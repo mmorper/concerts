@@ -11,6 +11,8 @@ interface GenreNode {
   name: string
   value?: number
   children?: GenreNode[]
+  isOther?: boolean
+  isArtist?: boolean
 }
 
 interface PartitionNode extends d3.HierarchyRectangularNode<GenreNode> {
@@ -22,42 +24,162 @@ interface PartitionNode extends d3.HierarchyRectangularNode<GenreNode> {
 
 export function Scene5Genres({ concerts }: Scene5GenresProps) {
   const svgRef = useRef<SVGSVGElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const [focusedNode, setFocusedNode] = useState<string>('All Genres')
+  const [expandedGenre, setExpandedGenre] = useState<string | null>(null)
 
-  // Build hierarchical genre data
+  // Build hierarchical genre data with zoom-in effect
   const genreHierarchy = useMemo((): GenreNode => {
+    // Count concerts per genre
     const genreCounts = new Map<string, number>()
+    const genreArtists = new Map<string, Map<string, number>>()
 
     concerts.forEach(concert => {
       const genre = concert.genre || 'Unknown'
       genreCounts.set(genre, (genreCounts.get(genre) || 0) + 1)
+
+      // Track artists within each genre
+      if (!genreArtists.has(genre)) {
+        genreArtists.set(genre, new Map())
+      }
+      const artists = genreArtists.get(genre)!
+      artists.set(concert.headliner, (artists.get(concert.headliner) || 0) + 1)
     })
 
-    const children: GenreNode[] = Array.from(genreCounts.entries())
-      .map(([genre, count]) => ({
-        name: genre,
-        value: count,
-      }))
-      .sort((a, b) => (b.value || 0) - (a.value || 0))
+    const totalConcerts = concerts.length
+    const threshold = totalConcerts * 0.03 // 3% threshold
+
+    // Separate major genres (>=3%) and small genres (<3%)
+    const majorGenres: { name: string; count: number; artists: Map<string, number> }[] = []
+    const smallGenres: { name: string; count: number; artists: Map<string, number> }[] = []
+
+    Array.from(genreCounts.entries()).forEach(([genre, count]) => {
+      const artists = genreArtists.get(genre)!
+      if (count >= threshold) {
+        majorGenres.push({ name: genre, count, artists })
+      } else {
+        smallGenres.push({ name: genre, count, artists })
+      }
+    })
+
+    majorGenres.sort((a, b) => b.count - a.count)
+    smallGenres.sort((a, b) => b.count - a.count)
+
+    // ZOOM-IN LOGIC: If a genre is expanded, it becomes the inner ring
+    if (expandedGenre && expandedGenre !== 'All Genres') {
+      // Check if it's a major genre
+      const majorGenre = majorGenres.find(g => g.name === expandedGenre)
+      if (majorGenre) {
+        // Zoomed into a major genre: show as single inner ring, artists in middle ring
+        const artistChildren: GenreNode[] = Array.from(majorGenre.artists.entries())
+          .map(([artist, count]) => ({
+            name: artist,
+            value: count,
+            isArtist: true,
+          }))
+          .sort((a, b) => (b.value || 0) - (a.value || 0))
+
+        return {
+          name: 'All Genres',
+          children: [
+            {
+              name: expandedGenre,
+              value: majorGenre.count,
+              children: artistChildren,
+            },
+          ],
+        }
+      }
+
+      // Check if it's "Other"
+      if (expandedGenre === 'Other') {
+        // Zoomed into "Other": show as single inner ring, small genres in middle ring
+        return {
+          name: 'All Genres',
+          children: [
+            {
+              name: 'Other',
+              value: smallGenres.reduce((sum, g) => sum + g.count, 0),
+              isOther: true,
+              children: smallGenres.map(g => ({
+                name: g.name,
+                value: g.count,
+              })),
+            },
+          ],
+        }
+      }
+
+      // Check if it's a small genre (from within "Other")
+      const smallGenre = smallGenres.find(g => g.name === expandedGenre)
+      if (smallGenre) {
+        // Zoomed into a small genre: show as single inner ring, artists in middle ring
+        const artistChildren: GenreNode[] = Array.from(smallGenre.artists.entries())
+          .map(([artist, count]) => ({
+            name: artist,
+            value: count,
+            isArtist: true,
+          }))
+          .sort((a, b) => (b.value || 0) - (a.value || 0))
+
+        return {
+          name: 'All Genres',
+          children: [
+            {
+              name: expandedGenre,
+              value: smallGenre.count,
+              children: artistChildren,
+            },
+          ],
+        }
+      }
+    }
+
+    // DEFAULT VIEW: Show all major genres + "Other" in inner ring
+    const children: GenreNode[] = majorGenres.map(g => ({
+      name: g.name,
+      value: g.count,
+    }))
+
+    if (smallGenres.length > 0) {
+      children.push({
+        name: 'Other',
+        value: smallGenres.reduce((sum, g) => sum + g.count, 0),
+        isOther: true,
+      })
+    }
 
     return {
       name: 'All Genres',
       children,
-    } as GenreNode
-  }, [concerts])
+    }
+  }, [concerts, expandedGenre])
 
-  // Separate initialization from state updates
+
+  // Render D3 sunburst - reads actual SVG dimensions from CSS
   useEffect(() => {
     if (!svgRef.current || !genreHierarchy.children || genreHierarchy.children.length === 0) return
 
-    const svg = d3.select(svgRef.current)
-    svg.selectAll('*').remove()
+    const renderSunburst = () => {
+      if (!svgRef.current) return
 
-    const width = svgRef.current.clientWidth
-    const height = svgRef.current.clientHeight
-    const radius = Math.min(width, height) / 2 - 60
+      const svg = d3.select(svgRef.current)
+      svg.selectAll('*').remove()
 
-    // Create color scale
+      // Read the actual computed dimensions from the SVG element
+      const rect = svgRef.current.getBoundingClientRect()
+      const width = rect.width
+      const height = rect.height
+      const radius = Math.min(width, height) / 2 - 20
+
+      console.log('🎯 SUNBURST DIMENSIONS:', {
+        width,
+        height,
+        radius,
+        source: 'getBoundingClientRect (CSS-computed)'
+      })
+
+    // Create color scale for genres
     const colorScale = d3.scaleOrdinal<string>()
       .domain(genreHierarchy.children.map(d => d.name))
       .range([
@@ -65,6 +187,33 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         '#eab308', '#84cc16', '#10b981', '#14b8a6', '#06b6d4',
         '#0ea5e9', '#3b82f6', '#a855f7', '#d946ef', '#e11d48',
       ])
+
+    // Function to get color for any node (artists inherit parent color with variation)
+    const getNodeColor = (d: PartitionNode, index: number): string => {
+      if (d.depth === 1) {
+        // Top-level genre
+        return colorScale(d.data.name)
+      } else if (d.depth >= 2) {
+        // Artist or small genre - inherit parent color with brightness variation
+        const parent = d.parent
+        if (parent && parent.depth >= 1) {
+          const parentColor = d.depth === 2 && parent.depth === 1
+            ? colorScale(parent.data.name)
+            : getNodeColor(parent as PartitionNode, 0)
+
+          const color = d3.color(parentColor)
+          if (color) {
+            // Vary brightness based on index within siblings
+            const siblings = parent.children || []
+            const siblingIndex = siblings.indexOf(d)
+            const brightnessShift = (siblingIndex / Math.max(siblings.length - 1, 1)) * 1.5 - 0.75
+            return color.brighter(brightnessShift).toString()
+          }
+        }
+        return colorScale(d.data.name)
+      }
+      return '#999'
+    }
 
     // Create hierarchy
     const root = d3.hierarchy(genreHierarchy)
@@ -77,47 +226,67 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
 
     partition(root)
 
-    // Create arc generators
+    // Create arc generators with fixed 3-ring layout
+    // Ring 1 (inner): 20-50% of radius
+    // Ring 2 (middle): 50-80% of radius
+    // Ring 3 (outer): 80-98% of radius (reserved for future expansion)
     const arc = d3.arc<PartitionNode>()
       .startAngle(d => d.x0)
       .endAngle(d => d.x1)
-      .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.01))
+      .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.005))
       .padRadius(radius / 2)
-      .innerRadius(radius * 0.4)
-      .outerRadius(radius * 0.95)
+      .innerRadius(d => {
+        if (d.depth === 1) return radius * 0.20  // Inner ring
+        if (d.depth === 2) return radius * 0.50  // Middle ring
+        return radius * 0.80  // Outer ring (future)
+      })
+      .outerRadius(d => {
+        if (d.depth === 1) return radius * 0.50  // Inner ring
+        if (d.depth === 2) return radius * 0.80  // Middle ring
+        return radius * 0.98  // Outer ring (future)
+      })
 
     const arcExpanded = d3.arc<PartitionNode>()
       .startAngle(d => d.x0)
       .endAngle(d => d.x1)
-      .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.01))
+      .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.005))
       .padRadius(radius / 2)
-      .innerRadius(radius * 0.35)
-      .outerRadius(radius * 1.15)
+      .innerRadius(d => {
+        if (d.depth === 1) return radius * 0.15  // Inner ring (expanded)
+        if (d.depth === 2) return radius * 0.45  // Middle ring (expanded)
+        return radius * 0.75  // Outer ring (future)
+      })
+      .outerRadius(d => {
+        if (d.depth === 1) return radius * 0.55  // Inner ring (expanded)
+        if (d.depth === 2) return radius * 0.85  // Middle ring (expanded)
+        return radius * 1.0   // Outer ring (future)
+      })
 
     // Create main group
     const g = svg.append('g')
       .attr('transform', `translate(${width / 2},${height / 2})`)
 
-    // Add transparent background for click-away
+    // Add transparent background for click-away - must not block path hover events
     svg.append('rect')
       .attr('width', width)
       .attr('height', height)
       .attr('fill', 'transparent')
-      .style('cursor', 'pointer')
+      .style('pointer-events', 'none')  // Don't block hover events on paths!
       .on('click', () => {
         setFocusedNode('All Genres')
       })
 
-    // Add radial gradient definitions
+    // Add radial gradient definitions for all nodes
     const defs = svg.append('defs')
-    genreHierarchy.children?.forEach((genre, i) => {
+    const allNodes = root.descendants().filter(d => d.depth > 0) as PartitionNode[]
+    allNodes.forEach((node, i) => {
       const gradient = defs.append('radialGradient')
         .attr('id', `gradient-${i}`)
         .attr('cx', '50%')
         .attr('cy', '50%')
         .attr('r', '50%')
 
-      const baseColor = colorScale(genre.name)
+      const baseColor = getNodeColor(node, i)
       gradient.append('stop')
         .attr('offset', '0%')
         .attr('stop-color', d3.color(baseColor)!.brighter(0.5).toString())
@@ -134,7 +303,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       .attr('class', 'node-group')
 
     // Add paths with interactivity
-    nodeGroups.append('path')
+    const paths = nodeGroups.append('path')
       .attr('class', 'segment-path')
       .attr('d', arc)
       .attr('fill', (_d, i) => `url(#gradient-${i})`)
@@ -143,15 +312,43 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       .attr('stroke-width', 3)
       .style('cursor', 'pointer')
       .style('filter', 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))')
+      .style('pointer-events', 'all')
       .on('click', function(_event, d) {
         _event.stopPropagation()
-        if (focusedNode === d.data.name) {
-          setFocusedNode('All Genres')
-        } else {
-          setFocusedNode(d.data.name)
+
+        // NEW ZOOM LOGIC:
+        // - Depth 1 nodes are either genres (in default view) or a focused genre (in zoomed view)
+        // - Depth 2 nodes are either artists (zoomed into genre) or small genres (zoomed into "Other")
+
+        if (d.depth === 1) {
+          // Clicking inner ring
+          if (expandedGenre === d.data.name) {
+            // Already zoomed in - zoom out
+            setExpandedGenre(null)
+            setFocusedNode('All Genres')
+          } else {
+            // Zoom into this genre
+            setExpandedGenre(d.data.name)
+            setFocusedNode(d.data.name)
+          }
+        } else if (d.depth === 2) {
+          // Clicking middle ring
+          if (d.parent && d.parent.data.isOther && !d.data.isArtist) {
+            // Clicking a small genre within "Other" - zoom into it
+            setExpandedGenre(d.data.name)
+            setFocusedNode(d.data.name)
+          } else if (d.data.isArtist) {
+            // Clicking an artist - just focus (no further zoom)
+            if (focusedNode === d.data.name) {
+              setFocusedNode(d.parent?.data.name || 'All Genres')
+            } else {
+              setFocusedNode(d.data.name)
+            }
+          }
         }
       })
-      .on('mouseenter', function(_event, d) {
+      .on('mouseover', function(_event, d) {
+        console.log('MOUSEOVER detected on:', d.data.name)
         const currentPath = d3.select(this)
         const parentNode = this.parentNode as Element
         const parentSelection = d3.select(parentNode)
@@ -218,12 +415,23 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         return `${d.data.name}: ${value} shows (${percentage}%)`
       })
 
-    // Add labels
+    // DEBUG: Log paths created
+    console.log('Sunburst paths created:', paths.size(), 'paths with hover handlers')
+
+    // Add labels with fixed ring positioning
     nodeGroups.append('text')
       .attr('class', 'segment-label')
       .attr('transform', function(d) {
         const angle = (d.x0 + d.x1) / 2
-        const adjustedRadius = (radius * 0.4 + radius * 0.95) / 2
+        // Fixed radius based on depth (matching arc generators)
+        let adjustedRadius
+        if (d.depth === 1) {
+          adjustedRadius = radius * 0.35   // Middle of inner ring (0.20 to 0.50)
+        } else if (d.depth === 2) {
+          adjustedRadius = radius * 0.65   // Middle of middle ring (0.50 to 0.80)
+        } else {
+          adjustedRadius = radius * 0.89   // Middle of outer ring (0.80 to 0.98)
+        }
         const x = Math.cos(angle - Math.PI / 2) * adjustedRadius
         const y = Math.sin(angle - Math.PI / 2) * adjustedRadius
         const rotation = angle * 180 / Math.PI - 90
@@ -233,11 +441,22 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       .attr('text-anchor', 'middle')
       .attr('font-size', d => {
         const angle = d.x1 - d.x0
-        if (angle > 0.4) return '12px'
-        if (angle > 0.2) return '11px'
-        return '10px'
+        // Depth 2 (artists/small genres) get smaller font
+        if (d.depth === 2) {
+          if (angle > 0.4) return '11px'
+          if (angle > 0.2) return '10px'
+          return '9px'
+        }
+        // Depth 1 (genres) - larger when zoomed in (single segment)
+        if (expandedGenre && d.data.name === expandedGenre) return '18px'
+        if (angle > 0.4) return '14px'
+        if (angle > 0.2) return '12px'
+        return '11px'
       })
-      .attr('font-weight', '600')
+      .attr('font-weight', d => {
+        if (expandedGenre && d.depth === 1 && d.data.name === expandedGenre) return '700'
+        return d.depth === 2 ? '500' : '600'
+      })
       .attr('fill', 'white')
       .attr('font-family', 'Inter, system-ui, sans-serif')
       .style('pointer-events', 'none')
@@ -245,13 +464,28 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       .text(d => {
         const name = d.data.name
         const angle = d.x1 - d.x0
+
+        // For zoomed-in single genre, show full name
+        if (expandedGenre && d.depth === 1 && d.data.name === expandedGenre) {
+          return name
+        }
+
+        if (d.depth === 2) {
+          // Artists/small genres - more aggressive truncation
+          if (angle > 0.4) return name.length > 12 ? name.substring(0, 10) + '…' : name
+          if (angle > 0.2) return name.length > 8 ? name.substring(0, 6) + '…' : name
+          return name.length > 5 ? name.substring(0, 3) + '…' : name
+        }
+
+        // Genres in default view
         if (angle > 0.4) return name
-        if (angle > 0.2) return name.length > 12 ? name.substring(0, 10) + '…' : name
-        return name.length > 8 ? name.substring(0, 6) + '…' : name
+        if (angle > 0.2) return name.length > 14 ? name.substring(0, 12) + '…' : name
+        return name.length > 10 ? name.substring(0, 8) + '…' : name
       })
       .attr('opacity', d => {
         const angle = d.x1 - d.x0
-        if (angle > 0.3) return 1
+        if (expandedGenre && d.depth === 1) return 1  // Always show zoomed genre
+        if (angle > 0.2) return 1
         return 0.3
       })
 
@@ -289,8 +523,18 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       .attr('fill', '#9ca3af')
       .attr('font-family', 'Inter, system-ui, sans-serif')
       .text(`${totalGenres} genres`)
+    }
 
-  }, [genreHierarchy, concerts]) // Removed focusedNode from dependencies
+    // Initial render
+    renderSunburst()
+
+    // Re-render on window resize
+    window.addEventListener('resize', renderSunburst)
+
+    return () => {
+      window.removeEventListener('resize', renderSunburst)
+    }
+  }, [genreHierarchy, concerts, expandedGenre]) // Rebuild when hierarchy changes
 
   // Separate effect to update visuals when focus changes
   useEffect(() => {
@@ -322,7 +566,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
           return 0.3
         }
         if (d.data.name === focusedNode) return 1
-        return 0
+        return 0.3  // Keep labels visible at 30% opacity instead of hiding completely
       })
 
     // Update center text
@@ -393,17 +637,20 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
 
       {/* Chart Container */}
       <motion.div
+        ref={containerRef}
         initial={{ scale: 0.9, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         viewport={{ once: false }}
         transition={{ duration: 1, delay: 0.4 }}
-        className="flex justify-center items-center"
+        className="absolute inset-0 flex justify-center items-center pointer-events-none"
       >
         <svg
           ref={svgRef}
-          width="600"
-          height="600"
-          className="max-w-full h-auto"
+          className="pointer-events-auto"
+          style={{
+            width: 'min(100vw, calc(100vh - 280px))',
+            height: 'min(100vw, calc(100vh - 280px))'
+          }}
         />
       </motion.div>
 
@@ -416,9 +663,9 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         className="absolute bottom-20 left-0 right-0 z-20 text-center"
       >
         <p className="text-sm text-gray-500">
-          {focusedNode === 'All Genres'
-            ? 'Hover to expand · Click to focus on a genre'
-            : 'Click anywhere to reset view'
+          {expandedGenre
+            ? 'Click inner ring to zoom out · Click outer segments to drill deeper'
+            : 'Hover to preview · Click to zoom into a genre'
           }
         </p>
       </motion.div>
