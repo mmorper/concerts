@@ -1471,3 +1471,48 @@ d3.forceRadial(
   - Current sizing: `min(100vw, calc(100vh - 280px))` with CSS viewport units
   - File: [src/components/scenes/Scene5Genres.tsx](../src/components/scenes/Scene5Genres.tsx:647-654)
 - [ ] Fix viewport clipping in genres scene (if still occurring)
+
+---
+
+## Documentation Maintenance Policy
+
+### Single Source of Truth: docs/planning.md
+
+This file (`docs/planning.md`) is the authoritative record of:
+- All implementation phases and their completion status
+- Bug tracking and fixes
+- Technical decisions and architecture changes
+- Current work and pending tasks
+
+### Context File Synchronization
+
+**`.claude/context.md` must be refreshed:**
+1. ✅ **With each commit and push** (per user preference)
+2. ✅ At the start of each major phase (Phase 0-6)
+3. ✅ After significant architectural changes
+4. ✅ When context has drifted >5 bugs/features from planning.md
+
+**Refresh process:**
+1. Read current state from `docs/planning.md` (this file)
+2. Update `.claude/context.md` with:
+   - Current phase and completion status
+   - Recent work (last 5-10 items)
+   - Pending work
+   - Last commit hash and message
+3. Keep context.md concise (<2000 tokens) - it's a quick-start guide, not full history
+
+**Other documentation:**
+- `README.md` - Update when features change or tech stack evolves
+- `docs/api-setup.md` - Update when APIs change or new services added
+
+### Why This Matters
+
+Claude Code sessions have context windows. If `.claude/context.md` is outdated, new sessions will:
+- ❌ Have incorrect understanding of project state
+- ❌ Suggest work that's already complete
+- ❌ Miss critical bugs or pending work
+- ❌ Waste time rediscovering current architecture
+
+**Check sync status:** Compare `.claude/context.md` phase to this file's "Implementation Progress" section.
+
+**Last Context Sync:** 2025-12-28 (synchronized with commit 778467f)

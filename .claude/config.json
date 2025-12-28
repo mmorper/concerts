@@ -6,9 +6,14 @@
     "tech_stack": ["vite", "react", "typescript", "tailwind", "leaflet"]
   },
   "phases": {
-    "current": "Phase 0: Project Infrastructure",
-    "completed": [],
-    "next": "Phase 1: Foundation Setup"
+    "current": "Phase 5+ (Bug Fixes)",
+    "completed": ["Phase 0", "Phase 1", "Phase 2", "Phase 3", "Phase 4", "Phase 5"],
+    "next": "Phase 6: Deployment"
+  },
+  "status": {
+    "currentPhase": "Phase 5+ (Bug Fixes)",
+    "lastContextSync": "2025-12-28",
+    "lastCommit": "778467f"
   },
   "deployment": {
     "platform": "cloudflare-pages",
@@ -22,8 +27,9 @@
     "enrichment_apis": ["theaudiodb", "lastfm"]
   },
   "documentation": {
+    "source_of_truth": "docs/planning.md",
     "planning": "docs/planning.md",
     "api_setup": "docs/api-setup.md",
-    "phase_tracking": ".claude/phase-tracking.md"
+    "context": ".claude/context.md"
   }
 }

@@ -1,92 +1,50 @@
-# Morperhaus Concert Archives - Project Context
+# Concert Archives - Project Context
 
-## Project Overview
+## Current Status (December 28, 2025)
 
-An interactive Jamstack single-page application that replaces a Google Looker Studio dashboard with a rich, engaging timeline visualization of personal concert history spanning decades.
+**Implementation Status:**
+- Phases 0-5: ✅ Complete
+- Bug Fix Session 1: 🔄 In progress
 
-## Key Information
+**Recent Work:**
+- Fixed navigation dots scroll tracking
+- Reordered scenes: Timeline → Venues → Map → Genres → Artists
+- Redesigned venue network as radial hierarchy
+- Fixed map z-index layering issue
+- Converted Scene2 to artist list (top 20)
 
-### Data Source
-- Google Sheet with 100-500 concert records
-- Contains: Date, Headliner, Genre, up to 15 Openers, Venue, City, State, Reference links
-- Manual periodic updates during "vibe code" sessions
+**Pending Work:**
+- Sunburst visualization sizing (awaiting user's visual mockup)
+- User will provide annotated mockup showing desired layout
 
-### Core Requirements
-- Timeline/chronological storytelling as primary UX
-- Integrated map view alongside timeline
-- Read-only visualization (no editing)
-- Zero runtime API costs (all data pre-fetched)
-- Multiple exploration paths (timeline, genre, artist, venue, geographic)
+**Architecture:**
+- 5 full-viewport scenes (100vh each) with parallax scrolling
+- NYT-inspired design: clean, minimal, contemporary sans-serif
+- Scene-specific backgrounds with scroll-triggered animations
+- D3.js visualizations for all data displays
 
-### Technical Stack
-- **Framework**: Vite + React 18 + TypeScript
-- **Styling**: Tailwind CSS v4
-- **State**: Zustand
-- **Maps**: React Leaflet with OpenStreetMap
-- **Animations**: Framer Motion
-- **Deployment**: Cloudflare Pages (auto-deploy from GitHub)
+**Tech Stack:**
+- Vite 6.0.7 + React 18.3.1 + TypeScript 5.7.2
+- Tailwind CSS 4.1.18
+- Framer Motion 11.18.2 (parallax scrolling)
+- D3.js 7.9.0 (visualizations)
+- React Leaflet 4.2.1 (map scene)
 
-### Design Philosophy
-"Rolling Stone Magazine Worthy" - editorial photography meets interactive storytelling meets rock poster art.
+**Data Source:**
+- 175 concerts (1984-2026, 42 years)
+- Top venues: Irvine Meadows (14x), Pacific Amphitheatre (12x)
+- Top genres: New Wave (46), Punk (15), Alternative (14)
+- Geographic: California ~65%, DC cluster, Boston, New Orleans, UK
 
-**Visual Themes**:
-- Vintage concert poster + modern editorial
-- Large bold typography (Bebas Neue for headliners)
-- Genre-based color palettes
-- Concert ticket aesthetic for cards
-- Scroll-triggered animations
-- Magazine masthead header
+**Last Commit:** 778467f - "wip: Sunburst sizing adjustments - awaiting visual mockup"
 
-### Data Strategy
-1. **Import**: Google Sheets API OAuth integration
-2. **Enrich**: TheAudioDB & Last.fm APIs for artist images/metadata
-3. **Cache**: Static JSON files committed to repo
-4. **Deploy**: Cloudflare Pages auto-builds on push
+---
 
-### Key Features
-- Filterable timeline (genre, artist, venue, city, year)
-- Synchronized map showing visible concerts
-- Virtual scrolling for performance
-- Decade section headers with era-specific theming
-- Expandable opener lists (up to 15 per show)
-- Shareable filtered views via URL params
+## Primary Documentation
 
-### Removed Features
-- ~~"Who Attended" filter~~ - simplified per user request
+For comprehensive project details, see:
+- **[docs/planning.md](../docs/planning.md)** - Complete implementation plan (SOURCE OF TRUTH)
+- **[README.md](../README.md)** - Project overview
+- **[docs/api-setup.md](../docs/api-setup.md)** - API configuration
 
-### Future Enhancements (v2)
-- Venue deep-dive pages
-- City heat maps
-- Tour route visualization
-- ConcertArchives.org integration
-- "Concert DNA" aggregate visualizations
-
-## Current Phase
-
-**Phase 0: Project Infrastructure** ✅
-- Git repository initialized
-- Directory structure created
-- Documentation organized
-- .claude configuration established
-
-## Next Phase
-
-**Phase 1: Foundation Setup**
-- package.json and dependencies
-- Vite configuration
-- TypeScript setup
-- Tailwind CSS
-- Basic component structure
-- Sample data file
-
-## Context Window Strategy
-- Check remaining tokens before each phase
-- If <30k tokens: Stop, update docs, start fresh session
-- Update `/docs/planning.md` at phase completion
-- This file provides quick context rebuild for future sessions
-
-## Important Files
-- `/docs/planning.md` - Complete implementation plan
-- `/.claude/config.json` - Project configuration
-- `/.claude/phase-tracking.md` - Progress tracking
-- `/index.html` - Current Looker dashboard (backup to old_index.html)
+Always check planning.md for latest status before beginning work.
