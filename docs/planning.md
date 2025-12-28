@@ -1256,28 +1256,78 @@ This ensures we never run out of context mid-phase and maintains continuity.
 - react-leaflet 4.2.1
 - react-leaflet-cluster 2.1.0
 
-### 🔄 Phase 5: Polish (PENDING)
-**Status**: Not started
+### ✅ Phase 5: Polish (COMPLETE)
+**Completed**: Design review session
+**Status**: Dashboard polished, but **MAJOR PIVOT APPROVED**
 
-**Planned Tasks**:
-1. Add animations with Framer Motion
+**What Was Completed**:
+1. ✅ Animations with Framer Motion
    - Scroll-triggered card animations
-   - Map marker pulse effects
-   - Filter transition animations
-2. Implement concert ticket design theme
+   - Hover effects and transitions
+2. ✅ Concert ticket design theme
    - Perforated edge styling
    - "ADMIT ONE" stamp aesthetic
-3. Add stats overview header enhancements
-4. Optimize images and performance
-   - Image lazy loading improvements
-   - Virtual scrolling with react-window
-5. Mobile responsive refinements
-6. Genre-based color theming for cards
+3. ✅ Three-column dashboard layout
+   - Left sidebar: Stats (250px)
+   - Center: Compact concert list
+   - Right sidebar: Map (400px)
+4. ✅ Minimal header (60px)
+5. ✅ Collapsible filter chips
 
-**Remaining Dependencies to Use**:
-- framer-motion (already installed)
-- react-window (already installed)
-- date-fns (already installed)
+**CRITICAL DESIGN DECISION**:
+After user review, the dashboard approach was rejected as "1999 layout" with "horrible UX". User requested a complete redesign inspired by:
+- **NYT Interactive Graphics** (minimal, data-driven)
+- **Scout Motors parallax scrolling** (scoutmotors.com)
+- **Spotify Wrapped** (single statistic per viewport)
+- **Monochromatic maps** (dark grayscale aesthetic)
+
+**New Direction Approved**: See Phase 5B below.
+
+### 🔄 Phase 5B: Immersive Scrolling Experience (IN PROGRESS)
+**Status**: Plan approved, ready to implement
+**Plan Document**: [.claude/plans/polished-wondering-meadow.md](.claude/plans/polished-wondering-meadow.md)
+
+**New Vision**:
+- 5 full-viewport scenes (100vh each) with parallax scrolling
+- NYT-inspired design: clean, minimal, contemporary sans-serif
+- Scene-specific backgrounds (white, off-white, charcoal, beige, light gray)
+- Google Sheets API integration for live data
+- D3.js visualizations for all data
+
+**Five Scenes**:
+1. **Hero/Timeline**: Interactive timeline (1984-2026) with dots sized by density
+2. **Venues**: Photo mosaic background + venue grid (Irvine Meadows 14x, Pacific 12x, 9:30 Club 11x)
+3. **Map**: Monochromatic map with dark grayscale styling (user's favorite!)
+4. **Bands**: Force-directed network or particle visualization
+5. **Genres**: Radial/donut chart (New Wave 26%, Punk 9%, Alternative 8%)
+
+**Design Specifications**:
+- Typography: Inter (NOT Georgia), modern sans-serif
+- Color palette: NYT-inspired muted blues, soft reds, grayscale data
+- Animations: Subtle (0.8-1.2s transitions, 0.2-0.3x parallax)
+- Backgrounds vary by scene for visual separation
+
+**Implementation Phases** (8 phases, 21-29 hours estimated):
+- Phase 0: Google Sheets API integration
+- Phase 1: Scene framework with Framer Motion
+- Phase 2: Hero/Timeline scene with D3.js
+- Phase 3: Venues scene with photo mosaic
+- Phase 4: Map scene (monochromatic styling)
+- Phase 5: Bands network visualization
+- Phase 6: Genres radial chart
+- Phase 7: Polish, mobile, accessibility
+
+**Dependencies to Add**:
+- d3 ^7.8.5
+- @types/d3 ^7.4.3
+- googleapis ^140.0.0 (for Google Sheets API)
+
+**Real Data Analyzed**:
+- 175 concerts from 1984-2026 (42 years)
+- Top artists: Social Distortion (8x), Howard Jones (6x)
+- Top venues: Irvine Meadows (14x), Pacific Amphitheatre (12x)
+- Top genres: New Wave (46), Punk (15), Alternative (14), Ska (13)
+- Geographic: California ~65%, DC cluster, Boston area, New Orleans, UK
 
 ### 📦 Phase 6: Deployment (PENDING)
 **Status**: Not started
@@ -1322,3 +1372,97 @@ Environment Variables: (none - all data is static)
 
 **GitHub Repository**: https://github.com/mmorper/concerts
 **Latest Commit**: Phase 4: Map Integration - Complete (58c7299)
+
+## Bug Fixes & Enhancements (Post-Phase 5)
+
+### 🐛 Bug Fix Session 1 (December 28, 2025)
+**Status**: In Progress
+**Focus**: Venue network visualization and map overlay z-index issues
+
+**Bugs Fixed**:
+1. ✅ **Navigation dots** - Fixed scroll tracking and clickability
+   - Problem: Dots weren't tracking scroll position or responding to clicks
+   - Root cause: Code was listening to `window.scrollY` but scroll container is `.snap-y` div
+   - Solution: Changed to query `.snap-y` container and use `scrollContainer.scrollTop`
+   - Files: [src/components/SceneNavigation.tsx](../src/components/SceneNavigation.tsx:16-39)
+
+2. ✅ **Scene order** - Reordered to match user's requested flow
+   - New order: Timeline → Venues (force graph) → Map → Genres → Artist List
+   - Files: [src/App.tsx](../src/App.tsx:59-73), [src/components/SceneNavigation.tsx](../src/components/SceneNavigation.tsx:4-10)
+
+3. ✅ **Venue network hierarchy** - Complete redesign from flat network to proper hierarchy
+   - Old: Venues connected by city relationships (incorrect)
+   - New: Radial layout with venue → headliner → opener hierarchy
+   - Cross-venue connections show bands that played multiple venues
+   - Visual distinction: Venues (indigo, large), Headliners (purple, medium), Openers (pink, small)
+   - Hierarchy links (solid blue) vs cross-venue links (dashed pink)
+   - Top 10 venues displayed for clarity with radial force layout
+   - Files: [src/components/scenes/Scene4Bands.tsx](../src/components/scenes/Scene4Bands.tsx:10-229)
+
+4. ✅ **Map header disappearing** - Fixed z-index layering issue
+   - Problem: Title and tabs disappeared when map scene was fully in viewport
+   - Root cause: Map container had higher z-index than header overlay
+   - Solution:
+     - Set map container to `z-0` with `absolute inset-0` positioning
+     - Increased header overlay to `z-20` with `pointer-events-none`
+     - Re-enabled pointer events on tabs with `pointer-events-auto`
+     - Increased stats overlay to `z-20`
+   - Files: [src/components/scenes/Scene3Map.tsx](../src/components/scenes/Scene3Map.tsx:120-164)
+
+5. ✅ **Artist list conversion** - Converted Scene2Venues from venue cards to artist list
+   - Shows top 20 artists in 4-column grid
+   - Each card displays: count, artist name, genre
+   - Changed background to `bg-stone-50` for contrast with other scenes
+   - Files: [src/components/scenes/Scene2Venues.tsx](../src/components/scenes/Scene2Venues.tsx:9-99)
+
+**Technical Details**:
+
+**Venue Network Hierarchy**:
+```typescript
+// Node types
+interface Node {
+  id: string
+  count: number
+  type: 'venue' | 'headliner' | 'opener'
+  parentVenue?: string
+}
+
+// Link types
+interface Link {
+  source: string
+  target: string
+  value: number
+  type: 'hierarchy' | 'cross-venue'
+}
+
+// Radial force layout
+d3.forceRadial(
+  (d) => {
+    if (d.type === 'venue') return 0        // Venues in center
+    if (d.type === 'headliner') return 150  // Headliners mid-radius
+    return 250                               // Openers outer radius
+  },
+  width / 2,
+  height / 2
+).strength(0.3)
+```
+
+**Map Z-Index Fix**:
+- Map container: `absolute inset-0 z-0` (background layer)
+- Title/tabs overlay: `absolute top-20 z-20 pointer-events-none` (top layer)
+- Tabs container: `pointer-events-auto` (re-enable clicks)
+- Stats overlay: `absolute bottom-20 z-20` (top layer)
+
+**Scene Backgrounds** (for contrast):
+- Scene 1 (Timeline): `bg-white`
+- Scene 2 (Venues): `bg-gradient-to-br from-indigo-950 to-purple-950`
+- Scene 3 (Map): `bg-gray-900`
+- Scene 4 (Genres): `bg-gray-100`
+- Scene 5 (Artists): `bg-stone-50`
+
+**Build Status**: ✅ TypeScript compilation successful
+**Bundle Size**: 504.63 kB JS (gzipped: 160.04 kB), 59.30 kB CSS (gzipped: 14.10 kB)
+
+**Pending Work**:
+- [ ] Replace donut chart with sunburst visualization in Scene5Genres.tsx
+- [ ] Fix viewport clipping in genres scene (if still occurring)

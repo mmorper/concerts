@@ -1,121 +1,4175 @@
 {
   "concerts": [
     {
-      "id": "1",
-      "date": "2023-08-15",
-      "headliner": "Radiohead",
-      "headlinerNormalized": "radiohead",
-      "genre": "Alternative Rock",
-      "openers": ["Phoebe Bridgers", "Japanese Breakfast"],
-      "venue": "Red Rocks Amphitheatre",
-      "city": "Morrison",
-      "state": "CO",
-      "cityState": "Morrison, CO",
-      "reference": "https://www.concertarchives.org/concerts/radiohead-2023",
-      "year": 2023,
-      "month": 8,
-      "day": 15,
-      "dayOfWeek": "Tuesday",
-      "decade": "2020s",
+      "id": "concert-1",
+      "date": "1984-04-27",
+      "headliner": "Adam Ant",
+      "headlinerNormalized": "adam-ant",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "Irvine Meadows",
+      "city": "Irvine",
+      "state": "California",
+      "cityState": "Irvine, California",
+      "reference": "https://www.concertarchives.org/concerts/adam-ant-4b4a77b7-b951-4fe6-99ad-d2017d67b5b4",
+      "year": 1984,
+      "month": 4,
+      "day": 27,
+      "dayOfWeek": "Thursday",
+      "decade": "1980s",
       "location": {
-        "lat": 39.6653,
-        "lng": -105.2055
+        "lat": 33.6846,
+        "lng": -117.8265
       }
     },
     {
-      "id": "2",
-      "date": "2022-06-20",
-      "headliner": "The National",
-      "headlinerNormalized": "the-national",
-      "genre": "Indie Rock",
-      "openers": ["Alvvays"],
-      "venue": "Ogden Theatre",
-      "city": "Denver",
-      "state": "CO",
-      "cityState": "Denver, CO",
-      "year": 2022,
+      "id": "concert-2",
+      "date": "1984-05-12",
+      "headliner": "Thompson Twins",
+      "headlinerNormalized": "thompson-twins",
+      "genre": "New Wave",
+      "openers": [
+        "The Reflex"
+      ],
+      "venue": "Irvine Meadows",
+      "city": "Irvine",
+      "state": "California",
+      "cityState": "Irvine, California",
+      "year": 1984,
+      "month": 5,
+      "day": 12,
+      "dayOfWeek": "Friday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6846,
+        "lng": -117.8265
+      }
+    },
+    {
+      "id": "concert-3",
+      "date": "1984-09-08",
+      "headliner": "Echo and the Bunnymen",
+      "headlinerNormalized": "echo-and-the-bunnymen",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "Irvine Meadows",
+      "city": "Irvine",
+      "state": "California",
+      "cityState": "Irvine, California",
+      "reference": "https://www.concertarchives.org/concerts/echo-the-bunnymen-81f113b0-3f36-4787-afa9-5b9cbd675bc8",
+      "year": 1984,
+      "month": 9,
+      "day": 8,
+      "dayOfWeek": "Friday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6846,
+        "lng": -117.8265
+      }
+    },
+    {
+      "id": "concert-4",
+      "date": "1985-03-31",
+      "headliner": "Depeche Mode",
+      "headlinerNormalized": "depeche-mode",
+      "genre": "New Wave",
+      "openers": [
+        "\"Animotion",
+        "Animotion",
+        "Book of Love"
+      ],
+      "venue": "Book of Love\"",
+      "city": "",
+      "state": "Irvine",
+      "cityState": ", Irvine",
+      "reference": "Mike",
+      "year": 1985,
+      "month": 3,
+      "day": 31,
+      "dayOfWeek": "Saturday",
+      "decade": "1980s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-5",
+      "date": "1985-05-17",
+      "headliner": "Stryper",
+      "headlinerNormalized": "stryper",
+      "genre": "Heavy Metal",
+      "openers": [],
+      "venue": "Knots Berry Farm",
+      "city": "Buena Park",
+      "state": "California",
+      "cityState": "Buena Park, California",
+      "year": 1985,
+      "month": 5,
+      "day": 17,
+      "dayOfWeek": "Thursday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.8675,
+        "lng": -118.0001
+      }
+    },
+    {
+      "id": "concert-6",
+      "date": "1985-06-04",
+      "headliner": "Howard Jones",
+      "headlinerNormalized": "howard-jones",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "Irvine Meadows",
+      "city": "Irvine",
+      "state": "California",
+      "cityState": "Irvine, California",
+      "reference": "https://www.setlist.fm/setlist/howard-jones/1985/irvine-meadows-amphitheatre-irvine-ca-5bdc63c4.html",
+      "year": 1985,
+      "month": 6,
+      "day": 4,
+      "dayOfWeek": "Monday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6846,
+        "lng": -117.8265
+      }
+    },
+    {
+      "id": "concert-7",
+      "date": "1985-07-10",
+      "headliner": "Tears For Fears",
+      "headlinerNormalized": "tears-for-fears",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "Pacific Amphitheatre",
+      "city": "Costa Mesa",
+      "state": "California",
+      "cityState": "Costa Mesa, California",
+      "reference": "https://www.concertarchives.org/concerts/tears-for-fears-046ab552-e762-4a60-a0e6-110790ce281e",
+      "year": 1985,
+      "month": 7,
+      "day": 10,
+      "dayOfWeek": "Tuesday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6411,
+        "lng": -117.9187
+      }
+    },
+    {
+      "id": "concert-8",
+      "date": "1985-08-30",
+      "headliner": "Wham!",
+      "headlinerNormalized": "wham-",
+      "genre": "Pop",
+      "openers": [
+        "\"Chaka Kahn",
+        "Chaka Kahn",
+        "Katrina And the Waves"
+      ],
+      "venue": "Katrina And the Waves\"",
+      "city": "",
+      "state": "Inglewood",
+      "cityState": ", Inglewood",
+      "reference": "Dori",
+      "year": 1985,
+      "month": 8,
+      "day": 30,
+      "dayOfWeek": "Thursday",
+      "decade": "1980s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-9",
+      "date": "1985-08-23",
+      "headliner": "New Order",
+      "headlinerNormalized": "new-order",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "Irvine Meadows",
+      "city": "Irvine",
+      "state": "California",
+      "cityState": "Irvine, California",
+      "reference": "http://www.neworderonline.com/Live/Concert.aspx?ConcertID=190",
+      "year": 1985,
+      "month": 8,
+      "day": 23,
+      "dayOfWeek": "Thursday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6846,
+        "lng": -117.8265
+      }
+    },
+    {
+      "id": "concert-10",
+      "date": "1985-09-29",
+      "headliner": "Bruce Springsteen",
+      "headlinerNormalized": "bruce-springsteen",
+      "genre": "Classic Rock",
+      "openers": [],
+      "venue": "Los Angeles Memorial Coliseum",
+      "city": "Los Angeles",
+      "state": "California",
+      "cityState": "Los Angeles, California",
+      "reference": "https://www.concertarchives.org/concerts/bruce-springsteen-at-los-angeles-memorial-coliseum-september-29-1985",
+      "year": 1985,
+      "month": 9,
+      "day": 29,
+      "dayOfWeek": "Saturday",
+      "decade": "1980s",
+      "location": {
+        "lat": 34.0522,
+        "lng": -118.2437
+      }
+    },
+    {
+      "id": "concert-11",
+      "date": "1985-11-02",
+      "headliner": "Thompson Twins",
+      "headlinerNormalized": "thompson-twins",
+      "genre": "New Wave",
+      "openers": [
+        "OMD"
+      ],
+      "venue": "Irvine Meadows",
+      "city": "Irvine",
+      "state": "California",
+      "cityState": "Irvine, California",
+      "reference": "Concert Archive",
+      "year": 1985,
+      "month": 11,
+      "day": 2,
+      "dayOfWeek": "Friday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6846,
+        "lng": -117.8265
+      }
+    },
+    {
+      "id": "concert-12",
+      "date": "1986-04-12",
+      "headliner": "The Alarm",
+      "headlinerNormalized": "the-alarm",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "UCLA",
+      "city": "Los Angeles",
+      "state": "California",
+      "cityState": "Los Angeles, California",
+      "reference": "https://www.setlist.fm/setlist/the-alarm/1986/ucla-los-angeles-ca-3dda527.html",
+      "year": 1986,
+      "month": 4,
+      "day": 12,
+      "dayOfWeek": "Friday",
+      "decade": "1980s",
+      "location": {
+        "lat": 34.0522,
+        "lng": -118.2437
+      }
+    },
+    {
+      "id": "concert-13",
+      "date": "1986-04-15",
+      "headliner": "Blancmange",
+      "headlinerNormalized": "blancmange",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "Crawford Hall",
+      "city": "Irvine",
+      "state": "California",
+      "cityState": "Irvine, California",
+      "reference": "https://www.setlist.fm/setlist/blancmange/1986/crawford-hall-irvine-ca-bfc0dfa.html",
+      "year": 1986,
+      "month": 4,
+      "day": 15,
+      "dayOfWeek": "Monday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6846,
+        "lng": -117.8265
+      }
+    },
+    {
+      "id": "concert-14",
+      "date": "1986-07-16",
+      "headliner": "Beach Boys",
+      "headlinerNormalized": "beach-boys",
+      "genre": "Classic Rock",
+      "openers": [],
+      "venue": "Pacific Amphitheatre",
+      "city": "Costa Mesa",
+      "state": "California",
+      "cityState": "Costa Mesa, California",
+      "year": 1986,
+      "month": 7,
+      "day": 16,
+      "dayOfWeek": "Tuesday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6411,
+        "lng": -117.9187
+      }
+    },
+    {
+      "id": "concert-15",
+      "date": "1986-07-31",
+      "headliner": "The Art of Noise",
+      "headlinerNormalized": "the-art-of-noise",
+      "genre": "Synthpop",
+      "openers": [],
+      "venue": "Pacific Amphitheatre",
+      "city": "Costa Mesa",
+      "state": "California",
+      "cityState": "Costa Mesa, California",
+      "reference": "https://www.setlist.fm/setlist/art-of-noise/1986/pacific-amphitheatre-costa-mesa-ca-bff113e.html",
+      "year": 1986,
+      "month": 7,
+      "day": 31,
+      "dayOfWeek": "Wednesday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6411,
+        "lng": -117.9187
+      }
+    },
+    {
+      "id": "concert-16",
+      "date": "1987-06-20",
+      "headliner": "Run DMC",
+      "headlinerNormalized": "run-dmc",
+      "genre": "Rap",
+      "openers": [
+        "Beastie Boys"
+      ],
+      "venue": "Pacific Amphitheatre",
+      "city": "Costa Mesa",
+      "state": "California",
+      "cityState": "Costa Mesa, California",
+      "reference": "https://www.setlist.fm/setlist/rundmc/1987/pacific-amphitheatre-costa-mesa-ca-2be3cc0a.html",
+      "year": 1987,
       "month": 6,
       "day": 20,
-      "dayOfWeek": "Monday",
-      "decade": "2020s",
+      "dayOfWeek": "Friday",
+      "decade": "1980s",
       "location": {
-        "lat": 39.7392,
-        "lng": -104.9903
+        "lat": 33.6411,
+        "lng": -117.9187
       }
     },
     {
-      "id": "3",
-      "date": "2019-09-10",
-      "headliner": "Tool",
-      "headlinerNormalized": "tool",
-      "genre": "Progressive Metal",
-      "openers": ["Killing Joke", "Author & Punisher"],
-      "venue": "Pepsi Center",
-      "city": "Denver",
-      "state": "CO",
-      "cityState": "Denver, CO",
-      "year": 2019,
+      "id": "concert-17",
+      "date": "1987-07-27",
+      "headliner": "Duran Duran",
+      "headlinerNormalized": "duran-duran",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "Irvine Meadows",
+      "city": "Irvine",
+      "state": "California",
+      "cityState": "Irvine, California",
+      "year": 1987,
+      "month": 7,
+      "day": 27,
+      "dayOfWeek": "Sunday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6846,
+        "lng": -117.8265
+      }
+    },
+    {
+      "id": "concert-18",
+      "date": "1987-06-30",
+      "headliner": "Oingo Boingo",
+      "headlinerNormalized": "oingo-boingo",
+      "genre": "New Wave",
+      "openers": [
+        "\"Hoodoo Gurus",
+        "30",
+        "1987",
+        "Tuesday",
+        "Hoodoo Gurus",
+        "Bangles",
+        "Squeeze",
+        "Chris Isaak",
+        "The Fixx"
+      ],
+      "venue": "Bangles",
+      "city": "Dori",
+      "state": "MexFest",
+      "cityState": "Dori, MexFest",
+      "reference": "Caliente Racetrack",
+      "year": 1987,
+      "month": 6,
+      "day": 30,
+      "dayOfWeek": "Monday",
+      "decade": "1980s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-19",
+      "date": "1988-03-04",
+      "headliner": "No Doubt",
+      "headlinerNormalized": "no-doubt",
+      "genre": "Alternative",
+      "openers": [
+        "The Nylons"
+      ],
+      "venue": "Disneyland",
+      "city": "Anaheim",
+      "state": "California",
+      "cityState": "Anaheim, California",
+      "year": 1988,
+      "month": 3,
+      "day": 4,
+      "dayOfWeek": "Thursday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.8366,
+        "lng": -117.9143
+      }
+    },
+    {
+      "id": "concert-20",
+      "date": "1988-06-18",
+      "headliner": "Depeche Mode",
+      "headlinerNormalized": "depeche-mode",
+      "genre": "New Wave",
+      "openers": [
+        "\"Thomas Dolby",
+        "Saturday",
+        "Thomas Dolby",
+        "Wire",
+        "OMD"
+      ],
+      "venue": "Wire",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "California\"",
+      "year": 1988,
+      "month": 6,
+      "day": 18,
+      "dayOfWeek": "Friday",
+      "decade": "1980s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-21",
+      "date": "1988-09-09",
+      "headliner": "UB40",
+      "headlinerNormalized": "ub40",
+      "genre": "Reggae",
+      "openers": [],
+      "venue": "Pacific Amphitheatre",
+      "city": "Costa Mesa",
+      "state": "California",
+      "cityState": "Costa Mesa, California",
+      "year": 1988,
       "month": 9,
+      "day": 9,
+      "dayOfWeek": "Thursday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6411,
+        "lng": -117.9187
+      }
+    },
+    {
+      "id": "concert-22",
+      "date": "1988-09-19",
+      "headliner": "Ziggy Marley",
+      "headlinerNormalized": "ziggy-marley",
+      "genre": "Reggae",
+      "openers": [],
+      "venue": "Mesa Amphitheatre",
+      "city": "Mesa",
+      "state": "Arizona",
+      "cityState": "Mesa, Arizona",
+      "year": 1988,
+      "month": 9,
+      "day": 19,
+      "dayOfWeek": "Sunday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.4152,
+        "lng": -111.8315
+      }
+    },
+    {
+      "id": "concert-23",
+      "date": "1988-10-07",
+      "headliner": "George Michael",
+      "headlinerNormalized": "george-michael",
+      "genre": "Pop",
+      "openers": [],
+      "venue": "Irvine Meadows",
+      "city": "Irvine",
+      "state": "California",
+      "cityState": "Irvine, California",
+      "year": 1988,
+      "month": 10,
+      "day": 7,
+      "dayOfWeek": "Thursday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6846,
+        "lng": -117.8265
+      }
+    },
+    {
+      "id": "concert-24",
+      "date": "1988-10-15",
+      "headliner": "Beach Boys",
+      "headlinerNormalized": "beach-boys",
+      "genre": "Classic Rock",
+      "openers": [],
+      "venue": "Arizona Veterans Memorial Coliseum",
+      "city": "Phoenix",
+      "state": "Arizona",
+      "cityState": "Phoenix, Arizona",
+      "year": 1988,
+      "month": 10,
+      "day": 15,
+      "dayOfWeek": "Friday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.4484,
+        "lng": -112.074
+      }
+    },
+    {
+      "id": "concert-25",
+      "date": "1988-10-29",
+      "headliner": "Oingo Boingo",
+      "headlinerNormalized": "oingo-boingo",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "Irvine Meadows",
+      "city": "Irvine",
+      "state": "California",
+      "cityState": "Irvine, California",
+      "year": 1988,
+      "month": 10,
+      "day": 29,
+      "dayOfWeek": "Friday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6846,
+        "lng": -117.8265
+      }
+    },
+    {
+      "id": "concert-26",
+      "date": "1989-07-05",
+      "headliner": "Howard Jones",
+      "headlinerNormalized": "howard-jones",
+      "genre": "New Wave",
+      "openers": [
+        "Midge Ure"
+      ],
+      "venue": "Universal Amphitheater",
+      "city": "Los Angeles",
+      "state": "California",
+      "cityState": "Los Angeles, California",
+      "reference": "https://www.setlist.fm/setlist/midge-ure/1989/universal-amphitheatre-universal-city-ca-63ea32ff.html",
+      "year": 1989,
+      "month": 7,
+      "day": 5,
+      "dayOfWeek": "Tuesday",
+      "decade": "1980s",
+      "location": {
+        "lat": 34.0522,
+        "lng": -118.2437
+      }
+    },
+    {
+      "id": "concert-27",
+      "date": "1990-03-10",
+      "headliner": "Tone Loc",
+      "headlinerNormalized": "tone-loc",
+      "genre": "Hip Hop",
+      "openers": [],
+      "venue": "Jets",
+      "city": "Long Beach",
+      "state": "California",
+      "cityState": "Long Beach, California",
+      "year": 1990,
+      "month": 3,
+      "day": 10,
+      "dayOfWeek": "Friday",
+      "decade": "1990s",
+      "location": {
+        "lat": 33.7701,
+        "lng": -118.1937
+      }
+    },
+    {
+      "id": "concert-28",
+      "date": "1990-03-11",
+      "headliner": "Erasure",
+      "headlinerNormalized": "erasure",
+      "genre": "Synthpop",
+      "openers": [],
+      "venue": "Kia Forum",
+      "city": "Inglewood",
+      "state": "California",
+      "cityState": "Inglewood, California",
+      "reference": "https://www.setlist.fm/setlist/erasure/1990/great-western-forum-inglewood-ca-13c21d6d.html",
+      "year": 1990,
+      "month": 3,
+      "day": 11,
+      "dayOfWeek": "Saturday",
+      "decade": "1990s",
+      "location": {
+        "lat": 33.9617,
+        "lng": -118.3531
+      }
+    },
+    {
+      "id": "concert-29",
+      "date": "1990-09-13",
+      "headliner": "Social Distortion",
+      "headlinerNormalized": "social-distortion",
+      "genre": "Punk",
+      "openers": [],
+      "venue": "Cal State Fullerton",
+      "city": "Fullerton",
+      "state": "California",
+      "cityState": "Fullerton, California",
+      "year": 1990,
+      "month": 9,
+      "day": 13,
+      "dayOfWeek": "Wednesday",
+      "decade": "1990s",
+      "location": {
+        "lat": 33.8704,
+        "lng": -117.9242
+      }
+    },
+    {
+      "id": "concert-30",
+      "date": "1990-06-15",
+      "headliner": "Erasure",
+      "headlinerNormalized": "erasure",
+      "genre": "Synthpop",
+      "openers": [],
+      "venue": "Irvine Meadows",
+      "city": "Irvine",
+      "state": "California",
+      "cityState": "Irvine, California",
+      "reference": "https://www.setlist.fm/setlist/erasure/1990/irvine-meadows-amphitheatre-irvine-ca-23c21c7b.html",
+      "year": 1990,
+      "month": 6,
+      "day": 15,
+      "dayOfWeek": "Thursday",
+      "decade": "1990s",
+      "location": {
+        "lat": 33.6846,
+        "lng": -117.8265
+      }
+    },
+    {
+      "id": "concert-31",
+      "date": "1990-08-05",
+      "headliner": "Depeche Mode",
+      "headlinerNormalized": "depeche-mode",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "Dodger Stadium",
+      "city": "Los Angeles",
+      "state": "California",
+      "cityState": "Los Angeles, California",
+      "year": 1990,
+      "month": 8,
+      "day": 5,
+      "dayOfWeek": "Saturday",
+      "decade": "1990s",
+      "location": {
+        "lat": 34.0522,
+        "lng": -118.2437
+      }
+    },
+    {
+      "id": "concert-32",
+      "date": "1990-08-09",
+      "headliner": "Jesus Jones",
+      "headlinerNormalized": "jesus-jones",
+      "genre": "Britpop",
+      "openers": [
+        "EMF"
+      ],
+      "venue": "Hollywood Palladium",
+      "city": "Hollywood",
+      "state": "California",
+      "cityState": "Hollywood, California",
+      "year": 1990,
+      "month": 8,
+      "day": 9,
+      "dayOfWeek": "Wednesday",
+      "decade": "1990s",
+      "location": {
+        "lat": 34.0928,
+        "lng": -118.3287
+      }
+    },
+    {
+      "id": "concert-33",
+      "date": "1991-06-02",
+      "headliner": "Maxi Priest",
+      "headlinerNormalized": "maxi-priest",
+      "genre": "Reggae",
+      "openers": [
+        "\"Andrew Tosh",
+        "June",
+        "2",
+        "1991",
+        "Sunday",
+        "Andrew Tosh",
+        "Carlene Davis",
+        "Dennis Brown",
+        "Little Lenny",
+        "Shinehead",
+        "Team Band"
+      ],
+      "venue": "Carlene Davis",
+      "city": "California\"",
+      "state": "Dori",
+      "cityState": "California\", Dori",
+      "reference": "Team Band\"",
+      "year": 1991,
+      "month": 6,
+      "day": 2,
+      "dayOfWeek": "Saturday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-34",
+      "date": "1991-06-21",
+      "headliner": "Jimmy Buffett",
+      "headlinerNormalized": "jimmy-buffett",
+      "genre": "Gulf and Western Country Rock",
+      "openers": [],
+      "venue": "Irvine Meadows",
+      "city": "Irvine",
+      "state": "California",
+      "cityState": "Irvine, California",
+      "year": 1991,
+      "month": 6,
+      "day": 21,
+      "dayOfWeek": "Thursday",
+      "decade": "1990s",
+      "location": {
+        "lat": 33.6846,
+        "lng": -117.8265
+      }
+    },
+    {
+      "id": "concert-35",
+      "date": "1991-02-23",
+      "headliner": "Bel Biv DeVoe",
+      "headlinerNormalized": "bel-biv-devoe",
+      "genre": "R&B",
+      "openers": [
+        "\"Johnny Gill",
+        "Johnny Gill",
+        "Keith Sweat"
+      ],
+      "venue": "Keith Sweat\"",
+      "city": "",
+      "state": "Inglewood",
+      "cityState": ", Inglewood",
+      "reference": "Dori",
+      "year": 1991,
+      "month": 2,
+      "day": 23,
+      "dayOfWeek": "Friday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-36",
+      "date": "1991-09-08",
+      "headliner": "Burning Spear",
+      "headlinerNormalized": "burning-spear",
+      "genre": "Reggae",
+      "openers": [
+        "\"Aswad",
+        "Aswad",
+        "Eek a Mouse"
+      ],
+      "venue": "Eek a Mouse\"",
+      "city": "",
+      "state": "Long Beach",
+      "cityState": ", Long Beach",
+      "reference": "Dori",
+      "year": 1991,
+      "month": 9,
+      "day": 8,
+      "dayOfWeek": "Saturday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-37",
+      "date": "1991-10-04",
+      "headliner": "Sting",
+      "headlinerNormalized": "sting",
+      "genre": "Soft Rock",
+      "openers": [
+        "Squeeze"
+      ],
+      "venue": "Pacific Amphitheatre",
+      "city": "",
+      "state": "Costa Mesa",
+      "cityState": ", Costa Mesa",
+      "reference": "Dori\"",
+      "year": 1991,
+      "month": 10,
+      "day": 4,
+      "dayOfWeek": "Thursday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-38",
+      "date": "1992-06-04",
+      "headliner": "The Smithereens",
+      "headlinerNormalized": "the-smithereens",
+      "genre": "Pop Rock",
+      "openers": [
+        "Tom Cochrane"
+      ],
+      "venue": "The Celebrity Theatre",
+      "city": "",
+      "state": "Anaheim",
+      "cityState": ", Anaheim",
+      "reference": "Dori\"",
+      "year": 1992,
+      "month": 6,
+      "day": 4,
+      "dayOfWeek": "Wednesday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-39",
+      "date": "1991-12-21",
+      "headliner": "Siouxsie and Banshees",
+      "headlinerNormalized": "siouxsie-and-banshees",
+      "genre": "Post Punk",
+      "openers": [
+        "\"Ian McCulloch",
+        "21",
+        "1991",
+        "Saturday",
+        "Ian McCulloch",
+        "School of Fish",
+        "The Smithereens",
+        "The Wonderstuff"
+      ],
+      "venue": "School of Fish",
+      "city": "Dori\"",
+      "state": "https://www.setlist.fm/search?query=KROQ+Almost+Acoustic+Christmas+1991",
+      "cityState": "Dori\", https://www.setlist.fm/search?query=KROQ+Almost+Acoustic+Christmas+1991",
+      "reference": "\"Los Angeles",
+      "year": 1991,
+      "month": 12,
+      "day": 21,
+      "dayOfWeek": "Friday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-40",
+      "date": "1993-02-26",
+      "headliner": "Adam Ant",
+      "headlinerNormalized": "adam-ant",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "The Coach House",
+      "city": "",
+      "state": "San Juan Capistrano",
+      "cityState": ", San Juan Capistrano",
+      "reference": "Dori\"",
+      "year": 1993,
+      "month": 2,
+      "day": 26,
+      "dayOfWeek": "Thursday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-41",
+      "date": "1993-09-18",
+      "headliner": "Peter Gabriel",
+      "headlinerNormalized": "peter-gabriel",
+      "genre": "Art Rock",
+      "openers": [],
+      "venue": "Olympic Velodrome",
+      "city": "",
+      "state": "Carson",
+      "cityState": ", Carson",
+      "reference": "Dori\"",
+      "year": 1993,
+      "month": 9,
+      "day": 18,
+      "dayOfWeek": "Friday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-42",
+      "date": "1993-11-04",
+      "headliner": "Tears For Fears",
+      "headlinerNormalized": "tears-for-fears",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "Universal Amphitheater",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Dori\"",
+      "year": 1993,
+      "month": 11,
+      "day": 4,
+      "dayOfWeek": "Wednesday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-43",
+      "date": "1995-02-04",
+      "headliner": "Violent Femmes",
+      "headlinerNormalized": "violent-femmes",
+      "genre": "Alternative",
+      "openers": [
+        "Saturday"
+      ],
+      "venue": "Hollywood Palladium",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "Dori",
+      "year": 1995,
+      "month": 2,
+      "day": 4,
+      "dayOfWeek": "Friday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-44",
+      "date": "1995-03-26",
+      "headliner": "Brian Setzer Orchestra",
+      "headlinerNormalized": "brian-setzer-orchestra",
+      "genre": "Swing",
+      "openers": [],
+      "venue": "Hard Rock Cafe",
+      "city": "",
+      "state": "Newport Beach",
+      "cityState": ", Newport Beach",
+      "reference": "Dori\"",
+      "year": 1995,
+      "month": 3,
+      "day": 26,
+      "dayOfWeek": "Saturday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-45",
+      "date": "1995-10-30",
+      "headliner": "Big Audio Dynamite",
+      "headlinerNormalized": "big-audio-dynamite",
+      "genre": "New Wave",
+      "openers": [
+        "\"John Doe",
+        "Monday",
+        "John Doe",
+        "Jane Weidlin"
+      ],
+      "venue": "Jane Weidlin\"",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "\"Mike",
+      "year": 1995,
+      "month": 10,
+      "day": 30,
+      "dayOfWeek": "Sunday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-46",
+      "date": "1995-10-14",
+      "headliner": "Jimmy Buffett",
+      "headlinerNormalized": "jimmy-buffett",
+      "genre": "Gulf and Western Country Rock",
+      "openers": [],
+      "venue": "Irvine Meadows",
+      "city": "",
+      "state": "Irvine",
+      "cityState": ", Irvine",
+      "reference": "Dori\"",
+      "year": 1995,
+      "month": 10,
+      "day": 14,
+      "dayOfWeek": "Friday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-47",
+      "date": "1998-02-11",
+      "headliner": "Pat DiNizio",
+      "headlinerNormalized": "pat-dinizio",
+      "genre": "Pop Rock",
+      "openers": [],
+      "venue": "The Coach House",
+      "city": "",
+      "state": "San Juan Capistrano",
+      "cityState": ", San Juan Capistrano",
+      "reference": "Dori\"",
+      "year": 1998,
+      "month": 2,
+      "day": 11,
+      "dayOfWeek": "Tuesday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-48",
+      "date": "1997-10-25",
+      "headliner": "Jimmy Buffett",
+      "headlinerNormalized": "jimmy-buffett",
+      "genre": "Gulf and Western Country Rock",
+      "openers": [],
+      "venue": "Irvine Meadows",
+      "city": "",
+      "state": "Irvine",
+      "cityState": ", Irvine",
+      "reference": "Sue\"",
+      "year": 1997,
+      "month": 10,
+      "day": 25,
+      "dayOfWeek": "Friday",
+      "decade": "1990s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-49",
+      "date": "1999-10-13",
+      "headliner": "The Art of Noise",
+      "headlinerNormalized": "the-art-of-noise",
+      "genre": "Sythpop",
+      "openers": [],
+      "venue": "Paradise Rock Club",
+      "city": "Boston",
+      "state": "Massachusetts",
+      "cityState": "Boston, Massachusetts",
+      "reference": "https://www.setlist.fm/setlist/art-of-noise/1999/paradise-rock-club-boston-ma-5b8efba8.html",
+      "year": 1999,
+      "month": 10,
+      "day": 13,
+      "dayOfWeek": "Tuesday",
+      "decade": "1990s",
+      "location": {
+        "lat": 42.3601,
+        "lng": -71.0589
+      }
+    },
+    {
+      "id": "concert-50",
+      "date": "2000-11-17",
+      "headliner": "Brian Setzer ’68 Comeback Special",
+      "headlinerNormalized": "brian-setzer--68-comeback-special",
+      "genre": "Rockabilly",
+      "openers": [],
+      "venue": "The Coach House",
+      "city": "",
+      "state": "San Juan Capistrano",
+      "cityState": ", San Juan Capistrano",
+      "reference": "Dori\"",
+      "year": 2000,
+      "month": 11,
+      "day": 17,
+      "dayOfWeek": "Thursday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-51",
+      "date": "2001-02-11",
+      "headliner": "Elton John",
+      "headlinerNormalized": "elton-john",
+      "genre": "Soft Rock",
+      "openers": [
+        "Billy Joel"
+      ],
+      "venue": "Kia Forum",
+      "city": "Inglewood",
+      "state": "California",
+      "cityState": "Inglewood, California",
+      "year": 2001,
+      "month": 2,
+      "day": 11,
+      "dayOfWeek": "Saturday",
+      "decade": "2000s",
+      "location": {
+        "lat": 33.9617,
+        "lng": -118.3531
+      }
+    },
+    {
+      "id": "concert-52",
+      "date": "2002-12-21",
+      "headliner": "Brian Setzer Orchestra",
+      "headlinerNormalized": "brian-setzer-orchestra",
+      "genre": "Swing",
+      "openers": [
+        "Richard Cheese & Lounge Against the Machine"
+      ],
+      "venue": "Universal Amphitheater",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Dori\"",
+      "year": 2002,
+      "month": 12,
+      "day": 21,
+      "dayOfWeek": "Friday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-53",
+      "date": "2003-06-08",
+      "headliner": "Peter Gabriel",
+      "headlinerNormalized": "peter-gabriel",
+      "genre": "Art Rock",
+      "openers": [
+        "2003",
+        "Sunday"
+      ],
+      "venue": "Irvine Meadows",
+      "city": "https://www.concertarchives.org/concerts/peter-gabriel-64442961-9950-4878-90b2-f7ce2bd51a8a",
+      "state": "",
+      "cityState": "https://www.concertarchives.org/concerts/peter-gabriel-64442961-9950-4878-90b2-f7ce2bd51a8a,",
+      "reference": "Dori",
+      "year": 2003,
+      "month": 6,
+      "day": 8,
+      "dayOfWeek": "Saturday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-54",
+      "date": "2003-08-24",
+      "headliner": "The Human League",
+      "headlinerNormalized": "the-human-league",
+      "genre": "New Wave",
+      "openers": [
+        "The English Beat"
+      ],
+      "venue": "The Grove of Anaheim",
+      "city": "",
+      "state": "Anaheim",
+      "cityState": ", Anaheim",
+      "reference": "Dori\"",
+      "year": 2003,
+      "month": 8,
+      "day": 24,
+      "dayOfWeek": "Saturday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-55",
+      "date": "2003-08-29",
+      "headliner": "Joe Jackson",
+      "headlinerNormalized": "joe-jackson",
+      "genre": "New Wave Pop",
+      "openers": [],
+      "venue": "House of Blues Anaheim",
+      "city": "",
+      "state": "Anaheim",
+      "cityState": ", Anaheim",
+      "reference": "Dori\"",
+      "year": 2003,
+      "month": 8,
+      "day": 29,
+      "dayOfWeek": "Thursday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-56",
+      "date": "2003-09-20",
+      "headliner": "The Cure",
+      "headlinerNormalized": "the-cure",
+      "genre": "New Wave",
+      "openers": [
+        "\"Marc Almond",
+        "\"Mike",
+        "Dori",
+        "Kevin",
+        "Andi\"",
+        "https://www.setlist.fm/setlist/the-cure/2003/hyundai-pavilion-san-bernardino-ca-2bd7e0ea.html",
+        "San Bernardino",
+        "California",
+        "September 20 2003",
+        "September",
+        "20",
+        "2003",
+        "Saturday"
+      ],
+      "venue": "Berlin",
+      "city": "The English Beat",
+      "state": "Hot Hot Heat",
+      "cityState": "The English Beat, Hot Hot Heat",
+      "reference": "Duran Duran",
+      "year": 2003,
+      "month": 9,
+      "day": 20,
+      "dayOfWeek": "Friday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-57",
+      "date": "2005-03-23",
+      "headliner": "Social Distortion",
+      "headlinerNormalized": "social-distortion",
+      "genre": "Punk",
+      "openers": [
+        "2005",
+        "Wednesday"
+      ],
+      "venue": "Hard Rock Hotel Las Vegas",
+      "city": "https://www.concertarchives.org/concerts/social-distortion-6d4ba3cf-007d-4666-9038-a55719fe5b07",
+      "state": "",
+      "cityState": "https://www.concertarchives.org/concerts/social-distortion-6d4ba3cf-007d-4666-9038-a55719fe5b07,",
+      "reference": "Doug",
+      "year": 2005,
+      "month": 3,
+      "day": 23,
+      "dayOfWeek": "Tuesday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-58",
+      "date": "2005-07-27",
+      "headliner": "Garbage",
+      "headlinerNormalized": "garbage",
+      "genre": "Alternative",
+      "openers": [],
+      "venue": "Pacific Amphitheatre",
+      "city": "",
+      "state": "Costa Mesa",
+      "cityState": ", Costa Mesa",
+      "reference": "Dori\"",
+      "year": 2005,
+      "month": 7,
+      "day": 27,
+      "dayOfWeek": "Tuesday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-59",
+      "date": "2005-11-22",
+      "headliner": "Depeche Mode",
+      "headlinerNormalized": "depeche-mode",
+      "genre": "New Wave",
+      "openers": [
+        "Raveonettes"
+      ],
+      "venue": "Staples Center",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Kevin\"",
+      "year": 2005,
+      "month": 11,
+      "day": 22,
+      "dayOfWeek": "Monday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-60",
+      "date": "2005-11-23",
+      "headliner": "Tears For Fears",
+      "headlinerNormalized": "tears-for-fears",
+      "genre": "New Wave",
+      "openers": [
+        "Dirty Vegas"
+      ],
+      "venue": "Universal Amphitheater",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Kevin\"",
+      "year": 2005,
+      "month": 11,
+      "day": 23,
+      "dayOfWeek": "Tuesday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-61",
+      "date": "2006-02-02",
+      "headliner": "Howard Jones",
+      "headlinerNormalized": "howard-jones",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "The Coach House",
+      "city": "",
+      "state": "San Juan Capistrano",
+      "cityState": ", San Juan Capistrano",
+      "reference": "Dori\"",
+      "year": 2006,
+      "month": 2,
+      "day": 2,
+      "dayOfWeek": "Wednesday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-62",
+      "date": "2006-10-27",
+      "headliner": "Devo",
+      "headlinerNormalized": "devo",
+      "genre": "New Wave",
+      "openers": [
+        "\"Bow Wow Wow",
+        "2006",
+        "Friday",
+        "Bow Wow Wow",
+        "Flock of Seagulls",
+        "When In Rome"
+      ],
+      "venue": "Flock of Seagulls",
+      "city": "https://www.setlist.fm/setlist/devo/2006/the-grove-of-anaheim-anaheim-ca-4bd25386.html",
+      "state": "",
+      "cityState": "https://www.setlist.fm/setlist/devo/2006/the-grove-of-anaheim-anaheim-ca-4bd25386.html,",
+      "reference": "California\"",
+      "year": 2006,
+      "month": 10,
+      "day": 27,
+      "dayOfWeek": "Thursday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-63",
+      "date": "2007-02-10",
+      "headliner": "The Tubes",
+      "headlinerNormalized": "the-tubes",
+      "genre": "Classic Rock",
+      "openers": [],
+      "venue": "The Coach House",
+      "city": "San Juan Capistrano",
+      "state": "California",
+      "cityState": "San Juan Capistrano, California",
+      "year": 2007,
+      "month": 2,
+      "day": 10,
+      "dayOfWeek": "Friday",
+      "decade": "2000s",
+      "location": {
+        "lat": 33.5017,
+        "lng": -117.6625
+      }
+    },
+    {
+      "id": "concert-64",
+      "date": "2007-06-02",
+      "headliner": "Berlin",
+      "headlinerNormalized": "berlin",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "The Coach House",
+      "city": "",
+      "state": "San Juan Capistrano",
+      "cityState": ", San Juan Capistrano",
+      "reference": "Dori\"",
+      "year": 2007,
+      "month": 6,
+      "day": 2,
+      "dayOfWeek": "Friday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-65",
+      "date": "2008-05-04",
+      "headliner": "Duran Duran",
+      "headlinerNormalized": "duran-duran",
+      "genre": "New Romantic",
+      "openers": [],
+      "venue": "Nokia Center",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Dori\"",
+      "year": 2008,
+      "month": 5,
+      "day": 4,
+      "dayOfWeek": "Saturday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-66",
+      "date": "2008-07-22",
+      "headliner": "Stray Cats",
+      "headlinerNormalized": "stray-cats",
+      "genre": "Rockabilly",
+      "openers": [
+        "Hot Rod Lincoln"
+      ],
+      "venue": "Pacific Amphitheatre",
+      "city": "",
+      "state": "Costa Mesa",
+      "cityState": ", Costa Mesa",
+      "reference": "Dori\"",
+      "year": 2008,
+      "month": 7,
+      "day": 22,
+      "dayOfWeek": "Monday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-67",
+      "date": "2008-07-24",
+      "headliner": "Yaz",
+      "headlinerNormalized": "yaz",
+      "genre": "New Wave",
+      "openers": [
+        "The Psychedelic Furs"
+      ],
+      "venue": "Pacific Amphitheatre",
+      "city": "",
+      "state": "Costa Mesa",
+      "cityState": ", Costa Mesa",
+      "reference": "Dori\"",
+      "year": 2008,
+      "month": 7,
+      "day": 24,
+      "dayOfWeek": "Wednesday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-68",
+      "date": "2008-09-06",
+      "headliner": "The English Beat",
+      "headlinerNormalized": "the-english-beat",
+      "genre": "Ska",
+      "openers": [],
+      "venue": "The Coach House",
+      "city": "",
+      "state": "San Juan Capistrano",
+      "cityState": ", San Juan Capistrano",
+      "reference": "Dori\"",
+      "year": 2008,
+      "month": 9,
+      "day": 6,
+      "dayOfWeek": "Friday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-69",
+      "date": "2008-11-28",
+      "headliner": "Berlin",
+      "headlinerNormalized": "berlin",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "The Coach House",
+      "city": "",
+      "state": "San Juan Capistrano",
+      "cityState": ", San Juan Capistrano",
+      "reference": "Dori\"",
+      "year": 2008,
+      "month": 11,
+      "day": 28,
+      "dayOfWeek": "Thursday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-70",
+      "date": "2008-12-09",
+      "headliner": "Mike Ness",
+      "headlinerNormalized": "mike-ness",
+      "genre": "Rockabilly",
+      "openers": [],
+      "venue": "The Coach House",
+      "city": "San Juan Capistrano",
+      "state": "California",
+      "cityState": "San Juan Capistrano, California",
+      "year": 2008,
+      "month": 12,
+      "day": 9,
+      "dayOfWeek": "Monday",
+      "decade": "2000s",
+      "location": {
+        "lat": 33.5017,
+        "lng": -117.6625
+      }
+    },
+    {
+      "id": "concert-71",
+      "date": "2009-05-16",
+      "headliner": "Brian Setzer and the Nashvillians",
+      "headlinerNormalized": "brian-setzer-and-the-nashvillians",
+      "genre": "Rockabilly",
+      "openers": [
+        "Keb Mo",
+        "2009",
+        "Saturday"
+      ],
+      "venue": "Doheny",
+      "city": "https://www.setlist.fm/festival/2009/doheny-blues-festival-2009-5bd63bfc.html",
+      "state": "",
+      "cityState": "https://www.setlist.fm/festival/2009/doheny-blues-festival-2009-5bd63bfc.html,",
+      "reference": "Dori",
+      "year": 2009,
+      "month": 5,
+      "day": 16,
+      "dayOfWeek": "Friday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-72",
+      "date": "2009-11-10",
+      "headliner": "Rob Thomas",
+      "headlinerNormalized": "rob-thomas",
+      "genre": "Pop Rock",
+      "openers": [],
+      "venue": "EagleBank Arena",
+      "city": "Fairfax",
+      "state": "Virginia",
+      "cityState": "Fairfax, Virginia",
+      "year": 2009,
+      "month": 11,
+      "day": 10,
+      "dayOfWeek": "Monday",
+      "decade": "2000s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-73",
+      "date": "2010-02-22",
+      "headliner": "The English Beat",
+      "headlinerNormalized": "the-english-beat",
+      "genre": "Ska",
+      "openers": [
+        "Fishbone"
+      ],
+      "venue": "9:30 Club",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2010,
+      "month": 2,
+      "day": 22,
+      "dayOfWeek": "Sunday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-74",
+      "date": "2010-04-30",
+      "headliner": "Echo and the Bunnymen",
+      "headlinerNormalized": "echo-and-the-bunnymen",
+      "genre": "New Wave",
+      "openers": [
+        "\"Hatcham Social",
+        "Hatcham Social",
+        "Kelley Stoltz"
+      ],
+      "venue": "Kelley Stoltz\"",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Mike",
+      "year": 2010,
+      "month": 4,
+      "day": 30,
+      "dayOfWeek": "Thursday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-75",
+      "date": "2010-10-26",
+      "headliner": "Social Distortion",
+      "headlinerNormalized": "social-distortion",
+      "genre": "Punk",
+      "openers": [],
+      "venue": "9:30 Club",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2010,
+      "month": 10,
+      "day": 26,
+      "dayOfWeek": "Monday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-76",
+      "date": "2011-04-26",
+      "headliner": "Bad Religion",
+      "headlinerNormalized": "bad-religion",
+      "genre": "Punk",
+      "openers": [
+        "Rise Against"
+      ],
+      "venue": "9:30 Club",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2011,
+      "month": 4,
+      "day": 26,
+      "dayOfWeek": "Monday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-77",
+      "date": "2011-05-06",
+      "headliner": "The Dollyrots",
+      "headlinerNormalized": "the-dollyrots",
+      "genre": "Pop Punk",
+      "openers": [
+        "Bowling for Soup"
+      ],
+      "venue": "The Ballroom",
+      "city": "",
+      "state": "Baltimore",
+      "cityState": ", Baltimore",
+      "reference": "Dori\"",
+      "year": 2011,
+      "month": 5,
+      "day": 6,
+      "dayOfWeek": "Thursday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-78",
+      "date": "2011-06-10",
+      "headliner": "The Go Go's",
+      "headlinerNormalized": "the-go-go-s",
+      "genre": "New Wave",
+      "openers": [
+        "The Dollyrots"
+      ],
+      "venue": "Wolftrap",
+      "city": "",
+      "state": "Vienna",
+      "cityState": ", Vienna",
+      "reference": "Dori\"",
+      "year": 2011,
+      "month": 6,
+      "day": 10,
+      "dayOfWeek": "Thursday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-79",
+      "date": "2012-04-24",
+      "headliner": "Squeeze",
+      "headlinerNormalized": "squeeze",
+      "genre": "New Wave Pop",
+      "openers": [
+        "The English Beat"
+      ],
+      "venue": "Rams Head Live! Baltimore",
+      "city": "",
+      "state": "Baltimore",
+      "cityState": ", Baltimore",
+      "reference": "Dori\"",
+      "year": 2012,
+      "month": 4,
+      "day": 24,
+      "dayOfWeek": "Monday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-80",
+      "date": "2012-05-10",
+      "headliner": "The Red Hot Chilli Peppers",
+      "headlinerNormalized": "the-red-hot-chilli-peppers",
+      "genre": "Funk Rock",
+      "openers": [
+        "Sleigh Bells"
+      ],
+      "venue": "Capitol One Arena",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2012,
+      "month": 5,
+      "day": 10,
+      "dayOfWeek": "Wednesday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-81",
+      "date": "2012-06-12",
+      "headliner": "The Cult",
+      "headlinerNormalized": "the-cult",
+      "genre": "New Wave",
+      "openers": [
+        "Against Me!"
+      ],
+      "venue": "The Fillmore Silver Spring",
+      "city": "",
+      "state": "Silver Spring",
+      "cityState": ", Silver Spring",
+      "reference": "Dori\"",
+      "year": 2012,
+      "month": 6,
+      "day": 12,
+      "dayOfWeek": "Monday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-82",
+      "date": "2012-07-05",
+      "headliner": "Howard Jones",
+      "headlinerNormalized": "howard-jones",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "Howard Theater",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2012,
+      "month": 7,
+      "day": 5,
+      "dayOfWeek": "Wednesday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-83",
+      "date": "2012-09-15",
+      "headliner": "Joe Jackson",
+      "headlinerNormalized": "joe-jackson",
+      "genre": "New Wave Pop",
+      "openers": [],
+      "venue": "The Strathmore",
+      "city": "",
+      "state": "Bethesda",
+      "cityState": ", Bethesda",
+      "reference": "Dori\"",
+      "year": 2012,
+      "month": 9,
+      "day": 15,
+      "dayOfWeek": "Friday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-84",
+      "date": "2012-11-06",
+      "headliner": "Social Distortion",
+      "headlinerNormalized": "social-distortion",
+      "genre": "Punk",
+      "openers": [
+        "Lindi Ortega"
+      ],
+      "venue": "9:30 Club",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2012,
+      "month": 11,
+      "day": 6,
+      "dayOfWeek": "Monday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-85",
+      "date": "2013-03-10",
+      "headliner": "Dropkick Murphys",
+      "headlinerNormalized": "dropkick-murphys",
+      "genre": "Punk",
+      "openers": [
+        "\"Solemn Sun",
+        "Sunday",
+        "Solemn Sun",
+        "Barroom Heroes"
+      ],
+      "venue": "Barroom Heroes\"",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "\"Mike",
+      "year": 2013,
+      "month": 3,
+      "day": 10,
+      "dayOfWeek": "Saturday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-86",
+      "date": "2013-03-22",
+      "headliner": "Bad Religion",
+      "headlinerNormalized": "bad-religion",
+      "genre": "Punk",
+      "openers": [
+        "\"Against Me!",
+        "2013",
+        "Friday",
+        "Against Me!",
+        "The Bronx",
+        "Polar Bear Club"
+      ],
+      "venue": "The Bronx",
+      "city": "https://www.concertarchives.org/concerts/bad-religion-polar-bear-club-the-bronx",
+      "state": "",
+      "cityState": "https://www.concertarchives.org/concerts/bad-religion-polar-bear-club-the-bronx,",
+      "reference": "District of Columbia\"",
+      "year": 2013,
+      "month": 3,
+      "day": 22,
+      "dayOfWeek": "Thursday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-87",
+      "date": "2013-03-24",
+      "headliner": "Garbage",
+      "headlinerNormalized": "garbage",
+      "genre": "Alternative",
+      "openers": [],
+      "venue": "The Fillmore Silver Spring",
+      "city": "",
+      "state": "Silver Spring",
+      "cityState": ", Silver Spring",
+      "reference": "Dori\"",
+      "year": 2013,
+      "month": 3,
+      "day": 24,
+      "dayOfWeek": "Saturday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-88",
+      "date": "2013-06-01",
+      "headliner": "Rancid",
+      "headlinerNormalized": "rancid",
+      "genre": "Punk",
+      "openers": [
+        "\"Transplants",
+        "Transplants",
+        "Crown of Thornz"
+      ],
+      "venue": "Crown of Thornz\"",
+      "city": "",
+      "state": "Silver Spring",
+      "cityState": ", Silver Spring",
+      "reference": "Mike",
+      "year": 2013,
+      "month": 6,
+      "day": 1,
+      "dayOfWeek": "Friday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-89",
+      "date": "2013-06-02",
+      "headliner": "The Smithereens",
+      "headlinerNormalized": "the-smithereens",
+      "genre": "Pop Rock",
+      "openers": [],
+      "venue": "The Hamilton Live",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2013,
+      "month": 6,
+      "day": 2,
+      "dayOfWeek": "Saturday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-90",
+      "date": "2013-10-27",
+      "headliner": "Gary Numan",
+      "headlinerNormalized": "gary-numan",
+      "genre": "Post Punk",
+      "openers": [],
+      "venue": "The Black Cat",
+      "city": "Washington",
+      "state": "District of Columbia",
+      "cityState": "Washington, District of Columbia",
+      "year": 2013,
+      "month": 10,
+      "day": 27,
+      "dayOfWeek": "Saturday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-91",
+      "date": "2014-04-04",
+      "headliner": "Kraftwerk",
+      "headlinerNormalized": "kraftwerk",
+      "genre": "Electronic",
+      "openers": [],
+      "venue": "9:30 Club",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Kevin\"",
+      "year": 2014,
+      "month": 4,
+      "day": 4,
+      "dayOfWeek": "Thursday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-92",
+      "date": "2014-05-02",
+      "headliner": "Berlin",
+      "headlinerNormalized": "berlin",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "Rams Head Center Stage",
+      "city": "",
+      "state": "Hanover",
+      "cityState": ", Hanover",
+      "reference": "Dori\"",
+      "year": 2014,
+      "month": 5,
+      "day": 2,
+      "dayOfWeek": "Thursday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-93",
+      "date": "2014-06-25",
+      "headliner": "Snarky Puppy",
+      "headlinerNormalized": "snarky-puppy",
+      "genre": "Jazz",
+      "openers": [],
+      "venue": "The Hamilton Live",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2014,
+      "month": 6,
+      "day": 25,
+      "dayOfWeek": "Tuesday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-94",
+      "date": "2014-07-30",
+      "headliner": "The Offspring",
+      "headlinerNormalized": "the-offspring",
+      "genre": "Pop Punk",
+      "openers": [
+        "\"Pennywise",
+        "2014",
+        "Wednesday",
+        "Pennywise",
+        "Vandals",
+        "Bad Religion"
+      ],
+      "venue": "Vandals",
+      "city": "https://www.concertarchives.org/concerts/bad-religion-the-offspring-pennywise-the-vandals",
+      "state": "",
+      "cityState": "https://www.concertarchives.org/concerts/bad-religion-the-offspring-pennywise-the-vandals,",
+      "reference": "Maryland\"",
+      "year": 2014,
+      "month": 7,
+      "day": 30,
+      "dayOfWeek": "Tuesday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-95",
+      "date": "2014-10-26",
+      "headliner": "Streetlight Manifesto",
+      "headlinerNormalized": "streetlight-manifesto",
+      "genre": "Ska",
+      "openers": [
+        "\"Dan Potthast",
+        "Dan Potthast",
+        "Chris Murray"
+      ],
+      "venue": "Chris Murray\"",
+      "city": "",
+      "state": "Silver Spring",
+      "cityState": ", Silver Spring",
+      "reference": "Mike",
+      "year": 2014,
+      "month": 10,
+      "day": 26,
+      "dayOfWeek": "Saturday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-96",
+      "date": "2014-12-09",
+      "headliner": "The Head and the Heart",
+      "headlinerNormalized": "the-head-and-the-heart",
+      "genre": "Folk Pop",
+      "openers": [
+        "Phox"
+      ],
+      "venue": "DAR Constitution Hall",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Carl\"",
+      "year": 2014,
+      "month": 12,
+      "day": 9,
+      "dayOfWeek": "Monday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-97",
+      "date": "2015-03-06",
+      "headliner": "Dropkick Murphys",
+      "headlinerNormalized": "dropkick-murphys",
+      "genre": "Punk",
+      "openers": [
+        "\"Mahones",
+        "Friday",
+        "Mahones",
+        "Blood or Whiskey",
+        "Bryan Mcpherson"
+      ],
+      "venue": "Blood or Whiskey",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "District of Columbia\"",
+      "year": 2015,
+      "month": 3,
+      "day": 6,
+      "dayOfWeek": "Thursday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-98",
+      "date": "2015-06-10",
+      "headliner": "Royal Blood",
+      "headlinerNormalized": "royal-blood",
+      "genre": "Alternative",
+      "openers": [
+        "Mini Mansions"
+      ],
+      "venue": "9:30 Club",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2015,
+      "month": 6,
       "day": 10,
       "dayOfWeek": "Tuesday",
       "decade": "2010s",
       "location": {
-        "lat": 39.7487,
-        "lng": -105.0077
+        "lat": 0,
+        "lng": 0
       }
     },
     {
-      "id": "4",
-      "date": "2018-07-14",
-      "headliner": "Arctic Monkeys",
-      "headlinerNormalized": "arctic-monkeys",
-      "genre": "Indie Rock",
-      "openers": ["Mini Mansions"],
-      "venue": "Red Rocks Amphitheatre",
-      "city": "Morrison",
-      "state": "CO",
-      "cityState": "Morrison, CO",
-      "year": 2018,
+      "id": "concert-99",
+      "date": "2015-06-15",
+      "headliner": "Snarky Puppy",
+      "headlinerNormalized": "snarky-puppy",
+      "genre": "Jazz",
+      "openers": [],
+      "venue": "The Hamilton Live",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2015,
+      "month": 6,
+      "day": 15,
+      "dayOfWeek": "Sunday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-100",
+      "date": "2015-07-04",
+      "headliner": "Foo Fighters",
+      "headlinerNormalized": "foo-fighters",
+      "genre": "Rock",
+      "openers": [
+        "\"Buddy Guy",
+        "Washington",
+        "District of Columbia",
+        "July 4 2015",
+        "July",
+        "4",
+        "2015",
+        "Saturday",
+        "Buddy Guy",
+        "Gary Clark Jr.",
+        "Heart",
+        "Joan Jett & The Blackhearts",
+        "LL Cool J",
+        "DJ Z-Trip",
+        "Trouble Funk"
+      ],
+      "venue": "Gary Clark Jr.",
+      "city": "RDGLDGRN\"",
+      "state": "RFK Stadium",
+      "cityState": "RDGLDGRN\", RFK Stadium",
+      "reference": "DJ Z-Trip",
+      "year": 2015,
       "month": 7,
+      "day": 4,
+      "dayOfWeek": "Friday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-101",
+      "date": "2015-08-25",
+      "headliner": "Social Distortion",
+      "headlinerNormalized": "social-distortion",
+      "genre": "Punk",
+      "openers": [
+        "\"Nikki Lane",
+        "Tuesday",
+        "Nikki Lane",
+        "Drag The River"
+      ],
+      "venue": "Drag The River\"",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "\"Mike",
+      "year": 2015,
+      "month": 8,
+      "day": 25,
+      "dayOfWeek": "Monday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-102",
+      "date": "2015-10-28",
+      "headliner": "Garbage",
+      "headlinerNormalized": "garbage",
+      "genre": "Alternative",
+      "openers": [
+        "Torres"
+      ],
+      "venue": "9:30 Club",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2015,
+      "month": 10,
+      "day": 28,
+      "dayOfWeek": "Tuesday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-103",
+      "date": "2016-04-29",
+      "headliner": "Dirty Heads",
+      "headlinerNormalized": "dirty-heads",
+      "genre": "Reggae Rock",
+      "openers": [
+        "RDGLDGRN"
+      ],
+      "venue": "The Fillmore Silver Spring",
+      "city": "",
+      "state": "Silver Spring",
+      "cityState": ", Silver Spring",
+      "reference": "Dori\"",
+      "year": 2016,
+      "month": 4,
+      "day": 29,
+      "dayOfWeek": "Thursday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-104",
+      "date": "2016-05-02",
+      "headliner": "Snarky Puppy",
+      "headlinerNormalized": "snarky-puppy",
+      "genre": "Jazz",
+      "openers": [],
+      "venue": "Bethesda Jazz and Blues Club",
+      "city": "Bethesda",
+      "state": "Maryland",
+      "cityState": "Bethesda, Maryland",
+      "year": 2016,
+      "month": 5,
+      "day": 2,
+      "dayOfWeek": "Sunday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-105",
+      "date": "2016-08-19",
+      "headliner": "Prophets of Rage",
+      "headlinerNormalized": "prophets-of-rage",
+      "genre": "Political Hip Hop",
+      "openers": [
+        "AWOLNATION"
+      ],
+      "venue": "EagleBank Arena",
+      "city": "Fairfax",
+      "state": "Virginia",
+      "cityState": "Fairfax, Virginia",
+      "reference": "https://www.setlist.fm/setlist/prophets-of-rage/2016/eaglebank-arena-fairfax-va-1bfcd14c.html",
+      "year": 2016,
+      "month": 8,
+      "day": 19,
+      "dayOfWeek": "Thursday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-106",
+      "date": "2016-08-26",
+      "headliner": "The Smithereens",
+      "headlinerNormalized": "the-smithereens",
+      "genre": "Pop Rock",
+      "openers": [],
+      "venue": "Birchmere",
+      "city": "",
+      "state": "Alexandria",
+      "cityState": ", Alexandria",
+      "reference": "Dori\"",
+      "year": 2016,
+      "month": 8,
+      "day": 26,
+      "dayOfWeek": "Thursday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-107",
+      "date": "2016-09-03",
+      "headliner": "Howard Jones",
+      "headlinerNormalized": "howard-jones",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "The Hamilton Live",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2016,
+      "month": 9,
+      "day": 3,
+      "dayOfWeek": "Friday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-108",
+      "date": "2016-09-24",
+      "headliner": "The Roots",
+      "headlinerNormalized": "the-roots",
+      "genre": "Alternative Hip Hop",
+      "openers": [
+        "\"Living Colour",
+        "Saturday",
+        "Living Colour",
+        "Public Enemy"
+      ],
+      "venue": "Public Enemy\"",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "\"Mike",
+      "year": 2016,
+      "month": 9,
+      "day": 24,
+      "dayOfWeek": "Friday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-109",
+      "date": "2017-01-01",
+      "headliner": "Duran Duran",
+      "headlinerNormalized": "duran-duran",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "MGM National Harbor",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2017,
+      "month": 1,
+      "day": 1,
+      "dayOfWeek": "Saturday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-110",
+      "date": "2017-05-09",
+      "headliner": "Midnight Oil",
+      "headlinerNormalized": "midnight-oil",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "The Fillmore Silver Spring",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2017,
+      "month": 5,
+      "day": 9,
+      "dayOfWeek": "Monday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-111",
+      "date": "2017-06-06",
+      "headliner": "Royal Blood",
+      "headlinerNormalized": "royal-blood",
+      "genre": "Alternative",
+      "openers": [],
+      "venue": "9:30 Club",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2017,
+      "month": 6,
+      "day": 6,
+      "dayOfWeek": "Monday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-112",
+      "date": "2017-06-10",
+      "headliner": "Joe Jackson",
+      "headlinerNormalized": "joe-jackson",
+      "genre": "New Wave Pop",
+      "openers": [],
+      "venue": "Wolftrap",
+      "city": "",
+      "state": "Vienna",
+      "cityState": ", Vienna",
+      "reference": "Dori\"",
+      "year": 2017,
+      "month": 6,
+      "day": 10,
+      "dayOfWeek": "Friday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-113",
+      "date": "2017-07-13",
+      "headliner": "The Skints",
+      "headlinerNormalized": "the-skints",
+      "genre": "Reggae Fusion",
+      "openers": [
+        "Thursday"
+      ],
+      "venue": "DC9 Nightclub",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "Dori",
+      "year": 2017,
+      "month": 7,
+      "day": 13,
+      "dayOfWeek": "Wednesday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-114",
+      "date": "2017-08-03",
+      "headliner": "Blondie",
+      "headlinerNormalized": "blondie",
+      "genre": "Post Punk",
+      "openers": [
+        "Garbage"
+      ],
+      "venue": "Wolftrap",
+      "city": "",
+      "state": "Vienna",
+      "cityState": ", Vienna",
+      "reference": "Dori\"",
+      "year": 2017,
+      "month": 8,
+      "day": 3,
+      "dayOfWeek": "Wednesday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-115",
+      "date": "2017-09-11",
+      "headliner": "Alison Moyet",
+      "headlinerNormalized": "alison-moyet",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "Sixth & I Synagogue",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2017,
+      "month": 9,
+      "day": 11,
+      "dayOfWeek": "Sunday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-116",
+      "date": "2017-10-08",
+      "headliner": "Bat Fangs",
+      "headlinerNormalized": "bat-fangs",
+      "genre": "Indie",
+      "openers": [
+        "\"The Messthetics",
+        "2017",
+        "Sunday",
+        "The Messthetics",
+        "Danger Painters",
+        "Kid Congo Powers"
+      ],
+      "venue": "Danger Painters",
+      "city": "Soft opening",
+      "state": "",
+      "cityState": "Soft opening,",
+      "reference": "District of Columbia\"",
+      "year": 2017,
+      "month": 10,
+      "day": 8,
+      "dayOfWeek": "Saturday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-117",
+      "date": "2017-10-12",
+      "headliner": "Foo Fighters",
+      "headlinerNormalized": "foo-fighters",
+      "genre": "Rock",
+      "openers": [
+        "The Struts"
+      ],
+      "venue": "The Anthem",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2017,
+      "month": 10,
+      "day": 12,
+      "dayOfWeek": "Wednesday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-118",
+      "date": "2017-10-21",
+      "headliner": "Colin Hay",
+      "headlinerNormalized": "colin-hay",
+      "genre": "Neo Mellow",
+      "openers": [],
+      "venue": "Lincoln Theatre",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2017,
+      "month": 10,
+      "day": 21,
+      "dayOfWeek": "Friday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-119",
+      "date": "2017-11-25",
+      "headliner": "Brian Setzer Orchestra",
+      "headlinerNormalized": "brian-setzer-orchestra",
+      "genre": "Swing",
+      "openers": [],
+      "venue": "Warner Theatre",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2017,
+      "month": 11,
+      "day": 25,
+      "dayOfWeek": "Friday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-120",
+      "date": "2017-12-09",
+      "headliner": "Gary Numan",
+      "headlinerNormalized": "gary-numan",
+      "genre": "Post Punk",
+      "openers": [],
+      "venue": "9:30 Club",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2017,
+      "month": 12,
+      "day": 9,
+      "dayOfWeek": "Friday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-121",
+      "date": "2018-05-12",
+      "headliner": "The Human League",
+      "headlinerNormalized": "the-human-league",
+      "genre": "New Wave",
+      "openers": [
+        "\"The Alarm",
+        "Huntington Beach",
+        "California",
+        "May 12 2018",
+        "May",
+        "12",
+        "2018",
+        "Saturday",
+        "The Alarm",
+        "Dramarama",
+        "The Motels",
+        "Naked Eyes",
+        "The Untouchables",
+        "Gene Loves Jezabel"
+      ],
+      "venue": "Dramarama",
+      "city": "Huntington State Beach",
+      "state": "\"Huntington Beach",
+      "cityState": "Huntington State Beach, \"Huntington Beach",
+      "reference": "Gene Loves Jezabel",
+      "year": 2018,
+      "month": 5,
+      "day": 12,
+      "dayOfWeek": "Friday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-122",
+      "date": "2018-05-19",
+      "headliner": "Lee Rocker",
+      "headlinerNormalized": "lee-rocker",
+      "genre": "Rockabilly",
+      "openers": [],
+      "venue": "Carpenter Performing Arts Center",
+      "city": "",
+      "state": "Long Beach",
+      "cityState": ", Long Beach",
+      "reference": "Erik\"",
+      "year": 2018,
+      "month": 5,
+      "day": 19,
+      "dayOfWeek": "Friday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-123",
+      "date": "2018-06-17",
+      "headliner": "U2",
+      "headlinerNormalized": "u2",
+      "genre": "Rock",
+      "openers": [],
+      "venue": "Capital One Center",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Beth\"",
+      "year": 2018,
+      "month": 6,
+      "day": 17,
+      "dayOfWeek": "Saturday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-124",
+      "date": "2018-08-17",
+      "headliner": "Stray Cats",
+      "headlinerNormalized": "stray-cats",
+      "genre": "Rockabilly",
+      "openers": [
+        "The Paladins"
+      ],
+      "venue": "Pacific Amphitheatre",
+      "city": "",
+      "state": "Costa Mesa",
+      "cityState": ", Costa Mesa",
+      "reference": "Dori\"",
+      "year": 2018,
+      "month": 8,
+      "day": 17,
+      "dayOfWeek": "Thursday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-125",
+      "date": "2018-09-21",
+      "headliner": "Gary Numan",
+      "headlinerNormalized": "gary-numan",
+      "genre": "Post Punk",
+      "openers": [
+        "Me Not You"
+      ],
+      "venue": "9:30 Club",
+      "city": "",
+      "state": "Washington",
+      "cityState": ", Washington",
+      "reference": "Dori\"",
+      "year": 2018,
+      "month": 9,
+      "day": 21,
+      "dayOfWeek": "Thursday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-126",
+      "date": "2018-10-28",
+      "headliner": "Social Distortion",
+      "headlinerNormalized": "social-distortion",
+      "genre": "Punk",
+      "openers": [
+        "\"Bad Religion",
+        "\"Mike",
+        "Dori\"",
+        "https://www.concertarchives.org/concerts/surf-city-blitz-2018",
+        "Huntington Beach",
+        "California",
+        "October 28 2018",
+        "October",
+        "28",
+        "2018",
+        "Sunday",
+        "Bad Religion",
+        "The Offspring"
+      ],
+      "venue": "The Offspring",
+      "city": "Fear",
+      "state": "Mad Caddies",
+      "cityState": "Fear, Mad Caddies",
+      "reference": "T.S.O.L.",
+      "year": 2018,
+      "month": 10,
+      "day": 28,
+      "dayOfWeek": "Saturday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-127",
+      "date": "2018-11-03",
+      "headliner": "Streetlight Manifesto",
+      "headlinerNormalized": "streetlight-manifesto",
+      "genre": "Ska",
+      "openers": [
+        "2018",
+        "Saturday"
+      ],
+      "venue": "The Observatory",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "Dori",
+      "year": 2018,
+      "month": 11,
+      "day": 3,
+      "dayOfWeek": "Friday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-128",
+      "date": "2019-03-24",
+      "headliner": "Foals",
+      "headlinerNormalized": "foals",
+      "genre": "Indie Rock",
+      "openers": [
+        "\"Bear Hands",
+        "Sunday",
+        "Bear Hands",
+        "Kiev"
+      ],
+      "venue": "Kiev\"",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "\"Mike",
+      "year": 2019,
+      "month": 3,
+      "day": 24,
+      "dayOfWeek": "Saturday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-129",
+      "date": "2019-04-14",
+      "headliner": "The Interrupters",
+      "headlinerNormalized": "the-interrupters",
+      "genre": "Ska",
+      "openers": [
+        "\"Masked Intruder",
+        "Sunday",
+        "Masked Intruder",
+        "Rat Boy"
+      ],
+      "venue": "Rat Boy\"",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "\"Mike",
+      "year": 2019,
+      "month": 4,
       "day": 14,
       "dayOfWeek": "Saturday",
       "decade": "2010s",
       "location": {
-        "lat": 39.6653,
-        "lng": -105.2055
+        "lat": 0,
+        "lng": 0
       }
     },
     {
-      "id": "5",
-      "date": "2015-05-22",
-      "headliner": "Kendrick Lamar",
-      "headlinerNormalized": "kendrick-lamar",
-      "genre": "Hip Hop",
-      "openers": ["Flying Lotus", "Anderson .Paak"],
-      "venue": "Fillmore Auditorium",
-      "city": "Denver",
-      "state": "CO",
-      "cityState": "Denver, CO",
-      "year": 2015,
+      "id": "concert-130",
+      "date": "2019-05-16",
+      "headliner": "Garbage",
+      "headlinerNormalized": "garbage",
+      "genre": "Alternative",
+      "openers": [],
+      "venue": "The Shrine Auditorium",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Kevin\"",
+      "year": 2019,
       "month": 5,
-      "day": 22,
+      "day": 16,
+      "dayOfWeek": "Wednesday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-131",
+      "date": "2019-05-18",
+      "headliner": "Bandits of the Accoustic Revolution",
+      "headlinerNormalized": "bandits-of-the-accoustic-revolution",
+      "genre": "Ska",
+      "openers": [],
+      "venue": "Dolby Theatre",
+      "city": "",
+      "state": "Hollywood",
+      "cityState": ", Hollywood",
+      "reference": "Dori\"",
+      "year": 2019,
+      "month": 5,
+      "day": 18,
       "dayOfWeek": "Friday",
       "decade": "2010s",
       "location": {
-        "lat": 39.7325,
-        "lng": -104.9786
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-132",
+      "date": "2019-05-26",
+      "headliner": "The Skints",
+      "headlinerNormalized": "the-skints",
+      "genre": "Reggae Fusion",
+      "openers": [],
+      "venue": "Mozambique",
+      "city": "",
+      "state": "Laguna Beach",
+      "cityState": ", Laguna Beach",
+      "reference": "Dori\"",
+      "year": 2019,
+      "month": 5,
+      "day": 26,
+      "dayOfWeek": "Saturday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-133",
+      "date": "2019-07-19",
+      "headliner": "The English Beat",
+      "headlinerNormalized": "the-english-beat",
+      "genre": "Ska",
+      "openers": [],
+      "venue": "OC Fair & Event Center",
+      "city": "",
+      "state": "Costa Mesa",
+      "cityState": ", Costa Mesa",
+      "reference": "Dori\"",
+      "year": 2019,
+      "month": 7,
+      "day": 19,
+      "dayOfWeek": "Thursday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-134",
+      "date": "2019-07-30",
+      "headliner": "Streetlight Manifesto",
+      "headlinerNormalized": "streetlight-manifesto",
+      "genre": "Ska",
+      "openers": [],
+      "venue": "House of Blues Anaheim",
+      "city": "",
+      "state": "Anaheim",
+      "cityState": ", Anaheim",
+      "reference": "Dori\"",
+      "year": 2019,
+      "month": 7,
+      "day": 30,
+      "dayOfWeek": "Monday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-135",
+      "date": "2019-09-21",
+      "headliner": "Lenny Kravitz",
+      "headlinerNormalized": "lenny-kravitz",
+      "genre": "Rock",
+      "openers": [],
+      "venue": "The Shrine Auditorium",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Dori\"",
+      "year": 2019,
+      "month": 9,
+      "day": 21,
+      "dayOfWeek": "Friday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-136",
+      "date": "2019-10-06",
+      "headliner": "Lee Rocker",
+      "headlinerNormalized": "lee-rocker",
+      "genre": "Rockabilly",
+      "openers": [],
+      "venue": "The Coach House",
+      "city": "",
+      "state": "San Juan Capistrano",
+      "cityState": ", San Juan Capistrano",
+      "reference": "Dori\"",
+      "year": 2019,
+      "month": 10,
+      "day": 6,
+      "dayOfWeek": "Saturday",
+      "decade": "2010s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-137",
+      "date": "2021-08-14",
+      "headliner": "Aquabats",
+      "headlinerNormalized": "aquabats",
+      "genre": "Ska",
+      "openers": [
+        "The English Beat",
+        "14",
+        "2021",
+        "Saturday"
+      ],
+      "venue": "Pacific Amphitheatre",
+      "city": "Taylor\"",
+      "state": "",
+      "cityState": "Taylor\",",
+      "reference": "Dori",
+      "year": 2021,
+      "month": 8,
+      "day": 14,
+      "dayOfWeek": "Friday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-138",
+      "date": "2022-05-07",
+      "headliner": "Royal Blood",
+      "headlinerNormalized": "royal-blood",
+      "genre": "Alternative",
+      "openers": [
+        "cleopatrick"
+      ],
+      "venue": "House of Blues Anaheim",
+      "city": "",
+      "state": "Anaheim",
+      "cityState": ", Anaheim",
+      "reference": "Dori\"",
+      "year": 2022,
+      "month": 5,
+      "day": 7,
+      "dayOfWeek": "Friday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-139",
+      "date": "2021-08-31",
+      "headliner": "Future Islands",
+      "headlinerNormalized": "future-islands",
+      "genre": "Alternative",
+      "openers": [],
+      "venue": "House of Blues Anaheim",
+      "city": "",
+      "state": "Anaheim",
+      "cityState": ", Anaheim",
+      "reference": "Dori\"",
+      "year": 2021,
+      "month": 8,
+      "day": 31,
+      "dayOfWeek": "Monday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-140",
+      "date": "2022-06-04",
+      "headliner": "Tears For Fears",
+      "headlinerNormalized": "tears-for-fears",
+      "genre": "New Wave",
+      "openers": [
+        "Garbage"
+      ],
+      "venue": "Kia Forum",
+      "city": "",
+      "state": "Inglewood",
+      "cityState": ", Inglewood",
+      "reference": "Dori\"",
+      "year": 2022,
+      "month": 6,
+      "day": 4,
+      "dayOfWeek": "Friday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-141",
+      "date": "2022-06-10",
+      "headliner": "Joe Jackson",
+      "headlinerNormalized": "joe-jackson",
+      "genre": "New Wave Pop",
+      "openers": [
+        "2022",
+        "Friday"
+      ],
+      "venue": "Orpheum Theatre",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "Dori",
+      "year": 2022,
+      "month": 6,
+      "day": 10,
+      "dayOfWeek": "Thursday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-142",
+      "date": "2022-07-05",
+      "headliner": "Kraftwerk",
+      "headlinerNormalized": "kraftwerk",
+      "genre": "Synthpop",
+      "openers": [],
+      "venue": "The Shrine Auditorium",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Dori\"",
+      "year": 2022,
+      "month": 7,
+      "day": 5,
+      "dayOfWeek": "Monday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-143",
+      "date": "2022-07-12",
+      "headliner": "Streetlight Manifesto",
+      "headlinerNormalized": "streetlight-manifesto",
+      "genre": "Ska",
+      "openers": [],
+      "venue": "House of Blues Anaheim",
+      "city": "",
+      "state": "Anaheim",
+      "cityState": ", Anaheim",
+      "reference": "Alex\"",
+      "year": 2022,
+      "month": 7,
+      "day": 12,
+      "dayOfWeek": "Monday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-144",
+      "date": "2022-08-01",
+      "headliner": "X",
+      "headlinerNormalized": "x",
+      "genre": "Punk",
+      "openers": [
+        "\"The Blasters",
+        "Monday",
+        "The Blasters",
+        "Los Lobos"
+      ],
+      "venue": "Los Lobos\"",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "\"Mike",
+      "year": 2022,
+      "month": 8,
+      "day": 1,
+      "dayOfWeek": "Sunday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-145",
+      "date": "2022-08-18",
+      "headliner": "Culture Club",
+      "headlinerNormalized": "culture-club",
+      "genre": "New Wave",
+      "openers": [
+        "Berlin"
+      ],
+      "venue": "Pacific Amphitheatre",
+      "city": "",
+      "state": "Costa Mesa",
+      "cityState": ", Costa Mesa",
+      "reference": "Erik\"",
+      "year": 2022,
+      "month": 8,
+      "day": 18,
+      "dayOfWeek": "Wednesday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-146",
+      "date": "2022-09-09",
+      "headliner": "Peter Hook and the Light",
+      "headlinerNormalized": "peter-hook-and-the-light",
+      "genre": "Post Punk",
+      "openers": [
+        "El Ten Eleven"
+      ],
+      "venue": "Theatre at the Ace Hotel",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Dori\"",
+      "year": 2022,
+      "month": 9,
+      "day": 9,
+      "dayOfWeek": "Thursday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-147",
+      "date": "2022-09-25",
+      "headliner": "Gorrillaz",
+      "headlinerNormalized": "gorrillaz",
+      "genre": "Alternative Hip Hop",
+      "openers": [
+        "EarthGang",
+        "Sunday"
+      ],
+      "venue": "YouTube Theatre",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "Alex",
+      "year": 2022,
+      "month": 9,
+      "day": 25,
+      "dayOfWeek": "Saturday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-148",
+      "date": "2022-10-01",
+      "headliner": "Heaven 17",
+      "headlinerNormalized": "heaven-17",
+      "genre": "New Wave",
+      "openers": [
+        "Saturday"
+      ],
+      "venue": "The Observatory",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "Kevin",
+      "year": 2022,
+      "month": 10,
+      "day": 1,
+      "dayOfWeek": "Friday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-149",
+      "date": "2022-10-07",
+      "headliner": "New Order",
+      "headlinerNormalized": "new-order",
+      "genre": "New Wave",
+      "openers": [
+        "\"Pet Shop Boys",
+        "Friday",
+        "Pet Shop Boys",
+        "Paul Oakenfold"
+      ],
+      "venue": "Paul Oakenfold\"",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "\"Mike",
+      "year": 2022,
+      "month": 10,
+      "day": 7,
+      "dayOfWeek": "Thursday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-150",
+      "date": "2022-10-28",
+      "headliner": "Danny Elfman",
+      "headlinerNormalized": "danny-elfman",
+      "genre": "Orchestral Soundtrack",
+      "openers": [
+        "Boy Harsher"
+      ],
+      "venue": "Hollywood Bowl",
+      "city": "",
+      "state": "Hollywood",
+      "cityState": ", Hollywood",
+      "reference": "Dori\"",
+      "year": 2022,
+      "month": 10,
+      "day": 28,
+      "dayOfWeek": "Thursday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-151",
+      "date": "2022-11-16",
+      "headliner": "Foals",
+      "headlinerNormalized": "foals",
+      "genre": "Indie Rock",
+      "openers": [
+        "Inner Wave"
+      ],
+      "venue": "Hollywood Palladium",
+      "city": "",
+      "state": "Hollywood",
+      "cityState": ", Hollywood",
+      "reference": "Dori\"",
+      "year": 2022,
+      "month": 11,
+      "day": 16,
+      "dayOfWeek": "Tuesday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-152",
+      "date": "2022-12-08",
+      "headliner": "Social Distortion",
+      "headlinerNormalized": "social-distortion",
+      "genre": "Punk",
+      "openers": [
+        "Chris Shiflett"
+      ],
+      "venue": "House of Blues Anaheim",
+      "city": "",
+      "state": "Anaheim",
+      "cityState": ", Anaheim",
+      "reference": "Bruce\"",
+      "year": 2022,
+      "month": 12,
+      "day": 8,
+      "dayOfWeek": "Wednesday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-153",
+      "date": "2023-03-03",
+      "headliner": "The English Beat",
+      "headlinerNormalized": "the-english-beat",
+      "genre": "Ska",
+      "openers": [
+        "Smoke & Mirrors Sound System",
+        "2023",
+        "Friday"
+      ],
+      "venue": "The Belly Up Tavern",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "Dori",
+      "year": 2023,
+      "month": 3,
+      "day": 3,
+      "dayOfWeek": "Thursday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-154",
+      "date": "2023-03-28",
+      "headliner": "Depeche Mode",
+      "headlinerNormalized": "depeche-mode",
+      "genre": "New Wave",
+      "openers": [
+        "Kelly Lee Owens"
+      ],
+      "venue": "Kia Forum",
+      "city": "",
+      "state": "Inglewood",
+      "cityState": ", Inglewood",
+      "reference": "Dori\"",
+      "year": 2023,
+      "month": 3,
+      "day": 28,
+      "dayOfWeek": "Monday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-155",
+      "date": "2023-04-12",
+      "headliner": "Dr Sick",
+      "headlinerNormalized": "dr-sick",
+      "genre": "Jazz",
+      "openers": [],
+      "venue": "21st Amendment",
+      "city": "",
+      "state": "New Orleans",
+      "cityState": ", New Orleans",
+      "reference": "Dori\"",
+      "year": 2023,
+      "month": 4,
+      "day": 12,
+      "dayOfWeek": "Tuesday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-156",
+      "date": "2023-05-09",
+      "headliner": "Crowded House",
+      "headlinerNormalized": "crowded-house",
+      "genre": "Pop Rock",
+      "openers": [
+        "Liam Finn"
+      ],
+      "venue": "The Wiltern",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Dori\"",
+      "year": 2023,
+      "month": 5,
+      "day": 9,
+      "dayOfWeek": "Monday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-157",
+      "date": "2023-05-24",
+      "headliner": "The Cure",
+      "headlinerNormalized": "the-cure",
+      "genre": "New Wave",
+      "openers": [
+        "The Twilight Sad"
+      ],
+      "venue": "Hollywood Bowl",
+      "city": "",
+      "state": "Hollywood",
+      "cityState": ", Hollywood",
+      "reference": "Dori\"",
+      "year": 2023,
+      "month": 5,
+      "day": 24,
+      "dayOfWeek": "Tuesday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-158",
+      "date": "2023-07-18",
+      "headliner": "Foals",
+      "headlinerNormalized": "foals",
+      "genre": "Indie Rock",
+      "openers": [
+        "Andy Stavas"
+      ],
+      "venue": "The Belasco",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Dori\"",
+      "year": 2023,
+      "month": 7,
+      "day": 18,
+      "dayOfWeek": "Monday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-159",
+      "date": "2023-07-21",
+      "headliner": "UB40",
+      "headlinerNormalized": "ub40",
+      "genre": "Reggae",
+      "openers": [
+        "\"Men At Work",
+        "21",
+        "2023",
+        "Friday",
+        "Men At Work",
+        "Smash Mouth"
+      ],
+      "venue": "Smash Mouth\"",
+      "city": "Andi\"",
+      "state": "",
+      "cityState": "Andi\",",
+      "reference": "\"Mike",
+      "year": 2023,
+      "month": 7,
+      "day": 21,
+      "dayOfWeek": "Thursday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-160",
+      "date": "2023-07-30",
+      "headliner": "X",
+      "headlinerNormalized": "x",
+      "genre": "Punk",
+      "openers": [
+        "\"The English Beat",
+        "Sunday",
+        "The English Beat",
+        "Save Ferris"
+      ],
+      "venue": "Save Ferris\"",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "\"Mike",
+      "year": 2023,
+      "month": 7,
+      "day": 30,
+      "dayOfWeek": "Saturday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-161",
+      "date": "2023-09-23",
+      "headliner": "Streetlight Manifesto",
+      "headlinerNormalized": "streetlight-manifesto",
+      "genre": "Ska",
+      "openers": [
+        "Rebuilder"
+      ],
+      "venue": "The Wiltern",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Dori\"",
+      "year": 2023,
+      "month": 9,
+      "day": 23,
+      "dayOfWeek": "Friday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-162",
+      "date": "2023-11-16",
+      "headliner": "Devo",
+      "headlinerNormalized": "devo",
+      "genre": "New Wave",
+      "openers": [],
+      "venue": "YouTube Theatre",
+      "city": "",
+      "state": "Inglewood",
+      "cityState": ", Inglewood",
+      "reference": "Dori\"",
+      "year": 2023,
+      "month": 11,
+      "day": 16,
+      "dayOfWeek": "Wednesday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-163",
+      "date": "2023-11-22",
+      "headliner": "Kasabian",
+      "headlinerNormalized": "kasabian",
+      "genre": "Alternative",
+      "openers": [],
+      "venue": "The Belasco",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Dori\"",
+      "year": 2023,
+      "month": 11,
+      "day": 22,
+      "dayOfWeek": "Tuesday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-164",
+      "date": "2024-02-27",
+      "headliner": "Brian Setzer",
+      "headlinerNormalized": "brian-setzer",
+      "genre": "Rockabilly",
+      "openers": [
+        "Yates McKendree"
+      ],
+      "venue": "The Wiltern",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Dori\"",
+      "year": 2024,
+      "month": 2,
+      "day": 27,
+      "dayOfWeek": "Monday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-165",
+      "date": "2024-02-15",
+      "headliner": "Umphrey's McGee",
+      "headlinerNormalized": "umphrey-s-mcgee",
+      "genre": "Unknown",
+      "openers": [],
+      "venue": "9:30 Club",
+      "city": "Washington",
+      "state": "District of Columbia",
+      "cityState": "Washington, District of Columbia",
+      "year": 2024,
+      "month": 2,
+      "day": 15,
+      "dayOfWeek": "Wednesday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-166",
+      "date": "2024-07-26",
+      "headliner": "English Beat",
+      "headlinerNormalized": "english-beat",
+      "genre": "Ska",
+      "openers": [
+        "\"Common Sense",
+        "Friday",
+        "Common Sense",
+        "Smoke & Mirrors Sound System"
+      ],
+      "venue": "Smoke & Mirrors Sound System\"",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "\"Mike",
+      "year": 2024,
+      "month": 7,
+      "day": 26,
+      "dayOfWeek": "Thursday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-167",
+      "date": "2024-08-20",
+      "headliner": "Howard Jones",
+      "headlinerNormalized": "howard-jones",
+      "genre": "New Wave",
+      "openers": [
+        "\"ABC",
+        "Tuesday",
+        "ABC",
+        "Haircut 100"
+      ],
+      "venue": "Haircut 100\"",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "\"Mike",
+      "year": 2024,
+      "month": 8,
+      "day": 20,
+      "dayOfWeek": "Monday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-168",
+      "date": "2024-11-16",
+      "headliner": "Cold War Kids",
+      "headlinerNormalized": "cold-war-kids",
+      "genre": "Alternative",
+      "openers": [
+        "Husbands"
+      ],
+      "venue": "The Observatory",
+      "city": "",
+      "state": "Santa Ana",
+      "cityState": ", Santa Ana",
+      "reference": "Dori\"",
+      "year": 2024,
+      "month": 11,
+      "day": 16,
+      "dayOfWeek": "Friday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-169",
+      "date": "2025-03-01",
+      "headliner": "Klangphonics",
+      "headlinerNormalized": "klangphonics",
+      "genre": "Dance/Electronic",
+      "openers": [],
+      "venue": "The Roxy",
+      "city": "",
+      "state": "Hollywood",
+      "cityState": ", Hollywood",
+      "reference": "Dori\"",
+      "year": 2025,
+      "month": 3,
+      "day": 1,
+      "dayOfWeek": "Friday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-170",
+      "date": "2024-12-05",
+      "headliner": "Social Distortion",
+      "headlinerNormalized": "social-distortion",
+      "genre": "Punk",
+      "openers": [],
+      "venue": "The Belasco",
+      "city": "",
+      "state": "Los Angeles",
+      "cityState": ", Los Angeles",
+      "reference": "Dori\"",
+      "year": 2024,
+      "month": 12,
+      "day": 5,
+      "dayOfWeek": "Wednesday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-171",
+      "date": "2025-03-07",
+      "headliner": "Molchat Doma",
+      "headlinerNormalized": "molchat-doma",
+      "genre": "Post Punk",
+      "openers": [
+        "Sextile"
+      ],
+      "venue": "Hollywood Palladium",
+      "city": "",
+      "state": "Hollywood",
+      "cityState": ", Hollywood",
+      "reference": "Alex\"",
+      "year": 2025,
+      "month": 3,
+      "day": 7,
+      "dayOfWeek": "Thursday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-172",
+      "date": "2025-08-16",
+      "headliner": "The Black Keys",
+      "headlinerNormalized": "the-black-keys",
+      "genre": "Indie Rock",
+      "openers": [
+        "Gary Clark Jr",
+        "2025",
+        "Saturday"
+      ],
+      "venue": "MGM Music Hall at Fenway",
+      "city": "",
+      "state": "",
+      "cityState": ",",
+      "reference": "Dori",
+      "year": 2025,
+      "month": 8,
+      "day": 16,
+      "dayOfWeek": "Friday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-173",
+      "date": "2025-11-20",
+      "headliner": "David Byrne",
+      "headlinerNormalized": "david-byrne",
+      "genre": "Alternative",
+      "openers": [],
+      "venue": "Dolby Theatre",
+      "city": "",
+      "state": "Hollywood",
+      "cityState": ", Hollywood",
+      "reference": "Dori\"",
+      "year": 2025,
+      "month": 11,
+      "day": 20,
+      "dayOfWeek": "Wednesday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "concert-174",
+      "date": "2026-09-16",
+      "headliner": "Thompson Twins",
+      "headlinerNormalized": "thompson-twins",
+      "genre": "Alternative",
+      "openers": [
+        "Blancmange"
+      ],
+      "venue": "Pavilion Theatre",
+      "city": "",
+      "state": "Glasgow",
+      "cityState": ", Glasgow",
+      "reference": "Dori\"",
+      "year": 2026,
+      "month": 9,
+      "day": 16,
+      "dayOfWeek": "Tuesday",
+      "decade": "2020s",
+      "location": {
+        "lat": 0,
+        "lng": 0
       }
     }
   ],
   "metadata": {
-    "lastUpdated": "2024-12-27T00:00:00Z",
-    "totalConcerts": 5,
+    "lastUpdated": "2025-12-28T17:13:23.663Z",
+    "totalConcerts": 174,
     "dateRange": {
-      "earliest": "2015-05-22",
-      "latest": "2023-08-15"
+      "earliest": "2026-09-16",
+      "latest": "1984-04-27"
     },
-    "uniqueArtists": 5,
-    "uniqueVenues": 4,
-    "uniqueCities": 2
+    "uniqueArtists": 305,
+    "uniqueVenues": 97,
+    "uniqueCities": 54
   }
 }

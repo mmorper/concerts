@@ -10,9 +10,12 @@
     "preview": "vite preview",
     "build-data": "tsx scripts/build-data.ts",
     "fetch-sheet": "tsx scripts/fetch-google-sheet.ts",
-    "enrich": "tsx scripts/enrich-artists.ts"
+    "enrich": "tsx scripts/enrich-artists.ts",
+    "convert-csv": "tsx scripts/convert-csv-to-json.ts"
   },
   "dependencies": {
+    "@types/d3": "^7.4.3",
+    "d3": "^7.9.0",
     "date-fns": "^4.1.0",
     "framer-motion": "^11.15.0",
     "leaflet": "^1.9.4",
