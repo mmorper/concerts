@@ -27,8 +27,9 @@
     "enrichment_apis": ["theaudiodb", "lastfm"]
   },
   "documentation": {
-    "source_of_truth": "docs/planning.md",
-    "planning": "docs/planning.md",
+    "source_of_truth": "docs/STATUS.md",
+    "status": "docs/STATUS.md",
+    "planning_archive": "docs/planning.md",
     "api_setup": "docs/api-setup.md",
     "context": ".claude/context.md"
   }

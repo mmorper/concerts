@@ -43,8 +43,9 @@
 ## Primary Documentation
 
 For comprehensive project details, see:
-- **[docs/planning.md](../docs/planning.md)** - Complete implementation plan (SOURCE OF TRUTH)
+- **[docs/STATUS.md](../docs/STATUS.md)** - Current state & active work (SOURCE OF TRUTH)
+- **[docs/planning.md](../docs/planning.md)** - Historical implementation plan (archive)
 - **[README.md](../README.md)** - Project overview
 - **[docs/api-setup.md](../docs/api-setup.md)** - API configuration
 
-Always check planning.md for latest status before beginning work.
+Always check STATUS.md for latest status before beginning work.
