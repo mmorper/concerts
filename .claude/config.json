@@ -1,0 +1,29 @@
+{
+  "project": {
+    "name": "Morperhaus Concert Archives",
+    "description": "Interactive concert history timeline application",
+    "type": "jamstack-spa",
+    "tech_stack": ["vite", "react", "typescript", "tailwind", "leaflet"]
+  },
+  "phases": {
+    "current": "Phase 0: Project Infrastructure",
+    "completed": [],
+    "next": "Phase 1: Foundation Setup"
+  },
+  "deployment": {
+    "platform": "cloudflare-pages",
+    "build_command": "npm run build",
+    "output_directory": "dist",
+    "auto_deploy": true
+  },
+  "data_source": {
+    "type": "google-sheets",
+    "update_strategy": "periodic-manual",
+    "enrichment_apis": ["theaudiodb", "lastfm"]
+  },
+  "documentation": {
+    "planning": "docs/planning.md",
+    "api_setup": "docs/api-setup.md",
+    "phase_tracking": ".claude/phase-tracking.md"
+  }
+}
