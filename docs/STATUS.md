@@ -38,17 +38,51 @@ All major implementation phases are complete:
 5. ✅ Artist list - Converted Scene2Venues to show top 20 artists
 
 **Pending Work:**
+
 - ⚠️ **Sunburst visualization sizing** - Awaiting user's visual mockup
   - Current: `min(100vw, calc(100vh - 280px))`
   - Issue: Appears too small in multi-genre view
   - File: [src/components/scenes/Scene5Genres.tsx](../src/components/scenes/Scene5Genres.tsx:647-654)
 
-### 📦 Next Phase: Deployment (Phase 6)
+### 📋 Upcoming Phases
+
+**Phase 6: Geography Scene Enhancement**
+
+- Zoom into LA and DC tighter
+- Fix DC missing from region views
+- Component: [Scene3Map.tsx](../src/components/scenes/Scene3Map.tsx)
+
+**Phase 7: Venues Scene Enhancement**
+
+- Show top X venues by number of shows
+- Add "View all venues" link/button
+- Design UX style pattern (will be reused in other scenes)
+- Component: [Scene2Venues.tsx](../src/components/scenes/Scene2Venues.tsx)
+
+**Phase 8: Music Scene Enhancement**
+
+- Mock up sunburst visualization
+- Design UX improvements
+- Component: [Scene5Genres.tsx](../src/components/scenes/Scene5Genres.tsx)
+
+**Phase 9: Artists Scene Enhancement**
+
+- Review existing brainstorming work
+- Consider mockups for each artist display
+- Component: [Scene2Venues.tsx](../src/components/scenes/Scene2Venues.tsx)
+
+**Phase 10: Deployment**
 
 - Set up Cloudflare Pages
 - Connect GitHub repository
 - Configure build settings
 - Deploy to production
+
+**Phase 11: Data Sources Enhancement**
+
+- Review all Google Sheets/API integration work
+- Integrate Spotify API for artist cards
+- Enhance data enrichment pipeline
 
 ---
 
