@@ -1,35 +1,37 @@
+@import 'tailwindcss';
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  body {
-    @apply antialiased;
-  }
-
-  /* Scrollbar styling for dark theme */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-gray-900;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-gray-700 rounded-full;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-600;
-  }
+@theme {
+  --font-display: 'Bebas Neue', 'Impact', sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'Courier New', monospace;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(17 24 39);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(55 65 81);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(75 85 99);
+}
+
+.text-balance {
+  text-wrap: balance;
 }

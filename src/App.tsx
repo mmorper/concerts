@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import type { ConcertData } from './types/concert'
+import { useConcertData } from './hooks/useConcertData'
+import { FilterBar } from './components/filters/FilterBar'
+import { TimelineContainer } from './components/timeline/TimelineContainer'
 
 function App() {
   const [data, setData] = useState<ConcertData | null>(null)
@@ -17,6 +20,16 @@ function App() {
         setLoading(false)
       })
   }, [])
+
+  const {
+    filteredConcerts,
+    uniqueArtists,
+    uniqueGenres,
+    uniqueVenues,
+    uniqueCities,
+    yearRange,
+    stats,
+  } = useConcertData(data)
 
   if (loading) {
     return (
@@ -54,69 +67,31 @@ function App() {
             Concert Archives
           </p>
           <div className="flex gap-4 mt-3 text-sm text-gray-500">
-            <span>{data.metadata.totalConcerts} Shows</span>
+            <span>{stats.filtered} Shows</span>
             <span>·</span>
-            <span>{data.metadata.uniqueArtists} Artists</span>
+            <span>{stats.artists} Artists</span>
             <span>·</span>
-            <span>{data.metadata.uniqueVenues} Venues</span>
+            <span>{stats.venues} Venues</span>
+            <span>·</span>
+            <span>{stats.cities} Cities</span>
           </div>
         </div>
       </header>
 
+      {/* Filter Bar */}
+      <FilterBar
+        uniqueArtists={uniqueArtists}
+        uniqueGenres={uniqueGenres}
+        uniqueVenues={uniqueVenues}
+        uniqueCities={uniqueCities}
+        yearRange={yearRange}
+        filteredCount={stats.filtered}
+        totalCount={stats.total}
+      />
+
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h2 className="text-2xl font-display uppercase tracking-wide text-gray-300 mb-4">
-            Recent Concerts
-          </h2>
-        </div>
-
-        {/* Concert Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {data.concerts.map((concert) => (
-            <div
-              key={concert.id}
-              className="bg-gray-900 rounded-lg overflow-hidden border border-gray-800 hover:border-purple-500 transition-colors"
-            >
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-display uppercase text-white mb-1">
-                      {concert.headliner}
-                    </h3>
-                    <span className="inline-block px-2 py-1 text-xs font-mono uppercase bg-purple-500/20 text-purple-300 rounded">
-                      {concert.genre}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="space-y-2 text-sm text-gray-400">
-                  <p className="font-mono">
-                    {new Date(concert.date).toLocaleDateString('en-US', {
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </p>
-                  <p>{concert.venue}</p>
-                  <p>{concert.cityState}</p>
-
-                  {concert.openers.length > 0 && (
-                    <div className="pt-3 mt-3 border-t border-gray-800">
-                      <p className="text-xs font-mono uppercase text-gray-500 mb-1">
-                        Also on the bill:
-                      </p>
-                      <p className="text-gray-300">
-                        {concert.openers.join(' • ')}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <TimelineContainer concerts={filteredConcerts} />
       </main>
 
       {/* Footer */}
