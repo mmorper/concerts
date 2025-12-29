@@ -1,0 +1,191 @@
+# Morperhaus Concerts — Color Specification Guide
+
+**Version:** 2.0  
+**Last Updated:** December 2024
+
+---
+
+## Genre Colors
+
+### The Concert Poster Palette
+
+Deep jewel tones at 35-45% lightness, 65-80% saturation.
+
+| Genre | Hex | Vibe |
+|-------|-----|------|
+| **New Wave** | `#1e3a8a` | Deep electric blue — synth, cold, 80s |
+| **Punk** | `#991b1b` | Dried blood red — raw, aggressive |
+| **Alternative** | `#5b21b6` | Deep violet — moody, introspective |
+| **Ska** | `#b45309` | Burnt orange — brass, sunshine |
+| **Indie Rock** | `#1d4ed8` | Royal blue — melodic, expansive |
+| **Electronic** | `#0e7490` | Deep cyan — synthetic, club lights |
+| **Pop Rock** | `#c2410c` | Burnt sienna — warm, accessible |
+| **Pop Punk** | `#be185d` | Deep magenta — youthful, loud |
+| **Classic Rock** | `#78350f` | Brown leather — vintage, worn |
+| **Jazz** | `#312e81` | Midnight indigo — smoky, sophisticated |
+| **Reggae** | `#166534` | Forest green — roots, earth |
+| **Metal** | `#1f2937` | Near-black charcoal — heavy, dark |
+| **Hip Hop** | `#9a3412` | Rust orange — street, bold |
+| **R&B/Soul** | `#4c1d95` | Deep purple — smooth, rich |
+| **Folk/Country** | `#713f12` | Saddle brown — acoustic, earthy |
+| **Funk** | `#a16207` | Mustard gold — groove, 70s |
+| **Blues** | `#1e40af` | Deep navy — soulful, late night |
+| **World** | `#115e59` | Dark teal — global, oceanic |
+| **Experimental** | `#7c3aed` | Electric purple — weird, avant-garde |
+| **Other** | `#4b5563` | Slate gray — neutral bucket |
+
+---
+
+## Background System
+
+### Light Backgrounds
+
+| Token | Hex | Tailwind | Best For |
+|-------|-----|----------|----------|
+| `bg-light-1` | `#ffffff` | `bg-white` | Hero, clean starts |
+| `bg-light-2` | `#f3f4f6` | `bg-gray-100` | Charts, data visualizations |
+| `bg-light-3` | `#fafaf9` | `bg-stone-50` | Lists, grids, cards |
+| `bg-light-4` | `#fef3c7` | `bg-amber-100` | Highlight/feature scenes |
+| `bg-light-5` | `#ede9fe` | `bg-violet-100` | Music-themed scenes |
+
+### Dark Backgrounds
+
+| Token | Hex | Tailwind | Best For |
+|-------|-----|----------|----------|
+| `bg-dark-1` | `#111827` | `bg-gray-900` | Maps, geography |
+| `bg-dark-2` | `#1e1b4b → #581c87` | `from-indigo-950 to-purple-950` | Networks, relationships |
+| `bg-dark-3` | `#0c0a09` | `bg-stone-950` | Dramatic stats |
+| `bg-dark-4` | `#1e1b4b` | `bg-indigo-950` | Music scenes (dark variant) |
+| `bg-dark-5` | `#172554` | `bg-blue-950` | Timeline, historical |
+
+### Text Colors
+
+| Context | Primary | Muted |
+|---------|---------|-------|
+| On light backgrounds | `#1f2937` | `#6b7280` |
+| On dark backgrounds | `#ffffff` | `#9ca3af` |
+
+---
+
+## CSS Variables
+
+```css
+:root {
+  /* Genre Colors */
+  --color-genre-new-wave: #1e3a8a;
+  --color-genre-punk: #991b1b;
+  --color-genre-alternative: #5b21b6;
+  --color-genre-ska: #b45309;
+  --color-genre-indie-rock: #1d4ed8;
+  --color-genre-electronic: #0e7490;
+  --color-genre-pop-rock: #c2410c;
+  --color-genre-pop-punk: #be185d;
+  --color-genre-classic-rock: #78350f;
+  --color-genre-jazz: #312e81;
+  --color-genre-reggae: #166534;
+  --color-genre-metal: #1f2937;
+  --color-genre-hip-hop: #9a3412;
+  --color-genre-rnb-soul: #4c1d95;
+  --color-genre-folk-country: #713f12;
+  --color-genre-funk: #a16207;
+  --color-genre-blues: #1e40af;
+  --color-genre-world: #115e59;
+  --color-genre-experimental: #7c3aed;
+  --color-genre-other: #4b5563;
+
+  /* Backgrounds - Light */
+  --bg-light-1: #ffffff;
+  --bg-light-2: #f3f4f6;
+  --bg-light-3: #fafaf9;
+  --bg-light-4: #fef3c7;
+  --bg-light-5: #ede9fe;
+
+  /* Backgrounds - Dark */
+  --bg-dark-1: #111827;
+  --bg-dark-2-start: #1e1b4b;
+  --bg-dark-2-end: #581c87;
+  --bg-dark-3: #0c0a09;
+  --bg-dark-4: #1e1b4b;
+  --bg-dark-5: #172554;
+
+  /* Text */
+  --text-on-light: #1f2937;
+  --text-on-light-muted: #6b7280;
+  --text-on-dark: #ffffff;
+  --text-on-dark-muted: #9ca3af;
+}
+```
+
+---
+
+## TypeScript Constants
+
+```typescript
+// src/constants/colors.ts
+
+export const GENRE_COLORS: Record<string, string> = {
+  'New Wave': '#1e3a8a',
+  'Punk': '#991b1b',
+  'Alternative': '#5b21b6',
+  'Ska': '#b45309',
+  'Indie Rock': '#1d4ed8',
+  'Electronic': '#0e7490',
+  'Pop Rock': '#c2410c',
+  'Pop Punk': '#be185d',
+  'Classic Rock': '#78350f',
+  'Jazz': '#312e81',
+  'Reggae': '#166534',
+  'Metal': '#1f2937',
+  'Hip Hop': '#9a3412',
+  'R&B/Soul': '#4c1d95',
+  'Folk/Country': '#713f12',
+  'Funk': '#a16207',
+  'Blues': '#1e40af',
+  'World': '#115e59',
+  'Experimental': '#7c3aed',
+  'Other': '#4b5563',
+} as const;
+
+export const BACKGROUNDS = {
+  light1: '#ffffff',
+  light2: '#f3f4f6',
+  light3: '#fafaf9',
+  light4: '#fef3c7',
+  light5: '#ede9fe',
+  dark1: '#111827',
+  dark2: 'linear-gradient(135deg, #1e1b4b 0%, #581c87 100%)',
+  dark3: '#0c0a09',
+  dark4: '#1e1b4b',
+  dark5: '#172554',
+} as const;
+
+export const DEFAULT_GENRE_COLOR = '#4b5563';
+
+export function getGenreColor(genre: string): string {
+  return GENRE_COLORS[genre] || DEFAULT_GENRE_COLOR;
+}
+```
+
+---
+
+## Color Families
+
+**Blues & Indigos:** New Wave, Indie Rock, Blues, Jazz
+
+**Purples & Magentas:** Alternative, R&B/Soul, Experimental, Pop Punk
+
+**Oranges & Warm Tones:** Ska, Pop Rock, Hip Hop, Funk
+
+**Earth & Nature:** Classic Rock, Folk/Country, Reggae, World
+
+**Reds, Cyans & Neutrals:** Punk, Electronic, Metal, Other
+
+---
+
+## Adding New Genres
+
+1. Identify which color family it belongs to
+2. Find an unused hue slot within that family
+3. Match saturation (65-80%) and lightness (35-45%)
+4. Add to `GENRE_COLORS` constant and CSS variables
+5. Update this spec

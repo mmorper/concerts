@@ -43,9 +43,15 @@
 ## Primary Documentation
 
 For comprehensive project details, see:
+
 - **[docs/STATUS.md](../docs/STATUS.md)** - Current state & active work (SOURCE OF TRUTH)
 - **[docs/planning.md](../docs/planning.md)** - Historical implementation plan (archive)
 - **[README.md](../README.md)** - Project overview
 - **[docs/api-setup.md](../docs/api-setup.md)** - API configuration
+
+**Design Framework:**
+
+- **[docs/design/Morperhaus-Scene-Design-Guide.md](../docs/design/Morperhaus-Scene-Design-Guide.md)** - Scene flow, typography, spacing, animation
+- **[docs/design/Morperhaus-Color-Specification-Guide.md](../docs/design/Morperhaus-Color-Specification-Guide.md)** - Genre colors, backgrounds, CSS variables
 
 Always check STATUS.md for latest status before beginning work.

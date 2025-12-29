@@ -37,47 +37,56 @@ All major implementation phases are complete:
 4. ✅ Map z-index - Fixed header overlay layering (z-20 over z-0 map)
 5. ✅ Artist list - Converted Scene2Venues to show top 20 artists
 
-**Pending Work:**
-
-- ⚠️ **Sunburst visualization sizing** - Awaiting user's visual mockup
-  - Current: `min(100vw, calc(100vh - 280px))`
-  - Issue: Appears too small in multi-genre view
-  - File: [src/components/scenes/Scene5Genres.tsx](../src/components/scenes/Scene5Genres.tsx:647-654)
-
 ### 📋 Upcoming Phases
 
-**Phase 6: Geography Scene Enhancement**
+⚠️ **Pending: Sunburst visualization sizing**
+
+- Awaiting user's visual mockup
+- Current: `min(100vw, calc(100vh - 280px))`
+- Issue: Appears too small in multi-genre view
+- File: [src/components/scenes/Scene5Genres.tsx](../src/components/scenes/Scene5Genres.tsx:647-654)
+
+**Phase 6: Design Conformance**
+
+- Implement [Scene Design Guide](design/Morperhaus-Scene-Design-Guide.md) specifications
+- Apply [Color Specification Guide](design/Morperhaus-Color-Specification-Guide.md) palette
+- Update typography to Playfair Display + Source Sans 3
+- Align scene backgrounds with LIGHT→DARK→DARK→LIGHT→LIGHT rhythm
+- Create genre color constants (`src/constants/colors.ts`)
+- Apply consistent spacing, animation timing, and "One Thing" rule
+
+**Phase 7: Geography Scene Enhancement**
 
 - Zoom into LA and DC tighter
 - Fix DC missing from region views
 - Component: [Scene3Map.tsx](../src/components/scenes/Scene3Map.tsx)
 
-**Phase 7: Venues Scene Enhancement**
+**Phase 8: Venues Scene Enhancement**
 
 - Show top X venues by number of shows
 - Add "View all venues" link/button
 - Design UX style pattern (will be reused in other scenes)
 - Component: [Scene2Venues.tsx](../src/components/scenes/Scene2Venues.tsx)
 
-**Phase 8: Music Scene Enhancement**
+**Phase 9: Music Scene Enhancement**
 
 - Mock up sunburst visualization
 - Design UX improvements
 - Component: [Scene5Genres.tsx](../src/components/scenes/Scene5Genres.tsx)
 
-**Phase 9: Artists Scene Enhancement**
+**Phase 10: Artists Scene Enhancement**
 
 - Dedicated plan document [Phase 9 Artists Scene v2](phase-9-artist_scene_plan_v2.md)
 - Component: [Scene2Venues.tsx](../src/components/scenes/Scene2Venues.tsx)
 
-**Phase 10: Deployment**
+**Phase 11: Deployment**
 
 - Set up Cloudflare Pages
 - Connect GitHub repository
 - Configure build settings
 - Deploy to production
 
-**Phase 11: Data Sources Enhancement**
+**Phase 12: Data Sources Enhancement**
 
 - Review all Google Sheets/API integration work
 - Integrate Spotify API for artist cards
@@ -143,7 +152,11 @@ concerts/
 ├── docs/
 │   ├── STATUS.md           # This file (current state)
 │   ├── planning.md         # Complete historical implementation plan
-│   └── api-setup.md        # API configuration guide
+│   ├── api-setup.md        # API configuration guide
+│   ├── phase-9-artist_scene_plan_v2.md  # Phase 9 detailed plan
+│   └── design/             # Visual design framework
+│       ├── Morperhaus-Scene-Design-Guide.md
+│       └── Morperhaus-Color-Specification-Guide.md
 └── .claude/
     ├── config.json         # Project metadata & phase tracking
     └── context.md          # Quick-start context for new sessions
@@ -171,10 +184,17 @@ concerts/
 - Static map (no scroll hijacking)
 
 ### Design System
-- NYT-inspired: clean, minimal, contemporary
-- Inter font family (sans-serif)
-- Scene-specific backgrounds for visual separation
-- Subtle animations (0.8-1.2s transitions)
+
+**Framework Documents:**
+
+- [Scene Design Guide](design/Morperhaus-Scene-Design-Guide.md) - Scene flow, typography, spacing, animation
+- [Color Specification Guide](design/Morperhaus-Color-Specification-Guide.md) - Genre colors, backgrounds, CSS variables
+
+**Current Implementation:**
+
+- Typography: Inter font family (to be updated to Playfair Display + Source Sans 3)
+- Scene backgrounds: Custom per scene (to be aligned with LIGHT→DARK→DARK→LIGHT→LIGHT rhythm)
+- Animations: Framer Motion with 0.8-1.2s transitions
 
 ---
 
