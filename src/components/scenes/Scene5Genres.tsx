@@ -504,18 +504,25 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         }
         const x = Math.cos(angle - Math.PI / 2) * adjustedRadius
         const y = Math.sin(angle - Math.PI / 2) * adjustedRadius
+
+        // Keep labels horizontal in bottom half for depth 1 (inner genres)
         const rotation = angle * 180 / Math.PI - 90
+        if (d.depth === 1 && angle > Math.PI) {
+          // Bottom half - keep horizontal (no rotation)
+          return `translate(${x},${y})`
+        }
+
         return `translate(${x},${y}) rotate(${rotation < 180 ? rotation : rotation + 180})`
       })
       .attr('dy', '0.35em')
       .attr('text-anchor', 'middle')
       .attr('font-size', d => {
         const angle = d.x1 - d.x0
-        // Depth 2 (artists/small genres) get smaller font
+        // Depth 2 (artists/small genres) - increased font sizes for better visibility
         if (d.depth === 2) {
-          if (angle > 0.4) return '11px'
-          if (angle > 0.2) return '10px'
-          return '9px'
+          if (angle > 0.4) return '12px'
+          if (angle > 0.2) return '11px'
+          return '10px'
         }
         // Depth 1 (genres) - larger when zoomed in (single segment)
         if (expandedGenre && d.data.name === expandedGenre) return '18px'
@@ -541,10 +548,10 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         }
 
         if (d.depth === 2) {
-          // Artists/small genres - more aggressive truncation
-          if (angle > 0.4) return name.length > 12 ? name.substring(0, 10) + '…' : name
-          if (angle > 0.2) return name.length > 8 ? name.substring(0, 6) + '…' : name
-          return name.length > 5 ? name.substring(0, 3) + '…' : name
+          // Artists/small genres - show more text, less aggressive truncation
+          if (angle > 0.4) return name.length > 18 ? name.substring(0, 16) + '…' : name
+          if (angle > 0.2) return name.length > 12 ? name.substring(0, 10) + '…' : name
+          return name.length > 8 ? name.substring(0, 6) + '…' : name
         }
 
         // Genres in default view
@@ -555,8 +562,9 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       .attr('opacity', d => {
         const angle = d.x1 - d.x0
         if (expandedGenre && d.depth === 1) return 1  // Always show zoomed genre
+        if (d.depth === 2) return 1  // Always show artist labels at full opacity
         if (angle > 0.2) return 1
-        return 0.3
+        return 0.5  // Increased from 0.3 for better visibility
       })
 
     // Add center text
