@@ -1,8 +1,8 @@
 # Concert Archives - Current Status
 
 **Last Updated:** 2025-12-29
-**Current Phase:** Phase 8 (Map Interaction - Complete)
-**Last Commit:** 20fd916 - "feat: Add interactive map exploration mode with click-to-activate UX"
+**Current Phase:** Phase 9b (Venue Scene Enhancement - Complete)
+**Last Commit:** [pending] - "feat: Add click-to-expand interaction for venues in All view"
 
 ---
 
@@ -167,6 +167,41 @@ All major implementation phases are complete:
 **Post-Implementation Cleanup:**
 
 - ✅ Removed jitter logic from Scene3Map.tsx - no longer needed with venue-specific coordinates
+
+### ✅ Phase 9b: Venue Scene Enhancement (Complete)
+
+**Implementation Date:** December 29, 2025
+
+**Completed Items:**
+
+- ✅ **Click-to-expand interaction in "All" view** - Venue dots animate to center and expand children
+  - Clicking a venue dot in All view now moves it to horizontal center at y=380 (below exclusion zone)
+  - Smooth physics-based animation using D3 force simulation
+  - Child nodes (headliners and openers) automatically expand radially around centered venue
+  - Headliners positioned at 120px radius, openers at 180px radius from centered venue
+  - All child node labels become visible when venue is expanded
+  - Click again to collapse back to dot and return to original position
+  - Component: [src/components/scenes/Scene4Bands.tsx](../src/components/scenes/Scene4Bands.tsx)
+  - Reference: [docs/phase-9b-Venue_Scene_Enhancement_Spec.md](phase-9b-Venue_Scene_Enhancement_Spec.md)
+
+- ✅ **Removed fade effects** - Eliminated screen-wide dimming on node clicks
+  - All nodes maintain constant opacity (0.85 fill, 1.0 stroke)
+  - Links maintain constant opacity (0.5 hierarchy, 0.3 cross-venue)
+  - No more ghosting or fading of unrelated nodes when clicking
+  - Hover effects simplified to work uniformly for all nodes
+  - Cleaner, less distracting visual experience
+
+**Technical Implementation:**
+
+- **Positioning Forces**: Added `centerVenue` and `centerVenueY` forces with 1.0 strength for decisive movement
+- **Radial Layout**: Updated radial force to center children around y=380 when venue is centered
+- **Label Display**: Modified band label filter to show labels for expanded venues in "all" mode
+- **State Management**: Uses `expandedVenues` Set and `centeredVenue` string to track expansion state
+- **Exclusion Zone**: Positioned venue at y=380, just below the exclusion zone boundary (ends at y=360)
+
+**Files Modified:**
+
+- MODIFIED: `src/components/scenes/Scene4Bands.tsx` - Click interaction, force simulation, and label visibility
 
 ### 📋 Upcoming Phases
 

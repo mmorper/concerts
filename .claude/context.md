@@ -4,8 +4,28 @@
 
 **Implementation Status:**
 
-- Phases 0-9: ✅ Complete
+- Phases 0-9b: ✅ Complete
 - Phase 10: Artists Scene Enhancement (NEXT)
+
+**Phase 9b Complete (Venue Scene Enhancement):**
+
+- ✅ Click-to-expand interaction in "All" view - Venue dots animate to center and expand children
+- ✅ Smooth physics-based animation using D3 force simulation
+- ✅ Centered venue positioned at y=380 (below exclusion zone)
+- ✅ Child nodes (headliners/openers) expand radially around centered venue
+- ✅ All child node labels visible when venue is expanded
+- ✅ Click again to collapse back to dot
+- ✅ Removed fade effects - No more screen-wide dimming on node clicks
+- ✅ All nodes maintain constant opacity for cleaner visual experience
+
+**Phase 9 Complete (Venue-Level Geocoding):**
+
+- ✅ Google Maps Geocoding API integration with cache-first approach
+- ✅ 77 unique venues geocoded with accurate coordinates
+- ✅ Cost optimization: $0.00 (within $200/month free tier)
+- ✅ DC map adjustments: center [39.00, -77.03], zoom 10.5
+- ✅ Popup z-index fix: z-index 9999 for top-most layer
+- ✅ Removed jitter logic from Scene3Map.tsx (no longer needed)
 
 **Phase 8 Complete (Map Interaction Enhancements - Desktop):**
 
@@ -20,24 +40,13 @@
 - ✅ Genres scene centering fix for initial load
 - 🔄 Mobile device testing deferred (touch interactions already enabled in code)
 
-**Phase 9 Complete (Venue-Level Geocoding):**
-
-- ✅ Google Maps Geocoding API integration with cache-first approach
-- ✅ 77 unique venues geocoded with accurate coordinates
-- ✅ Cost optimization: $0.00 (within $200/month free tier)
-- ✅ DC map adjustments: center [39.00, -77.03], zoom 10.5
-- ✅ Popup z-index fix: z-index 9999 for top-most layer
-- ✅ Removed jitter logic from Scene3Map.tsx (no longer needed)
-
 **Recent Work (December 29):**
 
-- ✅ Map interaction implementation (Phase 8)
-  - Created click-to-activate exploration mode
-  - Added scene navigation buttons with animations
-  - Implemented scroll trapping and state management
-  - Added visual hints and accessibility features
-  - Fixed CA venue popups to show venue names
-  - Fixed genres scene centering issue
+- ✅ Venue scene enhancement (Phase 9b)
+  - Implemented click-to-expand interaction for venues in All view
+  - Added smooth animation to center position below exclusion zone
+  - Configured radial child node expansion with visible labels
+  - Removed all fade effects for cleaner UX
 
 **Architecture:**
 
@@ -64,7 +73,7 @@
 - Top genres: New Wave (46), Punk (15), Alternative (14)
 - Geographic: California ~65%, DC cluster, Boston, New Orleans, UK
 
-**Last Commit:** 20fd916 - "feat: Add interactive map exploration mode with click-to-activate UX"
+**Last Commit:** [pending] - "feat: Add click-to-expand interaction for venues in All view"
 
 ---
 

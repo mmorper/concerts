@@ -21,17 +21,20 @@ interface Link {
   type: 'hierarchy' | 'cross-venue'
 }
 
+type ViewMode = 'top10' | 'all'
+
 export function Scene4Bands({ concerts }: Scene4BandsProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null)
+  const [viewMode, setViewMode] = useState<ViewMode>('top10')
+  const [expandedVenues, setExpandedVenues] = useState<Set<string>>(new Set())
+  const [centeredVenue, setCenteredVenue] = useState<string | null>(null)
 
-  // Build venue → band hierarchy network
-  const { nodes, links } = useMemo(() => {
-    // Track venue counts and band appearances per venue
+  // Compute venue stats
+  const venueStats = useMemo(() => {
     const venueCounts = new Map<string, number>()
     const venueHeadliners = new Map<string, Map<string, number>>()
     const venueOpeners = new Map<string, Map<string, Map<string, number>>>()
-    const bandVenues = new Map<string, Set<string>>() // Track which venues each band has played
 
     concerts.forEach(concert => {
       const venue = concert.venue
@@ -47,12 +50,6 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       const headlinerMap = venueHeadliners.get(venue)!
       headlinerMap.set(headliner, (headlinerMap.get(headliner) || 0) + 1)
 
-      // Track which venues this headliner has played
-      if (!bandVenues.has(headliner)) {
-        bandVenues.set(headliner, new Set())
-      }
-      bandVenues.get(headliner)!.add(venue)
-
       // Track openers per headliner per venue
       if (!venueOpeners.has(venue)) {
         venueOpeners.set(venue, new Map())
@@ -64,8 +61,45 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
 
       concert.openers.forEach(opener => {
         openerMap.set(opener, (openerMap.get(opener) || 0) + 1)
+      })
+    })
 
-        // Track which venues this opener has played
+    return { venueCounts, venueHeadliners, venueOpeners }
+  }, [concerts])
+
+  // Get sorted venues by show count
+  const sortedVenues = useMemo(() => {
+    return Array.from(venueStats.venueCounts.entries())
+      .sort(([, a], [, b]) => b - a)
+      .map(([venue]) => venue)
+  }, [venueStats])
+
+  // Determine which venues to show based on viewMode
+  const displayedVenues = useMemo(() => {
+    return viewMode === 'top10' ? sortedVenues.slice(0, 10) : sortedVenues
+  }, [viewMode, sortedVenues])
+
+  // In "all" mode, no venues are expanded by default (all collapsed to dots)
+  const defaultExpandedVenues = useMemo<Set<string>>(() => {
+    return new Set() // Start with all collapsed
+  }, [])
+
+  // Build venue → band hierarchy network
+  const { nodes, links } = useMemo(() => {
+    const { venueCounts, venueHeadliners, venueOpeners } = venueStats
+    const bandVenues = new Map<string, Set<string>>() // Track which venues each band has played
+
+    // Track band venues for cross-venue links
+    concerts.forEach(concert => {
+      const venue = concert.venue
+      const headliner = concert.headliner
+
+      if (!bandVenues.has(headliner)) {
+        bandVenues.set(headliner, new Set())
+      }
+      bandVenues.get(headliner)!.add(venue)
+
+      concert.openers.forEach(opener => {
         if (!bandVenues.has(opener)) {
           bandVenues.set(opener, new Set())
         }
@@ -73,18 +107,17 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       })
     })
 
-    // Get top 10 venues for clarity
-    const topVenues = Array.from(venueCounts.entries())
-      .sort(([, a], [, b]) => b - a)
-      .slice(0, 10)
-      .map(([venue]) => venue)
+    // Determine which venues should show their artists
+    const venuesToExpand: Set<string> = viewMode === 'top10'
+      ? new Set(displayedVenues) // Top 10 mode: all venues expanded
+      : new Set([...defaultExpandedVenues, ...expandedVenues]) // All mode: default + user-expanded
 
     const nodes: Node[] = []
     const links: Link[] = []
     const nodeIds = new Set<string>()
 
-    // Create venue nodes (root)
-    topVenues.forEach(venue => {
+    // Create venue nodes (root) - all displayed venues
+    displayedVenues.forEach(venue => {
       const nodeId = `venue|${venue}`
       nodes.push({
         id: nodeId,
@@ -94,8 +127,8 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       nodeIds.add(nodeId)
     })
 
-    // Create headliner and opener nodes for each venue
-    topVenues.forEach(venue => {
+    // Create headliner and opener nodes only for expanded venues
+    venuesToExpand.forEach(venue => {
       const headliners = venueHeadliners.get(venue)
       if (!headliners) return
 
@@ -148,7 +181,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
 
     // Create cross-venue links for bands that played multiple venues
     bandVenues.forEach((venues, band) => {
-      const venueList = Array.from(venues).filter(v => topVenues.includes(v))
+      const venueList = Array.from(venues).filter(v => displayedVenues.includes(v))
       if (venueList.length > 1) {
         // Find all nodes for this band across venues
         const bandNodes = nodes.filter(n =>
@@ -170,7 +203,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
     })
 
     return { nodes, links }
-  }, [concerts])
+  }, [concerts, venueStats, displayedVenues, viewMode, defaultExpandedVenues, expandedVenues])
 
   // Helper to get related nodes for a clicked node
   const getRelatedNodes = useCallback((nodeId: string): Set<string> => {
@@ -210,6 +243,41 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
     return related
   }, [nodes])
 
+  // Custom force to create elliptical exclusion zone around header
+  const createExclusionZone = (
+    centerX: number,
+    centerY: number,
+    radiusX: number,
+    radiusY: number
+  ) => {
+    function force(alpha: number) {
+      // This will be called by the simulation on each tick
+      nodes.forEach((d: any) => {
+        if (d.x == null || d.y == null) return // Skip nodes without positions
+
+        // Calculate normalized distance from center using ellipse equation
+        const dx = (d.x - centerX) / radiusX
+        const dy = (d.y - centerY) / radiusY
+        const distanceFromCenter = Math.sqrt(dx * dx + dy * dy)
+
+        // If node is inside the ellipse (distance < 1), push it out
+        if (distanceFromCenter < 1) {
+          // Calculate push direction (radial from center)
+          const angle = Math.atan2(d.y - centerY, d.x - centerX)
+
+          // Strength increases as node gets closer to center
+          const strength = alpha * (1 - distanceFromCenter) * 3.0
+
+          // Apply radial force pushing outward
+          d.vx = (d.vx || 0) + Math.cos(angle) * strength * 100
+          d.vy = (d.vy || 0) + Math.sin(angle) * strength * 100
+        }
+      })
+    }
+
+    return force
+  }
+
   useEffect(() => {
     if (!svgRef.current || nodes.length === 0) return
 
@@ -224,19 +292,25 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       .attr('width', width)
       .attr('height', height)
       .attr('fill', 'transparent')
-      .style('cursor', focusedNodeId ? 'pointer' : 'default')
+      .style('cursor', focusedNodeId || expandedVenues.size > 0 ? 'pointer' : 'default')
       .on('click', () => {
         if (focusedNodeId) {
           setFocusedNodeId(null)
+        }
+        // In "all" mode, clear user-expanded venues and centered venue
+        if (viewMode === 'all' && expandedVenues.size > 0) {
+          setExpandedVenues(new Set())
+          setCenteredVenue(null)
         }
       })
 
     const relatedNodes = focusedNodeId ? getRelatedNodes(focusedNodeId) : new Set<string>()
 
     // Create size scales for different node types
+    // In "all" mode, use wider range to show hierarchy clearly
     const venueSizeScale = d3.scaleSqrt()
       .domain([1, Math.max(...nodes.filter(n => n.type === 'venue').map(n => n.count))])
-      .range([20, 40])
+      .range(viewMode === 'all' ? [8, 45] : [20, 40])
 
     const bandSizeScale = d3.scaleSqrt()
       .domain([1, Math.max(...nodes.filter(n => n.type !== 'venue').map(n => n.count))])
@@ -270,15 +344,58 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       .force('center', d3.forceCenter(width / 2, height / 2))
       .force('collision', d3.forceCollide().radius((d: any) => getNodeSize(d) + 15))
       // Radial force to push venues toward center
+      // When a venue is centered, position children around it
       .force('radial', d3.forceRadial(
         (d: any) => {
           if (d.type === 'venue') return 0 // Venues in center
+
+          // If this node belongs to the centered venue, position children around it
+          if (centeredVenue && d.parentVenue === centeredVenue) {
+            if (d.type === 'headliner') return 120 // Headliners closer
+            return 180 // Openers further out
+          }
+
+          // Otherwise use default radial positions
           if (d.type === 'headliner') return 150 // Headliners mid-radius
           return 250 // Openers outer radius
         },
         width / 2,
-        height / 2
-      ).strength(0.3))
+        centeredVenue ? 380 : height / 2 // Center around the positioned venue
+      ).strength((d: any) => {
+        // Stronger radial force for centered venue's children
+        if (centeredVenue && d.parentVenue === centeredVenue) return 0.5
+        return 0.3
+      }))
+      // In "all" mode with centered venue, add strong positioning force
+      // Position the centered venue below the exclusion zone (y = 380)
+      .force('centerVenue', viewMode === 'all' && centeredVenue ?
+        d3.forceX((d: any) => {
+          const venueName = d.id.replace('venue|', '')
+          if (venueName === centeredVenue) return width / 2
+          return d.x
+        }).strength((d: any) => {
+          const venueName = d.id.replace('venue|', '')
+          return venueName === centeredVenue ? 1.0 : 0
+        }) : null
+      )
+      .force('centerVenueY', viewMode === 'all' && centeredVenue ?
+        d3.forceY((d: any) => {
+          const venueName = d.id.replace('venue|', '')
+          // Position centered venue at y=380 (below exclusion zone which ends around y=360)
+          if (venueName === centeredVenue) return 380
+          return d.y
+        }).strength((d: any) => {
+          const venueName = d.id.replace('venue|', '')
+          return venueName === centeredVenue ? 1.0 : 0
+        }) : null
+      )
+      // Add elliptical exclusion zone around header for organic distribution
+      .force('exclusion', createExclusionZone(
+        width / 2, // centerX (middle of viewport)
+        180, // centerY (center of header area)
+        280, // radiusX (horizontal radius - narrower for closer sides)
+        180 // radiusY (vertical radius from top to below buttons)
+      ))
 
     // Create container group
     const g = svg.append('g')
@@ -287,27 +404,38 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
     const link = g.append('g')
       .selectAll('line')
       .data(links)
-      .join('line')
+      .join(
+        enter => enter.append('line')
+          .attr('stroke-opacity', 0) // Start invisible
+          .call(enter => enter.transition().duration(800)
+            .attr('stroke-opacity', (d: any) => d.type === 'hierarchy' ? 0.5 : 0.3)
+          ),
+        update => update,
+        exit => exit.call(exit => exit.transition().duration(600)
+          .attr('stroke-opacity', 0)
+          .remove()
+        )
+      )
       .attr('stroke', (d: any) => d.type === 'hierarchy' ? '#818cf8' : '#f472b6')
-      .attr('stroke-opacity', (d: any) => {
-        if (!focusedNodeId) return d.type === 'hierarchy' ? 0.5 : 0.3
-
-        // Show links connected to related nodes
-        const sourceId = typeof d.source === 'string' ? d.source : d.source.id
-        const targetId = typeof d.target === 'string' ? d.target : d.target.id
-        const isRelated = relatedNodes.has(sourceId) && relatedNodes.has(targetId)
-
-        if (isRelated) return d.type === 'hierarchy' ? 0.7 : 0.5
-        return 0.05 // Ghost back
-      })
       .attr('stroke-width', (d: any) => d.type === 'hierarchy' ? 2 : 1)
       .attr('stroke-dasharray', (d: any) => d.type === 'cross-venue' ? '5,5' : 'none')
 
     // Draw nodes
     const node = g.append('g')
       .selectAll('g')
-      .data(nodes)
-      .join('g')
+      .data(nodes, (d: any) => d.id) // Use key function for proper transitions
+      .join(
+        enter => enter.append('g')
+          .attr('opacity', 0) // Start invisible
+          .call(enter => enter.transition().duration(800)
+            .attr('opacity', 1)
+          ),
+        update => update,
+        exit => exit.call(exit => exit.transition().duration(600)
+          .attr('opacity', 0)
+          .remove()
+        )
+      )
       .call(d3.drag<any, any>()
         .on('start', dragstarted)
         .on('drag', dragged)
@@ -315,43 +443,40 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
 
     // Add circles with different colors per type
     node.append('circle')
-      .attr('r', d => {
-        const baseSize = getNodeSize(d)
-        // Increase size by 50% when focused or related
-        if (focusedNodeId && relatedNodes.has(d.id)) {
-          return baseSize * 1.5
-        }
-        return baseSize
-      })
+      .attr('r', d => getNodeSize(d))
       .attr('fill', d => {
         if (d.type === 'venue') return '#6366f1' // Indigo for venues
         if (d.type === 'headliner') return '#8b5cf6' // Purple for headliners
         return '#ec4899' // Pink for openers
       })
-      .attr('fill-opacity', d => {
-        if (!focusedNodeId) return 0.85
-        return relatedNodes.has(d.id) ? 1 : 0.15 // Ghost back unrelated nodes
-      })
+      .attr('fill-opacity', 0.85)
       .attr('stroke', d => {
         if (d.type === 'venue') return '#4f46e5'
         if (d.type === 'headliner') return '#7c3aed'
         return '#db2777'
       })
-      .attr('stroke-width', d => {
-        const baseWidth = d.type === 'venue' ? 3 : 2
-        // Increase stroke width when focused
-        if (focusedNodeId && relatedNodes.has(d.id)) {
-          return baseWidth * 1.5
-        }
-        return baseWidth
-      })
-      .attr('stroke-opacity', d => {
-        if (!focusedNodeId) return 1
-        return relatedNodes.has(d.id) ? 1 : 0.15
-      })
+      .attr('stroke-width', d => d.type === 'venue' ? 3 : 2)
+      .attr('stroke-opacity', 1)
       .style('cursor', 'pointer')
       .on('click', function(_event, d) {
-        // Toggle focus: if already focused, unfocus
+        // In "all" mode, clicking a venue expands/collapses it and centers it
+        if (viewMode === 'all' && d.type === 'venue') {
+          const venueName = d.id.replace('venue|', '')
+
+          if (expandedVenues.has(venueName)) {
+            // Collapse: clear expanded and centered
+            setExpandedVenues(new Set())
+            setCenteredVenue(null)
+          } else {
+            // Expand: set this venue as the only expanded one and center it
+            setExpandedVenues(new Set([venueName]))
+            setCenteredVenue(venueName)
+          }
+
+          return
+        }
+
+        // Original behavior for other modes/nodes: Toggle focus
         if (focusedNodeId === d.id) {
           setFocusedNodeId(null)
         } else {
@@ -359,23 +484,47 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
         }
       })
       .on('mouseenter', function(_event, d) {
-        if (!focusedNodeId || relatedNodes.has(d.id)) {
-          d3.select(this)
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr('fill-opacity', 1)
+
+        // Show hover label for small venues in "all" mode
+        if (viewMode === 'all' && d.type === 'venue' && d.count < 3) {
+          const parentNode = this.parentNode as Element
+          d3.select(parentNode)
+            .select('.hover-label')
             .transition()
             .duration(200)
             .attr('fill-opacity', 1)
         }
       })
       .on('mouseleave', function(_event, d) {
-        const baseOpacity = (!focusedNodeId || relatedNodes.has(d.id)) ? 0.85 : 0.15
         d3.select(this)
           .transition()
           .duration(200)
-          .attr('fill-opacity', baseOpacity)
+          .attr('fill-opacity', 0.85)
+
+        // Hide hover label for small venues in "all" mode
+        if (viewMode === 'all' && d.type === 'venue' && d.count < 3) {
+          const parentNode = this.parentNode as Element
+          d3.select(parentNode)
+            .select('.hover-label')
+            .transition()
+            .duration(200)
+            .attr('fill-opacity', 0)
+        }
       })
 
-    // Add labels for venue nodes (always visible)
-    node.filter(d => d.type === 'venue')
+    // Add labels for venue nodes
+    // In "all" mode: only show labels for venues with 3+ shows (others show on hover)
+    // In "top10" mode: always show labels
+    node.filter(d => {
+      if (d.type !== 'venue') return false
+      if (viewMode === 'top10') return true
+      // In "all" mode, only show if 3+ shows
+      return d.count >= 3
+    })
       .append('text')
       .text(d => {
         // Extract venue name from the id
@@ -387,21 +536,43 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       .attr('dy', '0.35em')
       .attr('font-size', '11px')
       .attr('fill', 'white')
-      .attr('fill-opacity', d => {
-        if (!focusedNodeId) return 1
-        return relatedNodes.has(d.id) ? 1 : 0.15
-      })
+      .attr('fill-opacity', 1)
       .attr('font-family', 'Inter, system-ui, sans-serif')
       .attr('font-weight', '600')
       .attr('pointer-events', 'none')
       .style('text-shadow', '0 1px 3px rgba(0,0,0,0.8)')
 
-    // Add labels for focused band nodes (headliners and openers)
+    // Add hover labels for small venues in "all" mode (1-2 shows)
+    if (viewMode === 'all') {
+      node.filter(d => d.type === 'venue' && d.count < 3)
+        .append('text')
+        .text(d => {
+          const venueName = d.id.replace('venue|', '')
+          return venueName.length > 20 ? venueName.substring(0, 17) + '...' : venueName
+        })
+        .attr('text-anchor', 'middle')
+        .attr('dy', '0.35em')
+        .attr('font-size', '10px')
+        .attr('fill', 'white')
+        .attr('fill-opacity', 0) // Hidden by default
+        .attr('font-family', 'Inter, system-ui, sans-serif')
+        .attr('font-weight', '600')
+        .attr('pointer-events', 'none')
+        .attr('class', 'hover-label')
+        .style('text-shadow', '0 1px 3px rgba(0,0,0,0.8)')
+    }
+
+    // Add labels for band nodes (headliners and openers)
     node.filter(d => {
-        // Show label if this node is part of focused hierarchy
-        if (!focusedNodeId) return false
         if (d.type === 'venue') return false
-        return relatedNodes.has(d.id) // Show all related band labels
+
+        // Show labels for focused hierarchy
+        if (focusedNodeId && relatedNodes.has(d.id)) return true
+
+        // Show labels for expanded venues in "all" mode
+        if (viewMode === 'all' && d.parentVenue && expandedVenues.has(d.parentVenue)) return true
+
+        return false
       })
       .append('text')
       .text(d => {
@@ -418,8 +589,10 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       .attr('text-anchor', 'middle')
       .attr('dy', '0.35em')
       .attr('font-size', d => {
-        // Larger font for focused nodes
-        return focusedNodeId && relatedNodes.has(d.id) ? '10px' : '9px'
+        // Larger font for focused/expanded nodes
+        const isHighlighted = (focusedNodeId && relatedNodes.has(d.id)) ||
+                              (viewMode === 'all' && d.parentVenue && expandedVenues.has(d.parentVenue))
+        return isHighlighted ? '10px' : '9px'
       })
       .attr('fill', 'white')
       .attr('fill-opacity', 1)
@@ -474,7 +647,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
     return () => {
       simulation.stop()
     }
-  }, [nodes, links, focusedNodeId, getRelatedNodes])
+  }, [nodes, links, focusedNodeId, getRelatedNodes, viewMode, expandedVenues, centeredVenue])
 
   const totalVenues = useMemo(() => {
     const allVenues = new Set<string>()
@@ -496,14 +669,50 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: false }}
         transition={{ duration: 0.8, delay: 0 }}
-        className="absolute top-20 left-0 right-0 z-10 text-center px-8"
+        className="venue-header absolute top-20 left-0 right-0 z-10 text-center px-8"
       >
         <h2 className="font-serif text-5xl md:text-7xl text-white mb-3 tracking-tight">
           The Venues
         </h2>
-        <p className="font-sans text-lg md:text-xl text-gray-400">
-          {totalVenues} concert halls and amphitheaters
+        <p className="font-sans text-lg md:text-xl text-gray-400 mb-6">
+          {viewMode === 'top10'
+            ? '10 most-visited venues'
+            : `${totalVenues} concert halls and amphitheaters`}
         </p>
+
+        {/* View Mode Toggle */}
+        <div className="flex justify-center gap-2">
+          <button
+            onClick={() => {
+              setViewMode('top10')
+              setExpandedVenues(new Set())
+              setFocusedNodeId(null)
+              setCenteredVenue(null)
+            }}
+            className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              viewMode === 'top10'
+                ? 'bg-indigo-600 text-white'
+                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+            }`}
+          >
+            Top 10
+          </button>
+          <button
+            onClick={() => {
+              setViewMode('all')
+              setExpandedVenues(new Set())
+              setFocusedNodeId(null)
+              setCenteredVenue(null)
+            }}
+            className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              viewMode === 'all'
+                ? 'bg-indigo-600 text-white'
+                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+            }`}
+          >
+            All Venues
+          </button>
+        </div>
       </motion.div>
 
       {/* Network Visualization */}
