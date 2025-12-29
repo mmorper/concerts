@@ -364,7 +364,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
           }
         }
       })
-      .on('mouseover', function(_event, d) {
+      .on('mouseover', function(event, d) {
         console.log('MOUSEOVER detected on:', d.data.name)
         const currentPath = d3.select(this)
         const parentNode = this.parentNode as Element
@@ -392,40 +392,24 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
           .attr('font-weight', '800')
           .style('text-shadow', '0 2px 8px rgba(0,0,0,1)')
 
-        // Show floating tooltip for all segments
-        const angle = (d.x0 + d.x1) / 2
-
-        // Determine the outer radius based on depth
-        let sliceOuterRadius
-        if (d.depth === 1) {
-          sliceOuterRadius = radius * 0.50   // Outer edge of inner ring
-        } else if (d.depth === 2) {
-          sliceOuterRadius = radius * 0.80   // Outer edge of middle ring
-        } else {
-          sliceOuterRadius = radius * 0.98   // Outer edge of outer ring
-        }
-
-        // Calculate position at outer edge of slice
-        const sliceX = Math.cos(angle - Math.PI / 2) * sliceOuterRadius
-        const sliceY = Math.sin(angle - Math.PI / 2) * sliceOuterRadius
-
-        // Add offset to position tooltip outside the slice
-        const offsetDistance = 20
-        const tooltipX = sliceX + Math.cos(angle - Math.PI / 2) * offsetDistance
-        const tooltipY = sliceY + Math.sin(angle - Math.PI / 2) * offsetDistance
-
+        // Show floating tooltip using mouse position
+        const [mouseX, mouseY] = d3.pointer(event, svg.node())
         const value = d.value || 0
         const percentage = ((value / (root.value || 1)) * 100).toFixed(1)
 
+        // Position tooltip offset from mouse
+        const tooltipOffsetX = 15
+        const tooltipOffsetY = -10
+
         tooltipText
           .text(d.data.name)
-          .attr('x', tooltipX + 8)
-          .attr('y', tooltipY - 2)
+          .attr('x', mouseX + tooltipOffsetX + 8)
+          .attr('y', mouseY + tooltipOffsetY + 16)
 
         tooltipSubtext
           .text(`${value} show${value !== 1 ? 's' : ''} (${percentage}%)`)
-          .attr('x', tooltipX + 8)
-          .attr('y', tooltipY + 14)
+          .attr('x', mouseX + tooltipOffsetX + 8)
+          .attr('y', mouseY + tooltipOffsetY + 32)
 
         // Size background to fit text
         const textBBox = (tooltipText.node() as SVGTextElement).getBBox()
@@ -434,10 +418,10 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         const totalHeight = textBBox.height + subtextBBox.height + 8
 
         tooltipBg
-          .attr('x', tooltipX + 4)
-          .attr('y', tooltipY - textBBox.height - 2)
+          .attr('x', mouseX + tooltipOffsetX + 4)
+          .attr('y', mouseY + tooltipOffsetY + 4)
           .attr('width', maxWidth + 8)
-          .attr('height', totalHeight + 4)
+          .attr('height', totalHeight + 8)
 
         tooltip
           .transition()
