@@ -181,7 +181,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
 
     // Create color scale for genres
     const colorScale = d3.scaleOrdinal<string>()
-      .domain(genreHierarchy.children.map(d => d.name))
+      .domain((genreHierarchy.children || []).map(d => d.name))
       .range([
         '#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316',
         '#eab308', '#84cc16', '#10b981', '#14b8a6', '#06b6d4',
@@ -189,7 +189,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       ])
 
     // Function to get color for any node (artists inherit parent color with variation)
-    const getNodeColor = (d: PartitionNode, index: number): string => {
+    const getNodeColor = (d: PartitionNode): string => {
       if (d.depth === 1) {
         // Top-level genre
         return colorScale(d.data.name)
@@ -199,7 +199,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         if (parent && parent.depth >= 1) {
           const parentColor = d.depth === 2 && parent.depth === 1
             ? colorScale(parent.data.name)
-            : getNodeColor(parent as PartitionNode, 0)
+            : getNodeColor(parent as PartitionNode)
 
           const color = d3.color(parentColor)
           if (color) {
@@ -286,7 +286,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         .attr('cy', '50%')
         .attr('r', '50%')
 
-      const baseColor = getNodeColor(node, i)
+      const baseColor = getNodeColor(node)
       gradient.append('stop')
         .attr('offset', '0%')
         .attr('stop-color', d3.color(baseColor)!.brighter(0.5).toString())
@@ -601,7 +601,8 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       whileInView={{ opacity: 1 }}
       viewport={{ once: false, margin: '-20%' }}
       transition={{ duration: 0.8 }}
-      className="h-screen flex flex-col items-center justify-center bg-gray-100 relative snap-start snap-always"
+      className="h-screen flex flex-col items-center justify-center relative snap-start snap-always"
+      style={{ backgroundColor: '#ede9fe' }}
     >
       {/* Title */}
       <motion.div
@@ -648,8 +649,10 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
           ref={svgRef}
           className="pointer-events-auto"
           style={{
-            width: 'min(100vw, calc(100vh - 280px))',
-            height: 'min(100vw, calc(100vh - 280px))'
+            width: 'min(85vw, 85vh)',
+            height: 'min(85vw, 85vh)',
+            maxWidth: '800px',
+            maxHeight: '800px'
           }}
         />
       </motion.div>
