@@ -39,3 +39,19 @@ body {
 .text-balance {
   text-wrap: balance;
 }
+
+/* Leaflet popup z-index override to ensure popups are always topmost */
+.leaflet-popup-pane {
+  z-index: 1100 !important;
+}
+
+.venue-popup .leaflet-popup-content-wrapper {
+  background: white;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border-radius: 0.5rem;
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+}
+
+.venue-popup .leaflet-popup-tip {
+  background: white;
+}

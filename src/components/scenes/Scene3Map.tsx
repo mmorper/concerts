@@ -8,7 +8,7 @@ interface Scene3MapProps {
   concerts: Concert[]
 }
 
-type Region = 'all' | 'california' | 'dc' | 'boston'
+type Region = 'all' | 'california' | 'dc'
 
 const REGION_VIEWS: Record<Region, { center: [number, number]; zoom: number; label: string; filter?: (concert: Concert) => boolean }> = {
   all: {
@@ -23,16 +23,10 @@ const REGION_VIEWS: Record<Region, { center: [number, number]; zoom: number; lab
     filter: (c) => c.state === 'California' || c.state === 'CA'
   },
   dc: {
-    center: [38.9072, -77.0369],
-    zoom: 11, // Tighter zoom for DC metro area
+    center: [38.85, -77.0369], // Moved south to show Bethesda without clipping
+    zoom: 10, // Slightly wider zoom to fit all DC metro venues
     label: 'DC Area',
     filter: (c) => ['Virginia', 'VA', 'Maryland', 'MD', 'District of Columbia', 'DC'].includes(c.state)
-  },
-  boston: {
-    center: [42.3601, -71.0589],
-    zoom: 10,
-    label: 'Boston',
-    filter: (c) => c.state === 'Massachusetts' || c.state === 'MA'
   },
 }
 
@@ -100,25 +94,39 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
     // Clear existing markers
     markersLayerRef.current.clearLayers()
 
-    // Aggregate concerts by city
-    const cityMarkers = new Map<string, { lat: number; lng: number; count: number }>()
+    // For DC area, aggregate by venue to show multiple venues in same city
+    // For other regions, aggregate by city
+    const isDCRegion = selectedRegion === 'dc'
+    const markers = new Map<string, { lat: number; lng: number; count: number; label: string }>()
+    const locationCounts = new Map<string, number>() // Track venues at same location
 
     filteredConcerts.forEach(concert => {
-      const key = concert.cityState
-      const existing = cityMarkers.get(key)
+      const key = isDCRegion ? `${concert.venue}|${concert.cityState}` : concert.cityState
+      const existing = markers.get(key)
       if (existing) {
         existing.count++
       } else {
-        cityMarkers.set(key, {
-          lat: concert.location.lat,
-          lng: concert.location.lng,
+        const locationKey = `${concert.location.lat},${concert.location.lng}`
+        const venuesAtLocation = locationCounts.get(locationKey) || 0
+        locationCounts.set(locationKey, venuesAtLocation + 1)
+
+        // Add small jitter for DC venues at same coordinates to prevent overlap
+        const jitterAmount = 0.008 // ~0.5 mile offset
+        const angle = (venuesAtLocation * (Math.PI * 2)) / 5 // Spread in circle
+        const latJitter = isDCRegion && venuesAtLocation > 0 ? Math.cos(angle) * jitterAmount : 0
+        const lngJitter = isDCRegion && venuesAtLocation > 0 ? Math.sin(angle) * jitterAmount : 0
+
+        markers.set(key, {
+          lat: concert.location.lat + latJitter,
+          lng: concert.location.lng + lngJitter,
           count: 1,
+          label: isDCRegion ? `${concert.venue}<br/><span style="font-size: 11px; color: #9ca3af;">${concert.cityState}</span>` : concert.cityState,
         })
       }
     })
 
     // Create markers with size based on concert count
-    cityMarkers.forEach((data, city) => {
+    markers.forEach((data) => {
       const radius = Math.sqrt(data.count) * 5
 
       if (markersLayerRef.current) {
@@ -129,13 +137,15 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
           weight: 2,
           opacity: 0.8,
           fillOpacity: 0.6,
-          pane: 'markerPane', // Ensure markers render in proper pane
+          pane: 'markerPane',
         })
-          .bindPopup(`<strong>${city}</strong><br/>${data.count} concert${data.count !== 1 ? 's' : ''}`)
+          .bindPopup(`<strong>${data.label}</strong><br/>${data.count} concert${data.count !== 1 ? 's' : ''}`, {
+            className: 'venue-popup',
+          })
           .addTo(markersLayerRef.current)
       }
     })
-  }, [filteredConcerts])
+  }, [filteredConcerts, selectedRegion])
 
   // Handle region changes
   useEffect(() => {
