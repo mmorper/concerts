@@ -753,7 +753,10 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          onClick={() => setFocusedNode('All Genres')}
+          onClick={() => {
+            setFocusedNode('All Genres')
+            setExpandedGenre(null)
+          }}
           className="absolute top-32 right-8 z-20 px-4 py-2 bg-white/80 backdrop-blur-sm text-gray-900 border border-gray-300 rounded-lg font-sans text-sm font-medium hover:bg-white transition-all duration-200 shadow-sm"
         >
           Reset View
