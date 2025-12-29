@@ -67,8 +67,7 @@ All major implementation phases are complete:
 
 **Phase 9: Artists Scene Enhancement**
 
-- Review existing brainstorming work
-- Consider mockups for each artist display
+- Dedicated plan document [Phase 9 Artists Scene v2](phase-9-artist_scene_plan_v2.md)
 - Component: [Scene2Venues.tsx](../src/components/scenes/Scene2Venues.tsx)
 
 **Phase 10: Deployment**
