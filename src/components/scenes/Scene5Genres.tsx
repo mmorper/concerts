@@ -173,12 +173,6 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       const height = rect.height
       const radius = Math.min(width, height) / 2 - 20
 
-      console.log('🎯 SUNBURST DIMENSIONS:', {
-        width,
-        height,
-        radius,
-        source: 'getBoundingClientRect (CSS-computed)'
-      })
 
     // Function to get color for any node using genre color palette
     const getNodeColor = (d: PartitionNode): string => {
@@ -220,21 +214,35 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
 
     // When in drill-down view, adjust artist arcs to 270° (3 o'clock to 9 o'clock)
     if (expandedGenre) {
-      (root.descendants() as PartitionNode[]).forEach(d => {
-        if (d.depth === 2) {
-          // Artists: Map from 270° arc starting at 0 (3 o'clock)
-          const totalArtistAngle = Math.PI * 1.5  // 270° in radians
-          const fullCircle = 2 * Math.PI
-          const scaleFactor = totalArtistAngle / fullCircle
+      const depth2Nodes = (root.descendants() as PartitionNode[]).filter(d => d.depth === 2)
 
-          // Scale the angles proportionally
-          const originalStart = d.x0
-          const originalSpan = d.x1 - d.x0
+      if (depth2Nodes.length > 0) {
+        // Find the min and max angles for all depth 2 nodes
+        const minAngle = Math.min(...depth2Nodes.map(d => d.x0))
+        const maxAngle = Math.max(...depth2Nodes.map(d => d.x1))
+        const originalSpan = maxAngle - minAngle
 
-          d.x0 = originalStart * scaleFactor
-          d.x1 = d.x0 + (originalSpan * scaleFactor)
-        }
-      })
+        // Target: 270° arc centered at left (9 o'clock = π radians = 180°)
+        // Center at π (left side), spanning 135° above and below
+        // Start: π - 3π/4 = π/4 (about 1:30 position)
+        // End: π + 3π/4 = 7π/4 (about 10:30 position)
+        const leftCenter = Math.PI  // 180° = 9 o'clock left
+        const arcSpan = Math.PI * 1.5  // 270° total
+        const targetStart = leftCenter - (arcSpan / 2)  // π/4 = 0.785
+        const targetEnd = leftCenter + (arcSpan / 2)    // 7π/4 = 5.498
+        const targetSpan = targetEnd - targetStart
+
+        // Remap each node's angles from original span to target span
+        depth2Nodes.forEach(d => {
+          // Calculate position within original span (0 to 1)
+          const startPosition = (d.x0 - minAngle) / originalSpan
+          const endPosition = (d.x1 - minAngle) / originalSpan
+
+          // Map to target span
+          d.x0 = targetStart + (startPosition * targetSpan)
+          d.x1 = targetStart + (endPosition * targetSpan)
+        })
+      }
     }
 
     // Create arc generators with fixed 3-ring layout
@@ -339,7 +347,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       .attr('class', 'node-group')
 
     // Add paths with interactivity
-    const paths = nodeGroups.append('path')
+    nodeGroups.append('path')
       .attr('class', 'segment-path')
       .attr('d', arc)
       .attr('fill', (_d, i) => `url(#gradient-${i})`)
@@ -384,7 +392,6 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         }
       })
       .on('mouseover', function(event, d) {
-        console.log('MOUSEOVER detected on:', d.data.name)
         const currentPath = d3.select(this)
         const parentNode = this.parentNode as Element
         const parentSelection = d3.select(parentNode)
@@ -483,9 +490,6 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
           .duration(200)
           .style('opacity', 0)
       })
-
-    // DEBUG: Log paths created
-    console.log('Sunburst paths created:', paths.size(), 'paths with hover handlers')
 
     // Add labels with fixed ring positioning
     nodeGroups.append('text')

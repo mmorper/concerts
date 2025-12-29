@@ -36,6 +36,7 @@ All major implementation phases are complete:
 3. ✅ Venue network - Redesigned as radial hierarchy (venue→headliner→opener)
 4. ✅ Map z-index - Fixed header overlay layering (z-20 over z-0 map)
 5. ✅ Artist list - Converted Scene2Venues to show top 20 artists
+6. ✅ Sunburst artist arc - Implemented 270° arc centered at left (9 o'clock) for drill-down view
 
 ### 📋 Upcoming Phases
 
@@ -175,7 +176,7 @@ concerts/
 ### D3.js Visualizations
 1. **Timeline (Scene 1):** Year dots sized by concert density
 2. **Venue Network (Scene 4):** Radial force layout showing venue→artist relationships
-3. **Genre Sunburst (Scene 5):** Hierarchical chart with click-to-zoom
+3. **Genre Sunburst (Scene 5):** Hierarchical chart with click-to-zoom, 270° artist arc in drill-down view
 
 ### Leaflet Map (Scene 3)
 - Dark CartoDB tile layer
