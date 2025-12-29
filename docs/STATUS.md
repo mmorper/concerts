@@ -1,8 +1,8 @@
 # Concert Archives - Current Status
 
 **Last Updated:** 2025-12-29
-**Current Phase:** Phase 8 (Venue Scene Enhancements - Complete)
-**Last Commit:** ea67089 - "fix: Resolve 9:30 Club parsing bug and remove jitter logic"
+**Current Phase:** Phase 8 (Map Interaction - Complete)
+**Last Commit:** [Pending] - "feat: Add interactive map exploration mode with click-to-activate UX"
 
 ---
 
@@ -74,27 +74,60 @@ All major implementation phases are complete:
   - All 32 DC area concerts now display correctly on map
   - Data quality improvements: 54→34 cities (deduplicated), 305→240 artists (deduplicated)
 
-### ✅ Phase 8: Venue Scene Enhancements (Complete)
+### ✅ Phase 8: Map Interaction Enhancements (Complete - Desktop)
+
+**Implementation Date:** December 29, 2025
 
 **Completed Items:**
 
-- ✅ **9:30 Club parsing bug** - Fixed venue names with colons being incorrectly parsed
-  - Issue: "9:30 Club" appearing as multiple nodes ("30 Club", etc.) in venue network
-  - Root cause: Node IDs used `:` as delimiter, but "9:30 Club" contains a colon
-  - Solution: Replaced all `:` delimiters with `|` (pipe) throughout node ID system
-  - Changed formats: `venue:name` → `venue|name`, `headliner:venue:band` → `headliner|venue|band`
-  - Updated all `.split(':')` calls to `.split('|')` (12 locations)
-  - Reference: [docs/bugs/44-930.png](bugs/44-930.png)
-  - Component: [src/components/scenes/Scene4Bands.tsx](../src/components/scenes/Scene4Bands.tsx)
-
-**Pending Items:**
-
-- ⚠️ **Map interaction improvements** - Enable zoom/pan without scroll hijacking
-  - Current state: Map is completely static (no scroll, zoom, or pan)
-  - Goal: Allow user to explore map without triggering scene scroll
-  - Design challenge: Separate map interaction from viewport scroll behavior
-  - Needs: Plan for UX implementation (modal overlay, click-to-enable, touch zones, etc.)
+- ✅ **Interactive map exploration mode** - Click-to-activate pattern that preserves scene navigation
+  - Two-state system: Locked (default) and Active (exploration mode)
+  - Click on map tiles activates exploration mode (markers still show popups without activating)
+  - Scroll wheel zoom and drag panning enabled when active
+  - ESC key deactivates and returns to locked state
+  - Scroll event trapping prevents scene navigation when map is active
+  - Reference: [docs/phase-8-Map_Interaction_Plan.md](phase-8-Map_Interaction_Plan.md)
   - Component: [src/components/scenes/Scene3Map.tsx](../src/components/scenes/Scene3Map.tsx)
+
+- ✅ **Scene navigation buttons** - Contextual exit controls appear when map is active
+  - Top button: "↑ The Venues" (navigates to Scene 2 - Bands)
+  - Bottom button: "The Music ↓" (navigates to Scene 4 - Genres)
+  - Styled with semi-transparent pills, backdrop blur, smooth animations
+  - Buttons sized for touch (44px min-height)
+  - AnimatePresence for smooth enter/exit transitions
+
+- ✅ **Visual feedback and hints**
+  - "Click to explore map" hint appears after 1s delay, fades out after 3s
+  - Hint also disappears when user activates the map
+  - Zoom bounds enforced: min 4 (continental), max 16 (street-level)
+
+- ✅ **Accessibility support**
+  - Dynamic aria-label on section describes current state
+  - aria-live region announces "Map exploration mode activated" to screen readers
+  - ESC key support for keyboard users
+  - Scene nav buttons have proper aria-labels
+
+- ✅ **California venue popups** - Now show venue names like DC region
+  - Changed aggregation logic to show venues for both CA and DC regions
+  - Popup format: Venue name (large) + city/state (small gray text)
+
+- ✅ **Genres scene centering fix** - Donut chart now properly centered on initial load
+  - Changed container from `absolute inset-0` to `w-full h-full`
+  - Component: [src/components/scenes/Scene5Genres.tsx](../src/components/scenes/Scene5Genres.tsx)
+
+**Deferred Items (Phase 8.1 - Mobile):**
+
+- 🔄 **Mobile device testing and refinements**
+  - Touch interactions already enabled in code (touchZoom, dragging)
+  - Need testing on actual iOS and Android devices
+  - May need to adjust hint prominence for mobile (no hover state)
+  - May need pinch gesture indicators
+  - Scene nav buttons already sized for touch targets
+
+- 🔄 **Zoom UI buttons (optional)**
+  - Scroll wheel zoom works well for desktop
+  - Could add +/- buttons for users without scroll wheels
+  - Would be hidden on mobile (pinch-to-zoom is native)
 
 ### ✅ Phase 9: Venue-Level Geocoding (Complete)
 
@@ -325,11 +358,11 @@ For visual reference (actual order):
 
 ## Recent Commits
 
-- `ea67089` - fix: Resolve 9:30 Club parsing bug and remove jitter logic (Phase 8 - Complete)
+- `[Pending]` - feat: Add interactive map exploration mode with click-to-activate UX (Phase 8 - Complete)
+- `ea67089` - fix: Resolve 9:30 Club parsing bug and remove jitter logic
 - `ca6e059` - feat: Implement venue-level geocoding with Google Maps API (Phase 9 - Complete)
 - `69b1ea2` - fix: Resolve DC area coordinate geocoding issue (Phase 7 - Complete)
 - `65688d3` - fix: Add coordinate validation to DC area filter
-- `bd52be4` - fix: Increase z-index for map UI overlays to z-[1000]
 
 ---
 

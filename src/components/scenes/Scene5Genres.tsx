@@ -770,7 +770,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         whileInView={{ scale: 1, opacity: 1 }}
         viewport={{ once: false }}
         transition={{ duration: 1, delay: 0.4 }}
-        className="absolute inset-0 flex justify-center items-center pointer-events-none"
+        className="w-full h-full flex justify-center items-center pointer-events-none"
       >
         <svg
           ref={svgRef}

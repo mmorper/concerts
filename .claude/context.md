@@ -7,11 +7,18 @@
 - Phases 0-9: ✅ Complete
 - Phase 10: Artists Scene Enhancement (NEXT)
 
-**Phase 8 Complete (Venue Scene Enhancements):**
+**Phase 8 Complete (Map Interaction Enhancements - Desktop):**
 
-- ✅ Fixed 9:30 Club parsing bug - Replaced `:` delimiters with `|` (pipe) in node IDs
-- ✅ Resolved venue names with colons being incorrectly parsed in venue network
-- ⚠️ Map interaction improvements deferred (enable zoom/pan without scroll hijacking)
+- ✅ Interactive map exploration mode - Click-to-activate pattern preserves scene navigation
+- ✅ Two-state system: Locked (default) and Active (exploration mode)
+- ✅ Scene navigation buttons appear when active ("↑ The Venues" / "The Music ↓")
+- ✅ Scroll wheel zoom and drag panning enabled when active
+- ✅ ESC key deactivates and returns to locked state
+- ✅ "Click to explore map" hint with auto-fade behavior
+- ✅ Full accessibility support (aria-labels, aria-live announcements)
+- ✅ California venue popups now show venue names like DC region
+- ✅ Genres scene centering fix for initial load
+- 🔄 Mobile device testing deferred (touch interactions already enabled in code)
 
 **Phase 9 Complete (Venue-Level Geocoding):**
 
@@ -24,14 +31,13 @@
 
 **Recent Work (December 29):**
 
-- ✅ Venue-level geocoding implementation
-  - Created scripts/services/geocoding.ts with cache management
-  - Integrated Google Maps Geocoding API
-  - Geocoded 77 venues with venue-specific coordinates
-  - Added dotenv for environment variable loading
-- ✅ DC map positioning fixes (center, zoom, popup z-index)
-- ✅ Phase 7 Complete: Geography Scene Enhancement
-  - Tighter zoom levels, region filters, DC data quality fixes
+- ✅ Map interaction implementation (Phase 8)
+  - Created click-to-activate exploration mode
+  - Added scene navigation buttons with animations
+  - Implemented scroll trapping and state management
+  - Added visual hints and accessibility features
+  - Fixed CA venue popups to show venue names
+  - Fixed genres scene centering issue
 
 **Architecture:**
 
@@ -58,7 +64,7 @@
 - Top genres: New Wave (46), Punk (15), Alternative (14)
 - Geographic: California ~65%, DC cluster, Boston, New Orleans, UK
 
-**Last Commit:** ea67089 - "fix: Resolve 9:30 Club parsing bug and remove jitter logic"
+**Last Commit:** [Pending] - "feat: Add interactive map exploration mode with click-to-activate UX"
 
 ---
 
@@ -70,6 +76,7 @@ For comprehensive project details, see:
 - **[docs/planning.md](../docs/planning.md)** - Historical implementation plan (archive)
 - **[README.md](../README.md)** - Project overview
 - **[docs/api-setup.md](../docs/api-setup.md)** - API configuration (includes Google Maps setup)
+- **[docs/phase-8-Map_Interaction_Plan.md](../docs/phase-8-Map_Interaction_Plan.md)** - Phase 8 detailed implementation plan
 
 **Design Framework:**
 

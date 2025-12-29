@@ -1,5 +1,5 @@
 import { useEffect, useRef, useMemo, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import type { Concert } from '../../types/concert'
@@ -9,6 +9,11 @@ interface Scene3MapProps {
 }
 
 type Region = 'all' | 'california' | 'dc'
+
+const ZOOM_BOUNDS = {
+  min: 4,   // Continental US (matches "All" region view)
+  max: 16,  // Street-level with context
+}
 
 const REGION_VIEWS: Record<Region, { center: [number, number]; zoom: number; label: string; filter?: (concert: Concert) => boolean }> = {
   all: {
@@ -35,6 +40,25 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
   const mapInstanceRef = useRef<L.Map | null>(null)
   const markersLayerRef = useRef<L.LayerGroup | null>(null)
   const [selectedRegion, setSelectedRegion] = useState<Region>('all')
+  const [isMapActive, setIsMapActive] = useState(false)
+  const [showHint, setShowHint] = useState(true)
+
+  // Helper function to scroll to a specific scene
+  const scrollToScene = (sceneId: number) => {
+    const scrollContainer = document.querySelector('.snap-y')
+    if (!scrollContainer) return
+
+    const windowHeight = window.innerHeight
+    scrollContainer.scrollTo({
+      top: (sceneId - 1) * windowHeight,
+      behavior: 'smooth',
+    })
+  }
+
+  const handleSceneNavigation = (sceneId: number) => {
+    setIsMapActive(false)
+    scrollToScene(sceneId)
+  }
 
   // Filter concerts based on selected region
   const filteredConcerts = useMemo(() => {
@@ -56,6 +80,8 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
       const map = L.map(mapRef.current, {
         center: REGION_VIEWS.all.center,
         zoom: REGION_VIEWS.all.zoom,
+        minZoom: ZOOM_BOUNDS.min,
+        maxZoom: ZOOM_BOUNDS.max,
         zoomControl: false,
         attributionControl: false,
         scrollWheelZoom: false, // Disable scroll zoom to prevent hijacking
@@ -98,13 +124,13 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
     // Clear existing markers
     markersLayerRef.current.clearLayers()
 
-    // For DC area, aggregate by venue to show multiple venues in same city
+    // For DC and California regions, aggregate by venue to show multiple venues in same city
     // For other regions, aggregate by city
-    const isDCRegion = selectedRegion === 'dc'
+    const showVenues = selectedRegion === 'dc' || selectedRegion === 'california'
     const markers = new Map<string, { lat: number; lng: number; count: number; label: string }>()
 
     filteredConcerts.forEach(concert => {
-      const key = isDCRegion ? `${concert.venue}|${concert.cityState}` : concert.cityState
+      const key = showVenues ? `${concert.venue}|${concert.cityState}` : concert.cityState
       const existing = markers.get(key)
       if (existing) {
         existing.count++
@@ -113,7 +139,7 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
           lat: concert.location.lat,
           lng: concert.location.lng,
           count: 1,
-          label: isDCRegion ? `${concert.venue}<br/><span style="font-size: 11px; color: #9ca3af;">${concert.cityState}</span>` : concert.cityState,
+          label: showVenues ? `${concert.venue}<br/><span style="font-size: 11px; color: #9ca3af;">${concert.cityState}</span>` : concert.cityState,
         })
       }
     })
@@ -151,6 +177,101 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
     }
   }, [selectedRegion])
 
+  // Toggle Leaflet interactions based on isMapActive state
+  useEffect(() => {
+    if (!mapInstanceRef.current) return
+
+    const map = mapInstanceRef.current
+
+    if (isMapActive) {
+      map.scrollWheelZoom.enable()
+      map.dragging.enable()
+      map.touchZoom.enable()
+      map.doubleClickZoom.enable()
+    } else {
+      map.scrollWheelZoom.disable()
+      map.dragging.disable()
+      map.touchZoom.disable()
+      map.doubleClickZoom.disable()
+    }
+  }, [isMapActive])
+
+  // Click detection (map vs marker) - activate on map tile click
+  useEffect(() => {
+    if (!mapInstanceRef.current) return
+
+    const map = mapInstanceRef.current
+
+    const handleMapClick = () => {
+      // Only activate if clicking map tiles, not markers
+      // Markers have their own click handlers that stop propagation
+      if (!isMapActive) {
+        setIsMapActive(true)
+        setShowHint(false)
+      }
+    }
+
+    map.on('click', handleMapClick)
+
+    return () => {
+      map.off('click', handleMapClick)
+    }
+  }, [isMapActive])
+
+  // ESC key listener to deactivate map
+  useEffect(() => {
+    if (!isMapActive) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsMapActive(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isMapActive])
+
+  // Scroll trapping when map is active
+  useEffect(() => {
+    if (!isMapActive) return
+
+    const handleWheel = (e: WheelEvent) => {
+      e.stopPropagation()
+    }
+
+    const mapContainer = mapRef.current
+    if (mapContainer) {
+      mapContainer.addEventListener('wheel', handleWheel, { passive: false })
+
+      return () => {
+        mapContainer.removeEventListener('wheel', handleWheel)
+      }
+    }
+  }, [isMapActive])
+
+  // Auto-fade hint: show after 1s delay, hide after 3s
+  useEffect(() => {
+    // Reset hint when scene is viewed again
+    setShowHint(true)
+
+    const showTimer = setTimeout(() => {
+      setShowHint(true)
+    }, 1000)
+
+    const hideTimer = setTimeout(() => {
+      setShowHint(false)
+    }, 4000) // 1s delay + 3s visible
+
+    return () => {
+      clearTimeout(showTimer)
+      clearTimeout(hideTimer)
+    }
+  }, []) // Run once on mount
+
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -158,7 +279,47 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
       viewport={{ once: false, margin: '-20%' }}
       transition={{ duration: 0.8 }}
       className="h-screen flex flex-col items-center justify-center bg-gray-900 relative snap-start snap-always"
+      aria-label={isMapActive ? "Map exploration mode - interactive" : "Map - click to explore"}
     >
+      {/* Accessibility: Announce state changes */}
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {isMapActive ? "Map exploration mode activated. Press Escape to exit." : ""}
+      </div>
+
+      {/* Scene Navigation Links - only visible when map is active */}
+      <AnimatePresence>
+        {isMapActive && (
+          <>
+            {/* Top Navigation - to Bands scene */}
+            <motion.button
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+              onClick={() => handleSceneNavigation(2)}
+              className="fixed top-8 left-1/2 -translate-x-1/2 z-[1001] bg-gray-900/70 backdrop-blur-sm text-gray-300 hover:text-white px-4 py-2 rounded-full min-h-[44px] flex items-center gap-2 transition-colors"
+              aria-label="Go to The Venues scene"
+            >
+              <span>↑</span>
+              <span>The Venues</span>
+            </motion.button>
+
+            {/* Bottom Navigation - to Genres scene */}
+            <motion.button
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+              onClick={() => handleSceneNavigation(4)}
+              className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[1001] bg-gray-900/70 backdrop-blur-sm text-gray-300 hover:text-white px-4 py-2 rounded-full min-h-[44px] flex items-center gap-2 transition-colors"
+              aria-label="Go to The Music scene"
+            >
+              <span>The Music</span>
+              <span>↓</span>
+            </motion.button>
+          </>
+        )}
+      </AnimatePresence>
       {/* Title Overlay - increased z-index to be above Leaflet panes */}
       <motion.div
         initial={{ y: 20, opacity: 0 }}
@@ -202,6 +363,23 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
       >
         <div ref={mapRef} className="w-full h-full" />
       </motion.div>
+
+      {/* "Click to explore" Hint - only visible when map is locked and hint is active */}
+      <AnimatePresence>
+        {!isMapActive && showHint && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute bottom-32 left-0 right-0 z-[1000] text-center pointer-events-none"
+          >
+            <div className="inline-block bg-gray-800/80 backdrop-blur-sm text-gray-400 text-sm px-4 py-2 rounded-full">
+              Click to explore map
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Stats Overlay */}
       <motion.div
