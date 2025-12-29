@@ -39,9 +39,9 @@ All major implementation phases are complete:
 
 ### 📋 Upcoming Phases
 
-⚠️ **Pending: Sunburst visualization sizing**
+⚠️ **Phase 5: Sunburst visualization sizing**
 
-- Awaiting user's visual mockup
+- Design spec: [Music Scene Spec](phase-5-music-scene-spec-v2.md)
 - Current: `min(100vw, calc(100vh - 280px))`
 - Issue: Appears too small in multi-genre view
 - File: [src/components/scenes/Scene5Genres.tsx](../src/components/scenes/Scene5Genres.tsx:647-654)
