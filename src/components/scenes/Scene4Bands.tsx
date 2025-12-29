@@ -85,7 +85,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
 
     // Create venue nodes (root)
     topVenues.forEach(venue => {
-      const nodeId = `venue:${venue}`
+      const nodeId = `venue|${venue}`
       nodes.push({
         id: nodeId,
         count: venueCounts.get(venue) || 0,
@@ -100,7 +100,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       if (!headliners) return
 
       headliners.forEach((count, headliner) => {
-        const headlinerId = `headliner:${venue}:${headliner}`
+        const headlinerId = `headliner|${venue}|${headliner}`
 
         // Add headliner node
         nodes.push({
@@ -113,7 +113,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
 
         // Link venue → headliner
         links.push({
-          source: `venue:${venue}`,
+          source: `venue|${venue}`,
           target: headlinerId,
           value: count,
           type: 'hierarchy',
@@ -123,7 +123,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
         const openers = venueOpeners.get(venue)?.get(headliner)
         if (openers) {
           openers.forEach((openerCount, opener) => {
-            const openerId = `opener:${venue}:${headliner}:${opener}`
+            const openerId = `opener|${venue}|${headliner}|${opener}`
 
             // Add opener node
             nodes.push({
@@ -182,27 +182,27 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
     if (node.type === 'venue') {
       // Get all children (headliners and openers)
       nodes.forEach(n => {
-        if (n.parentVenue === node.id.replace('venue:', '')) {
+        if (n.parentVenue === node.id.replace('venue|', '')) {
           related.add(n.id)
         }
       })
     } else if (node.type === 'headliner') {
       // Get parent venue and sibling/child openers
-      const venue = `venue:${node.parentVenue}`
+      const venue = `venue|${node.parentVenue}`
       related.add(venue)
 
       // Get openers for this headliner
       nodes.forEach(n => {
-        if (n.type === 'opener' && n.id.startsWith(`opener:${node.parentVenue}:${node.id.split(':')[2]}`)) {
+        if (n.type === 'opener' && n.id.startsWith(`opener|${node.parentVenue}|${node.id.split('|')[2]}`)) {
           related.add(n.id)
         }
       })
     } else if (node.type === 'opener') {
       // Get parent venue and parent headliner
-      const parts = node.id.split(':')
-      const venue = `venue:${parts[1]}`
+      const parts = node.id.split('|')
+      const venue = `venue|${parts[1]}`
       const headlinerName = parts[2]
-      const headliner = `headliner:${parts[1]}:${headlinerName}`
+      const headliner = `headliner|${parts[1]}|${headlinerName}`
       related.add(venue)
       related.add(headliner)
     }
@@ -379,7 +379,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       .append('text')
       .text(d => {
         // Extract venue name from the id
-        const venueName = d.id.replace('venue:', '')
+        const venueName = d.id.replace('venue|', '')
         // Truncate long names
         return venueName.length > 20 ? venueName.substring(0, 17) + '...' : venueName
       })
@@ -408,9 +408,9 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
         // Extract band name from the id
         let bandName = ''
         if (d.type === 'headliner') {
-          bandName = d.id.split(':')[2]
+          bandName = d.id.split('|')[2]
         } else if (d.type === 'opener') {
-          bandName = d.id.split(':')[3]
+          bandName = d.id.split('|')[3]
         }
         // Truncate long names - be more generous with focused nodes
         return bandName.length > 18 ? bandName.substring(0, 15) + '...' : bandName
@@ -433,11 +433,11 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       .text(d => {
         let label = d.id
         if (d.type === 'venue') {
-          label = d.id.replace('venue:', '')
+          label = d.id.replace('venue|', '')
         } else if (d.type === 'headliner') {
-          label = d.id.split(':')[2] // Extract band name
+          label = d.id.split('|')[2] // Extract band name
         } else {
-          label = d.id.split(':')[3] // Extract opener name
+          label = d.id.split('|')[3] // Extract opener name
         }
         return `${label}: ${d.count} show${d.count !== 1 ? 's' : ''}`
       })

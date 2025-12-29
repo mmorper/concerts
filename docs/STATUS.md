@@ -127,9 +127,9 @@ All major implementation phases are complete:
 - MODIFIED: `docs/api-setup.md` - Added Google Maps Geocoding API section
 - MODIFIED: `src/components/scenes/Scene3Map.tsx` - DC zoom/center and popup z-index
 
-**Pending Cleanup:**
+**Post-Implementation Cleanup:**
 
-- ⚠️ Remove jitter logic from Scene3Map.tsx (lines 97-101, 104-105) - no longer needed with venue-specific coordinates
+- ✅ Removed jitter logic from Scene3Map.tsx - no longer needed with venue-specific coordinates
 
 ### 📋 Upcoming Phases
 

@@ -102,7 +102,6 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
     // For other regions, aggregate by city
     const isDCRegion = selectedRegion === 'dc'
     const markers = new Map<string, { lat: number; lng: number; count: number; label: string }>()
-    const locationCounts = new Map<string, number>() // Track venues at same location
 
     filteredConcerts.forEach(concert => {
       const key = isDCRegion ? `${concert.venue}|${concert.cityState}` : concert.cityState
@@ -110,19 +109,9 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
       if (existing) {
         existing.count++
       } else {
-        const locationKey = `${concert.location.lat},${concert.location.lng}`
-        const venuesAtLocation = locationCounts.get(locationKey) || 0
-        locationCounts.set(locationKey, venuesAtLocation + 1)
-
-        // Add small jitter for DC venues at same coordinates to prevent overlap
-        const jitterAmount = 0.008 // ~0.5 mile offset
-        const angle = (venuesAtLocation * (Math.PI * 2)) / 5 // Spread in circle
-        const latJitter = isDCRegion && venuesAtLocation > 0 ? Math.cos(angle) * jitterAmount : 0
-        const lngJitter = isDCRegion && venuesAtLocation > 0 ? Math.sin(angle) * jitterAmount : 0
-
         markers.set(key, {
-          lat: concert.location.lat + latJitter,
-          lng: concert.location.lng + lngJitter,
+          lat: concert.location.lat,
+          lng: concert.location.lng,
           count: 1,
           label: isDCRegion ? `${concert.venue}<br/><span style="font-size: 11px; color: #9ca3af;">${concert.cityState}</span>` : concert.cityState,
         })
