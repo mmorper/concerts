@@ -73,7 +73,7 @@
 - Top genres: New Wave (46), Punk (15), Alternative (14)
 - Geographic: California ~65%, DC cluster, Boston, New Orleans, UK
 
-**Last Commit:** [pending] - "feat: Add click-to-expand interaction for venues in All view"
+**Last Commit:** 3020a30 - "feat: Add click-to-expand interaction for venues in All view"
 
 ---
 
