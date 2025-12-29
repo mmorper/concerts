@@ -1,8 +1,8 @@
 # Concert Archives - Current Status
 
 **Last Updated:** 2025-12-29
-**Current Phase:** Phase 6 (Design Conformance - In Progress)
-**Last Commit:** 103d6f1 - "feat: Implement 270° artist arc centered at left in sunburst drill-down"
+**Current Phase:** Phase 7 (Geography Scene Enhancement - Partially Complete)
+**Last Commit:** 65688d3 - "fix: Add coordinate validation to DC area filter"
 
 ---
 
@@ -59,13 +59,19 @@ All major implementation phases are complete:
 6. ✅ Sunburst sizing - Updated to `min(85vw, 85vh)` with 800px max
 7. ✅ Sunburst artist arc - Implemented 270° arc centered at left (9 o'clock) for drill-down view
 
+### 🔄 Phase 7: Geography Scene Enhancement (Partially Complete)
+
+- ✅ Tighter zoom levels: California (zoom 9) and DC (zoom 11)
+- ✅ Region-based filtering with state filters
+- ✅ Z-index layering fix (UI overlays z-[1000])
+- ⚠️ DC data quality issue discovered: ALL 32 DC area concerts have zero coordinates
+  - Root cause: Geocoding pipeline failure for DC venues
+  - Fix applied: Filter excludes zero-coordinate concerts (prevents invisible markers at [0,0])
+  - Impact: DC Area view correctly shows "0 cities" until data is fixed
+  - Venues affected: 9:30 Club (11x), The Hamilton Live (4x), Capitol One Arena, Howard Theater, DAR Constitution Hall, The Black Cat, Lincoln Theatre, Warner Theatre, The Anthem, Sixth & I Synagogue, MGM National Harbor, The Fillmore Silver Spring, Bethesda Jazz and Blues Club, EagleBank Arena
+  - Next step: Re-run geocoding script or manually fix coordinates
+
 ### 📋 Upcoming Phases
-
-**Phase 7: Geography Scene Enhancement**
-
-- Zoom into LA and DC tighter
-- Fix DC missing from region views
-- Component: [Scene3Map.tsx](../src/components/scenes/Scene3Map.tsx)
 
 **Phase 8: Venues Scene Enhancement**
 
@@ -268,10 +274,11 @@ For visual reference (actual order):
 
 ## Recent Commits
 
+- `65688d3` - fix: Add coordinate validation to DC area filter (Phase 7 - DC data quality issue)
+- `bd52be4` - fix: Increase z-index for map UI overlays to z-[1000]
+- `04d3d66` - feat: Implement tighter zoom levels and region filtering for map
 - `103d6f1` - feat: Implement 270° artist arc centered at left in sunburst drill-down
 - `6b187d5` - docs: Synchronize .claude/context.md and establish planning.md as source of truth
-- `d216550` - feat: Apply Playfair Display + Source Sans 3 typography, genre color palette
-- `8830dd3` - Redesign to dashboard layout - above-the-fold horizontal 16:9 format
 
 ---
 

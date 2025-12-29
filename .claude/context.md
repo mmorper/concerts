@@ -3,22 +3,23 @@
 ## Current Status (December 29, 2025)
 
 **Implementation Status:**
-- Phases 0-5: ✅ Complete
-- Phase 6 (Design Conformance): 🔄 ~80% complete
 
-**Recent Work (December 28-29):**
+- Phases 0-6: ✅ Complete
+- Phase 7 (Geography Scene Enhancement): 🔄 Partially complete
 
-- ✅ Applied Playfair Display + Source Sans 3 typography system
-- ✅ Created genre color constants (src/constants/colors.ts)
-- ✅ Fixed sunburst sizing to min(85vw, 85vh) with 800px max
-- ✅ Implemented 270° artist arc in sunburst drill-down view
-- ✅ Fixed navigation dots, scene order, venue network, map z-index
+**Recent Work (December 29):**
+
+- ✅ Tighter zoom levels: California (zoom 9) and DC (zoom 11)
+- ✅ Region-based filtering with state filters
+- ✅ Z-index layering fix (UI overlays z-[1000])
+- ⚠️ Discovered DC data quality issue: ALL 32 DC area concerts have zero coordinates
+  - Applied filter to exclude zero-coordinate concerts
+  - DC Area view correctly shows "0 cities" until data is re-geocoded
 
 **Pending Work:**
 
-- Scene background rhythm adjustment (Scene 2 & 5 should be LIGHT)
-- Validate spacing consistency per design guide
-- Review "One Thing" rule per scene
+- Re-run geocoding script for DC venues (9:30 Club, The Hamilton Live, etc.)
+- Phase 6 remaining: Scene background rhythm adjustment (Scene 2 & 5 should be LIGHT)
 
 **Architecture:**
 
@@ -29,6 +30,7 @@
 - D3.js visualizations with genre color palette
 
 **Tech Stack:**
+
 - Vite 6.0.7 + React 18.3.1 + TypeScript 5.7.2
 - Tailwind CSS 4.1.18
 - Framer Motion 11.18.2 (scroll animations)
@@ -36,12 +38,13 @@
 - React Leaflet 4.2.1 (map)
 
 **Data Source:**
+
 - 175 concerts (1984-2026, 42 years)
 - Top venues: Irvine Meadows (14x), Pacific Amphitheatre (12x)
 - Top genres: New Wave (46), Punk (15), Alternative (14)
 - Geographic: California ~65%, DC cluster, Boston, New Orleans, UK
 
-**Last Commit:** 103d6f1 - "feat: Implement 270° artist arc centered at left in sunburst drill-down"
+**Last Commit:** 65688d3 - "fix: Add coordinate validation to DC area filter"
 
 ---
 
