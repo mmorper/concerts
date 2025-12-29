@@ -26,7 +26,13 @@ const REGION_VIEWS: Record<Region, { center: [number, number]; zoom: number; lab
     center: [38.9072, -77.0369],
     zoom: 11, // Tighter zoom for DC metro area
     label: 'DC Area',
-    filter: (c) => ['Virginia', 'VA', 'Maryland', 'MD', 'District of Columbia', 'DC'].includes(c.state)
+    filter: (c) => {
+      // Include DC area states (including 'Washington' which is used for DC venues in the data)
+      const isDCArea = ['Virginia', 'VA', 'Maryland', 'MD', 'District of Columbia', 'DC', 'Washington'].includes(c.state)
+      // Exclude concerts with invalid coordinates (0, 0)
+      const hasValidCoords = c.location.lat !== 0 && c.location.lng !== 0
+      return isDCArea && hasValidCoords
+    }
   },
   boston: {
     center: [42.3601, -71.0589],
