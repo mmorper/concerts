@@ -340,7 +340,18 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       .attr('font-size', '12px')
       .attr('fill', '#6b7280')
 
-    // Create node groups
+    // Helper function to calculate luminance for dynamic text color
+    const getLuminance = (hex: string): number => {
+      const color = d3.color(hex)?.rgb()
+      if (!color) return 0
+      const [r, g, b] = [color.r, color.g, color.b].map(v => {
+        v /= 255
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
+      })
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b
+    }
+
+    // Create node groups for paths only
     const nodeGroups = g.selectAll('.node-group')
       .data(root.descendants().filter(d => d.depth > 0) as PartitionNode[])
       .join('g')
@@ -393,12 +404,9 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       })
       .on('mouseover', function(event, d) {
         const currentPath = d3.select(this)
-        const parentNode = this.parentNode as Element
-        const parentSelection = d3.select(parentNode)
 
-        // Dramatic expansion
+        // Dramatic expansion (removed .raise() to prevent z-index issues)
         currentPath
-          .raise()
           .transition()
           .duration(400)
           .ease(d3.easeBackOut.overshoot(2))
@@ -407,10 +415,9 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
           .attr('stroke-width', 4)
           .style('filter', 'drop-shadow(0 6px 20px rgba(0,0,0,0.5))')
 
-        // Enlarge label
-        parentSelection
-          .raise()
-          .select('.segment-label')
+        // Enlarge corresponding label in separate label group
+        g.selectAll('.segment-label')
+          .filter((labelData: unknown) => labelData === d)
           .transition()
           .duration(400)
           .attr('opacity', 1)
@@ -456,9 +463,6 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       })
       .on('mouseleave', function(_event, d) {
         const currentPath = d3.select(this)
-        const parentNode = this.parentNode as Element
-        const parentSelection = d3.select(parentNode)
-
         const angle = d.x1 - d.x0
 
         // Contract segment
@@ -471,19 +475,26 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
           .attr('stroke-width', 3)
           .style('filter', 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))')
 
-        // Reset label - always keep full opacity
+        // Reset label in separate label group - always keep full opacity
         const baseFontSize = d.depth === 2
           ? (angle > 0.4 ? '12px' : angle > 0.2 ? '11px' : '10px')
           : (angle > 0.4 ? '14px' : angle > 0.2 ? '12px' : '11px')
 
-        parentSelection
-          .select('.segment-label')
+        // Get text color based on segment color
+        const nodeColor = getNodeColor(d)
+        const luminance = getLuminance(nodeColor)
+        const textColor = luminance > 0.5 ? '#1f2937' : 'white'
+        const shadowColor = luminance > 0.5 ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'
+
+        g.selectAll('.segment-label')
+          .filter((labelData: unknown) => labelData === d)
           .transition()
           .duration(300)
           .attr('opacity', 1)
           .attr('font-size', baseFontSize)
           .attr('font-weight', d.depth === 2 ? '500' : '600')
-          .style('text-shadow', '0 1px 4px rgba(0,0,0,0.8)')
+          .attr('fill', textColor)
+          .style('text-shadow', `0 1px 4px ${shadowColor}`)
 
         // Hide floating tooltip
         tooltip
@@ -492,8 +503,15 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
           .style('opacity', 0)
       })
 
+    // Create separate label group AFTER all paths (ensures labels render on top)
+    const labelGroup = g.append('g')
+      .attr('class', 'label-group')
+      .style('pointer-events', 'none')
+
     // Add labels with fixed ring positioning
-    nodeGroups.append('text')
+    labelGroup.selectAll('.segment-label')
+      .data(root.descendants().filter(d => d.depth > 0) as PartitionNode[])
+      .join('text')
       .attr('class', 'segment-label')
       .attr('transform', function(d) {
         const angle = (d.x0 + d.x1) / 2
@@ -550,10 +568,20 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         if (expandedGenre && d.depth === 1 && d.data.name === expandedGenre) return '700'
         return d.depth === 2 ? '500' : '600'
       })
-      .attr('fill', 'white')
+      .attr('fill', d => {
+        // Dynamic text color based on background luminance
+        const nodeColor = getNodeColor(d)
+        const luminance = getLuminance(nodeColor)
+        return luminance > 0.5 ? '#1f2937' : 'white'
+      })
       .attr('font-family', 'Source Sans 3, system-ui, sans-serif')
       .style('pointer-events', 'none')
-      .style('text-shadow', '0 1px 4px rgba(0,0,0,0.8)')
+      .style('text-shadow', d => {
+        // Dynamic shadow based on background luminance
+        const nodeColor = getNodeColor(d)
+        const luminance = getLuminance(nodeColor)
+        return luminance > 0.5 ? '0 1px 4px rgba(255,255,255,0.8)' : '0 1px 4px rgba(0,0,0,0.8)'
+      })
       .text(d => {
         const name = d.data.name
         const angle = d.x1 - d.x0
@@ -564,16 +592,20 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         }
 
         if (d.depth === 2) {
-          // Artists/small genres - show more text, less aggressive truncation
+          // Artists/small genres - always show at least 2 characters
           if (angle > 0.4) return name.length > 18 ? name.substring(0, 16) + '…' : name
           if (angle > 0.2) return name.length > 12 ? name.substring(0, 10) + '…' : name
-          return name.length > 8 ? name.substring(0, 6) + '…' : name
+          if (angle > 0.1) return name.length > 8 ? name.substring(0, 6) + '…' : name
+          // Very small segments - show at least first 3 chars
+          return name.length > 3 ? name.substring(0, 3) + '…' : name
         }
 
-        // Genres in default view
+        // Genres in default view - always show at least 2 characters
         if (angle > 0.4) return name
         if (angle > 0.2) return name.length > 14 ? name.substring(0, 12) + '…' : name
-        return name.length > 10 ? name.substring(0, 8) + '…' : name
+        if (angle > 0.1) return name.length > 10 ? name.substring(0, 8) + '…' : name
+        // Very small segments - show at least first 3 chars
+        return name.length > 3 ? name.substring(0, 3) + '…' : name
       })
       .attr('opacity', 1)  // Always show all labels at full opacity
 
