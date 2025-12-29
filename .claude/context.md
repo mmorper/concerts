@@ -64,7 +64,7 @@
 - Top genres: New Wave (46), Punk (15), Alternative (14)
 - Geographic: California ~65%, DC cluster, Boston, New Orleans, UK
 
-**Last Commit:** [Pending] - "feat: Add interactive map exploration mode with click-to-activate UX"
+**Last Commit:** 20fd916 - "feat: Add interactive map exploration mode with click-to-activate UX"
 
 ---
 
