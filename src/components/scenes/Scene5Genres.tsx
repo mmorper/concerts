@@ -2,6 +2,7 @@ import { useEffect, useRef, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import * as d3 from 'd3'
 import type { Concert } from '../../types/concert'
+import { getGenreColor } from '../../constants/colors'
 
 interface Scene5GenresProps {
   concerts: Concert[]
@@ -179,26 +180,17 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         source: 'getBoundingClientRect (CSS-computed)'
       })
 
-    // Create color scale for genres
-    const colorScale = d3.scaleOrdinal<string>()
-      .domain((genreHierarchy.children || []).map(d => d.name))
-      .range([
-        '#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316',
-        '#eab308', '#84cc16', '#10b981', '#14b8a6', '#06b6d4',
-        '#0ea5e9', '#3b82f6', '#a855f7', '#d946ef', '#e11d48',
-      ])
-
-    // Function to get color for any node (artists inherit parent color with variation)
+    // Function to get color for any node using genre color palette
     const getNodeColor = (d: PartitionNode): string => {
       if (d.depth === 1) {
-        // Top-level genre
-        return colorScale(d.data.name)
+        // Top-level genre - use genre color palette
+        return getGenreColor(d.data.name)
       } else if (d.depth >= 2) {
         // Artist or small genre - inherit parent color with brightness variation
         const parent = d.parent
         if (parent && parent.depth >= 1) {
           const parentColor = d.depth === 2 && parent.depth === 1
-            ? colorScale(parent.data.name)
+            ? getGenreColor(parent.data.name)
             : getNodeColor(parent as PartitionNode)
 
           const color = d3.color(parentColor)
@@ -210,7 +202,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
             return color.brighter(brightnessShift).toString()
           }
         }
-        return colorScale(d.data.name)
+        return getGenreColor(d.data.name)
       }
       return '#999'
     }
@@ -458,7 +450,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         return d.depth === 2 ? '500' : '600'
       })
       .attr('fill', 'white')
-      .attr('font-family', 'Inter, system-ui, sans-serif')
+      .attr('font-family', 'Source Sans 3, system-ui, sans-serif')
       .style('pointer-events', 'none')
       .style('text-shadow', '0 1px 4px rgba(0,0,0,0.8)')
       .text(d => {
@@ -503,7 +495,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       .attr('font-size', '48px')
       .attr('font-weight', '300')
       .attr('fill', '#1f2937')
-      .attr('font-family', 'Inter, system-ui, sans-serif')
+      .attr('font-family', 'Source Sans 3, system-ui, sans-serif')
       .text(concerts.length)
 
     centerText.append('text')
@@ -512,7 +504,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       .attr('dy', '1.5em')
       .attr('font-size', '14px')
       .attr('fill', '#6b7280')
-      .attr('font-family', 'Inter, system-ui, sans-serif')
+      .attr('font-family', 'Source Sans 3, system-ui, sans-serif')
       .text('total shows')
 
     centerText.append('text')
@@ -521,7 +513,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       .attr('dy', '3em')
       .attr('font-size', '12px')
       .attr('fill', '#9ca3af')
-      .attr('font-family', 'Inter, system-ui, sans-serif')
+      .attr('font-family', 'Source Sans 3, system-ui, sans-serif')
       .text(`${totalGenres} genres`)
     }
 
@@ -612,10 +604,10 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         transition={{ duration: 0.8, delay: 0.2 }}
         className="absolute top-20 left-0 right-0 z-20 text-center px-8"
       >
-        <h2 className="text-5xl md:text-6xl font-light text-gray-900 mb-3 tracking-tight">
+        <h2 className="font-serif text-5xl md:text-7xl text-gray-900 mb-3 tracking-tight">
           The Music
         </h2>
-        <p className="text-lg text-gray-600">
+        <p className="font-sans text-lg md:text-xl text-gray-500">
           {focusedNode === 'All Genres'
             ? 'A diverse sonic journey'
             : `Exploring ${focusedNode}`
@@ -630,7 +622,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
           onClick={() => setFocusedNode('All Genres')}
-          className="absolute top-32 right-8 z-20 px-4 py-2 bg-white/80 backdrop-blur-sm text-gray-900 border border-gray-300 rounded-lg text-sm font-medium hover:bg-white transition-all shadow-sm"
+          className="absolute top-32 right-8 z-20 px-4 py-2 bg-white/80 backdrop-blur-sm text-gray-900 border border-gray-300 rounded-lg font-sans text-sm font-medium hover:bg-white transition-all duration-200 shadow-sm"
         >
           Reset View
         </motion.button>
@@ -665,7 +657,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
         transition={{ duration: 0.8, delay: 0.6 }}
         className="absolute bottom-20 left-0 right-0 z-20 text-center"
       >
-        <p className="text-sm text-gray-500">
+        <p className="font-sans text-xs text-gray-500 font-medium uppercase tracking-widest">
           {expandedGenre
             ? 'Click inner ring to zoom out · Click outer segments to drill deeper'
             : 'Hover to preview · Click to zoom into a genre'

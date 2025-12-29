@@ -1,9 +1,8 @@
 @import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
 
 @theme {
-  --font-display: 'Bebas Neue', 'Impact', sans-serif;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', 'Georgia', serif;
+  --font-sans: 'Source Sans 3', system-ui, sans-serif;
   --font-mono: 'Courier New', monospace;
 }
 

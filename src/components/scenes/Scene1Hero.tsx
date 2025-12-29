@@ -108,8 +108,8 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
       .attr('x', d => xScale(d))
       .attr('y', innerHeight / 2 + 30)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#666')
-      .attr('font-family', 'Inter, system-ui, sans-serif')
+      .attr('fill', '#6b7280')
+      .attr('font-family', 'Source Sans 3, system-ui, sans-serif')
       .attr('font-size', '12px')
       .attr('font-weight', '500')
       .text(d => d)
@@ -140,13 +140,13 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: false }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.8, delay: 0 }}
+          className="text-center mb-12"
         >
-          <h1 className="text-6xl md:text-7xl font-light text-gray-900 mb-4 tracking-tight">
+          <h1 className="font-serif text-5xl md:text-7xl text-gray-900 mb-4 tracking-tight">
             Concert Archive
           </h1>
-          <p className="text-xl md:text-2xl text-gray-600 font-light">
+          <p className="font-sans text-lg md:text-xl text-gray-500">
             {totalConcerts} shows across {yearSpan}
           </p>
         </motion.div>
@@ -156,7 +156,7 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: false }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
           className="w-full"
         >
           <svg
@@ -172,8 +172,8 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: false }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-center text-gray-500 mt-12 text-sm tracking-wide uppercase"
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-center font-sans text-gray-500 mt-8 text-xs font-medium tracking-widest uppercase"
         >
           A Visual Journey Through Live Music
         </motion.p>
@@ -215,8 +215,8 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
               {/* Header */}
               <div className="bg-indigo-600 text-white px-8 py-6 flex justify-between items-center">
                 <div>
-                  <h3 className="text-3xl font-light">{selectedYear}</h3>
-                  <p className="text-indigo-200 mt-1">
+                  <h3 className="font-serif text-3xl">{selectedYear}</h3>
+                  <p className="font-sans text-indigo-200 mt-1">
                     {selectedYearConcerts.length} concert{selectedYearConcerts.length !== 1 ? 's' : ''}
                   </p>
                 </div>
@@ -240,22 +240,22 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
                     >
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <h4 className="text-lg font-semibold text-gray-900">
+                          <h4 className="font-sans text-lg font-semibold text-gray-900">
                             {concert.headliner}
                           </h4>
-                          <p className="text-sm text-gray-600">{concert.genre}</p>
+                          <p className="font-sans text-sm text-gray-600">{concert.genre}</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-sm font-medium text-gray-700">
+                          <p className="font-sans text-sm font-medium text-gray-700">
                             {new Date(concert.date).toLocaleDateString('en-US', {
                               month: 'short',
                               day: 'numeric',
                             })}
                           </p>
-                          <p className="text-xs text-gray-500">{concert.dayOfWeek}</p>
+                          <p className="font-sans text-xs text-gray-500">{concert.dayOfWeek}</p>
                         </div>
                       </div>
-                      <div className="text-sm text-gray-600">
+                      <div className="font-sans text-sm text-gray-600">
                         <p className="mb-1">
                           <span className="font-medium">Venue:</span> {concert.venue}
                         </p>

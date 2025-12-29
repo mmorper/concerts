@@ -116,13 +116,13 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: false }}
-        transition={{ duration: 0.8, delay: 0.2 }}
+        transition={{ duration: 0.8, delay: 0 }}
         className="absolute top-20 left-0 right-0 z-20 text-center px-8 pointer-events-none"
       >
-        <h2 className="text-5xl md:text-6xl font-light text-white mb-3 tracking-tight">
+        <h2 className="font-serif text-5xl md:text-7xl text-white mb-3 tracking-tight">
           The Geography
         </h2>
-        <p className="text-lg text-gray-400 mb-6">
+        <p className="font-sans text-lg md:text-xl text-gray-400 mb-6">
           {cityCount} cities across the map
         </p>
 
@@ -132,7 +132,7 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
             <button
               key={region}
               onClick={() => setSelectedRegion(region)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                 selectedRegion === region
                   ? 'bg-indigo-600 text-white'
                   : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -160,10 +160,10 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
         initial={{ y: -20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: false }}
-        transition={{ duration: 0.8, delay: 0.6 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
         className="absolute bottom-20 left-0 right-0 z-20 text-center"
       >
-        <p className="text-sm text-gray-500 uppercase tracking-wide">
+        <p className="font-sans text-xs text-gray-500 font-medium uppercase tracking-widest">
           {concerts.length} Shows · {cityCount} Cities
         </p>
       </motion.div>

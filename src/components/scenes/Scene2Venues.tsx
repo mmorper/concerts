@@ -36,7 +36,7 @@ export function Scene2Venues({ concerts }: Scene2VenuesProps) {
       whileInView={{ opacity: 1 }}
       viewport={{ once: false, margin: '-20%' }}
       transition={{ duration: 0.8 }}
-      className="min-h-screen flex flex-col items-center justify-center bg-stone-50 py-20 snap-start snap-always"
+      className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-950 to-purple-950 py-20 snap-start snap-always"
     >
       <div className="max-w-7xl w-full px-8">
         {/* Title */}
@@ -44,13 +44,13 @@ export function Scene2Venues({ concerts }: Scene2VenuesProps) {
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: false }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.8, delay: 0 }}
+          className="text-center mb-12"
         >
-          <h2 className="text-5xl md:text-6xl font-light text-gray-900 mb-4 tracking-tight">
+          <h2 className="font-serif text-5xl md:text-7xl text-white mb-4 tracking-tight">
             The Artists
           </h2>
-          <p className="text-lg text-gray-600">
+          <p className="font-sans text-lg md:text-xl text-gray-400">
             305 bands and musicians across 42 years
           </p>
         </motion.div>
@@ -64,18 +64,18 @@ export function Scene2Venues({ concerts }: Scene2VenuesProps) {
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: false }}
               transition={{ duration: 0.4, delay: index * 0.03 }}
-              className="bg-white rounded-lg border border-gray-200 p-4 hover:border-indigo-300 hover:shadow-lg transition-all"
+              className="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 p-4 hover:border-indigo-400 hover:bg-white/20 transition-all duration-200"
             >
               <div className="flex items-baseline gap-3 mb-2">
-                <div className="text-3xl font-light text-indigo-600">
+                <div className="font-serif text-3xl text-indigo-300">
                   {artist.count}
                 </div>
-                <div className="text-xs text-gray-500">×</div>
+                <div className="font-sans text-xs text-gray-400">×</div>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-1 leading-tight">
+              <h3 className="font-sans text-lg font-semibold text-white mb-1 leading-tight">
                 {artist.name}
               </h3>
-              <p className="text-xs text-gray-500 uppercase tracking-wide">
+              <p className="font-sans text-xs text-gray-400 uppercase tracking-widest">
                 {artist.genre}
               </p>
             </motion.div>
@@ -87,8 +87,8 @@ export function Scene2Venues({ concerts }: Scene2VenuesProps) {
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: false }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="text-center mt-16 text-gray-500 text-sm"
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-center mt-8 font-sans text-gray-400 text-xs font-medium tracking-widest uppercase"
         >
           <p>
             Top {topArtists.length} most-seen artists

@@ -495,13 +495,13 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: false }}
-        transition={{ duration: 0.8, delay: 0.2 }}
+        transition={{ duration: 0.8, delay: 0 }}
         className="absolute top-20 left-0 right-0 z-10 text-center px-8"
       >
-        <h2 className="text-5xl md:text-6xl font-light text-white mb-3 tracking-tight">
+        <h2 className="font-serif text-5xl md:text-7xl text-white mb-3 tracking-tight">
           The Venues
         </h2>
-        <p className="text-lg text-indigo-300">
+        <p className="font-sans text-lg md:text-xl text-gray-400">
           {totalVenues} concert halls and amphitheaters
         </p>
       </motion.div>
@@ -511,7 +511,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
         initial={{ scale: 0.9, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         viewport={{ once: false }}
-        transition={{ duration: 1, delay: 0.4 }}
+        transition={{ duration: 1, delay: 0.2 }}
         className="w-full h-full"
       >
         <svg
@@ -526,10 +526,10 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
         initial={{ y: -20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: false }}
-        transition={{ duration: 0.8, delay: 0.6 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
         className="absolute bottom-20 left-0 right-0 z-10 text-center"
       >
-        <p className="text-sm text-indigo-400 uppercase tracking-wide">
+        <p className="font-sans text-xs text-gray-400 font-medium uppercase tracking-widest">
           {focusedNodeId ? 'Click anywhere to reset · Drag to explore' : 'Click to focus · Drag to explore'}
         </p>
       </motion.div>
@@ -541,7 +541,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
           onClick={() => setFocusedNodeId(null)}
-          className="absolute top-32 right-8 z-20 px-4 py-2 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg text-sm font-medium hover:bg-white/20 transition-all"
+          className="absolute top-32 right-8 z-20 px-4 py-2 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg font-sans text-sm font-medium hover:bg-white/20 transition-all duration-200"
         >
           Reset View
         </motion.button>
