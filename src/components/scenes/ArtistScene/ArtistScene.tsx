@@ -60,10 +60,16 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
         transition={{ duration: 0.8, delay: 0 }}
         className="absolute top-20 left-0 right-0 z-20 text-center px-8"
       >
-        <h2 className="font-serif text-5xl md:text-7xl text-gray-900 mb-3 tracking-tight">
+        <h2
+          className="font-serif text-5xl md:text-7xl text-gray-900 mb-3 tracking-tight"
+          style={{ textShadow: '0 2px 20px rgba(0, 0, 0, 0.3)' }}
+        >
           The Artists
         </h2>
-        <p className="font-sans text-lg md:text-xl text-gray-500 mb-6">
+        <p
+          className="font-sans text-lg md:text-xl text-gray-500 mb-6"
+          style={{ textShadow: '0 2px 20px rgba(0, 0, 0, 0.3)' }}
+        >
           {artistCount} artists · {totalConcerts} concerts
         </p>
 
@@ -107,13 +113,28 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
         </div>
       </motion.div>
 
+      {/* Gradient vignette for header legibility */}
+      <div
+        className="absolute inset-x-0 top-0 h-[35vh] pointer-events-none z-10"
+        style={{
+          background: `linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0.5) 30%,
+            rgba(0, 0, 0, 0.2) 60%,
+            rgba(0, 0, 0, 0) 100%
+          )`
+        }}
+        aria-hidden="true"
+      />
+
       {/* Mosaic Grid */}
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         viewport={{ once: false }}
         transition={{ duration: 1, delay: 0.2 }}
-        className="w-full h-full"
+        className="w-full h-full z-0"
       >
         <ArtistMosaic
           artists={artistCards}
