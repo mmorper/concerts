@@ -1,0 +1,14 @@
+{
+  "_comment": "Manual Spotify artist ID overrides for ambiguous or incorrect search results",
+  "_instructions": "Add entries when the Spotify search returns wrong results. Format: normalized name (lowercase, no punctuation) -> Spotify artist ID",
+  "_examples": {
+    "boston": {
+      "spotifyArtistId": "29kkCKKGXheHuoO829FxWK",
+      "note": "The classic rock band, not the city playlist"
+    },
+    "heart": {
+      "spotifyArtistId": "34jw2BbxjoYalTp8cJFCPv",
+      "note": "Ann & Nancy Wilson rock band"
+    }
+  }
+}
