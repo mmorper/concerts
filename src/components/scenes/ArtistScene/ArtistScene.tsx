@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ArtistMosaic } from './ArtistMosaic'
+import { ArtistGatefold } from './ArtistGatefold'
 import { useArtistData } from './useArtistData'
 import type { Concert } from '../../../types/concert'
-import type { SortOrder } from './types'
+import type { SortOrder, ArtistCard } from './types'
 
 interface ArtistSceneProps {
   concerts: Concert[]
@@ -17,9 +18,32 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
   const { artistCards, isLoading } = useArtistData(concerts)
   const [sortOrder, setSortOrder] = useState<SortOrder>('alphabetical') // Default: A-Z
   const [artistCount, setArtistCount] = useState(0)
+  const [openArtist, setOpenArtist] = useState<ArtistCard | null>(null)
+  const [clickedTileRect, setClickedTileRect] = useState<DOMRect | null>(null)
+  const [reducedMotion, setReducedMotion] = useState(false)
+
+  // Check for reduced motion preference
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setReducedMotion(mediaQuery.matches)
+
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
+    mediaQuery.addEventListener('change', handler)
+    return () => mediaQuery.removeEventListener('change', handler)
+  }, [])
 
   // Show frequency badge only when sorted by timesSeen (Weighted)
   const showFrequencyBadge = sortOrder === 'timesSeen'
+
+  const handleCardClick = (artist: ArtistCard, rect: DOMRect) => {
+    setOpenArtist(artist)
+    setClickedTileRect(rect)
+  }
+
+  const handleCloseGatefold = () => {
+    setOpenArtist(null)
+    setClickedTileRect(null)
+  }
 
   if (isLoading) {
     return (
@@ -141,6 +165,8 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
           sortOrder={sortOrder}
           showFrequencyBadge={showFrequencyBadge}
           onArtistCountUpdate={setArtistCount}
+          onCardClick={handleCardClick}
+          openArtistName={openArtist?.normalizedName}
         />
       </motion.div>
 
@@ -178,6 +204,16 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
             </svg>
           </a>
         </motion.div>
+      )}
+
+      {/* Gatefold Overlay - Rendered at scene level to escape stacking context */}
+      {openArtist && (
+        <ArtistGatefold
+          artist={openArtist}
+          onClose={handleCloseGatefold}
+          clickedTileRect={clickedTileRect}
+          reducedMotion={reducedMotion}
+        />
       )}
     </motion.section>
   )

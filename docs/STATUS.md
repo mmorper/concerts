@@ -1,8 +1,8 @@
 # Concert Archives - Current Status
 
-**Last Updated:** 2025-12-29
-**Current Phase:** Phase 10 (Artists Scene Enhancement - In Progress)
-**Last Commit:** b647836 - "feat: Implement artist card flip interaction with 2x2 sizing"
+**Last Updated:** 2025-12-30
+**Current Phase:** Phase 10 Complete (Artists Scene Gatefold Animation - Desktop)
+**Last Commit:** [Pending] - "feat: Implement vinyl gatefold animation with z-index fix"
 
 ---
 
@@ -189,9 +189,9 @@ All major implementation phases are complete:
 
 - MODIFIED: `src/components/scenes/Scene4Bands.tsx` - Click interaction, force simulation, and label visibility
 
-### 🔄 Phase 10: Artists Scene Enhancement (In Progress)
+### ✅ Phase 10: Artists Scene Gatefold Animation (Complete - Desktop)
 
-**Implementation Date:** December 29, 2025
+**Implementation Date:** December 30, 2025
 
 **Completed Items:**
 
@@ -202,35 +202,48 @@ All major implementation phases are complete:
   - Frequency badges show ×N for artists seen multiple times (Weighted mode only)
   - Component: [src/components/scenes/ArtistScene/](../src/components/scenes/ArtistScene/)
 
-- ✅ **Card flip interaction** - Click cards to flip and expand 2x2 (400px)
-  - 3D flip animation with 0.6s rotation transition
-  - Cards scale 2.0x (200px → 400px) = exactly 2 rows height
-  - Transform origin calculated dynamically based on screen position
-  - Left half of screen: anchor top-right, expand left (INTO viewport)
-  - Right half of screen: anchor top-left, expand right (INTO viewport)
-  - ESC key closes flipped cards
-  - Reduced motion support (instant transitions)
+- ✅ **Gatefold animation** - Vinyl album-inspired opening interaction
+  - **Flying tile animation**: Clicked tile flies from grid to center of viewport (500ms)
+  - **Book-opening effect**: Tile becomes album cover that swings open hinged on LEFT edge (800ms)
+  - **V-angle "vinyl on lap" tilt**: Both panels tilt ±15° with spine as lowest point
+  - **Two 400×400px panels** side-by-side with 12px spine = 812px total width
+  - Pure CSS transitions (more performant than Framer Motion for complex 3D transforms)
+  - ESC key or click anywhere to close
+  - Reduced motion support (skips animations, maintains layout)
+  - Reference: [docs/v1.0-phase-9-gatefold-animation-spec.md](v1.0-phase-9-gatefold-animation-spec.md)
+  - Prototype: [docs/v1.0-phase-9-artists-gatefold-centered.html](v1.0-phase-9-artists-gatefold-centered.html)
 
-- ✅ **Back card design** - Concert history with scrollable list
-  - Artist name (text-sm) and "Seen X times" (text-[10px])
-  - Scrollable concert list with dates and venues (text-[9px])
-  - Spotify integration section at bottom
-  - Sized at 200px (scales to 400px via transform)
-  - Typography scaled appropriately for 2x transform
+- ✅ **Left panel (Concert History)** - Dark gradient background with artist info
+  - Background: `linear-gradient(145deg, #181818 0%, #121212 100%)`
+  - 100×100px genre-colored album art placeholder with initials
+  - Artist name (Playfair Display, 1.875rem) + genre/show count
+  - Scrollable concert list with dates (tabular-nums) and venues
+  - Spotify green section labels (#1DB954)
+  - White text on dark background
+
+- ✅ **Right panel (Spotify Player)** - Phase 1 "Coming Soon" skeleton
+  - Same dark gradient background as left panel
+  - Spotify icon with "Top Tracks" label
+  - Muted play button (50% opacity)
+  - 4 skeleton track rows with genre-colored placeholders
+  - "Spotify Integration Coming Soon" messaging
+  - Skeleton bars (#2a2a2a) for track names/artists
 
 **Remaining Items:**
 
-- ⚠️ **Spotify integration** - Connect artist cards to Spotify metadata
-  - Album cover images from Spotify API
-  - Artist profile links
-  - Genre data enrichment
-  - See: [docs/SPOTIFY-INTEGRATION-GUIDE.md](SPOTIFY-INTEGRATION-GUIDE.md)
+- ⚠️ **Mobile bottom sheet** - For viewports <768px (v1.1 deferred)
+  - Slide-up sheet instead of gatefold (no flying animation)
+  - 70vh initial height, draggable to 90vh
+  - Swipe down or tap backdrop to close
+  - Concert history + Spotify stacked vertically
+  - Reference: [docs/v1.0-phase-9-gatefold-animation-spec.md](v1.0-phase-9-gatefold-animation-spec.md) (Mobile Design section)
 
-- ⚠️ **Mini music player** - Design and implement player UI
-  - Placement on flipped card (bottom section?)
+- ⚠️ **Spotify integration** - Connect to Spotify API (v1.1 deferred)
+  - Album cover images from Spotify API
+  - Artist profile links and top tracks
   - 30-second preview playback
-  - Play/pause controls
-  - Track selection for multi-concert artists
+  - Replace skeleton with live data
+  - See: [docs/SPOTIFY-INTEGRATION-GUIDE.md](SPOTIFY-INTEGRATION-GUIDE.md)
 
 - ⚠️ **Scene background** - Change from DARK to LIGHT
   - Current: `from-indigo-950 to-purple-950` (DARK)
@@ -238,25 +251,52 @@ All major implementation phases are complete:
 
 **Technical Implementation:**
 
-- **Flip Logic**: Uses refs and getBoundingClientRect() to calculate card position
-- **Transform Origin**: `top-right` for left cards, `top-left` for right cards
-- **Scale Math**: 200px base × 2.0 = 400px final (2 rows × 200px)
-- **Typography Scale**: Font sizes chosen for readability at 2x scale
-- **State Management**: Single `activeCardId` tracks which card is flipped
+- **Animation Strategy**: Pure CSS transitions with JavaScript positioning
+  - `perspective: 2000px` on overlay for 3D depth
+  - Cover hinged on left edge: `transform-origin: left center`
+  - Cover opens: `rotateY(-165deg)` = -180° flip + 15° V-angle
+  - Right panel tilts: `rotateY(-15deg)` for matching V-angle
+  - Timing: cubic-bezier(0.4, 0, 0.2, 1) for smooth easing
+
+- **Positioning Logic**: Dynamic centering calculations
+  - Closed position: Center 400×400px cover in viewport
+  - Open position: Center full 812px gatefold, accounting for cover swing
+  - Flying tile tracks getBoundingClientRect() of clicked tile
+  - Window resize handler repositions gatefold if open
+
+- **State Management**:
+  - `openArtist` tracks which artist gatefold is open (null when closed)
+  - `clickedTileRect` stores original tile position for return animation
+  - Original tile hidden (visibility: hidden) while gatefold is open
+  - Grid dimmed (opacity: 0.3, blur: 6px) when gatefold active
+
+- **Z-Index Layering Fix** (Critical):
+  - **Problem**: Gatefold was trapped in stacking context created by motion.div with transforms
+  - **Solution**: Lifted gatefold rendering to scene level (ArtistScene.tsx) outside motion.div containers
+  - **Z-Index Values**: Gatefold overlay (99998), Flying tile (99999), Close hint (100000)
+  - **Result**: Gatefold now properly appears above all scene elements including header buttons
 
 **Files Created/Modified:**
 
-- NEW: `src/components/scenes/ArtistScene/` - Complete artist scene component tree
-  - `ArtistScene.tsx` - Main container with sort controls
+- NEW: `src/components/scenes/ArtistScene/ArtistGatefold.tsx` - Main gatefold overlay with animations
+- NEW: `src/components/scenes/ArtistScene/ConcertHistoryPanel.tsx` - Left panel (dark theme)
+- NEW: `src/components/scenes/ArtistScene/SpotifyPanel.tsx` - Right panel (skeleton state)
+- MODIFIED: `src/components/scenes/ArtistScene/ArtistScene.tsx` - Lifted gatefold state, renders gatefold at scene level
+- MODIFIED: `src/components/scenes/ArtistScene/ArtistCard.tsx` - Simplified to clickable tile
+- MODIFIED: `src/components/scenes/ArtistScene/ArtistMosaic.tsx` - Removed gatefold state, accepts callbacks
+- MODIFIED: `src/index.css` - Added 3D transform utility classes
+- Complete artist scene component tree:
+  - `ArtistScene.tsx` - Main container with sort controls and gatefold state
   - `ArtistMosaic.tsx` - Grid layout with lazy loading
-  - `ArtistCard.tsx` - Flip card wrapper with transform logic
+  - `ArtistCard.tsx` - Clickable tile that triggers gatefold
   - `ArtistCardFront.tsx` - Album cover display
-  - `ArtistCardBack.tsx` - Concert history list
+  - `ArtistCardBack.tsx` - Concert history list (deprecated - replaced by gatefold)
   - `ArtistPlaceholder.tsx` - Colored placeholder for missing covers
+  - `ArtistGatefold.tsx` - Overlay with flying tile and 3D animation
+  - `ConcertHistoryPanel.tsx` - Left gatefold panel
+  - `SpotifyPanel.tsx` - Right gatefold panel
   - `useArtistData.ts` - Data processing and sorting
   - `types.ts` - TypeScript interfaces
-- MODIFIED: `src/App.tsx` - Integrated ArtistScene component
-- MODIFIED: `public/data/artists-metadata.json` - Artist data structure
 
 ### 📋 Upcoming Phases
 

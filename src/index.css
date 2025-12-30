@@ -55,3 +55,28 @@ body {
 .venue-popup .leaflet-popup-tip {
   background: white;
 }
+
+/* Gatefold 3D Transform Utilities */
+.rotate-y-0 {
+  transform: rotateY(0deg);
+}
+
+.rotate-y-\[-15deg\] {
+  transform: rotateY(-15deg);
+}
+
+.rotate-y-\[-165deg\] {
+  transform: rotateY(-165deg);
+}
+
+.duration-800 {
+  transition-duration: 800ms;
+}
+
+.duration-400 {
+  transition-duration: 400ms;
+}
+
+.delay-300 {
+  transition-delay: 300ms;
+}

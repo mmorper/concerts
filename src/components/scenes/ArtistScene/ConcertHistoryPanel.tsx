@@ -1,0 +1,108 @@
+import { format } from 'date-fns'
+import { getGenreColor } from '../../../constants/colors'
+import type { ArtistCard } from './types'
+
+interface ConcertHistoryPanelProps {
+  artist: ArtistCard
+}
+
+/**
+ * Get artist initials for placeholder display
+ */
+function getArtistInitials(name: string): string {
+  const words = name
+    .trim()
+    .split(/\s+/)
+    .filter(word => word.length > 0)
+
+  if (words.length === 0) return '?'
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase()
+
+  // Take first letter of first two words
+  return (words[0][0] + words[1][0]).toUpperCase()
+}
+
+/**
+ * Left panel of gatefold - Concert history with dark theme
+ * Displays on the inside of the opened cover (left side)
+ * Size: 400×400px
+ */
+export function ConcertHistoryPanel({ artist }: ConcertHistoryPanelProps) {
+  const genreColor = getGenreColor(artist.primaryGenre)
+  const initials = getArtistInitials(artist.name)
+
+  // Create gradient for album art placeholder
+  const gradient = `linear-gradient(135deg, ${genreColor} 0%, ${adjustColor(genreColor, -30)} 100%)`
+
+  return (
+    <div
+      className="w-[400px] h-[400px] flex flex-col p-8"
+      style={{
+        background: 'linear-gradient(145deg, #181818 0%, #121212 100%)',
+        borderRadius: '4px',
+        boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)'
+      }}
+    >
+      {/* Artist Header */}
+      <div className="flex gap-5 mb-7 flex-shrink-0">
+        {/* Album Art Placeholder */}
+        <div
+          className="w-[100px] h-[100px] flex items-center justify-center rounded flex-shrink-0"
+          style={{
+            background: gradient,
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)'
+          }}
+        >
+          <span className="font-sans text-4xl font-semibold text-white">
+            {initials}
+          </span>
+        </div>
+
+        {/* Artist Info */}
+        <div className="flex flex-col justify-center">
+          <h2 className="font-serif text-3xl font-medium text-white tracking-tight leading-tight mb-2">
+            {artist.name}
+          </h2>
+          <p className="font-sans text-sm text-[#a3a3a3]">
+            {artist.primaryGenre} · {artist.timesSeen} {artist.timesSeen === 1 ? 'show' : 'shows'}
+          </p>
+        </div>
+      </div>
+
+      {/* Concert History Section */}
+      <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+        <div className="font-sans text-xs font-semibold text-[#1DB954] uppercase tracking-wider mb-3.5 flex-shrink-0">
+          Concert History
+        </div>
+
+        {/* Concert List - Scrollable */}
+        <ul className="list-none flex flex-col gap-1.5 overflow-y-auto">
+          {artist.concerts.map((concert, idx) => (
+            <li
+              key={idx}
+              className="flex items-baseline gap-4 text-[0.95rem] text-[#e5e5e5] py-1 border-b border-white/[0.04] last:border-b-0"
+            >
+              <span className="font-sans text-xs text-[#737373] font-medium min-w-[85px] flex-shrink-0 tabular-nums">
+                {format(new Date(concert.date), 'dd MMM yyyy')}
+              </span>
+              <span className="font-sans text-[#e5e5e5]">
+                {concert.venue}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Adjust color brightness for gradient effect
+ */
+function adjustColor(hex: string, amount: number): string {
+  const num = parseInt(hex.replace('#', ''), 16)
+  const r = Math.min(255, Math.max(0, (num >> 16) + amount))
+  const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount))
+  const b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount))
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`
+}
