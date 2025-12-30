@@ -67,6 +67,17 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
       const x = xScale(year)
       const radius = sizeScale(count)
 
+      // Draw outer glow ring (appears on hover)
+      const glowRing = g.append('circle')
+        .attr('cx', x)
+        .attr('cy', innerHeight / 2)
+        .attr('r', radius)
+        .attr('fill', 'none')
+        .attr('stroke', '#818cf8')
+        .attr('stroke-width', 0)
+        .attr('opacity', 0)
+        .style('pointer-events', 'none')
+
       // Draw shadow (for elevation effect)
       const shadow = g.append('circle')
         .attr('cx', x)
@@ -74,7 +85,7 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
         .attr('r', radius)
         .attr('fill', '#6366f1')
         .attr('opacity', 0)
-        .attr('filter', 'blur(8px)')
+        .attr('filter', 'blur(12px)')
         .style('pointer-events', 'none')
 
       // Draw dot
@@ -89,30 +100,46 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
         .on('mouseenter', function() {
           d3.select(this)
             .transition()
-            .duration(200)
-            .attr('r', radius * 1.2)
-            .attr('fill', '#818cf8') // Lighter indigo
+            .duration(250)
+            .attr('r', radius * 1.5)
+            .attr('fill', '#a5b4fc') // Much lighter indigo
             .attr('opacity', 1)
+
+          // Animate glow ring
+          glowRing
+            .transition()
+            .duration(250)
+            .attr('r', radius * 1.8)
+            .attr('stroke-width', 3)
+            .attr('opacity', 0.6)
 
           // Animate shadow
           shadow
             .transition()
-            .duration(200)
-            .attr('r', radius * 1.3)
-            .attr('opacity', 0.4)
+            .duration(250)
+            .attr('r', radius * 1.6)
+            .attr('opacity', 0.6)
         })
         .on('mouseleave', function() {
           d3.select(this)
             .transition()
-            .duration(200)
+            .duration(250)
             .attr('r', radius)
             .attr('fill', '#6366f1')
             .attr('opacity', 0.8)
 
+          // Fade glow ring
+          glowRing
+            .transition()
+            .duration(250)
+            .attr('r', radius)
+            .attr('stroke-width', 0)
+            .attr('opacity', 0)
+
           // Fade shadow
           shadow
             .transition()
-            .duration(200)
+            .duration(250)
             .attr('r', radius)
             .attr('opacity', 0)
         })
