@@ -766,8 +766,8 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       {/* Chart Container */}
       <motion.div
         ref={containerRef}
-        initial={{ scale: 0.9, opacity: 0 }}
-        whileInView={{ scale: 1, opacity: 1 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: false }}
         transition={{ duration: 1, delay: 0.4 }}
         className="flex-1 w-full flex justify-center items-center pointer-events-none"
