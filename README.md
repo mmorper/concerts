@@ -66,6 +66,32 @@ npm run build-data
 npm run geocode
 ```
 
+## Visual Testing
+
+Puppeteer is available for automated visual testing.
+
+### Prerequisites
+
+Tests require the development server to be running:
+
+```bash
+npm run dev
+```
+
+### Available Tests
+
+| Command                 | Purpose                                      |
+|-------------------------|----------------------------------------------|
+| `npm run test:sanity`   | Basic page load and scroll verification      |
+
+### Output
+
+Screenshots are saved to `/tmp/` directory.
+
+### Future Work
+
+Comprehensive visual testing for all 5 scenes (Timeline, Venue Network, Map, Genres, Artists) is planned for v1.1+. See [docs/specs/future/visual-testing-suite.md](docs/specs/future/visual-testing-suite.md) for the full specification.
+
 ## Deployment
 
 The app is automatically deployed to Cloudflare Pages on every push to the main branch. No build action configuration needed - Cloudflare handles everything.

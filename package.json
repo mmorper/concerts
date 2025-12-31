@@ -14,7 +14,8 @@
     "enrich-spotify": "tsx scripts/enrich-spotify-metadata.ts",
     "generate-mock-spotify": "tsx scripts/generate-mock-spotify-metadata.ts",
     "convert-csv": "tsx scripts/convert-csv-to-json.ts",
-    "geocode": "tsx scripts/geocode-venues.ts"
+    "geocode": "tsx scripts/geocode-venues.ts",
+    "test:sanity": "node test/test-simple.mjs"
   },
   "dependencies": {
     "@types/d3": "^7.4.3",
