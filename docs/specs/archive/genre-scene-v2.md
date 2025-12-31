@@ -858,6 +858,6 @@ No new dependencies required. Uses existing:
 
 ## Related Documents
 
-- [Color Specification Guide](./Morperhaus-Color-Specification-Guide.md)
-- [Scene Design Guide](./Morperhaus-Scene-Design-Guide.md)
+- [Color Specification Guide](../../design/color-specification.md)
+- [Scene Design Guide](../../design/scene-design-guide.md)
 - [Band Scene Plan](./Band_Scene_Plan) — Reference for artist data handling

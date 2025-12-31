@@ -3,35 +3,49 @@
     "name": "Morperhaus Concert Archives",
     "description": "Interactive concert history timeline application",
     "type": "jamstack-spa",
-    "tech_stack": ["vite", "react", "typescript", "tailwind", "leaflet"]
+    "tech_stack": ["vite", "react", "typescript", "tailwind", "leaflet", "d3", "framer-motion"]
+  },
+  "version": {
+    "current": "0.9.0",
+    "status": "pre-production",
+    "next": "1.0.0"
   },
   "phases": {
-    "current": "Phase 11 (Deployment)",
+    "current": "v0.9.0 Release Prep",
     "completed": ["Phase 0", "Phase 1", "Phase 2", "Phase 3", "Phase 4", "Phase 5", "Phase 6", "Phase 7", "Phase 8", "Phase 9", "Phase 9b", "Phase 10"],
-    "next": "v1.1 Planning"
+    "next": "v1.0.0 Deployment"
   },
   "status": {
-    "currentPhase": "Phase 10 Complete - Ready for Deployment",
-    "lastContextSync": "2025-12-30",
-    "lastCommit": "2fcbf92 - feat: Implement vinyl gatefold animation with z-index fix",
-    "notes": "Phase 10 complete. Implemented vinyl gatefold animation with flying tile, book-opening effect, and proper z-index layering. Fixed stacking context issue by lifting gatefold to scene level."
+    "currentPhase": "v0.9.0 Release Prep",
+    "lastContextSync": "2025-12-31",
+    "lastCommit": "42cf71a - docs: Add artist scene implementation tracking document",
+    "notes": "Feature complete. Documentation reorganized. Ready for CI/CD setup and deployment."
   },
   "deployment": {
     "platform": "cloudflare-pages",
     "build_command": "npm run build",
     "output_directory": "dist",
-    "auto_deploy": true
+    "auto_deploy": true,
+    "status": "pending"
   },
   "data_source": {
     "type": "google-sheets",
     "update_strategy": "periodic-manual",
-    "enrichment_apis": ["theaudiodb", "lastfm"]
+    "enrichment_apis": ["theaudiodb", "lastfm", "google-maps-geocoding"]
   },
   "documentation": {
     "source_of_truth": "docs/STATUS.md",
-    "status": "docs/STATUS.md",
     "planning_archive": "docs/planning.md",
     "api_setup": "docs/api-setup.md",
+    "design": {
+      "scene_guide": "docs/design/scene-design-guide.md",
+      "color_spec": "docs/design/color-specification.md"
+    },
+    "specs": {
+      "implemented": "docs/specs/implemented/",
+      "future": "docs/specs/future/",
+      "archive": "docs/specs/archive/"
+    },
     "context": ".claude/context.md"
   }
 }

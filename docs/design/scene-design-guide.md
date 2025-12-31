@@ -2,7 +2,7 @@
 
 **Version:** 1.0  
 **Last Updated:** December 2024  
-**Related:** [Color Specification Guide](./Morperhaus-Color-Specification-Guide.md)
+**Related:** [Color Specification Guide](./color-specification.md)
 
 ---
 

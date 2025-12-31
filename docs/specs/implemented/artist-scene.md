@@ -589,7 +589,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 | Artist data hook | `src/components/scenes/ArtistScene/useArtistData.ts` |
 | Genre colors | `src/constants/colors.ts` |
 | Type definitions | `src/components/scenes/ArtistScene/types.ts` |
-| Design guide | `docs/design/Morperhaus-Scene-Design-Guide.md` |
+| Design guide | `docs/design/scene-design-guide.md` |
 
 ---
 

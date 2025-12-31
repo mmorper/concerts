@@ -1,8 +1,30 @@
-# Concert Archives - Current Status
+# Morperhaus Concert Archives - Status
 
-**Last Updated:** 2025-12-30
-**Current Phase:** Phase 10 Complete (Artists Scene Gatefold Animation - Desktop)
-**Last Commit:** 2fcbf92 - "feat: Implement vinyl gatefold animation with z-index fix"
+**Version:** v0.9.0 (Pre-production)
+**Last Updated:** 2025-12-31
+**Current Phase:** Release Prep
+**Last Commit:** 42cf71a - "docs: Add artist scene implementation tracking document"
+
+---
+
+## Release Status
+
+### v0.9.0 Pre-production (Current)
+- ✅ Feature complete (all 5 scenes implemented)
+- ✅ Desktop experience polished
+- ✅ Documentation cleanup complete
+- ⏳ CI/CD setup (GitHub → Cloudflare Pages)
+- ⏳ Production deployment
+
+### v1.0.0 Initial Release (Next)
+- Production deployment to Cloudflare Pages
+- Custom domain setup (if applicable)
+- Final QA pass
+
+### v1.1.0 Planned
+- Mobile optimization (bottom sheets, touch refinements)
+- Spotify API integration
+- Cross-scene venue navigation
 
 ---
 
@@ -86,7 +108,7 @@ All major implementation phases are complete:
   - Scroll wheel zoom and drag panning enabled when active
   - ESC key deactivates and returns to locked state
   - Scroll event trapping prevents scene navigation when map is active
-  - Reference: [docs/phase-8-Map_Interaction_Plan.md](phase-8-Map_Interaction_Plan.md)
+  - Reference: [docs/specs/implemented/map-interaction.md](specs/implemented/map-interaction.md)
   - Component: [src/components/scenes/Scene3Map.tsx](../src/components/scenes/Scene3Map.tsx)
 
 - ✅ **Scene navigation buttons** - Contextual exit controls appear when map is active
@@ -168,7 +190,7 @@ All major implementation phases are complete:
   - All child node labels become visible when venue is expanded
   - Click again to collapse back to dot and return to original position
   - Component: [src/components/scenes/Scene4Bands.tsx](../src/components/scenes/Scene4Bands.tsx)
-  - Reference: [docs/phase-9b-Venue_Scene_Enhancement_Spec.md](phase-9b-Venue_Scene_Enhancement_Spec.md)
+  - Reference: [docs/specs/implemented/venue-scene.md](specs/implemented/venue-scene.md)
 
 - ✅ **Removed fade effects** - Eliminated screen-wide dimming on node clicks
   - All nodes maintain constant opacity (0.85 fill, 1.0 stroke)
@@ -210,8 +232,8 @@ All major implementation phases are complete:
   - Pure CSS transitions (more performant than Framer Motion for complex 3D transforms)
   - ESC key or click anywhere to close
   - Reduced motion support (skips animations, maintains layout)
-  - Reference: [docs/v1.0-phase-9-gatefold-animation-spec.md](v1.0-phase-9-gatefold-animation-spec.md)
-  - Prototype: [docs/v1.0-phase-9-artists-gatefold-centered.html](v1.0-phase-9-artists-gatefold-centered.html)
+  - Reference: [docs/specs/implemented/artist-scene.md](specs/implemented/artist-scene.md)
+  - Prototype: [docs/specs/archive/prototypes/gatefold-centered.html](specs/archive/prototypes/gatefold-centered.html)
 
 - ✅ **Left panel (Concert History)** - Dark gradient background with artist info
   - Background: `linear-gradient(145deg, #181818 0%, #121212 100%)`
@@ -236,14 +258,14 @@ All major implementation phases are complete:
   - 70vh initial height, draggable to 90vh
   - Swipe down or tap backdrop to close
   - Concert history + Spotify stacked vertically
-  - Reference: [docs/v1.0-phase-9-gatefold-animation-spec.md](v1.0-phase-9-gatefold-animation-spec.md) (Mobile Design section)
+  - Reference: [docs/specs/implemented/artist-scene.md](specs/implemented/artist-scene.md) (Mobile Design section)
 
 - ⚠️ **Spotify integration** - Connect to Spotify API (v1.1 deferred)
   - Album cover images from Spotify API
   - Artist profile links and top tracks
   - 30-second preview playback
   - Replace skeleton with live data
-  - See: [docs/SPOTIFY-INTEGRATION-GUIDE.md](SPOTIFY-INTEGRATION-GUIDE.md)
+  - See: [docs/specs/future/spotify-integration.md](specs/future/spotify-integration.md)
 
 - ⚠️ **Scene background** - Change from DARK to LIGHT
   - Current: `from-indigo-950 to-purple-950` (DARK)
@@ -307,34 +329,35 @@ All major implementation phases are complete:
 - Configure build settings
 - Deploy to production
 
+---
 
+## v1.1 Roadmap
 
-## v1.1 Planning
+Items deferred from v1.0 for future release:
 
-**v1.1 Phase X: Deferred Items from Phase 8.1 - Mobile):**
+### Mobile Optimization
 
-- 🔄 **Mobile device testing and refinements**
-  - Touch interactions already enabled in code (touchZoom, dragging)
-  - Need testing on actual iOS and Android devices
-  - May need to adjust hint prominence for mobile (no hover state)
-  - May need pinch gesture indicators
-  - Scene nav buttons already sized for touch targets
+- Artist scene: Bottom sheet instead of gatefold (<768px viewports)
+- Map scene: Touch interaction refinements
+- General: Device testing, gesture indicators
+- See: [Mobile Optimization Spec](specs/future/mobile-optimization.md)
 
-- 🔄 **Zoom UI buttons (optional)**
-  - Scroll wheel zoom works well for desktop
-  - Could add +/- buttons for users without scroll wheels
-  - Would be hidden on mobile (pinch-to-zoom is native)
+### Spotify Integration
 
-**v1.1 - Phase X: Data Sources Enhancement**
+- Album cover images from Spotify API
+- Artist profile links and top tracks
+- 30-second preview playback
+- See: [Spotify Integration Spec](specs/future/spotify-integration.md)
 
-- Review all Google Sheets/API integration work
-- Consider future music API integrations (Spotify, MusicBrainz) for artist cards
-- Enhance data enrichment pipeline
+### Cross-Scene Navigation
 
-**v1.1. Phase X: Cross-Scene Venue Navigation: Map → Venues
+- Map popup → Venue scene linking
+- See: [Venue Cross-Navigation Spec](specs/future/venue-cross-navigation.md)
 
- - Add clickable venue links in the Map (Geography) scene popups that navigate users to The Venues scene and auto-expand the corresponding venue node. This creates a seamless cross-scene connection for exploring venue details.
- - [See Venue map Cross Scene Navigation](v1.1-venue-map-cross-scene-navigation.md)
+### Design Polish (Optional)
+
+- Scene background rhythm alignment (current: LIGHT→DARK→DARK→LIGHT→DARK)
+- Consistent spacing per design guide
 
 
 ---
@@ -376,6 +399,43 @@ All major implementation phases are complete:
 
 ---
 
+## Documentation
+
+### Core Documents
+
+| Document | Purpose |
+|----------|---------|
+| [STATUS.md](STATUS.md) | Current state, active work (source of truth) |
+| [planning.md](planning.md) | Historical implementation plan (archive) |
+| [api-setup.md](api-setup.md) | Google Sheets, Maps, and music API configuration |
+
+### Design System
+
+| Document | Purpose |
+|----------|---------|
+| [Scene Design Guide](design/scene-design-guide.md) | Scene flow, typography, spacing, animation |
+| [Color Specification](design/color-specification.md) | Genre colors, backgrounds, CSS variables |
+
+### Feature Specs
+
+**Implemented (v1.0):**
+
+- [Artist Scene](specs/implemented/artist-scene.md) - Gatefold animation, mosaic grid
+- [Map Interaction](specs/implemented/map-interaction.md) - Click-to-explore, navigation
+- [Venue Scene](specs/implemented/venue-scene.md) - Click-to-expand, force layout
+
+**Future (v1.1+):**
+
+- [Mobile Optimization](specs/future/mobile-optimization.md) - Bottom sheets, touch refinements
+- [Spotify Integration](specs/future/spotify-integration.md) - API integration guide
+- [Venue Cross-Navigation](specs/future/venue-cross-navigation.md) - Map→Venue linking
+
+**Archive:**
+
+- [specs/archive/](specs/archive/) - Superseded specs and prototypes
+
+---
+
 ## Project Structure
 
 ```
@@ -398,10 +458,13 @@ concerts/
 │   ├── STATUS.md           # This file (current state)
 │   ├── planning.md         # Complete historical implementation plan
 │   ├── api-setup.md        # API configuration guide
-│   ├── phase-9-artist_scene_plan_v2.md  # Phase 9 detailed plan
-│   └── design/             # Visual design framework
-│       ├── Morperhaus-Scene-Design-Guide.md
-│       └── Morperhaus-Color-Specification-Guide.md
+│   ├── design/             # Visual design framework
+│   │   ├── scene-design-guide.md
+│   │   └── color-specification.md
+│   └── specs/
+│       ├── implemented/    # v1.0 feature specs
+│       ├── future/         # v1.1+ roadmap
+│       └── archive/        # Superseded specs
 └── .claude/
     ├── config.json         # Project metadata & phase tracking
     └── context.md          # Quick-start context for new sessions
@@ -432,8 +495,8 @@ concerts/
 
 **Framework Documents:**
 
-- [Scene Design Guide](design/Morperhaus-Scene-Design-Guide.md) - Scene flow, typography, spacing, animation
-- [Color Specification Guide](design/Morperhaus-Color-Specification-Guide.md) - Genre colors, backgrounds, CSS variables
+- [Scene Design Guide](design/scene-design-guide.md) - Scene flow, typography, spacing, animation
+- [Color Specification Guide](design/color-specification.md) - Genre colors, backgrounds, CSS variables
 
 **Current Implementation:**
 
