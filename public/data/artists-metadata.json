@@ -439,8 +439,8 @@
       "dataSource": "mock"
     },
     "englishbeat": {
-      "name": "English Beat",
-      "normalizedName": "englishbeat",
+      "name": "The English Beat",
+      "normalizedName": "theenglishbeat",
       "fetchedAt": "2025-12-30T00:05:33.629Z",
       "dataSource": "mock"
     },
