@@ -459,6 +459,18 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       .attr('stroke-opacity', 1)
       .style('cursor', 'pointer')
       .on('click', function(_event, d) {
+        // Add click feedback: brief opacity boost on clicked circle only
+        const circle = d3.select(this)
+        circle
+          .classed('clicking', true)
+          .attr('fill-opacity', 1)
+          .transition()
+          .duration(300)
+          .attr('fill-opacity', 0.85)
+          .on('end', function() {
+            d3.select(this).classed('clicking', false)
+          })
+
         // In "all" mode, clicking a venue expands/collapses it and centers it
         if (viewMode === 'all' && d.type === 'venue') {
           const venueName = d.id.replace('venue|', '')
@@ -484,10 +496,14 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
         }
       })
       .on('mouseenter', function(_event, d) {
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .attr('fill-opacity', 1)
+        // Suppress hover effect if circle is being clicked
+        const circle = d3.select(this)
+        if (!circle.classed('clicking')) {
+          circle
+            .transition()
+            .duration(200)
+            .attr('fill-opacity', 1)
+        }
 
         // Show hover label for small venues in "all" mode
         if (viewMode === 'all' && d.type === 'venue' && d.count < 3) {
@@ -500,10 +516,14 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
         }
       })
       .on('mouseleave', function(_event, d) {
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .attr('fill-opacity', 0.85)
+        // Suppress hover effect if circle is being clicked
+        const circle = d3.select(this)
+        if (!circle.classed('clicking')) {
+          circle
+            .transition()
+            .duration(200)
+            .attr('fill-opacity', 0.85)
+        }
 
         // Hide hover label for small venues in "all" mode
         if (viewMode === 'all' && d.type === 'venue' && d.count < 3) {

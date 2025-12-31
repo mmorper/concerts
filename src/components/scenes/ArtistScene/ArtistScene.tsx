@@ -82,7 +82,7 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: false }}
         transition={{ duration: 0.8, delay: 0 }}
-        className="absolute top-20 left-0 right-0 z-20 text-center px-8"
+        className="absolute top-20 left-0 right-0 z-20 text-center px-8 pointer-events-none"
       >
         <h2
           className="font-serif text-5xl md:text-7xl text-white mb-3 tracking-tight"
@@ -102,7 +102,7 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
           {/* A-Z Button */}
           <button
             onClick={() => setSortOrder('alphabetical')}
-            className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+            className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto ${
               sortOrder === 'alphabetical'
                 ? 'bg-violet-600 text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
@@ -114,7 +114,7 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
           {/* Genre Button */}
           <button
             onClick={() => setSortOrder('genre')}
-            className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+            className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto ${
               sortOrder === 'genre'
                 ? 'bg-violet-600 text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
@@ -126,7 +126,7 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
           {/* Weighted Button */}
           <button
             onClick={() => setSortOrder('timesSeen')}
-            className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+            className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto ${
               sortOrder === 'timesSeen'
                 ? 'bg-violet-600 text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
@@ -170,15 +170,29 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
         />
       </motion.div>
 
+      {/* Gradient vignette for footer legibility */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-[20vh] pointer-events-none z-10"
+        style={{
+          background: `linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.4) 0%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0) 100%
+          )`
+        }}
+        aria-hidden="true"
+      />
+
       {/* Footer Instructions */}
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: false }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        className="absolute bottom-20 left-0 right-0 z-10 text-center"
+        className="absolute bottom-20 left-0 right-0 z-20 text-center"
       >
-        <p className="font-sans text-xs text-gray-500 font-medium uppercase tracking-widest">
+        <p className="font-sans text-xs text-white/90 font-medium uppercase tracking-widest">
           Click to flip · Press ESC to close
         </p>
       </motion.div>
