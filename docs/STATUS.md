@@ -30,11 +30,18 @@
 - ✅ Build version tracking system implemented
 - ✅ v1.1.0 GitHub release published
 
-### v1.2.0+ Planned
+### v1.2.0 Planned (Data Pipeline Enhancement)
+
+- ✅ Google Sheets integration (Phase 1 implemented, Phase 2 spec'd)
+- Data validation and logging improvements
+- Optional: Webhook automation for auto-deploys
+
+### v1.3.0+ Future
+
 - Phone optimization (viewports <768px)
 - Timeline artist display enhancements
-- Genre scene opener inclusion (under review)
 - Spotify API integration
+- Genre scene opener inclusion (under review)
 
 ---
 
@@ -377,42 +384,74 @@ All major implementation phases are complete:
 - ✅ Build version tracking system added
 - ✅ Version display in footer
 
-## v1.2+ Roadmap
+## v1.2.0 Roadmap (Data Pipeline Enhancement)
 
-Planned enhancements with detailed specifications in [docs/specs/future/](specs/future/):
+**Focus:** Improve data pipeline reliability, validation, and automation
 
-### 1. Phone Optimization
+**Key Features:**
+
+1. **Google Sheets Data Integration** - Single source of truth documentation
+2. **Enhanced Build-Time Validation** - Pre-commit data quality checks
+3. **Improved Logging & Reporting** - Better troubleshooting and diff reports
+4. **Optional Webhook Automation** - Auto-deploy when sheet is edited (Phase 2)
+
+See detailed specifications below.
+
+---
+
+## v1.3.0+ Roadmap (User Experience Enhancements)
+
+Planned feature enhancements with detailed specifications in [docs/specs/future/](specs/future/):
+
+### 1. Google Sheets Data Integration (v1.2.0)
+
+**Status:** Phase 1 Implemented, Phase 2 Planned for v1.2.0
+**Spec:** [Google Sheets Data Integration](specs/future/google-sheets-data-integration.md)
+
+**Scope:**
+
+- Build-time data fetching from Google Sheets (✅ implemented)
+- Cached fallback strategy with committed JSON files
+- Phase 1 enhancements: validation, logging, diff reports (v1.2.0)
+- Phase 2: Webhook automation (Google Apps Script → GitHub Action → auto-deploy) - optional for v1.2.0
+- CSV scripts documented as backup-only, not primary pipeline
+
+**Prerequisites:** Google Sheets API and OAuth 2.0 setup (see [api-setup.md](api-setup.md))
+
+**Related:**
+
+- [api-setup.md](api-setup.md) — Complete API credential configuration
+- [BUILD.md](BUILD.md) — Build process and deployment workflow
+
+### 2. Phone Optimization (v1.3.0+)
+
 **Status:** Planned
 **Spec:** [Mobile Optimization](specs/future/mobile-optimization.md)
 
 **Scope:**
+
 - Artist scene: Bottom sheet instead of gatefold (<768px viewports)
 - Map scene: Further touch refinements for small screens
 - General: Phone-specific gesture indicators, responsive improvements
 
-### 2. Timeline Artist Display Enhancement
+### 3. Timeline Artist Display Enhancement (v1.3.0+)
+
 **Status:** Planned
 **Spec:** [Timeline Artist Display Enhancement](specs/future/timeline-artist-display-enhancement.md)
 
 **Scope:**
+
 - Rich artist modals on timeline dot clicks
 - Artist photos, biography, genre evolution
 - Full concert history for selected artist
 
-### 3. Genre Scene Opener Inclusion
-**Status:** Under Review
-**Spec:** [Genre Scene Opener Inclusion](specs/future/genre-scene-opener-inclusion.md)
+### 4. Spotify Artist Integration (v1.3.0+)
 
-**Scope:**
-- Include opener band appearances in genre chart
-- Adjustable weighting (headliner vs opener)
-- Updated data model to track performance types
-
-### 4. Spotify Artist Integration
-**Status:** Planned (v1.1)
+**Status:** Planned
 **Spec:** [Spotify Artist Integration](specs/future/spotify-artist-integration.md)
 
 **Scope:**
+
 - Album cover art on Artist Scene card fronts
 - Gatefold right panel: mini-player with 30-second previews
 - Top tracks display with play/pause controls
@@ -422,10 +461,23 @@ Planned enhancements with detailed specifications in [docs/specs/future/](specs/
 **Prerequisites:** Gatefold animation (✅ complete)
 
 **Related:**
+
 - [spotify-enrichment-runbook.md](specs/future/spotify-enrichment-runbook.md) — Enrichment script runbook
 - [mobile-optimization.md](specs/future/mobile-optimization.md) — Mobile bottom sheet layout
 
-### 5. Venue Cross-Navigation
+### 5. Genre Scene Opener Inclusion (v1.3.0+)
+
+**Status:** Under Review
+**Spec:** [Genre Scene Opener Inclusion](specs/future/genre-scene-opener-inclusion.md)
+
+**Scope:**
+
+- Include opener band appearances in genre chart
+- Adjustable weighting (headliner vs opener)
+- Updated data model to track performance types
+
+### 6. Venue Cross-Navigation (v1.3.0+)
+
 **Status:** Planned
 **Spec:** [Venue Cross-Navigation](specs/future/venue-cross-navigation.md)
 
@@ -434,7 +486,8 @@ Planned enhancements with detailed specifications in [docs/specs/future/](specs/
 - Smooth transitions between scenes
 - Venue focus and expansion on arrival
 
-### 6. Visual Testing Suite
+### 7. Visual Testing Suite (v1.3.0+)
+
 **Status:** Planned
 **Spec:** [Visual Testing Suite](specs/future/visual-testing-suite.md)
 
@@ -443,8 +496,9 @@ Planned enhancements with detailed specifications in [docs/specs/future/](specs/
 - Visual regression detection
 - Scene rendering validation
 
-### 7. Timeline Wake Effect
-**Status:** Future (v1.1+)
+### 8. Timeline Wake Effect (v1.3.0+)
+
+**Status:** Future
 **Spec:** [Timeline Wake Effect](specs/future/timeline-wake-effect-spec.md) | [Prototype](specs/future/timeline-wake-effect-poc.html)
 
 **Scope:**

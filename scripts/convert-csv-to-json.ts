@@ -1,3 +1,20 @@
+/**
+ * CSV-to-JSON Converter
+ *
+ * ⚠️ BACKUP SCRIPT ONLY - NOT PRIMARY DATA PIPELINE
+ *
+ * This script converts the CSV export (docs/inspiration/sampleData.csv) to JSON format.
+ * It is intended as a BACKUP ONLY for when Google Sheets API is unavailable.
+ *
+ * PRIMARY PIPELINE: Use `npm run fetch-sheet` or `npm run build-data` instead,
+ * which fetches directly from Google Sheets via the Google Sheets API.
+ *
+ * CSV Source: docs/inspiration/sampleData.csv (manual export of Google Sheet)
+ * Output: public/data/concerts.json
+ *
+ * See: docs/specs/future/google-sheets-data-integration.md for complete data architecture
+ */
+
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
