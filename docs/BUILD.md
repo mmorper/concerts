@@ -26,11 +26,8 @@ npm run build
    - Bundles React application
    - Optimizes assets (JS, CSS, images)
    - Applies tree-shaking and minification
+   - Copies `public/` (including pre-generated OG image) to `dist/`
    - Outputs production build to `dist/`
-
-4. **OG Image Generation** (`npm run og:generate`)
-   - Automatically generates social media preview image
-   - See [Open Graph Image Generation](#open-graph-image-generation) below
 
 ## Open Graph (Social Media Preview)
 
@@ -51,8 +48,10 @@ The metadata includes:
 
 **Script**: `scripts/generate-og-simple.ts`
 **Output**: `public/og-image.jpg` (1200×630px, ~126KB)
-**Runs**: Automatically during `npm run build`
-**Manual**: `OG_SITE_URL=https://concerts.morperhaus.org npm run og:generate`
+**Storage**: Committed to git (not generated during CI builds)
+**Manual Regeneration**: `OG_SITE_URL=https://concerts.morperhaus.org npm run og:generate`
+
+> **Note**: The OG image is pre-generated and committed to the repository to avoid Cloudflare Pages free tier build timeout limits (20 minutes). Puppeteer + production site loading takes ~6-8 minutes, which when combined with the full build, would exceed free tier limits.
 
 #### How It Works
 
@@ -106,7 +105,19 @@ The OG image updates automatically when data changes:
 - After adding new concerts to the database
 - After updating artist data
 - After geocoding new venues
+- When changing site branding or design
 - Before major releases
+
+**Regeneration Workflow**:
+```bash
+# 1. Generate new OG image from production
+OG_SITE_URL=https://concerts.morperhaus.org npm run og:generate
+
+# 2. Commit the updated image
+git add public/og-image.jpg public/og-stats.json
+git commit -m "chore: Update OG image with latest stats"
+git push
+```
 
 #### Environment Variables
 
