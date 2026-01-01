@@ -421,6 +421,17 @@ Planned enhancements with detailed specifications in [docs/specs/future/](specs/
 - Visual regression detection
 - Scene rendering validation
 
+### 7. Timeline Wake Effect
+**Status:** Future (v1.1+)
+**Spec:** [Timeline Wake Effect](specs/future/timeline-wake-effect-spec.md) | [Prototype](specs/future/timeline-wake-effect-poc.html)
+
+**Scope:**
+- Interactive wake effect for Timeline scene (Scene1Hero)
+- Cursor movement spawns concert labels (artists up, venues down)
+- Physics-based Bezier curve arcs trailing backward
+- Velocity-responsive: fast cursor = dramatic curves, slow = gentle arcs
+- Sequential chronological spawning within each year
+
 ### Additional Enhancements
 
 **Design Polish (Optional):**

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timeline Wake Effect - Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
+      color: #1f2937;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #6b7280;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
+
+    .timeline-container {
+      width: 100%;
+      height: 60vh;
+      position: relative;
+      cursor: crosshair;
+    }
+
+    .timeline-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 500;
+    }
+
+    .label {
+      position: absolute;
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 500;
+      white-space: nowrap;
+      pointer-events: none;
+      transform-origin: center center;
+    }
+
+    .artist-label {
+      color: #6366f1;
+    }
+
+    .venue-label {
+      color: #ec4899;
+    }
+
+    circle.year-dot {
+      cursor: pointer;
+      transition: r 0.3s ease, fill 0.3s ease;
+    }
+
+    circle.year-dot:hover {
+      fill: #818cf8 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 class="title">Concert Archive</h1>
+    <p class="subtitle">174 shows across 1984–2026</p>
+  </div>
+
+  <div class="timeline-container" id="container">
+    <svg class="timeline-svg" id="timeline"></svg>
+    <div id="labels"></div>
+  </div>
+
+  <p class="hint">Move your mouse across the timeline</p>
+
+  <script>
+    // Sample data structure matching real concerts.json
+    const sampleData = [
+      { year: 1997, concerts: [
+        { headliner: 'Radiohead', venue: 'The Fillmore' },
+        { headliner: 'The Verve', venue: 'Hollywood Bowl' },
+        { headliner: 'Portishead', venue: '9:30 Club' },
+        { headliner: 'Blur', venue: 'The Warfield' },
+        { headliner: 'Beck', venue: 'The Wiltern' },
+        { headliner: 'The Chemical Brothers', venue: 'The Warfield' },
+        { headliner: 'Massive Attack', venue: 'Hollywood Palladium' },
+        { headliner: 'Prodigy', venue: 'The Fillmore' }
+      ]},
+      { year: 2003, concerts: [
+        { headliner: 'Radiohead', venue: 'Greek Theatre' },
+        { headliner: 'The White Stripes', venue: 'The Fillmore' },
+        { headliner: 'Sigur Rós', venue: 'Hollywood Bowl' }
+      ]},
+      { year: 2008, concerts: [
+        { headliner: 'Portishead', venue: 'Coachella' },
+        { headliner: 'Radiohead', venue: 'Outside Lands' },
+        { headliner: 'Nine Inch Nails', venue: 'Oracle Arena' },
+        { headliner: 'LCD Soundsystem', venue: 'The Fox Theater' }
+      ]},
+      { year: 2012, concerts: [
+        { headliner: 'Radiohead', venue: 'Outside Lands' },
+        { headliner: 'The xx', venue: 'Fox Theater' },
+        { headliner: 'James Blake', venue: 'The Independent' },
+        { headliner: 'Alt-J', venue: 'The Fillmore' },
+        { headliner: 'Grimes', venue: 'Bottom of the Hill' }
+      ]},
+      { year: 2016, concerts: [
+        { headliner: 'Radiohead', venue: 'Outside Lands' },
+        { headliner: 'LCD Soundsystem', venue: 'Bill Graham' },
+        { headliner: 'CHVRCHES', venue: 'The Warfield' },
+        { headliner: 'Tame Impala', venue: 'Bill Graham' },
+        { headliner: 'M83', venue: 'Greek Theatre' },
+        { headliner: 'Two Door Cinema Club', venue: 'The Warfield' },
+        { headliner: 'The 1975', venue: 'Bill Graham' }
+      ]},
+      { year: 2019, concerts: [
+        { headliner: 'Thom Yorke', venue: 'Bill Graham' },
+        { headliner: 'Bon Iver', venue: 'Greek Theatre' },
+        { headliner: 'Billie Eilish', venue: 'Outside Lands' },
+        { headliner: 'The National', venue: 'Greek Theatre' },
+        { headliner: 'Vampire Weekend', venue: 'Outside Lands' },
+        { headliner: 'Tame Impala', venue: 'Outside Lands' }
+      ]},
+      { year: 2022, concerts: [
+        { headliner: 'Wet Leg', venue: 'The Fillmore' },
+        { headliner: 'Big Thief', venue: 'Greek Theatre' },
+        { headliner: 'The Smile', venue: 'Bill Graham' },
+        { headliner: 'Yeah Yeah Yeahs', venue: 'Outside Lands' }
+      ]},
+      { year: 2024, concerts: [
+        { headliner: 'The National', venue: 'Greek Theatre' },
+        { headliner: 'Fontaines D.C.', venue: 'The Fillmore' },
+        { headliner: 'Yard Act', venue: 'The Independent' },
+        { headliner: 'Black Midi', venue: 'The Chapel' },
+        { headliner: 'Wet Leg', venue: 'Outside Lands' },
+        { headliner: 'boygenius', venue: 'Outside Lands' },
+        { headliner: 'The Smile', venue: 'Bill Graham' },
+        { headliner: 'Phoebe Bridgers', venue: 'Greek Theatre' },
+        { headliner: 'King Gizzard', venue: 'Bill Graham' }
+      ]}
+    ];
+
+    const container = document.getElementById('container');
+    const svg = document.getElementById('timeline');
+    const labelsContainer = document.getElementById('labels');
+
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    const centerY = height / 2;
+
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
+    // Helper functions for scaling
+    const years = sampleData.map(d => d.year);
+    const minYear = Math.min(...years);
+    const maxYear = Math.max(...years);
+    
+    function xScale(year) {
+      return 100 + ((year - minYear) / (maxYear - minYear)) * (width - 200);
+    }
+
+    const maxConcerts = Math.max(...sampleData.map(d => d.concerts.length));
+    
+    function sizeScale(count) {
+      return 6 + Math.sqrt(count / maxConcerts) * 14;
+    }
+
+    // Create SVG elements
+    function createSVGElement(tag, attrs) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+      Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+      return el;
+    }
+
+    // Draw timeline base
+    const line = createSVGElement('line', {
+      x1: 50,
+      y1: centerY,
+      x2: width - 50,
+      y2: centerY,
+      stroke: '#d1d5db',
+      'stroke-width': 2
+    });
+    svg.appendChild(line);
+
+    // Draw year circles
+    sampleData.forEach(yearData => {
+      const circle = createSVGElement('circle', {
+        class: 'year-dot',
+        cx: xScale(yearData.year),
+        cy: centerY,
+        r: sizeScale(yearData.concerts.length),
+        fill: '#6366f1',
+        opacity: 0.8,
+        stroke: '#4f46e5',
+        'stroke-width': 2
+      });
+      svg.appendChild(circle);
+    });
+
+    // Add year labels below timeline
+    sampleData.forEach(yearData => {
+      const text = createSVGElement('text', {
+        class: 'year-label',
+        x: xScale(yearData.year),
+        y: centerY + 40,
+        'text-anchor': 'middle',
+        fill: '#6b7280',
+        'font-family': 'Source Sans 3, sans-serif',
+        'font-size': '12px',
+        'font-weight': '500'
+      });
+      text.textContent = yearData.year;
+      svg.appendChild(text);
+    });
+
+    // Wake effect system
+    let activeLabels = [];
+    let mouseX = -1000;
+    let mouseY = -1000;
+    let prevMouseX = -1000;
+    let lastSpawnTimes = new Map(); // Track last spawn time per year
+    let spawnCounters = new Map(); // Track which concert index to spawn next per year
+    const wakeRadius = 100;
+
+    // Track mouse position and velocity
+    let mouseVelocity = 0;
+    container.addEventListener('mousemove', (e) => {
+      const rect = container.getBoundingClientRect();
+      prevMouseX = mouseX;
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      
+      // Calculate cursor velocity (for arc curvature)
+      if (prevMouseX !== -1000) {
+        mouseVelocity = mouseX - prevMouseX;
+      }
+    });
+
+    container.addEventListener('mouseleave', () => {
+      mouseX = -1000;
+      mouseY = -1000;
+      prevMouseX = -1000;
+      mouseVelocity = 0;
+    });
+
+    // Create Bezier curve for label path
+    function createArcPath(startX, startY, type, cursorVelocity, staggerIndex, totalInYear) {
+      // Much larger vertical offset to guarantee no overlapping
+      // Use negative stagger so first concert appears first in sequence
+      const staggerOffset = (staggerIndex - totalInYear / 2) * 55;
+      
+      // Direction: artists up (-1), venues down (1)
+      const direction = type === 'artist' ? -1 : 1;
+      
+      // Increased base arc height for more dramatic Y-axis arc
+      const baseHeight = 140 + Math.abs(staggerOffset * 0.5);
+      
+      // Backward curve strength based on cursor velocity
+      // Faster cursor = more dramatic backward curve
+      const velocityFactor = Math.min(Math.abs(cursorVelocity) / 10, 3);
+      const backwardCurve = 100 + (velocityFactor * 50); // 100-250px backward
+      
+      // Bezier control points with stagger applied to X as well for more separation
+      // P0: start (circle position)
+      const p0 = { x: startX, y: startY };
+      
+      // P1: control point 1 (upward/downward, slightly forward)
+      const p1 = { 
+        x: startX + 30 + (staggerIndex * 3), // Add horizontal stagger too
+        y: startY + (direction * baseHeight * 0.6)
+      };
+      
+      // P2: control point 2 (peak height, curved backward)
+      const p2 = { 
+        x: startX - backwardCurve * 0.4 + (staggerIndex * 2),
+        y: startY + (direction * baseHeight * 1.1) // Higher peak
+      };
+      
+      // P3: end point (trailing off backward and returning toward baseline)
+      const p3 = { 
+        x: startX - backwardCurve + (staggerIndex * 2),
+        y: startY + (direction * baseHeight * 0.5) // Come back down/up
+      };
+      
+      return { p0, p1, p2, p3 };
+    }
+
+    // Get point on cubic Bezier curve
+    function getPointOnCurve(curve, t) {
+      const t2 = t * t;
+      const t3 = t2 * t;
+      const mt = 1 - t;
+      const mt2 = mt * mt;
+      const mt3 = mt2 * mt;
+      
+      return {
+        x: curve.p0.x * mt3 + 
+           3 * curve.p1.x * mt2 * t + 
+           3 * curve.p2.x * mt * t2 + 
+           curve.p3.x * t3,
+        y: curve.p0.y * mt3 + 
+           3 * curve.p1.y * mt2 * t + 
+           3 * curve.p2.y * mt * t2 + 
+           curve.p3.y * t3
+      };
+    }
+
+    // Animation loop
+    function animate() {
+      const now = Date.now();
+      
+      // Check each year for spawning
+      sampleData.forEach(yearData => {
+        const circleX = xScale(yearData.year);
+        const circleY = centerY;
+        const distance = Math.sqrt(Math.pow(mouseX - circleX, 2) + Math.pow(mouseY - circleY, 2));
+        
+        if (distance < wakeRadius) {
+          // Cursor is over this year's circle
+          const yearKey = yearData.year;
+          const lastSpawn = lastSpawnTimes.get(yearKey) || 0;
+          
+          // Spawn rate: faster for years with more concerts
+          // Base: 150ms between spawns, scales down to 50ms for busy years
+          const concertCount = yearData.concerts.length;
+          const spawnInterval = Math.max(50, 150 - (concertCount * 10));
+          
+          if (now - lastSpawn > spawnInterval) {
+            // Get next concert index to spawn
+            const nextIndex = spawnCounters.get(yearKey) || 0;
+            
+            if (nextIndex < yearData.concerts.length) {
+              const concert = yearData.concerts[nextIndex];
+              
+              // Create artist label
+              const artistElement = createLabel(
+                concert.headliner,
+                circleX,
+                circleY,
+                'artist',
+                nextIndex,
+                yearData.concerts.length
+              );
+              
+              const artistCurve = createArcPath(
+                circleX, 
+                circleY, 
+                'artist', 
+                mouseVelocity,
+                nextIndex,
+                yearData.concerts.length
+              );
+              
+              // Create venue label
+              const venueElement = createLabel(
+                concert.venue,
+                circleX,
+                circleY,
+                'venue',
+                nextIndex,
+                yearData.concerts.length
+              );
+              
+              const venueCurve = createArcPath(
+                circleX, 
+                circleY, 
+                'venue', 
+                mouseVelocity,
+                nextIndex,
+                yearData.concerts.length
+              );
+              
+              activeLabels.push({
+                yearKey,
+                concertIndex: nextIndex,
+                artist: {
+                  element: artistElement,
+                  curve: artistCurve,
+                  progress: 0
+                },
+                venue: {
+                  element: venueElement,
+                  curve: venueCurve,
+                  progress: 0
+                },
+                birthTime: now
+              });
+              
+              lastSpawnTimes.set(yearKey, now);
+              spawnCounters.set(yearKey, nextIndex + 1);
+            }
+          }
+        } else {
+          // Reset spawn counter when cursor leaves circle
+          lastSpawnTimes.delete(yearData.year);
+          spawnCounters.delete(yearData.year);
+        }
+      });
+
+      // Update all active labels - faster constant speed along curve
+      const arcSpeed = 0.006; // Faster progress (~166 frames = ~2.7 seconds)
+      
+      activeLabels = activeLabels.filter(label => {
+        const age = now - label.birthTime;
+        
+        // Advance along curve at constant rate
+        label.artist.progress += arcSpeed;
+        label.venue.progress += arcSpeed;
+        
+        // Remove if past end of curve
+        if (label.artist.progress > 1) {
+          label.artist.element.remove();
+          label.venue.element.remove();
+          return false;
+        }
+        
+        // Calculate position on curve
+        const artistPos = getPointOnCurve(label.artist.curve, label.artist.progress);
+        const venuePos = getPointOnCurve(label.venue.curve, label.venue.progress);
+        
+        // Fade in quickly, stay visible longer, then fade out only in last 10%
+        let opacity;
+        if (label.artist.progress < 0.05) {
+          // Quick fade in over first 5%
+          opacity = label.artist.progress / 0.05;
+        } else if (label.artist.progress > 0.9) {
+          // Fade out only in last 10%
+          opacity = (1 - label.artist.progress) / 0.1;
+        } else {
+          // Stay fully visible for the middle 85% of journey
+          opacity = 1;
+        }
+        
+        // Apply blur only in last 5%
+        const blur = label.artist.progress > 0.95
+          ? (label.artist.progress - 0.95) / 0.05 * 2
+          : 0;
+        
+        // Update artist label
+        label.artist.element.style.left = `${artistPos.x}px`;
+        label.artist.element.style.top = `${artistPos.y}px`;
+        label.artist.element.style.opacity = opacity;
+        label.artist.element.style.filter = `blur(${blur}px)`;
+        
+        // Update venue label
+        label.venue.element.style.left = `${venuePos.x}px`;
+        label.venue.element.style.top = `${venuePos.y}px`;
+        label.venue.element.style.opacity = opacity;
+        label.venue.element.style.filter = `blur(${blur}px)`;
+        
+        return true;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    function createLabel(text, x, y, type, index, total) {
+      const element = document.createElement('div');
+      element.className = `label ${type}-label`;
+      element.textContent = text;
+      element.style.position = 'absolute';
+      element.style.left = `${x}px`;
+      element.style.top = `${y}px`;
+      element.style.opacity = '0';
+      
+      // Size variation based on position in list (first = larger)
+      // Base size increased 20% (12px → 14.4px)
+      const sizeVariation = 1 - (index / total) * 0.3;
+      element.style.fontSize = `${14.4 * sizeVariation}px`;
+      
+      labelsContainer.appendChild(element);
+      
+      return element;
+    }
+
+    // Start animation loop
+    animate();
+  </script>
+</body>
+</html>
