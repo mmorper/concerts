@@ -118,7 +118,7 @@ async function main() {
           }
           .subtitle {
             font-family: 'Source Sans 3', sans-serif;
-            font-size: 18px;
+            font-size: 22px;
             font-weight: 400;
             fill: rgba(255,255,255,0.95);
             letter-spacing: 0;
