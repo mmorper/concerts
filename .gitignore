@@ -37,6 +37,11 @@ lerna-debug.log*
 *.tmp
 .cache/
 
+# Build-time generated files
+public/version.json
+public/og-image.jpg
+public/og-stats.json
+
 # Claude Code configuration and plans
 .claude/
 
