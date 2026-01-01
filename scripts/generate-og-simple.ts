@@ -125,8 +125,11 @@ async function main() {
         </style>
       </defs>
 
-      <text x="600" y="80" text-anchor="middle" class="title">Morperhaus Concert Archives</text>
-      <text x="600" y="120" text-anchor="middle" class="subtitle">${decades}+ decades. ${stats.concerts} shows. ${stats.artists} artists. ${stats.venues} venues. ${stats.scenes} interactive stories.</text>
+      <!-- Semi-transparent background for better contrast -->
+      <rect x="0" y="0" width="${OUTPUT_WIDTH}" height="160" fill="rgba(0, 0, 0, 0.4)" />
+
+      <text x="600" y="70" text-anchor="middle" class="title">Morperhaus Concert Archives</text>
+      <text x="600" y="110" text-anchor="middle" class="subtitle">${decades}+ decades. ${stats.concerts} shows. ${stats.artists} artists. ${stats.venues} venues. ${stats.scenes} interactive stories.</text>
     </svg>
   `
 
