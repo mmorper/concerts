@@ -1,5 +1,15 @@
 # Artist Scene v3: Album Mosaic
 
+> ⚠️ **Partial Implementation Status**
+>
+> | Component | Status | Reference |
+> |-----------|--------|-----------|
+> | Album mosaic grid | ✅ Implemented | Current file |
+> | Gatefold animation | ✅ Implemented | [artist-scene.md](../implemented/artist-scene.md) |
+> | Spotify integration | 🔜 Planned | [spotify-artist-integration.md](../future/spotify-artist-integration.md) |
+>
+> The Spotify sections in this document are **superseded** by the dedicated Spotify spec linked above. Refer to that document for current requirements.
+
 > **This spec supersedes all previous Artist Scene plans**, including the v1 treemap concept (`Band_Scene_Plan`) and the v2 hybrid treemap/grid approach (`phase-9-artist_scene_plan_v2.md`). If you encounter references to treemaps, D3 brick walls, or hybrid layouts for the Artist Scene elsewhere in project documentation, disregard them in favor of this spec.
 
 -----
@@ -43,6 +53,8 @@ Two reasons:
 -----
 
 ## Data Architecture
+
+> 📌 **Note**: The authoritative data schema for Spotify integration is now in [spotify-artist-integration.md](../future/spotify-artist-integration.md#data-architecture). The schema below may be outdated.
 
 ### Source Data
 
@@ -280,6 +292,12 @@ This is Phase 6 / stretch goal—not required for MVP.
 -----
 
 ## Spotify Integration
+
+> 📌 **Moved**: This section has been expanded and moved to [spotify-artist-integration.md](../future/spotify-artist-integration.md). See that document for:
+> - Album art selection logic (with fallback hierarchy)
+> - Mini-player component spec
+> - Track row states and preview handling
+> - TOS compliance checklist
 
 ### Build-Time Enrichment
 
@@ -601,6 +619,8 @@ src/components/scenes/ArtistScene/
 - [ ] Ensure clicking new card closes previous
 
 ### Phase 4: Spotify Mini-Player
+
+> 📌 **See**: [spotify-artist-integration.md](../future/spotify-artist-integration.md#implementation-checklist) for the complete implementation checklist.
 
 - [ ] Build `SpotifyMiniPlayer.tsx`
 - [ ] Implement `<audio>` element with preview URL

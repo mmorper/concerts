@@ -353,6 +353,18 @@ const useArtistDetailMode = () => {
 }
 ```
 
+#### Spotify Mini-Player (Mobile Layout)
+
+The desktop gatefold's right panel contains a Spotify mini-player. On mobile, this appears below the concert history in the bottom sheet.
+
+**Design requirements defined in**: [spotify-artist-integration.md](./spotify-artist-integration.md#mobile-considerations)
+
+**Mobile-specific implementation**:
+- [ ] Hide track album art thumbnails (save horizontal space)
+- [ ] Ensure 48px minimum touch targets on track rows
+- [ ] Simplify Play All button
+- [ ] Test audio playback doesn't interfere with sheet drag gestures
+
 #### Mobile Bottom Sheet (v1.2.0+ for phones only)
 
 - [ ] Replace gatefold animation with slide-up bottom sheet on viewports <768px

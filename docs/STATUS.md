@@ -276,7 +276,7 @@ All major implementation phases are complete:
   - Artist profile links and top tracks
   - 30-second preview playback
   - Replace skeleton with live data
-  - See: [docs/specs/future/spotify-integration.md](specs/future/spotify-integration.md)
+  - See: [docs/specs/future/spotify-enrichment-runbook.md](specs/future/spotify-enrichment-runbook.md)
 
 - ⚠️ **Scene background** - Change from DARK to LIGHT
   - Current: `from-indigo-950 to-purple-950` (DARK)
@@ -408,15 +408,22 @@ Planned enhancements with detailed specifications in [docs/specs/future/](specs/
 - Adjustable weighting (headliner vs opener)
 - Updated data model to track performance types
 
-### 4. Spotify Integration
-**Status:** Planned
-**Spec:** [Spotify Integration](specs/future/spotify-integration.md)
+### 4. Spotify Artist Integration
+**Status:** Planned (v1.1)
+**Spec:** [Spotify Artist Integration](specs/future/spotify-artist-integration.md)
 
 **Scope:**
-- Album cover images from Spotify API
-- Artist profile links and top tracks
-- 30-second preview playback
-- OAuth authentication flow
+- Album cover art on Artist Scene card fronts
+- Gatefold right panel: mini-player with 30-second previews
+- Top tracks display with play/pause controls
+- Build-time Spotify API enrichment (no runtime calls)
+- Graceful fallbacks (no album → single → artist image → placeholder)
+
+**Prerequisites:** Gatefold animation (✅ complete)
+
+**Related:**
+- [spotify-enrichment-runbook.md](specs/future/spotify-enrichment-runbook.md) — Enrichment script runbook
+- [mobile-optimization.md](specs/future/mobile-optimization.md) — Mobile bottom sheet layout
 
 ### 5. Venue Cross-Navigation
 **Status:** Planned
@@ -528,7 +535,7 @@ Planned enhancements with detailed specifications in [docs/specs/future/](specs/
 - [Mobile Optimization](specs/future/mobile-optimization.md) - Touch refinements, iPad support
 - [Timeline Artist Display Enhancement](specs/future/timeline-artist-display-enhancement.md) - Rich artist modals
 - [Genre Scene Opener Inclusion](specs/future/genre-scene-opener-inclusion.md) - Include opener appearances (under review)
-- [Spotify Integration](specs/future/spotify-integration.md) - API integration guide
+- [Spotify Enrichment Runbook](specs/future/spotify-enrichment-runbook.md) - API setup and data enrichment
 - [Venue Cross-Navigation](specs/future/venue-cross-navigation.md) - Map→Venue linking
 - [Visual Testing Suite](specs/future/visual-testing-suite.md) - Automated testing
 
