@@ -17,10 +17,13 @@ This document describes the data pipeline for fetching, validating, and enrichin
 | Command | Description | When to Use |
 |---------|-------------|-------------|
 | `npm run fetch-sheet` | Fetch data from Google Sheets only | Quick data refresh without enrichment |
+| `npm run fetch-sheet -- --dry-run` | Preview fetch without writing files | Test before applying changes |
 | `npm run validate-data` | Validate concert data quality | After fetching, before committing |
 | `npm run diff-data` | Compare data changes | See what changed since last backup |
 | `npm run enrich` | Add artist metadata (out of scope v1.2.0) | When artist data needed |
 | `npm run build-data` | Run full pipeline (fetch + validate + enrich) | Complete data refresh |
+| `npm run build-data -- --dry-run` | Preview pipeline without writing files | Test full pipeline safely |
+| `npm run build-data -- --skip-validation` | Skip validation step | Faster builds when data is trusted |
 
 ---
 
@@ -34,33 +37,38 @@ This document describes the data pipeline for fetching, validating, and enrichin
    # Edit .env and add your Google Sheets API credentials
    ```
 
-2. **Fetch concert data:**
+2. **Preview what will be fetched (safe, no writes):**
+   ```bash
+   npm run fetch-sheet -- --dry-run
+   ```
+
+3. **Fetch concert data (automatic backup created):**
    ```bash
    npm run fetch-sheet
    ```
 
-3. **Validate data quality:**
+4. **Validate data quality:**
    ```bash
    npm run validate-data
    ```
 
-4. **Build the site:**
+5. **Build the site:**
    ```bash
    npm run build
    ```
 
 ### Regular Workflow (Adding New Concerts)
 
-1. **Create backup for comparison:**
+1. **Update Google Sheet** with new concert data
+
+2. **Preview changes (optional, safe):**
    ```bash
-   cp public/data/concerts.json public/data/concerts.json.backup
+   npm run build-data -- --dry-run
    ```
 
-2. **Update Google Sheet** with new concert data
-
-3. **Fetch updated data:**
+3. **Fetch and validate (automatic backup created):**
    ```bash
-   npm run fetch-sheet
+   npm run build-data
    ```
 
 4. **Review changes:**
@@ -68,17 +76,65 @@ This document describes the data pipeline for fetching, validating, and enrichin
    npm run diff-data
    ```
 
-5. **Validate data:**
-   ```bash
-   npm run validate-data
-   ```
-
-6. **Commit changes:**
+5. **Commit changes:**
    ```bash
    git add public/data/concerts.json
    git commit -m "data: Add concerts for [date/event]"
    git push
    ```
+
+**Note**: As of v1.2.1, automatic backups are created before any file writes. Manual backups are optional but still recommended for peace of mind.
+
+---
+
+## Safety Features (v1.2.1+)
+
+### Automatic Backups
+
+All data pipeline scripts automatically create timestamped backups before modifying files:
+
+**Files Protected:**
+- `public/data/concerts.json` → `concerts.json.backup.YYYY-MM-DDTHH-MM-SS`
+- `public/data/artists-metadata.json` → `artists-metadata.json.backup.YYYY-MM-DDTHH-MM-SS`
+
+**Features:**
+- ✅ Automatic creation before every write
+- ✅ Timestamped for history tracking
+- ✅ Keeps last 10 backups (configurable)
+- ✅ Auto-cleanup of old backups
+- ✅ No manual intervention required
+
+**Example Output:**
+```
+📦 Creating backups...
+✅ Created 1 backup(s)
+   concerts.json → concerts.json.backup.2026-01-01T14-30-45
+```
+
+### Dry-Run Mode
+
+Preview what changes will be made **without writing any files**:
+
+```bash
+# Preview fetch only
+npm run fetch-sheet -- --dry-run
+
+# Preview full pipeline
+npm run build-data -- --dry-run
+```
+
+**What It Does:**
+- Fetches data from Google Sheets
+- Processes and validates all data
+- Shows summary statistics
+- **Does NOT write any files**
+- **Does NOT create backups**
+
+**Use Cases:**
+- Test pipeline before applying changes
+- Verify Google Sheets data is valid
+- Check what will change without risk
+- Learn how the pipeline works safely
 
 ---
 

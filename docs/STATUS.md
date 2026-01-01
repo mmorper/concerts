@@ -1,9 +1,9 @@
 # Morperhaus Concert Archives - Status
 
-**Version:** v1.2.0 (Ready for Release)
+**Version:** v1.2.1 (Ready for Release)
 **Last Updated:** 2026-01-01
-**Current Phase:** Data Pipeline Enhancement Complete
-**Last Commit:** 216aa50 - "docs: Add comprehensive Google Sheets data integration spec for v1.2.0"
+**Current Phase:** Data Pipeline Safety Features Complete
+**Last Commit:** TBD - "feat: Add automatic backups and dry-run mode (v1.2.1)"
 **Live URL:** https://concerts.morperhaus.org
 
 ---
@@ -30,7 +30,8 @@
 - ✅ Build version tracking system implemented
 - ✅ v1.1.0 GitHub release published
 
-### v1.2.0 Data Pipeline Enhancement (Current) 🎉
+### v1.2.0 Data Pipeline Enhancement 🎉
+
 - ✅ Google Sheets Phase 1 Core complete (OAuth 2.0, fetch, process, geocode)
 - ✅ Phase 1 Enhancement 1.1: Pre-build validation (`npm run validate-data`)
 - ✅ Phase 1 Enhancement 1.2: Detailed logging and statistics
@@ -38,6 +39,15 @@
 - ✅ Complete documentation ([DATA_PIPELINE.md](DATA_PIPELINE.md))
 - ✅ Implementation notes ([specs/implemented/google-sheets-phase1-implementation.md](specs/implemented/google-sheets-phase1-implementation.md))
 - 📝 Phase 2 (webhook automation) out of scope for v1.2.0, spec'd for future
+
+### v1.2.1 Safety Features (Current) 🎉
+
+- ✅ Automatic timestamped backups before all file writes
+- ✅ Backup retention management (keeps last 10, automatic cleanup)
+- ✅ Dry-run mode for safe testing (`--dry-run` flag)
+- ✅ Reusable backup utility module (`scripts/utils/backup.ts`)
+- ✅ Updated documentation with comprehensive safety features section
+- ✅ Backup files excluded from git (`.gitignore` updated)
 
 ### v1.3.0+ Future
 

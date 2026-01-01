@@ -1,5 +1,6 @@
 import { GoogleSheetsClient } from './utils/google-sheets-client'
 import { getCityCoordinates, getDefaultCoordinates } from '../src/utils/city-coordinates'
+import { createBackup } from './utils/backup'
 import { writeFileSync } from 'fs'
 import { join } from 'path'
 import * as dotenv from 'dotenv'
@@ -44,8 +45,10 @@ function normalizeArtistName(name: string): string {
 /**
  * Main function to fetch and process Google Sheets data
  */
-async function fetchGoogleSheet() {
-  console.log('🎸 Fetching concert data from Google Sheets...\n')
+async function fetchGoogleSheet(options: { dryRun?: boolean } = {}) {
+  const { dryRun = process.argv.includes('--dry-run') } = options
+
+  console.log(`🎸 Fetching concert data from Google Sheets...${dryRun ? ' (DRY RUN)' : ''}\n`)
 
   // Validate environment variables
   const requiredVars = [
@@ -171,7 +174,22 @@ async function fetchGoogleSheet() {
 
     // Write to file
     const outputPath = join(process.cwd(), 'public', 'data', 'concerts.json')
-    writeFileSync(outputPath, JSON.stringify(concertData, null, 2))
+
+    if (dryRun) {
+      console.log('=' .repeat(60))
+      console.log('🔍 DRY RUN MODE - No files will be modified')
+      console.log('=' .repeat(60))
+      console.log()
+      console.log(`Would write to: ${outputPath}`)
+      console.log(`File size: ${JSON.stringify(concertData, null, 2).length} bytes`)
+      console.log()
+    } else {
+      // Create backup before overwriting
+      createBackup(outputPath, { maxBackups: 10, verbose: true })
+
+      // Write new data
+      writeFileSync(outputPath, JSON.stringify(concertData, null, 2))
+    }
 
     // Print summary
     console.log('=' .repeat(60))
@@ -198,16 +216,22 @@ async function fetchGoogleSheet() {
     console.log(`   - ${uniqueVenues.size} unique venues`)
     console.log(`   - ${uniqueCities.size} unique cities`)
     console.log()
-    console.log(`💾 Output file: ${outputPath}`)
+    if (dryRun) {
+      console.log('💡 To apply these changes, run without --dry-run flag')
+    } else {
+      console.log(`💾 Output file: ${outputPath}`)
+    }
     console.log()
     console.log('=' .repeat(60))
-    console.log('✨ Data fetch complete!')
+    console.log(`✨ Data fetch complete!${dryRun ? ' (DRY RUN)' : ''}`)
     console.log('=' .repeat(60))
     console.log()
-    console.log('Next steps:')
-    console.log('  • Validate data: npm run validate-data')
-    console.log('  • Enrich artists: npm run enrich')
-    console.log('  • Build site: npm run build')
+    if (!dryRun) {
+      console.log('Next steps:')
+      console.log('  • Validate data: npm run validate-data')
+      console.log('  • Enrich artists: npm run enrich')
+      console.log('  • Build site: npm run build')
+    }
   } catch (error) {
     console.error('❌ Error fetching Google Sheets data:', error)
     process.exit(1)

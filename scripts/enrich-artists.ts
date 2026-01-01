@@ -1,6 +1,7 @@
 import { TheAudioDBClient } from './utils/theaudiodb-client'
 import { LastFmClient } from './utils/lastfm-client'
 import { RateLimiter } from './utils/rate-limiter'
+import { createBackup } from './utils/backup'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { join } from 'path'
 import * as dotenv from 'dotenv'
@@ -23,8 +24,10 @@ interface ArtistMetadata {
 /**
  * Enrich concert data with artist metadata from free APIs
  */
-async function enrichArtists() {
-  console.log('🎤 Enriching concert data with artist metadata...\n')
+async function enrichArtists(options: { dryRun?: boolean } = {}) {
+  const { dryRun = process.argv.includes('--dry-run') } = options
+
+  console.log(`🎤 Enriching concert data with artist metadata...${dryRun ? ' (DRY RUN)' : ''}\n`)
 
   // Load concerts data
   const concertsPath = join(process.cwd(), 'public', 'data', 'concerts.json')
@@ -110,14 +113,32 @@ async function enrichArtists() {
   }
 
   // Save metadata
-  writeFileSync(metadataPath, JSON.stringify(metadata, null, 2))
+  if (dryRun) {
+    console.log('\n=' .repeat(30))
+    console.log('🔍 DRY RUN MODE - No files will be modified')
+    console.log('=' .repeat(30))
+    console.log(`\nWould write to: ${metadataPath}`)
+    console.log(`File size: ${JSON.stringify(metadata, null, 2).length} bytes`)
+  } else {
+    // Create backup before overwriting
+    createBackup(metadataPath, { maxBackups: 10, verbose: true })
+
+    // Write new metadata
+    writeFileSync(metadataPath, JSON.stringify(metadata, null, 2))
+  }
 
   console.log(`\n📊 Enrichment Summary:`)
   console.log(`   ✅ Enriched: ${enriched}`)
   console.log(`   ⏭️  Skipped (cached): ${skipped}`)
   console.log(`   ❌ Failed: ${failed}`)
-  console.log(`\n💾 Saved metadata to: ${metadataPath}`)
-  console.log('\n🎉 Done!')
+
+  if (dryRun) {
+    console.log('\n💡 To apply these changes, run without --dry-run flag')
+  } else {
+    console.log(`\n💾 Saved metadata to: ${metadataPath}`)
+  }
+
+  console.log(`\n🎉 Done!${dryRun ? ' (DRY RUN)' : ''}`)
 }
 
 function normalizeArtistName(name: string): string {
