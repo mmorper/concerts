@@ -6,7 +6,7 @@
   "description": "Interactive concert history timeline application",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsx scripts/generate-version.ts && tsc && vite build",
     "preview": "vite preview",
     "build-data": "tsx scripts/build-data.ts",
     "fetch-sheet": "tsx scripts/fetch-google-sheet.ts",

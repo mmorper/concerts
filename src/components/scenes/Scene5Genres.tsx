@@ -757,7 +757,7 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
             setFocusedNode('All Genres')
             setExpandedGenre(null)
           }}
-          className="absolute top-32 right-8 z-20 px-4 py-2 bg-white/80 backdrop-blur-sm text-gray-900 border border-gray-300 rounded-lg font-sans text-sm font-medium hover:bg-white transition-all duration-200 shadow-sm"
+          className="absolute top-32 right-8 z-20 px-6 py-3 bg-white/80 backdrop-blur-sm text-gray-900 border border-gray-300 rounded-lg font-sans text-sm font-medium hover:bg-white transition-all duration-200 shadow-sm min-h-[44px]"
         >
           Reset View
         </motion.button>
@@ -794,8 +794,8 @@ export function Scene5Genres({ concerts }: Scene5GenresProps) {
       >
         <p className="font-sans text-xs text-gray-500 font-medium uppercase tracking-widest">
           {expandedGenre
-            ? 'Click inner ring to zoom out · Click outer segments to drill deeper'
-            : 'Hover to preview · Click to zoom into a genre'
+            ? 'Tap inner ring to zoom out · Tap outer segments to drill deeper'
+            : 'Tap to zoom into a genre'
           }
         </p>
       </motion.div>

@@ -10,15 +10,38 @@ interface Scene1HeroProps {
 export function Scene1Hero({ concerts }: Scene1HeroProps) {
   const timelineRef = useRef<SVGSVGElement>(null)
   const [selectedYear, setSelectedYear] = useState<number | null>(null)
+  const [dimensions, setDimensions] = useState({ width: 0, height: 200 })
+
+  // Use ResizeObserver to get accurate dimensions and handle orientation changes
+  useEffect(() => {
+    if (!timelineRef.current) return
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[0]
+      if (entry) {
+        const { width } = entry.contentRect
+        // Only update if width is valid (avoid initial 0 width)
+        if (width > 0) {
+          setDimensions({ width, height: 200 })
+        }
+      }
+    })
+
+    resizeObserver.observe(timelineRef.current)
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [])
 
   useEffect(() => {
-    if (!timelineRef.current || concerts.length === 0) return
+    if (!timelineRef.current || concerts.length === 0 || dimensions.width === 0) return
 
     const svg = d3.select(timelineRef.current)
     svg.selectAll('*').remove() // Clear previous render
 
-    const width = timelineRef.current.clientWidth
-    const height = 200
+    const width = dimensions.width
+    const height = dimensions.height
     const margin = { top: 40, right: 60, bottom: 40, left: 60 }
     const innerWidth = width - margin.left - margin.right
     const innerHeight = height - margin.top - margin.bottom
@@ -46,6 +69,9 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
       .domain([0, maxConcerts])
       .range([4, 16])
 
+    // Minimum touch target size (44px / 2 = 22px radius)
+    const minTouchRadius = 22
+
     // Create main group
     const g = svg.append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`)
@@ -66,6 +92,9 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
       const count = concertsByYear.get(year) || 0
       const x = xScale(year)
       const radius = sizeScale(count)
+
+      // Calculate touch target radius (minimum 44px diameter = 22px radius)
+      const touchRadius = Math.max(radius, minTouchRadius)
 
       // Draw outer glow ring (appears on hover)
       const glowRing = g.append('circle')
@@ -88,17 +117,29 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
         .attr('filter', 'blur(12px)')
         .style('pointer-events', 'none')
 
-      // Draw dot
+      // Draw invisible larger touch target
+      const touchTarget = g.append('circle')
+        .attr('cx', x)
+        .attr('cy', innerHeight / 2)
+        .attr('r', touchRadius)
+        .attr('fill', 'transparent')
+        .attr('class', 'cursor-pointer')
+        .style('cursor', 'pointer')
+
+      // Draw visible dot (smaller, for aesthetics)
       const dot = g.append('circle')
         .attr('cx', x)
         .attr('cy', innerHeight / 2)
         .attr('r', radius)
         .attr('fill', '#6366f1')
         .attr('opacity', 0.8)
-        .attr('class', 'cursor-pointer')
-        .style('cursor', 'pointer')
+        .style('pointer-events', 'none') // Touch handled by touchTarget
+
+      // Add interactions to touch target
+      touchTarget
         .on('mouseenter', function() {
-          d3.select(this)
+          // Animate the visible dot
+          dot
             .transition()
             .duration(250)
             .attr('r', radius * 1.5)
@@ -121,7 +162,8 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
             .attr('opacity', 0.6)
         })
         .on('mouseleave', function() {
-          d3.select(this)
+          // Reset the visible dot
+          dot
             .transition()
             .duration(250)
             .attr('r', radius)
@@ -147,7 +189,7 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
           setSelectedYear(year)
         })
 
-      dot.append('title')
+      touchTarget.append('title')
         .text(`${year}: ${count} concert${count !== 1 ? 's' : ''}`)
     })
 
@@ -170,7 +212,7 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
       .attr('font-weight', '500')
       .text(d => d)
 
-  }, [concerts, setSelectedYear])
+  }, [concerts, dimensions, setSelectedYear])
 
   // Calculate stats from data
   const totalConcerts = concerts.length
@@ -278,7 +320,8 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
                 </div>
                 <button
                   onClick={() => setSelectedYear(null)}
-                  className="text-white hover:text-indigo-200 transition-colors"
+                  className="text-white hover:text-indigo-200 transition-colors p-2 -m-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
+                  aria-label="Close"
                 >
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

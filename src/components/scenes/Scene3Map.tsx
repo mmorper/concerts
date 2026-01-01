@@ -43,6 +43,26 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
   const [isMapActive, setIsMapActive] = useState(false)
   const [showHint, setShowHint] = useState(true)
 
+  // Use ResizeObserver to handle orientation changes and call invalidateSize
+  useEffect(() => {
+    if (!mapRef.current) return
+
+    const resizeObserver = new ResizeObserver(() => {
+      if (mapInstanceRef.current) {
+        // Delay to ensure layout is settled
+        setTimeout(() => {
+          mapInstanceRef.current?.invalidateSize()
+        }, 100)
+      }
+    })
+
+    resizeObserver.observe(mapRef.current)
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [])
+
   // Helper function to scroll to a specific scene
   const scrollToScene = (sceneId: number) => {
     const scrollContainer = document.querySelector('.snap-y')
@@ -340,7 +360,7 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
             <button
               key={region}
               onClick={() => setSelectedRegion(region)}
-              className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              className={`font-sans px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 min-h-[44px] ${
                 selectedRegion === region
                   ? 'bg-indigo-600 text-white'
                   : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -363,7 +383,7 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
         <div ref={mapRef} className="w-full h-full" />
       </motion.div>
 
-      {/* "Click to explore" Hint - only visible when map is locked and hint is active */}
+      {/* "Tap to explore" Hint - only visible when map is locked and hint is active */}
       <AnimatePresence>
         {!isMapActive && showHint && (
           <motion.div
@@ -374,7 +394,7 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
             className="absolute bottom-32 left-0 right-0 z-[1000] text-center pointer-events-none"
           >
             <div className="inline-block bg-gray-800/80 backdrop-blur-sm text-gray-400 text-sm px-4 py-2 rounded-full">
-              Click to explore map
+              Tap to explore map
             </div>
           </motion.div>
         )}

@@ -25,10 +25,33 @@ type ViewMode = 'top10' | 'all'
 
 export function Scene4Bands({ concerts }: Scene4BandsProps) {
   const svgRef = useRef<SVGSVGElement>(null)
+  const simulationRef = useRef<d3.Simulation<any, any> | null>(null)
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>('top10')
   const [expandedVenues, setExpandedVenues] = useState<Set<string>>(new Set())
   const [centeredVenue, setCenteredVenue] = useState<string | null>(null)
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+
+  // Use ResizeObserver to track SVG dimensions and handle orientation changes
+  useEffect(() => {
+    if (!svgRef.current) return
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[0]
+      if (entry) {
+        const { width, height } = entry.contentRect
+        if (width > 0 && height > 0) {
+          setDimensions({ width, height })
+        }
+      }
+    })
+
+    resizeObserver.observe(svgRef.current)
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [])
 
   // Compute venue stats
   const venueStats = useMemo(() => {
@@ -279,13 +302,13 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
   }
 
   useEffect(() => {
-    if (!svgRef.current || nodes.length === 0) return
+    if (!svgRef.current || nodes.length === 0 || dimensions.width === 0 || dimensions.height === 0) return
 
     const svg = d3.select(svgRef.current)
     svg.selectAll('*').remove()
 
-    const width = svgRef.current.clientWidth
-    const height = svgRef.current.clientHeight
+    const width = dimensions.width
+    const height = dimensions.height
 
     // Add background rect for click-away
     svg.append('rect')
@@ -323,6 +346,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
 
     // Create force simulation with radial layout
     const simulation = d3.forceSimulation(nodes as any)
+    simulationRef.current = simulation
       .force('link', d3.forceLink(links)
         .id((d: any) => d.id)
         .distance((d: any) => {
@@ -342,7 +366,12 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
         return -100
       }))
       .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collision', d3.forceCollide().radius((d: any) => getNodeSize(d) + 15))
+      .force('collision', d3.forceCollide().radius((d: any) => {
+        // Increase collision radius for touch - minimum 22px radius (44px diameter)
+        const baseSize = getNodeSize(d)
+        const touchRadius = Math.max(baseSize, 22)
+        return touchRadius + 15
+      }))
       // Radial force to push venues toward center
       // When a venue is centered, position children around it
       .force('radial', d3.forceRadial(
@@ -441,36 +470,12 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
         .on('drag', dragged)
         .on('end', dragended) as any)
 
-    // Add circles with different colors per type
+    // Add invisible touch targets (minimum 44px diameter = 22px radius)
     node.append('circle')
-      .attr('r', d => getNodeSize(d))
-      .attr('fill', d => {
-        if (d.type === 'venue') return '#6366f1' // Indigo for venues
-        if (d.type === 'headliner') return '#8b5cf6' // Purple for headliners
-        return '#ec4899' // Pink for openers
-      })
-      .attr('fill-opacity', 0.85)
-      .attr('stroke', d => {
-        if (d.type === 'venue') return '#4f46e5'
-        if (d.type === 'headliner') return '#7c3aed'
-        return '#db2777'
-      })
-      .attr('stroke-width', d => d.type === 'venue' ? 3 : 2)
-      .attr('stroke-opacity', 1)
+      .attr('r', d => Math.max(getNodeSize(d), 22))
+      .attr('fill', 'transparent')
       .style('cursor', 'pointer')
       .on('click', function(_event, d) {
-        // Add click feedback: brief opacity boost on clicked circle only
-        const circle = d3.select(this)
-        circle
-          .classed('clicking', true)
-          .attr('fill-opacity', 1)
-          .transition()
-          .duration(300)
-          .attr('fill-opacity', 0.85)
-          .on('end', function() {
-            d3.select(this).classed('clicking', false)
-          })
-
         // In "all" mode, clicking a venue expands/collapses it and centers it
         if (viewMode === 'all' && d.type === 'venue') {
           const venueName = d.id.replace('venue|', '')
@@ -495,46 +500,68 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
           setFocusedNodeId(d.id)
         }
       })
-      .on('mouseenter', function(_event, d) {
-        // Suppress hover effect if circle is being clicked
-        const circle = d3.select(this)
-        if (!circle.classed('clicking')) {
-          circle
-            .transition()
-            .duration(200)
-            .attr('fill-opacity', 1)
-        }
 
-        // Show hover label for small venues in "all" mode
-        if (viewMode === 'all' && d.type === 'venue' && d.count < 3) {
-          const parentNode = this.parentNode as Element
-          d3.select(parentNode)
-            .select('.hover-label')
-            .transition()
-            .duration(200)
-            .attr('fill-opacity', 1)
-        }
+    // Add visible circles with different colors per type
+    node.append('circle')
+      .attr('r', d => getNodeSize(d))
+      .attr('fill', d => {
+        if (d.type === 'venue') return '#6366f1' // Indigo for venues
+        if (d.type === 'headliner') return '#8b5cf6' // Purple for headliners
+        return '#ec4899' // Pink for openers
       })
-      .on('mouseleave', function(_event, d) {
-        // Suppress hover effect if circle is being clicked
-        const circle = d3.select(this)
-        if (!circle.classed('clicking')) {
-          circle
-            .transition()
-            .duration(200)
-            .attr('fill-opacity', 0.85)
-        }
+      .attr('fill-opacity', 0.85)
+      .attr('stroke', d => {
+        if (d.type === 'venue') return '#4f46e5'
+        if (d.type === 'headliner') return '#7c3aed'
+        return '#db2777'
+      })
+      .attr('stroke-width', d => d.type === 'venue' ? 3 : 2)
+      .attr('stroke-opacity', 1)
+      .style('pointer-events', 'none') // Touch handled by invisible target
+      .attr('class', 'visual-circle')
+      .each(function(_d, i, nodes) {
+        // Add click feedback class to parent node for hover effects
+        const parentNode = nodes[i].parentNode as Element
+        d3.select(parentNode).classed('node-group', true)
+      })
 
-        // Hide hover label for small venues in "all" mode
-        if (viewMode === 'all' && d.type === 'venue' && d.count < 3) {
-          const parentNode = this.parentNode as Element
-          d3.select(parentNode)
-            .select('.hover-label')
-            .transition()
-            .duration(200)
-            .attr('fill-opacity', 0)
-        }
-      })
+    // Add hover effects to the node groups
+    node.on('mouseenter', function(_event, d) {
+      const circle = d3.select(this).select('.visual-circle')
+      if (!d3.select(this).classed('clicking')) {
+        circle
+          .transition()
+          .duration(200)
+          .attr('fill-opacity', 1)
+      }
+
+      // Show hover label for small venues in "all" mode
+      if (viewMode === 'all' && d.type === 'venue' && d.count < 3) {
+        d3.select(this)
+          .select('.hover-label')
+          .transition()
+          .duration(200)
+          .attr('fill-opacity', 1)
+      }
+    })
+    .on('mouseleave', function(_event, d) {
+      const circle = d3.select(this).select('.visual-circle')
+      if (!d3.select(this).classed('clicking')) {
+        circle
+          .transition()
+          .duration(200)
+          .attr('fill-opacity', 0.85)
+      }
+
+      // Hide hover label for small venues in "all" mode
+      if (viewMode === 'all' && d.type === 'venue' && d.count < 3) {
+        d3.select(this)
+          .select('.hover-label')
+          .transition()
+          .duration(200)
+          .attr('fill-opacity', 0)
+      }
+    })
 
     // Add labels for venue nodes
     // In "all" mode: only show labels for venues with 3+ shows (others show on hover)
@@ -667,7 +694,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
     return () => {
       simulation.stop()
     }
-  }, [nodes, links, focusedNodeId, getRelatedNodes, viewMode, expandedVenues, centeredVenue])
+  }, [nodes, links, focusedNodeId, getRelatedNodes, viewMode, expandedVenues, centeredVenue, dimensions])
 
   const totalVenues = useMemo(() => {
     const allVenues = new Set<string>()
@@ -709,7 +736,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
               setFocusedNodeId(null)
               setCenteredVenue(null)
             }}
-            className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+            className={`font-sans px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 min-h-[44px] ${
               viewMode === 'top10'
                 ? 'bg-indigo-600 text-white'
                 : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -724,7 +751,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
               setFocusedNodeId(null)
               setCenteredVenue(null)
             }}
-            className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+            className={`font-sans px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 min-h-[44px] ${
               viewMode === 'all'
                 ? 'bg-indigo-600 text-white'
                 : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -770,7 +797,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
           onClick={() => setFocusedNodeId(null)}
-          className="absolute top-32 right-8 z-20 px-4 py-2 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg font-sans text-sm font-medium hover:bg-white/20 transition-all duration-200"
+          className="absolute top-32 right-8 z-20 px-6 py-3 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg font-sans text-sm font-medium hover:bg-white/20 transition-all duration-200 min-h-[44px]"
         >
           Reset View
         </motion.button>

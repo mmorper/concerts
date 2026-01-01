@@ -32,6 +32,18 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
     return () => mediaQuery.removeEventListener('change', handler)
   }, [])
 
+  // Close gatefold on orientation change to prevent layout issues
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      if (openArtist) {
+        handleCloseGatefold()
+      }
+    }
+
+    window.addEventListener('resize', handleOrientationChange)
+    return () => window.removeEventListener('resize', handleOrientationChange)
+  }, [openArtist])
+
   // Show frequency badge only when sorted by timesSeen (Weighted)
   const showFrequencyBadge = sortOrder === 'timesSeen'
 
@@ -102,7 +114,7 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
           {/* A-Z Button */}
           <button
             onClick={() => setSortOrder('alphabetical')}
-            className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto ${
+            className={`font-sans px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto min-h-[44px] ${
               sortOrder === 'alphabetical'
                 ? 'bg-violet-600 text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
@@ -114,7 +126,7 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
           {/* Genre Button */}
           <button
             onClick={() => setSortOrder('genre')}
-            className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto ${
+            className={`font-sans px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto min-h-[44px] ${
               sortOrder === 'genre'
                 ? 'bg-violet-600 text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
@@ -126,7 +138,7 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
           {/* Weighted Button */}
           <button
             onClick={() => setSortOrder('timesSeen')}
-            className={`font-sans px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto ${
+            className={`font-sans px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto min-h-[44px] ${
               sortOrder === 'timesSeen'
                 ? 'bg-violet-600 text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
@@ -194,7 +206,7 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
           className="absolute bottom-20 left-0 right-0 z-20 text-center"
         >
           <p className="font-sans text-xs text-white/90 font-medium uppercase tracking-widest">
-            Click to flip · Press ESC to close
+            Tap to flip · Press ESC to close
           </p>
         </motion.div>
       )}
