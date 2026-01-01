@@ -196,10 +196,18 @@ The site is automatically deployed via Cloudflare Pages:
 | Script | Command | Description |
 |--------|---------|-------------|
 | `dev` | `vite` | Start development server |
-| `build` | Full pipeline | Build production bundle + OG image |
+| `build` | Full pipeline | Build production bundle |
 | `preview` | `vite preview` | Preview production build locally |
+| `build-data` | `tsx scripts/build-data.ts` | Fetch + validate + enrich concert data |
+| `fetch-sheet` | `tsx scripts/fetch-google-sheet.ts` | Fetch data from Google Sheets |
+| `validate-data` | `tsx scripts/validate-concerts.ts` | Validate concert data quality |
+| `diff-data` | `tsx scripts/diff-concerts.ts` | Compare data changes |
+| `geocode` | `tsx scripts/geocode-venues.ts` | Geocode venue locations |
+| `enrich` | `tsx scripts/enrich-artists.ts` | Enrich artist metadata (out of scope v1.2.0) |
 | `og:generate` | `tsx scripts/generate-og-simple.ts` | Generate OG image from live site |
 | `og:preview` | `tsx scripts/preview-og-crops.ts` | Preview crop regions with guides |
+
+For detailed data pipeline documentation, see [DATA_PIPELINE.md](DATA_PIPELINE.md).
 
 ## Dependencies for Build
 

@@ -1,9 +1,9 @@
 # Morperhaus Concert Archives - Status
 
-**Version:** v1.1.0 (Production)
-**Last Updated:** 2025-12-31
-**Current Phase:** iPad Optimization Complete
-**Last Commit:** 2619946 - "feat: Implement v1.1.0 iPad optimization and version tracking"
+**Version:** v1.2.0 (Ready for Release)
+**Last Updated:** 2026-01-01
+**Current Phase:** Data Pipeline Enhancement Complete
+**Last Commit:** 216aa50 - "docs: Add comprehensive Google Sheets data integration spec for v1.2.0"
 **Live URL:** https://concerts.morperhaus.org
 
 ---
@@ -22,7 +22,7 @@
 - ✅ Geography Scene venue marker fixes
 - ✅ API documentation cleanup (removed unused services)
 
-### v1.1.0 iPad Optimization (Current) 🎉
+### v1.1.0 iPad Optimization 🎉
 - ✅ iPad support complete (all scenes functional)
 - ✅ 44px touch targets across all interactive elements
 - ✅ Timeline portrait load bug fixed
@@ -30,18 +30,27 @@
 - ✅ Build version tracking system implemented
 - ✅ v1.1.0 GitHub release published
 
-### v1.2.0 Planned (Data Pipeline Enhancement)
-
-- ✅ Google Sheets integration (Phase 1 implemented, Phase 2 spec'd)
-- Data validation and logging improvements
-- Optional: Webhook automation for auto-deploys
+### v1.2.0 Data Pipeline Enhancement (Current) 🎉
+- ✅ Google Sheets Phase 1 Core complete (OAuth 2.0, fetch, process, geocode)
+- ✅ Phase 1 Enhancement 1.1: Pre-build validation (`npm run validate-data`)
+- ✅ Phase 1 Enhancement 1.2: Detailed logging and statistics
+- ✅ Phase 1 Enhancement 1.3: Change comparison (`npm run diff-data`)
+- ✅ Complete documentation ([DATA_PIPELINE.md](DATA_PIPELINE.md))
+- ✅ Implementation notes ([specs/implemented/google-sheets-phase1-implementation.md](specs/implemented/google-sheets-phase1-implementation.md))
+- 📝 Phase 2 (webhook automation) out of scope for v1.2.0, spec'd for future
 
 ### v1.3.0+ Future
 
-- Phone optimization (viewports <768px)
-- Timeline artist display enhancements
-- Spotify API integration
-- Genre scene opener inclusion (under review)
+See [docs/specs/future/](specs/future/) for complete specifications:
+
+1. **Phone Optimization** ([mobile-optimization.md](specs/future/mobile-optimization.md)) - Bottom sheets, smaller viewport refinements (<768px)
+2. **Spotify Artist Integration** ([spotify-artist-integration.md](specs/future/spotify-artist-integration.md)) - Album art, gatefold mini-player, 30s previews
+3. **Timeline Artist Display** ([timeline-artist-display-enhancement.md](specs/future/timeline-artist-display-enhancement.md)) - Rich artist modals on timeline
+4. **Google Sheets Phase 2** ([google-sheets-data-integration.md](specs/future/google-sheets-data-integration.md)) - Webhook automation (Google Apps Script → GitHub Action)
+5. **Genre Scene Opener Inclusion** ([genre-scene-opener-inclusion.md](specs/future/genre-scene-opener-inclusion.md)) - Include opener appearances (under review)
+6. **Venue Cross-Navigation** ([venue-cross-navigation.md](specs/future/venue-cross-navigation.md)) - Map popup → Venue scene linking
+7. **Visual Testing Suite** ([visual-testing-suite.md](specs/future/visual-testing-suite.md)) - Automated screenshot testing
+8. **Timeline Wake Effect** ([timeline-wake-effect-spec.md](specs/future/timeline-wake-effect-spec.md)) - Interactive cursor wake effect
 
 ---
 
@@ -384,18 +393,26 @@ All major implementation phases are complete:
 - ✅ Build version tracking system added
 - ✅ Version display in footer
 
-## v1.2.0 Roadmap (Data Pipeline Enhancement)
+## v1.2.0 Complete (Data Pipeline Enhancement)
 
+**Status:** Complete (2026-01-01)
 **Focus:** Improve data pipeline reliability, validation, and automation
 
-**Key Features:**
+**Delivered:**
 
-1. **Google Sheets Data Integration** - Single source of truth documentation
-2. **Enhanced Build-Time Validation** - Pre-commit data quality checks
-3. **Improved Logging & Reporting** - Better troubleshooting and diff reports
-4. **Optional Webhook Automation** - Auto-deploy when sheet is edited (Phase 2)
+1. ✅ **Google Sheets Phase 1 Core** - Build-time integration (OAuth 2.0, fetch, geocode)
+2. ✅ **Enhancement 1.1: Validation** - `npm run validate-data` with 8 checks
+3. ✅ **Enhancement 1.2: Logging** - Detailed statistics and formatted output
+4. ✅ **Enhancement 1.3: Diff Reports** - `npm run diff-data` for change tracking
+5. ✅ **Complete Documentation** - User guide ([DATA_PIPELINE.md](DATA_PIPELINE.md)) and implementation notes
+6. 📝 **Phase 2 (Webhook Automation)** - Out of scope for v1.2.0, spec'd for future
 
-See detailed specifications below.
+**New Commands:**
+- `npm run build-data` - Fetch + validate + enrich
+- `npm run validate-data` - Pre-commit data quality checks
+- `npm run diff-data` - Compare data changes
+
+See [specs/implemented/google-sheets-phase1-implementation.md](specs/implemented/google-sheets-phase1-implementation.md) for implementation details.
 
 ---
 
@@ -403,18 +420,25 @@ See detailed specifications below.
 
 Planned feature enhancements with detailed specifications in [docs/specs/future/](specs/future/):
 
-### 1. Google Sheets Data Integration (v1.2.0)
+### 1. Google Sheets Data Integration
 
-**Status:** Phase 1 Implemented, Phase 2 Planned for v1.2.0
+**Status:** Phase 1 Complete ✅, Phase 2 Planned for Future
 **Spec:** [Google Sheets Data Integration](specs/future/google-sheets-data-integration.md)
+**Implementation:** [Phase 1 Implementation Details](specs/implemented/google-sheets-phase1-implementation.md)
+**User Guide:** [DATA_PIPELINE.md](DATA_PIPELINE.md)
 
-**Scope:**
+**Phase 1 Complete (v1.2.0):**
 
-- Build-time data fetching from Google Sheets (✅ implemented)
-- Cached fallback strategy with committed JSON files
-- Phase 1 enhancements: validation, logging, diff reports (v1.2.0)
-- Phase 2: Webhook automation (Google Apps Script → GitHub Action → auto-deploy) - optional for v1.2.0
-- CSV scripts documented as backup-only, not primary pipeline
+- ✅ Build-time data fetching from Google Sheets (OAuth 2.0)
+- ✅ Cached fallback strategy with committed JSON files
+- ✅ Pre-build validation with error/warning classification
+- ✅ Detailed logging with statistics and formatted output
+- ✅ Change comparison (diff reports)
+- ✅ Complete documentation
+
+**Phase 2 (Future):**
+- Webhook automation (Google Apps Script → GitHub Action → auto-deploy)
+- See spec for details
 
 **Prerequisites:** Google Sheets API and OAuth 2.0 setup (see [api-setup.md](api-setup.md))
 

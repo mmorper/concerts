@@ -1,9 +1,11 @@
 # Google Sheets Data Integration Spec
 
 > **Location**: `docs/specs/future/google-sheets-data-integration.md`
-> **Status**: Phase 1 Implemented, Phase 2 Planned for v1.2.0
+> **Status**: Phase 1 Complete (Core + Enhancements), Phase 2 Planned for v1.2.0
 > **Target Version**: v1.2.0
 > **Last Updated**: 2026-01-01
+> **Implementation**: [google-sheets-phase1-implementation.md](../implemented/google-sheets-phase1-implementation.md)
+> **User Guide**: [DATA_PIPELINE.md](../../DATA_PIPELINE.md)
 
 ---
 
@@ -62,14 +64,15 @@ This specification defines the complete data integration strategy for the Morper
 │     - Generate metadata (stats, date ranges)                     │
 │     - Output: public/data/concerts.json                          │
 │                                                                   │
-│  2. enrich-artists.ts                                            │
+│  2. enrich-artists.ts (out of scope for v1.2.0)                 │
 │     - Aggregate unique artists from concerts                     │
 │     - Fetch metadata from Last.fm / TheAudioDB                   │
 │     - Output: public/data/artists-metadata.json                  │
 │                                                                   │
-│  3. enrich-spotify-metadata.ts (optional)                        │
+│  3. enrich-spotify-metadata.ts (future, required for Spotify)    │
 │     - Fetch album art and top tracks from Spotify               │
 │     - Update: public/data/artists-metadata.json                  │
+│     - See: spotify-artist-integration.md for details             │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               │ git commit & push
@@ -87,9 +90,12 @@ This specification defines the complete data integration strategy for the Morper
 
 ## Phase 1: Build-Time Integration (Current)
 
-### Status: ✅ Implemented
+### Status: ✅ Complete (Core + All Enhancements)
 
-Phase 1 uses manual script execution to fetch data from Google Sheets during local builds or CI/CD runs.
+**Implementation Date:** 2026-01-01
+**Details:** See [google-sheets-phase1-implementation.md](../implemented/google-sheets-phase1-implementation.md)
+
+Phase 1 uses manual script execution to fetch data from Google Sheets during local builds or CI/CD runs. All Phase 1 Enhancements (1.1, 1.2, 1.3) have been implemented and tested.
 
 ### Components
 
@@ -242,11 +248,17 @@ public/data/
 
 ---
 
-## Phase 1 Enhancements (Recommended)
+## Phase 1 Enhancements
 
-### Status: 📋 Planned
+### Status: ✅ Complete (All 3 Enhancements Implemented)
 
-These enhancements improve Phase 1 without adding webhook automation.
+**Implementation Date:** 2026-01-01
+**Files Created:**
+- `scripts/validate-concerts.ts` (Enhancement 1.1)
+- `scripts/diff-concerts.ts` (Enhancement 1.3)
+- Enhanced `scripts/fetch-google-sheet.ts` (Enhancement 1.2)
+
+These enhancements improve Phase 1 without adding webhook automation. All three have been implemented and tested.
 
 ### Enhancement 1.1: Pre-Build Validation
 
@@ -575,6 +587,21 @@ Users can also trigger sync manually via GitHub UI:
 **Expected monthly runs:** 10-20 (based on <10 updates/year)
 **Total cost:** $0
 
+### GitHub Actions Free Tier Considerations
+
+**Free Account Limits:**
+- ✅ 2,000 minutes/month of Actions runtime (Linux runners)
+- ✅ 500 MB of Actions storage
+- ✅ Unlimited workflows and concurrent jobs
+
+**Expected Usage for This Project:**
+- **This workflow (sync-data.yml):** ~2-3 min/run × 10-20 runs/month = **30-60 min/month**
+- **Versioned Release workflow (deploy.yml):** ~2-3 min/run × variable frequency = **~20-30 min/month**
+- **Combined total:** ~50-90 min/month
+- **Free tier utilization:** **2.5-4.5%** of available quota
+
+**Conclusion:** Both workflows will run comfortably within GitHub's free tier limits with plenty of headroom for additional automation.
+
 ---
 
 ## Alternative Approaches (Considered & Rejected)
@@ -834,9 +861,10 @@ The following scripts are **CSV-specific** and intended **only** for parsing `do
 
 ## Revision History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2026-01-01 | Initial specification |
+| Version | Date       | Changes |
+|---------|------------|---------|
+| 1.1     | 2026-01-01 | Updated scope: enrich-artists.ts out of scope for v1.2.0; enrich-spotify-metadata.ts future required component; Added GitHub Actions free tier analysis |
+| 1.0     | 2026-01-01 | Initial specification |
 
 ---
 

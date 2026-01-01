@@ -581,6 +581,9 @@ All commands run in VS Code's integrated terminal (`` Ctrl+` `` or `` Cmd+` `` t
 | `npm run dev` | Start local dev server |
 | `npm run build` | Production build |
 | `npm run preview` | Preview production build locally |
+| `npm run build-data` | Fetch + validate + enrich concert data from Google Sheets |
+| `npm run validate-data` | Check concert data for quality issues |
+| `npm run diff-data` | Compare data changes before/after fetch |
 | `git add . && git commit -m "..."` | Stage and commit |
 | `git push origin main` | Push to GitHub |
 | `git tag v1.x.x && git push origin v1.x.x` | Tag and deploy release |
@@ -641,6 +644,7 @@ The `.claude/context.md` file is probably stale. Either update it manually with 
 ## See Also
 
 - **[BUILD.md](BUILD.md)** — Technical build pipeline details, OG image generation
+- **[DATA_PIPELINE.md](DATA_PIPELINE.md)** — Concert data pipeline (Google Sheets fetch, validation, enrichment)
 - **[STATUS.md](STATUS.md)** — Current project state, architecture, recent commits
 - **[api-setup.md](api-setup.md)** — Google Sheets and music API configuration
 - **[planning.md](planning.md)** — Complete implementation history
