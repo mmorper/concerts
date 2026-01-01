@@ -114,19 +114,18 @@ async function main() {
             font-weight: 400;
             fill: white;
             letter-spacing: -0.02em;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8)) drop-shadow(0 0 24px rgba(0,0,0,0.6));
           }
           .subtitle {
             font-family: 'Source Sans 3', sans-serif;
             font-size: 18px;
             font-weight: 400;
-            fill: rgba(255,255,255,0.9);
+            fill: rgba(255,255,255,0.95);
             letter-spacing: 0;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.9)) drop-shadow(0 0 16px rgba(0,0,0,0.7));
           }
         </style>
       </defs>
-
-      <!-- Semi-transparent background for better contrast - vertically centered -->
-      <rect x="0" y="${(OUTPUT_HEIGHT - 160) / 2}" width="${OUTPUT_WIDTH}" height="160" fill="rgba(0, 0, 0, 0.4)" />
 
       <!-- Vertically centered text (630/2 = 315, adjusted for text baseline) -->
       <text x="600" y="285" text-anchor="middle" class="title">Morperhaus Concert Archives</text>
