@@ -2150,9 +2150,9 @@
         "Bryan Mcpherson"
       ],
       "venue": "The Fillmore Silver Spring",
-      "city": "Washington",
-      "state": "District of Columbia",
-      "cityState": "Washington, District of Columbia",
+      "city": "Silver Spring",
+      "state": "Maryland",
+      "cityState": "Silver Spring, Maryland",
       "year": 2015,
       "month": 3,
       "day": 6,
@@ -2447,9 +2447,9 @@
       "genre": "New Wave",
       "openers": [],
       "venue": "The Fillmore Silver Spring",
-      "city": "Washington",
-      "state": "District of Columbia",
-      "cityState": "Washington, District of Columbia",
+      "city": "Silver Spring",
+      "state": "Maryland",
+      "cityState": "Silver Spring, Maryland",
       "year": 2017,
       "month": 5,
       "day": 9,
@@ -3904,7 +3904,7 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-01-02T04:18:54.602Z",
+    "lastUpdated": "2026-01-02T04:23:17.608Z",
     "totalConcerts": 174,
     "dateRange": {
       "earliest": "1984-04-27",
