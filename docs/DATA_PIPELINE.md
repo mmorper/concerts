@@ -1,7 +1,7 @@
 # Concert Data Pipeline Documentation
 
-> **Status:** Phase 1 Core + Enhancements Implemented
-> **Last Updated:** 2026-01-01
+> **Status:** Phase 1 Core + Enhancements Implemented (v1.2.4 - Flexible Columns)
+> **Last Updated:** 2026-01-02
 > **Related Spec:** [google-sheets-data-integration.md](specs/future/google-sheets-data-integration.md)
 
 ---
@@ -371,6 +371,58 @@ npm run build-data -- --skip-validation
 # or
 SKIP_VALIDATION=true npm run build-data
 ```
+
+---
+
+## Flexible Column Support (v1.2.4+)
+
+### Overview
+
+The Google Sheets parser uses **header-based column detection** instead of hardcoded column indices. This makes the pipeline resilient to column reordering and allows optional columns to be added or removed without breaking the data fetch.
+
+### Column Requirements
+
+**Required Columns:**
+
+- `Date` - Concert date (any parseable date format)
+- `Headliner` - Main artist name
+- `Venue` - Venue name
+- Location: Either `City/State` (combined) OR separate `City` and `State` columns
+
+**Optional Columns:**
+
+- `Genre_Headliner` or `Genre` - Music genre (empty if missing)
+- `Opener` - Primary opener artist
+- `Reference` - Concert reference URL
+- `Opener_1` through `Opener_15` - Additional opener artists
+
+### Column Detection
+
+The parser automatically:
+
+- ✅ Reads the header row to map column names to indices
+- ✅ Searches for columns by multiple possible names (e.g., "City/State", "citystate")
+- ✅ Handles separate City/State columns by combining them automatically
+- ✅ Trims whitespace from all field values (v1.2.4)
+- ✅ Warns when optional columns are missing (non-blocking)
+- ❌ Errors if required columns are missing
+
+### Example Log Output
+
+```
+📋 Parsed 35 columns from header row
+   Required: Date(0), Headliner(1), Venue(4)
+   Location: City(10), State(11) [separate columns]
+   Optional: Genre(2), Opener(3), Reference(7)
+   Found 15 Opener_N columns
+```
+
+### Benefits
+
+1. **Flexible sheet structure** - Add, remove, or reorder columns without code changes
+2. **Optional genre support** - Prepare for removing genre column when Spotify integration is ready
+3. **Clear validation** - Know immediately if required columns are missing
+4. **Whitespace handling** - Automatic trimming prevents cache key mismatches
 
 ---
 

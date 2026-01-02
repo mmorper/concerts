@@ -1,9 +1,9 @@
 # Google Sheets Data Integration Spec
 
 > **Location**: `docs/specs/future/google-sheets-data-integration.md`
-> **Status**: Phase 1 Complete (Core + Enhancements + v1.2.1-v1.2.3), Phase 2 Planned for v1.3+
-> **Target Version**: v1.2.0-v1.2.3 (Phase 1), v1.3+ (Phase 2)
-> **Last Updated**: 2026-01-02
+> **Status**: Phase 1 Complete (Core + Enhancements + v1.2.1-v1.2.4), Phase 2 Planned for v1.3+
+> **Target Version**: v1.2.0-v1.2.4 (Phase 1), v1.3+ (Phase 2)
+> **Last Updated**: 2026-01-02 (v1.2.4 Flexible Columns)
 > **Implementation**: [google-sheets-phase1-implementation.md](../implemented/google-sheets-phase1-implementation.md)
 > **User Guide**: [DATA_PIPELINE.md](../../DATA_PIPELINE.md)
 
@@ -90,12 +90,12 @@ This specification defines the complete data integration strategy for the Morper
 
 ## Phase 1: Build-Time Integration (Current)
 
-### Status: ✅ Complete (Core + All Enhancements + v1.2.1-v1.2.3 Improvements)
+### Status: ✅ Complete (Core + All Enhancements + v1.2.1-v1.2.4 Improvements)
 
-**Implementation Date:** 2026-01-01 (Core), 2026-01-02 (Improvements)
+**Implementation Date:** 2026-01-01 (Core), 2026-01-02 (Improvements + v1.2.4)
 **Details:** See [google-sheets-phase1-implementation.md](../implemented/google-sheets-phase1-implementation.md)
 
-Phase 1 uses manual script execution to fetch data from Google Sheets during local builds or CI/CD runs. All Phase 1 Enhancements (1.1, 1.2, 1.3) have been implemented and tested. Additional improvements in v1.2.1-v1.2.3 added automatic backups, geocode cache integration, and data quality fixes.
+Phase 1 uses manual script execution to fetch data from Google Sheets during local builds or CI/CD runs. All Phase 1 Enhancements (1.1, 1.2, 1.3) have been implemented and tested. Additional improvements in v1.2.1-v1.2.4 added automatic backups, geocode cache integration, data quality fixes, and **flexible column parsing** (v1.2.4).
 
 ### Components
 
@@ -110,7 +110,7 @@ Phase 1 uses manual script execution to fetch data from Google Sheets during loc
 | **Geocoding Service** | `scripts/services/geocoding.ts` | Venue-level coordinate lookup (Google Maps API) |
 | **Environment Config** | `.env` | API credentials (not committed to git) |
 
-### v1.2.1-v1.2.3 Improvements
+### v1.2.1-v1.2.4 Improvements
 
 #### v1.2.1: Safety Features
 
@@ -132,6 +132,16 @@ Phase 1 uses manual script execution to fetch data from Google Sheets during loc
 - Fixed 21st Amendment and Universal Amphitheater coordinate issues
 - Added `.trim()` to venue, city, state before building cache keys
 - Handles trailing/leading spaces in Google Sheet data
+
+#### v1.2.4: Flexible Column Parsing
+
+- **Header-based column detection** - No longer relies on hardcoded indices
+- Supports column reordering without code changes
+- Handles both combined `City/State` and separate `City` + `State` columns
+- Optional genre column support (prepares for genre removal in Phase 2)
+- Whitespace trimming for all fields (prevents cache key mismatches)
+- Clear error messages showing available columns when required columns missing
+- See [DATA_PIPELINE.md § Flexible Column Support](../../DATA_PIPELINE.md#flexible-column-support-v124) for details
 
 ### Current Workflow
 
@@ -178,24 +188,36 @@ SPOTIFY_CLIENT_SECRET=your_secret_here
 
 **Setup Guide:** See [docs/api-setup.md](../../api-setup.md) for complete OAuth 2.0 configuration instructions.
 
-### Google Sheets Column Mapping
+### Google Sheets Column Mapping (v1.2.4+: Header-Based)
 
-The `GoogleSheetsClient` expects columns in this order:
+The `GoogleSheetsClient` uses **header-based column detection** (v1.2.4+). Columns can be in any order as long as the header names match:
 
-| Index | Column Name | Example Value | Notes |
-|-------|-------------|---------------|-------|
-| 0 | Date | `4/27/1984` | Format: M/D/YYYY |
-| 1 | Headliner | `Social Distortion` | Main artist |
-| 2 | Genre_Headliner | `Punk` | Primary genre |
-| 3 | Opener | `The Vandals` | Primary opener (optional) |
-| 4 | Venue | `The Roxy` | Venue name |
-| 5 | City, State | `West Hollywood, California` | Full city/state |
-| 6 | Who | `Morper` | Attendee (unused in app) |
-| 7 | Reference | `https://...` | Concert archive link (optional) |
-| 8-17 | [Parsed columns] | — | Auto-generated (month, year, etc.) |
-| 18-33 | Opener_1...Opener_15 | Additional openers | Up to 16 total openers |
+**Required Columns:**
 
-**Important:** This structure is **stable** and should not be reordered without updating the client code.
+| Column Name(s) | Example Value | Notes |
+| -------------- | ------------- | ----- |
+| `Date` | `4/27/1984` | Any parseable date format |
+| `Headliner` | `Social Distortion` | Main artist name |
+| `Venue` | `The Roxy` | Venue name |
+| `City/State` (combined) OR `City` + `State` (separate) | `West Hollywood, California` OR `West Hollywood` + `California` | Parser handles both formats |
+
+**Optional Columns:**
+
+| Column Name(s) | Example Value | Notes |
+| -------------- | ------------- | ----- |
+| `Genre_Headliner` or `Genre` | `Punk` | Music genre (warns if missing, v1.2.4+) |
+| `Opener` | `The Vandals` | Primary opener artist |
+| `Reference` | `https://...` | Concert reference URL |
+| `Opener_1` through `Opener_15` | Various artists | Additional opener artists |
+
+**Column Detection:**
+
+- Parser reads first row as headers
+- Normalizes column names (lowercase, trim whitespace)
+- Supports multiple possible names (e.g., "City/State", "citystate")
+- Clear error if required columns missing
+
+**Important (v1.2.4+):** Columns can now be reordered freely! The parser uses header names instead of hardcoded positions.
 
 ### Data Validation
 

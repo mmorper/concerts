@@ -120,7 +120,13 @@ async function fetchGoogleSheet(options: { dryRun?: boolean } = {}) {
 
   try {
     const sheetId = process.env.GOOGLE_SHEET_ID!
-    const range = process.env.SHEET_RANGE || 'Sheet1!A2:Z1000'
+    const configuredRange = process.env.SHEET_RANGE || 'Sheet1!A2:Z1000'
+
+    // Adjust range to include header row (row 1)
+    // e.g., "Data Entry!A2:AI500" → "Data Entry!A1:AI500"
+    const range = configuredRange.replace(/!A\d+:/, '!A1:')
+
+    console.log(`📍 Fetching from: ${range}`)
 
     const rawData = await client.fetchConcerts(sheetId, range)
     console.log(`✅ Fetched ${rawData.length} rows from sheet\n`)

@@ -1,9 +1,9 @@
 # Morperhaus Concert Archives - Status
 
-**Version:** v1.2.3 (Ready for Release)
+**Version:** v1.2.4 (Ready for Release)
 **Last Updated:** 2026-01-02
-**Current Phase:** Geocoding Robustness Improvements
-**Last Commit:** TBD - "chore: Release v1.2.3 with whitespace handling"
+**Current Phase:** Flexible Column Parsing Implementation
+**Last Commit:** TBD - "feat: Add flexible header-based column parsing (v1.2.4)"
 **Live URL:** https://concerts.morperhaus.org
 
 ---
@@ -73,7 +73,7 @@
 - `.gitignore` - Updated backup exclusion patterns
 - `public/data/concerts.json` - Regenerated with correct coordinates
 
-### v1.2.3 Geocoding Robustness (Current) 🎉
+### v1.2.3 Geocoding Robustness 🎉
 
 - ✅ **Whitespace Handling:** Made geocode cache lookup robust to whitespace
   - Fixed 21st Amendment and Universal Amphitheater showing Denver coordinates
@@ -92,6 +92,45 @@
 
 - `scripts/fetch-google-sheet.ts` - Added whitespace trimming to cache key generation (line 77)
 - `public/data/concerts.json` - Regenerated with corrected coordinates
+
+### v1.2.4 Flexible Column Parsing (Current) 🎉
+
+- ✅ **Header-Based Column Detection:** Refactored Google Sheets parser to use headers instead of hardcoded indices
+  - Columns can now be reordered without breaking the pipeline
+  - Supports multiple column name variations (e.g., "City/State", "citystate")
+  - Handles both combined `City/State` and separate `City` + `State` columns
+  - Genre column now optional (prepares for Phase 2 genre removal)
+  - Whitespace trimming applied to ALL fields (date, headliner, genre, venue, city, state)
+  - Clear error messages showing available columns when required columns missing
+
+**Why This Matters:**
+
+- Enables safe removal of genre column in Phase 2 (Roadmap v1.2.4)
+- Makes Google Sheet structure more flexible for future changes
+- Prevents whitespace-related bugs across all fields (not just geocode keys)
+- Reduces brittleness - no more "column 2 must be genre" hardcoding
+
+**Implementation Details:**
+
+- Added `parseHeaders()` and `getColumnIndex()` helper methods
+- Updated range fetching to include header row (A1 instead of A2)
+- Modified `fetch-google-sheet.ts` to adjust range automatically
+- All field values trimmed on parse (prevents cache mismatches)
+
+**Files Modified:**
+
+- `scripts/utils/google-sheets-client.ts` - Header-based parsing logic
+- `scripts/fetch-google-sheet.ts` - Range adjustment for header row
+- `docs/DATA_PIPELINE.md` - Added "Flexible Column Support" section
+- `docs/specs/future/google-sheets-data-integration.md` - Updated column mapping table
+
+**Success Criteria Met:**
+
+- ✅ Pipeline runs with genre column present
+- ✅ Parser warns (non-blocking) when genre column missing
+- ✅ concerts.json maintains backward compatibility
+- ✅ All 174 concerts processed successfully
+- ✅ Whitespace in cityState fixed (single space, not double)
 
 ### v1.3.0+ Future
 
@@ -542,6 +581,28 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 
 - [spotify-enrichment-runbook.md](specs/future/spotify-enrichment-runbook.md) — Enrichment script runbook
 - [mobile-optimization.md](specs/future/mobile-optimization.md) — Mobile bottom sheet layout
+
+### 4.5. Venue Photos Integration (v1.3.2)
+
+**Status:** Planned
+**Spec:** [Venue Photos Integration](specs/future/venue-photos-integration.md)
+
+**Scope:**
+
+- Google Places API integration for venue photos
+- Three-tier fallback: Places API → Manual curation → No photo
+- Handle legacy venues (closed/demolished) with manual photo curation
+- venues-metadata.json with photos, stats, and concert references
+- Display venue photos in Map (popups) and Venue Network (detail modals)
+- Cache-first approach with 90-day TTL
+- ~$15/year API costs (within $200/month free tier)
+
+**Prerequisites:** None (can run independently)
+
+**Related:**
+
+- [data-normalization-architecture.md](specs/future/data-normalization-architecture.md) — Parent architecture spec
+- [api-setup.md](api-setup.md) — API credentials setup
 
 ### 5. Genre Scene Opener Inclusion (v1.3.0+)
 
