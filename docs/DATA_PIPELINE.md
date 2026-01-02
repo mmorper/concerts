@@ -20,7 +20,7 @@ This document describes the data pipeline for fetching, validating, and enrichin
 | `npm run fetch-sheet -- --dry-run` | Preview fetch without writing files | Test before applying changes |
 | `npm run validate-data` | Validate concert data quality | After fetching, before committing |
 | `npm run diff-data` | Compare data changes | See what changed since last backup |
-| `npm run enrich` | Add artist metadata (out of scope v1.2.0) | When artist data needed |
+| `npm run enrich` | Enrich artist metadata from TheAudioDB | Standalone artist enrichment |
 | `npm run build-data` | Run full pipeline (fetch + validate + enrich) | Complete data refresh |
 | `npm run build-data -- --dry-run` | Preview pipeline without writing files | Test full pipeline safely |
 | `npm run build-data -- --skip-validation` | Skip validation step | Faster builds when data is trusted |
@@ -266,11 +266,99 @@ New total: 174 concerts
 Net change: +3
 ```
 
-### 4. Build Pipeline (`build-data.ts`)
+### 4. Artist Enrichment (`enrich-artists.ts`)
+
+**What it does:**
+
+- Enriches concert data with artist metadata from TheAudioDB
+- Fetches artist photos, biographies, genres, and other metadata
+- Caches results to avoid redundant API calls
+- Rate-limited to respect API constraints
+
+#### Data Source: TheAudioDB
+
+- Free music metadata API (no API key required for basic tier)
+- Community-maintained artist database
+- API docs: <https://www.theaudiodb.com/api_guide.php>
+- Rate limit: 2 calls per second (automatically enforced)
+
+#### Metadata Fields Collected
+
+| Field       | Description                | Example                             |
+|-------------|----------------------------|-------------------------------------|
+| `name`      | Artist name (normalized)   | "Depeche Mode"                      |
+| `image`     | Artist photo or logo URL   | `https://theaudiodb.com/images/...` |
+| `bio`       | Biography (500 char max)   | "Depeche Mode are an English..."    |
+| `genres`    | Array of genres/styles     | ["Synthpop", "New Wave"]            |
+| `formed`    | Formation year             | "1980"                              |
+| `website`   | Official website URL       | `https://depechemode.com`           |
+| `source`    | Data source identifier     | "theaudiodb"                        |
+| `fetchedAt` | ISO timestamp              | "2026-01-02T03:37:26.000Z"          |
+
+#### Caching Strategy
+
+- Metadata is cached for 30 days
+- Skips artists with recent data (< 30 days old)
+- Re-fetches stale data automatically
+
+#### Example Output
+
+```
+🎤 Enriching concert data with artist metadata...
+
+Found 101 unique artists to enrich
+
+Loaded 2 existing artist records
+
+Fetching metadata for: Depeche Mode
+  ✅ Found on TheAudioDB
+Fetching metadata for: The Cure
+  ✅ Found on TheAudioDB
+Fetching metadata for: The Go Go's
+  ⚠️  No metadata found
+
+📦 Backup created: artists-metadata.json.backup.2026-01-02T03-37-26
+
+📊 Enrichment Summary:
+   ✅ Enriched: 87
+   ⏭️  Skipped (cached): 0
+   ❌ Failed: 14
+
+💾 Saved metadata to: public/data/artists-metadata.json
+
+🎉 Done!
+```
+
+#### Why Some Artists Fail
+
+- Artist not in TheAudioDB database
+- Spelling variations (e.g., "The Go Go's" vs "The Go-Go's")
+- Typos in artist names
+- Lesser-known or local artists
+
+#### Current Usage
+
+- Metadata is collected but **not actively displayed** in v1.2.1
+- Data is prepared for future features:
+  - Artist Scene enhancements
+  - Timeline Artist Display modals (v1.3.0+)
+  - Spotify Artist Integration (v1.3.0+)
+
+#### Running Enrichment
+
+```bash
+# Standalone enrichment
+npm run enrich
+
+# Or as part of full pipeline
+npm run build-data
+```
+
+### 5. Build Pipeline (`build-data.ts`)
 
 **What it does:**
 - Orchestrates full pipeline
-- Runs fetch → validate → enrich (if available)
+- Runs fetch → validate → enrich
 - Can skip validation with `--skip-validation` flag
 
 **Usage:**
@@ -295,7 +383,7 @@ SKIP_VALIDATION=true npm run build-data
 ### Output (Committed to Git)
 - `public/data/concerts.json` - Processed concert data + metadata
 - `public/data/geocode-cache.json` - Cached venue coordinates
-- `public/data/artists-metadata.json` - Artist enrichment data (minimal in v1.2.0)
+- `public/data/artists-metadata.json` - Artist metadata from TheAudioDB (photos, bios, genres)
 
 ### Temporary (Not Committed)
 - `public/data/concerts.json.backup` - Created manually for diff comparison
