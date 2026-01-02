@@ -374,6 +374,74 @@ SKIP_VALIDATION=true npm run build-data
 
 ---
 
+## Geocoding Strategy
+
+### Overview
+
+The pipeline uses Google Maps Geocoding API to get accurate venue-specific coordinates for displaying concerts on the map. The system employs a **cache-first** strategy to minimize API calls and stay within the free tier.
+
+### How It Works
+
+The geocoding system uses an intelligent cache stored in `public/data/geocode-cache.json`:
+
+1. **First run**: Geocodes all unique venues (~76 requests)
+2. **Cache created**: Saves all coordinates to cache file
+3. **Subsequent runs**: Uses cached coordinates (0 API calls)
+4. **New venues**: Only geocodes venues not in cache
+
+After the initial run, you'll typically make **zero API calls** during normal operation.
+
+### Cache Key Format
+
+Venue coordinates are cached using the format:
+```
+${venue}|${city}|${state}`.toLowerCase()
+```
+
+**Example:** `"universal amphitheater|los angeles|california"`
+
+**Important:** The cache lookup is robust to whitespace - venue, city, and state are trimmed before building the key (v1.2.3+).
+
+### Fallback Strategy
+
+The fetch pipeline uses a multi-tier coordinate strategy:
+
+1. **Venue-specific (preferred)**: Look up venue in geocode cache
+2. **City-level (fallback)**: Use hardcoded city coordinates from `src/utils/city-coordinates.ts`
+3. **Default (last resort)**: Use default coordinates if venue and city not found
+
+This ensures every concert has valid coordinates even if geocoding hasn't run yet.
+
+### Manual Geocoding
+
+You can manually geocode all venues from your concerts.json file:
+
+```bash
+npm run geocode
+```
+
+**Use cases:**
+- Pre-populate the cache before first fetch
+- Update coordinates for all venues
+- Fix incorrect geocoding results
+
+### Cost Analysis
+
+- **Pricing**: $5/1,000 requests ($0.005 per request)
+- **Free Tier**: $200/month credit = 40,000 free requests/month
+- **Your Usage**:
+  - Initial run: ~76 unique venues = 76 requests = **$0.38**
+  - Subsequent runs: Only new venues (0-5/month) = **$0.01/month**
+  - Annual estimate: ~100 requests/year = **$0.50/year**
+
+**Expected cost: $0.00** - All usage stays well within the $200/month free tier.
+
+### Rate Limiting
+
+Google Maps Geocoding API allows 50 requests/second. The geocoding script enforces a 20ms delay between requests to stay well within this limit.
+
+---
+
 ## Data Files
 
 ### Input

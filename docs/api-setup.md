@@ -107,7 +107,7 @@ GOOGLE_REFRESH_TOKEN=your_refresh_token
 
 ## Google Maps Geocoding API Setup
 
-The Google Maps Geocoding API is used to get accurate venue-specific coordinates for displaying concerts on the map. It uses a cache-first approach to minimize API calls and stay within the free tier.
+The Google Maps Geocoding API is used to get accurate venue-specific coordinates for displaying concerts on the map.
 
 ### 1. Enable the API
 
@@ -136,43 +136,11 @@ GOOGLE_MAPS_API_KEY=your_api_key_here
 
 ### 4. Enable Billing (Required)
 
-**Important**: Google requires a payment method on file, but you won't be charged for typical usage.
+**Important**: Google requires a payment method on file, but you won't be charged for typical usage (see [DATA_PIPELINE.md](DATA_PIPELINE.md#geocoding-strategy) for cost details).
 
 1. Go to "Billing" in Google Cloud Console
 2. Link a payment method (credit card)
-3. You're automatically enrolled in the free tier
-
-### Cost Analysis
-
-- **Pricing**: $5/1,000 requests ($0.005 per request)
-- **Free Tier**: $200/month credit = 40,000 free requests/month
-- **Your Usage**:
-  - Initial run: ~76 unique venues = 76 requests = **$0.38**
-  - Subsequent runs: Only new venues (0-5/month) = **$0.01/month**
-  - Annual estimate: ~100 requests/year = **$0.50/year**
-
-**Expected cost: $0.00** - All usage stays well within the $200/month free tier.
-
-### 5. How Caching Works
-
-The geocoding system uses an intelligent cache stored in `public/data/geocode-cache.json`:
-
-1. **First run**: Geocodes all unique venues (~76 requests)
-2. **Cache created**: Saves all coordinates to cache file
-3. **Subsequent runs**: Uses cached coordinates (0 API calls)
-4. **New venues**: Only geocodes venues not in cache
-
-After the initial run, you'll typically make **zero API calls** during normal operation.
-
-### 6. Manual Geocoding
-
-You can manually geocode all venues from your concerts.json file:
-
-```bash
-npm run geocode
-```
-
-This is useful if you want to pre-populate the cache or update coordinates for all venues.
+3. You're automatically enrolled in the free tier ($200/month credit)
 
 
 ## Complete .env File
@@ -226,6 +194,8 @@ npm run build-data
 - **Google Sheets API**: 100 requests/100 seconds per user (plenty for our use)
 - **Google Maps Geocoding API**: 50 requests/second (enforced by rate limiter with 20ms delays)
 
+For implementation details on how caching minimizes API calls, see [DATA_PIPELINE.md - Geocoding Strategy](DATA_PIPELINE.md#geocoding-strategy).
+
 ## Best Practices
 
 1. **Run the pipeline when you've added new concerts** to your Google Sheet
@@ -233,11 +203,13 @@ npm run build-data
 3. **Commit the generated JSON files** - they're the source of truth for the app
 4. **Keep API keys secure** - treat them like passwords
 
-## Cost
+## Expected Cost
 
-Both APIs used are **free** for our use case:
+Both APIs stay within free tiers for typical usage:
 
 - **Google Sheets API**: Free tier (60 reads/minute per user)
-- **Google Maps Geocoding API**: $200/month free tier (expected usage: $0/month)
+- **Google Maps Geocoding API**: $200/month free tier
 
-**Total monthly cost: $0** (all usage stays within free tiers)
+**Total monthly cost: $0**
+
+For detailed cost analysis and caching strategy, see [DATA_PIPELINE.md - Geocoding Strategy](DATA_PIPELINE.md#geocoding-strategy).
