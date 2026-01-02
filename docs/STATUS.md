@@ -132,6 +132,95 @@
 - ✅ All 174 concerts processed successfully
 - ✅ Whitespace in cityState fixed (single space, not double)
 
+### v1.3.2 Venue Photos Backend (Current - 80% Complete) 🎯
+
+**Status:** Backend complete, frontend integration pending
+**Started:** 2026-01-02
+**Focus:** Google Places API integration for venue photos
+
+**Completed (Context Windows 1-4):**
+
+- ✅ **Venue Classification System** - 76 venues manually researched and classified
+  - Created `scripts/export-venues.ts` to generate CSV for manual research
+  - Classified all venues as active/closed/demolished/renamed in `data/venue-status.csv`
+  - Added closed dates and historical notes
+
+- ✅ **Google Places API Integration** - Full Places API (New) client implementation
+  - Created `scripts/utils/google-places-client.ts` with Text Search and Place Details
+  - Photo URL generation (thumbnail 400px, medium 800px, large 1200px)
+  - Cache-first strategy with 90-day TTL for active venues
+  - Rate limiting with 20ms delays (50 req/sec max)
+  - Enabled Places API (New) in Google Cloud Console
+
+- ✅ **Venue Enrichment Script** - Automated photo fetching and metadata generation
+  - Created `scripts/enrich-venues.ts` to process all venues
+  - Fetches photos from Google Places API for 66 active venues
+  - Checks for manual photos in `/public/images/venues/` for 10 legacy venues
+  - Computes venue statistics (totalConcerts, uniqueArtists, date ranges)
+  - Generates `public/data/venues-metadata.json` (76 venues, 62KB)
+
+- ✅ **Fallback Image System** - 5-tier hierarchy for missing photos
+  - Created `fallback-active.jpg` for active venues without API photos
+  - Created `fallback.jpg` for legacy venues without manual photos
+  - Implemented smart fallback logic in enrichment script
+  - All venues have photoUrls (real photos or fallbacks)
+
+- ✅ **Manual Photo Curation** - Historical venue photos (exceeded target!)
+  - User curated 8 manual photos for legacy venues:
+    - Irvine Meadows Amphitheatre, Universal Amphitheater, Nokia Center
+    - Staples Center, RFK Stadium, The Galaxy Theatre
+    - Crawford Hall, Hollywood Park Race Track
+  - Stored in `/public/images/venues/{normalizedName}-{number}.jpg`
+  - Photos integrated into venues-metadata.json
+
+- ✅ **Photo Review Tool** - Quality control script
+  - Created `scripts/review-venue-photos.ts` to list all photo URLs
+  - Shows photographer attribution from Google Places API
+  - Identifies venues using fallback images
+  - Added npm script `review-venue-photos`
+
+- ✅ **Comprehensive Documentation** - Complete API setup and pipeline docs
+  - Updated `docs/DATA_PIPELINE.md` with Section 5 "Venue Enrichment"
+  - Added photo quality, sources, and attribution documentation
+  - Updated `docs/api-setup.md` with Google Places API setup instructions
+  - Documented cost analysis (~$15/year, within free tier)
+  - Explained 5-tier fallback hierarchy
+
+**Results:**
+
+- 76 venues processed (66 active, 10 legacy)
+- 73 venues (96%) have real photos
+- 3 venues use fallback images
+- API costs: $4.26 initial, ~$15/year ongoing
+- venues-metadata.json: 62KB with full venue details
+- venue-photos-cache.json: 14KB API response cache
+
+**Remaining Work (Context Window 5 - Frontend Integration):**
+
+- [ ] Load venues-metadata.json in Scene3Map.tsx
+- [ ] Update marker popups to show venue photos
+- [ ] Display legacy venue badges (Closed/Demolished)
+- [ ] Create normalizeVenueName utility function
+- [ ] Add TypeScript interface for VenueMetadata
+- [ ] Test on desktop and mobile
+- [ ] Update README.md with new feature
+
+**Files Created:**
+
+- `scripts/export-venues.ts` - Venue extraction script
+- `scripts/utils/google-places-client.ts` - Places API client
+- `scripts/enrich-venues.ts` - Main enrichment script
+- `scripts/review-venue-photos.ts` - Photo review tool
+- `data/venue-status.csv` - Manual venue classifications
+- `public/data/venues-metadata.json` - Enriched venue data
+- `public/data/venue-photos-cache.json` - API response cache
+- `public/images/venues/fallback-active.jpg` - Active venue fallback
+- `public/images/venues/fallback.jpg` - Legacy venue fallback
+- `public/images/venues/{venue}-1.jpg` - 8 manual photos
+- `docs/specs/NEXT_CONTEXT_WINDOW.md` - Frontend integration plan
+
+**Next Session:** Focus on Scene3Map.tsx frontend integration (Context Window 5)
+
 ### v1.3.0+ Future
 
 See [docs/specs/future/](specs/future/) for complete specifications:
