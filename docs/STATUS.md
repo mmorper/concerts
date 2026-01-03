@@ -3,9 +3,9 @@
 **Version:** v1.5.1 🎉
 **Last Updated:** 2026-01-03
 **Current Phase:** Production Release
-**Last Commit:** (pending) - "feat: Venue cross-navigation from Geography to Venues scene (v1.5.1)"
+**Last Commit:** 938fd79 - "feat: Add venue cross-navigation from Geography to Venues scene (v1.5.1)"
 **Live URL:** https://concerts.morperhaus.org
-**GitHub Release:** https://github.com/mmorper/concerts/releases/tag/v1.4.0
+**GitHub Release:** https://github.com/mmorper/concerts/releases/tag/v1.5.1
 
 ---
 
