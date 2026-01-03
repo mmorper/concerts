@@ -56,7 +56,6 @@ export function TimelineHoverPreviewTest() {
                   concertCount={artist.count}
                   venue={artist.venue}
                   imageUrl={imageUrl}
-                  mousePosition={{ x: 0, y: 0 }}
                 />
               </div>
             </div>

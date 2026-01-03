@@ -49,7 +49,15 @@ If you want to connect your own Google Sheet and run the data pipeline, check [d
 
 ## What's next
 
-**v1.4.0 is live!** Timeline hover previews bring artist imagery to the hero scene. Hover over any year dot to see artist photos with a subtle parallax effect—no more click-to-modal. Replaces the old modal with a smoother "scrubbing through time" experience.
+**v1.4.0 is live!** Timeline hover previews bring artist imagery to the hero scene. Hover over any year dot to see artist photos with a subtle parallax effect—no more click-to-modal. The popup features:
+
+- 220×200px card with artist photo (140px height) from TheAudioDB
+- Venue name and concert count with clean typography
+- Parallax image effect responding to mouse movement
+- Smart above/below positioning that avoids viewport edges
+- 120ms hover delay for intentional browsing, 300ms linger for smooth transitions
+
+Replaces the old modal with a smoother "scrubbing through time" experience that feels like flipping through concert memories.
 
 Next up: phone optimization (v1.5.0+), Spotify listening history integration, and—most importantly—more shows to add to the list.
 

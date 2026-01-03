@@ -1,9 +1,9 @@
 # Morperhaus Concert Archives - Status
 
-**Version:** v1.4.0 (Ready for Release)
-**Last Updated:** 2026-01-02
-**Current Phase:** Timeline Hover Preview Complete
-**Last Commit:** a56b03a - "feat: Window 2 - Timeline Hover Preview integration (v1.4.0)"
+**Version:** v1.4.0 🎉
+**Last Updated:** 2026-01-03
+**Current Phase:** Production Release
+**Last Commit:** TBD - "release: v1.4.0 Timeline Hover Preview"
 **Live URL:** https://concerts.morperhaus.org
 
 ---
@@ -282,30 +282,33 @@
 ### v1.4.0 Timeline Hover Preview (Complete) 🎉
 
 **Status:** Complete
-**Completed:** 2026-01-02
+**Completed:** 2026-01-03
 **Focus:** Hover-triggered preview popups for timeline year dots
 
 **Implementation Completed:**
 
-- ✅ **Complete Specifications** - 3-part spec document (2,109 lines)
-  - Part 1: Visual Design & Content
-  - Part 2: Interaction & Animation
-  - Part 3: Technical Implementation
-- ✅ **Project Plan** - Detailed 3-window implementation strategy
+- ✅ **Complete Specifications** - 3-part spec document (2,109 lines total)
+  - Part 1: Visual Design & Content (355 lines)
+  - Part 2: Interaction & Animation (508 lines)
+  - Part 3: Technical Implementation (1,246 lines)
+- ✅ **Project Plan** - Detailed 2-window implementation strategy (405 lines)
+- ✅ **Summary Document** - Executive summary (227 lines)
 - ✅ **Window 1** - Foundation (types, hooks, content component) - 505 lines
-- ✅ **Window 2** - Integration (main popup, Scene1Hero mods) - 149 lines added, 93 removed
-- ✅ **Window 3** - Polish (documentation, version bump)
+- ✅ **Window 2** - Integration & Bug Fixes (main popup, Scene1Hero mods, flashing resolution)
+- ✅ **Data Normalization Migration** - Single source of truth across codebase (eliminated "Violent Femmes" duplicate bug)
 
 **Key Features:**
 
 - Hover-triggered popups with 120ms delay
 - Artist imagery from TheAudioDB (~87 artists enriched)
-- Persistent frame with crossfade between years
-- Parallax image effect responding to mouse movement
-- Above/below positioning logic (alternating, session-persistent)
+- 220×200px card with 140px artist photo
+- Parallax image effect responding to mouse movement (±6px shift)
+- Smart above/below positioning that avoids viewport edges
+- 70px offset prevents popup overlap with timeline dots (resolves flashing)
 - Linger duration (300ms) for smooth transitions
 - Mobile disabled (<768px viewports)
 - Replaces existing click-to-open modal
+- Clean card-based layout with deep indigo-purple background (#1e1e3f)
 
 **Design Philosophy:**
 
@@ -338,8 +341,12 @@ The popup serves as a "memory trigger" - a glimpse into a year's musical moments
 
 **Documentation:**
 
-- [TIMELINE_HOVER_PREVIEW_PROJECT_PLAN.md](specs/TIMELINE_HOVER_PREVIEW_PROJECT_PLAN.md) - Complete implementation plan
-- [TIMELINE_HOVER_PREVIEW_SUMMARY.md](specs/TIMELINE_HOVER_PREVIEW_SUMMARY.md) - Executive summary
+- [TIMELINE_HOVER_PREVIEW_PROJECT_PLAN.md](specs/implemented/TIMELINE_HOVER_PREVIEW_PROJECT_PLAN.md) - Complete implementation plan
+- [TIMELINE_HOVER_PREVIEW_SUMMARY.md](specs/implemented/TIMELINE_HOVER_PREVIEW_SUMMARY.md) - Executive summary
+- [timeline-hover-preview-spec-part1.md](specs/implemented/timeline-hover-preview-spec-part1.md) - Visual Design & Content
+- [timeline-hover-preview-spec-part2.md](specs/implemented/timeline-hover-preview-spec-part2.md) - Interaction & Animation
+- [timeline-hover-preview-spec-part3.md](specs/implemented/timeline-hover-preview-spec-part3.md) - Technical Implementation
+- [NORMALIZATION_MIGRATION.md](specs/implemented/NORMALIZATION_MIGRATION.md) - Data normalization architecture migration
 
 ---
 

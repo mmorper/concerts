@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { TimelineHoverContent } from './TimelineHoverContent'
 import { useArtistMetadata } from './useArtistMetadata'
-import { ANIMATION, LAYOUT, BREAKPOINTS } from './constants'
+import { ANIMATION, LAYOUT, BREAKPOINTS, COLORS } from './constants'
 import type { TimelineHoverPreviewProps } from './types'
 
 /**
@@ -19,55 +19,48 @@ export function TimelineHoverPreview({
   onMouseEnter,
   onMouseLeave,
 }: TimelineHoverPreviewProps) {
-  const [isVisible, setIsVisible] = useState(false)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const { getArtistImage } = useArtistMetadata()
 
   // Check if viewport is mobile (disable on mobile)
   const isMobile = typeof window !== 'undefined' && window.innerWidth < BREAKPOINTS.MOBILE_MAX
 
   /**
-   * Update visibility based on hover state
-   */
-  useEffect(() => {
-    if (hoverState && !isMobile) {
-      setIsVisible(true)
-    } else {
-      setIsVisible(false)
-    }
-  }, [hoverState, isMobile])
-
-  /**
-   * Track mouse position for parallax effect
-   */
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    setMousePosition({ x: e.clientX, y: e.clientY })
-  }, [])
-
-  /**
    * Calculate popup position to keep it within viewport bounds
+   * Returns position and whether popup should be above or below the dot
    */
-  const calculatePosition = useCallback(() => {
-    if (!hoverState) return { x: 0, y: 0 }
+  const position = useMemo(() => {
+    if (!hoverState) return { x: 0, y: 0, isAbove: true }
 
     const { x, y } = hoverState.position
     let popupX = x - LAYOUT.WIDTH / 2
-    let popupY = y + LAYOUT.OFFSET_Y - LAYOUT.HEIGHT
+
+    // Estimate popup height (MIN_HEIGHT + content)
+    const estimatedHeight = LAYOUT.MIN_HEIGHT + 20
+
+    // Determine if popup should be above or below
+    const spaceAbove = y - LAYOUT.OFFSET_Y - LAYOUT.ARROW_SIZE
+    const spaceBelow = window.innerHeight - y - LAYOUT.OFFSET_Y - LAYOUT.ARROW_SIZE
+    const isAbove = spaceAbove >= estimatedHeight || spaceAbove > spaceBelow
+
+    // Calculate vertical position
+    let popupY = isAbove
+      ? y - LAYOUT.OFFSET_Y - LAYOUT.ARROW_SIZE - estimatedHeight
+      : y + LAYOUT.OFFSET_Y + LAYOUT.ARROW_SIZE
 
     // Keep within horizontal bounds
     const maxX = window.innerWidth - LAYOUT.WIDTH - LAYOUT.EDGE_MARGIN
     popupX = Math.max(LAYOUT.EDGE_MARGIN, Math.min(popupX, maxX))
 
-    // Keep within vertical bounds (prefer above, but flip below if needed)
-    if (popupY < LAYOUT.EDGE_MARGIN) {
-      // Flip to below the dot
-      popupY = y - LAYOUT.OFFSET_Y + 40
+    // Keep within vertical bounds
+    if (isAbove) {
+      popupY = Math.max(LAYOUT.EDGE_MARGIN, popupY)
+    } else {
+      const maxY = window.innerHeight - estimatedHeight - LAYOUT.EDGE_MARGIN
+      popupY = Math.min(maxY, popupY)
     }
 
-    return { x: popupX, y: popupY }
+    return { x: popupX, y: popupY, isAbove }
   }, [hoverState])
-
-  const position = calculatePosition()
 
   if (!hoverState || isMobile) {
     return null
@@ -77,35 +70,51 @@ export function TimelineHoverPreview({
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {hoverState && !isMobile && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 10 }}
+          key="timeline-hover-popup"
+          layout
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+          }}
+          exit={{ opacity: 0, scale: 0.95 }}
           transition={{
             duration: ANIMATION.FADE_DURATION / 1000,
             ease: 'easeOut',
+            layout: { duration: 0.2, ease: 'easeOut' },
           }}
           style={{
             position: 'fixed',
             left: position.x,
             top: position.y,
-            width: LAYOUT.WIDTH,
-            height: LAYOUT.HEIGHT,
             pointerEvents: 'auto',
             zIndex: 100,
           }}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
-          onMouseMove={handleMouseMove}
         >
+          {/* Pointer Arrow */}
+          <div
+            style={{
+              position: 'absolute',
+              left: hoverState.position.x - position.x - LAYOUT.ARROW_SIZE,
+              [position.isAbove ? 'bottom' : 'top']: -LAYOUT.ARROW_SIZE,
+              width: 0,
+              height: 0,
+              borderLeft: `${LAYOUT.ARROW_SIZE}px solid transparent`,
+              borderRight: `${LAYOUT.ARROW_SIZE}px solid transparent`,
+              [position.isAbove ? 'borderTop' : 'borderBottom']: `${LAYOUT.ARROW_SIZE}px solid ${COLORS.POPUP_BG}`,
+            }}
+          />
+
           <TimelineHoverContent
             artistName={hoverState.artistName}
             year={hoverState.year}
             concertCount={hoverState.concertCount}
             venue={hoverState.venue}
             imageUrl={imageUrl}
-            mousePosition={mousePosition}
           />
         </motion.div>
       )}

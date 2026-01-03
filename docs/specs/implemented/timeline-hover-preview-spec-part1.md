@@ -44,23 +44,24 @@ The popup serves as a **memory trigger** — a glimpse into a year's musical mom
 │   │                             │   │
 │   │                             │   │
 │   │      ARTIST IMAGE           │   │  ← 188px × 140px
-│   │      (Album Cover)          │   │     with parallax effect
+│   │      (Artist photo)         │   │     with parallax effect
 │   │                             │   │
 │   │                             │   │
 │   └─────────────────────────────┘   │
 │                                     │
-│   Radiohead at The Greek Theatre    │  ← Artist + Venue (single line)
-│                                     │
-│   + 7 more                          │  ← Additional concerts (if any)
+│   Radiohead                         │  ← Primary (artist name)
+│   at The Greek Theatre              │  ← Secondary (venue)
 │                                     │
 │   ─────────────────────────────     │  ← Subtle divider
 │                                     │
-│   1997 · 8 shows                    │  ← Year + total count
+│   1997 · one of 8 concerts          │  ← Accent (year + "one of X")
 │                                     │
 └─────────────────────────────────────┘
          ▼
     [Arrow pointer to dot]
 ```
+
+This three-line structure mirrors the Map popup pattern for cross-scene consistency.
 
 ### Image Container
 
@@ -89,47 +90,42 @@ The popup includes a triangular pointer connecting it to the year dot:
 
 ## Typography
 
-All text uses the existing app type system.
+All text uses the existing app type system, matching the Map popup hierarchy.
 
-### Artist + Venue Line
+### Line 1: Artist Name (Primary)
 
 ```css
 font-family: 'Source Sans 3', system-ui, sans-serif;
-font-size: 15px;
+font-size: 17px;
 font-weight: 600;
 color: #ffffff;
 line-height: 1.3;
+margin-bottom: 2px;
 ```
 
-Format: `{Artist Name} at {Venue Name}`
+**Truncation:** If artist name exceeds container width, truncate with ellipsis. This should be rare.
 
-**Truncation:** If combined length exceeds container width, truncate venue name with ellipsis. Artist name should never truncate.
+### Line 2: Venue (Secondary)
 
-Example truncation:
-- Full: "Radiohead at The Greek Theatre"
-- Truncated: "Radiohead at The Greek Thea…"
+```css
+font-family: 'Source Sans 3', system-ui, sans-serif;
+font-size: 14px;
+font-weight: 400;
+color: #94a3b8;  /* Muted slate */
+line-height: 1.4;
+```
 
-### "+ X more" Line
+Format: `at {Venue Name}`
+
+**Truncation:** If venue name is too long, truncate venue (not "at"). 
+- Full: "at The Greek Theatre"
+- Truncated: "at The Greek Thea…"
+
+### Line 3: Year + Count (Accent)
 
 ```css
 font-family: 'Source Sans 3', system-ui, sans-serif;
 font-size: 13px;
-font-weight: 400;
-color: #94a3b8;  /* Muted gray */
-line-height: 1.4;
-margin-top: 4px;
-```
-
-**Copy variations:**
-- 2+ additional concerts: "+ 7 more"
-- 1 additional concert: "+ 1 more"
-- No additional concerts: *Line omitted entirely*
-
-### Year + Count Line
-
-```css
-font-family: 'Source Sans 3', system-ui, sans-serif;
-font-size: 12px;
 font-weight: 500;
 color: #6366f1;  /* Indigo accent */
 line-height: 1.4;
@@ -138,11 +134,16 @@ padding-top: 12px;
 border-top: 1px solid rgba(99, 102, 241, 0.2);
 ```
 
-Format: `{Year} · {N} show{s}`
+Format varies by concert count:
+- **Multiple concerts:** `{Year} · one of {N} concerts`
+- **Single concert:** `{Year} · 1 concert`
 
 Examples:
-- "1997 · 8 shows"
-- "2003 · 1 show"
+- "1997 · one of 8 concerts"
+- "2013 · one of 6 concerts"
+- "2003 · 1 concert"
+
+**Terminology:** Use "concerts" (not "shows") to match Map popup.
 
 ---
 
@@ -265,9 +266,10 @@ The dot retains its existing hover behavior (scale up + glow), but the preview p
 ### Concert Count Calculation
 
 ```typescript
-const totalShows = concerts.filter(c => c.year === hoveredYear).length;
-const additionalShows = totalShows - 1;  // Subtract the featured one
+const totalConcerts = concerts.filter(c => c.year === hoveredYear).length;
 ```
+
+The popup displays the **total count** for the year, not "additional" concerts. This is clearer and matches the Map popup pattern.
 
 ### Venue Name Handling
 
@@ -351,10 +353,12 @@ src/components/scenes/Scene1Hero/
 |----------|------------|
 | Popup width | 220px |
 | Image size | 188px × 140px |
-| Content | Artist at Venue, + X more, Year · N shows |
+| Text structure | Three lines: Artist, "at Venue", "Year · one of X concerts" |
+| Typography | Matches Map popup hierarchy (primary/secondary/accent) |
 | Image priority | Spotify album art (future) → TheAudioDB artist photo (current) |
 | Artist selection | Random, **only from artists with images** |
 | No-image years | No popup appears (dot retains normal hover state) |
+| Terminology | "concerts" (matches Map popup) |
 | Mobile | Disabled (separate mobile strategy needed) |
 | Accessibility | Reduced motion support, WCAG AA contrast |
 

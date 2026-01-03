@@ -29,16 +29,31 @@ export const ANIMATION = {
  */
 export const LAYOUT = {
   /** Popup width in pixels */
-  WIDTH: 320,
+  WIDTH: 220,
 
-  /** Popup height in pixels */
-  HEIGHT: 180,
+  /** Minimum popup height in pixels */
+  MIN_HEIGHT: 200,
+
+  /** Artist image height in pixels */
+  IMAGE_HEIGHT: 140,
 
   /** Distance from cursor/dot in pixels */
-  OFFSET_Y: -20,
+  OFFSET_Y: 70,
 
   /** Minimum distance from viewport edge in pixels */
   EDGE_MARGIN: 16,
+
+  /** Internal padding (16px each side) */
+  PADDING: 16,
+
+  /** Popup border radius */
+  BORDER_RADIUS: 12,
+
+  /** Image border radius */
+  IMAGE_BORDER_RADIUS: 8,
+
+  /** Pointer arrow size */
+  ARROW_SIZE: 8,
 } as const
 
 /**
@@ -67,7 +82,29 @@ export const BREAKPOINTS = {
  * Image fallback
  */
 export const FALLBACK = {
-  /** Gradient colors for when no artist image is available */
-  GRADIENT_START: '#6366f1', // indigo-500
-  GRADIENT_END: '#a5b4fc', // indigo-300
+  /** Fallback image path for when no artist image is available */
+  IMAGE_URL: '/images/venues/fallback-active.jpg',
+} as const
+
+/**
+ * Color palette
+ */
+export const COLORS = {
+  /** Popup background - deep indigo-purple */
+  POPUP_BG: '#1e1e3f',
+
+  /** Popup border - indigo-700 */
+  POPUP_BORDER: '#3730a3',
+
+  /** Primary text color (artist name) */
+  TEXT_PRIMARY: '#ffffff',
+
+  /** Secondary text color (venue) */
+  TEXT_SECONDARY: '#94a3b8', // slate-400
+
+  /** Accent text color (year + count) */
+  TEXT_ACCENT: '#6366f1', // indigo-500
+
+  /** Divider color */
+  DIVIDER: 'rgba(99, 102, 241, 0.2)', // indigo-500/20
 } as const

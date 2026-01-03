@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import type { Concert } from '../../types/concert'
-import { normalizeVenueName } from '../../utils/normalizeVenueName'
+import { normalizeVenueName } from '../../utils/normalize'
 
 interface VenueMetadata {
   name: string

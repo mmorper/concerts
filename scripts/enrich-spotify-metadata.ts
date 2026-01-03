@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
+import { normalizeArtistName } from '../src/utils/normalize.js'
 import * as dotenv from 'dotenv'
 
 /**
@@ -55,12 +56,6 @@ interface SpotifyArtistMetadata {
 interface SpotifyOverride {
   spotifyArtistId: string
   note: string
-}
-
-function normalizeArtistName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, '')
 }
 
 /**

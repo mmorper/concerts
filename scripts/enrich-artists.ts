@@ -1,6 +1,7 @@
 import { TheAudioDBClient } from './utils/theaudiodb-client'
 import { LastFmClient } from './utils/lastfm-client'
 import { RateLimiter } from './utils/rate-limiter'
+import { normalizeArtistName } from '../src/utils/normalize.js'
 import { createBackup } from './utils/backup'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { join } from 'path'
@@ -67,8 +68,11 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
     const normalized = normalizeArtistName(artistName)
 
     // Skip if already enriched and recent (within 30 days)
-    if (metadata[normalized]) {
-      const age = Date.now() - new Date(metadata[normalized].fetchedAt).getTime()
+    // BUT always re-fetch mock data since it has no images
+    const existingData = metadata[normalized] as any
+    const isMockData = existingData && (existingData.source === 'mock' || existingData.dataSource === 'mock')
+    if (existingData && !isMockData) {
+      const age = Date.now() - new Date(existingData.fetchedAt).getTime()
       const thirtyDays = 30 * 24 * 60 * 60 * 1000
       if (age < thirtyDays) {
         skipped++
@@ -139,14 +143,6 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
   }
 
   console.log(`\n🎉 Done!${dryRun ? ' (DRY RUN)' : ''}`)
-}
-
-function normalizeArtistName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
 }
 
 // Run if called directly

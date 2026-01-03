@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { parse } from 'csv-parse/sync'
+import { normalizeVenueName } from '../src/utils/normalize.js'
 import {
   getVenuePlaceDetails,
   getPhotoUrl,
@@ -93,16 +94,6 @@ interface VenueMetadata {
   } | null
   fetchedAt: string
   photoCacheExpiry?: string | null
-}
-
-/**
- * Normalize venue name for use as object key
- */
-function normalizeVenueName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '')
-    .trim()
 }
 
 /**

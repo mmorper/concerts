@@ -215,9 +215,6 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
             .attr('r', radius)
             .attr('opacity', 0)
         })
-
-      touchTarget.append('title')
-        .text(`${year}: ${count} concert${count !== 1 ? 's' : ''}`)
     })
 
     // Draw decade markers

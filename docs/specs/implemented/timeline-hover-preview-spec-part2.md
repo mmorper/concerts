@@ -253,7 +253,6 @@ When moving between dots during an active session:
 | **Image** | Crossfade to new artist |
 | **Artist name** | Crossfade to new text |
 | **Venue** | Crossfade to new text |
-| **"+ X more"** | Crossfade (or fade out if single concert) |
 | **Year · count** | Crossfade to new values |
 | **Frame position** | Slides horizontally to new dot |
 | **Frame vertical** | Stays fixed (above or below) |
@@ -572,13 +571,12 @@ If user moves cursor across timeline very quickly:
 
 ### Single Concert Year
 
-- No "+ X more" line appears
-- Layout adjusts (less total height)
+- Shows "1 concert" (not "one of 1 concerts")
 - All other behavior identical
 
 ### Year with No Images
 
-- `selectFeaturedArtist()` returns `null`
+- `selectFeaturedConcert()` returns `null`
 - No popup renders for that dot
 - Dot retains normal hover state (scale + glow)
 

@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
+import { normalizeArtistName } from '../src/utils/normalize.js'
 
 /**
  * Generate mock Spotify metadata for all artists
@@ -44,12 +45,6 @@ interface ArtistsMetadataFile {
     note: string
   }
   artists: Record<string, SpotifyArtistMetadata>
-}
-
-function normalizeArtistName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, '')
 }
 
 function generateMockMetadata() {

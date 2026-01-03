@@ -1,24 +1,6 @@
 import { useState, useEffect } from 'react'
+import { normalizeArtistName } from '../../utils/normalize'
 import type { ArtistMetadata } from './types'
-
-/**
- * Normalize artist name to match the format in artists-metadata.json
- * Tries multiple formats to handle variations in the data
- */
-function normalizeArtistName(name: string): string[] {
-  const lowercase = name.toLowerCase()
-
-  // Return multiple possible normalizations
-  // Try hyphenated versions FIRST since TheAudioDB enriched data uses hyphens
-  return [
-    // With spaces replaced by hyphens: "violent-femmes" (TheAudioDB enriched)
-    lowercase.replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
-    // Keep existing hyphens, remove other chars: "duran-duran"
-    lowercase.replace(/[^a-z0-9-]/g, ''),
-    // Without any special chars: "violentfemmes" (mock data fallback)
-    lowercase.replace(/[^a-z0-9]/g, ''),
-  ]
-}
 
 /**
  * Hook to fetch and manage artist metadata
@@ -41,7 +23,7 @@ export function useArtistMetadata() {
           throw new Error(`Failed to load artist metadata: ${response.statusText}`)
         }
         const data = await response.json()
-        setMetadata(data.artists || {})
+        setMetadata(data)
         setLoading(false)
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Unknown error loading metadata'))
@@ -60,16 +42,8 @@ export function useArtistMetadata() {
    */
   const getArtistMetadata = (artistName: string): ArtistMetadata | null => {
     if (!metadata) return null
-    const normalizedVariants = normalizeArtistName(artistName)
-
-    // Try each normalization variant until we find a match
-    for (const normalized of normalizedVariants) {
-      if (metadata[normalized]) {
-        return metadata[normalized]
-      }
-    }
-
-    return null
+    const normalized = normalizeArtistName(artistName)
+    return metadata[normalized] || null
   }
 
   /**

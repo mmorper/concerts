@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from 'react'
+import { normalizeArtistName } from '../../../utils/normalize'
 import type { Concert } from '../../../types/concert'
 import type {
   ArtistCard,
@@ -7,15 +8,6 @@ import type {
   SortOrder,
   ArtistConcert
 } from './types'
-
-/**
- * Normalize artist name for matching
- */
-function normalizeArtistName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, '')
-}
 
 /**
  * All cards use uniform size (240px front, 600px back when flipped)
@@ -132,7 +124,7 @@ export function useArtistData(concerts: Concert[]) {
       const timesSeen = artistData.concerts.length
 
       // Get Spotify metadata if available
-      const spotify = spotifyMetadata.artists[normalizedName]
+      const spotify = spotifyMetadata[normalizedName]
 
       // Determine which album cover size to use - medium is good for 240px cards
       const sizeClass = getSizeClass(timesSeen)

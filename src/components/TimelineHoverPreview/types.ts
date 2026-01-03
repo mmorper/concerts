@@ -45,5 +45,4 @@ export interface TimelineHoverContentProps {
   concertCount: number
   venue: string
   imageUrl?: string
-  mousePosition: { x: number; y: number }
 }

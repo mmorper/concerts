@@ -19,6 +19,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { parse } from 'csv-parse/sync'
+import { normalizeArtistName } from '../src/utils/normalize.js'
 import { getVenueCoordinates } from './services/geocoding.js'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -108,10 +109,6 @@ function parseCSV(csvContent: string): ConcertRow[] {
   })
 
   return records as ConcertRow[]
-}
-
-function normalizeArtistName(name: string): string {
-  return name.toLowerCase().replace(/[^a-z0-9]/g, '-')
 }
 
 function parseDate(dateStr: string): { year: number; month: number; day: number } | null {

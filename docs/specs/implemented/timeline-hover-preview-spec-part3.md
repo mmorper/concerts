@@ -109,8 +109,7 @@ export interface FeaturedConcert {
  */
 export interface PopupContent {
   featured: FeaturedConcert;
-  additionalCount: number;  // Number of other concerts that year
-  totalShows: number;       // Total concerts that year
+  totalConcerts: number;    // Total concerts that year
   year: number;
 }
 
@@ -355,8 +354,7 @@ function selectFeaturedConcert(
       artistName: featured.headliner,
       venueName: featured.venue,
     },
-    additionalCount: yearConcerts.length - 1,
-    totalShows: yearConcerts.length,
+    totalConcerts: yearConcerts.length,
     year,
   };
 }
@@ -724,7 +722,7 @@ export function TimelinePopupContent({
   onMouseMove,
   onMouseLeave,
 }: Props) {
-  const { featured, additionalCount, totalShows, year } = content;
+  const { featured, totalConcerts, year } = content;
   
   return (
     <div style={{ padding: DIMENSIONS.POPUP_PADDING }}>
@@ -755,43 +753,44 @@ export function TimelinePopupContent({
         />
       </div>
       
-      {/* Artist at Venue */}
+      {/* Line 1: Artist Name (Primary) */}
       <div
         style={{
           fontFamily: "'Source Sans 3', system-ui, sans-serif",
-          fontSize: 15,
+          fontSize: 17,
           fontWeight: 600,
           color: COLORS.TEXT_PRIMARY,
           lineHeight: 1.3,
-          marginBottom: 4,
+          marginBottom: 2,
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
         }}
       >
-        {featured.artistName} at {featured.venueName}
+        {featured.artistName}
       </div>
       
-      {/* + X more (conditional) */}
-      {additionalCount > 0 && (
-        <div
-          style={{
-            fontFamily: "'Source Sans 3', system-ui, sans-serif",
-            fontSize: 13,
-            fontWeight: 400,
-            color: COLORS.TEXT_SECONDARY,
-            lineHeight: 1.4,
-          }}
-        >
-          + {additionalCount} more
-        </div>
-      )}
-      
-      {/* Year · count footer */}
+      {/* Line 2: Venue (Secondary) */}
       <div
         style={{
           fontFamily: "'Source Sans 3', system-ui, sans-serif",
-          fontSize: 12,
+          fontSize: 14,
+          fontWeight: 400,
+          color: COLORS.TEXT_SECONDARY,
+          lineHeight: 1.4,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        at {featured.venueName}
+      </div>
+      
+      {/* Line 3: Year + Count (Accent) */}
+      <div
+        style={{
+          fontFamily: "'Source Sans 3', system-ui, sans-serif",
+          fontSize: 13,
           fontWeight: 500,
           color: COLORS.TEXT_ACCENT,
           lineHeight: 1.4,
@@ -800,7 +799,9 @@ export function TimelinePopupContent({
           borderTop: `1px solid ${COLORS.DIVIDER}`,
         }}
       >
-        {year} · {totalShows} show{totalShows !== 1 ? 's' : ''}
+        {year} · {totalConcerts === 1 
+          ? '1 concert' 
+          : `one of ${totalConcerts} concerts`}
       </div>
     </div>
   );
@@ -936,10 +937,10 @@ return (
 
 - [ ] Create `TimelinePopupContent.tsx`
 - [ ] Implement image container with parallax transform
-- [ ] Implement artist + venue text line
-- [ ] Implement "+ X more" conditional text
-- [ ] Implement year · count footer with divider
-- [ ] Verify text truncation on long venue names
+- [ ] Implement Line 1: Artist name (primary style)
+- [ ] Implement Line 2: "at {Venue}" (secondary style)
+- [ ] Implement Line 3: "{Year} · one of {N} concerts" or "{Year} · 1 concert" (conditional)
+- [ ] Verify text truncation on long artist/venue names
 
 - [ ] Create `TimelineHoverPreview.tsx`
 - [ ] Implement position calculation (X with edge clamping)
@@ -998,12 +999,15 @@ return (
 | Move cursor between dots | Content crossfades, frame slides |
 | Move cursor across timeline quickly | No popups (delay prevents) |
 | Hover year with no images | No popup, dot still glows |
-| Hover single-concert year | No "+ X more" line |
+| Hover single-concert year | Shows "2003 · 1 concert" (no "one of") |
+| Hover multi-concert year | Shows "1997 · one of 8 concerts" |
 | Move cursor within popup | Image parallax moves |
 | Popup near left edge | Clamped, arrow still points to dot |
 | Popup near right edge | Clamped, arrow still points to dot |
 | Enable reduced motion in OS | No parallax, simplified animations |
 | Resize window while popup visible | Popup repositions correctly |
+| Long artist name | Truncates with ellipsis |
+| Long venue name | "at {Venue}..." truncates |
 
 ### Automated Testing (Future)
 

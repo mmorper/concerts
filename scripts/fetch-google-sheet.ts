@@ -1,5 +1,6 @@
 import { GoogleSheetsClient } from './utils/google-sheets-client'
 import { getCityCoordinates, getDefaultCoordinates } from '../src/utils/city-coordinates'
+import { normalizeArtistName } from '../src/utils/normalize.js'
 import { createBackup } from './utils/backup'
 import { writeFileSync, readFileSync, existsSync } from 'fs'
 import { join } from 'path'
@@ -29,17 +30,6 @@ interface ProcessedConcert {
     lat: number
     lng: number
   }
-}
-
-/**
- * Normalize artist name for API lookups and matching
- */
-function normalizeArtistName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
 }
 
 /**

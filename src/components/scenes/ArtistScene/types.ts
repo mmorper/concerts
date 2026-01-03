@@ -64,12 +64,4 @@ export interface SpotifyArtistMetadata {
   dataSource: 'spotify' | 'mock'
 }
 
-export interface ArtistsMetadataFile {
-  metadata: {
-    lastUpdated: string
-    totalArtists: number
-    dataSource: 'spotify' | 'mock'
-    note: string
-  }
-  artists: Record<string, SpotifyArtistMetadata>
-}
+export type ArtistsMetadataFile = Record<string, SpotifyArtistMetadata>

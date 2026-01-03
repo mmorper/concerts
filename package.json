@@ -19,6 +19,8 @@
     "enrich-venues": "tsx scripts/enrich-venues.ts",
     "test-places-api": "tsx scripts/test-places-api.ts",
     "review-venue-photos": "tsx scripts/review-venue-photos.ts",
+    "deduplicate-artists": "tsx scripts/deduplicate-artists.ts",
+    "validate-normalization": "tsx scripts/validate-normalization.ts",
     "validate-data": "tsx scripts/validate-concerts.ts",
     "diff-data": "tsx scripts/diff-concerts.ts",
     "test:sanity": "node test/test-simple.mjs",

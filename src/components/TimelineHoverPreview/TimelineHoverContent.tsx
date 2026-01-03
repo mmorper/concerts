@@ -1,12 +1,13 @@
 import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { PARALLAX, FALLBACK, LAYOUT } from './constants'
+import { PARALLAX, LAYOUT, FALLBACK, COLORS } from './constants'
 import type { TimelineHoverContentProps } from './types'
 
 /**
  * Content component for the timeline hover preview
  *
- * Displays artist name, year, concert count, and artist image with parallax effect
+ * Displays artist photo, artist name, venue, year, and concert count
+ * with a clean card-based layout and parallax effect.
  *
  * @param props - Component props
  * @returns React component
@@ -21,7 +22,7 @@ export function TimelineHoverContent({
   const [localMousePosition, setLocalMousePosition] = useState({ x: 0, y: 0 })
 
   /**
-   * Track mouse position relative to the popup for parallax effect
+   * Track mouse position relative to the image for parallax effect
    */
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!PARALLAX.ENABLED) return
@@ -33,71 +34,118 @@ export function TimelineHoverContent({
     setLocalMousePosition({ x, y })
   }, [])
 
-  /**
-   * Calculate parallax shift based on mouse position
-   */
+  // Calculate parallax offsets
   const parallaxX = PARALLAX.ENABLED
     ? (localMousePosition.x / (LAYOUT.WIDTH / 2)) * PARALLAX.MAX_SHIFT_X
     : 0
   const parallaxY = PARALLAX.ENABLED
-    ? (localMousePosition.y / (LAYOUT.HEIGHT / 2)) * PARALLAX.MAX_SHIFT_Y
+    ? (localMousePosition.y / (LAYOUT.IMAGE_HEIGHT / 2)) * PARALLAX.MAX_SHIFT_Y
     : 0
+
+  // Use fallback image if no artist image available
+  const displayImageUrl = imageUrl || FALLBACK.IMAGE_URL
+
+  // Format concert count text
+  const countText = concertCount === 1
+    ? '1 concert'
+    : `one of ${concertCount} concerts`
 
   return (
     <div
-      className="relative w-full h-full overflow-hidden bg-white rounded-lg shadow-2xl"
-      onMouseMove={handleMouseMove}
+      style={{
+        width: LAYOUT.WIDTH,
+        minHeight: LAYOUT.MIN_HEIGHT,
+        backgroundColor: COLORS.POPUP_BG,
+        border: `1px solid ${COLORS.POPUP_BORDER}`,
+        borderRadius: LAYOUT.BORDER_RADIUS,
+        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.4)',
+        overflow: 'hidden',
+        fontFamily: "'Source Sans 3', system-ui, sans-serif",
+      }}
     >
-      {/* Background image with parallax */}
-      <div className="absolute inset-0">
-        {imageUrl ? (
-          <motion.img
-            src={imageUrl}
-            alt={artistName}
-            className="w-full h-full object-cover"
-            animate={{
-              x: parallaxX,
-              y: parallaxY,
-            }}
-            transition={{
-              duration: PARALLAX.ENABLED ? 0.2 : 0,
-              ease: 'easeOut',
-            }}
-          />
-        ) : (
-          // Fallback gradient when no image is available
-          <motion.div
-            className="w-full h-full"
-            style={{
-              background: `linear-gradient(135deg, ${FALLBACK.GRADIENT_START} 0%, ${FALLBACK.GRADIENT_END} 100%)`,
-            }}
-            animate={{
-              x: parallaxX,
-              y: parallaxY,
-            }}
-            transition={{
-              duration: PARALLAX.ENABLED ? 0.2 : 0,
-              ease: 'easeOut',
-            }}
-          />
-        )}
+      {/* Artist Image with Parallax */}
+      <div
+        style={{
+          width: '100%',
+          height: LAYOUT.IMAGE_HEIGHT,
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => setLocalMousePosition({ x: 0, y: 0 })}
+      >
+        <motion.img
+          src={displayImageUrl}
+          alt={artistName}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center',
+            transform: 'scale(1.1)', // Slightly larger for parallax without exposing edges
+          }}
+          animate={{
+            x: parallaxX,
+            y: parallaxY,
+          }}
+          transition={{
+            duration: PARALLAX.ENABLED ? 0.2 : 0,
+            ease: 'easeOut',
+          }}
+        />
       </div>
 
-      {/* Gradient overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+      {/* Text Content */}
+      <div style={{ padding: `${LAYOUT.PADDING}px` }}>
+        {/* Line 1: Artist Name */}
+        <div
+          style={{
+            fontSize: '17px',
+            fontWeight: 600,
+            color: COLORS.TEXT_PRIMARY,
+            lineHeight: 1.3,
+            marginBottom: '2px',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {artistName}
+        </div>
 
-      {/* Content */}
-      <div className="absolute inset-0 flex flex-col justify-end p-4">
-        <div className="text-white">
-          {/* Artist and venue */}
-          <h3 className="font-serif text-lg font-semibold mb-1 leading-tight">
-            {artistName} at {venue}
-            {concertCount > 1 && ` + ${concertCount - 1} other show${concertCount - 1 !== 1 ? 's' : ''}`}
-          </h3>
+        {/* Line 2: Venue */}
+        <div
+          style={{
+            fontSize: '14px',
+            fontWeight: 400,
+            color: COLORS.TEXT_SECONDARY,
+            lineHeight: 1.4,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          at {venue}
+        </div>
 
-          {/* Year */}
-          <div className="font-sans text-sm text-white/80">
-            {year}
+        {/* Divider */}
+        <div
+          style={{
+            marginTop: '12px',
+            paddingTop: '12px',
+            borderTop: `1px solid ${COLORS.DIVIDER}`,
+          }}
+        >
+          {/* Line 3: Year · Count */}
+          <div
+            style={{
+              fontSize: '13px',
+              fontWeight: 500,
+              color: COLORS.TEXT_ACCENT,
+              lineHeight: 1.4,
+            }}
+          >
+            {year} · {countText}
           </div>
         </div>
       </div>
