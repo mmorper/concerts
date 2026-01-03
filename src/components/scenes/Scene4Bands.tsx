@@ -5,6 +5,8 @@ import type { Concert } from '../../types/concert'
 
 interface Scene4BandsProps {
   concerts: Concert[]
+  pendingVenueFocus?: string | null
+  onVenueFocusComplete?: () => void
 }
 
 interface Node {
@@ -23,7 +25,7 @@ interface Link {
 
 type ViewMode = 'top10' | 'all'
 
-export function Scene4Bands({ concerts }: Scene4BandsProps) {
+export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete }: Scene4BandsProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const simulationRef = useRef<d3.Simulation<any, any> | null>(null)
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null)
@@ -317,6 +319,7 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       .attr('fill', 'transparent')
       .style('cursor', focusedNodeId || expandedVenues.size > 0 ? 'pointer' : 'default')
       .on('click', () => {
+        // Clear focus if set
         if (focusedNodeId) {
           setFocusedNodeId(null)
         }
@@ -429,6 +432,21 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
     // Create container group
     const g = svg.append('g')
 
+    // Determine target opacity for links (for spotlight effect)
+    const getLinkOpacity = (d: any) => {
+      const baseOpacity = d.type === 'hierarchy' ? 0.5 : 0.3
+      if (focusedNodeId) {
+        const sourceId = typeof d.source === 'object' ? d.source.id : d.source
+        const targetId = typeof d.target === 'object' ? d.target.id : d.target
+        if (sourceId === focusedNodeId || targetId === focusedNodeId ||
+            relatedNodes.has(sourceId) || relatedNodes.has(targetId)) {
+          return baseOpacity
+        }
+        return baseOpacity * 0.15
+      }
+      return baseOpacity
+    }
+
     // Draw links with different styles for hierarchy vs cross-venue
     const link = g.append('g')
       .selectAll('line')
@@ -437,9 +455,12 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
         enter => enter.append('line')
           .attr('stroke-opacity', 0) // Start invisible
           .call(enter => enter.transition().duration(800)
-            .attr('stroke-opacity', (d: any) => d.type === 'hierarchy' ? 0.5 : 0.3)
+            .attr('stroke-opacity', (d: any) => getLinkOpacity(d))
           ),
-        update => update,
+        update => update
+          .call(update => update.transition().duration(600)
+            .attr('stroke-opacity', (d: any) => getLinkOpacity(d))
+          ),
         exit => exit.call(exit => exit.transition().duration(600)
           .attr('stroke-opacity', 0)
           .remove()
@@ -449,6 +470,18 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       .attr('stroke-width', (d: any) => d.type === 'hierarchy' ? 2 : 1)
       .attr('stroke-dasharray', (d: any) => d.type === 'cross-venue' ? '5,5' : 'none')
 
+    // Determine target opacity for each node (for spotlight effect)
+    const getTargetOpacity = (d: Node) => {
+      // If focused on a specific node, dim unrelated nodes
+      if (focusedNodeId) {
+        if (d.id === focusedNodeId || relatedNodes.has(d.id)) {
+          return 1
+        }
+        return 0.15
+      }
+      return 1
+    }
+
     // Draw nodes
     const node = g.append('g')
       .selectAll('g')
@@ -457,9 +490,12 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
         enter => enter.append('g')
           .attr('opacity', 0) // Start invisible
           .call(enter => enter.transition().duration(800)
-            .attr('opacity', 1)
+            .attr('opacity', (d: any) => getTargetOpacity(d))
           ),
-        update => update,
+        update => update
+          .call(update => update.transition().duration(600)
+            .attr('opacity', (d: any) => getTargetOpacity(d))
+          ),
         exit => exit.call(exit => exit.transition().duration(600)
           .attr('opacity', 0)
           .remove()
@@ -481,13 +517,15 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
           const venueName = d.id.replace('venue|', '')
 
           if (expandedVenues.has(venueName)) {
-            // Collapse: clear expanded and centered
+            // Collapse: clear expanded, centered, and focus
             setExpandedVenues(new Set())
             setCenteredVenue(null)
+            setFocusedNodeId(null)
           } else {
-            // Expand: set this venue as the only expanded one and center it
+            // Expand: set this venue as the only expanded one, center it, and focus it
             setExpandedVenues(new Set([venueName]))
             setCenteredVenue(venueName)
+            setFocusedNodeId(d.id)
           }
 
           return
@@ -695,6 +733,33 @@ export function Scene4Bands({ concerts }: Scene4BandsProps) {
       simulation.stop()
     }
   }, [nodes, links, focusedNodeId, getRelatedNodes, viewMode, expandedVenues, centeredVenue, dimensions])
+
+  // Handle pendingVenueFocus from cross-scene navigation
+  useEffect(() => {
+    if (!pendingVenueFocus) return
+
+    // Check if this venue exists in our data
+    const venueExists = concerts.some(c => c.venue === pendingVenueFocus)
+    if (!venueExists) {
+      console.warn(`Venue "${pendingVenueFocus}" not found in concerts data`)
+      onVenueFocusComplete?.()
+      return
+    }
+
+    // Expand and center the target venue
+    setExpandedVenues(new Set([pendingVenueFocus]))
+    setCenteredVenue(pendingVenueFocus)
+    setViewMode('all')
+
+    // Set focus to the venue node to apply spotlight effect
+    // The D3 render will automatically dim unrelated nodes via getTargetOpacity
+    const venueNodeId = `venue|${pendingVenueFocus}`
+    setFocusedNodeId(venueNodeId)
+
+    // Just notify parent that navigation is complete (don't clear focus)
+    // User interaction will clear the spotlight via background click or button press
+    onVenueFocusComplete?.()
+  }, [pendingVenueFocus, concerts, onVenueFocusComplete])
 
   const totalVenues = useMemo(() => {
     const allVenues = new Set<string>()

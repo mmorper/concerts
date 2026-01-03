@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import type { ConcertData } from './types/concert'
 import { Scene1Hero } from './components/scenes/Scene1Hero'
 import { Scene3Map } from './components/scenes/Scene3Map'
@@ -6,10 +7,52 @@ import { Scene4Bands } from './components/scenes/Scene4Bands'
 import { Scene5Genres } from './components/scenes/Scene5Genres'
 import { ArtistScene } from './components/scenes/ArtistScene/ArtistScene'
 import { SceneNavigation } from './components/SceneNavigation'
+import { ChangelogPage, ChangelogToast, ChangelogRSS } from './components/changelog'
+import { SCENE_MAP, TOAST } from './components/changelog/constants'
+import { useChangelogCheck } from './hooks/useChangelogCheck'
 
 function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<MainScenes />} />
+      <Route path="/changelog" element={<ChangelogPage />} />
+      <Route path="/changelog/rss" element={<ChangelogRSS />} />
+    </Routes>
+  )
+}
+
+function MainScenes() {
+  const location = useLocation()
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [data, setData] = useState<ConcertData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [currentScene, setCurrentScene] = useState(1)
+  const [showToast, setShowToast] = useState(false)
+  const [pendingVenueFocus, setPendingVenueFocus] = useState<string | null>(null)
+
+  // Check for new changelog entries
+  const {
+    shouldShow,
+    newFeatureCount,
+    latestRelease,
+    dismissToast,
+    markAsSeen,
+  } = useChangelogCheck(currentScene)
+
+  // Handle venue navigation from map to venues scene
+  const handleVenueNavigate = (venueName: string) => {
+    setPendingVenueFocus(venueName)
+
+    // Scroll to venues scene (Scene 2)
+    const scrollContainer = scrollContainerRef.current
+    if (!scrollContainer) return
+
+    const windowHeight = window.innerHeight
+    scrollContainer.scrollTo({
+      top: (2 - 1) * windowHeight, // Scene 2 = Venues
+      behavior: 'smooth',
+    })
+  }
 
   useEffect(() => {
     fetch('/data/concerts.json')
@@ -23,6 +66,59 @@ function App() {
         setLoading(false)
       })
   }, [])
+
+  // Track current scene from scroll position
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current
+    if (!scrollContainer) return
+
+    const handleScroll = () => {
+      const scrollPosition = scrollContainer.scrollTop
+      const windowHeight = window.innerHeight
+      const sceneIndex = Math.round(scrollPosition / windowHeight) + 1
+      setCurrentScene(Math.min(Math.max(sceneIndex, 1), 5))
+    }
+
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true })
+    return () => scrollContainer.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Show toast with delay after data loads and if new features available
+  useEffect(() => {
+    if (loading || !shouldShow) return
+
+    const timer = setTimeout(() => {
+      setShowToast(true)
+    }, TOAST.INITIAL_DELAY)
+
+    return () => clearTimeout(timer)
+  }, [loading, shouldShow])
+
+  // Handle deep linking via query parameters
+  useEffect(() => {
+    if (loading || !scrollContainerRef.current) return
+
+    const params = new URLSearchParams(location.search)
+    const sceneParam = params.get('scene')
+
+    if (sceneParam && SCENE_MAP[sceneParam]) {
+      const sceneId = SCENE_MAP[sceneParam]
+
+      // Delay to ensure DOM is fully ready
+      setTimeout(() => {
+        const scrollContainer = scrollContainerRef.current
+        if (!scrollContainer) return
+
+        const windowHeight = window.innerHeight
+        scrollContainer.scrollTo({
+          top: (sceneId - 1) * windowHeight,
+          behavior: 'smooth',
+        })
+      }, 100)
+    } else if (sceneParam) {
+      console.warn('Invalid scene parameter:', sceneParam)
+    }
+  }, [location.search, loading])
 
   if (loading) {
     return (
@@ -56,15 +152,22 @@ function App() {
 
   return (
     <>
-      <div className="relative snap-y snap-mandatory h-screen overflow-y-scroll">
+      <div ref={scrollContainerRef} className="relative snap-y snap-mandatory h-screen overflow-y-scroll">
         {/* Scene 1: Hero/Timeline */}
         <Scene1Hero concerts={concerts} />
 
         {/* Scene 2: Venues (force-directed graph) */}
-        <Scene4Bands concerts={concerts} />
+        <Scene4Bands
+          concerts={concerts}
+          pendingVenueFocus={pendingVenueFocus}
+          onVenueFocusComplete={() => setPendingVenueFocus(null)}
+        />
 
         {/* Scene 3: Map */}
-        <Scene3Map concerts={concerts} />
+        <Scene3Map
+          concerts={concerts}
+          onVenueNavigate={handleVenueNavigate}
+        />
 
         {/* Scene 4: Genres (sunburst) */}
         <Scene5Genres concerts={concerts} />
@@ -75,6 +178,23 @@ function App() {
 
       {/* Scene Navigation */}
       <SceneNavigation />
+
+      {/* Changelog Toast (only on Scene 1) */}
+      {latestRelease && (
+        <ChangelogToast
+          isVisible={showToast}
+          newFeatureCount={newFeatureCount}
+          latestRelease={latestRelease}
+          onDismiss={() => {
+            setShowToast(false)
+            dismissToast()
+          }}
+          onNavigate={() => {
+            setShowToast(false)
+            markAsSeen()
+          }}
+        />
+      )}
     </>
   )
 }

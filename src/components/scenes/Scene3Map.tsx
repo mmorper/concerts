@@ -46,6 +46,7 @@ interface VenueMetadata {
 
 interface Scene3MapProps {
   concerts: Concert[]
+  onVenueNavigate?: (venueName: string) => void
 }
 
 type Region = 'all' | 'california' | 'dc'
@@ -75,7 +76,7 @@ const REGION_VIEWS: Record<Region, { center: [number, number]; zoom: number; lab
   },
 }
 
-export function Scene3Map({ concerts }: Scene3MapProps) {
+export function Scene3Map({ concerts, onVenueNavigate }: Scene3MapProps) {
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<L.Map | null>(null)
   const markersLayerRef = useRef<L.LayerGroup | null>(null)
@@ -189,6 +190,21 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
           <div class="venue-popup-location">${cityState}</div>
           ${legacyBadge}
           <div class="venue-popup-count">${concertCount} concert${concertCount !== 1 ? 's' : ''}</div>
+          <button
+            class="venue-popup-link"
+            data-venue-name="${venueName}"
+            aria-label="View ${venueName} in venues scene"
+          >
+            <svg class="venue-graph-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="6" cy="5" r="3.5" fill="currentColor" opacity="0.9"/>
+              <circle cx="16" cy="12" r="3" fill="currentColor" opacity="0.7"/>
+              <circle cx="14" cy="21" r="3" fill="currentColor" opacity="0.7"/>
+              <line x1="9" y1="7" x2="13.5" y2="10" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+              <line x1="8.5" y1="7.5" x2="11.5" y2="18.5" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+            </svg>
+            <span>Explore Venue</span>
+            <span class="arrow">→</span>
+          </button>
         </div>
       </div>
     `
@@ -357,6 +373,31 @@ export function Scene3Map({ concerts }: Scene3MapProps) {
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [isMapActive])
+
+  // Event delegation for venue link clicks in popups
+  useEffect(() => {
+    if (!mapRef.current || !onVenueNavigate) return
+
+    const handleVenueLinkClick = (e: Event) => {
+      const target = e.target as HTMLElement
+      if (target.classList.contains('venue-popup-link')) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const venueName = target.getAttribute('data-venue-name')
+        if (venueName) {
+          onVenueNavigate(venueName)
+        }
+      }
+    }
+
+    const mapContainer = mapRef.current
+    mapContainer.addEventListener('click', handleVenueLinkClick)
+
+    return () => {
+      mapContainer.removeEventListener('click', handleVenueLinkClick)
+    }
+  }, [onVenueNavigate])
 
   // Scroll trapping when map is active
   useEffect(() => {
