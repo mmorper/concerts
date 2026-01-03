@@ -49,7 +49,7 @@ If you want to connect your own Google Sheet and run the data pipeline, check [d
 
 ## What's next
 
-**v1.3.3 is live!** Venue photos now appear in Geography Scene map popups—click any venue marker to see photos, legacy badges for closed/demolished venues, and venue stats. 96% of venues have real photos from Google Places API or manual curation.
+**v1.3.4 is live!** Enhanced API key security with separate keys for geocoding and venue photos. Venue photos now appear in Geography Scene map popups—click any venue marker to see photos, legacy badges for closed/demolished venues, and venue stats. 96% of venues have real photos from Google Places API or manual curation.
 
 Next up: phone optimization (v1.4.0+), Spotify listening history integration, and—most importantly—more shows to add to the list.
 

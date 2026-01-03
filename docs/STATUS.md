@@ -1,9 +1,9 @@
 # Morperhaus Concert Archives - Status
 
-**Version:** v1.3.3 (Ready for Release)
-**Last Updated:** 2026-01-03
-**Current Phase:** Venue Photos Frontend Integration Complete
-**Last Commit:** TBD - "feat: Add venue photos to Geography Scene popups (v1.3.3)"
+**Version:** v1.3.4 (Ready for Release)
+**Last Updated:** 2026-01-02
+**Current Phase:** API Key Security Enhancement Complete
+**Last Commit:** 4fbdf44 - "security: Separate Geocoding and Places API keys (v1.3.4)"
 **Live URL:** https://concerts.morperhaus.org
 
 ---
@@ -141,7 +141,7 @@
 ### v1.3.3 Venue Photos Frontend Integration (Complete) 🎉
 
 **Status:** Complete (Frontend)
-**Completed:** 2026-01-03
+**Completed:** 2026-01-02
 **Focus:** Display venue photos in Geography Scene map popups
 
 **Completed (Context Windows 1-4):**
@@ -248,18 +248,97 @@
 - 0 runtime API calls (all photos pre-fetched)
 - 96% of venues have real photos
 
-### v1.3.0+ Future
+### v1.3.4 API Key Security Enhancement (Complete) 🎉
+
+**Status:** Complete
+**Completed:** 2026-01-02
+**Focus:** Separate Geocoding and Places API keys for improved security
+
+**Changes:**
+
+- ✅ **Separate API Keys** - Split GOOGLE_MAPS_API_KEY into two distinct keys:
+  - `GOOGLE_GEOCODING_API_KEY` - For venue geocoding (Geocoding API)
+  - `GOOGLE_PLACES_API_KEY` - For venue photos (Places API New)
+- ✅ **Updated Environment Variables** - Modified `.env` structure for clearer key management
+- ✅ **Script Updates** - Updated all scripts to use appropriate API keys:
+  - `scripts/services/geocoding.ts` - Uses GOOGLE_GEOCODING_API_KEY
+  - `scripts/utils/google-places-client.ts` - Uses GOOGLE_PLACES_API_KEY
+- ✅ **Documentation Updates** - Updated `docs/api-setup.md` with separate key setup instructions
+
+**Security Benefits:**
+
+- Principle of least privilege - Each key only has access to its required API
+- Easier API restriction management in Google Cloud Console
+- Better cost tracking and rate limiting per service
+- Reduced blast radius if a key is compromised
+
+**Files Modified:**
+
+- `.env` - Updated environment variable names
+- `scripts/services/geocoding.ts` - Updated to use GOOGLE_GEOCODING_API_KEY
+- `scripts/utils/google-places-client.ts` - Updated to use GOOGLE_PLACES_API_KEY
+- `docs/api-setup.md` - Added separate key setup sections
+
+### v1.4.0 Timeline Hover Preview (In Progress) 🚧
+
+**Status:** Ready to Start
+**Started:** 2026-01-02
+**Focus:** Hover-triggered preview popups for timeline year dots
+
+**Scope:**
+
+- ✅ **Complete Specifications** - 3-part spec document (2,109 lines)
+  - Part 1: Visual Design & Content
+  - Part 2: Interaction & Animation
+  - Part 3: Technical Implementation
+- ✅ **Project Plan** - Detailed 3-window implementation strategy
+- 🔲 **Context Window 1** - Foundation (types, hooks, content component)
+- 🔲 **Context Window 2** - Integration (main popup, Scene1Hero mods)
+- 🔲 **Context Window 3** - Polish (testing, docs, release)
+
+**Key Features:**
+
+- Hover-triggered popups with 120ms delay
+- Artist imagery from TheAudioDB (~87 artists enriched)
+- Persistent frame with crossfade between years
+- Parallax image effect responding to mouse movement
+- Above/below positioning logic (alternating, session-persistent)
+- Linger duration (300ms) for smooth transitions
+- Mobile disabled (<768px viewports)
+- Replaces existing click-to-open modal
+
+**Design Philosophy:**
+
+The popup serves as a "memory trigger" - a glimpse into a year's musical moments. Large album art creates immediate recognition, while venue anchors the memory in place. Moving across dots feels like "scrubbing through time" rather than discrete open/close actions.
+
+**Implementation Plan:**
+
+See [TIMELINE_HOVER_PREVIEW_PROJECT_PLAN.md](specs/TIMELINE_HOVER_PREVIEW_PROJECT_PLAN.md) for complete details.
+
+**Files to Create:**
+- `src/components/scenes/TimelineHoverPreview/` (8 new files)
+
+**Files to Modify:**
+- `src/components/scenes/Scene1Hero.tsx` (remove modal, add hover)
+- `docs/STATUS.md`, `README.md`, `package.json`
+
+**Archived:**
+- `timeline-wake-effect-spec.md` → `specs/archive/`
+- `timeline-wake-effect-poc.html` → `specs/archive/`
+
+---
+
+### v1.4.0+ Future Roadmap
 
 See [docs/specs/future/](specs/future/) for complete specifications:
 
-1. **Phone Optimization** ([mobile-optimization.md](specs/future/mobile-optimization.md)) - Bottom sheets, smaller viewport refinements (<768px)
-2. **Spotify Artist Integration** ([spotify-artist-integration.md](specs/future/spotify-artist-integration.md)) - Album art, gatefold mini-player, 30s previews
-3. **Timeline Artist Display** ([timeline-artist-display-enhancement.md](specs/future/timeline-artist-display-enhancement.md)) - Rich artist modals on timeline
-4. **Google Sheets Phase 2** ([google-sheets-data-integration.md](specs/future/google-sheets-data-integration.md)) - Webhook automation (Google Apps Script → GitHub Action)
-5. **Genre Scene Opener Inclusion** ([genre-scene-opener-inclusion.md](specs/future/genre-scene-opener-inclusion.md)) - Include opener appearances (under review)
-6. **Venue Cross-Navigation** ([venue-cross-navigation.md](specs/future/venue-cross-navigation.md)) - Map popup → Venue scene linking
-7. **Visual Testing Suite** ([visual-testing-suite.md](specs/future/visual-testing-suite.md)) - Automated screenshot testing
-8. **Timeline Wake Effect** ([timeline-wake-effect-spec.md](specs/future/timeline-wake-effect-spec.md)) - Interactive cursor wake effect
+1. **Phone Optimization** ([mobile-optimization.md](specs/future/mobile-optimization.md)) - Bottom sheets, smaller viewport refinements (<768px) [v1.5.0]
+2. **Spotify Artist Integration** ([spotify-artist-integration.md](specs/future/spotify-artist-integration.md)) - Album art, gatefold mini-player, 30s previews [v1.5.0]
+3. **Timeline Artist Display Enhancement** ([timeline-artist-display-enhancement.md](specs/future/timeline-artist-display-enhancement.md)) - Rich artist modals on timeline (click-to-expand from hover preview) [v1.5.0+]
+4. **Google Sheets Phase 2** ([google-sheets-data-integration.md](specs/future/google-sheets-data-integration.md)) - Webhook automation (Google Apps Script → GitHub Action) [Future]
+5. **Genre Scene Opener Inclusion** ([genre-scene-opener-inclusion.md](specs/future/genre-scene-opener-inclusion.md)) - Include opener appearances (under review) [Future]
+6. **Venue Cross-Navigation** ([venue-cross-navigation.md](specs/future/venue-cross-navigation.md)) - Map popup → Venue scene linking [Future]
+7. **Visual Testing Suite** ([visual-testing-suite.md](specs/future/visual-testing-suite.md)) - Automated screenshot testing [Future]
 
 ---
 
