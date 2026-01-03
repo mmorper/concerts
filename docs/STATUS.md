@@ -3,7 +3,7 @@
 **Version:** v1.4.1 🎉
 **Last Updated:** 2026-01-03
 **Current Phase:** Production Release
-**Last Commit:** (pending) - "feat: Add artist photos to gatefold inside cover"
+**Last Commit:** 9d4717f - "feat: Add artist photos to gatefold inside cover (v1.4.1)"
 **Live URL:** https://concerts.morperhaus.org
 **GitHub Release:** https://github.com/mmorper/concerts/releases/tag/v1.4.0
 
