@@ -1,9 +1,9 @@
 # Morperhaus Concert Archives - Status
 
-**Version:** v1.4.1 🎉
+**Version:** v1.5.1 🎉
 **Last Updated:** 2026-01-03
 **Current Phase:** Production Release
-**Last Commit:** 9d4717f - "feat: Add artist photos to gatefold inside cover (v1.4.1)"
+**Last Commit:** (pending) - "feat: Venue cross-navigation from Geography to Venues scene (v1.5.1)"
 **Live URL:** https://concerts.morperhaus.org
 **GitHub Release:** https://github.com/mmorper/concerts/releases/tag/v1.4.0
 
@@ -336,6 +336,77 @@
 - 2-3 hours implementation time
 - 94 artists (54%) display photos, 80 artists (46%) use gradient fallback
 
+### v1.5.0 "What's Playing" Changelog (Complete) 🎉
+
+**Status:** Complete
+**Completed:** 2026-01-03
+**Focus:** Concert-themed changelog feature with toast notifications, RSS feed, and deep linking
+
+**Implementation Completed:**
+
+- ✅ **Standalone Changelog Page** - Full-page route at `/changelog`
+  - "What's Playing" branding with concert theme
+  - Grid layout (2 columns on desktop, 1 on mobile)
+  - Cards with gatefold aesthetic (dark zinc bg, amber accents)
+  - Stagger animations on page load (100ms per card)
+  - RSS link in bottom-right corner (subtle, slate-600)
+- ✅ **Toast Notification System** - Bottom-center toast on Timeline scene (Scene 1)
+  - Shows count of new features since last visit
+  - Auto-dismiss after 10 seconds with progress bar
+  - Click toast or button to navigate to `/changelog`
+  - ESC key support, localStorage tracking
+  - Session-based dismissal (won't re-appear until next visit)
+- ✅ **Deep Linking** - Navigate directly to features from changelog
+  - Each release links to its scene via query parameters
+  - Example: `/?scene=timeline`, `/?scene=artists`, `/?scene=geography`
+  - Smooth scroll to target scene on arrival
+- ✅ **RSS Feed** - Machine-readable feed at `/changelog/rss`
+  - RSS 2.0 format with Atom namespace
+  - Generated from changelog.json at runtime
+  - Includes release titles, descriptions, highlights, and deep links
+- ✅ **Historical Entries** - Backfilled 4 releases from recent git commits
+  - v1.4.1 - Artist Photos in Gatefold (Jan 3, 2026)
+  - v1.4.0 - Timeline Hover Preview (Jan 3, 2026)
+  - v1.3.3 - Venue Photos on Map (Jan 2, 2026)
+  - v1.3.2 - Google Places Integration (Jan 2, 2026)
+
+**Files Created:**
+
+- `src/data/changelog.json` - Central changelog data file
+- `src/components/changelog/ChangelogPage.tsx` - Main changelog page
+- `src/components/changelog/ChangelogCard.tsx` - Individual release cards
+- `src/components/changelog/ChangelogToast.tsx` - Toast notification component
+- `src/components/changelog/ChangelogRSS.tsx` - RSS feed generator
+- `src/components/changelog/types.ts` - TypeScript interfaces
+- `src/components/changelog/constants.ts` - Configuration & deep link mapping
+- `src/components/changelog/index.ts` - Public exports
+- `src/utils/changelogStorage.ts` - localStorage/sessionStorage utilities
+- `src/hooks/useChangelogCheck.ts` - Hook for toast visibility logic
+- `docs/specs/implemented/whats-playing-changelog.md` - Complete specification
+
+**Files Modified:**
+
+- `src/App.tsx` - Added React Router with 3 routes (/, /changelog, /changelog/rss)
+- `src/main.tsx` - Wrapped app in BrowserRouter
+- `package.json` - Added react-router-dom dependency
+
+**Implementation Stats:**
+
+- 4-phase implementation (Foundation → Page → Toast → Polish)
+- ~950 lines of new code across 10 files
+- Bundle impact: +11.5KB gzipped (changelog chunk: 0.69KB)
+- Zero runtime API calls (data loaded from static JSON)
+- WCAG AA accessibility compliance
+
+**Design Features:**
+
+- Concert poster aesthetic (black bg, amber/gold accents)
+- "Latest" badge on newest release
+- "See it live →" CTA button with concert pun
+- Date formatting: "January 3, 2026"
+- Hover effects: amber-500 border + shadow glow
+- Mobile: Cards get mx-4 breathing room, RSS link hidden
+
 **Key Features:**
 
 - Hover-triggered popups with 120ms delay
@@ -389,19 +460,73 @@ The popup serves as a "memory trigger" - a glimpse into a year's musical moments
 
 ---
 
-### v1.4.0+ Future Roadmap
+### v1.5.1 Venue Cross-Navigation (Complete) 🎉
+
+**Status:** Complete
+**Completed:** 2026-01-03
+**Focus:** Seamless navigation from Geography Scene map popups to Venues Scene
+
+**Implementation Completed:**
+
+- ✅ **Button with Graph Icon** - "Explore Venue →" button in venue popups
+  - Custom graph icon (parent + 2 child nodes, diagonal cascade layout)
+  - Full-width gradient button (indigo-500) with proper visual weight
+  - Icon positioned on left, text center, arrow on right
+  - 18x18px icon size, larger nodes (parent r=3.5, children r=3)
+  - Icon design: parent at (6,5), children at (16,12) and (14,21) for max vertical spread
+- ✅ **State Management** - Cross-scene communication via App.tsx
+  - `pendingVenueFocus` state lifted to App component
+  - `handleVenueNavigate()` scrolls to Venues scene and sets focus
+  - Props passed to Scene3Map (onVenueNavigate) and Scene4Bands (pendingVenueFocus)
+- ✅ **Spotlight Effect** - Persistent dimming until user interaction
+  - All non-focused nodes dimmed to 15% opacity
+  - Target venue and children remain at 100% opacity
+  - Spotlight persists until user clicks anywhere or presses button
+  - No auto-clear timer (user-controlled interaction)
+- ✅ **Auto-Expand on Click** - Default behavior for ALL venue interactions
+  - Clicking any venue (from map or directly in scene) auto-applies spotlight
+  - Makes child nodes immediately visible and easier to see
+  - Consistent UX: spotlight + expand is the default for venue focus
+- ✅ **Integrated into D3 Render Pipeline** - Declarative opacity management
+  - `getTargetOpacity()` and `getLinkOpacity()` helper functions
+  - Opacity calculated in D3 `.join()` enter and update transitions
+  - No manual DOM manipulation - all spotlight logic declarative
+
+**Files Modified:**
+
+- `src/App.tsx` - State management and scroll handler (+20 lines)
+- `src/components/scenes/Scene3Map.tsx` - Popup button HTML, event delegation (+35 lines)
+- `src/components/scenes/Scene4Bands.tsx` - Spotlight integration, auto-focus (+80 lines)
+- `src/index.css` - Button and icon styling (+30 lines)
+
+**Implementation Stats:**
+
+- ~165 lines of code added across 4 files
+- Zero additional API calls or performance overhead
+- Seamless user experience with smooth animations
+- Fully integrated with existing D3 force simulation
+
+**Design Iterations:**
+
+- Icon evolution: horizontal layout → angled V → final diagonal cascade
+- Button width: auto-size → full-width (better CTA prominence)
+- Node sizing: multiple iterations to achieve proper visual weight
+- Text refinement: "View in Venues" → "Explore" → "Explore Venue"
+
+### v1.5.0+ Future Roadmap
 
 See [docs/specs/future/](specs/future/) for complete specifications:
 
-1. **"What's Playing" Changelog** ([whats-playing-changelog-spec.md](specs/future/whats-playing-changelog-spec.md)) - Concert-themed changelog with toast notifications, deep linking [v1.4.1]
-2. **Phone Optimization** ([mobile-optimization.md](specs/future/mobile-optimization.md)) - Bottom sheets, smaller viewport refinements (<768px) [v1.5.0]
-3. **Setlist Liner Notes** ([setlist-liner-notes.md](specs/future/setlist-liner-notes.md)) - Artist gatefold enhancement with setlist.fm integration, sliding liner notes panel [v1.5.0]
-4. **Spotify Artist Integration** ([spotify-artist-integration.md](specs/future/spotify-artist-integration.md)) - Album art, gatefold mini-player, 30s previews [v1.5.0]
-5. **Timeline Artist Display Enhancement** ([timeline-artist-display-enhancement.md](specs/future/timeline-artist-display-enhancement.md)) - Rich artist modals on timeline (click-to-expand from hover preview) [v1.5.0+]
-6. **Google Sheets Phase 2** ([google-sheets-data-integration.md](specs/future/google-sheets-data-integration.md)) - Webhook automation (Google Apps Script → GitHub Action) [Future]
-7. **Genre Scene Opener Inclusion** ([genre-scene-opener-inclusion.md](specs/future/genre-scene-opener-inclusion.md)) - Include opener appearances (under review) [Future]
-8. **Venue Cross-Navigation** ([venue-cross-navigation.md](specs/future/venue-cross-navigation.md)) - Map popup → Venue scene linking [Future]
-9. **Visual Testing Suite** ([visual-testing-suite.md](specs/future/visual-testing-suite.md)) - Automated screenshot testing [Future]
+1. ✅ **"What's Playing" Changelog** ([whats-playing-changelog.md](specs/implemented/whats-playing-changelog.md)) - Concert-themed changelog with toast notifications, deep linking [v1.5.0 - Complete]
+2. ✅ **Venue Cross-Navigation** ([venue-cross-navigation.md](specs/implemented/venue-cross-navigation.md)) - Map popup → Venue scene linking with spotlight effect [v1.5.1 - Complete]
+3. **Phone Optimization** ([mobile-optimization.md](specs/future/mobile-optimization.md)) - Bottom sheets, smaller viewport refinements (<768px) [v1.6.0]
+4. **Setlist Liner Notes** ([setlist-liner-notes.md](specs/future/setlist-liner-notes.md)) - Artist gatefold contextual menu with setlist.fm integration, sliding liner notes panel [v1.6.0]
+5. **Upcoming Tour Dates** ([upcoming-tour-dates.md](specs/future/upcoming-tour-dates.md)) - Artist gatefold contextual menu with Bandsintown integration, discover upcoming concerts [v1.7.0]
+6. **Spotify Artist Integration** ([spotify-artist-integration.md](specs/future/spotify-artist-integration.md)) - Album art, gatefold mini-player, 30s previews [v1.6.0]
+7. **Timeline Artist Display Enhancement** ([timeline-artist-display-enhancement.md](specs/future/timeline-artist-display-enhancement.md)) - Rich artist modals on timeline (click-to-expand from hover preview) [v1.6.0+]
+8. **Google Sheets Phase 2** ([google-sheets-data-integration.md](specs/future/google-sheets-data-integration.md)) - Webhook automation (Google Apps Script → GitHub Action) [Future]
+9. **Genre Scene Opener Inclusion** ([genre-scene-opener-inclusion.md](specs/future/genre-scene-opener-inclusion.md)) - Include opener appearances (under review) [Future]
+10. **Visual Testing Suite** ([visual-testing-suite.md](specs/future/visual-testing-suite.md)) - Automated screenshot testing [Future]
 
 ---
 
@@ -816,9 +941,10 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 
 **Scope:**
 
-- setlist.fm API integration for concert setlists
+- Contextual menu (three-dot icon) on each concert in Concert History Panel
+- Menu shows "View Setlist" and "Upcoming Shows" options (with disabled states)
+- setlist.fm API integration for concert setlists (free API, requires key)
 - "Liner notes" panel that slides over Spotify panel in Artist gatefold
-- Three-dot icon on each concert in Concert History Panel
 - Smooth concert switching (slide out left, slide in right)
 - Loading/success/error/not found states
 - 24-hour client-side caching
@@ -830,9 +956,34 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 **Related:**
 
 - [api-setup.md](api-setup.md) — setlist.fm API key setup
+- [upcoming-tour-dates.md](specs/future/upcoming-tour-dates.md) — Shares contextual menu pattern
 - [spotify-artist-integration.md](specs/future/spotify-artist-integration.md) — Panel that gets covered by liner notes
 
-### 4. Timeline Artist Display Enhancement (v1.3.0+)
+### 4. Upcoming Tour Dates (v1.6.0)
+
+**Status:** Planned
+**Spec:** [Upcoming Tour Dates](specs/future/upcoming-tour-dates.md)
+
+**Scope:**
+
+- Shares contextual menu pattern with Setlist Liner Notes (v1.5.0)
+- Menu option "Upcoming Shows" opens tour dates panel
+- Bandsintown API integration (free, no API key - just app_id)
+- Tour dates panel slides over Spotify panel (same pattern as liner notes)
+- Shows all future tour dates for the artist
+- Date list with venue, location, and ticket links
+- 24-hour client-side caching to minimize API calls
+- Loading/success/error/no dates states
+- Artist name normalization for better matching
+
+**Prerequisites:** Artist Scene Gatefold (✅ complete in v1.4.0)
+
+**Related:**
+
+- [api-setup.md](api-setup.md) — Bandsintown API setup (no key required)
+- [setlist-liner-notes.md](specs/future/setlist-liner-notes.md) — Shares contextual menu component
+
+### 6. Timeline Artist Display Enhancement (v1.3.0+)
 
 **Status:** Planned
 **Spec:** [Timeline Artist Display Enhancement](specs/future/timeline-artist-display-enhancement.md)
@@ -843,7 +994,7 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 - Artist photos, biography, genre evolution
 - Full concert history for selected artist
 
-### 5. Spotify Artist Integration (v1.3.0+)
+### 7. Spotify Artist Integration (v1.3.0+)
 
 **Status:** Planned
 **Spec:** [Spotify Artist Integration](specs/future/spotify-artist-integration.md)

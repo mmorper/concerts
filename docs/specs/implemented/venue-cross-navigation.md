@@ -1,5 +1,9 @@
 # Cross-Scene Venue Navigation: Map → Venues
 
+**Status:** ✅ Complete
+**Version:** v1.5.1
+**Completed:** 2026-01-03
+
 ## Overview
 
 Add clickable venue links in the Map (Geography) scene popups that navigate users to The Venues scene and auto-expand the corresponding venue node. This creates a seamless cross-scene connection for exploring venue details.
@@ -13,7 +17,7 @@ Add clickable venue links in the Map (Geography) scene popups that navigate user
    - Smooth scrolls to The Venues scene
    - Switches to "All Venues" view (if not already)
    - Auto-expands the venue node with its child artists
-
+   - All other venue nodes fade back, drawing further attention on the venue node and child nodes with focus
 ---
 
 ## Visual Design
@@ -399,6 +403,115 @@ const isTargetVenue = (d: Node) =>
 - [x] **Visual feedback:** Spotlight effect dims all non-target nodes, making the venue "pop" before expansion begins
 
 ---
+
+## Design Decisions & Deviations from Spec
+
+### 1. Button Instead of Text Link
+
+**Original Spec:** Clickable venue name text link with arrow indicator
+
+**Implemented:** Full-width gradient button with graph icon
+
+**Rationale:**
+
+- Button provides stronger call-to-action (single primary action in popup)
+- Graph icon creates visual foreshadowing of the Venues scene
+- Better touch target for mobile users (44px min-height)
+- More prominent CTA matches importance of cross-navigation feature
+
+### 2. Graph Icon Design
+
+**Original Spec:** Small arrow indicator (→) after venue name
+
+**Implemented:** Custom SVG icon showing parent-child node relationship
+
+**Rationale:**
+
+- Icon visually communicates destination (graph visualization scene)
+- Diagonal cascade layout (parent top-left, children bottom-right) better represents force graph
+- Multiple iterations to achieve proper visual weight and clarity
+- Final design: parent r=3.5 at (6,5), children r=3 at (16,12) and (14,21)
+
+### 3. Persistent Spotlight (No Auto-Clear)
+
+**Original Spec:** Spotlight fades out after expansion settles (~800ms)
+
+**Implemented:** Spotlight persists indefinitely until user interaction
+
+**Rationale:**
+
+- User explicitly requested: "I think they should stay screened back until the user takes action"
+- Makes child nodes much easier to see and identify
+- User-controlled interaction (click anywhere or press button to clear)
+- More intentional focus on the target venue
+
+### 4. Auto-Spotlight on All Venue Clicks
+
+**Original Spec:** Spotlight only applied during cross-scene navigation
+
+**Implemented:** Spotlight automatically applied whenever any venue is expanded
+
+**Rationale:**
+
+- User feedback: "I want this behavior... to be the default behavior. It is so much easier to see the child nodes."
+- Consistent UX - spotlight + expand is always paired
+- Applies to: map navigation, direct venue clicks in Venues scene, and Reset button
+
+### 5. Integrated D3 Rendering (Not Manual DOM Manipulation)
+
+**Original Spec:** Manual D3 selection to dim nodes after-the-fact
+
+**Implemented:** Declarative opacity in D3 `.join()` transitions
+
+**Rationale:**
+
+- Original approach caused timing issues (nodes not rendered yet)
+- Declarative approach integrates with D3's enter/update/exit lifecycle
+- More reliable and performant
+- Helper functions `getTargetOpacity()` and `getLinkOpacity()` calculate opacity per render
+
+### 6. Simplified Animation Sequence
+
+**Original Spec:** 4-step choreography (~2300ms total)
+
+- Scroll (800ms) → Spotlight fade-in (400ms) → Pause (300ms) → Expand + fade-out (800ms)
+
+**Implemented:** 2-step sequence (~1200ms total)
+
+- Scroll (800ms) → Expand with spotlight (400ms, no fade-out)
+
+**Rationale:**
+
+- Simplified timing is more responsive
+- Persistent spotlight eliminates need for fade-out animation
+- Faster perceived performance
+- Less complex state management
+
+### 7. Event Delegation Pattern
+
+**Original Spec:** Listen to Leaflet's `popupopen` event
+
+**Implemented:** Direct click event delegation on map container
+
+**Rationale:**
+
+- Simpler implementation
+- Better control over event propagation
+- Works reliably with dynamically generated popup HTML
+- Easier to test and maintain
+
+### 8. Button Text Evolution
+
+**Original Spec:** "View in Venues →"
+
+**Implemented:** "Explore Venue →"
+
+**Rationale:**
+
+- Shorter and more action-oriented
+- "Explore" suggests discovery (better matches use case)
+- "Venue" clarifies what you're exploring (not just "Explore")
+- More conversational tone
 
 ## Future Enhancements (Out of Scope)
 

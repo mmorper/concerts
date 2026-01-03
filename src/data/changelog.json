@@ -1,0 +1,64 @@
+{
+  "releases": [
+    {
+      "version": "1.5.1",
+      "date": "2026-01-03",
+      "title": "Venue Cross-Navigation",
+      "description": "Click any venue on the map to navigate directly to its details in the Venues scene",
+      "route": "/?scene=geography",
+      "highlights": [
+        "Clickable \"Explore Venue →\" buttons in map popups",
+        "Smooth scroll with spotlight animation",
+        "Auto-expand venue with child artists"
+      ]
+    },
+    {
+      "version": "1.4.1",
+      "date": "2026-01-03",
+      "title": "Artist Photos in Gatefold",
+      "description": "Open any artist's gatefold to see their photo alongside concert history",
+      "route": "/?scene=artists",
+      "highlights": [
+        "94 artists (54%) display photos",
+        "Enriched metadata from Spotify, AudioDB, Last.fm",
+        "Graceful fallback to gradient + initials"
+      ]
+    },
+    {
+      "version": "1.4.0",
+      "date": "2026-01-03",
+      "title": "Timeline Hover Preview",
+      "description": "Hover over any year to see artist photos with subtle parallax effects",
+      "route": "/?scene=timeline",
+      "highlights": [
+        "Artist imagery on hover",
+        "Parallax mouse tracking",
+        "Smooth fade-in animations"
+      ]
+    },
+    {
+      "version": "1.3.3",
+      "date": "2026-01-02",
+      "title": "Venue Photos on Map",
+      "description": "Click any venue marker to see photos, legacy badges, and concert stats",
+      "route": "/?scene=geography",
+      "highlights": [
+        "96% of venues have photos (73/76)",
+        "Lazy-loaded with skeleton shimmer",
+        "Legacy badges for closed/demolished venues"
+      ]
+    },
+    {
+      "version": "1.3.2",
+      "date": "2026-01-02",
+      "title": "Google Places Integration",
+      "description": "Venue photos powered by Google Places API with smart fallback hierarchy",
+      "route": "/?scene=geography",
+      "highlights": [
+        "66 active venues with real photos",
+        "Automatic fallbacks for legacy venues",
+        "Manual curation support for historical photos"
+      ]
+    }
+  ]
+}
