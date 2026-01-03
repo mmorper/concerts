@@ -9,13 +9,14 @@ function normalizeArtistName(name: string): string[] {
   const lowercase = name.toLowerCase()
 
   // Return multiple possible normalizations
+  // Try hyphenated versions FIRST since TheAudioDB enriched data uses hyphens
   return [
-    // With hyphens (TheAudioDB format): "duran-duran"
-    lowercase.replace(/[^a-z0-9-]/g, '').replace(/\s+/g, '-'),
-    // Without any special chars: "duranduran"
-    lowercase.replace(/[^a-z0-9]/g, ''),
-    // With spaces replaced by hyphens: "duran-duran"
+    // With spaces replaced by hyphens: "violent-femmes" (TheAudioDB enriched)
     lowercase.replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+    // Keep existing hyphens, remove other chars: "duran-duran"
+    lowercase.replace(/[^a-z0-9-]/g, ''),
+    // Without any special chars: "violentfemmes" (mock data fallback)
+    lowercase.replace(/[^a-z0-9]/g, ''),
   ]
 }
 
