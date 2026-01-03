@@ -1,5 +1,6 @@
 import { format } from 'date-fns'
 import { getGenreColor } from '../../../constants/colors'
+import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
 import type { ArtistCard } from './types'
 
 interface ConcertHistoryPanelProps {
@@ -28,6 +29,8 @@ function getArtistInitials(name: string): string {
  * Size: 400×400px
  */
 export function ConcertHistoryPanel({ artist }: ConcertHistoryPanelProps) {
+  const { getArtistImage } = useArtistMetadata()
+  const artistImage = getArtistImage(artist.name)
   const genreColor = getGenreColor(artist.primaryGenre)
   const initials = getArtistInitials(artist.name)
 
@@ -45,18 +48,30 @@ export function ConcertHistoryPanel({ artist }: ConcertHistoryPanelProps) {
     >
       {/* Artist Header */}
       <div className="flex gap-5 mb-7 flex-shrink-0">
-        {/* Album Art Placeholder */}
-        <div
-          className="w-[100px] h-[100px] flex items-center justify-center rounded flex-shrink-0"
-          style={{
-            background: gradient,
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)'
-          }}
-        >
-          <span className="font-sans text-4xl font-semibold text-white">
-            {initials}
-          </span>
-        </div>
+        {/* Artist Photo or Gradient Placeholder */}
+        {artistImage ? (
+          <img
+            src={artistImage}
+            alt={`Photo of ${artist.name}`}
+            className="w-[100px] h-[100px] flex-shrink-0 object-cover object-center"
+            style={{
+              borderRadius: '8px',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)'
+            }}
+          />
+        ) : (
+          <div
+            className="w-[100px] h-[100px] flex items-center justify-center rounded flex-shrink-0"
+            style={{
+              background: gradient,
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)'
+            }}
+          >
+            <span className="font-sans text-4xl font-semibold text-white">
+              {initials}
+            </span>
+          </div>
+        )}
 
         {/* Artist Info */}
         <div className="flex flex-col justify-center">

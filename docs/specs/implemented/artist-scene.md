@@ -115,12 +115,14 @@ CLOSED STATE:                    OPEN STATE (bird's eye view):
 
 ### Left Panel: Concert History (Inside of Cover)
 
+> **✅ v1.4.1 Enhancement:** Artist photos now display when available (see [gatefold-artist-photo.md](gatefold-artist-photo.md))
+
 ```
 ┌────────────────────────────────────────┐
 │  ┌──────┐  Artist Name                 │  ← Playfair Display, 1.875rem
-│  │ Art  │  Genre · X shows             │  ← Source Sans 3, 0.9rem, #a3a3a3
-│  │      │                              │
-│  └──────┘                              │
+│  │ 📷   │  Genre · X shows             │  ← Source Sans 3, 0.9rem, #a3a3a3
+│  │      │                              │  ← 100×100px artist photo (8px rounded)
+│  └──────┘                              │     OR gradient + initials if no photo
 │         100×100px                      │
 │                                        │
 │  CONCERT HISTORY                       │  ← Label: 0.7rem, #1DB954, uppercase
@@ -136,6 +138,14 @@ CLOSED STATE:                    OPEN STATE (bird's eye view):
 └────────────────────────────────────────┘
 
 Background: linear-gradient(145deg, #181818 0%, #121212 100%)
+
+Artist Photo Details:
+- Shows artist image when available (94 artists, 54%)
+- Falls back to genre-colored gradient + initials (80 artists, 46%)
+- 8px border radius (distinguishes from album art)
+- Center-cropped with object-fit: cover
+- Data sources: Spotify → AudioDB → Last.fm (same as timeline hover)
+- Implementation: ConcertHistoryPanel.tsx uses useArtistMetadata hook
 ```
 
 ### Right Panel: Spotify Player

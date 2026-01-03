@@ -1,9 +1,9 @@
 # Morperhaus Concert Archives - Status
 
-**Version:** v1.4.0 🎉
+**Version:** v1.4.1 🎉
 **Last Updated:** 2026-01-03
 **Current Phase:** Production Release
-**Last Commit:** 34f9e6a - "release: v1.4.0 Timeline Hover Preview"
+**Last Commit:** (pending) - "feat: Add artist photos to gatefold inside cover"
 **Live URL:** https://concerts.morperhaus.org
 **GitHub Release:** https://github.com/mmorper/concerts/releases/tag/v1.4.0
 
@@ -297,6 +297,44 @@
 - ✅ **Window 1** - Foundation (types, hooks, content component) - 505 lines
 - ✅ **Window 2** - Integration & Bug Fixes (main popup, Scene1Hero mods, flashing resolution)
 - ✅ **Data Normalization Migration** - Single source of truth across codebase (eliminated "Violent Femmes" duplicate bug)
+
+### v1.4.1 Gatefold Artist Photos (Complete) 🎉
+
+**Status:** Complete
+**Completed:** 2026-01-03
+**Focus:** Add artist photos to gatefold inside cover
+
+**Implementation Completed:**
+
+- ✅ **Artist Photo Integration** - Reused Timeline Hover Preview metadata pipeline
+  - Added artist photos to Concert History Panel (gatefold inside cover)
+  - 100×100px square images with 8px rounded corners
+  - Center-crop with object-fit: cover
+  - Same data source priority as timeline hover (Spotify → AudioDB → Last.fm)
+- ✅ **Graceful Fallback** - Maintains existing design for artists without images
+  - Genre-colored gradient with initials when no photo available
+  - 94 artists have photos in metadata
+  - Zero additional API calls or performance overhead
+- ✅ **Visual Consistency** - Unified artist imagery across features
+  - Same images shown in timeline hover preview and gatefold
+  - Consistent data normalization (artist name matching)
+  - Maintains gatefold's dark theme aesthetic
+
+**Files Modified:**
+
+- `src/components/scenes/ArtistScene/ConcertHistoryPanel.tsx` - Added conditional rendering for artist photos (+25 lines)
+
+**Files Created:**
+
+- `docs/specs/implemented/gatefold-artist-photo.md` - Complete implementation specification
+
+**Implementation Stats:**
+
+- Single file modified (ConcertHistoryPanel.tsx)
+- ~25 lines of code added (TypeScript + JSX)
+- 0 additional API calls (reuses existing metadata)
+- 2-3 hours implementation time
+- 94 artists (54%) display photos, 80 artists (46%) use gradient fallback
 
 **Key Features:**
 
