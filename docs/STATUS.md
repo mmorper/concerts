@@ -355,13 +355,15 @@ The popup serves as a "memory trigger" - a glimpse into a year's musical moments
 
 See [docs/specs/future/](specs/future/) for complete specifications:
 
-1. **Phone Optimization** ([mobile-optimization.md](specs/future/mobile-optimization.md)) - Bottom sheets, smaller viewport refinements (<768px) [v1.5.0]
-2. **Spotify Artist Integration** ([spotify-artist-integration.md](specs/future/spotify-artist-integration.md)) - Album art, gatefold mini-player, 30s previews [v1.5.0]
-3. **Timeline Artist Display Enhancement** ([timeline-artist-display-enhancement.md](specs/future/timeline-artist-display-enhancement.md)) - Rich artist modals on timeline (click-to-expand from hover preview) [v1.5.0+]
-4. **Google Sheets Phase 2** ([google-sheets-data-integration.md](specs/future/google-sheets-data-integration.md)) - Webhook automation (Google Apps Script → GitHub Action) [Future]
-5. **Genre Scene Opener Inclusion** ([genre-scene-opener-inclusion.md](specs/future/genre-scene-opener-inclusion.md)) - Include opener appearances (under review) [Future]
-6. **Venue Cross-Navigation** ([venue-cross-navigation.md](specs/future/venue-cross-navigation.md)) - Map popup → Venue scene linking [Future]
-7. **Visual Testing Suite** ([visual-testing-suite.md](specs/future/visual-testing-suite.md)) - Automated screenshot testing [Future]
+1. **"What's Playing" Changelog** ([whats-playing-changelog-spec.md](specs/future/whats-playing-changelog-spec.md)) - Concert-themed changelog with toast notifications, deep linking [v1.4.1]
+2. **Phone Optimization** ([mobile-optimization.md](specs/future/mobile-optimization.md)) - Bottom sheets, smaller viewport refinements (<768px) [v1.5.0]
+3. **Setlist Liner Notes** ([setlist-liner-notes.md](specs/future/setlist-liner-notes.md)) - Artist gatefold enhancement with setlist.fm integration, sliding liner notes panel [v1.5.0]
+4. **Spotify Artist Integration** ([spotify-artist-integration.md](specs/future/spotify-artist-integration.md)) - Album art, gatefold mini-player, 30s previews [v1.5.0]
+5. **Timeline Artist Display Enhancement** ([timeline-artist-display-enhancement.md](specs/future/timeline-artist-display-enhancement.md)) - Rich artist modals on timeline (click-to-expand from hover preview) [v1.5.0+]
+6. **Google Sheets Phase 2** ([google-sheets-data-integration.md](specs/future/google-sheets-data-integration.md)) - Webhook automation (Google Apps Script → GitHub Action) [Future]
+7. **Genre Scene Opener Inclusion** ([genre-scene-opener-inclusion.md](specs/future/genre-scene-opener-inclusion.md)) - Include opener appearances (under review) [Future]
+8. **Venue Cross-Navigation** ([venue-cross-navigation.md](specs/future/venue-cross-navigation.md)) - Map popup → Venue scene linking [Future]
+9. **Visual Testing Suite** ([visual-testing-suite.md](specs/future/visual-testing-suite.md)) - Automated screenshot testing [Future]
 
 ---
 
@@ -769,7 +771,30 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 - Map scene: Further touch refinements for small screens
 - General: Phone-specific gesture indicators, responsive improvements
 
-### 3. Timeline Artist Display Enhancement (v1.3.0+)
+### 3. Setlist Liner Notes (v1.5.0)
+
+**Status:** Planned
+**Spec:** [Setlist Liner Notes](specs/future/setlist-liner-notes.md)
+
+**Scope:**
+
+- setlist.fm API integration for concert setlists
+- "Liner notes" panel that slides over Spotify panel in Artist gatefold
+- Three-dot icon on each concert in Concert History Panel
+- Smooth concert switching (slide out left, slide in right)
+- Loading/success/error/not found states
+- 24-hour client-side caching
+- Fuzzy matching for artist/date/venue
+- Keyboard navigation and accessibility
+
+**Prerequisites:** Artist Scene Gatefold (✅ complete in v1.4.0)
+
+**Related:**
+
+- [api-setup.md](api-setup.md) — setlist.fm API key setup
+- [spotify-artist-integration.md](specs/future/spotify-artist-integration.md) — Panel that gets covered by liner notes
+
+### 4. Timeline Artist Display Enhancement (v1.3.0+)
 
 **Status:** Planned
 **Spec:** [Timeline Artist Display Enhancement](specs/future/timeline-artist-display-enhancement.md)
@@ -780,7 +805,7 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 - Artist photos, biography, genre evolution
 - Full concert history for selected artist
 
-### 4. Spotify Artist Integration (v1.3.0+)
+### 5. Spotify Artist Integration (v1.3.0+)
 
 **Status:** Planned
 **Spec:** [Spotify Artist Integration](specs/future/spotify-artist-integration.md)
@@ -799,10 +824,11 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 
 - [spotify-enrichment-runbook.md](specs/future/spotify-enrichment-runbook.md) — Enrichment script runbook
 - [mobile-optimization.md](specs/future/mobile-optimization.md) — Mobile bottom sheet layout
+- [setlist-liner-notes.md](specs/future/setlist-liner-notes.md) — Liner notes that cover Spotify panel
 
-### 4.5. Venue Photos Integration (v1.3.2)
+### 6. Venue Photos Integration (v1.3.2)
 
-**Status:** Planned
+**Status:** Complete ✅
 **Spec:** [Venue Photos Integration](specs/future/venue-photos-integration.md)
 
 **Scope:**
@@ -822,7 +848,7 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 - [data-normalization-architecture.md](specs/future/data-normalization-architecture.md) — Parent architecture spec
 - [api-setup.md](api-setup.md) — API credentials setup
 
-### 5. Genre Scene Opener Inclusion (v1.3.0+)
+### 7. Genre Scene Opener Inclusion (v1.3.0+)
 
 **Status:** Under Review
 **Spec:** [Genre Scene Opener Inclusion](specs/future/genre-scene-opener-inclusion.md)
@@ -833,7 +859,7 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 - Adjustable weighting (headliner vs opener)
 - Updated data model to track performance types
 
-### 6. Venue Cross-Navigation (v1.3.0+)
+### 8. Venue Cross-Navigation (v1.3.0+)
 
 **Status:** Planned
 **Spec:** [Venue Cross-Navigation](specs/future/venue-cross-navigation.md)
@@ -843,7 +869,7 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 - Smooth transitions between scenes
 - Venue focus and expansion on arrival
 
-### 7. Visual Testing Suite (v1.3.0+)
+### 9. Visual Testing Suite (v1.3.0+)
 
 **Status:** Planned
 **Spec:** [Visual Testing Suite](specs/future/visual-testing-suite.md)
@@ -853,7 +879,7 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 - Visual regression detection
 - Scene rendering validation
 
-### 8. Timeline Wake Effect (v1.3.0+)
+### 10. Timeline Wake Effect (v1.3.0+)
 
 **Status:** Future
 **Spec:** [Timeline Wake Effect](specs/future/timeline-wake-effect-spec.md) | [Prototype](specs/future/timeline-wake-effect-poc.html)

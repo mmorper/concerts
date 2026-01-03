@@ -4,10 +4,11 @@ This document explains how to configure the various APIs needed for the concert 
 
 ## Overview
 
-The data pipeline uses three Google Cloud services:
+The data pipeline uses three Google Cloud services and one music metadata service:
 1. **Google Sheets API** - To fetch concert data from your spreadsheet
 2. **Google Maps Geocoding API** - To get accurate venue coordinates for the map
 3. **Google Places API (New)** - To fetch venue photos and metadata (v1.3.2+)
+4. **setlist.fm API** - To fetch concert setlists for Artist Scene liner notes (v1.5.0+)
 
 ## Google Sheets API Setup
 
@@ -331,6 +332,152 @@ When using photos from Google Places API, you must comply with Google's terms:
 For venues with sensitive copyright concerns or low-quality photos, use manual photo curation instead.
 
 For detailed implementation and caching strategy, see [DATA_PIPELINE.md - Venue Enrichment](DATA_PIPELINE.md#5-venue-enrichment-export-venuests-enrich-venuests).
+
+## setlist.fm API Setup (v1.5.0+)
+
+The setlist.fm API is used to fetch concert setlists for the Artist Scene liner notes feature. This allows users to view the actual songs performed at concerts in their collection.
+
+### 1. Create setlist.fm Account
+
+1. Go to [setlist.fm](https://www.setlist.fm/)
+2. Click "Sign Up" in the top-right corner
+3. Create a free account with your email
+4. Verify your email address
+
+### 2. Request API Key
+
+1. Once logged in, go to [API Settings](https://www.setlist.fm/settings/api)
+2. Click "Apply for an API key"
+3. Fill out the application form:
+   - **Application name:** "Morperhaus Concert Archives" (or your project name)
+   - **Application URL:** https://concerts.morperhaus.org (your production URL)
+   - **Description:** "Personal concert archive visualization project. Fetching setlists for concerts I've attended to display in an interactive artist detail view."
+   - **API version:** 1.0
+   - **Expected API calls:** "Low volume - personal project with <100 unique concerts. Estimated 10-50 API calls per day."
+4. Submit the application
+5. Wait for approval (typically 1-3 business days)
+6. Once approved, your API key will appear in the API Settings page
+
+### 3. Configure Environment Variable
+
+Once you receive your API key, add it to your `.env` file:
+
+```bash
+# setlist.fm API (client-side, rate-limited by key)
+VITE_SETLISTFM_API_KEY=your_setlistfm_api_key_here
+```
+
+**Important Notes:**
+
+- The API key is prefixed with `VITE_` because it's used client-side (browser)
+- setlist.fm API keys are **safe to expose in client-side code** (common practice)
+- The key is rate-limited per key (not per domain)
+- There is no domain restriction - the key works from any origin
+- Monitor your usage at [setlist.fm/settings/api](https://www.setlist.fm/settings/api)
+
+### 4. Verify Setup
+
+Test your API key with a simple request:
+
+```bash
+curl -X GET "https://api.setlist.fm/rest/1.0/search/setlists?artistName=The+National&cityName=Brooklyn" \
+  -H "Accept: application/json" \
+  -H "x-api-key: your_api_key_here"
+```
+
+You should receive a JSON response with setlist data. If you get a 401 error, your API key is invalid.
+
+### 5. API Usage & Rate Limits
+
+**Rate Limits:**
+- No explicit rate limit documented in the API docs
+- Fair use policy applies - be respectful
+- Recommended self-imposed limit: 5 requests/second max
+- The app implements 24-hour client-side caching to minimize requests
+
+**Expected Usage:**
+- Initial development/testing: ~50-100 requests
+- Typical user session: 3-5 setlist fetches
+- Daily usage (10 users): ~30-50 requests
+- Monthly usage: ~900-1,500 requests
+- **Cost: $0** (completely free API)
+
+**Data Availability:**
+- setlist.fm is community-contributed
+- Not all concerts will have setlists (expected hit rate: 40-60%)
+- Older shows (pre-2000) less likely to have data
+- Popular artists more likely to be documented
+- Users can contribute missing setlists to the community
+
+### 6. Attribution Requirements
+
+When displaying setlists, you must:
+
+- ✅ Include "via setlist.fm" attribution text (implemented in LinerNotesPanel)
+- ✅ Link to setlist.fm when possible
+- ✅ Respect the community-contributed nature of the data
+- ✅ Encourage users to contribute missing setlists
+
+The liner notes panel includes proper attribution at the bottom of each setlist display.
+
+### 7. Troubleshooting
+
+**"401 Unauthorized" Error:**
+- Verify your API key is correct in `.env`
+- Ensure you're including the `x-api-key` header
+- Check that your API key application was approved
+
+**"No setlists found" (empty results):**
+- Normal - not all concerts have setlists on setlist.fm
+- Try searching manually at [setlist.fm](https://www.setlist.fm/) to verify
+- Encourage users to contribute missing setlists
+
+**"Rate limit exceeded" (429 error):**
+- Reduce request frequency
+- Check for infinite loops or redundant calls
+- Verify caching is working correctly
+
+**Incorrect setlist returned:**
+- Fuzzy matching may return close but not exact matches
+- Check artist name, date, and venue name spelling
+- Report matching issues for future tuning
+
+### 8. Development vs Production
+
+**Development:**
+- Use the same API key for development and production
+- Test with known concerts that have setlists (e.g., popular artists)
+- Monitor console for API errors
+
+**Production:**
+- Same API key works in production (no domain restrictions)
+- Monitor API usage in setlist.fm dashboard
+- Set up error tracking to catch failed requests
+
+### Complete .env File
+
+Your `.env` should now include:
+
+```bash
+# Google Sheets API
+GOOGLE_SHEET_ID=1abc123...xyz
+GOOGLE_CLIENT_ID=123456789-abc.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-abc123...
+GOOGLE_REDIRECT_URI=http://localhost:5173
+GOOGLE_REFRESH_TOKEN=1//abc123...
+
+# Google Maps APIs (Separate Keys for Security)
+GOOGLE_MAPS_API_KEY=AIzaSyA...    # Geocoding (server-side, API restrictions only)
+GOOGLE_PLACES_API_KEY=AIzaSyB...  # Places Photos (client-side, HTTP referrer restrictions)
+
+# setlist.fm API (v1.5.0+)
+VITE_SETLISTFM_API_KEY=your_setlistfm_api_key_here
+
+# Sheet Configuration
+SHEET_RANGE=Sheet1!A2:Z1000
+```
+
+For implementation details and design specifications, see [docs/specs/future/setlist-liner-notes.md](specs/future/setlist-liner-notes.md).
 
 ## Best Practices
 
