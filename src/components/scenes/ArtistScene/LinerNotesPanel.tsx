@@ -56,17 +56,18 @@ export function LinerNotesPanel({
       }`}
       style={{
         zIndex: 25, // Above Spotify panel (20) but below cover (30)
-        // Add solid background during closing to prevent bleed-through
-        background: isClosing ? 'linear-gradient(135deg, #f5f5f0 0%, #e8e8e0 100%)' : 'transparent'
+        // Always use solid background to prevent bleed-through during animation
+        background: 'linear-gradient(135deg, #f5f5f0 0%, #e8e8e0 100%)',
+        padding: '10px'
       }}
       role="dialog"
       aria-modal="false"
       aria-label={`Setlist for ${artistName} on ${format(new Date(concert.date), 'MMMM d, yyyy')}`}
     >
       <div
-        className="w-full h-full p-[10px] liner-notes-paper"
+        className="w-full h-full liner-notes-paper"
         style={{
-          background: 'linear-gradient(135deg, #f5f5f0 0%, #e8e8e0 100%)',
+          background: 'transparent', // Parent now provides background
           borderRadius: '4px',
           boxShadow: '-10px 0 40px rgba(0, 0, 0, 0.6), inset -2px 0 8px rgba(0, 0, 0, 0.08)',
           border: '1px solid rgba(180, 170, 150, 0.3)',

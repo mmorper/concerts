@@ -451,12 +451,17 @@ export function ArtistGatefold({
                       )}
                       {/* Artist image that fades in when loaded */}
                       <img
+                        key={artist.name} // Force new image element for each artist
                         src={imageUrl}
                         alt={artist.name}
                         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
                           coverImageLoaded ? 'opacity-100' : 'opacity-0'
                         }`}
                         onLoad={() => setCoverImageLoaded(true)}
+                        onError={() => {
+                          // If image fails to load, show it immediately (will show broken image or fallback)
+                          setCoverImageLoaded(true)
+                        }}
                       />
                     </>
                   ) : (
