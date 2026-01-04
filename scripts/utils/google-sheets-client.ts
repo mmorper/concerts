@@ -178,6 +178,21 @@ export class GoogleSheetsClient {
             }
           }
 
+          // Debug: Log Howard Jones concert opener data
+          if (headliner.includes('Howard') && date.includes('2024')) {
+            console.log(`\n🐛 DEBUG: ${headliner} @ ${date}`)
+            console.log(`   Venue: "${venue}"`)
+            console.log(`   Opener column value: "${opener}"`)
+            console.log(`   Opener_N columns (indices): ${JSON.stringify(openerColumns.slice(0, 5))}`)
+            console.log(`   Parsed openers array: ${JSON.stringify(openers)}`)
+            console.log(`   Raw row length: ${row.length}`)
+            for (let i = 0; i < Math.min(5, openerColumns.length); i++) {
+              const colIdx = openerColumns[i]
+              const val = row[colIdx]
+              console.log(`   Opener_${i+1} (col ${colIdx}): "${val}" [type: ${typeof val}, empty: ${!val}]`)
+            }
+          }
+
           return {
             date,
             headliner,

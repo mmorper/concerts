@@ -1,6 +1,10 @@
 import { fetchGoogleSheet } from './fetch-google-sheet'
 import { enrichArtists } from './enrich-artists'
 import { validateConcerts } from './validate-concerts'
+import { exec as execCallback } from 'child_process'
+import { promisify } from 'util'
+
+const exec = promisify(execCallback)
 
 /**
  * Main data pipeline orchestrator
@@ -104,9 +108,8 @@ async function buildData() {
       console.log(`Step ${currentStep}/${activeSteps}: Enriching venue metadata`)
       console.log('-'.repeat(60))
 
-      // Dynamic import to avoid loading if skipped
-      const { default: enrichVenues } = await import('./enrich-venues.ts')
-      await enrichVenues()
+      // Run as subprocess since enrich-venues.ts is a standalone script
+      await exec('npm run enrich-venues')
       console.log()
     } else {
       console.log('⏭️  Skipping venue enrichment (--skip-venues flag set)\n')

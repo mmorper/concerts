@@ -40,6 +40,20 @@ body {
   text-wrap: balance;
 }
 
+/* Artist card highlight animation (for search scroll-to) */
+@keyframes artist-card-highlight {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(168, 85, 247, 0);
+  }
+}
+
+.artist-card-highlight {
+  animation: artist-card-highlight 600ms ease-out;
+}
+
 /* Leaflet popup z-index - high value within map container stacking context */
 .leaflet-popup-pane {
   z-index: 9999 !important;
@@ -176,10 +190,16 @@ body {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
+  pointer-events: none;
 }
 
 .venue-popup-link .arrow {
   margin-left: 2px;
+  pointer-events: none;
+}
+
+.venue-popup-link span {
+  pointer-events: none;
 }
 
 .venue-popup-link:hover {
@@ -227,37 +247,61 @@ body {
    Liner Notes Panel Styles (v1.5.0)
    ============================================ */
 
-/* Liner notes panel slide-in animation */
+/* Liner notes panel slide-in animation
+   Slides from left panel (Concert History) to right panel (Spotify)
+   Mimics pulling liner notes from a vinyl record sleeve */
 .liner-notes-panel {
-  animation: slideInFromRight 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideInFromLeft 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes slideInFromRight {
+@keyframes slideInFromLeft {
   from {
-    transform: translateX(100%);
+    /* Start at left panel position (inside the sleeve) */
+    transform: translateX(-400px);
+    opacity: 0.8;
   }
   to {
+    /* End at right panel position (covering Spotify) */
     transform: translateX(0);
+    opacity: 1;
   }
 }
 
-/* Custom scrollbar for liner notes content */
+/* Liner notes panel slide-out animation (closing)
+   Slides back to left panel (back into the vinyl sleeve) */
+.liner-notes-panel-closing {
+  animation: slideOutToLeft 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    /* Slide back to left (into the sleeve) */
+    transform: translateX(-400px);
+    opacity: 1;
+  }
+}
+
+/* Custom scrollbar for liner notes content - paper theme */
 .liner-notes-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
 
 .liner-notes-scrollbar::-webkit-scrollbar-track {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(100, 100, 90, 0.08);
   border-radius: 3px;
 }
 
 .liner-notes-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(100, 100, 90, 0.25);
   border-radius: 3px;
 }
 
 .liner-notes-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(100, 100, 90, 0.4);
 }
 
 /* ============================================
@@ -270,14 +314,21 @@ body {
   background: none;
   border: none;
   border-radius: 4px;
-  padding: 4px 8px;
+  padding: 6px 10px; /* Increased from 4px 8px for better click target */
   cursor: pointer;
   font-family: var(--font-sans);
+  /* Ensure button is clickable and above other elements */
+  position: relative;
+  z-index: 10; /* Increased from 1 to ensure it's above scrollbar and row hover */
+  /* Ensure hover states work correctly */
+  pointer-events: auto;
 }
 
 .setlist-link:hover {
   color: rgba(255, 255, 255, 0.8); /* Brighten on hover */
   background-color: rgba(255, 255, 255, 0.08);
+  /* Force re-render of hover state */
+  transform: translateZ(0);
 }
 
 .setlist-link:focus-visible {
@@ -293,4 +344,34 @@ body {
 
 .setlist-link-active:hover {
   background-color: rgba(29, 185, 84, 0.12);
+  /* Force re-render of hover state */
+  transform: translateZ(0);
+}
+
+/* ============================================
+   Concert Row Hover Fix
+   ============================================ */
+
+/* Ensure row hover doesn't interfere with button hover */
+.concert-row {
+  /* Create isolation context for button z-index */
+  isolation: isolate;
+}
+
+/* Style scrollbar for concert list to prevent overlap with buttons */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }

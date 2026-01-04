@@ -178,25 +178,7 @@ export function sortArtistCards(cards: ArtistCard[], sortOrder: SortOrder): Arti
       })
 
     case 'alphabetical':
-      return sorted.sort((a, b) => a.name.localeCompare(b.name))
-
-    case 'genre':
-      // Genre: sort by genre, then alphabetically within genre
-      return sorted.sort((a, b) => {
-        const genreCompare = a.primaryGenre.localeCompare(b.primaryGenre)
-        if (genreCompare !== 0) return genreCompare
-        return a.name.localeCompare(b.name)
-      })
-
-    case 'chronological':
-      return sorted.sort((a, b) => {
-        // Sort by first-seen date (earliest concert)
-        const aFirstDate = a.concerts[a.concerts.length - 1]?.date || ''
-        const bFirstDate = b.concerts[b.concerts.length - 1]?.date || ''
-        return aFirstDate.localeCompare(bFirstDate)
-      })
-
     default:
-      return sorted
+      return sorted.sort((a, b) => a.name.localeCompare(b.name))
   }
 }

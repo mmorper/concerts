@@ -11,6 +11,7 @@ import type {
   CachedSetlist,
   SetlistError
 } from '../types/setlist'
+import { normalizeArtistName } from '../utils/normalize'
 
 // Cache configuration
 const CACHE_TTL = 1000 * 60 * 60 * 24 // 24 hours
@@ -26,13 +27,6 @@ let staticCacheLoadAttempted = false
 const API_BASE_URL = import.meta.env.DEV
   ? '/api/setlistfm'  // Proxied through Vite dev server
   : 'https://api.setlist.fm/rest/1.0' // Direct (will need backend proxy in prod)
-
-/**
- * Generate cache key from concert ID (for static cache lookups)
- */
-function getCacheKeyFromConcertId(concertId: string): string {
-  return concertId
-}
 
 /**
  * Generate cache key from search parameters (for memory cache)
@@ -59,9 +53,13 @@ async function loadStaticCache(): Promise<void> {
     const data = await response.json()
     staticCache = new Map()
 
-    // Index by concert ID for O(1) lookups
+    // Index by composite key (concertId:normalizedArtistName) for O(1) lookups
+    // This allows multiple artists (headliner + openers) to have separate setlists
+    // for the same concert ID
     for (const entry of data.entries) {
-      staticCache.set(entry.concertId, entry.setlist)
+      const normalizedArtist = normalizeArtistName(entry.artistName)
+      const cacheKey = `${entry.concertId}:${normalizedArtist}`
+      staticCache.set(cacheKey, entry.setlist)
     }
 
     console.log(`Loaded ${staticCache.size} setlists from static cache`)
@@ -71,19 +69,28 @@ async function loadStaticCache(): Promise<void> {
 }
 
 /**
- * Look up setlist in static cache by concert ID
+ * Look up setlist in static cache by concert ID and artist name
+ * Uses composite key (concertId:normalizedArtistName) to support multiple
+ * artists (headliner + openers) at the same concert
  */
-async function getFromStaticCache(concertId?: string): Promise<Setlist | null | undefined> {
-  if (!concertId) return undefined
+async function getFromStaticCache(
+  concertId?: string,
+  artistName?: string
+): Promise<Setlist | null | undefined> {
+  if (!concertId || !artistName) return undefined
 
   // Load static cache on first use
   await loadStaticCache()
 
   if (!staticCache) return undefined
 
-  // Check if we have this concert in the static cache
-  if (staticCache.has(concertId)) {
-    return staticCache.get(concertId) || null
+  // Build composite cache key
+  const normalizedArtist = normalizeArtistName(artistName)
+  const cacheKey = `${concertId}:${normalizedArtist}`
+
+  // Check if we have this artist's setlist for this concert
+  if (staticCache.has(cacheKey)) {
+    return staticCache.get(cacheKey) || null
   }
 
   return undefined
@@ -252,14 +259,6 @@ function findBestSetlistMatch(
 }
 
 /**
- * Convert internal date format (YYYY-MM-DD) to setlist.fm format (DD-MM-YYYY)
- */
-function formatDateForAPI(date: string): string {
-  const [year, month, day] = date.split('-')
-  return `${day}-${month}-${year}`
-}
-
-/**
  * Fetch setlist from setlist.fm API with retry logic
  */
 async function fetchFromAPI(params: SetlistSearchParams): Promise<Setlist | null> {
@@ -355,16 +354,16 @@ async function fetchFromAPI(params: SetlistSearchParams): Promise<Setlist | null
 
 /**
  * Fetch setlist with three-tier caching:
- * 1. Static cache (pre-fetched at build time) - checked by concert ID
+ * 1. Static cache (pre-fetched at build time) - checked by concert ID + artist name
  * 2. Memory cache (runtime) - checked by search params
  * 3. API fetch (fallback) - only if not in either cache
  */
 export async function fetchSetlist(
   params: SetlistSearchParams
 ): Promise<Setlist | null> {
-  // Tier 1: Check static cache first (O(1) lookup by concert ID)
-  if (params.concertId) {
-    const staticResult = await getFromStaticCache(params.concertId)
+  // Tier 1: Check static cache first (O(1) lookup by concert ID + artist name)
+  if (params.concertId && params.artistName) {
+    const staticResult = await getFromStaticCache(params.concertId, params.artistName)
     if (staticResult !== undefined) {
       // Static cache hit (may be null if we know there's no setlist)
       return staticResult

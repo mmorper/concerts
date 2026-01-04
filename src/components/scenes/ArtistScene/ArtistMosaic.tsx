@@ -7,10 +7,12 @@ import type { ArtistCard as ArtistCardType, SortOrder } from './types'
 interface ArtistMosaicProps {
   artists: ArtistCardType[]
   sortOrder: SortOrder
-  showFrequencyBadge: boolean // Show badge when Weighted sort is active
   onArtistCountUpdate?: (count: number) => void
   onCardClick: (artist: ArtistCardType, rect: DOMRect) => void
   openArtistName?: string
+  getArtistImage: (artistName: string) => string | undefined
+  artistImageLoading: boolean
+  onLoadAllCards?: () => void
 }
 
 const INITIAL_LOAD = 100
@@ -22,14 +24,28 @@ const BATCH_SIZE = 50
 export function ArtistMosaic({
   artists,
   sortOrder,
-  showFrequencyBadge,
   onArtistCountUpdate,
   onCardClick,
-  openArtistName
+  openArtistName,
+  getArtistImage,
+  artistImageLoading,
+  onLoadAllCards
 }: ArtistMosaicProps) {
   const [visibleCount, setVisibleCount] = useState(INITIAL_LOAD)
   const sentinelRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+
+  // Expose a way to load all cards (for search scroll-to)
+  useEffect(() => {
+    if (onLoadAllCards) {
+      // This function will be called from parent to load all cards
+      const loadAll = () => {
+        setVisibleCount(artists.length)
+      }
+      // Store it so parent can call it
+      ;(window as any).__loadAllArtistCards = loadAll
+    }
+  }, [artists.length, onLoadAllCards])
 
   // Report artist count to parent
   useEffect(() => {
@@ -90,6 +106,7 @@ export function ArtistMosaic({
             {visibleArtists.map((artist, index) => (
               <motion.div
                 key={artist.normalizedName}
+                data-artist={artist.normalizedName}
                 layout
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -104,15 +121,11 @@ export function ArtistMosaic({
                   visibility: openArtistName === artist.normalizedName ? 'hidden' : 'visible'
                 }}
               >
-                {/* Frequency Badge (TOS-compliant: outside album art) */}
-                {showFrequencyBadge && artist.timesSeen > 1 && (
-                  <div className="absolute -top-2 -right-2 z-10 bg-violet-600 text-white text-xs font-bold rounded-full w-8 h-8 flex items-center justify-center shadow-lg">
-                    ×{artist.timesSeen}
-                  </div>
-                )}
                 <ArtistCard
                   artist={artist}
                   onClick={(rect) => onCardClick(artist, rect)}
+                  getArtistImage={getArtistImage}
+                  artistImageLoading={artistImageLoading}
                 />
               </motion.div>
             ))}

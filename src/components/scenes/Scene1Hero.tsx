@@ -19,6 +19,11 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
     handlePopupMouseLeave,
   } = useTimelineHover()
 
+  // Track touch state
+  const isTouchingRef = useRef(false)
+  const lastTouchTargetRef = useRef<Element | null>(null)
+  const touchThrottleRef = useRef<number | null>(null)
+
   // Use ResizeObserver to get accurate dimensions and handle orientation changes
   useEffect(() => {
     if (!timelineRef.current) return
@@ -38,6 +43,15 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
 
     return () => {
       resizeObserver.disconnect()
+    }
+  }, [])
+
+  // Cleanup touch throttle on unmount
+  useEffect(() => {
+    return () => {
+      if (touchThrottleRef.current) {
+        cancelAnimationFrame(touchThrottleRef.current)
+      }
     }
   }, [])
 
@@ -142,23 +156,76 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
         .attr('opacity', 0.8)
         .style('pointer-events', 'none') // Touch handled by touchTarget
 
-      // Add interactions to touch target
+      // Helper function to get concert info for a year
+      const getConcertInfo = () => {
+        const yearConcerts = concerts.filter(c => c.year === year)
+        const artistCounts = new Map<string, number>()
+        yearConcerts.forEach(c => {
+          artistCounts.set(c.headliner, (artistCounts.get(c.headliner) || 0) + 1)
+        })
+        const mostFrequentArtist = Array.from(artistCounts.entries())
+          .sort((a, b) => b[1] - a[1])[0]?.[0] || yearConcerts[0]?.headliner || 'Unknown'
+        const artistConcert = yearConcerts.find(c => c.headliner === mostFrequentArtist)
+        const venueName = artistConcert?.venue || 'Unknown Venue'
+        return { mostFrequentArtist, venueName }
+      }
+
+      // Helper function to animate dot on hover/touch
+      const animateDotEnter = () => {
+        dot
+          .transition()
+          .duration(250)
+          .attr('r', radius * 1.5)
+          .attr('fill', '#a5b4fc')
+          .attr('opacity', 1)
+
+        glowRing
+          .transition()
+          .duration(250)
+          .attr('r', radius * 1.8)
+          .attr('stroke-width', 3)
+          .attr('opacity', 0.6)
+
+        shadow
+          .transition()
+          .duration(250)
+          .attr('r', radius * 1.6)
+          .attr('opacity', 0.6)
+      }
+
+      // Helper function to reset dot animation
+      const animateDotLeave = () => {
+        dot
+          .transition()
+          .duration(250)
+          .attr('r', radius)
+          .attr('fill', '#6366f1')
+          .attr('opacity', 0.8)
+
+        glowRing
+          .transition()
+          .duration(250)
+          .attr('r', radius)
+          .attr('stroke-width', 0)
+          .attr('opacity', 0)
+
+        shadow
+          .transition()
+          .duration(250)
+          .attr('r', radius)
+          .attr('opacity', 0)
+      }
+
+      // Store metadata on the touch target for touch event handling
+      touchTarget.datum({ year, count, x, getConcertInfo, animateDotEnter, animateDotLeave })
+
+      // Add mouse interactions to touch target
       touchTarget
         .on('mouseenter', function() {
-          // Get the most prominent artist for this year
-          const yearConcerts = concerts.filter(c => c.year === year)
-          const artistCounts = new Map<string, number>()
-          yearConcerts.forEach(c => {
-            artistCounts.set(c.headliner, (artistCounts.get(c.headliner) || 0) + 1)
-          })
-          const mostFrequentArtist = Array.from(artistCounts.entries())
-            .sort((a, b) => b[1] - a[1])[0]?.[0] || yearConcerts[0]?.headliner || 'Unknown'
+          // Don't trigger mouse events during touch
+          if (isTouchingRef.current) return
 
-          // Get the venue for the first show by the most frequent artist
-          const artistConcert = yearConcerts.find(c => c.headliner === mostFrequentArtist)
-          const venueName = artistConcert?.venue || 'Unknown Venue'
-
-          // Get screen position of the dot
+          const { mostFrequentArtist, venueName } = getConcertInfo()
           const svgRect = timelineRef.current?.getBoundingClientRect()
           if (svgRect) {
             const screenX = svgRect.left + x + margin.left
@@ -166,54 +233,14 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
             handleMouseEnter(mostFrequentArtist, year, count, venueName, { x: screenX, y: screenY })
           }
 
-          // Animate the visible dot
-          dot
-            .transition()
-            .duration(250)
-            .attr('r', radius * 1.5)
-            .attr('fill', '#a5b4fc') // Much lighter indigo
-            .attr('opacity', 1)
-
-          // Animate glow ring
-          glowRing
-            .transition()
-            .duration(250)
-            .attr('r', radius * 1.8)
-            .attr('stroke-width', 3)
-            .attr('opacity', 0.6)
-
-          // Animate shadow
-          shadow
-            .transition()
-            .duration(250)
-            .attr('r', radius * 1.6)
-            .attr('opacity', 0.6)
+          animateDotEnter()
         })
         .on('mouseleave', function() {
+          // Don't trigger mouse events during touch
+          if (isTouchingRef.current) return
+
           handleMouseLeave()
-
-          // Reset the visible dot
-          dot
-            .transition()
-            .duration(250)
-            .attr('r', radius)
-            .attr('fill', '#6366f1')
-            .attr('opacity', 0.8)
-
-          // Fade glow ring
-          glowRing
-            .transition()
-            .duration(250)
-            .attr('r', radius)
-            .attr('stroke-width', 0)
-            .attr('opacity', 0)
-
-          // Fade shadow
-          shadow
-            .transition()
-            .duration(250)
-            .attr('r', radius)
-            .attr('opacity', 0)
+          animateDotLeave()
         })
     })
 
@@ -235,6 +262,121 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
       .attr('font-size', '12px')
       .attr('font-weight', '500')
       .text(d => d)
+
+    // Add touch event handlers to SVG
+    svg
+      .on('touchstart', function(event: TouchEvent) {
+        isTouchingRef.current = true
+        // Don't prevent default on touchstart - let the browser handle scrolling
+        // unless we're touching a dot
+        const touch = event.touches[0]
+        if (!touch) return
+
+        const element = document.elementFromPoint(touch.clientX, touch.clientY)
+        if (element && element.classList.contains('cursor-pointer')) {
+          // Touching a timeline dot - prevent scrolling for this touch
+          event.preventDefault()
+        }
+      })
+      .on('touchmove', function(event: TouchEvent) {
+        if (!isTouchingRef.current) return
+
+        // Prevent page scrolling while sliding across timeline
+        event.preventDefault()
+
+        const touch = event.touches[0]
+        if (!touch) return
+
+        // Throttle using requestAnimationFrame for smooth performance
+        if (touchThrottleRef.current === null) {
+          touchThrottleRef.current = requestAnimationFrame(() => {
+            touchThrottleRef.current = null
+
+            // Find element under touch point
+            const element = document.elementFromPoint(touch.clientX, touch.clientY)
+
+            // Check if we've moved to a different dot
+            if (element && element !== lastTouchTargetRef.current) {
+              // Get the data bound to this element (if it's a timeline dot)
+              const d3Element = d3.select(element)
+              const data = d3Element.datum() as any
+
+              if (data?.year) {
+                // Reset animation on previous dot if any
+                if (lastTouchTargetRef.current) {
+                  const prevD3Element = d3.select(lastTouchTargetRef.current)
+                  const prevData = prevD3Element.datum() as any
+                  if (prevData?.animateDotLeave) {
+                    prevData.animateDotLeave()
+                  }
+                }
+
+                // Animate new dot
+                if (data.animateDotEnter) {
+                  data.animateDotEnter()
+                }
+
+                // Get concert info and show preview
+                if (data.getConcertInfo) {
+                  const { mostFrequentArtist, venueName } = data.getConcertInfo()
+                  handleMouseEnter(
+                    mostFrequentArtist,
+                    data.year,
+                    data.count,
+                    venueName,
+                    { x: touch.clientX, y: touch.clientY },
+                    true // isTouch = true for shorter delay
+                  )
+                }
+
+                lastTouchTargetRef.current = element
+              }
+            }
+          })
+        }
+      })
+      .on('touchend', function() {
+        isTouchingRef.current = false
+
+        // Reset animation on last touched dot
+        if (lastTouchTargetRef.current) {
+          const d3Element = d3.select(lastTouchTargetRef.current)
+          const data = d3Element.datum() as any
+          if (data?.animateDotLeave) {
+            data.animateDotLeave()
+          }
+          lastTouchTargetRef.current = null
+        }
+
+        // Clear throttle
+        if (touchThrottleRef.current !== null) {
+          cancelAnimationFrame(touchThrottleRef.current)
+          touchThrottleRef.current = null
+        }
+
+        // Hide preview
+        handleMouseLeave()
+      })
+      .on('touchcancel', function() {
+        // Handle touch cancel same as touch end
+        isTouchingRef.current = false
+
+        if (lastTouchTargetRef.current) {
+          const d3Element = d3.select(lastTouchTargetRef.current)
+          const data = d3Element.datum() as any
+          if (data?.animateDotLeave) {
+            data.animateDotLeave()
+          }
+          lastTouchTargetRef.current = null
+        }
+
+        if (touchThrottleRef.current !== null) {
+          cancelAnimationFrame(touchThrottleRef.current)
+          touchThrottleRef.current = null
+        }
+
+        handleMouseLeave()
+      })
 
   }, [concerts, dimensions, handleMouseEnter, handleMouseLeave])
 

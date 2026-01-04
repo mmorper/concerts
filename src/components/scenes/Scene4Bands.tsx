@@ -470,18 +470,6 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
       .attr('stroke-width', (d: any) => d.type === 'hierarchy' ? 2 : 1)
       .attr('stroke-dasharray', (d: any) => d.type === 'cross-venue' ? '5,5' : 'none')
 
-    // Determine target opacity for each node (for spotlight effect)
-    const getTargetOpacity = (d: Node) => {
-      // If focused on a specific node, dim unrelated nodes
-      if (focusedNodeId) {
-        if (d.id === focusedNodeId || relatedNodes.has(d.id)) {
-          return 1
-        }
-        return 0.15
-      }
-      return 1
-    }
-
     // Draw nodes
     const node = g.append('g')
       .selectAll('g')
@@ -490,12 +478,10 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
         enter => enter.append('g')
           .attr('opacity', 0) // Start invisible
           .call(enter => enter.transition().duration(800)
-            .attr('opacity', (d: any) => getTargetOpacity(d))
+            .attr('opacity', 1) // Always fade in to full opacity
           ),
         update => update
-          .call(update => update.transition().duration(600)
-            .attr('opacity', (d: any) => getTargetOpacity(d))
-          ),
+          .attr('opacity', 1), // Always keep groups at full opacity
         exit => exit.call(exit => exit.transition().duration(600)
           .attr('opacity', 0)
           .remove()
@@ -547,14 +533,33 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
         if (d.type === 'headliner') return '#8b5cf6' // Purple for headliners
         return '#ec4899' // Pink for openers
       })
-      .attr('fill-opacity', 0.85)
+      .attr('fill-opacity', d => {
+        // Apply spotlight dimming to circles only, not to text labels
+        const baseOpacity = 0.85
+        if (focusedNodeId) {
+          if (d.id === focusedNodeId || relatedNodes.has(d.id)) {
+            return baseOpacity
+          }
+          return 0.15
+        }
+        return baseOpacity
+      })
       .attr('stroke', d => {
         if (d.type === 'venue') return '#4f46e5'
         if (d.type === 'headliner') return '#7c3aed'
         return '#db2777'
       })
       .attr('stroke-width', d => d.type === 'venue' ? 3 : 2)
-      .attr('stroke-opacity', 1)
+      .attr('stroke-opacity', d => {
+        // Apply spotlight dimming to stroke as well
+        if (focusedNodeId) {
+          if (d.id === focusedNodeId || relatedNodes.has(d.id)) {
+            return 1
+          }
+          return 0.15
+        }
+        return 1
+      })
       .style('pointer-events', 'none') // Touch handled by invisible target
       .attr('class', 'visual-circle')
       .each(function(_d, i, nodes) {
@@ -604,12 +609,14 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
     // Add labels for venue nodes
     // In "all" mode: only show labels for venues with 3+ shows (others show on hover)
     // In "top10" mode: always show labels
-    node.filter(d => {
+    const venueLabels = node.filter(d => {
       if (d.type !== 'venue') return false
       if (viewMode === 'top10') return true
       // In "all" mode, only show if 3+ shows
       return d.count >= 3
     })
+
+    venueLabels
       .append('text')
       .text(d => {
         // Extract venue name from the id
@@ -639,7 +646,13 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
         .attr('dy', '0.35em')
         .attr('font-size', '10px')
         .attr('fill', 'white')
-        .attr('fill-opacity', 0) // Hidden by default
+        .attr('fill-opacity', d => {
+          // Show label if this node is focused or related to focused node
+          if (focusedNodeId && (d.id === focusedNodeId || relatedNodes.has(d.id))) {
+            return 1
+          }
+          return 0 // Hidden by default
+        })
         .attr('font-family', 'Inter, system-ui, sans-serif')
         .attr('font-weight', '600')
         .attr('pointer-events', 'none')

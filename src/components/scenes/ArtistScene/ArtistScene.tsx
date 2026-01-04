@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ArtistMosaic } from './ArtistMosaic'
 import { ArtistGatefold } from './ArtistGatefold'
+import { ArtistSearchTypeahead } from './ArtistSearchTypeahead'
 import { useArtistData } from './useArtistData'
+import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
 import type { Concert } from '../../../types/concert'
 import type { SortOrder, ArtistCard } from './types'
 
@@ -16,6 +18,7 @@ interface ArtistSceneProps {
  */
 export function ArtistScene({ concerts }: ArtistSceneProps) {
   const { artistCards, isLoading } = useArtistData(concerts)
+  const { getArtistImage, loading: artistImageLoading } = useArtistMetadata()
   const [sortOrder, setSortOrder] = useState<SortOrder>('alphabetical') // Default: A-Z
   const [artistCount, setArtistCount] = useState(0)
   const [openArtist, setOpenArtist] = useState<ArtistCard | null>(null)
@@ -44,9 +47,6 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
     return () => window.removeEventListener('resize', handleOrientationChange)
   }, [openArtist])
 
-  // Show frequency badge only when sorted by timesSeen (Weighted)
-  const showFrequencyBadge = sortOrder === 'timesSeen'
-
   const handleCardClick = (artist: ArtistCard, rect: DOMRect) => {
     setOpenArtist(artist)
     setClickedTileRect(rect)
@@ -55,6 +55,65 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
   const handleCloseGatefold = () => {
     setOpenArtist(null)
     setClickedTileRect(null)
+  }
+
+  const handleArtistSelect = (normalizedName: string) => {
+    // Find the artist data first
+    const artist = artistCards.find(a => a.normalizedName === normalizedName)
+    if (!artist) {
+      console.warn('Artist not found:', normalizedName)
+      return
+    }
+
+    // Try to find the card element
+    let cardElement = document.querySelector(
+      `[data-artist="${normalizedName}"]`
+    ) as HTMLElement
+
+    if (!cardElement) {
+      console.log('Card not in DOM yet, loading all cards...')
+      // Load all cards first
+      if ((window as any).__loadAllArtistCards) {
+        ;(window as any).__loadAllArtistCards()
+      }
+
+      // Wait for cards to render, then try again
+      setTimeout(() => {
+        cardElement = document.querySelector(
+          `[data-artist="${normalizedName}"]`
+        ) as HTMLElement
+
+        if (!cardElement) {
+          console.error('Card element still not found after loading all cards:', normalizedName)
+          return
+        }
+
+        scrollAndOpenGatefold(cardElement, artist)
+      }, 100) // Give React time to render
+      return
+    }
+
+    scrollAndOpenGatefold(cardElement, artist)
+  }
+
+  const scrollAndOpenGatefold = (cardElement: HTMLElement, artist: ArtistCard) => {
+    // Scroll to the card
+    cardElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    })
+
+    // Brief highlight effect
+    cardElement.classList.add('artist-card-highlight')
+
+    // Wait for scroll to complete + pause, then open gatefold
+    setTimeout(() => {
+      cardElement.classList.remove('artist-card-highlight')
+
+      // Get fresh rect after scroll completes
+      const rect = cardElement.getBoundingClientRect()
+      handleCardClick(artist, rect)
+    }, 1000) // 600ms highlight + 400ms pause
   }
 
   if (isLoading) {
@@ -109,6 +168,16 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
           {artistCount} artists · {totalConcerts} concerts
         </p>
 
+        {/* Artist Search */}
+        <div className="mb-4 w-full max-w-md mx-auto pointer-events-auto">
+          <ArtistSearchTypeahead
+            artists={artistCards}
+            onArtistSelect={handleArtistSelect}
+            getArtistImage={getArtistImage}
+            artistImageLoading={artistImageLoading}
+          />
+        </div>
+
         {/* Control Buttons */}
         <div className="flex justify-center gap-2 flex-wrap">
           {/* A-Z Button */}
@@ -123,19 +192,7 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
             A–Z
           </button>
 
-          {/* Genre Button */}
-          <button
-            onClick={() => setSortOrder('genre')}
-            className={`font-sans px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto min-h-[44px] ${
-              sortOrder === 'genre'
-                ? 'bg-violet-600 text-white'
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
-            }`}
-          >
-            Genre
-          </button>
-
-          {/* Weighted Button */}
+          {/* Most Seen Button */}
           <button
             onClick={() => setSortOrder('timesSeen')}
             className={`font-sans px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto min-h-[44px] ${
@@ -144,7 +201,7 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
                 : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
             }`}
           >
-            Weighted
+            Most Seen
           </button>
         </div>
       </motion.div>
@@ -175,10 +232,12 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
         <ArtistMosaic
           artists={artistCards}
           sortOrder={sortOrder}
-          showFrequencyBadge={showFrequencyBadge}
           onArtistCountUpdate={setArtistCount}
           onCardClick={handleCardClick}
           openArtistName={openArtist?.normalizedName}
+          getArtistImage={getArtistImage}
+          artistImageLoading={artistImageLoading}
+          onLoadAllCards={() => {}}
         />
       </motion.div>
 
@@ -241,6 +300,7 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
           onClose={handleCloseGatefold}
           clickedTileRect={clickedTileRect}
           reducedMotion={reducedMotion}
+          getArtistImage={getArtistImage}
         />
       )}
     </motion.section>

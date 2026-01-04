@@ -11,6 +11,9 @@ export const ANIMATION = {
   /** Delay before popup appears on hover */
   HOVER_DELAY: 120,
 
+  /** Delay before popup appears on touch (shorter for better touch responsiveness) */
+  TOUCH_HOVER_DELAY: 50,
+
   /** Duration of fade in/out animations */
   FADE_DURATION: 180,
 

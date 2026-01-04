@@ -1,7 +1,8 @@
 # Data Refresh Pipeline Orchestration
 
 > **Role**: Technical specification for automated data refresh workflows
-> **Status**: Planning - For future implementation
+> **Status**: ✅ **Phase 1 IMPLEMENTED** (v1.5.1) - Enhanced Build Pipeline Complete
+> **Status**: 📋 **Phase 2-3 PLANNED** - GitHub Actions automation pending
 > **Related Docs**: [setlist-liner-notes.md](./setlist-liner-notes.md), [spotify-enrichment-runbook.md](./spotify-enrichment-runbook.md)
 
 ---
@@ -10,10 +11,10 @@
 
 This spec addresses two interconnected needs:
 
-1. **Setlist Pre-fetch Automation** - When/how to run the setlist pre-fetch script
-2. **Unified Data Pipeline** - Orchestrating all data refresh operations (Google Sheets → concerts → artists → venues → setlists → Spotify)
+1. ✅ **Setlist Pre-fetch Automation** - **IMPLEMENTED** via `build-data.ts` orchestrator
+2. ✅ **Unified Data Pipeline** - **IMPLEMENTED** - Single command runs all enrichments (Google Sheets → concerts → artists → venues → setlists → Spotify)
 
-Currently, most data enrichment scripts run **manually**. This works for development but becomes fragile and error-prone as the project scales. This spec outlines implementation options for automating these workflows.
+**Current State (v1.5.1)**: The enhanced build pipeline (Option 1) is fully implemented and documented in [WORKFLOW.md](../../WORKFLOW.md) and [DATA_PIPELINE.md](../../DATA_PIPELINE.md). All data enrichment scripts now run through a single `npm run build-data` orchestrator with flexible skip flags.
 
 ---
 
@@ -104,9 +105,11 @@ Currently, most data enrichment scripts run **manually**. This works for develop
 
 ## Proposed Solutions
 
-### Option 1: Enhanced Build Pipeline (Recommended)
+### Option 1: Enhanced Build Pipeline ✅ **IMPLEMENTED (v1.5.1)**
 
 **Description**: Extend `build-data.ts` to orchestrate all enrichment scripts.
+
+**Status**: ✅ **COMPLETE** - Fully implemented and in production use
 
 **Implementation**:
 
@@ -528,41 +531,55 @@ exit 0
 
 ---
 
-## Implementation Plan
+## Implementation Status
 
-### Phase 1: Enhanced Build Script (Week 1)
+### Phase 1: Enhanced Build Script ✅ **COMPLETE (v1.5.1)**
 
 **Goal**: Single-command local refresh
 
-**Steps**:
-1. Extend `scripts/build-data.ts` to include all enrichment steps
-2. Add `--skip-*` flags for optional steps
-3. Update documentation with new workflow
-4. Test full pipeline locally
+**Implementation**:
+1. ✅ Extended `scripts/build-data.ts` to include all enrichment steps
+2. ✅ Added `--skip-*` flags for optional steps: `--skip-validation`, `--skip-venues`, `--skip-spotify`, `--skip-setlists`
+3. ✅ Updated documentation in DATA_PIPELINE.md and WORKFLOW.md
+4. ✅ Tested full pipeline in production
 
-**Deliverables**:
-- ✅ `npm run build-data` runs all enrichments
-- ✅ Flag support: `--skip-venues`, `--skip-spotify`, `--skip-setlists`
-- ✅ Updated README with new workflow
+**Delivered Features**:
+- ✅ `npm run build-data` runs all 6 enrichment steps (fetch, validate, artists, venues, spotify, setlists)
+- ✅ Flag support: `--skip-venues`, `--skip-spotify`, `--skip-setlists`, `--skip-validation`
+- ✅ Dry-run mode: `--dry-run` for safe testing
+- ✅ Force refresh: `--force-refresh-setlists` for cache invalidation
+- ✅ Automatic credential validation with helpful warnings
+- ✅ Progress tracking with step counters
+- ✅ Comprehensive error handling and troubleshooting tips
+- ✅ Documentation: [DATA_PIPELINE.md](../../DATA_PIPELINE.md) Section 8
 
-### Phase 2: Setlist Integration (Week 1)
+### Phase 2: Setlist Integration ✅ **COMPLETE (v1.5.1)**
 
 **Goal**: Always run setlist pre-fetch with data refresh
 
-**Steps**:
-1. Add `prefetchSetlists()` to build pipeline
-2. Make it conditional on concerts.json changes (checksum comparison)
-3. Add logging for cache hits vs. new fetches
-4. Test incremental updates
+**Implementation**:
+1. ✅ Added `prefetchSetlists()` to build pipeline as Step 6
+2. ✅ Incremental caching implemented (only fetches new concerts)
+3. ✅ Comprehensive logging for cache hits vs. new fetches
+4. ✅ Tested with incremental updates in production
 
-**Deliverables**:
-- ✅ Setlist cache automatically updates when concerts change
-- ✅ Skip unnecessary API calls when data unchanged
-- ✅ Clear logging of what's cached vs. fetched
+**Delivered Features**:
+- ✅ Setlist cache automatically updates when running `build-data`
+- ✅ Skips cached setlists (uses existing cache by default)
+- ✅ Clear logging: "Used cached: 145, Fetched new: 27, Not found: 2"
+- ✅ Force refresh available via `--force-refresh-setlists` flag
+- ✅ Documentation: [DATA_PIPELINE.md](../../DATA_PIPELINE.md) Section 6
 
-### Phase 3: GitHub Actions (Week 2)
+### Phase 3: GitHub Actions 📋 **PLANNED (Future)**
 
 **Goal**: Automated weekly data refresh
+
+**Status**: Not yet implemented. Manual `npm run build-data` works well for current needs.
+
+**When to implement**:
+- When adding concerts becomes more frequent (currently ~5-10/year)
+- When maintaining multiple data sources that need regular syncing
+- When setlists need regular refresh to catch late additions
 
 **Steps**:
 1. Create `.github/workflows/data-refresh.yml`
@@ -570,26 +587,38 @@ exit 0
 3. Add deployment trigger
 4. Test workflow with manual dispatch
 
-**Deliverables**:
-- ✅ Weekly automatic data refresh
-- ✅ Manual trigger option
-- ✅ Automatic deployment after refresh
-- ✅ Notification on failure
+**Target Deliverables**:
+- Weekly automatic data refresh
+- Manual trigger option
+- Automatic deployment after refresh
+- Notification on failure
 
-### Phase 4: Incremental Optimization (Future)
+**Reference**: Complete GitHub Actions workflow example documented in this spec (see Option 4 above).
+
+### Phase 4: Incremental Optimization 📋 **PARTIALLY COMPLETE**
 
 **Goal**: Only run expensive operations when necessary
 
-**Steps**:
-1. Add checksum-based change detection
-2. Implement Spotify cache staleness check
-3. Add venue photo expiry detection
-4. Log skip reasons
+**Current State**:
+- ✅ **Incremental caching**: Already implemented for setlists (reuses cache)
+- ✅ **API credential validation**: Skips steps when credentials missing
+- ✅ **Manual skip flags**: User controls which steps run
+- ⚠️ **Automatic change detection**: Not implemented (checksum-based)
+- ⚠️ **Cache staleness checks**: Not implemented (automatic expiry)
 
-**Deliverables**:
-- ✅ Smart pipeline that skips unnecessary API calls
-- ✅ Faster local development
-- ✅ Reduced API quota usage
+**What's Working**:
+- Setlist pre-fetch only fetches new concerts (not in cache)
+- Spotify enrichment skips artists with recent data (<90 days via internal cache)
+- Venue enrichment skips venues with recent data (<90 days via cache)
+- User can manually skip expensive steps: `--skip-venues --skip-spotify`
+
+**Future Enhancements** (if needed):
+1. Add checksum-based change detection (only run enrichment if concerts.json changed)
+2. Add automatic Spotify cache staleness warnings (>90 days old)
+3. Add venue photo expiry detection (>90 days old)
+4. Log skip reasons more explicitly
+
+**Decision**: May not be needed. Current approach (manual skip flags + internal caching) works well for solo project with infrequent updates.
 
 ---
 
@@ -721,24 +750,49 @@ After implementation, we should measure:
 
 ---
 
-## Next Steps
+## Implementation Summary & Next Steps
 
-1. **Immediate** (This week):
-   - Run `npm run prefetch:setlists` manually when adding concerts
-   - Document the workflow in README
+### What's Been Implemented ✅
 
-2. **Short-term** (Next 2 weeks):
-   - Implement Option 1 (Enhanced Build Script)
-   - Add setlist pre-fetch to build pipeline
+**v1.5.1 (Current State)**:
+1. ✅ **Enhanced Build Pipeline** - Complete single-command orchestrator
+2. ✅ **Setlist Pre-fetch Integration** - Automatic incremental caching
+3. ✅ **Skip Flags** - Full control over which steps run
+4. ✅ **Dry-Run Mode** - Safe preview without file writes
+5. ✅ **API Validation** - Automatic credential checking
+6. ✅ **Comprehensive Documentation** - User guides and troubleshooting
 
-3. **Medium-term** (Next month):
-   - Implement Option 4 (GitHub Actions)
-   - Set up weekly automated refresh
+**Usage Today**:
+```bash
+# Typical workflow (add new concerts)
+npm run build-data -- --skip-venues --skip-spotify
 
-4. **Long-term** (Future):
-   - Add incremental change detection
-   - Optimize API usage with smarter caching
-   - Add monitoring and alerting
+# Full refresh (monthly maintenance)
+npm run build-data
+
+# Safe testing
+npm run build-data -- --dry-run
+```
+
+### Future Enhancements (Optional)
+
+**Phase 3: GitHub Actions Automation** (Priority: Low)
+- **When**: If concert additions become frequent enough to warrant automation
+- **Effort**: 2-3 hours setup + secrets configuration
+- **Benefit**: Hands-off weekly data refresh
+- **Tradeoff**: Adds complexity, requires GitHub Actions monitoring
+
+**Phase 4: Incremental Optimization** (Priority: Low)
+- **When**: If API quota becomes a concern or builds get too slow
+- **Effort**: 4-6 hours for checksum detection + state management
+- **Benefit**: Faster builds, lower API usage
+- **Tradeoff**: More complex mental model, state file to manage
+
+**Current Recommendation**: ✅ **No immediate action needed**. The enhanced build pipeline (Phase 1-2) handles all requirements for a solo project with infrequent data updates (5-10 concerts/year). Consider Phase 3-4 if:
+- Concert additions increase to weekly frequency
+- Multiple collaborators need automated workflows
+- API costs become a concern
+- Monthly manual refreshes feel burdensome
 
 ---
 
@@ -770,6 +824,24 @@ Google Sheets
 
 ---
 
-**Last Updated**: 2026-01-03
+## Files Modified
+
+**Implemented (v1.5.1)**:
+- ✅ [`scripts/build-data.ts`](../../scripts/build-data.ts) - Enhanced orchestrator with 6-step pipeline
+- ✅ [`scripts/prefetch-setlists.ts`](../../scripts/prefetch-setlists.ts) - Integrated into pipeline
+- ✅ [`docs/DATA_PIPELINE.md`](../../DATA_PIPELINE.md) - Complete user guide (Section 8)
+- ✅ [`docs/WORKFLOW.md`](../../WORKFLOW.md) - Developer workflow (Phase 6)
+- ✅ [`package.json`](../../package.json) - Updated `build-data` script
+
+**Not Created (Future phases)**:
+- `.github/workflows/data-refresh.yml` - GitHub Actions automation (Phase 3)
+- `scripts/build-data-incremental.ts` - Smart change detection (Phase 4, optional)
+- `.pipeline-state.json` - State file for incremental builds (Phase 4, optional)
+
+---
+
+**Last Updated**: 2026-01-04
 **Author**: Claude (with user guidance)
-**Status**: Draft - Awaiting approval for Phase 1 implementation
+**Status**:
+- ✅ **Phase 1-2**: IMPLEMENTED and DOCUMENTED (v1.5.1)
+- 📋 **Phase 3-4**: PLANNED (optional future enhancements)

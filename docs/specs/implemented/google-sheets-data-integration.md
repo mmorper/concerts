@@ -1,10 +1,10 @@
 # Google Sheets Data Integration Spec
 
-> **Location**: `docs/specs/future/google-sheets-data-integration.md`
-> **Status**: ✅ Phase 1 Complete (v1.2.0-v1.2.4), ❌ Phase 2 (Webhook automation) Future
-> **Completed**: Build-time fetch, OAuth 2.0, validation, caching, flexible columns - [Implementation](../implemented/google-sheets-phase1-implementation.md)
-> **Remaining**: Phase 2 - Webhook automation (Google Apps Script → GitHub Action)
-> **Target Version**: v1.2.0-v1.2.4 (Phase 1 ✅), v1.5.0+ (Phase 2)
+> **Location**: `docs/specs/implemented/google-sheets-data-integration.md`
+> **Status**: ✅ **Phase 1 IMPLEMENTED** (v1.2.0-v1.2.4) | 📋 Phase 2 PLANNED (Future)
+> **Completed**: Build-time fetch, OAuth 2.0, validation, caching, flexible columns - [Implementation Details](./google-sheets-phase1-implementation.md)
+> **Remaining**: Phase 2 - Webhook automation (Google Apps Script → GitHub Action → auto-deploy)
+> **Completed Versions**: v1.2.0 (Core), v1.2.1 (Safety), v1.2.2 (Bug Fixes), v1.2.3 (Geocoding), v1.2.4 (Flexible Columns)
 > **Last Updated**: 2026-01-04
 > **User Guide**: [DATA_PIPELINE.md](../../DATA_PIPELINE.md)
 

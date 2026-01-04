@@ -3,7 +3,7 @@
 **Status:** ✅ v1.1.0 Complete (iPad) | 📋 v1.2.0+ Planned (Phone)
 **Priority:** High
 **Version:** v1.1.0 (iPad - Complete), v1.2.0+ (Phone - Planned)
-**Last Updated:** 2026-01-01
+**Last Updated:** 2026-01-04
 **Completed:** 2026-01-01
 **Dependencies:** None
 
@@ -80,6 +80,485 @@ This specification details mobile-specific optimizations deferred from v1.0 rele
 
 ---
 
+## Mobile UX Quick Wins (v1.6.1-v1.8.0)
+
+This section identifies high-impact, low-effort mobile UX improvements that can be implemented incrementally to enhance the mobile experience before the full phone support redesign in v1.2.0+.
+
+### Quick Win Priorities
+
+| Priority | Category | Effort Range | Target Version |
+|----------|----------|--------------|----------------|
+| **Critical** | Touch feedback, haptics, safe areas, share | 1-3 hours each | v1.6.1 |
+| **High** | Swipe gestures, bottom sheets, pull-to-refresh | 3-6 hours each | v1.7.0 |
+| **Polish** | Loading states, momentum scroll, offline | 2-4 hours each | v1.8.0 |
+
+---
+
+### Tier 1: Critical Mobile Polish (v1.6.1)
+
+**Target:** Ship within 1-2 sprints | **Total Effort:** 4-12 hours
+
+#### 1.1 Visual Touch Feedback
+**Effort:** 1-2 hours | **Impact:** High | **Risk:** Low
+
+Add `:active` states and scale animations to all interactive elements.
+
+```css
+/* Global touch feedback */
+.touchable {
+  transition: transform 0.1s ease;
+}
+
+.touchable:active {
+  transform: scale(0.95);
+  opacity: 0.8;
+}
+
+/* Apply to: artist tiles, venue nodes, timeline dots, genre segments */
+```
+
+**Benefits:**
+- Immediate visual confirmation that touch registered
+- Makes the app feel more responsive
+- Zero JavaScript required
+
+**Implementation:**
+- Add `.touchable` class to interactive elements
+- Add `:active` pseudo-class styles globally
+- Test on iOS and Android
+
+---
+
+#### 1.2 Haptic Feedback
+**Effort:** 2-3 hours | **Impact:** High | **Risk:** Low
+
+Integrate Web Vibration API for tactile feedback on key interactions.
+
+```typescript
+// utils/haptics.ts
+export const haptics = {
+  light: () => navigator.vibrate?.(10),
+  medium: () => navigator.vibrate?.(20),
+  heavy: () => navigator.vibrate?.(50),
+  success: () => navigator.vibrate?.([10, 50, 10]),
+  error: () => navigator.vibrate?.([50, 100, 50])
+}
+
+// Usage examples:
+// - Timeline dot tap: haptics.light()
+// - Artist tile tap: haptics.medium()
+// - Genre segment drill-down: haptics.heavy()
+// - Setlist loaded: haptics.success()
+// - API error: haptics.error()
+```
+
+**Benefits:**
+- Confirms touch registration even when visual feedback delayed
+- Enhances perceived responsiveness
+- Aligns with iOS HIG expectations
+
+**Implementation:**
+- Create `utils/haptics.ts` utility
+- Add to all major interaction handlers
+- Feature-detect and gracefully degrade
+- Test on devices with haptic engines
+
+**Note:** Scene 4 (Genres) haptic feedback was already identified in main spec (line 305). This consolidates that requirement.
+
+---
+
+#### 1.3 Safe Area Padding
+**Effort:** 1-2 hours | **Impact:** Medium | **Risk:** Low
+
+Respect iOS safe areas (notch, home indicator) and Android navigation bars.
+
+```css
+/* Add to global styles */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Scene navigation dots */
+.scene-navigation {
+  right: calc(16px + env(safe-area-inset-right));
+  bottom: calc(24px + env(safe-area-inset-bottom));
+}
+```
+
+**Benefits:**
+- Prevents content from being cut off by device UI
+- Professional polish
+- Respects platform conventions
+
+**Implementation:**
+- Add `env()` safe area variables to layouts
+- Test on iPhone 15 Pro (Dynamic Island)
+- Test on Android phones with gesture navigation
+
+---
+
+#### 1.4 Share Concert Functionality
+**Effort:** 2-3 hours | **Impact:** High | **Risk:** Low
+
+Add Web Share API to share concert details from artist gatefold.
+
+```typescript
+// In ConcertHistoryPanel.tsx
+const handleShare = async (concert: ArtistConcert) => {
+  if (!navigator.share) {
+    // Fallback: copy to clipboard
+    await navigator.clipboard.writeText(
+      `${concert.headliner} at ${concert.venue} - ${concert.date}`
+    )
+    toast.success('Concert details copied!')
+    return
+  }
+
+  await navigator.share({
+    title: `${concert.headliner} Concert`,
+    text: `I saw ${concert.headliner} at ${concert.venue} on ${concert.date}`,
+    url: window.location.href
+  })
+}
+```
+
+**Benefits:**
+- Native share sheet on mobile
+- Users can share to Messages, WhatsApp, social media
+- Low effort, high delight factor
+
+**Implementation:**
+- Add share button to concert rows in gatefold
+- Feature-detect `navigator.share`
+- Fallback to clipboard copy
+- Add toast notification
+
+---
+
+### Tier 2: High-Value Interactions (v1.7.0)
+
+**Target:** Ship within 2-4 sprints | **Total Effort:** 9-18 hours
+
+#### 2.1 Swipe Gestures for Scene Navigation
+**Effort:** 4-6 hours | **Impact:** High | **Risk:** Medium
+
+Add horizontal swipe gestures as alternative to dot navigation.
+
+```typescript
+// Hook for swipe detection
+const useSwipeNavigation = (onSwipeLeft: () => void, onSwipeRight: () => void) => {
+  const [touchStart, setTouchStart] = useState(0)
+
+  const handleTouchStart = (e: TouchEvent) => {
+    setTouchStart(e.touches[0].clientX)
+  }
+
+  const handleTouchEnd = (e: TouchEvent) => {
+    const touchEnd = e.changedTouches[0].clientX
+    const diff = touchStart - touchEnd
+    const threshold = 75 // pixels
+
+    if (Math.abs(diff) > threshold) {
+      haptics.light()
+      if (diff > 0) onSwipeLeft()
+      else onSwipeRight()
+    }
+  }
+
+  return { handleTouchStart, handleTouchEnd }
+}
+```
+
+**Benefits:**
+- Natural mobile navigation pattern
+- Complements existing scroll behavior
+- Reduces reliance on small touch targets
+
+**Implementation:**
+- Add swipe detection to scene container
+- Coordinate with existing snap scroll
+- Prevent conflicts with horizontal scrolling (timeline, map)
+- Add edge swipe indicators for discoverability
+
+---
+
+#### 2.2 Bottom Sheet Modal System
+**Effort:** 6-8 hours | **Impact:** High | **Risk:** Medium
+
+Create reusable bottom sheet component for concert details, filters, etc.
+
+**Note:** Phase 3 in main spec already plans bottom sheet for Artist Scene on phones (lines 521-548). This expands that to a **reusable system** for other scenes.
+
+```typescript
+// components/BottomSheet.tsx
+interface BottomSheetProps {
+  isOpen: boolean
+  onClose: () => void
+  initialHeight?: '50vh' | '70vh' | '90vh'
+  children: React.ReactNode
+}
+
+export function BottomSheet({ isOpen, onClose, initialHeight = '70vh', children }: BottomSheetProps) {
+  const [y, setY] = useState(0)
+
+  return (
+    <motion.div
+      drag="y"
+      dragConstraints={{ top: 0, bottom: window.innerHeight }}
+      onDragEnd={(_, info) => {
+        if (info.offset.y > 100) onClose()
+      }}
+      initial={{ y: '100%' }}
+      animate={{ y: isOpen ? 0 : '100%' }}
+      style={{ height: initialHeight }}
+    >
+      {/* Drag handle */}
+      <div className="drag-handle" />
+      {children}
+    </motion.div>
+  )
+}
+```
+
+**Use cases:**
+- Artist concert details (alternative to full gatefold on small phones)
+- Map venue details
+- Timeline concert details
+- Genre breakdown details
+
+**Benefits:**
+- Consistent mobile UI pattern
+- Doesn't obscure background
+- Natural dismiss gesture
+
+**Implementation:**
+- Create reusable `BottomSheet` component
+- Integrate with Framer Motion
+- Add backdrop with tap-to-dismiss
+- Implement swipe-down threshold
+- Apply to multiple scenes progressively
+
+---
+
+#### 2.3 Pull-to-Refresh for Live Updates
+**Effort:** 3-4 hours | **Impact:** Medium | **Risk:** Low
+
+Add pull-to-refresh gesture for checking new concert data.
+
+```typescript
+// Hook for pull-to-refresh
+const usePullToRefresh = (onRefresh: () => Promise<void>) => {
+  const [isPulling, setIsPulling] = useState(false)
+  const [pullDistance, setPullDistance] = useState(0)
+  const threshold = 80 // pixels
+
+  // Touch handlers track pull distance
+  // When released beyond threshold, trigger onRefresh()
+  // Show loading indicator during refresh
+}
+```
+
+**Benefits:**
+- Familiar mobile pattern
+- Useful for checking new setlists
+- Sense of "liveness" in the app
+
+**Implementation:**
+- Add to main scene container
+- Coordinate with scroll position (only at top)
+- Show spinner during refresh
+- Haptic feedback on threshold
+
+---
+
+### Tier 3: Polish & Delight (v1.8.0)
+
+**Target:** Ship within 4-6 sprints | **Total Effort:** 6-12 hours
+
+#### 3.1 Loading Skeletons
+**Effort:** 2-3 hours | **Impact:** Medium | **Risk:** Low
+
+Replace blank states with skeleton screens during data loading.
+
+```typescript
+// components/ArtistGridSkeleton.tsx
+export function ArtistGridSkeleton() {
+  return (
+    <div className="grid grid-cols-3 gap-4">
+      {Array.from({ length: 9 }).map((_, i) => (
+        <div key={i} className="skeleton-card" />
+      ))}
+    </div>
+  )
+}
+```
+
+**Benefits:**
+- Perceived performance improvement
+- Reduces "janky" initial load
+- Modern UX expectation
+
+**Implementation:**
+- Create skeleton components for each scene
+- Show while data loads or transitions
+- Animate shimmer effect
+
+---
+
+#### 3.2 Momentum Scrolling Indicators
+**Effort:** 2-3 hours | **Impact:** Low | **Risk:** Low
+
+Add visual indicators for scrollable areas and scroll progress.
+
+```css
+/* Scroll fade hints */
+.scrollable-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.5));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.scrollable-container.has-overflow::after {
+  opacity: 1;
+}
+```
+
+**Benefits:**
+- Signals more content below
+- Aids discoverability
+- Subtle UX improvement
+
+**Implementation:**
+- Detect overflow with JavaScript
+- Add gradient hints
+- Update on scroll
+- Apply to concert lists, venue lists, etc.
+
+---
+
+#### 3.3 Offline Indicator
+**Effort:** 2-4 hours | **Impact:** Low | **Risk:** Low
+
+Show banner when offline, queue failed API requests.
+
+```typescript
+// Hook for online/offline detection
+const useOnlineStatus = () => {
+  const [isOnline, setIsOnline] = useState(navigator.onLine)
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true)
+    const handleOffline = () => setIsOnline(false)
+
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+
+    return () => {
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
+
+  return isOnline
+}
+
+// Banner component
+{!isOnline && (
+  <div className="offline-banner">
+    📡 You're offline. Some features may be unavailable.
+  </div>
+)}
+```
+
+**Benefits:**
+- Explains why setlists won't load
+- Prevents confusion
+- Progressive enhancement
+
+**Implementation:**
+- Add online/offline listeners
+- Show banner when offline
+- Queue setlist requests to retry
+- Auto-dismiss banner when back online
+
+---
+
+### Implementation Roadmap
+
+**Sprint 1 (v1.6.1) - Critical Polish**
+- Visual touch feedback (1-2h)
+- Haptic feedback (2-3h)
+- Safe area padding (1-2h)
+- Share functionality (2-3h)
+
+**Total: 6-10 hours**
+
+---
+
+**Sprint 2-3 (v1.7.0) - High-Value Interactions**
+- Swipe gestures (4-6h)
+- Bottom sheet system (6-8h)
+- Pull-to-refresh (3-4h)
+
+**Total: 13-18 hours**
+
+---
+
+**Sprint 4-5 (v1.8.0) - Polish & Delight**
+- Loading skeletons (2-3h)
+- Momentum scroll indicators (2-3h)
+- Offline indicator (2-4h)
+
+**Total: 6-10 hours**
+
+---
+
+**Grand Total: 25-38 hours** across 3 releases
+
+---
+
+### Priority Decision Matrix
+
+| Feature | User Impact | Effort | Risk | Priority | Version |
+|---------|-------------|--------|------|----------|---------|
+| Visual touch feedback | 🔥 High | 🟢 Low | 🟢 Low | **Critical** | v1.6.1 |
+| Haptic feedback | 🔥 High | 🟢 Low | 🟢 Low | **Critical** | v1.6.1 |
+| Safe area padding | 🟡 Medium | 🟢 Low | 🟢 Low | **Critical** | v1.6.1 |
+| Share concert | 🔥 High | 🟢 Low | 🟢 Low | **Critical** | v1.6.1 |
+| Swipe gestures | 🔥 High | 🟡 Medium | 🟡 Medium | **High** | v1.7.0 |
+| Bottom sheet system | 🔥 High | 🟡 Medium | 🟡 Medium | **High** | v1.7.0 |
+| Pull-to-refresh | 🟡 Medium | 🟡 Medium | 🟢 Low | **High** | v1.7.0 |
+| Loading skeletons | 🟡 Medium | 🟢 Low | 🟢 Low | **Polish** | v1.8.0 |
+| Momentum indicators | 🟢 Low | 🟢 Low | 🟢 Low | **Polish** | v1.8.0 |
+| Offline indicator | 🟢 Low | 🟢 Low | 🟢 Low | **Polish** | v1.8.0 |
+
+---
+
+### Testing Checklist
+
+For each quick win implementation:
+
+- [ ] Test on iOS Safari (iPhone 12-15)
+- [ ] Test on Android Chrome (Pixel, Samsung)
+- [ ] Test on iPad (ensure no regression)
+- [ ] Test in both portrait and landscape
+- [ ] Verify no performance degradation
+- [ ] Ensure graceful degradation if API unsupported
+- [ ] Add feature detection where needed
+- [ ] Document any browser-specific quirks
+
+---
+
 ### Target Viewports (CSS pixels)
 
 | Device | Landscape | Portrait |
@@ -149,14 +628,17 @@ Based on iPad Pro 11" testing, two specific issues were identified:
 
 #### iPad Requirements (v1.1.0)
 
-- [ ] **Fix initial portrait load scaling bug** (Critical)
+- [x] **Fix initial portrait load scaling bug** (Critical) ✅ Complete
   - Investigate why D3 calculates wrong dimensions when loading in portrait
   - Ensure container dimensions are read after layout settles
   - Consider using `ResizeObserver` or `requestAnimationFrame` delay
-- [ ] Ensure year dots resize proportionally on orientation change
-- [ ] Test tooltip positioning at viewport edges
-- [ ] Verify touch targets ≥44px for year dots
-- [ ] Ensure comfortable timeline navigation with larger touch targets
+- [x] Ensure year dots resize proportionally on orientation change ✅ Complete
+- [x] Test tooltip positioning at viewport edges ✅ Complete
+- [x] Verify touch targets ≥44px for year dots ✅ Complete
+- [x] **Drag finger across timeline for navigation** ✅ Complete (v1.6.0)
+  - Implemented touch-friendly drag gesture for horizontal timeline scrolling
+  - Eliminates need to precisely tap on scrollbar
+  - Natural mobile interaction pattern
 
 **Debugging approach:**
 ```typescript

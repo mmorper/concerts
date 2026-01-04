@@ -1,11 +1,15 @@
 # Setlist Liner Notes - Artist Gatefold Enhancement
 
-**Status:** Planned
-**Target Version:** v1.5.0
-**Priority:** High
-**Estimated Complexity:** Medium
+**Status:** ✅ **IMPLEMENTED** (v1.5.0+)
+**Completed Version:** v1.5.0
+**Implementation:** Complete with setlist.fm API integration, pre-fetch caching, liner notes panel
 **Dependencies:** Artist Scene Gatefold (✅ Complete in v1.4.0)
-**Mobile Note:** 📱 Requires mobile-specific bottom sheet layout (see [mobile-optimization.md](mobile-optimization.md))
+**Evidence:**
+- [src/services/setlistfm.ts](../../src/services/setlistfm.ts) - setlist.fm API client
+- [src/components/scenes/ArtistScene/LinerNotesPanel.tsx](../../src/components/scenes/ArtistScene/LinerNotesPanel.tsx) - Liner notes UI
+- [scripts/prefetch-setlists.ts](../../scripts/prefetch-setlists.ts) - Build-time pre-fetch
+- [public/data/setlists-cache.json](../../public/data/setlists-cache.json) - Cached setlist data
+**Mobile Note:** 📱 Desktop implementation complete; mobile bottom sheet adaptation pending (see [../future/mobile-optimization.md](../future/mobile-optimization.md))
 
 ---
 
@@ -202,12 +206,16 @@ This unified menu pattern makes both setlist and tour dates features discoverabl
 
 ### Liner Notes Panel Design
 
+**Design Philosophy:** Authentic paper aesthetic mimicking vinyl record liner notes - warm off-white paper with subtle texture, dimensional effects, and minimized header to maximize setlist content space.
+
 **Panel Specifications:**
 - **Dimensions:** 380×380px (10px margin inside 400×400px panel)
-- **Background:** `rgba(24, 24, 24, 0.98)` - Nearly opaque dark with slight transparency
-- **Border:** 1px inner border `rgba(255, 255, 255, 0.1)` for depth
+- **Background:** Gradient `linear-gradient(135deg, #f5f5f0 0%, #e8e8e0 100%)` - Warm off-white paper
+- **Paper Texture:** SVG noise filter overlay with fractal noise (3% opacity, multiply blend mode)
+- **Border:** 1px solid `rgba(180, 170, 150, 0.3)` - Warm beige edge
 - **Border Radius:** 4px (matches other panels)
-- **Shadow:** `0 10px 40px rgba(0, 0, 0, 0.6)` on left edge (lifted effect)
+- **Shadow:** `-10px 0 40px rgba(0, 0, 0, 0.6)` (left edge depth) + `inset -2px 0 8px rgba(0, 0, 0, 0.08)` (inner dimension)
+- **Paper Curl:** Radial gradient shadow at bottom-right corner `rgba(0, 0, 0, 0.15)` suggesting lifted corner
 - **Z-Index:** Above Spotify panel but below close button
 
 **Layout:**
@@ -215,10 +223,8 @@ This unified menu pattern makes both setlist and tour dates features discoverabl
 ┌───────────────────────────────────┐
 │  ✕                           [380×380px]
 │                                   │
-│  The National                     │ ← Artist name
-│  Brooklyn Steel                   │ ← Venue
-│  Brooklyn, NY · 19 Oct 2023       │ ← City/State · Date
-│  ───────────────────────────      │ ← Divider
+│  October 19, 2023 · Brooklyn Steel│ ← Compact: Date + Venue only
+│  ───────────────────────────      │ ← Subtle gradient divider
 │                                   │
 │  SET 1                            │ ← Section header
 │  1. Runaway                       │
@@ -228,54 +234,64 @@ This unified menu pattern makes both setlist and tour dates features discoverabl
 │  5. The System Only Dreams...     │
 │  6. Fake Empire                   │
 │  7. Mistaken for Strangers        │
-│  ...                              │
+│  8. Graceless                     │
+│  9. This Is the Last Time         │
+│  10. Mr. November                 │
 │                                   │
 │  ENCORE                           │
-│  12. Terrible Love                │
-│  13. Vanderlyle Crybaby Geeks     │
+│  11. Terrible Love                │
+│  12. Vanderlyle Crybaby Geeks     │
 │                                   │
-│  ⚠ Loading from setlist.fm        │ ← Status/attribution
+│  ────────────────────────         │
+│  via setlist.fm     12 songs      │ ← Attribution footer
 └───────────────────────────────────┘
 ```
 
-**Typography:**
-- **Artist Name:** Playfair Display, 1.75rem (28px), font-medium, `#ffffff`
-- **Venue:** Source Sans 3, 1.125rem (18px), font-normal, `#e5e5e5`
-- **City/Date:** Source Sans 3, 0.875rem (14px), font-normal, `#a3a3a3`
-- **Section Headers:** Source Sans 3, 0.75rem (12px), font-semibold, `#1DB954` (Spotify green), uppercase, tracking-wider
-- **Song List:** Source Sans 3, 0.9375rem (15px), font-normal, `#e5e5e5`
-- **Song Numbers:** Source Sans 3, 0.875rem (14px), font-medium, `#737373`, tabular-nums
-- **Attribution:** Source Sans 3, 0.6875rem (11px), font-normal, `#737373`
+**Typography (Paper Theme):**
 
-**Spacing:**
-- **Top Padding:** 32px (for close button clearance)
-- **Horizontal Padding:** 32px
-- **Bottom Padding:** 32px
-- **Header Spacing:** 8px between artist/venue/date lines
-- **Divider Margin:** 20px top, 24px bottom
+- **Header Line:** Source Sans 3, 0.8125rem (13px), font-normal, `#6a6a60` (warm gray), tracking-wide
+- **Section Headers:** Source Sans 3, 0.75rem (12px), font-bold, `#2a5a2a` (forest green - ink-like), uppercase, tracking-wider
+- **Song Titles:** Source Sans 3, 0.9375rem (15px), font-normal, `#2a2a25` (dark charcoal)
+- **Song Numbers:** Source Sans 3, 0.875rem (14px), font-medium, `#8a8a80` (medium gray), tabular-nums
+- **Song Annotations:** Source Sans 3, 0.8125rem (13px), font-normal, `#7a7a70` (light gray) - for covers, notes
+- **Attribution:** Source Sans 3, 0.6875rem (11px), font-normal, `#8a8a80` (medium gray)
+- **Close Button:** `#4a4a40` (dark gray) with hover: `#1DB954` (Spotify green)
+
+**Spacing (Optimized for Content):**
+
+- **Top Padding:** 24px (reduced from 32px)
+- **Horizontal Padding:** 28px (reduced from 32px for more content width)
+- **Bottom Padding:** 28px
+- **Header:** Single compact line (pt-6 px-7 pb-3) ~40px total vs ~120px in original
+- **Divider Margin:** Gradient fade divider with minimal spacing
+- **Content Gain:** +80px vertical space (30% more area for setlist)
 - **Section Spacing:** 20px between sections
 - **Song Row Spacing:** 6px between songs
-- **List Scrolling:** Scrollable content area, custom scrollbar styling
+- **List Scrolling:** Scrollable content area with paper-themed scrollbar
 
 **Visual Effects:**
-- **Subtle Paper Texture:** Optional very light grain overlay (`opacity: 0.02`)
-- **Close Button:** 24×24px X icon, top-right 16px inset, `#ffffff` with hover: `#1DB954`
+
+- **Paper Texture:** SVG fractal noise filter at 3% opacity creating authentic paper grain
+- **Dimensional Curl:** Radial gradient shadow (20×20px) at bottom-right corner mimicking paper lift
+- **Inset Shadow:** Subtle depth on left edge suggesting paper pulled from sleeve
+- **Gradient Divider:** Horizontal rule with fade-in/fade-out effect
+- **Scrollbar:** Olive-toned (`rgba(100, 100, 90, 0.25)`) matching paper aesthetic
+- **Close Button:** 24×24px X icon, top-right 20px inset
 
 ### States and Loading
 
 **Loading State:**
 ```
 ┌───────────────────────────────────┐
-│  ✕                                │
+│  ✕                    [Paper BG]  │
 │                                   │
-│  The National                     │
-│  Brooklyn Steel                   │
-│  Brooklyn, NY · 19 Oct 2023       │
+│  October 19, 2023 · Brooklyn Steel│
 │  ───────────────────────────      │
 │                                   │
-│  [Skeleton bars animation]        │
-│  [Skeleton bars animation]        │
-│  [Skeleton bars animation]        │
+│  [Skeleton bars - olive tint]    │
+│  [Skeleton bars - olive tint]    │
+│  [Skeleton bars - olive tint]    │
+│  [Skeleton bars - olive tint]    │
 │                                   │
 │  Loading setlist...               │
 └───────────────────────────────────┘
@@ -284,12 +300,11 @@ This unified menu pattern makes both setlist and tour dates features discoverabl
 **Not Found State:**
 ```
 ┌───────────────────────────────────┐
-│  ✕                                │
+│  ✕                    [Paper BG]  │
 │                                   │
-│  The National                     │
-│  Brooklyn Steel                   │
-│  Brooklyn, NY · 19 Oct 2023       │
+│  October 19, 2023 · Brooklyn Steel│
 │  ───────────────────────────      │
+│                                   │
 │                                   │
 │  📋                               │
 │                                   │
@@ -300,19 +315,17 @@ This unified menu pattern makes both setlist and tour dates features discoverabl
 │  contributed and may not exist    │
 │  for all shows.                   │
 │                                   │
-│  via setlist.fm                   │
 └───────────────────────────────────┘
 ```
 
 **Error State:**
 ```
 ┌───────────────────────────────────┐
-│  ✕                                │
+│  ✕                    [Paper BG]  │
 │                                   │
-│  The National                     │
-│  Brooklyn Steel                   │
-│  Brooklyn, NY · 19 Oct 2023       │
+│  October 19, 2023 · Brooklyn Steel│
 │  ───────────────────────────      │
+│                                   │
 │                                   │
 │  ⚠️                                │
 │                                   │
@@ -330,37 +343,36 @@ This unified menu pattern makes both setlist and tour dates features discoverabl
 
 ### Animation Sequence
 
-**Opening Liner Notes (Option A - Smooth Transition):**
+**Opening Liner Notes (Vinyl Sleeve Metaphor - Implemented):**
 
-1. **User clicks three-dot icon** on concert in Concert History Panel
-2. **Liner Notes slides in from right**
-   - Initial position: `transform: translateX(100%)` (off-screen right)
+1. **User clicks setlist icon** on concert in Concert History Panel
+2. **Liner Notes slides out from left** (like pulling paper from vinyl sleeve)
+   - Initial position: `transform: translateX(-400px)` (over Concert History Panel - "inside the sleeve")
    - Final position: `transform: translateX(0)` (covering Spotify panel)
+   - Opacity: 0.8 → 1.0 (paper becoming visible)
    - Duration: 400ms
    - Easing: `cubic-bezier(0.4, 0, 0.2, 1)` (standard ease-out)
 3. **Spotify panel dims slightly** beneath liner notes
    - Opacity: 1.0 → 0.3
    - Transition: 400ms synchronized with slide
 4. **Loading state shows** while fetching from setlist.fm
-   - Skeleton animation for song rows
+   - Skeleton animation for song rows (olive-tinted)
    - "Loading setlist..." text
 5. **Content appears** once loaded
    - Fade in: opacity 0 → 1 over 200ms
 
-**Switching Between Setlists (Option A - Recommended):**
+**Switching Between Setlists:**
 
 When user clicks a different concert while liner notes are open:
 
-1. **Current liner notes slides out to left**
-   - Transform: `translateX(0)` → `translateX(-100%)`
-   - Duration: 300ms
-   - Easing: `cubic-bezier(0.4, 0, 0.6, 1)`
-2. **New liner notes slides in from right** (simultaneously)
-   - Transform: `translateX(100%)` → `translateX(0)`
-   - Duration: 300ms (50ms delay after previous starts sliding out)
+1. **Current liner notes slides back to left** (into sleeve)
+   - Transform: `translateX(0)` → `translateX(-400px)`
+   - Opacity: 1.0 → 0.6
+   - Duration: 350ms
    - Easing: `cubic-bezier(0.4, 0, 0.2, 1)`
-3. **Crossfade effect** - old slides left as new slides right
-4. **Loading state** appears immediately in new panel
+2. **New liner notes slides out from left** (immediately after)
+   - Same animation as opening
+   - Loading state appears immediately in new panel
 
 **Closing Liner Notes:**
 
@@ -368,11 +380,13 @@ Three ways to close:
 
 1. **Click X button** in top-right corner
 2. **Click outside** liner notes panel (on Spotify panel area or overlay)
-3. **ESC key** (same as closing entire gatefold)
+3. **ESC key** (closes liner notes first, then gatefold on second press)
 
 Close animation:
-- **Liner notes slides right** off-screen
-  - Transform: `translateX(0)` → `translateX(100%)`
+
+- **Liner notes slides left** back into sleeve
+  - Transform: `translateX(0)` → `translateX(-400px)`
+  - Opacity: 1.0 → 0.6 (paper disappearing into sleeve)
   - Duration: 350ms
   - Easing: `cubic-bezier(0.4, 0, 0.2, 1)`
 - **Spotify panel brightens** back to full opacity
@@ -1475,12 +1489,84 @@ export async function fetchSetlist(params: SetlistSearchParams): Promise<Setlist
 
 ---
 
+## Implementation Improvements (v1.1.0)
+
+The following enhancements were made during implementation to improve the vinyl metaphor authenticity and maximize usability:
+
+### 1. Animation Direction Change
+
+**Original Spec:** Liner notes slide in from right (`translateX(100%)` → `translateX(0)`)
+
+**Implemented:** Liner notes slide from left (`translateX(-400px)` → `translateX(0)`)
+
+**Rationale:** Better matches the vinyl sleeve metaphor - paper visually emerges from the Concert History Panel (left side) like pulling liner notes from a record sleeve.
+
+### 2. Authentic Paper Aesthetic
+
+**Original Spec:** Dark background (`rgba(24, 24, 24, 0.98)`)
+
+**Implemented:** Off-white paper gradient (`#f5f5f0` → `#e8e8e0`)
+
+**Added:**
+
+- SVG fractal noise texture overlay (3% opacity)
+- Dimensional paper curl shadow (bottom-right corner)
+- Inset shadow for depth (`inset -2px 0 8px rgba(0, 0, 0, 0.08)`)
+- Warm beige border (`rgba(180, 170, 150, 0.3)`)
+
+**Rationale:** Authentic paper aesthetic reinforces the vinyl liner notes metaphor - users should feel like they're handling physical concert memorabilia.
+
+### 3. Header Optimization
+
+**Original Spec:** 3-line header with artist name, venue, and city/date (~120px)
+
+**Implemented:** Single compact line with date + venue only (~40px)
+
+**Space Gained:** +80px vertical space (30% more area for setlist content)
+
+**Rationale:** Artist name, venue, and city are already visible on the Concert History Panel (left side) - repeating this information wastes valuable space. The compact header provides just enough context while maximizing the setlist viewing area.
+
+### 4. Paper-Appropriate Typography
+
+**Updated Colors:**
+
+- Section headers: `#1DB954` (Spotify green) → `#2a5a2a` (forest green - ink-like)
+- Song titles: `#e5e5e5` (light gray) → `#2a2a25` (dark charcoal)
+- Song numbers: `#737373` (medium gray) → `#8a8a80` (warm gray)
+- Annotations: Updated to olive/warm gray tones for paper harmony
+
+**Rationale:** The original bright white/green colors were designed for dark backgrounds. Paper requires darker, warmer tones that suggest printed ink on paper stock.
+
+### 5. Visual Effects Enhancement
+
+**Added:**
+
+- Paper texture using SVG noise filter
+- Corner curl shadow (radial gradient)
+- Paper-themed scrollbar (olive tones)
+- Gradient divider with fade effect
+
+**Rationale:** These subtle details enhance the tactile, physical quality of the liner notes - making the digital experience feel more like handling real vinyl memorabilia.
+
+### Implementation Philosophy Summary
+
+The improvements maintain the spec's core functionality while elevating the vinyl metaphor through authentic material design. The result is a liner notes experience that feels genuinely like pulling paper from a record sleeve, not just a dark panel sliding over content.
+
+---
+
 ## Revision History
 
 - **2026-01-02:** Initial specification created
-- **Version:** 1.0.0
+- **2026-01-04:** Design improvements implemented
+  - Changed animation from right-to-left to left-to-right (vinyl sleeve metaphor)
+  - Updated to authentic paper aesthetic (off-white gradient, texture, dimensional effects)
+  - Minimized header to single line (date + venue only) for 30% more content space
+  - Updated typography for paper theme (forest green headers, charcoal text, olive accents)
+  - Added paper curl shadow effect and SVG texture overlay
+  - Updated all color values and spacing specifications
+- **Version:** 1.1.0 (Implemented)
 - **Author:** Lead Designer & Developer
-- **Status:** Ready for Implementation
+- **Status:** Implemented and Documented
 
 ---
 

@@ -12,6 +12,7 @@ interface ArtistGatefoldProps {
   onClose: () => void
   clickedTileRect: DOMRect | null
   reducedMotion: boolean
+  getArtistImage: (artistName: string) => string | undefined
 }
 
 // Constants matching prototype
@@ -28,7 +29,8 @@ export function ArtistGatefold({
   artist,
   onClose,
   clickedTileRect,
-  reducedMotion
+  reducedMotion,
+  getArtistImage
 }: ArtistGatefoldProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -194,10 +196,14 @@ export function ArtistGatefold({
 
   // Close liner notes panel
   const handleCloseLinerNotes = () => {
-    setSelectedConcert(null)
-    setSetlistData(null)
-    setSetlistError(null)
-    setIsLoadingSetlist(false)
+    // Delay clearing state until after the slide-out animation completes (350ms)
+    // This prevents the Spotify panel from un-dimming while the liner notes are sliding out
+    setTimeout(() => {
+      setSelectedConcert(null)
+      setSetlistData(null)
+      setSetlistError(null)
+      setIsLoadingSetlist(false)
+    }, 350)
   }
 
   // Close animation
@@ -300,6 +306,11 @@ export function ArtistGatefold({
   const genreColor = getGenreColor(artist.primaryGenre)
   const gradient = `linear-gradient(135deg, ${genreColor} 0%, ${adjustColor(genreColor, -30)} 100%)`
   const initials = getArtistInitials(artist.name)
+  const [coverImageLoaded, setCoverImageLoaded] = useState(false)
+
+  // Unified image sourcing: artist photo → album cover → placeholder
+  const artistImage = getArtistImage(artist.name)
+  const imageUrl = artistImage || artist.albumCover
 
   return (
     <>
@@ -415,7 +426,7 @@ export function ArtistGatefold({
               >
                 {/* Front of cover (album art) */}
                 <div
-                  className="absolute inset-0 flex items-center justify-center rounded text-[8rem] font-sans font-semibold text-white/90"
+                  className="absolute inset-0 flex items-center justify-center rounded text-[8rem] font-sans font-semibold text-white/90 overflow-hidden"
                   style={{
                     background: gradient,
                     backfaceVisibility: 'hidden',
@@ -423,7 +434,27 @@ export function ArtistGatefold({
                     boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)'
                   }}
                 >
-                  {initials}
+                  {imageUrl ? (
+                    <>
+                      {/* Placeholder underneath while image loads */}
+                      {!coverImageLoaded && (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          {initials}
+                        </div>
+                      )}
+                      {/* Artist image that fades in when loaded */}
+                      <img
+                        src={imageUrl}
+                        alt={artist.name}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+                          coverImageLoaded ? 'opacity-100' : 'opacity-0'
+                        }`}
+                        onLoad={() => setCoverImageLoaded(true)}
+                      />
+                    </>
+                  ) : (
+                    initials
+                  )}
                 </div>
 
                 {/* Back of cover (concert history) */}

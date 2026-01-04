@@ -38,18 +38,22 @@ export function useTimelineHover() {
    * @param concertCount - Number of concerts that year
    * @param venue - Venue name
    * @param position - Screen position of the dot {x, y}
+   * @param isTouch - Whether this is a touch interaction (uses shorter delay)
    */
   const handleMouseEnter = useCallback((
     artistName: string,
     year: number,
     concertCount: number,
     venue: string,
-    position: { x: number; y: number }
+    position: { x: number; y: number },
+    isTouch = false
   ) => {
     clearTimeouts()
     isHoveringRef.current = true
 
-    // Wait 120ms before showing popup
+    // Use shorter delay for touch interactions
+    const delay = isTouch ? ANIMATION.TOUCH_HOVER_DELAY : ANIMATION.HOVER_DELAY
+
     hoverTimeoutRef.current = window.setTimeout(() => {
       setHoverState({
         artistName,
@@ -59,7 +63,7 @@ export function useTimelineHover() {
         position,
         isHovering: true,
       })
-    }, ANIMATION.HOVER_DELAY)
+    }, delay)
   }, [clearTimeouts])
 
   /**

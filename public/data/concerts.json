@@ -28,7 +28,9 @@
       "headliner": "Thompson Twins",
       "headlinerNormalized": "thompson-twins",
       "genre": "New Wave",
-      "openers": [],
+      "openers": [
+        "The Reflex"
+      ],
       "venue": "Irvine Meadows",
       "city": "Irvine",
       "state": "California",
@@ -73,6 +75,7 @@
       "headlinerNormalized": "depeche-mode",
       "genre": "New Wave",
       "openers": [
+        "Animotion",
         "Book of Love"
       ],
       "venue": "Irvine Meadows",
@@ -185,6 +188,7 @@
       "headlinerNormalized": "wham",
       "genre": "Pop",
       "openers": [
+        "Chaka Kahn",
         "Katrina And the Waves"
       ],
       "venue": "Hollywood Park Racetrack",
@@ -230,7 +234,9 @@
       "headliner": "Thompson Twins",
       "headlinerNormalized": "thompson-twins",
       "genre": "New Wave",
-      "openers": [],
+      "openers": [
+        "OMD"
+      ],
       "venue": "Irvine Meadows",
       "city": "Irvine",
       "state": "California",
@@ -340,7 +346,9 @@
       "headliner": "Run DMC",
       "headlinerNormalized": "run-dmc",
       "genre": "Rap",
-      "openers": [],
+      "openers": [
+        "Beastie Boys"
+      ],
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "state": "California",
@@ -363,6 +371,7 @@
       "headlinerNormalized": "oingo-boingo",
       "genre": "New Wave",
       "openers": [
+        "Hoodoo Gurus",
         "Bangles",
         "Squeeze",
         "Chris Isaak",
@@ -411,7 +420,9 @@
       "headliner": "No Doubt",
       "headlinerNormalized": "no-doubt",
       "genre": "Alternative",
-      "openers": [],
+      "openers": [
+        "The Nylons"
+      ],
       "venue": "Disneyland",
       "city": "Anaheim",
       "state": "California",
@@ -434,6 +445,7 @@
       "headlinerNormalized": "depeche-mode",
       "genre": "New Wave",
       "openers": [
+        "Thomas Dolby",
         "Wire",
         "OMD"
       ],
@@ -568,7 +580,9 @@
       "headliner": "Howard Jones",
       "headlinerNormalized": "howard-jones",
       "genre": "New Wave",
-      "openers": [],
+      "openers": [
+        "Midge Ure"
+      ],
       "venue": "Universal Amphitheater",
       "city": "Los Angeles",
       "state": "California",
@@ -678,7 +692,9 @@
       "headliner": "Jesus Jones",
       "headlinerNormalized": "jesus-jones",
       "genre": "Britpop",
-      "openers": [],
+      "openers": [
+        "EMF"
+      ],
       "venue": "Hollywood Palladium",
       "city": "Hollywood",
       "state": "California",
@@ -723,6 +739,7 @@
       "headlinerNormalized": "bel-biv-devoe",
       "genre": "R&B",
       "openers": [
+        "Johnny Gill",
         "Keith Sweat"
       ],
       "venue": "Kia Forum",
@@ -747,6 +764,7 @@
       "headlinerNormalized": "maxi-priest",
       "genre": "Reggae",
       "openers": [
+        "Andrew Tosh",
         "Carlene Davis",
         "Dennis Brown",
         "Little Lenny",
@@ -797,6 +815,7 @@
       "headlinerNormalized": "burning-spear",
       "genre": "Reggae",
       "openers": [
+        "Aswad",
         "Eek a Mouse"
       ],
       "venue": "Long Beach Arena",
@@ -820,7 +839,9 @@
       "headliner": "Sting",
       "headlinerNormalized": "sting",
       "genre": "Soft Rock",
-      "openers": [],
+      "openers": [
+        "Squeeze"
+      ],
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "state": "California",
@@ -843,6 +864,7 @@
       "headlinerNormalized": "siouxsie-and-the-banshees",
       "genre": "Post Punk",
       "openers": [
+        "Ian McCulloch",
         "School of Fish",
         "The Smithereens",
         "The Wonderstuff"
@@ -912,12 +934,24 @@
       "headliner": "Peter Gabriel",
       "headlinerNormalized": "peter-gabriel",
       "genre": "Art Rock",
-      "openers": [],
+      "openers": [
+        "Crowded House",
+        "Inner Circle",
+        "Jah Wobble's Invaders of the Heart",
+        "James",
+        "P.M. Dawn",
+        "Sheila Chandra",
+        "Sinéad O'Connor",
+        "Stereo MC's",
+        "Ziggy Marley and the Melody Makers",
+        "Terem Quartet",
+        "The Drummers of Burundi"
+      ],
       "venue": "Olympic Velodrome",
       "city": "Carson",
       "state": "California",
       "cityState": "Carson, California",
-      "reference": "",
+      "reference": "https://www.setlist.fm/festival/1993/womad-festival-carson-1993-6bd6e692.html",
       "year": 1993,
       "month": 9,
       "day": 18,
@@ -1023,6 +1057,7 @@
       "headlinerNormalized": "big-audio-dynamite",
       "genre": "New Wave",
       "openers": [
+        "John Doe",
         "Jane Weidlin"
       ],
       "venue": "The Galaxy Theatre",
@@ -1134,7 +1169,9 @@
       "headliner": "Elton John",
       "headlinerNormalized": "elton-john",
       "genre": "Soft Rock",
-      "openers": [],
+      "openers": [
+        "Billy Joel"
+      ],
       "venue": "Kia Forum",
       "city": "Inglewood",
       "state": "California",
@@ -1156,7 +1193,9 @@
       "headliner": "The Brian Setzer Orchestra",
       "headlinerNormalized": "the-brian-setzer-orchestra",
       "genre": "Swing",
-      "openers": [],
+      "openers": [
+        "Richard Cheese & Lounge Against the Machine"
+      ],
       "venue": "Universal Amphitheater",
       "city": "Los Angeles",
       "state": "California",
@@ -1200,7 +1239,9 @@
       "headliner": "The Human League",
       "headlinerNormalized": "the-human-league",
       "genre": "New Wave",
-      "openers": [],
+      "openers": [
+        "The English Beat"
+      ],
       "venue": "The Grove of Anaheim",
       "city": "Anaheim",
       "state": "California",
@@ -1245,6 +1286,7 @@
       "headlinerNormalized": "the-cure",
       "genre": "New Wave",
       "openers": [
+        "Marc Almond",
         "Berlin",
         "Bow Wow Wow",
         "Dashboard Confessional",
@@ -1324,7 +1366,9 @@
       "headliner": "Depeche Mode",
       "headlinerNormalized": "depeche-mode",
       "genre": "New Wave",
-      "openers": [],
+      "openers": [
+        "Raveonettes"
+      ],
       "venue": "Staples Center",
       "city": "Los Angeles",
       "state": "California",
@@ -1346,7 +1390,9 @@
       "headliner": "Tears For Fears",
       "headlinerNormalized": "tears-for-fears",
       "genre": "New Wave",
-      "openers": [],
+      "openers": [
+        "Dirty Vegas"
+      ],
       "venue": "Universal Amphitheater",
       "city": "Los Angeles",
       "state": "California",
@@ -1391,6 +1437,7 @@
       "headlinerNormalized": "devo",
       "genre": "New Wave",
       "openers": [
+        "Bow Wow Wow",
         "Flock of Seagulls",
         "When In Rome"
       ],
@@ -1481,7 +1528,9 @@
       "headliner": "Stray Cats",
       "headlinerNormalized": "stray-cats",
       "genre": "Rockabilly",
-      "openers": [],
+      "openers": [
+        "Hot Rod Lincoln"
+      ],
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "state": "California",
@@ -1503,7 +1552,9 @@
       "headliner": "Yaz",
       "headlinerNormalized": "yaz",
       "genre": "New Wave",
-      "openers": [],
+      "openers": [
+        "The Psychedelic Furs"
+      ],
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "state": "California",
@@ -1635,7 +1686,9 @@
       "headliner": "The English Beat",
       "headlinerNormalized": "the-english-beat",
       "genre": "Ska",
-      "openers": [],
+      "openers": [
+        "Fishbone"
+      ],
       "venue": "9:30 Club",
       "city": "Washington",
       "state": "District of Columbia",
@@ -1658,6 +1711,7 @@
       "headlinerNormalized": "echo-and-the-bunnymen",
       "genre": "New Wave",
       "openers": [
+        "Hatcham Social",
         "Kelley Stoltz"
       ],
       "venue": "The Black Cat",
@@ -1703,7 +1757,9 @@
       "headliner": "Bad Religion",
       "headlinerNormalized": "bad-religion",
       "genre": "Punk",
-      "openers": [],
+      "openers": [
+        "Rise Against"
+      ],
       "venue": "9:30 Club",
       "city": "Washington",
       "state": "District of Columbia",
@@ -1725,7 +1781,9 @@
       "headliner": "The Dollyrots",
       "headlinerNormalized": "the-dollyrots",
       "genre": "Pop Punk",
-      "openers": [],
+      "openers": [
+        "Bowling for Soup"
+      ],
       "venue": "The Ballroom",
       "city": "Baltimore",
       "state": "Maryland",
@@ -1747,7 +1805,9 @@
       "headliner": "The Go-Go's",
       "headlinerNormalized": "the-go-go-s",
       "genre": "New Wave",
-      "openers": [],
+      "openers": [
+        "The Dollyrots"
+      ],
       "venue": "Wolftrap",
       "city": "Vienna",
       "state": "Virginia",
@@ -1769,7 +1829,9 @@
       "headliner": "Squeeze",
       "headlinerNormalized": "squeeze",
       "genre": "New Wave Pop",
-      "openers": [],
+      "openers": [
+        "The English Beat"
+      ],
       "venue": "Rams Head Live! Baltimore",
       "city": "Baltimore",
       "state": "Maryland",
@@ -1791,7 +1853,9 @@
       "headliner": "Red Hot Chili Peppers",
       "headlinerNormalized": "red-hot-chili-peppers",
       "genre": "Funk Rock",
-      "openers": [],
+      "openers": [
+        "Sleigh Bells"
+      ],
       "venue": "Capitol One Arena",
       "city": "Washington",
       "state": "District of Columbia",
@@ -1813,7 +1877,9 @@
       "headliner": "The Cult",
       "headlinerNormalized": "the-cult",
       "genre": "New Wave",
-      "openers": [],
+      "openers": [
+        "Against Me!"
+      ],
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
       "state": "Maryland",
@@ -1879,7 +1945,9 @@
       "headliner": "Social Distortion",
       "headlinerNormalized": "social-distortion",
       "genre": "Punk",
-      "openers": [],
+      "openers": [
+        "Lindi Ortega"
+      ],
       "venue": "9:30 Club",
       "city": "Washington",
       "state": "District of Columbia",
@@ -1902,6 +1970,7 @@
       "headlinerNormalized": "dropkick-murphys",
       "genre": "Punk",
       "openers": [
+        "Solemn Sun",
         "Barroom Heroes"
       ],
       "venue": "9:30 Club",
@@ -1926,6 +1995,7 @@
       "headlinerNormalized": "bad-religion",
       "genre": "Punk",
       "openers": [
+        "Against Me!",
         "The Bronx",
         "Polar Bear Club"
       ],
@@ -1973,6 +2043,7 @@
       "headlinerNormalized": "rancid",
       "genre": "Punk",
       "openers": [
+        "Transplants",
         "Crown of Thornz"
       ],
       "venue": "The Fillmore Silver Spring",
@@ -2107,6 +2178,7 @@
       "headlinerNormalized": "the-offspring",
       "genre": "Pop Punk",
       "openers": [
+        "Pennywise",
         "Vandals",
         "Bad Religion"
       ],
@@ -2132,6 +2204,7 @@
       "headlinerNormalized": "streetlight-manifesto",
       "genre": "Ska",
       "openers": [
+        "Dan Potthast",
         "Chris Murray"
       ],
       "venue": "The Fillmore Silver Spring",
@@ -2155,7 +2228,9 @@
       "headliner": "The Head and the Heart",
       "headlinerNormalized": "the-head-and-the-heart",
       "genre": "Folk Pop",
-      "openers": [],
+      "openers": [
+        "Phox"
+      ],
       "venue": "DAR Constitution Hall",
       "city": "Washington",
       "state": "District of Columbia",
@@ -2178,6 +2253,7 @@
       "headlinerNormalized": "dropkick-murphys",
       "genre": "Punk",
       "openers": [
+        "Mahones",
         "Blood or Whiskey",
         "Bryan Mcpherson"
       ],
@@ -2202,7 +2278,9 @@
       "headliner": "Royal Blood",
       "headlinerNormalized": "royal-blood",
       "genre": "Alternative",
-      "openers": [],
+      "openers": [
+        "Mini Mansions"
+      ],
       "venue": "9:30 Club",
       "city": "Washington",
       "state": "District of Columbia",
@@ -2247,6 +2325,7 @@
       "headlinerNormalized": "foo-fighters",
       "genre": "Rock",
       "openers": [
+        "Buddy Guy",
         "Gary Clark Jr.",
         "Heart",
         "Joan Jett & The Blackhearts",
@@ -2278,6 +2357,7 @@
       "headlinerNormalized": "social-distortion",
       "genre": "Punk",
       "openers": [
+        "Nikki Lane",
         "Drag The River"
       ],
       "venue": "The Fillmore Silver Spring",
@@ -2301,7 +2381,9 @@
       "headliner": "Garbage",
       "headlinerNormalized": "garbage",
       "genre": "Alternative",
-      "openers": [],
+      "openers": [
+        "Torres"
+      ],
       "venue": "9:30 Club",
       "city": "Washington",
       "state": "District of Columbia",
@@ -2323,7 +2405,9 @@
       "headliner": "Dirty Heads",
       "headlinerNormalized": "dirty-heads",
       "genre": "Reggae Rock",
-      "openers": [],
+      "openers": [
+        "RDGLDGRN"
+      ],
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
       "state": "Maryland",
@@ -2367,7 +2451,9 @@
       "headliner": "Prophets of Rage",
       "headlinerNormalized": "prophets-of-rage",
       "genre": "Political Hip Hop",
-      "openers": [],
+      "openers": [
+        "AWOLNATION"
+      ],
       "venue": "EagleBank Arena",
       "city": "Fairfax",
       "state": "Virginia",
@@ -2434,6 +2520,7 @@
       "headlinerNormalized": "the-roots",
       "genre": "Alternative Hip Hop",
       "openers": [
+        "Living Colour",
         "Public Enemy"
       ],
       "venue": "National Museum of African American History and Culture",
@@ -2567,7 +2654,9 @@
       "headliner": "Blondie",
       "headlinerNormalized": "blondie",
       "genre": "Post Punk",
-      "openers": [],
+      "openers": [
+        "Garbage"
+      ],
       "venue": "Wolftrap",
       "city": "Vienna",
       "state": "Virginia",
@@ -2612,6 +2701,7 @@
       "headlinerNormalized": "bat-fangs",
       "genre": "Indie",
       "openers": [
+        "The Messthetics",
         "Danger Painters",
         "Kid Congo Powers"
       ],
@@ -2636,7 +2726,9 @@
       "headliner": "Foo Fighters",
       "headlinerNormalized": "foo-fighters",
       "genre": "Rock",
-      "openers": [],
+      "openers": [
+        "The Struts"
+      ],
       "venue": "The Anthem",
       "city": "Washington",
       "state": "District of Columbia",
@@ -2725,6 +2817,7 @@
       "headlinerNormalized": "the-human-league",
       "genre": "New Wave",
       "openers": [
+        "The Alarm",
         "Dramarama",
         "The Motels",
         "Naked Eyes",
@@ -2798,7 +2891,9 @@
       "headliner": "Stray Cats",
       "headlinerNormalized": "stray-cats",
       "genre": "Rockabilly",
-      "openers": [],
+      "openers": [
+        "The Paladins"
+      ],
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "state": "California",
@@ -2820,7 +2915,9 @@
       "headliner": "Gary Numan",
       "headlinerNormalized": "gary-numan",
       "genre": "Post Punk",
-      "openers": [],
+      "openers": [
+        "Me Not You"
+      ],
       "venue": "9:30 Club",
       "city": "Washington",
       "state": "District of Columbia",
@@ -2843,6 +2940,7 @@
       "headlinerNormalized": "social-distortion",
       "genre": "Punk",
       "openers": [
+        "Bad Religion",
         "The Offspring",
         "Pennywise",
         "Suicidal Tendencies",
@@ -2901,6 +2999,7 @@
       "headlinerNormalized": "foals",
       "genre": "Indie Rock",
       "openers": [
+        "Bear Hands",
         "Kiev"
       ],
       "venue": "The Shrine Auditorium",
@@ -2925,6 +3024,7 @@
       "headlinerNormalized": "the-interrupters",
       "genre": "Ska",
       "openers": [
+        "Masked Intruder",
         "Rat Boy"
       ],
       "venue": "The Observatory",
@@ -3102,7 +3202,9 @@
       "headliner": "The Aquabats!",
       "headlinerNormalized": "the-aquabats",
       "genre": "Ska",
-      "openers": [],
+      "openers": [
+        "The English Beat"
+      ],
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "state": "California",
@@ -3146,7 +3248,9 @@
       "headliner": "Royal Blood",
       "headlinerNormalized": "royal-blood",
       "genre": "Alternative",
-      "openers": [],
+      "openers": [
+        "cleopatrick"
+      ],
       "venue": "House of Blues Anaheim",
       "city": "Anaheim",
       "state": "California",
@@ -3168,7 +3272,9 @@
       "headliner": "Tears For Fears",
       "headlinerNormalized": "tears-for-fears",
       "genre": "New Wave",
-      "openers": [],
+      "openers": [
+        "Garbage"
+      ],
       "venue": "Kia Forum",
       "city": "Inglewood",
       "state": "California",
@@ -3257,6 +3363,7 @@
       "headlinerNormalized": "x",
       "genre": "Punk",
       "openers": [
+        "The Blasters",
         "Los Lobos"
       ],
       "venue": "Pacific Amphitheatre",
@@ -3280,7 +3387,9 @@
       "headliner": "Culture Club",
       "headlinerNormalized": "culture-club",
       "genre": "New Wave",
-      "openers": [],
+      "openers": [
+        "Berlin"
+      ],
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "state": "California",
@@ -3302,7 +3411,9 @@
       "headliner": "Peter Hook and the Light",
       "headlinerNormalized": "peter-hook-and-the-light",
       "genre": "Post Punk",
-      "openers": [],
+      "openers": [
+        "El Ten Eleven"
+      ],
       "venue": "Theatre at the Ace Hotel",
       "city": "Los Angeles",
       "state": "California",
@@ -3324,7 +3435,9 @@
       "headliner": "Gorillaz",
       "headlinerNormalized": "gorillaz",
       "genre": "Alternative Hip Hop",
-      "openers": [],
+      "openers": [
+        "EarthGang"
+      ],
       "venue": "YouTube Theatre",
       "city": "Inglewood",
       "state": "California",
@@ -3369,6 +3482,7 @@
       "headlinerNormalized": "new-order",
       "genre": "New Wave",
       "openers": [
+        "Pet Shop Boys",
         "Paul Oakenfold"
       ],
       "venue": "Hollywood Bowl",
@@ -3392,7 +3506,9 @@
       "headliner": "Danny Elfman",
       "headlinerNormalized": "danny-elfman",
       "genre": "Orchestral Soundtrack",
-      "openers": [],
+      "openers": [
+        "Boy Harsher"
+      ],
       "venue": "Hollywood Bowl",
       "city": "Hollywood",
       "state": "California",
@@ -3414,7 +3530,9 @@
       "headliner": "Foals",
       "headlinerNormalized": "foals",
       "genre": "Indie Rock",
-      "openers": [],
+      "openers": [
+        "Inner Wave"
+      ],
       "venue": "Hollywood Palladium",
       "city": "Hollywood",
       "state": "California",
@@ -3436,7 +3554,9 @@
       "headliner": "Social Distortion",
       "headlinerNormalized": "social-distortion",
       "genre": "Punk",
-      "openers": [],
+      "openers": [
+        "Chris Shiflett"
+      ],
       "venue": "House of Blues Anaheim",
       "city": "Anaheim",
       "state": "California",
@@ -3480,7 +3600,9 @@
       "headliner": "Depeche Mode",
       "headlinerNormalized": "depeche-mode",
       "genre": "New Wave",
-      "openers": [],
+      "openers": [
+        "Kelly Lee Owens"
+      ],
       "venue": "Kia Forum",
       "city": "Inglewood",
       "state": "California",
@@ -3524,7 +3646,9 @@
       "headliner": "Crowded House",
       "headlinerNormalized": "crowded-house",
       "genre": "Pop Rock",
-      "openers": [],
+      "openers": [
+        "Liam Finn"
+      ],
       "venue": "The Wiltern",
       "city": "Los Angeles",
       "state": "California",
@@ -3546,7 +3670,9 @@
       "headliner": "The Cure",
       "headlinerNormalized": "the-cure",
       "genre": "New Wave",
-      "openers": [],
+      "openers": [
+        "The Twilight Sad"
+      ],
       "venue": "Hollywood Bowl",
       "city": "Hollywood",
       "state": "California",
@@ -3568,7 +3694,9 @@
       "headliner": "Foals",
       "headlinerNormalized": "foals",
       "genre": "Indie Rock",
-      "openers": [],
+      "openers": [
+        "Andy Stavas"
+      ],
       "venue": "The Belasco",
       "city": "Los Angeles",
       "state": "California",
@@ -3591,6 +3719,7 @@
       "headlinerNormalized": "ub40",
       "genre": "Reggae",
       "openers": [
+        "Men At Work",
         "Smash Mouth"
       ],
       "venue": "Peacock Theater",
@@ -3615,6 +3744,7 @@
       "headlinerNormalized": "x",
       "genre": "Punk",
       "openers": [
+        "The English Beat",
         "Save Ferris"
       ],
       "venue": "Pacific Amphitheatre",
@@ -3638,7 +3768,9 @@
       "headliner": "Streetlight Manifesto",
       "headlinerNormalized": "streetlight-manifesto",
       "genre": "Ska",
-      "openers": [],
+      "openers": [
+        "Rebuilder"
+      ],
       "venue": "The Wiltern",
       "city": "Los Angeles",
       "state": "California",
@@ -3726,7 +3858,9 @@
       "headliner": "Brian Setzer",
       "headlinerNormalized": "brian-setzer",
       "genre": "Rockabilly",
-      "openers": [],
+      "openers": [
+        "Yates McKendree"
+      ],
       "venue": "The Wiltern",
       "city": "Los Angeles",
       "state": "California",
@@ -3749,6 +3883,7 @@
       "headlinerNormalized": "the-english-beat",
       "genre": "Ska",
       "openers": [
+        "Common Sense",
         "Smoke & Mirrors Sound System"
       ],
       "venue": "Pacific Amphitheatre",
@@ -3773,6 +3908,7 @@
       "headlinerNormalized": "howard-jones",
       "genre": "New Wave",
       "openers": [
+        "ABC",
         "Haircut 100"
       ],
       "venue": "YouTube Theatre",
@@ -3796,7 +3932,9 @@
       "headliner": "Cold War Kids",
       "headlinerNormalized": "cold-war-kids",
       "genre": "Alternative",
-      "openers": [],
+      "openers": [
+        "Husbands"
+      ],
       "venue": "The Observatory",
       "city": "Santa Ana",
       "state": "California",
@@ -3862,7 +4000,9 @@
       "headliner": "Molchat Doma",
       "headlinerNormalized": "molchat-doma",
       "genre": "Post Punk",
-      "openers": [],
+      "openers": [
+        "Sextile"
+      ],
       "venue": "Hollywood Palladium",
       "city": "Hollywood",
       "state": "California",
@@ -3884,7 +4024,9 @@
       "headliner": "The Black Keys",
       "headlinerNormalized": "the-black-keys",
       "genre": "Indie Rock",
-      "openers": [],
+      "openers": [
+        "Gary Clark Jr."
+      ],
       "venue": "MGM Music Hall at Fenway",
       "city": "Boston",
       "state": "Massachusetts",
@@ -3928,7 +4070,9 @@
       "headliner": "Thompson Twins",
       "headlinerNormalized": "thompson-twins",
       "genre": "Alternative",
-      "openers": [],
+      "openers": [
+        "Blancmange"
+      ],
       "venue": "Pavilion Theatre",
       "city": "Glasgow",
       "state": "UK",
@@ -3946,7 +4090,7 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-01-02T19:44:21.091Z",
+    "lastUpdated": "2026-01-04T20:43:42.039Z",
     "totalConcerts": 174,
     "dateRange": {
       "earliest": "1984-04-27",

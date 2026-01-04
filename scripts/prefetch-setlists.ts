@@ -32,6 +32,7 @@ interface Concert {
   id: string
   date: string
   headliner: string
+  openers?: string[]
   venue: string
   city: string
   state: string
@@ -237,16 +238,17 @@ function findBestSetlistMatch(
   return null
 }
 
-// Fetch setlist from setlist.fm API
+// Fetch setlist from setlist.fm API for a specific artist
 async function fetchSetlistFromAPI(
   concert: Concert,
+  artistName: string,
   apiKey: string
 ): Promise<Setlist | null> {
   const mappedCity = mapCityName(concert.city)
   const year = concert.date.split('-')[0]
 
   const url = new URL('https://api.setlist.fm/rest/1.0/search/setlists')
-  url.searchParams.append('artistName', concert.headliner)
+  url.searchParams.append('artistName', artistName)
   url.searchParams.append('cityName', mappedCity)
   url.searchParams.append('year', year)
 
@@ -275,7 +277,7 @@ async function fetchSetlistFromAPI(
 
     // Find best match using fuzzy matching
     const bestMatch = findBestSetlistMatch(data.setlist, {
-      artistName: concert.headliner,
+      artistName,
       venueName: concert.venue,
       city: mappedCity
     })
@@ -337,11 +339,13 @@ async function main(options: { forceRefresh?: boolean } = {}) {
     }
   }
 
-  // Build map of existing cache entries
+  // Build map of existing cache entries using composite key (concertId:artistName)
   const existingEntries = new Map<string, SetlistCacheEntry>()
   if (existingCache && !forceRefresh) {
     for (const entry of existingCache.entries) {
-      existingEntries.set(entry.concertId, entry)
+      // Use composite key to support multiple artists per concert
+      const cacheKey = `${entry.concertId}:${entry.artistName}`
+      existingEntries.set(cacheKey, entry)
     }
   }
 
@@ -351,30 +355,66 @@ async function main(options: { forceRefresh?: boolean } = {}) {
   let notFoundCount = 0
   let errorCount = 0
 
-  // Process each concert
-  for (let i = 0; i < concerts.length; i++) {
-    const concert = concerts[i]
-    const progress = `[${i + 1}/${concerts.length}]`
+  // Build list of all artists to fetch (headliners + openers)
+  interface ArtistToFetch {
+    concert: Concert
+    artistName: string
+    isHeadliner: boolean
+  }
+
+  const artistsToFetch: ArtistToFetch[] = []
+  for (const concert of concerts) {
+    // Add headliner
+    artistsToFetch.push({
+      concert,
+      artistName: concert.headliner,
+      isHeadliner: true
+    })
+
+    // Add openers
+    if (concert.openers && concert.openers.length > 0) {
+      for (const opener of concert.openers) {
+        if (opener && opener.trim()) {
+          artistsToFetch.push({
+            concert,
+            artistName: opener.trim(),
+            isHeadliner: false
+          })
+        }
+      }
+    }
+  }
+
+  console.log(`📊 Total artists to fetch: ${artistsToFetch.length} (headliners + openers)\n`)
+
+  // Process each artist
+  for (let i = 0; i < artistsToFetch.length; i++) {
+    const { concert, artistName, isHeadliner } = artistsToFetch[i]
+    const progress = `[${i + 1}/${artistsToFetch.length}]`
+    const artistType = isHeadliner ? '🎤' : '🎸'
+
+    // Build cache key for this specific artist at this concert
+    const cacheKey = `${concert.id}:${artistName}`
 
     // Check if we already have this in cache
-    const existing = existingEntries.get(concert.id)
+    const existing = existingEntries.get(cacheKey)
     if (existing && existing.setlist !== null) {
       // We have a valid cached setlist - reuse it
       cacheEntries.push(existing)
       cacheHitCount++
-      console.log(`${progress} ✓ ${concert.headliner} - ${concert.venue} (cached)`)
+      console.log(`${progress} ${artistType} ✓ ${artistName} at ${concert.venue} (cached)`)
       continue
     }
 
     // Need to fetch from API
-    console.log(`${progress} 🔍 ${concert.headliner} - ${concert.venue}...`)
+    console.log(`${progress} ${artistType} 🔍 ${artistName} at ${concert.venue}...`)
 
     try {
-      const setlist = await fetchSetlistFromAPI(concert, apiKey)
+      const setlist = await fetchSetlistFromAPI(concert, artistName, apiKey)
 
       const entry: SetlistCacheEntry = {
         concertId: concert.id,
-        artistName: concert.headliner,
+        artistName: artistName,
         date: concert.date,
         venue: concert.venue,
         city: concert.city,
@@ -385,25 +425,26 @@ async function main(options: { forceRefresh?: boolean } = {}) {
       cacheEntries.push(entry)
 
       if (setlist) {
-        console.log(`${progress} ✅ Found setlist with ${setlist.sets.set.reduce((acc, s) => acc + s.song.length, 0)} songs`)
+        const songCount = setlist.sets.set.reduce((acc, s) => acc + s.song.length, 0)
+        console.log(`${progress} ${artistType} ✅ Found setlist with ${songCount} songs`)
         fetchCount++
       } else {
-        console.log(`${progress} ⚪ No setlist found`)
+        console.log(`${progress} ${artistType} ⚪ No setlist found`)
         notFoundCount++
       }
 
       // Rate limiting: setlist.fm free tier allows ~1 request per second
       // Add 1.5 second delay between requests to be safe
-      if (i < concerts.length - 1) {
+      if (i < artistsToFetch.length - 1) {
         await delay(1500)
       }
 
     } catch (error) {
-      console.error(`${progress} ❌ Error: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      console.error(`${progress} ${artistType} ❌ Error: ${error instanceof Error ? error.message : 'Unknown error'}`)
 
       const entry: SetlistCacheEntry = {
         concertId: concert.id,
-        artistName: concert.headliner,
+        artistName: artistName,
         date: concert.date,
         venue: concert.venue,
         city: concert.city,
@@ -447,12 +488,14 @@ async function main(options: { forceRefresh?: boolean } = {}) {
   console.log('✨ Pre-fetch complete!')
   console.log('='.repeat(60))
   console.log(`📊 Total concerts: ${concerts.length}`)
+  console.log(`🎵 Total artists (headliners + openers): ${artistsToFetch.length}`)
   console.log(`📦 Used cached: ${cacheHitCount}`)
   console.log(`🔍 Fetched new: ${fetchCount}`)
   console.log(`⚪ Not found: ${notFoundCount}`)
   console.log(`❌ Errors: ${errorCount}`)
   console.log(`\n💾 Cache saved to: ${path.relative(process.cwd(), cachePath)}`)
   console.log(`📦 Cache size: ${(fs.statSync(cachePath).size / 1024).toFixed(2)} KB`)
+  console.log(`📝 Total cache entries: ${cacheEntries.length}`)
 }
 
 // Run if called directly

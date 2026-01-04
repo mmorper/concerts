@@ -5,13 +5,15 @@ import type { ArtistCard as ArtistCardType } from './types'
 interface ArtistCardProps {
   artist: ArtistCardType
   onClick: (rect: DOMRect) => void
+  getArtistImage: (artistName: string) => string | undefined
+  artistImageLoading: boolean
 }
 
 /**
  * Artist tile card - click to open gatefold
  * Simple clickable tile that triggers the gatefold overlay
  */
-export function ArtistCard({ artist, onClick }: ArtistCardProps) {
+export function ArtistCard({ artist, onClick, getArtistImage, artistImageLoading }: ArtistCardProps) {
   const cardRef = useRef<HTMLDivElement>(null)
 
   const handleClick = () => {
@@ -44,6 +46,8 @@ export function ArtistCard({ artist, onClick }: ArtistCardProps) {
         artistName={artist.name}
         albumCover={artist.albumCover}
         genre={artist.primaryGenre}
+        getArtistImage={getArtistImage}
+        artistImageLoading={artistImageLoading}
       />
     </div>
   )

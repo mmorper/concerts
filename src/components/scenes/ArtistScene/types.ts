@@ -5,7 +5,7 @@
 // All cards now use uniform 240px size (front) → 600px (back when flipped)
 export type SizeClass = 'uniform'
 
-export type SortOrder = 'timesSeen' | 'alphabetical' | 'genre' | 'chronological'
+export type SortOrder = 'timesSeen' | 'alphabetical'
 
 export interface ArtistConcert {
   concertId: string // Concert ID from concerts.json (for static cache lookups)
