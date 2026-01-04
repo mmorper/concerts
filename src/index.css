@@ -256,7 +256,7 @@ body {
    Slides from left panel (Concert History) to right panel (Spotify)
    Mimics pulling liner notes from a vinyl record sleeve */
 .liner-notes-panel {
-  animation: slideInFromLeft 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideInFromLeft 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes slideInFromLeft {
@@ -275,7 +275,7 @@ body {
 /* Liner notes panel slide-out animation (closing)
    Slides back to left panel (back into the vinyl sleeve) */
 .liner-notes-panel-closing {
-  animation: slideOutToLeft 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideOutToLeft 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes slideOutToLeft {

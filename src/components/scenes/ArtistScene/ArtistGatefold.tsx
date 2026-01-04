@@ -71,6 +71,16 @@ export function ArtistGatefold({
       const closedPos = getClosedPosition()
       const openPos = getOpenPosition()
 
+      // Preload the image before starting animations
+      const artistImage = getArtistImage(artist.name)
+      const imageUrl = artistImage || artist.albumCover
+      if (imageUrl) {
+        const img = new Image()
+        img.src = imageUrl
+        img.onload = () => setCoverImageLoaded(true)
+        img.onerror = () => setCoverImageLoaded(false)
+      }
+
       if (reducedMotion) {
         // Skip animations for reduced motion
         setShowGatefold(true)
@@ -200,7 +210,6 @@ export function ArtistGatefold({
   // Close liner notes panel
   const handleCloseLinerNotes = () => {
     // Delay clearing state until after the slide-out animation completes (350ms)
-    // This prevents the Spotify panel from un-dimming while the liner notes are sliding out
     setTimeout(() => {
       setSelectedConcert(null)
       setSetlistData(null)
@@ -325,13 +334,24 @@ export function ArtistGatefold({
       {showFlyingTile && (
         <div
           ref={flyingTileRef}
-          className="fixed flex items-center justify-center font-sans font-semibold text-white/90 pointer-events-none"
+          className="fixed flex items-center justify-center font-sans font-semibold text-white/90 pointer-events-none overflow-hidden"
           style={{
             background: gradient,
             zIndex: 99999
           }}
         >
-          {initials}
+          {/* Always show initials as base */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            {initials}
+          </div>
+          {/* Show image if loaded */}
+          {imageUrl && coverImageLoaded && (
+            <img
+              src={imageUrl}
+              alt={artist.name}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          )}
         </div>
       )}
 
@@ -401,7 +421,7 @@ export function ArtistGatefold({
                   />
                 </div>
 
-                <SpotifyPanel artist={artist} dimmed={!!selectedConcert} />
+                <SpotifyPanel artist={artist} />
 
                 {/* Liner Notes Panel - slides over Spotify panel */}
                 {selectedConcert && (
@@ -441,31 +461,28 @@ export function ArtistGatefold({
                     boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)'
                   }}
                 >
-                  {imageUrl ? (
-                    <>
-                      {/* Placeholder underneath while image loads */}
-                      {!coverImageLoaded && (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          {initials}
-                        </div>
-                      )}
-                      {/* Artist image that fades in when loaded */}
-                      <img
-                        key={artist.name} // Force new image element for each artist
-                        src={imageUrl}
-                        alt={artist.name}
-                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-                          coverImageLoaded ? 'opacity-100' : 'opacity-0'
-                        }`}
-                        onLoad={() => setCoverImageLoaded(true)}
-                        onError={() => {
-                          // If image fails to load, show it immediately (will show broken image or fallback)
-                          setCoverImageLoaded(true)
-                        }}
-                      />
-                    </>
-                  ) : (
-                    initials
+                  {/* Always show initials as base layer (only if image not loaded) */}
+                  {!coverImageLoaded && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      {initials}
+                    </div>
+                  )}
+
+                  {/* Artist image overlays initials - instant if preloaded, fade if loading */}
+                  {imageUrl && (
+                    <img
+                      key={artist.name} // Force new image element for each artist
+                      src={imageUrl}
+                      alt={artist.name}
+                      className={`absolute inset-0 w-full h-full object-cover ${
+                        coverImageLoaded ? 'opacity-100' : 'opacity-0 transition-opacity duration-300'
+                      }`}
+                      onLoad={() => setCoverImageLoaded(true)}
+                      onError={() => {
+                        // Keep image hidden on error so initials remain visible
+                        setCoverImageLoaded(false)
+                      }}
+                    />
                   )}
                 </div>
 

@@ -3,7 +3,6 @@ import type { ArtistCard } from './types'
 
 interface SpotifyPanelProps {
   artist: ArtistCard
-  dimmed?: boolean // Dim to 0.3 opacity when liner notes are open
 }
 
 /**
@@ -11,7 +10,7 @@ interface SpotifyPanelProps {
  * Phase 1: Shows "Coming Soon" placeholder
  * Size: 400×400px
  */
-export function SpotifyPanel({ artist, dimmed = false }: SpotifyPanelProps) {
+export function SpotifyPanel({ artist }: SpotifyPanelProps) {
   const genreColor = getGenreColor(artist.primaryGenre)
 
   // Create gradient for track art placeholders (30% opacity)
@@ -19,12 +18,11 @@ export function SpotifyPanel({ artist, dimmed = false }: SpotifyPanelProps) {
 
   return (
     <div
-      className="w-[400px] h-[400px] flex flex-col p-8 transition-opacity duration-400"
+      className="w-[400px] h-[400px] flex flex-col p-8"
       style={{
         background: 'linear-gradient(145deg, #121212 0%, #181818 100%)',
         borderRadius: '4px',
-        boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)',
-        opacity: dimmed ? 0.3 : 1
+        boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)'
       }}
     >
       {/* Spotify Section */}
