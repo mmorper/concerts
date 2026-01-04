@@ -55,7 +55,9 @@ export function LinerNotesPanel({
         isClosing ? 'liner-notes-panel-closing' : 'liner-notes-panel'
       }`}
       style={{
-        zIndex: 25 // Above Spotify panel (20) but below cover (30)
+        zIndex: 25, // Above Spotify panel (20) but below cover (30)
+        // Add solid background during closing to prevent bleed-through
+        background: isClosing ? 'linear-gradient(135deg, #f5f5f0 0%, #e8e8e0 100%)' : 'transparent'
       }}
       role="dialog"
       aria-modal="false"

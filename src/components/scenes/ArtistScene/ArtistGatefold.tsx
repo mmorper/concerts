@@ -48,6 +48,9 @@ export function ArtistGatefold({
   const flyingTileRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
 
+  // Cover image loading state - must be before early return
+  const [coverImageLoaded, setCoverImageLoaded] = useState(false)
+
   // Get positioning functions
   const getClosedPosition = () => ({
     left: (window.innerWidth - CLOSED_WIDTH) / 2,
@@ -301,12 +304,16 @@ export function ArtistGatefold({
     return () => window.removeEventListener('resize', handleResize)
   }, [isOpen, isAnimating])
 
+  // Reset cover image loaded state when artist changes
+  useEffect(() => {
+    setCoverImageLoaded(false)
+  }, [artist?.name])
+
   if (!artist) return null
 
   const genreColor = getGenreColor(artist.primaryGenre)
   const gradient = `linear-gradient(135deg, ${genreColor} 0%, ${adjustColor(genreColor, -30)} 100%)`
   const initials = getArtistInitials(artist.name)
-  const [coverImageLoaded, setCoverImageLoaded] = useState(false)
 
   // Unified image sourcing: artist photo → album cover → placeholder
   const artistImage = getArtistImage(artist.name)
