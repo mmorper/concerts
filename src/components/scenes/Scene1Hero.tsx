@@ -179,24 +179,27 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
 
       // Helper function to animate dot on hover/touch
       const animateDotEnter = () => {
+        // Much larger scale on mobile (4x) vs desktop (1.5x)
+        const scaleMultiplier = isMobile ? 4 : 1.5
+
         dot
           .transition()
           .duration(250)
-          .attr('r', radius * 1.5)
+          .attr('r', radius * scaleMultiplier)
           .attr('fill', '#a5b4fc')
           .attr('opacity', 1)
 
         glowRing
           .transition()
           .duration(250)
-          .attr('r', radius * 1.8)
+          .attr('r', radius * (scaleMultiplier + 0.3))
           .attr('stroke-width', 3)
           .attr('opacity', 0.6)
 
         shadow
           .transition()
           .duration(250)
-          .attr('r', radius * 1.6)
+          .attr('r', radius * (scaleMultiplier + 0.1))
           .attr('opacity', 0.6)
       }
 

@@ -21,7 +21,8 @@ export function TimelineHoverPreview({
 }: TimelineHoverPreviewProps) {
   const { getArtistImage } = useArtistMetadata()
 
-  // Check if viewport is mobile (disable on mobile)
+  // Check if viewport is mobile
+  // Note: We now ENABLE popups on mobile for touch interactions (v1.7.9)
   const isMobile = typeof window !== 'undefined' && window.innerWidth < BREAKPOINTS.MOBILE_MAX
 
   /**
@@ -37,14 +38,20 @@ export function TimelineHoverPreview({
     // Estimate popup height (MIN_HEIGHT + content)
     const estimatedHeight = LAYOUT.MIN_HEIGHT + 20
 
+    // On mobile, prefer showing above to avoid finger occlusion
+    const preferAbove = isMobile
+
     // Determine if popup should be above or below
     const spaceAbove = y - LAYOUT.OFFSET_Y - LAYOUT.ARROW_SIZE
     const spaceBelow = window.innerHeight - y - LAYOUT.OFFSET_Y - LAYOUT.ARROW_SIZE
-    const isAbove = spaceAbove >= estimatedHeight || spaceAbove > spaceBelow
+    const isAbove = preferAbove
+      ? spaceAbove >= LAYOUT.MIN_HEIGHT // If mobile and enough space, always show above
+      : spaceAbove >= estimatedHeight || spaceAbove > spaceBelow
 
-    // Calculate vertical position
+    // Calculate vertical position with extra offset on mobile for finger clearance
+    const mobileOffset = isMobile ? 60 : 0
     let popupY = isAbove
-      ? y - LAYOUT.OFFSET_Y - LAYOUT.ARROW_SIZE - estimatedHeight
+      ? y - LAYOUT.OFFSET_Y - LAYOUT.ARROW_SIZE - estimatedHeight - mobileOffset
       : y + LAYOUT.OFFSET_Y + LAYOUT.ARROW_SIZE
 
     // Keep within horizontal bounds
@@ -60,9 +67,9 @@ export function TimelineHoverPreview({
     }
 
     return { x: popupX, y: popupY, isAbove }
-  }, [hoverState])
+  }, [hoverState, isMobile])
 
-  if (!hoverState || isMobile) {
+  if (!hoverState) {
     return null
   }
 
@@ -70,7 +77,7 @@ export function TimelineHoverPreview({
 
   return (
     <AnimatePresence>
-      {hoverState && !isMobile && (
+      {hoverState && (
         <motion.div
           key="timeline-hover-popup"
           layout
