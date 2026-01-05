@@ -57,7 +57,7 @@ Want the technical details? See [docs/DATA_PIPELINE.md](docs/DATA_PIPELINE.md) f
 
 ## How it's built
 
-Honestly? To learn.
+Honestly? I did this to learn.
 
 I wanted to see if I could build a real [Jamstack](https://jamstack.org/what-is-jamstack/) app from scratch. No backend servers, just static files, APIs for data enrichment, and modern frontend tooling. I'd never done it before.
 
