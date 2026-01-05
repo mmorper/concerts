@@ -1,6 +1,32 @@
 {
   "releases": [
     {
+      "version": "1.7.6",
+      "date": "2026-01-04",
+      "title": "Changelog Toast UX & Gatefold Refinements",
+      "description": "Improved toast notifications and refined artist gatefold animations",
+      "route": "/?scene=artists&artist=depeche-mode",
+      "highlights": [
+        "Optimized changelog toast UX with better positioning",
+        "Improved artist gatefold image loading",
+        "Fixed liner notes panel bleed-through during animations",
+        "Enhanced visual polish across gatefold experience"
+      ]
+    },
+    {
+      "version": "1.7.5",
+      "date": "2026-01-04",
+      "title": "Mobile Touch Feedback & Haptics",
+      "description": "Added haptic feedback for mobile interactions across the app",
+      "route": "/?scene=artists&artist=duran-duran",
+      "highlights": [
+        "Haptic feedback on button taps and interactions",
+        "Touch-optimized UI elements with visual feedback",
+        "Improved mobile experience with tactile responses",
+        "Tier 1 mobile polish complete"
+      ]
+    },
+    {
       "version": "1.7.0",
       "date": "2026-01-04",
       "title": "Artist Search & Smart Sorting",
@@ -18,7 +44,7 @@
       "date": "2026-01-03",
       "title": "Venue Cross-Navigation",
       "description": "Click any venue on the map to navigate directly to its details in the Venues scene",
-      "route": "/?scene=geography",
+      "route": "/?scene=venues&venue=930club",
       "highlights": [
         "Clickable \"Explore Venue →\" buttons in map popups",
         "Smooth scroll with spotlight animation",
@@ -30,7 +56,7 @@
       "date": "2026-01-03",
       "title": "Artist Photos in Gatefold",
       "description": "Open any artist's gatefold to see their photo alongside concert history",
-      "route": "/?scene=artists",
+      "route": "/?scene=artists&artist=social-distortion",
       "highlights": [
         "94 artists (54%) display photos",
         "Enriched metadata from Spotify, AudioDB, Last.fm",
@@ -54,7 +80,7 @@
       "date": "2026-01-02",
       "title": "Venue Photos on Map",
       "description": "Click any venue marker to see photos, legacy badges, and concert stats",
-      "route": "/?scene=geography",
+      "route": "/?scene=geography&venue=930club",
       "highlights": [
         "96% of venues have photos (73/76)",
         "Lazy-loaded with skeleton shimmer",
@@ -66,7 +92,7 @@
       "date": "2026-01-02",
       "title": "Google Places Integration",
       "description": "Venue photos powered by Google Places API with smart fallback hierarchy",
-      "route": "/?scene=geography",
+      "route": "/?scene=geography&venue=hollywood-palladium",
       "highlights": [
         "66 active venues with real photos",
         "Automatic fallbacks for legacy venues",

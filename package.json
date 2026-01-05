@@ -1,6 +1,6 @@
 {
   "name": "morperhaus-concerts",
-  "version": "1.7.6",
+  "version": "1.7.12",
   "private": true,
   "type": "module",
   "description": "Interactive concert history timeline application",
@@ -21,11 +21,13 @@
     "deduplicate-artists": "tsx scripts/deduplicate-artists.ts",
     "validate-normalization": "tsx scripts/validate-normalization.ts",
     "validate-data": "tsx scripts/validate-concerts.ts",
+    "validate:version": "tsx scripts/validate-version-sync.ts",
     "diff-data": "tsx scripts/diff-concerts.ts",
     "prefetch:setlists": "tsx scripts/prefetch-setlists.ts",
     "test:sanity": "node test/test-simple.mjs",
     "og:generate": "tsx scripts/generate-og-simple.ts",
-    "og:preview": "tsx scripts/preview-og-crops.ts"
+    "og:preview": "tsx scripts/preview-og-crops.ts",
+    "cleanup:backups": "tsx scripts/cleanup-backups.ts"
   },
   "dependencies": {
     "@types/d3": "^7.4.3",
@@ -35,6 +37,7 @@
     "dotenv": "^17.2.3",
     "framer-motion": "^11.15.0",
     "leaflet": "^1.9.4",
+    "lucide-react": "^0.562.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",

@@ -32,12 +32,15 @@ function MainScenes() {
   const [currentScene, setCurrentScene] = useState(1)
   const [showToast, setShowToast] = useState(false)
   const [pendingVenueFocus, setPendingVenueFocus] = useState<string | null>(null)
+  const [pendingMapVenueFocus, setPendingMapVenueFocus] = useState<string | null>(null)
+  const [pendingArtistFocus, setPendingArtistFocus] = useState<string | null>(null)
 
   // Check for new changelog entries
   const {
     shouldShow,
     newFeatureCount,
     latestRelease,
+    newReleases,
     dismissToast,
     markAsSeen,
   } = useChangelogCheck(currentScene)
@@ -103,9 +106,23 @@ function MainScenes() {
 
     const params = new URLSearchParams(location.search)
     const sceneParam = params.get('scene')
+    const artistParam = params.get('artist')
+    const venueParam = params.get('venue')
 
     if (sceneParam && SCENE_MAP[sceneParam]) {
       const sceneId = SCENE_MAP[sceneParam]
+
+      // If artist parameter is provided, set it for the ArtistScene
+      if (artistParam && sceneId === 5) {
+        setPendingArtistFocus(artistParam)
+      }
+
+      // If venue parameter is provided, set it for the appropriate scene
+      if (venueParam && sceneId === 2) {
+        setPendingVenueFocus(venueParam)
+      } else if (venueParam && sceneId === 3) {
+        setPendingMapVenueFocus(venueParam)
+      }
 
       // Delay to ensure DOM is fully ready
       setTimeout(() => {
@@ -170,13 +187,19 @@ function MainScenes() {
         <Scene3Map
           concerts={concerts}
           onVenueNavigate={handleVenueNavigate}
+          pendingVenueFocus={pendingMapVenueFocus}
+          onVenueFocusComplete={() => setPendingMapVenueFocus(null)}
         />
 
         {/* Scene 4: Genres (sunburst) */}
         <Scene5Genres concerts={concerts} />
 
         {/* Scene 5: Artists (album mosaic) */}
-        <ArtistScene concerts={concerts} />
+        <ArtistScene
+          concerts={concerts}
+          pendingArtistFocus={pendingArtistFocus}
+          onArtistFocusComplete={() => setPendingArtistFocus(null)}
+        />
       </div>
 
       {/* Scene Navigation */}
@@ -188,6 +211,7 @@ function MainScenes() {
           isVisible={showToast}
           newFeatureCount={newFeatureCount}
           latestRelease={latestRelease}
+          newReleases={newReleases}
           onDismiss={() => {
             setShowToast(false)
             dismissToast()

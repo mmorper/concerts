@@ -65,6 +65,7 @@ export interface ChangelogToastProps {
   isVisible: boolean
   newFeatureCount: number
   latestRelease: Release
+  newReleases: Release[]
   onDismiss: () => void
   onNavigate: () => void
 }

@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { format } from 'date-fns'
+import { Link2 } from 'lucide-react'
 import { getGenreColor } from '../../../constants/colors'
 import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
 import type { ArtistCard, ArtistConcert } from './types'
@@ -40,9 +42,23 @@ export function ConcertHistoryPanel({
   const artistImage = getArtistImage(artist.name)
   const genreColor = getGenreColor(artist.primaryGenre)
   const initials = getArtistInitials(artist.name)
+  const [showCopiedToast, setShowCopiedToast] = useState(false)
 
   // Create gradient for album art placeholder
   const gradient = `linear-gradient(135deg, ${genreColor} 0%, ${adjustColor(genreColor, -30)} 100%)`
+
+  const handleCopyLink = async () => {
+    const url = `${window.location.origin}/?scene=artists&artist=${artist.normalizedName}`
+
+    try {
+      await navigator.clipboard.writeText(url)
+      haptics.light() // Haptic feedback on successful copy
+      setShowCopiedToast(true)
+      setTimeout(() => setShowCopiedToast(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy link:', err)
+    }
+  }
 
   return (
     <div
@@ -81,11 +97,32 @@ export function ConcertHistoryPanel({
         )}
 
         {/* Artist Info */}
-        <div className="flex flex-col justify-center">
-          <h2 className="font-serif text-3xl font-medium text-white tracking-tight leading-tight mb-2">
-            {artist.name}
-          </h2>
-          <p className="font-sans text-sm text-[#a3a3a3]">
+        <div className="flex flex-col justify-center flex-1">
+          <div className="flex items-start gap-3 relative">
+            <h2 className="font-serif text-3xl font-medium text-white tracking-tight leading-tight">
+              {artist.name}
+            </h2>
+            <button
+              onClick={handleCopyLink}
+              className="mt-1.5 text-white/40 hover:text-white/90 transition-colors duration-150 flex-shrink-0"
+              aria-label={`Copy link to ${artist.name}`}
+              title="Copy link"
+            >
+              <Link2 size={18} />
+            </button>
+
+            {/* Copy confirmation tooltip */}
+            {showCopiedToast && (
+              <div
+                className="absolute -top-8 right-0 px-2 py-1 bg-black/90 text-white text-xs font-medium rounded shadow-lg animate-fade-in pointer-events-none"
+                role="status"
+                aria-live="polite"
+              >
+                Copied!
+              </div>
+            )}
+          </div>
+          <p className="font-sans text-sm text-[#a3a3a3] mt-2">
             {artist.primaryGenre} · {artist.timesSeen} {artist.timesSeen === 1 ? 'show' : 'shows'}
           </p>
         </div>

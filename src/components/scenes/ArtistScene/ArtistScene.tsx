@@ -11,13 +11,15 @@ import { haptics } from '../../../utils/haptics'
 
 interface ArtistSceneProps {
   concerts: Concert[]
+  pendingArtistFocus?: string | null
+  onArtistFocusComplete?: () => void
 }
 
 /**
  * Main Artist Scene container
  * Album mosaic visualization with flip cards
  */
-export function ArtistScene({ concerts }: ArtistSceneProps) {
+export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplete }: ArtistSceneProps) {
   const { artistCards, isLoading } = useArtistData(concerts)
   const { getArtistImage, loading: artistImageLoading } = useArtistMetadata()
   const [sortOrder, setSortOrder] = useState<SortOrder>('timesSeen') // Default: Most Seen
@@ -47,6 +49,17 @@ export function ArtistScene({ concerts }: ArtistSceneProps) {
     window.addEventListener('resize', handleOrientationChange)
     return () => window.removeEventListener('resize', handleOrientationChange)
   }, [openArtist])
+
+  // Handle deep link artist focus from URL parameters
+  useEffect(() => {
+    if (!pendingArtistFocus || isLoading || artistCards.length === 0) return
+
+    // Wait for scene to be visible and ready
+    setTimeout(() => {
+      handleArtistSelect(pendingArtistFocus)
+      onArtistFocusComplete?.()
+    }, 500) // Delay to ensure scene is scrolled into view
+  }, [pendingArtistFocus, isLoading, artistCards])
 
   const handleCardClick = (artist: ArtistCard, rect: DOMRect) => {
     setOpenArtist(artist)

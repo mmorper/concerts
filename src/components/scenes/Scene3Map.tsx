@@ -307,10 +307,65 @@ export function Scene3Map({ concerts, onVenueNavigate, pendingVenueFocus, onVenu
             className: 'venue-popup',
             pane: 'popupPane',
             maxWidth: 240,
+            autoPan: false, // We'll handle panning manually for precise control
+          })
+          .on('popupopen', () => {
+            // When popup opens, position it precisely below filter buttons
+            if (mapInstanceRef.current) {
+              const map = mapInstanceRef.current
+
+              // Get marker's current screen position
+              const markerLatLng = marker.getLatLng()
+              const markerPoint = map.latLngToContainerPoint(markerLatLng)
+
+              // Get the actual popup element and measure it
+              const popupElement = marker.getPopup()?.getElement()
+              if (!popupElement) return
+
+              // Get the popup's bounding rect to see where it actually is
+              const popupRect = popupElement.getBoundingClientRect()
+              const popupCurrentTop = popupRect.top
+
+              // Calculate where we want the popup top to be
+              const isMobile = window.innerWidth < 768
+              const filterButtonsBottom = isMobile ? 244 : 260
+              const padding = isMobile ? 20 : 24
+              const desiredPopupTop = filterButtonsBottom + padding // 264px mobile / 284px desktop
+
+              // Calculate how much we need to move the popup down (positive = down)
+              const popupShiftNeeded = desiredPopupTop - popupCurrentTop
+
+              // Since popup is anchored to marker, move marker down by the same amount
+              // In screen coordinates, moving down means increasing Y
+              const targetMarkerY = markerPoint.y + popupShiftNeeded
+
+              // Center horizontally
+              const mapCenterX = map.getSize().x / 2
+              const targetPoint = L.point(mapCenterX, targetMarkerY)
+
+              // Calculate how much to pan the map
+              const panOffset = markerPoint.subtract(targetPoint)
+              const distance = Math.sqrt(panOffset.x * panOffset.x + panOffset.y * panOffset.y)
+
+              // Only pan if adjustment is significant (prevents jitter)
+              if (distance > 30) {
+                const currentCenter = map.getSize().divideBy(2)
+                const newCenter = map.containerPointToLatLng(currentCenter.add(panOffset))
+
+                map.panTo(newCenter, {
+                  duration: 1.0,
+                  easeLinearity: 0.08,
+                })
+              }
+            }
           })
           .on('click', () => {
             // Haptic feedback when marker is clicked
             haptics.light()
+
+            // Activate map interactions when marker is clicked
+            setIsMapActive(true)
+            setShowHint(false)
           })
           .addTo(markersLayerRef.current)
 

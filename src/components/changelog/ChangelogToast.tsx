@@ -14,6 +14,8 @@ import { TOAST } from './constants'
 export function ChangelogToast({
   isVisible,
   newFeatureCount,
+  latestRelease,
+  newReleases,
   onDismiss,
   onNavigate,
 }: ChangelogToastProps) {
@@ -104,35 +106,60 @@ export function ChangelogToast({
             }}
           >
             {/* Content */}
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">🎵</span>
-                <span className="text-sm font-semibold text-white">
-                  {newFeatureCount} new feature{newFeatureCount !== 1 ? 's' : ''} added!
-                </span>
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex-1">
+                {newFeatureCount === 1 ? (
+                  // Single feature: Show title and description
+                  <>
+                    <div className="text-sm font-semibold text-white mb-1">
+                      {latestRelease.title}
+                    </div>
+                    <div className="text-xs text-slate-400 leading-relaxed">
+                      {latestRelease.description}
+                    </div>
+                  </>
+                ) : newFeatureCount <= 3 ? (
+                  // 2-3 features: Show titles as list
+                  <>
+                    <div className="text-sm font-semibold text-white mb-2">
+                      {newFeatureCount} new features
+                    </div>
+                    <div className="text-xs text-slate-300 space-y-1">
+                      {newReleases.slice(0, 3).map((release) => (
+                        <div key={release.version}>• {release.title}</div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  // 4+ features: Generic message
+                  <>
+                    <div className="text-sm font-semibold text-white mb-1">
+                      {newFeatureCount} new features added
+                    </div>
+                    <div className="text-xs text-slate-400">
+                      Multiple updates since your last visit
+                    </div>
+                  </>
+                )}
               </div>
               <button
                 onClick={(e) => {
                   e.stopPropagation() // Prevent toast click
                   onDismiss()
                 }}
-                className="text-slate-400 hover:text-white transition-colors text-xl leading-none -mt-1 min-w-[32px] min-h-[32px] flex items-center justify-center"
+                className="text-slate-400 hover:text-white transition-colors text-xl leading-none -mt-1 ml-3 min-w-[32px] min-h-[32px] flex items-center justify-center flex-shrink-0"
                 aria-label="Dismiss notification"
               >
                 ×
               </button>
             </div>
 
-            <p className="text-xs text-slate-400 mb-3">
-              Latest additions to the Morperhaus concert archives
-            </p>
-
             <button
               onClick={(e) => {
                 e.stopPropagation() // Prevent double navigation
                 handleNavigate()
               }}
-              className="w-full py-2 rounded-lg text-sm font-medium transition-colors min-h-[36px]"
+              className="w-full py-1.5 rounded-lg text-xs font-medium transition-colors"
               style={{
                 backgroundColor: TOAST.BUTTON_BG,
                 color: 'white',
