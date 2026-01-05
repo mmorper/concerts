@@ -90,12 +90,18 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
     )
 
     // Create size scale for dots (based on concert count)
-    // Mobile: larger base size (6-20px) for better visibility
+    // Mobile: adaptive sizing - tiny dots (2-4px) for 1-2 concerts, larger (8-20px) for 3+
     // Desktop: standard size (4-16px)
     const maxConcerts = Math.max(...concertsByYear.values())
-    const sizeScale = d3.scaleSqrt()
-      .domain([0, maxConcerts])
-      .range(isMobile ? [6, 20] : [4, 16])
+
+    // Mobile-only: Custom scale function for visual hierarchy
+    const sizeScale = isMobile
+      ? ((count: number) => {
+          if (count <= 2) return 3 // Tiny dots for sparse years
+          // Scale 3+ concerts from 8-20px
+          return 8 + Math.sqrt((count - 3) / (maxConcerts - 3)) * 12
+        })
+      : d3.scaleSqrt().domain([0, maxConcerts]).range([4, 16])
 
     // Minimum touch target size (44px / 2 = 22px radius)
     const minTouchRadius = 22
@@ -121,8 +127,12 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
       const x = xScale(year)
       const radius = sizeScale(count)
 
+      // Mobile-only: Skip touch interactions for tiny dots (1-2 concerts)
+      const isSignificant = !isMobile || count >= 3
+
       // Calculate touch target radius (minimum 44px diameter = 22px radius)
-      const touchRadius = Math.max(radius, minTouchRadius)
+      // Tiny dots on mobile: no touch target (visual only)
+      const touchRadius = isSignificant ? Math.max(radius, minTouchRadius) : radius
 
       // Draw outer glow ring (appears on hover)
       const glowRing = g.append('circle')
@@ -145,24 +155,27 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
         .attr('filter', 'blur(12px)')
         .style('pointer-events', 'none')
 
-      // Draw invisible larger touch target
+      // Draw invisible larger touch target (only for significant dots)
       const touchTarget = g.append('circle')
         .attr('cx', x)
         .attr('cy', innerHeight / 2)
         .attr('r', touchRadius)
         .attr('fill', 'transparent')
-        .attr('class', 'timeline-dot')
+        .attr('class', isSignificant ? 'timeline-dot' : 'timeline-dot-tiny')
         .attr('data-year', year)
-        .style('cursor', 'pointer')
-        .style('touch-action', 'none')
+        .attr('data-count', count)
+        .style('cursor', isSignificant ? 'pointer' : 'default')
+        .style('touch-action', isSignificant ? 'none' : 'auto')
+        .style('pointer-events', isSignificant ? 'auto' : 'none')
 
       // Draw visible dot (smaller, for aesthetics)
+      // Mobile: tiny dots are more subtle (lower opacity)
       const dot = g.append('circle')
         .attr('cx', x)
         .attr('cy', innerHeight / 2)
         .attr('r', radius)
         .attr('fill', '#6366f1')
-        .attr('opacity', 0.8)
+        .attr('opacity', isSignificant ? 0.8 : 0.5)
         .style('pointer-events', 'none') // Touch handled by touchTarget
 
       // Helper function to get concert info for a year
@@ -230,31 +243,33 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
       }
 
       // Store metadata on the touch target for touch event handling
-      touchTarget.datum({ year, count, x, getConcertInfo, animateDotEnter, animateDotLeave })
+      touchTarget.datum({ year, count, x, getConcertInfo, animateDotEnter, animateDotLeave, isSignificant })
 
-      // Add mouse interactions to touch target
-      touchTarget
-        .on('mouseenter', function() {
-          // Don't trigger mouse events during touch
-          if (isTouchingRef.current) return
+      // Add mouse interactions only to significant dots
+      if (isSignificant) {
+        touchTarget
+          .on('mouseenter', function() {
+            // Don't trigger mouse events during touch
+            if (isTouchingRef.current) return
 
-          const { mostFrequentArtist, venueName } = getConcertInfo()
-          const svgRect = timelineRef.current?.getBoundingClientRect()
-          if (svgRect) {
-            const screenX = svgRect.left + x + margin.left
-            const screenY = svgRect.top + innerHeight / 2 + margin.top
-            handleMouseEnter(mostFrequentArtist, year, count, venueName, { x: screenX, y: screenY })
-          }
+            const { mostFrequentArtist, venueName } = getConcertInfo()
+            const svgRect = timelineRef.current?.getBoundingClientRect()
+            if (svgRect) {
+              const screenX = svgRect.left + x + margin.left
+              const screenY = svgRect.top + innerHeight / 2 + margin.top
+              handleMouseEnter(mostFrequentArtist, year, count, venueName, { x: screenX, y: screenY })
+            }
 
-          animateDotEnter()
-        })
-        .on('mouseleave', function() {
-          // Don't trigger mouse events during touch
-          if (isTouchingRef.current) return
+            animateDotEnter()
+          })
+          .on('mouseleave', function() {
+            // Don't trigger mouse events during touch
+            if (isTouchingRef.current) return
 
-          handleMouseLeave()
-          animateDotLeave()
-        })
+            handleMouseLeave()
+            animateDotLeave()
+          })
+      }
     })
 
     // Draw decade markers
@@ -286,11 +301,12 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
         if (!touch) return
 
         const element = document.elementFromPoint(touch.clientX, touch.clientY)
-        if (element && (element.classList.contains('timeline-dot') || element.hasAttribute('data-year'))) {
+        // Only process significant dots (class 'timeline-dot', not 'timeline-dot-tiny')
+        if (element && element.classList.contains('timeline-dot')) {
           // Touching a timeline dot - prevent scrolling for this touch
           event.preventDefault()
 
-          // Trigger haptic feedback
+          // Trigger haptic feedback (only for significant dots)
           haptics.light()
 
           // Trigger initial touch feedback
@@ -324,8 +340,8 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
         // Find element under touch point first to decide about preventDefault
         const element = document.elementFromPoint(touch.clientX, touch.clientY)
 
-        // Only prevent default if we're over a timeline dot
-        if (element && (element.classList.contains('timeline-dot') || element.hasAttribute('data-year'))) {
+        // Only prevent default if we're over a significant timeline dot
+        if (element && element.classList.contains('timeline-dot')) {
           event.preventDefault()
         }
 
