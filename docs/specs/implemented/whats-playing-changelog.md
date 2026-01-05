@@ -353,8 +353,8 @@ https://concerts.morperhaus.org/?scene={scene_name}&{entity_type}={normalized_na
 | Entity Type | Scenes | Description | Example |
 | ----------- | ------ | ----------- | ------- |
 | `artist` | Scene 5 (Artists) | Auto-scrolls to artist and opens gatefold | `?scene=artists&artist=depeche-mode` |
-| `venue` | Scene 2 (Venues) | Auto-expands venue in force graph with spotlight | `?scene=venues&venue=930club` |
-| `venue` | Scene 3 (Geography) | Flies to venue on map and opens popup | `?scene=geography&venue=930club` |
+| `venue` | Scene 2 (Venues) | Auto-expands venue in force graph with spotlight | `?scene=venues&venue=9-30-club` |
+| `venue` | Scene 3 (Geography) | Flies to venue on map and opens popup | `?scene=geography&venue=9-30-club` |
 
 **Real Examples:**
 
@@ -364,10 +364,10 @@ https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode
 https://concerts.morperhaus.org/?scene=artists&artist=social-distortion
 
 # Venue in force-directed graph (Scene 2)
-https://concerts.morperhaus.org/?scene=venues&venue=930club
+https://concerts.morperhaus.org/?scene=venues&venue=9-30-club
 
 # Venue on map with popup (Scene 3)
-https://concerts.morperhaus.org/?scene=geography&venue=930club
+https://concerts.morperhaus.org/?scene=geography&venue=9-30-club
 https://concerts.morperhaus.org/?scene=geography&venue=hollywood-palladium
 ```
 
@@ -375,7 +375,7 @@ https://concerts.morperhaus.org/?scene=geography&venue=hollywood-palladium
 
 - Lowercase with hyphens
 - Strip non-alphanumeric characters except hyphens
-- Examples: `depeche-mode`, `930club`, `hollywood-palladium`
+- Examples: `depeche-mode`, `9-30-club`, `hollywood-palladium`
 
 **Implementation Details:**
 
