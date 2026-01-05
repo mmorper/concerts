@@ -5,13 +5,15 @@ _A visual love letter to four decades of live music._
 
 ## What is this?
 
-An interactive web app for exploring personal concert history. Five scenes—Timeline, Venues, Geography, Genres, Artists—each offering a different lens on 174+ shows spanning 1984 to today. Click through decades, trace connections between venues and artists, see where the music happened on a map. All enriched with artist photos, venue imagery, and setlist data.
+An interactive web app for exploring personal concert history. Five scenes—Timeline, Venues, Geography, Genres, Artists—each offering a different lens on 178 shows spanning 1984 to today. Click through decades, trace connections between venues and artists, see where the music happened on a map. All enriched with artist photos, venue imagery, and setlist data.
 
-**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 174 shows • 248 artists • 77 venues • 5+ decades
+**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 178 shows • 247 artists • 77 venues • 5+ decades
 
 ## What's new
 
-**v1.7.0 is live!** Find any artist instantly with the new search bar—just start typing and jump straight to their gatefold. Plus, artists now sort by times seen by default, so my most-frequented acts appear first.
+**v1.8.0 is live!** We've overhauled the documentation to make it easier than ever to fork this project and build your own concert archive. New example data templates, comprehensive format specifications, and a two-path getting started guide (Quick Start vs Your Own Data) mean you can go from clone to customized archive in minutes.
+
+**Artist search just got better** (v1.7.0) — Find any artist instantly with typeahead search. Just start typing and jump straight to their gatefold. Artists now sort by times seen by default, so your most-frequented acts appear first.
 
 See the full changelog at [/liner-notes](https://concerts.morperhaus.org/liner-notes)
 
