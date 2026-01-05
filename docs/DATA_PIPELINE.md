@@ -530,7 +530,7 @@ For legacy venues without Google Places data:
 3. **Save photos:**
    - Directory: `/public/images/venues/`
    - Naming: `{normalizedName}-{number}.jpg`
-   - Example: `irvinemeadows-1.jpg`
+   - Example: `irvine-meadows-1.jpg`
 
 4. **Re-run enrichment:**
    ```bash
