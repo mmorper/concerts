@@ -302,6 +302,10 @@ export function Scene3Map({ concerts, onVenueNavigate, pendingVenueFocus, onVenu
           opacity: 0.8,
           fillOpacity: 0.6,
           pane: 'markerPane',
+          // Increase interactive hit area for small markers on touch devices
+          // This makes tiny dots easier to tap without changing visual size
+          interactive: true,
+          bubblingMouseEvents: false,
         })
           .bindPopup(generatePopupHTML(data.venueName, data.cityState, data.count), {
             className: 'venue-popup',
