@@ -42,14 +42,7 @@ const isIOSSafari = (): boolean => {
   const iOS = /iPad|iPhone|iPod/.test(ua)
   const webkit = /WebKit/.test(ua)
   const notChrome = !/CriOS|Chrome/.test(ua)
-  const result = iOS && webkit && notChrome
-
-  // Debug logging (remove after testing)
-  if (result) {
-    console.log('[Haptics] iOS Safari detected, UA:', ua)
-  }
-
-  return result
+  return iOS && webkit && notChrome
 }
 
 /**
@@ -122,15 +115,10 @@ export const haptics = {
    * Use for: Most tap interactions, navigation dots, timeline dots, genre segments
    */
   light: (): void => {
-    console.log('[Haptics] light() called')
     if (isIOSSafari()) {
-      console.log('[Haptics] Triggering iOS haptic')
       triggerIOSHaptic('light')
     } else if (isVibrationSupported()) {
-      console.log('[Haptics] Using vibration API')
       navigator.vibrate(10)
-    } else {
-      console.log('[Haptics] No haptic support detected')
     }
   },
 
