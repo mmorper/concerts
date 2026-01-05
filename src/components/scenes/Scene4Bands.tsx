@@ -751,22 +751,25 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
   useEffect(() => {
     if (!pendingVenueFocus) return
 
-    // Check if this venue exists in our data
-    const venueExists = concerts.some(c => c.venue === pendingVenueFocus)
-    if (!venueExists) {
+    // Find venue by normalized name (URL parameter is normalized)
+    const matchingConcert = concerts.find(c => c.venueNormalized === pendingVenueFocus)
+    if (!matchingConcert) {
       console.warn(`Venue "${pendingVenueFocus}" not found in concerts data`)
       onVenueFocusComplete?.()
       return
     }
 
+    // Use the display name for internal state
+    const venueName = matchingConcert.venue
+
     // Expand and center the target venue
-    setExpandedVenues(new Set([pendingVenueFocus]))
-    setCenteredVenue(pendingVenueFocus)
+    setExpandedVenues(new Set([venueName]))
+    setCenteredVenue(venueName)
     setViewMode('all')
 
     // Set focus to the venue node to apply spotlight effect
     // The D3 render will automatically dim unrelated nodes via getTargetOpacity
-    const venueNodeId = `venue|${pendingVenueFocus}`
+    const venueNodeId = `venue|${venueName}`
     setFocusedNodeId(venueNodeId)
 
     // Just notify parent that navigation is complete (don't clear focus)
