@@ -57,7 +57,7 @@
       "date": "2026-01-03",
       "title": "Venue Cross-Navigation",
       "description": "Click any venue on the map to navigate directly to its details in the Venues scene",
-      "route": "/?scene=venues&venue=930club",
+      "route": "/?scene=venues&venue=9-30-club",
       "highlights": [
         "Clickable \"Explore Venue →\" buttons in map popups",
         "Smooth scroll with spotlight animation",
@@ -93,7 +93,7 @@
       "date": "2026-01-02",
       "title": "Venue Photos on Map",
       "description": "Click any venue marker to see photos, legacy badges, and concert stats",
-      "route": "/?scene=geography&venue=930club",
+      "route": "/?scene=geography&venue=9-30-club",
       "highlights": [
         "96% of venues have photos (73/76)",
         "Lazy-loaded with skeleton shimmer",
