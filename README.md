@@ -69,7 +69,7 @@ The result is an app that pulls concert data from a Google Sheet, enriches it wi
 
 **The stack:** Vite, React, TypeScript, and Tailwind CSS. D3.js handles the timeline and genre visualizations. Leaflet powers the map. Framer Motion makes everything feel good to scroll through.
 
-If you care about that sort of thing, the full technical breakdown is in [docs/STATUS.md](docs/STATUS.md).
+If you care about that sort of thing, see [docs/ROADMAP.md](docs/ROADMAP.md) for what's coming next and [docs/WORKFLOW.md](docs/WORKFLOW.md) for technical details.
 
 ## Running it yourself
 
