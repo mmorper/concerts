@@ -144,8 +144,10 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
         .attr('cy', innerHeight / 2)
         .attr('r', touchRadius)
         .attr('fill', 'transparent')
-        .attr('class', 'cursor-pointer')
+        .attr('class', 'timeline-dot')
+        .attr('data-year', year)
         .style('cursor', 'pointer')
+        .style('touch-action', 'none')
 
       // Draw visible dot (smaller, for aesthetics)
       const dot = g.append('circle')
@@ -273,27 +275,50 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
         if (!touch) return
 
         const element = document.elementFromPoint(touch.clientX, touch.clientY)
-        if (element && element.classList.contains('cursor-pointer')) {
+        if (element && (element.classList.contains('timeline-dot') || element.hasAttribute('data-year'))) {
           // Touching a timeline dot - prevent scrolling for this touch
           event.preventDefault()
+
+          // Trigger initial touch feedback
+          const d3Element = d3.select(element)
+          const data = d3Element.datum() as any
+          if (data?.animateDotEnter) {
+            data.animateDotEnter()
+            lastTouchTargetRef.current = element
+
+            // Show preview
+            if (data.getConcertInfo) {
+              const { mostFrequentArtist, venueName } = data.getConcertInfo()
+              handleMouseEnter(
+                mostFrequentArtist,
+                data.year,
+                data.count,
+                venueName,
+                { x: touch.clientX, y: touch.clientY },
+                true // isTouch = true for shorter delay
+              )
+            }
+          }
         }
       })
       .on('touchmove', function(event: TouchEvent) {
         if (!isTouchingRef.current) return
 
-        // Prevent page scrolling while sliding across timeline
-        event.preventDefault()
-
         const touch = event.touches[0]
         if (!touch) return
+
+        // Find element under touch point first to decide about preventDefault
+        const element = document.elementFromPoint(touch.clientX, touch.clientY)
+
+        // Only prevent default if we're over a timeline dot
+        if (element && (element.classList.contains('timeline-dot') || element.hasAttribute('data-year'))) {
+          event.preventDefault()
+        }
 
         // Throttle using requestAnimationFrame for smooth performance
         if (touchThrottleRef.current === null) {
           touchThrottleRef.current = requestAnimationFrame(() => {
             touchThrottleRef.current = null
-
-            // Find element under touch point
-            const element = document.elementFromPoint(touch.clientX, touch.clientY)
 
             // Check if we've moved to a different dot
             if (element && element !== lastTouchTargetRef.current) {
