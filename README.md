@@ -33,7 +33,7 @@ Five interactive scenes, each one a different lens on the same history:
 
 **[The Timeline](https://concerts.morperhaus.org/?scene=timeline)** — Every concert laid out chronologically. Scroll through four decades, see the density of shows ebb and flow. Hover over any year to preview artist imagery and concert counts with subtle parallax effects.
 
-**[The Venues](https://concerts.morperhaus.org/?scene=venues)** — A network graph connecting venues to the artists who played them. Turns out [we've been to Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows) a *lot*. Click any venue to see photos, stats, and concert history.
+**[The Venues](https://concerts.morperhaus.org/?scene=venues)** — A network graph connecting venues to the artists who played them. Turns out [we've been to Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvinemeadows) a *lot*. Click any venue to see photos, stats, and concert history.
 
 **[The Geography](https://concerts.morperhaus.org/?scene=geography)** — A map of everywhere we've seen live music. Filter by region, click a venue marker to see photos and details of where the shows happened. Legacy badges mark closed or demolished venues.
 
