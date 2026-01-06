@@ -1,28 +1,36 @@
 # Roadmap
 
-## Current State (v1.9.0)
+## Current State (v2.0.0)
 
 - **178 concerts** spanning 1984-2026
 - **104 headlining artists** with 247 total artists (including openers)
 - **77 unique venues** across 35 cities
 - **5 interactive scenes**: Timeline, Venues, Geography, Genres, Artists
-- **Latest improvements**: Standardized metadata normalization with hyphenated format
+- **Latest improvements**: Real-time tour dates with Ticketmaster API integration
+
+---
+
+## Recently Completed
+
+### ✅ Upcoming Tour Dates (v2.0.0)
+
+**Status**: Completed
+**Spec**: [upcoming-tour-dates.md](specs/implemented/upcoming-tour-dates.md)
+
+Real-time tour dates with direct ticket purchase links using Ticketmaster Discovery API.
+
+**Implemented Features**:
+
+- Fetch upcoming tour dates for artists via Ticketmaster API
+- "ON TOUR" badge in artist gatefold when dates available
+- Sliding tour dates panel matching setlist design
+- Direct ticket purchase links for each show
+- 24-hour client-side caching with smart fallbacks
+- Elegant empty state when no tours scheduled
 
 ---
 
 ## Short-Term Roadmap
-
-### Bandsintown Integration (Upcoming Tours)
-**Status**: Planned
-**Spec**: [upcoming-tour-dates.md](specs/future/upcoming-tour-dates.md)
-
-Display upcoming tour dates for artists in the collection using Bandsintown API integration.
-
-**Key Features**:
-- Fetch upcoming tour dates for tracked artists
-- Display tour information in artist gatefold liner notes
-- Filter by geographic region or date range
-- "Coming Soon" indicator for artists with upcoming shows
 
 ---
 

@@ -11,9 +11,9 @@ An interactive web app for exploring personal concert history. Five scenes—Tim
 
 ## What's new
 
-**v1.8.0 is live!** We've overhauled the documentation to make it easier than ever to fork this project and build your own concert archive. New example data templates, comprehensive format specifications, and a two-path getting started guide (Quick Start vs Your Own Data) mean you can go from clone to customized archive in minutes.
+**v2.0.0 is live!** 🎫 See when your favorite artists are touring—right from their gatefold. [Open Joe Jackson](https://concerts.morperhaus.org/?scene=artists&artist=joe-jackson) to see live tour dates fetched from Ticketmaster, complete with direct ticket purchase links. The "ON TOUR" badge appears instantly when artists have upcoming shows, with smart 24-hour caching to keep things snappy. This is the kind of feature that bridges past concerts with future ones—your archive becomes a discovery tool.
 
-**Artist search just got better** (v1.7.0) — Find any artist instantly with [typeahead search](https://concerts.morperhaus.org/?scene=artists). Just start typing and jump straight to their gatefold. Artists now sort by times seen by default, so your most-frequented acts appear first.
+**Documentation overhaul** (v1.8.0) — Fork-ready example templates, comprehensive format specs, and a two-path getting started guide make it dead simple to build your own concert archive.
 
 See the full changelog at [/liner-notes](https://concerts.morperhaus.org/liner-notes)
 
@@ -39,7 +39,7 @@ Five interactive scenes, each one a different lens on the same history:
 
 **[The Genres](https://concerts.morperhaus.org/?scene=genres)** — A sunburst chart breaking down our musical diet. Click into a genre to see every artist.
 
-**[The Artists](https://concerts.morperhaus.org/?scene=artists)** — Browse everyone we've seen, from headliners to openers. [Gatefold album art vibes](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) with artist photos, concert histories, and setlist integration.
+**[The Artists](https://concerts.morperhaus.org/?scene=artists)** — Browse everyone we've seen, from headliners to openers. [Gatefold album art vibes](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) with artist photos, concert histories, setlist integration, and live tour dates with ticket links.
 
 ## Where the data comes from
 
@@ -50,10 +50,11 @@ But raw data isn't enough. The app enriches everything at build time:
 - **Artist photos and metadata** from [TheAudioDB](https://www.theaudiodb.com/) and Last.fm
 - **Venue photos** from Google Places API (96% of venues have images)
 - **Geocoding** for every venue location via Google Maps API
-- **Setlists** from [setlist.fm](https://setlist.fm/) when available
+- **Setlists** from [setlist.fm](https://setlist.fm/) when available (client-side)
 - **Album art and tracks** from Spotify (for select artists)
+- **Upcoming tour dates** from [Ticketmaster Discovery API](https://developer.ticketmaster.com/) (client-side)
 
-All of this happens during the build process. The data pipeline fetches, validates, enriches, and generates static JSON files that get committed to the repo. Zero API calls at runtime. Zero monthly costs (beyond the domain).
+The build-time pipeline fetches, validates, enriches, and generates static JSON files. Runtime features like setlists and tour dates load client-side with smart caching. Zero backend servers. Zero monthly costs (beyond the domain).
 
 Want the technical details? See [docs/DATA_PIPELINE.md](docs/DATA_PIPELINE.md) for the complete data pipeline documentation, or [docs/WORKFLOW.md](docs/WORKFLOW.md) for how this whole thing gets built and maintained.
 

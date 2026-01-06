@@ -9,7 +9,7 @@ The data pipeline uses three Google Cloud services and two music metadata servic
 2. **Google Maps Geocoding API** - To get accurate venue coordinates for the map
 3. **Google Places API (New)** - To fetch venue photos and metadata (v1.3.2+)
 4. **setlist.fm API** - To fetch concert setlists for Artist Scene liner notes (v1.5.0+)
-5. **Bandsintown API** - To fetch upcoming tour dates for artists (v1.6.0+)
+5. **Ticketmaster Discovery API** - To fetch upcoming tour dates for artists (v2.0.0+)
 
 ## Google Sheets API Setup
 
@@ -483,109 +483,150 @@ SHEET_RANGE=Sheet1!A2:Z1000
 
 For implementation details and design specifications, see [docs/specs/future/setlist-liner-notes.md](specs/future/setlist-liner-notes.md).
 
-## Bandsintown API Setup (v1.6.0+)
+## Ticketmaster Discovery API Setup (v2.0.0+)
 
-The Bandsintown API is used to fetch upcoming tour dates for artists in the Artist Scene. This allows users to discover when their favorite artists are touring and get ticket links.
+The Ticketmaster Discovery API is used to fetch upcoming tour dates for artists in the Artist Scene. This allows users to discover when their favorite artists are touring and get direct ticket purchase links.
 
-### 1. No API Key Required!
+### 1. Create Ticketmaster Developer Account
 
-Unlike most APIs, Bandsintown doesn't require a traditional API key or registration. Instead, it uses a simple **app_id** parameter that's just an identifier for your application.
+1. Go to [Ticketmaster Developer Portal](https://developer.ticketmaster.com/)
+2. Click "Get Your API Key" or "Sign Up"
+3. Create a free account with your email
+4. Verify your email address
 
-**Benefits:**
-- ✅ No registration or approval process
-- ✅ No rate limits or billing
-- ✅ Free for all use cases
-- ✅ Works immediately
+### 2. Get API Key
+
+1. Log in to [Ticketmaster Developer Portal](https://developer.ticketmaster.com/)
+2. Go to "My Apps" or click "Get Your API Key"
+3. Click "Create New App"
+4. Fill out the form:
+   - **App Name:** "Morperhaus Concert Archives" (or your project name)
+   - **Description:** "Personal concert archive visualization project with upcoming tour dates feature"
+5. Submit and your API key will be generated immediately
+6. Copy the **Consumer Key** (this is your API key)
 
 ### 2. Configure Environment Variable
 
-Simply add an app identifier to your `.env` file:
+Add your API key to your `.env` file:
 
 ```bash
-# Bandsintown API (v1.6.0+)
-VITE_BANDSINTOWN_APP_ID=morperhaus_concert_archives
+# Ticketmaster Discovery API (v2.0.0+)
+VITE_TICKETMASTER_API_KEY=your_ticketmaster_api_key_here
 ```
 
-**App ID Guidelines:**
-- Use your project name, domain, or any unique identifier
-- No spaces (use underscores or hyphens)
-- Examples: `your_project_name`, `your-domain-com`, `concert-tracker`
-- This is just for tracking/analytics purposes on Bandsintown's side
+**Important Notes:**
+
+- The API key is prefixed with `VITE_` because it's used client-side (browser)
+- Ticketmaster API keys are designed for client-side use
+- The key is rate-limited per key (5,000 API calls/day, 5 requests/second)
+- Monitor your usage in the [Ticketmaster Developer Dashboard](https://developer-acct.ticketmaster.com/user/login)
 
 ### 3. Verify Setup
 
-Test the API with a simple request:
+Test your API key with a simple request:
 
 ```bash
-curl -X GET "https://rest.bandsintown.com/artists/Pearl%20Jam/events?app_id=morperhaus_concert_archives"
+curl -X GET "https://app.ticketmaster.com/discovery/v2/attractions.json?keyword=Pearl+Jam&apikey=your_api_key_here"
 ```
 
-You should receive a JSON array with upcoming tour dates. If you get an empty array `[]`, the artist either isn't touring or isn't in the Bandsintown database (which is normal).
+You should receive a JSON response with artist/attraction data. If you get a 401 error, your API key is invalid.
 
 ### 4. API Usage & Rate Limits
 
-**Rate Limits:**
-- No explicit rate limit documented
-- Fair use policy applies - be respectful
-- Recommended self-imposed limit: 5 requests/second max
-- The app implements 24-hour client-side caching to minimize requests
+**Rate Limits (Free Tier):**
+
+- 5,000 API calls per day
+- 5 requests per second
+- Automatically enforced by Ticketmaster
+- Exceeded limits return 429 "Too Many Requests" error
 
 **Expected Usage:**
+
 - Initial development/testing: ~50-100 requests
-- Typical user session: 2-4 tour date fetches
-- Daily usage (10 users): ~20-40 requests
-- Monthly usage: ~600-1,200 requests
+- Typical user session: 4-6 tour date fetches (2 API calls per artist: search + events)
+- Daily usage (10 users): ~40-60 requests
+- Monthly usage: ~1,200-1,800 requests
+- **Well within free tier limits**
 - **Cost: $0** (completely free)
 
+**Caching Strategy:**
+
+- 24-hour client-side caching to minimize API calls
+- Artist name normalization fallback (try exact match, then remove "The")
+- Empty results cached to prevent repeated failed lookups
+
 **Data Availability:**
-- Bandsintown has good coverage for active touring artists
-- Not all artists will be in the database (especially inactive/historical bands)
-- Empty results are normal and not an error condition
-- Best coverage for major and actively touring indie/alternative artists
 
-### 5. API Endpoint
+- Excellent coverage for actively touring artists
+- Comprehensive event data with ticket links
+- Not all artists will have upcoming events (normal condition)
+- Best coverage for major touring acts and large venues
 
-The tour dates feature uses the Artist Events endpoint:
+### 5. API Endpoints Used
+
+The tour dates feature uses two Discovery API endpoints:
+
+**1. Attractions Search (find artist ID):**
 
 ```
-https://rest.bandsintown.com/artists/{artist_name}/events?app_id={your_app_id}
+GET https://app.ticketmaster.com/discovery/v2/attractions.json?keyword={artist_name}&apikey={api_key}
 ```
 
-**Parameters:**
-- `artist_name` - Artist name (URL-encoded)
-- `app_id` - Your app identifier
+**2. Events Search (fetch tour dates):**
+
+```
+GET https://app.ticketmaster.com/discovery/v2/events.json?attractionId={attraction_id}&sort=date,asc&apikey={api_key}
+```
 
 **Response:**
-- JSON array of upcoming events (empty array if none)
-- Each event includes: date, venue, city, region, country, ticket URL
+
+- Sorted list of upcoming events (empty if none)
+- Each event includes: date/time, venue, city, state, country, ticket offers with URLs
+- Direct links to Ticketmaster ticket purchase pages
 
 ### 6. Development vs Production
 
 **Development:**
-- Use the same app_id for development and production
-- No domain restrictions or CORS issues
-- Test with known touring artists (e.g., Pearl Jam, The National)
+
+- Use the same API key for development and production
+- No domain restrictions or CORS configuration needed
+- Test with known touring artists (e.g., Pearl Jam, The National, Foo Fighters)
+- Monitor console for API errors and rate limit warnings
 
 **Production:**
-- Same app_id works in production
+
+- Same API key works in production
 - No additional configuration needed
-- Monitor console for API errors
+- Monitor usage in Ticketmaster Developer Dashboard
+- Set up error tracking to catch failed requests
 
 ### 7. Troubleshooting
 
-**Empty Array Response `[]`:**
+**"401 Unauthorized" Error:**
+
+- Verify your API key is correct in `.env`
+- Ensure you're using the Consumer Key (not Consumer Secret)
+- Check that your Ticketmaster developer account is active
+
+**Empty Results (no events):**
+
 - Normal - artist has no upcoming tour dates
-- Or artist not in Bandsintown database
-- Show "No upcoming shows" message to users
+- Or artist not found in Ticketmaster database
+- Show "No upcoming shows" message gracefully
+- Consider manual fallback for artist name variations
 
-**HTTP Error (500, 503):**
-- Bandsintown API temporarily unavailable
-- Implement retry logic or show error message
-- Usually resolves quickly
+**"429 Too Many Requests" Error:**
 
-**Invalid Artist Name:**
+- You've exceeded the rate limit (5 req/sec or 5,000/day)
+- Verify caching is working correctly
+- Check for infinite loops or redundant API calls
+- Wait and retry with exponential backoff
+
+**"Attraction not found" (search returns empty):**
+
 - Artist name too generic or misspelled
-- Try normalized version (remove "The", trim spaces)
+- Try normalized version (remove "The ", trim whitespace)
+- Some historical/inactive bands may not be in Ticketmaster's database
 - Show "No upcoming shows" gracefully
 
 ### Complete .env File
@@ -607,14 +648,14 @@ GOOGLE_PLACES_API_KEY=AIzaSyB...  # Places Photos (client-side, HTTP referrer re
 # setlist.fm API (v1.5.0+)
 VITE_SETLISTFM_API_KEY=your_setlistfm_api_key_here
 
-# Bandsintown API (v1.6.0+)
-VITE_BANDSINTOWN_APP_ID=morperhaus_concert_archives
+# Ticketmaster Discovery API (v2.0.0+)
+VITE_TICKETMASTER_API_KEY=your_ticketmaster_api_key_here
 
 # Sheet Configuration
 SHEET_RANGE=Sheet1!A2:Z1000
 ```
 
-For implementation details and design specifications, see [docs/specs/future/upcoming-tour-dates.md](specs/future/upcoming-tour-dates.md).
+For implementation details and design specifications, see [docs/specs/implemented/upcoming-tour-dates.md](specs/implemented/upcoming-tour-dates.md).
 
 ## Best Practices
 

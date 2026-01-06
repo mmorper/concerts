@@ -328,12 +328,49 @@ body {
 }
 
 /* ============================================
+   Tour Badge Styles (v1.6.0)
+   ============================================ */
+
+/* Pulsing dot animation for tour badge */
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* Tour dates panel scrollbar - dark theme */
+.tour-dates-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tour-dates-scrollbar::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.tour-dates-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(29, 185, 84, 0.3);
+  border-radius: 3px;
+}
+
+.tour-dates-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(29, 185, 84, 0.5);
+}
+
+/* ============================================
    Inline Setlist Link Styles (v1.5.0)
    ============================================ */
 
 /* Inline setlist link next to concert rows - always visible */
 .setlist-link {
-  color: rgba(255, 255, 255, 0.35); /* Muted gray - subtle but present */
+  color: #8b8b8b; /* Slate grey - matches Tickets link */
   background: none;
   border: none;
   border-radius: 4px;
@@ -359,8 +396,7 @@ body {
 }
 
 .setlist-link:hover {
-  color: rgba(255, 255, 255, 0.8); /* Brighten on hover */
-  background-color: rgba(255, 255, 255, 0.08);
+  color: #1DB954; /* Spotify green on hover - matches Tickets link */
   /* Force re-render of hover state */
   transform: translateZ(0);
 }
@@ -373,11 +409,10 @@ body {
 /* Active state - when liner notes are open for this concert */
 .setlist-link-active {
   color: #1DB954; /* Spotify green */
-  background-color: rgba(29, 185, 84, 0.08);
 }
 
 .setlist-link-active:hover {
-  background-color: rgba(29, 185, 84, 0.12);
+  color: #1DB954; /* Stay green on hover when active */
   /* Force re-render of hover state */
   transform: translateZ(0);
 }

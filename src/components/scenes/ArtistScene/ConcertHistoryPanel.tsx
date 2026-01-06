@@ -3,6 +3,7 @@ import { format } from 'date-fns'
 import { Link2 } from 'lucide-react'
 import { getGenreColor } from '../../../constants/colors'
 import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
+import { TourBadge } from './TourBadge'
 import type { ArtistCard, ArtistConcert } from './types'
 import { haptics } from '../../../utils/haptics'
 
@@ -10,6 +11,9 @@ interface ConcertHistoryPanelProps {
   artist: ArtistCard
   onSetlistClick?: (concert: ArtistConcert) => void
   openSetlistConcert?: ArtistConcert | null // Currently open setlist concert
+  tourCount?: number // v1.6.0 - Number of upcoming tour dates
+  isTourPanelActive?: boolean // v1.6.0 - Whether tour panel is currently open
+  onTourBadgeClick?: () => void // v1.6.0 - Handler for tour badge click
 }
 
 /**
@@ -36,7 +40,10 @@ function getArtistInitials(name: string): string {
 export function ConcertHistoryPanel({
   artist,
   onSetlistClick,
-  openSetlistConcert
+  openSetlistConcert,
+  tourCount = 0,
+  isTourPanelActive = false,
+  onTourBadgeClick
 }: ConcertHistoryPanelProps) {
   const { getArtistImage } = useArtistMetadata()
   const artistImage = getArtistImage(artist.name)
@@ -125,6 +132,18 @@ export function ConcertHistoryPanel({
           <p className="font-sans text-sm text-[#a3a3a3] mt-2">
             {artist.primaryGenre} · {artist.timesSeen} {artist.timesSeen === 1 ? 'show' : 'shows'}
           </p>
+
+          {/* Tour Badge (v1.6.0) - Only shows if artist has upcoming dates */}
+          {tourCount > 0 && onTourBadgeClick && (
+            <div className="mt-2">
+              <TourBadge
+                tourCount={tourCount}
+                isActive={isTourPanelActive}
+                onClick={onTourBadgeClick}
+                show={true}
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -143,14 +162,19 @@ export function ConcertHistoryPanel({
             return (
               <li
                 key={idx}
-                className="concert-row group flex items-center gap-4 text-[0.95rem] text-[#e5e5e5] py-1.5 border-b border-white/[0.04] last:border-b-0 hover:bg-white/[0.04] transition-colors duration-150 rounded px-2 -mx-2"
+                className="concert-row group flex items-start gap-4 text-xs text-[#e5e5e5] py-1.5 border-b border-white/[0.04] last:border-b-0 hover:bg-white/[0.04] transition-colors duration-150 rounded px-2 -mx-2"
               >
-                <span className="font-sans text-xs text-[#737373] font-medium min-w-[85px] flex-shrink-0 tabular-nums">
+                <span className="font-sans text-[#737373] font-medium min-w-[85px] flex-shrink-0 tabular-nums pt-0.5">
                   {format(new Date(concert.date), 'dd MMM yyyy')}
                 </span>
-                <span className="font-sans text-[#e5e5e5] flex-1">
-                  {concert.venue}
-                </span>
+                <div className="flex-1 flex flex-col gap-0.5">
+                  <span className="font-sans text-[#e5e5e5]">
+                    {concert.city}
+                  </span>
+                  <span className="font-sans text-[#737373]">
+                    {concert.venue}
+                  </span>
+                </div>
 
                 {/* Inline Setlist Link - always visible if callback provided */}
                 {onSetlistClick && (

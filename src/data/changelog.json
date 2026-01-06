@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "2.0.0",
+      "date": "2026-01-05",
+      "title": "Real-Time Tour Dates with Ticketmaster",
+      "description": "Discover when your favorite artists are touring and buy tickets instantly with live Ticketmaster integration",
+      "route": "/?scene=artists&artist=joe-jackson",
+      "highlights": [
+        "Live tour dates via Ticketmaster Discovery API (5,000 calls/day)",
+        "\"ON TOUR\" badge appears instantly when artist has upcoming shows",
+        "Direct ticket purchase links for every concert",
+        "24-hour smart caching with automatic artist name fallback"
+      ]
+    },
+    {
       "version": "1.8.0",
       "date": "2026-01-05",
       "title": "Developer Experience & Documentation Overhaul",

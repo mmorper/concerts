@@ -6,18 +6,137 @@
 **Estimated Complexity:** Medium
 **Dependencies:**
 - Artist Scene Gatefold (✅ Complete in v1.4.0)
-- Setlist Liner Notes (Planned v1.5.0) - Shares contextual menu pattern
+- Setlist Liner Notes (✅ Complete in v1.5.0) - Shares panel animation pattern
 **Mobile Note:** 📱 Requires mobile-specific bottom sheet layout (see [mobile-optimization.md](mobile-optimization.md))
+
+---
+
+## ⚠️ IMPLEMENTATION NOTE - DESIGN DECISIONS (2026-01-05)
+
+**CRITICAL: This spec was written before v1.5.0 implementation. The following design decisions supersede the original spec:**
+
+### ✅ Agreed Design Pattern (Badge Approach - NOT Contextual Menu)
+
+**What Changed:**
+
+- ❌ **NO contextual menu** with three-dot icon on each concert row
+- ❌ **NO menu** with "View Setlist" and "Upcoming Shows" options
+- ✅ **YES to Tour Badge** in Concert History header (below artist info)
+- ✅ **YES to Eager Loading** - Check API when gatefold opens (background)
+- ✅ **Keep existing setlist buttons** unchanged (inline musical note icon)
+
+**Badge Design:**
+
+```
+┌──────────────────────────────┐
+│  [Photo]  The National       │
+│           Indie Rock · 4     │
+│           ● ON TOUR · 12 dates │ ← Badge only appears if touring
+└──────────────────────────────┘
+```
+
+- **Label:** "ON TOUR · X dates" (dynamic count)
+- **No checkmark** when panel is open (keep label same)
+- **Pulsing green dot** animation (2s cycle, Spotify green)
+- **Only visible** when artist has upcoming dates (eager check succeeds)
+- **Clickable** - Opens tour dates panel (or closes if already open - toggle)
+
+### ✅ Animation Pattern (CRITICAL - Must Match Liner Notes EXACTLY)
+
+**Both panels (setlist liner notes AND tour dates) use IDENTICAL animations:**
+
+**Opening Animation:**
+
+```css
+/* Both panels positioned at: absolute top-0 right-0 */
+/* Start position: translateX(-400px) - Hidden inside left panel */
+/* End position: translateX(0) - Covering Spotify panel */
+/* Animation: slideInFromLeft 400ms cubic-bezier(0.4, 0, 0.2, 1) */
+```
+
+**Metaphor:** Pulling liner notes/tour poster OUT of vinyl sleeve (left → right slide)
+
+**Closing Animation:**
+
+```css
+/* Start position: translateX(0) - Visible at right panel */
+/* End position: translateX(-400px) - Back into left panel */
+/* Animation: slideOutToLeft 350ms cubic-bezier(0.4, 0, 0.2, 1) */
+```
+
+**Metaphor:** Sliding liner notes/tour poster BACK INTO vinyl sleeve (right → left slide)
+
+### ✅ Panel Switching (Crossfade with 100ms Overlap)
+
+**When user switches between setlist ↔ tour dates:**
+
+1. Current panel starts sliding left at t=0ms (slideOutToLeft, 350ms)
+2. New panel starts sliding right at t=100ms (slideInFromLeft, 400ms)
+3. **Total transition: 450ms** with smooth crossfade overlap
+4. **Only ONE panel visible** at any time (never coexist)
+
+### ✅ State Management (Single activePanel)
+
+```typescript
+type ActivePanel = 'none' | 'setlist' | 'tour-dates'
+const [activePanel, setActivePanel] = useState<ActivePanel>('none')
+```
+
+**Benefits:**
+
+- Prevents race conditions
+- Clear panel switching logic
+- Only one panel rendered at a time
+- ESC key closes active panel (priority: most recent)
+
+### ✅ Badge Behavior
+
+**Eager Loading Flow:**
+
+1. User opens gatefold (flying tile → book opens)
+2. **Background API check** starts (50ms after gatefold opens)
+3. Check cache first (24hr TTL) or fetch from Bandsintown
+4. **If dates found:** Badge fades in (200ms) with date count
+5. **If no dates:** Badge never appears (silent)
+6. **If error:** Badge never appears (fail silently, log to console)
+
+**Badge Interactions:**
+
+- **Click badge → Opens tour panel** (or closes if already open)
+- **Click setlist button while tour open → Crossfade to setlist**
+- **Click badge while setlist open → Crossfade to tour**
+- **ESC key → Closes active panel** (tour or setlist)
+
+### ✅ Files to Create (Updated)
+
+**Create:**
+
+- `src/components/scenes/ArtistScene/TourBadge.tsx` (~80 lines) - Badge component
+- `src/components/scenes/ArtistScene/TourDatesPanel.tsx` (~250 lines) - Panel component
+- `src/services/bandsintown.ts` (~150 lines) - API client with caching
+- `src/types/tourDates.ts` (~50 lines) - TypeScript interfaces
+- `src/hooks/useTourDates.ts` (~100 lines) - Eager loading hook
+
+**Modify:**
+
+- `src/components/scenes/ArtistScene/ArtistGatefold.tsx` - Add activePanel state
+- `src/components/scenes/ArtistScene/ConcertHistoryPanel.tsx` - Add tour badge to header
+- `src/index.css` - Add tour dates panel styles (reuse liner notes animations)
+- `.env` - Add VITE_BANDSINTOWN_APP_ID
+
+**DO NOT Create:**
+
+- ❌ ConcertContextMenu.tsx (not using contextual menu pattern)
 
 ---
 
 ## Executive Summary
 
-Enhance the Artist Scene gatefold by integrating Bandsintown API to display upcoming tour dates for artists. When users click the three-dot menu on any concert in the Concert History Panel, they can select "Upcoming Shows" to view a panel showing all future tour dates for that artist.
+Enhance the Artist Scene gatefold by integrating Bandsintown API to display upcoming tour dates for artists. When users click the **tour badge** in the Concert History Panel header, a tour dates panel slides out from the left (same animation as liner notes), covering the Spotify panel.
 
 This feature complements the Setlist Liner Notes feature (v1.5.0) by adding forward-looking discovery to the backward-looking history. Users can see not just what they've experienced, but what opportunities exist to see the artist again.
 
-**Key Innovation:** Both features share a unified contextual menu pattern where the three-dot icon reveals context-aware options: "View Setlist" (for past concerts) and "Upcoming Shows" (for all concerts, showing the artist's future tour dates).
+**Key Innovation:** Tour badge with eager loading automatically checks if artist is touring when gatefold opens. Badge appears with pulsing green dot and date count, inviting user to explore upcoming shows. Panel uses identical "pulling from sleeve" animation as liner notes, maintaining the vinyl metaphor.
 
 ---
 

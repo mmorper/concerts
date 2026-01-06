@@ -3,9 +3,14 @@ import { getGenreColor } from '../../../constants/colors'
 import { ConcertHistoryPanel } from './ConcertHistoryPanel'
 import { SpotifyPanel } from './SpotifyPanel'
 import { LinerNotesPanel } from './LinerNotesPanel'
+import { TourDatesPanel } from './TourDatesPanel'
 import { fetchSetlist } from '../../../services/setlistfm'
+import { useTourDates } from '../../../hooks/useTourDates'
 import type { ArtistCard, ArtistConcert } from './types'
 import type { Setlist } from '../../../types/setlist'
+
+// Active panel type - only one panel can be visible at a time
+type ActivePanel = 'none' | 'setlist' | 'tour-dates'
 
 interface ArtistGatefoldProps {
   artist: ArtistCard | null
@@ -38,11 +43,21 @@ export function ArtistGatefold({
   const [showGatefold, setShowGatefold] = useState(false)
   const [showCloseHint, setShowCloseHint] = useState(false)
 
+  // Active panel state (v1.6.0) - only one panel visible at a time
+  const [activePanel, setActivePanel] = useState<ActivePanel>('none')
+  const [isTransitioning, setIsTransitioning] = useState(false)
+
   // Liner notes state
   const [selectedConcert, setSelectedConcert] = useState<ArtistConcert | null>(null)
   const [setlistData, setSetlistData] = useState<Setlist | null>(null)
   const [isLoadingSetlist, setIsLoadingSetlist] = useState(false)
   const [setlistError, setSetlistError] = useState<string | null>(null)
+
+  // Tour dates eager loading (v1.6.0)
+  const { tourDates, tourCount, isLoading: isLoadingTourDates, error: tourDatesError } = useTourDates(
+    artist?.name || null,
+    { delay: 100, enabled: !!artist }
+  )
 
   const wrapperRef = useRef<HTMLDivElement>(null)
   const flyingTileRef = useRef<HTMLDivElement>(null)
@@ -169,33 +184,52 @@ export function ArtistGatefold({
     openGatefold()
   }, [artist, clickedTileRect, reducedMotion])
 
-  // Handle setlist click from concert row
+  // Handle setlist click from concert row (v1.6.0 - updated for activePanel)
   const handleSetlistClick = async (concert: ArtistConcert) => {
-    // If clicking the same concert, close liner notes
-    if (selectedConcert?.date === concert.date && selectedConcert?.venue === concert.venue) {
-      handleCloseLinerNotes()
+    // If clicking the same concert AND setlist is active, close it (toggle)
+    if (activePanel === 'setlist' &&
+        selectedConcert?.date === concert.date &&
+        selectedConcert?.venue === concert.venue) {
+      handleClosePanel()
       return
     }
 
-    // Set selected concert and start loading
+    // If tour panel is open, trigger crossfade transition
+    if (activePanel === 'tour-dates' && !isTransitioning) {
+      setIsTransitioning(true)
+      // Wait 100ms (crossfade overlap), then switch panels
+      setTimeout(() => {
+        setActivePanel('none')
+        setTimeout(() => {
+          openSetlistPanel(concert)
+          setIsTransitioning(false)
+        }, 100)
+      }, 100)
+      return
+    }
+
+    // Otherwise, open setlist panel normally
+    openSetlistPanel(concert)
+  }
+
+  // Open setlist panel helper
+  const openSetlistPanel = async (concert: ArtistConcert) => {
     setSelectedConcert(concert)
     setSetlistData(null)
     setIsLoadingSetlist(true)
     setSetlistError(null)
+    setActivePanel('setlist')
 
     try {
-      // Fetch setlist with static cache lookup by concert ID
       const setlist = await fetchSetlist({
-        concertId: concert.concertId, // Enable static cache lookup
+        concertId: concert.concertId,
         artistName: artist?.name || '',
         date: concert.date,
         venueName: concert.venue,
-        city: concert.city.split(',')[0].trim() // Extract city from "City, State"
+        city: concert.city.split(',')[0].trim()
       })
-
       setSetlistData(setlist)
     } catch (error) {
-      // Handle structured errors
       if (typeof error === 'object' && error !== null && 'type' in error) {
         const structuredError = error as any
         setSetlistError(structuredError.message)
@@ -207,9 +241,37 @@ export function ArtistGatefold({
     }
   }
 
-  // Close liner notes panel
-  const handleCloseLinerNotes = () => {
-    // Delay clearing state until after the slide-out animation completes (350ms)
+  // Handle tour badge click (v1.6.0)
+  const handleTourBadgeClick = () => {
+    // If tour panel already open, close it (toggle)
+    if (activePanel === 'tour-dates') {
+      handleClosePanel()
+      return
+    }
+
+    // If setlist panel is open, trigger crossfade transition
+    if (activePanel === 'setlist' && !isTransitioning) {
+      setIsTransitioning(true)
+      // Wait 100ms (crossfade overlap), then switch panels
+      setTimeout(() => {
+        setActivePanel('none')
+        setTimeout(() => {
+          setActivePanel('tour-dates')
+          setIsTransitioning(false)
+        }, 100)
+      }, 100)
+      return
+    }
+
+    // Otherwise, open tour panel normally
+    setActivePanel('tour-dates')
+  }
+
+  // Close active panel (unified handler for v1.6.0)
+  const handleClosePanel = () => {
+    setActivePanel('none')
+
+    // Delay clearing state until after animation completes (350ms)
     setTimeout(() => {
       setSelectedConcert(null)
       setSetlistData(null)
@@ -217,6 +279,9 @@ export function ArtistGatefold({
       setIsLoadingSetlist(false)
     }, 350)
   }
+
+  // Legacy handler (keep for backward compatibility)
+  const handleCloseLinerNotes = handleClosePanel
 
   // Close animation
   const handleClose = async () => {
@@ -280,13 +345,13 @@ export function ArtistGatefold({
     onClose()
   }
 
-  // Handle ESC key
+  // Handle ESC key (v1.6.0 - updated for activePanel)
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && artist) {
-        // If liner notes are open, close them first
-        if (selectedConcert) {
-          handleCloseLinerNotes()
+        // If any panel is open, close it first
+        if (activePanel !== 'none') {
+          handleClosePanel()
         } else {
           // Otherwise close the entire gatefold
           handleClose()
@@ -296,7 +361,7 @@ export function ArtistGatefold({
 
     window.addEventListener('keydown', handleEscape)
     return () => window.removeEventListener('keydown', handleEscape)
-  }, [artist, isAnimating, selectedConcert])
+  }, [artist, isAnimating, activePanel])
 
   // Handle window resize
   useEffect(() => {
@@ -423,15 +488,26 @@ export function ArtistGatefold({
 
                 <SpotifyPanel artist={artist} />
 
-                {/* Liner Notes Panel - slides over Spotify panel */}
-                {selectedConcert && (
+                {/* Liner Notes Panel - slides over Spotify panel (v1.5.0) */}
+                {activePanel === 'setlist' && selectedConcert && (
                   <LinerNotesPanel
                     concert={selectedConcert}
                     artistName={artist.name}
                     setlist={setlistData}
                     isLoading={isLoadingSetlist}
                     error={setlistError}
-                    onClose={handleCloseLinerNotes}
+                    onClose={handleClosePanel}
+                  />
+                )}
+
+                {/* Tour Dates Panel - slides over Spotify panel (v1.6.0) */}
+                {activePanel === 'tour-dates' && (
+                  <TourDatesPanel
+                    artistName={artist.name}
+                    tourDates={tourDates}
+                    isLoading={isLoadingTourDates}
+                    error={tourDatesError}
+                    onClose={handleClosePanel}
                   />
                 )}
               </div>
@@ -499,6 +575,9 @@ export function ArtistGatefold({
                     artist={artist}
                     onSetlistClick={handleSetlistClick}
                     openSetlistConcert={selectedConcert}
+                    tourCount={tourCount}
+                    isTourPanelActive={activePanel === 'tour-dates'}
+                    onTourBadgeClick={handleTourBadgeClick}
                   />
                 </div>
               </div>
