@@ -24,7 +24,7 @@ export interface TourBadgeProps {
  * Tour Badge Component
  * Shows pulsing "ON TOUR · X dates" badge
  */
-export function TourBadge({ tourCount, isActive = false, onClick, show = true }: TourBadgeProps) {
+export function TourBadge({ tourCount, onClick, show = true }: TourBadgeProps) {
   const [isVisible, setIsVisible] = useState(false)
 
   // Fade in animation when show prop changes

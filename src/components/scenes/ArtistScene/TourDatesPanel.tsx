@@ -46,8 +46,6 @@ export function TourDatesPanel({
     }, 350) // Match slideOutToLeft animation duration
   }
 
-  const dateCount = tourDates?.length || 0
-
   return (
     <div
       className={`absolute top-0 right-0 w-[400px] h-[400px] ${
