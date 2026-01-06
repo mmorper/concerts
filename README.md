@@ -136,7 +136,6 @@ A few things I'm thinking about (whenever I get around to them):
 
 **Spotify integration** — Album covers on artist cards, 30-second preview players in the gatefold, "Open in Spotify" links. The vinyl metaphor taken to its logical conclusion.
 
-**Upcoming tour dates** — See where artists are playing next, get tickets. Same menu where you browse past shows.
 
 And always: more shows to add to the list.
 
