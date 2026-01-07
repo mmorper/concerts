@@ -1,6 +1,14 @@
 {
   "releases": [
     {
+      "version": "3.0.1",
+      "date": "2026-01-06",
+      "title": "Genre Enrichment & Artist Metadata",
+      "description": "Your genre treemap now includes six more musical styles—from Neo Mellow's chill vibes to Political Hip Hop's conscious messages—giving you a more complete picture of your concert history's sonic diversity.",
+      "route": "/?scene=genres",
+      "highlights": []
+    },
+    {
       "version": "3.0.0",
       "date": "2026-01-06",
       "title": "Interactive Timeline Exploration & Genre Journey",
