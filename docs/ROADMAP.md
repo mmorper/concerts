@@ -1,16 +1,33 @@
 # Roadmap
 
-## Current State (v3.0.0)
+## Current State (v3.1.0)
 
 - **178 concerts** spanning 1984-2026
 - **104 headlining artists** with 247 total artists (including openers)
 - **77 unique venues** across 35 cities
 - **5 interactive scenes**: Timeline, Venues, Geography, Genres, Artists
-- **Latest improvements**: Interactive timeline exploration with year cards and animated genre journey
+- **Latest improvements**: iPad touch support for timeline exploration with drag-to-focus interactions
 
 ---
 
 ## Recently Completed
+
+### ✅ iPad Touch Support for Timeline (v3.1.0)
+
+**Status**: Completed
+**Spec**: [timeline-ipad-touch-support.md](specs/implemented/timeline-ipad-touch-support.md)
+
+Touch-optimized interactions for exploring timeline year cards on iPad and tablets.
+
+**Implemented Features**:
+
+- Drag finger across timeline cards to preview concerts
+- Tap-to-navigate pattern with haptic feedback
+- Smart tap vs. drag detection (10px movement threshold)
+- Proper touch event handling without bubbling conflicts
+- Focus state persistence across interactions
+
+---
 
 ### ✅ Interactive Timeline Exploration & Genre Journey (v3.0.0)
 

@@ -1,6 +1,18 @@
 {
   "releases": [
     {
+      "version": "3.1.0",
+      "date": "2026-01-07",
+      "title": "iPad Touch Support",
+      "description": "Explore your concert timeline naturally on iPad with touch-optimized interactions. Drag your finger across concert cards to preview them one by one, then tap to dive into any artist's full history—bringing the same fluid desktop experience to your tablet.",
+      "route": "/?scene=timeline",
+      "highlights": [
+        "Drag across timeline cards to preview concerts with haptic feedback",
+        "Tap any focused card to jump straight to the artist's gatefold",
+        "Smooth touch detection distinguishes taps from swipes automatically"
+      ]
+    },
+    {
       "version": "3.0.1",
       "date": "2026-01-06",
       "title": "Genre Enrichment & Artist Metadata",

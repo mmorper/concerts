@@ -11,9 +11,9 @@ An interactive web app for exploring personal concert history. Five scenes—Tim
 
 ## What's new
 
-**v3.0.0 is here!** 🎉 The timeline is now fully interactive. [Click any year dot](https://concerts.morperhaus.org/?scene=timeline) to see every concert from that moment in time—artist photos fan out in a card stack, and one tap takes you straight to their full story. Meanwhile, the [Genres scene](https://concerts.morperhaus.org/?scene=genres) got a complete overhaul with an animated treemap that shows how your musical taste evolved decade by decade. Watch genres grow and shrink over time, then drill into any style to explore the artists within.
+**v3.1.0** 🖐️ The timeline now works beautifully on iPad! [Tap any year](https://concerts.morperhaus.org/?scene=timeline) and drag your finger across the concert cards to preview them one by one—each card comes to life with haptic feedback. Tap a focused card to jump straight into that artist's full story. Touch interactions feel as natural as flipping through vinyl.
 
-**v2.0.0** 🎫 See when your favorite artists are touring—right from their gatefold. [Open Joe Jackson](https://concerts.morperhaus.org/?scene=artists&artist=joe-jackson) to see live tour dates fetched from Ticketmaster, complete with direct ticket purchase links.
+**v3.0.0** 🎉 The timeline became fully interactive. Click any year dot to see every concert from that moment in time—artist photos fan out in a card stack, and one tap takes you straight to their full story. Plus, the [Genres scene](https://concerts.morperhaus.org/?scene=genres) got an animated treemap that shows how your musical taste evolved decade by decade.
 
 See the full changelog at [/liner-notes](https://concerts.morperhaus.org/liner-notes)
 
