@@ -1,0 +1,1563 @@
+{
+  "genres": [
+    {
+      "name": "New Wave",
+      "normalizedName": "new-wave",
+      "color": "#1e40af",
+      "showsByYear": {
+        "1984": 3,
+        "1985": 5,
+        "1986": 2,
+        "1987": 2,
+        "1988": 2,
+        "1989": 1,
+        "1990": 1,
+        "1993": 2,
+        "1995": 1,
+        "2003": 2,
+        "2005": 2,
+        "2006": 2,
+        "2007": 1,
+        "2008": 2,
+        "2010": 1,
+        "2011": 1,
+        "2012": 2,
+        "2014": 1,
+        "2016": 1,
+        "2017": 3,
+        "2018": 1,
+        "2022": 4,
+        "2023": 3,
+        "2024": 1
+      },
+      "totalShows": 46,
+      "firstYear": 1984,
+      "lastYear": 2024,
+      "artists": [
+        {
+          "name": "Howard Jones",
+          "normalizedName": "howard-jones",
+          "showCount": 6,
+          "years": [
+            1985,
+            1989,
+            2006,
+            2012,
+            2016,
+            2024
+          ],
+          "firstYear": 1985,
+          "lastYear": 2024
+        },
+        {
+          "name": "Depeche Mode",
+          "normalizedName": "depeche-mode",
+          "showCount": 5,
+          "years": [
+            1985,
+            1988,
+            1990,
+            2005,
+            2023
+          ],
+          "firstYear": 1985,
+          "lastYear": 2023
+        },
+        {
+          "name": "Tears For Fears",
+          "normalizedName": "tears-for-fears",
+          "showCount": 4,
+          "years": [
+            1985,
+            1993,
+            2005,
+            2022
+          ],
+          "firstYear": 1985,
+          "lastYear": 2022
+        },
+        {
+          "name": "Berlin",
+          "normalizedName": "berlin",
+          "showCount": 3,
+          "years": [
+            2007,
+            2008,
+            2014
+          ],
+          "firstYear": 2007,
+          "lastYear": 2014
+        },
+        {
+          "name": "Adam Ant",
+          "normalizedName": "adam-ant",
+          "showCount": 2,
+          "years": [
+            1984,
+            1993
+          ],
+          "firstYear": 1984,
+          "lastYear": 1993
+        },
+        {
+          "name": "Thompson Twins",
+          "normalizedName": "thompson-twins",
+          "showCount": 2,
+          "years": [
+            1984,
+            1985
+          ],
+          "firstYear": 1984,
+          "lastYear": 1985
+        },
+        {
+          "name": "Echo and the Bunnymen",
+          "normalizedName": "echo-and-the-bunnymen",
+          "showCount": 2,
+          "years": [
+            1984,
+            2010
+          ],
+          "firstYear": 1984,
+          "lastYear": 2010
+        },
+        {
+          "name": "New Order",
+          "normalizedName": "new-order",
+          "showCount": 2,
+          "years": [
+            1985,
+            2022
+          ],
+          "firstYear": 1985,
+          "lastYear": 2022
+        },
+        {
+          "name": "Oingo Boingo",
+          "normalizedName": "oingo-boingo",
+          "showCount": 2,
+          "years": [
+            1987,
+            1988
+          ],
+          "firstYear": 1987,
+          "lastYear": 1988
+        },
+        {
+          "name": "Duran Duran",
+          "normalizedName": "duran-duran",
+          "showCount": 2,
+          "years": [
+            1987,
+            2017
+          ],
+          "firstYear": 1987,
+          "lastYear": 2017
+        },
+        {
+          "name": "The Human League",
+          "normalizedName": "the-human-league",
+          "showCount": 2,
+          "years": [
+            2003,
+            2018
+          ],
+          "firstYear": 2003,
+          "lastYear": 2018
+        },
+        {
+          "name": "The Cure",
+          "normalizedName": "the-cure",
+          "showCount": 2,
+          "years": [
+            2003,
+            2023
+          ],
+          "firstYear": 2003,
+          "lastYear": 2023
+        },
+        {
+          "name": "Devo",
+          "normalizedName": "devo",
+          "showCount": 2,
+          "years": [
+            2006,
+            2023
+          ],
+          "firstYear": 2006,
+          "lastYear": 2023
+        },
+        {
+          "name": "The Alarm",
+          "normalizedName": "the-alarm",
+          "showCount": 1,
+          "years": [
+            1986
+          ],
+          "firstYear": 1986,
+          "lastYear": 1986
+        },
+        {
+          "name": "Blancmange",
+          "normalizedName": "blancmange",
+          "showCount": 1,
+          "years": [
+            1986
+          ],
+          "firstYear": 1986,
+          "lastYear": 1986
+        },
+        {
+          "name": "Big Audio Dynamite",
+          "normalizedName": "big-audio-dynamite",
+          "showCount": 1,
+          "years": [
+            1995
+          ],
+          "firstYear": 1995,
+          "lastYear": 1995
+        },
+        {
+          "name": "Yaz",
+          "normalizedName": "yaz",
+          "showCount": 1,
+          "years": [
+            2008
+          ],
+          "firstYear": 2008,
+          "lastYear": 2008
+        },
+        {
+          "name": "The Go-Go's",
+          "normalizedName": "the-go-go-s",
+          "showCount": 1,
+          "years": [
+            2011
+          ],
+          "firstYear": 2011,
+          "lastYear": 2011
+        },
+        {
+          "name": "The Cult",
+          "normalizedName": "the-cult",
+          "showCount": 1,
+          "years": [
+            2012
+          ],
+          "firstYear": 2012,
+          "lastYear": 2012
+        },
+        {
+          "name": "Midnight Oil",
+          "normalizedName": "midnight-oil",
+          "showCount": 1,
+          "years": [
+            2017
+          ],
+          "firstYear": 2017,
+          "lastYear": 2017
+        },
+        {
+          "name": "Alison Moyet",
+          "normalizedName": "alison-moyet",
+          "showCount": 1,
+          "years": [
+            2017
+          ],
+          "firstYear": 2017,
+          "lastYear": 2017
+        },
+        {
+          "name": "Culture Club",
+          "normalizedName": "culture-club",
+          "showCount": 1,
+          "years": [
+            2022
+          ],
+          "firstYear": 2022,
+          "lastYear": 2022
+        },
+        {
+          "name": "Heaven 17",
+          "normalizedName": "heaven-17",
+          "showCount": 1,
+          "years": [
+            2022
+          ],
+          "firstYear": 2022,
+          "lastYear": 2022
+        }
+      ]
+    },
+    {
+      "name": "Other",
+      "normalizedName": "other",
+      "color": "#64748b",
+      "showsByYear": {
+        "1985": 2,
+        "1987": 1,
+        "1988": 1,
+        "1990": 2,
+        "1991": 2,
+        "1993": 1,
+        "1999": 1,
+        "2001": 1,
+        "2003": 1,
+        "2008": 1,
+        "2011": 1,
+        "2012": 1,
+        "2014": 3,
+        "2016": 3,
+        "2017": 3,
+        "2019": 1,
+        "2022": 2,
+        "2024": 1,
+        "2025": 1
+      },
+      "totalShows": 29,
+      "firstYear": 1985,
+      "lastYear": 2025,
+      "artists": [
+        {
+          "name": "Peter Gabriel",
+          "normalizedName": "peter-gabriel",
+          "showCount": 2,
+          "years": [
+            1993,
+            2003
+          ],
+          "firstYear": 1993,
+          "lastYear": 2003
+        },
+        {
+          "name": "The Skints",
+          "normalizedName": "the-skints",
+          "showCount": 2,
+          "years": [
+            2017,
+            2019
+          ],
+          "firstYear": 2017,
+          "lastYear": 2019
+        },
+        {
+          "name": "Stryper",
+          "normalizedName": "stryper",
+          "showCount": 1,
+          "years": [
+            1985
+          ],
+          "firstYear": 1985,
+          "lastYear": 1985
+        },
+        {
+          "name": "Wham!",
+          "normalizedName": "wham",
+          "showCount": 1,
+          "years": [
+            1985
+          ],
+          "firstYear": 1985,
+          "lastYear": 1985
+        },
+        {
+          "name": "George Michael",
+          "normalizedName": "george-michael",
+          "showCount": 1,
+          "years": [
+            1988
+          ],
+          "firstYear": 1988,
+          "lastYear": 1988
+        },
+        {
+          "name": "Run DMC",
+          "normalizedName": "run-dmc",
+          "showCount": 1,
+          "years": [
+            1987
+          ],
+          "firstYear": 1987,
+          "lastYear": 1987
+        },
+        {
+          "name": "Tone Loc",
+          "normalizedName": "tone-loc",
+          "showCount": 1,
+          "years": [
+            1990
+          ],
+          "firstYear": 1990,
+          "lastYear": 1990
+        },
+        {
+          "name": "Jesus Jones",
+          "normalizedName": "jesus-jones",
+          "showCount": 1,
+          "years": [
+            1990
+          ],
+          "firstYear": 1990,
+          "lastYear": 1990
+        },
+        {
+          "name": "Bell Biv DeVoe",
+          "normalizedName": "bell-biv-devoe",
+          "showCount": 1,
+          "years": [
+            1991
+          ],
+          "firstYear": 1991,
+          "lastYear": 1991
+        },
+        {
+          "name": "Sting",
+          "normalizedName": "sting",
+          "showCount": 1,
+          "years": [
+            1991
+          ],
+          "firstYear": 1991,
+          "lastYear": 1991
+        },
+        {
+          "name": "Elton John",
+          "normalizedName": "elton-john",
+          "showCount": 1,
+          "years": [
+            2001
+          ],
+          "firstYear": 2001,
+          "lastYear": 2001
+        },
+        {
+          "name": "The Art of Noise",
+          "normalizedName": "the-art-of-noise",
+          "showCount": 1,
+          "years": [
+            1999
+          ],
+          "firstYear": 1999,
+          "lastYear": 1999
+        },
+        {
+          "name": "Duran Duran",
+          "normalizedName": "duran-duran",
+          "showCount": 1,
+          "years": [
+            2008
+          ],
+          "firstYear": 2008,
+          "lastYear": 2008
+        },
+        {
+          "name": "The Dollyrots",
+          "normalizedName": "the-dollyrots",
+          "showCount": 1,
+          "years": [
+            2011
+          ],
+          "firstYear": 2011,
+          "lastYear": 2011
+        },
+        {
+          "name": "The Offspring",
+          "normalizedName": "the-offspring",
+          "showCount": 1,
+          "years": [
+            2014
+          ],
+          "firstYear": 2014,
+          "lastYear": 2014
+        },
+        {
+          "name": "Red Hot Chili Peppers",
+          "normalizedName": "red-hot-chili-peppers",
+          "showCount": 1,
+          "years": [
+            2012
+          ],
+          "firstYear": 2012,
+          "lastYear": 2012
+        },
+        {
+          "name": "Kraftwerk",
+          "normalizedName": "kraftwerk",
+          "showCount": 1,
+          "years": [
+            2014
+          ],
+          "firstYear": 2014,
+          "lastYear": 2014
+        },
+        {
+          "name": "The Head and the Heart",
+          "normalizedName": "the-head-and-the-heart",
+          "showCount": 1,
+          "years": [
+            2014
+          ],
+          "firstYear": 2014,
+          "lastYear": 2014
+        },
+        {
+          "name": "Dirty Heads",
+          "normalizedName": "dirty-heads",
+          "showCount": 1,
+          "years": [
+            2016
+          ],
+          "firstYear": 2016,
+          "lastYear": 2016
+        },
+        {
+          "name": "Prophets of Rage",
+          "normalizedName": "prophets-of-rage",
+          "showCount": 1,
+          "years": [
+            2016
+          ],
+          "firstYear": 2016,
+          "lastYear": 2016
+        },
+        {
+          "name": "The Roots",
+          "normalizedName": "the-roots",
+          "showCount": 1,
+          "years": [
+            2016
+          ],
+          "firstYear": 2016,
+          "lastYear": 2016
+        },
+        {
+          "name": "Gorillaz",
+          "normalizedName": "gorillaz",
+          "showCount": 1,
+          "years": [
+            2022
+          ],
+          "firstYear": 2022,
+          "lastYear": 2022
+        },
+        {
+          "name": "Bat Fangs",
+          "normalizedName": "bat-fangs",
+          "showCount": 1,
+          "years": [
+            2017
+          ],
+          "firstYear": 2017,
+          "lastYear": 2017
+        },
+        {
+          "name": "Colin Hay",
+          "normalizedName": "colin-hay",
+          "showCount": 1,
+          "years": [
+            2017
+          ],
+          "firstYear": 2017,
+          "lastYear": 2017
+        },
+        {
+          "name": "Danny Elfman",
+          "normalizedName": "danny-elfman",
+          "showCount": 1,
+          "years": [
+            2022
+          ],
+          "firstYear": 2022,
+          "lastYear": 2022
+        },
+        {
+          "name": "Umphrey's McGee",
+          "normalizedName": "umphrey-s-mcgee",
+          "showCount": 1,
+          "years": [
+            2024
+          ],
+          "firstYear": 2024,
+          "lastYear": 2024
+        },
+        {
+          "name": "Klangphonics",
+          "normalizedName": "klangphonics",
+          "showCount": 1,
+          "years": [
+            2025
+          ],
+          "firstYear": 2025,
+          "lastYear": 2025
+        }
+      ]
+    },
+    {
+      "name": "Punk",
+      "normalizedName": "punk",
+      "color": "#991b1b",
+      "showsByYear": {
+        "1990": 1,
+        "2005": 1,
+        "2010": 1,
+        "2011": 1,
+        "2012": 1,
+        "2013": 3,
+        "2015": 2,
+        "2018": 1,
+        "2022": 2,
+        "2023": 1,
+        "2024": 1
+      },
+      "totalShows": 15,
+      "firstYear": 1990,
+      "lastYear": 2024,
+      "artists": [
+        {
+          "name": "Social Distortion",
+          "normalizedName": "social-distortion",
+          "showCount": 8,
+          "years": [
+            1990,
+            2005,
+            2010,
+            2012,
+            2015,
+            2018,
+            2022,
+            2024
+          ],
+          "firstYear": 1990,
+          "lastYear": 2024
+        },
+        {
+          "name": "Bad Religion",
+          "normalizedName": "bad-religion",
+          "showCount": 2,
+          "years": [
+            2011,
+            2013
+          ],
+          "firstYear": 2011,
+          "lastYear": 2013
+        },
+        {
+          "name": "Dropkick Murphys",
+          "normalizedName": "dropkick-murphys",
+          "showCount": 2,
+          "years": [
+            2013,
+            2015
+          ],
+          "firstYear": 2013,
+          "lastYear": 2015
+        },
+        {
+          "name": "X",
+          "normalizedName": "x",
+          "showCount": 2,
+          "years": [
+            2022,
+            2023
+          ],
+          "firstYear": 2022,
+          "lastYear": 2023
+        },
+        {
+          "name": "Rancid",
+          "normalizedName": "rancid",
+          "showCount": 1,
+          "years": [
+            2013
+          ],
+          "firstYear": 2013,
+          "lastYear": 2013
+        }
+      ]
+    },
+    {
+      "name": "Alternative",
+      "normalizedName": "alternative",
+      "color": "#5b21b6",
+      "showsByYear": {
+        "1988": 1,
+        "1995": 1,
+        "2005": 1,
+        "2013": 1,
+        "2015": 2,
+        "2017": 1,
+        "2019": 1,
+        "2021": 1,
+        "2022": 1,
+        "2023": 1,
+        "2024": 1,
+        "2025": 1,
+        "2026": 1
+      },
+      "totalShows": 14,
+      "firstYear": 1988,
+      "lastYear": 2026,
+      "artists": [
+        {
+          "name": "Garbage",
+          "normalizedName": "garbage",
+          "showCount": 4,
+          "years": [
+            2005,
+            2013,
+            2015,
+            2019
+          ],
+          "firstYear": 2005,
+          "lastYear": 2019
+        },
+        {
+          "name": "Royal Blood",
+          "normalizedName": "royal-blood",
+          "showCount": 3,
+          "years": [
+            2015,
+            2017,
+            2022
+          ],
+          "firstYear": 2015,
+          "lastYear": 2022
+        },
+        {
+          "name": "No Doubt",
+          "normalizedName": "no-doubt",
+          "showCount": 1,
+          "years": [
+            1988
+          ],
+          "firstYear": 1988,
+          "lastYear": 1988
+        },
+        {
+          "name": "Violent Femmes",
+          "normalizedName": "violent-femmes",
+          "showCount": 1,
+          "years": [
+            1995
+          ],
+          "firstYear": 1995,
+          "lastYear": 1995
+        },
+        {
+          "name": "Future Islands",
+          "normalizedName": "future-islands",
+          "showCount": 1,
+          "years": [
+            2021
+          ],
+          "firstYear": 2021,
+          "lastYear": 2021
+        },
+        {
+          "name": "Kasabian",
+          "normalizedName": "kasabian",
+          "showCount": 1,
+          "years": [
+            2023
+          ],
+          "firstYear": 2023,
+          "lastYear": 2023
+        },
+        {
+          "name": "Cold War Kids",
+          "normalizedName": "cold-war-kids",
+          "showCount": 1,
+          "years": [
+            2024
+          ],
+          "firstYear": 2024,
+          "lastYear": 2024
+        },
+        {
+          "name": "David Byrne",
+          "normalizedName": "david-byrne",
+          "showCount": 1,
+          "years": [
+            2025
+          ],
+          "firstYear": 2025,
+          "lastYear": 2025
+        },
+        {
+          "name": "Thompson Twins",
+          "normalizedName": "thompson-twins",
+          "showCount": 1,
+          "years": [
+            2026
+          ],
+          "firstYear": 2026,
+          "lastYear": 2026
+        }
+      ]
+    },
+    {
+      "name": "Ska",
+      "normalizedName": "ska",
+      "color": "#f59e0b",
+      "showsByYear": {
+        "2008": 1,
+        "2010": 1,
+        "2014": 1,
+        "2018": 1,
+        "2019": 4,
+        "2021": 1,
+        "2022": 1,
+        "2023": 2,
+        "2024": 1
+      },
+      "totalShows": 13,
+      "firstYear": 2008,
+      "lastYear": 2024,
+      "artists": [
+        {
+          "name": "The English Beat",
+          "normalizedName": "the-english-beat",
+          "showCount": 5,
+          "years": [
+            2008,
+            2010,
+            2019,
+            2023,
+            2024
+          ],
+          "firstYear": 2008,
+          "lastYear": 2024
+        },
+        {
+          "name": "Streetlight Manifesto",
+          "normalizedName": "streetlight-manifesto",
+          "showCount": 5,
+          "years": [
+            2014,
+            2018,
+            2019,
+            2022,
+            2023
+          ],
+          "firstYear": 2014,
+          "lastYear": 2023
+        },
+        {
+          "name": "The Interrupters",
+          "normalizedName": "the-interrupters",
+          "showCount": 1,
+          "years": [
+            2019
+          ],
+          "firstYear": 2019,
+          "lastYear": 2019
+        },
+        {
+          "name": "Bandits of the Acoustic Revolution",
+          "normalizedName": "bandits-of-the-acoustic-revolution",
+          "showCount": 1,
+          "years": [
+            2019
+          ],
+          "firstYear": 2019,
+          "lastYear": 2019
+        },
+        {
+          "name": "The Aquabats!",
+          "normalizedName": "the-aquabats",
+          "showCount": 1,
+          "years": [
+            2021
+          ],
+          "firstYear": 2021,
+          "lastYear": 2021
+        }
+      ]
+    },
+    {
+      "name": "Rockabilly",
+      "normalizedName": "rockabilly",
+      "color": "#78350f",
+      "showsByYear": {
+        "2000": 1,
+        "2007": 1,
+        "2008": 2,
+        "2009": 1,
+        "2018": 2,
+        "2019": 1,
+        "2024": 1
+      },
+      "totalShows": 9,
+      "firstYear": 2000,
+      "lastYear": 2024,
+      "artists": [
+        {
+          "name": "Lee Rocker",
+          "normalizedName": "lee-rocker",
+          "showCount": 3,
+          "years": [
+            2007,
+            2018,
+            2019
+          ],
+          "firstYear": 2007,
+          "lastYear": 2019
+        },
+        {
+          "name": "Stray Cats",
+          "normalizedName": "stray-cats",
+          "showCount": 2,
+          "years": [
+            2008,
+            2018
+          ],
+          "firstYear": 2008,
+          "lastYear": 2018
+        },
+        {
+          "name": "Brian Setzer ’68 Comeback Special",
+          "normalizedName": "brian-setzer-68-comeback-special",
+          "showCount": 1,
+          "years": [
+            2000
+          ],
+          "firstYear": 2000,
+          "lastYear": 2000
+        },
+        {
+          "name": "Mike Ness",
+          "normalizedName": "mike-ness",
+          "showCount": 1,
+          "years": [
+            2008
+          ],
+          "firstYear": 2008,
+          "lastYear": 2008
+        },
+        {
+          "name": "Brian Setzer and the Nashvillians",
+          "normalizedName": "brian-setzer-and-the-nashvillians",
+          "showCount": 1,
+          "years": [
+            2009
+          ],
+          "firstYear": 2009,
+          "lastYear": 2009
+        },
+        {
+          "name": "Brian Setzer",
+          "normalizedName": "brian-setzer",
+          "showCount": 1,
+          "years": [
+            2024
+          ],
+          "firstYear": 2024,
+          "lastYear": 2024
+        }
+      ]
+    },
+    {
+      "name": "Post Punk",
+      "normalizedName": "post-punk",
+      "color": "#be123c",
+      "showsByYear": {
+        "1991": 1,
+        "2013": 1,
+        "2017": 2,
+        "2018": 1,
+        "2022": 1,
+        "2025": 1
+      },
+      "totalShows": 7,
+      "firstYear": 1991,
+      "lastYear": 2025,
+      "artists": [
+        {
+          "name": "Gary Numan",
+          "normalizedName": "gary-numan",
+          "showCount": 3,
+          "years": [
+            2013,
+            2017,
+            2018
+          ],
+          "firstYear": 2013,
+          "lastYear": 2018
+        },
+        {
+          "name": "Siouxsie and the Banshees",
+          "normalizedName": "siouxsie-and-the-banshees",
+          "showCount": 1,
+          "years": [
+            1991
+          ],
+          "firstYear": 1991,
+          "lastYear": 1991
+        },
+        {
+          "name": "Blondie",
+          "normalizedName": "blondie",
+          "showCount": 1,
+          "years": [
+            2017
+          ],
+          "firstYear": 2017,
+          "lastYear": 2017
+        },
+        {
+          "name": "Peter Hook and the Light",
+          "normalizedName": "peter-hook-and-the-light",
+          "showCount": 1,
+          "years": [
+            2022
+          ],
+          "firstYear": 2022,
+          "lastYear": 2022
+        },
+        {
+          "name": "Molchat Doma",
+          "normalizedName": "molchat-doma",
+          "showCount": 1,
+          "years": [
+            2025
+          ],
+          "firstYear": 2025,
+          "lastYear": 2025
+        }
+      ]
+    },
+    {
+      "name": "Pop Rock",
+      "normalizedName": "pop-rock",
+      "color": "#dc2626",
+      "showsByYear": {
+        "1992": 1,
+        "1998": 1,
+        "2009": 1,
+        "2013": 1,
+        "2016": 1,
+        "2023": 1
+      },
+      "totalShows": 6,
+      "firstYear": 1992,
+      "lastYear": 2023,
+      "artists": [
+        {
+          "name": "The Smithereens",
+          "normalizedName": "the-smithereens",
+          "showCount": 3,
+          "years": [
+            1992,
+            2013,
+            2016
+          ],
+          "firstYear": 1992,
+          "lastYear": 2016
+        },
+        {
+          "name": "Pat DiNizio",
+          "normalizedName": "pat-dinizio",
+          "showCount": 1,
+          "years": [
+            1998
+          ],
+          "firstYear": 1998,
+          "lastYear": 1998
+        },
+        {
+          "name": "Rob Thomas",
+          "normalizedName": "rob-thomas",
+          "showCount": 1,
+          "years": [
+            2009
+          ],
+          "firstYear": 2009,
+          "lastYear": 2009
+        },
+        {
+          "name": "Crowded House",
+          "normalizedName": "crowded-house",
+          "showCount": 1,
+          "years": [
+            2023
+          ],
+          "firstYear": 2023,
+          "lastYear": 2023
+        }
+      ]
+    },
+    {
+      "name": "Rock",
+      "normalizedName": "rock",
+      "color": "#64748b",
+      "showsByYear": {
+        "1984": 1,
+        "2015": 1,
+        "2017": 1,
+        "2018": 1,
+        "2019": 1
+      },
+      "totalShows": 5,
+      "firstYear": 1984,
+      "lastYear": 2019,
+      "artists": [
+        {
+          "name": "Foo Fighters",
+          "normalizedName": "foo-fighters",
+          "showCount": 2,
+          "years": [
+            2015,
+            2017
+          ],
+          "firstYear": 2015,
+          "lastYear": 2017
+        },
+        {
+          "name": "Billy Idol",
+          "normalizedName": "billy-idol",
+          "showCount": 1,
+          "years": [
+            1984
+          ],
+          "firstYear": 1984,
+          "lastYear": 1984
+        },
+        {
+          "name": "U2",
+          "normalizedName": "u2",
+          "showCount": 1,
+          "years": [
+            2018
+          ],
+          "firstYear": 2018,
+          "lastYear": 2018
+        },
+        {
+          "name": "Lenny Kravitz",
+          "normalizedName": "lenny-kravitz",
+          "showCount": 1,
+          "years": [
+            2019
+          ],
+          "firstYear": 2019,
+          "lastYear": 2019
+        }
+      ]
+    },
+    {
+      "name": "Classic Rock",
+      "normalizedName": "classic-rock",
+      "color": "#92400e",
+      "showsByYear": {
+        "1985": 1,
+        "1986": 1,
+        "1988": 1,
+        "2006": 1,
+        "2007": 1
+      },
+      "totalShows": 5,
+      "firstYear": 1985,
+      "lastYear": 2007,
+      "artists": [
+        {
+          "name": "Beach Boys",
+          "normalizedName": "beach-boys",
+          "showCount": 2,
+          "years": [
+            1986,
+            1988
+          ],
+          "firstYear": 1986,
+          "lastYear": 1988
+        },
+        {
+          "name": "Bruce Springsteen",
+          "normalizedName": "bruce-springsteen",
+          "showCount": 1,
+          "years": [
+            1985
+          ],
+          "firstYear": 1985,
+          "lastYear": 1985
+        },
+        {
+          "name": "Joe Satriani",
+          "normalizedName": "joe-satriani",
+          "showCount": 1,
+          "years": [
+            2006
+          ],
+          "firstYear": 2006,
+          "lastYear": 2006
+        },
+        {
+          "name": "The Tubes",
+          "normalizedName": "the-tubes",
+          "showCount": 1,
+          "years": [
+            2007
+          ],
+          "firstYear": 2007,
+          "lastYear": 2007
+        }
+      ]
+    },
+    {
+      "name": "Reggae",
+      "normalizedName": "reggae",
+      "color": "#16a34a",
+      "showsByYear": {
+        "1988": 2,
+        "1991": 2,
+        "2023": 1
+      },
+      "totalShows": 5,
+      "firstYear": 1988,
+      "lastYear": 2023,
+      "artists": [
+        {
+          "name": "UB40",
+          "normalizedName": "ub40",
+          "showCount": 2,
+          "years": [
+            1988,
+            2023
+          ],
+          "firstYear": 1988,
+          "lastYear": 2023
+        },
+        {
+          "name": "Ziggy Marley",
+          "normalizedName": "ziggy-marley",
+          "showCount": 1,
+          "years": [
+            1988
+          ],
+          "firstYear": 1988,
+          "lastYear": 1988
+        },
+        {
+          "name": "Maxi Priest",
+          "normalizedName": "maxi-priest",
+          "showCount": 1,
+          "years": [
+            1991
+          ],
+          "firstYear": 1991,
+          "lastYear": 1991
+        },
+        {
+          "name": "Burning Spear",
+          "normalizedName": "burning-spear",
+          "showCount": 1,
+          "years": [
+            1991
+          ],
+          "firstYear": 1991,
+          "lastYear": 1991
+        }
+      ]
+    },
+    {
+      "name": "New Wave Pop",
+      "normalizedName": "new-wave-pop",
+      "color": "#3b82f6",
+      "showsByYear": {
+        "2003": 1,
+        "2012": 2,
+        "2017": 1,
+        "2022": 1
+      },
+      "totalShows": 5,
+      "firstYear": 2003,
+      "lastYear": 2022,
+      "artists": [
+        {
+          "name": "Joe Jackson",
+          "normalizedName": "joe-jackson",
+          "showCount": 4,
+          "years": [
+            2003,
+            2012,
+            2017,
+            2022
+          ],
+          "firstYear": 2003,
+          "lastYear": 2022
+        },
+        {
+          "name": "Squeeze",
+          "normalizedName": "squeeze",
+          "showCount": 1,
+          "years": [
+            2012
+          ],
+          "firstYear": 2012,
+          "lastYear": 2012
+        }
+      ]
+    },
+    {
+      "name": "Synthpop",
+      "normalizedName": "synthpop",
+      "color": "#8b5cf6",
+      "showsByYear": {
+        "1986": 1,
+        "1990": 2,
+        "2022": 1
+      },
+      "totalShows": 4,
+      "firstYear": 1986,
+      "lastYear": 2022,
+      "artists": [
+        {
+          "name": "The Art of Noise",
+          "normalizedName": "the-art-of-noise",
+          "showCount": 1,
+          "years": [
+            1986
+          ],
+          "firstYear": 1986,
+          "lastYear": 1986
+        },
+        {
+          "name": "Erasure",
+          "normalizedName": "erasure",
+          "showCount": 1,
+          "years": [
+            1990
+          ],
+          "firstYear": 1990,
+          "lastYear": 1990
+        },
+        {
+          "name": "Kraftwerk",
+          "normalizedName": "kraftwerk",
+          "showCount": 1,
+          "years": [
+            2022
+          ],
+          "firstYear": 2022,
+          "lastYear": 2022
+        }
+      ]
+    },
+    {
+      "name": "Swing",
+      "normalizedName": "swing",
+      "color": "#ca8a04",
+      "showsByYear": {
+        "1995": 1,
+        "1999": 1,
+        "2002": 1,
+        "2017": 1
+      },
+      "totalShows": 4,
+      "firstYear": 1995,
+      "lastYear": 2017,
+      "artists": [
+        {
+          "name": "The Brian Setzer Orchestra",
+          "normalizedName": "the-brian-setzer-orchestra",
+          "showCount": 3,
+          "years": [
+            1995,
+            2002,
+            2017
+          ],
+          "firstYear": 1995,
+          "lastYear": 2017
+        },
+        {
+          "name": "Alien Fashion Show",
+          "normalizedName": "alien-fashion-show",
+          "showCount": 1,
+          "years": [
+            1999
+          ],
+          "firstYear": 1999,
+          "lastYear": 1999
+        }
+      ]
+    },
+    {
+      "name": "Jazz",
+      "normalizedName": "jazz",
+      "color": "#4338ca",
+      "showsByYear": {
+        "2014": 1,
+        "2015": 1,
+        "2016": 1,
+        "2023": 1
+      },
+      "totalShows": 4,
+      "firstYear": 2014,
+      "lastYear": 2023,
+      "artists": [
+        {
+          "name": "Snarky Puppy",
+          "normalizedName": "snarky-puppy",
+          "showCount": 3,
+          "years": [
+            2014,
+            2015,
+            2016
+          ],
+          "firstYear": 2014,
+          "lastYear": 2016
+        },
+        {
+          "name": "Dr Sick",
+          "normalizedName": "dr-sick",
+          "showCount": 1,
+          "years": [
+            2023
+          ],
+          "firstYear": 2023,
+          "lastYear": 2023
+        }
+      ]
+    },
+    {
+      "name": "Indie Rock",
+      "normalizedName": "indie-rock",
+      "color": "#0ea5e9",
+      "showsByYear": {
+        "2019": 1,
+        "2022": 1,
+        "2023": 1,
+        "2025": 1
+      },
+      "totalShows": 4,
+      "firstYear": 2019,
+      "lastYear": 2025,
+      "artists": [
+        {
+          "name": "Foals",
+          "normalizedName": "foals",
+          "showCount": 3,
+          "years": [
+            2019,
+            2022,
+            2023
+          ],
+          "firstYear": 2019,
+          "lastYear": 2023
+        },
+        {
+          "name": "The Black Keys",
+          "normalizedName": "the-black-keys",
+          "showCount": 1,
+          "years": [
+            2025
+          ],
+          "firstYear": 2025,
+          "lastYear": 2025
+        }
+      ]
+    },
+    {
+      "name": "Gulf and Western Country Rock",
+      "normalizedName": "gulf-and-western-country-rock",
+      "color": "#64748b",
+      "showsByYear": {
+        "1991": 1,
+        "1995": 1,
+        "1997": 1
+      },
+      "totalShows": 3,
+      "firstYear": 1991,
+      "lastYear": 1997,
+      "artists": [
+        {
+          "name": "Jimmy Buffett",
+          "normalizedName": "jimmy-buffett",
+          "showCount": 3,
+          "years": [
+            1991,
+            1995,
+            1997
+          ],
+          "firstYear": 1991,
+          "lastYear": 1997
+        }
+      ]
+    }
+  ],
+  "totalShowsByYear": {
+    "1984": 4,
+    "1985": 8,
+    "1986": 4,
+    "1987": 3,
+    "1988": 7,
+    "1989": 1,
+    "1990": 6,
+    "1991": 6,
+    "1992": 1,
+    "1993": 3,
+    "1995": 4,
+    "1997": 1,
+    "1998": 1,
+    "1999": 2,
+    "2000": 1,
+    "2001": 1,
+    "2002": 1,
+    "2003": 4,
+    "2005": 4,
+    "2006": 3,
+    "2007": 3,
+    "2008": 6,
+    "2009": 2,
+    "2010": 3,
+    "2011": 3,
+    "2012": 6,
+    "2013": 6,
+    "2014": 6,
+    "2015": 6,
+    "2016": 6,
+    "2017": 12,
+    "2018": 7,
+    "2019": 9,
+    "2021": 2,
+    "2022": 14,
+    "2023": 11,
+    "2024": 6,
+    "2025": 4,
+    "2026": 1
+  },
+  "milestones": [
+    {
+      "milestone": 25,
+      "year": 1988
+    },
+    {
+      "milestone": 50,
+      "year": 1999
+    },
+    {
+      "milestone": 75,
+      "year": 2009
+    },
+    {
+      "milestone": 100,
+      "year": 2014
+    },
+    {
+      "milestone": 125,
+      "year": 2018
+    },
+    {
+      "milestone": 150,
+      "year": 2022
+    },
+    {
+      "milestone": 175,
+      "year": 2025
+    }
+  ],
+  "yearRange": {
+    "start": 1984,
+    "end": 2026
+  },
+  "generatedAt": "2026-01-07T02:56:32.776Z"
+}
