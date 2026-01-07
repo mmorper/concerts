@@ -45,6 +45,7 @@ async function buildData() {
     { name: 'Enrich venue metadata', active: !skipVenues },
     { name: 'Enrich Spotify data', active: !skipSpotify },
     { name: 'Pre-fetch setlists', active: !skipSetlists },
+    { name: 'Aggregate genres timeline', active: true },
   ]
   const activeSteps = steps.filter(s => s.active).length
 
@@ -166,6 +167,15 @@ async function buildData() {
     } else {
       console.log('⏭️  Skipping setlist pre-fetch (--skip-setlists flag set)\n')
     }
+
+    // Step 8: Aggregate genres timeline (always runs)
+    currentStep++
+    console.log('=' .repeat(60))
+    console.log(`Step ${currentStep}/${activeSteps}: Aggregating genres timeline`)
+    console.log('-'.repeat(60))
+    const { aggregateGenresTimeline } = await import('./aggregate-genres-timeline.ts')
+    await aggregateGenresTimeline()
+    console.log()
 
     // Summary
     console.log('=' .repeat(60))

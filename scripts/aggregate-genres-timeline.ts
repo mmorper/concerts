@@ -276,8 +276,13 @@ async function main() {
   console.log('✨ Genres timeline aggregation complete!')
 }
 
+// Export for use in build pipeline
+export { main as aggregateGenresTimeline }
+
 // Run if called directly
-main().catch(err => {
-  console.error('❌ Error:', err)
-  process.exit(1)
-})
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch(err => {
+    console.error('❌ Error:', err)
+    process.exit(1)
+  })
+}
