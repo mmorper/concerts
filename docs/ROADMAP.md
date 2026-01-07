@@ -65,6 +65,23 @@ Real-time tour dates with direct ticket purchase links using Ticketmaster Discov
 
 ---
 
+### ✅ Artist Genre Enrichment (v3.0.1)
+
+**Status**: Completed
+**Spec**: [artist-genre-enrichment.md](specs/implemented/artist-genre-enrichment.md)
+
+Genre moved to artist-level metadata with automatic enrichment from TheAudioDB.
+
+**Implemented Features**:
+
+- Genre as canonical artist attribute in `data/artist-metadata.json`
+- Build pipeline enriches concerts with artist genres
+- Validation tools for genre consistency
+- 247 artists enriched with genre data
+- Google Sheet source data no longer requires genre column
+
+---
+
 ## Short-Term Roadmap
 
 ### UX Polish
@@ -106,19 +123,23 @@ Automatically detect when venue names change and provide CLI tools to manage ven
 ---
 
 ### Spotify Integration & Unified Image Sourcing
-**Status**: Planned
-**Related Specs**:
-- [spotify-artist-integration.md](specs/future/spotify-artist-integration.md)
-- [unified-image-sourcing-strategy.md](specs/future/unified-image-sourcing-strategy.md)
-- [spotify-enrichment-runbook.md](specs/future/spotify-enrichment-runbook.md)
+**Status**: Blocked (Spotify API not accepting new projects)
+**Architecture**: [data-normalization-architecture.md](specs/future/data-normalization-architecture.md)
 
-Consolidate image sourcing from multiple providers (Spotify, AudioDB, Last.fm) with priority-based fallback hierarchy.
+**Related Specs**:
+
+- [spotify-artist-integration.md](specs/future/spotify-artist-integration.md) - Feature spec
+- [spotify-enrichment-runbook.md](specs/future/spotify-enrichment-runbook.md) - Operations runbook
+- [unified-image-sourcing-strategy.md](specs/future/unified-image-sourcing-strategy.md) - Image strategy
+
+Consolidate image sourcing with Spotify as primary source, TheAudioDB as fallback.
 
 **Key Goals**:
-- Single image pipeline for all artist metadata
+
+- Spotify as primary source for artist metadata (genres, images, audio previews)
+- TheAudioDB as fallback for artists not on Spotify
 - Consistent image quality and sizing across scenes
-- Spotify as primary source with graceful fallbacks
-- Automated image validation and refresh
+- Album art and track previews for Artist Scene gatefold
 
 ---
 

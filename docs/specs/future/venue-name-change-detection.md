@@ -1,10 +1,11 @@
 # Venue Name Change Detection & Management CLI
 
-**Status:** Planned
-**Priority:** Medium
-**Effort:** Medium (pipeline enhancement + CLI tool)
-**Related Spec:** [renamed-venue-display.md](renamed-venue-display.md)
-**Category:** Data Pipeline Automation
+> **Status**: Planned
+> **Priority**: Medium
+> **Effort**: Medium (pipeline enhancement + CLI tool)
+> **Related**: [renamed-venue-display.md](renamed-venue-display.md)
+> **Category**: Data Pipeline Automation
+> **Last Updated**: 2026-01-07
 
 ---
 

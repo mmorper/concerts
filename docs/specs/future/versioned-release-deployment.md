@@ -1,10 +1,10 @@
 # Versioned Release Deployment Specification
 
-**Status:** 📋 Future
-**Priority:** Medium
-**Complexity:** Low-Medium
-**Last Updated:** 2026-01-01
-**Dependencies:** None (one-time infrastructure setup)
+> **Status**: Planned
+> **Priority**: Medium
+> **Effort**: Low-Medium
+> **Dependencies**: None (one-time infrastructure setup)
+> **Last Updated**: 2026-01-07
 
 ---
 

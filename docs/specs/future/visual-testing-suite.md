@@ -1,8 +1,11 @@
 # Visual Testing Suite Specification
 
-**Status:** Future (v1.1+)
-**Priority:** Medium
-**Complexity:** Medium
+> **Status**: Planned
+> **Priority**: Medium
+> **Effort**: Medium
+> **Last Updated**: 2026-01-07
+
+---
 
 ## Overview
 

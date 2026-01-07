@@ -1,9 +1,10 @@
 # Renamed Venue Display Enhancement
 
-**Status:** Planned
-**Priority:** Medium
-**Effort:** Small (frontend-only change)
-**Target Scene:** Geography (Scene 3 - Map)
+> **Status**: Planned
+> **Priority**: Medium
+> **Effort**: Small (frontend-only change)
+> **Target Scene**: Geography (Scene 3 - Map)
+> **Last Updated**: 2026-01-07
 
 ---
 

@@ -1,11 +1,11 @@
 # Cross-Scene Artist Navigation: Venues → Artists
 
-**Status:** 🚧 Planned
-**Target Version:** v1.6.0
-**Priority:** Medium
-**Estimated Complexity:** Medium
-**Dependencies:** None (builds on existing venue-cross-navigation pattern)
-**Created:** 2026-01-03
+> **Status**: Planned
+> **Target Version**: v1.6.0
+> **Priority**: Medium
+> **Effort**: Medium
+> **Dependencies**: None
+> **Last Updated**: 2026-01-07
 
 ---
 

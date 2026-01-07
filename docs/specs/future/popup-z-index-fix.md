@@ -1,8 +1,9 @@
 # Popup Z-Index Fix
 
-**Status:** Optional Enhancement
-**Priority:** Low
-**Effort:** Medium (requires careful testing)
+> **Status**: Optional Enhancement
+> **Priority**: Low
+> **Effort**: Medium (requires careful testing)
+> **Last Updated**: 2026-01-07
 
 ---
 
