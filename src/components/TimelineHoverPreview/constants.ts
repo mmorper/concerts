@@ -106,7 +106,7 @@ export const COLORS = {
   TEXT_SECONDARY: '#94a3b8', // slate-400
 
   /** Accent text color (year + count) */
-  TEXT_ACCENT: '#6366f1', // indigo-500
+  TEXT_ACCENT: '#a5b4fc', // indigo-300 for better contrast on dark bg
 
   /** Divider color */
   DIVIDER: 'rgba(99, 102, 241, 0.2)', // indigo-500/20

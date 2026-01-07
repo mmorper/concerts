@@ -18,6 +18,7 @@ export function TimelineHoverContent({
   concertCount,
   venue,
   imageUrl,
+  onClick,
 }: TimelineHoverContentProps) {
   const [localMousePosition, setLocalMousePosition] = useState({ x: 0, y: 0 })
 
@@ -61,7 +62,17 @@ export function TimelineHoverContent({
         boxShadow: '0 10px 40px rgba(0, 0, 0, 0.4)',
         overflow: 'hidden',
         fontFamily: "'Source Sans 3', system-ui, sans-serif",
+        cursor: onClick ? 'pointer' : 'default',
       }}
+      onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' && onClick) {
+          onClick()
+        }
+      }}
+      tabIndex={onClick ? 0 : undefined}
+      role={onClick ? 'button' : undefined}
+      aria-label={onClick ? `View ${artistName} concert details` : undefined}
     >
       {/* Artist Image with Parallax */}
       <div

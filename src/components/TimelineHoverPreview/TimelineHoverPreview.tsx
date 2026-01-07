@@ -18,6 +18,7 @@ export function TimelineHoverPreview({
   hoverState,
   onMouseEnter,
   onMouseLeave,
+  onClick,
 }: TimelineHoverPreviewProps) {
   const { getArtistImage } = useArtistMetadata()
 
@@ -91,6 +92,7 @@ export function TimelineHoverPreview({
             duration: ANIMATION.FADE_DURATION / 1000,
             ease: 'easeOut',
             layout: { duration: 0.2, ease: 'easeOut' },
+            exit: { duration: 0.25, delay: 0.1, ease: 'easeOut' }, // Slight delay for elegance
           }}
           style={{
             position: 'fixed',
@@ -122,6 +124,7 @@ export function TimelineHoverPreview({
             concertCount={hoverState.concertCount}
             venue={hoverState.venue}
             imageUrl={imageUrl}
+            onClick={onClick ? () => onClick(hoverState.artistName) : undefined}
           />
         </motion.div>
       )}
