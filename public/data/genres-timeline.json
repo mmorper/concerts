@@ -18,7 +18,7 @@
         "2005": 2,
         "2006": 2,
         "2007": 1,
-        "2008": 2,
+        "2008": 3,
         "2010": 1,
         "2011": 1,
         "2012": 2,
@@ -28,11 +28,12 @@
         "2018": 1,
         "2022": 4,
         "2023": 3,
-        "2024": 1
+        "2024": 1,
+        "2026": 1
       },
-      "totalShows": 46,
+      "totalShows": 48,
       "firstYear": 1984,
-      "lastYear": 2024,
+      "lastYear": 2026,
       "artists": [
         {
           "name": "Howard Jones",
@@ -77,6 +78,30 @@
           "lastYear": 2022
         },
         {
+          "name": "Thompson Twins",
+          "normalizedName": "thompson-twins",
+          "showCount": 3,
+          "years": [
+            1984,
+            1985,
+            2026
+          ],
+          "firstYear": 1984,
+          "lastYear": 2026
+        },
+        {
+          "name": "Duran Duran",
+          "normalizedName": "duran-duran",
+          "showCount": 3,
+          "years": [
+            1987,
+            2008,
+            2017
+          ],
+          "firstYear": 1987,
+          "lastYear": 2017
+        },
+        {
           "name": "Berlin",
           "normalizedName": "berlin",
           "showCount": 3,
@@ -98,17 +123,6 @@
           ],
           "firstYear": 1984,
           "lastYear": 1993
-        },
-        {
-          "name": "Thompson Twins",
-          "normalizedName": "thompson-twins",
-          "showCount": 2,
-          "years": [
-            1984,
-            1985
-          ],
-          "firstYear": 1984,
-          "lastYear": 1985
         },
         {
           "name": "Echo and the Bunnymen",
@@ -142,17 +156,6 @@
           ],
           "firstYear": 1987,
           "lastYear": 1988
-        },
-        {
-          "name": "Duran Duran",
-          "normalizedName": "duran-duran",
-          "showCount": 2,
-          "years": [
-            1987,
-            2017
-          ],
-          "firstYear": 1987,
-          "lastYear": 2017
         },
         {
           "name": "The Human League",
@@ -300,21 +303,19 @@
         "1990": 2,
         "1991": 2,
         "1993": 1,
-        "1999": 1,
         "2001": 1,
         "2003": 1,
-        "2008": 1,
         "2011": 1,
         "2012": 1,
         "2014": 3,
         "2016": 3,
         "2017": 3,
         "2019": 1,
-        "2022": 2,
+        "2022": 3,
         "2024": 1,
         "2025": 1
       },
-      "totalShows": 29,
+      "totalShows": 28,
       "firstYear": 1985,
       "lastYear": 2025,
       "artists": [
@@ -328,6 +329,17 @@
           ],
           "firstYear": 1993,
           "lastYear": 2003
+        },
+        {
+          "name": "Kraftwerk",
+          "normalizedName": "kraftwerk",
+          "showCount": 2,
+          "years": [
+            2014,
+            2022
+          ],
+          "firstYear": 2014,
+          "lastYear": 2022
         },
         {
           "name": "The Skints",
@@ -431,26 +443,6 @@
           "lastYear": 2001
         },
         {
-          "name": "The Art of Noise",
-          "normalizedName": "the-art-of-noise",
-          "showCount": 1,
-          "years": [
-            1999
-          ],
-          "firstYear": 1999,
-          "lastYear": 1999
-        },
-        {
-          "name": "Duran Duran",
-          "normalizedName": "duran-duran",
-          "showCount": 1,
-          "years": [
-            2008
-          ],
-          "firstYear": 2008,
-          "lastYear": 2008
-        },
-        {
           "name": "The Dollyrots",
           "normalizedName": "the-dollyrots",
           "showCount": 1,
@@ -479,16 +471,6 @@
           ],
           "firstYear": 2012,
           "lastYear": 2012
-        },
-        {
-          "name": "Kraftwerk",
-          "normalizedName": "kraftwerk",
-          "showCount": 1,
-          "years": [
-            2014
-          ],
-          "firstYear": 2014,
-          "lastYear": 2014
         },
         {
           "name": "The Head and the Heart",
@@ -691,12 +673,11 @@
         "2022": 1,
         "2023": 1,
         "2024": 1,
-        "2025": 1,
-        "2026": 1
+        "2025": 1
       },
-      "totalShows": 14,
+      "totalShows": 13,
       "firstYear": 1988,
-      "lastYear": 2026,
+      "lastYear": 2025,
       "artists": [
         {
           "name": "Garbage",
@@ -782,16 +763,6 @@
           ],
           "firstYear": 2025,
           "lastYear": 2025
-        },
-        {
-          "name": "Thompson Twins",
-          "normalizedName": "thompson-twins",
-          "showCount": 1,
-          "years": [
-            2026
-          ],
-          "firstYear": 2026,
-          "lastYear": 2026
         }
       ]
     },
@@ -1304,21 +1275,22 @@
       "showsByYear": {
         "1986": 1,
         "1990": 2,
-        "2022": 1
+        "1999": 1
       },
       "totalShows": 4,
       "firstYear": 1986,
-      "lastYear": 2022,
+      "lastYear": 1999,
       "artists": [
         {
           "name": "The Art of Noise",
           "normalizedName": "the-art-of-noise",
-          "showCount": 1,
+          "showCount": 2,
           "years": [
-            1986
+            1986,
+            1999
           ],
           "firstYear": 1986,
-          "lastYear": 1986
+          "lastYear": 1999
         },
         {
           "name": "Erasure",
@@ -1329,16 +1301,6 @@
           ],
           "firstYear": 1990,
           "lastYear": 1990
-        },
-        {
-          "name": "Kraftwerk",
-          "normalizedName": "kraftwerk",
-          "showCount": 1,
-          "years": [
-            2022
-          ],
-          "firstYear": 2022,
-          "lastYear": 2022
         }
       ]
     },
@@ -1459,7 +1421,7 @@
     {
       "name": "Gulf and Western Country Rock",
       "normalizedName": "gulf-and-western-country-rock",
-      "color": "#64748b",
+      "color": "#c2410c",
       "showsByYear": {
         "1991": 1,
         "1995": 1,
@@ -1559,5 +1521,5 @@
     "start": 1984,
     "end": 2026
   },
-  "generatedAt": "2026-01-07T02:56:32.776Z"
+  "generatedAt": "2026-01-07T05:57:11.556Z"
 }
