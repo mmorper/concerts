@@ -293,7 +293,7 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
             The Music
           </h2>
           <p className="font-sans text-sm text-slate-400">
-            Your musical journey through time
+            Watch taste evolve decade by decade
           </p>
         </motion.div>
 
