@@ -27,9 +27,8 @@ export function StackedCard({
   const { getArtistImage } = useArtistMetadata()
   const imageUrl = getArtistImage(concert.headliner) || FALLBACK.IMAGE_URL
 
-  // Touch interaction state for two-tap pattern (iPad/tablets)
+  // Touch interaction state for tap-to-focus pattern (iPad/tablets)
   const [isTouchFocused, setIsTouchFocused] = useState(false)
-  const [lastTapTime, setLastTapTime] = useState(0)
 
   // Detect if device supports touch
   const isTouchDevice = typeof window !== 'undefined' &&
@@ -45,7 +44,7 @@ export function StackedCard({
   /**
    * Handle touch tap on touch devices (iPad/tablets)
    * When dragging: ignore tap events (handled by parent)
-   * When tapping: first tap focuses, second tap navigates
+   * When tapping: if already focused (via drag or tap), navigate; otherwise focus first
    */
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
     if (!isTouchDevice) return
@@ -56,28 +55,25 @@ export function StackedCard({
       // Mark this card as touch-focused since it was the last one hovered during drag
       if (isHovered) {
         setIsTouchFocused(true)
-        setLastTapTime(Date.now())
       }
       return
     }
 
     e.stopPropagation() // Prevent card stack dismissal
 
-    const now = Date.now()
-    const isDoubleTap = isTouchFocused && (now - lastTapTime < 500) // 500ms window for "same card"
-
-    if (!isDoubleTap) {
-      // First tap: focus this card
-      setIsTouchFocused(true)
-      setLastTapTime(now)
-      onHover() // Bring card to front
-      haptics.light()
-    } else {
-      // Second tap: navigate
+    // If this card is already focused (either via drag or previous tap), navigate immediately
+    // Also check if currently hovered (via drag focus that just ended)
+    if (isTouchFocused || isHovered) {
+      // Navigate to artist
       onClick()
       haptics.medium()
+    } else {
+      // First tap: focus this card
+      setIsTouchFocused(true)
+      onHover() // Bring card to front
+      haptics.light()
     }
-  }, [isTouchDevice, isTouchFocused, lastTapTime, isDragging, isHovered, onHover, onClick])
+  }, [isTouchDevice, isTouchFocused, isDragging, isHovered, onHover, onClick])
 
   /**
    * Handle regular click on non-touch devices (desktop)
