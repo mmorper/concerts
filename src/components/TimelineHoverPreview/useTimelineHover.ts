@@ -96,12 +96,18 @@ export function useTimelineHover() {
   /**
    * Handle mouse leaving the popup
    *
-   * Immediately hides the popup
+   * Waits before hiding to allow movement to card stack
    */
   const handlePopupMouseLeave = useCallback(() => {
     clearTimeouts()
     isHoveringRef.current = false
-    setHoverState(null)
+
+    // Wait 300ms before hiding (linger delay) to allow movement to cards
+    lingerTimeoutRef.current = window.setTimeout(() => {
+      if (!isHoveringRef.current) {
+        setHoverState(null)
+      }
+    }, ANIMATION.LINGER_DELAY)
   }, [clearTimeouts])
 
   /**

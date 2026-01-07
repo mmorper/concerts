@@ -3,11 +3,11 @@ import { motion } from 'framer-motion'
 import { haptics } from '../utils/haptics'
 
 const scenes = [
-  { id: 1, label: 'Timeline', color: 'bg-indigo-500' },
-  { id: 2, label: 'Venues', color: 'bg-slate-600' },
-  { id: 3, label: 'Map', color: 'bg-gray-800' },
-  { id: 4, label: 'Genres', color: 'bg-rose-500' },
-  { id: 5, label: 'Artists', color: 'bg-gray-400' },
+  { id: 1, label: 'Timeline' },
+  { id: 2, label: 'Venues' },
+  { id: 3, label: 'Map' },
+  { id: 4, label: 'Genres' },
+  { id: 5, label: 'Artists' },
 ]
 
 export function SceneNavigation() {
@@ -66,26 +66,22 @@ export function SceneNavigation() {
         {scenes.map((scene) => (
           <button
             key={scene.id}
-            onClick={(e) => {
-              // Toggle label on tap, navigate on second tap or when label already shown
-              if (revealedLabel === scene.id) {
-                scrollToScene(scene.id)
-                setRevealedLabel(null)
-              } else {
-                haptics.light() // Haptic feedback on label reveal
-                e.stopPropagation()
-                setRevealedLabel(scene.id)
-              }
+            onClick={() => {
+              // Single click navigates directly
+              scrollToScene(scene.id)
             }}
+            onMouseEnter={() => setRevealedLabel(scene.id)}
+            onMouseLeave={() => setRevealedLabel(null)}
             className="group relative flex items-center justify-center min-w-[44px] min-h-[44px] touchable"
             aria-label={`Go to ${scene.label}`}
           >
             {/* Dot - visually smaller but larger touch target */}
+            {/* Uses dark fill with white border for visibility on both light and dark backgrounds */}
             <motion.div
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`w-3 h-3 rounded-full transition-all duration-300 border-2 ${
                 activeScene === scene.id
-                  ? `${scene.color} scale-125`
-                  : 'bg-gray-400/50 group-hover:bg-gray-400 group-active:bg-gray-400'
+                  ? 'bg-slate-800 border-white scale-125'
+                  : 'bg-slate-600 border-white/60 group-hover:bg-slate-700 group-hover:border-white'
               }`}
               animate={revealedLabel === scene.id ? { scale: 1.3 } : { scale: 1 }}
               transition={{ duration: 0.2 }}

@@ -34,6 +34,7 @@ export interface TimelineHoverPreviewProps {
   hoverState: TimelineHoverState | null
   onMouseEnter?: () => void
   onMouseLeave?: () => void
+  onClick?: (artistName: string) => void
 }
 
 /**
@@ -45,4 +46,5 @@ export interface TimelineHoverContentProps {
   concertCount: number
   venue: string
   imageUrl?: string
+  onClick?: () => void
 }

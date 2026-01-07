@@ -520,3 +520,40 @@ body {
 .animate-fade-in {
   animation: fade-in 200ms ease-out forwards;
 }
+
+/* ============================================
+   Genre Treemap Timeline Slider (v2.1.0)
+   ============================================ */
+
+/* Wobble animation for timeline slider thumb (pre-interaction affordance) */
+@keyframes wobble {
+  0%, 100% {
+    transform: translateX(-50%) translateY(-50%) translateX(0);
+  }
+  25% {
+    transform: translateX(-50%) translateY(-50%) translateX(-4px);
+  }
+  75% {
+    transform: translateX(-50%) translateY(-50%) translateX(4px);
+  }
+}
+
+.animate-wobble {
+  animation: wobble 1.5s ease-in-out infinite;
+}
+
+/* Slow pulse animation for timeline slider thumb (pre-interaction affordance) */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateX(-50%) translateY(-50%) scale(1.15);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s ease-in-out infinite;
+}

@@ -170,6 +170,18 @@ export const haptics = {
       navigator.vibrate([50, 100, 50])
     }
   },
+
+  /**
+   * Decade crossing pattern (double pulse)
+   * Use for: Timeline scrubber crossing decade boundaries (1980s → 1990s, etc.)
+   */
+  decade: (): void => {
+    if (isIOSSafari()) {
+      triggerIOSHaptic('success') // Double tap pattern
+    } else if (isVibrationSupported()) {
+      navigator.vibrate([30, 20, 30])
+    }
+  },
 }
 
 /**
