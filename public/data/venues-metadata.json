@@ -101,7 +101,7 @@
     "closedDate": "2016-10-30",
     "notes": "Demolished for residential development",
     "places": null,
-    "fetchedAt": "2026-01-05T22:54:49.944Z",
+    "fetchedAt": "2026-01-07T05:53:17.662Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -296,13 +296,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:49.945Z",
+    "fetchedAt": "2026-01-07T05:53:17.663Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJo3h_9V8p3YARVTAekE45jq4/photos/AZLasHrsHhHeN-ifHa6ZUHBcFK-zUMR5YN7qBR31GQrjgICh_cRoYQgDiWngmemvQ3NbeTv_OM7CSOtWzFpxBmeK0j0XVLlQBbnf0S3DjfXQqnaJbSheIsOfUiwB65k5wDqCL2fKLHA-ZYF9f4zPUmrRueB-zR9QceJ3xbNXriydFXVtHRVuC4is7VbkTJo9hjZ-LU_vL8ogFiDidYmK7cd4p0jJnlc5ZSgDy9jNB519g_1pG_4arvbQjGtuU0zlXbEhCh177obW2wHWSyX0snsPmKvoBRH6Tnai3gF-l68wTTFyH9Phlxd_SPxedoBxjE84i3jyTObOgnxjM7Rh7BGYHgasqp5NUJVXWd5mjS2erweSidbYwweC45G_IUC7noxdZXM3ryAzltWQU5LhSuANZBnrp-zux76QLS854SxdQeruWuY/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJo3h_9V8p3YARVTAekE45jq4/photos/AZLasHrsHhHeN-ifHa6ZUHBcFK-zUMR5YN7qBR31GQrjgICh_cRoYQgDiWngmemvQ3NbeTv_OM7CSOtWzFpxBmeK0j0XVLlQBbnf0S3DjfXQqnaJbSheIsOfUiwB65k5wDqCL2fKLHA-ZYF9f4zPUmrRueB-zR9QceJ3xbNXriydFXVtHRVuC4is7VbkTJo9hjZ-LU_vL8ogFiDidYmK7cd4p0jJnlc5ZSgDy9jNB519g_1pG_4arvbQjGtuU0zlXbEhCh177obW2wHWSyX0snsPmKvoBRH6Tnai3gF-l68wTTFyH9Phlxd_SPxedoBxjE84i3jyTObOgnxjM7Rh7BGYHgasqp5NUJVXWd5mjS2erweSidbYwweC45G_IUC7noxdZXM3ryAzltWQU5LhSuANZBnrp-zux76QLS854SxdQeruWuY/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJo3h_9V8p3YARVTAekE45jq4/photos/AZLasHrsHhHeN-ifHa6ZUHBcFK-zUMR5YN7qBR31GQrjgICh_cRoYQgDiWngmemvQ3NbeTv_OM7CSOtWzFpxBmeK0j0XVLlQBbnf0S3DjfXQqnaJbSheIsOfUiwB65k5wDqCL2fKLHA-ZYF9f4zPUmrRueB-zR9QceJ3xbNXriydFXVtHRVuC4is7VbkTJo9hjZ-LU_vL8ogFiDidYmK7cd4p0jJnlc5ZSgDy9jNB519g_1pG_4arvbQjGtuU0zlXbEhCh177obW2wHWSyX0snsPmKvoBRH6Tnai3gF-l68wTTFyH9Phlxd_SPxedoBxjE84i3jyTObOgnxjM7Rh7BGYHgasqp5NUJVXWd5mjS2erweSidbYwweC45G_IUC7noxdZXM3ryAzltWQU5LhSuANZBnrp-zux76QLS854SxdQeruWuY/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:49.945Z"
+    "photoCacheExpiry": "2026-04-07T04:53:17.663Z"
   },
   "pacific-amphitheatre": {
     "name": "Pacific Amphitheatre",
@@ -565,13 +565,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:50.047Z",
+    "fetchedAt": "2026-01-07T05:53:17.765Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJXYl3hHPf3IARgjod4gPGqQo/photos/AZLasHrerti9YdvIuUMCCX3oNAB4Dky79HYCEQN3JC9Xfj0BkAsyKhHrvOkHqVNaonYwYyI7vlnmz6X9vByB12ukR2gK44ulStwQwM6ATV_a9gGhV0P0Ah8MhVOAw4k1nIPqPuytPkvLKjuN_vmtGKu64MRjsB-Qp9w5xCBnesADIjkgsfx-yHr4QuVtGz1kRIgLQxkswjUeDs_WmxYZQqmQzFFY7UfCLTsjSPv6AtSYP5NugKQA5tmPyYPV1pTDuXGc_ELima-isScydNpPalnTDmdVzmjz6b7Dqj2lo6LSNYzn76UlkgZiFsJNujfqNzlSKm30EBJtU5W3rQOFqyfXnLl50F2F4Dp06KxMWTjpXpYIr2JF-Bz3sFufQGoyRVt8RVpxV2_xI-Oh1RTCvKXhHd-8VBI5C6jo4loET4gfEphBbw/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJXYl3hHPf3IARgjod4gPGqQo/photos/AZLasHrerti9YdvIuUMCCX3oNAB4Dky79HYCEQN3JC9Xfj0BkAsyKhHrvOkHqVNaonYwYyI7vlnmz6X9vByB12ukR2gK44ulStwQwM6ATV_a9gGhV0P0Ah8MhVOAw4k1nIPqPuytPkvLKjuN_vmtGKu64MRjsB-Qp9w5xCBnesADIjkgsfx-yHr4QuVtGz1kRIgLQxkswjUeDs_WmxYZQqmQzFFY7UfCLTsjSPv6AtSYP5NugKQA5tmPyYPV1pTDuXGc_ELima-isScydNpPalnTDmdVzmjz6b7Dqj2lo6LSNYzn76UlkgZiFsJNujfqNzlSKm30EBJtU5W3rQOFqyfXnLl50F2F4Dp06KxMWTjpXpYIr2JF-Bz3sFufQGoyRVt8RVpxV2_xI-Oh1RTCvKXhHd-8VBI5C6jo4loET4gfEphBbw/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJXYl3hHPf3IARgjod4gPGqQo/photos/AZLasHrerti9YdvIuUMCCX3oNAB4Dky79HYCEQN3JC9Xfj0BkAsyKhHrvOkHqVNaonYwYyI7vlnmz6X9vByB12ukR2gK44ulStwQwM6ATV_a9gGhV0P0Ah8MhVOAw4k1nIPqPuytPkvLKjuN_vmtGKu64MRjsB-Qp9w5xCBnesADIjkgsfx-yHr4QuVtGz1kRIgLQxkswjUeDs_WmxYZQqmQzFFY7UfCLTsjSPv6AtSYP5NugKQA5tmPyYPV1pTDuXGc_ELima-isScydNpPalnTDmdVzmjz6b7Dqj2lo6LSNYzn76UlkgZiFsJNujfqNzlSKm30EBJtU5W3rQOFqyfXnLl50F2F4Dp06KxMWTjpXpYIr2JF-Bz3sFufQGoyRVt8RVpxV2_xI-Oh1RTCvKXhHd-8VBI5C6jo4loET4gfEphBbw/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:50.047Z"
+    "photoCacheExpiry": "2026-04-07T04:53:17.765Z"
   },
   "hollywood-park-racetrack": {
     "name": "Hollywood Park Racetrack",
@@ -600,7 +600,7 @@
     "closedDate": "2013-12-22",
     "notes": "Demolished for SoFi Stadium development",
     "places": null,
-    "fetchedAt": "2026-01-05T22:54:50.148Z",
+    "fetchedAt": "2026-01-07T05:53:17.865Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -796,13 +796,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:50.149Z",
+    "fetchedAt": "2026-01-07T05:53:17.865Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJ-2dO1wfIwoARNj2U1XAKz1Q/photos/AZLasHoDU_Cb0N700y6kQU7SCwOeZ_XKmGDJRv0WTaTeAOmP8cChET_9Io4nZcTMJ3zoOaSLgFHCB07SsX3UTkah3j8j3Kgg7s_XB8vdqlHJyGjb3QOcmREt8pgV1kD6h7acKXB7aujYHStRKcqE9E8MgQ1s1nAD-3m_FinX3F7qtT-1cwa_lj6nkQ4OroU5ZV7cEjKuFomON8JIlqTuH1xhLb0cuwBhgxuYfBKagYBf2d6ipTWXfMqunCp7O1V1hLriNDzS7QysDS8UyoBa_ReJV4q9soDe3axAtwNQ9Ww0L5dUTvFe_YQrwtMWFlwAkL01XMLBthuv1HfQ0tQI2ZgotbJ2ndv8P3-hF9XlbB9WOjufvgLdmzVKeY-aycqUSlZwhVSjOh7WeoZ9UfgMhuYbY9aDawXGm2kbJMW1cwQiLie8v3MX/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJ-2dO1wfIwoARNj2U1XAKz1Q/photos/AZLasHoDU_Cb0N700y6kQU7SCwOeZ_XKmGDJRv0WTaTeAOmP8cChET_9Io4nZcTMJ3zoOaSLgFHCB07SsX3UTkah3j8j3Kgg7s_XB8vdqlHJyGjb3QOcmREt8pgV1kD6h7acKXB7aujYHStRKcqE9E8MgQ1s1nAD-3m_FinX3F7qtT-1cwa_lj6nkQ4OroU5ZV7cEjKuFomON8JIlqTuH1xhLb0cuwBhgxuYfBKagYBf2d6ipTWXfMqunCp7O1V1hLriNDzS7QysDS8UyoBa_ReJV4q9soDe3axAtwNQ9Ww0L5dUTvFe_YQrwtMWFlwAkL01XMLBthuv1HfQ0tQI2ZgotbJ2ndv8P3-hF9XlbB9WOjufvgLdmzVKeY-aycqUSlZwhVSjOh7WeoZ9UfgMhuYbY9aDawXGm2kbJMW1cwQiLie8v3MX/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJ-2dO1wfIwoARNj2U1XAKz1Q/photos/AZLasHoDU_Cb0N700y6kQU7SCwOeZ_XKmGDJRv0WTaTeAOmP8cChET_9Io4nZcTMJ3zoOaSLgFHCB07SsX3UTkah3j8j3Kgg7s_XB8vdqlHJyGjb3QOcmREt8pgV1kD6h7acKXB7aujYHStRKcqE9E8MgQ1s1nAD-3m_FinX3F7qtT-1cwa_lj6nkQ4OroU5ZV7cEjKuFomON8JIlqTuH1xhLb0cuwBhgxuYfBKagYBf2d6ipTWXfMqunCp7O1V1hLriNDzS7QysDS8UyoBa_ReJV4q9soDe3axAtwNQ9Ww0L5dUTvFe_YQrwtMWFlwAkL01XMLBthuv1HfQ0tQI2ZgotbJ2ndv8P3-hF9XlbB9WOjufvgLdmzVKeY-aycqUSlZwhVSjOh7WeoZ9UfgMhuYbY9aDawXGm2kbJMW1cwQiLie8v3MX/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:50.149Z"
+    "photoCacheExpiry": "2026-04-07T04:53:17.865Z"
   },
   "ucla": {
     "name": "UCLA",
@@ -988,13 +988,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:50.251Z",
+    "fetchedAt": "2026-01-07T05:53:17.967Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJZQ9c8IW8woARN0gTXFiTqSU/photos/AZLasHpe3vnH70Mv4rAFyCVHc3Yq8jkmwuyF-g19_ct7N4z0pJQ_5DZM_8t14TwQmZnpfvoMor24atUov9w-Etz2Ly1R2OuVpHOnwlgA18ue-fJ_ww8woCKBuU2gP9oOaEETbVXJJK083eOOvH4MfaVwMcgNyf8OIyys474TuZ8o8O_LvTGNP68rkupAuN91oYZTlc_7lTqcau5rWHj6dkAutjgHtUsbIPAUGKrWilvv53TRNd-EG7KnTESiO6ybG2NhODSq6iE917eoAfHIkRX-Y9XAabEC0O-cZLijGXx_aKaEtEOaUmeRqAdClpg96SZVfGxhFzVBkgYBuWVF79fNXRd3B6xxtQ6t5j9VS5Lnqm-OYbD9dZvtRmoe-6LH80uULdBb3-mtIhIy08LmDUviGu8nQcQ85eQRYLwRmxLkJoHTbXAj/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJZQ9c8IW8woARN0gTXFiTqSU/photos/AZLasHpe3vnH70Mv4rAFyCVHc3Yq8jkmwuyF-g19_ct7N4z0pJQ_5DZM_8t14TwQmZnpfvoMor24atUov9w-Etz2Ly1R2OuVpHOnwlgA18ue-fJ_ww8woCKBuU2gP9oOaEETbVXJJK083eOOvH4MfaVwMcgNyf8OIyys474TuZ8o8O_LvTGNP68rkupAuN91oYZTlc_7lTqcau5rWHj6dkAutjgHtUsbIPAUGKrWilvv53TRNd-EG7KnTESiO6ybG2NhODSq6iE917eoAfHIkRX-Y9XAabEC0O-cZLijGXx_aKaEtEOaUmeRqAdClpg96SZVfGxhFzVBkgYBuWVF79fNXRd3B6xxtQ6t5j9VS5Lnqm-OYbD9dZvtRmoe-6LH80uULdBb3-mtIhIy08LmDUviGu8nQcQ85eQRYLwRmxLkJoHTbXAj/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJZQ9c8IW8woARN0gTXFiTqSU/photos/AZLasHpe3vnH70Mv4rAFyCVHc3Yq8jkmwuyF-g19_ct7N4z0pJQ_5DZM_8t14TwQmZnpfvoMor24atUov9w-Etz2Ly1R2OuVpHOnwlgA18ue-fJ_ww8woCKBuU2gP9oOaEETbVXJJK083eOOvH4MfaVwMcgNyf8OIyys474TuZ8o8O_LvTGNP68rkupAuN91oYZTlc_7lTqcau5rWHj6dkAutjgHtUsbIPAUGKrWilvv53TRNd-EG7KnTESiO6ybG2NhODSq6iE917eoAfHIkRX-Y9XAabEC0O-cZLijGXx_aKaEtEOaUmeRqAdClpg96SZVfGxhFzVBkgYBuWVF79fNXRd3B6xxtQ6t5j9VS5Lnqm-OYbD9dZvtRmoe-6LH80uULdBb3-mtIhIy08LmDUviGu8nQcQ85eQRYLwRmxLkJoHTbXAj/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:50.251Z"
+    "photoCacheExpiry": "2026-04-07T04:53:17.967Z"
   },
   "crawford-hall": {
     "name": "Crawford Hall",
@@ -1034,13 +1034,13 @@
         "languageCode": "en"
       }
     },
-    "fetchedAt": "2026-01-05T22:54:50.352Z",
+    "fetchedAt": "2026-01-07T05:53:18.068Z",
     "photoUrls": {
       "thumbnail": "/images/venues/fallback-active.jpg",
       "medium": "/images/venues/fallback-active.jpg",
       "large": "/images/venues/fallback-active.jpg"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:50.352Z"
+    "photoCacheExpiry": "2026-04-07T04:53:18.068Z"
   },
   "caliente-racetrack": {
     "name": "Caliente Racetrack",
@@ -1226,13 +1226,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:50.454Z",
+    "fetchedAt": "2026-01-07T05:53:18.170Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJrSFlZwNI2YAR2dEjuz7VXCI/photos/AZLasHoDdwKB2WwsxaD4QAxo5kmkogFUaZj_SUtFoC93yeSLX2vk4OitWuDhY1PVRzbBZGkQuIAQUCDT16GwMgYHor9CrShp8xxqM7GzKzoYgXf9gg_VGyIPoljOAH0mRwo43lCsrrASfwrcQnIelAWvPGf0lVnrXnj_6Mo33SUtapl3Mj7owEETY_9-J5H12NNOhAzyf9iuWRmVIHzdyeZYWaNZyBLsj6aJgYHmruLRm6J7SaiS62BJ4NeD_vWwJgXxdsgcBb8w6mwO-KHp1pbWQj5ZyyaEcQo-GxF8hfoV4QctXX8QrW4dEnvNmjYZoqKWN800ijl5Abtx25E7sf4-45Ssxs3Huv62126rIKdx6t2knDWY9QPXgbtU1eV7OQYJe-TYp9_SC-ivMaPFydtdphRqWLrckhUg67bdQcS7CpGU6A/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJrSFlZwNI2YAR2dEjuz7VXCI/photos/AZLasHoDdwKB2WwsxaD4QAxo5kmkogFUaZj_SUtFoC93yeSLX2vk4OitWuDhY1PVRzbBZGkQuIAQUCDT16GwMgYHor9CrShp8xxqM7GzKzoYgXf9gg_VGyIPoljOAH0mRwo43lCsrrASfwrcQnIelAWvPGf0lVnrXnj_6Mo33SUtapl3Mj7owEETY_9-J5H12NNOhAzyf9iuWRmVIHzdyeZYWaNZyBLsj6aJgYHmruLRm6J7SaiS62BJ4NeD_vWwJgXxdsgcBb8w6mwO-KHp1pbWQj5ZyyaEcQo-GxF8hfoV4QctXX8QrW4dEnvNmjYZoqKWN800ijl5Abtx25E7sf4-45Ssxs3Huv62126rIKdx6t2knDWY9QPXgbtU1eV7OQYJe-TYp9_SC-ivMaPFydtdphRqWLrckhUg67bdQcS7CpGU6A/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJrSFlZwNI2YAR2dEjuz7VXCI/photos/AZLasHoDdwKB2WwsxaD4QAxo5kmkogFUaZj_SUtFoC93yeSLX2vk4OitWuDhY1PVRzbBZGkQuIAQUCDT16GwMgYHor9CrShp8xxqM7GzKzoYgXf9gg_VGyIPoljOAH0mRwo43lCsrrASfwrcQnIelAWvPGf0lVnrXnj_6Mo33SUtapl3Mj7owEETY_9-J5H12NNOhAzyf9iuWRmVIHzdyeZYWaNZyBLsj6aJgYHmruLRm6J7SaiS62BJ4NeD_vWwJgXxdsgcBb8w6mwO-KHp1pbWQj5ZyyaEcQo-GxF8hfoV4QctXX8QrW4dEnvNmjYZoqKWN800ijl5Abtx25E7sf4-45Ssxs3Huv62126rIKdx6t2knDWY9QPXgbtU1eV7OQYJe-TYp9_SC-ivMaPFydtdphRqWLrckhUg67bdQcS7CpGU6A/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:50.454Z"
+    "photoCacheExpiry": "2026-04-07T04:53:18.170Z"
   },
   "disneyland": {
     "name": "Disneyland",
@@ -1420,13 +1420,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:50.556Z",
+    "fetchedAt": "2026-01-07T05:53:18.272Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJa147K9HX3IAR-lwiGIQv9i4/photos/AZLasHrOuUWCsIt94ZL2Mrcab72HEu8_PI8N8qPvK5eBXez1bNcQ4OCx-AjG0I5OWiuO4phPoJR2eSKki0Ngq0CaE6ntAxZje5bHgosnzxFLLyUAjK4tOPShzTtv4c9mCjQMfw1uWySJx57EYTTQBJVSLqhSjtfSGqv_kOjYeovHWcPRMFYjToqgcc4kRfJGQSmJglnQNTi5Oh-73V1Egy4ODYbckLXqF1Q48wEEt0zaYuJS6PGmTRwu2uff2-uDJvu9tkUFR3QB0nEPhSCgUwLo28pnnexMQqxwGaf-gaiFv2G8C8Dtic4hW_acNf-Z2LAezajjWubehIKFajZLmoH-ZgTwO62kMZansSWpM6jB4-pp5Q0h7gOXrJPfE1felT6mbJTwndLFd-9ep0vg5Oo6gc-BmkBbEhzqtknx9KnxSxSb8A/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJa147K9HX3IAR-lwiGIQv9i4/photos/AZLasHrOuUWCsIt94ZL2Mrcab72HEu8_PI8N8qPvK5eBXez1bNcQ4OCx-AjG0I5OWiuO4phPoJR2eSKki0Ngq0CaE6ntAxZje5bHgosnzxFLLyUAjK4tOPShzTtv4c9mCjQMfw1uWySJx57EYTTQBJVSLqhSjtfSGqv_kOjYeovHWcPRMFYjToqgcc4kRfJGQSmJglnQNTi5Oh-73V1Egy4ODYbckLXqF1Q48wEEt0zaYuJS6PGmTRwu2uff2-uDJvu9tkUFR3QB0nEPhSCgUwLo28pnnexMQqxwGaf-gaiFv2G8C8Dtic4hW_acNf-Z2LAezajjWubehIKFajZLmoH-ZgTwO62kMZansSWpM6jB4-pp5Q0h7gOXrJPfE1felT6mbJTwndLFd-9ep0vg5Oo6gc-BmkBbEhzqtknx9KnxSxSb8A/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJa147K9HX3IAR-lwiGIQv9i4/photos/AZLasHrOuUWCsIt94ZL2Mrcab72HEu8_PI8N8qPvK5eBXez1bNcQ4OCx-AjG0I5OWiuO4phPoJR2eSKki0Ngq0CaE6ntAxZje5bHgosnzxFLLyUAjK4tOPShzTtv4c9mCjQMfw1uWySJx57EYTTQBJVSLqhSjtfSGqv_kOjYeovHWcPRMFYjToqgcc4kRfJGQSmJglnQNTi5Oh-73V1Egy4ODYbckLXqF1Q48wEEt0zaYuJS6PGmTRwu2uff2-uDJvu9tkUFR3QB0nEPhSCgUwLo28pnnexMQqxwGaf-gaiFv2G8C8Dtic4hW_acNf-Z2LAezajjWubehIKFajZLmoH-ZgTwO62kMZansSWpM6jB4-pp5Q0h7gOXrJPfE1felT6mbJTwndLFd-9ep0vg5Oo6gc-BmkBbEhzqtknx9KnxSxSb8A/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:50.556Z"
+    "photoCacheExpiry": "2026-04-07T04:53:18.272Z"
   },
   "the-rose-bowl": {
     "name": "The Rose Bowl",
@@ -1616,13 +1616,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:50.657Z",
+    "fetchedAt": "2026-01-07T05:53:18.372Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJkRS5KKTDwoARL78qHMf9T0w/photos/AZLasHooHIQZ0JclQBgiH8ett7Dc-ssciJvAWm3ZjDWQd0CkyVxqW0nOKRxjnwroViItu1IBGWoV7bt7s_8sWVkKiRNwdWxPvz6lTu1pEkNxb9t7HXPJRuAK09wELT6j4W3xLHQSM86o3M8TXfNdwBQvh-zDmNkeqrfkFnL2xgpgW7v9k5EoUnnQ-_MBfYvjkkcccD1uQygiV_xJsryhljrdFe6J_HhIsdyGT2Rl2ZaQBw3xjtdfE50KamUNsBWT7iAuofobWW7oBptD7AtBbgGvAT4zSrCDMhho4O6c_t8sQet6OGGeaougqnhc6WoUzbQ_OnaUowwyFXTHMA0VelHPU3W3S0cASh8bFbPfFY2R9Crtv92hfuBgS70DcKS0jcBI7pDXjKW9eew86r7UDvGNXlGqzOJR4P7TlTg1mQKbVZJgwA/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJkRS5KKTDwoARL78qHMf9T0w/photos/AZLasHooHIQZ0JclQBgiH8ett7Dc-ssciJvAWm3ZjDWQd0CkyVxqW0nOKRxjnwroViItu1IBGWoV7bt7s_8sWVkKiRNwdWxPvz6lTu1pEkNxb9t7HXPJRuAK09wELT6j4W3xLHQSM86o3M8TXfNdwBQvh-zDmNkeqrfkFnL2xgpgW7v9k5EoUnnQ-_MBfYvjkkcccD1uQygiV_xJsryhljrdFe6J_HhIsdyGT2Rl2ZaQBw3xjtdfE50KamUNsBWT7iAuofobWW7oBptD7AtBbgGvAT4zSrCDMhho4O6c_t8sQet6OGGeaougqnhc6WoUzbQ_OnaUowwyFXTHMA0VelHPU3W3S0cASh8bFbPfFY2R9Crtv92hfuBgS70DcKS0jcBI7pDXjKW9eew86r7UDvGNXlGqzOJR4P7TlTg1mQKbVZJgwA/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJkRS5KKTDwoARL78qHMf9T0w/photos/AZLasHooHIQZ0JclQBgiH8ett7Dc-ssciJvAWm3ZjDWQd0CkyVxqW0nOKRxjnwroViItu1IBGWoV7bt7s_8sWVkKiRNwdWxPvz6lTu1pEkNxb9t7HXPJRuAK09wELT6j4W3xLHQSM86o3M8TXfNdwBQvh-zDmNkeqrfkFnL2xgpgW7v9k5EoUnnQ-_MBfYvjkkcccD1uQygiV_xJsryhljrdFe6J_HhIsdyGT2Rl2ZaQBw3xjtdfE50KamUNsBWT7iAuofobWW7oBptD7AtBbgGvAT4zSrCDMhho4O6c_t8sQet6OGGeaougqnhc6WoUzbQ_OnaUowwyFXTHMA0VelHPU3W3S0cASh8bFbPfFY2R9Crtv92hfuBgS70DcKS0jcBI7pDXjKW9eew86r7UDvGNXlGqzOJR4P7TlTg1mQKbVZJgwA/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:50.657Z"
+    "photoCacheExpiry": "2026-04-07T04:53:18.372Z"
   },
   "mesa-amphitheatre": {
     "name": "Mesa Amphitheatre",
@@ -1811,13 +1811,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:50.759Z",
+    "fetchedAt": "2026-01-07T05:53:18.482Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJgzS8c8GnK4cR3X6G3CfM5mo/photos/AZLasHqhzD9LudN4dZ-9reTgr-muq8_JdDXKXlLE3ybsMXQNgKSY4s6NKbdwTvJfr8bTxQeGhRv5Uv4k88eI2POcmNsNp7lG_pOdWN3pi1g9CPeTTirf1iCciVC4t0sRoz_gO66YFL6Be2ZF6J1KBmRQKQUqG_hPNwrLNlUEAhRXoJKWC4PXSUH1FUX5ZZLGVsl_FSj2AWYNyz-Gifr57b6ZaW5l-OMFjsgszB44QJ5hyGd-lSwBRN4W1HZMhWN-X0HIBXEKPuPXQVjmj63yJUdPgcNQQGKlgwl3_LLssOEAp5Uh1LzEXFtU5qg3LKNuQxBk-XIQGY51_tA0HWh902yz0mNcK3LxRiCKNxKBhrz0U7-eXT9CzCYvqagJfXS5fHTEwvKhxEuCvKx_nM9QyEKRd78gE_Sepvb55Tvmia92vLg4Hg/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJgzS8c8GnK4cR3X6G3CfM5mo/photos/AZLasHqhzD9LudN4dZ-9reTgr-muq8_JdDXKXlLE3ybsMXQNgKSY4s6NKbdwTvJfr8bTxQeGhRv5Uv4k88eI2POcmNsNp7lG_pOdWN3pi1g9CPeTTirf1iCciVC4t0sRoz_gO66YFL6Be2ZF6J1KBmRQKQUqG_hPNwrLNlUEAhRXoJKWC4PXSUH1FUX5ZZLGVsl_FSj2AWYNyz-Gifr57b6ZaW5l-OMFjsgszB44QJ5hyGd-lSwBRN4W1HZMhWN-X0HIBXEKPuPXQVjmj63yJUdPgcNQQGKlgwl3_LLssOEAp5Uh1LzEXFtU5qg3LKNuQxBk-XIQGY51_tA0HWh902yz0mNcK3LxRiCKNxKBhrz0U7-eXT9CzCYvqagJfXS5fHTEwvKhxEuCvKx_nM9QyEKRd78gE_Sepvb55Tvmia92vLg4Hg/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJgzS8c8GnK4cR3X6G3CfM5mo/photos/AZLasHqhzD9LudN4dZ-9reTgr-muq8_JdDXKXlLE3ybsMXQNgKSY4s6NKbdwTvJfr8bTxQeGhRv5Uv4k88eI2POcmNsNp7lG_pOdWN3pi1g9CPeTTirf1iCciVC4t0sRoz_gO66YFL6Be2ZF6J1KBmRQKQUqG_hPNwrLNlUEAhRXoJKWC4PXSUH1FUX5ZZLGVsl_FSj2AWYNyz-Gifr57b6ZaW5l-OMFjsgszB44QJ5hyGd-lSwBRN4W1HZMhWN-X0HIBXEKPuPXQVjmj63yJUdPgcNQQGKlgwl3_LLssOEAp5Uh1LzEXFtU5qg3LKNuQxBk-XIQGY51_tA0HWh902yz0mNcK3LxRiCKNxKBhrz0U7-eXT9CzCYvqagJfXS5fHTEwvKhxEuCvKx_nM9QyEKRd78gE_Sepvb55Tvmia92vLg4Hg/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:50.759Z"
+    "photoCacheExpiry": "2026-04-07T04:53:18.482Z"
   },
   "arizona-veterans-memorial-coliseum": {
     "name": "Arizona Veterans Memorial Coliseum",
@@ -2007,13 +2007,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:50.861Z",
+    "fetchedAt": "2026-01-07T05:53:18.584Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJscMorLQTK4cRQZtJ3VeEd8M/photos/AZLasHqDmjTg_iVR5zEMPRdcqZ5QCWAmUgs7EwYDsdb0NAWTjDkEty3B4N2Xk41bpHeNAxbZvimEgHlG8aeJJ-UYCKmAByjENH2iQfqaIzDKCOjl2tlJQ5Zv3Yc9f_zAvE4eXhfW1XWBeuM1NxKGqbZwSmCPxtfneWKkNYJnwk-mMZor33VJk4MQDkCTqZFAoePti0r8D-M3DJR5BEuff5MbLVtwWTV7mPpj_D-mqqdWl_3B4K2fe5jHkWwJ1sFPxfi_7FgdiuFL3Bz8Y7DRted7gFTFtsxLAPyqo5LTd1Cz1WoZlA/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJscMorLQTK4cRQZtJ3VeEd8M/photos/AZLasHqDmjTg_iVR5zEMPRdcqZ5QCWAmUgs7EwYDsdb0NAWTjDkEty3B4N2Xk41bpHeNAxbZvimEgHlG8aeJJ-UYCKmAByjENH2iQfqaIzDKCOjl2tlJQ5Zv3Yc9f_zAvE4eXhfW1XWBeuM1NxKGqbZwSmCPxtfneWKkNYJnwk-mMZor33VJk4MQDkCTqZFAoePti0r8D-M3DJR5BEuff5MbLVtwWTV7mPpj_D-mqqdWl_3B4K2fe5jHkWwJ1sFPxfi_7FgdiuFL3Bz8Y7DRted7gFTFtsxLAPyqo5LTd1Cz1WoZlA/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJscMorLQTK4cRQZtJ3VeEd8M/photos/AZLasHqDmjTg_iVR5zEMPRdcqZ5QCWAmUgs7EwYDsdb0NAWTjDkEty3B4N2Xk41bpHeNAxbZvimEgHlG8aeJJ-UYCKmAByjENH2iQfqaIzDKCOjl2tlJQ5Zv3Yc9f_zAvE4eXhfW1XWBeuM1NxKGqbZwSmCPxtfneWKkNYJnwk-mMZor33VJk4MQDkCTqZFAoePti0r8D-M3DJR5BEuff5MbLVtwWTV7mPpj_D-mqqdWl_3B4K2fe5jHkWwJ1sFPxfi_7FgdiuFL3Bz8Y7DRted7gFTFtsxLAPyqo5LTd1Cz1WoZlA/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:50.861Z"
+    "photoCacheExpiry": "2026-04-07T04:53:18.584Z"
   },
   "universal-amphitheater": {
     "name": "Universal Amphitheater",
@@ -2062,7 +2062,7 @@
     "closedDate": "1999-12-31",
     "notes": "Demolished and rebuilt as Gibson Amphitheatre",
     "places": null,
-    "fetchedAt": "2026-01-05T22:54:50.961Z",
+    "fetchedAt": "2026-01-07T05:53:18.685Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -2098,7 +2098,7 @@
     "closedDate": "1990-01-01",
     "notes": "Club closed in 1990",
     "places": null,
-    "fetchedAt": "2026-01-05T22:54:50.962Z",
+    "fetchedAt": "2026-01-07T05:53:18.685Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -2315,13 +2315,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:50.963Z",
+    "fetchedAt": "2026-01-07T05:53:18.686Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJy3VFXVS2woARBmn6yKDq7rE/photos/AZLasHpTq1NzpGdfJkm4ubYq5uNRM_U-l4M6tQRJPYJkY7BBSrYZvnvMeDoZCtTXMpmefgx2mDciBBkfLbNkvGFRETODdYdDs9eLPoO3hAAydaXPPJmxfrxsmPwXosz9u064VVf1NPsh1zLf9bMgt8C5VyMNr6T3AH7TfYhUZEdFzQVf6tMUhNckCB44R6XzzF9oVxTL9H7IXSrU1rSP9QTY9Uc6ul7JltaP_uU9YFzSw7bmEJta2xX8YdSaGv90FqaW6UfqaRK53dqV7l8Y7RwJr44cy2W7BtdE4cVof9a-_DtEEg/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJy3VFXVS2woARBmn6yKDq7rE/photos/AZLasHpTq1NzpGdfJkm4ubYq5uNRM_U-l4M6tQRJPYJkY7BBSrYZvnvMeDoZCtTXMpmefgx2mDciBBkfLbNkvGFRETODdYdDs9eLPoO3hAAydaXPPJmxfrxsmPwXosz9u064VVf1NPsh1zLf9bMgt8C5VyMNr6T3AH7TfYhUZEdFzQVf6tMUhNckCB44R6XzzF9oVxTL9H7IXSrU1rSP9QTY9Uc6ul7JltaP_uU9YFzSw7bmEJta2xX8YdSaGv90FqaW6UfqaRK53dqV7l8Y7RwJr44cy2W7BtdE4cVof9a-_DtEEg/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJy3VFXVS2woARBmn6yKDq7rE/photos/AZLasHpTq1NzpGdfJkm4ubYq5uNRM_U-l4M6tQRJPYJkY7BBSrYZvnvMeDoZCtTXMpmefgx2mDciBBkfLbNkvGFRETODdYdDs9eLPoO3hAAydaXPPJmxfrxsmPwXosz9u064VVf1NPsh1zLf9bMgt8C5VyMNr6T3AH7TfYhUZEdFzQVf6tMUhNckCB44R6XzzF9oVxTL9H7IXSrU1rSP9QTY9Uc6ul7JltaP_uU9YFzSw7bmEJta2xX8YdSaGv90FqaW6UfqaRK53dqV7l8Y7RwJr44cy2W7BtdE4cVof9a-_DtEEg/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:50.963Z"
+    "photoCacheExpiry": "2026-04-07T04:53:18.686Z"
   },
   "dodger-stadium": {
     "name": "Dodger Stadium",
@@ -2512,13 +2512,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:51.064Z",
+    "fetchedAt": "2026-01-07T05:53:18.788Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJdVYAVPnGwoAR3wmcg09VlJ4/photos/AZLasHqoniiWNAwcYB-oO5qy6m86Or8NECZsTrlOyb8E0F9TOhzhq2A_xo8LJuazmig7o1VnX8rzvbG7_JT78YjwiumtbKA_I24d_RFmoRqFm1LEZmTB3n26QtMwmb_c59aqEcT97q6cN8SWysp_cmSPKb62ey1BW-uG7--DlW9y8uX5jsNSMCC6Oirxq9AIbVa-yADSNcUkJZu97oRoHENBiEdlGgVR3pPH3N81MgaSPx_DmnSjF2L1zUh7v_Tkpjri_drhyzOvg62S30D5o6XvJ88ouqBqWLka8YyXLsE2Ca0T0drJ552FpllcvLKDzjudhH9OGaZq7CWT8cSEdG_JBYVTVI1c-BUR3D3yFc1FvKu7T3brGzFYUbqQczDIKOpVud36v7A9dlQETFKM1oEF9EePQsGr24EW2Wdk6E5XlO3U_N0/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJdVYAVPnGwoAR3wmcg09VlJ4/photos/AZLasHqoniiWNAwcYB-oO5qy6m86Or8NECZsTrlOyb8E0F9TOhzhq2A_xo8LJuazmig7o1VnX8rzvbG7_JT78YjwiumtbKA_I24d_RFmoRqFm1LEZmTB3n26QtMwmb_c59aqEcT97q6cN8SWysp_cmSPKb62ey1BW-uG7--DlW9y8uX5jsNSMCC6Oirxq9AIbVa-yADSNcUkJZu97oRoHENBiEdlGgVR3pPH3N81MgaSPx_DmnSjF2L1zUh7v_Tkpjri_drhyzOvg62S30D5o6XvJ88ouqBqWLka8YyXLsE2Ca0T0drJ552FpllcvLKDzjudhH9OGaZq7CWT8cSEdG_JBYVTVI1c-BUR3D3yFc1FvKu7T3brGzFYUbqQczDIKOpVud36v7A9dlQETFKM1oEF9EePQsGr24EW2Wdk6E5XlO3U_N0/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJdVYAVPnGwoAR3wmcg09VlJ4/photos/AZLasHqoniiWNAwcYB-oO5qy6m86Or8NECZsTrlOyb8E0F9TOhzhq2A_xo8LJuazmig7o1VnX8rzvbG7_JT78YjwiumtbKA_I24d_RFmoRqFm1LEZmTB3n26QtMwmb_c59aqEcT97q6cN8SWysp_cmSPKb62ey1BW-uG7--DlW9y8uX5jsNSMCC6Oirxq9AIbVa-yADSNcUkJZu97oRoHENBiEdlGgVR3pPH3N81MgaSPx_DmnSjF2L1zUh7v_Tkpjri_drhyzOvg62S30D5o6XvJ88ouqBqWLka8YyXLsE2Ca0T0drJ552FpllcvLKDzjudhH9OGaZq7CWT8cSEdG_JBYVTVI1c-BUR3D3yFc1FvKu7T3brGzFYUbqQczDIKOpVud36v7A9dlQETFKM1oEF9EePQsGr24EW2Wdk6E5XlO3U_N0/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:51.064Z"
+    "photoCacheExpiry": "2026-04-07T04:53:18.788Z"
   },
   "hollywood-palladium": {
     "name": "Hollywood Palladium",
@@ -2725,13 +2725,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:51.166Z",
+    "fetchedAt": "2026-01-07T05:53:18.889Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJt1-0kze_woARkevCuYSmEOA/photos/AZLasHr3POj9qJ2UxR9gVMhuOsuK7Ni6si_b46KAFqM4VeIvbArSn2_lu1S-bVvWuQ-iWNSEm3gR4rNHTaIGuwFOlr3SUYY__yPOi5gk7qkptN8h8sVXbDA0fAYixLReO7HKCDPRfNdIUs6tgT__m6lkPpwtJgPwKN8FW6rEprpha_kjYhzSvuiujPPY6wyqczbavMS1N1JoGzn3S9qhznfysOseir2gPLMixyh2up1wihr50H7O3wMojRHLJtmS0TCTxwaJTLMTWovnf5VcJ0hng9g3rlrOfRk_Maq7yIgwuEPzi6sWEHwWRgikKtMA0tL0fwNOgg6skIBIaEE3ZhhKMQm1BhuTluK-FpQoB_jlnwQFSZH1VPwC60SE2tVsr7giwQK54jKS0wJQWA-RK7A0Lt48mqoqyzIPNK1LuOXACUs/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJt1-0kze_woARkevCuYSmEOA/photos/AZLasHr3POj9qJ2UxR9gVMhuOsuK7Ni6si_b46KAFqM4VeIvbArSn2_lu1S-bVvWuQ-iWNSEm3gR4rNHTaIGuwFOlr3SUYY__yPOi5gk7qkptN8h8sVXbDA0fAYixLReO7HKCDPRfNdIUs6tgT__m6lkPpwtJgPwKN8FW6rEprpha_kjYhzSvuiujPPY6wyqczbavMS1N1JoGzn3S9qhznfysOseir2gPLMixyh2up1wihr50H7O3wMojRHLJtmS0TCTxwaJTLMTWovnf5VcJ0hng9g3rlrOfRk_Maq7yIgwuEPzi6sWEHwWRgikKtMA0tL0fwNOgg6skIBIaEE3ZhhKMQm1BhuTluK-FpQoB_jlnwQFSZH1VPwC60SE2tVsr7giwQK54jKS0wJQWA-RK7A0Lt48mqoqyzIPNK1LuOXACUs/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJt1-0kze_woARkevCuYSmEOA/photos/AZLasHr3POj9qJ2UxR9gVMhuOsuK7Ni6si_b46KAFqM4VeIvbArSn2_lu1S-bVvWuQ-iWNSEm3gR4rNHTaIGuwFOlr3SUYY__yPOi5gk7qkptN8h8sVXbDA0fAYixLReO7HKCDPRfNdIUs6tgT__m6lkPpwtJgPwKN8FW6rEprpha_kjYhzSvuiujPPY6wyqczbavMS1N1JoGzn3S9qhznfysOseir2gPLMixyh2up1wihr50H7O3wMojRHLJtmS0TCTxwaJTLMTWovnf5VcJ0hng9g3rlrOfRk_Maq7yIgwuEPzi6sWEHwWRgikKtMA0tL0fwNOgg6skIBIaEE3ZhhKMQm1BhuTluK-FpQoB_jlnwQFSZH1VPwC60SE2tVsr7giwQK54jKS0wJQWA-RK7A0Lt48mqoqyzIPNK1LuOXACUs/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:51.166Z"
+    "photoCacheExpiry": "2026-04-07T04:53:18.889Z"
   },
   "cal-state-fullerton": {
     "name": "Cal State Fullerton",
@@ -2917,13 +2917,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:51.267Z",
+    "fetchedAt": "2026-01-07T05:53:18.991Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJkRPGjM7V3IARVfNKubsQmCs/photos/AZLasHqgzvgb7riusxzsstUqeayFoympWK7oVPrH19A5dW13QlmAvbVYNI86YMcIyph5eqEUq80ZKOqlHfO_F9uBcmRpGtxCfoGr53Lsl5CmsZdGY3osFUeXYzJnLk6s0JPB-253hb5MzvcvzU2z7QjYT9AWqq0LCVlkWyZ0hjiJnR6C-25vv2iGdiCyVL8mjTs-mV7awSSfPJCTIBwm8yHjR7nAMe0b8vjeZHiE7EwcSv-Yv9lgOj4uH7h7eHNRT0O23qfjKqoY-RKUoqhT5_Srh-GQplMv0kUi7q8XiIy5Yzatp_QixjWRcM2jV6b1dGOKeJYf1zNyMx3tsWfqLXzCPPvCNR2pgRt-aueju-VmLEn95mWm9qy2wmtazOYTqQHcbV9-M2BvRiWKLVOytwA2pcCgISSNazHBaWfhqT9QLbQfMScQ/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJkRPGjM7V3IARVfNKubsQmCs/photos/AZLasHqgzvgb7riusxzsstUqeayFoympWK7oVPrH19A5dW13QlmAvbVYNI86YMcIyph5eqEUq80ZKOqlHfO_F9uBcmRpGtxCfoGr53Lsl5CmsZdGY3osFUeXYzJnLk6s0JPB-253hb5MzvcvzU2z7QjYT9AWqq0LCVlkWyZ0hjiJnR6C-25vv2iGdiCyVL8mjTs-mV7awSSfPJCTIBwm8yHjR7nAMe0b8vjeZHiE7EwcSv-Yv9lgOj4uH7h7eHNRT0O23qfjKqoY-RKUoqhT5_Srh-GQplMv0kUi7q8XiIy5Yzatp_QixjWRcM2jV6b1dGOKeJYf1zNyMx3tsWfqLXzCPPvCNR2pgRt-aueju-VmLEn95mWm9qy2wmtazOYTqQHcbV9-M2BvRiWKLVOytwA2pcCgISSNazHBaWfhqT9QLbQfMScQ/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJkRPGjM7V3IARVfNKubsQmCs/photos/AZLasHqgzvgb7riusxzsstUqeayFoympWK7oVPrH19A5dW13QlmAvbVYNI86YMcIyph5eqEUq80ZKOqlHfO_F9uBcmRpGtxCfoGr53Lsl5CmsZdGY3osFUeXYzJnLk6s0JPB-253hb5MzvcvzU2z7QjYT9AWqq0LCVlkWyZ0hjiJnR6C-25vv2iGdiCyVL8mjTs-mV7awSSfPJCTIBwm8yHjR7nAMe0b8vjeZHiE7EwcSv-Yv9lgOj4uH7h7eHNRT0O23qfjKqoY-RKUoqhT5_Srh-GQplMv0kUi7q8XiIy5Yzatp_QixjWRcM2jV6b1dGOKeJYf1zNyMx3tsWfqLXzCPPvCNR2pgRt-aueju-VmLEn95mWm9qy2wmtazOYTqQHcbV9-M2BvRiWKLVOytwA2pcCgISSNazHBaWfhqT9QLbQfMScQ/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:51.268Z"
+    "photoCacheExpiry": "2026-04-07T04:53:18.991Z"
   },
   "long-beach-arena": {
     "name": "Long Beach Arena",
@@ -3110,13 +3110,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:51.369Z",
+    "fetchedAt": "2026-01-07T05:53:19.091Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJj8T_Vzsx3YARROVXXHXInnY/photos/AZLasHps9HIdBPUHaIlfdoGyCegerfos1zxDX_ehissc0iVW8ycI3xPDr-yBNtgWtleyMge4jbQ7WkCwmkrDtbObLsgYEFLiAzzleX8Zv4xk81q3ejH813PfaiJ0xn-JuPYMahzh8S298QN4aSIxlonEEWVFrT5FsMu5bsHaPWzcF9GtaJqtvBA3vTgzMZjjQN4rg0ew9OpQkjoZ9IH4-LgHzH3JanTjuF7qH68DzYH78GCWRgHdaPgn-_lzQvH1hWyZkV8l_t5L-VF-XHXJC82nF4gjS5BJn8sLzbNb1aUFnAKfXw/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJj8T_Vzsx3YARROVXXHXInnY/photos/AZLasHps9HIdBPUHaIlfdoGyCegerfos1zxDX_ehissc0iVW8ycI3xPDr-yBNtgWtleyMge4jbQ7WkCwmkrDtbObLsgYEFLiAzzleX8Zv4xk81q3ejH813PfaiJ0xn-JuPYMahzh8S298QN4aSIxlonEEWVFrT5FsMu5bsHaPWzcF9GtaJqtvBA3vTgzMZjjQN4rg0ew9OpQkjoZ9IH4-LgHzH3JanTjuF7qH68DzYH78GCWRgHdaPgn-_lzQvH1hWyZkV8l_t5L-VF-XHXJC82nF4gjS5BJn8sLzbNb1aUFnAKfXw/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJj8T_Vzsx3YARROVXXHXInnY/photos/AZLasHps9HIdBPUHaIlfdoGyCegerfos1zxDX_ehissc0iVW8ycI3xPDr-yBNtgWtleyMge4jbQ7WkCwmkrDtbObLsgYEFLiAzzleX8Zv4xk81q3ejH813PfaiJ0xn-JuPYMahzh8S298QN4aSIxlonEEWVFrT5FsMu5bsHaPWzcF9GtaJqtvBA3vTgzMZjjQN4rg0ew9OpQkjoZ9IH4-LgHzH3JanTjuF7qH68DzYH78GCWRgHdaPgn-_lzQvH1hWyZkV8l_t5L-VF-XHXJC82nF4gjS5BJn8sLzbNb1aUFnAKfXw/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:51.369Z"
+    "photoCacheExpiry": "2026-04-07T04:53:19.091Z"
   },
   "the-celebrity-theatre": {
     "name": "The Celebrity Theatre",
@@ -3145,7 +3145,7 @@
     "closedDate": "2008-01-01",
     "notes": "Renamed City National Grove of Anaheim",
     "places": null,
-    "fetchedAt": "2026-01-05T22:54:51.471Z",
+    "fetchedAt": "2026-01-07T05:53:19.192Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -3385,13 +3385,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:51.471Z",
+    "fetchedAt": "2026-01-07T05:53:19.193Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJzTySGLzx3IARdR3ZRRb9WzI/photos/AZLasHpn04wC_WyaeEDfZo0A6TqMg_twB-ZOHjimAMEgdq_PSM0YM3yuNvMTFt1k11RjGIfMAhKe--xwS-BZ8SdxOxcAAj0dallaRCTW-jj-vCB6ODTN0ndPKcPHBhRXG7Q70_n_ZIxoe2Jbx-mFQ83jmwPFsJzrMUChETfEaw0hO317z_FxwDnXEnpjJ_uTtMBY5kSyBSD7cdrqbWrm4qpGa3movgnDW3jeaPLn1WOjGEsJnk4ZHX5u7845-K46Sgr1A6FNvDJofEoLGBOhV6-ayRZv7C-9b6GC5CSvOstr_HzXF5wajZR_IoKuAWMN4l9WqCDLa6dPi6W5nJG-mkM16fh2ldPqVZcBdm6ErUXY5a6fasY6DzdCMrcgBUVYUPW2iIlRrLExgqc2bIVoHJ0zskZnQJoRJh2PHQBXJRKmThHbow/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJzTySGLzx3IARdR3ZRRb9WzI/photos/AZLasHpn04wC_WyaeEDfZo0A6TqMg_twB-ZOHjimAMEgdq_PSM0YM3yuNvMTFt1k11RjGIfMAhKe--xwS-BZ8SdxOxcAAj0dallaRCTW-jj-vCB6ODTN0ndPKcPHBhRXG7Q70_n_ZIxoe2Jbx-mFQ83jmwPFsJzrMUChETfEaw0hO317z_FxwDnXEnpjJ_uTtMBY5kSyBSD7cdrqbWrm4qpGa3movgnDW3jeaPLn1WOjGEsJnk4ZHX5u7845-K46Sgr1A6FNvDJofEoLGBOhV6-ayRZv7C-9b6GC5CSvOstr_HzXF5wajZR_IoKuAWMN4l9WqCDLa6dPi6W5nJG-mkM16fh2ldPqVZcBdm6ErUXY5a6fasY6DzdCMrcgBUVYUPW2iIlRrLExgqc2bIVoHJ0zskZnQJoRJh2PHQBXJRKmThHbow/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJzTySGLzx3IARdR3ZRRb9WzI/photos/AZLasHpn04wC_WyaeEDfZo0A6TqMg_twB-ZOHjimAMEgdq_PSM0YM3yuNvMTFt1k11RjGIfMAhKe--xwS-BZ8SdxOxcAAj0dallaRCTW-jj-vCB6ODTN0ndPKcPHBhRXG7Q70_n_ZIxoe2Jbx-mFQ83jmwPFsJzrMUChETfEaw0hO317z_FxwDnXEnpjJ_uTtMBY5kSyBSD7cdrqbWrm4qpGa3movgnDW3jeaPLn1WOjGEsJnk4ZHX5u7845-K46Sgr1A6FNvDJofEoLGBOhV6-ayRZv7C-9b6GC5CSvOstr_HzXF5wajZR_IoKuAWMN4l9WqCDLa6dPi6W5nJG-mkM16fh2ldPqVZcBdm6ErUXY5a6fasY6DzdCMrcgBUVYUPW2iIlRrLExgqc2bIVoHJ0zskZnQJoRJh2PHQBXJRKmThHbow/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:51.471Z"
+    "photoCacheExpiry": "2026-04-07T04:53:19.193Z"
   },
   "olympic-velodrome": {
     "name": "Olympic Velodrome",
@@ -3420,7 +3420,7 @@
     "closedDate": "2003-01-01",
     "notes": "Demolished for Dignity Health Sports Park (Home Depot Center)",
     "places": null,
-    "fetchedAt": "2026-01-05T22:54:51.573Z",
+    "fetchedAt": "2026-01-07T05:53:19.293Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -3486,13 +3486,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:51.573Z",
+    "fetchedAt": "2026-01-07T05:53:19.294Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJc740BIbg3IAR3BtFGEv1jR8/photos/AZLasHqr3GOow-L-wKUe2y3xyQLpcGyx2Zxy1OfDwlJaonqgEPcYGVcmUw0b6y6LTIRXjmqgNixPvWioFE24rZchTuuwNsQvYb82jysAy1NaVg_ju_vIlA8_K1_o7hNTm6KlkfIvfP3p_jp56oV_14HpEYlKJylGMM5hBLN7ah9FZD_WnGZfkfVEjP6qqyTuV8IcAy1JakvWH7n7LyD9CNShpUxiaxLCGELzBeBeU73Gjis8cBflGZU44d5_GdB5I8LU3cWKAvIPyj0Fs8XI-jZ6dKeDuBWzT0MeHqu9TsdgcWjqytAqGk4caijp8XL080Hqi9VnDTCEauRN_9VoixwJ3dwfCj4Pi6_Z92yBop73_KsqT4THeeFYxr70rojdVbR5-xmrdblSO6t4DtCY-hvIQ9XujG7tLO9-BTgyyzVo9amrmABf/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJc740BIbg3IAR3BtFGEv1jR8/photos/AZLasHqr3GOow-L-wKUe2y3xyQLpcGyx2Zxy1OfDwlJaonqgEPcYGVcmUw0b6y6LTIRXjmqgNixPvWioFE24rZchTuuwNsQvYb82jysAy1NaVg_ju_vIlA8_K1_o7hNTm6KlkfIvfP3p_jp56oV_14HpEYlKJylGMM5hBLN7ah9FZD_WnGZfkfVEjP6qqyTuV8IcAy1JakvWH7n7LyD9CNShpUxiaxLCGELzBeBeU73Gjis8cBflGZU44d5_GdB5I8LU3cWKAvIPyj0Fs8XI-jZ6dKeDuBWzT0MeHqu9TsdgcWjqytAqGk4caijp8XL080Hqi9VnDTCEauRN_9VoixwJ3dwfCj4Pi6_Z92yBop73_KsqT4THeeFYxr70rojdVbR5-xmrdblSO6t4DtCY-hvIQ9XujG7tLO9-BTgyyzVo9amrmABf/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJc740BIbg3IAR3BtFGEv1jR8/photos/AZLasHqr3GOow-L-wKUe2y3xyQLpcGyx2Zxy1OfDwlJaonqgEPcYGVcmUw0b6y6LTIRXjmqgNixPvWioFE24rZchTuuwNsQvYb82jysAy1NaVg_ju_vIlA8_K1_o7hNTm6KlkfIvfP3p_jp56oV_14HpEYlKJylGMM5hBLN7ah9FZD_WnGZfkfVEjP6qqyTuV8IcAy1JakvWH7n7LyD9CNShpUxiaxLCGELzBeBeU73Gjis8cBflGZU44d5_GdB5I8LU3cWKAvIPyj0Fs8XI-jZ6dKeDuBWzT0MeHqu9TsdgcWjqytAqGk4caijp8XL080Hqi9VnDTCEauRN_9VoixwJ3dwfCj4Pi6_Z92yBop73_KsqT4THeeFYxr70rojdVbR5-xmrdblSO6t4DtCY-hvIQ9XujG7tLO9-BTgyyzVo9amrmABf/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:51.573Z"
+    "photoCacheExpiry": "2026-04-07T04:53:19.294Z"
   },
   "the-galaxy-theatre": {
     "name": "The Galaxy Theatre",
@@ -3526,7 +3526,7 @@
     "closedDate": "2011-01-01",
     "notes": "Renamed The Observatory",
     "places": null,
-    "fetchedAt": "2026-01-05T22:54:51.674Z",
+    "fetchedAt": "2026-01-07T05:53:19.395Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -3562,7 +3562,7 @@
     "closedDate": null,
     "notes": "Former address: 1700 S. Pacific Coast Hwy, Redondo Beach, CA 90277",
     "places": null,
-    "fetchedAt": "2026-01-05T22:54:51.674Z",
+    "fetchedAt": "2026-01-07T05:53:19.396Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -3757,13 +3757,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:51.674Z",
+    "fetchedAt": "2026-01-07T05:53:19.396Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJ4U6oQOh544kROegfjmsLBCs/photos/AZLasHpUAwpVictbtZlVxUOm3oG2O92B1ahJpY_nMmYNr0cX7oCVZJ3-Y3SfkTnubGwIV8MaCLFYdWXDxrPYRMwTjIc3L5YfMErdCmhnZ4NfAD6kEZ12qFg6ihWNG0LpoowjWjJXIesqfmzvazRN6gEE0VCibcV9-rvZ3eoQvloaZjz1pFxqyIVsWBnPAiDqlr-gtZzakBdpIrueeclEqGqN5HDyitoA4i6z2IbS2Wj05SDuiCm2hOa3TwYPJhQ5sZk2yofapgNr92HgltIqOqeBdRgCwnHpyBbHS3EqSxZXUCWvfRMipgVu9nKhhEK9Nq9IRuAdRcBIE0z8IbqXs2kWp5wg3OtlQZuy3yl6jOYJQ84jhi3XWic4b8BXsQbGdSJ3dJ8b6G5TgJz4I1f2Ifg_65MdQsPRBPIQ1DtMQODfpa4/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJ4U6oQOh544kROegfjmsLBCs/photos/AZLasHpUAwpVictbtZlVxUOm3oG2O92B1ahJpY_nMmYNr0cX7oCVZJ3-Y3SfkTnubGwIV8MaCLFYdWXDxrPYRMwTjIc3L5YfMErdCmhnZ4NfAD6kEZ12qFg6ihWNG0LpoowjWjJXIesqfmzvazRN6gEE0VCibcV9-rvZ3eoQvloaZjz1pFxqyIVsWBnPAiDqlr-gtZzakBdpIrueeclEqGqN5HDyitoA4i6z2IbS2Wj05SDuiCm2hOa3TwYPJhQ5sZk2yofapgNr92HgltIqOqeBdRgCwnHpyBbHS3EqSxZXUCWvfRMipgVu9nKhhEK9Nq9IRuAdRcBIE0z8IbqXs2kWp5wg3OtlQZuy3yl6jOYJQ84jhi3XWic4b8BXsQbGdSJ3dJ8b6G5TgJz4I1f2Ifg_65MdQsPRBPIQ1DtMQODfpa4/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJ4U6oQOh544kROegfjmsLBCs/photos/AZLasHpUAwpVictbtZlVxUOm3oG2O92B1ahJpY_nMmYNr0cX7oCVZJ3-Y3SfkTnubGwIV8MaCLFYdWXDxrPYRMwTjIc3L5YfMErdCmhnZ4NfAD6kEZ12qFg6ihWNG0LpoowjWjJXIesqfmzvazRN6gEE0VCibcV9-rvZ3eoQvloaZjz1pFxqyIVsWBnPAiDqlr-gtZzakBdpIrueeclEqGqN5HDyitoA4i6z2IbS2Wj05SDuiCm2hOa3TwYPJhQ5sZk2yofapgNr92HgltIqOqeBdRgCwnHpyBbHS3EqSxZXUCWvfRMipgVu9nKhhEK9Nq9IRuAdRcBIE0z8IbqXs2kWp5wg3OtlQZuy3yl6jOYJQ84jhi3XWic4b8BXsQbGdSJ3dJ8b6G5TgJz4I1f2Ifg_65MdQsPRBPIQ1DtMQODfpa4/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:51.674Z"
+    "photoCacheExpiry": "2026-04-07T04:53:19.396Z"
   },
   "the-grove-of-anaheim": {
     "name": "The Grove of Anaheim",
@@ -3963,13 +3963,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:51.776Z",
+    "fetchedAt": "2026-01-07T05:53:19.497Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJeTMFbZnX3IARggbv6Xylqw8/photos/AZLasHpCAELPK3FWqXGVuBXCeNBHDi8CRCBESsSGZj8SZDbT8ZkV6EbDCCJd4VC2UMQZPqk89UlE4WkZiLDAUVWfTAXxDNj5FnVdWCtM-RD_m1HdiCygFCkXxjuKULNEdTqlX161Gs_4b6zmag9qArfVB9sbndFg-q7jJtnqQJw0VBHoafG43Qj3LuvIs1wQuoTlZSCe7CZEeXqZZ4x_YDdCu9H7yqp75jcQ_y6W_ECs6h9qRSqnvOIM368ATOUzMOfIEQRJWJ2Ef-BLuzdcGCjFPMKp2EZuKEzUacPoRdWNHjM/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJeTMFbZnX3IARggbv6Xylqw8/photos/AZLasHpCAELPK3FWqXGVuBXCeNBHDi8CRCBESsSGZj8SZDbT8ZkV6EbDCCJd4VC2UMQZPqk89UlE4WkZiLDAUVWfTAXxDNj5FnVdWCtM-RD_m1HdiCygFCkXxjuKULNEdTqlX161Gs_4b6zmag9qArfVB9sbndFg-q7jJtnqQJw0VBHoafG43Qj3LuvIs1wQuoTlZSCe7CZEeXqZZ4x_YDdCu9H7yqp75jcQ_y6W_ECs6h9qRSqnvOIM368ATOUzMOfIEQRJWJ2Ef-BLuzdcGCjFPMKp2EZuKEzUacPoRdWNHjM/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJeTMFbZnX3IARggbv6Xylqw8/photos/AZLasHpCAELPK3FWqXGVuBXCeNBHDi8CRCBESsSGZj8SZDbT8ZkV6EbDCCJd4VC2UMQZPqk89UlE4WkZiLDAUVWfTAXxDNj5FnVdWCtM-RD_m1HdiCygFCkXxjuKULNEdTqlX161Gs_4b6zmag9qArfVB9sbndFg-q7jJtnqQJw0VBHoafG43Qj3LuvIs1wQuoTlZSCe7CZEeXqZZ4x_YDdCu9H7yqp75jcQ_y6W_ECs6h9qRSqnvOIM368ATOUzMOfIEQRJWJ2Ef-BLuzdcGCjFPMKp2EZuKEzUacPoRdWNHjM/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:51.776Z"
+    "photoCacheExpiry": "2026-04-07T04:53:19.497Z"
   },
   "house-of-blues-anaheim": {
     "name": "House of Blues Anaheim",
@@ -4189,13 +4189,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:51.877Z",
+    "fetchedAt": "2026-01-07T05:53:19.599Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJc4y_idjX3IARMRg3qcsJwC8/photos/AZLasHqDl8fwuyycOOcZgIvJBbvUkTceEY9dYHKaNGKZAOfFoYsQiex9MRe6HrywIh0hQZ0kkYuMP2itae8pLEtPzXZwCu13cfD961JpxCUt0nkrJmixgOT62biKAhea83bDcH6F0Zc6mhW9YS6sgdbZsj2Sge5lHBi3-_WU1A4GCZUrshRHVuihuum_fpB4XPYOK1bx53fikC8zoCzo2MsONvbFgJL_NoL_QBpzFzvtC5kNVn6CNyShm4T-i29KDOhJS59tnK8lC2xFlE18D5Mz8ppxU61jcCckVu5gjaqqkA493Q/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJc4y_idjX3IARMRg3qcsJwC8/photos/AZLasHqDl8fwuyycOOcZgIvJBbvUkTceEY9dYHKaNGKZAOfFoYsQiex9MRe6HrywIh0hQZ0kkYuMP2itae8pLEtPzXZwCu13cfD961JpxCUt0nkrJmixgOT62biKAhea83bDcH6F0Zc6mhW9YS6sgdbZsj2Sge5lHBi3-_WU1A4GCZUrshRHVuihuum_fpB4XPYOK1bx53fikC8zoCzo2MsONvbFgJL_NoL_QBpzFzvtC5kNVn6CNyShm4T-i29KDOhJS59tnK8lC2xFlE18D5Mz8ppxU61jcCckVu5gjaqqkA493Q/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJc4y_idjX3IARMRg3qcsJwC8/photos/AZLasHqDl8fwuyycOOcZgIvJBbvUkTceEY9dYHKaNGKZAOfFoYsQiex9MRe6HrywIh0hQZ0kkYuMP2itae8pLEtPzXZwCu13cfD961JpxCUt0nkrJmixgOT62biKAhea83bDcH6F0Zc6mhW9YS6sgdbZsj2Sge5lHBi3-_WU1A4GCZUrshRHVuihuum_fpB4XPYOK1bx53fikC8zoCzo2MsONvbFgJL_NoL_QBpzFzvtC5kNVn6CNyShm4T-i29KDOhJS59tnK8lC2xFlE18D5Mz8ppxU61jcCckVu5gjaqqkA493Q/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:51.878Z"
+    "photoCacheExpiry": "2026-04-07T04:53:19.599Z"
   },
   "hyundai-pavilion": {
     "name": "Hyundai Pavilion",
@@ -4383,13 +4383,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:51.979Z",
+    "fetchedAt": "2026-01-07T05:53:19.701Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJqejNjgpPw4ARqYeFJtDWCgY/photos/AZLasHqL9MePpAK8maXiwQhqD5YBfJjcZwp_otA94yHAsa7uZPWMS-zsjWEbQG2_zBp0MaTSX9rM6060Seg-K9YKmGOOfw9FR6-a-rQTUCYN0GyJQ8l9u1Qz_NxQqoqctLHGQWJA2YkFdKcQ8ARopzeGouAIOm72je8KEKEOelFPxADEanXX_c4tCh5W9bnDjE3mM97yKMAZpyjy0Cu55r-tj2hvISm6cY-n8ppJ6dl_2ZkAxXVhlYYzE5L_7cjdrL9OxKUpELmIrn51lQEJqPKSa_S6tzD4bgaTmhcWE_N_I6rA6vLh8ixQP7VhJIWVvRT5ygHaVO7kSCyz5B4splRtRfwqMWRRyh_G00To3D1B3wC7OWbwZSa-WzMYfJQnZUHgYqAdqfQpqnfzAnxasVRxo6QtzVPCR1VU4x8COMXT2vvuvA/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJqejNjgpPw4ARqYeFJtDWCgY/photos/AZLasHqL9MePpAK8maXiwQhqD5YBfJjcZwp_otA94yHAsa7uZPWMS-zsjWEbQG2_zBp0MaTSX9rM6060Seg-K9YKmGOOfw9FR6-a-rQTUCYN0GyJQ8l9u1Qz_NxQqoqctLHGQWJA2YkFdKcQ8ARopzeGouAIOm72je8KEKEOelFPxADEanXX_c4tCh5W9bnDjE3mM97yKMAZpyjy0Cu55r-tj2hvISm6cY-n8ppJ6dl_2ZkAxXVhlYYzE5L_7cjdrL9OxKUpELmIrn51lQEJqPKSa_S6tzD4bgaTmhcWE_N_I6rA6vLh8ixQP7VhJIWVvRT5ygHaVO7kSCyz5B4splRtRfwqMWRRyh_G00To3D1B3wC7OWbwZSa-WzMYfJQnZUHgYqAdqfQpqnfzAnxasVRxo6QtzVPCR1VU4x8COMXT2vvuvA/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJqejNjgpPw4ARqYeFJtDWCgY/photos/AZLasHqL9MePpAK8maXiwQhqD5YBfJjcZwp_otA94yHAsa7uZPWMS-zsjWEbQG2_zBp0MaTSX9rM6060Seg-K9YKmGOOfw9FR6-a-rQTUCYN0GyJQ8l9u1Qz_NxQqoqctLHGQWJA2YkFdKcQ8ARopzeGouAIOm72je8KEKEOelFPxADEanXX_c4tCh5W9bnDjE3mM97yKMAZpyjy0Cu55r-tj2hvISm6cY-n8ppJ6dl_2ZkAxXVhlYYzE5L_7cjdrL9OxKUpELmIrn51lQEJqPKSa_S6tzD4bgaTmhcWE_N_I6rA6vLh8ixQP7VhJIWVvRT5ygHaVO7kSCyz5B4splRtRfwqMWRRyh_G00To3D1B3wC7OWbwZSa-WzMYfJQnZUHgYqAdqfQpqnfzAnxasVRxo6QtzVPCR1VU4x8COMXT2vvuvA/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:51.980Z"
+    "photoCacheExpiry": "2026-04-07T04:53:19.701Z"
   },
   "hard-rock-hotel-las-vegas": {
     "name": "Hard Rock Hotel Las Vegas",
@@ -4581,13 +4581,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:52.081Z",
+    "fetchedAt": "2026-01-07T05:53:19.802Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJM1wlazPEyIARnJQ_llUdPDo/photos/AZLasHqgY-9NN3FkKk3FT49aVTvMHRv3ru-0YE3-2NUeOISCHf5rfGsZcsjkdF12XnWffk_uQGScqTZP0KpxCUjEd_YmYI8stREgh9rT4tca7GRcEQ813lWU9Ajx20AN3qObUy6kwVYoFFsoBh2QaPj9QwGQmK9PryFBmJ7qBdY-_V1puqMJ2rqNSFIOKXZTFM36kQhub4dCR4iDnxC0HH-kVzorH5Q0_gG0srIKy_bA9mDFCeLFj1eSNbmx4p8XDvC7NE-V0tHPr3zxjdtMq0Wrblf1IPX790sNnBqGCdhYeyWB9w/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJM1wlazPEyIARnJQ_llUdPDo/photos/AZLasHqgY-9NN3FkKk3FT49aVTvMHRv3ru-0YE3-2NUeOISCHf5rfGsZcsjkdF12XnWffk_uQGScqTZP0KpxCUjEd_YmYI8stREgh9rT4tca7GRcEQ813lWU9Ajx20AN3qObUy6kwVYoFFsoBh2QaPj9QwGQmK9PryFBmJ7qBdY-_V1puqMJ2rqNSFIOKXZTFM36kQhub4dCR4iDnxC0HH-kVzorH5Q0_gG0srIKy_bA9mDFCeLFj1eSNbmx4p8XDvC7NE-V0tHPr3zxjdtMq0Wrblf1IPX790sNnBqGCdhYeyWB9w/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJM1wlazPEyIARnJQ_llUdPDo/photos/AZLasHqgY-9NN3FkKk3FT49aVTvMHRv3ru-0YE3-2NUeOISCHf5rfGsZcsjkdF12XnWffk_uQGScqTZP0KpxCUjEd_YmYI8stREgh9rT4tca7GRcEQ813lWU9Ajx20AN3qObUy6kwVYoFFsoBh2QaPj9QwGQmK9PryFBmJ7qBdY-_V1puqMJ2rqNSFIOKXZTFM36kQhub4dCR4iDnxC0HH-kVzorH5Q0_gG0srIKy_bA9mDFCeLFj1eSNbmx4p8XDvC7NE-V0tHPr3zxjdtMq0Wrblf1IPX790sNnBqGCdhYeyWB9w/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:52.081Z"
+    "photoCacheExpiry": "2026-04-07T04:53:19.803Z"
   },
   "staples-center": {
     "name": "Staples Center",
@@ -4616,7 +4616,7 @@
     "closedDate": "2021-12-25",
     "notes": "Renamed Crypto.com Arena",
     "places": null,
-    "fetchedAt": "2026-01-05T22:54:52.182Z",
+    "fetchedAt": "2026-01-07T05:53:19.904Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -4652,7 +4652,7 @@
     "closedDate": "2015-01-01",
     "notes": "Renamed Microsoft Theater (now Peacock Theater)",
     "places": null,
-    "fetchedAt": "2026-01-05T22:54:52.183Z",
+    "fetchedAt": "2026-01-07T05:53:19.904Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -4847,13 +4847,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:52.183Z",
+    "fetchedAt": "2026-01-07T05:53:19.904Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJfcarOh3y3IAR4MU3LI5NWJQ/photos/AZLasHq6oYVXFTN_x9877IaBV4k2z5n9numEZhcqKMS-_WUS1L1uTrQEBS0m0vQMRA-lKUotkRbgI8rG9h9PHKfqXc8YKMMZgIfO8n-LUgjqioSy-mjIQ0CzzvQUeVR9Acs909mD9RR-CTRtGs0aUKRdWLstsCCjxrsICvR9D-5l1CN3bFjPXEq6NRe8hIRpacirAI2F03BMIW5yP2PQRgC9CKJOQQySc5QKNFV7pR_tBpzO8PVARUXT6E-Z7iobiSGVI5Nhuw2f7pdZ4h7DzHRqROuhZTUxEUYMZ9VlpaaHeihPF3SLHgN71KUR-SA5h9ISllThhUkk7vDBt_IVWIfqsAExxFb-rkxiUevU8eed-yLi9gM61QA6DPPA8c4wCJvZU0sA5FCpiPSPhu33CenQaxL0TdUe_k4JSA4DhG9Lwrd9zQ/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJfcarOh3y3IAR4MU3LI5NWJQ/photos/AZLasHq6oYVXFTN_x9877IaBV4k2z5n9numEZhcqKMS-_WUS1L1uTrQEBS0m0vQMRA-lKUotkRbgI8rG9h9PHKfqXc8YKMMZgIfO8n-LUgjqioSy-mjIQ0CzzvQUeVR9Acs909mD9RR-CTRtGs0aUKRdWLstsCCjxrsICvR9D-5l1CN3bFjPXEq6NRe8hIRpacirAI2F03BMIW5yP2PQRgC9CKJOQQySc5QKNFV7pR_tBpzO8PVARUXT6E-Z7iobiSGVI5Nhuw2f7pdZ4h7DzHRqROuhZTUxEUYMZ9VlpaaHeihPF3SLHgN71KUR-SA5h9ISllThhUkk7vDBt_IVWIfqsAExxFb-rkxiUevU8eed-yLi9gM61QA6DPPA8c4wCJvZU0sA5FCpiPSPhu33CenQaxL0TdUe_k4JSA4DhG9Lwrd9zQ/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJfcarOh3y3IAR4MU3LI5NWJQ/photos/AZLasHq6oYVXFTN_x9877IaBV4k2z5n9numEZhcqKMS-_WUS1L1uTrQEBS0m0vQMRA-lKUotkRbgI8rG9h9PHKfqXc8YKMMZgIfO8n-LUgjqioSy-mjIQ0CzzvQUeVR9Acs909mD9RR-CTRtGs0aUKRdWLstsCCjxrsICvR9D-5l1CN3bFjPXEq6NRe8hIRpacirAI2F03BMIW5yP2PQRgC9CKJOQQySc5QKNFV7pR_tBpzO8PVARUXT6E-Z7iobiSGVI5Nhuw2f7pdZ4h7DzHRqROuhZTUxEUYMZ9VlpaaHeihPF3SLHgN71KUR-SA5h9ISllThhUkk7vDBt_IVWIfqsAExxFb-rkxiUevU8eed-yLi9gM61QA6DPPA8c4wCJvZU0sA5FCpiPSPhu33CenQaxL0TdUe_k4JSA4DhG9Lwrd9zQ/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:52.183Z"
+    "photoCacheExpiry": "2026-04-07T04:53:19.904Z"
   },
   "eaglebank-arena": {
     "name": "EagleBank Arena",
@@ -5045,13 +5045,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:52.285Z",
+    "fetchedAt": "2026-01-07T05:53:20.005Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJ8wHn5V1OtokRQhcVDc3PB8M/photos/AZLasHo9Z0kEhlC2DOmPLwaDxu5tE5uggtsYDg7QhFj_4-E6WXfDz7i65JH6SZxEwE6Pgm34YZBinZQwRPrdu4xbN8YQqpWmaJMyOoC7cbfFmTM5f-Z1betc0oDIWc-B5b43rkEwr6K5Qj2bHMzrvOPw1xLNGh7vc2HOYs51Qd8JQ7hObQOgpkpOkwGflW5bdN5IAaZ5TA9HoKLuEnM71JA_gxYS9p3pEggq1K4WgOGt_4oIcahnzjVDrEEKCGnFt2BwySz-iYhVt9KFcn_CJf7o1w_rlUZHtHfxVHFYXJ0iC9bA6T5zrFlmeiJL6C3iN3LX4558O58YuaTnm6KkIbpa40zV0x0NhgJj11K9rVCQyz6SBdq6cmSnzlNp6Su39SJBaa4sTVwFrV92TwIzfiVJ1ku3rWxqLs3u17HR8btnSq1mlg/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJ8wHn5V1OtokRQhcVDc3PB8M/photos/AZLasHo9Z0kEhlC2DOmPLwaDxu5tE5uggtsYDg7QhFj_4-E6WXfDz7i65JH6SZxEwE6Pgm34YZBinZQwRPrdu4xbN8YQqpWmaJMyOoC7cbfFmTM5f-Z1betc0oDIWc-B5b43rkEwr6K5Qj2bHMzrvOPw1xLNGh7vc2HOYs51Qd8JQ7hObQOgpkpOkwGflW5bdN5IAaZ5TA9HoKLuEnM71JA_gxYS9p3pEggq1K4WgOGt_4oIcahnzjVDrEEKCGnFt2BwySz-iYhVt9KFcn_CJf7o1w_rlUZHtHfxVHFYXJ0iC9bA6T5zrFlmeiJL6C3iN3LX4558O58YuaTnm6KkIbpa40zV0x0NhgJj11K9rVCQyz6SBdq6cmSnzlNp6Su39SJBaa4sTVwFrV92TwIzfiVJ1ku3rWxqLs3u17HR8btnSq1mlg/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJ8wHn5V1OtokRQhcVDc3PB8M/photos/AZLasHo9Z0kEhlC2DOmPLwaDxu5tE5uggtsYDg7QhFj_4-E6WXfDz7i65JH6SZxEwE6Pgm34YZBinZQwRPrdu4xbN8YQqpWmaJMyOoC7cbfFmTM5f-Z1betc0oDIWc-B5b43rkEwr6K5Qj2bHMzrvOPw1xLNGh7vc2HOYs51Qd8JQ7hObQOgpkpOkwGflW5bdN5IAaZ5TA9HoKLuEnM71JA_gxYS9p3pEggq1K4WgOGt_4oIcahnzjVDrEEKCGnFt2BwySz-iYhVt9KFcn_CJf7o1w_rlUZHtHfxVHFYXJ0iC9bA6T5zrFlmeiJL6C3iN3LX4558O58YuaTnm6KkIbpa40zV0x0NhgJj11K9rVCQyz6SBdq6cmSnzlNp6Su39SJBaa4sTVwFrV92TwIzfiVJ1ku3rWxqLs3u17HR8btnSq1mlg/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:52.285Z"
+    "photoCacheExpiry": "2026-04-07T04:53:20.005Z"
   },
   "9-30-club": {
     "name": "9:30 Club",
@@ -5299,13 +5299,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:52.386Z",
+    "fetchedAt": "2026-01-07T05:53:20.107Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJxeko4uS3t4kRuCl8NRL9YTE/photos/AZLasHpAquVAafxVIIrwucMaBeO-g_fKxZI3EjoY0WA3RyMZQfq6TiYDzWKe7jZ_5D8fSC5WKnhmgyqyW6Dx1JP9U7vvbnFwYS5ek0vzAZSIOWAjP84vOwt2q8cutNDwLK6dKZWFV0aSIyFw3ajscQ5IBtkQ6q5Xk3SFq5Gsujttk2foU8uJXNe3qbflVnaTKK7TmijMRbEMcHqnju-aIoN1MCjOEJ66-IT5bsaSQrKPKkUBUb3opj0JOpOOZSPFpuiKDRcg_P1jsBbP1BZ1vX70S9jZ8NKp_rODzFkY_Spff9VsamvX5x58zCFpXwJsAPCjj1OKjWsoYzp52DdhSNrfGr79WNApe31T2ALHDmB8DI6CJDRgA68GIeUJPNGw52jcQIlC_jhEn7rmER2LnRgyYNqqijLv4Cm_Y62unzV5virFOLqt0UTvi6sJP0TsfObn/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJxeko4uS3t4kRuCl8NRL9YTE/photos/AZLasHpAquVAafxVIIrwucMaBeO-g_fKxZI3EjoY0WA3RyMZQfq6TiYDzWKe7jZ_5D8fSC5WKnhmgyqyW6Dx1JP9U7vvbnFwYS5ek0vzAZSIOWAjP84vOwt2q8cutNDwLK6dKZWFV0aSIyFw3ajscQ5IBtkQ6q5Xk3SFq5Gsujttk2foU8uJXNe3qbflVnaTKK7TmijMRbEMcHqnju-aIoN1MCjOEJ66-IT5bsaSQrKPKkUBUb3opj0JOpOOZSPFpuiKDRcg_P1jsBbP1BZ1vX70S9jZ8NKp_rODzFkY_Spff9VsamvX5x58zCFpXwJsAPCjj1OKjWsoYzp52DdhSNrfGr79WNApe31T2ALHDmB8DI6CJDRgA68GIeUJPNGw52jcQIlC_jhEn7rmER2LnRgyYNqqijLv4Cm_Y62unzV5virFOLqt0UTvi6sJP0TsfObn/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJxeko4uS3t4kRuCl8NRL9YTE/photos/AZLasHpAquVAafxVIIrwucMaBeO-g_fKxZI3EjoY0WA3RyMZQfq6TiYDzWKe7jZ_5D8fSC5WKnhmgyqyW6Dx1JP9U7vvbnFwYS5ek0vzAZSIOWAjP84vOwt2q8cutNDwLK6dKZWFV0aSIyFw3ajscQ5IBtkQ6q5Xk3SFq5Gsujttk2foU8uJXNe3qbflVnaTKK7TmijMRbEMcHqnju-aIoN1MCjOEJ66-IT5bsaSQrKPKkUBUb3opj0JOpOOZSPFpuiKDRcg_P1jsBbP1BZ1vX70S9jZ8NKp_rODzFkY_Spff9VsamvX5x58zCFpXwJsAPCjj1OKjWsoYzp52DdhSNrfGr79WNApe31T2ALHDmB8DI6CJDRgA68GIeUJPNGw52jcQIlC_jhEn7rmER2LnRgyYNqqijLv4Cm_Y62unzV5virFOLqt0UTvi6sJP0TsfObn/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:52.386Z"
+    "photoCacheExpiry": "2026-04-07T04:53:20.107Z"
   },
   "the-black-cat": {
     "name": "The Black Cat",
@@ -5496,13 +5496,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:52.488Z",
+    "fetchedAt": "2026-01-07T05:53:20.208Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJc51bR-i3t4kRNg7p-Xdzza0/photos/AZLasHqlrgefawF07CpvH5AuOLjEzegpE4pxGfkf3k5WNX8Y9VGkeCne6vVf-6_XU_MyFDyWDD1Y4WReX3BoGnhYD1LftOfLtQJxavC1oX4a3if5lU_jqYaMk1T4Pr_DmA-45kpq9E8Kv-z-HK9TY9bENtiPPtKnTeq9wxGduKUbyE5-f8iNoOWTY4fZPO4PucU4WRAj6bTENoe8Xn_pJRzY9VVB60r0EHExXy5-0ZQRB7Xho0cOKOKnuBIZY8CuH009k8LLJP_QYYIpshy6l7nE6aZz4fkeFU4_skV73tpAlzlE1yIQ2g3x41FgpAjRSUqGVQmoJn9B6G9CkNRM-TB8L1yAlkpeoJSA8pLoPZuzxGmnhj7gxPwEEJ_u4qIhDpTnNxkBu6upCl8KbOSq9pUid8V_BIPjeJKxAa6-Mc-fFPf_Rg/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJc51bR-i3t4kRNg7p-Xdzza0/photos/AZLasHqlrgefawF07CpvH5AuOLjEzegpE4pxGfkf3k5WNX8Y9VGkeCne6vVf-6_XU_MyFDyWDD1Y4WReX3BoGnhYD1LftOfLtQJxavC1oX4a3if5lU_jqYaMk1T4Pr_DmA-45kpq9E8Kv-z-HK9TY9bENtiPPtKnTeq9wxGduKUbyE5-f8iNoOWTY4fZPO4PucU4WRAj6bTENoe8Xn_pJRzY9VVB60r0EHExXy5-0ZQRB7Xho0cOKOKnuBIZY8CuH009k8LLJP_QYYIpshy6l7nE6aZz4fkeFU4_skV73tpAlzlE1yIQ2g3x41FgpAjRSUqGVQmoJn9B6G9CkNRM-TB8L1yAlkpeoJSA8pLoPZuzxGmnhj7gxPwEEJ_u4qIhDpTnNxkBu6upCl8KbOSq9pUid8V_BIPjeJKxAa6-Mc-fFPf_Rg/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJc51bR-i3t4kRNg7p-Xdzza0/photos/AZLasHqlrgefawF07CpvH5AuOLjEzegpE4pxGfkf3k5WNX8Y9VGkeCne6vVf-6_XU_MyFDyWDD1Y4WReX3BoGnhYD1LftOfLtQJxavC1oX4a3if5lU_jqYaMk1T4Pr_DmA-45kpq9E8Kv-z-HK9TY9bENtiPPtKnTeq9wxGduKUbyE5-f8iNoOWTY4fZPO4PucU4WRAj6bTENoe8Xn_pJRzY9VVB60r0EHExXy5-0ZQRB7Xho0cOKOKnuBIZY8CuH009k8LLJP_QYYIpshy6l7nE6aZz4fkeFU4_skV73tpAlzlE1yIQ2g3x41FgpAjRSUqGVQmoJn9B6G9CkNRM-TB8L1yAlkpeoJSA8pLoPZuzxGmnhj7gxPwEEJ_u4qIhDpTnNxkBu6upCl8KbOSq9pUid8V_BIPjeJKxAa6-Mc-fFPf_Rg/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:52.488Z"
+    "photoCacheExpiry": "2026-04-07T04:53:20.208Z"
   },
   "the-ballroom": {
     "name": "The Ballroom",
@@ -5692,13 +5692,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:52.589Z",
+    "fetchedAt": "2026-01-07T05:53:20.310Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJgzlGklADyIkRhR_6HXk_GLE/photos/AZLasHr8Rule12K44Hyaki-9NdUa2-2i9t4VGXAkdxAwoNyJ4rZ6HfDqOfILYTn3xoFcDCajX5BPIZ7CHP3pq0TzvA1wJKtxvU4VTmULCJ8a4MjhOLARc0kqHG1egGs_EFVuIJNVHdRSkqkb8tzjlzjTqqmuOf5-UpML-fIFNII4UNj4GIpXT9GdEqkJGCgl4zLxB5VXNeWycNstYFi1yJlhDw-3wlk6zhfRwBfh9_spvR3dsw3xQSWSae85ULOeCJCwC8cW0Cl5HB9mU8AZdZaFosp1v4ZHljfzG-P3GC0XuqebLA/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJgzlGklADyIkRhR_6HXk_GLE/photos/AZLasHr8Rule12K44Hyaki-9NdUa2-2i9t4VGXAkdxAwoNyJ4rZ6HfDqOfILYTn3xoFcDCajX5BPIZ7CHP3pq0TzvA1wJKtxvU4VTmULCJ8a4MjhOLARc0kqHG1egGs_EFVuIJNVHdRSkqkb8tzjlzjTqqmuOf5-UpML-fIFNII4UNj4GIpXT9GdEqkJGCgl4zLxB5VXNeWycNstYFi1yJlhDw-3wlk6zhfRwBfh9_spvR3dsw3xQSWSae85ULOeCJCwC8cW0Cl5HB9mU8AZdZaFosp1v4ZHljfzG-P3GC0XuqebLA/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJgzlGklADyIkRhR_6HXk_GLE/photos/AZLasHr8Rule12K44Hyaki-9NdUa2-2i9t4VGXAkdxAwoNyJ4rZ6HfDqOfILYTn3xoFcDCajX5BPIZ7CHP3pq0TzvA1wJKtxvU4VTmULCJ8a4MjhOLARc0kqHG1egGs_EFVuIJNVHdRSkqkb8tzjlzjTqqmuOf5-UpML-fIFNII4UNj4GIpXT9GdEqkJGCgl4zLxB5VXNeWycNstYFi1yJlhDw-3wlk6zhfRwBfh9_spvR3dsw3xQSWSae85ULOeCJCwC8cW0Cl5HB9mU8AZdZaFosp1v4ZHljfzG-P3GC0XuqebLA/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:52.589Z"
+    "photoCacheExpiry": "2026-04-07T04:53:20.311Z"
   },
   "wolftrap": {
     "name": "Wolftrap",
@@ -5897,13 +5897,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:52.691Z",
+    "fetchedAt": "2026-01-07T05:53:20.412Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJ93RagxNKtokRP83pbY44vWU/photos/AZLasHosJiZWwhLwXJTMZ2OFSsuQYFwR_hoi51B9Bk7ecTr21SnCCZe627wQQFilxDaIWqsk9dPatdj28ZF-ysS9Rks05jATIj0moigprje-8AGXvV15jlHGmzo-avJC0aKkXtdgwLcaYXXQonkxSaB-6eFFzUBX6VxcG27O1LXRVhk5vwJdlDxlIMsVbuxAM6-fWSXcrN2RzyDn9JnSdlYdip7_6anvekgsXZMxERA-HCSQkYsW4d4WPNB3te0K52YoCJ13gi8jXCGNsUCIxjQDjk55LuudnbEvzcwTqHEbWcB6pw/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJ93RagxNKtokRP83pbY44vWU/photos/AZLasHosJiZWwhLwXJTMZ2OFSsuQYFwR_hoi51B9Bk7ecTr21SnCCZe627wQQFilxDaIWqsk9dPatdj28ZF-ysS9Rks05jATIj0moigprje-8AGXvV15jlHGmzo-avJC0aKkXtdgwLcaYXXQonkxSaB-6eFFzUBX6VxcG27O1LXRVhk5vwJdlDxlIMsVbuxAM6-fWSXcrN2RzyDn9JnSdlYdip7_6anvekgsXZMxERA-HCSQkYsW4d4WPNB3te0K52YoCJ13gi8jXCGNsUCIxjQDjk55LuudnbEvzcwTqHEbWcB6pw/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJ93RagxNKtokRP83pbY44vWU/photos/AZLasHosJiZWwhLwXJTMZ2OFSsuQYFwR_hoi51B9Bk7ecTr21SnCCZe627wQQFilxDaIWqsk9dPatdj28ZF-ysS9Rks05jATIj0moigprje-8AGXvV15jlHGmzo-avJC0aKkXtdgwLcaYXXQonkxSaB-6eFFzUBX6VxcG27O1LXRVhk5vwJdlDxlIMsVbuxAM6-fWSXcrN2RzyDn9JnSdlYdip7_6anvekgsXZMxERA-HCSQkYsW4d4WPNB3te0K52YoCJ13gi8jXCGNsUCIxjQDjk55LuudnbEvzcwTqHEbWcB6pw/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:52.691Z"
+    "photoCacheExpiry": "2026-04-07T04:53:20.412Z"
   },
   "rams-head-live-baltimore": {
     "name": "Rams Head Live! Baltimore",
@@ -6091,13 +6091,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:52.792Z",
+    "fetchedAt": "2026-01-07T05:53:20.513Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJ20bAk1D2t4kR3UEmAQNb6rY/photos/AZLasHpaW-Wal9yxDJ8S6T8GJTPO4iUHBO86mUbvDwm5BffIWb3MV25jrniAwwclIXpiybbEJYFR65JjcAQVEeHF408W-Xy_ggjYCWv2NllGFeeY9lpmlNaO0BdfrCTp_Byi_3NCYUo_ro9Wwvk9pZTwzsSk8AI2GFiyFei-aDCM5w4KaQ7rfYtoyxMECpqP4NhojTY8wd5DWmC1AEW2yYdf7DXaMcqm4EPR-0u9N_s_95vaYlrYuPiTryT8vM_wVsavobkT9KA2dvwf-JGuafrOQPz7PdVP7TaaA7NWfJNnHZBlnd3C0zYaxX_XPGajNzifEMOwhkjhtejNoHO30AKaQbw_pUxywRy1gUyQIH-g3notkrpHD8f6vdd3lHkK7KARdWKEdZ__Gzm3pYP7NHD-MbiOw80knaPMhpHQJofiwXY/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJ20bAk1D2t4kR3UEmAQNb6rY/photos/AZLasHpaW-Wal9yxDJ8S6T8GJTPO4iUHBO86mUbvDwm5BffIWb3MV25jrniAwwclIXpiybbEJYFR65JjcAQVEeHF408W-Xy_ggjYCWv2NllGFeeY9lpmlNaO0BdfrCTp_Byi_3NCYUo_ro9Wwvk9pZTwzsSk8AI2GFiyFei-aDCM5w4KaQ7rfYtoyxMECpqP4NhojTY8wd5DWmC1AEW2yYdf7DXaMcqm4EPR-0u9N_s_95vaYlrYuPiTryT8vM_wVsavobkT9KA2dvwf-JGuafrOQPz7PdVP7TaaA7NWfJNnHZBlnd3C0zYaxX_XPGajNzifEMOwhkjhtejNoHO30AKaQbw_pUxywRy1gUyQIH-g3notkrpHD8f6vdd3lHkK7KARdWKEdZ__Gzm3pYP7NHD-MbiOw80knaPMhpHQJofiwXY/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJ20bAk1D2t4kR3UEmAQNb6rY/photos/AZLasHpaW-Wal9yxDJ8S6T8GJTPO4iUHBO86mUbvDwm5BffIWb3MV25jrniAwwclIXpiybbEJYFR65JjcAQVEeHF408W-Xy_ggjYCWv2NllGFeeY9lpmlNaO0BdfrCTp_Byi_3NCYUo_ro9Wwvk9pZTwzsSk8AI2GFiyFei-aDCM5w4KaQ7rfYtoyxMECpqP4NhojTY8wd5DWmC1AEW2yYdf7DXaMcqm4EPR-0u9N_s_95vaYlrYuPiTryT8vM_wVsavobkT9KA2dvwf-JGuafrOQPz7PdVP7TaaA7NWfJNnHZBlnd3C0zYaxX_XPGajNzifEMOwhkjhtejNoHO30AKaQbw_pUxywRy1gUyQIH-g3notkrpHD8f6vdd3lHkK7KARdWKEdZ__Gzm3pYP7NHD-MbiOw80knaPMhpHQJofiwXY/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:52.792Z"
+    "photoCacheExpiry": "2026-04-07T04:53:20.513Z"
   },
   "capitol-one-arena": {
     "name": "Capitol One Arena",
@@ -6282,13 +6282,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:52.894Z",
+    "fetchedAt": "2026-01-07T05:53:20.614Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJc2hfT463t4kREfcRHtsEzHU/photos/AZLasHr5pxfviLHpDkGWl6e5zcOYpBDmCQv0IEU5jPy-Ke8a1XzAGLYNdnCINgS72VueyHBtwVh3rgBUSSQNH9atDUkzcaYNE68nWBhkyBgZXX6wodsO35KdJkL1uIYLXBCAx5p1-vF5xzqI5jiLofsFRbl3c7Cp1aSUBgD2FzRH4UFvQTg7_HO562NHcBVQfGl5cRK_pJkBaH3Z7DSNklLgpgAhlh1Xke7OhvRLjvAkS_sKT_ahUoDsmNyn5zDsjPdU2SOdxBxuooUdhRa6EwB2uPrVWtPVsAvPAycGWTL7is7vytauDzRq3akD2-8ujqJlrSG5q0ujITaxtF4ROSuINeQR8HanuIjPpLYCk3GWn0lgTZMic2YOFFO_8FlebS_0IBs8_B8hg983z3Qz2fWd5yFkB4z7Imo-iZtESXwTR-8KQw/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJc2hfT463t4kREfcRHtsEzHU/photos/AZLasHr5pxfviLHpDkGWl6e5zcOYpBDmCQv0IEU5jPy-Ke8a1XzAGLYNdnCINgS72VueyHBtwVh3rgBUSSQNH9atDUkzcaYNE68nWBhkyBgZXX6wodsO35KdJkL1uIYLXBCAx5p1-vF5xzqI5jiLofsFRbl3c7Cp1aSUBgD2FzRH4UFvQTg7_HO562NHcBVQfGl5cRK_pJkBaH3Z7DSNklLgpgAhlh1Xke7OhvRLjvAkS_sKT_ahUoDsmNyn5zDsjPdU2SOdxBxuooUdhRa6EwB2uPrVWtPVsAvPAycGWTL7is7vytauDzRq3akD2-8ujqJlrSG5q0ujITaxtF4ROSuINeQR8HanuIjPpLYCk3GWn0lgTZMic2YOFFO_8FlebS_0IBs8_B8hg983z3Qz2fWd5yFkB4z7Imo-iZtESXwTR-8KQw/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJc2hfT463t4kREfcRHtsEzHU/photos/AZLasHr5pxfviLHpDkGWl6e5zcOYpBDmCQv0IEU5jPy-Ke8a1XzAGLYNdnCINgS72VueyHBtwVh3rgBUSSQNH9atDUkzcaYNE68nWBhkyBgZXX6wodsO35KdJkL1uIYLXBCAx5p1-vF5xzqI5jiLofsFRbl3c7Cp1aSUBgD2FzRH4UFvQTg7_HO562NHcBVQfGl5cRK_pJkBaH3Z7DSNklLgpgAhlh1Xke7OhvRLjvAkS_sKT_ahUoDsmNyn5zDsjPdU2SOdxBxuooUdhRa6EwB2uPrVWtPVsAvPAycGWTL7is7vytauDzRq3akD2-8ujqJlrSG5q0ujITaxtF4ROSuINeQR8HanuIjPpLYCk3GWn0lgTZMic2YOFFO_8FlebS_0IBs8_B8hg983z3Qz2fWd5yFkB4z7Imo-iZtESXwTR-8KQw/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:52.894Z"
+    "photoCacheExpiry": "2026-04-07T04:53:20.615Z"
   },
   "the-fillmore-silver-spring": {
     "name": "The Fillmore Silver Spring",
@@ -6516,13 +6516,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:52.995Z",
+    "fetchedAt": "2026-01-07T05:53:20.716Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJIxKP_rnIt4kRrekV-3S3Lac/photos/AZLasHoFBoHK-khKzUv0SFwqr52X4-hJWvpO8X-MAf9ruUgwykifBX9_ZRGYM1F_dmEawQXfIBF_SqSQXEBaV7x6zW9GXQSAMJ0oHOpe553fDzPTjdoxrhOaOJm_xo7e98cOTyf1UWymtrxIP-1WcWwneEFkNHPVbZRxTOgLQ41BzdOQ4hci1Dazjc5uVM3PnCT5Ax_F-qsZRtz0Sh4WDawcbY1LcqFE--PZf9GNRiuGxiSQKJzfdX7ZZUbk67a7kbMRhnAO2jKBgfYYzGI6wP7z_l6hgFml2mbpQiG-GWnWNV9orIA7wkWSQS8INJv9SJFRprP69V6AW8w-ZGzsGKrXwuiaI4EDye2qNbfyN2i1BTgPD83VhVl0x1AOzofDjOu9wqUc0-IEqRS_zx73IEEHe7TVGwZaSMI4gYEKMPmphZcBOxIO/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJIxKP_rnIt4kRrekV-3S3Lac/photos/AZLasHoFBoHK-khKzUv0SFwqr52X4-hJWvpO8X-MAf9ruUgwykifBX9_ZRGYM1F_dmEawQXfIBF_SqSQXEBaV7x6zW9GXQSAMJ0oHOpe553fDzPTjdoxrhOaOJm_xo7e98cOTyf1UWymtrxIP-1WcWwneEFkNHPVbZRxTOgLQ41BzdOQ4hci1Dazjc5uVM3PnCT5Ax_F-qsZRtz0Sh4WDawcbY1LcqFE--PZf9GNRiuGxiSQKJzfdX7ZZUbk67a7kbMRhnAO2jKBgfYYzGI6wP7z_l6hgFml2mbpQiG-GWnWNV9orIA7wkWSQS8INJv9SJFRprP69V6AW8w-ZGzsGKrXwuiaI4EDye2qNbfyN2i1BTgPD83VhVl0x1AOzofDjOu9wqUc0-IEqRS_zx73IEEHe7TVGwZaSMI4gYEKMPmphZcBOxIO/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJIxKP_rnIt4kRrekV-3S3Lac/photos/AZLasHoFBoHK-khKzUv0SFwqr52X4-hJWvpO8X-MAf9ruUgwykifBX9_ZRGYM1F_dmEawQXfIBF_SqSQXEBaV7x6zW9GXQSAMJ0oHOpe553fDzPTjdoxrhOaOJm_xo7e98cOTyf1UWymtrxIP-1WcWwneEFkNHPVbZRxTOgLQ41BzdOQ4hci1Dazjc5uVM3PnCT5Ax_F-qsZRtz0Sh4WDawcbY1LcqFE--PZf9GNRiuGxiSQKJzfdX7ZZUbk67a7kbMRhnAO2jKBgfYYzGI6wP7z_l6hgFml2mbpQiG-GWnWNV9orIA7wkWSQS8INJv9SJFRprP69V6AW8w-ZGzsGKrXwuiaI4EDye2qNbfyN2i1BTgPD83VhVl0x1AOzofDjOu9wqUc0-IEqRS_zx73IEEHe7TVGwZaSMI4gYEKMPmphZcBOxIO/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:52.996Z"
+    "photoCacheExpiry": "2026-04-07T04:53:20.716Z"
   },
   "howard-theater": {
     "name": "Howard Theater",
@@ -6707,13 +6707,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:53.097Z",
+    "fetchedAt": "2026-01-07T05:53:20.817Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJVdXqpfq3t4kRKdmLILMajbs/photos/AZLasHoCnNXR3HgTvTQHEWsdaEHu2ozmKfDXOkoBLHuHnusGugbfBZy_fnE_q1uUKKSKxKWtvbFkS7PK_UaGAhsa6Tl8JuxFWCLw9yAPhoLdxjeKwP2gjTgHehabIJai8OO0CmPt2xp-UH3ORMtvD_cZi3gRvQ0S8_q6Pp3Rip_CnV1N4p0mRWczloQXXckauiCSgj-TF5f4xg20v_WPo1WQn3WbduIT0jPguZcTAaNnPT4yCF-zEgbqEDocMirVzrRmv5KiV_8MgHMSXJCji_cDR_PeD8goOWkLLTbFkgP1h3wrr8w-R6wZ5K8jcIsYrvG6g7P1B98u_vXJJQ7C2Dv2bHRj_XRJ5z724zgBijGSC0JtOf_bjGJbBq74jxpQgBkqImaW4jhWHpMUh6bOAP3gYWPs4RjeJPxRyOR0CjLUIMaL5Qgh/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJVdXqpfq3t4kRKdmLILMajbs/photos/AZLasHoCnNXR3HgTvTQHEWsdaEHu2ozmKfDXOkoBLHuHnusGugbfBZy_fnE_q1uUKKSKxKWtvbFkS7PK_UaGAhsa6Tl8JuxFWCLw9yAPhoLdxjeKwP2gjTgHehabIJai8OO0CmPt2xp-UH3ORMtvD_cZi3gRvQ0S8_q6Pp3Rip_CnV1N4p0mRWczloQXXckauiCSgj-TF5f4xg20v_WPo1WQn3WbduIT0jPguZcTAaNnPT4yCF-zEgbqEDocMirVzrRmv5KiV_8MgHMSXJCji_cDR_PeD8goOWkLLTbFkgP1h3wrr8w-R6wZ5K8jcIsYrvG6g7P1B98u_vXJJQ7C2Dv2bHRj_XRJ5z724zgBijGSC0JtOf_bjGJbBq74jxpQgBkqImaW4jhWHpMUh6bOAP3gYWPs4RjeJPxRyOR0CjLUIMaL5Qgh/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJVdXqpfq3t4kRKdmLILMajbs/photos/AZLasHoCnNXR3HgTvTQHEWsdaEHu2ozmKfDXOkoBLHuHnusGugbfBZy_fnE_q1uUKKSKxKWtvbFkS7PK_UaGAhsa6Tl8JuxFWCLw9yAPhoLdxjeKwP2gjTgHehabIJai8OO0CmPt2xp-UH3ORMtvD_cZi3gRvQ0S8_q6Pp3Rip_CnV1N4p0mRWczloQXXckauiCSgj-TF5f4xg20v_WPo1WQn3WbduIT0jPguZcTAaNnPT4yCF-zEgbqEDocMirVzrRmv5KiV_8MgHMSXJCji_cDR_PeD8goOWkLLTbFkgP1h3wrr8w-R6wZ5K8jcIsYrvG6g7P1B98u_vXJJQ7C2Dv2bHRj_XRJ5z724zgBijGSC0JtOf_bjGJbBq74jxpQgBkqImaW4jhWHpMUh6bOAP3gYWPs4RjeJPxRyOR0CjLUIMaL5Qgh/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:53.097Z"
+    "photoCacheExpiry": "2026-04-07T04:53:20.817Z"
   },
   "the-strathmore": {
     "name": "The Strathmore",
@@ -6902,13 +6902,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:53.199Z",
+    "fetchedAt": "2026-01-07T05:53:20.919Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJkbjg_R3Mt4kRunUYHBsKuuQ/photos/AZLasHpgi7GjGTrE_f-o8ZH6h26ntPazOu8SRfINJBN2polk6HxO1pWya8MCVxL0SsYV4fbMkCaQdVGdJug8XNqu7Ynf85XNUiwlAeAgL4FcqWbVkxenRoNY3pCYJUAhcC2-BPZUZzPBjX4cKSa9uOr-lQHfUZvbaxqCmjW2iH8PwWGFAtc2XIjkoRu-8MX7AO93e5PxDsAfgdr3EKvgWfnfs8PQc6-C2i2XWxRbpeHjb4CcFtHPImRgz74J1TFILigqnKQYN2C2duySel9M6p6Lz8QKP0D3Nkb1ld5D-K1r66z6vJeHtsoEx6LlAOTZJgp5-dlYtDjQ18F5dgshDxe0fyfOWTcqMKAxHfw8dk8PMDwWdeocDXjyPxYOOkppo4TjnJVaMNzNXpW9sK3Z9EWUqcBjtn0v_4fCVLqxLFPa15Cqs5Qy/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJkbjg_R3Mt4kRunUYHBsKuuQ/photos/AZLasHpgi7GjGTrE_f-o8ZH6h26ntPazOu8SRfINJBN2polk6HxO1pWya8MCVxL0SsYV4fbMkCaQdVGdJug8XNqu7Ynf85XNUiwlAeAgL4FcqWbVkxenRoNY3pCYJUAhcC2-BPZUZzPBjX4cKSa9uOr-lQHfUZvbaxqCmjW2iH8PwWGFAtc2XIjkoRu-8MX7AO93e5PxDsAfgdr3EKvgWfnfs8PQc6-C2i2XWxRbpeHjb4CcFtHPImRgz74J1TFILigqnKQYN2C2duySel9M6p6Lz8QKP0D3Nkb1ld5D-K1r66z6vJeHtsoEx6LlAOTZJgp5-dlYtDjQ18F5dgshDxe0fyfOWTcqMKAxHfw8dk8PMDwWdeocDXjyPxYOOkppo4TjnJVaMNzNXpW9sK3Z9EWUqcBjtn0v_4fCVLqxLFPa15Cqs5Qy/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJkbjg_R3Mt4kRunUYHBsKuuQ/photos/AZLasHpgi7GjGTrE_f-o8ZH6h26ntPazOu8SRfINJBN2polk6HxO1pWya8MCVxL0SsYV4fbMkCaQdVGdJug8XNqu7Ynf85XNUiwlAeAgL4FcqWbVkxenRoNY3pCYJUAhcC2-BPZUZzPBjX4cKSa9uOr-lQHfUZvbaxqCmjW2iH8PwWGFAtc2XIjkoRu-8MX7AO93e5PxDsAfgdr3EKvgWfnfs8PQc6-C2i2XWxRbpeHjb4CcFtHPImRgz74J1TFILigqnKQYN2C2duySel9M6p6Lz8QKP0D3Nkb1ld5D-K1r66z6vJeHtsoEx6LlAOTZJgp5-dlYtDjQ18F5dgshDxe0fyfOWTcqMKAxHfw8dk8PMDwWdeocDXjyPxYOOkppo4TjnJVaMNzNXpW9sK3Z9EWUqcBjtn0v_4fCVLqxLFPa15Cqs5Qy/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:53.199Z"
+    "photoCacheExpiry": "2026-04-07T04:53:20.919Z"
   },
   "the-hamilton-live": {
     "name": "The Hamilton Live",
@@ -7109,13 +7109,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:53.301Z",
+    "fetchedAt": "2026-01-07T05:53:21.020Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJmXLZNJq3t4kR93UiKxIrtHw/photos/AZLasHo9MDsx_3ncXOfSOsVcuauMiuZ5mcM_l_ZYw8OZqjMvLgQDvNyPe_msE87fGYrth6V42PxGP2Lg_BCkdX0rBSkElK_oN5ZuVRQLGY9NfVT5GrVfPlgqyXCWAxQDAopawNIdwz8bwW68x_qWPKeOnhb-BCD3MUApZslqSj-1hwGOfPksBQ83Y4ziWbryZ3pfT2NersG-QiFGBQW3q38Ad18keBjXjwLoBOx0ya38bE7paxecYkM2CSBgBjOltdBxxsHLusxECl9D2hMZEhZP089gKM9cz_22wKOJ0UY3EwgWBA/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJmXLZNJq3t4kR93UiKxIrtHw/photos/AZLasHo9MDsx_3ncXOfSOsVcuauMiuZ5mcM_l_ZYw8OZqjMvLgQDvNyPe_msE87fGYrth6V42PxGP2Lg_BCkdX0rBSkElK_oN5ZuVRQLGY9NfVT5GrVfPlgqyXCWAxQDAopawNIdwz8bwW68x_qWPKeOnhb-BCD3MUApZslqSj-1hwGOfPksBQ83Y4ziWbryZ3pfT2NersG-QiFGBQW3q38Ad18keBjXjwLoBOx0ya38bE7paxecYkM2CSBgBjOltdBxxsHLusxECl9D2hMZEhZP089gKM9cz_22wKOJ0UY3EwgWBA/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJmXLZNJq3t4kR93UiKxIrtHw/photos/AZLasHo9MDsx_3ncXOfSOsVcuauMiuZ5mcM_l_ZYw8OZqjMvLgQDvNyPe_msE87fGYrth6V42PxGP2Lg_BCkdX0rBSkElK_oN5ZuVRQLGY9NfVT5GrVfPlgqyXCWAxQDAopawNIdwz8bwW68x_qWPKeOnhb-BCD3MUApZslqSj-1hwGOfPksBQ83Y4ziWbryZ3pfT2NersG-QiFGBQW3q38Ad18keBjXjwLoBOx0ya38bE7paxecYkM2CSBgBjOltdBxxsHLusxECl9D2hMZEhZP089gKM9cz_22wKOJ0UY3EwgWBA/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:53.302Z"
+    "photoCacheExpiry": "2026-04-07T04:53:21.020Z"
   },
   "rams-head-center-stage": {
     "name": "Rams Head Center Stage",
@@ -7301,13 +7301,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:53.403Z",
+    "fetchedAt": "2026-01-07T05:53:21.121Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJC3luj1D2t4kRebPyRafDp4E/photos/AZLasHoLf5gIoURgr5lM1M6u7AEOS9EwIQ0cbzhK-GlwTb-bY2-DO3R37BRXQHU19nRasapJdKLQWc_13uIXbRx3weavCuA3_g-XMZ_G-_-LMh0EjWR4FEn_3mPM_g---ZDdwivAtlXqnMtmIMCphVZ1IAe3Kg087-LkUpFKpilyeUi7tN1j2gL2d1xp5Qgvdjjw5DsN5V43YVtHxe6YulNMvyJ9Mk6GTNStvW-0e0PKTBw6lw7lvOzzzIUbkfx_SxZa7lIc8bvoORrwJc2wfmnEF9Ug86Ew7EabShe1HTUcbVZaocBTW3ezo41JiMSDnA-QwrBKai3eHbXm2I7H1hKO754g0IBE4akwpqw7KZ9JgmrGqV1eoLoZVSVYqa5HYGdMpZNsIcZmws3YPDyW75Xnle83YK04Aqg52KvMLvTJc9iSpM9gawuyGVw_09AgZ5Jq/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJC3luj1D2t4kRebPyRafDp4E/photos/AZLasHoLf5gIoURgr5lM1M6u7AEOS9EwIQ0cbzhK-GlwTb-bY2-DO3R37BRXQHU19nRasapJdKLQWc_13uIXbRx3weavCuA3_g-XMZ_G-_-LMh0EjWR4FEn_3mPM_g---ZDdwivAtlXqnMtmIMCphVZ1IAe3Kg087-LkUpFKpilyeUi7tN1j2gL2d1xp5Qgvdjjw5DsN5V43YVtHxe6YulNMvyJ9Mk6GTNStvW-0e0PKTBw6lw7lvOzzzIUbkfx_SxZa7lIc8bvoORrwJc2wfmnEF9Ug86Ew7EabShe1HTUcbVZaocBTW3ezo41JiMSDnA-QwrBKai3eHbXm2I7H1hKO754g0IBE4akwpqw7KZ9JgmrGqV1eoLoZVSVYqa5HYGdMpZNsIcZmws3YPDyW75Xnle83YK04Aqg52KvMLvTJc9iSpM9gawuyGVw_09AgZ5Jq/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJC3luj1D2t4kRebPyRafDp4E/photos/AZLasHoLf5gIoURgr5lM1M6u7AEOS9EwIQ0cbzhK-GlwTb-bY2-DO3R37BRXQHU19nRasapJdKLQWc_13uIXbRx3weavCuA3_g-XMZ_G-_-LMh0EjWR4FEn_3mPM_g---ZDdwivAtlXqnMtmIMCphVZ1IAe3Kg087-LkUpFKpilyeUi7tN1j2gL2d1xp5Qgvdjjw5DsN5V43YVtHxe6YulNMvyJ9Mk6GTNStvW-0e0PKTBw6lw7lvOzzzIUbkfx_SxZa7lIc8bvoORrwJc2wfmnEF9Ug86Ew7EabShe1HTUcbVZaocBTW3ezo41JiMSDnA-QwrBKai3eHbXm2I7H1hKO754g0IBE4akwpqw7KZ9JgmrGqV1eoLoZVSVYqa5HYGdMpZNsIcZmws3YPDyW75Xnle83YK04Aqg52KvMLvTJc9iSpM9gawuyGVw_09AgZ5Jq/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:53.403Z"
+    "photoCacheExpiry": "2026-04-07T04:53:21.122Z"
   },
   "pier-6-pavillion": {
     "name": "Pier 6 Pavillion",
@@ -7493,13 +7493,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:53.504Z",
+    "fetchedAt": "2026-01-07T05:53:21.223Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJ20bAk1D2t4kRScYfblDwzI0/photos/AZLasHrnIlo1OM83nbUX6EqS6RKmFaIA3pVXz68KfYIFutSIwGIAlqGJwkdUdZ7YFLMpktuyi-voVbvc1YplvonPhzSk2bHB6xnUBL6QwBL_U8ZbJdme3eRnAvzyW3YwM0iEzMuuqDvf4H__3DbyLQjHtoroCN5IeN1Pw5jbofuMzzni8RiDe4q-uE3XHIBFdtaNNi8UDUkFoVMlPqkXrqx4Sl-9nuzkAblC0D3spmw8qf-4VQIrc64SGsU20rVRSSovHojav1TYX427x9XNF23Uwc4Vv9j1C90ZbfR9AB4lVMcccA/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJ20bAk1D2t4kRScYfblDwzI0/photos/AZLasHrnIlo1OM83nbUX6EqS6RKmFaIA3pVXz68KfYIFutSIwGIAlqGJwkdUdZ7YFLMpktuyi-voVbvc1YplvonPhzSk2bHB6xnUBL6QwBL_U8ZbJdme3eRnAvzyW3YwM0iEzMuuqDvf4H__3DbyLQjHtoroCN5IeN1Pw5jbofuMzzni8RiDe4q-uE3XHIBFdtaNNi8UDUkFoVMlPqkXrqx4Sl-9nuzkAblC0D3spmw8qf-4VQIrc64SGsU20rVRSSovHojav1TYX427x9XNF23Uwc4Vv9j1C90ZbfR9AB4lVMcccA/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJ20bAk1D2t4kRScYfblDwzI0/photos/AZLasHrnIlo1OM83nbUX6EqS6RKmFaIA3pVXz68KfYIFutSIwGIAlqGJwkdUdZ7YFLMpktuyi-voVbvc1YplvonPhzSk2bHB6xnUBL6QwBL_U8ZbJdme3eRnAvzyW3YwM0iEzMuuqDvf4H__3DbyLQjHtoroCN5IeN1Pw5jbofuMzzni8RiDe4q-uE3XHIBFdtaNNi8UDUkFoVMlPqkXrqx4Sl-9nuzkAblC0D3spmw8qf-4VQIrc64SGsU20rVRSSovHojav1TYX427x9XNF23Uwc4Vv9j1C90ZbfR9AB4lVMcccA/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:53.504Z"
+    "photoCacheExpiry": "2026-04-07T04:53:21.223Z"
   },
   "dar-constitution-hall": {
     "name": "DAR Constitution Hall",
@@ -7687,13 +7687,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:53.606Z",
+    "fetchedAt": "2026-01-07T05:53:21.324Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJP6aKfKS3t4kRPsT_Y0wUbds/photos/AZLasHqdDG7Q_GNUfF4yXL2q9WSQk3vIvskV86AXNtvx_4_LWq_4OSvJUHA24nqsOgbOYHDT8OvVVzCIFqrbDsE3Lh3iGt2tq7QE2Dx3-QFt0Yj4TYMhDWqd7BLcVgv2Ug9ntASGdZ1Ltfra1Q5cw2Vvth9VggTzKWuucNmjfQahsN0-oC1rVGVDDqWooxpZLrx9-Ez0yTk2E89091Is2VEETAOqH4uElrelTk_LfGgh2hQ7dHdXgMVMsdC_nHDtFfc0PImKOOuQVPVU5xeNVcbE7InFmWJH3upni6sbS-8Ntt5vz_1ZE8NOsY96MaZgsaAunLzkEyatK1rlfX6KPZ_XaAW9MksJOMWazWluEvU0MipihsHYFdYA1bQeWOeiB8uOD7AdDdagnJU4hAgZC0uk4v80ctFoJaw41iL5ABsocYbrzIyk/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJP6aKfKS3t4kRPsT_Y0wUbds/photos/AZLasHqdDG7Q_GNUfF4yXL2q9WSQk3vIvskV86AXNtvx_4_LWq_4OSvJUHA24nqsOgbOYHDT8OvVVzCIFqrbDsE3Lh3iGt2tq7QE2Dx3-QFt0Yj4TYMhDWqd7BLcVgv2Ug9ntASGdZ1Ltfra1Q5cw2Vvth9VggTzKWuucNmjfQahsN0-oC1rVGVDDqWooxpZLrx9-Ez0yTk2E89091Is2VEETAOqH4uElrelTk_LfGgh2hQ7dHdXgMVMsdC_nHDtFfc0PImKOOuQVPVU5xeNVcbE7InFmWJH3upni6sbS-8Ntt5vz_1ZE8NOsY96MaZgsaAunLzkEyatK1rlfX6KPZ_XaAW9MksJOMWazWluEvU0MipihsHYFdYA1bQeWOeiB8uOD7AdDdagnJU4hAgZC0uk4v80ctFoJaw41iL5ABsocYbrzIyk/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJP6aKfKS3t4kRPsT_Y0wUbds/photos/AZLasHqdDG7Q_GNUfF4yXL2q9WSQk3vIvskV86AXNtvx_4_LWq_4OSvJUHA24nqsOgbOYHDT8OvVVzCIFqrbDsE3Lh3iGt2tq7QE2Dx3-QFt0Yj4TYMhDWqd7BLcVgv2Ug9ntASGdZ1Ltfra1Q5cw2Vvth9VggTzKWuucNmjfQahsN0-oC1rVGVDDqWooxpZLrx9-Ez0yTk2E89091Is2VEETAOqH4uElrelTk_LfGgh2hQ7dHdXgMVMsdC_nHDtFfc0PImKOOuQVPVU5xeNVcbE7InFmWJH3upni6sbS-8Ntt5vz_1ZE8NOsY96MaZgsaAunLzkEyatK1rlfX6KPZ_XaAW9MksJOMWazWluEvU0MipihsHYFdYA1bQeWOeiB8uOD7AdDdagnJU4hAgZC0uk4v80ctFoJaw41iL5ABsocYbrzIyk/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:53.606Z"
+    "photoCacheExpiry": "2026-04-07T04:53:21.324Z"
   },
   "rfk-stadium": {
     "name": "RFK Stadium",
@@ -7722,7 +7722,7 @@
     "closedDate": "2019-09-15",
     "notes": "Demolished",
     "places": null,
-    "fetchedAt": "2026-01-05T22:54:53.707Z",
+    "fetchedAt": "2026-01-07T05:53:21.426Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -7917,13 +7917,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:53.707Z",
+    "fetchedAt": "2026-01-07T05:53:21.426Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJ8XHA92TJt4kRbFHivt_79mk/photos/AZLasHqadzofvJ49hvyrLw1g0MesHKOaoj27jhqfS8d96x-oy6u0FtP3AEP-BMPGuMRaVNx14IJQlUKO9DACc3Rgc0QKkeDlH52WRWb-kbCJ4M8_IOLz1ZslToJO2ZeQmaWcQ_ChE75y1xt9EGgKNcPlLObnng_DwbZquYC-U_Zoq7CalaeiEGp53uqGSwsjdaHxB0GraSrM5pLLiLnS_DgxSatxFtwHb6qg-GIr2bW_5jgyJVqjaU7XAoN_qpnLOeXd8-qUQachHT5L3tTEzX-z7Qz5HgYY4doKvSA60ik6e0XIeb92r93bphZe5MBsPOr-xqw2XEoBx0mR3AOWRaW2u3mdTsvFM_A4_9DqfAFojHfdIl6dMAhI2m58obQ0HG6L14XpbV5NL-62CkqwHPVvUAlNNJBqF73rRixoNGRIFpZrlQ/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJ8XHA92TJt4kRbFHivt_79mk/photos/AZLasHqadzofvJ49hvyrLw1g0MesHKOaoj27jhqfS8d96x-oy6u0FtP3AEP-BMPGuMRaVNx14IJQlUKO9DACc3Rgc0QKkeDlH52WRWb-kbCJ4M8_IOLz1ZslToJO2ZeQmaWcQ_ChE75y1xt9EGgKNcPlLObnng_DwbZquYC-U_Zoq7CalaeiEGp53uqGSwsjdaHxB0GraSrM5pLLiLnS_DgxSatxFtwHb6qg-GIr2bW_5jgyJVqjaU7XAoN_qpnLOeXd8-qUQachHT5L3tTEzX-z7Qz5HgYY4doKvSA60ik6e0XIeb92r93bphZe5MBsPOr-xqw2XEoBx0mR3AOWRaW2u3mdTsvFM_A4_9DqfAFojHfdIl6dMAhI2m58obQ0HG6L14XpbV5NL-62CkqwHPVvUAlNNJBqF73rRixoNGRIFpZrlQ/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJ8XHA92TJt4kRbFHivt_79mk/photos/AZLasHqadzofvJ49hvyrLw1g0MesHKOaoj27jhqfS8d96x-oy6u0FtP3AEP-BMPGuMRaVNx14IJQlUKO9DACc3Rgc0QKkeDlH52WRWb-kbCJ4M8_IOLz1ZslToJO2ZeQmaWcQ_ChE75y1xt9EGgKNcPlLObnng_DwbZquYC-U_Zoq7CalaeiEGp53uqGSwsjdaHxB0GraSrM5pLLiLnS_DgxSatxFtwHb6qg-GIr2bW_5jgyJVqjaU7XAoN_qpnLOeXd8-qUQachHT5L3tTEzX-z7Qz5HgYY4doKvSA60ik6e0XIeb92r93bphZe5MBsPOr-xqw2XEoBx0mR3AOWRaW2u3mdTsvFM_A4_9DqfAFojHfdIl6dMAhI2m58obQ0HG6L14XpbV5NL-62CkqwHPVvUAlNNJBqF73rRixoNGRIFpZrlQ/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:53.707Z"
+    "photoCacheExpiry": "2026-04-07T04:53:21.426Z"
   },
   "birchmere": {
     "name": "Birchmere",
@@ -8113,13 +8113,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:53.808Z",
+    "fetchedAt": "2026-01-07T05:53:21.527Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJCYMIJymxt4kRtCuoj5Ehk4U/photos/AZLasHoEQdd-QsUlyLlmAV4YuxpWSXiZPyGnP_Iya0swUkILfaeYx2zDqN05HZEK_-wNFwGDYJ9qCahqfZZt02eJq9o3_emD2m902Zkdxr3SfCZuzqJPu42_IFaPGFeQdhHNgm1Z1JCATvvminKVTf3gxKmfG5PvM7rqhvcqXYEz1hDzv7ibDi0AT5BmeLeBXRKWHGGtBiE62DGyqCPmMbMWjLPv-S9eR4UD-rPCXCy_v0P6wx_p0w8xLkTX0JIGmpqq4-5MqlSWRR7MIfsQRmw-mVEzFJA7_iTy1QuVdcejGkmLyw/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJCYMIJymxt4kRtCuoj5Ehk4U/photos/AZLasHoEQdd-QsUlyLlmAV4YuxpWSXiZPyGnP_Iya0swUkILfaeYx2zDqN05HZEK_-wNFwGDYJ9qCahqfZZt02eJq9o3_emD2m902Zkdxr3SfCZuzqJPu42_IFaPGFeQdhHNgm1Z1JCATvvminKVTf3gxKmfG5PvM7rqhvcqXYEz1hDzv7ibDi0AT5BmeLeBXRKWHGGtBiE62DGyqCPmMbMWjLPv-S9eR4UD-rPCXCy_v0P6wx_p0w8xLkTX0JIGmpqq4-5MqlSWRR7MIfsQRmw-mVEzFJA7_iTy1QuVdcejGkmLyw/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJCYMIJymxt4kRtCuoj5Ehk4U/photos/AZLasHoEQdd-QsUlyLlmAV4YuxpWSXiZPyGnP_Iya0swUkILfaeYx2zDqN05HZEK_-wNFwGDYJ9qCahqfZZt02eJq9o3_emD2m902Zkdxr3SfCZuzqJPu42_IFaPGFeQdhHNgm1Z1JCATvvminKVTf3gxKmfG5PvM7rqhvcqXYEz1hDzv7ibDi0AT5BmeLeBXRKWHGGtBiE62DGyqCPmMbMWjLPv-S9eR4UD-rPCXCy_v0P6wx_p0w8xLkTX0JIGmpqq4-5MqlSWRR7MIfsQRmw-mVEzFJA7_iTy1QuVdcejGkmLyw/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:53.808Z"
+    "photoCacheExpiry": "2026-04-07T04:53:21.528Z"
   },
   "national-museum-of-african-american-history-and-culture": {
     "name": "National Museum of African American History and Culture",
@@ -8306,13 +8306,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:53.910Z",
+    "fetchedAt": "2026-01-07T05:53:21.629Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJF4Mpspi3t4kRBi9jWNebAZg/photos/AZLasHpTJIKdOuZgio5KdCauMgMxckgX4cDrgzlGYYT6UNdresqpCElF1lGQgDiYmhDwyPX-Ot1eipwFQuEy5yqktAkMCDbycbstWrqADas2SbSj3y8mI8KtPHC_1_xoeV7c6rWnxhSRO-Yf-0JeUnHxAcOIeLN_GfbTqgVSU6fFKUkfApLewsmJnP4_S0JqfX6zGo_ciGy-HTCsU1Hh3c95joobw00hX_aX16csUtxriRmnr82RQHZ2aRfZ8KW-8ccs9Sz8wSoH-mfrGXkgBdhjio_VVqFlwVDL3DLBexf57LzmWD3gN_u5RAt1-QaLD-PNgfOeTqqARv1dwGEq-82L2LbsNEHEFwfaRo9VHctG-1zh_6EEPF9djUtJIvpjMg0NEC-U9LHVRbYGB3krkoHaZm3ybtK00_iOLcDeo8lxdTKOVj8/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJF4Mpspi3t4kRBi9jWNebAZg/photos/AZLasHpTJIKdOuZgio5KdCauMgMxckgX4cDrgzlGYYT6UNdresqpCElF1lGQgDiYmhDwyPX-Ot1eipwFQuEy5yqktAkMCDbycbstWrqADas2SbSj3y8mI8KtPHC_1_xoeV7c6rWnxhSRO-Yf-0JeUnHxAcOIeLN_GfbTqgVSU6fFKUkfApLewsmJnP4_S0JqfX6zGo_ciGy-HTCsU1Hh3c95joobw00hX_aX16csUtxriRmnr82RQHZ2aRfZ8KW-8ccs9Sz8wSoH-mfrGXkgBdhjio_VVqFlwVDL3DLBexf57LzmWD3gN_u5RAt1-QaLD-PNgfOeTqqARv1dwGEq-82L2LbsNEHEFwfaRo9VHctG-1zh_6EEPF9djUtJIvpjMg0NEC-U9LHVRbYGB3krkoHaZm3ybtK00_iOLcDeo8lxdTKOVj8/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJF4Mpspi3t4kRBi9jWNebAZg/photos/AZLasHpTJIKdOuZgio5KdCauMgMxckgX4cDrgzlGYYT6UNdresqpCElF1lGQgDiYmhDwyPX-Ot1eipwFQuEy5yqktAkMCDbycbstWrqADas2SbSj3y8mI8KtPHC_1_xoeV7c6rWnxhSRO-Yf-0JeUnHxAcOIeLN_GfbTqgVSU6fFKUkfApLewsmJnP4_S0JqfX6zGo_ciGy-HTCsU1Hh3c95joobw00hX_aX16csUtxriRmnr82RQHZ2aRfZ8KW-8ccs9Sz8wSoH-mfrGXkgBdhjio_VVqFlwVDL3DLBexf57LzmWD3gN_u5RAt1-QaLD-PNgfOeTqqARv1dwGEq-82L2LbsNEHEFwfaRo9VHctG-1zh_6EEPF9djUtJIvpjMg0NEC-U9LHVRbYGB3krkoHaZm3ybtK00_iOLcDeo8lxdTKOVj8/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:53.910Z"
+    "photoCacheExpiry": "2026-04-07T04:53:21.629Z"
   },
   "mgm-national-harbor": {
     "name": "MGM National Harbor",
@@ -8501,13 +8501,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:54.011Z",
+    "fetchedAt": "2026-01-07T05:53:21.731Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJpcLNN4e6t4kRWA8RnTLGUr4/photos/AZLasHp5XotsWwYbsx4ZZqbQ1OyKwIYNp7TMAqv-wA1yT6CWjkOJ6oIQkEjj7PhRRPFKw8qf7W5UBeKnUACbKk9PCEWxU6HAXS2-5DHj4g5XgnqVTJ0trRF1dGdvjOrzZJZjghKOyGk5KODjyAGAy-jPN3SUg7dnnaWnj4uigywYurJQcu7ww0v8Vtmjnxug7YplctRNhG9BRsW0Naqwp0ajxF0f_eF1hIrB8wRQWYGENMghMQi8E1tNIAKys5H4hUkY8bNn29Kp54Z-7lAtQShoLe5awK8nXCrA4f4vBsBSX4kCIg/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJpcLNN4e6t4kRWA8RnTLGUr4/photos/AZLasHp5XotsWwYbsx4ZZqbQ1OyKwIYNp7TMAqv-wA1yT6CWjkOJ6oIQkEjj7PhRRPFKw8qf7W5UBeKnUACbKk9PCEWxU6HAXS2-5DHj4g5XgnqVTJ0trRF1dGdvjOrzZJZjghKOyGk5KODjyAGAy-jPN3SUg7dnnaWnj4uigywYurJQcu7ww0v8Vtmjnxug7YplctRNhG9BRsW0Naqwp0ajxF0f_eF1hIrB8wRQWYGENMghMQi8E1tNIAKys5H4hUkY8bNn29Kp54Z-7lAtQShoLe5awK8nXCrA4f4vBsBSX4kCIg/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJpcLNN4e6t4kRWA8RnTLGUr4/photos/AZLasHp5XotsWwYbsx4ZZqbQ1OyKwIYNp7TMAqv-wA1yT6CWjkOJ6oIQkEjj7PhRRPFKw8qf7W5UBeKnUACbKk9PCEWxU6HAXS2-5DHj4g5XgnqVTJ0trRF1dGdvjOrzZJZjghKOyGk5KODjyAGAy-jPN3SUg7dnnaWnj4uigywYurJQcu7ww0v8Vtmjnxug7YplctRNhG9BRsW0Naqwp0ajxF0f_eF1hIrB8wRQWYGENMghMQi8E1tNIAKys5H4hUkY8bNn29Kp54Z-7lAtQShoLe5awK8nXCrA4f4vBsBSX4kCIg/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:54.011Z"
+    "photoCacheExpiry": "2026-04-07T04:53:21.731Z"
   },
   "dc9-nightclub": {
     "name": "DC9 Nightclub",
@@ -8699,13 +8699,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:54.113Z",
+    "fetchedAt": "2026-01-07T05:53:21.832Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJ_-ZWDOW3t4kRM1ZI2ZPp3Lw/photos/AZLasHrinGEDjezNNt6ujUREjYM7R1svjshUXxjWD7Hc8kn3wTD4HQAaqyev40pfLWVr-JQxmR57XfcURvi2j2bOBE-AluF-Hk5ryuTHMGwQR2KoyPptDfpAz1JOTajVjiZhuqkv4Qj9nhc5BRXgD9u_iYHTpm960tpiZSG5hHyb6qgRKNuCEEC0FTXyp2nvset3VcpRUdIq_M2uQZlYU4ZAbxcCVHpJRSpGncLPMoq8A7-t7fR1P0WAJX58fB_EiGvxH-QTTv68Z3EagqC9XCnB3X5tK_jbOYAlGMJPbSfZRggdbw/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJ_-ZWDOW3t4kRM1ZI2ZPp3Lw/photos/AZLasHrinGEDjezNNt6ujUREjYM7R1svjshUXxjWD7Hc8kn3wTD4HQAaqyev40pfLWVr-JQxmR57XfcURvi2j2bOBE-AluF-Hk5ryuTHMGwQR2KoyPptDfpAz1JOTajVjiZhuqkv4Qj9nhc5BRXgD9u_iYHTpm960tpiZSG5hHyb6qgRKNuCEEC0FTXyp2nvset3VcpRUdIq_M2uQZlYU4ZAbxcCVHpJRSpGncLPMoq8A7-t7fR1P0WAJX58fB_EiGvxH-QTTv68Z3EagqC9XCnB3X5tK_jbOYAlGMJPbSfZRggdbw/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJ_-ZWDOW3t4kRM1ZI2ZPp3Lw/photos/AZLasHrinGEDjezNNt6ujUREjYM7R1svjshUXxjWD7Hc8kn3wTD4HQAaqyev40pfLWVr-JQxmR57XfcURvi2j2bOBE-AluF-Hk5ryuTHMGwQR2KoyPptDfpAz1JOTajVjiZhuqkv4Qj9nhc5BRXgD9u_iYHTpm960tpiZSG5hHyb6qgRKNuCEEC0FTXyp2nvset3VcpRUdIq_M2uQZlYU4ZAbxcCVHpJRSpGncLPMoq8A7-t7fR1P0WAJX58fB_EiGvxH-QTTv68Z3EagqC9XCnB3X5tK_jbOYAlGMJPbSfZRggdbw/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:54.113Z"
+    "photoCacheExpiry": "2026-04-07T04:53:21.832Z"
   },
   "sixth-i-synagogue": {
     "name": "Sixth & I Synagogue",
@@ -8895,13 +8895,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:54.214Z",
+    "fetchedAt": "2026-01-07T05:53:21.934Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJR_GDwI23t4kR4stD2tB3isI/photos/AZLasHqAlZYCG5N6zgSmxzCAdiRTrHZC6RRhAS2odGAcBHovsysHuQATk3CsjlEKxJzIAnDED_3AnR7sY-YUlp8_e5JG7wt6xeGvvVlXNAFI3O4qMj_JTG9CKJ2zuYkRqMpdqhYioeqlFzD6kA7ntNL4ia5RENAbvfW9fabzJZ_HG8rXZ-BJccx4oUcOc-CydKGYvi8m1NKdfYQdK4iEropZQmaRGI5QwRxgGIsR-dgQJhVk_fiI0BeENQtjthbiI7DQHMe2j4pM30eLGP0SXg-9FD2QplURpPI07yhxhWulYOYIVw/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJR_GDwI23t4kR4stD2tB3isI/photos/AZLasHqAlZYCG5N6zgSmxzCAdiRTrHZC6RRhAS2odGAcBHovsysHuQATk3CsjlEKxJzIAnDED_3AnR7sY-YUlp8_e5JG7wt6xeGvvVlXNAFI3O4qMj_JTG9CKJ2zuYkRqMpdqhYioeqlFzD6kA7ntNL4ia5RENAbvfW9fabzJZ_HG8rXZ-BJccx4oUcOc-CydKGYvi8m1NKdfYQdK4iEropZQmaRGI5QwRxgGIsR-dgQJhVk_fiI0BeENQtjthbiI7DQHMe2j4pM30eLGP0SXg-9FD2QplURpPI07yhxhWulYOYIVw/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJR_GDwI23t4kR4stD2tB3isI/photos/AZLasHqAlZYCG5N6zgSmxzCAdiRTrHZC6RRhAS2odGAcBHovsysHuQATk3CsjlEKxJzIAnDED_3AnR7sY-YUlp8_e5JG7wt6xeGvvVlXNAFI3O4qMj_JTG9CKJ2zuYkRqMpdqhYioeqlFzD6kA7ntNL4ia5RENAbvfW9fabzJZ_HG8rXZ-BJccx4oUcOc-CydKGYvi8m1NKdfYQdK4iEropZQmaRGI5QwRxgGIsR-dgQJhVk_fiI0BeENQtjthbiI7DQHMe2j4pM30eLGP0SXg-9FD2QplURpPI07yhxhWulYOYIVw/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:54.214Z"
+    "photoCacheExpiry": "2026-04-07T04:53:21.934Z"
   },
   "the-anthem": {
     "name": "The Anthem",
@@ -9094,13 +9094,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:54.315Z",
+    "fetchedAt": "2026-01-07T05:53:22.034Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJ64m9ioC3t4kRkqNX0msvbDM/photos/AZLasHqYAdUvMywQxBroq2qNynd3FSliltuk3AG4uZAAVc-iHfRu8CkjO9TR_UFQmAh1a-xNhHocaKpzLiNL4-Z-yZI4slzBgP2cW0U2uyJ4Ya4zB6UEgk9BTR-Zna49OWWuHtjYz5TlndovplQ-tlguJ21s8t6SiyWaCUH4p69j_JwkIS4x0tqJ72ic3iF5d7gkxCcZqkNo5hTrA_8-SbngvLB1K-Q59Ga7_yR_M9-9wzgvI2PIEXkemzWzsvBSvZ2YN7hedvk5vy0ZAYfwrm6b3prXO6p2rSpzpsmvI78sQIl3PezenM8a7bEN1SBR4excCzK6CObq8gwUeVVM7QP6RzbLNucMwFwqjUXxqaUU3wrqU3sNF6DLC-eV5KVVps_Q2apWn4TjAN8WGWcOBms3FFzcVD3N6My6fXQ0Qymh7PD7eg/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJ64m9ioC3t4kRkqNX0msvbDM/photos/AZLasHqYAdUvMywQxBroq2qNynd3FSliltuk3AG4uZAAVc-iHfRu8CkjO9TR_UFQmAh1a-xNhHocaKpzLiNL4-Z-yZI4slzBgP2cW0U2uyJ4Ya4zB6UEgk9BTR-Zna49OWWuHtjYz5TlndovplQ-tlguJ21s8t6SiyWaCUH4p69j_JwkIS4x0tqJ72ic3iF5d7gkxCcZqkNo5hTrA_8-SbngvLB1K-Q59Ga7_yR_M9-9wzgvI2PIEXkemzWzsvBSvZ2YN7hedvk5vy0ZAYfwrm6b3prXO6p2rSpzpsmvI78sQIl3PezenM8a7bEN1SBR4excCzK6CObq8gwUeVVM7QP6RzbLNucMwFwqjUXxqaUU3wrqU3sNF6DLC-eV5KVVps_Q2apWn4TjAN8WGWcOBms3FFzcVD3N6My6fXQ0Qymh7PD7eg/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJ64m9ioC3t4kRkqNX0msvbDM/photos/AZLasHqYAdUvMywQxBroq2qNynd3FSliltuk3AG4uZAAVc-iHfRu8CkjO9TR_UFQmAh1a-xNhHocaKpzLiNL4-Z-yZI4slzBgP2cW0U2uyJ4Ya4zB6UEgk9BTR-Zna49OWWuHtjYz5TlndovplQ-tlguJ21s8t6SiyWaCUH4p69j_JwkIS4x0tqJ72ic3iF5d7gkxCcZqkNo5hTrA_8-SbngvLB1K-Q59Ga7_yR_M9-9wzgvI2PIEXkemzWzsvBSvZ2YN7hedvk5vy0ZAYfwrm6b3prXO6p2rSpzpsmvI78sQIl3PezenM8a7bEN1SBR4excCzK6CObq8gwUeVVM7QP6RzbLNucMwFwqjUXxqaUU3wrqU3sNF6DLC-eV5KVVps_Q2apWn4TjAN8WGWcOBms3FFzcVD3N6My6fXQ0Qymh7PD7eg/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:54.315Z"
+    "photoCacheExpiry": "2026-04-07T04:53:22.034Z"
   },
   "lincoln-theatre": {
     "name": "Lincoln Theatre",
@@ -9287,13 +9287,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:54.417Z",
+    "fetchedAt": "2026-01-07T05:53:22.136Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJieyNaea3t4kRNZzAhQuHPJc/photos/AZLasHqBW5dp9ejJRlVT9p25B_hd4ZrNTfhyThoAlTgr30gJW74pnZI0Wu16sBSR9FEiFt8sfKZZXyVjf3tUxObzSc7p2b3qT04o3stxhvegmwZ0IKU4GgWA-XRaNNCwTa9JWAgXX-VoPJ-C7yL2AIlp4WNeZ0LR8cTGoIpkI1wuyxNd3eLzULeJxqdEQA1H9yun7w6q9LxIPOHRe3BNRkGdh142aAMeKZWC2ujfvBn2lvgpSf7uyTPCP6X24kTsRd9uTTeYdqMjkzWqwAo0JymA0YkBd4xfhWFU8Mazx2xrkDLkhcuJK34457GONp8ITAz9Gr47zrDyCG2a_A-LhsEed6071WAtSYz8P-HHq05U4MvEY8kXLRmSSYNRxsHi5SIu2Jlyocxy1q4EoMsD1m2Ks6G-ZFCSqK6tqDO6fkejBrXAEg/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJieyNaea3t4kRNZzAhQuHPJc/photos/AZLasHqBW5dp9ejJRlVT9p25B_hd4ZrNTfhyThoAlTgr30gJW74pnZI0Wu16sBSR9FEiFt8sfKZZXyVjf3tUxObzSc7p2b3qT04o3stxhvegmwZ0IKU4GgWA-XRaNNCwTa9JWAgXX-VoPJ-C7yL2AIlp4WNeZ0LR8cTGoIpkI1wuyxNd3eLzULeJxqdEQA1H9yun7w6q9LxIPOHRe3BNRkGdh142aAMeKZWC2ujfvBn2lvgpSf7uyTPCP6X24kTsRd9uTTeYdqMjkzWqwAo0JymA0YkBd4xfhWFU8Mazx2xrkDLkhcuJK34457GONp8ITAz9Gr47zrDyCG2a_A-LhsEed6071WAtSYz8P-HHq05U4MvEY8kXLRmSSYNRxsHi5SIu2Jlyocxy1q4EoMsD1m2Ks6G-ZFCSqK6tqDO6fkejBrXAEg/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJieyNaea3t4kRNZzAhQuHPJc/photos/AZLasHqBW5dp9ejJRlVT9p25B_hd4ZrNTfhyThoAlTgr30gJW74pnZI0Wu16sBSR9FEiFt8sfKZZXyVjf3tUxObzSc7p2b3qT04o3stxhvegmwZ0IKU4GgWA-XRaNNCwTa9JWAgXX-VoPJ-C7yL2AIlp4WNeZ0LR8cTGoIpkI1wuyxNd3eLzULeJxqdEQA1H9yun7w6q9LxIPOHRe3BNRkGdh142aAMeKZWC2ujfvBn2lvgpSf7uyTPCP6X24kTsRd9uTTeYdqMjkzWqwAo0JymA0YkBd4xfhWFU8Mazx2xrkDLkhcuJK34457GONp8ITAz9Gr47zrDyCG2a_A-LhsEed6071WAtSYz8P-HHq05U4MvEY8kXLRmSSYNRxsHi5SIu2Jlyocxy1q4EoMsD1m2Ks6G-ZFCSqK6tqDO6fkejBrXAEg/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:54.417Z"
+    "photoCacheExpiry": "2026-04-07T04:53:22.136Z"
   },
   "warner-theatre": {
     "name": "Warner Theatre",
@@ -9483,13 +9483,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:54.518Z",
+    "fetchedAt": "2026-01-07T05:53:22.237Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJFWr6bpe3t4kRblUlYvDqX0o/photos/AZLasHrz5vtIHNlu0y7Ivv3yG_e7yDf-xag8pjMN81CkheDQQtgsRkrr6md_13q9Xh7E-bJO9Y1hU68mqoqAFAKarorcDVwr7LtLW2xc3BLk9JjQDGHH9ITS7nyuBW5VcEFyPkwRWYUgrAkB_VIIVt-ajx31ZxivB8wuYzR_s_dxxAKkxXjgA3IR7odka0hh1QZh3UKXFjd4f6SNUkNnFfhO2ycXKDfOMXYmQ0pwuVLc-L19_3pezvBxvvYJu5IXf80XzMtPY_Eewk12PmZmxjHV_PZJDU9G55arUKz4QjYfbz3cUQ/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJFWr6bpe3t4kRblUlYvDqX0o/photos/AZLasHrz5vtIHNlu0y7Ivv3yG_e7yDf-xag8pjMN81CkheDQQtgsRkrr6md_13q9Xh7E-bJO9Y1hU68mqoqAFAKarorcDVwr7LtLW2xc3BLk9JjQDGHH9ITS7nyuBW5VcEFyPkwRWYUgrAkB_VIIVt-ajx31ZxivB8wuYzR_s_dxxAKkxXjgA3IR7odka0hh1QZh3UKXFjd4f6SNUkNnFfhO2ycXKDfOMXYmQ0pwuVLc-L19_3pezvBxvvYJu5IXf80XzMtPY_Eewk12PmZmxjHV_PZJDU9G55arUKz4QjYfbz3cUQ/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJFWr6bpe3t4kRblUlYvDqX0o/photos/AZLasHrz5vtIHNlu0y7Ivv3yG_e7yDf-xag8pjMN81CkheDQQtgsRkrr6md_13q9Xh7E-bJO9Y1hU68mqoqAFAKarorcDVwr7LtLW2xc3BLk9JjQDGHH9ITS7nyuBW5VcEFyPkwRWYUgrAkB_VIIVt-ajx31ZxivB8wuYzR_s_dxxAKkxXjgA3IR7odka0hh1QZh3UKXFjd4f6SNUkNnFfhO2ycXKDfOMXYmQ0pwuVLc-L19_3pezvBxvvYJu5IXf80XzMtPY_Eewk12PmZmxjHV_PZJDU9G55arUKz4QjYfbz3cUQ/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:54.518Z"
+    "photoCacheExpiry": "2026-04-07T04:53:22.237Z"
   },
   "huntington-state-beach": {
     "name": "Huntington State Beach",
@@ -9682,13 +9682,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:54.620Z",
+    "fetchedAt": "2026-01-07T05:53:22.339Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJVbrtcKoh3YARKN871uXwqCI/photos/AZLasHo6FO1_ATvTOF6vbg6O_nEsu5RUUUYPHdpO1Xj3W-KiAWMZhQVZg5vb1xhDgCYXDTfCs6lFJoB6wjUx-zN_D_YahzPNcWgu_A9mT8nrtNbdcHkhaoImWEwzY3N1BnN93T2K34B9rnSJ0PW60KgG3hOmGsKytPw-ZxCFEgNAzlwOgLxAoaAwnOW4i-pYoQbwPEj2TqyxGxUmXokgvtzC5Wr5SJhzw__2e-Vc-6EwpQm9vKhbTiRg5jnZn6uNUteLtYksXezoHcg3yTUg8laCPYG5BFX-Tc-qSvj3Yv9wYcFujFoKolqNYSCM51FxQKrIDUtkfp5EKTHv9PJBG5Grh7KbdSA8XiofxSQJKid8Zif2QQthg5fqrmMC6b7aHEwdi_Hb6QWGmNdvLRVD7kx7xV1ezDFtWQI8nDFxKoahYTWlpw/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJVbrtcKoh3YARKN871uXwqCI/photos/AZLasHo6FO1_ATvTOF6vbg6O_nEsu5RUUUYPHdpO1Xj3W-KiAWMZhQVZg5vb1xhDgCYXDTfCs6lFJoB6wjUx-zN_D_YahzPNcWgu_A9mT8nrtNbdcHkhaoImWEwzY3N1BnN93T2K34B9rnSJ0PW60KgG3hOmGsKytPw-ZxCFEgNAzlwOgLxAoaAwnOW4i-pYoQbwPEj2TqyxGxUmXokgvtzC5Wr5SJhzw__2e-Vc-6EwpQm9vKhbTiRg5jnZn6uNUteLtYksXezoHcg3yTUg8laCPYG5BFX-Tc-qSvj3Yv9wYcFujFoKolqNYSCM51FxQKrIDUtkfp5EKTHv9PJBG5Grh7KbdSA8XiofxSQJKid8Zif2QQthg5fqrmMC6b7aHEwdi_Hb6QWGmNdvLRVD7kx7xV1ezDFtWQI8nDFxKoahYTWlpw/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJVbrtcKoh3YARKN871uXwqCI/photos/AZLasHo6FO1_ATvTOF6vbg6O_nEsu5RUUUYPHdpO1Xj3W-KiAWMZhQVZg5vb1xhDgCYXDTfCs6lFJoB6wjUx-zN_D_YahzPNcWgu_A9mT8nrtNbdcHkhaoImWEwzY3N1BnN93T2K34B9rnSJ0PW60KgG3hOmGsKytPw-ZxCFEgNAzlwOgLxAoaAwnOW4i-pYoQbwPEj2TqyxGxUmXokgvtzC5Wr5SJhzw__2e-Vc-6EwpQm9vKhbTiRg5jnZn6uNUteLtYksXezoHcg3yTUg8laCPYG5BFX-Tc-qSvj3Yv9wYcFujFoKolqNYSCM51FxQKrIDUtkfp5EKTHv9PJBG5Grh7KbdSA8XiofxSQJKid8Zif2QQthg5fqrmMC6b7aHEwdi_Hb6QWGmNdvLRVD7kx7xV1ezDFtWQI8nDFxKoahYTWlpw/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:54.620Z"
+    "photoCacheExpiry": "2026-04-07T04:53:22.339Z"
   },
   "carpenter-performing-arts-center": {
     "name": "Carpenter Performing Arts Center",
@@ -9877,13 +9877,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:54.721Z",
+    "fetchedAt": "2026-01-07T05:53:22.440Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJJ-0WriAu3YARv9DP_fsdAp0/photos/AZLasHoEpjGrFgPEbKTkgA-3DoCooldrYaDtqeoz-LeQevbfA2uFIQhoqCfiLZTekxj3u01Pj4CJ9bxESvPXoyAgP1DOpc05mxtbQ0iRNTz-b2Y69PCn0N_aQ-P8v96KbtlY1FsvsmzuD7Lb6iMwCd53DE_ZqaSALXwruOB5DJdpeoCJ5UmufBUulQW2j0LB_jcWynDMB_GgvZ8_NDghHIzHMRsYISynPFvf5My7QMngq_etsRKo8QmqlXFuYnF45nzy0IH1C5HtP4PzAd38AYXXbbm1kiC4WLzbpBiF8fMqoj2PBQ/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJJ-0WriAu3YARv9DP_fsdAp0/photos/AZLasHoEpjGrFgPEbKTkgA-3DoCooldrYaDtqeoz-LeQevbfA2uFIQhoqCfiLZTekxj3u01Pj4CJ9bxESvPXoyAgP1DOpc05mxtbQ0iRNTz-b2Y69PCn0N_aQ-P8v96KbtlY1FsvsmzuD7Lb6iMwCd53DE_ZqaSALXwruOB5DJdpeoCJ5UmufBUulQW2j0LB_jcWynDMB_GgvZ8_NDghHIzHMRsYISynPFvf5My7QMngq_etsRKo8QmqlXFuYnF45nzy0IH1C5HtP4PzAd38AYXXbbm1kiC4WLzbpBiF8fMqoj2PBQ/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJJ-0WriAu3YARv9DP_fsdAp0/photos/AZLasHoEpjGrFgPEbKTkgA-3DoCooldrYaDtqeoz-LeQevbfA2uFIQhoqCfiLZTekxj3u01Pj4CJ9bxESvPXoyAgP1DOpc05mxtbQ0iRNTz-b2Y69PCn0N_aQ-P8v96KbtlY1FsvsmzuD7Lb6iMwCd53DE_ZqaSALXwruOB5DJdpeoCJ5UmufBUulQW2j0LB_jcWynDMB_GgvZ8_NDghHIzHMRsYISynPFvf5My7QMngq_etsRKo8QmqlXFuYnF45nzy0IH1C5HtP4PzAd38AYXXbbm1kiC4WLzbpBiF8fMqoj2PBQ/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:54.721Z"
+    "photoCacheExpiry": "2026-04-07T04:53:22.440Z"
   },
   "capital-one-center": {
     "name": "Capital One Center",
@@ -10068,13 +10068,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:54.823Z",
+    "fetchedAt": "2026-01-07T05:53:22.542Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJc2hfT463t4kREfcRHtsEzHU/photos/AZLasHrzavRyzOqrD8Ute-qTGAhMobV8Xp_o3A15PIxfJcemWbhu5St1rep_GCaBD5BlnYYOscSQlLE2DJTLUOTxK9pQtfxjsZQLYvNsAjRqad_vBsnvH2jxtecHffXVWgJ6QIvBZkHgH7U65Yb6WJfkrUzJ1n3pY6JxdLptW2N-6HtTE5ewNZOMMarZUQfbcGl9WV1EsxHDT5ukgrp1Of-VcqBF6vB8NGF2aXHpr69rT0MysSziQAhaDqPK6fRR0S8opphT4Hhim5irFJfbf4NnN2uQ6eMDg2aOpUT89g41o5-L_YKpAxu6Trt8SVx8HKj91OpaBdAgBbw5UXpOJpVH-ZXVB5N9YTF15XueSwyayrXtKz-6wxCl7mNTuGcjTmfWcFnIuF4SOOB2GGeOBaAClr-jXMghW08FJUHYtW91R8dP2w/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJc2hfT463t4kREfcRHtsEzHU/photos/AZLasHrzavRyzOqrD8Ute-qTGAhMobV8Xp_o3A15PIxfJcemWbhu5St1rep_GCaBD5BlnYYOscSQlLE2DJTLUOTxK9pQtfxjsZQLYvNsAjRqad_vBsnvH2jxtecHffXVWgJ6QIvBZkHgH7U65Yb6WJfkrUzJ1n3pY6JxdLptW2N-6HtTE5ewNZOMMarZUQfbcGl9WV1EsxHDT5ukgrp1Of-VcqBF6vB8NGF2aXHpr69rT0MysSziQAhaDqPK6fRR0S8opphT4Hhim5irFJfbf4NnN2uQ6eMDg2aOpUT89g41o5-L_YKpAxu6Trt8SVx8HKj91OpaBdAgBbw5UXpOJpVH-ZXVB5N9YTF15XueSwyayrXtKz-6wxCl7mNTuGcjTmfWcFnIuF4SOOB2GGeOBaAClr-jXMghW08FJUHYtW91R8dP2w/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJc2hfT463t4kREfcRHtsEzHU/photos/AZLasHrzavRyzOqrD8Ute-qTGAhMobV8Xp_o3A15PIxfJcemWbhu5St1rep_GCaBD5BlnYYOscSQlLE2DJTLUOTxK9pQtfxjsZQLYvNsAjRqad_vBsnvH2jxtecHffXVWgJ6QIvBZkHgH7U65Yb6WJfkrUzJ1n3pY6JxdLptW2N-6HtTE5ewNZOMMarZUQfbcGl9WV1EsxHDT5ukgrp1Of-VcqBF6vB8NGF2aXHpr69rT0MysSziQAhaDqPK6fRR0S8opphT4Hhim5irFJfbf4NnN2uQ6eMDg2aOpUT89g41o5-L_YKpAxu6Trt8SVx8HKj91OpaBdAgBbw5UXpOJpVH-ZXVB5N9YTF15XueSwyayrXtKz-6wxCl7mNTuGcjTmfWcFnIuF4SOOB2GGeOBaAClr-jXMghW08FJUHYtW91R8dP2w/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:54.823Z"
+    "photoCacheExpiry": "2026-04-07T04:53:22.542Z"
   },
   "the-observatory": {
     "name": "The Observatory",
@@ -10281,13 +10281,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:54.924Z",
+    "fetchedAt": "2026-01-07T05:53:22.644Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJ5zCjTqnY3IARwcG57cOsZo0/photos/AZLasHrI6dNWHud02VQgqXTtYv352aebZmsz26jeZ89IT3wdr2fRCQ0rwzEStkUItvbRYgXohsuEUMslFVV5Tul5sugQERs3lfYoDdh-eZBH-q4o7xU3rh8ZkOhu9wCsXJh9qld1XQDa_zgQ5ksSsFKf7NwjsPHOFvZAQRevHYWA9AvMaioOi4YSJHSqFeaDOCuYXiYWpU9EcJvCLek7sAuE57YL79HnM3YnSBUM7PqT0DVk5JO-594vndEjYs-K0zlxMJNaHkfr28jRiqwmcWPhXA7VsFplTOxLWcCw5CjhFdZi7lZUK7hVHnHj6LFAlETs_wcfKytHRRi1x-lcIUqAG0i3grUWy0kuQNbgq8oVpfjghvMBybVPDRP4Trw7daaGd1N64XSSZgpM-KoT3YqD7Zqkr9xLldOXFtDInomTrtbOjg/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJ5zCjTqnY3IARwcG57cOsZo0/photos/AZLasHrI6dNWHud02VQgqXTtYv352aebZmsz26jeZ89IT3wdr2fRCQ0rwzEStkUItvbRYgXohsuEUMslFVV5Tul5sugQERs3lfYoDdh-eZBH-q4o7xU3rh8ZkOhu9wCsXJh9qld1XQDa_zgQ5ksSsFKf7NwjsPHOFvZAQRevHYWA9AvMaioOi4YSJHSqFeaDOCuYXiYWpU9EcJvCLek7sAuE57YL79HnM3YnSBUM7PqT0DVk5JO-594vndEjYs-K0zlxMJNaHkfr28jRiqwmcWPhXA7VsFplTOxLWcCw5CjhFdZi7lZUK7hVHnHj6LFAlETs_wcfKytHRRi1x-lcIUqAG0i3grUWy0kuQNbgq8oVpfjghvMBybVPDRP4Trw7daaGd1N64XSSZgpM-KoT3YqD7Zqkr9xLldOXFtDInomTrtbOjg/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJ5zCjTqnY3IARwcG57cOsZo0/photos/AZLasHrI6dNWHud02VQgqXTtYv352aebZmsz26jeZ89IT3wdr2fRCQ0rwzEStkUItvbRYgXohsuEUMslFVV5Tul5sugQERs3lfYoDdh-eZBH-q4o7xU3rh8ZkOhu9wCsXJh9qld1XQDa_zgQ5ksSsFKf7NwjsPHOFvZAQRevHYWA9AvMaioOi4YSJHSqFeaDOCuYXiYWpU9EcJvCLek7sAuE57YL79HnM3YnSBUM7PqT0DVk5JO-594vndEjYs-K0zlxMJNaHkfr28jRiqwmcWPhXA7VsFplTOxLWcCw5CjhFdZi7lZUK7hVHnHj6LFAlETs_wcfKytHRRi1x-lcIUqAG0i3grUWy0kuQNbgq8oVpfjghvMBybVPDRP4Trw7daaGd1N64XSSZgpM-KoT3YqD7Zqkr9xLldOXFtDInomTrtbOjg/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:54.924Z"
+    "photoCacheExpiry": "2026-04-07T04:53:22.644Z"
   },
   "the-shrine-auditorium": {
     "name": "The Shrine Auditorium",
@@ -10490,13 +10490,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:55.025Z",
+    "fetchedAt": "2026-01-07T05:53:22.746Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJDbOWlebHwoAR7dy5hPIr75Y/photos/AZLasHpqMV1dmkaVKUcgGD3pU_stVJ7vIEBFqQTKc3Jebk19cDJjRUsMEx5LrIW8bmyOqGQ8LRQrG8zRNc2F-eJgiNpE51sSwLZ1iXtf5Et5Gj7XhS0fnseHAKhaBAUbloBzTK1PZTqXZ-fWtx3JzwWTqpT16EYroTLNUYXssvyfD3aUsELIhI4nO1dyMPHo-GJ3w0CnplIh7-g7TiWxtSzndeZHUikU9HZmzOtY9RnE_2X9b5KngXR2v8f5F7NFgQVZzg-jGh2oVaHwIPHX7NpTTe_noZn0J32BgooHyJLMS81YCnVhexL43DvUCwaDYCzMVlS5G0ihtXpJZpsyyl92mBtKT1pl_NJXvHeefAYmlqyBa4KaDgitmn7O0D_D_jZtUvyxoDaEoXJECzE3zBDGVyAnqVFiv2pVk79EKl2zvWOFwQ/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJDbOWlebHwoAR7dy5hPIr75Y/photos/AZLasHpqMV1dmkaVKUcgGD3pU_stVJ7vIEBFqQTKc3Jebk19cDJjRUsMEx5LrIW8bmyOqGQ8LRQrG8zRNc2F-eJgiNpE51sSwLZ1iXtf5Et5Gj7XhS0fnseHAKhaBAUbloBzTK1PZTqXZ-fWtx3JzwWTqpT16EYroTLNUYXssvyfD3aUsELIhI4nO1dyMPHo-GJ3w0CnplIh7-g7TiWxtSzndeZHUikU9HZmzOtY9RnE_2X9b5KngXR2v8f5F7NFgQVZzg-jGh2oVaHwIPHX7NpTTe_noZn0J32BgooHyJLMS81YCnVhexL43DvUCwaDYCzMVlS5G0ihtXpJZpsyyl92mBtKT1pl_NJXvHeefAYmlqyBa4KaDgitmn7O0D_D_jZtUvyxoDaEoXJECzE3zBDGVyAnqVFiv2pVk79EKl2zvWOFwQ/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJDbOWlebHwoAR7dy5hPIr75Y/photos/AZLasHpqMV1dmkaVKUcgGD3pU_stVJ7vIEBFqQTKc3Jebk19cDJjRUsMEx5LrIW8bmyOqGQ8LRQrG8zRNc2F-eJgiNpE51sSwLZ1iXtf5Et5Gj7XhS0fnseHAKhaBAUbloBzTK1PZTqXZ-fWtx3JzwWTqpT16EYroTLNUYXssvyfD3aUsELIhI4nO1dyMPHo-GJ3w0CnplIh7-g7TiWxtSzndeZHUikU9HZmzOtY9RnE_2X9b5KngXR2v8f5F7NFgQVZzg-jGh2oVaHwIPHX7NpTTe_noZn0J32BgooHyJLMS81YCnVhexL43DvUCwaDYCzMVlS5G0ihtXpJZpsyyl92mBtKT1pl_NJXvHeefAYmlqyBa4KaDgitmn7O0D_D_jZtUvyxoDaEoXJECzE3zBDGVyAnqVFiv2pVk79EKl2zvWOFwQ/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:55.025Z"
+    "photoCacheExpiry": "2026-04-07T04:53:22.746Z"
   },
   "dolby-theatre": {
     "name": "Dolby Theatre",
@@ -10691,13 +10691,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:55.126Z",
+    "fetchedAt": "2026-01-07T05:53:22.847Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJxxS7wyO_woARdqtZOw0d8PU/photos/AZLasHquVdu_n547iDXHY5XiVuFAIsFljpklZisS6fSxWCA-VTW-EMfhRa6I8tXmGBWashifMrNc6PZ-zOxk3OtoTPuidRYene3tZWYG04oJiOqJqOy4x4ERWShV5-RqHw0i1z_zfS7sWpfKTKZg1reX0_jpfIhXFIhP8MEUJCfw7cWkJdSuZMmKbW-VbIvmjdw7OqsKSQSbfBQNVUaoNOQPq9LE213NeLoqDVfwvhCoCeq2WKwKgh_WW3C8N0H8n23nvGVvUtJtMW1Uidkjl79UA53wyQ3o09RWqgJaOq3ngfj196XSJDzdsUXQ0ynZOoJY97S0Yzate72eJg1_um_bQkQBujmPJXkebpko8ejh91-NklhOqlQk0i2z6W5Nb__cZZ3MwzRwSzG78TxUAlMxcNku-yp133OzPzqGI66fHbBjOA/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJxxS7wyO_woARdqtZOw0d8PU/photos/AZLasHquVdu_n547iDXHY5XiVuFAIsFljpklZisS6fSxWCA-VTW-EMfhRa6I8tXmGBWashifMrNc6PZ-zOxk3OtoTPuidRYene3tZWYG04oJiOqJqOy4x4ERWShV5-RqHw0i1z_zfS7sWpfKTKZg1reX0_jpfIhXFIhP8MEUJCfw7cWkJdSuZMmKbW-VbIvmjdw7OqsKSQSbfBQNVUaoNOQPq9LE213NeLoqDVfwvhCoCeq2WKwKgh_WW3C8N0H8n23nvGVvUtJtMW1Uidkjl79UA53wyQ3o09RWqgJaOq3ngfj196XSJDzdsUXQ0ynZOoJY97S0Yzate72eJg1_um_bQkQBujmPJXkebpko8ejh91-NklhOqlQk0i2z6W5Nb__cZZ3MwzRwSzG78TxUAlMxcNku-yp133OzPzqGI66fHbBjOA/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJxxS7wyO_woARdqtZOw0d8PU/photos/AZLasHquVdu_n547iDXHY5XiVuFAIsFljpklZisS6fSxWCA-VTW-EMfhRa6I8tXmGBWashifMrNc6PZ-zOxk3OtoTPuidRYene3tZWYG04oJiOqJqOy4x4ERWShV5-RqHw0i1z_zfS7sWpfKTKZg1reX0_jpfIhXFIhP8MEUJCfw7cWkJdSuZMmKbW-VbIvmjdw7OqsKSQSbfBQNVUaoNOQPq9LE213NeLoqDVfwvhCoCeq2WKwKgh_WW3C8N0H8n23nvGVvUtJtMW1Uidkjl79UA53wyQ3o09RWqgJaOq3ngfj196XSJDzdsUXQ0ynZOoJY97S0Yzate72eJg1_um_bQkQBujmPJXkebpko8ejh91-NklhOqlQk0i2z6W5Nb__cZZ3MwzRwSzG78TxUAlMxcNku-yp133OzPzqGI66fHbBjOA/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:55.126Z"
+    "photoCacheExpiry": "2026-04-07T04:53:22.847Z"
   },
   "mozambique": {
     "name": "Mozambique",
@@ -10889,13 +10889,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:55.228Z",
+    "fetchedAt": "2026-01-07T05:53:22.949Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJIyfePabl3IARyTHf-Ufr7KI/photos/AZLasHqHDSVg4Bcrg_3XUR4ESzwi0bq0CNrtzc6AykW5djZXBM6-oHkg3esn-lM38Fz1ES5Tza94FGAxWq6w5sVT_iyzIXORKyKRfo0tUDKQDP_diLjqm4IPKmm8rC-Ep3JxFOiWYHekJcf8GDYFCabSRQoLNLcg8rXYfCnvKR8KW54FpbxXMgnwFelbiva7PNkYTG3C3Sqc3TsHnj9DOdowvXP6C3wNtP0XsdFleBYZ8vr3FoK2TcLy-rYEOVP2IgAifUxETnbRSsa1VlYtn2TPRYlegNLVtibBZr_JQzPaVe1FA2y6K19AQn27tTxBXGHWUHPMPKYJjm5cy974bd1VPSBpz1BgaD9d8n0sAyCvb6HJpq1bppzAgoQSUqYoLPQebDS19vaZpn6PGSy1PEEFMDBttm2jEERLLAZZzSZsDy_60RlyfqeAE4UsJ-6DbuI5/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJIyfePabl3IARyTHf-Ufr7KI/photos/AZLasHqHDSVg4Bcrg_3XUR4ESzwi0bq0CNrtzc6AykW5djZXBM6-oHkg3esn-lM38Fz1ES5Tza94FGAxWq6w5sVT_iyzIXORKyKRfo0tUDKQDP_diLjqm4IPKmm8rC-Ep3JxFOiWYHekJcf8GDYFCabSRQoLNLcg8rXYfCnvKR8KW54FpbxXMgnwFelbiva7PNkYTG3C3Sqc3TsHnj9DOdowvXP6C3wNtP0XsdFleBYZ8vr3FoK2TcLy-rYEOVP2IgAifUxETnbRSsa1VlYtn2TPRYlegNLVtibBZr_JQzPaVe1FA2y6K19AQn27tTxBXGHWUHPMPKYJjm5cy974bd1VPSBpz1BgaD9d8n0sAyCvb6HJpq1bppzAgoQSUqYoLPQebDS19vaZpn6PGSy1PEEFMDBttm2jEERLLAZZzSZsDy_60RlyfqeAE4UsJ-6DbuI5/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJIyfePabl3IARyTHf-Ufr7KI/photos/AZLasHqHDSVg4Bcrg_3XUR4ESzwi0bq0CNrtzc6AykW5djZXBM6-oHkg3esn-lM38Fz1ES5Tza94FGAxWq6w5sVT_iyzIXORKyKRfo0tUDKQDP_diLjqm4IPKmm8rC-Ep3JxFOiWYHekJcf8GDYFCabSRQoLNLcg8rXYfCnvKR8KW54FpbxXMgnwFelbiva7PNkYTG3C3Sqc3TsHnj9DOdowvXP6C3wNtP0XsdFleBYZ8vr3FoK2TcLy-rYEOVP2IgAifUxETnbRSsa1VlYtn2TPRYlegNLVtibBZr_JQzPaVe1FA2y6K19AQn27tTxBXGHWUHPMPKYJjm5cy974bd1VPSBpz1BgaD9d8n0sAyCvb6HJpq1bppzAgoQSUqYoLPQebDS19vaZpn6PGSy1PEEFMDBttm2jEERLLAZZzSZsDy_60RlyfqeAE4UsJ-6DbuI5/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:55.228Z"
+    "photoCacheExpiry": "2026-04-07T04:53:22.949Z"
   },
   "oc-fair-event-center": {
     "name": "OC Fair & Event Center",
@@ -11081,13 +11081,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:55.330Z",
+    "fetchedAt": "2026-01-07T05:53:23.050Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJcQ_mwgzf3IAResPJ9Lc03R8/photos/AZLasHopVorvuU4aK0Lxq3jK5QvhGTyygLXLZsvJE1K82AAuipNanoX-bSVE0A28L7cnq_w8RxECCQA-ieAigNed65IZZ8EpxijwV_UW12H8b8lMvbV_Qg_DUT2B3mcEksV2k_ihSuvLnX7JN6fJc1isgMH4cR1fH_8I4am5H0Mdudz6WGrWxLovPSDGrGimYDQMwPqMPgMxn-dbLXmnaz1pTtQKSGsv8aHJJSymOLfgOoWzArFzXSfEGfcTYKN5QvCBTKJ6yJiZnhIMRsHm5pFmtpNiAjHR-208acK1eBzawYpyLcmCr2g-uRDWilia2Hj2DbGpQ9iVHdVoJp_x3cvaUrzs01FCqac9SrkypxAhZqeH-QVcARAyqRCxalzgKRabWk-8uU0kKG5zcIouggELCbSc0RoZWt9kYCk5tMgL3LuMqrt5/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJcQ_mwgzf3IAResPJ9Lc03R8/photos/AZLasHopVorvuU4aK0Lxq3jK5QvhGTyygLXLZsvJE1K82AAuipNanoX-bSVE0A28L7cnq_w8RxECCQA-ieAigNed65IZZ8EpxijwV_UW12H8b8lMvbV_Qg_DUT2B3mcEksV2k_ihSuvLnX7JN6fJc1isgMH4cR1fH_8I4am5H0Mdudz6WGrWxLovPSDGrGimYDQMwPqMPgMxn-dbLXmnaz1pTtQKSGsv8aHJJSymOLfgOoWzArFzXSfEGfcTYKN5QvCBTKJ6yJiZnhIMRsHm5pFmtpNiAjHR-208acK1eBzawYpyLcmCr2g-uRDWilia2Hj2DbGpQ9iVHdVoJp_x3cvaUrzs01FCqac9SrkypxAhZqeH-QVcARAyqRCxalzgKRabWk-8uU0kKG5zcIouggELCbSc0RoZWt9kYCk5tMgL3LuMqrt5/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJcQ_mwgzf3IAResPJ9Lc03R8/photos/AZLasHopVorvuU4aK0Lxq3jK5QvhGTyygLXLZsvJE1K82AAuipNanoX-bSVE0A28L7cnq_w8RxECCQA-ieAigNed65IZZ8EpxijwV_UW12H8b8lMvbV_Qg_DUT2B3mcEksV2k_ihSuvLnX7JN6fJc1isgMH4cR1fH_8I4am5H0Mdudz6WGrWxLovPSDGrGimYDQMwPqMPgMxn-dbLXmnaz1pTtQKSGsv8aHJJSymOLfgOoWzArFzXSfEGfcTYKN5QvCBTKJ6yJiZnhIMRsHm5pFmtpNiAjHR-208acK1eBzawYpyLcmCr2g-uRDWilia2Hj2DbGpQ9iVHdVoJp_x3cvaUrzs01FCqac9SrkypxAhZqeH-QVcARAyqRCxalzgKRabWk-8uU0kKG5zcIouggELCbSc0RoZWt9kYCk5tMgL3LuMqrt5/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:55.330Z"
+    "photoCacheExpiry": "2026-04-07T04:53:23.050Z"
   },
   "orpheum-theatre": {
     "name": "Orpheum Theatre",
@@ -11275,13 +11275,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:55.430Z",
+    "fetchedAt": "2026-01-07T05:53:23.152Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJWQrC-crHwoARJvmB0kX7tbI/photos/AZLasHqcFGzRKtTjXa4gysJfxBQb0KSM32vBnX59FtI7C4nysVyC7wmNLcU4BBpMTNZNpCaGsklSAQJfvDYzmKJ5izWESfv4sZVg8nM0pe0qAIzsysEFUjq0uk_HEo06N4ooA_UmqVsoCOFz63koC3xiMsAaOAbmLxREZUcBYom75jIqZvH4PWaEoe6LL2PxS6isK9VdhQIqXwOdB3InrX7bFzla7Z8-maKg8MFzyp7vIWNyHFGvgz8vpsBpB-74x9Jgcfs3psyF1IdM1OyhoYhxd3LQWxCM1-4l-KONI5v9wVxyCg/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJWQrC-crHwoARJvmB0kX7tbI/photos/AZLasHqcFGzRKtTjXa4gysJfxBQb0KSM32vBnX59FtI7C4nysVyC7wmNLcU4BBpMTNZNpCaGsklSAQJfvDYzmKJ5izWESfv4sZVg8nM0pe0qAIzsysEFUjq0uk_HEo06N4ooA_UmqVsoCOFz63koC3xiMsAaOAbmLxREZUcBYom75jIqZvH4PWaEoe6LL2PxS6isK9VdhQIqXwOdB3InrX7bFzla7Z8-maKg8MFzyp7vIWNyHFGvgz8vpsBpB-74x9Jgcfs3psyF1IdM1OyhoYhxd3LQWxCM1-4l-KONI5v9wVxyCg/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJWQrC-crHwoARJvmB0kX7tbI/photos/AZLasHqcFGzRKtTjXa4gysJfxBQb0KSM32vBnX59FtI7C4nysVyC7wmNLcU4BBpMTNZNpCaGsklSAQJfvDYzmKJ5izWESfv4sZVg8nM0pe0qAIzsysEFUjq0uk_HEo06N4ooA_UmqVsoCOFz63koC3xiMsAaOAbmLxREZUcBYom75jIqZvH4PWaEoe6LL2PxS6isK9VdhQIqXwOdB3InrX7bFzla7Z8-maKg8MFzyp7vIWNyHFGvgz8vpsBpB-74x9Jgcfs3psyF1IdM1OyhoYhxd3LQWxCM1-4l-KONI5v9wVxyCg/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:55.430Z"
+    "photoCacheExpiry": "2026-04-07T04:53:23.152Z"
   },
   "theatre-at-the-ace-hotel": {
     "name": "Theatre at the Ace Hotel",
@@ -11471,13 +11471,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:55.531Z",
+    "fetchedAt": "2026-01-07T05:53:23.253Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJL_hWS8rHwoAR8tjTKEGvNyU/photos/AZLasHqMkrWACFJn2Rse7gDZPwDlv20pQaZ1DxOntSgSz0PtnFVQDtRZxKcwoP9EJpbGnvUdS2sdFlS6aXVif5Jyqemfwz3YDkKS6h3cPLJihqU8-op0L67-KRhSkaCXFYAZrYl30OPiR2zxJJfWQBEYpJ-YdnbHrwZCjKbArZtpRCYfUSHIbA43tYed5wGoxAcJL2KztL11RgII9SOZmUpfg0yjW8Ejtu0-uxUlGrI1SHPcv3h1mxNUoT6Q03t9Mt-UOITXs6wzjEuMEXVr3Jmi6Xe2T_C-fEtcqyzIM48PkMFT1Qz7uvyoXaZD54IrZR8Y4TWOGgUXW6P1hoYOkys3GthJU-_vjpbGS3Jm6Q5Q4V4lLD1JQ5zJidd-dHXtAcDOKEmnzG9rrvjoWR2_XVsuSU26q2IIYVDu1s017sdc3NHxmvKU/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJL_hWS8rHwoAR8tjTKEGvNyU/photos/AZLasHqMkrWACFJn2Rse7gDZPwDlv20pQaZ1DxOntSgSz0PtnFVQDtRZxKcwoP9EJpbGnvUdS2sdFlS6aXVif5Jyqemfwz3YDkKS6h3cPLJihqU8-op0L67-KRhSkaCXFYAZrYl30OPiR2zxJJfWQBEYpJ-YdnbHrwZCjKbArZtpRCYfUSHIbA43tYed5wGoxAcJL2KztL11RgII9SOZmUpfg0yjW8Ejtu0-uxUlGrI1SHPcv3h1mxNUoT6Q03t9Mt-UOITXs6wzjEuMEXVr3Jmi6Xe2T_C-fEtcqyzIM48PkMFT1Qz7uvyoXaZD54IrZR8Y4TWOGgUXW6P1hoYOkys3GthJU-_vjpbGS3Jm6Q5Q4V4lLD1JQ5zJidd-dHXtAcDOKEmnzG9rrvjoWR2_XVsuSU26q2IIYVDu1s017sdc3NHxmvKU/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJL_hWS8rHwoAR8tjTKEGvNyU/photos/AZLasHqMkrWACFJn2Rse7gDZPwDlv20pQaZ1DxOntSgSz0PtnFVQDtRZxKcwoP9EJpbGnvUdS2sdFlS6aXVif5Jyqemfwz3YDkKS6h3cPLJihqU8-op0L67-KRhSkaCXFYAZrYl30OPiR2zxJJfWQBEYpJ-YdnbHrwZCjKbArZtpRCYfUSHIbA43tYed5wGoxAcJL2KztL11RgII9SOZmUpfg0yjW8Ejtu0-uxUlGrI1SHPcv3h1mxNUoT6Q03t9Mt-UOITXs6wzjEuMEXVr3Jmi6Xe2T_C-fEtcqyzIM48PkMFT1Qz7uvyoXaZD54IrZR8Y4TWOGgUXW6P1hoYOkys3GthJU-_vjpbGS3Jm6Q5Q4V4lLD1JQ5zJidd-dHXtAcDOKEmnzG9rrvjoWR2_XVsuSU26q2IIYVDu1s017sdc3NHxmvKU/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:55.531Z"
+    "photoCacheExpiry": "2026-04-07T04:53:23.253Z"
   },
   "youtube-theatre": {
     "name": "YouTube Theatre",
@@ -11676,13 +11676,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:55.632Z",
+    "fetchedAt": "2026-01-07T05:53:23.355Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJI0nugpK3woARgOX9APkNgDc/photos/AZLasHq3KlI96fXBvFPYxIM2tCua84j18AGVWrlgKjU5ixkgRMuKc7Jpz8TD6NKAYLvjygY7WuyWAi7yOe1UUqoW8D_ZXTK0xQ--QMPS9paifh8_XloUEWugYGRG-AgQNDxLb3iHMaL4D19F86l17cuyTe9faVc-0Nz-R6W57jwPfP8YF0Pm17kBsy4pT3InPBybXC95HoRVk1idgHMG_it0whh2CK_vUvqdRPTAsl_7KDRDCmrNhKUKbP3uvBH_xgzbHXOQcAeHf1CepoX7dn-A0ewknPBytxD2A5pMom1LzLjutPTmFMw7Dbe-MHTr39rFLw2fmbCtdgqky6N7MepmCOGw4JOLNbfRgp0L30E9AbaAPSs_RPTKjTJ4-7zY-_0N4sH0AX67GuB3vGc-L0rWWc8hQRshQcuu6vZHYk-Cg6O6Ow/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJI0nugpK3woARgOX9APkNgDc/photos/AZLasHq3KlI96fXBvFPYxIM2tCua84j18AGVWrlgKjU5ixkgRMuKc7Jpz8TD6NKAYLvjygY7WuyWAi7yOe1UUqoW8D_ZXTK0xQ--QMPS9paifh8_XloUEWugYGRG-AgQNDxLb3iHMaL4D19F86l17cuyTe9faVc-0Nz-R6W57jwPfP8YF0Pm17kBsy4pT3InPBybXC95HoRVk1idgHMG_it0whh2CK_vUvqdRPTAsl_7KDRDCmrNhKUKbP3uvBH_xgzbHXOQcAeHf1CepoX7dn-A0ewknPBytxD2A5pMom1LzLjutPTmFMw7Dbe-MHTr39rFLw2fmbCtdgqky6N7MepmCOGw4JOLNbfRgp0L30E9AbaAPSs_RPTKjTJ4-7zY-_0N4sH0AX67GuB3vGc-L0rWWc8hQRshQcuu6vZHYk-Cg6O6Ow/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJI0nugpK3woARgOX9APkNgDc/photos/AZLasHq3KlI96fXBvFPYxIM2tCua84j18AGVWrlgKjU5ixkgRMuKc7Jpz8TD6NKAYLvjygY7WuyWAi7yOe1UUqoW8D_ZXTK0xQ--QMPS9paifh8_XloUEWugYGRG-AgQNDxLb3iHMaL4D19F86l17cuyTe9faVc-0Nz-R6W57jwPfP8YF0Pm17kBsy4pT3InPBybXC95HoRVk1idgHMG_it0whh2CK_vUvqdRPTAsl_7KDRDCmrNhKUKbP3uvBH_xgzbHXOQcAeHf1CepoX7dn-A0ewknPBytxD2A5pMom1LzLjutPTmFMw7Dbe-MHTr39rFLw2fmbCtdgqky6N7MepmCOGw4JOLNbfRgp0L30E9AbaAPSs_RPTKjTJ4-7zY-_0N4sH0AX67GuB3vGc-L0rWWc8hQRshQcuu6vZHYk-Cg6O6Ow/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:55.632Z"
+    "photoCacheExpiry": "2026-04-07T04:53:23.355Z"
   },
   "hollywood-bowl": {
     "name": "Hollywood Bowl",
@@ -11883,13 +11883,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:55.733Z",
+    "fetchedAt": "2026-01-07T05:53:23.456Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJMwknwRu_woAR_eI2OM9ib2o/photos/AZLasHozmBlqyxLfco7_pK6_xK8wIF6054heEqJNOxXJspNkkj_lx-2uNuU1tqIkFl4fV-n3n5TpraKi99qrv8tedKKZI443p0LFbcDiG-ZIGuIgpMAb44E4WtAxemfOZBW-vSmdeFVI-js4djjUcnW6CNc3HrHtkuhiSh_F46ZHC6tz8aAcBjsFDsBtkeUY3yK0H5p4vCO-xJw_REqKCWkCVVtkYPVa4t-xvxw5Nncs9aDCcZBcQgwVA1DnxfODLQQoVCRbsTe4I_97jjusNvcdznOXOgpyjPi7x946ZLSSEQ5RDLkPssNb9aZdRaRUq1zogKSKQeA-KMo14yp3530URXOiozJadenRNPAQG5zVokElB_0Ly9QzJ_tEHF7VNwdIfTGe1EMgd4cSSLTyrbHzrOlKu8BcKefjDRltsdHDqiVmEQ/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJMwknwRu_woAR_eI2OM9ib2o/photos/AZLasHozmBlqyxLfco7_pK6_xK8wIF6054heEqJNOxXJspNkkj_lx-2uNuU1tqIkFl4fV-n3n5TpraKi99qrv8tedKKZI443p0LFbcDiG-ZIGuIgpMAb44E4WtAxemfOZBW-vSmdeFVI-js4djjUcnW6CNc3HrHtkuhiSh_F46ZHC6tz8aAcBjsFDsBtkeUY3yK0H5p4vCO-xJw_REqKCWkCVVtkYPVa4t-xvxw5Nncs9aDCcZBcQgwVA1DnxfODLQQoVCRbsTe4I_97jjusNvcdznOXOgpyjPi7x946ZLSSEQ5RDLkPssNb9aZdRaRUq1zogKSKQeA-KMo14yp3530URXOiozJadenRNPAQG5zVokElB_0Ly9QzJ_tEHF7VNwdIfTGe1EMgd4cSSLTyrbHzrOlKu8BcKefjDRltsdHDqiVmEQ/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJMwknwRu_woAR_eI2OM9ib2o/photos/AZLasHozmBlqyxLfco7_pK6_xK8wIF6054heEqJNOxXJspNkkj_lx-2uNuU1tqIkFl4fV-n3n5TpraKi99qrv8tedKKZI443p0LFbcDiG-ZIGuIgpMAb44E4WtAxemfOZBW-vSmdeFVI-js4djjUcnW6CNc3HrHtkuhiSh_F46ZHC6tz8aAcBjsFDsBtkeUY3yK0H5p4vCO-xJw_REqKCWkCVVtkYPVa4t-xvxw5Nncs9aDCcZBcQgwVA1DnxfODLQQoVCRbsTe4I_97jjusNvcdznOXOgpyjPi7x946ZLSSEQ5RDLkPssNb9aZdRaRUq1zogKSKQeA-KMo14yp3530URXOiozJadenRNPAQG5zVokElB_0Ly9QzJ_tEHF7VNwdIfTGe1EMgd4cSSLTyrbHzrOlKu8BcKefjDRltsdHDqiVmEQ/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:55.733Z"
+    "photoCacheExpiry": "2026-04-07T04:53:23.457Z"
   },
   "the-belly-up-tavern": {
     "name": "The Belly Up Tavern",
@@ -12079,13 +12079,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:55.834Z",
+    "fetchedAt": "2026-01-07T05:53:23.558Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJz_479dIO3IARSSMZDsd_eH8/photos/AZLasHpdDwzwPaQnz9Z82b1WL9t4ejdDbHowYDROofhyN2WyZXAv8RUdlnqbA6epvx_ksn-z8ylPkqfq1w5PMB9u-HrZGqTKpiE_3SrPd9y-1RhgaxszH3rfbrqm-t3GRYoUzDOC9h3gTeRwGArNrVHQ1MBUmuVcS3peVVF_pAf-ABzYIUd7uFpldDVEyT4dwPBDHBO8GlemEKSZyXzm-Av5kIi7hYf84MF8WyRxdNPApfqSVcy2f7mve_9zMWce0gdT6fZY2HPb-wCTJbjU0ugqc5zxgQiEqEuG7MkTLiZ3dx2mLw/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJz_479dIO3IARSSMZDsd_eH8/photos/AZLasHpdDwzwPaQnz9Z82b1WL9t4ejdDbHowYDROofhyN2WyZXAv8RUdlnqbA6epvx_ksn-z8ylPkqfq1w5PMB9u-HrZGqTKpiE_3SrPd9y-1RhgaxszH3rfbrqm-t3GRYoUzDOC9h3gTeRwGArNrVHQ1MBUmuVcS3peVVF_pAf-ABzYIUd7uFpldDVEyT4dwPBDHBO8GlemEKSZyXzm-Av5kIi7hYf84MF8WyRxdNPApfqSVcy2f7mve_9zMWce0gdT6fZY2HPb-wCTJbjU0ugqc5zxgQiEqEuG7MkTLiZ3dx2mLw/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJz_479dIO3IARSSMZDsd_eH8/photos/AZLasHpdDwzwPaQnz9Z82b1WL9t4ejdDbHowYDROofhyN2WyZXAv8RUdlnqbA6epvx_ksn-z8ylPkqfq1w5PMB9u-HrZGqTKpiE_3SrPd9y-1RhgaxszH3rfbrqm-t3GRYoUzDOC9h3gTeRwGArNrVHQ1MBUmuVcS3peVVF_pAf-ABzYIUd7uFpldDVEyT4dwPBDHBO8GlemEKSZyXzm-Av5kIi7hYf84MF8WyRxdNPApfqSVcy2f7mve_9zMWce0gdT6fZY2HPb-wCTJbjU0ugqc5zxgQiEqEuG7MkTLiZ3dx2mLw/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:55.834Z"
+    "photoCacheExpiry": "2026-04-07T04:53:23.558Z"
   },
   "21st-amendment": {
     "name": "21st Amendment",
@@ -12271,13 +12271,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:55.935Z",
+    "fetchedAt": "2026-01-07T05:53:23.660Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJPT5OXQymIIYRG8pEabH-WXM/photos/AZLasHp4Hh8P40-HZFQcwkvV7dSGyAm0xYAhQoxXvv8tVqPFB2dfJfp8_3MInkJYz4sjocrL6R8MTKFehcwV--0dGd0W3J-a7qcV-SHIyFKn4STGcJEbWMf8yEsrDkleEbub48K2kPdITQqojmrjR6RcNsHYXl5c6uzoFheyQ7DqXj5ruP8baquPA6-OBiRXlQwYX4ZZc32NQ5TzZJmV9yTzaDIFidSqkny3mObJ_UsPdGmfsvD_ymqCQw00jnYMeNxY8313eUI1iooBA-G-FIw5WKlmarB574dzg1D__bQ3YPyYKw/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJPT5OXQymIIYRG8pEabH-WXM/photos/AZLasHp4Hh8P40-HZFQcwkvV7dSGyAm0xYAhQoxXvv8tVqPFB2dfJfp8_3MInkJYz4sjocrL6R8MTKFehcwV--0dGd0W3J-a7qcV-SHIyFKn4STGcJEbWMf8yEsrDkleEbub48K2kPdITQqojmrjR6RcNsHYXl5c6uzoFheyQ7DqXj5ruP8baquPA6-OBiRXlQwYX4ZZc32NQ5TzZJmV9yTzaDIFidSqkny3mObJ_UsPdGmfsvD_ymqCQw00jnYMeNxY8313eUI1iooBA-G-FIw5WKlmarB574dzg1D__bQ3YPyYKw/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJPT5OXQymIIYRG8pEabH-WXM/photos/AZLasHp4Hh8P40-HZFQcwkvV7dSGyAm0xYAhQoxXvv8tVqPFB2dfJfp8_3MInkJYz4sjocrL6R8MTKFehcwV--0dGd0W3J-a7qcV-SHIyFKn4STGcJEbWMf8yEsrDkleEbub48K2kPdITQqojmrjR6RcNsHYXl5c6uzoFheyQ7DqXj5ruP8baquPA6-OBiRXlQwYX4ZZc32NQ5TzZJmV9yTzaDIFidSqkny3mObJ_UsPdGmfsvD_ymqCQw00jnYMeNxY8313eUI1iooBA-G-FIw5WKlmarB574dzg1D__bQ3YPyYKw/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:55.935Z"
+    "photoCacheExpiry": "2026-04-07T04:53:23.660Z"
   },
   "the-wiltern": {
     "name": "The Wiltern",
@@ -12479,13 +12479,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:56.036Z",
+    "fetchedAt": "2026-01-07T05:53:23.762Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJo4G0L4W4woARbz4mhiS79jk/photos/AZLasHoWkV_Fp7ytUSCdkxYLK-EReFSPbQ3k3N--YveHTcBxngh2gdlE_spm4vQeSPImzgBIsnyWHgsIBC2Byw45cs5qVdLkvHDFqO_bsZyysMbjVz83yTbWa1VX46ZxJvXdE_uwhs8m2-XTjngQzK6GU-qZA8pXhMiFCpA2fg3l1pkWrgwS0VEwc5lb8YBxPvr_Iq9z-v5fJ1FLiaTMQysz3y08IGyJRNDFgr77cIfgp69O5B3w6S8SDZkFUPw4k_TH9k5ad9ptKdEru5pT6T98955__ew7preJ4zVEkbJs0nmfMq4KwLC0eQvQksT4PlA57mu4HUZbbv4Rm__Z4P8XutjsBGgXV-sn-h_8T991Fp3Y9TePQCTbF1XUhgnXWeO35aGNiOIlcMvSz-pZuggGKyiMTjN5_u-0ii8FtAk20iXsgA/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJo4G0L4W4woARbz4mhiS79jk/photos/AZLasHoWkV_Fp7ytUSCdkxYLK-EReFSPbQ3k3N--YveHTcBxngh2gdlE_spm4vQeSPImzgBIsnyWHgsIBC2Byw45cs5qVdLkvHDFqO_bsZyysMbjVz83yTbWa1VX46ZxJvXdE_uwhs8m2-XTjngQzK6GU-qZA8pXhMiFCpA2fg3l1pkWrgwS0VEwc5lb8YBxPvr_Iq9z-v5fJ1FLiaTMQysz3y08IGyJRNDFgr77cIfgp69O5B3w6S8SDZkFUPw4k_TH9k5ad9ptKdEru5pT6T98955__ew7preJ4zVEkbJs0nmfMq4KwLC0eQvQksT4PlA57mu4HUZbbv4Rm__Z4P8XutjsBGgXV-sn-h_8T991Fp3Y9TePQCTbF1XUhgnXWeO35aGNiOIlcMvSz-pZuggGKyiMTjN5_u-0ii8FtAk20iXsgA/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJo4G0L4W4woARbz4mhiS79jk/photos/AZLasHoWkV_Fp7ytUSCdkxYLK-EReFSPbQ3k3N--YveHTcBxngh2gdlE_spm4vQeSPImzgBIsnyWHgsIBC2Byw45cs5qVdLkvHDFqO_bsZyysMbjVz83yTbWa1VX46ZxJvXdE_uwhs8m2-XTjngQzK6GU-qZA8pXhMiFCpA2fg3l1pkWrgwS0VEwc5lb8YBxPvr_Iq9z-v5fJ1FLiaTMQysz3y08IGyJRNDFgr77cIfgp69O5B3w6S8SDZkFUPw4k_TH9k5ad9ptKdEru5pT6T98955__ew7preJ4zVEkbJs0nmfMq4KwLC0eQvQksT4PlA57mu4HUZbbv4Rm__Z4P8XutjsBGgXV-sn-h_8T991Fp3Y9TePQCTbF1XUhgnXWeO35aGNiOIlcMvSz-pZuggGKyiMTjN5_u-0ii8FtAk20iXsgA/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:56.036Z"
+    "photoCacheExpiry": "2026-04-07T04:53:23.762Z"
   },
   "the-belasco": {
     "name": "The Belasco",
@@ -12687,13 +12687,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:56.138Z",
+    "fetchedAt": "2026-01-07T05:53:23.864Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJT359ZcnHwoARlzqycZrBhdc/photos/AZLasHpPmGxHAhRN7-SoEmCzohHrddWxRfhbbQlXnnQhM0wkUW0VTW7DCExLSTKjTQXFFDHYvBmELvean-UfoHE7JSuLeyJrkB4RP8jT4_86IUOvwOjk6GM8oZbg6eVIi2w3rc6PQHMsZRtFthKj6IwADmS5KqCENGb8Pe0JDJ0H3gDJabcAmO3rNA8TeKwKw2S_MnLTYcA5_S6uoS9V7TIcNgHz6_3KXj2LxyvT4TCSmWxgnkVk6uxrUZSVpaL2H0-kUeonPbSwR1WUsU6h0yKGg0FL23eOFTnc-tOCFanHro248g/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJT359ZcnHwoARlzqycZrBhdc/photos/AZLasHpPmGxHAhRN7-SoEmCzohHrddWxRfhbbQlXnnQhM0wkUW0VTW7DCExLSTKjTQXFFDHYvBmELvean-UfoHE7JSuLeyJrkB4RP8jT4_86IUOvwOjk6GM8oZbg6eVIi2w3rc6PQHMsZRtFthKj6IwADmS5KqCENGb8Pe0JDJ0H3gDJabcAmO3rNA8TeKwKw2S_MnLTYcA5_S6uoS9V7TIcNgHz6_3KXj2LxyvT4TCSmWxgnkVk6uxrUZSVpaL2H0-kUeonPbSwR1WUsU6h0yKGg0FL23eOFTnc-tOCFanHro248g/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJT359ZcnHwoARlzqycZrBhdc/photos/AZLasHpPmGxHAhRN7-SoEmCzohHrddWxRfhbbQlXnnQhM0wkUW0VTW7DCExLSTKjTQXFFDHYvBmELvean-UfoHE7JSuLeyJrkB4RP8jT4_86IUOvwOjk6GM8oZbg6eVIi2w3rc6PQHMsZRtFthKj6IwADmS5KqCENGb8Pe0JDJ0H3gDJabcAmO3rNA8TeKwKw2S_MnLTYcA5_S6uoS9V7TIcNgHz6_3KXj2LxyvT4TCSmWxgnkVk6uxrUZSVpaL2H0-kUeonPbSwR1WUsU6h0yKGg0FL23eOFTnc-tOCFanHro248g/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:56.138Z"
+    "photoCacheExpiry": "2026-04-07T04:53:23.864Z"
   },
   "peacock-theater": {
     "name": "Peacock Theater",
@@ -12880,13 +12880,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:56.239Z",
+    "fetchedAt": "2026-01-07T05:53:23.964Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJf13sALnHwoARD8_A2Rt3Hcc/photos/AZLasHrNEbwwC_LW6TJy-aDVXAA_DwgX0Ob9xyDBpX5a050VGP_wbHb9Sb3AsEEI0Jug-DmLUeYnyRoaauTSIJFlpuB6mMpPnWAHXrnvcKNy27pajAVaHbJzv-F3Y9kkQsNX4ANJruHr93sn_XSCkBZcYTVECgaJ9A0uRwxtVrojK9hEGkXThe1WfFz1NCsZBVCIAb3CX5WpWyxQQawwLzLCiGzATOsDoQM-p72UwsiWT2PmAcg_dPVqGuE31P9XFT0F2z8QTBPPifEBxbZjrKeM4p2L5XshRQwXTo2zTloimXmdhQ/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJf13sALnHwoARD8_A2Rt3Hcc/photos/AZLasHrNEbwwC_LW6TJy-aDVXAA_DwgX0Ob9xyDBpX5a050VGP_wbHb9Sb3AsEEI0Jug-DmLUeYnyRoaauTSIJFlpuB6mMpPnWAHXrnvcKNy27pajAVaHbJzv-F3Y9kkQsNX4ANJruHr93sn_XSCkBZcYTVECgaJ9A0uRwxtVrojK9hEGkXThe1WfFz1NCsZBVCIAb3CX5WpWyxQQawwLzLCiGzATOsDoQM-p72UwsiWT2PmAcg_dPVqGuE31P9XFT0F2z8QTBPPifEBxbZjrKeM4p2L5XshRQwXTo2zTloimXmdhQ/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJf13sALnHwoARD8_A2Rt3Hcc/photos/AZLasHrNEbwwC_LW6TJy-aDVXAA_DwgX0Ob9xyDBpX5a050VGP_wbHb9Sb3AsEEI0Jug-DmLUeYnyRoaauTSIJFlpuB6mMpPnWAHXrnvcKNy27pajAVaHbJzv-F3Y9kkQsNX4ANJruHr93sn_XSCkBZcYTVECgaJ9A0uRwxtVrojK9hEGkXThe1WfFz1NCsZBVCIAb3CX5WpWyxQQawwLzLCiGzATOsDoQM-p72UwsiWT2PmAcg_dPVqGuE31P9XFT0F2z8QTBPPifEBxbZjrKeM4p2L5XshRQwXTo2zTloimXmdhQ/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:56.240Z"
+    "photoCacheExpiry": "2026-04-07T04:53:23.965Z"
   },
   "the-roxy": {
     "name": "The Roxy",
@@ -13072,13 +13072,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:56.341Z",
+    "fetchedAt": "2026-01-07T05:53:24.065Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJR53ad6G-woARNqbu5kF-iAM/photos/AZLasHrc1lqvyFrLUAP7rg1K6zlAC50VlMKcvEOhI_yq-LHMPA5S-5wZNgOpaIPqr-CZJ5efUqpK3Msat7cUGZlWLzslnzNAxR3ONyCcWWabJN9arFjK4KtMnuT8mSnlM0abHJylYAIYpxPk7XZ0lwhgHsm4NPSJtYZ52CSwlgZr4R8JI0XX_ad0BG-Rh4HLC21QIL_U1D2TqYwXkex5UhknWheHKc5pS4NAXEZxHwL8cNy2dx5gQQPFyF8ygTsgrJxy93hEFMSKEDhCc5xJWzm3Gd8UgXGU8mDsPC9wfSBvzYiyeovB8xuEX8squj2ixamHA4owrD89qTG9X9AJJJPu95KPOBenad1osG8xpGg-8GSErVbBhyAWsPVOmOb7-agtz42Yn1G8EbNNKY4jmg58eQBl2XO12lpvv0A4LCy8c8RXPl0/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJR53ad6G-woARNqbu5kF-iAM/photos/AZLasHrc1lqvyFrLUAP7rg1K6zlAC50VlMKcvEOhI_yq-LHMPA5S-5wZNgOpaIPqr-CZJ5efUqpK3Msat7cUGZlWLzslnzNAxR3ONyCcWWabJN9arFjK4KtMnuT8mSnlM0abHJylYAIYpxPk7XZ0lwhgHsm4NPSJtYZ52CSwlgZr4R8JI0XX_ad0BG-Rh4HLC21QIL_U1D2TqYwXkex5UhknWheHKc5pS4NAXEZxHwL8cNy2dx5gQQPFyF8ygTsgrJxy93hEFMSKEDhCc5xJWzm3Gd8UgXGU8mDsPC9wfSBvzYiyeovB8xuEX8squj2ixamHA4owrD89qTG9X9AJJJPu95KPOBenad1osG8xpGg-8GSErVbBhyAWsPVOmOb7-agtz42Yn1G8EbNNKY4jmg58eQBl2XO12lpvv0A4LCy8c8RXPl0/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJR53ad6G-woARNqbu5kF-iAM/photos/AZLasHrc1lqvyFrLUAP7rg1K6zlAC50VlMKcvEOhI_yq-LHMPA5S-5wZNgOpaIPqr-CZJ5efUqpK3Msat7cUGZlWLzslnzNAxR3ONyCcWWabJN9arFjK4KtMnuT8mSnlM0abHJylYAIYpxPk7XZ0lwhgHsm4NPSJtYZ52CSwlgZr4R8JI0XX_ad0BG-Rh4HLC21QIL_U1D2TqYwXkex5UhknWheHKc5pS4NAXEZxHwL8cNy2dx5gQQPFyF8ygTsgrJxy93hEFMSKEDhCc5xJWzm3Gd8UgXGU8mDsPC9wfSBvzYiyeovB8xuEX8squj2ixamHA4owrD89qTG9X9AJJJPu95KPOBenad1osG8xpGg-8GSErVbBhyAWsPVOmOb7-agtz42Yn1G8EbNNKY4jmg58eQBl2XO12lpvv0A4LCy8c8RXPl0/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:56.341Z"
+    "photoCacheExpiry": "2026-04-07T04:53:24.065Z"
   },
   "mgm-music-hall-at-fenway": {
     "name": "MGM Music Hall at Fenway",
@@ -13264,13 +13264,13 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:56.444Z",
+    "fetchedAt": "2026-01-07T05:53:24.167Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJEbj5w5J744kRV0MbtKFC7KU/photos/AZLasHoKaQfG267sdHBugC-PpwJ_ioGH6G9DVe0z1slKPkYSul7MpvoCeoWBlokY3j7jgobQwdjylxur-eBxQWRdkeIojH4w9YMTgXVxy2L6TGbL8efXC555Pso_R5A7nfcfMoY1so7iuhkJO7kT3AhOE3PpN0TP7JXaCcwZBZjGhb4nUUiG0L1z4SdKzAZlhbespftl_mCyCzi7G2xG6gUdJh7ZoJwhyhHza41_8R8iT7ltMNBhf-O5XMc6FCF6BEvdYJ5BbNIGBE-BpZm2yBABl3jQqAU2Miv36z3oKtUZzko-A_LB-i97ie53YRl8c0scOYHQAPla2kIwLz7oQiNlBdPMn4UdVVX3QLAM0vj_Fw9nuWGvv-K8NGH1MyvBO9DohIp_XCUEsgGJM_lzC5QFTFMceP9V8V3HhWx2Udo_QiCU9NRZ/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJEbj5w5J744kRV0MbtKFC7KU/photos/AZLasHoKaQfG267sdHBugC-PpwJ_ioGH6G9DVe0z1slKPkYSul7MpvoCeoWBlokY3j7jgobQwdjylxur-eBxQWRdkeIojH4w9YMTgXVxy2L6TGbL8efXC555Pso_R5A7nfcfMoY1so7iuhkJO7kT3AhOE3PpN0TP7JXaCcwZBZjGhb4nUUiG0L1z4SdKzAZlhbespftl_mCyCzi7G2xG6gUdJh7ZoJwhyhHza41_8R8iT7ltMNBhf-O5XMc6FCF6BEvdYJ5BbNIGBE-BpZm2yBABl3jQqAU2Miv36z3oKtUZzko-A_LB-i97ie53YRl8c0scOYHQAPla2kIwLz7oQiNlBdPMn4UdVVX3QLAM0vj_Fw9nuWGvv-K8NGH1MyvBO9DohIp_XCUEsgGJM_lzC5QFTFMceP9V8V3HhWx2Udo_QiCU9NRZ/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJEbj5w5J744kRV0MbtKFC7KU/photos/AZLasHoKaQfG267sdHBugC-PpwJ_ioGH6G9DVe0z1slKPkYSul7MpvoCeoWBlokY3j7jgobQwdjylxur-eBxQWRdkeIojH4w9YMTgXVxy2L6TGbL8efXC555Pso_R5A7nfcfMoY1so7iuhkJO7kT3AhOE3PpN0TP7JXaCcwZBZjGhb4nUUiG0L1z4SdKzAZlhbespftl_mCyCzi7G2xG6gUdJh7ZoJwhyhHza41_8R8iT7ltMNBhf-O5XMc6FCF6BEvdYJ5BbNIGBE-BpZm2yBABl3jQqAU2Miv36z3oKtUZzko-A_LB-i97ie53YRl8c0scOYHQAPla2kIwLz7oQiNlBdPMn4UdVVX3QLAM0vj_Fw9nuWGvv-K8NGH1MyvBO9DohIp_XCUEsgGJM_lzC5QFTFMceP9V8V3HhWx2Udo_QiCU9NRZ/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:56.444Z"
+    "photoCacheExpiry": "2026-04-07T04:53:24.167Z"
   },
   "pavilion-theatre": {
     "name": "Pavilion Theatre",
@@ -13457,12 +13457,12 @@
         }
       ]
     },
-    "fetchedAt": "2026-01-05T22:54:56.545Z",
+    "fetchedAt": "2026-01-07T05:53:24.269Z",
     "photoUrls": {
       "thumbnail": "https://places.googleapis.com/v1/places/ChIJMQFxsCFEiEgRSB8mtTSOB1A/photos/AZLasHrAUQJwCL0Vry8brJUpc_c2OuWM6vrylED9W5BX9rN4stRv0Q3yZnaASS4XWKYDEAtWwqMqmz99PXgcc4QX3fprIMPVvobCtea2m5-lNWzdGCIBO-E7vxiXZ3zOaasIAYMvSdcatvaOzU9XdMpqFCjc6_vFKkP3MlJB7_qfjDGCq_AsOCHasK1WAznn_t4TgqnAj7NwKWk_xpNBLE5DQvEJyl6OM4R44JlxtZPoy6o_AKef1kz4ePaRpJLSXiBk_mhWQx7MF7YfrTCb_t83-c0DzX5F-5XT4HNP2ooW8a5aBQ/media?maxHeightPx=400&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "medium": "https://places.googleapis.com/v1/places/ChIJMQFxsCFEiEgRSB8mtTSOB1A/photos/AZLasHrAUQJwCL0Vry8brJUpc_c2OuWM6vrylED9W5BX9rN4stRv0Q3yZnaASS4XWKYDEAtWwqMqmz99PXgcc4QX3fprIMPVvobCtea2m5-lNWzdGCIBO-E7vxiXZ3zOaasIAYMvSdcatvaOzU9XdMpqFCjc6_vFKkP3MlJB7_qfjDGCq_AsOCHasK1WAznn_t4TgqnAj7NwKWk_xpNBLE5DQvEJyl6OM4R44JlxtZPoy6o_AKef1kz4ePaRpJLSXiBk_mhWQx7MF7YfrTCb_t83-c0DzX5F-5XT4HNP2ooW8a5aBQ/media?maxHeightPx=800&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o",
       "large": "https://places.googleapis.com/v1/places/ChIJMQFxsCFEiEgRSB8mtTSOB1A/photos/AZLasHrAUQJwCL0Vry8brJUpc_c2OuWM6vrylED9W5BX9rN4stRv0Q3yZnaASS4XWKYDEAtWwqMqmz99PXgcc4QX3fprIMPVvobCtea2m5-lNWzdGCIBO-E7vxiXZ3zOaasIAYMvSdcatvaOzU9XdMpqFCjc6_vFKkP3MlJB7_qfjDGCq_AsOCHasK1WAznn_t4TgqnAj7NwKWk_xpNBLE5DQvEJyl6OM4R44JlxtZPoy6o_AKef1kz4ePaRpJLSXiBk_mhWQx7MF7YfrTCb_t83-c0DzX5F-5XT4HNP2ooW8a5aBQ/media?maxHeightPx=1200&key=AIzaSyCYTLom3OkO6w3_ZRz18wNAgfAxpOlyV9o"
     },
-    "photoCacheExpiry": "2026-04-05T21:54:56.545Z"
+    "photoCacheExpiry": "2026-04-07T04:53:24.269Z"
   }
 }
