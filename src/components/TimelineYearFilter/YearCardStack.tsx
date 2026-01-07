@@ -25,6 +25,8 @@ export function YearCardStack({
   const containerRef = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useState(false)
   const lastHoveredRef = useRef<number | null>(null)
+  const touchStartPosRef = useRef<{ x: number; y: number } | null>(null)
+  const touchStartCardRef = useRef<number | null>(null)
 
   // If no concerts (shouldn't happen, but safety check), don't render
   if (concertCount === 0) return null
@@ -121,21 +123,25 @@ export function YearCardStack({
   }
 
   /**
-   * Handle touch start - begin tracking drag
+   * Handle touch start - begin tracking drag and record start position
    */
   const handleTouchStart = (e: React.TouchEvent) => {
     e.stopPropagation()
-    setIsDragging(true)
-    // Find which card is under the initial touch
     const touch = e.touches[0]
+
+    // Record touch start position for tap detection
+    touchStartPosRef.current = { x: touch.clientX, y: touch.clientY }
+
+    // Find which card is under the initial touch
     const element = document.elementFromPoint(touch.clientX, touch.clientY)
     const cardElement = element?.closest('[data-card-index]') as HTMLElement
     if (cardElement) {
       const index = parseInt(cardElement.dataset.cardIndex || '-1', 10)
       if (index >= 0) {
+        touchStartCardRef.current = index
         lastHoveredRef.current = index
         onCardHover(index)
-        haptics.light()
+        // Don't set isDragging yet - wait for touchmove to confirm drag
       }
     }
   }
@@ -144,8 +150,21 @@ export function YearCardStack({
    * Handle touch move - update focus as finger drags across cards
    */
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging) return
     e.stopPropagation()
+
+    // Detect if user has moved significantly (indicates drag, not tap)
+    if (!isDragging && touchStartPosRef.current) {
+      const touch = e.touches[0]
+      const deltaX = Math.abs(touch.clientX - touchStartPosRef.current.x)
+      const deltaY = Math.abs(touch.clientY - touchStartPosRef.current.y)
+      const DRAG_THRESHOLD = 10 // pixels
+
+      if (deltaX > DRAG_THRESHOLD || deltaY > DRAG_THRESHOLD) {
+        console.log('[YearCardStack] Movement detected, setting isDragging=true')
+        setIsDragging(true)
+        haptics.light()
+      }
+    }
 
     const touch = e.touches[0]
     const element = document.elementFromPoint(touch.clientX, touch.clientY)
@@ -156,20 +175,55 @@ export function YearCardStack({
       if (index >= 0 && index !== lastHoveredRef.current) {
         lastHoveredRef.current = index
         onCardHover(index)
-        haptics.light()
+        if (isDragging) {
+          haptics.light()
+        }
       }
     }
   }
 
   /**
-   * Handle touch end - keep last focused card in focus state
+   * Handle touch end - detect tap vs drag and handle navigation
    */
   const handleTouchEnd = (e: React.TouchEvent) => {
-    console.log('[YearCardStack] handleTouchEnd, setting isDragging=false')
     e.stopPropagation()
-    setIsDragging(false)
-    // Keep the last hovered card focused (don't clear hover state)
-    // User will need to tap again to navigate
+
+    const wasDragging = isDragging
+    const touchStartCard = touchStartCardRef.current
+    const touchEndCard = lastHoveredRef.current
+
+    console.log('[YearCardStack] handleTouchEnd', {
+      wasDragging,
+      touchStartCard,
+      touchEndCard,
+    })
+
+    if (wasDragging) {
+      // User was dragging - just end drag state
+      console.log('[YearCardStack] Was dragging, ending drag state')
+      setIsDragging(false)
+      // Keep last hovered card focused for next tap
+    } else {
+      // User tapped without dragging - navigate if tapping focused card
+      console.log('[YearCardStack] Was tap, checking if should navigate')
+      if (touchStartCard !== null && touchStartCard === touchEndCard && touchEndCard === hoveredCardIndex) {
+        // Tapped the currently focused/hovered card - navigate
+        const concert = visibleConcerts[touchStartCard]
+        if (concert) {
+          console.log('[YearCardStack] Navigating to', concert.headliner)
+          onCardClick(concert)
+          haptics.medium()
+        }
+      } else {
+        // First tap on this card - just focus it
+        console.log('[YearCardStack] First tap, focusing card')
+        haptics.light()
+      }
+    }
+
+    // Reset touch tracking
+    touchStartPosRef.current = null
+    touchStartCardRef.current = null
   }
 
   // Trigger haptic when cards first appear
@@ -218,10 +272,7 @@ export function YearCardStack({
               haptics.light()
             }}
             onHoverEnd={() => onCardHover(null)}
-            onClick={() => {
-              console.log('[YearCardStack] Card onClick, calling onCardClick with:', concert.headliner)
-              onCardClick(concert)
-            }}
+            onClick={() => onCardClick(concert)}
           />
         ))}
       </AnimatePresence>

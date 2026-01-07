@@ -1,8 +1,7 @@
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { useArtistMetadata } from '../TimelineHoverPreview/useArtistMetadata'
 import { FALLBACK, LAYOUT, COLORS } from '../TimelineHoverPreview/constants'
-import { haptics } from '../../utils/haptics'
 import type { StackedCardProps } from './types'
 
 /**
@@ -19,7 +18,7 @@ export function StackedCard({
   offsetX,
   rotation = 0,
   cardIndex,
-  isDragging,
+  isDragging: _isDragging, // unused - touch handling moved to parent
   onHover,
   onHoverEnd,
   onClick,
@@ -27,10 +26,7 @@ export function StackedCard({
   const { getArtistImage } = useArtistMetadata()
   const imageUrl = getArtistImage(concert.headliner) || FALLBACK.IMAGE_URL
 
-  // Touch interaction state for tap-to-focus pattern (iPad/tablets)
-  const [isTouchFocused, setIsTouchFocused] = useState(false)
-
-  // Detect if device supports touch
+  // Detect if device supports touch (for conditional mouse handlers)
   const isTouchDevice = typeof window !== 'undefined' &&
     ('ontouchstart' in window || navigator.maxTouchPoints > 0)
 
@@ -41,49 +37,8 @@ export function StackedCard({
     day: 'numeric',
   })
 
-  /**
-   * Handle touch tap on touch devices (iPad/tablets)
-   * When dragging: ignore tap events (handled by parent)
-   * When tapping: if already focused (via drag or tap), navigate; otherwise focus first
-   */
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    if (!isTouchDevice) return
-
-    console.log('[StackedCard] handleTouchEnd', {
-      isDragging,
-      isHovered,
-      isTouchFocused,
-      concertHeadliner: concert.headliner,
-    })
-
-    // If user was dragging, don't treat this as a tap
-    // The parent container already handled the focus via drag
-    if (isDragging) {
-      console.log('[StackedCard] isDragging=true, marking as focused if hovered')
-      // Mark this card as touch-focused since it was the last one hovered during drag
-      if (isHovered) {
-        setIsTouchFocused(true)
-      }
-      return
-    }
-
-    e.stopPropagation() // Prevent card stack dismissal
-
-    // If this card is already focused (either via drag or previous tap), navigate immediately
-    // Also check if currently hovered (via drag focus that just ended)
-    if (isTouchFocused || isHovered) {
-      // Navigate to artist
-      console.log('[StackedCard] Navigating!', concert.headliner)
-      onClick()
-      haptics.medium()
-    } else {
-      // First tap: focus this card
-      console.log('[StackedCard] First tap, focusing')
-      setIsTouchFocused(true)
-      onHover() // Bring card to front
-      haptics.light()
-    }
-  }, [isTouchDevice, isTouchFocused, isDragging, isHovered, onHover, onClick, concert.headliner])
+  // Note: Touch handling moved to parent container (YearCardStack)
+  // to avoid event bubbling issues and allow proper drag detection
 
   /**
    * Handle regular click on non-touch devices (desktop)
@@ -94,15 +49,14 @@ export function StackedCard({
   }, [isTouchDevice, onClick])
 
   /**
-   * Reset focus state when card loses hover (e.g., user taps different card)
+   * Handle hover end
    */
   const handleHoverEnd = useCallback(() => {
-    setIsTouchFocused(false)
     onHoverEnd()
   }, [onHoverEnd])
 
-  // Calculate z-index: hovered or touch-focused card goes to top, otherwise stack position
-  const zIndex = (isHovered || isTouchFocused) ? 999 : stackPosition
+  // Calculate z-index: hovered card goes to top, otherwise stack position
+  const zIndex = isHovered ? 999 : stackPosition
 
   return (
     <motion.div
@@ -110,7 +64,7 @@ export function StackedCard({
       initial={{ opacity: 0, scale: 0.8, x: initialX }}
       animate={{
         opacity: 1,
-        scale: (isHovered || isTouchFocused) ? 1.05 : 1,
+        scale: isHovered ? 1.05 : 1,
         x: offsetX,
         rotate: rotation,
       }}
@@ -136,7 +90,6 @@ export function StackedCard({
       onMouseEnter={isTouchDevice ? undefined : onHover}
       onMouseLeave={isTouchDevice ? undefined : handleHoverEnd}
       onClick={handleClick}
-      onTouchEnd={handleTouchEnd}
       onKeyDown={(e) => {
         if (e.key === 'Enter') {
           onClick()
@@ -144,12 +97,7 @@ export function StackedCard({
       }}
       tabIndex={0}
       role="button"
-      aria-label={
-        isTouchFocused
-          ? `${concert.headliner} at ${concert.venue}, focused. Tap again to view.`
-          : `View ${concert.headliner} concert at ${concert.venue}`
-      }
-      aria-pressed={isTouchFocused}
+      aria-label={`View ${concert.headliner} concert at ${concert.venue}`}
       data-card-index={cardIndex}
     >
       <div
@@ -159,8 +107,8 @@ export function StackedCard({
           border: `1px solid ${COLORS.POPUP_BORDER}`,
           borderRadius: LAYOUT.BORDER_RADIUS,
           overflow: 'hidden',
-          boxShadow: (isHovered || isTouchFocused)
-            ? '0 12px 48px rgba(0, 0, 0, 0.5)' // Larger on hover/focus
+          boxShadow: isHovered
+            ? '0 12px 48px rgba(0, 0, 0, 0.5)' // Larger on hover
             : '0 10px 40px rgba(0, 0, 0, 0.4)', // Match popup shadow
           transition: 'box-shadow 150ms ease-out',
           fontFamily: "'Source Sans 3', system-ui, sans-serif",
