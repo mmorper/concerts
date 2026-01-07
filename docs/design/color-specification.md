@@ -1,7 +1,7 @@
 # Morperhaus Concerts — Color Specification Guide
 
-**Version:** 2.1
-**Last Updated:** December 2024
+**Version:** 2.2
+**Last Updated:** January 2026
 
 ---
 
@@ -16,25 +16,31 @@ Deep jewel tones at 35-45% lightness, 65-80% saturation.
 | **New Wave** | `#1e40af` | Deep navy blue — synth, cold, 80s |
 | **Punk** | `#991b1b` | Dried blood red — raw, aggressive |
 | **Alternative** | `#5b21b6` | Deep violet — moody, introspective |
-| **Ska** | `#f59e0b` | Bright amber — brass, sunshine ⚠️ |
-| **Indie Rock** | `#0ea5e9` | Sky blue — melodic, expansive ⚠️ |
-| **Electronic** | `#06b6d4` | Bright cyan — synthetic, club lights ⚠️ |
-| **Pop Rock** | `#dc2626` | Bright red — warm, accessible ⚠️ |
-| **Pop Punk** | `#ec4899` | Hot pink — youthful, loud ⚠️ |
-| **Classic Rock** | `#92400e` | Dark brown leather — vintage, worn ⚠️ |
-| **Jazz** | `#4338ca` | Rich indigo — smoky, sophisticated ⚠️ |
-| **Reggae** | `#16a34a` | Vibrant green — roots, earth ⚠️ |
-| **Metal** | `#18181b` | Near-black — heavy, dark ⚠️ |
-| **Hip Hop** | `#ea580c` | Bright orange — street, bold ⚠️ |
-| **R&B/Soul** | `#7c3aed` | Electric purple — smooth, rich ⚠️ |
-| **Folk/Country** | `#a16207` | Golden brown — acoustic, earthy ⚠️ |
-| **Funk** | `#d97706` | Rich gold — groove, 70s ⚠️ |
-| **Blues** | `#1e3a8a` | Deep blue — soulful, late night ⚠️ |
-| **World** | `#14b8a6` | Bright teal — global, oceanic ⚠️ |
-| **Experimental** | `#a855f7` | Bright purple — weird, avant-garde ⚠️ |
-| **Other** | `#6b7280` | Medium gray — neutral bucket ⚠️ |
+| **Ska** | `#f59e0b` | Bright amber — brass, sunshine |
+| **Indie Rock** | `#0ea5e9` | Sky blue — melodic, expansive |
+| **Electronic** | `#06b6d4` | Bright cyan — synthetic, club lights |
+| **Pop Rock** | `#dc2626` | Bright red — warm, accessible |
+| **Pop Punk** | `#ec4899` | Hot pink — youthful, loud |
+| **Classic Rock** | `#92400e` | Dark brown leather — vintage, worn |
+| **Jazz** | `#4338ca` | Rich indigo — smoky, sophisticated |
+| **Reggae** | `#16a34a` | Vibrant green — roots, earth |
+| **Metal** | `#18181b` | Near-black — heavy, dark |
+| **Hip Hop** | `#ea580c` | Bright orange — street, bold |
+| **R&B/Soul** | `#7c3aed` | Electric purple — smooth, rich |
+| **Folk/Country** | `#a16207` | Golden brown — acoustic, earthy |
+| **Funk** | `#d97706` | Rich gold — groove, 70s |
+| **Blues** | `#1e3a8a` | Deep blue — soulful, late night |
+| **World** | `#14b8a6` | Bright teal — global, oceanic |
+| **Experimental** | `#a855f7` | Bright purple — weird, avant-garde |
+| **Neo Mellow** | `#6ee7b7` | Soft sage green — chill, acoustic-electronic ✨ |
+| **Orchestral Soundtrack** | `#881337` | Deep burgundy — cinematic, dramatic ✨ |
+| **Reggae Rock** | `#14b8a6` | Teal — reggae-rock fusion ✨ |
+| **Alternative Hip Hop** | `#b45309` | Dark amber — experimental rap ✨ |
+| **Gulf and Western Country Rock** | `#c2410c` | Terracotta — southern rock ✨ |
+| **Political Hip Hop** | `#be123c` | Bold crimson — conscious, message-driven ✨ |
+| **Other** | `#6b7280` | Medium gray — neutral bucket |
 
-⚠️ **Updated in v2.1** - Colors adjusted for better differentiation in sunburst visualization
+✨ **Updated in v2.2** - Added 6 new genres from artist enrichment data
 
 ---
 

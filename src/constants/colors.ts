@@ -39,6 +39,12 @@ export const GENRE_COLORS: Record<string, string> = {
   'Funk Rock': '#d97706',       // Gold
   'New Romantic': '#c084fc',    // Light purple
   'Dance/Electronic': '#22d3d1', // Teal
+  'Neo Mellow': '#6ee7b7',      // Soft sage green (chill, acoustic-electronic)
+  'Orchestral Soundtrack': '#881337', // Deep burgundy (cinematic, dramatic)
+  'Reggae Rock': '#14b8a6',     // Teal (reggae-rock fusion)
+  'Alternative Hip Hop': '#b45309', // Dark amber (experimental rap)
+  'Gulf and Western Country Rock': '#c2410c', // Terracotta (southern rock)
+  'Political Hip Hop': '#be123c', // Bold crimson (conscious, message-driven)
 
   // Bucket
   'Other': '#64748b',           // Slate gray (neutral bucket)

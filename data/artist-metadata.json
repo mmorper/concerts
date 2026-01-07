@@ -1,0 +1,928 @@
+{
+  "artists": [
+    {
+      "name": "Adam Ant",
+      "normalizedName": "adam-ant",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.367Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/ant-adam-500052f733720.jpg"
+    },
+    {
+      "name": "Alien Fashion Show",
+      "normalizedName": "alien-fashion-show",
+      "genre": "Swing",
+      "genreNormalized": "swing",
+      "source": "manual",
+      "fetchedAt": "2026-01-07T05:34:46.368Z"
+    },
+    {
+      "name": "Alison Moyet",
+      "normalizedName": "alison-moyet",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/xyswvr1342645255.jpg"
+    },
+    {
+      "name": "Bad Religion",
+      "normalizedName": "bad-religion",
+      "genre": "Punk",
+      "genreNormalized": "punk",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/t5bmip1762622194.jpg"
+    },
+    {
+      "name": "Bandits of the Acoustic Revolution",
+      "normalizedName": "bandits-of-the-acoustic-revolution",
+      "genre": "Ska",
+      "genreNormalized": "ska",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/xxpqsy1507572945.jpg"
+    },
+    {
+      "name": "Bat Fangs",
+      "normalizedName": "bat-fangs",
+      "genre": "Indie",
+      "genreNormalized": "indie",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/iapux71632929602.jpg"
+    },
+    {
+      "name": "Beach Boys",
+      "normalizedName": "beach-boys",
+      "genre": "Classic Rock",
+      "genreNormalized": "classic-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/rvqysx1385325837.jpg"
+    },
+    {
+      "name": "Bell Biv DeVoe",
+      "normalizedName": "bell-biv-devoe",
+      "genre": "R&B",
+      "genreNormalized": "r-b",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/j1riuq1681646207.jpg"
+    },
+    {
+      "name": "Berlin",
+      "normalizedName": "berlin",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/berlin-508e21ae9f72b.jpg"
+    },
+    {
+      "name": "Big Audio Dynamite",
+      "normalizedName": "big-audio-dynamite",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/usvswv1393089652.jpg"
+    },
+    {
+      "name": "Billy Idol",
+      "normalizedName": "billy-idol",
+      "genre": "Rock",
+      "genreNormalized": "rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/qprtqv1342815862.jpg"
+    },
+    {
+      "name": "Blancmange",
+      "normalizedName": "blancmange",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/blancmange-51c457e3276c1.jpg"
+    },
+    {
+      "name": "Blondie",
+      "normalizedName": "blondie",
+      "genre": "Post Punk",
+      "genreNormalized": "post-punk",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/4kj6071638975443.jpg"
+    },
+    {
+      "name": "Brian Setzer",
+      "normalizedName": "brian-setzer",
+      "genre": "Rockabilly",
+      "genreNormalized": "rockabilly",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/qrvsyt1365505313.jpg"
+    },
+    {
+      "name": "Brian Setzer ’68 Comeback Special",
+      "normalizedName": "brian-setzer-68-comeback-special",
+      "genre": "Rockabilly",
+      "genreNormalized": "rockabilly",
+      "fetchedAt": "2026-01-07T05:34:46.368Z"
+    },
+    {
+      "name": "Brian Setzer and the Nashvillians",
+      "normalizedName": "brian-setzer-and-the-nashvillians",
+      "genre": "Rockabilly",
+      "genreNormalized": "rockabilly",
+      "fetchedAt": "2026-01-07T05:34:46.369Z"
+    },
+    {
+      "name": "Bruce Springsteen",
+      "normalizedName": "bruce-springsteen",
+      "genre": "Classic Rock",
+      "genreNormalized": "classic-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/pj57t31658769167.jpg"
+    },
+    {
+      "name": "Burning Spear",
+      "normalizedName": "burning-spear",
+      "genre": "Reggae",
+      "genreNormalized": "reggae",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/tjalxx1666294612.jpg"
+    },
+    {
+      "name": "Cold War Kids",
+      "normalizedName": "cold-war-kids",
+      "genre": "Alternative",
+      "genreNormalized": "alternative",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/cold-war-kids-50bc967bda014.jpg"
+    },
+    {
+      "name": "Colin Hay",
+      "normalizedName": "colin-hay",
+      "genre": "Neo Mellow",
+      "genreNormalized": "neo-mellow",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/rvsssy1363778020.jpg"
+    },
+    {
+      "name": "Crowded House",
+      "normalizedName": "crowded-house",
+      "genre": "Pop Rock",
+      "genreNormalized": "pop-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/ywuyqr1348102507.jpg"
+    },
+    {
+      "name": "Culture Club",
+      "normalizedName": "culture-club",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/usxpur1347992567.jpg"
+    },
+    {
+      "name": "Danny Elfman",
+      "normalizedName": "danny-elfman",
+      "genre": "Orchestral Soundtrack",
+      "genreNormalized": "orchestral-soundtrack",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/elfman-danny-4ff30aade04f5.jpg"
+    },
+    {
+      "name": "David Byrne",
+      "normalizedName": "david-byrne",
+      "genre": "Alternative",
+      "genreNormalized": "alternative",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/qyvqxu1345667079.jpg"
+    },
+    {
+      "name": "Depeche Mode",
+      "normalizedName": "depeche-mode",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg"
+    },
+    {
+      "name": "Devo",
+      "normalizedName": "devo",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/devo-507ffb535419f.jpg"
+    },
+    {
+      "name": "Dirty Heads",
+      "normalizedName": "dirty-heads",
+      "genre": "Reggae Rock",
+      "genreNormalized": "reggae-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/brpgls1661694235.jpg"
+    },
+    {
+      "name": "Dr Sick",
+      "normalizedName": "dr-sick",
+      "genre": "Jazz",
+      "genreNormalized": "jazz",
+      "fetchedAt": "2026-01-07T05:34:46.369Z"
+    },
+    {
+      "name": "Dropkick Murphys",
+      "normalizedName": "dropkick-murphys",
+      "genre": "Punk",
+      "genreNormalized": "punk",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/utwpss1362603462.jpg"
+    },
+    {
+      "name": "Duran Duran",
+      "normalizedName": "duran-duran",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/73oxf41638977308.jpg"
+    },
+    {
+      "name": "Echo and the Bunnymen",
+      "normalizedName": "echo-and-the-bunnymen",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/22zdag1638977527.jpg"
+    },
+    {
+      "name": "Elton John",
+      "normalizedName": "elton-john",
+      "genre": "Soft Rock",
+      "genreNormalized": "soft-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/9o30sk1687869267.jpg"
+    },
+    {
+      "name": "Erasure",
+      "normalizedName": "erasure",
+      "genre": "Synthpop",
+      "genreNormalized": "synthpop",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/xpytqt1342444014.jpg"
+    },
+    {
+      "name": "Foals",
+      "normalizedName": "foals",
+      "genre": "Indie Rock",
+      "genreNormalized": "indie-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/hqj1961665173344.jpg"
+    },
+    {
+      "name": "Foo Fighters",
+      "normalizedName": "foo-fighters",
+      "genre": "Rock",
+      "genreNormalized": "rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/vuvqxr1352453964.jpg"
+    },
+    {
+      "name": "Future Islands",
+      "normalizedName": "future-islands",
+      "genre": "Alternative",
+      "genreNormalized": "alternative",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/rsrvuy1489438204.jpg"
+    },
+    {
+      "name": "Garbage",
+      "normalizedName": "garbage",
+      "genre": "Alternative",
+      "genreNormalized": "alternative",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wwswpy1366731211.jpg"
+    },
+    {
+      "name": "Gary Numan",
+      "normalizedName": "gary-numan",
+      "genre": "Post Punk",
+      "genreNormalized": "post-punk",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/c83nrm1638978271.jpg"
+    },
+    {
+      "name": "George Michael",
+      "normalizedName": "george-michael",
+      "genre": "Pop",
+      "genreNormalized": "pop",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/hbmwem1637696093.jpg"
+    },
+    {
+      "name": "Gorillaz",
+      "normalizedName": "gorillaz",
+      "genre": "Alternative Hip Hop",
+      "genreNormalized": "alternative-hip-hop",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/yuvrtv1359741191.jpg"
+    },
+    {
+      "name": "Heaven 17",
+      "normalizedName": "heaven-17",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/tuvsvy1373048794.jpg"
+    },
+    {
+      "name": "Howard Jones",
+      "normalizedName": "howard-jones",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/jones-howard-50fbc0fcc99a1.jpg"
+    },
+    {
+      "name": "Jesus Jones",
+      "normalizedName": "jesus-jones",
+      "genre": "Britpop",
+      "genreNormalized": "britpop",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/trqwst1340718689.jpg"
+    },
+    {
+      "name": "Jimmy Buffett",
+      "normalizedName": "jimmy-buffett",
+      "genre": "Gulf and Western Country Rock",
+      "genreNormalized": "gulf-and-western-country-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/tspqvv1366946673.jpg"
+    },
+    {
+      "name": "Joe Jackson",
+      "normalizedName": "joe-jackson",
+      "genre": "New Wave Pop",
+      "genreNormalized": "new-wave-pop",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wqxvvw1362151298.jpg"
+    },
+    {
+      "name": "Joe Satriani",
+      "normalizedName": "joe-satriani",
+      "genre": "Classic Rock",
+      "genreNormalized": "classic-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/xxxxtu1385856091.jpg"
+    },
+    {
+      "name": "Kasabian",
+      "normalizedName": "kasabian",
+      "genre": "Alternative",
+      "genreNormalized": "alternative",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/rpxwvt1521641597.jpg"
+    },
+    {
+      "name": "Klangphonics",
+      "normalizedName": "klangphonics",
+      "genre": "Dance/Electronic",
+      "genreNormalized": "dance-electronic",
+      "fetchedAt": "2026-01-07T05:34:46.369Z"
+    },
+    {
+      "name": "Kraftwerk",
+      "normalizedName": "kraftwerk",
+      "genre": "Electronic",
+      "genreNormalized": "electronic",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/80nobh1639054989.jpg"
+    },
+    {
+      "name": "Lee Rocker",
+      "normalizedName": "lee-rocker",
+      "genre": "Rockabilly",
+      "genreNormalized": "rockabilly",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/qvxpsr1454807114.jpg"
+    },
+    {
+      "name": "Lenny Kravitz",
+      "normalizedName": "lenny-kravitz",
+      "genre": "Rock",
+      "genreNormalized": "rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/vqquup1340472598.jpg"
+    },
+    {
+      "name": "Maxi Priest",
+      "normalizedName": "maxi-priest",
+      "genre": "Reggae",
+      "genreNormalized": "reggae",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/xtvyvp1364378396.jpg"
+    },
+    {
+      "name": "Midnight Oil",
+      "normalizedName": "midnight-oil",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/xxxuyx1428415320.jpg"
+    },
+    {
+      "name": "Mike Ness",
+      "normalizedName": "mike-ness",
+      "genre": "Rockabilly",
+      "genreNormalized": "rockabilly",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/ytxvys1399309445.jpg"
+    },
+    {
+      "name": "Molchat Doma",
+      "normalizedName": "molchat-doma",
+      "genre": "Post Punk",
+      "genreNormalized": "post-punk",
+      "fetchedAt": "2026-01-07T05:34:46.369Z"
+    },
+    {
+      "name": "New Order",
+      "normalizedName": "new-order",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/new-order-4fd5f3e934e45.jpg"
+    },
+    {
+      "name": "No Doubt",
+      "normalizedName": "no-doubt",
+      "genre": "Alternative",
+      "genreNormalized": "alternative",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/vxvvtr1348513703.jpg"
+    },
+    {
+      "name": "Oingo Boingo",
+      "normalizedName": "oingo-boingo",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/oingo-boingo-4ff3036de887f.jpg"
+    },
+    {
+      "name": "Pat DiNizio",
+      "normalizedName": "pat-dinizio",
+      "genre": "Pop Rock",
+      "genreNormalized": "pop-rock",
+      "fetchedAt": "2026-01-07T05:34:46.368Z"
+    },
+    {
+      "name": "Peter Gabriel",
+      "normalizedName": "peter-gabriel",
+      "genre": "Art Rock",
+      "genreNormalized": "art-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/xwtsqv1386887602.jpg"
+    },
+    {
+      "name": "Peter Hook and the Light",
+      "normalizedName": "peter-hook-and-the-light",
+      "genre": "Post Punk",
+      "genreNormalized": "post-punk",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/tuxxvx1587303826.jpg"
+    },
+    {
+      "name": "Prophets of Rage",
+      "normalizedName": "prophets-of-rage",
+      "genre": "Political Hip Hop",
+      "genreNormalized": "political-hip-hop",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/vvrxry1506149904.jpg"
+    },
+    {
+      "name": "Rancid",
+      "normalizedName": "rancid",
+      "genre": "Punk",
+      "genreNormalized": "punk",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/syswtv1348428604.jpg"
+    },
+    {
+      "name": "Red Hot Chili Peppers",
+      "normalizedName": "red-hot-chili-peppers",
+      "genre": "Funk Rock",
+      "genreNormalized": "funk-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/6gwagp1698329821.jpg"
+    },
+    {
+      "name": "Rob Thomas",
+      "normalizedName": "rob-thomas",
+      "genre": "Pop Rock",
+      "genreNormalized": "pop-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/vpruvy1363985809.jpg"
+    },
+    {
+      "name": "Royal Blood",
+      "normalizedName": "royal-blood",
+      "genre": "Alternative",
+      "genreNormalized": "alternative",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/vqwstv1429364744.jpg"
+    },
+    {
+      "name": "Run DMC",
+      "normalizedName": "run-dmc",
+      "genre": "Rap",
+      "genreNormalized": "rap",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wvrqqx1341250863.jpg"
+    },
+    {
+      "name": "Siouxsie and the Banshees",
+      "normalizedName": "siouxsie-and-the-banshees",
+      "genre": "Post Punk",
+      "genreNormalized": "post-punk",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/rvqpuy1348109917.jpg"
+    },
+    {
+      "name": "Snarky Puppy",
+      "normalizedName": "snarky-puppy",
+      "genre": "Jazz",
+      "genreNormalized": "jazz",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/qxqxrp1440203712.jpg"
+    },
+    {
+      "name": "Social Distortion",
+      "normalizedName": "social-distortion",
+      "genre": "Punk",
+      "genreNormalized": "punk",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg"
+    },
+    {
+      "name": "Squeeze",
+      "normalizedName": "squeeze",
+      "genre": "New Wave Pop",
+      "genreNormalized": "new-wave-pop",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/stywtv1376542198.jpg"
+    },
+    {
+      "name": "Sting",
+      "normalizedName": "sting",
+      "genre": "Soft Rock",
+      "genreNormalized": "soft-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wuprus1340023845.jpg"
+    },
+    {
+      "name": "Stray Cats",
+      "normalizedName": "stray-cats",
+      "genre": "Rockabilly",
+      "genreNormalized": "rockabilly",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/vrywvp1520117258.jpg"
+    },
+    {
+      "name": "Streetlight Manifesto",
+      "normalizedName": "streetlight-manifesto",
+      "genre": "Ska",
+      "genreNormalized": "ska",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/vpppqu1407953773.jpg"
+    },
+    {
+      "name": "Stryper",
+      "normalizedName": "stryper",
+      "genre": "Heavy Metal",
+      "genreNormalized": "heavy-metal",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/8nyeap1666438385.jpg"
+    },
+    {
+      "name": "Tears For Fears",
+      "normalizedName": "tears-for-fears",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/yusuxr1341941676.jpg"
+    },
+    {
+      "name": "The Alarm",
+      "normalizedName": "the-alarm",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wswstt1388681264.jpg"
+    },
+    {
+      "name": "The Aquabats!",
+      "normalizedName": "the-aquabats",
+      "genre": "Ska",
+      "genreNormalized": "ska",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/aquabats-the-501ad78967ae8.jpg"
+    },
+    {
+      "name": "The Art of Noise",
+      "normalizedName": "the-art-of-noise",
+      "genre": "Synthpop",
+      "genreNormalized": "synthpop",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/art-of-noise-50dfd27c82328.jpg"
+    },
+    {
+      "name": "The Black Keys",
+      "normalizedName": "the-black-keys",
+      "genre": "Indie Rock",
+      "genreNormalized": "indie-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://www.theaudiodb.com/images/media/artist/thumb/9sr7m01767342345.jpg"
+    },
+    {
+      "name": "The Brian Setzer Orchestra",
+      "normalizedName": "the-brian-setzer-orchestra",
+      "genre": "Swing",
+      "genreNormalized": "swing",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg"
+    },
+    {
+      "name": "The Cult",
+      "normalizedName": "the-cult",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/t73kw91755266539.jpg"
+    },
+    {
+      "name": "The Cure",
+      "normalizedName": "the-cure",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wwwwtv1455324256.jpg"
+    },
+    {
+      "name": "The Dollyrots",
+      "normalizedName": "the-dollyrots",
+      "genre": "Pop Punk",
+      "genreNormalized": "pop-punk",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/qsrtvt1532970819.jpg"
+    },
+    {
+      "name": "The English Beat",
+      "normalizedName": "the-english-beat",
+      "genre": "Ska",
+      "genreNormalized": "ska",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wtwxsv1367710023.jpg"
+    },
+    {
+      "name": "The Go-Go's",
+      "normalizedName": "the-go-go-s",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/go-gos-the-5101e33f14eee.jpg"
+    },
+    {
+      "name": "The Head and the Heart",
+      "normalizedName": "the-head-and-the-heart",
+      "genre": "Folk Pop",
+      "genreNormalized": "folk-pop",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/vxrppp1359054732.jpg"
+    },
+    {
+      "name": "The Human League",
+      "normalizedName": "the-human-league",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wysuyt1345666474.jpg"
+    },
+    {
+      "name": "The Interrupters",
+      "normalizedName": "the-interrupters",
+      "genre": "Ska",
+      "genreNormalized": "ska",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wstvxp1530275217.jpg"
+    },
+    {
+      "name": "The Offspring",
+      "normalizedName": "the-offspring",
+      "genre": "Pop Punk",
+      "genreNormalized": "pop-punk",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/offspring-the-4fd645eace27c.jpg"
+    },
+    {
+      "name": "The Roots",
+      "normalizedName": "the-roots",
+      "genre": "Alternative Hip Hop",
+      "genreNormalized": "alternative-hip-hop",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/roots-the-509d890e21e4d.jpg"
+    },
+    {
+      "name": "The Skints",
+      "normalizedName": "the-skints",
+      "genre": "Reggae Fusion",
+      "genreNormalized": "reggae-fusion",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/lxvgym1663170770.jpg"
+    },
+    {
+      "name": "The Smithereens",
+      "normalizedName": "the-smithereens",
+      "genre": "Pop Rock",
+      "genreNormalized": "pop-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/qswpwx1377465655.jpg"
+    },
+    {
+      "name": "The Tubes",
+      "normalizedName": "the-tubes",
+      "genre": "Classic Rock",
+      "genreNormalized": "classic-rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/vwtupr1367773697.jpg"
+    },
+    {
+      "name": "Thompson Twins",
+      "normalizedName": "thompson-twins",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wprwyr1360161305.jpg"
+    },
+    {
+      "name": "Tone Loc",
+      "normalizedName": "tone-loc",
+      "genre": "Hip Hop",
+      "genreNormalized": "hip-hop",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/tpqvpr1362756419.jpg"
+    },
+    {
+      "name": "U2",
+      "normalizedName": "u2",
+      "genre": "Rock",
+      "genreNormalized": "rock",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/qvuxvs1347997318.jpg"
+    },
+    {
+      "name": "UB40",
+      "normalizedName": "ub40",
+      "genre": "Reggae",
+      "genreNormalized": "reggae",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/tsysvw1341332686.jpg"
+    },
+    {
+      "name": "Umphrey's McGee",
+      "normalizedName": "umphrey-s-mcgee",
+      "genre": "Other",
+      "genreNormalized": "other",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/umphreys-mcgee-5102299737aa1.jpg"
+    },
+    {
+      "name": "Violent Femmes",
+      "normalizedName": "violent-femmes",
+      "genre": "Alternative",
+      "genreNormalized": "alternative",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/qxqtvs1348113644.jpg"
+    },
+    {
+      "name": "Wham!",
+      "normalizedName": "wham",
+      "genre": "Pop",
+      "genreNormalized": "pop",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/xuwupw1439139539.jpg"
+    },
+    {
+      "name": "X",
+      "normalizedName": "x",
+      "genre": "Punk",
+      "genreNormalized": "punk",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/rrtxsr1401206573.jpg"
+    },
+    {
+      "name": "Yaz",
+      "normalizedName": "yaz",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.369Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/yazoo-5076d3d48a8af.jpg"
+    },
+    {
+      "name": "Ziggy Marley",
+      "normalizedName": "ziggy-marley",
+      "genre": "Reggae",
+      "genreNormalized": "reggae",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-01-07T05:34:46.368Z",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/marley-ziggy-508440fb16be3.jpg"
+    }
+  ],
+  "lastUpdated": "2026-01-07T05:34:46.377Z"
+}

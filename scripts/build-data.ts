@@ -1,4 +1,5 @@
 import { fetchGoogleSheet } from './fetch-google-sheet'
+import { enrichConcertGenres } from './enrich-concert-genres'
 import { enrichArtists } from './enrich-artists'
 import { validateConcerts } from './validate-concerts'
 import { exec as execCallback } from 'child_process'
@@ -38,6 +39,7 @@ async function buildData() {
   // Count active steps for progress tracking
   const steps = [
     { name: 'Fetch Google Sheets', active: true },
+    { name: 'Enrich concert genres', active: true },
     { name: 'Validate concerts', active: !skipValidation },
     { name: 'Enrich artist metadata', active: true },
     { name: 'Enrich venue metadata', active: !skipVenues },
@@ -76,7 +78,15 @@ async function buildData() {
     await fetchGoogleSheet({ dryRun })
     console.log()
 
-    // Step 2: Validate data (optional)
+    // Step 2: Enrich concert genres from artist metadata (always runs)
+    currentStep++
+    console.log('=' .repeat(60))
+    console.log(`Step ${currentStep}/${activeSteps}: Enriching concert genres`)
+    console.log('-'.repeat(60))
+    await enrichConcertGenres({ dryRun })
+    console.log()
+
+    // Step 3: Validate data (optional)
     if (!skipValidation) {
       currentStep++
       console.log('=' .repeat(60))
@@ -93,7 +103,7 @@ async function buildData() {
       console.log('⏭️  Skipping validation (--skip-validation flag set)\n')
     }
 
-    // Step 3: Enrich with artist metadata (always runs)
+    // Step 4: Enrich with artist metadata (always runs)
     currentStep++
     console.log('=' .repeat(60))
     console.log(`Step ${currentStep}/${activeSteps}: Enriching artist metadata`)
@@ -101,7 +111,7 @@ async function buildData() {
     await enrichArtists({ dryRun })
     console.log()
 
-    // Step 4: Enrich venue metadata (optional)
+    // Step 5: Enrich venue metadata (optional)
     if (!skipVenues) {
       currentStep++
       console.log('=' .repeat(60))
@@ -115,7 +125,7 @@ async function buildData() {
       console.log('⏭️  Skipping venue enrichment (--skip-venues flag set)\n')
     }
 
-    // Step 5: Enrich Spotify data (optional)
+    // Step 6: Enrich Spotify data (optional)
     if (!skipSpotify) {
       currentStep++
       console.log('=' .repeat(60))
@@ -136,7 +146,7 @@ async function buildData() {
       console.log('⏭️  Skipping Spotify enrichment (--skip-spotify flag set)\n')
     }
 
-    // Step 6: Pre-fetch setlists (optional)
+    // Step 7: Pre-fetch setlists (optional)
     if (!skipSetlists) {
       currentStep++
       console.log('=' .repeat(60))
