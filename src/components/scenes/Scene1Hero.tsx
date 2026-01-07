@@ -1,15 +1,20 @@
-import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useRef, useState, useMemo } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import * as d3 from 'd3'
 import type { Concert } from '../../types/concert'
 import { TimelineHoverPreview, useTimelineHover } from '../TimelineHoverPreview'
+import { LAYOUT as POPUP_LAYOUT } from '../TimelineHoverPreview/constants'
 import { haptics } from '../../utils/haptics'
+import { useYearFilter } from '../TimelineYearFilter/useYearFilter'
+import { YearCardStack } from '../TimelineYearFilter'
+import { normalizeArtistName } from '../../utils/normalize'
 
 interface Scene1HeroProps {
   concerts: Concert[]
+  onNavigateToArtist?: (artistName: string) => void
 }
 
-export function Scene1Hero({ concerts }: Scene1HeroProps) {
+export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
   const timelineRef = useRef<SVGSVGElement>(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 200 })
   const {
@@ -20,10 +25,45 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
     handlePopupMouseLeave,
   } = useTimelineHover()
 
+  // Year filter state
+  const {
+    filterState,
+    isTabletOrLarger: _isTabletOrLarger, // Used internally by hook
+    handleYearClick,
+    handleCardHover,
+    collapse,
+    handleClickOutside: handleClickOutsideBase,
+  } = useYearFilter()
+
+  // Wrap handleClickOutside to also clear hover state
+  const handleClickOutside = () => {
+    handleClickOutsideBase()
+    // Delay clearing hover state to allow exit animations to complete
+    setTimeout(() => {
+      handleMouseLeave()
+    }, 400) // Wait for cards (250ms) + popup (250ms + 100ms delay)
+  }
+
+  // Track dot positions for card stack positioning
+  const [dotPositions, setDotPositions] = useState<Map<number, { x: number; y: number }>>(new Map())
+
   // Track touch state
   const isTouchingRef = useRef(false)
   const lastTouchTargetRef = useRef<Element | null>(null)
   const touchThrottleRef = useRef<number | null>(null)
+
+  // Handle navigation to artist scene from card click
+  const handleNavigateToArtist = (concert: Concert) => {
+    const normalizedName = normalizeArtistName(concert.headliner)
+    onNavigateToArtist?.(normalizedName)
+    // Don't collapse - let user explore all cards
+  }
+
+  // Handle navigation to artist scene from popup click
+  const handlePopupClick = (artistName: string) => {
+    const normalizedName = normalizeArtistName(artistName)
+    onNavigateToArtist?.(normalizedName)
+  }
 
   // Use ResizeObserver to get accurate dimensions and handle orientation changes
   useEffect(() => {
@@ -122,10 +162,22 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
     // Draw year markers and dots
     const yearArray = Array.from(concertsByYear.keys()).sort((a, b) => a - b)
 
+    // Store dot positions for card stack
+    const newDotPositions = new Map<number, { x: number; y: number }>()
+
     yearArray.forEach(year => {
       const count = concertsByYear.get(year) || 0
       const x = xScale(year)
       const radius = sizeScale(count)
+
+      // Store screen position for this year
+      if (timelineRef.current) {
+        const svgRect = timelineRef.current.getBoundingClientRect()
+        newDotPositions.set(year, {
+          x: svgRect.left + x + margin.left,
+          y: svgRect.top + innerHeight / 2 + margin.top,
+        })
+      }
 
       // Mobile-only: Skip touch interactions for tiny dots (1-2 concerts)
       const isSignificant = !isMobile || count >= 3
@@ -133,6 +185,10 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
       // Calculate touch target radius (minimum 44px diameter = 22px radius)
       // Tiny dots on mobile: no touch target (visual only)
       const touchRadius = isSignificant ? Math.max(radius, minTouchRadius) : radius
+
+      // Check if this year is selected
+      const isSelected = filterState.selectedYear === year
+      const isFaded = filterState.isExpanded && !isSelected
 
       // Draw outer glow ring (appears on hover)
       const glowRing = g.append('circle')
@@ -170,13 +226,15 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
 
       // Draw visible dot (smaller, for aesthetics)
       // Mobile: tiny dots are more subtle (lower opacity)
+      // Apply selection/fade states
       const dot = g.append('circle')
         .attr('cx', x)
         .attr('cy', innerHeight / 2)
-        .attr('r', radius)
-        .attr('fill', '#6366f1')
-        .attr('opacity', isSignificant ? 0.8 : 0.5)
+        .attr('r', isSelected ? radius * 1.2 : radius)
+        .attr('fill', isSelected ? '#a5b4fc' : '#6366f1')
+        .attr('opacity', isFaded ? 0.3 : (isSignificant ? 0.8 : 0.5))
         .style('pointer-events', 'none') // Touch handled by touchTarget
+        .style('transition', 'all 200ms ease-out')
 
       // Helper function to get concert info for a year
       const getConcertInfo = () => {
@@ -249,8 +307,8 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
       if (isSignificant) {
         touchTarget
           .on('mouseenter', function() {
-            // Don't trigger mouse events during touch
-            if (isTouchingRef.current) return
+            // Don't trigger mouse events during touch or when expanded
+            if (isTouchingRef.current || filterState.isExpanded) return
 
             const { mostFrequentArtist, venueName } = getConcertInfo()
             const svgRect = timelineRef.current?.getBoundingClientRect()
@@ -266,11 +324,35 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
             // Don't trigger mouse events during touch
             if (isTouchingRef.current) return
 
+            // If expanded (year selected), keep hover state and don't animate leave
+            if (filterState.isExpanded) return
+
             handleMouseLeave()
             animateDotLeave()
           })
+          .on('click', function(event: MouseEvent) {
+            // Handle year selection on click (tablet+ only)
+            event.stopPropagation()
+
+            // If not already showing hover state, trigger it first
+            if (!hoverState || hoverState.year !== year) {
+              const { mostFrequentArtist, venueName } = getConcertInfo()
+              const svgRect = timelineRef.current?.getBoundingClientRect()
+              if (svgRect) {
+                const screenX = svgRect.left + x + margin.left
+                const screenY = svgRect.top + innerHeight / 2 + margin.top
+                handleMouseEnter(mostFrequentArtist, year, count, venueName, { x: screenX, y: screenY })
+              }
+            }
+
+            handleYearClick(year)
+            haptics.medium()
+          })
       }
     })
+
+    // Update dot positions state
+    setDotPositions(newDotPositions)
 
     // Draw decade markers
     const decades = []
@@ -285,10 +367,23 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
       .attr('x', d => xScale(d))
       .attr('y', innerHeight / 2 + 30)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#6b7280')
+      .attr('fill', (d) => {
+        // Highlight selected year's decade
+        if (filterState.selectedYear && Math.floor(filterState.selectedYear / 10) * 10 === d) {
+          return '#ffffff'
+        }
+        return '#6b7280'
+      })
       .attr('font-family', 'Source Sans 3, system-ui, sans-serif')
       .attr('font-size', '12px')
-      .attr('font-weight', '500')
+      .attr('font-weight', (d) => {
+        // Bold selected year's decade
+        if (filterState.selectedYear && Math.floor(filterState.selectedYear / 10) * 10 === d) {
+          return '700'
+        }
+        return '500'
+      })
+      .style('transition', 'all 150ms ease-out')
       .text(d => d)
 
     // Add touch event handlers to SVG
@@ -436,12 +531,50 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
         handleMouseLeave()
       })
 
-  }, [concerts, dimensions, handleMouseEnter, handleMouseLeave])
+  }, [concerts, dimensions, handleMouseEnter, handleMouseLeave, filterState, handleYearClick])
 
   // Calculate stats from data
   const totalConcerts = concerts.length
   const years = concerts.map(c => c.year)
   const yearSpan = years.length > 0 ? `${Math.min(...years)}–${Math.max(...years)}` : ''
+
+  // Calculate popup position for card stack positioning
+  const popupPosition = useMemo(() => {
+    if (!filterState.selectedYear || !dotPositions.has(filterState.selectedYear) || !hoverState) {
+      return null
+    }
+
+    const dotPos = dotPositions.get(filterState.selectedYear)!
+    const popupWidth = POPUP_LAYOUT.WIDTH
+
+    // Calculate popup X position (centered on dot, with edge constraints)
+    let popupX = dotPos.x - popupWidth / 2
+    const edgeMargin = POPUP_LAYOUT.EDGE_MARGIN
+    const maxX = window.innerWidth - popupWidth - edgeMargin
+    popupX = Math.max(edgeMargin, Math.min(popupX, maxX))
+
+    // Calculate popup Y position (above or below dot)
+    const estimatedHeight = POPUP_LAYOUT.MIN_HEIGHT + 20
+    const spaceAbove = dotPos.y - POPUP_LAYOUT.OFFSET_Y - POPUP_LAYOUT.ARROW_SIZE
+    const isAbove = spaceAbove >= estimatedHeight
+    const popupY = isAbove
+      ? dotPos.y - POPUP_LAYOUT.OFFSET_Y - POPUP_LAYOUT.ARROW_SIZE - estimatedHeight
+      : dotPos.y + POPUP_LAYOUT.OFFSET_Y + POPUP_LAYOUT.ARROW_SIZE
+
+    return {
+      x: popupX,
+      y: Math.max(edgeMargin, popupY),
+      width: popupWidth,
+    }
+  }, [filterState.selectedYear, dotPositions, hoverState])
+
+  // Get concerts for selected year, excluding the first one (shown in popup)
+  const additionalConcerts = useMemo(() => {
+    if (!filterState.selectedYear) return []
+    const yearConcerts = concerts.filter(c => c.year === filterState.selectedYear)
+    // Skip the first concert (it's shown in the popup)
+    return yearConcerts.slice(1)
+  }, [filterState.selectedYear, concerts])
 
   return (
     <motion.section
@@ -450,6 +583,7 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
       viewport={{ once: false, margin: '-20%' }}
       transition={{ duration: 0.8 }}
       className="h-screen flex flex-col items-center justify-center bg-white snap-start snap-always relative"
+      onClick={handleClickOutside}
     >
       <div className="max-w-6xl w-full px-8">
         {/* Title */}
@@ -512,12 +646,31 @@ export function Scene1Hero({ concerts }: Scene1HeroProps) {
         </motion.div>
       </motion.div>
 
-      {/* Timeline Hover Preview */}
+      {/* Timeline Hover Preview - stays visible when expanded */}
       <TimelineHoverPreview
         hoverState={hoverState}
         onMouseEnter={handlePopupMouseEnter}
         onMouseLeave={handlePopupMouseLeave}
+        onClick={handlePopupClick}
       />
+
+      {/* Year Card Stack - fans out beside the popup */}
+      <AnimatePresence>
+        {filterState.isExpanded && filterState.selectedYear && popupPosition && additionalConcerts.length > 0 && (
+          <YearCardStack
+            key={`year-stack-${filterState.selectedYear}`}
+            year={filterState.selectedYear}
+            concerts={additionalConcerts}
+            popupPosition={popupPosition}
+            hoveredCardIndex={filterState.hoveredCardIndex}
+            onCardHover={handleCardHover}
+            onCardClick={handleNavigateToArtist}
+            onDismiss={collapse}
+            onMouseEnter={handlePopupMouseEnter}
+            onMouseLeave={handlePopupMouseLeave}
+          />
+        )}
+      </AnimatePresence>
     </motion.section>
   )
 }
