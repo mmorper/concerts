@@ -48,6 +48,10 @@ export interface StackedCardProps {
   offsetX: number
   /** Optional rotation for organic feel */
   rotation?: number
+  /** Card index for drag detection */
+  cardIndex: number
+  /** Whether user is currently dragging across cards */
+  isDragging: boolean
   /** Callback when card is hovered */
   onHover: () => void
   /** Callback when hover ends */

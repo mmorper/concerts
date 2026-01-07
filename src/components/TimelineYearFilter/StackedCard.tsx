@@ -18,6 +18,8 @@ export function StackedCard({
   initialX,
   offsetX,
   rotation = 0,
+  cardIndex,
+  isDragging,
   onHover,
   onHoverEnd,
   onClick,
@@ -42,11 +44,22 @@ export function StackedCard({
 
   /**
    * Handle touch tap on touch devices (iPad/tablets)
-   * First tap: focus card (bring to front)
-   * Second tap: navigate to artist
+   * When dragging: ignore tap events (handled by parent)
+   * When tapping: first tap focuses, second tap navigates
    */
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
     if (!isTouchDevice) return
+
+    // If user was dragging, don't treat this as a tap
+    // The parent container already handled the focus via drag
+    if (isDragging) {
+      // Mark this card as touch-focused since it was the last one hovered during drag
+      if (isHovered) {
+        setIsTouchFocused(true)
+        setLastTapTime(Date.now())
+      }
+      return
+    }
 
     e.stopPropagation() // Prevent card stack dismissal
 
@@ -64,7 +77,7 @@ export function StackedCard({
       onClick()
       haptics.medium()
     }
-  }, [isTouchDevice, isTouchFocused, lastTapTime, onHover, onClick])
+  }, [isTouchDevice, isTouchFocused, lastTapTime, isDragging, isHovered, onHover, onClick])
 
   /**
    * Handle regular click on non-touch devices (desktop)
@@ -131,6 +144,7 @@ export function StackedCard({
           : `View ${concert.headliner} concert at ${concert.venue}`
       }
       aria-pressed={isTouchFocused}
+      data-card-index={cardIndex}
     >
       <div
         style={{

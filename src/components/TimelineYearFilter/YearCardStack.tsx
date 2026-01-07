@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { StackedCard } from './StackedCard'
 import { CardCountBadge } from './CardCountBadge'
@@ -22,6 +22,9 @@ export function YearCardStack({
   onMouseLeave,
 }: YearCardStackProps) {
   const concertCount = concerts.length
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const lastHoveredRef = useRef<number | null>(null)
 
   // If no concerts (shouldn't happen, but safety check), don't render
   if (concertCount === 0) return null
@@ -117,6 +120,57 @@ export function YearCardStack({
     e.stopPropagation()
   }
 
+  /**
+   * Handle touch start - begin tracking drag
+   */
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.stopPropagation()
+    setIsDragging(true)
+    // Find which card is under the initial touch
+    const touch = e.touches[0]
+    const element = document.elementFromPoint(touch.clientX, touch.clientY)
+    const cardElement = element?.closest('[data-card-index]') as HTMLElement
+    if (cardElement) {
+      const index = parseInt(cardElement.dataset.cardIndex || '-1', 10)
+      if (index >= 0) {
+        lastHoveredRef.current = index
+        onCardHover(index)
+        haptics.light()
+      }
+    }
+  }
+
+  /**
+   * Handle touch move - update focus as finger drags across cards
+   */
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging) return
+    e.stopPropagation()
+
+    const touch = e.touches[0]
+    const element = document.elementFromPoint(touch.clientX, touch.clientY)
+    const cardElement = element?.closest('[data-card-index]') as HTMLElement
+
+    if (cardElement) {
+      const index = parseInt(cardElement.dataset.cardIndex || '-1', 10)
+      if (index >= 0 && index !== lastHoveredRef.current) {
+        lastHoveredRef.current = index
+        onCardHover(index)
+        haptics.light()
+      }
+    }
+  }
+
+  /**
+   * Handle touch end - keep last focused card in focus state
+   */
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    e.stopPropagation()
+    setIsDragging(false)
+    // Keep the last hovered card focused (don't clear hover state)
+    // User will need to tap again to navigate
+  }
+
   // Trigger haptic when cards first appear
   useEffect(() => {
     haptics.light()
@@ -124,6 +178,7 @@ export function YearCardStack({
 
   return (
     <div
+      ref={containerRef}
       style={{
         position: 'fixed',
         left: layout.stackLeft,
@@ -136,6 +191,9 @@ export function YearCardStack({
       onClick={handleContainerClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Show badge for 6+ concerts */}
       {concertCount >= 6 && <CardCountBadge count={concertCount + 1} />}
@@ -152,6 +210,8 @@ export function YearCardStack({
             initialX={layout.initialX}
             offsetX={index * layout.offsetPerCard}
             rotation={getRotation(index, visibleConcerts.length)}
+            cardIndex={index}
+            isDragging={isDragging}
             onHover={() => {
               onCardHover(index)
               haptics.light()
