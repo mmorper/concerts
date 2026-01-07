@@ -11,9 +11,9 @@ An interactive web app for exploring personal concert history. Five scenes—Tim
 
 ## What's new
 
-**v2.0.0 is live!** 🎫 See when your favorite artists are touring—right from their gatefold. [Open Joe Jackson](https://concerts.morperhaus.org/?scene=artists&artist=joe-jackson) to see live tour dates fetched from Ticketmaster, complete with direct ticket purchase links. The "ON TOUR" badge appears instantly when artists have upcoming shows, with smart 24-hour caching to keep things snappy. This is the kind of feature that bridges past concerts with future ones—your archive becomes a discovery tool.
+**v3.0.0 is here!** 🎉 The timeline is now fully interactive. [Click any year dot](https://concerts.morperhaus.org/?scene=timeline) to see every concert from that moment in time—artist photos fan out in a card stack, and one tap takes you straight to their full story. Meanwhile, the [Genres scene](https://concerts.morperhaus.org/?scene=genres) got a complete overhaul with an animated treemap that shows how your musical taste evolved decade by decade. Watch genres grow and shrink over time, then drill into any style to explore the artists within.
 
-**Documentation overhaul** (v1.8.0) — Fork-ready example templates, comprehensive format specs, and a two-path getting started guide make it dead simple to build your own concert archive.
+**v2.0.0** 🎫 See when your favorite artists are touring—right from their gatefold. [Open Joe Jackson](https://concerts.morperhaus.org/?scene=artists&artist=joe-jackson) to see live tour dates fetched from Ticketmaster, complete with direct ticket purchase links.
 
 See the full changelog at [/liner-notes](https://concerts.morperhaus.org/liner-notes)
 

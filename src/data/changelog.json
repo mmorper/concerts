@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "3.0.0",
+      "date": "2026-01-06",
+      "title": "Interactive Timeline Exploration & Genre Journey",
+      "description": "Click any year on the timeline to explore every concert from that moment, then tap a card to dive into an artist's full story. Plus, watch your musical taste evolve through an animated genre timeline that shows how your concert history shaped your sound.",
+      "route": "/?scene=timeline",
+      "highlights": [
+        "Interactive year cards - click any timeline dot to see all concerts from that year",
+        "One-tap navigation from timeline to artist gatefold details",
+        "Animated genre treemap with decade-by-decade musical evolution",
+        "Genre drill-down to explore artists within each musical style"
+      ]
+    },
+    {
       "version": "2.0.0",
       "date": "2026-01-05",
       "title": "Real-Time Tour Dates with Ticketmaster",
