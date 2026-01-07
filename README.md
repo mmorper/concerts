@@ -130,12 +130,9 @@ For details on the data pipeline and enrichment process, see [docs/DATA_PIPELINE
 
 A few things I'm thinking about (whenever I get around to them):
 
-**Phone support** — iPad works great. Phones need some love—bottom sheets for artist details, better touch controls, layouts that make sense at 430px wide.
-
-**Cross-scene artist navigation** — Click any artist node in the Venues force graph and jump straight to their gatefold in the Artists scene. Complete the discovery triangle.
-
 **Spotify integration** — Album covers on artist cards, 30-second preview players in the gatefold, "Open in Spotify" links. The vinyl metaphor taken to its logical conclusion.
 
+**Data normalization architecture** — Refactor the data pipeline to separate raw concert data from enriched metadata. Clean separation between source of truth and derived data, better caching, faster rebuilds.
 
 And always: more shows to add to the list.
 

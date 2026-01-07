@@ -334,7 +334,7 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
                   All Genres
                 </button>
                 <span className="mx-2">&rsaquo;</span>
-                <span style={{ color: dominantGenre?.color }}>{selectedGenre}</span>
+                <span>{selectedGenre}</span>
               </span>
             </motion.div>
           )}
