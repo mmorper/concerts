@@ -130,9 +130,9 @@ For details on the data pipeline and enrichment process, see [docs/DATA_PIPELINE
 
 A few things I'm thinking about (whenever I get around to them):
 
-**Spotify integration** — Album covers on artist cards, 30-second preview players in the gatefold, "Open in Spotify" links. The vinyl metaphor taken to its logical conclusion.
+**Spotify integration** — Add 30-second preview players to the [artist gatefold](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode). Spotify will also become the primary source for artist images and metadata (genres, bios) with TheAudioDB as fallback. See [Spotify Web API docs](https://developer.spotify.com/documentation/web-api) for details.
 
-**Data normalization architecture** — Refactor the data pipeline to separate raw concert data from enriched metadata. Clean separation between source of truth and derived data, better caching, faster rebuilds.
+**Cleaner data pipeline** — Right now the build process mixes raw concert data with enriched API data in the same files. Planning to separate them: Google Sheets stays the single source of truth for concerts, API-enriched data (photos, geocoding, metadata) gets cached separately. Makes rebuilds faster and data easier to understand.
 
 And always: more shows to add to the list.
 
