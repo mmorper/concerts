@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
+import { haptics } from '../../utils/haptics'
 
 /**
  * State for year filter feature
@@ -10,6 +11,8 @@ export interface YearFilterState {
   isExpanded: boolean
   /** Index of currently hovered card (null if none) */
   hoveredCardIndex: number | null
+  /** Index of currently touch-focused card on iPad/tablets (null if none) */
+  focusedCardIndex: number | null
 }
 
 /**
@@ -25,6 +28,7 @@ export function useYearFilter() {
     selectedYear: null,
     isExpanded: false,
     hoveredCardIndex: null,
+    focusedCardIndex: null,
   })
 
   // Track if device is tablet or larger
@@ -45,6 +49,7 @@ export function useYearFilter() {
           isExpanded: false,
           selectedYear: null,
           hoveredCardIndex: null,
+          focusedCardIndex: null,
         }))
       }
     }
@@ -70,6 +75,7 @@ export function useYearFilter() {
           selectedYear: null,
           isExpanded: false,
           hoveredCardIndex: null,
+          focusedCardIndex: null,
         }
       }
 
@@ -78,6 +84,7 @@ export function useYearFilter() {
         selectedYear: year,
         isExpanded: true,
         hoveredCardIndex: null,
+        focusedCardIndex: null,
       }
     })
   }, [isTabletOrLarger])
@@ -100,6 +107,7 @@ export function useYearFilter() {
       selectedYear: null,
       isExpanded: false,
       hoveredCardIndex: null,
+      focusedCardIndex: null,
     })
   }, [])
 
@@ -117,6 +125,7 @@ export function useYearFilter() {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && filterState.isExpanded) {
         collapse()
+        haptics.light()
       }
     }
 

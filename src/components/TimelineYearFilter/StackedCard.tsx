@@ -1,6 +1,8 @@
+import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { useArtistMetadata } from '../TimelineHoverPreview/useArtistMetadata'
 import { FALLBACK, LAYOUT, COLORS } from '../TimelineHoverPreview/constants'
+import { haptics } from '../../utils/haptics'
 import type { StackedCardProps } from './types'
 
 /**
@@ -23,6 +25,14 @@ export function StackedCard({
   const { getArtistImage } = useArtistMetadata()
   const imageUrl = getArtistImage(concert.headliner) || FALLBACK.IMAGE_URL
 
+  // Touch interaction state for two-tap pattern (iPad/tablets)
+  const [isTouchFocused, setIsTouchFocused] = useState(false)
+  const [lastTapTime, setLastTapTime] = useState(0)
+
+  // Detect if device supports touch
+  const isTouchDevice = typeof window !== 'undefined' &&
+    ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+
   // Format date as "Month Day"
   const dateObj = new Date(concert.date)
   const formattedDate = dateObj.toLocaleDateString('en-US', {
@@ -30,8 +40,50 @@ export function StackedCard({
     day: 'numeric',
   })
 
-  // Calculate z-index: hovered card goes to top, otherwise stack position
-  const zIndex = isHovered ? 999 : stackPosition
+  /**
+   * Handle touch tap on touch devices (iPad/tablets)
+   * First tap: focus card (bring to front)
+   * Second tap: navigate to artist
+   */
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (!isTouchDevice) return
+
+    e.stopPropagation() // Prevent card stack dismissal
+
+    const now = Date.now()
+    const isDoubleTap = isTouchFocused && (now - lastTapTime < 500) // 500ms window for "same card"
+
+    if (!isDoubleTap) {
+      // First tap: focus this card
+      setIsTouchFocused(true)
+      setLastTapTime(now)
+      onHover() // Bring card to front
+      haptics.light()
+    } else {
+      // Second tap: navigate
+      onClick()
+      haptics.medium()
+    }
+  }, [isTouchDevice, isTouchFocused, lastTapTime, onHover, onClick])
+
+  /**
+   * Handle regular click on non-touch devices (desktop)
+   */
+  const handleClick = useCallback((_e: React.MouseEvent) => {
+    if (isTouchDevice) return // Touch devices use handleTouchEnd
+    onClick()
+  }, [isTouchDevice, onClick])
+
+  /**
+   * Reset focus state when card loses hover (e.g., user taps different card)
+   */
+  const handleHoverEnd = useCallback(() => {
+    setIsTouchFocused(false)
+    onHoverEnd()
+  }, [onHoverEnd])
+
+  // Calculate z-index: hovered or touch-focused card goes to top, otherwise stack position
+  const zIndex = (isHovered || isTouchFocused) ? 999 : stackPosition
 
   return (
     <motion.div
@@ -39,7 +91,7 @@ export function StackedCard({
       initial={{ opacity: 0, scale: 0.8, x: initialX }}
       animate={{
         opacity: 1,
-        scale: isHovered ? 1.05 : 1,
+        scale: (isHovered || isTouchFocused) ? 1.05 : 1,
         x: offsetX,
         rotate: rotation,
       }}
@@ -62,9 +114,10 @@ export function StackedCard({
         zIndex,
         cursor: 'pointer',
       }}
-      onMouseEnter={onHover}
-      onMouseLeave={onHoverEnd}
-      onClick={onClick}
+      onMouseEnter={isTouchDevice ? undefined : onHover}
+      onMouseLeave={isTouchDevice ? undefined : handleHoverEnd}
+      onClick={handleClick}
+      onTouchEnd={handleTouchEnd}
       onKeyDown={(e) => {
         if (e.key === 'Enter') {
           onClick()
@@ -72,7 +125,12 @@ export function StackedCard({
       }}
       tabIndex={0}
       role="button"
-      aria-label={`View ${concert.headliner} concert at ${concert.venue}`}
+      aria-label={
+        isTouchFocused
+          ? `${concert.headliner} at ${concert.venue}, focused. Tap again to view.`
+          : `View ${concert.headliner} concert at ${concert.venue}`
+      }
+      aria-pressed={isTouchFocused}
     >
       <div
         style={{
@@ -81,8 +139,8 @@ export function StackedCard({
           border: `1px solid ${COLORS.POPUP_BORDER}`,
           borderRadius: LAYOUT.BORDER_RADIUS,
           overflow: 'hidden',
-          boxShadow: isHovered
-            ? '0 12px 48px rgba(0, 0, 0, 0.5)' // Larger on hover
+          boxShadow: (isHovered || isTouchFocused)
+            ? '0 12px 48px rgba(0, 0, 0, 0.5)' // Larger on hover/focus
             : '0 10px 40px rgba(0, 0, 0, 0.4)', // Match popup shadow
           transition: 'box-shadow 150ms ease-out',
           fontFamily: "'Source Sans 3', system-ui, sans-serif",

@@ -37,6 +37,10 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
 
   // Wrap handleClickOutside to also clear hover state
   const handleClickOutside = () => {
+    // Add haptic feedback when dismissing via tap outside
+    if (filterState.isExpanded) {
+      haptics.light()
+    }
     handleClickOutsideBase()
     // Delay clearing hover state to allow exit animations to complete
     setTimeout(() => {
@@ -345,9 +349,49 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
               }
             }
 
+            // Check if we're collapsing (clicking same year) or expanding
+            const wasExpanded = filterState.selectedYear === year && filterState.isExpanded
             handleYearClick(year)
-            haptics.medium()
+            // Different haptics: light for collapse, medium for expand
+            haptics[wasExpanded ? 'light' : 'medium']()
           })
+
+        // Add touchend handler for touch devices (iPad/tablets)
+        // D3's .on('click') doesn't fire reliably on touch, so we need explicit touch handling
+        const isTouchDevice = typeof window !== 'undefined' &&
+          ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+        const isTabletOrLarger = typeof window !== 'undefined' && window.innerWidth >= 768
+
+        if (isTouchDevice && isTabletOrLarger) {
+          touchTarget.on('touchend', function(event: TouchEvent) {
+            // Only fire if user hasn't dragged away from dot (still touching this element)
+            // This prevents expansion when user is scrubbing across the timeline
+            if (!isTouchingRef.current || lastTouchTargetRef.current !== this) {
+              return
+            }
+
+            // Prevent synthetic click event to avoid double-firing
+            event.preventDefault()
+            event.stopPropagation()
+
+            // If not already showing hover state, trigger it first
+            if (!hoverState || hoverState.year !== year) {
+              const { mostFrequentArtist, venueName } = getConcertInfo()
+              const svgRect = timelineRef.current?.getBoundingClientRect()
+              if (svgRect) {
+                const screenX = svgRect.left + x + margin.left
+                const screenY = svgRect.top + innerHeight / 2 + margin.top
+                handleMouseEnter(mostFrequentArtist, year, count, venueName, { x: screenX, y: screenY })
+              }
+            }
+
+            // Check if we're collapsing (tapping same year) or expanding
+            const wasExpanded = filterState.selectedYear === year && filterState.isExpanded
+            handleYearClick(year)
+            // Different haptics: light for collapse, medium for expand
+            haptics[wasExpanded ? 'light' : 'medium']()
+          })
+        }
       }
     })
 
