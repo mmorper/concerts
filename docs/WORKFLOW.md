@@ -516,6 +516,15 @@ After pushing, I monitor the deploy in two places:
 - Check `/version.json` to confirm the commit hash matches my latest push
 - Click through all five scenes to verify nothing broke
 
+**Pro tip for collaboration:** When working with others (or when using Claude Code), always provide the version check link after pushing:
+```
+✓ Pushed commit abc1234
+Check deployment: https://concerts.morperhaus.org/version.json
+Expected commit after build: abc1234
+```
+
+This makes it easy to verify when Cloudflare has finished building and deploying your changes.
+
 If a build fails, the previous successful deployment stays live. The site doesn't go down—it just doesn't update until I fix the error and push again.
 
 ### When deployments go wrong
