@@ -23,6 +23,7 @@
     "validate-data": "tsx scripts/validate-concerts.ts",
     "validate:version": "tsx scripts/validate-version-sync.ts",
     "diff-data": "tsx scripts/diff-concerts.ts",
+    "aggregate:genres": "tsx scripts/aggregate-genres-timeline.ts",
     "prefetch:setlists": "tsx scripts/prefetch-setlists.ts",
     "test:sanity": "node test/test-simple.mjs",
     "og:generate": "tsx scripts/generate-og-simple.ts",
