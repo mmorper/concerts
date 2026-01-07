@@ -1,16 +1,34 @@
 # Roadmap
 
-## Current State (v2.0.0)
+## Current State (v3.0.0)
 
 - **178 concerts** spanning 1984-2026
 - **104 headlining artists** with 247 total artists (including openers)
 - **77 unique venues** across 35 cities
 - **5 interactive scenes**: Timeline, Venues, Geography, Genres, Artists
-- **Latest improvements**: Real-time tour dates with Ticketmaster API integration
+- **Latest improvements**: Interactive timeline exploration with year cards and animated genre journey
 
 ---
 
 ## Recently Completed
+
+### ✅ Interactive Timeline Exploration & Genre Journey (v3.0.0)
+
+**Status**: Completed
+**Spec**: [timeline-year-filter-spec.md](specs/implemented/timeline-year-filter-spec.md), [genre-scene-treemap-timeline-spec.md](specs/implemented/genre-scene-treemap-timeline-spec.md)
+
+Interactive year filtering on timeline with card stack UI and animated genre treemap visualization.
+
+**Implemented Features**:
+
+- Click any timeline dot to see all concerts from that year
+- Interactive year cards with one-tap navigation to artist details
+- Animated genre treemap showing musical evolution over time
+- Genre drill-down to explore artists within each style
+- Timeline slider with milestone markers for genre scene
+- Mobile-optimized touch interactions with haptic feedback
+
+---
 
 ### ✅ Upcoming Tour Dates (v2.0.0)
 
@@ -32,37 +50,24 @@ Real-time tour dates with direct ticket purchase links using Ticketmaster Discov
 
 ## Short-Term Roadmap
 
----
-
 ### UX Polish
+
 **Status**: In Progress
 **Related Specs**:
-- [mobile-optimization.md](specs/future/mobile-optimization.md)
+
+- [mobile-optimization.md](specs/implemented/mobile-optimization.md)
 - [popup-z-index-fix.md](specs/future/popup-z-index-fix.md)
 - [renamed-venue-display.md](specs/future/renamed-venue-display.md)
 
 Refinements to interaction patterns and navigation across the app.
 
 **Improvements**:
+
 - Enhanced touch and click feedback (haptic + visual)
 - Add hyperlinks in gatefold content (venue names, related artists)
 - Improved button states and loading indicators
 - Better keyboard navigation support
 - Display renamed venues with ♻️ badge and new name
-
----
-
-### Timeline Artist Display Enhancement
-**Status**: Planned
-**Spec**: [timeline-artist-display-enhancement.md](specs/future/timeline-artist-display-enhancement.md)
-
-Improve artist imagery and information presentation in the Timeline scene.
-
-**Features**:
-- Enhanced hover preview with larger artist images
-- Show artist metadata (genre, concert count) on hover
-- Improved parallax effects and animations
-- Better handling of artists without images
 
 ---
 
@@ -97,22 +102,6 @@ Consolidate image sourcing from multiple providers (Spotify, AudioDB, Last.fm) w
 - Consistent image quality and sizing across scenes
 - Spotify as primary source with graceful fallbacks
 - Automated image validation and refresh
-
----
-
-### Genre Scene Refactor (Sunburst Control for Mobile)
-**Status**: Planned
-**Related Specs**:
-- [genre-scene-treemap-visualization.md](specs/future/genre-scene-treemap-visualization.md)
-- [genre-scene-opener-inclusion.md](specs/future/genre-scene-opener-inclusion.md)
-
-Redesign Genre scene controls for better mobile experience and add support for opener artists.
-
-**Improvements**:
-- Mobile-optimized sunburst interaction
-- Touch-friendly zoom and pan controls
-- Include opener artists in genre hierarchy
-- Alternative treemap visualization option
 
 ---
 
