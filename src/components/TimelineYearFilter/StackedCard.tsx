@@ -49,9 +49,17 @@ export function StackedCard({
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
     if (!isTouchDevice) return
 
+    console.log('[StackedCard] handleTouchEnd', {
+      isDragging,
+      isHovered,
+      isTouchFocused,
+      concertHeadliner: concert.headliner,
+    })
+
     // If user was dragging, don't treat this as a tap
     // The parent container already handled the focus via drag
     if (isDragging) {
+      console.log('[StackedCard] isDragging=true, marking as focused if hovered')
       // Mark this card as touch-focused since it was the last one hovered during drag
       if (isHovered) {
         setIsTouchFocused(true)
@@ -65,15 +73,17 @@ export function StackedCard({
     // Also check if currently hovered (via drag focus that just ended)
     if (isTouchFocused || isHovered) {
       // Navigate to artist
+      console.log('[StackedCard] Navigating!', concert.headliner)
       onClick()
       haptics.medium()
     } else {
       // First tap: focus this card
+      console.log('[StackedCard] First tap, focusing')
       setIsTouchFocused(true)
       onHover() // Bring card to front
       haptics.light()
     }
-  }, [isTouchDevice, isTouchFocused, isDragging, isHovered, onHover, onClick])
+  }, [isTouchDevice, isTouchFocused, isDragging, isHovered, onHover, onClick, concert.headliner])
 
   /**
    * Handle regular click on non-touch devices (desktop)

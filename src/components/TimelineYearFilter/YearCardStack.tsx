@@ -165,6 +165,7 @@ export function YearCardStack({
    * Handle touch end - keep last focused card in focus state
    */
   const handleTouchEnd = (e: React.TouchEvent) => {
+    console.log('[YearCardStack] handleTouchEnd, setting isDragging=false')
     e.stopPropagation()
     setIsDragging(false)
     // Keep the last hovered card focused (don't clear hover state)
@@ -218,7 +219,7 @@ export function YearCardStack({
             }}
             onHoverEnd={() => onCardHover(null)}
             onClick={() => {
-              haptics.light()
+              console.log('[YearCardStack] Card onClick, calling onCardClick with:', concert.headliner)
               onCardClick(concert)
             }}
           />
