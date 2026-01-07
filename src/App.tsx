@@ -4,7 +4,7 @@ import type { ConcertData } from './types/concert'
 import { Scene1Hero } from './components/scenes/Scene1Hero'
 import { Scene3Map } from './components/scenes/Scene3Map'
 import { Scene4Bands } from './components/scenes/Scene4Bands'
-import { Scene5Genres } from './components/scenes/Scene5Genres'
+import { Scene5Genres } from './components/scenes/Scene5Genres/index'
 import { ArtistScene } from './components/scenes/ArtistScene/ArtistScene'
 import { SceneNavigation } from './components/SceneNavigation'
 import { ChangelogPage, ChangelogToast, ChangelogRSS } from './components/changelog'
@@ -56,6 +56,21 @@ function MainScenes() {
     const windowHeight = window.innerHeight
     scrollContainer.scrollTo({
       top: (2 - 1) * windowHeight, // Scene 2 = Venues
+      behavior: 'smooth',
+    })
+  }
+
+  // Handle artist navigation from timeline to artist scene
+  const handleArtistNavigate = (artistName: string) => {
+    setPendingArtistFocus(artistName)
+
+    // Scroll to artist scene (Scene 5)
+    const scrollContainer = scrollContainerRef.current
+    if (!scrollContainer) return
+
+    const windowHeight = window.innerHeight
+    scrollContainer.scrollTo({
+      top: (5 - 1) * windowHeight, // Scene 5 = Artists
       behavior: 'smooth',
     })
   }
@@ -174,7 +189,7 @@ function MainScenes() {
     <>
       <div ref={scrollContainerRef} className="relative snap-y snap-mandatory h-screen overflow-y-scroll">
         {/* Scene 1: Hero/Timeline */}
-        <Scene1Hero concerts={concerts} />
+        <Scene1Hero concerts={concerts} onNavigateToArtist={handleArtistNavigate} />
 
         {/* Scene 2: Venues (force-directed graph) */}
         <Scene4Bands
