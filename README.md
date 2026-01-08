@@ -132,8 +132,6 @@ A few things I'm thinking about (whenever I get around to them):
 
 **Spotify integration** — Add 30-second preview players to the [artist gatefold](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode). Spotify will also become the primary source for artist images and metadata (genres, bios) with TheAudioDB as fallback. See [Spotify Web API docs](https://developer.spotify.com/documentation/web-api) for details.
 
-**Cleaner data pipeline** — Right now the build process mixes raw concert data with enriched API data in the same files. Planning to separate them: Google Sheets stays the single source of truth for concerts, API-enriched data (photos, geocoding, metadata) gets cached separately. Makes rebuilds faster and data easier to understand.
-
 And always: more shows to add to the list.
 
 _Built with ❤️ for live music._
