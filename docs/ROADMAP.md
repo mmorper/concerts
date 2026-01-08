@@ -102,6 +102,14 @@ Genre moved to artist-level metadata with automatic enrichment from TheAudioDB.
 
 ## Short-Term Roadmap
 
+### Venues Mobile UX
+**Status**: Planned
+**Spec**: [venues-mobile-ux.md](specs/future/venues-mobile-ux.md)
+
+Venue mobile ux improvements
+
+---
+
 ### UX Polish
 
 **Status**: In Progress
@@ -124,6 +132,15 @@ Refinements to interaction patterns and navigation across the app.
 ---
 
 ## Medium-Term Roadmap
+
+### Venue Deep Linking
+
+**Status**: Planned
+**Spec**: [venues-deep-linking.md](specs/future/venues-deep-linking.md)
+
+Navigate to specific venue nodes with artist filtering via URL parameters
+
+---
 
 ### Venue Name Change Detection & CLI Management
 **Status**: Planned

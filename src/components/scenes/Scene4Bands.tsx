@@ -28,11 +28,25 @@ type ViewMode = 'top10' | 'all'
 export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete }: Scene4BandsProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const simulationRef = useRef<d3.Simulation<any, any> | null>(null)
+  const graphGroupRef = useRef<SVGGElement | null>(null)
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>('top10')
   const [expandedVenues, setExpandedVenues] = useState<Set<string>>(new Set())
   const [centeredVenue, setCenteredVenue] = useState<string | null>(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+
+  // Mobile detection for responsive behavior
+  const isMobile = useMemo(() => dimensions.width < 768, [dimensions.width])
+
+  // Helper function to reset graph transform on mobile
+  const resetGraphTransform = useCallback(() => {
+    if (isMobile && graphGroupRef.current) {
+      d3.select(graphGroupRef.current)
+        .transition()
+        .duration(600)
+        .attr('transform', 'translate(0,0)')
+    }
+  }, [isMobile])
 
   // Use ResizeObserver to track SVG dimensions and handle orientation changes
   useEffect(() => {
@@ -322,11 +336,19 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
         // Clear focus if set
         if (focusedNodeId) {
           setFocusedNodeId(null)
+          setCenteredVenue(null)
+
+          // Reset transform on mobile when clearing focus
+          if (isMobile && graphGroupRef.current) {
+            d3.select(graphGroupRef.current)
+              .transition()
+              .duration(600)
+              .attr('transform', 'translate(0,0)')
+          }
         }
-        // In "all" mode, clear user-expanded venues and centered venue
+        // In "all" mode, clear user-expanded venues
         if (viewMode === 'all' && expandedVenues.size > 0) {
           setExpandedVenues(new Set())
-          setCenteredVenue(null)
         }
       })
 
@@ -334,13 +356,17 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
 
     // Create size scales for different node types
     // In "all" mode, use wider range to show hierarchy clearly
+    // Mobile uses smaller node sizes for better density
     const venueSizeScale = d3.scaleSqrt()
       .domain([1, Math.max(...nodes.filter(n => n.type === 'venue').map(n => n.count))])
-      .range(viewMode === 'all' ? [8, 45] : [20, 40])
+      .range(viewMode === 'all'
+        ? (isMobile ? [6, 30] : [8, 45])
+        : (isMobile ? [15, 30] : [20, 40])
+      )
 
     const bandSizeScale = d3.scaleSqrt()
       .domain([1, Math.max(...nodes.filter(n => n.type !== 'venue').map(n => n.count))])
-      .range([6, 16])
+      .range(isMobile ? [5, 12] : [6, 16])
 
     const getNodeSize = (d: Node) => {
       if (d.type === 'venue') return venueSizeScale(d.count)
@@ -373,7 +399,8 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
         // Increase collision radius for touch - minimum 22px radius (44px diameter)
         const baseSize = getNodeSize(d)
         const touchRadius = Math.max(baseSize, 22)
-        return touchRadius + 15
+        const padding = isMobile ? 10 : 15
+        return touchRadius + padding
       }))
       // Radial force to push venues toward center
       // When a venue is centered, position children around it
@@ -422,15 +449,17 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
         }) : null
       )
       // Add elliptical exclusion zone around header for organic distribution
+      // Mobile uses smaller exclusion zone to maximize usable graph space
       .force('exclusion', createExclusionZone(
         width / 2, // centerX (middle of viewport)
-        180, // centerY (center of header area)
-        280, // radiusX (horizontal radius - narrower for closer sides)
-        180 // radiusY (vertical radius from top to below buttons)
+        isMobile ? 140 : 180, // centerY (center of header area)
+        isMobile ? 180 : 280, // radiusX (horizontal radius - narrower for closer sides)
+        isMobile ? 140 : 180 // radiusY (vertical radius from top to below buttons)
       ))
 
     // Create container group
     const g = svg.append('g')
+    graphGroupRef.current = g.node() // Store reference for mobile centering
 
     // Determine target opacity for links (for spotlight effect)
     const getLinkOpacity = (d: any) => {
@@ -498,6 +527,20 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
       .attr('fill', 'transparent')
       .style('cursor', 'pointer')
       .on('click', function(_event, d) {
+        // Add haptic feedback for mobile devices
+        if (typeof navigator.vibrate === 'function') {
+          try {
+            const success = navigator.vibrate(10) // Light 10ms tap
+            if (!success) {
+              console.log('Vibration not supported or permission denied')
+            }
+          } catch (e) {
+            console.log('Vibration API error:', e)
+          }
+        } else {
+          console.log('Vibration API not available')
+        }
+
         // In "all" mode, clicking a venue expands/collapses it and centers it
         if (viewMode === 'all' && d.type === 'venue') {
           const venueName = d.id.replace('venue|', '')
@@ -520,8 +563,53 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
         // Original behavior for other modes/nodes: Toggle focus
         if (focusedNodeId === d.id) {
           setFocusedNodeId(null)
+          setCenteredVenue(null)
+
+          // Reset transform on mobile when clearing focus
+          if (isMobile && graphGroupRef.current) {
+            d3.select(graphGroupRef.current)
+              .transition()
+              .duration(600)
+              .attr('transform', 'translate(0,0)')
+          }
         } else {
           setFocusedNodeId(d.id)
+
+          // On mobile, center the focused node and its children in viewport
+          if (isMobile && d.x !== undefined && d.y !== undefined && graphGroupRef.current) {
+            // Get all related nodes (parent + children)
+            const related = getRelatedNodes(d.id)
+            const relatedNodePositions = nodes.filter(n => related.has(n.id)).map((n: any) => ({
+              x: n.x,
+              y: n.y
+            }))
+
+            if (relatedNodePositions.length > 0) {
+              // Calculate bounding box of all related nodes
+              const minX = Math.min(...relatedNodePositions.map(n => n.x))
+              const maxX = Math.max(...relatedNodePositions.map(n => n.x))
+              const minY = Math.min(...relatedNodePositions.map(n => n.y))
+              const maxY = Math.max(...relatedNodePositions.map(n => n.y))
+
+              // Calculate center of bounding box
+              const boundsCenterX = (minX + maxX) / 2
+              const boundsCenterY = (minY + maxY) / 2
+
+              // Calculate viewport center (accounting for header at top)
+              const centerX = width / 2
+              const centerY = height / 2 + 50 // Offset down slightly to account for header
+
+              // Calculate translation needed to center the bounding box
+              const translateX = centerX - boundsCenterX
+              const translateY = centerY - boundsCenterY
+
+              // Smoothly translate the graph
+              d3.select(graphGroupRef.current)
+                .transition()
+                .duration(600)
+                .attr('transform', `translate(${translateX},${translateY})`)
+            }
+          }
         }
       })
 
@@ -621,12 +709,14 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
       .text(d => {
         // Extract venue name from the id
         const venueName = d.id.replace('venue|', '')
-        // Truncate long names
-        return venueName.length > 20 ? venueName.substring(0, 17) + '...' : venueName
+        // Truncate long names - mobile: 15 char limit, desktop: 20 char limit
+        const maxLength = isMobile ? 15 : 20
+        const truncateAt = isMobile ? 12 : 17
+        return venueName.length > maxLength ? venueName.substring(0, truncateAt) + '...' : venueName
       })
       .attr('text-anchor', 'middle')
       .attr('dy', '0.35em')
-      .attr('font-size', '11px')
+      .attr('font-size', isMobile ? '10px' : '11px')
       .attr('fill', 'white')
       .attr('fill-opacity', 1)
       .attr('font-family', 'Inter, system-ui, sans-serif')
@@ -640,11 +730,13 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
         .append('text')
         .text(d => {
           const venueName = d.id.replace('venue|', '')
-          return venueName.length > 20 ? venueName.substring(0, 17) + '...' : venueName
+          const maxLength = isMobile ? 15 : 20
+          const truncateAt = isMobile ? 12 : 17
+          return venueName.length > maxLength ? venueName.substring(0, truncateAt) + '...' : venueName
         })
         .attr('text-anchor', 'middle')
         .attr('dy', '0.35em')
-        .attr('font-size', '10px')
+        .attr('font-size', isMobile ? '9px' : '10px')
         .attr('fill', 'white')
         .attr('fill-opacity', d => {
           // Show label if this node is focused or related to focused node
@@ -664,13 +756,17 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
     node.filter(d => {
         if (d.type === 'venue') return false
 
-        // Show labels for focused hierarchy
+        // RULE 1: Show labels for focused hierarchy
         if (focusedNodeId && relatedNodes.has(d.id)) return true
 
-        // Show labels for expanded venues in "all" mode
+        // RULE 2: In "All Venues" mode without focus, hide all band labels
+        if (viewMode === 'all' && !focusedNodeId) return false
+
+        // RULE 3: Show labels for expanded venues in "all" mode (when focused)
         if (viewMode === 'all' && d.parentVenue && expandedVenues.has(d.parentVenue)) return true
 
-        return false
+        // Top 10 mode: show all labels (legacy behavior)
+        return viewMode === 'top10'
       })
       .append('text')
       .text(d => {
@@ -681,8 +777,10 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
         } else if (d.type === 'opener') {
           bandName = d.id.split('|')[3]
         }
-        // Truncate long names - be more generous with focused nodes
-        return bandName.length > 18 ? bandName.substring(0, 15) + '...' : bandName
+        // Truncate long names - mobile: 14 char limit, desktop: 18 char limit
+        const maxLength = isMobile ? 14 : 18
+        const truncateAt = isMobile ? 11 : 15
+        return bandName.length > maxLength ? bandName.substring(0, truncateAt) + '...' : bandName
       })
       .attr('text-anchor', 'middle')
       .attr('dy', '0.35em')
@@ -690,6 +788,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
         // Larger font for focused/expanded nodes
         const isHighlighted = (focusedNodeId && relatedNodes.has(d.id)) ||
                               (viewMode === 'all' && d.parentVenue && expandedVenues.has(d.parentVenue))
+        if (isMobile) return isHighlighted ? '9px' : '8px'
         return isHighlighted ? '10px' : '9px'
       })
       .attr('fill', 'white')
@@ -867,7 +966,10 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
         className="absolute bottom-20 left-0 right-0 z-10 text-center"
       >
         <p className="font-sans text-xs text-gray-400 font-medium uppercase tracking-widest">
-          {focusedNodeId ? 'Click anywhere to reset · Drag to explore' : 'Click to focus · Drag to explore'}
+          {focusedNodeId
+            ? (isMobile ? 'Tap anywhere to reset · Drag' : 'Click anywhere to reset · Drag to explore')
+            : (isMobile ? 'Tap to focus · Drag' : 'Click to focus · Drag to explore')
+          }
         </p>
       </motion.div>
 
@@ -877,8 +979,19 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          onClick={() => setFocusedNodeId(null)}
-          className="absolute top-32 right-8 z-20 px-6 py-3 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg font-sans text-sm font-medium hover:bg-white/20 transition-all duration-200 min-h-[44px]"
+          onClick={() => {
+            setFocusedNodeId(null)
+            setCenteredVenue(null)
+            if (viewMode === 'all') {
+              setExpandedVenues(new Set())
+            }
+            resetGraphTransform()
+          }}
+          className={`absolute z-20 px-6 py-3 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg font-sans text-sm font-medium hover:bg-white/20 transition-all duration-200 min-h-[44px] ${
+            isMobile
+              ? 'bottom-24 left-1/2 -translate-x-1/2' // Center bottom on mobile
+              : 'top-32 right-8' // Top right on desktop
+          }`}
         >
           Reset View
         </motion.button>
