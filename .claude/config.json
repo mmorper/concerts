@@ -1,0 +1,113 @@
+{
+  "project": {
+    "name": "Morperhaus Concert Archives",
+    "description": "Interactive concert history timeline application",
+    "type": "jamstack-spa",
+    "tech_stack": [
+      "vite",
+      "react",
+      "typescript",
+      "tailwind",
+      "leaflet",
+      "d3",
+      "framer-motion"
+    ]
+  },
+  "version": {
+    "current": "3.1.0",
+    "status": "production",
+    "live_url": "https://concerts.morperhaus.org"
+  },
+  "status": {
+    "lastContextSync": "2026-01-07",
+    "lastCommit": "Remove upcoming tour dates section from README (c607bd0)",
+    "notes": "v3.1.0 production. iPad touch support for timeline exploration. Genre treemap with timeline animation. Real-time tour dates via Ticketmaster API."
+  },
+  "deployment": {
+    "platform": "cloudflare-pages",
+    "build_command": "npm run build",
+    "output_directory": "dist",
+    "auto_deploy": true,
+    "status": "live",
+    "url": "https://concerts.morperhaus.org"
+  },
+  "data_source": {
+    "type": "google-sheets",
+    "update_strategy": "periodic-manual",
+    "enrichment_apis": [
+      "google-maps-geocoding",
+      "theaudiodb"
+    ]
+  },
+  "documentation": {
+    "roadmap": {
+      "file": "docs/ROADMAP.md",
+      "status": "active",
+      "maintenance": "REQUIRED: Update ROADMAP.md when new versions are released to GitHub. Move completed items from roadmap to changelog.json."
+    },
+    "changelog": {
+      "file": "src/data/changelog.json",
+      "style_guide": "docs/design/changelog-style-guide.md",
+      "maintenance": "REQUIRED: Update changelog.json for all user-facing features before release"
+    },
+    "historical_archive": {
+      "status_v1.0_v1.3": "docs/specs/archive/STATUS-v1.0-v1.3-historical.md",
+      "planning": "docs/planning.md"
+    },
+    "api_setup": "docs/api-setup.md",
+    "design": {
+      "scene_guide": "docs/design/scene-design-guide.md",
+      "color_spec": "docs/design/color-specification.md"
+    },
+    "specs": {
+      "implemented": "docs/specs/implemented/",
+      "future": "docs/specs/future/",
+      "archive": "docs/specs/archive/"
+    },
+    "context": ".claude/context.md"
+  },
+  "workflows": {
+    "version_release": {
+      "trigger": "When pushing new version to GitHub",
+      "command": "/release",
+      "documentation": ".claude/commands/README.md",
+      "usage": [
+        "/release minor     # New feature",
+        "/release patch     # Bug fix", 
+        "/release --dry-run # Preview changes"
+      ],
+      "manual_steps_if_needed": [
+        "1. Update changelog.json with new release entry",
+        "2. Move implemented specs from docs/specs/future/ to docs/specs/implemented/",
+        "3. Update docs/ROADMAP.md - move completed items",
+        "4. Run npm run validate:version",
+        "5. git commit, tag, push"
+      ]
+    },
+    "spec_completion": {
+      "trigger": "When moving spec to docs/specs/implemented/",
+      "note": "Handled automatically by /release command when ROADMAP items are selected",
+      "manual_steps_if_needed": [
+        "1. Update spec status to '✅ IMPLEMENTED'",
+        "2. Add implementation date",
+        "3. Move file from specs/future/ to specs/implemented/"
+      ]
+    }
+  },
+  "commands": {
+    "available": [
+      "/release",
+      "/changelog",
+      "/release-undo",
+      "/spec",
+      "/implement",
+      "/context-sync",
+      "/validate",
+      "/data-refresh",
+      "/preview",
+      "/hotfix",
+      "/commands"
+    ],
+    "documentation": ".claude/commands/"
+  }
+}
