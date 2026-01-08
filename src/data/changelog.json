@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "3.2.0",
+      "date": "2026-01-08",
+      "title": "Mobile Artist Experience",
+      "description": "Artist details now feel native on your phone. Tap any artist card to open a full-screen modal with tabbed navigation—swipe through your concert history, check upcoming tour dates, and pull up setlists with a tap. Swipe down or tap X to close, just like you'd expect.",
+      "route": "/?scene=artists&artist=depeche-mode",
+      "highlights": [
+        "Full-screen modal replaces desktop gatefold on phones",
+        "Tabbed navigation: Concert History, Upcoming Shows, Top Tracks",
+        "Setlist overlay slides in from the right with swipe-to-dismiss",
+        "Color-coded tabs with brand accents (violet, amber, Spotify green)"
+      ]
+    },
+    {
       "version": "3.1.0",
       "date": "2026-01-07",
       "title": "iPad Touch Support",

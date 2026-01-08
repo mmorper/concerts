@@ -19,6 +19,7 @@ export default defineConfig(({ mode }) => {
       sourcemap: true,
     },
     server: {
+      host: true, // Allow network access for mobile testing
       port: 5173,
       open: true,
       proxy: {

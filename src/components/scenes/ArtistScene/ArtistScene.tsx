@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ArtistMosaic } from './ArtistMosaic'
 import { ArtistGatefold } from './ArtistGatefold'
+import { PhoneArtistModal } from './PhoneArtistModal'
 import { ArtistSearchTypeahead } from './ArtistSearchTypeahead'
 import { useArtistData } from './useArtistData'
 import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
+import { useGatefoldOrientation } from '../../../hooks/useGatefoldOrientation'
 import type { Concert } from '../../../types/concert'
 import type { SortOrder, ArtistCard } from './types'
 import { haptics } from '../../../utils/haptics'
@@ -22,6 +24,7 @@ interface ArtistSceneProps {
 export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplete }: ArtistSceneProps) {
   const { artistCards, isLoading } = useArtistData(concerts)
   const { getArtistImage, loading: artistImageLoading } = useArtistMetadata()
+  const { isPhone } = useGatefoldOrientation()
   const [sortOrder, setSortOrder] = useState<SortOrder>('timesSeen') // Default: Most Seen
   const [artistCount, setArtistCount] = useState(0)
   const [openArtist, setOpenArtist] = useState<ArtistCard | null>(null)
@@ -313,15 +316,23 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
         </motion.div>
       )}
 
-      {/* Gatefold Overlay - Rendered at scene level to escape stacking context */}
+      {/* Artist Detail Overlay - Phone modal vs Desktop gatefold */}
       {openArtist && (
-        <ArtistGatefold
-          artist={openArtist}
-          onClose={handleCloseGatefold}
-          clickedTileRect={clickedTileRect}
-          reducedMotion={reducedMotion}
-          getArtistImage={getArtistImage}
-        />
+        isPhone ? (
+          <PhoneArtistModal
+            artist={openArtist}
+            onClose={handleCloseGatefold}
+            reducedMotion={reducedMotion}
+          />
+        ) : (
+          <ArtistGatefold
+            artist={openArtist}
+            onClose={handleCloseGatefold}
+            clickedTileRect={clickedTileRect}
+            reducedMotion={reducedMotion}
+            getArtistImage={getArtistImage}
+          />
+        )
       )}
     </motion.section>
   )

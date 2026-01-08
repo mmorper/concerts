@@ -6,6 +6,8 @@ import { LinerNotesPanel } from './LinerNotesPanel'
 import { TourDatesPanel } from './TourDatesPanel'
 import { fetchSetlist } from '../../../services/setlistfm'
 import { useTourDates } from '../../../hooks/useTourDates'
+import { useGatefoldOrientation } from '../../../hooks/useGatefoldOrientation'
+import { haptics } from '../../../utils/haptics'
 import type { ArtistCard, ArtistConcert } from './types'
 import type { Setlist } from '../../../types/setlist'
 
@@ -23,6 +25,7 @@ interface ArtistGatefoldProps {
 // Constants matching prototype
 const PANEL_SIZE = 400
 const SPINE_WIDTH = 12
+const SPINE_HEIGHT = 12 // Phone spine height
 const CLOSED_WIDTH = PANEL_SIZE
 const OPEN_WIDTH = PANEL_SIZE + SPINE_WIDTH + PANEL_SIZE // 812px
 
@@ -66,16 +69,52 @@ export function ArtistGatefold({
   // Cover image loading state - must be before early return
   const [coverImageLoaded, setCoverImageLoaded] = useState(false)
 
-  // Get positioning functions
-  const getClosedPosition = () => ({
-    left: (window.innerWidth - CLOSED_WIDTH) / 2,
-    top: (window.innerHeight - PANEL_SIZE) / 2
+  // Phone/desktop orientation detection (v3.2.0)
+  const { isPhone, dimensions, safeAreas } = useGatefoldOrientation()
+
+  // Phone helper functions (v3.2.0)
+  const getPhonePanelHeight = () => {
+    const { height } = dimensions
+    const { top, bottom } = safeAreas
+    return Math.floor((height - top - bottom - SPINE_HEIGHT) / 2)
+  }
+
+  const getPhoneClosedPosition = () => ({
+    left: 0,
+    top: dimensions.height - getPhonePanelHeight() - safeAreas.bottom,
+    width: dimensions.width,
+    height: getPhonePanelHeight()
   })
 
-  const getOpenPosition = () => ({
-    left: (window.innerWidth - OPEN_WIDTH) / 2 + PANEL_SIZE, // +400 because cover opens to left
-    top: (window.innerHeight - PANEL_SIZE) / 2
+  const getPhoneOpenPosition = () => ({
+    left: 0,
+    top: safeAreas.top + getPhonePanelHeight(), // Cover bottom at spine
+    width: dimensions.width,
+    height: getPhonePanelHeight()
   })
+
+  // Get positioning functions (desktop)
+  const getClosedPosition = () => {
+    if (isPhone) {
+      const phonePos = getPhoneClosedPosition()
+      return { left: phonePos.left, top: phonePos.top }
+    }
+    return {
+      left: (window.innerWidth - CLOSED_WIDTH) / 2,
+      top: (window.innerHeight - PANEL_SIZE) / 2
+    }
+  }
+
+  const getOpenPosition = () => {
+    if (isPhone) {
+      const phonePos = getPhoneOpenPosition()
+      return { left: phonePos.left, top: phonePos.top }
+    }
+    return {
+      left: (window.innerWidth - OPEN_WIDTH) / 2 + PANEL_SIZE, // +400 because cover opens to left
+      top: (window.innerHeight - PANEL_SIZE) / 2
+    }
+  }
 
   // Open animation sequence
   useEffect(() => {
@@ -127,13 +166,18 @@ export function ArtistGatefold({
         // Force reflow
         tile.offsetHeight
 
-        // Step 2: Animate tile to center (500ms)
+        // Step 2: Animate tile to closed position (500ms)
+        // Phone: target size matches panel height; Desktop: 400x400
+        const targetWidth = isPhone ? getPhoneClosedPosition().width : PANEL_SIZE
+        const targetHeight = isPhone ? getPhoneClosedPosition().height : PANEL_SIZE
+        const targetFontSize = isPhone ? '6rem' : '8rem'
+
         tile.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
         tile.style.left = `${closedPos.left}px`
         tile.style.top = `${closedPos.top}px`
-        tile.style.width = `${PANEL_SIZE}px`
-        tile.style.height = `${PANEL_SIZE}px`
-        tile.style.fontSize = '8rem'
+        tile.style.width = `${targetWidth}px`
+        tile.style.height = `${targetHeight}px`
+        tile.style.fontSize = targetFontSize
         tile.style.borderRadius = '4px'
         tile.style.boxShadow = '0 25px 50px rgba(0,0,0,0.5), 0 10px 20px rgba(0,0,0,0.3)'
       }
@@ -146,8 +190,14 @@ export function ArtistGatefold({
       // Position wrapper at closed position (where flying tile ended)
       if (wrapperRef.current) {
         const wrapper = wrapperRef.current
-        wrapper.style.left = `${closedPos.left}px`
-        wrapper.style.top = `${closedPos.top}px`
+        // Phone layout uses fixed positioning at top-left (full viewport)
+        if (isPhone) {
+          wrapper.style.left = '0px'
+          wrapper.style.top = '0px'
+        } else {
+          wrapper.style.left = `${closedPos.left}px`
+          wrapper.style.top = `${closedPos.top}px`
+        }
         wrapper.style.transition = 'none'
       }
 
@@ -164,9 +214,12 @@ export function ArtistGatefold({
         wrapper.offsetHeight
 
         // Start animating to open position and opening cover simultaneously (800ms)
-        wrapper.style.transition = 'left 0.8s cubic-bezier(0.4, 0, 0.2, 1), top 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
-        wrapper.style.left = `${openPos.left}px`
-        wrapper.style.top = `${openPos.top}px`
+        // Phone layout doesn't move the wrapper (stays at 0,0), only desktop moves
+        if (!isPhone) {
+          wrapper.style.transition = 'left 0.8s cubic-bezier(0.4, 0, 0.2, 1), top 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+          wrapper.style.left = `${openPos.left}px`
+          wrapper.style.top = `${openPos.top}px`
+        }
 
         // Small delay then trigger the cover opening animation
         setTimeout(() => {
@@ -318,12 +371,16 @@ export function ArtistGatefold({
       setShowFlyingTile(true)
 
       const tile = flyingTileRef.current
+      const startWidth = isPhone ? getPhoneClosedPosition().width : PANEL_SIZE
+      const startHeight = isPhone ? getPhoneClosedPosition().height : PANEL_SIZE
+      const startFontSize = isPhone ? '6rem' : '8rem'
+
       tile.style.transition = 'none'
       tile.style.left = `${closedPos.left}px`
       tile.style.top = `${closedPos.top}px`
-      tile.style.width = `${PANEL_SIZE}px`
-      tile.style.height = `${PANEL_SIZE}px`
-      tile.style.fontSize = '8rem'
+      tile.style.width = `${startWidth}px`
+      tile.style.height = `${startHeight}px`
+      tile.style.fontSize = startFontSize
       tile.style.borderRadius = '4px'
 
       // Force reflow
@@ -344,6 +401,42 @@ export function ArtistGatefold({
 
     onClose()
   }
+
+  // Touch handlers for swipe-to-close (v3.2.0 - phone only)
+  // Using useEffect with native events to enable passive listeners for better scroll performance
+  useEffect(() => {
+    if (!isPhone || !overlayRef.current) return
+
+    const overlay = overlayRef.current
+    let touchStartY = 0
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY
+    }
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (!artist) return
+
+      const SWIPE_THRESHOLD = 100 // pixels
+      const touchEndY = e.changedTouches[0].clientY
+      const deltaY = touchEndY - touchStartY
+
+      // Swipe down detected
+      if (deltaY > SWIPE_THRESHOLD) {
+        haptics.light()
+        handleClose()
+      }
+    }
+
+    // Add passive listeners for better scroll performance
+    overlay.addEventListener('touchstart', handleTouchStart, { passive: true })
+    overlay.addEventListener('touchend', handleTouchEnd, { passive: true })
+
+    return () => {
+      overlay.removeEventListener('touchstart', handleTouchStart)
+      overlay.removeEventListener('touchend', handleTouchEnd)
+    }
+  }, [isPhone, artist, handleClose])
 
   // Handle ESC key (v1.6.0 - updated for activePanel)
   useEffect(() => {
@@ -441,134 +534,157 @@ export function ArtistGatefold({
               style={{ zIndex: 100000 }}
               aria-live="polite"
             >
-              Click anywhere or press ESC to close
+              {isPhone ? 'Tap or swipe down to close' : 'Click anywhere or press ESC to close'}
             </div>
           )}
 
           {/* Gatefold Wrapper */}
           <div
             ref={wrapperRef}
-            className={`absolute ${showGatefold ? 'opacity-100' : 'opacity-0'} transition-opacity duration-200`}
+            className={`${isPhone ? '' : 'absolute'} ${showGatefold ? 'opacity-100' : 'opacity-0'} transition-opacity duration-200`}
             style={{ transformStyle: 'preserve-3d' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div
-              className="flex relative"
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              {/* Right Panel (Spotify) - revealed by cover opening */}
+            {!isPhone ? (
+              /* ============ DESKTOP LAYOUT (Horizontal) ============ */
               <div
-                className={`transform-gpu transition-transform duration-800 ${
-                  isOpen ? 'rotate-y-[-15deg]' : 'rotate-y-0'
-                }`}
-                style={{
-                  transformStyle: 'preserve-3d',
-                  transformOrigin: 'left center',
-                  transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
-                }}
+                className="flex relative"
+                style={{ transformStyle: 'preserve-3d' }}
               >
-                {/* Spine */}
+                {/* Right Panel (Spotify) - revealed by cover opening */}
                 <div
-                  className={`absolute left-[-6px] top-0 w-[12px] h-[400px] rounded-sm transition-opacity duration-400 ${
-                    isOpen ? 'opacity-100 delay-300' : 'opacity-0'
+                  className={`transform-gpu transition-transform duration-800 ${
+                    isOpen ? 'rotate-y-[-15deg]' : 'rotate-y-0'
                   }`}
                   style={{
-                    background: 'linear-gradient(to right, #0a0a0a 0%, #1a1a1a 20%, #0a0a0a 50%, #1a1a1a 80%, #0a0a0a 100%)',
-                    boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.8)',
-                    zIndex: 15
+                    transformStyle: 'preserve-3d',
+                    transformOrigin: 'left center',
+                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
+                  {/* Vertical Spine (Desktop) */}
                   <div
-                    className="absolute top-2.5 bottom-2.5 left-1/2 w-0.5 -translate-x-1/2"
+                    className={`absolute left-[-6px] top-0 w-[12px] h-[400px] rounded-sm transition-opacity duration-400 ${
+                      isOpen ? 'opacity-100 delay-300' : 'opacity-0'
+                    }`}
                     style={{
-                      background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 10%, rgba(0,0,0,0.6) 90%, transparent 100%)'
+                      background: 'linear-gradient(to right, #0a0a0a 0%, #1a1a1a 20%, #0a0a0a 50%, #1a1a1a 80%, #0a0a0a 100%)',
+                      boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.8)',
+                      zIndex: 15
                     }}
-                  />
-                </div>
+                  >
+                    <div
+                      className="absolute top-2.5 bottom-2.5 left-1/2 w-0.5 -translate-x-1/2"
+                      style={{
+                        background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 10%, rgba(0,0,0,0.6) 90%, transparent 100%)'
+                      }}
+                    />
+                  </div>
 
-                <SpotifyPanel artist={artist} />
+                  <SpotifyPanel artist={artist} />
 
-                {/* Liner Notes Panel - slides over Spotify panel (v1.5.0) */}
-                {activePanel === 'setlist' && selectedConcert && (
-                  <LinerNotesPanel
-                    concert={selectedConcert}
-                    artistName={artist.name}
-                    setlist={setlistData}
-                    isLoading={isLoadingSetlist}
-                    error={setlistError}
-                    onClose={handleClosePanel}
-                  />
-                )}
-
-                {/* Tour Dates Panel - slides over Spotify panel (v1.6.0) */}
-                {activePanel === 'tour-dates' && (
-                  <TourDatesPanel
-                    artistName={artist.name}
-                    tourDates={tourDates}
-                    isLoading={isLoadingTourDates}
-                    error={tourDatesError}
-                    onClose={handleClosePanel}
-                  />
-                )}
-              </div>
-
-              {/* Cover (opens to become left panel) */}
-              <div
-                className={`absolute top-0 left-0 transform-gpu transition-transform duration-800 ${
-                  isOpen ? 'rotate-y-[-165deg]' : 'rotate-y-0'
-                }`}
-                style={{
-                  width: PANEL_SIZE,
-                  height: PANEL_SIZE,
-                  transformStyle: 'preserve-3d',
-                  transformOrigin: 'left center',
-                  zIndex: 20,
-                  cursor: 'pointer',
-                  transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
-                }}
-              >
-                {/* Front of cover (album art) */}
-                <div
-                  className="absolute inset-0 flex items-center justify-center rounded text-[8rem] font-sans font-semibold text-white/90 overflow-hidden"
-                  style={{
-                    background: gradient,
-                    backfaceVisibility: 'hidden',
-                    WebkitBackfaceVisibility: 'hidden',
-                    boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)'
-                  }}
-                >
-                  {/* Always show initials as base layer (only if image not loaded) */}
-                  {!coverImageLoaded && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      {initials}
-                    </div>
+                  {/* Liner Notes Panel - slides from left (desktop) */}
+                  {activePanel === 'setlist' && selectedConcert && (
+                    <LinerNotesPanel
+                      concert={selectedConcert}
+                      artistName={artist.name}
+                      setlist={setlistData}
+                      isLoading={isLoadingSetlist}
+                      error={setlistError}
+                      onClose={handleClosePanel}
+                    />
                   )}
 
-                  {/* Artist image overlays initials - instant if preloaded, fade if loading */}
-                  {imageUrl && (
-                    <img
-                      key={artist.name} // Force new image element for each artist
-                      src={imageUrl}
-                      alt={artist.name}
-                      className={`absolute inset-0 w-full h-full object-cover ${
-                        coverImageLoaded ? 'opacity-100' : 'opacity-0 transition-opacity duration-300'
-                      }`}
-                      onLoad={() => setCoverImageLoaded(true)}
-                      onError={() => {
-                        // Keep image hidden on error so initials remain visible
-                        setCoverImageLoaded(false)
-                      }}
+                  {/* Tour Dates Panel - slides from left (desktop) */}
+                  {activePanel === 'tour-dates' && (
+                    <TourDatesPanel
+                      artistName={artist.name}
+                      tourDates={tourDates}
+                      isLoading={isLoadingTourDates}
+                      error={tourDatesError}
+                      onClose={handleClosePanel}
                     />
                   )}
                 </div>
 
-                {/* Back of cover (concert history) */}
+                {/* Cover (opens to become left panel) */}
                 <div
-                  className="absolute inset-0"
+                  className={`absolute top-0 left-0 transform-gpu transition-transform duration-800 ${
+                    isOpen ? 'rotate-y-[-165deg]' : 'rotate-y-0'
+                  }`}
                   style={{
-                    backfaceVisibility: 'hidden',
-                    WebkitBackfaceVisibility: 'hidden',
-                    transform: 'rotateY(180deg)'
+                    width: PANEL_SIZE,
+                    height: PANEL_SIZE,
+                    transformStyle: 'preserve-3d',
+                    transformOrigin: 'left center',
+                    zIndex: 20,
+                    cursor: 'pointer',
+                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                >
+                  {/* Front of cover (album art) */}
+                  <div
+                    className="absolute inset-0 flex items-center justify-center rounded text-[8rem] font-sans font-semibold text-white/90 overflow-hidden"
+                    style={{
+                      background: gradient,
+                      backfaceVisibility: 'hidden',
+                      WebkitBackfaceVisibility: 'hidden',
+                      boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)'
+                    }}
+                  >
+                    {!coverImageLoaded && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        {initials}
+                      </div>
+                    )}
+                    {imageUrl && (
+                      <img
+                        key={artist.name}
+                        src={imageUrl}
+                        alt={artist.name}
+                        className={`absolute inset-0 w-full h-full object-cover ${
+                          coverImageLoaded ? 'opacity-100' : 'opacity-0 transition-opacity duration-300'
+                        }`}
+                        onLoad={() => setCoverImageLoaded(true)}
+                        onError={() => setCoverImageLoaded(false)}
+                      />
+                    )}
+                  </div>
+
+                  {/* Back of cover (concert history) */}
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      backfaceVisibility: 'hidden',
+                      WebkitBackfaceVisibility: 'hidden',
+                      transform: 'rotateY(180deg)'
+                    }}
+                  >
+                    <ConcertHistoryPanel
+                      artist={artist}
+                      onSetlistClick={handleSetlistClick}
+                      openSetlistConcert={selectedConcert}
+                      tourCount={tourCount}
+                      isTourPanelActive={activePanel === 'tour-dates'}
+                      onTourBadgeClick={handleTourBadgeClick}
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* ============ PHONE LAYOUT (Vertical) ============ */
+              <div
+                className="flex flex-col relative"
+                style={{ transformStyle: 'preserve-3d', width: getPhoneClosedPosition().width, height: '100vh' }}
+              >
+                {/* Top Panel (Concert History) - revealed by cover opening */}
+                <div
+                  className={`flex-1 transform-gpu transition-transform duration-800 ${
+                    isOpen ? 'rotate-x-[-15deg]' : 'rotate-x-0'
+                  } origin-center-bottom`}
+                  style={{
+                    transformStyle: 'preserve-3d',
+                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
                   <ConcertHistoryPanel
@@ -578,10 +694,116 @@ export function ArtistGatefold({
                     tourCount={tourCount}
                     isTourPanelActive={activePanel === 'tour-dates'}
                     onTourBadgeClick={handleTourBadgeClick}
+                    isPhone={true}
+                  />
+
+                  {/* Liner Notes Panel - slides from top (phone) */}
+                  {activePanel === 'setlist' && selectedConcert && (
+                    <LinerNotesPanel
+                      concert={selectedConcert}
+                      artistName={artist.name}
+                      setlist={setlistData}
+                      isLoading={isLoadingSetlist}
+                      error={setlistError}
+                      onClose={handleClosePanel}
+                      isPhone={true}
+                    />
+                  )}
+
+                  {/* Tour Dates Panel - slides from top (phone) */}
+                  {activePanel === 'tour-dates' && (
+                    <TourDatesPanel
+                      artistName={artist.name}
+                      tourDates={tourDates}
+                      isLoading={isLoadingTourDates}
+                      error={tourDatesError}
+                      onClose={handleClosePanel}
+                      isPhone={true}
+                    />
+                  )}
+                </div>
+
+                {/* Horizontal Spine (Phone) */}
+                <div
+                  className={`relative transition-opacity duration-400 ${
+                    isOpen ? 'opacity-100 delay-300' : 'opacity-0'
+                  }`}
+                  style={{
+                    height: SPINE_HEIGHT,
+                    width: '100%',
+                    background: 'linear-gradient(to bottom, #0a0a0a 0%, #1a1a1a 20%, #0a0a0a 50%, #1a1a1a 80%, #0a0a0a 100%)',
+                    boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.8)',
+                    zIndex: 15
+                  }}
+                >
+                  <div
+                    className="absolute left-2.5 right-2.5 top-1/2 h-0.5 -translate-y-1/2"
+                    style={{
+                      background: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 10%, rgba(0,0,0,0.6) 90%, transparent 100%)'
+                    }}
                   />
                 </div>
+
+                {/* Bottom Panel (Spotify) */}
+                <div
+                  className={`flex-1 transform-gpu transition-transform duration-800 ${
+                    isOpen ? 'rotate-x-15' : 'rotate-x-0'
+                  } origin-center-top`}
+                  style={{
+                    transformStyle: 'preserve-3d',
+                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                >
+                  <SpotifyPanel artist={artist} isPhone={true} />
+                </div>
+
+                {/* Cover (opens upward from bottom half) */}
+                <div
+                  className={`absolute transform-gpu transition-transform duration-800 ${
+                    isOpen ? 'rotate-x-165' : 'rotate-x-0'
+                  } origin-center-bottom`}
+                  style={{
+                    width: '100%',
+                    height: getPhonePanelHeight(),
+                    bottom: 0,
+                    left: 0,
+                    transformStyle: 'preserve-3d',
+                    zIndex: 20,
+                    cursor: 'pointer',
+                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                >
+                  {/* Front of cover (album art) */}
+                  <div
+                    className="absolute inset-0 flex items-center justify-center text-[6rem] font-sans font-semibold text-white/90 overflow-hidden"
+                    style={{
+                      background: gradient,
+                      backfaceVisibility: 'hidden',
+                      WebkitBackfaceVisibility: 'hidden',
+                      boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)'
+                    }}
+                  >
+                    {!coverImageLoaded && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        {initials}
+                      </div>
+                    )}
+                    {imageUrl && (
+                      <img
+                        key={artist.name}
+                        src={imageUrl}
+                        alt={artist.name}
+                        className={`absolute inset-0 w-full h-full object-cover ${
+                          coverImageLoaded ? 'opacity-100' : 'opacity-0 transition-opacity duration-300'
+                        }`}
+                        onLoad={() => setCoverImageLoaded(true)}
+                        onError={() => setCoverImageLoaded(false)}
+                      />
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       )}

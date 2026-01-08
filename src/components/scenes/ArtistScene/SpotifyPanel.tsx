@@ -3,14 +3,15 @@ import type { ArtistCard } from './types'
 
 interface SpotifyPanelProps {
   artist: ArtistCard
+  isPhone?: boolean // v3.2.0 - Phone layout mode
 }
 
 /**
  * Right panel of gatefold - Spotify player with skeleton state
  * Phase 1: Shows "Coming Soon" placeholder
- * Size: 400×400px
+ * Size: 400×400px (desktop) or full-width panel (phone)
  */
-export function SpotifyPanel({ artist }: SpotifyPanelProps) {
+export function SpotifyPanel({ artist, isPhone = false }: SpotifyPanelProps) {
   const genreColor = getGenreColor(artist.primaryGenre)
 
   // Create gradient for track art placeholders (30% opacity)
@@ -18,11 +19,11 @@ export function SpotifyPanel({ artist }: SpotifyPanelProps) {
 
   return (
     <div
-      className="w-[400px] h-[400px] flex flex-col p-8"
+      className={`flex flex-col ${isPhone ? 'w-full h-full p-6' : 'w-[400px] h-[400px] p-8'}`}
       style={{
         background: 'linear-gradient(145deg, #121212 0%, #181818 100%)',
-        borderRadius: '4px',
-        boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)'
+        borderRadius: isPhone ? '0' : '4px',
+        boxShadow: isPhone ? 'none' : '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)'
       }}
     >
       {/* Spotify Section */}

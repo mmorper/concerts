@@ -16,17 +16,21 @@ interface TourDatesPanelProps {
   isLoading: boolean
   error: string | null
   onClose: () => void
+  isPhone?: boolean // v3.2.0 - Phone layout mode (slides from top)
 }
 
 /**
  * Main tour dates panel component
+ * Desktop: Slides from left (Concert History → Spotify)
+ * Phone: Slides from top (covering Concert History panel)
  */
 export function TourDatesPanel({
   artistName,
   tourDates,
   isLoading,
   error,
-  onClose
+  onClose,
+  isPhone = false
 }: TourDatesPanelProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const [isClosing, setIsClosing] = useState(false)
@@ -48,9 +52,11 @@ export function TourDatesPanel({
 
   return (
     <div
-      className={`absolute top-0 right-0 w-[400px] h-[400px] ${
-        isClosing ? 'liner-notes-panel-closing' : 'liner-notes-panel'
-      }`}
+      className={`absolute w-[400px] h-[400px] ${
+        isPhone
+          ? isClosing ? 'phone-tour-dates-panel-closing' : 'phone-tour-dates-panel'
+          : isClosing ? 'liner-notes-panel-closing' : 'liner-notes-panel'
+      } ${isPhone ? 'top-0 left-0 w-full h-full' : 'top-0 right-0'}`}
       style={{
         zIndex: 25, // Above Spotify panel (20) but below cover (30)
         background: 'rgba(32, 32, 32, 0.98)', // Slightly lighter than gatefold for distinction

@@ -388,10 +388,28 @@ Preview first 50 lines of spec...
 
 ## Filename Convention
 
-Convert feature name to kebab-case:
-- "Artist Search" → `artist-search.md`
-- "Tour Dates Panel" → `tour-dates-panel.md`
-- "Timeline Hover Preview" → `timeline-hover-preview.md`
+**Pattern:** `{scene}-{feature}.md`
+
+Where `{scene}` is one of:
+
+- `timeline` — Scene 1 (Timeline)
+- `venues` — Scene 2 (Venues/Network)
+- `geography` — Scene 3 (Map)
+- `genres` — Scene 4 (Sunburst)
+- `artists` — Scene 5 (Gatefold)
+- `global` — Cross-scene or app-wide features
+
+And `{feature}` is a 1-3 word intuitive label for the primary capability (kebab-case).
+
+**Examples:**
+
+- Timeline decade filter → `timeline-decade-filter.md`
+- Artist search typeahead → `artists-search-typeahead.md`
+- Venue photo thumbnails → `venues-photo-thumbnails.md`
+- Geography heatmap → `geography-heatmap.md`
+- Genre drill-down → `genres-drill-down.md`
+- App-wide keyboard shortcuts → `global-keyboard-shortcuts.md`
+- Cross-scene navigation → `global-cross-navigation.md`
 
 ---
 

@@ -14,6 +14,7 @@ interface ConcertHistoryPanelProps {
   tourCount?: number // v1.6.0 - Number of upcoming tour dates
   isTourPanelActive?: boolean // v1.6.0 - Whether tour panel is currently open
   onTourBadgeClick?: () => void // v1.6.0 - Handler for tour badge click
+  isPhone?: boolean // v3.2.0 - Phone layout mode
 }
 
 /**
@@ -43,7 +44,8 @@ export function ConcertHistoryPanel({
   openSetlistConcert,
   tourCount = 0,
   isTourPanelActive = false,
-  onTourBadgeClick
+  onTourBadgeClick,
+  isPhone = false
 }: ConcertHistoryPanelProps) {
   const { getArtistImage } = useArtistMetadata()
   const artistImage = getArtistImage(artist.name)
@@ -69,7 +71,7 @@ export function ConcertHistoryPanel({
 
   return (
     <div
-      className="w-[400px] h-[400px] flex flex-col p-8"
+      className={`${isPhone ? 'w-full h-full' : 'w-[400px] h-[400px]'} flex flex-col p-8`}
       style={{
         background: 'linear-gradient(145deg, #181818 0%, #121212 100%)',
         borderRadius: '4px',

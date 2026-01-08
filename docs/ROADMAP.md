@@ -1,16 +1,34 @@
 # Roadmap
 
-## Current State (v3.1.0)
+## Current State (v3.2.0)
 
 - **178 concerts** spanning 1984-2026
 - **104 headlining artists** with 247 total artists (including openers)
 - **77 unique venues** across 35 cities
 - **5 interactive scenes**: Timeline, Venues, Geography, Genres, Artists
-- **Latest improvements**: iPad touch support for timeline exploration with drag-to-focus interactions
+- **Latest improvements**: Phone-native modal for Artist Scene with tabbed navigation
 
 ---
 
 ## Recently Completed
+
+### ✅ Phone Artist Modal (v3.2.0)
+
+**Status**: Completed
+**Spec**: [artists-phone-modal.md](specs/implemented/artists-phone-modal.md)
+
+Phone-specific modal for Artist Scene using mobile-native patterns instead of the desktop gatefold.
+
+**Implemented Features**:
+
+- Full-screen modal with tabbed navigation (History, Upcoming, Top Tracks)
+- Swipe-down and X to dismiss
+- Setlist overlay slides from right with swipe gestures
+- Color-coded tabs with brand accents (violet, amber, Spotify green)
+- On Tour badge with tap-to-navigate to Upcoming tab
+- Deep link copy button with haptic feedback
+
+---
 
 ### ✅ iPad Touch Support for Timeline (v3.1.0)
 

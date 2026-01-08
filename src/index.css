@@ -365,6 +365,74 @@ body {
 }
 
 /* ============================================
+   Phone Gatefold Styles (v3.2.0)
+   ============================================ */
+
+/* Phone gatefold transform utilities - rotateX for vertical opening */
+.rotate-x-0 {
+  transform: rotateX(0deg);
+}
+
+.rotate-x-15 {
+  transform: rotateX(15deg);
+}
+
+.rotate-x-[-15deg] {
+  transform: rotateX(-15deg);
+}
+
+.rotate-x-165 {
+  transform: rotateX(165deg);
+}
+
+.origin-center-bottom {
+  transform-origin: center bottom;
+}
+
+.origin-center-top {
+  transform-origin: center top;
+}
+
+/* Phone sub-panel animations - slide down from top like pulling liner notes from sleeve */
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToTop {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+}
+
+.phone-liner-notes-panel {
+  animation: slideInFromTop 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.phone-liner-notes-panel-closing {
+  animation: slideOutToTop 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.phone-tour-dates-panel {
+  animation: slideInFromTop 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.phone-tour-dates-panel-closing {
+  animation: slideOutToTop 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ============================================
    Inline Setlist Link Styles (v1.5.0)
    ============================================ */
 
