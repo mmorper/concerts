@@ -24,7 +24,6 @@ Seamless cross-scene navigation with venue+artist combined deep linking.
 - Clickable venue names in Artist gatefold concert history
 - Clickable venue names in Phone Artist Modal
 - Venue+artist combined deep linking focuses both nodes in force-directed graph
-- Permanent venue labels on map markers
 - "Explore Venue" buttons use real links for better mobile UX
 - Hyperlinks in gatefold content with proper navigation
 
@@ -39,7 +38,7 @@ Mobile UX improvements for Venues scene including enhanced label visibility and 
 
 **Implemented Features**:
 
-- Permanent venue labels on map for at-a-glance navigation
+- Enhanced venue label visibility in force-directed graph
 - Improved label opacity logic matching spotlight state
 - Real link navigation for cross-scene venue exploration
 - Touch-optimized venue node interactions

@@ -318,12 +318,6 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
             maxWidth: 240,
             autoPan: false, // We'll handle panning manually for precise control
           })
-          .bindTooltip(data.venueName, {
-            permanent: true,
-            direction: 'top',
-            className: 'venue-label',
-            offset: [0, -radius - 5],
-          })
           .on('popupopen', () => {
             // When popup opens, position it precisely below filter buttons
             if (mapInstanceRef.current) {
