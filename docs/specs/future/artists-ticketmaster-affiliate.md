@@ -5,7 +5,7 @@
 **Priority:** Low
 **Estimated Complexity:** Low (affiliate setup + analytics only)
 **Dependencies:** Ticketmaster Partner Program approval, Google Analytics setup
-**Related Specs:** [google-analytics-tracking.md](./google-analytics-tracking.md) (comprehensive GA4 implementation for all scenes)
+**Related Specs:** [global-analytics-tracking.md](./global-analytics-tracking.md) (comprehensive GA4 implementation for all scenes)
 
 ---
 
@@ -58,7 +58,7 @@ I need to add affiliate tracking and analytics to the existing Ticketmaster tick
 - [ ] Google Analytics 4 property created for concerts.morperhaus.org
 
 **Key References:**
-- Full Spec: docs/specs/future/artists-ticket-purchasing.md
+- Full Spec: docs/specs/future/artists-ticketmaster-affiliate.md
 - Ticketmaster Service: src/services/ticketmaster.ts
 - Tour Dates Panel: src/components/scenes/ArtistScene/TourDatesPanel.tsx
 - API Integration Guide: .claude/skills/api-integration/SKILL.md
@@ -238,7 +238,7 @@ onClick={(e) => {
 
 ## Google Analytics Setup (Required for Tracking)
 
-> **Note**: This section provides minimal GA4 setup for tracking ticket purchase intent. For comprehensive analytics tracking across all scenes and interactions, see [google-analytics-tracking.md](./google-analytics-tracking.md). If you implement that spec first, you can skip this section and use the shared analytics service.
+> **Note**: This section provides minimal GA4 setup for tracking ticket purchase intent. For comprehensive analytics tracking across all scenes and interactions, see [global-analytics-tracking.md](./global-analytics-tracking.md). If you implement that spec first, you can skip this section and use the shared analytics service.
 
 ### Create GA4 Property
 

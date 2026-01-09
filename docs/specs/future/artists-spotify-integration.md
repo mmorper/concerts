@@ -1,10 +1,10 @@
 # Spotify Artist Integration Spec
 
-> **Location**: `docs/specs/future/spotify-artist-integration.md`
+> **Location**: `docs/specs/future/artists-spotify-integration.md`
 > **Status**: Planned (v1.5.0+)
 > **Prerequisites**: Gatefold animation (✅ implemented in [artist-scene.md](../implemented/artist-scene.md))
 > **Mobile Note**: 📱 Mini-player requires mobile-specific bottom sheet layout (see [mobile-optimization.md](mobile-optimization.md))
-> **Related**: [spotify-enrichment-runbook.md](./spotify-enrichment-runbook.md) (enrichment script runbook)
+> **Related**: [runbook-global-spotify-enrichment.md](./runbook-global-spotify-enrichment.md) (enrichment script runbook)
 
 ---
 
@@ -694,7 +694,7 @@ On viewports <768px, the gatefold is replaced with a bottom sheet. Spotify conte
 ## References
 
 - [artist-scene.md](../implemented/artist-scene.md) — Gatefold animation (implemented)
-- [spotify-enrichment-runbook.md](./spotify-enrichment-runbook.md) — Enrichment script runbook
+- [runbook-global-spotify-enrichment.md](./runbook-global-spotify-enrichment.md) — Enrichment script runbook
 - [mobile-optimization.md](./mobile-optimization.md) — Mobile bottom sheet implementation
 - [Spotify Web API Docs](https://developer.spotify.com/documentation/web-api)
 - [Spotify Design Guidelines](https://developer.spotify.com/documentation/design)

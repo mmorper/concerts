@@ -164,7 +164,7 @@ Scene5Genres/
 
 - **Timeline Artist Display Enhancement** (timeline-artist-display-enhancement.md) - Artist exploration workflows
 - **Mobile Optimization** (mobile-optimization.md) - Touch interactions for small segments
-- **Visual Testing Suite** (visual-testing-suite.md) - Sunburst interaction testing
+- **Visual Testing Suite** (global-visual-testing-suite.md) - Sunburst interaction testing
 
 ---
 

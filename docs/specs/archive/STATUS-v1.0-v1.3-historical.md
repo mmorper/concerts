@@ -233,11 +233,11 @@
 - `README.md` - Updated feature descriptions and version
 - `docs/STATUS.md` - Marked v1.3.3 complete
 - `docs/specs/implemented/venue-photos-frontend.md` - NEW: Complete frontend documentation
-- `docs/specs/future/popup-z-index-fix.md` - NEW: Optional enhancement spec
+- `docs/specs/future/map-popup-z-index.md` - NEW: Optional enhancement spec
 
 **Known Limitations:**
 
-- Popups may appear behind navigation buttons in rare cases (edge markers). Documented in [popup-z-index-fix.md](specs/future/popup-z-index-fix.md). Low priority - most venues unaffected.
+- Popups may appear behind navigation buttons in rare cases (edge markers). Documented in [map-popup-z-index.md](specs/future/map-popup-z-index.md). Low priority - most venues unaffected.
 
 **Implementation Stats:**
 
@@ -626,11 +626,11 @@ See [docs/specs/future/](specs/future/) for complete specifications:
 3. **Phone Optimization** ([mobile-optimization.md](specs/future/mobile-optimization.md)) - Bottom sheets, smaller viewport refinements (<768px) [v1.6.0]
 4. **Setlist Liner Notes** ([setlist-liner-notes.md](specs/future/setlist-liner-notes.md)) - Artist gatefold contextual menu with setlist.fm integration, sliding liner notes panel [v1.6.0]
 5. **Upcoming Tour Dates** ([upcoming-tour-dates.md](specs/future/upcoming-tour-dates.md)) - Artist gatefold contextual menu with Bandsintown integration, discover upcoming concerts [v1.7.0]
-6. **Spotify Artist Integration** ([spotify-artist-integration.md](specs/future/spotify-artist-integration.md)) - Album art, gatefold mini-player, 30s previews [v1.6.0]
+6. **Spotify Artist Integration** ([artists-spotify-integration.md](specs/future/artists-spotify-integration.md)) - Album art, gatefold mini-player, 30s previews [v1.6.0]
 7. **Timeline Artist Display Enhancement** ([timeline-artist-display-enhancement.md](specs/future/timeline-artist-display-enhancement.md)) - Rich artist modals on timeline (click-to-expand from hover preview) [v1.6.0+]
 8. **Google Sheets Phase 2** ([google-sheets-data-integration.md](specs/future/google-sheets-data-integration.md)) - Webhook automation (Google Apps Script → GitHub Action) [Future]
 9. **Genre Scene Opener Inclusion** ([genre-scene-opener-inclusion.md](specs/future/genre-scene-opener-inclusion.md)) - Include opener appearances (under review) [Future]
-10. **Visual Testing Suite** ([visual-testing-suite.md](specs/future/visual-testing-suite.md)) - Automated screenshot testing [Future]
+10. **Visual Testing Suite** ([global-visual-testing-suite.md](specs/future/global-visual-testing-suite.md)) - Automated screenshot testing [Future]
 
 ---
 
@@ -872,7 +872,7 @@ All major implementation phases are complete:
   - Artist profile links and top tracks
   - 30-second preview playback
   - Replace skeleton with live data
-  - See: [docs/specs/future/spotify-enrichment-runbook.md](specs/future/spotify-enrichment-runbook.md)
+  - See: [docs/specs/future/runbook-global-spotify-enrichment.md](specs/future/runbook-global-spotify-enrichment.md)
 
 - ⚠️ **Scene background** - Change from DARK to LIGHT
   - Current: `from-indigo-950 to-purple-950` (DARK)
@@ -1061,7 +1061,7 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 
 - [api-setup.md](api-setup.md) — setlist.fm API key setup
 - [upcoming-tour-dates.md](specs/future/upcoming-tour-dates.md) — Shares contextual menu pattern
-- [spotify-artist-integration.md](specs/future/spotify-artist-integration.md) — Panel that gets covered by liner notes
+- [artists-spotify-integration.md](specs/future/artists-spotify-integration.md) — Panel that gets covered by liner notes
 
 ### 4. Upcoming Tour Dates (v1.6.0)
 
@@ -1101,7 +1101,7 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 ### 7. Spotify Artist Integration (v1.3.0+)
 
 **Status:** Planned
-**Spec:** [Spotify Artist Integration](specs/future/spotify-artist-integration.md)
+**Spec:** [Spotify Artist Integration](specs/future/artists-spotify-integration.md)
 
 **Scope:**
 
@@ -1115,7 +1115,7 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 
 **Related:**
 
-- [spotify-enrichment-runbook.md](specs/future/spotify-enrichment-runbook.md) — Enrichment script runbook
+- [runbook-global-spotify-enrichment.md](specs/future/runbook-global-spotify-enrichment.md) — Enrichment script runbook
 - [mobile-optimization.md](specs/future/mobile-optimization.md) — Mobile bottom sheet layout
 - [setlist-liner-notes.md](specs/future/setlist-liner-notes.md) — Liner notes that cover Spotify panel
 
@@ -1138,7 +1138,7 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 
 **Related:**
 
-- [data-normalization-architecture.md](specs/future/data-normalization-architecture.md) — Parent architecture spec
+- [global-data-normalization-architecture.md](specs/future/global-data-normalization-architecture.md) — Parent architecture spec
 - [api-setup.md](api-setup.md) — API credentials setup
 
 ### 7. Genre Scene Opener Inclusion (v1.3.0+)
@@ -1165,7 +1165,7 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 ### 9. Visual Testing Suite (v1.3.0+)
 
 **Status:** Planned
-**Spec:** [Visual Testing Suite](specs/future/visual-testing-suite.md)
+**Spec:** [Visual Testing Suite](specs/future/global-visual-testing-suite.md)
 
 **Scope:**
 - Automated screenshot testing
@@ -1265,9 +1265,9 @@ Planned feature enhancements with detailed specifications in [docs/specs/future/
 - [Mobile Optimization](specs/future/mobile-optimization.md) - Touch refinements, iPad support
 - [Timeline Artist Display Enhancement](specs/future/timeline-artist-display-enhancement.md) - Rich artist modals
 - [Genre Scene Opener Inclusion](specs/future/genre-scene-opener-inclusion.md) - Include opener appearances (under review)
-- [Spotify Enrichment Runbook](specs/future/spotify-enrichment-runbook.md) - API setup and data enrichment
+- [Spotify Enrichment Runbook](specs/future/runbook-global-spotify-enrichment.md) - API setup and data enrichment
 - [Venue Cross-Navigation](specs/future/venue-cross-navigation.md) - Map→Venue linking
-- [Visual Testing Suite](specs/future/visual-testing-suite.md) - Automated testing
+- [Visual Testing Suite](specs/future/global-visual-testing-suite.md) - Automated testing
 
 **Archive:**
 

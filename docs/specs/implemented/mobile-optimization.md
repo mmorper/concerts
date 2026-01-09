@@ -842,7 +842,7 @@ const useArtistDetailMode = () => {
 
 The desktop gatefold's right panel contains a Spotify mini-player. On mobile, this appears below the concert history in the bottom sheet.
 
-**Design requirements defined in**: [spotify-artist-integration.md](./spotify-artist-integration.md#mobile-considerations)
+**Design requirements defined in**: [artists-spotify-integration.md](./artists-spotify-integration.md#mobile-considerations)
 
 **Mobile-specific implementation**:
 - [ ] Hide track album art thumbnails (save horizontal space)

@@ -141,7 +141,7 @@ Genre moved to artist-level metadata with automatic enrichment from TheAudioDB.
 **Related Specs**:
 
 - [mobile-optimization.md](specs/implemented/mobile-optimization.md)
-- [popup-z-index-fix.md](specs/future/popup-z-index-fix.md)
+- [map-popup-z-index.md](specs/future/map-popup-z-index.md)
 - [renamed-venue-display.md](specs/future/renamed-venue-display.md)
 
 Refinements to interaction patterns and navigation across the app.
@@ -173,13 +173,13 @@ Automatically detect when venue names change and provide CLI tools to manage ven
 
 ### Spotify Integration & Unified Image Sourcing
 **Status**: Blocked (Spotify API not accepting new projects)
-**Architecture**: [data-normalization-architecture.md](specs/future/data-normalization-architecture.md)
+**Architecture**: [global-data-normalization-architecture.md](specs/future/global-data-normalization-architecture.md)
 
 **Related Specs**:
 
-- [spotify-artist-integration.md](specs/future/spotify-artist-integration.md) - Feature spec
-- [spotify-enrichment-runbook.md](specs/future/spotify-enrichment-runbook.md) - Operations runbook
-- [unified-image-sourcing-strategy.md](specs/future/unified-image-sourcing-strategy.md) - Image strategy
+- [artists-spotify-integration.md](specs/future/artists-spotify-integration.md) - Feature spec
+- [runbook-global-spotify-enrichment.md](specs/future/runbook-global-spotify-enrichment.md) - Operations runbook
+- [global-image-sourcing-strategy.md](specs/future/global-image-sourcing-strategy.md) - Image strategy
 
 Consolidate image sourcing with Spotify as primary source, TheAudioDB as fallback.
 
@@ -223,7 +223,7 @@ Scheduled data refresh workflows with validation and rollback capabilities.
 ---
 
 ### Visual Testing
-**Spec**: [visual-testing-suite.md](specs/future/visual-testing-suite.md)
+**Spec**: [global-visual-testing-suite.md](specs/future/global-visual-testing-suite.md)
 
 Automated visual regression testing for UI components across scenes.
 

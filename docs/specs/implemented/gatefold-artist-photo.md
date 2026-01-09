@@ -2,7 +2,7 @@
 
 > **Status:** Specification
 > **Priority:** Medium
-> **Related:** [artist-scene.md](../implemented/artist-scene.md), [spotify-artist-integration.md](spotify-artist-integration.md)
+> **Related:** [artist-scene.md](../implemented/artist-scene.md), [artists-spotify-integration.md](artists-spotify-integration.md)
 
 ## Overview
 

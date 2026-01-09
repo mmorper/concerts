@@ -642,7 +642,7 @@ node -e "console.log(Object.keys(require('./public/data/venues-metadata.json'))[
 
 ## Related Specifications
 
-- [Data Normalization Architecture](./data-normalization-architecture.md) - Established normalize.ts in v1.4.0
+- [Data Normalization Architecture](./global-data-normalization-architecture.md) - Established normalize.ts in v1.4.0
 - [Deep Linking Support](../implemented/deep-linking.md) - URL parameter handling
 - [Data Pipeline Orchestration](./data-refresh-pipeline-orchestration.md) - Build process
 

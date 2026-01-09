@@ -133,7 +133,7 @@ TimelineArtistModal/
 
 - **Mobile Optimization** (mobile-optimization.md) - Touch interactions
 - **Venue Cross-Navigation** (venue-cross-navigation.md) - Venue relationship display
-- **Visual Testing Suite** (visual-testing-suite.md) - Modal interaction testing
+- **Visual Testing Suite** (global-visual-testing-suite.md) - Modal interaction testing
 
 ---
 

@@ -272,7 +272,7 @@ npm run validate:artist-genres    # Checks for issues
 
 ## Related
 
-- [Spotify Integration & Unified Image Sourcing](unified-image-sourcing-strategy.md) - Similar pattern for artist photos
+- [Spotify Integration & Unified Image Sourcing](global-image-sourcing-strategy.md) - Similar pattern for artist photos
 - [Data Pipeline Documentation](../../DATA_PIPELINE.md) - Build process overview
 - [Genre Colors](../../src/constants/colors.ts) - Genre color definitions
 

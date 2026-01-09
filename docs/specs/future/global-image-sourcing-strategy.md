@@ -3,7 +3,7 @@
 > **Status:** Specification
 > **Priority:** High
 > **Version:** v1.5.0 (proposed)
-> **Related:** [gatefold-artist-photo.md](../implemented/gatefold-artist-photo.md), [artist-scene.md](../implemented/artist-scene.md), [spotify-artist-integration.md](spotify-artist-integration.md)
+> **Related:** [gatefold-artist-photo.md](../implemented/gatefold-artist-photo.md), [artist-scene.md](../implemented/artist-scene.md), [artists-spotify-integration.md](artists-spotify-integration.md)
 
 ## Overview
 
@@ -527,7 +527,7 @@ Once this unified strategy is in place:
 |----------|-------------|
 | [gatefold-artist-photo.md](../implemented/gatefold-artist-photo.md) | v1.4.1 implementation (to be superseded) |
 | [artist-scene.md](../implemented/artist-scene.md) | Gatefold design spec |
-| [spotify-artist-integration.md](spotify-artist-integration.md) | Future Spotify player integration |
+| [artists-spotify-integration.md](artists-spotify-integration.md) | Future Spotify player integration |
 | [DATA_PIPELINE.md](../../DATA_PIPELINE.md) | Data enrichment documentation |
 | [api-setup.md](../../api-setup.md) | Spotify API configuration |
 

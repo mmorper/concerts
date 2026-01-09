@@ -1451,11 +1451,11 @@ export async function fetchSetlist(params: SetlistSearchParams): Promise<Setlist
 
 **Parent Features:**
 - [Artist Scene Gatefold](../implemented/artist-scene.md) - Container for liner notes
-- [Spotify Artist Integration](./spotify-artist-integration.md) - Panel that gets covered by liner notes
+- [Spotify Artist Integration](./artists-spotify-integration.md) - Panel that gets covered by liner notes
 
 **Related Features:**
 - [Timeline Artist Display Enhancement](./timeline-artist-display-enhancement.md) - Could also show setlists in modal
-- [Data Normalization Architecture](./data-normalization-architecture.md) - Artist name matching
+- [Data Normalization Architecture](./global-data-normalization-architecture.md) - Artist name matching
 
 **Future Enhancements:**
 - Setlist-based filtering and discovery features

@@ -52,7 +52,7 @@ Concert data is normalized across three files to eliminate redundancy and enable
 - Spotify Developer Portal not accepting new projects
 - When unblocked: Spotify becomes **PRIMARY** source
 - TheAudioDB becomes fallback
-- See: [spotify-artist-integration.md](./spotify-artist-integration.md)
+- See: [artists-spotify-integration.md](./artists-spotify-integration.md)
 
 ---
 
@@ -191,8 +191,8 @@ When Spotify API becomes available:
 
 **See detailed specs:**
 
-- Feature spec: [spotify-artist-integration.md](./spotify-artist-integration.md)
-- Operations runbook: [spotify-enrichment-runbook.md](./spotify-enrichment-runbook.md)
+- Feature spec: [artists-spotify-integration.md](./artists-spotify-integration.md)
+- Operations runbook: [runbook-global-spotify-enrichment.md](./runbook-global-spotify-enrichment.md)
 
 ### Computed Artist Stats (Optional)
 
@@ -247,8 +247,8 @@ See: [docs/DEEP_LINKING.md](../DEEP_LINKING.md)
 
 - [DATA_PIPELINE.md](../DATA_PIPELINE.md) - Full build pipeline documentation
 - [ROADMAP.md](../ROADMAP.md) - Spotify integration prioritization
-- [spotify-artist-integration.md](./spotify-artist-integration.md) - Spotify feature spec
-- [spotify-enrichment-runbook.md](./spotify-enrichment-runbook.md) - Spotify operations
+- [artists-spotify-integration.md](./artists-spotify-integration.md) - Spotify feature spec
+- [runbook-global-spotify-enrichment.md](./runbook-global-spotify-enrichment.md) - Spotify operations
 
 ---
 

@@ -1,14 +1,14 @@
 # Spotify Data Enrichment Runbook
 
 > **Role**: Technical instructions for running the Spotify enrichment script
-> **Feature Spec**: See [spotify-artist-integration.md](./spotify-artist-integration.md) for full feature requirements
+> **Feature Spec**: See [artists-spotify-integration.md](./artists-spotify-integration.md) for full feature requirements
 > **Status**: Ready to use once Spotify API credentials are configured
 
 ---
 
 ## Overview
 
-This document covers the *how* of Spotify data enrichment—getting API credentials, running the script, handling mismatches. For the *what* (feature requirements, UI specs, implementation checklist), see the [Spotify Artist Integration Spec](./spotify-artist-integration.md).
+This document covers the *how* of Spotify data enrichment—getting API credentials, running the script, handling mismatches. For the *what* (feature requirements, UI specs, implementation checklist), see the [Spotify Artist Integration Spec](./artists-spotify-integration.md).
 
 ---
 
@@ -363,8 +363,8 @@ The current implementation follows Spotify's Design Guidelines:
 
 Once enrichment is complete and `artists-metadata.json` is populated:
 
-1. **Implement mini-player**: See [spotify-artist-integration.md](./spotify-artist-integration.md#gatefold-right-panel-spotify-mini-player) for full component spec
-2. **Update card fronts**: See [spotify-artist-integration.md](./spotify-artist-integration.md#card-front-album-art-display) for album art implementation
+1. **Implement mini-player**: See [artists-spotify-integration.md](./artists-spotify-integration.md#gatefold-right-panel-spotify-mini-player) for full component spec
+2. **Update card fronts**: See [artists-spotify-integration.md](./artists-spotify-integration.md#card-front-album-art-display) for album art implementation
 3. **Test playback**: Verify 30-second previews work across browsers
 
 ---

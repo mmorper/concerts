@@ -341,7 +341,7 @@ Which spec would you like to implement? (enter number)
 🚀 Ready to Implement: Spotify Artist Integration
 ═════════════════════════════════════════════════
 
-Spec: docs/specs/future/spotify-artist-integration.md
+Spec: docs/specs/future/artists-spotify-integration.md
 Target: v1.5.0
 Priority: High | Complexity: High
 

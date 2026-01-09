@@ -62,7 +62,7 @@ All screenshots save to `/tmp/` which:
 
 ## Future Work
 
-See [docs/specs/future/visual-testing-suite.md](docs/specs/future/visual-testing-suite.md) for the comprehensive testing roadmap covering all 5 scenes.
+See [docs/specs/future/global-visual-testing-suite.md](docs/specs/future/global-visual-testing-suite.md) for the comprehensive testing roadmap covering all 5 scenes.
 
 ### Recommended Tools for v1.1+
 

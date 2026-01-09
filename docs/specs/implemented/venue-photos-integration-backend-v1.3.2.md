@@ -730,7 +730,7 @@ If no photo available (API failure, legacy venue, etc.):
 
 ## Related Documentation
 
-- [data-normalization-architecture.md](./data-normalization-architecture.md) - Parent spec
+- [global-data-normalization-architecture.md](./global-data-normalization-architecture.md) - Parent spec
 - [google-sheets-data-integration.md](./google-sheets-data-integration.md) - Data pipeline
 - [DATA_PIPELINE.md](../../DATA_PIPELINE.md) - Pipeline overview
 - [api-setup.md](../../api-setup.md) - API credentials setup

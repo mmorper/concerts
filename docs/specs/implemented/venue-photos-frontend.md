@@ -304,7 +304,7 @@ All styles in `src/index.css`:
 - Low - Most venues (LA, DC clusters) are center-map and never overlap
 - Users can close popup (X button) or click elsewhere if needed
 
-**Future Enhancement:** Documented in `docs/specs/future/popup-z-index-fix.md` (optional)
+**Future Enhancement:** Documented in `docs/specs/future/map-popup-z-index.md` (optional)
 
 ---
 

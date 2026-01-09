@@ -1366,11 +1366,11 @@ async function fetchTourDatesWithFallback(
 
 **Parent Features:**
 - [Artist Scene Gatefold](../implemented/artist-scene.md) - Container for tour dates panel
-- [Spotify Artist Integration](./spotify-artist-integration.md) - Panel that gets covered by tour dates
+- [Spotify Artist Integration](./artists-spotify-integration.md) - Panel that gets covered by tour dates
 
 **Related Features:**
 - [Setlist Liner Notes](./setlist-liner-notes.md) - Shares contextual menu pattern
-- [Data Normalization Architecture](./data-normalization-architecture.md) - Artist name matching
+- [Data Normalization Architecture](./global-data-normalization-architecture.md) - Artist name matching
 
 **Future Enhancements:**
 - Tour date filtering and visualization features

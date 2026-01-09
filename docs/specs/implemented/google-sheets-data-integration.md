@@ -73,7 +73,7 @@ This specification defines the complete data integration strategy for the Morper
 │  3. enrich-spotify-metadata.ts (future, required for Spotify)    │
 │     - Fetch album art and top tracks from Spotify               │
 │     - Update: public/data/artists-metadata.json                  │
-│     - See: spotify-artist-integration.md for details             │
+│     - See: artists-spotify-integration.md for details             │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               │ git commit & push

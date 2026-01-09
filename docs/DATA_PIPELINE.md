@@ -712,7 +712,7 @@ Fetching: Boston
 npm run enrich-spotify
 ```
 
-See [docs/specs/future/spotify-enrichment-runbook.md](specs/future/spotify-enrichment-runbook.md) for detailed setup instructions.
+See [docs/specs/future/runbook-global-spotify-enrichment.md](specs/future/runbook-global-spotify-enrichment.md) for detailed setup instructions.
 
 ---
 

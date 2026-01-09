@@ -3,7 +3,7 @@
 > **Role**: Technical specification for automated data refresh workflows
 > **Status**: ✅ **Phase 1 IMPLEMENTED** (v1.5.1) - Enhanced Build Pipeline Complete
 > **Status**: 📋 **Phase 2-3 PLANNED** - GitHub Actions automation pending
-> **Related Docs**: [setlist-liner-notes.md](./setlist-liner-notes.md), [spotify-enrichment-runbook.md](./spotify-enrichment-runbook.md)
+> **Related Docs**: [setlist-liner-notes.md](./setlist-liner-notes.md), [runbook-global-spotify-enrichment.md](./runbook-global-spotify-enrichment.md)
 
 ---
 
@@ -818,9 +818,9 @@ Google Sheets
 ## Related Documentation
 
 - [Setlist Liner Notes Spec](./setlist-liner-notes.md) - Feature requirements for setlist display
-- [Spotify Enrichment Runbook](./spotify-enrichment-runbook.md) - How to run Spotify enrichment
+- [Spotify Enrichment Runbook](./runbook-global-spotify-enrichment.md) - How to run Spotify enrichment
 - [Google Sheets Integration](./google-sheets-data-integration.md) - Primary data source
-- [Data Normalization Architecture](./data-normalization-architecture.md) - Name matching logic
+- [Data Normalization Architecture](./global-data-normalization-architecture.md) - Name matching logic
 
 ---
 

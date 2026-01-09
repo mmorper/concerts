@@ -1011,7 +1011,7 @@ return (
 
 ### Automated Testing (Future)
 
-Reference `docs/specs/future/visual-testing-suite.md` for Puppeteer test requirements:
+Reference `docs/specs/future/global-visual-testing-suite.md` for Puppeteer test requirements:
 
 - [ ] Popup renders at correct position
 - [ ] Content matches expected format
@@ -1059,7 +1059,7 @@ Reference `docs/specs/future/visual-testing-suite.md` for Puppeteer test require
 
 - `docs/specs/future/timeline-artist-display-enhancement.md` — Future modal expansion
 - `docs/specs/future/mobile-optimization.md` — Touch interaction strategy
-- `docs/specs/future/visual-testing-suite.md` — Automated testing
+- `docs/specs/future/global-visual-testing-suite.md` — Automated testing
 
 ---
 

@@ -5,7 +5,7 @@
 **Priority:** Medium
 **Estimated Complexity:** Medium
 **Dependencies:** None
-**Related Specs:** [artists-ticket-purchasing.md](./artists-ticket-purchasing.md) (uses GA4 for ticket click tracking)
+**Related Specs:** [artists-ticketmaster-affiliate.md](./artists-ticketmaster-affiliate.md) (uses GA4 for ticket click tracking)
 
 ---
 
@@ -26,7 +26,7 @@ Add comprehensive Google Analytics 4 (GA4) event tracking to enable data-driven 
 - Server-side analytics
 - Custom dashboards (configured separately in GA4 admin)
 
-**Note on Related Spec:** The [artists-ticket-purchasing.md](./artists-ticket-purchasing.md) spec covers Ticketmaster affiliate monetization and includes its own GA4 setup instructions for tracking `purchase_intent` events. If you implement that spec first, you can skip the GA4 initialization steps in this spec (Phase 2) and only add the event tracking calls. Both specs are designed to work together and share the same GA4 property and analytics service.
+**Note on Related Spec:** The [artists-ticketmaster-affiliate.md](./artists-ticketmaster-affiliate.md) spec covers Ticketmaster affiliate monetization and includes its own GA4 setup instructions for tracking `purchase_intent` events. If you implement that spec first, you can skip the GA4 initialization steps in this spec (Phase 2) and only add the event tracking calls. Both specs are designed to work together and share the same GA4 property and analytics service.
 
 ---
 

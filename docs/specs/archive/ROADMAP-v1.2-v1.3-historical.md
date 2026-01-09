@@ -331,7 +331,7 @@ const genre = concert.genre || 'Unknown'
   - "3 unique venues"
 
 #### 4.4: Update Documentation
-- [ ] Update `docs/specs/future/data-normalization-architecture.md` - Note Phase 3 complete
+- [ ] Update `docs/specs/future/global-data-normalization-architecture.md` - Note Phase 3 complete
 - [ ] Update `docs/STATUS.md` - Mark v1.3.1 complete
 
 ### Success Criteria
@@ -346,7 +346,7 @@ const genre = concert.genre || 'Unknown'
 ### Files Modified
 - `scripts/build-data.ts`
 - `src/components/scenes/ArtistScene/ConcertHistoryPanel.tsx`
-- `docs/specs/future/data-normalization-architecture.md`
+- `docs/specs/future/global-data-normalization-architecture.md`
 - `docs/STATUS.md`
 
 ---
@@ -520,8 +520,8 @@ const genre = concert.genre || 'Unknown'
 - [ ] Pass venuesMetadata to scenes via context or props
 
 #### 6.3: Update Documentation
-- [ ] Update `docs/specs/future/data-normalization-architecture.md` - Mark complete
-- [ ] Move to `docs/specs/implemented/data-normalization-architecture.md`
+- [ ] Update `docs/specs/future/global-data-normalization-architecture.md` - Mark complete
+- [ ] Move to `docs/specs/implemented/global-data-normalization-architecture.md`
 
 ---
 

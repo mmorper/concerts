@@ -6,7 +6,7 @@
 > |-----------|--------|-----------|
 > | Album mosaic grid | ✅ Implemented | Current file |
 > | Gatefold animation | ✅ Implemented | [artist-scene.md](../implemented/artist-scene.md) |
-> | Spotify integration | 🔜 Planned | [spotify-artist-integration.md](../future/spotify-artist-integration.md) |
+> | Spotify integration | 🔜 Planned | [artists-spotify-integration.md](../future/artists-spotify-integration.md) |
 >
 > The Spotify sections in this document are **superseded** by the dedicated Spotify spec linked above. Refer to that document for current requirements.
 
@@ -54,7 +54,7 @@ Two reasons:
 
 ## Data Architecture
 
-> 📌 **Note**: The authoritative data schema for Spotify integration is now in [spotify-artist-integration.md](../future/spotify-artist-integration.md#data-architecture). The schema below may be outdated.
+> 📌 **Note**: The authoritative data schema for Spotify integration is now in [artists-spotify-integration.md](../future/artists-spotify-integration.md#data-architecture). The schema below may be outdated.
 
 ### Source Data
 
@@ -293,7 +293,7 @@ This is Phase 6 / stretch goal—not required for MVP.
 
 ## Spotify Integration
 
-> 📌 **Moved**: This section has been expanded and moved to [spotify-artist-integration.md](../future/spotify-artist-integration.md). See that document for:
+> 📌 **Moved**: This section has been expanded and moved to [artists-spotify-integration.md](../future/artists-spotify-integration.md). See that document for:
 > - Album art selection logic (with fallback hierarchy)
 > - Mini-player component spec
 > - Track row states and preview handling
@@ -620,7 +620,7 @@ src/components/scenes/ArtistScene/
 
 ### Phase 4: Spotify Mini-Player
 
-> 📌 **See**: [spotify-artist-integration.md](../future/spotify-artist-integration.md#implementation-checklist) for the complete implementation checklist.
+> 📌 **See**: [artists-spotify-integration.md](../future/artists-spotify-integration.md#implementation-checklist) for the complete implementation checklist.
 
 - [ ] Build `SpotifyMiniPlayer.tsx`
 - [ ] Implement `<audio>` element with preview URL

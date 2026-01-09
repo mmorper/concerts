@@ -187,7 +187,7 @@ Skeleton colors:
 
 #### Phase 2: Full Spotify Integration (Future)
 
-> 📌 **Detailed Spec**: See [spotify-artist-integration.md](../future/spotify-artist-integration.md) for complete implementation requirements including:
+> 📌 **Detailed Spec**: See [artists-spotify-integration.md](../future/artists-spotify-integration.md) for complete implementation requirements including:
 > - Track row component states
 > - Playback logic and auto-advance
 > - Keyboard navigation
@@ -613,5 +613,5 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 
 - [ ] Should the gatefold cast a shadow on the dimmed background?
 - [ ] Should there be a subtle parallax effect on hover (panels respond to mouse position)?
-- [x] ~~For artists with album art, should the cover-front show the actual album art instead of initials?~~ → **Yes**, see [spotify-artist-integration.md](../future/spotify-artist-integration.md#card-front-album-art-display)
+- [x] ~~For artists with album art, should the cover-front show the actual album art instead of initials?~~ → **Yes**, see [artists-spotify-integration.md](../future/artists-spotify-integration.md#card-front-album-art-display)
 - [ ] Should the spine have a subtle texture or remain flat gradient?
