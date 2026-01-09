@@ -361,6 +361,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
         // Clear focus if set
         if (focusedNodeId) {
           setFocusedNodeId(null)
+          setFocusedArtist(null) // Clear artist filter when clearing focus
           setCenteredVenue(null)
 
           // Reset transform on mobile when clearing focus
@@ -575,11 +576,13 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
             setExpandedVenues(new Set())
             setCenteredVenue(null)
             setFocusedNodeId(null)
+            setFocusedArtist(null) // Clear artist filter when collapsing
           } else {
             // Expand: set this venue as the only expanded one, center it, and focus it
             setExpandedVenues(new Set([venueName]))
             setCenteredVenue(venueName)
             setFocusedNodeId(d.id)
+            setFocusedArtist(null) // Clear artist filter when expanding a venue manually
           }
 
           return
@@ -588,6 +591,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
         // Original behavior for other modes/nodes: Toggle focus
         if (focusedNodeId === d.id) {
           setFocusedNodeId(null)
+          setFocusedArtist(null) // Clear artist filter when clearing focus
           setCenteredVenue(null)
 
           // Reset transform on mobile when clearing focus
@@ -994,6 +998,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
               setViewMode('top10')
               setExpandedVenues(new Set())
               setFocusedNodeId(null)
+              setFocusedArtist(null)
               setCenteredVenue(null)
             }}
             className={`font-sans px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 min-h-[44px] ${
@@ -1009,6 +1014,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
               setViewMode('all')
               setExpandedVenues(new Set())
               setFocusedNodeId(null)
+              setFocusedArtist(null)
               setCenteredVenue(null)
             }}
             className={`font-sans px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 min-h-[44px] ${
@@ -1061,6 +1067,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
           exit={{ opacity: 0, scale: 0.9 }}
           onClick={() => {
             setFocusedNodeId(null)
+            setFocusedArtist(null)
             setCenteredVenue(null)
             if (viewMode === 'all') {
               setExpandedVenues(new Set())
