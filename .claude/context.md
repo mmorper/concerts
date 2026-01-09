@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v3.2.0 (Production)
+**Version:** v3.3.0 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-01-08
 
@@ -92,21 +92,21 @@ These docs provide essential context for common development tasks:
 
 **Live Site:** https://concerts.morperhaus.org
 
-**v3.2.0 Production (Latest):**
+**v3.3.0 Production (Latest):**
 
-- ✅ Phone-native modal for Artist Scene (replaces desktop gatefold on mobile)
-- ✅ Tabbed navigation: Concert History, Upcoming Shows, Top Tracks
-- ✅ Setlist overlay slides from right with swipe gestures
-- ✅ Color-coded tabs with brand accents (violet, amber, Spotify green)
-- ✅ Deep link copy button with haptic feedback
+- ✅ Cross-scene navigation with venue+artist combined deep linking
+- ✅ Clickable venue names in Artist gatefold and Phone Modal
+- ✅ Venue+artist spotlight focuses both nodes in force-directed graph
+- ✅ Permanent venue labels on map markers
+- ✅ Real links for "Explore Venue" buttons (better mobile UX)
 
 **Recent Releases:**
 
+- **v3.3.0** (2026-01-08): Connected Experience
 - **v3.2.0** (2026-01-08): Mobile Artist Experience
 - **v3.1.0** (2026-01-07): iPad Touch Support for Timeline
 - **v3.0.1** (2026-01-06): Genre Enrichment & Artist Metadata
 - **v3.0.0** (2026-01-06): Interactive Timeline Exploration & Genre Journey
-- **v2.0.0** (2026-01-05): Real-time tour dates with Ticketmaster API
 
 ---
 
@@ -190,4 +190,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-01-08 by Claude Code for v3.2.0 release*
+*Last updated: 2026-01-08 by Claude Code for v3.3.0 release*

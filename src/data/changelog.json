@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "3.3.0",
+      "date": "2026-01-08",
+      "title": "Connected Experience",
+      "description": "Navigate seamlessly between scenes by clicking venue names anywhere in the app. When exploring an artist's concert history, tap any venue to jump straight to the Venues scene—automatically spotlighting both the venue and artist to show you their unique relationship. Map markers now display venue names for easier exploration.",
+      "route": "/?scene=venues&venue=9-30-club&artist=depeche-mode",
+      "highlights": [
+        "Click venue names in artist details to explore venue-artist relationships",
+        "Venue+artist combined deep linking focuses both nodes in force-directed graph",
+        "Permanent venue labels on map markers for at-a-glance navigation",
+        "\"Explore Venue\" buttons now use real links for better mobile UX"
+      ]
+    },
+    {
       "version": "3.2.0",
       "date": "2026-01-08",
       "title": "Mobile Artist Experience",

@@ -1,16 +1,50 @@
 # Roadmap
 
-## Current State (v3.2.0)
+## Current State (v3.3.0)
 
 - **178 concerts** spanning 1984-2026
 - **104 headlining artists** with 247 total artists (including openers)
 - **77 unique venues** across 35 cities
 - **5 interactive scenes**: Timeline, Venues, Geography, Genres, Artists
-- **Latest improvements**: Phone-native modal for Artist Scene with tabbed navigation
+- **Latest improvements**: Cross-scene venue navigation with venue+artist combined deep linking
 
 ---
 
 ## Recently Completed
+
+### ✅ Venue Cross-Scene Navigation (v3.3.0)
+
+**Status**: Completed
+**Spec**: [venues-deep-linking.md](specs/implemented/venues-deep-linking.md)
+
+Seamless cross-scene navigation with venue+artist combined deep linking.
+
+**Implemented Features**:
+
+- Clickable venue names in Artist gatefold concert history
+- Clickable venue names in Phone Artist Modal
+- Venue+artist combined deep linking focuses both nodes in force-directed graph
+- Permanent venue labels on map markers
+- "Explore Venue" buttons use real links for better mobile UX
+- Hyperlinks in gatefold content with proper navigation
+
+---
+
+### ✅ Venues Mobile UX (v3.3.0)
+
+**Status**: Completed
+**Spec**: [venues-mobile-ux.md](specs/implemented/venues-mobile-ux.md)
+
+Mobile UX improvements for Venues scene including enhanced label visibility and touch interactions.
+
+**Implemented Features**:
+
+- Permanent venue labels on map for at-a-glance navigation
+- Improved label opacity logic matching spotlight state
+- Real link navigation for cross-scene venue exploration
+- Touch-optimized venue node interactions
+
+---
 
 ### ✅ Phone Artist Modal (v3.2.0)
 
@@ -102,14 +136,6 @@ Genre moved to artist-level metadata with automatic enrichment from TheAudioDB.
 
 ## Short-Term Roadmap
 
-### Venues Mobile UX
-**Status**: Planned
-**Spec**: [venues-mobile-ux.md](specs/future/venues-mobile-ux.md)
-
-Venue mobile ux improvements
-
----
-
 ### UX Polish
 
 **Status**: In Progress
@@ -121,10 +147,8 @@ Venue mobile ux improvements
 
 Refinements to interaction patterns and navigation across the app.
 
-**Improvements**:
+**Remaining Improvements**:
 
-- Enhanced touch and click feedback (haptic + visual)
-- Add hyperlinks in gatefold content (venue names, related artists)
 - Improved button states and loading indicators
 - Better keyboard navigation support
 - Display renamed venues with ♻️ badge and new name
@@ -132,15 +156,6 @@ Refinements to interaction patterns and navigation across the app.
 ---
 
 ## Medium-Term Roadmap
-
-### Venue Deep Linking
-
-**Status**: Planned
-**Spec**: [venues-deep-linking.md](specs/future/venues-deep-linking.md)
-
-Navigate to specific venue nodes with artist filtering via URL parameters
-
----
 
 ### Venue Name Change Detection & CLI Management
 **Status**: Planned

@@ -11,9 +11,9 @@ An interactive web app for exploring personal concert history. Five scenes—Tim
 
 ## What's new
 
-**v3.2.0** 📱 Artist details now feel native on your phone! [Tap any artist](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) to open a full-screen modal with tabbed navigation—swipe through your concert history, check upcoming tour dates, and pull up setlists with a tap. Swipe down or tap X to close, just like you'd expect.
+**v3.3.0** 🔗 Navigate seamlessly between scenes! When exploring an artist's concert history, [tap any venue name](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) to jump straight to the Venues scene—automatically spotlighting both the venue and artist to show you their unique relationship. Map markers now display venue names for easier exploration, and all venue links use proper navigation for a better mobile experience.
 
-**v3.1.0** 🖐️ The timeline now works beautifully on iPad! [Tap any year](https://concerts.morperhaus.org/?scene=timeline) and drag your finger across the concert cards to preview them one by one—each card comes to life with haptic feedback. Tap a focused card to jump straight into that artist's full story. Touch interactions feel as natural as flipping through vinyl.
+**v3.2.0** 📱 Artist details now feel native on your phone! [Tap any artist](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) to open a full-screen modal with tabbed navigation—swipe through your concert history, check upcoming tour dates, and pull up setlists with a tap. Swipe down or tap X to close, just like you'd expect.
 
 See the full changelog at [/liner-notes](https://concerts.morperhaus.org/liner-notes)
 
