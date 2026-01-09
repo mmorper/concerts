@@ -2,9 +2,9 @@
 
 ## Quick Start
 
-**Version:** v3.3.0 (Production)
+**Version:** v3.4.0 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-01-08
+**Last Sync:** 2026-01-09
 
 ### Commands
 
@@ -92,21 +92,21 @@ These docs provide essential context for common development tasks:
 
 **Live Site:** https://concerts.morperhaus.org
 
-**v3.3.0 Production (Latest):**
+**v3.4.0 Production (Latest):**
 
-- ✅ Cross-scene navigation with venue+artist combined deep linking
-- ✅ Clickable venue names in Artist gatefold and Phone Modal
-- ✅ Venue+artist spotlight focuses both nodes in force-directed graph
-- ✅ Permanent venue labels on map markers
-- ✅ Real links for "Explore Venue" buttons (better mobile UX)
+- ✅ Map and venue navigation polish
+- ✅ Fixed artist spotlight filtering in venue network graph
+- ✅ Improved venue label visibility and clarity
+- ✅ Better URL state management for reset buttons
+- ✅ Google Analytics 4 event tracking (internal)
 
 **Recent Releases:**
 
+- **v3.4.0** (2026-01-09): Map & Venue Navigation Polish
 - **v3.3.0** (2026-01-08): Connected Experience
 - **v3.2.0** (2026-01-08): Mobile Artist Experience
 - **v3.1.0** (2026-01-07): iPad Touch Support for Timeline
 - **v3.0.1** (2026-01-06): Genre Enrichment & Artist Metadata
-- **v3.0.0** (2026-01-06): Interactive Timeline Exploration & Genre Journey
 
 ---
 
@@ -190,4 +190,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-01-08 by Claude Code for v3.3.0 release*
+*Last updated: 2026-01-09 by Claude Code for v3.4.0 release*

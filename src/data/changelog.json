@@ -1,6 +1,14 @@
 {
   "releases": [
     {
+      "version": "3.4.0",
+      "date": "2026-01-09",
+      "title": "Map & Venue Navigation Polish",
+      "description": "Smoother exploration across the venue map and network graph. Fixed several navigation quirks that made it harder to jump between artists and venues, plus cleaned up the map's visual clutter so you can focus on the places that matter most.",
+      "route": "/?scene=venues",
+      "highlights": []
+    },
+    {
       "version": "3.3.0",
       "date": "2026-01-08",
       "title": "Connected Experience",
