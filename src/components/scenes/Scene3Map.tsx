@@ -194,7 +194,8 @@ export function Scene3Map({ concerts, onVenueNavigate, pendingVenueFocus, onVenu
           <div class="venue-popup-location">${cityState}</div>
           ${legacyBadge}
           <div class="venue-popup-count">${concertCount} concert${concertCount !== 1 ? 's' : ''}</div>
-          <button
+          <a
+            href="/?scene=venues&venue=${normalizedName}"
             class="venue-popup-link"
             data-venue-name="${venueName}"
             aria-label="View ${venueName} in venues scene"
@@ -208,7 +209,7 @@ export function Scene3Map({ concerts, onVenueNavigate, pendingVenueFocus, onVenu
             </svg>
             <span>Explore Venue</span>
             <span class="arrow">→</span>
-          </button>
+          </a>
         </div>
       </div>
     `
@@ -316,6 +317,12 @@ export function Scene3Map({ concerts, onVenueNavigate, pendingVenueFocus, onVenu
             pane: 'popupPane',
             maxWidth: 240,
             autoPan: false, // We'll handle panning manually for precise control
+          })
+          .bindTooltip(data.venueName, {
+            permanent: true,
+            direction: 'top',
+            className: 'venue-label',
+            offset: [0, -radius - 5],
           })
           .on('popupopen', () => {
             // When popup opens, position it precisely below filter buttons
@@ -482,23 +489,17 @@ export function Scene3Map({ concerts, onVenueNavigate, pendingVenueFocus, onVenu
     }
   }, [isMapActive])
 
-  // Event delegation for venue link clicks in popups
+  // Event delegation for venue link clicks in popups (haptic feedback only)
   useEffect(() => {
-    if (!mapRef.current || !onVenueNavigate) return
+    if (!mapRef.current) return
 
     const handleVenueLinkClick = (e: Event) => {
       const target = e.target as HTMLElement
-      if (target.classList.contains('venue-popup-link')) {
-        e.preventDefault()
-        e.stopPropagation()
-
+      // Check if click is on the link or its children
+      if (target.classList.contains('venue-popup-link') || target.closest('.venue-popup-link')) {
         // Haptic feedback for venue navigation
         haptics.light()
-
-        const venueName = target.getAttribute('data-venue-name')
-        if (venueName) {
-          onVenueNavigate(venueName)
-        }
+        // Let the default link behavior handle navigation
       }
     }
 
@@ -508,7 +509,7 @@ export function Scene3Map({ concerts, onVenueNavigate, pendingVenueFocus, onVenu
     return () => {
       mapContainer.removeEventListener('click', handleVenueLinkClick)
     }
-  }, [onVenueNavigate])
+  }, [])
 
   // Scroll trapping when map is active
   useEffect(() => {

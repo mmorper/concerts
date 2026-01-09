@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { Link2 } from 'lucide-react'
 import { getGenreColor } from '../../../constants/colors'
@@ -6,6 +7,7 @@ import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
 import { TourBadge } from './TourBadge'
 import type { ArtistCard, ArtistConcert } from './types'
 import { haptics } from '../../../utils/haptics'
+import { normalizeVenueName } from '../../../utils/normalize'
 
 interface ConcertHistoryPanelProps {
   artist: ArtistCard
@@ -47,6 +49,7 @@ export function ConcertHistoryPanel({
   onTourBadgeClick,
   isPhone = false
 }: ConcertHistoryPanelProps) {
+  const navigate = useNavigate()
   const { getArtistImage } = useArtistMetadata()
   const artistImage = getArtistImage(artist.name)
   const genreColor = getGenreColor(artist.primaryGenre)
@@ -67,6 +70,15 @@ export function ConcertHistoryPanel({
     } catch (err) {
       console.error('Failed to copy link:', err)
     }
+  }
+
+  const handleVenueClick = (venueName: string) => {
+    const normalizedVenue = normalizeVenueName(venueName)
+    const normalizedArtist = artist.normalizedName
+
+    // Navigate with both venue and artist parameters for focused spotlight
+    haptics.light() // Haptic feedback on venue navigation
+    navigate(`/?scene=venues&venue=${normalizedVenue}&artist=${normalizedArtist}`)
   }
 
   return (
@@ -173,9 +185,16 @@ export function ConcertHistoryPanel({
                   <span className="font-sans text-[#e5e5e5]">
                     {concert.city}
                   </span>
-                  <span className="font-sans text-[#737373]">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleVenueClick(concert.venue)
+                    }}
+                    className="font-sans text-white hover:text-[#6366f1] underline decoration-1 underline-offset-2 text-left transition-colors duration-150 touchable-subtle"
+                    aria-label={`View ${concert.venue} in venues scene`}
+                  >
                     {concert.venue}
-                  </span>
+                  </button>
                 </div>
 
                 {/* Inline Setlist Link - always visible if callback provided */}

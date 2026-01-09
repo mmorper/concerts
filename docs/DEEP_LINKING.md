@@ -109,6 +109,39 @@ https://concerts.morperhaus.org/?scene=venues&venue=hollywood-palladium
 4. Centers graph on venue
 5. Applies spotlight animation
 
+### Venue + Artist Deep Links (Scene 2 - Advanced)
+
+Focus on a specific artist-venue relationship with enhanced spotlight:
+
+```
+https://concerts.morperhaus.org/?scene=venues&venue={normalized-venue}&artist={normalized-artist}
+```
+
+**Examples:**
+
+```
+# 9:30 Club with Depeche Mode - spotlights both nodes
+https://concerts.morperhaus.org/?scene=venues&venue=9-30-club&artist=depeche-mode
+
+# Irvine Meadows with OMD
+https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows&artist=omd
+```
+
+**Behavior:**
+
+1. Scrolls to Venues scene (Scene 2)
+2. Expands venue to show all artists
+3. Centers graph on venue
+4. Applies focused spotlight: only venue + specified artist visible at full opacity
+5. All other nodes dimmed to 0.15 opacity
+
+**Spotlight Rules:**
+
+| Parameter | Focused Nodes (0.85 opacity) | Dimmed Nodes (0.15 opacity) |
+|-----------|------------------------------|------------------------------|
+| `venue` only | Venue + all its artists | All other venues and artists |
+| `venue` + `artist` | Venue + specified artist only | All other venues and artists |
+
 ### Venue Deep Links (Scene 3 - Map)
 
 Flies to venue marker and opens popup with photo:
@@ -195,6 +228,17 @@ function normalizeGenreName(name: string): string {
 
 ## Use Cases
 
+### Cross-Scene Navigation
+
+**From Artist Gatefold:**
+- Click any venue name in the concert history to navigate to Venues scene
+- Automatically focuses both the venue and the current artist
+- Creates a contextual "tell me more about this relationship" experience
+
+**From Map Popup:**
+- Click "Explore Venue →" button to navigate to Venues scene
+- Shows venue's full artist network in force-directed graph
+
 ### Sharing Content
 
 Share specific discoveries with friends:
@@ -205,6 +249,9 @@ https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode
 
 "The 9:30 Club has hosted 13 shows!"
 https://concerts.morperhaus.org/?scene=venues&venue=9-30-club
+
+"See who Depeche Mode played with at 9:30 Club!"
+https://concerts.morperhaus.org/?scene=venues&venue=9-30-club&artist=depeche-mode
 ```
 
 ### Changelog Integration
@@ -305,8 +352,13 @@ interface ArtistSceneProps {
 // Venues Scene
 interface Scene4BandsProps {
   concerts: Concert[]
-  pendingVenueFocus?: string | null
+  pendingVenueFocus?: string | null // Legacy venue-only focus
   onVenueFocusComplete?: () => void
+  pendingVenueArtistFocus?: { // New venue+artist combined focus
+    venue: string
+    artist?: string
+  } | null
+  onVenueArtistFocusComplete?: () => void
 }
 
 // Geography Scene

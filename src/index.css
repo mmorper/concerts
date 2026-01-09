@@ -174,7 +174,7 @@ body {
   width: 100%;
   padding: 10px 16px;
   background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-  color: white;
+  color: white !important;
   font-size: 13px;
   font-weight: 600;
   border: none;
@@ -189,6 +189,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  text-decoration: none;
 }
 
 .venue-graph-icon {
@@ -239,6 +240,31 @@ body {
     stroke-width: 15; /* Adds ~30px to diameter for better tap targets */
     pointer-events: all;
   }
+}
+
+/* Venue Label Styling - permanent tooltips on map */
+.venue-label {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+  text-shadow:
+    /* Multiple layers for the blurred shadow effect */
+    0 0 12px rgba(0, 0, 0, 0.9),
+    0 0 8px rgba(0, 0, 0, 0.8),
+    0 0 4px rgba(0, 0, 0, 0.7),
+    0 1px 2px rgba(0, 0, 0, 1);
+  white-space: nowrap;
+  pointer-events: none;
+  padding: 0 !important;
+  letter-spacing: 0.025em;
+}
+
+.venue-label::before {
+  display: none !important;
 }
 
 /* Gatefold 3D Transform Utilities */
@@ -438,7 +464,7 @@ body {
 
 /* Inline setlist link next to concert rows - always visible */
 .setlist-link {
-  color: #8b8b8b; /* Slate grey - matches Tickets link */
+  color: #a3a3a3; /* Lighter grey for better contrast against dark background */
   background: none;
   border: none;
   border-radius: 4px;

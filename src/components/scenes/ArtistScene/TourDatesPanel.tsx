@@ -248,7 +248,7 @@ function TourDateItem({ event }: { event: TourEvent }) {
           href={ticketUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center flex-shrink-0 text-xs font-medium text-[#8b8b8b] hover:text-[#1DB954] transition-all duration-150 touchable-subtle"
+          className="flex items-center flex-shrink-0 text-xs font-medium text-[#a3a3a3] hover:text-[#1DB954] transition-all duration-150 touchable-subtle"
           onClick={(e) => {
             e.stopPropagation()
             haptics.light()

@@ -7,6 +7,11 @@ interface Scene4BandsProps {
   concerts: Concert[]
   pendingVenueFocus?: string | null
   onVenueFocusComplete?: () => void
+  pendingVenueArtistFocus?: {
+    venue: string
+    artist?: string
+  } | null
+  onVenueArtistFocusComplete?: () => void
 }
 
 interface Node {
@@ -25,7 +30,7 @@ interface Link {
 
 type ViewMode = 'top10' | 'all'
 
-export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete }: Scene4BandsProps) {
+export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete, pendingVenueArtistFocus, onVenueArtistFocusComplete }: Scene4BandsProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const simulationRef = useRef<d3.Simulation<any, any> | null>(null)
   const graphGroupRef = useRef<SVGGElement | null>(null)
@@ -34,6 +39,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
   const [expandedVenues, setExpandedVenues] = useState<Set<string>>(new Set())
   const [centeredVenue, setCenteredVenue] = useState<string | null>(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+  const [focusedArtist, setFocusedArtist] = useState<string | null>(null)
 
   // Mobile detection for responsive behavior
   const isMobile = useMemo(() => dimensions.width < 768, [dimensions.width])
@@ -245,7 +251,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
   }, [concerts, venueStats, displayedVenues, viewMode, defaultExpandedVenues, expandedVenues])
 
   // Helper to get related nodes for a clicked node
-  const getRelatedNodes = useCallback((nodeId: string): Set<string> => {
+  const getRelatedNodes = useCallback((nodeId: string, specificArtist?: string | null): Set<string> => {
     const related = new Set<string>([nodeId])
     const node = nodes.find(n => n.id === nodeId)
 
@@ -253,9 +259,26 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
 
     if (node.type === 'venue') {
       // Get all children (headliners and openers)
+      // If specificArtist is provided, only include nodes matching that artist
       nodes.forEach(n => {
         if (n.parentVenue === node.id.replace('venue|', '')) {
-          related.add(n.id)
+          // Check if we should filter by specific artist
+          if (specificArtist) {
+            // Extract artist name from node ID
+            let artistName = ''
+            if (n.type === 'headliner') {
+              artistName = n.id.split('|')[2]
+            } else if (n.type === 'opener') {
+              artistName = n.id.split('|')[3]
+            }
+            // Only add if it matches the focused artist
+            if (artistName === specificArtist) {
+              related.add(n.id)
+            }
+          } else {
+            // No filter, add all children
+            related.add(n.id)
+          }
         }
       })
     } else if (node.type === 'headliner') {
@@ -352,7 +375,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
         }
       })
 
-    const relatedNodes = focusedNodeId ? getRelatedNodes(focusedNodeId) : new Set<string>()
+    const relatedNodes = focusedNodeId ? getRelatedNodes(focusedNodeId, focusedArtist) : new Set<string>()
 
     // Create size scales for different node types
     // In "all" mode, use wider range to show hierarchy clearly
@@ -578,7 +601,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
           // On mobile, center the focused node and its children in viewport
           if (isMobile && d.x !== undefined && d.y !== undefined && graphGroupRef.current) {
             // Get all related nodes (parent + children)
-            const related = getRelatedNodes(d.id)
+            const related = getRelatedNodes(d.id, focusedArtist)
             const relatedNodePositions = nodes.filter(n => related.has(n.id)).map((n: any) => ({
               x: n.x,
               y: n.y
@@ -668,11 +691,15 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
 
       // Show hover label for small venues in "all" mode
       if (viewMode === 'all' && d.type === 'venue' && d.count < 3) {
+        // Determine target opacity based on spotlight state
+        // Recompute related nodes to get fresh spotlight state
+        const currentRelated = focusedNodeId ? getRelatedNodes(focusedNodeId, focusedArtist) : new Set<string>()
+        const targetOpacity = focusedNodeId ? (currentRelated.has(d.id) ? 0.85 : 0.15) : 1
         d3.select(this)
           .select('.hover-label')
           .transition()
           .duration(200)
-          .attr('fill-opacity', 1)
+          .attr('fill-opacity', targetOpacity)
       }
     })
     .on('mouseleave', function(_event, d) {
@@ -704,7 +731,11 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
       return d.count >= 3
     })
 
-    venueLabels
+    // Handle both new and existing labels
+    const labels = venueLabels.selectAll('text').data(d => [d])
+
+    // Enter: create new labels
+    labels.enter()
       .append('text')
       .text(d => {
         // Extract venue name from the id
@@ -718,11 +749,17 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
       .attr('dy', '0.35em')
       .attr('font-size', isMobile ? '10px' : '11px')
       .attr('fill', 'white')
-      .attr('fill-opacity', 1)
       .attr('font-family', 'Inter, system-ui, sans-serif')
       .attr('font-weight', '600')
       .attr('pointer-events', 'none')
       .style('text-shadow', '0 1px 3px rgba(0,0,0,0.8)')
+      .merge(labels) // Merge enter + update selections
+      .attr('fill-opacity', (d: any) => {
+        // Match label opacity to node spotlight state
+        // This runs for both new and existing labels
+        if (!focusedNodeId) return 1
+        return relatedNodes.has(d.id) ? 0.85 : 0.15
+      })
 
     // Add hover labels for small venues in "all" mode (1-2 shows)
     if (viewMode === 'all') {
@@ -738,13 +775,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
         .attr('dy', '0.35em')
         .attr('font-size', isMobile ? '9px' : '10px')
         .attr('fill', 'white')
-        .attr('fill-opacity', d => {
-          // Show label if this node is focused or related to focused node
-          if (focusedNodeId && (d.id === focusedNodeId || relatedNodes.has(d.id))) {
-            return 1
-          }
-          return 0 // Hidden by default
-        })
+        .attr('fill-opacity', 0) // Hidden by default, shown on hover
         .attr('font-family', 'Inter, system-ui, sans-serif')
         .attr('font-weight', '600')
         .attr('pointer-events', 'none')
@@ -844,9 +875,9 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
     return () => {
       simulation.stop()
     }
-  }, [nodes, links, focusedNodeId, getRelatedNodes, viewMode, expandedVenues, centeredVenue, dimensions])
+  }, [nodes, links, focusedNodeId, focusedArtist, getRelatedNodes, viewMode, expandedVenues, centeredVenue, dimensions, isMobile])
 
-  // Handle pendingVenueFocus from cross-scene navigation
+  // Handle pendingVenueFocus from cross-scene navigation (legacy venue-only)
   useEffect(() => {
     if (!pendingVenueFocus) return
 
@@ -870,11 +901,62 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete 
     // The D3 render will automatically dim unrelated nodes via getTargetOpacity
     const venueNodeId = `venue|${venueName}`
     setFocusedNodeId(venueNodeId)
+    setFocusedArtist(null) // Clear any artist filter
 
     // Just notify parent that navigation is complete (don't clear focus)
     // User interaction will clear the spotlight via background click or button press
     onVenueFocusComplete?.()
   }, [pendingVenueFocus, concerts, onVenueFocusComplete])
+
+  // Handle pendingVenueArtistFocus from cross-scene navigation (venue + artist)
+  useEffect(() => {
+    if (!pendingVenueArtistFocus) return
+
+    const { venue: venueParam, artist: artistParam } = pendingVenueArtistFocus
+
+    // Find venue by normalized name (URL parameter is normalized)
+    const matchingConcert = concerts.find(c => c.venueNormalized === venueParam)
+    if (!matchingConcert) {
+      console.warn(`Venue "${venueParam}" not found in concerts data`)
+      onVenueArtistFocusComplete?.()
+      return
+    }
+
+    // Use the display name for internal state
+    const venueName = matchingConcert.venue
+
+    // If artist is provided, validate it exists at this venue
+    if (artistParam) {
+      // Check if the artist played at this venue (as headliner or opener)
+      const artistAtVenue = concerts.some(c =>
+        c.venue === venueName &&
+        (c.headlinerNormalized === artistParam ||
+         c.openers.some(opener => opener.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') === artistParam))
+      )
+
+      if (!artistAtVenue) {
+        console.warn(`Artist "${artistParam}" not found at venue "${venueName}"`)
+        // Still show venue, just without artist filter
+        setFocusedArtist(null)
+      } else {
+        setFocusedArtist(artistParam)
+      }
+    } else {
+      setFocusedArtist(null)
+    }
+
+    // Expand and center the target venue
+    setExpandedVenues(new Set([venueName]))
+    setCenteredVenue(venueName)
+    setViewMode('all')
+
+    // Set focus to the venue node to apply spotlight effect
+    const venueNodeId = `venue|${venueName}`
+    setFocusedNodeId(venueNodeId)
+
+    // Notify parent that navigation is complete
+    onVenueArtistFocusComplete?.()
+  }, [pendingVenueArtistFocus, concerts, onVenueArtistFocusComplete])
 
   const totalVenues = useMemo(() => {
     const allVenues = new Set<string>()

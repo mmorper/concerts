@@ -10,6 +10,7 @@
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { X, Link2, History, Calendar, Music } from 'lucide-react'
 import { getGenreColor } from '../../../constants/colors'
@@ -18,6 +19,7 @@ import { useTourDates } from '../../../hooks/useTourDates'
 import { fetchSetlist } from '../../../services/setlistfm'
 import { TourBadge } from './TourBadge'
 import { haptics } from '../../../utils/haptics'
+import { normalizeVenueName } from '../../../utils/normalize'
 import type { ArtistCard, ArtistConcert } from './types'
 import type { Setlist } from '../../../types/setlist'
 
@@ -61,6 +63,7 @@ export function PhoneArtistModal({
   onClose,
   reducedMotion
 }: PhoneArtistModalProps) {
+  const navigate = useNavigate()
   const { getArtistImage } = useArtistMetadata()
 
   // Animation states
@@ -93,6 +96,15 @@ export function PhoneArtistModal({
 
   // Determine if Upcoming tab should show
   const showUpcomingTab = tourCount > 0
+
+  // Handle venue click - navigate to Venues scene with venue+artist context
+  const handleVenueClick = useCallback((venueName: string) => {
+    if (!artist) return
+    const normalizedVenue = normalizeVenueName(venueName)
+    const normalizedArtist = artist.normalizedName
+    haptics.light()
+    navigate(`/?scene=venues&venue=${normalizedVenue}&artist=${normalizedArtist}`)
+  }, [artist, navigate])
 
   // Open animation on mount
   useEffect(() => {
@@ -466,7 +478,16 @@ export function PhoneArtistModal({
                     </span>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-white">{concert.city}</p>
-                      <p className="text-xs text-gray-500">{concert.venue}</p>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleVenueClick(concert.venue)
+                        }}
+                        className="text-xs text-white hover:text-[#6366f1] underline decoration-1 underline-offset-2 text-left transition-colors touchable-subtle"
+                        aria-label={`View ${concert.venue} in venues scene`}
+                      >
+                        {concert.venue}
+                      </button>
                     </div>
                     <button
                       onClick={() => handleSetlistClick(concert)}
@@ -522,7 +543,7 @@ export function PhoneArtistModal({
                           href={event.offers?.[0]?.url || event.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs font-medium text-gray-400 hover:text-white transition-colors flex-shrink-0"
+                          className="text-xs font-medium text-[#a3a3a3] hover:text-[#1DB954] transition-colors flex-shrink-0"
                           onClick={() => haptics.light()}
                         >
                           Tickets

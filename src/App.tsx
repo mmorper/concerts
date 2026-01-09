@@ -34,6 +34,10 @@ function MainScenes() {
   const [pendingVenueFocus, setPendingVenueFocus] = useState<string | null>(null)
   const [pendingMapVenueFocus, setPendingMapVenueFocus] = useState<string | null>(null)
   const [pendingArtistFocus, setPendingArtistFocus] = useState<string | null>(null)
+  const [pendingVenueArtistFocus, setPendingVenueArtistFocus] = useState<{
+    venue: string
+    artist?: string
+  } | null>(null)
 
   // Check for new changelog entries
   const {
@@ -134,7 +138,16 @@ function MainScenes() {
 
       // If venue parameter is provided, set it for the appropriate scene
       if (venueParam && sceneId === 2) {
-        setPendingVenueFocus(venueParam)
+        // Check if artist parameter is also provided for venue+artist deep linking
+        if (artistParam) {
+          setPendingVenueArtistFocus({
+            venue: venueParam,
+            artist: artistParam
+          })
+        } else {
+          // Venue-only deep linking (legacy behavior)
+          setPendingVenueFocus(venueParam)
+        }
       } else if (venueParam && sceneId === 3) {
         setPendingMapVenueFocus(venueParam)
       }
@@ -196,6 +209,8 @@ function MainScenes() {
           concerts={concerts}
           pendingVenueFocus={pendingVenueFocus}
           onVenueFocusComplete={() => setPendingVenueFocus(null)}
+          pendingVenueArtistFocus={pendingVenueArtistFocus}
+          onVenueArtistFocusComplete={() => setPendingVenueArtistFocus(null)}
         />
 
         {/* Scene 3: Map */}
