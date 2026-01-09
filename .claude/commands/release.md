@@ -44,7 +44,16 @@ Orchestrates the release workflow. References existing docs for details.
 | Clean working directory | ❌ Hard stop |
 | On main branch | ⚠️ Warning, confirm to continue |
 | Unpushed commits | ℹ️ Info, show what's included |
+| Code builds successfully | ❌ Hard stop |
 | File integrity | ❌ Hard stop |
+
+**Build Check:**
+
+```bash
+npm run build
+```
+
+**If build fails:** Exit immediately. Fix TypeScript/build errors before releasing.
 
 **If any hard stop:** Exit immediately. User must fix first.
 
@@ -210,15 +219,26 @@ Then **STOP**.
 2. Run validation:
    ```bash
    npm run validate:version
+   npm run build
    ```
 
-**If validation fails:**
+**If version validation fails:**
 > ❌ Version mismatch detected. See error above.
-> 
+>
 > Fix manually, or run:
 > ```bash
 > git checkout -- src/data/changelog.json package.json docs/ROADMAP.md README.md .claude/context.md
 > ```
+
+**If build fails:**
+> ❌ TypeScript or build errors detected.
+>
+> Fix the errors, then re-run validation:
+> ```bash
+> npm run build
+> ```
+>
+> Once fixed, continue with git operations.
 
 ---
 
