@@ -11,6 +11,7 @@ Skills are knowledge packages that Claude references for specialized tasks. Unli
 | **design-system** | `skills/design-system/SKILL.md` | UI work, styling, colors, typography, animations |
 | **data-schema** | `skills/data-schema/SKILL.md` | Data queries, entity relationships, normalization |
 | **api-integration** | `skills/api-integration/SKILL.md` | External APIs, caching, rate limits, credentials |
+| **analytics** | `skills/analytics/SKILL.md` | Event tracking, user interactions, GA4 implementation |
 
 ---
 
@@ -52,6 +53,13 @@ Claude's process:
 - Configuring API credentials
 - Understanding data enrichment pipelines
 
+**Reference `analytics` when:**
+- Adding new user interactions or features
+- Creating new scenes or scene components
+- Implementing search, filters, or navigation
+- Adding external links
+- Any work that involves user engagement
+
 ---
 
 ## Skill Structure
@@ -65,8 +73,10 @@ skills/
 │   └── SKILL.md           # Colors, typography, components
 ├── data-schema/
 │   └── SKILL.md           # Data structures, relationships
-└── api-integration/
-    └── SKILL.md           # External APIs, caching, credentials
+├── api-integration/
+│   └── SKILL.md           # External APIs, caching, credentials
+└── analytics/
+    └── SKILL.md           # Event tracking, GA4, user interactions
 ```
 
 Skills are **read-only references**. They don't execute code—they inform how code should be written.

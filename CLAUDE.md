@@ -29,6 +29,9 @@ npm run build-data   # Refresh data pipeline
 **Before working with external APIs**, read:
 - `.claude/skills/api-integration/SKILL.md` — Ticketmaster, setlist.fm, geocoding patterns
 
+**Before adding user interactions or features**, read:
+- `.claude/skills/analytics/SKILL.md` — Event tracking, GA4 patterns, naming conventions
+
 ---
 
 ## Slash Commands
