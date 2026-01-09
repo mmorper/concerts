@@ -79,7 +79,7 @@ const REGION_VIEWS: Record<Region, { center: [number, number]; zoom: number; lab
   },
 }
 
-export function Scene3Map({ concerts, onVenueNavigate, pendingVenueFocus, onVenueFocusComplete }: Scene3MapProps) {
+export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }: Scene3MapProps) {
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<L.Map | null>(null)
   const markersLayerRef = useRef<L.LayerGroup | null>(null)

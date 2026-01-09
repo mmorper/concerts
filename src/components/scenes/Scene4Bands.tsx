@@ -599,7 +599,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
           setFocusedNodeId(d.id)
 
           // On mobile, center the focused node and its children in viewport
-          if (isMobile && d.x !== undefined && d.y !== undefined && graphGroupRef.current) {
+          if (isMobile && (d as any).x !== undefined && (d as any).y !== undefined && graphGroupRef.current) {
             // Get all related nodes (parent + children)
             const related = getRelatedNodes(d.id, focusedArtist)
             const relatedNodePositions = nodes.filter(n => related.has(n.id)).map((n: any) => ({
@@ -732,11 +732,8 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
     })
 
     // Handle both new and existing labels
-    const labels = venueLabels.selectAll('text').data(d => [d])
-
-    // Enter: create new labels
-    labels.enter()
-      .append('text')
+    venueLabels.selectAll('text').data(d => [d])
+      .join('text')
       .text(d => {
         // Extract venue name from the id
         const venueName = d.id.replace('venue|', '')
@@ -753,7 +750,6 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
       .attr('font-weight', '600')
       .attr('pointer-events', 'none')
       .style('text-shadow', '0 1px 3px rgba(0,0,0,0.8)')
-      .merge(labels) // Merge enter + update selections
       .attr('fill-opacity', (d: any) => {
         // Match label opacity to node spotlight state
         // This runs for both new and existing labels
