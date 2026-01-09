@@ -1,4 +1,5 @@
 import { useEffect, useRef, useMemo, useState, useCallback } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import * as d3 from 'd3'
 import type { Concert } from '../../types/concert'
@@ -31,6 +32,8 @@ interface Link {
 type ViewMode = 'top10' | 'all'
 
 export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete, pendingVenueArtistFocus, onVenueArtistFocusComplete }: Scene4BandsProps) {
+  const navigate = useNavigate()
+  const location = useLocation()
   const svgRef = useRef<SVGSVGElement>(null)
   const simulationRef = useRef<d3.Simulation<any, any> | null>(null)
   const graphGroupRef = useRef<SVGGElement | null>(null)
@@ -697,15 +700,12 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
 
       // Show hover label for small venues in "all" mode
       if (viewMode === 'all' && d.type === 'venue' && d.count < 3) {
-        // Determine target opacity based on spotlight state
-        // Recompute related nodes to get fresh spotlight state
-        const currentRelated = focusedNodeId ? getRelatedNodes(focusedNodeId, focusedArtist) : new Set<string>()
-        const targetOpacity = focusedNodeId ? (currentRelated.has(d.id) ? 0.85 : 0.15) : 1
+        // Always show at full opacity on hover
         d3.select(this)
           .select('.hover-label')
           .transition()
           .duration(200)
-          .attr('fill-opacity', targetOpacity)
+          .attr('fill-opacity', 1)
       }
     })
     .on('mouseleave', function(_event, d) {
@@ -717,13 +717,16 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
           .attr('fill-opacity', 0.85)
       }
 
-      // Hide hover label for small venues in "all" mode
+      // Restore hover label opacity for small venues in "all" mode
       if (viewMode === 'all' && d.type === 'venue' && d.count < 3) {
+        // Restore to spotlight-appropriate opacity
+        const currentRelated = focusedNodeId ? getRelatedNodes(focusedNodeId, focusedArtist) : new Set<string>()
+        const targetOpacity = focusedNodeId ? (currentRelated.has(d.id) ? 0.85 : 0.15) : 1
         d3.select(this)
           .select('.hover-label')
           .transition()
           .duration(200)
-          .attr('fill-opacity', 0)
+          .attr('fill-opacity', targetOpacity)
       }
     })
 
@@ -777,7 +780,11 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
         .attr('dy', '0.35em')
         .attr('font-size', isMobile ? '9px' : '10px')
         .attr('fill', 'white')
-        .attr('fill-opacity', 0) // Hidden by default, shown on hover
+        .attr('fill-opacity', d => {
+          // Show labels when no spotlight is active, otherwise respect spotlight state
+          if (!focusedNodeId) return 1
+          return relatedNodes.has(d.id) ? 0.85 : 0.15
+        })
         .attr('font-family', 'Inter, system-ui, sans-serif')
         .attr('font-weight', '600')
         .attr('pointer-events', 'none')
@@ -1073,6 +1080,14 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
               setExpandedVenues(new Set())
             }
             resetGraphTransform()
+
+            // Clear venue and artist query params from URL
+            const searchParams = new URLSearchParams(location.search)
+            if (searchParams.has('venue') || searchParams.has('artist')) {
+              searchParams.delete('venue')
+              searchParams.delete('artist')
+              navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true })
+            }
           }}
           className={`absolute z-20 px-6 py-3 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg font-sans text-sm font-medium hover:bg-white/20 transition-all duration-200 min-h-[44px] ${
             isMobile
