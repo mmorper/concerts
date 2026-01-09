@@ -20,15 +20,6 @@ class AnalyticsService {
     this.measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
     this.enabled = !!this.measurementId && import.meta.env.PROD;
 
-    // Configure GA4 if enabled
-    if (this.enabled && window.gtag) {
-      window.gtag('config', this.measurementId, {
-        // Privacy-friendly defaults
-        anonymize_ip: true,
-        cookie_flags: 'SameSite=None;Secure',
-      });
-    }
-
     if (import.meta.env.DEV) {
       console.log('[Analytics] Service initialized', {
         enabled: this.enabled,
