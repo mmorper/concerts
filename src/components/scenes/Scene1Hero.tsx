@@ -8,6 +8,7 @@ import { haptics } from '../../utils/haptics'
 import { useYearFilter } from '../TimelineYearFilter/useYearFilter'
 import { YearCardStack } from '../TimelineYearFilter'
 import { normalizeArtistName } from '../../utils/normalize'
+import { analytics } from '../../services/analytics'
 
 interface Scene1HeroProps {
   concerts: Concert[]
@@ -33,7 +34,7 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
     handleCardHover,
     collapse,
     handleClickOutside: handleClickOutsideBase,
-  } = useYearFilter()
+  } = useYearFilter(concerts)
 
   // Wrap handleClickOutside to also clear hover state
   const handleClickOutside = () => {
@@ -59,6 +60,15 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
   // Handle navigation to artist scene from card click
   const handleNavigateToArtist = (concert: Concert) => {
     const normalizedName = normalizeArtistName(concert.headliner)
+
+    // Track card click
+    const year = new Date(concert.date).getFullYear()
+    analytics.trackEvent('timeline_card_clicked', {
+      year,
+      artist_name: concert.headliner,
+      concert_date: concert.date,
+    })
+
     onNavigateToArtist?.(normalizedName)
     // Don't collapse - let user explore all cards
   }
@@ -66,6 +76,12 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
   // Handle navigation to artist scene from popup click
   const handlePopupClick = (artistName: string) => {
     const normalizedName = normalizeArtistName(artistName)
+
+    // Track artist navigation from popup
+    analytics.trackEvent('timeline_artist_navigate', {
+      artist_name: artistName,
+    })
+
     onNavigateToArtist?.(normalizedName)
   }
 

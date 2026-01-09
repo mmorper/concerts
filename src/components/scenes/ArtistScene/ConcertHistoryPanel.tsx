@@ -8,6 +8,7 @@ import { TourBadge } from './TourBadge'
 import type { ArtistCard, ArtistConcert } from './types'
 import { haptics } from '../../../utils/haptics'
 import { normalizeVenueName } from '../../../utils/normalize'
+import { analytics } from '../../../services/analytics'
 
 interface ConcertHistoryPanelProps {
   artist: ArtistCard
@@ -72,9 +73,16 @@ export function ConcertHistoryPanel({
     }
   }
 
-  const handleVenueClick = (venueName: string) => {
+  const handleVenueClick = (venueName: string, concertDate: string) => {
     const normalizedVenue = normalizeVenueName(venueName)
     const normalizedArtist = artist.normalizedName
+
+    // Track venue click
+    analytics.trackEvent('venue_clicked_from_artist', {
+      artist_name: artist.name,
+      venue_name: venueName,
+      concert_date: concertDate,
+    })
 
     // Navigate with both venue and artist parameters for focused spotlight
     haptics.light() // Haptic feedback on venue navigation
@@ -188,7 +196,7 @@ export function ConcertHistoryPanel({
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
-                      handleVenueClick(concert.venue)
+                      handleVenueClick(concert.venue, concert.date)
                     }}
                     className="font-sans text-white hover:text-[#6366f1] underline decoration-1 underline-offset-2 text-left transition-colors duration-150 touchable-subtle"
                     aria-label={`View ${concert.venue} in venues scene`}

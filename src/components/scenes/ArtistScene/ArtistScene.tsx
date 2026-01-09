@@ -10,6 +10,7 @@ import { useGatefoldOrientation } from '../../../hooks/useGatefoldOrientation'
 import type { Concert } from '../../../types/concert'
 import type { SortOrder, ArtistCard } from './types'
 import { haptics } from '../../../utils/haptics'
+import { analytics } from '../../../services/analytics'
 
 interface ArtistSceneProps {
   concerts: Concert[]
@@ -65,6 +66,14 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
   }, [pendingArtistFocus, isLoading, artistCards])
 
   const handleCardClick = (artist: ArtistCard, rect: DOMRect) => {
+    // Track card open
+    const deviceType = window.innerWidth < 768 ? 'phone' : 'desktop'
+    analytics.trackEvent('artist_card_opened', {
+      artist_name: artist.name,
+      device_type: deviceType,
+      times_seen: artist.timesSeen,
+    })
+
     setOpenArtist(artist)
     setClickedTileRect(rect)
   }
@@ -201,6 +210,9 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
           <button
             onClick={() => {
               haptics.light() // Haptic feedback on sort change
+              analytics.trackEvent('artist_sort_changed', {
+                sort_order: 'alphabetical',
+              })
               setSortOrder('alphabetical')
             }}
             className={`font-sans px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto min-h-[44px] touchable-no-scale ${
@@ -216,6 +228,9 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
           <button
             onClick={() => {
               haptics.light() // Haptic feedback on sort change
+              analytics.trackEvent('artist_sort_changed', {
+                sort_order: 'timesSeen',
+              })
               setSortOrder('timesSeen')
             }}
             className={`font-sans px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 pointer-events-auto min-h-[44px] touchable-no-scale ${

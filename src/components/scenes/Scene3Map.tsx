@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import type { Concert } from '../../types/concert'
 import { normalizeVenueName } from '../../utils/normalize'
 import { haptics } from '../../utils/haptics'
+import { analytics } from '../../services/analytics'
 
 interface VenueMetadata {
   name: string
@@ -372,6 +373,13 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
             // Haptic feedback when marker is clicked
             haptics.light()
 
+            // Track marker click
+            analytics.trackEvent('map_marker_clicked', {
+              venue_name: data.venueName,
+              city_state: data.cityState,
+              concert_count: data.count,
+            })
+
             // Activate map interactions when marker is clicked
             setIsMapActive(true)
             setShowHint(false)
@@ -454,6 +462,9 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
       // Only activate if clicking map tiles, not markers
       // Markers have their own click handlers that stop propagation
       if (!isMapActive) {
+        // Track map activation
+        analytics.trackEvent('map_activated', {})
+
         setIsMapActive(true)
         setShowHint(false)
       }
@@ -493,6 +504,16 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
       if (target.classList.contains('venue-popup-link') || target.closest('.venue-popup-link')) {
         // Haptic feedback for venue navigation
         haptics.light()
+
+        // Extract venue name from data attribute
+        const link = target.closest('.venue-popup-link') as HTMLAnchorElement
+        const venueName = link?.dataset.venueName
+        if (venueName) {
+          analytics.trackEvent('map_explore_venue_clicked', {
+            venue_name: venueName,
+          })
+        }
+
         // Let the default link behavior handle navigation
       }
     }
@@ -618,6 +639,16 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
               key={region}
               onClick={() => {
                 haptics.light() // Haptic feedback on region change
+
+                // Track region change
+                const filter = REGION_VIEWS[region].filter
+                const regionConcerts = filter ? concerts.filter(filter) : concerts
+                const regionCityCount = new Set(regionConcerts.map(c => c.cityState)).size
+                analytics.trackEvent('map_region_changed', {
+                  region,
+                  city_count: regionCityCount,
+                })
+
                 setSelectedRegion(region)
               }}
               className={`font-sans px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 min-h-[44px] touchable-no-scale ${

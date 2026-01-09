@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react'
 import { format } from 'date-fns'
 import type { TourEvent } from '../../../types/tourDates'
 import { haptics } from '../../../utils/haptics'
+import { analytics } from '../../../services/analytics'
 
 interface TourDatesPanelProps {
   artistName: string
@@ -38,6 +39,14 @@ export function TourDatesPanel({
   // Focus close button when panel opens (accessibility)
   useEffect(() => {
     closeButtonRef.current?.focus()
+
+    // Track tour dates viewed
+    if (tourDates && tourDates.length > 0) {
+      analytics.trackEvent('tour_date_viewed', {
+        artist_name: artistName,
+        event_count: tourDates.length,
+      })
+    }
   }, [])
 
   // Handle close with animation

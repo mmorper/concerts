@@ -32,7 +32,7 @@ Add comprehensive Google Analytics 4 (GA4) event tracking to enable data-driven 
 
 ## Prerequisites
 
-- **GA4 Property**: Must have Google Analytics 4 Measurement ID (format: `G-XXXXXXXXXX`)
+- **GA4 Property**: Must have Google Analytics 4 Measurement ID (format: `G-G7FTDXMNSW`)
 - **Environment Variable**: `VITE_GA_MEASUREMENT_ID` configured in deployment environment
 - **DebugView Access**: (Recommended) GA4 property access for testing during implementation
 

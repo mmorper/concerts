@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import * as d3 from 'd3'
 import type { Concert } from '../../types/concert'
+import { analytics } from '../../services/analytics'
 
 interface Scene4BandsProps {
   concerts: Concert[]
@@ -570,6 +571,13 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
           console.log('Vibration API not available')
         }
 
+        // Track node click
+        analytics.trackEvent('venue_node_clicked', {
+          venue_name: d.id.split('|')[0],
+          node_type: d.type,
+          concert_count: d.count || 0,
+        })
+
         // In "all" mode, clicking a venue expands/collapses it and centers it
         if (viewMode === 'all' && d.type === 'venue') {
           const venueName = d.id.replace('venue|', '')
@@ -581,6 +589,12 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
             setFocusedNodeId(null)
             setFocusedArtist(null) // Clear artist filter when collapsing
           } else {
+            // Track venue expansion
+            analytics.trackEvent('venue_expanded', {
+              venue_name: venueName,
+              has_artist_filter: !!focusedArtist,
+            })
+
             // Expand: set this venue as the only expanded one, center it, and focus it
             setExpandedVenues(new Set([venueName]))
             setCenteredVenue(venueName)
@@ -1002,6 +1016,9 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
         <div className="flex justify-center gap-2">
           <button
             onClick={() => {
+              analytics.trackEvent('venue_view_mode_changed', {
+                new_mode: 'top10',
+              })
               setViewMode('top10')
               setExpandedVenues(new Set())
               setFocusedNodeId(null)
@@ -1018,6 +1035,9 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
           </button>
           <button
             onClick={() => {
+              analytics.trackEvent('venue_view_mode_changed', {
+                new_mode: 'all',
+              })
               setViewMode('all')
               setExpandedVenues(new Set())
               setFocusedNodeId(null)

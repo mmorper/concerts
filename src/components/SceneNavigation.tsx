@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { haptics } from '../utils/haptics'
+import { analytics } from '../services/analytics'
 
 const scenes = [
   { id: 1, label: 'Timeline' },
@@ -45,6 +46,13 @@ export function SceneNavigation() {
 
   const scrollToScene = (sceneId: number) => {
     haptics.light() // Haptic feedback on navigation
+
+    // Track scene navigation
+    analytics.trackEvent('scene_nav_clicked', {
+      from_scene: activeScene,
+      to_scene: sceneId,
+    })
+
     const scrollContainer = document.querySelector('.snap-y')
     if (!scrollContainer) return
 

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useDebounce } from '../../../hooks/useDebounce'
 import { ArtistPlaceholder } from './ArtistPlaceholder'
 import type { ArtistCard } from './types'
+import { analytics } from '../../../services/analytics'
 
 interface ArtistSearchTypeaheadProps {
   artists: ArtistCard[]
@@ -137,6 +138,13 @@ export function ArtistSearchTypeahead({
   }, [isDropdownOpen])
 
   const handleSelectArtist = (artist: ArtistCard) => {
+    // Track search performed
+    analytics.trackEvent('artist_search_performed', {
+      search_term: searchQuery,
+      results_found: filteredArtists.length,
+      selected_artist: artist.name,
+    })
+
     onArtistSelect(artist.normalizedName)
     setSearchQuery('')
     setIsDropdownOpen(false)

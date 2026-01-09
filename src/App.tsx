@@ -10,6 +10,7 @@ import { SceneNavigation } from './components/SceneNavigation'
 import { ChangelogPage, ChangelogToast, ChangelogRSS } from './components/changelog'
 import { SCENE_MAP, TOAST } from './components/changelog/constants'
 import { useChangelogCheck } from './hooks/useChangelogCheck'
+import { analytics } from './services/analytics'
 
 function App() {
   return (
@@ -101,12 +102,24 @@ function MainScenes() {
       const scrollPosition = scrollContainer.scrollTop
       const windowHeight = window.innerHeight
       const sceneIndex = Math.round(scrollPosition / windowHeight) + 1
-      setCurrentScene(Math.min(Math.max(sceneIndex, 1), 5))
+      const newScene = Math.min(Math.max(sceneIndex, 1), 5)
+
+      if (newScene !== currentScene) {
+        setCurrentScene(newScene)
+
+        // Track scene view
+        const sceneNames = ['timeline', 'venues', 'map', 'genres', 'artists']
+        const sceneName = sceneNames[newScene - 1]
+        analytics.trackEvent('scene_view', {
+          scene_name: sceneName,
+          scene_number: newScene,
+        })
+      }
     }
 
     scrollContainer.addEventListener('scroll', handleScroll, { passive: true })
     return () => scrollContainer.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [currentScene])
 
   // Show toast with delay after data loads and if new features available
   useEffect(() => {
@@ -127,6 +140,16 @@ function MainScenes() {
     const sceneParam = params.get('scene')
     const artistParam = params.get('artist')
     const venueParam = params.get('venue')
+
+    // Track deep link access
+    if (sceneParam || artistParam || venueParam) {
+      analytics.trackEvent('deep_link_accessed', {
+        scene: sceneParam || undefined,
+        artist: artistParam || undefined,
+        venue: venueParam || undefined,
+        has_artist_filter: !!(artistParam && venueParam),
+      })
+    }
 
     if (sceneParam && SCENE_MAP[sceneParam]) {
       const sceneId = SCENE_MAP[sceneParam]

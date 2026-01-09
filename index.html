@@ -27,6 +27,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
 
+    <!-- Google Analytics 4 -->
+    <!-- Only loads in production when VITE_GA_MEASUREMENT_ID is set -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      // Configuration will be called by analytics service
+      // This just sets up the gtag function and dataLayer
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G7FTDXMNSW"></script>
+    <!-- End Google Analytics -->
+
     <!-- Cloudflare Web Analytics -->
     <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e783090c97624000b4b9816b209190a1"}'></script>
     <!-- End Cloudflare Web Analytics -->

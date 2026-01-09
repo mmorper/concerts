@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
 import { haptics } from '../../utils/haptics'
+import { analytics } from '../../services/analytics'
 
 /**
  * State for year filter feature
@@ -21,9 +22,10 @@ export interface YearFilterState {
  * Handles selection, expansion, and hover state for the year filter feature.
  * Only active on tablet+ devices (≥768px).
  *
+ * @param concerts - Optional array of concerts for analytics tracking
  * @returns Object with filter state and control functions
  */
-export function useYearFilter() {
+export function useYearFilter(concerts?: Array<{ date: string }>) {
   const [filterState, setFilterState] = useState<YearFilterState>({
     selectedYear: null,
     isExpanded: false,
@@ -79,6 +81,18 @@ export function useYearFilter() {
         }
       }
 
+      // Track year selection for analytics
+      if (concerts) {
+        const concertsInYear = concerts.filter(c => {
+          const concertYear = new Date(c.date).getFullYear()
+          return concertYear === year
+        }).length
+        analytics.trackEvent('timeline_year_selected', {
+          year,
+          concert_count: concertsInYear,
+        })
+      }
+
       // Otherwise, select and expand
       return {
         selectedYear: year,
@@ -87,7 +101,7 @@ export function useYearFilter() {
         focusedCardIndex: null,
       }
     })
-  }, [isTabletOrLarger])
+  }, [isTabletOrLarger, concerts])
 
   /**
    * Handle hovering over a card in the stack

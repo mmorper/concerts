@@ -22,6 +22,7 @@ import { haptics } from '../../../utils/haptics'
 import { normalizeVenueName } from '../../../utils/normalize'
 import type { ArtistCard, ArtistConcert } from './types'
 import type { Setlist } from '../../../types/setlist'
+import { analytics } from '../../../services/analytics'
 
 // Tab types
 type TabId = 'history' | 'upcoming' | 'tracks'
@@ -197,6 +198,13 @@ export function PhoneArtistModal({
     if (tabId === activeTab) return
 
     haptics.light()
+
+    // Track tab view
+    analytics.trackEvent('artist_tab_viewed', {
+      artist_name: artist?.name || '',
+      tab_name: tabId,
+    })
+
     setActiveTab(tabId)
 
     // Reset scroll position

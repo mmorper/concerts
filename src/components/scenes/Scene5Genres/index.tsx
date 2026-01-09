@@ -6,6 +6,7 @@ import { TimelineSlider } from './TimelineSlider'
 import { useTimelineAnimation } from './useTimelineAnimation'
 import { haptics } from '../../../utils/haptics'
 import type { Concert } from '../../../types/concert'
+import { analytics } from '../../../services/analytics'
 
 // Import timeline data type
 interface GenreTimelineData {
@@ -120,6 +121,12 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
 
   // Handle year change from animation or slider
   const handleYearChange = useCallback((year: number) => {
+    // Track year change (only when user manually changes, not during auto-play)
+    if (hasSeenAnimation.current) {
+      analytics.trackEvent('genre_timeline_changed', {
+        year,
+      })
+    }
     setCurrentYear(year)
   }, [])
 
@@ -170,13 +177,27 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
 
   // Handle tile click
   const handleTileClick = useCallback(
-    (name: string, type: 'genre' | 'artist') => {
+    (name: string, type: 'genre' | 'artist', concertCount?: number) => {
+      // Track tile click
+      analytics.trackEvent('genre_tile_clicked', {
+        genre_name: name,
+        concert_count: concertCount || 0,
+      })
+
       if (type === 'genre') {
         if (selectedGenre === name) {
+          // Track view toggle to genres
+          analytics.trackEvent('genre_view_toggled', {
+            view_mode: 'genres',
+          })
           // Clicking same genre - zoom out
           setView('genres')
           setSelectedGenre(null)
         } else {
+          // Track view toggle to artists
+          analytics.trackEvent('genre_view_toggled', {
+            view_mode: 'artists',
+          })
           // Drill into genre
           setView('artists')
           setSelectedGenre(name)

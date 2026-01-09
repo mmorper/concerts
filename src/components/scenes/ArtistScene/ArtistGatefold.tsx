@@ -10,6 +10,7 @@ import { useGatefoldOrientation } from '../../../hooks/useGatefoldOrientation'
 import { haptics } from '../../../utils/haptics'
 import type { ArtistCard, ArtistConcert } from './types'
 import type { Setlist } from '../../../types/setlist'
+import { analytics } from '../../../services/analytics'
 
 // Active panel type - only one panel can be visible at a time
 type ActivePanel = 'none' | 'setlist' | 'tour-dates'
@@ -267,6 +268,12 @@ export function ArtistGatefold({
 
   // Open setlist panel helper
   const openSetlistPanel = async (concert: ArtistConcert) => {
+    // Track setlist tab view
+    analytics.trackEvent('artist_tab_viewed', {
+      artist_name: artist?.name || '',
+      tab_name: 'setlist',
+    })
+
     setSelectedConcert(concert)
     setSetlistData(null)
     setIsLoadingSetlist(true)
@@ -301,6 +308,12 @@ export function ArtistGatefold({
       handleClosePanel()
       return
     }
+
+    // Track tour dates tab view
+    analytics.trackEvent('artist_tab_viewed', {
+      artist_name: artist?.name || '',
+      tab_name: 'tour-dates',
+    })
 
     // If setlist panel is open, trigger crossfade transition
     if (activePanel === 'setlist' && !isTransitioning) {

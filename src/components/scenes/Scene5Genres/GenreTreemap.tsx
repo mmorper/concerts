@@ -44,7 +44,7 @@ interface GenreTreemapProps {
   view: 'genres' | 'artists'
   selectedGenre: string | null
   hoveredTile: string | null
-  onTileClick: (name: string, type: 'genre' | 'artist') => void
+  onTileClick: (name: string, type: 'genre' | 'artist', concertCount?: number) => void
   onTileHover: (name: string | null) => void
   onExploreArtist: (normalizedName: string) => void
 }
@@ -203,9 +203,9 @@ export function GenreTreemap({
   const handleTileClick = (tile: TreemapTile) => {
     haptics.light()
     if (view === 'artists') {
-      onTileClick(tile.name, 'artist')
+      onTileClick(tile.name, 'artist', tile.count)
     } else {
-      onTileClick(tile.name, 'genre')
+      onTileClick(tile.name, 'genre', tile.count)
     }
   }
 
