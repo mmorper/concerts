@@ -271,8 +271,10 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
             } else if (n.type === 'opener') {
               artistName = n.id.split('|')[3]
             }
+            // Normalize the artist name for comparison (specificArtist is already normalized)
+            const normalizedArtistName = artistName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
             // Only add if it matches the focused artist
-            if (artistName === specificArtist) {
+            if (normalizedArtistName === specificArtist) {
               related.add(n.id)
             }
           } else {
