@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v3.4.0 (Production)
+**Version:** v3.4.1 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-01-09
 
@@ -190,4 +190,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-01-09 by Claude Code for v3.4.0 release*
+*Last updated: 2026-01-09 by Claude Code for v3.4.1 release*

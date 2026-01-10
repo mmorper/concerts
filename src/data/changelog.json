@@ -1,6 +1,14 @@
 {
   "releases": [
     {
+      "version": "3.4.1",
+      "date": "2026-01-09",
+      "title": "Google Analytics 4 Configuration Fix",
+      "description": "Fixed Google Analytics event tracking to properly capture user interactions across all scenes. Analytics data now flows correctly to help understand how people explore their concert memories.",
+      "route": "",
+      "highlights": []
+    },
+    {
       "version": "3.4.0",
       "date": "2026-01-09",
       "title": "Map & Venue Navigation Polish",
