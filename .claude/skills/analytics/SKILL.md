@@ -266,7 +266,7 @@ After events are live:
 
 ## Existing Events Reference
 
-See complete list in: `docs/specs/future/global-analytics-tracking.md` (lines 1456-1487)
+See complete list in: `docs/specs/implemented/global-analytics-tracking.md` (lines 1456-1487)
 
 ### Global Events
 
@@ -402,7 +402,7 @@ Before marking tracking implementation complete:
 
 ## Related Documentation
 
-- **Full Implementation Spec:** `docs/specs/future/global-analytics-tracking.md`
+- **Full Implementation Spec:** `docs/specs/implemented/global-analytics-tracking.md`
 - **Analytics Service:** `src/services/analytics.ts`
 - **GA4 Setup Guide:** Follow prompts in GA4 Admin after events are live
 
