@@ -374,12 +374,12 @@ Starting Phase 1: Data Pipeline...
 ### Direct Spec Selection
 
 ```
-> /implement --spec renamed-venue-display
+> /implement --spec map-renamed-venue-badges
 
-🚀 Ready to Implement: Renamed Venue Display
+🚀 Ready to Implement: Map Renamed Venue Badges
 ════════════════════════════════════════════
 
-Spec: docs/specs/future/renamed-venue-display.md
+Spec: docs/specs/future/map-renamed-venue-badges.md
 Target: v2.1.0
 Priority: Medium | Complexity: Low
 
