@@ -3,7 +3,7 @@
 > **Status**: Planned
 > **Priority**: Medium
 > **Effort**: Medium (pipeline enhancement + CLI tool)
-> **Related**: [renamed-venue-display.md](renamed-venue-display.md)
+> **Related**: [map-renamed-venue-badges.md](map-renamed-venue-badges.md)
 > **Category**: Data Pipeline Automation
 > **Last Updated**: 2026-01-07
 
@@ -813,7 +813,7 @@ npm run test:csv-handler
 
 ## Related Documentation
 
-- [renamed-venue-display.md](renamed-venue-display.md) - Frontend display of renamed venues
+- [map-renamed-venue-badges.md](map-renamed-venue-badges.md) - Frontend display of renamed venues
 - [DATA_PIPELINE.md](../../DATA_PIPELINE.md#workflow-venue-photo-integration) - Venue enrichment workflow
 - [venue-status.csv](../../../data/venue-status.csv) - Manual venue status tracking
 

@@ -142,7 +142,7 @@ Genre moved to artist-level metadata with automatic enrichment from TheAudioDB.
 
 - [mobile-optimization.md](specs/implemented/mobile-optimization.md)
 - [map-popup-z-index.md](specs/future/map-popup-z-index.md)
-- [renamed-venue-display.md](specs/future/renamed-venue-display.md)
+- [map-renamed-venue-badges.md](specs/future/map-renamed-venue-badges.md)
 
 Refinements to interaction patterns and navigation across the app.
 
@@ -158,7 +158,7 @@ Refinements to interaction patterns and navigation across the app.
 
 ### Venue Name Change Detection & CLI Management
 **Status**: Planned
-**Spec**: [venue-name-change-detection.md](specs/future/venue-name-change-detection.md)
+**Spec**: [global-venue-name-change-detection.md](specs/future/global-venue-name-change-detection.md)
 
 Automatically detect when venue names change and provide CLI tools to manage venue status updates.
 
@@ -209,7 +209,7 @@ Refine mobile experience for artist gatefold interactions.
 ## Documentation & Processes
 
 ### Release Management
-**Spec**: [versioned-release-deployment.md](specs/future/versioned-release-deployment.md)
+**Spec**: [global-versioned-release-deployment.md](specs/future/global-versioned-release-deployment.md)
 
 Establish CI/CD pipeline with automated versioning and deployment to Cloudflare Pages.
 

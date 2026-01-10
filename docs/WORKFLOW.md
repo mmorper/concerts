@@ -562,7 +562,7 @@ Right now, every push deploys automatically. This is simple but limits my abilit
 
 The next evolution: **deploy only on version tags** (like `v1.2.0`). This would give me control over when releases happen while keeping the freedom to push to `main` anytime.
 
-I've documented the complete setup for this in **[Versioned Release Deployment Spec](specs/future/versioned-release-deployment.md)**. It's a one-time configuration (GitHub Actions + Wrangler CLI) that replaces Cloudflare's automatic deploys with tag-triggered deploys.
+I've documented the complete setup for this in **[Versioned Release Deployment Spec](specs/future/global-versioned-release-deployment.md)**. It's a one-time configuration (GitHub Actions + Wrangler CLI) that replaces Cloudflare's automatic deploys with tag-triggered deploys.
 
 Benefits:
 - Deploy only when I explicitly tag a release
