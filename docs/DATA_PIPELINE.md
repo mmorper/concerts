@@ -716,7 +716,105 @@ See [docs/specs/future/runbook-global-spotify-enrichment.md](specs/future/runboo
 
 ---
 
-### 8. Build Pipeline (`build-data.ts`) - Enhanced Orchestrator
+### 8. Discography Enrichment (`enrich-discography.ts`)
+
+**What it does:**
+- Fetches comprehensive discography data from MusicBrainz
+- Collects albums, release dates, cover art URLs, and album types
+- Caches results for 90 days
+- Skips mock data artists (no metadata yet)
+
+**Data Source**: MusicBrainz API + Cover Art Archive
+- No authentication required (free, open data)
+- Rate limit: 1 request/second (strictly enforced)
+- Data License: CC0 (public domain)
+
+**Metadata Fields Collected**:
+
+| Field | Description | Example |
+|-------|-------------|---------|
+| `artistName` | Display name | "Radiohead" |
+| `normalizedName` | Cache key | "radiohead" |
+| `mbid` | MusicBrainz ID | "a74b1b7f-71a5-4011..." |
+| `albumCount` | Number of albums | 12 |
+| `albums[]` | Album details array | [...] |
+| `albums[].title` | Album name | "OK Computer" |
+| `albums[].releaseDate` | Full date | "1997-05-21" |
+| `albums[].year` | Release year | 1997 |
+| `albums[].primaryType` | Album type | "Album" \| "EP" \| "Single" |
+| `albums[].secondaryTypes` | Modifiers | ["Live"] \| ["Compilation"] |
+| `albums[].coverUrl` | Cover art URL (500px) | "https://coverartarchive.org/..." |
+| `albums[].coverAvailable` | Has cover art | true |
+
+**Example Output**:
+```
+🎵 Enriching artist discographies from MusicBrainz...
+
+Found 247 unique artists
+Loaded 102 existing discography records
+
+Fetching: Radiohead
+  ✅ Found MBID: a74b1b7f-71a5-4011-9441-d0b5e4122711
+  ✅ Found 9 albums
+  ✅ 9/9 albums have cover art
+
+Fetching: Depeche Mode
+  ✅ Found MBID: 8538e728-ca0b-4321-b7e5-cff6565dd4c0
+  ✅ Found 14 albums
+  ✅ 14/14 albums have cover art
+
+Fetching: Local Band Name
+  ⚠️  Not found in MusicBrainz
+
+📦 Backup created: discography.json.backup.2026-01-14T10-30-00
+
+📊 Enrichment Summary:
+   ✅ Enriched: 200
+   ⏭️  Skipped (cached): 45
+   ❌ Failed: 2
+
+💾 Saved to: public/data/discography.json
+
+🎉 Done!
+```
+
+**Usage**:
+```bash
+# Enrich discography data
+npm run enrich:discography
+
+# Preview without writing
+npm run enrich:discography -- --dry-run
+
+# Force re-fetch all artists (ignore cache)
+npm run enrich:discography -- --force
+```
+
+**Cache Strategy**:
+- TTL: 90 days (albums rarely change)
+- Cache file: `public/data/discography.json`
+- Keyed by normalized artist name
+- Stores empty entries for artists not found (avoids re-fetching)
+
+**Features**:
+- **Fuzzy matching**: Uses Levenshtein distance (80% threshold) for artist search
+- **Rate limiting**: Strict 1 req/sec enforcement with automatic retry on 503 errors
+- **Pagination warning**: Alerts if artist has >100 albums (shows first 100)
+- **Mock data filtering**: Skips artists without real metadata
+
+**Data Output**: `public/data/discography.json`
+
+**Future Use Cases**:
+- Artist Scene gatefold discography panel (v3.6.0+)
+- Album filtering (studio, live, compilations)
+- Concert-album association ("You saw them 3 months after this album dropped")
+- Spotify album deep links (v3.7.0+)
+
+See [docs/specs/future/artists-discography.md](specs/future/artists-discography.md) for complete implementation details.
+
+---
+
+### 9. Build Pipeline (`build-data.ts`) - Enhanced Orchestrator
 
 **What it does:**
 - Orchestrates the complete data refresh pipeline
@@ -728,11 +826,14 @@ See [docs/specs/future/runbook-global-spotify-enrichment.md](specs/future/runboo
 **Pipeline Steps** (in order):
 
 1. **Fetch Google Sheets** → `concerts.json` (always runs)
-2. **Validate concerts** → Quality checks (optional)
-3. **Enrich artist metadata** → TheAudioDB/Last.fm (always runs)
-4. **Enrich venue metadata** → Google Places API (optional)
-5. **Enrich Spotify data** → Album art, tracks (optional)
-6. **Pre-fetch setlists** → setlist.fm cache (optional)
+2. **Enrich concert genres** → Genre enrichment from artist metadata (always runs)
+3. **Validate concerts** → Quality checks (optional)
+4. **Enrich artist metadata** → TheAudioDB/Last.fm (always runs)
+5. **Enrich venue metadata** → Google Places API (optional)
+6. **Enrich Spotify data** → Album art, tracks (optional)
+7. **Enrich discography** → MusicBrainz albums (optional)
+8. **Pre-fetch setlists** → setlist.fm cache (optional)
+9. **Aggregate genres timeline** → Genre statistics (always runs)
 
 **Available Flags:**
 
@@ -742,6 +843,7 @@ See [docs/specs/future/runbook-global-spotify-enrichment.md](specs/future/runboo
 | `--skip-validation` | Skip data quality checks | Faster builds, trusted data |
 | `--skip-venues` | Skip venue enrichment | Saving API quota/cost |
 | `--skip-spotify` | Skip Spotify enrichment | No Spotify credentials |
+| `--skip-discography` | Skip discography enrichment | Faster builds, no MusicBrainz needed |
 | `--skip-setlists` | Skip setlist pre-fetch | No setlist.fm API key |
 | `--force-refresh-setlists` | Re-fetch all setlists | Updating existing setlists |
 

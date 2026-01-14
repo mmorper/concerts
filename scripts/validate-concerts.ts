@@ -170,6 +170,93 @@ async function validateConcerts() {
     }
   })
 
+  // Validate discography data
+  console.log('🎵 Validating discography data...\n')
+
+  const discographyPath = join(process.cwd(), 'public', 'data', 'discography.json')
+  if (existsSync(discographyPath)) {
+    const artistsMetadataPath = join(process.cwd(), 'public', 'data', 'artists-metadata.json')
+    const discography = JSON.parse(readFileSync(discographyPath, 'utf-8'))
+    const artistsMetadata = existsSync(artistsMetadataPath)
+      ? JSON.parse(readFileSync(artistsMetadataPath, 'utf-8'))
+      : {}
+
+    // Check 1: Every non-mock artist should have discography entry
+    for (const [key, artist] of Object.entries(artistsMetadata) as any[]) {
+      const isMockData = artist.dataSource === 'mock' || artist.source === 'mock'
+      if (isMockData) continue
+
+      if (!discography[key]) {
+        warnings.push({
+          row: 0,
+          field: 'discography',
+          message: `Artist "${artist.name}" has no discography data`,
+          severity: 'warning',
+        })
+      }
+    }
+
+    // Check 2: No duplicate albums within artist
+    for (const [key, entry] of Object.entries(discography) as any[]) {
+      const albumIds = entry.albums.map((a: any) => a.id)
+      const uniqueIds = new Set(albumIds)
+
+      if (albumIds.length !== uniqueIds.size) {
+        const duplicates = albumIds.filter(
+          (id: string, index: number) => albumIds.indexOf(id) !== index
+        )
+        errors.push({
+          row: 0,
+          field: 'discography',
+          message: `Artist "${entry.artistName}" has duplicate album IDs: ${duplicates.join(', ')}`,
+          severity: 'error',
+        })
+      }
+    }
+
+    // Check 3: Warn if artist has 0 albums
+    for (const [key, entry] of Object.entries(discography) as any[]) {
+      if (entry.albumCount === 0 && entry.mbid) {
+        warnings.push({
+          row: 0,
+          field: 'discography',
+          message: `Artist "${entry.artistName}" has MBID but no albums`,
+          severity: 'warning',
+        })
+      }
+    }
+
+    // Check 4: Warn if discography is stale (>90 days)
+    const NINETY_DAYS = 90 * 24 * 60 * 60 * 1000
+    let staleCount = 0
+    for (const [key, entry] of Object.entries(discography) as any[]) {
+      const age = Date.now() - new Date(entry.cachedAt).getTime()
+      if (age > NINETY_DAYS) {
+        staleCount++
+      }
+    }
+
+    if (staleCount > 0) {
+      warnings.push({
+        row: 0,
+        field: 'discography',
+        message: `${staleCount} artists have stale discography data (>90 days old)`,
+        severity: 'warning',
+      })
+    }
+
+    console.log(`   Checked ${Object.keys(discography).length} discography records`)
+  } else {
+    warnings.push({
+      row: 0,
+      field: 'discography',
+      message: 'discography.json file not found',
+      severity: 'warning',
+    })
+  }
+
+  console.log()
+
   // Print results
   console.log('=' .repeat(60))
   console.log('VALIDATION RESULTS')

@@ -136,6 +136,80 @@ interface VenueMetadata {
 
 ---
 
+### Artist Discography
+
+Comprehensive album information from MusicBrainz.
+
+**Location:** `public/data/discography.json`
+
+**Key:** Normalized artist name (e.g., `"radiohead"`)
+
+```typescript
+interface ArtistDiscography {
+  // Identity
+  artistName: string;              // "Radiohead"
+  normalizedName: string;          // "radiohead"
+  mbid: string | null;             // MusicBrainz ID or null if not found
+
+  // Cache metadata
+  fetchedAt: string;               // ISO timestamp
+  cachedAt: string;                // ISO timestamp
+  albumCount: number;              // 9
+
+  // Albums
+  albums: Album[];
+}
+
+interface Album {
+  // Identity
+  id: string;                      // MusicBrainz release-group ID
+  title: string;                   // "OK Computer"
+
+  // Dates
+  releaseDate: string;             // "1997-05-21" (full date if available)
+  year: number;                    // 1997
+
+  // Classification
+  primaryType: string;             // "Album" | "EP" | "Single" | "Broadcast" | "Other"
+  secondaryTypes: string[];        // ["Live"] | ["Compilation"] | ["Soundtrack"] | []
+  disambiguation: string;          // "Japanese edition", "" (often empty)
+
+  // Cover Art
+  coverUrl: string;                // Cover Art Archive URL (500px)
+  coverAvailable: boolean;         // true (assumed available, handle 404s in UI)
+}
+```
+
+**Usage:**
+```typescript
+const artistKey = concert.headlinerNormalized; // "radiohead"
+const discography = discographyData[artistKey];
+
+if (discography?.albums) {
+  // Filter to studio albums only
+  const studioAlbums = discography.albums.filter(
+    album => album.primaryType === "Album" && album.secondaryTypes.length === 0
+  );
+
+  // Filter out compilations and live albums
+  const originalReleases = discography.albums.filter(
+    album => !album.secondaryTypes.includes("Compilation")
+          && !album.secondaryTypes.includes("Live")
+  );
+}
+```
+
+**Filtering Patterns:**
+
+- Studio albums: `primaryType === "Album" && secondaryTypes.length === 0`
+- Live albums: `secondaryTypes.includes("Live")`
+- Compilations: `secondaryTypes.includes("Compilation")`
+- EPs: `primaryType === "EP"`
+
+**Cache TTL:** 90 days (albums rarely change)
+
+---
+
 ## Cache Files
 
 ### Geocode Cache

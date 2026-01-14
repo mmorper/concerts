@@ -24,6 +24,7 @@ const exec = promisify(execCallback)
  *   --skip-validation         Skip data validation step
  *   --skip-venues             Skip venue metadata enrichment (Google Places)
  *   --skip-spotify            Skip Spotify metadata enrichment
+ *   --skip-discography        Skip discography enrichment (MusicBrainz)
  *   --skip-setlists           Skip setlist pre-fetch (setlist.fm)
  *   --force-refresh-setlists  Re-fetch all setlists (ignore cache)
  */
@@ -33,6 +34,7 @@ async function buildData() {
   const dryRun = process.argv.includes('--dry-run')
   const skipVenues = process.argv.includes('--skip-venues')
   const skipSpotify = process.argv.includes('--skip-spotify')
+  const skipDiscography = process.argv.includes('--skip-discography')
   const skipSetlists = process.argv.includes('--skip-setlists')
   const forceRefreshSetlists = process.argv.includes('--force-refresh-setlists')
 
@@ -44,6 +46,7 @@ async function buildData() {
     { name: 'Enrich artist metadata', active: true },
     { name: 'Enrich venue metadata', active: !skipVenues },
     { name: 'Enrich Spotify data', active: !skipSpotify },
+    { name: 'Enrich discography', active: !skipDiscography },
     { name: 'Pre-fetch setlists', active: !skipSetlists },
     { name: 'Aggregate genres timeline', active: true },
   ]
@@ -147,7 +150,21 @@ async function buildData() {
       console.log('⏭️  Skipping Spotify enrichment (--skip-spotify flag set)\n')
     }
 
-    // Step 7: Pre-fetch setlists (optional)
+    // Step 7: Enrich discography (optional)
+    if (!skipDiscography) {
+      currentStep++
+      console.log('=' .repeat(60))
+      console.log(`Step ${currentStep}/${activeSteps}: Enriching discography`)
+      console.log('-'.repeat(60))
+
+      const { enrichDiscography } = await import('./enrich-discography.ts')
+      await enrichDiscography()
+      console.log()
+    } else {
+      console.log('⏭️  Skipping discography enrichment (--skip-discography flag set)\n')
+    }
+
+    // Step 8: Pre-fetch setlists (optional)
     if (!skipSetlists) {
       currentStep++
       console.log('=' .repeat(60))
@@ -168,7 +185,7 @@ async function buildData() {
       console.log('⏭️  Skipping setlist pre-fetch (--skip-setlists flag set)\n')
     }
 
-    // Step 8: Aggregate genres timeline (always runs)
+    // Step 9: Aggregate genres timeline (always runs)
     currentStep++
     console.log('=' .repeat(60))
     console.log(`Step ${currentStep}/${activeSteps}: Aggregating genres timeline`)
@@ -193,6 +210,7 @@ async function buildData() {
       console.log('   - public/data/concerts.json')
       console.log('   - public/data/artists-metadata.json')
       if (!skipVenues) console.log('   - public/data/venues-metadata.json')
+      if (!skipDiscography) console.log('   - public/data/discography.json')
       if (!skipSetlists) console.log('   - public/data/setlists-cache.json')
       console.log()
       console.log('📦 Automatic backups created with .backup.TIMESTAMP extension')
