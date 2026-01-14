@@ -1,6 +1,14 @@
 {
   "releases": [
     {
+      "version": "3.4.2",
+      "date": "2026-01-14",
+      "title": "Quality Standards & Documentation Infrastructure",
+      "description": "Enhanced Claude Code agent reliability with centralized quality standards and validation guidelines. Behind-the-scenes improvements to ensure consistent, high-quality development workflows.",
+      "route": "",
+      "highlights": []
+    },
+    {
       "version": "3.4.1",
       "date": "2026-01-09",
       "title": "Google Analytics 4 Configuration Fix",

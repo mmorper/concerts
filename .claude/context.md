@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v3.4.1 (Production)
+**Version:** v3.4.2 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-01-09
 
@@ -103,11 +103,11 @@ These docs provide essential context for common development tasks:
 
 **Recent Releases:**
 
+- **v3.4.2** (2026-01-14): Quality Standards & Documentation Infrastructure
+- **v3.4.1** (2026-01-09): Google Analytics 4 Configuration Fix
 - **v3.4.0** (2026-01-09): Map & Venue Navigation Polish
 - **v3.3.0** (2026-01-08): Connected Experience
 - **v3.2.0** (2026-01-08): Mobile Artist Experience
-- **v3.1.0** (2026-01-07): iPad Touch Support for Timeline
-- **v3.0.1** (2026-01-06): Genre Enrichment & Artist Metadata
 
 ---
 
@@ -191,4 +191,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-01-09 by Claude Code for v3.4.1 release*
+*Last updated: 2026-01-14 by Claude Code for v3.4.2 release*
