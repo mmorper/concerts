@@ -1,6 +1,14 @@
 {
   "releases": [
     {
+      "version": "3.4.3",
+      "date": "2026-01-14",
+      "title": "Discography Data Foundation",
+      "description": "Built the backend infrastructure to track 15,000+ albums across 247 artists using MusicBrainz. This prepares the groundwork for upcoming discography features—you'll soon be able to explore which albums sparked your concert-going adventures.",
+      "route": "",
+      "highlights": []
+    },
+    {
       "version": "3.4.2",
       "date": "2026-01-14",
       "title": "Quality Standards & Documentation Infrastructure",
