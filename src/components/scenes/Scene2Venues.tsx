@@ -32,6 +32,7 @@ export function Scene2Venues({ concerts }: Scene2VenuesProps) {
 
   return (
     <motion.section
+      data-testid="venues-scene"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: false, margin: '-20%' }}
@@ -41,6 +42,7 @@ export function Scene2Venues({ concerts }: Scene2VenuesProps) {
       <div className="max-w-7xl w-full px-8">
         {/* Title */}
         <motion.div
+          data-testid="venues-title"
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: false }}
@@ -50,16 +52,18 @@ export function Scene2Venues({ concerts }: Scene2VenuesProps) {
           <h2 className="font-serif text-5xl md:text-7xl text-white mb-4 tracking-tight">
             The Artists
           </h2>
-          <p className="font-sans text-lg md:text-xl text-gray-400">
+          <p data-testid="venues-subtitle" className="font-sans text-lg md:text-xl text-gray-400">
             305 bands and musicians across 42 years
           </p>
         </motion.div>
 
         {/* Artist Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div data-testid="artist-grid" className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {topArtists.map((artist, index) => (
             <motion.div
               key={artist.name}
+              data-testid="artist-card"
+              data-artist-name={artist.name}
               initial={{ y: 20, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: false }}
@@ -67,15 +71,15 @@ export function Scene2Venues({ concerts }: Scene2VenuesProps) {
               className="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 p-4 hover:border-indigo-400 hover:bg-white/20 transition-all duration-200"
             >
               <div className="flex items-baseline gap-3 mb-2">
-                <div className="font-serif text-3xl text-indigo-300">
+                <div data-testid="artist-count" className="font-serif text-3xl text-indigo-300">
                   {artist.count}
                 </div>
                 <div className="font-sans text-xs text-gray-400">×</div>
               </div>
-              <h3 className="font-sans text-lg font-semibold text-white mb-1 leading-tight">
+              <h3 data-testid="artist-name" className="font-sans text-lg font-semibold text-white mb-1 leading-tight">
                 {artist.name}
               </h3>
-              <p className="font-sans text-xs text-gray-400 uppercase tracking-widest">
+              <p data-testid="artist-genre" className="font-sans text-xs text-gray-400 uppercase tracking-widest">
                 {artist.genre}
               </p>
             </motion.div>
@@ -84,6 +88,7 @@ export function Scene2Venues({ concerts }: Scene2VenuesProps) {
 
         {/* Stats */}
         <motion.div
+          data-testid="venues-stats"
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: false }}

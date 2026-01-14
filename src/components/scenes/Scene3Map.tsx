@@ -565,11 +565,12 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
 
   return (
     <motion.section
+      data-testid="map-scene"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: false, margin: '-20%' }}
       transition={{ duration: 0.8 }}
-      className="h-screen flex flex-col items-center justify-center bg-gray-900 relative snap-start snap-always"
+      className="h-screen flex-col items-center justify-center bg-gray-900 relative snap-start snap-always"
       aria-label={isMapActive ? "Map exploration mode - interactive" : "Map - click to explore"}
     >
       {/* Accessibility: Announce state changes */}
@@ -583,6 +584,7 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
           <>
             {/* Top Navigation - to Bands scene */}
             <motion.button
+              data-testid="map-nav-up"
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -600,6 +602,7 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
 
             {/* Bottom Navigation - to Genres scene */}
             <motion.button
+              data-testid="map-nav-down"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -619,6 +622,7 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
       </AnimatePresence>
       {/* Title Overlay - increased z-index to be above Leaflet panes */}
       <motion.div
+        data-testid="map-title"
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: false }}
@@ -628,15 +632,16 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
         <h2 className="font-serif text-5xl md:text-7xl text-white mb-3 tracking-tight">
           The Geography
         </h2>
-        <p className="font-sans text-lg md:text-xl text-gray-400 mb-6">
+        <p data-testid="map-subtitle" className="font-sans text-lg md:text-xl text-gray-400 mb-6">
           {cityCount} cities across the map
         </p>
 
         {/* Region Tabs */}
-        <div className="flex justify-center gap-2 pointer-events-auto">
+        <div data-testid="region-tabs" className="flex justify-center gap-2 pointer-events-auto">
           {(Object.keys(REGION_VIEWS) as Region[]).map((region) => (
             <button
               key={region}
+              data-testid={`region-button-${region}`}
               onClick={() => {
                 haptics.light() // Haptic feedback on region change
 
@@ -665,6 +670,7 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
 
       {/* Map Container */}
       <motion.div
+        data-testid="map-container"
         initial={{ scale: 0.95, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         viewport={{ once: false }}
@@ -678,6 +684,7 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
       <AnimatePresence>
         {!isMapActive && showHint && (
           <motion.div
+            data-testid="map-hint"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -693,6 +700,7 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
 
       {/* Stats Overlay */}
       <motion.div
+        data-testid="map-stats"
         initial={{ y: -20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: false }}

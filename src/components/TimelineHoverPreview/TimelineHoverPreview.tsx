@@ -81,6 +81,7 @@ export function TimelineHoverPreview({
       {hoverState && (
         <motion.div
           key="timeline-hover-popup"
+          data-testid="timeline-hover-preview"
           layout
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{

@@ -1,0 +1,18 @@
+{
+  "release-groups": [
+    {
+      "id": "6af08295-9a17-3695-bb1a-a26b8c5b8e8e",
+      "title": "Violator",
+      "first-release-date": "1990-03-19",
+      "primary-type": "Album",
+      "secondary-types": []
+    },
+    {
+      "id": "e3e5b4c1-3b3e-4b3e-9b3e-3b3e3b3e3b3e",
+      "title": "Music for the Masses",
+      "first-release-date": "1987-09-28",
+      "primary-type": "Album",
+      "secondary-types": []
+    }
+  ]
+}

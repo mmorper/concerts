@@ -30,12 +30,13 @@ If `--spec` not provided, list all specs in `docs/specs/future/`:
 📋 Available Specs (docs/specs/future/)
 ═══════════════════════════════════════
 
-  #  Name                              Priority   Complexity
-  ─  ────────────────────────────────  ─────────  ──────────
-  1  Spotify Artist Integration        High       High
-  2  Genre Scene Treemap               Medium     Medium
-  3  Artist Cross Navigation           Medium     Low
-  4  Visual Testing Suite              Low        High
+  #  Name
+  ─  ──────────────────────────────────────
+  1  artists-discography
+  2  artists-spotify-integration
+  3  artists-ticketmaster-affiliate
+  4  global-comprehensive-testing-suite
+  5  global-data-normalization-architecture
   ...
 
 Which spec would you like to implement? (enter number)
@@ -44,10 +45,9 @@ Which spec would you like to implement? (enter number)
 **To build this list:**
 
 1. Glob `docs/specs/future/*.md`
-2. For each file, extract metadata from header:
-   - `**Priority:**` value
-   - `**Estimated Complexity:**` or `**Complexity:**` value
-3. Sort by Priority (High → Medium → Low), then alphabetically
+2. Extract filename (without `.md` extension)
+3. Sort alphabetically
+4. **Do not read file contents** — listing only, no token consumption
 
 ---
 
@@ -186,6 +186,76 @@ If `--skip-todos` is not set, use **TodoWrite** to create tasks from the Impleme
 
 ---
 
+### Step 6.5: Recommend Testing Strategy
+
+After creating todos, analyze implementation needs and recommend appropriate test coverage.
+
+Load `.claude/skills/testing/SKILL.md` for testing infrastructure reference, then evaluate:
+
+**Pipeline Changes:**
+
+- If spec modifies `scripts/` → Vitest tests in `test/pipeline/`
+- If spec modifies `src/utils/` → Vitest tests in `test/utils/`
+
+**UI Changes:**
+
+- If spec modifies `src/components/scenes/` → Puppeteer tests in `test/scenes/`
+- If spec adds interactions/navigation → Puppeteer interaction tests
+
+**Data Schema Changes:**
+
+- If spec modifies data structures → Validation tests (referential integrity)
+- If spec changes API contracts → Integration tests with mocks
+
+**Present testing plan:**
+
+```
+🧪 Recommended Testing Approach
+────────────────────────────────
+
+Based on this implementation, you should:
+
+✓ Add Vitest tests for:
+  • {specific script or utility with description}
+  • {specific function or module with description}
+
+✓ Add Puppeteer tests for:
+  • {specific scene or component with description}
+  • {specific interaction or navigation flow}
+
+✓ Update existing tests:
+  • {existing test file with reason}
+  • {existing test file with reason}
+
+Estimated test additions: ~{N} tests
+Run tests after implementation: npm run test:all
+```
+
+**If no tests are needed (documentation/style-only changes):**
+
+```
+🧪 Testing Assessment
+─────────────────────
+
+No test changes required:
+  • Changes are documentation/style-only
+  • Existing tests provide coverage
+```
+
+**Add testing task to todos:**
+
+Add final todo item:
+
+```json
+{
+  "content": "Write/update tests for implementation",
+  "status": "pending",
+  "activeForm": "Writing/updating tests for implementation"
+}
+```
+
+---
+
 ### Step 7: Provide Kickoff Guidance
 
 Present implementation readiness summary:
@@ -202,6 +272,7 @@ Context Loaded:
   ✓ Full spec ({LINE_COUNT} lines)
   ✓ {skill-name} skill
   ✓ {skill-name} skill
+  ✓ testing skill
   ✓ {N} reference files
 
 Implementation Phases:
@@ -209,11 +280,17 @@ Implementation Phases:
   2. {Phase 2 Name} ({task_count} tasks)
   ...
 
+Testing Plan:
+  • {N} Vitest tests (pipeline/utilities)
+  • {N} Puppeteer tests (scenes/interactions)
+  • {N} test updates (existing coverage)
+
 Start with:
   → {first_file_path} ({reason})
   → {second_file_path} ({reason})
 
 First task: {first_task_description}
+Last task: Write/update tests for implementation
 
 Ready to begin? (yes / show spec summary / show tasks)
 ```
@@ -328,11 +405,11 @@ Recommend starting a new session. Handoff summary:
 📋 Available Specs (docs/specs/future/)
 ═══════════════════════════════════════
 
-  #  Name                              Priority   Complexity
-  ─  ────────────────────────────────  ─────────  ──────────
-  1  Spotify Artist Integration        High       High
-  2  Genre Scene Treemap               Medium     Medium
-  3  Renamed Venue Display             Medium     Low
+  #  Name
+  ─  ──────────────────────────────────────
+  1  artists-spotify-integration
+  2  genre-scene-treemap
+  3  map-renamed-venue-badges
 
 Which spec would you like to implement? (enter number)
 

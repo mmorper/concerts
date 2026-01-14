@@ -989,6 +989,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
 
   return (
     <motion.section
+      data-testid="venue-network-scene"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: false, margin: '-20%' }}
@@ -997,6 +998,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
     >
       {/* Title */}
       <motion.div
+        data-testid="venue-network-title"
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: false }}
@@ -1006,15 +1008,16 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
         <h2 className="font-serif text-5xl md:text-7xl text-white mb-3 tracking-tight">
           The Venues
         </h2>
-        <p className="font-sans text-lg md:text-xl text-gray-400 mb-6">
+        <p data-testid="venue-network-subtitle" className="font-sans text-lg md:text-xl text-gray-400 mb-6">
           {viewMode === 'top10'
             ? '10 most-visited venues'
             : `${totalVenues} concert halls and amphitheaters`}
         </p>
 
         {/* View Mode Toggle */}
-        <div className="flex justify-center gap-2">
+        <div data-testid="view-mode-toggle" className="flex justify-center gap-2">
           <button
+            data-testid="view-mode-top10"
             onClick={() => {
               analytics.trackEvent('venue_view_mode_changed', {
                 new_mode: 'top10',
@@ -1034,6 +1037,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
             Top 10
           </button>
           <button
+            data-testid="view-mode-all"
             onClick={() => {
               analytics.trackEvent('venue_view_mode_changed', {
                 new_mode: 'all',
@@ -1057,6 +1061,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
 
       {/* Network Visualization */}
       <motion.div
+        data-testid="network-graph"
         initial={{ scale: 0.9, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         viewport={{ once: false }}
@@ -1065,6 +1070,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
       >
         <svg
           ref={svgRef}
+          data-testid="network-svg"
           className="w-full h-full"
           style={{ cursor: 'default' }}
         />
@@ -1072,6 +1078,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
 
       {/* Subtitle */}
       <motion.div
+        data-testid="venue-network-instructions"
         initial={{ y: -20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: false }}
@@ -1089,6 +1096,7 @@ export function Scene4Bands({ concerts, pendingVenueFocus, onVenueFocusComplete,
       {/* Reset Button */}
       {focusedNodeId && (
         <motion.button
+          data-testid="reset-button"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}

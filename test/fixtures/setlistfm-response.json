@@ -1,0 +1,32 @@
+{
+  "setlist": [
+    {
+      "id": "63d1e2f8",
+      "artist": {
+        "name": "Depeche Mode"
+      },
+      "venue": {
+        "name": "Hollywood Bowl",
+        "city": {
+          "name": "Los Angeles",
+          "state": "California",
+          "country": {
+            "code": "US"
+          }
+        }
+      },
+      "eventDate": "15-01-2024",
+      "sets": {
+        "set": [
+          {
+            "song": [
+              { "name": "Walking in My Shoes" },
+              { "name": "Personal Jesus" },
+              { "name": "Enjoy the Silence" }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

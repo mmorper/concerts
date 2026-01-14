@@ -1,0 +1,15 @@
+{
+  "artists": {
+    "items": [
+      {
+        "id": "762310PdDnwsDxAQxzQkfX",
+        "name": "Depeche Mode",
+        "popularity": 73,
+        "genres": ["new wave", "permanent wave", "rock", "synth pop"],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/artist/762310PdDnwsDxAQxzQkfX"
+        }
+      }
+    ]
+  }
+}

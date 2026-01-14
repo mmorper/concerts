@@ -1,0 +1,64 @@
+{
+  "concerts": [
+    {
+      "id": "concert-1",
+      "date": "2024-01-15",
+      "year": 2024,
+      "month": 1,
+      "day": 15,
+      "dayOfWeek": "Monday",
+      "decade": "2020s",
+      "headliner": "Depeche Mode",
+      "headlinerNormalized": "depeche-mode",
+      "openers": ["Devo"],
+      "genre": "Synth Pop",
+      "genreNormalized": "synth-pop",
+      "venue": "Hollywood Bowl",
+      "venueNormalized": "hollywood-bowl",
+      "city": "Los Angeles",
+      "state": "California",
+      "cityState": "Los Angeles, California",
+      "location": {
+        "lat": 34.1128,
+        "lng": -118.3389
+      },
+      "reference": ""
+    },
+    {
+      "id": "concert-2",
+      "date": "2024-02-20",
+      "year": 2024,
+      "month": 2,
+      "day": 20,
+      "dayOfWeek": "Tuesday",
+      "decade": "2020s",
+      "headliner": "The Cure",
+      "headlinerNormalized": "the-cure",
+      "openers": [],
+      "genre": "Alternative Rock",
+      "genreNormalized": "alternative-rock",
+      "venue": "The Forum",
+      "venueNormalized": "the-forum",
+      "city": "Inglewood",
+      "state": "California",
+      "cityState": "Inglewood, California",
+      "location": {
+        "lat": 33.9581,
+        "lng": -118.3417
+      },
+      "reference": "https://example.com/concert"
+    }
+  ],
+  "metadata": {
+    "totalConcerts": 2,
+    "dateRange": {
+      "earliest": "2024-01-15",
+      "latest": "2024-02-20"
+    },
+    "stats": {
+      "uniqueArtists": 3,
+      "uniqueVenues": 2,
+      "uniqueCities": 2
+    }
+  }
+}

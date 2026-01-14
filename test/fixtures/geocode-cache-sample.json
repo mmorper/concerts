@@ -1,0 +1,14 @@
+{
+  "hollywood bowl|los angeles|california": {
+    "lat": 34.1128,
+    "lng": -118.3389,
+    "formattedAddress": "2301 N Highland Ave, Los Angeles, CA 90068, USA",
+    "geocodedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "the forum|inglewood|california": {
+    "lat": 33.9581,
+    "lng": -118.3417,
+    "formattedAddress": "3900 W Manchester Blvd, Inglewood, CA 90305, USA",
+    "geocodedAt": "2024-01-01T00:00:00.000Z"
+  }
+}

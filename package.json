@@ -28,7 +28,24 @@
     "aggregate:genres": "tsx scripts/aggregate-genres-timeline.ts",
     "generate-artist-metadata": "tsx scripts/generate-artist-metadata.ts",
     "prefetch:setlists": "tsx scripts/prefetch-setlists.ts",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
+    "test:pipeline": "vitest run test/pipeline",
+    "test:scenes": "vitest run test/scenes",
+    "test:utils": "vitest run test/utils",
     "test:sanity": "node test/test-simple.mjs",
+    "test:all": "tsx scripts/run-tests.ts",
+    "test:all:quick": "tsx scripts/run-tests.ts --quick",
+    "test:all:coverage": "tsx scripts/run-tests.ts --coverage",
+    "test:scenes:puppeteer": "npm run test:timeline && npm run test:venues && npm run test:map && npm run test:genres && npm run test:artists",
+    "test:timeline": "node test/scenes/test-timeline.mjs",
+    "test:venues": "node test/scenes/test-venues.mjs",
+    "test:map": "node test/scenes/test-map.mjs",
+    "test:genres": "node test/scenes/test-genres.mjs",
+    "test:artists": "node test/scenes/test-artists.mjs",
     "og:generate": "tsx scripts/generate-og-simple.ts",
     "og:preview": "tsx scripts/preview-og-crops.ts",
     "cleanup:backups": "tsx scripts/cleanup-backups.ts"
@@ -51,12 +68,15 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@axe-core/puppeteer": "^4.11.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/leaflet": "^1.9.14",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@types/react-window": "^1.8.8",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^4.0.17",
+    "@vitest/ui": "^4.0.17",
     "autoprefixer": "^10.4.20",
     "googleapis": "^144.0.0",
     "postcss": "^8.4.49",
@@ -65,6 +85,7 @@
     "tailwindcss": "^4.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
-    "vite": "^6.0.7"
+    "vite": "^6.0.7",
+    "vitest": "^4.0.17"
   }
 }

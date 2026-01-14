@@ -8,8 +8,8 @@ import puppeteer from 'puppeteer';
 
   const page = await browser.newPage();
 
-  console.log('Navigating to localhost:5179...');
-  await page.goto('http://localhost:5179', { waitUntil: 'networkidle2' });
+  console.log('Navigating to localhost:5173...');
+  await page.goto('http://localhost:5173', { waitUntil: 'networkidle2' });
 
   console.log('Page loaded, taking screenshot...');
   await page.screenshot({ path: '/tmp/page-initial.png', fullPage: true });

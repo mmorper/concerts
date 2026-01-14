@@ -1,0 +1,28 @@
+{
+  "depeche-mode": {
+    "name": "Depeche Mode",
+    "image": "https://www.theaudiodb.com/images/media/artist/thumb/depeche-mode.jpg",
+    "bio": "Depeche Mode are an English electronic music band formed in 1980 in Basildon, Essex.",
+    "genres": ["Synth Pop", "New Wave"],
+    "formed": "1980",
+    "website": "https://www.depechemode.com",
+    "source": "theaudiodb",
+    "fetchedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "the-cure": {
+    "name": "The Cure",
+    "image": "https://www.theaudiodb.com/images/media/artist/thumb/the-cure.jpg",
+    "bio": "The Cure are an English rock band formed in Crawley, West Sussex, in 1976.",
+    "genres": ["Alternative Rock", "Post-Punk"],
+    "formed": "1976",
+    "website": "https://www.thecure.com",
+    "source": "theaudiodb",
+    "fetchedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "devo": {
+    "name": "Devo",
+    "normalizedName": "devo",
+    "fetchedAt": "2024-01-01T00:00:00.000Z",
+    "dataSource": "mock"
+  }
+}

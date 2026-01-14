@@ -167,6 +167,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
 
   return (
     <motion.section
+      data-testid="artist-scene"
       className="h-screen flex flex-col items-center justify-center bg-stone-50 snap-start snap-always relative overflow-hidden"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -175,6 +176,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
     >
       {/* Header - Centered like other scenes */}
       <motion.div
+        data-testid="artist-scene-title"
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: false }}
@@ -188,6 +190,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
           The Artists
         </h2>
         <p
+          data-testid="artist-scene-subtitle"
           className="font-sans text-lg md:text-xl text-white/85 mb-6"
           style={{ textShadow: '0 2px 20px rgba(0, 0, 0, 0.3)' }}
         >
@@ -195,7 +198,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
         </p>
 
         {/* Artist Search */}
-        <div className="mb-4 w-full max-w-md mx-auto pointer-events-auto">
+        <div data-testid="artist-search-container" className="mb-4 w-full max-w-md mx-auto pointer-events-auto">
           <ArtistSearchTypeahead
             artists={artistCards}
             onArtistSelect={handleArtistSelect}
@@ -205,9 +208,10 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
         </div>
 
         {/* Control Buttons */}
-        <div className="flex justify-center gap-2 flex-wrap">
+        <div data-testid="sort-buttons" className="flex justify-center gap-2 flex-wrap">
           {/* A-Z Button */}
           <button
+            data-testid="sort-alphabetical"
             onClick={() => {
               haptics.light() // Haptic feedback on sort change
               analytics.trackEvent('artist_sort_changed', {
@@ -226,6 +230,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
 
           {/* Most Seen Button */}
           <button
+            data-testid="sort-most-seen"
             onClick={() => {
               haptics.light() // Haptic feedback on sort change
               analytics.trackEvent('artist_sort_changed', {
@@ -261,6 +266,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
 
       {/* Mosaic Grid */}
       <motion.div
+        data-testid="artist-mosaic-container"
         initial={{ scale: 0.9, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         viewport={{ once: false }}
@@ -296,6 +302,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
       {/* Footer Instructions - Hide when gatefold is open */}
       {!openArtist && (
         <motion.div
+          data-testid="artist-scene-instructions"
           initial={{ y: -20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: false }}
@@ -311,6 +318,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
       {/* Spotify Attribution */}
       {artistCards.some(a => a.spotifyArtistUrl) && (
         <motion.div
+          data-testid="spotify-attribution"
           className="absolute bottom-2 right-4 z-20"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

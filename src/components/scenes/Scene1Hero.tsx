@@ -238,6 +238,7 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
         .attr('r', touchRadius)
         .attr('fill', 'transparent')
         .attr('class', isSignificant ? 'timeline-dot' : 'timeline-dot-tiny')
+        .attr('data-testid', 'year-dot')
         .attr('data-year', year)
         .attr('data-count', count)
         .style('cursor', isSignificant ? 'pointer' : 'default')
@@ -638,6 +639,7 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
 
   return (
     <motion.section
+      data-testid="scene-timeline"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: false, margin: '-20%' }}
@@ -654,10 +656,16 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
           transition={{ duration: 0.8, delay: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="font-serif text-5xl md:text-7xl text-gray-900 mb-4 tracking-tight">
+          <h1
+            data-testid="timeline-title"
+            className="font-serif text-5xl md:text-7xl text-gray-900 mb-4 tracking-tight"
+          >
             Concert Archive
           </h1>
-          <p className="font-sans text-lg md:text-xl text-gray-500">
+          <p
+            data-testid="timeline-stats"
+            className="font-sans text-lg md:text-xl text-gray-500"
+          >
             {totalConcerts} shows across {yearSpan}
           </p>
         </motion.div>
@@ -671,6 +679,7 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
           className="w-full"
         >
           <svg
+            data-testid="timeline-svg"
             ref={timelineRef}
             className="w-full"
             height="200"
@@ -680,6 +689,7 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
 
         {/* Subtitle */}
         <motion.p
+          data-testid="timeline-subtitle"
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: false }}

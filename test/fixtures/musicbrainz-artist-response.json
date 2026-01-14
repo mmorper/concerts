@@ -1,0 +1,12 @@
+{
+  "artists": [
+    {
+      "id": "8538e728-ca0b-4321-b7e5-cff6565dd4c0",
+      "name": "Depeche Mode",
+      "type": "Group",
+      "score": 100,
+      "country": "GB",
+      "begin": "1980"
+    }
+  ]
+}

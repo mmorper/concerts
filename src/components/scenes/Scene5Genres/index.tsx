@@ -288,6 +288,7 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
 
   return (
     <motion.section
+      data-testid="genres-scene"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: false, margin: '-20%' }}
@@ -304,6 +305,7 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
       {/* Header: Title + Year */}
       <div className="flex flex-col items-center z-20">
         <motion.div
+          data-testid="genres-title"
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: false }}
@@ -313,12 +315,13 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
           <h2 className="font-serif text-3xl md:text-5xl text-white mb-1 tracking-tight">
             The Music
           </h2>
-          <p className="font-sans text-sm text-slate-400">
+          <p data-testid="genres-subtitle" className="font-sans text-sm text-slate-400">
             Watch taste evolve decade by decade
           </p>
         </motion.div>
 
         <motion.div
+          data-testid="genres-year-display"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: false }}
@@ -326,6 +329,7 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
           className="text-center mt-3 md:mt-4"
         >
           <div
+            data-testid="current-year"
             className="font-serif text-4xl md:text-5xl text-white tabular-nums transition-transform duration-100"
             style={{
               transform: isPlaying ? 'scale(1.02)' : 'scale(1)',
@@ -333,7 +337,7 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
           >
             {currentYear}
           </div>
-          <div className="font-sans text-sm text-slate-400 mt-1">
+          <div data-testid="total-shows" className="font-sans text-sm text-slate-400 mt-1">
             {totalShows} show{totalShows !== 1 ? 's' : ''}
           </div>
         </motion.div>
@@ -342,6 +346,7 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
         <AnimatePresence>
           {selectedGenre && (
             <motion.div
+              data-testid="genres-breadcrumb"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
@@ -349,13 +354,14 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
             >
               <span className="font-sans text-sm text-slate-500">
                 <button
+                  data-testid="breadcrumb-back"
                   onClick={handleReset}
                   className="hover:text-white transition-colors"
                 >
                   All Genres
                 </button>
                 <span className="mx-2">&rsaquo;</span>
-                <span>{selectedGenre}</span>
+                <span data-testid="selected-genre-name">{selectedGenre}</span>
               </span>
             </motion.div>
           )}
@@ -366,6 +372,7 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
       <AnimatePresence>
         {view === 'artists' && (
           <motion.button
+            data-testid="genres-back-button"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -380,6 +387,7 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
       {/* Treemap container - centered */}
       <motion.div
         ref={containerRef}
+        data-testid="genre-treemap-container"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: false }}
@@ -401,10 +409,11 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
       </motion.div>
 
       {/* Footer: Timeline slider */}
-      <div className="flex flex-col items-center z-20 w-full">
+      <div data-testid="genres-footer" className="flex flex-col items-center z-20 w-full">
         <AnimatePresence>
           {view === 'genres' && (
             <motion.div
+              data-testid="timeline-slider-container"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
@@ -427,6 +436,7 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
 
         {/* Instruction text */}
         <motion.p
+          data-testid="genres-instructions"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: false }}

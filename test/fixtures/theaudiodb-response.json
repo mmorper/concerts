@@ -1,0 +1,14 @@
+{
+  "artists": [
+    {
+      "idArtist": "111247",
+      "strArtist": "Depeche Mode",
+      "strArtistThumb": "https://www.theaudiodb.com/images/media/artist/thumb/depeche-mode.jpg",
+      "strBiographyEN": "Depeche Mode are an English electronic music band formed in 1980 in Basildon, Essex. The group consists of founders Dave Gahan (lead vocals), Martin Gore (keyboards, guitar, vocals), and Andy Fletcher (keyboards).",
+      "strGenre": "Synth Pop",
+      "strStyle": "New Wave",
+      "intFormedYear": "1980",
+      "strWebsite": "www.depechemode.com"
+    }
+  ]
+}
