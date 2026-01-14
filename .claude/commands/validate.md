@@ -2,6 +2,8 @@
 
 Run comprehensive validation checks before releases or after data changes.
 
+**Quality Standards:** This command enforces the standards defined in [.claude/quality-standards.md](../quality-standards.md).
+
 ## Inputs
 
 | Argument | Required | Default | Description |
@@ -135,6 +137,14 @@ Errors: 0
 
 ✅ Ready for release!
 ```
+
+**IMPORTANT:** Never claim checks passed unless they were actually run. If validation cannot be completed, explicitly state:
+
+- Which checks could not be executed
+- Why they could not be run
+- What would need to happen to run them
+
+This is a **blocking requirement** — validation failures must prevent releases. See [.claude/quality-standards.md](../quality-standards.md) for rationale.
 
 ---
 

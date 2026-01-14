@@ -73,6 +73,7 @@ These docs provide essential context for common development tasks:
 
 | Document | Use When |
 |----------|----------|
+| [.claude/quality-standards.md](quality-standards.md) | **Before submitting any changes** - validation requirements, production safety |
 | [docs/DEEP_LINKING.md](../docs/DEEP_LINKING.md) | Creating URLs, implementing navigation, writing specs with deep links |
 | [docs/DATA_PIPELINE.md](../docs/DATA_PIPELINE.md) | Working with concert data, running enrichment, understanding validation |
 | [docs/BUILD.md](../docs/BUILD.md) | Deploying, regenerating OG images, understanding build pipeline |

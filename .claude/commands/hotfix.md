@@ -2,6 +2,8 @@
 
 Streamlined workflow for urgent bug fixes. Faster than `/release` with fewer prompts.
 
+**Quality Standards:** Even though this is a fast-track workflow, validation checks are still **blocking**. See [.claude/quality-standards.md](../quality-standards.md).
+
 ## Inputs
 
 | Argument | Required | Default | Description |
@@ -113,7 +115,28 @@ New:     v{NEW_VERSION}
 
 ---
 
-### Step 5: Update Files
+### Step 5: Validation
+
+**Run quick validation (blocking):**
+
+```bash
+npm run validate:version
+npm run build
+```
+
+**If validation fails:** Stop and fix issues before proceeding. Hotfixes still require passing checks.
+
+**Production Safety:** Even for urgent fixes, check if changes affect:
+
+- Data structures or schemas
+- API integrations
+- Analytics tracking
+
+If yes, explicitly note in changelog description.
+
+---
+
+### Step 7: Update Files
 
 **Minimal updates (no ROADMAP, no README "What's New"):**
 
@@ -125,7 +148,7 @@ New:     v{NEW_VERSION}
 
 ---
 
-### Step 6: Commit & Tag
+### Step 8: Commit & Tag
 
 ```bash
 git add -A
@@ -142,7 +165,7 @@ git tag v{NEW_VERSION}
 
 ---
 
-### Step 7: Push (unless --no-push)
+### Step 9: Push (unless --no-push)
 
 ```bash
 git push origin main --tags

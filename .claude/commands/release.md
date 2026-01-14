@@ -59,6 +59,24 @@ npm run build
 
 ---
 
+### Production Safety Checklist
+
+Before proceeding with release, verify:
+
+- [ ] **Changes reviewed for impact** — Check if this release affects:
+  - Data structures (`concerts.json`, `artists-metadata.json`, `venues-metadata.json`)
+  - API integrations (Ticketmaster, setlist.fm, geocoding)
+  - Analytics tracking events (GA4)
+  - Build/deployment configuration
+- [ ] **Breaking changes documented** — If any breaking changes exist, they must be:
+  - Clearly described in changelog with migration notes
+  - Highlighted in README "What's New" section
+- [ ] **Rollback plan identified** — Confirm `/release-undo` can reverse this release
+
+**Reference:** [.claude/quality-standards.md](.claude/quality-standards.md) for detailed safety guidelines.
+
+---
+
 ### Step 2: Determine Version
 
 **If bump type provided (`patch`/`minor`/`major`):**
