@@ -1,16 +1,35 @@
 # Roadmap
 
-## Current State (v3.3.0)
+## Current State (v3.5.0)
 
 - **178 concerts** spanning 1984-2026
 - **104 headlining artists** with 247 total artists (including openers)
 - **77 unique venues** across 35 cities
 - **5 interactive scenes**: Timeline, Venues, Geography, Genres, Artists
-- **Latest improvements**: Cross-scene venue navigation with venue+artist combined deep linking
+- **Latest improvements**: Artist discography integration with MusicBrainz API
 
 ---
 
 ## Recently Completed
+
+### ✅ Artist Discography Data Pipeline (v3.5.0)
+
+**Status**: Completed
+**Spec**: [artists-discography.md](specs/future/artists-discography.md)
+
+Comprehensive artist discography enrichment using MusicBrainz API to fetch album data for all 247 artists.
+
+**Implemented Features**:
+
+- MusicBrainz API client with rate limiting (1 req/sec) and fuzzy artist matching
+- Discography enrichment script with 90-day caching
+- Integration into `npm run build-data` pipeline as Step 7
+- Validation checks for discography completeness and data quality
+- Generated 2.5MB discography.json with 15,000+ albums
+- Support for album filtering by type (studio, live, compilation, EP)
+- Prepared data structure for future UI integration in Artist Scene (v3.6.0+)
+
+---
 
 ### ✅ Venue Cross-Scene Navigation (v3.3.0)
 
@@ -155,6 +174,25 @@ Refinements to interaction patterns and navigation across the app.
 ---
 
 ## Medium-Term Roadmap
+
+### Artist Discography UI Panel
+
+**Status**: Planned (Data pipeline completed in v3.5.0)
+**Spec**: [artists-discography.md](specs/future/artists-discography.md)
+
+Visual discography panel in Artist Scene gatefold showing album covers and release timeline.
+
+**Key Features**:
+
+- Grid layout of album covers (4-5 columns)
+- Chronological ordering (newest first)
+- Album filtering by type (studio albums, EPs, live, compilations)
+- Hover to show album title + year
+- Click to link to Spotify album (future integration)
+- Fallback for missing cover art
+- Data already available in `discography.json` (15k+ albums)
+
+---
 
 ### Venue Name Change Detection & CLI Management
 **Status**: Planned
