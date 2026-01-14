@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "3.5.0",
+      "date": "2026-01-14",
+      "title": "Comprehensive Testing Infrastructure",
+      "description": "Added enterprise-grade testing with 305 automated tests covering every data pipeline and interactive scene. When you explore your concert history, you can trust it's been thoroughly validated—from venue geocoding to genre timelines to artist search.",
+      "route": "",
+      "highlights": [
+        "268 Vitest tests validate all 26 data processing scripts",
+        "37 Puppeteer tests verify every scene interaction and navigation flow",
+        "New /test command orchestrates full test suite in under 2 minutes",
+        "Testing skill integrated into /implement workflow for new features"
+      ]
+    },
+    {
       "version": "3.4.3",
       "date": "2026-01-14",
       "title": "Discography Data Foundation",
