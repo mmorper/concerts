@@ -183,20 +183,22 @@ Static /about page surfacing creator identity and project backstory for SEO auth
 
 ---
 
-### SEO Optimization - Search & AI Bot Discoverability
+### SEO Tool v2 - Integrated Analytics & Backlink Support
 
 **Status**: Planned
-**Spec**: [global-seo-optimization.md](specs/future/global-seo-optimization.md)
+**Target Version**: v4.0.0
+**Spec**: [global-seo-tool-v2.md](specs/future/global-seo-tool-v2.md)
 
-Make concert archive discoverable to search engines and AI assistants through static SEO foundation and dynamic meta injection.
+Transform `/seo` command into comprehensive SEO intelligence platform with real data from Google Search Console, GA4, and optional backlink APIs.
 
 **Key Features**:
 
-- Static SEO foundation (robots.txt, sitemap.xml, llm.txt, Schema.org structured data)
-- Dynamic sitemap generation from concert data (247 artists, 77 venues)
-- Cloudflare Worker for dynamic meta tag injection per entity
-- Enhanced social media preview cards with Open Graph tags
-- AI assistant documentation via llm.txt
+- Google Search Console integration (impressions, clicks, CTR, rankings)
+- Google Analytics 4 integration (engagement, bounce rate, Core Web Vitals)
+- Backlink API scaffolding (Ahrefs + SEMrush support)
+- Correlation insights engine (cross-source analysis)
+- Portable credential management (env vars, config file, OAuth)
+- Multiple output formats (CLI, Markdown, HTML, JSON)
 
 ---
 

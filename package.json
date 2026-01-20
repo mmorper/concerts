@@ -84,6 +84,7 @@
     "@vitest/ui": "^4.0.17",
     "autoprefixer": "^10.4.20",
     "googleapis": "^144.0.0",
+    "open": "^11.0.0",
     "postcss": "^8.4.49",
     "puppeteer": "^24.34.0",
     "sharp": "^0.34.5",

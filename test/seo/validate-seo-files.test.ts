@@ -121,11 +121,11 @@ describe('SEO Files Validation', () => {
       const llmPath = path.join(publicDir, 'llm.txt')
       const content = fs.readFileSync(llmPath, 'utf-8')
 
-      // Should have stats that match pattern
-      expect(content).toMatch(/\d+ concerts/)
-      expect(content).toMatch(/\d+ artists/)
-      expect(content).toMatch(/\d+ venues/)
-      expect(content).toMatch(/\d+ albums/)
+      // Should have stats that match pattern (may include commas and + signs)
+      expect(content).toMatch(/[\d,]+\+? concerts/)
+      expect(content).toMatch(/[\d,]+\+? artists/)
+      expect(content).toMatch(/[\d,]+\+? venues/)
+      expect(content).toMatch(/[\d,]+\+? albums/)
 
       // Should have last updated date
       expect(content).toMatch(/\*\*Last Updated:\*\* \d{4}-\d{2}-\d{2}/)
@@ -173,7 +173,7 @@ describe('SEO Files Validation', () => {
       const content = fs.readFileSync(indexHtmlPath, 'utf-8')
 
       expect(content).toContain('application/rss+xml')
-      expect(content).toContain('/liner-notes/rss')
+      expect(content).toContain('/rss.xml')
     })
 
     it('should have JSON data endpoint discovery link', () => {
@@ -239,7 +239,7 @@ describe('SEO Files Validation', () => {
       }
     })
 
-    it('should have hasPart with all 5 scenes', () => {
+    it('should have hasPart with all scenes and About page', () => {
       const content = fs.readFileSync(indexHtmlPath, 'utf-8')
 
       const jsonLdMatch = content.match(
@@ -250,7 +250,7 @@ describe('SEO Files Validation', () => {
         const parsed = JSON.parse(jsonLdMatch[1])
 
         expect(parsed.hasPart).toBeDefined()
-        expect(parsed.hasPart).toHaveLength(5)
+        expect(parsed.hasPart).toHaveLength(6) // 5 scenes + About page
 
         const sceneNames = parsed.hasPart.map((scene: any) => scene.name)
         expect(sceneNames).toContain('Timeline')
@@ -258,6 +258,7 @@ describe('SEO Files Validation', () => {
         expect(sceneNames).toContain('Venues')
         expect(sceneNames).toContain('Geography')
         expect(sceneNames).toContain('Genres')
+        expect(sceneNames).toContain('About the Archive')
       }
     })
 

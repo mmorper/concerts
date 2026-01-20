@@ -59,11 +59,11 @@
 
 ## Automated SEO Analysis
 
-### `/seo` Command
+### `/seo` Command (v2.0)
 
-Run comprehensive SEO analysis of the live production site with a single command.
+Run comprehensive SEO analysis with optional integration of Google Search Console, Google Analytics 4, and backlink APIs (Ahrefs/SEMrush).
 
-**Usage:**
+**Basic Usage:**
 
 ```bash
 /seo                           # Standard analysis with dashboard report
@@ -72,36 +72,157 @@ Run comprehensive SEO analysis of the live production site with a single command
 /seo --url https://staging.com # Analyze staging environment
 ```
 
+**Data Source Modes:**
+
+```bash
+/seo --quick                   # Crawl-only mode (no API calls)
+/seo --full                    # Enable all configured data sources
+/seo --no-gsc                  # Skip Google Search Console
+/seo --no-ga4                  # Skip Google Analytics 4
+/seo --no-backlinks            # Skip backlink API
+```
+
+**Output Format Options:**
+
+```bash
+/seo --output cli              # Dashboard only (default)
+/seo --output cli,md           # Dashboard + Markdown report
+/seo --output html             # Standalone HTML report
+/seo --output json             # Full JSON data export
+/seo --output csv              # CSV files for spreadsheet import
+/seo --output sheets           # Export directly to Google Sheets
+/seo --output cli,md,html,json # Multiple formats
+```
+
+**Setup & Configuration:**
+
+```bash
+/seo --setup                   # Interactive credential setup wizard
+/seo --cache-clear             # Clear all cached API responses
+/seo --cache-clear gsc         # Clear only GSC cache
+```
+
 **What It Does:**
 
 - Crawls 12 key pages (homepage, 5 scenes, 6 deep link examples)
+- Fetches real search performance data from Google Search Console
+- Fetches engagement metrics and Core Web Vitals from GA4
+- Fetches backlink profile from Ahrefs or SEMrush (optional)
+- Correlates data across sources to detect actionable insights
+- Generates playbooks with step-by-step fixes for non-technical users
 - Scores site across 6 SEO categories (100-point rubric)
-- Evaluates both traditional SEO and AI-agent optimization
-- Simulates AI assistant queries to test content discoverability
-- Generates detailed markdown report with visual dashboard
-- Provides actionable recommendations in Impact/Effort matrix
+- Provides confidence score based on available data sources
+
+**Data Sources & Confidence:**
+
+| Sources Available | Confidence |
+|-------------------|------------|
+| Crawl only | 60% |
+| Crawl + GSC | 75% |
+| Crawl + GSC + GA4 | 90% |
+| Crawl + GSC + GA4 + Backlinks | 100% |
 
 **Scoring Categories:**
 
-1. **Technical Foundation (25 pts)** - Sitemap, robots.txt, performance, structured data
-2. **Content Quality (30 pts)** - Meta tags, headings, AI-readability, natural language
-3. **Semantic Intelligence (20 pts)** - Topic authority, user intent matching
-4. **Authority & Trust (15 pts)** - E-E-A-T signals, citation-worthiness
-5. **User Experience (10 pts)** - Navigation, accessibility, engagement
-6. **AI Agent Readiness (10 pts)** - Conversational queries, explicit answers
+1. **Technical Foundation (25 pts)** - Response time, canonical tags, Schema.org, Core Web Vitals
+2. **Content Quality (30 pts)** - Titles, descriptions, H1 structure, real CTR from GSC
+3. **Semantic Intelligence (20 pts)** - Word count, schema types, entity relationships
+4. **Authority & Trust (15 pts)** - Domain rating, referring domains, organic traffic %
+5. **User Experience (10 pts)** - Alt text, CWV ratings, engagement metrics
+6. **AI Agent Readiness (10 pts)** - Schema coverage, content depth, citation-worthiness
 
-**Output:**
+**Correlation Insights Detected:**
 
-- Color-coded dashboard with category scores
-- Quick Wins (high impact, low effort recommendations)
-- Strategic improvements (high impact, higher effort)
-- Page-by-page analysis
-- AI query simulation results
-- Comparison to previous baselines (if available)
+| Insight Type | Data Sources | Description |
+|--------------|--------------|-------------|
+| CTR Opportunity | GSC | Pages ranking well but with below-average CTR |
+| Engagement Mismatch | GSC + GA4 | High traffic but high bounce rate |
+| Zombie Page | GSC + GA4 | Impressions but no clicks or traffic |
+| Content Gap | Crawl + GSC | Well-structured pages with no search visibility |
+| Authority Mismatch | GSC + Backlinks | High backlinks but poor rankings |
+| Linkworthy Content | GA4 + Backlinks | High engagement but few backlinks |
+| Cannibalization | GSC | Multiple pages competing for same queries |
 
-**Reports Saved To:** `seo-reports/YYYY-MM-DD-report.md`
+**Output Files:**
+
+| Format | Location |
+|--------|----------|
+| Markdown | `seo-reports/YYYY-MM-DD-report.md` |
+| HTML | `seo-reports/YYYY-MM-DD-report.html` |
+| JSON | `seo-reports/YYYY-MM-DD-report.json` |
+| CSV | `seo-reports/YYYY-MM-DD-csv/` (multiple files) |
+| Baseline | `seo-reports/YYYY-MM-DD-baseline.json` |
 
 **Documentation:** See [.claude/commands/seo.md](../.claude/commands/seo.md) for complete command specification.
+
+---
+
+## Setting Up API Credentials
+
+The `/seo` command works in crawl-only mode by default, but integrating real data from Google APIs dramatically improves accuracy and insight detection.
+
+### Google OAuth Setup (GSC + GA4)
+
+**Prerequisites:**
+
+1. Google Cloud Console project with Search Console API and Analytics Data API enabled
+2. OAuth 2.0 credentials (Client ID and Client Secret)
+
+**Setup Steps:**
+
+```bash
+# Run the interactive setup wizard
+/seo --setup
+
+# Or set environment variables
+export GOOGLE_CLIENT_ID="your-client-id.apps.googleusercontent.com"
+export GOOGLE_CLIENT_SECRET="your-client-secret"
+```
+
+The setup wizard will:
+
+1. Prompt for Client ID and Client Secret
+2. Open browser for OAuth consent
+3. Store refresh token securely in `~/.seo-analyzer/credentials.json`
+4. List available GSC properties and GA4 accounts
+
+**Credential Storage:**
+
+Credentials are stored outside the project directory for security:
+
+- Location: `~/.seo-analyzer/credentials.json`
+- Contains: OAuth tokens (encrypted), API keys
+- Cache: `~/.seo-analyzer/cache/` (API response cache)
+
+### Backlink API Setup (Optional)
+
+**Ahrefs:**
+
+```bash
+export AHREFS_API_KEY="your-ahrefs-api-key"
+```
+
+**SEMrush:**
+
+```bash
+export SEMRUSH_API_KEY="your-semrush-api-key"
+```
+
+Or add to credentials file via `--setup` wizard.
+
+### Verifying Configuration
+
+```bash
+# Check which data sources are configured
+/seo --setup  # Shows credential summary without modifying
+```
+
+Output shows:
+
+- ✅ Google OAuth: Configured (expires in X days)
+- ✅ GSC Property: sc-domain:concerts.morperhaus.org
+- ❌ GA4 Property: Not configured
+- ✅ Backlinks: Ahrefs configured
 
 ---
 
@@ -916,6 +1037,7 @@ New content indexed by search engines
 
 | Version | Date | Changes |
 | ------- | ---- | ------- |
+| v2.0.0 | 2026-01-20 | SEO Tool v2: GSC/GA4/Backlink integration, correlation insights, playbooks, HTML/CSV/Sheets output |
 | v3.7.0 | 2026-01-20 | Added AI Fact Cards section, llm.txt Pre-Computed Statistics |
 | v3.5.0 | 2026-01-19 | Initial SEO documentation (Phases 1-3 complete) |
 

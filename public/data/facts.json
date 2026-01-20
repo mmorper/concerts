@@ -1,5 +1,5 @@
 {
-  "computedAt": "2026-01-20T04:58:52.563Z",
+  "computedAt": "2026-01-20T19:54:16.973Z",
   "facts": [
     {
       "id": "top-artist",
@@ -22,7 +22,7 @@
     {
       "id": "total-concerts",
       "category": "timeline",
-      "headline": "178 concerts since 1984",
+      "headline": "179 concerts since 1984",
       "detail": "43 years of live music memories",
       "route": "/?scene=timeline",
       "cta": "Explore the timeline",
@@ -31,7 +31,7 @@
     {
       "id": "top-genre",
       "category": "genre",
-      "headline": "New Wave: 48 shows",
+      "headline": "New Wave: 49 shows",
       "detail": "The dominant sound in this collection",
       "route": "/?scene=genres",
       "cta": "Explore genre breakdown",
@@ -49,7 +49,7 @@
     {
       "id": "top-state",
       "category": "geography",
-      "headline": "California: 118 concerts",
+      "headline": "California: 119 concerts",
       "detail": "Home base for most concert experiences",
       "route": "/?scene=geography",
       "cta": "Explore the map",

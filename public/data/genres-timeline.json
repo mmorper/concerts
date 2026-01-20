@@ -29,9 +29,9 @@
         "2022": 4,
         "2023": 3,
         "2024": 1,
-        "2026": 1
+        "2026": 2
       },
-      "totalShows": 48,
+      "totalShows": 49,
       "firstYear": 1984,
       "lastYear": 2026,
       "artists": [
@@ -102,6 +102,18 @@
           "lastYear": 2017
         },
         {
+          "name": "The Human League",
+          "normalizedName": "the-human-league",
+          "showCount": 3,
+          "years": [
+            2003,
+            2018,
+            2026
+          ],
+          "firstYear": 2003,
+          "lastYear": 2026
+        },
+        {
           "name": "Berlin",
           "normalizedName": "berlin",
           "showCount": 3,
@@ -156,17 +168,6 @@
           ],
           "firstYear": 1987,
           "lastYear": 1988
-        },
-        {
-          "name": "The Human League",
-          "normalizedName": "the-human-league",
-          "showCount": 2,
-          "years": [
-            2003,
-            2018
-          ],
-          "firstYear": 2003,
-          "lastYear": 2018
         },
         {
           "name": "The Cure",
@@ -1485,7 +1486,7 @@
     "2023": 11,
     "2024": 6,
     "2025": 4,
-    "2026": 1
+    "2026": 2
   },
   "milestones": [
     {
@@ -1521,5 +1522,5 @@
     "start": 1984,
     "end": 2026
   },
-  "generatedAt": "2026-01-07T05:59:52.274Z"
+  "generatedAt": "2026-01-20T19:54:16.963Z"
 }

@@ -466,5 +466,53 @@
     "lng": -118.3895,
     "formattedAddress": "1700 S. Pacific Coast Hwy, Redondo Beach, CA 90277",
     "geocodedAt": "2026-01-05T05:45:00.000Z"
+  },
+  "hollywood bowl|los angeles|california": {
+    "lat": 34.1128,
+    "lng": -118.3389,
+    "formattedAddress": "Hollywood Bowl, Los Angeles, California",
+    "geocodedAt": "2026-01-20T04:59:03.477Z"
+  },
+  "unique venue test 1|test city 1|test state 1": {
+    "lat": 34.1128,
+    "lng": -118.3389,
+    "formattedAddress": "Unique Venue Test 1, Test City 1, Test State 1",
+    "geocodedAt": "2026-01-20T04:59:03.479Z"
+  },
+  "batch test venue 1|batch city 1|batch state 1": {
+    "lat": 34,
+    "lng": -118,
+    "formattedAddress": "Batch Test Venue 1, Batch City 1, Batch State 1",
+    "geocodedAt": "2026-01-20T04:59:03.481Z"
+  },
+  "batch test venue 2|batch city 2|batch state 2": {
+    "lat": 34,
+    "lng": -118,
+    "formattedAddress": "Batch Test Venue 2, Batch City 2, Batch State 2",
+    "geocodedAt": "2026-01-20T04:59:03.502Z"
+  },
+  "venue 1|city 1|state 1": {
+    "lat": 34,
+    "lng": -118,
+    "formattedAddress": "Venue 1, City 1, State 1",
+    "geocodedAt": "2026-01-20T04:59:03.525Z"
+  },
+  "venue 2|city 2|state 2": {
+    "lat": 34,
+    "lng": -118,
+    "formattedAddress": "Venue 2, City 2, State 2",
+    "geocodedAt": "2026-01-20T04:59:03.546Z"
+  },
+  "skip test good venue|skip city 1|skip state 1": {
+    "lat": 34,
+    "lng": -118,
+    "formattedAddress": "Skip Test Good Venue, Skip City 1, Skip State 1",
+    "geocodedAt": "2026-01-20T04:59:03.633Z"
+  },
+  "skip test bad venue|skip city 2|skip state 2": {
+    "lat": 34,
+    "lng": -118,
+    "formattedAddress": "Skip Test Bad Venue, Skip City 2, Skip State 2",
+    "geocodedAt": "2026-01-20T18:06:44.667Z"
   }
 }

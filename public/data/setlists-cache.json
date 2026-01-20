@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-01-05T06:16:54.056Z",
+  "generatedAt": "2026-01-20T19:54:16.901Z",
   "entries": [
     {
       "concertId": "concert-1",
@@ -114,7 +114,7 @@
       "venue": "Irvine Meadows",
       "city": "Irvine",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:13:59.806Z",
+      "fetchedAt": "2026-01-20T19:50:54.090Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -195,7 +195,7 @@
       "venue": "Irvine Meadows",
       "city": "Irvine",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:02.154Z"
+      "fetchedAt": "2026-01-20T19:50:56.525Z"
     },
     {
       "concertId": "concert-5",
@@ -657,7 +657,7 @@
       "venue": "Irvine Meadows",
       "city": "Irvine",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:04.101Z",
+      "fetchedAt": "2026-01-20T19:50:58.812Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -1170,7 +1170,7 @@
       "venue": "Irvine Meadows",
       "city": "Irvine",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:06.560Z"
+      "fetchedAt": "2026-01-20T19:51:01.377Z"
     },
     {
       "concertId": "concert-13",
@@ -1934,7 +1934,7 @@
       "venue": "Disneyland",
       "city": "Anaheim",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:08.395Z",
+      "fetchedAt": "2026-01-20T19:51:03.462Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -2831,7 +2831,7 @@
       "venue": "Jets",
       "city": "Long Beach",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:10.751Z",
+      "fetchedAt": "2026-01-20T19:51:06.086Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -3223,7 +3223,7 @@
       "venue": "Hollywood Palladium",
       "city": "Hollywood",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:13.119Z",
+      "fetchedAt": "2026-01-20T19:51:08.711Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -3233,7 +3233,7 @@
       "venue": "Cal State Fullerton",
       "city": "Fullerton",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:15.469Z",
+      "fetchedAt": "2026-01-20T19:51:11.397Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -3823,7 +3823,7 @@
       "venue": "Long Beach Arena",
       "city": "Long Beach",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:19.509Z",
+      "fetchedAt": "2026-01-20T19:51:14.015Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -3921,7 +3921,7 @@
       "venue": "Long Beach Arena",
       "city": "Long Beach",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:23.592Z",
+      "fetchedAt": "2026-01-20T19:51:16.571Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -4635,7 +4635,7 @@
       "venue": "Olympic Velodrome",
       "city": "Carson",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:25.958Z"
+      "fetchedAt": "2026-01-20T19:51:19.198Z"
     },
     {
       "concertId": "concert-42",
@@ -4855,7 +4855,7 @@
       "venue": "Olympic Velodrome",
       "city": "Carson",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:27.860Z"
+      "fetchedAt": "2026-01-20T19:51:21.295Z"
     },
     {
       "concertId": "concert-42",
@@ -4864,7 +4864,7 @@
       "venue": "Olympic Velodrome",
       "city": "Carson",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:29.639Z"
+      "fetchedAt": "2026-01-20T19:51:23.394Z"
     },
     {
       "concertId": "concert-42",
@@ -5187,7 +5187,7 @@
       "venue": "The Galaxy Theatre",
       "city": "Santa Ana",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:31.476Z",
+      "fetchedAt": "2026-01-20T19:51:25.486Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -5197,7 +5197,7 @@
       "venue": "The Galaxy Theatre",
       "city": "Santa Ana",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:33.923Z",
+      "fetchedAt": "2026-01-20T19:51:28.173Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -5436,7 +5436,27 @@
       "venue": "Club Caprice",
       "city": "Redondo Beach",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:36.277Z",
+      "fetchedAt": "2026-01-20T19:51:30.795Z",
+      "error": "API error: 404 Not Found"
+    },
+    {
+      "concertId": "concert-50",
+      "artistName": "New Morty Show",
+      "date": "1999-04-02",
+      "venue": "Club Caprice",
+      "city": "Redondo Beach",
+      "setlist": null,
+      "fetchedAt": "2026-01-20T19:51:33.348Z",
+      "error": "API error: 404 Not Found"
+    },
+    {
+      "concertId": "concert-50",
+      "artistName": "Blue Plate Special",
+      "date": "1999-04-02",
+      "venue": "Club Caprice",
+      "city": "Redondo Beach",
+      "setlist": null,
+      "fetchedAt": "2026-01-20T19:51:35.975Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -5779,7 +5799,7 @@
       "venue": "Kia Forum",
       "city": "Inglewood",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:39.067Z"
+      "fetchedAt": "2026-01-20T19:51:38.604Z"
     },
     {
       "concertId": "concert-53",
@@ -5788,7 +5808,7 @@
       "venue": "Kia Forum",
       "city": "Inglewood",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:40.935Z"
+      "fetchedAt": "2026-01-20T19:51:40.693Z"
     },
     {
       "concertId": "concert-54",
@@ -5841,7 +5861,7 @@
       "venue": "Universal Amphitheater",
       "city": "Los Angeles",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:43.052Z",
+      "fetchedAt": "2026-01-20T19:51:42.853Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -6066,7 +6086,7 @@
       "venue": "The Grove of Anaheim",
       "city": "Anaheim",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:45.355Z",
+      "fetchedAt": "2026-01-20T19:51:45.479Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -6963,7 +6983,7 @@
       "venue": "Hyundai Pavilion",
       "city": "San Bernardino",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:47.605Z",
+      "fetchedAt": "2026-01-20T19:51:48.096Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -7708,7 +7728,7 @@
       "venue": "Universal Amphitheater",
       "city": "Los Angeles",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:49.887Z",
+      "fetchedAt": "2026-01-20T19:51:50.651Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -7718,7 +7738,7 @@
       "venue": "Universal Amphitheater",
       "city": "Los Angeles",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:52.340Z",
+      "fetchedAt": "2026-01-20T19:51:53.273Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -7728,7 +7748,7 @@
       "venue": "The Coach House",
       "city": "San Juan Capistrano",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:54.795Z",
+      "fetchedAt": "2026-01-20T19:51:55.895Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -8325,7 +8345,7 @@
       "venue": "The Galaxy Theatre",
       "city": "Santa Ana",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:57.155Z",
+      "fetchedAt": "2026-01-20T19:51:58.584Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -8620,7 +8640,7 @@
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:14:59.514Z",
+      "fetchedAt": "2026-01-20T19:52:01.204Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -8795,7 +8815,7 @@
       "venue": "The Coach House",
       "city": "San Juan Capistrano",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:01.672Z",
+      "fetchedAt": "2026-01-20T19:52:03.825Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -8894,7 +8914,7 @@
       "venue": "Doheny",
       "city": "Dana Point",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:04.036Z",
+      "fetchedAt": "2026-01-20T19:52:06.378Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -9062,7 +9082,7 @@
       "venue": "9:30 Club",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:06.329Z",
+      "fetchedAt": "2026-01-20T19:52:09.002Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -9298,7 +9318,7 @@
       "venue": "The Black Cat",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:08.693Z",
+      "fetchedAt": "2026-01-20T19:52:11.621Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -9783,7 +9803,7 @@
       "venue": "Wolftrap",
       "city": "Vienna",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:11.051Z"
+      "fetchedAt": "2026-01-20T19:52:14.244Z"
     },
     {
       "concertId": "concert-82",
@@ -9960,7 +9980,7 @@
       "venue": "Rams Head Live! Baltimore",
       "city": "Baltimore",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:12.881Z",
+      "fetchedAt": "2026-01-20T19:52:16.406Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -10330,7 +10350,7 @@
       "venue": "The Strathmore",
       "city": "Bethesda",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:15.248Z"
+      "fetchedAt": "2026-01-20T19:52:19.030Z"
     },
     {
       "concertId": "concert-88",
@@ -10470,7 +10490,7 @@
       "venue": "9:30 Club",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:17.082Z",
+      "fetchedAt": "2026-01-20T19:52:21.125Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -10570,7 +10590,7 @@
       "venue": "9:30 Club",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:19.440Z",
+      "fetchedAt": "2026-01-20T19:52:23.678Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -10737,7 +10757,7 @@
       "venue": "9:30 Club",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:21.795Z",
+      "fetchedAt": "2026-01-20T19:52:26.300Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -11224,7 +11244,7 @@
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:24.054Z",
+      "fetchedAt": "2026-01-20T19:52:28.935Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -11234,7 +11254,7 @@
       "venue": "The Hamilton Live",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:26.333Z"
+      "fetchedAt": "2026-01-20T19:52:31.612Z"
     },
     {
       "concertId": "concert-94",
@@ -11891,7 +11911,7 @@
       "venue": "Pier 6 Pavillion",
       "city": "Baltimore",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:28.109Z"
+      "fetchedAt": "2026-01-20T19:52:33.710Z"
     },
     {
       "concertId": "concert-98",
@@ -12132,7 +12152,7 @@
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:30.089Z",
+      "fetchedAt": "2026-01-20T19:52:35.804Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -12142,7 +12162,7 @@
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:32.544Z",
+      "fetchedAt": "2026-01-20T19:52:38.358Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -12152,7 +12172,7 @@
       "venue": "DAR Constitution Hall",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:34.920Z",
+      "fetchedAt": "2026-01-20T19:52:40.983Z",
       "error": "Cannot read properties of undefined (reading 'toLowerCase')"
     },
     {
@@ -12162,7 +12182,7 @@
       "venue": "DAR Constitution Hall",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:37.264Z",
+      "fetchedAt": "2026-01-20T19:52:43.605Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -13575,7 +13595,7 @@
       "venue": "RFK Stadium",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:39.659Z"
+      "fetchedAt": "2026-01-20T19:52:46.227Z"
     },
     {
       "concertId": "concert-104",
@@ -14227,7 +14247,7 @@
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:41.621Z",
+      "fetchedAt": "2026-01-20T19:52:48.387Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -14237,7 +14257,7 @@
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:44.080Z",
+      "fetchedAt": "2026-01-20T19:52:51.009Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -14247,7 +14267,7 @@
       "venue": "Bethesda Jazz and Blues Club",
       "city": "Bethesda",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:46.338Z",
+      "fetchedAt": "2026-01-20T19:52:53.629Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -15010,7 +15030,7 @@
       "venue": "MGM National Harbor",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:48.594Z",
+      "fetchedAt": "2026-01-20T19:52:56.182Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -15929,7 +15949,7 @@
       "venue": "The Anthem",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:50.897Z",
+      "fetchedAt": "2026-01-20T19:52:58.807Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -15939,7 +15959,7 @@
       "venue": "The Anthem",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:53.245Z",
+      "fetchedAt": "2026-01-20T19:53:01.427Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -16944,7 +16964,7 @@
       "venue": "Huntington State Beach",
       "city": "Huntington Beach",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:55.615Z",
+      "fetchedAt": "2026-01-20T19:53:04.115Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -16954,7 +16974,7 @@
       "venue": "Huntington State Beach",
       "city": "Huntington Beach",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:15:57.972Z",
+      "fetchedAt": "2026-01-20T19:53:06.736Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -16964,7 +16984,7 @@
       "venue": "Huntington State Beach",
       "city": "Huntington Beach",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:00.337Z",
+      "fetchedAt": "2026-01-20T19:53:09.360Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -16974,7 +16994,7 @@
       "venue": "Carpenter Performing Arts Center",
       "city": "Long Beach",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:02.734Z",
+      "fetchedAt": "2026-01-20T19:53:11.917Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -17530,7 +17550,7 @@
       "venue": "9:30 Club",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:05.078Z",
+      "fetchedAt": "2026-01-20T19:53:14.540Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -18253,7 +18273,7 @@
       "venue": "Huntington State Beach",
       "city": "Huntington Beach",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:07.480Z",
+      "fetchedAt": "2026-01-20T19:53:17.159Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -18520,7 +18540,7 @@
       "venue": "Huntington State Beach",
       "city": "Huntington Beach",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:09.937Z",
+      "fetchedAt": "2026-01-20T19:53:19.845Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -18530,7 +18550,7 @@
       "venue": "Huntington State Beach",
       "city": "Huntington Beach",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:12.227Z",
+      "fetchedAt": "2026-01-20T19:53:22.467Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -19169,7 +19189,7 @@
       "venue": "The Observatory",
       "city": "Santa Ana",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:14.492Z",
+      "fetchedAt": "2026-01-20T19:53:25.089Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -19310,7 +19330,7 @@
       "venue": "Dolby Theatre",
       "city": "Hollywood",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:16.893Z",
+      "fetchedAt": "2026-01-20T19:53:27.641Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -19320,7 +19340,7 @@
       "venue": "Mozambique",
       "city": "Laguna Beach",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:19.461Z",
+      "fetchedAt": "2026-01-20T19:53:30.266Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -19330,7 +19350,7 @@
       "venue": "OC Fair & Event Center",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:21.831Z",
+      "fetchedAt": "2026-01-20T19:53:32.889Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -19601,7 +19621,7 @@
       "venue": "The Coach House",
       "city": "San Juan Capistrano",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:24.196Z",
+      "fetchedAt": "2026-01-20T19:53:35.515Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -19705,7 +19725,7 @@
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:26.456Z",
+      "fetchedAt": "2026-01-20T19:53:38.197Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -20797,7 +20817,7 @@
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:28.711Z",
+      "fetchedAt": "2026-01-20T19:53:40.816Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -20807,7 +20827,7 @@
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:30.999Z",
+      "fetchedAt": "2026-01-20T19:53:43.371Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -20909,7 +20929,7 @@
       "venue": "Theatre at the Ace Hotel",
       "city": "Los Angeles",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:33.365Z",
+      "fetchedAt": "2026-01-20T19:53:45.996Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -22393,7 +22413,7 @@
       "venue": "House of Blues Anaheim",
       "city": "Anaheim",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:35.633Z",
+      "fetchedAt": "2026-01-20T19:53:48.614Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -22403,7 +22423,7 @@
       "venue": "The Belly Up Tavern",
       "city": "Solana Beach",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:37.928Z",
+      "fetchedAt": "2026-01-20T19:53:51.236Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -22626,7 +22646,7 @@
       "venue": "21st Amendment",
       "city": "New Orleans",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:40.210Z",
+      "fetchedAt": "2026-01-20T19:53:53.924Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -23235,7 +23255,7 @@
       "venue": "The Belasco",
       "city": "Los Angeles",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:42.555Z",
+      "fetchedAt": "2026-01-20T19:53:56.546Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -23773,7 +23793,7 @@
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:44.897Z",
+      "fetchedAt": "2026-01-20T19:53:59.097Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -24665,7 +24685,7 @@
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:47.520Z",
+      "fetchedAt": "2026-01-20T19:54:01.722Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -25982,13 +26002,43 @@
       "fetchedAt": "2026-01-05T05:51:29.494Z"
     },
     {
+      "concertId": "concert-179",
+      "artistName": "The Human League",
+      "date": "2026-06-04",
+      "venue": "Hollywood Bowl",
+      "city": "Hollywood",
+      "setlist": null,
+      "fetchedAt": "2026-01-20T19:54:04.346Z",
+      "error": "API error: 404 Not Found"
+    },
+    {
+      "concertId": "concert-179",
+      "artistName": "Alison Moyet",
+      "date": "2026-06-04",
+      "venue": "Hollywood Bowl",
+      "city": "Hollywood",
+      "setlist": null,
+      "fetchedAt": "2026-01-20T19:54:06.969Z",
+      "error": "API error: 404 Not Found"
+    },
+    {
+      "concertId": "concert-179",
+      "artistName": "Soft Cell",
+      "date": "2026-06-04",
+      "venue": "Hollywood Bowl",
+      "city": "Hollywood",
+      "setlist": null,
+      "fetchedAt": "2026-01-20T19:54:09.654Z",
+      "error": "API error: 404 Not Found"
+    },
+    {
       "concertId": "concert-178",
       "artistName": "Thompson Twins",
       "date": "2026-09-16",
       "venue": "Pavilion Theatre",
       "city": "Glasgow",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:49.792Z",
+      "fetchedAt": "2026-01-20T19:54:12.276Z",
       "error": "API error: 404 Not Found"
     },
     {
@@ -25998,7 +26048,7 @@
       "venue": "Pavilion Theatre",
       "city": "Glasgow",
       "setlist": null,
-      "fetchedAt": "2026-01-05T06:16:52.054Z",
+      "fetchedAt": "2026-01-20T19:54:14.899Z",
       "error": "API error: 404 Not Found"
     }
   ]

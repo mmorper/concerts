@@ -27,9 +27,8 @@ const __dirname = path.dirname(__filename)
 // Configuration
 const DEFAULT_URL = 'https://concerts.morperhaus.org'
 const REPORTS_DIR = path.join(process.cwd(), 'seo-reports')
-const VERSION = '1.1'
 const USER_AGENTS = {
-  googlebot: 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+  googlebot: 'Googlebot/2.1 (+http://www.google.com/bot.html)',
   human: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
 }
 
@@ -176,12 +175,11 @@ async function crawlPages(baseUrl: string): Promise<PageAnalysis[]> {
   const pages = getKeyPages(baseUrl)
   const analyses: PageAnalysis[] = []
 
-  console.log(`📄 Crawling ${pages.length} pages (as Googlebot)...\n`)
+  console.log(`📄 Crawling ${pages.length} pages...\n`)
 
   for (const url of pages) {
     try {
-      // Use Googlebot UA to get dynamic meta tags from Cloudflare Worker
-      const { html, responseTime } = await fetchPage(url, USER_AGENTS.googlebot)
+      const { html, responseTime } = await fetchPage(url)
       const analysis = analyzePage(url, html, responseTime)
       analyses.push(analysis)
 
@@ -216,73 +214,6 @@ async function checkRobotsTxt(baseUrl: string): Promise<boolean> {
   }
 }
 
-// Check if llm.txt exists and has content
-async function checkLlmTxt(baseUrl: string): Promise<boolean> {
-  try {
-    const response = await fetch(`${baseUrl}/llm.txt`)
-    if (!response.ok) return false
-    const text = await response.text()
-    return text.length > 100 && text.includes('## ')
-  } catch {
-    return false
-  }
-}
-
-// Check if facts.json exists and has valid structure
-async function checkFactsJson(baseUrl: string): Promise<boolean> {
-  try {
-    const response = await fetch(`${baseUrl}/data/facts.json`)
-    if (!response.ok) return false
-    const data = await response.json()
-    return data.facts && Array.isArray(data.facts) && data.facts.length > 0
-  } catch {
-    return false
-  }
-}
-
-// Check if RSS feed exists and is valid XML
-async function checkRssFeed(baseUrl: string): Promise<boolean> {
-  try {
-    const response = await fetch(`${baseUrl}/rss.xml`)
-    if (!response.ok) return false
-    const text = await response.text()
-    return text.includes('<rss') && text.includes('<channel>')
-  } catch {
-    return false
-  }
-}
-
-// Check if About page exists with E-E-A-T signals
-async function checkAboutPage(baseUrl: string): Promise<{ exists: boolean; hasSchema: boolean; hasLinkedIn: boolean }> {
-  try {
-    const response = await fetch(`${baseUrl}/?scene=about`)
-    if (!response.ok) return { exists: false, hasSchema: false, hasLinkedIn: false }
-    const html = await response.text()
-    return {
-      exists: html.includes('about') || html.includes('About'),
-      hasSchema: html.includes('application/ld+json'),
-      hasLinkedIn: html.includes('linkedin.com'),
-    }
-  } catch {
-    return { exists: false, hasSchema: false, hasLinkedIn: false }
-  }
-}
-
-// Extract Schema.org type from HTML
-function extractSchemaType(html: string): string | null {
-  const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)
-  if (!match) return null
-  try {
-    const schema = JSON.parse(match[1])
-    if (Array.isArray(schema)) {
-      return schema.map(s => s['@type']).join(' + ')
-    }
-    return schema['@type'] || null
-  } catch {
-    return 'present'
-  }
-}
-
 // Score the technical foundation category
 function scoreTechnical(pages: PageAnalysis[], checks: Record<string, any>): number {
   let score = 0
@@ -292,12 +223,13 @@ function scoreTechnical(pages: PageAnalysis[], checks: Record<string, any>): num
   if (checks.hasRobotsTxt) score += 1
   score += 2 // Clean URL structure (always true for this site)
   score += 1 // No orphaned pages (assumed)
-  score += 2 // Canonical tags present
-  if (checks.avgResponseTime < 500) score += 2 // Allow for Worker processing + CDN variability
+  score += 2 // Canonical tags (need to check)
+  if (checks.avgResponseTime < 200) score += 2
 
   // Performance Hints (8 pts)
-  score += 7 // Lazy loading, preload tags, critical CSS present
-  // -1 for missing WebP images
+  // Would need to check for lazy loading, preload tags, etc.
+  // For now, give partial credit
+  score += 5
 
   // Structured Data (7 pts)
   const hasSchema = pages.every(p => p.hasSchema)
@@ -305,14 +237,14 @@ function scoreTechnical(pages: PageAnalysis[], checks: Record<string, any>): num
 
   if (hasOG) score += 2
   if (hasSchema) score += 3
-  score += 1 // Twitter cards complete
-  if (hasSchema) score += 1 // Search action present
+  score += 1 // Social meta tags
+  if (hasSchema) score += 1 // Rich snippets potential
 
   return Math.min(score, 25)
 }
 
 // Score the content quality category
-function scoreContent(pages: PageAnalysis[], checks: Record<string, any>): number {
+function scoreContent(pages: PageAnalysis[]): number {
   let score = 0
 
   // Traditional SEO (15 pts)
@@ -321,113 +253,57 @@ function scoreContent(pages: PageAnalysis[], checks: Record<string, any>): numbe
   const allHaveDescriptions = pages.every(p => p.description)
   const properH1s = pages.filter(p => p.h1Count === 1).length
 
-  // Unique titles: full credit if all unique, partial credit if some unique
-  if (allHaveTitles) {
-    if (uniqueTitles === pages.length) {
-      score += 3 // All unique
-    } else if (uniqueTitles > pages.length / 2) {
-      score += 2 // Most unique (deep links have unique titles)
-    } else {
-      score += 1 // Some unique
-    }
-  }
-  score += 2 // Optimal title length
+  if (allHaveTitles && uniqueTitles === pages.length) score += 3 // Unique titles
+  score += 2 // Optimal title length (would need to check)
   if (allHaveDescriptions) score += 3
-  // Heading hierarchy: SPA uses semantic structure, partial credit even without H1
-  const h1Score = Math.floor((properH1s / pages.length) * 3)
-  score += h1Score > 0 ? h1Score : 1 // Min 1pt for semantic structure
-  score += 2 // Internal linking
-  score += 2 // Content freshness
+  score += Math.floor((properH1s / pages.length) * 3) // Heading hierarchy
+  score += 2 // Internal linking (assumed)
+  score += 2 // Content freshness (assumed)
 
   // AI Agent SEO (15 pts)
-  score += 3 // Natural language structure
-  score += 2 // Question headers (partial - some FAQ-style content)
-  score += 3 // Entity relationships clear
-  score += 3 // Factual accuracy
-  score += 2 // Citation worthiness
-  if (checks.hasLlmTxt) score += 1
-  if (checks.hasFactsJson) score += 1
+  // Would need deeper content analysis
+  // For now, give partial credit
+  score += 10
 
   return Math.min(score, 30)
 }
 
 // Score semantic intelligence
-function scoreSemantic(checks: Record<string, any>): number {
-  let score = 0
-
-  // Topical Authority (10 pts)
-  score += 3 // Comprehensive coverage (178 concerts)
-  score += 3 // Content depth (artist metadata, venue details)
-  score += 2 // Related clusters (genres, geography)
-  score += 1 // Consistent terminology
-  // -1 for partial contextual explanations
-
-  // Intent Matching (10 pts)
-  score += 3 // Informational queries
-  score += 3 // Navigational queries
-  score += 3 // Conversational queries (deep links)
-  // -1 partial
-
-  return Math.min(score, 20)
+function scoreSemantic(): number {
+  // Would require deeper content analysis
+  // For now, return a reasonable estimate
+  return 17
 }
 
 // Score authority & trust
-function scoreAuthority(checks: Record<string, any>): number {
-  let score = 0
-
-  // Traditional Signals (8 pts)
-  score += 2 // Brand mentions
-  score += 2 // Domain established
-  score += 1 // HTTPS secure
-  score += 2 // Backlinks (unverified but assumed)
-
-  // AI-Era Signals (7 pts)
-  score += 1 // Experience signals
-  if (checks.aboutPage?.exists) score += 2 // Expertise signals (About page)
-  score += 1 // Authoritativeness
-  score += 1 // Trust signals
-  if (checks.aboutPage?.hasLinkedIn) score += 1 // Creator identity visible
-  if (checks.aboutPage?.hasLinkedIn) score += 1 // LinkedIn articles
-
-  return Math.min(score, 15)
+function scoreAuthority(): number {
+  // Would require external backlink data
+  // For now, return a reasonable estimate
+  return 11
 }
 
 // Score user experience
 function scoreUX(): number {
-  let score = 0
-
-  score += 2 // Intuitive navigation
-  score += 2 // Visual hierarchy
-  score += 2 // Responsive design
-  score += 1 // Accessibility (partial - some ARIA labels missing)
-  score += 2 // Interactive elements
-
-  return Math.min(score, 10)
+  // Would require accessibility checks
+  // For now, return a reasonable estimate
+  return 9
 }
 
 // Score AI agent readiness
-function scoreAIReadiness(checks: Record<string, any>): number {
-  let score = 0
-
-  if (checks.hasLlmTxt) score += 2 // llm.txt complete
-  if (checks.hasFactsJson) score += 2 // facts.json complete
-  score += 2 // Pre-computed stats
-  score += 1 // Data endpoints documented
-  score += 1 // Deep linking documented
-  if (checks.hasLlmTxt) score += 1 // Usage policy present
-  if (checks.aboutPage?.exists) score += 1 // Creator info present
-
-  return Math.min(score, 10)
+function scoreAIReadiness(): number {
+  // Would require content structure analysis
+  // For now, return a reasonable estimate
+  return 7
 }
 
 // Calculate overall scores
 function calculateScores(pages: PageAnalysis[], checks: Record<string, any>): SEOScore {
   const technical = scoreTechnical(pages, checks)
-  const content = scoreContent(pages, checks)
-  const semantic = scoreSemantic(checks)
-  const authority = scoreAuthority(checks)
+  const content = scoreContent(pages)
+  const semantic = scoreSemantic()
+  const authority = scoreAuthority()
   const ux = scoreUX()
-  const aiReadiness = scoreAIReadiness(checks)
+  const aiReadiness = scoreAIReadiness()
 
   const overall = technical + content + semantic + authority + ux
 
@@ -696,22 +572,9 @@ async function analyzeSEO() {
   console.log('🔍 Checking foundational files...')
   const hasSitemap = await checkSitemap(options.url)
   const hasRobotsTxt = await checkRobotsTxt(options.url)
-  const hasLlmTxt = await checkLlmTxt(options.url)
-  const hasFactsJson = await checkFactsJson(options.url)
-  const hasRssFeed = await checkRssFeed(options.url)
-  const aboutPage = await checkAboutPage(options.url)
 
   console.log(`  ${hasSitemap ? '✅' : '❌'} Sitemap`)
-  console.log(`  ${hasRobotsTxt ? '✅' : '❌'} robots.txt`)
-  console.log(`  ${hasLlmTxt ? '✅' : '❌'} llm.txt`)
-  console.log(`  ${hasFactsJson ? '✅' : '❌'} facts.json`)
-  console.log(`  ${hasRssFeed ? '✅' : '❌'} RSS feed`)
-  console.log(`  ${aboutPage.exists ? '✅' : '❌'} About page`)
-  if (aboutPage.exists) {
-    console.log(`    ${aboutPage.hasSchema ? '✅' : '❌'} Schema.org`)
-    console.log(`    ${aboutPage.hasLinkedIn ? '✅' : '❌'} LinkedIn link`)
-  }
-  console.log()
+  console.log(`  ${hasRobotsTxt ? '✅' : '❌'} robots.txt\n`)
 
   // Crawl pages
   const pages = await crawlPages(options.url)
@@ -728,10 +591,6 @@ async function analyzeSEO() {
   const checks = {
     hasSitemap,
     hasRobotsTxt,
-    hasLlmTxt,
-    hasFactsJson,
-    hasRssFeed,
-    aboutPage,
     avgResponseTime,
   }
 
@@ -748,7 +607,7 @@ async function analyzeSEO() {
       date: new Date().toISOString().split('T')[0],
       url: options.url,
       pagesAnalyzed: pages.length,
-      version: VERSION,
+      version: '1.0',
     },
     scores,
     pages,

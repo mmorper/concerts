@@ -4516,6 +4516,33 @@
       }
     },
     {
+      "id": "concert-179",
+      "date": "2026-06-04",
+      "headliner": "The Human League",
+      "headlinerNormalized": "the-human-league",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "openers": [
+        "Alison Moyet",
+        "Soft Cell"
+      ],
+      "venue": "Hollywood Bowl",
+      "venueNormalized": "hollywood-bowl",
+      "city": "Hollywood",
+      "state": "California",
+      "cityState": "Hollywood, California",
+      "reference": "",
+      "year": 2026,
+      "month": 6,
+      "day": 4,
+      "dayOfWeek": "Thursday",
+      "decade": "2020s",
+      "location": {
+        "lat": 34.112224,
+        "lng": -118.3391279
+      }
+    },
+    {
       "id": "concert-178",
       "date": "2026-09-16",
       "headliner": "Thompson Twins",
@@ -4543,8 +4570,8 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-01-07T05:59:49.084Z",
-    "totalConcerts": 178,
+    "lastUpdated": "2026-01-20T19:50:41.594Z",
+    "totalConcerts": 179,
     "dateRange": {
       "earliest": "1984-04-27",
       "latest": "2026-09-16"
