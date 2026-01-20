@@ -52,7 +52,8 @@
     "og:preview": "tsx scripts/preview-og-crops.ts",
     "cleanup:backups": "tsx scripts/cleanup-backups.ts",
     "seo": "tsx scripts/analyze-seo.ts",
-    "generate:facts": "tsx scripts/generate-facts.ts"
+    "generate:facts": "tsx scripts/generate-facts.ts",
+    "generate:rss": "tsx scripts/generate-rss.ts"
   },
   "dependencies": {
     "@types/d3": "^7.4.3",

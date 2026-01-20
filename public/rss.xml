@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Morperhaus Concert Archives - Liner Notes</title>
+    <link>https://concerts.morperhaus.org/liner-notes</link>
+    <description>New features, updates, and statistics for the Morperhaus Concert Archives</description>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 20 Jan 2026 06:11:20 GMT</lastBuildDate>
+    <atom:link href="https://concerts.morperhaus.org/rss.xml" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>https://concerts.morperhaus.org/og-image.jpg</url>
+      <title>Morperhaus Concert Archives</title>
+      <link>https://concerts.morperhaus.org</link>
+    </image>
+
+    <item>
+      <title>By the Numbers - Archive Statistics</title>
+      <link>https://concerts.morperhaus.org/liner-notes</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#facts-2026-01-20</guid>
+      <pubDate>Tue, 20 Jan 2026 04:58:52 GMT</pubDate>
+      <category>Statistics</category>
+      <description><![CDATA[<h3>Archive Statistics</h3><h4>Artists</h4><ul><li><strong>Social Distortion: 8 concerts</strong> — The most-seen live act, 1990–2024</li><li><strong>Howard Jones: 6 concerts</strong> — Another favorite who keeps drawing me back</li><li><strong>Depeche Mode: 5 concerts</strong> — Rounding out the top three most-seen</li></ul><h4>Venues</h4><ul><li><strong>Irvine Meadows: 16 shows</strong> — A favorite spot, visited 1984–2003</li><li><strong>Pacific Amphitheatre: 16 shows</strong> — Another venue with great memories</li><li><strong>77 unique venues</strong> — From clubs to arenas and amphitheaters</li></ul><h4>Timeline</h4><ul><li><strong>178 concerts since 1984</strong> — 43 years of live music memories</li><li><strong>First show: Adam Ant (1984)</strong> — Where it all began — Irvine Meadows</li><li><strong>Latest: Thompson Twins (2026)</strong> — The most recent addition — Pavilion Theatre</li><li><strong>2022: 14 shows</strong> — The peak year for live music attendance</li><li><strong>2010s: 64 shows</strong> — The golden era of concert-going</li></ul><h4>Genres</h4><ul><li><strong>New Wave: 48 shows</strong> — The dominant sound in this collection</li><li><strong>Punk: 15 shows</strong> — Another genre that shaped the journey</li></ul><h4>Geography</h4><ul><li><strong>California: 118 concerts</strong> — Home base for most concert experiences</li><li><strong>35 cities visited</strong> — Live music across the map</li></ul><p><a href="https://concerts.morperhaus.org/liner-notes">View all statistics</a></p>]]></description>
+    </item>
+
+    <item>
+      <title>By the Numbers - v3.7.0</title>
+      <link>https://concerts.morperhaus.org/liner-notes</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v3.7.0</guid>
+      <pubDate>Tue, 20 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Your concert archive now speaks for itself. The Liner Notes page features 12 computed statistics—from most-seen artists to busiest concert year—each linking directly to where you can explore that story. AI agents like ChatGPT and Claude can now quote these facts directly when answering questions about your concert history.</p><ul><li>12 fact cards display statistics like &quot;Social Distortion: 8 concerts&quot; with deep links</li><li>Pre-computed facts in llm.txt help AI agents answer questions about your archive</li><li>RSS feed now includes archive statistics with their computed date</li><li>Human-friendly detail text like &quot;The most-seen live act, 1990–2024&quot;</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Comprehensive Testing Infrastructure - v3.5.0</title>
+      <link>https://concerts.morperhaus.org/liner-notes</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v3.5.0</guid>
+      <pubDate>Wed, 14 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Added enterprise-grade testing with 305 automated tests covering every data pipeline and interactive scene. When you explore your concert history, you can trust it&apos;s been thoroughly validated—from venue geocoding to genre timelines to artist search.</p><ul><li>268 Vitest tests validate all 26 data processing scripts</li><li>37 Puppeteer tests verify every scene interaction and navigation flow</li><li>New /test command orchestrates full test suite in under 2 minutes</li><li>Testing skill integrated into /implement workflow for new features</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Discography Data Foundation - v3.4.3</title>
+      <link>https://concerts.morperhaus.org/liner-notes</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v3.4.3</guid>
+      <pubDate>Wed, 14 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Built the backend infrastructure to track 15,000+ albums across 247 artists using MusicBrainz. This prepares the groundwork for upcoming discography features—you&apos;ll soon be able to explore which albums sparked your concert-going adventures.</p>]]></description>
+    </item>
+
+    <item>
+      <title>Quality Standards &amp; Documentation Infrastructure - v3.4.2</title>
+      <link>https://concerts.morperhaus.org/liner-notes</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v3.4.2</guid>
+      <pubDate>Wed, 14 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Enhanced Claude Code agent reliability with centralized quality standards and validation guidelines. Behind-the-scenes improvements to ensure consistent, high-quality development workflows.</p>]]></description>
+    </item>
+
+    <item>
+      <title>Google Analytics 4 Configuration Fix - v3.4.1</title>
+      <link>https://concerts.morperhaus.org/liner-notes</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v3.4.1</guid>
+      <pubDate>Fri, 09 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Fixed Google Analytics event tracking to properly capture user interactions across all scenes. Analytics data now flows correctly to help understand how people explore their concert memories.</p>]]></description>
+    </item>
+
+    <item>
+      <title>Map &amp; Venue Navigation Polish - v3.4.0</title>
+      <link>https://concerts.morperhaus.org/?scene=venues</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v3.4.0</guid>
+      <pubDate>Fri, 09 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Smoother exploration across the venue map and network graph. Fixed several navigation quirks that made it harder to jump between artists and venues, plus cleaned up the map&apos;s visual clutter so you can focus on the places that matter most.</p>]]></description>
+    </item>
+
+    <item>
+      <title>Connected Experience - v3.3.0</title>
+      <link>https://concerts.morperhaus.org/?scene=venues&venue=9-30-club&artist=depeche-mode</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v3.3.0</guid>
+      <pubDate>Thu, 08 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Navigate seamlessly between scenes by clicking venue names anywhere in the app. When exploring an artist&apos;s concert history, tap any venue to jump straight to the Venues scene—automatically spotlighting both the venue and artist to show you their unique relationship. Map markers now display venue names for easier exploration.</p><ul><li>Click venue names in artist details to explore venue-artist relationships</li><li>Venue+artist combined deep linking focuses both nodes in force-directed graph</li><li>&quot;Explore Venue&quot; buttons now use real links for better mobile UX</li><li>Enhanced venue node label visibility in force-directed graph</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Mobile Artist Experience - v3.2.0</title>
+      <link>https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v3.2.0</guid>
+      <pubDate>Thu, 08 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Artist details now feel native on your phone. Tap any artist card to open a full-screen modal with tabbed navigation—swipe through your concert history, check upcoming tour dates, and pull up setlists with a tap. Swipe down or tap X to close, just like you&apos;d expect.</p><ul><li>Full-screen modal replaces desktop gatefold on phones</li><li>Tabbed navigation: Concert History, Upcoming Shows, Top Tracks</li><li>Setlist overlay slides in from the right with swipe-to-dismiss</li><li>Color-coded tabs with brand accents (violet, amber, Spotify green)</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>iPad Touch Support - v3.1.0</title>
+      <link>https://concerts.morperhaus.org/?scene=timeline</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v3.1.0</guid>
+      <pubDate>Wed, 07 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Explore your concert timeline naturally on iPad with touch-optimized interactions. Drag your finger across concert cards to preview them one by one, then tap to dive into any artist&apos;s full history—bringing the same fluid desktop experience to your tablet.</p><ul><li>Drag across timeline cards to preview concerts with haptic feedback</li><li>Tap any focused card to jump straight to the artist&apos;s gatefold</li><li>Smooth touch detection distinguishes taps from swipes automatically</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Genre Enrichment &amp; Artist Metadata - v3.0.1</title>
+      <link>https://concerts.morperhaus.org/?scene=genres</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v3.0.1</guid>
+      <pubDate>Tue, 06 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Your genre treemap now includes six more musical styles—from Neo Mellow&apos;s chill vibes to Political Hip Hop&apos;s conscious messages—giving you a more complete picture of your concert history&apos;s sonic diversity.</p>]]></description>
+    </item>
+
+    <item>
+      <title>Interactive Timeline Exploration &amp; Genre Journey - v3.0.0</title>
+      <link>https://concerts.morperhaus.org/?scene=timeline</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v3.0.0</guid>
+      <pubDate>Tue, 06 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Click any year on the timeline to explore every concert from that moment, then tap a card to dive into an artist&apos;s full story. Plus, watch your musical taste evolve through an animated genre timeline that shows how your concert history shaped your sound.</p><ul><li>Interactive year cards - click any timeline dot to see all concerts from that year</li><li>One-tap navigation from timeline to artist gatefold details</li><li>Animated genre treemap with decade-by-decade musical evolution</li><li>Genre drill-down to explore artists within each musical style</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Real-Time Tour Dates with Ticketmaster - v2.0.0</title>
+      <link>https://concerts.morperhaus.org/?scene=artists&artist=joe-jackson</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v2.0.0</guid>
+      <pubDate>Mon, 05 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Discover when your favorite artists are touring and buy tickets instantly with live Ticketmaster integration</p><ul><li>Live tour dates via Ticketmaster Discovery API (5,000 calls/day)</li><li>&quot;ON TOUR&quot; badge appears instantly when artist has upcoming shows</li><li>Direct ticket purchase links for every concert</li><li>24-hour smart caching with automatic artist name fallback</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Developer Experience &amp; Documentation Overhaul - v1.8.0</title>
+      <link>https://concerts.morperhaus.org/</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v1.8.0</guid>
+      <pubDate>Mon, 05 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Comprehensive documentation improvements and example templates for building your own concert archive</p><ul><li>Two-path getting started guide (Quick Start vs Your Own Data)</li><li>Example CSV templates for concert data and venue status</li><li>Unified data format specifications in data/README.md</li><li>Privacy-first: Personal data files now gitignored with examples in repo</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Changelog Toast UX &amp; Gatefold Refinements - v1.7.6</title>
+      <link>https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v1.7.6</guid>
+      <pubDate>Sun, 04 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Improved toast notifications and refined artist gatefold animations</p><ul><li>Optimized changelog toast UX with better positioning</li><li>Improved artist gatefold image loading</li><li>Fixed liner notes panel bleed-through during animations</li><li>Enhanced visual polish across gatefold experience</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Mobile Touch Feedback &amp; Haptics - v1.7.5</title>
+      <link>https://concerts.morperhaus.org/?scene=artists&artist=duran-duran</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v1.7.5</guid>
+      <pubDate>Sun, 04 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Added haptic feedback for mobile interactions across the app</p><ul><li>Haptic feedback on button taps and interactions</li><li>Touch-optimized UI elements with visual feedback</li><li>Improved mobile experience with tactile responses</li><li>Tier 1 mobile polish complete</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Artist Search &amp; Smart Sorting - v1.7.0</title>
+      <link>https://concerts.morperhaus.org/?scene=artists</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v1.7.0</guid>
+      <pubDate>Sun, 04 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Find any artist instantly with typeahead search, and see your most-seen artists first by default</p><ul><li>Typeahead search across all 248 artists</li><li>Auto-scroll to artist and open gatefold</li><li>Default sort by times seen (most frequent first)</li><li>Smooth liner notes slide animations</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Venue Cross-Navigation - v1.5.1</title>
+      <link>https://concerts.morperhaus.org/?scene=venues&venue=9-30-club</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v1.5.1</guid>
+      <pubDate>Sat, 03 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Click any venue on the map to navigate directly to its details in the Venues scene</p><ul><li>Clickable &quot;Explore Venue →&quot; buttons in map popups</li><li>Smooth scroll with spotlight animation</li><li>Auto-expand venue with child artists</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Artist Photos in Gatefold - v1.4.1</title>
+      <link>https://concerts.morperhaus.org/?scene=artists&artist=social-distortion</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v1.4.1</guid>
+      <pubDate>Sat, 03 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Open any artist&apos;s gatefold to see their photo alongside concert history</p><ul><li>94 artists (54%) display photos</li><li>Enriched metadata from Spotify, AudioDB, Last.fm</li><li>Graceful fallback to gradient + initials</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Timeline Hover Preview - v1.4.0</title>
+      <link>https://concerts.morperhaus.org/?scene=timeline</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v1.4.0</guid>
+      <pubDate>Sat, 03 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Hover over any year to see artist photos with subtle parallax effects</p><ul><li>Artist imagery on hover</li><li>Parallax mouse tracking</li><li>Smooth fade-in animations</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Venue Photos on Map - v1.3.3</title>
+      <link>https://concerts.morperhaus.org/?scene=geography&venue=9-30-club</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v1.3.3</guid>
+      <pubDate>Fri, 02 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Click any venue marker to see photos, legacy badges, and concert stats</p><ul><li>96% of venues have photos (73/76)</li><li>Lazy-loaded with skeleton shimmer</li><li>Legacy badges for closed/demolished venues</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Google Places Integration - v1.3.2</title>
+      <link>https://concerts.morperhaus.org/?scene=geography&venue=hollywood-palladium</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v1.3.2</guid>
+      <pubDate>Fri, 02 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Venue photos powered by Google Places API with smart fallback hierarchy</p><ul><li>66 active venues with real photos</li><li>Automatic fallbacks for legacy venues</li><li>Manual curation support for historical photos</li></ul>]]></description>
+    </item>
+  </channel>
+</rss>

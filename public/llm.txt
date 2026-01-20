@@ -336,7 +336,7 @@ Preferred format:
 
 ## Changelog & Updates
 
-**RSS Feed:** https://concerts.morperhaus.org/liner-notes/rss
+**RSS Feed:** https://concerts.morperhaus.org/rss.xml
 **Changelog Page:** https://concerts.morperhaus.org/liner-notes
 
 Track new features, data updates, and improvements.
