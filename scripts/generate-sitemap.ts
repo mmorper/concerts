@@ -123,6 +123,9 @@ async function generateSitemap() {
   xml += generateUrlEntry('/liner-notes', 0.5, 'weekly', latestDate)
   xml += generateUrlEntry('/liner-notes/rss', 0.4, 'weekly', latestDate)
 
+  // About page
+  xml += generateUrlEntry('/about', 0.6, 'monthly')
+
   xml += '</urlset>'
 
   // Write file
@@ -133,7 +136,8 @@ async function generateSitemap() {
     scenes.length +
     sortedArtists.length +
     sortedVenues.length * 2 + // 2 scenes per venue
-    2 // changelog pages
+    2 + // changelog pages
+    1 // about page
 
   console.log(`✅ Sitemap generated: ${OUTPUT_PATH}`)
   console.log(`   Total URLs: ${totalUrls}`)
@@ -142,6 +146,7 @@ async function generateSitemap() {
   console.log(`   - Artists: ${sortedArtists.length}`)
   console.log(`   - Venues: ${sortedVenues.length} × 2 scenes = ${sortedVenues.length * 2}`)
   console.log(`   - Changelog: 2`)
+  console.log(`   - About: 1`)
   console.log()
 }
 

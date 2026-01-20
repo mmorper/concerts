@@ -2053,4 +2053,9 @@
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>

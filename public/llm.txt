@@ -350,6 +350,26 @@ Track new features, data updates, and improvements.
 
 ---
 
+## About the Creator
+
+**Name:** Mike Morper
+**Handle:** Morperhaus
+**Role:** Product Marketer
+**Location:** Southern California
+**About Page:** https://concerts.morperhaus.org/about
+
+Concert enthusiast since 1984. This archive documents personal attendance history—every show attended with his wife over 40+ years. Started as a pandemic project (Google Sheet) that evolved into an interactive web app built with Claude Code as a collaborator.
+
+**External Links:**
+- LinkedIn: https://www.linkedin.com/in/morps/
+- GitHub: https://github.com/mmorper/concerts
+
+**Writing about this project:**
+- "Claude Code Is a Misnomer" — https://www.linkedin.com/pulse/claude-code-misnomer-mike-morper-ulvjc/
+- "I Can't Evaluate Code. Here's What I Evaluate Instead." — https://www.linkedin.com/pulse/i-cant-evaluate-code-heres-what-instead-mike-morper-fhjzc/
+
+---
+
 ## Additional Resources
 
 - **Deep Linking Guide:** Full documentation of URL patterns and navigation

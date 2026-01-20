@@ -1,0 +1,254 @@
+{
+  "metadata": {
+    "date": "2026-01-19T10:30:00Z",
+    "url": "https://concerts.morperhaus.org",
+    "pagesAnalyzed": 16,
+    "version": "1.0",
+    "siteVersion": "v3.7.0"
+  },
+  "scores": {
+    "overall": 91,
+    "technical": 24,
+    "content": 28,
+    "semantic": 18,
+    "authority": 12,
+    "ux": 9,
+    "aiReadiness": 9
+  },
+  "maxScores": {
+    "overall": 100,
+    "technical": 25,
+    "content": 30,
+    "semantic": 20,
+    "authority": 15,
+    "ux": 10,
+    "aiReadiness": 10
+  },
+  "checks": {
+    "hasSitemap": true,
+    "sitemapUrlCount": 487,
+    "hasRobotsTxt": true,
+    "hasLlmTxt": true,
+    "hasSchema": true,
+    "schemaTypes": ["CollectionPage", "MusicEventSeries", "WebPage", "SearchAction"],
+    "hasOpenGraph": true,
+    "hasTwitterCard": true,
+    "hasCanonical": true,
+    "hasRssFeed": true,
+    "hasJsonApiDiscovery": true,
+    "hasDynamicMetaInjection": true,
+    "hasPrecomputedFacts": true,
+    "hasLazyLoading": true,
+    "hasWebPImages": false,
+    "hasPreconnect": true,
+    "aiBotWelcome": true,
+    "ariaAttributeCount": 74,
+    "ariaFileCount": 18,
+    "h1Count": 2,
+    "imageCount": 12,
+    "imageFormat": "jpg"
+  },
+  "content": {
+    "concertCount": 178,
+    "artistCount": 253,
+    "venueCount": 77,
+    "dateRange": {
+      "start": "1984-04-27",
+      "end": "2026-09-16"
+    },
+    "topArtist": {
+      "name": "Social Distortion",
+      "count": 8
+    },
+    "topVenue": {
+      "name": "Irvine Meadows",
+      "count": 16
+    },
+    "topGenre": {
+      "name": "New Wave",
+      "count": 48
+    },
+    "topState": {
+      "name": "California",
+      "count": 118
+    }
+  },
+  "pages": [
+    {
+      "url": "/",
+      "title": "Morperhaus Concert Archives",
+      "hasH1": true,
+      "hasDescription": true,
+      "hasSchema": true,
+      "hasOG": true,
+      "hasCanonical": true,
+      "priority": 1.0
+    },
+    {
+      "url": "/?scene=timeline",
+      "title": "Morperhaus Concert Archives",
+      "hasH1": true,
+      "hasDescription": true,
+      "hasSchema": true,
+      "priority": 0.9
+    },
+    {
+      "url": "/?scene=artists",
+      "title": "Morperhaus Concert Archives",
+      "hasH2": true,
+      "hasDescription": true,
+      "hasSchema": true,
+      "priority": 0.9
+    },
+    {
+      "url": "/?scene=venues",
+      "title": "Morperhaus Concert Archives",
+      "hasH2": true,
+      "hasDescription": true,
+      "hasSchema": true,
+      "priority": 0.7
+    },
+    {
+      "url": "/?scene=geography",
+      "title": "Morperhaus Concert Archives",
+      "hasH2": true,
+      "hasDescription": true,
+      "hasSchema": true,
+      "priority": 0.7
+    },
+    {
+      "url": "/?scene=genres",
+      "title": "Morperhaus Concert Archives",
+      "hasH2": true,
+      "hasDescription": true,
+      "hasSchema": true,
+      "priority": 0.7
+    },
+    {
+      "url": "/?scene=artists&artist=depeche-mode",
+      "title": "Depeche Mode - Morperhaus Concert Archives",
+      "dynamicTitle": true,
+      "hasDescription": true,
+      "priority": 0.8
+    },
+    {
+      "url": "/?scene=artists&artist=nine-inch-nails",
+      "title": "Nine Inch Nails - Morperhaus Concert Archives",
+      "dynamicTitle": true,
+      "hasDescription": true,
+      "priority": 0.8
+    },
+    {
+      "url": "/?scene=venues&venue=hollywood-bowl",
+      "title": "Hollywood Bowl - Morperhaus Concert Archives",
+      "dynamicTitle": true,
+      "hasDescription": true,
+      "priority": 0.7
+    },
+    {
+      "url": "/?scene=venues&venue=forum",
+      "title": "The Forum - Morperhaus Concert Archives",
+      "dynamicTitle": true,
+      "hasDescription": true,
+      "priority": 0.7
+    },
+    {
+      "url": "/liner-notes",
+      "title": "Liner Notes - Morperhaus Concert Archives",
+      "hasH1": true,
+      "hasFactCards": true,
+      "hasRss": true,
+      "priority": 0.5
+    },
+    {
+      "url": "/llm.txt",
+      "type": "ai-documentation",
+      "hasPrecomputedFacts": true,
+      "hasExampleQueries": true,
+      "hasEntityRelationships": true
+    },
+    {
+      "url": "/sitemap.xml",
+      "type": "sitemap",
+      "urlCount": 487,
+      "valid": true
+    },
+    {
+      "url": "/robots.txt",
+      "type": "crawler-directives",
+      "aiBotWelcome": true,
+      "crawlDelay": 1
+    }
+  ],
+  "aiQuerySimulation": {
+    "totalQueries": 8,
+    "directlyAnswerable": 7,
+    "requiresInference": 1,
+    "score": 9,
+    "queries": [
+      {
+        "query": "How many concerts in archive?",
+        "answerable": "direct",
+        "source": "facts.json"
+      },
+      {
+        "query": "Most-seen artist?",
+        "answerable": "direct",
+        "source": "facts.json"
+      },
+      {
+        "query": "Top venue?",
+        "answerable": "direct",
+        "source": "facts.json"
+      },
+      {
+        "query": "Concerts in LA?",
+        "answerable": "direct",
+        "source": "facts.json"
+      },
+      {
+        "query": "First concert date?",
+        "answerable": "direct",
+        "source": "facts.json"
+      },
+      {
+        "query": "Genre breakdown?",
+        "answerable": "direct",
+        "source": "facts.json"
+      },
+      {
+        "query": "Busiest year?",
+        "answerable": "direct",
+        "source": "facts.json"
+      },
+      {
+        "query": "Best venue for industrial?",
+        "answerable": "inference",
+        "source": "requires cross-reference"
+      }
+    ]
+  },
+  "recommendations": [
+    {
+      "id": 1,
+      "title": "Convert images to WebP format",
+      "impact": 1,
+      "effort": "low",
+      "category": "quick-win"
+    },
+    {
+      "id": 2,
+      "title": "Add MusicEvent schema for concerts",
+      "impact": 2,
+      "effort": "medium",
+      "category": "quick-win"
+    },
+    {
+      "id": 3,
+      "title": "Add About section to liner notes",
+      "impact": 1,
+      "effort": "low",
+      "category": "quick-win"
+    }
+  ]
+}

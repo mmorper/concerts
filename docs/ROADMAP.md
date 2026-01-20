@@ -174,6 +174,15 @@ Genre moved to artist-level metadata with automatic enrichment from TheAudioDB.
 
 ## Short-Term Roadmap
 
+### About Page - E-E-A-T Signals
+
+**Status**: Planned
+**Spec**: [global-about-page.md](specs/future/global-about-page.md)
+
+Static /about page surfacing creator identity and project backstory for SEO authority signals.
+
+---
+
 ### SEO Optimization - Search & AI Bot Discoverability
 
 **Status**: Planned

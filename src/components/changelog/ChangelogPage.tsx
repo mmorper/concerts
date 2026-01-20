@@ -111,13 +111,22 @@ export function ChangelogPage() {
       <div className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
         {/* Header */}
         <header className="mb-12" role="banner">
-          <button
-            onClick={() => navigate('/')}
-            className="text-slate-300 hover:text-white transition-colors mb-8 flex items-center gap-1"
-          >
-            <ChevronLeft className="w-4 h-4" />
-            <span>Back to Timeline</span>
-          </button>
+          <nav className="flex items-center gap-4 mb-8">
+            <button
+              onClick={() => navigate('/')}
+              className="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span>Back to Timeline</span>
+            </button>
+            <span className="text-slate-600">|</span>
+            <button
+              onClick={() => navigate('/about')}
+              className="text-slate-400 hover:text-white transition-colors"
+            >
+              About
+            </button>
+          </nav>
 
           <motion.h1
             ref={headerRef}

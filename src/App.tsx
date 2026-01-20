@@ -8,6 +8,7 @@ import { Scene5Genres } from './components/scenes/Scene5Genres/index'
 import { ArtistScene } from './components/scenes/ArtistScene/ArtistScene'
 import { SceneNavigation } from './components/SceneNavigation'
 import { ChangelogPage, ChangelogToast, ChangelogRSS } from './components/changelog'
+import { AboutPage } from './components/about'
 import { SCENE_MAP, TOAST } from './components/changelog/constants'
 import { useChangelogCheck } from './hooks/useChangelogCheck'
 import { analytics } from './services/analytics'
@@ -18,6 +19,7 @@ function App() {
       <Route path="/" element={<MainScenes />} />
       <Route path="/liner-notes" element={<ChangelogPage />} />
       <Route path="/liner-notes/rss" element={<ChangelogRSS />} />
+      <Route path="/about" element={<AboutPage />} />
       {/* Legacy redirects */}
       <Route path="/changelog" element={<ChangelogPage />} />
       <Route path="/changelog/rss" element={<ChangelogRSS />} />
