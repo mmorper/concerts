@@ -18,6 +18,7 @@ Slash commands for common workflows. Run these in Claude Code with `/{command}`.
 | `/context-sync` | Update context files | After commits or data refresh |
 | `/validate` | Run all checks | Before releases, after data changes |
 | `/data-refresh` | Refresh data pipeline | Adding concerts, monthly maintenance |
+| `/seo` | SEO analysis report | Monthly audits, after improvements |
 | `/preview` | Start dev server | Local development with context |
 | `/hotfix` | Emergency patch | Urgent production fixes |
 
@@ -172,6 +173,35 @@ Synchronize context files with project state.
 - `config.json`: Version, lastContextSync, lastCommit
 
 **Run after:** Data refresh, multiple commits, before starting new features
+
+---
+
+### `/seo`
+
+Analyze live site SEO health with comprehensive scoring.
+
+```
+/seo                           # Standard analysis
+/seo --baseline                # Save current as baseline
+/seo --compare 2026-01-20      # Compare to baseline
+/seo --url https://staging.com # Analyze staging
+```
+
+**Analyzes:**
+
+- 12 key pages (homepage, 5 scenes, 6 deep link examples)
+- 100-point rubric across 6 categories
+- Technical foundation, content quality, semantic intelligence
+- Authority signals, user experience, AI readiness
+
+**Generates:**
+
+- Visual dashboard with color-coded scores
+- Impact/effort matrix for recommendations
+- Page-by-page analysis with specific issues
+- Markdown report in `seo-reports/YYYY-MM-DD-report.md`
+
+**Useful for:** Monthly SEO audits, tracking improvements, pre-release checks
 
 ---
 
