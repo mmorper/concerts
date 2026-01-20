@@ -8,7 +8,23 @@
 import { useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ChevronLeft, Linkedin, Github, ExternalLink } from 'lucide-react'
+import { ChevronLeft, Github, ExternalLink } from 'lucide-react'
+
+/** LinkedIn brand icon SVG */
+const LinkedInIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 72 72"
+    className={className}
+    fill="currentColor"
+  >
+    <rect width="72" height="72" rx="8" fill="#0A66C2" />
+    <path
+      d="M20.053 55H12V27.71h8.053V55zM16 24c-2.63 0-4-1.607-4-3.607C12 17.787 13.404 16 16.105 16c2.667 0 4.053 1.787 4.053 4.393 0 2-1.404 3.607-4.158 3.607zm38 31h-8.457V40.607c0-3.786-1.456-6.393-4.965-6.393-2.667 0-4.158 1.787-4.86 3.536-.26.607-.26 1.464-.26 2.322V55H27.001V27.71h8.457v3.394c1.23-1.786 3.053-4.393 7.585-4.393 5.525 0 9.957 3.607 9.957 11.393V55z"
+      fill="#fff"
+    />
+  </svg>
+)
 
 /** LinkedIn articles about building this project */
 interface LinkedInPost {
@@ -106,7 +122,7 @@ export function AboutPage() {
                 rel="noopener noreferrer"
                 className="text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-2"
               >
-                <Linkedin className="w-5 h-5 fill-[#0A66C2] text-[#0A66C2]" />
+                <LinkedInIcon className="w-5 h-5" />
                 <span>LinkedIn</span>
               </a>
               <a
@@ -187,12 +203,21 @@ export function AboutPage() {
                 Claude Code
               </a>{' '}
               and a hypothesis: I didn't need to know <em>how</em> to code. I just needed to know{' '}
-              <em>what</em> I wanted.
+              <em>what</em> I wanted. If you're interested,{' '}
+              <a
+                href="https://www.linkedin.com/pulse/claude-code-misnomer-mike-morper-ulvjc/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-400 hover:text-amber-300"
+              >
+                I wrote about this
+              </a>
+              .
             </p>
             <p className="text-slate-300 text-lg leading-relaxed mb-4">
-              The result: ~29,000 lines of code, six API integrations, 305 automated tests, and an
-              experience I'm genuinely proud of. I can't tell you if the code is good—but the
-              product works and the experience delights.
+              The result: ~29,000 lines of code, six API integrations, 305 automated tests (and
+              counting!), and an experience I'm genuinely proud of. I can't tell you if the code is
+              good—but the product works and the experience delights.
             </p>
             <p className="text-slate-400">
               Curious about the technical details?{' '}
@@ -244,7 +269,7 @@ export function AboutPage() {
                   className="flex items-start gap-4 bg-slate-900/50 border border-slate-800 rounded-lg p-5 hover:border-amber-500/50 transition-colors group"
                 >
                   <div className="flex-shrink-0 mt-1">
-                    <Linkedin className="w-5 h-5 fill-[#0A66C2] text-[#0A66C2]" />
+                    <LinkedInIcon className="w-5 h-5" />
                   </div>
                   <div className="flex-grow min-w-0">
                     <div className="flex items-start justify-between gap-2 mb-1">
