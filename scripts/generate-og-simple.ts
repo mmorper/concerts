@@ -16,11 +16,41 @@ const __dirname = path.dirname(__filename)
 
 const SITE_URL = process.env.OG_SITE_URL || 'http://localhost:5173'
 const OUTPUT_PATH = 'public/og-image.jpg'
+const CACHE_PATH = 'public/og-image-stats.json'
 const OUTPUT_WIDTH = 1200
 const OUTPUT_HEIGHT = 630
 
+interface OGStats {
+  concerts: number
+  scenes: number
+  artists: number
+  venues: number
+}
+
+function loadCachedStats(): OGStats | null {
+  try {
+    if (fs.existsSync(CACHE_PATH)) {
+      return JSON.parse(fs.readFileSync(CACHE_PATH, 'utf-8'))
+    }
+  } catch {
+    // Cache file corrupted or missing, regenerate
+  }
+  return null
+}
+
+function saveCachedStats(stats: OGStats): void {
+  fs.writeFileSync(CACHE_PATH, JSON.stringify(stats, null, 2))
+}
+
+function statsMatch(a: OGStats, b: OGStats): boolean {
+  return a.concerts === b.concerts &&
+         a.scenes === b.scenes &&
+         a.artists === b.artists &&
+         a.venues === b.venues
+}
+
 async function main() {
-  console.log('🎨 Generating simplified OG image\n')
+  console.log('🎨 OG Image Generator\n')
 
   // Read stats directly from data file
   const dataPath = path.join(__dirname, '..', 'public', 'data', 'concerts.json')
@@ -41,9 +71,31 @@ async function main() {
   const venueSet = new Set(concertsData.concerts.map((c: any) => c.venue))
   const venues = venueSet.size
 
-  const stats = { concerts, scenes, artists, venues }
+  const stats: OGStats = { concerts, scenes, artists, venues }
 
-  console.log(`Stats from data file: ${stats.concerts} shows, ${stats.artists} artists, ${stats.venues} venues, ${stats.scenes} scenes`)
+  console.log(`Current stats: ${stats.concerts} shows, ${stats.artists} artists, ${stats.venues} venues, ${stats.scenes} scenes`)
+
+  // Check if stats have changed
+  const cachedStats = loadCachedStats()
+  const ogImageExists = fs.existsSync(OUTPUT_PATH)
+  const forceRegenerate = process.argv.includes('--force')
+
+  if (cachedStats && statsMatch(cachedStats, stats) && ogImageExists && !forceRegenerate) {
+    console.log('\n✓ No data changes detected - skipping OG image generation')
+    console.log('  (use --force to regenerate anyway)')
+    return
+  }
+
+  if (forceRegenerate) {
+    console.log('\n--force flag detected, regenerating...')
+  } else if (!ogImageExists) {
+    console.log('\nOG image missing, generating...')
+  } else {
+    console.log('\nData changed, regenerating OG image...')
+    if (cachedStats) {
+      console.log(`  Previous: ${cachedStats.concerts} shows, ${cachedStats.artists} artists, ${cachedStats.venues} venues`)
+    }
+  }
 
   const browser = await puppeteer.launch({
     headless: true,
@@ -169,6 +221,9 @@ async function main() {
     ])
     .jpeg({ quality: 90 })
     .toFile(OUTPUT_PATH)
+
+  // Save stats cache for next run
+  saveCachedStats(stats)
 
   console.log(`✓ OG image created: ${OUTPUT_PATH}`)
   console.log(`  Dimensions: ${OUTPUT_WIDTH}x${OUTPUT_HEIGHT}px`)
