@@ -1,0 +1,33 @@
+# Cloudflare Worker Configuration
+# This worker injects dynamic meta tags for bots while keeping the SPA fast for humans
+
+name = "concerts-meta-injector"
+main = "meta-injector.js"
+compatibility_date = "2024-01-01"
+
+# Account ID (get from Cloudflare Dashboard > Workers & Pages > Overview)
+account_id = "6db8591bbcba4588ae4ef9c3839cd209"
+
+# Route configuration
+# After deployment, configure routes in Cloudflare Dashboard:
+# Workers & Pages > concerts-meta-injector > Settings > Triggers > Add route
+#
+# Recommended route: concerts.morperhaus.org/*
+# This intercepts all requests to your domain
+
+[env.production]
+# Production environment variables (if needed)
+# name = "concerts-meta-injector-prod"
+
+[env.staging]
+# Staging environment (optional)
+# name = "concerts-meta-injector-staging"
+
+# Build configuration
+[build]
+command = ""  # No build step needed for vanilla JS worker
+
+# Worker limits (free tier)
+# - 100,000 requests/day
+# - 10ms CPU time per request
+# - 128 MB memory

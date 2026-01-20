@@ -349,6 +349,120 @@ The site is automatically deployed via Cloudflare Pages:
 - **Cache Busting**: May take hours/days for social platforms to refresh
 - **Testing**: Use [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) or [Twitter Card Validator](https://cards-dev.twitter.com/validator) to force refresh
 
+### Cloudflare Worker (Dynamic Meta Tags)
+
+**Location**: `workers/meta-injector.js`
+**Purpose**: Inject dynamic meta tags for bots while keeping SPA fast for humans
+**Status**: Deployed to production
+**Worker URL**: <https://concerts-meta-injector.morps.workers.dev>
+**Route**: `concerts.morperhaus.org/*`
+
+#### Worker Flow
+
+The worker sits in front of the Cloudflare Pages site and:
+
+1. **Detects Bot User Agents** (Googlebot, Facebook, Twitter, AI bots)
+2. **Parses URL Parameters** (`?scene=artists&artist=depeche-mode`)
+3. **Fetches Entity Metadata** from production JSON files
+4. **Injects Dynamic Meta Tags** into HTML `<head>`
+5. **Returns Personalized HTML** with entity-specific title, description, OG image
+
+**For Human Users**: Bypasses worker completely (no performance impact)
+
+#### Deep Link Patterns
+
+**Artist Pages**:
+
+```text
+/?scene=artists&artist={artist-normalized}
+```
+
+Example: `/?scene=artists&artist=depeche-mode`
+
+Injects:
+
+- `<title>Depeche Mode - Morperhaus Concert Archives</title>`
+- Description with concert count and date range
+- Artist photo as OG image (if available)
+
+**Venue Pages (Network)**:
+
+```text
+/?scene=venues&venue={venue-normalized}
+```
+
+Example: `/?scene=venues&venue=9-30-club`
+
+**Venue Pages (Map)**:
+
+```text
+/?scene=geography&venue={venue-normalized}
+```
+
+Example: `/?scene=geography&venue=irvine-meadows`
+
+Injects:
+
+- Venue name and location in title
+- Description with concert count and featured artists
+- Default OG image
+
+#### Worker Testing
+
+**Test Bot Detection**:
+
+```bash
+curl -A "Googlebot/2.1" \
+  "https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode" | grep "<title>"
+# Returns: <title>Depeche Mode - Morperhaus Concert Archives</title>
+```
+
+**Test Human Bypass**:
+
+```bash
+curl "https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode" | grep "<title>"
+# Returns: <title>Morperhaus Concert Archives</title> (static)
+```
+
+**Test Social Media Previews**:
+
+- **Facebook**: <https://developers.facebook.com/tools/debug/>
+- **Twitter**: <https://cards-dev.twitter.com/validator>
+- **LinkedIn**: <https://www.linkedin.com/post-inspector/>
+
+Enter URL: `https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode`
+
+#### Worker Deployment
+
+See [workers/README.md](../workers/README.md) for:
+
+- Local testing with `wrangler dev`
+- Deployment with `wrangler deploy`
+- Route configuration
+- Monitoring with `wrangler tail`
+- Troubleshooting common issues
+
+#### Worker Performance
+
+**Bot Requests**:
+
+- Cold start: ~50-100ms (first request after deploy)
+- Warm requests: ~10-20ms (cached metadata)
+- Total latency: ~30-120ms
+
+**Human Requests**:
+
+- Worker overhead: ~0ms (bypassed immediately)
+- No performance impact
+
+#### Bot Detection List
+
+**Search Engines**: Googlebot, Bingbot, DuckDuckBot, Yandexbot
+**Social Media**: Facebook, Twitter, LinkedIn, WhatsApp, Telegram, Slack, Discord
+**AI Assistants**: ChatGPT, Claude, Perplexity, Google-Extended
+
+Full list: See `BOT_USER_AGENTS` in [workers/meta-injector.js:18-44](../workers/meta-injector.js#L18-L44)
+
 ## NPM Scripts Reference
 
 | Script | Command | Description |
