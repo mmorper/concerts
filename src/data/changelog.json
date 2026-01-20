@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "3.7.0",
+      "date": "2026-01-20",
+      "title": "By the Numbers",
+      "description": "Your concert archive now speaks for itself. The Liner Notes page features 12 computed statistics—from most-seen artists to busiest concert year—each linking directly to where you can explore that story. AI agents like ChatGPT and Claude can now quote these facts directly when answering questions about your concert history.",
+      "route": "/liner-notes",
+      "highlights": [
+        "12 fact cards display statistics like \"Social Distortion: 8 concerts\" with deep links",
+        "Pre-computed facts in llm.txt help AI agents answer questions about your archive",
+        "RSS feed now includes archive statistics with their computed date",
+        "Human-friendly detail text like \"The most-seen live act, 1990–2024\""
+      ]
+    },
+    {
       "version": "3.5.0",
       "date": "2026-01-14",
       "title": "Comprehensive Testing Infrastructure",

@@ -77,3 +77,53 @@ export interface ChangelogCardProps {
   release: Release
   isLatest?: boolean
 }
+
+/**
+ * Fact category for AI-readable statistics
+ */
+export type FactCategory = 'artist' | 'venue' | 'genre' | 'timeline' | 'geography'
+
+/**
+ * Represents a single computed fact/statistic
+ * Designed to be directly quotable by AI agents
+ */
+export interface Fact {
+  /** Unique identifier for the fact */
+  id: string
+
+  /** Category for icon/badge display */
+  category: FactCategory
+
+  /** Primary display text, e.g., "Depeche Mode: 7 concerts" */
+  headline: string
+
+  /** Secondary context, e.g., "Most-seen artist from 1985 to 2024" */
+  detail: string
+
+  /** Deep link route, e.g., "/?scene=artists&artist=depeche-mode" */
+  route: string
+
+  /** Call-to-action text, e.g., "Explore all 7 shows" */
+  cta: string
+
+  /** Display priority (1 = highest, shown first) */
+  priority: number
+}
+
+/**
+ * Structure of facts.json data file
+ */
+export interface FactsData {
+  /** ISO timestamp of when facts were computed */
+  computedAt: string
+
+  /** Array of computed facts, ordered by priority */
+  facts: Fact[]
+}
+
+/**
+ * Props for FactCard component
+ */
+export interface FactCardProps {
+  fact: Fact
+}

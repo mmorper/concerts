@@ -36,6 +36,21 @@ interface DiscographyData {
   }
 }
 
+interface Fact {
+  id: string
+  category: string
+  headline: string
+  detail: string
+  route: string
+  cta: string
+  priority: number
+}
+
+interface FactsData {
+  computedAt: string
+  facts: Fact[]
+}
+
 async function main() {
   console.log('📝 Updating meta tags and SEO files with current stats\n')
 
@@ -51,6 +66,15 @@ async function main() {
     totalAlbums = Object.values(discographyData).reduce((sum, artist) => sum + (artist.albums?.length || 0), 0)
   } catch (err) {
     console.warn('⚠️  Could not read discography.json, album count will be 0')
+  }
+
+  // Read facts data for llm.txt statistics section
+  const factsPath = path.join(__dirname, '..', 'public', 'data', 'facts.json')
+  let factsData: FactsData | null = null
+  try {
+    factsData = JSON.parse(fs.readFileSync(factsPath, 'utf-8'))
+  } catch (err) {
+    console.warn('⚠️  Could not read facts.json, facts section will be skipped')
   }
 
   // Calculate stats
@@ -251,6 +275,87 @@ async function main() {
     /\*\*Total Content:\*\* \d+ concerts \| \d+ artists \| \d+ venues \| [^|]+ \| \d+-\d+/,
     `**Total Content:** ${concerts} concerts | ${artists} artists | ${venues} venues | ${totalAlbums.toLocaleString()}+ albums | ${startYear}-${endYear}`
   )
+
+  // Generate and update Pre-Computed Statistics section from facts.json
+  if (factsData?.facts) {
+    const baseUrl = 'https://concerts.morperhaus.org'
+
+    // Group facts by category for structured output
+    const artistFacts = factsData.facts.filter((f) => f.category === 'artist')
+    const venueFacts = factsData.facts.filter((f) => f.category === 'venue')
+    const timelineFacts = factsData.facts.filter((f) => f.category === 'timeline')
+    const genreFacts = factsData.facts.filter((f) => f.category === 'genre')
+    const geographyFacts = factsData.facts.filter((f) => f.category === 'geography')
+
+    // Build the statistics section - optimized for AI agent parsing
+    let statsSection = `## Pre-Computed Statistics
+
+These facts are updated with each data refresh and can be quoted directly:
+
+### Most-Seen Artists
+`
+    artistFacts.forEach((fact, i) => {
+      statsSection += `${i + 1}. ${fact.headline} (${fact.detail})\n   → ${baseUrl}${fact.route}\n`
+    })
+
+    statsSection += `
+### Most-Visited Venues
+`
+    venueFacts.forEach((fact, i) => {
+      statsSection += `${i + 1}. ${fact.headline} (${fact.detail})\n   → ${baseUrl}${fact.route}\n`
+    })
+
+    statsSection += `
+### Timeline Highlights
+`
+    timelineFacts.forEach((fact) => {
+      statsSection += `- ${fact.headline}: ${fact.detail}\n  → ${baseUrl}${fact.route}\n`
+    })
+
+    statsSection += `
+### Genre Distribution
+`
+    genreFacts.forEach((fact, i) => {
+      statsSection += `${i + 1}. ${fact.headline} (${fact.detail})\n   → ${baseUrl}${fact.route}\n`
+    })
+
+    statsSection += `
+### Geographic Coverage
+`
+    geographyFacts.forEach((fact) => {
+      statsSection += `- ${fact.headline}: ${fact.detail}\n  → ${baseUrl}${fact.route}\n`
+    })
+
+    statsSection += `
+### Quick Facts (AI-Quotable)
+`
+    // Add top-priority facts in a simple quotable format
+    factsData.facts.slice(0, 6).forEach((fact) => {
+      statsSection += `- "${fact.headline}" — ${fact.detail}\n`
+    })
+
+    statsSection += `
+**Facts computed:** ${factsData.computedAt}
+**Source:** https://concerts.morperhaus.org/data/facts.json
+**Browse visually:** https://concerts.morperhaus.org/liner-notes
+
+---
+`
+
+    // Remove existing statistics section if present
+    llmContent = llmContent.replace(
+      /## Pre-Computed Statistics[\s\S]*?(?=## Common Queries|## Features|---\n\n##)/,
+      ''
+    )
+
+    // Insert new statistics section before "Common Queries & Answers"
+    llmContent = llmContent.replace(
+      /## Common Queries & Answers/,
+      `${statsSection}\n## Common Queries & Answers`
+    )
+
+    console.log('✓ Added Pre-Computed Statistics section to llm.txt')
+  }
 
   fs.writeFileSync(llmPath, llmContent, 'utf-8')
   console.log('✓ Updated public/llm.txt')

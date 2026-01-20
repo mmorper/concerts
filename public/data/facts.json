@@ -1,0 +1,140 @@
+{
+  "computedAt": "2026-01-20T04:58:52.563Z",
+  "facts": [
+    {
+      "id": "top-artist",
+      "category": "artist",
+      "headline": "Social Distortion: 8 concerts",
+      "detail": "The most-seen live act, 1990–2024",
+      "route": "/?scene=artists&artist=social-distortion",
+      "cta": "Explore all 8 shows",
+      "priority": 1
+    },
+    {
+      "id": "top-venue",
+      "category": "venue",
+      "headline": "Irvine Meadows: 16 shows",
+      "detail": "A favorite spot, visited 1984–2003",
+      "route": "/?scene=venues&venue=irvine-meadows",
+      "cta": "See all 16 concerts",
+      "priority": 2
+    },
+    {
+      "id": "total-concerts",
+      "category": "timeline",
+      "headline": "178 concerts since 1984",
+      "detail": "43 years of live music memories",
+      "route": "/?scene=timeline",
+      "cta": "Explore the timeline",
+      "priority": 3
+    },
+    {
+      "id": "top-genre",
+      "category": "genre",
+      "headline": "New Wave: 48 shows",
+      "detail": "The dominant sound in this collection",
+      "route": "/?scene=genres",
+      "cta": "Explore genre breakdown",
+      "priority": 4
+    },
+    {
+      "id": "first-concert",
+      "category": "timeline",
+      "headline": "First show: Adam Ant (1984)",
+      "detail": "Where it all began — Irvine Meadows",
+      "route": "/?scene=artists&artist=adam-ant",
+      "cta": "View artist details",
+      "priority": 5
+    },
+    {
+      "id": "top-state",
+      "category": "geography",
+      "headline": "California: 118 concerts",
+      "detail": "Home base for most concert experiences",
+      "route": "/?scene=geography",
+      "cta": "Explore the map",
+      "priority": 6
+    },
+    {
+      "id": "second-artist",
+      "category": "artist",
+      "headline": "Howard Jones: 6 concerts",
+      "detail": "Another favorite who keeps drawing me back",
+      "route": "/?scene=artists&artist=howard-jones",
+      "cta": "Explore all 6 shows",
+      "priority": 7
+    },
+    {
+      "id": "third-artist",
+      "category": "artist",
+      "headline": "Depeche Mode: 5 concerts",
+      "detail": "Rounding out the top three most-seen",
+      "route": "/?scene=artists&artist=depeche-mode",
+      "cta": "Explore all 5 shows",
+      "priority": 8
+    },
+    {
+      "id": "second-venue",
+      "category": "venue",
+      "headline": "Pacific Amphitheatre: 16 shows",
+      "detail": "Another venue with great memories",
+      "route": "/?scene=venues&venue=pacific-amphitheatre",
+      "cta": "See all 16 concerts",
+      "priority": 9
+    },
+    {
+      "id": "latest-concert",
+      "category": "timeline",
+      "headline": "Latest: Thompson Twins (2026)",
+      "detail": "The most recent addition — Pavilion Theatre",
+      "route": "/?scene=artists&artist=thompson-twins",
+      "cta": "View artist details",
+      "priority": 10
+    },
+    {
+      "id": "busiest-year",
+      "category": "timeline",
+      "headline": "2022: 14 shows",
+      "detail": "The peak year for live music attendance",
+      "route": "/?scene=timeline",
+      "cta": "View timeline",
+      "priority": 11
+    },
+    {
+      "id": "unique-cities",
+      "category": "geography",
+      "headline": "35 cities visited",
+      "detail": "Live music across the map",
+      "route": "/?scene=geography",
+      "cta": "Explore the map",
+      "priority": 12
+    },
+    {
+      "id": "unique-venues",
+      "category": "venue",
+      "headline": "77 unique venues",
+      "detail": "From clubs to arenas and amphitheaters",
+      "route": "/?scene=venues",
+      "cta": "Explore venues",
+      "priority": 13
+    },
+    {
+      "id": "top-decade",
+      "category": "timeline",
+      "headline": "2010s: 64 shows",
+      "detail": "The golden era of concert-going",
+      "route": "/?scene=timeline",
+      "cta": "View timeline",
+      "priority": 14
+    },
+    {
+      "id": "second-genre",
+      "category": "genre",
+      "headline": "Punk: 15 shows",
+      "detail": "Another genre that shaped the journey",
+      "route": "/?scene=genres",
+      "cta": "Explore genres",
+      "priority": 15
+    }
+  ]
+}

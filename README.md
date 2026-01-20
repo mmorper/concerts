@@ -7,13 +7,13 @@ _A visual love letter to four decades of live music._
 
 An interactive web app for exploring personal concert history. Five scenes—Timeline, Venues, Geography, Genres, Artists—each offering a different lens on 178 shows spanning 1984 to today. Click through decades, trace connections between venues and artists, see where the music happened on a map. All enriched with artist photos, venue imagery, and setlist data.
 
-**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 178 shows • 247 artists • 77 venues • 5+ decades
+**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 178 shows • 253 artists • 77 venues • 5+ decades
 
 ## What's new
 
-**v3.3.0** 🔗 Navigate seamlessly between scenes! When exploring an artist's concert history, [tap any venue name](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) to jump straight to the Venues scene—automatically spotlighting both the venue and artist to show you their unique relationship. Map markers now display venue names for easier exploration, and all venue links use proper navigation for a better mobile experience.
+**v3.7.0** 📊 Your archive now speaks for itself! The [Liner Notes](https://concerts.morperhaus.org/liner-notes) page features 12 computed statistics—from "Social Distortion: 8 concerts" to "2022: 14 shows"—each linking directly to where you can explore that story. AI agents like ChatGPT and Claude can now quote these facts directly when answering questions about your concert history.
 
-**v3.2.0** 📱 Artist details now feel native on your phone! [Tap any artist](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) to open a full-screen modal with tabbed navigation—swipe through your concert history, check upcoming tour dates, and pull up setlists with a tap. Swipe down or tap X to close, just like you'd expect.
+**v3.3.0** 🔗 Navigate seamlessly between scenes! When exploring an artist's concert history, [tap any venue name](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) to jump straight to the Venues scene—automatically spotlighting both the venue and artist to show you their unique relationship.
 
 See the full changelog at [/liner-notes](https://concerts.morperhaus.org/liner-notes)
 

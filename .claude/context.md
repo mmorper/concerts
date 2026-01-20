@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v3.6.0 (Production)
+**Version:** v3.7.0 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-01-20
 
@@ -103,11 +103,11 @@ These docs provide essential context for common development tasks:
 
 **Recent Releases:**
 
+- **v3.7.0** (2026-01-20): By the Numbers - AI Fact Cards for Liner Notes
 - **v3.6.0** (2026-01-20): SEO Analysis Command & Infrastructure
 - **v3.5.0** (2026-01-14): Comprehensive Testing Infrastructure
 - **v3.4.2** (2026-01-14): Quality Standards & Documentation Infrastructure
 - **v3.4.1** (2026-01-09): Google Analytics 4 Configuration Fix
-- **v3.4.0** (2026-01-09): Map & Venue Navigation Polish
 
 ---
 

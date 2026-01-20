@@ -49,6 +49,7 @@ async function buildData() {
     { name: 'Enrich discography', active: !skipDiscography },
     { name: 'Pre-fetch setlists', active: !skipSetlists },
     { name: 'Aggregate genres timeline', active: true },
+    { name: 'Generate facts for liner notes', active: true },
     { name: 'Update meta tags and SEO files', active: !dryRun },
     { name: 'Generate sitemap', active: !dryRun },
   ]
@@ -196,7 +197,16 @@ async function buildData() {
     await aggregateGenresTimeline()
     console.log()
 
-    // Step 10: Update meta tags and SEO files (always runs)
+    // Step 10: Generate facts for liner notes (always runs)
+    currentStep++
+    console.log('=' .repeat(60))
+    console.log(`Step ${currentStep}/${activeSteps}: Generating facts for liner notes`)
+    console.log('-'.repeat(60))
+    const { writeFacts } = await import('./generate-facts.ts')
+    await writeFacts()
+    console.log()
+
+    // Step 11: Update meta tags and SEO files (always runs)
     if (!dryRun) {
       currentStep++
       console.log('=' .repeat(60))
@@ -206,7 +216,7 @@ async function buildData() {
       console.log()
     }
 
-    // Step 11: Generate sitemap (always runs)
+    // Step 12: Generate sitemap (always runs)
     if (!dryRun) {
       currentStep++
       console.log('=' .repeat(60))
@@ -234,6 +244,7 @@ async function buildData() {
       if (!skipVenues) console.log('   - public/data/venues-metadata.json')
       if (!skipDiscography) console.log('   - public/data/discography.json')
       if (!skipSetlists) console.log('   - public/data/setlists-cache.json')
+      console.log('   - public/data/facts.json')
       console.log('   - public/sitemap.xml')
       console.log('   - index.html (meta tags updated)')
       console.log('   - public/llm.txt (stats updated)')

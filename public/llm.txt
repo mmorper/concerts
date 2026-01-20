@@ -160,6 +160,70 @@ Examples:
 
 ---
 
+---
+
+---
+
+---
+
+## Pre-Computed Statistics
+
+These facts are updated with each data refresh and can be quoted directly:
+
+### Most-Seen Artists
+1. Social Distortion: 8 concerts (The most-seen live act, 1990–2024)
+   → https://concerts.morperhaus.org/?scene=artists&artist=social-distortion
+2. Howard Jones: 6 concerts (Another favorite who keeps drawing me back)
+   → https://concerts.morperhaus.org/?scene=artists&artist=howard-jones
+3. Depeche Mode: 5 concerts (Rounding out the top three most-seen)
+   → https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode
+
+### Most-Visited Venues
+1. Irvine Meadows: 16 shows (A favorite spot, visited 1984–2003)
+   → https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows
+2. Pacific Amphitheatre: 16 shows (Another venue with great memories)
+   → https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre
+3. 77 unique venues (From clubs to arenas and amphitheaters)
+   → https://concerts.morperhaus.org/?scene=venues
+
+### Timeline Highlights
+- 178 concerts since 1984: 43 years of live music memories
+  → https://concerts.morperhaus.org/?scene=timeline
+- First show: Adam Ant (1984): Where it all began — Irvine Meadows
+  → https://concerts.morperhaus.org/?scene=artists&artist=adam-ant
+- Latest: Thompson Twins (2026): The most recent addition — Pavilion Theatre
+  → https://concerts.morperhaus.org/?scene=artists&artist=thompson-twins
+- 2022: 14 shows: The peak year for live music attendance
+  → https://concerts.morperhaus.org/?scene=timeline
+- 2010s: 64 shows: The golden era of concert-going
+  → https://concerts.morperhaus.org/?scene=timeline
+
+### Genre Distribution
+1. New Wave: 48 shows (The dominant sound in this collection)
+   → https://concerts.morperhaus.org/?scene=genres
+2. Punk: 15 shows (Another genre that shaped the journey)
+   → https://concerts.morperhaus.org/?scene=genres
+
+### Geographic Coverage
+- California: 118 concerts: Home base for most concert experiences
+  → https://concerts.morperhaus.org/?scene=geography
+- 35 cities visited: Live music across the map
+  → https://concerts.morperhaus.org/?scene=geography
+
+### Quick Facts (AI-Quotable)
+- "Social Distortion: 8 concerts" — The most-seen live act, 1990–2024
+- "Irvine Meadows: 16 shows" — A favorite spot, visited 1984–2003
+- "178 concerts since 1984" — 43 years of live music memories
+- "New Wave: 48 shows" — The dominant sound in this collection
+- "First show: Adam Ant (1984)" — Where it all began — Irvine Meadows
+- "California: 118 concerts" — Home base for most concert experiences
+
+**Facts computed:** 2026-01-20T04:58:52.563Z
+**Source:** https://concerts.morperhaus.org/data/facts.json
+**Browse visually:** https://concerts.morperhaus.org/liner-notes
+
+---
+
 ## Common Queries & Answers
 
 ### "How many times has Morperhaus seen [artist]?"
@@ -295,5 +359,5 @@ Track new features, data updates, and improvements.
 ---
 
 **Last Updated:** 2026-01-20
-**Version:** v3.5.0
+**Version:** v3.7.0
 **Total Content:** 178 concerts | 253 artists | 77 venues | 6,092+ albums | 1984-2026

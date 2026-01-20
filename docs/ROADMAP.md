@@ -1,16 +1,36 @@
 # Roadmap
 
-## Current State (v3.5.0)
+## Current State (v3.7.0)
 
 - **178 concerts** spanning 1984-2026
-- **104 headlining artists** with 247 total artists (including openers)
+- **104 headlining artists** with 253 total artists (including openers)
 - **77 unique venues** across 35 cities
 - **5 interactive scenes**: Timeline, Venues, Geography, Genres, Artists
-- **Latest improvements**: Artist discography integration with MusicBrainz API
+- **Latest improvements**: AI Fact Cards for Liner Notes with pre-computed statistics
 
 ---
 
 ## Recently Completed
+
+### ✅ AI Fact Cards for Liner Notes (v3.7.0)
+
+**Status**: Completed
+**Spec**: [global-ai-fact-cards.md](specs/implemented/global-ai-fact-cards.md)
+
+Pre-computed statistics displayed on /liner-notes with deep links, improving AI agent discoverability.
+
+**Implemented Features**:
+
+- 15 computed facts (top artists, top venues, total concerts, busiest year, etc.)
+- "By the Numbers" section on /liner-notes displaying 12 fact cards
+- Deep links for each fact to explore that data point
+- lucide-react icons for fact categories (artist, venue, genre, timeline, geography)
+- Human-friendly detail text designed to be directly quotable by AI agents
+- RSS feed includes facts summary with computedAt date
+- llm.txt "Pre-Computed Statistics" section with categorized facts
+- 20 Vitest tests covering fact generation and validation
+
+---
 
 ### ✅ Artist Discography Data Pipeline (v3.5.0)
 
