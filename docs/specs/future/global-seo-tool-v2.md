@@ -1,11 +1,58 @@
 # SEO Tool v2: Integrated Analytics & Backlink Support
 
-**Status:** Planned
+**Status:** In Progress (v1.1 baseline restored, v2 scaffolding ready)
 **Target Version:** v4.0.0
 **Priority:** High
 **Estimated Complexity:** Very High
 **Dependencies:** `/seo` command (v3.5.0), GA4 tracking (v3.4.0)
 **Supersedes:** `seo-command-enhancements.md` (partial overlap, this is comprehensive)
+
+---
+
+## Current Status (2026-01-20)
+
+### What's Working (v1.1)
+- `/seo` command scores **91/100** with crawl-only analysis
+- Detects: sitemap, robots.txt, llm.txt, facts.json, RSS feed, About page
+- Checks About page for Schema.org and LinkedIn (E-E-A-T signals)
+- Uses Googlebot UA to verify Cloudflare Worker meta tag injection
+- Outputs CLI dashboard + Markdown report
+
+### V2 Scaffolding (Ready but Not Active)
+The following files exist in `scripts/seo/` but are not yet wired into the main script:
+- `credentials.ts` — Credential storage and retrieval
+- `oauth.ts` — Google OAuth flow
+- `setup.ts` — Interactive setup wizard (first-time UX)
+- `cache.ts` — Caching layer for API responses
+- `clients/gsc.ts` — Google Search Console client (stub)
+- `clients/ga4.ts` — Google Analytics 4 client (stub)
+- `clients/backlinks.ts` — Backlink provider interface
+- `insights/engine.ts` — Correlation insight detection
+- `insights/playbooks.ts` — Actionable playbook generation
+- `outputs/html.ts`, `outputs/csv.ts`, `outputs/sheets.ts` — Export formats
+- `types.ts` — TypeScript interfaces for all data structures
+- `index.ts` — Module exports
+
+### What Broke (Fixed)
+- v2 was prematurely swapped in as the active script
+- v2 requires Google API credentials; without them, score dropped to 63/100
+- **Fix:** Restored v1.1 as active, preserved v2 work as `analyze-seo-v2-wip.ts`
+
+### Next Steps to Complete v2
+1. **Phase 1 (Credential Management):** Wire up `setup.ts` to run via `--setup` flag
+2. **Phase 2 (GSC Integration):** Complete `clients/gsc.ts`, integrate into scoring
+3. **Phase 3 (GA4 Integration):** Complete `clients/ga4.ts`, add engagement metrics
+4. **Phase 4 (Backlinks):** Implement Ahrefs/SEMrush clients (optional)
+5. **Phase 5 (Insights Engine):** Enable correlation detection with real data
+6. **Phase 6 (Output Formats):** Add `--output csv,html,sheets` support
+
+### Key Files
+| File | Purpose |
+|------|---------|
+| `scripts/analyze-seo.ts` | Active v1.1 script (91/100 baseline) |
+| `scripts/analyze-seo-v2-wip.ts` | v2 work-in-progress (not active) |
+| `scripts/seo/` | v2 modular components (ready to integrate) |
+| `seo-reports/2026-01-20-baseline.json` | Baseline for comparison |
 
 ---
 
