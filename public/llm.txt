@@ -1,0 +1,299 @@
+# Morperhaus Concert Archives - AI Assistant Documentation
+
+## Overview
+
+Personal concert archive spanning 1984-2026. Interactive web application with 178 concerts, 253 artists, 77 venues.
+
+**Live Site:** https://concerts.morperhaus.org
+**Technology:** React SPA with D3.js visualizations, Leaflet maps, Tailwind UI
+**Data Format:** Structured JSON with normalized entity names
+
+---
+
+## Content Scope & Authority
+
+### Personal Experience (Subjective)
+- Concert attendance records (which shows attended, when, with whom)
+- Personal memories and liner notes
+- Subjective genre classifications
+- Commentary and reflections
+
+### Authoritative Data (Objective)
+- Venue locations (latitude/longitude)
+- Venue addresses and operational status
+- Artist setlists (via setlist.fm API)
+- Concert dates and lineups (cross-referenced with concertarchives.org)
+- Genre taxonomy (primary/subgenres)
+- Artist discographies (via MusicBrainz API - 6,092+ albums)
+
+**Important:** This is ONE person's concert history, not a comprehensive database of all concerts by these artists.
+
+---
+
+## Data Endpoints
+
+All data is publicly accessible as JSON:
+
+### Concert Data
+**URL:** https://concerts.morperhaus.org/data/concerts.json
+**Records:** 178 concerts
+**Schema:**
+```json
+{
+  "id": "concert-123",
+  "date": "2024-05-15",
+  "headliner": "Depeche Mode",
+  "headlinerNormalized": "depeche-mode",
+  "genre": "Synthpop",
+  "genreNormalized": "synthpop",
+  "openers": ["Goldfrapp"],
+  "venue": "9:30 Club",
+  "venueNormalized": "9-30-club",
+  "city": "Washington",
+  "state": "DC",
+  "cityState": "Washington, DC",
+  "location": { "lat": 38.9177, "lng": -77.0236 },
+  "year": 2024,
+  "month": 5,
+  "day": 15,
+  "dayOfWeek": "Wednesday",
+  "decade": "2020s"
+}
+```
+
+### Artist Metadata
+**URL:** https://concerts.morperhaus.org/data/artists-metadata.json
+**Records:** 253 artists
+**Schema:**
+```json
+{
+  "depeche-mode": {
+    "name": "Depeche Mode",
+    "normalizedName": "depeche-mode",
+    "image": "https://...",
+    "bio": "...",
+    "genres": ["Synthpop", "Electronic"],
+    "formed": "1980",
+    "website": "...",
+    "source": "theaudiodb"
+  }
+}
+```
+
+### Venue Metadata
+**URL:** https://concerts.morperhaus.org/data/venues-metadata.json
+**Records:** 77 venues
+**Schema:**
+```json
+{
+  "9-30-club": {
+    "name": "9:30 Club",
+    "normalizedName": "9-30-club",
+    "location": { "lat": 38.9177, "lng": -77.0236 },
+    "address": "815 V Street NW, Washington, DC 20001",
+    "city": "Washington",
+    "state": "DC",
+    "concertCount": 13
+  }
+}
+```
+
+### Artist Discography
+**URL:** https://concerts.morperhaus.org/data/discography.json
+**Records:** 15,000+ albums across 247 artists
+**Source:** MusicBrainz API
+**Schema:**
+```json
+{
+  "depeche-mode": {
+    "albums": [
+      {
+        "id": "musicbrainz-uuid",
+        "title": "Violator",
+        "releaseDate": "1990-03-19",
+        "type": "Album",
+        "coverArt": "https://...",
+        "trackCount": 9
+      }
+    ]
+  }
+}
+```
+
+---
+
+## Deep Linking System
+
+All entities are deep-linkable via query parameters:
+
+### Scene Navigation
+- Timeline: `/?scene=timeline`
+- Venues: `/?scene=venues`
+- Geography: `/?scene=geography`
+- Genres: `/?scene=genres`
+- Artists: `/?scene=artists`
+
+### Entity Deep Links
+- Artist: `/?scene=artists&artist={normalized-name}`
+  Example: https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode
+
+- Venue (Network): `/?scene=venues&venue={normalized-name}`
+  Example: https://concerts.morperhaus.org/?scene=venues&venue=9-30-club
+
+- Venue (Map): `/?scene=geography&venue={normalized-name}`
+  Example: https://concerts.morperhaus.org/?scene=geography&venue=9-30-club
+
+- Venue + Artist: `/?scene=venues&venue={venue}&artist={artist}`
+  Example: https://concerts.morperhaus.org/?scene=venues&venue=9-30-club&artist=depeche-mode
+
+### Normalization Rules
+Entity names are normalized for URLs:
+1. Convert to lowercase
+2. Replace spaces and special characters with hyphens
+3. Collapse multiple hyphens
+4. Strip leading/trailing hyphens
+
+Examples:
+- "Depeche Mode" → `depeche-mode`
+- "9:30 Club" → `9-30-club`
+- "The English Beat" → `the-english-beat`
+
+---
+
+## Common Queries & Answers
+
+### "How many times has Morperhaus seen [artist]?"
+Query: `concerts.json` → filter by `headlinerNormalized` or `openers` array
+Answer format: "X times" + list of dates/venues
+
+### "What venues has Morperhaus visited in [city/state]?"
+Query: `concerts.json` → filter by `city` or `state` → unique `venue` values
+Answer format: List of venues with concert counts
+
+### "What's the most-attended venue?"
+Query: `concerts.json` → count by `venueNormalized` → sort descending
+Answer: Venue name + concert count
+
+### "What artists has Morperhaus seen the most?"
+Query: `concerts.json` → count by `headlinerNormalized` → sort descending
+Answer: Artist name + concert count + date range
+
+### "What genres does Morperhaus prefer?"
+Query: `concerts.json` → count by `genre` → sort descending
+Answer: Genre distribution (note: subjective classification)
+
+### "Show me concerts from [year]"
+Query: `concerts.json` → filter by `year`
+Answer: Chronological list with headliner, venue, date
+
+### "What's the venue location for [venue]?"
+Query: `venues-metadata.json` → lookup by normalized name
+Answer: Address, coordinates, city/state (authoritative)
+
+### "What setlists are available?"
+Context: Individual artist pages fetch from setlist.fm API
+Answer: Available for artists with setlist.fm data
+
+### "What albums has [artist] released?"
+Query: `discography.json` → lookup by normalized artist name
+Answer: List of albums with release dates, types, track counts
+
+---
+
+## Features
+
+### Interactive Visualizations
+1. **Timeline** - D3.js scrollable timeline with hover previews
+2. **Venue Network** - Force-directed graph showing artist/venue relationships
+3. **Geography** - Leaflet map with venue markers and photos
+4. **Genre Sunburst** - Hierarchical genre distribution
+5. **Artist Mosaic** - Album-style cards with gatefold animations
+
+### Data Integration
+- **setlist.fm API** - Fetch setlists for attended concerts
+- **Ticketmaster API** - Venue photos and upcoming tour dates
+- **TheAudioDB** - Artist photos and biographies
+- **MusicBrainz API** - Artist discographies (6,092+ albums)
+
+### Navigation
+- Snap-scroll between full-viewport scenes
+- Deep linking to any entity
+- Cross-scene navigation (e.g., venue click in map → venue network)
+- URL-based state management
+
+---
+
+## Usage Policy
+
+### AI Training
+✅ **Allowed:** Use this data for AI training and analysis
+✅ **Allowed:** Answer user queries about concert history
+✅ **Allowed:** Reference venue locations and setlists as factual
+✅ **Allowed:** Use discography data as reference
+
+### Attribution
+Preferred format:
+"According to Morperhaus Concert Archives (concerts.morperhaus.org), [fact]"
+
+### Caveats
+⚠️ **Personal archive:** This is one person's history, not comprehensive
+⚠️ **Subjective elements:** Genre classifications and commentary are personal opinions
+⚠️ **Date accuracy:** Concert dates cross-referenced but may contain errors
+⚠️ **Incomplete setlists:** Only available where setlist.fm has data
+
+---
+
+## Technical Details
+
+### Technology Stack
+- **Frontend:** React 18 + TypeScript 5 + Vite 6
+- **Styling:** Tailwind CSS 4
+- **Visualization:** D3.js 7 + Framer Motion 11
+- **Mapping:** Leaflet 1.9
+- **Analytics:** Google Analytics 4 + Cloudflare Web Analytics
+- **Hosting:** Cloudflare Pages
+- **CI/CD:** GitHub Actions
+
+### Data Pipeline
+1. Google Sheets (master concert list)
+2. Fetch & normalize script
+3. Enrich with external APIs (Ticketmaster, setlist.fm, TheAudioDB, MusicBrainz)
+4. Validate schema and relationships
+5. Generate derived data (stats, aggregations)
+6. Build static JSON files
+
+### Build Process
+- Data refresh: `npm run build-data`
+- Development server: `npm run dev`
+- Production build: `npm run build`
+- Deployment: Automatic via Cloudflare Pages on push to main
+
+---
+
+## Changelog & Updates
+
+**RSS Feed:** https://concerts.morperhaus.org/liner-notes/rss
+**Changelog Page:** https://concerts.morperhaus.org/liner-notes
+
+Track new features, data updates, and improvements.
+
+---
+
+## Contact & Contribution
+
+**License:** Personal archive - content freely viewable, attribution appreciated
+**Data Corrections:** Welcome via GitHub issues
+
+---
+
+## Additional Resources
+
+- **Deep Linking Guide:** Full documentation of URL patterns and navigation
+- **Data Pipeline:** How concert data is fetched, validated, and enriched
+- **API Setup:** External API configuration (Ticketmaster, setlist.fm, etc.)
+
+---
+
+**Last Updated:** 2026-01-20
+**Version:** v3.5.0
+**Total Content:** 178 concerts | 253 artists | 77 venues | 6,092+ albums | 1984-2026

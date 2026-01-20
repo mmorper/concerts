@@ -49,6 +49,7 @@ async function buildData() {
     { name: 'Enrich discography', active: !skipDiscography },
     { name: 'Pre-fetch setlists', active: !skipSetlists },
     { name: 'Aggregate genres timeline', active: true },
+    { name: 'Update meta tags and SEO files', active: !dryRun },
   ]
   const activeSteps = steps.filter(s => s.active).length
 
@@ -193,6 +194,16 @@ async function buildData() {
     const { aggregateGenresTimeline } = await import('./aggregate-genres-timeline.ts')
     await aggregateGenresTimeline()
     console.log()
+
+    // Step 10: Update meta tags and SEO files (always runs)
+    if (!dryRun) {
+      currentStep++
+      console.log('=' .repeat(60))
+      console.log(`Step ${currentStep}/${activeSteps + 1}: Updating meta tags and SEO files`)
+      console.log('-'.repeat(60))
+      await exec('npm run update:meta')
+      console.log()
+    }
 
     // Summary
     console.log('=' .repeat(60))

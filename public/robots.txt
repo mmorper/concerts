@@ -1,0 +1,34 @@
+# Morperhaus Concert Archives - Crawler Directives
+# https://concerts.morperhaus.org/robots.txt
+
+User-agent: *
+Allow: /
+Allow: /data/*.json
+Disallow: /api/
+
+# Rate limiting for polite crawling
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://concerts.morperhaus.org/sitemap.xml
+
+# AI Bots - Explicitly welcome
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: Claude-Web
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: Google-Extended
+User-agent: PerplexityBot
+User-agent: CCBot
+Allow: /
+
+# Social Media Crawlers
+User-agent: facebookexternalhit
+User-agent: Twitterbot
+User-agent: LinkedInBot
+User-agent: WhatsApp
+User-agent: TelegramBot
+User-agent: Slackbot
+User-agent: Discordbot
+Allow: /

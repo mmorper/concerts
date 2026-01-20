@@ -154,6 +154,23 @@ Genre moved to artist-level metadata with automatic enrichment from TheAudioDB.
 
 ## Short-Term Roadmap
 
+### SEO Optimization - Search & AI Bot Discoverability
+
+**Status**: Planned
+**Spec**: [global-seo-optimization.md](specs/future/global-seo-optimization.md)
+
+Make concert archive discoverable to search engines and AI assistants through static SEO foundation and dynamic meta injection.
+
+**Key Features**:
+
+- Static SEO foundation (robots.txt, sitemap.xml, llm.txt, Schema.org structured data)
+- Dynamic sitemap generation from concert data (247 artists, 77 venues)
+- Cloudflare Worker for dynamic meta tag injection per entity
+- Enhanced social media preview cards with Open Graph tags
+- AI assistant documentation via llm.txt
+
+---
+
 ### UX Polish
 
 **Status**: In Progress
