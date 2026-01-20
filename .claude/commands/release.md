@@ -25,11 +25,14 @@ Orchestrates the release workflow. References existing docs for details.
 |------|------|-----------|
 | 1 | Pre-flight checks | `.claude/version-management.md` → "Pre-Flight Checks" |
 | 2 | Determine version | `.claude/version-management.md` → "Version Calculation" |
-| 3 | Changelog entry | `/changelog` command |
-| 4 | Update files | `.claude/readme-maintenance.md` → "Callable Checklist" |
-| 5 | Validate | `npm run validate:version` |
-| 6 | Git operations | Below |
-| 7 | GitHub release | `gh release create` |
+| 3 | Categorize commits | Liner notes decision (user-facing vs internal) |
+| 4 | Changelog entry | `/changelog` command (if user-facing changes) |
+| 5 | Update files | `.claude/readme-maintenance.md` → "Callable Checklist" |
+| 6 | Preview & confirm | Review all changes |
+| 7 | Validate | `npm run validate:version` |
+| 8 | Git operations | Below |
+| 9 | GitHub release | `gh release create` (all commits) |
+| 10 | Post-release | Verification checklist |
 
 ---
 
@@ -110,9 +113,86 @@ New: v1.9.1
 
 ---
 
-### Step 3: Changelog Entry
+### Step 3: Categorize Commits (Liner Notes Decision)
 
-**Invoke `/changelog --version {VERSION}`**
+**Analyze all commits since last tag and categorize:**
+
+```bash
+git log $(git describe --tags --abbrev=0)..HEAD --oneline
+```
+
+**User-facing (triggers liner notes):**
+
+| Prefix | Type | Include |
+|--------|------|---------|
+| `feat:` | New features | ✅ Yes |
+| `fix:` | Bug fixes | ✅ Yes |
+| `data:` | New concerts | ✅ Yes |
+| `perf:` | Performance (if UX impact) | ✅ Yes |
+
+**Internal (GitHub release only):**
+
+| Prefix | Type | Include |
+|--------|------|---------|
+| `feat(internal):` | Internal features | ❌ No |
+| `docs:` | Documentation | ❌ No |
+| `chore:` | Tooling, deps | ❌ No |
+| `refactor:` | Code restructuring | ❌ No |
+| `ci:` | Build/deploy | ❌ No |
+| `test:` | Test additions | ❌ No |
+| `seo:` | SEO optimizations | ❌ No |
+| `analytics:` | Tracking changes | ❌ No |
+
+**Display categorization:**
+
+```
+📊 Commit Analysis
+═══════════════════
+
+User-facing changes:
+  ✅ feat: Add artist search
+  ✅ fix: Mobile scroll issue
+
+Internal changes:
+  ⚪ docs: Update README
+  ⚪ chore: Bump dependencies
+  ⚪ seo: Add meta tags
+
+Liner notes: YES (2 user-facing commits)
+```
+
+**If no user-facing commits:**
+
+```
+📊 Commit Analysis
+═══════════════════
+
+User-facing changes:
+  (none)
+
+Internal changes:
+  ⚪ docs: Update documentation
+  ⚪ seo: Add sitemap
+  ⚪ chore: Update dependencies
+
+Liner notes: NO (internal-only release)
+```
+
+**Store the categorization for later steps.**
+
+---
+
+### Step 4: Changelog Entry (Conditional)
+
+**If user-facing commits exist:**
+
+> **Publish liner notes?** [Y/n]
+>
+> User-facing changes to include:
+> - feat: Add artist search
+> - fix: Mobile scroll issue
+
+If confirmed, invoke `/changelog --version {VERSION}`
 
 This handles:
 - Gathering title, description, highlights, route
@@ -121,9 +201,17 @@ This handles:
 
 If `--dry-run`: Pass through to changelog command.
 
+**If NO user-facing commits:**
+
+> ℹ️ **Skipping liner notes** — This release contains only internal changes.
+>
+> GitHub release notes will include all commits for completeness.
+
+Skip changelog entry entirely. Do not write to `src/data/changelog.json`.
+
 ---
 
-### Step 4: Update Files
+### Step 5: Update Files
 
 **Reference: `.claude/readme-maintenance.md` → "Version Release Checklist"**
 
@@ -140,7 +228,7 @@ Update in order:
 | `index.html` + `og-stats.json` | Run `npm run update:meta` to refresh stats | - |
 | `public/og-image.jpg` | Run `npm run og:generate` to regenerate with current stats | - |
 | `docs/ROADMAP.md` | Move completed items (see below) | No items selected |
-| `README.md` | Update "What's New" | Bugfix release |
+| `README.md` | Update "What's New" | No user-facing changes |
 | `CLAUDE.md` | Update version + stats in header line | - |
 | `.claude/context.md` | Update version, recent releases | - |
 
@@ -190,7 +278,7 @@ Update the version + stats line (line 6):
 
 ---
 
-### Step 5: Preview & Confirm
+### Step 6: Preview & Confirm
 
 **🔵 CHECKPOINT: Show all pending changes**
 
@@ -231,7 +319,7 @@ Then **STOP**.
 
 ---
 
-### Step 6: Write & Validate
+### Step 7: Write & Validate
 
 1. Write all files
 2. Run validation:
@@ -260,7 +348,7 @@ Then **STOP**.
 
 ---
 
-### Step 7: Git Operations
+### Step 8: Git Operations
 
 **🔵 CHECKPOINT: Confirm before git commands**
 
@@ -295,11 +383,13 @@ git push origin main --tags  # unless --no-push
 
 ---
 
-### Step 8: Create GitHub Release
+### Step 9: Create GitHub Release
 
 **CHECKPOINT:** Create GitHub release
 
-Build release notes from changelog data:
+GitHub release notes include **all commits** (both user-facing and internal) for complete technical documentation.
+
+**If user-facing changes exist (liner notes published):**
 
 ```bash
 gh release create v{VERSION} \
@@ -317,41 +407,55 @@ gh release create v{VERSION} \
 
 - [{SCENE_NAME}]({FULL_ROUTE_URL})
 
-### Technical Details
+### All Changes
 
-This release includes:
-{TECHNICAL_SUMMARY_FROM_COMMITS}
+{ALL_COMMITS_FORMATTED_AS_BULLETS}
 
-See the [full changelog](https://concerts.morperhaus.org/liner-notes) for all updates.
+See the [liner notes](https://concerts.morperhaus.org/liner-notes) for user-facing highlights.
 EOF
 )"
 ```
 
-**Highlights formatting:**
+**If internal-only release (no liner notes):**
 
-- Convert highlights array to markdown bullets
-- Prefix each with `- **` and bold the first few words
+```bash
+gh release create v{VERSION} \
+  --title "v{VERSION} - {SHORT_SUMMARY}" \
+  --notes "$(cat <<'EOF'
+## v{VERSION} - {SHORT_SUMMARY}
 
-**Technical summary:**
+Internal maintenance release with no user-facing changes.
 
-- Show commit count and key changes
-- Reference moved specs if applicable
-- Keep it brief (3-5 bullet points max)
+### Changes
+
+{ALL_COMMITS_FORMATTED_AS_BULLETS}
+EOF
+)"
+```
+
+**Formatting all commits:**
+
+- List every commit since last tag
+- Group by type if helpful (Features, Fixes, Internal)
+- Include full commit messages
 
 GitHub release created at: `https://github.com/{owner}/{repo}/releases/tag/v{VERSION}`
 
 ---
 
-### Step 9: Post-Release
+### Step 10: Post-Release
 
 🚀 **v{VERSION} released!**
 
-**Verify:**
+**Verify (all releases):**
 
 - [ ] Site live at concerts.morperhaus.org
+- [ ] GitHub release visible at `https://github.com/mmorper/concerts/releases`
+
+**Verify (if liner notes published):**
+
 - [ ] `/liner-notes` shows v{VERSION}
 - [ ] Deep link works: `{ROUTE}`
-- [ ] GitHub release visible at `https://github.com/mmorper/concerts/releases`
 - [ ] Social media preview shows current stats (test with [Twitter Card Validator](https://cards-dev.twitter.com/validator) or [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/))
 
 **If something's wrong:** `/release-undo`
