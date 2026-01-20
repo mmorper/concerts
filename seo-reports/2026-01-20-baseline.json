@@ -1,0 +1,145 @@
+{
+  "metadata": {
+    "date": "2026-01-20",
+    "url": "https://concerts.morperhaus.org",
+    "pagesAnalyzed": 12,
+    "version": "1.0"
+  },
+  "scores": {
+    "overall": 78,
+    "technical": 22,
+    "content": 19,
+    "semantic": 17,
+    "authority": 11,
+    "ux": 9,
+    "aiReadiness": 7
+  },
+  "pages": [
+    {
+      "url": "https://concerts.morperhaus.org/",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 178 concerts from 1984-2026, featuring 253 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 52,
+      "htmlSize": 6981
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=timeline",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 178 concerts from 1984-2026, featuring 253 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 58,
+      "htmlSize": 6981
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=venues",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 178 concerts from 1984-2026, featuring 253 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 48,
+      "htmlSize": 6981
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=geography",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 178 concerts from 1984-2026, featuring 253 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 51,
+      "htmlSize": 6981
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=genres",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 178 concerts from 1984-2026, featuring 253 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 56,
+      "htmlSize": 6981
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=artists",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 178 concerts from 1984-2026, featuring 253 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 135,
+      "htmlSize": 6981
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 178 concerts from 1984-2026, featuring 253 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 101,
+      "htmlSize": 6981
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=nine-inch-nails",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 178 concerts from 1984-2026, featuring 253 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 61,
+      "htmlSize": 6981
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=venues&venue=hollywood-bowl",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 178 concerts from 1984-2026, featuring 253 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 52,
+      "htmlSize": 6981
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=venues&venue=forum",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 178 concerts from 1984-2026, featuring 253 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 41,
+      "htmlSize": 6981
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=genres&genre=industrial",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 178 concerts from 1984-2026, featuring 253 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 42,
+      "htmlSize": 6981
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=geography&region=losangeles",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 178 concerts from 1984-2026, featuring 253 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 45,
+      "htmlSize": 6981
+    }
+  ],
+  "checks": {
+    "hasSitemap": true,
+    "hasRobotsTxt": true,
+    "avgResponseTime": 61.833333333333336
+  },
+  "recommendations": []
+}

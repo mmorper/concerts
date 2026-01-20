@@ -106,7 +106,8 @@
       "/data-refresh",
       "/preview",
       "/hotfix",
-      "/commands"
+      "/commands",
+      "/seo"
     ],
     "documentation": ".claude/commands/"
   }

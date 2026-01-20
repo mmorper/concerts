@@ -2,9 +2,9 @@
 
 ## Quick Start
 
-**Version:** v3.5.0 (Production)
+**Version:** v3.6.0 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-01-14
+**Last Sync:** 2026-01-20
 
 ### Commands
 
@@ -103,11 +103,11 @@ These docs provide essential context for common development tasks:
 
 **Recent Releases:**
 
+- **v3.6.0** (2026-01-20): SEO Analysis Command & Infrastructure
+- **v3.5.0** (2026-01-14): Comprehensive Testing Infrastructure
 - **v3.4.2** (2026-01-14): Quality Standards & Documentation Infrastructure
 - **v3.4.1** (2026-01-09): Google Analytics 4 Configuration Fix
 - **v3.4.0** (2026-01-09): Map & Venue Navigation Polish
-- **v3.3.0** (2026-01-08): Connected Experience
-- **v3.2.0** (2026-01-08): Mobile Artist Experience
 
 ---
 
@@ -191,4 +191,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-01-14 by Claude Code for v3.5.0 release*
+*Last updated: 2026-01-20 by Claude Code for v3.6.0 release*

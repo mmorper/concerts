@@ -1170,6 +1170,423 @@ curl -A "Twitterbot/1.0" "https://concerts.morperhaus.org/?scene=geography&venue
 
 ---
 
+### Phase 4: External Validation & Search Engine Submission (P0 - Post-Deployment)
+
+**Status:** ⏸️ Not Started
+**Target:** v3.6.0 (post-release validation)
+**Priority:** P0 (Required for SEO effectiveness)
+
+**Purpose:** Submit SEO infrastructure to external platforms and validate dynamic meta tags work correctly across all crawlers and social media platforms.
+
+---
+
+#### 4.1 Search Engine Submission
+
+**Google Search Console**
+
+**Prerequisites:**
+- [ ] Site ownership verified in Google Search Console
+- [ ] Property: `https://concerts.morperhaus.org`
+
+**Steps:**
+
+1. **Submit Sitemap**
+   - Navigate to: <https://search.google.com/search-console>
+   - Select property: `concerts.morperhaus.org`
+   - Go to: **Sitemaps** (left sidebar)
+   - Enter: `sitemap.xml`
+   - Click: **Submit**
+
+2. **Verify Sitemap Processing**
+   - Wait 24-48 hours for initial processing
+   - Check: **Sitemaps** > Status should show "Success"
+   - Check: **Discovered URLs** should show ~409 URLs
+   - Monitor: **Coverage** report for any errors
+
+3. **Request Indexing for Key URLs** (Optional, accelerates discovery)
+   - Go to: **URL Inspection** tool
+   - Test high-priority URLs:
+     - `https://concerts.morperhaus.org/`
+     - `https://concerts.morperhaus.org/?scene=artists`
+     - `https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode`
+   - Click: **Request Indexing** for each
+
+**Expected Timeline:**
+- Sitemap processing: 1-2 days
+- URL discovery: 1-2 weeks
+- Full indexing: 2-4 weeks
+
+**Success Criteria:**
+- [ ] Sitemap status: "Success"
+- [ ] Discovered URLs: 409
+- [ ] No crawl errors in Coverage report
+- [ ] Top 10 artists indexed within 2 weeks
+
+---
+
+**Bing Webmaster Tools**
+
+**Prerequisites:**
+- [ ] Site ownership verified in Bing Webmaster Tools
+- [ ] Property: `https://concerts.morperhaus.org`
+
+**Steps:**
+
+1. **Submit Sitemap**
+   - Navigate to: <https://www.bing.com/webmasters>
+   - Select site: `concerts.morperhaus.org`
+   - Go to: **Sitemaps** (left menu)
+   - Click: **Submit a sitemap**
+   - Enter: `https://concerts.morperhaus.org/sitemap.xml`
+   - Click: **Submit**
+
+2. **Verify Sitemap Processing**
+   - Wait 24-48 hours
+   - Check: **Sitemaps** > Status should show submitted count
+   - Monitor: **URL Inspection** for any issues
+
+**Expected Timeline:**
+- Sitemap processing: 1-3 days
+- URL discovery: 1-3 weeks
+
+**Success Criteria:**
+- [ ] Sitemap submitted successfully
+- [ ] URLs discovered in Bing index
+- [ ] No crawl errors
+
+---
+
+#### 4.2 Schema.org Validation
+
+**Google Rich Results Test**
+
+**Purpose:** Ensure structured data is valid and eligible for rich search results
+
+**Steps:**
+
+1. **Test Homepage**
+   - Navigate to: <https://search.google.com/test/rich-results>
+   - Enter URL: `https://concerts.morperhaus.org`
+   - Click: **Test URL**
+   - Wait for analysis
+
+2. **Review Results**
+   - Should detect: `CollectionPage` schema
+   - Should detect: `MusicEventSeries` schema
+   - Should show: **Valid** status (green checkmark)
+   - Check for: No errors or warnings
+
+3. **Test Deep Links** (After Phase 3 worker deployed)
+   - Test: `https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode`
+   - Expected: Same valid results (worker doesn't inject schema yet)
+
+**Success Criteria:**
+- [ ] Homepage validates without errors
+- [ ] Schema.org types detected correctly
+- [ ] No critical warnings
+- [ ] Rich results eligible
+
+**Troubleshooting:**
+- If errors found: Check `index.html` lines 68-146 (JSON-LD block)
+- If not detected: Ensure `<script type="application/ld+json">` is in `<head>`
+- If warnings: Review recommended fixes, update if critical
+
+---
+
+**Schema.org Validator**
+
+**Purpose:** Comprehensive schema validation (backup to Google's tool)
+
+**Steps:**
+
+1. **Validate Markup**
+   - Navigate to: <https://validator.schema.org/>
+   - Enter URL: `https://concerts.morperhaus.org`
+   - Click: **Run Test**
+
+2. **Review Results**
+   - Should show: Parsed schema tree
+   - Check: All properties present and correct
+   - Verify: Types match specification
+
+**Success Criteria:**
+- [ ] No syntax errors
+- [ ] Schema tree displays correctly
+- [ ] All required properties present
+
+---
+
+#### 4.3 Social Media Preview Validation
+
+**Facebook Sharing Debugger**
+
+**Purpose:** Validate Open Graph tags for Facebook, Messenger, WhatsApp
+
+**Steps:**
+
+1. **Test Static Homepage**
+   - Navigate to: <https://developers.facebook.com/tools/debug/>
+   - Enter URL: `https://concerts.morperhaus.org`
+   - Click: **Debug**
+
+2. **Review Preview**
+   - Check: Title shows "Morperhaus Concert Archives"
+   - Check: Description shows concert count and summary
+   - Check: Image loads (`/og-image.jpg`)
+   - Check: No errors or warnings
+
+3. **Test Dynamic Artist Page** (Phase 3 feature)
+   - Enter URL: `https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode`
+   - Click: **Debug**
+   - Expected: Title shows "Depeche Mode - Morperhaus Concert Archives"
+   - Expected: Description shows concert count and date range
+   - Expected: Image shows artist photo (if available)
+
+4. **Scrape Again** (If cache exists)
+   - Click: **Scrape Again** to force fresh fetch
+   - Verify: Updated metadata appears
+
+**Success Criteria:**
+- [ ] Homepage preview correct
+- [ ] Artist deep link preview correct (dynamic title)
+- [ ] Venue deep link preview correct (dynamic description)
+- [ ] OG image loads correctly (1200×630px)
+- [ ] No missing required properties warnings
+
+**Test URLs:**
+- Homepage: `https://concerts.morperhaus.org`
+- Artist: `https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode`
+- Venue: `https://concerts.morperhaus.org/?scene=venues&venue=9-30-club`
+
+---
+
+**Twitter Card Validator**
+
+**Purpose:** Validate Twitter Card tags for Twitter/X shares
+
+**Steps:**
+
+1. **Test Homepage**
+   - Navigate to: <https://cards-dev.twitter.com/validator>
+   - Enter URL: `https://concerts.morperhaus.org`
+   - Click: **Preview card**
+
+2. **Review Preview**
+   - Check: Card type shows "summary_large_image"
+   - Check: Title correct
+   - Check: Description correct
+   - Check: Image displays correctly
+
+3. **Test Dynamic Deep Links**
+   - Test: `https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode`
+   - Expected: Dynamic title appears
+   - Test: `https://concerts.morperhaus.org/?scene=venues&venue=9-30-club`
+   - Expected: Dynamic venue info appears
+
+**Success Criteria:**
+- [ ] Homepage card renders correctly
+- [ ] Artist deep link shows dynamic title
+- [ ] Venue deep link shows dynamic description
+- [ ] Image displays at correct dimensions
+- [ ] No validation errors
+
+---
+
+**LinkedIn Post Inspector**
+
+**Purpose:** Validate Open Graph tags for LinkedIn shares
+
+**Steps:**
+
+1. **Test Homepage**
+   - Navigate to: <https://www.linkedin.com/post-inspector/>
+   - Enter URL: `https://concerts.morperhaus.org`
+   - Click: **Inspect**
+
+2. **Review Preview**
+   - Check: Title displays correctly
+   - Check: Description displays correctly
+   - Check: Image displays correctly
+
+3. **Test Dynamic Deep Links**
+   - Test: `https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode`
+   - Expected: Dynamic artist title
+   - Test: `https://concerts.morperhaus.org/?scene=geography&venue=irvine-meadows`
+   - Expected: Dynamic venue info
+
+**Success Criteria:**
+- [ ] Homepage preview correct
+- [ ] Deep links show dynamic metadata
+- [ ] No errors or warnings
+
+---
+
+#### 4.4 Bot Detection Verification
+
+**Purpose:** Verify Cloudflare Worker correctly detects various bot user agents
+
+**Test Matrix:**
+
+| Bot Type | User Agent | Test URL | Expected Title |
+|----------|-----------|----------|----------------|
+| Google | `Googlebot/2.1` | `/?scene=artists&artist=depeche-mode` | "Depeche Mode - Morperhaus..." |
+| Bing | `bingbot/2.0` | `/?scene=artists&artist=duran-duran` | "Duran Duran - Morperhaus..." |
+| Facebook | `facebookexternalhit/1.1` | `/?scene=venues&venue=9-30-club` | "9:30 Club - Morperhaus..." |
+| Twitter | `Twitterbot/1.0` | `/?scene=geography&venue=irvine-meadows` | "Irvine Meadows - Morperhaus..." |
+| LinkedIn | `LinkedInBot/1.0` | `/?scene=artists&artist=depeche-mode` | "Depeche Mode - Morperhaus..." |
+| ChatGPT | `ChatGPT-User` | `/?scene=artists&artist=depeche-mode` | "Depeche Mode - Morperhaus..." |
+| Claude | `claudebot` | `/?scene=venues&venue=9-30-club` | "9:30 Club - Morperhaus..." |
+| Human | (default browser) | `/?scene=artists&artist=depeche-mode` | "Morperhaus Concert Archives" (static) |
+
+**Test Commands:**
+
+```bash
+# Google
+curl -sS -A "Googlebot/2.1" "https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode" | grep "<title>"
+
+# Bing
+curl -sS -A "bingbot/2.0" "https://concerts.morperhaus.org/?scene=artists&artist=duran-duran" | grep "<title>"
+
+# Facebook
+curl -sS -A "facebookexternalhit/1.1" "https://concerts.morperhaus.org/?scene=venues&venue=9-30-club" | grep "og:title"
+
+# Twitter
+curl -sS -A "Twitterbot/1.0" "https://concerts.morperhaus.org/?scene=geography&venue=irvine-meadows" | grep "<title>"
+
+# Human (should get static title)
+curl -sS "https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode" | grep "<title>"
+```
+
+**Success Criteria:**
+- [ ] All bots receive dynamic meta tags
+- [ ] Human users receive static title
+- [ ] No timeout or error responses
+- [ ] Response times < 200ms for bots
+
+---
+
+#### 4.5 Monitoring & Maintenance
+
+**Weekly Monitoring (First Month)**
+
+- [ ] **Google Search Console**: Check for crawl errors
+- [ ] **Cloudflare Worker Metrics**: Review request counts
+  - Dashboard: Workers & Pages > concerts-meta-injector > Metrics
+  - Check: Bot vs. human traffic ratio
+  - Check: Error rate < 1%
+  - Check: Request count within free tier (100k/day)
+
+**Monthly Monitoring (Ongoing)**
+
+- [ ] **Index Coverage**: Track URL indexing progress
+  - Target: 50% of URLs indexed by Month 1
+  - Target: 80% of URLs indexed by Month 3
+- [ ] **Search Performance**: Monitor organic traffic
+  - Google Analytics 4: Acquisition > Traffic Acquisition
+  - Filter: Organic Search
+- [ ] **Worker Performance**: Check P50/P95 latency
+  - Target: P50 < 50ms, P95 < 150ms
+
+**Alert Thresholds:**
+
+- [ ] Worker error rate > 5%: Investigate immediately
+- [ ] Worker requests > 80k/day: Optimize or consider paid tier
+- [ ] Crawl errors > 10: Review and fix URLs
+- [ ] Index coverage dropped: Check for site issues
+
+---
+
+#### 4.6 Phase 4 Acceptance Criteria
+
+**Search Engine Submission:**
+- [ ] Sitemap submitted to Google Search Console
+- [ ] Sitemap submitted to Bing Webmaster Tools
+- [ ] Sitemap status: "Success" on both platforms
+- [ ] No critical crawl errors
+
+**Schema.org Validation:**
+- [ ] Google Rich Results Test: Valid (no errors)
+- [ ] Schema.org Validator: Valid
+- [ ] Structured data detected correctly
+
+**Social Media Validation:**
+- [ ] Facebook Sharing Debugger: All test URLs pass
+- [ ] Twitter Card Validator: All test URLs pass
+- [ ] LinkedIn Post Inspector: All test URLs pass
+- [ ] Dynamic meta tags working on all platforms
+
+**Bot Detection:**
+- [ ] All bot user agents tested successfully
+- [ ] Human users bypass worker correctly
+- [ ] No timeout or error responses
+
+**Monitoring:**
+- [ ] Google Search Console configured with alerts
+- [ ] Cloudflare Worker metrics dashboard bookmarked
+- [ ] Monthly review scheduled
+
+---
+
+#### 4.7 Troubleshooting Guide
+
+**Issue: Facebook shows old metadata**
+- **Cause**: Facebook caches OG tags for 7+ days
+- **Solution**: Use Sharing Debugger > "Scrape Again" button
+- **Prevention**: Always test with Sharing Debugger after meta tag changes
+
+**Issue: Google not indexing new URLs**
+- **Cause**: Natural crawl delay (1-4 weeks for new URLs)
+- **Solution**: Use URL Inspection > "Request Indexing" for priority URLs
+- **Prevention**: Submit sitemap promptly after launch
+
+**Issue: Worker not injecting meta tags**
+- **Check 1**: Verify route configured: `concerts.morperhaus.org/*`
+- **Check 2**: Test with curl using bot user agent
+- **Check 3**: Check `wrangler tail` logs for errors
+- **Check 4**: Verify worker deployed: `wrangler deployments list`
+
+**Issue: Schema.org validation errors**
+- **Check 1**: Validate JSON-LD syntax: <https://jsonlint.com/>
+- **Check 2**: Ensure `index.html` lines 68-146 have correct structure
+- **Check 3**: Run `npm run update:meta` to regenerate
+- **Check 4**: Check for missing required properties
+
+**Issue: Twitter cards not rendering**
+- **Cause**: Twitter requires both `twitter:` and `og:` tags
+- **Check**: `index.html` has both tag sets (lines 11-43)
+- **Test**: Use Card Validator to see specific errors
+
+---
+
+#### 4.8 Phase 4 Timeline
+
+**Immediate (Day 1 - Release Day):**
+- [ ] Submit sitemap to Google Search Console (5 min)
+- [ ] Submit sitemap to Bing Webmaster Tools (5 min)
+- [ ] Validate Schema.org with Google Rich Results Test (5 min)
+
+**Week 1:**
+- [ ] Test all social media preview validators (30 min)
+- [ ] Verify bot detection with curl tests (15 min)
+- [ ] Check Google Search Console for initial indexing (5 min)
+
+**Week 2:**
+- [ ] Review Cloudflare Worker metrics (10 min)
+- [ ] Check Google Search Console index coverage (10 min)
+- [ ] Test social media previews again (if issues found Week 1)
+
+**Week 4:**
+- [ ] Verify URL indexing progress (20 URLs minimum)
+- [ ] Review organic search traffic in GA4
+- [ ] Document any issues found and fixes applied
+
+**Month 3:**
+- [ ] Verify 50%+ URL indexing
+- [ ] Measure organic traffic growth
+- [ ] Assess need for per-entity OG images (future enhancement)
+
+---
+
 ## Testing Strategy
 
 ### Manual Testing Checklist

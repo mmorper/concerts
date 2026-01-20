@@ -1,6 +1,6 @@
 {
   "name": "morperhaus-concerts",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "private": true,
   "type": "module",
   "description": "Interactive concert history timeline application",
@@ -50,7 +50,8 @@
     "generate:sitemap": "tsx scripts/generate-sitemap.ts",
     "og:generate": "tsx scripts/generate-og-simple.ts",
     "og:preview": "tsx scripts/preview-og-crops.ts",
-    "cleanup:backups": "tsx scripts/cleanup-backups.ts"
+    "cleanup:backups": "tsx scripts/cleanup-backups.ts",
+    "seo": "tsx scripts/analyze-seo.ts"
   },
   "dependencies": {
     "@types/d3": "^7.4.3",
