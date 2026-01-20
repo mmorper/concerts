@@ -9,14 +9,16 @@ Perform deep SEO analysis of the live production site with modern AI-agent optim
 | `--baseline` | No | false | Save current results as baseline for future comparison |
 | `--compare` | No | (latest) | Compare to specific baseline report date (YYYY-MM-DD) |
 | `--url` | No | https://concerts.morperhaus.org | Override base URL (for staging) |
-| `--output` | No | markdown | Output format: `markdown` or `json` |
+| `--output` | No | both | Output format: `cli`, `md`, or `both` |
 
 **Examples:**
 ```
-/seo                           # Standard analysis
+/seo                           # Standard analysis (CLI + MD)
 /seo --baseline                # Set current state as target
 /seo --compare 2026-01-15      # Compare to Jan 15 baseline
 /seo --url https://staging.example.com  # Test staging
+/seo --output cli              # Dashboard only, no file
+/seo --output md               # Save report only, no CLI output
 ```
 
 ---

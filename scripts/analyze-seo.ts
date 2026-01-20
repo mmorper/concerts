@@ -6,10 +6,13 @@
  * Generates a detailed report with scoring and actionable recommendations.
  *
  * Usage:
- *   npm run seo                      # Standard analysis
+ *   npm run seo                      # Standard analysis (both CLI + MD)
  *   npm run seo -- --baseline        # Save baseline
  *   npm run seo -- --compare DATE    # Compare to baseline
  *   npm run seo -- --url URL         # Analyze custom URL
+ *   npm run seo -- --output cli      # CLI dashboard only
+ *   npm run seo -- --output md       # Markdown report only
+ *   npm run seo -- --output both     # Both (default)
  *
  * See: .claude/commands/seo.md for full documentation
  */
@@ -77,6 +80,7 @@ function parseArgs() {
     baseline: args.includes('--baseline'),
     compare: args.includes('--compare') ? args[args.indexOf('--compare') + 1] : null,
     url: args.includes('--url') ? args[args.indexOf('--url') + 1] : DEFAULT_URL,
+    output: args.includes('--output') ? args[args.indexOf('--output') + 1] : 'both', // cli, md, both
   }
 }
 
@@ -611,12 +615,21 @@ async function analyzeSEO() {
     recommendations,
   }
 
-  // Display dashboard
-  console.log(generateDashboard(report))
-
-  // Save report
   const dateStr = report.metadata.date
-  saveReport(report, `${dateStr}-report.md`)
+
+  // Handle output based on format
+  const outputCLI = options.output === 'cli' || options.output === 'both'
+  const outputMD = options.output === 'md' || options.output === 'both'
+
+  // Display dashboard to CLI
+  if (outputCLI) {
+    console.log(generateDashboard(report))
+  }
+
+  // Save markdown report
+  if (outputMD) {
+    saveReport(report, `${dateStr}-report.md`)
+  }
 
   // Save baseline if requested
   if (options.baseline) {
@@ -628,20 +641,30 @@ async function analyzeSEO() {
     const baseline = loadBaseline(options.compare)
     if (baseline) {
       const comparison = compareToBaseline(report, baseline)
-      console.log(comparison)
 
-      // Append comparison to report
-      const reportPath = path.join(REPORTS_DIR, `${dateStr}-report.md`)
-      fs.appendFileSync(reportPath, comparison, 'utf-8')
-      console.log(`✅ Comparison added to report`)
+      if (outputCLI) {
+        console.log(comparison)
+      }
+
+      // Append comparison to markdown report if saving
+      if (outputMD) {
+        const reportPath = path.join(REPORTS_DIR, `${dateStr}-report.md`)
+        fs.appendFileSync(reportPath, comparison, 'utf-8')
+        console.log(`✅ Comparison added to report`)
+      }
     }
   }
 
   console.log(`\n🏁 Analysis complete!`)
-  console.log(`\nNext steps:`)
-  console.log(`  1. Review report: seo-reports/${dateStr}-report.md`)
-  console.log(`  2. Focus on Quick Wins (${recommendations.filter(r => r.category === 'quick-win').length} items)`)
-  console.log(`  3. Re-run with --compare ${dateStr} after improvements\n`)
+
+  if (outputMD) {
+    console.log(`\nNext steps:`)
+    console.log(`  1. Review report: seo-reports/${dateStr}-report.md`)
+    console.log(`  2. Focus on Quick Wins (${recommendations.filter(r => r.category === 'quick-win').length} items)`)
+    console.log(`  3. Re-run with --compare ${dateStr} after improvements\n`)
+  } else {
+    console.log(`\n💡 Tip: Use --output md or --output both to save a detailed report\n`)
+  }
 }
 
 // Run analysis
