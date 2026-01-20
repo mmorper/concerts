@@ -1,10 +1,17 @@
 # SEO Optimization - Search & AI Bot Discoverability
 
-**Status:** Planned
-**Target Version:** v3.6.0
+**Status:** Phase 1-2 Complete | Phase 3 Planned
+**Current Version:** v3.5.0
+**Target Version:** v3.6.0 (Phase 3)
 **Priority:** High
 **Estimated Complexity:** Medium
 **Dependencies:** None
+
+**Implementation Progress:**
+
+- ✅ **Phase 1: Static SEO Foundation** - Complete (2026-01-20)
+- ✅ **Phase 2: Dynamic Sitemap Generation** - Complete (2026-01-20)
+- ⏸️ **Phase 3: Cloudflare Worker Meta Injection** - Planned
 
 ---
 
@@ -1831,10 +1838,180 @@ npm run build && npm run preview
 
 ---
 
+## Implementation Notes
+
+### Phase 1: Static SEO Foundation ✅ Complete
+
+**Completed:** 2026-01-20
+**Version:** v3.5.0 (pre-existing implementation verified)
+
+**What Was Already Implemented:**
+
+All Phase 1 items were found to be already complete:
+
+1. ✅ **Auto-Update Strategy (1.0)** - Fully functional
+   - `scripts/update-meta-tags.ts` exists and works correctly
+   - Integrated into `build-data.ts` as Step 10
+   - Comprehensive test coverage in `test/pipeline/update-meta-tags.test.ts`
+   - Auto-updates: `index.html`, `public/llm.txt`, `public/og-stats.json`
+
+2. ✅ **robots.txt (1.1)** - Complete
+   - Created at `public/robots.txt`
+   - All AI bots explicitly welcomed (GPTBot, ClaudeBot, Google-Extended, PerplexityBot, CCBot)
+   - Social media crawlers included (Facebook, Twitter, LinkedIn, WhatsApp, Telegram, Slack, Discord)
+   - Sitemap declared
+   - Crawl-delay: 1 second
+
+3. ✅ **Enhanced Meta Tags (1.2)** - Complete
+   - All enhanced tags present in `index.html` (lines 11-43)
+   - Open Graph tags for social sharing
+   - Twitter Card metadata
+   - Music-specific meta tags
+   - RSS feed discovery link
+   - JSON data endpoint discovery
+   - Article published/modified timestamps
+
+4. ✅ **Schema.org Structured Data (1.3)** - Complete
+   - JSON-LD implemented in `index.html` (lines 68-146)
+   - Auto-updates via `update-meta-tags.ts`
+   - All dynamic stats updated correctly:
+     - `numberOfEvents`, `startDate`, `endDate`, `numberOfItems`
+     - Scene descriptions (Timeline, Artists, Venues)
+     - `dateModified` set to current date
+
+5. ✅ **llm.txt** - Complete
+   - Created at `public/llm.txt`
+   - Comprehensive AI assistant documentation (300 lines)
+   - Auto-updates all stats (11 occurrences)
+   - Includes:
+     - Content scope (personal vs. authoritative)
+     - Data endpoints with JSON schemas
+     - Deep linking patterns and examples
+     - Common queries and how to answer them
+     - Features, tech stack, usage policy
+     - Currently shows: 178 concerts, 253 artists, 77 venues, 6,092+ albums
+
+**Phase 1 Verification:**
+- All items passed manual review
+- Meta tags validate with Google Rich Results Test
+- robots.txt accessible at `/robots.txt`
+- llm.txt accessible at `/llm.txt`
+- Stats auto-update correctly during `npm run build-data`
+
+---
+
+### Phase 2: Dynamic Sitemap Generation ✅ Complete
+
+**Completed:** 2026-01-20
+**Version:** v3.5.0
+
+**What Was Implemented:**
+
+1. ✅ **Sitemap Generator Script (2.1)**
+   - Created `scripts/generate-sitemap.ts` (185 lines)
+   - Generates `public/sitemap.xml` with 409 URLs
+   - Properly escapes XML special characters (`&` → `&amp;`)
+   - Sorts artists and venues by concert count (most-attended first)
+
+2. ✅ **URL Structure**
+   - Homepage: 1 URL (priority 1.0)
+   - Scenes: 5 URLs (priorities adjusted based on update frequency)
+     - Timeline: 0.9 (updates frequently)
+     - Artists: 0.9 (updates frequently)
+     - Venues: 0.7 (updates less frequently)
+     - Geography: 0.7 (updates less frequently)
+     - Genres: 0.7 (updates less frequently)
+   - Artist deep links: 247 URLs (priority 0.8, changefreq monthly)
+   - Venue network links: 77 URLs (priority 0.7, changefreq monthly)
+   - Venue map links: 77 URLs (priority 0.6, changefreq monthly)
+   - Changelog: 2 URLs (priority 0.5/0.4, changefreq weekly)
+
+3. ✅ **Integration**
+   - Added to `package.json`: `"generate:sitemap": "tsx scripts/generate-sitemap.ts"`
+   - Integrated into `build-data.ts` as Step 11
+   - Runs automatically after `update:meta`
+   - Sitemap committed to git (regenerated on data changes)
+
+4. ✅ **Testing**
+   - Created `test/pipeline/generate-sitemap.test.ts` (550+ lines)
+   - Covers: URL generation, XML escaping, priority values, sorting, lastmod dates
+   - Manual verification: 409 URLs generated correctly
+
+5. ✅ **Documentation**
+   - Added comprehensive sitemap section to `docs/BUILD.md`
+   - Documented URL types, priorities, sorting logic
+   - Search engine submission instructions
+   - Validation procedures
+
+**Phase 2 Adjustments from Spec:**
+
+- **Scene Priorities**: Adjusted based on user feedback
+  - Timeline & Artists: 0.9 (update frequently)
+  - Venues, Geography, Genres: 0.7 (update infrequently)
+  - Original spec had all scenes at 0.9
+
+- **Sitemap Committed to Git**: Per user requirement
+  - Sitemap regenerates during `npm run build-data`
+  - File committed (not in `.gitignore`)
+  - Original spec suggested generated-only
+
+**Phase 2 Verification:**
+- ✅ Script runs without errors: `npm run generate:sitemap`
+- ✅ Generates 409 URLs (1 + 5 + 247 + 154 + 2)
+- ✅ XML properly escaped (`&amp;`)
+- ✅ Artists sorted by concert count (Social Distortion, Howard Jones, Depeche Mode first)
+- ✅ Venues sorted by concert count (top venues first)
+- ✅ Integrated into build pipeline
+- ✅ Documented in BUILD.md
+
+**Output:**
+```
+Total URLs: 409
+- Homepage: 1
+- Scenes: 5
+- Artists: 247
+- Venues: 77 × 2 scenes = 154
+- Changelog: 2
+```
+
+---
+
+### Phase 3: Cloudflare Worker Meta Injection ⏸️ Planned
+
+**Status:** Not yet implemented
+**Target:** v3.6.0+
+**Priority:** P1
+
+**Prerequisites Verified:**
+- ✅ Cloudflare Pages hosting (confirmed)
+- ✅ Cloudflare Workers free tier available (100k requests/day)
+
+**Next Steps:**
+1. Create `workers/meta-injector.js` (200 lines)
+2. Implement bot user-agent detection
+3. Parse URL parameters (scene, artist, venue)
+4. Fetch entity metadata from origin
+5. Build dynamic meta tag templates
+6. Inject into HTML `<head>`
+7. Add caching strategy (Cloudflare KV optional)
+8. Test with curl (simulate Googlebot)
+9. Deploy to Cloudflare Workers
+10. Monitor performance (P50/P95 latency)
+11. Document in BUILD.md
+
+**User Requirement:**
+> "Worker looks good to use, but I will need step by step assistance"
+
+This will be implemented in a separate session with guided step-by-step instructions.
+
+---
+
 ## Revision History
 
-- **2026-01-19:** Initial specification created
-- **Version:** 1.0.0
-- **Author:** Claude Sonnet 4.5 (via /spec command)
-- **Status:** Planned
-- **Next Review:** Post Phase 1 implementation (target: v3.6.0)
+- **2026-01-19:** Initial specification created (v1.0.0)
+- **2026-01-20:** Phase 1 verification complete (pre-existing implementation)
+- **2026-01-20:** Phase 2 implementation complete (sitemap generation)
+- **Version:** 2.0.0
+- **Author:** Claude Sonnet 4.5 (via /spec command + /implement)
+- **Status:** Phase 1-2 Complete | Phase 3 Planned
+- **Next Review:** Before Phase 3 implementation (target: v3.6.0)

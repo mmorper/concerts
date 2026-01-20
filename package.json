@@ -47,6 +47,7 @@
     "test:genres": "node test/scenes/test-genres.mjs",
     "test:artists": "node test/scenes/test-artists.mjs",
     "update:meta": "tsx scripts/update-meta-tags.ts",
+    "generate:sitemap": "tsx scripts/generate-sitemap.ts",
     "og:generate": "tsx scripts/generate-og-simple.ts",
     "og:preview": "tsx scripts/preview-og-crops.ts",
     "cleanup:backups": "tsx scripts/cleanup-backups.ts"

@@ -50,6 +50,7 @@ async function buildData() {
     { name: 'Pre-fetch setlists', active: !skipSetlists },
     { name: 'Aggregate genres timeline', active: true },
     { name: 'Update meta tags and SEO files', active: !dryRun },
+    { name: 'Generate sitemap', active: !dryRun },
   ]
   const activeSteps = steps.filter(s => s.active).length
 
@@ -199,9 +200,19 @@ async function buildData() {
     if (!dryRun) {
       currentStep++
       console.log('=' .repeat(60))
-      console.log(`Step ${currentStep}/${activeSteps + 1}: Updating meta tags and SEO files`)
+      console.log(`Step ${currentStep}/${activeSteps}: Updating meta tags and SEO files`)
       console.log('-'.repeat(60))
       await exec('npm run update:meta')
+      console.log()
+    }
+
+    // Step 11: Generate sitemap (always runs)
+    if (!dryRun) {
+      currentStep++
+      console.log('=' .repeat(60))
+      console.log(`Step ${currentStep}/${activeSteps}: Generating sitemap`)
+      console.log('-'.repeat(60))
+      await exec('npm run generate:sitemap')
       console.log()
     }
 
@@ -223,6 +234,10 @@ async function buildData() {
       if (!skipVenues) console.log('   - public/data/venues-metadata.json')
       if (!skipDiscography) console.log('   - public/data/discography.json')
       if (!skipSetlists) console.log('   - public/data/setlists-cache.json')
+      console.log('   - public/sitemap.xml')
+      console.log('   - index.html (meta tags updated)')
+      console.log('   - public/llm.txt (stats updated)')
+      console.log('   - public/og-stats.json')
       console.log()
       console.log('📦 Automatic backups created with .backup.TIMESTAMP extension')
       console.log()

@@ -1,0 +1,182 @@
+#!/usr/bin/env tsx
+/**
+ * Generate Sitemap Script
+ *
+ * Creates sitemap.xml from concert data with all deep-linkable URLs:
+ * - Homepage
+ * - 5 scene navigation links
+ * - 247+ artist deep links
+ * - 77+ venue deep links (2 scenes each)
+ * - Changelog pages
+ *
+ * URLs sorted by concert count (most-attended first) for SEO priority.
+ *
+ * Run: npm run generate:sitemap
+ */
+
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+interface Concert {
+  headlinerNormalized: string
+  venueNormalized: string
+  date: string
+}
+
+interface ConcertsData {
+  concerts: Concert[]
+}
+
+const SITE_URL = 'https://concerts.morperhaus.org'
+const OUTPUT_PATH = path.join(process.cwd(), 'public/sitemap.xml')
+
+async function generateSitemap() {
+  console.log('🗺️  Generating sitemap.xml...\n')
+
+  // Load data
+  const concertsPath = path.join(__dirname, '..', 'public', 'data', 'concerts.json')
+  const artistsPath = path.join(__dirname, '..', 'public', 'data', 'artists-metadata.json')
+  const venuesPath = path.join(__dirname, '..', 'public', 'data', 'venues-metadata.json')
+
+  const concertsData: ConcertsData = JSON.parse(fs.readFileSync(concertsPath, 'utf-8'))
+  const artistsData = JSON.parse(fs.readFileSync(artistsPath, 'utf-8'))
+  const venuesData = JSON.parse(fs.readFileSync(venuesPath, 'utf-8'))
+
+  const concerts = concertsData.concerts
+  const artists = Object.keys(artistsData)
+  const venues = Object.keys(venuesData)
+
+  // Calculate last modified from latest concert date
+  const dates = concerts.map((c) => c.date).sort()
+  const latestDate = dates[dates.length - 1]
+
+  console.log(`Data loaded:`)
+  console.log(`  ${concerts.length} concerts`)
+  console.log(`  ${artists.length} artists`)
+  console.log(`  ${venues.length} venues`)
+  console.log(`  Latest concert: ${latestDate}\n`)
+
+  // Start XML
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+
+  // Homepage
+  xml += generateUrlEntry('/', 1.0, 'weekly', latestDate)
+
+  // Scene links with adjusted priorities based on update frequency
+  // Timeline & Artists update frequently (0.9)
+  // Venues, Map, Genres update least (0.7)
+  const scenes = [
+    { path: 'timeline', priority: 0.9, changefreq: 'weekly' }, // Updates frequently
+    { path: 'artists', priority: 0.9, changefreq: 'weekly' }, // Updates frequently
+    { path: 'venues', priority: 0.7, changefreq: 'monthly' }, // Updates least
+    { path: 'geography', priority: 0.7, changefreq: 'monthly' }, // Updates least (map)
+    { path: 'genres', priority: 0.7, changefreq: 'monthly' }, // Updates least
+  ]
+
+  scenes.forEach((scene) => {
+    xml += generateUrlEntry(`/?scene=${scene.path}`, scene.priority, scene.changefreq, latestDate)
+  })
+
+  // Artist deep links (sorted by concert count)
+  const artistConcertCounts = new Map<string, number>()
+  concerts.forEach((concert) => {
+    const count = artistConcertCounts.get(concert.headlinerNormalized) || 0
+    artistConcertCounts.set(concert.headlinerNormalized, count + 1)
+  })
+
+  const sortedArtists = artists.sort((a, b) => {
+    const countA = artistConcertCounts.get(a) || 0
+    const countB = artistConcertCounts.get(b) || 0
+    return countB - countA
+  })
+
+  sortedArtists.forEach((artist) => {
+    xml += generateUrlEntry(`/?scene=artists&artist=${artist}`, 0.8, 'monthly')
+  })
+
+  // Venue deep links (both scenes, sorted by concert count)
+  const venueConcertCounts = new Map<string, number>()
+  concerts.forEach((concert) => {
+    const count = venueConcertCounts.get(concert.venueNormalized) || 0
+    venueConcertCounts.set(concert.venueNormalized, count + 1)
+  })
+
+  const sortedVenues = venues.sort((a, b) => {
+    const countA = venueConcertCounts.get(a) || 0
+    const countB = venueConcertCounts.get(b) || 0
+    return countB - countA
+  })
+
+  sortedVenues.forEach((venue) => {
+    // Venues scene (network graph)
+    xml += generateUrlEntry(`/?scene=venues&venue=${venue}`, 0.7, 'monthly')
+    // Geography scene (map)
+    xml += generateUrlEntry(`/?scene=geography&venue=${venue}`, 0.6, 'monthly')
+  })
+
+  // Changelog pages
+  xml += generateUrlEntry('/liner-notes', 0.5, 'weekly', latestDate)
+  xml += generateUrlEntry('/liner-notes/rss', 0.4, 'weekly', latestDate)
+
+  xml += '</urlset>'
+
+  // Write file
+  fs.writeFileSync(OUTPUT_PATH, xml, 'utf-8')
+
+  const totalUrls =
+    1 + // homepage
+    scenes.length +
+    sortedArtists.length +
+    sortedVenues.length * 2 + // 2 scenes per venue
+    2 // changelog pages
+
+  console.log(`✅ Sitemap generated: ${OUTPUT_PATH}`)
+  console.log(`   Total URLs: ${totalUrls}`)
+  console.log(`   - Homepage: 1`)
+  console.log(`   - Scenes: ${scenes.length}`)
+  console.log(`   - Artists: ${sortedArtists.length}`)
+  console.log(`   - Venues: ${sortedVenues.length} × 2 scenes = ${sortedVenues.length * 2}`)
+  console.log(`   - Changelog: 2`)
+  console.log()
+}
+
+/**
+ * Generate a single URL entry with proper XML escaping
+ */
+function generateUrlEntry(
+  urlPath: string,
+  priority: number,
+  changefreq: string,
+  lastmod?: string
+): string {
+  // XML escape special characters
+  const escapedPath = urlPath
+    .replace(/&/g, '&amp;')
+    .replace(/'/g, '&apos;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+
+  let entry = '  <url>\n'
+  entry += `    <loc>${SITE_URL}${escapedPath}</loc>\n`
+  if (lastmod) {
+    entry += `    <lastmod>${lastmod}</lastmod>\n`
+  }
+  entry += `    <changefreq>${changefreq}</changefreq>\n`
+  entry += `    <priority>${priority.toFixed(1)}</priority>\n`
+  entry += '  </url>\n'
+  return entry
+}
+
+// Run if called directly
+generateSitemap().catch((err) => {
+  console.error('❌ Sitemap generation failed:', err)
+  process.exit(1)
+})
+
+export { generateSitemap }

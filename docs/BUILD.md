@@ -165,6 +165,164 @@ Output: `public/preview-scene-{N}-{name}.png` files
 
 These were part of the original multi-scene composite approach. The simplified single-scene approach (`generate-og-simple.ts`) is now preferred.
 
+## SEO & Discovery
+
+### Sitemap Generation
+
+**Script**: `scripts/generate-sitemap.ts`
+**Output**: `public/sitemap.xml`
+**Storage**: Committed to git (regenerated on data changes)
+**Manual Generation**: `npm run generate:sitemap`
+**Auto-Generated**: During `npm run build-data` (Step 11)
+
+The sitemap provides search engines and bots with a complete index of all discoverable URLs:
+
+#### URL Types
+
+| Type | Count | Priority | Change Freq | Example |
+|------|-------|----------|-------------|---------|
+| **Homepage** | 1 | 1.0 | weekly | `/` |
+| **Timeline Scene** | 1 | 0.9 | weekly | `/?scene=timeline` |
+| **Artists Scene** | 1 | 0.9 | weekly | `/?scene=artists` |
+| **Venues Scene** | 1 | 0.7 | monthly | `/?scene=venues` |
+| **Geography Scene** | 1 | 0.7 | monthly | `/?scene=geography` |
+| **Genres Scene** | 1 | 0.7 | monthly | `/?scene=genres` |
+| **Artist Deep Links** | 247+ | 0.8 | monthly | `/?scene=artists&artist=depeche-mode` |
+| **Venue Network Links** | 77+ | 0.7 | monthly | `/?scene=venues&venue=9-30-club` |
+| **Venue Map Links** | 77+ | 0.6 | monthly | `/?scene=geography&venue=9-30-club` |
+| **Changelog** | 2 | 0.5-0.4 | weekly | `/liner-notes`, `/liner-notes/rss` |
+
+**Total URLs**: ~410 (1 homepage + 5 scenes + 247 artists + 154 venue links + 2 changelog)
+
+#### Priority Logic
+
+Scene priorities reflect update frequency:
+- **Timeline & Artists** (0.9): Update frequently as new concerts are added
+- **Venues, Geography, Genres** (0.7): Update infrequently (venues change rarely)
+
+#### Sorting
+
+Artists and venues are sorted by concert count (descending) to signal content richness to search engines:
+- Top artists (e.g., Depeche Mode, Duran Duran) appear first
+- Top venues (e.g., 9:30 Club, Irvine Meadows) appear first
+
+#### When Sitemap Regenerates
+
+Automatically during:
+```bash
+npm run build-data  # Step 11 of pipeline
+```
+
+Manually:
+```bash
+npm run generate:sitemap
+```
+
+**After regeneration**, commit the updated sitemap:
+```bash
+git add public/sitemap.xml
+git commit -m "chore: Update sitemap with latest concerts"
+git push
+```
+
+#### Search Engine Submission
+
+**One-Time Setup**:
+1. **Google Search Console**: https://search.google.com/search-console
+   - Submit sitemap URL: `https://concerts.morperhaus.org/sitemap.xml`
+2. **Bing Webmaster Tools**: https://www.bing.com/webmasters
+   - Submit sitemap URL: `https://concerts.morperhaus.org/sitemap.xml`
+
+**Verification**:
+- Sitemap declared in `public/robots.txt` (line 13)
+- Sitemap validates at: https://www.xml-sitemaps.com/validate-xml-sitemap.html
+
+### Meta Tags & Schema.org
+
+**Auto-Update Script**: `scripts/update-meta-tags.ts`
+**Runs During**: `npm run build-data` (Step 10)
+**Manual Update**: `npm run update:meta`
+
+This script keeps SEO metadata synchronized with current concert data:
+
+#### Files Updated
+
+| File | What Updates | Purpose |
+|------|-------------|---------|
+| `index.html` | Meta descriptions, Schema.org JSON-LD | Search results, rich snippets |
+| `public/llm.txt` | All stat occurrences | AI assistant documentation |
+| `public/og-stats.json` | Concert/artist/venue counts | OG image generation |
+
+#### Stats Auto-Updated
+
+- **Concert count**: Total concerts (e.g., "178 concerts")
+- **Artist count**: Unique headliners + openers (e.g., "253 artists")
+- **Venue count**: Unique venues (e.g., "77 venues")
+- **Album count**: From `discography.json` (e.g., "6,092+ albums")
+- **Date range**: Earliest → latest concert (e.g., "1984-2026")
+- **Decades**: Calculated from start year (e.g., "5+ decades")
+- **Last modified**: Current date (ISO format)
+
+#### Schema.org Structured Data
+
+**Location**: `index.html` lines 68-146
+
+The JSON-LD provides machine-readable structure for:
+- **CollectionPage**: Site classification
+- **MusicEventSeries**: Concert archive metadata
+- **WebPage** (hasPart): 5 interactive scenes
+- **SearchAction**: Artist search capability
+
+**Fields Auto-Updated**:
+- `description`: Full stats summary
+- `dateModified`: Current date
+- `numberOfEvents`: Concert count
+- `startDate`: Earliest concert date
+- `endDate`: Latest concert date
+- `numberOfItems`: Artist count
+- Scene descriptions (Timeline, Artists, Venues)
+
+**Validation**:
+- Google Rich Results Test: https://search.google.com/test/rich-results
+- Schema.org Validator: https://validator.schema.org/
+
+### AI Assistant Documentation (llm.txt)
+
+**File**: `public/llm.txt`
+**Format**: Human-readable markdown
+**Purpose**: Help AI assistants (ChatGPT, Claude, Perplexity) understand the site
+
+**Contents**:
+- Site overview and stats (auto-updated)
+- Content scope (personal vs. authoritative data)
+- Data endpoints (JSON URLs and schemas)
+- Deep linking patterns
+- Common queries and how to answer them
+- Features and tech stack
+- Usage policy and attribution
+
+**Example Queries AI Bots Can Answer**:
+- "How many times has Morperhaus seen Depeche Mode?"
+- "What's the most-attended venue?"
+- "What venues are in Washington, DC?"
+- "Show me concerts from 2024"
+
+**Access**: https://concerts.morperhaus.org/llm.txt
+
+### Robots.txt
+
+**File**: `public/robots.txt`
+**Purpose**: Direct crawler behavior
+
+**Key Directives**:
+- Allow all crawlers (`User-agent: *`, `Allow: /`)
+- Explicitly welcome AI bots (GPTBot, ClaudeBot, Google-Extended, PerplexityBot)
+- Welcome social media scrapers (Facebook, Twitter, LinkedIn)
+- Declare sitemap location
+- Rate limit: 1 second crawl delay
+
+**Access**: https://concerts.morperhaus.org/robots.txt
+
 ## Deployment
 
 ### Cloudflare Pages
