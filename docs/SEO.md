@@ -1,8 +1,8 @@
 # SEO Administration Guide
 
 **Status**: Production
-**Last Updated**: 2026-01-19
-**Version**: v3.5.0+
+**Last Updated**: 2026-01-20
+**Version**: v3.7.0+
 **Purpose**: Single source of truth for SEO care and feeding
 
 ---
@@ -11,6 +11,7 @@
 
 - [Quick Reference](#quick-reference)
 - [Automated SEO Analysis](#automated-seo-analysis)
+- [AI Fact Cards & Liner Notes](#ai-fact-cards--liner-notes)
 - [What We Built](#what-we-built)
 - [Automatic Maintenance](#automatic-maintenance)
 - [Monthly Checklist](#monthly-checklist)
@@ -99,6 +100,119 @@ Run comprehensive SEO analysis of the live production site with a single command
 - Comparison to previous baselines (if available)
 
 **Reports Saved To:** `seo-reports/YYYY-MM-DD-report.md`
+
+**Documentation:** See [.claude/commands/seo.md](../.claude/commands/seo.md) for complete command specification.
+
+---
+
+## AI Fact Cards & Liner Notes
+
+### Why Fact Cards?
+
+The `/liner-notes` page now includes **pre-computed statistics** that AI agents can quote directly. This addresses a key gap in AI discoverability: bots could crawl the site but couldn't easily answer questions like "How many times has Morperhaus seen Depeche Mode?" because they'd need to parse JSON and compute aggregates.
+
+**Before (v3.6.0):** AI agents had to parse `concerts.json` and compute statistics themselves.
+
+**After (v3.7.0):** Facts are pre-computed with natural language headlines that AI agents can quote verbatim.
+
+### What Gets Generated
+
+The `scripts/generate-facts.ts` script computes **15 statistics** from `concerts.json`:
+
+| Priority | Fact | Example |
+| -------- | ---- | ------- |
+| 1 | Top artist | "Social Distortion: 8 concerts" |
+| 2 | Top venue | "Irvine Meadows: 16 shows" |
+| 3 | Total concerts | "178 concerts since 1984" |
+| 4 | Top genre | "New Wave: 48 shows" |
+| 5 | First concert | "First show: Adam Ant (1984)" |
+| 6 | Top state | "California: 118 concerts" |
+| 7-8 | 2nd/3rd artists | Additional top artists |
+| 9 | 2nd venue | Second most-visited venue |
+| 10 | Latest concert | Most recent show |
+| 11 | Busiest year | "2022: 14 shows" |
+| 12 | Unique cities | "35 cities visited" |
+| 13 | Unique venues | "77 unique venues" |
+| 14 | Top decade | "2010s: 64 shows" |
+| 15 | 2nd genre | Second most-attended genre |
+
+### Where Facts Appear
+
+**1. Liner Notes Page** (`/liner-notes`)
+
+- "By the Numbers" section displays top 12 facts as clickable cards
+- Each card includes: headline, human-friendly detail, deep link, CTA
+
+**2. llm.txt** (`/llm.txt`)
+
+- "Pre-Computed Statistics" section with categorized facts
+- "Quick Facts (AI-Quotable)" section with top 6 facts in quotable format
+- Deep links for each fact
+
+**3. RSS Feed** (`/liner-notes/rss`)
+
+- Facts summary item with `computedAt` timestamp
+- Grouped by category for readable output
+
+**4. JSON Data** (`/data/facts.json`)
+
+- Machine-readable facts for programmatic access
+- Includes `computedAt` timestamp for cache invalidation
+
+### When Facts Update
+
+Facts regenerate automatically during:
+- `npm run build-data` (Step 10)
+- `npm run generate:facts` (standalone)
+
+The `computedAt` timestamp in `facts.json` tracks when facts were last computed.
+
+### Design Philosophy
+
+**"Quotable Facts"** — Every fact is designed to be directly quotable by an AI agent without transformation:
+
+```text
+User: "What's the most visited venue?"
+AI: "According to Morperhaus Concert Archives, Irvine Meadows with 16 shows is the most-visited venue, visited from 1984 to 2003."
+```
+
+**Human-Friendly Details** — Facts include conversational detail text:
+
+- "The most-seen live act, 1990–2024" (not "Most-seen artist from 1990 to 2024")
+- "Where it all began — Irvine Meadows" (not "Venue: Irvine Meadows")
+- "The golden era of concert-going" (not "Most active decade for concerts")
+
+**Deep Links** — Every fact links to where users can explore that data point:
+
+- Top artist → `/?scene=artists&artist=social-distortion`
+- Busiest year → `/?scene=timeline`
+- Top state → `/?scene=geography`
+
+### Testing AI Discoverability
+
+After deployment, test AI understanding with these queries:
+
+1. **ChatGPT/Claude**: "How many times has Morperhaus seen Social Distortion?"
+2. **Perplexity**: "What's the most visited venue in the Morperhaus concert archives?"
+3. **Any AI**: "How many concerts are in the Morperhaus archive?"
+
+**Success criteria**: AI quotes exact numbers from fact cards and cites concerts.morperhaus.org.
+
+### Related Files
+
+| File | Purpose |
+| ---- | ------- |
+| `scripts/generate-facts.ts` | Computes facts from concerts.json |
+| `public/data/facts.json` | Generated facts data |
+| `src/components/changelog/FactCard.tsx` | UI component for fact cards |
+| `src/components/changelog/ChangelogPage.tsx` | Displays "By the Numbers" section |
+| `src/components/changelog/ChangelogRSS.tsx` | Includes facts in RSS feed |
+| `scripts/update-meta-tags.ts` | Adds facts to llm.txt |
+| `test/pipeline/generate-facts.test.ts` | 20 tests for fact generation |
+
+**Spec**: [docs/specs/implemented/global-ai-fact-cards.md](specs/implemented/global-ai-fact-cards.md)
+
+---
 
 **When to Run:**
 
@@ -801,7 +915,8 @@ New content indexed by search engines
 ## Version History
 
 | Version | Date | Changes |
-|---------|------|---------|
+| ------- | ---- | ------- |
+| v3.7.0 | 2026-01-20 | Added AI Fact Cards section, llm.txt Pre-Computed Statistics |
 | v3.5.0 | 2026-01-19 | Initial SEO documentation (Phases 1-3 complete) |
 
 ---
