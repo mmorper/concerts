@@ -24,7 +24,8 @@ This directory contains all data pipeline, build, and utility scripts for the Mo
 | Script | Command | Purpose | When It Runs |
 |--------|---------|---------|--------------|
 | generate-version.ts | `npm run build` | Generate version.json with git metadata | Every production build |
-| generate-og-simple.ts | `npm run og:generate` | Generate Open Graph social media image | When stats change |
+| update-meta-tags.ts | `npm run update:meta` | Update index.html meta descriptions with current stats | Before each release |
+| generate-og-simple.ts | `npm run og:generate` | Generate Open Graph social media image | After updating meta tags |
 | preview-og-crops.ts | `npm run og:preview` | Preview OG image crop regions | Testing OG image generation |
 
 ### Utility Scripts (One-Time or Maintenance)
@@ -110,16 +111,27 @@ See [docs/DATA_PIPELINE.md](../docs/DATA_PIPELINE.md) for complete pipeline docu
 ### 🏗️ Build & Deployment
 
 **generate-version.ts** - Generates `public/version.json`
+
 - Captures git commit hash, branch, build time
 - Runs automatically during `npm run build`
 - Used for production debugging (check `/version.json`)
 
+**update-meta-tags.ts** - Updates meta descriptions with current stats
+
+- Reads stats from `concerts.json` (concerts, artists, venues, year range)
+- Updates `index.html` meta tags (description, OG, Twitter)
+- Updates `public/og-stats.json`
+- Run before each release: `npm run update:meta`
+
 **generate-og-simple.ts** - Open Graph social media image
+
 - Captures Venues scene force graph + stats overlay
+- Reads stats from `concerts.json` for accuracy
 - Pre-generated and committed (runs locally, not in CI)
-- Regenerate when stats change significantly
+- Run after `update:meta`: `npm run og:generate`
 
 **preview-og-crops.ts** - OG image preview tool
+
 - Shows different crop regions for social media
 - Helps verify OG image looks good across platforms
 
@@ -178,6 +190,7 @@ npx tsx scripts/test-setlistfm.ts
 
 **Build:**
 - generate-version.ts
+- update-meta-tags.ts
 - generate-og-simple.ts
 - preview-og-crops.ts
 
@@ -368,5 +381,5 @@ export { myScript }
 
 ---
 
-**Last Updated**: 2026-01-04
-**Total Scripts**: 21 (18 active, 2 test, 1 deprecated)
+**Last Updated**: 2026-01-07
+**Total Scripts**: 22 (19 active, 2 test, 1 deprecated)

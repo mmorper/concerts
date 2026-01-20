@@ -8,6 +8,11 @@
 import puppeteer from 'puppeteer'
 import sharp from 'sharp'
 import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const SITE_URL = process.env.OG_SITE_URL || 'http://localhost:5173'
 const OUTPUT_PATH = 'public/og-image.jpg'
@@ -16,6 +21,29 @@ const OUTPUT_HEIGHT = 630
 
 async function main() {
   console.log('🎨 Generating simplified OG image\n')
+
+  // Read stats directly from data file
+  const dataPath = path.join(__dirname, '..', 'public', 'data', 'concerts.json')
+  const concertsData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'))
+
+  const concerts = concertsData.concerts.length
+  const scenes = 5
+
+  // Count unique artists (headliners + openers)
+  const artistSet = new Set<string>()
+  concertsData.concerts.forEach((concert: any) => {
+    if (concert.headliner) artistSet.add(concert.headliner)
+    concert.openers?.forEach((opener: string) => artistSet.add(opener))
+  })
+  const artists = artistSet.size
+
+  // Count unique venues
+  const venueSet = new Set(concertsData.concerts.map((c: any) => c.venue))
+  const venues = venueSet.size
+
+  const stats = { concerts, scenes, artists, venues }
+
+  console.log(`Stats from data file: ${stats.concerts} shows, ${stats.artists} artists, ${stats.venues} venues, ${stats.scenes} scenes`)
 
   const browser = await puppeteer.launch({
     headless: true,
@@ -27,25 +55,9 @@ async function main() {
 
   const page = await browser.newPage()
 
-  console.log(`Loading ${SITE_URL}...`)
+  console.log(`\nLoading ${SITE_URL}...`)
   await page.goto(SITE_URL, { waitUntil: 'networkidle0' })
   await new Promise(resolve => setTimeout(resolve, 3000))
-
-  // Extract stats from live page
-  const stats = await page.evaluate(() => {
-    const concerts = document.querySelectorAll('[data-concert-id]').length || 175
-    const scenes = 5
-    const artistElements = document.querySelectorAll('[data-artist-name]')
-    const artists = artistElements.length || 248
-
-    // Try to count venues from the data
-    const venueElements = document.querySelectorAll('[data-venue-name]')
-    const venues = venueElements.length || 77
-
-    return { concerts, scenes, artists, venues }
-  })
-
-  console.log(`Stats: ${stats.concerts} shows, ${stats.artists} artists, ${stats.venues} venues, ${stats.scenes} scenes`)
 
   // Navigate to Venues scene (scene 2)
   console.log('\nCapturing Venues scene...')
@@ -68,22 +80,22 @@ async function main() {
   // Hide UI elements for cleaner OG image
   await page.evaluate(() => {
     // Hide title and subtitle
-    const title = document.querySelector('h1')
+    const title = document.querySelector('h1') as HTMLElement | null
     if (title) title.style.display = 'none'
 
-    const subtitle = document.querySelector('p.text-lg, p.text-xl')
+    const subtitle = document.querySelector('p.text-lg, p.text-xl') as HTMLElement | null
     if (subtitle) subtitle.style.display = 'none'
 
     // Hide buttons
     const buttons = document.querySelectorAll('button')
-    buttons.forEach(btn => btn.style.display = 'none')
+    buttons.forEach(btn => (btn as HTMLElement).style.display = 'none')
 
     // Hide footer text (but keep venue node labels in SVG)
     const footerTexts = document.querySelectorAll('p')
     footerTexts.forEach(p => {
       const text = p.textContent?.toLowerCase() || ''
       if (text.includes('click') || text.includes('drag') || text.includes('explore')) {
-        p.style.display = 'none'
+        (p as HTMLElement).style.display = 'none'
       }
     })
   })
