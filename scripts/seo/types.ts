@@ -214,6 +214,12 @@ export interface PageAnalysis {
 // ============================================================================
 
 export type InsightType =
+  // Crawl-only insights
+  | 'duplicate_content' // Multiple pages with identical titles
+  | 'missing_schema' // Key pages without structured data
+  | 'slow_response' // High server response time
+  | 'missing_canonical' // Pages without canonical tag
+  // Cross-source insights
   | 'content_gap' // Good structure, no impressions
   | 'ctr_opportunity' // Good ranking, low CTR
   | 'engagement_mismatch' // Good traffic, high bounce
@@ -222,7 +228,6 @@ export type InsightType =
   | 'authority_mismatch' // High backlinks, low rankings
   | 'linkworthy_content' // High engagement, few backlinks
   | 'cannibalizing_pages' // Multiple pages competing for same queries
-  | 'duplicate_content' // GSC duplicate warnings
 
 export interface CorrelationInsight {
   type: InsightType

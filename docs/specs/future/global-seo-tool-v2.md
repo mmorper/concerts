@@ -1,6 +1,6 @@
 # SEO Tool v2: Integrated Analytics & Backlink Support
 
-**Status:** In Progress (v1.1 baseline restored, v2 scaffolding ready)
+**Status:** In Progress (v1.4 — Phases 1-6 complete, waiting for GSC/GA4 data)
 **Target Version:** v4.0.0
 **Priority:** High
 **Estimated Complexity:** Very High
@@ -11,27 +11,58 @@
 
 ## Current Status (2026-01-20)
 
-### What's Working (v1.1)
+### What's Working (v1.4)
+
 - `/seo` command scores **91/100** with crawl-only analysis
 - Detects: sitemap, robots.txt, llm.txt, facts.json, RSS feed, About page
 - Checks About page for Schema.org and LinkedIn (E-E-A-T signals)
 - Uses Googlebot UA to verify Cloudflare Worker meta tag injection
 - Outputs CLI dashboard + Markdown report
+- **GSC integration with graceful degradation** (shows "awaiting data" when configured but no data)
+- **GA4 integration with graceful degradation** (shows "no data in date range" when configured)
+- **Backlinks integration with graceful degradation** (shows "not configured" with setup instructions)
+- **Rate limiting** — Conservative limits with exponential backoff for all API clients
+- **Differentiated cache TTLs** — crawl 1d, GSC 3d, GA4 1d, backlinks 14d
+- **Detailed error states** — ⬚ not configured, ⏳ pending, ❌ error, ✅ active
+- **Backlink provider capabilities** — Runtime feature detection for Ahrefs vs SEMrush
+- **Playbook templates** — Extracted for easier customization
+- **Insights engine integrated** — Crawl-only insights active, cross-source ready for data
+- **CSV export** — `--output csv` generates multi-file export
+- **HTML export** — `--output html` generates standalone report
 
-### V2 Scaffolding (Ready but Not Active)
-The following files exist in `scripts/seo/` but are not yet wired into the main script:
+### OAuth Setup COMPLETE (2026-01-20)
+- **Google Cloud Project:** `476447563424` (existing, used for Sheets/Maps)
+- **APIs Enabled:** Search Console API, Analytics Data API
+- **OAuth Scopes:** `spreadsheets.readonly`, `webmasters.readonly`, `analytics.readonly`
+- **Redirect URI:** `http://localhost:3333/oauth2callback`
+- **New Env Var:** `GOOGLE_REFRESH_TOKEN_SEO` (has all 3 scopes)
+- **Reauthorize Script:** `scripts/seo/reauthorize.ts`
+- **GSC Property:** `sc-domain:concerts.morperhaus.org` (verified, API access confirmed)
+- **GSC Data Status:** Property just added — no data yet (takes 2-4 weeks)
+
+### V2 Scaffolding
+
+The following files exist in `scripts/seo/`:
+
 - `credentials.ts` — Credential storage and retrieval
 - `oauth.ts` — Google OAuth flow
 - `setup.ts` — Interactive setup wizard (first-time UX)
-- `cache.ts` — Caching layer for API responses
-- `clients/gsc.ts` — Google Search Console client (stub)
-- `clients/ga4.ts` — Google Analytics 4 client (stub)
-- `clients/backlinks.ts` — Backlink provider interface
+- `reauthorize.ts` — Re-auth script for expanded scopes
+- `test-gsc.ts` — GSC API test script
+- `cache.ts` — Caching layer with differentiated TTLs by source type
+- `rate-limiter.ts` — **NEW** Rate limiting with exponential backoff
+- `clients/gsc.ts` — Google Search Console client (original stub)
+- `clients/gsc-simple.ts` — **ACTIVE** GSC client with graceful degradation + rate limiting
+- `clients/ga4.ts` — Google Analytics 4 client (original stub)
+- `clients/ga4-simple.ts` — **ACTIVE** GA4 client with graceful degradation + rate limiting
+- `clients/backlinks.ts` — Backlink provider interface with capabilities detection
+- `clients/backlinks-simple.ts` — **ACTIVE** Backlink client with graceful degradation
 - `insights/engine.ts` — Correlation insight detection
 - `insights/playbooks.ts` — Actionable playbook generation
+- `insights/playbook-templates.ts` — **NEW** Extracted templates for customization
 - `outputs/html.ts`, `outputs/csv.ts`, `outputs/sheets.ts` — Export formats
 - `types.ts` — TypeScript interfaces for all data structures
-- `index.ts` — Module exports
+- `index.ts` — Module exports (updated with new exports)
 
 ### What Broke (Fixed)
 - v2 was prematurely swapped in as the active script
@@ -39,20 +70,63 @@ The following files exist in `scripts/seo/` but are not yet wired into the main 
 - **Fix:** Restored v1.1 as active, preserved v2 work as `analyze-seo-v2-wip.ts`
 
 ### Next Steps to Complete v2
-1. **Phase 1 (Credential Management):** Wire up `setup.ts` to run via `--setup` flag
-2. **Phase 2 (GSC Integration):** Complete `clients/gsc.ts`, integrate into scoring
-3. **Phase 3 (GA4 Integration):** Complete `clients/ga4.ts`, add engagement metrics
-4. **Phase 4 (Backlinks):** Implement Ahrefs/SEMrush clients (optional)
-5. **Phase 5 (Insights Engine):** Enable correlation detection with real data
-6. **Phase 6 (Output Formats):** Add `--output csv,html,sheets` support
+
+1. ~~**Phase 1 (Credential Management):**~~ **DONE** — OAuth working, `GOOGLE_REFRESH_TOKEN_SEO` env var
+2. ~~**Phase 2 (GSC Integration):**~~ **DONE** — `clients/gsc-simple.ts` integrated into `analyze-seo.ts`
+   - API access verified ✅
+   - Graceful degradation implemented ✅
+   - Dashboard shows GSC status (configured/awaiting data/active) ✅
+   - **Waiting for GSC data** (property added 2026-01-20, check back ~2026-02-03)
+3. ~~**Phase 3 (GA4 Integration):**~~ **DONE** — `clients/ga4-simple.ts` integrated into `analyze-seo.ts`
+   - Graceful degradation implemented ✅
+   - Dashboard shows GA4 status (not configured/no property ID/active) ✅
+   - `GA4_PROPERTY_ID` added to `.env` ✅
+   - API connection verified ✅ (returns "no data in date range" — expected for new/low-traffic property)
+4. ~~**Phase 4 (Backlinks):**~~ **DONE** — `clients/backlinks-simple.ts` integrated into `analyze-seo.ts`
+   - Graceful degradation implemented ✅
+   - Dashboard shows backlink status (not configured/API error/active) ✅
+   - Supports both Ahrefs (`AHREFS_API_KEY`) and SEMrush (`SEMRUSH_API_KEY`)
+   - **Provider capabilities detection** ✅ — Runtime feature detection for API differences
+   - **Ready to test** — add API key to `.env` when available
+5. ~~**Phase 4.5 (Infrastructure):**~~ **DONE** — Rate limiting, caching, error handling
+   - Rate limiting with exponential backoff ✅ (GSC 60/min, GA4 30/min, backlinks 10/min)
+   - Differentiated cache TTLs ✅ (crawl 1d, GSC 3d, GA4 1d, backlinks 14d)
+   - Detailed error state icons ✅ (⬚ not configured, ⏳ pending, ❌ error, ✅ active)
+   - Playbook templates extracted ✅ — Easier customization of title/description suggestions
+6. ~~**Phase 5 (Insights Engine):**~~ **DONE** — Integrated into `analyze-seo.ts`
+   - Crawl-only detectors: duplicate titles, missing schema, slow response, missing canonical ✅
+   - Cross-source detectors ready: CTR opportunity, content gap, zombie page, etc. ✅
+   - Insights logged to CLI ✅
+   - **Waiting for GSC/GA4 data** to activate cross-source correlations
+7. ~~**Phase 6 (Output Formats):**~~ **DONE** — CSV and HTML export
+   - `--output csv` — Multi-file CSV export to `seo-reports/YYYY-MM-DD-csv/` ✅
+   - `--output html` — Standalone HTML report with embedded CSS ✅
+   - `--output md` — Markdown report (existing) ✅
+   - `--output both` — CLI + Markdown (default) ✅
+   - Sheets export deferred (requires additional OAuth scope)
+
+### What's Next
+
+1. **Wait for GSC data** (~2026-02-03) — Property needs 2-4 weeks to accumulate data
+2. **Test cross-source insights** — Once GSC data arrives, verify correlation detection
+3. **Review duplicate title insight** — The tool detected 10 pages sharing "Morperhaus Concert Archives" title
 
 ### Key Files
+
 | File | Purpose |
 |------|---------|
-| `scripts/analyze-seo.ts` | Active v1.1 script (91/100 baseline) |
+| `scripts/analyze-seo.ts` | Active v1.4 script (91/100 baseline + GSC + GA4 + Backlinks) |
+| `scripts/seo/rate-limiter.ts` | **NEW** Rate limiting with exponential backoff |
+| `scripts/seo/cache.ts` | Caching with differentiated TTLs |
+| `scripts/seo/clients/gsc-simple.ts` | GSC client with graceful degradation + rate limiting |
+| `scripts/seo/clients/ga4-simple.ts` | GA4 client with graceful degradation + rate limiting |
+| `scripts/seo/clients/backlinks-simple.ts` | Backlinks client with graceful degradation |
+| `scripts/seo/clients/backlinks.ts` | Provider interface with capabilities detection |
+| `scripts/seo/insights/playbook-templates.ts` | **NEW** Extracted playbook templates |
+| `scripts/seo/reauthorize.ts` | OAuth re-auth for expanded scopes |
+| `scripts/seo/test-gsc.ts` | GSC API test script |
 | `scripts/analyze-seo-v2-wip.ts` | v2 work-in-progress (not active) |
-| `scripts/seo/` | v2 modular components (ready to integrate) |
-| `seo-reports/2026-01-20-baseline.json` | Baseline for comparison |
+| `scripts/seo/` | v2 modular components |
 
 ---
 
@@ -805,13 +879,43 @@ interface SEMrushClient {
 
 ### Scaffolding Pattern
 
-Both APIs follow the same interface pattern:
+Both APIs follow the same interface pattern with capability detection:
 
 ```typescript
+interface BacklinkProviderCapabilities {
+  supportsDomainRating: boolean      // Ahrefs DR
+  supportsAuthorityScore: boolean    // SEMrush AS
+  supportsNewLostBacklinks: boolean  // Trend data
+  supportsTopReferrers: boolean
+  supportsAnchorText: boolean
+  maxReferrersPerRequest: number     // API limit
+}
+
 interface BacklinkProvider {
   name: 'ahrefs' | 'semrush'
+  capabilities: BacklinkProviderCapabilities
   isConfigured(): boolean
   fetchMetrics(domain: string): Promise<BacklinkData>
+}
+
+// Ahrefs capabilities (varies by plan)
+const AHREFS_CAPABILITIES: BacklinkProviderCapabilities = {
+  supportsDomainRating: true,
+  supportsAuthorityScore: false,
+  supportsNewLostBacklinks: true,
+  supportsTopReferrers: true,
+  supportsAnchorText: true,
+  maxReferrersPerRequest: 100,
+}
+
+// SEMrush capabilities
+const SEMRUSH_CAPABILITIES: BacklinkProviderCapabilities = {
+  supportsDomainRating: false,
+  supportsAuthorityScore: true,
+  supportsNewLostBacklinks: true,
+  supportsTopReferrers: true,
+  supportsAnchorText: true,
+  maxReferrersPerRequest: 50,
 }
 
 class AhrefsProvider implements BacklinkProvider {
@@ -2271,10 +2375,10 @@ NOW RUNNING YOUR FIRST ANALYSIS...
 
 | Data Source | Default TTL | Rationale |
 |-------------|-------------|-----------|
-| Crawl data | 24 hours | HTML changes frequently during development |
-| GSC data | 7 days | Data is 2-3 days delayed anyway |
-| GA4 data | 7 days | Aggregated data, doesn't need real-time |
-| Backlink data | 7 days | Changes slowly, API costs money |
+| Crawl data | 1 day | HTML changes frequently during development |
+| GSC data | 3 days | Data is 2-3 days delayed anyway, balance freshness vs API calls |
+| GA4 data | 1 day | Near real-time data, stale quickly |
+| Backlink data | 14 days | Changes slowly, API costs money |
 | Baselines | 90 days | Historical comparison data |
 
 ### Cache Commands
@@ -2574,6 +2678,161 @@ scripts/
 | Ahrefs | API Key | No ($99+/mo) | Varies by plan |
 | SEMrush | API Key | No ($120+/mo) | Varies by plan |
 
+### Rate Limiting Strategy
+
+Conservative rate limiting to avoid hitting quotas:
+
+```typescript
+const RATE_LIMITS = {
+  gsc: {
+    requestsPerMinute: 60,      // Well under 1,200 limit
+    requestsPerDay: 1000,       // Conservative daily cap
+    retryAttempts: 3,
+    retryDelayMs: 1000,         // Exponential backoff base
+  },
+  ga4: {
+    requestsPerMinute: 30,      // GA4 can be strict
+    requestsPerDay: 5000,       // Half of 10k limit
+    retryAttempts: 3,
+    retryDelayMs: 2000,
+  },
+  crux: {
+    requestsPerMinute: 10,      // Very conservative (150/day limit)
+    requestsPerDay: 100,
+    retryAttempts: 2,
+    retryDelayMs: 5000,
+  },
+  backlinks: {
+    requestsPerMinute: 10,      // Paid APIs, be respectful
+    requestsPerDay: 100,
+    retryAttempts: 2,
+    retryDelayMs: 3000,
+  },
+}
+
+interface RateLimiter {
+  canMakeRequest(): boolean
+  recordRequest(): void
+  waitForSlot(): Promise<void>
+  getStats(): { remaining: number; resetsAt: Date }
+}
+```
+
+**Exponential Backoff:**
+
+```typescript
+async function withRetry<T>(
+  fn: () => Promise<T>,
+  config: { attempts: number; baseDelayMs: number }
+): Promise<T> {
+  for (let attempt = 1; attempt <= config.attempts; attempt++) {
+    try {
+      return await fn()
+    } catch (error) {
+      if (attempt === config.attempts) throw error
+      if (isRateLimitError(error)) {
+        const delay = config.baseDelayMs * Math.pow(2, attempt - 1)
+        console.log(`Rate limited, retrying in ${delay}ms...`)
+        await sleep(delay)
+      } else {
+        throw error
+      }
+    }
+  }
+}
+```
+
+### Baseline Storage
+
+Baselines are stored in the project directory for version control:
+
+```text
+seo-reports/
+├── baselines/
+│   ├── 2026-01-20.json       # Full analysis snapshot
+│   ├── 2026-01-13.json
+│   └── latest.json           # Symlink to most recent
+├── reports/
+│   ├── 2026-01-20.md         # Human-readable report
+│   └── 2026-01-20.html       # HTML version
+└── exports/
+    ├── 2026-01-20-pages.csv
+    ├── 2026-01-20-queries.csv
+    └── 2026-01-20-insights.csv
+```
+
+**Baseline Format:**
+
+```typescript
+interface Baseline {
+  version: string             // "1.4.0"
+  timestamp: string           // ISO 8601
+  url: string
+  scores: SEOScores
+  dataSources: {
+    crawl: boolean
+    gsc: boolean
+    ga4: boolean
+    backlinks: 'ahrefs' | 'semrush' | 'none'
+  }
+  // Compact summaries for comparison
+  pageCount: number
+  totalImpressions?: number
+  totalClicks?: number
+  avgPosition?: number
+  insights: CorrelationInsight[]
+}
+```
+
+### CrUX API Configuration
+
+Core Web Vitals field data requires a separate API key (not OAuth):
+
+```bash
+# In .env
+CRUX_API_KEY=AIzaSy...          # Google Cloud API key with CrUX API enabled
+```
+
+**Fallback Behavior:**
+
+1. If `CRUX_API_KEY` set → Use CrUX API (real field data)
+2. If not set → Fall back to PageSpeed Insights API (lab data)
+3. If both fail → Show "Core Web Vitals: unavailable" with setup instructions
+
+**Setup Instructions (shown when unavailable):**
+
+```text
+Core Web Vitals data requires a Google Cloud API key:
+1. Go to: https://console.cloud.google.com/apis/credentials
+2. Create an API key
+3. Enable: Chrome UX Report API
+4. Add to .env: CRUX_API_KEY=your-key-here
+```
+
+### GA4 Property ID Format
+
+The `GA4_PROPERTY_ID` environment variable should be the **numeric property ID only**:
+
+```bash
+# Correct
+GA4_PROPERTY_ID=123456789
+
+# Wrong (don't include prefix)
+GA4_PROPERTY_ID=properties/123456789
+```
+
+The client adds the `properties/` prefix automatically:
+
+```typescript
+property: `properties/${process.env.GA4_PROPERTY_ID}`
+```
+
+**Finding Your Property ID:**
+
+1. Open Google Analytics
+2. Go to Admin → Property Settings
+3. Copy the "Property ID" (numeric value)
+
 ---
 
 ## Future Enhancements (v2.1+)
@@ -2602,7 +2861,17 @@ scripts/
 
 ## Revision History
 
+- **2026-01-20 (v1.4):** Spec refinements based on implementation review
+  - Updated cache TTLs: GSC 3 days, GA4 1 day, Backlinks 14 days
+  - Added rate limiting requirements with conservative defaults
+  - Added backlink provider capabilities pattern
+  - Defined baseline storage location: `seo-reports/baselines/YYYY-MM-DD.json`
+  - Improved error state detail requirements for dashboard
+  - Deferred Google Sheets export, prioritized CSV
+  - Documented GA4 Property ID format (numeric, client adds `properties/` prefix)
+  - Added CrUX API key as separate optional credential
+  - Extracted playbook templates to dedicated file
 - **2026-01-20:** Initial specification created
-- **Version:** 1.0.0
+- **Version:** 1.4.0
 - **Author:** Claude Opus 4.5
-- **Status:** Planned
+- **Status:** In Progress (Phases 1-4 complete)

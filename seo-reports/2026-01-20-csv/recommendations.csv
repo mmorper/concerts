@@ -1,0 +1,2 @@
+Category,Title,Impact,Effort,Points,Description,Affected Pages Count,Affected Pages
+strategic,Optimize page load times,Medium,Medium,3,12 pages load in >300ms. Consider CDN optimization or caching improvements.,0,

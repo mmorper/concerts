@@ -46,7 +46,134 @@ export function findCrawlPage(crawlData: PageAnalysis[], url: string): PageAnaly
 }
 
 // ============================================================================
-// Insight Detectors
+// Crawl-Only Insight Detectors
+// ============================================================================
+
+/**
+ * Duplicate Titles: Multiple pages with identical titles
+ */
+function detectDuplicateTitles(crawlData: PageAnalysis[]): CorrelationInsight[] {
+  const insights: CorrelationInsight[] = []
+  const titleMap = new Map<string, string[]>()
+
+  for (const page of crawlData) {
+    if (page.title && page.title.trim()) {
+      const title = page.title.trim()
+      const existing = titleMap.get(title) || []
+      existing.push(page.url)
+      titleMap.set(title, existing)
+    }
+  }
+
+  for (const [title, urls] of titleMap) {
+    if (urls.length > 1) {
+      insights.push({
+        type: 'duplicate_content',
+        severity: 'warning',
+        title: `${urls.length} pages share identical title`,
+        description: `Title "${title.slice(0, 60)}${title.length > 60 ? '...' : ''}" is used on ${urls.length} pages. This can cause keyword cannibalization.`,
+        affectedPages: urls,
+        dataSources: ['crawl'],
+        recommendation:
+          'Give each page a unique, descriptive title. Consider if these pages should be consolidated.',
+        estimatedImpact: 'medium',
+      })
+    }
+  }
+
+  return insights
+}
+
+/**
+ * Missing Schema: Key pages without structured data
+ */
+function detectMissingSchema(crawlData: PageAnalysis[]): CorrelationInsight[] {
+  const insights: CorrelationInsight[] = []
+
+  // Key pages that should have schema
+  const keyPagePatterns = [
+    { pattern: /^\/?$/, type: 'homepage', schema: 'WebSite or Organization' },
+    { pattern: /about/i, type: 'about page', schema: 'Person or Organization' },
+  ]
+
+  for (const page of crawlData) {
+    for (const { pattern, type, schema } of keyPagePatterns) {
+      const path = new URL(page.url, 'https://example.com').pathname
+      if (pattern.test(path) && !page.hasSchema) {
+        insights.push({
+          type: 'missing_schema',
+          severity: 'opportunity',
+          title: `${type.charAt(0).toUpperCase() + type.slice(1)} missing structured data`,
+          description: `${page.url} is a ${type} but has no Schema.org markup. Adding ${schema} schema can improve rich snippets.`,
+          affectedPages: [page.url],
+          dataSources: ['crawl'],
+          recommendation: `Add ${schema} schema to help search engines understand this page's purpose.`,
+          estimatedImpact: 'medium',
+        })
+      }
+    }
+  }
+
+  return insights
+}
+
+/**
+ * Slow Server Response: Pages with high TTFB
+ */
+function detectSlowResponses(crawlData: PageAnalysis[]): CorrelationInsight[] {
+  const insights: CorrelationInsight[] = []
+  const SLOW_THRESHOLD_MS = 500
+
+  const slowPages = crawlData.filter((p) => p.responseTime > SLOW_THRESHOLD_MS)
+
+  if (slowPages.length > 0) {
+    const avgSlow = Math.round(
+      slowPages.reduce((sum, p) => sum + p.responseTime, 0) / slowPages.length
+    )
+
+    insights.push({
+      type: 'slow_response',
+      severity: slowPages.length > 3 ? 'warning' : 'opportunity',
+      title: `${slowPages.length} page${slowPages.length > 1 ? 's' : ''} with slow server response`,
+      description: `${slowPages.length} pages have TTFB > ${SLOW_THRESHOLD_MS}ms (avg: ${avgSlow}ms). Slow server response hurts Core Web Vitals.`,
+      affectedPages: slowPages.map((p) => p.url),
+      dataSources: ['crawl'],
+      recommendation:
+        'Check server performance, caching, and CDN configuration. Consider edge caching for static pages.',
+      estimatedImpact: 'high',
+    })
+  }
+
+  return insights
+}
+
+/**
+ * Missing Canonical: Pages without self-referencing canonical
+ */
+function detectMissingCanonicals(crawlData: PageAnalysis[]): CorrelationInsight[] {
+  const insights: CorrelationInsight[] = []
+
+  const pagesWithoutCanonical = crawlData.filter((p) => !p.hasCanonical)
+
+  if (pagesWithoutCanonical.length > 0) {
+    insights.push({
+      type: 'missing_canonical',
+      severity: 'opportunity',
+      title: `${pagesWithoutCanonical.length} page${pagesWithoutCanonical.length > 1 ? 's' : ''} missing canonical tag`,
+      description: `Pages without canonical tags may be indexed with query parameters or alternate URLs, diluting link equity.`,
+      affectedPages: pagesWithoutCanonical.map((p) => p.url),
+      dataSources: ['crawl'],
+      recommendation:
+        'Add self-referencing <link rel="canonical"> to each page, or implement via Cloudflare Worker.',
+      estimatedImpact: 'low',
+    })
+  }
+
+  return insights
+}
+
+// ============================================================================
+// Cross-Source Insight Detectors
 // ============================================================================
 
 /**
@@ -348,7 +475,13 @@ export function detectInsights(
 ): CorrelationInsight[] {
   const insights: CorrelationInsight[] = []
 
-  // Only run correlations when we have the required data sources
+  // Crawl-only insights (always available)
+  insights.push(...detectDuplicateTitles(crawlData))
+  insights.push(...detectMissingSchema(crawlData))
+  insights.push(...detectSlowResponses(crawlData))
+  insights.push(...detectMissingCanonicals(crawlData))
+
+  // Cross-source insights (require additional data)
 
   if (gscData) {
     insights.push(...detectContentGaps(crawlData, gscData))

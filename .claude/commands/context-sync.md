@@ -34,6 +34,7 @@ Synchronize `.claude/context.md` and `.claude/config.json` with current project 
 | Version line | `package.json` | Read `version` field |
 | Last Sync date | Current date | Today's date |
 | Data stats | `concerts.json` | Count concerts, artists, venues |
+| SEO Status | `seo-reports/*.json` | Latest score and date |
 | Recent Commits | `git log` | Last 10 commits |
 | Last updated footer | Current date | Today's date |
 
@@ -73,6 +74,13 @@ VENUES=$(cat public/data/concerts.json | jq '[.concerts[].venue] | unique | leng
 FIRST_YEAR=$(cat public/data/concerts.json | jq '[.concerts[].year] | min')
 LAST_YEAR=$(cat public/data/concerts.json | jq '[.concerts[].year] | max')
 
+# Get latest SEO score (if baseline exists)
+LATEST_SEO=$(ls -t seo-reports/*-baseline.json 2>/dev/null | head -1)
+if [ -n "$LATEST_SEO" ]; then
+  SEO_SCORE=$(cat "$LATEST_SEO" | jq -r '.scores.overall')
+  SEO_DATE=$(basename "$LATEST_SEO" | sed 's/-baseline.json//')
+fi
+
 # Get last 10 commits
 COMMITS=$(git log -10 --pretty=format:'- `%h` - %s')
 
@@ -101,6 +109,9 @@ Data Stats:
   Total Artists: {TOTAL_ARTISTS} (context.md shows: {OLD_ARTISTS})
   Venues:        {VENUES} (context.md shows: {OLD_VENUES})
   Years:         {FIRST_YEAR}-{LAST_YEAR}
+
+SEO Status:
+  Score:         {SEO_SCORE}/100 (from {SEO_DATE})
 
 Last Sync:
   config.json:   {LAST_SYNC}
@@ -139,6 +150,13 @@ Commits:
 ```markdown
 **Data:** {CONCERTS} concerts ({FIRST_YEAR}-{LAST_YEAR}), {TOTAL_ARTISTS} artists ({HEADLINERS} headliners), {VENUES} venues
 ```
+
+**SEO status (after data stats):**
+```markdown
+**SEO:** {SEO_SCORE}/100 (last analyzed: {SEO_DATE})
+```
+
+Note: Only include SEO line if baseline exists. If no baseline found, omit this line.
 
 **Recent Commits section (line ~152-165):**
 ```markdown
@@ -217,6 +235,7 @@ Summary:
   - Concerts: {CONCERTS}
   - Artists: {TOTAL_ARTISTS} ({HEADLINERS} headliners)
   - Venues: {VENUES}
+  - SEO Score: {SEO_SCORE}/100 (if baseline exists)
   - Last commit: {LAST_COMMIT}
 ```
 

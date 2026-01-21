@@ -75,6 +75,11 @@ export {
   getBacklinkProvider,
   getConfiguredProviderName,
   fetchBacklinkData,
+  getProviderCapabilities,
+  AHREFS_CAPABILITIES,
+  SEMRUSH_CAPABILITIES,
+  type BacklinkProvider,
+  type BacklinkProviderCapabilities,
 } from './clients/backlinks.js'
 
 // Insights
@@ -89,6 +94,29 @@ export {
 // Playbooks
 export { generatePlaybook, generatePlaybooks } from './insights/playbooks.js'
 
+// Playbook Templates (for customization)
+export {
+  TITLE_TEMPLATES,
+  DESCRIPTION_TEMPLATES,
+  CODE_SNIPPETS,
+  FIX_STEPS,
+  VERIFICATION,
+  fillTemplate,
+  getPageType,
+} from './insights/playbook-templates.js'
+
+// Rate Limiting
+export {
+  RateLimiter,
+  RATE_LIMITS,
+  getRateLimiter,
+  withRetry,
+  withRateLimitAndRetry,
+  isRateLimitError,
+  isRetryableError,
+  printRateLimiterStats,
+} from './rate-limiter.js'
+
 // Output Formats
 export {
   generateHtmlReport,
@@ -102,3 +130,24 @@ export {
   canExportToSheets,
   type CSVExport,
 } from './outputs/index.js'
+
+// Interactive Mode
+export {
+  showMainMenu,
+  showPostAnalysisMenu,
+  showExportMenu,
+  displayActionItems,
+  displayPlaybook,
+  displayQuickScore,
+  displayComparison,
+  selectIssue,
+  prompt,
+  promptChoice,
+  pressEnter,
+  closeReadline,
+  buildAnalysisContext,
+  getGrade,
+  getSeverityEmoji,
+  type AnalysisResult,
+  type ComparisonData,
+} from './interactive.js'

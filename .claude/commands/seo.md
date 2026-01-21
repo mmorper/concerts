@@ -2,6 +2,23 @@
 
 Perform deep SEO analysis of the live production site with modern AI-agent optimization scoring.
 
+**Version:** 1.5 (Interactive mode added)
+
+## Two Modes
+
+### Interactive Mode (Default)
+
+Run `/seo` with no flags to get a guided menu experience:
+
+- Choose what to do: full analysis, quick check, compare progress, or export
+- Get action items in plain English after analysis
+- Step-by-step fix instructions for each issue
+- Visual progress comparison to previous runs
+
+### Direct Mode (With Flags)
+
+Use flags for automation, CI/CD, or power users.
+
 ## Inputs
 
 | Argument | Required | Default | Description |
@@ -9,16 +26,86 @@ Perform deep SEO analysis of the live production site with modern AI-agent optim
 | `--baseline` | No | false | Save current results as baseline for future comparison |
 | `--compare` | No | (latest) | Compare to specific baseline report date (YYYY-MM-DD) |
 | `--url` | No | https://concerts.morperhaus.org | Override base URL (for staging) |
-| `--output` | No | both | Output format: `cli`, `md`, or `both` |
+| `--output` | No | both | Output format: `cli`, `md`, `both`, `csv`, or `html` |
+| `--quick` | No | false | Quick score check only (outputs just the number) |
 
 **Examples:**
 ```
-/seo                           # Standard analysis (CLI + MD)
+/seo                           # Interactive mode (guided menu)
 /seo --baseline                # Set current state as target
 /seo --compare 2026-01-15      # Compare to Jan 15 baseline
 /seo --url https://staging.example.com  # Test staging
 /seo --output cli              # Dashboard only, no file
 /seo --output md               # Save report only, no CLI output
+/seo --output csv              # Multi-file CSV export for spreadsheets
+/seo --output html             # Standalone HTML report for sharing
+/seo --quick                   # Just print score (e.g., "91")
+```
+
+---
+
+## Interactive Mode Flow
+
+When you run `/seo` with no flags, you'll see:
+
+```
+═══════════════════════════════════════════════════════════════
+  SEO Analysis Tool
+═══════════════════════════════════════════════════════════════
+
+  What would you like to do?
+
+  [1] Full analysis          Run complete SEO audit with action items
+  [2] Quick score check      Just show the score (fast)
+  [3] Compare progress       See what changed since last run
+  [4] Export for sharing     Generate HTML or CSV report
+  [5] Quit
+
+  Your choice (1-5): _
+```
+
+### After Full Analysis
+
+You'll see your score and a list of issues, then choose:
+
+```
+  ✅ Analysis complete: 91/100 (A Grade - Excellent)
+
+  Found 3 issues to review:
+
+  #1 ⚠️  10 pages share identical title (medium impact)
+  #2 💡 12 pages missing canonical tag (low impact)
+  #3 💡 About page missing structured data (medium impact)
+
+  What next?
+  [1] Show action items for all issues
+  [2] Get detailed help for a specific issue
+  [3] Save report and exit
+  [4] Exit without saving
+```
+
+### Detailed Fix Instructions
+
+Select "Get detailed help" to see step-by-step playbooks:
+
+```
+═══════════════════════════════════════════════════════════════
+  FIX: 10 pages share identical title
+═══════════════════════════════════════════════════════════════
+
+  WHY IT MATTERS
+  Each page needs a unique title for Google to rank it properly.
+
+  HOW TO FIX (4 steps)
+
+  Step 1: Open workers/meta-injector.js
+  Step 2: Add scene-specific titles
+  Step 3: Deploy the Worker
+  Step 4: Verify with curl
+
+  HOW TO VERIFY
+  Where: Google Search Console → Indexing → Pages
+  When: Check in 2-4 weeks
 ```
 
 ---
@@ -598,7 +685,19 @@ Add /about route with:
 ### Directory Structure
 ```
 seo-reports/
-├── 2026-01-19-report.md       # Human-readable report
+├── 2026-01-19-report.md       # Markdown report (default)
+├── 2026-01-19-report.html     # Standalone HTML report (--output html)
+├── 2026-01-19-csv/            # CSV export directory (--output csv)
+│   ├── summary.csv
+│   ├── pages.csv
+│   ├── insights.csv
+│   ├── recommendations.csv
+│   ├── scores.csv
+│   ├── gsc-pages.csv          # If GSC data available
+│   ├── gsc-queries.csv
+│   ├── ga4-pages.csv          # If GA4 data available
+│   ├── ga4-traffic.csv
+│   └── backlinks.csv          # If backlink data available
 ├── 2026-01-19-baseline.json   # Raw data for comparison
 ├── 2026-01-15-report.md
 ├── 2026-01-15-baseline.json

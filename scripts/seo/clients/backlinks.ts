@@ -2,11 +2,49 @@
  * Backlink Provider Interface
  *
  * Defines the common interface for backlink data providers (Ahrefs, SEMrush).
+ * Includes rate limiting with exponential backoff and capability detection.
  */
 
 import { loadCredentials, hasBacklinkCredentials } from '../credentials.js'
 import { readCache, writeCache, hasValidCache } from '../cache.js'
+import { getRateLimiter, withRateLimitAndRetry } from '../rate-limiter.js'
 import type { BacklinkData } from '../types.js'
+
+// Rate limiter for backlink APIs
+const backlinkLimiter = getRateLimiter('backlinks')
+
+// ============================================================================
+// Provider Capabilities
+// ============================================================================
+
+export interface BacklinkProviderCapabilities {
+  supportsDomainRating: boolean // Ahrefs DR
+  supportsAuthorityScore: boolean // SEMrush AS
+  supportsNewLostBacklinks: boolean // Trend data
+  supportsTopReferrers: boolean
+  supportsAnchorText: boolean
+  maxReferrersPerRequest: number // API limit
+}
+
+// Ahrefs capabilities
+export const AHREFS_CAPABILITIES: BacklinkProviderCapabilities = {
+  supportsDomainRating: true,
+  supportsAuthorityScore: false,
+  supportsNewLostBacklinks: true,
+  supportsTopReferrers: true,
+  supportsAnchorText: true,
+  maxReferrersPerRequest: 100,
+}
+
+// SEMrush capabilities
+export const SEMRUSH_CAPABILITIES: BacklinkProviderCapabilities = {
+  supportsDomainRating: false,
+  supportsAuthorityScore: true,
+  supportsNewLostBacklinks: false, // Requires premium tier
+  supportsTopReferrers: true,
+  supportsAnchorText: true,
+  maxReferrersPerRequest: 50,
+}
 
 // ============================================================================
 // Provider Interface
@@ -14,6 +52,7 @@ import type { BacklinkData } from '../types.js'
 
 export interface BacklinkProvider {
   name: 'ahrefs' | 'semrush'
+  capabilities: BacklinkProviderCapabilities
   isConfigured(): boolean
   fetchMetrics(domain: string): Promise<BacklinkData>
 }
@@ -26,6 +65,7 @@ const AHREFS_API_BASE = 'https://api.ahrefs.com/v3'
 
 export class AhrefsProvider implements BacklinkProvider {
   name = 'ahrefs' as const
+  capabilities = AHREFS_CAPABILITIES
   private apiKey: string
 
   constructor(apiKey: string) {
@@ -126,6 +166,7 @@ const SEMRUSH_API_BASE = 'https://api.semrush.com'
 
 export class SEMrushProvider implements BacklinkProvider {
   name = 'semrush' as const
+  capabilities = SEMRUSH_CAPABILITIES
   private apiKey: string
 
   constructor(apiKey: string) {
@@ -309,7 +350,13 @@ export async function fetchBacklinkData(
   console.log(`  🔗 Fetching ${provider.name} backlink data...`)
 
   try {
-    const data = await provider.fetchMetrics(domain)
+    const data = await withRateLimitAndRetry(
+      backlinkLimiter,
+      () => provider.fetchMetrics(domain),
+      (attempt, error, delay) => {
+        console.log(`  ${provider.name} retry ${attempt}: ${error.message} (waiting ${delay}ms)`)
+      }
+    )
 
     // Cache the results
     writeCache(domain, 'backlinks', data)
@@ -322,4 +369,11 @@ export async function fetchBacklinkData(
     console.error(`  ❌ ${provider.name} fetch failed:`, error)
     return null
   }
+}
+
+/**
+ * Get capabilities for a specific provider
+ */
+export function getProviderCapabilities(provider: 'ahrefs' | 'semrush'): BacklinkProviderCapabilities {
+  return provider === 'ahrefs' ? AHREFS_CAPABILITIES : SEMRUSH_CAPABILITIES
 }

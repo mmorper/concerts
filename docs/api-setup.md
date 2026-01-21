@@ -657,6 +657,239 @@ SHEET_RANGE=Sheet1!A2:Z1000
 
 For implementation details and design specifications, see [docs/specs/implemented/upcoming-tour-dates.md](specs/implemented/upcoming-tour-dates.md).
 
+## SEO Tool APIs (v3.7.0+)
+
+The `/seo` command uses Google Search Console and Google Analytics 4 APIs to provide deeper SEO insights. These credentials are **separate** from the Google Sheets credentials above because they require different OAuth scopes.
+
+### Why Separate Credentials?
+
+| API | Scope | Purpose |
+|-----|-------|---------|
+| Google Sheets | `spreadsheets.readonly` | Read concert data from spreadsheet |
+| Search Console | `webmasters.readonly` | SEO performance data (impressions, clicks) |
+| Analytics 4 | `analytics.readonly` | User behavior data (bounce rate, sessions) |
+
+The SEO tool stores credentials in `~/.seo-analyzer/credentials.json` (your home directory), not in `.env`, for security isolation.
+
+### Quick Start: Interactive Setup
+
+The easiest way to configure the SEO tool:
+
+```bash
+npm run seo -- --setup
+```
+
+This launches an interactive wizard that:
+1. Guides you through creating Google Cloud credentials
+2. Opens your browser for OAuth authorization
+3. Saves credentials securely to your home directory
+4. Optionally configures backlink APIs (Ahrefs/SEMrush)
+
+### Manual Setup: Google Search Console & Analytics
+
+If you prefer manual configuration:
+
+#### 1. Create Google Cloud Project
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project (e.g., "SEO Analyzer")
+3. Enable these APIs:
+   - **Search Console API** (not "Webmaster Tools API")
+   - **Google Analytics Data API** (for GA4)
+
+#### 2. Create OAuth Credentials
+
+1. Go to "APIs & Services" → "Credentials"
+2. Click "Create Credentials" → "OAuth client ID"
+3. Configure OAuth consent screen:
+   - User Type: External (or Internal if Google Workspace)
+   - App name: "SEO Analyzer"
+   - Scopes: Add `webmasters.readonly` and `analytics.readonly`
+4. Application type: **Desktop app**
+5. Name: "SEO Analyzer Desktop"
+6. Click "Create" and save the **Client ID** and **Client Secret**
+
+#### 3. Run OAuth Flow
+
+```bash
+npm run seo -- --setup
+```
+
+When prompted:
+1. Enter your Client ID
+2. Enter your Client Secret
+3. Browser opens → Sign in with Google
+4. Authorize the requested scopes
+5. Credentials are saved automatically
+
+#### 4. Verify Access
+
+```bash
+npm run seo
+```
+
+You should see "Google (GSC/GA4): ✅ Configured" in the credential summary.
+
+### Property Mapping
+
+The SEO tool needs to know which GSC property and GA4 property correspond to your site.
+
+**Google Search Console Property:**
+- Find your property URL in [Search Console](https://search.google.com/search-console)
+- Format: `sc-domain:concerts.morperhaus.org` or `https://concerts.morperhaus.org/`
+
+**GA4 Property ID:**
+- Find in [Google Analytics](https://analytics.google.com/) → Admin → Property Settings
+- Use the **numeric ID** (e.g., `123456789`), NOT the Measurement ID (`G-XXXXXX`)
+
+The setup wizard will prompt for these, or add them to `~/.seo-analyzer/credentials.json`:
+
+```json
+{
+  "version": 1,
+  "google": {
+    "clientId": "...",
+    "clientSecret": "...",
+    "refreshToken": "..."
+  },
+  "properties": {
+    "https://concerts.morperhaus.org": {
+      "gscProperty": "sc-domain:concerts.morperhaus.org",
+      "ga4PropertyId": "123456789"
+    }
+  }
+}
+```
+
+### Backlink APIs (Optional)
+
+For backlink analysis, you can optionally configure Ahrefs or SEMrush:
+
+**Ahrefs:**
+1. Get API key from [Ahrefs API](https://ahrefs.com/api)
+2. Requires paid Ahrefs subscription
+3. Add to credentials during `--setup` or manually:
+   ```json
+   {
+     "ahrefs": {
+       "apiKey": "your_ahrefs_api_key"
+     }
+   }
+   ```
+
+**SEMrush:**
+1. Get API key from [SEMrush Developer Portal](https://www.semrush.com/api/)
+2. Requires paid SEMrush subscription
+3. Add to credentials during `--setup` or manually:
+   ```json
+   {
+     "semrush": {
+       "apiKey": "your_semrush_api_key"
+     }
+   }
+   ```
+
+**Note:** Backlink APIs are optional. The SEO tool provides valuable insights with just Google APIs, or even crawl-only mode.
+
+### Environment Variable Alternative
+
+If you prefer environment variables over the credentials file:
+
+```bash
+# Add to .env (NOT committed to git)
+GOOGLE_CLIENT_ID=your_client_id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your_client_secret
+GOOGLE_REFRESH_TOKEN=your_refresh_token
+
+# Optional backlinks
+AHREFS_API_KEY=your_ahrefs_key
+SEMRUSH_API_KEY=your_semrush_key
+```
+
+Environment variables take precedence over the credentials file.
+
+### Credential Priority
+
+The SEO tool checks credentials in this order:
+1. Environment variables (`.env`)
+2. Config file (`~/.seo-analyzer/credentials.json`)
+3. Interactive OAuth flow (prompted if neither exists)
+
+### Running Without Credentials
+
+The SEO tool works without any API credentials in **crawl-only mode**:
+
+```bash
+npm run seo
+# Shows: "Running in crawl-only mode"
+```
+
+This provides:
+- Technical foundation analysis (sitemap, robots.txt)
+- Meta tag analysis
+- Heading structure
+- Response time measurements
+- Basic scoring
+
+You'll miss:
+- Search Console data (impressions, clicks, CTR)
+- Analytics data (bounce rate, sessions)
+- Cross-source correlation insights
+- Backlink analysis
+
+### Data Lag & Caching
+
+**Google Search Console:**
+- Data has 2-3 day lag (Google's limitation)
+- New properties take 2-4 weeks for data
+
+**Google Analytics 4:**
+- Near real-time data
+- Historical data immediately available
+
+**Caching:**
+| Source | Cache TTL | Rationale |
+|--------|-----------|-----------|
+| GSC | 3 days | Matches Google's data lag |
+| GA4 | 1 day | Fresher data available |
+| Backlinks | 14 days | Changes slowly |
+
+### Troubleshooting
+
+**"Google (GSC/GA4): ⬚ Not configured"**
+- Run `npm run seo -- --setup` to configure
+- Or check environment variables are set
+
+**"Failed to refresh access token"**
+- Refresh token may have expired
+- Run `npm run seo -- --setup` to re-authorize
+
+**"Property not found" in GSC**
+- Verify property URL matches exactly
+- Check you have owner/full access in Search Console
+
+**"GA4: Property not found"**
+- Use numeric Property ID, not Measurement ID
+- Verify you have viewer access in Analytics
+
+**"Awaiting data" for new properties**
+- Normal for new Search Console properties
+- Wait 2-4 weeks for data to populate
+
+### Cost
+
+All SEO tool APIs are **free**:
+- Google Search Console API: Free
+- Google Analytics Data API: Free (within quotas)
+- Ahrefs/SEMrush: Requires paid subscription (optional)
+
+### Security Notes
+
+- Credentials stored in `~/.seo-analyzer/` are **outside** your project
+- Never commit credentials to version control
+- The credentials file is automatically excluded from git
+- OAuth tokens auto-refresh, no manual renewal needed
+
 ## Best Practices
 
 1. **Run the pipeline when you've added new concerts** to your Google Sheet

@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO Report - https://concerts.morperhaus.org - 2026-01-20</title>
+  
+<style>
+  :root {
+    --primary: #6366f1;
+    --success: #22c55e;
+    --warning: #eab308;
+    --danger: #ef4444;
+    --bg: #f9fafb;
+    --card: #ffffff;
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 2rem;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  header .meta {
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+
+  .score-hero {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .score-hero .score {
+    font-size: 5rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .score-hero .label {
+    font-size: 1.25rem;
+    opacity: 0.9;
+  }
+
+  .score-hero .confidence {
+    font-size: 0.875rem;
+    opacity: 0.7;
+    margin-top: 0.5rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .card h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .score-bar .label {
+    flex: 1;
+    font-size: 0.875rem;
+  }
+
+  .score-bar .value {
+    font-weight: 600;
+    font-size: 0.875rem;
+    min-width: 60px;
+    text-align: right;
+  }
+
+  .score-bar .bar {
+    width: 100px;
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .score-bar .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  .score-bar .bar-fill.good { background: var(--success); }
+  .score-bar .bar-fill.medium { background: var(--warning); }
+  .score-bar .bar-fill.poor { background: var(--danger); }
+
+  .data-sources {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .data-source {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--card);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .data-source.active { border: 2px solid var(--success); }
+  .data-source.inactive { opacity: 0.5; }
+
+  .insights {
+    margin-bottom: 2rem;
+  }
+
+  .insight {
+    background: var(--card);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--border);
+  }
+
+  .insight.critical { border-left-color: var(--danger); }
+  .insight.warning { border-left-color: var(--warning); }
+  .insight.opportunity { border-left-color: var(--success); }
+
+  .insight h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .insight p {
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .insight .recommendation {
+    background: var(--bg);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .insight .meta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .pages-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .pages-table th,
+  .pages-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.875rem;
+  }
+
+  .pages-table th {
+    background: var(--bg);
+    font-weight: 600;
+  }
+
+  .pages-table tr:hover td {
+    background: var(--bg);
+  }
+
+  .check { color: var(--success); }
+  .x { color: var(--danger); }
+  .warn { color: var(--warning); }
+
+  .playbook {
+    background: var(--card);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .playbook h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .playbook-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .playbook-section h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .playbook-steps {
+    list-style: decimal;
+    margin-left: 1.5rem;
+  }
+
+  .playbook-steps li {
+    margin-bottom: 0.5rem;
+  }
+
+  .code-snippet {
+    background: #1f2937;
+    color: #f9fafb;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 0.8125rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.75rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  @media print {
+    body { padding: 0; }
+    .score-hero { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  }
+</style>
+
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>SEO Analysis Report</h1>
+      <div class="meta">
+        https://concerts.morperhaus.org • 2026-01-20 •
+        12 pages analyzed
+      </div>
+    </header>
+
+    
+    <div class="score-hero">
+      <div class="score">91</div>
+      <div class="label">Overall SEO Score</div>
+      <div class="confidence">60% confidence based on available data sources</div>
+    </div>
+  
+    
+    <div class="data-sources">
+      <div class="data-source active">
+        ✅ Crawl
+      </div>
+      <div class="data-source inactive">
+        ⬜ Google Search Console
+      </div>
+      <div class="data-source inactive">
+        ⬜ Google Analytics 4
+      </div>
+      <div class="data-source inactive">
+        ⬜ Backlinks (none)
+      </div>
+    </div>
+  
+
+    <div class="grid">
+      
+    <div class="card">
+      <h2>📊 Score Breakdown</h2>
+      
+        <div class="score-bar">
+          <span class="label">🔧 Technical Foundation</span>
+          <span class="value">24/25</span>
+          <div class="bar">
+            <div class="bar-fill good"
+                 style="width: 96%"></div>
+          </div>
+        </div>
+      
+        <div class="score-bar">
+          <span class="label">📝 Content Quality</span>
+          <span class="value">26/30</span>
+          <div class="bar">
+            <div class="bar-fill good"
+                 style="width: 86.66666666666667%"></div>
+          </div>
+        </div>
+      
+        <div class="score-bar">
+          <span class="label">🧠 Semantic Intelligence</span>
+          <span class="value">18/20</span>
+          <div class="bar">
+            <div class="bar-fill good"
+                 style="width: 90%"></div>
+          </div>
+        </div>
+      
+        <div class="score-bar">
+          <span class="label">⭐ Authority & Trust</span>
+          <span class="value">14/15</span>
+          <div class="bar">
+            <div class="bar-fill good"
+                 style="width: 93.33333333333333%"></div>
+          </div>
+        </div>
+      
+        <div class="score-bar">
+          <span class="label">👤 User Experience</span>
+          <span class="value">9/10</span>
+          <div class="bar">
+            <div class="bar-fill good"
+                 style="width: 90%"></div>
+          </div>
+        </div>
+      
+        <div class="score-bar">
+          <span class="label">🤖 AI Agent Readiness</span>
+          <span class="value">10/10</span>
+          <div class="bar">
+            <div class="bar-fill good"
+                 style="width: 100%"></div>
+          </div>
+        </div>
+      
+    </div>
+  
+
+      <div class="card">
+        <h2>📅 Analysis Period</h2>
+        <p><strong>From:</strong> 2025-12-23</p>
+        <p><strong>To:</strong> 2026-01-20</p>
+        <p style="margin-top: 1rem;"><strong>Version:</strong> 1.4</p>
+      </div>
+    </div>
+
+    
+    <div class="insights">
+      <h2 style="margin-bottom: 1rem;">🔍 Correlation Insights</h2>
+
+      
+
+      
+        <h3 style="color: var(--warning); margin: 1rem 0 0.5rem;">🟡 Warnings (13)</h3>
+        
+    <div class="insight warning">
+      <h3>🟡 10 pages share identical title</h3>
+      <p>Title &quot;Morperhaus Concert Archives&quot; is used on 10 pages. This can cause keyword cannibalization.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Give each page a unique, descriptive title. Consider if these pages should be consolidated.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl</span>
+        <span>Impact: medium</span>
+        <span>Pages: 10</span>
+      </div>
+    </div>
+  
+    <div class="insight warning">
+      <h3>🟡 Well-structured page has no search visibility</h3>
+      <p>https://concerts.morperhaus.org/ has proper meta tags and schema but received only 0 impressions in the last 28 days.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Check if page is indexed. If indexed, content may not match search intent or faces strong competition.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl + gsc</span>
+        <span>Impact: medium</span>
+        <span>Pages: 1</span>
+      </div>
+    </div>
+  
+    <div class="insight warning">
+      <h3>🟡 Well-structured page has no search visibility</h3>
+      <p>https://concerts.morperhaus.org/?scene=timeline has proper meta tags and schema but received only 0 impressions in the last 28 days.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Check if page is indexed. If indexed, content may not match search intent or faces strong competition.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl + gsc</span>
+        <span>Impact: medium</span>
+        <span>Pages: 1</span>
+      </div>
+    </div>
+  
+    <div class="insight warning">
+      <h3>🟡 Well-structured page has no search visibility</h3>
+      <p>https://concerts.morperhaus.org/?scene=venues has proper meta tags and schema but received only 0 impressions in the last 28 days.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Check if page is indexed. If indexed, content may not match search intent or faces strong competition.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl + gsc</span>
+        <span>Impact: medium</span>
+        <span>Pages: 1</span>
+      </div>
+    </div>
+  
+    <div class="insight warning">
+      <h3>🟡 Well-structured page has no search visibility</h3>
+      <p>https://concerts.morperhaus.org/?scene=geography has proper meta tags and schema but received only 0 impressions in the last 28 days.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Check if page is indexed. If indexed, content may not match search intent or faces strong competition.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl + gsc</span>
+        <span>Impact: medium</span>
+        <span>Pages: 1</span>
+      </div>
+    </div>
+  
+    <div class="insight warning">
+      <h3>🟡 Well-structured page has no search visibility</h3>
+      <p>https://concerts.morperhaus.org/?scene=genres has proper meta tags and schema but received only 0 impressions in the last 28 days.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Check if page is indexed. If indexed, content may not match search intent or faces strong competition.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl + gsc</span>
+        <span>Impact: medium</span>
+        <span>Pages: 1</span>
+      </div>
+    </div>
+  
+    <div class="insight warning">
+      <h3>🟡 Well-structured page has no search visibility</h3>
+      <p>https://concerts.morperhaus.org/?scene=artists has proper meta tags and schema but received only 0 impressions in the last 28 days.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Check if page is indexed. If indexed, content may not match search intent or faces strong competition.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl + gsc</span>
+        <span>Impact: medium</span>
+        <span>Pages: 1</span>
+      </div>
+    </div>
+  
+    <div class="insight warning">
+      <h3>🟡 Well-structured page has no search visibility</h3>
+      <p>https://concerts.morperhaus.org/?scene=artists&amp;artist=depeche-mode has proper meta tags and schema but received only 0 impressions in the last 28 days.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Check if page is indexed. If indexed, content may not match search intent or faces strong competition.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl + gsc</span>
+        <span>Impact: medium</span>
+        <span>Pages: 1</span>
+      </div>
+    </div>
+  
+    <div class="insight warning">
+      <h3>🟡 Well-structured page has no search visibility</h3>
+      <p>https://concerts.morperhaus.org/?scene=artists&amp;artist=nine-inch-nails has proper meta tags and schema but received only 0 impressions in the last 28 days.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Check if page is indexed. If indexed, content may not match search intent or faces strong competition.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl + gsc</span>
+        <span>Impact: medium</span>
+        <span>Pages: 1</span>
+      </div>
+    </div>
+  
+    <div class="insight warning">
+      <h3>🟡 Well-structured page has no search visibility</h3>
+      <p>https://concerts.morperhaus.org/?scene=venues&amp;venue=hollywood-bowl has proper meta tags and schema but received only 0 impressions in the last 28 days.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Check if page is indexed. If indexed, content may not match search intent or faces strong competition.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl + gsc</span>
+        <span>Impact: medium</span>
+        <span>Pages: 1</span>
+      </div>
+    </div>
+  
+    <div class="insight warning">
+      <h3>🟡 Well-structured page has no search visibility</h3>
+      <p>https://concerts.morperhaus.org/?scene=venues&amp;venue=forum has proper meta tags and schema but received only 0 impressions in the last 28 days.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Check if page is indexed. If indexed, content may not match search intent or faces strong competition.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl + gsc</span>
+        <span>Impact: medium</span>
+        <span>Pages: 1</span>
+      </div>
+    </div>
+  
+    <div class="insight warning">
+      <h3>🟡 Well-structured page has no search visibility</h3>
+      <p>https://concerts.morperhaus.org/?scene=genres&amp;genre=industrial has proper meta tags and schema but received only 0 impressions in the last 28 days.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Check if page is indexed. If indexed, content may not match search intent or faces strong competition.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl + gsc</span>
+        <span>Impact: medium</span>
+        <span>Pages: 1</span>
+      </div>
+    </div>
+  
+    <div class="insight warning">
+      <h3>🟡 Well-structured page has no search visibility</h3>
+      <p>https://concerts.morperhaus.org/?scene=geography&amp;region=losangeles has proper meta tags and schema but received only 0 impressions in the last 28 days.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Check if page is indexed. If indexed, content may not match search intent or faces strong competition.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl + gsc</span>
+        <span>Impact: medium</span>
+        <span>Pages: 1</span>
+      </div>
+    </div>
+  
+      
+
+      
+        <h3 style="color: var(--success); margin: 1rem 0 0.5rem;">🟢 Opportunities (1)</h3>
+        
+    <div class="insight opportunity">
+      <h3>🟢 3 pages with slow server response</h3>
+      <p>3 pages have TTFB &gt; 500ms (avg: 521ms). Slow server response hurts Core Web Vitals.</p>
+      <div class="recommendation">
+        <strong>Recommendation:</strong> Check server performance, caching, and CDN configuration. Consider edge caching for static pages.
+      </div>
+      <div class="meta">
+        <span>Sources: crawl</span>
+        <span>Impact: high</span>
+        <span>Pages: 3</span>
+      </div>
+    </div>
+  
+      
+    </div>
+  
+    
+    
+    <div class="card" style="overflow-x: auto;">
+      <h2>📄 Page Analysis</h2>
+      <table class="pages-table">
+        <thead>
+          <tr>
+            <th>Page</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>H1</th>
+            <th>Schema</th>
+            <th>Response</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+              <tr>
+                <td>/</td>
+                <td class="check">27 chars</td>
+                <td class="check">184 chars</td>
+                <td class="x">0</td>
+                <td class="check">✓</td>
+                <td>143ms</td>
+              </tr>
+            
+              <tr>
+                <td>/?scene=timeline</td>
+                <td class="check">27 chars</td>
+                <td class="check">184 chars</td>
+                <td class="x">0</td>
+                <td class="check">✓</td>
+                <td>60ms</td>
+              </tr>
+            
+              <tr>
+                <td>/?scene=venues</td>
+                <td class="check">27 chars</td>
+                <td class="check">184 chars</td>
+                <td class="x">0</td>
+                <td class="check">✓</td>
+                <td>65ms</td>
+              </tr>
+            
+              <tr>
+                <td>/?scene=geography</td>
+                <td class="check">27 chars</td>
+                <td class="check">184 chars</td>
+                <td class="x">0</td>
+                <td class="check">✓</td>
+                <td>76ms</td>
+              </tr>
+            
+              <tr>
+                <td>/?scene=genres</td>
+                <td class="check">27 chars</td>
+                <td class="check">184 chars</td>
+                <td class="x">0</td>
+                <td class="check">✓</td>
+                <td>64ms</td>
+              </tr>
+            
+              <tr>
+                <td>/?scene=artists</td>
+                <td class="check">27 chars</td>
+                <td class="check">184 chars</td>
+                <td class="x">0</td>
+                <td class="check">✓</td>
+                <td>63ms</td>
+              </tr>
+            
+              <tr>
+                <td>/?scene=artists&amp;artist=depeche-mode</td>
+                <td class="check">42 chars</td>
+                <td class="check">94 chars</td>
+                <td class="x">0</td>
+                <td class="check">✓</td>
+                <td>386ms</td>
+              </tr>
+            
+              <tr>
+                <td>/?scene=artists&amp;artist=nine-inch-nails</td>
+                <td class="check">27 chars</td>
+                <td class="check">184 chars</td>
+                <td class="x">0</td>
+                <td class="check">✓</td>
+                <td>514ms</td>
+              </tr>
+            
+              <tr>
+                <td>/?scene=venues&amp;venue=hollywood-bowl</td>
+                <td class="check">44 chars</td>
+                <td class="check">107 chars</td>
+                <td class="x">0</td>
+                <td class="check">✓</td>
+                <td>523ms</td>
+              </tr>
+            
+              <tr>
+                <td>/?scene=venues&amp;venue=forum</td>
+                <td class="check">27 chars</td>
+                <td class="check">184 chars</td>
+                <td class="x">0</td>
+                <td class="check">✓</td>
+                <td>525ms</td>
+              </tr>
+            
+              <tr>
+                <td>/?scene=genres&amp;genre=industrial</td>
+                <td class="check">27 chars</td>
+                <td class="check">184 chars</td>
+                <td class="x">0</td>
+                <td class="check">✓</td>
+                <td>57ms</td>
+              </tr>
+            
+              <tr>
+                <td>/?scene=geography&amp;region=losangeles</td>
+                <td class="check">27 chars</td>
+                <td class="check">184 chars</td>
+                <td class="x">0</td>
+                <td class="check">✓</td>
+                <td>469ms</td>
+              </tr>
+            
+        </tbody>
+      </table>
+    </div>
+  
+
+    <footer>
+      Generated by SEO Tool v1.4 •
+      2026-01-20T23:55:58.556Z
+    </footer>
+  </div>
+</body>
+</html>

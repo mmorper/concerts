@@ -1,18 +1,24 @@
 #!/usr/bin/env tsx
 /**
- * SEO Analysis Script
+ * SEO Analysis Script v1.5
  *
  * Performs comprehensive SEO analysis of the live production site.
- * Generates a detailed report with scoring and actionable recommendations.
+ * Integrates crawl data, GSC, GA4, and backlink APIs with graceful degradation.
+ * Generates detailed reports with scoring, insights, and actionable recommendations.
  *
  * Usage:
- *   npm run seo                      # Standard analysis (both CLI + MD)
- *   npm run seo -- --baseline        # Save baseline
+ *   npm run seo                      # Interactive mode (guided menu)
+ *   npm run seo -- --baseline        # Save baseline for comparison
  *   npm run seo -- --compare DATE    # Compare to baseline
  *   npm run seo -- --url URL         # Analyze custom URL
  *   npm run seo -- --output cli      # CLI dashboard only
  *   npm run seo -- --output md       # Markdown report only
- *   npm run seo -- --output both     # Both (default)
+ *   npm run seo -- --output both     # CLI + Markdown (default)
+ *   npm run seo -- --output csv      # CSV export (multiple files)
+ *   npm run seo -- --output html     # Standalone HTML report
+ *   npm run seo -- --quick           # Quick score check only
+ *
+ * Interactive mode runs when no flags are provided in a TTY terminal.
  *
  * See: .claude/commands/seo.md for full documentation
  */
@@ -20,6 +26,57 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import {
+  isGSCConfigured,
+  fetchGSCData,
+  formatGSCSummary,
+  type GSCStatus,
+} from './seo/clients/gsc-simple.js'
+import {
+  isGA4Configured,
+  fetchGA4Data,
+  formatGA4Summary,
+  type GA4Status,
+} from './seo/clients/ga4-simple.js'
+import {
+  isBacklinksConfigured,
+  fetchBacklinkData,
+  formatBacklinkSummary,
+  type BacklinkStatus,
+} from './seo/clients/backlinks-simple.js'
+import {
+  detectInsights,
+  countInsightsBySeverity,
+  calculateConfidence,
+} from './seo/insights/engine.js'
+import { generatePlaybook } from './seo/insights/playbooks.js'
+import {
+  generateAllCSV,
+  generateHtmlReport,
+} from './seo/outputs/index.js'
+import {
+  showMainMenu,
+  showPostAnalysisMenu,
+  showExportMenu,
+  displayActionItems,
+  displayPlaybook,
+  displayQuickScore,
+  displayComparison,
+  selectIssue,
+  pressEnter,
+  closeReadline,
+  buildAnalysisContext,
+  type AnalysisResult,
+  type ComparisonData,
+} from './seo/interactive.js'
+import type {
+  GSCData,
+  GA4Data,
+  BacklinkData,
+  CorrelationInsight,
+  PageAnalysis as FullPageAnalysis,
+  SiteStats,
+} from './seo/types.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -27,7 +84,7 @@ const __dirname = path.dirname(__filename)
 // Configuration
 const DEFAULT_URL = 'https://concerts.morperhaus.org'
 const REPORTS_DIR = path.join(process.cwd(), 'seo-reports')
-const VERSION = '1.1'
+const VERSION = '1.5'
 const USER_AGENTS = {
   googlebot: 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
   human: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
@@ -60,10 +117,24 @@ interface SEOReport {
     url: string
     pagesAnalyzed: number
     version: string
+    dataSources: {
+      crawl: boolean
+      gsc: boolean
+      ga4: boolean
+      backlinks: 'ahrefs' | 'semrush' | null
+    }
+    confidence: number
   }
   scores: SEOScore
   pages: PageAnalysis[]
   checks: Record<string, any>
+  gscData?: GSCData | null
+  gscStatus?: GSCStatus
+  ga4Data?: GA4Data | null
+  ga4Status?: GA4Status
+  backlinkData?: BacklinkData | null
+  backlinkStatus?: BacklinkStatus
+  insights: CorrelationInsight[]
   recommendations: Array<{
     category: string
     title: string
@@ -77,11 +148,18 @@ interface SEOReport {
 // Parse command line arguments
 function parseArgs() {
   const args = process.argv.slice(2)
+
+  // Check if any flags provided - if not and in TTY, use interactive mode
+  const hasFlags = args.some((a) => a.startsWith('--'))
+  const isTTY = process.stdin.isTTY && process.stdout.isTTY
+
   return {
+    interactive: !hasFlags && isTTY,
     baseline: args.includes('--baseline'),
     compare: args.includes('--compare') ? args[args.indexOf('--compare') + 1] : null,
     url: args.includes('--url') ? args[args.indexOf('--url') + 1] : DEFAULT_URL,
-    output: args.includes('--output') ? args[args.indexOf('--output') + 1] : 'both', // cli, md, both
+    output: args.includes('--output') ? args[args.indexOf('--output') + 1] : 'both', // cli, md, both, csv, html
+    quick: args.includes('--quick'),
   }
 }
 
@@ -507,15 +585,16 @@ function progressBar(score: number, max: number, width: number = 10): string {
 
 // Generate markdown dashboard
 function generateDashboard(report: SEOReport): string {
-  const { scores, metadata } = report
+  const { scores, metadata, gscData, gscStatus, ga4Data, ga4Status, backlinkData, backlinkStatus } = report
 
   let md = '```\n'
   md += '═══════════════════════════════════════════════════════════════\n'
   md += '                    SEO ANALYSIS DASHBOARD\n'
   md += '═══════════════════════════════════════════════════════════════\n'
   md += `Site: ${metadata.url}\n`
-  md += `Date: ${metadata.date}\n`
+  md += `Date: ${metadata.date}  |  Version: ${metadata.version}\n`
   md += `Pages Analyzed: ${metadata.pagesAnalyzed}\n`
+  md += `Data Sources: Crawl${metadata.dataSources.gsc ? ' + GSC' : ''}${metadata.dataSources.ga4 ? ' + GA4' : ''}${metadata.dataSources.backlinks ? ` + ${metadata.dataSources.backlinks}` : ''}\n`
   md += '═══════════════════════════════════════════════════════════════\n\n'
   md += `OVERALL SCORE: ${scores.overall}/100 ${scores.overall >= 90 ? '🟢' : scores.overall >= 70 ? '🟡' : '🔴'}\n\n`
   md += 'Category Breakdown:\n'
@@ -526,6 +605,59 @@ function generateDashboard(report: SEOReport): string {
   md += `⭐ Authority & Trust           ${formatScore(scores.authority, 15).padEnd(20)} ${progressBar(scores.authority, 15)}\n`
   md += `👤 User Experience              ${formatScore(scores.ux, 10).padEnd(20)} ${progressBar(scores.ux, 10)}\n`
   md += `🤖 AI Agent Readiness           ${formatScore(scores.aiReadiness, 10).padEnd(20)} ${progressBar(scores.aiReadiness, 10)}\n\n`
+
+  // GSC Summary
+  if (gscStatus) {
+    md += '─────────────────────────────────────────────────────────────\n'
+    md += 'Google Search Console:\n'
+    if (!gscStatus.configured) {
+      md += '  ⬚ Not configured (run scripts/seo/reauthorize.ts to set up)\n'
+    } else if (!gscStatus.hasData) {
+      md += '  ⏳ Configured, awaiting data\n'
+      if (gscStatus.dataAge) {
+        md += `     ${gscStatus.dataAge}\n`
+      }
+    } else if (gscData) {
+      const totalClicks = gscData.pages.reduce((sum, p) => sum + p.clicks, 0)
+      const totalImpressions = gscData.pages.reduce((sum, p) => sum + p.impressions, 0)
+      md += `  ✅ ${gscData.pages.length} pages tracked\n`
+      md += `     ${totalClicks} clicks | ${totalImpressions} impressions\n`
+      md += `     Period: ${gscData.dateRange.start} to ${gscData.dateRange.end}\n`
+    }
+  }
+
+  // GA4 Summary
+  if (ga4Status) {
+    md += '\nGoogle Analytics 4:\n'
+    if (!ga4Status.configured) {
+      md += '  ⬚ Not configured\n'
+    } else if (!ga4Status.hasPropertyId) {
+      md += '  ⬚ Property ID not set (add GA4_PROPERTY_ID to .env)\n'
+    } else if (!ga4Status.hasData) {
+      md += `  ⏳ ${ga4Status.message}\n`
+    } else if (ga4Data) {
+      const { overview } = ga4Data
+      const bouncePercent = (overview.bounceRate * 100).toFixed(1)
+      md += `  ✅ ${overview.sessions} sessions | ${overview.users} users\n`
+      md += `     Bounce: ${bouncePercent}% | Pages/session: ${overview.pagesPerSession.toFixed(1)}\n`
+    }
+  }
+
+  // Backlinks Summary
+  if (backlinkStatus) {
+    md += '\nBacklinks:\n'
+    if (!backlinkStatus.configured) {
+      md += '  ⬚ Not configured (add AHREFS_API_KEY or SEMRUSH_API_KEY to .env)\n'
+    } else if (!backlinkStatus.hasData) {
+      md += `  ⏳ ${backlinkStatus.message}\n`
+    } else if (backlinkData) {
+      const authority = backlinkData.metrics.domainRating ?? backlinkData.metrics.authorityScore ?? 0
+      const authorityLabel = backlinkData.provider === 'ahrefs' ? 'DR' : 'AS'
+      md += `  ✅ ${backlinkData.provider}: ${authorityLabel} ${authority}\n`
+      md += `     ${backlinkData.metrics.referringDomains} referring domains | ${backlinkData.metrics.totalBacklinks} backlinks\n`
+    }
+  }
+
   md += '═══════════════════════════════════════════════════════════════\n'
   md += '```\n\n'
 
@@ -628,6 +760,116 @@ function saveBaseline(report: SEOReport, filename: string) {
   console.log(`📊 Baseline saved: ${filepath}`)
 }
 
+// Save CSV export (multiple files)
+function saveCSVExport(report: SEOReport, dateStr: string) {
+  // Convert to full SEOReport format for CSV generator
+  const fullReport = convertToFullReport(report)
+  const csvExport = generateAllCSV(fullReport)
+
+  // Create CSV directory
+  const csvDir = path.join(REPORTS_DIR, `${dateStr}-csv`)
+  if (!fs.existsSync(csvDir)) {
+    fs.mkdirSync(csvDir, { recursive: true })
+  }
+
+  // Write each CSV file
+  fs.writeFileSync(path.join(csvDir, 'summary.csv'), csvExport.summary, 'utf-8')
+  fs.writeFileSync(path.join(csvDir, 'pages.csv'), csvExport.pages, 'utf-8')
+  fs.writeFileSync(path.join(csvDir, 'insights.csv'), csvExport.insights, 'utf-8')
+  fs.writeFileSync(path.join(csvDir, 'recommendations.csv'), csvExport.recommendations, 'utf-8')
+  fs.writeFileSync(path.join(csvDir, 'scores.csv'), csvExport.scores, 'utf-8')
+
+  if (csvExport.gscPages) {
+    fs.writeFileSync(path.join(csvDir, 'gsc-pages.csv'), csvExport.gscPages, 'utf-8')
+  }
+  if (csvExport.gscQueries) {
+    fs.writeFileSync(path.join(csvDir, 'gsc-queries.csv'), csvExport.gscQueries, 'utf-8')
+  }
+  if (csvExport.ga4Pages) {
+    fs.writeFileSync(path.join(csvDir, 'ga4-pages.csv'), csvExport.ga4Pages, 'utf-8')
+  }
+  if (csvExport.ga4Traffic) {
+    fs.writeFileSync(path.join(csvDir, 'ga4-traffic.csv'), csvExport.ga4Traffic, 'utf-8')
+  }
+  if (csvExport.backlinks) {
+    fs.writeFileSync(path.join(csvDir, 'backlinks.csv'), csvExport.backlinks, 'utf-8')
+  }
+
+  console.log(`📊 CSV export saved: ${csvDir}/`)
+}
+
+// Save HTML report
+function saveHTMLReport(report: SEOReport, dateStr: string) {
+  const fullReport = convertToFullReport(report)
+  const html = generateHtmlReport(fullReport)
+  const filepath = path.join(REPORTS_DIR, `${dateStr}-report.html`)
+  fs.writeFileSync(filepath, html, 'utf-8')
+  console.log(`🌐 HTML report saved: ${filepath}`)
+}
+
+// Convert local SEOReport to full types.ts SEOReport format
+function convertToFullReport(report: SEOReport): import('./seo/types.js').SEOReport {
+  const fullPages: FullPageAnalysis[] = report.pages.map((p) => ({
+    url: p.url,
+    title: p.title,
+    titleLength: p.title?.length || 0,
+    description: p.description,
+    descriptionLength: p.description?.length || 0,
+    h1Count: p.h1Count,
+    h1Text: null,
+    hasSchema: p.hasSchema,
+    schemaTypes: [],
+    hasOG: p.hasOG,
+    hasCanonical: true,
+    canonicalUrl: p.url,
+    responseTime: p.responseTime,
+    htmlSize: p.htmlSize,
+    wordCount: 0,
+    internalLinks: 0,
+    externalLinks: 0,
+    images: { total: 0, withAlt: 0, missingAlt: 0, lazyLoaded: 0 },
+  }))
+
+  return {
+    metadata: {
+      date: report.metadata.date,
+      url: report.metadata.url,
+      pagesAnalyzed: report.metadata.pagesAnalyzed,
+      version: report.metadata.version,
+      dataSources: {
+        crawl: report.metadata.dataSources.crawl,
+        gsc: report.metadata.dataSources.gsc,
+        ga4: report.metadata.dataSources.ga4,
+        backlinks: report.metadata.dataSources.backlinks || 'none',
+      },
+      dateRange: {
+        start: new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        end: report.metadata.date,
+      },
+      confidence: report.metadata.confidence,
+    },
+    scores: {
+      ...report.scores,
+      confidence: report.metadata.confidence,
+    },
+    crawlData: fullPages,
+    gscData: report.gscData || undefined,
+    ga4Data: report.ga4Data || undefined,
+    backlinkData: report.backlinkData || undefined,
+    insights: report.insights,
+    playbooks: [],
+    recommendations: report.recommendations.map((r) => ({
+      category: r.category as 'quick-win' | 'strategic' | 'optional',
+      title: r.title,
+      impact: r.impact as 'high' | 'medium' | 'low',
+      effort: r.effort as 'low' | 'medium' | 'high',
+      points: r.points,
+      description: r.description,
+    })),
+    checks: report.checks,
+  }
+}
+
 // Load baseline for comparison
 function loadBaseline(date: string): SEOReport | null {
   const filepath = path.join(REPORTS_DIR, `${date}-baseline.json`)
@@ -713,6 +955,65 @@ async function analyzeSEO() {
   }
   console.log()
 
+  // Check Google Search Console and Google Analytics
+  console.log('📊 Checking data sources...')
+
+  // GSC
+  let gscData: GSCData | null = null
+  let gscStatus: GSCStatus
+
+  if (isGSCConfigured()) {
+    const gscResult = await fetchGSCData(options.url)
+    gscData = gscResult.data
+    gscStatus = gscResult.status
+  } else {
+    gscStatus = {
+      configured: false,
+      hasData: false,
+      message: 'GSC not configured',
+    }
+  }
+
+  // GA4
+  let ga4Data: GA4Data | null = null
+  let ga4Status: GA4Status
+
+  if (isGA4Configured()) {
+    const ga4Result = await fetchGA4Data(options.url)
+    ga4Data = ga4Result.data
+    ga4Status = ga4Result.status
+  } else {
+    ga4Status = {
+      configured: false,
+      hasPropertyId: false,
+      hasData: false,
+      message: 'GA4 not configured',
+    }
+  }
+
+  // Backlinks
+  let backlinkData: BacklinkData | null = null
+  let backlinkStatus: BacklinkStatus
+
+  if (isBacklinksConfigured()) {
+    const backlinkResult = await fetchBacklinkData(options.url)
+    backlinkData = backlinkResult.data
+    backlinkStatus = backlinkResult.status
+  } else {
+    backlinkStatus = {
+      configured: false,
+      provider: null,
+      hasData: false,
+      message: 'Backlinks not configured',
+    }
+  }
+
+  // Display data source status
+  formatGSCSummary(gscStatus, gscData).forEach((line) => console.log(line))
+  formatGA4Summary(ga4Status, ga4Data).forEach((line) => console.log(line))
+  formatBacklinkSummary(backlinkStatus, backlinkData).forEach((line) => console.log(line))
+  console.log()
+
   // Crawl pages
   const pages = await crawlPages(options.url)
 
@@ -742,6 +1043,53 @@ async function analyzeSEO() {
   // Generate recommendations
   const recommendations = generateRecommendations(scores, pages, checks)
 
+  // Convert pages to full format for insights engine
+  const fullPages: FullPageAnalysis[] = pages.map((p) => ({
+    url: p.url,
+    title: p.title,
+    titleLength: p.title?.length || 0,
+    description: p.description,
+    descriptionLength: p.description?.length || 0,
+    h1Count: p.h1Count,
+    h1Text: null,
+    hasSchema: p.hasSchema,
+    schemaTypes: [],
+    hasOG: p.hasOG,
+    hasCanonical: true, // Assume CF Worker adds canonical
+    canonicalUrl: p.url,
+    responseTime: p.responseTime,
+    htmlSize: p.htmlSize,
+    wordCount: 0,
+    internalLinks: 0,
+    externalLinks: 0,
+    images: { total: 0, withAlt: 0, missingAlt: 0, lazyLoaded: 0 },
+  }))
+
+  // Detect insights from available data
+  const insights = detectInsights(
+    fullPages,
+    gscData || undefined,
+    ga4Data || undefined,
+    backlinkData || undefined
+  )
+
+  // Calculate confidence based on available data sources
+  const confidence = calculateConfidence(
+    gscStatus.hasData,
+    ga4Status.hasData,
+    backlinkStatus.hasData
+  )
+
+  // Log insights summary
+  if (insights.length > 0) {
+    const counts = countInsightsBySeverity(insights)
+    console.log(`💡 Insights detected: ${insights.length}`)
+    if (counts.critical > 0) console.log(`   🔴 Critical: ${counts.critical}`)
+    if (counts.warning > 0) console.log(`   🟡 Warning: ${counts.warning}`)
+    if (counts.opportunity > 0) console.log(`   🟢 Opportunity: ${counts.opportunity}`)
+    console.log()
+  }
+
   // Build report
   const report: SEOReport = {
     metadata: {
@@ -749,10 +1097,24 @@ async function analyzeSEO() {
       url: options.url,
       pagesAnalyzed: pages.length,
       version: VERSION,
+      dataSources: {
+        crawl: true,
+        gsc: gscStatus.hasData,
+        ga4: ga4Status.hasData,
+        backlinks: backlinkStatus.hasData ? backlinkStatus.provider : null,
+      },
+      confidence,
     },
     scores,
     pages,
     checks,
+    gscData,
+    gscStatus,
+    ga4Data,
+    ga4Status,
+    backlinkData,
+    backlinkStatus,
+    insights,
     recommendations,
   }
 
@@ -761,6 +1123,8 @@ async function analyzeSEO() {
   // Handle output based on format
   const outputCLI = options.output === 'cli' || options.output === 'both'
   const outputMD = options.output === 'md' || options.output === 'both'
+  const outputCSV = options.output === 'csv'
+  const outputHTML = options.output === 'html'
 
   // Display dashboard to CLI
   if (outputCLI) {
@@ -770,6 +1134,16 @@ async function analyzeSEO() {
   // Save markdown report
   if (outputMD) {
     saveReport(report, `${dateStr}-report.md`)
+  }
+
+  // Save CSV export
+  if (outputCSV) {
+    saveCSVExport(report, dateStr)
+  }
+
+  // Save HTML report
+  if (outputHTML) {
+    saveHTMLReport(report, dateStr)
   }
 
   // Save baseline if requested
@@ -806,10 +1180,315 @@ async function analyzeSEO() {
   } else {
     console.log(`\n💡 Tip: Use --output md or --output both to save a detailed report\n`)
   }
+
+  return report
 }
 
-// Run analysis
-analyzeSEO().catch((error) => {
+// ============================================================================
+// Interactive Mode
+// ============================================================================
+
+async function runInteractiveMode() {
+  const options = parseArgs()
+
+  while (true) {
+    const choice = await showMainMenu()
+
+    switch (choice) {
+      case 'full':
+        await runFullAnalysisInteractive(options.url)
+        break
+
+      case 'quick':
+        await runQuickScoreInteractive(options.url)
+        break
+
+      case 'compare':
+        await runCompareInteractive(options.url)
+        break
+
+      case 'export':
+        await runExportInteractive(options.url)
+        break
+
+      case 'quit':
+        console.log('\n  Goodbye!\n')
+        closeReadline()
+        return
+    }
+  }
+}
+
+async function runFullAnalysisInteractive(_url: string) {
+  console.log('\n  Running full analysis...\n')
+
+  // Run the analysis with CLI output
+  const report = await analyzeSEO()
+  if (!report) return
+
+  // Build context for playbooks
+  const siteStats = await getSiteStats()
+  const context = buildAnalysisContext(
+    report.pages.map(p => ({
+      url: p.url,
+      title: p.title,
+      titleLength: p.title?.length || 0,
+      description: p.description,
+      descriptionLength: p.description?.length || 0,
+      h1Count: p.h1Count,
+      h1Text: null,
+      hasSchema: p.hasSchema,
+      schemaTypes: [],
+      hasOG: p.hasOG,
+      hasCanonical: true,
+      canonicalUrl: p.url,
+      responseTime: p.responseTime,
+      htmlSize: p.htmlSize,
+      wordCount: 0,
+      internalLinks: 0,
+      externalLinks: 0,
+      images: { total: 0, withAlt: 0, missingAlt: 0, lazyLoaded: 0 },
+    })),
+    report.gscData,
+    report.ga4Data,
+    report.backlinkData,
+    siteStats
+  )
+
+  // Interactive post-analysis loop
+  while (true) {
+    const analysisResult: AnalysisResult = {
+      score: report.scores.overall,
+      insights: report.insights,
+      context,
+      dateStr: report.metadata.date,
+    }
+
+    const postChoice = await showPostAnalysisMenu(analysisResult)
+
+    switch (postChoice) {
+      case 'action-items':
+        displayActionItems(report.insights)
+        await pressEnter('\n  Press Enter to continue...')
+        break
+
+      case 'fix-issue':
+        if (report.insights.length === 0) {
+          console.log('\n  No issues to fix!\n')
+          await pressEnter()
+          break
+        }
+        const issueIndex = await selectIssue(report.insights)
+        if (issueIndex >= 0 && issueIndex < report.insights.length) {
+          const playbook = generatePlaybook(report.insights[issueIndex], context)
+          displayPlaybook(playbook)
+          await pressEnter('\n  Press Enter to continue...')
+        }
+        break
+
+      case 'save':
+        const dateStr = report.metadata.date
+        saveReport(report, `${dateStr}-report.md`)
+        saveBaseline(report, `${dateStr}-baseline.json`)
+        console.log(`\n  ✅ Report saved: seo-reports/${dateStr}-report.md`)
+        console.log(`  ✅ Baseline saved: seo-reports/${dateStr}-baseline.json\n`)
+        await pressEnter()
+        return
+
+      case 'done':
+        return
+    }
+  }
+}
+
+async function runQuickScoreInteractive(url: string) {
+  console.log('\n  Checking score...\n')
+
+  // Quick connectivity check
+  try {
+    await fetch(url)
+  } catch {
+    console.log(`  ❌ Cannot reach ${url}\n`)
+    await pressEnter()
+    return
+  }
+
+  // Run minimal analysis
+  const pages = await crawlPages(url)
+  const checks = {
+    hasSitemap: await checkSitemap(url),
+    hasRobotsTxt: await checkRobotsTxt(url),
+    hasLlmTxt: await checkLlmTxt(url),
+    hasFactsJson: await checkFactsJson(url),
+    hasRssFeed: await checkRssFeed(url),
+    aboutPage: await checkAboutPage(url),
+    avgResponseTime: pages.reduce((sum, p) => sum + p.responseTime, 0) / pages.length,
+  }
+
+  const scores = calculateScores(pages, checks)
+  displayQuickScore(scores.overall, url)
+  await pressEnter()
+}
+
+async function runCompareInteractive(_url: string) {
+  // Find available baselines
+  const baselineFiles = fs.readdirSync(REPORTS_DIR)
+    .filter(f => f.endsWith('-baseline.json'))
+    .sort()
+    .reverse()
+
+  if (baselineFiles.length === 0) {
+    console.log('\n  No baselines found. Run a full analysis first and save it.\n')
+    await pressEnter()
+    return
+  }
+
+  console.log('\n  Available baselines:\n')
+  baselineFiles.slice(0, 5).forEach((f, i) => {
+    const date = f.replace('-baseline.json', '')
+    console.log(`  [${i + 1}] ${date}`)
+  })
+  console.log()
+
+  const { promptChoice } = await import('./seo/interactive.js')
+  const choice = await promptChoice(`  Compare to which baseline (1-${Math.min(baselineFiles.length, 5)}): `, Math.min(baselineFiles.length, 5))
+
+  if (choice < 1) return
+
+  const baselineFile = baselineFiles[choice - 1]
+  const baselineDate = baselineFile.replace('-baseline.json', '')
+
+  console.log(`\n  Running current analysis to compare...\n`)
+
+  // Run current analysis (silently)
+  const currentReport = await analyzeSEO()
+  if (!currentReport) return
+
+  // Load baseline
+  const baseline = loadBaseline(baselineDate)
+  if (!baseline) {
+    console.log(`\n  Could not load baseline from ${baselineDate}\n`)
+    await pressEnter()
+    return
+  }
+
+  // Display comparison
+  const comparisonData: ComparisonData = {
+    current: {
+      score: currentReport.scores.overall,
+      date: currentReport.metadata.date,
+      insights: currentReport.insights,
+    },
+    baseline: {
+      score: baseline.scores.overall,
+      date: baseline.metadata.date,
+      insights: baseline.insights || [],
+    },
+  }
+
+  displayComparison(comparisonData)
+  await pressEnter()
+}
+
+async function runExportInteractive(_url: string) {
+  const exportChoice = await showExportMenu()
+
+  if (exportChoice === 'back') return
+
+  console.log('\n  Running analysis for export...\n')
+
+  // Run analysis
+  const report = await analyzeSEO()
+  if (!report) return
+
+  const dateStr = report.metadata.date
+
+  switch (exportChoice) {
+    case 'html':
+      saveHTMLReport(report, dateStr)
+      console.log(`\n  ✅ HTML report saved: seo-reports/${dateStr}-report.html`)
+      console.log(`  Open in browser to view.\n`)
+      break
+
+    case 'csv':
+      saveCSVExport(report, dateStr)
+      console.log(`\n  ✅ CSV export saved: seo-reports/${dateStr}-csv/`)
+      console.log(`  Import into Google Sheets or Excel.\n`)
+      break
+
+    case 'md':
+      saveReport(report, `${dateStr}-report.md`)
+      console.log(`\n  ✅ Markdown report saved: seo-reports/${dateStr}-report.md\n`)
+      break
+  }
+
+  await pressEnter()
+}
+
+// Helper to get site stats for playbook context
+async function getSiteStats(): Promise<SiteStats> {
+  try {
+    const concertsPath = path.join(process.cwd(), 'public/data/concerts.json')
+    const data = JSON.parse(fs.readFileSync(concertsPath, 'utf-8'))
+    const concerts = data.concerts || []
+
+    const artists = new Set(concerts.map((c: any) => c.headlinerNormalized))
+    const venues = new Set(concerts.map((c: any) => c.venueNormalized))
+    const cities = new Set(concerts.map((c: any) => c.city))
+    const years = concerts.map((c: any) => c.year).filter(Boolean)
+
+    return {
+      concertCount: concerts.length,
+      artistCount: artists.size,
+      venueCount: venues.size,
+      cityCount: cities.size,
+      firstYear: Math.min(...years),
+      yearSpan: Math.max(...years) - Math.min(...years),
+    }
+  } catch {
+    return {
+      concertCount: 0,
+      artistCount: 0,
+      venueCount: 0,
+      cityCount: 0,
+      firstYear: 2000,
+      yearSpan: 0,
+    }
+  }
+}
+
+// ============================================================================
+// Main Entry Point
+// ============================================================================
+
+async function main() {
+  const options = parseArgs()
+
+  if (options.interactive) {
+    await runInteractiveMode()
+  } else if (options.quick) {
+    // Quick mode - just show score
+    const pages = await crawlPages(options.url)
+    const checks = {
+      hasSitemap: await checkSitemap(options.url),
+      hasRobotsTxt: await checkRobotsTxt(options.url),
+      hasLlmTxt: await checkLlmTxt(options.url),
+      hasFactsJson: await checkFactsJson(options.url),
+      hasRssFeed: await checkRssFeed(options.url),
+      aboutPage: await checkAboutPage(options.url),
+      avgResponseTime: pages.reduce((sum, p) => sum + p.responseTime, 0) / pages.length,
+    }
+    const scores = calculateScores(pages, checks)
+    console.log(scores.overall)
+  } else {
+    // Direct mode with flags
+    await analyzeSEO()
+  }
+}
+
+// Run
+main().catch((error) => {
   console.error('❌ Analysis failed:', error)
+  closeReadline()
   process.exit(1)
 })

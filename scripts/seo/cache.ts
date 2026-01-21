@@ -16,11 +16,17 @@ import type { CacheEntry, CacheMetadata } from './types.js'
 const DEFAULT_CACHE_DIR = path.join(os.homedir(), '.seo-analyzer', 'cache')
 
 // TTL defaults (in days)
+// Rationale:
+// - crawl: Pages change frequently during development
+// - gsc: Data is 2-3 days delayed, balance freshness vs API calls
+// - ga4: Near real-time data, stale quickly
+// - backlinks: Changes slowly, API costs money
+// - baseline: Historical comparison data
 const DEFAULT_TTL = {
-  crawl: 1, // 24 hours
-  gsc: 7, // 7 days (data is 2-3 days delayed anyway)
-  ga4: 7, // 7 days
-  backlinks: 7, // 7 days
+  crawl: 1, // 1 day
+  gsc: 3, // 3 days (data is 2-3 days delayed anyway)
+  ga4: 1, // 1 day (near real-time data)
+  backlinks: 14, // 14 days (changes slowly)
   baseline: 90, // 90 days for historical comparison
 }
 
