@@ -2,45 +2,45 @@
 
 Perform deep SEO analysis of the live production site with modern AI-agent optimization scoring.
 
-**Version:** 1.5 (Interactive mode added)
+**Version:** 1.5
 
-## Two Modes
+## How This Command Works
 
-### Interactive Mode (Default)
+This is a **Claude Code slash command**. When you run `/seo`, Claude executes `npm run seo` and interprets the results conversationally.
 
-Run `/seo` with no flags to get a guided menu experience:
-
-- Choose what to do: full analysis, quick check, compare progress, or export
-- Get action items in plain English after analysis
-- Step-by-step fix instructions for each issue
-- Visual progress comparison to previous runs
-
-### Direct Mode (With Flags)
-
-Use flags for automation, CI/CD, or power users.
-
-## Inputs
-
-| Argument | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `--baseline` | No | false | Save current results as baseline for future comparison |
-| `--compare` | No | (latest) | Compare to specific baseline report date (YYYY-MM-DD) |
-| `--url` | No | https://concerts.morperhaus.org | Override base URL (for staging) |
-| `--output` | No | both | Output format: `cli`, `md`, `both`, `csv`, or `html` |
-| `--quick` | No | false | Quick score check only (outputs just the number) |
-
-**Examples:**
+**Slash command (in Claude Code):**
+```text
+/seo
 ```
-/seo                           # Interactive mode (guided menu)
-/seo --baseline                # Set current state as target
-/seo --compare 2026-01-15      # Compare to Jan 15 baseline
-/seo --url https://staging.example.com  # Test staging
-/seo --output cli              # Dashboard only, no file
-/seo --output md               # Save report only, no CLI output
-/seo --output csv              # Multi-file CSV export for spreadsheets
-/seo --output html             # Standalone HTML report for sharing
-/seo --quick                   # Just print score (e.g., "91")
+
+**Equivalent CLI (in terminal):**
+```bash
+npm run seo
 ```
+
+## CLI Flags
+
+When running via `npm run seo`, you can pass flags:
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--baseline` | false | Save current results as baseline for future comparison |
+| `--compare DATE` | (none) | Compare to specific baseline (YYYY-MM-DD) |
+| `--url URL` | production | Override base URL (for staging) |
+| `--output FORMAT` | both | Output: `cli`, `md`, `both`, `csv`, or `html` |
+| `--quick` | false | Quick score check only |
+
+**CLI Examples:**
+```bash
+npm run seo                              # Interactive menu mode
+npm run seo -- --baseline                # Save baseline
+npm run seo -- --compare 2026-01-15      # Compare to Jan 15
+npm run seo -- --url https://staging.example.com
+npm run seo -- --output html             # HTML report
+npm run seo -- --quick                   # Just the score
+```
+
+**Note:** Use `--` before flags when running with npm.
 
 ---
 

@@ -59,101 +59,89 @@
 
 ## Automated SEO Analysis
 
-### `/seo` Command (v2.0)
+### Two Ways to Run
 
-Run comprehensive SEO analysis with optional integration of Google Search Console, Google Analytics 4, and backlink APIs (Ahrefs/SEMrush).
+**1. Claude Code Slash Command** (inside Claude Code sessions):
 
-**Basic Usage:**
-
-```bash
-/seo                           # Standard analysis with dashboard report
-/seo --baseline                # Save current state as baseline for comparison
-/seo --compare 2026-01-15      # Compare against previous baseline
-/seo --url https://staging.com # Analyze staging environment
+```text
+/seo
 ```
 
-**Data Source Modes:**
+This invokes the Claude Code skill — Claude runs the analysis script, interprets results, and discusses findings conversationally. Use this when working with Claude Code.
+
+**2. npm Script** (direct terminal/CLI):
 
 ```bash
-/seo --quick                   # Crawl-only mode (no API calls)
-/seo --full                    # Enable all configured data sources
-/seo --no-gsc                  # Skip Google Search Console
-/seo --no-ga4                  # Skip Google Analytics 4
-/seo --no-backlinks            # Skip backlink API
+npm run seo                    # Interactive menu mode
+npm run seo -- --baseline      # Save current state as baseline
+npm run seo -- --compare 2026-01-15  # Compare against previous baseline
+npm run seo -- --url https://staging.com  # Analyze staging environment
+npm run seo -- --output cli    # Dashboard only (no file)
+npm run seo -- --output md     # Markdown report only
+npm run seo -- --output both   # CLI + Markdown (default)
+npm run seo -- --output csv    # CSV files for spreadsheet import
+npm run seo -- --output html   # Standalone HTML report
+npm run seo -- --quick         # Quick score check only
 ```
 
-**Output Format Options:**
+This runs the script directly in your terminal. Use this for automation, CI/CD, or when not using Claude Code. The `--` before flags is required with npm to pass arguments to the script.
 
-```bash
-/seo --output cli              # Dashboard only (default)
-/seo --output cli,md           # Dashboard + Markdown report
-/seo --output html             # Standalone HTML report
-/seo --output json             # Full JSON data export
-/seo --output csv              # CSV files for spreadsheet import
-/seo --output sheets           # Export directly to Google Sheets
-/seo --output cli,md,html,json # Multiple formats
-```
+### Current Version: 1.5
 
-**Setup & Configuration:**
-
-```bash
-/seo --setup                   # Interactive credential setup wizard
-/seo --cache-clear             # Clear all cached API responses
-/seo --cache-clear gsc         # Clear only GSC cache
-```
+The SEO tool currently supports crawl-based analysis with optional GSC, GA4, and backlink data when configured via environment variables.
 
 **What It Does:**
 
 - Crawls 12 key pages (homepage, 5 scenes, 6 deep link examples)
-- Fetches real search performance data from Google Search Console
-- Fetches engagement metrics and Core Web Vitals from GA4
-- Fetches backlink profile from Ahrefs or SEMrush (optional)
+- Optionally fetches data from Google Search Console (if configured)
+- Optionally fetches data from Google Analytics 4 (if configured)
+- Optionally fetches backlink data from Ahrefs or SEMrush (if configured)
 - Correlates data across sources to detect actionable insights
-- Generates playbooks with step-by-step fixes for non-technical users
+- Generates playbooks with step-by-step fixes
 - Scores site across 6 SEO categories (100-point rubric)
 - Provides confidence score based on available data sources
 
 **Data Sources & Confidence:**
 
-| Sources Available | Confidence |
-|-------------------|------------|
-| Crawl only | 60% |
-| Crawl + GSC | 75% |
-| Crawl + GSC + GA4 | 90% |
-| Crawl + GSC + GA4 + Backlinks | 100% |
+| Sources Available              | Confidence |
+| ------------------------------ | ---------- |
+| Crawl only                     | 60%        |
+| Crawl + GSC                    | 75%        |
+| Crawl + GSC + GA4              | 90%        |
+| Crawl + GSC + GA4 + Backlinks  | 100%       |
 
 **Scoring Categories:**
 
-1. **Technical Foundation (25 pts)** - Response time, canonical tags, Schema.org, Core Web Vitals
-2. **Content Quality (30 pts)** - Titles, descriptions, H1 structure, real CTR from GSC
-3. **Semantic Intelligence (20 pts)** - Word count, schema types, entity relationships
-4. **Authority & Trust (15 pts)** - Domain rating, referring domains, organic traffic %
-5. **User Experience (10 pts)** - Alt text, CWV ratings, engagement metrics
-6. **AI Agent Readiness (10 pts)** - Schema coverage, content depth, citation-worthiness
+1. **Technical Foundation (25 pts)** — Response time, canonical tags, Schema.org
+2. **Content Quality (30 pts)** — Titles, descriptions, H1 structure
+3. **Semantic Intelligence (20 pts)** — Word count, schema types
+4. **Authority & Trust (15 pts)** — Domain rating, referring domains (when backlink data available)
+5. **User Experience (10 pts)** — Alt text, engagement metrics (when GA4 available)
+6. **AI Agent Readiness (10 pts)** — Schema coverage, content depth
 
-**Correlation Insights Detected:**
+**Cross-Source Insights (require multiple data sources):**
 
-| Insight Type | Data Sources | Description |
-|--------------|--------------|-------------|
-| CTR Opportunity | GSC | Pages ranking well but with below-average CTR |
-| Engagement Mismatch | GSC + GA4 | High traffic but high bounce rate |
-| Zombie Page | GSC + GA4 | Impressions but no clicks or traffic |
-| Content Gap | Crawl + GSC | Well-structured pages with no search visibility |
-| Authority Mismatch | GSC + Backlinks | High backlinks but poor rankings |
-| Linkworthy Content | GA4 + Backlinks | High engagement but few backlinks |
-| Cannibalization | GSC | Multiple pages competing for same queries |
+| Insight Type       | Data Sources      | Description                                      |
+| ------------------ | ----------------- | ------------------------------------------------ |
+| Content Gap        | Crawl + GSC       | Well-structured pages with no search visibility  |
+| CTR Opportunity    | Crawl + GSC       | Pages ranking well but with below-average CTR    |
+| Engagement Mismatch| Crawl + GA4       | High traffic but high bounce rate                |
+| Technical Reality  | Crawl + GA4       | Fast server but slow real-world load times       |
+| Zombie Page        | GSC + GA4         | Impressions but no clicks or traffic             |
+| Authority Mismatch | GSC + Backlinks   | High backlinks but poor rankings                 |
+| Linkworthy Content | GA4 + Backlinks   | High engagement but few backlinks                |
+| Cannibalization    | GSC               | Multiple pages competing for same queries        |
 
 **Output Files:**
 
-| Format | Location |
-|--------|----------|
-| Markdown | `seo-reports/YYYY-MM-DD-report.md` |
-| HTML | `seo-reports/YYYY-MM-DD-report.html` |
-| JSON | `seo-reports/YYYY-MM-DD-report.json` |
-| CSV | `seo-reports/YYYY-MM-DD-csv/` (multiple files) |
-| Baseline | `seo-reports/YYYY-MM-DD-baseline.json` |
+| Format   | Location                              |
+| -------- | ------------------------------------- |
+| Markdown | `seo-reports/YYYY-MM-DD-report.md`    |
+| HTML     | `seo-reports/YYYY-MM-DD-report.html`  |
+| CSV      | `seo-reports/YYYY-MM-DD-csv/`         |
+| Baseline | `seo-reports/YYYY-MM-DD-baseline.json`|
 
-**Documentation:** See [.claude/commands/seo.md](../.claude/commands/seo.md) for complete command specification.
+**Full Documentation:** See [.claude/commands/seo.md](../.claude/commands/seo.md) for the complete slash command specification.
 
 ---
 
@@ -168,31 +156,14 @@ The `/seo` command works in crawl-only mode by default, but integrating real dat
 1. Google Cloud Console project with Search Console API and Analytics Data API enabled
 2. OAuth 2.0 credentials (Client ID and Client Secret)
 
-**Setup Steps:**
+**Setup via Environment Variables:**
 
 ```bash
-# Run the interactive setup wizard
-/seo --setup
-
-# Or set environment variables
 export GOOGLE_CLIENT_ID="your-client-id.apps.googleusercontent.com"
 export GOOGLE_CLIENT_SECRET="your-client-secret"
 ```
 
-The setup wizard will:
-
-1. Prompt for Client ID and Client Secret
-2. Open browser for OAuth consent
-3. Store refresh token securely in `~/.seo-analyzer/credentials.json`
-4. List available GSC properties and GA4 accounts
-
-**Credential Storage:**
-
-Credentials are stored outside the project directory for security:
-
-- Location: `~/.seo-analyzer/credentials.json`
-- Contains: OAuth tokens (encrypted), API keys
-- Cache: `~/.seo-analyzer/cache/` (API response cache)
+See [docs/api-setup.md](api-setup.md) for detailed Google Cloud Console setup instructions.
 
 ### Backlink API Setup (Optional)
 
@@ -208,21 +179,9 @@ export AHREFS_API_KEY="your-ahrefs-api-key"
 export SEMRUSH_API_KEY="your-semrush-api-key"
 ```
 
-Or add to credentials file via `--setup` wizard.
-
 ### Verifying Configuration
 
-```bash
-# Check which data sources are configured
-/seo --setup  # Shows credential summary without modifying
-```
-
-Output shows:
-
-- ✅ Google OAuth: Configured (expires in X days)
-- ✅ GSC Property: sc-domain:concerts.morperhaus.org
-- ❌ GA4 Property: Not configured
-- ✅ Backlinks: Ahrefs configured
+When you run `npm run seo`, the tool displays which data sources are available at startup.
 
 ---
 
@@ -1035,12 +994,24 @@ New content indexed by search engines
 
 ## Version History
 
-| Version | Date | Changes |
-| ------- | ---- | ------- |
-| v2.0.0 | 2026-01-20 | SEO Tool v2: GSC/GA4/Backlink integration, correlation insights, playbooks, HTML/CSV/Sheets output |
-| v3.7.0 | 2026-01-20 | Added AI Fact Cards section, llm.txt Pre-Computed Statistics |
-| v3.5.0 | 2026-01-19 | Initial SEO documentation (Phases 1-3 complete) |
+| Version | Date       | Changes                                                       |
+| ------- | ---------- | ------------------------------------------------------------- |
+| v1.5    | 2026-01-20 | Interactive menu mode, GSC/GA4/Backlink integration, insights |
+| v3.7.0  | 2026-01-20 | Added AI Fact Cards section, llm.txt Pre-Computed Statistics  |
+| v3.5.0  | 2026-01-19 | Initial SEO documentation (Phases 1-3 complete)               |
 
 ---
 
 **Questions or Issues?** Review the [Troubleshooting](#troubleshooting) section or check [docs/specs/future/global-seo-optimization.md](specs/future/global-seo-optimization.md) for implementation details.
+
+## Planned Features (v2.0)
+
+The following features are planned but not yet implemented:
+
+- `--setup` interactive credential wizard
+- `--cache-clear` to clear API response cache
+- `--full`, `--no-gsc`, `--no-ga4`, `--no-backlinks` flags
+- `--output json` and `--output sheets` formats
+- Multiple output formats in single run (`--output cli,md,html`)
+
+See [docs/specs/future/global-seo-tool-v2.md](specs/future/global-seo-tool-v2.md) for the full v2 specification.
