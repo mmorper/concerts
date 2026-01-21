@@ -1,27 +1,73 @@
 # Cloudflare Worker: Dynamic Scene Titles
 
 **Status:** Planned
-**Priority:** Medium (SEO improvement)
-**Discovered by:** `/seo` insights engine — "10 pages share identical title"
+**Priority:** High (SEO improvement — 4 point impact)
+**Discovered by:** `/seo` analysis — inconsistent deep link metadata
+**Last updated:** 2026-01-20
 
 ---
 
 ## Problem
 
-The SEO tool detected that 10 pages share the same title: "Morperhaus Concert Archives"
+The `/seo` tool (v1.5) discovered that **approximately 60% of deep link pages show generic metadata** instead of entity-specific titles.
 
-Currently, the Cloudflare Worker (`workers/meta-injector.js`) only injects dynamic titles for:
-- `?scene=artists&artist=X` → "Artist Name - Morperhaus Concert Archives"
-- `?scene=venues&venue=X` → "Venue Name - Morperhaus Concert Archives"
+### Current State
 
-These pages get the default title from `index.html`:
-- `/?scene=timeline` (or `/`)
-- `/?scene=venues`
-- `/?scene=artists`
-- `/?scene=geography`
-- `/?scene=genres`
-- `/?scene=genres&genre=X`
-- `/?scene=geography&region=X`
+All pages return generic metadata "Morperhaus Concert Archives" — including deep links to real entities:
+
+| URL | Entity Exists? | Title (Observed) | Status |
+|-----|----------------|------------------|--------|
+| `/?scene=artists&artist=social-distortion` | ✅ Yes (6 concerts) | "Morperhaus Concert Archives" | ❌ Generic |
+| `/?scene=artists&artist=howard-jones` | ✅ Yes (5 concerts) | "Morperhaus Concert Archives" | ❌ Generic |
+| `/?scene=artists&artist=depeche-mode` | ✅ Yes (5 concerts) | "Morperhaus Concert Archives" | ❌ Generic |
+| `/?scene=venues&venue=kia-forum` | ✅ Yes (3 concerts) | "Morperhaus Concert Archives" | ❌ Generic |
+| `/?scene=genres&genre=new-wave` | ✅ Yes (49 concerts) | "Morperhaus Concert Archives" | ❌ Generic |
+| `/?scene=timeline` | N/A | "Morperhaus Concert Archives" | ❌ Generic |
+| `/?scene=venues` | N/A | "Morperhaus Concert Archives" | ❌ Generic |
+| `/?scene=artists` | N/A | "Morperhaus Concert Archives" | ❌ Generic |
+| `/?scene=geography` | N/A | "Morperhaus Concert Archives" | ❌ Generic |
+| `/?scene=genres` | N/A | "Morperhaus Concert Archives" | ❌ Generic |
+
+### Root Cause
+
+The Cloudflare Worker (`workers/meta-injector.js`) either:
+1. **Not deployed** — meta injection code exists but isn't active
+2. **Not matching patterns** — URL routing doesn't trigger injection functions
+3. **Failing silently** — metadata fetch errors cause fallback to defaults
+
+---
+
+## Investigation Steps
+
+Before implementing, verify the current Worker behavior using **real entities from the archive**:
+
+```bash
+# Test artist deep links (Social Distortion = most-seen artist, 6 concerts)
+curl -s "https://concerts.morperhaus.org/?scene=artists&artist=social-distortion" | grep -i "<title>"
+# Expected: "Social Distortion - Morperhaus Concert Archives"
+# Current: "Morperhaus Concert Archives" (generic)
+
+# Test venue deep links (Kia Forum = 3 concerts)
+curl -s "https://concerts.morperhaus.org/?scene=venues&venue=kia-forum" | grep -i "<title>"
+# Expected: "Kia Forum - Morperhaus Concert Archives"
+# Current: "Morperhaus Concert Archives" (generic)
+
+# Test genre deep links (New Wave = 49 concerts)
+curl -s "https://concerts.morperhaus.org/?scene=genres&genre=new-wave" | grep -i "<title>"
+# Expected: "New Wave Concerts (49) - Morperhaus Concert Archives"
+# Current: "Morperhaus Concert Archives" (generic)
+
+# Test scene-only pages
+curl -s "https://concerts.morperhaus.org/?scene=timeline" | grep -i "<title>"
+# Expected: "179 Concerts (1984-2026) - Morperhaus Concert Archives"
+# Current: "Morperhaus Concert Archives" (generic)
+```
+
+**Note:** Always test with entities that exist in the archive. Check `concerts.json` for valid normalized names.
+
+---
+
+## Solution
 
 ---
 
