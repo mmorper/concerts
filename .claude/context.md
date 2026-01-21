@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v3.7.0 (Production)
+**Version:** v3.8.0 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-01-20
 
@@ -39,7 +39,7 @@ npm run build-data   # Fetch & enrich concert data
 
 **Tech Stack:** Vite 6 + React 18 + TypeScript 5 + Tailwind 4 + D3 7 + Framer Motion 11 + Leaflet
 
-**Data:** 178 concerts (1984-2026), 247 artists (104 headliners), 77 venues
+**Data:** 179 concerts (1984-2026), 254 artists (104 headliners), 77 venues
 
 ---
 
