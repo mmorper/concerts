@@ -112,12 +112,39 @@ The SEO tool currently supports crawl-based analysis with optional GSC, GA4, and
 
 **Scoring Categories:**
 
-1. **Technical Foundation (25 pts)** — Response time, canonical tags, Schema.org
-2. **Content Quality (30 pts)** — Titles, descriptions, H1 structure
-3. **Semantic Intelligence (20 pts)** — Word count, schema types
-4. **Authority & Trust (15 pts)** — Domain rating, referring domains (when backlink data available)
-5. **User Experience (10 pts)** — Alt text, engagement metrics (when GA4 available)
-6. **AI Agent Readiness (10 pts)** — Schema coverage, content depth
+The tool scores your site across 6 categories (100 points total):
+
+1. **Technical Foundation (25 pts)** — Core infrastructure that search engines need
+   - Crawlability: sitemap, robots.txt, canonical tags, response times
+   - Performance: lazy loading, preload tags, image optimization
+   - Structured data: Schema.org JSON-LD, Open Graph tags
+
+2. **Content Quality (30 pts)** — How well your content is structured and optimized
+   - Meta tags: unique titles, optimal length, compelling descriptions
+   - Heading hierarchy: proper H1 usage, logical H2-H6 flow
+   - Internal linking: cross-scene navigation, deep links
+
+3. **Semantic Intelligence (20 pts)** — How well search engines understand your content
+   - Topical authority: comprehensive coverage, content depth
+   - Intent matching: informational, navigational, conversational queries
+   - Entity relationships: clear connections (artist → venue → date)
+
+4. **Authority & Trust (15 pts)** — Signals that indicate your site is trustworthy
+   - Traditional: backlinks, domain rating (when backlink data available)
+   - E-E-A-T: experience, expertise, authoritativeness, trust signals
+   - Citation-worthiness: structured facts, verifiable data
+
+5. **User Experience (10 pts)** — How visitors interact with your site
+   - Navigation: intuitive structure, visual hierarchy
+   - Accessibility: ARIA labels, responsive design
+   - Engagement: bounce rate, time on page (when GA4 available)
+
+6. **AI Agent Readiness (10 pts)** — How well AI assistants can understand and cite your content
+   - Schema coverage: structured data for parsing
+   - Explicit answers: pre-computed statistics, quotable facts
+   - Context clarity: clear relationships, natural language
+
+**Detailed Scoring Rubric:** See [.claude/commands/seo.md](../.claude/commands/seo.md#seo-rubric-details) for point-by-point breakdown of each category and sub-category.
 
 **Cross-Source Insights (require multiple data sources):**
 
