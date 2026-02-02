@@ -90,12 +90,18 @@ export default {
       html = await injectSceneMeta(html, scene, url.origin);
     }
 
-    // Return modified HTML
+    // Preserve all original headers (CORS, CSP, security headers, etc.)
+    const headers = new Headers(response.headers);
+
+    // Only override specific headers
+    headers.set('Content-Type', 'text/html;charset=UTF-8');
+    headers.set('Cache-Control', 'public, max-age=3600'); // Cache bot responses for 1 hour
+
+    // Return modified HTML with all original headers preserved
     return new Response(html, {
-      headers: {
-        'Content-Type': 'text/html;charset=UTF-8',
-        'Cache-Control': 'public, max-age=3600', // Cache bot responses for 1 hour
-      },
+      status: response.status,
+      statusText: response.statusText,
+      headers: headers,
     });
   },
 };

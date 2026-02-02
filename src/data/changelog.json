@@ -1,6 +1,14 @@
 {
   "releases": [
     {
+      "version": "3.8.1",
+      "date": "2026-02-02",
+      "title": "Venue Images Restored",
+      "description": "Venue photos are back in map popups. Click any venue marker to see its location, concert history, and venue image—the recent SEO update accidentally broke these, but they're working again.",
+      "route": "/?scene=geography",
+      "highlights": []
+    },
+    {
       "version": "3.7.0",
       "date": "2026-01-20",
       "title": "By the Numbers",

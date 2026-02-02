@@ -184,6 +184,7 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
               alt="${venueName}"
               class="venue-popup-image"
               loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
               onload="this.parentElement.classList.add('loaded')"
               onerror="this.parentElement.style.display='none'"
             />

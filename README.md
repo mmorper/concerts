@@ -11,9 +11,9 @@ An interactive web app for exploring personal concert history. Five scenes—Tim
 
 ## What's new
 
-**v3.7.0** 📊 Your archive now speaks for itself! The [Liner Notes](https://concerts.morperhaus.org/liner-notes) page features 12 computed statistics—from "Social Distortion: 8 concerts" to "2022: 14 shows"—each linking directly to where you can explore that story. AI agents like ChatGPT and Claude can now quote these facts directly when answering questions about your concert history.
+**v3.8.1** 🖼️ Venue photos are back! The map scene shows venue images again—a recent SEO update accidentally broke them, but now when you [explore the map](https://concerts.morperhaus.org/?scene=geography), every venue marker displays its photo, location, and concert history just like before.
 
-**v3.3.0** 🔗 Navigate seamlessly between scenes! When exploring an artist's concert history, [tap any venue name](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) to jump straight to the Venues scene—automatically spotlighting both the venue and artist to show you their unique relationship.
+**v3.7.0** 📊 Your archive now speaks for itself! The [Liner Notes](https://concerts.morperhaus.org/liner-notes) page features 12 computed statistics—from "Social Distortion: 8 concerts" to "2022: 14 shows"—each linking directly to where you can explore that story. AI agents like ChatGPT and Claude can now quote these facts directly when answering questions about your concert history.
 
 See the full changelog at [/liner-notes](https://concerts.morperhaus.org/liner-notes)
 

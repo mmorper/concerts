@@ -1,9 +1,9 @@
 # Roadmap
 
-## Current State (v3.7.0)
+## Current State (v3.8.1)
 
-- **178 concerts** spanning 1984-2026
-- **104 headlining artists** with 253 total artists (including openers)
+- **179 concerts** spanning 1984-2026
+- **254 artists** (including openers)
 - **77 unique venues** across 35 cities
 - **5 interactive scenes**: Timeline, Venues, Geography, Genres, Artists
 - **Latest improvements**: AI Fact Cards for Liner Notes with pre-computed statistics
