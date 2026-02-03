@@ -7,13 +7,13 @@ _A visual love letter to four decades of live music._
 
 An interactive web app for exploring personal concert history. Five scenes—Timeline, Venues, Geography, Genres, Artists—each offering a different lens on 178 shows spanning 1984 to today. Click through decades, trace connections between venues and artists, see where the music happened on a map. All enriched with artist photos, venue imagery, and setlist data.
 
-**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 178 shows • 253 artists • 77 venues • 5+ decades
+**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 179 shows • 254 artists • 77 venues • 5+ decades
 
 ## What's new
 
-**v3.9.0** 🎭 Complete artist imagery! Every opening act now has a photo and bio alongside the headliners. We've enriched 151 previously missing artists and doubled coverage to 254 total artists—no more blank faces in your concert history. Smart name matching even finds artists with complex band names. [Explore the artists](https://concerts.morperhaus.org/?scene=artists) to see every performer who's shaped your musical journey.
+**v4.0.0** 🎵 Listen before you go! The [Artist Gatefold](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) now includes an audio preview player with 30-second clips from 252 artists (99% coverage). Play/pause controls, animated equalizer, auto-advance, and direct links to Apple Music and Deezer. Get a feel for an artist's sound right in your concert archive—perfect for those moments when you remember the show but forgot what they sounded like.
 
-**v3.7.0** 📊 Your archive now speaks for itself! The [Liner Notes](https://concerts.morperhaus.org/liner-notes) page features 12 computed statistics—from "Social Distortion: 8 concerts" to "2022: 14 shows"—each linking directly to where you can explore that story. AI agents like ChatGPT and Claude can now quote these facts directly when answering questions about your concert history.
+**v3.9.0** 🎭 Complete artist imagery! Every opening act now has a photo and bio alongside the headliners. We've enriched 151 previously missing artists and doubled coverage to 254 total artists—no more blank faces in your concert history. Smart name matching even finds artists with complex band names. [Explore the artists](https://concerts.morperhaus.org/?scene=artists) to see every performer who's shaped your musical journey.
 
 See the full changelog at [/liner-notes](https://concerts.morperhaus.org/liner-notes)
 

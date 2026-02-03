@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "4.0.0",
+      "date": "2026-02-03",
+      "title": "Audio Preview Player",
+      "description": "Listen before you go—preview top tracks from 252 artists right in the Artist Gatefold. Get a feel for an artist's sound with 30-second clips from iTunes and Deezer, plus quick links to stream full albums.",
+      "route": "/?scene=artists&artist=depeche-mode",
+      "highlights": [
+        "Audio preview player with 30-second clips for 252 artists (99% coverage)",
+        "Play/pause controls with animated equalizer and auto-advance",
+        "Mobile-responsive design with album art and track details",
+        "Direct links to Apple Music and Deezer for full streaming"
+      ]
+    },
+    {
       "version": "3.9.0",
       "date": "2026-02-02",
       "title": "Complete Artist Imagery",
