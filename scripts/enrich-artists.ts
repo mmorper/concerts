@@ -51,7 +51,8 @@ function getArtistNameVariants(artistName: string): string[] {
   }
 
   // Remove "'68 Comeback Special" or similar suffixes
-  const specialMatch = artistName.match(/^(.+?)\s+[''][0-9]{2}\s+.+$/i)
+  // Handles ASCII apostrophe (') and Unicode quotes (' ')
+  const specialMatch = artistName.match(/^(.+?)\s+[''\u2018\u2019][0-9]{2}\s+.+$/i)
   if (specialMatch) {
     variants.push(specialMatch[1])
   }

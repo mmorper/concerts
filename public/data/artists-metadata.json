@@ -380,13 +380,6 @@
     "source": "theaudiodb",
     "fetchedAt": "2026-02-03T01:23:46.302Z"
   },
-  "brian-setzer-68-comeback-special": {
-    "name": "Brian Setzer '68 Comeback Special",
-    "image": "https://cdn-images.dzcdn.net/images/artist//500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-02-03T01:15:26.110Z"
-  },
   "bruce-springsteen": {
     "name": "Bruce Springsteen",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/pj57t31658769167.jpg",
@@ -2896,13 +2889,6 @@
     "source": "deezer",
     "fetchedAt": "2026-02-03T01:19:38.693Z"
   },
-  "blue-plate-special": {
-    "name": "Blue Plate Special",
-    "image": "https://cdn-images.dzcdn.net/images/artist//500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-02-03T01:19:39.153Z"
-  },
   "eric-johnson": {
     "name": "Eric Johnson",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/truwqw1363615596.jpg",
@@ -2928,5 +2914,18 @@
     "website": "",
     "source": "theaudiodb",
     "fetchedAt": "2026-02-03T01:20:32.099Z"
+  },
+  "brian-setzer-68-comeback-special": {
+    "name": "Brian Setzer",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qrvsyt1365505313.jpg",
+    "bio": "Brian Robert Setzer (born April 10, 1959) is an American guitarist, singer and songwriter. He first found widespread success in the early 1980s with the 1950s-style rockabilly revival group Stray Cats, and revitalized his career in the late 1990s with his Swing revival band, The Brian Setzer Orchestra.\n\nSetzer was born in Massapequa, New York. Beginning in January 1979, he fronted the rockabilly band The Tomcats before transforming them into the later successful Stray Cats.  After only four year",
+    "genres": [
+      "Rock & Roll",
+      "Rock/Pop"
+    ],
+    "formed": "1979",
+    "website": "www.briansetzer.com",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-02-03T01:46:42.391Z"
   }
 }

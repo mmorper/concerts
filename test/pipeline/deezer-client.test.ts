@@ -273,6 +273,33 @@ describe('DeezerClient', () => {
       expect(result).toBeNull()
     })
 
+    it('should return null when Deezer returns placeholder image', async () => {
+      const mockResponse = {
+        data: [
+          {
+            id: 123,
+            name: 'Test Artist',
+            picture: 'https://cdn-images.dzcdn.net/images/artist//500x500-000000-80-0-0.jpg',
+            picture_small: 'https://example.com/56x56.jpg',
+            picture_medium: 'https://cdn-images.dzcdn.net/images/artist//250x250-000000-80-0-0.jpg',
+            picture_big: 'https://cdn-images.dzcdn.net/images/artist//500x500-000000-80-0-0.jpg',
+            picture_xl: 'https://example.com/1000x1000.jpg',
+            type: 'artist',
+          },
+        ],
+        total: 1,
+      }
+
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => mockResponse,
+      } as Response)
+
+      const result = await client.getArtistInfo('Test Artist')
+
+      expect(result).toBeNull()
+    })
+
     it('should return null on API error', async () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: false,

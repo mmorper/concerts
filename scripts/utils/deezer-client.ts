@@ -75,6 +75,11 @@ export class DeezerClient {
       return null
     }
 
+    // Reject Deezer placeholder images (contain //500x500 with missing artist ID)
+    if (image.includes('//500x500') || image.includes('//250x250')) {
+      return null
+    }
+
     return {
       name: artist.name,
       image: image,
