@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { getGenreColor } from '../../../constants/colors'
 import { ConcertHistoryPanel } from './ConcertHistoryPanel'
-import { SpotifyPanel } from './SpotifyPanel'
+import { AudioPreviewPanel } from './AudioPreviewPanel'
 import { LinerNotesPanel } from './LinerNotesPanel'
 import { TourDatesPanel } from './TourDatesPanel'
 import { fetchSetlist } from '../../../services/setlistfm'
@@ -603,7 +603,7 @@ export function ArtistGatefold({
                     />
                   </div>
 
-                  <SpotifyPanel artist={artist} />
+                  <AudioPreviewPanel artist={artist} />
 
                   {/* Liner Notes Panel - slides from left (desktop) */}
                   {activePanel === 'setlist' && selectedConcert && (
@@ -776,7 +776,7 @@ export function ArtistGatefold({
                     transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
-                  <SpotifyPanel artist={artist} isPhone={true} />
+                  <AudioPreviewPanel artist={artist} isPhone={true} />
                 </div>
 
                 {/* Cover (opens upward from bottom half) */}

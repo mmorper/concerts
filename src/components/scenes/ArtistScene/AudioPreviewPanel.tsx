@@ -3,7 +3,7 @@ import { useArtistTopTracks } from '../../../hooks/useArtistTopTracks'
 import { AudioPreviewPlayer } from './AudioPreviewPlayer'
 import type { ArtistCard } from './types'
 
-interface SpotifyPanelProps {
+interface AudioPreviewPanelProps {
   artist: ArtistCard
   isPhone?: boolean // v3.2.0 - Phone layout mode
 }
@@ -12,7 +12,7 @@ interface SpotifyPanelProps {
  * Right panel of gatefold - Audio preview player with top tracks
  * Size: 400×400px (desktop) or full-width panel (phone)
  */
-export function SpotifyPanel({ artist, isPhone = false }: SpotifyPanelProps) {
+export function AudioPreviewPanel({ artist, isPhone = false }: AudioPreviewPanelProps) {
   const { tracks, source, streamingUrl, loading, error } = useArtistTopTracks(artist.name)
 
   // Responsive sizing: 460px on desktop/tablet landscape (1024px+), 400px on smaller viewports
