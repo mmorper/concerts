@@ -1,5 +1,6 @@
 import { TheAudioDBClient } from './utils/theaudiodb-client'
 import { LastFmClient } from './utils/lastfm-client'
+import { DeezerClient } from './utils/deezer-client'
 import { RateLimiter } from './utils/rate-limiter'
 import { normalizeArtistName } from '../src/utils/normalize.js'
 import { createBackup } from './utils/backup'
@@ -17,9 +18,45 @@ interface ArtistMetadata {
     bio?: string
     genres?: string[]
     formed?: string
-    source: 'theaudiodb' | 'lastfm' | 'manual'
+    source: 'theaudiodb' | 'lastfm' | 'deezer' | 'manual'
     fetchedAt: string
   }
+}
+
+/**
+ * Generate artist name variants to try as fallbacks
+ * Examples:
+ *   "Brian Setzer and the Nashvillians" → ["Brian Setzer and the Nashvillians", "Brian Setzer"]
+ *   "Trombone Shorty & Orleans Avenue" → ["Trombone Shorty & Orleans Avenue", "Trombone Shorty"]
+ */
+function getArtistNameVariants(artistName: string): string[] {
+  const variants = [artistName] // Always try original name first
+
+  // Remove " and the [Band Name]" suffix
+  const andTheMatch = artistName.match(/^(.+?)\s+and\s+the\s+.+$/i)
+  if (andTheMatch) {
+    variants.push(andTheMatch[1])
+  }
+
+  // Remove " & [Band Name]" suffix
+  const ampersandMatch = artistName.match(/^(.+?)\s+&\s+.+$/i)
+  if (ampersandMatch) {
+    variants.push(ampersandMatch[1])
+  }
+
+  // Remove " with [Guest]" suffix
+  const withMatch = artistName.match(/^(.+?)\s+with\s+.+$/i)
+  if (withMatch) {
+    variants.push(withMatch[1])
+  }
+
+  // Remove "'68 Comeback Special" or similar suffixes
+  const specialMatch = artistName.match(/^(.+?)\s+[''][0-9]{2}\s+.+$/i)
+  if (specialMatch) {
+    variants.push(specialMatch[1])
+  }
+
+  return [...new Set(variants)] // Remove duplicates
 }
 
 /**
@@ -40,9 +77,11 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
   const concertsData = JSON.parse(readFileSync(concertsPath, 'utf-8'))
   const concerts = concertsData.concerts
 
-  // Get unique artists (headliners only for now)
-  const uniqueArtists = [...new Set(concerts.map((c: any) => c.headliner))]
-  console.log(`Found ${uniqueArtists.length} unique artists to enrich\n`)
+  // Get unique artists (headliners + openers)
+  const headliners = concerts.map((c: any) => c.headliner)
+  const openers = concerts.flatMap((c: any) => c.openers || [])
+  const uniqueArtists = [...new Set([...headliners, ...openers])]
+  console.log(`Found ${uniqueArtists.length} unique artists to enrich (headliners + openers)\n`)
 
   // Load existing metadata if available
   const metadataPath = join(process.cwd(), 'public', 'data', 'artists-metadata.json')
@@ -57,6 +96,7 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
   const lastFm = process.env.LASTFM_API_KEY
     ? new LastFmClient(process.env.LASTFM_API_KEY)
     : null
+  const deezer = new DeezerClient()
 
   const rateLimiter = new RateLimiter(2) // TheAudioDB: 2 calls/sec
 
@@ -83,33 +123,60 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
     console.log(`Fetching metadata for: ${artistName}`)
 
     try {
-      // Rate limit
-      await rateLimiter.wait()
+      let found = false
+      const nameVariants = getArtistNameVariants(artistName)
 
-      // Try TheAudioDB first
-      const audioDbInfo = await audioDb.getArtistInfo(artistName)
+      // Try each name variant across all APIs
+      for (let i = 0; i < nameVariants.length && !found; i++) {
+        const variantName = nameVariants[i]
+        const isOriginalName = i === 0
 
-      if (audioDbInfo && audioDbInfo.image) {
-        metadata[normalized] = audioDbInfo
-        console.log(`  ✅ Found on TheAudioDB`)
-        enriched++
-        continue
-      }
+        if (!isOriginalName) {
+          console.log(`  → Trying simplified name: ${variantName}`)
+        }
 
-      // Fallback to Last.fm
-      if (lastFm) {
-        const lastFmInfo = await lastFm.getArtistInfo(artistName)
+        // Rate limit
+        await rateLimiter.wait()
 
-        if (lastFmInfo && lastFmInfo.image) {
-          metadata[normalized] = lastFmInfo
-          console.log(`  ✅ Found on Last.fm`)
+        // Try TheAudioDB first
+        const audioDbInfo = await audioDb.getArtistInfo(variantName)
+
+        if (audioDbInfo && audioDbInfo.image) {
+          metadata[normalized] = audioDbInfo
+          console.log(`  ✅ Found on TheAudioDB${isOriginalName ? '' : ' (using simplified name)'}`)
           enriched++
-          continue
+          found = true
+          break
+        }
+
+        // Fallback to Last.fm
+        if (lastFm) {
+          const lastFmInfo = await lastFm.getArtistInfo(variantName)
+
+          if (lastFmInfo && lastFmInfo.image) {
+            metadata[normalized] = lastFmInfo
+            console.log(`  ✅ Found on Last.fm${isOriginalName ? '' : ' (using simplified name)'}`)
+            enriched++
+            found = true
+            break
+          }
+        }
+
+        // Fallback to Deezer
+        const deezerInfo = await deezer.getArtistInfo(variantName)
+        if (deezerInfo && deezerInfo.image) {
+          metadata[normalized] = deezerInfo
+          console.log(`  ✅ Found on Deezer${isOriginalName ? '' : ' (using simplified name)'}`)
+          enriched++
+          found = true
+          break
         }
       }
 
-      console.log(`  ⚠️  No metadata found`)
-      failed++
+      if (!found) {
+        console.log(`  ⚠️  No metadata found (tried ${nameVariants.length} name variant${nameVariants.length > 1 ? 's' : ''})`)
+        failed++
+      }
     } catch (error) {
       console.error(`  ❌ Error fetching ${artistName}:`, error)
       failed++

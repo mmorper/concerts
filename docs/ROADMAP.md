@@ -174,6 +174,16 @@ Genre moved to artist-level metadata with automatic enrichment from TheAudioDB.
 
 ## Short-Term Roadmap
 
+### Artist Imagery Enrichment - Add Deezer Fallback
+
+**Status**: Planned
+**Target Version**: v3.9.0
+**Spec**: [global-deezer-artist-imagery.md](specs/future/global-deezer-artist-imagery.md)
+
+Enhance artist enrichment pipeline with Deezer API as third fallback (after TheAudioDB and Last.fm) to fill imagery gaps for artists like Against Me! and Dramarama.
+
+---
+
 ### About Page - E-E-A-T Signals
 
 **Status**: Planned
