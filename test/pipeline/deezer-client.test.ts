@@ -379,4 +379,405 @@ describe('DeezerClient', () => {
       expect(new Date(result!.fetchedAt).toISOString()).toBe(result?.fetchedAt)
     })
   })
+
+  describe('getTopTracks', () => {
+    it('should return normalized tracks on successful search', async () => {
+      // Mock artist search
+      const mockArtistResponse = {
+        data: [
+          {
+            id: 4695969,
+            name: 'Thompson Twins',
+            picture: 'https://api.deezer.com/artist/4695969/image',
+            picture_small: 'https://example.com/56x56.jpg',
+            picture_medium: 'https://example.com/250x250.jpg',
+            picture_big: 'https://example.com/500x500.jpg',
+            picture_xl: 'https://example.com/1000x1000.jpg',
+            type: 'artist',
+          },
+        ],
+        total: 1,
+      }
+
+      // Mock top tracks response
+      const mockTracksResponse = {
+        data: [
+          {
+            id: 123,
+            title: 'Hold On',
+            preview: 'https://cdns-preview-7.dzcdn.net/preview.mp3',
+            duration: 232,
+            rank: 100000,
+            album: {
+              title: 'Love It to Death',
+              cover_medium: 'https://cdn-images.dzcdn.net/album.jpg',
+            },
+            link: 'https://www.deezer.com/track/123',
+          },
+          {
+            id: 124,
+            title: 'If You Were Here',
+            preview: 'https://cdns-preview-7.dzcdn.net/preview2.mp3',
+            duration: 245,
+            rank: 95000,
+            album: {
+              title: 'Into the Gap',
+              cover_medium: 'https://cdn-images.dzcdn.net/album2.jpg',
+            },
+            link: 'https://www.deezer.com/track/124',
+          },
+        ],
+        total: 2,
+      }
+
+      global.fetch = vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockArtistResponse,
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockTracksResponse,
+        } as Response)
+
+      const result = await client.getTopTracks('Thompson Twins', 5)
+
+      expect(result).toHaveLength(2)
+      expect(result[0]).toEqual({
+        name: 'Hold On',
+        previewUrl: 'https://cdns-preview-7.dzcdn.net/preview.mp3',
+        durationMs: 232000, // Converted from seconds to milliseconds
+        albumName: 'Love It to Death',
+        albumArt: 'https://cdn-images.dzcdn.net/album.jpg',
+        streamingUrl: 'https://www.deezer.com/track/123',
+      })
+      expect(global.fetch).toHaveBeenCalledTimes(2)
+      expect(global.fetch).toHaveBeenNthCalledWith(
+        1,
+        'https://api.deezer.com/search/artist?q=Thompson%20Twins'
+      )
+      expect(global.fetch).toHaveBeenNthCalledWith(
+        2,
+        'https://api.deezer.com/artist/4695969/top?limit=5'
+      )
+    })
+
+    it('should return empty array when artist not found', async () => {
+      const mockResponse = {
+        data: [],
+        total: 0,
+      }
+
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => mockResponse,
+      } as Response)
+
+      const result = await client.getTopTracks('NonexistentArtist', 5)
+
+      expect(result).toEqual([])
+      expect(global.fetch).toHaveBeenCalledTimes(1) // Only artist search called
+    })
+
+    it('should return empty array when no tracks available', async () => {
+      const mockArtistResponse = {
+        data: [
+          {
+            id: 123,
+            name: 'Test Artist',
+            picture: 'https://example.com/image.jpg',
+            picture_big: 'https://example.com/500x500.jpg',
+            type: 'artist',
+          },
+        ],
+        total: 1,
+      }
+
+      const mockTracksResponse = {
+        data: [],
+        total: 0,
+      }
+
+      global.fetch = vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockArtistResponse,
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockTracksResponse,
+        } as Response)
+
+      const result = await client.getTopTracks('Test Artist', 5)
+
+      expect(result).toEqual([])
+    })
+
+    it('should handle tracks with missing preview URLs', async () => {
+      const mockArtistResponse = {
+        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        total: 1,
+      }
+
+      const mockTracksResponse = {
+        data: [
+          {
+            id: 1,
+            title: 'Track With Preview',
+            preview: 'https://preview.mp3',
+            duration: 200,
+            rank: 100000,
+            album: { title: 'Album 1', cover_medium: 'https://art1.jpg' },
+            link: 'https://track1',
+          },
+          {
+            id: 2,
+            title: 'Track Without Preview',
+            preview: null,
+            duration: 180,
+            rank: 95000,
+            album: { title: 'Album 2', cover_medium: 'https://art2.jpg' },
+            link: 'https://track2',
+          },
+        ],
+        total: 2,
+      }
+
+      global.fetch = vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockArtistResponse,
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockTracksResponse,
+        } as Response)
+
+      const result = await client.getTopTracks('Test Artist', 5)
+
+      expect(result).toHaveLength(2)
+      expect(result[0].previewUrl).toBe('https://preview.mp3')
+      expect(result[1].previewUrl).toBeNull()
+    })
+
+    it('should convert duration from seconds to milliseconds', async () => {
+      const mockArtistResponse = {
+        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        total: 1,
+      }
+
+      const mockTracksResponse = {
+        data: [
+          {
+            id: 1,
+            title: 'Test Track',
+            preview: 'https://preview.mp3',
+            duration: 195, // 195 seconds
+            rank: 100000,
+            album: { title: 'Album', cover_medium: 'https://art.jpg' },
+            link: 'https://track',
+          },
+        ],
+        total: 1,
+      }
+
+      global.fetch = vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockArtistResponse,
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockTracksResponse,
+        } as Response)
+
+      const result = await client.getTopTracks('Test Artist', 5)
+
+      expect(result[0].durationMs).toBe(195000) // 195 * 1000
+    })
+
+    it('should respect the limit parameter', async () => {
+      const mockArtistResponse = {
+        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        total: 1,
+      }
+
+      const mockTracksResponse = {
+        data: [],
+        total: 0,
+      }
+
+      global.fetch = vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockArtistResponse,
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockTracksResponse,
+        } as Response)
+
+      await client.getTopTracks('Test Artist', 10)
+
+      expect(global.fetch).toHaveBeenNthCalledWith(
+        2,
+        'https://api.deezer.com/artist/123/top?limit=10'
+      )
+    })
+
+    it('should retry once on 429 rate limit for top tracks request', async () => {
+      const mockArtistResponse = {
+        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        total: 1,
+      }
+
+      const mockTracksResponse = {
+        data: [
+          {
+            id: 1,
+            title: 'Test Track',
+            preview: 'https://preview.mp3',
+            duration: 200,
+            rank: 100000,
+            album: { title: 'Album', cover_medium: 'https://art.jpg' },
+            link: 'https://track',
+          },
+        ],
+        total: 1,
+      }
+
+      global.fetch = vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockArtistResponse,
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 429,
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockArtistResponse,
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockTracksResponse,
+        } as Response)
+
+      const result = await client.getTopTracks('Test Artist', 5)
+
+      expect(result).toHaveLength(1)
+      expect(console.warn).toHaveBeenCalledWith(
+        '  ⚠️  Rate limit hit, waiting 2 seconds...'
+      )
+      expect(global.fetch).toHaveBeenCalledTimes(4) // 2 for initial attempt, 2 for retry
+    })
+
+    it('should handle 404 errors on top tracks request', async () => {
+      const mockArtistResponse = {
+        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        total: 1,
+      }
+
+      global.fetch = vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockArtistResponse,
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 404,
+        } as Response)
+
+      const result = await client.getTopTracks('Test Artist', 5)
+
+      expect(result).toEqual([])
+      expect(console.error).toHaveBeenCalledWith(
+        'Failed to fetch top tracks from Deezer: Test Artist',
+        expect.any(Error)
+      )
+    })
+
+    it('should handle network errors', async () => {
+      const mockArtistResponse = {
+        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        total: 1,
+      }
+
+      global.fetch = vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockArtistResponse,
+        } as Response)
+        .mockRejectedValueOnce(new Error('Network error'))
+
+      const result = await client.getTopTracks('Test Artist', 5)
+
+      expect(result).toEqual([])
+      expect(console.error).toHaveBeenCalledWith(
+        'Failed to fetch top tracks from Deezer: Test Artist',
+        expect.any(Error)
+      )
+    })
+
+    it('should handle malformed tracks response', async () => {
+      const mockArtistResponse = {
+        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        total: 1,
+      }
+
+      global.fetch = vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockArtistResponse,
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ total: 0 }), // Missing data array
+        } as Response)
+
+      const result = await client.getTopTracks('Test Artist', 5)
+
+      expect(result).toEqual([])
+    })
+
+    it('should use default limit of 5 when not specified', async () => {
+      const mockArtistResponse = {
+        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        total: 1,
+      }
+
+      const mockTracksResponse = {
+        data: [],
+        total: 0,
+      }
+
+      global.fetch = vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockArtistResponse,
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockTracksResponse,
+        } as Response)
+
+      await client.getTopTracks('Test Artist')
+
+      expect(global.fetch).toHaveBeenNthCalledWith(
+        2,
+        'https://api.deezer.com/artist/123/top?limit=5'
+      )
+    })
+  })
 })

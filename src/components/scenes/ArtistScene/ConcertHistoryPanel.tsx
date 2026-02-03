@@ -89,10 +89,15 @@ export function ConcertHistoryPanel({
     navigate(`/?scene=venues&venue=${normalizedVenue}&artist=${normalizedArtist}`)
   }
 
+  // Responsive sizing: 460px on desktop/tablet landscape (1024px+), 400px on smaller viewports
+  const panelSize = typeof window !== 'undefined' && window.innerWidth >= 1024 ? 460 : 400
+
   return (
     <div
-      className={`${isPhone ? 'w-full h-full' : 'w-[400px] h-[400px]'} flex flex-col p-8`}
+      className={`flex flex-col ${isPhone ? 'w-full h-full p-6' : 'p-10'}`}
       style={{
+        width: isPhone ? '100%' : `${panelSize}px`,
+        height: isPhone ? '100%' : `${panelSize}px`,
         background: 'linear-gradient(145deg, #181818 0%, #121212 100%)',
         borderRadius: '4px',
         boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)'

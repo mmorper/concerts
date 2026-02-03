@@ -25,6 +25,33 @@ interface DeezerSearchResponse {
   next?: string
 }
 
+interface DeezerTrack {
+  id: number
+  title: string
+  preview: string | null
+  duration: number
+  rank: number
+  album: {
+    title: string
+    cover_medium: string
+  }
+  link: string
+}
+
+interface DeezerTopTracksResponse {
+  data: DeezerTrack[]
+  total: number
+}
+
+export interface NormalizedTrack {
+  name: string
+  previewUrl: string | null
+  durationMs: number
+  albumName: string
+  albumArt: string
+  streamingUrl: string
+}
+
 export class DeezerClient {
   private baseUrl = 'https://api.deezer.com'
 
@@ -86,6 +113,55 @@ export class DeezerClient {
       genres: [], // Deezer doesn't provide genres in search endpoint
       source: 'deezer' as const,
       fetchedAt: new Date().toISOString(),
+    }
+  }
+
+  /**
+   * Get top tracks by popularity with preview URLs
+   * Returns normalized track data in common format
+   */
+  async getTopTracks(artistName: string, limit: number = 5): Promise<NormalizedTrack[]> {
+    try {
+      // Step 1: Search for artist
+      const artists = await this.searchArtist(artistName)
+      if (!artists || artists.length === 0) {
+        return []
+      }
+
+      const artistId = artists[0].id
+
+      // Step 2: Get top tracks
+      const url = `${this.baseUrl}/artist/${artistId}/top?limit=${limit}`
+      const response = await fetch(url)
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          console.warn('  ⚠️  Rate limit hit, waiting 2 seconds...')
+          await new Promise(resolve => setTimeout(resolve, 2000))
+          return this.getTopTracks(artistName, limit) // Retry once
+        }
+        throw new Error(`Deezer API error: ${response.status}`)
+      }
+
+      const data: DeezerTopTracksResponse = await response.json()
+
+      if (!data.data || data.data.length === 0) {
+        return []
+      }
+
+      // Normalize to common format
+      return data.data.map(track => ({
+        name: track.title,
+        previewUrl: track.preview || null,
+        durationMs: track.duration * 1000, // Deezer returns seconds, convert to ms
+        albumName: track.album.title,
+        albumArt: track.album.cover_medium,
+        streamingUrl: track.link
+      }))
+
+    } catch (error) {
+      console.error(`Failed to fetch top tracks from Deezer: ${artistName}`, error)
+      return []
     }
   }
 }

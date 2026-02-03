@@ -38,6 +38,1003 @@ Implement a 30-second audio preview mini-player in the Artist Gatefold using **D
 
 ---
 
+## Design Specifications
+
+### Visual Overview
+
+The audio preview player follows industry-standard music player patterns (Spotify, Apple Music) with a dark aesthetic that matches the gatefold's concert history panel.
+
+**Panel Dimensions:**
+- Desktop: 400×400px
+- Mobile: Full-width panel, height determined by device
+
+**Layout Structure:**
+```
+┌─────────────────────────────────────┐
+│  🎵 TOP TRACKS                      │
+│                                     │
+│  ▶ Play All                         │
+│                                     │
+│  [Track List - 5 rows]              │
+│                                     │
+│  🔗 Listen on Deezer/Apple Music    │
+└─────────────────────────────────────┘
+```
+
+---
+
+### Section Header
+
+**Layout:**
+```tsx
+<div className="flex items-center gap-2 mb-4">
+  <MusicalNoteIcon className="w-[18px] h-[18px] text-gray-400" />
+  <span className="font-sans text-xs font-semibold text-gray-400
+    uppercase tracking-wider">
+    Top Tracks
+  </span>
+</div>
+```
+
+**Specifications:**
+- Icon: Heroicons `MusicalNoteIcon` (outline variant)
+- Size: 18×18px
+- Color: `text-gray-400` (#9ca3af)
+- Label: "TOP TRACKS" (all caps, 12px, 600 weight, 0.05em letter-spacing)
+- No source branding (Spotify logo removed)
+- Generic music icon indicates music content
+
+---
+
+### Play All Button
+
+**Placement:** Below section header, above track list
+
+**Specifications:**
+```tsx
+<button className="
+  w-10 h-10 rounded-full
+  bg-white hover:bg-gray-100
+  shadow-md hover:shadow-lg hover:scale-105
+  transition-all duration-200
+  flex items-center justify-center
+  mb-4
+">
+  <PlayIcon className="w-5 h-5 fill-black ml-0.5" />
+</button>
+```
+
+**States:**
+- Default: White background, black play icon
+- Hover: Slight scale (1.05), increased shadow
+- Playing: Replace play icon with pause icon
+- Disabled: `opacity-50 cursor-not-allowed` (no tracks available)
+
+**Behavior:**
+- Starts playback from first available preview
+- If clicked while playing, pauses current track
+- Auto-advances through all tracks with previews
+
+---
+
+### Track Row Layout
+
+**Structure (5 rows, ~52px height each):**
+
+```
+[#] [Album Art] [Track Name     ] [Duration/Icon]
+                [Album Name     ]
+```
+
+**Column Breakdown:**
+| Column | Width | Content |
+|--------|-------|---------|
+| Track # | 20px | Number / Play Icon / Equalizer |
+| Spacing | 12px | Gap |
+| Album Art | 40px | 40×40px rounded image |
+| Spacing | 12px | Gap |
+| Track Info | flex-1 | Name (14px) + Album (12px) |
+| Spacing | 8px | Gap |
+| Duration | 40px | Time (mm:ss) or Pause icon |
+
+**Total Row Height:** 52px (44px min + 8px padding)
+
+---
+
+### Track Row States
+
+#### 1. Default State (Has Preview, Not Playing)
+
+```tsx
+<div className="
+  flex items-center gap-3 p-3 rounded-lg
+  cursor-pointer transition-all duration-200
+  hover:bg-white/5
+">
+  {/* Track Number */}
+  <span className="w-5 text-center text-sm text-gray-400">
+    {number}
+  </span>
+
+  {/* Album Art */}
+  <img
+    src={albumArt}
+    alt={albumName}
+    className="w-10 h-10 rounded flex-shrink-0"
+  />
+
+  {/* Track Info */}
+  <div className="flex-1 min-w-0">
+    <p className="text-sm font-medium text-gray-300 truncate">
+      {trackName}
+    </p>
+    <p className="text-xs text-gray-400 truncate">
+      {albumName}
+    </p>
+  </div>
+
+  {/* Duration */}
+  <span className="w-10 text-center text-xs text-gray-400">
+    {duration}
+  </span>
+</div>
+```
+
+**Visual Characteristics:**
+- Background: Transparent
+- Track number: Visible (1-5)
+- Text: Gray tones
+- Cursor: Pointer
+- Hover: Subtle white overlay (5% opacity)
+
+---
+
+#### 2. Hover State (Desktop Only)
+
+**Changes on hover:**
+- Background: `bg-white/5` (5% white overlay)
+- Track number → Play icon (▶)
+- Play icon: `text-gray-400 group-hover:text-white`
+
+```tsx
+<div className="group">
+  {/* Track Number becomes Play Icon */}
+  <div className="w-5 flex items-center justify-center">
+    {showPlayIcon ? (
+      <PlayIcon className="w-4 h-4 text-gray-400 group-hover:text-white
+        transition-colors" />
+    ) : (
+      <span className="text-sm text-gray-400">{number}</span>
+    )}
+  </div>
+</div>
+```
+
+**Note:** Mobile (touch) devices skip this state - they go directly to playing on tap.
+
+---
+
+#### 3. Playing State
+
+**Visual changes:**
+- Background: `bg-white/5` (persists)
+- Track number → **Animated equalizer bars** (3 vertical bars, bouncing)
+- Track name: `text-white` (brighter, from gray-300)
+- Album name: `text-gray-400` (unchanged)
+- Duration → **Pause icon** (⏸)
+
+```tsx
+{isPlaying && (
+  <>
+    {/* Equalizer replaces track number */}
+    <div className="w-5 flex items-center justify-center">
+      <EqualizerIcon className="w-4 h-4 text-white" />
+    </div>
+
+    {/* Track name brighter */}
+    <p className="text-sm font-medium text-white truncate">
+      {trackName}
+    </p>
+
+    {/* Pause icon replaces duration */}
+    <div className="w-10 flex items-center justify-center">
+      <PauseIcon className="w-5 h-5 text-white" />
+    </div>
+  </>
+)}
+```
+
+**Equalizer Animation:**
+- 3 vertical bars (2px width each, 4px gap)
+- Heights: 4px, 8px, 6px (randomized bouncing)
+- Animation: `animate-bounce` staggered delays
+- Color: White (#ffffff)
+
+---
+
+#### 4. Disabled State (No Preview Available)
+
+**Visual changes:**
+- Entire row: `opacity-40 cursor-not-allowed`
+- Track number: Shows number (no play icon on hover)
+- Duration replaced with: "No preview" text
+- No hover effect
+
+```tsx
+<div className="
+  flex items-center gap-3 p-3 rounded-lg
+  opacity-40 cursor-not-allowed
+">
+  {/* Track number remains visible */}
+  <span className="w-5 text-center text-sm text-gray-400">
+    {number}
+  </span>
+
+  {/* Album art (grayed out) */}
+  <img
+    src={albumArt}
+    className="w-10 h-10 rounded flex-shrink-0 grayscale"
+  />
+
+  {/* Track info (muted) */}
+  <div className="flex-1 min-w-0">
+    <p className="text-sm font-medium text-gray-500 truncate">
+      {trackName}
+    </p>
+    <p className="text-xs text-gray-500 truncate">
+      {albumName}
+    </p>
+  </div>
+
+  {/* "No preview" label */}
+  <span className="text-[10px] text-gray-500">
+    No preview
+  </span>
+</div>
+```
+
+**Note:** Users cannot interact with disabled tracks. They are shown for context (complete Top 5 list) but clearly indicated as unavailable.
+
+---
+
+### Color Palette
+
+| Element | Default | Hover | Active/Playing | Disabled |
+|---------|---------|-------|----------------|----------|
+| Background | `#121212` | `rgba(255,255,255,0.05)` | `rgba(255,255,255,0.05)` | `#121212` |
+| Track Number | `#9ca3af` | Play icon | Equalizer (white) | `#6b7280` |
+| Track Name | `#d1d5db` | `#d1d5db` | `#ffffff` | `#6b7280` |
+| Album Name | `#9ca3af` | `#9ca3af` | `#9ca3af` | `#6b7280` |
+| Duration | `#9ca3af` | `#9ca3af` | Pause icon (white) | — |
+| Play All Button | `#ffffff` | `#f3f4f6` | `#ffffff` | `#6b7280` |
+
+**Contrast Ratios (WCAG AA):**
+- White text on `#121212`: 15.3:1 ✅
+- Gray-300 text on `#121212`: 10.2:1 ✅
+- Gray-400 text on `#121212`: 7.1:1 ✅
+
+---
+
+### Typography
+
+| Element | Font | Size | Weight | Color | Line Height |
+|---------|------|------|--------|-------|-------------|
+| Section Label | Source Sans | 12px | 600 | Gray-400 | 1.2 |
+| Track Name | Source Sans | 14px | 500 | Gray-300/White | 1.3 |
+| Album Name | Source Sans | 12px | 400 | Gray-400 | 1.3 |
+| Duration | Source Sans | 12px | 400 | Gray-400 | 1.2 |
+| Streaming Link | Source Sans | 12px | 400 | Gray-400 | 1.4 |
+
+**Text Truncation:**
+- Track names: `truncate` (single line with ellipsis)
+- Album names: `truncate` (single line with ellipsis)
+- Long names never wrap to preserve row height
+
+---
+
+### Spacing & Sizing
+
+**Panel Padding:**
+- Desktop: `p-8` (32px all sides)
+- Mobile: `p-6` (24px all sides)
+
+**Section Spacing:**
+- Header → Play button: `mb-4` (16px)
+- Play button → Track list: `mb-4` (16px)
+- Track rows: `gap-1` (4px vertical spacing)
+- Track list → Streaming link: `mt-4` (16px)
+
+**Element Sizing:**
+- Play All button: 40×40px (min-height: 44px with padding)
+- Track row height: 52px (ensures 44px+ tap target)
+- Album art: 40×40px
+- Icons: 16-20px (depending on context)
+
+**Mobile Adjustments:**
+- Track row height: 52px (maintained for touch)
+- Album art: 36×36px (slightly smaller)
+- Panel padding: 24px (reduced from 32px)
+- Hide duration on very narrow screens (<350px width)
+
+---
+
+### Streaming Link Footer
+
+**Layout:**
+```tsx
+<div className="mt-4 pt-4 border-t border-white/10">
+  <a
+    href={streamingUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center justify-center gap-2 text-xs
+      text-gray-400 hover:text-white transition-colors group"
+  >
+    <ExternalLinkIcon className="w-3.5 h-3.5" />
+    <span>Listen on {source === 'deezer' ? 'Deezer' : 'Apple Music'}</span>
+  </a>
+</div>
+```
+
+**Specifications:**
+- Border: 1px solid `rgba(255,255,255,0.1)` above link
+- Padding: 16px top
+- Text: 12px, gray-400
+- Icon: Heroicons `ArrowTopRightOnSquareIcon` (3.5×3.5)
+- Hover: Text and icon turn white
+- Dynamic label: "Deezer" or "Apple Music" based on source
+
+---
+
+### Empty States
+
+#### 1. Coming Soon (Skeleton State)
+
+**Used when:** Feature not yet implemented or data not loaded
+
+```tsx
+<div className="flex flex-col items-center justify-center h-full py-12">
+  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center
+    justify-center mb-4">
+    <MusicalNoteIcon className="w-6 h-6 text-gray-600" />
+  </div>
+  <p className="font-sans text-sm text-gray-500 mb-1">
+    Track Previews
+  </p>
+  <p className="font-sans text-xs text-gray-600">
+    Coming Soon
+  </p>
+</div>
+```
+
+---
+
+#### 2. No Data Available
+
+**Used when:** Artist doesn't meet quality bar (< 40% preview coverage)
+
+```tsx
+<div className="flex flex-col items-center justify-center h-full py-12">
+  <div className="w-12 h-12 rounded-full bg-white/5 flex items-center
+    justify-center mb-4">
+    <MusicalNoteIcon className="w-6 h-6 text-gray-700" />
+  </div>
+  <p className="font-sans text-sm text-gray-500 text-center px-8">
+    Track previews not available for this artist
+  </p>
+</div>
+```
+
+**Visual Differences:**
+- "Coming Soon" uses brighter icon (gray-600)
+- "Not Available" uses dimmer icon (gray-700)
+- "Not Available" is artist-specific (some artists have data, others don't)
+
+---
+
+### Interactive Behaviors
+
+#### Click/Tap Behavior
+
+**Entire track row is clickable:**
+- Click anywhere on row → Play/pause that track
+- 52px row height = large touch target (exceeds 44px minimum)
+- Clear hover feedback (desktop) indicates clickability
+
+**Play All button:**
+- Starts playback from first track with preview URL
+- If already playing, pauses current track
+- Disabled if no tracks have previews
+
+**Streaming link:**
+- Opens Deezer/Apple Music in new tab
+- Does NOT pause playback (keeps playing in background)
+
+---
+
+#### Auto-Advance Logic
+
+**When a track ends:**
+1. Find next track with `previewUrl !== null`
+2. If found, start playing that track
+3. If no more tracks, stop playback and reset UI
+
+**Example flow:**
+- Tracks 1, 3, 5 have previews
+- Tracks 2, 4 do not
+- Play All → Plays 1 → Auto-advances to 3 → Auto-advances to 5 → Stops
+
+---
+
+#### Gatefold Close Behavior
+
+**When user closes gatefold:**
+1. Stop audio playback immediately
+2. Reset player state (no track playing)
+3. Clear audio element source
+4. Prevent audio from continuing in background
+
+```tsx
+useEffect(() => {
+  // Cleanup when gatefold closes
+  return () => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.src = ''
+    }
+  }
+}, [])
+```
+
+---
+
+### Accessibility
+
+#### Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| `Tab` | Move focus between Play All button and track rows |
+| `Shift + Tab` | Move focus backward |
+| `Enter` / `Space` | Play/pause focused track or activate Play All |
+| `Escape` | Close gatefold (stops playback) |
+
+**Focus Indicators:**
+```tsx
+<div className="
+  focus-visible:outline-none
+  focus-visible:ring-2
+  focus-visible:ring-white/50
+  focus-visible:ring-offset-2
+  focus-visible:ring-offset-[#121212]
+">
+```
+
+---
+
+#### ARIA Attributes
+
+**Player Container:**
+```tsx
+<div
+  role="region"
+  aria-label={`Top tracks by ${artistName}`}
+>
+```
+
+**Track List:**
+```tsx
+<div role="list" aria-label="Track list">
+  {tracks.map((track, i) => (
+    <div
+      role="listitem"
+      aria-label={`${track.name}, ${track.albumName}, ${formatDuration(track.durationMs)}`}
+      aria-disabled={!track.previewUrl}
+      tabIndex={track.previewUrl ? 0 : -1}
+    >
+  ))}
+</div>
+```
+
+**Live Region Announcements:**
+```tsx
+{isPlaying && (
+  <div aria-live="polite" className="sr-only">
+    Now playing: {tracks[currentIndex].name}
+  </div>
+)}
+```
+
+**Play All Button:**
+```tsx
+<button
+  aria-label={isPlaying ? "Pause all tracks" : "Play all tracks"}
+  aria-pressed={isPlaying}
+>
+```
+
+---
+
+#### Screen Reader Support
+
+**Disabled tracks:**
+- Use `aria-disabled="true"`
+- Include "No preview available" in aria-label
+- Remove from tab order (`tabIndex={-1}`)
+
+**Currently playing:**
+- Announce track name via `aria-live="polite"`
+- Update button labels dynamically (Play → Pause)
+- Provide audio element with `aria-hidden="true"` (hidden but functional)
+
+---
+
+### Animation Specifications
+
+#### Equalizer Animation (Playing Indicator)
+
+**Structure:**
+```tsx
+<div className="flex items-end gap-0.5 h-4">
+  <div className="w-0.5 bg-white animate-bounce" style={{
+    animationDelay: '0ms',
+    animationDuration: '800ms'
+  }} />
+  <div className="w-0.5 bg-white animate-bounce" style={{
+    animationDelay: '200ms',
+    animationDuration: '900ms'
+  }} />
+  <div className="w-0.5 bg-white animate-bounce" style={{
+    animationDelay: '400ms',
+    animationDuration: '850ms'
+  }} />
+</div>
+```
+
+**Specifications:**
+- 3 bars, 2px width each, 4px total height
+- Staggered bounce animation (200ms offsets)
+- Varying durations (800-900ms) for natural feel
+- White color (#ffffff)
+
+---
+
+#### Hover Transitions
+
+**All interactive elements:**
+- Duration: `200ms`
+- Easing: `cubic-bezier(0.4, 0, 0.2, 1)` (ease-out)
+- Properties: `background-color`, `color`, `transform`, `box-shadow`
+
+**Play All Button:**
+- Hover scale: `transform: scale(1.05)`
+- Shadow increase: `shadow-md` → `shadow-lg`
+- Duration: `200ms`
+
+**Track Rows:**
+- Background fade: 0% → 5% white overlay
+- No scale or movement (maintains list stability)
+
+---
+
+#### Loading States (Future)
+
+**Skeleton while tracks load:**
+- Show 5 gray rectangles (track name placeholders)
+- Pulse animation: `animate-pulse`
+- Duration: 1.5s infinite
+- Opacity range: 0.5 → 1.0
+
+---
+
+### Mobile-Specific Considerations
+
+#### Phone Layout Adjustments
+
+**Changes for phone gatefold (vertical orientation):**
+1. Panel takes full width of device
+2. Reduced padding: `p-6` (24px vs 32px desktop)
+3. Slightly smaller album art: 36×36px (vs 40px desktop)
+4. No hover states (direct tap interaction)
+5. Larger Play All button: 44×44px minimum
+
+**Very narrow screens (<350px):**
+- Hide duration text (only show on playing track as pause icon)
+- Reduce horizontal padding to `p-4` (16px)
+- Slightly smaller album art: 32×32px
+
+---
+
+#### Touch Target Sizes
+
+**Minimum touch targets (iOS/Android guidelines):**
+- Play All button: 44×44px ✅
+- Track row: 52×52px ✅
+- Streaming link: 44px height (with padding) ✅
+
+**All interactive elements meet WCAG 2.5.5 (Target Size) Level AAA**
+
+---
+
+### Responsive Breakpoints
+
+| Breakpoint | Width | Changes |
+|------------|-------|---------|
+| Desktop | ≥1024px | Full 400×400px panel, 40px album art, show duration |
+| Tablet | 768-1023px | Full-width panel, 40px album art, show duration |
+| Mobile | 350-767px | Full-width panel, 36px album art, show duration |
+| Small mobile | <350px | Full-width panel, 32px album art, hide duration except when playing |
+
+---
+
+### Performance Considerations
+
+**Image Loading:**
+- Album art preloaded during gatefold open animation
+- Lazy load non-visible tracks (only top 3 initially)
+- Fallback to gradient placeholder if image fails
+
+**Audio Preloading:**
+- Do NOT preload audio files (waste of bandwidth)
+- Load audio only when user clicks play
+- Use native `<audio>` element (no heavy libraries)
+
+**Animation Performance:**
+- Use `transform` and `opacity` only (GPU-accelerated)
+- Avoid animating `width`, `height`, `top`, `left`
+- Use `will-change: transform` on hover elements
+
+---
+
+## Analytics Tracking
+
+### Overview
+
+Track all user interactions with the audio preview player to understand engagement, identify popular features, and monitor data quality. All events follow project naming conventions (`artist_*` prefix, `snake_case`, past tense verbs).
+
+**Analytics Service:** Use existing `src/services/analytics.ts`
+
+**Core Metrics:**
+- Play rate: % of gatefolds where users play at least one preview
+- Completion rate: % of played tracks that reach 30 seconds
+- Auto-advance usage: % of sessions using Play All vs. individual tracks
+- Data quality: % of artists with insufficient preview coverage
+
+---
+
+### Event Naming Conventions
+
+**Pattern:** `artist_preview_{action}`
+
+**Standard Parameters:**
+- `artist_name` (string) - Display name of artist
+- `device_type` (string) - `'mobile'` or `'desktop'`
+- `track_name` (string) - Track title
+- `track_position` (number) - Position in Top 5 list (1-5)
+- `source` (string) - `'deezer'` or `'itunes'`
+
+---
+
+### Core Events
+
+#### 1. `artist_preview_played`
+
+**Fired when:** User plays a track (via track row click or Play All button).
+
+**Parameters:**
+```typescript
+analytics.trackEvent('artist_preview_played', {
+  artist_name: string,         // "Depeche Mode"
+  track_name: string,           // "Enjoy the Silence"
+  track_position: number,       // 1-5
+  source: 'deezer' | 'itunes',  // Which API provided preview
+  device_type: 'mobile' | 'desktop',
+  trigger: 'track_click' | 'play_all' | 'auto_advance'
+})
+```
+
+**Trigger Values:**
+- `'track_click'` - User clicked specific track row
+- `'play_all'` - Started via Play All button
+- `'auto_advance'` - Previous track ended, auto-advanced
+
+**Implementation:**
+```tsx
+const handlePlay = (trackIndex: number, trigger: string) => {
+  const track = tracks[trackIndex]
+  analytics.trackEvent('artist_preview_played', {
+    artist_name: artist.name,
+    track_name: track.name,
+    track_position: trackIndex + 1,
+    source: track.source,
+    device_type: isPhone ? 'mobile' : 'desktop',
+    trigger
+  })
+  // Start playback...
+}
+```
+
+---
+
+#### 2. `artist_preview_paused`
+
+**Fired when:** User explicitly pauses playback (clicks pause icon or playing track row).
+
+**Parameters:**
+```typescript
+analytics.trackEvent('artist_preview_paused', {
+  artist_name: string,
+  track_name: string,
+  track_position: number,
+  playback_duration: number,    // Seconds played before pause
+  device_type: 'mobile' | 'desktop'
+})
+```
+
+**Implementation:**
+```tsx
+const handlePause = () => {
+  const elapsed = audioRef.current?.currentTime || 0
+  analytics.trackEvent('artist_preview_paused', {
+    artist_name: artist.name,
+    track_name: tracks[currentIndex].name,
+    track_position: currentIndex + 1,
+    playback_duration: Math.round(elapsed * 10) / 10, // Round to 0.1s
+    device_type: isPhone ? 'mobile' : 'desktop'
+  })
+  // Pause audio...
+}
+```
+
+**Note:** Do NOT fire this event when gatefold closes (use cleanup logic, not analytics).
+
+---
+
+#### 3. `artist_preview_track_changed`
+
+**Fired when:** Playing track changes (manual click or auto-advance).
+
+**Parameters:**
+```typescript
+analytics.trackEvent('artist_preview_track_changed', {
+  artist_name: string,
+  from_track_position: number,  // Previous track (1-5)
+  to_track_position: number,    // New track (1-5)
+  change_type: 'manual' | 'auto_advance',
+  device_type: 'mobile' | 'desktop'
+})
+```
+
+**Change Types:**
+- `'manual'` - User clicked different track while one was playing
+- `'auto_advance'` - Previous track ended, automatically moved to next
+
+**Implementation:**
+```tsx
+const handleTrackChange = (newIndex: number, isAutoAdvance: boolean) => {
+  if (currentIndex !== null) {
+    analytics.trackEvent('artist_preview_track_changed', {
+      artist_name: artist.name,
+      from_track_position: currentIndex + 1,
+      to_track_position: newIndex + 1,
+      change_type: isAutoAdvance ? 'auto_advance' : 'manual',
+      device_type: isPhone ? 'mobile' : 'desktop'
+    })
+  }
+  // Change track...
+}
+```
+
+---
+
+#### 4. `artist_preview_play_all_clicked`
+
+**Fired when:** User clicks the Play All button.
+
+**Parameters:**
+```typescript
+analytics.trackEvent('artist_preview_play_all_clicked', {
+  artist_name: string,
+  available_tracks: number,     // How many tracks have preview URLs (1-5)
+  total_tracks: number,         // Always 5
+  device_type: 'mobile' | 'desktop'
+})
+```
+
+**Implementation:**
+```tsx
+const handlePlayAll = () => {
+  const availableCount = tracks.filter(t => t.previewUrl).length
+
+  analytics.trackEvent('artist_preview_play_all_clicked', {
+    artist_name: artist.name,
+    available_tracks: availableCount,
+    total_tracks: tracks.length,
+    device_type: isPhone ? 'mobile' : 'desktop'
+  })
+
+  // Start playback from first track with preview...
+}
+```
+
+**Analysis Use Cases:**
+- Compare Play All usage vs. individual track clicks
+- Identify if users prefer auto-advance playlist mode
+- Correlate available track count with Play All usage
+
+---
+
+#### 5. `artist_preview_unavailable`
+
+**Fired when:** Audio preview section renders but no tracks meet quality bar (< 40% preview coverage).
+
+**Parameters:**
+```typescript
+analytics.trackEvent('artist_preview_unavailable', {
+  artist_name: string,
+  reason: 'no_data' | 'insufficient_coverage' | 'api_error',
+  available_tracks: number,     // How many tracks had preview URLs
+  total_tracks: number,         // Tracks returned from API
+  device_type: 'mobile' | 'desktop'
+})
+```
+
+**Reason Values:**
+- `'no_data'` - API returned no tracks or artist not found
+- `'insufficient_coverage'` - Tracks exist but < 40% have preview URLs
+- `'api_error'` - API request failed
+
+**Implementation:**
+```tsx
+useEffect(() => {
+  if (!topTracksData || !topTracksData.tracks) {
+    analytics.trackEvent('artist_preview_unavailable', {
+      artist_name: artist.name,
+      reason: 'no_data',
+      available_tracks: 0,
+      total_tracks: 0,
+      device_type: isPhone ? 'mobile' : 'desktop'
+    })
+  } else {
+    const availableCount = topTracksData.tracks.filter(t => t.previewUrl).length
+    const coveragePercent = (availableCount / topTracksData.tracks.length) * 100
+
+    if (coveragePercent < 40) {
+      analytics.trackEvent('artist_preview_unavailable', {
+        artist_name: artist.name,
+        reason: 'insufficient_coverage',
+        available_tracks: availableCount,
+        total_tracks: topTracksData.tracks.length,
+        device_type: isPhone ? 'mobile' : 'desktop'
+      })
+    }
+  }
+}, [topTracksData])
+```
+
+**Analysis Use Cases:**
+- Monitor data quality across all artists
+- Identify which API (Deezer vs. iTunes) has better coverage
+- Prioritize artists for manual curation or API fallback
+
+---
+
+### Optional Future Events
+
+These events can be added in later iterations to deepen analysis:
+
+**`artist_preview_completed`** - Track played to 30-second completion
+```typescript
+analytics.trackEvent('artist_preview_completed', {
+  artist_name: string,
+  track_name: string,
+  track_position: number,
+  device_type: 'mobile' | 'desktop'
+})
+```
+
+**`artist_preview_skipped`** - User skipped before 10-second mark
+```typescript
+analytics.trackEvent('artist_preview_skipped', {
+  artist_name: string,
+  track_name: string,
+  track_position: number,
+  playback_duration: number,
+  device_type: 'mobile' | 'desktop'
+})
+```
+
+**`artist_preview_section_viewed`** - Section came into viewport (impression tracking)
+```typescript
+analytics.trackEvent('artist_preview_section_viewed', {
+  artist_name: string,
+  available_tracks: number,
+  device_type: 'mobile' | 'desktop'
+})
+```
+
+**`artist_preview_streaming_link_clicked`** - User clicked "Listen on Deezer/Apple Music"
+```typescript
+analytics.trackEvent('artist_preview_streaming_link_clicked', {
+  artist_name: string,
+  source: 'deezer' | 'itunes',
+  was_playing: boolean,        // Was audio playing when link clicked?
+  device_type: 'mobile' | 'desktop'
+})
+```
+
+---
+
+### Implementation Notes
+
+**Service Import:**
+```tsx
+import { analytics } from '@/services/analytics'
+```
+
+**Device Type Detection:**
+```tsx
+const isPhone = /* existing gatefold phone detection logic */
+const deviceType = isPhone ? 'mobile' : 'desktop'
+```
+
+**Event Timing:**
+- Fire events **after** user action completes successfully
+- Do NOT fire events on failed actions (e.g., audio load error)
+- Do NOT fire duplicate events for same interaction
+
+**Error Handling:**
+- Wrap analytics calls in try-catch (don't break UI if analytics fails)
+- Log analytics errors to console (dev mode only)
+
+**Privacy:**
+- No personally identifiable information (PII) in events
+- Artist names and track names are public data
+- Device type is aggregated category, not fingerprinting
+
+---
+
+### Data Quality Monitoring
+
+**Key Metrics to Track:**
+
+1. **Preview Availability Rate**
+   - Formula: `artist_preview_played` / (`artist_preview_played` + `artist_preview_unavailable`)
+   - Target: >90% (at least 230 of 254 artists have playable previews)
+
+2. **Play Engagement Rate**
+   - Formula: `artist_preview_played` / `artist_card_opened` (existing event)
+   - Target: >30% (at least 3 in 10 gatefolds result in preview playback)
+
+3. **Play All vs. Individual Track**
+   - Formula: `artist_preview_play_all_clicked` / total `artist_preview_played` events
+   - Insight: Do users prefer playlist mode or browsing individual tracks?
+
+4. **Auto-Advance Completion**
+   - Formula: Count of `auto_advance` triggers in `artist_preview_track_changed`
+   - Insight: Are users listening through multiple tracks or stopping after one?
+
+5. **Coverage Quality by Source**
+   - Group `artist_preview_unavailable` by `source` (Deezer vs. iTunes)
+   - Insight: Which API provides better preview coverage?
+
+**Dashboard Queries (Google Analytics 4):**
+
+```
+Event: artist_preview_played
+Dimensions: artist_name, source, device_type
+Metrics: Event count, unique users
+```
+
+```
+Event: artist_preview_unavailable
+Dimensions: reason, source
+Metrics: Event count
+Filter: Last 30 days
+```
+
+---
+
 ## Data Architecture
 
 ### Source Files

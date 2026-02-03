@@ -24,11 +24,12 @@ interface ArtistGatefoldProps {
 }
 
 // Constants matching prototype
-const PANEL_SIZE = 400
+// Desktop: 460px panels (eliminates scroll for 5 tracks)
+// Smaller viewports: 400px panels (for tighter screens)
+const PANEL_SIZE_LARGE = 460
+const PANEL_SIZE_SMALL = 400
 const SPINE_WIDTH = 12
 const SPINE_HEIGHT = 12 // Phone spine height
-const CLOSED_WIDTH = PANEL_SIZE
-const OPEN_WIDTH = PANEL_SIZE + SPINE_WIDTH + PANEL_SIZE // 812px
 
 /**
  * Main gatefold overlay component
@@ -72,6 +73,13 @@ export function ArtistGatefold({
 
   // Phone/desktop orientation detection (v3.2.0)
   const { isPhone, dimensions, safeAreas } = useGatefoldOrientation()
+
+  // Responsive panel sizing: larger panels on desktop/tablet landscape (1024px+)
+  const PANEL_SIZE = typeof window !== 'undefined' && window.innerWidth >= 1024
+    ? PANEL_SIZE_LARGE
+    : PANEL_SIZE_SMALL
+  const CLOSED_WIDTH = PANEL_SIZE
+  const OPEN_WIDTH = PANEL_SIZE + SPINE_WIDTH + PANEL_SIZE
 
   // Phone helper functions (v3.2.0)
   const getPhonePanelHeight = () => {
@@ -577,10 +585,11 @@ export function ArtistGatefold({
                 >
                   {/* Vertical Spine (Desktop) */}
                   <div
-                    className={`absolute left-[-6px] top-0 w-[12px] h-[400px] rounded-sm transition-opacity duration-400 ${
+                    className={`absolute left-[-6px] top-0 w-[12px] rounded-sm transition-opacity duration-400 ${
                       isOpen ? 'opacity-100 delay-300' : 'opacity-0'
                     }`}
                     style={{
+                      height: `${PANEL_SIZE}px`,
                       background: 'linear-gradient(to right, #0a0a0a 0%, #1a1a1a 20%, #0a0a0a 50%, #1a1a1a 80%, #0a0a0a 100%)',
                       boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.8)',
                       zIndex: 15
