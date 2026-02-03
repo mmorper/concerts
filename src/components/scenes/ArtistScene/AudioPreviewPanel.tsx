@@ -1,6 +1,8 @@
 import { Music } from 'lucide-react'
+import { useEffect } from 'react'
 import { useArtistTopTracks } from '../../../hooks/useArtistTopTracks'
 import { AudioPreviewPlayer } from './AudioPreviewPlayer'
+import { analytics } from '../../../services/analytics'
 import type { ArtistCard } from './types'
 
 interface AudioPreviewPanelProps {
@@ -45,7 +47,7 @@ export function AudioPreviewPanel({ artist, isPhone = false }: AudioPreviewPanel
           <LoadingState />
         ) : error ? (
           // Error State
-          <ErrorState message={error} />
+          <ErrorState message={error} artistName={artist.name} isPhone={isPhone} />
         ) : tracks && tracks.length > 0 && source && streamingUrl ? (
           // Player State
           <AudioPreviewPlayer
@@ -57,7 +59,7 @@ export function AudioPreviewPanel({ artist, isPhone = false }: AudioPreviewPanel
           />
         ) : (
           // Empty State (no data available for this artist)
-          <EmptyState />
+          <EmptyState artistName={artist.name} isPhone={isPhone} />
         )}
       </div>
     </div>
@@ -87,7 +89,23 @@ function LoadingState() {
  * Empty state when no tracks are available for this artist
  * (Artist doesn't meet 40% preview coverage quality bar)
  */
-function EmptyState() {
+function EmptyState({ artistName, isPhone }: { artistName?: string; isPhone?: boolean }) {
+  useEffect(() => {
+    if (artistName) {
+      try {
+        analytics.trackEvent('artist_preview_unavailable', {
+          artist_name: artistName,
+          reason: 'insufficient_coverage',
+          available_tracks: 0,
+          total_tracks: 0,
+          device_type: isPhone ? 'mobile' : 'desktop'
+        })
+      } catch (error) {
+        console.error('[AudioPreview] Analytics error:', error)
+      }
+    }
+  }, [artistName, isPhone])
+
   return (
     <div className="flex flex-col items-center justify-center h-full py-12">
       <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-4">
@@ -103,7 +121,23 @@ function EmptyState() {
 /**
  * Error state when data loading fails
  */
-function ErrorState({ message }: { message: string }) {
+function ErrorState({ message, artistName, isPhone }: { message: string; artistName?: string; isPhone?: boolean }) {
+  useEffect(() => {
+    if (artistName) {
+      try {
+        analytics.trackEvent('artist_preview_unavailable', {
+          artist_name: artistName,
+          reason: 'api_error',
+          available_tracks: 0,
+          total_tracks: 0,
+          device_type: isPhone ? 'mobile' : 'desktop'
+        })
+      } catch (error) {
+        console.error('[AudioPreview] Analytics error:', error)
+      }
+    }
+  }, [artistName, isPhone])
+
   return (
     <div className="flex flex-col items-center justify-center h-full py-12">
       <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-4">

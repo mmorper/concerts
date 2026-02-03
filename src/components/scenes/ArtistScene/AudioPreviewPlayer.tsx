@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { ExternalLink } from 'lucide-react'
 import { TrackRow } from './TrackRow'
 import type { TopTrack } from '../../../types/artist'
+import { analytics } from '../../../services/analytics'
 
 interface AudioPreviewPlayerProps {
   artistName: string
@@ -30,7 +31,7 @@ export function AudioPreviewPlayer({
   /**
    * Play a specific track by index
    */
-  const playTrack = useCallback((index: number) => {
+  const playTrack = useCallback((index: number, trigger: 'track_click' | 'auto_advance' = 'track_click') => {
     const track = tracks[index]
     const audio = audioRef.current
 
@@ -42,9 +43,37 @@ export function AudioPreviewPlayer({
     // If clicking same track, toggle play/pause
     if (index === currentIndex) {
       if (isPlaying) {
+        // Track pause event
+        try {
+          const elapsed = audio.currentTime || 0
+          analytics.trackEvent('artist_preview_paused', {
+            artist_name: artistName,
+            track_name: track.name,
+            track_position: index + 1,
+            playback_duration: Math.round(elapsed * 10) / 10,
+            device_type: isPhone ? 'mobile' : 'desktop'
+          })
+        } catch (error) {
+          console.error('[AudioPreview] Analytics error:', error)
+        }
+
         audio.pause()
         setIsPlaying(false)
       } else {
+        // Track play event (resume)
+        try {
+          analytics.trackEvent('artist_preview_played', {
+            artist_name: artistName,
+            track_name: track.name,
+            track_position: index + 1,
+            source: source,
+            device_type: isPhone ? 'mobile' : 'desktop',
+            trigger: 'track_click'
+          })
+        } catch (error) {
+          console.error('[AudioPreview] Analytics error:', error)
+        }
+
         audio.play().catch(error => {
           console.error('[AudioPreview] Playback failed:', error, track)
           setIsPlaying(false)
@@ -52,6 +81,21 @@ export function AudioPreviewPlayer({
         setIsPlaying(true)
       }
       return
+    }
+
+    // Track manual track change if switching from another playing track
+    if (currentIndex !== null && trigger === 'track_click') {
+      try {
+        analytics.trackEvent('artist_preview_track_changed', {
+          artist_name: artistName,
+          from_track_position: currentIndex + 1,
+          to_track_position: index + 1,
+          change_type: 'manual',
+          device_type: isPhone ? 'mobile' : 'desktop'
+        })
+      } catch (error) {
+        console.error('[AudioPreview] Analytics error:', error)
+      }
     }
 
     // New track: load and play
@@ -62,13 +106,27 @@ export function AudioPreviewPlayer({
     audio.play()
       .then(() => {
         setIsPlaying(true)
+
+        // Track play event for new track
+        try {
+          analytics.trackEvent('artist_preview_played', {
+            artist_name: artistName,
+            track_name: track.name,
+            track_position: index + 1,
+            source: source,
+            device_type: isPhone ? 'mobile' : 'desktop',
+            trigger: trigger
+          })
+        } catch (error) {
+          console.error('[AudioPreview] Analytics error:', error)
+        }
       })
       .catch(error => {
         console.error('[AudioPreview] Failed to load/play track:', error, track)
         setIsPlaying(false)
         setCurrentIndex(null)
       })
-  }, [tracks, currentIndex, isPlaying])
+  }, [tracks, currentIndex, isPlaying, artistName, source, isPhone])
 
 
   /**
@@ -83,7 +141,20 @@ export function AudioPreviewPlayer({
       let nextIndex = (currentIndex ?? -1) + 1
       while (nextIndex < tracks.length) {
         if (tracks[nextIndex].previewUrl) {
-          playTrack(nextIndex)
+          // Track auto-advance event
+          try {
+            analytics.trackEvent('artist_preview_track_changed', {
+              artist_name: artistName,
+              from_track_position: (currentIndex ?? 0) + 1,
+              to_track_position: nextIndex + 1,
+              change_type: 'auto_advance',
+              device_type: isPhone ? 'mobile' : 'desktop'
+            })
+          } catch (error) {
+            console.error('[AudioPreview] Analytics error:', error)
+          }
+
+          playTrack(nextIndex, 'auto_advance')
           return
         }
         nextIndex++
@@ -95,7 +166,7 @@ export function AudioPreviewPlayer({
 
     audio.addEventListener('ended', handleEnded)
     return () => audio.removeEventListener('ended', handleEnded)
-  }, [currentIndex, tracks, playTrack])
+  }, [currentIndex, tracks, playTrack, artistName, isPhone])
 
   /**
    * Setup audio error handling
@@ -172,6 +243,18 @@ export function AudioPreviewPlayer({
             href={streamingUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => {
+              try {
+                analytics.trackEvent('artist_preview_streaming_link_clicked', {
+                  artist_name: artistName,
+                  source: source,
+                  was_playing: isPlaying,
+                  device_type: isPhone ? 'mobile' : 'desktop'
+                })
+              } catch (error) {
+                console.error('[AudioPreview] Analytics error:', error)
+              }
+            }}
             className="flex items-center justify-center gap-2 text-xs
               text-gray-400 hover:text-white transition-colors group"
           >
