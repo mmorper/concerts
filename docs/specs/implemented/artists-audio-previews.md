@@ -1,9 +1,9 @@
 # Artist Audio Previews - Top Tracks Integration
 
-> **Status:** Planned
+> **Status:** ✅ Implemented
+> **Shipped:** v4.0.0 (2026-02-03)
 > **Priority:** High
-> **Version:** TBD
-> **Related:** [artists-spotify-integration.md](artists-spotify-integration.md), [global-image-sourcing-strategy.md](global-image-sourcing-strategy.md)
+> **Related:** [artists-spotify-integration.md](../archived/artists-spotify-integration-superseded.md), [global-image-sourcing-strategy.md](../archived/global-image-sourcing-strategy-superseded.md)
 
 ---
 
