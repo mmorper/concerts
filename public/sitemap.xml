@@ -262,11 +262,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=brian-setzer-68-comeback-special</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=bruce-springsteen</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -548,6 +543,16 @@
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=bell-biv-devoe</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=alien-fashion-show</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=brian-setzer-68-comeback-special</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1268,6 +1273,76 @@
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=cleopatrick</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=a-certain-ratio</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=abecedarians</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=inner-circle</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=jah-wobble-s-invaders-of-the-heart</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=james</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=p-m-dawn</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=sheila-chandra</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=sin-ad-o-connor</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=stereo-mc-s</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=terem-quartet</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-drummers-of-burundi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=new-morty-show</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=eric-johnson</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=soft-cell</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
