@@ -132,8 +132,8 @@ See [docs/ROADMAP.md](../docs/ROADMAP.md) for current priorities.
 
 **Medium-term:**
 
-1. **Spotify Integration** - Unified image sourcing strategy
-2. **Mobile Optimizations** - Continued gatefold improvements
+1. **Mobile Optimizations** - Continued gatefold improvements
+2. **Performance Enhancements** - Optimize bundle size and loading times
 
 ---
 

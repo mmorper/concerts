@@ -607,7 +607,7 @@ No need to be precious about it—validation will catch any obvious mistakes.
 Before running anything for real, I preview:
 
 ```bash
-npm run build-data -- --dry-run --skip-venues --skip-spotify
+npm run build-data -- --dry-run --skip-venues --skip-tracks
 ```
 
 I'm skipping the expensive operations (venues, Spotify) because I just want to see if the new concerts look right. The dry-run output shows:
@@ -622,7 +622,7 @@ If anything looks wrong, I fix it in the Google Sheet and preview again. No harm
 Once the preview looks good:
 
 ```bash
-npm run build-data -- --skip-venues --skip-spotify
+npm run build-data -- --skip-venues --skip-tracks
 ```
 
 This fetches the data, validates it, enriches artist metadata, and pre-fetches setlists for the new concerts. The venue and Spotify stuff can wait—I typically only refresh those monthly since they change rarely.
@@ -696,10 +696,10 @@ The pipeline supports flags for different scenarios:
 
 ```bash
 # Just concerts + artists (fastest, ~30 seconds)
-npm run build-data -- --skip-venues --skip-spotify --skip-setlists
+npm run build-data -- --skip-venues --skip-tracks --skip-setlists
 
 # Skip validation if I'm confident the data is good
-npm run build-data -- --skip-validation --skip-venues --skip-spotify
+npm run build-data -- --skip-validation --skip-venues --skip-tracks
 
 # Preview without writing anything
 npm run build-data -- --dry-run

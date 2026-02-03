@@ -115,7 +115,7 @@ Phone-specific modal for Artist Scene using mobile-native patterns instead of th
 - Full-screen modal with tabbed navigation (History, Upcoming, Top Tracks)
 - Swipe-down and X to dismiss
 - Setlist overlay slides from right with swipe gestures
-- Color-coded tabs with brand accents (violet, amber, Spotify green)
+- Color-coded tabs with brand accents (violet, amber)
 - On Tour badge with tap-to-navigate to Upcoming tab
 - Deep link copy button with haptic feedback
 
@@ -255,7 +255,7 @@ Visual discography panel in Artist Scene gatefold showing album covers and relea
 - Chronological ordering (newest first)
 - Album filtering by type (studio albums, EPs, live, compilations)
 - Hover to show album title + year
-- Click to link to Spotify album (future integration)
+- Click to link to external album sources (future enhancement)
 - Fallback for missing cover art
 - Data already available in `discography.json` (15k+ albums)
 
@@ -276,24 +276,30 @@ Automatically detect when venue names change and provide CLI tools to manage ven
 
 ---
 
-### Spotify Integration & Unified Image Sourcing
-**Status**: Blocked (Spotify API not accepting new projects)
-**Architecture**: [global-data-normalization-architecture.md](specs/future/global-data-normalization-architecture.md)
+### Spotify Integration
+**Status**: Not Planned (Replaced by iTunes/Deezer implementation in v4.0.0)
 
-**Related Specs**:
+**Note**: The original vision for Spotify integration was blocked due to Spotify API not accepting new projects. This led to implementing audio previews using iTunes/Apple Music (primary) and Deezer (fallback) instead, which provides:
+- 30-second track previews for 252 artists (99.2% coverage)
+- No authentication requirements
+- Album art and track metadata
+- Streaming service deep links
 
-- [artists-spotify-integration.md](specs/future/artists-spotify-integration.md) - Feature spec
-- [runbook-global-spotify-enrichment.md](specs/future/runbook-global-spotify-enrichment.md) - Operations runbook
-- [global-image-sourcing-strategy.md](specs/future/global-image-sourcing-strategy.md) - Image strategy
+**Audio Preview Implementation**:
+- Feature shipped in v4.0.0
+- See [artists-audio-previews.md](specs/future/artists-audio-previews.md) for specification
+- Data pipeline: `npm run enrich:tracks`
+- UI: AudioPreviewPanel in Artist Gatefold
 
-Consolidate image sourcing with Spotify as primary source, TheAudioDB as fallback.
+**Image Sourcing Strategy**:
+Current implementation uses multi-source waterfall:
+- Artist images: TheAudioDB → Last.fm → Deezer
+- Album art: MusicBrainz (discography) + iTunes/Deezer (audio previews)
+- See [global-image-sourcing-strategy.md](specs/archived/global-image-sourcing-strategy-superseded.md) for historical context
 
-**Key Goals**:
-
-- Spotify as primary source for artist metadata (genres, images, audio previews)
-- TheAudioDB as fallback for artists not on Spotify
-- Consistent image quality and sizing across scenes
-- Album art and track previews for Artist Scene gatefold
+**Related Documentation**:
+- [artists-spotify-integration.md](specs/archived/artists-spotify-integration-superseded.md) - Original feature spec (archived)
+- [global-data-normalization-architecture.md](specs/implemented/global-data-normalization-architecture.md) - Data architecture
 
 ---
 

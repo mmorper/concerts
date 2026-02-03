@@ -11,7 +11,7 @@ Refresh concert data from Google Sheets through the complete enrichment pipeline
 | `--full` | No | false | Force refresh all data (ignore cache) |
 | `--skip-setlists` | No | false | Skip setlist pre-fetch |
 | `--skip-venues` | No | false | Skip venue enrichment |
-| `--skip-spotify` | No | false | Skip Spotify enrichment |
+| `--skip-tracks` | No | false | Skip audio preview enrichment |
 
 **Examples:**
 ```
@@ -31,7 +31,7 @@ Refresh concert data from Google Sheets through the complete enrichment pipeline
 | 2. Validate | `npm run validate-data` | ~2s | - |
 | 3. Artists | `npm run enrich` | ~10-90s | - |
 | 4. Venues | `npm run enrich-venues` | ~5-50s | `--skip-venues` |
-| 5. Spotify | `npm run enrich-spotify` | ~20-180s | `--skip-spotify` |
+| 5. Audio Previews | `npm run enrich:tracks` | ~20-180s | `--skip-tracks` |
 | 6. Setlists | `npm run prefetch:setlists` | ~30-260s | `--skip-setlists` |
 
 ---
@@ -51,14 +51,11 @@ GOOGLE_REFRESH_TOKEN ✓
 # Optional (skips step if missing)
 VITE_TICKETMASTER_API_KEY
 VITE_SETLISTFM_API_KEY
-SPOTIFY_CLIENT_ID
-SPOTIFY_CLIENT_SECRET
 GOOGLE_MAPS_API_KEY
 ```
 
 > **Environment Check:**
 > ✅ Google Sheets credentials configured
-> ⚠️ Spotify credentials missing (will skip Spotify enrichment)
 > ✅ setlist.fm API key configured
 >
 > Continue? (yes / configure credentials)
@@ -150,26 +147,27 @@ npm run enrich-venues
 
 ---
 
-### Step 6: Enrich Spotify Metadata
+### Step 6: Enrich Audio Preview Data
 
-See `docs/DATA_PIPELINE.md` → "Spotify Enrichment" for setup and metadata fields.
+See `docs/DATA_PIPELINE.md` → "Audio Preview Enrichment" for complete details.
 
-**Skip with:** `--skip-spotify` or `--quick`
+**Skip with:** `--skip-tracks` or `--quick`
 
 ```bash
-npm run enrich-spotify
+npm run enrich:tracks
 ```
 
-**Source:** Spotify Web API (requires credentials)
+**Sources:** iTunes Search API (primary), Deezer API (fallback) - no credentials required
 
-**Updates:** `public/data/artists-metadata.json`
+**Creates:** `public/data/artists-top-tracks.json`
 
-> 🎵 Enriching Spotify data...
-> - Enriched: 145
-> - Skipped (cached): 25
-> - Failed: 4
+> 🎵 Enriching top tracks with audio previews...
+> - Enriched: 252 artists (99.2% coverage)
+>   └─ iTunes: 250 (98.8%)
+>   └─ Deezer: 2 (0.8%)
+> - Skipped: 2 (below 40% quality bar)
 >
-> ✅ Spotify enrichment complete
+> ✅ Audio preview enrichment complete
 
 ---
 
@@ -241,7 +239,7 @@ If yes, run `/context-sync --stats-only`
 /data-refresh --quick
 ```
 - Fetch + validate only
-- Skips: venues, Spotify, setlists
+- Skips: venues, audio previews, setlists
 - ~10 seconds
 
 ### Full Refresh

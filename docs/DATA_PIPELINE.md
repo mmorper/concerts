@@ -349,7 +349,6 @@ Fetching metadata for: The Go Go's
 - Data is prepared for future features:
   - Artist Scene enhancements
   - Timeline Artist Display modals (v1.3.0+)
-  - Spotify Artist Integration (v1.3.0+)
 
 #### Running Enrichment
 
@@ -656,63 +655,76 @@ npm run prefetch:setlists -- --force-refresh
 
 ---
 
-### 7. Spotify Enrichment (`enrich-spotify-metadata.ts`)
+### 7. Audio Preview Enrichment (`enrich-top-tracks.ts`)
 
 **What it does:**
-- Enriches artist metadata with Spotify data
-- Fetches album covers, top tracks, preview URLs
-- Handles ambiguous artist matches with manual overrides
-- Caches results for 90 days
+- Enriches artist metadata with 30-second audio preview URLs
+- Fetches top 5 tracks per artist from iTunes/Apple Music (primary) or Deezer (fallback)
+- Validates preview URLs with HEAD requests to ensure they're working
+- Only includes artists meeting 40% quality bar (minimum 2 of 5 tracks with valid previews)
+- Caches results for 30 days
 
-**Data Source**: Spotify Web API
-- Requires Client Credentials (see docs/api-setup.md)
-- Rate limit: ~3 requests/second
-- Free tier: Unlimited API calls
+**Data Sources**:
+- **Primary**: iTunes Search API (no authentication required)
+- **Fallback**: Deezer API (no authentication required)
+- Rate limiting: 600ms between requests
+- Preview validation: HEAD request with 5-second timeout
 
-**Metadata Fields Collected**:
+**Metadata Structure**:
 
-| Field | Description | Example |
-|-------|-------------|---------|
-| `spotifyArtistId` | Spotify artist ID | "1w5Kfo2jwwIPruYS2UWh56" |
-| `spotifyArtistUrl` | Artist profile URL | "https://open.spotify.com/artist/..." |
-| `mostPopularAlbum` | Top album with cover art | {...} |
-| `topTracks` | Top 3 tracks with previews | [{...}, {...}, {...}] |
-| `genres` | Spotify genre tags | ["punk rock", "ska punk"] |
-| `popularity` | Popularity score (0-100) | 68 |
+```json
+{
+  "artistName": "Depeche Mode",
+  "normalizedName": "depeche-mode",
+  "tracks": [
+    {
+      "title": "Enjoy the Silence",
+      "album": "Violator",
+      "previewUrl": "https://audio-ssl.itunes.apple.com/...",
+      "albumArt": "https://is1-ssl.mzstatic.com/..."
+    }
+  ],
+  "source": "itunes",
+  "streamingUrl": "https://music.apple.com/us/artist/..."
+}
+```
 
 **Example Output**:
 ```
-🎵 Enriching artist metadata with Spotify data...
+🎵 Enriching top tracks with audio previews...
 
-🔑 Authenticating with Spotify...
-✅ Authenticated
+Processing 254 artists...
 
-Processing 174 artists...
+Fetching: Depeche Mode
+  ✅ iTunes: 5/5 previews validated
 
-Fetching: Social Distortion
-  ✅ Enriched (album: Social Distortion)
-
-Fetching: Boston
-  ⚠️  Review match: "Boston" → "Boston Playlist" (popularity: 15)
-  ✅ Enriched (album: Boston)
+Fetching: The National
+  ⚠️  iTunes: 1/5 previews (below 40% threshold)
+  🔄 Trying Deezer fallback...
+  ✅ Deezer: 3/5 previews validated
 
 📊 Enrichment Summary:
-   ✅ Enriched: 145
-   ⏭️  Skipped (cached): 25
-   ❌ Failed: 4
+   ✅ Enriched: 252 artists (99.2% coverage)
+   └─ iTunes: 250 (98.8%)
+   └─ Deezer: 2 (0.8%)
+   ⏭️  Skipped: 2 (below 40% quality bar)
 
-💾 Saved to: public/data/artists-metadata.json
+💾 Saved to: public/data/artists-top-tracks.json
 
 🎉 Done!
 ```
 
 **Usage**:
 ```bash
-# Enrich with Spotify data
-npm run enrich-spotify
+# Enrich audio preview data
+npm run enrich:tracks
 ```
 
-See [docs/specs/future/runbook-global-spotify-enrichment.md](specs/future/runbook-global-spotify-enrichment.md) for detailed setup instructions.
+**Configuration**:
+- Track limit: 5 per artist
+- Quality bar: 40% preview coverage (minimum 2 of 5 tracks)
+- Cache duration: 30 days
+- Rate limiting: 600ms between API requests
 
 ---
 
@@ -830,7 +842,7 @@ See [docs/specs/future/artists-discography.md](specs/future/artists-discography.
 3. **Validate concerts** → Quality checks (optional)
 4. **Enrich artist metadata** → TheAudioDB/Last.fm (always runs)
 5. **Enrich venue metadata** → Google Places API (optional)
-6. **Enrich Spotify data** → Album art, tracks (optional)
+6. **Enrich audio preview data** → iTunes/Deezer top tracks (optional)
 7. **Enrich discography** → MusicBrainz albums (optional)
 8. **Pre-fetch setlists** → setlist.fm cache (optional)
 9. **Aggregate genres timeline** → Genre statistics (always runs)
@@ -842,7 +854,7 @@ See [docs/specs/future/artists-discography.md](specs/future/artists-discography.
 | `--dry-run` | Preview without writing files | Testing changes safely |
 | `--skip-validation` | Skip data quality checks | Faster builds, trusted data |
 | `--skip-venues` | Skip venue enrichment | Saving API quota/cost |
-| `--skip-spotify` | Skip Spotify enrichment | No Spotify credentials |
+| `--skip-tracks` | Skip audio preview enrichment | Faster builds, no track data needed |
 | `--skip-discography` | Skip discography enrichment | Faster builds, no MusicBrainz needed |
 | `--skip-setlists` | Skip setlist pre-fetch | No setlist.fm API key |
 | `--force-refresh-setlists` | Re-fetch all setlists | Updating existing setlists |
@@ -857,19 +869,19 @@ npm run build-data
 npm run build-data -- --dry-run
 
 # Quick refresh (skip expensive operations)
-npm run build-data -- --skip-venues --skip-spotify
+npm run build-data -- --skip-venues --skip-tracks
 
 # Minimal refresh (concerts + artists only)
-npm run build-data -- --skip-venues --skip-spotify --skip-setlists
+npm run build-data -- --skip-venues --skip-tracks --skip-setlists
 
 # Update setlist cache only
-npm run build-data -- --skip-venues --skip-spotify
+npm run build-data -- --skip-venues --skip-tracks
 
 # Force refresh all setlists (ignore cache)
 npm run build-data -- --force-refresh-setlists
 
 # Fast build for development
-npm run build-data -- --skip-validation --skip-venues --skip-spotify
+npm run build-data -- --skip-validation --skip-venues --skip-tracks
 ```
 
 **Example Output:**
@@ -1010,10 +1022,10 @@ npm run build-data -- --dry-run
 npm run build-data
 
 # Option B: Skip expensive operations
-npm run build-data -- --skip-venues --skip-spotify
+npm run build-data -- --skip-venues --skip-tracks
 
 # Option C: Setlists only (after adding new concerts)
-npm run build-data -- --skip-venues --skip-spotify
+npm run build-data -- --skip-venues --skip-tracks
 ```
 
 **4. Review Changes**

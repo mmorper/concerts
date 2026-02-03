@@ -1,6 +1,6 @@
 # API Integration Skill
 
-**Purpose:** Reference this skill when working with external APIs (Ticketmaster, setlist.fm, Google Maps, Spotify, TheAudioDB).
+**Purpose:** Reference this skill when working with external APIs (Ticketmaster, setlist.fm, Google Maps, iTunes, Deezer, TheAudioDB).
 
 **When to use:**
 - Adding new API integrations
@@ -20,8 +20,9 @@
 | setlist.fm | Concert setlists | API key | 1/sec | 24 hours |
 | Google Maps | Geocoding | API key | 50/sec | Permanent |
 | Google Places | Venue photos | API key | 50/sec | 90 days |
-| Spotify | Artist metadata | OAuth | 3/sec | 90 days |
-| TheAudioDB | Artist bios | None | 2/sec | 30 days |
+| iTunes Search | Audio previews | None | ~20/sec | 30 days |
+| Deezer | Audio previews (fallback) | None | ~50/sec | 30 days |
+| TheAudioDB | Artist bios/photos | None | 2/sec | 30 days |
 
 ### Environment Variables
 
@@ -34,10 +35,6 @@ VITE_SETLISTFM_API_KEY=your_key
 
 # Google (build-time scripts)
 GOOGLE_MAPS_API_KEY=your_key
-
-# Spotify (build-time scripts)
-SPOTIFY_CLIENT_ID=your_id
-SPOTIFY_CLIENT_SECRET=your_secret
 
 # Google Sheets (build-time)
 GOOGLE_SHEET_ID=your_sheet_id
@@ -254,55 +251,116 @@ For historical/closed venues:
 
 ---
 
-## Spotify Web API
+## iTunes Search API
 
-**Purpose:** Album art, top tracks, genre tags
+**Purpose:** Audio preview URLs and track metadata (primary source)
 
-**Docs:** https://developer.spotify.com/documentation/web-api
+**Docs:** https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/
 
 ### Service Location
 
 ```
-scripts/enrich-spotify-metadata.ts
+scripts/utils/itunes-client.ts
+scripts/enrich-top-tracks.ts
 ```
 
 ### Authentication
 
-Uses Client Credentials flow (no user auth needed):
+**No authentication required** - completely free public API
+
+### Usage Pattern
 
 ```typescript
-const auth = await fetch('https://accounts.spotify.com/api/token', {
-  method: 'POST',
-  headers: {
-    'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
-    'Content-Type': 'application/x-www-form-urlencoded'
-  },
-  body: 'grant_type=client_credentials'
-})
+import { getTopTracks } from '../utils/itunes-client'
+
+const result = await getTopTracks('Depeche Mode')
+// Returns { tracks: Track[], source: 'itunes' }
 ```
 
 ### Data Collected
 
 | Field | Description |
 |-------|-------------|
-| `spotifyArtistId` | Artist ID |
-| `spotifyArtistUrl` | Profile URL |
-| `mostPopularAlbum` | Top album with cover art |
-| `topTracks` | Top 3 tracks with preview URLs |
-| `genres` | Spotify genre tags |
-| `popularity` | Score 0-100 |
+| `title` | Track name |
+| `album` | Album name |
+| `previewUrl` | 30-second preview MP3 URL |
+| `albumArt` | Album artwork URL (600x600) |
+| `releaseDate` | Track release date |
+
+### Features
+
+- **Track limit:** 5 per artist
+- **Preview validation:** HEAD request to verify URL works
+- **Rate limiting:** 600ms between requests (conservative)
+- **Normalization:** Fuzzy artist name matching
+- **Quality bar:** Minimum 40% preview coverage (2/5 tracks)
 
 ### Cache Strategy
 
-- Stored in: `public/data/artists-metadata.json`
-- TTL: 90 days
+- Stored in: `public/data/artists-top-tracks.json`
+- TTL: 30 days
 - Skips cached entries on re-run
+
+---
+
+## Deezer API
+
+**Purpose:** Audio preview URLs (fallback source when iTunes fails)
+
+**Docs:** https://developers.deezer.com/api
+
+### Service Location
+
+```
+scripts/utils/deezer-client.ts
+scripts/enrich-top-tracks.ts
+```
+
+### Authentication
+
+**No authentication required** - free public API
+
+### Usage Pattern
+
+```typescript
+import { getTopTracks, getArtistImage } from '../utils/deezer-client'
+
+// Fetch top tracks
+const result = await getTopTracks('Depeche Mode')
+// Returns { tracks: Track[], source: 'deezer' }
+
+// Fetch artist image (tertiary fallback)
+const image = await getArtistImage('Depeche Mode')
+```
+
+### Data Collected
+
+| Field | Description |
+|-------|-------------|
+| `title` | Track name |
+| `album` | Album name |
+| `previewUrl` | 30-second preview MP3 URL |
+| `albumArt` | Album artwork URL (250x250) |
+| `link` | Deezer track page URL |
+
+### Features
+
+- **Track limit:** 5 per artist
+- **Preview validation:** HEAD request to verify URL works
+- **Image validation:** Detects and rejects placeholder images
+- **Rate limiting:** 600ms between requests
+- **Multiple uses:** Top tracks + artist images (tertiary fallback)
+
+### Cache Strategy
+
+- **Top tracks:** `public/data/artists-top-tracks.json` (30 days)
+- **Artist images:** `public/data/artists-metadata.json` (90 days)
 
 ---
 
 ## TheAudioDB
 
-**Purpose:** Artist bios and photos (fallback for Spotify)
+**Purpose:** Artist bios and photos (primary source)
 
 **Docs:** https://www.theaudiodb.com/api_guide.php
 

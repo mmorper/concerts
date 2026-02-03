@@ -51,7 +51,7 @@ But raw data isn't enough. The app enriches everything at build time:
 - **Venue photos** from Google Places API (96% of venues have images)
 - **Geocoding** for every venue location via Google Maps API
 - **Setlists** from [setlist.fm](https://setlist.fm/) when available (client-side)
-- **Album art and tracks** from Spotify (for select artists)
+- **Audio preview player** with top tracks from iTunes/Apple Music (for 252 artists)
 - **Upcoming tour dates** from [Ticketmaster Discovery API](https://developer.ticketmaster.com/) (client-side)
 
 The build-time pipeline fetches, validates, enriches, and generates static JSON files. Runtime features like setlists and tour dates load client-side with smart caching. Zero backend servers. Zero monthly costs (beyond the domain).
@@ -129,8 +129,6 @@ For details on the data pipeline and enrichment process, see [docs/DATA_PIPELINE
 ## What's Next
 
 A few things I'm thinking about (whenever I get around to them):
-
-**Spotify integration** — Add 30-second preview players to the [artist gatefold](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode). Spotify will also become the primary source for artist images and metadata (genres, bios) with TheAudioDB as fallback. See [Spotify Web API docs](https://developer.spotify.com/documentation/web-api) for details.
 
 And always: more shows to add to the list.
 
