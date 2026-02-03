@@ -32,7 +32,8 @@ Orchestrates the release workflow. References existing docs for details.
 | 7 | Validate | `npm run validate:version` |
 | 8 | Git operations | Below |
 | 9 | GitHub release | `gh release create` (all commits) |
-| 10 | Post-release | Verification checklist |
+| 10 | Close related issues | `gh issue close` (selected issues) |
+| 11 | Post-release | Verification checklist |
 
 ---
 
@@ -443,7 +444,52 @@ GitHub release created at: `https://github.com/{owner}/{repo}/releases/tag/v{VER
 
 ---
 
-### Step 10: Post-Release
+### Step 10: Close Related Issues
+
+**🔵 CHECKPOINT: Review and close GitHub issues**
+
+List all open issues:
+
+```bash
+gh issue list --state open --limit 100
+```
+
+**Display issues in a readable format:**
+
+```
+📋 Open GitHub Issues
+═══════════════════════
+
+1. #15 - Add Deezer API as third fallback for artist imagery
+2. #23 - Improve mobile navigation on Artist scene
+3. #42 - Add keyboard shortcuts for scene navigation
+4. #56 - Optimize image loading performance
+
+Which issues does this release close? (numbers, comma-separated, or "none")
+```
+
+**For each selected issue:**
+
+Close the issue with a comment referencing the release:
+
+```bash
+gh issue close {ISSUE_NUMBER} --comment "Completed in v{VERSION}. See [release notes](https://github.com/mmorper/concerts/releases/tag/v{VERSION})"
+```
+
+**Skip if:**
+- User enters "none"
+- No open issues exist
+
+**Output:**
+
+```
+✅ Closed issue #15 - Add Deezer API as third fallback for artist imagery
+✅ Closed issue #23 - Improve mobile navigation on Artist scene
+```
+
+---
+
+### Step 11: Post-Release
 
 🚀 **v{VERSION} released!**
 
