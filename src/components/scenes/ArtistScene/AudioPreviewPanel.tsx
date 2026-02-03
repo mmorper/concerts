@@ -91,20 +91,21 @@ function LoadingState() {
  */
 function EmptyState({ artistName, isPhone }: { artistName?: string; isPhone?: boolean }) {
   useEffect(() => {
-    if (artistName) {
-      try {
-        analytics.trackEvent('artist_preview_unavailable', {
-          artist_name: artistName,
-          reason: 'insufficient_coverage',
-          available_tracks: 0,
-          total_tracks: 0,
-          device_type: isPhone ? 'mobile' : 'desktop'
-        })
-      } catch (error) {
-        console.error('[AudioPreview] Analytics error:', error)
-      }
+    if (!artistName) return
+
+    try {
+      analytics.trackEvent('artist_preview_unavailable', {
+        artist_name: artistName,
+        reason: 'insufficient_coverage',
+        available_tracks: 0,
+        total_tracks: 0,
+        device_type: isPhone ? 'mobile' : 'desktop'
+      })
+    } catch (error) {
+      console.error('[AudioPreview] Analytics error:', error)
     }
-  }, [artistName, isPhone])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="flex flex-col items-center justify-center h-full py-12">
@@ -123,20 +124,21 @@ function EmptyState({ artistName, isPhone }: { artistName?: string; isPhone?: bo
  */
 function ErrorState({ message, artistName, isPhone }: { message: string; artistName?: string; isPhone?: boolean }) {
   useEffect(() => {
-    if (artistName) {
-      try {
-        analytics.trackEvent('artist_preview_unavailable', {
-          artist_name: artistName,
-          reason: 'api_error',
-          available_tracks: 0,
-          total_tracks: 0,
-          device_type: isPhone ? 'mobile' : 'desktop'
-        })
-      } catch (error) {
-        console.error('[AudioPreview] Analytics error:', error)
-      }
+    if (!artistName) return
+
+    try {
+      analytics.trackEvent('artist_preview_unavailable', {
+        artist_name: artistName,
+        reason: 'api_error',
+        available_tracks: 0,
+        total_tracks: 0,
+        device_type: isPhone ? 'mobile' : 'desktop'
+      })
+    } catch (error) {
+      console.error('[AudioPreview] Analytics error:', error)
     }
-  }, [artistName, isPhone])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="flex flex-col items-center justify-center h-full py-12">

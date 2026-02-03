@@ -208,7 +208,7 @@ export function AudioPreviewPlayer({
         ref={audioRef}
         className="hidden"
         aria-hidden="true"
-        preload="metadata"
+        preload="none"
       />
 
       {/* Live region for screen readers */}
