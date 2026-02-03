@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "3.9.0",
+      "date": "2026-02-02",
+      "title": "Complete Artist Imagery",
+      "description": "Every artist who's ever opened a show now has a photo and bio alongside the headliners—no more missing faces in your concert history. We've filled 151 gaps and doubled artist coverage, so you can explore the full story of every show you've attended.",
+      "route": "/?scene=artists",
+      "highlights": [
+        "Opening acts now included—254 artists have photos and bios, up from 104 headliners-only",
+        "151 previously missing artists enriched with imagery from expanded sources",
+        "Smart name matching finds artists even with complex band names like \"Trombone Shorty & Orleans Avenue\"",
+        "100% artist coverage—every performer in your history now has a face"
+      ]
+    },
+    {
       "version": "3.8.1",
       "date": "2026-02-02",
       "title": "Venue Images Restored",

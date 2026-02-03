@@ -2,9 +2,9 @@
 
 ## Quick Start
 
-**Version:** v3.8.2 (Production)
+**Version:** v3.9.0 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-02-03
+**Last Sync:** 2026-02-02
 
 ### Commands
 
@@ -103,11 +103,11 @@ These docs provide essential context for common development tasks:
 
 **Recent Releases:**
 
+- **v3.9.0** (2026-02-02): Complete Artist Imagery - 254 artists with photos/bios
 - **v3.8.2** (2026-02-03): Automated Venue Photo Refresh Infrastructure
 - **v3.8.1** (2026-02-02): Venue Images Restored
 - **v3.7.0** (2026-01-20): By the Numbers - AI Fact Cards for Liner Notes
 - **v3.6.0** (2026-01-20): SEO Analysis Command & Infrastructure
-- **v3.5.0** (2026-01-14): Comprehensive Testing Infrastructure
 
 ---
 
@@ -191,4 +191,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-02-03 by Claude Code for v3.8.2 release*
+*Last updated: 2026-02-02 by Claude Code for v3.9.0 release*

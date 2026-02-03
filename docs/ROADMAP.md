@@ -1,16 +1,35 @@
 # Roadmap
 
-## Current State (v3.8.1)
+## Current State (v3.9.0)
 
 - **179 concerts** spanning 1984-2026
-- **254 artists** (including openers)
+- **254 artists** (including openers) with 100% imagery coverage
 - **77 unique venues** across 35 cities
 - **5 interactive scenes**: Timeline, Venues, Geography, Genres, Artists
-- **Latest improvements**: AI Fact Cards for Liner Notes with pre-computed statistics
+- **Latest improvements**: Complete artist imagery with Deezer API fallback and expanded coverage to include opening acts
 
 ---
 
 ## Recently Completed
+
+### ✅ Artist Imagery Enrichment - Deezer Fallback (v3.9.0)
+
+**Status**: Completed
+**Spec**: [global-deezer-artist-imagery.md](specs/implemented/global-deezer-artist-imagery.md)
+
+Enhanced artist enrichment pipeline with Deezer API as third fallback source, achieving 100% artist imagery coverage.
+
+**Implemented Features**:
+
+- DeezerClient with automatic retry logic and image quality prioritization (picture_big 500x500)
+- Expanded enrichment to process both headliners and opening acts (104 → 254 artists)
+- Intelligent name fallback matching (e.g., "Trombone Shorty & Orleans Avenue" → "Trombone Shorty")
+- 151 previously missing artists enriched with imagery from expanded sources
+- Zero failures after name fallback implementation (100% success rate)
+- Comprehensive test coverage (13 Vitest tests)
+- Non-breaking: existing TheAudioDB and Last.fm data preserved
+
+---
 
 ### ✅ AI Fact Cards for Liner Notes (v3.7.0)
 
@@ -173,16 +192,6 @@ Genre moved to artist-level metadata with automatic enrichment from TheAudioDB.
 ---
 
 ## Short-Term Roadmap
-
-### Artist Imagery Enrichment - Add Deezer Fallback
-
-**Status**: Planned
-**Target Version**: v3.9.0
-**Spec**: [global-deezer-artist-imagery.md](specs/future/global-deezer-artist-imagery.md)
-
-Enhance artist enrichment pipeline with Deezer API as third fallback (after TheAudioDB and Last.fm) to fill imagery gaps for artists like Against Me! and Dramarama.
-
----
 
 ### About Page - E-E-A-T Signals
 

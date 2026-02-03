@@ -3,7 +3,7 @@
 Interactive web application for exploring personal concert history (1984-present).
 
 **Live:** https://concerts.morperhaus.org
-**Version:** v3.8.2 | 179 concerts, 254 artists, 77 venues
+**Version:** v3.9.0 | 179 concerts, 254 artists, 77 venues
 **Stack:** Vite 6, React 18, TypeScript 5, Tailwind 4, D3.js 7, Leaflet
 
 ---
