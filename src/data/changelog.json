@@ -1,6 +1,14 @@
 {
   "releases": [
     {
+      "version": "4.0.1",
+      "date": "2026-02-03",
+      "title": "Artist Scene Polish",
+      "description": "The Artist Gatefold feels even smoother—refined spacing, larger photos, and more responsive animations make exploring your concert history more immersive. Audio previews now work better on Safari and track your listening patterns to help improve the experience.",
+      "route": "/?scene=artists&artist=depeche-mode",
+      "highlights": []
+    },
+    {
       "version": "4.0.0",
       "date": "2026-02-03",
       "title": "Audio Preview Player",
