@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v4.0.2 (Production)
+**Version:** v4.0.3 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-02-03
 
@@ -103,11 +103,11 @@ These docs provide essential context for common development tasks:
 
 **Recent Releases:**
 
+- **v4.0.3** (2026-02-04): Documentation updates - Internal release
 - **v4.0.2** (2026-02-03): Mobile Audio Preview - Enabled playback in mobile Artist modal
 - **v4.0.1** (2026-02-03): Artist Scene Polish - Refined UI with larger photos and responsive sizing
 - **v4.0.0** (2026-02-03): Audio Preview Player - 30-second track previews for 252 artists
 - **v3.9.0** (2026-02-02): Complete Artist Imagery - 254 artists with photos/bios
-- **v3.8.2** (2026-02-03): Automated Venue Photo Refresh Infrastructure
 
 ---
 
@@ -191,4 +191,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-02-03 by Claude Code for v4.0.2 release*
+*Last updated: 2026-02-04 by Claude Code for v4.0.3 release*
