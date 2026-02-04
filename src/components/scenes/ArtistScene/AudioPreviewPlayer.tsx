@@ -126,7 +126,7 @@ export function AudioPreviewPlayer({
         setIsPlaying(false)
         setCurrentIndex(null)
       })
-  }, [tracks, currentIndex, isPlaying, artistName, source, isPhone])
+  }, [tracks, currentIndex, isPlaying])
 
 
   /**
@@ -166,7 +166,7 @@ export function AudioPreviewPlayer({
 
     audio.addEventListener('ended', handleEnded)
     return () => audio.removeEventListener('ended', handleEnded)
-  }, [currentIndex, tracks, playTrack, artistName, isPhone])
+  }, [currentIndex, tracks, playTrack])
 
   /**
    * Setup audio error handling
@@ -199,7 +199,8 @@ export function AudioPreviewPlayer({
     <div
       data-testid="audio-preview-player"
       data-artist-name={artistName}
-      className="flex flex-col h-full"
+      className="flex flex-col h-full min-h-0"
+      style={{ position: 'relative', zIndex: 10 }}
       role="region"
       aria-label={`Top tracks by ${artistName}`}
     >
@@ -208,7 +209,7 @@ export function AudioPreviewPlayer({
         ref={audioRef}
         className="hidden"
         aria-hidden="true"
-        preload="none"
+        preload="metadata"
       />
 
       {/* Live region for screen readers */}
@@ -218,9 +219,9 @@ export function AudioPreviewPlayer({
         </div>
       )}
 
-      {/* Track List with Footer Inside Scroll Container */}
+      {/* Track List - No scrolling needed for 5 tracks */}
       <div
-        className="flex-1 overflow-y-auto space-y-0.5 min-h-0"
+        className="space-y-1.5"
         role="list"
         aria-label="Track list"
       >
@@ -236,9 +237,10 @@ export function AudioPreviewPlayer({
             onHoverChange={() => setHoveredIndex(index)}
           />
         ))}
+      </div>
 
-        {/* Streaming Link Footer - Inside Scroll Container */}
-        <div className="mt-4 pt-4 border-t border-white/10">
+      {/* Streaming Link Footer - Fixed below track list */}
+      <div className="mt-4 flex-shrink-0">
           <a
             href={streamingUrl}
             target="_blank"
@@ -256,13 +258,12 @@ export function AudioPreviewPlayer({
               }
             }}
             className="flex items-center justify-center gap-2 text-xs
-              text-gray-400 hover:text-white transition-colors group"
+              text-gray-300 hover:text-white transition-colors group"
           >
             <ExternalLink className="w-3.5 h-3.5" />
             <span>Listen to more on {source === 'deezer' ? 'Deezer' : 'Apple Music'}</span>
           </a>
         </div>
-      </div>
     </div>
   )
 }

@@ -110,7 +110,7 @@ export function ConcertHistoryPanel({
           <img
             src={artistImage}
             alt={`Photo of ${artist.name}`}
-            className="w-[100px] h-[100px] flex-shrink-0 object-cover object-center"
+            className="w-[120px] h-[120px] flex-shrink-0 object-cover object-center"
             style={{
               borderRadius: '8px',
               boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)'
@@ -118,13 +118,13 @@ export function ConcertHistoryPanel({
           />
         ) : (
           <div
-            className="w-[100px] h-[100px] flex items-center justify-center rounded flex-shrink-0"
+            className="w-[120px] h-[120px] flex items-center justify-center rounded flex-shrink-0"
             style={{
               background: gradient,
               boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)'
             }}
           >
-            <span className="font-sans text-4xl font-semibold text-white">
+            <span className="font-sans text-5xl font-semibold text-white">
               {initials}
             </span>
           </div>
@@ -133,7 +133,7 @@ export function ConcertHistoryPanel({
         {/* Artist Info */}
         <div className="flex flex-col justify-center flex-1">
           <div className="flex items-start gap-3 relative">
-            <h2 className="font-serif text-3xl font-medium text-white tracking-tight leading-tight">
+            <h2 className="font-serif text-4xl font-medium text-white tracking-tight leading-tight">
               {artist.name}
             </h2>
             <button
@@ -181,7 +181,7 @@ export function ConcertHistoryPanel({
         </div>
 
         {/* Concert List - Scrollable */}
-        <ul className="list-none flex flex-col gap-1.5 overflow-y-auto pr-2">
+        <ul className="list-none flex flex-col gap-2.5 overflow-y-auto pr-2">
           {artist.concerts.map((concert, idx) => {
             const isSetlistOpen = openSetlistConcert?.date === concert.date &&
                                   openSetlistConcert?.venue === concert.venue
@@ -189,9 +189,9 @@ export function ConcertHistoryPanel({
             return (
               <li
                 key={idx}
-                className="concert-row group flex items-start gap-4 text-xs text-[#e5e5e5] py-1.5 border-b border-white/[0.04] last:border-b-0 hover:bg-white/[0.04] transition-colors duration-150 rounded px-2 -mx-2"
+                className="concert-row group flex items-start gap-4 text-sm text-[#e5e5e5] py-1.5 border-b border-white/[0.04] last:border-b-0 hover:bg-white/[0.04] transition-colors duration-150 rounded px-2 -mx-2"
               >
-                <span className="font-sans text-[#737373] font-medium min-w-[85px] flex-shrink-0 tabular-nums pt-0.5">
+                <span className="font-sans text-[#737373] font-medium min-w-[95px] flex-shrink-0 tabular-nums pt-0.5">
                   {format(new Date(concert.date), 'dd MMM yyyy')}
                 </span>
                 <div className="flex-1 flex flex-col gap-0.5">
@@ -218,20 +218,20 @@ export function ConcertHistoryPanel({
                       haptics.light() // Haptic feedback on setlist open
                       onSetlistClick(concert)
                     }}
-                    className={`setlist-link flex items-center gap-1.5 flex-shrink-0 transition-all duration-150 relative touchable-subtle ${
+                    className={`setlist-link flex items-center gap-1.5 flex-shrink-0 ml-4 transition-all duration-150 relative touchable-subtle ${
                       isSetlistOpen ? 'setlist-link-active' : ''
                     }`}
                     aria-label={`View setlist for ${concert.venue}`}
                   >
                     {/* Musical note icon */}
                     <svg
-                      className="w-3.5 h-3.5 pointer-events-none"
+                      className="w-4 h-4 pointer-events-none"
                       viewBox="0 0 24 24"
                       fill="currentColor"
                     >
                       <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
                     </svg>
-                    <span className="text-xs font-medium pointer-events-none">Setlist</span>
+                    <span className="text-sm font-medium pointer-events-none">Setlist</span>
                   </button>
                 )}
               </li>

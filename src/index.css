@@ -299,10 +299,28 @@ body {
 /* Liner notes panel slide-in animation
    Slides from left panel (Concert History) to right panel (Spotify)
    Mimics pulling liner notes from a vinyl record sleeve */
+
+/* Default animations for smaller viewports (400px panels) */
 .liner-notes-panel {
   animation: slideInFromLeft 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
+.liner-notes-panel-closing {
+  animation: slideOutToLeft 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Desktop animations for larger viewports (460px panels) */
+@media (min-width: 1024px) {
+  .liner-notes-panel {
+    animation: slideInFromLeftLarge 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .liner-notes-panel-closing {
+    animation: slideOutToLeftLarge 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+}
+
+/* Keyframes for smaller viewports (400px) */
 @keyframes slideInFromLeft {
   from {
     /* Start at left panel position (inside the sleeve) */
@@ -316,12 +334,6 @@ body {
   }
 }
 
-/* Liner notes panel slide-out animation (closing)
-   Slides back to left panel (back into the vinyl sleeve) */
-.liner-notes-panel-closing {
-  animation: slideOutToLeft 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
 @keyframes slideOutToLeft {
   from {
     transform: translateX(0);
@@ -330,6 +342,32 @@ body {
   to {
     /* Slide back to left (into the sleeve) */
     transform: translateX(-400px);
+    opacity: 1;
+  }
+}
+
+/* Keyframes for larger viewports (460px) */
+@keyframes slideInFromLeftLarge {
+  from {
+    /* Start at left panel position (inside the sleeve) */
+    transform: translateX(-460px);
+    opacity: 0.8;
+  }
+  to {
+    /* End at right panel position (covering Spotify) */
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToLeftLarge {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    /* Slide back to left (into the sleeve) */
+    transform: translateX(-460px);
     opacity: 1;
   }
 }

@@ -29,7 +29,10 @@ export function AudioPreviewPanel({ artist, isPhone = false }: AudioPreviewPanel
         height: isPhone ? '100%' : `${panelSize}px`,
         background: 'linear-gradient(145deg, #121212 0%, #181818 100%)',
         borderRadius: isPhone ? '0' : '4px',
-        boxShadow: isPhone ? 'none' : '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)'
+        boxShadow: isPhone ? 'none' : '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)',
+        // Safari fix: Force into separate compositing layer
+        transform: 'translateZ(0)',
+        isolation: 'isolate'
       }}
     >
       {/* Section Header */}
@@ -41,7 +44,10 @@ export function AudioPreviewPanel({ artist, isPhone = false }: AudioPreviewPanel
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+      <div
+        className="flex-1 flex flex-col min-h-0"
+        style={{ position: 'relative', zIndex: 1 }}
+      >
         {loading ? (
           // Loading State
           <LoadingState />
@@ -91,21 +97,20 @@ function LoadingState() {
  */
 function EmptyState({ artistName, isPhone }: { artistName?: string; isPhone?: boolean }) {
   useEffect(() => {
-    if (!artistName) return
-
-    try {
-      analytics.trackEvent('artist_preview_unavailable', {
-        artist_name: artistName,
-        reason: 'insufficient_coverage',
-        available_tracks: 0,
-        total_tracks: 0,
-        device_type: isPhone ? 'mobile' : 'desktop'
-      })
-    } catch (error) {
-      console.error('[AudioPreview] Analytics error:', error)
+    if (artistName) {
+      try {
+        analytics.trackEvent('artist_preview_unavailable', {
+          artist_name: artistName,
+          reason: 'insufficient_coverage',
+          available_tracks: 0,
+          total_tracks: 0,
+          device_type: isPhone ? 'mobile' : 'desktop'
+        })
+      } catch (error) {
+        console.error('[AudioPreview] Analytics error:', error)
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [artistName, isPhone])
 
   return (
     <div className="flex flex-col items-center justify-center h-full py-12">
@@ -124,21 +129,20 @@ function EmptyState({ artistName, isPhone }: { artistName?: string; isPhone?: bo
  */
 function ErrorState({ message, artistName, isPhone }: { message: string; artistName?: string; isPhone?: boolean }) {
   useEffect(() => {
-    if (!artistName) return
-
-    try {
-      analytics.trackEvent('artist_preview_unavailable', {
-        artist_name: artistName,
-        reason: 'api_error',
-        available_tracks: 0,
-        total_tracks: 0,
-        device_type: isPhone ? 'mobile' : 'desktop'
-      })
-    } catch (error) {
-      console.error('[AudioPreview] Analytics error:', error)
+    if (artistName) {
+      try {
+        analytics.trackEvent('artist_preview_unavailable', {
+          artist_name: artistName,
+          reason: 'api_error',
+          available_tracks: 0,
+          total_tracks: 0,
+          device_type: isPhone ? 'mobile' : 'desktop'
+        })
+      } catch (error) {
+        console.error('[AudioPreview] Analytics error:', error)
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [artistName, isPhone])
 
   return (
     <div className="flex flex-col items-center justify-center h-full py-12">

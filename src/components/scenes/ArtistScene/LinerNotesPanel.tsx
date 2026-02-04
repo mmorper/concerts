@@ -2,7 +2,7 @@
  * LinerNotesPanel - Displays concert setlist from setlist.fm
  * Slides in from the left (Concert History panel) like pulling liner notes from a vinyl sleeve
  * Covers the Spotify panel when open
- * Size: 380×380px (10px margin inside 400×400px panel)
+ * Size: 440×440px (10px margin inside 460×460px panel on desktop), 380×380px on smaller viewports
  */
 
 import { useEffect, useRef, useState } from 'react'
@@ -53,14 +53,20 @@ export function LinerNotesPanel({
     }, 350) // Match animation duration
   }
 
+  // Responsive sizing: 460px on desktop/tablet landscape (1024px+), 400px on smaller viewports
+  const panelSize = typeof window !== 'undefined' && window.innerWidth >= 1024 ? 460 : 400
+  const contentSize = panelSize - 20 // Account for 10px padding on each side
+
   return (
     <div
-      className={`absolute w-[400px] h-[400px] ${
+      className={`absolute ${
         isPhone
           ? isClosing ? 'phone-liner-notes-panel-closing' : 'phone-liner-notes-panel'
           : isClosing ? 'liner-notes-panel-closing' : 'liner-notes-panel'
       } ${isPhone ? 'top-0 left-0 w-full h-full' : 'top-0 right-0'}`}
       style={{
+        width: isPhone ? '100%' : `${panelSize}px`,
+        height: isPhone ? '100%' : `${panelSize}px`,
         zIndex: 25, // Above Spotify panel (20) but below cover (30)
         // Always use solid background to prevent bleed-through during animation
         background: 'linear-gradient(135deg, #f5f5f0 0%, #e8e8e0 100%)',
@@ -99,7 +105,7 @@ export function LinerNotesPanel({
           }}
         />
 
-        <div className="w-[380px] h-[380px] flex flex-col relative z-10">
+        <div className="flex flex-col relative z-10" style={{ width: `${contentSize}px`, height: `${contentSize}px` }}>
           {/* Close Button */}
           <button
             ref={closeButtonRef}
