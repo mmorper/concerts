@@ -54,6 +54,11 @@ interface FactsData {
 async function main() {
   console.log('📝 Updating meta tags and SEO files with current stats\n')
 
+  // Read package.json for version
+  const packagePath = path.join(__dirname, '..', 'package.json')
+  const packageData = JSON.parse(fs.readFileSync(packagePath, 'utf-8'))
+  const version = packageData.version
+
   // Read concerts data
   const dataPath = path.join(__dirname, '..', 'public', 'data', 'concerts.json')
   const concertsData: ConcertsData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'))
@@ -107,6 +112,7 @@ async function main() {
   const today = new Date().toISOString().split('T')[0]
 
   console.log(`Current stats:`)
+  console.log(`  Version: v${version}`)
   console.log(`  ${concerts} concerts`)
   console.log(`  ${artists} artists`)
   console.log(`  ${venues} venues`)
@@ -268,6 +274,12 @@ async function main() {
   llmContent = llmContent.replace(
     /\*\*Last Updated:\*\* [0-9-]+/,
     `**Last Updated:** ${today}`
+  )
+
+  // Update version number
+  llmContent = llmContent.replace(
+    /\*\*Version:\*\* v[0-9.]+/,
+    `**Version:** v${version}`
   )
 
   // Update total content footer

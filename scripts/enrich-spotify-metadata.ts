@@ -4,6 +4,20 @@ import { normalizeArtistName } from '../src/utils/normalize.js'
 import * as dotenv from 'dotenv'
 
 /**
+ * ⚠️  DEPRECATED (as of v4.0.0) ⚠️
+ *
+ * This script is no longer part of the standard data pipeline.
+ * Audio preview functionality has been replaced with:
+ * - iTunes/Apple Music API (primary) - scripts/enrich-top-tracks.ts
+ * - Deezer API (fallback) - scripts/enrich-top-tracks.ts
+ *
+ * This file is retained for legacy purposes only and can be skipped
+ * via the --skip-spotify flag in build-data.ts.
+ *
+ * See: docs/DATA_PIPELINE.md for current pipeline documentation
+ *
+ * ---
+ *
  * Enrich artist metadata with Spotify data
  *
  * IMPORTANT: This script requires Spotify API access

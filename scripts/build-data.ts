@@ -52,6 +52,7 @@ async function buildData() {
     { name: 'Generate facts for liner notes', active: true },
     { name: 'Update meta tags and SEO files', active: !dryRun },
     { name: 'Generate sitemap', active: !dryRun },
+    { name: 'Generate RSS feed', active: !dryRun },
   ]
   const activeSteps = steps.filter(s => s.active).length
 
@@ -226,6 +227,16 @@ async function buildData() {
       console.log()
     }
 
+    // Step 13: Generate RSS feed (always runs)
+    if (!dryRun) {
+      currentStep++
+      console.log('=' .repeat(60))
+      console.log(`Step ${currentStep}/${activeSteps}: Generating RSS feed`)
+      console.log('-'.repeat(60))
+      await exec('npm run generate:rss')
+      console.log()
+    }
+
     // Summary
     console.log('=' .repeat(60))
     console.log(`✨ Data pipeline complete!${dryRun ? ' (DRY RUN)' : ''}`)
@@ -246,6 +257,7 @@ async function buildData() {
       if (!skipSetlists) console.log('   - public/data/setlists-cache.json')
       console.log('   - public/data/facts.json')
       console.log('   - public/sitemap.xml')
+      console.log('   - public/rss.xml')
       console.log('   - index.html (meta tags updated)')
       console.log('   - public/llm.txt (stats updated)')
       console.log('   - public/og-stats.json')

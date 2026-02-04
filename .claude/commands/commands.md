@@ -12,6 +12,7 @@ Slash commands for common workflows. Run these in Claude Code with `/{command}`.
 |---------|---------|-------------|
 | `/release` | Ship a version | Wrapping up a feature or bugfix |
 | `/changelog` | Create changelog entry | Drafting release notes |
+| `/roadmap` | Update "What's Next" | During releases or when roadmap changes |
 | `/release-undo` | Rollback a release | Something went wrong |
 | `/spec` | Create feature spec | Starting a new feature |
 | `/implement` | Start work on a spec | Beginning implementation |
@@ -173,6 +174,31 @@ Synchronize context files with project state.
 - `config.json`: Version, lastContextSync, lastCommit
 
 **Run after:** Data refresh, multiple commits, before starting new features
+
+---
+
+### `/roadmap`
+
+Generate user-friendly roadmap for README.md "What's Next" section.
+
+```
+/roadmap              # Interactive with confirmation
+/roadmap --preview    # Show without writing
+/roadmap --auto       # Non-interactive (for releases)
+```
+
+**Does:**
+
+1. Fetches all open GitHub issues
+2. Uses AI to categorize into 3 buckets:
+   - **New Capabilities** — Major features
+   - **Enhancements** — Improvements, polish, docs
+   - **Fixes** — Bug fixes, broken functionality
+3. Generates compelling summaries in Product Marketer voice
+4. Links to 2-3 representative examples per category
+5. Updates README.md lines 132-139 (What's Next section)
+
+**Useful for:** Keeping roadmap current during releases, refreshing README for visitors
 
 ---
 

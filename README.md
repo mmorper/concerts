@@ -45,18 +45,19 @@ Five interactive scenes, each one a different lens on the same history:
 
 ## Where the data comes from
 
-All concert data starts in a Google Sheet I've been maintaining since the pandemic—date, headliner, openers, venue, city, who attended, reference links. That's the single source of truth.
+All concert data starts in a **Google Sheet** I've been maintaining since the pandemic—date, headliner, openers, venue, city, who attended, reference links. That's the single source of truth.
 
 But raw data isn't enough. The app enriches everything at build time:
 
-- **Artist photos and metadata** from [TheAudioDB](https://www.theaudiodb.com/) and Last.fm
+- **Artist photos and metadata** from [TheAudioDB](https://www.theaudiodb.com/), [Last.fm](https://www.last.fm/), and [Deezer](https://www.deezer.com/) (cascading fallbacks)
+- **Artist discography** from [MusicBrainz](https://musicbrainz.org/) and Cover Art Archive
 - **Venue photos** from Google Places API (96% of venues have images)
-- **Geocoding** for every venue location via Google Maps API
-- **Setlists** from [setlist.fm](https://setlist.fm/) when available (client-side)
-- **Audio preview player** with top tracks from iTunes/Apple Music (for 252 artists)
+- **Geocoding** for every venue location via Google Maps Geocoding API
+- **Audio preview player** with 30-second track clips from [iTunes/Apple Music](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/) (primary) and [Deezer](https://developers.deezer.com/) (fallback) for 252 artists
+- **Setlists** from [setlist.fm](https://setlist.fm/) when available (pre-fetched at build time)
 - **Upcoming tour dates** from [Ticketmaster Discovery API](https://developer.ticketmaster.com/) (client-side)
 
-The build-time pipeline fetches, validates, enriches, and generates static JSON files. Runtime features like setlists and tour dates load client-side with smart caching. Zero backend servers. Zero monthly costs (beyond the domain).
+The build-time pipeline fetches, validates, enriches, and generates static JSON files. Runtime features like tour dates load client-side with smart caching. Zero backend servers. Zero monthly costs (beyond the domain).
 
 Want the technical details? See [docs/DATA_PIPELINE.md](docs/DATA_PIPELINE.md) for the complete data pipeline documentation, or [docs/WORKFLOW.md](docs/WORKFLOW.md) for how this whole thing gets built and maintained.
 

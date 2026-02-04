@@ -5,7 +5,7 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>New features, updates, and statistics for the Morperhaus Concert Archives</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 20 Jan 2026 06:11:20 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 04 Feb 2026 14:37:48 GMT</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://concerts.morperhaus.org/og-image.jpg</url>
@@ -17,9 +17,45 @@
       <title>By the Numbers - Archive Statistics</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
       <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#facts-2026-01-20</guid>
-      <pubDate>Tue, 20 Jan 2026 04:58:52 GMT</pubDate>
+      <pubDate>Tue, 20 Jan 2026 19:54:16 GMT</pubDate>
       <category>Statistics</category>
-      <description><![CDATA[<h3>Archive Statistics</h3><h4>Artists</h4><ul><li><strong>Social Distortion: 8 concerts</strong> — The most-seen live act, 1990–2024</li><li><strong>Howard Jones: 6 concerts</strong> — Another favorite who keeps drawing me back</li><li><strong>Depeche Mode: 5 concerts</strong> — Rounding out the top three most-seen</li></ul><h4>Venues</h4><ul><li><strong>Irvine Meadows: 16 shows</strong> — A favorite spot, visited 1984–2003</li><li><strong>Pacific Amphitheatre: 16 shows</strong> — Another venue with great memories</li><li><strong>77 unique venues</strong> — From clubs to arenas and amphitheaters</li></ul><h4>Timeline</h4><ul><li><strong>178 concerts since 1984</strong> — 43 years of live music memories</li><li><strong>First show: Adam Ant (1984)</strong> — Where it all began — Irvine Meadows</li><li><strong>Latest: Thompson Twins (2026)</strong> — The most recent addition — Pavilion Theatre</li><li><strong>2022: 14 shows</strong> — The peak year for live music attendance</li><li><strong>2010s: 64 shows</strong> — The golden era of concert-going</li></ul><h4>Genres</h4><ul><li><strong>New Wave: 48 shows</strong> — The dominant sound in this collection</li><li><strong>Punk: 15 shows</strong> — Another genre that shaped the journey</li></ul><h4>Geography</h4><ul><li><strong>California: 118 concerts</strong> — Home base for most concert experiences</li><li><strong>35 cities visited</strong> — Live music across the map</li></ul><p><a href="https://concerts.morperhaus.org/liner-notes">View all statistics</a></p>]]></description>
+      <description><![CDATA[<h3>Archive Statistics</h3><h4>Artists</h4><ul><li><strong>Social Distortion: 8 concerts</strong> — The most-seen live act, 1990–2024</li><li><strong>Howard Jones: 6 concerts</strong> — Another favorite who keeps drawing me back</li><li><strong>Depeche Mode: 5 concerts</strong> — Rounding out the top three most-seen</li></ul><h4>Venues</h4><ul><li><strong>Irvine Meadows: 16 shows</strong> — A favorite spot, visited 1984–2003</li><li><strong>Pacific Amphitheatre: 16 shows</strong> — Another venue with great memories</li><li><strong>77 unique venues</strong> — From clubs to arenas and amphitheaters</li></ul><h4>Timeline</h4><ul><li><strong>179 concerts since 1984</strong> — 43 years of live music memories</li><li><strong>First show: Adam Ant (1984)</strong> — Where it all began — Irvine Meadows</li><li><strong>Latest: Thompson Twins (2026)</strong> — The most recent addition — Pavilion Theatre</li><li><strong>2022: 14 shows</strong> — The peak year for live music attendance</li><li><strong>2010s: 64 shows</strong> — The golden era of concert-going</li></ul><h4>Genres</h4><ul><li><strong>New Wave: 49 shows</strong> — The dominant sound in this collection</li><li><strong>Punk: 15 shows</strong> — Another genre that shaped the journey</li></ul><h4>Geography</h4><ul><li><strong>California: 119 concerts</strong> — Home base for most concert experiences</li><li><strong>35 cities visited</strong> — Live music across the map</li></ul><p><a href="https://concerts.morperhaus.org/liner-notes">View all statistics</a></p>]]></description>
+    </item>
+
+    <item>
+      <title>Artist Scene Polish - v4.0.1</title>
+      <link>https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v4.0.1</guid>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>The Artist Gatefold feels even smoother—refined spacing, larger photos, and more responsive animations make exploring your concert history more immersive. Audio previews now work better on Safari and track your listening patterns to help improve the experience.</p>]]></description>
+    </item>
+
+    <item>
+      <title>Audio Preview Player - v4.0.0</title>
+      <link>https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v4.0.0</guid>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Listen before you go—preview top tracks from 252 artists right in the Artist Gatefold. Get a feel for an artist&apos;s sound with 30-second clips from iTunes and Deezer, plus quick links to stream full albums.</p><ul><li>Audio preview player with 30-second clips for 252 artists (99% coverage)</li><li>Play/pause controls with animated equalizer and auto-advance</li><li>Mobile-responsive design with album art and track details</li><li>Direct links to Apple Music and Deezer for full streaming</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Complete Artist Imagery - v3.9.0</title>
+      <link>https://concerts.morperhaus.org/?scene=artists</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v3.9.0</guid>
+      <pubDate>Mon, 02 Feb 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Every artist who&apos;s ever opened a show now has a photo and bio alongside the headliners—no more missing faces in your concert history. We&apos;ve filled 151 gaps and doubled artist coverage, so you can explore the full story of every show you&apos;ve attended.</p><ul><li>Opening acts now included—254 artists have photos and bios, up from 104 headliners-only</li><li>151 previously missing artists enriched with imagery from expanded sources</li><li>Smart name matching finds artists even with complex band names like &quot;Trombone Shorty &amp; Orleans Avenue&quot;</li><li>100% artist coverage—every performer in your history now has a face</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Venue Images Restored - v3.8.1</title>
+      <link>https://concerts.morperhaus.org/?scene=geography</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v3.8.1</guid>
+      <pubDate>Mon, 02 Feb 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Venue photos are back in map popups. Click any venue marker to see its location, concert history, and venue image—the recent SEO update accidentally broke these, but they&apos;re working again.</p>]]></description>
     </item>
 
     <item>

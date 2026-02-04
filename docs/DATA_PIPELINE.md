@@ -94,6 +94,33 @@ This document describes the data pipeline for fetching, validating, and enrichin
 
 ---
 
+## Data Sources Overview
+
+This table lists all external services used in the data enrichment pipeline:
+
+| Service | Purpose | Authentication | Rate Limit | Cost | Pipeline Step |
+|---------|---------|----------------|------------|------|---------------|
+| **Google Sheets** | Primary concert data source | OAuth 2.0 | N/A | Free | Step 1: Fetch |
+| **Google Maps Geocoding** | Venue coordinates | API Key | 50 req/sec | $5/1k requests (free tier: $200/mo) | Step 1: Fetch |
+| **Google Places** | Venue photos/metadata | API Key | 50 req/sec | Variable by operation (free tier: $200/mo) | Step 5: Venues |
+| **TheAudioDB** | Artist photos/bios/genres (primary) | API Key (optional) | 2 req/sec | Free | Step 4: Artists |
+| **Last.fm** | Artist metadata (fallback) | API Key | Variable | Free | Step 4: Artists |
+| **Deezer** | Artist metadata & audio fallback | None | Variable | Free | Step 4: Artists, Step 6: Audio |
+| **iTunes/Apple Music** | Audio preview tracks (primary) | None | ~1.6 req/sec | Free | Step 6: Audio |
+| **MusicBrainz** | Artist discography data | None | 1 req/sec | Free | Step 7: Discography |
+| **setlist.fm** | Concert setlists | API Key | ~1 req/sec | Free | Step 8: Setlists |
+| **Ticketmaster** | Live tour dates (runtime only) | API Key | Variable | Free tier available | Client-side |
+| **~~Spotify~~** | ~~Audio previews (deprecated)~~ | ~~OAuth 2.0~~ | ~~N/A~~ | ~~Free~~ | Deprecated (v4.0.0) |
+
+**Notes:**
+- Services are listed in order of execution during the pipeline
+- "Fallback" indicates the service is only used if the primary source fails
+- Ticketmaster is fetched client-side at runtime, not during build
+- Spotify API was deprecated in v4.0.0 and replaced with iTunes/Apple Music and Deezer
+- For complete API setup instructions, see [api-setup.md](api-setup.md)
+
+---
+
 ## Safety Features (v1.2.1+)
 
 ### Automatic Backups
@@ -288,6 +315,7 @@ Net change: +3
 - Community-maintained artist database
 - API docs: <https://www.theaudiodb.com/api_guide.php>
 - Rate limit: 2 calls per second (automatically enforced)
+- Setup instructions: See [api-setup.md](api-setup.md) for TheAudioDB and Last.fm configuration
 
 #### Metadata Fields Collected
 
@@ -375,6 +403,7 @@ npm run build-data
 - Requires API key (same key used for Geocoding API)
 - API docs: <https://developers.google.com/maps/documentation/places/web-service/overview>
 - Rate limit: 50 requests/second (automatically enforced)
+- Setup instructions: See [api-setup.md](api-setup.md) for Google Cloud API configuration
 
 #### Photo Quality and Sources
 
@@ -604,6 +633,7 @@ Cache: public/data/venue-photos-cache.json
 - Free API with rate limiting (~1 request per second)
 - Community-maintained setlist database
 - API docs: https://api.setlist.fm/docs/1.0/index.html
+- Setup instructions: See [api-setup.md](api-setup.md) for setlist.fm API key configuration
 
 **Features**:
 - Three-tier caching: Static cache → Memory cache → API fallback
@@ -669,6 +699,7 @@ npm run prefetch:setlists -- --force-refresh
 - **Fallback**: Deezer API (no authentication required)
 - Rate limiting: 600ms between requests
 - Preview validation: HEAD request with 5-second timeout
+- No setup required - both APIs are publicly accessible without authentication
 
 **Metadata Structure**:
 
@@ -740,6 +771,7 @@ npm run enrich:tracks
 - No authentication required (free, open data)
 - Rate limit: 1 request/second (strictly enforced)
 - Data License: CC0 (public domain)
+- No setup required - publicly accessible API
 
 **Metadata Fields Collected**:
 
@@ -840,12 +872,18 @@ See [docs/specs/future/artists-discography.md](specs/future/artists-discography.
 1. **Fetch Google Sheets** → `concerts.json` (always runs)
 2. **Enrich concert genres** → Genre enrichment from artist metadata (always runs)
 3. **Validate concerts** → Quality checks (optional)
-4. **Enrich artist metadata** → TheAudioDB/Last.fm (always runs)
+4. **Enrich artist metadata** → TheAudioDB/Last.fm/Deezer (always runs)
 5. **Enrich venue metadata** → Google Places API (optional)
-6. **Enrich audio preview data** → iTunes/Deezer top tracks (optional)
+6. **Enrich audio preview data** → iTunes/Apple Music (primary), Deezer (fallback) (optional)
 7. **Enrich discography** → MusicBrainz albums (optional)
 8. **Pre-fetch setlists** → setlist.fm cache (optional)
 9. **Aggregate genres timeline** → Genre statistics (always runs)
+10. **Generate facts** → Liner notes facts (always runs)
+11. **Update meta tags** → SEO and meta tags (always runs)
+12. **Generate sitemap** → sitemap.xml (always runs)
+13. **Generate RSS feed** → rss.xml (always runs)
+
+**Note**: Prior to v4.0.0, the pipeline used Spotify API for audio previews. This has been replaced with iTunes/Apple Music and Deezer. The `enrich-spotify-metadata.ts` script remains in the codebase for legacy purposes but can be skipped via the `--skip-spotify` flag and is not part of the standard pipeline.
 
 **Available Flags:**
 
@@ -854,9 +892,10 @@ See [docs/specs/future/artists-discography.md](specs/future/artists-discography.
 | `--dry-run` | Preview without writing files | Testing changes safely |
 | `--skip-validation` | Skip data quality checks | Faster builds, trusted data |
 | `--skip-venues` | Skip venue enrichment | Saving API quota/cost |
-| `--skip-tracks` | Skip audio preview enrichment | Faster builds, no track data needed |
+| `--skip-tracks` | Skip audio preview enrichment (iTunes/Deezer) | Faster builds, no track data needed |
 | `--skip-discography` | Skip discography enrichment | Faster builds, no MusicBrainz needed |
 | `--skip-setlists` | Skip setlist pre-fetch | No setlist.fm API key |
+| `--skip-spotify` | Skip legacy Spotify enrichment (deprecated) | Should always be skipped (no longer used) |
 | `--force-refresh-setlists` | Re-fetch all setlists | Updating existing setlists |
 
 **Usage Examples:**
@@ -893,11 +932,18 @@ npm run build-data -- --skip-validation --skip-venues --skip-tracks
 
 📋 Pipeline Steps:
    ✓ Fetch Google Sheets
+   ✓ Enrich concert genres
    ✓ Validate concerts
    ✓ Enrich artist metadata
    ⏭️ Enrich venue metadata (skipped)
-   ✓ Enrich Spotify data
+   ✓ Enrich audio preview data
+   ✓ Enrich discography
    ✓ Pre-fetch setlists
+   ✓ Aggregate genres timeline
+   ✓ Generate facts
+   ✓ Update meta tags
+   ✓ Generate sitemap
+   ✓ Generate RSS feed
 
 ============================================================
 Step 1/5: Fetching data from Google Sheets
@@ -915,9 +961,9 @@ Step 3/5: Enriching artist metadata
 [...enrichment output...]
 
 ============================================================
-Step 4/5: Enriching Spotify metadata
+Step 6/13: Enriching audio preview data
 ------------------------------------------------------------
-[...Spotify output...]
+[...audio preview output...]
 
 ============================================================
 Step 5/5: Pre-fetching setlists
@@ -931,7 +977,16 @@ Step 5/5: Pre-fetching setlists
 📁 Output files:
    - public/data/concerts.json
    - public/data/artists-metadata.json
-   - public/data/setlists-cache.json
+   - public/data/artists-top-tracks.json
+   - public/data/venues-metadata.json (if not skipped)
+   - public/data/discography.json (if not skipped)
+   - public/data/setlists-cache.json (if not skipped)
+   - public/data/facts.json
+   - public/sitemap.xml
+   - public/rss.xml
+   - index.html (meta tags updated)
+   - public/llm.txt (stats updated)
+   - public/og-stats.json
 
 📦 Automatic backups created with .backup.TIMESTAMP extension
 
@@ -947,10 +1002,10 @@ The pipeline automatically checks for required API credentials before running op
 
 ```
 ============================================================
-Step 4/5: Enriching Spotify metadata
+Step 8/13: Pre-fetching setlists
 ------------------------------------------------------------
-⚠️  Warning: Spotify credentials not configured in .env
-   Skipping Spotify enrichment
+⚠️  Warning: setlist.fm API key not configured in .env
+   Skipping setlist pre-fetch
    See docs/api-setup.md for setup instructions
 ```
 

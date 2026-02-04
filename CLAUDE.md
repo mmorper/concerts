@@ -40,6 +40,7 @@ npm run build-data   # Refresh data pipeline
 |---------|---------|
 | `/release` | Ship a version (changelog, git, deploy) |
 | `/changelog` | Create changelog entry |
+| `/roadmap` | Update README "What's Next" from issues |
 | `/release-undo` | Rollback a release |
 | `/spec` | Create feature specification |
 | `/implement` | Start work on a spec |

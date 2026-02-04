@@ -50,22 +50,26 @@ async function generateSitemap() {
   const artists = Object.keys(artistsData)
   const venues = Object.keys(venuesData)
 
-  // Calculate last modified from latest concert date
+  // Use current date as lastmod (when sitemap was generated/site was updated)
+  const lastmod = new Date().toISOString().split('T')[0]
+
+  // Also get latest concert date for logging
   const dates = concerts.map((c) => c.date).sort()
-  const latestDate = dates[dates.length - 1]
+  const latestConcertDate = dates[dates.length - 1]
 
   console.log(`Data loaded:`)
   console.log(`  ${concerts.length} concerts`)
   console.log(`  ${artists.length} artists`)
   console.log(`  ${venues.length} venues`)
-  console.log(`  Latest concert: ${latestDate}\n`)
+  console.log(`  Latest concert: ${latestConcertDate}`)
+  console.log(`  Sitemap lastmod: ${lastmod}\n`)
 
   // Start XML
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
 
   // Homepage
-  xml += generateUrlEntry('/', 1.0, 'weekly', latestDate)
+  xml += generateUrlEntry('/', 1.0, 'weekly', lastmod)
 
   // Scene links with adjusted priorities based on update frequency
   // Timeline & Artists update frequently (0.9)
@@ -79,7 +83,7 @@ async function generateSitemap() {
   ]
 
   scenes.forEach((scene) => {
-    xml += generateUrlEntry(`/?scene=${scene.path}`, scene.priority, scene.changefreq, latestDate)
+    xml += generateUrlEntry(`/?scene=${scene.path}`, scene.priority, scene.changefreq, lastmod)
   })
 
   // Artist deep links (sorted by concert count)
@@ -120,8 +124,8 @@ async function generateSitemap() {
   })
 
   // Changelog pages
-  xml += generateUrlEntry('/liner-notes', 0.5, 'weekly', latestDate)
-  xml += generateUrlEntry('/liner-notes/rss', 0.4, 'weekly', latestDate)
+  xml += generateUrlEntry('/liner-notes', 0.5, 'weekly', lastmod)
+  xml += generateUrlEntry('/liner-notes/rss', 0.4, 'weekly', lastmod)
 
   // About page
   xml += generateUrlEntry('/about', 0.6, 'monthly')
