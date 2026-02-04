@@ -18,6 +18,7 @@ import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
 import { useTourDates } from '../../../hooks/useTourDates'
 import { fetchSetlist } from '../../../services/setlistfm'
 import { TourBadge } from './TourBadge'
+import { AudioPreviewPanel } from './AudioPreviewPanel'
 import { haptics } from '../../../utils/haptics'
 import { normalizeVenueName } from '../../../utils/normalize'
 import type { ArtistCard, ArtistConcert } from './types'
@@ -575,40 +576,8 @@ export function PhoneArtistModal({
 
           {/* Top Tracks Tab */}
           {activeTab === 'tracks' && (
-            <div className="p-4">
-              {/* Spotify Section Label */}
-              <div className="flex items-center gap-2 mb-4">
-                <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="#1DB954">
-                  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
-                </svg>
-                <span className="text-xs font-semibold text-[#1DB954] uppercase tracking-wider">
-                  Top Tracks
-                </span>
-              </div>
-
-              {/* Coming Soon placeholder */}
-              <div className="text-center py-8">
-                <p className="text-sm text-gray-500 mb-1">Spotify Integration</p>
-                <p className="text-xs text-gray-600">Coming Soon</p>
-              </div>
-
-              {/* Skeleton tracks */}
-              <div className="space-y-3 opacity-50">
-                {[1, 2, 3, 4].map((num) => (
-                  <div key={num} className="flex items-center gap-3">
-                    <span className="text-sm text-gray-500 w-5 text-center">{num}</span>
-                    <div
-                      className="w-10 h-10 rounded flex-shrink-0"
-                      style={{ background: `${genreColor}30` }}
-                    />
-                    <div className="flex-1">
-                      <div className="h-3 bg-gray-800 rounded mb-1" style={{ width: `${60 + Math.random() * 30}%` }} />
-                      <div className="h-2.5 bg-gray-800 rounded" style={{ width: `${40 + Math.random() * 20}%` }} />
-                    </div>
-                    <div className="h-3 w-8 bg-gray-800 rounded" />
-                  </div>
-                ))}
-              </div>
+            <div className="flex-1 flex items-center justify-center min-h-0">
+              <AudioPreviewPanel artist={artist} isPhone={true} />
             </div>
           )}
         </div>
