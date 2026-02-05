@@ -188,6 +188,8 @@ Examples:
 
 ---
 
+---
+
 ## Pre-Computed Statistics
 
 These facts are updated with each data refresh and can be quoted directly:
@@ -400,6 +402,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-02-04
-**Version:** v4.0.2
+**Last Updated:** 2026-02-05
+**Version:** v4.1.0
 **Total Content:** 179 concerts | 254 artists | 77 venues | 6,092+ albums | 1984-2026

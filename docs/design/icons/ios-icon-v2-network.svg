@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1b4b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#581c87;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Central node glow -->
+    <radialGradient id="nodeGlow2" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="180" height="180" fill="url(#bgGradient2)"/>
+
+  <!-- Connection lines (more complex network) -->
+  <line x1="90" y1="90" x2="45" y2="45" stroke="#a855f7" stroke-width="2" opacity="0.5"/>
+  <line x1="90" y1="90" x2="135" y2="45" stroke="#a855f7" stroke-width="2" opacity="0.5"/>
+  <line x1="90" y1="90" x2="135" y2="135" stroke="#a855f7" stroke-width="2" opacity="0.5"/>
+  <line x1="90" y1="90" x2="45" y2="135" stroke="#a855f7" stroke-width="2" opacity="0.5"/>
+  <line x1="90" y1="90" x2="90" y2="30" stroke="#a855f7" stroke-width="2.5" opacity="0.6"/>
+  <line x1="90" y1="90" x2="150" y2="90" stroke="#a855f7" stroke-width="2.5" opacity="0.6"/>
+
+  <!-- Secondary connections -->
+  <line x1="45" y1="45" x2="90" y2="30" stroke="#7c3aed" stroke-width="1.5" opacity="0.3"/>
+  <line x1="135" y1="45" x2="150" y2="90" stroke="#7c3aed" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Peripheral nodes -->
+  <circle cx="90" cy="30" r="10" fill="#6366f1" opacity="0.95"/>
+  <circle cx="150" cy="90" r="10" fill="#6366f1" opacity="0.95"/>
+  <circle cx="135" cy="135" r="7" fill="#7c3aed" opacity="0.8"/>
+  <circle cx="45" cy="135" r="7" fill="#7c3aed" opacity="0.8"/>
+  <circle cx="45" cy="45" r="8" fill="#8b5cf6" opacity="0.85"/>
+  <circle cx="135" cy="45" r="8" fill="#8b5cf6" opacity="0.85"/>
+
+  <!-- Central node (hero) -->
+  <circle cx="90" cy="90" r="32" fill="url(#nodeGlow2)"/>
+  <circle cx="90" cy="90" r="32" fill="#ffffff" opacity="0.2"/>
+  <circle cx="90" cy="90" r="24" fill="#ffffff" opacity="0.1"/>
+</svg>
