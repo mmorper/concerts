@@ -391,7 +391,7 @@ Score will be lower but all crawl-based insights work.
 ## Related Documentation
 
 - **Command Reference:** `.claude/commands/seo.md`
-- **V2 Specification:** `docs/specs/future/global-seo-tool-v2.md`
+- **V2 Implementation:** `docs/specs/implemented/global-seo-tool-v2.md`
 - **Analytics Skill:** `.claude/skills/analytics/SKILL.md` (GA4 event tracking)
 - **API Integration Skill:** `.claude/skills/api-integration/SKILL.md`
 

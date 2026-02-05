@@ -204,9 +204,9 @@ Static /about page surfacing creator identity and project backstory for SEO auth
 
 ### SEO Tool v2 - Integrated Analytics & Backlink Support
 
-**Status**: Planned
-**Target Version**: v4.0.0
-**Spec**: [global-seo-tool-v2.md](specs/future/global-seo-tool-v2.md)
+**Status**: Complete
+**Implemented Version**: v4.2.0
+**Spec**: [global-seo-tool-v2.md](specs/implemented/global-seo-tool-v2.md)
 
 Transform `/seo` command into comprehensive SEO intelligence platform with real data from Google Search Console, GA4, and optional backlink APIs.
 

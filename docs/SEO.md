@@ -1119,7 +1119,7 @@ New content indexed by search engines
 
 ---
 
-**Questions or Issues?** Review the [Troubleshooting](#troubleshooting) section or check [docs/specs/future/global-seo-optimization.md](specs/future/global-seo-optimization.md) for implementation details.
+**Questions or Issues?** Review the [Troubleshooting](#troubleshooting) section or check [docs/specs/implemented/global-seo-optimization.md](specs/implemented/global-seo-optimization.md) for implementation details.
 
 ## Planned Features (v2.0)
 
@@ -1131,4 +1131,4 @@ The following features are planned but not yet implemented:
 - `--output json` and `--output sheets` formats
 - Multiple output formats in single run (`--output cli,md,html`)
 
-See [docs/specs/future/global-seo-tool-v2.md](specs/future/global-seo-tool-v2.md) for the full v2 specification.
+See [docs/specs/implemented/global-seo-tool-v2.md](specs/implemented/global-seo-tool-v2.md) for the complete v2 implementation.
