@@ -11,9 +11,7 @@ An interactive web app for exploring personal concert history. Five scenes—Tim
 
 ## What's new
 
-**v4.0.1** ✨ Refined experience! The [Artist Gatefold](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) feels even smoother with larger photos, refined spacing, and more responsive animations. Audio previews now work better on Safari and adapt beautifully across all screen sizes—from phones to large desktop displays.
-
-**v4.0.0** 🎵 Listen before you go! The Artist Gatefold now includes an audio preview player with 30-second clips from 252 artists (99% coverage). Play/pause controls, animated equalizer, auto-advance, and direct links to Apple Music and Deezer. Get a feel for an artist's sound right in your concert archive—perfect for those moments when you remember the show but forgot what they sounded like.
+**v4.0.0** 🎵 Listen before you go! The Artist Gatefold now includes an audio preview player with 30-second clips from 252 artists (99% coverage). Play/pause controls, animated equalizer, auto-advance, and direct links to Apple Music and Deezer. The gatefold feels smoother than ever with refined spacing, larger photos, and responsive animations that adapt beautifully from phones to large displays. Get a feel for an artist's sound right in your concert archive—perfect for those moments when you remember the show but forgot what they sounded like.
 
 **v3.9.0** 🎭 Complete artist imagery! Every opening act now has a photo and bio alongside the headliners. We've enriched 151 previously missing artists and doubled coverage to 254 total artists—no more blank faces in your concert history. Smart name matching even finds artists with complex band names. [Explore the artists](https://concerts.morperhaus.org/?scene=artists) to see every performer who's shaped your musical journey.
 

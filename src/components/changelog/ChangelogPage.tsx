@@ -181,7 +181,7 @@ export function ChangelogPage() {
         )}
 
         {/* Release History Cards */}
-        <section aria-label="Release history">
+        <section id="releases" aria-label="Release history">
           <motion.h2
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
