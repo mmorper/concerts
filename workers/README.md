@@ -2,6 +2,8 @@
 
 This Cloudflare Worker injects dynamic meta tags for artist and venue pages when accessed by bots (search engines, social media crawlers, AI assistants), while keeping the original SPA fast for human users.
 
+**Part of the SEO ecosystem** — see [docs/SEO.md](../docs/SEO.md) for the full SEO strategy and how this Worker fits into the broader system.
+
 ## What It Does
 
 **For Bots (Googlebot, Facebook, Twitter, etc.):**
@@ -132,6 +134,8 @@ curl -A "Googlebot/2.1" \
 ```
 
 Should return dynamic title.
+
+**Automated Testing:** Use the `/seo` command to run comprehensive Worker validation tests. See [.claude/commands/seo.md](../.claude/commands/seo.md) for details.
 
 ## Monitoring
 
@@ -324,6 +328,8 @@ Changes are live immediately.
 
 ## Related Documentation
 
+- **SEO Administration Guide**: [docs/SEO.md](../docs/SEO.md) - Full SEO strategy and how this Worker integrates
+- **SEO Analysis Command**: [.claude/commands/seo.md](../.claude/commands/seo.md) - Test Worker with automated validation
 - **SEO Spec**: `docs/specs/future/global-seo-optimization.md`
 - **Build Process**: `docs/BUILD.md`
 - **Deep Linking**: `docs/DEEP_LINKING.md`

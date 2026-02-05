@@ -57,6 +57,82 @@
 
 ---
 
+## How Everything Connects
+
+Our SEO ecosystem consists of 4 integrated components:
+
+### Data Pipeline → SEO Files
+
+**Trigger:** `npm run build-data`
+
+- Step 10: Updates `index.html` meta tags (concert/artist/venue counts)
+- Step 10: Updates `public/llm.txt` with current stats
+- Step 10: Updates `public/og-stats.json` for social sharing
+- Step 11: Regenerates `public/sitemap.xml` (410+ URLs)
+
+### Sitemap → Search Engines
+
+**Purpose:** Tell Google/Bing about all 410+ entity pages
+
+- 6 core pages (scenes + homepage)
+- 247 artist deep links
+- 154 venue deep links (network + map views)
+- 2 changelog pages
+
+### Cloudflare Worker → Dynamic Meta Tags
+
+**Purpose:** Serve entity-specific meta tags to bots
+
+- Reads: `artists-metadata.json`, `venues-metadata.json`
+- Injects: Dynamic titles, descriptions, OG tags
+- Serves: 410+ unique meta tag combinations
+- Performance: 0ms impact on human users
+
+See [workers/README.md](../workers/README.md) for deployment guide.
+
+### SEO Analysis Tool → Validation
+
+**Purpose:** Test that Worker + static SEO work correctly
+
+- Tests: 6 core + 2 golden + 4 random URLs per run
+- Validates: Meta tags, Schema.org, performance
+- Scores: 100-point rubric across 6 categories
+- Ensures: Meta-injector serving correct dynamic content
+
+See [.claude/commands/seo.md](../.claude/commands/seo.md) for command specification.
+
+### Discovery Flow
+
+```text
+User searches "Depeche Mode concerts"
+  ↓
+Google crawls sitemap.xml → finds artist page
+  ↓
+Googlebot requests /?scene=artists&artist=depeche-mode
+  ↓
+Worker detects bot → fetches metadata → injects dynamic meta
+  ↓
+Google indexes: "Depeche Mode - Morperhaus Concert Archives"
+  ↓
+Search result appears with artist-specific preview ✅
+```
+
+### AI Assistant Flow
+
+```text
+User asks: "How many times has Morperhaus seen Depeche Mode?"
+  ↓
+AI assistant reads /llm.txt
+  ↓
+Discovers data endpoint: /data/concerts.json
+  ↓
+Fetches and filters by headlinerNormalized: "depeche-mode"
+  ↓
+AI answers: "Morperhaus has seen Depeche Mode 5 times from 1988-2023" ✅
+```
+
+---
+
 ## Automated SEO Analysis
 
 ### Two Ways to Run
@@ -92,7 +168,21 @@ The SEO tool currently supports crawl-based analysis with optional GSC, GA4, and
 
 **What It Does:**
 
-- Crawls 12 key pages (homepage, 5 scenes, 6 deep link examples)
+**Hybrid Testing Strategy (12 URLs):**
+
+- **6 core pages** (always tested): homepage + 5 scenes
+- **2 golden paths** (always tested): depeche-mode, hollywood-bowl
+- **~4 random samples** (changes each run): 1 artist, 1 venue, 1 genre, 1 region
+
+**Why hybrid testing?**
+
+- Core pages + golden paths ensure **consistent baseline comparison**
+- Random sampling ensures **broad coverage** and catches edge cases
+- Over multiple runs, most entities get tested
+- Prevents false positives from testing only the same URLs
+
+**Additional Features:**
+
 - Optionally fetches data from Google Search Console (if configured)
 - Optionally fetches data from Google Analytics 4 (if configured)
 - Optionally fetches backlink data from Ahrefs or SEMrush (if configured)
@@ -359,7 +449,7 @@ Our SEO implementation consists of three integrated systems:
 - 154+ venue deep links (77 network + 77 map views)
 - 2 changelog URLs
 
-**Auto-Updates**: Sitemap regenerates during `npm run build-data`
+**Auto-Updates**: Sitemap regenerates during `npm run build-data` (see [scripts/generate-sitemap.ts](../scripts/generate-sitemap.ts))
 
 ### 3. Cloudflare Worker (Phase 3)
 
