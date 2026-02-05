@@ -49,9 +49,9 @@ export function Scene2Venues({ concerts }: Scene2VenuesProps) {
           transition={{ duration: 0.8, delay: 0 }}
           className="text-center mb-12"
         >
-          <h2 className="font-serif text-5xl md:text-7xl text-white mb-4 tracking-tight">
+          <h1 className="font-serif text-5xl md:text-7xl text-white mb-4 tracking-tight">
             The Artists
-          </h2>
+          </h1>
           <p data-testid="venues-subtitle" className="font-sans text-lg md:text-xl text-gray-400">
             305 bands and musicians across 42 years
           </p>

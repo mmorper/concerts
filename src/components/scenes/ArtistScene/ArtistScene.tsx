@@ -183,12 +183,12 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
         transition={{ duration: 0.8, delay: 0 }}
         className="absolute top-20 left-0 right-0 z-20 text-center px-8 pointer-events-none"
       >
-        <h2
+        <h1
           className="font-serif text-5xl md:text-7xl text-white mb-3 tracking-tight"
           style={{ textShadow: '0 2px 20px rgba(0, 0, 0, 0.3)' }}
         >
           The Artists
-        </h2>
+        </h1>
         <p
           data-testid="artist-scene-subtitle"
           className="font-sans text-lg md:text-xl text-white/85 mb-6"

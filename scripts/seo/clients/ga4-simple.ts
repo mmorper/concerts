@@ -152,14 +152,15 @@ export async function fetchGA4Data(
       }
     )
 
-    const totals = overviewResponse.data.totals?.[0]?.metricValues || []
+    // GA4 API returns data in 'rows' when no dimensions are specified
+    const metricValues = overviewResponse.data.rows?.[0]?.metricValues || []
     const overview = {
-      sessions: parseInt(totals[0]?.value || '0', 10),
-      users: parseInt(totals[1]?.value || '0', 10),
-      newUsers: parseInt(totals[2]?.value || '0', 10),
-      bounceRate: parseFloat(totals[3]?.value || '0'),
-      avgSessionDuration: parseFloat(totals[4]?.value || '0'),
-      pagesPerSession: parseFloat(totals[5]?.value || '0'),
+      sessions: parseInt(metricValues[0]?.value || '0', 10),
+      users: parseInt(metricValues[1]?.value || '0', 10),
+      newUsers: parseInt(metricValues[2]?.value || '0', 10),
+      bounceRate: parseFloat(metricValues[3]?.value || '0'),
+      avgSessionDuration: parseFloat(metricValues[4]?.value || '0'),
+      pagesPerSession: parseFloat(metricValues[5]?.value || '0'),
     }
 
     // Fetch page-level metrics with rate limiting

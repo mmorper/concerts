@@ -630,9 +630,9 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
         transition={{ duration: 0.8, delay: 0 }}
         className="absolute top-20 left-0 right-0 z-[1000] text-center px-8 pointer-events-none"
       >
-        <h2 className="font-serif text-5xl md:text-7xl text-white mb-3 tracking-tight">
+        <h1 className="font-serif text-5xl md:text-7xl text-white mb-3 tracking-tight">
           The Geography
-        </h2>
+        </h1>
         <p data-testid="map-subtitle" className="font-sans text-lg md:text-xl text-gray-400 mb-6">
           {cityCount} cities across the map
         </p>
