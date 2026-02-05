@@ -17,7 +17,7 @@ An interactive web app for exploring personal concert history. Five scenes—Tim
 
 **v3.9.0** 🎭 Complete artist imagery! Every opening act now has a photo and bio alongside the headliners. We've enriched 151 previously missing artists and doubled coverage to 254 total artists—no more blank faces in your concert history. Smart name matching even finds artists with complex band names. [Explore the artists](https://concerts.morperhaus.org/?scene=artists) to see every performer who's shaped your musical journey.
 
-See the full changelog at [/liner-notes](https://concerts.morperhaus.org/liner-notes)
+Want the full story? Explore recent updates in the [liner notes](https://concerts.morperhaus.org/liner-notes).
 
 ## The backstory
 
