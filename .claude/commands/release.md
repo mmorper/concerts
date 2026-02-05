@@ -652,15 +652,85 @@ Close the issue with a comment referencing the release:
 gh issue close {ISSUE_NUMBER} --comment "Completed in v{VERSION}. See [release notes](https://github.com/mmorper/concerts/releases/tag/v{VERSION})"
 ```
 
+**Then check for spec relocation:**
+
+After closing each issue, check if the issue body references a spec in `docs/specs/future/`:
+
+```bash
+# Get issue body
+ISSUE_BODY=$(gh issue view {ISSUE_NUMBER} --json body --jq '.body')
+
+# Look for spec reference patterns:
+# - **Spec:** docs/specs/future/xyz.md
+# - [docs/specs/future/xyz.md](...)
+SPEC_PATH=$(echo "$ISSUE_BODY" | grep -oE 'docs/specs/future/[a-z0-9_-]+\.md' | head -1)
+```
+
+**If spec found and exists in `docs/specs/future/`:**
+
+```
+  → Spec found: docs/specs/future/roadmap-skill.md
+  Move to implemented? (yes / no / skip-all):
+```
+
+**Response handling:**
+- `yes` — Move this spec to `docs/specs/implemented/`
+- `no` — Skip this spec, keep in `future/`
+- `skip-all` — Skip all remaining spec moves for this release
+
+**Execute move if confirmed:**
+
+```bash
+git mv docs/specs/future/{SPEC_NAME}.md docs/specs/implemented/{SPEC_NAME}.md
+echo "  ✓ Moved {SPEC_NAME}.md to implemented/"
+```
+
+**Edge cases handled automatically:**
+
+| Scenario | Output | Action |
+|----------|--------|--------|
+| Spec already in `implemented/` | `→ Spec already implemented` | Skip prompt |
+| Spec file not found | `→ Spec file not found (may have been removed)` | Skip prompt |
+| No spec reference | (no output) | Continue to next issue |
+| Multiple issues → same spec | `→ Spec already moved earlier` | Skip prompt |
+
 **Skip if:**
 - User enters "none"
 - No open issues exist
 
-**Output:**
+**Example output:**
 
 ```
-✅ Closed issue #15 - Add Deezer API as third fallback for artist imagery
-✅ Closed issue #23 - Improve mobile navigation on Artist scene
+Closing 3 issues:
+
+Issue #25: Create /roadmap skill
+  ✓ Closed with comment
+  → Spec found: docs/specs/future/roadmap-skill.md
+  Move to implemented? (yes / no / skip-all): yes
+  ✓ Moved roadmap-skill.md to implemented/
+
+Issue #24: Confirm site metadata updates
+  ✓ Closed with comment
+  → No spec reference found
+
+Issue #23: Improve documentation accuracy
+  ✓ Closed with comment
+  → Spec already in implemented/
+  ℹ️  Skipped (already implemented)
+
+Summary:
+  • 3 issues closed
+  • 1 spec moved to implemented/
+  • Changes staged for commit
+```
+
+**Include moved specs in release commit:**
+
+In Step 8 (Git Operations), moved specs are automatically included:
+
+```bash
+git add docs/specs/implemented/*.md  # Include any moved specs
+git commit -m "release: v{VERSION} - {TITLE}"
 ```
 
 ---
