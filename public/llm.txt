@@ -190,6 +190,212 @@ Examples:
 
 ---
 
+## Page Structure & Semantic Hierarchy
+
+### Scene Navigation
+The site uses full-viewport snap-scroll scenes with interactive visualizations:
+
+#### 1. Timeline Scene (`/?scene=timeline`)
+**Title:** "179 Concerts (1984-2026) | Morperhaus Concert Archives"
+**H1:** "Concert Archive"
+**Layout:**
+- Interactive D3.js timeline visualization
+- Year markers (1984-2026)
+- Concert dots clustered by year
+- Click any year to expand cards and view concerts
+
+**Content Sections:**
+- Timeline visualization (primary)
+- Year selector dots
+- Concert count by year (dot size indicates frequency)
+- Hover preview cards with artist/venue details
+- Expandable year cards showing all concerts for selected year
+
+---
+
+#### 2. Artists Scene (`/?scene=artists`)
+**Title:** "254 Artists I've Seen Live | Morperhaus Concert Archives"
+**H1:** "The Artists"
+**Layout:**
+- Grid display of top 20 most-seen artists
+- Artist cards with concert counts and genre labels
+- Sorted by concert frequency
+
+**Content Sections:**
+- Artist cards with concert count badges
+- Genre classification for each artist
+- Statistics: "305 bands and musicians across 42 years"
+
+---
+
+#### 3. Venues Scene (`/?scene=venues`)
+**Title:** "77 Concert Venues | Morperhaus Concert Archives"
+**H1:** "The Venues"
+**Layout:**
+- Force-directed network graph
+- Venue nodes (larger) connected to artist nodes (smaller)
+- Interactive: click to expand/focus venue hierarchies
+- Toggle between "Top 10" and "All Venues" modes
+
+**Content Sections:**
+- Network visualization (primary)
+- Venue nodes sized by concert count
+- Nested artist/opener nodes when venue is expanded
+- View mode toggle (Top 10 / All Venues)
+- Interactive spotlight focus on click
+
+---
+
+#### 4. Geography Scene (`/?scene=geography`)
+**Title:** "Concert Map: 77 Venues Across North America | Morperhaus"
+**H1:** "The Geography"
+**Layout:**
+- Interactive Leaflet map with dark theme
+- Clustered venue markers
+- Region filter tabs (All / California / DC Area)
+- Click-to-activate for pan/zoom
+
+**Content Sections:**
+- Map visualization (primary)
+- Venue markers with popup details
+- Venue photos (from Google Places API)
+- Legacy badges (demolished/closed venues)
+- "Explore Venue" links to venue network scene
+- Region selector tabs
+
+---
+
+### Entity Deep-Link Pages (Dynamic Content)
+
+These pages inject dynamic semantic structure via Cloudflare Worker when accessed by bots (Googlebot, social crawlers). Human users get fast SPA with client-side routing.
+
+#### Artist Pages (`/?scene=artists&artist={normalized-name}`)
+**Title Pattern:** "{Artist Name} | Morperhaus Concert Archives"
+**Example:** "Depeche Mode | Morperhaus Concert Archives"
+
+**Semantic Structure (client-rendered):**
+- **H1:** "{Artist Name}"
+- **Sections:** Concert history, artist bio, genre tags
+- **Content:** List of concerts with dates/venues, artist photo, biographical info
+
+**Meta Tags (bot-rendered):**
+- Dynamic title with artist name
+- Description includes concert count and date range
+- OpenGraph image from TheAudioDB (if available)
+
+---
+
+#### Venue Pages (`/?scene=venues&venue={normalized-name}`)
+**Title Pattern:** "{Venue Name} | Morperhaus Concert Archives"
+**Example:** "Hollywood Bowl | Morperhaus Concert Archives"
+
+**Semantic Structure (network graph focused state):**
+- Spotlight on venue node in network visualization
+- Connected artist nodes highlighted
+- Dimmed unrelated nodes for focus
+
+**Meta Tags (bot-rendered):**
+- Dynamic title with venue name
+- Description includes concert count, location, and top 3 featured artists
+- Example: "4 concerts at Hollywood Bowl in Hollywood, California. Featured artists: New Order, Danny Elfman, The Cure."
+
+---
+
+#### Venue Pages via Map (`/?scene=geography&venue={normalized-name}`)
+**Same titles as venue network, different visualization:**
+- Map flies to venue location
+- Opens popup with venue photo and details
+- Shows venue marker highlighted on map
+
+---
+
+#### Venue + Artist Pages (`/?scene=venues&venue={venue}&artist={artist}`)
+**Title Pattern:** "{Venue Name} | Morperhaus Concert Archives"
+**Behavior:**
+- Expands venue node in network
+- Applies spotlight filter to show only that artist's connections at the venue
+- Useful for seeing specific artist's history at a specific venue
+
+---
+
+#### Genre Pages (`/?scene=genres&genre={normalized-name}`)
+**Title Pattern:** "{Genre} Concerts (count) | Morperhaus Concert Archives"
+**Example:** "New Wave Concerts (49) | Morperhaus Concert Archives"
+
+**Meta Tags (bot-rendered):**
+- Dynamic title with genre name and concert count
+- Description includes top 3 artists in that genre
+- Example: "49 new wave concerts featuring Depeche Mode, New Order, Pet Shop Boys and more."
+
+---
+
+#### Region Pages (`/?scene=geography&region={normalized-name}`)
+**Title Pattern:** "Concerts in {Region} (count) | Morperhaus Concert Archives"
+**Example:** "Concerts in Los Angeles (89) | Morperhaus Concert Archives"
+
+**Meta Tags (bot-rendered):**
+- Dynamic title with region name and concert count
+- Description includes top 3 venues in that region
+- Map view flies to region bounds
+
+---
+
+### Accessibility & Semantic Notes
+
+**HTML Structure:**
+- All pages use semantic HTML5 (`<section>`, `<h1>`, `<p>`)
+- Single H1 per scene (for SEO and accessibility)
+- Descriptive subtitles below H1 using `<p>` tags
+- ARIA labels on interactive visualizations
+- Keyboard navigation support where applicable
+
+**Bot Detection:**
+- Cloudflare Worker detects bots via User-Agent
+- Bots receive pre-rendered meta tags with entity-specific titles
+- Human users get fast SPA experience
+- No layout shift or hydration issues
+
+---
+
+### Visual Hierarchy
+
+**Typography:**
+- **H1:** Playfair Display, text-5xl (mobile) / text-7xl (desktop), serif
+- **Body:** Source Sans 3, sans-serif
+- **Subtitles:** text-lg (mobile) / text-xl (desktop)
+- **Labels:** text-xs, uppercase, tracking-widest
+
+**Color Scheme:**
+- Scene 1 (Timeline): White background with indigo accents
+- Scene 2 (Artists): Gradient from indigo-950 to purple-950
+- Scene 3 (Geography): Dark gray-900 with Leaflet dark tiles
+- Scene 4 (Venues): Gradient from indigo-950 to purple-950
+- Accent colors: Indigo (#6366f1), Purple (#8b5cf6), Pink (#ec4899)
+
+---
+
+## Interaction Patterns
+
+### Scene Navigation
+- Vertical snap-scroll between full-viewport scenes
+- Smooth transitions with Framer Motion
+- Deep linking preserves scroll position to correct scene
+- Cross-scene navigation (e.g., click venue in map → venue network)
+
+### Entity Exploration
+- **Timeline:** Click year dots to expand cards showing all concerts
+- **Venues Network:** Click venue nodes to expand and show artists/openers
+- **Map:** Click markers to open popups with photos and details
+- **Artists:** Cards link to artist deep-link pages (future enhancement)
+
+### Data Fetching
+- Initial load: Base HTML + static JSON files (concerts.json, artists-metadata.json, venues-metadata.json)
+- Lazy loading: Artist images, venue photos loaded on demand
+- External APIs: setlist.fm, Ticketmaster (called client-side when needed)
+- Discography: MusicBrainz data pre-fetched and bundled (discography.json)
+
+---
+
 ## Pre-Computed Statistics
 
 These facts are updated with each data refresh and can be quoted directly:

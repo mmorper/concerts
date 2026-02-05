@@ -170,7 +170,7 @@ async function injectArtistMeta(html, artistNormalized, origin) {
       : 'various years';
 
     // Build dynamic meta tags
-    const title = `${metadata.name} - Morperhaus Concert Archives`;
+    const title = `${metadata.name} | Morperhaus Concert Archives`;
     const description = `${concertCount} ${concertCount === 1 ? 'concert' : 'concerts'} from ${dateRange}. Explore setlists, tour history, and venue details for ${metadata.name}.`;
     const imageUrl = metadata.image || `${origin}/og-image.jpg`;
     const pageUrl = `${origin}/?scene=artists&artist=${artistNormalized}`;
@@ -178,7 +178,7 @@ async function injectArtistMeta(html, artistNormalized, origin) {
     // Replace title
     html = html.replace(
       /<title>.*?<\/title>/,
-      `<title>${escapeHtml(title)}</title>`
+      `<title>${escapeTitleText(title)}</title>`
     );
 
     // Replace meta description
@@ -274,14 +274,14 @@ async function injectVenueMeta(html, venueNormalized, origin, scene) {
 
     // Build dynamic meta tags
     const sceneLabel = scene === 'geography' ? 'Map' : 'Network';
-    const title = `${metadata.name} - Morperhaus Concert Archives`;
+    const title = `${metadata.name} | Morperhaus Concert Archives`;
     const description = `${concertCount} ${concertCount === 1 ? 'concert' : 'concerts'} at ${metadata.name} in ${metadata.city}, ${metadata.state}. Featured artists: ${topArtists.join(', ')}.`;
     const pageUrl = `${origin}/?scene=${scene}&venue=${venueNormalized}`;
 
     // Replace title
     html = html.replace(
       /<title>.*?<\/title>/,
-      `<title>${escapeHtml(title)}</title>`
+      `<title>${escapeTitleText(title)}</title>`
     );
 
     // Replace meta description
@@ -390,11 +390,11 @@ async function injectRegionMeta(html, regionNormalized, origin) {
       .sort((a, b) => venueCounts[b] - venueCounts[a])
       .slice(0, 3);
 
-    const title = `Concerts in ${regionName} (${regionConcerts.length}) - Morperhaus Concert Archives`;
+    const title = `Concerts in ${regionName} (${regionConcerts.length}) | Morperhaus Concert Archives`;
     const description = `${regionConcerts.length} concerts in ${regionName} at venues like ${topVenues.join(', ')}.`;
     const pageUrl = `${origin}/?scene=geography&region=${regionNormalized}`;
 
-    html = html.replace(/<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`);
+    html = html.replace(/<title>.*?<\/title>/, `<title>${escapeTitleText(title)}</title>`);
     html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
     html = html.replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
     html = html.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
@@ -450,11 +450,11 @@ async function injectGenreMeta(html, genreNormalized, origin) {
       .sort((a, b) => artistCounts[b] - artistCounts[a])
       .slice(0, 3);
 
-    const title = `${genreName} Concerts (${genreConcerts.length}) - Morperhaus Concert Archives`;
+    const title = `${genreName} Concerts (${genreConcerts.length}) | Morperhaus Concert Archives`;
     const description = `${genreConcerts.length} ${genreName.toLowerCase()} concerts featuring ${topArtists.join(', ')} and more.`;
     const pageUrl = `${origin}/?scene=genres&genre=${genreNormalized}`;
 
-    html = html.replace(/<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`);
+    html = html.replace(/<title>.*?<\/title>/, `<title>${escapeTitleText(title)}</title>`);
     html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
     html = html.replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
     html = html.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
@@ -494,27 +494,27 @@ async function injectSceneMeta(html, scene, origin) {
     // Scene-specific metadata
     const sceneMeta = {
       timeline: {
-        title: `${stats.concerts} Concerts (${stats.firstYear}-${stats.lastYear}) - Morperhaus Concert Archives`,
+        title: `${stats.concerts} Concerts (${stats.firstYear}-${stats.lastYear}) | Morperhaus Concert Archives`,
         description: `Interactive timeline of ${stats.concerts} concerts from ${stats.firstYear}-${stats.lastYear}. Click any year to explore shows, artists, and venues.`,
       },
       artists: {
-        title: `${stats.artists} Artists I've Seen Live - Morperhaus Concert Archives`,
+        title: `${stats.artists} Artists I've Seen Live | Morperhaus Concert Archives`,
         description: `Browse ${stats.artists} artists I've seen live. View photos, concert history, and connections between artists.`,
       },
       venues: {
-        title: `${stats.venues} Concert Venues - Morperhaus Concert Archives`,
+        title: `${stats.venues} Concert Venues | Morperhaus Concert Archives`,
         description: `Explore ${stats.venues} concert venues through an interactive network visualization. See artist connections and concert history.`,
       },
       geography: {
-        title: `Concert Map: ${stats.venues} Venues Across North America - Morperhaus`,
+        title: `Concert Map: ${stats.venues} Venues Across North America | Morperhaus`,
         description: `Interactive map of ${stats.venues} concert venues. Click markers to explore show history and artist lineups.`,
       },
       genres: {
-        title: `Music Genres Explored - Morperhaus Concert Archives`,
+        title: `Music Genres Explored | Morperhaus Concert Archives`,
         description: `How ${stats.concerts} concerts break down by genre. Explore the musical diversity of ${stats.lastYear - stats.firstYear}+ years of live shows.`,
       },
       about: {
-        title: `About - Morperhaus Concert Archives`,
+        title: `About | Morperhaus Concert Archives`,
         description: `The story behind ${stats.concerts} concerts across ${stats.lastYear - stats.firstYear}+ years. A personal archive of live music memories.`,
       },
     };
@@ -523,7 +523,7 @@ async function injectSceneMeta(html, scene, origin) {
     const pageUrl = scene ? `${origin}/?scene=${scene}` : origin;
 
     // Replace meta tags
-    html = html.replace(/<title>.*?<\/title>/, `<title>${escapeHtml(meta.title)}</title>`);
+    html = html.replace(/<title>.*?<\/title>/, `<title>${escapeTitleText(meta.title)}</title>`);
     html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(meta.description)}" />`);
     html = html.replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(meta.title)}" />`);
     html = html.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(meta.description)}" />`);
@@ -540,7 +540,18 @@ async function injectSceneMeta(html, scene, origin) {
 }
 
 /**
- * Escape HTML special characters
+ * Escape text for use in <title> tags
+ * Title tags contain text content, not HTML, so only escape < and & which could break parsing
+ * Apostrophes and quotes are safe in title text and should NOT be entity-encoded
+ */
+function escapeTitleText(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;');
+}
+
+/**
+ * Escape HTML special characters for use in HTML attributes
  */
 function escapeHtml(text) {
   const map = {

@@ -231,22 +231,107 @@ function analyzePage(url: string, html: string, responseTime: number): PageAnaly
   }
 }
 
+// Load available entities from data files
+function loadAvailableEntities(): {
+  artists: string[]
+  venues: string[]
+  genres: string[]
+  regions: string[]
+} {
+  try {
+    const concertsPath = path.join(process.cwd(), 'public/data/concerts.json')
+    const concertsData = JSON.parse(fs.readFileSync(concertsPath, 'utf-8'))
+    const concerts = concertsData.concerts || []
+
+    // Extract unique normalized entities
+    const artists = Array.from(new Set(concerts.map((c: any) => c.headlinerNormalized).filter(Boolean))) as string[]
+    const venues = Array.from(new Set(concerts.map((c: any) => c.venueNormalized).filter(Boolean))) as string[]
+    const genres = Array.from(new Set(concerts.map((c: any) => c.genreNormalized).filter(Boolean))) as string[]
+
+    // Regions are city names normalized (lowercase, hyphens)
+    const regions = Array.from(
+      new Set(
+        concerts
+          .map((c: any) => c.city)
+          .filter(Boolean)
+          .map((city: string) => city.toLowerCase().replace(/\s+/g, ''))
+      )
+    ) as string[]
+
+    return { artists, venues, genres, regions }
+  } catch (error) {
+    console.warn('⚠️  Could not load entities from data files, using fallback set')
+    // Fallback to original hardcoded entities if data files unavailable
+    return {
+      artists: ['depeche-mode', 'nine-inch-nails'],
+      venues: ['hollywood-bowl', 'forum'],
+      genres: ['industrial'],
+      regions: ['losangeles'],
+    }
+  }
+}
+
+// Randomly sample one entity from each category (stratified sampling)
+function sampleRandomDeepLinks(baseUrl: string): string[] {
+  const entities = loadAvailableEntities()
+  const links: string[] = []
+
+  // Helper to pick random element from array
+  const pickRandom = <T>(arr: T[]): T | null => {
+    if (arr.length === 0) return null
+    return arr[Math.floor(Math.random() * arr.length)]
+  }
+
+  // Sample 1 artist (exclude golden paths to ensure variety)
+  const randomArtist = pickRandom(entities.artists.filter(a => a !== 'depeche-mode'))
+  if (randomArtist) {
+    links.push(`${baseUrl}/?scene=artists&artist=${randomArtist}`)
+  }
+
+  // Sample 1 venue (exclude golden paths)
+  const randomVenue = pickRandom(entities.venues.filter(v => v !== 'hollywood-bowl'))
+  if (randomVenue) {
+    links.push(`${baseUrl}/?scene=venues&venue=${randomVenue}`)
+  }
+
+  // Sample 1 genre
+  const randomGenre = pickRandom(entities.genres)
+  if (randomGenre) {
+    links.push(`${baseUrl}/?scene=genres&genre=${randomGenre}`)
+  }
+
+  // Sample 1 region
+  const randomRegion = pickRandom(entities.regions)
+  if (randomRegion) {
+    links.push(`${baseUrl}/?scene=geography&region=${randomRegion}`)
+  }
+
+  return links
+}
+
 // Generate list of key pages to crawl
+// Uses hybrid approach: consistent core pages + golden paths + random sampling
 function getKeyPages(baseUrl: string): string[] {
-  return [
+  // Core pages (always test) - 6 URLs
+  const corePages = [
     `${baseUrl}/`,
     `${baseUrl}/?scene=timeline`,
     `${baseUrl}/?scene=venues`,
     `${baseUrl}/?scene=geography`,
     `${baseUrl}/?scene=genres`,
     `${baseUrl}/?scene=artists`,
-    `${baseUrl}/?scene=artists&artist=depeche-mode`,
-    `${baseUrl}/?scene=artists&artist=nine-inch-nails`,
-    `${baseUrl}/?scene=venues&venue=hollywood-bowl`,
-    `${baseUrl}/?scene=venues&venue=forum`,
-    `${baseUrl}/?scene=genres&genre=industrial`,
-    `${baseUrl}/?scene=geography&region=losangeles`,
   ]
+
+  // Golden path deep links (always test for baseline consistency) - 2 URLs
+  const goldenPaths = [
+    `${baseUrl}/?scene=artists&artist=depeche-mode`,
+    `${baseUrl}/?scene=venues&venue=hollywood-bowl`,
+  ]
+
+  // Random stratified sample (changes each run for broader coverage) - ~4 URLs
+  const randomDeepLinks = sampleRandomDeepLinks(baseUrl)
+
+  return [...corePages, ...goldenPaths, ...randomDeepLinks]
 }
 
 // Crawl key pages
@@ -254,18 +339,29 @@ async function crawlPages(baseUrl: string): Promise<PageAnalysis[]> {
   const pages = getKeyPages(baseUrl)
   const analyses: PageAnalysis[] = []
 
-  console.log(`📄 Crawling ${pages.length} pages (as Googlebot)...\n`)
+  // Identify which URLs are random samples (for display)
+  const corePageCount = 6
+  const goldenPathCount = 2
+  const randomStartIndex = corePageCount + goldenPathCount
 
-  for (const url of pages) {
+  console.log(`📄 Crawling ${pages.length} pages (as Googlebot)...`)
+  console.log(`   ${corePageCount} core pages + ${goldenPathCount} golden paths + ${pages.length - randomStartIndex} random samples\n`)
+
+  for (let i = 0; i < pages.length; i++) {
+    const url = pages[i]
+    const isRandom = i >= randomStartIndex
+
     try {
       // Use Googlebot UA to get dynamic meta tags from Cloudflare Worker
       const { html, responseTime } = await fetchPage(url, USER_AGENTS.googlebot)
       const analysis = analyzePage(url, html, responseTime)
       analyses.push(analysis)
 
-      console.log(`  ✅ ${url.replace(baseUrl, '')} (${responseTime}ms)`)
+      const badge = isRandom ? '🎲' : '  '
+      console.log(`  ${badge} ✅ ${url.replace(baseUrl, '')} (${responseTime}ms)`)
     } catch (error) {
-      console.error(`  ❌ ${url.replace(baseUrl, '')} failed`)
+      const badge = isRandom ? '🎲' : '  '
+      console.error(`  ${badge} ❌ ${url.replace(baseUrl, '')} failed`)
     }
   }
 

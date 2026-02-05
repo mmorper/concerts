@@ -145,25 +145,49 @@ Select "Get detailed help" to see step-by-step playbooks:
 
 ### Step 2: Crawl Key Pages
 
-**Pages analyzed (12 URLs):**
-1. Homepage: `/?scene=timeline`
-2. Scene 1 - Timeline: `/?scene=timeline`
-3. Scene 2 - Venues: `/?scene=venues`
-4. Scene 3 - Geography: `/?scene=geography`
-5. Scene 4 - Genres: `/?scene=genres`
-6. Scene 5 - Artists: `/?scene=artists`
-7. Artist deep link: `/?scene=artists&artist=depeche-mode`
-8. Artist deep link: `/?scene=artists&artist=nine-inch-nails`
-9. Venue deep link: `/?scene=venues&venue=hollywood-bowl`
-10. Venue deep link: `/?scene=venues&venue=forum`
-11. Genre deep link: `/?scene=genres&genre=industrial`
-12. Region deep link: `/?scene=geography&region=losangeles`
+**Hybrid Testing Strategy (12 URLs):**
 
-> 📄 Crawling 12 pages...
+The SEO tool uses a **hybrid approach** for URL testing:
+
+1. **Core Pages (6 URLs)** - Always tested:
+   - Homepage: `/?scene=timeline`
+   - Scene 1 - Timeline: `/?scene=timeline`
+   - Scene 2 - Venues: `/?scene=venues`
+   - Scene 3 - Geography: `/?scene=geography`
+   - Scene 4 - Genres: `/?scene=genres`
+   - Scene 5 - Artists: `/?scene=artists`
+
+2. **Golden Paths (2 URLs)** - Always tested for baseline consistency:
+   - Artist: `/?scene=artists&artist=depeche-mode`
+   - Venue: `/?scene=venues&venue=hollywood-bowl`
+
+3. **Random Samples (~4 URLs)** - Changes each run for broader coverage:
+   - 1 random artist (stratified sampling from actual data)
+   - 1 random venue
+   - 1 random genre
+   - 1 random region
+
+**Why this approach?**
+- Core pages and golden paths ensure **consistent baseline comparison**
+- Random sampling ensures **broad coverage** and catches edge cases
+- Over multiple runs, most entities get tested
+- Prevents false positives from testing only the same URLs
+
+> 📄 Crawling 12 pages (as Googlebot)...
+>    6 core pages + 2 golden paths + 4 random samples
+>
+>   ✅ / (165ms)
+>   ✅ /?scene=timeline (180ms)
+>   ...
+> 🎲 ✅ /?scene=artists&artist=sonic-youth (195ms)
+> 🎲 ✅ /?scene=venues&venue=red-rocks (210ms)
+>
 > ✅ 12/12 fetched successfully
 >
 > Total HTML size: 245 KB
 > Average response time: 187ms
+
+**Note:** The 🎲 emoji indicates a randomly sampled URL that will change on each run.
 
 ---
 
