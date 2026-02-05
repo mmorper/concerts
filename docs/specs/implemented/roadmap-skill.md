@@ -62,19 +62,22 @@ Generated roadmap summary:
 Building out features that add entirely new ways to experience
 the archive. The audio preview integration proved how powerful
 these immersive touches can be—thinking about extending that to
-setlist items (#22) and bringing the full discography UI to life
-in the Artist gatefold (#5).
+setlist items ([#22](https://github.com/mmorper/concerts/issues/22))
+and bringing the full discography UI to life in the Artist gatefold
+([#5](https://github.com/mmorper/concerts/issues/5)).
 
 **Enhancements**
 Polishing existing features with better cross-scene navigation
-(#9), smarter venue status badges (#8), and more accurate
-documentation (#23). The kind of improvements that make
-everything feel more cohesive and discoverable.
+([#9](https://github.com/mmorper/concerts/issues/9)), smarter venue
+status badges ([#8](https://github.com/mmorper/concerts/issues/8)),
+and more accurate documentation ([#23](https://github.com/mmorper/concerts/issues/23)).
+The kind of improvements that make everything feel more cohesive and
+discoverable.
 
 **Fixes**
-Addressing deployment workflow gaps (#13) and ensuring all site
-metadata stays current (#24). Foundational work that keeps
-everything running smoothly.
+Addressing deployment workflow gaps ([#13](https://github.com/mmorper/concerts/issues/13))
+and ensuring all site metadata stays current ([#24](https://github.com/mmorper/concerts/issues/24)).
+Foundational work that keeps everything running smoothly.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -159,6 +162,12 @@ Respond with:
 - Link 1-3 representative examples per category
 - Focus on outcomes, not implementation details
 - Use Product Marketer voice (see Voice Guidelines below)
+
+**Issue reference hyperlinking:**
+- AI generates plain issue references: `(#22)`
+- Post-processing converts to markdown links: `([#22](https://github.com/owner/repo/issues/22))`
+- Repository owner/name dynamically determined from git remote
+- Makes README more interactive and professional
 
 **Selection criteria for linked examples:**
 - High-impact or high-interest features
@@ -252,7 +261,12 @@ Users can also run `/roadmap` standalone anytime to refresh the roadmap.
    └─> Group by category
    └─> Select representative examples (2-3 per category)
    └─> Write prose using Product Marketer voice
-   └─> Format with issue links
+   └─> Format with plain issue references: (#N)
+
+3.5. Hyperlink issue references
+   └─> Get repo owner/name from git remote
+   └─> Convert (#N) to ([#N](https://github.com/owner/repo/issues/N))
+   └─> Apply to all category summaries
 
 4. Update README
    └─> Replace lines 132-139 (What's Next section)

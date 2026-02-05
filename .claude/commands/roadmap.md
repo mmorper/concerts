@@ -148,6 +148,90 @@ If a category has 0 issues, don't include it in the output.
 
 ---
 
+### Step 3.5: Hyperlink Issue References
+
+**Convert plain issue references to markdown links for better interactivity.**
+
+**Get repository info from git remote:**
+
+```typescript
+function getGitHubRepoInfo(): { owner: string; repo: string } {
+  const remote = execSync('git remote get-url origin').toString().trim()
+
+  // Handle SSH: git@github.com:mmorper/concerts.git
+  // Handle HTTPS: https://github.com/mmorper/concerts.git
+  const match = remote.match(/github\.com[:/](.+?)\/(.+?)(?:\.git)?$/)
+
+  if (!match) {
+    throw new Error('Could not parse GitHub repo info from git remote')
+  }
+
+  return {
+    owner: match[1],
+    repo: match[2],
+  }
+}
+```
+
+**Post-process summaries to add hyperlinks:**
+
+```typescript
+const repoInfo = getGitHubRepoInfo()
+
+function hyperlinkIssues(text: string, owner: string, repo: string): string {
+  // Replace (#N) with ([#N](url))
+  return text.replace(
+    /\(#(\d+)\)/g,
+    `([#$1](https://github.com/${owner}/${repo}/issues/$1))`
+  )
+}
+
+// Apply to all category summaries
+if (summaries.capabilities) {
+  summaries.capabilities = hyperlinkIssues(
+    summaries.capabilities,
+    repoInfo.owner,
+    repoInfo.repo
+  )
+}
+
+if (summaries.enhancements) {
+  summaries.enhancements = hyperlinkIssues(
+    summaries.enhancements,
+    repoInfo.owner,
+    repoInfo.repo
+  )
+}
+
+if (summaries.fixes) {
+  summaries.fixes = hyperlinkIssues(
+    summaries.fixes,
+    repoInfo.owner,
+    repoInfo.repo
+  )
+}
+```
+
+**Transformation examples:**
+
+Before:
+```
+Audio preview playback comes to setlist items (#22), letting you instantly hear...
+```
+
+After:
+```
+Audio preview playback comes to setlist items ([#22](https://github.com/mmorper/concerts/issues/22)), letting you instantly hear...
+```
+
+**Benefits:**
+- Readers can click directly to issue details
+- More professional and polished documentation
+- Works with any repository (not hardcoded)
+- Applied consistently across all categories
+
+---
+
 ### Step 4: Preview Generated Content
 
 **Show complete preview:**
@@ -160,19 +244,22 @@ If a category has 0 issues, don't include it in the output.
 Building out features that add entirely new ways to experience
 the archive. The audio preview integration proved how powerful
 these immersive touches can be—thinking about extending that to
-setlist items (#22) and bringing the full discography UI to life
-in the Artist gatefold (#5).
+setlist items ([#22](https://github.com/mmorper/concerts/issues/22))
+and bringing the full discography UI to life in the Artist gatefold
+([#5](https://github.com/mmorper/concerts/issues/5)).
 
 **Enhancements**
 Polishing existing features with better cross-scene navigation
-(#9), smarter venue status badges (#8), and more accurate
-documentation (#23). The kind of improvements that make everything
-feel more cohesive and discoverable.
+([#9](https://github.com/mmorper/concerts/issues/9)), smarter venue
+status badges ([#8](https://github.com/mmorper/concerts/issues/8)),
+and more accurate documentation ([#23](https://github.com/mmorper/concerts/issues/23)).
+The kind of improvements that make everything feel more cohesive and
+discoverable.
 
 **Fixes**
-Addressing deployment workflow gaps (#13) and ensuring all site
-metadata stays current (#24). Foundational work that keeps
-everything running smoothly.
+Addressing deployment workflow gaps ([#13](https://github.com/mmorper/concerts/issues/13))
+and ensuring all site metadata stays current ([#24](https://github.com/mmorper/concerts/issues/24)).
+Foundational work that keeps everything running smoothly.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -426,10 +513,12 @@ whole experience feel more cohesive and easy to explore.
 
 ### Issue Links in Summary
 
-- Use GitHub issue number format: `(#22)`
-- Always include parentheses
-- Link to 1-3 representative examples per category
+- GitHub issue references are automatically converted to markdown links
+- AI generates plain format: `(#22)`
+- Post-processing converts to: `([#22](https://github.com/owner/repo/issues/22))`
+- Links to 1-3 representative examples per category
 - Choose high-impact or easy-to-understand issues
+- Repository owner/name dynamically determined from git remote
 
 ### GitHub API Rate Limits
 
@@ -462,9 +551,12 @@ Possible causes:
 - [ ] Fetches open issues via `gh` CLI
 - [ ] Categorizes issues correctly (capability/enhancement/fix)
 - [ ] Generates summaries in Product Marketer voice
+- [ ] Converts plain issue references `(#N)` to markdown links `[#N](url)`
+- [ ] Dynamically determines repo owner/name from git remote
+- [ ] Hyperlinks work in all three categories
 - [ ] Updates README.md What's Next section
 - [ ] Preserves opening and closing lines
-- [ ] `--preview` shows content without writing
+- [ ] `--preview` shows hyperlinked content without writing
 - [ ] `--auto` runs non-interactively
 - [ ] Handles no issues gracefully
 - [ ] Handles all issues in one category
@@ -492,13 +584,13 @@ Possible causes:
 A few things I'm thinking about (whenever I get around to them):
 
 **New Capabilities**
-Building out features that add entirely new ways to experience the archive. The audio preview integration proved how powerful these immersive touches can be—thinking about extending that to setlist items (#22) and bringing the full discography UI to life in the Artist gatefold (#5).
+Building out features that add entirely new ways to experience the archive. The audio preview integration proved how powerful these immersive touches can be—thinking about extending that to setlist items ([#22](https://github.com/mmorper/concerts/issues/22)) and bringing the full discography UI to life in the Artist gatefold ([#5](https://github.com/mmorper/concerts/issues/5)).
 
 **Enhancements**
-Polishing existing features with better cross-scene navigation (#9), smarter venue status badges (#8), and more accurate documentation (#23). The kind of improvements that make everything feel more cohesive and discoverable.
+Polishing existing features with better cross-scene navigation ([#9](https://github.com/mmorper/concerts/issues/9)), smarter venue status badges ([#8](https://github.com/mmorper/concerts/issues/8)), and more accurate documentation ([#23](https://github.com/mmorper/concerts/issues/23)). The kind of improvements that make everything feel more cohesive and discoverable.
 
 **Fixes**
-Addressing deployment workflow gaps (#13) and ensuring all site metadata stays current (#24). Foundational work that keeps everything running smoothly.
+Addressing deployment workflow gaps ([#13](https://github.com/mmorper/concerts/issues/13)) and ensuring all site metadata stays current ([#24](https://github.com/mmorper/concerts/issues/24)). Foundational work that keeps everything running smoothly.
 
 And always: more shows to add to the list.
 ```
@@ -511,7 +603,7 @@ And always: more shows to add to the list.
 A few things I'm thinking about (whenever I get around to them):
 
 **Enhancements**
-Focusing on polish and refinement—making venue status clearer with renamed venue badges (#8), improving documentation accuracy (#23), and building visual tests to catch UI issues earlier (#10). The kind of foundational work that makes everything feel more solid and trustworthy.
+Focusing on polish and refinement—making venue status clearer with renamed venue badges ([#8](https://github.com/mmorper/concerts/issues/8)), improving documentation accuracy ([#23](https://github.com/mmorper/concerts/issues/23)), and building visual tests to catch UI issues earlier ([#10](https://github.com/mmorper/concerts/issues/10)). The kind of foundational work that makes everything feel more solid and trustworthy.
 
 And always: more shows to add to the list.
 ```
