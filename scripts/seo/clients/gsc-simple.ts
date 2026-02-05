@@ -28,10 +28,9 @@ const GSC_PROPERTY = 'sc-domain:concerts.morperhaus.org'
 // ============================================================================
 
 function getAuth() {
-  const clientId = process.env.GOOGLE_CLIENT_ID
-  const clientSecret = process.env.GOOGLE_CLIENT_SECRET
-  // Try SEO-specific token first, fallback to general token
-  const refreshToken = process.env.GOOGLE_REFRESH_TOKEN_SEO || process.env.GOOGLE_REFRESH_TOKEN
+  const clientId = process.env.GOOGLE_CLIENT_ID_SEO
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET_SEO
+  const refreshToken = process.env.GOOGLE_REFRESH_TOKEN_SEO
 
   if (!clientId || !clientSecret || !refreshToken) {
     return null
@@ -101,7 +100,7 @@ export async function fetchGSCData(
       status: {
         configured: false,
         hasData: false,
-        message: 'GSC not configured (missing GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, or GOOGLE_REFRESH_TOKEN_SEO)',
+        message: 'GSC not configured (missing GOOGLE_CLIENT_ID_SEO, GOOGLE_CLIENT_SECRET_SEO, or GOOGLE_REFRESH_TOKEN_SEO)',
       },
     }
   }
@@ -210,7 +209,7 @@ export function formatGSCSummary(status: GSCStatus, data: GSCData | null): strin
 
   if (!status.configured) {
     lines.push('  ⬚ Google Search Console: Not configured')
-    lines.push('     Missing: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, or GOOGLE_REFRESH_TOKEN_SEO')
+    lines.push('     Missing: GOOGLE_CLIENT_ID_SEO, GOOGLE_CLIENT_SECRET_SEO, or GOOGLE_REFRESH_TOKEN_SEO')
     return lines
   }
 

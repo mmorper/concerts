@@ -31,10 +31,9 @@ const DEFAULT_DATE_RANGE = 28 // days
 // ============================================================================
 
 function getAuth() {
-  const clientId = process.env.GOOGLE_CLIENT_ID
-  const clientSecret = process.env.GOOGLE_CLIENT_SECRET
-  // Try SEO-specific token first, fallback to general token
-  const refreshToken = process.env.GOOGLE_REFRESH_TOKEN_SEO || process.env.GOOGLE_REFRESH_TOKEN
+  const clientId = process.env.GOOGLE_CLIENT_ID_SEO
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET_SEO
+  const refreshToken = process.env.GOOGLE_REFRESH_TOKEN_SEO
 
   if (!clientId || !clientSecret || !refreshToken) {
     return null
