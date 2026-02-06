@@ -2,9 +2,9 @@
 
 ## Quick Start
 
-**Version:** v4.2.0 (Production)
+**Version:** v4.2.1 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-02-05
+**Last Sync:** 2026-02-06
 
 ### Commands
 
@@ -103,11 +103,11 @@ These docs provide essential context for common development tasks:
 
 **Recent Releases:**
 
+- **v4.2.1** (2026-02-06): OAuth credentials separation, page tracking utility, spec documentation updates (internal)
 - **v4.2.0** (2026-02-05): SEO Ecosystem & Tooling - Hybrid testing strategy, documentation improvements, GA4 integration fixes (internal)
 - **v4.1.0** (2026-02-05): iOS Home Screen Icons & Favicon - Purple network design with icon generation tooling
 - **v4.0.3** (2026-02-04): Documentation updates - Internal release
 - **v4.0.2** (2026-02-03): Mobile Audio Preview - Enabled playback in mobile Artist modal
-- **v4.0.1** (2026-02-03): Artist Scene Polish - Refined UI with larger photos and responsive sizing
 
 ---
 
@@ -191,4 +191,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-02-05 by Claude Code for v4.2.0 release*
+*Last updated: 2026-02-06 by Claude Code for v4.2.1 release*
