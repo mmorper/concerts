@@ -1,0 +1,94 @@
+// src/utils/pageTracking.ts
+
+/**
+ * Scene name to display title mapping
+ * Ensures each scene has a unique title for SEO and analytics
+ */
+const SCENE_TITLES: Record<number, string> = {
+  1: '179 Concerts (1984-2026) | Morperhaus Concert Archives',
+  2: 'Venues | Concert Archives',
+  3: 'Geography | Concert Archives',
+  4: 'Genres | Concert Archives',
+  5: 'Artists | Concert Archives',
+}
+
+/**
+ * Scene number to URL parameter name mapping
+ */
+const SCENE_NAMES: Record<number, string> = {
+  1: 'timeline',
+  2: 'venues',
+  3: 'geography',
+  4: 'genres',
+  5: 'artists',
+}
+
+interface DeepLinkParams {
+  artist?: string | null
+  venue?: string | null
+}
+
+/**
+ * Formats a normalized name for display (reverses normalization)
+ * Example: "depeche-mode" → "Depeche Mode"
+ */
+function formatEntityName(normalizedName: string): string {
+  return normalizedName
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
+/**
+ * Builds the page path (URL) from current scene and deep link parameters
+ */
+export function buildPagePath(
+  sceneNumber: number,
+  params?: DeepLinkParams
+): string {
+  const sceneName = SCENE_NAMES[sceneNumber]
+
+  // Base path with scene
+  const searchParams = new URLSearchParams()
+  searchParams.set('scene', sceneName)
+
+  // Add entity parameters if present
+  if (params?.artist) {
+    searchParams.set('artist', params.artist)
+  }
+  if (params?.venue) {
+    searchParams.set('venue', params.venue)
+  }
+
+  return `/?${searchParams.toString()}`
+}
+
+/**
+ * Builds the page title from current scene and deep link parameters
+ */
+export function buildPageTitle(
+  sceneNumber: number,
+  params?: DeepLinkParams
+): string {
+  const baseTitle = SCENE_TITLES[sceneNumber]
+
+  // If no deep link params, return base scene title
+  if (!params?.artist && !params?.venue) {
+    return baseTitle
+  }
+
+  // Format entity names for display
+  const artistDisplay = params.artist ? formatEntityName(params.artist) : null
+  const venueDisplay = params.venue ? formatEntityName(params.venue) : null
+
+  // Build descriptive title based on deep link combination
+  if (artistDisplay && venueDisplay) {
+    return `${artistDisplay} at ${venueDisplay} | Concert Archives`
+  } else if (artistDisplay) {
+    return `${artistDisplay} | Artists | Concert Archives`
+  } else if (venueDisplay) {
+    return `${venueDisplay} | Venues | Concert Archives`
+  }
+
+  return baseTitle
+}

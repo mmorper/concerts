@@ -165,6 +165,7 @@ export function ConcertHistoryPanel({
             <div className="mt-2">
               <TourBadge
                 tourCount={tourCount}
+                artistName={artist.name}
                 isActive={isTourPanelActive}
                 onClick={onTourBadgeClick}
                 show={true}
@@ -216,6 +217,15 @@ export function ConcertHistoryPanel({
                     onClick={(e) => {
                       e.stopPropagation()
                       haptics.light() // Haptic feedback on setlist open
+
+                      // Track setlist click
+                      analytics.trackEvent('setlist_button_clicked', {
+                        artist_name: artist.name,
+                        concert_date: concert.date,
+                        venue_name: concert.venue,
+                        device_type: window.innerWidth < 768 ? 'mobile' : 'desktop',
+                      })
+
                       onSetlistClick(concert)
                     }}
                     className={`setlist-link flex items-center gap-1.5 flex-shrink-0 ml-4 transition-all duration-150 relative touchable-subtle ${

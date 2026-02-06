@@ -8,10 +8,13 @@
 
 import { useState, useEffect } from 'react'
 import { haptics } from '../../../utils/haptics'
+import { analytics } from '../../../services/analytics'
 
 export interface TourBadgeProps {
   /** Number of upcoming tour dates */
   tourCount: number
+  /** Artist name for analytics tracking */
+  artistName: string
   /** Whether tour panel is currently open */
   isActive?: boolean
   /** Click handler */
@@ -24,7 +27,7 @@ export interface TourBadgeProps {
  * Tour Badge Component
  * Shows pulsing "ON TOUR · X dates" badge
  */
-export function TourBadge({ tourCount, onClick, show = true }: TourBadgeProps) {
+export function TourBadge({ tourCount, artistName, onClick, show = true }: TourBadgeProps) {
   const [isVisible, setIsVisible] = useState(false)
 
   // Fade in animation when show prop changes
@@ -40,6 +43,14 @@ export function TourBadge({ tourCount, onClick, show = true }: TourBadgeProps) {
 
   const handleClick = () => {
     haptics.light()
+
+    // Track tour badge click
+    analytics.trackEvent('tour_badge_clicked', {
+      artist_name: artistName,
+      tour_date_count: tourCount,
+      device_type: window.innerWidth < 768 ? 'mobile' : 'desktop',
+    })
+
     onClick()
   }
 

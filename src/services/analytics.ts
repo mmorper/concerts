@@ -54,15 +54,27 @@ class AnalyticsService {
   }
 
   /**
-   * Track page view (called automatically on scene changes)
-   * @param pagePath - Virtual page path (e.g., '/timeline', '/artists')
+   * Track virtual page view (for SPAs)
+   * @param pagePath - Virtual page path (e.g., '/?scene=timeline')
    * @param pageTitle - Human-readable title
    */
   trackPageView(pagePath: string, pageTitle: string): void {
-    this.trackEvent('page_view', {
-      page_path: pagePath,
-      page_title: pageTitle,
-    });
+    // Development: Always log to console
+    if (import.meta.env.DEV) {
+      console.log(`[Analytics] pageview`, { page_path: pagePath, page_title: pageTitle });
+    }
+
+    // Production: Send to GA4 using config (proper virtual pageview)
+    if (this.enabled && window.gtag) {
+      try {
+        window.gtag('config', this.measurementId, {
+          page_path: pagePath,
+          page_title: pageTitle,
+        });
+      } catch (error) {
+        console.error('[Analytics] Failed to track pageview:', error);
+      }
+    }
   }
 }
 

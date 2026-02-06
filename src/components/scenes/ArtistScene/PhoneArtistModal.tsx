@@ -261,6 +261,14 @@ export function PhoneArtistModal({
   const handleSetlistClick = async (concert: ArtistConcert) => {
     if (!artist) return
 
+    // Track setlist click
+    analytics.trackEvent('setlist_button_clicked', {
+      artist_name: artist.name,
+      concert_date: concert.date,
+      venue_name: concert.venue,
+      device_type: 'mobile',
+    })
+
     setSelectedConcert(concert)
     setSetlistData(null)
     setIsLoadingSetlist(true)
@@ -407,6 +415,7 @@ export function PhoneArtistModal({
                 <div className="mt-2">
                   <TourBadge
                     tourCount={tourCount}
+                    artistName={artist.name}
                     isActive={activeTab === 'upcoming'}
                     onClick={handleTourBadgeClick}
                     show={true}

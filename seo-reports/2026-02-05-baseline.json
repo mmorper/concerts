@@ -1,0 +1,504 @@
+{
+  "metadata": {
+    "date": "2026-02-05",
+    "url": "https://concerts.morperhaus.org",
+    "pagesAnalyzed": 12,
+    "version": "1.5",
+    "dataSources": {
+      "crawl": true,
+      "gsc": true,
+      "ga4": true,
+      "backlinks": null
+    },
+    "confidence": 90
+  },
+  "scores": {
+    "overall": 92,
+    "technical": 24,
+    "content": 27,
+    "semantic": 18,
+    "authority": 14,
+    "ux": 9,
+    "aiReadiness": 10
+  },
+  "pages": [
+    {
+      "url": "https://concerts.morperhaus.org/",
+      "title": "179 Concerts (1984-2026) - Morperhaus Concert Archives",
+      "description": "Interactive timeline of 179 concerts from 1984-2026. Click any year to explore shows, artists, and venues.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 70,
+      "htmlSize": 7791
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=timeline",
+      "title": "179 Concerts (1984-2026) - Morperhaus Concert Archives",
+      "description": "Interactive timeline of 179 concerts from 1984-2026. Click any year to explore shows, artists, and venues.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 80,
+      "htmlSize": 7807
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=venues",
+      "title": "77 Concert Venues - Morperhaus Concert Archives",
+      "description": "Explore 77 concert venues through an interactive network visualization. See artist connections and concert history.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 76,
+      "htmlSize": 7818
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=geography",
+      "title": "Concert Map: 77 Venues Across North America - Morperhaus",
+      "description": "Interactive map of 77 concert venues. Click markers to explore show history and artist lineups.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 61,
+      "htmlSize": 7779
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=genres",
+      "title": "Music Genres Explored - Morperhaus Concert Archives",
+      "description": "How 179 concerts break down by genre. Explore the musical diversity of 42+ years of live shows.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 71,
+      "htmlSize": 7766
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=artists",
+      "title": "104 Artists I&#039;ve Seen Live - Morperhaus Concert Archives",
+      "description": "Browse 104 artists I&#039;ve seen live. View photos, concert history, and connections between artists.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 99,
+      "htmlSize": 7808
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode",
+      "title": "Depeche Mode - Morperhaus Concert Archives",
+      "description": "5 concerts from 1985-2023. Explore setlists, tour history, and venue details for Depeche Mode.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 110,
+      "htmlSize": 7826
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=nine-inch-nails",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 179 concerts from 1984-2026, featuring 254 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 80,
+      "htmlSize": 7972
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=venues&venue=hollywood-bowl",
+      "title": "Hollywood Bowl - Morperhaus Concert Archives",
+      "description": "4 concerts at Hollywood Bowl in Hollywood, California. Featured artists: New Order, Danny Elfman, The Cure.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 120,
+      "htmlSize": 7813
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=venues&venue=forum",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 179 concerts from 1984-2026, featuring 254 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 86,
+      "htmlSize": 7972
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=genres&genre=industrial",
+      "title": "Morperhaus Concert Archives",
+      "description": "A visual love letter to 5+ decades of live music. 179 concerts from 1984-2026, featuring 254 artists across 77 venues. Explored through interactive timelines, maps, and network graphs.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 74,
+      "htmlSize": 7972
+    },
+    {
+      "url": "https://concerts.morperhaus.org/?scene=geography&region=losangeles",
+      "title": "Concerts in Los Angeles (23) - Morperhaus Concert Archives",
+      "description": "23 concerts in Los Angeles at venues like Universal Amphitheater, The Shrine Auditorium, The Wiltern.",
+      "h1Count": 0,
+      "hasSchema": true,
+      "hasOG": true,
+      "responseTime": 81,
+      "htmlSize": 7823
+    }
+  ],
+  "checks": {
+    "hasSitemap": true,
+    "hasRobotsTxt": true,
+    "hasLlmTxt": true,
+    "hasFactsJson": true,
+    "hasRssFeed": true,
+    "aboutPage": {
+      "exists": true,
+      "hasSchema": true,
+      "hasLinkedIn": true
+    },
+    "avgResponseTime": 84
+  },
+  "gscData": {
+    "property": "sc-domain:concerts.morperhaus.org",
+    "dateRange": {
+      "start": "2026-01-05",
+      "end": "2026-02-02"
+    },
+    "pages": [
+      {
+        "page": "https://concerts.morperhaus.org/",
+        "clicks": 2,
+        "impressions": 26,
+        "ctr": 0.07692307692307693,
+        "position": 6.038461538461538
+      }
+    ],
+    "queries": [
+      {
+        "query": "how many venues",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "query": "what about 2022?",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "query": "what’s the most recent update",
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      {
+        "query": "yes",
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 1
+      }
+    ],
+    "indexCoverage": {
+      "valid": 0,
+      "warning": 0,
+      "error": 0,
+      "excluded": 0
+    }
+  },
+  "gscStatus": {
+    "configured": true,
+    "hasData": true,
+    "message": "GSC: 1 pages, 4 queries"
+  },
+  "ga4Data": {
+    "propertyId": "343639505",
+    "dateRange": {
+      "start": "2026-01-08",
+      "end": "2026-02-05"
+    },
+    "overview": {
+      "sessions": 115,
+      "users": 67,
+      "newUsers": 67,
+      "bounceRate": 0.2608695652173913,
+      "avgSessionDuration": 457.70369785217395,
+      "pagesPerSession": 2.8173913043478263
+    },
+    "pageMetrics": [
+      {
+        "pagePath": "/",
+        "pageViews": 293,
+        "uniquePageViews": 293,
+        "avgTimeOnPage": 408.61778083035716,
+        "bounceRate": 0.25892857142857145,
+        "exitRate": 0
+      },
+      {
+        "pagePath": "/about",
+        "pageViews": 15,
+        "uniquePageViews": 15,
+        "avgTimeOnPage": 377.9847032,
+        "bounceRate": 0,
+        "exitRate": 0
+      },
+      {
+        "pagePath": "/liner-notes",
+        "pageViews": 14,
+        "uniquePageViews": 14,
+        "avgTimeOnPage": 618.60079525,
+        "bounceRate": 0.125,
+        "exitRate": 0
+      },
+      {
+        "pagePath": "/favico.png",
+        "pageViews": 2,
+        "uniquePageViews": 2,
+        "avgTimeOnPage": 32.003922,
+        "bounceRate": 0,
+        "exitRate": 0
+      }
+    ],
+    "trafficSources": [
+      {
+        "source": "(direct)",
+        "medium": "(none)",
+        "sessions": 94,
+        "bounceRate": 0.2872340425531915
+      },
+      {
+        "source": "linkedin.com",
+        "medium": "referral",
+        "sessions": 16,
+        "bounceRate": 0.0625
+      },
+      {
+        "source": "itunes",
+        "medium": "(not set)",
+        "sessions": 3,
+        "bounceRate": 0.6666666666666666
+      },
+      {
+        "source": "github.com",
+        "medium": "referral",
+        "sessions": 2,
+        "bounceRate": 0
+      }
+    ]
+  },
+  "ga4Status": {
+    "configured": true,
+    "hasPropertyId": true,
+    "hasData": true,
+    "message": "GA4: 115 sessions, 4 pages",
+    "propertyId": "343639505"
+  },
+  "backlinkData": null,
+  "backlinkStatus": {
+    "configured": false,
+    "provider": null,
+    "hasData": false,
+    "message": "Backlinks not configured"
+  },
+  "insights": [
+    {
+      "type": "duplicate_content",
+      "severity": "warning",
+      "title": "2 pages share identical title",
+      "description": "Title \"179 Concerts (1984-2026) - Morperhaus Concert Archives\" is used on 2 pages. This can cause keyword cannibalization.",
+      "affectedPages": [
+        "https://concerts.morperhaus.org/",
+        "https://concerts.morperhaus.org/?scene=timeline"
+      ],
+      "dataSources": [
+        "crawl"
+      ],
+      "recommendation": "Give each page a unique, descriptive title. Consider if these pages should be consolidated.",
+      "estimatedImpact": "medium"
+    },
+    {
+      "type": "duplicate_content",
+      "severity": "warning",
+      "title": "3 pages share identical title",
+      "description": "Title \"Morperhaus Concert Archives\" is used on 3 pages. This can cause keyword cannibalization.",
+      "affectedPages": [
+        "https://concerts.morperhaus.org/?scene=artists&artist=nine-inch-nails",
+        "https://concerts.morperhaus.org/?scene=venues&venue=forum",
+        "https://concerts.morperhaus.org/?scene=genres&genre=industrial"
+      ],
+      "dataSources": [
+        "crawl"
+      ],
+      "recommendation": "Give each page a unique, descriptive title. Consider if these pages should be consolidated.",
+      "estimatedImpact": "medium"
+    },
+    {
+      "type": "content_gap",
+      "severity": "warning",
+      "title": "Well-structured page has no search visibility",
+      "description": "https://concerts.morperhaus.org/?scene=timeline has proper meta tags and schema but received only 0 impressions in the last 28 days.",
+      "affectedPages": [
+        "https://concerts.morperhaus.org/?scene=timeline"
+      ],
+      "dataSources": [
+        "crawl",
+        "gsc"
+      ],
+      "recommendation": "Check if page is indexed. If indexed, content may not match search intent or faces strong competition.",
+      "estimatedImpact": "medium"
+    },
+    {
+      "type": "content_gap",
+      "severity": "warning",
+      "title": "Well-structured page has no search visibility",
+      "description": "https://concerts.morperhaus.org/?scene=venues has proper meta tags and schema but received only 0 impressions in the last 28 days.",
+      "affectedPages": [
+        "https://concerts.morperhaus.org/?scene=venues"
+      ],
+      "dataSources": [
+        "crawl",
+        "gsc"
+      ],
+      "recommendation": "Check if page is indexed. If indexed, content may not match search intent or faces strong competition.",
+      "estimatedImpact": "medium"
+    },
+    {
+      "type": "content_gap",
+      "severity": "warning",
+      "title": "Well-structured page has no search visibility",
+      "description": "https://concerts.morperhaus.org/?scene=geography has proper meta tags and schema but received only 0 impressions in the last 28 days.",
+      "affectedPages": [
+        "https://concerts.morperhaus.org/?scene=geography"
+      ],
+      "dataSources": [
+        "crawl",
+        "gsc"
+      ],
+      "recommendation": "Check if page is indexed. If indexed, content may not match search intent or faces strong competition.",
+      "estimatedImpact": "medium"
+    },
+    {
+      "type": "content_gap",
+      "severity": "warning",
+      "title": "Well-structured page has no search visibility",
+      "description": "https://concerts.morperhaus.org/?scene=genres has proper meta tags and schema but received only 0 impressions in the last 28 days.",
+      "affectedPages": [
+        "https://concerts.morperhaus.org/?scene=genres"
+      ],
+      "dataSources": [
+        "crawl",
+        "gsc"
+      ],
+      "recommendation": "Check if page is indexed. If indexed, content may not match search intent or faces strong competition.",
+      "estimatedImpact": "medium"
+    },
+    {
+      "type": "content_gap",
+      "severity": "warning",
+      "title": "Well-structured page has no search visibility",
+      "description": "https://concerts.morperhaus.org/?scene=artists has proper meta tags and schema but received only 0 impressions in the last 28 days.",
+      "affectedPages": [
+        "https://concerts.morperhaus.org/?scene=artists"
+      ],
+      "dataSources": [
+        "crawl",
+        "gsc"
+      ],
+      "recommendation": "Check if page is indexed. If indexed, content may not match search intent or faces strong competition.",
+      "estimatedImpact": "medium"
+    },
+    {
+      "type": "content_gap",
+      "severity": "warning",
+      "title": "Well-structured page has no search visibility",
+      "description": "https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode has proper meta tags and schema but received only 0 impressions in the last 28 days.",
+      "affectedPages": [
+        "https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode"
+      ],
+      "dataSources": [
+        "crawl",
+        "gsc"
+      ],
+      "recommendation": "Check if page is indexed. If indexed, content may not match search intent or faces strong competition.",
+      "estimatedImpact": "medium"
+    },
+    {
+      "type": "content_gap",
+      "severity": "warning",
+      "title": "Well-structured page has no search visibility",
+      "description": "https://concerts.morperhaus.org/?scene=artists&artist=nine-inch-nails has proper meta tags and schema but received only 0 impressions in the last 28 days.",
+      "affectedPages": [
+        "https://concerts.morperhaus.org/?scene=artists&artist=nine-inch-nails"
+      ],
+      "dataSources": [
+        "crawl",
+        "gsc"
+      ],
+      "recommendation": "Check if page is indexed. If indexed, content may not match search intent or faces strong competition.",
+      "estimatedImpact": "medium"
+    },
+    {
+      "type": "content_gap",
+      "severity": "warning",
+      "title": "Well-structured page has no search visibility",
+      "description": "https://concerts.morperhaus.org/?scene=venues&venue=hollywood-bowl has proper meta tags and schema but received only 0 impressions in the last 28 days.",
+      "affectedPages": [
+        "https://concerts.morperhaus.org/?scene=venues&venue=hollywood-bowl"
+      ],
+      "dataSources": [
+        "crawl",
+        "gsc"
+      ],
+      "recommendation": "Check if page is indexed. If indexed, content may not match search intent or faces strong competition.",
+      "estimatedImpact": "medium"
+    },
+    {
+      "type": "content_gap",
+      "severity": "warning",
+      "title": "Well-structured page has no search visibility",
+      "description": "https://concerts.morperhaus.org/?scene=venues&venue=forum has proper meta tags and schema but received only 0 impressions in the last 28 days.",
+      "affectedPages": [
+        "https://concerts.morperhaus.org/?scene=venues&venue=forum"
+      ],
+      "dataSources": [
+        "crawl",
+        "gsc"
+      ],
+      "recommendation": "Check if page is indexed. If indexed, content may not match search intent or faces strong competition.",
+      "estimatedImpact": "medium"
+    },
+    {
+      "type": "content_gap",
+      "severity": "warning",
+      "title": "Well-structured page has no search visibility",
+      "description": "https://concerts.morperhaus.org/?scene=genres&genre=industrial has proper meta tags and schema but received only 0 impressions in the last 28 days.",
+      "affectedPages": [
+        "https://concerts.morperhaus.org/?scene=genres&genre=industrial"
+      ],
+      "dataSources": [
+        "crawl",
+        "gsc"
+      ],
+      "recommendation": "Check if page is indexed. If indexed, content may not match search intent or faces strong competition.",
+      "estimatedImpact": "medium"
+    },
+    {
+      "type": "content_gap",
+      "severity": "warning",
+      "title": "Well-structured page has no search visibility",
+      "description": "https://concerts.morperhaus.org/?scene=geography&region=losangeles has proper meta tags and schema but received only 0 impressions in the last 28 days.",
+      "affectedPages": [
+        "https://concerts.morperhaus.org/?scene=geography&region=losangeles"
+      ],
+      "dataSources": [
+        "crawl",
+        "gsc"
+      ],
+      "recommendation": "Check if page is indexed. If indexed, content may not match search intent or faces strong competition.",
+      "estimatedImpact": "medium"
+    }
+  ],
+  "recommendations": []
+}

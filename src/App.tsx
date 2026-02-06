@@ -12,6 +12,7 @@ import { AboutPage } from './components/about'
 import { SCENE_MAP, TOAST } from './components/changelog/constants'
 import { useChangelogCheck } from './hooks/useChangelogCheck'
 import { analytics } from './services/analytics'
+import { buildPagePath, buildPageTitle } from './utils/pageTracking'
 
 function App() {
   return (
@@ -41,6 +42,10 @@ function MainScenes() {
     venue: string
     artist?: string
   } | null>(null)
+  const [currentDeepLinkParams, setCurrentDeepLinkParams] = useState<{
+    artist?: string | null
+    venue?: string | null
+  }>({})
 
   // Check for new changelog entries
   const {
@@ -109,8 +114,13 @@ function MainScenes() {
       if (newScene !== currentScene) {
         setCurrentScene(newScene)
 
-        // Track scene view
-        const sceneNames = ['timeline', 'venues', 'map', 'genres', 'artists']
+        // Track virtual pageview
+        const pagePath = buildPagePath(newScene, currentDeepLinkParams)
+        const pageTitle = buildPageTitle(newScene, currentDeepLinkParams)
+        analytics.trackPageView(pagePath, pageTitle)
+
+        // Keep legacy scene_view event for continuity
+        const sceneNames = ['timeline', 'venues', 'geography', 'genres', 'artists']
         const sceneName = sceneNames[newScene - 1]
         analytics.trackEvent('scene_view', {
           scene_name: sceneName,
@@ -121,7 +131,7 @@ function MainScenes() {
 
     scrollContainer.addEventListener('scroll', handleScroll, { passive: true })
     return () => scrollContainer.removeEventListener('scroll', handleScroll)
-  }, [currentScene])
+  }, [currentScene, currentDeepLinkParams])
 
   // Show toast with delay after data loads and if new features available
   useEffect(() => {
@@ -143,7 +153,13 @@ function MainScenes() {
     const artistParam = params.get('artist')
     const venueParam = params.get('venue')
 
-    // Track deep link access
+    // Store deep link parameters in state for pageview tracking
+    setCurrentDeepLinkParams({
+      artist: artistParam,
+      venue: venueParam,
+    })
+
+    // Track deep link access with legacy event (for continuity)
     if (sceneParam || artistParam || venueParam) {
       analytics.trackEvent('deep_link_accessed', {
         scene: sceneParam || undefined,
@@ -155,6 +171,17 @@ function MainScenes() {
 
     if (sceneParam && SCENE_MAP[sceneParam]) {
       const sceneId = SCENE_MAP[sceneParam]
+
+      // Track virtual pageview for deep link
+      const pagePath = buildPagePath(sceneId, {
+        artist: artistParam,
+        venue: venueParam,
+      })
+      const pageTitle = buildPageTitle(sceneId, {
+        artist: artistParam,
+        venue: venueParam,
+      })
+      analytics.trackPageView(pagePath, pageTitle)
 
       // If artist parameter is provided, set it for the ArtistScene
       if (artistParam && sceneId === 5) {

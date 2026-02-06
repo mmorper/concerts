@@ -19,6 +19,26 @@
 import { analytics } from '@/services/analytics'
 ```
 
+### Virtual Pageview Tracking (SPA)
+
+Track scene changes and deep link navigation as virtual pageviews:
+
+```typescript
+import { buildPagePath, buildPageTitle } from '@/utils/pageTracking'
+
+// Track scene change
+const pagePath = buildPagePath(sceneNumber, { artist, venue })
+const pageTitle = buildPageTitle(sceneNumber, { artist, venue })
+analytics.trackPageView(pagePath, pageTitle)
+```
+
+**Automatic Tracking:**
+- Scene changes via scroll → Virtual pageview with current scene
+- Deep link access → Virtual pageview with scene + entity params
+- Navigation clicks → Pageview when scene actually changes
+
+**Note:** Virtual pageviews complement (not replace) scene_view events. Both are tracked for comprehensive analytics.
+
 ### Basic Event Tracking Pattern
 
 ```typescript
@@ -404,9 +424,11 @@ Before marking tracking implementation complete:
 
 - **Full Implementation Spec:** `docs/specs/implemented/global-analytics-tracking.md`
 - **Analytics Service:** `src/services/analytics.ts`
+- **Page Tracking Utilities:** `src/utils/pageTracking.ts`
 - **GA4 Setup Guide:** Follow prompts in GA4 Admin after events are live
+- **Deep Linking:** `docs/DEEP_LINKING.md`
 
 ---
 
-**Last Updated:** 2026-01-09
-**Version:** v3.4.0+ (GA tracking implemented)
+**Last Updated:** 2026-02-05
+**Version:** v4.2.0+ (Virtual pageview tracking implemented)

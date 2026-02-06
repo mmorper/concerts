@@ -312,7 +312,7 @@ export function Scene5Genres({ concerts: _concerts }: Scene5GenresProps) {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-center px-4"
         >
-          <h1 className="font-serif text-3xl md:text-5xl text-white mb-1 tracking-tight">
+          <h1 className="font-serif text-5xl md:text-7xl text-white mb-1 tracking-tight">
             The Music
           </h1>
           <p data-testid="genres-subtitle" className="font-sans text-sm text-slate-400">
