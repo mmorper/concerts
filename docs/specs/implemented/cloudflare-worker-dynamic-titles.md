@@ -1,9 +1,11 @@
 # Cloudflare Worker: Dynamic Scene Titles
 
-**Status:** Planned
+**Status:** Implemented ✅
+**Issue:** [#29](https://github.com/mmorper/concerts/issues/29) (open - deployment pending)
 **Priority:** High (SEO improvement — 4 point impact)
 **Discovered by:** `/seo` analysis — inconsistent deep link metadata
-**Last updated:** 2026-01-20
+**Implemented:** 2026-01-20
+**Moved to implemented:** 2026-02-05
 
 ---
 
