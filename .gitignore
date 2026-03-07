@@ -44,6 +44,8 @@ public/og-image-stats.json
 # Data pipeline backup files
 public/data/*.backup
 public/data/*.backup.*
+data/*.backup
+data/*.backup.*
 data/venues-to-classify.csv*
 
 # Personal data files (keep examples in git)
@@ -52,6 +54,7 @@ data/venue-status.csv
 # Claude Code - ignore personal settings, keep shared config
 .claude/settings.local.json
 .claude/todos/
+.claude/worktrees/
 
 # Bug reports and debugging artifacts
 bugs/
