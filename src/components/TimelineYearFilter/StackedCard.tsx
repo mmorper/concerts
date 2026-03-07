@@ -3,6 +3,8 @@ import { motion } from 'framer-motion'
 import { useArtistMetadata } from '../TimelineHoverPreview/useArtistMetadata'
 import { FALLBACK, LAYOUT, COLORS } from '../TimelineHoverPreview/constants'
 import type { StackedCardProps } from './types'
+import { isUpcomingConcert } from '../../utils/concertUtils'
+import { UpcomingBadge } from '../UpcomingBadge'
 
 /**
  * Individual concert card in the stacked year filter display
@@ -55,6 +57,8 @@ export function StackedCard({
     onHoverEnd()
   }, [onHoverEnd])
 
+  const upcoming = isUpcomingConcert(concert.date)
+
   // Calculate z-index: hovered card goes to top, otherwise stack position
   const zIndex = isHovered ? 999 : stackPosition
 
@@ -104,7 +108,14 @@ export function StackedCard({
         style={{
           width: LAYOUT.WIDTH,
           backgroundColor: COLORS.POPUP_BG,
-          border: `1px solid ${COLORS.POPUP_BORDER}`,
+          ...(upcoming ? {
+            borderTop: '3px solid #4f46e5',
+            borderRight: '1px solid rgba(99,102,241,0.45)',
+            borderBottom: '1px solid rgba(99,102,241,0.45)',
+            borderLeft: '1px solid rgba(99,102,241,0.45)',
+          } : {
+            border: `1px solid ${COLORS.POPUP_BORDER}`,
+          }),
           borderRadius: LAYOUT.BORDER_RADIUS,
           overflow: 'hidden',
           boxShadow: isHovered
@@ -115,7 +126,7 @@ export function StackedCard({
         }}
       >
         {/* Artist Image - same height as popup */}
-        <div style={{ width: '100%', height: LAYOUT.IMAGE_HEIGHT, overflow: 'hidden' }}>
+        <div style={{ width: '100%', height: LAYOUT.IMAGE_HEIGHT, overflow: 'hidden', position: 'relative' }}>
           <img
             src={imageUrl}
             alt={concert.headliner}
@@ -126,6 +137,11 @@ export function StackedCard({
               objectPosition: 'center',
             }}
           />
+          {upcoming && (
+            <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 2 }}>
+              <UpcomingBadge size="md" />
+            </div>
+          )}
         </div>
 
         {/* Text Content - match popup exactly */}

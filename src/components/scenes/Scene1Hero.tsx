@@ -268,7 +268,8 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
           .sort((a, b) => b[1] - a[1])[0]?.[0] || yearConcerts[0]?.headliner || 'Unknown'
         const artistConcert = yearConcerts.find(c => c.headliner === mostFrequentArtist)
         const venueName = artistConcert?.venue || 'Unknown Venue'
-        return { mostFrequentArtist, venueName }
+        const concertDate = artistConcert?.date || `${year}-01-01`
+        return { mostFrequentArtist, venueName, concertDate }
       }
 
       // Helper function to animate dot on hover/touch
@@ -331,12 +332,12 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
             // Don't trigger mouse events during touch or when expanded
             if (isTouchingRef.current || filterState.isExpanded) return
 
-            const { mostFrequentArtist, venueName } = getConcertInfo()
+            const { mostFrequentArtist, venueName, concertDate } = getConcertInfo()
             const svgRect = timelineRef.current?.getBoundingClientRect()
             if (svgRect) {
               const screenX = svgRect.left + x + margin.left
               const screenY = svgRect.top + innerHeight / 2 + margin.top
-              handleMouseEnter(mostFrequentArtist, year, count, venueName, { x: screenX, y: screenY })
+              handleMouseEnter(mostFrequentArtist, year, count, venueName, concertDate, { x: screenX, y: screenY })
             }
 
             animateDotEnter()
@@ -357,12 +358,12 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
 
             // If not already showing hover state, trigger it first
             if (!hoverState || hoverState.year !== year) {
-              const { mostFrequentArtist, venueName } = getConcertInfo()
+              const { mostFrequentArtist, venueName, concertDate } = getConcertInfo()
               const svgRect = timelineRef.current?.getBoundingClientRect()
               if (svgRect) {
                 const screenX = svgRect.left + x + margin.left
                 const screenY = svgRect.top + innerHeight / 2 + margin.top
-                handleMouseEnter(mostFrequentArtist, year, count, venueName, { x: screenX, y: screenY })
+                handleMouseEnter(mostFrequentArtist, year, count, venueName, concertDate, { x: screenX, y: screenY })
               }
             }
 
@@ -393,12 +394,12 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
 
             // If not already showing hover state, trigger it first
             if (!hoverState || hoverState.year !== year) {
-              const { mostFrequentArtist, venueName } = getConcertInfo()
+              const { mostFrequentArtist, venueName, concertDate } = getConcertInfo()
               const svgRect = timelineRef.current?.getBoundingClientRect()
               if (svgRect) {
                 const screenX = svgRect.left + x + margin.left
                 const screenY = svgRect.top + innerHeight / 2 + margin.top
-                handleMouseEnter(mostFrequentArtist, year, count, venueName, { x: screenX, y: screenY })
+                handleMouseEnter(mostFrequentArtist, year, count, venueName, concertDate, { x: screenX, y: screenY })
               }
             }
 
@@ -474,12 +475,13 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
 
             // Show preview
             if (data.getConcertInfo) {
-              const { mostFrequentArtist, venueName } = data.getConcertInfo()
+              const { mostFrequentArtist, venueName, concertDate } = data.getConcertInfo()
               handleMouseEnter(
                 mostFrequentArtist,
                 data.year,
                 data.count,
                 venueName,
+                concertDate,
                 { x: touch.clientX, y: touch.clientY },
                 true // isTouch = true for shorter delay
               )
@@ -532,12 +534,13 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
 
                 // Get concert info and show preview
                 if (data.getConcertInfo) {
-                  const { mostFrequentArtist, venueName } = data.getConcertInfo()
+                  const { mostFrequentArtist, venueName, concertDate } = data.getConcertInfo()
                   handleMouseEnter(
                     mostFrequentArtist,
                     data.year,
                     data.count,
                     venueName,
+                    concertDate,
                     { x: touch.clientX, y: touch.clientY },
                     true // isTouch = true for shorter delay
                   )

@@ -392,6 +392,44 @@ body {
 }
 
 /* ============================================
+   Upcoming Concert Badge Styles
+   ============================================ */
+
+/* Pulsing dot animation for upcoming badge — opacity fade + scale shrink */
+@keyframes upcoming-pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.55);
+  }
+}
+
+.animate-upcoming-dot {
+  animation: upcoming-pulse-dot 2s ease-in-out infinite;
+}
+
+/* Upcoming concert row treatment in gatefold concert history */
+.row-upcoming {
+  background: rgba(79, 70, 229, 0.15);
+  border: 1px solid rgba(79, 70, 229, 0.3);
+  position: relative;
+}
+
+.row-upcoming::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  border-radius: 0 2px 2px 0;
+  background: #4f46e5;
+}
+
+/* ============================================
    Tour Badge Styles (v1.6.0)
    ============================================ */
 

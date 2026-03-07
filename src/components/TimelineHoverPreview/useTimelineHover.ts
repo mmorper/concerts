@@ -45,6 +45,7 @@ export function useTimelineHover() {
     year: number,
     concertCount: number,
     venue: string,
+    date: string,
     position: { x: number; y: number },
     isTouch = false
   ) => {
@@ -60,6 +61,7 @@ export function useTimelineHover() {
         year,
         concertCount,
         venue,
+        date,
         position,
         isHovering: true,
       })

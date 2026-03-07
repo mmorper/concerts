@@ -9,6 +9,8 @@ import type { ArtistCard, ArtistConcert } from './types'
 import { haptics } from '../../../utils/haptics'
 import { normalizeVenueName } from '../../../utils/normalize'
 import { analytics } from '../../../services/analytics'
+import { isUpcomingConcert } from '../../../utils/concertUtils'
+import { UpcomingBadge } from '../../UpcomingBadge'
 
 interface ConcertHistoryPanelProps {
   artist: ArtistCard
@@ -186,13 +188,17 @@ export function ConcertHistoryPanel({
           {artist.concerts.map((concert, idx) => {
             const isSetlistOpen = openSetlistConcert?.date === concert.date &&
                                   openSetlistConcert?.venue === concert.venue
+            const isUpcoming = isUpcomingConcert(concert.date)
 
             return (
               <li
                 key={idx}
-                className="concert-row group flex items-start gap-4 text-sm text-[#e5e5e5] py-1.5 border-b border-white/[0.04] last:border-b-0 hover:bg-white/[0.04] transition-colors duration-150 rounded px-2 -mx-2"
+                className={`concert-row group flex items-start gap-4 text-sm text-[#e5e5e5] py-1.5 last:border-b-0 hover:bg-white/[0.04] transition-colors duration-150 rounded px-2 -mx-2 ${isUpcoming ? 'row-upcoming' : 'border-b border-white/[0.04]'}`}
               >
-                <span className="font-sans text-[#737373] font-medium min-w-[95px] flex-shrink-0 tabular-nums pt-0.5">
+                <span
+                  className="font-sans min-w-[95px] flex-shrink-0 tabular-nums pt-0.5"
+                  style={{ color: isUpcoming ? '#818cf8' : '#737373', fontWeight: isUpcoming ? 600 : 500 }}
+                >
                   {format(new Date(concert.date + 'T00:00:00'), 'dd MMM yyyy')}
                 </span>
                 <div className="flex-1 flex flex-col gap-0.5">
@@ -211,8 +217,12 @@ export function ConcertHistoryPanel({
                   </button>
                 </div>
 
-                {/* Inline Setlist Link - always visible if callback provided */}
-                {onSetlistClick && (
+                {/* Right column: upcoming badge OR setlist link */}
+                {isUpcoming ? (
+                  <div className="flex-shrink-0 ml-4">
+                    <UpcomingBadge size="sm" />
+                  </div>
+                ) : onSetlistClick && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation()

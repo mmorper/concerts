@@ -2,6 +2,8 @@ import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { PARALLAX, LAYOUT, FALLBACK, COLORS } from './constants'
 import type { TimelineHoverContentProps } from './types'
+import { isUpcomingConcert } from '../../utils/concertUtils'
+import { UpcomingBadge } from '../UpcomingBadge'
 
 /**
  * Content component for the timeline hover preview
@@ -17,9 +19,11 @@ export function TimelineHoverContent({
   year,
   concertCount,
   venue,
+  date,
   imageUrl,
   onClick,
 }: TimelineHoverContentProps) {
+  const upcoming = isUpcomingConcert(date)
   const [localMousePosition, setLocalMousePosition] = useState({ x: 0, y: 0 })
 
   /**
@@ -57,7 +61,14 @@ export function TimelineHoverContent({
         width: LAYOUT.WIDTH,
         minHeight: LAYOUT.MIN_HEIGHT,
         backgroundColor: COLORS.POPUP_BG,
-        border: `1px solid ${COLORS.POPUP_BORDER}`,
+        ...(upcoming ? {
+          borderTop: '3px solid #4f46e5',
+          borderRight: '1px solid rgba(99,102,241,0.45)',
+          borderBottom: '1px solid rgba(99,102,241,0.45)',
+          borderLeft: '1px solid rgba(99,102,241,0.45)',
+        } : {
+          border: `1px solid ${COLORS.POPUP_BORDER}`,
+        }),
         borderRadius: LAYOUT.BORDER_RADIUS,
         boxShadow: '0 10px 40px rgba(0, 0, 0, 0.4)',
         overflow: 'hidden',
@@ -104,6 +115,11 @@ export function TimelineHoverContent({
             ease: 'easeOut',
           }}
         />
+        {upcoming && (
+          <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 2 }}>
+            <UpcomingBadge size="md" />
+          </div>
+        )}
       </div>
 
       {/* Text Content */}

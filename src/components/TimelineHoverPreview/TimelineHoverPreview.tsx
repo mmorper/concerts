@@ -124,6 +124,7 @@ export function TimelineHoverPreview({
             year={hoverState.year}
             concertCount={hoverState.concertCount}
             venue={hoverState.venue}
+            date={hoverState.date}
             imageUrl={imageUrl}
             onClick={onClick ? () => onClick(hoverState.artistName) : undefined}
           />
