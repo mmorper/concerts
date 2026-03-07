@@ -192,11 +192,30 @@ async function getPlaceDetails(placeId: string): Promise<PlaceDetails | null> {
 }
 
 /**
- * Get photo URL with specified max height
+ * Fetch the permanent CDN photo URI for a given photo resource name.
+ * Uses skipHttpRedirect=true to resolve the API reference to a stable
+ * lh3.googleusercontent.com URL at data-refresh time, avoiding expiring
+ * API resource references being stored in venues-metadata.json.
  */
-export function getPhotoUrl(photoName: string, maxHeightPx: number): string {
-  // photoName already includes the full path like "places/ChIJ.../photos/..."
-  return `https://places.googleapis.com/v1/${photoName}/media?maxHeightPx=${maxHeightPx}&key=${GOOGLE_PLACES_API_KEY}`
+export async function fetchPhotoUri(photoName: string, maxHeightPx: number): Promise<string | null> {
+  if (!GOOGLE_PLACES_API_KEY) {
+    return null
+  }
+  const url = `https://places.googleapis.com/v1/${photoName}/media?maxHeightPx=${maxHeightPx}&skipHttpRedirect=true&key=${GOOGLE_PLACES_API_KEY}`
+  try {
+    const response = await fetch(url, {
+      headers: { 'X-Goog-Api-Key': GOOGLE_PLACES_API_KEY },
+    })
+    if (!response.ok) {
+      console.warn(`Warning: photo fetch failed (${response.status}) for ${photoName}`)
+      return null
+    }
+    const data = await response.json()
+    return data.photoUri ?? null
+  } catch (error) {
+    console.error(`Error fetching photo URI for ${photoName}:`, error)
+    return null
+  }
 }
 
 /**

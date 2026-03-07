@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v4.2.1 (Production)
+**Version:** v4.2.2 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-02-06
 
@@ -103,6 +103,7 @@ These docs provide essential context for common development tasks:
 
 **Recent Releases:**
 
+- **v4.2.2** (2026-03-07): Venue photos restored — fix expiring Google Places API references, date display fix, Nile Rodgers data
 - **v4.2.1** (2026-02-06): OAuth credentials separation, page tracking utility, spec documentation updates (internal)
 - **v4.2.0** (2026-02-05): SEO Ecosystem & Tooling - Hybrid testing strategy, documentation improvements, GA4 integration fixes (internal)
 - **v4.1.0** (2026-02-05): iOS Home Screen Icons & Favicon - Purple network design with icon generation tooling

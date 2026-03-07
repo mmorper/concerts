@@ -5,7 +5,7 @@ import { parse } from 'csv-parse/sync'
 import { normalizeVenueName } from '../src/utils/normalize.js'
 import {
   getVenuePlaceDetails,
-  getPhotoUrl,
+  fetchPhotoUri,
   loadCache as loadPlacesCache,
   saveCache as savePlacesCache,
   getCacheKey,
@@ -310,14 +310,39 @@ async function enrichVenues() {
 
           // Generate photo URLs if photos available
           if (placeDetails.photos && placeDetails.photos.length > 0) {
-            const photo = placeDetails.photos[0]
-            metadata.photoUrls = {
-              thumbnail: getPhotoUrl(photo.name, 400),
-              medium: getPhotoUrl(photo.name, 800),
-              large: getPhotoUrl(photo.name, 1200),
+            let photo = placeDetails.photos[0]
+            // Resolve to permanent CDN URLs at refresh time — API resource names expire
+            let [thumbnail, medium, large] = await Promise.all([
+              fetchPhotoUri(photo.name, 400),
+              fetchPhotoUri(photo.name, 800),
+              fetchPhotoUri(photo.name, 1200),
+            ])
+            // Photo names may have expired in the cache — retry with a fresh API call
+            if (!thumbnail || !medium || !large) {
+              console.log(`  ↩ Photo names expired, re-fetching from API...`)
+              const freshDetails = await getVenuePlaceDetails(
+                venue.name, venue.city, venue.state,
+                venue.location?.lat, venue.location?.lng,
+                true // forceRefresh
+              )
+              if (freshDetails?.photos?.length) {
+                metadata.places = freshDetails
+                photo = freshDetails.photos[0];
+                [thumbnail, medium, large] = await Promise.all([
+                  fetchPhotoUri(photo.name, 400),
+                  fetchPhotoUri(photo.name, 800),
+                  fetchPhotoUri(photo.name, 1200),
+                ])
+              }
             }
-            photosFoundCount++
-            console.log(`  ✓ Found ${placeDetails.photos.length} photo(s)`)
+            if (thumbnail && medium && large) {
+              metadata.photoUrls = { thumbnail, medium, large }
+              photosFoundCount++
+              console.log(`  ✓ Found ${placeDetails.photos.length} photo(s)`)
+            } else {
+              metadata.photoUrls = generateFallbackPhotoUrls(FALLBACK_IMAGES.ACTIVE_NO_PHOTO)
+              console.log(`  ⚠ Could not resolve photo URIs (using fallback)`)
+            }
           } else {
             // Active venue but no photos from API - use generic fallback
             metadata.photoUrls = generateFallbackPhotoUrls(FALLBACK_IMAGES.ACTIVE_NO_PHOTO)
