@@ -99,8 +99,9 @@ export function AudioPreviewPlayer({
     }
 
     // New track: load and play
+    // Note: do NOT call audio.load() — setting src is sufficient and load() breaks
+    // Safari's user gesture chain, preventing play() from being allowed.
     audio.src = track.previewUrl
-    audio.load()
     setCurrentIndex(index)
 
     audio.play()
@@ -209,7 +210,7 @@ export function AudioPreviewPlayer({
         ref={audioRef}
         className="hidden"
         aria-hidden="true"
-        preload="metadata"
+        preload="none"
       />
 
       {/* Live region for screen readers */}
