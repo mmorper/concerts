@@ -2164,7 +2164,7 @@
   "common-sense": {
     "name": "Common Sense",
     "source": "itunes",
-    "fetchedAt": "2026-02-03T18:54:44.705Z",
+    "fetchedAt": "2026-03-07T20:05:55.532Z",
     "tracks": [
       {
         "name": "Common Sense",
@@ -2192,19 +2192,19 @@
       },
       {
         "name": "Common Sense",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/36/69/a4/3669a42e-91a6-e766-a74f-9a1f372e213d/mzaf_5311381735730910456.plus.aac.p.m4a",
+        "durationMs": 235424,
+        "albumName": "Yard Sale",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/3e/c4/f4/3ec4f4eb-47a3-65dc-e3e7-e3004a9c828f/196006528430.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/common-sense/1567102785?i=1567103385&uo=4"
+      },
+      {
+        "name": "Common Sense",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/e1/7d/8d/e17d8d1d-2559-e17d-39af-039f38020a34/mzaf_390803664220644063.plus.aac.p.m4a",
         "durationMs": 204977,
         "albumName": "Schmilco",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/7d/35/ea/7d35ea22-9d12-97df-3ad6-319279892865/196871169448.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/common-sense/1690693983?i=1690694180&uo=4"
-      },
-      {
-        "name": "Common Sense",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/5e/4c/90/5e4c9011-6cf0-8902-aa33-6233766ec912/mzaf_1181740135371085077.plus.aac.p.m4a",
-        "durationMs": 215710,
-        "albumName": "Common Sense - Single",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/33/6b/1a/336b1a89-ffc3-7867-00fd-7e7b618555b3/198026610799.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/common-sense/1723399001?i=1723399002&uo=4"
       }
     ]
   },
@@ -2446,7 +2446,7 @@
   "danger-painters": {
     "name": "Danger Painters",
     "source": "itunes",
-    "fetchedAt": "2026-02-03T18:54:49.765Z",
+    "fetchedAt": "2026-03-07T20:05:56.395Z",
     "tracks": [
       {
         "name": "Northern Song",
@@ -6958,7 +6958,7 @@
   "psychedelic-furs": {
     "name": "Psychedelic Furs",
     "source": "itunes",
-    "fetchedAt": "2026-02-03T18:56:46.475Z",
+    "fetchedAt": "2026-03-07T20:05:57.723Z",
     "tracks": [
       {
         "name": "Love My Way",
@@ -9073,8 +9073,16 @@
   "the-drummers-of-burundi": {
     "name": "The Drummers of Burundi",
     "source": "itunes",
-    "fetchedAt": "2026-02-03T18:57:38.143Z",
+    "fetchedAt": "2026-03-07T20:05:58.641Z",
     "tracks": [
+      {
+        "name": "Live at Real World",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/bc/c2/5b/bcc25b58-285d-f80e-9124-581a0224fdbd/mzaf_2171285718341913474.plus.aac.p.m4a",
+        "durationMs": 1848000,
+        "albumName": "Live at Real World",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1c/da/ad/1cdaad09-13c5-feee-00d6-b82357f315ef/0884108003138_cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/live-at-real-world/1653590764?i=1653591047&uo=4"
+      },
       {
         "name": "Extract",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/79/1a/58/791a5826-aac8-7420-2695-e58fc1cab174/mzaf_10115411107277744350.plus.aac.p.m4a",
@@ -9090,14 +9098,6 @@
         "albumName": "Live at WOMAD 1982",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/5a/6d/80/5a6d80cb-fcc5-1ceb-623c-1cd5145b69d0/0884108012673_cover.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/kama-kiwacu/1659018144?i=1659018886&uo=4"
-      },
-      {
-        "name": "Live at Real World",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/bc/c2/5b/bcc25b58-285d-f80e-9124-581a0224fdbd/mzaf_2171285718341913474.plus.aac.p.m4a",
-        "durationMs": 1848000,
-        "albumName": "Live at Real World",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1c/da/ad/1cdaad09-13c5-feee-00d6-b82357f315ef/0884108003138_cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/live-at-real-world/1653590764?i=1653591047&uo=4"
       },
       {
         "name": "Extract",
@@ -9402,7 +9402,7 @@
   "the-polecats": {
     "name": "The Polecats",
     "source": "itunes",
-    "fetchedAt": "2026-02-03T18:58:03.108Z",
+    "fetchedAt": "2026-03-07T20:05:59.577Z",
     "tracks": [
       {
         "name": "Make a Circuit with Me",
@@ -9413,12 +9413,12 @@
         "streamingUrl": "https://music.apple.com/us/album/make-a-circuit-with-me/960509787?i=960509789&uo=4"
       },
       {
-        "name": "Gravedigger Rock",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/13/74/24/1374245c-b384-711a-fef7-10c08d97c41a/mzaf_6600629447488281537.plus.aac.p.m4a",
-        "durationMs": 164587,
+        "name": "John I'm Only Dancing",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8c/ce/cf/8ccecf86-2ecd-c998-14e0-d74ec948b57a/mzaf_9284084568665263037.plus.aac.p.m4a",
+        "durationMs": 154000,
         "albumName": "The Best Of Polecats",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/9f/4e/34/9f4e34cd-ddbd-a0ad-2ad8-5177bdbba2b9/mzi.wmgvjbmc.tif/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/gravedigger-rock/151117602?i=151117642&uo=4"
+        "streamingUrl": "https://music.apple.com/us/album/john-im-only-dancing/151117602?i=151117626&uo=4"
       },
       {
         "name": "Rockabilly Guy",
@@ -9429,12 +9429,12 @@
         "streamingUrl": "https://music.apple.com/us/album/rockabilly-guy/151117602?i=151117637&uo=4"
       },
       {
-        "name": "John I'm Only Dancing",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8c/ce/cf/8ccecf86-2ecd-c998-14e0-d74ec948b57a/mzaf_9284084568665263037.plus.aac.p.m4a",
-        "durationMs": 154000,
+        "name": "Gravedigger Rock",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/13/74/24/1374245c-b384-711a-fef7-10c08d97c41a/mzaf_6600629447488281537.plus.aac.p.m4a",
+        "durationMs": 164587,
         "albumName": "The Best Of Polecats",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/9f/4e/34/9f4e34cd-ddbd-a0ad-2ad8-5177bdbba2b9/mzi.wmgvjbmc.tif/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/john-im-only-dancing/151117602?i=151117626&uo=4"
+        "streamingUrl": "https://music.apple.com/us/album/gravedigger-rock/151117602?i=151117642&uo=4"
       },
       {
         "name": "Make A Circuit With Me",
@@ -10107,8 +10107,16 @@
   "trombone-shorty-orleans-avenue": {
     "name": "Trombone Shorty & Orleans Avenue",
     "source": "itunes",
-    "fetchedAt": "2026-02-03T18:58:18.866Z",
+    "fetchedAt": "2026-03-07T20:06:00.378Z",
     "tracks": [
+      {
+        "name": "Overnight (feat. Trombone Shorty)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c9/6e/fb/c96efb31-3385-aee3-6480-e3e8dcc71b9a/mzaf_1637085993004804616.plus.aac.p.m4a",
+        "durationMs": 282640,
+        "albumName": "Uncaged",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/15/15/90/151590f3-cdb6-ac17-4b31-184353bb3612/075679962096.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/overnight-feat-trombone-shorty/1585314236?i=1585314244&uo=4"
+      },
       {
         "name": "Mardi Gras (feat. Trombone Shorty)",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/7e/51/7e/7e517edd-db7b-4161-8da2-479e805c80ea/mzaf_15958452971089205300.plus.aac.p.m4a",
@@ -10126,28 +10134,20 @@
         "streamingUrl": "https://music.apple.com/us/album/hurricane-season/1440755889?i=1440755890&uo=4"
       },
       {
-        "name": "Buckjump (feat. The Rebirth Brass Band, 5th Ward Weebie)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/af/d0/fd/afd0fdd4-3a1c-9b78-836f-1154e7cb0120/mzaf_9486466185076032728.plus.aac.p.m4a",
-        "durationMs": 243720,
+        "name": "New Orleans Girl (feat. Trombone Shorty) (Bounce Version)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/ea/3b/c6/ea3bc6dd-ba0c-a746-c04a-e962b7205bc1/mzaf_748523406114226016.plus.aac.p.m4a",
+        "durationMs": 178155,
+        "albumName": "Bounce & Soul, Vol. 1",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music49/v4/2c/8d/68/2c8d6836-355c-add6-d1bc-61467dadf98b/artwork.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/new-orleans-girl-feat-trombone-shorty-bounce-version/1094405649?i=1094407142&uo=4"
+      },
+      {
+        "name": "Mrs. Orleans (feat. Kid Rock)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f2/20/60/f2206060-7e44-0a21-c3d3-a58f3b161b70/mzaf_504552873942085285.plus.aac.p.m4a",
+        "durationMs": 201680,
         "albumName": "For True",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/f5/a3/aa/f5a3aad9-4ba9-a497-9db5-c7afc8610c83/00602527825885.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/buckjump-feat-the-rebirth-brass-band-5th-ward-weebie/1440772383?i=1440772815&uo=4"
-      },
-      {
-        "name": "Overnight (feat. Trombone Shorty)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c9/6e/fb/c96efb31-3385-aee3-6480-e3e8dcc71b9a/mzaf_1637085993004804616.plus.aac.p.m4a",
-        "durationMs": 282640,
-        "albumName": "Uncaged",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/15/15/90/151590f3-cdb6-ac17-4b31-184353bb3612/075679962096.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/overnight-feat-trombone-shorty/1585314236?i=1585314244&uo=4"
-      },
-      {
-        "name": "Cineramascope (feat. Trombone Shorty & Corey Henry)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/c9/4a/91/c94a91b4-5900-1f7f-4774-891fa915b79c/mzaf_12785098374476360288.plus.aac.p.m4a",
-        "durationMs": 194747,
-        "albumName": "Ya - Ka - May (Deluxe Edition)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/36/65/22/36652244-3435-0c36-5c97-79035847265e/0045778700240.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/cineramascope-feat-trombone-shorty-corey-henry/1485024003?i=1485024297&uo=4"
+        "streamingUrl": "https://music.apple.com/us/album/mrs-orleans-feat-kid-rock/1440772383?i=1440773223&uo=4"
       }
     ]
   },
@@ -10765,7 +10765,7 @@
   "yaz": {
     "name": "Yaz",
     "source": "itunes",
-    "fetchedAt": "2026-02-03T18:58:30.814Z",
+    "fetchedAt": "2026-03-07T20:06:01.130Z",
     "tracks": [
       {
         "name": "Only You",
@@ -11887,6 +11887,53 @@
         "albumName": "Random Access Memories",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/43/5f/e8435ffa-b6b9-b171-40ab-4ff3959ab661/886443919266.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/get-lucky/617154241?i=617154366&uo=4"
+      }
+    ]
+  },
+  "nile-rodgers": {
+    "name": "Nile Rodgers",
+    "source": "itunes",
+    "fetchedAt": "2026-03-07T20:05:57.110Z",
+    "tracks": [
+      {
+        "name": "Get Lucky",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/d4/d3/1e/d4d31eb4-7405-b806-8346-3c52ad5b4cf4/mzaf_8095545455942962509.plus.aac.p.m4a",
+        "durationMs": 369629,
+        "albumName": "Random Access Memories",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/43/5f/e8435ffa-b6b9-b171-40ab-4ff3959ab661/886443919266.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/get-lucky/617154241?i=617154366&uo=4"
+      },
+      {
+        "name": "For Life (feat. Nile Rodgers)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c9/7a/15/c97a1512-a882-65e4-ed8e-0e6f34110c16/mzaf_69079442290233979.plus.aac.p.m4a",
+        "durationMs": 175803,
+        "albumName": "For Life (feat. Nile Rodgers) - Single",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ab/25/35/ab253570-adba-d17c-61c8-a04f968e28ba/196871955614.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/for-life-feat-nile-rodgers/1740192999?i=1740193000&uo=4"
+      },
+      {
+        "name": "Kill the Lights (with Nile Rodgers) [Audien Remix]",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/33/75/14/3375146f-a6a9-c75e-be10-275aee30a1ed/mzaf_6954903732887417006.plus.aac.p.m4a",
+        "durationMs": 224762,
+        "albumName": "Kill the Lights (with Nile Rodgers) [Remixes] - EP",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/fc/54/a1/fc54a157-9680-2a69-8081-491c5c3bfabf/dj.dociunvv.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/kill-the-lights-with-nile-rodgers-audien-remix/1101538311?i=1101538317&uo=4"
+      },
+      {
+        "name": "I Want Your Love (feat. Lady Gaga)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b1/34/98/b134988a-7f27-7032-9ee7-7ca32bf62bc5/mzaf_15750195418667690266.plus.aac.p.m4a",
+        "durationMs": 296240,
+        "albumName": "It’s About Time",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e7/f1/99/e7f199a6-5e05-e0aa-724d-7ea0c4f7ef65/00602567793540.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/i-want-your-love-feat-lady-gaga/1434829624?i=1434829985&uo=4"
+      },
+      {
+        "name": "Get Lucky",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d0/ac/05/d0ac05bf-0868-70c1-39e0-45cd519f9118/mzaf_16416880542558691019.plus.aac.p.m4a",
+        "durationMs": 369615,
+        "albumName": "Random Access Memories (10th Anniversary Edition)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/86/b1/92/86b192cf-ceb6-6e51-9361-dc4a35e95d22/196589921154.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/get-lucky/1673536063?i=1673536443&uo=4"
       }
     ]
   }
