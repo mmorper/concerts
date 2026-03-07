@@ -70,7 +70,7 @@ export function ConcertCard({ concert, onMapFocus, index = 0 }: ConcertCardProps
         {/* Date and venue info */}
         <div className="space-y-2 text-sm text-gray-400">
           <p className="font-mono font-semibold text-gray-300">
-            {new Date(concert.date).toLocaleDateString('en-US', {
+            {new Date(concert.date + 'T00:00:00').toLocaleDateString('en-US', {
               weekday: 'long',
               year: 'numeric',
               month: 'long',

@@ -62,7 +62,7 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
     const normalizedName = normalizeArtistName(concert.headliner)
 
     // Track card click
-    const year = new Date(concert.date).getFullYear()
+    const year = new Date(concert.date + 'T00:00:00').getFullYear()
     analytics.trackEvent('timeline_card_clicked', {
       year,
       artist_name: concert.headliner,

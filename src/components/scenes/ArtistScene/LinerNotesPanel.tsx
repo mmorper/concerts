@@ -74,7 +74,7 @@ export function LinerNotesPanel({
       }}
       role="dialog"
       aria-modal="false"
-      aria-label={`Setlist for ${artistName} on ${format(new Date(concert.date), 'MMMM d, yyyy')}`}
+      aria-label={`Setlist for ${artistName} on ${format(new Date(concert.date + 'T00:00:00'), 'MMMM d, yyyy')}`}
     >
       <div
         className="w-full h-full liner-notes-paper"
@@ -122,7 +122,7 @@ export function LinerNotesPanel({
           {/* Compact Header - Just date and venue */}
           <div className="flex-shrink-0 pt-6 px-7 pb-3">
             <p className="font-sans text-[0.8125rem] text-[#6a6a60] tracking-wide">
-              {format(new Date(concert.date), 'MMMM d, yyyy')} · {concert.venue}
+              {format(new Date(concert.date + 'T00:00:00'), 'MMMM d, yyyy')} · {concert.venue}
             </p>
           </div>
 

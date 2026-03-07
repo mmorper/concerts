@@ -193,7 +193,7 @@ export function ConcertHistoryPanel({
                 className="concert-row group flex items-start gap-4 text-sm text-[#e5e5e5] py-1.5 border-b border-white/[0.04] last:border-b-0 hover:bg-white/[0.04] transition-colors duration-150 rounded px-2 -mx-2"
               >
                 <span className="font-sans text-[#737373] font-medium min-w-[95px] flex-shrink-0 tabular-nums pt-0.5">
-                  {format(new Date(concert.date), 'dd MMM yyyy')}
+                  {format(new Date(concert.date + 'T00:00:00'), 'dd MMM yyyy')}
                 </span>
                 <div className="flex-1 flex flex-col gap-0.5">
                   <span className="font-sans text-[#e5e5e5]">

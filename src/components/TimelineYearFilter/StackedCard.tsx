@@ -31,7 +31,7 @@ export function StackedCard({
     ('ontouchstart' in window || navigator.maxTouchPoints > 0)
 
   // Format date as "Month Day"
-  const dateObj = new Date(concert.date)
+  const dateObj = new Date(concert.date + 'T00:00:00')
   const formattedDate = dateObj.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',

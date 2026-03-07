@@ -41,7 +41,7 @@ export function ArtistCardBack({ artist }: ArtistCardBackProps) {
           {artist.concerts.map((concert, idx) => (
             <div key={idx} className="text-gray-700">
               <div className={`${sizes.concert} font-medium`}>
-                {format(new Date(concert.date), 'MMM yyyy')}
+                {format(new Date(concert.date + 'T00:00:00'), 'MMM yyyy')}
               </div>
               <div className={`${sizes.concert} text-gray-500`}>{concert.venue}</div>
             </div>

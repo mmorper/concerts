@@ -483,7 +483,7 @@ export function PhoneArtistModal({
                     className="flex items-start gap-3 py-3 border-b border-white/5 last:border-b-0"
                   >
                     <span className="text-xs text-gray-500 font-medium min-w-[85px] tabular-nums pt-0.5">
-                      {format(new Date(concert.date), 'dd MMM yyyy')}
+                      {format(new Date(concert.date + 'T00:00:00'), 'dd MMM yyyy')}
                     </span>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-white">{concert.city}</p>
@@ -713,7 +713,7 @@ function SetlistOverlay({
               {artistName} · {concert.venue}
             </p>
             <p className="text-xs text-gray-500">
-              {format(new Date(concert.date), 'MMMM d, yyyy')}
+              {format(new Date(concert.date + 'T00:00:00'), 'MMMM d, yyyy')}
             </p>
           </div>
           <button

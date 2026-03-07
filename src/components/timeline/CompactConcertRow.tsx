@@ -10,7 +10,7 @@ interface CompactConcertRowProps {
 export function CompactConcertRow({ concert, onMapFocus }: CompactConcertRowProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const date = new Date(concert.date)
+  const date = new Date(concert.date + 'T00:00:00')
   const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 
   return (

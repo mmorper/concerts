@@ -121,7 +121,7 @@ export function MapContainer({ concerts, focusedConcert, onMarkerClick }: MapCon
                     {concert.headliner}
                   </p>
                   <p className="text-xs text-gray-600 mb-2">
-                    {new Date(concert.date).toLocaleDateString('en-US', {
+                    {new Date(concert.date + 'T00:00:00').toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
                       year: 'numeric',
