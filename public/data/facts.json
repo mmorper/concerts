@@ -1,5 +1,5 @@
 {
-  "computedAt": "2026-01-20T19:54:16.973Z",
+  "computedAt": "2026-03-07T19:36:08.888Z",
   "facts": [
     {
       "id": "top-artist",
@@ -13,16 +13,16 @@
     {
       "id": "top-venue",
       "category": "venue",
-      "headline": "Irvine Meadows: 16 shows",
-      "detail": "A favorite spot, visited 1984–2003",
-      "route": "/?scene=venues&venue=irvine-meadows",
-      "cta": "See all 16 concerts",
+      "headline": "Pacific Amphitheatre: 17 shows",
+      "detail": "A favorite spot, visited 1985–2026",
+      "route": "/?scene=venues&venue=pacific-amphitheatre",
+      "cta": "See all 17 concerts",
       "priority": 2
     },
     {
       "id": "total-concerts",
       "category": "timeline",
-      "headline": "179 concerts since 1984",
+      "headline": "180 concerts since 1984",
       "detail": "43 years of live music memories",
       "route": "/?scene=timeline",
       "cta": "Explore the timeline",
@@ -49,7 +49,7 @@
     {
       "id": "top-state",
       "category": "geography",
-      "headline": "California: 119 concerts",
+      "headline": "California: 120 concerts",
       "detail": "Home base for most concert experiences",
       "route": "/?scene=geography",
       "cta": "Explore the map",
@@ -76,9 +76,9 @@
     {
       "id": "second-venue",
       "category": "venue",
-      "headline": "Pacific Amphitheatre: 16 shows",
+      "headline": "Irvine Meadows: 16 shows",
       "detail": "Another venue with great memories",
-      "route": "/?scene=venues&venue=pacific-amphitheatre",
+      "route": "/?scene=venues&venue=irvine-meadows",
       "cta": "See all 16 concerts",
       "priority": 9
     },

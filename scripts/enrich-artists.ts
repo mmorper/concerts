@@ -127,50 +127,54 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
       let found = false
       const nameVariants = getArtistNameVariants(artistName)
 
-      // Try each name variant across all APIs
+      // Try each API across all name variants before falling back to the next API.
+      // This ensures higher-quality sources (TheAudioDB has genres/bio) are fully
+      // exhausted before settling for Deezer (which has images but no genres).
+
+      // 1. TheAudioDB — best quality (genres, bio, formed year)
       for (let i = 0; i < nameVariants.length && !found; i++) {
         const variantName = nameVariants[i]
         const isOriginalName = i === 0
-
-        if (!isOriginalName) {
-          console.log(`  → Trying simplified name: ${variantName}`)
-        }
-
-        // Rate limit
+        if (!isOriginalName) console.log(`  → Trying simplified name: ${variantName}`)
         await rateLimiter.wait()
-
-        // Try TheAudioDB first
         const audioDbInfo = await audioDb.getArtistInfo(variantName)
-
         if (audioDbInfo && audioDbInfo.image) {
           metadata[normalized] = audioDbInfo
           console.log(`  ✅ Found on TheAudioDB${isOriginalName ? '' : ' (using simplified name)'}`)
           enriched++
           found = true
-          break
         }
+      }
 
-        // Fallback to Last.fm
-        if (lastFm) {
+      // 2. Last.fm — fallback with genre data
+      if (!found && lastFm) {
+        for (let i = 0; i < nameVariants.length && !found; i++) {
+          const variantName = nameVariants[i]
+          const isOriginalName = i === 0
+          if (!isOriginalName) console.log(`  → Trying simplified name: ${variantName}`)
           const lastFmInfo = await lastFm.getArtistInfo(variantName)
-
           if (lastFmInfo && lastFmInfo.image) {
             metadata[normalized] = lastFmInfo
             console.log(`  ✅ Found on Last.fm${isOriginalName ? '' : ' (using simplified name)'}`)
             enriched++
             found = true
-            break
           }
         }
+      }
 
-        // Fallback to Deezer
-        const deezerInfo = await deezer.getArtistInfo(variantName)
-        if (deezerInfo && deezerInfo.image) {
-          metadata[normalized] = deezerInfo
-          console.log(`  ✅ Found on Deezer${isOriginalName ? '' : ' (using simplified name)'}`)
-          enriched++
-          found = true
-          break
+      // 3. Deezer — last resort (images only, no genres)
+      if (!found) {
+        for (let i = 0; i < nameVariants.length && !found; i++) {
+          const variantName = nameVariants[i]
+          const isOriginalName = i === 0
+          if (!isOriginalName) console.log(`  → Trying simplified name: ${variantName}`)
+          const deezerInfo = await deezer.getArtistInfo(variantName)
+          if (deezerInfo && deezerInfo.image) {
+            metadata[normalized] = deezerInfo
+            console.log(`  ✅ Found on Deezer${isOriginalName ? '' : ' (using simplified name)'}`)
+            enriched++
+            found = true
+          }
         }
       }
 

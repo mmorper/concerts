@@ -61,7 +61,7 @@ export class TheAudioDBClient {
       name: artist.strArtist,
       image: artist.strArtistThumb || artist.strArtistLogo,
       bio: artist.strBiographyEN?.slice(0, 500), // Truncate to 500 chars
-      genres: [artist.strGenre, artist.strStyle].filter(Boolean),
+      genres: [artist.strGenre, artist.strStyle].filter((g): g is string => Boolean(g)),
       formed: artist.intFormedYear,
       website: artist.strWebsite,
       source: 'theaudiodb' as const,

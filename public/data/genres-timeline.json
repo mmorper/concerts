@@ -314,11 +314,12 @@
         "2019": 1,
         "2022": 3,
         "2024": 1,
-        "2025": 1
+        "2025": 1,
+        "2026": 1
       },
-      "totalShows": 28,
+      "totalShows": 29,
       "firstYear": 1985,
-      "lastYear": 2025,
+      "lastYear": 2026,
       "artists": [
         {
           "name": "Peter Gabriel",
@@ -562,6 +563,16 @@
           ],
           "firstYear": 2024,
           "lastYear": 2024
+        },
+        {
+          "name": "Nile Rodgers & Chic",
+          "normalizedName": "nile-rodgers-chic",
+          "showCount": 1,
+          "years": [
+            2026
+          ],
+          "firstYear": 2026,
+          "lastYear": 2026
         },
         {
           "name": "Klangphonics",
@@ -1486,7 +1497,7 @@
     "2023": 11,
     "2024": 6,
     "2025": 4,
-    "2026": 2
+    "2026": 3
   },
   "milestones": [
     {
@@ -1522,5 +1533,5 @@
     "start": 1984,
     "end": 2026
   },
-  "generatedAt": "2026-01-20T19:54:16.963Z"
+  "generatedAt": "2026-03-07T19:36:08.880Z"
 }

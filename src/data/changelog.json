@@ -1,6 +1,52 @@
 {
   "releases": [
     {
+      "version": "4.2.1",
+      "date": "2026-02-05",
+      "title": "Under the Hood",
+      "description": "Maintenance update keeping the data pipeline and SEO tools running smoothly behind the scenes.",
+      "route": "/?scene=artists",
+      "highlights": []
+    },
+    {
+      "version": "4.2.0",
+      "date": "2026-02-05",
+      "title": "SEO Foundations",
+      "description": "Search engines now get a clearer picture of your archive—better metadata, structured data, and a baseline for tracking discoverability over time.",
+      "route": "/liner-notes",
+      "highlights": []
+    },
+    {
+      "version": "4.1.0",
+      "date": "2026-02-05",
+      "title": "iOS Home Screen Icons",
+      "description": "Add the app to your iPhone home screen and it looks the part—custom icons and a proper favicon across every device.",
+      "route": "/?scene=artists",
+      "highlights": [
+        "Custom iOS home screen icon",
+        "Favicon optimized for all sizes"
+      ]
+    },
+    {
+      "version": "4.0.3",
+      "date": "2026-02-04",
+      "title": "Documentation Polish",
+      "description": "Internal documentation updates to keep the project well-documented as it evolves.",
+      "route": "/?scene=artists",
+      "highlights": []
+    },
+    {
+      "version": "4.0.2",
+      "date": "2026-02-03",
+      "title": "Mobile Audio Previews",
+      "description": "Listen to artist previews on your phone—audio playback now works in the mobile Artist view.",
+      "route": "/?scene=artists",
+      "highlights": [
+        "Audio previews in mobile Artist view",
+        "Music icon replaces Spotify logo on mobile"
+      ]
+    },
+    {
       "version": "4.0.1",
       "date": "2026-02-03",
       "title": "Artist Scene Polish",

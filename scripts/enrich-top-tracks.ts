@@ -323,7 +323,7 @@ export async function enrichTopTracks() {
 }
 
 // Run the enrichment (only when executed directly, not when imported for testing)
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   enrichTopTracks().catch(error => {
     console.error('Fatal error:', error)
     process.exit(1)

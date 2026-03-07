@@ -4543,6 +4543,30 @@
       }
     },
     {
+      "id": "concert-180",
+      "date": "2026-07-31",
+      "headliner": "Nile Rodgers & Chic",
+      "headlinerNormalized": "nile-rodgers-chic",
+      "genre": "Other",
+      "genreNormalized": "other",
+      "openers": [],
+      "venue": "Pacific Amphitheatre",
+      "venueNormalized": "pacific-amphitheatre",
+      "city": "Costa Mesa",
+      "state": "California",
+      "cityState": "Costa Mesa, California",
+      "reference": "",
+      "year": 2026,
+      "month": 7,
+      "day": 31,
+      "dayOfWeek": "Friday",
+      "decade": "2020s",
+      "location": {
+        "lat": 33.6658588,
+        "lng": -117.9048811
+      }
+    },
+    {
       "id": "concert-178",
       "date": "2026-09-16",
       "headliner": "Thompson Twins",
@@ -4570,13 +4594,13 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-02-05T23:40:33.757Z",
-    "totalConcerts": 179,
+    "lastUpdated": "2026-03-07T19:28:03.117Z",
+    "totalConcerts": 180,
     "dateRange": {
       "earliest": "1984-04-27",
       "latest": "2026-09-16"
     },
-    "uniqueArtists": 104,
+    "uniqueArtists": 105,
     "uniqueVenues": 77,
     "uniqueCities": 35
   }
