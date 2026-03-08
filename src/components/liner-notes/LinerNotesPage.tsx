@@ -82,7 +82,7 @@ export function LinerNotesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#fafaf9' }}>
+      <div className="h-screen flex items-center justify-center" style={{ background: '#fafaf9' }}>
         <p className="font-sans text-sm text-gray-400 animate-pulse">Loading liner notes...</p>
       </div>
     )
@@ -90,7 +90,7 @@ export function LinerNotesPage() {
 
   if (empty) {
     return (
-      <main className="min-h-screen overflow-y-auto" style={{ background: '#fafaf9' }}>
+      <main className="h-screen overflow-y-auto" style={{ background: '#fafaf9' }}>
         <div className="max-w-3xl mx-auto" style={{ padding: 'clamp(32px, 6vw, 48px) clamp(16px, 4vw, 24px)' }}>
           <nav className="mb-8">
             <button
@@ -119,7 +119,7 @@ export function LinerNotesPage() {
   }
 
   return (
-    <main className="min-h-screen overflow-y-auto" style={{ background: '#fafaf9' }}>
+    <main className="h-screen overflow-y-auto" style={{ background: '#fafaf9' }}>
       <div
         className="max-w-3xl mx-auto"
         style={{ padding: 'clamp(32px, 6vw, 48px) clamp(16px, 4vw, 24px)' }}

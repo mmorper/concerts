@@ -2,14 +2,14 @@ import type { PostCategory } from '../../types/liner-notes'
 
 /** Category accent colors per spec */
 export const CATEGORY_ACCENT_COLORS: Record<PostCategory, string> = {
-  cultural: '#1e3a8a',   // New Wave blue
-  personal: '#5b21b6',   // Alternative violet
-  'deep-cut': '#06b6d4', // Electronic cyan
+  cultural: '#1e3a8a',   // The Scene — New Wave blue
+  personal: '#5b21b6',   // I Was There — Alternative violet
+  'deep-cut': '#0e7490', // Deep Cuts — darker teal for legibility
 }
 
 /** Display labels for each category */
 export const CATEGORY_LABELS: Record<PostCategory, string> = {
-  cultural: 'Cultural Context',
-  personal: 'Personal Connection',
-  'deep-cut': 'Deep-Cut',
+  cultural: 'The Scene',
+  personal: 'I Was There',
+  'deep-cut': 'Deep Cuts',
 }

@@ -3,10 +3,11 @@
  * Spec: docs/specs/future/liner-notes-design-mocks.md
  */
 
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { format } from 'date-fns'
-import type { LinerNotesPost } from '../../types/liner-notes'
+import type { LinerNotesPost, DeepLink } from '../../types/liner-notes'
 import { CATEGORY_ACCENT_COLORS, CATEGORY_LABELS } from './constants'
 import { LinerNoteMiniPlayer } from './LinerNoteMiniPlayer'
 
@@ -20,11 +21,55 @@ const prefersReducedMotion =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+/**
+ * Parses prose and wraps deepLink labels with <Link> elements.
+ * Matches are case-sensitive and non-overlapping (longer labels first).
+ */
+function linkifyProse(prose: string, deepLinks: DeepLink[], accentColor: string) {
+  if (!deepLinks.length) return [prose]
+
+  // Sort longest first to prevent shorter substrings clobbering longer matches
+  const sorted = [...deepLinks].sort((a, b) => b.label.length - a.label.length)
+
+  type Segment = string | React.ReactNode
+  let segments: Segment[] = [prose]
+
+  for (const link of sorted) {
+    const next: Segment[] = []
+    for (const seg of segments) {
+      if (typeof seg !== 'string') {
+        next.push(seg)
+        continue
+      }
+      const parts = seg.split(link.label)
+      parts.forEach((part, i) => {
+        if (part) next.push(part)
+        if (i < parts.length - 1) {
+          next.push(
+            <Link
+              key={`${link.url}-${i}`}
+              to={link.url}
+              className="transition-colors hover:underline"
+              style={{ color: accentColor, fontWeight: 500 }}
+            >
+              {link.label}
+            </Link>
+          )
+        }
+      })
+    }
+    segments = next
+  }
+
+  return segments
+}
+
 export function LinerNoteCard({ post, index, onTagClick }: LinerNoteCardProps) {
   const accentColor = CATEGORY_ACCENT_COLORS[post.category]
   const categoryLabel = CATEGORY_LABELS[post.category]
 
   const publishedDate = format(new Date(post.publishedAt), 'MMMM d, yyyy')
+  const proseSegments = linkifyProse(post.prose, post.deepLinks, accentColor)
 
   return (
     <motion.article
@@ -81,12 +126,12 @@ export function LinerNoteCard({ post, index, onTagClick }: LinerNoteCardProps) {
           </Link>
         </h2>
 
-        {/* Prose */}
+        {/* Prose with inline deeplinks */}
         <p
           className="font-sans mb-4"
           style={{ fontSize: 16, color: '#374151', lineHeight: 1.65 }}
         >
-          {post.prose}
+          {proseSegments}
         </p>
 
         {/* MiniPlayer */}
@@ -96,7 +141,7 @@ export function LinerNoteCard({ post, index, onTagClick }: LinerNoteCardProps) {
           </div>
         )}
 
-        {/* Deep links */}
+        {/* Deep links footer row */}
         {post.deepLinks.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-3">
             {post.deepLinks.map((link, i) => (
