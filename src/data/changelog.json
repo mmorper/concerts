@@ -1,6 +1,26 @@
 {
   "releases": [
     {
+      "version": "4.3.1",
+      "date": "2026-03-07",
+      "title": "Under the Hood",
+      "description": "Switched audio previews to iTunes exclusively—stable, permanent URLs with no expiring tokens. Build pipeline now refreshes track data automatically on every run.",
+      "route": "/?scene=artists",
+      "highlights": []
+    },
+    {
+      "version": "4.3.0",
+      "date": "2026-03-07",
+      "title": "On Deck",
+      "description": "Future concerts now get their moment in the spotlight. An upcoming badge appears on Timeline cards and in Artist profiles wherever a show is still ahead—so you always know what's on the horizon.",
+      "route": "/?scene=artists",
+      "highlights": [
+        "Upcoming badge on Timeline cards for concerts still to come",
+        "Artist concert history highlights upcoming shows with a distinct badge",
+        "Consistent treatment across desktop hover previews and mobile"
+      ]
+    },
+    {
       "version": "4.2.1",
       "date": "2026-02-05",
       "title": "Under the Hood",
