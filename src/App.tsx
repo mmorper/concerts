@@ -7,7 +7,9 @@ import { Scene4Bands } from './components/scenes/Scene4Bands'
 import { Scene5Genres } from './components/scenes/Scene5Genres/index'
 import { ArtistScene } from './components/scenes/ArtistScene/ArtistScene'
 import { SceneNavigation } from './components/SceneNavigation'
-import { ChangelogPage, ChangelogToast, ChangelogRSS } from './components/changelog'
+import { ChangelogToast, ChangelogRSS } from './components/changelog'
+import { WhatsPlayingPage } from './components/changelog/WhatsPlayingPage'
+import { LinerNotesPage, LinerNotePermalink } from './components/liner-notes'
 import { AboutPage } from './components/about'
 import { SCENE_MAP, TOAST } from './components/changelog/constants'
 import { useChangelogCheck } from './hooks/useChangelogCheck'
@@ -18,11 +20,13 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<MainScenes />} />
-      <Route path="/liner-notes" element={<ChangelogPage />} />
+      <Route path="/liner-notes" element={<LinerNotesPage />} />
       <Route path="/liner-notes/rss" element={<ChangelogRSS />} />
+      <Route path="/liner-notes/:slug" element={<LinerNotePermalink />} />
+      <Route path="/whats-playing" element={<WhatsPlayingPage />} />
       <Route path="/about" element={<AboutPage />} />
       {/* Legacy redirects */}
-      <Route path="/changelog" element={<ChangelogPage />} />
+      <Route path="/changelog" element={<WhatsPlayingPage />} />
       <Route path="/changelog/rss" element={<ChangelogRSS />} />
     </Routes>
   )

@@ -15,7 +15,7 @@ An interactive web app for exploring personal concert history. Five scenes—Tim
 
 **v4.0.0** 🎵 Listen before you go! The Artist Gatefold now includes an audio preview player with 30-second clips from 252 artists (99% coverage). Play/pause controls, animated equalizer, auto-advance, and direct links to Apple Music. Get a feel for an artist's sound right in your concert archive—perfect for those moments when you remember the show but forgot what they sounded like.
 
-Want the full story? Explore recent updates in the [liner notes](https://concerts.morperhaus.org/liner-notes).
+Want the full story? Explore recent updates in [What's Playing](https://concerts.morperhaus.org/whats-playing).
 
 ## The backstory
 

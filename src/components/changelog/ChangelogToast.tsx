@@ -65,7 +65,7 @@ export function ChangelogToast({
   // Handle navigation
   const handleNavigate = () => {
     onNavigate()
-    navigate('/liner-notes')
+    navigate('/whats-playing')
   }
 
   // Handle click anywhere on toast to navigate
