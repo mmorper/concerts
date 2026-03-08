@@ -46,6 +46,14 @@ async function generateSitemap() {
   const artistsData = JSON.parse(fs.readFileSync(artistsPath, 'utf-8'))
   const venuesData = JSON.parse(fs.readFileSync(venuesPath, 'utf-8'))
 
+  // Load liner notes posts (optional — may not exist on first run)
+  const linerNotesPath = path.join(__dirname, '..', 'public', 'data', 'liner-notes.json')
+  const linerNotesSlugs: string[] = []
+  if (fs.existsSync(linerNotesPath)) {
+    const linerNotesData = JSON.parse(fs.readFileSync(linerNotesPath, 'utf-8'))
+    linerNotesSlugs.push(...(linerNotesData.posts ?? []).map((p: { slug: string }) => p.slug))
+  }
+
   const concerts = concertsData.concerts
   const artists = Object.keys(artistsData)
   const venues = Object.keys(venuesData)
@@ -123,9 +131,12 @@ async function generateSitemap() {
     xml += generateUrlEntry(`/?scene=geography&venue=${venue}`, 0.6, 'monthly')
   })
 
-  // Changelog pages
-  xml += generateUrlEntry('/liner-notes', 0.5, 'weekly', lastmod)
-  xml += generateUrlEntry('/liner-notes/rss', 0.4, 'weekly', lastmod)
+  // Liner notes feed and post permalinks
+  xml += generateUrlEntry('/liner-notes', 0.7, 'weekly', lastmod)
+  xml += generateUrlEntry('/liner-notes.xml', 0.4, 'weekly', lastmod)
+  linerNotesSlugs.forEach((slug) => {
+    xml += generateUrlEntry(`/liner-notes/${slug}`, 0.8, 'weekly', lastmod)
+  })
 
   // About page
   xml += generateUrlEntry('/about', 0.6, 'monthly')
@@ -140,7 +151,7 @@ async function generateSitemap() {
     scenes.length +
     sortedArtists.length +
     sortedVenues.length * 2 + // 2 scenes per venue
-    2 + // changelog pages
+    2 + linerNotesSlugs.length + // liner notes feed + permalinks
     1 // about page
 
   console.log(`✅ Sitemap generated: ${OUTPUT_PATH}`)
@@ -149,7 +160,7 @@ async function generateSitemap() {
   console.log(`   - Scenes: ${scenes.length}`)
   console.log(`   - Artists: ${sortedArtists.length}`)
   console.log(`   - Venues: ${sortedVenues.length} × 2 scenes = ${sortedVenues.length * 2}`)
-  console.log(`   - Changelog: 2`)
+  console.log(`   - Liner notes: ${2 + linerNotesSlugs.length} (feed + ${linerNotesSlugs.length} posts)`)
   console.log(`   - About: 1`)
   console.log()
 }

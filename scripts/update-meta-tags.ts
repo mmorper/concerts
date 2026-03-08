@@ -214,11 +214,25 @@ async function main() {
 
   // Update og-stats.json
   const ogStatsPath = path.join(__dirname, '..', 'public', 'og-stats.json')
+
+  // Read liner notes count if available
+  const linerNotesPath = path.join(__dirname, '..', 'public', 'data', 'liner-notes.json')
+  let linerNotesCount = 0
+  if (fs.existsSync(linerNotesPath)) {
+    try {
+      const linerNotesData = JSON.parse(fs.readFileSync(linerNotesPath, 'utf-8'))
+      linerNotesCount = linerNotesData.metadata?.totalPosts ?? linerNotesData.posts?.length ?? 0
+    } catch {
+      // Not yet generated — ok
+    }
+  }
+
   const ogStats = {
     concerts,
     scenes,
     artists,
-    venues
+    venues,
+    linerNotesCount,
   }
 
   fs.writeFileSync(ogStatsPath, JSON.stringify(ogStats, null, 2) + '\n', 'utf-8')
@@ -367,6 +381,23 @@ These facts are updated with each data refresh and can be quoted directly:
     )
 
     console.log('✓ Added Pre-Computed Statistics section to llm.txt')
+  }
+
+  // Add liner notes count to llm.txt if posts exist
+  if (linerNotesCount > 0) {
+    const linerNotesLine = `- ${linerNotesCount} AI-generated liner notes stories at https://concerts.morperhaus.org/liner-notes`
+    if (!llmContent.includes('liner notes stories at')) {
+      llmContent = llmContent.replace(
+        /## Content\n/,
+        `## Content\n${linerNotesLine}\n`
+      )
+    } else {
+      llmContent = llmContent.replace(
+        /- \d+ AI-generated liner notes stories at .+/,
+        linerNotesLine
+      )
+    }
+    console.log(`✓ Updated liner notes count in llm.txt (${linerNotesCount} posts)`)
   }
 
   fs.writeFileSync(llmPath, llmContent, 'utf-8')

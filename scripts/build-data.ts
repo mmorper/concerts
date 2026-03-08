@@ -53,6 +53,7 @@ async function buildData() {
     { name: 'Enrich discography', active: !skipDiscography },
     { name: 'Pre-fetch setlists', active: !skipSetlists },
     { name: 'Aggregate genres timeline', active: true },
+    { name: 'Generate liner notes (agentic)', active: !!process.env.ANTHROPIC_API_KEY },
     { name: 'Generate facts for liner notes', active: true },
     { name: 'Update meta tags and SEO files', active: !dryRun },
     { name: 'Generate sitemap', active: !dryRun },
@@ -216,7 +217,20 @@ async function buildData() {
     await aggregateGenresTimeline()
     console.log()
 
-    // Step 10: Generate facts for liner notes (always runs)
+    // Step 10: Generate agentic liner notes (runs only if ANTHROPIC_API_KEY is set)
+    if (process.env.ANTHROPIC_API_KEY) {
+      currentStep++
+      console.log('=' .repeat(60))
+      console.log(`Step ${currentStep}/${activeSteps}: Generating liner notes (agentic)`)
+      console.log('-'.repeat(60))
+      const { run: runLinerNotes } = await import('./liner-notes/pipeline.ts')
+      await runLinerNotes({ analyzeOnly: false, dryRun: false, seed: false, force: false })
+      console.log()
+    } else {
+      console.log('⏭️  Skipping liner notes generation (ANTHROPIC_API_KEY not set)\n')
+    }
+
+    // Step 11: Generate facts for liner notes (always runs — legacy, deprecated by agentic system)
     currentStep++
     console.log('=' .repeat(60))
     console.log(`Step ${currentStep}/${activeSteps}: Generating facts for liner notes`)
