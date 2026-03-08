@@ -74,7 +74,6 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
   const hasImage = post.image.url && post.image.source !== 'placeholder'
 
   const [copied, setCopied] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
 
   const handleShare = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -97,8 +96,7 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
       initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut', delay: index * 0.08 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+
       style={{
         position: 'relative',
         background: '#ffffff',
@@ -110,6 +108,27 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
         overflow: 'hidden',
       }}
     >
+      {/* Mobile-only: full-width image at the top */}
+      {hasImage && (
+        <Link
+          to={`/liner-notes/${post.slug}`}
+          className="block sm:hidden"
+          tabIndex={-1}
+          aria-hidden="true"
+        >
+          <img
+            src={post.image.url}
+            alt={post.image.alt}
+            style={{
+              width: '100%',
+              height: 180,
+              objectFit: 'cover',
+              display: 'block',
+            }}
+          />
+        </Link>
+      )}
+
       {/* Content + thumbnail row */}
       <div
         className="flex gap-5 items-start"
@@ -129,7 +148,7 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
           </div>
 
           {/* Headline */}
-          <h2 className="mb-3" style={{ fontFamily: 'Playfair Display, serif', fontSize: 22, fontWeight: 700, color: '#1f2937' }}>
+          <h2 className="mb-3 text-[19px] sm:text-[22px]" style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, color: '#1f2937' }}>
             <Link
               to={`/liner-notes/${post.slug}`}
               className="hover:underline transition-colors"
@@ -154,9 +173,9 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
             </div>
           )}
 
-          {/* Deep links footer row */}
-          {post.deepLinks.length > 0 && (
-            <div className="flex flex-wrap gap-1">
+          {/* Footer: deep links + share button */}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex flex-wrap gap-1 flex-1 min-w-0">
               {post.deepLinks.map((link, i) => (
                 <span key={link.url} className="font-sans text-sm font-medium">
                   {i > 0 && <span className="text-gray-400 mx-1">·</span>}
@@ -172,14 +191,37 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
                 </span>
               ))}
             </div>
-          )}
+            <button
+              onClick={handleShare}
+              aria-label={copied ? 'Link copied!' : 'Copy link to this post'}
+              title={copied ? 'Copied!' : 'Copy link'}
+              style={{
+                flexShrink: 0,
+                color: copied ? accentColor : '#6b7280',
+                opacity: copied ? 1 : 0.6,
+                transition: 'opacity 0.15s ease, color 0.15s ease',
+                background: 'none',
+                border: 'none',
+                padding: '4px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                lineHeight: 1,
+              }}
+            >
+              {copied
+                ? <Check size={14} strokeWidth={2.5} />
+                : <Link2 size={14} strokeWidth={2} />
+              }
+            </button>
+          </div>
         </div>
 
-        {/* Right: thumbnail — only when a real image is available */}
+        {/* Desktop-only: thumbnail on the right */}
         {hasImage && (
           <Link
             to={`/liner-notes/${post.slug}`}
-            className="flex-shrink-0"
+            className="hidden sm:block flex-shrink-0"
             tabIndex={-1}
             aria-hidden="true"
           >
@@ -198,33 +240,6 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
         )}
       </div>
 
-      {/* Share / copy-link — pinned to card bottom-right, direct child of article */}
-      <button
-        onClick={handleShare}
-        aria-label={copied ? 'Link copied!' : 'Copy link to this post'}
-        title={copied ? 'Copied!' : 'Copy link'}
-        style={{
-          position: 'absolute',
-          bottom: 12,
-          right: 14,
-          color: copied ? accentColor : '#6b7280',
-          opacity: copied ? 1 : isHovered ? 1 : 0.5,
-          transition: 'opacity 0.15s ease, color 0.15s ease',
-          background: 'none',
-          border: 'none',
-          padding: '4px',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          lineHeight: 1,
-          zIndex: 1,
-        }}
-      >
-        {copied
-          ? <Check size={14} strokeWidth={2.5} />
-          : <Link2 size={14} strokeWidth={2} />
-        }
-      </button>
     </motion.article>
   )
 }
