@@ -1,8 +1,8 @@
 /**
  * ChangelogToast Component
  *
- * Bottom-center toast notification for new features
- * Auto-dismisses after 10 seconds with progress bar
+ * Bottom-right toast for new changelog features or new liner note posts.
+ * Auto-dismisses after 10 seconds with progress bar.
  */
 
 import { useEffect, useState } from 'react'
@@ -13,34 +13,43 @@ import { TOAST } from './constants'
 
 export function ChangelogToast({
   isVisible,
-  newFeatureCount,
+  type = 'changelog',
+  // changelog mode
+  newFeatureCount = 0,
   latestRelease,
-  newReleases,
+  newReleases = [],
+  // liner-notes mode
+  newPosts = [],
+  latestPost,
   onDismiss,
   onNavigate,
 }: ChangelogToastProps) {
   const navigate = useNavigate()
   const [progress, setProgress] = useState(100)
 
+  const isLinerNotes = type === 'liner-notes'
+  const accentColor = isLinerNotes ? TOAST.LINER_NOTES_ACCENT : TOAST.BORDER_COLOR
+  const accentHover = isLinerNotes ? TOAST.LINER_NOTES_ACCENT_HOVER : TOAST.BUTTON_HOVER
+  const ctaLabel = isLinerNotes ? 'Read the Liner Notes →' : "See What's Playing →"
+  const ctaRoute = isLinerNotes ? '/liner-notes' : '/whats-playing'
+
   // Auto-dismiss timer and progress bar
   useEffect(() => {
     if (!isVisible) {
-      setProgress(100) // Reset progress when hidden
+      setProgress(100)
       return
     }
 
-    // Auto-dismiss after duration
     const dismissTimer = setTimeout(() => {
       onDismiss()
     }, TOAST.AUTO_DISMISS_DURATION)
 
-    // Progress bar countdown
     const startTime = Date.now()
     const progressInterval = setInterval(() => {
       const elapsed = Date.now() - startTime
       const remaining = Math.max(0, 100 - (elapsed / TOAST.AUTO_DISMISS_DURATION) * 100)
       setProgress(remaining)
-    }, 50) // Update every 50ms for smooth animation
+    }, 50)
 
     return () => {
       clearTimeout(dismissTimer)
@@ -51,48 +60,122 @@ export function ChangelogToast({
   // Handle ESC key
   useEffect(() => {
     if (!isVisible) return
-
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onDismiss()
-      }
+      if (e.key === 'Escape') onDismiss()
     }
-
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isVisible, onDismiss])
 
-  // Handle navigation
   const handleNavigate = () => {
     onNavigate()
-    navigate('/whats-playing')
+    navigate(ctaRoute)
   }
 
-  // Handle click anywhere on toast to navigate
-  const handleToastClick = () => {
-    handleNavigate()
+  // ── Content rendering ───────────────────────────────────────
+
+  function renderContent() {
+    if (isLinerNotes) {
+      const count = newPosts.length
+      if (count === 1 && latestPost) {
+        return (
+          <>
+            {/* top row: image + headline sized to ~2 headline lines */}
+            <div className="flex items-start gap-2.5 mb-2">
+              {latestPost.image?.url && (
+                <img
+                  src={latestPost.image.url}
+                  alt={latestPost.image.alt}
+                  className="rounded-md object-cover flex-shrink-0"
+                  style={{ width: 40, height: 40 }}
+                />
+              )}
+              <div className="text-sm font-semibold text-white leading-snug flex-1">
+                {latestPost.headline}
+              </div>
+            </div>
+            {/* prose spans full width beneath */}
+            <div className="text-xs text-slate-400 leading-relaxed">
+              {latestPost.prose.slice(0, 110).trimEnd()}…
+            </div>
+          </>
+        )
+      }
+      if (count <= 3) {
+        return (
+          <>
+            <div className="text-sm font-semibold text-white mb-2">
+              {count} new liner notes
+            </div>
+            <div className="text-xs text-slate-300 space-y-1">
+              {newPosts.slice(0, 3).map((post) => (
+                <div key={post.id}>• {post.headline}</div>
+              ))}
+            </div>
+          </>
+        )
+      }
+      return (
+        <>
+          <div className="text-sm font-semibold text-white mb-1">
+            {count} new liner notes
+          </div>
+          <div className="text-xs text-slate-400">
+            New stories from your concert history
+          </div>
+        </>
+      )
+    }
+
+    // changelog mode (unchanged logic)
+    if (newFeatureCount === 1 && latestRelease) {
+      return (
+        <>
+          <div className="text-sm font-semibold text-white mb-1">
+            {latestRelease.title}
+          </div>
+          <div className="text-xs text-slate-400 leading-relaxed">
+            {latestRelease.description}
+          </div>
+        </>
+      )
+    }
+    if (newFeatureCount <= 3) {
+      return (
+        <>
+          <div className="text-sm font-semibold text-white mb-2">
+            {newFeatureCount} new features
+          </div>
+          <div className="text-xs text-slate-300 space-y-1">
+            {newReleases.slice(0, 3).map((release) => (
+              <div key={release.version}>• {release.title}</div>
+            ))}
+          </div>
+        </>
+      )
+    }
+    return (
+      <>
+        <div className="text-sm font-semibold text-white mb-1">
+          {newFeatureCount} new features added
+        </div>
+        <div className="text-xs text-slate-400">
+          Multiple updates since your last visit
+        </div>
+      </>
+    )
   }
 
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ x: 100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: 100, opacity: 0 }}
-          transition={{
-            type: 'spring',
-            stiffness: 100,
-            damping: 20,
-            duration: 0.5,
-          }}
-          className="fixed z-[9999] cursor-pointer"
-          style={{
-            bottom: `${TOAST.BOTTOM_OFFSET}px`,
-            right: `${TOAST.RIGHT_OFFSET}px`,
-            width: `min(${TOAST.WIDTH}px, calc(100vw - 48px))`,
-          }}
-          onClick={handleToastClick}
+          initial={{ y: 16, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 16, opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 120, damping: 20, duration: 0.4 }}
+          className="fixed z-[9999] cursor-pointer left-4 right-4 bottom-[calc(56px+env(safe-area-inset-bottom))] md:left-auto md:right-6 md:w-80 md:bottom-6"
+          onClick={handleNavigate}
           role="status"
           aria-live="polite"
           aria-atomic="true"
@@ -102,49 +185,17 @@ export function ChangelogToast({
             style={{
               backgroundColor: TOAST.BG_COLOR,
               borderWidth: '2px',
-              borderColor: TOAST.BORDER_COLOR,
+              borderColor: accentColor,
             }}
           >
             {/* Content */}
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1">
-                {newFeatureCount === 1 ? (
-                  // Single feature: Show title and description
-                  <>
-                    <div className="text-sm font-semibold text-white mb-1">
-                      {latestRelease.title}
-                    </div>
-                    <div className="text-xs text-slate-400 leading-relaxed">
-                      {latestRelease.description}
-                    </div>
-                  </>
-                ) : newFeatureCount <= 3 ? (
-                  // 2-3 features: Show titles as list
-                  <>
-                    <div className="text-sm font-semibold text-white mb-2">
-                      {newFeatureCount} new features
-                    </div>
-                    <div className="text-xs text-slate-300 space-y-1">
-                      {newReleases.slice(0, 3).map((release) => (
-                        <div key={release.version}>• {release.title}</div>
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  // 4+ features: Generic message
-                  <>
-                    <div className="text-sm font-semibold text-white mb-1">
-                      {newFeatureCount} new features added
-                    </div>
-                    <div className="text-xs text-slate-400">
-                      Multiple updates since your last visit
-                    </div>
-                  </>
-                )}
+                {renderContent()}
               </div>
               <button
                 onClick={(e) => {
-                  e.stopPropagation() // Prevent toast click
+                  e.stopPropagation()
                   onDismiss()
                 }}
                 className="text-slate-400 hover:text-white transition-colors text-xl leading-none -mt-1 ml-3 min-w-[32px] min-h-[32px] flex items-center justify-center flex-shrink-0"
@@ -156,33 +207,23 @@ export function ChangelogToast({
 
             <button
               onClick={(e) => {
-                e.stopPropagation() // Prevent double navigation
+                e.stopPropagation()
                 handleNavigate()
               }}
               className="w-full py-1.5 rounded-lg text-xs font-medium transition-colors"
-              style={{
-                backgroundColor: TOAST.BUTTON_BG,
-                color: 'white',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = TOAST.BUTTON_HOVER
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = TOAST.BUTTON_BG
-              }}
-              aria-label="View new features in changelog"
+              style={{ backgroundColor: accentColor, color: 'white' }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accentHover }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = accentColor }}
+              aria-label={ctaLabel}
             >
-              See What's Playing →
+              {ctaLabel}
             </button>
 
             {/* Progress bar */}
             <div className="mt-3 h-1 bg-slate-800 rounded-full overflow-hidden">
               <motion.div
                 className="h-full"
-                style={{
-                  backgroundColor: '#f59e0b', // amber-500
-                  width: `${progress}%`,
-                }}
+                style={{ backgroundColor: accentColor, width: `${progress}%` }}
                 transition={{ duration: 0.05 }}
               />
             </div>

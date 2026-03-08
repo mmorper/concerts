@@ -131418,5 +131418,37 @@
     ],
     "fetchedAt": "2026-03-07T19:33:16.207Z",
     "cachedAt": "2026-03-07T19:33:16.207Z"
+  },
+  "smcke": {
+    "artistName": "smcke",
+    "normalizedName": "smcke",
+    "mbid": "68dcedcd-3a2d-42b4-82c3-5f320b347755",
+    "albumCount": 2,
+    "albums": [
+      {
+        "id": "2aa54abe-b847-42db-840e-336775b8c191",
+        "title": "2:30am, 18/02/19",
+        "releaseDate": "2019-02-20",
+        "year": 2019,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/2aa54abe-b847-42db-840e-336775b8c191/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "fe0a021a-4011-4397-8e2a-93385b6c805a",
+        "title": "ねむる ep",
+        "releaseDate": "2018-03-09",
+        "year": 2018,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/fe0a021a-4011-4397-8e2a-93385b6c805a/front-500.jpg",
+        "coverAvailable": true
+      }
+    ],
+    "fetchedAt": "2026-03-08T23:12:40.201Z",
+    "cachedAt": "2026-03-08T23:12:40.201Z"
   }
 }

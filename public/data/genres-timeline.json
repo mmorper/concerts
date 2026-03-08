@@ -565,16 +565,6 @@
           "lastYear": 2024
         },
         {
-          "name": "Nile Rodgers & Chic",
-          "normalizedName": "nile-rodgers-chic",
-          "showCount": 1,
-          "years": [
-            2026
-          ],
-          "firstYear": 2026,
-          "lastYear": 2026
-        },
-        {
           "name": "Klangphonics",
           "normalizedName": "klangphonics",
           "showCount": 1,
@@ -583,6 +573,16 @@
           ],
           "firstYear": 2025,
           "lastYear": 2025
+        },
+        {
+          "name": "Nile Rodgers",
+          "normalizedName": "nile-rodgers",
+          "showCount": 1,
+          "years": [
+            2026
+          ],
+          "firstYear": 2026,
+          "lastYear": 2026
         }
       ]
     },
@@ -1533,5 +1533,5 @@
     "start": 1984,
     "end": 2026
   },
-  "generatedAt": "2026-03-07T19:36:08.880Z"
+  "generatedAt": "2026-03-08T23:18:55.808Z"
 }

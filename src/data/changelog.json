@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "4.5.0",
+      "date": "2026-03-08",
+      "title": "Deep Cuts",
+      "description": "Liner Notes became a full editorial experience — 31 personal essays about your concerts, deep-cut detectors that surface rare finds, and smart notifications that celebrate new posts the moment you return.",
+      "route": "/liner-notes",
+      "highlights": [
+        "Liner notes in artist gatefold — see every essay for artists you've seen",
+        "Year deep links jump straight to any year in your timeline",
+        "Mobile bottom nav puts Liner Notes one tap away",
+        "Smarter notifications celebrate new liner notes and app updates"
+      ]
+    },
+    {
       "version": "4.4.0",
       "date": "2026-03-08",
       "title": "Liner Notes",

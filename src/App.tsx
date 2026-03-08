@@ -13,6 +13,7 @@ import { LinerNotesPage, LinerNotePermalink } from './components/liner-notes'
 import { AboutPage } from './components/about'
 import { SCENE_MAP, TOAST } from './components/changelog/constants'
 import { useChangelogCheck } from './hooks/useChangelogCheck'
+import { useLinerNotesCheck } from './hooks/useLinerNotesCheck'
 import { analytics } from './services/analytics'
 import { buildPagePath, buildPageTitle } from './utils/pageTracking'
 
@@ -39,6 +40,7 @@ function MainScenes() {
   const [loading, setLoading] = useState(true)
   const [currentScene, setCurrentScene] = useState(1)
   const [showToast, setShowToast] = useState(false)
+  const [toastShownThisSession, setToastShownThisSession] = useState(false)
   const [pendingVenueFocus, setPendingVenueFocus] = useState<string | null>(null)
   const [pendingMapVenueFocus, setPendingMapVenueFocus] = useState<string | null>(null)
   const [pendingArtistFocus, setPendingArtistFocus] = useState<string | null>(null)
@@ -52,15 +54,27 @@ function MainScenes() {
     venue?: string | null
   }>({})
 
-  // Check for new changelog entries
+  // Check for new changelog entries and liner notes posts
   const {
-    shouldShow,
+    shouldShow: changelogShouldShow,
     newFeatureCount,
     latestRelease,
     newReleases,
-    dismissToast,
-    markAsSeen,
+    dismissToast: dismissChangelog,
+    markAsSeen: markChangelogSeen,
   } = useChangelogCheck(currentScene)
+
+  const {
+    shouldShow: linerNotesShouldShow,
+    latestPost,
+    newPosts,
+    dismissToast: dismissLinerNotes,
+    markAsSeen: markLinerNotesSeen,
+  } = useLinerNotesCheck(currentScene)
+
+  // Priority: changelog > liner-notes. One toast per session.
+  const activeToastType = changelogShouldShow ? 'changelog' : linerNotesShouldShow ? 'liner-notes' : null
+  const shouldShow = activeToastType !== null
 
   // Handle venue navigation from map to venues scene
   const handleVenueNavigate = (venueName: string) => {
@@ -138,16 +152,17 @@ function MainScenes() {
     return () => scrollContainer.removeEventListener('scroll', handleScroll)
   }, [currentScene, currentDeepLinkParams])
 
-  // Show toast with delay after data loads and if new features available
+  // Show toast with delay — one per session, highest priority wins
   useEffect(() => {
-    if (loading || !shouldShow) return
+    if (loading || !shouldShow || toastShownThisSession) return
 
     const timer = setTimeout(() => {
       setShowToast(true)
+      setToastShownThisSession(true)
     }, TOAST.INITIAL_DELAY)
 
     return () => clearTimeout(timer)
-  }, [loading, shouldShow])
+  }, [loading, shouldShow, toastShownThisSession])
 
   // Handle deep linking via query parameters
   useEffect(() => {
@@ -304,20 +319,23 @@ function MainScenes() {
       {/* Scene Navigation */}
       <SceneNavigation />
 
-      {/* Changelog Toast (only on Scene 1) */}
-      {latestRelease && (
+      {/* Toast (only on Scene 1) — changelog or liner-notes, one per session */}
+      {activeToastType && (
         <ChangelogToast
           isVisible={showToast}
+          type={activeToastType}
           newFeatureCount={newFeatureCount}
           latestRelease={latestRelease}
           newReleases={newReleases}
+          newPosts={newPosts}
+          latestPost={latestPost}
           onDismiss={() => {
             setShowToast(false)
-            dismissToast()
+            activeToastType === 'changelog' ? dismissChangelog() : dismissLinerNotes()
           }}
           onNavigate={() => {
             setShowToast(false)
-            markAsSeen()
+            activeToastType === 'changelog' ? markChangelogSeen() : markLinerNotesSeen()
           }}
         />
       )}

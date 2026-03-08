@@ -5,7 +5,7 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>New features, updates, and statistics for the Morperhaus Concert Archives</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 07 Mar 2026 19:36:10 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 08 Mar 2026 23:19:13 GMT</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://concerts.morperhaus.org/og-image.jpg</url>
@@ -16,10 +16,91 @@
     <item>
       <title>By the Numbers - Archive Statistics</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
-      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#facts-2026-03-07</guid>
-      <pubDate>Sat, 07 Mar 2026 19:36:08 GMT</pubDate>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#facts-2026-03-08</guid>
+      <pubDate>Sun, 08 Mar 2026 23:19:11 GMT</pubDate>
       <category>Statistics</category>
       <description><![CDATA[<h3>Archive Statistics</h3><h4>Artists</h4><ul><li><strong>Social Distortion: 8 concerts</strong> — The most-seen live act, 1990–2024</li><li><strong>Howard Jones: 6 concerts</strong> — Another favorite who keeps drawing me back</li><li><strong>Depeche Mode: 5 concerts</strong> — Rounding out the top three most-seen</li></ul><h4>Venues</h4><ul><li><strong>Pacific Amphitheatre: 17 shows</strong> — A favorite spot, visited 1985–2026</li><li><strong>Irvine Meadows: 16 shows</strong> — Another venue with great memories</li><li><strong>77 unique venues</strong> — From clubs to arenas and amphitheaters</li></ul><h4>Timeline</h4><ul><li><strong>180 concerts since 1984</strong> — 43 years of live music memories</li><li><strong>First show: Adam Ant (1984)</strong> — Where it all began — Irvine Meadows</li><li><strong>Latest: Thompson Twins (2026)</strong> — The most recent addition — Pavilion Theatre</li><li><strong>2022: 14 shows</strong> — The peak year for live music attendance</li><li><strong>2010s: 64 shows</strong> — The golden era of concert-going</li></ul><h4>Genres</h4><ul><li><strong>New Wave: 49 shows</strong> — The dominant sound in this collection</li><li><strong>Punk: 15 shows</strong> — Another genre that shaped the journey</li></ul><h4>Geography</h4><ul><li><strong>California: 120 concerts</strong> — Home base for most concert experiences</li><li><strong>35 cities visited</strong> — Live music across the map</li></ul><p><a href="https://concerts.morperhaus.org/liner-notes">View all statistics</a></p>]]></description>
+    </item>
+
+    <item>
+      <title>Liner Notes - v4.4.0</title>
+      <link>https://concerts.morperhaus.org/liner-notes</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v4.4.0</guid>
+      <pubDate>Sun, 08 Mar 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Forty-two years of concerts, now with stories. Original liner notes drawn from the archive — personal essays, cultural deep cuts, and milestone moments. Browse the feed, filter by category, and subscribe via RSS so new stories come to you.</p><ul><li>New stories every week — anniversary milestones, artist longevity, cultural context, and deep cuts drawn straight from your history</li><li>Browse and filter at /liner-notes — category chips, tag filters, and individual post pages at /liner-notes/:slug</li><li>App release notes moved to /whats-playing — a cleaner home for what&apos;s new in the archive</li><li>RSS feed at /liner-notes.xml so new stories come to you automatically</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Full Coverage - v4.3.2</title>
+      <link>https://concerts.morperhaus.org/liner-notes</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v4.3.2</guid>
+      <pubDate>Sat, 07 Mar 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>iTunes preview coverage reaches 100% across all artists. Search aliases and direct artist ID lookup resolve the remaining edge cases where Apple Music catalog names differ from concert listings.</p>]]></description>
+    </item>
+
+    <item>
+      <title>Under the Hood - v4.3.1</title>
+      <link>https://concerts.morperhaus.org/?scene=artists</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v4.3.1</guid>
+      <pubDate>Sat, 07 Mar 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Switched audio previews to iTunes exclusively—stable, permanent URLs with no expiring tokens. Build pipeline now refreshes track data automatically on every run.</p>]]></description>
+    </item>
+
+    <item>
+      <title>On Deck - v4.3.0</title>
+      <link>https://concerts.morperhaus.org/?scene=artists</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v4.3.0</guid>
+      <pubDate>Sat, 07 Mar 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Future concerts now get their moment in the spotlight. An upcoming badge appears on Timeline cards and in Artist profiles wherever a show is still ahead—so you always know what&apos;s on the horizon.</p><ul><li>Upcoming badge on Timeline cards for concerts still to come</li><li>Artist concert history highlights upcoming shows with a distinct badge</li><li>Consistent treatment across desktop hover previews and mobile</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Under the Hood - v4.2.1</title>
+      <link>https://concerts.morperhaus.org/?scene=artists</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v4.2.1</guid>
+      <pubDate>Thu, 05 Feb 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Maintenance update keeping the data pipeline and SEO tools running smoothly behind the scenes.</p>]]></description>
+    </item>
+
+    <item>
+      <title>SEO Foundations - v4.2.0</title>
+      <link>https://concerts.morperhaus.org/liner-notes</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v4.2.0</guid>
+      <pubDate>Thu, 05 Feb 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Search engines now get a clearer picture of your archive—better metadata, structured data, and a baseline for tracking discoverability over time.</p>]]></description>
+    </item>
+
+    <item>
+      <title>iOS Home Screen Icons - v4.1.0</title>
+      <link>https://concerts.morperhaus.org/?scene=artists</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v4.1.0</guid>
+      <pubDate>Thu, 05 Feb 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Add the app to your iPhone home screen and it looks the part—custom icons and a proper favicon across every device.</p><ul><li>Custom iOS home screen icon</li><li>Favicon optimized for all sizes</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Documentation Polish - v4.0.3</title>
+      <link>https://concerts.morperhaus.org/?scene=artists</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v4.0.3</guid>
+      <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Internal documentation updates to keep the project well-documented as it evolves.</p>]]></description>
+    </item>
+
+    <item>
+      <title>Mobile Audio Previews - v4.0.2</title>
+      <link>https://concerts.morperhaus.org/?scene=artists</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v4.0.2</guid>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Listen to artist previews on your phone—audio playback now works in the mobile Artist view.</p><ul><li>Audio previews in mobile Artist view</li><li>Music icon replaces Spotify logo on mobile</li></ul>]]></description>
     </item>
 
     <item>

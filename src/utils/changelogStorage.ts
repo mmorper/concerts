@@ -86,3 +86,45 @@ export function clearLastSeenChangelog(): void {
     console.warn('localStorage clear failed:', e)
   }
 }
+
+// ── Liner Notes Storage ────────────────────────────────────────
+
+export function getLastSeenLinerNotes(): string | null {
+  try {
+    return localStorage.getItem(STORAGE_KEYS.LINER_NOTES_LAST_SEEN)
+  } catch (e) {
+    return null
+  }
+}
+
+export function setLastSeenLinerNotes(timestamp?: string): void {
+  try {
+    localStorage.setItem(STORAGE_KEYS.LINER_NOTES_LAST_SEEN, timestamp || new Date().toISOString())
+  } catch (e) {
+    console.warn('localStorage write failed:', e)
+  }
+}
+
+export function isLinerNotesDismissedInSession(key: string): boolean {
+  try {
+    const dismissed = sessionStorage.getItem(STORAGE_KEYS.LINER_NOTES_DISMISSED_SESSION)
+    if (!dismissed) return false
+    const keys: string[] = JSON.parse(dismissed)
+    return keys.includes(key)
+  } catch (e) {
+    return false
+  }
+}
+
+export function markLinerNotesDismissedInSession(key: string): void {
+  try {
+    const dismissed = sessionStorage.getItem(STORAGE_KEYS.LINER_NOTES_DISMISSED_SESSION)
+    const keys: string[] = dismissed ? JSON.parse(dismissed) : []
+    if (!keys.includes(key)) {
+      keys.push(key)
+      sessionStorage.setItem(STORAGE_KEYS.LINER_NOTES_DISMISSED_SESSION, JSON.stringify(keys))
+    }
+  } catch (e) {
+    console.warn('sessionStorage write failed:', e)
+  }
+}

@@ -1,7 +1,378 @@
 {
-  "generatedAt": "2026-03-08T23:08:41.464Z",
-  "dataHash": "7b0fb380",
+  "generatedAt": "2026-03-08T23:19:11.199Z",
+  "dataHash": "6ebe0abe",
   "posts": [
+    {
+      "id": "drought-comeback-tears-for-fears",
+      "slug": "tears-for-fears-17-years-between-shows",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Tears For Fears: 17 Years Between Shows",
+      "prose": "I remember walking out of the Universal Amphitheater in 2005 after Tears For Fears, thinking it might be the last time I'd see Roland Orzabal and Curt Smith together on stage. Seventeen years later, I found myself at the Kia Forum in Inglewood, watching them perform like no time had passed at all. The gap between those shows spans nearly two decades of my life — jobs, moves, relationships — but hearing \"Mad World\" again felt like stepping back into that younger version of myself. Four shows total across all these years, and somehow each one marked a different chapter of growing up with their music.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/yusuxr1341941676.jpg",
+        "alt": "Tears for Fears",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Everybody Wants to Rule the World",
+        "artistName": "Tears For Fears",
+        "albumName": "Songs from the Big Chair",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/56/65/5f/56655f64-f26f-3a21-b2c8-c78f1c9a0a20/mzaf_11752705800252350393.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/everybody-wants-to-rule-the-world/1440813508?i=1440813515&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "tears-for-fears"
+      ],
+      "venues": [
+        "pacific-amphitheatre",
+        "universal-amphitheater",
+        "kia-forum"
+      ],
+      "years": [
+        1985,
+        1993,
+        2005,
+        2022
+      ],
+      "tags": [
+        "#drought",
+        "#comeback"
+      ],
+      "deepLinks": [
+        {
+          "label": "Tears for Fears",
+          "url": "/?scene=artists&artist=tears-for-fears",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=venues&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "Universal Amphitheater",
+          "url": "/?scene=venues&venue=universal-amphitheater",
+          "type": "venue"
+        },
+        {
+          "label": "1985",
+          "url": "/?scene=timeline&year=1985",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "universal-amphitheater-5-shows-before-it-was-demolished",
+        "pacific-amphitheatre-16-shows-over-5-decades"
+      ],
+      "score": 41,
+      "detector": "drought-comeback",
+      "publishedAt": "2026-03-08T23:19:11.199Z"
+    },
+    {
+      "id": "album-context-violator-erasure",
+      "slug": "erasure-days-before-violator-dropped",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Erasure — Days Before Violator Dropped",
+      "prose": "March 1990 was the moment synth-pop split into two futures — one heading for the dancefloor, the other for the stadium. I caught Erasure at the Forum just 8 days before Depeche Mode's Violator dropped, unknowingly witnessing the last gasps of pure pop innocence before their darker cousins conquered the world. Andy Bell's voice soared through \"A Little Respect\" while somewhere across town, Dave Gahan was probably rehearsing \"Personal Jesus\" for arenas that would dwarf this moment. Sometimes the most significant concerts are the ones that capture a scene right before it changes forever.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/xpytqt1342444014.jpg",
+        "alt": "Erasure",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "A Little Respect",
+        "artistName": "Erasure",
+        "albumName": "The Innocents",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ca/25/0d/ca250df0-1f9a-69a2-82d2-86486005d4f8/mzaf_10865615112430914389.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/bc/5a/a0/bc5aa061-1010-6d23-9ff5-bae2f97720ce/mzi.ouqqcxnp.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/a-little-respect/332852548?i=332852764&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "erasure"
+      ],
+      "venues": [
+        "kia-forum"
+      ],
+      "years": [
+        1990
+      ],
+      "tags": [
+        "#album-context",
+        "#cultural-moment"
+      ],
+      "deepLinks": [
+        {
+          "label": "Erasure",
+          "url": "/?scene=artists&artist=erasure",
+          "type": "artist"
+        },
+        {
+          "label": "Kia Forum",
+          "url": "/?scene=venues&venue=kia-forum",
+          "type": "venue"
+        },
+        {
+          "label": "1990",
+          "url": "/?scene=timeline&year=1990",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "kia-forum-5-shows-over-3-decades"
+      ],
+      "score": 35,
+      "detector": "album-context",
+      "publishedAt": "2026-03-08T23:19:11.199Z"
+    },
+    {
+      "id": "rare-sighting-the-alarm",
+      "slug": "the-alarm-caught-once-never-again",
+      "category": "deep-cut",
+      "temporality": "evergreen",
+      "headline": "The Alarm: Caught Once, Never Again",
+      "prose": "I caught The Alarm exactly once in my entire concert-going life — April 12, 1986 at UCLA — and somehow never circled back to them again across nearly four decades of shows. This Welsh alternative rock band, formed in 1981, was riding high on their Strength album when I saw them, yet they became a complete one-and-done in my archive despite releasing Eye of the Hurricane the following year. It's genuinely puzzling how a band can make enough of an impression to get me to a show, then vanish entirely from my radar for the next 38 years.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wswstt1388681264.jpg",
+        "alt": "The Alarm",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Strength",
+        "artistName": "The Alarm",
+        "albumName": "Strength 1985-1986 (Deluxe 2000 Remaster)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/3d/87/80/3d8780de-6ab2-1d63-bc56-8a085dd9d3fd/mzaf_11114072592712370582.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b7/c6/80/b7c6806f-dd02-3942-1bc4-632fc66ef8d9/801963843624_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/strength/1324886851?i=1324887143&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "the-alarm"
+      ],
+      "venues": [
+        "ucla"
+      ],
+      "years": [
+        1986
+      ],
+      "tags": [
+        "#rare-sighting",
+        "#one-time-only"
+      ],
+      "deepLinks": [
+        {
+          "label": "The Alarm",
+          "url": "/?scene=artists&artist=the-alarm",
+          "type": "artist"
+        },
+        {
+          "label": "UCLA",
+          "url": "/?scene=venues&venue=ucla",
+          "type": "venue"
+        },
+        {
+          "label": "1986",
+          "url": "/?scene=timeline&year=1986",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "the-human-league-8-more-2018-festival-bill"
+      ],
+      "score": 33,
+      "detector": "rare-sighting",
+      "publishedAt": "2026-03-08T23:19:11.199Z"
+    },
+    {
+      "id": "drought-comeback-echo-and-the-bunnymen",
+      "slug": "echo-and-the-bunnymen-26-years-between-shows",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Echo and the Bunnymen: 26 Years Between Shows",
+      "prose": "I caught Echo and the Bunnymen at Irvine Meadows in 1984, when their post-punk atmospherics still felt urgent and new. Twenty-six years passed before I saw them again — a quarter-century gap that took me from California amphitheaters to a cramped club in D.C. called The Black Cat in 2010. By then, Ian McCulloch's voice had weathered but the songs from *Porcupine* and those early albums still carried that same moody weight. Sometimes the longest waits between shows make you appreciate how certain bands become part of your internal soundtrack, whether you're actively listening or not.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/22zdag1638977527.jpg",
+        "alt": "Echo & The Bunnymen",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Lips Like Sugar",
+        "artistName": "Echo and the Bunnymen",
+        "albumName": "Echo & the Bunnymen (Bonus Tracks Edition) [2004 Remaster]",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/3c/c1/91/3cc191c2-d459-e596-afc3-0ec61582eb03/mzaf_7599854564460017285.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features4/v4/fd/ad/1c/fdad1c4a-8878-3f2f-0b31-ec0e5d61d96c/dj.yzybcgmc.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/lips-like-sugar/31740074?i=31740091&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "echo-and-the-bunnymen"
+      ],
+      "venues": [
+        "irvine-meadows",
+        "the-black-cat"
+      ],
+      "years": [
+        1984,
+        2010
+      ],
+      "tags": [
+        "#drought",
+        "#comeback"
+      ],
+      "deepLinks": [
+        {
+          "label": "Echo & The Bunnymen",
+          "url": "/?scene=artists&artist=echo-and-the-bunnymen",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=venues&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "The Black Cat",
+          "url": "/?scene=venues&venue=the-black-cat",
+          "type": "venue"
+        },
+        {
+          "label": "1984",
+          "url": "/?scene=timeline&year=1984",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "irvine-meadows-16-shows-before-it-was-demolished",
+        "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics"
+      ],
+      "score": 41,
+      "detector": "drought-comeback",
+      "publishedAt": "2026-03-08T23:15:48.360Z"
+    },
+    {
+      "id": "album-context-it-takes-a-nation-of-millions-to-hold-us-back-no-doubt",
+      "slug": "no-doubt-days-before-it-takes-a-nation-of-millions-to-hold-us-back-dropped",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "No Doubt — Days Before It Takes a Nation of Millions to Hold Us Back Dropped",
+      "prose": "Hip-hop was about to get its political manifesto, but I was watching a ska band from Orange County play at the happiest place on earth. I caught No Doubt at Disneyland on March 4, 1988, just 37 days before Public Enemy would drop It Takes a Nation of Millions to Hold Us Back and change everything about what rap could say and do. While Chuck D was putting the finishing touches on hip-hop's first true political landmark, I was experiencing the early stirrings of what would become the ska revival, watching Gwen Stefani and company work through their sound in front of families with mouse ears. Two completely different revolutions brewing at the same time — one I witnessed firsthand, the other I'd discover when it hit like a manifesto five weeks later.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/vxvvtr1348513703.jpg",
+        "alt": "No Doubt",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Don't Speak",
+        "artistName": "No Doubt",
+        "albumName": "Tragic Kingdom",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/eb/d3/dd/ebd3dd7b-ef82-0855-54b0-3c978e7f1594/mzaf_13350123702531292562.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/fe/0a/68/fe0a687a-537e-e902-0778-90465c118f77/00602547870575.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/dont-speak/1440845400?i=1440845557&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "no-doubt"
+      ],
+      "venues": [
+        "disneyland"
+      ],
+      "years": [
+        1988
+      ],
+      "tags": [
+        "#album-context",
+        "#cultural-moment"
+      ],
+      "deepLinks": [
+        {
+          "label": "No Doubt",
+          "url": "/?scene=artists&artist=no-doubt",
+          "type": "artist"
+        },
+        {
+          "label": "Disneyland",
+          "url": "/?scene=venues&venue=disneyland",
+          "type": "venue"
+        },
+        {
+          "label": "1988",
+          "url": "/?scene=timeline&year=1988",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "the-brian-setzer-orchestra-days-after-the-bends-dropped"
+      ],
+      "score": 35,
+      "detector": "album-context",
+      "publishedAt": "2026-03-08T23:15:48.360Z"
+    },
+    {
+      "id": "rare-sighting-bruce-springsteen",
+      "slug": "bruce-springsteen-caught-once-never-again",
+      "category": "deep-cut",
+      "temporality": "evergreen",
+      "headline": "Bruce Springsteen: Caught Once, Never Again",
+      "prose": "I saw Bruce Springsteen exactly once in my entire concert-going life — September 29, 1985 at the Los Angeles Memorial Coliseum during the Born in the U.S.A. tour. Despite attending hundreds of shows across four decades, The Boss never crossed my path again, making him one of the most glaring single-sighting artists in my archive. It's almost impossible to believe that someone who built a career on marathon three-hour shows and relentless touring somehow became my ultimate one-and-done experience. Sometimes the biggest names leave the smallest footprints.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/pj57t31658769167.jpg",
+        "alt": "Bruce Springsteen",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "I'm On Fire",
+        "artistName": "Bruce Springsteen",
+        "albumName": "Born In the U.S.A.",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/9e/3c/4a/9e3c4a34-2b8f-8d44-f5c7-5ec1db4f92d0/mzaf_2408012147081157014.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/32/72/68/327268ba-b9dd-b322-2a16-bdd0212df48c/074643865326.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/im-on-fire/203708420?i=203708893&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "bruce-springsteen"
+      ],
+      "venues": [
+        "los-angeles-memorial-coliseum"
+      ],
+      "years": [
+        1985
+      ],
+      "tags": [
+        "#rare-sighting",
+        "#one-time-only"
+      ],
+      "deepLinks": [
+        {
+          "label": "Bruce Springsteen",
+          "url": "/?scene=artists&artist=bruce-springsteen",
+          "type": "artist"
+        },
+        {
+          "label": "Los Angeles Memorial Coliseum",
+          "url": "/?scene=venues&venue=los-angeles-memorial-coliseum",
+          "type": "venue"
+        },
+        {
+          "label": "1985",
+          "url": "/?scene=timeline&year=1985",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "billy-idol-caught-once-never-again"
+      ],
+      "score": 33,
+      "detector": "rare-sighting",
+      "publishedAt": "2026-03-08T23:15:48.360Z"
+    },
     {
       "id": "drought-comeback-ub40",
       "slug": "ub40-35-years-between-shows",
@@ -2844,10 +3215,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 34,
-    "totalGenerated": 35,
-    "averageScore": 39.7,
-    "lastPipelineRun": "2026-03-08T23:08:41.464Z",
+    "totalPosts": 40,
+    "totalGenerated": 41,
+    "averageScore": 39.2,
+    "lastPipelineRun": "2026-03-08T23:19:11.199Z",
     "concertsAnalyzed": 177,
     "feedUrl": "/liner-notes.xml"
   }

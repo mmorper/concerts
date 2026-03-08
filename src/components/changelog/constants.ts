@@ -38,20 +38,26 @@ export const TOAST = {
   /** Background color (black with 90% opacity) */
   BG_COLOR: 'rgba(0, 0, 0, 0.90)',
 
-  /** Border color (amber-600) */
-  BORDER_COLOR: '#d97706',
+  /** Border color (indigo-600) */
+  BORDER_COLOR: '#4f46e5',
 
   /** Primary text color */
   TEXT_PRIMARY: '#ffffff',
 
-  /** Accent text color (amber-400) */
-  TEXT_ACCENT: '#fbbf24',
+  /** Accent text color (indigo-400) */
+  TEXT_ACCENT: '#818cf8',
 
-  /** Button background color */
-  BUTTON_BG: '#d97706',
+  /** Button background color (indigo-600) */
+  BUTTON_BG: '#4f46e5',
 
-  /** Button hover background color */
-  BUTTON_HOVER: '#f59e0b',
+  /** Button hover background color (indigo-500) */
+  BUTTON_HOVER: '#6366f1',
+
+  /** Liner notes accent color (sky-500) */
+  LINER_NOTES_ACCENT: '#0ea5e9',
+
+  /** Liner notes button hover color (sky-400) */
+  LINER_NOTES_ACCENT_HOVER: '#38bdf8',
 } as const
 
 /**
@@ -165,4 +171,10 @@ export const STORAGE_KEYS = {
 
   /** Dismissed versions in session (sessionStorage) */
   DISMISSED_SESSION: 'morperhaus_changelog_dismissedSession',
+
+  /** Last seen liner notes timestamp (localStorage) */
+  LINER_NOTES_LAST_SEEN: 'morperhaus_linernotes_lastSeen',
+
+  /** Dismissed liner notes in session (sessionStorage) */
+  LINER_NOTES_DISMISSED_SESSION: 'morperhaus_linernotes_dismissedSession',
 } as const

@@ -5,6 +5,26 @@
  */
 
 /**
+ * Which kind of content the toast is announcing
+ */
+export type ToastType = 'changelog' | 'liner-notes'
+
+/**
+ * A single liner notes post (subset of the full post shape)
+ */
+export interface LinerNotesPost {
+  id: string
+  slug: string
+  headline: string
+  prose: string
+  publishedAt: string
+  image?: {
+    url: string
+    alt: string
+  }
+}
+
+/**
  * Represents a single feature release entry
  */
 export interface Release {
@@ -63,9 +83,14 @@ export interface ChangelogCheckResult {
  */
 export interface ChangelogToastProps {
   isVisible: boolean
-  newFeatureCount: number
-  latestRelease: Release
-  newReleases: Release[]
+  type?: ToastType
+  // changelog mode
+  newFeatureCount?: number
+  latestRelease?: Release | null
+  newReleases?: Release[]
+  // liner-notes mode
+  newPosts?: LinerNotesPost[]
+  latestPost?: LinerNotesPost | null
   onDismiss: () => void
   onNavigate: () => void
 }

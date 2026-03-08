@@ -494,6 +494,15 @@
       "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/new-order-4fd5f3e934e45.jpg"
     },
     {
+      "name": "Nile Rodgers",
+      "normalizedName": "nile-rodgers",
+      "genre": "Funk",
+      "genreNormalized": "funk",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/qsqsqq1394998284.jpg",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-03-08T23:12:28.322Z"
+    },
+    {
       "name": "Nile Rodgers & Chic",
       "normalizedName": "nile-rodgers-chic",
       "genre": "Other",
@@ -932,5 +941,5 @@
       "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/marley-ziggy-508440fb16be3.jpg"
     }
   ],
-  "lastUpdated": "2026-03-07T18:55:16.484Z"
+  "lastUpdated": "2026-03-08T23:12:28.325Z"
 }

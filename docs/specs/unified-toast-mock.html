@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unified Toast Mock — Morperhaus</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0f172a;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      padding: 48px 40px;
+    }
+
+    h1 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #475569;
+      margin-bottom: 40px;
+    }
+
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #475569;
+      margin-bottom: 16px;
+    }
+
+    .row {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    /* ── Toast shell ────────────────────────────────────────── */
+    .toast {
+      width: 320px;
+      background: rgba(0, 0, 0, 0.90);
+      border: 2px solid;
+      border-radius: 8px;
+      padding: 16px;
+      backdrop-filter: blur(8px);
+    }
+
+    .toast--changelog  { border-color: #4f46e5; }
+    .toast--linernotes { border-color: #0ea5e9; }
+
+    /* ── Content row ────────────────────────────────────────── */
+    .toast__content {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 10px;
+    }
+
+    .toast__body { flex: 1; }
+
+    .toast__title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+      line-height: 1.35;
+    }
+
+    .toast__desc {
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.55;
+    }
+
+    .toast__desc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .toast__desc ul li::before {
+      content: "• ";
+    }
+
+    .toast__desc ul li + li {
+      margin-top: 3px;
+    }
+
+    .toast__dismiss {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      min-width: 28px;
+      min-height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 0;
+      margin-top: -2px;
+      transition: color 0.15s;
+    }
+
+    .toast__dismiss:hover { color: #fff; }
+
+    /* ── CTA button ─────────────────────────────────────────── */
+    .toast__cta {
+      display: block;
+      width: 100%;
+      padding: 7px 0;
+      border-radius: 6px;
+      border: none;
+      font-size: 12px;
+      font-weight: 500;
+      color: #fff;
+      cursor: pointer;
+      transition: filter 0.15s;
+      text-align: center;
+    }
+
+    .toast__cta:hover { filter: brightness(1.15); }
+
+    .toast--changelog  .toast__cta { background: #4f46e5; }
+    .toast--linernotes .toast__cta { background: #0ea5e9; }
+
+    /* ── Progress bar ───────────────────────────────────────── */
+    .toast__progress-track {
+      margin-top: 12px;
+      height: 4px;
+      background: #1e293b;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .toast__progress-fill {
+      height: 100%;
+      border-radius: 9999px;
+    }
+
+    .toast--changelog  .toast__progress-fill { background: #4f46e5; }
+    .toast--linernotes .toast__progress-fill { background: #0ea5e9; }
+
+    /* ── Variant label ──────────────────────────────────────── */
+    .variant-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #475569;
+      margin-bottom: 8px;
+    }
+
+    /* ── Divider ────────────────────────────────────────────── */
+    hr {
+      border: none;
+      border-top: 1px solid #1e293b;
+      margin: 48px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Unified Toast — Visual Mock</h1>
+
+  <!-- ── SINGLE POST ─────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-label">Single item (1 new)</div>
+    <div class="row">
+
+      <div>
+        <div class="variant-label">changelog</div>
+        <div class="toast toast--changelog">
+          <div class="toast__content">
+            <div class="toast__body">
+              <div class="toast__title">Liner Notes</div>
+              <div class="toast__desc">A rolling feed of personal essays about concerts you've actually attended.</div>
+            </div>
+            <button class="toast__dismiss">×</button>
+          </div>
+          <button class="toast__cta">See What's Playing →</button>
+          <div class="toast__progress-track">
+            <div class="toast__progress-fill" style="width: 60%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="variant-label">liner-notes (with image)</div>
+        <div class="toast toast--linernotes">
+          <!-- top row: image + headline + dismiss -->
+          <div class="toast__content" style="margin-bottom: 8px;">
+            <img
+              src="https://r2.theaudiodb.com/images/media/artist/thumb/depeche-mode.jpg"
+              onerror="this.style.background='#1e293b';this.removeAttribute('src')"
+              style="width:40px;height:40px;border-radius:6px;object-fit:cover;flex-shrink:0;background:#1e293b;"
+              alt="Depeche Mode"
+            />
+            <div class="toast__title" style="flex:1;">Depeche Mode: 18 Years Between Shows</div>
+            <button class="toast__dismiss">×</button>
+          </div>
+          <!-- prose spans full width below image -->
+          <div class="toast__desc" style="margin-bottom: 12px;">
+            When a band you've seen before goes silent for nearly two decades, their return feels less like a concert and more like a reckoning…
+          </div>
+          <button class="toast__cta">Read the Liner Notes →</button>
+          <div class="toast__progress-track">
+            <div class="toast__progress-fill" style="width: 60%"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- ── 2–3 ITEMS ───────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-label">Short list (2–3 new)</div>
+    <div class="row">
+
+      <div>
+        <div class="variant-label">changelog</div>
+        <div class="toast toast--changelog">
+          <div class="toast__content">
+            <div class="toast__body">
+              <div class="toast__title">2 new features</div>
+              <div class="toast__desc">
+                <ul>
+                  <li>Liner Notes</li>
+                  <li>Artist Gatefold Deep Links</li>
+                </ul>
+              </div>
+            </div>
+            <button class="toast__dismiss">×</button>
+          </div>
+          <button class="toast__cta">See What's Playing →</button>
+          <div class="toast__progress-track">
+            <div class="toast__progress-fill" style="width: 60%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="variant-label">liner-notes</div>
+        <div class="toast toast--linernotes">
+          <div class="toast__content">
+            <div class="toast__body">
+              <div class="toast__title">3 new liner notes</div>
+              <div class="toast__desc">
+                <ul>
+                  <li>Depeche Mode: 18 Years Between Shows</li>
+                  <li>Universal Amphitheater: 5 Shows Before Demolition</li>
+                  <li>The Cure + 14 More: 2003 Festival Bill</li>
+                </ul>
+              </div>
+            </div>
+            <button class="toast__dismiss">×</button>
+          </div>
+          <button class="toast__cta">Read the Liner Notes →</button>
+          <div class="toast__progress-track">
+            <div class="toast__progress-fill" style="width: 60%"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- ── 4+ ITEMS ────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-label">Many (4+ new)</div>
+    <div class="row">
+
+      <div>
+        <div class="variant-label">changelog</div>
+        <div class="toast toast--changelog">
+          <div class="toast__content">
+            <div class="toast__body">
+              <div class="toast__title">5 new features added</div>
+              <div class="toast__desc">Multiple updates since your last visit</div>
+            </div>
+            <button class="toast__dismiss">×</button>
+          </div>
+          <button class="toast__cta">See What's Playing →</button>
+          <div class="toast__progress-track">
+            <div class="toast__progress-fill" style="width: 60%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="variant-label">liner-notes</div>
+        <div class="toast toast--linernotes">
+          <div class="toast__content">
+            <div class="toast__body">
+              <div class="toast__title">7 new liner notes</div>
+              <div class="toast__desc">New stories from your concert history</div>
+            </div>
+            <button class="toast__dismiss">×</button>
+          </div>
+          <button class="toast__cta">Read the Liner Notes →</button>
+          <div class="toast__progress-track">
+            <div class="toast__progress-fill" style="width: 60%"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

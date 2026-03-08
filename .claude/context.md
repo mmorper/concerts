@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v4.4.0 (Production)
+**Version:** v4.5.0 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-02-06
 
@@ -103,6 +103,7 @@ These docs provide essential context for common development tasks:
 
 **Recent Releases:**
 
+- **v4.5.0** (2026-03-08): Deep Cuts — liner notes in artist gatefold, year deep links, mobile bottom nav, unified toast for liner notes + changelog notifications
 - **v4.4.0** (2026-03-08): Liner Notes — agentic AI-written weekly stories, /liner-notes blog feed, /whats-playing changelog, permalink routes, Cloudflare Worker OG tags
 - **v4.3.3** (2026-03-08): Mobile upcoming badges — phone artist modal History tab parity + TS build fix (internal)
 - **v4.3.2** (2026-03-07): iTunes 100% coverage — search aliases + artist ID lookup for Brian Setzer variants and The Roots (internal)
