@@ -487,8 +487,8 @@ export function PhoneArtistModal({
                       className="flex items-start gap-3 py-3 border-b border-white/5 last:border-b-0"
                     >
                       <span
-                        className="text-xs font-medium min-w-[85px] tabular-nums pt-0.5"
-                        style={{ color: isUpcoming ? '#818cf8' : undefined, fontWeight: isUpcoming ? 600 : undefined }}
+                        className="text-xs font-medium min-w-[85px] tabular-nums pt-0.5 text-gray-500"
+                        style={isUpcoming ? { color: '#818cf8', fontWeight: 600 } : undefined}
                       >
                         {format(new Date(concert.date + 'T00:00:00'), 'dd MMM yyyy')}
                       </span>
