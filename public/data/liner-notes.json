@@ -1,7 +1,1131 @@
 {
-  "generatedAt": "2026-03-08T20:13:07.549Z",
+  "generatedAt": "2026-03-08T21:52:43.098Z",
   "dataHash": "7b0fb380",
   "posts": [
+    {
+      "id": "festival-mega-bill-concert-130",
+      "slug": "social-distortion-14-more-2018-festival-bill",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Social Distortion + 14 More: 2018 Festival Bill",
+      "prose": "California punk's founding fathers assembled for what felt like a family reunion at Huntington State Beach in 2018, with Social Distortion, Bad Religion, and 13 other acts spanning four decades of West Coast rebellion. I witnessed bands that had been shaping punk since 1979 sharing the same sand with newer torchbearers like The Interrupters, creating this perfect cross-generational snapshot of the scene's evolution. Seeing Fear and Suicidal Tendencies on the same bill as Black Rebel Motorcycle Club reminded me how punk's DNA keeps mutating while staying fundamentally defiant. Standing on that beach with 15 bands cycling through, I felt like I was getting a master class in how Southern California invented its own brand of sunny nihilism.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
+        "alt": "Social Distortion",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Ball and Chain",
+        "artistName": "Social Distortion",
+        "albumName": "Social Distortion",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/06/ba/12/06ba12b1-5067-7e82-194c-5eae9ee98577/mzaf_8457712484241926193.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/d2/8f/e3/d28fe3a5-f99f-227c-263f-1485756de8eb/mzi.goczaxyx.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/ball-and-chain/197984051?i=197986000&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "social-distortion",
+        "bad-religion",
+        "the-offspring",
+        "pennywise",
+        "suicidal-tendencies",
+        "voodoo-glow-skulls",
+        "t-s-o-l",
+        "black-rebel-motorcycle-club",
+        "snuff",
+        "fear",
+        "mad-caddies",
+        "rancid",
+        "aaron-lee-tasjan",
+        "wrecks",
+        "the-interrupters"
+      ],
+      "venues": [
+        "huntington-state-beach"
+      ],
+      "years": [
+        2018
+      ],
+      "tags": [
+        "#festival-bill",
+        "#mega-bill"
+      ],
+      "deepLinks": [
+        {
+          "label": "Social Distortion",
+          "url": "/?scene=artists&artist=social-distortion",
+          "type": "artist"
+        },
+        {
+          "label": "Bad Religion",
+          "url": "/?scene=artists&artist=bad-religion",
+          "type": "artist"
+        },
+        {
+          "label": "The Offspring",
+          "url": "/?scene=artists&artist=the-offspring",
+          "type": "artist"
+        },
+        {
+          "label": "Huntington State Beach",
+          "url": "/?scene=map&venue=huntington-state-beach",
+          "type": "venue"
+        },
+        {
+          "label": "2018",
+          "url": "/?scene=timeline&year=2018",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "social-distortion-34-years-of-shows",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 50,
+      "detector": "festival-mega-bill",
+      "publishedAt": "2026-03-07T12:00:00.000Z"
+    },
+    {
+      "id": "festival-mega-bill-concert-58",
+      "slug": "the-cure-14-more-2003-festival-bill",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "The Cure + 14 More: 2003 Festival Bill",
+      "prose": "This 2003 festival captured new wave's full evolution — from The Cure's goth-pop mastery to Duran Duran's synth glamour, with Dashboard Confessional and Interpol representing where alternative rock was heading next. I witnessed 15 acts spanning three decades of post-punk DNA, from the original wave (Echo and the Bunnymen, Psychedelic Furs) through the '90s survivors (Violent Femmes) to the emerging indie darlings (Kings of Leon, Hot Hot Heat). The Hyundai Pavilion became a living museum of how Robert Smith's melancholy had spawned an entire musical ecosystem. Standing there in San Bernardino, I realized I wasn't just watching a festival — I was seeing the alternative rock family tree in full bloom.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wwwwtv1455324256.jpg",
+        "alt": "The Cure",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Just Like Heaven",
+        "artistName": "The Cure",
+        "albumName": "Kiss Me, Kiss Me, Kiss Me",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/cb/31/2d/cb312df8-ccdc-cd89-88c4-832b4d454963/mzaf_10323324397338669644.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2004/m11/d24/h19/s06.lkkhqoax.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/just-like-heaven/31739756?i=31739774&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "the-cure",
+        "marc-almond",
+        "berlin",
+        "bow-wow-wow",
+        "dashboard-confessional",
+        "dramarama",
+        "duran-duran",
+        "echo-and-the-bunnymen",
+        "fountains-of-wayne",
+        "the-english-beat",
+        "hot-hot-heat",
+        "interpol",
+        "kings-of-leon",
+        "psychedelic-furs",
+        "violent-femmes"
+      ],
+      "venues": [
+        "hyundai-pavilion"
+      ],
+      "years": [
+        2003
+      ],
+      "tags": [
+        "#festival-bill",
+        "#mega-bill"
+      ],
+      "deepLinks": [
+        {
+          "label": "The Cure",
+          "url": "/?scene=artists&artist=the-cure",
+          "type": "artist"
+        },
+        {
+          "label": "Marc Almond",
+          "url": "/?scene=artists&artist=marc-almond",
+          "type": "artist"
+        },
+        {
+          "label": "Berlin",
+          "url": "/?scene=artists&artist=berlin",
+          "type": "artist"
+        },
+        {
+          "label": "Hyundai Pavilion",
+          "url": "/?scene=map&venue=hyundai-pavilion",
+          "type": "venue"
+        },
+        {
+          "label": "2003",
+          "url": "/?scene=timeline&year=2003",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "pacific-amphitheatre-16-shows-over-5-decades"
+      ],
+      "score": 48,
+      "detector": "festival-mega-bill",
+      "publishedAt": "2026-03-05T08:48:00.000Z"
+    },
+    {
+      "id": "festival-mega-bill-concert-42",
+      "slug": "peter-gabriel-11-more-1993-festival-bill",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Peter Gabriel + 11 More: 1993 Festival Bill",
+      "prose": "The early '90s were the golden age of world music crossover, when MTV and major festivals finally opened their doors to artists like Ziggy Marley, The Drummers of Burundi, and Sinéad O'Connor sharing the same bill. I caught this spectacular 12-artist lineup at the Olympic Velodrome in Carson in September 1993, headlined by Peter Gabriel during his peak \"So\" era. The sheer diversity was staggering — from Crowded House's jangly pop-rock to Jah Wobble's experimental dub, from P.M. Dawn's hip-hop soul to the traditional rhythms of Burundi. Looking back, it feels like witnessing a brief moment when the music industry genuinely believed in bringing the world together on one stage.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/xwtsqv1386887602.jpg",
+        "alt": "Peter Gabriel",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "In Your Eyes",
+        "artistName": "Peter Gabriel",
+        "albumName": "So",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/72/5d/1e/725d1e86-5984-370c-2c77-69441563d5ba/mzaf_15155768550883280506.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/29/d7/7d/29d77d60-24b8-f45b-936f-d8cf3ce52d8d/884108003503.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/in-your-eyes/986800858?i=986800927&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "peter-gabriel",
+        "crowded-house",
+        "inner-circle",
+        "jah-wobble-s-invaders-of-the-heart",
+        "james",
+        "p-m-dawn",
+        "sheila-chandra",
+        "sin-ad-o-connor",
+        "stereo-mc-s",
+        "ziggy-marley",
+        "terem-quartet",
+        "the-drummers-of-burundi"
+      ],
+      "venues": [
+        "olympic-velodrome"
+      ],
+      "years": [
+        1993
+      ],
+      "tags": [
+        "#festival-bill",
+        "#mega-bill"
+      ],
+      "deepLinks": [
+        {
+          "label": "Peter Gabriel",
+          "url": "/?scene=artists&artist=peter-gabriel",
+          "type": "artist"
+        },
+        {
+          "label": "Crowded House",
+          "url": "/?scene=artists&artist=crowded-house",
+          "type": "artist"
+        },
+        {
+          "label": "Inner Circle",
+          "url": "/?scene=artists&artist=inner-circle",
+          "type": "artist"
+        },
+        {
+          "label": "Olympic Velodrome",
+          "url": "/?scene=map&venue=olympic-velodrome",
+          "type": "venue"
+        },
+        {
+          "label": "1993",
+          "url": "/?scene=timeline&year=1993",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "crowded-house-from-opener-to-headliner"
+      ],
+      "score": 48,
+      "detector": "festival-mega-bill",
+      "publishedAt": "2026-03-03T05:36:00.000Z"
+    },
+    {
+      "id": "city-pulse-1984-los-angeles-summer-olympics-1984",
+      "slug": "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Thompson Twins in 1984: The Year of 1984 Los Angeles Summer Olympics",
+      "prose": "Los Angeles in 1984 was electric with Olympic fever, and the new wave acts flooding Irvine Meadows that year captured that same restless energy. I saw Thompson Twins in May, right in the thick of it — part of a four-show run at the venue that also brought Adam Ant, Billy Idol, and Echo and the Bunnymen between April and September. The Thompson Twins were riding high on \"Into the Gap,\" their synth-pop perfectly matching the city's futuristic Olympic optimism. Looking back, those 4 concerts feel like a snapshot of new wave's peak moment, when MTV and the Games made everything feel possible.",
+      "image": {
+        "url": "/images/venues/fallback.jpg",
+        "alt": "Irvine Meadows",
+        "source": "venue"
+      },
+      "audio": {
+        "trackName": "Hold Me Now",
+        "artistName": "Thompson Twins",
+        "albumName": "Into the Gap (Deluxe Edition)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/69/e2/44/69e244e9-8956-5811-9973-f65fd95aff3a/mzaf_9754010820934214863.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/51/f5/d2/51f5d297-e277-2592-17af-bd89156103e0/0884977845730.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/hold-me-now/1675310461?i=1675310468&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "adam-ant",
+        "thompson-twins",
+        "billy-idol",
+        "echo-and-the-bunnymen"
+      ],
+      "venues": [
+        "irvine-meadows"
+      ],
+      "years": [
+        1984
+      ],
+      "tags": [
+        "#city-pulse",
+        "#historical-context"
+      ],
+      "deepLinks": [
+        {
+          "label": "Adam Ant",
+          "url": "/?scene=artists&artist=adam-ant",
+          "type": "artist"
+        },
+        {
+          "label": "Thompson Twins",
+          "url": "/?scene=artists&artist=thompson-twins",
+          "type": "artist"
+        },
+        {
+          "label": "Billy Idol",
+          "url": "/?scene=artists&artist=billy-idol",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=map&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "1984",
+          "url": "/?scene=timeline&year=1984",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "irvine-meadows-16-shows-over-3-decades"
+      ],
+      "score": 46,
+      "detector": "city-pulse",
+      "publishedAt": "2026-03-01T02:24:00.000Z"
+    },
+    {
+      "id": "festival-mega-bill-concert-125",
+      "slug": "the-human-league-8-more-2018-festival-bill",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "The Human League + 8 More: 2018 Festival Bill",
+      "prose": "The 2018 nostalgia festival circuit became a time machine for those of us who lived through the new wave explosion of the early '80s. I caught this 9-band bill at Huntington State Beach, headlined by The Human League with 8 supporting acts including The Alarm, Dramarama, and Naked Eyes — essentially a greatest hits compilation of synth-pop and alternative rock from 1977 to 1987. What struck me wasn't just the concentrated dose of my teenage soundtrack, but how these songs that once felt so futuristic now carried the warm patina of shared memory. Standing on that beach, surrounded by fellow Gen-Xers singing along to \"Don't You (Forget About Me)\" vibes, I realized we'd become our parents at the oldies show.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wysuyt1345666474.jpg",
+        "alt": "The Human League",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Human",
+        "artistName": "The Human League",
+        "albumName": "Crash (Bonus Track Version)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/6b/e2/df/6be2df75-5c16-e6a3-cf4d-5feecc43f6f8/mzaf_3185171022652100282.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/ae/1e/2f/ae1e2f65-8f1d-18fc-ba28-c88e2ef3db6e/00094633341555.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/human/714506198?i=714506573&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "the-human-league",
+        "the-alarm",
+        "dramarama",
+        "the-motels",
+        "naked-eyes",
+        "the-untouchables",
+        "gene-loves-jezabel",
+        "when-in-rome",
+        "the-polecats"
+      ],
+      "venues": [
+        "huntington-state-beach"
+      ],
+      "years": [
+        2018
+      ],
+      "tags": [
+        "#festival-bill",
+        "#mega-bill"
+      ],
+      "deepLinks": [
+        {
+          "label": "The Human League",
+          "url": "/?scene=artists&artist=the-human-league",
+          "type": "artist"
+        },
+        {
+          "label": "The Alarm",
+          "url": "/?scene=artists&artist=the-alarm",
+          "type": "artist"
+        },
+        {
+          "label": "Dramarama",
+          "url": "/?scene=artists&artist=dramarama",
+          "type": "artist"
+        },
+        {
+          "label": "Huntington State Beach",
+          "url": "/?scene=map&venue=huntington-state-beach",
+          "type": "venue"
+        },
+        {
+          "label": "2018",
+          "url": "/?scene=timeline&year=2018",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "social-distortion-34-years-of-shows"
+      ],
+      "score": 45,
+      "detector": "festival-mega-bill",
+      "publishedAt": "2026-02-26T23:12:00.000Z"
+    },
+    {
+      "id": "drought-comeback-depeche-mode",
+      "slug": "depeche-mode-18-years-between-shows",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Depeche Mode: 18 Years Between Shows",
+      "prose": "I remember walking out of Staples Center in November 2005 after seeing Depeche Mode, never imagining it would be 18 years before I'd see them again. Life happened — moves, kids, priorities shifted — and suddenly it was 2023 and I was driving to the Kia Forum in Inglewood, practically the same neighborhood where I'd last seen them. The gap felt surreal, like I was reconnecting with a version of myself I'd almost forgotten. Eighteen years is long enough to raise a child, but Dave Gahan's voice still hit exactly the same way it did when I was younger.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg",
+        "alt": "Depeche Mode",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Universal Soldier",
+        "artistName": "Depeche Mode",
+        "albumName": "HELP(2)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/bb/7e/0f/bb7e0fb7-ec0b-9fd2-4a0e-5e8ee18b2238/mzaf_5690086882308562359.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e6/1c/41/e61c4157-3864-e904-acc3-75613984e326/191400691650.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/universal-soldier/1870313498?i=1870313513&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "depeche-mode"
+      ],
+      "venues": [
+        "irvine-meadows",
+        "the-rose-bowl",
+        "dodger-stadium",
+        "staples-center",
+        "kia-forum"
+      ],
+      "years": [
+        1985,
+        1988,
+        1990,
+        2005,
+        2023
+      ],
+      "tags": [
+        "#drought",
+        "#comeback"
+      ],
+      "deepLinks": [
+        {
+          "label": "Depeche Mode",
+          "url": "/?scene=artists&artist=depeche-mode",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=map&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "The Rose Bowl",
+          "url": "/?scene=map&venue=the-rose-bowl",
+          "type": "venue"
+        },
+        {
+          "label": "1985",
+          "url": "/?scene=timeline&year=1985",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "depeche-mode-38-years-of-shows-2",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 44,
+      "detector": "drought-comeback",
+      "publishedAt": "2026-02-24T20:00:00.000Z"
+    },
+    {
+      "id": "drought-comeback-howard-jones",
+      "slug": "howard-jones-17-years-between-shows",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Howard Jones: 17 Years Between Shows",
+      "prose": "I remember standing in the Universal Amphitheater in 1989, watching Howard Jones perform what I didn't know would be his last show in my collection for nearly two decades. When I finally saw him again in 2006 at the intimate Coach House in San Juan Capistrano, it felt like reconnecting with an old friend after years of silence. That 17-year gap represents the longest drought between any artist's appearances in my concert history. The shift from arena to club venue somehow made his synth-pop anthems feel more personal, like he was playing just for the handful of us who had waited all those years.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/jones-howard-50fbc0fcc99a1.jpg",
+        "alt": "Howard Jones",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "No One Is To Blame",
+        "artistName": "Howard Jones",
+        "albumName": "Action Replay",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/fc/24/df/fc24dfce-89ca-8034-674c-cd7cb4817223/mzaf_7174615373798508312.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b4/30/b7/b430b70f-1cc8-b120-1217-6ada0096fe7a/5037300817439.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/no-one-is-to-blame/1764332125?i=1764332265&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "howard-jones"
+      ],
+      "venues": [
+        "irvine-meadows",
+        "universal-amphitheater",
+        "the-coach-house",
+        "howard-theater",
+        "the-hamilton-live",
+        "youtube-theatre"
+      ],
+      "years": [
+        1985,
+        1989,
+        2006,
+        2012,
+        2016,
+        2024
+      ],
+      "tags": [
+        "#drought",
+        "#comeback"
+      ],
+      "deepLinks": [
+        {
+          "label": "Howard Jones",
+          "url": "/?scene=artists&artist=howard-jones",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=map&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "Universal Amphitheater",
+          "url": "/?scene=map&venue=universal-amphitheater",
+          "type": "venue"
+        },
+        {
+          "label": "1985",
+          "url": "/?scene=timeline&year=1985",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "universal-amphitheater-5-shows-before-it-was-demolished",
+        "howard-jones-39-years-of-shows"
+      ],
+      "score": 44,
+      "detector": "drought-comeback",
+      "publishedAt": "2026-02-22T16:48:00.000Z"
+    },
+    {
+      "id": "festival-mega-bill-concert-104",
+      "slug": "foo-fighters-9-more-2015-festival-bill",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Foo Fighters + 9 More: 2015 Festival Bill",
+      "prose": "The 4th of July 2015 at RFK Stadium was one of those rare festival bills that read like a cross-section of American music itself — blues legend Buddy Guy sharing the stage with Foo Fighters, Heart bridging classic and alternative rock, LL Cool J representing hip-hop's golden age, all anchored by the go-go sounds of Trouble Funk. I caught this 10-artist extravaganza during Foo Fighters' peak touring years, just as they were cementing their status as arena headliners more than two decades after Dave Grohl formed the band in 1994. The sheer breadth of genres — from Buddy Guy's six decades of blues mastery to DJ Z-Trip's turntable wizardry — felt like watching the soundtrack to America unfold in real time on Independence Day.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/vuvqxr1352453964.jpg",
+        "alt": "Foo Fighters",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Everlong",
+        "artistName": "Foo Fighters",
+        "albumName": "The Colour And The Shape",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d0/77/17/d07717cb-9977-1cbb-6634-3e598d0c4da6/mzaf_15769952961470333318.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/68/f5/86/68f586ca-a375-9965-a864-9e227e77ef5b/884977570328.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/everlong/362133451?i=362133505&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "foo-fighters",
+        "buddy-guy",
+        "gary-clark-jr",
+        "heart",
+        "joan-jett-the-blackhearts",
+        "ll-cool-j",
+        "dj-z-trip",
+        "trouble-funk",
+        "trombone-shorty-orleans-avenue",
+        "rdgldgrn"
+      ],
+      "venues": [
+        "rfk-stadium"
+      ],
+      "years": [
+        2015
+      ],
+      "tags": [
+        "#festival-bill",
+        "#mega-bill"
+      ],
+      "deepLinks": [
+        {
+          "label": "Foo Fighters",
+          "url": "/?scene=artists&artist=foo-fighters",
+          "type": "artist"
+        },
+        {
+          "label": "Buddy Guy",
+          "url": "/?scene=artists&artist=buddy-guy",
+          "type": "artist"
+        },
+        {
+          "label": "Gary Clark, Jr.",
+          "url": "/?scene=artists&artist=gary-clark-jr",
+          "type": "artist"
+        },
+        {
+          "label": "RFK Stadium",
+          "url": "/?scene=map&venue=rfk-stadium",
+          "type": "venue"
+        },
+        {
+          "label": "2015",
+          "url": "/?scene=timeline&year=2015",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "howard-jones-39-years-of-shows"
+      ],
+      "score": 43,
+      "detector": "festival-mega-bill",
+      "publishedAt": "2026-02-20T13:36:00.000Z"
+    },
+    {
+      "id": "drought-comeback-new-order",
+      "slug": "new-order-37-years-between-shows",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "New Order: 37 Years Between Shows",
+      "prose": "I saw New Order at Irvine Meadows in 1985 when I was just getting into their sound — that perfect blend of post-punk edge and dance floor pulse that made Brotherhood feel so essential. Then nothing. Thirty-seven years passed before I caught them again at the Hollywood Bowl in 2022, and walking into that venue, I couldn't help but think about how much had changed in both our lives since that summer night in Orange County. The music hit just as hard, but I was definitely standing in a very different place to receive it.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/new-order-4fd5f3e934e45.jpg",
+        "alt": "New Order",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Bizarre Love Triangle",
+        "artistName": "New Order",
+        "albumName": "Brotherhood",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/dc/e7/a6/dce7a612-2672-34e1-e735-a44218403ed2/mzaf_11026710952020512417.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e4/4c/dc/e44cdc30-89d8-1b46-8e1f-57c0bbbc9ce7/825646051175.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/bizarre-love-triangle/1040972118?i=1040972132&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "new-order"
+      ],
+      "venues": [
+        "irvine-meadows",
+        "hollywood-bowl"
+      ],
+      "years": [
+        1985,
+        2022
+      ],
+      "tags": [
+        "#drought",
+        "#comeback"
+      ],
+      "deepLinks": [
+        {
+          "label": "New Order",
+          "url": "/?scene=artists&artist=new-order",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=map&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "Hollywood Bowl",
+          "url": "/?scene=map&venue=hollywood-bowl",
+          "type": "venue"
+        },
+        {
+          "label": "1985",
+          "url": "/?scene=timeline&year=1985",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "irvine-meadows-16-shows-over-3-decades"
+      ],
+      "score": 41,
+      "detector": "drought-comeback",
+      "publishedAt": "2026-02-18T10:24:00.000Z"
+    },
+    {
+      "id": "venue-ghost-universal-amphitheater",
+      "slug": "universal-amphitheater-5-shows-before-it-was-demolished",
+      "category": "deep-cut",
+      "temporality": "evergreen",
+      "headline": "Universal Amphitheater: 5 Shows Before It Was Demolished",
+      "prose": "I somehow caught 5 shows at Universal Amphitheater across 16 years, from Howard Jones in 1989 to Tears For Fears in 2005 — but here's the twist: the venue was actually demolished in 1999 and rebuilt as Gibson Amphitheatre. That means my last show there technically happened at a completely different building on the same site, six years after the original was torn down. Four different artists, two different venues, one address that fooled my concert tracking for decades.",
+      "image": {
+        "url": "/images/venues/fallback.jpg",
+        "alt": "Universal Amphitheater",
+        "source": "venue"
+      },
+      "audio": {
+        "trackName": "No One Is To Blame",
+        "artistName": "Howard Jones",
+        "albumName": "Action Replay",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/fc/24/df/fc24dfce-89ca-8034-674c-cd7cb4817223/mzaf_7174615373798508312.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b4/30/b7/b430b70f-1cc8-b120-1217-6ada0096fe7a/5037300817439.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/no-one-is-to-blame/1764332125?i=1764332265&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "howard-jones",
+        "siouxsie-and-the-banshees",
+        "tears-for-fears",
+        "the-brian-setzer-orchestra"
+      ],
+      "venues": [
+        "universal-amphitheater"
+      ],
+      "years": [
+        1989,
+        1991,
+        1993,
+        2002,
+        2005
+      ],
+      "tags": [
+        "#venue-ghost",
+        "#demolished"
+      ],
+      "deepLinks": [
+        {
+          "label": "Howard Jones",
+          "url": "/?scene=artists&artist=howard-jones",
+          "type": "artist"
+        },
+        {
+          "label": "Siouxsie and the Banshees",
+          "url": "/?scene=artists&artist=siouxsie-and-the-banshees",
+          "type": "artist"
+        },
+        {
+          "label": "Tears for Fears",
+          "url": "/?scene=artists&artist=tears-for-fears",
+          "type": "artist"
+        },
+        {
+          "label": "Universal Amphitheater",
+          "url": "/?scene=map&venue=universal-amphitheater",
+          "type": "venue"
+        },
+        {
+          "label": "1989",
+          "url": "/?scene=timeline&year=1989",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "howard-jones-39-years-of-shows",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 41,
+      "detector": "venue-ghost",
+      "publishedAt": "2026-02-16T07:12:00.000Z"
+    },
+    {
+      "id": "drought-comeback-duran-duran",
+      "slug": "duran-duran-21-years-between-shows",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Duran Duran: 21 Years Between Shows",
+      "prose": "I remember standing at Irvine Meadows in 1987 watching Duran Duran, not knowing it would be 21 years before I'd see them again. That Nokia Center show in 2008 felt like stepping into a time machine — Simon Le Bon's voice cutting through two decades of silence, bringing back memories of new wave summers and MTV afternoons. Three shows total across my concert history, but that middle gap speaks volumes about how life can drift you away from the bands that once defined your weekends. Sometimes the longest waits make for the sweetest reunions.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/73oxf41638977308.jpg",
+        "alt": "Duran Duran",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Come Undone",
+        "artistName": "Duran Duran",
+        "albumName": "Duran Duran (The Wedding Album)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/55/b8/d1/55b8d178-7c6d-e8c7-49f2-aa17dcd163b7/mzaf_7323411528954987336.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e9/43/cb/e943cba9-b641-14a9-c5cb-52e67cef101c/077779887651.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/come-undone/696247010?i=696247427&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "duran-duran"
+      ],
+      "venues": [
+        "irvine-meadows",
+        "nokia-center",
+        "mgm-national-harbor"
+      ],
+      "years": [
+        1987,
+        2008,
+        2017
+      ],
+      "tags": [
+        "#drought",
+        "#comeback"
+      ],
+      "deepLinks": [
+        {
+          "label": "Duran Duran",
+          "url": "/?scene=artists&artist=duran-duran",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=map&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "Nokia Center",
+          "url": "/?scene=map&venue=nokia-center",
+          "type": "venue"
+        },
+        {
+          "label": "1987",
+          "url": "/?scene=timeline&year=1987",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "irvine-meadows-16-shows-over-3-decades"
+      ],
+      "score": 41,
+      "detector": "drought-comeback",
+      "publishedAt": "2026-02-14T04:00:00.000Z"
+    },
+    {
+      "id": "drought-comeback-the-smithereens",
+      "slug": "the-smithereens-21-years-between-shows",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "The Smithereens: 21 Years Between Shows",
+      "prose": "I saw The Smithereens at The Celebrity Theatre in Anaheim in 1992, then didn't catch them again until 21 years later at The Hamilton Live in Washington. That's a gap that spans my entire twenties and thirties — I was a different person entirely by the time I heard those power-pop hooks again. It's strange how some bands just vanish from your radar, even when they keep making music. Sometimes the longest breaks make the reunion feel like discovering an old friend's phone number in a jacket pocket.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qswpwx1377465655.jpg",
+        "alt": "The Smithereens",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "A Girl Like You",
+        "artistName": "The Smithereens",
+        "albumName": "11",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/7d/a1/39/7da13956-6ce1-c557-d082-f0cc05ad8c83/mzaf_1502979762782017245.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/fe/4d/38/fe4d3834-b114-f4fd-3e06-f01457c1ddfc/00077779119455.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/a-girl-like-you/724465905?i=724466017&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "the-smithereens"
+      ],
+      "venues": [
+        "the-celebrity-theatre",
+        "the-hamilton-live",
+        "birchmere"
+      ],
+      "years": [
+        1992,
+        2013,
+        2016
+      ],
+      "tags": [
+        "#drought",
+        "#comeback"
+      ],
+      "deepLinks": [
+        {
+          "label": "The Smithereens",
+          "url": "/?scene=artists&artist=the-smithereens",
+          "type": "artist"
+        },
+        {
+          "label": "The Celebrity Theatre",
+          "url": "/?scene=map&venue=the-celebrity-theatre",
+          "type": "venue"
+        },
+        {
+          "label": "The Hamilton Live",
+          "url": "/?scene=map&venue=the-hamilton-live",
+          "type": "venue"
+        },
+        {
+          "label": "1992",
+          "url": "/?scene=timeline&year=1992",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "howard-jones-39-years-of-shows"
+      ],
+      "score": 41,
+      "detector": "drought-comeback",
+      "publishedAt": "2026-02-12T00:48:00.000Z"
+    },
+    {
+      "id": "venue-ghost-irvine-meadows",
+      "slug": "irvine-meadows-16-shows-before-it-was-demolished",
+      "category": "deep-cut",
+      "temporality": "evergreen",
+      "headline": "Irvine Meadows: 16 Shows Before It Was Demolished",
+      "prose": "I discovered I saw 16 shows at Irvine Meadows between 1984 and 2003, from Adam Ant's April '84 performance to Peter Gabriel in June 2003, before the venue was demolished in 2016. What strikes me is how this amphitheater captured a specific era — my concert history there reads like a New Wave and post-punk time capsule, heavy on acts like Thompson Twins, Billy Idol, Echo and the Bunnymen, and Depeche Mode. Thirteen different artists across nearly two decades, and now it's all tract housing where those summer nights used to echo with synthesizers and guitar feedback.",
+      "image": {
+        "url": "/images/venues/fallback.jpg",
+        "alt": "Irvine Meadows",
+        "source": "venue"
+      },
+      "audio": {
+        "trackName": "Goody Two Shoes",
+        "artistName": "Adam Ant",
+        "albumName": "The Essential Adam Ant",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/15/4f/be/154fbe11-e98b-d65e-e933-fb03516b2dfc/mzaf_3769504448482768076.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/de/b4/09deb44c-e956-6d43-e4cf-840784faf7d7/mzi.ogdifckc.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/goody-two-shoes/391324319?i=391324334&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "adam-ant",
+        "thompson-twins",
+        "billy-idol",
+        "echo-and-the-bunnymen",
+        "depeche-mode",
+        "howard-jones",
+        "new-order",
+        "duran-duran",
+        "george-michael",
+        "oingo-boingo",
+        "erasure",
+        "jimmy-buffett",
+        "peter-gabriel"
+      ],
+      "venues": [
+        "irvine-meadows"
+      ],
+      "years": [
+        1984,
+        1984,
+        1984,
+        1984,
+        1985,
+        1985,
+        1985,
+        1985,
+        1987,
+        1988,
+        1988,
+        1990,
+        1991,
+        1995,
+        1997,
+        2003
+      ],
+      "tags": [
+        "#venue-ghost",
+        "#demolished"
+      ],
+      "deepLinks": [
+        {
+          "label": "Adam Ant",
+          "url": "/?scene=artists&artist=adam-ant",
+          "type": "artist"
+        },
+        {
+          "label": "Thompson Twins",
+          "url": "/?scene=artists&artist=thompson-twins",
+          "type": "artist"
+        },
+        {
+          "label": "Billy Idol",
+          "url": "/?scene=artists&artist=billy-idol",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=map&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "1984",
+          "url": "/?scene=timeline&year=1984",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics",
+        "duran-duran-21-years-between-shows"
+      ],
+      "score": 39,
+      "detector": "venue-ghost",
+      "publishedAt": "2026-02-09T21:36:00.000Z"
+    },
+    {
+      "id": "city-pulse-los-angeles-uprising-after-the-rodney-king-verdict-1992",
+      "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "The Smithereens in 1992: The Year of Los Angeles uprising after the Rodney King verdict",
+      "prose": "The Smithereens were hitting their stride in 1992, riding the wave of their most successful period, when I caught them at The Celebrity Theatre in Anaheim that June. The streets that summer were fractured and raw after the acquittal, and going out felt charged with something unresolved. I remember the drive down to Orange County feeling different somehow — like the whole region was still processing what had happened just weeks before. The Smithereens' blend of power pop and heartland rock felt like the right soundtrack for that moment, their earnest melodies cutting through the tension that lingered in the California air.",
+      "image": {
+        "url": "/images/venues/fallback.jpg",
+        "alt": "The Celebrity Theatre",
+        "source": "venue"
+      },
+      "audio": {
+        "trackName": "A Girl Like You",
+        "artistName": "The Smithereens",
+        "albumName": "11",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/7d/a1/39/7da13956-6ce1-c557-d082-f0cc05ad8c83/mzaf_1502979762782017245.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/fe/4d/38/fe4d3834-b114-f4fd-3e06-f01457c1ddfc/00077779119455.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/a-girl-like-you/724465905?i=724466017&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "the-smithereens"
+      ],
+      "venues": [
+        "the-celebrity-theatre"
+      ],
+      "years": [
+        1992
+      ],
+      "tags": [
+        "#city-pulse",
+        "#historical-context"
+      ],
+      "deepLinks": [
+        {
+          "label": "The Smithereens",
+          "url": "/?scene=artists&artist=the-smithereens",
+          "type": "artist"
+        },
+        {
+          "label": "The Celebrity Theatre",
+          "url": "/?scene=map&venue=the-celebrity-theatre",
+          "type": "venue"
+        },
+        {
+          "label": "1992",
+          "url": "/?scene=timeline&year=1992",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "the-smithereens-21-years-between-shows",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 39,
+      "detector": "city-pulse",
+      "publishedAt": "2026-02-07T18:24:00.000Z"
+    },
+    {
+      "id": "longevity-depeche-mode",
+      "slug": "depeche-mode-38-years-of-shows-2",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Depeche Mode: 38 Years of Shows",
+      "prose": "I still remember walking into Irvine Meadows in 1985 for my first Depeche Mode show, not knowing I was starting something that would span 38 years and four decades of my concert-going life. Five shows across California venues, from that early synthpop energy through their Violator era and beyond, each one marking a different chapter of both their evolution and mine. The most recent was just last year at the Kia Forum in Inglewood, and I found myself thinking about that 18-year-old kid at Irvine Meadows, how certain bands just become part of your DNA. Some artists you see once; others become a parallel soundtrack to your entire adult life.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg",
+        "alt": "Depeche Mode",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Universal Soldier",
+        "artistName": "Depeche Mode",
+        "albumName": "HELP(2)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/bb/7e/0f/bb7e0fb7-ec0b-9fd2-4a0e-5e8ee18b2238/mzaf_5690086882308562359.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e6/1c/41/e61c4157-3864-e904-acc3-75613984e326/191400691650.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/universal-soldier/1870313498?i=1870313513&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "depeche-mode"
+      ],
+      "venues": [
+        "irvine-meadows",
+        "the-rose-bowl",
+        "dodger-stadium",
+        "staples-center",
+        "kia-forum"
+      ],
+      "years": [
+        1985,
+        1988,
+        1990,
+        2005,
+        2023
+      ],
+      "tags": [
+        "#artist-longevity",
+        "#multi-decade"
+      ],
+      "deepLinks": [
+        {
+          "label": "Depeche Mode",
+          "url": "/?scene=artists&artist=depeche-mode",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=map&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "The Rose Bowl",
+          "url": "/?scene=map&venue=the-rose-bowl",
+          "type": "venue"
+        },
+        {
+          "label": "1985",
+          "url": "/?scene=timeline&year=1985",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "depeche-mode-38-years-of-shows",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 39,
+      "detector": "artist-longevity",
+      "publishedAt": "2026-02-05T15:12:00.000Z"
+    },
     {
       "id": "longevity-howard-jones",
       "slug": "howard-jones-39-years-of-shows",
@@ -74,7 +1198,7 @@
       ],
       "score": 39,
       "detector": "artist-longevity",
-      "publishedAt": "2026-03-08T20:13:07.549Z"
+      "publishedAt": "2026-02-03T12:00:00.000Z"
     },
     {
       "id": "longevity-social-distortion",
@@ -151,7 +1275,7 @@
       ],
       "score": 39,
       "detector": "artist-longevity",
-      "publishedAt": "2026-03-08T20:13:07.549Z"
+      "publishedAt": "2026-02-01T08:48:00.000Z"
     },
     {
       "id": "venue-loyalty-pacific-amphitheatre",
@@ -248,7 +1372,7 @@
       ],
       "score": 39,
       "detector": "venue-loyalty",
-      "publishedAt": "2026-03-08T20:13:07.549Z"
+      "publishedAt": "2026-01-30T05:36:00.000Z"
     },
     {
       "id": "geographic-international-1984",
@@ -675,7 +1799,156 @@
       ],
       "score": 39,
       "detector": "geographic-chapter",
-      "publishedAt": "2026-03-08T20:13:07.549Z"
+      "publishedAt": "2026-01-28T02:24:00.000Z"
+    },
+    {
+      "id": "festival-mega-bill-concert-34",
+      "slug": "maxi-priest-6-more-1991-festival-bill",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Maxi Priest + 6 More: 1991 Festival Bill",
+      "prose": "This was reggae's moment in American mainstream consciousness, and I caught a perfect snapshot of it at Pacific Amphitheatre in June 1991. Maxi Priest was riding high with crossover hits, headlining over a seven-artist bill that included Dennis Brown and Andrew Tosh — Peter Tosh's son, carrying forward his father's legacy. I remember the crowd being surprisingly diverse for Orange County, drawn by reggae's growing radio presence around that time. What struck me most was how the music unified this massive outdoor crowd, from the opening act through Priest's closing set under the California stars.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/xtvyvp1364378396.jpg",
+        "alt": "Maxi Priest",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Close To You",
+        "artistName": "Maxi Priest",
+        "albumName": "Bonafide",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/b2/28/79/b22879e6-ff5e-c0b1-267c-584b94ebdcc7/mzaf_13906708873837689304.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/16/22/a9/1622a9d7-8a90-0350-7d85-3f673e753a23/00077778617655.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/close-to-you/723343556?i=723343714&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "maxi-priest",
+        "andrew-tosh",
+        "carlene-davis",
+        "dennis-brown",
+        "little-lenny",
+        "shinehead",
+        "team-band"
+      ],
+      "venues": [
+        "pacific-amphitheatre"
+      ],
+      "years": [
+        1991
+      ],
+      "tags": [
+        "#festival-bill",
+        "#mega-bill"
+      ],
+      "deepLinks": [
+        {
+          "label": "Maxi Priest",
+          "url": "/?scene=artists&artist=maxi-priest",
+          "type": "artist"
+        },
+        {
+          "label": "Andrew Tosh",
+          "url": "/?scene=artists&artist=andrew-tosh",
+          "type": "artist"
+        },
+        {
+          "label": "Carlene Davis",
+          "url": "/?scene=artists&artist=carlene-davis",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=map&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "1991",
+          "url": "/?scene=timeline&year=1991",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "pacific-amphitheatre-16-shows-over-5-decades",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 38,
+      "detector": "festival-mega-bill",
+      "publishedAt": "2026-01-25T23:12:00.000Z"
+    },
+    {
+      "id": "festival-mega-bill-concert-19",
+      "slug": "oingo-boingo-5-more-1987-festival-bill",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Oingo Boingo + 5 More: 1987 Festival Bill",
+      "prose": "This was the era when alternative rock was still finding its footing alongside new wave's final flourishes — and somehow I caught all of it on one stage in Tijuana. Six acts that would define different corners of the late-80s landscape: Oingo Boingo riding high on \"Dead Man's Party,\" The Bangles at their commercial peak, Squeeze's sophisticated pop craft, and Australia's Hoodoo Gurus bringing their garage rock energy just five years after forming. I remember the surreal border-crossing pilgrimage to Caliente Racetrack, where Chris Isaak's crooning and The Fixx's synth-rock completed this unlikely but perfect snapshot of 1987's musical diversity. Looking back, it feels like witnessing a changing of the guard I didn't even know was happening.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/oingo-boingo-4ff3036de887f.jpg",
+        "alt": "Oingo Boingo",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Dead Man's Party",
+        "artistName": "Oingo Boingo",
+        "albumName": "Dead Man's Party",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/3a/69/8f/3a698f90-e99c-a8dc-ef52-87c3becf2bd3/mzaf_18094485913850446498.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/be/5b/14/be5b14fc-5480-81cc-53a1-59f98f185f2b/06UMGIM03141.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/dead-mans-party/1440740144?i=1440740152&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "oingo-boingo",
+        "hoodoo-gurus",
+        "bangles",
+        "squeeze",
+        "chris-isaak",
+        "the-fixx"
+      ],
+      "venues": [
+        "caliente-racetrack"
+      ],
+      "years": [
+        1987
+      ],
+      "tags": [
+        "#festival-bill",
+        "#mega-bill"
+      ],
+      "deepLinks": [
+        {
+          "label": "Oingo Boingo",
+          "url": "/?scene=artists&artist=oingo-boingo",
+          "type": "artist"
+        },
+        {
+          "label": "Hoodoo Gurus",
+          "url": "/?scene=artists&artist=hoodoo-gurus",
+          "type": "artist"
+        },
+        {
+          "label": "The Bangles",
+          "url": "/?scene=artists&artist=bangles",
+          "type": "artist"
+        },
+        {
+          "label": "Caliente Racetrack",
+          "url": "/?scene=map&venue=caliente-racetrack",
+          "type": "venue"
+        },
+        {
+          "label": "1987",
+          "url": "/?scene=timeline&year=1987",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "squeeze-from-opener-to-headliner"
+      ],
+      "score": 38,
+      "detector": "festival-mega-bill",
+      "publishedAt": "2026-01-23T20:00:00.000Z"
     },
     {
       "id": "opener-to-headliner-crowded-house",
@@ -741,7 +2014,70 @@
       ],
       "score": 38,
       "detector": "opener-to-headliner",
-      "publishedAt": "2026-03-08T20:13:07.549Z"
+      "publishedAt": "2026-01-21T16:48:00.000Z"
+    },
+    {
+      "id": "opener-to-headliner-squeeze",
+      "slug": "squeeze-from-opener-to-headliner",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Squeeze: From Opener to Headliner",
+      "prose": "Few bands embodied the scrappy spirit of new wave quite like Squeeze, and my concert history accidentally documented their long climb from opening act to headliner. I first saw them opening for Oingo Boingo at a racetrack in Tijuana in 1987, when their clever wordplay and pub rock energy felt perfectly suited to warming up a crowd. Twenty-five years later, I watched them headline Rams Head Live in Baltimore, now seasoned veterans commanding the stage with the same wit but deeper confidence. It's rare to witness that complete arc in your own concert diary — from promising opener to rightful headliner.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/stywtv1376542198.jpg",
+        "alt": "Squeeze",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "What More Can I Say",
+        "artistName": "Squeeze",
+        "albumName": "Trixies",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/65/02/ac/6502ac6d-26e8-880f-062b-0fbb76644a03/mzaf_537671996813235778.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a6/23/be/a623beed-1659-48d1-83de-1c35260f9d1e/4099964217681.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/what-more-can-i-say/1849943038?i=1849943040&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "squeeze"
+      ],
+      "venues": [
+        "caliente-racetrack",
+        "rams-head-live-baltimore"
+      ],
+      "years": [
+        1987,
+        2012
+      ],
+      "tags": [
+        "#opener-to-headliner",
+        "#career-arc"
+      ],
+      "deepLinks": [
+        {
+          "label": "Squeeze",
+          "url": "/?scene=artists&artist=squeeze",
+          "type": "artist"
+        },
+        {
+          "label": "Caliente Racetrack",
+          "url": "/?scene=map&venue=caliente-racetrack",
+          "type": "venue"
+        },
+        {
+          "label": "Rams Head Live! Baltimore",
+          "url": "/?scene=map&venue=rams-head-live-baltimore",
+          "type": "venue"
+        },
+        {
+          "label": "1987",
+          "url": "/?scene=timeline&year=1987",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [],
+      "score": 38,
+      "detector": "opener-to-headliner",
+      "publishedAt": "2026-01-19T13:36:00.000Z"
     },
     {
       "id": "longevity-tears-for-fears",
@@ -810,7 +2146,7 @@
       ],
       "score": 36,
       "detector": "artist-longevity",
-      "publishedAt": "2026-03-08T20:13:07.549Z"
+      "publishedAt": "2026-01-17T10:24:00.000Z"
     },
     {
       "id": "venue-loyalty-universal-amphitheater",
@@ -885,7 +2221,7 @@
       ],
       "score": 36,
       "detector": "venue-loyalty",
-      "publishedAt": "2026-03-08T20:13:07.549Z"
+      "publishedAt": "2026-01-15T07:12:00.000Z"
     },
     {
       "id": "venue-loyalty-house-of-blues-anaheim",
@@ -962,7 +2298,7 @@
       ],
       "score": 36,
       "detector": "venue-loyalty",
-      "publishedAt": "2026-03-08T20:13:07.549Z"
+      "publishedAt": "2026-01-13T04:00:00.000Z"
     },
     {
       "id": "venue-loyalty-irvine-meadows",
@@ -1058,7 +2394,7 @@
       ],
       "score": 34,
       "detector": "venue-loyalty",
-      "publishedAt": "2026-03-08T20:13:07.549Z"
+      "publishedAt": "2026-01-11T00:48:00.000Z"
     },
     {
       "id": "venue-loyalty-kia-forum",
@@ -1133,54 +2469,46 @@
       ],
       "score": 34,
       "detector": "venue-loyalty",
-      "publishedAt": "2026-03-08T20:13:07.549Z"
+      "publishedAt": "2026-01-08T21:36:00.000Z"
     },
     {
-      "id": "longevity-depeche-mode",
-      "slug": "depeche-mode-38-years-of-shows",
-      "category": "personal",
+      "id": "rare-sighting-billy-idol",
+      "slug": "billy-idol-caught-once-never-again",
+      "category": "deep-cut",
       "temporality": "evergreen",
-      "headline": "Depeche Mode: 38 Years of Shows",
-      "prose": "I still remember walking into Irvine Meadows in 1985 for my first Depeche Mode show, when they were just five years into their career and still riding the wave of their early synthpop sound. That night kicked off what became a 38-year relationship with their live performances, spanning four decades and taking me from Southern California amphitheaters to the gleaming Kia Forum just last year. Five shows across nearly four decades feels almost modest for a band this essential to my concert-going life, but each one marked a different era of both their evolution and mine. There's something beautifully cyclical about starting and ending this run in the same corner of Los Angeles County.",
+      "headline": "Billy Idol: Caught Once, Never Again",
+      "prose": "I saw Billy Idol exactly once in four decades of concertgoing — August 13, 1984 at Irvine Meadows — and somehow never crossed paths with him again. This strikes me as nearly impossible given how ubiquitous he became after *Rebel Yell*, yet my archive shows a complete Billy Idol drought from 1985 to present. Maybe I was unconsciously avoiding the crowds, or maybe our touring schedules just never aligned, but it's wild that a single summer night in Orange County represents my entire Billy Idol experience.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg",
-        "alt": "Depeche Mode",
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qprtqv1342815862.jpg",
+        "alt": "Billy Idol",
         "source": "artist"
       },
       "audio": {
-        "trackName": "Universal Soldier",
-        "artistName": "Depeche Mode",
-        "albumName": "HELP(2)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/bb/7e/0f/bb7e0fb7-ec0b-9fd2-4a0e-5e8ee18b2238/mzaf_5690086882308562359.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e6/1c/41/e61c4157-3864-e904-acc3-75613984e326/191400691650.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/universal-soldier/1870313498?i=1870313513&uo=4",
+        "trackName": "Rebel Yell",
+        "artistName": "Billy Idol",
+        "albumName": "Rebel Yell",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/72/3b/be/723bbe8b-a347-712e-5a75-46b89a140a5d/mzaf_5830844999738001223.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/18/05/fe/1805fea9-58d8-502a-573b-5711473bd5e4/13UABIM74015.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/rebel-yell/1440901660?i=1440902023&uo=4",
         "source": "itunes"
       },
       "artists": [
-        "depeche-mode"
+        "billy-idol"
       ],
       "venues": [
-        "irvine-meadows",
-        "the-rose-bowl",
-        "dodger-stadium",
-        "staples-center",
-        "kia-forum"
+        "irvine-meadows"
       ],
       "years": [
-        1985,
-        1988,
-        1990,
-        2005,
-        2023
+        1984
       ],
       "tags": [
-        "#artist-longevity",
-        "#multi-decade"
+        "#rare-sighting",
+        "#one-time-only"
       ],
       "deepLinks": [
         {
-          "label": "Depeche Mode",
-          "url": "/?scene=artists&artist=depeche-mode",
+          "label": "Billy Idol",
+          "url": "/?scene=artists&artist=billy-idol",
           "type": "artist"
         },
         {
@@ -1189,8 +2517,62 @@
           "type": "venue"
         },
         {
-          "label": "The Rose Bowl",
-          "url": "/?scene=map&venue=the-rose-bowl",
+          "label": "1984",
+          "url": "/?scene=timeline&year=1984",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 33,
+      "detector": "rare-sighting",
+      "publishedAt": "2026-01-06T18:24:00.000Z"
+    },
+    {
+      "id": "rare-sighting-stryper",
+      "slug": "stryper-caught-once-never-again",
+      "category": "deep-cut",
+      "temporality": "evergreen",
+      "headline": "Stryper: Caught Once, Never Again",
+      "prose": "I saw Stryper exactly once in my entire concert-going life — May 17, 1985 at Knots Berry Farm in Buena Park. This was just two years after they formed, before \"To Hell with the Devil\" would make them the most successful Christian metal band of the era. Something about that single sighting feels perfectly calibrated: I caught them at exactly the right moment, then never felt compelled to return. Maybe once was enough to appreciate the novelty of headbanging to hymns in an amusement park.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/8nyeap1666438385.jpg",
+        "alt": "Stryper",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Honestly",
+        "artistName": "Stryper",
+        "albumName": "To Hell with the Devil",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/47/0f/07/470f07f7-a469-8d1f-6c39-fe49a99d5a07/mzaf_866634689559940877.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a1/f3/22/a1f322ca-58ff-dbc8-7556-12a12bb552b5/00720616118523.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/honestly/1440914389?i=1440914648&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "stryper"
+      ],
+      "venues": [
+        "knots-berry-farm"
+      ],
+      "years": [
+        1985
+      ],
+      "tags": [
+        "#rare-sighting",
+        "#one-time-only"
+      ],
+      "deepLinks": [
+        {
+          "label": "Stryper",
+          "url": "/?scene=artists&artist=stryper",
+          "type": "artist"
+        },
+        {
+          "label": "Knots Berry Farm",
+          "url": "/?scene=map&venue=knots-berry-farm",
           "type": "venue"
         },
         {
@@ -1199,80 +2581,79 @@
           "type": "timeline"
         }
       ],
-      "relatedSlugs": [],
-      "score": 39,
-      "detector": "artist-longevity",
-      "publishedAt": "2026-03-08T20:11:14.801Z"
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics"
+      ],
+      "score": 33,
+      "detector": "rare-sighting",
+      "publishedAt": "2026-01-04T15:12:00.000Z"
     },
     {
-      "id": "opener-to-headliner-squeeze",
-      "slug": "squeeze-from-opener-to-headliner",
-      "category": "cultural",
+      "id": "rare-sighting-wham",
+      "slug": "wham-caught-once-never-again",
+      "category": "deep-cut",
       "temporality": "evergreen",
-      "headline": "Squeeze: From Opener to Headliner",
-      "prose": "Few bands embodied the scrappy spirit of new wave quite like Squeeze, and my concert history accidentally documented their long climb from opening act to headliner. I first saw them opening for Oingo Boingo at a racetrack in Tijuana in 1987, when their clever wordplay and pub rock energy felt perfectly suited to warming up a crowd. Twenty-five years later, I watched them headline Rams Head Live in Baltimore, now seasoned veterans commanding the stage with the same wit but deeper confidence. It's rare to witness that complete arc in your own concert diary — from promising opener to rightful headliner.",
+      "headline": "Wham!: Caught Once, Never Again",
+      "prose": "I saw Wham! exactly once in my entire concert-going history — August 30, 1985 at Hollywood Park Racetrack in Inglewood — and somehow never crossed paths with them again despite decades of shows. This was right in their \"Make It Big\" era, with Chaka Khan and Katrina and the Waves opening, yet they became the ultimate one-and-done in my archive. Looking back, it's wild that a duo this massive during the mid-80s pop explosion left such a singular footprint in my concert memory.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/stywtv1376542198.jpg",
-        "alt": "Squeeze",
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/xuwupw1439139539.jpg",
+        "alt": "Wham!",
         "source": "artist"
       },
       "audio": {
-        "trackName": "What More Can I Say",
-        "artistName": "Squeeze",
-        "albumName": "Trixies",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/65/02/ac/6502ac6d-26e8-880f-062b-0fbb76644a03/mzaf_537671996813235778.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a6/23/be/a623beed-1659-48d1-83de-1c35260f9d1e/4099964217681.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/what-more-can-i-say/1849943038?i=1849943040&uo=4",
+        "trackName": "Everything She Wants",
+        "artistName": "Wham!",
+        "albumName": "Make It Big",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f4/4c/28/f44c2892-c31f-7deb-4636-706dc2b62e38/mzaf_13372409243849718628.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/ee/49/ac/ee49accc-78bd-bcdb-1aff-c40c1ac3ccc4/074643959520.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/everything-she-wants/193084944?i=193084976&uo=4",
         "source": "itunes"
       },
       "artists": [
-        "squeeze"
+        "wham"
       ],
       "venues": [
-        "caliente-racetrack",
-        "rams-head-live-baltimore"
+        "hollywood-park-racetrack"
       ],
       "years": [
-        1987,
-        2012
+        1985
       ],
       "tags": [
-        "#opener-to-headliner",
-        "#career-arc"
+        "#rare-sighting",
+        "#one-time-only"
       ],
       "deepLinks": [
         {
-          "label": "Squeeze",
-          "url": "/?scene=artists&artist=squeeze",
+          "label": "Wham!",
+          "url": "/?scene=artists&artist=wham",
           "type": "artist"
         },
         {
-          "label": "Caliente Racetrack",
-          "url": "/?scene=map&venue=caliente-racetrack",
+          "label": "Hollywood Park Racetrack",
+          "url": "/?scene=map&venue=hollywood-park-racetrack",
           "type": "venue"
         },
         {
-          "label": "Rams Head Live! Baltimore",
-          "url": "/?scene=map&venue=rams-head-live-baltimore",
-          "type": "venue"
-        },
-        {
-          "label": "1987",
-          "url": "/?scene=timeline&year=1987",
+          "label": "1985",
+          "url": "/?scene=timeline&year=1985",
           "type": "timeline"
         }
       ],
-      "relatedSlugs": [],
-      "score": 38,
-      "detector": "opener-to-headliner",
-      "publishedAt": "2026-03-08T20:11:14.801Z"
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics"
+      ],
+      "score": 33,
+      "detector": "rare-sighting",
+      "publishedAt": "2026-01-02T12:00:00.000Z"
     }
   ],
   "metadata": {
-    "totalPosts": 12,
-    "totalGenerated": 12,
-    "averageScore": 37.3,
-    "lastPipelineRun": "2026-03-08T20:13:07.549Z",
+    "totalPosts": 31,
+    "totalGenerated": 32,
+    "averageScore": 39.7,
+    "lastPipelineRun": "2026-03-08T21:52:43.098Z",
     "concertsAnalyzed": 177,
     "feedUrl": "/liner-notes.xml"
   }

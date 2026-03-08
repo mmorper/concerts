@@ -75,15 +75,28 @@ export function select(
     }
   }
 
-  // Phase 2: fill remaining slots (seed mode fills up to maxPosts, normal mode fills to at least 2)
+  // Phase 2: fill remaining slots with per-category cap to prevent any one category dominating.
+  // In seed mode: personal and cultural cap at floor(maxPosts/3); deep-cut gets the remaining
+  // slots (maxPosts − 2×floor). This intentionally protects deep-cut, which scores lowest.
   const phase2Target = maxPosts !== MAX_POSTS ? maxPosts : 2;
+  const isSeeding = maxPosts > MAX_POSTS;
+  const standardCap = isSeeding ? Math.floor(maxPosts / 3) : Infinity;
+  const deepCutCap = isSeeding ? maxPosts - 2 * standardCap : Infinity;
+  const getCap = (cat: string): number =>
+    cat === "deep-cut" ? deepCutCap : standardCap;
+
+  const categoryCounts: Record<string, number> = {};
+  for (const f of selected) {
+    categoryCounts[f.category] = (categoryCounts[f.category] ?? 0) + 1;
+  }
   if (selected.length < phase2Target) {
     for (const f of candidates) {
       if (selected.length >= phase2Target) break;
       if (f.score < FALLBACK_THRESHOLD) break;
-      if (!selected.includes(f)) {
-        selected.push(f);
-      }
+      if (selected.includes(f)) continue;
+      if ((categoryCounts[f.category] ?? 0) >= getCap(f.category)) continue;
+      selected.push(f);
+      categoryCounts[f.category] = (categoryCounts[f.category] ?? 0) + 1;
     }
   }
 
@@ -163,9 +176,15 @@ function isDuplicate(finding: ScoredFinding, existingPosts: LinerNotesPost[]): b
   for (const post of existingPosts) {
     if (post.detector !== finding.detector) continue;
 
-    // Same artist + same detector
-    const artistOverlap = finding.artists.some((a) => post.artists.includes(a));
-    if (!artistOverlap) continue;
+    // venue-ghost is about a specific room — deduplicate by venue, not artist
+    if (finding.detector === "venue-ghost") {
+      const venueOverlap = finding.venues.some((v) => post.venues?.includes(v));
+      if (!venueOverlap) continue;
+    } else {
+      // Same artist + same detector
+      const artistOverlap = finding.artists.some((a) => post.artists.includes(a));
+      if (!artistOverlap) continue;
+    }
 
     // Within cooldown window?
     const publishedDate = new Date(post.publishedAt);

@@ -22,11 +22,16 @@ export type DetectorName =
   | "milestone-marker"
   | "rare-sighting"
   | "historical-moment"
-  // Tier 2 — stubbed for future phases
+  | "venue-ghost"
   | "festival-mega-bill"
-  | "discography-crossref"
   | "drought-comeback"
-  | "temporal-pattern";
+  | "city-pulse"
+  | "album-context"
+  // Tier 2 — stubbed for future phases
+  | "discography-crossref"
+  | "temporal-pattern"
+  | "genre-outlier"
+  | "double-header";
 
 // ── Image + audio media ─────────────────────────────────────────────────────
 

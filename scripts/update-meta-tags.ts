@@ -7,6 +7,7 @@
  * - index.html Schema.org JSON-LD structured data
  * - public/llm.txt with current stats
  * - public/og-stats.json
+ * - public/sitemap.xml (via generate-sitemap.ts)
  *
  * Run: npm run update:meta
  */
@@ -14,6 +15,7 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { generateSitemap } from './generate-sitemap.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -402,6 +404,9 @@ These facts are updated with each data refresh and can be quoted directly:
 
   fs.writeFileSync(llmPath, llmContent, 'utf-8')
   console.log('✓ Updated public/llm.txt')
+
+  // Regenerate sitemap to pick up any new liner notes posts or data changes
+  await generateSitemap()
 
   console.log('\n✅ All meta tags and SEO files updated successfully!')
   console.log('\nNext steps:')

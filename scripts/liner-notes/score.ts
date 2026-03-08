@@ -112,6 +112,42 @@ function computeSpan(f: AnalysisFinding): number {
       const span = dp.spanYears as number;
       return span > 30 ? 10 : span > 20 ? 7 : span > 10 ? 4 : 0;
     }
+    case "venue-ghost": {
+      // Span = years the venue was open before closing
+      const years = f.years as number[];
+      if (!years.length) return 0;
+      const span = Math.max(...years) - Math.min(...years);
+      return span > 20 ? 10 : span > 10 ? 7 : span > 5 ? 4 : 2;
+    }
+    case "festival-mega-bill": {
+      const openerCount = (f.dataPoints as Record<string, unknown>).openerCount as number;
+      return openerCount >= 10 ? 10 : openerCount >= 7 ? 7 : openerCount >= 5 ? 4 : 2;
+    }
+    case "drought-comeback": {
+      const gap = (f.dataPoints as Record<string, unknown>).gapYears as number;
+      return gap > 20 ? 10 : gap > 15 ? 7 : gap > 10 ? 4 : 2;
+    }
+    case "city-pulse":
+    case "album-context": {
+      // Span = how many years ago this happened
+      const year = f.years[0];
+      if (!year) return 0;
+      const yearsAgo = new Date().getFullYear() - year;
+      return yearsAgo > 30 ? 10 : yearsAgo > 20 ? 7 : yearsAgo > 10 ? 4 : 2;
+    }
+    case "rare-sighting": {
+      // Older rare sightings feel more like buried history
+      const year = f.years[0];
+      if (!year) return 0;
+      const yearsAgo = new Date().getFullYear() - year;
+      return yearsAgo > 30 ? 10 : yearsAgo > 20 ? 7 : yearsAgo > 10 ? 4 : 2;
+    }
+    case "historical-moment": {
+      const year = f.years[0];
+      if (!year) return 0;
+      const yearsAgo = new Date().getFullYear() - year;
+      return yearsAgo > 30 ? 10 : yearsAgo > 20 ? 7 : yearsAgo > 10 ? 4 : 2;
+    }
     case "concert-streak":
     case "milestone-marker":
     default:
@@ -170,6 +206,26 @@ function computeSurpriseFactor(f: AnalysisFinding): number {
       return 4;
     case "milestone-marker":
       return 3;
+    case "venue-ghost":
+      return 9; // A room you knew is gone — inherently powerful
+    case "festival-mega-bill": {
+      const openerCount = (f.dataPoints as Record<string, unknown>).openerCount as number;
+      return openerCount >= 10 ? 10 : openerCount >= 7 ? 8 : openerCount >= 5 ? 6 : 4;
+    }
+    case "drought-comeback": {
+      const gap = (f.dataPoints as Record<string, unknown>).gapYears as number;
+      return gap >= 20 ? 9 : gap >= 15 ? 7 : gap >= 10 ? 5 : 3;
+    }
+    case "city-pulse":
+      return 8; // Historical context is compelling
+    case "album-context": {
+      const isSameArtist = (f.dataPoints as Record<string, unknown>).isSameArtist as boolean;
+      return isSameArtist ? 9 : 6; // Higher wow if you saw the artist themselves
+    }
+    case "rare-sighting":
+      return 9; // You caught them once — and never again
+    case "historical-moment":
+      return 7; // Grounded in web search; context is specific
     default:
       return 0;
   }

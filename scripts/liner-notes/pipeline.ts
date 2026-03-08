@@ -64,7 +64,7 @@ export async function run(options: PipelineOptions): Promise<void> {
 
   // ── Stage 1: Analyze ─────────────────────────────────────────────────────
   console.log("\n🔍 Stage 1: Analyzing concert patterns...");
-  const { findings, stats } = analyze(concerts, today);
+  const { findings, stats } = analyze(concerts, today, { venuesMetadata });
   console.log(`   Found ${findings.length} raw findings (${stats.concertsAnalyzed} concerts analyzed)`);
   for (const [detector, count] of Object.entries(stats.findingsByDetector)) {
     console.log(`   • ${detector}: ${count}`);

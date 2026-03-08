@@ -596,7 +596,7 @@ function detectRareSighting(concerts: Concert[]): AnalysisFinding[] {
 
     const concert = shows[0];
     findings.push({
-      id: `rare-sighting-${concert.headlinerNormalized}`,
+      id: `rare-sighting-${normalized}`,
       detector: "rare-sighting",
       category: "deep-cut",
       temporality: "evergreen",
@@ -604,25 +604,22 @@ function detectRareSighting(concerts: Concert[]): AnalysisFinding[] {
       dataPoints: {
         artist: concert.headliner,
         venue: concert.venue,
-        city: concert.city,
-        state: concert.state,
+        city: concert.cityState,
         date: concert.date,
         year: concert.year,
         openers: concert.openers,
       },
-      artists: [concert.headlinerNormalized],
+      artists: [normalized],
       venues: [concert.venueNormalized],
       years: [concert.year],
-      tags: ["rare-sighting", "one-time-only"],
-      suggestedImage: { type: "artist", artistNormalized: concert.headlinerNormalized },
+      tags: ["#rare-sighting", "#one-time-only"],
+      suggestedImage: { type: "artist", artistNormalized: normalized },
       suggestedTrack: { artistNormalized: concert.headlinerNormalized },
     });
   }
 
-  // Sort by year descending — more recent rare sightings first
-  return findings
-    .sort((a, b) => b.years[0] - a.years[0])
-    .slice(0, 25);
+  // Return all — scorer ranks by span (older = more historically interesting)
+  return findings;
 }
 
 // ── 9. Historical Moment Detector ─────────────────────────────────────────────
@@ -663,7 +660,7 @@ function detectHistoricalMoment(concerts: Concert[]): AnalysisFinding[] {
         state: concert.state,
         date: concert.date,
         year,
-        month: new Date(concert.date).toLocaleString("en-US", { month: "long" }),
+        month: new Date(concert.date + "T12:00:00Z").toLocaleString("en-US", { month: "long" }),
         concertsInYear: yearConcerts.length,
       },
       artists: [concert.headlinerNormalized],
@@ -676,10 +673,408 @@ function detectHistoricalMoment(concerts: Concert[]): AnalysisFinding[] {
     });
   }
 
-  // Most recent years first, cap at 20
+  // Return all years — scorer ranks by span (older = higher historical interest)
+  return findings;
+}
+
+// ── 10. Venue Ghost Detector ──────────────────────────────────────────────────
+
+type VenueMetaSlim = {
+  status?: string;
+  closedDate?: string;
+  notes?: string;
+};
+
+const GHOST_STATUSES = new Set(["demolished", "closed"]);
+
+function detectVenueGhost(
+  concerts: Concert[],
+  venuesMetadata: Record<string, VenueMetaSlim>
+): AnalysisFinding[] {
+  const byVenue = new Map<string, Concert[]>();
+  for (const c of concerts) {
+    if (!byVenue.has(c.venueNormalized)) byVenue.set(c.venueNormalized, []);
+    byVenue.get(c.venueNormalized)!.push(c);
+  }
+
+  const findings: AnalysisFinding[] = [];
+
+  for (const [venueNorm, shows] of byVenue) {
+    const meta = venuesMetadata[venueNorm];
+    if (!meta?.status || !GHOST_STATUSES.has(meta.status)) continue;
+
+    const sorted = [...shows].sort((a, b) => a.date.localeCompare(b.date));
+    const first = sorted[0];
+    const last = sorted[sorted.length - 1];
+    const closedYear = meta.closedDate
+      ? new Date(meta.closedDate + "T12:00:00Z").getFullYear()
+      : null;
+    const artists = [...new Set(sorted.map((s) => s.headlinerNormalized))];
+    const years = sorted.map((s) => s.year);
+    const statusLabel = meta.status === "demolished" ? "Demolished" : "Closed";
+
+    findings.push({
+      id: `venue-ghost-${venueNorm}`,
+      detector: "venue-ghost",
+      category: "deep-cut",
+      temporality: "evergreen",
+      headline: `${first.venue}: ${shows.length} Show${shows.length !== 1 ? "s" : ""} Before It Was ${statusLabel}`,
+      dataPoints: {
+        venue: first.venue,
+        venueNormalized: venueNorm,
+        city: first.cityState,
+        showCount: shows.length,
+        status: meta.status,
+        closedDate: meta.closedDate,
+        closedYear,
+        notes: meta.notes,
+        firstShow: { date: first.date, artist: first.headliner },
+        lastShow: { date: last.date, artist: last.headliner },
+        artistCount: artists.length,
+        topArtists: artists.slice(0, 5),
+      },
+      artists,
+      venues: [venueNorm],
+      years,
+      suggestedImage: { type: "venue", venueNormalized: venueNorm },
+      tags: ["#venue-ghost", `#${meta.status}`],
+    });
+  }
+
+  return findings.sort(
+    (a, b) => (b.dataPoints.showCount as number) - (a.dataPoints.showCount as number)
+  );
+}
+
+// ── 11. Festival Mega-Bill Detector ───────────────────────────────────────────
+
+const MEGA_BILL_THRESHOLD = 4; // 4+ openers = festival-like
+
+function detectFestivalMegaBill(concerts: Concert[]): AnalysisFinding[] {
+  return concerts
+    .filter((c) => (c.openers?.length ?? 0) >= MEGA_BILL_THRESHOLD)
+    .sort((a, b) => b.openers.length - a.openers.length)
+    .slice(0, 10)
+    .map((concert) => {
+      const allNorm = [
+        concert.headlinerNormalized,
+        ...concert.openers.map(slugify),
+      ];
+
+      return {
+        id: `festival-mega-bill-${concert.id ?? slugify(concert.date + concert.headliner)}`,
+        detector: "festival-mega-bill" as const,
+        category: "cultural" as const,
+        temporality: "evergreen" as const,
+        headline: `${concert.headliner} + ${concert.openers.length} More: ${concert.year} Festival Bill`,
+        dataPoints: {
+          headliner: concert.headliner,
+          openers: concert.openers,
+          openerCount: concert.openers.length,
+          totalArtists: concert.openers.length + 1,
+          venue: concert.venue,
+          city: concert.cityState,
+          date: concert.date,
+          year: concert.year,
+        },
+        artists: allNorm,
+        venues: [concert.venueNormalized],
+        years: [concert.year],
+        suggestedImage: { type: "artist" as const, artistNormalized: concert.headlinerNormalized },
+        suggestedTrack: { artistNormalized: concert.headlinerNormalized },
+        tags: ["#festival-bill", "#mega-bill"],
+      };
+    });
+}
+
+// ── 12. Drought & Comeback Detector ───────────────────────────────────────────
+
+const DROUGHT_MIN_GAP_YEARS = 5;
+
+function detectDroughtComeback(concerts: Concert[]): AnalysisFinding[] {
+  const byArtist = new Map<string, Concert[]>();
+  for (const c of concerts) {
+    if (!byArtist.has(c.headlinerNormalized)) byArtist.set(c.headlinerNormalized, []);
+    byArtist.get(c.headlinerNormalized)!.push(c);
+  }
+
+  const findings: AnalysisFinding[] = [];
+
+  for (const [normalized, shows] of byArtist) {
+    if (shows.length < 2) continue;
+    const sorted = [...shows].sort((a, b) => a.date.localeCompare(b.date));
+
+    // Find the largest gap between consecutive shows
+    let maxGap = 0;
+    let gapStart: Concert | null = null;
+    let gapEnd: Concert | null = null;
+
+    for (let i = 1; i < sorted.length; i++) {
+      const gap = spanYears(sorted[i - 1].date, sorted[i].date);
+      if (gap > maxGap) {
+        maxGap = gap;
+        gapStart = sorted[i - 1];
+        gapEnd = sorted[i];
+      }
+    }
+
+    if (maxGap < DROUGHT_MIN_GAP_YEARS || !gapStart || !gapEnd) continue;
+
+    findings.push({
+      id: `drought-comeback-${normalized}`,
+      detector: "drought-comeback",
+      category: "personal",
+      temporality: "evergreen",
+      headline: `${gapStart.headliner}: ${maxGap} Years Between Shows`,
+      dataPoints: {
+        artist: gapStart.headliner,
+        artistNormalized: normalized,
+        lastShowBefore: {
+          date: gapStart.date,
+          venue: gapStart.venue,
+          city: gapStart.cityState,
+        },
+        firstShowAfter: {
+          date: gapEnd.date,
+          venue: gapEnd.venue,
+          city: gapEnd.cityState,
+        },
+        gapYears: maxGap,
+        totalShows: shows.length,
+      },
+      artists: [normalized],
+      venues: [...new Set(sorted.map((s) => s.venueNormalized))],
+      years: sorted.map((s) => s.year),
+      suggestedImage: { type: "artist", artistNormalized: normalized },
+      suggestedTrack: { artistNormalized: normalized },
+      tags: ["#drought", "#comeback"],
+    });
+  }
+
   return findings
-    .sort((a, b) => b.years[0] - a.years[0])
-    .slice(0, 20);
+    .sort((a, b) => (b.dataPoints.gapYears as number) - (a.dataPoints.gapYears as number))
+    .slice(0, 15);
+}
+
+// ── 13. City Pulse Detector ───────────────────────────────────────────────────
+
+interface CityPulseEvent {
+  /** Full state name as it appears in concert data (e.g. "California"), or null = any */
+  state: string | null;
+  /** Partial city name to match (e.g. "Los Angeles"), or null = any city in state */
+  city: string | null;
+  year: number;
+  event: string;
+  context: string;
+}
+
+const CITY_PULSE_EVENTS: CityPulseEvent[] = [
+  {
+    state: "California", city: null, year: 1984,
+    event: "1984 Los Angeles Summer Olympics",
+    context: "The city was pulsing with Olympic fever — a rare, almost disorienting civic pride for Los Angeles.",
+  },
+  {
+    state: "California", city: null, year: 1992,
+    event: "Los Angeles uprising after the Rodney King verdict",
+    context: "The streets that summer were fractured and raw after the acquittal. Going out felt charged with something unresolved.",
+  },
+  {
+    state: "California", city: null, year: 1994,
+    event: "Northridge earthquake (January 1994)",
+    context: "The Northridge quake hit in January and the aftershocks — literal and emotional — ran through the whole year.",
+  },
+  {
+    state: "New York", city: null, year: 2001,
+    event: "September 11 attacks",
+    context: "After 9/11, New York was raw and defiant. Going out to concerts felt like a small act of communal faith.",
+  },
+  {
+    state: "District of Columbia", city: null, year: 2001,
+    event: "September 11 attacks and Pentagon strike",
+    context: "Washington was a city on edge — checkpoints, fighter jets overhead, an eerie quiet between bursts of collective grief.",
+  },
+  {
+    state: "Louisiana", city: null, year: 2005,
+    event: "Hurricane Katrina",
+    context: "Katrina made landfall in August 2005. The failure of the levees became a national wound that hadn't healed by year's end.",
+  },
+  {
+    state: "Massachusetts", city: "Boston", year: 2013,
+    event: "Boston Marathon bombing",
+    context: "The Marathon bombing in April put the city under siege for a week. Boston came out shaken but resolute.",
+  },
+];
+
+function detectCityPulse(concerts: Concert[]): AnalysisFinding[] {
+  const findings: AnalysisFinding[] = [];
+
+  for (const event of CITY_PULSE_EVENTS) {
+    const matching = concerts.filter((c) => {
+      if (c.year !== event.year) return false;
+      if (event.state !== null && c.state !== event.state) return false;
+      if (event.city !== null && !c.city?.includes(event.city)) return false;
+      return true;
+    });
+
+    if (matching.length === 0) continue;
+
+    // Pick the concert with the most openers (most interesting bill); break ties by date
+    const sorted = [...matching].sort((a, b) => {
+      const diff = (b.openers?.length ?? 0) - (a.openers?.length ?? 0);
+      return diff !== 0 ? diff : a.date.localeCompare(b.date);
+    });
+    const concert = sorted[0];
+
+    findings.push({
+      id: `city-pulse-${slugify(event.event)}-${event.year}`,
+      detector: "city-pulse",
+      category: "cultural",
+      temporality: "evergreen",
+      headline: `${concert.headliner} in ${event.year}: The Year of ${event.event}`,
+      dataPoints: {
+        artist: concert.headliner,
+        venue: concert.venue,
+        city: concert.cityState,
+        date: concert.date,
+        year: concert.year,
+        historicalEvent: event.event,
+        historicalContext: event.context,
+        matchingConcertCount: matching.length,
+        allMatchingConcerts: matching.map((c) => ({
+          date: c.date,
+          artist: c.headliner,
+          venue: c.venue,
+        })),
+      },
+      artists: matching.map((c) => c.headlinerNormalized),
+      venues: [...new Set(matching.map((c) => c.venueNormalized))],
+      years: [event.year],
+      suggestedImage: { type: "venue", venueNormalized: concert.venueNormalized },
+      suggestedTrack: { artistNormalized: concert.headlinerNormalized },
+      tags: ["#city-pulse", "#historical-context"],
+    });
+  }
+
+  return findings;
+}
+
+// ── 14. Album Context Detector ────────────────────────────────────────────────
+
+interface LandmarkAlbum {
+  artist: string;
+  album: string;
+  released: string; // YYYY-MM-DD
+  significance: string;
+}
+
+const LANDMARK_ALBUMS: LandmarkAlbum[] = [
+  { artist: "Prince", album: "Purple Rain", released: "1984-06-25", significance: "one of the defining rock soundtracks of the decade, inescapable that summer" },
+  { artist: "Madonna", album: "Like a Virgin", released: "1984-11-12", significance: "a pop statement that dominated radio into 1985 and redefined what a pop star could be" },
+  { artist: "U2", album: "The Joshua Tree", released: "1987-03-09", significance: "the record that made U2 global — instantly everywhere in spring 1987" },
+  { artist: "Public Enemy", album: "It Takes a Nation of Millions to Hold Us Back", released: "1988-04-10", significance: "hip-hop's first true political landmark, it landed like a manifesto" },
+  { artist: "De La Soul", album: "3 Feet High and Rising", released: "1989-03-03", significance: "a complete reinvention of what hip-hop could sound like in one record" },
+  { artist: "Depeche Mode", album: "Violator", released: "1990-03-19", significance: "the album that took Depeche Mode from synth cult to arena act" },
+  { artist: "Nirvana", album: "Nevermind", released: "1991-09-24", significance: "the record that pivoted the entire rock conversation overnight" },
+  { artist: "Massive Attack", album: "Blue Lines", released: "1991-04-08", significance: "trip-hop's founding document — a genre invented in one record" },
+  { artist: "U2", album: "Achtung Baby", released: "1991-11-18", significance: "U2 reinventing themselves from the ground up — it shouldn't have worked as well as it did" },
+  { artist: "Dr. Dre", album: "The Chronic", released: "1992-12-15", significance: "the record that defined West Coast hip-hop for a generation" },
+  { artist: "Radiohead", album: "The Bends", released: "1995-03-13", significance: "the album that signaled Radiohead were doing something different from everyone else" },
+  { artist: "Alanis Morissette", album: "Jagged Little Pill", released: "1995-06-13", significance: "a record that felt like a cultural pressure valve releasing — everywhere that summer" },
+  { artist: "Radiohead", album: "OK Computer", released: "1997-05-21", significance: "the moment rock turned inward and got strange — in the best way" },
+  { artist: "Lauryn Hill", album: "The Miseducation of Lauryn Hill", released: "1998-08-25", significance: "an instant cultural landmark that seemed to arrive fully formed" },
+  { artist: "Eminem", album: "The Marshall Mathers LP", released: "2000-05-23", significance: "a record that divided critics and dominated every conversation" },
+  { artist: "Daft Punk", album: "Discovery", released: "2001-03-13", significance: "electronic music's crossover moment — it sounded like the future" },
+  { artist: "Jay-Z", album: "The Blueprint", released: "2001-09-11", significance: "released on 9/11, overshadowed then rediscovered as a generational classic" },
+  { artist: "Arcade Fire", album: "Funeral", released: "2004-09-14", significance: "the indie record that reframed what guitar music could aspire to" },
+  { artist: "Kanye West", album: "Late Registration", released: "2005-08-30", significance: "hip-hop's most ambitious production statement up to that point" },
+  { artist: "Amy Winehouse", album: "Back to Black", released: "2006-10-27", significance: "soul and pop colliding — everyone seemed to be playing it" },
+  { artist: "LCD Soundsystem", album: "Sound of Silver", released: "2007-03-12", significance: "a love letter to dance music and growing older — the year's best record" },
+  { artist: "Vampire Weekend", album: "Vampire Weekend", released: "2008-01-29", significance: "indie's sharpest debut in years — it sounded like nothing else" },
+  { artist: "Frank Ocean", album: "Channel Orange", released: "2012-07-10", significance: "a complete left turn in R&B that forced everyone to pay attention" },
+  { artist: "Kendrick Lamar", album: "good kid, m.A.A.d city", released: "2012-10-22", significance: "hip-hop's defining narrative album of the decade" },
+  { artist: "Beyoncé", album: "Beyoncé", released: "2013-12-13", significance: "dropped without warning at midnight and instantly reshaped pop" },
+  { artist: "Kendrick Lamar", album: "To Pimp a Butterfly", released: "2015-03-16", significance: "a political, jazz-inflected masterpiece — hip-hop's 'What's Going On'" },
+  { artist: "David Bowie", album: "Blackstar", released: "2016-01-08", significance: "released two days before Bowie died — a farewell that felt impossible to process" },
+  { artist: "Beyoncé", album: "Lemonade", released: "2016-04-23", significance: "visual album as cultural reckoning — inescapable that spring" },
+  { artist: "Kendrick Lamar", album: "DAMN.", released: "2017-04-14", significance: "hip-hop's first Pulitzer Prize winner, arrived without ceremony" },
+  { artist: "Taylor Swift", album: "folklore", released: "2020-07-24", significance: "a surprise pandemic drop that felt like a lifeline when nothing else was happening" },
+  { artist: "Beyoncé", album: "Renaissance", released: "2022-07-29", significance: "a love letter to Black queer dance culture that reclaimed the dancefloor" },
+  { artist: "Taylor Swift", album: "Midnights", released: "2022-10-21", significance: "broke every streaming record in its first week — the conversation of the fall" },
+];
+
+const ALBUM_WINDOW_DAYS = 42; // 6 weeks
+
+function detectAlbumContext(concerts: Concert[]): AnalysisFinding[] {
+  const findings: AnalysisFinding[] = [];
+  const usedConcertIds = new Set<string>(); // one finding per concert max
+
+  for (const album of LANDMARK_ALBUMS) {
+    const albumDate = new Date(album.released + "T12:00:00Z");
+
+    const nearby = concerts.filter((c) => {
+      const concertDate = new Date(c.date + "T12:00:00Z");
+      const diffDays = Math.abs(concertDate.getTime() - albumDate.getTime()) / 86_400_000;
+      return diffDays <= ALBUM_WINDOW_DAYS;
+    });
+
+    if (nearby.length === 0) continue;
+
+    // Prefer concert by the same artist; otherwise pick chronologically closest
+    const byArtist = nearby.filter(
+      (c) => c.headlinerNormalized === slugify(album.artist)
+    );
+    const pool = byArtist.length > 0 ? byArtist : nearby;
+    const anchor = pool.sort((a, b) => {
+      const dA = Math.abs(new Date(a.date + "T12:00:00Z").getTime() - albumDate.getTime());
+      const dB = Math.abs(new Date(b.date + "T12:00:00Z").getTime() - albumDate.getTime());
+      return dA - dB;
+    })[0];
+
+    if (usedConcertIds.has(anchor.id + album.album)) continue;
+    usedConcertIds.add(anchor.id + album.album);
+
+    const concertDate = new Date(anchor.date + "T12:00:00Z");
+    const daysApart = Math.round(
+      (concertDate.getTime() - albumDate.getTime()) / 86_400_000
+    );
+    const timing =
+      daysApart < 0
+        ? `${Math.abs(daysApart)} days before it dropped`
+        : daysApart === 0
+        ? "the same day it dropped"
+        : `${daysApart} days after it dropped`;
+
+    findings.push({
+      id: `album-context-${slugify(album.album)}-${anchor.headlinerNormalized}`,
+      detector: "album-context",
+      category: "cultural",
+      temporality: "evergreen",
+      headline: `${anchor.headliner} — ${timing.includes("before") ? "Days Before" : "Days After"} ${album.album} Dropped`,
+      dataPoints: {
+        concertArtist: anchor.headliner,
+        concertVenue: anchor.venue,
+        concertCity: anchor.cityState,
+        concertDate: anchor.date,
+        concertYear: anchor.year,
+        album: album.album,
+        albumArtist: album.artist,
+        albumReleased: album.released,
+        albumSignificance: album.significance,
+        daysApart: Math.abs(daysApart),
+        timing,
+        isSameArtist: byArtist.length > 0,
+      },
+      artists: [anchor.headlinerNormalized],
+      venues: [anchor.venueNormalized],
+      years: [anchor.year],
+      suggestedImage: { type: "artist", artistNormalized: anchor.headlinerNormalized },
+      suggestedTrack: { artistNormalized: anchor.headlinerNormalized },
+      tags: ["#album-context", "#cultural-moment"],
+    });
+  }
+
+  return findings;
 }
 
 // ── Main export ───────────────────────────────────────────────────────────────
@@ -693,7 +1088,15 @@ export interface AnalysisResult {
   };
 }
 
-export function analyze(concerts: Concert[], today: Date = new Date()): AnalysisResult {
+export interface AnalyzeOptions {
+  venuesMetadata?: Record<string, VenueMetaSlim>;
+}
+
+export function analyze(
+  concerts: Concert[],
+  today: Date = new Date(),
+  options: AnalyzeOptions = {}
+): AnalysisResult {
   const past = pastConcerts(concerts, today);
 
   const allFindings: AnalysisFinding[] = [
@@ -706,6 +1109,11 @@ export function analyze(concerts: Concert[], today: Date = new Date()): Analysis
     ...detectMilestoneMarker(past),
     ...detectRareSighting(past),
     ...detectHistoricalMoment(past),
+    ...detectVenueGhost(past, options.venuesMetadata ?? {}),
+    ...detectFestivalMegaBill(past),
+    ...detectDroughtComeback(past),
+    ...detectCityPulse(past),
+    ...detectAlbumContext(past),
   ];
 
   const findingsByDetector: Record<string, number> = {};
