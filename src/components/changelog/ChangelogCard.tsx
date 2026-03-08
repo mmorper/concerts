@@ -14,8 +14,7 @@ export function ChangelogCard({ release, isLatest = false }: ChangelogCardProps)
   const [isHovered, setIsHovered] = useState(false)
 
   const handleNavigate = () => {
-    // Navigate to the deep link route
-    navigate(release.route)
+    if (release.route) navigate(release.route)
   }
 
   // Format the date for display

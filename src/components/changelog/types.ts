@@ -20,8 +20,8 @@ export interface Release {
   /** One-liner description (60-120 chars) */
   description: string
 
-  /** Deep link route (e.g., "/?scene=timeline") */
-  route: string
+  /** Deep link route (e.g., "/?scene=timeline") — optional for internal releases */
+  route?: string
 
   /** 2-4 bullet points (3-8 words each) */
   highlights: string[]
