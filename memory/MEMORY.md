@@ -22,6 +22,35 @@
 
 ---
 
+## iTunes Audio Previews (v4.3.1+)
+
+**Architecture:** iTunes-only. Deezer was dropped because its CDN signed tokens (`hdnea=exp=<unix>`) expire within ~15 minutes — incompatible with a static data pipeline.
+
+**Key files:**
+- `scripts/enrich-top-tracks.ts` — enrichment script; 30-day cache TTL; `SEARCH_ALIASES` + `ARTIST_ID_OVERRIDES` for disambiguation
+- `scripts/utils/itunes-client.ts` — `getTopTracks()` (search by name) + `getTopTracksByArtistId()` (lookup by ID); 3-retry exponential backoff for 429s
+- `scripts/build-data.ts` — Step 5, `--skip-tracks` flag to bypass
+- `src/hooks/useArtistTopTracks.ts` — loads `public/data/artists-top-tracks.json`
+
+**iTunes search disambiguation:**
+
+Some concert names don't match Apple Music. Two override mechanisms in `enrich-top-tracks.ts`:
+
+1. `SEARCH_ALIASES` — maps concert name → search term (for name mismatches)
+   - `"Brian Setzer \u201968 Comeback Special"` → `"Brian Setzer"` (note: U+2019 curly apostrophe in data)
+   - `"Brian Setzer and the Nashvillians"` → `"Brian Setzer"`
+
+2. `ARTIST_ID_OVERRIDES` — maps concert name → iTunes artist ID (for ambiguous searches)
+   - `"The Roots"` → `43680` (searches "roots" return unrelated songs; ID lookup is exact)
+   - Artist IDs come from `music.apple.com/us/artist/<slug>/<ID>` URLs
+
+**Key rules:**
+- iTunes CDN URLs don't expire — 30-day TTL is safe
+- When searching returns wrong/unrelated results, use artist ID lookup instead of search aliases
+- The apostrophe in artist names from `concerts.json` may be U+2019 (curly), not U+0027 (straight) — check with `python3 -c "print(repr(name))"` before adding alias keys
+
+---
+
 ## Safari Audio Playback Bug (Recurring)
 
 **Symptom:** Clicking play on tracks in the gatefold does nothing in Safari. Controls are visible but unresponsive.
