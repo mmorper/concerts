@@ -46,13 +46,16 @@ const RERUN_COOLDOWN_MONTHS = 6;
 // ── Step 1: Selection ─────────────────────────────────────────────────────────
 
 /**
- * Select 2–3 candidate findings using the spec's category-diversity algorithm.
+ * Select candidate findings using the spec's category-diversity algorithm.
  * Applies deduplication against previously published posts.
  * Returns findings sorted by score descending — no prose yet.
+ *
+ * @param maxPosts Override the default cap (used by seed mode).
  */
 export function select(
   findings: ScoredFinding[],
-  existingPosts: LinerNotesPost[]
+  existingPosts: LinerNotesPost[],
+  maxPosts: number = MAX_POSTS
 ): ScoredFinding[] {
   const sorted = [...findings].sort((a, b) => b.score - a.score);
 
@@ -64,7 +67,7 @@ export function select(
   const usedCategories = new Set<string>();
 
   for (const f of candidates) {
-    if (selected.length >= MAX_POSTS) break;
+    if (selected.length >= maxPosts) break;
     if (f.score < STANDARD_THRESHOLD) break; // sorted descending, so remaining are lower
     if (!usedCategories.has(f.category)) {
       selected.push(f);
@@ -75,7 +78,7 @@ export function select(
   // Phase 2: fill to at least 2 posts, lowering threshold if needed
   if (selected.length < 2) {
     for (const f of candidates) {
-      if (selected.length >= MAX_POSTS) break;
+      if (selected.length >= maxPosts) break;
       if (f.score < FALLBACK_THRESHOLD) break;
       if (!selected.includes(f)) {
         selected.push(f);
@@ -83,9 +86,9 @@ export function select(
     }
   }
 
-  // Phase 3: cap at MAX_POSTS, tie-break timely > evergreen
+  // Phase 3: cap at maxPosts, tie-break timely > evergreen
   const capped = selected
-    .slice(0, MAX_POSTS)
+    .slice(0, maxPosts)
     .sort((a, b) => {
       // First by score
       if (b.score !== a.score) return b.score - a.score;
