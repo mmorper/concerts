@@ -125,6 +125,10 @@ async function generateProse(
   options: GenerateOptions,
   client: Anthropic
 ): Promise<string> {
+  if (finding.detector === "historical-moment") {
+    return generateProseWithWebSearch(finding, options, client);
+  }
+
   const userPrompt = buildUserPrompt(finding, options);
 
   const message = await client.messages.create({
@@ -138,6 +142,96 @@ async function generateProse(
   const prose = extractText(message);
   validateProse(prose, finding);
   return prose;
+}
+
+async function generateProseWithWebSearch(
+  finding: ScoredFinding,
+  options: GenerateOptions,
+  client: Anthropic
+): Promise<string> {
+  const userPrompt = buildUserPromptHistorical(finding, options);
+
+  const messages: Anthropic.MessageParam[] = [
+    { role: "user", content: userPrompt },
+  ];
+
+  // web_search_20250305 is Anthropic's built-in server-side search tool
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const webSearchTool: any = {
+    type: "web_search_20250305",
+    name: "web_search",
+    max_uses: 3,
+  };
+
+  let response = await client.messages.create({
+    model: MODEL,
+    max_tokens: 800, // More tokens needed for tool use turns
+    temperature: TEMPERATURE,
+    system: SYSTEM_PROMPT,
+    tools: [webSearchTool],
+    messages,
+  });
+
+  // Agentic loop: handle tool_use turns until end_turn or no more tool calls
+  let iterations = 0;
+  while (response.stop_reason === "tool_use" && iterations < 5) {
+    iterations++;
+    messages.push({ role: "assistant", content: response.content });
+    // For built-in server-side tools, Anthropic handles execution.
+    // We still need to send back a user turn to continue the conversation.
+    // The tool results are embedded in the assistant response by Anthropic.
+    const toolResults = response.content
+      .filter((b): b is Anthropic.Messages.ToolUseBlock => b.type === "tool_use")
+      .map((block) => ({
+        type: "tool_result" as const,
+        tool_use_id: block.id,
+        content: "Search completed by Anthropic.",
+      }));
+    messages.push({ role: "user", content: toolResults });
+
+    response = await client.messages.create({
+      model: MODEL,
+      max_tokens: 800,
+      temperature: TEMPERATURE,
+      system: SYSTEM_PROMPT,
+      tools: [webSearchTool],
+      messages,
+    });
+  }
+
+  const prose = extractText(response);
+  validateProse(prose, finding);
+  return prose;
+}
+
+function buildUserPromptHistorical(finding: ScoredFinding, options: GenerateOptions): string {
+  const lines: string[] = [];
+  const dp = finding.dataPoints as Record<string, unknown>;
+
+  lines.push(`CATEGORY: ${finding.category}`);
+  lines.push(`HEADLINE: ${finding.headline}`);
+  lines.push(`DETECTOR: ${finding.detector}`);
+  lines.push("");
+
+  lines.push("DATA POINTS:");
+  lines.push(JSON.stringify(finding.dataPoints, null, 2));
+  lines.push("");
+
+  const culturalData = buildCulturalContextData(finding, options);
+  if (culturalData) {
+    lines.push("ARTIST CONTEXT (from our data):");
+    lines.push(culturalData);
+    lines.push("");
+  }
+
+  lines.push("INSTRUCTION:");
+  lines.push(CATEGORY_INSTRUCTION["deep-cut"]);
+  lines.push("");
+  lines.push(`SEARCH TASK: Before writing, search the web for major world events and cultural happenings in ${dp.month ?? ""} ${dp.year} and in ${dp.city ?? ""} during ${dp.year}. Focus on events that would resonate with a concert-goer: music industry news, cultural moments, political events, sports, anything that defined that moment in time. Only reference events you find in search results — do not invent historical context.`);
+  lines.push("");
+  lines.push("Write the liner note prose now, weaving in 1–2 real historical details from your search to place this concert in its moment.");
+
+  return lines.join("\n");
 }
 
 function buildUserPrompt(finding: ScoredFinding, options: GenerateOptions): string {

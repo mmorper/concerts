@@ -14,7 +14,6 @@ import { LinerNoteMiniPlayer } from './LinerNoteMiniPlayer'
 interface LinerNoteCardProps {
   post: LinerNotesPost
   index: number
-  onTagClick: (tag: string) => void
 }
 
 const prefersReducedMotion =
@@ -64,12 +63,14 @@ function linkifyProse(prose: string, deepLinks: DeepLink[], accentColor: string)
   return segments
 }
 
-export function LinerNoteCard({ post, index, onTagClick }: LinerNoteCardProps) {
+export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
   const accentColor = CATEGORY_ACCENT_COLORS[post.category]
   const categoryLabel = CATEGORY_LABELS[post.category]
 
   const publishedDate = format(new Date(post.publishedAt), 'MMMM d, yyyy')
   const proseSegments = linkifyProse(post.prose, post.deepLinks, accentColor)
+
+  const hasImage = post.image.url && post.image.source !== 'placeholder'
 
   return (
     <motion.article
@@ -86,102 +87,91 @@ export function LinerNoteCard({ post, index, onTagClick }: LinerNoteCardProps) {
         overflow: 'hidden',
       }}
     >
-      {/* Image */}
-      {post.image.url && post.image.source !== 'placeholder' && (
-        <div style={{ maxHeight: 280, overflow: 'hidden' }}>
-          <img
-            src={post.image.url}
-            alt={post.image.alt}
-            style={{
-              width: '100%',
-              maxHeight: 280,
-              objectFit: 'cover',
-              display: 'block',
-            }}
-          />
-        </div>
-      )}
+      {/* Content + thumbnail row */}
+      <div
+        className="flex gap-5 items-start"
+        style={{ padding: 'clamp(16px, 4vw, 24px)' }}
+      >
+        {/* Left: all text content */}
+        <div className="flex-1 min-w-0">
+          {/* Category label + date */}
+          <div className="flex items-center justify-between mb-2">
+            <span
+              className="font-sans text-xs font-semibold uppercase tracking-wider"
+              style={{ color: accentColor }}
+            >
+              {categoryLabel}
+            </span>
+            <span className="font-sans text-[13px] text-gray-400">{publishedDate}</span>
+          </div>
 
-      {/* Content */}
-      <div className="px-6 py-6" style={{ padding: 'clamp(16px, 4vw, 24px)' }}>
-        {/* Category label + date */}
-        <div className="flex items-center justify-between mb-2">
-          <span
-            className="font-sans text-xs font-semibold uppercase tracking-wider"
-            style={{ color: accentColor }}
+          {/* Headline */}
+          <h2 className="mb-3" style={{ fontFamily: 'Playfair Display, serif', fontSize: 22, fontWeight: 700, color: '#1f2937' }}>
+            <Link
+              to={`/liner-notes/${post.slug}`}
+              className="hover:underline transition-colors"
+              style={{ color: '#1f2937' }}
+            >
+              {post.headline}
+            </Link>
+          </h2>
+
+          {/* Prose with inline deeplinks */}
+          <p
+            className="font-sans mb-4"
+            style={{ fontSize: 16, color: '#374151', lineHeight: 1.65 }}
           >
-            {categoryLabel}
-          </span>
-          <span className="font-sans text-[13px] text-gray-400">{publishedDate}</span>
+            {proseSegments}
+          </p>
+
+          {/* MiniPlayer */}
+          {post.audio && (
+            <div className="mb-4">
+              <LinerNoteMiniPlayer audio={post.audio} accentColor={accentColor} />
+            </div>
+          )}
+
+          {/* Deep links footer row */}
+          {post.deepLinks.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {post.deepLinks.map((link, i) => (
+                <span key={link.url} className="font-sans text-sm font-medium">
+                  {i > 0 && <span className="text-gray-400 mx-1">·</span>}
+                  <Link
+                    to={link.url}
+                    className="transition-colors hover:underline"
+                    style={{ color: '#6b7280' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = accentColor)}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#6b7280')}
+                  >
+                    {link.label}
+                  </Link>
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Headline */}
-        <h2 className="mb-3" style={{ fontFamily: 'Playfair Display, serif', fontSize: 22, fontWeight: 700, color: '#1f2937' }}>
+        {/* Right: thumbnail — only when a real image is available */}
+        {hasImage && (
           <Link
             to={`/liner-notes/${post.slug}`}
-            className="hover:underline transition-colors"
-            style={{ color: '#1f2937' }}
+            className="flex-shrink-0"
+            tabIndex={-1}
+            aria-hidden="true"
           >
-            {post.headline}
+            <img
+              src={post.image.url}
+              alt={post.image.alt}
+              style={{
+                width: 160,
+                height: 160,
+                objectFit: 'cover',
+                borderRadius: 10,
+                display: 'block',
+              }}
+            />
           </Link>
-        </h2>
-
-        {/* Prose with inline deeplinks */}
-        <p
-          className="font-sans mb-4"
-          style={{ fontSize: 16, color: '#374151', lineHeight: 1.65 }}
-        >
-          {proseSegments}
-        </p>
-
-        {/* MiniPlayer */}
-        {post.audio && (
-          <div className="mb-4">
-            <LinerNoteMiniPlayer audio={post.audio} accentColor={accentColor} />
-          </div>
-        )}
-
-        {/* Deep links footer row */}
-        {post.deepLinks.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-3">
-            {post.deepLinks.map((link, i) => (
-              <span key={link.url} className="font-sans text-sm font-medium">
-                {i > 0 && <span className="text-gray-400 mx-1">·</span>}
-                <Link
-                  to={link.url}
-                  className="transition-colors hover:underline"
-                  style={{ color: '#6b7280' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = accentColor)}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#6b7280')}
-                >
-                  {link.label}
-                </Link>
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* Tags */}
-        {post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1">
-            {post.tags.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => onTagClick(tag)}
-                className="font-sans text-xs font-medium rounded-full transition-colors"
-                style={{
-                  padding: '2px 8px',
-                  backgroundColor: '#f3f4f6',
-                  color: '#9ca3af',
-                  minHeight: 44,
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = accentColor)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
         )}
       </div>
     </motion.article>

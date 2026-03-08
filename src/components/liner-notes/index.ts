@@ -1,4 +1,5 @@
 export { LinerNotesPage } from './LinerNotesPage'
+export { PageNav } from './PageNav'
 export { LinerNotePermalink } from './LinerNotePermalink'
 export { LinerNoteCard } from './LinerNoteCard'
 export { LinerNoteMiniPlayer } from './LinerNoteMiniPlayer'

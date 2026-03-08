@@ -6,11 +6,11 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ChevronLeft } from 'lucide-react'
 import { format } from 'date-fns'
 import type { LinerNotesPost, LinerNotesData } from '../../types/liner-notes'
 import { CATEGORY_ACCENT_COLORS, CATEGORY_LABELS } from './constants'
 import { LinerNoteMiniPlayer } from './LinerNoteMiniPlayer'
+import { PageNav } from './PageNav'
 
 const SITE_URL = 'https://concerts.morperhaus.org'
 const RELATED_THRESHOLD = 30
@@ -92,7 +92,7 @@ export function LinerNotePermalink() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#fafaf9' }}>
+      <div className="h-screen flex items-center justify-center" style={{ background: '#fafaf9' }}>
         <p className="font-sans text-sm text-gray-400 animate-pulse">Loading...</p>
       </div>
     )
@@ -100,18 +100,9 @@ export function LinerNotePermalink() {
 
   if (notFound || !post) {
     return (
-      <main className="min-h-screen" style={{ background: '#fafaf9' }}>
-        <div
-          className="max-w-3xl mx-auto"
-          style={{ padding: 'clamp(24px, 5vw, 48px) clamp(16px, 4vw, 24px)' }}
-        >
-          <Link
-            to="/liner-notes"
-            className="inline-flex items-center gap-1 font-sans text-sm text-gray-500 hover:text-gray-800 transition-colors mb-8"
-          >
-            <ChevronLeft className="w-4 h-4" />
-            Back to Liner Notes
-          </Link>
+      <main className="h-screen overflow-y-auto" style={{ background: '#fafaf9' }}>
+        <div className="max-w-5xl mx-auto px-6 lg:px-12 py-10">
+          <PageNav current="liner-notes" theme="light" />
           <h1
             className="mb-4"
             style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: '#1f2937' }}
@@ -132,67 +123,62 @@ export function LinerNotePermalink() {
   const showRelated = related.length > 0 && totalPosts >= RELATED_THRESHOLD
 
   return (
-    <main className="min-h-screen overflow-y-auto" style={{ background: '#fafaf9' }}>
-      <div
-        className="max-w-3xl mx-auto"
-        style={{ padding: 'clamp(24px, 5vw, 48px) clamp(16px, 4vw, 24px)', maxWidth: 800 }}
-      >
-        {/* Back link */}
-        <Link
-          to="/liner-notes"
-          className="inline-flex items-center gap-1 font-sans text-sm text-gray-500 hover:text-gray-800 transition-colors mb-8"
-        >
-          <ChevronLeft className="w-4 h-4" />
-          Back to Liner Notes
-        </Link>
+    <main className="h-screen overflow-y-auto" style={{ background: '#fafaf9' }}>
+      <div className="max-w-5xl mx-auto px-6 lg:px-12 py-10">
+        <PageNav current="liner-notes" theme="light" />
+
+        {/* Prose constrained to reading width */}
+        <div style={{ maxWidth: 680 }}>
 
         <motion.article
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
         >
-          {/* Image */}
-          {post.image.url && post.image.source !== 'placeholder' && (
-            <div
-              style={{ borderRadius: 12, overflow: 'hidden', marginBottom: 32 }}
-            >
+          {/* Header: metadata + headline alongside thumbnail */}
+          <div className="flex gap-6 items-start mb-6">
+            <div className="flex-1 min-w-0">
+              {/* Category + date */}
+              <div className="flex items-center gap-4 mb-3">
+                <span
+                  className="font-sans text-xs font-semibold uppercase tracking-wider"
+                  style={{ color: accentColor }}
+                >
+                  {categoryLabel}
+                </span>
+                <span className="font-sans text-sm text-gray-400">{publishedDate}</span>
+              </div>
+
+              {/* Headline */}
+              <h1
+                style={{
+                  fontFamily: 'Playfair Display, serif',
+                  fontSize: 'clamp(24px, 4vw, 32px)',
+                  fontWeight: 700,
+                  color: '#1f2937',
+                  lineHeight: 1.25,
+                }}
+              >
+                {post.headline}
+              </h1>
+            </div>
+
+            {/* Thumbnail */}
+            {post.image.url && post.image.source !== 'placeholder' && (
               <img
                 src={post.image.url}
                 alt={post.image.alt}
+                className="flex-shrink-0"
                 style={{
-                  width: '100%',
-                  maxHeight: 'clamp(240px, 30vw, 360px)',
+                  width: 160,
+                  height: 160,
                   objectFit: 'cover',
+                  borderRadius: 10,
                   display: 'block',
                 }}
               />
-            </div>
-          )}
-
-          {/* Category + date */}
-          <div className="flex items-center gap-4 mb-3">
-            <span
-              className="font-sans text-xs font-semibold uppercase tracking-wider"
-              style={{ color: accentColor }}
-            >
-              {categoryLabel}
-            </span>
-            <span className="font-sans text-sm text-gray-400">{publishedDate}</span>
+            )}
           </div>
-
-          {/* Headline */}
-          <h1
-            className="mb-5"
-            style={{
-              fontFamily: 'Playfair Display, serif',
-              fontSize: 'clamp(24px, 4vw, 28px)',
-              fontWeight: 700,
-              color: '#1f2937',
-              lineHeight: 1.25,
-            }}
-          >
-            {post.headline}
-          </h1>
 
           {/* Prose */}
           <p
@@ -215,7 +201,7 @@ export function LinerNotePermalink() {
 
           {/* Deep links */}
           {post.deepLinks.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-4">
+            <div className="flex flex-wrap gap-1 mb-8">
               {post.deepLinks.map((link, i) => (
                 <span key={link.url} className="font-sans text-sm font-medium">
                   {i > 0 && <span className="text-gray-400 mx-1">·</span>}
@@ -228,21 +214,6 @@ export function LinerNotePermalink() {
                   >
                     {link.label}
                   </Link>
-                </span>
-              ))}
-            </div>
-          )}
-
-          {/* Tags */}
-          {post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-8">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="font-sans text-xs font-medium rounded-full"
-                  style={{ padding: '2px 8px', backgroundColor: '#f3f4f6', color: '#9ca3af' }}
-                >
-                  {tag}
                 </span>
               ))}
             </div>
@@ -290,6 +261,7 @@ export function LinerNotePermalink() {
             </div>
           )}
         </motion.article>
+        </div>{/* end prose constrain */}
       </div>
     </main>
   )

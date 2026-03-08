@@ -1,15 +1,14 @@
 /**
  * WhatsPlayingPage — app changelog at /whats-playing
- * Same layout as ChangelogPage but: different title/subtitle, no fact cards, updated RSS link
- * Spec: docs/specs/future/liner-notes-design-mocks.md (#61)
  */
 
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ChevronLeft, Rss } from 'lucide-react'
+import { Rss } from 'lucide-react'
 import { ChangelogCard } from './ChangelogCard'
 import { setLastSeenChangelog } from '../../utils/changelogStorage'
+import { PageNav } from '../liner-notes/PageNav'
 import type { Release } from './types'
 
 export function WhatsPlayingPage() {
@@ -36,7 +35,7 @@ export function WhatsPlayingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="h-screen bg-black text-white flex items-center justify-center">
         <p className="text-slate-400 animate-pulse">Loading...</p>
       </div>
     )
@@ -44,15 +43,14 @@ export function WhatsPlayingPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-400 mb-4">{error}</p>
           <button
             onClick={() => navigate('/')}
-            className="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
+            className="text-slate-300 hover:text-white transition-colors text-sm"
           >
-            <ChevronLeft className="w-4 h-4" />
-            Back to Timeline
+            ← Back to Archive
           </button>
         </div>
       </div>
@@ -60,27 +58,13 @@ export function WhatsPlayingPage() {
   }
 
   return (
-    <main className="min-h-screen bg-black text-white overflow-y-auto h-screen">
-      <div className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
-        {/* Header */}
-        <header className="mb-12" role="banner">
-          <nav className="flex items-center gap-4 mb-8">
-            <button
-              onClick={() => navigate('/')}
-              className="text-slate-300 hover:text-white transition-colors flex items-center gap-1"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              <span>Back to Timeline</span>
-            </button>
-            <span className="text-slate-600">|</span>
-            <button
-              onClick={() => navigate('/about')}
-              className="text-slate-400 hover:text-white transition-colors"
-            >
-              About
-            </button>
-          </nav>
+    <main className="h-screen bg-black text-white overflow-y-auto">
+      <div className="max-w-7xl mx-auto px-6 lg:px-20 py-10">
 
+        <PageNav current="whats-playing" theme="dark" />
+
+        {/* Page header */}
+        <header className="mb-12" role="banner">
           <motion.h1
             ref={headerRef}
             tabIndex={-1}
@@ -133,7 +117,7 @@ export function WhatsPlayingPage() {
           </motion.div>
         </section>
 
-        {/* RSS Link & Version — fixed bottom-right (desktop only) */}
+        {/* RSS + version — fixed bottom-right on desktop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -143,10 +127,10 @@ export function WhatsPlayingPage() {
           <div className="flex flex-col items-end gap-1">
             <a
               href="/liner-notes.xml"
-              className="text-slate-600 hover:text-slate-400 text-xs flex items-center gap-1.5 transition-colors"
+              className="text-slate-600 hover:text-indigo-400 text-xs flex items-center gap-1.5 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Subscribe to liner notes via RSS"
+              aria-label="Subscribe via RSS"
             >
               <Rss className="w-3.5 h-3.5" />
               RSS
@@ -156,6 +140,7 @@ export function WhatsPlayingPage() {
             )}
           </div>
         </motion.div>
+
       </div>
     </main>
   )

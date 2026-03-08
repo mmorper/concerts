@@ -20,6 +20,8 @@ export type DetectorName =
   | "geographic-chapter"
   | "concert-streak"
   | "milestone-marker"
+  | "rare-sighting"
+  | "historical-moment"
   // Tier 2 — stubbed for future phases
   | "festival-mega-bill"
   | "discography-crossref"

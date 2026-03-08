@@ -578,6 +578,110 @@ function detectMilestoneMarker(concerts: Concert[]): AnalysisFinding[] {
   return findings;
 }
 
+// ── 8. Rare Sighting Detector ─────────────────────────────────────────────────
+
+function detectRareSighting(concerts: Concert[]): AnalysisFinding[] {
+  const countByArtist = new Map<string, Concert[]>();
+
+  for (const c of concerts) {
+    const key = c.headlinerNormalized;
+    if (!countByArtist.has(key)) countByArtist.set(key, []);
+    countByArtist.get(key)!.push(c);
+  }
+
+  const findings: AnalysisFinding[] = [];
+
+  for (const [normalized, shows] of countByArtist) {
+    if (shows.length !== 1) continue;
+
+    const concert = shows[0];
+    findings.push({
+      id: `rare-sighting-${concert.headlinerNormalized}`,
+      detector: "rare-sighting",
+      category: "deep-cut",
+      temporality: "evergreen",
+      headline: `${concert.headliner}: Caught Once, Never Again`,
+      dataPoints: {
+        artist: concert.headliner,
+        venue: concert.venue,
+        city: concert.city,
+        state: concert.state,
+        date: concert.date,
+        year: concert.year,
+        openers: concert.openers,
+      },
+      artists: [concert.headlinerNormalized],
+      venues: [concert.venueNormalized],
+      years: [concert.year],
+      tags: ["rare-sighting", "one-time-only"],
+      suggestedImage: { type: "artist", artistNormalized: concert.headlinerNormalized },
+      suggestedTrack: { artistNormalized: concert.headlinerNormalized },
+    });
+  }
+
+  // Sort by year descending — more recent rare sightings first
+  return findings
+    .sort((a, b) => b.years[0] - a.years[0])
+    .slice(0, 25);
+}
+
+// ── 9. Historical Moment Detector ─────────────────────────────────────────────
+
+function detectHistoricalMoment(concerts: Concert[]): AnalysisFinding[] {
+  const byYear = new Map<number, Concert[]>();
+
+  for (const c of concerts) {
+    if (!byYear.has(c.year)) byYear.set(c.year, []);
+    byYear.get(c.year)!.push(c);
+  }
+
+  const findings: AnalysisFinding[] = [];
+
+  for (const [year, yearConcerts] of byYear) {
+    // Only include years with at least 2 concerts
+    if (yearConcerts.length < 2) continue;
+
+    // Pick the concert with the most openers; break ties by earliest date
+    const sorted = [...yearConcerts].sort((a, b) => {
+      const openerDiff = b.openers.length - a.openers.length;
+      if (openerDiff !== 0) return openerDiff;
+      return a.date.localeCompare(b.date);
+    });
+
+    const concert = sorted[0];
+
+    findings.push({
+      id: `historical-moment-${year}-${concert.headlinerNormalized}`,
+      detector: "historical-moment",
+      category: "deep-cut",
+      temporality: "evergreen",
+      headline: `${concert.headliner} in ${year}: What Was in the Air`,
+      dataPoints: {
+        artist: concert.headliner,
+        venue: concert.venue,
+        city: concert.city,
+        state: concert.state,
+        date: concert.date,
+        year,
+        month: new Date(concert.date).toLocaleString("en-US", { month: "long" }),
+        concertsInYear: yearConcerts.length,
+      },
+      artists: [concert.headlinerNormalized],
+      venues: [concert.venueNormalized],
+      years: [year],
+      tags: ["historical-context", `era-${Math.floor(year / 10) * 10}s`],
+      // Prefer venue imagery — the post is about a moment at a specific place
+      suggestedImage: { type: "venue", venueNormalized: concert.venueNormalized },
+      suggestedTrack: { artistNormalized: concert.headlinerNormalized },
+    });
+  }
+
+  // Most recent years first, cap at 20
+  return findings
+    .sort((a, b) => b.years[0] - a.years[0])
+    .slice(0, 20);
+}
+
 // ── Main export ───────────────────────────────────────────────────────────────
 
 export interface AnalysisResult {
@@ -600,6 +704,8 @@ export function analyze(concerts: Concert[], today: Date = new Date()): Analysis
     ...detectGeographicChapter(past),
     ...detectConcertStreak(past),
     ...detectMilestoneMarker(past),
+    ...detectRareSighting(past),
+    ...detectHistoricalMoment(past),
   ];
 
   const findingsByDetector: Record<string, number> = {};

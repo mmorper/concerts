@@ -27,7 +27,7 @@ export interface CurateOptions {
     name?: string;
     tracks: Array<{ name: string; albumName?: string; albumArt?: string; previewUrl?: string; streamingUrl?: string; durationMs?: number }>;
   }>;
-  venuesMetadata: Record<string, { name?: string; photoUrls?: string[]; manualPhotos?: string[] }>;
+  venuesMetadata: Record<string, { name?: string; photoUrls?: string[] | { thumbnail?: string; medium?: string; large?: string }; manualPhotos?: string[] }>;
   /** Published posts to dedup against and resolve related slugs. */
   existingPosts: LinerNotesPost[];
   /** ISO timestamp to stamp publishedAt on new posts. Defaults to now. */
@@ -178,6 +178,14 @@ function isDuplicate(finding: ScoredFinding, existingPosts: LinerNotesPost[]): b
 
 // ── Image resolution ──────────────────────────────────────────────────────────
 
+/**
+ * Apple Music album art URLs support resolution suffixes.
+ * Upsize from 100x100 (mini player thumbnail) to 600x600 for card hero images.
+ */
+function upsizeAppleMusicUrl(url: string): string {
+  return url.replace(/\/\d+x\d+bb\.jpg$/, '/600x600bb.jpg')
+}
+
 const PLACEHOLDER_IMAGE: PostImage = {
   url: "/images/liner-notes-placeholder.jpg",
   alt: "Concert",
@@ -217,7 +225,7 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
       );
       if (albumArt) {
         return {
-          url: albumArt,
+          url: upsizeAppleMusicUrl(albumArt),
           alt: suggestedImage.albumName ?? "Album art",
           source: "album",
         };
@@ -232,7 +240,7 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
   if (primaryArtist) {
     const track = options.artistsTopTracks[primaryArtist]?.tracks.find((t) => t.albumArt);
     if (track?.albumArt) {
-      return { url: track.albumArt, alt: track.albumName ?? "Album art", source: "album" };
+      return { url: upsizeAppleMusicUrl(track.albumArt), alt: track.albumName ?? "Album art", source: "album" };
     }
   }
 
@@ -270,7 +278,15 @@ function getVenueImageUrl(
 ): string | undefined {
   const venue = options.venuesMetadata[venueSlug];
   if (!venue) return undefined;
-  return venue.photoUrls?.[0] ?? venue.manualPhotos?.[0];
+
+  // photoUrls is either a string[] (legacy) or { thumbnail, medium, large } object
+  const photoUrls = venue.photoUrls;
+  if (Array.isArray(photoUrls)) return photoUrls[0];
+  if (photoUrls && typeof photoUrls === "object") {
+    return photoUrls.large ?? photoUrls.medium ?? photoUrls.thumbnail;
+  }
+
+  return venue.manualPhotos?.[0];
 }
 
 function getAlbumArt(
