@@ -176,6 +176,24 @@ function shouldSkip(
 }
 
 /**
+ * iTunes search aliases for artists whose names don't match Apple Music's catalog.
+ * Maps the concert data name → search term to use with the iTunes Search API.
+ */
+const SEARCH_ALIASES: Record<string, string> = {
+  "Brian Setzer \u201968 Comeback Special": "Brian Setzer",
+  "Brian Setzer and the Nashvillians": "Brian Setzer",
+}
+
+/**
+ * iTunes artist ID overrides for artists where name-based search is unreliable.
+ * Maps the concert data name → iTunes artist ID (from music.apple.com/us/artist/.../ID).
+ * Uses the iTunes Lookup API which is exact and unambiguous.
+ */
+const ARTIST_ID_OVERRIDES: Record<string, number> = {
+  "The Roots": 43680,
+}
+
+/**
  * Main enrichment function
  */
 export async function enrichTopTracks() {
@@ -226,12 +244,14 @@ export async function enrichTopTracks() {
     try {
       await rateLimiter.wait()
 
-      // Try iTunes first (no auth tokens, more reliable)
-      console.log(`  → Trying iTunes...`)
-      const iTunesTracks = await itunes.getTopTracks(
-        artistName,
-        AUDIO_PREVIEW_CONFIG.trackLimit
-      )
+      // Use artist ID lookup if available (exact, no ambiguity), otherwise name search with alias fallback
+      const artistIdOverride = ARTIST_ID_OVERRIDES[artistName]
+      const searchName = SEARCH_ALIASES[artistName] ?? artistName
+
+      console.log(`  → Trying iTunes${artistIdOverride ? ` (by artist ID ${artistIdOverride})` : searchName !== artistName ? ` (alias: "${searchName}")` : ''}...`)
+      const iTunesTracks = artistIdOverride
+        ? await itunes.getTopTracksByArtistId(artistIdOverride, AUDIO_PREVIEW_CONFIG.trackLimit)
+        : await itunes.getTopTracks(searchName, AUDIO_PREVIEW_CONFIG.trackLimit)
 
       if (iTunesTracks && iTunesTracks.length === AUDIO_PREVIEW_CONFIG.trackLimit) {
         console.log(`  🔍 Validating ${iTunesTracks.length} iTunes previews...`)

@@ -11889,5 +11889,146 @@
         "streamingUrl": "https://music.apple.com/us/album/wrecks/864292052?i=864292066&uo=4"
       }
     ]
+  },
+  "brian-setzer-and-the-nashvillians": {
+    "name": "Brian Setzer and the Nashvillians",
+    "source": "itunes",
+    "fetchedAt": "2026-03-08T01:03:22.565Z",
+    "tracks": [
+      {
+        "name": "Rock This Town",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/05/9c/26/059c2641-3aaf-b69a-a378-b3a3d18e3fcf/mzaf_1982914855990059471.plus.aac.p.m4a",
+        "durationMs": 159827,
+        "albumName": "The Brian Setzer Collection '81-'88",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/aa/77/db/aa77db65-d29e-7468-430e-d1a96ca142fb/00724352253852.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/rock-this-town/724502315?i=724502686&uo=4"
+      },
+      {
+        "name": "Summertime Blues",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/1e/52/0b/1e520b5b-c01b-066e-64b4-a6e8cca6b0b3/mzaf_1738877520929168929.plus.aac.p.m4a",
+        "durationMs": 160733,
+        "albumName": "La Bamba (Original Motion Picture Soundtrack)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/11/ac/57/mzi.gihwdlmg.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/summertime-blues/342347858?i=342347948&uo=4"
+      },
+      {
+        "name": "Stray Cat Strut",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b5/75/5d/b5755dd2-b061-c9aa-6722-c96ff855618e/mzaf_9857991074546161189.plus.aac.p.m4a",
+        "durationMs": 299320,
+        "albumName": "Red Hot & Live!",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/69/a3/6f/69a36f5f-275b-7501-264b-0be90be7eace/mzi.msxlukit.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/stray-cat-strut/307572701?i=307572804&uo=4"
+      },
+      {
+        "name": "Rockabilly Blues",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b1/72/22/b1722253-d4c5-c637-b8ea-09e89ba6c83c/mzaf_2506531577129854973.plus.aac.p.m4a",
+        "durationMs": 223893,
+        "albumName": "Rockabilly Riot! All Original",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/89/4a/79/894a797c-9e77-4aa6-bf65-648da7093491/640424419189.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/rockabilly-blues/1591131744?i=1591131751&uo=4"
+      },
+      {
+        "name": "Blue Moon of Kentucky",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8c/21/3f/8c213f1e-373e-293e-11be-7f13f73268c4/mzaf_16436912822423954213.plus.aac.p.m4a",
+        "durationMs": 258773,
+        "albumName": "Setzer Goes Instru-MENTAL!",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/2c/20/90/mzi.udhlvoji.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/blue-moon-of-kentucky/429949001?i=429949034&uo=4"
+      }
+    ]
+  },
+  "the-roots": {
+    "name": "The Roots",
+    "source": "itunes",
+    "fetchedAt": "2026-03-08T01:03:24.358Z",
+    "tracks": [
+      {
+        "name": "My Shot (feat. Busta Rhymes, Joell Ortiz & Nate Ruess) [Rise Up Remix]",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c0/43/7f/c0437ffe-9108-feb8-17a7-1f7fbccdcc70/mzaf_3219472276370973285.plus.aac.p.m4a",
+        "durationMs": 270747,
+        "albumName": "The Hamilton Mixtape",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/86/e0/e3/86e0e360-8cda-6a9a-ec29-a62134931220/075679922311.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/my-shot-feat-busta-rhymes-joell-ortiz-nate-ruess-rise/1171297143?i=1171297661&uo=4"
+      },
+      {
+        "name": "You Got Me (feat. Erykah Badu & Eve)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/d7/9f/e3/d79fe3c7-06a2-2058-5f41-f73746c37608/mzaf_18334050479129379209.plus.aac.p.m4a",
+        "durationMs": 259307,
+        "albumName": "Things Fall Apart",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/74/1d/df/741ddf4b-a124-16f4-60f3-03e03f291eab/06UMGIM02261.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/you-got-me-feat-erykah-badu-eve/1440632803?i=1440633299&uo=4"
+      },
+      {
+        "name": "The Seed (2.0) [feat. Cody Chestnutt]",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/ba/2a/ff/ba2aff7a-0273-cc27-f2cc-8673a45c46cc/mzaf_4254132096103170372.plus.aac.p.m4a",
+        "durationMs": 267933,
+        "albumName": "Phrenology",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/99/e8/0e/99e80e8f-4a84-8e4d-a2de-c01b2d3d9fc5/20UMGIM96042.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-seed-2-0-feat-cody-chestnutt/1540123415?i=1540123623&uo=4"
+      },
+      {
+        "name": "Wake Up Everybody (feat. Common & Melanie Fiona)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/71/b3/df/71b3dfe2-bbad-f037-da69-0896dea7ed87/mzaf_5589075724565778019.plus.aac.p.m4a",
+        "durationMs": 264867,
+        "albumName": "Wake Up!",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features/v4/b4/7b/5f/b47b5f9a-99f0-3335-3c1a-0f9bfcdf4008/dj.qjhsreuw.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/wake-up-everybody-feat-common-melanie-fiona/385274753?i=385274768&uo=4"
+      },
+      {
+        "name": "Ordinary People (Live)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/75/67/d3/7567d3ff-1a24-8ef7-62a5-08f17186464f/mzaf_11304655770650733678.plus.aac.p.m4a",
+        "durationMs": 296907,
+        "albumName": "iTunes Live from SoHo",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features/39/1b/f5/dj.gfjzvwbv.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/ordinary-people-live/416160707?i=416160770&uo=4"
+      }
+    ]
+  },
+  "brian-setzer-68-comeback-special": {
+    "name": "Brian Setzer ’68 Comeback Special",
+    "source": "itunes",
+    "fetchedAt": "2026-03-08T01:10:06.897Z",
+    "tracks": [
+      {
+        "name": "Rock This Town",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/05/9c/26/059c2641-3aaf-b69a-a378-b3a3d18e3fcf/mzaf_1982914855990059471.plus.aac.p.m4a",
+        "durationMs": 159827,
+        "albumName": "The Brian Setzer Collection '81-'88",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/aa/77/db/aa77db65-d29e-7468-430e-d1a96ca142fb/00724352253852.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/rock-this-town/724502315?i=724502686&uo=4"
+      },
+      {
+        "name": "Summertime Blues",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/1e/52/0b/1e520b5b-c01b-066e-64b4-a6e8cca6b0b3/mzaf_1738877520929168929.plus.aac.p.m4a",
+        "durationMs": 160733,
+        "albumName": "La Bamba (Original Motion Picture Soundtrack)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/11/ac/57/mzi.gihwdlmg.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/summertime-blues/342347858?i=342347948&uo=4"
+      },
+      {
+        "name": "Stray Cat Strut",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b5/75/5d/b5755dd2-b061-c9aa-6722-c96ff855618e/mzaf_9857991074546161189.plus.aac.p.m4a",
+        "durationMs": 299320,
+        "albumName": "Red Hot & Live!",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/69/a3/6f/69a36f5f-275b-7501-264b-0be90be7eace/mzi.msxlukit.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/stray-cat-strut/307572701?i=307572804&uo=4"
+      },
+      {
+        "name": "Rockabilly Blues",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b1/72/22/b1722253-d4c5-c637-b8ea-09e89ba6c83c/mzaf_2506531577129854973.plus.aac.p.m4a",
+        "durationMs": 223893,
+        "albumName": "Rockabilly Riot! All Original",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/89/4a/79/894a797c-9e77-4aa6-bf65-648da7093491/640424419189.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/rockabilly-blues/1591131744?i=1591131751&uo=4"
+      },
+      {
+        "name": "Blue Moon of Kentucky",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8c/21/3f/8c213f1e-373e-293e-11be-7f13f73268c4/mzaf_16436912822423954213.plus.aac.p.m4a",
+        "durationMs": 258773,
+        "albumName": "Setzer Goes Instru-MENTAL!",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/2c/20/90/mzi.udhlvoji.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/blue-moon-of-kentucky/429949001?i=429949034&uo=4"
+      }
+    ]
   }
 }

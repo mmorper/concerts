@@ -33,13 +33,26 @@ export class iTunesClient {
   private retryBaseDelayMs = 2000
 
   /**
-   * Search for tracks by artist (returns top tracks by relevance/popularity)
+   * Fetch top tracks by iTunes artist ID (exact lookup — no search ambiguity).
+   * Uses the Lookup API: /lookup?id=ARTIST_ID&entity=song&limit=N
+   */
+  async getTopTracksByArtistId(artistId: number, limit: number = 5): Promise<NormalizedTrack[]> {
+    const url = `${this.baseUrl}/lookup?id=${artistId}&entity=song&limit=${limit}&country=US`
+    return this.fetchTracks(url, `artist ID ${artistId}`)
+  }
+
+  /**
+   * Search for tracks by artist name (returns top tracks by relevance/popularity).
    * No authentication required. Retries up to 3 times on 429 with exponential backoff.
    */
   async getTopTracks(artistName: string, limit: number = 5): Promise<NormalizedTrack[]> {
     const encodedName = encodeURIComponent(artistName)
     const url = `${this.baseUrl}/search?term=${encodedName}&entity=song&limit=${limit}&country=US`
 
+    return this.fetchTracks(url, artistName)
+  }
+
+  private async fetchTracks(url: string, label: string): Promise<NormalizedTrack[]> {
     for (let attempt = 0; attempt <= this.maxRetries; attempt++) {
       try {
         const response = await fetch(url)
@@ -60,11 +73,14 @@ export class iTunesClient {
 
         const data: iTunesSearchResponse = await response.json()
 
-        if (!data.results || data.results.length === 0) {
+        // Lookup API returns the artist as first result; filter to songs only
+        const songs = data.results.filter(r => (r as iTunesTrack & { wrapperType?: string }).wrapperType === 'track' || !('wrapperType' in r))
+
+        if (!songs || songs.length === 0) {
           return []
         }
 
-        return data.results.map(track => ({
+        return songs.map(track => ({
           name: track.trackName,
           previewUrl: track.previewUrl || null,
           durationMs: track.trackTimeMillis,
@@ -75,9 +91,9 @@ export class iTunesClient {
 
       } catch (error) {
         if (attempt < this.maxRetries && error instanceof Error && error.message.includes('429')) {
-          continue // already handled above
+          continue
         }
-        console.error(`Failed to fetch tracks from iTunes: ${artistName}`, error)
+        console.error(`Failed to fetch tracks from iTunes: ${label}`, error)
         return []
       }
     }
