@@ -24,6 +24,8 @@ import { normalizeVenueName } from '../../../utils/normalize'
 import type { ArtistCard, ArtistConcert } from './types'
 import type { Setlist } from '../../../types/setlist'
 import { analytics } from '../../../services/analytics'
+import { isUpcomingConcert } from '../../../utils/concertUtils'
+import { UpcomingBadge } from '../../UpcomingBadge'
 
 // Tab types
 type TabId = 'history' | 'upcoming' | 'tracks'
@@ -477,37 +479,49 @@ export function PhoneArtistModal({
               </div>
 
               <ul className="space-y-1">
-                {artist.concerts.map((concert, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-start gap-3 py-3 border-b border-white/5 last:border-b-0"
-                  >
-                    <span className="text-xs text-gray-500 font-medium min-w-[85px] tabular-nums pt-0.5">
-                      {format(new Date(concert.date + 'T00:00:00'), 'dd MMM yyyy')}
-                    </span>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-white">{concert.city}</p>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleVenueClick(concert.venue)
-                        }}
-                        className="text-xs text-white hover:text-[#6366f1] underline decoration-1 underline-offset-2 text-left transition-colors touchable-subtle"
-                        aria-label={`View ${concert.venue} in venues scene`}
-                      >
-                        {concert.venue}
-                      </button>
-                    </div>
-                    <button
-                      onClick={() => handleSetlistClick(concert)}
-                      className="flex items-center gap-1 text-xs font-medium text-[#22c55e] hover:text-[#4ade80] transition-colors flex-shrink-0 py-1"
-                      aria-label={`View setlist for ${concert.venue}`}
+                {artist.concerts.map((concert, idx) => {
+                  const isUpcoming = isUpcomingConcert(concert.date)
+                  return (
+                    <li
+                      key={idx}
+                      className="flex items-start gap-3 py-3 border-b border-white/5 last:border-b-0"
                     >
-                      <Music size={14} />
-                      <span>Setlist</span>
-                    </button>
-                  </li>
-                ))}
+                      <span
+                        className="text-xs font-medium min-w-[85px] tabular-nums pt-0.5"
+                        style={{ color: isUpcoming ? '#818cf8' : undefined, fontWeight: isUpcoming ? 600 : undefined }}
+                      >
+                        {format(new Date(concert.date + 'T00:00:00'), 'dd MMM yyyy')}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-white">{concert.city}</p>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleVenueClick(concert.venue)
+                          }}
+                          className="text-xs text-white hover:text-[#6366f1] underline decoration-1 underline-offset-2 text-left transition-colors touchable-subtle"
+                          aria-label={`View ${concert.venue} in venues scene`}
+                        >
+                          {concert.venue}
+                        </button>
+                      </div>
+                      {isUpcoming ? (
+                        <div className="flex-shrink-0 pt-0.5">
+                          <UpcomingBadge size="sm" />
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => handleSetlistClick(concert)}
+                          className="flex items-center gap-1 text-xs font-medium text-[#22c55e] hover:text-[#4ade80] transition-colors flex-shrink-0 py-1"
+                          aria-label={`View setlist for ${concert.venue}`}
+                        >
+                          <Music size={14} />
+                          <span>Setlist</span>
+                        </button>
+                      )}
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           )}
