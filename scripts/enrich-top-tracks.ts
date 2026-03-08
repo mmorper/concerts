@@ -1,5 +1,5 @@
 /**
- * Enrich artists with top 5 tracks from iTunes (primary) or Deezer (fallback)
+ * Enrich artists with top 5 tracks from iTunes
  *
  * Quality bar: At least 40% of tracks must have VALIDATED preview URLs (2 of 5 tracks)
  * Preview URLs are tested with HEAD requests to ensure they're actually accessible
@@ -8,18 +8,15 @@
 
 import { readFileSync, writeFileSync } from 'fs'
 import { resolve } from 'path'
-import { DeezerClient, type NormalizedTrack } from './utils/deezer-client.js'
-import { iTunesClient } from './utils/itunes-client.js'
+import { iTunesClient, type NormalizedTrack } from './utils/itunes-client.js'
 
 // Configuration
 const AUDIO_PREVIEW_CONFIG = {
-  trackLimit: 5,                    // Always fetch exactly 5 tracks
-  minPreviewCoverage: 0.4,         // At least 2/5 must have VALIDATED preview URLs
-  preferredSource: 'itunes',       // Try iTunes first (no auth tokens, more reliable)
-  fallbackSource: 'deezer',        // Fall back to Deezer
-  rateLimitMs: 600,                // 600ms between API requests (~1.6 req/sec) - slower to avoid iTunes 429
-  validationDelayMs: 100,          // 100ms between validation requests
-  timeout: 5000,                   // 5-second timeout per request
+  trackLimit: 5,               // Always fetch exactly 5 tracks
+  minPreviewCoverage: 0.4,     // At least 2/5 must have VALIDATED preview URLs
+  rateLimitMs: 600,            // 600ms between API requests (~1.6 req/sec)
+  validationDelayMs: 100,      // 100ms between validation requests
+  timeout: 5000,               // 5-second timeout per request
 }
 
 interface Concert {
@@ -31,7 +28,7 @@ interface Concert {
 interface ArtistTopTracksData {
   [artistNormalized: string]: {
     name: string
-    source: 'deezer' | 'itunes'
+    source: 'itunes'
     fetchedAt: string
     tracks: NormalizedTrack[]
   }
@@ -164,10 +161,7 @@ function loadExistingCache(): ArtistTopTracksData {
 
 /**
  * Check if artist should be skipped (already enriched recently).
- * For Deezer: inspect the actual token expiry (exp= param in the signed URL)
- * rather than relying on a fixed TTL, since Deezer token lifetime varies.
- * A 5-minute buffer avoids serving tokens that are about to expire.
- * For iTunes: URLs are stable indefinitely, so a 30-day TTL is used.
+ * iTunes URLs are stable indefinitely, so a 30-day TTL is sufficient.
  */
 function shouldSkip(
   normalized: string,
@@ -176,18 +170,6 @@ function shouldSkip(
   const cached = existingCache[normalized]
   if (!cached) return false
 
-  if (cached.source === 'deezer') {
-    // Find the first track with a preview URL and check its expiry token
-    const previewUrl = cached.tracks?.find(t => t.previewUrl)?.previewUrl ?? null
-    if (!previewUrl) return false // No valid preview — re-fetch
-    const match = previewUrl.match(/[?&]hdnea=exp=(\d+)/)
-    if (!match) return false // Can't determine expiry — re-fetch
-    const expMs = parseInt(match[1], 10) * 1000
-    const bufferMs = 5 * 60 * 1000 // 5-minute safety buffer
-    return Date.now() < expMs - bufferMs // Skip only if token is still valid
-  }
-
-  // iTunes: use 30-day TTL
   const fetchedAt = new Date(cached.fetchedAt).getTime()
   const thirtyDays = 30 * 24 * 60 * 60 * 1000
   return Date.now() - fetchedAt < thirtyDays
@@ -218,7 +200,6 @@ export async function enrichTopTracks() {
   console.log(`Found ${artists.length} unique artists\n`)
 
   // Initialize clients
-  const deezer = new DeezerClient()
   const itunes = new iTunesClient()
   const rateLimiter = new RateLimiter(AUDIO_PREVIEW_CONFIG.rateLimitMs)
 
@@ -274,42 +255,10 @@ export async function enrichTopTracks() {
         }
       }
 
-      // Fallback to Deezer
-      console.log(`  → Trying Deezer...`)
-      await rateLimiter.wait()
-
-      const deezerTracks = await deezer.getTopTracks(
-        artistName,
-        AUDIO_PREVIEW_CONFIG.trackLimit
-      )
-
-      if (deezerTracks && deezerTracks.length === AUDIO_PREVIEW_CONFIG.trackLimit) {
-        console.log(`  🔍 Validating ${deezerTracks.length} Deezer previews...`)
-        const validatedTracks = await validateTracks(deezerTracks)
-
-        if (meetsQualityBar(validatedTracks)) {
-          const previewCount = countPreviews(validatedTracks)
-          console.log(`  ✅ Deezer: ${previewCount}/${AUDIO_PREVIEW_CONFIG.trackLimit} validated tracks`)
-
-          results[normalized] = {
-            name: artistName,
-            source: 'deezer',
-            fetchedAt: new Date().toISOString(),
-            tracks: validatedTracks
-          }
-          enriched++
-          continue
-        } else {
-          const previewCount = countPreviews(validatedTracks)
-          console.log(`  ⚠️  Deezer: only ${previewCount}/${AUDIO_PREVIEW_CONFIG.trackLimit} validated (below quality bar)`)
-        }
-      }
-
-      // Neither source had sufficient VALIDATED preview coverage
-      const itunesPreviewCount = iTunesTracks ? countPreviews(iTunesTracks) : 0
-      const deezerPreviewCount = deezerTracks ? countPreviews(deezerTracks) : 0
+      // iTunes did not meet quality bar — no preview available for this artist
+      const previewCount = iTunesTracks ? countPreviews(iTunesTracks) : 0
       console.log(
-        `  ❌ No sufficient validated preview coverage (iTunes: ${itunesPreviewCount}/${iTunesTracks?.length || 0}, Deezer: ${deezerPreviewCount}/${deezerTracks?.length || 0})`
+        `  ❌ Insufficient iTunes preview coverage (${previewCount}/${iTunesTracks?.length || 0} validated)`
       )
       failed++
 

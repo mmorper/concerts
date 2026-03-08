@@ -22,7 +22,7 @@ export interface FilterState {
 
 export interface TopTrack {
   name: string;
-  previewUrl: string | null;  // 30-sec MP3 (Deezer) or M4A (iTunes)
+  previewUrl: string | null;  // 30-sec M4A preview from iTunes
   durationMs: number;
   albumName: string;
   albumArt: string;           // 100-250px square
@@ -32,7 +32,7 @@ export interface TopTrack {
 export interface ArtistTopTracks {
   [artistNormalized: string]: {
     name: string;
-    source: 'deezer' | 'itunes';
+    source: 'itunes';
     fetchedAt: string;
     tracks: TopTrack[];
   };

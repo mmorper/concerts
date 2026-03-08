@@ -7,7 +7,7 @@ import { analytics } from '../../../services/analytics'
 interface AudioPreviewPlayerProps {
   artistName: string
   tracks: TopTrack[]
-  source: 'deezer' | 'itunes'
+  source: 'itunes'
   streamingUrl: string
   isPhone?: boolean
 }
@@ -262,7 +262,7 @@ export function AudioPreviewPlayer({
               text-gray-300 hover:text-white transition-colors group"
           >
             <ExternalLink className="w-3.5 h-3.5" />
-            <span>Listen to more on {source === 'deezer' ? 'Deezer' : 'Apple Music'}</span>
+            <span>Listen to more on Apple Music</span>
           </a>
         </div>
     </div>

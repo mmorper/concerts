@@ -3,7 +3,7 @@ import type { TopTrack } from '../types/artist'
 
 interface TopTracksData {
   tracks: TopTrack[] | null
-  source: 'deezer' | 'itunes' | null
+  source: 'itunes' | null
   streamingUrl: string | null
   loading: boolean
   error: string | null
@@ -22,30 +22,10 @@ function normalizeArtistName(name: string): string {
 }
 
 /**
- * Check if a Deezer preview URL has an expired signed token (exp= param).
- * Returns true if expired, so the track can be shown as unavailable rather
- * than freezing the player on a 403.
+ * Get Apple Music search URL for the artist
  */
-function isDeezerTokenExpired(url: string | null): boolean {
-  if (!url) return false
-  const match = url.match(/[?&]hdnea=exp=(\d+)/)
-  if (!match) return false
-  return Date.now() / 1000 > parseInt(match[1], 10)
-}
-
-/**
- * Get streaming platform URL for the artist
- */
-function getArtistStreamingUrl(artistName: string, source: 'deezer' | 'itunes'): string {
-  const encodedName = encodeURIComponent(artistName)
-
-  if (source === 'deezer') {
-    // Deezer search URL
-    return `https://www.deezer.com/search/${encodedName}`
-  } else {
-    // Apple Music search URL
-    return `https://music.apple.com/us/search?term=${encodedName}`
-  }
+function getArtistStreamingUrl(artistName: string): string {
+  return `https://music.apple.com/us/search?term=${encodeURIComponent(artistName)}`
 }
 
 /**
@@ -86,19 +66,10 @@ export function useArtistTopTracks(artistName: string): TopTracksData {
         if (!isMounted) return
 
         if (artistData && artistData.tracks && artistData.tracks.length > 0) {
-          // Nullify any Deezer preview URLs whose signed tokens have expired,
-          // so the UI shows "no preview" instead of freezing on a 403.
-          const tracks = artistData.source === 'deezer'
-            ? artistData.tracks.map((t: { previewUrl: string | null;[key: string]: unknown }) => ({
-                ...t,
-                previewUrl: isDeezerTokenExpired(t.previewUrl) ? null : t.previewUrl
-              }))
-            : artistData.tracks
-
           setData({
-            tracks,
+            tracks: artistData.tracks,
             source: artistData.source,
-            streamingUrl: getArtistStreamingUrl(artistName, artistData.source),
+            streamingUrl: getArtistStreamingUrl(artistName),
             loading: false,
             error: null
           })
