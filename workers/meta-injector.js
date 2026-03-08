@@ -76,8 +76,15 @@ export default {
 
     let html = await response.text();
 
-    // Inject dynamic meta tags based on URL params (most specific first)
-    if (scene === 'artists' && artist) {
+    // Inject dynamic meta tags — pathname routes take precedence over query params
+    if (url.pathname === '/liner-notes') {
+      html = await injectLinerNotesFeedMeta(html, url.origin);
+    } else if (url.pathname.startsWith('/liner-notes/') && url.pathname !== '/liner-notes/rss') {
+      const slug = url.pathname.slice('/liner-notes/'.length);
+      html = await injectLinerNotesPostMeta(html, slug, url.origin);
+    } else if (url.pathname === '/whats-playing') {
+      html = await injectWhatsPlayingMeta(html, url.origin);
+    } else if (scene === 'artists' && artist) {
       html = await injectArtistMeta(html, artist, url.origin);
     } else if ((scene === 'venues' || scene === 'geography') && venue) {
       html = await injectVenueMeta(html, venue, url.origin, scene);
@@ -535,6 +542,117 @@ async function injectSceneMeta(html, scene, origin) {
 
   } catch (error) {
     console.error(`Error injecting scene meta: ${error.message}`);
+    return html;
+  }
+}
+
+/**
+ * Inject meta tags for /liner-notes feed page
+ */
+async function injectLinerNotesFeedMeta(html, origin) {
+  try {
+    const feedResponse = await fetch(`${origin}/data/liner-notes.json`);
+    const title = 'Liner Notes | Morperhaus Concert Archives';
+    const description = 'Stories from 42 years of live music — personal essays, cultural context, and deep cuts.';
+    const pageUrl = `${origin}/liner-notes`;
+    let imageUrl = `${origin}/og-image.jpg`;
+
+    if (feedResponse.ok) {
+      const feedData = await feedResponse.json();
+      const firstPost = feedData.posts && feedData.posts[0];
+      if (firstPost && firstPost.image && firstPost.image.url && firstPost.image.source !== 'placeholder') {
+        imageUrl = firstPost.image.url;
+      }
+    }
+
+    html = html.replace(/<title>.*?<\/title>/, `<title>${escapeTitleText(title)}</title>`);
+    html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
+    html = html.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
+    html = html.replace(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${escapeHtml(imageUrl)}" />`);
+    html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta property="twitter:image" content="[^"]*" \/>/, `<meta property="twitter:image" content="${escapeHtml(imageUrl)}" />`);
+
+    console.log('[Liner Notes Feed Meta Injected]');
+    return html;
+
+  } catch (error) {
+    console.error(`Error injecting liner notes feed meta: ${error.message}`);
+    return html;
+  }
+}
+
+/**
+ * Inject meta tags for /liner-notes/:slug post permalink
+ */
+async function injectLinerNotesPostMeta(html, slug, origin) {
+  try {
+    const feedResponse = await fetch(`${origin}/data/liner-notes.json`);
+    if (!feedResponse.ok) {
+      console.error('Failed to fetch liner-notes.json');
+      return html;
+    }
+    const feedData = await feedResponse.json();
+    const post = feedData.posts && feedData.posts.find(p => p.slug === slug);
+
+    if (!post) {
+      console.warn(`Liner note not found: ${slug}`);
+      return html;
+    }
+
+    const title = `${post.headline} | Liner Notes — Morperhaus`;
+    // Truncate prose to ~160 chars for description
+    const description = post.prose.length > 160
+      ? post.prose.slice(0, 157).trimEnd() + '...'
+      : post.prose;
+    const pageUrl = `${origin}/liner-notes/${slug}`;
+    // Pre-generated OG image from og-image.ts pipeline; fall back to post image or default
+    const ogImageUrl = `${origin}/og/liner-notes/${slug}.png`;
+    const imageUrl = post.image && post.image.url && post.image.source !== 'placeholder'
+      ? post.image.url
+      : ogImageUrl;
+
+    html = html.replace(/<title>.*?<\/title>/, `<title>${escapeTitleText(title)}</title>`);
+    html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
+    html = html.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
+    html = html.replace(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${escapeHtml(ogImageUrl)}" />`);
+    html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta property="twitter:image" content="[^"]*" \/>/, `<meta property="twitter:image" content="${escapeHtml(ogImageUrl)}" />`);
+
+    console.log(`[Liner Notes Post Meta Injected] ${post.headline}`);
+    return html;
+
+  } catch (error) {
+    console.error(`Error injecting liner notes post meta: ${error.message}`);
+    return html;
+  }
+}
+
+/**
+ * Inject meta tags for /whats-playing app changelog page
+ */
+async function injectWhatsPlayingMeta(html, origin) {
+  try {
+    const title = "What's Playing | Morperhaus Concert Archives";
+    const description = 'App updates and new features for the Morperhaus Concert Archives.';
+    const pageUrl = `${origin}/whats-playing`;
+    const imageUrl = `${origin}/og-image.jpg`;
+
+    html = html.replace(/<title>.*?<\/title>/, `<title>${escapeTitleText(title)}</title>`);
+    html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
+    html = html.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
+    html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
+
+    console.log("[What's Playing Meta Injected]");
+    return html;
+
+  } catch (error) {
+    console.error(`Error injecting whats-playing meta: ${error.message}`);
     return html;
   }
 }
