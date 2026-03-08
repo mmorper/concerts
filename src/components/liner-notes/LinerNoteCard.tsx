@@ -3,10 +3,11 @@
  * Spec: docs/specs/future/liner-notes-design-mocks.md
  */
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { format } from 'date-fns'
+import { Link2, Check } from 'lucide-react'
 import type { LinerNotesPost, DeepLink } from '../../types/liner-notes'
 import { CATEGORY_ACCENT_COLORS, CATEGORY_LABELS } from './constants'
 import { LinerNoteMiniPlayer } from './LinerNoteMiniPlayer'
@@ -72,12 +73,34 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
 
   const hasImage = post.image.url && post.image.source !== 'placeholder'
 
+  const [copied, setCopied] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+
+  const handleShare = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    const url = `${window.location.origin}/liner-notes/${post.slug}`
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: post.headline, url })
+      } catch {
+        // User cancelled share sheet — no-op
+      }
+    } else {
+      await navigator.clipboard.writeText(url)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    }
+  }
+
   return (
     <motion.article
       initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut', delay: index * 0.08 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
+        position: 'relative',
         background: '#ffffff',
         border: '1px solid #e5e7eb',
         borderRadius: '12px',
@@ -174,6 +197,34 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
           </Link>
         )}
       </div>
+
+      {/* Share / copy-link — pinned to card bottom-right, direct child of article */}
+      <button
+        onClick={handleShare}
+        aria-label={copied ? 'Link copied!' : 'Copy link to this post'}
+        title={copied ? 'Copied!' : 'Copy link'}
+        style={{
+          position: 'absolute',
+          bottom: 12,
+          right: 14,
+          color: copied ? accentColor : '#6b7280',
+          opacity: copied ? 1 : isHovered ? 1 : 0.5,
+          transition: 'opacity 0.15s ease, color 0.15s ease',
+          background: 'none',
+          border: 'none',
+          padding: '4px',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          lineHeight: 1,
+          zIndex: 1,
+        }}
+      >
+        {copied
+          ? <Check size={14} strokeWidth={2.5} />
+          : <Link2 size={14} strokeWidth={2} />
+        }
+      </button>
     </motion.article>
   )
 }

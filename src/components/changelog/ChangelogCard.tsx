@@ -1,23 +1,17 @@
 /**
- * ChangelogCard Component
- *
- * Individual feature card with gatefold aesthetic and deep linking
+ * ChangelogCard — editorial list entry for /whats-playing
+ * Styled to match LinerNoteCard: light background, indigo left accent, Playfair headline
  */
 
-import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import type { ChangelogCardProps } from './types'
 
+const INDIGO = '#4f46e5'
+
 export function ChangelogCard({ release, isLatest = false }: ChangelogCardProps) {
   const navigate = useNavigate()
-  const [isHovered, setIsHovered] = useState(false)
 
-  const handleNavigate = () => {
-    if (release.route) navigate(release.route)
-  }
-
-  // Format the date for display
   const formattedDate = new Date(release.date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -26,57 +20,78 @@ export function ChangelogCard({ release, isLatest = false }: ChangelogCardProps)
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className={`
-        relative bg-zinc-950 rounded-2xl p-8 mx-4 lg:mx-0
-        border-2 transition-all duration-300
-        ${isHovered ? 'border-amber-500 shadow-xl shadow-amber-500/20' : 'border-slate-700'}
-      `}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+      style={{
+        background: '#ffffff',
+        border: '1px solid #e5e7eb',
+        borderRadius: '12px',
+        borderLeft: `4px solid ${INDIGO}`,
+        boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+        marginBottom: '24px',
+        overflow: 'hidden',
+      }}
     >
-      {/* Latest badge */}
-      {isLatest && (
-        <div className="absolute top-4 right-4 bg-amber-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-          Latest
+      <div style={{ padding: 'clamp(16px, 4vw, 24px)' }}>
+        {/* Category label + date row */}
+        <div className="flex items-center justify-between mb-2">
+          <span
+            className="font-sans text-xs font-semibold uppercase tracking-wider"
+            style={{ color: INDIGO }}
+          >
+            {isLatest ? 'Latest Release' : 'Release'}
+          </span>
+          <time dateTime={release.date} className="font-sans text-[13px] text-gray-400">
+            {formattedDate}
+          </time>
         </div>
-      )}
 
-      {/* Title */}
-      <h2 className="text-2xl font-semibold text-white mb-3">
-        {release.title}
-      </h2>
+        {/* Version + title as Playfair headline */}
+        <h2
+          className="mb-3"
+          style={{
+            fontFamily: 'Playfair Display, serif',
+            fontSize: 22,
+            fontWeight: 700,
+            color: '#1f2937',
+            lineHeight: 1.3,
+          }}
+        >
+          v{release.version} — {release.title}
+        </h2>
 
-      {/* Date */}
-      <time dateTime={release.date} className="text-slate-400 text-sm mb-4 block">
-        {formattedDate}
-      </time>
+        {/* Description */}
+        <p
+          className="font-sans mb-4"
+          style={{ fontSize: 16, color: '#374151', lineHeight: 1.65 }}
+        >
+          {release.description}
+        </p>
 
-      {/* Description */}
-      <p className="text-slate-300 text-lg mb-8 leading-relaxed">
-        {release.description}
-      </p>
+        {/* Highlights */}
+        <ul className="mb-4 space-y-1.5">
+          {release.highlights.map((highlight, i) => (
+            <li key={i} className="font-sans text-sm flex items-start gap-2" style={{ color: '#4b5563' }}>
+              <span style={{ color: INDIGO, marginTop: 1, flexShrink: 0 }}>·</span>
+              {highlight}
+            </li>
+          ))}
+        </ul>
 
-      {/* Highlights */}
-      <ul className="space-y-2 mb-6">
-        {release.highlights.map((highlight, index) => (
-          <li key={index} className="flex items-center gap-2 text-slate-400">
-            <span className="text-amber-500">•</span>
-            <span>{highlight}</span>
-          </li>
-        ))}
-      </ul>
-
-      {/* CTA Button */}
-      <button
-        onClick={handleNavigate}
-        className="w-full bg-amber-600 hover:bg-amber-500 text-white py-3 rounded-lg transition-colors font-medium min-h-[44px]"
-        aria-label={`Navigate to ${release.title} feature`}
-      >
-        See it live →
-      </button>
+        {/* CTA — text link, not full-width button */}
+        {release.route && (
+          <button
+            onClick={() => navigate(release.route!)}
+            className="font-sans text-sm font-medium transition-colors"
+            style={{ color: INDIGO }}
+            onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+            onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
+          >
+            See it live →
+          </button>
+        )}
+      </div>
     </motion.article>
   )
 }

@@ -35,20 +35,20 @@ export function WhatsPlayingPage() {
 
   if (loading) {
     return (
-      <div className="h-screen bg-black text-white flex items-center justify-center">
-        <p className="text-slate-400 animate-pulse">Loading...</p>
+      <div className="h-screen flex items-center justify-center" style={{ background: '#fafaf9' }}>
+        <p className="font-sans text-sm text-gray-400 animate-pulse">Loading...</p>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="h-screen bg-black text-white flex items-center justify-center">
+      <div className="h-screen flex items-center justify-center" style={{ background: '#fafaf9' }}>
         <div className="text-center">
-          <p className="text-red-400 mb-4">{error}</p>
+          <p className="font-sans text-red-500 mb-4">{error}</p>
           <button
             onClick={() => navigate('/')}
-            className="text-slate-300 hover:text-white transition-colors text-sm"
+            className="font-sans text-sm text-gray-500 hover:text-gray-900 transition-colors"
           >
             ← Back to Archive
           </button>
@@ -58,54 +58,52 @@ export function WhatsPlayingPage() {
   }
 
   return (
-    <main className="h-screen bg-black text-white overflow-y-auto">
-      <div className="max-w-7xl mx-auto px-6 lg:px-20 py-10">
+    <main className="h-screen overflow-y-auto" style={{ background: '#fafaf9' }}>
+      <div className="max-w-5xl mx-auto px-6 lg:px-12 py-10">
 
-        <PageNav current="whats-playing" theme="dark" />
+        <PageNav current="whats-playing" theme="light" />
 
         {/* Page header */}
-        <header className="mb-12" role="banner">
+        <header className="mb-8" role="banner">
+          {/* Indigo accent bar — matches Liner Notes */}
+          <div style={{ width: 40, height: 4, borderRadius: 2, backgroundColor: '#4f46e5', marginBottom: 16 }} />
           <motion.h1
             ref={headerRef}
             tabIndex={-1}
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-5xl lg:text-6xl font-display text-amber-400 mb-3 outline-none"
+            transition={{ duration: 0.4 }}
+            className="outline-none mb-2"
+            style={{
+              fontFamily: 'Playfair Display, serif',
+              fontSize: 'clamp(32px, 5vw, 48px)',
+              fontWeight: 700,
+              color: '#1f2937',
+              lineHeight: 1.15,
+            }}
           >
             What&apos;s Playing
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-slate-400 text-lg"
+            transition={{ duration: 0.4, delay: 0.08 }}
+            className="font-sans text-gray-500"
+            style={{ fontSize: 'clamp(15px, 2vw, 18px)' }}
           >
             App updates and new features
           </motion.p>
         </header>
 
-        {/* Release History Cards */}
+        {/* Release list */}
         <section id="releases" aria-label="Release history">
-          <motion.h2
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xs uppercase tracking-widest text-slate-500 font-medium mb-6"
-          >
-            Release History
-          </motion.h2>
           <motion.div
             initial="hidden"
             animate="show"
             variants={{
               hidden: { opacity: 0 },
-              show: {
-                opacity: 1,
-                transition: { staggerChildren: 0.1 },
-              },
+              show: { opacity: 1, transition: { staggerChildren: 0.08 } },
             }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8"
           >
             {releases.map((release, index) => (
               <ChangelogCard
@@ -127,7 +125,7 @@ export function WhatsPlayingPage() {
           <div className="flex flex-col items-end gap-1">
             <a
               href="/liner-notes.xml"
-              className="text-slate-600 hover:text-indigo-400 text-xs flex items-center gap-1.5 transition-colors"
+              className="flex items-center gap-1.5 font-sans text-xs text-gray-400 hover:text-indigo-600 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Subscribe via RSS"
@@ -136,7 +134,7 @@ export function WhatsPlayingPage() {
               RSS
             </a>
             {releases.length > 0 && (
-              <span className="text-slate-600 text-xs">v{releases[0].version}</span>
+              <span className="font-sans text-xs text-gray-400">v{releases[0].version}</span>
             )}
           </div>
         </motion.div>

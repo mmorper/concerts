@@ -386,7 +386,7 @@ function buildDeepLinks(finding: ScoredFinding, options: CurateOptions): DeepLin
   for (const venueSlug of finding.venues.slice(0, 2)) {
     links.push({
       label: displayVenueName(venueSlug, options),
-      url: `/?scene=map&venue=${encodeURIComponent(venueSlug)}`,
+      url: `/?scene=venues&venue=${encodeURIComponent(venueSlug)}`,
       type: "venue",
     });
   }
