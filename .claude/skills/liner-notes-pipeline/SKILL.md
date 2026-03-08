@@ -70,7 +70,7 @@ npm run generate:liner-notes -- --date 2026-06-15  # Override today's date
 
 ## Pattern Detectors
 
-### Tier 1 (Implemented)
+### Tier 1 (Implemented — 14 detectors)
 
 | Detector | Trigger | Category | Tags |
 |----------|---------|----------|------|
@@ -81,10 +81,17 @@ npm run generate:liner-notes -- --date 2026-06-15  # Override today's date
 | `geographic-chapter` | 3+ consecutive shows in same US region | personal | `#geographic`, `#two-coasts` |
 | `concert-streak` | 3+ concerts within 30 days | personal | `#hot-streak`, `#back-to-back` |
 | `milestone-marker` | Concert #1, 25, 50, 75, 100, 150 | personal | `#milestone` |
+| `rare-sighting` | Artist seen exactly once | deep-cut | `#rare-sighting` |
+| `historical-moment` | Year with 2+ concerts; concert with most openers | deep-cut | `#historical-moment` |
+| `venue-ghost` | Venue with status "demolished" or "closed" | deep-cut | `#venue-ghost`, `#demolished`/`#closed` |
+| `festival-mega-bill` | 4+ openers on a single bill | cultural | `#festival-bill`, `#mega-bill` |
+| `drought-comeback` | 5+ year gap between consecutive shows, same artist | personal | `#drought`, `#comeback` |
+| `city-pulse` | Concert in city during a historically significant year (hardcoded list) | cultural | `#city-pulse`, `#historical-context` |
+| `album-context` | Concert within 42 days of a landmark album release (hardcoded list) | cultural | `#album-context`, `#cultural-moment` |
 
-### Tier 2 (Stubbed — add when Tier 1 content is flowing)
+### Tier 2 (Planned — tracked in issue #68)
 
-`festival-mega-bill`, `discography-crossref`, `drought-comeback`, `temporal-pattern`
+`genre-outlier`, `double-header`, `discography-crossref`, `temporal-pattern`
 
 ### Adding a New Detector
 

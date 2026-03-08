@@ -27,10 +27,10 @@ export type DetectorName =
   | "drought-comeback"
   | "city-pulse"
   | "album-context"
+  | "genre-outlier"
   // Tier 2 — stubbed for future phases
   | "discography-crossref"
   | "temporal-pattern"
-  | "genre-outlier"
   | "double-header";
 
 // ── Image + audio media ─────────────────────────────────────────────────────

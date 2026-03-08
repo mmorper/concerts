@@ -1077,6 +1077,148 @@ function detectAlbumContext(concerts: Concert[]): AnalysisFinding[] {
   return findings;
 }
 
+// ── 15. Genre Outlier Detector ────────────────────────────────────────────────
+//
+// Finds headliner artists whose genre is significantly outside the user's
+// dominant genre pattern. E.g., in a rock/electronic archive, catching a
+// reggae or country act stands out as a memorable anomaly.
+
+/** Maps raw genre strings (lowercased) to broad genre families. */
+const GENRE_FAMILY_MAP: Record<string, string> = {
+  // Rock
+  "rock": "Rock", "rock/pop": "Rock", "alternative rock": "Rock",
+  "indie rock": "Rock", "hard rock": "Rock", "punk rock": "Rock",
+  "punk": "Rock", "classic rock": "Rock", "progressive rock": "Rock",
+  "garage rock": "Rock", "folk rock": "Rock", "psychedelic rock": "Rock",
+  "grunge": "Rock", "new wave": "Rock",
+  // Electronic / Synth
+  "electronic": "Electronic", "synthpop": "Electronic", "electronica": "Electronic",
+  "dance": "Electronic", "techno": "Electronic", "house": "Electronic",
+  "ambient": "Electronic", "industrial": "Electronic", "edm": "Electronic",
+  "synth pop": "Electronic",
+  // Pop
+  "pop": "Pop", "pop rock": "Pop", "teen pop": "Pop", "dance pop": "Pop",
+  // Hip-Hop
+  "hip-hop": "Hip-Hop", "hip hop": "Hip-Hop", "rap": "Hip-Hop",
+  "hip-hop/rap": "Hip-Hop",
+  // R&B / Soul
+  "r&b": "R&B/Soul", "soul": "R&B/Soul", "funk": "R&B/Soul",
+  "motown": "R&B/Soul", "neo soul": "R&B/Soul",
+  // Reggae / Ska
+  "reggae": "Reggae", "ska": "Reggae", "dancehall": "Reggae",
+  // Metal
+  "metal": "Metal", "heavy metal": "Metal", "thrash metal": "Metal",
+  "glam metal": "Metal",
+  // Jazz / Blues
+  "jazz": "Jazz/Blues", "blues": "Jazz/Blues", "soul blues": "Jazz/Blues",
+  // Country / Folk
+  "country": "Country/Folk", "folk": "Country/Folk", "americana": "Country/Folk",
+  // Latin
+  "latin": "Latin", "salsa": "Latin",
+  // Classical
+  "classical": "Classical",
+};
+
+function genreFamily(genre: string): string {
+  return GENRE_FAMILY_MAP[genre.toLowerCase()] ?? "Other";
+}
+
+/** Minimum shows for genre distribution to be meaningful. */
+const GENRE_OUTLIER_MIN_SHOWS = 15;
+/** An artist's genre family must fall outside the top N dominant families. */
+const GENRE_DOMINANT_TOP_N = 3;
+
+function detectGenreOutlier(
+  concerts: Concert[],
+  artistsMetadata: Record<string, { genres?: string[] }>
+): AnalysisFinding[] {
+  if (concerts.length < GENRE_OUTLIER_MIN_SHOWS) return [];
+
+  // Step 1: Build concert-weighted genre family distribution over headliners
+  const familyConcertCount: Record<string, number> = {};
+  const artistFamilies: Record<string, string[]> = {}; // normalized → unique families
+
+  for (const c of concerts) {
+    const meta = artistsMetadata[c.headlinerNormalized];
+    if (!meta?.genres?.length) continue;
+
+    const families = [...new Set(meta.genres.map(genreFamily).filter((f) => f !== "Other"))];
+    if (families.length === 0) continue;
+
+    artistFamilies[c.headlinerNormalized] = families;
+    for (const fam of families) {
+      familyConcertCount[fam] = (familyConcertCount[fam] ?? 0) + 1;
+    }
+  }
+
+  // Step 2: Identify dominant families
+  const ranked = Object.entries(familyConcertCount)
+    .sort(([, a], [, b]) => b - a);
+  const dominantFamilies = new Set(ranked.slice(0, GENRE_DOMINANT_TOP_N).map(([f]) => f));
+  const totalConcertsWithGenre = Object.values(familyConcertCount).reduce((a, b) => a + b, 0);
+  const dominantPct = ranked
+    .slice(0, GENRE_DOMINANT_TOP_N)
+    .reduce((sum, [, n]) => sum + n, 0) / totalConcertsWithGenre;
+
+  // Only fire if the archive is genuinely genre-concentrated (top 3 ≥ 55%)
+  if (dominantPct < 0.55) return [];
+
+  // Step 3: Find artists whose families don't overlap with dominant
+  const byArtist = new Map<string, Concert[]>();
+  for (const c of concerts) {
+    if (!byArtist.has(c.headlinerNormalized)) byArtist.set(c.headlinerNormalized, []);
+    byArtist.get(c.headlinerNormalized)!.push(c);
+  }
+
+  const findings: AnalysisFinding[] = [];
+
+  for (const [normalized, shows] of byArtist) {
+    const families = artistFamilies[normalized];
+    if (!families || families.length === 0) continue;
+
+    // Outlier = no genre family overlaps with dominant set
+    const isOutlier = !families.some((f) => dominantFamilies.has(f));
+    if (!isOutlier) continue;
+
+    // Skip artists with many shows — they're not really outliers
+    if (shows.length > 4) continue;
+
+    const sorted = [...shows].sort((a, b) => a.date.localeCompare(b.date));
+    const firstShow = sorted[0];
+    const outlierFamily = families[0]; // Primary genre family of the outlier
+    const dominantList = [...dominantFamilies].join(" / ");
+
+    findings.push({
+      id: `genre-outlier-${normalized}`,
+      detector: "genre-outlier",
+      category: "deep-cut",
+      temporality: "evergreen",
+      headline: `${firstShow.headliner}: A ${outlierFamily} Outlier in a ${dominantList} Archive`,
+      dataPoints: {
+        artist: firstShow.headliner,
+        artistNormalized: normalized,
+        artistGenres: artistsMetadata[normalized]?.genres ?? [],
+        artistGenreFamily: outlierFamily,
+        dominantFamilies: [...dominantFamilies],
+        dominantFamilyPercent: Math.round(dominantPct * 100),
+        showCount: shows.length,
+        shows: sorted.map((s) => ({ date: s.date, venue: s.venue, city: s.cityState })),
+      },
+      artists: [normalized],
+      venues: [...new Set(sorted.map((s) => s.venueNormalized))],
+      years: sorted.map((s) => s.year),
+      suggestedImage: { type: "artist", artistNormalized: normalized },
+      suggestedTrack: { artistNormalized: normalized },
+      tags: ["#genre-outlier", `#${slugify(outlierFamily)}`],
+    });
+  }
+
+  // Sort by show count ascending (rarest appearances = most surprising)
+  return findings.sort((a, b) =>
+    (a.dataPoints.showCount as number) - (b.dataPoints.showCount as number)
+  );
+}
+
 // ── Main export ───────────────────────────────────────────────────────────────
 
 export interface AnalysisResult {
@@ -1090,6 +1232,7 @@ export interface AnalysisResult {
 
 export interface AnalyzeOptions {
   venuesMetadata?: Record<string, VenueMetaSlim>;
+  artistsMetadata?: Record<string, { genres?: string[] }>;
 }
 
 export function analyze(
@@ -1114,6 +1257,7 @@ export function analyze(
     ...detectDroughtComeback(past),
     ...detectCityPulse(past),
     ...detectAlbumContext(past),
+    ...detectGenreOutlier(past, options.artistsMetadata ?? {}),
   ];
 
   const findingsByDetector: Record<string, number> = {};

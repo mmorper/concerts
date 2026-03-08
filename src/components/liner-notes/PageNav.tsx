@@ -8,7 +8,7 @@ import { useNavigate, Link } from 'react-router-dom'
 
 interface PageNavProps {
   /** Which page this nav is on — used to hide the self-link */
-  current: 'liner-notes' | 'whats-playing'
+  current: 'liner-notes' | 'whats-playing' | 'about'
   /** Dark theme (What's Playing) vs light theme (Liner Notes) */
   theme: 'dark' | 'light'
 }
@@ -49,27 +49,31 @@ export function PageNav({ current, theme }: PageNavProps) {
         </Link>
       )}
 
-      {current !== 'liner-notes' && current !== 'whats-playing' && (
-        <span className={dividerClass} aria-hidden="true">·</span>
-      )}
-
       {current !== 'whats-playing' && (
-        <Link
-          to="/whats-playing"
-          className={`font-sans text-sm transition-colors ${linkClass}`}
-        >
-          What&apos;s Playing
-        </Link>
+        <>
+          {current !== 'liner-notes' && (
+            <span className={dividerClass} aria-hidden="true">·</span>
+          )}
+          <Link
+            to="/whats-playing"
+            className={`font-sans text-sm transition-colors ${linkClass}`}
+          >
+            What&apos;s Playing
+          </Link>
+        </>
       )}
 
-      <span className={dividerClass} aria-hidden="true">·</span>
-
-      <Link
-        to="/about"
-        className={`font-sans text-sm transition-colors ${linkClass}`}
-      >
-        About
-      </Link>
+      {current !== 'about' && (
+        <>
+          <span className={dividerClass} aria-hidden="true">·</span>
+          <Link
+            to="/about"
+            className={`font-sans text-sm transition-colors ${linkClass}`}
+          >
+            About
+          </Link>
+        </>
+      )}
     </nav>
   )
 }

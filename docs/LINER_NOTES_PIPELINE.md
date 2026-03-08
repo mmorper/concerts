@@ -350,9 +350,113 @@ Each detector produces one or more `AnalysisFinding` objects with a `category`, 
 
 ---
 
+### 10. Venue Ghost (`venue-ghost`)
+
+**What it finds:** Venues that have since been demolished or closed, based on `status` in `venues-metadata.json`.
+
+**Category:** Deep-Cut | **Temporality:** Evergreen
+
+**Data points:** Venue name, city, show count, status (`demolished` or `closed`), closed date/year, first and last show, top 5 artists seen there.
+
+**Scoring note:** Highest surprise factor of any venue detector (9 pts) — a room you knew is gone is inherently powerful.
+
+**Auto-tags:** `#venue-ghost`, plus `#demolished` or `#closed` based on status.
+
+**Returns:** Sorted by show count descending. Requires venue status data in `venues-metadata.json` — venues without a `status` field are ignored.
+
+**Example headline:** *"The Roxy: 4 Shows Before It Was Demolished"*
+
+---
+
+### 11. Festival Mega-Bill (`festival-mega-bill`)
+
+**What it finds:** Concerts with 4 or more openers — festival-scale bills in the archive.
+
+**Category:** Cultural | **Temporality:** Evergreen
+
+**Data points:** Headliner, full openers list, opener count, total artists, venue, city, date, year.
+
+**Scoring note:** Surprise factor scales with bill size (10+ openers = 10 pts, 7+ = 8, 5+ = 6, else 4).
+
+**Auto-tags:** `#festival-bill`, `#mega-bill`.
+
+**Returns:** Top 10 by opener count.
+
+**Example headline:** *"Lollapalooza 1991 + 8 More: 1991 Festival Bill"*
+
+---
+
+### 12. Drought & Comeback (`drought-comeback`)
+
+**What it finds:** Artists seen 2+ times with a gap of 5+ years between any two consecutive shows. Surfaces the largest gap for each qualifying artist.
+
+**Category:** Personal | **Temporality:** Evergreen
+
+**Data points:** Artist, last show before the gap, first show after the gap, gap in years, total show count.
+
+**Scoring note:** Surprise factor scales with gap size (≥20 years = 9, ≥15 = 7, ≥10 = 5, else 3).
+
+**Auto-tags:** `#drought`, `#comeback`.
+
+**Returns:** Top 15 by gap size.
+
+**Example headline:** *"Depeche Mode: 8 Years Between Shows"*
+
+---
+
+### 13. City Pulse (`city-pulse`)
+
+**What it finds:** Concerts in a city/state during a historically significant year. Matches against a hardcoded list of 7 major events.
+
+**Category:** Cultural | **Temporality:** Evergreen
+
+**Hardcoded events:**
+
+| Year | Event |
+| ---- | ----- |
+| 1984 | 1984 Los Angeles Summer Olympics (California) |
+| 1992 | LA uprising after the Rodney King verdict (California) |
+| 1994 | Northridge earthquake (California) |
+| 2001 | September 11 attacks (New York) |
+| 2001 | September 11 / Pentagon strike (District of Columbia) |
+| 2005 | Hurricane Katrina (Louisiana) |
+| 2013 | Boston Marathon bombing (Massachusetts) |
+
+**Data points:** Concert artist, venue, city, date, year, the matched historical event name, a curated context string describing the moment, count of all matching concerts that year.
+
+**Selection:** Among matching concerts, picks the one with the most openers; breaks ties by date. The historical context string is hardcoded per event — not fetched from the web.
+
+**Scoring note:** Surprise factor = 8 (historical context is compelling).
+
+**Auto-tags:** `#city-pulse`, `#historical-context`.
+
+**Example headline:** *"The Replacements in 1992: The Year of Los Angeles Uprising"*
+
+---
+
+### 14. Album Context (`album-context`)
+
+**What it finds:** Concerts that fell within 42 days (6 weeks) of a landmark album release. Surfaces the intersection of your concert history and a cultural moment in recorded music.
+
+**Category:** Cultural | **Temporality:** Evergreen
+
+**Landmark album list:** 31 hardcoded albums, from *Purple Rain* (1984) to *Midnights* (2022). The list includes albums chosen for cultural significance (Violator, Nevermind, OK Computer, Blackstar, etc.) with a curated `significance` string for each.
+
+**Selection:** Prefers a concert by the same artist as the album; otherwise uses the chronologically closest concert. One finding per concert/album pair.
+
+**Data points:** Concert artist, venue, city, date, year; album name, album artist, release date, significance string; days apart, timing description (e.g. "3 days before it dropped"), `isSameArtist` flag.
+
+**Scoring note:** Surprise factor = 9 if `isSameArtist`, 6 otherwise.
+
+**Auto-tags:** `#album-context`, `#cultural-moment`.
+
+**Example headline:** *"David Bowie — Days Before Blackstar Dropped"*
+
+---
+
 ## Planned Detectors (Tier 2)
 
-Tracked in [GitHub issue #68](https://github.com/mmorper/concerts/issues/68). These four detectors were scoped and designed during v4.4.x but deferred — each has a specific reason it can't ship yet.
+Tracked in [GitHub issue #68](https://github.com/mmorper/concerts/issues/68). These four detectors were scoped during v4.4.x but deferred — each has a specific reason it can't ship yet. They are declared in `types.ts` but have no implementation in `analyze.ts`.
 
 ---
 
@@ -428,7 +532,7 @@ A finding with 3 artists and 2 venues scores 15 (the maximum). A finding with 1 
 
 Each detector uses a different measure of scale. The thresholds are:
 
-| Detector | Measure | 0 pts | 4 pts | 7 pts | 10 pts |
+| Detector | Measure | 2 pts | 4 pts | 7 pts | 10 pts |
 | -------- | ------- | ----- | ----- | ----- | ------ |
 | `artist-longevity` | `spanYears` | — | >10 yrs | >20 yrs | >30 yrs |
 | `opener-to-headliner` | `gapYears` | — | >10 yrs | >20 yrs | >30 yrs |
@@ -437,6 +541,11 @@ Each detector uses a different measure of scale. The thresholds are:
 | `geographic-chapter` | `spanYears` | — | >10 yrs | >20 yrs | >30 yrs |
 | `rare-sighting` | years ago | — | >10 yrs | >20 yrs | >30 yrs |
 | `historical-moment` | years ago | — | >10 yrs | >20 yrs | >30 yrs |
+| `venue-ghost` | year span (first→last show) | >5 yrs | — | >10 yrs | >20 yrs |
+| `festival-mega-bill` | opener count | 4+ openers | 5+ openers | 7+ openers | 10+ openers |
+| `drought-comeback` | `gapYears` | 0–10 yrs | >10 yrs | >15 yrs | >20 yrs |
+| `city-pulse` | years ago | — | >10 yrs | >20 yrs | >30 yrs |
+| `album-context` | years ago | — | >10 yrs | >20 yrs | >30 yrs |
 | `concert-streak` | — | 0 | — | — | — |
 | `milestone-marker` | — | 0 | — | — | — |
 
@@ -461,9 +570,14 @@ A fixed subjective weight per detector reflecting the inherent wow-factor of tha
 
 | Detector | Score | Notes |
 | -------- | ----- | ----- |
+| `festival-mega-bill` | 4–10 | Opener count ≥10 = 10, ≥7 = 8, ≥5 = 6, else 4 |
 | `opener-to-headliner` | 3–9 | Gap ≥20 yrs = 9, ≥15 = 7, ≥10 = 5, else 3 |
+| `venue-ghost` | 9 | A room you knew is gone — inherently powerful |
 | `rare-sighting` | 9 | Caught once — and never again |
+| `album-context` | 6 or 9 | 9 if `isSameArtist`, 6 otherwise |
+| `drought-comeback` | 3–9 | Gap ≥20 yrs = 9, ≥15 = 7, ≥10 = 5, else 3 |
 | `calendar-anniversary` | 8 | Time-coincidence is inherently compelling |
+| `city-pulse` | 8 | Historical context is compelling |
 | `historical-moment` | 7 | Grounded with web search; context is specific |
 | `geographic-chapter` | 6 | — |
 | `concert-streak` | 5 | — |
@@ -491,22 +605,6 @@ Example: a show that is exactly 25 years ago (milestone) and 2 days away scores 
 ### Category Balance (0–5)
 
 The scorer pre-computes how many findings fall into each category across the full batch. A finding earns +5 if its category has fewer findings than the average-per-category. This nudges the selection algorithm toward diversity without requiring it.
-
----
-
-### Forward-looking scorer cases
-
-`score.ts` contains scoring cases for several detectors not yet in `analyze.ts`. These are pre-built to avoid rework when those detectors ship:
-
-| Detector in scorer | Status |
-| ------------------ | ------ |
-| `drought-comeback` | Tier 2 — tracked in [issue #68](https://github.com/mmorper/concerts/issues/68) |
-| `festival-mega-bill` | Tier 2 — tracked in [issue #68](https://github.com/mmorper/concerts/issues/68) |
-| `venue-ghost` | Untracked — a venue that has since closed; inherently powerful (surprise = 9) |
-| `city-pulse` | Untracked — historical context for a concert city in a given year (surprise = 8) |
-| `album-context` | Untracked — a concert tied to a specific album era; same-artist = 9, other artist = 6 |
-
-The three untracked detectors (`venue-ghost`, `city-pulse`, `album-context`) exist in the scorer but have no corresponding analyzer or GitHub issue. They represent ideas that were scoped far enough to get scoring logic written but have not formally entered the roadmap yet.
 
 ---
 

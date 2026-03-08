@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { haptics } from '../utils/haptics'
 import { analytics } from '../services/analytics'
@@ -114,6 +115,31 @@ export function SceneNavigation() {
             </span>
           </button>
         ))}
+
+        {/* Liner Notes link — separated from scene dots */}
+        <div className="flex flex-col items-center" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 10, marginTop: 4 }}>
+          <Link
+            to="/liner-notes"
+            className="group relative flex items-center justify-center min-w-[44px] min-h-[44px]"
+            aria-label="Go to Liner Notes"
+            onClick={() => analytics.trackEvent('liner_notes_nav_clicked', { from_scene: activeScene })}
+          >
+            <span
+              className="font-sans transition-colors duration-200 group-hover:text-white"
+              style={{
+                fontSize: 11,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.4)',
+                writingMode: 'vertical-rl',
+                transform: 'rotate(180deg)',
+                lineHeight: 1,
+              }}
+            >
+              Liner Notes
+            </span>
+          </Link>
+        </div>
       </div>
     </motion.div>
   )

@@ -6,9 +6,9 @@
  */
 
 import { useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ChevronLeft, Github, ExternalLink } from 'lucide-react'
+import { Github, ExternalLink } from 'lucide-react'
+import { PageNav } from '../liner-notes/PageNav'
 
 /** LinkedIn brand icon SVG */
 const LinkedInIcon = ({ className }: { className?: string }) => (
@@ -50,155 +50,185 @@ const LINKEDIN_POSTS: LinkedInPost[] = [
 ]
 
 export function AboutPage() {
-  const navigate = useNavigate()
   const headerRef = useRef<HTMLHeadingElement>(null)
 
   useEffect(() => {
-    // Focus header for accessibility
     setTimeout(() => {
       headerRef.current?.focus()
     }, 100)
   }, [])
 
   return (
-    <main className="min-h-screen bg-black text-white overflow-y-auto h-screen">
-      <div className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
-        {/* Header */}
-        <header className="mb-12" role="banner">
-          <button
-            onClick={() => navigate('/')}
-            className="text-slate-300 hover:text-white transition-colors mb-8 flex items-center gap-1"
-          >
-            <ChevronLeft className="w-4 h-4" />
-            <span>Back to Timeline</span>
-          </button>
+    <main className="h-screen overflow-y-auto" style={{ background: '#fafaf9' }}>
+      <div className="max-w-5xl mx-auto px-6 lg:px-12 py-10">
 
+        <PageNav current="about" theme="light" />
+
+        {/* Page header */}
+        <header className="mb-10" role="banner">
+          <div style={{ width: 40, height: 4, borderRadius: 2, backgroundColor: '#4f46e5', marginBottom: 16 }} />
           <motion.h1
             ref={headerRef}
             tabIndex={-1}
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-5xl lg:text-6xl font-display text-amber-400 mb-3 outline-none"
+            transition={{ duration: 0.4 }}
+            className="outline-none mb-2"
+            style={{
+              fontFamily: 'Playfair Display, serif',
+              fontSize: 'clamp(32px, 5vw, 48px)',
+              fontWeight: 700,
+              color: '#1f2937',
+              lineHeight: 1.15,
+            }}
           >
             About the Archive
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-slate-400 text-lg"
+            transition={{ duration: 0.4, delay: 0.08 }}
+            className="font-sans text-gray-500"
+            style={{ fontSize: 'clamp(15px, 2vw, 18px)' }}
           >
             The human behind the data
           </motion.p>
         </header>
 
         {/* The Archivist */}
-        <section aria-label="About the creator" className="mb-16">
+        <section aria-label="About the creator" className="mb-10">
           <motion.h2
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xs uppercase tracking-widest text-slate-500 font-medium mb-6"
+            transition={{ duration: 0.4, delay: 0.15 }}
+            className="font-sans text-xs uppercase tracking-widest text-gray-400 font-semibold mb-4"
           >
             The Archivist
           </motion.h2>
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="bg-slate-900/50 border border-slate-800 rounded-lg p-6"
+            transition={{ duration: 0.4, delay: 0.2 }}
+            style={{
+              background: '#ffffff',
+              border: '1px solid #e5e7eb',
+              borderLeft: '4px solid #4f46e5',
+              borderRadius: 12,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+              padding: 'clamp(16px, 4vw, 24px)',
+            }}
           >
-            <h3 className="text-2xl font-display text-white mb-2">Mike Morper</h3>
-            <p className="text-slate-400 mb-4">
-              Product Marketer, concert enthusiast
-              <br />
-              Southern California
+            <h3
+              className="mb-1"
+              style={{
+                fontFamily: 'Playfair Display, serif',
+                fontSize: 22,
+                fontWeight: 700,
+                color: '#1f2937',
+              }}
+            >
+              Mike Morper
+            </h3>
+            <p className="font-sans text-gray-500 text-sm mb-4">
+              Product Marketer, concert enthusiast · Southern California
             </p>
             <div className="flex gap-4">
               <a
                 href="https://www.linkedin.com/in/morps/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-2"
+                className="font-sans text-sm text-gray-500 hover:text-indigo-600 transition-colors flex items-center gap-2"
               >
-                <LinkedInIcon className="w-5 h-5" />
-                <span>LinkedIn</span>
+                <LinkedInIcon className="w-4 h-4" />
+                LinkedIn
               </a>
               <a
                 href="https://github.com/mmorper/concerts"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-2"
+                className="font-sans text-sm text-gray-500 hover:text-indigo-600 transition-colors flex items-center gap-2"
               >
-                <Github className="w-5 h-5" />
-                <span>GitHub</span>
+                <Github className="w-4 h-4" />
+                GitHub
               </a>
             </div>
           </motion.div>
         </section>
 
         {/* The Origin Story */}
-        <section aria-label="Origin story" className="mb-16">
+        <section aria-label="Origin story" className="mb-10">
           <motion.h2
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="text-xs uppercase tracking-widest text-slate-500 font-medium mb-6"
+            transition={{ duration: 0.4, delay: 0.25 }}
+            className="font-sans text-xs uppercase tracking-widest text-gray-400 font-semibold mb-4"
           >
             The Origin Story
           </motion.h2>
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="prose prose-invert prose-slate max-w-none"
+            transition={{ duration: 0.4, delay: 0.3 }}
+            style={{
+              background: '#ffffff',
+              border: '1px solid #e5e7eb',
+              borderLeft: '4px solid #4f46e5',
+              borderRadius: 12,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+              padding: 'clamp(16px, 4vw, 24px)',
+            }}
           >
-            <p className="text-slate-300 text-lg leading-relaxed mb-4">
+            <p className="font-sans text-gray-700 text-base leading-relaxed mb-4" style={{ lineHeight: 1.7 }}>
               Concerts since 1984. My wife and I have been going together since we started dating
               in the '90s—arena tours, sweaty club shows, bands we grew up worshipping, openers
               we'd never heard of who blew us away.
             </p>
-            <p className="text-slate-300 text-lg leading-relaxed mb-4">
+            <p className="font-sans text-gray-700 text-base leading-relaxed mb-4" style={{ lineHeight: 1.7 }}>
               During the pandemic, we started listing every show we'd ever attended in a Google
               Sheet. I feature-creeped it almost immediately—opening acts, venues, genres, who
               attended. What started as a list became a database.
             </p>
-            <p className="text-slate-300 text-lg leading-relaxed mb-4">
+            <p className="font-sans text-gray-700 text-base leading-relaxed mb-4" style={{ lineHeight: 1.7 }}>
               For a while I had it hooked up to Looker Studio. Functional, but lifeless. Data, not
               memories.
             </p>
-            <p className="text-slate-300 text-lg leading-relaxed">
-              This project is my attempt to make it <em>feel</em> like flipping through ticket
-              stubs.
+            <p className="font-sans text-gray-700 text-base leading-relaxed" style={{ lineHeight: 1.7 }}>
+              This project is my attempt to make it <em>feel</em> like flipping through ticket stubs.
             </p>
           </motion.div>
         </section>
 
         {/* How It's Built */}
-        <section aria-label="How it's built" className="mb-16">
+        <section aria-label="How it's built" className="mb-10">
           <motion.h2
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="text-xs uppercase tracking-widest text-slate-500 font-medium mb-6"
+            transition={{ duration: 0.4, delay: 0.35 }}
+            className="font-sans text-xs uppercase tracking-widest text-gray-400 font-semibold mb-4"
           >
-            How It's Built
+            How It&apos;s Built
           </motion.h2>
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-            className="prose prose-invert prose-slate max-w-none"
+            transition={{ duration: 0.4, delay: 0.4 }}
+            style={{
+              background: '#ffffff',
+              border: '1px solid #e5e7eb',
+              borderLeft: '4px solid #4f46e5',
+              borderRadius: 12,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+              padding: 'clamp(16px, 4vw, 24px)',
+            }}
           >
-            <p className="text-slate-300 text-lg leading-relaxed mb-4">
+            <p className="font-sans text-gray-700 text-base leading-relaxed mb-4" style={{ lineHeight: 1.7 }}>
               I'm not an engineer. I'd never built a data pipeline, integrated an API, or written a
               React component. But I had{' '}
               <a
                 href="https://www.anthropic.com/claude-code"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-amber-400 hover:text-amber-300"
+                className="text-indigo-600 hover:text-indigo-800 transition-colors"
               >
                 Claude Code
               </a>{' '}
@@ -208,27 +238,27 @@ export function AboutPage() {
                 href="https://www.linkedin.com/pulse/claude-code-misnomer-mike-morper-ulvjc/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-amber-400 hover:text-amber-300"
+                className="text-indigo-600 hover:text-indigo-800 transition-colors"
               >
                 I wrote about this
               </a>
               .
             </p>
-            <p className="text-slate-300 text-lg leading-relaxed mb-4">
+            <p className="font-sans text-gray-700 text-base leading-relaxed mb-4" style={{ lineHeight: 1.7 }}>
               The result: ~29,000 lines of code, six API integrations, 305 automated tests (and
               counting!), and an experience I'm genuinely proud of. I can't tell you if the code is
               good—but the product works and the experience delights.
             </p>
-            <p className="text-slate-400">
+            <p className="font-sans text-gray-500 text-sm">
               Curious about the technical details?{' '}
               <a
                 href="https://github.com/mmorper/concerts#readme"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-amber-400 hover:text-amber-300 inline-flex items-center gap-1"
+                className="text-indigo-600 hover:text-indigo-800 transition-colors inline-flex items-center gap-1"
               >
                 Check out the README on GitHub
-                <ExternalLink className="w-4 h-4" />
+                <ExternalLink className="w-3.5 h-3.5" />
               </a>
             </p>
           </motion.div>
@@ -236,28 +266,28 @@ export function AboutPage() {
 
         {/* Writing */}
         {LINKEDIN_POSTS.length > 0 && (
-          <section aria-label="Writing" className="mb-16">
+          <section aria-label="Writing" className="mb-10">
             <motion.h2
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
-              className="text-xs uppercase tracking-widest text-slate-500 font-medium mb-6"
+              transition={{ duration: 0.4, delay: 0.45 }}
+              className="font-sans text-xs uppercase tracking-widest text-gray-400 font-semibold mb-2"
             >
               Writing
             </motion.h2>
             <motion.p
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.85 }}
-              className="text-slate-400 mb-6"
+              transition={{ duration: 0.4, delay: 0.5 }}
+              className="font-sans text-gray-500 text-sm mb-4"
             >
               Reflections on building with AI—a series exploring what happens when a non-developer
               picks up Claude Code.
             </motion.p>
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.9 }}
+              transition={{ duration: 0.4, delay: 0.55 }}
               className="space-y-3"
             >
               {LINKEDIN_POSTS.map((post, index) => (
@@ -266,26 +296,42 @@ export function AboutPage() {
                   href={post.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-start gap-4 bg-slate-900/50 border border-slate-800 rounded-lg p-5 hover:border-amber-500/50 transition-colors group"
+                  className="flex items-start gap-4 group"
+                  style={{
+                    background: '#ffffff',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: 12,
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                    padding: 'clamp(14px, 3vw, 20px)',
+                    display: 'flex',
+                    textDecoration: 'none',
+                    transition: 'border-color 0.15s ease',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#a5b4fc')}
+                  onMouseLeave={(e) => (e.currentTarget.style.borderColor = '#e5e7eb')}
                 >
-                  <div className="flex-shrink-0 mt-1">
+                  <div className="flex-shrink-0 mt-0.5">
                     <LinkedInIcon className="w-5 h-5" />
                   </div>
                   <div className="flex-grow min-w-0">
                     <div className="flex items-start justify-between gap-2 mb-1">
-                      <h3 className="text-white font-medium group-hover:text-amber-400 transition-colors">
+                      <h3
+                        className="font-sans font-semibold text-gray-800 group-hover:text-indigo-700 transition-colors"
+                        style={{ fontSize: 15 }}
+                      >
                         {post.title}
                       </h3>
-                      <ExternalLink className="w-4 h-4 text-slate-500 group-hover:text-amber-400 transition-colors flex-shrink-0" />
+                      <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-indigo-500 transition-colors flex-shrink-0 mt-0.5" />
                     </div>
-                    <p className="text-slate-400 text-sm mb-2">{post.preview}</p>
-                    <p className="text-slate-500 text-xs">{post.date}</p>
+                    <p className="font-sans text-gray-500 text-sm mb-1">{post.preview}</p>
+                    <p className="font-sans text-gray-400 text-xs">{post.date}</p>
                   </div>
                 </a>
               ))}
             </motion.div>
           </section>
         )}
+
       </div>
     </main>
   )

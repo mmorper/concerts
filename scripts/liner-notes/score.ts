@@ -135,6 +135,13 @@ function computeSpan(f: AnalysisFinding): number {
       const yearsAgo = new Date().getFullYear() - year;
       return yearsAgo > 30 ? 10 : yearsAgo > 20 ? 7 : yearsAgo > 10 ? 4 : 2;
     }
+    case "genre-outlier": {
+      // Span = how many years ago the show(s) happened
+      const year = f.years[0];
+      if (!year) return 0;
+      const yearsAgo = new Date().getFullYear() - year;
+      return yearsAgo > 30 ? 10 : yearsAgo > 20 ? 7 : yearsAgo > 10 ? 4 : 2;
+    }
     case "rare-sighting": {
       // Older rare sightings feel more like buried history
       const year = f.years[0];
@@ -222,6 +229,8 @@ function computeSurpriseFactor(f: AnalysisFinding): number {
       const isSameArtist = (f.dataPoints as Record<string, unknown>).isSameArtist as boolean;
       return isSameArtist ? 9 : 6; // Higher wow if you saw the artist themselves
     }
+    case "genre-outlier":
+      return 8; // A genuine anomaly in an otherwise coherent archive
     case "rare-sighting":
       return 9; // You caught them once — and never again
     case "historical-moment":
