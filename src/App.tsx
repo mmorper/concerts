@@ -46,6 +46,7 @@ function MainScenes() {
     venue: string
     artist?: string
   } | null>(null)
+  const [pendingYearFocus, setPendingYearFocus] = useState<number | null>(null)
   const [currentDeepLinkParams, setCurrentDeepLinkParams] = useState<{
     artist?: string | null
     venue?: string | null
@@ -156,6 +157,7 @@ function MainScenes() {
     const sceneParam = params.get('scene')
     const artistParam = params.get('artist')
     const venueParam = params.get('venue')
+    const yearParam = params.get('year')
 
     // Store deep link parameters in state for pageview tracking
     setCurrentDeepLinkParams({
@@ -190,6 +192,12 @@ function MainScenes() {
       // If artist parameter is provided, set it for the ArtistScene
       if (artistParam && sceneId === 5) {
         setPendingArtistFocus(artistParam)
+      }
+
+      // If year parameter is provided, expand that year's card stack on the timeline
+      if (yearParam && sceneId === 1) {
+        const year = Number(yearParam)
+        if (!isNaN(year)) setPendingYearFocus(year)
       }
 
       // If venue parameter is provided, set it for the appropriate scene
@@ -258,7 +266,12 @@ function MainScenes() {
     <>
       <div ref={scrollContainerRef} className="relative snap-y snap-mandatory h-screen overflow-y-scroll">
         {/* Scene 1: Hero/Timeline */}
-        <Scene1Hero concerts={concerts} onNavigateToArtist={handleArtistNavigate} />
+        <Scene1Hero
+          concerts={concerts}
+          onNavigateToArtist={handleArtistNavigate}
+          pendingYearFocus={pendingYearFocus}
+          onYearFocusComplete={() => setPendingYearFocus(null)}
+        />
 
         {/* Scene 2: Venues (force-directed graph) */}
         <Scene4Bands

@@ -13,9 +13,11 @@ import { analytics } from '../../services/analytics'
 interface Scene1HeroProps {
   concerts: Concert[]
   onNavigateToArtist?: (artistName: string) => void
+  pendingYearFocus?: number | null
+  onYearFocusComplete?: () => void
 }
 
-export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
+export function Scene1Hero({ concerts, onNavigateToArtist, pendingYearFocus, onYearFocusComplete }: Scene1HeroProps) {
   const timelineRef = useRef<SVGSVGElement>(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 200 })
   const {
@@ -24,6 +26,7 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
     handleMouseLeave,
     handlePopupMouseEnter,
     handlePopupMouseLeave,
+    setHoverStateDirect,
   } = useTimelineHover()
 
   // Year filter state
@@ -51,6 +54,36 @@ export function Scene1Hero({ concerts, onNavigateToArtist }: Scene1HeroProps) {
 
   // Track dot positions for card stack positioning
   const [dotPositions, setDotPositions] = useState<Map<number, { x: number; y: number }>>(new Map())
+
+  // Programmatic year focus via deep link (e.g. /?scene=timeline&year=2018)
+  useEffect(() => {
+    if (!pendingYearFocus || dotPositions.size === 0) return
+    const dotPos = dotPositions.get(pendingYearFocus)
+    if (!dotPos) return
+
+    const yearConcerts = concerts.filter(c => c.year === pendingYearFocus)
+    if (yearConcerts.length === 0) return
+
+    const artistCounts = new Map<string, number>()
+    yearConcerts.forEach(c => {
+      artistCounts.set(c.headliner, (artistCounts.get(c.headliner) || 0) + 1)
+    })
+    const mostFrequentArtist = Array.from(artistCounts.entries())
+      .sort((a, b) => b[1] - a[1])[0]?.[0] || yearConcerts[0].headliner
+    const artistConcert = yearConcerts.find(c => c.headliner === mostFrequentArtist) || yearConcerts[0]
+
+    setHoverStateDirect({
+      artistName: mostFrequentArtist,
+      year: pendingYearFocus,
+      concertCount: yearConcerts.length,
+      venue: artistConcert.venue,
+      date: artistConcert.date,
+      position: dotPos,
+      isHovering: true,
+    })
+    handleYearClick(pendingYearFocus)
+    onYearFocusComplete?.()
+  }, [pendingYearFocus, dotPositions, concerts, setHoverStateDirect, handleYearClick, onYearFocusComplete])
 
   // Track touch state
   const isTouchingRef = useRef(false)

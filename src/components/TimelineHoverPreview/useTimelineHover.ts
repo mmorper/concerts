@@ -120,6 +120,16 @@ export function useTimelineHover() {
     setHoverState(prev => prev ? { ...prev, position } : null)
   }, [])
 
+  /**
+   * Set hover state directly without any delay.
+   * Used for programmatic activation (e.g. deep-link year focus).
+   */
+  const setHoverStateDirect = useCallback((state: TimelineHoverState) => {
+    clearTimeouts()
+    isHoveringRef.current = true
+    setHoverState(state)
+  }, [clearTimeouts])
+
   // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
@@ -134,5 +144,6 @@ export function useTimelineHover() {
     handlePopupMouseEnter,
     handlePopupMouseLeave,
     updatePosition,
+    setHoverStateDirect,
   }
 }
