@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Liner Notes — Design Mock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fafaf9;
+      --card-bg: #ffffff;
+      --card-border: #e5e7eb;
+      --card-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      --title: #1f2937;
+      --body: #374151;
+      --muted: #6b7280;
+      --very-muted: #9ca3af;
+      --tag-bg: #f3f4f6;
+
+      --scene: #1e3a8a;       /* The Scene — Cultural Context */
+      --wasthere: #5b21b6;    /* I Was There — Personal Connection */
+      --deepcuts: #0e7490;    /* Deep Cuts — was #06b6d4, slightly deeper for legibility */
+    }
+
+    html, body { background: var(--bg); font-family: 'Source Sans 3', sans-serif; color: var(--body); }
+
+    /* ── Mock banner ── */
+    .mock-banner {
+      background: #1e3a8a;
+      color: white;
+      text-align: center;
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Top nav ── */
+    .topnav {
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid var(--card-border);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .topnav a { font-size: 13px; color: var(--muted); text-decoration: none; }
+    .topnav a:hover { color: var(--title); }
+    .topnav a.back { color: var(--title); font-weight: 500; display: flex; align-items: center; gap: 4px; }
+    .topnav .sep { color: #d1d5db; font-size: 13px; }
+
+    /* ── Page shell ── */
+    .page { max-width: 768px; margin: 0 auto; padding: 48px 24px; }
+
+    /* ── Page header ── */
+    .page-header { margin-bottom: 32px; }
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--title);
+      margin-bottom: 6px;
+    }
+    .page-subtitle { font-size: 16px; color: var(--muted); }
+
+    /* ── Filter section ── */
+    .filter-section { margin-bottom: 28px; }
+    .filter-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--very-muted);
+      margin-bottom: 10px;
+    }
+
+    /* Equal-width chip grid */
+    .filter-chips {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 500px) {
+      .filter-chips { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .chip {
+      height: 40px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      white-space: nowrap;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      text-align: center;
+    }
+
+    /* Color dot — visible on all chips, even inactive */
+    .chip-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--card-border); /* default: gray */
+    }
+    .chip.all .chip-dot { background: var(--title); }
+    .chip.scene .chip-dot { background: var(--scene); }
+    .chip.wasthere .chip-dot { background: var(--wasthere); }
+    .chip.deepcuts .chip-dot { background: var(--deepcuts); }
+
+    /* Active states: fill with category color */
+    .chip.active { border-color: transparent; color: #fff; }
+    .chip.active.all { background: var(--title); }
+    .chip.active.scene { background: var(--scene); }
+    .chip.active.wasthere { background: var(--wasthere); }
+    .chip.active.deepcuts { background: var(--deepcuts); }
+    .chip.active .chip-dot { background: rgba(255,255,255,0.6); }
+
+    /* Inactive hover: tinted border */
+    .chip:not(.active):hover { border-color: var(--card-border); background: #f9fafb; color: var(--title); }
+    .chip:not(.active).scene:hover { border-color: var(--scene); color: var(--scene); }
+    .chip:not(.active).wasthere:hover { border-color: var(--wasthere); color: var(--wasthere); }
+    .chip:not(.active).deepcuts:hover { border-color: var(--deepcuts); color: var(--deepcuts); }
+
+    /* ── Post count ── */
+    .post-count { font-size: 13px; color: var(--very-muted); margin-bottom: 32px; }
+
+    /* ── Post card ── */
+    .post-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      margin-bottom: 24px;
+      border-left: 4px solid transparent;
+    }
+    .post-card.scene    { border-left-color: var(--scene); }
+    .post-card.wasthere { border-left-color: var(--wasthere); }
+    .post-card.deepcuts { border-left-color: var(--deepcuts); }
+
+    /* ── Post image ── */
+    .post-image-placeholder {
+      width: 100%;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Post content ── */
+    .post-content { padding: 22px 24px 20px; }
+
+    .post-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 7px;
+    }
+
+    /* Category label — uses same chip color */
+    .post-category {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .post-category .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .post-category.scene    { color: var(--scene); }
+    .post-category.scene .dot { background: var(--scene); }
+    .post-category.wasthere { color: var(--wasthere); }
+    .post-category.wasthere .dot { background: var(--wasthere); }
+    .post-category.deepcuts { color: var(--deepcuts); }
+    .post-category.deepcuts .dot { background: var(--deepcuts); }
+
+    .post-date { font-size: 12px; color: var(--very-muted); }
+
+    .post-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--title);
+      margin-bottom: 10px;
+      line-height: 1.3;
+      text-decoration: none;
+      display: block;
+    }
+    .post-headline:hover { color: var(--wasthere); }
+
+    .post-prose {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--body);
+      margin-bottom: 16px;
+    }
+
+    /* ── MiniPlayer ── */
+    .miniplayer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+    }
+    .miniplayer-art {
+      width: 36px;
+      height: 36px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .miniplayer-info { flex: 1; min-width: 0; }
+    .miniplayer-track { font-size: 13px; font-weight: 600; color: var(--title); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .miniplayer-artist { font-size: 11px; color: var(--muted); }
+    .miniplayer-play {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .miniplayer-play svg { fill: white; margin-left: 2px; }
+    .miniplayer-duration { font-size: 11px; color: var(--very-muted); flex-shrink: 0; }
+    .wasthere-player .miniplayer-play { background: var(--wasthere); }
+    .deepcuts-player .miniplayer-play { background: var(--deepcuts); }
+    .scene-player .miniplayer-play { background: var(--scene); }
+    .wasthere-player .miniplayer-art { background: linear-gradient(135deg, #4c1d95, #7c3aed); }
+    .deepcuts-player .miniplayer-art { background: linear-gradient(135deg, #0c4a6e, #0284c7); }
+    .scene-player .miniplayer-art { background: linear-gradient(135deg, #1e3a8a, #3b82f6); }
+
+    /* ── Deep links ──
+       Each is a navigable link into the app (artist, venue, or timeline scene).
+       Compact pill style in the feed; fuller pill with type badge in permalink.
+    ── */
+    .deep-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .deep-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+      background: var(--bg);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .deep-links a:hover { border-color: var(--wasthere); color: var(--wasthere); }
+
+    /* ── Tags — muted, below deep links ── */
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--very-muted);
+      background: var(--tag-bg);
+      border-radius: 999px;
+      padding: 2px 7px;
+      text-decoration: none;
+    }
+    .tag:hover { color: var(--wasthere); }
+
+    /* ── Show more ── */
+    .show-more-wrap { text-align: center; margin: 4px 0 40px; }
+    .show-more {
+      height: 44px;
+      padding: 0 32px;
+      border-radius: 22px;
+      border: 1.5px solid var(--card-border);
+      background: var(--card-bg);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .show-more:hover { border-color: var(--wasthere); color: var(--wasthere); }
+
+    /* ── RSS footer ── */
+    .rss-footer {
+      border-top: 1px solid var(--card-border);
+      padding-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--very-muted);
+      font-size: 12px;
+    }
+    .rss-footer a { color: var(--very-muted); text-decoration: none; }
+    .rss-footer a:hover { color: var(--wasthere); }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      .page { padding: 28px 16px; }
+      .page-title { font-size: 28px; }
+      .page-subtitle { font-size: 14px; }
+      .post-image-placeholder { height: 180px; }
+      .post-content { padding: 16px 16px 14px; }
+      .post-headline { font-size: 19px; }
+      .topnav { padding: 12px 16px; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mock-banner">DESIGN MOCK — /liner-notes feed · iteration 2</div>
+
+<!-- Top nav -->
+<nav class="topnav">
+  <a href="#" class="back">← Archive</a>
+  <span class="sep">|</span>
+  <a href="#">About</a>
+  <span class="sep">|</span>
+  <a href="whats-playing.html">What's Playing</a>
+</nav>
+
+<main class="page">
+
+  <!-- Header -->
+  <header class="page-header">
+    <h1 class="page-title">Liner Notes</h1>
+    <p class="page-subtitle">Stories from 42 years of live music</p>
+  </header>
+
+  <!-- Filter section -->
+  <div class="filter-section">
+    <p class="filter-label">Browse by</p>
+    <div class="filter-chips" role="group" aria-label="Filter stories">
+      <button class="chip active all">
+        <span class="chip-dot"></span>
+        All
+      </button>
+      <button class="chip scene">
+        <span class="chip-dot"></span>
+        The Scene
+      </button>
+      <button class="chip wasthere">
+        <span class="chip-dot"></span>
+        I Was There
+      </button>
+      <button class="chip deepcuts">
+        <span class="chip-dot"></span>
+        Deep Cuts
+      </button>
+    </div>
+  </div>
+
+  <!-- Post count -->
+  <p class="post-count">12 liner notes · Updated weekly</p>
+
+  <!-- ── POST 1: I Was There (Personal Connection) ── -->
+  <article class="post-card wasthere">
+    <div class="post-image-placeholder"
+      style="background: linear-gradient(135deg, #1a0533 0%, #4c1d95 55%, #7c3aed 100%);">
+      artist photo · Depeche Mode
+    </div>
+    <div class="post-content">
+      <div class="post-meta">
+        <span class="post-category wasthere">
+          <span class="dot"></span>
+          I Was There
+        </span>
+        <time class="post-date" datetime="2026-03-08">March 8, 2026</time>
+      </div>
+      <a href="liner-notes-permalink.html" class="post-headline">38 Years of Depeche Mode</a>
+      <p class="post-prose">
+        I first saw Depeche Mode at Irvine Meadows in 1985, the year they released
+        <em>Some Great Reward</em>. 38 years later, I watched them fill Dodger Stadium —
+        same band, same intensity, just 41,000 more people.
+      </p>
+      <div class="miniplayer wasthere-player">
+        <div class="miniplayer-art"></div>
+        <div class="miniplayer-info">
+          <div class="miniplayer-track">Enjoy the Silence</div>
+          <div class="miniplayer-artist">Depeche Mode · Violator</div>
+        </div>
+        <button class="miniplayer-play" aria-label="Play preview">
+          <svg width="10" height="12" viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg>
+        </button>
+        <span class="miniplayer-duration">0:30</span>
+      </div>
+      <nav class="deep-links" aria-label="Explore in the archive">
+        <a href="#">Depeche Mode</a>
+        <a href="#">Irvine Meadows</a>
+        <a href="#">Dodger Stadium</a>
+      </nav>
+      <div class="tags">
+        <a href="#" class="tag">#artist-longevity</a>
+        <a href="#" class="tag">#multi-decade</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- ── POST 2: Deep Cuts ── -->
+  <article class="post-card deepcuts">
+    <div class="post-image-placeholder"
+      style="background: linear-gradient(135deg, #083344 0%, #0891b2 55%, #67e8f9 100%);">
+      album art · Tears for Fears
+    </div>
+    <div class="post-content">
+      <div class="post-meta">
+        <span class="post-category deepcuts">
+          <span class="dot"></span>
+          Deep Cuts
+        </span>
+        <time class="post-date" datetime="2026-03-08">March 8, 2026</time>
+      </div>
+      <a href="liner-notes-permalink.html" class="post-headline">June 4th Keeps Showing Up</a>
+      <p class="post-prose">
+        June 4th appears in my concert history four separate times: Howard Jones in 1985,
+        The Smithereens in 1992, Tears for Fears in 2022, The Human League in 2026.
+        Forty-one years, one date. I've stopped calling it a coincidence.
+      </p>
+      <nav class="deep-links" aria-label="Explore in the archive">
+        <a href="#">Howard Jones</a>
+        <span class="sep">·</span>
+        <a href="#">Tears for Fears</a>
+        <span class="sep">·</span>
+        <a href="#">The Human League</a>
+        <span class="sep">·</span>
+        <a href="#">Timeline: 1985</a>
+      </nav>
+      <div class="tags">
+        <a href="#" class="tag">#calendar-quirk</a>
+        <a href="#" class="tag">#pattern</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- ── POST 3: The Scene (Cultural Context) ── -->
+  <article class="post-card scene">
+    <div class="post-image-placeholder"
+      style="background: linear-gradient(135deg, #0c1445 0%, #1e3a8a 55%, #3b82f6 100%);">
+      venue photo · Pacific Amphitheatre
+    </div>
+    <div class="post-content">
+      <div class="post-meta">
+        <span class="post-category scene">
+          <span class="dot"></span>
+          The Scene
+        </span>
+        <time class="post-date" datetime="2026-03-01">March 1, 2026</time>
+      </div>
+      <a href="liner-notes-permalink.html" class="post-headline">Pacific Amphitheatre: Five Decades</a>
+      <p class="post-prose">
+        The Pacific Amphitheatre has anchored Orange County summers since before I started
+        going to shows. Eight concerts across five decades — from Thompson Twins in 1984 to
+        Peter Gabriel in 2023. The venue closed and reopened once in that time. I outlasted it.
+      </p>
+      <nav class="deep-links" aria-label="Explore in the archive">
+        <a href="#">Pacific Amphitheatre</a>
+        <span class="sep">·</span>
+        <a href="#">Thompson Twins</a>
+        <span class="sep">·</span>
+        <a href="#">Peter Gabriel</a>
+      </nav>
+      <div class="tags">
+        <a href="#" class="tag">#venue-loyalty</a>
+        <a href="#" class="tag">#multi-decade</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- Show More -->
+  <div class="show-more-wrap">
+    <button class="show-more">Show 9 more liner notes</button>
+  </div>
+
+  <!-- RSS footer -->
+  <footer class="rss-footer">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/>
+      <circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/>
+    </svg>
+    <a href="#">Subscribe via RSS</a>
+  </footer>
+
+</main>
+</body>
+</html>

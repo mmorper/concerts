@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>38 Years of Depeche Mode — Morperhaus Liner Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fafaf9;
+      --card-bg: #ffffff;
+      --card-border: #e5e7eb;
+      --title: #1f2937;
+      --body: #374151;
+      --muted: #6b7280;
+      --very-muted: #9ca3af;
+      --tag-bg: #f3f4f6;
+      --wasthere: #5b21b6;  /* I Was There — Personal Connection */
+      --focus-ring: rgba(124, 58, 237, 0.35);
+    }
+
+    html, body { background: var(--bg); font-family: 'Source Sans 3', sans-serif; color: var(--body); }
+
+    /* ── Mock banner ── */
+    .mock-banner {
+      background: #5b21b6;
+      color: white;
+      text-align: center;
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Top nav (sticky) — light scene pattern ── */
+    .topnav {
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid var(--card-border);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topnav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--title);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 44px;
+      align-self: center;
+    }
+    .topnav a:hover { color: var(--wasthere); }
+    .topnav a:focus-visible { outline: 2px solid var(--wasthere); outline-offset: 2px; border-radius: 4px; }
+    .topnav .sep { color: #d1d5db; }
+    .topnav a.secondary { color: var(--muted); font-weight: 400; }
+
+    /* ── Page shell ── */
+    .page { max-width: 800px; margin: 0 auto; padding: 40px 24px 64px; }
+
+    /* ── Post image ── */
+    .post-image {
+      width: 100%;
+      height: 360px;
+      border-radius: 12px;
+      object-fit: cover;
+      display: block;
+      margin-bottom: 28px;
+    }
+    .post-image-placeholder {
+      width: 100%;
+      height: 360px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.06em;
+      margin-bottom: 28px;
+      background: linear-gradient(135deg, #1a0533 0%, #4c1d95 50%, #7c3aed 100%);
+    }
+
+    /* ── Post meta ── */
+    .post-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .post-category {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--wasthere);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .post-category .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--wasthere);
+    }
+    .post-date { font-size: 12px; color: var(--very-muted); }
+
+    /* ── Headline — Playfair Display, 28px, tight leading ── */
+    h1.post-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--title);
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+
+    /* ── Prose — Source Sans 3, 18px, generous leading ── */
+    .post-prose {
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--body);
+      margin-bottom: 24px;
+    }
+
+    /* ── MiniPlayer ── */
+    .miniplayer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f9fafb;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 28px;
+    }
+    .miniplayer-art {
+      width: 44px; height: 44px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #4c1d95, #7c3aed);
+      flex-shrink: 0;
+    }
+    .miniplayer-info { flex: 1; min-width: 0; }
+    .miniplayer-track { font-size: 14px; font-weight: 600; color: var(--title); }
+    .miniplayer-artist { font-size: 12px; color: var(--muted); margin-top: 1px; }
+    .miniplayer-play {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--wasthere);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .miniplayer-play:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+    .miniplayer-play svg { fill: white; margin-left: 2px; }
+    .miniplayer-duration { font-size: 11px; color: var(--very-muted); }
+
+    /* ── Section divider ── */
+    .section-divider {
+      border: none;
+      border-top: 1px solid #f0f0ef;
+      margin: 28px 0;
+    }
+
+    /* ── Deep links section — primary CTA ── */
+    /*
+      Deep links drive traffic INTO the archive.
+      Each name is a link that navigates to the app:
+        • Artist name  → /?scene=artists&artist={slug}
+        • Venue name   → /?scene=venues&venue={slug}
+        • Year / date  → /?scene=timeline&year={year}
+
+      Styled as navigation links, not decorative text.
+      Section has a label to communicate intent.
+    */
+    .deep-links-section { margin-bottom: 20px; }
+    .deep-links-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--very-muted);
+      margin-bottom: 10px;
+    }
+    .deep-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    /*
+      Each deep link is a pill-shaped button — clearly tappable,
+      communicates "navigate to this thing in the archive"
+    */
+    .deep-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      height: 36px;
+      padding: 0 14px;
+      border-radius: 18px;
+      border: 1.5px solid var(--card-border);
+      background: var(--card-bg);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+    .deep-link:hover {
+      border-color: var(--wasthere);
+      color: var(--wasthere);
+      background: #faf5ff;
+    }
+    .deep-link:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+    /* small icon to the right of the text */
+    .deep-link svg { opacity: 0.5; flex-shrink: 0; }
+    .deep-link:hover svg { opacity: 1; }
+
+    /* Type badges inside the links */
+    .deep-link .type-badge {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 1px 5px;
+      border-radius: 3px;
+      background: var(--tag-bg);
+      color: var(--very-muted);
+    }
+
+    /* ── Tags ── */
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--very-muted);
+      background: var(--tag-bg);
+      border-radius: 999px;
+      padding: 3px 9px;
+      text-decoration: none;
+    }
+    .tag:hover { color: var(--wasthere); }
+    .tag:focus-visible { outline: 2px solid var(--wasthere); outline-offset: 2px; }
+
+    /* ── Related posts placeholder ── */
+    .related {
+      border-top: 1px solid #f0f0ef;
+      padding-top: 24px;
+    }
+    .related-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--very-muted);
+      margin-bottom: 10px;
+    }
+    .related-placeholder {
+      font-size: 14px;
+      color: var(--very-muted);
+      font-style: italic;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      .page { padding: 24px 16px 48px; }
+      .post-image-placeholder { height: 220px; }
+      h1.post-headline { font-size: 24px; }
+      .post-prose { font-size: 16px; line-height: 1.65; }
+      .topnav { padding: 12px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mock-banner">DESIGN MOCK — /liner-notes/:slug permalink · not production</div>
+
+<!-- Top nav -->
+<nav class="topnav">
+  <a href="liner-notes-feed.html">
+    <!-- left arrow -->
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+    Liner Notes
+  </a>
+  <span class="sep">|</span>
+  <a href="#" class="secondary">About</a>
+  <span class="sep">|</span>
+  <a href="whats-playing.html" class="secondary">What's Playing</a>
+</nav>
+
+<main class="page">
+
+  <!-- Post hero image -->
+  <div class="post-image-placeholder" role="img" aria-label="Depeche Mode artist photo">
+    artist photo · Depeche Mode
+  </div>
+
+  <!-- Meta -->
+  <div class="post-meta">
+    <span class="post-category">
+      <span class="dot"></span>
+      I Was There
+    </span>
+    <time class="post-date" datetime="2026-03-08">March 8, 2026</time>
+  </div>
+
+  <!-- Headline -->
+  <h1 class="post-headline">38 Years of Depeche Mode</h1>
+
+  <!-- Prose -->
+  <p class="post-prose">
+    I first saw Depeche Mode at Irvine Meadows Amphitheatre in 1985, the year they released
+    <em>Some Great Reward</em>. 38 years later, I watched them fill Dodger Stadium — same band,
+    same intensity, just 41,000 more people. Around that time they had just lost Andrew Fletcher,
+    their founding member, and the Memento Mori tour felt heavier for it. That gap between two
+    shows contains most of my concert-going life.
+  </p>
+
+  <!-- MiniPlayer -->
+  <div class="miniplayer" role="region" aria-label="Audio preview">
+    <div class="miniplayer-art"></div>
+    <div class="miniplayer-info">
+      <div class="miniplayer-track">Enjoy the Silence</div>
+      <div class="miniplayer-artist">Depeche Mode · Violator</div>
+    </div>
+    <button class="miniplayer-play" aria-label="Play 30-second preview">
+      <svg width="10" height="12" viewBox="0 0 12 14"><path d="M0 0l12 7-12 7z"/></svg>
+    </button>
+    <span class="miniplayer-duration">0:30</span>
+  </div>
+
+  <hr class="section-divider" />
+
+  <!--
+    ── DEEP LINKS ──────────────────────────────────────────────────────
+    These are the PRIMARY mechanism for driving readers into the archive.
+    Each pill navigates to a scene in the main app:
+      • "Depeche Mode"   → /?scene=artists&artist=depeche-mode
+      • "Irvine Meadows" → /?scene=venues&venue=irvine-meadows
+      • "Dodger Stadium" → /?scene=venues&venue=dodger-stadium
+      • "Timeline: 1985" → /?scene=timeline&year=1985
+    The type badges (Artist / Venue / Year) make the destination clear.
+  -->
+  <div class="deep-links-section">
+    <p class="deep-links-label">Explore in the archive</p>
+    <nav class="deep-links" aria-label="Navigate to related scenes">
+      <a href="#" class="deep-link">
+        <span class="type-badge">Artist</span>
+        Depeche Mode
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a href="#" class="deep-link">
+        <span class="type-badge">Venue</span>
+        Irvine Meadows
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a href="#" class="deep-link">
+        <span class="type-badge">Venue</span>
+        Dodger Stadium
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a href="#" class="deep-link">
+        <span class="type-badge">Year</span>
+        1985
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Tags -->
+  <div class="tags" role="list">
+    <a href="liner-notes-feed.html?tag=artist-longevity" class="tag" role="listitem">#artist-longevity</a>
+    <a href="liner-notes-feed.html?tag=multi-decade" class="tag" role="listitem">#multi-decade</a>
+  </div>
+
+  <!-- Related posts (deferred until 30+ posts) -->
+  <hr class="section-divider" />
+  <div class="related">
+    <p class="related-label">Related</p>
+    <p class="related-placeholder">More liner notes appear here once the feed grows.</p>
+  </div>
+
+</main>
+</body>
+</html>

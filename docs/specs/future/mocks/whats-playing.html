@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What's Playing — Morperhaus Concert Archives</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fafaf9;
+      --card-bg: #ffffff;
+      --card-border: #e5e7eb;
+      --card-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      --title: #1f2937;
+      --body: #374151;
+      --muted: #6b7280;
+      --very-muted: #9ca3af;
+      --tag-bg: #f3f4f6;
+      --accent: #d97706;   /* amber — release/version accent */
+      --focus-ring: rgba(217, 119, 6, 0.35);
+    }
+
+    html, body { background: var(--bg); font-family: 'Source Sans 3', sans-serif; color: var(--body); }
+
+    /* ── Mock banner ── */
+    .mock-banner {
+      background: #d97706;
+      color: white;
+      text-align: center;
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Top nav — light scene pattern ── */
+    .topnav {
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid var(--card-border);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topnav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--title);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 44px;
+      align-self: center;
+    }
+    .topnav a:hover { color: var(--accent); }
+    .topnav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .topnav .sep { color: #d1d5db; }
+    .topnav a.secondary { color: var(--muted); font-weight: 400; }
+
+    /* ── Page shell ── */
+    .page { max-width: 768px; margin: 0 auto; padding: 48px 24px 64px; }
+
+    /* ── Page header ── */
+    .page-header { margin-bottom: 36px; }
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--title);
+      margin-bottom: 6px;
+    }
+    .page-subtitle { font-size: 16px; color: var(--muted); }
+
+    /* ── Release list — single column (max-width matches liner notes) ── */
+    .release-list { display: flex; flex-direction: column; gap: 20px; }
+
+    /* ── Release card — light scene aesthetic ── */
+    .release-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-left: 4px solid transparent;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      padding: 24px;
+      position: relative;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .release-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    .release-card.latest {
+      border-left-color: var(--accent);
+    }
+
+    /* ── Latest badge ── */
+    .latest-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--accent);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Card header ── */
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .version-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.03em;
+    }
+    .release-date { font-size: 12px; color: var(--very-muted); }
+
+    /* ── Card title — Section Header scale ── */
+    .release-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--title);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    /* ── Description ── */
+    .release-desc {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--body);
+      margin-bottom: 16px;
+    }
+
+    /* ── Highlights ── */
+    .highlights {
+      list-style: none;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .highlights li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .highlights li::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    /* ── CTA button — light scene primary pattern ── */
+    /*
+      Design system: light scene primary = bg-white border inactive → bg-violet-600 active.
+      Here we use amber to stay consistent with the amber release identity,
+      but the pattern (solid bg, white text, 44px) follows the design system.
+    */
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 44px;
+      padding: 0 20px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .cta-btn:hover { background: #b45309; }
+    .cta-btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+    .cta-btn svg { opacity: 0.8; }
+
+    /* ── RSS footer ── */
+    .rss-footer {
+      border-top: 1px solid var(--card-border);
+      padding-top: 20px;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--very-muted);
+      font-size: 12px;
+    }
+    .rss-footer a { color: var(--very-muted); text-decoration: none; }
+    .rss-footer a:hover { color: var(--accent); }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      .page { padding: 28px 16px 48px; }
+      .page-title { font-size: 28px; }
+      .page-subtitle { font-size: 14px; }
+      .release-card { padding: 18px; }
+      .release-title { font-size: 18px; }
+      .topnav { padding: 12px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mock-banner">DESIGN MOCK — /whats-playing · light theme · no internal releases</div>
+
+<!-- Top nav -->
+<nav class="topnav">
+  <a href="#">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+    Archive
+  </a>
+  <span class="sep">|</span>
+  <a href="liner-notes-feed.html" class="secondary">Liner Notes</a>
+  <span class="sep">|</span>
+  <a href="#" class="secondary">About</a>
+</nav>
+
+<main class="page">
+
+  <!-- Header -->
+  <header class="page-header">
+    <h1 class="page-title">What's Playing</h1>
+    <p class="page-subtitle">App updates and new features</p>
+  </header>
+
+  <!-- Releases — user-facing only, no internal/maintenance entries -->
+  <div class="release-list">
+
+    <!-- v4.3.3 — Latest -->
+    <article class="release-card latest">
+      <span class="latest-badge">Latest</span>
+      <div class="card-meta">
+        <span class="version-badge">v4.3.3</span>
+        <time class="release-date" datetime="2026-03-08">March 8, 2026</time>
+      </div>
+      <h2 class="release-title">Mobile Concert Badges</h2>
+      <p class="release-desc">
+        Upcoming concert badges now appear in the phone artist modal, with date text
+        returning to its correct color on past rows. The mobile experience gets the same
+        treatment as desktop.
+      </p>
+      <ul class="highlights">
+        <li>Upcoming badge in phone modal artist view</li>
+        <li>Past row date color restored on mobile</li>
+        <li>Consistent badge treatment across all viewports</li>
+      </ul>
+      <a href="#" class="cta-btn">
+        See it live
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </article>
+
+    <!-- v4.3.0 -->
+    <article class="release-card">
+      <div class="card-meta">
+        <span class="version-badge">v4.3.0</span>
+        <time class="release-date" datetime="2026-03-07">March 7, 2026</time>
+      </div>
+      <h2 class="release-title">On Deck</h2>
+      <p class="release-desc">
+        Future concerts now get their moment in the spotlight. An upcoming badge appears
+        on Timeline cards and in Artist profiles wherever a show is still ahead — so you
+        always know what's on the horizon.
+      </p>
+      <ul class="highlights">
+        <li>Upcoming badge on Timeline cards for concerts still to come</li>
+        <li>Artist concert history highlights upcoming shows with a distinct badge</li>
+        <li>Consistent treatment across desktop hover previews and mobile</li>
+      </ul>
+      <a href="#" class="cta-btn">
+        See it live
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </article>
+
+    <!-- v4.1.0 -->
+    <article class="release-card">
+      <div class="card-meta">
+        <span class="version-badge">v4.1.0</span>
+        <time class="release-date" datetime="2026-02-05">February 5, 2026</time>
+      </div>
+      <h2 class="release-title">iOS Home Screen Icons</h2>
+      <p class="release-desc">
+        Add the app to your iPhone home screen and it looks the part — custom icons and a
+        proper favicon across every device.
+      </p>
+      <ul class="highlights">
+        <li>Custom iOS home screen icon</li>
+        <li>Favicon optimized for all sizes</li>
+      </ul>
+      <a href="#" class="cta-btn">
+        See it live
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </article>
+
+  </div>
+
+  <!-- RSS footer -->
+  <footer class="rss-footer">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/>
+      <circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/>
+    </svg>
+    <a href="#">Subscribe to Liner Notes via RSS</a>
+  </footer>
+
+</main>
+</body>
+</html>
