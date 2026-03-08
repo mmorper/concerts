@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v4.3.1 (Production)
+**Version:** v4.3.2 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-02-06
 
@@ -103,11 +103,11 @@ These docs provide essential context for common development tasks:
 
 **Recent Releases:**
 
+- **v4.3.2** (2026-03-07): iTunes 100% coverage — search aliases + artist ID lookup for Brian Setzer variants and The Roots (internal)
 - **v4.3.1** (2026-03-07): iTunes-only audio pipeline — drop Deezer (15-min token TTL made it unviable), 429 retry logic, enrich:tracks wired into build-data (internal)
 - **v4.3.0** (2026-03-07): On Deck — upcoming concert badges on Timeline cards and Artist profiles
 - **v4.2.2** (2026-03-07): Venue photos restored — fix expiring Google Places API references, date display fix, Nile Rodgers data
 - **v4.2.1** (2026-02-06): OAuth credentials separation, page tracking utility, spec documentation updates (internal)
-- **v4.2.0** (2026-02-05): SEO Ecosystem & Tooling - Hybrid testing strategy, documentation improvements, GA4 integration fixes (internal)
 - **v4.1.0** (2026-02-05): iOS Home Screen Icons & Favicon - Purple network design with icon generation tooling
 - **v4.0.3** (2026-02-04): Documentation updates - Internal release
 - **v4.0.2** (2026-02-03): Mobile Audio Preview - Enabled playback in mobile Artist modal
@@ -194,4 +194,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-03-07 by Claude Code for v4.3.1 release*
+*Last updated: 2026-03-07 by Claude Code for v4.3.2 release*

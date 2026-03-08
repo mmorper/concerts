@@ -1,6 +1,13 @@
 {
   "releases": [
     {
+      "version": "4.3.2",
+      "date": "2026-03-07",
+      "title": "Full Coverage",
+      "description": "iTunes preview coverage reaches 100% across all artists. Search aliases and direct artist ID lookup resolve the remaining edge cases where Apple Music catalog names differ from concert listings.",
+      "highlights": []
+    },
+    {
       "version": "4.3.1",
       "date": "2026-03-07",
       "title": "Under the Hood",
