@@ -1,12 +1,19 @@
 #!/usr/bin/env tsx
 /**
+ * @deprecated Superseded by the agentic liner notes pipeline (scripts/liner-notes/).
+ *
+ * This script generates facts.json for the legacy "By the Numbers" section
+ * of the Liner Notes component. It will be removed in Phase 4 when the
+ * LinerNotes component is redesigned as a blog feed and facts.json is no
+ * longer consumed by the app.
+ *
+ * DO NOT add new features here. Use scripts/liner-notes/ instead.
+ *
+ * ---
  * Generate Facts Script
  *
  * Computes statistics from concerts.json and generates facts.json
  * for the Liner Notes "By the Numbers" section and llm.txt integration.
- *
- * Facts are designed to be directly quotable by AI agents with natural
- * language headlines and deep links for exploration.
  *
  * Run: npm run generate:facts (or as part of build-data pipeline)
  */
