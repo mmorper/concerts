@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v4.3.2 (Production)
+**Version:** v4.3.3 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-02-06
 
@@ -103,6 +103,7 @@ These docs provide essential context for common development tasks:
 
 **Recent Releases:**
 
+- **v4.3.3** (2026-03-08): Mobile upcoming badges — phone artist modal History tab parity + TS build fix (internal)
 - **v4.3.2** (2026-03-07): iTunes 100% coverage — search aliases + artist ID lookup for Brian Setzer variants and The Roots (internal)
 - **v4.3.1** (2026-03-07): iTunes-only audio pipeline — drop Deezer (15-min token TTL made it unviable), 429 retry logic, enrich:tracks wired into build-data (internal)
 - **v4.3.0** (2026-03-07): On Deck — upcoming concert badges on Timeline cards and Artist profiles
@@ -194,4 +195,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-03-07 by Claude Code for v4.3.2 release*
+*Last updated: 2026-03-08 by Claude Code for v4.3.3 release*
