@@ -222,6 +222,18 @@ npm run prefetch:setlists
 
 If yes, run `/context-sync --stats-only`
 
+**Liner notes pipeline:**
+
+`npm run build-data` automatically runs the agentic liner notes pipeline if `ANTHROPIC_API_KEY` is set. This generates `public/data/liner-notes.json` with 2–3 new posts per run (see `scripts/liner-notes/`). If the key is absent, this step is skipped silently.
+
+To run the liner notes pipeline separately:
+
+```bash
+npm run generate:liner-notes            # Normal run (2-3 posts)
+npm run generate:liner-notes -- --seed  # Seed run (~10 posts, first-time setup)
+npm run generate:liner-notes -- --dry-run  # Preview without writing
+```
+
 ---
 
 ## Mode Presets
@@ -288,3 +300,6 @@ If yes, run `/context-sync --stats-only`
 - `docs/api-setup.md` — API credential configuration
 - `/validate` — Run validation only
 - `/context-sync` — Update context files
+- `scripts/liner-notes/` — Agentic liner notes pipeline (runs automatically in `build-data` when `ANTHROPIC_API_KEY` is set)
+- `/liner-notes` — Agentic blog feed (generated output)
+- `/whats-playing` — App changelog

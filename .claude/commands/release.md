@@ -589,7 +589,7 @@ gh release create v{VERSION} \
 
 {ALL_COMMITS_FORMATTED_AS_BULLETS}
 
-See the [liner notes](https://concerts.morperhaus.org/liner-notes) for user-facing highlights.
+See [What's Playing](https://concerts.morperhaus.org/whats-playing) for user-facing highlights.
 EOF
 )"
 ```
@@ -747,7 +747,7 @@ git commit -m "release: v{VERSION} - {TITLE}"
 
 **Verify (if liner notes published):**
 
-- [ ] `/liner-notes` shows v{VERSION}
+- [ ] `/whats-playing` shows v{VERSION}
 - [ ] Deep link works: `{ROUTE}`
 - [ ] Social media preview shows current stats (test with [Twitter Card Validator](https://cards-dev.twitter.com/validator) or [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/))
 
