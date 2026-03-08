@@ -108,27 +108,6 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
         overflow: 'hidden',
       }}
     >
-      {/* Mobile-only: full-width image at the top */}
-      {hasImage && (
-        <Link
-          to={`/liner-notes/${post.slug}`}
-          className="block sm:hidden"
-          tabIndex={-1}
-          aria-hidden="true"
-        >
-          <img
-            src={post.image.url}
-            alt={post.image.alt}
-            style={{
-              width: '100%',
-              height: 180,
-              objectFit: 'cover',
-              display: 'block',
-            }}
-          />
-        </Link>
-      )}
-
       {/* Content + thumbnail row */}
       <div
         className="flex gap-5 items-start"
@@ -217,11 +196,11 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
           </div>
         </div>
 
-        {/* Desktop-only: thumbnail on the right */}
+        {/* Thumbnail */}
         {hasImage && (
           <Link
             to={`/liner-notes/${post.slug}`}
-            className="hidden sm:block flex-shrink-0"
+            className="flex-shrink-0"
             tabIndex={-1}
             aria-hidden="true"
           >
