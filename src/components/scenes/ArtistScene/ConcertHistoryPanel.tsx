@@ -5,6 +5,7 @@ import { Link2 } from 'lucide-react'
 import { getGenreColor } from '../../../constants/colors'
 import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
 import { TourBadge } from './TourBadge'
+import { LinerNotesBadge } from './LinerNotesBadge'
 import type { ArtistCard, ArtistConcert } from './types'
 import { haptics } from '../../../utils/haptics'
 import { normalizeVenueName } from '../../../utils/normalize'
@@ -19,6 +20,7 @@ interface ConcertHistoryPanelProps {
   tourCount?: number // v1.6.0 - Number of upcoming tour dates
   isTourPanelActive?: boolean // v1.6.0 - Whether tour panel is currently open
   onTourBadgeClick?: () => void // v1.6.0 - Handler for tour badge click
+  linerNotesCount?: number // #66 - Number of liner notes posts for this artist
   isPhone?: boolean // v3.2.0 - Phone layout mode
 }
 
@@ -50,6 +52,7 @@ export function ConcertHistoryPanel({
   tourCount = 0,
   isTourPanelActive = false,
   onTourBadgeClick,
+  linerNotesCount = 0,
   isPhone = false
 }: ConcertHistoryPanelProps) {
   const navigate = useNavigate()
@@ -162,16 +165,25 @@ export function ConcertHistoryPanel({
             {artist.primaryGenre} · {artist.timesSeen} {artist.timesSeen === 1 ? 'show' : 'shows'}
           </p>
 
-          {/* Tour Badge (v1.6.0) - Only shows if artist has upcoming dates */}
-          {tourCount > 0 && onTourBadgeClick && (
-            <div className="mt-2">
-              <TourBadge
-                tourCount={tourCount}
-                artistName={artist.name}
-                isActive={isTourPanelActive}
-                onClick={onTourBadgeClick}
-                show={true}
-              />
+          {/* Badges row — Tour + Liner Notes */}
+          {(tourCount > 0 || linerNotesCount > 0) && (
+            <div className="mt-2 flex flex-wrap gap-2">
+              {tourCount > 0 && onTourBadgeClick && (
+                <TourBadge
+                  tourCount={tourCount}
+                  artistName={artist.name}
+                  isActive={isTourPanelActive}
+                  onClick={onTourBadgeClick}
+                  show={true}
+                />
+              )}
+              {linerNotesCount > 0 && (
+                <LinerNotesBadge
+                  count={linerNotesCount}
+                  artistNormalizedName={artist.normalizedName}
+                  artistName={artist.name}
+                />
+              )}
             </div>
           )}
         </div>

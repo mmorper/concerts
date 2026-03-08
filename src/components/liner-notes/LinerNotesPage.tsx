@@ -5,8 +5,9 @@
  */
 
 import { useEffect, useState, useRef } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Rss } from 'lucide-react'
+import { Rss, X } from 'lucide-react'
 import type { LinerNotesPost, LinerNotesData, PostCategory } from '../../types/liner-notes'
 import { LinerNoteCard } from './LinerNoteCard'
 import { CategoryFilterChips } from './CategoryFilterChips'
@@ -18,8 +19,21 @@ const LOAD_MORE_COUNT = 10
 
 type ActiveCategory = PostCategory | 'all'
 
+/** Humanize a normalized slug: "howard-jones" → "Howard Jones" */
+function slugToLabel(slug: string): string {
+  return slug
+    .split('-')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')
+}
+
 export function LinerNotesPage() {
   const headerRef = useRef<HTMLHeadingElement>(null)
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  // URL-driven filters (#66)
+  const artistParam = searchParams.get('artist')
+  const venueParam = searchParams.get('venue')
 
   const [posts, setPosts] = useState<LinerNotesPost[]>([])
   const [totalPosts, setTotalPosts] = useState(0)
@@ -52,9 +66,14 @@ export function LinerNotesPage() {
       })
   }, [])
 
-  const filtered = posts.filter((p) =>
-    activeCategory === 'all' || p.category === activeCategory
-  )
+  const filtered = posts.filter((p) => {
+    if (activeCategory !== 'all' && p.category !== activeCategory) return false
+    // Exclude aggregate posts from artist/venue URL filters (#66)
+    if ((artistParam || venueParam) && p.aggregate) return false
+    if (artistParam && !p.artists.includes(artistParam)) return false
+    if (venueParam && !p.venues.includes(venueParam)) return false
+    return true
+  })
 
   const visible = filtered.slice(0, visibleCount)
   const hasMore = visibleCount < filtered.length
@@ -140,6 +159,48 @@ export function LinerNotesPage() {
           </motion.p>
         </header>
 
+        {/* Active artist/venue filter chips (#66) */}
+        {(artistParam || venueParam) && (
+          <div className="flex items-center gap-2 flex-wrap mb-4">
+            {artistParam && (
+              <span className="inline-flex items-center gap-1.5 font-sans text-xs font-medium px-3 py-1 rounded-full"
+                style={{ background: 'rgba(79,70,229,0.08)', color: '#4f46e5', border: '1px solid rgba(79,70,229,0.2)' }}>
+                Artist: {slugToLabel(artistParam)}
+                <button
+                  onClick={() => {
+                    const next = new URLSearchParams(searchParams)
+                    next.delete('artist')
+                    setSearchParams(next)
+                  }}
+                  aria-label={`Remove artist filter: ${slugToLabel(artistParam)}`}
+                  className="hover:opacity-70 transition-opacity"
+                  style={{ lineHeight: 1 }}
+                >
+                  <X size={12} />
+                </button>
+              </span>
+            )}
+            {venueParam && (
+              <span className="inline-flex items-center gap-1.5 font-sans text-xs font-medium px-3 py-1 rounded-full"
+                style={{ background: 'rgba(79,70,229,0.08)', color: '#4f46e5', border: '1px solid rgba(79,70,229,0.2)' }}>
+                Venue: {slugToLabel(venueParam)}
+                <button
+                  onClick={() => {
+                    const next = new URLSearchParams(searchParams)
+                    next.delete('venue')
+                    setSearchParams(next)
+                  }}
+                  aria-label={`Remove venue filter: ${slugToLabel(venueParam)}`}
+                  className="hover:opacity-70 transition-opacity"
+                  style={{ lineHeight: 1 }}
+                >
+                  <X size={12} />
+                </button>
+              </span>
+            )}
+          </div>
+        )}
+
         {/* Filter row + meta — horizontal across top */}
         <div className="flex items-center justify-between gap-4 mb-6 flex-wrap">
           <CategoryFilterChips active={activeCategory} onChange={handleCategoryChange} />
@@ -147,7 +208,7 @@ export function LinerNotesPage() {
           <div className="flex items-center gap-4 flex-shrink-0">
             <p className="font-sans text-xs text-gray-400">
               {filtered.length} {filtered.length === 1 ? 'story' : 'stories'}
-              {activeCategory !== 'all' ? ' matching filter' : ` · ${totalPosts} total`}
+              {(activeCategory !== 'all' || artistParam || venueParam) ? ' matching filter' : ` · ${totalPosts} total`}
               {' · Updated weekly'}
             </p>
             <a

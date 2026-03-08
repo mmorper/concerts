@@ -76,6 +76,8 @@ export interface LinerNotesPost {
   score: number;
   detector: string;
   publishedAt: string;      // ISO timestamp
+  /** When true, post covers the full archive and is excluded from artist/venue URL filters */
+  aggregate?: boolean;
 
   // AI discoverability
   searchableNarrative?: string;

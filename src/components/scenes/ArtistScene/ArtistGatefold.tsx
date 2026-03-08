@@ -6,6 +6,7 @@ import { LinerNotesPanel } from './LinerNotesPanel'
 import { TourDatesPanel } from './TourDatesPanel'
 import { fetchSetlist } from '../../../services/setlistfm'
 import { useTourDates } from '../../../hooks/useTourDates'
+import { useLinerNotesCount } from '../../../hooks/useLinerNotesCount'
 import { useGatefoldOrientation } from '../../../hooks/useGatefoldOrientation'
 import { haptics } from '../../../utils/haptics'
 import type { ArtistCard, ArtistConcert } from './types'
@@ -57,6 +58,9 @@ export function ArtistGatefold({
   const [setlistData, setSetlistData] = useState<Setlist | null>(null)
   const [isLoadingSetlist, setIsLoadingSetlist] = useState(false)
   const [setlistError, setSetlistError] = useState<string | null>(null)
+
+  // Liner notes count (#66)
+  const { count: linerNotesCount } = useLinerNotesCount(artist?.normalizedName ?? null)
 
   // Tour dates eager loading (v1.6.0)
   const { tourDates, tourCount, isLoading: isLoadingTourDates, error: tourDatesError } = useTourDates(
@@ -689,6 +693,7 @@ export function ArtistGatefold({
                       tourCount={tourCount}
                       isTourPanelActive={activePanel === 'tour-dates'}
                       onTourBadgeClick={handleTourBadgeClick}
+                      linerNotesCount={linerNotesCount}
                     />
                   </div>
                 </div>
@@ -716,6 +721,7 @@ export function ArtistGatefold({
                     tourCount={tourCount}
                     isTourPanelActive={activePanel === 'tour-dates'}
                     onTourBadgeClick={handleTourBadgeClick}
+                    linerNotesCount={linerNotesCount}
                     isPhone={true}
                   />
 
