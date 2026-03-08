@@ -57,6 +57,7 @@
     "generate:rss": "tsx scripts/generate-rss.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
     "@types/d3": "^7.4.3",
     "csv-parse": "^6.1.0",
     "d3": "^7.9.0",
