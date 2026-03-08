@@ -34,6 +34,7 @@ Orchestrates the release workflow. References existing docs for details.
 | 9 | GitHub release | `gh release create` (all commits) |
 | 10 | Close related issues | `gh issue close` (selected issues) |
 | 11 | Post-release | Verification checklist |
+| 11.5 | Clean up handoff docs | Remove consumed `memory/session-handoff-*.md` |
 
 ---
 
@@ -751,6 +752,38 @@ git commit -m "release: v{VERSION} - {TITLE}"
 - [ ] Social media preview shows current stats (test with [Twitter Card Validator](https://cards-dev.twitter.com/validator) or [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/))
 
 **If something's wrong:** `/release-undo`
+
+---
+
+### Step 11.5: Clean Up Session Handoff Docs
+
+Check for consumed session handoff files:
+
+```bash
+ls memory/session-handoff-*.md 2>/dev/null
+```
+
+**If handoff files exist:**
+
+> 🗂️ **Session handoff docs found:**
+>
+> - `memory/session-handoff-2026-03-07.md`
+>
+> These were created to bridge a previous context limit. Now that work is shipped, they can be removed.
+>
+> Delete them? (yes / no)
+
+**If confirmed:**
+
+```bash
+rm memory/session-handoff-*.md
+```
+
+Output: `✓ Removed N handoff file(s)`
+
+**If declined:** Leave them — they may describe work still in progress.
+
+**If no handoff files:** Skip silently.
 
 ---
 
