@@ -1,7 +1,200 @@
 {
-  "generatedAt": "2026-03-08T22:32:06.279Z",
+  "generatedAt": "2026-03-08T23:08:41.464Z",
   "dataHash": "7b0fb380",
   "posts": [
+    {
+      "id": "drought-comeback-ub40",
+      "slug": "ub40-35-years-between-shows",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "UB40: 35 Years Between Shows",
+      "prose": "I saw UB40 at Pacific Amphitheatre in 1988, back when \"Red Red Wine\" was still fresh and their reggae-pop was everywhere on the radio. Thirty-five years passed before I caught them again at the Peacock Theater in 2023 — the longest gap between any artist in my concert history. Walking into that LA venue, I wondered if they'd still have that Birmingham-meets-Jamaica energy that made their Labour of Love covers so infectious. Time had changed us both, but the music hit exactly the same way it did in Costa Mesa all those decades ago.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/tsysvw1341332686.jpg",
+        "alt": "UB40",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Red Red Wine (12'' Version)",
+        "artistName": "UB40",
+        "albumName": "Labour of Love",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/cb/bb/96/cbbb9631-abce-1871-07b2-8c71fb408fad/mzaf_15665530028010085502.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/84/c2/52/84c25239-f4a6-1b09-c046-9669784497d6/00077778641254.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/red-red-wine-12-version/723495499?i=723495673&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "ub40"
+      ],
+      "venues": [
+        "pacific-amphitheatre",
+        "peacock-theater"
+      ],
+      "years": [
+        1988,
+        2023
+      ],
+      "tags": [
+        "#drought",
+        "#comeback"
+      ],
+      "deepLinks": [
+        {
+          "label": "UB40",
+          "url": "/?scene=artists&artist=ub40",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=venues&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "Peacock Theater",
+          "url": "/?scene=venues&venue=peacock-theater",
+          "type": "venue"
+        },
+        {
+          "label": "1988",
+          "url": "/?scene=timeline&year=1988",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "pacific-amphitheatre-16-shows-over-5-decades",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 41,
+      "detector": "drought-comeback",
+      "publishedAt": "2026-03-08T23:08:41.464Z"
+    },
+    {
+      "id": "genre-outlier-the-brian-setzer-orchestra",
+      "slug": "the-brian-setzer-orchestra-a-jazz-blues-outlier-in-a-rock-electronic-reggae-arch",
+      "category": "deep-cut",
+      "temporality": "evergreen",
+      "headline": "The Brian Setzer Orchestra: A Jazz/Blues Outlier in a Rock / Electronic / Reggae Archive",
+      "prose": "I just discovered that The Brian Setzer Orchestra represents my only swing and blues shows in an archive that's 86% rock, electronic, and reggae. Three shows across 22 years — Hard Rock Cafe in Newport Beach in 1995, Universal Amphitheater in 2002, and the Warner Theatre in DC in 2017 — stand as complete genre outliers in my concert history. It's fascinating that my musical wandering led me to catch them during three different decades, from the \"Dirty Boogie\" era through their Christmas tours. Sometimes the most revealing thing about your taste is what doesn't fit the pattern.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg",
+        "alt": "The Brian Setzer Orchestra",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Jump, Jive an' Wail",
+        "artistName": "The Brian Setzer Orchestra",
+        "albumName": "The Dirty Boogie",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/7f/c5/43/7fc543bf-ee41-b3aa-81da-edbaf7995403/mzaf_7474708702167455145.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/1c/32/96/1c32968d-aadc-3eeb-552c-5604f7ccb3ea/00606949018320.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/jump-jive-an-wail/1440903312?i=1440903436&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "the-brian-setzer-orchestra"
+      ],
+      "venues": [
+        "hard-rock-cafe",
+        "universal-amphitheater",
+        "warner-theatre"
+      ],
+      "years": [
+        1995,
+        2002,
+        2017
+      ],
+      "tags": [
+        "#genre-outlier",
+        "#jazz-blues"
+      ],
+      "deepLinks": [
+        {
+          "label": "The Brian Setzer Orchestra",
+          "url": "/?scene=artists&artist=the-brian-setzer-orchestra",
+          "type": "artist"
+        },
+        {
+          "label": "Hard Rock Cafe",
+          "url": "/?scene=venues&venue=hard-rock-cafe",
+          "type": "venue"
+        },
+        {
+          "label": "Universal Amphitheater",
+          "url": "/?scene=venues&venue=universal-amphitheater",
+          "type": "venue"
+        },
+        {
+          "label": "1995",
+          "url": "/?scene=timeline&year=1995",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "universal-amphitheater-5-shows-before-it-was-demolished",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 40,
+      "detector": "genre-outlier",
+      "publishedAt": "2026-03-08T23:08:41.464Z"
+    },
+    {
+      "id": "album-context-the-bends-the-brian-setzer-orchestra",
+      "slug": "the-brian-setzer-orchestra-days-after-the-bends-dropped",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "The Brian Setzer Orchestra — Days After The Bends Dropped",
+      "prose": "March 1995 was a pivotal moment in rock history — Radiohead had just released The Bends, the album that signaled they were doing something different from everyone else, and I found myself at the Hard Rock Cafe in Newport Beach just 13 days later watching The Brian Setzer Orchestra swing through their rockabilly revival. While Thom Yorke was pushing guitar music into uncharted emotional territory, I was experiencing the opposite impulse: Brian Setzer's calculated nostalgia, all pompadour and upright bass, pulling rock back to its 1950s roots. The timing feels like a perfect snapshot of mid-'90s music culture — innovation and retro-fetishism existing in the same two-week span, both trying to solve the problem of what rock could be after grunge.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg",
+        "alt": "The Brian Setzer Orchestra",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Jump, Jive an' Wail",
+        "artistName": "The Brian Setzer Orchestra",
+        "albumName": "The Dirty Boogie",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/7f/c5/43/7fc543bf-ee41-b3aa-81da-edbaf7995403/mzaf_7474708702167455145.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/1c/32/96/1c32968d-aadc-3eeb-552c-5604f7ccb3ea/00606949018320.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/jump-jive-an-wail/1440903312?i=1440903436&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "the-brian-setzer-orchestra"
+      ],
+      "venues": [
+        "hard-rock-cafe"
+      ],
+      "years": [
+        1995
+      ],
+      "tags": [
+        "#album-context",
+        "#cultural-moment"
+      ],
+      "deepLinks": [
+        {
+          "label": "The Brian Setzer Orchestra",
+          "url": "/?scene=artists&artist=the-brian-setzer-orchestra",
+          "type": "artist"
+        },
+        {
+          "label": "Hard Rock Cafe",
+          "url": "/?scene=venues&venue=hard-rock-cafe",
+          "type": "venue"
+        },
+        {
+          "label": "1995",
+          "url": "/?scene=timeline&year=1995",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "universal-amphitheater-5-shows-before-it-was-demolished"
+      ],
+      "score": 37,
+      "detector": "album-context",
+      "publishedAt": "2026-03-08T23:08:41.464Z"
+    },
     {
       "id": "festival-mega-bill-concert-130",
       "slug": "social-distortion-14-more-2018-festival-bill",
@@ -2651,10 +2844,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 31,
-    "totalGenerated": 32,
+    "totalPosts": 34,
+    "totalGenerated": 35,
     "averageScore": 39.7,
-    "lastPipelineRun": "2026-03-08T21:52:43.098Z",
+    "lastPipelineRun": "2026-03-08T23:08:41.464Z",
     "concertsAnalyzed": 177,
     "feedUrl": "/liner-notes.xml"
   }
