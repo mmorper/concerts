@@ -16,6 +16,7 @@ const exec = promisify(execCallback)
  *   npm run build-data -- --dry-run       # Preview without writing files
  *   npm run build-data -- --skip-venues   # Skip venue enrichment
  *   npm run build-data -- --skip-spotify  # Skip Spotify enrichment
+ *   npm run build-data -- --skip-tracks   # Skip top tracks enrichment
  *   npm run build-data -- --skip-setlists # Skip setlist pre-fetch
  *   npm run build-data -- --force-refresh-setlists # Re-fetch all setlists
  *
@@ -25,6 +26,7 @@ const exec = promisify(execCallback)
  *   --skip-venues             Skip venue metadata enrichment (Google Places)
  *   --skip-spotify            Skip Spotify metadata enrichment
  *   --skip-discography        Skip discography enrichment (MusicBrainz)
+ *   --skip-tracks             Skip top tracks enrichment (iTunes/Deezer)
  *   --skip-setlists           Skip setlist pre-fetch (setlist.fm)
  *   --force-refresh-setlists  Re-fetch all setlists (ignore cache)
  */
@@ -35,6 +37,7 @@ async function buildData() {
   const skipVenues = process.argv.includes('--skip-venues')
   const skipSpotify = process.argv.includes('--skip-spotify')
   const skipDiscography = process.argv.includes('--skip-discography')
+  const skipTracks = process.argv.includes('--skip-tracks')
   const skipSetlists = process.argv.includes('--skip-setlists')
   const forceRefreshSetlists = process.argv.includes('--force-refresh-setlists')
 
@@ -44,6 +47,7 @@ async function buildData() {
     { name: 'Enrich concert genres', active: true },
     { name: 'Validate concerts', active: !skipValidation },
     { name: 'Enrich artist metadata', active: true },
+    { name: 'Enrich top tracks', active: !skipTracks },
     { name: 'Enrich venue metadata', active: !skipVenues },
     { name: 'Enrich Spotify data', active: !skipSpotify },
     { name: 'Enrich discography', active: !skipDiscography },
@@ -119,7 +123,21 @@ async function buildData() {
     await enrichArtists({ dryRun })
     console.log()
 
-    // Step 5: Enrich venue metadata (optional)
+    // Step 5: Enrich top tracks (optional)
+    if (!skipTracks) {
+      currentStep++
+      console.log('=' .repeat(60))
+      console.log(`Step ${currentStep}/${activeSteps}: Enriching artist top tracks`)
+      console.log('-'.repeat(60))
+
+      const { enrichTopTracks } = await import('./enrich-top-tracks.ts')
+      await enrichTopTracks()
+      console.log()
+    } else {
+      console.log('⏭️  Skipping top tracks enrichment (--skip-tracks flag set)\n')
+    }
+
+    // Step 6: Enrich venue metadata (optional)
     if (!skipVenues) {
       currentStep++
       console.log('=' .repeat(60))
@@ -252,6 +270,7 @@ async function buildData() {
       console.log('📁 Output files:')
       console.log('   - public/data/concerts.json')
       console.log('   - public/data/artists-metadata.json')
+      if (!skipTracks) console.log('   - public/data/artists-top-tracks.json')
       if (!skipVenues) console.log('   - public/data/venues-metadata.json')
       if (!skipDiscography) console.log('   - public/data/discography.json')
       if (!skipSetlists) console.log('   - public/data/setlists-cache.json')

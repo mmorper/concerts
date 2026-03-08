@@ -22,6 +22,18 @@ function normalizeArtistName(name: string): string {
 }
 
 /**
+ * Check if a Deezer preview URL has an expired signed token (exp= param).
+ * Returns true if expired, so the track can be shown as unavailable rather
+ * than freezing the player on a 403.
+ */
+function isDeezerTokenExpired(url: string | null): boolean {
+  if (!url) return false
+  const match = url.match(/[?&]hdnea=exp=(\d+)/)
+  if (!match) return false
+  return Date.now() / 1000 > parseInt(match[1], 10)
+}
+
+/**
  * Get streaming platform URL for the artist
  */
 function getArtistStreamingUrl(artistName: string, source: 'deezer' | 'itunes'): string {
@@ -74,9 +86,17 @@ export function useArtistTopTracks(artistName: string): TopTracksData {
         if (!isMounted) return
 
         if (artistData && artistData.tracks && artistData.tracks.length > 0) {
-          // Artist has top tracks data
+          // Nullify any Deezer preview URLs whose signed tokens have expired,
+          // so the UI shows "no preview" instead of freezing on a 403.
+          const tracks = artistData.source === 'deezer'
+            ? artistData.tracks.map((t: { previewUrl: string | null;[key: string]: unknown }) => ({
+                ...t,
+                previewUrl: isDeezerTokenExpired(t.previewUrl) ? null : t.previewUrl
+              }))
+            : artistData.tracks
+
           setData({
-            tracks: artistData.tracks,
+            tracks,
             source: artistData.source,
             streamingUrl: getArtistStreamingUrl(artistName, artistData.source),
             loading: false,

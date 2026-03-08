@@ -163,21 +163,34 @@ function loadExistingCache(): ArtistTopTracksData {
 }
 
 /**
- * Check if artist should be skipped (already enriched recently)
+ * Check if artist should be skipped (already enriched recently).
+ * For Deezer: inspect the actual token expiry (exp= param in the signed URL)
+ * rather than relying on a fixed TTL, since Deezer token lifetime varies.
+ * A 5-minute buffer avoids serving tokens that are about to expire.
+ * For iTunes: URLs are stable indefinitely, so a 30-day TTL is used.
  */
 function shouldSkip(
   normalized: string,
-  existingCache: ArtistTopTracksData,
-  cacheTTL: number = 30 * 24 * 60 * 60 * 1000 // 30 days
+  existingCache: ArtistTopTracksData
 ): boolean {
   const cached = existingCache[normalized]
   if (!cached) return false
 
-  const fetchedAt = new Date(cached.fetchedAt).getTime()
-  const now = Date.now()
-  const age = now - fetchedAt
+  if (cached.source === 'deezer') {
+    // Find the first track with a preview URL and check its expiry token
+    const previewUrl = cached.tracks?.find(t => t.previewUrl)?.previewUrl ?? null
+    if (!previewUrl) return false // No valid preview — re-fetch
+    const match = previewUrl.match(/[?&]hdnea=exp=(\d+)/)
+    if (!match) return false // Can't determine expiry — re-fetch
+    const expMs = parseInt(match[1], 10) * 1000
+    const bufferMs = 5 * 60 * 1000 // 5-minute safety buffer
+    return Date.now() < expMs - bufferMs // Skip only if token is still valid
+  }
 
-  return age < cacheTTL
+  // iTunes: use 30-day TTL
+  const fetchedAt = new Date(cached.fetchedAt).getTime()
+  const thirtyDays = 30 * 24 * 60 * 60 * 1000
+  return Date.now() - fetchedAt < thirtyDays
 }
 
 /**
