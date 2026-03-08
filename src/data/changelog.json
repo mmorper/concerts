@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "4.4.0",
+      "date": "2026-03-08",
+      "title": "Liner Notes",
+      "description": "Forty-two years of concerts, now with stories. The archive analyzes your history every week and writes original liner notes — personal essays and musical deep cuts drawn straight from the data. Browse the feed, filter by category, and subscribe via RSS so new stories come to you.",
+      "route": "/liner-notes",
+      "highlights": [
+        "AI-written weekly stories about your concert history — anniversary milestones, artist longevity, cultural context, and deep cuts",
+        "Browse and filter at /liner-notes — category chips, tag filters, and individual post pages at /liner-notes/:slug",
+        "App release notes moved to /whats-playing — a cleaner home for what's new in the archive",
+        "RSS feed at /liner-notes.xml so new stories come to you automatically"
+      ]
+    },
+    {
       "version": "4.3.2",
       "date": "2026-03-07",
       "title": "Full Coverage",

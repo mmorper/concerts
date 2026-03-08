@@ -11,9 +11,9 @@ An interactive web app for exploring personal concert history. Five scenes—Tim
 
 ## What's new
 
-**v4.3.0** 🎟️ On Deck! Upcoming concerts now get their moment in the spotlight—look for the badge on Timeline cards and in Artist profiles wherever a show is still ahead. Never lose track of what's coming up next.
+**v4.4.0** 📖 Liner Notes! Forty-two years of concerts, now with stories. The archive analyzes your history and writes original essays—personal milestones, cultural context, and deep cuts drawn straight from the data. Browse the feed at [/liner-notes](https://concerts.morperhaus.org/liner-notes), filter by category, and subscribe via RSS. App release notes have moved to [What's Playing](https://concerts.morperhaus.org/whats-playing).
 
-**v4.0.0** 🎵 Listen before you go! The Artist Gatefold now includes an audio preview player with 30-second clips from 252 artists (99% coverage). Play/pause controls, animated equalizer, auto-advance, and direct links to Apple Music. Get a feel for an artist's sound right in your concert archive—perfect for those moments when you remember the show but forgot what they sounded like.
+**v4.3.0** 🎟️ On Deck! Upcoming concerts now get their moment in the spotlight—look for the badge on Timeline cards and in Artist profiles wherever a show is still ahead. Never lose track of what's coming up next.
 
 Want the full story? Explore recent updates in [What's Playing](https://concerts.morperhaus.org/whats-playing).
 
