@@ -22,6 +22,7 @@ Slash commands for common workflows. Run these in Claude Code with `/{command}`.
 | `/seo` | SEO analysis report | Monthly audits, after improvements |
 | `/preview` | Start dev server | Local development with context |
 | `/hotfix` | Emergency patch | Urgent production fixes |
+| `/handoff` | Create session handoff doc | Context running low, work mid-stream |
 
 ---
 

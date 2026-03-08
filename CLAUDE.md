@@ -50,6 +50,7 @@ npm run build-data   # Refresh data pipeline
 | `/seo` | SEO analysis & optimization report |
 | `/preview` | Start dev server with context |
 | `/hotfix` | Emergency patch workflow |
+| `/handoff` | Create session handoff document |
 | `/commands` | List all project slash commands |
 
 ---
