@@ -75,10 +75,11 @@ export function select(
     }
   }
 
-  // Phase 2: fill to at least 2 posts, lowering threshold if needed
-  if (selected.length < 2) {
+  // Phase 2: fill remaining slots (seed mode fills up to maxPosts, normal mode fills to at least 2)
+  const phase2Target = maxPosts !== MAX_POSTS ? maxPosts : 2;
+  if (selected.length < phase2Target) {
     for (const f of candidates) {
-      if (selected.length >= maxPosts) break;
+      if (selected.length >= phase2Target) break;
       if (f.score < FALLBACK_THRESHOLD) break;
       if (!selected.includes(f)) {
         selected.push(f);

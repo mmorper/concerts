@@ -1,0 +1,1279 @@
+{
+  "generatedAt": "2026-03-08T20:13:07.549Z",
+  "dataHash": "7b0fb380",
+  "posts": [
+    {
+      "id": "longevity-howard-jones",
+      "slug": "howard-jones-39-years-of-shows",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Howard Jones: 39 Years of Shows",
+      "prose": "I first caught Howard Jones at Irvine Meadows in 1985, right in the thick of his \"Dream Into Action\" era when those synthesizer hooks were everywhere. What strikes me now is how I kept coming back — six shows across 39 years, from that outdoor amphitheater in Orange County to the YouTube Theatre in Inglewood just this past August. There's something about his earnest optimism and those unmistakable keyboard melodies that pulls me back decade after decade. I suppose some artists just become part of your personal soundtrack, whether you plan it or not.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/jones-howard-50fbc0fcc99a1.jpg",
+        "alt": "Howard Jones",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "No One Is To Blame",
+        "artistName": "Howard Jones",
+        "albumName": "Action Replay",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/fc/24/df/fc24dfce-89ca-8034-674c-cd7cb4817223/mzaf_7174615373798508312.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b4/30/b7/b430b70f-1cc8-b120-1217-6ada0096fe7a/5037300817439.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/no-one-is-to-blame/1764332125?i=1764332265&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "howard-jones"
+      ],
+      "venues": [
+        "irvine-meadows",
+        "universal-amphitheater",
+        "the-coach-house",
+        "howard-theater",
+        "the-hamilton-live",
+        "youtube-theatre"
+      ],
+      "years": [
+        1985,
+        1989,
+        2006,
+        2012,
+        2016,
+        2024
+      ],
+      "tags": [
+        "#artist-longevity",
+        "#multi-decade"
+      ],
+      "deepLinks": [
+        {
+          "label": "Howard Jones",
+          "url": "/?scene=artists&artist=howard-jones",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=map&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "Universal Amphitheater",
+          "url": "/?scene=map&venue=universal-amphitheater",
+          "type": "venue"
+        },
+        {
+          "label": "1985",
+          "url": "/?scene=timeline&year=1985",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "depeche-mode-38-years-of-shows",
+        "squeeze-from-opener-to-headliner"
+      ],
+      "score": 39,
+      "detector": "artist-longevity",
+      "publishedAt": "2026-03-08T20:13:07.549Z"
+    },
+    {
+      "id": "longevity-social-distortion",
+      "slug": "social-distortion-34-years-of-shows",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Social Distortion: 34 Years of Shows",
+      "prose": "I first caught Social Distortion at Cal State Fullerton in 1990, back when Mike Ness was still carving out that distinctive sound that would define them through White Light White Heat White Trash and beyond. Eight shows across 34 years might not sound like devotion, but with Social D, each one felt like checking in with an old friend who'd weathered the same storms. My most recent show was just this past December at The Belasco, and hearing those same punk rock anthems that shaped my college years still hit with the same raw honesty. There's something comforting about a band that refuses to reinvent itself—they just keep getting better at being exactly who they've always been.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
+        "alt": "Social Distortion",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Ball and Chain",
+        "artistName": "Social Distortion",
+        "albumName": "Social Distortion",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/06/ba/12/06ba12b1-5067-7e82-194c-5eae9ee98577/mzaf_8457712484241926193.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/d2/8f/e3/d28fe3a5-f99f-227c-263f-1485756de8eb/mzi.goczaxyx.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/ball-and-chain/197984051?i=197986000&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "social-distortion"
+      ],
+      "venues": [
+        "cal-state-fullerton",
+        "hard-rock-hotel-las-vegas",
+        "9-30-club",
+        "the-fillmore-silver-spring",
+        "huntington-state-beach",
+        "house-of-blues-anaheim",
+        "the-belasco"
+      ],
+      "years": [
+        1990,
+        2005,
+        2010,
+        2012,
+        2015,
+        2018,
+        2022,
+        2024
+      ],
+      "tags": [
+        "#artist-longevity",
+        "#multi-decade"
+      ],
+      "deepLinks": [
+        {
+          "label": "Social Distortion",
+          "url": "/?scene=artists&artist=social-distortion",
+          "type": "artist"
+        },
+        {
+          "label": "Cal State Fullerton",
+          "url": "/?scene=map&venue=cal-state-fullerton",
+          "type": "venue"
+        },
+        {
+          "label": "Hard Rock Hotel Las Vegas",
+          "url": "/?scene=map&venue=hard-rock-hotel-las-vegas",
+          "type": "venue"
+        },
+        {
+          "label": "1990",
+          "url": "/?scene=timeline&year=1990",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "depeche-mode-38-years-of-shows",
+        "squeeze-from-opener-to-headliner"
+      ],
+      "score": 39,
+      "detector": "artist-longevity",
+      "publishedAt": "2026-03-08T20:13:07.549Z"
+    },
+    {
+      "id": "venue-loyalty-pacific-amphitheatre",
+      "slug": "pacific-amphitheatre-16-shows-over-5-decades",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Pacific Amphitheatre: 16 Shows Over 5 Decades",
+      "prose": "I've been returning to Pacific Amphitheatre in Costa Mesa for nearly 40 years now, starting with Tears For Fears in 1985 when I was young enough to think outdoor concerts in July were a good idea. Sixteen shows across five decades means this venue has been a constant through every phase of my life — from that first synth-pop experience to catching The English Beat just this past summer. Something about the way sound carries in that amphitheater keeps pulling me back, whether it's for multiple Beach Boys shows or discovering acts like The Art of Noise live. I realize now that Pacific Amphitheatre isn't just where I see concerts — it's where I measure time.",
+      "image": {
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/100x100bb.jpg",
+        "alt": "Songs from the Big Chair",
+        "source": "album"
+      },
+      "audio": {
+        "trackName": "Everybody Wants to Rule the World",
+        "artistName": "Tears For Fears",
+        "albumName": "Songs from the Big Chair",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/56/65/5f/56655f64-f26f-3a21-b2c8-c78f1c9a0a20/mzaf_11752705800252350393.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/everybody-wants-to-rule-the-world/1440813508?i=1440813515&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "tears-for-fears",
+        "beach-boys",
+        "the-art-of-noise",
+        "run-dmc",
+        "ub40",
+        "maxi-priest",
+        "sting",
+        "garbage",
+        "stray-cats",
+        "yaz",
+        "the-aquabats",
+        "x",
+        "culture-club",
+        "the-english-beat"
+      ],
+      "venues": [
+        "pacific-amphitheatre"
+      ],
+      "years": [
+        1985,
+        1986,
+        1986,
+        1987,
+        1988,
+        1991,
+        1991,
+        2005,
+        2008,
+        2008,
+        2018,
+        2021,
+        2022,
+        2022,
+        2023,
+        2024
+      ],
+      "tags": [
+        "#venue-loyalty",
+        "#home-venue"
+      ],
+      "deepLinks": [
+        {
+          "label": "Tears for Fears",
+          "url": "/?scene=artists&artist=tears-for-fears",
+          "type": "artist"
+        },
+        {
+          "label": "The Beach Boys",
+          "url": "/?scene=artists&artist=beach-boys",
+          "type": "artist"
+        },
+        {
+          "label": "Art of Noise",
+          "url": "/?scene=artists&artist=the-art-of-noise",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=map&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "1985",
+          "url": "/?scene=timeline&year=1985",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "depeche-mode-38-years-of-shows",
+        "squeeze-from-opener-to-headliner"
+      ],
+      "score": 39,
+      "detector": "venue-loyalty",
+      "publishedAt": "2026-03-08T20:13:07.549Z"
+    },
+    {
+      "id": "geographic-international-1984",
+      "slug": "my-international-chapter-177-concerts-over-41-years",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "My International Chapter: 177 Concerts Over 41 Years",
+      "prose": "I remember standing at Irvine Meadows in 1984, watching Adam Ant command the stage in what would become the first of 177 international concerts spanning 41 years of my life. From that punk rock moment through 76 different venues and 104 artists, I've collected a geography of sound that stretches across five decades. The bookend feels perfect somehow — David Byrne at the Dolby Theatre this November, two cerebral performers separated by four decades of evolution in how we experience live music. It's wild to think I've been chasing that same electric feeling since Reagan was president.",
+      "image": {
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/de/b4/09deb44c-e956-6d43-e4cf-840784faf7d7/mzi.ogdifckc.jpg/100x100bb.jpg",
+        "alt": "The Essential Adam Ant",
+        "source": "album"
+      },
+      "audio": {
+        "trackName": "Goody Two Shoes",
+        "artistName": "Adam Ant",
+        "albumName": "The Essential Adam Ant",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/15/4f/be/154fbe11-e98b-d65e-e933-fb03516b2dfc/mzaf_3769504448482768076.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/de/b4/09deb44c-e956-6d43-e4cf-840784faf7d7/mzi.ogdifckc.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/goody-two-shoes/391324319?i=391324334&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "adam-ant",
+        "thompson-twins",
+        "billy-idol",
+        "echo-and-the-bunnymen",
+        "depeche-mode",
+        "stryper",
+        "howard-jones",
+        "tears-for-fears",
+        "new-order",
+        "wham",
+        "bruce-springsteen",
+        "the-alarm",
+        "blancmange",
+        "beach-boys",
+        "the-art-of-noise",
+        "run-dmc",
+        "oingo-boingo",
+        "duran-duran",
+        "no-doubt",
+        "ub40",
+        "ziggy-marley",
+        "george-michael",
+        "tone-loc",
+        "erasure",
+        "jesus-jones",
+        "social-distortion",
+        "bell-biv-devoe",
+        "maxi-priest",
+        "jimmy-buffett",
+        "burning-spear",
+        "sting",
+        "siouxsie-and-the-banshees",
+        "the-smithereens",
+        "peter-gabriel",
+        "violent-femmes",
+        "the-brian-setzer-orchestra",
+        "big-audio-dynamite",
+        "pat-dinizio",
+        "alien-fashion-show",
+        "brian-setzer-68-comeback-special",
+        "elton-john",
+        "the-human-league",
+        "joe-jackson",
+        "the-cure",
+        "garbage",
+        "joe-satriani",
+        "devo",
+        "the-tubes",
+        "berlin",
+        "lee-rocker",
+        "stray-cats",
+        "yaz",
+        "the-english-beat",
+        "mike-ness",
+        "brian-setzer-and-the-nashvillians",
+        "rob-thomas",
+        "bad-religion",
+        "the-dollyrots",
+        "the-go-go-s",
+        "squeeze",
+        "red-hot-chili-peppers",
+        "the-cult",
+        "dropkick-murphys",
+        "rancid",
+        "gary-numan",
+        "kraftwerk",
+        "snarky-puppy",
+        "the-offspring",
+        "streetlight-manifesto",
+        "the-head-and-the-heart",
+        "royal-blood",
+        "foo-fighters",
+        "dirty-heads",
+        "prophets-of-rage",
+        "the-roots",
+        "midnight-oil",
+        "the-skints",
+        "blondie",
+        "alison-moyet",
+        "bat-fangs",
+        "colin-hay",
+        "u2",
+        "foals",
+        "the-interrupters",
+        "bandits-of-the-acoustic-revolution",
+        "lenny-kravitz",
+        "the-aquabats",
+        "future-islands",
+        "x",
+        "culture-club",
+        "peter-hook-and-the-light",
+        "gorillaz",
+        "heaven-17",
+        "danny-elfman",
+        "dr-sick",
+        "crowded-house",
+        "kasabian",
+        "umphrey-s-mcgee",
+        "brian-setzer",
+        "cold-war-kids",
+        "klangphonics",
+        "molchat-doma",
+        "the-black-keys",
+        "david-byrne"
+      ],
+      "venues": [
+        "irvine-meadows",
+        "knots-berry-farm",
+        "pacific-amphitheatre",
+        "hollywood-park-racetrack",
+        "los-angeles-memorial-coliseum",
+        "ucla",
+        "crawford-hall",
+        "caliente-racetrack",
+        "disneyland",
+        "the-rose-bowl",
+        "mesa-amphitheatre",
+        "arizona-veterans-memorial-coliseum",
+        "universal-amphitheater",
+        "jets",
+        "kia-forum",
+        "dodger-stadium",
+        "hollywood-palladium",
+        "cal-state-fullerton",
+        "long-beach-arena",
+        "the-celebrity-theatre",
+        "the-coach-house",
+        "olympic-velodrome",
+        "hard-rock-cafe",
+        "the-galaxy-theatre",
+        "club-caprice",
+        "paradise-rock-club",
+        "the-grove-of-anaheim",
+        "house-of-blues-anaheim",
+        "hyundai-pavilion",
+        "hard-rock-hotel-las-vegas",
+        "staples-center",
+        "nokia-center",
+        "doheny",
+        "eaglebank-arena",
+        "9-30-club",
+        "the-black-cat",
+        "the-ballroom",
+        "wolftrap",
+        "rams-head-live-baltimore",
+        "capitol-one-arena",
+        "the-fillmore-silver-spring",
+        "howard-theater",
+        "the-strathmore",
+        "the-hamilton-live",
+        "rams-head-center-stage",
+        "pier-6-pavillion",
+        "dar-constitution-hall",
+        "rfk-stadium",
+        "bethesda-jazz-and-blues-club",
+        "birchmere",
+        "national-museum-of-african-american-history-and-culture",
+        "mgm-national-harbor",
+        "dc9-nightclub",
+        "sixth-i-synagogue",
+        "the-anthem",
+        "lincoln-theatre",
+        "warner-theatre",
+        "huntington-state-beach",
+        "carpenter-performing-arts-center",
+        "capital-one-center",
+        "the-observatory",
+        "the-shrine-auditorium",
+        "dolby-theatre",
+        "mozambique",
+        "oc-fair-event-center",
+        "orpheum-theatre",
+        "theatre-at-the-ace-hotel",
+        "youtube-theatre",
+        "hollywood-bowl",
+        "the-belly-up-tavern",
+        "21st-amendment",
+        "the-wiltern",
+        "the-belasco",
+        "peacock-theater",
+        "the-roxy",
+        "mgm-music-hall-at-fenway"
+      ],
+      "years": [
+        1984,
+        1984,
+        1984,
+        1984,
+        1985,
+        1985,
+        1985,
+        1985,
+        1985,
+        1985,
+        1985,
+        1985,
+        1986,
+        1986,
+        1986,
+        1986,
+        1987,
+        1987,
+        1987,
+        1988,
+        1988,
+        1988,
+        1988,
+        1988,
+        1988,
+        1988,
+        1989,
+        1990,
+        1990,
+        1990,
+        1990,
+        1990,
+        1990,
+        1991,
+        1991,
+        1991,
+        1991,
+        1991,
+        1991,
+        1992,
+        1993,
+        1993,
+        1993,
+        1995,
+        1995,
+        1995,
+        1995,
+        1997,
+        1998,
+        1999,
+        1999,
+        2000,
+        2001,
+        2002,
+        2003,
+        2003,
+        2003,
+        2003,
+        2005,
+        2005,
+        2005,
+        2005,
+        2006,
+        2006,
+        2006,
+        2007,
+        2007,
+        2007,
+        2008,
+        2008,
+        2008,
+        2008,
+        2008,
+        2008,
+        2009,
+        2009,
+        2010,
+        2010,
+        2010,
+        2011,
+        2011,
+        2011,
+        2012,
+        2012,
+        2012,
+        2012,
+        2012,
+        2012,
+        2013,
+        2013,
+        2013,
+        2013,
+        2013,
+        2013,
+        2014,
+        2014,
+        2014,
+        2014,
+        2014,
+        2014,
+        2015,
+        2015,
+        2015,
+        2015,
+        2015,
+        2015,
+        2016,
+        2016,
+        2016,
+        2016,
+        2016,
+        2016,
+        2017,
+        2017,
+        2017,
+        2017,
+        2017,
+        2017,
+        2017,
+        2017,
+        2017,
+        2017,
+        2017,
+        2017,
+        2018,
+        2018,
+        2018,
+        2018,
+        2018,
+        2018,
+        2018,
+        2019,
+        2019,
+        2019,
+        2019,
+        2019,
+        2019,
+        2019,
+        2019,
+        2019,
+        2021,
+        2021,
+        2022,
+        2022,
+        2022,
+        2022,
+        2022,
+        2022,
+        2022,
+        2022,
+        2022,
+        2022,
+        2022,
+        2022,
+        2022,
+        2022,
+        2023,
+        2023,
+        2023,
+        2023,
+        2023,
+        2023,
+        2023,
+        2023,
+        2023,
+        2023,
+        2023,
+        2024,
+        2024,
+        2024,
+        2024,
+        2024,
+        2024,
+        2025,
+        2025,
+        2025,
+        2025
+      ],
+      "tags": [
+        "#geographic"
+      ],
+      "deepLinks": [
+        {
+          "label": "Adam Ant",
+          "url": "/?scene=artists&artist=adam-ant",
+          "type": "artist"
+        },
+        {
+          "label": "Thompson Twins",
+          "url": "/?scene=artists&artist=thompson-twins",
+          "type": "artist"
+        },
+        {
+          "label": "Billy Idol",
+          "url": "/?scene=artists&artist=billy-idol",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=map&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "Knots Berry Farm",
+          "url": "/?scene=map&venue=knots-berry-farm",
+          "type": "venue"
+        },
+        {
+          "label": "1984",
+          "url": "/?scene=timeline&year=1984",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "depeche-mode-38-years-of-shows",
+        "squeeze-from-opener-to-headliner"
+      ],
+      "score": 39,
+      "detector": "geographic-chapter",
+      "publishedAt": "2026-03-08T20:13:07.549Z"
+    },
+    {
+      "id": "opener-to-headliner-crowded-house",
+      "slug": "crowded-house-from-opener-to-headliner",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Crowded House: From Opener to Headliner",
+      "prose": "Crowded House's trajectory from Melbourne alt-rock darlings to enduring pop craftsmen spans exactly the 30 years between when I saw them open for Peter Gabriel at the Olympic Velodrome in 1993 and headline The Wiltern in 2023. That first show came around the time *Woodface* had established them as more than just Neil Finn's post-Split Enz project, but they were still very much the supporting act in a massive arena. Three decades later, watching them command their own stage at the Wiltern felt like witnessing the full arc of a band that never chased trends but simply outlasted them. Some artists earn their headliner status through persistence and craft rather than flash.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/ywuyqr1348102507.jpg",
+        "alt": "Crowded House",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Don't Dream It's Over",
+        "artistName": "Crowded House",
+        "albumName": "Crowded House",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6d/07/2b/6d072b60-4bec-c854-5267-575e2ccc1a91/mzaf_4354817901169615291.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/91/42/09/91420918-380f-c05a-3225-78b27c792774/13UAEIM58114.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/dont-dream-its-over/1440822690?i=1440823110&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "crowded-house"
+      ],
+      "venues": [
+        "olympic-velodrome",
+        "the-wiltern"
+      ],
+      "years": [
+        1993,
+        2023
+      ],
+      "tags": [
+        "#opener-to-headliner",
+        "#career-arc"
+      ],
+      "deepLinks": [
+        {
+          "label": "Crowded House",
+          "url": "/?scene=artists&artist=crowded-house",
+          "type": "artist"
+        },
+        {
+          "label": "Olympic Velodrome",
+          "url": "/?scene=map&venue=olympic-velodrome",
+          "type": "venue"
+        },
+        {
+          "label": "The Wiltern",
+          "url": "/?scene=map&venue=the-wiltern",
+          "type": "venue"
+        },
+        {
+          "label": "1993",
+          "url": "/?scene=timeline&year=1993",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "squeeze-from-opener-to-headliner",
+        "depeche-mode-38-years-of-shows"
+      ],
+      "score": 38,
+      "detector": "opener-to-headliner",
+      "publishedAt": "2026-03-08T20:13:07.549Z"
+    },
+    {
+      "id": "longevity-tears-for-fears",
+      "slug": "tears-for-fears-37-years-of-shows",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Tears For Fears: 37 Years of Shows",
+      "prose": "I remember discovering Tears For Fears at Pacific Amphitheatre in 1985, when \"Songs from the Big Chair\" was still fresh and Roland Orzabal's voice felt like it could crack open the world. Four shows across 37 years might not seem like much, but each one marked a different chapter of my life — from that first encounter in Costa Mesa to their triumphant return at the Kia Forum in 2022. What strikes me most is how their pop-rock has aged: the synthesizers that once felt futuristic now carry the weight of memory, and those soaring choruses hit differently when you've lived through four decades of hearing them. Some artists you grow out of; others grow with you.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/yusuxr1341941676.jpg",
+        "alt": "Tears for Fears",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Everybody Wants to Rule the World",
+        "artistName": "Tears For Fears",
+        "albumName": "Songs from the Big Chair",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/56/65/5f/56655f64-f26f-3a21-b2c8-c78f1c9a0a20/mzaf_11752705800252350393.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/everybody-wants-to-rule-the-world/1440813508?i=1440813515&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "tears-for-fears"
+      ],
+      "venues": [
+        "pacific-amphitheatre",
+        "universal-amphitheater",
+        "kia-forum"
+      ],
+      "years": [
+        1985,
+        1993,
+        2005,
+        2022
+      ],
+      "tags": [
+        "#artist-longevity",
+        "#multi-decade"
+      ],
+      "deepLinks": [
+        {
+          "label": "Tears for Fears",
+          "url": "/?scene=artists&artist=tears-for-fears",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=map&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "Universal Amphitheater",
+          "url": "/?scene=map&venue=universal-amphitheater",
+          "type": "venue"
+        },
+        {
+          "label": "1985",
+          "url": "/?scene=timeline&year=1985",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "depeche-mode-38-years-of-shows",
+        "squeeze-from-opener-to-headliner"
+      ],
+      "score": 36,
+      "detector": "artist-longevity",
+      "publishedAt": "2026-03-08T20:13:07.549Z"
+    },
+    {
+      "id": "venue-loyalty-universal-amphitheater",
+      "slug": "universal-amphitheater-5-shows-over-3-decades",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Universal Amphitheater: 5 Shows Over 3 Decades",
+      "prose": "I remember discovering the Universal Amphitheater through Howard Jones in 1989, drawn by those sweeping synthesizer melodies and his earnest pop optimism. Something about that venue kept pulling me back — the way it nestled into the Hollywood Hills, intimate enough to feel personal but grand enough for proper spectacle. Over 16 years, I caught 5 shows there across three decades, from Siouxsie and the Banshees' dark glamour to The Brian Setzer Orchestra's rockabilly swagger, ending with Tears For Fears in 2005. It became my accidental home base for catching acts that mattered to me, though I didn't realize I was building a pattern until I looked back at the ticket stubs.",
+      "image": {
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b4/30/b7/b430b70f-1cc8-b120-1217-6ada0096fe7a/5037300817439.jpg/100x100bb.jpg",
+        "alt": "Action Replay",
+        "source": "album"
+      },
+      "audio": {
+        "trackName": "No One Is To Blame",
+        "artistName": "Howard Jones",
+        "albumName": "Action Replay",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/fc/24/df/fc24dfce-89ca-8034-674c-cd7cb4817223/mzaf_7174615373798508312.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b4/30/b7/b430b70f-1cc8-b120-1217-6ada0096fe7a/5037300817439.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/no-one-is-to-blame/1764332125?i=1764332265&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "howard-jones",
+        "siouxsie-and-the-banshees",
+        "tears-for-fears",
+        "the-brian-setzer-orchestra"
+      ],
+      "venues": [
+        "universal-amphitheater"
+      ],
+      "years": [
+        1989,
+        1991,
+        1993,
+        2002,
+        2005
+      ],
+      "tags": [
+        "#venue-loyalty"
+      ],
+      "deepLinks": [
+        {
+          "label": "Howard Jones",
+          "url": "/?scene=artists&artist=howard-jones",
+          "type": "artist"
+        },
+        {
+          "label": "Siouxsie and the Banshees",
+          "url": "/?scene=artists&artist=siouxsie-and-the-banshees",
+          "type": "artist"
+        },
+        {
+          "label": "Tears for Fears",
+          "url": "/?scene=artists&artist=tears-for-fears",
+          "type": "artist"
+        },
+        {
+          "label": "Universal Amphitheater",
+          "url": "/?scene=map&venue=universal-amphitheater",
+          "type": "venue"
+        },
+        {
+          "label": "1989",
+          "url": "/?scene=timeline&year=1989",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "depeche-mode-38-years-of-shows",
+        "squeeze-from-opener-to-headliner"
+      ],
+      "score": 36,
+      "detector": "venue-loyalty",
+      "publishedAt": "2026-03-08T20:13:07.549Z"
+    },
+    {
+      "id": "venue-loyalty-house-of-blues-anaheim",
+      "slug": "house-of-blues-anaheim-6-shows-over-3-decades",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "House of Blues Anaheim: 6 Shows Over 3 Decades",
+      "prose": "I keep finding myself back at House of Blues Anaheim, apparently — 6 shows across 20 years, from Joe Jackson's sophisticated pop in 2003 to Social Distortion's punk grit last December. The venue has this reliable intimacy that works whether I'm watching Future Islands' synth-pop theatrics or Streetlight Manifesto's ska-punk energy, and somehow I've managed to see 5 completely different artists there without ever planning it as a destination. It's become my accidental musical constant, this Anaheim room where I've consistently stumbled into great performances.",
+      "image": {
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/23/74/62/23746272-49a1-fd05-d64f-9c5235b024b3/00075021333420.rgb.jpg/100x100bb.jpg",
+        "alt": "Night and Day",
+        "source": "album"
+      },
+      "audio": {
+        "trackName": "Steppin' Out",
+        "artistName": "Joe Jackson",
+        "albumName": "Night and Day",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/7f/b8/85/7fb88577-a301-beab-da78-c5f20a39f9a8/mzaf_6319136707027446662.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/23/74/62/23746272-49a1-fd05-d64f-9c5235b024b3/00075021333420.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/steppin-out/1440641327?i=1440641332&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "joe-jackson",
+        "streetlight-manifesto",
+        "future-islands",
+        "royal-blood",
+        "social-distortion"
+      ],
+      "venues": [
+        "house-of-blues-anaheim"
+      ],
+      "years": [
+        2003,
+        2019,
+        2021,
+        2022,
+        2022,
+        2022
+      ],
+      "tags": [
+        "#venue-loyalty"
+      ],
+      "deepLinks": [
+        {
+          "label": "Joe Jackson",
+          "url": "/?scene=artists&artist=joe-jackson",
+          "type": "artist"
+        },
+        {
+          "label": "Streetlight Manifesto",
+          "url": "/?scene=artists&artist=streetlight-manifesto",
+          "type": "artist"
+        },
+        {
+          "label": "Future Islands",
+          "url": "/?scene=artists&artist=future-islands",
+          "type": "artist"
+        },
+        {
+          "label": "House of Blues Anaheim",
+          "url": "/?scene=map&venue=house-of-blues-anaheim",
+          "type": "venue"
+        },
+        {
+          "label": "2003",
+          "url": "/?scene=timeline&year=2003",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "depeche-mode-38-years-of-shows",
+        "squeeze-from-opener-to-headliner"
+      ],
+      "score": 36,
+      "detector": "venue-loyalty",
+      "publishedAt": "2026-03-08T20:13:07.549Z"
+    },
+    {
+      "id": "venue-loyalty-irvine-meadows",
+      "slug": "irvine-meadows-16-shows-over-3-decades",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Irvine Meadows: 16 Shows Over 3 Decades",
+      "prose": "I discovered Irvine Meadows on April 27, 1984, watching Adam Ant command that massive outdoor stage under the California sun. Something about that amphitheater just clicked — the way sound carried across those concrete terraces, how the San Gabriel Mountains framed every performance. Over the next 19 years, I kept coming back, catching everyone from Thompson Twins to Billy Idol to my final show there with Peter Gabriel in 2003. Sixteen concerts spanning three decades at one venue feels almost accidental until you realize it wasn't — some places just become part of your concert DNA.",
+      "image": {
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/de/b4/09deb44c-e956-6d43-e4cf-840784faf7d7/mzi.ogdifckc.jpg/100x100bb.jpg",
+        "alt": "The Essential Adam Ant",
+        "source": "album"
+      },
+      "audio": {
+        "trackName": "Goody Two Shoes",
+        "artistName": "Adam Ant",
+        "albumName": "The Essential Adam Ant",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/15/4f/be/154fbe11-e98b-d65e-e933-fb03516b2dfc/mzaf_3769504448482768076.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/de/b4/09deb44c-e956-6d43-e4cf-840784faf7d7/mzi.ogdifckc.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/goody-two-shoes/391324319?i=391324334&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "adam-ant",
+        "thompson-twins",
+        "billy-idol",
+        "echo-and-the-bunnymen",
+        "depeche-mode",
+        "howard-jones",
+        "new-order",
+        "duran-duran",
+        "george-michael",
+        "oingo-boingo",
+        "erasure",
+        "jimmy-buffett",
+        "peter-gabriel"
+      ],
+      "venues": [
+        "irvine-meadows"
+      ],
+      "years": [
+        1984,
+        1984,
+        1984,
+        1984,
+        1985,
+        1985,
+        1985,
+        1985,
+        1987,
+        1988,
+        1988,
+        1990,
+        1991,
+        1995,
+        1997,
+        2003
+      ],
+      "tags": [
+        "#venue-loyalty",
+        "#home-venue"
+      ],
+      "deepLinks": [
+        {
+          "label": "Adam Ant",
+          "url": "/?scene=artists&artist=adam-ant",
+          "type": "artist"
+        },
+        {
+          "label": "Thompson Twins",
+          "url": "/?scene=artists&artist=thompson-twins",
+          "type": "artist"
+        },
+        {
+          "label": "Billy Idol",
+          "url": "/?scene=artists&artist=billy-idol",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=map&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "1984",
+          "url": "/?scene=timeline&year=1984",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "depeche-mode-38-years-of-shows",
+        "squeeze-from-opener-to-headliner"
+      ],
+      "score": 34,
+      "detector": "venue-loyalty",
+      "publishedAt": "2026-03-08T20:13:07.549Z"
+    },
+    {
+      "id": "venue-loyalty-kia-forum",
+      "slug": "kia-forum-5-shows-over-3-decades",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Kia Forum: 5 Shows Over 3 Decades",
+      "prose": "I remember walking into the Forum for the first time in 1990 to see Erasure, that massive bowl of a venue feeling both intimate and overwhelming at 19 years old. Five shows across 33 years have brought me back to Inglewood — from Bell Biv DeVoe's New Jack Swing energy to Elton John's piano grandeur to Tears for Fears' nostalgic pull. My most recent visit was Depeche Mode in 2023, and I realized I've been loyal to this place longer than some of my friendships. There's something about the Forum's acoustics that makes every synthesizer sound like it's coming from the future.",
+      "image": {
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/bc/5a/a0/bc5aa061-1010-6d23-9ff5-bae2f97720ce/mzi.ouqqcxnp.jpg/100x100bb.jpg",
+        "alt": "The Innocents",
+        "source": "album"
+      },
+      "audio": {
+        "trackName": "A Little Respect",
+        "artistName": "Erasure",
+        "albumName": "The Innocents",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ca/25/0d/ca250df0-1f9a-69a2-82d2-86486005d4f8/mzaf_10865615112430914389.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/bc/5a/a0/bc5aa061-1010-6d23-9ff5-bae2f97720ce/mzi.ouqqcxnp.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/a-little-respect/332852548?i=332852764&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "erasure",
+        "bell-biv-devoe",
+        "elton-john",
+        "tears-for-fears",
+        "depeche-mode"
+      ],
+      "venues": [
+        "kia-forum"
+      ],
+      "years": [
+        1990,
+        1991,
+        2001,
+        2022,
+        2023
+      ],
+      "tags": [
+        "#venue-loyalty"
+      ],
+      "deepLinks": [
+        {
+          "label": "Erasure",
+          "url": "/?scene=artists&artist=erasure",
+          "type": "artist"
+        },
+        {
+          "label": "Bell Biv DeVoe",
+          "url": "/?scene=artists&artist=bell-biv-devoe",
+          "type": "artist"
+        },
+        {
+          "label": "Elton John",
+          "url": "/?scene=artists&artist=elton-john",
+          "type": "artist"
+        },
+        {
+          "label": "Kia Forum",
+          "url": "/?scene=map&venue=kia-forum",
+          "type": "venue"
+        },
+        {
+          "label": "1990",
+          "url": "/?scene=timeline&year=1990",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "depeche-mode-38-years-of-shows"
+      ],
+      "score": 34,
+      "detector": "venue-loyalty",
+      "publishedAt": "2026-03-08T20:13:07.549Z"
+    },
+    {
+      "id": "longevity-depeche-mode",
+      "slug": "depeche-mode-38-years-of-shows",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Depeche Mode: 38 Years of Shows",
+      "prose": "I still remember walking into Irvine Meadows in 1985 for my first Depeche Mode show, when they were just five years into their career and still riding the wave of their early synthpop sound. That night kicked off what became a 38-year relationship with their live performances, spanning four decades and taking me from Southern California amphitheaters to the gleaming Kia Forum just last year. Five shows across nearly four decades feels almost modest for a band this essential to my concert-going life, but each one marked a different era of both their evolution and mine. There's something beautifully cyclical about starting and ending this run in the same corner of Los Angeles County.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg",
+        "alt": "Depeche Mode",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Universal Soldier",
+        "artistName": "Depeche Mode",
+        "albumName": "HELP(2)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/bb/7e/0f/bb7e0fb7-ec0b-9fd2-4a0e-5e8ee18b2238/mzaf_5690086882308562359.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e6/1c/41/e61c4157-3864-e904-acc3-75613984e326/191400691650.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/universal-soldier/1870313498?i=1870313513&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "depeche-mode"
+      ],
+      "venues": [
+        "irvine-meadows",
+        "the-rose-bowl",
+        "dodger-stadium",
+        "staples-center",
+        "kia-forum"
+      ],
+      "years": [
+        1985,
+        1988,
+        1990,
+        2005,
+        2023
+      ],
+      "tags": [
+        "#artist-longevity",
+        "#multi-decade"
+      ],
+      "deepLinks": [
+        {
+          "label": "Depeche Mode",
+          "url": "/?scene=artists&artist=depeche-mode",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=map&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "The Rose Bowl",
+          "url": "/?scene=map&venue=the-rose-bowl",
+          "type": "venue"
+        },
+        {
+          "label": "1985",
+          "url": "/?scene=timeline&year=1985",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [],
+      "score": 39,
+      "detector": "artist-longevity",
+      "publishedAt": "2026-03-08T20:11:14.801Z"
+    },
+    {
+      "id": "opener-to-headliner-squeeze",
+      "slug": "squeeze-from-opener-to-headliner",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Squeeze: From Opener to Headliner",
+      "prose": "Few bands embodied the scrappy spirit of new wave quite like Squeeze, and my concert history accidentally documented their long climb from opening act to headliner. I first saw them opening for Oingo Boingo at a racetrack in Tijuana in 1987, when their clever wordplay and pub rock energy felt perfectly suited to warming up a crowd. Twenty-five years later, I watched them headline Rams Head Live in Baltimore, now seasoned veterans commanding the stage with the same wit but deeper confidence. It's rare to witness that complete arc in your own concert diary — from promising opener to rightful headliner.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/stywtv1376542198.jpg",
+        "alt": "Squeeze",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "What More Can I Say",
+        "artistName": "Squeeze",
+        "albumName": "Trixies",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/65/02/ac/6502ac6d-26e8-880f-062b-0fbb76644a03/mzaf_537671996813235778.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a6/23/be/a623beed-1659-48d1-83de-1c35260f9d1e/4099964217681.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/what-more-can-i-say/1849943038?i=1849943040&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "squeeze"
+      ],
+      "venues": [
+        "caliente-racetrack",
+        "rams-head-live-baltimore"
+      ],
+      "years": [
+        1987,
+        2012
+      ],
+      "tags": [
+        "#opener-to-headliner",
+        "#career-arc"
+      ],
+      "deepLinks": [
+        {
+          "label": "Squeeze",
+          "url": "/?scene=artists&artist=squeeze",
+          "type": "artist"
+        },
+        {
+          "label": "Caliente Racetrack",
+          "url": "/?scene=map&venue=caliente-racetrack",
+          "type": "venue"
+        },
+        {
+          "label": "Rams Head Live! Baltimore",
+          "url": "/?scene=map&venue=rams-head-live-baltimore",
+          "type": "venue"
+        },
+        {
+          "label": "1987",
+          "url": "/?scene=timeline&year=1987",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [],
+      "score": 38,
+      "detector": "opener-to-headliner",
+      "publishedAt": "2026-03-08T20:11:14.801Z"
+    }
+  ],
+  "metadata": {
+    "totalPosts": 12,
+    "totalGenerated": 12,
+    "averageScore": 37.3,
+    "lastPipelineRun": "2026-03-08T20:13:07.549Z",
+    "concertsAnalyzed": 177,
+    "feedUrl": "/liner-notes.xml"
+  }
+}
