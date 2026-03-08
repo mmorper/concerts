@@ -1,8 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { haptics } from '../utils/haptics'
 import { analytics } from '../services/analytics'
+
+const NAV_LINKS = [
+  { to: '/liner-notes', label: 'Liner Notes', event: 'liner_notes_nav_clicked' },
+  { to: '/whats-playing', label: "What's Playing", event: 'whats_playing_nav_clicked' },
+  { to: '/about', label: 'About', event: 'about_nav_clicked' },
+] as const
 
 const scenes = [
   { id: 1, label: 'Timeline' },
@@ -65,6 +71,7 @@ export function SceneNavigation() {
   }
 
   return (
+    <>
     <motion.div
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
@@ -142,5 +149,40 @@ export function SceneNavigation() {
         </div>
       </div>
     </motion.div>
+
+    {/* Mobile bottom nav — mirrors desktop right-side nav, visible on small screens only */}
+    <motion.nav
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 2, duration: 0.8 }}
+      className="fixed bottom-0 left-0 right-0 z-40 md:hidden"
+      aria-label="Site navigation"
+      style={{
+        background: 'rgba(15, 23, 42, 0.72)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        borderTop: '1px solid rgba(255,255,255,0.08)',
+        paddingBottom: 'env(safe-area-inset-bottom)',
+      }}
+    >
+      <div className="flex items-center justify-center py-3" style={{ gap: 16 }}>
+        {NAV_LINKS.map(({ to, label, event }, i) => (
+          <Fragment key={to}>
+            {i > 0 && (
+              <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.2)', fontSize: 10, lineHeight: 1 }}>·</span>
+            )}
+            <Link
+              to={to}
+              className="font-sans transition-colors duration-200 hover:text-white active:text-white"
+              style={{ fontSize: 11, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)' }}
+              onClick={() => analytics.trackEvent(event, { from_scene: activeScene })}
+            >
+              {label}
+            </Link>
+          </Fragment>
+        ))}
+      </div>
+    </motion.nav>
+  </>
   )
 }
