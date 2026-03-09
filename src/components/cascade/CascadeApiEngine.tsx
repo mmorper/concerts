@@ -113,7 +113,7 @@ export function FlowArrow({ label }: { label: string }) {
 
 // ─── Service badge — centered vertical format (all contexts) ──────────────────
 
-export function ServiceGatewayPeer({ svc }: { svc: ApiService }) {
+export function ServiceGatewayPeer({ svc, pulsing }: { svc: ApiService; pulsing?: boolean }) {
   const brand = API_BRANDS[svc.name] ?? { primary: '#6b7280', domain: '' }
   const { primary, domain } = brand
 
@@ -140,7 +140,7 @@ export function ServiceGatewayPeer({ svc }: { svc: ApiService }) {
           alt=""
           width={20}
           height={20}
-          style={{ borderRadius: 3 }}
+          style={{ borderRadius: 3, animation: pulsing ? 'favPulse 0.6s ease-in-out infinite' : 'none' }}
         />
       )}
       <div>
@@ -160,11 +160,14 @@ interface PillGridProps {
   items: ApiTag[]
   tierColor: string
   maxVisible?: number
+  visibleCount?: number
 }
 
-export function PillGrid({ items, tierColor, maxVisible = 3 }: PillGridProps) {
+export function PillGrid({ items, tierColor, maxVisible = 3, visibleCount }: PillGridProps) {
   const [expanded, setExpanded] = useState(false)
-  const shown = expanded ? items : items.slice(0, maxVisible)
+  // During animation, visibleCount overrides; otherwise normal expand behavior
+  const effectiveMax = visibleCount !== undefined ? visibleCount : (expanded ? items.length : maxVisible)
+  const shown = items.slice(0, effectiveMax)
   const hiddenCount = items.length - maxVisible
 
   return (
@@ -176,7 +179,7 @@ export function PillGrid({ items, tierColor, maxVisible = 3 }: PillGridProps) {
           gap: 4,
         }}
       >
-        {shown.map(tag => {
+        {(shown as ApiTag[]).map(tag => {
           const chipColor = tag.source ? (API_BRANDS[tag.source]?.primary ?? tierColor) : tierColor
           return (
             <div
@@ -225,7 +228,7 @@ export function PillGrid({ items, tierColor, maxVisible = 3 }: PillGridProps) {
           )
         })}
       </div>
-      {hiddenCount > 0 && (
+      {visibleCount === undefined && hiddenCount > 0 && (
         <button
           onClick={() => setExpanded(e => !e)}
           style={{

@@ -140,13 +140,13 @@ function TierBand({ color, children }: { color: string; children: React.ReactNod
   )
 }
 
-function ApiBadge({ name, domain, color }: { name: string; domain: string; color: string }) {
+function ApiBadge({ name, domain, color, pulsing }: { name: string; domain: string; color: string; pulsing?: boolean }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
       <img
         src={`https://www.google.com/s2/favicons?domain=${domain}&sz=16`}
         width={14} height={14}
-        style={{ borderRadius: 2 }}
+        style={{ borderRadius: 2, animation: pulsing ? 'favPulse 0.6s ease-in-out infinite' : 'none' }}
         alt=""
       />
       <span style={{ ...MONO, fontSize: 9, color, letterSpacing: '0.05em' }}>{name}</span>
@@ -169,6 +169,133 @@ export function CascadePage() {
   const { focusedAtom, focusAtom, resetFocus, isTierRelevant } = useCascadeFocus()
   const [activeScene, setActiveScene] = useState<string | null>(null)
 
+  // ── Animation state ──────────────────────────────────────────────────────
+  const genRef = useRef(0)
+  const [animStep, setAnimStep] = useState(0)        // 0=idle, 1=T0 shown, …, 7=fully done
+  const [loadingTier, setLoadingTier] = useState<number | null>(null)
+  const [pillCounts, setPillCounts] = useState<Partial<Record<string, number>>>({})
+  const [setlistLines, setSetlistLines] = useState(0)
+  const [scenesUnlocked, setScenesUnlocked] = useState(0)  // 0–4
+
+  const startAnimation = () => {
+    const gen = ++genRef.current
+    ;(async () => {
+      const delay = (ms: number) => new Promise<void>(res => setTimeout(res, ms))
+      const alive = () => genRef.current === gen
+
+      // Reset
+      setAnimStep(0)
+      setLoadingTier(null)
+      setPillCounts({})
+      setSetlistLines(0)
+      setScenesUnlocked(0)
+      await delay(100)
+      if (!alive()) return
+
+      // T0 — seed chips
+      setAnimStep(1)
+      await delay(700)
+      if (!alive()) return
+
+      // T1 — build pipeline (no API, no loading phase)
+      setAnimStep(2)
+      await delay(200)
+      if (!alive()) return
+      // Artist 3 pills, Venue 4 pills, Date 5 pills — stagger across all three
+      for (let i = 1; i <= 5; i++) {
+        await delay(80)
+        if (!alive()) return
+        setPillCounts(prev => ({
+          ...prev,
+          t1a: Math.min(i, 3),
+          t1v: Math.min(i, 4),
+          t1d: Math.min(i, 5),
+        }))
+      }
+      await delay(300)
+      if (!alive()) return
+
+      // T2 — geographic (venue only, Google Places)
+      setLoadingTier(2)
+      setAnimStep(3)
+      await delay(600)
+      if (!alive()) return
+      setLoadingTier(null)
+      for (let i = 1; i <= 6; i++) {
+        await delay(80)
+        if (!alive()) return
+        setPillCounts(prev => ({ ...prev, t2: i }))
+      }
+      await delay(300)
+      if (!alive()) return
+
+      // T3 — artist identity (3 APIs)
+      setLoadingTier(3)
+      setAnimStep(4)
+      await delay(600)
+      if (!alive()) return
+      setLoadingTier(null)
+      for (let i = 1; i <= 7; i++) {
+        await delay(80)
+        if (!alive()) return
+        setPillCounts(prev => ({ ...prev, t3: i }))
+      }
+      await delay(300)
+      if (!alive()) return
+
+      // T4 — audio (Apple Music)
+      setLoadingTier(4)
+      setAnimStep(5)
+      await delay(600)
+      if (!alive()) return
+      setLoadingTier(null)
+      for (let i = 1; i <= 3; i++) {
+        await delay(80)
+        if (!alive()) return
+        setPillCounts(prev => ({ ...prev, t4: i }))
+      }
+      await delay(300)
+      if (!alive()) return
+
+      // T5 — performance convergence (setlist.fm + Ticketmaster)
+      setLoadingTier(5)
+      setAnimStep(6)
+      await delay(600)
+      if (!alive()) return
+      setLoadingTier(null)
+      // Quick stagger for metadata pills
+      for (let i = 1; i <= 4; i++) {
+        await delay(80)
+        if (!alive()) return
+        setPillCounts(prev => ({ ...prev, t5s: i, t5t: i }))
+      }
+      await delay(300)
+      if (!alive()) return
+      // Setlist lines one by one
+      for (let i = 1; i <= DEMO.setlist.length; i++) {
+        await delay(60)
+        if (!alive()) return
+        setSetlistLines(i)
+      }
+      await delay(400)
+      if (!alive()) return
+
+      // T6 — scene cards unlock (staggered)
+      for (let i = 1; i <= 4; i++) {
+        await delay(80)
+        if (!alive()) return
+        setScenesUnlocked(i)
+      }
+      setAnimStep(7)
+    })()
+  }
+
+  // Auto-start on mount
+  useEffect(() => {
+    const timer = setTimeout(startAnimation, 600)
+    return () => { clearTimeout(timer); genRef.current++ }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   // Global CSS sets body { overflow: hidden } for the snap-scroll main app.
   // Restore scrollability for this standalone page, and set matching background.
   useEffect(() => {
@@ -180,14 +307,21 @@ export function CascadePage() {
     }
   }, [])
 
-  const fadeUp = (delay: number) => ({
+  // Helper: motion props for each tier based on animStep threshold
+  const tierAnim = (step: number) => ({
     initial: { opacity: 0, y: 16 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8, ease: 'easeOut', delay },
+    animate: { opacity: animStep >= step ? 1 : 0, y: animStep >= step ? 0 : 16 },
+    transition: { duration: 0.4, ease: 'easeOut' },
   })
 
   return (
     <div style={{ background: '#0a0a0f', minHeight: '100vh', color: '#fff' }}>
+      <style>{`
+        @keyframes favPulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.25; transform: scale(0.85); }
+        }
+      `}</style>
       <div
         ref={containerRef}
         style={{ maxWidth: 900, margin: '0 auto', position: 'relative' }}
@@ -200,7 +334,7 @@ export function CascadePage() {
 
         {/* ── HEADER ── */}
         <motion.header
-          {...fadeUp(0.2)}
+          initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
           style={{ textAlign: 'center', padding: '80px 40px 40px', position: 'relative', zIndex: 2 }}
         >
           <div style={{ ...MONO, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#6b7280', marginBottom: 24 }}>
@@ -224,10 +358,25 @@ export function CascadePage() {
           </p>
         </motion.header>
 
+        {/* ── REPLAY BUTTON ── */}
+        <div style={{ textAlign: 'center', marginBottom: 8, position: 'relative', zIndex: 2 }}>
+          <button
+            onClick={startAnimation}
+            style={{
+              ...MONO, fontSize: 10, letterSpacing: '0.12em',
+              color: '#374151', background: 'none',
+              border: '1px solid #1e2028', borderRadius: 6,
+              padding: '5px 14px', cursor: 'pointer',
+            }}
+          >
+            ↻ replay
+          </button>
+        </div>
+
         {/* ── TIER 0 — THREE ATOMS ── */}
         <motion.div
           id="cascade-tier-0"
-          {...fadeUp(0.8)}
+          {...tierAnim(1)}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
@@ -271,7 +420,7 @@ export function CascadePage() {
         {/* ── TIER 1 — BUILD PIPELINE ── */}
         <motion.div
           id="cascade-tier-1"
-          {...fadeUp(1.1)}
+          {...tierAnim(2)}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
@@ -290,7 +439,7 @@ export function CascadePage() {
           {/* Artist lane */}
           <div>
             <CodeTransform fn="derive(artist)" description="normalize + assign ID" />
-            <PillGrid tierColor="#8b5cf6" items={[
+            <PillGrid tierColor="#8b5cf6" visibleCount={pillCounts.t1a} items={[
               { key: 'headlinerNormalized', value: '"depeche-mode"' },
               { key: 'id', value: '"concert-158"' },
               { key: 'openers', value: '["Kelly Lee Owens"]' },
@@ -300,7 +449,7 @@ export function CascadePage() {
           {/* Venue lane */}
           <div>
             <CodeTransform fn="normalize(venue)" description="slug + location lookup" />
-            <PillGrid tierColor="#6366f1" items={[
+            <PillGrid tierColor="#6366f1" visibleCount={pillCounts.t1v} items={[
               { key: 'venueNormalized', value: '"kia-forum"' },
               { key: 'city', value: '"Inglewood"' },
               { key: 'state', value: '"California"' },
@@ -311,7 +460,7 @@ export function CascadePage() {
           {/* Date lane */}
           <div>
             <CodeTransform fn="parse(date)" description="extract temporal fields" />
-            <PillGrid tierColor="#64748b" items={[
+            <PillGrid tierColor="#64748b" visibleCount={pillCounts.t1d} items={[
               { key: 'year', value: '2023' },
               { key: 'month', value: '3' },
               { key: 'day', value: '28' },
@@ -331,7 +480,7 @@ export function CascadePage() {
         {/* ── TIER 2 — GEOGRAPHIC (venue lane wide) ── */}
         <motion.div
           id="cascade-tier-2"
-          {...fadeUp(1.5)}
+          {...tierAnim(3)}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
@@ -353,7 +502,7 @@ export function CascadePage() {
           {/* Venue — active */}
           <TierBand color="#6366f1">
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
-              <ApiBadge name="Google Places" domain="google.com" color="#4285F4" />
+              <ApiBadge name="Google Places" domain="google.com" color="#4285F4" pulsing={loadingTier === 2} />
             </div>
             {/* Venue photo placeholder */}
             <div style={{
@@ -374,7 +523,7 @@ export function CascadePage() {
             }}>
               {DEMO.lat.toFixed(4)}° N · {Math.abs(DEMO.lng).toFixed(4)}° W
             </div>
-            <PillGrid tierColor="#6366f1" items={[
+            <PillGrid tierColor="#6366f1" visibleCount={pillCounts.t2} items={[
               { key: 'formattedAddress', value: '3900 W Manchester Blvd' },
               { key: 'placeId', value: 'ChIJO...', icon: 'id' },
               { key: 'confirmedName', value: '"Kia Forum"' },
@@ -392,7 +541,7 @@ export function CascadePage() {
         {/* ── TIER 3 — ARTIST IDENTITY (artist lane wide) ── */}
         <motion.div
           id="cascade-tier-3"
-          {...fadeUp(1.9)}
+          {...tierAnim(4)}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
@@ -411,9 +560,9 @@ export function CascadePage() {
           {/* Artist — active */}
           <TierBand color="#8b5cf6">
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 12, flexWrap: 'wrap' }}>
-              <ApiBadge name="TheAudioDB" domain="theaudiodb.com" color="#1DA0C3" />
-              <ApiBadge name="Last.fm" domain="last.fm" color="#D51007" />
-              <ApiBadge name="MusicBrainz" domain="musicbrainz.org" color="#BA478F" />
+              <ApiBadge name="TheAudioDB" domain="theaudiodb.com" color="#1DA0C3" pulsing={loadingTier === 3} />
+              <ApiBadge name="Last.fm" domain="last.fm" color="#D51007" pulsing={loadingTier === 3} />
+              <ApiBadge name="MusicBrainz" domain="musicbrainz.org" color="#BA478F" pulsing={loadingTier === 3} />
             </div>
             {/* Artist avatar */}
             <div style={{
@@ -442,7 +591,7 @@ export function CascadePage() {
             <div style={{ ...SANS, fontSize: 9, color: '#94a3b8', lineHeight: 1.5, textAlign: 'center', maxHeight: 42, overflow: 'hidden' }}>
               Electronic pioneers known for dark synthesizer-driven sound and iconic global live performances.
             </div>
-            <PillGrid tierColor="#8b5cf6" items={[
+            <PillGrid tierColor="#8b5cf6" visibleCount={pillCounts.t3} items={[
               { key: 'image', value: 'artist photo', icon: 'image', source: 'TheAudioDB' },
               { key: 'formed', value: '"1980"', source: 'TheAudioDB' },
               { key: 'country', value: '"England"', source: 'TheAudioDB' },
@@ -463,7 +612,7 @@ export function CascadePage() {
         {/* ── TIER 4 — AUDIO (artist lane wide) ── */}
         <motion.div
           id="cascade-tier-4"
-          {...fadeUp(2.3)}
+          {...tierAnim(5)}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
@@ -482,7 +631,7 @@ export function CascadePage() {
           {/* Artist — active */}
           <TierBand color="#a855f7">
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
-              <ApiBadge name="Apple Music" domain="music.apple.com" color="#FC3C44" />
+              <ApiBadge name="Apple Music" domain="music.apple.com" color="#FC3C44" pulsing={loadingTier === 4} />
             </div>
             {/* Album art + label */}
             <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12 }}>
@@ -502,7 +651,7 @@ export function CascadePage() {
             </div>
             {/* Track list */}
             <div>
-              {DEMO.topTracks.slice(0, 3).map((t, i) => (
+              {DEMO.topTracks.slice(0, pillCounts.t4 ?? 0).map((t, i) => (
                 <div key={t.name} style={{
                   display: 'flex', alignItems: 'center', gap: 8, padding: '5px 0',
                   borderBottom: '1px solid rgba(168,85,247,0.1)',
@@ -528,7 +677,7 @@ export function CascadePage() {
         {/* ── TIER 5 — PERFORMANCE (all lanes reconverge) ── */}
         <motion.div
           id="cascade-tier-5"
-          {...fadeUp(2.7)}
+          {...tierAnim(6)}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
@@ -596,8 +745,8 @@ export function CascadePage() {
 
               {/* Side-by-side peer gateways */}
               <div style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
-                <ServiceGatewayPeer svc={{ name: 'setlist.fm', type: 'Historical setlists' }} />
-                <ServiceGatewayPeer svc={{ name: 'Ticketmaster', type: 'Tour dates' }} />
+                <ServiceGatewayPeer svc={{ name: 'setlist.fm', type: 'Historical setlists' }} pulsing={loadingTier === 5} />
+                <ServiceGatewayPeer svc={{ name: 'Ticketmaster', type: 'Tour dates' }} pulsing={loadingTier === 5} />
               </div>
 
               <FlowArrow label="response" />
@@ -606,6 +755,7 @@ export function CascadePage() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginTop: 4 }}>
                 <PillGrid
                   tierColor={API_BRANDS['setlist.fm'].primary}
+                  visibleCount={pillCounts.t5s}
                   items={[
                     { key: 'tourName', value: `"${DEMO.tour}"` },
                     { key: 'songs', value: `${DEMO.setlist.length} tracks` },
@@ -615,6 +765,7 @@ export function CascadePage() {
                 />
                 <PillGrid
                   tierColor={API_BRANDS['Ticketmaster'].primary}
+                  visibleCount={pillCounts.t5t}
                   items={[
                     { key: 'opener', value: `"${DEMO.opener}"` },
                     { key: 'tour', value: `"${DEMO.tour} Tour"` },
@@ -630,7 +781,7 @@ export function CascadePage() {
                   SETLIST — {DEMO.date}
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px 16px' }}>
-                  {DEMO.setlist.map((song, i) => (
+                  {DEMO.setlist.slice(0, setlistLines).map((song, i) => (
                     <div key={song} style={{ display: 'flex', gap: 8, alignItems: 'baseline', padding: '3px 0', borderBottom: '1px solid rgba(124,58,237,0.08)' }}>
                       <span style={{ ...MONO, fontSize: 8, color: '#7c3aed55', width: 18, textAlign: 'right', flexShrink: 0 }}>
                         {String(i + 1).padStart(2, '0')}
@@ -655,7 +806,7 @@ export function CascadePage() {
 
         {/* ── ASSEMBLY BRIDGE ── */}
         <motion.div
-          {...fadeUp(2.9)}
+          {...tierAnim(6)}
           style={{ textAlign: 'center', padding: '8px 16px 0', position: 'relative', zIndex: 2 }}
         >
           {/* Tier accumulation row */}
@@ -818,7 +969,7 @@ export function CascadePage() {
           return (
             <motion.div
               id="cascade-tier-6"
-              {...fadeUp(3.1)}
+              {...tierAnim(1)}
               style={{
                 ...TIER_ROW_STYLE,
                 display: 'grid',
@@ -835,19 +986,28 @@ export function CascadePage() {
 
               <div style={{ maxWidth: 640, margin: '0 auto', width: '100%' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                  {SCENES.map(scene => {
+                  {SCENES.map((scene, sceneIndex) => {
                     const isActive = activeScene === scene.id
+                    const isUnlocked = scenesUnlocked > sceneIndex
                     return (
-                      <div key={scene.id}>
+                      <motion.div
+                        key={scene.id}
+                        animate={{
+                          opacity: isUnlocked ? 1 : 0.15,
+                          filter: isUnlocked ? 'grayscale(0)' : 'grayscale(1)',
+                        }}
+                        transition={{ duration: 0.5, ease: 'easeOut' }}
+                      >
                         <button
-                          onClick={() => setActiveScene(isActive ? null : scene.id)}
+                          onClick={() => isUnlocked && setActiveScene(isActive ? null : scene.id)}
                           style={{
                             width: '100%',
                             background: scene.bg,
                             border: `1.5px solid ${isActive ? scene.activeBorderColor : scene.borderColor}`,
                             borderRadius: 10,
                             padding: '14px 12px 10px',
-                            cursor: 'pointer',
+                            cursor: isUnlocked ? 'pointer' : 'default',
+                            pointerEvents: isUnlocked ? 'auto' : 'none',
                             textAlign: 'left',
                             display: 'flex',
                             flexDirection: 'column',
@@ -940,14 +1100,25 @@ export function CascadePage() {
                             </motion.div>
                           )}
                         </AnimatePresence>
-                      </div>
+                      </motion.div>
                     )
                   })}
                 </div>
 
-                <div style={{ ...SANS, fontSize: 10, color: '#4b5563', textAlign: 'center', marginTop: 14, fontWeight: 300 }}>
-                  tap any scene to see which cascade tiers power it
-                </div>
+                {scenesUnlocked >= 4 ? (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    style={{ ...MONO, fontSize: 9, color: '#6b7280', textAlign: 'center', marginTop: 14, letterSpacing: '0.1em' }}
+                  >
+                    ↑ select a scene to trace its data
+                  </motion.div>
+                ) : (
+                  <div style={{ ...MONO, fontSize: 9, color: '#374151', textAlign: 'center', marginTop: 14, letterSpacing: '0.1em' }}>
+                    {animStep === 0 ? '' : '· · · hydrating'}
+                  </div>
+                )}
               </div>
             </motion.div>
           )
@@ -955,7 +1126,7 @@ export function CascadePage() {
 
         {/* ── FOOTER ── */}
         <motion.footer
-          {...fadeUp(3.5)}
+          {...tierAnim(7)}
           style={{
             textAlign: 'center',
             padding: '80px 40px 100px',
