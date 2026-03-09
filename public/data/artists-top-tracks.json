@@ -12030,5 +12030,52 @@
         "streamingUrl": "https://music.apple.com/us/album/blue-moon-of-kentucky/429949001?i=429949034&uo=4"
       }
     ]
+  },
+  "beck": {
+    "name": "Beck",
+    "source": "itunes",
+    "fetchedAt": "2026-03-09T16:13:22.465Z",
+    "tracks": [
+      {
+        "name": "Loser",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/15/63/62/15636288-1e10-7d53-9f13-e26405efd3b5/mzaf_7319409321789244658.plus.aac.p.m4a",
+        "durationMs": 235000,
+        "albumName": "Mellow Gold",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/27/43/8f/27438f8b-dc4c-569f-34fb-caf1091b71da/00075021017931.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/loser/1443287652?i=1443287670&uo=4"
+      },
+      {
+        "name": "Lilac Wine",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e5/b5/f6/e5b5f6e3-78aa-b062-f37f-96ca98d57907/mzaf_4870779438149818558.plus.aac.p.m4a",
+        "durationMs": 226076,
+        "albumName": "HELP(2)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e6/1c/41/e61c4157-3864-e904-acc3-75613984e326/191400691650.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/lilac-wine/1870313498?i=1870313507&uo=4"
+      },
+      {
+        "name": "Where It's At",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/df/38/ff/df38ffc2-a065-36fe-0c33-472f32ec1791/mzaf_14922065517739240034.plus.aac.p.m4a",
+        "durationMs": 330947,
+        "albumName": "Odelay (Deluxe Edition)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5b/bd/e5/5bbde5af-e430-2b74-1980-00bd784d8a27/00602577519956.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/where-its-at/1453197774?i=1453197805&uo=4"
+      },
+      {
+        "name": "E-Pro",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/ab/ce/d4/abced4fc-1a02-92a8-8318-8f2b4ae8cb4c/mzaf_1491611460300639115.plus.aac.p.m4a",
+        "durationMs": 202040,
+        "albumName": "Guero",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/f1/c4/62/f1c4626f-000a-656c-687d-d0ffa2eaf9bf/00602527874685.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/e-pro/1440809859?i=1440810341&uo=4"
+      },
+      {
+        "name": "beck.",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/b6/f6/09/b6f609cd-4cb7-b0b6-86b2-ef69676e5e6c/mzaf_3014554571157261434.plus.aac.p.m4a",
+        "durationMs": 246900,
+        "albumName": "play with earth! 0.03 (Extended Version)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0c/c9/ca/0cc9ca8e-a83d-6326-c1db-742538b16c43/198846522081.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/beck/1771834051?i=1771834494&uo=4"
+      }
+    ]
   }
 }

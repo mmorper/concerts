@@ -3083,5 +3083,18 @@
     "website": null,
     "source": "theaudiodb",
     "fetchedAt": "2026-03-07T20:05:35.665Z"
+  },
+  "beck": {
+    "name": "Beck",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vtuvvs1424793068.jpg",
+    "bio": "Beck Hansen (born Bek David Campbell, July 8, 1970) is an American musician, singer-songwriter and multi-instrumentalist, known by the stage name Beck.\nThe four-time platinum artist rose to underground popularity with his early works, which combined social criticism (as in \"MTV Makes Me Want to Smoke Crack\" and \"Deep Fried Love\") with musical and lyrical experimentation. He first earned wider public attention for his breakthrough single \"Loser\", a 1994 hit. Beck is known for creating musical col",
+    "genres": [
+      "Alternative Rock",
+      "Rock/Pop"
+    ],
+    "formed": "1988",
+    "website": "www.beck.com",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-03-09T16:12:54.023Z"
   }
 }

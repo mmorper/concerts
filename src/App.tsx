@@ -11,6 +11,7 @@ import { ChangelogToast, ChangelogRSS } from './components/changelog'
 import { WhatsPlayingPage } from './components/changelog/WhatsPlayingPage'
 import { LinerNotesPage, LinerNotePermalink } from './components/liner-notes'
 import { AboutPage } from './components/about'
+import { CascadePage } from './components/cascade/CascadePage'
 import { SCENE_MAP, TOAST } from './components/changelog/constants'
 import { useChangelogCheck } from './hooks/useChangelogCheck'
 import { useLinerNotesCheck } from './hooks/useLinerNotesCheck'
@@ -26,6 +27,7 @@ function App() {
       <Route path="/liner-notes/:slug" element={<LinerNotePermalink />} />
       <Route path="/whats-playing" element={<WhatsPlayingPage />} />
       <Route path="/about" element={<AboutPage />} />
+      <Route path="/cascade" element={<CascadePage />} />
       {/* Legacy redirects */}
       <Route path="/changelog" element={<WhatsPlayingPage />} />
       <Route path="/changelog/rss" element={<ChangelogRSS />} />
