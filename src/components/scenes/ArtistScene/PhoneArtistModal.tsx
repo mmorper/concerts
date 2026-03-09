@@ -16,8 +16,10 @@ import { X, Link2, History, Calendar, Music } from 'lucide-react'
 import { getGenreColor } from '../../../constants/colors'
 import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
 import { useTourDates } from '../../../hooks/useTourDates'
+import { useLinerNotesCount } from '../../../hooks/useLinerNotesCount'
 import { fetchSetlist } from '../../../services/setlistfm'
 import { TourBadge } from './TourBadge'
+import { LinerNotesBadge } from './LinerNotesBadge'
 import { AudioPreviewPanel } from './AudioPreviewPanel'
 import { haptics } from '../../../utils/haptics'
 import { normalizeVenueName } from '../../../utils/normalize'
@@ -97,6 +99,9 @@ export function PhoneArtistModal({
     artist?.name || null,
     { delay: 100, enabled: !!artist }
   )
+
+  // Liner notes count
+  const { count: linerNotesCount } = useLinerNotesCount(artist?.normalizedName ?? null)
 
   // Determine if Upcoming tab should show
   const showUpcomingTab = tourCount > 0
@@ -412,16 +417,25 @@ export function PhoneArtistModal({
                 {artist.primaryGenre} · {artist.timesSeen} {artist.timesSeen === 1 ? 'show' : 'shows'}
               </p>
 
-              {/* Tour Badge */}
-              {tourCount > 0 && (
-                <div className="mt-2">
-                  <TourBadge
-                    tourCount={tourCount}
-                    artistName={artist.name}
-                    isActive={activeTab === 'upcoming'}
-                    onClick={handleTourBadgeClick}
-                    show={true}
-                  />
+              {/* Badges row — Tour + Liner Notes */}
+              {(tourCount > 0 || linerNotesCount > 0) && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {tourCount > 0 && (
+                    <TourBadge
+                      tourCount={tourCount}
+                      artistName={artist.name}
+                      isActive={activeTab === 'upcoming'}
+                      onClick={handleTourBadgeClick}
+                      show={true}
+                    />
+                  )}
+                  {linerNotesCount > 0 && (
+                    <LinerNotesBadge
+                      count={linerNotesCount}
+                      artistNormalizedName={artist.normalizedName}
+                      artistName={artist.name}
+                    />
+                  )}
                 </div>
               )}
             </div>
