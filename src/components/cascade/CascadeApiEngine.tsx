@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { ApiService, ApiTag } from './cascadeTypes'
 
 // ─── Brand config ─────────────────────────────────────────────────────────────
@@ -153,6 +154,102 @@ export function ServiceGatewayPeer({ svc }: { svc: ApiService }) {
   )
 }
 
+// ─── Normalized pill grid (all tiers) ────────────────────────────────────────
+
+interface PillGridProps {
+  items: ApiTag[]
+  tierColor: string
+  maxVisible?: number
+}
+
+export function PillGrid({ items, tierColor, maxVisible = 3 }: PillGridProps) {
+  const [expanded, setExpanded] = useState(false)
+  const shown = expanded ? items : items.slice(0, maxVisible)
+  const hiddenCount = items.length - maxVisible
+
+  return (
+    <div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
+          gap: 4,
+        }}
+      >
+        {shown.map(tag => {
+          const chipColor = tag.source ? (API_BRANDS[tag.source]?.primary ?? tierColor) : tierColor
+          return (
+            <div
+              key={tag.key}
+              style={{
+                ...MONO,
+                padding: '6px 10px',
+                borderRadius: 4,
+                background: `${chipColor}12`,
+                border: `1px solid ${chipColor}30`,
+                minWidth: 0,
+                overflow: 'hidden',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 8,
+                  display: 'block',
+                  letterSpacing: '0.05em',
+                  color: `${chipColor}90`,
+                  marginBottom: 2,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {tag.key}
+              </span>
+              <span
+                style={{
+                  fontSize: 11,
+                  color: '#f0f0ff',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 3,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  maxWidth: '100%',
+                }}
+              >
+                {tag.icon && <DataTypeIcon type={tag.icon} />}
+                {tag.value}
+              </span>
+            </div>
+          )
+        })}
+      </div>
+      {hiddenCount > 0 && (
+        <button
+          onClick={() => setExpanded(e => !e)}
+          style={{
+            ...MONO,
+            fontSize: 9,
+            color: `${tierColor}55`,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '8px 0 0',
+            letterSpacing: '0.1em',
+            width: '100%',
+            textAlign: 'center',
+          }}
+        >
+          {expanded
+            ? '↑ collapse'
+            : `· · · ${hiddenCount} more field${hiddenCount !== 1 ? 's' : ''} ↓`}
+        </button>
+      )}
+    </div>
+  )
+}
+
 // ─── Main engine ──────────────────────────────────────────────────────────────
 
 interface CascadeApiEngineProps {
@@ -211,41 +308,7 @@ export function CascadeApiEngine({
 
       <FlowArrow label="response" />
 
-      {/* Outputs — support icon + source-based color tinting */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, justifyContent: 'center' }}>
-        {outputs.map(tag => {
-          const chipColor = tag.source ? (API_BRANDS[tag.source]?.primary ?? hex) : hex
-          return (
-            <div
-              key={tag.key}
-              style={{
-                ...MONO,
-                fontSize: 11,
-                padding: '5px 10px',
-                borderRadius: 4,
-                background: `${chipColor}14`,
-                border: `1px solid ${chipColor}33`,
-              }}
-            >
-              <span style={{ fontSize: 8, display: 'block', letterSpacing: '0.04em', color: `${chipColor}99` }}>
-                {tag.key}
-              </span>
-              <span
-                style={{
-                  fontSize: 12,
-                  color: '#f0f0ff',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 4,
-                }}
-              >
-                {tag.icon && <DataTypeIcon type={tag.icon} />}
-                {tag.value}
-              </span>
-            </div>
-          )
-        })}
-      </div>
+      <PillGrid items={outputs} tierColor={hex} />
 
       {children}
 

@@ -7,7 +7,7 @@ interface CascadeLanesProps {
   focusedAtom: FocusAtom
 }
 
-const LANE_NAMES = ['date', 'venue', 'artist'] as const
+const LANE_NAMES = ['artist', 'venue', 'date'] as const
 
 export function CascadeLanes({ containerRef, focusedAtom }: CascadeLanesProps) {
   const { paths, svgSize, LANE_COLORS } = useCascadeLanes(containerRef)
@@ -44,7 +44,7 @@ export function CascadeLanes({ containerRef, focusedAtom }: CascadeLanesProps) {
             <path
               d={d}
               fill={LANE_COLORS[i]}
-              opacity={isFocused ? 0.18 : isDimmed ? 0.03 : 0.07}
+              opacity={isFocused ? 0.28 : isDimmed ? 0.04 : 0.15}
               filter="url(#laneBlur)"
               style={{ transition: 'opacity 0.6s ease' }}
             />
@@ -53,7 +53,7 @@ export function CascadeLanes({ containerRef, focusedAtom }: CascadeLanesProps) {
               fill="none"
               stroke={LANE_COLORS[i]}
               strokeWidth="1"
-              opacity={isFocused ? 0.25 : isDimmed ? 0.04 : 0.15}
+              opacity={isFocused ? 0.4 : isDimmed ? 0.06 : 0.25}
               style={{ transition: 'opacity 0.6s ease' }}
             />
           </g>

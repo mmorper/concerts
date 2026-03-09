@@ -1,14 +1,14 @@
 import { useEffect, useCallback, useState, type RefObject } from 'react'
 
-export const LANE_COLORS = ['#64748b', '#6366f1', '#8b5cf6'] // date, venue, artist
+export const LANE_COLORS = ['#8b5cf6', '#6366f1', '#64748b'] // artist, venue, date
 
-// Width ratios [date, venue, artist] per tier row ID
+// Width ratios [artist, venue, date] per tier row ID
 export const TIER_WIDTHS: Record<string, [number, number, number]> = {
   'cascade-tier-0': [1, 1, 1],
   'cascade-tier-1': [1, 1, 1],
   'cascade-tier-2': [0.15, 2.5, 0.15],
-  'cascade-tier-3': [0.15, 0.15, 2.5],
-  'cascade-tier-4': [0.15, 0.15, 2.5],
+  'cascade-tier-3': [2.5, 0.15, 0.15],
+  'cascade-tier-4': [2.5, 0.15, 0.15],
   'cascade-tier-5': [1, 1, 1],
   'cascade-tier-6': [1, 1, 1],
 }
