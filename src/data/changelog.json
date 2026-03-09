@@ -1,6 +1,18 @@
 {
   "releases": [
     {
+      "version": "4.5.1",
+      "date": "2026-03-08",
+      "title": "Mobile Polish",
+      "description": "The Liner Notes experience on mobile got a proper tune-up. Story cards now show a clean square photo that keeps faces in frame, the share button sits neatly in the footer, and the Liner Notes badge appears inside the artist modal just like it does on desktop.",
+      "route": "/liner-notes",
+      "highlights": [
+        "Story cards show a square artist photo on all screen sizes — no more cropped heads",
+        "Share button moved in-line with deep links, no longer overlapping on small screens",
+        "Liner Notes badge appears in the mobile artist modal alongside the On Tour badge"
+      ]
+    },
+    {
       "version": "4.5.0",
       "date": "2026-03-08",
       "title": "Deep Cuts",
