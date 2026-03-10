@@ -5,6 +5,18 @@ import { CascadeAtom } from './CascadeAtom'
 import { ServiceGatewayPeer, CodeTransform, FlowArrow, API_BRANDS, PillGrid } from './CascadeApiEngine'
 import { useCascadeFocus } from './useCascadeFocus'
 import { AnimatedConnector } from './AnimatedConnector'
+type SeedType = 'artist' | 'venue' | 'date'
+
+const SEED_GLOW: Record<SeedType, string> = {
+  artist: '#8b5cf6',
+  venue:  '#6366f1',
+  date:   '#64748b',
+}
+const dominantSeedColor = (seeds: SeedType[]): string => {
+  if (seeds.includes('artist')) return SEED_GLOW.artist
+  if (seeds.includes('venue'))  return SEED_GLOW.venue
+  return SEED_GLOW.date
+}
 
 // ─── Data types ───────────────────────────────────────────────────────────────
 
@@ -61,6 +73,7 @@ type FlowPhase =
   | 'venue-hydrating'
   | 'date-pending'
   | 'convergence'
+  | 'cascade-pending'
   | 'complete'
 
 // ─── Tier color palette ───────────────────────────────────────────────────────
@@ -102,7 +115,7 @@ const SANS: React.CSSProperties = { fontFamily: "'Source Sans 3', sans-serif" }
 
 function TierLabel({ color, text }: { color: string; text: string }) {
   return (
-    <div style={{ ...MONO, fontSize: 8, letterSpacing: '0.22em', textTransform: 'uppercase', color, marginBottom: 3 }}>
+    <div style={{ ...MONO, fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color, marginBottom: 5 }}>
       {text}
     </div>
   )
@@ -110,7 +123,7 @@ function TierLabel({ color, text }: { color: string; text: string }) {
 
 function TierTitle({ color, children }: { color: string; children: React.ReactNode }) {
   return (
-    <div style={{ ...PLAYFAIR, fontSize: 18, fontWeight: 700, color, lineHeight: 1.2, marginBottom: 2 }}>
+    <div style={{ ...PLAYFAIR, fontSize: 26, fontWeight: 700, color, lineHeight: 1.15, marginBottom: 4 }}>
       {children}
     </div>
   )
@@ -118,7 +131,7 @@ function TierTitle({ color, children }: { color: string; children: React.ReactNo
 
 function TierSubtitle({ color, children }: { color: string; children: React.ReactNode }) {
   return (
-    <div style={{ ...SANS, fontSize: 10, fontWeight: 300, color, lineHeight: 1.4 }}>
+    <div style={{ ...SANS, fontSize: 13, fontWeight: 300, color, lineHeight: 1.5 }}>
       {children}
     </div>
   )
@@ -126,6 +139,35 @@ function TierSubtitle({ color, children }: { color: string; children: React.Reac
 
 function DormantThread({ color: _ }: { color: string }) {
   return <div style={{ minHeight: 52 }} />
+}
+
+function ContinueButton({ tierColor, onContinue }: { tierColor: string; onContinue: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: 'easeOut', delay: 0.2 }}
+      style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center', paddingTop: 20, paddingBottom: 4 }}
+    >
+      <button
+        onClick={onContinue}
+        style={{
+          ...MONO,
+          fontSize: 10,
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: tierColor,
+          background: 'none',
+          border: `1px solid ${tierColor}40`,
+          borderRadius: 4,
+          padding: '8px 32px',
+          cursor: 'pointer',
+        }}
+      >
+        continue ↓
+      </button>
+    </motion.div>
+  )
 }
 
 function tierDimStyle(isRelevant: boolean): React.CSSProperties {
@@ -167,6 +209,50 @@ function CorpusScale({ color, children }: { color: string; children: React.React
   )
 }
 
+function TierSummaryCard({
+  color, label, domains, iconText, summary, onClick,
+}: {
+  color: string; label: string
+  domains?: string[]; iconText?: string; summary: string; onClick: () => void
+}) {
+  return (
+    <motion.div
+      key="summary"
+      initial={{ opacity: 0, scaleY: 0.88 }}
+      animate={{ opacity: 1, scaleY: 1 }}
+      exit={{ opacity: 0, scaleY: 0.88 }}
+      transition={{ duration: 0.42, ease: [0.4, 0, 0.2, 1] }}
+      onClick={onClick}
+      style={{
+        cursor: 'pointer', padding: '10px 24px',
+        display: 'flex', alignItems: 'center', gap: 10,
+        background: `${color}08`, border: `1px solid ${color}22`,
+        borderRadius: 6, userSelect: 'none', position: 'relative', zIndex: 2,
+        transformOrigin: 'top center',
+      }}
+    >
+      <div style={{ ...MONO, fontSize: 10, letterSpacing: '0.06em', color, flex: 1, fontWeight: 500 }}>
+        {label}
+      </div>
+      {iconText && (
+        <div style={{ ...MONO, fontSize: 9, color: `${color}80`, flexShrink: 0 }}>{iconText}</div>
+      )}
+      {domains?.map(domain => (
+        <img key={domain} src={`https://www.google.com/s2/favicons?domain=${domain}&sz=16`}
+          width={12} height={12} style={{ borderRadius: 2, opacity: 0.6, flexShrink: 0 }} alt="" />
+      ))}
+      <div style={{
+        ...MONO, fontSize: 8, color: `${color}80`,
+        background: `${color}12`, border: `1px solid ${color}25`,
+        borderRadius: 10, padding: '2px 8px', flexShrink: 0,
+      }}>
+        {summary}
+      </div>
+      <div style={{ ...MONO, fontSize: 10, color: `${color}35`, flexShrink: 0 }}>↕</div>
+    </motion.div>
+  )
+}
+
 // ─── T0 sub-components (picker + pending) ─────────────────────────────────────
 
 const PICKER_BTN: React.CSSProperties = {
@@ -183,57 +269,117 @@ const PICKER_BTN: React.CSSProperties = {
   transition: 'background 0.1s',
 }
 
-function ArtistPicker({
+function ArtistTypeahead({
   artists,
-  search,
-  onSearchChange,
+  value,
+  onValueChange,
   onSelect,
+  glowing,
 }: {
   artists: { norm: string; display: string }[]
-  search: string
-  onSearchChange: (v: string) => void
+  value: string
+  onValueChange: (v: string) => void
   onSelect: (norm: string, display: string) => void
+  glowing?: boolean
 }) {
+  const [editing, setEditing] = useState(false)
+  const [inputValue, setInputValue] = useState('')
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const ARTIST_COLOR = '#8b5cf6'
+
+  const filtered = useMemo(() => {
+    if (!inputValue.trim()) return artists.slice(0, 20)
+    const q = inputValue.toLowerCase()
+    return artists.filter(a => a.display.toLowerCase().includes(q)).slice(0, 20)
+  }, [artists, inputValue])
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) {
+        setEditing(false)
+        setInputValue('')
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
+
+  const handleActivate = () => {
+    setInputValue('')
+    setEditing(true)
+  }
+
+  const handlePick = (norm: string, display: string) => {
+    onValueChange(display)
+    onSelect(norm, display)
+    setEditing(false)
+    setInputValue('')
+  }
+
   return (
-    <div>
-      <div style={{ ...MONO, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4b5563', marginBottom: 8, textAlign: 'center' }}>
-        artist
-      </div>
-      <input
-        type="text"
-        placeholder="search artists…"
-        value={search}
-        onChange={e => onSearchChange(e.target.value)}
+    <div ref={wrapRef} style={{ position: 'relative' }}>
+      <div
         style={{
+          background: '#1e2028',
+          border: `1px solid ${(editing || glowing) ? ARTIST_COLOR : '#2d3040'}`,
+          borderRadius: 6,
+          padding: '20px',
+          fontFamily: "'JetBrains Mono', monospace",
+          cursor: editing ? 'default' : 'text',
+          textAlign: 'center',
           width: '100%',
-          ...MONO,
-          fontSize: 10,
-          background: '#0d0f18',
-          border: '1px solid #2d3040',
-          borderRadius: 4,
-          padding: '6px 10px',
-          color: '#9ca3af',
-          marginBottom: 4,
-          outline: 'none',
+          boxShadow: glowing ? `0 0 28px ${ARTIST_COLOR}70, 0 0 10px ${ARTIST_COLOR}40` : editing ? `0 0 24px ${ARTIST_COLOR}40` : 'none',
+          transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
           boxSizing: 'border-box',
+          position: 'relative',
         }}
-      />
-      <div style={{ maxHeight: 168, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 1 }}>
-        {artists.map(a => (
-          <button
-            key={a.norm}
-            onClick={() => onSelect(a.norm, a.display)}
-            style={{ ...PICKER_BTN, color: '#9ca3af' }}
-            onMouseEnter={e => (e.currentTarget.style.background = '#1a1e2a')}
-            onMouseLeave={e => (e.currentTarget.style.background = 'none')}
-          >
-            {a.display}
-          </button>
-        ))}
-        {artists.length === 0 && (
-          <div style={{ ...MONO, fontSize: 9, color: '#374151', textAlign: 'center', padding: '12px 0' }}>no match</div>
+        onClick={!editing ? handleActivate : undefined}
+      >
+        <div style={{ fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4b5563', marginBottom: 8 }}>
+          artist
+        </div>
+        {editing ? (
+          <input
+            autoFocus
+            type="text"
+            placeholder="search…"
+            value={inputValue}
+            onChange={e => setInputValue(e.target.value)}
+            style={{
+              width: '100%',
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 17,
+              background: 'transparent',
+              border: 'none',
+              outline: 'none',
+              color: '#9ca3af',
+              textAlign: 'center',
+              padding: 0,
+            }}
+          />
+        ) : (
+          <div style={{ fontSize: 17, color: '#9ca3af' }}>{value || '—'}</div>
         )}
       </div>
+      {editing && filtered.length > 0 && (
+        <div style={{
+          position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 50,
+          background: '#0d0f18', border: '1px solid #2d3040', borderRadius: 4,
+          marginTop: 2, maxHeight: 180, overflowY: 'auto',
+        }}>
+          {filtered.map(a => (
+            <button
+              key={a.norm}
+              onMouseDown={e => { e.preventDefault(); handlePick(a.norm, a.display) }}
+              style={{ ...PICKER_BTN, color: '#9ca3af', display: 'block' }}
+              onMouseEnter={e => (e.currentTarget.style.background = '#1a1e2a')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'none')}
+            >
+              {a.display}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -391,6 +537,19 @@ export function CascadePage() {
   const [setlistSongs, setSetlistSongs] = useState<string[]>([])
   const [tourName, setTourName] = useState<string | null>(null)
 
+  // ── Seed glow state ───────────────────────────────────────────────────────
+  const [glowingSeeds, setGlowingSeeds] = useState<Set<SeedType>>(new Set())
+  const [glowingTiers, setGlowingTiers] = useState<Map<number, string>>(new Map())
+
+  const showTrace = (seeds: SeedType[], tierId: number) => {
+    setGlowingSeeds(new Set(seeds))
+    setGlowingTiers(prev => new Map([...prev, [tierId, dominantSeedColor(seeds)]]))
+  }
+  const clearTraces = (tierId: number) => {
+    setGlowingSeeds(new Set())
+    setGlowingTiers(prev => { const next = new Map(prev); next.delete(tierId); return next })
+  }
+
   // ── Animation state ───────────────────────────────────────────────────────
   const genRef = useRef(0)
   const [tiersVisible, setTiersVisible] = useState<Set<number>>(new Set([0]))
@@ -399,119 +558,176 @@ export function CascadePage() {
   const [pillCounts, setPillCounts] = useState<Partial<Record<string, number>>>({})
   const [setlistLines, setSetlistLines] = useState(0)
   const [scenesUnlocked, setScenesUnlocked] = useState(0)
-  const [t0InputCount, setT0InputCount] = useState(0) // 0=hidden, 1-540=counter visible
   const [t1ColStep, setT1ColStep] = useState(0)   // 0=none, 1=artist, 2=+venue, 3=+date
   const [t1FieldCount, setT1FieldCount] = useState(0) // 0=hidden, 1-19=counter visible
   const [t2RevealStep, setT2RevealStep] = useState(0) // 0=nothing, 2=image visible
+  const [collapsedTiers, setCollapsedTiers] = useState<Set<number>>(new Set())
+  const [expandedTier, setExpandedTier] = useState<number | null>(null)
+  const [cascadePending, setCascadePending] = useState(false)
+  const pendingCascadeRef = useRef<{ gen: number; songCount: number } | null>(null)
+  const [tierAwaitingContinue, setTierAwaitingContinue] = useState<number | null>(null)
+  const continueResolverRef = useRef<(() => void) | null>(null)
+
+  const waitForContinue = (tier: number) => {
+    setTierAwaitingContinue(tier)
+    return new Promise<void>(resolve => { continueResolverRef.current = resolve })
+  }
+  const handleContinue = () => {
+    setTierAwaitingContinue(null)
+    continueResolverRef.current?.()
+    continueResolverRef.current = null
+  }
+
+  const handleStartCascade = () => {
+    setCascadePending(false)
+    const pending = pendingCascadeRef.current
+    if (pending) {
+      pendingCascadeRef.current = null
+      setFlowPhase('convergence')
+      runFullCascade(pending.gen, pending.songCount)
+    }
+  }
 
   const revealTier = (n: number) => setTiersVisible(prev => new Set([...prev, n]))
+  const collapseTier = (n: number) => setCollapsedTiers(prev => new Set([...prev, n]))
+  const toggleExpand = (n: number) => setExpandedTier(prev => prev === n ? null : n)
 
   // ── Full cascade animation — runs after T0 is fully resolved ─────────────
 
   const runFullCascade = async (gen: number, songCount: number) => {
     const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
-    // rAF-based tick: guarantees one render per browser paint frame
-    const frame = () => new Promise<void>(r => requestAnimationFrame(() => r()))
     const alive = () => genRef.current === gen
 
     setLoadingTier(null); setPillCounts({ t1a: 0, t1v: 0, t1d: 0, t2: 0, t3: 0, t4: 0, t5s: 0, t5t: 0 }); setSetlistLines(0); setScenesUnlocked(0)
-    setT0InputCount(0); setT1ColStep(0); setT1FieldCount(0); setT2RevealStep(0)
+    setT1ColStep(0); setT1FieldCount(0); setT2RevealStep(0)
+    setGlowingSeeds(new Set()); setGlowingTiers(new Map())
     await delay(100); if (!alive()) return
 
-    // T0 footer counter: 0 → 540 one rAF frame per step of 20 (~27 frames ≈ 450ms)
-    for (let i = 20; i < 540; i += 20) {
-      await frame(); if (!alive()) return
-      setT0InputCount(i)
-    }
-    setT0InputCount(540)
-    await delay(200); if (!alive()) return
-
-    // T0→T1 connector then reveal T1 header
+    // T0→T1 connector
     setConnectorPhase(1)
     await delay(800); if (!alive()) return
     revealTier(1)
     await delay(500); if (!alive()) return  // tier header settles
 
-    // Columns appear sequentially: derive artist → normalize venue → parse date
+    // T1: each trace fires a beat before its column — artist → venue → date
+    showTrace(['artist'], 1)
+    await delay(300); if (!alive()) return
     setT1ColStep(1)
-    await delay(350); if (!alive()) return
+    await delay(250); if (!alive()) return
+
+    showTrace(['venue'], 1)
+    await delay(300); if (!alive()) return
     setT1ColStep(2)
-    await delay(350); if (!alive()) return
+    await delay(250); if (!alive()) return
+
+    showTrace(['date'], 1)
+    await delay(300); if (!alive()) return
     setT1ColStep(3)
     await delay(500); if (!alive()) return  // pause — viewer reads all three
 
-    // T1 pills: artist → venue → date, 120ms each (> 100ms animation so each card lands before next starts)
-    // After each column finishes, pause for the same duration it took to paint
+    // T1 pills: artist → venue → date
     for (let i = 1; i <= 3; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t1a: i }))
     }
-    await delay(3 * 120); if (!alive()) return  // mirror-pause = artist paint time
+    await delay(3 * 120); if (!alive()) return
     for (let i = 1; i <= 4; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t1v: i }))
     }
-    await delay(4 * 120); if (!alive()) return  // mirror-pause = venue paint time
+    await delay(4 * 120); if (!alive()) return
     for (let i = 1; i <= 5; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t1d: i }))
     }
 
-    // Field counter: 1 → 19 at 35ms each ≈ 665ms — clearly visible
+    // Field counter: 1 → 19
     for (let i = 1; i <= 19; i++) {
       await delay(35); if (!alive()) return
       setT1FieldCount(i)
     }
+    await delay(200); if (!alive()) return
+    clearTraces(1)
     await delay(400); if (!alive()) return
 
-    // T1→T2 connector then reveal T2
+    // T1 complete — wait for user, then collapse
+    await waitForContinue(1); if (!alive()) return
+    collapseTier(1)
+    await delay(400); if (!alive()) return
+
+    // T1→T2 connector — venue trace fires here
     setConnectorPhase(2)
+    showTrace(['venue'], 2)
     await delay(800); if (!alive()) return
     revealTier(2)
-    setLoadingTier(2) // badge pulses while "API call runs"
-    await delay(350); if (!alive()) return  // tier entrance
-    await delay(400); if (!alive()) return  // viewer sees pulsing badge
-    setT2RevealStep(2)   // image fades in (response arrives)
-    setLoadingTier(null) // badge stops pulsing
-    await delay(700); if (!alive()) return  // image fully renders in
+    setLoadingTier(2)
+    await delay(350); if (!alive()) return
+    await delay(400); if (!alive()) return
+    setT2RevealStep(2)
+    setLoadingTier(null)
+    await delay(700); if (!alive()) return
     for (let i = 1; i <= 6; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t2: i }))
     }
+    await delay(200); if (!alive()) return
+    clearTraces(2)
     await delay(400); if (!alive()) return
 
-    // T2→T3 connector then reveal T3
+    // T2 complete — wait for user, then collapse
+    await waitForContinue(2); if (!alive()) return
+    collapseTier(2)
+    await delay(400); if (!alive()) return
+
+    // T2→T3 connector — artist trace fires here
     setConnectorPhase(3)
+    showTrace(['artist'], 3)
     await delay(800); if (!alive()) return
     setLoadingTier(3); revealTier(3)
-    await delay(350); if (!alive()) return  // tier entrance
-    await delay(400); if (!alive()) return  // viewer sees pulsing badges
+    await delay(350); if (!alive()) return
+    await delay(400); if (!alive()) return
     setLoadingTier(null)
     for (let i = 1; i <= 7; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t3: i }))
     }
+    await delay(200); if (!alive()) return
+    clearTraces(3)
     await delay(400); if (!alive()) return
 
-    // T3→T4 connector then reveal T4
+    // T3 complete — wait for user, then collapse
+    await waitForContinue(3); if (!alive()) return
+    collapseTier(3)
+    await delay(400); if (!alive()) return
+
+    // T3→T4 connector — artist trace fires here
     setConnectorPhase(4)
+    showTrace(['artist'], 4)
     await delay(800); if (!alive()) return
     setLoadingTier(4); revealTier(4)
-    await delay(350); if (!alive()) return  // tier entrance
-    await delay(400); if (!alive()) return  // viewer sees pulsing badge
+    await delay(350); if (!alive()) return
+    await delay(400); if (!alive()) return
     setLoadingTier(null)
     for (let i = 1; i <= 3; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t4: i }))
     }
+    await delay(200); if (!alive()) return
+    clearTraces(4)
     await delay(400); if (!alive()) return
 
-    // T4→T5 connector then reveal T5
+    // T4 complete — wait for user, then collapse
+    await waitForContinue(4); if (!alive()) return
+    collapseTier(4)
+    await delay(400); if (!alive()) return
+
+    // T4→T5 connector — artist + venue traces fire here
     setConnectorPhase(5)
+    showTrace(['artist', 'venue'], 5)
     await delay(800); if (!alive()) return
     setLoadingTier(5); revealTier(5)
-    await delay(350); if (!alive()) return  // tier entrance
-    await delay(400); if (!alive()) return  // viewer sees pulsing badges
+    await delay(350); if (!alive()) return
+    await delay(400); if (!alive()) return
     setLoadingTier(null)
     for (let i = 1; i <= 4; i++) {
       await delay(120); if (!alive()) return
@@ -522,21 +738,32 @@ export function CascadePage() {
       await delay(80); if (!alive()) return
       setSetlistLines(i)
     }
+    await delay(200); if (!alive()) return
+    clearTraces(5)
     await delay(400); if (!alive()) return
+
+    // T5 complete — wait for user, then collapse
+    await waitForContinue(5); if (!alive()) return
+    collapseTier(5)
+    await delay(400); if (!alive()) return
+
+    // T6 — all three traces, then scenes unlock
+    showTrace(['artist', 'venue', 'date'], 6)
+    await delay(300); if (!alive()) return
     revealTier(6)
     for (let i = 1; i <= 4; i++) {
       await delay(80); if (!alive()) return
       setScenesUnlocked(i)
     }
+    clearTraces(6)
     setFlowPhase('complete')
   }
 
   // ── Selection handlers ────────────────────────────────────────────────────
 
-  const doDateSelect = (concert: Concert, gen: number) => {
+  const doDateSelect = (concert: Concert, gen: number, autoRun = true) => {
     setSelectedConcert(concert)
     setDateOptions([])
-    setFlowPhase('convergence')
 
     let songs: string[] = []
     let tour: string | null = null
@@ -550,10 +777,18 @@ export function CascadePage() {
     }
     setSetlistSongs(songs)
     setTourName(tour)
-    runFullCascade(gen, songs.length)
+
+    if (autoRun) {
+      setFlowPhase('convergence')
+      runFullCascade(gen, songs.length)
+    } else {
+      setFlowPhase('cascade-pending')
+      pendingCascadeRef.current = { gen, songCount: songs.length }
+      setCascadePending(true)
+    }
   }
 
-  const doVenueSelect = (venueNorm: string, artistNorm: string, gen: number) => {
+  const doVenueSelect = (venueNorm: string, artistNorm: string, gen: number, autoRun = true) => {
     const vm = venuesMetaRef.current[venueNorm] ?? null
     setSelectedVenueNorm(venueNorm)
     setSelectedVenueDisplay(vm?.name ?? venueNorm)
@@ -566,14 +801,15 @@ export function CascadePage() {
       a.date.localeCompare(b.date)
     )
     if (available.length === 1) {
-      doDateSelect(available[0], gen)
+      doDateSelect(available[0], gen, autoRun)
     } else {
       setDateOptions(available)
       setFlowPhase('date-pending')
     }
   }
 
-  const handleArtistSelect = (artistNorm: string, artistDisplay: string) => {
+  const handleArtistSelect = (artistNorm: string, artistDisplay: string, isPreview = false) => {
+    if (!isPreview) setCascadePending(false)
     const gen = ++genRef.current
 
     setSelectedArtistNorm(artistNorm)
@@ -593,7 +829,7 @@ export function CascadePage() {
 
     const venues = [...(artistToVenues.get(artistNorm) ?? [])]
     if (venues.length === 1) {
-      doVenueSelect(venues[0], artistNorm, gen)
+      doVenueSelect(venues[0], artistNorm, gen, !isPreview)
     } else {
       const opts = venues
         .map(vn => ({ norm: vn, display: venuesMetaRef.current[vn]?.name ?? vn }))
@@ -607,7 +843,7 @@ export function CascadePage() {
     genRef.current++
     setFlowPhase('idle')
     setTiersVisible(new Set([0])); setConnectorPhase(0)
-    setLoadingTier(null); setPillCounts({ t1a: 0, t1v: 0, t1d: 0, t2: 0, t3: 0, t4: 0, t5s: 0, t5t: 0 }); setSetlistLines(0); setScenesUnlocked(0); setT0InputCount(0); setT1ColStep(0); setT1FieldCount(0); setT2RevealStep(0)
+    setLoadingTier(null); setPillCounts({ t1a: 0, t1v: 0, t1d: 0, t2: 0, t3: 0, t4: 0, t5s: 0, t5t: 0 }); setSetlistLines(0); setScenesUnlocked(0); setT1ColStep(0); setT1FieldCount(0); setT2RevealStep(0); setCollapsedTiers(new Set()); setExpandedTier(null)
     setSelectedArtistNorm(null); setSelectedArtistDisplay(null)
     setSelectedVenueNorm(null); setSelectedVenueDisplay(null)
     setSelectedConcert(null)
@@ -615,6 +851,9 @@ export function CascadePage() {
     setArtistMeta(null); setVenueMeta(null)
     setArtistTracks([]); setSetlistSongs([]); setTourName(null)
     resetFocus(); setArtistSearch('')
+    setCascadePending(false); pendingCascadeRef.current = null
+    setTierAwaitingContinue(null); continueResolverRef.current = null
+    setGlowingSeeds(new Set()); setGlowingTiers(new Map())
   }
 
   // ── Body style ────────────────────────────────────────────────────────────
@@ -626,6 +865,19 @@ export function CascadePage() {
       document.body.style.background = ''
     }
   }, [])
+
+  // ── Featured demo: auto-run Sting on load ─────────────────────────────────
+  useEffect(() => {
+    if (artistList.length === 0) return
+    const featured = artistList.find(a => a.norm === 'sting')
+    if (!featured) return
+    const timer = setTimeout(() => {
+      setArtistSearch('Sting')
+      handleArtistSelect(featured.norm, featured.display, true)
+    }, 400)
+    return () => clearTimeout(timer)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [artistList.length])
 
   // ── Helpers ───────────────────────────────────────────────────────────────
   const tierEntrance = (relevant: boolean) => ({
@@ -724,49 +976,46 @@ export function CascadePage() {
             ...tierDimStyle(isTierRelevant(0)),
           }}
         >
-          <div style={TIER_HEADER_STYLE}>
-            <TierLabel color={TIER_COLORS.t0.label} text="Tier 0 · The Source" />
-            <TierTitle color={TIER_COLORS.t0.title}>Three Atoms</TierTitle>
-            <TierSubtitle color={TIER_COLORS.t0.sub}>One row in a spreadsheet. That's the whole input.</TierSubtitle>
+          {/* Artist column */}
+          <div>
+            {flowPhase === 'idle' || flowPhase === 'cascade-pending' || flowPhase === 'complete' ? (
+              <ArtistTypeahead
+                artists={filteredArtistList}
+                value={artistSearch}
+                onValueChange={setArtistSearch}
+                onSelect={handleArtistSelect}
+                glowing={glowingSeeds.has('artist')}
+              />
+            ) : (
+              <CascadeAtom type="artist" value={selectedArtistDisplay ?? ''} focusedAtom={focusedAtom} onFocus={focusAtom} glowing={glowingSeeds.has('artist')} />
+            )}
           </div>
 
-          {/* Artist column */}
-          {flowPhase === 'idle' ? (
-            <ArtistPicker
-              artists={filteredArtistList}
-              search={artistSearch}
-              onSearchChange={setArtistSearch}
-              onSelect={handleArtistSelect}
-            />
-          ) : (
-            <CascadeAtom type="artist" value={selectedArtistDisplay ?? ''} focusedAtom={focusedAtom} onFocus={focusAtom} />
-          )}
-
           {/* Venue column */}
-          {flowPhase === 'venue-pending' ? (
-            <VenuePicker options={venueOptions} onSelect={v => { const gen = ++genRef.current; doVenueSelect(v, selectedArtistNorm!, gen) }} />
-          ) : selectedVenueDisplay ? (
-            <CascadeAtom type="venue" value={selectedVenueDisplay} focusedAtom={focusedAtom} onFocus={focusAtom} />
-          ) : (
-            <PendingAtom type="venue" />
-          )}
+          <div>
+            {flowPhase === 'venue-pending' ? (
+              <VenuePicker options={venueOptions} onSelect={v => { const gen = ++genRef.current; doVenueSelect(v, selectedArtistNorm!, gen) }} />
+            ) : selectedVenueDisplay ? (
+              <CascadeAtom type="venue" value={selectedVenueDisplay} focusedAtom={focusedAtom} onFocus={focusAtom} glowing={glowingSeeds.has('venue')} />
+            ) : (
+              <PendingAtom type="venue" />
+            )}
+          </div>
 
           {/* Date column */}
-          {flowPhase === 'date-pending' ? (
-            <DatePicker options={dateOptions} onSelect={c => { const gen = ++genRef.current; doDateSelect(c, gen) }} />
-          ) : selectedConcert ? (
-            <CascadeAtom type="date" value={selectedConcert.date} focusedAtom={focusedAtom} onFocus={focusAtom} />
-          ) : (
-            <PendingAtom type="date" />
-          )}
+          <div>
+            {flowPhase === 'date-pending' ? (
+              <DatePicker options={dateOptions} onSelect={c => { const gen = ++genRef.current; doDateSelect(c, gen) }} />
+            ) : selectedConcert ? (
+              <CascadeAtom type="date" value={selectedConcert.date} focusedAtom={focusedAtom} onFocus={focusAtom} glowing={glowingSeeds.has('date')} />
+            ) : (
+              <PendingAtom type="date" />
+            )}
+          </div>
 
           {/* Hint / reset row */}
-          <div style={{ gridColumn: '1 / -1', textAlign: 'center', marginTop: 8 }}>
-            {flowPhase === 'idle' ? (
-              <div style={{ ...MONO, fontSize: 9, color: '#374151', letterSpacing: '0.1em' }}>
-                {concerts.length > 0 ? 'select an artist to begin the cascade ↓' : 'loading…'}
-              </div>
-            ) : (
+          <div style={{ gridColumn: '1 / -1', textAlign: 'center', marginTop: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+            {flowPhase !== 'idle' && flowPhase !== 'cascade-pending' && flowPhase !== 'complete' && (
               <button
                 onClick={handleReset}
                 style={{ ...MONO, fontSize: 9, letterSpacing: '0.12em', color: '#374151', background: 'none', border: '1px solid #1e2028', borderRadius: 6, padding: '4px 12px', cursor: 'pointer' }}
@@ -775,17 +1024,68 @@ export function CascadePage() {
               </button>
             )}
           </div>
+        </div>
 
-          {t0InputCount > 0 && (
+        {/* ── CASCADE CONTINUE BLOCK (Option B) ── */}
+        <AnimatePresence>
+          {cascadePending && (
             <motion.div
-              style={{ gridColumn: '1 / -1', ...MONO, fontSize: 12, color: '#4b5563', textAlign: 'center' }}
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+              key="cascade-continue"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8, transition: { duration: 0.25 } }}
+              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.3 }}
+              style={{
+                textAlign: 'center',
+                padding: '32px 48px',
+                position: 'relative',
+                zIndex: 2,
+                borderTop: '1px solid #1a1e2a',
+                borderBottom: '1px solid #1a1e2a',
+                margin: '4px 0',
+              }}
             >
-              180 concerts × 3 fields ={' '}
-              <span style={{ color: '#6b7280' }}>{t0InputCount} total inputs</span>
+              <div style={{
+                ...PLAYFAIR,
+                fontSize: 22,
+                fontWeight: 700,
+                color: '#e2e8f0',
+                marginBottom: 12,
+                lineHeight: 1.2,
+              }}>
+                Three words. Watch what happens next.
+              </div>
+              <p style={{
+                ...SANS,
+                fontSize: 13,
+                color: '#6b7280',
+                fontWeight: 300,
+                maxWidth: 440,
+                margin: '0 auto 24px',
+                lineHeight: 1.65,
+              }}>
+                Artist, venue, date — the raw ingredients. The cascade will normalize them, then call seven APIs across six tiers to build everything you see on concerts.morperhaus.org.
+              </p>
+              <button
+                onClick={handleStartCascade}
+                style={{
+                  ...MONO,
+                  fontSize: 11,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                  color: '#a5b4fc',
+                  background: 'none',
+                  border: '1px solid #a5b4fc40',
+                  borderRadius: 4,
+                  padding: '10px 36px',
+                  cursor: 'pointer',
+                }}
+              >
+                Start the cascade →
+              </button>
             </motion.div>
           )}
-        </div>
+        </AnimatePresence>
 
         {connectorPhase >= 1 && (
           <AnimatedConnector toColor={TIER_COLORS.t1.accent!} duration={800} />
@@ -793,18 +1093,29 @@ export function CascadePage() {
 
         {/* ── TIER 1 — BUILD PIPELINE ── */}
         {tiersVisible.has(1) && (
-        <motion.div
-          id="cascade-tier-1"
-          {...tierEntrance(isTierRelevant(1))}
-          style={{
-            ...TIER_ROW_STYLE,
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gap: 16,
-            alignItems: 'start',
-            ...(isTierRelevant(1) ? {} : { filter: 'grayscale(0.5)' }),
-          }}
-        >
+          <AnimatePresence mode="sync">
+          {collapsedTiers.has(1) && expandedTier !== 1 ? (
+            <TierSummaryCard key="summary"
+              color={TIER_COLORS.t1.accent!} label="Tier 1 · Structural Enrichment"
+              iconText="</>" summary="19 fields derived" onClick={() => toggleExpand(1)}
+            />
+          ) : (
+          <motion.div
+            key="full"
+            id="cascade-tier-1"
+            {...tierEntrance(isTierRelevant(1))}
+            exit={{ opacity: 0, scaleY: 0.88, transition: { duration: 0.38, ease: 'easeInOut' } }}
+            style={{
+              ...TIER_ROW_STYLE,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr 1fr',
+              gap: 16,
+              alignItems: 'start',
+              transformOrigin: 'top center',
+              ...(isTierRelevant(1) ? {} : { filter: 'grayscale(0.5)' }),
+              ...(glowingTiers.has(1) ? { boxShadow: `0 0 0 1px ${glowingTiers.get(1)}40, 0 0 32px ${glowingTiers.get(1)}20`, transition: 'box-shadow 0.4s ease' } : { transition: 'box-shadow 0.4s ease' }),
+            }}
+          >
           <div style={TIER_HEADER_STYLE}>
             <TierLabel color={TIER_COLORS.t1.label} text="Tier 1 · Structural Enrichment" />
             <TierTitle color={TIER_COLORS.t1.title}>The Build Pipeline</TierTitle>
@@ -858,7 +1169,12 @@ export function CascadePage() {
               </div>
             </motion.div>
           )}
-        </motion.div>
+          {tierAwaitingContinue === 1 && (
+            <ContinueButton tierColor={TIER_COLORS.t1.accent!} onContinue={handleContinue} />
+          )}
+          </motion.div>
+          )}
+          </AnimatePresence>
         )}
 
         {connectorPhase >= 2 && (
@@ -867,18 +1183,29 @@ export function CascadePage() {
 
         {/* ── TIER 2 — GEOGRAPHIC (venue lane wide) ── */}
         {tiersVisible.has(2) && (
-        <motion.div
-          id="cascade-tier-2"
-          {...tierEntrance(isTierRelevant(2))}
-          style={{
-            ...TIER_ROW_STYLE,
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gap: 12,
-            alignItems: 'start',
-            ...(isTierRelevant(2) ? {} : { filter: 'grayscale(0.5)' }),
-          }}
-        >
+          <AnimatePresence mode="sync">
+          {collapsedTiers.has(2) && expandedTier !== 2 ? (
+            <TierSummaryCard key="summary"
+              color={TIER_COLORS.t2.accent!} label="Tier 2 · Geographic Enrichment"
+              domains={['google.com']} summary={venueMeta?.name ?? selectedVenueDisplay ?? '…'} onClick={() => toggleExpand(2)}
+            />
+          ) : (
+          <motion.div
+            key="full"
+            id="cascade-tier-2"
+            {...tierEntrance(isTierRelevant(2))}
+            exit={{ opacity: 0, scaleY: 0.88, transition: { duration: 0.38, ease: 'easeInOut' } }}
+            style={{
+              ...TIER_ROW_STYLE,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr 1fr',
+              gap: 12,
+              alignItems: 'start',
+              transformOrigin: 'top center',
+              ...(isTierRelevant(2) ? {} : { filter: 'grayscale(0.5)' }),
+              ...(glowingTiers.has(2) ? { boxShadow: `0 0 0 1px ${glowingTiers.get(2)}40, 0 0 32px ${glowingTiers.get(2)}20`, transition: 'box-shadow 0.4s ease' } : { transition: 'box-shadow 0.4s ease' }),
+            }}
+          >
           <div style={TIER_HEADER_STYLE}>
             <TierLabel color={TIER_COLORS.t2.label} text="Tier 2 · Geographic Enrichment" />
             <TierTitle color={TIER_COLORS.t2.title}>Every Venue, Precisely Placed</TierTitle>
@@ -938,7 +1265,12 @@ export function CascadePage() {
 
           {/* Date — dormant */}
           <DormantThread color="#64748b" />
-        </motion.div>
+          {tierAwaitingContinue === 2 && (
+            <ContinueButton tierColor={TIER_COLORS.t2.accent!} onContinue={handleContinue} />
+          )}
+          </motion.div>
+          )}
+          </AnimatePresence>
         )}
 
         {connectorPhase >= 3 && (
@@ -947,18 +1279,29 @@ export function CascadePage() {
 
         {/* ── TIER 3 — ARTIST IDENTITY (artist lane wide) ── */}
         {tiersVisible.has(3) && (
-        <motion.div
-          id="cascade-tier-3"
-          {...tierEntrance(isTierRelevant(3))}
-          style={{
-            ...TIER_ROW_STYLE,
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gap: 12,
-            alignItems: 'start',
-            ...(isTierRelevant(3) ? {} : { filter: 'grayscale(0.5)' }),
-          }}
-        >
+          <AnimatePresence mode="sync">
+          {collapsedTiers.has(3) && expandedTier !== 3 ? (
+            <TierSummaryCard key="summary"
+              color={TIER_COLORS.t3.accent!} label="Tier 3 · Artist Enrichment"
+              domains={['theaudiodb.com', 'last.fm', 'musicbrainz.org']} summary={selectedArtistDisplay ?? '…'} onClick={() => toggleExpand(3)}
+            />
+          ) : (
+          <motion.div
+            key="full"
+            id="cascade-tier-3"
+            {...tierEntrance(isTierRelevant(3))}
+            exit={{ opacity: 0, scaleY: 0.88, transition: { duration: 0.38, ease: 'easeInOut' } }}
+            style={{
+              ...TIER_ROW_STYLE,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr 1fr',
+              gap: 12,
+              alignItems: 'start',
+              transformOrigin: 'top center',
+              ...(isTierRelevant(3) ? {} : { filter: 'grayscale(0.5)' }),
+              ...(glowingTiers.has(3) ? { boxShadow: `0 0 0 1px ${glowingTiers.get(3)}40, 0 0 32px ${glowingTiers.get(3)}20`, transition: 'box-shadow 0.4s ease' } : { transition: 'box-shadow 0.4s ease' }),
+            }}
+          >
           <div style={TIER_HEADER_STYLE}>
             <TierLabel color={TIER_COLORS.t3.label} text="Tier 3 · Artist Enrichment" />
             <TierTitle color={TIER_COLORS.t3.title}>A Face and a Story</TierTitle>
@@ -1023,7 +1366,12 @@ export function CascadePage() {
           <DormantThread color="#6366f1" />
           {/* Date — dormant */}
           <DormantThread color="#64748b" />
-        </motion.div>
+          {tierAwaitingContinue === 3 && (
+            <ContinueButton tierColor={TIER_COLORS.t3.accent!} onContinue={handleContinue} />
+          )}
+          </motion.div>
+          )}
+          </AnimatePresence>
         )}
 
         {connectorPhase >= 4 && (
@@ -1032,18 +1380,29 @@ export function CascadePage() {
 
         {/* ── TIER 4 — AUDIO (artist lane wide) ── */}
         {tiersVisible.has(4) && (
-        <motion.div
-          id="cascade-tier-4"
-          {...tierEntrance(isTierRelevant(4))}
-          style={{
-            ...TIER_ROW_STYLE,
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gap: 12,
-            alignItems: 'start',
-            ...(isTierRelevant(4) ? {} : { filter: 'grayscale(0.5)' }),
-          }}
-        >
+          <AnimatePresence mode="sync">
+          {collapsedTiers.has(4) && expandedTier !== 4 ? (
+            <TierSummaryCard key="summary"
+              color={TIER_COLORS.t4.accent!} label="Tier 4 · Audio Enrichment"
+              domains={['music.apple.com']} summary={artistTracks.length > 0 ? `${artistTracks.length} tracks` : 'audio enriched'} onClick={() => toggleExpand(4)}
+            />
+          ) : (
+          <motion.div
+            key="full"
+            id="cascade-tier-4"
+            {...tierEntrance(isTierRelevant(4))}
+            exit={{ opacity: 0, scaleY: 0.88, transition: { duration: 0.38, ease: 'easeInOut' } }}
+            style={{
+              ...TIER_ROW_STYLE,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr 1fr',
+              gap: 12,
+              alignItems: 'start',
+              transformOrigin: 'top center',
+              ...(isTierRelevant(4) ? {} : { filter: 'grayscale(0.5)' }),
+              ...(glowingTiers.has(4) ? { boxShadow: `0 0 0 1px ${glowingTiers.get(4)}40, 0 0 32px ${glowingTiers.get(4)}20`, transition: 'box-shadow 0.4s ease' } : { transition: 'box-shadow 0.4s ease' }),
+            }}
+          >
           {/* Full-width header */}
           <div style={TIER_HEADER_STYLE}>
             <TierLabel color={TIER_COLORS.t4.label} text="Tier 4 · Audio Enrichment" />
@@ -1110,7 +1469,12 @@ export function CascadePage() {
           <DormantThread color="#6366f1" />
           {/* Col 3 — dormant */}
           <DormantThread color="#64748b" />
-        </motion.div>
+          {tierAwaitingContinue === 4 && (
+            <ContinueButton tierColor={TIER_COLORS.t4.accent!} onContinue={handleContinue} />
+          )}
+          </motion.div>
+          )}
+          </AnimatePresence>
         )}
 
         {connectorPhase >= 5 && (
@@ -1119,18 +1483,29 @@ export function CascadePage() {
 
         {/* ── TIER 5 — PERFORMANCE (all lanes reconverge) ── */}
         {tiersVisible.has(5) && (
-        <motion.div
-          id="cascade-tier-5"
-          {...tierEntrance(isTierRelevant(5))}
-          style={{
-            ...TIER_ROW_STYLE,
-            display: 'grid',
-            gridTemplateColumns: '2fr 1fr',
-            gap: 16,
-            alignItems: 'start',
-            ...(isTierRelevant(5) ? {} : { filter: 'grayscale(0.5)' }),
-          }}
-        >
+          <AnimatePresence mode="sync">
+          {collapsedTiers.has(5) && expandedTier !== 5 ? (
+            <TierSummaryCard key="summary"
+              color={TIER_COLORS.t5.accent!} label="Tier 5 · Performance Enrichment"
+              domains={['setlist.fm', 'ticketmaster.com']} summary={setlistSongs.length > 0 ? `${setlistSongs.length} songs` : 'performance enriched'} onClick={() => toggleExpand(5)}
+            />
+          ) : (
+          <motion.div
+            key="full"
+            id="cascade-tier-5"
+            {...tierEntrance(isTierRelevant(5))}
+            exit={{ opacity: 0, scaleY: 0.88, transition: { duration: 0.38, ease: 'easeInOut' } }}
+            style={{
+              ...TIER_ROW_STYLE,
+              display: 'grid',
+              gridTemplateColumns: '2fr 1fr',
+              gap: 16,
+              alignItems: 'start',
+              transformOrigin: 'top center',
+              ...(isTierRelevant(5) ? {} : { filter: 'grayscale(0.5)' }),
+              ...(glowingTiers.has(5) ? { boxShadow: `0 0 0 1px ${glowingTiers.get(5)}40, 0 0 32px ${glowingTiers.get(5)}20`, transition: 'box-shadow 0.4s ease' } : { transition: 'box-shadow 0.4s ease' }),
+            }}
+          >
           {/* Full-width header */}
           <div style={TIER_HEADER_STYLE}>
             <TierLabel color={TIER_COLORS.t5.label} text="Tier 5 · Performance Enrichment" />
@@ -1210,7 +1585,12 @@ export function CascadePage() {
 
           {/* Col 2 (1fr) — dormant right */}
           <DormantThread color="#64748b" />
-        </motion.div>
+          {tierAwaitingContinue === 5 && (
+            <ContinueButton tierColor={TIER_COLORS.t5.accent!} onContinue={handleContinue} />
+          )}
+          </motion.div>
+          )}
+          </AnimatePresence>
         )}
 
         {/* ── ASSEMBLY BRIDGE — only visible once complete ── */}
@@ -1259,8 +1639,8 @@ export function CascadePage() {
           const SCENES = [
             {
               id: 'timeline',
-              name: 'Timeline',
-              subtitle: '42 years, one axis',
+              name: 'Concert Archive',
+              subtitle: '180 shows across 42 years',
               bg: '#ffffff',
               labelColor: '#1e293b',
               subtitleColor: '#64748b',
@@ -1270,20 +1650,39 @@ export function CascadePage() {
                 { label: 'T1', name: 'Structural', color: '#94a3b8', desc: 'parsed dates, computed decade & day-of-week' },
               ],
               icon: (
-                <svg width="80" height="40" viewBox="0 0 80 40" fill="none">
-                  <line x1="6" y1="20" x2="74" y2="20" stroke="#94a3b8" strokeWidth="1.5" />
-                  {[12, 24, 36, 48, 60, 68].map((x, i) => (
-                    <circle key={i} cx={x} cy={20} r={i === 3 ? 5 : 3}
-                      fill={i === 3 ? '#6366f1' : '#c7d2fe'}
-                      stroke={i === 3 ? '#4f46e5' : 'none'} strokeWidth="1.5" />
+                <svg width="128" height="64" viewBox="0 0 140 70" fill="none">
+                  {/* decade tick marks */}
+                  {[16, 38, 60, 82, 104, 122].map((x, i) => (
+                    <line key={`tick-${i}`} x1={x} y1={28} x2={x} y2={36} stroke="#475569" strokeWidth="1" />
+                  ))}
+                  {/* decade labels */}
+                  {[["'84",16],["'90",38],["'96",60],["'02",82],["'10",104],["'20",122]].map(([label, x], i) => (
+                    <text key={`lbl-${i}`} x={Number(x)} y={46} textAnchor="middle" fontSize="7" fill="#475569" fontFamily="monospace">{label}</text>
+                  ))}
+                  {/* axis */}
+                  <line x1="8" y1="32" x2="132" y2="32" stroke="#94a3b8" strokeWidth="1.5" />
+                  {/* concert dots */}
+                  {([
+                    [16, 32, 3, false], [22, 32, 3, false], [38, 32, 3, false], [44, 32, 3, false],
+                    [52, 32, 3, false], [60, 32, 3, false], [68, 32, 7, true], [78, 32, 3, false],
+                    [82, 32, 3, false], [90, 32, 3, false], [104, 32, 3, false], [116, 32, 3, false], [122, 32, 3, false],
+                  ] as [number,number,number,boolean][]).map(([x, y, r, active], i) => (
+                    <g key={i}>
+                      {active && <circle cx={x} cy={y} r={12} stroke="#6366f1" strokeWidth="1" opacity={0.2} />}
+                      {active && <circle cx={x} cy={y} r={9} stroke="#6366f1" strokeWidth="1" opacity={0.15} />}
+                      <circle cx={x} cy={y} r={r}
+                        fill={active ? '#6366f1' : '#c7d2fe'}
+                        stroke={active ? '#4f46e5' : 'none'} strokeWidth="1.5"
+                        opacity={active ? 1 : 0.7} />
+                    </g>
                   ))}
                 </svg>
               ),
             },
             {
               id: 'map',
-              name: 'Map',
-              subtitle: '77 venues, precisely placed',
+              name: 'The Geography',
+              subtitle: '35 cities across the map',
               bg: '#111827',
               labelColor: '#f9fafb',
               subtitleColor: '#9ca3af',
@@ -1293,12 +1692,30 @@ export function CascadePage() {
                 { label: 'T2', name: 'Geographic', color: '#6366f1', desc: 'lat/lng, address, venue photos from Google Places' },
               ],
               icon: (
-                <svg width="80" height="40" viewBox="0 0 80 40" fill="none">
-                  {([[20,28],[45,14],[58,22],[32,10],[65,30]] as [number,number][]).map(([x,y], i) => (
+                <svg width="128" height="64" viewBox="0 0 140 70" fill="none">
+                  {/* dark map tile background */}
+                  <rect width="140" height="70" fill="#111827" rx="3" />
+                  {/* organic road lines — CartoDB dark style */}
+                  <path d="M 0 42 C 18 40 28 35 45 33 C 62 31 70 35 90 32 C 110 29 125 30 140 28" stroke="#1e293b" strokeWidth="1.5" fill="none" />
+                  <path d="M 0 28 C 15 27 30 22 48 24 C 66 26 75 30 95 28 C 115 26 128 24 140 22" stroke="#1e293b" strokeWidth="1" fill="none" />
+                  <path d="M 52 0 C 50 12 48 22 50 35 C 52 48 55 58 54 70" stroke="#1e293b" strokeWidth="1" fill="none" />
+                  <path d="M 88 0 C 86 10 85 20 87 33 C 89 46 90 58 89 70" stroke="#1e293b" strokeWidth="0.75" fill="none" />
+                  <path d="M 20 0 C 22 15 24 28 22 42 C 20 56 18 64 20 70" stroke="#1e293b" strokeWidth="0.75" fill="none" />
+                  {/* venue markers — circles sized by concert count */}
+                  {([
+                    [52, 33, 9, true],   // large — busy venue
+                    [88, 28, 6, false],
+                    [22, 42, 5, false],
+                    [115, 38, 4, false],
+                    [36, 20, 4, false],
+                    [72, 52, 3.5, false],
+                    [105, 18, 3, false],
+                    [130, 48, 3, false],
+                  ] as [number,number,number,boolean][]).map(([x,y,r,featured], i) => (
                     <g key={i}>
-                      <circle cx={x} cy={y} r={i === 1 ? 5 : 3.5}
-                        fill={i === 1 ? '#6366f1' : '#4f46e5'} opacity={i === 1 ? 1 : 0.6} />
-                      {i === 1 && <circle cx={x} cy={y} r={8} stroke="#6366f1" strokeWidth="1" opacity={0.3} />}
+                      {featured && <circle cx={x} cy={y} r={r + 8} fill="#6366f1" opacity={0.1} />}
+                      {featured && <circle cx={x} cy={y} r={r + 4} fill="#6366f1" opacity={0.15} />}
+                      <circle cx={x} cy={y} r={r} fill="#6366f1" stroke="#818cf8" strokeWidth={featured ? 1.5 : 0.75} opacity={featured ? 1 : 0.75} />
                     </g>
                   ))}
                 </svg>
@@ -1306,8 +1723,8 @@ export function CascadePage() {
             },
             {
               id: 'artists',
-              name: 'Artists',
-              subtitle: '255 artists, fully enriched',
+              name: 'The Artists',
+              subtitle: '255 artists · 180 concerts',
               bg: 'linear-gradient(135deg, #1e1b4b, #581c87)',
               labelColor: '#f5f3ff',
               subtitleColor: '#c4b5fd',
@@ -1320,19 +1737,31 @@ export function CascadePage() {
                 { label: 'T5', name: 'Performance', color: '#ec4899', desc: 'setlists, covers, tour dates — setlist.fm / Ticketmaster' },
               ],
               icon: (
-                <svg width="80" height="40" viewBox="0 0 80 40" fill="none">
-                  {([[8,6],[30,6],[52,6],[8,22],[30,22],[52,22]] as [number,number][]).map(([x,y], i) => (
-                    <rect key={i} x={x} y={y} width="18" height="12" rx="2"
-                      fill={(['#7c3aed','#8b5cf6','#a855f7','#6366f1','#7c3aed','#8b5cf6'] as string[])[i]}
-                      opacity={0.7 + i * 0.04} />
-                  ))}
+                <svg width="128" height="64" viewBox="0 0 140 70" fill="none">
+                  {/* artist cards — 3 columns × 2 rows */}
+                  {([[10,8],[52,8],[94,8],[10,40],[52,40],[94,40]] as [number,number][]).map(([x,y], i) => {
+                    const colors = ['#7c3aed','#8b5cf6','#a855f7','#6366f1','#7c3aed','#8b5cf6']
+                    const c = colors[i]
+                    return (
+                      <g key={i}>
+                        <rect x={x} y={y} width="34" height="24" rx="3" fill={`${c}22`} stroke={`${c}55`} strokeWidth="0.75" />
+                        {/* avatar circle */}
+                        <circle cx={x + 10} cy={y + 10} r={6} fill={`${c}55`} stroke={`${c}88`} strokeWidth="0.75" />
+                        {/* name lines */}
+                        <rect x={x + 20} y={y + 7} width="10" height="2.5" rx="1" fill={`${c}80`} />
+                        <rect x={x + 20} y={y + 12} width="7" height="2" rx="1" fill={`${c}50`} />
+                        {/* genre chip */}
+                        <rect x={x + 4} y={y + 19} width="12" height="2.5" rx="1" fill={`${c}40`} />
+                      </g>
+                    )
+                  })}
                 </svg>
               ),
             },
             {
               id: 'network',
-              name: 'Network',
-              subtitle: 'venues & artists, connected',
+              name: 'The Venues',
+              subtitle: '10 most-visited venues',
               bg: 'linear-gradient(135deg, #1e1b4b, #0f172a)',
               labelColor: '#f5f3ff',
               subtitleColor: '#a5b4fc',
@@ -1343,16 +1772,35 @@ export function CascadePage() {
                 { label: 'T2', name: 'Geographic', color: '#6366f1', desc: 'lat/lng positions influence node layout' },
               ],
               icon: (
-                <svg width="80" height="40" viewBox="0 0 80 40" fill="none">
-                  <line x1="20" y1="20" x2="45" y2="10" stroke="#6366f1" strokeWidth="1" opacity="0.5" />
-                  <line x1="20" y1="20" x2="55" y2="28" stroke="#6366f1" strokeWidth="1" opacity="0.5" />
-                  <line x1="45" y1="10" x2="62" y2="18" stroke="#6366f1" strokeWidth="1" opacity="0.4" />
-                  <line x1="55" y1="28" x2="62" y2="18" stroke="#6366f1" strokeWidth="1" opacity="0.4" />
-                  <line x1="45" y1="10" x2="55" y2="28" stroke="#ec4899" strokeWidth="1" opacity="0.5" strokeDasharray="3 2" />
-                  <circle cx={20} cy={20} r={5} fill="#6366f1" />
-                  <circle cx={45} cy={10} r={3.5} fill="#818cf8" />
-                  <circle cx={55} cy={28} r={3.5} fill="#818cf8" />
-                  <circle cx={62} cy={18} r={2.5} fill="#a5b4fc" />
+                <svg width="128" height="64" viewBox="0 0 140 70" fill="none">
+                  {/* venue → headliner links */}
+                  <line x1="62" y1="36" x2="28" y2="18" stroke="#818cf8" strokeWidth="1.25" opacity="0.5" />
+                  <line x1="62" y1="36" x2="96" y2="14" stroke="#818cf8" strokeWidth="1.25" opacity="0.5" />
+                  <line x1="62" y1="36" x2="30" y2="56" stroke="#818cf8" strokeWidth="1.25" opacity="0.5" />
+                  <line x1="62" y1="36" x2="105" y2="50" stroke="#818cf8" strokeWidth="1.25" opacity="0.5" />
+                  <line x1="62" y1="36" x2="118" y2="30" stroke="#818cf8" strokeWidth="1" opacity="0.4" />
+                  {/* headliner → opener links */}
+                  <line x1="28" y1="18" x2="8" y2="10" stroke="#818cf8" strokeWidth="0.75" opacity="0.3" />
+                  <line x1="28" y1="18" x2="12" y2="38" stroke="#818cf8" strokeWidth="0.75" opacity="0.3" />
+                  <line x1="96" y1="14" x2="120" y2="6" stroke="#818cf8" strokeWidth="0.75" opacity="0.3" />
+                  <line x1="105" y1="50" x2="128" y2="58" stroke="#818cf8" strokeWidth="0.75" opacity="0.3" />
+                  <line x1="30" y1="56" x2="10" y2="62" stroke="#818cf8" strokeWidth="0.75" opacity="0.3" />
+                  <line x1="118" y1="30" x2="132" y2="18" stroke="#818cf8" strokeWidth="0.75" opacity="0.3" />
+                  {/* venue node — off-center, large indigo */}
+                  <circle cx={62} cy={36} r={11} fill="#6366f1" stroke="#4f46e5" strokeWidth="1.5" />
+                  {/* headliner nodes — purple, irregular positions */}
+                  <circle cx={28} cy={18} r={6} fill="#8b5cf6" stroke="#7c3aed" strokeWidth="1" />
+                  <circle cx={96} cy={14} r={5} fill="#8b5cf6" stroke="#7c3aed" strokeWidth="1" />
+                  <circle cx={30} cy={56} r={5.5} fill="#8b5cf6" stroke="#7c3aed" strokeWidth="1" />
+                  <circle cx={105} cy={50} r={4.5} fill="#8b5cf6" stroke="#7c3aed" strokeWidth="1" />
+                  <circle cx={118} cy={30} r={4} fill="#8b5cf6" stroke="#7c3aed" strokeWidth="1" />
+                  {/* opener nodes — pink, scattered */}
+                  <circle cx={8} cy={10} r={2.5} fill="#ec4899" opacity={0.85} />
+                  <circle cx={12} cy={38} r={2.5} fill="#ec4899" opacity={0.85} />
+                  <circle cx={120} cy={6} r={2.5} fill="#ec4899" opacity={0.85} />
+                  <circle cx={128} cy={58} r={2.5} fill="#ec4899" opacity={0.85} />
+                  <circle cx={10} cy={62} r={2.5} fill="#ec4899" opacity={0.85} />
+                  <circle cx={132} cy={18} r={2.5} fill="#ec4899" opacity={0.85} />
                 </svg>
               ),
             },
@@ -1399,30 +1847,33 @@ export function CascadePage() {
                             background: scene.bg,
                             border: `1.5px solid ${isActive ? scene.activeBorderColor : scene.borderColor}`,
                             borderRadius: 10,
-                            padding: '18px 16px 14px',
+                            padding: '14px 16px 16px',
                             cursor: isUnlocked ? 'pointer' : 'default',
                             pointerEvents: isUnlocked ? 'auto' : 'none',
-                            textAlign: 'left',
+                            textAlign: 'center',
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: 8,
+                            gap: 0,
                             transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
                             outline: 'none',
                             boxShadow: isActive ? '0 0 0 2px rgba(139,92,246,0.25)' : 'none',
                           }}
                         >
-                          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 56 }}>
-                            {scene.icon}
-                          </div>
-                          <div>
+                          {/* Label — top center, mirrors real scene H1 */}
+                          <div style={{ marginBottom: 10 }}>
                             <div style={{ ...SANS, fontSize: 13, fontWeight: 600, color: scene.labelColor, lineHeight: 1.2 }}>
                               {scene.name}
                             </div>
-                            <div style={{ ...SANS, fontSize: 11, fontWeight: 300, color: scene.subtitleColor, marginTop: 3 }}>
+                            <div style={{ ...SANS, fontSize: 10, fontWeight: 300, color: scene.subtitleColor, marginTop: 2 }}>
                               {scene.subtitle}
                             </div>
                           </div>
-                          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                          {/* Visual */}
+                          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 64 }}>
+                            {scene.icon}
+                          </div>
+                          {/* Tier chips */}
+                          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center', marginTop: 12 }}>
                             {scene.tiers.map(t => (
                               <span key={t.label} style={{
                                 ...MONO, fontSize: 9, padding: '2px 6px', borderRadius: 3,
@@ -1435,45 +1886,6 @@ export function CascadePage() {
                           </div>
                         </button>
 
-                        <AnimatePresence>
-                          {isActive && (
-                            <motion.div
-                              key="panel"
-                              initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                              animate={{ opacity: 1, height: 'auto', marginTop: 6 }}
-                              exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                              transition={{ duration: 0.22, ease: 'easeOut' }}
-                              style={{ overflow: 'hidden' }}
-                            >
-                              <div style={{
-                                background: 'rgba(15,18,30,0.95)',
-                                border: '1px solid rgba(139,92,246,0.25)',
-                                borderRadius: 8,
-                                padding: '12px 14px',
-                                display: 'flex', flexDirection: 'column', gap: 8,
-                              }}>
-                                <div style={{ ...MONO, fontSize: 8, letterSpacing: '0.12em', color: '#6b7280', textTransform: 'uppercase' }}>
-                                  Powered by
-                                </div>
-                                {scene.tiers.map(t => (
-                                  <div key={t.label} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                                    <span style={{
-                                      ...MONO, fontSize: 9, padding: '2px 6px', borderRadius: 3,
-                                      background: `${t.color}20`, border: `1px solid ${t.color}55`,
-                                      color: t.color, flexShrink: 0, letterSpacing: '0.04em',
-                                    }}>
-                                      {t.label}
-                                    </span>
-                                    <div>
-                                      <div style={{ ...SANS, fontSize: 10, fontWeight: 600, color: '#e2e8f0', lineHeight: 1.2 }}>{t.name}</div>
-                                      <div style={{ ...SANS, fontSize: 9, fontWeight: 300, color: '#6b7280', lineHeight: 1.4 }}>{t.desc}</div>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
                       </motion.div>
                     )
                   })}
@@ -1499,8 +1911,9 @@ export function CascadePage() {
         })()}
 
         {/* ── FOOTER ── */}
+        {flowPhase === 'complete' && (
         <motion.footer
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.3 }}
+          initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', padding: '36px 40px 60px', position: 'relative', zIndex: 2 }}
         >
           {/* Radial glow */}
@@ -1564,6 +1977,7 @@ export function CascadePage() {
             concerts.morperhaus.org
           </a>
         </motion.footer>
+        )}
 
         {/* ── FOCUS RESET PILL ── */}
         {(focusedAtom || focusedScene) && (

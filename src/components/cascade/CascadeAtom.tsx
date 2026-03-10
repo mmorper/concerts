@@ -11,9 +11,10 @@ interface CascadeAtomProps {
   value: string
   focusedAtom: FocusAtom
   onFocus: (atom: FocusAtom) => void
+  glowing?: boolean
 }
 
-export function CascadeAtom({ type, value, focusedAtom, onFocus }: CascadeAtomProps) {
+export function CascadeAtom({ type, value, focusedAtom, onFocus, glowing }: CascadeAtomProps) {
   const color = ATOM_COLORS[type]
   const isFocused = focusedAtom === type
   const isDimmed = focusedAtom !== null && !isFocused
@@ -23,7 +24,7 @@ export function CascadeAtom({ type, value, focusedAtom, onFocus }: CascadeAtomPr
       onClick={() => onFocus(type)}
       style={{
         background: '#1e2028',
-        border: `1px solid ${isFocused ? color : '#2d3040'}`,
+        border: `1px solid ${(glowing || isFocused) ? color : '#2d3040'}`,
         borderRadius: 6,
         padding: '20px',
         fontFamily: "'JetBrains Mono', monospace",
@@ -32,7 +33,7 @@ export function CascadeAtom({ type, value, focusedAtom, onFocus }: CascadeAtomPr
         width: '100%',
         opacity: isDimmed ? 0.2 : 1,
         transform: isDimmed ? 'scale(0.95)' : 'scale(1)',
-        boxShadow: isFocused ? `0 0 24px ${color}40` : 'none',
+        boxShadow: glowing ? `0 0 28px ${color}70, 0 0 10px ${color}40` : isFocused ? `0 0 24px ${color}40` : 'none',
         transition: 'all 0.4s ease',
       }}
     >
