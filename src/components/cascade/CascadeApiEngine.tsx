@@ -172,6 +172,12 @@ export function PillGrid({ items, tierColor, maxVisible = 3, visibleCount }: Pil
 
   return (
     <div>
+      <style>{`
+        @keyframes pillFlipIn {
+          from { transform: perspective(300px) rotateX(-90deg); opacity: 0; }
+          to   { transform: perspective(300px) rotateX(0deg);   opacity: 1; }
+        }
+      `}</style>
       <div
         style={{
           display: 'grid',
@@ -192,6 +198,8 @@ export function PillGrid({ items, tierColor, maxVisible = 3, visibleCount }: Pil
                 border: `1px solid ${chipColor}30`,
                 minWidth: 0,
                 overflow: 'hidden',
+                transformOrigin: 'top center',
+                animation: 'pillFlipIn 0.2s cubic-bezier(0, 0, 0.2, 1) both',
               }}
             >
               <span

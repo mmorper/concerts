@@ -4,6 +4,7 @@ import { CascadeLanes } from './CascadeLanes'
 import { CascadeAtom } from './CascadeAtom'
 import { ServiceGatewayPeer, CodeTransform, FlowArrow, API_BRANDS, PillGrid } from './CascadeApiEngine'
 import { useCascadeFocus } from './useCascadeFocus'
+import { AnimatedConnector } from './AnimatedConnector'
 
 // ─── Data types ───────────────────────────────────────────────────────────────
 
@@ -79,7 +80,6 @@ const TIER_ROW_STYLE: React.CSSProperties = {
   position: 'relative',
   zIndex: 2,
   padding: '14px 24px 8px',
-  transition: 'opacity 0.5s ease, filter 0.5s ease',
 }
 
 const TIER_HEADER_STYLE: React.CSSProperties = {
@@ -313,22 +313,6 @@ function PendingAtom({ type }: { type: string }) {
   )
 }
 
-function TierConnector() {
-  return (
-    <div style={{
-      textAlign: 'center',
-      padding: '1px 0',
-      position: 'relative',
-      zIndex: 2,
-      ...MONO,
-      fontSize: 9,
-      color: '#1e2130',
-      letterSpacing: '0.05em',
-    }}>
-      ↓
-    </div>
-  )
-}
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
@@ -409,104 +393,141 @@ export function CascadePage() {
 
   // ── Animation state ───────────────────────────────────────────────────────
   const genRef = useRef(0)
-  const [animStep, setAnimStep] = useState(0)
+  const [tiersVisible, setTiersVisible] = useState<Set<number>>(new Set([0]))
+  const [connectorPhase, setConnectorPhase] = useState(0)
   const [loadingTier, setLoadingTier] = useState<number | null>(null)
   const [pillCounts, setPillCounts] = useState<Partial<Record<string, number>>>({})
   const [setlistLines, setSetlistLines] = useState(0)
   const [scenesUnlocked, setScenesUnlocked] = useState(0)
+  const [t0InputCount, setT0InputCount] = useState(0) // 0=hidden, 1-540=counter visible
+  const [t1ColStep, setT1ColStep] = useState(0)   // 0=none, 1=artist, 2=+venue, 3=+date
+  const [t1FieldCount, setT1FieldCount] = useState(0) // 0=hidden, 1-19=counter visible
+  const [t2RevealStep, setT2RevealStep] = useState(0) // 0=nothing, 2=image visible
 
-  // ── Animation phase 1: artist tiers (T0 → T1a → T2 dormant → T3 → T4) ──
+  const revealTier = (n: number) => setTiersVisible(prev => new Set([...prev, n]))
 
-  const runArtistAnim = async (gen: number) => {
+  // ── Full cascade animation — runs after T0 is fully resolved ─────────────
+
+  const runFullCascade = async (gen: number, songCount: number) => {
     const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
+    // rAF-based tick: guarantees one render per browser paint frame
+    const frame = () => new Promise<void>(r => requestAnimationFrame(() => r()))
     const alive = () => genRef.current === gen
 
-    setAnimStep(0); setLoadingTier(null); setPillCounts({}); setSetlistLines(0); setScenesUnlocked(0)
+    setLoadingTier(null); setPillCounts({ t1a: 0, t1v: 0, t1d: 0, t2: 0, t3: 0, t4: 0, t5s: 0, t5t: 0 }); setSetlistLines(0); setScenesUnlocked(0)
+    setT0InputCount(0); setT1ColStep(0); setT1FieldCount(0); setT2RevealStep(0)
     await delay(100); if (!alive()) return
 
-    setAnimStep(1) // T0 seeds visible
-    await delay(600); if (!alive()) return
-
-    setAnimStep(2) // T1 visible
+    // T0 footer counter: 0 → 540 one rAF frame per step of 20 (~27 frames ≈ 450ms)
+    for (let i = 20; i < 540; i += 20) {
+      await frame(); if (!alive()) return
+      setT0InputCount(i)
+    }
+    setT0InputCount(540)
     await delay(200); if (!alive()) return
+
+    // T0→T1 connector then reveal T1 header
+    setConnectorPhase(1)
+    await delay(800); if (!alive()) return
+    revealTier(1)
+    await delay(500); if (!alive()) return  // tier header settles
+
+    // Columns appear sequentially: derive artist → normalize venue → parse date
+    setT1ColStep(1)
+    await delay(350); if (!alive()) return
+    setT1ColStep(2)
+    await delay(350); if (!alive()) return
+    setT1ColStep(3)
+    await delay(500); if (!alive()) return  // pause — viewer reads all three
+
+    // T1 pills: artist → venue → date, 120ms each (> 100ms animation so each card lands before next starts)
+    // After each column finishes, pause for the same duration it took to paint
     for (let i = 1; i <= 3; i++) {
-      await delay(80); if (!alive()) return
+      await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t1a: i }))
     }
-    await delay(300); if (!alive()) return
+    await delay(3 * 120); if (!alive()) return  // mirror-pause = artist paint time
+    for (let i = 1; i <= 4; i++) {
+      await delay(120); if (!alive()) return
+      setPillCounts(prev => ({ ...prev, t1v: i }))
+    }
+    await delay(4 * 120); if (!alive()) return  // mirror-pause = venue paint time
+    for (let i = 1; i <= 5; i++) {
+      await delay(120); if (!alive()) return
+      setPillCounts(prev => ({ ...prev, t1d: i }))
+    }
 
-    setAnimStep(3) // T2 visible (dormant — no venue data yet)
-    await delay(500); if (!alive()) return
+    // Field counter: 1 → 19 at 35ms each ≈ 665ms — clearly visible
+    for (let i = 1; i <= 19; i++) {
+      await delay(35); if (!alive()) return
+      setT1FieldCount(i)
+    }
+    await delay(400); if (!alive()) return
 
-    setLoadingTier(3); setAnimStep(4) // T3 visible
-    await delay(600); if (!alive()) return
+    // T1→T2 connector then reveal T2
+    setConnectorPhase(2)
+    await delay(800); if (!alive()) return
+    revealTier(2)
+    setLoadingTier(2) // badge pulses while "API call runs"
+    await delay(350); if (!alive()) return  // tier entrance
+    await delay(400); if (!alive()) return  // viewer sees pulsing badge
+    setT2RevealStep(2)   // image fades in (response arrives)
+    setLoadingTier(null) // badge stops pulsing
+    await delay(700); if (!alive()) return  // image fully renders in
+    for (let i = 1; i <= 6; i++) {
+      await delay(120); if (!alive()) return
+      setPillCounts(prev => ({ ...prev, t2: i }))
+    }
+    await delay(400); if (!alive()) return
+
+    // T2→T3 connector then reveal T3
+    setConnectorPhase(3)
+    await delay(800); if (!alive()) return
+    setLoadingTier(3); revealTier(3)
+    await delay(350); if (!alive()) return  // tier entrance
+    await delay(400); if (!alive()) return  // viewer sees pulsing badges
     setLoadingTier(null)
     for (let i = 1; i <= 7; i++) {
-      await delay(80); if (!alive()) return
+      await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t3: i }))
     }
-    await delay(300); if (!alive()) return
+    await delay(400); if (!alive()) return
 
-    setLoadingTier(4); setAnimStep(5) // T4 visible
-    await delay(600); if (!alive()) return
+    // T3→T4 connector then reveal T4
+    setConnectorPhase(4)
+    await delay(800); if (!alive()) return
+    setLoadingTier(4); revealTier(4)
+    await delay(350); if (!alive()) return  // tier entrance
+    await delay(400); if (!alive()) return  // viewer sees pulsing badge
     setLoadingTier(null)
     for (let i = 1; i <= 3; i++) {
-      await delay(80); if (!alive()) return
+      await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t4: i }))
     }
     await delay(400); if (!alive()) return
-  }
 
-  // ── Animation phase 2: venue tier (T2 activates + T1v pills) ─────────────
-
-  const runVenueAnim = async (gen: number) => {
-    const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
-    const alive = () => genRef.current === gen
-
-    setLoadingTier(2)
-    await delay(600); if (!alive()) return
-    setLoadingTier(null)
-    for (let i = 1; i <= 6; i++) {
-      await delay(80); if (!alive()) return
-      setPillCounts(prev => ({ ...prev, t2: i }))
-    }
-    for (let i = 1; i <= 4; i++) {
-      await delay(80); if (!alive()) return
-      setPillCounts(prev => ({ ...prev, t1v: i }))
-    }
-    await delay(300); if (!alive()) return
-  }
-
-  // ── Animation phase 3: convergence (T1d pills + T5 + T6) ─────────────────
-
-  const runConvergenceAnim = async (gen: number, songCount: number) => {
-    const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
-    const alive = () => genRef.current === gen
-
-    for (let i = 1; i <= 5; i++) {
-      await delay(80); if (!alive()) return
-      setPillCounts(prev => ({ ...prev, t1d: i }))
-    }
-    await delay(200); if (!alive()) return
-
-    setLoadingTier(5); setAnimStep(6)
-    await delay(600); if (!alive()) return
+    // T4→T5 connector then reveal T5
+    setConnectorPhase(5)
+    await delay(800); if (!alive()) return
+    setLoadingTier(5); revealTier(5)
+    await delay(350); if (!alive()) return  // tier entrance
+    await delay(400); if (!alive()) return  // viewer sees pulsing badges
     setLoadingTier(null)
     for (let i = 1; i <= 4; i++) {
-      await delay(80); if (!alive()) return
+      await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t5s: i, t5t: i }))
     }
     await delay(300); if (!alive()) return
     for (let i = 1; i <= songCount; i++) {
-      await delay(60); if (!alive()) return
+      await delay(80); if (!alive()) return
       setSetlistLines(i)
     }
     await delay(400); if (!alive()) return
+    revealTier(6)
     for (let i = 1; i <= 4; i++) {
       await delay(80); if (!alive()) return
       setScenesUnlocked(i)
     }
-    setAnimStep(7)
     setFlowPhase('complete')
   }
 
@@ -529,7 +550,7 @@ export function CascadePage() {
     }
     setSetlistSongs(songs)
     setTourName(tour)
-    runConvergenceAnim(gen, songs.length)
+    runFullCascade(gen, songs.length)
   }
 
   const doVenueSelect = (venueNorm: string, artistNorm: string, gen: number) => {
@@ -540,21 +561,16 @@ export function CascadePage() {
     setVenueMeta(vm)
     setFlowPhase('venue-hydrating')
 
-    ;(async () => {
-      await runVenueAnim(gen)
-      if (genRef.current !== gen) return
-
-      const key = `${artistNorm}::${venueNorm}`
-      const available = (artistVenueToConcerts.get(key) ?? []).sort((a, b) =>
-        a.date.localeCompare(b.date)
-      )
-      if (available.length === 1) {
-        doDateSelect(available[0], gen)
-      } else {
-        setDateOptions(available)
-        setFlowPhase('date-pending')
-      }
-    })()
+    const key = `${artistNorm}::${venueNorm}`
+    const available = (artistVenueToConcerts.get(key) ?? []).sort((a, b) =>
+      a.date.localeCompare(b.date)
+    )
+    if (available.length === 1) {
+      doDateSelect(available[0], gen)
+    } else {
+      setDateOptions(available)
+      setFlowPhase('date-pending')
+    }
   }
 
   const handleArtistSelect = (artistNorm: string, artistDisplay: string) => {
@@ -572,29 +588,26 @@ export function CascadePage() {
     setTourName(null)
     setArtistMeta(artistsMetaRef.current[artistNorm] ?? null)
     setArtistTracks(topTracksRef.current[artistNorm]?.tracks?.slice(0, 5) ?? [])
+    setTiersVisible(new Set([0])); setConnectorPhase(0)
     setFlowPhase('artist-hydrating')
 
-    ;(async () => {
-      await runArtistAnim(gen)
-      if (genRef.current !== gen) return
-
-      const venues = [...(artistToVenues.get(artistNorm) ?? [])]
-      if (venues.length === 1) {
-        doVenueSelect(venues[0], artistNorm, gen)
-      } else {
-        const opts = venues
-          .map(vn => ({ norm: vn, display: venuesMetaRef.current[vn]?.name ?? vn }))
-          .sort((a, b) => a.display.localeCompare(b.display))
-        setVenueOptions(opts)
-        setFlowPhase('venue-pending')
-      }
-    })()
+    const venues = [...(artistToVenues.get(artistNorm) ?? [])]
+    if (venues.length === 1) {
+      doVenueSelect(venues[0], artistNorm, gen)
+    } else {
+      const opts = venues
+        .map(vn => ({ norm: vn, display: venuesMetaRef.current[vn]?.name ?? vn }))
+        .sort((a, b) => a.display.localeCompare(b.display))
+      setVenueOptions(opts)
+      setFlowPhase('venue-pending')
+    }
   }
 
   const handleReset = () => {
     genRef.current++
     setFlowPhase('idle')
-    setAnimStep(0); setLoadingTier(null); setPillCounts({}); setSetlistLines(0); setScenesUnlocked(0)
+    setTiersVisible(new Set([0])); setConnectorPhase(0)
+    setLoadingTier(null); setPillCounts({ t1a: 0, t1v: 0, t1d: 0, t2: 0, t3: 0, t4: 0, t5s: 0, t5t: 0 }); setSetlistLines(0); setScenesUnlocked(0); setT0InputCount(0); setT1ColStep(0); setT1FieldCount(0); setT2RevealStep(0)
     setSelectedArtistNorm(null); setSelectedArtistDisplay(null)
     setSelectedVenueNorm(null); setSelectedVenueDisplay(null)
     setSelectedConcert(null)
@@ -615,10 +628,10 @@ export function CascadePage() {
   }, [])
 
   // ── Helpers ───────────────────────────────────────────────────────────────
-  const tierAnim = (step: number, relevant = true) => ({
-    initial: { opacity: 0.25, y: 0 },
-    animate: { opacity: animStep >= step ? (relevant ? 1 : 0.12) : 0.25, y: 0 },
-    transition: { duration: 0.4, ease: 'easeOut' },
+  const tierEntrance = (relevant: boolean) => ({
+    initial: { opacity: 0, y: 16 },
+    animate: { opacity: relevant ? 1 : 0.12, y: 0 },
+    transition: { duration: 0.35, ease: 'easeOut' as const },
   })
 
   // Derived display values
@@ -763,20 +776,26 @@ export function CascadePage() {
             )}
           </div>
 
-          {flowPhase !== 'idle' && (
-            <div style={{ gridColumn: '1 / -1', ...MONO, fontSize: 12, color: '#4b5563', textAlign: 'center' }}>
+          {t0InputCount > 0 && (
+            <motion.div
+              style={{ gridColumn: '1 / -1', ...MONO, fontSize: 12, color: '#4b5563', textAlign: 'center' }}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+            >
               180 concerts × 3 fields ={' '}
-              <span style={{ color: '#6b7280' }}>540 total inputs</span>
-            </div>
+              <span style={{ color: '#6b7280' }}>{t0InputCount} total inputs</span>
+            </motion.div>
           )}
         </div>
 
-        <TierConnector />
+        {connectorPhase >= 1 && (
+          <AnimatedConnector toColor={TIER_COLORS.t1.accent!} duration={800} />
+        )}
 
         {/* ── TIER 1 — BUILD PIPELINE ── */}
+        {tiersVisible.has(1) && (
         <motion.div
           id="cascade-tier-1"
-          {...tierAnim(2, isTierRelevant(1))}
+          {...tierEntrance(isTierRelevant(1))}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
@@ -792,53 +811,65 @@ export function CascadePage() {
             <TierSubtitle color={TIER_COLORS.t1.sub}>Parse, normalize, derive. No APIs — just code.</TierSubtitle>
           </div>
 
-          {/* Artist lane */}
-          <div>
-            <CodeTransform fn="derive(artist)" description="normalize + assign ID" />
-            <PillGrid tierColor="#8b5cf6" visibleCount={pillCounts.t1a} items={[
-              { key: 'headlinerNormalized', value: selectedArtistNorm ? `"${selectedArtistNorm}"` : '—' },
-              { key: 'concertId', value: selectedConcert ? `"${selectedConcert.id}"` : '…' },
-              { key: 'openers', value: selectedConcert?.openers?.length ? `["${selectedConcert.openers[0]}"]` : '[]' },
-            ]} />
-          </div>
+          {/* Artist lane — appears at t1ColStep >= 1 */}
+          {t1ColStep >= 1 ? (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+              <CodeTransform fn="derive(artist)" description="normalize + assign ID" />
+              <PillGrid tierColor="#8b5cf6" visibleCount={pillCounts.t1a} items={[
+                { key: 'headlinerNormalized', value: selectedArtistNorm ? `"${selectedArtistNorm}"` : '—' },
+                { key: 'concertId', value: selectedConcert ? `"${selectedConcert.id}"` : '…' },
+                { key: 'openers', value: selectedConcert?.openers?.length ? `["${selectedConcert.openers[0]}"]` : '[]' },
+              ]} />
+            </motion.div>
+          ) : <div />}
 
-          {/* Venue lane */}
-          <div>
-            <CodeTransform fn="normalize(venue)" description="slug + location lookup" />
-            <PillGrid tierColor="#6366f1" visibleCount={pillCounts.t1v} items={[
-              { key: 'venueNormalized', value: selectedVenueNorm ? `"${selectedVenueNorm}"` : '—' },
-              { key: 'city', value: venueMeta?.city ? `"${venueMeta.city}"` : '—' },
-              { key: 'state', value: venueMeta?.state ? `"${venueMeta.state}"` : '—' },
-              { key: 'cityState', value: venueMeta?.cityState ? `"${venueMeta.cityState}"` : '—' },
-            ]} />
-          </div>
+          {/* Venue lane — appears at t1ColStep >= 2 */}
+          {t1ColStep >= 2 ? (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+              <CodeTransform fn="normalize(venue)" description="slug + location lookup" />
+              <PillGrid tierColor="#6366f1" visibleCount={pillCounts.t1v} items={[
+                { key: 'venueNormalized', value: selectedVenueNorm ? `"${selectedVenueNorm}"` : '—' },
+                { key: 'city', value: venueMeta?.city ? `"${venueMeta.city}"` : '—' },
+                { key: 'state', value: venueMeta?.state ? `"${venueMeta.state}"` : '—' },
+                { key: 'cityState', value: venueMeta?.cityState ? `"${venueMeta.cityState}"` : '—' },
+              ]} />
+            </motion.div>
+          ) : <div />}
 
-          {/* Date lane */}
-          <div>
-            <CodeTransform fn="parse(date)" description="extract temporal fields" />
-            <PillGrid tierColor="#64748b" visibleCount={pillCounts.t1d} items={[
-              { key: 'year', value: selectedConcert ? String(selectedConcert.year) : '—' },
-              { key: 'month', value: selectedConcert ? String(selectedConcert.month) : '—' },
-              { key: 'day', value: selectedConcert ? String(selectedConcert.day) : '—' },
-              { key: 'dayOfWeek', value: selectedConcert?.dayOfWeek ? `"${selectedConcert.dayOfWeek}"` : '—' },
-              { key: 'decade', value: selectedConcert?.decade ? `"${selectedConcert.decade}"` : '—' },
-            ]} />
-          </div>
+          {/* Date lane — appears at t1ColStep >= 3 */}
+          {t1ColStep >= 3 ? (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+              <CodeTransform fn="parse(date)" description="extract temporal fields" />
+              <PillGrid tierColor="#64748b" visibleCount={pillCounts.t1d} items={[
+                { key: 'year', value: selectedConcert ? String(selectedConcert.year) : '—' },
+                { key: 'month', value: selectedConcert ? String(selectedConcert.month) : '—' },
+                { key: 'day', value: selectedConcert ? String(selectedConcert.day) : '—' },
+                { key: 'dayOfWeek', value: selectedConcert?.dayOfWeek ? `"${selectedConcert.dayOfWeek}"` : '—' },
+                { key: 'decade', value: selectedConcert?.decade ? `"${selectedConcert.decade}"` : '—' },
+              ]} />
+            </motion.div>
+          ) : <div />}
 
-          <div style={TIER_FOOTER_STYLE}>
-            <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
-              <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#94a3b8' }}>19</span>
-              <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#64748b' }}>fields per concert</span>
-            </div>
-          </div>
+          {t1FieldCount > 0 && (
+            <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
+                <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#94a3b8' }}>{t1FieldCount}</span>
+                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#64748b' }}>fields per concert</span>
+              </div>
+            </motion.div>
+          )}
         </motion.div>
+        )}
 
-        <TierConnector />
+        {connectorPhase >= 2 && (
+          <AnimatedConnector toColor={TIER_COLORS.t2.accent!} duration={800} />
+        )}
 
         {/* ── TIER 2 — GEOGRAPHIC (venue lane wide) ── */}
+        {tiersVisible.has(2) && (
         <motion.div
           id="cascade-tier-2"
-          {...tierAnim(3, isTierRelevant(2))}
+          {...tierEntrance(isTierRelevant(2))}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
@@ -862,36 +893,44 @@ export function CascadePage() {
             <DormantThread color="#6366f1" />
           ) : (
             <TierBand color="#6366f1">
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
+              {/* Badge — appears immediately with tier */}
+              <motion.div
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
+                style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}
+              >
                 <ApiBadge name="Google Places" domain="google.com" color="#4285F4" pulsing={loadingTier === 2} />
-              </div>
-              {/* Venue photo */}
-              {venueMeta.photoUrls?.thumbnail ? (
-                <img
-                  src={venueMeta.photoUrls.thumbnail}
-                  alt={venueMeta.name}
-                  style={{ width: '100%', height: 56, objectFit: 'cover', borderRadius: 4, marginBottom: 10 }}
-                />
-              ) : (
-                <div style={{
-                  width: '100%', height: 56,
-                  background: 'rgba(99,102,241,0.1)',
-                  border: '1px solid rgba(99,102,241,0.2)',
-                  borderRadius: 4,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  marginBottom: 10, fontSize: 24,
-                }}>
-                  📍
-                </div>
+              </motion.div>
+              {/* Venue photo — fades in after badge pause */}
+              {t2RevealStep >= 2 && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+                  {venueMeta.photoUrls?.thumbnail ? (
+                    <img
+                      src={venueMeta.photoUrls.thumbnail}
+                      alt={venueMeta.name}
+                      style={{ width: '100%', height: 56, objectFit: 'cover', borderRadius: 4, marginBottom: 10 }}
+                    />
+                  ) : (
+                    <div style={{
+                      width: '100%', height: 56,
+                      background: 'rgba(99,102,241,0.1)',
+                      border: '1px solid rgba(99,102,241,0.2)',
+                      borderRadius: 4,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      marginBottom: 10, fontSize: 24,
+                    }}>
+                      📍
+                    </div>
+                  )}
+                  {/* Coordinate pill appears with image */}
+                  <div style={{
+                    ...MONO, fontSize: 9, textAlign: 'center', color: '#a5b4fc',
+                    marginBottom: 10, background: 'rgba(99,102,241,0.1)',
+                    padding: '4px 8px', borderRadius: 3, letterSpacing: '0.02em',
+                  }}>
+                    {venueMeta.location.lat.toFixed(4)}° N · {Math.abs(venueMeta.location.lng).toFixed(4)}° W
+                  </div>
+                </motion.div>
               )}
-              {/* Coordinate pill */}
-              <div style={{
-                ...MONO, fontSize: 9, textAlign: 'center', color: '#a5b4fc',
-                marginBottom: 10, background: 'rgba(99,102,241,0.1)',
-                padding: '4px 8px', borderRadius: 3, letterSpacing: '0.02em',
-              }}>
-                {venueMeta.location.lat.toFixed(4)}° N · {Math.abs(venueMeta.location.lng).toFixed(4)}° W
-              </div>
               <PillGrid tierColor="#6366f1" visibleCount={pillCounts.t2} items={t2Pills} />
               <CorpusScale color="#6366f1">× 77 venues · 35 cities</CorpusScale>
             </TierBand>
@@ -900,13 +939,17 @@ export function CascadePage() {
           {/* Date — dormant */}
           <DormantThread color="#64748b" />
         </motion.div>
+        )}
 
-        <TierConnector />
+        {connectorPhase >= 3 && (
+          <AnimatedConnector toColor={TIER_COLORS.t3.accent!} duration={800} />
+        )}
 
         {/* ── TIER 3 — ARTIST IDENTITY (artist lane wide) ── */}
+        {tiersVisible.has(3) && (
         <motion.div
           id="cascade-tier-3"
-          {...tierAnim(4, isTierRelevant(3))}
+          {...tierEntrance(isTierRelevant(3))}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
@@ -981,13 +1024,17 @@ export function CascadePage() {
           {/* Date — dormant */}
           <DormantThread color="#64748b" />
         </motion.div>
+        )}
 
-        <TierConnector />
+        {connectorPhase >= 4 && (
+          <AnimatedConnector toColor={TIER_COLORS.t4.accent!} duration={800} />
+        )}
 
         {/* ── TIER 4 — AUDIO (artist lane wide) ── */}
+        {tiersVisible.has(4) && (
         <motion.div
           id="cascade-tier-4"
-          {...tierAnim(5, isTierRelevant(4))}
+          {...tierEntrance(isTierRelevant(4))}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
@@ -1049,7 +1096,7 @@ export function CascadePage() {
                   </div>
                 ))}
               </div>
-              {artistTracks.length === 0 && animStep >= 5 && (
+              {artistTracks.length === 0 && (
                 <div style={{ ...MONO, fontSize: 9, color: '#a855f740', textAlign: 'center', padding: '8px 0' }}>
                   no audio data
                 </div>
@@ -1064,13 +1111,17 @@ export function CascadePage() {
           {/* Col 3 — dormant */}
           <DormantThread color="#64748b" />
         </motion.div>
+        )}
 
-        <TierConnector />
+        {connectorPhase >= 5 && (
+          <AnimatedConnector toColor={TIER_COLORS.t5.accent!} duration={800} />
+        )}
 
         {/* ── TIER 5 — PERFORMANCE (all lanes reconverge) ── */}
+        {tiersVisible.has(5) && (
         <motion.div
           id="cascade-tier-5"
-          {...tierAnim(6, isTierRelevant(5))}
+          {...tierEntrance(isTierRelevant(5))}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
@@ -1089,9 +1140,6 @@ export function CascadePage() {
 
           {/* Col 1 (2fr) — left+center lanes: content */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {animStep < 6 ? (
-            <DormantThread color="#8b5cf6" />
-          ) : (
           <div>
               <FlowArrow label="query" />
 
@@ -1132,7 +1180,7 @@ export function CascadePage() {
                 <div style={{ ...MONO, fontSize: 8, letterSpacing: '0.15em', color: '#7c3aed', marginBottom: 8, textAlign: 'center' }}>
                   SETLIST — {selectedConcert?.date ?? '—'}
                 </div>
-                {setlistSongs.length === 0 && animStep >= 6 && (
+                {setlistSongs.length === 0 && (
                   <div style={{ ...MONO, fontSize: 9, color: '#7c3aed40', textAlign: 'center', padding: '8px 0' }}>
                     setlist not available
                   </div>
@@ -1151,21 +1199,19 @@ export function CascadePage() {
                 </div>
               </div>
             </div>
-          )}
 
-          {animStep >= 6 && (
-            <div style={TIER_FOOTER_STYLE}>
-              <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
-                <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#e9d5ff' }}>~3,240</span>
-                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#d8b4fe' }}>songs across 180 concerts</span>
-              </div>
+          <div style={TIER_FOOTER_STYLE}>
+            <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
+              <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#e9d5ff' }}>~3,240</span>
+              <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#d8b4fe' }}>songs across 180 concerts</span>
             </div>
-          )}
+          </div>
           </div>{/* end 2fr col */}
 
           {/* Col 2 (1fr) — dormant right */}
           <DormantThread color="#64748b" />
         </motion.div>
+        )}
 
         {/* ── ASSEMBLY BRIDGE — only visible once complete ── */}
         {flowPhase === 'complete' && (
@@ -1209,7 +1255,7 @@ export function CascadePage() {
         )}
 
         {/* ── TIER 6 — THE OUTPUT ── */}
-        {(() => {
+        {tiersVisible.has(6) && (() => {
           const SCENES = [
             {
               id: 'timeline',
@@ -1444,7 +1490,7 @@ export function CascadePage() {
                   </motion.div>
                 ) : (
                   <div style={{ ...MONO, fontSize: 9, color: '#374151', textAlign: 'center', marginTop: 14, letterSpacing: '0.1em' }}>
-                    {animStep === 0 && flowPhase === 'idle' ? '' : '· · · hydrating'}
+                    · · · hydrating
                   </div>
                 )}
               </div>
@@ -1454,7 +1500,7 @@ export function CascadePage() {
 
         {/* ── FOOTER ── */}
         <motion.footer
-          {...tierAnim(7)}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.3 }}
           style={{ textAlign: 'center', padding: '36px 40px 60px', position: 'relative', zIndex: 2 }}
         >
           {/* Radial glow */}
