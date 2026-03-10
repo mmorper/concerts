@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Data Enrichment Cascade — Morperhaus Concert Archives</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0a0a0f;
+    --text-muted: #6b7280;
+    --text-dim: #94a3b8;
+    --text-bright: #ffffff;
+    --indigo-500: #6366f1;
+    --violet-500: #8b5cf6;
+    --violet-600: #7c3aed;
+    --purple-500: #a855f7;
+    --purple-400: #c084fc;
+    --amber-500: #f59e0b;
+    --color-date: #64748b;
+    --color-venue: #6366f1;
+    --color-artist: #8b5cf6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg-deep); color: var(--text-bright); font-family: 'Source Sans 3', sans-serif; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  .infographic { max-width: 900px; margin: 0 auto; position: relative; }
+
+  /* ═══ SVG LANES ═══ */
+  #laneSvg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+  .lane-fill { transition: opacity 0.6s ease; }
+  .lane-fill.dimmed { opacity: 0.03 !important; }
+  .lane-fill.highlighted { opacity: 0.18 !important; }
+
+  /* ═══ HEADER ═══ */
+  .header { text-align: center; padding: 80px 40px 40px; position: relative; z-index: 2; }
+  .header-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px; opacity:0; animation: fadeUp 0.8s ease 0.2s forwards; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; line-height: 1.1; margin-bottom: 20px; opacity:0; animation: fadeUp 0.8s ease 0.4s forwards; }
+  .header h1 .accent { background: linear-gradient(135deg, var(--purple-400), var(--indigo-500)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .header-sub { font-size: 18px; color: var(--text-dim); font-weight: 300; max-width: 500px; margin: 0 auto; line-height: 1.6; opacity:0; animation: fadeUp 0.8s ease 0.6s forwards; }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+
+  /* ═══ TIER ROW ═══ */
+  .tier-row {
+    position: relative; z-index: 2;
+    display: grid;
+    align-items: start;
+    padding: 48px 16px;
+    opacity: 0; animation: fadeUp 0.8s ease forwards;
+    transition: opacity 0.5s ease, filter 0.5s ease;
+  }
+  .tier-row.dimmed { opacity: 0.12; filter: grayscale(0.5); }
+  .tier-row.focused { opacity: 1; filter: none; }
+
+  /* Grid column templates per tier — defines the lane widths */
+  .tier-row.cols-equal  { grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .tier-row.cols-venue  { grid-template-columns: 0.6fr 2.4fr 0.6fr; gap: 12px; }
+  .tier-row.cols-artist { grid-template-columns: 0.6fr 0.6fr 2.4fr; gap: 12px; }
+  .tier-row.cols-all    { grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  /* Lane cell */
+  .lane {
+    min-height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 0.4s ease;
+  }
+  .lane.dormant {
+    justify-content: center;
+    opacity: 0.3;
+  }
+  .lane.active {
+    opacity: 1;
+  }
+
+  /* Dormant lane thread indicator */
+  .dormant-thread {
+    width: 2px;
+    height: 100%;
+    min-height: 60px;
+    border-radius: 1px;
+    opacity: 0.4;
+  }
+  .dormant-thread.date   { background: var(--color-date); }
+  .dormant-thread.venue  { background: var(--color-venue); }
+  .dormant-thread.artist { background: var(--color-artist); }
+
+  .dormant-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    margin-top: 8px;
+    opacity: 0.4;
+  }
+
+  /* ═══ TIER HEADER (spans full width) ═══ */
+  .tier-header {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .tier-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 8px; }
+  .tier-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; margin-bottom: 4px; line-height: 1.2; }
+  .tier-subtitle { font-size: 14px; font-weight: 300; line-height: 1.5; }
+
+  /* ═══ TIER FOOTER (spans full width) ═══ */
+  .tier-footer {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .tier-stat { display: inline-flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+  .tier-stat-number { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 32px; line-height: 1; }
+  .tier-stat-label { font-size: 13px; font-weight: 300; }
+
+  .cumulative { position: absolute; right: 16px; top: 48px; font-family: 'JetBrains Mono', monospace; font-size: 11px; opacity: 0.35; text-align: right; }
+  .cumulative .count { font-size: 14px; font-weight: 500; display: block; }
+  .cumulative .label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; }
+
+  /* ═══ ATOM CARDS (Tier 0) ═══ */
+  .atom { background: #1e2028; border: 1px solid #2d3040; border-radius: 6px; padding: 20px; font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: all 0.4s ease; text-align: center; width: 100%; }
+  .atom:hover { border-color: #4b5563; transform: translateY(-2px); }
+  .atom-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #4b5563; margin-bottom: 8px; }
+  .atom-value { font-size: 17px; color: #9ca3af; }
+  .atom.focused-artist { border-color: var(--color-artist); box-shadow: 0 0 24px rgba(139,92,246,0.25); }
+  .atom.focused-venue  { border-color: var(--color-venue);  box-shadow: 0 0 24px rgba(99,102,241,0.25); }
+  .atom.focused-date   { border-color: var(--color-date);   box-shadow: 0 0 24px rgba(100,116,139,0.25); }
+  .atom.dimmed { opacity: 0.2; transform: scale(0.95); }
+  .atom-click-hint { grid-column: 1 / -1; font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #374151; text-align: center; margin-top: 8px; letter-spacing: 0.1em; transition: opacity 0.4s ease; }
+  .atoms-equation { grid-column: 1 / -1; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4b5563; text-align: center; margin-top: 4px; }
+
+  /* ═══ PIPELINE FIELDS (Tier 1) ═══ */
+  .field-group { width: 100%; }
+  .field-group-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #4b5563; text-align: center; margin-bottom: 8px; letter-spacing: 0.1em; }
+  .field-tag { padding: 5px 10px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; background: #1e2028; border: 1px solid #2d3040; margin-bottom: 4px; display: flex; flex-direction: column; gap: 1px; }
+  .field-key { font-size: 8px; letter-spacing: 0.05em; color: #4b5563; } .field-val { font-size: 12px; color: #64748b; white-space: nowrap; }
+  .field-tag.derived { border-color: #475569; background: #1a1f2e; } .field-tag.derived .field-key { color: #64748b; } .field-tag.derived .field-val { color: #cbd5e1; }
+
+  /* ═══ API ENGINE (Tiers 2-5) ═══ */
+  .api-engine { width: 100%; }
+  .api-input-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 4px 10px; border-radius: 4px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: #6b7280; margin-bottom: 4px; text-align: center; }
+  .api-input-tag .ik { color: #4b5563; font-size: 8px; display: block; letter-spacing: 0.04em; }
+  .api-input-tag .iv { color: #94a3b8; }
+  .api-arrow { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #374151; padding: 4px 0; letter-spacing: 0.15em; }
+  .api-svc { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 6px; margin-bottom: 4px; }
+  .api-svc-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .api-svc-name { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; }
+  .api-svc-type { font-size: 10px; font-weight: 300; opacity: 0.7; }
+  .api-svc.fallback { opacity: 0.5; border-style: dashed; }
+  .api-out-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 5px 10px; border-radius: 4px; margin-bottom: 3px; }
+  .api-out-tag .ok { font-size: 8px; display: block; letter-spacing: 0.04em; }
+  .api-out-tag .ov { font-size: 12px; }
+  .api-scale-row { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; margin-top: 12px; letter-spacing: 0.05em; }
+
+  /* Per-tier colors */
+  .t2 .api-svc { background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.15); }
+  .t2 .api-svc-dot { background: var(--indigo-500); box-shadow: 0 0 8px rgba(99,102,241,0.4); }
+  .t2 .api-svc-name { color: #a5b4fc; } .t2 .api-svc-type { color: #818cf8; }
+  .t2 .api-out-tag { background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2); }
+  .t2 .api-out-tag .ok { color: #818cf8; } .t2 .api-out-tag .ov { color: #e0e7ff; }
+  .t2 .api-scale-row { color: #4f46e5; }
+  .t2 .tier-label { color: var(--indigo-500); } .t2 .tier-title { color: #e0e7ff; } .t2 .tier-subtitle { color: #a5b4fc; }
+
+  .t3 .api-svc { background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.15); }
+  .t3 .api-svc-dot { background: var(--violet-500); box-shadow: 0 0 8px rgba(139,92,246,0.4); }
+  .t3 .api-svc-name { color: #c4b5fd; } .t3 .api-svc-type { color: #a78bfa; }
+  .t3 .api-out-tag { background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2); }
+  .t3 .api-out-tag .ok { color: #a78bfa; } .t3 .api-out-tag .ov { color: #ede9fe; }
+  .t3 .api-scale-row { color: var(--violet-600); }
+  .t3 .tier-label { color: var(--violet-500); } .t3 .tier-title { color: #ede9fe; } .t3 .tier-subtitle { color: #c4b5fd; }
+
+  .t4 .api-svc { background: rgba(168,85,247,0.06); border: 1px solid rgba(168,85,247,0.15); }
+  .t4 .api-svc-dot { background: var(--purple-500); box-shadow: 0 0 8px rgba(168,85,247,0.4); }
+  .t4 .api-svc-name { color: #d8b4fe; } .t4 .api-svc-type { color: #c084fc; }
+  .t4 .api-out-tag { background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.2); }
+  .t4 .api-out-tag .ok { color: #c084fc; } .t4 .api-out-tag .ov { color: #faf5ff; }
+  .t4 .api-scale-row { color: var(--purple-500); }
+  .t4 .tier-label { color: var(--purple-500); } .t4 .tier-title { color: #faf5ff; } .t4 .tier-subtitle { color: #d8b4fe; }
+
+  .t5 .api-svc { background: rgba(192,132,252,0.06); border: 1px solid rgba(192,132,252,0.15); }
+  .t5 .api-svc-dot { background: var(--purple-400); box-shadow: 0 0 8px rgba(192,132,252,0.4); }
+  .t5 .api-svc-name { color: #e9d5ff; } .t5 .api-svc-type { color: #d8b4fe; }
+  .t5 .api-out-tag { background: rgba(192,132,252,0.08); border: 1px solid rgba(192,132,252,0.2); }
+  .t5 .api-out-tag .ok { color: #d8b4fe; } .t5 .api-out-tag .ov { color: #faf5ff; }
+  .t5 .tier-label { color: var(--purple-400); } .t5 .tier-title { color: #fff; } .t5 .tier-subtitle { color: #e9d5ff; }
+  .t5 .tier-stat-number { color: #e9d5ff; } .t5 .tier-stat-label { color: #d8b4fe; }
+  .reconverge { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #7c3aed; padding: 6px 12px; border: 1px dashed rgba(124,58,237,0.25); border-radius: 5px; display: inline-block; margin-bottom: 12px; }
+  .setlist-mini .song { display: flex; gap: 8px; padding: 2px 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #d8b4fe; }
+  .setlist-mini .song .n { color: #7c3aed; width: 14px; text-align: right; flex-shrink: 0; font-size: 9px; }
+  .setlist-mini .ellipsis { color: #4b5563; font-style: italic; text-align: center; font-size: 10px; padding: 3px 0; }
+  .tag-cover { font-size: 8px; padding: 1px 4px; border-radius: 2px; background: rgba(245,158,11,0.15); color: var(--amber-500); border: 1px solid rgba(245,158,11,0.3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  .waveform-bar { display: inline-flex; gap: 2px; align-items: end; height: 14px; vertical-align: middle; margin-left: 4px; }
+  .waveform-bar span { width: 2px; border-radius: 1px; animation: waveform 1.2s ease-in-out infinite; }
+  @keyframes waveform { 0%,100% { height: 3px; } 50% { height: 12px; } }
+
+  /* ═══ FOOTER ═══ */
+  .footer { text-align: center; padding: 80px 40px 100px; position: relative; z-index: 2; opacity:0; animation: fadeUp 0.8s ease 2.2s forwards; }
+  .footer::before { content:''; position: absolute; inset: 0; background: radial-gradient(ellipse 600px 300px at 50% 30%, rgba(139,92,246,0.08), transparent); pointer-events: none; }
+  .punchline-stats { display: flex; justify-content: center; gap: 40px; margin-bottom: 40px; flex-wrap: wrap; }
+  .punchline-stat { text-align: center; }
+  .punchline-stat .big-num { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; line-height: 1; background: linear-gradient(135deg, var(--purple-400), var(--indigo-500), #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .punchline-stat .big-label { font-size: 14px; color: var(--text-muted); margin-top: 4px; font-weight: 300; }
+  .punchline-phrase { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 400; font-style: italic; color: #c4b5fd; margin-bottom: 36px; line-height: 1.4; }
+  .api-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; }
+  .api-logo { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4b5563; padding: 6px 14px; border: 1px solid #1e2028; border-radius: 100px; transition: all 0.3s ease; }
+  .api-logo:hover { border-color: #374151; color: #9ca3af; }
+  .cta-url { font-family: 'JetBrains Mono', monospace; font-size: 16px; color: var(--indigo-500); text-decoration: none; padding: 12px 28px; border: 1px solid rgba(99,102,241,0.3); border-radius: 8px; display: inline-block; transition: all 0.3s ease; }
+  .cta-url:hover { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.5); }
+
+  .focus-reset { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #e2e8f0; background: rgba(30,27,75,0.9); border: 1px solid rgba(139,92,246,0.3); border-radius: 100px; padding: 10px 24px; cursor: pointer; backdrop-filter: blur(12px); z-index: 100; opacity:0; pointer-events: none; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); }
+  .focus-reset.visible { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 700px) {
+    .header h1 { font-size: 32px; }
+    .tier-row { padding: 32px 12px; }
+    .tier-row.cols-venue, .tier-row.cols-artist { grid-template-columns: 0.3fr 3fr 0.3fr; }
+    .punchline-stat .big-num { font-size: 40px; }
+    .cumulative { display: none; }
+    #laneSvg { display: none; }
+    .dormant-label { display: none; }
+  }
+
+  /* Delays */
+  .tr0 { animation-delay: 0.8s; } .tr1 { animation-delay: 1.1s; } .tr2 { animation-delay: 1.5s; } .tr3 { animation-delay: 1.9s; } .tr4 { animation-delay: 2.3s; } .tr5 { animation-delay: 2.7s; }
+</style>
+</head>
+<body>
+<div class="infographic" id="ig">
+  <svg id="laneSvg"></svg>
+
+  <header class="header">
+    <div class="header-eyebrow">Morperhaus Concert Archives</div>
+    <h1>The Data<br><span class="accent">Enrichment Cascade</span></h1>
+    <p class="header-sub">How three words in a spreadsheet become a living archive of four decades of live music</p>
+  </header>
+
+  <!-- ═══ TIER 0 — ATOMS ═══ -->
+  <div class="tier-row cols-equal tr0" data-atoms="date venue artist" id="row0">
+    <div class="tier-header">
+      <div class="tier-label" style="color:#4b5563;">Tier 0 · The Source</div>
+      <div class="tier-title" style="color:#9ca3af; font-size:22px;">Three Atoms</div>
+      <div class="tier-subtitle" style="color:#6b7280;">One row in a Google Sheet. That's the whole input.</div>
+    </div>
+    <!-- Date lane -->
+    <div class="lane active" id="l0-date">
+      <div class="atom" data-atom="date" onclick="focusAtom('date')">
+        <div class="atom-label">Date</div>
+        <div class="atom-value">2023-10-14</div>
+      </div>
+    </div>
+    <!-- Venue lane -->
+    <div class="lane active" id="l0-venue">
+      <div class="atom" data-atom="venue" onclick="focusAtom('venue')">
+        <div class="atom-label">Venue</div>
+        <div class="atom-value">Rose Bowl</div>
+      </div>
+    </div>
+    <!-- Artist lane -->
+    <div class="lane active" id="l0-artist">
+      <div class="atom" data-atom="artist" onclick="focusAtom('artist')">
+        <div class="atom-label">Artist</div>
+        <div class="atom-value">Depeche Mode</div>
+      </div>
+    </div>
+    <div class="atom-click-hint">click an atom to trace its journey ↓</div>
+    <div class="atoms-equation">180 concerts × 3 fields = <span style="color:#6b7280;">540 total inputs</span></div>
+  </div>
+
+  <!-- ═══ TIER 1 — PIPELINE ═══ -->
+  <div class="tier-row cols-equal tr1" data-atoms="date venue artist" id="row1">
+    <div class="tier-header">
+      <div class="tier-label" style="color:#64748b;">Tier 1 · Structural Enrichment</div>
+      <div class="tier-title" style="color:#cbd5e1;">The Build Pipeline</div>
+      <div class="tier-subtitle" style="color:#94a3b8;">Parse, normalize, derive. No APIs — just code.</div>
+    </div>
+    <!-- Date lane -->
+    <div class="lane active" id="l1-date">
+      <div class="field-group">
+        <div class="field-group-label">↓ parses into ↓</div>
+        <div class="field-tag derived"><span class="field-key">year</span><span class="field-val">2023</span></div>
+        <div class="field-tag derived"><span class="field-key">month</span><span class="field-val">10</span></div>
+        <div class="field-tag derived"><span class="field-key">day</span><span class="field-val">14</span></div>
+        <div class="field-tag derived"><span class="field-key">dayOfWeek</span><span class="field-val">"Saturday"</span></div>
+        <div class="field-tag derived"><span class="field-key">decade</span><span class="field-val">"2020s"</span></div>
+      </div>
+    </div>
+    <!-- Venue lane -->
+    <div class="lane active" id="l1-venue">
+      <div class="field-group">
+        <div class="field-group-label">↓ enriches into ↓</div>
+        <div class="field-tag derived"><span class="field-key">venueNormalized</span><span class="field-val">"rose-bowl"</span></div>
+        <div class="field-tag derived"><span class="field-key">city</span><span class="field-val">"Pasadena"</span></div>
+        <div class="field-tag derived"><span class="field-key">state</span><span class="field-val">"California"</span></div>
+        <div class="field-tag derived"><span class="field-key">cityState</span><span class="field-val">"Pasadena, CA"</span></div>
+      </div>
+    </div>
+    <!-- Artist lane -->
+    <div class="lane active" id="l1-artist">
+      <div class="field-group">
+        <div class="field-group-label">↓ normalizes into ↓</div>
+        <div class="field-tag derived"><span class="field-key">headlinerNormalized</span><span class="field-val">"depeche-mode"</span></div>
+        <div class="field-tag"><span class="field-key">id</span><span class="field-val">"concert-163"</span></div>
+      </div>
+    </div>
+    <div class="tier-footer">
+      <div class="tier-stat"><span class="tier-stat-number" style="color:#94a3b8;">19</span><span class="tier-stat-label" style="color:#64748b;">fields per concert</span></div>
+    </div>
+    <div class="cumulative" style="color:#64748b;"><span class="count">3,600</span><span class="label">data points</span></div>
+  </div>
+
+  <!-- ═══ TIER 2 — GEOGRAPHIC (venue lane wide) ═══ -->
+  <div class="tier-row cols-venue tr2 t2" data-atoms="venue" id="row2">
+    <div class="tier-header">
+      <div class="tier-label">Tier 2 · Geographic Enrichment</div>
+      <div class="tier-title">Every Venue, Precisely Placed</div>
+      <div class="tier-subtitle">Structural data becomes geographic intelligence.</div>
+    </div>
+    <!-- Date: dormant -->
+    <div class="lane dormant">
+      <div class="dormant-thread date"></div>
+      <div class="dormant-label" style="color:var(--color-date);">date</div>
+    </div>
+    <!-- Venue: active, wide -->
+    <div class="lane active" id="l2-venue">
+      <div class="api-engine">
+        <div class="api-input-tag"><span class="ik">venue + city + state</span><span class="iv">"Rose Bowl" · "Pasadena" · "California"</span></div>
+        <div class="api-arrow">↓ query ↓</div>
+        <div class="api-svc">
+          <div class="api-svc-dot"></div>
+          <div><div class="api-svc-name">Google Places</div><div class="api-svc-type">Geocoding + Photos</div></div>
+        </div>
+        <div class="api-arrow">↓ response ↓</div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; justify-content:center;">
+          <div class="api-out-tag"><span class="ok">lat</span><span class="ov">34.1613</span></div>
+          <div class="api-out-tag"><span class="ok">lng</span><span class="ov">-118.1676</span></div>
+          <div class="api-out-tag"><span class="ok">photos</span><span class="ov">3 images</span></div>
+          <div class="api-out-tag"><span class="ok">placeId</span><span class="ov">ChIJO...</span></div>
+        </div>
+        <div class="api-scale-row">× 77 venues · 35 cities · 10 regions</div>
+      </div>
+    </div>
+    <!-- Artist: dormant -->
+    <div class="lane dormant">
+      <div class="dormant-thread artist"></div>
+      <div class="dormant-label" style="color:var(--color-artist);">artist</div>
+    </div>
+    <div class="cumulative" style="color:#818cf8;"><span class="count">3,985</span><span class="label">data points</span></div>
+  </div>
+
+  <!-- ═══ TIER 3 — ARTIST IDENTITY (artist lane wide) ═══ -->
+  <div class="tier-row cols-artist tr3 t3" data-atoms="artist" id="row3">
+    <div class="tier-header">
+      <div class="tier-label">Tier 3 · Artist Enrichment</div>
+      <div class="tier-title">A Face and a Story</div>
+      <div class="tier-subtitle">A name becomes a profile. Three services, one identity.</div>
+    </div>
+    <!-- Date: dormant -->
+    <div class="lane dormant">
+      <div class="dormant-thread date"></div>
+      <div class="dormant-label" style="color:var(--color-date);">date</div>
+    </div>
+    <!-- Venue: dormant -->
+    <div class="lane dormant">
+      <div class="dormant-thread venue"></div>
+      <div class="dormant-label" style="color:var(--color-venue);">venue</div>
+    </div>
+    <!-- Artist: active, wide -->
+    <div class="lane active" id="l3-artist">
+      <div class="api-engine">
+        <div class="api-input-tag"><span class="ik">headliner</span><span class="iv">"Depeche Mode"</span></div>
+        <div class="api-arrow">↓ query ↓</div>
+        <div class="api-svc"><div class="api-svc-dot"></div><div><div class="api-svc-name">TheAudioDB</div><div class="api-svc-type">Images + Bios</div></div></div>
+        <div class="api-svc fallback"><div class="api-svc-dot" style="opacity:0.5;"></div><div><div class="api-svc-name">Last.fm</div><div class="api-svc-type">Fallback metadata</div></div></div>
+        <div class="api-svc fallback"><div class="api-svc-dot" style="opacity:0.5;"></div><div><div class="api-svc-name">MusicBrainz</div><div class="api-svc-type">Canonical IDs</div></div></div>
+        <div class="api-arrow">↓ response ↓</div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; justify-content:center;">
+          <div class="api-out-tag"><span class="ok">image</span><span class="ov">artist photo</span></div>
+          <div class="api-out-tag"><span class="ok">bio</span><span class="ov">biography</span></div>
+          <div class="api-out-tag"><span class="ok">genres</span><span class="ov">["New Wave"]</span></div>
+          <div class="api-out-tag"><span class="ok">formed</span><span class="ov">"1980"</span></div>
+          <div class="api-out-tag"><span class="ok">mbid</span><span class="ov">MusicBrainz ID</span></div>
+        </div>
+        <div class="api-scale-row">× 255 artists enriched</div>
+      </div>
+    </div>
+    <div class="cumulative" style="color:#a78bfa;"><span class="count">5,515</span><span class="label">data points</span></div>
+  </div>
+
+  <!-- ═══ TIER 4 — AUDIO (artist lane wide) ═══ -->
+  <div class="tier-row cols-artist tr4 t4" data-atoms="artist" id="row4">
+    <div class="tier-header">
+      <div class="tier-label">Tier 4 · Audio Enrichment</div>
+      <div class="tier-title">Hear Every Artist</div>
+      <div class="tier-subtitle">The archive gets a soundtrack.</div>
+    </div>
+    <div class="lane dormant">
+      <div class="dormant-thread date"></div>
+      <div class="dormant-label" style="color:var(--color-date);">date</div>
+    </div>
+    <div class="lane dormant">
+      <div class="dormant-thread venue"></div>
+      <div class="dormant-label" style="color:var(--color-venue);">venue</div>
+    </div>
+    <div class="lane active" id="l4-artist">
+      <div class="api-engine">
+        <div class="api-input-tag"><span class="ik">artist</span><span class="iv">"Depeche Mode"</span></div>
+        <div class="api-arrow">↓ search ↓</div>
+        <div class="api-svc"><div class="api-svc-dot"></div><div><div class="api-svc-name">iTunes / Apple Music</div><div class="api-svc-type">Search API</div></div></div>
+        <div class="api-arrow">↓ top 5 tracks ↓</div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; justify-content:center;">
+          <div class="api-out-tag"><span class="ok">trackName</span><span class="ov">"Enjoy the Silence"</span></div>
+          <div class="api-out-tag"><span class="ok">previewUrl</span><span class="ov">30s M4A <span class="waveform-bar"><span style="background:#a855f7;animation-delay:0s;"></span><span style="background:#c084fc;animation-delay:.12s;"></span><span style="background:#a855f7;animation-delay:.24s;"></span><span style="background:#c084fc;animation-delay:.36s;"></span></span></span></div>
+          <div class="api-out-tag"><span class="ok">albumArt</span><span class="ov">250px image</span></div>
+          <div class="api-out-tag"><span class="ok">streamingUrl</span><span class="ov">Apple Music link</span></div>
+        </div>
+        <div class="api-scale-row">× 255 artists · up to 1,275 tracks</div>
+      </div>
+    </div>
+    <div class="cumulative" style="color:#c084fc;"><span class="count">13,165</span><span class="label">data points</span></div>
+  </div>
+
+  <!-- ═══ TIER 5 — RECONVERGENCE ═══ -->
+  <div class="tier-row cols-all tr5 t5" data-atoms="date venue artist" id="row5">
+    <div class="tier-header">
+      <div class="tier-label">Tier 5 · Performance Enrichment</div>
+      <div class="tier-title">Song by Song, Night by Night</div>
+      <div class="tier-subtitle">All three atoms reconverge to find one specific night.</div>
+      <div style="margin-top:12px;"><span class="reconverge">all three atoms required</span></div>
+    </div>
+    <!-- All three lanes active, content spans -->
+    <div class="lane active" style="grid-column: 1 / -1;" id="l5-all">
+      <div class="api-engine" style="max-width:500px; margin:0 auto;">
+        <div style="display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:8px;">
+          <div class="api-input-tag"><span class="ik">artist</span><span class="iv">"Depeche Mode"</span></div>
+          <div class="api-input-tag"><span class="ik">venue</span><span class="iv">"Rose Bowl"</span></div>
+          <div class="api-input-tag"><span class="ik">date</span><span class="iv">"2023-10-14"</span></div>
+        </div>
+        <div class="api-arrow">↓ search ↓</div>
+        <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:4px;">
+          <div class="api-svc" style="flex:1; min-width:180px;"><div class="api-svc-dot"></div><div><div class="api-svc-name">setlist.fm</div><div class="api-svc-type">Historical setlists</div></div></div>
+          <div class="api-svc" style="flex:1; min-width:180px;"><div class="api-svc-dot"></div><div><div class="api-svc-name">Ticketmaster</div><div class="api-svc-type">Tour dates</div></div></div>
+        </div>
+        <div class="api-arrow">↓ response ↓</div>
+        <div class="setlist-mini" style="margin:8px auto;">
+          <div class="song"><span class="n">1</span><span>My Cosmos Is Mine</span></div>
+          <div class="song"><span class="n">2</span><span>Wagging Tongue</span></div>
+          <div class="song"><span class="n">3</span><span>Walking in My Shoes</span></div>
+          <div class="ellipsis">· · · 15 more songs · · ·</div>
+          <div class="song"><span class="n">20</span><span>Heroes</span><span class="tag-cover" style="margin-left:auto;">cover</span></div>
+          <div class="song"><span class="n">21</span><span>Never Let Me Down Again</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tier-footer">
+      <div class="tier-stat"><span class="tier-stat-number" style="color:#e9d5ff;">~3,240</span><span class="tier-stat-label" style="color:#d8b4fe;">songs across 180 concerts</span></div>
+    </div>
+    <div class="cumulative" style="color:#e9d5ff;"><span class="count">23,000+</span><span class="label">data points</span></div>
+  </div>
+
+  <div class="focus-reset" id="focusReset" onclick="resetFocus()">Show All</div>
+
+  <footer class="footer">
+    <div class="punchline-stats">
+      <div class="punchline-stat"><div class="big-num">540</div><div class="big-label">inputs</div></div>
+      <div class="punchline-stat" style="display:flex;align-items:center;"><div class="big-num" style="font-size:36px;background:linear-gradient(135deg,#6b7280,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">→</div></div>
+      <div class="punchline-stat"><div class="big-num">23,000+</div><div class="big-label">data points</div></div>
+      <div class="punchline-stat" style="display:flex;align-items:center;"><div class="big-num" style="font-size:36px;background:linear-gradient(135deg,#6b7280,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">=</div></div>
+      <div class="punchline-stat"><div class="big-num">42×</div><div class="big-label">enrichment</div></div>
+    </div>
+    <p class="punchline-phrase">7 APIs. 5 scenes. 42 years.<br>Three words started it all.</p>
+    <div class="api-row"><span class="api-logo">Google Places</span><span class="api-logo">TheAudioDB</span><span class="api-logo">Last.fm</span><span class="api-logo">MusicBrainz</span><span class="api-logo">iTunes</span><span class="api-logo">setlist.fm</span><span class="api-logo">Ticketmaster</span></div>
+    <a href="https://concerts.morperhaus.org" class="cta-url" target="_blank">concerts.morperhaus.org</a>
+  </footer>
+</div>
+
+<script>
+// ═══ SVG LANE SHAPES ═══
+// Each tier defines width ratios for [date, venue, artist]
+// Values are proportional (will be normalized to fill width)
+const LANE_WIDTHS = {
+  row0: [1, 1, 1],
+  row1: [1, 1, 1],
+  row2: [0.15, 2.5, 0.15],
+  row3: [0.15, 0.15, 2.5],
+  row4: [0.15, 0.15, 2.5],
+  row5: [1, 1, 1],
+};
+
+const LANE_COLORS = ['#64748b', '#6366f1', '#8b5cf6']; // date, venue, artist
+const ig = document.getElementById('ig');
+const svg = document.getElementById('laneSvg');
+
+function getLaneRegions(rowEl, widths) {
+  const r = rowEl.getBoundingClientRect();
+  const ir = ig.getBoundingClientRect();
+  const y = r.top - ir.top;
+  const h = r.height;
+  const totalW = r.width;
+  const padX = 16;
+  const usableW = totalW - padX * 2;
+  const sum = widths.reduce((a, b) => a + b, 0);
+  const gap = 8;
+  const totalGap = gap * (widths.length - 1);
+  const contentW = usableW - totalGap;
+
+  let x = padX;
+  return widths.map((w, i) => {
+    const laneW = (w / sum) * contentW;
+    const region = { x: x + ir.left - ir.left, cx: x + laneW / 2, y, w: laneW, h };
+    x += laneW + gap;
+    return region;
+  });
+}
+
+function drawLanes() {
+  const W = ig.offsetWidth;
+  const H = ig.offsetHeight;
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', H);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = '';
+
+  // Defs for blur
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  const blur = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+  blur.id = 'laneBlur';
+  blur.setAttribute('x', '-20%'); blur.setAttribute('y', '-5%'); blur.setAttribute('width', '140%'); blur.setAttribute('height', '110%');
+  const gb = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
+  gb.setAttribute('stdDeviation', '8');
+  blur.appendChild(gb);
+  defs.appendChild(blur);
+  svg.appendChild(defs);
+
+  const rowIds = Object.keys(LANE_WIDTHS);
+  const rows = rowIds.map(id => document.getElementById(id)).filter(Boolean);
+  if (rows.length < 2) return;
+
+  // Compute regions for each row
+  const regions = rowIds.map(id => {
+    const el = document.getElementById(id);
+    if (!el) return null;
+    return getLaneRegions(el, LANE_WIDTHS[id]);
+  }).filter(Boolean);
+
+  // For each lane (date=0, venue=1, artist=2), draw a flowing shape
+  for (let lane = 0; lane < 3; lane++) {
+    let pathD = '';
+    const points = [];
+
+    // Collect center-x and width at top and bottom of each row
+    for (let i = 0; i < regions.length; i++) {
+      const reg = regions[i][lane];
+      points.push({ y: reg.y, cx: reg.cx, hw: reg.w / 2 });
+      points.push({ y: reg.y + reg.h, cx: reg.cx, hw: reg.w / 2 });
+    }
+
+    if (points.length < 2) continue;
+
+    // Build left edge (top to bottom) and right edge (bottom to top)
+    const leftPts = points.map(p => ({ x: p.cx - p.hw, y: p.y }));
+    const rightPts = points.map(p => ({ x: p.cx + p.hw, y: p.y })).reverse();
+
+    // Smooth path with cubic beziers between each pair
+    function smoothPath(pts) {
+      let d = `M ${pts[0].x} ${pts[0].y}`;
+      for (let i = 0; i < pts.length - 1; i++) {
+        const curr = pts[i];
+        const next = pts[i + 1];
+        const midY = curr.y + (next.y - curr.y) * 0.5;
+        d += ` C ${curr.x} ${midY}, ${next.x} ${midY}, ${next.x} ${next.y}`;
+      }
+      return d;
+    }
+
+    const leftD = smoothPath(leftPts);
+    const rightD = smoothPath(rightPts);
+
+    // Combine into closed shape
+    const fullD = leftD + ' L ' + rightPts[0].x + ' ' + rightPts[0].y + rightD.substring(rightD.indexOf(' C')) + ' Z';
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', fullD);
+    path.setAttribute('fill', LANE_COLORS[lane]);
+    path.setAttribute('opacity', '0.07');
+    path.setAttribute('filter', 'url(#laneBlur)');
+    path.classList.add('lane-fill', `lane-${['date','venue','artist'][lane]}`);
+    svg.appendChild(path);
+
+    // Thinner, brighter center line
+    const centerPts = points.map(p => ({ x: p.cx, y: p.y }));
+    const centerD = smoothPath(centerPts);
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    line.setAttribute('d', centerD);
+    line.setAttribute('fill', 'none');
+    line.setAttribute('stroke', LANE_COLORS[lane]);
+    line.setAttribute('stroke-width', '1');
+    line.setAttribute('opacity', '0.15');
+    line.classList.add('lane-fill', `lane-${['date','venue','artist'][lane]}`);
+    svg.appendChild(line);
+  }
+}
+
+window.addEventListener('resize', drawLanes);
+window.addEventListener('load', () => setTimeout(drawLanes, 800));
+setTimeout(drawLanes, 2000);
+
+// ═══ FOCUS ═══
+let currentFocus = null;
+const atomNames = ['date', 'venue', 'artist'];
+
+function focusAtom(atom) {
+  if (currentFocus === atom) { resetFocus(); return; }
+  currentFocus = atom;
+
+  document.querySelectorAll('.tier-row[data-atoms]').forEach(s => {
+    const a = s.dataset.atoms.split(' ');
+    s.classList.toggle('focused', a.includes(atom));
+    s.classList.toggle('dimmed', !a.includes(atom));
+  });
+  document.querySelectorAll('.atom[data-atom]').forEach(el => {
+    if (el.dataset.atom === atom) { el.classList.add('focused-' + atom); el.classList.remove('dimmed'); }
+    else { el.classList.add('dimmed'); el.classList.remove('focused-artist', 'focused-venue', 'focused-date'); }
+  });
+  // SVG lanes
+  svg.querySelectorAll('.lane-fill').forEach(p => {
+    if (p.classList.contains(`lane-${atom}`)) { p.classList.add('highlighted'); p.classList.remove('dimmed'); }
+    else { p.classList.add('dimmed'); p.classList.remove('highlighted'); }
+  });
+  const footer = document.querySelector('.footer');
+  if (footer) { footer.classList.remove('dimmed'); footer.classList.add('focused'); }
+  document.querySelector('.atom-click-hint').style.opacity = '0';
+  document.getElementById('focusReset').classList.add('visible');
+}
+
+function resetFocus() {
+  currentFocus = null;
+  document.querySelectorAll('.tier-row').forEach(s => s.classList.remove('focused', 'dimmed'));
+  document.querySelectorAll('.atom[data-atom]').forEach(el => el.classList.remove('dimmed', 'focused-artist', 'focused-venue', 'focused-date'));
+  svg.querySelectorAll('.lane-fill').forEach(p => { p.classList.remove('highlighted', 'dimmed'); });
+  document.querySelector('.atom-click-hint').style.opacity = '';
+  document.getElementById('focusReset').classList.remove('visible');
+}
+</script>
+</body>
+</html>

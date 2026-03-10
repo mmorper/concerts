@@ -193,6 +193,15 @@ Genre moved to artist-level metadata with automatic enrichment from TheAudioDB.
 
 ## Short-Term Roadmap
 
+### Cascade Progressive Disclosure
+
+**Status**: Planned
+**Spec**: [cascade-progressive-disclosure.md](specs/future/cascade-progressive-disclosure.md)
+
+Progressive reveal animation for the Data Enrichment Cascade — tiers hidden until earned, connector lines animate between each tier boundary, columns hydrate left to right.
+
+---
+
 ### About Page - E-E-A-T Signals
 
 **Status**: Planned

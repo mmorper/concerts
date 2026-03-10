@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Option A — Three Converging Wedges</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0a0a0f;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    padding: 40px 20px 80px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 400;
+    color: #6b7280;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+
+  /* ── Layout ── */
+  .cascade {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* Each tier is a row of 3 columns */
+  .tier {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 4px;
+    position: relative;
+  }
+
+  .tier-label {
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #374151;
+    text-align: center;
+    padding: 6px 0 2px;
+    grid-column: 1 / -1;
+  }
+
+  /* A "band" is the colored block within a column at a tier.
+     Width = how enriched that atom is at this tier.
+     Inactive bands are thin lines. */
+  .col {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    padding: 3px 0;
+  }
+
+  .band {
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px 6px;
+    font-size: 9px;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+    min-height: 48px;
+  }
+
+  /* Atom colors */
+  .date  { background: rgba(100, 116, 139, 0.18); border: 1px solid rgba(100, 116, 139, 0.4);  color: #94a3b8; }
+  .venue { background: rgba(99,  102, 241, 0.18); border: 1px solid rgba(99,  102, 241, 0.45); color: #a5b4fc; }
+  .artist{ background: rgba(139, 92,  246, 0.18); border: 1px solid rgba(139, 92,  246, 0.45); color: #c4b5fd; }
+
+  /* Dormant = thin thread */
+  .dormant {
+    opacity: 0.2;
+    min-height: 48px;
+  }
+  .dormant .band {
+    width: 4px !important;
+    background: transparent;
+    border-width: 0;
+    border-left-width: 2px;
+    border-radius: 0;
+    padding: 0;
+  }
+  .dormant.date  .band { border-color: #64748b; }
+  .dormant.venue .band { border-color: #6366f1; }
+  .dormant.artist .band { border-color: #8b5cf6; }
+
+  /* Active = full width of column */
+  .active .band { width: 100%; }
+
+  /* Seed = compact */
+  .seed .band {
+    width: 80%;
+    min-height: 40px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* Small enrichment */
+  .sm .band { width: 100%; min-height: 56px; }
+  /* Large enrichment */
+  .lg .band { width: 100%; min-height: 96px; }
+  /* Very large enrichment */
+  .xl .band { width: 100%; min-height: 120px; }
+
+  .band .atom-label {
+    font-size: 7px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 4px;
+  }
+  .band .atom-value {
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .band .fields {
+    font-size: 8px;
+    opacity: 0.7;
+    margin-top: 4px;
+  }
+  .band .count {
+    font-size: 18px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .band .api {
+    font-size: 9px;
+    opacity: 0.6;
+  }
+
+  /* Connector arrows between tiers */
+  .connector {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    height: 20px;
+    margin-bottom: 4px;
+  }
+  .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #374151;
+  }
+  .arrow.dormant { opacity: 0.15; }
+
+  /* ── Merge zone (T5) ── */
+  .merge {
+    margin: 8px 0;
+  }
+  .merge-band {
+    background: rgba(124, 58, 237, 0.14);
+    border: 1px solid rgba(124, 58, 237, 0.4);
+    border-radius: 6px;
+    padding: 20px;
+    text-align: center;
+    color: #e9d5ff;
+  }
+  .merge-band .label { font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: #7c3aed; margin-bottom: 6px; }
+  .merge-band .title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .merge-band .sub { font-size: 10px; color: #a78bfa; opacity: 0.8; }
+  .merge-band .threads {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 10px 0;
+    font-size: 9px;
+  }
+  .thread-dot { padding: 3px 8px; border-radius: 3px; font-size: 9px; }
+  .thread-date   { background: rgba(100,116,139,0.2); border: 1px solid rgba(100,116,139,0.4); color: #94a3b8; }
+  .thread-venue  { background: rgba(99,102,241,0.2);  border: 1px solid rgba(99,102,241,0.4);  color: #a5b4fc; }
+  .thread-artist { background: rgba(139,92,246,0.2);  border: 1px solid rgba(139,92,246,0.4);  color: #c4b5fd; }
+
+  /* ── Scene foundation ── */
+  .scenes {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .scene {
+    border-radius: 6px;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+  }
+  .scene:hover { transform: translateY(-2px); }
+  .scene .scene-name { font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+  .scene .scene-sub  { font-size: 8px; opacity: 0.6; }
+  .scene .scene-tiers {
+    display: flex;
+    gap: 3px;
+    justify-content: center;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .tier-dot {
+    font-size: 7px;
+    padding: 1px 4px;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .scene-timeline { background: rgba(148,163,184,0.08); border-color: rgba(148,163,184,0.25); color: #cbd5e1; }
+  .scene-map      { background: rgba(99,102,241,0.08);  border-color: rgba(99,102,241,0.3);   color: #a5b4fc; }
+  .scene-artists  { background: rgba(139,92,246,0.08);  border-color: rgba(139,92,246,0.3);   color: #c4b5fd; }
+  .scene-network  { background: rgba(168,85,247,0.08);  border-color: rgba(168,85,247,0.3);   color: #d8b4fe; }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 40px;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot  { width: 10px; height: 10px; border-radius: 2px; }
+
+  /* ── Annotation ── */
+  .note {
+    background: rgba(99,102,241,0.06);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 6px;
+    padding: 16px 20px;
+    font-size: 11px;
+    color: #6b7280;
+    margin-bottom: 36px;
+    line-height: 1.6;
+  }
+  .note strong { color: #a5b4fc; }
+</style>
+</head>
+<body>
+
+<h1>Option A — Three Converging Wedges (Rudimentary Mock)</h1>
+
+<div class="cascade">
+
+  <div class="note">
+    <strong>Concept:</strong> Each atom is its own vertical wedge. Width = enrichment activity at that tier.
+    The date wedge barely grows. The venue wedge explodes at T2. The artist wedge explodes at T3–4.
+    All three converge at T5 (setlist), then fan into 4 scenes at the foundation.
+    Click a scene at the bottom to imagine the tiers above it "lighting up" (not wired here — just the shape).
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#64748b"></div> Date atom</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div> Venue atom</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div> Artist atom</div>
+  </div>
+
+  <!-- ── T0: Three Seeds ── -->
+  <div class="tier-label">T0 · Seeds</div>
+  <div class="tier">
+    <div class="col seed date">
+      <div class="band date">
+        <div class="atom-label">date</div>
+        <div class="atom-value">2023-03-28</div>
+      </div>
+    </div>
+    <div class="col seed venue">
+      <div class="band venue">
+        <div class="atom-label">venue</div>
+        <div class="atom-value">Kia Forum</div>
+      </div>
+    </div>
+    <div class="col seed artist">
+      <div class="band artist">
+        <div class="atom-label">artist</div>
+        <div class="atom-value">Depeche Mode</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- connector -->
+  <div class="connector">
+    <div class="arrow">↓</div>
+    <div class="arrow">↓</div>
+    <div class="arrow">↓</div>
+  </div>
+
+  <!-- ── T1: Build Pipeline (all three, roughly equal) ── -->
+  <div class="tier-label">T1 · Build Pipeline — parse, normalize, derive (no APIs)</div>
+  <div class="tier">
+    <div class="col sm date">
+      <div class="band date">
+        <span class="count">5</span>
+        <div class="api">year · month · day · dayOfWeek · decade</div>
+      </div>
+    </div>
+    <div class="col sm venue">
+      <div class="band venue">
+        <span class="count">4</span>
+        <div class="api">venueNormalized · city · state · cityState</div>
+      </div>
+    </div>
+    <div class="col sm artist">
+      <div class="band artist">
+        <span class="count">3</span>
+        <div class="api">headlinerNormalized · concertId · openers</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- connector -->
+  <div class="connector">
+    <div class="arrow dormant">↓</div>
+    <div class="arrow">↓</div>
+    <div class="arrow dormant">↓</div>
+  </div>
+
+  <!-- ── T2: Geographic (venue explodes) ── -->
+  <div class="tier-label">T2 · Geographic — Google Places</div>
+  <div class="tier">
+    <div class="col dormant date">
+      <div class="band date"></div>
+    </div>
+    <div class="col xl venue">
+      <div class="band venue">
+        <span class="count">8</span>
+        <div class="api">lat · lng · formattedAddress · placeId · confirmedName · types · website · photos</div>
+        <div class="fields" style="margin-top:8px; opacity:0.5">× 77 venues</div>
+      </div>
+    </div>
+    <div class="col dormant artist">
+      <div class="band artist"></div>
+    </div>
+  </div>
+
+  <!-- connector -->
+  <div class="connector">
+    <div class="arrow dormant">↓</div>
+    <div class="arrow dormant">↓</div>
+    <div class="arrow">↓</div>
+  </div>
+
+  <!-- ── T3: Artist Identity (artist explodes) ── -->
+  <div class="tier-label">T3 · Artist Identity — TheAudioDB · Last.fm · MusicBrainz</div>
+  <div class="tier">
+    <div class="col dormant date">
+      <div class="band date"></div>
+    </div>
+    <div class="col dormant venue">
+      <div class="band venue"></div>
+    </div>
+    <div class="col xl artist">
+      <div class="band artist">
+        <span class="count">8</span>
+        <div class="api">image · bio · formed · country · style · genres · listeners · mbid</div>
+        <div class="fields" style="margin-top:8px; opacity:0.5">× 255 artists</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- connector -->
+  <div class="connector">
+    <div class="arrow dormant">↓</div>
+    <div class="arrow dormant">↓</div>
+    <div class="arrow">↓</div>
+  </div>
+
+  <!-- ── T4: Audio (artist stays wide) ── -->
+  <div class="tier-label">T4 · Audio — Apple Music</div>
+  <div class="tier">
+    <div class="col dormant date">
+      <div class="band date"></div>
+    </div>
+    <div class="col dormant venue">
+      <div class="band venue"></div>
+    </div>
+    <div class="col lg artist">
+      <div class="band artist">
+        <span class="count">7</span>
+        <div class="api">trackName · albumName · albumArt · previewUrl · streamingUrl · releaseDate · genre</div>
+        <div class="fields" style="margin-top:8px; opacity:0.5">× 255 artists · 1,275 tracks</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- connector → merge -->
+  <div class="connector">
+    <div class="arrow">↘</div>
+    <div class="arrow">↓</div>
+    <div class="arrow">↙</div>
+  </div>
+
+  <!-- ── T5: Convergence ── -->
+  <div class="merge">
+    <div class="merge-band">
+      <div class="label">T5 · Performance — The only tier that needs all three atoms</div>
+      <div class="threads">
+        <span class="thread-dot thread-date">date</span>
+        <span style="color:#374151; font-size:10px;">+</span>
+        <span class="thread-dot thread-venue">venue</span>
+        <span style="color:#374151; font-size:10px;">+</span>
+        <span class="thread-dot thread-artist">artist</span>
+        <span style="color:#374151; font-size:10px;">=</span>
+        <span style="color:#c084fc; font-size:10px; font-weight:600;">one specific night</span>
+      </div>
+      <div class="title">setlist.fm · Ticketmaster</div>
+      <div class="sub">tourName · 23 songs · Set 1 + Encore · opener · eventId — × 180 concerts</div>
+    </div>
+  </div>
+
+  <!-- ── T6: Scene Foundation ── -->
+  <div class="tier-label" style="margin-top:12px; color:#5b21b6;">T6 · The Living Archive — click to trace which tiers feed each scene</div>
+  <div class="scenes">
+    <div class="scene scene-timeline" onclick="this.style.borderColor='rgba(148,163,184,0.7)'">
+      <div class="scene-name">Timeline</div>
+      <div class="scene-sub">42 years, one axis</div>
+      <div class="scene-tiers">
+        <span class="tier-dot" style="background:rgba(148,163,184,0.2);border:1px solid rgba(148,163,184,0.4);color:#94a3b8">T1</span>
+      </div>
+    </div>
+    <div class="scene scene-map" onclick="this.style.borderColor='rgba(99,102,241,0.7)'">
+      <div class="scene-name">Map</div>
+      <div class="scene-sub">77 venues placed</div>
+      <div class="scene-tiers">
+        <span class="tier-dot" style="background:rgba(148,163,184,0.2);border:1px solid rgba(148,163,184,0.4);color:#94a3b8">T1</span>
+        <span class="tier-dot" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);color:#a5b4fc">T2</span>
+      </div>
+    </div>
+    <div class="scene scene-artists" onclick="this.style.borderColor='rgba(139,92,246,0.8)'">
+      <div class="scene-name">Artists</div>
+      <div class="scene-sub">255 profiles</div>
+      <div class="scene-tiers">
+        <span class="tier-dot" style="background:rgba(148,163,184,0.2);border:1px solid rgba(148,163,184,0.4);color:#94a3b8">T1</span>
+        <span class="tier-dot" style="background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);color:#c4b5fd">T3</span>
+        <span class="tier-dot" style="background:rgba(168,85,247,0.2);border:1px solid rgba(168,85,247,0.4);color:#d8b4fe">T4</span>
+        <span class="tier-dot" style="background:rgba(192,132,252,0.2);border:1px solid rgba(192,132,252,0.4);color:#e9d5ff">T5</span>
+      </div>
+    </div>
+    <div class="scene scene-network" onclick="this.style.borderColor='rgba(168,85,247,0.7)'">
+      <div class="scene-name">Network</div>
+      <div class="scene-sub">venues &amp; artists linked</div>
+      <div class="scene-tiers">
+        <span class="tier-dot" style="background:rgba(148,163,184,0.2);border:1px solid rgba(148,163,184,0.4);color:#94a3b8">T1</span>
+        <span class="tier-dot" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);color:#a5b4fc">T2</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer stat -->
+  <div style="text-align:center; margin-top:40px; font-size:10px; color:#374151; letter-spacing:0.1em;">
+    540 inputs &nbsp;→&nbsp; 23,000+ data points &nbsp;=&nbsp; <span style="color:#7c3aed">42× enrichment</span>
+  </div>
+
+</div>
+</body>
+</html>

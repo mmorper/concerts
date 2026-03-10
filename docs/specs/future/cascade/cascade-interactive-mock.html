@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cascade — Interactive Hydration (Mock)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0a0a0f;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    padding: 40px 20px 80px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 400;
+    color: #6b7280;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 10px;
+    color: #374151;
+    letter-spacing: 0.1em;
+    margin-bottom: 40px;
+  }
+
+  .cascade {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-bottom: 36px;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .legend-item { display: flex; align-items: center; gap: 7px; color: #6b7280; }
+  .legend-dot  { width: 10px; height: 10px; border-radius: 2px; }
+
+  /* ── Tier row ── */
+  .tier {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 2px;
+    position: relative;
+  }
+
+  .tier-label {
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #374151;
+    text-align: center;
+    padding: 10px 0 3px;
+    grid-column: 1 / -1;
+  }
+
+  /* Column slot */
+  .col {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    padding: 3px 0;
+  }
+
+  /* Band inside a column */
+  .band {
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    padding: 10px 8px;
+    font-size: 9px;
+    line-height: 1.5;
+    width: 100%;
+    min-height: 48px;
+  }
+
+  /* Atom color themes */
+  .artist { background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.4); color: #c4b5fd; }
+  .venue  { background: rgba(99,102,241,0.15);  border: 1px solid rgba(99,102,241,0.4);  color: #a5b4fc; }
+  .date   { background: rgba(100,116,139,0.15); border: 1px solid rgba(100,116,139,0.4); color: #94a3b8; }
+
+  /* Dormant = thin thread */
+  .dormant { opacity: 0.22; }
+  .dormant .band {
+    width: 3px !important;
+    background: transparent !important;
+    border-width: 0 !important;
+    border-left-width: 2px !important;
+    border-left-style: solid !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    min-height: 64px;
+  }
+  .dormant.artist .band { border-color: #8b5cf6 !important; }
+  .dormant.venue  .band { border-color: #6366f1 !important; }
+  .dormant.date   .band { border-color: #64748b !important; }
+
+  /* Height variants */
+  .seed .band  { min-height: 52px; }
+  .sm .band    { min-height: 68px; }
+  .md .band    { min-height: 96px; }
+  .lg .band    { min-height: 120px; }
+  .xl .band    { min-height: 156px; }
+
+  /* Band internals */
+  .atom-label {
+    font-size: 7px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 4px;
+  }
+  .atom-value {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .tier-sig {
+    font-size: 10px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .count {
+    font-size: 22px;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 3px;
+    line-height: 1;
+  }
+  .fields {
+    font-size: 8px;
+    opacity: 0.65;
+    line-height: 1.5;
+  }
+  .scale {
+    font-size: 8px;
+    opacity: 0.4;
+    margin-top: 8px;
+    letter-spacing: 0.05em;
+  }
+  .api-label {
+    font-size: 8px;
+    opacity: 0.5;
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Picklist (T0 interactive) ── */
+  .picklist {
+    width: 100%;
+    background: rgba(139,92,246,0.08);
+    border: 1px dashed rgba(139,92,246,0.5);
+    border-radius: 4px;
+    padding: 10px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .picklist:hover { background: rgba(139,92,246,0.18); }
+  .picklist .pick-label { font-size: 8px; letter-spacing: 0.15em; color: #8b5cf6; margin-bottom: 4px; }
+  .picklist .pick-value { font-size: 12px; color: #c4b5fd; font-weight: 600; }
+  .picklist .pick-arrow { font-size: 8px; color: #8b5cf680; margin-top: 2px; }
+
+  .picklist.venue-pick {
+    background: rgba(99,102,241,0.08);
+    border-color: rgba(99,102,241,0.5);
+  }
+  .picklist.venue-pick:hover { background: rgba(99,102,241,0.18); }
+  .picklist.venue-pick .pick-label { color: #6366f1; }
+  .picklist.venue-pick .pick-value { color: #a5b4fc; }
+
+  /* ── Connector ── */
+  .connector {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    height: 18px;
+    margin-bottom: 2px;
+  }
+  .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #374151;
+  }
+  .arrow.dim { opacity: 0.15; }
+
+  /* ── T3 signature: artist photo ── */
+  .artist-photo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(139,92,246,0.25);
+    border: 1px solid rgba(139,92,246,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin: 0 auto 6px;
+    overflow: hidden;
+  }
+  .artist-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .genre-chips {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 4px 0;
+  }
+  .genre-chip {
+    font-size: 7px;
+    padding: 2px 5px;
+    border-radius: 2px;
+    background: rgba(139,92,246,0.2);
+    border: 1px solid rgba(139,92,246,0.35);
+    color: #c4b5fd;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── T2 signature: venue photo ── */
+  .venue-photo {
+    width: 100%;
+    height: 44px;
+    border-radius: 3px;
+    background: rgba(99,102,241,0.2);
+    border: 1px solid rgba(99,102,241,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    color: #6366f180;
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+  .venue-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .coord-pill {
+    font-size: 8px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    background: rgba(99,102,241,0.15);
+    border: 1px solid rgba(99,102,241,0.3);
+    color: #a5b4fc;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── T4 signature: track list ── */
+  .track-list {
+    width: 100%;
+    text-align: left;
+    margin-top: 4px;
+  }
+  .track-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(139,92,246,0.1);
+    font-size: 8px;
+    color: #c4b5fd;
+  }
+  .track-num { opacity: 0.35; width: 14px; text-align: right; flex-shrink: 0; }
+  .track-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .track-dur { opacity: 0.35; flex-shrink: 0; }
+
+  /* ── T5 Convergence ── */
+  .convergence {
+    margin: 6px 0;
+  }
+  .convergence-arrows {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    height: 20px;
+    margin-bottom: 4px;
+  }
+  .conv-band {
+    background: rgba(124,58,237,0.12);
+    border: 1px solid rgba(124,58,237,0.4);
+    border-radius: 6px;
+    padding: 16px 20px;
+  }
+  .conv-equation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    font-size: 9px;
+    flex-wrap: wrap;
+  }
+  .eq-chip {
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 9px;
+  }
+  .eq-artist { background: rgba(139,92,246,0.2); border: 1px solid rgba(139,92,246,0.4); color: #c4b5fd; }
+  .eq-venue  { background: rgba(99,102,241,0.2);  border: 1px solid rgba(99,102,241,0.4);  color: #a5b4fc; }
+  .eq-date   { background: rgba(100,116,139,0.2); border: 1px solid rgba(100,116,139,0.4); color: #94a3b8; }
+  .eq-op { color: #4b5563; }
+  .eq-result { color: #c084fc; font-weight: 700; font-size: 10px; }
+
+  .conv-apis {
+    text-align: center;
+    font-size: 9px;
+    color: #7c3aed;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+  .setlist {
+    font-size: 8px;
+    color: #a78bfa;
+    line-height: 1.8;
+    column-count: 2;
+    column-gap: 16px;
+  }
+  .setlist-row { display: flex; gap: 6px; }
+  .setlist-num { opacity: 0.4; width: 16px; text-align: right; flex-shrink: 0; }
+  .conv-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .meta-pill {
+    font-size: 8px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    background: rgba(124,58,237,0.15);
+    border: 1px solid rgba(124,58,237,0.35);
+    color: #e9d5ff;
+  }
+  .conv-scale {
+    text-align: center;
+    font-size: 8px;
+    color: #4b5563;
+    margin-top: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── T6 Scenes ── */
+  .scenes-label {
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 12px 0 4px;
+    color: #5b21b6;
+  }
+  .scenes-unlock-hint {
+    text-align: center;
+    font-size: 9px;
+    color: #7c3aed;
+    opacity: 0.7;
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+  }
+  .scenes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .scene {
+    border-radius: 6px;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: 1px solid transparent;
+  }
+  .scene:hover { transform: translateY(-2px); }
+  .scene.locked { opacity: 0.2; filter: grayscale(0.7); cursor: default; pointer-events: none; }
+  .scene-name { font-size: 11px; font-weight: 700; margin-bottom: 3px; }
+  .scene-sub  { font-size: 8px; opacity: 0.6; }
+  .scene-tiers {
+    display: flex; gap: 3px; justify-content: center; margin-top: 8px; flex-wrap: wrap;
+  }
+  .tier-dot {
+    font-size: 7px; padding: 1px 4px; border-radius: 2px; letter-spacing: 0.04em;
+  }
+
+  .scene-timeline { background: rgba(148,163,184,0.08); border-color: rgba(148,163,184,0.25); color: #cbd5e1; }
+  .scene-map      { background: rgba(99,102,241,0.08);  border-color: rgba(99,102,241,0.3);   color: #a5b4fc; }
+  .scene-artists  { background: rgba(139,92,246,0.08);  border-color: rgba(139,92,246,0.3);   color: #c4b5fd; }
+  .scene-network  { background: rgba(168,85,247,0.08);  border-color: rgba(168,85,247,0.3);   color: #d8b4fe; }
+
+  /* ── Code transform style (T1) ── */
+  .code-band {
+    background: rgba(15,18,30,0.8) !important;
+    border: 1px dashed rgba(100,116,139,0.3) !important;
+    color: #64748b !important;
+  }
+  .code-icon {
+    font-size: 11px;
+    margin-bottom: 4px;
+    opacity: 0.5;
+  }
+  .pill-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    justify-content: center;
+    margin-top: 4px;
+  }
+  .pill {
+    font-size: 7px;
+    padding: 2px 5px;
+    border-radius: 2px;
+    letter-spacing: 0.03em;
+  }
+  .pill-artist { background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3); color: #c4b5fd; }
+  .pill-venue  { background: rgba(99,102,241,0.15);  border: 1px solid rgba(99,102,241,0.3);  color: #a5b4fc; }
+  .pill-date   { background: rgba(100,116,139,0.15); border: 1px solid rgba(100,116,139,0.3); color: #94a3b8; }
+
+  /* ── Note ── */
+  .note {
+    background: rgba(99,102,241,0.05);
+    border: 1px solid rgba(99,102,241,0.18);
+    border-radius: 6px;
+    padding: 14px 18px;
+    font-size: 10px;
+    color: #6b7280;
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+  .note strong { color: #a5b4fc; }
+
+  /* ── Footer ── */
+  .footer-stat {
+    text-align: center;
+    margin-top: 44px;
+    font-size: 10px;
+    color: #374151;
+    letter-spacing: 0.1em;
+  }
+  .footer-stat span { color: #7c3aed; }
+</style>
+</head>
+<body>
+
+<h1>Cascade — Interactive Hydration</h1>
+<div class="subtitle">Visual mock · Artist → Venue → Date · Sand through an hourglass</div>
+
+<div class="cascade">
+
+  <div class="note">
+    <strong>Interaction model:</strong> Select an artist → watch the artist column hydrate tier by tier.
+    Venue unlocks after artist completes (auto-selects if only one). Date resolves last (auto or pick).
+    Scene cards at the bottom are locked until all three seeds have fully hydrated. Then click any scene to ghost upstream fields not relevant to it.
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div>Artist</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div>Venue</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#64748b"></div>Date</div>
+  </div>
+
+  <!-- ── T0: Seeds / Picklist ── -->
+  <div class="tier-label">T0 · Seeds</div>
+  <div class="tier">
+
+    <!-- Artist: picklist (selected state shown) -->
+    <div class="col seed artist">
+      <div class="band artist" style="justify-content: center;">
+        <div class="atom-label">artist</div>
+        <div class="atom-value">Depeche Mode</div>
+        <div style="font-size:8px; color:#8b5cf660; margin-top:3px;">✓ selected</div>
+      </div>
+    </div>
+
+    <!-- Venue: auto-resolved -->
+    <div class="col seed venue">
+      <div class="band venue" style="justify-content: center;">
+        <div class="atom-label">venue</div>
+        <div class="atom-value">Kia Forum</div>
+        <div style="font-size:8px; color:#6366f160; margin-top:3px;">✓ auto-resolved</div>
+      </div>
+    </div>
+
+    <!-- Date: auto-resolved -->
+    <div class="col seed date">
+      <div class="band date" style="justify-content: center;">
+        <div class="atom-label">date</div>
+        <div class="atom-value">2023-03-28</div>
+        <div style="font-size:8px; color:#64748b60; margin-top:3px;">✓ auto-resolved</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="connector">
+    <div class="arrow">↓</div>
+    <div class="arrow">↓</div>
+    <div class="arrow">↓</div>
+  </div>
+
+  <!-- ── T1: Build Pipeline ── -->
+  <div class="tier-label">T1 · Build Pipeline — parse · normalize · derive · no network</div>
+  <div class="tier">
+
+    <div class="col sm artist">
+      <div class="band code-band">
+        <div class="code-icon">&lt;/&gt;</div>
+        <div class="pill-grid">
+          <span class="pill pill-artist">headlinerNormalized</span>
+          <span class="pill pill-artist">concertId</span>
+          <span class="pill pill-artist">openers</span>
+        </div>
+        <div class="scale">3 fields</div>
+      </div>
+    </div>
+
+    <div class="col sm venue">
+      <div class="band code-band">
+        <div class="code-icon">&lt;/&gt;</div>
+        <div class="pill-grid">
+          <span class="pill pill-venue">venueNormalized</span>
+          <span class="pill pill-venue">city</span>
+          <span class="pill pill-venue">state</span>
+          <span class="pill pill-venue">cityState</span>
+        </div>
+        <div class="scale">4 fields</div>
+      </div>
+    </div>
+
+    <div class="col sm date">
+      <div class="band code-band">
+        <div class="code-icon">&lt;/&gt;</div>
+        <div class="pill-grid">
+          <span class="pill pill-date">year</span>
+          <span class="pill pill-date">month</span>
+          <span class="pill pill-date">day</span>
+          <span class="pill pill-date">dayOfWeek</span>
+          <span class="pill pill-date">decade</span>
+        </div>
+        <div class="scale">5 fields</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="connector">
+    <div class="arrow dim">↓</div>
+    <div class="arrow">↓</div>
+    <div class="arrow dim">↓</div>
+  </div>
+
+  <!-- ── T2: Geographic (venue only) ── -->
+  <div class="tier-label">T2 · Geographic — Google Places</div>
+  <div class="tier">
+
+    <div class="col dormant artist"><div class="band artist"></div></div>
+
+    <div class="col xl venue">
+      <div class="band venue" style="align-items: flex-start;">
+        <div class="api-label">Google Places</div>
+        <div class="venue-photo">
+          <span>📍 venue photo</span>
+        </div>
+        <div class="coord-pill">33.9579° N · 118.3416° W</div>
+        <div class="fields">formattedAddress · placeId · types · website</div>
+        <div class="scale">× 77 venues · 8 fields each</div>
+      </div>
+    </div>
+
+    <div class="col dormant date"><div class="band date"></div></div>
+
+  </div>
+
+  <div class="connector">
+    <div class="arrow">↓</div>
+    <div class="arrow dim">↓</div>
+    <div class="arrow dim">↓</div>
+  </div>
+
+  <!-- ── T3: Artist Identity (artist only) ── -->
+  <div class="tier-label">T3 · Artist Identity — TheAudioDB · Last.fm · MusicBrainz</div>
+  <div class="tier">
+
+    <div class="col xl artist">
+      <div class="band artist" style="align-items: flex-start;">
+        <div class="api-label">TheAudioDB · Last.fm · MusicBrainz</div>
+        <div class="artist-photo">🎸</div>
+        <div class="genre-chips">
+          <span class="genre-chip">synth-pop</span>
+          <span class="genre-chip">electronic</span>
+          <span class="genre-chip">new wave</span>
+        </div>
+        <div class="fields" style="margin-top:4px;">Formed 1980 · Basildon, UK · 12.4M listeners</div>
+        <div class="fields" style="margin-top:3px; text-align:left;">Electronic pioneers known for dark synthesizer-driven sound and iconic live performances...</div>
+        <div class="scale">× 255 artists · 8 fields each</div>
+      </div>
+    </div>
+
+    <div class="col dormant venue"><div class="band venue"></div></div>
+    <div class="col dormant date"><div class="band date"></div></div>
+
+  </div>
+
+  <div class="connector">
+    <div class="arrow">↓</div>
+    <div class="arrow dim">↓</div>
+    <div class="arrow dim">↓</div>
+  </div>
+
+  <!-- ── T4: Audio (artist only) ── -->
+  <div class="tier-label">T4 · Audio — Apple Music</div>
+  <div class="tier">
+
+    <div class="col lg artist">
+      <div class="band artist" style="align-items: flex-start;">
+        <div class="api-label">Apple Music</div>
+        <div style="display:flex; gap:8px; width:100%; margin-bottom:6px;">
+          <div style="width:40px; height:40px; border-radius:4px; background:rgba(139,92,246,0.25); border:1px solid rgba(139,92,246,0.4); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:16px;">🎵</div>
+          <div style="font-size:8px; color:#c4b5fd80; text-align:left; line-height:1.5;">Top tracks<br>from archive</div>
+        </div>
+        <div class="track-list">
+          <div class="track-row"><span class="track-num">01</span><span class="track-name">Personal Jesus</span><span class="track-dur">4:15</span></div>
+          <div class="track-row"><span class="track-num">02</span><span class="track-name">Enjoy the Silence</span><span class="track-dur">4:13</span></div>
+          <div class="track-row"><span class="track-num">03</span><span class="track-name">Policy of Truth</span><span class="track-dur">4:54</span></div>
+        </div>
+        <div class="scale">× 255 artists · 1,275 tracks</div>
+      </div>
+    </div>
+
+    <div class="col dormant venue"><div class="band venue"></div></div>
+    <div class="col dormant date"><div class="band date"></div></div>
+
+  </div>
+
+  <!-- ── T5: Convergence ── -->
+  <div class="connector convergence-arrows">
+    <div class="arrow" style="justify-content:flex-end; padding-right:8px;">↘</div>
+    <div class="arrow">↓</div>
+    <div class="arrow" style="justify-content:flex-start; padding-left:8px;">↙</div>
+  </div>
+
+  <div class="convergence">
+    <div class="tier-label" style="padding-top:4px;">T5 · Performance — The only tier that needs all three atoms</div>
+    <div class="conv-band">
+
+      <div class="conv-equation">
+        <span class="eq-chip eq-artist">Depeche Mode</span>
+        <span class="eq-op">+</span>
+        <span class="eq-chip eq-venue">Kia Forum</span>
+        <span class="eq-op">+</span>
+        <span class="eq-chip eq-date">2023-03-28</span>
+        <span class="eq-op">=</span>
+        <span class="eq-result">one specific night</span>
+      </div>
+
+      <div class="conv-apis">setlist.fm · Ticketmaster</div>
+
+      <div class="setlist">
+        <div class="setlist-row"><span class="setlist-num">01</span>World in My Eyes</div>
+        <div class="setlist-row"><span class="setlist-num">02</span>Walking in My Shoes</div>
+        <div class="setlist-row"><span class="setlist-num">03</span>Policy of Truth</div>
+        <div class="setlist-row"><span class="setlist-num">04</span>In Your Room</div>
+        <div class="setlist-row"><span class="setlist-num">05</span>Personal Jesus</div>
+        <div class="setlist-row"><span class="setlist-num">06</span>Enjoy the Silence</div>
+      </div>
+
+      <div class="conv-meta">
+        <span class="meta-pill">Memento Mori Tour</span>
+        <span class="meta-pill">opener: Dry Cleaning</span>
+        <span class="meta-pill">23 songs · Set 1 + Encore</span>
+      </div>
+
+      <div class="conv-scale">× 180 concerts</div>
+    </div>
+  </div>
+
+  <!-- ── T6: Scene Foundation ── -->
+  <div class="scenes-label">T6 · The Living Archive</div>
+  <div class="scenes-unlock-hint">↑ select a scene to trace its data</div>
+
+  <div class="scenes">
+
+    <div class="scene scene-timeline" onclick="handleScene(this, 'timeline')">
+      <div class="scene-name">Timeline</div>
+      <div class="scene-sub">42 years · one axis</div>
+      <div class="scene-tiers">
+        <span class="tier-dot" style="background:rgba(100,116,139,0.2);border:1px solid rgba(100,116,139,0.4);color:#94a3b8">Date T1</span>
+      </div>
+    </div>
+
+    <div class="scene scene-map" onclick="handleScene(this, 'map')">
+      <div class="scene-name">Map</div>
+      <div class="scene-sub">77 venues placed</div>
+      <div class="scene-tiers">
+        <span class="tier-dot" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);color:#a5b4fc">Venue T1</span>
+        <span class="tier-dot" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);color:#a5b4fc">Venue T2</span>
+      </div>
+    </div>
+
+    <div class="scene scene-artists" onclick="handleScene(this, 'artists')">
+      <div class="scene-name">Artists</div>
+      <div class="scene-sub">255 profiles</div>
+      <div class="scene-tiers">
+        <span class="tier-dot" style="background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);color:#c4b5fd">Artist T1</span>
+        <span class="tier-dot" style="background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);color:#c4b5fd">T3</span>
+        <span class="tier-dot" style="background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);color:#c4b5fd">T4</span>
+        <span class="tier-dot" style="background:rgba(124,58,237,0.2);border:1px solid rgba(124,58,237,0.4);color:#e9d5ff">T5</span>
+      </div>
+    </div>
+
+    <div class="scene scene-network" onclick="handleScene(this, 'network')">
+      <div class="scene-name">Network</div>
+      <div class="scene-sub">venues &amp; artists linked</div>
+      <div class="scene-tiers">
+        <span class="tier-dot" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);color:#a5b4fc">Venue T1</span>
+        <span class="tier-dot" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);color:#a5b4fc">Venue T2</span>
+        <span class="tier-dot" style="background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);color:#c4b5fd">Artist T1</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-stat">
+    540 inputs &nbsp;→&nbsp; 23,000+ data points &nbsp;=&nbsp; <span>42× enrichment</span>
+  </div>
+
+</div>
+
+<script>
+  let activeScene = null
+
+  function handleScene(el, name) {
+    if (activeScene === name) {
+      // deselect
+      activeScene = null
+      document.querySelectorAll('.scene').forEach(s => s.style.opacity = '')
+      document.querySelectorAll('.scene').forEach(s => s.style.borderColor = '')
+      return
+    }
+    activeScene = name
+    document.querySelectorAll('.scene').forEach(s => {
+      s.style.opacity = s === el ? '1' : '0.3'
+      s.style.borderColor = ''
+    })
+    el.style.borderColor = 'currentColor'
+  }
+</script>
+
+</body>
+</html>
