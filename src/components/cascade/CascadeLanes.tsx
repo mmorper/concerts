@@ -29,7 +29,7 @@ export function CascadeLanes({ containerRef, focusedAtom }: CascadeLanesProps) {
     >
       <defs>
         <filter id="laneBlur" x="-20%" y="-5%" width="140%" height="110%">
-          <feGaussianBlur stdDeviation="8" />
+          <feGaussianBlur stdDeviation="4" />
         </filter>
       </defs>
 
@@ -44,16 +44,8 @@ export function CascadeLanes({ containerRef, focusedAtom }: CascadeLanesProps) {
             <path
               d={d}
               fill={LANE_COLORS[i]}
-              opacity={isFocused ? 0.28 : isDimmed ? 0.04 : 0.15}
+              opacity={isFocused ? 0.22 : isDimmed ? 0.03 : 0.10}
               filter="url(#laneBlur)"
-              style={{ transition: 'opacity 0.6s ease' }}
-            />
-            <path
-              d={paths.centers[i]}
-              fill="none"
-              stroke={LANE_COLORS[i]}
-              strokeWidth="1"
-              opacity={isFocused ? 0.4 : isDimmed ? 0.06 : 0.25}
               style={{ transition: 'opacity 0.6s ease' }}
             />
           </g>

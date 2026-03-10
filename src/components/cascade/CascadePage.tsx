@@ -78,20 +78,20 @@ const TIER_COLORS = {
 const TIER_ROW_STYLE: React.CSSProperties = {
   position: 'relative',
   zIndex: 2,
-  padding: '80px 24px 48px',
+  padding: '14px 24px 8px',
   transition: 'opacity 0.5s ease, filter 0.5s ease',
 }
 
 const TIER_HEADER_STYLE: React.CSSProperties = {
   gridColumn: '1 / -1',
   textAlign: 'center',
-  marginBottom: 20,
+  marginBottom: 6,
 }
 
 const TIER_FOOTER_STYLE: React.CSSProperties = {
   gridColumn: '1 / -1',
   textAlign: 'center',
-  marginTop: 20,
+  marginTop: 8,
 }
 
 const MONO: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
@@ -102,7 +102,7 @@ const SANS: React.CSSProperties = { fontFamily: "'Source Sans 3', sans-serif" }
 
 function TierLabel({ color, text }: { color: string; text: string }) {
   return (
-    <div style={{ ...MONO, fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color, marginBottom: 8 }}>
+    <div style={{ ...MONO, fontSize: 8, letterSpacing: '0.22em', textTransform: 'uppercase', color, marginBottom: 3 }}>
       {text}
     </div>
   )
@@ -110,7 +110,7 @@ function TierLabel({ color, text }: { color: string; text: string }) {
 
 function TierTitle({ color, children }: { color: string; children: React.ReactNode }) {
   return (
-    <div style={{ ...PLAYFAIR, fontSize: 26, fontWeight: 700, color, lineHeight: 1.2, marginBottom: 4 }}>
+    <div style={{ ...PLAYFAIR, fontSize: 18, fontWeight: 700, color, lineHeight: 1.2, marginBottom: 2 }}>
       {children}
     </div>
   )
@@ -118,10 +118,14 @@ function TierTitle({ color, children }: { color: string; children: React.ReactNo
 
 function TierSubtitle({ color, children }: { color: string; children: React.ReactNode }) {
   return (
-    <div style={{ ...SANS, fontSize: 14, fontWeight: 300, color, lineHeight: 1.5 }}>
+    <div style={{ ...SANS, fontSize: 10, fontWeight: 300, color, lineHeight: 1.4 }}>
       {children}
     </div>
   )
+}
+
+function DormantThread({ color: _ }: { color: string }) {
+  return <div style={{ minHeight: 52 }} />
 }
 
 function tierDimStyle(isRelevant: boolean): React.CSSProperties {
@@ -295,17 +299,33 @@ function DatePicker({
 function PendingAtom({ type }: { type: string }) {
   return (
     <div style={{
-      background: '#0d0f18',
-      border: '1px solid #161920',
+      border: '1px dashed #1e2028',
       borderRadius: 6,
-      padding: '20px',
+      padding: '12px 10px',
       textAlign: 'center',
-      opacity: 0.25,
+      opacity: 0.45,
     }}>
-      <div style={{ ...MONO, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4b5563', marginBottom: 8 }}>
+      <div style={{ ...MONO, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#374151', marginBottom: 5 }}>
         {type}
       </div>
-      <div style={{ fontSize: 17, color: '#374151' }}>· · ·</div>
+      <div style={{ ...MONO, fontSize: 8, color: '#2d3040', letterSpacing: '0.12em' }}>awaiting…</div>
+    </div>
+  )
+}
+
+function TierConnector() {
+  return (
+    <div style={{
+      textAlign: 'center',
+      padding: '1px 0',
+      position: 'relative',
+      zIndex: 2,
+      ...MONO,
+      fontSize: 9,
+      color: '#1e2130',
+      letterSpacing: '0.05em',
+    }}>
+      ↓
     </div>
   )
 }
@@ -596,8 +616,8 @@ export function CascadePage() {
 
   // ── Helpers ───────────────────────────────────────────────────────────────
   const tierAnim = (step: number, relevant = true) => ({
-    initial: { opacity: 0, y: 16 },
-    animate: { opacity: animStep >= step ? (relevant ? 1 : 0.12) : 0, y: animStep >= step ? 0 : 16 },
+    initial: { opacity: 0.25, y: 0 },
+    animate: { opacity: animStep >= step ? (relevant ? 1 : 0.12) : 0.25, y: 0 },
     transition: { duration: 0.4, ease: 'easeOut' },
   })
 
@@ -660,12 +680,12 @@ export function CascadePage() {
         {/* ── HEADER ── */}
         <motion.header
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-          style={{ textAlign: 'center', padding: '80px 40px 40px', position: 'relative', zIndex: 2 }}
+          style={{ textAlign: 'center', padding: '40px 40px 20px', position: 'relative', zIndex: 2 }}
         >
           <div style={{ ...MONO, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#6b7280', marginBottom: 24 }}>
             Morperhaus Concert Archives
           </div>
-          <h1 style={{ ...PLAYFAIR, fontSize: 48, fontWeight: 900, lineHeight: 1.1, marginBottom: 20 }}>
+          <h1 style={{ ...PLAYFAIR, fontSize: 38, fontWeight: 900, lineHeight: 1.1, marginBottom: 12 }}>
             The Data<br />
             <span style={{
               background: 'linear-gradient(135deg, #c084fc, #6366f1)',
@@ -674,7 +694,7 @@ export function CascadePage() {
               Enrichment Cascade
             </span>
           </h1>
-          <p style={{ ...SANS, fontSize: 18, color: '#94a3b8', fontWeight: 300, maxWidth: 500, margin: '0 auto', lineHeight: 1.6 }}>
+          <p style={{ ...SANS, fontSize: 13, color: '#94a3b8', fontWeight: 300, maxWidth: 480, margin: '0 auto', lineHeight: 1.6 }}>
             How three words in a spreadsheet become a living archive of four decades of live music
           </p>
         </motion.header>
@@ -751,6 +771,8 @@ export function CascadePage() {
           )}
         </div>
 
+        <TierConnector />
+
         {/* ── TIER 1 — BUILD PIPELINE ── */}
         <motion.div
           id="cascade-tier-1"
@@ -805,11 +827,13 @@ export function CascadePage() {
 
           <div style={TIER_FOOTER_STYLE}>
             <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
-              <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 32, lineHeight: 1, color: '#94a3b8' }}>19</span>
-              <span style={{ ...SANS, fontSize: 13, fontWeight: 300, color: '#64748b' }}>fields per concert</span>
+              <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#94a3b8' }}>19</span>
+              <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#64748b' }}>fields per concert</span>
             </div>
           </div>
         </motion.div>
+
+        <TierConnector />
 
         {/* ── TIER 2 — GEOGRAPHIC (venue lane wide) ── */}
         <motion.div
@@ -818,7 +842,7 @@ export function CascadePage() {
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
-            gridTemplateColumns: '0.6fr 2.4fr 0.6fr',
+            gridTemplateColumns: '1fr 1fr 1fr',
             gap: 12,
             alignItems: 'start',
             ...(isTierRelevant(2) ? {} : { filter: 'grayscale(0.5)' }),
@@ -831,56 +855,53 @@ export function CascadePage() {
           </div>
 
           {/* Artist — dormant */}
-          <div style={{ minHeight: 60 }} />
+          <DormantThread color="#8b5cf6" />
 
-          {/* Venue — active (or dormant placeholder) */}
-          <TierBand color="#6366f1">
-            {!venueMeta ? (
-              // Dormant pass-through during artist animation
-              <div style={{ textAlign: 'center', padding: '20px 0', ...MONO, fontSize: 11, color: '#6366f118' }}>
-                · · ·
+          {/* Venue — active or dormant thread */}
+          {!venueMeta ? (
+            <DormantThread color="#6366f1" />
+          ) : (
+            <TierBand color="#6366f1">
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
+                <ApiBadge name="Google Places" domain="google.com" color="#4285F4" pulsing={loadingTier === 2} />
               </div>
-            ) : (
-              <>
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
-                  <ApiBadge name="Google Places" domain="google.com" color="#4285F4" pulsing={loadingTier === 2} />
-                </div>
-                {/* Venue photo */}
-                {venueMeta.photoUrls?.thumbnail ? (
-                  <img
-                    src={venueMeta.photoUrls.thumbnail}
-                    alt={venueMeta.name}
-                    style={{ width: '100%', height: 56, objectFit: 'cover', borderRadius: 4, marginBottom: 10 }}
-                  />
-                ) : (
-                  <div style={{
-                    width: '100%', height: 56,
-                    background: 'rgba(99,102,241,0.1)',
-                    border: '1px solid rgba(99,102,241,0.2)',
-                    borderRadius: 4,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    marginBottom: 10, fontSize: 24,
-                  }}>
-                    📍
-                  </div>
-                )}
-                {/* Coordinate pill */}
+              {/* Venue photo */}
+              {venueMeta.photoUrls?.thumbnail ? (
+                <img
+                  src={venueMeta.photoUrls.thumbnail}
+                  alt={venueMeta.name}
+                  style={{ width: '100%', height: 56, objectFit: 'cover', borderRadius: 4, marginBottom: 10 }}
+                />
+              ) : (
                 <div style={{
-                  ...MONO, fontSize: 9, textAlign: 'center', color: '#a5b4fc',
-                  marginBottom: 10, background: 'rgba(99,102,241,0.1)',
-                  padding: '4px 8px', borderRadius: 3, letterSpacing: '0.02em',
+                  width: '100%', height: 56,
+                  background: 'rgba(99,102,241,0.1)',
+                  border: '1px solid rgba(99,102,241,0.2)',
+                  borderRadius: 4,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  marginBottom: 10, fontSize: 24,
                 }}>
-                  {venueMeta.location.lat.toFixed(4)}° N · {Math.abs(venueMeta.location.lng).toFixed(4)}° W
+                  📍
                 </div>
-                <PillGrid tierColor="#6366f1" visibleCount={pillCounts.t2} items={t2Pills} />
-                <CorpusScale color="#6366f1">× 77 venues · 35 cities</CorpusScale>
-              </>
-            )}
-          </TierBand>
+              )}
+              {/* Coordinate pill */}
+              <div style={{
+                ...MONO, fontSize: 9, textAlign: 'center', color: '#a5b4fc',
+                marginBottom: 10, background: 'rgba(99,102,241,0.1)',
+                padding: '4px 8px', borderRadius: 3, letterSpacing: '0.02em',
+              }}>
+                {venueMeta.location.lat.toFixed(4)}° N · {Math.abs(venueMeta.location.lng).toFixed(4)}° W
+              </div>
+              <PillGrid tierColor="#6366f1" visibleCount={pillCounts.t2} items={t2Pills} />
+              <CorpusScale color="#6366f1">× 77 venues · 35 cities</CorpusScale>
+            </TierBand>
+          )}
 
           {/* Date — dormant */}
-          <div style={{ minHeight: 60 }} />
+          <DormantThread color="#64748b" />
         </motion.div>
+
+        <TierConnector />
 
         {/* ── TIER 3 — ARTIST IDENTITY (artist lane wide) ── */}
         <motion.div
@@ -889,7 +910,7 @@ export function CascadePage() {
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
-            gridTemplateColumns: '2.4fr 0.6fr 0.6fr',
+            gridTemplateColumns: '1fr 1fr 1fr',
             gap: 12,
             alignItems: 'start',
             ...(isTierRelevant(3) ? {} : { filter: 'grayscale(0.5)' }),
@@ -901,7 +922,10 @@ export function CascadePage() {
             <TierSubtitle color={TIER_COLORS.t3.sub}>A name becomes a profile. Three services, one identity.</TierSubtitle>
           </div>
 
-          {/* Artist — active */}
+          {/* Artist — active or dormant */}
+          {!selectedArtistDisplay ? (
+            <DormantThread color="#8b5cf6" />
+          ) : (
           <TierBand color="#8b5cf6">
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 12, flexWrap: 'wrap' }}>
               <ApiBadge name="TheAudioDB" domain="theaudiodb.com" color="#1DA0C3" pulsing={loadingTier === 3} />
@@ -950,12 +974,15 @@ export function CascadePage() {
             <PillGrid tierColor="#8b5cf6" visibleCount={pillCounts.t3} items={t3Pills} />
             <CorpusScale color="#8b5cf6">× 255 artists enriched</CorpusScale>
           </TierBand>
+          )}
 
           {/* Venue — dormant */}
-          <div style={{ minHeight: 60 }} />
+          <DormantThread color="#6366f1" />
           {/* Date — dormant */}
-          <div style={{ minHeight: 60 }} />
+          <DormantThread color="#64748b" />
         </motion.div>
+
+        <TierConnector />
 
         {/* ── TIER 4 — AUDIO (artist lane wide) ── */}
         <motion.div
@@ -964,72 +991,81 @@ export function CascadePage() {
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
-            gridTemplateColumns: '2.4fr 0.6fr 0.6fr',
+            gridTemplateColumns: '1fr 1fr 1fr',
             gap: 12,
             alignItems: 'start',
             ...(isTierRelevant(4) ? {} : { filter: 'grayscale(0.5)' }),
           }}
         >
+          {/* Full-width header */}
           <div style={TIER_HEADER_STYLE}>
             <TierLabel color={TIER_COLORS.t4.label} text="Tier 4 · Audio Enrichment" />
             <TierTitle color={TIER_COLORS.t4.title}>Hear Every Artist</TierTitle>
             <TierSubtitle color={TIER_COLORS.t4.sub}>The archive gets a soundtrack.</TierSubtitle>
           </div>
 
-          {/* Artist — active */}
-          <TierBand color="#a855f7">
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
-              <ApiBadge name="Apple Music" domain="music.apple.com" color="#FC3C44" pulsing={loadingTier === 4} />
-            </div>
-            {/* Album art + label */}
-            <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12 }}>
-              {albumArt ? (
-                <img src={albumArt} alt="album" style={{ width: 48, height: 48, borderRadius: 6, objectFit: 'cover', flexShrink: 0 }} />
-              ) : (
-                <div style={{
-                  width: 48, height: 48, borderRadius: 6,
-                  background: 'rgba(168,85,247,0.18)',
-                  border: '1px solid rgba(168,85,247,0.35)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 22, flexShrink: 0,
-                }}>🎵</div>
-              )}
+          {/* Col 1 — left lane: Apple Music */}
+          <div>
+            {!selectedArtistDisplay ? (
+              <DormantThread color="#8b5cf6" />
+            ) : (
+            <TierBand color="#a855f7">
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
+                <ApiBadge name="Apple Music" domain="music.apple.com" color="#FC3C44" pulsing={loadingTier === 4} />
+              </div>
+              {/* Album art + label */}
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12 }}>
+                {albumArt ? (
+                  <img src={albumArt} alt="album" style={{ width: 48, height: 48, borderRadius: 6, objectFit: 'cover', flexShrink: 0 }} />
+                ) : (
+                  <div style={{
+                    width: 48, height: 48, borderRadius: 6,
+                    background: 'rgba(168,85,247,0.18)',
+                    border: '1px solid rgba(168,85,247,0.35)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 22, flexShrink: 0,
+                  }}>🎵</div>
+                )}
+                <div>
+                  <div style={{ ...SANS, fontSize: 10, fontWeight: 600, color: '#d8b4fe', lineHeight: 1.2 }}>Top tracks</div>
+                  <div style={{ ...SANS, fontSize: 8, fontWeight: 300, color: '#a855f770', lineHeight: 1.4 }}>
+                    {artistTracks[0]?.albumName ?? '—'}
+                  </div>
+                </div>
+              </div>
+              {/* Track list */}
               <div>
-                <div style={{ ...SANS, fontSize: 10, fontWeight: 600, color: '#d8b4fe', lineHeight: 1.2 }}>Top tracks</div>
-                <div style={{ ...SANS, fontSize: 8, fontWeight: 300, color: '#a855f770', lineHeight: 1.4 }}>
-                  {artistTracks[0]?.albumName ?? '—'}
-                </div>
+                {artistTracks.slice(0, pillCounts.t4 ?? 0).map((t, i) => (
+                  <div key={t.name} style={{
+                    display: 'flex', alignItems: 'center', gap: 8, padding: '5px 0',
+                    borderBottom: '1px solid rgba(168,85,247,0.1)',
+                  }}>
+                    <span style={{ ...MONO, fontSize: 8, color: '#a855f740', width: 16, textAlign: 'right', flexShrink: 0 }}>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span style={{ ...MONO, fontSize: 9, color: '#d8b4fe', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {t.name}
+                    </span>
+                  </div>
+                ))}
               </div>
-            </div>
-            {/* Track list */}
-            <div>
-              {artistTracks.slice(0, pillCounts.t4 ?? 0).map((t, i) => (
-                <div key={t.name} style={{
-                  display: 'flex', alignItems: 'center', gap: 8, padding: '5px 0',
-                  borderBottom: '1px solid rgba(168,85,247,0.1)',
-                }}>
-                  <span style={{ ...MONO, fontSize: 8, color: '#a855f740', width: 16, textAlign: 'right', flexShrink: 0 }}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span style={{ ...MONO, fontSize: 9, color: '#d8b4fe', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {t.name}
-                  </span>
+              {artistTracks.length === 0 && animStep >= 5 && (
+                <div style={{ ...MONO, fontSize: 9, color: '#a855f740', textAlign: 'center', padding: '8px 0' }}>
+                  no audio data
                 </div>
-              ))}
-            </div>
-            {artistTracks.length === 0 && animStep >= 5 && (
-              <div style={{ ...MONO, fontSize: 9, color: '#a855f740', textAlign: 'center', padding: '8px 0' }}>
-                no audio data
-              </div>
+              )}
+              <CorpusScale color="#a855f7">× 255 artists · 1,275 tracks</CorpusScale>
+            </TierBand>
             )}
-            <CorpusScale color="#a855f7">× 255 artists · 1,275 tracks</CorpusScale>
-          </TierBand>
+          </div>
 
-          {/* Venue — dormant */}
-          <div style={{ minHeight: 60 }} />
-          {/* Date — dormant */}
-          <div style={{ minHeight: 60 }} />
+          {/* Col 2 — dormant */}
+          <DormantThread color="#6366f1" />
+          {/* Col 3 — dormant */}
+          <DormantThread color="#64748b" />
         </motion.div>
+
+        <TierConnector />
 
         {/* ── TIER 5 — PERFORMANCE (all lanes reconverge) ── */}
         <motion.div
@@ -1038,66 +1074,25 @@ export function CascadePage() {
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
+            gridTemplateColumns: '2fr 1fr',
             gap: 16,
             alignItems: 'start',
             ...(isTierRelevant(5) ? {} : { filter: 'grayscale(0.5)' }),
           }}
         >
+          {/* Full-width header */}
           <div style={TIER_HEADER_STYLE}>
             <TierLabel color={TIER_COLORS.t5.label} text="Tier 5 · Performance Enrichment" />
             <TierTitle color={TIER_COLORS.t5.title}>Song by Song, Night by Night</TierTitle>
             <TierSubtitle color={TIER_COLORS.t5.sub}>All three atoms reconverge to find one specific night.</TierSubtitle>
-            {/* Thread convergence visual */}
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-              <svg width="220" height="56" viewBox="0 0 220 56" fill="none">
-                <line x1="55" y1="0" x2="110" y2="44" stroke="#8b5cf6" strokeWidth="1.5" />
-                <line x1="110" y1="0" x2="110" y2="44" stroke="#6366f1" strokeWidth="1.5" />
-                <line x1="165" y1="0" x2="110" y2="44" stroke="#64748b" strokeWidth="1.5" />
-                <text x="55" y="10" textAnchor="middle" fill="#8b5cf6" fontSize="8" fontFamily="'JetBrains Mono', monospace" letterSpacing="0.1em">artist</text>
-                <text x="110" y="10" textAnchor="middle" fill="#6366f1" fontSize="8" fontFamily="'JetBrains Mono', monospace" letterSpacing="0.1em">venue</text>
-                <text x="165" y="10" textAnchor="middle" fill="#64748b" fontSize="8" fontFamily="'JetBrains Mono', monospace" letterSpacing="0.1em">date</text>
-                <circle cx="110" cy="48" r="5" fill="#7c3aed" opacity="0.9" />
-                <circle cx="110" cy="48" r="9" stroke="#7c3aed" strokeWidth="1" opacity="0.25" />
-              </svg>
-            </div>
           </div>
 
-          {/* Spans all 3 columns */}
-          <div style={{ gridColumn: '1 / -1' }}>
-            <div style={{ maxWidth: 540, margin: '0 auto' }}>
-              {/* Equation header */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, flexWrap: 'wrap', marginBottom: 16 }}>
-                {[
-                  { label: 'artist', value: selectedArtistDisplay ?? '—', color: '#8b5cf6' },
-                  { label: '+', value: '', color: '#4b5563' },
-                  { label: 'venue', value: selectedVenueDisplay ?? '—', color: '#6366f1' },
-                  { label: '+', value: '', color: '#4b5563' },
-                  { label: 'date', value: selectedConcert?.date ?? '—', color: '#64748b' },
-                  { label: '=', value: '', color: '#4b5563' },
-                  { label: '', value: 'one specific night', color: '#c084fc' },
-                ].map((item, i) => (
-                  item.label === '+' || item.label === '=' ? (
-                    <span key={i} style={{ ...MONO, fontSize: 12, color: item.color }}>{item.label}</span>
-                  ) : (
-                    <div key={i} style={{
-                      ...MONO,
-                      fontSize: item.label === '' ? 11 : 10,
-                      fontWeight: item.label === '' ? 700 : 400,
-                      padding: '4px 10px',
-                      borderRadius: 4,
-                      background: `${item.color}12`,
-                      border: `1px solid ${item.color}35`,
-                      color: item.color,
-                      textAlign: 'center',
-                    }}>
-                      {item.label && <span style={{ fontSize: 7, display: 'block', opacity: 0.5, letterSpacing: '0.1em', marginBottom: 1 }}>{item.label}</span>}
-                      {item.value}
-                    </div>
-                  )
-                ))}
-              </div>
-
+          {/* Col 1 (2fr) — left+center lanes: content */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {animStep < 6 ? (
+            <DormantThread color="#8b5cf6" />
+          ) : (
+          <div>
               <FlowArrow label="query" />
 
               {/* Side-by-side peer gateways */}
@@ -1156,19 +1151,26 @@ export function CascadePage() {
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
-          <div style={TIER_FOOTER_STYLE}>
-            <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
-              <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 32, lineHeight: 1, color: '#e9d5ff' }}>~3,240</span>
-              <span style={{ ...SANS, fontSize: 13, fontWeight: 300, color: '#d8b4fe' }}>songs across 180 concerts</span>
+          {animStep >= 6 && (
+            <div style={TIER_FOOTER_STYLE}>
+              <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
+                <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#e9d5ff' }}>~3,240</span>
+                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#d8b4fe' }}>songs across 180 concerts</span>
+              </div>
             </div>
-          </div>
+          )}
+          </div>{/* end 2fr col */}
+
+          {/* Col 2 (1fr) — dormant right */}
+          <DormantThread color="#64748b" />
         </motion.div>
 
-        {/* ── ASSEMBLY BRIDGE ── */}
+        {/* ── ASSEMBLY BRIDGE — only visible once complete ── */}
+        {flowPhase === 'complete' && (
         <motion.div
-          {...tierAnim(6)}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, ease: 'easeOut' }}
           style={{ textAlign: 'center', padding: '8px 16px 0', position: 'relative', zIndex: 2 }}
         >
           <div style={{ display: 'flex', gap: 6, justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', marginBottom: 10 }}>
@@ -1204,6 +1206,7 @@ export function CascadePage() {
             <path d="M-3 16 L1 22 L5 16" stroke="rgba(139,92,246,0.4)" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </motion.div>
+        )}
 
         {/* ── TIER 6 — THE OUTPUT ── */}
         {(() => {
@@ -1312,7 +1315,9 @@ export function CascadePage() {
           return (
             <motion.div
               id="cascade-tier-6"
-              {...tierAnim(1, isTierRelevant(6))}
+              initial={{ opacity: 0.6 }}
+              animate={{ opacity: isTierRelevant(6) ? 1 : 0.12 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
               style={{
                 ...TIER_ROW_STYLE,
                 display: 'grid',
@@ -1327,8 +1332,8 @@ export function CascadePage() {
                 <TierSubtitle color="#c4b5fd">Here's what three words actually built.</TierSubtitle>
               </div>
 
-              <div style={{ maxWidth: 640, margin: '0 auto', width: '100%' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+              <div style={{ maxWidth: 780, margin: '0 auto', width: '100%' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                   {SCENES.map((scene, sceneIndex) => {
                     const isActive = focusedScene === scene.id
                     const isUnlocked = scenesUnlocked > sceneIndex
@@ -1336,8 +1341,8 @@ export function CascadePage() {
                       <motion.div
                         key={scene.id}
                         animate={{
-                          opacity: isUnlocked ? 1 : 0.15,
-                          filter: isUnlocked ? 'grayscale(0)' : 'grayscale(1)',
+                          opacity: isUnlocked ? 1 : 0.3,
+                          filter: isUnlocked ? 'grayscale(0)' : 'grayscale(0.7)',
                         }}
                         transition={{ duration: 0.5, ease: 'easeOut' }}
                       >
@@ -1348,7 +1353,7 @@ export function CascadePage() {
                             background: scene.bg,
                             border: `1.5px solid ${isActive ? scene.activeBorderColor : scene.borderColor}`,
                             borderRadius: 10,
-                            padding: '14px 12px 10px',
+                            padding: '18px 16px 14px',
                             cursor: isUnlocked ? 'pointer' : 'default',
                             pointerEvents: isUnlocked ? 'auto' : 'none',
                             textAlign: 'left',
@@ -1360,21 +1365,21 @@ export function CascadePage() {
                             boxShadow: isActive ? '0 0 0 2px rgba(139,92,246,0.25)' : 'none',
                           }}
                         >
-                          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 44 }}>
+                          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 56 }}>
                             {scene.icon}
                           </div>
                           <div>
-                            <div style={{ ...SANS, fontSize: 12, fontWeight: 600, color: scene.labelColor, lineHeight: 1.2 }}>
+                            <div style={{ ...SANS, fontSize: 13, fontWeight: 600, color: scene.labelColor, lineHeight: 1.2 }}>
                               {scene.name}
                             </div>
-                            <div style={{ ...SANS, fontSize: 10, fontWeight: 300, color: scene.subtitleColor, marginTop: 2 }}>
+                            <div style={{ ...SANS, fontSize: 11, fontWeight: 300, color: scene.subtitleColor, marginTop: 3 }}>
                               {scene.subtitle}
                             </div>
                           </div>
-                          <div style={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+                          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
                             {scene.tiers.map(t => (
                               <span key={t.label} style={{
-                                ...MONO, fontSize: 8, padding: '2px 5px', borderRadius: 3,
+                                ...MONO, fontSize: 9, padding: '2px 6px', borderRadius: 3,
                                 background: `${t.color}20`, border: `1px solid ${t.color}44`,
                                 color: t.color, letterSpacing: '0.05em',
                               }}>
@@ -1450,7 +1455,7 @@ export function CascadePage() {
         {/* ── FOOTER ── */}
         <motion.footer
           {...tierAnim(7)}
-          style={{ textAlign: 'center', padding: '80px 40px 100px', position: 'relative', zIndex: 2 }}
+          style={{ textAlign: 'center', padding: '36px 40px 60px', position: 'relative', zIndex: 2 }}
         >
           {/* Radial glow */}
           <div style={{
@@ -1460,7 +1465,7 @@ export function CascadePage() {
           }} />
 
           {/* Punchline stats */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 40, marginBottom: 40, flexWrap: 'wrap', position: 'relative' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 28, marginBottom: 28, flexWrap: 'wrap', position: 'relative' }}>
             {[
               { num: '540', label: 'inputs' },
               { num: '→', label: '' },
@@ -1471,17 +1476,17 @@ export function CascadePage() {
               <div key={i} style={{ textAlign: 'center' }}>
                 <div style={{
                   ...PLAYFAIR,
-                  fontSize: stat.num === '→' || stat.num === '=' ? 36 : 56,
+                  fontSize: stat.num === '→' || stat.num === '=' ? 28 : 42,
                   fontWeight: 900, lineHeight: 1,
                   background: 'linear-gradient(135deg, #c084fc, #6366f1, #ec4899)',
                   WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                   display: 'flex', alignItems: 'center',
-                  height: stat.num === '→' || stat.num === '=' ? 56 : undefined,
+                  height: stat.num === '→' || stat.num === '=' ? 42 : undefined,
                 }}>
                   {stat.num}
                 </div>
                 {stat.label && (
-                  <div style={{ ...SANS, fontSize: 14, color: '#6b7280', marginTop: 4, fontWeight: 300 }}>
+                  <div style={{ ...SANS, fontSize: 12, color: '#6b7280', marginTop: 3, fontWeight: 300 }}>
                     {stat.label}
                   </div>
                 )}
@@ -1490,8 +1495,8 @@ export function CascadePage() {
           </div>
 
           <p style={{
-            ...PLAYFAIR, fontSize: 24, fontWeight: 400, fontStyle: 'italic',
-            color: '#c4b5fd', marginBottom: 36, lineHeight: 1.4, position: 'relative',
+            ...PLAYFAIR, fontSize: 18, fontWeight: 400, fontStyle: 'italic',
+            color: '#c4b5fd', marginBottom: 28, lineHeight: 1.4, position: 'relative',
           }}>
             7 APIs. 4 scenes. 42 years.<br />Three words started it all.
           </p>

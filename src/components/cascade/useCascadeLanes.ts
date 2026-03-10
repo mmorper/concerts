@@ -3,15 +3,7 @@ import { useEffect, useCallback, useState, type RefObject } from 'react'
 export const LANE_COLORS = ['#8b5cf6', '#6366f1', '#64748b'] // artist, venue, date
 
 // Width ratios [artist, venue, date] per tier row ID
-export const TIER_WIDTHS: Record<string, [number, number, number]> = {
-  'cascade-tier-0': [1, 1, 1],
-  'cascade-tier-1': [1, 1, 1],
-  'cascade-tier-2': [0.15, 2.5, 0.15],
-  'cascade-tier-3': [2.5, 0.15, 0.15],
-  'cascade-tier-4': [2.5, 0.15, 0.15],
-  'cascade-tier-5': [1, 1, 1],
-  'cascade-tier-6': [1, 1, 1],
-}
+export const TIER_WIDTHS: Record<string, [number, number, number]> = {}
 
 const TIER_IDS = Object.keys(TIER_WIDTHS)
 
@@ -99,7 +91,11 @@ export function useCascadeLanes(containerRef: RefObject<HTMLElement | null>) {
   const draw = useCallback(() => {
     const container = containerRef.current
     if (!container) return
-    setSvgSize({ w: container.offsetWidth, h: container.scrollHeight })
+    const tier5El = document.getElementById('cascade-tier-5')
+    const svgH = tier5El
+      ? tier5El.getBoundingClientRect().bottom - container.getBoundingClientRect().top
+      : container.offsetHeight
+    setSvgSize({ w: container.offsetWidth, h: svgH })
     setPaths(computePaths(container))
   }, [containerRef])
 
