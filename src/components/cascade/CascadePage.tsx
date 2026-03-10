@@ -314,8 +314,7 @@ function PendingAtom({ type }: { type: string }) {
 
 export function CascadePage() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const { focusedAtom, focusAtom, resetFocus, isTierRelevant } = useCascadeFocus()
-  const [activeScene, setActiveScene] = useState<string | null>(null)
+  const { focusedAtom, focusAtom, focusedScene, focusScene, resetFocus, isTierRelevant } = useCascadeFocus()
 
   // ── Data loading ──────────────────────────────────────────────────────────
   const [concerts, setConcerts] = useState<Concert[]>([])
@@ -582,7 +581,7 @@ export function CascadePage() {
     setVenueOptions([]); setDateOptions([])
     setArtistMeta(null); setVenueMeta(null)
     setArtistTracks([]); setSetlistSongs([]); setTourName(null)
-    setActiveScene(null); setArtistSearch('')
+    resetFocus(); setArtistSearch('')
   }
 
   // ── Body style ────────────────────────────────────────────────────────────
@@ -596,9 +595,9 @@ export function CascadePage() {
   }, [])
 
   // ── Helpers ───────────────────────────────────────────────────────────────
-  const tierAnim = (step: number) => ({
+  const tierAnim = (step: number, relevant = true) => ({
     initial: { opacity: 0, y: 16 },
-    animate: { opacity: animStep >= step ? 1 : 0, y: animStep >= step ? 0 : 16 },
+    animate: { opacity: animStep >= step ? (relevant ? 1 : 0.12) : 0, y: animStep >= step ? 0 : 16 },
     transition: { duration: 0.4, ease: 'easeOut' },
   })
 
@@ -755,14 +754,14 @@ export function CascadePage() {
         {/* ── TIER 1 — BUILD PIPELINE ── */}
         <motion.div
           id="cascade-tier-1"
-          {...tierAnim(2)}
+          {...tierAnim(2, isTierRelevant(1))}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
             gridTemplateColumns: '1fr 1fr 1fr',
             gap: 16,
             alignItems: 'start',
-            ...tierDimStyle(isTierRelevant(1)),
+            ...(isTierRelevant(1) ? {} : { filter: 'grayscale(0.5)' }),
           }}
         >
           <div style={TIER_HEADER_STYLE}>
@@ -815,14 +814,14 @@ export function CascadePage() {
         {/* ── TIER 2 — GEOGRAPHIC (venue lane wide) ── */}
         <motion.div
           id="cascade-tier-2"
-          {...tierAnim(3)}
+          {...tierAnim(3, isTierRelevant(2))}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
             gridTemplateColumns: '0.6fr 2.4fr 0.6fr',
             gap: 12,
             alignItems: 'start',
-            ...tierDimStyle(isTierRelevant(2)),
+            ...(isTierRelevant(2) ? {} : { filter: 'grayscale(0.5)' }),
           }}
         >
           <div style={TIER_HEADER_STYLE}>
@@ -886,14 +885,14 @@ export function CascadePage() {
         {/* ── TIER 3 — ARTIST IDENTITY (artist lane wide) ── */}
         <motion.div
           id="cascade-tier-3"
-          {...tierAnim(4)}
+          {...tierAnim(4, isTierRelevant(3))}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
             gridTemplateColumns: '2.4fr 0.6fr 0.6fr',
             gap: 12,
             alignItems: 'start',
-            ...tierDimStyle(isTierRelevant(3)),
+            ...(isTierRelevant(3) ? {} : { filter: 'grayscale(0.5)' }),
           }}
         >
           <div style={TIER_HEADER_STYLE}>
@@ -961,14 +960,14 @@ export function CascadePage() {
         {/* ── TIER 4 — AUDIO (artist lane wide) ── */}
         <motion.div
           id="cascade-tier-4"
-          {...tierAnim(5)}
+          {...tierAnim(5, isTierRelevant(4))}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
             gridTemplateColumns: '2.4fr 0.6fr 0.6fr',
             gap: 12,
             alignItems: 'start',
-            ...tierDimStyle(isTierRelevant(4)),
+            ...(isTierRelevant(4) ? {} : { filter: 'grayscale(0.5)' }),
           }}
         >
           <div style={TIER_HEADER_STYLE}>
@@ -1035,14 +1034,14 @@ export function CascadePage() {
         {/* ── TIER 5 — PERFORMANCE (all lanes reconverge) ── */}
         <motion.div
           id="cascade-tier-5"
-          {...tierAnim(6)}
+          {...tierAnim(6, isTierRelevant(5))}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
             gridTemplateColumns: '1fr 1fr 1fr',
             gap: 16,
             alignItems: 'start',
-            ...tierDimStyle(isTierRelevant(5)),
+            ...(isTierRelevant(5) ? {} : { filter: 'grayscale(0.5)' }),
           }}
         >
           <div style={TIER_HEADER_STYLE}>
@@ -1313,13 +1312,13 @@ export function CascadePage() {
           return (
             <motion.div
               id="cascade-tier-6"
-              {...tierAnim(1)}
+              {...tierAnim(1, isTierRelevant(6))}
               style={{
                 ...TIER_ROW_STYLE,
                 display: 'grid',
                 gridTemplateColumns: '1fr',
                 gap: 16,
-                ...tierDimStyle(isTierRelevant(6)),
+                ...(isTierRelevant(6) ? {} : { filter: 'grayscale(0.5)' }),
               }}
             >
               <div style={{ textAlign: 'center', marginBottom: 24 }}>
@@ -1331,7 +1330,7 @@ export function CascadePage() {
               <div style={{ maxWidth: 640, margin: '0 auto', width: '100%' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                   {SCENES.map((scene, sceneIndex) => {
-                    const isActive = activeScene === scene.id
+                    const isActive = focusedScene === scene.id
                     const isUnlocked = scenesUnlocked > sceneIndex
                     return (
                       <motion.div
@@ -1343,7 +1342,7 @@ export function CascadePage() {
                         transition={{ duration: 0.5, ease: 'easeOut' }}
                       >
                         <button
-                          onClick={() => isUnlocked && setActiveScene(isActive ? null : scene.id)}
+                          onClick={() => isUnlocked && focusScene(scene.id)}
                           style={{
                             width: '100%',
                             background: scene.bg,
@@ -1516,7 +1515,7 @@ export function CascadePage() {
         </motion.footer>
 
         {/* ── FOCUS RESET PILL ── */}
-        {focusedAtom && (
+        {(focusedAtom || focusedScene) && (
           <motion.button
             initial={{ opacity: 0, y: 80 }}
             animate={{ opacity: 1, y: 0 }}
