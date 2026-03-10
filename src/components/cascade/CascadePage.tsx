@@ -1,66 +1,68 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CascadeLanes } from './CascadeLanes'
 import { CascadeAtom } from './CascadeAtom'
 import { ServiceGatewayPeer, CodeTransform, FlowArrow, API_BRANDS, PillGrid } from './CascadeApiEngine'
 import { useCascadeFocus } from './useCascadeFocus'
 
-// ─── Hardcoded demo data: Depeche Mode / Kia Forum / 2023-03-28 (concert-158) ──
+// ─── Data types ───────────────────────────────────────────────────────────────
 
-const DEMO = {
-  date: '2023-03-28',
-  venue: 'Kia Forum',
-  artist: 'Depeche Mode',
-  year: 2023,
-  month: 3,
-  day: 28,
-  dayOfWeek: 'Tuesday',
-  decade: '2020s',
-  venueNormalized: 'kia-forum',
-  headlinerNormalized: 'depeche-mode',
-  city: 'Inglewood',
-  state: 'California',
-  cityState: 'Inglewood, California',
-  concertId: 'concert-158',
-  lat: 33.9580853,
-  lng: -118.3420621,
-  tour: 'Memento Mori',
-  opener: 'Kelly Lee Owens',
-  setlist: [
-    'My Cosmos Is Mine',
-    'Wagging Tongue',
-    'Walking in My Shoes',
-    "It's No Good",
-    'Policy of Truth',
-    'In Your Room',
-    'Everything Counts',
-    'Precious',
-    'My Favourite Stranger',
-    'Home',
-    'Dressed in Black',
-    'Ghosts Again',
-    'I Feel You',
-    'A Pain That I\'m Used To',
-    'World in My Eyes',
-    'Black Celebration',
-    'Stripped',
-    'John the Revelator',
-    'Enjoy the Silence',
-    'Condemnation',
-    'Just Can\'t Get Enough',
-    'Never Let Me Down Again',
-    'Personal Jesus',
-  ],
-  topTracks: [
-    { name: 'Enjoy the Silence', album: 'Violator (Deluxe)' },
-    { name: 'Personal Jesus', album: 'Violator (Deluxe)' },
-    { name: 'Policy of Truth', album: 'Violator (Deluxe)' },
-    { name: "Just Can't Get Enough", album: 'Speak and Spell (Deluxe)' },
-    { name: 'Universal Soldier', album: 'HELP(2)' },
-  ],
+interface Concert {
+  id: string
+  date: string
+  headliner: string
+  headlinerNormalized: string
+  openers: string[]
+  venue: string
+  venueNormalized: string
+  city: string
+  state: string
+  cityState: string
+  year: number
+  month: number
+  day: number
+  dayOfWeek: string
+  decade: string
+  location: { lat: number; lng: number }
 }
 
-// ─── Tier color palette ──────────────────────────────────────────────────────
+interface ArtistMeta {
+  name?: string
+  image?: string
+  bio?: string
+  genres?: string[]
+  formed?: string
+  country?: string
+}
+
+interface VenueMeta {
+  name: string
+  normalizedName: string
+  city: string
+  state: string
+  cityState: string
+  location: { lat: number; lng: number }
+  photoUrls?: { thumbnail?: string; medium?: string }
+  places?: { id?: string; formattedAddress?: string; websiteUri?: string }[]
+}
+
+interface Track {
+  name: string
+  albumName?: string
+  albumArt?: string
+  durationMs?: number
+}
+
+type FlowPhase =
+  | 'idle'
+  | 'artist-hydrating'
+  | 'venue-pending'
+  | 'venue-hydrating'
+  | 'date-pending'
+  | 'convergence'
+  | 'complete'
+
+// ─── Tier color palette ───────────────────────────────────────────────────────
 
 const TIER_COLORS = {
   t0: { label: '#4b5563', title: '#9ca3af', sub: '#6b7280' },
@@ -71,7 +73,7 @@ const TIER_COLORS = {
   t5: { label: '#c084fc', title: '#ffffff', sub: '#e9d5ff', accent: '#c084fc' },
 }
 
-// ─── Shared styles ───────────────────────────────────────────────────────────
+// ─── Shared styles ────────────────────────────────────────────────────────────
 
 const TIER_ROW_STYLE: React.CSSProperties = {
   position: 'relative',
@@ -95,6 +97,8 @@ const TIER_FOOTER_STYLE: React.CSSProperties = {
 const MONO: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
 const PLAYFAIR: React.CSSProperties = { fontFamily: "'Playfair Display', serif" }
 const SANS: React.CSSProperties = { fontFamily: "'Source Sans 3', sans-serif" }
+
+// ─── Helper components ────────────────────────────────────────────────────────
 
 function TierLabel({ color, text }: { color: string; text: string }) {
   return (
@@ -120,12 +124,9 @@ function TierSubtitle({ color, children }: { color: string; children: React.Reac
   )
 }
 
-
 function tierDimStyle(isRelevant: boolean): React.CSSProperties {
   return isRelevant ? {} : { opacity: 0.12, filter: 'grayscale(0.5)' }
 }
-
-// ─── Tier signature helpers ───────────────────────────────────────────────────
 
 function TierBand({ color, children }: { color: string; children: React.ReactNode }) {
   return (
@@ -162,142 +163,429 @@ function CorpusScale({ color, children }: { color: string; children: React.React
   )
 }
 
-// ─── Main Page ───────────────────────────────────────────────────────────────
+// ─── T0 sub-components (picker + pending) ─────────────────────────────────────
+
+const PICKER_BTN: React.CSSProperties = {
+  ...MONO,
+  fontSize: 10,
+  background: 'none',
+  border: 'none',
+  padding: '5px 8px',
+  cursor: 'pointer',
+  textAlign: 'left',
+  borderRadius: 3,
+  width: '100%',
+  letterSpacing: '0.02em',
+  transition: 'background 0.1s',
+}
+
+function ArtistPicker({
+  artists,
+  search,
+  onSearchChange,
+  onSelect,
+}: {
+  artists: { norm: string; display: string }[]
+  search: string
+  onSearchChange: (v: string) => void
+  onSelect: (norm: string, display: string) => void
+}) {
+  return (
+    <div>
+      <div style={{ ...MONO, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4b5563', marginBottom: 8, textAlign: 'center' }}>
+        artist
+      </div>
+      <input
+        type="text"
+        placeholder="search artists…"
+        value={search}
+        onChange={e => onSearchChange(e.target.value)}
+        style={{
+          width: '100%',
+          ...MONO,
+          fontSize: 10,
+          background: '#0d0f18',
+          border: '1px solid #2d3040',
+          borderRadius: 4,
+          padding: '6px 10px',
+          color: '#9ca3af',
+          marginBottom: 4,
+          outline: 'none',
+          boxSizing: 'border-box',
+        }}
+      />
+      <div style={{ maxHeight: 168, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 1 }}>
+        {artists.map(a => (
+          <button
+            key={a.norm}
+            onClick={() => onSelect(a.norm, a.display)}
+            style={{ ...PICKER_BTN, color: '#9ca3af' }}
+            onMouseEnter={e => (e.currentTarget.style.background = '#1a1e2a')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'none')}
+          >
+            {a.display}
+          </button>
+        ))}
+        {artists.length === 0 && (
+          <div style={{ ...MONO, fontSize: 9, color: '#374151', textAlign: 'center', padding: '12px 0' }}>no match</div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function VenuePicker({
+  options,
+  onSelect,
+}: {
+  options: { norm: string; display: string }[]
+  onSelect: (norm: string) => void
+}) {
+  return (
+    <div>
+      <div style={{ ...MONO, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4b5563', marginBottom: 8, textAlign: 'center' }}>
+        venue
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        {options.map(o => (
+          <button
+            key={o.norm}
+            onClick={() => onSelect(o.norm)}
+            style={{ ...PICKER_BTN, color: '#a5b4fc' }}
+            onMouseEnter={e => (e.currentTarget.style.background = '#1a1e2a')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'none')}
+          >
+            {o.display}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function DatePicker({
+  options,
+  onSelect,
+}: {
+  options: Concert[]
+  onSelect: (concert: Concert) => void
+}) {
+  return (
+    <div>
+      <div style={{ ...MONO, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4b5563', marginBottom: 8, textAlign: 'center' }}>
+        date
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        {options.map(c => (
+          <button
+            key={c.id}
+            onClick={() => onSelect(c)}
+            style={{ ...PICKER_BTN, color: '#94a3b8' }}
+            onMouseEnter={e => (e.currentTarget.style.background = '#1a1e2a')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'none')}
+          >
+            {c.date}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function PendingAtom({ type }: { type: string }) {
+  return (
+    <div style={{
+      background: '#0d0f18',
+      border: '1px solid #161920',
+      borderRadius: 6,
+      padding: '20px',
+      textAlign: 'center',
+      opacity: 0.25,
+    }}>
+      <div style={{ ...MONO, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4b5563', marginBottom: 8 }}>
+        {type}
+      </div>
+      <div style={{ fontSize: 17, color: '#374151' }}>· · ·</div>
+    </div>
+  )
+}
+
+// ─── Main Page ────────────────────────────────────────────────────────────────
 
 export function CascadePage() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { focusedAtom, focusAtom, resetFocus, isTierRelevant } = useCascadeFocus()
   const [activeScene, setActiveScene] = useState<string | null>(null)
 
-  // ── Animation state ──────────────────────────────────────────────────────
+  // ── Data loading ──────────────────────────────────────────────────────────
+  const [concerts, setConcerts] = useState<Concert[]>([])
+  const artistsMetaRef = useRef<Record<string, ArtistMeta>>({})
+  const venuesMetaRef = useRef<Record<string, VenueMeta>>({})
+  const topTracksRef = useRef<Record<string, { tracks: Track[] }>>({})
+  const setlistsByConcertId = useRef<Record<string, any>>({})
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/data/concerts.json').then(r => r.json()),
+      fetch('/data/artists-metadata.json').then(r => r.json()),
+      fetch('/data/venues-metadata.json').then(r => r.json()),
+      fetch('/data/artists-top-tracks.json').then(r => r.json()),
+      fetch('/data/setlists-cache.json').then(r => r.json()),
+    ]).then(([c, am, vm, tt, sl]) => {
+      setConcerts(c.concerts ?? [])
+      artistsMetaRef.current = am
+      venuesMetaRef.current = vm
+      topTracksRef.current = tt
+      const slMap: Record<string, any> = {}
+      Object.values(sl.entries ?? {}).forEach((entry: any) => {
+        if (entry.concertId) slMap[entry.concertId] = entry
+      })
+      setlistsByConcertId.current = slMap
+    })
+  }, [])
+
+  // ── Data graph ────────────────────────────────────────────────────────────
+  const { artistToVenues, artistVenueToConcerts, artistList } = useMemo(() => {
+    const artistToVenues = new Map<string, Set<string>>()
+    const artistVenueToConcerts = new Map<string, Concert[]>()
+    const seen = new Set<string>()
+    const artistList: { norm: string; display: string }[] = []
+
+    concerts.forEach(c => {
+      if (!artistToVenues.has(c.headlinerNormalized))
+        artistToVenues.set(c.headlinerNormalized, new Set())
+      artistToVenues.get(c.headlinerNormalized)!.add(c.venueNormalized)
+
+      const key = `${c.headlinerNormalized}::${c.venueNormalized}`
+      if (!artistVenueToConcerts.has(key)) artistVenueToConcerts.set(key, [])
+      artistVenueToConcerts.get(key)!.push(c)
+
+      if (!seen.has(c.headlinerNormalized)) {
+        seen.add(c.headlinerNormalized)
+        artistList.push({ norm: c.headlinerNormalized, display: c.headliner })
+      }
+    })
+
+    artistList.sort((a, b) => a.display.localeCompare(b.display))
+    return { artistToVenues, artistVenueToConcerts, artistList }
+  }, [concerts])
+
+  // ── Flow state ────────────────────────────────────────────────────────────
+  const [flowPhase, setFlowPhase] = useState<FlowPhase>('idle')
+  const [selectedArtistNorm, setSelectedArtistNorm] = useState<string | null>(null)
+  const [selectedArtistDisplay, setSelectedArtistDisplay] = useState<string | null>(null)
+  const [selectedVenueNorm, setSelectedVenueNorm] = useState<string | null>(null)
+  const [selectedVenueDisplay, setSelectedVenueDisplay] = useState<string | null>(null)
+  const [selectedConcert, setSelectedConcert] = useState<Concert | null>(null)
+  const [venueOptions, setVenueOptions] = useState<{ norm: string; display: string }[]>([])
+  const [dateOptions, setDateOptions] = useState<Concert[]>([])
+  const [artistSearch, setArtistSearch] = useState('')
+
+  // ── Rich data state ───────────────────────────────────────────────────────
+  const [artistMeta, setArtistMeta] = useState<ArtistMeta | null>(null)
+  const [venueMeta, setVenueMeta] = useState<VenueMeta | null>(null)
+  const [artistTracks, setArtistTracks] = useState<Track[]>([])
+  const [setlistSongs, setSetlistSongs] = useState<string[]>([])
+  const [tourName, setTourName] = useState<string | null>(null)
+
+  // ── Animation state ───────────────────────────────────────────────────────
   const genRef = useRef(0)
-  const [animStep, setAnimStep] = useState(0)        // 0=idle, 1=T0 shown, …, 7=fully done
+  const [animStep, setAnimStep] = useState(0)
   const [loadingTier, setLoadingTier] = useState<number | null>(null)
   const [pillCounts, setPillCounts] = useState<Partial<Record<string, number>>>({})
   const [setlistLines, setSetlistLines] = useState(0)
-  const [scenesUnlocked, setScenesUnlocked] = useState(0)  // 0–4
+  const [scenesUnlocked, setScenesUnlocked] = useState(0)
 
-  const startAnimation = () => {
-    const gen = ++genRef.current
+  // ── Animation phase 1: artist tiers (T0 → T1a → T2 dormant → T3 → T4) ──
+
+  const runArtistAnim = async (gen: number) => {
+    const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
+    const alive = () => genRef.current === gen
+
+    setAnimStep(0); setLoadingTier(null); setPillCounts({}); setSetlistLines(0); setScenesUnlocked(0)
+    await delay(100); if (!alive()) return
+
+    setAnimStep(1) // T0 seeds visible
+    await delay(600); if (!alive()) return
+
+    setAnimStep(2) // T1 visible
+    await delay(200); if (!alive()) return
+    for (let i = 1; i <= 3; i++) {
+      await delay(80); if (!alive()) return
+      setPillCounts(prev => ({ ...prev, t1a: i }))
+    }
+    await delay(300); if (!alive()) return
+
+    setAnimStep(3) // T2 visible (dormant — no venue data yet)
+    await delay(500); if (!alive()) return
+
+    setLoadingTier(3); setAnimStep(4) // T3 visible
+    await delay(600); if (!alive()) return
+    setLoadingTier(null)
+    for (let i = 1; i <= 7; i++) {
+      await delay(80); if (!alive()) return
+      setPillCounts(prev => ({ ...prev, t3: i }))
+    }
+    await delay(300); if (!alive()) return
+
+    setLoadingTier(4); setAnimStep(5) // T4 visible
+    await delay(600); if (!alive()) return
+    setLoadingTier(null)
+    for (let i = 1; i <= 3; i++) {
+      await delay(80); if (!alive()) return
+      setPillCounts(prev => ({ ...prev, t4: i }))
+    }
+    await delay(400); if (!alive()) return
+  }
+
+  // ── Animation phase 2: venue tier (T2 activates + T1v pills) ─────────────
+
+  const runVenueAnim = async (gen: number) => {
+    const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
+    const alive = () => genRef.current === gen
+
+    setLoadingTier(2)
+    await delay(600); if (!alive()) return
+    setLoadingTier(null)
+    for (let i = 1; i <= 6; i++) {
+      await delay(80); if (!alive()) return
+      setPillCounts(prev => ({ ...prev, t2: i }))
+    }
+    for (let i = 1; i <= 4; i++) {
+      await delay(80); if (!alive()) return
+      setPillCounts(prev => ({ ...prev, t1v: i }))
+    }
+    await delay(300); if (!alive()) return
+  }
+
+  // ── Animation phase 3: convergence (T1d pills + T5 + T6) ─────────────────
+
+  const runConvergenceAnim = async (gen: number, songCount: number) => {
+    const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
+    const alive = () => genRef.current === gen
+
+    for (let i = 1; i <= 5; i++) {
+      await delay(80); if (!alive()) return
+      setPillCounts(prev => ({ ...prev, t1d: i }))
+    }
+    await delay(200); if (!alive()) return
+
+    setLoadingTier(5); setAnimStep(6)
+    await delay(600); if (!alive()) return
+    setLoadingTier(null)
+    for (let i = 1; i <= 4; i++) {
+      await delay(80); if (!alive()) return
+      setPillCounts(prev => ({ ...prev, t5s: i, t5t: i }))
+    }
+    await delay(300); if (!alive()) return
+    for (let i = 1; i <= songCount; i++) {
+      await delay(60); if (!alive()) return
+      setSetlistLines(i)
+    }
+    await delay(400); if (!alive()) return
+    for (let i = 1; i <= 4; i++) {
+      await delay(80); if (!alive()) return
+      setScenesUnlocked(i)
+    }
+    setAnimStep(7)
+    setFlowPhase('complete')
+  }
+
+  // ── Selection handlers ────────────────────────────────────────────────────
+
+  const doDateSelect = (concert: Concert, gen: number) => {
+    setSelectedConcert(concert)
+    setDateOptions([])
+    setFlowPhase('convergence')
+
+    let songs: string[] = []
+    let tour: string | null = null
+    const entry = setlistsByConcertId.current[concert.id]
+    if (entry?.setlist?.sets) {
+      songs = (entry.setlist.sets.set as any[])
+        .flatMap((s: any) => s.song as any[])
+        .filter((s: any) => !s.tape)
+        .map((s: any) => s.name as string)
+      tour = entry.setlist.tour?.name ?? null
+    }
+    setSetlistSongs(songs)
+    setTourName(tour)
+    runConvergenceAnim(gen, songs.length)
+  }
+
+  const doVenueSelect = (venueNorm: string, artistNorm: string, gen: number) => {
+    const vm = venuesMetaRef.current[venueNorm] ?? null
+    setSelectedVenueNorm(venueNorm)
+    setSelectedVenueDisplay(vm?.name ?? venueNorm)
+    setVenueOptions([])
+    setVenueMeta(vm)
+    setFlowPhase('venue-hydrating')
+
     ;(async () => {
-      const delay = (ms: number) => new Promise<void>(res => setTimeout(res, ms))
-      const alive = () => genRef.current === gen
+      await runVenueAnim(gen)
+      if (genRef.current !== gen) return
 
-      // Reset
-      setAnimStep(0)
-      setLoadingTier(null)
-      setPillCounts({})
-      setSetlistLines(0)
-      setScenesUnlocked(0)
-      await delay(100)
-      if (!alive()) return
-
-      // T0 — seed chips
-      setAnimStep(1)
-      await delay(700)
-      if (!alive()) return
-
-      // T1 — build pipeline (no API, no loading phase)
-      setAnimStep(2)
-      await delay(200)
-      if (!alive()) return
-      // Artist 3 pills, Venue 4 pills, Date 5 pills — stagger across all three
-      for (let i = 1; i <= 5; i++) {
-        await delay(80)
-        if (!alive()) return
-        setPillCounts(prev => ({
-          ...prev,
-          t1a: Math.min(i, 3),
-          t1v: Math.min(i, 4),
-          t1d: Math.min(i, 5),
-        }))
+      const key = `${artistNorm}::${venueNorm}`
+      const available = (artistVenueToConcerts.get(key) ?? []).sort((a, b) =>
+        a.date.localeCompare(b.date)
+      )
+      if (available.length === 1) {
+        doDateSelect(available[0], gen)
+      } else {
+        setDateOptions(available)
+        setFlowPhase('date-pending')
       }
-      await delay(300)
-      if (!alive()) return
-
-      // T2 — geographic (venue only, Google Places)
-      setLoadingTier(2)
-      setAnimStep(3)
-      await delay(600)
-      if (!alive()) return
-      setLoadingTier(null)
-      for (let i = 1; i <= 6; i++) {
-        await delay(80)
-        if (!alive()) return
-        setPillCounts(prev => ({ ...prev, t2: i }))
-      }
-      await delay(300)
-      if (!alive()) return
-
-      // T3 — artist identity (3 APIs)
-      setLoadingTier(3)
-      setAnimStep(4)
-      await delay(600)
-      if (!alive()) return
-      setLoadingTier(null)
-      for (let i = 1; i <= 7; i++) {
-        await delay(80)
-        if (!alive()) return
-        setPillCounts(prev => ({ ...prev, t3: i }))
-      }
-      await delay(300)
-      if (!alive()) return
-
-      // T4 — audio (Apple Music)
-      setLoadingTier(4)
-      setAnimStep(5)
-      await delay(600)
-      if (!alive()) return
-      setLoadingTier(null)
-      for (let i = 1; i <= 3; i++) {
-        await delay(80)
-        if (!alive()) return
-        setPillCounts(prev => ({ ...prev, t4: i }))
-      }
-      await delay(300)
-      if (!alive()) return
-
-      // T5 — performance convergence (setlist.fm + Ticketmaster)
-      setLoadingTier(5)
-      setAnimStep(6)
-      await delay(600)
-      if (!alive()) return
-      setLoadingTier(null)
-      // Quick stagger for metadata pills
-      for (let i = 1; i <= 4; i++) {
-        await delay(80)
-        if (!alive()) return
-        setPillCounts(prev => ({ ...prev, t5s: i, t5t: i }))
-      }
-      await delay(300)
-      if (!alive()) return
-      // Setlist lines one by one
-      for (let i = 1; i <= DEMO.setlist.length; i++) {
-        await delay(60)
-        if (!alive()) return
-        setSetlistLines(i)
-      }
-      await delay(400)
-      if (!alive()) return
-
-      // T6 — scene cards unlock (staggered)
-      for (let i = 1; i <= 4; i++) {
-        await delay(80)
-        if (!alive()) return
-        setScenesUnlocked(i)
-      }
-      setAnimStep(7)
     })()
   }
 
-  // Auto-start on mount
-  useEffect(() => {
-    const timer = setTimeout(startAnimation, 600)
-    return () => { clearTimeout(timer); genRef.current++ }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  const handleArtistSelect = (artistNorm: string, artistDisplay: string) => {
+    const gen = ++genRef.current
 
-  // Global CSS sets body { overflow: hidden } for the snap-scroll main app.
-  // Restore scrollability for this standalone page, and set matching background.
+    setSelectedArtistNorm(artistNorm)
+    setSelectedArtistDisplay(artistDisplay)
+    setSelectedVenueNorm(null)
+    setSelectedVenueDisplay(null)
+    setSelectedConcert(null)
+    setVenueOptions([])
+    setDateOptions([])
+    setVenueMeta(null)
+    setSetlistSongs([])
+    setTourName(null)
+    setArtistMeta(artistsMetaRef.current[artistNorm] ?? null)
+    setArtistTracks(topTracksRef.current[artistNorm]?.tracks?.slice(0, 5) ?? [])
+    setFlowPhase('artist-hydrating')
+
+    ;(async () => {
+      await runArtistAnim(gen)
+      if (genRef.current !== gen) return
+
+      const venues = [...(artistToVenues.get(artistNorm) ?? [])]
+      if (venues.length === 1) {
+        doVenueSelect(venues[0], artistNorm, gen)
+      } else {
+        const opts = venues
+          .map(vn => ({ norm: vn, display: venuesMetaRef.current[vn]?.name ?? vn }))
+          .sort((a, b) => a.display.localeCompare(b.display))
+        setVenueOptions(opts)
+        setFlowPhase('venue-pending')
+      }
+    })()
+  }
+
+  const handleReset = () => {
+    genRef.current++
+    setFlowPhase('idle')
+    setAnimStep(0); setLoadingTier(null); setPillCounts({}); setSetlistLines(0); setScenesUnlocked(0)
+    setSelectedArtistNorm(null); setSelectedArtistDisplay(null)
+    setSelectedVenueNorm(null); setSelectedVenueDisplay(null)
+    setSelectedConcert(null)
+    setVenueOptions([]); setDateOptions([])
+    setArtistMeta(null); setVenueMeta(null)
+    setArtistTracks([]); setSetlistSongs([]); setTourName(null)
+    setActiveScene(null); setArtistSearch('')
+  }
+
+  // ── Body style ────────────────────────────────────────────────────────────
   useEffect(() => {
     document.body.style.overflow = 'auto'
     document.body.style.background = '#0a0a0f'
@@ -307,12 +595,50 @@ export function CascadePage() {
     }
   }, [])
 
-  // Helper: motion props for each tier based on animStep threshold
+  // ── Helpers ───────────────────────────────────────────────────────────────
   const tierAnim = (step: number) => ({
     initial: { opacity: 0, y: 16 },
     animate: { opacity: animStep >= step ? 1 : 0, y: animStep >= step ? 0 : 16 },
     transition: { duration: 0.4, ease: 'easeOut' },
   })
+
+  // Derived display values
+  const venuePlace = venueMeta?.places?.[0] ?? null
+  const artistGenres = artistMeta?.genres ?? []
+  const artistFormed = artistMeta?.formed ?? null
+  const artistBio = artistMeta?.bio?.slice(0, 200) ?? null
+  const artistImage = artistMeta?.image ?? null
+  const albumArt = artistTracks[0]?.albumArt ?? null
+  const artistInitials = selectedArtistDisplay
+    ? selectedArtistDisplay.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
+    : '??'
+
+  const filteredArtistList = useMemo(() => {
+    if (!artistSearch.trim()) return artistList
+    const q = artistSearch.toLowerCase()
+    return artistList.filter(a => a.display.toLowerCase().includes(q))
+  }, [artistList, artistSearch])
+
+  // T2 derived pills
+  const t2Pills = [
+    { key: 'formattedAddress', value: venuePlace?.formattedAddress ?? '—' },
+    { key: 'placeId', value: venuePlace?.id ? 'Google Place ID' : '—', icon: 'id' as const },
+    { key: 'confirmedName', value: venueMeta?.name ?? '—' },
+    { key: 'city', value: venueMeta?.city ?? '—' },
+    { key: 'website', value: venuePlace?.websiteUri ? new URL(venuePlace.websiteUri).hostname : '—', icon: 'link' as const },
+    { key: 'photos', value: venueMeta?.photoUrls?.thumbnail ? '3 sizes' : '—', icon: 'image' as const },
+  ]
+
+  // T3 derived pills
+  const t3Pills = [
+    { key: 'image', value: artistImage ? 'artist photo' : '—', icon: 'image' as const, source: 'TheAudioDB' },
+    { key: 'formed', value: artistFormed ? `"${artistFormed}"` : '—', source: 'TheAudioDB' },
+    { key: 'country', value: artistMeta?.country ? `"${artistMeta.country}"` : '—', source: 'TheAudioDB' },
+    { key: 'style', value: artistGenres[0] ? `"${artistGenres[0]}"` : '—', source: 'TheAudioDB' },
+    { key: 'genres', value: artistGenres.length > 1 ? `["${artistGenres[1]}"]` : '—', source: 'Last.fm' },
+    { key: 'listeners', value: '—', source: 'Last.fm' },
+    { key: 'mbid', value: 'canonical ID', icon: 'id' as const, source: 'MusicBrainz' },
+  ]
 
   return (
     <div style={{ background: '#0a0a0f', minHeight: '100vh', color: '#fff' }}>
@@ -342,14 +668,10 @@ export function CascadePage() {
           </div>
           <h1 style={{ ...PLAYFAIR, fontSize: 48, fontWeight: 900, lineHeight: 1.1, marginBottom: 20 }}>
             The Data<br />
-            <span
-              style={{
-                background: 'linear-gradient(135deg, #c084fc, #6366f1)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
+            <span style={{
+              background: 'linear-gradient(135deg, #c084fc, #6366f1)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            }}>
               Enrichment Cascade
             </span>
           </h1>
@@ -358,25 +680,9 @@ export function CascadePage() {
           </p>
         </motion.header>
 
-        {/* ── REPLAY BUTTON ── */}
-        <div style={{ textAlign: 'center', marginBottom: 8, position: 'relative', zIndex: 2 }}>
-          <button
-            onClick={startAnimation}
-            style={{
-              ...MONO, fontSize: 10, letterSpacing: '0.12em',
-              color: '#374151', background: 'none',
-              border: '1px solid #1e2028', borderRadius: 6,
-              padding: '5px 14px', cursor: 'pointer',
-            }}
-          >
-            ↻ replay
-          </button>
-        </div>
-
-        {/* ── TIER 0 — THREE ATOMS ── */}
-        <motion.div
+        {/* ── TIER 0 — SEED ROW (interactive) ── */}
+        <div
           id="cascade-tier-0"
-          {...tierAnim(1)}
           style={{
             ...TIER_ROW_STYLE,
             display: 'grid',
@@ -392,30 +698,59 @@ export function CascadePage() {
             <TierSubtitle color={TIER_COLORS.t0.sub}>One row in a spreadsheet. That's the whole input.</TierSubtitle>
           </div>
 
-          <CascadeAtom type="artist" value={DEMO.artist} focusedAtom={focusedAtom} onFocus={focusAtom} />
-          <CascadeAtom type="venue" value={DEMO.venue} focusedAtom={focusedAtom} onFocus={focusAtom} />
-          <CascadeAtom type="date" value={DEMO.date} focusedAtom={focusedAtom} onFocus={focusAtom} />
+          {/* Artist column */}
+          {flowPhase === 'idle' ? (
+            <ArtistPicker
+              artists={filteredArtistList}
+              search={artistSearch}
+              onSearchChange={setArtistSearch}
+              onSelect={handleArtistSelect}
+            />
+          ) : (
+            <CascadeAtom type="artist" value={selectedArtistDisplay ?? ''} focusedAtom={focusedAtom} onFocus={focusAtom} />
+          )}
 
-          <div
-            style={{
-              gridColumn: '1 / -1',
-              ...MONO,
-              fontSize: 9,
-              color: '#374151',
-              textAlign: 'center',
-              marginTop: 8,
-              letterSpacing: '0.1em',
-              transition: 'opacity 0.4s ease',
-              opacity: focusedAtom ? 0 : 1,
-            }}
-          >
-            click an atom to trace its journey ↓
+          {/* Venue column */}
+          {flowPhase === 'venue-pending' ? (
+            <VenuePicker options={venueOptions} onSelect={v => { const gen = ++genRef.current; doVenueSelect(v, selectedArtistNorm!, gen) }} />
+          ) : selectedVenueDisplay ? (
+            <CascadeAtom type="venue" value={selectedVenueDisplay} focusedAtom={focusedAtom} onFocus={focusAtom} />
+          ) : (
+            <PendingAtom type="venue" />
+          )}
+
+          {/* Date column */}
+          {flowPhase === 'date-pending' ? (
+            <DatePicker options={dateOptions} onSelect={c => { const gen = ++genRef.current; doDateSelect(c, gen) }} />
+          ) : selectedConcert ? (
+            <CascadeAtom type="date" value={selectedConcert.date} focusedAtom={focusedAtom} onFocus={focusAtom} />
+          ) : (
+            <PendingAtom type="date" />
+          )}
+
+          {/* Hint / reset row */}
+          <div style={{ gridColumn: '1 / -1', textAlign: 'center', marginTop: 8 }}>
+            {flowPhase === 'idle' ? (
+              <div style={{ ...MONO, fontSize: 9, color: '#374151', letterSpacing: '0.1em' }}>
+                {concerts.length > 0 ? 'select an artist to begin the cascade ↓' : 'loading…'}
+              </div>
+            ) : (
+              <button
+                onClick={handleReset}
+                style={{ ...MONO, fontSize: 9, letterSpacing: '0.12em', color: '#374151', background: 'none', border: '1px solid #1e2028', borderRadius: 6, padding: '4px 12px', cursor: 'pointer' }}
+              >
+                ↻ reset
+              </button>
+            )}
           </div>
-          <div style={{ gridColumn: '1 / -1', ...MONO, fontSize: 12, color: '#4b5563', textAlign: 'center' }}>
-            180 concerts × 3 fields ={' '}
-            <span style={{ color: '#6b7280' }}>540 total inputs</span>
-          </div>
-        </motion.div>
+
+          {flowPhase !== 'idle' && (
+            <div style={{ gridColumn: '1 / -1', ...MONO, fontSize: 12, color: '#4b5563', textAlign: 'center' }}>
+              180 concerts × 3 fields ={' '}
+              <span style={{ color: '#6b7280' }}>540 total inputs</span>
+            </div>
+          )}
+        </div>
 
         {/* ── TIER 1 — BUILD PIPELINE ── */}
         <motion.div
@@ -440,9 +775,9 @@ export function CascadePage() {
           <div>
             <CodeTransform fn="derive(artist)" description="normalize + assign ID" />
             <PillGrid tierColor="#8b5cf6" visibleCount={pillCounts.t1a} items={[
-              { key: 'headlinerNormalized', value: '"depeche-mode"' },
-              { key: 'id', value: '"concert-158"' },
-              { key: 'openers', value: '["Kelly Lee Owens"]' },
+              { key: 'headlinerNormalized', value: selectedArtistNorm ? `"${selectedArtistNorm}"` : '—' },
+              { key: 'concertId', value: selectedConcert ? `"${selectedConcert.id}"` : '…' },
+              { key: 'openers', value: selectedConcert?.openers?.length ? `["${selectedConcert.openers[0]}"]` : '[]' },
             ]} />
           </div>
 
@@ -450,10 +785,10 @@ export function CascadePage() {
           <div>
             <CodeTransform fn="normalize(venue)" description="slug + location lookup" />
             <PillGrid tierColor="#6366f1" visibleCount={pillCounts.t1v} items={[
-              { key: 'venueNormalized', value: '"kia-forum"' },
-              { key: 'city', value: '"Inglewood"' },
-              { key: 'state', value: '"California"' },
-              { key: 'cityState', value: '"Inglewood, CA"' },
+              { key: 'venueNormalized', value: selectedVenueNorm ? `"${selectedVenueNorm}"` : '—' },
+              { key: 'city', value: venueMeta?.city ? `"${venueMeta.city}"` : '—' },
+              { key: 'state', value: venueMeta?.state ? `"${venueMeta.state}"` : '—' },
+              { key: 'cityState', value: venueMeta?.cityState ? `"${venueMeta.cityState}"` : '—' },
             ]} />
           </div>
 
@@ -461,11 +796,11 @@ export function CascadePage() {
           <div>
             <CodeTransform fn="parse(date)" description="extract temporal fields" />
             <PillGrid tierColor="#64748b" visibleCount={pillCounts.t1d} items={[
-              { key: 'year', value: '2023' },
-              { key: 'month', value: '3' },
-              { key: 'day', value: '28' },
-              { key: 'dayOfWeek', value: '"Tuesday"' },
-              { key: 'decade', value: '"2020s"' },
+              { key: 'year', value: selectedConcert ? String(selectedConcert.year) : '—' },
+              { key: 'month', value: selectedConcert ? String(selectedConcert.month) : '—' },
+              { key: 'day', value: selectedConcert ? String(selectedConcert.day) : '—' },
+              { key: 'dayOfWeek', value: selectedConcert?.dayOfWeek ? `"${selectedConcert.dayOfWeek}"` : '—' },
+              { key: 'decade', value: selectedConcert?.decade ? `"${selectedConcert.decade}"` : '—' },
             ]} />
           </div>
 
@@ -499,39 +834,49 @@ export function CascadePage() {
           {/* Artist — dormant */}
           <div style={{ minHeight: 60 }} />
 
-          {/* Venue — active */}
+          {/* Venue — active (or dormant placeholder) */}
           <TierBand color="#6366f1">
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
-              <ApiBadge name="Google Places" domain="google.com" color="#4285F4" pulsing={loadingTier === 2} />
-            </div>
-            {/* Venue photo placeholder */}
-            <div style={{
-              width: '100%', height: 56,
-              background: 'rgba(99,102,241,0.1)',
-              border: '1px solid rgba(99,102,241,0.2)',
-              borderRadius: 4,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              marginBottom: 10, fontSize: 24,
-            }}>
-              📍
-            </div>
-            {/* Coordinate pill */}
-            <div style={{
-              ...MONO, fontSize: 9, textAlign: 'center', color: '#a5b4fc',
-              marginBottom: 10, background: 'rgba(99,102,241,0.1)',
-              padding: '4px 8px', borderRadius: 3, letterSpacing: '0.02em',
-            }}>
-              {DEMO.lat.toFixed(4)}° N · {Math.abs(DEMO.lng).toFixed(4)}° W
-            </div>
-            <PillGrid tierColor="#6366f1" visibleCount={pillCounts.t2} items={[
-              { key: 'formattedAddress', value: '3900 W Manchester Blvd' },
-              { key: 'placeId', value: 'ChIJO...', icon: 'id' },
-              { key: 'confirmedName', value: '"Kia Forum"' },
-              { key: 'types', value: '"stadium"' },
-              { key: 'website', value: 'kiaforum.com', icon: 'link' },
-              { key: 'photos', value: '3 sizes', icon: 'image' },
-            ]} />
-            <CorpusScale color="#6366f1">× 77 venues · 35 cities</CorpusScale>
+            {!venueMeta ? (
+              // Dormant pass-through during artist animation
+              <div style={{ textAlign: 'center', padding: '20px 0', ...MONO, fontSize: 11, color: '#6366f118' }}>
+                · · ·
+              </div>
+            ) : (
+              <>
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
+                  <ApiBadge name="Google Places" domain="google.com" color="#4285F4" pulsing={loadingTier === 2} />
+                </div>
+                {/* Venue photo */}
+                {venueMeta.photoUrls?.thumbnail ? (
+                  <img
+                    src={venueMeta.photoUrls.thumbnail}
+                    alt={venueMeta.name}
+                    style={{ width: '100%', height: 56, objectFit: 'cover', borderRadius: 4, marginBottom: 10 }}
+                  />
+                ) : (
+                  <div style={{
+                    width: '100%', height: 56,
+                    background: 'rgba(99,102,241,0.1)',
+                    border: '1px solid rgba(99,102,241,0.2)',
+                    borderRadius: 4,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    marginBottom: 10, fontSize: 24,
+                  }}>
+                    📍
+                  </div>
+                )}
+                {/* Coordinate pill */}
+                <div style={{
+                  ...MONO, fontSize: 9, textAlign: 'center', color: '#a5b4fc',
+                  marginBottom: 10, background: 'rgba(99,102,241,0.1)',
+                  padding: '4px 8px', borderRadius: 3, letterSpacing: '0.02em',
+                }}>
+                  {venueMeta.location.lat.toFixed(4)}° N · {Math.abs(venueMeta.location.lng).toFixed(4)}° W
+                </div>
+                <PillGrid tierColor="#6366f1" visibleCount={pillCounts.t2} items={t2Pills} />
+                <CorpusScale color="#6366f1">× 77 venues · 35 cities</CorpusScale>
+              </>
+            )}
           </TierBand>
 
           {/* Date — dormant */}
@@ -564,42 +909,46 @@ export function CascadePage() {
               <ApiBadge name="Last.fm" domain="last.fm" color="#D51007" pulsing={loadingTier === 3} />
               <ApiBadge name="MusicBrainz" domain="musicbrainz.org" color="#BA478F" pulsing={loadingTier === 3} />
             </div>
-            {/* Artist avatar */}
-            <div style={{
-              width: 60, height: 60, borderRadius: '50%',
-              background: 'rgba(139,92,246,0.18)',
-              border: '1px solid rgba(139,92,246,0.45)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              margin: '0 auto 10px',
-              ...MONO, fontSize: 15, color: '#c4b5fd', letterSpacing: '0.05em',
-            }}>
-              DM
-            </div>
+            {/* Artist photo or initials avatar */}
+            {artistImage ? (
+              <img
+                src={artistImage}
+                alt={selectedArtistDisplay ?? ''}
+                style={{ width: 60, height: 60, borderRadius: '50%', objectFit: 'cover', display: 'block', margin: '0 auto 10px', border: '1px solid rgba(139,92,246,0.45)' }}
+              />
+            ) : (
+              <div style={{
+                width: 60, height: 60, borderRadius: '50%',
+                background: 'rgba(139,92,246,0.18)',
+                border: '1px solid rgba(139,92,246,0.45)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                margin: '0 auto 10px',
+                ...MONO, fontSize: 15, color: '#c4b5fd', letterSpacing: '0.05em',
+              }}>
+                {artistInitials}
+              </div>
+            )}
             {/* Genre chips */}
-            <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 8 }}>
-              {['synth-pop', 'electronic', 'new wave'].map(g => (
-                <span key={g} style={{
-                  ...MONO, fontSize: 7, padding: '2px 6px', borderRadius: 2,
-                  background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)',
-                  color: '#c4b5fd', letterSpacing: '0.04em',
-                }}>{g}</span>
-              ))}
-            </div>
+            {artistGenres.length > 0 && (
+              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 8 }}>
+                {artistGenres.slice(0, 4).map(g => (
+                  <span key={g} style={{
+                    ...MONO, fontSize: 7, padding: '2px 6px', borderRadius: 2,
+                    background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)',
+                    color: '#c4b5fd', letterSpacing: '0.04em',
+                  }}>{g.toLowerCase()}</span>
+                ))}
+              </div>
+            )}
             <div style={{ ...MONO, fontSize: 8, color: '#8b5cf680', textAlign: 'center', marginBottom: 8, lineHeight: 1.6 }}>
-              Formed 1980 · Basildon, UK · 12.4M listeners
+              {artistFormed ? `Formed ${artistFormed}` : ''}
             </div>
-            <div style={{ ...SANS, fontSize: 9, color: '#94a3b8', lineHeight: 1.5, textAlign: 'center', maxHeight: 42, overflow: 'hidden' }}>
-              Electronic pioneers known for dark synthesizer-driven sound and iconic global live performances.
-            </div>
-            <PillGrid tierColor="#8b5cf6" visibleCount={pillCounts.t3} items={[
-              { key: 'image', value: 'artist photo', icon: 'image', source: 'TheAudioDB' },
-              { key: 'formed', value: '"1980"', source: 'TheAudioDB' },
-              { key: 'country', value: '"England"', source: 'TheAudioDB' },
-              { key: 'style', value: '"Synth-pop"', source: 'TheAudioDB' },
-              { key: 'genres', value: '["New Wave"]', source: 'Last.fm' },
-              { key: 'listeners', value: '3.2M', source: 'Last.fm' },
-              { key: 'mbid', value: 'canonical ID', icon: 'id', source: 'MusicBrainz' },
-            ]} />
+            {artistBio && (
+              <div style={{ ...SANS, fontSize: 9, color: '#94a3b8', lineHeight: 1.5, textAlign: 'center', maxHeight: 42, overflow: 'hidden' }}>
+                {artistBio}
+              </div>
+            )}
+            <PillGrid tierColor="#8b5cf6" visibleCount={pillCounts.t3} items={t3Pills} />
             <CorpusScale color="#8b5cf6">× 255 artists enriched</CorpusScale>
           </TierBand>
 
@@ -635,23 +984,27 @@ export function CascadePage() {
             </div>
             {/* Album art + label */}
             <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12 }}>
-              <div style={{
-                width: 48, height: 48, borderRadius: 6,
-                background: 'rgba(168,85,247,0.18)',
-                border: '1px solid rgba(168,85,247,0.35)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 22, flexShrink: 0,
-              }}>🎵</div>
+              {albumArt ? (
+                <img src={albumArt} alt="album" style={{ width: 48, height: 48, borderRadius: 6, objectFit: 'cover', flexShrink: 0 }} />
+              ) : (
+                <div style={{
+                  width: 48, height: 48, borderRadius: 6,
+                  background: 'rgba(168,85,247,0.18)',
+                  border: '1px solid rgba(168,85,247,0.35)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 22, flexShrink: 0,
+                }}>🎵</div>
+              )}
               <div>
                 <div style={{ ...SANS, fontSize: 10, fontWeight: 600, color: '#d8b4fe', lineHeight: 1.2 }}>Top tracks</div>
                 <div style={{ ...SANS, fontSize: 8, fontWeight: 300, color: '#a855f770', lineHeight: 1.4 }}>
-                  Violator · Ultra · Music for the Masses
+                  {artistTracks[0]?.albumName ?? '—'}
                 </div>
               </div>
             </div>
             {/* Track list */}
             <div>
-              {DEMO.topTracks.slice(0, pillCounts.t4 ?? 0).map((t, i) => (
+              {artistTracks.slice(0, pillCounts.t4 ?? 0).map((t, i) => (
                 <div key={t.name} style={{
                   display: 'flex', alignItems: 'center', gap: 8, padding: '5px 0',
                   borderBottom: '1px solid rgba(168,85,247,0.1)',
@@ -665,6 +1018,11 @@ export function CascadePage() {
                 </div>
               ))}
             </div>
+            {artistTracks.length === 0 && animStep >= 5 && (
+              <div style={{ ...MONO, fontSize: 9, color: '#a855f740', textAlign: 'center', padding: '8px 0' }}>
+                no audio data
+              </div>
+            )}
             <CorpusScale color="#a855f7">× 255 artists · 1,275 tracks</CorpusScale>
           </TierBand>
 
@@ -712,11 +1070,11 @@ export function CascadePage() {
               {/* Equation header */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, flexWrap: 'wrap', marginBottom: 16 }}>
                 {[
-                  { label: 'artist', value: DEMO.artist, color: '#8b5cf6' },
+                  { label: 'artist', value: selectedArtistDisplay ?? '—', color: '#8b5cf6' },
                   { label: '+', value: '', color: '#4b5563' },
-                  { label: 'venue', value: DEMO.venue, color: '#6366f1' },
+                  { label: 'venue', value: selectedVenueDisplay ?? '—', color: '#6366f1' },
                   { label: '+', value: '', color: '#4b5563' },
-                  { label: 'date', value: DEMO.date, color: '#64748b' },
+                  { label: 'date', value: selectedConcert?.date ?? '—', color: '#64748b' },
                   { label: '=', value: '', color: '#4b5563' },
                   { label: '', value: 'one specific night', color: '#c084fc' },
                 ].map((item, i) => (
@@ -757,8 +1115,8 @@ export function CascadePage() {
                   tierColor={API_BRANDS['setlist.fm'].primary}
                   visibleCount={pillCounts.t5s}
                   items={[
-                    { key: 'tourName', value: `"${DEMO.tour}"` },
-                    { key: 'songs', value: `${DEMO.setlist.length} tracks` },
+                    { key: 'tourName', value: tourName ? `"${tourName}"` : '—' },
+                    { key: 'songs', value: setlistSongs.length ? `${setlistSongs.length} tracks` : '—' },
                     { key: 'setStructure', value: 'Set 1 + Encore' },
                     { key: 'setBreaks', value: 'positions noted' },
                   ]}
@@ -767,10 +1125,10 @@ export function CascadePage() {
                   tierColor={API_BRANDS['Ticketmaster'].primary}
                   visibleCount={pillCounts.t5t}
                   items={[
-                    { key: 'opener', value: `"${DEMO.opener}"` },
-                    { key: 'tour', value: `"${DEMO.tour} Tour"` },
-                    { key: 'eventId', value: 'TM canonical ID', icon: 'id' },
-                    { key: 'eventUrl', value: 'ticketmaster.com/…', icon: 'link' },
+                    { key: 'opener', value: selectedConcert?.openers?.[0] ? `"${selectedConcert.openers[0]}"` : '—' },
+                    { key: 'tour', value: tourName ? `"${tourName} Tour"` : '—' },
+                    { key: 'eventId', value: 'TM canonical ID', icon: 'id' as const },
+                    { key: 'eventUrl', value: 'ticketmaster.com/…', icon: 'link' as const },
                   ]}
                 />
               </div>
@@ -778,11 +1136,16 @@ export function CascadePage() {
               {/* Numbered setlist */}
               <div style={{ marginTop: 16 }}>
                 <div style={{ ...MONO, fontSize: 8, letterSpacing: '0.15em', color: '#7c3aed', marginBottom: 8, textAlign: 'center' }}>
-                  SETLIST — {DEMO.date}
+                  SETLIST — {selectedConcert?.date ?? '—'}
                 </div>
+                {setlistSongs.length === 0 && animStep >= 6 && (
+                  <div style={{ ...MONO, fontSize: 9, color: '#7c3aed40', textAlign: 'center', padding: '8px 0' }}>
+                    setlist not available
+                  </div>
+                )}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px 16px' }}>
-                  {DEMO.setlist.slice(0, setlistLines).map((song, i) => (
-                    <div key={song} style={{ display: 'flex', gap: 8, alignItems: 'baseline', padding: '3px 0', borderBottom: '1px solid rgba(124,58,237,0.08)' }}>
+                  {setlistSongs.slice(0, setlistLines).map((song, i) => (
+                    <div key={song + i} style={{ display: 'flex', gap: 8, alignItems: 'baseline', padding: '3px 0', borderBottom: '1px solid rgba(124,58,237,0.08)' }}>
                       <span style={{ ...MONO, fontSize: 8, color: '#7c3aed55', width: 18, textAlign: 'right', flexShrink: 0 }}>
                         {String(i + 1).padStart(2, '0')}
                       </span>
@@ -809,7 +1172,6 @@ export function CascadePage() {
           {...tierAnim(6)}
           style={{ textAlign: 'center', padding: '8px 16px 0', position: 'relative', zIndex: 2 }}
         >
-          {/* Tier accumulation row */}
           <div style={{ display: 'flex', gap: 6, justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', marginBottom: 10 }}>
             {[
               { label: 'T1', count: '3,600', color: '#64748b' },
@@ -820,42 +1182,24 @@ export function CascadePage() {
             ].map((t, i) => (
               <div key={t.label} style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
                 {i > 0 && <span style={{ ...MONO, fontSize: 11, color: '#374151' }}>+</span>}
-                <div
-                  style={{
-                    ...MONO,
-                    fontSize: 9,
-                    padding: '3px 8px',
-                    borderRadius: 4,
-                    background: `${t.color}12`,
-                    border: `1px solid ${t.color}30`,
-                    color: t.color,
-                    lineHeight: 1.5,
-                  }}
-                >
+                <div style={{ ...MONO, fontSize: 9, padding: '3px 8px', borderRadius: 4, background: `${t.color}12`, border: `1px solid ${t.color}30`, color: t.color, lineHeight: 1.5 }}>
                   <span style={{ fontSize: 7, letterSpacing: '0.1em', opacity: 0.7, display: 'block' }}>{t.label}</span>
                   {t.count}
                 </div>
               </div>
             ))}
             <span style={{ ...MONO, fontSize: 11, color: '#374151' }}>=</span>
-            <div
-              style={{
-                ...PLAYFAIR,
-                fontSize: 22,
-                fontWeight: 700,
-                background: 'linear-gradient(135deg, #c084fc, #6366f1)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
+            <div style={{
+              ...PLAYFAIR, fontSize: 22, fontWeight: 700,
+              background: 'linear-gradient(135deg, #c084fc, #6366f1)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            }}>
               23,000+
             </div>
           </div>
           <div style={{ ...SANS, fontSize: 11, color: '#374151', marginBottom: 10, fontWeight: 300 }}>
             data points assembled into
           </div>
-          {/* Downward arrow into T6 */}
           <svg width="2" height="24" viewBox="0 0 2 24" style={{ display: 'block', margin: '0 auto' }}>
             <line x1="1" y1="0" x2="1" y2="20" stroke="rgba(139,92,246,0.3)" strokeWidth="1.5" />
             <path d="M-3 16 L1 22 L5 16" stroke="rgba(139,92,246,0.4)" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
@@ -1030,19 +1374,11 @@ export function CascadePage() {
                           </div>
                           <div style={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
                             {scene.tiers.map(t => (
-                              <span
-                                key={t.label}
-                                style={{
-                                  ...MONO,
-                                  fontSize: 8,
-                                  padding: '2px 5px',
-                                  borderRadius: 3,
-                                  background: `${t.color}20`,
-                                  border: `1px solid ${t.color}44`,
-                                  color: t.color,
-                                  letterSpacing: '0.05em',
-                                }}
-                              >
+                              <span key={t.label} style={{
+                                ...MONO, fontSize: 8, padding: '2px 5px', borderRadius: 3,
+                                background: `${t.color}20`, border: `1px solid ${t.color}44`,
+                                color: t.color, letterSpacing: '0.05em',
+                              }}>
                                 {t.label}
                               </span>
                             ))}
@@ -1059,35 +1395,23 @@ export function CascadePage() {
                               transition={{ duration: 0.22, ease: 'easeOut' }}
                               style={{ overflow: 'hidden' }}
                             >
-                              <div
-                                style={{
-                                  background: 'rgba(15,18,30,0.95)',
-                                  border: '1px solid rgba(139,92,246,0.25)',
-                                  borderRadius: 8,
-                                  padding: '12px 14px',
-                                  display: 'flex',
-                                  flexDirection: 'column',
-                                  gap: 8,
-                                }}
-                              >
+                              <div style={{
+                                background: 'rgba(15,18,30,0.95)',
+                                border: '1px solid rgba(139,92,246,0.25)',
+                                borderRadius: 8,
+                                padding: '12px 14px',
+                                display: 'flex', flexDirection: 'column', gap: 8,
+                              }}>
                                 <div style={{ ...MONO, fontSize: 8, letterSpacing: '0.12em', color: '#6b7280', textTransform: 'uppercase' }}>
                                   Powered by
                                 </div>
                                 {scene.tiers.map(t => (
                                   <div key={t.label} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                                    <span
-                                      style={{
-                                        ...MONO,
-                                        fontSize: 9,
-                                        padding: '2px 6px',
-                                        borderRadius: 3,
-                                        background: `${t.color}20`,
-                                        border: `1px solid ${t.color}55`,
-                                        color: t.color,
-                                        flexShrink: 0,
-                                        letterSpacing: '0.04em',
-                                      }}
-                                    >
+                                    <span style={{
+                                      ...MONO, fontSize: 9, padding: '2px 6px', borderRadius: 3,
+                                      background: `${t.color}20`, border: `1px solid ${t.color}55`,
+                                      color: t.color, flexShrink: 0, letterSpacing: '0.04em',
+                                    }}>
                                       {t.label}
                                     </span>
                                     <div>
@@ -1116,7 +1440,7 @@ export function CascadePage() {
                   </motion.div>
                 ) : (
                   <div style={{ ...MONO, fontSize: 9, color: '#374151', textAlign: 'center', marginTop: 14, letterSpacing: '0.1em' }}>
-                    {animStep === 0 ? '' : '· · · hydrating'}
+                    {animStep === 0 && flowPhase === 'idle' ? '' : '· · · hydrating'}
                   </div>
                 )}
               </div>
@@ -1127,22 +1451,14 @@ export function CascadePage() {
         {/* ── FOOTER ── */}
         <motion.footer
           {...tierAnim(7)}
-          style={{
-            textAlign: 'center',
-            padding: '80px 40px 100px',
-            position: 'relative',
-            zIndex: 2,
-          }}
+          style={{ textAlign: 'center', padding: '80px 40px 100px', position: 'relative', zIndex: 2 }}
         >
           {/* Radial glow */}
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'radial-gradient(ellipse 600px 300px at 50% 30%, rgba(139,92,246,0.08), transparent)',
-              pointerEvents: 'none',
-            }}
-          />
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'radial-gradient(ellipse 600px 300px at 50% 30%, rgba(139,92,246,0.08), transparent)',
+            pointerEvents: 'none',
+          }} />
 
           {/* Punchline stats */}
           <div style={{ display: 'flex', justifyContent: 'center', gap: 40, marginBottom: 40, flexWrap: 'wrap', position: 'relative' }}>
@@ -1154,21 +1470,15 @@ export function CascadePage() {
               { num: '42×', label: 'enrichment' },
             ].map((stat, i) => (
               <div key={i} style={{ textAlign: 'center' }}>
-                <div
-                  style={{
-                    ...PLAYFAIR,
-                    fontSize: stat.num === '→' || stat.num === '=' ? 36 : 56,
-                    fontWeight: 900,
-                    lineHeight: 1,
-                    background: 'linear-gradient(135deg, #c084fc, #6366f1, #ec4899)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    display: 'flex',
-                    alignItems: 'center',
-                    height: stat.num === '→' || stat.num === '=' ? 56 : undefined,
-                  }}
-                >
+                <div style={{
+                  ...PLAYFAIR,
+                  fontSize: stat.num === '→' || stat.num === '=' ? 36 : 56,
+                  fontWeight: 900, lineHeight: 1,
+                  background: 'linear-gradient(135deg, #c084fc, #6366f1, #ec4899)',
+                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                  display: 'flex', alignItems: 'center',
+                  height: stat.num === '→' || stat.num === '=' ? 56 : undefined,
+                }}>
                   {stat.num}
                 </div>
                 {stat.label && (
@@ -1180,35 +1490,17 @@ export function CascadePage() {
             ))}
           </div>
 
-          <p
-            style={{
-              ...PLAYFAIR,
-              fontSize: 24,
-              fontWeight: 400,
-              fontStyle: 'italic',
-              color: '#c4b5fd',
-              marginBottom: 36,
-              lineHeight: 1.4,
-              position: 'relative',
-            }}
-          >
+          <p style={{
+            ...PLAYFAIR, fontSize: 24, fontWeight: 400, fontStyle: 'italic',
+            color: '#c4b5fd', marginBottom: 36, lineHeight: 1.4, position: 'relative',
+          }}>
             7 APIs. 4 scenes. 42 years.<br />Three words started it all.
           </p>
 
           {/* API logo row */}
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 40, position: 'relative' }}>
             {['Google Places', 'TheAudioDB', 'Last.fm', 'MusicBrainz', 'Apple Music', 'setlist.fm', 'Ticketmaster'].map(api => (
-              <span
-                key={api}
-                style={{
-                  ...MONO,
-                  fontSize: 11,
-                  color: '#4b5563',
-                  padding: '6px 14px',
-                  border: '1px solid #1e2028',
-                  borderRadius: 100,
-                }}
-              >
+              <span key={api} style={{ ...MONO, fontSize: 11, color: '#4b5563', padding: '6px 14px', border: '1px solid #1e2028', borderRadius: 100 }}>
                 {api}
               </span>
             ))}
@@ -1217,17 +1509,7 @@ export function CascadePage() {
           {/* CTA */}
           <a
             href="https://concerts.morperhaus.org"
-            style={{
-              ...MONO,
-              fontSize: 16,
-              color: '#6366f1',
-              textDecoration: 'none',
-              padding: '12px 28px',
-              border: '1px solid rgba(99,102,241,0.3)',
-              borderRadius: 8,
-              display: 'inline-block',
-              position: 'relative',
-            }}
+            style={{ ...MONO, fontSize: 16, color: '#6366f1', textDecoration: 'none', padding: '12px 28px', border: '1px solid rgba(99,102,241,0.3)', borderRadius: 8, display: 'inline-block', position: 'relative' }}
           >
             concerts.morperhaus.org
           </a>
@@ -1242,20 +1524,11 @@ export function CascadePage() {
             transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
             onClick={resetFocus}
             style={{
-              position: 'fixed',
-              bottom: 24,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              ...MONO,
-              fontSize: 12,
-              color: '#e2e8f0',
-              background: 'rgba(30,27,75,0.9)',
-              border: '1px solid rgba(139,92,246,0.3)',
-              borderRadius: 100,
-              padding: '10px 24px',
-              cursor: 'pointer',
-              backdropFilter: 'blur(12px)',
-              zIndex: 100,
+              position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)',
+              ...MONO, fontSize: 12, color: '#e2e8f0',
+              background: 'rgba(30,27,75,0.9)', border: '1px solid rgba(139,92,246,0.3)',
+              borderRadius: 100, padding: '10px 24px', cursor: 'pointer',
+              backdropFilter: 'blur(12px)', zIndex: 100,
             }}
           >
             Show All
