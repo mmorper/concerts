@@ -11,6 +11,8 @@
  *   npm run generate:liner-notes -- --date 2026-06-04  # Override today's date
  */
 
+import { config } from "dotenv";
+config({ override: true });
 import { run } from "./pipeline.ts";
 import type { PipelineOptions } from "./types.ts";
 

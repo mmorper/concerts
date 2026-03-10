@@ -121,7 +121,7 @@ export async function run(options: PipelineOptions): Promise<void> {
   // ── Stage 5: Build posts ─────────────────────────────────────────────────
   console.log("\n🏗️  Stage 5: Building posts...");
   const publishedAt = new Date().toISOString();
-  const newPosts = buildPosts(withProse, {
+  let newPosts = buildPosts(withProse, {
     artistsMetadata,
     artistsTopTracks,
     venuesMetadata,
@@ -133,6 +133,23 @@ export async function run(options: PipelineOptions): Promise<void> {
   if (newPosts.length === 0) {
     console.log("\n⚠️  No posts built (prose may have failed validation). Nothing written.");
     return;
+  }
+
+  // ── Stage 5b: Pick single best post (normal mode only) ────────────────────
+  if (!options.seed && !options.force && newPosts.length > 1) {
+    const lastDetector = existingPosts[0]?.detector;
+    const sorted = [...newPosts].sort((a, b) => b.score - a.score);
+    const pick =
+      (lastDetector && sorted.find((p) => p.detector !== lastDetector)) ??
+      sorted[0];
+    const skipped = newPosts.filter((p) => p !== pick);
+    console.log(`\n🎯 Stage 5b: Single-post filter...`);
+    console.log(`   Prior detector: ${lastDetector ?? "(none)"}`);
+    console.log(`   Selected: [${pick.score}/60] ${pick.headline} (${pick.detector})`);
+    for (const s of skipped) {
+      console.log(`   Skipped:  [${s.score}/60] ${s.headline} (${s.detector})`);
+    }
+    newPosts = [pick];
   }
 
   // ── Stage 6: Merge and write ─────────────────────────────────────────────
