@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "mcp__chrome-devtools__new_page"
+      "mcp__chrome-devtools__new_page",
+      "mcp__plugin_playwright_playwright__browser_wait_for",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_console_messages",
+      "Read(//Users/mmorper/**)",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "Bash(pkill -f \"chrome-devtools-mcp\")"
     ]
   }
 }

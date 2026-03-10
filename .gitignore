@@ -55,6 +55,7 @@ data/venue-status.csv
 .claude/settings.local.json
 .claude/todos/
 .claude/worktrees/
+.claude/scheduled-tasks/
 
 # Bug reports and debugging artifacts
 bugs/
