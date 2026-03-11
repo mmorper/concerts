@@ -1497,7 +1497,6 @@ export function CascadePage() {
                   no audio data
                 </div>
               )}
-              <CorpusScale color="#a855f7">× 255 artists · 1,275 tracks</CorpusScale>
             </TierBand>
             )}
           </div>
