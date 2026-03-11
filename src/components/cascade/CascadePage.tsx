@@ -131,15 +131,12 @@ function TierTitle({ color, children }: { color: string; children: React.ReactNo
 
 function TierSubtitle({ color, children }: { color: string; children: React.ReactNode }) {
   return (
-    <div style={{ ...SANS, fontSize: 13, fontWeight: 300, color, lineHeight: 1.5 }}>
+    <div style={{ ...SANS, fontSize: 15, fontWeight: 300, color, lineHeight: 1.5 }}>
       {children}
     </div>
   )
 }
 
-function DormantThread({ color: _ }: { color: string }) {
-  return <div style={{ minHeight: 52 }} />
-}
 
 function ContinueButton({ tierColor, onContinue }: { tierColor: string; onContinue: () => void }) {
   return (
@@ -153,14 +150,14 @@ function ContinueButton({ tierColor, onContinue }: { tierColor: string; onContin
         onClick={onContinue}
         style={{
           ...MONO,
-          fontSize: 10,
+          fontSize: 12,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
           color: tierColor,
           background: 'none',
           border: `1px solid ${tierColor}40`,
           borderRadius: 4,
-          padding: '8px 32px',
+          padding: '10px 32px',
           cursor: 'pointer',
         }}
       >
@@ -201,13 +198,6 @@ function ApiBadge({ name, domain, color, pulsing }: { name: string; domain: stri
   )
 }
 
-function CorpusScale({ color, children }: { color: string; children: React.ReactNode }) {
-  return (
-    <div style={{ ...MONO, fontSize: 9, color: `${color}55`, textAlign: 'center', marginTop: 10, letterSpacing: '0.05em' }}>
-      {children}
-    </div>
-  )
-}
 
 function TierSummaryCard({
   color, label, domains, iconText, summary, onClick,
@@ -224,31 +214,31 @@ function TierSummaryCard({
       transition={{ duration: 0.42, ease: [0.4, 0, 0.2, 1] }}
       onClick={onClick}
       style={{
-        cursor: 'pointer', padding: '10px 24px',
+        cursor: 'pointer', padding: '14px 24px',
         display: 'flex', alignItems: 'center', gap: 10,
         background: `${color}08`, border: `1px solid ${color}22`,
         borderRadius: 6, userSelect: 'none', position: 'relative', zIndex: 2,
         transformOrigin: 'top center',
       }}
     >
-      <div style={{ ...MONO, fontSize: 10, letterSpacing: '0.06em', color, flex: 1, fontWeight: 500 }}>
+      <div style={{ ...MONO, fontSize: 12, letterSpacing: '0.06em', color, flex: 1, fontWeight: 500 }}>
         {label}
       </div>
       {iconText && (
-        <div style={{ ...MONO, fontSize: 9, color: `${color}80`, flexShrink: 0 }}>{iconText}</div>
+        <div style={{ ...MONO, fontSize: 10, color: `${color}80`, flexShrink: 0 }}>{iconText}</div>
       )}
       {domains?.map(domain => (
         <img key={domain} src={`https://www.google.com/s2/favicons?domain=${domain}&sz=16`}
-          width={12} height={12} style={{ borderRadius: 2, opacity: 0.6, flexShrink: 0 }} alt="" />
+          width={16} height={16} style={{ borderRadius: 2, opacity: 0.8, flexShrink: 0 }} alt="" />
       ))}
       <div style={{
-        ...MONO, fontSize: 8, color: `${color}80`,
+        ...MONO, fontSize: 10, color: `${color}80`,
         background: `${color}12`, border: `1px solid ${color}25`,
-        borderRadius: 10, padding: '2px 8px', flexShrink: 0,
+        borderRadius: 10, padding: '3px 10px', flexShrink: 0,
       }}>
         {summary}
       </div>
-      <div style={{ ...MONO, fontSize: 10, color: `${color}35`, flexShrink: 0 }}>↕</div>
+      <div style={{ ...MONO, fontSize: 11, color: `${color}35`, flexShrink: 0 }}>↕</div>
     </motion.div>
   )
 }
@@ -541,15 +531,27 @@ export function CascadePage() {
   const [glowingSeeds, setGlowingSeeds] = useState<Set<SeedType>>(new Set())
   const [glowingTiers, setGlowingTiers] = useState<Map<number, string>>(new Map())
 
-  const showTrace = (seeds: SeedType[], tierId: number) => {
-    setGlowingSeeds(new Set(seeds))
-    setGlowingTiers(prev => new Map([...prev, [tierId, dominantSeedColor(seeds)]]))
+  const countSetlistDataPoints = (entry: any): number => {
+    const sl = entry?.setlist
+    if (!sl) return 0
+    const { sets: _sets, ...meta } = sl
+    const countLeaves = (obj: any): number => {
+      if (obj == null) return 0
+      if (typeof obj !== 'object') return 1
+      if (Array.isArray(obj)) return obj.reduce((n, v) => n + countLeaves(v), 0)
+      return Object.values(obj).reduce((n: number, v) => n + countLeaves(v), 0)
+    }
+    const metaCount = countLeaves(meta)
+    const songs = (sl.sets?.set ?? []).flatMap((s: any) => s.song ?? [])
+    return metaCount + songs.length
   }
-  // Clear tier frame glow only — call before pills so the box doesn't grow with content
+
+  const glowSeeds = (seeds: SeedType[]) => setGlowingSeeds(new Set(seeds))
+  const glowTier = (seeds: SeedType[], tierId: number) =>
+    setGlowingTiers(prev => new Map([...prev, [tierId, dominantSeedColor(seeds)]]))
   const clearTierGlow = (tierId: number) => {
     setGlowingTiers(prev => { const next = new Map(prev); next.delete(tierId); return next })
   }
-  // Clear atom glows only — call after pills complete
   const clearAtomGlow = () => setGlowingSeeds(new Set())
 
   // ── Animation state ───────────────────────────────────────────────────────
@@ -570,7 +572,7 @@ export function CascadePage() {
   const [collapsedTiers, setCollapsedTiers] = useState<Set<number>>(new Set())
   const [expandedTier, setExpandedTier] = useState<number | null>(null)
   const [cascadePending, setCascadePending] = useState(false)
-  const pendingCascadeRef = useRef<{ gen: number; songCount: number } | null>(null)
+  const pendingCascadeRef = useRef<{ gen: number; songCount: number; dataPoints: number } | null>(null)
   const [tierAwaitingContinue, setTierAwaitingContinue] = useState<number | null>(null)
   const continueResolverRef = useRef<(() => void) | null>(null)
 
@@ -590,7 +592,7 @@ export function CascadePage() {
     if (pending) {
       pendingCascadeRef.current = null
       setFlowPhase('convergence')
-      runFullCascade(pending.gen, pending.songCount)
+      runFullCascade(pending.gen, pending.songCount, pending.dataPoints)
     }
   }
 
@@ -600,7 +602,7 @@ export function CascadePage() {
 
   // ── Full cascade animation — runs after T0 is fully resolved ─────────────
 
-  const runFullCascade = async (gen: number, songCount: number) => {
+  const runFullCascade = async (gen: number, songCount: number, dataPoints: number) => {
     const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
     const alive = () => genRef.current === gen
 
@@ -615,24 +617,15 @@ export function CascadePage() {
     revealTier(1)
     await delay(650); if (!alive()) return  // tier header settles
 
-    // T1: each trace fires a beat before its column — artist → venue → date
-    showTrace(['artist'], 1)
-    await delay(300); if (!alive()) return
+    // T1: columns reveal sequentially
     setT1ColStep(1)
-    await delay(250); if (!alive()) return
-
-    showTrace(['venue'], 1)
-    await delay(300); if (!alive()) return
+    await delay(350); if (!alive()) return
     setT1ColStep(2)
-    await delay(250); if (!alive()) return
-
-    showTrace(['date'], 1)
-    await delay(300); if (!alive()) return
+    await delay(350); if (!alive()) return
     setT1ColStep(3)
     await delay(500); if (!alive()) return  // pause — viewer reads all three
 
-    // T1 pills: clear tier frame glow now (container at header height), then build
-    clearTierGlow(1)
+    // T1 pills build
     for (let i = 1; i <= 3; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t1a: i }))
@@ -654,17 +647,27 @@ export function CascadePage() {
       setT1FieldCount(i)
     }
     await delay(200); if (!alive()) return
-    clearAtomGlow()
+
+    // Post-build glow: seeds light up sequentially, then tier box joins, then both fade
+    glowSeeds(['artist'])
+    await delay(350); if (!alive()) return
+    glowSeeds(['artist', 'venue'])
+    await delay(350); if (!alive()) return
+    glowSeeds(['artist', 'venue', 'date'])
     await delay(400); if (!alive()) return
+    glowTier(['artist', 'venue', 'date'], 1)
+    await delay(3000); if (!alive()) return
+    clearTierGlow(1)
+    clearAtomGlow()
+    await delay(300); if (!alive()) return
 
     // T1 complete — wait for user, then collapse
     await waitForContinue(1); if (!alive()) return
     collapseTier(1)
     await delay(400); if (!alive()) return
 
-    // T1→T2 connector — venue trace fires here
+    // T1→T2 connector
     setConnectorPhase(2)
-    showTrace(['venue'], 2)
     await delay(1100); if (!alive()) return
     revealTier(2)
     setLoadingTier(2)
@@ -673,8 +676,6 @@ export function CascadePage() {
     setT2RevealStep(2)
     setLoadingTier(null)
     await delay(500); if (!alive()) return
-    clearTierGlow(2)
-    await delay(200); if (!alive()) return
     for (let i = 1; i <= 6; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t2: i }))
@@ -684,23 +685,28 @@ export function CascadePage() {
       setT2FieldCount(i)
     }
     await delay(300); if (!alive()) return
-    clearAtomGlow()
+
+    // Post-build glow
+    glowSeeds(['venue'])
     await delay(400); if (!alive()) return
+    glowTier(['venue'], 2)
+    await delay(3000); if (!alive()) return
+    clearTierGlow(2)
+    clearAtomGlow()
+    await delay(300); if (!alive()) return
 
     // T2 complete — wait for user, then collapse
     await waitForContinue(2); if (!alive()) return
     collapseTier(2)
     await delay(400); if (!alive()) return
 
-    // T2→T3 connector — artist trace fires here
+    // T2→T3 connector
     setConnectorPhase(3)
-    showTrace(['artist'], 3)
     await delay(1100); if (!alive()) return
     setLoadingTier(3); revealTier(3)
     await delay(400); if (!alive()) return
     await delay(450); if (!alive()) return
     setLoadingTier(null)
-    clearTierGlow(3)
     for (let i = 1; i <= 7; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t3: i }))
@@ -710,23 +716,28 @@ export function CascadePage() {
       setT3FieldCount(i)
     }
     await delay(300); if (!alive()) return
-    clearAtomGlow()
+
+    // Post-build glow
+    glowSeeds(['artist'])
     await delay(400); if (!alive()) return
+    glowTier(['artist'], 3)
+    await delay(3000); if (!alive()) return
+    clearTierGlow(3)
+    clearAtomGlow()
+    await delay(300); if (!alive()) return
 
     // T3 complete — wait for user, then collapse
     await waitForContinue(3); if (!alive()) return
     collapseTier(3)
     await delay(400); if (!alive()) return
 
-    // T3→T4 connector — artist trace fires here
+    // T3→T4 connector
     setConnectorPhase(4)
-    showTrace(['artist'], 4)
     await delay(1100); if (!alive()) return
     setLoadingTier(4); revealTier(4)
     await delay(400); if (!alive()) return
     await delay(450); if (!alive()) return
     setLoadingTier(null)
-    clearTierGlow(4)
     for (let i = 1; i <= 3; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t4: i }))
@@ -737,23 +748,28 @@ export function CascadePage() {
       setT4FieldCount(i)
     }
     await delay(300); if (!alive()) return
-    clearAtomGlow()
+
+    // Post-build glow
+    glowSeeds(['artist'])
     await delay(400); if (!alive()) return
+    glowTier(['artist'], 4)
+    await delay(3000); if (!alive()) return
+    clearTierGlow(4)
+    clearAtomGlow()
+    await delay(300); if (!alive()) return
 
     // T4 complete — wait for user, then collapse
     await waitForContinue(4); if (!alive()) return
     collapseTier(4)
     await delay(400); if (!alive()) return
 
-    // T4→T5 connector — artist + venue traces fire here
+    // T4→T5 connector
     setConnectorPhase(5)
-    showTrace(['artist', 'venue'], 5)
     await delay(1100); if (!alive()) return
     setLoadingTier(5); revealTier(5)
     await delay(400); if (!alive()) return
     await delay(450); if (!alive()) return
     setLoadingTier(null)
-    clearTierGlow(5)
     for (let i = 1; i <= 4; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t5s: i, t5t: i }))
@@ -763,29 +779,40 @@ export function CascadePage() {
       await delay(80); if (!alive()) return
       setSetlistLines(i)
     }
-    const dataPoints = 8 + songCount
     for (let i = 1; i <= dataPoints; i++) {
       await delay(25); if (!alive()) return
       setT5FieldCount(i)
     }
     await delay(300); if (!alive()) return
-    clearAtomGlow()
+
+    // Post-build glow — artist + venue both seed this tier
+    glowSeeds(['artist', 'venue'])
     await delay(400); if (!alive()) return
+    glowTier(['artist', 'venue'], 5)
+    await delay(3000); if (!alive()) return
+    clearTierGlow(5)
+    clearAtomGlow()
+    await delay(300); if (!alive()) return
 
     // T5 complete — wait for user, then collapse
     await waitForContinue(5); if (!alive()) return
     collapseTier(5)
     await delay(400); if (!alive()) return
 
-    // T6 — all three traces, then scenes unlock
-    showTrace(['artist', 'venue', 'date'], 6)
-    await delay(300); if (!alive()) return
+    // T6 — scenes unlock, then all three seeds
     revealTier(6)
-    clearTierGlow(6)
     for (let i = 1; i <= 4; i++) {
       await delay(80); if (!alive()) return
       setScenesUnlocked(i)
     }
+    await delay(300); if (!alive()) return
+
+    // Post-build glow — all three seeds
+    glowSeeds(['artist', 'venue', 'date'])
+    await delay(400); if (!alive()) return
+    glowTier(['artist', 'venue', 'date'], 6)
+    await delay(3000); if (!alive()) return
+    clearTierGlow(6)
     clearAtomGlow()
     setFlowPhase('complete')
   }
@@ -809,12 +836,14 @@ export function CascadePage() {
     setSetlistSongs(songs)
     setTourName(tour)
 
+    const dataPoints = countSetlistDataPoints(entry)
+
     if (autoRun) {
       setFlowPhase('convergence')
-      runFullCascade(gen, songs.length)
+      runFullCascade(gen, songs.length, dataPoints)
     } else {
       setFlowPhase('cascade-pending')
-      pendingCascadeRef.current = { gen, songCount: songs.length }
+      pendingCascadeRef.current = { gen, songCount: songs.length, dataPoints }
       setCascadePending(true)
     }
   }
@@ -986,7 +1015,7 @@ export function CascadePage() {
           <div style={{ ...MONO, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#6b7280', marginBottom: 24 }}>
             Morperhaus Concert Archives
           </div>
-          <h1 style={{ ...PLAYFAIR, fontSize: 38, fontWeight: 900, lineHeight: 1.1, marginBottom: 12 }}>
+          <h1 style={{ ...PLAYFAIR, fontSize: 48, fontWeight: 700, lineHeight: 1.1, marginBottom: 16 }}>
             The Data<br />
             <span style={{
               background: 'linear-gradient(135deg, #c084fc, #6366f1)',
@@ -995,7 +1024,7 @@ export function CascadePage() {
               Enrichment Cascade
             </span>
           </h1>
-          <p style={{ ...SANS, fontSize: 13, color: '#94a3b8', fontWeight: 300, maxWidth: 480, margin: '0 auto', lineHeight: 1.6 }}>
+          <p style={{ ...SANS, fontSize: 15, color: '#94a3b8', fontWeight: 300, maxWidth: 580, margin: '0 auto', lineHeight: 1.6 }}>
             How three words in a spreadsheet become a living archive of four decades of live music
           </p>
         </motion.header>
@@ -1079,10 +1108,10 @@ export function CascadePage() {
               </div>
               <p style={{
                 ...SANS,
-                fontSize: 13,
+                fontSize: 15,
                 color: '#6b7280',
                 fontWeight: 300,
-                maxWidth: 440,
+                maxWidth: 520,
                 margin: '0 auto 24px',
                 lineHeight: 1.65,
               }}>
@@ -1092,14 +1121,14 @@ export function CascadePage() {
                 onClick={handleStartCascade}
                 style={{
                   ...MONO,
-                  fontSize: 11,
+                  fontSize: 12,
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
                   color: '#a5b4fc',
                   background: 'none',
                   border: '1px solid #a5b4fc40',
                   borderRadius: 4,
-                  padding: '10px 36px',
+                  padding: '12px 36px',
                   cursor: 'pointer',
                 }}
               >
@@ -1187,7 +1216,7 @@ export function CascadePage() {
             <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
                 <span key={t1FieldCount} className="count-tick" style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#94a3b8' }}>{t1FieldCount}</span>
-                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#64748b' }}>fields per concert</span>
+                <span style={{ ...SANS, fontSize: 13, fontWeight: 300, color: '#64748b' }}>fields per concert</span>
               </div>
             </motion.div>
           )}
@@ -1234,13 +1263,10 @@ export function CascadePage() {
             <TierSubtitle color={TIER_COLORS.t2.sub}>Structural data becomes geographic intelligence.</TierSubtitle>
           </div>
 
-          {/* Artist — dormant */}
-          <DormantThread color="#8b5cf6" />
-
-          {/* Venue — active or dormant thread */}
-          {!venueMeta ? (
-            <DormantThread color="#6366f1" />
-          ) : (
+          {/* Venue — centered */}
+          {venueMeta && (
+            <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center' }}>
+            <div style={{ width: '100%', maxWidth: 360 }}>
             <TierBand color="#6366f1">
               {/* Badge — appears immediately with tier */}
               <motion.div
@@ -1281,17 +1307,15 @@ export function CascadePage() {
                 </motion.div>
               )}
               <PillGrid tierColor="#6366f1" visibleCount={pillCounts.t2} items={t2Pills} />
-              <CorpusScale color="#6366f1">× 77 venues · 35 cities</CorpusScale>
             </TierBand>
+            </div>
+            </div>
           )}
-
-          {/* Date — dormant */}
-          <DormantThread color="#64748b" />
           {t2FieldCount > 0 && (
             <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
                 <span key={t2FieldCount} className="count-tick" style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#a5b4fc' }}>{t2FieldCount}</span>
-                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#6366f1' }}>fields returned</span>
+                <span style={{ ...SANS, fontSize: 13, fontWeight: 300, color: '#6366f1' }}>fields returned</span>
               </div>
             </motion.div>
           )}
@@ -1338,10 +1362,10 @@ export function CascadePage() {
             <TierSubtitle color={TIER_COLORS.t3.sub}>A name becomes a profile. Three services, one identity.</TierSubtitle>
           </div>
 
-          {/* Artist — active or dormant */}
-          {!selectedArtistDisplay ? (
-            <DormantThread color="#8b5cf6" />
-          ) : (
+          {/* Artist — centered */}
+          {selectedArtistDisplay && (
+          <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: '100%', maxWidth: 360 }}>
           <TierBand color="#8b5cf6">
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 12, flexWrap: 'wrap' }}>
               <ApiBadge name="TheAudioDB" domain="theaudiodb.com" color="#1DA0C3" pulsing={loadingTier === 3} />
@@ -1389,17 +1413,14 @@ export function CascadePage() {
             )}
             <PillGrid tierColor="#8b5cf6" visibleCount={pillCounts.t3} items={t3Pills} />
           </TierBand>
+          </div>
+          </div>
           )}
-
-          {/* Venue — dormant */}
-          <DormantThread color="#6366f1" />
-          {/* Date — dormant */}
-          <DormantThread color="#64748b" />
           {t3FieldCount > 0 && (
             <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
                 <span key={t3FieldCount} className="count-tick" style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#c4b5fd' }}>{t3FieldCount}</span>
-                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#8b5cf6' }}>fields returned</span>
+                <span style={{ ...SANS, fontSize: 13, fontWeight: 300, color: '#8b5cf6' }}>fields returned</span>
               </div>
             </motion.div>
           )}
@@ -1447,11 +1468,10 @@ export function CascadePage() {
             <TierSubtitle color={TIER_COLORS.t4.sub}>The archive gets a soundtrack.</TierSubtitle>
           </div>
 
-          {/* Col 1 — left lane: Apple Music */}
-          <div>
-            {!selectedArtistDisplay ? (
-              <DormantThread color="#8b5cf6" />
-            ) : (
+          {/* Apple Music — centered */}
+          <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: '100%', maxWidth: 360 }}>
+            {selectedArtistDisplay && (
             <TierBand color="#a855f7">
               <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
                 <ApiBadge name="Apple Music" domain="music.apple.com" color="#FC3C44" pulsing={loadingTier === 4} />
@@ -1500,16 +1520,12 @@ export function CascadePage() {
             </TierBand>
             )}
           </div>
-
-          {/* Col 2 — dormant */}
-          <DormantThread color="#6366f1" />
-          {/* Col 3 — dormant */}
-          <DormantThread color="#64748b" />
+          </div>
           {t4FieldCount > 0 && (
             <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
                 <span key={t4FieldCount} className="count-tick" style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#d8b4fe' }}>{t4FieldCount}</span>
-                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#a855f7' }}>tracks indexed</span>
+                <span style={{ ...SANS, fontSize: 13, fontWeight: 300, color: '#a855f7' }}>tracks indexed</span>
               </div>
             </motion.div>
           )}
@@ -1542,7 +1558,7 @@ export function CascadePage() {
             style={{
               ...TIER_ROW_STYLE,
               display: 'grid',
-              gridTemplateColumns: '2fr 1fr',
+              gridTemplateColumns: '1fr',
               gap: 16,
               alignItems: 'start',
               transformOrigin: 'top center',
@@ -1557,8 +1573,8 @@ export function CascadePage() {
             <TierSubtitle color={TIER_COLORS.t5.sub}>All three atoms reconverge to find one specific night.</TierSubtitle>
           </div>
 
-          {/* Col 1 (2fr) — left+center lanes: content */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {/* Content — centered */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 560, margin: '0 auto', width: '100%' }}>
           <div>
               <FlowArrow label="query" />
 
@@ -1617,61 +1633,17 @@ export function CascadePage() {
             <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
                 <span key={t5FieldCount} className="count-tick" style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#e9d5ff' }}>{t5FieldCount}</span>
-                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#c084fc' }}>data points enriched</span>
+                <span style={{ ...SANS, fontSize: 13, fontWeight: 300, color: '#c084fc' }}>data points enriched</span>
               </div>
             </motion.div>
           )}
-          </div>{/* end 2fr col */}
-
-          {/* Col 2 (1fr) — dormant right */}
-          <DormantThread color="#64748b" />
+          </div>
           {tierAwaitingContinue === 5 && (
             <ContinueButton tierColor={TIER_COLORS.t5.accent!} onContinue={handleContinue} />
           )}
           </motion.div>
           )}
           </AnimatePresence>
-        )}
-
-        {/* ── ASSEMBLY BRIDGE — only visible once complete ── */}
-        {flowPhase === 'complete' && (
-        <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, ease: 'easeOut' }}
-          style={{ textAlign: 'center', padding: '8px 16px 0', position: 'relative', zIndex: 2 }}
-        >
-          <div style={{ display: 'flex', gap: 6, justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', marginBottom: 10 }}>
-            {[
-              { label: 'T1', count: '3,600', color: '#64748b' },
-              { label: 'T2', count: '385', color: '#6366f1' },
-              { label: 'T3', count: '1,530', color: '#8b5cf6' },
-              { label: 'T4', count: '7,650', color: '#a855f7' },
-              { label: 'T5', count: '10,000+', color: '#c084fc' },
-            ].map((t, i) => (
-              <div key={t.label} style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-                {i > 0 && <span style={{ ...MONO, fontSize: 11, color: '#374151' }}>+</span>}
-                <div style={{ ...MONO, fontSize: 9, padding: '3px 8px', borderRadius: 4, background: `${t.color}12`, border: `1px solid ${t.color}30`, color: t.color, lineHeight: 1.5 }}>
-                  <span style={{ fontSize: 7, letterSpacing: '0.1em', opacity: 0.7, display: 'block' }}>{t.label}</span>
-                  {t.count}
-                </div>
-              </div>
-            ))}
-            <span style={{ ...MONO, fontSize: 11, color: '#374151' }}>=</span>
-            <div style={{
-              ...PLAYFAIR, fontSize: 22, fontWeight: 700,
-              background: 'linear-gradient(135deg, #c084fc, #6366f1)',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            }}>
-              23,000+
-            </div>
-          </div>
-          <div style={{ ...SANS, fontSize: 11, color: '#374151', marginBottom: 10, fontWeight: 300 }}>
-            data points assembled into
-          </div>
-          <svg width="2" height="24" viewBox="0 0 2 24" style={{ display: 'block', margin: '0 auto' }}>
-            <line x1="1" y1="0" x2="1" y2="20" stroke="rgba(139,92,246,0.3)" strokeWidth="1.5" />
-            <path d="M-3 16 L1 22 L5 16" stroke="rgba(139,92,246,0.4)" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </motion.div>
         )}
 
         {/* ── TIER 6 — THE OUTPUT ── */}
@@ -1854,13 +1826,14 @@ export function CascadePage() {
               transition={{ duration: 0.4, ease: 'easeOut' }}
               style={{
                 ...TIER_ROW_STYLE,
+                paddingTop: 48,
                 display: 'grid',
                 gridTemplateColumns: '1fr',
                 gap: 16,
                 ...(isTierRelevant(6) ? {} : { filter: 'grayscale(0.5)' }),
               }}
             >
-              <div style={{ textAlign: 'center', marginBottom: 24 }}>
+              <div style={{ textAlign: 'center', marginBottom: 28 }}>
                 <TierLabel color="#7c3aed" text="Tier 6 · The Living Archive" />
                 <TierTitle color="#ffffff">Four Scenes. 42 Years.</TierTitle>
                 <TierSubtitle color="#c4b5fd">Here's what three words actually built.</TierSubtitle>
@@ -1874,11 +1847,12 @@ export function CascadePage() {
                     return (
                       <motion.div
                         key={scene.id}
-                        animate={{
-                          opacity: isUnlocked ? 1 : 0.3,
-                          filter: isUnlocked ? 'grayscale(0)' : 'grayscale(0.7)',
-                        }}
-                        transition={{ duration: 0.5, ease: 'easeOut' }}
+                        initial={{ opacity: 0, y: 20, scale: 0.97 }}
+                        animate={isUnlocked
+                          ? { opacity: 1, y: 0, scale: 1 }
+                          : { opacity: 0, y: 20, scale: 0.97 }
+                        }
+                        transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
                       >
                         <button
                           onClick={() => isUnlocked && focusScene(scene.id)}
@@ -1963,65 +1937,79 @@ export function CascadePage() {
             pointerEvents: 'none',
           }} />
 
-          {/* Punchline stats */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 28, marginBottom: 28, flexWrap: 'wrap', position: 'relative' }}>
-            {[
-              { num: '540', label: 'inputs' },
+          {/* Punchline stats — derived from this concert's actual cascade */}
+          {(() => {
+            const totalDataPoints = t1FieldCount + t2FieldCount + t3FieldCount + t4FieldCount + t5FieldCount
+            const inputs = 3
+            const ratio = totalDataPoints > 0 ? Math.round(totalDataPoints / inputs) : 0
+            const stats = [
+              { num: String(inputs), label: 'inputs' },
               { num: '→', label: '' },
-              { num: '23,000+', label: 'data points' },
+              { num: String(totalDataPoints), label: 'data points' },
               { num: '=', label: '' },
-              { num: '42×', label: 'enrichment' },
-            ].map((stat, i) => (
-              <div key={i} style={{ textAlign: 'center' }}>
-                <div style={{
-                  ...PLAYFAIR,
-                  fontSize: stat.num === '→' || stat.num === '=' ? 28 : 42,
-                  fontWeight: 900, lineHeight: 1,
-                  background: 'linear-gradient(135deg, #c084fc, #6366f1, #ec4899)',
-                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-                  display: 'flex', alignItems: 'center',
-                  height: stat.num === '→' || stat.num === '=' ? 42 : undefined,
-                }}>
-                  {stat.num}
-                </div>
-                {stat.label && (
-                  <div style={{ ...SANS, fontSize: 12, color: '#6b7280', marginTop: 3, fontWeight: 300 }}>
-                    {stat.label}
+              { num: `${ratio}×`, label: 'enrichment' },
+            ]
+            return (
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 28, marginBottom: 28, flexWrap: 'wrap', position: 'relative' }}>
+                {stats.map((stat, i) => (
+                  <div key={i} style={{ textAlign: 'center' }}>
+                    <div style={{
+                      ...PLAYFAIR,
+                      fontSize: stat.num === '→' || stat.num === '=' ? 28 : 42,
+                      fontWeight: 900, lineHeight: 1,
+                      background: 'linear-gradient(135deg, #c084fc, #6366f1, #ec4899)',
+                      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                      display: 'flex', alignItems: 'center',
+                      height: stat.num === '→' || stat.num === '=' ? 42 : undefined,
+                    }}>
+                      {stat.num}
+                    </div>
+                    {stat.label && (
+                      <div style={{ ...SANS, fontSize: 12, color: '#6b7280', marginTop: 3, fontWeight: 300 }}>
+                        {stat.label}
+                      </div>
+                    )}
                   </div>
-                )}
+                ))}
               </div>
-            ))}
-          </div>
-
-          <p style={{
-            ...PLAYFAIR, fontSize: 18, fontWeight: 400, fontStyle: 'italic',
-            color: '#c4b5fd', marginBottom: 28, lineHeight: 1.4, position: 'relative',
-          }}>
-            7 APIs. 4 scenes. 42 years.<br />Three words started it all.
-          </p>
+            )
+          })()}
 
           {/* API logo row */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 40, position: 'relative' }}>
-            {['Google Places', 'TheAudioDB', 'Last.fm', 'MusicBrainz', 'Apple Music', 'setlist.fm', 'Ticketmaster'].map(api => (
-              <span key={api} style={{ ...MONO, fontSize: 11, color: '#4b5563', padding: '6px 14px', border: '1px solid #1e2028', borderRadius: 100 }}>
-                {api}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 8, flexWrap: 'nowrap', marginBottom: 40, position: 'relative' }}>
+            {[
+              { name: 'Google Places', domain: 'google.com' },
+              { name: 'TheAudioDB', domain: 'theaudiodb.com' },
+              { name: 'Last.fm', domain: 'last.fm' },
+              { name: 'MusicBrainz', domain: 'musicbrainz.org' },
+              { name: 'Apple Music', domain: 'music.apple.com' },
+              { name: 'setlist.fm', domain: 'setlist.fm' },
+              { name: 'Ticketmaster', domain: 'ticketmaster.com' },
+            ].map(api => (
+              <span key={api.name} style={{
+                ...MONO, fontSize: 11, color: '#9ca3af',
+                padding: '5px 10px', border: '1px solid #2d3040',
+                borderRadius: 100, display: 'inline-flex', alignItems: 'center', gap: 5, whiteSpace: 'nowrap',
+              }}>
+                <img src={`https://www.google.com/s2/favicons?domain=${api.domain}&sz=16`}
+                  width={12} height={12} style={{ borderRadius: 2, opacity: 0.85 }} alt="" />
+                {api.name}
               </span>
             ))}
           </div>
 
           {/* CTA */}
-          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
-            <a
-              href="https://concerts.morperhaus.org"
-              style={{ ...MONO, fontSize: 16, color: '#6366f1', textDecoration: 'none', padding: '12px 28px', border: '1px solid rgba(99,102,241,0.3)', borderRadius: 8, display: 'inline-block', position: 'relative' }}
-            >
-              concerts.morperhaus.org
-            </a>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
             <button
               onClick={handleReset}
-              style={{ ...MONO, fontSize: 11, letterSpacing: '0.12em', color: '#4b5563', background: 'none', border: '1px solid #1e2028', borderRadius: 8, padding: '12px 20px', cursor: 'pointer' }}
+              style={{
+                ...MONO, fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase',
+                color: '#8b5cf6', background: 'rgba(139,92,246,0.1)',
+                border: '1px solid rgba(139,92,246,0.3)', borderRadius: 4,
+                padding: '6px 16px', cursor: 'pointer',
+              }}
             >
-              ↺ try another artist
+              ↺ Try another
             </button>
           </div>
         </motion.footer>
@@ -2047,6 +2035,52 @@ export function CascadePage() {
           </motion.button>
         )}
       </div>
+
+      {/* ── FLOATING SELECTION BAR — visible once cascade completes ── */}
+      <AnimatePresence>
+        {flowPhase === 'complete' && selectedConcert && (
+          <motion.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.4, ease: 'easeOut', delay: 0.6 }}
+            style={{
+              position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              padding: '10px 24px',
+              background: 'rgba(10, 10, 18, 0.85)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              borderBottom: '1px solid rgba(139, 92, 246, 0.15)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, justifyContent: 'center' }}>
+              <span style={{ ...MONO, fontSize: 12, color: '#c4b5fd', letterSpacing: '0.04em' }}>
+                {selectedArtistDisplay}
+              </span>
+              <span style={{ ...MONO, fontSize: 10, color: '#4b5563' }}>·</span>
+              <span style={{ ...MONO, fontSize: 12, color: '#94a3b8' }}>
+                {selectedVenueDisplay}
+              </span>
+              <span style={{ ...MONO, fontSize: 10, color: '#4b5563' }}>·</span>
+              <span style={{ ...MONO, fontSize: 12, color: '#94a3b8' }}>
+                {selectedConcert.date}
+              </span>
+            </div>
+            <button
+              onClick={handleReset}
+              style={{
+                ...MONO, fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase',
+                color: '#8b5cf6', background: 'rgba(139,92,246,0.1)',
+                border: '1px solid rgba(139,92,246,0.3)', borderRadius: 4,
+                padding: '6px 16px', cursor: 'pointer', flexShrink: 0,
+              }}
+            >
+              ↺ Try another
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
