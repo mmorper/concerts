@@ -1374,7 +1374,6 @@ export function CascadePage() {
               </div>
             )}
             <PillGrid tierColor="#8b5cf6" visibleCount={pillCounts.t3} items={t3Pills} />
-            <CorpusScale color="#8b5cf6">× 255 artists enriched</CorpusScale>
           </TierBand>
           )}
 
