@@ -560,6 +560,10 @@ export function CascadePage() {
   const [scenesUnlocked, setScenesUnlocked] = useState(0)
   const [t1ColStep, setT1ColStep] = useState(0)   // 0=none, 1=artist, 2=+venue, 3=+date
   const [t1FieldCount, setT1FieldCount] = useState(0) // 0=hidden, 1-19=counter visible
+  const [t2FieldCount, setT2FieldCount] = useState(0)
+  const [t3FieldCount, setT3FieldCount] = useState(0)
+  const [t4FieldCount, setT4FieldCount] = useState(0)
+  const [t5FieldCount, setT5FieldCount] = useState(0)
   const [t2RevealStep, setT2RevealStep] = useState(0) // 0=nothing, 2=image visible
   const [collapsedTiers, setCollapsedTiers] = useState<Set<number>>(new Set())
   const [expandedTier, setExpandedTier] = useState<number | null>(null)
@@ -599,15 +603,15 @@ export function CascadePage() {
     const alive = () => genRef.current === gen
 
     setLoadingTier(null); setPillCounts({ t1a: 0, t1v: 0, t1d: 0, t2: 0, t3: 0, t4: 0, t5s: 0, t5t: 0 }); setSetlistLines(0); setScenesUnlocked(0)
-    setT1ColStep(0); setT1FieldCount(0); setT2RevealStep(0)
+    setT1ColStep(0); setT1FieldCount(0); setT2FieldCount(0); setT3FieldCount(0); setT4FieldCount(0); setT5FieldCount(0); setT2RevealStep(0)
     setGlowingSeeds(new Set()); setGlowingTiers(new Map())
     await delay(100); if (!alive()) return
 
     // T0→T1 connector
     setConnectorPhase(1)
-    await delay(800); if (!alive()) return
+    await delay(1100); if (!alive()) return
     revealTier(1)
-    await delay(500); if (!alive()) return  // tier header settles
+    await delay(650); if (!alive()) return  // tier header settles
 
     // T1: each trace fires a beat before its column — artist → venue → date
     showTrace(['artist'], 1)
@@ -658,11 +662,11 @@ export function CascadePage() {
     // T1→T2 connector — venue trace fires here
     setConnectorPhase(2)
     showTrace(['venue'], 2)
-    await delay(800); if (!alive()) return
+    await delay(1100); if (!alive()) return
     revealTier(2)
     setLoadingTier(2)
-    await delay(350); if (!alive()) return
     await delay(400); if (!alive()) return
+    await delay(450); if (!alive()) return
     setT2RevealStep(2)
     setLoadingTier(null)
     await delay(700); if (!alive()) return
@@ -670,7 +674,11 @@ export function CascadePage() {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t2: i }))
     }
-    await delay(200); if (!alive()) return
+    for (let i = 1; i <= 6; i++) {
+      await delay(40); if (!alive()) return
+      setT2FieldCount(i)
+    }
+    await delay(300); if (!alive()) return
     clearTraces(2)
     await delay(400); if (!alive()) return
 
@@ -682,16 +690,20 @@ export function CascadePage() {
     // T2→T3 connector — artist trace fires here
     setConnectorPhase(3)
     showTrace(['artist'], 3)
-    await delay(800); if (!alive()) return
+    await delay(1100); if (!alive()) return
     setLoadingTier(3); revealTier(3)
-    await delay(350); if (!alive()) return
     await delay(400); if (!alive()) return
+    await delay(450); if (!alive()) return
     setLoadingTier(null)
     for (let i = 1; i <= 7; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t3: i }))
     }
-    await delay(200); if (!alive()) return
+    for (let i = 1; i <= 7; i++) {
+      await delay(40); if (!alive()) return
+      setT3FieldCount(i)
+    }
+    await delay(300); if (!alive()) return
     clearTraces(3)
     await delay(400); if (!alive()) return
 
@@ -703,16 +715,21 @@ export function CascadePage() {
     // T3→T4 connector — artist trace fires here
     setConnectorPhase(4)
     showTrace(['artist'], 4)
-    await delay(800); if (!alive()) return
+    await delay(1100); if (!alive()) return
     setLoadingTier(4); revealTier(4)
-    await delay(350); if (!alive()) return
     await delay(400); if (!alive()) return
+    await delay(450); if (!alive()) return
     setLoadingTier(null)
     for (let i = 1; i <= 3; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t4: i }))
     }
-    await delay(200); if (!alive()) return
+    const trackCount = artistTracks.length || 5
+    for (let i = 1; i <= trackCount; i++) {
+      await delay(30); if (!alive()) return
+      setT4FieldCount(i)
+    }
+    await delay(300); if (!alive()) return
     clearTraces(4)
     await delay(400); if (!alive()) return
 
@@ -724,10 +741,10 @@ export function CascadePage() {
     // T4→T5 connector — artist + venue traces fire here
     setConnectorPhase(5)
     showTrace(['artist', 'venue'], 5)
-    await delay(800); if (!alive()) return
+    await delay(1100); if (!alive()) return
     setLoadingTier(5); revealTier(5)
-    await delay(350); if (!alive()) return
     await delay(400); if (!alive()) return
+    await delay(450); if (!alive()) return
     setLoadingTier(null)
     for (let i = 1; i <= 4; i++) {
       await delay(120); if (!alive()) return
@@ -738,7 +755,12 @@ export function CascadePage() {
       await delay(80); if (!alive()) return
       setSetlistLines(i)
     }
-    await delay(200); if (!alive()) return
+    const dataPoints = 8 + songCount
+    for (let i = 1; i <= dataPoints; i++) {
+      await delay(25); if (!alive()) return
+      setT5FieldCount(i)
+    }
+    await delay(300); if (!alive()) return
     clearTraces(5)
     await delay(400); if (!alive()) return
 
@@ -843,7 +865,7 @@ export function CascadePage() {
     genRef.current++
     setFlowPhase('idle')
     setTiersVisible(new Set([0])); setConnectorPhase(0)
-    setLoadingTier(null); setPillCounts({ t1a: 0, t1v: 0, t1d: 0, t2: 0, t3: 0, t4: 0, t5s: 0, t5t: 0 }); setSetlistLines(0); setScenesUnlocked(0); setT1ColStep(0); setT1FieldCount(0); setT2RevealStep(0); setCollapsedTiers(new Set()); setExpandedTier(null)
+    setLoadingTier(null); setPillCounts({ t1a: 0, t1v: 0, t1d: 0, t2: 0, t3: 0, t4: 0, t5s: 0, t5t: 0 }); setSetlistLines(0); setScenesUnlocked(0); setT1ColStep(0); setT1FieldCount(0); setT2FieldCount(0); setT3FieldCount(0); setT4FieldCount(0); setT5FieldCount(0); setT2RevealStep(0); setCollapsedTiers(new Set()); setExpandedTier(null)
     setSelectedArtistNorm(null); setSelectedArtistDisplay(null)
     setSelectedVenueNorm(null); setSelectedVenueDisplay(null)
     setSelectedConcert(null)
@@ -881,9 +903,9 @@ export function CascadePage() {
 
   // ── Helpers ───────────────────────────────────────────────────────────────
   const tierEntrance = (relevant: boolean) => ({
-    initial: { opacity: 0, y: 16 },
+    initial: { opacity: 0, y: 6 },
     animate: { opacity: relevant ? 1 : 0.12, y: 0 },
-    transition: { duration: 0.35, ease: 'easeOut' as const },
+    transition: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] as const },
   })
 
   // Derived display values
@@ -1013,17 +1035,6 @@ export function CascadePage() {
             )}
           </div>
 
-          {/* Hint / reset row */}
-          <div style={{ gridColumn: '1 / -1', textAlign: 'center', marginTop: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
-            {flowPhase !== 'idle' && flowPhase !== 'cascade-pending' && flowPhase !== 'complete' && (
-              <button
-                onClick={handleReset}
-                style={{ ...MONO, fontSize: 9, letterSpacing: '0.12em', color: '#374151', background: 'none', border: '1px solid #1e2028', borderRadius: 6, padding: '4px 12px', cursor: 'pointer' }}
-              >
-                ↻ reset
-              </button>
-            )}
-          </div>
         </div>
 
         {/* ── CASCADE CONTINUE BLOCK (Option B) ── */}
@@ -1040,9 +1051,6 @@ export function CascadePage() {
                 padding: '32px 48px',
                 position: 'relative',
                 zIndex: 2,
-                borderTop: '1px solid #1a1e2a',
-                borderBottom: '1px solid #1a1e2a',
-                margin: '4px 0',
               }}
             >
               <div style={{
@@ -1053,7 +1061,7 @@ export function CascadePage() {
                 marginBottom: 12,
                 lineHeight: 1.2,
               }}>
-                Three words. Watch what happens next.
+                Watch what happens next.
               </div>
               <p style={{
                 ...SANS,
@@ -1265,6 +1273,14 @@ export function CascadePage() {
 
           {/* Date — dormant */}
           <DormantThread color="#64748b" />
+          {t2FieldCount > 0 && (
+            <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
+                <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#a5b4fc' }}>{t2FieldCount}</span>
+                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#6366f1' }}>geographic fields</span>
+              </div>
+            </motion.div>
+          )}
           {tierAwaitingContinue === 2 && (
             <ContinueButton tierColor={TIER_COLORS.t2.accent!} onContinue={handleContinue} />
           )}
@@ -1366,6 +1382,14 @@ export function CascadePage() {
           <DormantThread color="#6366f1" />
           {/* Date — dormant */}
           <DormantThread color="#64748b" />
+          {t3FieldCount > 0 && (
+            <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
+                <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#c4b5fd' }}>{t3FieldCount}</span>
+                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#8b5cf6' }}>artist attributes</span>
+              </div>
+            </motion.div>
+          )}
           {tierAwaitingContinue === 3 && (
             <ContinueButton tierColor={TIER_COLORS.t3.accent!} onContinue={handleContinue} />
           )}
@@ -1469,6 +1493,14 @@ export function CascadePage() {
           <DormantThread color="#6366f1" />
           {/* Col 3 — dormant */}
           <DormantThread color="#64748b" />
+          {t4FieldCount > 0 && (
+            <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
+                <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#d8b4fe' }}>{t4FieldCount}</span>
+                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#a855f7' }}>tracks indexed</span>
+              </div>
+            </motion.div>
+          )}
           {tierAwaitingContinue === 4 && (
             <ContinueButton tierColor={TIER_COLORS.t4.accent!} onContinue={handleContinue} />
           )}
@@ -1575,12 +1607,14 @@ export function CascadePage() {
               </div>
             </div>
 
-          <div style={TIER_FOOTER_STYLE}>
-            <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
-              <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#e9d5ff' }}>~3,240</span>
-              <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#d8b4fe' }}>songs across 180 concerts</span>
-            </div>
-          </div>
+          {t5FieldCount > 0 && (
+            <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
+                <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#e9d5ff' }}>{t5FieldCount}</span>
+                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#c084fc' }}>data points enriched</span>
+              </div>
+            </motion.div>
+          )}
           </div>{/* end 2fr col */}
 
           {/* Col 2 (1fr) — dormant right */}
@@ -1970,12 +2004,20 @@ export function CascadePage() {
           </div>
 
           {/* CTA */}
-          <a
-            href="https://concerts.morperhaus.org"
-            style={{ ...MONO, fontSize: 16, color: '#6366f1', textDecoration: 'none', padding: '12px 28px', border: '1px solid rgba(99,102,241,0.3)', borderRadius: 8, display: 'inline-block', position: 'relative' }}
-          >
-            concerts.morperhaus.org
-          </a>
+          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+            <a
+              href="https://concerts.morperhaus.org"
+              style={{ ...MONO, fontSize: 16, color: '#6366f1', textDecoration: 'none', padding: '12px 28px', border: '1px solid rgba(99,102,241,0.3)', borderRadius: 8, display: 'inline-block', position: 'relative' }}
+            >
+              concerts.morperhaus.org
+            </a>
+            <button
+              onClick={handleReset}
+              style={{ ...MONO, fontSize: 11, letterSpacing: '0.12em', color: '#4b5563', background: 'none', border: '1px solid #1e2028', borderRadius: 8, padding: '12px 20px', cursor: 'pointer' }}
+            >
+              ↺ try another artist
+            </button>
+          </div>
         </motion.footer>
         )}
 
