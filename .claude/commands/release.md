@@ -97,6 +97,7 @@ Before proceeding with release, verify:
   - API integrations (Ticketmaster, setlist.fm, geocoding)
   - Analytics tracking events (GA4)
   - Build/deployment configuration
+  - `/how-it-works` page — stats (show count, year span, artist count, city count) are data-driven and will reflect any data refresh automatically; verify the page loads and the auto-run featured example completes
 - [ ] **Breaking changes documented** — If any breaking changes exist, they must be:
   - Clearly described in changelog with migration notes
   - Highlighted in README "What's New" section
@@ -559,6 +560,23 @@ git push origin main --tags  # unless --no-push
 
 **Note:** If remote has new commits, the push will be rejected. Run `git pull --rebase` and push again.
 
+### Step 8.5: Deploy Cloudflare Worker
+
+**Purpose:** Keep the meta-injection worker in sync with the site. The worker handles bot-facing meta tags for all pathname routes (`/how-it-works`, `/liner-notes`, `/whats-playing`, etc.). It must be deployed separately — it does NOT auto-deploy on git push.
+
+**Skip if:** `--no-push` flag was used (worker deploy requires site to be live first).
+
+```bash
+npm run deploy:worker
+```
+
+**If deploy fails:**
+> ❌ Worker deployment failed. The site is live but bots will receive stale meta tags.
+>
+> Check Cloudflare dashboard or run `cd workers && wrangler deploy` manually.
+
+**Checkpoint:** > Deploy Cloudflare Worker? (yes / skip)
+
 ---
 
 ### Step 9: Create GitHub Release
@@ -750,6 +768,7 @@ git commit -m "release: v{VERSION} - {TITLE}"
 - [ ] `/whats-playing` shows v{VERSION}
 - [ ] Deep link works: `{ROUTE}`
 - [ ] Social media preview shows current stats (test with [Twitter Card Validator](https://cards-dev.twitter.com/validator) or [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/))
+- [ ] `/how-it-works` loads, auto-run featured example completes, T6 scene stats reflect current data
 
 **If something's wrong:** `/release-undo`
 

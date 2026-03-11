@@ -12,6 +12,15 @@
 
 ## Recently Completed
 
+### ✅ Cascade Progressive Disclosure — How It Works (v4.6.0)
+
+**Status**: Completed
+**Spec**: [how-it-works.md](specs/implemented/how-it-works.md)
+
+Interactive animated cascade showing how three raw data points become a richly enriched concert archive. Seven tiers pour top to bottom, each tier revealing a different enrichment layer — geographic, artist identity, audio, and performance data — with slot-machine counters and a post-build glow.
+
+---
+
 ### ✅ Artist Imagery Enrichment - Deezer Fallback (v3.9.0)
 
 **Status**: Completed
@@ -192,15 +201,6 @@ Genre moved to artist-level metadata with automatic enrichment from TheAudioDB.
 ---
 
 ## Short-Term Roadmap
-
-### Cascade Progressive Disclosure
-
-**Status**: Planned
-**Spec**: [cascade-progressive-disclosure.md](specs/future/cascade-progressive-disclosure.md)
-
-Progressive reveal animation for the Data Enrichment Cascade — tiers hidden until earned, connector lines animate between each tier boundary, columns hydrate left to right.
-
----
 
 ### About Page - E-E-A-T Signals
 

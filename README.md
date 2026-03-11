@@ -7,13 +7,13 @@ _A visual love letter to four decades of live music._
 
 An interactive web app for exploring personal concert history. Five scenes—Timeline, Venues, Geography, Genres, Artists—each offering a different lens on 178 shows spanning 1984 to today. Click through decades, trace connections between venues and artists, see where the music happened on a map. All enriched with artist photos, venue imagery, and setlist data.
 
-**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 179 shows • 254 artists • 77 venues • 5+ decades
+**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 181 shows • 256 artists • 77 venues • 5+ decades
 
 ## What's new
 
-**v4.4.0** 📖 Liner Notes! Forty-two years of concerts, now with stories. The archive analyzes your history and writes original essays—personal milestones, cultural context, and deep cuts drawn straight from the data. Browse the feed at [/liner-notes](https://concerts.morperhaus.org/liner-notes), filter by category, and subscribe via RSS. App release notes have moved to [What's Playing](https://concerts.morperhaus.org/whats-playing).
+**v4.6.0** ✨ How It Works! Ever wonder how a spreadsheet row becomes a richly connected concert record? Now you can watch it happen. The new [How It Works](https://concerts.morperhaus.org/how-it-works) page walks you through every enrichment tier—from raw artist name and venue to geographic coordinates, artist photos, audio previews, and song-by-song setlists—as an animated cascade in real time.
 
-**v4.3.0** 🎟️ On Deck! Upcoming concerts now get their moment in the spotlight—look for the badge on Timeline cards and in Artist profiles wherever a show is still ahead. Never lose track of what's coming up next.
+**v4.4.0** 📖 Liner Notes! Forty-two years of concerts, now with stories. The archive analyzes your history and writes original essays—personal milestones, cultural context, and deep cuts drawn straight from the data. Browse the feed at [/liner-notes](https://concerts.morperhaus.org/liner-notes), filter by category, and subscribe via RSS. App release notes have moved to [What's Playing](https://concerts.morperhaus.org/whats-playing).
 
 Want the full story? Explore recent updates in [What's Playing](https://concerts.morperhaus.org/whats-playing).
 

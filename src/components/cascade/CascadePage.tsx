@@ -277,11 +277,13 @@ function ArtistTypeahead({
   const wrapRef = useRef<HTMLDivElement>(null)
   const ARTIST_COLOR = '#8b5cf6'
 
-  const filtered = useMemo(() => {
-    if (!inputValue.trim()) return artists.slice(0, 20)
+  const firstMatch = useMemo(() => {
+    if (!inputValue.trim()) return null
     const q = inputValue.toLowerCase()
-    return artists.filter(a => a.display.toLowerCase().includes(q)).slice(0, 20)
+    return artists.find(a => a.display.toLowerCase().startsWith(q)) ?? null
   }, [artists, inputValue])
+
+  const ghostCompletion = firstMatch ? firstMatch.display.slice(inputValue.length) : ''
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -299,11 +301,23 @@ function ArtistTypeahead({
     setEditing(true)
   }
 
-  const handlePick = (norm: string, display: string) => {
-    onValueChange(display)
-    onSelect(norm, display)
-    setEditing(false)
-    setInputValue('')
+  const confirmMatch = () => {
+    if (firstMatch) {
+      onValueChange(firstMatch.display)
+      onSelect(firstMatch.norm, firstMatch.display)
+      setEditing(false)
+      setInputValue('')
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if ((e.key === 'Tab' || e.key === 'ArrowRight' || e.key === 'Enter') && firstMatch) {
+      e.preventDefault()
+      confirmMatch()
+    } else if (e.key === 'Escape') {
+      setEditing(false)
+      setInputValue('')
+    }
   }
 
   return (
@@ -329,47 +343,56 @@ function ArtistTypeahead({
           artist
         </div>
         {editing ? (
-          <input
-            autoFocus
-            type="text"
-            placeholder="search…"
-            value={inputValue}
-            onChange={e => setInputValue(e.target.value)}
-            style={{
-              width: '100%',
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 17,
-              background: 'transparent',
-              border: 'none',
-              outline: 'none',
-              color: '#9ca3af',
-              textAlign: 'center',
-              padding: 0,
-            }}
-          />
+          <div style={{ position: 'relative', height: 26, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {/* Ghost text display layer */}
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute', inset: 0,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 17,
+                pointerEvents: 'none',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+              }}
+            >
+              {inputValue ? (
+                <>
+                  <span style={{ color: '#e2e8f0' }}>{inputValue}</span>
+                  <span style={{ color: '#3d2a5c' }}>{ghostCompletion}</span>
+                </>
+              ) : (
+                <span style={{ color: '#2d3040' }}>search…</span>
+              )}
+            </div>
+            {/* Transparent input captures keyboard; caret shows position */}
+            <input
+              autoFocus
+              type="text"
+              value={inputValue}
+              onChange={e => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              style={{
+                width: '100%',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 17,
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                color: 'transparent',
+                caretColor: ARTIST_COLOR,
+                textAlign: 'center',
+                padding: 0,
+                position: 'relative',
+                zIndex: 1,
+              }}
+            />
+          </div>
         ) : (
           <div style={{ fontSize: 17, color: '#9ca3af' }}>{value || '—'}</div>
         )}
       </div>
-      {editing && filtered.length > 0 && (
-        <div style={{
-          position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 50,
-          background: '#0d0f18', border: '1px solid #2d3040', borderRadius: 4,
-          marginTop: 2, maxHeight: 180, overflowY: 'auto',
-        }}>
-          {filtered.map(a => (
-            <button
-              key={a.norm}
-              onMouseDown={e => { e.preventDefault(); handlePick(a.norm, a.display) }}
-              style={{ ...PICKER_BTN, color: '#9ca3af', display: 'block' }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#1a1e2a')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'none')}
-            >
-              {a.display}
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   )
 }
@@ -381,24 +404,81 @@ function VenuePicker({
   options: { norm: string; display: string }[]
   onSelect: (norm: string) => void
 }) {
+  const [open, setOpen] = useState(false)
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const VENUE_COLOR = '#6366f1'
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
+
   return (
-    <div>
-      <div style={{ ...MONO, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4b5563', marginBottom: 8, textAlign: 'center' }}>
-        venue
+    <div ref={wrapRef} style={{ position: 'relative' }}>
+      <div
+        onClick={() => setOpen(o => !o)}
+        style={{
+          background: '#1e2028',
+          border: `1px solid ${open ? VENUE_COLOR : '#2d3040'}`,
+          ...(open && { borderBottom: '1px solid #252836' }),
+          borderRadius: open ? '6px 6px 0 0' : 6,
+          padding: '20px',
+          fontFamily: "'JetBrains Mono', monospace",
+          cursor: 'pointer',
+          textAlign: 'center',
+          width: '100%',
+          boxShadow: open ? `0 0 24px ${VENUE_COLOR}40` : 'none',
+          transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+          boxSizing: 'border-box',
+        }}
+      >
+        <div style={{ fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4b5563', marginBottom: 8 }}>
+          venue
+        </div>
+        <div style={{ fontSize: 17, color: '#3a3f5c', fontStyle: 'italic' }}>
+          select venue…
+        </div>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        {options.map(o => (
-          <button
-            key={o.norm}
-            onClick={() => onSelect(o.norm)}
-            style={{ ...PICKER_BTN, color: '#a5b4fc' }}
-            onMouseEnter={e => (e.currentTarget.style.background = '#1a1e2a')}
-            onMouseLeave={e => (e.currentTarget.style.background = 'none')}
-          >
-            {o.display}
-          </button>
-        ))}
-      </div>
+      {open && (
+        <div style={{
+          position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 50,
+          background: '#1e2028',
+          border: `1px solid ${VENUE_COLOR}`,
+          borderTop: 'none',
+          borderRadius: '0 0 6px 6px',
+          overflow: 'hidden',
+        }}>
+          {options.map((o, i) => (
+            <button
+              key={o.norm}
+              onMouseDown={e => { e.preventDefault(); onSelect(o.norm); setOpen(false) }}
+              style={{
+                display: 'block',
+                width: '100%',
+                background: 'none',
+                border: 'none',
+                borderTop: i > 0 ? '1px solid #1a1d28' : 'none',
+                padding: '14px 20px',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 17,
+                color: '#9ca3af',
+                textAlign: 'center',
+                cursor: 'pointer',
+                transition: 'background 0.1s, color 0.1s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#141620'; e.currentTarget.style.color = '#c4b5fd' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = '#9ca3af' }}
+            >
+              {o.display}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -507,6 +587,23 @@ export function CascadePage() {
 
     artistList.sort((a, b) => a.display.localeCompare(b.display))
     return { artistToVenues, artistVenueToConcerts, artistList }
+  }, [concerts])
+
+  // ── Corpus stats (derived from loaded data) ───────────────────────────────
+  const corpusStats = useMemo(() => {
+    if (concerts.length === 0) return { totalShows: 0, yearSpan: 0, uniqueArtists: 0, uniqueCities: 0 }
+    const allArtists = new Set<string>()
+    concerts.forEach(c => {
+      allArtists.add(c.headliner)
+      c.openers.forEach(o => allArtists.add(o))
+    })
+    const years = concerts.map(c => c.year)
+    return {
+      totalShows: concerts.length,
+      yearSpan: Math.max(...years) - Math.min(...years) + 1,
+      uniqueArtists: allArtists.size,
+      uniqueCities: new Set(concerts.map(c => c.city)).size,
+    }
   }, [concerts])
 
   // ── Flow state ────────────────────────────────────────────────────────────
@@ -1652,7 +1749,7 @@ export function CascadePage() {
             {
               id: 'timeline',
               name: 'Concert Archive',
-              subtitle: '180 shows across 42 years',
+              subtitle: `${corpusStats.totalShows} shows across ${corpusStats.yearSpan} years`,
               bg: '#ffffff',
               labelColor: '#1e293b',
               subtitleColor: '#64748b',
@@ -1694,7 +1791,7 @@ export function CascadePage() {
             {
               id: 'map',
               name: 'The Geography',
-              subtitle: '35 cities across the map',
+              subtitle: `${corpusStats.uniqueCities} cities across the map`,
               bg: '#111827',
               labelColor: '#f9fafb',
               subtitleColor: '#9ca3af',
@@ -1736,7 +1833,7 @@ export function CascadePage() {
             {
               id: 'artists',
               name: 'The Artists',
-              subtitle: '255 artists · 180 concerts',
+              subtitle: `${corpusStats.uniqueArtists} artists · ${corpusStats.totalShows} concerts`,
               bg: 'linear-gradient(135deg, #1e1b4b, #581c87)',
               labelColor: '#f5f3ff',
               subtitleColor: '#c4b5fd',

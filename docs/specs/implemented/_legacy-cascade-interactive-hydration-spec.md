@@ -2,7 +2,7 @@
 
 **Status:** Planned
 **Replaces:** `_legacy-data-enrichment-cascade-spec.md`
-**Route:** `/cascade`
+**Route:** `/how-it-works`
 **Complexity:** Very High
 
 ---

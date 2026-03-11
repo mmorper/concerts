@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "4.6.0",
+      "date": "2026-03-10",
+      "title": "How It Works",
+      "description": "Watch three words in a spreadsheet become 42 years of living music history. The new \"How It Works\" page is an animated cascade that walks you through every API call, enrichment tier, and data transformation — from a raw artist name and venue to artist photos, audio previews, and full setlists — in real time.",
+      "route": "/how-it-works",
+      "highlights": [
+        "Pick any concert, hit run, and watch the data enrichment cascade pour tier by tier in front of you",
+        "Seven tiers reveal how raw inputs become geographic coordinates, artist identity, audio previews, and song-by-song setlists",
+        "Slot-machine counters and a post-build glow show the scale of the archive your concert feeds",
+        "Auto-loads with a featured Sting concert so you arrive to a live preview, ready to run"
+      ]
+    },
+    {
       "version": "4.5.1",
       "date": "2026-03-08",
       "title": "Mobile Polish",

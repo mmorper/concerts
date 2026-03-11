@@ -2,7 +2,7 @@
 
 ## Overview
 
-Personal concert archive spanning 1984-2026. Interactive web application with 180 concerts, 255 artists, 77 venues.
+Personal concert archive spanning 1984-2026. Interactive web application with 181 concerts, 256 artists, 77 venues.
 
 **Live Site:** https://concerts.morperhaus.org
 **Technology:** React SPA with D3.js visualizations, Leaflet maps, Tailwind UI
@@ -36,7 +36,7 @@ All data is publicly accessible as JSON:
 
 ### Concert Data
 **URL:** https://concerts.morperhaus.org/data/concerts.json
-**Records:** 180 concerts
+**Records:** 181 concerts
 **Schema:**
 ```json
 {
@@ -63,7 +63,7 @@ All data is publicly accessible as JSON:
 
 ### Artist Metadata
 **URL:** https://concerts.morperhaus.org/data/artists-metadata.json
-**Records:** 255 artists
+**Records:** 256 artists
 **Schema:**
 ```json
 {
@@ -340,6 +340,30 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 
 ---
 
+#### How It Works (`/how-it-works`)
+**Title:** "How It Works | Morperhaus Concert Archives"
+**Purpose:** Interactive explainer showing how a single concert entry flows through the data enrichment pipeline
+
+**What it does:**
+- User selects an artist, venue, and date (or watches an auto-run featured example)
+- The page animates the full enrichment cascade tier-by-tier: structural parsing → geographic enrichment → artist identity → audio previews → setlist/performance data
+- Each tier reveals which APIs are called, what data fields are populated, and how many data points are generated
+- Ends with a live preview of all five archive scenes fed by that concert's enriched data
+
+**Tiers explained:**
+- Tier 1 — Structural: date parsing, decade/day-of-week computation, normalized slugs
+- Tier 2 — Geographic: lat/lng, venue address, venue photos (Google Places)
+- Tier 3 — Artist Identity: bio, genres, images (TheAudioDB / Last.fm)
+- Tier 4 — Audio: 30-second previews, album art (Apple Music / iTunes)
+- Tier 5 — Performance: setlists, covers, tour context (setlist.fm / Ticketmaster)
+- Tier 6 — Output: all five interactive archive scenes
+
+**Meta Tags (bot-rendered):**
+- Dynamic title and description including current concert count and year span
+- URL: https://concerts.morperhaus.org/how-it-works
+
+---
+
 ### Accessibility & Semantic Notes
 
 **HTML Structure:**
@@ -393,6 +417,8 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 - Lazy loading: Artist images, venue photos loaded on demand
 - External APIs: setlist.fm, Ticketmaster (called client-side when needed)
 - Discography: MusicBrainz data pre-fetched and bundled (discography.json)
+
+---
 
 ---
 
@@ -630,6 +656,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-03-09
-**Version:** v4.5.0
-**Total Content:** 180 concerts | 255 artists | 77 venues | 10,933+ albums | 1984-2026
+**Last Updated:** 2026-03-11
+**Version:** v4.6.0
+**Total Content:** 181 concerts | 256 artists | 77 venues | 10,933+ albums | 1984-2026

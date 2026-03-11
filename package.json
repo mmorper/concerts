@@ -1,6 +1,6 @@
 {
   "name": "morperhaus-concerts",
-  "version": "4.5.1",
+  "version": "4.6.0",
   "private": true,
   "type": "module",
   "description": "Interactive concert history timeline application",
@@ -55,7 +55,8 @@
     "seo": "tsx scripts/analyze-seo.ts",
     "generate:facts": "tsx scripts/generate-facts.ts",
     "generate:rss": "tsx scripts/generate-rss.ts",
-    "generate:liner-notes": "tsx scripts/liner-notes/index.ts"
+    "generate:liner-notes": "tsx scripts/liner-notes/index.ts",
+    "deploy:worker": "cd workers && wrangler deploy"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

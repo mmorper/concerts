@@ -77,7 +77,9 @@ export default {
     let html = await response.text();
 
     // Inject dynamic meta tags — pathname routes take precedence over query params
-    if (url.pathname === '/liner-notes') {
+    if (url.pathname === '/how-it-works') {
+      html = await injectHowItWorksMeta(html, url.origin);
+    } else if (url.pathname === '/liner-notes') {
       html = await injectLinerNotesFeedMeta(html, url.origin);
     } else if (url.pathname.startsWith('/liner-notes/') && url.pathname !== '/liner-notes/rss') {
       const slug = url.pathname.slice('/liner-notes/'.length);
@@ -473,6 +475,39 @@ async function injectGenreMeta(html, genreNormalized, origin) {
 
   } catch (error) {
     console.error(`Error injecting genre meta: ${error.message}`);
+    return html;
+  }
+}
+
+/**
+ * Inject meta tags for /how-it-works — the interactive data pipeline explainer
+ */
+async function injectHowItWorksMeta(html, origin) {
+  try {
+    const concertsResponse = await fetch(`${origin}/data/concerts.json`);
+    if (!concertsResponse.ok) return html;
+    const concertsData = await concertsResponse.json();
+
+    const concertCount = concertsData.concerts.length;
+    const years = concertsData.concerts.map(c => c.year);
+    const yearSpan = Math.max(...years) - Math.min(...years) + 1;
+
+    const title = `How It Works | Morperhaus Concert Archives`;
+    const description = `See how ${concertCount} concerts come to life. An interactive walkthrough of the data enrichment pipeline — from a single artist, venue, and date through seven APIs across six tiers, building ${yearSpan} years of live music history.`;
+    const pageUrl = `${origin}/how-it-works`;
+
+    html = html.replace(/<title>.*?<\/title>/, `<title>${title}</title>`);
+    html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
+    html = html.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
+    html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
+
+    console.log(`[How It Works Meta Injected]`);
+    return html;
+
+  } catch (error) {
+    console.error(`Error injecting how-it-works meta: ${error.message}`);
     return html;
   }
 }

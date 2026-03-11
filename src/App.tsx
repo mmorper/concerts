@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import type { ConcertData } from './types/concert'
 import { Scene1Hero } from './components/scenes/Scene1Hero'
 import { Scene3Map } from './components/scenes/Scene3Map'
@@ -27,8 +27,9 @@ function App() {
       <Route path="/liner-notes/:slug" element={<LinerNotePermalink />} />
       <Route path="/whats-playing" element={<WhatsPlayingPage />} />
       <Route path="/about" element={<AboutPage />} />
-      <Route path="/cascade" element={<CascadePage />} />
+      <Route path="/how-it-works" element={<CascadePage />} />
       {/* Legacy redirects */}
+      <Route path="/cascade" element={<Navigate to="/how-it-works" replace />} />
       <Route path="/changelog" element={<WhatsPlayingPage />} />
       <Route path="/changelog/rss" element={<ChangelogRSS />} />
     </Routes>

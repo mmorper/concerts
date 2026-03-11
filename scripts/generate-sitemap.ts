@@ -138,6 +138,9 @@ async function generateSitemap() {
     xml += generateUrlEntry(`/liner-notes/${slug}`, 0.8, 'weekly', lastmod)
   })
 
+  // How It Works — interactive data pipeline explainer
+  xml += generateUrlEntry('/how-it-works', 0.6, 'monthly', lastmod)
+
   // About page
   xml += generateUrlEntry('/about', 0.6, 'monthly')
 
@@ -152,6 +155,7 @@ async function generateSitemap() {
     sortedArtists.length +
     sortedVenues.length * 2 + // 2 scenes per venue
     2 + linerNotesSlugs.length + // liner notes feed + permalinks
+    1 + // how-it-works
     1 // about page
 
   console.log(`✅ Sitemap generated: ${OUTPUT_PATH}`)
@@ -161,6 +165,7 @@ async function generateSitemap() {
   console.log(`   - Artists: ${sortedArtists.length}`)
   console.log(`   - Venues: ${sortedVenues.length} × 2 scenes = ${sortedVenues.length * 2}`)
   console.log(`   - Liner notes: ${2 + linerNotesSlugs.length} (feed + ${linerNotesSlugs.length} posts)`)
+  console.log(`   - How It Works: 1`)
   console.log(`   - About: 1`)
   console.log()
 }
