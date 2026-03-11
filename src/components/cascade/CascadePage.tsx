@@ -679,8 +679,8 @@ export function CascadePage() {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t2: i }))
     }
-    for (let i = 1; i <= 6; i++) {
-      await delay(40); if (!alive()) return
+    for (let i = 1; i <= 28; i++) {
+      await delay(22); if (!alive()) return
       setT2FieldCount(i)
     }
     await delay(300); if (!alive()) return
@@ -705,8 +705,8 @@ export function CascadePage() {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t3: i }))
     }
-    for (let i = 1; i <= 7; i++) {
-      await delay(40); if (!alive()) return
+    for (let i = 1; i <= 43; i++) {
+      await delay(18); if (!alive()) return
       setT3FieldCount(i)
     }
     await delay(300); if (!alive()) return
@@ -962,6 +962,11 @@ export function CascadePage() {
           0%, 100% { opacity: 1; transform: scale(1); }
           50% { opacity: 0.25; transform: scale(0.85); }
         }
+        @keyframes countTick {
+          0%   { opacity: 0; transform: translateY(-6px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .count-tick { animation: countTick 0.07s ease-out forwards; }
       `}</style>
       <div
         ref={containerRef}
@@ -1181,7 +1186,7 @@ export function CascadePage() {
           {t1FieldCount > 0 && (
             <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
-                <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#94a3b8' }}>{t1FieldCount}</span>
+                <span key={t1FieldCount} className="count-tick" style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#94a3b8' }}>{t1FieldCount}</span>
                 <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#64748b' }}>fields per concert</span>
               </div>
             </motion.div>
@@ -1285,8 +1290,8 @@ export function CascadePage() {
           {t2FieldCount > 0 && (
             <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
-                <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#a5b4fc' }}>{t2FieldCount}</span>
-                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#6366f1' }}>geographic fields</span>
+                <span key={t2FieldCount} className="count-tick" style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#a5b4fc' }}>{t2FieldCount}</span>
+                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#6366f1' }}>fields returned</span>
               </div>
             </motion.div>
           )}
@@ -1393,8 +1398,8 @@ export function CascadePage() {
           {t3FieldCount > 0 && (
             <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
-                <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#c4b5fd' }}>{t3FieldCount}</span>
-                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#8b5cf6' }}>artist attributes</span>
+                <span key={t3FieldCount} className="count-tick" style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#c4b5fd' }}>{t3FieldCount}</span>
+                <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#8b5cf6' }}>fields returned</span>
               </div>
             </motion.div>
           )}
@@ -1504,7 +1509,7 @@ export function CascadePage() {
           {t4FieldCount > 0 && (
             <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
-                <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#d8b4fe' }}>{t4FieldCount}</span>
+                <span key={t4FieldCount} className="count-tick" style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#d8b4fe' }}>{t4FieldCount}</span>
                 <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#a855f7' }}>tracks indexed</span>
               </div>
             </motion.div>
@@ -1612,7 +1617,7 @@ export function CascadePage() {
           {t5FieldCount > 0 && (
             <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
-                <span style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#e9d5ff' }}>{t5FieldCount}</span>
+                <span key={t5FieldCount} className="count-tick" style={{ ...PLAYFAIR, fontWeight: 700, fontSize: 22, lineHeight: 1, color: '#e9d5ff' }}>{t5FieldCount}</span>
                 <span style={{ ...SANS, fontSize: 11, fontWeight: 300, color: '#c084fc' }}>data points enriched</span>
               </div>
             </motion.div>
