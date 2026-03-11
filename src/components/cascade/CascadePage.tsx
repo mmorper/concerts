@@ -545,10 +545,12 @@ export function CascadePage() {
     setGlowingSeeds(new Set(seeds))
     setGlowingTiers(prev => new Map([...prev, [tierId, dominantSeedColor(seeds)]]))
   }
-  const clearTraces = (tierId: number) => {
-    setGlowingSeeds(new Set())
+  // Clear tier frame glow only — call before pills so the box doesn't grow with content
+  const clearTierGlow = (tierId: number) => {
     setGlowingTiers(prev => { const next = new Map(prev); next.delete(tierId); return next })
   }
+  // Clear atom glows only — call after pills complete
+  const clearAtomGlow = () => setGlowingSeeds(new Set())
 
   // ── Animation state ───────────────────────────────────────────────────────
   const genRef = useRef(0)
@@ -629,7 +631,8 @@ export function CascadePage() {
     setT1ColStep(3)
     await delay(500); if (!alive()) return  // pause — viewer reads all three
 
-    // T1 pills: artist → venue → date
+    // T1 pills: clear tier frame glow now (container at header height), then build
+    clearTierGlow(1)
     for (let i = 1; i <= 3; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t1a: i }))
@@ -651,7 +654,7 @@ export function CascadePage() {
       setT1FieldCount(i)
     }
     await delay(200); if (!alive()) return
-    clearTraces(1)
+    clearAtomGlow()
     await delay(400); if (!alive()) return
 
     // T1 complete — wait for user, then collapse
@@ -669,7 +672,9 @@ export function CascadePage() {
     await delay(450); if (!alive()) return
     setT2RevealStep(2)
     setLoadingTier(null)
-    await delay(700); if (!alive()) return
+    await delay(500); if (!alive()) return
+    clearTierGlow(2)
+    await delay(200); if (!alive()) return
     for (let i = 1; i <= 6; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t2: i }))
@@ -679,7 +684,7 @@ export function CascadePage() {
       setT2FieldCount(i)
     }
     await delay(300); if (!alive()) return
-    clearTraces(2)
+    clearAtomGlow()
     await delay(400); if (!alive()) return
 
     // T2 complete — wait for user, then collapse
@@ -695,6 +700,7 @@ export function CascadePage() {
     await delay(400); if (!alive()) return
     await delay(450); if (!alive()) return
     setLoadingTier(null)
+    clearTierGlow(3)
     for (let i = 1; i <= 7; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t3: i }))
@@ -704,7 +710,7 @@ export function CascadePage() {
       setT3FieldCount(i)
     }
     await delay(300); if (!alive()) return
-    clearTraces(3)
+    clearAtomGlow()
     await delay(400); if (!alive()) return
 
     // T3 complete — wait for user, then collapse
@@ -720,6 +726,7 @@ export function CascadePage() {
     await delay(400); if (!alive()) return
     await delay(450); if (!alive()) return
     setLoadingTier(null)
+    clearTierGlow(4)
     for (let i = 1; i <= 3; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t4: i }))
@@ -730,7 +737,7 @@ export function CascadePage() {
       setT4FieldCount(i)
     }
     await delay(300); if (!alive()) return
-    clearTraces(4)
+    clearAtomGlow()
     await delay(400); if (!alive()) return
 
     // T4 complete — wait for user, then collapse
@@ -746,6 +753,7 @@ export function CascadePage() {
     await delay(400); if (!alive()) return
     await delay(450); if (!alive()) return
     setLoadingTier(null)
+    clearTierGlow(5)
     for (let i = 1; i <= 4; i++) {
       await delay(120); if (!alive()) return
       setPillCounts(prev => ({ ...prev, t5s: i, t5t: i }))
@@ -761,7 +769,7 @@ export function CascadePage() {
       setT5FieldCount(i)
     }
     await delay(300); if (!alive()) return
-    clearTraces(5)
+    clearAtomGlow()
     await delay(400); if (!alive()) return
 
     // T5 complete — wait for user, then collapse
@@ -773,11 +781,12 @@ export function CascadePage() {
     showTrace(['artist', 'venue', 'date'], 6)
     await delay(300); if (!alive()) return
     revealTier(6)
+    clearTierGlow(6)
     for (let i = 1; i <= 4; i++) {
       await delay(80); if (!alive()) return
       setScenesUnlocked(i)
     }
-    clearTraces(6)
+    clearAtomGlow()
     setFlowPhase('complete')
   }
 
@@ -1582,15 +1591,8 @@ export function CascadePage() {
               </div>
 
               {/* Numbered setlist */}
+              {setlistSongs.length > 0 && (
               <div style={{ marginTop: 16 }}>
-                <div style={{ ...MONO, fontSize: 8, letterSpacing: '0.15em', color: '#7c3aed', marginBottom: 8, textAlign: 'center' }}>
-                  SETLIST — {selectedConcert?.date ?? '—'}
-                </div>
-                {setlistSongs.length === 0 && (
-                  <div style={{ ...MONO, fontSize: 9, color: '#7c3aed40', textAlign: 'center', padding: '8px 0' }}>
-                    setlist not available
-                  </div>
-                )}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px 16px' }}>
                   {setlistSongs.slice(0, setlistLines).map((song, i) => (
                     <div key={song + i} style={{ display: 'flex', gap: 8, alignItems: 'baseline', padding: '3px 0', borderBottom: '1px solid rgba(124,58,237,0.08)' }}>
@@ -1604,7 +1606,8 @@ export function CascadePage() {
                   ))}
                 </div>
               </div>
-            </div>
+              )}
+          </div>
 
           {t5FieldCount > 0 && (
             <motion.div style={TIER_FOOTER_STYLE} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
