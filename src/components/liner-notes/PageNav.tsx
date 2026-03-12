@@ -8,7 +8,7 @@ import { useNavigate, Link } from 'react-router-dom'
 
 interface PageNavProps {
   /** Which page this nav is on — used to hide the self-link */
-  current: 'liner-notes' | 'whats-playing' | 'about'
+  current: 'liner-notes' | 'whats-playing' | 'about' | 'how-it-works'
   /** Dark theme (What's Playing) vs light theme (Liner Notes) */
   theme: 'dark' | 'light'
 }
@@ -71,6 +71,18 @@ export function PageNav({ current, theme }: PageNavProps) {
             className={`font-sans text-sm transition-colors ${linkClass}`}
           >
             About
+          </Link>
+        </>
+      )}
+
+      {current !== 'how-it-works' && (
+        <>
+          <span className={dividerClass} aria-hidden="true">·</span>
+          <Link
+            to="/how-it-works"
+            className={`font-sans text-sm transition-colors ${linkClass}`}
+          >
+            How It Works
           </Link>
         </>
       )}

@@ -1015,7 +1015,7 @@ export function CascadePage() {
 
   // ── Body style ────────────────────────────────────────────────────────────
   useEffect(() => {
-    document.body.style.overflow = 'auto'
+    document.body.style.overflow = 'hidden'
     document.body.style.background = '#0a0a0f'
     return () => {
       document.body.style.overflow = 'hidden'
@@ -1082,7 +1082,7 @@ export function CascadePage() {
   ]
 
   return (
-    <div style={{ background: '#0a0a0f', minHeight: '100vh', color: '#fff' }}>
+    <div style={{ background: '#0a0a0f', height: '100vh', overflow: 'hidden', color: '#fff' }}>
       <style>{`
         @keyframes favPulse {
           0%, 100% { opacity: 1; transform: scale(1); }
@@ -1107,7 +1107,7 @@ export function CascadePage() {
         {/* ── HEADER ── */}
         <motion.header
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-          style={{ textAlign: 'center', padding: '40px 40px 20px', position: 'relative', zIndex: 2 }}
+          style={{ textAlign: 'center', padding: '24px 40px 20px', position: 'relative', zIndex: 2 }}
         >
           <div style={{ ...MONO, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#6b7280', marginBottom: 24 }}>
             Morperhaus Concert Archives
@@ -1379,11 +1379,11 @@ export function CascadePage() {
                     <img
                       src={venueMeta.photoUrls.thumbnail}
                       alt={venueMeta.name}
-                      style={{ width: '100%', height: 56, objectFit: 'cover', borderRadius: 4, marginBottom: 10 }}
+                      style={{ width: '100%', height: 40, objectFit: 'cover', borderRadius: 4, marginBottom: 10 }}
                     />
                   ) : (
                     <div style={{
-                      width: '100%', height: 56,
+                      width: '100%', height: 40,
                       background: 'rgba(99,102,241,0.1)',
                       border: '1px solid rgba(99,102,241,0.2)',
                       borderRadius: 4,
@@ -1474,11 +1474,11 @@ export function CascadePage() {
               <img
                 src={artistImage}
                 alt={selectedArtistDisplay ?? ''}
-                style={{ width: 60, height: 60, borderRadius: '50%', objectFit: 'cover', display: 'block', margin: '0 auto 10px', border: '1px solid rgba(139,92,246,0.45)' }}
+                style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover', display: 'block', margin: '0 auto 10px', border: '1px solid rgba(139,92,246,0.45)' }}
               />
             ) : (
               <div style={{
-                width: 60, height: 60, borderRadius: '50%',
+                width: 44, height: 44, borderRadius: '50%',
                 background: 'rgba(139,92,246,0.18)',
                 border: '1px solid rgba(139,92,246,0.45)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -1576,10 +1576,10 @@ export function CascadePage() {
               {/* Album art + label */}
               <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12 }}>
                 {albumArt ? (
-                  <img src={albumArt} alt="album" style={{ width: 48, height: 48, borderRadius: 6, objectFit: 'cover', flexShrink: 0 }} />
+                  <img src={albumArt} alt="album" style={{ width: 36, height: 36, borderRadius: 6, objectFit: 'cover', flexShrink: 0 }} />
                 ) : (
                   <div style={{
-                    width: 48, height: 48, borderRadius: 6,
+                    width: 36, height: 36, borderRadius: 6,
                     background: 'rgba(168,85,247,0.18)',
                     border: '1px solid rgba(168,85,247,0.35)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
