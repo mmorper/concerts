@@ -63,18 +63,6 @@ export function PageNav({ current, theme }: PageNavProps) {
         </>
       )}
 
-      {current !== 'about' && (
-        <>
-          <span className={dividerClass} aria-hidden="true">·</span>
-          <Link
-            to="/about"
-            className={`font-sans text-sm transition-colors ${linkClass}`}
-          >
-            About
-          </Link>
-        </>
-      )}
-
       {current !== 'how-it-works' && (
         <>
           <span className={dividerClass} aria-hidden="true">·</span>
@@ -83,6 +71,18 @@ export function PageNav({ current, theme }: PageNavProps) {
             className={`font-sans text-sm transition-colors ${linkClass}`}
           >
             How It Works
+          </Link>
+        </>
+      )}
+
+      {current !== 'about' && (
+        <>
+          <span className={dividerClass} aria-hidden="true">·</span>
+          <Link
+            to="/about"
+            className={`font-sans text-sm transition-colors ${linkClass}`}
+          >
+            About
           </Link>
         </>
       )}
