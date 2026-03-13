@@ -11,7 +11,22 @@
       "Bash(pkill -f \"chrome-devtools-mcp\")",
       "Bash(rm /Users/mmorper/projects/concerts/cascade-after-structural.png /Users/mmorper/projects/concerts/cascade-current.png /Users/mmorper/projects/concerts/phase5-artists-focus.png)",
       "Bash(rm -rf /Users/mmorper/projects/concerts/.playwright-mcp)",
-      "Bash(rm /Users/mmorper/projects/concerts/memory/session-handoff-*.md)"
+      "Bash(rm /Users/mmorper/projects/concerts/memory/session-handoff-*.md)",
+      "Bash(mv /Users/mmorper/projects/concerts/docs/specs/archived/artists-spotify-integration-superseded.md /Users/mmorper/projects/concerts/docs/specs/archive/)",
+      "Bash(mv /Users/mmorper/projects/concerts/docs/specs/archived/global-image-sourcing-strategy-superseded.md /Users/mmorper/projects/concerts/docs/specs/archive/)",
+      "Bash(rmdir /Users/mmorper/projects/concerts/docs/specs/archived)",
+      "Bash(mv /Users/mmorper/projects/concerts/docs/specs/UNIFIED_TOAST.md /Users/mmorper/projects/concerts/docs/specs/implemented/)",
+      "Bash(mv /Users/mmorper/projects/concerts/docs/specs/unified-toast-mock.html /Users/mmorper/projects/concerts/docs/specs/implemented/)",
+      "Bash(git -C /Users/mmorper/projects/concerts worktree list)",
+      "Bash(git -C /Users/mmorper/projects/concerts/. diff main...claude/charming-shockley --stat)",
+      "Bash(git -C /Users/mmorper/projects/concerts/. diff main...claude/goofy-archimedes --stat)",
+      "Bash(git -C /Users/mmorper/projects/concerts worktree remove --force .claude/worktrees/charming-shockley)",
+      "Bash(git -C /Users/mmorper/projects/concerts worktree remove --force .claude/worktrees/goofy-archimedes)",
+      "Bash(git -C /Users/mmorper/projects/concerts branch -d claude/charming-shockley claude/goofy-archimedes)"
+    ],
+    "additionalDirectories": [
+      "/Users/mmorper/projects/concerts/docs/tasks",
+      "/Users/mmorper/projects/concerts/.claude"
     ]
   }
 }

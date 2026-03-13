@@ -1,12 +1,13 @@
 # Roadmap
 
-## Current State (v3.9.0)
+## Current State (v4.6.0)
 
-- **179 concerts** spanning 1984-2026
-- **254 artists** (including openers) with 100% imagery coverage
+- **181 concerts** spanning 1984-2026
+- **256 artists** (including openers) with 100% imagery coverage
 - **77 unique venues** across 35 cities
 - **5 interactive scenes**: Timeline, Venues, Geography, Genres, Artists
-- **Latest improvements**: Complete artist imagery with Deezer API fallback and expanded coverage to include opening acts
+- **Standalone pages**: /liner-notes, /whats-playing, /how-it-works, /about
+- **Latest**: How It Works — interactive 7-tier data enrichment cascade at /how-it-works
 
 ---
 
@@ -21,61 +22,63 @@ Interactive animated cascade showing how three raw data points become a richly e
 
 ---
 
+### ✅ Deep Cuts — Liner Notes in Gatefold + Mobile (v4.5.0–v4.5.1)
+
+**Status**: Completed
+
+Liner Notes tab in artist gatefold, year deep links (`/?scene=timeline&year=YYYY`), mobile bottom nav bar, unified toast for liner notes + changelog notifications, and mobile layout polish.
+
+---
+
+### ✅ Liner Notes (v4.4.0)
+
+**Status**: Completed
+
+Agentic AI-written weekly stories from the archive. Blog feed at /liner-notes with category chips and tag filters, individual post permalinks, /whats-playing changelog page, RSS feed, Cloudflare Worker for dynamic OG tag injection.
+
+---
+
+### ✅ Audio Preview Player — iTunes (v4.0.0–v4.3.2)
+
+**Status**: Completed
+
+30-second iTunes previews for 256 artists (100% coverage). Dropped Deezer (15-min CDN token TTL incompatible with static pipeline). Auto-enrichment on every `build-data` run. Upcoming concert badges on Timeline and Artist profiles.
+
+---
+
+### ✅ About Page (v4.x)
+
+**Status**: Completed
+**Spec**: [global-about-page.md](specs/implemented/global-about-page.md)
+
+Static /about page surfacing creator identity and project backstory for SEO authority signals.
+
+---
+
+### ✅ SEO Tool v2 - Integrated Analytics & Backlink Support (v4.2.0)
+
+**Status**: Completed
+**Spec**: [global-seo-tool-v2.md](specs/implemented/global-seo-tool-v2.md)
+
+Comprehensive SEO intelligence with Google Search Console integration, GA4 integration, and correlation insights engine.
+
+---
+
 ### ✅ Artist Imagery Enrichment - Deezer Fallback (v3.9.0)
 
 **Status**: Completed
 **Spec**: [global-deezer-artist-imagery.md](specs/implemented/global-deezer-artist-imagery.md)
 
-Enhanced artist enrichment pipeline with Deezer API as third fallback source, achieving 100% artist imagery coverage.
-
-**Implemented Features**:
-
-- DeezerClient with automatic retry logic and image quality prioritization (picture_big 500x500)
-- Expanded enrichment to process both headliners and opening acts (104 → 254 artists)
-- Intelligent name fallback matching (e.g., "Trombone Shorty & Orleans Avenue" → "Trombone Shorty")
-- 151 previously missing artists enriched with imagery from expanded sources
-- Zero failures after name fallback implementation (100% success rate)
-- Comprehensive test coverage (13 Vitest tests)
-- Non-breaking: existing TheAudioDB and Last.fm data preserved
-
----
-
-### ✅ AI Fact Cards for Liner Notes (v3.7.0)
-
-**Status**: Completed
-**Spec**: [global-ai-fact-cards.md](specs/implemented/global-ai-fact-cards.md)
-
-Pre-computed statistics displayed on /liner-notes with deep links, improving AI agent discoverability.
-
-**Implemented Features**:
-
-- 15 computed facts (top artists, top venues, total concerts, busiest year, etc.)
-- "By the Numbers" section on /liner-notes displaying 12 fact cards
-- Deep links for each fact to explore that data point
-- lucide-react icons for fact categories (artist, venue, genre, timeline, geography)
-- Human-friendly detail text designed to be directly quotable by AI agents
-- RSS feed includes facts summary with computedAt date
-- llm.txt "Pre-Computed Statistics" section with categorized facts
-- 20 Vitest tests covering fact generation and validation
+Enhanced enrichment pipeline with Deezer API as third fallback source, achieving 100% artist imagery coverage for headliners and openers.
 
 ---
 
 ### ✅ Artist Discography Data Pipeline (v3.5.0)
 
-**Status**: Completed
+**Status**: Completed (UI integration planned — see Medium-Term)
 **Spec**: [artists-discography.md](specs/future/artists-discography.md)
 
-Comprehensive artist discography enrichment using MusicBrainz API to fetch album data for all 247 artists.
-
-**Implemented Features**:
-
-- MusicBrainz API client with rate limiting (1 req/sec) and fuzzy artist matching
-- Discography enrichment script with 90-day caching
-- Integration into `npm run build-data` pipeline as Step 7
-- Validation checks for discography completeness and data quality
-- Generated 2.5MB discography.json with 15,000+ albums
-- Support for album filtering by type (studio, live, compilation, EP)
-- Prepared data structure for future UI integration in Artist Scene (v3.6.0+)
+MusicBrainz API enrichment for 15,000+ albums across all artists. Data available in `discography.json`.
 
 ---
 
@@ -84,149 +87,44 @@ Comprehensive artist discography enrichment using MusicBrainz API to fetch album
 **Status**: Completed
 **Spec**: [venues-deep-linking.md](specs/implemented/venues-deep-linking.md)
 
-Seamless cross-scene navigation with venue+artist combined deep linking.
-
-**Implemented Features**:
-
-- Clickable venue names in Artist gatefold concert history
-- Clickable venue names in Phone Artist Modal
-- Venue+artist combined deep linking focuses both nodes in force-directed graph
-- "Explore Venue" buttons use real links for better mobile UX
-- Hyperlinks in gatefold content with proper navigation
-
----
-
-### ✅ Venues Mobile UX (v3.3.0)
-
-**Status**: Completed
-**Spec**: [venues-mobile-ux.md](specs/implemented/venues-mobile-ux.md)
-
-Mobile UX improvements for Venues scene including enhanced label visibility and touch interactions.
-
-**Implemented Features**:
-
-- Enhanced venue label visibility in force-directed graph
-- Improved label opacity logic matching spotlight state
-- Real link navigation for cross-scene venue exploration
-- Touch-optimized venue node interactions
-
----
-
-### ✅ Phone Artist Modal (v3.2.0)
-
-**Status**: Completed
-**Spec**: [artists-phone-modal.md](specs/implemented/artists-phone-modal.md)
-
-Phone-specific modal for Artist Scene using mobile-native patterns instead of the desktop gatefold.
-
-**Implemented Features**:
-
-- Full-screen modal with tabbed navigation (History, Upcoming, Top Tracks)
-- Swipe-down and X to dismiss
-- Setlist overlay slides from right with swipe gestures
-- Color-coded tabs with brand accents (violet, amber)
-- On Tour badge with tap-to-navigate to Upcoming tab
-- Deep link copy button with haptic feedback
-
----
-
-### ✅ iPad Touch Support for Timeline (v3.1.0)
-
-**Status**: Completed
-**Spec**: [timeline-ipad-touch-support.md](specs/implemented/timeline-ipad-touch-support.md)
-
-Touch-optimized interactions for exploring timeline year cards on iPad and tablets.
-
-**Implemented Features**:
-
-- Drag finger across timeline cards to preview concerts
-- Tap-to-navigate pattern with haptic feedback
-- Smart tap vs. drag detection (10px movement threshold)
-- Proper touch event handling without bubbling conflicts
-- Focus state persistence across interactions
+Clickable venue names in Artist gatefold and phone modal; venue+artist combined deep linking focuses both nodes in force-directed graph.
 
 ---
 
 ### ✅ Interactive Timeline Exploration & Genre Journey (v3.0.0)
 
 **Status**: Completed
-**Spec**: [timeline-year-filter-spec.md](specs/implemented/timeline-year-filter-spec.md), [genre-scene-treemap-timeline-spec.md](specs/implemented/genre-scene-treemap-timeline-spec.md)
 
-Interactive year filtering on timeline with card stack UI and animated genre treemap visualization.
-
-**Implemented Features**:
-
-- Click any timeline dot to see all concerts from that year
-- Interactive year cards with one-tap navigation to artist details
-- Animated genre treemap showing musical evolution over time
-- Genre drill-down to explore artists within each style
-- Timeline slider with milestone markers for genre scene
-- Mobile-optimized touch interactions with haptic feedback
-
----
-
-### ✅ Upcoming Tour Dates (v2.0.0)
-
-**Status**: Completed
-**Spec**: [upcoming-tour-dates.md](specs/implemented/upcoming-tour-dates.md)
-
-Real-time tour dates with direct ticket purchase links using Ticketmaster Discovery API.
-
-**Implemented Features**:
-
-- Fetch upcoming tour dates for artists via Ticketmaster API
-- "ON TOUR" badge in artist gatefold when dates available
-- Sliding tour dates panel matching setlist design
-- Direct ticket purchase links for each show
-- 24-hour client-side caching with smart fallbacks
-- Elegant empty state when no tours scheduled
-
----
-
-### ✅ Artist Genre Enrichment (v3.0.1)
-
-**Status**: Completed
-**Spec**: [artist-genre-enrichment.md](specs/implemented/artist-genre-enrichment.md)
-
-Genre moved to artist-level metadata with automatic enrichment from TheAudioDB.
-
-**Implemented Features**:
-
-- Genre as canonical artist attribute in `data/artist-metadata.json`
-- Build pipeline enriches concerts with artist genres
-- Validation tools for genre consistency
-- 247 artists enriched with genre data
-- Google Sheet source data no longer requires genre column
+Click-to-filter year cards, animated genre treemap with timeline slider, mobile-optimized touch interactions.
 
 ---
 
 ## Short-Term Roadmap
 
-### About Page - E-E-A-T Signals
+### How It Works — Interactive Thumbnails (#88)
 
 **Status**: Planned
-**Spec**: [global-about-page.md](specs/future/global-about-page.md)
+**Issue**: [#88](https://github.com/mmorper/concerts/issues/88)
 
-Static /about page surfacing creator identity and project backstory for SEO authority signals.
+Make the T2 (venue photo), T3 (artist photo), and T4 (album art) thumbnails in the cascade interactive — clickable within the cascade rather than purely cosmetic.
 
 ---
 
-### SEO Tool v2 - Integrated Analytics & Backlink Support
+### Genre Coverage for Opener Artists (#69)
 
-**Status**: Complete
-**Implemented Version**: v4.2.0
-**Spec**: [global-seo-tool-v2.md](specs/implemented/global-seo-tool-v2.md)
+**Status**: Planned
+**Issue**: [#69](https://github.com/mmorper/concerts/issues/69)
 
-Transform `/seo` command into comprehensive SEO intelligence platform with real data from Google Search Console, GA4, and optional backlink APIs.
+Opener artist genre coverage is 62% vs 93% for headliners. Root cause: opener artists are present in `artists-metadata.json` but not enriched at the same level. Affects `genre-outlier` detector and any future genre-based analysis.
 
-**Key Features**:
+---
 
-- Google Search Console integration (impressions, clicks, CTR, rankings)
-- Google Analytics 4 integration (engagement, bounce rate, Core Web Vitals)
-- Backlink API scaffolding (Ahrefs + SEMrush support)
-- Correlation insights engine (cross-source analysis)
-- Portable credential management (env vars, config file, OAuth)
-- Multiple output formats (CLI, Markdown, HTML, JSON)
+### llm.txt — Page Structure & Semantic Hierarchy (#30)
+
+**Status**: Planned
+**Issue**: [#30](https://github.com/mmorper/concerts/issues/30)
+
+Add page structure and H1/H2 hierarchy documentation to `llm.txt` to help AI assistants better understand the site's organization. Low-effort (~15 min).
 
 ---
 
@@ -239,110 +137,104 @@ Transform `/seo` command into comprehensive SEO intelligence platform with real 
 - [map-popup-z-index.md](specs/future/map-popup-z-index.md)
 - [map-renamed-venue-badges.md](specs/future/map-renamed-venue-badges.md)
 
-Refinements to interaction patterns and navigation across the app.
-
 **Remaining Improvements**:
 
+- Display renamed venues with ♻️ badge and new name on map popups (#8)
 - Improved button states and loading indicators
 - Better keyboard navigation support
-- Display renamed venues with ♻️ badge and new name
 
 ---
 
 ## Medium-Term Roadmap
 
-### Artist Discography UI Panel
+### Deferred Liner Notes Generators (#68)
 
-**Status**: Planned (Data pipeline completed in v3.5.0)
-**Spec**: [artists-discography.md](specs/future/artists-discography.md)
+**Status**: Planned
+**Issue**: [#68](https://github.com/mmorper/concerts/issues/68)
 
-Visual discography panel in Artist Scene gatefold showing album covers and release timeline.
-
-**Key Features**:
-
-- Grid layout of album covers (4-5 columns)
-- Chronological ordering (newest first)
-- Album filtering by type (studio albums, EPs, live, compilations)
-- Hover to show album title + year
-- Click to link to external album sources (future enhancement)
-- Fallback for missing cover art
-- Data already available in `discography.json` (15k+ albums)
+Four pattern detectors scoped but deferred during v4.4.x: `genreOutlier` (statistical genre anomalies), `doubleHeader` (same-venue multi-artist nights), `discographyCrossref` (albums released around concert dates), `temporalPattern` (multi-decade return patterns). Some require improved genre data (#69) first.
 
 ---
 
-### Venue Name Change Detection & CLI Management
+### Audio Preview in Setlist Items (#22)
+
+**Status**: Planned
+**Issue**: [#22](https://github.com/mmorper/concerts/issues/22)
+
+Clickable song previews directly in the setlist panel. Users open a concert setlist, click a song, and hear the iTunes preview inline — without switching to the artist gatefold.
+
+---
+
+### Artist Discography UI Panel (#5)
+
+**Status**: Planned (data pipeline completed in v3.5.0)
+**Spec**: [artists-discography.md](specs/future/artists-discography.md)
+
+Visual discography panel in Artist Scene gatefold showing album covers and release timeline. Data already available in `discography.json` (15k+ albums).
+
+**Key Features**:
+
+- Grid layout of album covers (4-5 columns), chronological ordering (newest first)
+- Album type filtering (studio, live, EP, compilations)
+- Hover to show album title + year
+
+---
+
+### Analytics Suite (#37–#41)
+
+**Status**: Planned
+**Issues**: [#37](https://github.com/mmorper/concerts/issues/37), [#38](https://github.com/mmorper/concerts/issues/38), [#39](https://github.com/mmorper/concerts/issues/39), [#40](https://github.com/mmorper/concerts/issues/40), [#41](https://github.com/mmorper/concerts/issues/41)
+
+GA4 Explore reports across five suites: scene navigation & engagement, artist content analysis, setlist & venue exploration, user behavior & device optimization, temporal patterns & retention.
+
+---
+
+### Venue Name Change Detection & CLI Management (#7)
+
 **Status**: Planned
 **Spec**: [global-venue-name-change-detection.md](specs/future/global-venue-name-change-detection.md)
 
-Automatically detect when venue names change and provide CLI tools to manage venue status updates.
+Automatically detect when venue names change during enrichment; `npm run venue-review` CLI for guided review workflow.
 
-**Key Features**:
-- Automatic detection during venue enrichment (compare Google Places name vs data)
-- Interactive CLI: `npm run venue-review` to process detected changes
-- Manual management: `npm run venue-update` and `npm run venue-add`
-- Safe CSV updates with validation and atomic writes
-- Guided workflow with next-step recommendations
+---
+
+### Validation Architecture Refactor (#14)
+
+**Status**: Planned
+**Issue**: [#14](https://github.com/mmorper/concerts/issues/14)
+
+Centralize validation logic currently scattered across scripts; improve error messages and recovery paths.
 
 ---
 
 ### Spotify Integration
-**Status**: Not Planned (Replaced by iTunes/Deezer implementation in v4.0.0)
 
-**Note**: The original vision for Spotify integration was blocked due to Spotify API not accepting new projects. This led to implementing audio previews using iTunes/Apple Music (primary) and Deezer (fallback) instead, which provides:
-- 30-second track previews for 252 artists (99.2% coverage)
-- No authentication requirements
-- Album art and track metadata
-- Streaming service deep links
+**Status**: Not Planned (Replaced by iTunes implementation in v4.0.0)
 
-**Audio Preview Implementation**:
-- Feature shipped in v4.0.0
-- See [artists-audio-previews.md](specs/future/artists-audio-previews.md) for specification
-- Data pipeline: `npm run enrich:tracks`
-- UI: AudioPreviewPanel in Artist Gatefold
-
-**Image Sourcing Strategy**:
-Current implementation uses multi-source waterfall:
-- Artist images: TheAudioDB → Last.fm → Deezer
-- Album art: MusicBrainz (discography) + iTunes/Deezer (audio previews)
-- See [global-image-sourcing-strategy.md](specs/archived/global-image-sourcing-strategy-superseded.md) for historical context
-
-**Related Documentation**:
-- [artists-spotify-integration.md](specs/archived/artists-spotify-integration-superseded.md) - Original feature spec (archived)
-- [global-data-normalization-architecture.md](specs/implemented/global-data-normalization-architecture.md) - Data architecture
-
----
-
-### Continued Mobile Optimizations (Gatefold)
-**Status**: In Progress
-**Spec**: [mobile-optimization.md](specs/future/mobile-optimization.md)
-
-Refine mobile experience for artist gatefold interactions.
-
-**Enhancements**:
-- Improved gatefold open/close animations on mobile
-- Better touch gesture handling (swipe, pinch)
-- Optimized image loading for cellular connections
-- Responsive liner notes layout
+Original vision was blocked by Spotify API not accepting new projects. iTunes/Apple Music provides equivalent capability with no auth requirements and stable CDN URLs.
 
 ---
 
 ## Documentation & Processes
 
-### Release Management
+### Release Management (#13)
+
 **Spec**: [global-versioned-release-deployment.md](specs/future/global-versioned-release-deployment.md)
 
-Establish CI/CD pipeline with automated versioning and deployment to Cloudflare Pages.
+CI/CD pipeline with automated versioning and deployment to Cloudflare Pages.
 
 ---
 
 ### Data Pipeline Automation
+
 **Spec**: [data-refresh-pipeline-orchestration.md](specs/future/data-refresh-pipeline-orchestration.md)
 
 Scheduled data refresh workflows with validation and rollback capabilities.
 
 ---
 
-### Visual Testing
+### Visual Testing (#10)
+
 **Spec**: [global-visual-testing-suite.md](specs/future/global-visual-testing-suite.md)
 
 Automated visual regression testing for UI components across scenes.
@@ -351,7 +243,6 @@ Automated visual regression testing for UI components across scenes.
 
 ## Navigation & Cross-References
 
-### Related Documentation
 - [Changelog](../src/data/changelog.json) - Release history with highlights
 - [GitHub Releases](https://github.com/mmorper/concerts/releases) - Versioned releases with notes
 - [Future Specs](specs/future/) - Detailed implementation plans

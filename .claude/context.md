@@ -4,7 +4,7 @@
 
 **Version:** v4.6.0 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-02-06
+**Last Sync:** 2026-03-12
 
 ### Commands
 
@@ -27,7 +27,7 @@ npm run build-data   # Fetch & enrich concert data
 
 ## Architecture
 
-**5 Full-Viewport Scenes** with snap scrolling:
+**5 Full-Viewport Scenes** with snap scrolling + standalone pages:
 
 | # | Scene | Component | Tech |
 |---|-------|-----------|------|
@@ -37,9 +37,21 @@ npm run build-data   # Fetch & enrich concert data
 | 4 | Genres | Scene5Genres.tsx | D3.js sunburst |
 | 5 | Artists | ArtistScene/ | Framer Motion + Gatefold |
 
+**Standalone Pages:**
+
+| Route | Purpose |
+|-------|---------|
+| `/liner-notes` | AI-written weekly stories from the archive (v4.4.0) |
+| `/liner-notes/:slug` | Individual post permalink |
+| `/whats-playing` | App release notes & changelog (v4.4.0) |
+| `/how-it-works` | Interactive data enrichment cascade, 7 tiers (v4.6.0) |
+| `/about` | Creator backstory & E-E-A-T signals |
+
 **Tech Stack:** Vite 6 + React 18 + TypeScript 5 + Tailwind 4 + D3 7 + Framer Motion 11 + Leaflet
 
-**Data:** 179 concerts (1984-2026), 254 artists (104 headliners), 77 venues
+**Infrastructure:** Cloudflare Pages (hosting) + Cloudflare Worker (dynamic OG tags for `/liner-notes` and `/whats-playing`)
+
+**Data:** 181 concerts (1984-2026), 256 artists (104 headliners + openers), 77 venues
 
 ---
 
@@ -49,6 +61,7 @@ npm run build-data   # Fetch & enrich concert data
 docs/
 ├── ROADMAP.md             # Short/medium-term feature planning (ACTIVE)
 ├── DEEP_LINKING.md        # URL navigation system (scene & entity deep links)
+├── LINER_NOTES_PIPELINE.md # Liner notes generation architecture & detector reference
 ├── api-setup.md           # API configuration
 ├── BUILD.md               # Build pipeline & deployment
 ├── DATA_PIPELINE.md       # Data fetch/validation/enrichment
@@ -61,30 +74,28 @@ docs/
     ├── implemented/       # Completed feature specs
     ├── future/            # Planned features
     └── archive/           # Superseded specs & historical docs
-        ├── STATUS-v1.0-v1.3-historical.md
-        └── planning.md
 ```
 
 ---
 
 ## Key Documentation Reference
 
-These docs provide essential context for common development tasks:
-
 | Document | Use When |
 |----------|----------|
-| [.claude/quality-standards.md](quality-standards.md) | **Before submitting any changes** - validation requirements, production safety |
-| [docs/DEEP_LINKING.md](../docs/DEEP_LINKING.md) | Creating URLs, implementing navigation, writing specs with deep links |
-| [docs/DATA_PIPELINE.md](../docs/DATA_PIPELINE.md) | Working with concert data, running enrichment, understanding validation |
-| [docs/BUILD.md](../docs/BUILD.md) | Deploying, regenerating OG images, understanding build pipeline |
-| [docs/WORKFLOW.md](../docs/WORKFLOW.md) | Understanding full development lifecycle, data refresh workflow |
-| [docs/api-setup.md](../docs/api-setup.md) | Configuring API credentials, troubleshooting auth issues |
+| [.claude/quality-standards.md](quality-standards.md) | **Before submitting any changes** |
+| [docs/DEEP_LINKING.md](../docs/DEEP_LINKING.md) | Creating URLs, implementing navigation |
+| [docs/DATA_PIPELINE.md](../docs/DATA_PIPELINE.md) | Working with concert data, running enrichment |
+| [docs/LINER_NOTES_PIPELINE.md](../docs/LINER_NOTES_PIPELINE.md) | Liner notes generation, detectors, schema |
+| [docs/BUILD.md](../docs/BUILD.md) | Deploying, regenerating OG images |
+| [docs/WORKFLOW.md](../docs/WORKFLOW.md) | Development lifecycle, data refresh workflow |
+| [docs/api-setup.md](../docs/api-setup.md) | Configuring API credentials, troubleshooting auth |
 
 **Deep Linking Quick Reference:**
 - Scene URLs: `/?scene={timeline|venues|geography|genres|artists}`
 - Artist deep link: `/?scene=artists&artist={normalized-name}`
 - Venue deep link (graph): `/?scene=venues&venue={normalized-name}`
 - Venue deep link (map): `/?scene=geography&venue={normalized-name}`
+- Year deep link: `/?scene=timeline&year=YYYY`
 - Normalization: lowercase, replace special chars with hyphens, collapse multiple hyphens
 
 ---
@@ -93,80 +104,61 @@ These docs provide essential context for common development tasks:
 
 **Live Site:** https://concerts.morperhaus.org
 
-**v3.4.0 Production (Latest):**
+**v4.6.0 Production (Latest — 2026-03-10):**
 
-- ✅ Map and venue navigation polish
-- ✅ Fixed artist spotlight filtering in venue network graph
-- ✅ Improved venue label visibility and clarity
-- ✅ Better URL state management for reset buttons
-- ✅ Google Analytics 4 event tracking (internal)
+- ✅ How It Works interactive cascade at `/how-it-works`
+- ✅ 7-tier data enrichment visualization with slot-machine counters and post-build glow
+- ✅ Auto-loads with a featured Sting concert on arrival
+- ✅ iPad portrait scrollability fixed
 
 **Recent Releases:**
 
-- **v4.6.0** (2026-03-10): How It Works — interactive animated Data Enrichment Cascade showing how raw inputs become a richly enriched concert archive across 7 tiers
-- **v4.5.1** (2026-03-08): Mobile Polish — Liner Notes card layout, share button, and artist modal badge fixes on mobile
-- **v4.5.0** (2026-03-08): Deep Cuts — liner notes in artist gatefold, year deep links, mobile bottom nav, unified toast for liner notes + changelog notifications
-- **v4.4.0** (2026-03-08): Liner Notes — agentic AI-written weekly stories, /liner-notes blog feed, /whats-playing changelog, permalink routes, Cloudflare Worker OG tags
-- **v4.3.3** (2026-03-08): Mobile upcoming badges — phone artist modal History tab parity + TS build fix (internal)
-- **v4.3.1** (2026-03-07): iTunes-only audio pipeline — drop Deezer (15-min token TTL made it unviable), 429 retry logic, enrich:tracks wired into build-data (internal)
-- **v4.3.0** (2026-03-07): On Deck — upcoming concert badges on Timeline cards and Artist profiles
-- **v4.2.1** (2026-02-06): OAuth credentials separation, page tracking utility, spec documentation updates (internal)
-- **v4.1.0** (2026-02-05): iOS Home Screen Icons & Favicon - Purple network design with icon generation tooling
-- **v4.0.3** (2026-02-04): Documentation updates - Internal release
-- **v4.0.2** (2026-02-03): Mobile Audio Preview - Enabled playback in mobile Artist modal
+- **v4.6.0** (2026-03-10): How It Works — interactive animated cascade showing 7 enrichment tiers
+- **v4.5.1** (2026-03-08): Mobile Polish — Liner Notes card layout, share button, artist modal badge
+- **v4.5.0** (2026-03-08): Deep Cuts — liner notes in gatefold, year deep links, mobile bottom nav, unified toast
+- **v4.4.0** (2026-03-08): Liner Notes — agentic AI-written weekly stories, blog feed, RSS, /whats-playing, Cloudflare Worker OG tags
+- **v4.3.x** (2026-03-07): On Deck (upcoming badges), iTunes-only audio (dropped Deezer), 100% track coverage
+- **v4.2.x** (2026-02-05): SEO Foundations, iOS Home Screen Icons
+- **v4.0.x** (2026-02-03): Audio Preview Player (iTunes), mobile audio, artist gatefold polish
 
 ---
 
 ## Active Work & Next Steps
 
-**Completed Recently:**
-
-- ✅ Interactive timeline exploration with year filter (v3.0.0)
-- ✅ Animated genre treemap with timeline slider (v3.0.0)
-- ✅ Real-time tour dates with Ticketmaster API (v2.0.0)
-- ✅ Documentation overhaul with example templates (v1.8.0)
-- ✅ Artist search with typeahead (v1.7.0)
-
-**Immediate Next Steps:**
-
 See [docs/ROADMAP.md](../docs/ROADMAP.md) for current priorities.
 
-**Short-term:**
+**Open GitHub issues:**
 
-1. **UX Polish** - Touch/click feedback, gatefold hyperlinks, venue rename badges
-2. **Venue Name Change Detection** - CLI tools for managing venue status updates
-
-**Medium-term:**
-
-1. **Mobile Optimizations** - Continued gatefold improvements
-2. **Performance Enhancements** - Optimize bundle size and loading times
+1. **#88** — Make How It Works cascade thumbnails interactive (T2 venue, T3 artist, T4 album art)
+2. **#69** — Improve genre coverage for opener artists (currently 62% vs 93% for headliners)
+3. **#68** — Deferred liner notes generators: genreOutlier, doubleHeader, discographyCrossref, temporalPattern
+4. **#30** — Enhance llm.txt with page structure & semantic hierarchy (low-effort, ~15 min)
+5. **#22** — Audio preview playback on individual setlist items
+6. **#5** — Artist Discography UI Panel (data pipeline complete since v3.5.0)
+7. **Analytics Suite** (#37–#41) — Scene navigation, artist content, setlist/venue, user behavior, retention
+8. **#8** — Renamed venue display badges on map popups
+9. **#7** — Venue name change detection & CLI management
+10. **#14** — Validation architecture refactor (code quality)
 
 ---
 
 ## Documentation Guidelines
 
 **Before creating new documentation:**
-1. **Review existing docs first** - Check if content belongs in existing files
-2. **Consolidate when possible** - Prefer editing over creating new files
-3. **Use descriptive names** - File names should clearly indicate content
-4. **Follow existing structure:**
+1. **Review existing docs first** — Check if content belongs in existing files
+2. **Consolidate when possible** — Prefer editing over creating new files
+3. **Follow existing structure:**
+   - `docs/ROADMAP.md` — Current priorities and planned features
+   - `src/data/changelog.json` — Release history with highlights
+   - `docs/WORKFLOW.md` — Development workflow and process
+   - `docs/BUILD.md` — Build pipeline and deployment
+   - `docs/DATA_PIPELINE.md` — Data fetch/validation/enrichment
+   - `docs/specs/future/` — Detailed specs for planned features
+   - `docs/specs/implemented/` — Completed feature implementation details
 
-   - `docs/ROADMAP.md` - Current priorities and planned features
-   - `src/data/changelog.json` - Release history with highlights
-   - `docs/WORKFLOW.md` - Development workflow and process
-   - `docs/BUILD.md` - Build pipeline and deployment
-   - `docs/DATA_PIPELINE.md` - Data fetch/validation/enrichment
-   - `docs/specs/future/` - Detailed specs for planned features
-   - `docs/specs/implemented/` - Completed feature implementation details
+---
 
-**When new docs are needed:**
-
-- Milestone summaries belong in `docs/ROADMAP.md`
-- User guides should be standalone (e.g., `DATA_PIPELINE.md`)
-- Implementation details go in `docs/specs/implemented/`
-- Quick references belong in the primary workflow/guide docs
-
-**Version Release Workflow:**
+## Version Release Workflow
 
 Use the `/release` command in Claude Code to automate the release process:
 
@@ -184,17 +176,17 @@ See `.claude/commands/README.md` for full documentation.
 
 ## Recent Commits (Last 10)
 
-- `2e8f695` - docs: Archive STATUS.md and create lean ROADMAP.md
-- `5ec1696` - docs: Add artist normalization override allowlist to validation
-- `c8b5d3a` - fix: Use venueNormalized field for deep link lookup in Scene4Bands
-- `e61c1a9` - docs: Add deep links to Features section and What's new
-- `4ff2528` - docs: Update What's new section and concert stats for v1.8.0
-- `81445e7` - docs: Add example data templates and overhaul getting started guide (v1.8.0)
-- `982d51a` - data: Add new concerts, venues, and openers with enrichment
-- `b0e9f4c` - feat!: Standardize all normalization to use hyphens (v1.9.0)
-- `a1b2c3d` - docs: Update deep linking guide with hyphenated venue examples
-- `d4e5f6g` - feat: Add genre normalization support
+- `2733e30` — fix: make How It Works scrollable on iPad portrait
+- `fe73b03` — fix: remove ghost posts from liner-notes RSS, add generate:liner-notes-rss script
+- `917b291` — fix: move About to last nav position across all pages
+- `8ec13ab` — fix: improve nav contrast + How It Works layout
+- `d00e366` — release: v4.6.0 - How It Works
+- `339cb8e` — feat: cascade UX overhaul — post-build glow, centered cards, data-driven stats
+- `7a19280` — fix: remove corpus scale label from T4
+- `da11aeb` — feat: cascade counters — slot-machine spin + honest field counts
+- `681dd5a` — release: v4.5.1 - Mobile Polish
+- `c862ebb` — release: v4.5.0 - Deep Cuts
 
 ---
 
-*Last updated: 2026-03-10 by Claude Code for v4.6.0 release*
+*Last updated: 2026-03-12 by Claude Code*
