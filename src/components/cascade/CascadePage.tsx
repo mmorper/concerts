@@ -1094,6 +1094,7 @@ export function CascadePage() {
         }
         .count-tick { animation: countTick 0.07s ease-out forwards; }
       `}</style>
+      <div style={{ height: '100vh', overflowY: 'auto' }}>
       <div
         ref={containerRef}
         style={{ maxWidth: 900, margin: '0 auto', position: 'relative' }}
@@ -2132,6 +2133,7 @@ export function CascadePage() {
           </motion.button>
         )}
       </div>
+      </div>{/* end scroll wrapper */}
 
       {/* ── FLOATING SELECTION BAR — visible once cascade completes ── */}
       <AnimatePresence>
