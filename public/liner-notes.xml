@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Sun, 08 Mar 2026 23:19:11 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 16 Mar 2026 14:42:18 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>March 23: 21 Years Since Social Distortion</title>
+    <link>https://concerts.morperhaus.org/liner-notes/march-23-21-years-since-social-distortion</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/march-23-21-years-since-social-distortion</guid>
+    <pubDate>Mon, 16 Mar 2026 14:42:18 +0000</pubDate>
+    <description>I caught Social Distortion at the Hard Rock Hotel in Las Vegas on March 23, 2005, and I still remember how surreal it felt seeing Mike Ness&apos;s tattooed storytelling in that glitzy casino setting. Twenty-one years later, that show stands out as one of those perfect mismatches — punk rock grit against Vegas excess, like hearing &quot;White Light White Heat White Trash&quot; while slot machines chimed in the distance. There&apos;s something beautifully defiant about Social Distortion that made even more sense in that artificial paradise.</description>
+    <category>#anniversary</category>
+    <category>#on-this-day</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg" medium="image" />
+  </item>
   <item>
     <title>Tears For Fears: 17 Years Between Shows</title>
     <link>https://concerts.morperhaus.org/liner-notes/tears-for-fears-17-years-between-shows</link>
@@ -201,16 +211,6 @@
     <category>#city-pulse</category>
     <category>#historical-context</category>
     <media:content url="/images/venues/fallback.jpg" medium="image" />
-  </item>
-  <item>
-    <title>Duran Duran: 21 Years Between Shows</title>
-    <link>https://concerts.morperhaus.org/liner-notes/duran-duran-21-years-between-shows</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/duran-duran-21-years-between-shows</guid>
-    <pubDate>Sat, 14 Feb 2026 04:00:00 +0000</pubDate>
-    <description>I remember standing at Irvine Meadows in 1987 watching Duran Duran, not knowing it would be 21 years before I&apos;d see them again. That Nokia Center show in 2008 felt like stepping into a time machine — Simon Le Bon&apos;s voice cutting through two decades of silence, bringing back memories of new wave summers and MTV afternoons. Three shows total across my concert history, but that middle gap speaks volumes about how life can drift you away from the bands that once defined your weekends. Sometimes the longest waits make for the sweetest reunions.</description>
-    <category>#drought</category>
-    <category>#comeback</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/73oxf41638977308.jpg" medium="image" />
   </item>
   </channel>
 </rss>
