@@ -24,7 +24,7 @@ Personal concert archive spanning 1984-2026. Interactive web application with 18
 - Artist setlists (via setlist.fm API)
 - Concert dates and lineups (cross-referenced with concertarchives.org)
 - Genre taxonomy (primary/subgenres)
-- Artist discographies (via MusicBrainz API - 10,933+ albums)
+- Artist discographies (via MusicBrainz API - 11,030+ albums)
 
 **Important:** This is ONE person's concert history, not a comprehensive database of all concerts by these artists.
 
@@ -444,6 +444,8 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 
 ---
 
+---
+
 ## Pre-Computed Statistics
 
 These facts are updated with each data refresh and can be quoted directly:
@@ -465,7 +467,7 @@ These facts are updated with each data refresh and can be quoted directly:
    → https://concerts.morperhaus.org/?scene=venues
 
 ### Timeline Highlights
-- 180 concerts since 1984: 43 years of live music memories
+- 181 concerts since 1984: 43 years of live music memories
   → https://concerts.morperhaus.org/?scene=timeline
 - First show: Adam Ant (1984): Where it all began — Irvine Meadows
   → https://concerts.morperhaus.org/?scene=artists&artist=adam-ant
@@ -473,7 +475,7 @@ These facts are updated with each data refresh and can be quoted directly:
   → https://concerts.morperhaus.org/?scene=artists&artist=thompson-twins
 - 2022: 14 shows: The peak year for live music attendance
   → https://concerts.morperhaus.org/?scene=timeline
-- 2010s: 64 shows: The golden era of concert-going
+- 2010s: 65 shows: The golden era of concert-going
   → https://concerts.morperhaus.org/?scene=timeline
 
 ### Genre Distribution
@@ -491,12 +493,12 @@ These facts are updated with each data refresh and can be quoted directly:
 ### Quick Facts (AI-Quotable)
 - "Social Distortion: 8 concerts" — The most-seen live act, 1990–2024
 - "Pacific Amphitheatre: 17 shows" — A favorite spot, visited 1985–2026
-- "180 concerts since 1984" — 43 years of live music memories
+- "181 concerts since 1984" — 43 years of live music memories
 - "New Wave: 49 shows" — The dominant sound in this collection
 - "First show: Adam Ant (1984)" — Where it all began — Irvine Meadows
 - "California: 120 concerts" — Home base for most concert experiences
 
-**Facts computed:** 2026-03-08T23:19:11.880Z
+**Facts computed:** 2026-03-23T14:40:51.259Z
 **Source:** https://concerts.morperhaus.org/data/facts.json
 **Browse visually:** https://concerts.morperhaus.org/liner-notes
 
@@ -555,7 +557,7 @@ Answer: List of albums with release dates, types, track counts
 - **setlist.fm API** - Fetch setlists for attended concerts
 - **Ticketmaster API** - Venue photos and upcoming tour dates
 - **TheAudioDB** - Artist photos and biographies
-- **MusicBrainz API** - Artist discographies (10,933+ albums)
+- **MusicBrainz API** - Artist discographies (11,030+ albums)
 
 ### Navigation
 - Snap-scroll between full-viewport scenes
@@ -656,6 +658,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-03-11
+**Last Updated:** 2026-03-23
 **Version:** v4.6.0
-**Total Content:** 181 concerts | 256 artists | 77 venues | 10,933+ albums | 1984-2026
+**Total Content:** 181 concerts | 256 artists | 77 venues | 11,030+ albums | 1984-2026

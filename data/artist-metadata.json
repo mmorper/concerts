@@ -63,6 +63,15 @@
       "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/rvqysx1385325837.jpg"
     },
     {
+      "name": "Beck",
+      "normalizedName": "beck",
+      "genre": "Alternative Rock",
+      "genreNormalized": "alternative-rock",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/vtuvvs1424793068.jpg",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-03-23T14:37:46.535Z"
+    },
+    {
       "name": "Bell Biv DeVoe",
       "normalizedName": "bell-biv-devoe",
       "genre": "R&B",
@@ -941,5 +950,5 @@
       "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/marley-ziggy-508440fb16be3.jpg"
     }
   ],
-  "lastUpdated": "2026-03-08T23:12:28.325Z"
+  "lastUpdated": "2026-03-23T14:37:46.540Z"
 }

@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       host: true, // Allow network access for mobile testing
-      port: 5173,
+      port: process.env.PORT ? parseInt(process.env.PORT) : 5173,
       open: true,
       proxy: {
         // Proxy setlist.fm API requests to avoid CORS issues

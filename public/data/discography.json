@@ -131450,5 +131450,1106 @@
     ],
     "fetchedAt": "2026-03-08T23:12:40.201Z",
     "cachedAt": "2026-03-08T23:12:40.201Z"
+  },
+  "beck": {
+    "artistName": "Beck",
+    "normalizedName": "beck",
+    "mbid": "309c62ba-7a22-4277-9f67-4a162526d18a",
+    "albumCount": 97,
+    "albums": [
+      {
+        "id": "068934af-7698-40b8-998e-5c62b6e19c83",
+        "title": "Everybody’s Gotta Learn Sometime",
+        "releaseDate": "2026-01-29",
+        "year": 2026,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/068934af-7698-40b8-998e-5c62b6e19c83/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "cf713e55-8df1-4285-83e9-f20be4aacfac",
+        "title": "Burning Barns (Live 1994)",
+        "releaseDate": "2021-08-02",
+        "year": 2021,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/cf713e55-8df1-4285-83e9-f20be4aacfac/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "4961a525-87e0-4ded-af2e-93e539afbd5e",
+        "title": "You've Got a Woman",
+        "releaseDate": "2021-07-09",
+        "year": 2021,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/4961a525-87e0-4ded-af2e-93e539afbd5e/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "b9430b9c-3f02-47ce-93b7-8babad2d951d",
+        "title": "Find My Way",
+        "releaseDate": "2021-03-25",
+        "year": 2021,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/b9430b9c-3f02-47ce-93b7-8babad2d951d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "67ad5df9-bd8c-45d9-aa1b-14a3ff2cb2ee",
+        "title": "Hyperspace",
+        "releaseDate": "2019-11-22",
+        "year": 2019,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/67ad5df9-bd8c-45d9-aa1b-14a3ff2cb2ee/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "223075c2-da1f-46fb-9c7a-1f1f7b8480d7",
+        "title": "Paisley Park Sessions",
+        "releaseDate": "2019-11-10",
+        "year": 2019,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/223075c2-da1f-46fb-9c7a-1f1f7b8480d7/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "fb69a009-818f-4cb5-9d47-f4e395555a65",
+        "title": "Dark Places",
+        "releaseDate": "2019-11-08",
+        "year": 2019,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/fb69a009-818f-4cb5-9d47-f4e395555a65/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a06fb358-02a6-40a4-9aa5-575bf6643a55",
+        "title": "Uneventful Days",
+        "releaseDate": "2019-10-17",
+        "year": 2019,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a06fb358-02a6-40a4-9aa5-575bf6643a55/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "decfb415-7fa8-4f6b-bf8d-55f4c4c2d812",
+        "title": "Hypocrite",
+        "releaseDate": "2019-08-19",
+        "year": 2019,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/decfb415-7fa8-4f6b-bf8d-55f4c4c2d812/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "93035831-926a-406f-bbd1-160ad9b1333b",
+        "title": "Saw Lightning",
+        "releaseDate": "2019-04-15",
+        "year": 2019,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/93035831-926a-406f-bbd1-160ad9b1333b/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "0ef71c34-7700-4d46-8ba9-adb79f29af01",
+        "title": "Night Running",
+        "releaseDate": "2019-03-28",
+        "year": 2019,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/0ef71c34-7700-4d46-8ba9-adb79f29af01/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "32e1b80c-42df-403c-b4d0-1d0e11d3f110",
+        "title": "Super Cool",
+        "releaseDate": "2019-02-06",
+        "year": 2019,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/32e1b80c-42df-403c-b4d0-1d0e11d3f110/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "836efaaf-c1fd-4e4a-a32b-06f07017c8de",
+        "title": "Tarantula",
+        "releaseDate": "2019-01-23",
+        "year": 2019,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/836efaaf-c1fd-4e4a-a32b-06f07017c8de/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "8cf44ed1-2d22-4bbc-b5c5-224d10b42cdc",
+        "title": "The Little Drum Machine Boy",
+        "releaseDate": "2018-12-04",
+        "year": 2018,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/8cf44ed1-2d22-4bbc-b5c5-224d10b42cdc/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "bf582d11-bc34-4c19-b86e-1316b3dc8681",
+        "title": "I’m Waiting for the Man",
+        "releaseDate": "2018-01-23",
+        "year": 2018,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/bf582d11-bc34-4c19-b86e-1316b3dc8681/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "84d67365-a2ca-4580-a239-9446231f27a0",
+        "title": "Colors",
+        "releaseDate": "2017-10-13",
+        "year": 2017,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/84d67365-a2ca-4580-a239-9446231f27a0/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "47c35af1-38dc-44df-9ffb-73fffe44285e",
+        "title": "Colors",
+        "releaseDate": "2017-10-05",
+        "year": 2017,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/47c35af1-38dc-44df-9ffb-73fffe44285e/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "cfe26f69-fdbf-488f-b74c-fa619615497a",
+        "title": "Up All Night",
+        "releaseDate": "2017-09-06",
+        "year": 2017,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/cfe26f69-fdbf-488f-b74c-fa619615497a/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "bae59357-b060-41e7-ae3c-04f5d6bea14b",
+        "title": "Dear Life",
+        "releaseDate": "2017-08-24",
+        "year": 2017,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/bae59357-b060-41e7-ae3c-04f5d6bea14b/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "64e8a9d3-4bbf-418f-bd84-db776905222b",
+        "title": "True Love Will Find You in the End",
+        "releaseDate": "2017-03-08",
+        "year": 2017,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/64e8a9d3-4bbf-418f-bd84-db776905222b/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "0f7b1187-68a9-4aa0-a0d6-8df1e132057d",
+        "title": "Wow",
+        "releaseDate": "2016-06-02",
+        "year": 2016,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/0f7b1187-68a9-4aa0-a0d6-8df1e132057d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "e1d7f40a-d2be-4baa-9454-ce61284e9aea",
+        "title": "John Deere / Woe Unto Me / Sweet Satan",
+        "releaseDate": "2015-09-21",
+        "year": 2015,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/e1d7f40a-d2be-4baa-9454-ce61284e9aea/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "159fa4fb-73f4-405f-81a2-a39f12a800f7",
+        "title": "Dreams",
+        "releaseDate": "2015-06-15",
+        "year": 2015,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/159fa4fb-73f4-405f-81a2-a39f12a800f7/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "777890d0-656b-4ea0-951c-9648d68d4b8b",
+        "title": "What This World Is Coming To",
+        "releaseDate": "2015-06-01",
+        "year": 2015,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/777890d0-656b-4ea0-951c-9648d68d4b8b/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "41a752cf-c08e-4fc6-bd60-c067f8eb0797",
+        "title": "Live From KCRW",
+        "releaseDate": "2014-08-18",
+        "year": 2014,
+        "primaryType": "EP",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/41a752cf-c08e-4fc6-bd60-c067f8eb0797/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "031fcc75-a425-4707-96a6-5ef910d20069",
+        "title": "Song Reader: Twenty Songs by Beck",
+        "releaseDate": "2014-07-29",
+        "year": 2014,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/031fcc75-a425-4707-96a6-5ef910d20069/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "bc4e1c5e-1fea-468d-b0ac-78b1c7f415f4",
+        "title": "Morning Phase",
+        "releaseDate": "2014-02-21",
+        "year": 2014,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/bc4e1c5e-1fea-468d-b0ac-78b1c7f415f4/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "786a293f-f5ab-44ea-bd16-78311d2e788d",
+        "title": "Wave",
+        "releaseDate": "2014-02-18",
+        "year": 2014,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/786a293f-f5ab-44ea-bd16-78311d2e788d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "1fd14b1b-72bf-415f-9937-856a2deed30a",
+        "title": "Waking Light",
+        "releaseDate": "2014-02-04",
+        "year": 2014,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1fd14b1b-72bf-415f-9937-856a2deed30a/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "b6081389-cce3-4d0a-bf00-b31478be97aa",
+        "title": "Blue Moon",
+        "releaseDate": "2014-01-20",
+        "year": 2014,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/b6081389-cce3-4d0a-bf00-b31478be97aa/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "217fbaea-b18b-4594-83aa-a48b7da5ffeb",
+        "title": "Gimme",
+        "releaseDate": "2013-09-17",
+        "year": 2013,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/217fbaea-b18b-4594-83aa-a48b7da5ffeb/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "d6de145d-d3a2-43c9-bd12-c57efd1942ae",
+        "title": "Defriended (Extended Version)",
+        "releaseDate": "2013-07-08",
+        "year": 2013,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/d6de145d-d3a2-43c9-bd12-c57efd1942ae/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "39ad13d2-7cfa-47d3-ab5a-3e0a10a1c5f8",
+        "title": "I Won’t Be Long",
+        "releaseDate": "2013-07-05",
+        "year": 2013,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/39ad13d2-7cfa-47d3-ab5a-3e0a10a1c5f8/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a36fdcc8-9397-40d4-a570-067fc5dfda52",
+        "title": "Defriended",
+        "releaseDate": "2013-06-10",
+        "year": 2013,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a36fdcc8-9397-40d4-a570-067fc5dfda52/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "90f2be76-1fd2-434f-bfa5-cae240d72811",
+        "title": "Back to You",
+        "releaseDate": "2013",
+        "year": 2013,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/90f2be76-1fd2-434f-bfa5-cae240d72811/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "e14f2faa-eb62-41de-a5b1-ba0ab8cf4650",
+        "title": "Let’s Get Lost",
+        "releaseDate": "2012-10-12",
+        "year": 2012,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/e14f2faa-eb62-41de-a5b1-ba0ab8cf4650/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "87bab8ba-e9c6-453b-8112-eb0cb4b7db3f",
+        "title": "Cities",
+        "releaseDate": "2012-08-07",
+        "year": 2012,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Soundtrack"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/87bab8ba-e9c6-453b-8112-eb0cb4b7db3f/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "7434accf-d3b5-422a-9ba3-9a4d8e7a5adb",
+        "title": "I Just Started Hating Some People Today",
+        "releaseDate": "2012-05-28",
+        "year": 2012,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/7434accf-d3b5-422a-9ba3-9a4d8e7a5adb/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "d003c2c8-eeaf-47e1-8e5e-6e0ae8e7f78d",
+        "title": "Looking for a Sign",
+        "releaseDate": "2012-03-20",
+        "year": 2012,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/d003c2c8-eeaf-47e1-8e5e-6e0ae8e7f78d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "bd5c5e47-600e-3fb9-b6e6-d437f2eb19aa",
+        "title": "Pay No Mind / Green Light",
+        "releaseDate": "2009-04-18",
+        "year": 2009,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/bd5c5e47-600e-3fb9-b6e6-d437f2eb19aa/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "48d1ec11-17ca-31b4-b375-f53e29477cbd",
+        "title": "Youthless",
+        "releaseDate": "2008-12-22",
+        "year": 2008,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/48d1ec11-17ca-31b4-b375-f53e29477cbd/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "2c71ab7a-d096-4a71-ac62-cadec2c2719f",
+        "title": "Bonfire Blondes",
+        "releaseDate": "2008-09-30",
+        "year": 2008,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/2c71ab7a-d096-4a71-ac62-cadec2c2719f/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "0a982c29-037d-3036-af72-8b2614764f00",
+        "title": "Modern Guilt",
+        "releaseDate": "2008-07-05",
+        "year": 2008,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/0a982c29-037d-3036-af72-8b2614764f00/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "af742d08-9c4c-449b-bef4-7e0cc0e628a1",
+        "title": "Gamma Ray",
+        "releaseDate": "2008-07",
+        "year": 2008,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/af742d08-9c4c-449b-bef4-7e0cc0e628a1/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "c634ce62-b2c1-305f-a4b7-57782671c663",
+        "title": "Chemtrails",
+        "releaseDate": "2008-06-23",
+        "year": 2008,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/c634ce62-b2c1-305f-a4b7-57782671c663/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "624af301-f403-3a44-9e15-18b700372ab6",
+        "title": "Timebomb",
+        "releaseDate": "2007-08-21",
+        "year": 2007,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/624af301-f403-3a44-9e15-18b700372ab6/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "1683ca43-c783-36a2-ad6b-78b816eb97fe",
+        "title": "O Menina",
+        "releaseDate": "2006-10-03",
+        "year": 2006,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1683ca43-c783-36a2-ad6b-78b816eb97fe/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "dce5fb18-24d8-386d-b5db-8c52c4c73c82",
+        "title": "The Information",
+        "releaseDate": "2006-10-02",
+        "year": 2006,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/dce5fb18-24d8-386d-b5db-8c52c4c73c82/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "71bda904-3a17-4cc6-baa6-7ec69a083d51",
+        "title": "Think I’m in Love",
+        "releaseDate": "2006-09-26",
+        "year": 2006,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/71bda904-3a17-4cc6-baa6-7ec69a083d51/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "4db81d46-40d4-3f28-9b40-4d7df4af9aaf",
+        "title": "Cellphone's Dead",
+        "releaseDate": "2006-09",
+        "year": 2006,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/4db81d46-40d4-3f28-9b40-4d7df4af9aaf/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "6400283c-5910-3039-b008-78262ae4f9f7",
+        "title": "Nausea",
+        "releaseDate": "2006-08-29",
+        "year": 2006,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6400283c-5910-3039-b008-78262ae4f9f7/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "beb8ea53-1ac4-4ff2-a346-211bd75bae84",
+        "title": "Hell Yes",
+        "releaseDate": "2006-01-23",
+        "year": 2006,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/beb8ea53-1ac4-4ff2-a346-211bd75bae84/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "741bbbea-63d1-3aca-9e53-d9846aa069d7",
+        "title": "Guerolito",
+        "releaseDate": "2005-12-13",
+        "year": 2005,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Remix"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/741bbbea-63d1-3aca-9e53-d9846aa069d7/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "433b24f2-5f3d-363f-a38d-fcf7e7076f4a",
+        "title": "Beck Remix EP #1",
+        "releaseDate": "2005-07-26",
+        "year": 2005,
+        "primaryType": "EP",
+        "secondaryTypes": [
+          "Remix"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/433b24f2-5f3d-363f-a38d-fcf7e7076f4a/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "8568cd19-5d9d-3bf9-9cf6-bc4966d7177a",
+        "title": "Girl",
+        "releaseDate": "2005-06-07",
+        "year": 2005,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/8568cd19-5d9d-3bf9-9cf6-bc4966d7177a/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "e49e2f8a-94c0-3dcf-8ce6-9bc52a1a7867",
+        "title": "Guero",
+        "releaseDate": "2005-03-16",
+        "year": 2005,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/e49e2f8a-94c0-3dcf-8ce6-9bc52a1a7867/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "402f9dce-1bdc-3978-b10c-f1083b47e771",
+        "title": "E-Pro",
+        "releaseDate": "2005-03-14",
+        "year": 2005,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/402f9dce-1bdc-3978-b10c-f1083b47e771/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "378a832d-082a-30f4-a81e-2ca36ef4b33e",
+        "title": "Gameboy Variations (Hell Yes EP)",
+        "releaseDate": "2005-02-01",
+        "year": 2005,
+        "primaryType": "EP",
+        "secondaryTypes": [
+          "Remix"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/378a832d-082a-30f4-a81e-2ca36ef4b33e/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "d90d252a-490c-3bd7-920e-fab8a251a1cf",
+        "title": "A Brief Overview",
+        "releaseDate": "2005",
+        "year": 2005,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/d90d252a-490c-3bd7-920e-fab8a251a1cf/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "1545825b-04f1-35d1-af67-355dea7903d0",
+        "title": "Frontin' on Debra",
+        "releaseDate": "2004-10-12",
+        "year": 2004,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1545825b-04f1-35d1-af67-355dea7903d0/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "5f84e8b9-b8e5-3fbf-b514-0192a62d88b6",
+        "title": "Sea Change",
+        "releaseDate": "2002-09-21",
+        "year": 2002,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/5f84e8b9-b8e5-3fbf-b514-0192a62d88b6/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "b8c9c282-2d5b-32b9-864f-9581e897e3e4",
+        "title": "Nicotine & Gravy",
+        "releaseDate": "2000-07-22",
+        "year": 2000,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/b8c9c282-2d5b-32b9-864f-9581e897e3e4/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "3b01ee33-d1dd-32bd-9720-dc9a69a1b4b0",
+        "title": "Stray Blues: A Collection of B-Sides",
+        "releaseDate": "2000-06-01",
+        "year": 2000,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/3b01ee33-d1dd-32bd-9720-dc9a69a1b4b0/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "0f3b41c9-4c0c-3e79-b315-0ee5e482189a",
+        "title": "Mixed Bizness",
+        "releaseDate": "2000-03-07",
+        "year": 2000,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/0f3b41c9-4c0c-3e79-b315-0ee5e482189a/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "bfa13581-b62e-4b81-863d-01ebc64a990d",
+        "title": "Beck",
+        "releaseDate": "2000",
+        "year": 2000,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/bfa13581-b62e-4b81-863d-01ebc64a990d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "4c5cd9dc-31b5-32b1-bd11-57081e83f8bb",
+        "title": "Midnite Vultures",
+        "releaseDate": "1999-11-20",
+        "year": 1999,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/4c5cd9dc-31b5-32b1-bd11-57081e83f8bb/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "aaac33f8-3861-3eaa-b458-ff3e8809dc54",
+        "title": "Sexx Laws",
+        "releaseDate": "1999-10-19",
+        "year": 1999,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/aaac33f8-3861-3eaa-b458-ff3e8809dc54/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "48afa87e-0a22-3c00-a9d0-a69957354f68",
+        "title": "Nobody's Fault but My Own",
+        "releaseDate": "1999-04-21",
+        "year": 1999,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/48afa87e-0a22-3c00-a9d0-a69957354f68/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "6e04d651-dfa0-31df-aeab-2cbe4a250e81",
+        "title": "Cold Brains",
+        "releaseDate": "1999-03-01",
+        "year": 1999,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6e04d651-dfa0-31df-aeab-2cbe4a250e81/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "459a6f27-1084-385c-98e7-e738460f92bd",
+        "title": "Tropicalia",
+        "releaseDate": "1998-12-07",
+        "year": 1998,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/459a6f27-1084-385c-98e7-e738460f92bd/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "00a9ccbf-341b-3b58-8865-7fc7fc9a64d9",
+        "title": "Mutations",
+        "releaseDate": "1998-11-02",
+        "year": 1998,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/00a9ccbf-341b-3b58-8865-7fc7fc9a64d9/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "bc17f600-ad09-3bd2-90fa-37328f4594e7",
+        "title": "Kill Any/All Spin Personnel",
+        "releaseDate": "1998",
+        "year": 1998,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/bc17f600-ad09-3bd2-90fa-37328f4594e7/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "b0aa2090-d87e-3f74-8f73-b1a326d89d8f",
+        "title": "Deadweight",
+        "releaseDate": "1997-10-27",
+        "year": 1997,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/b0aa2090-d87e-3f74-8f73-b1a326d89d8f/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "e0f16f47-4b45-33db-9439-6a216333e71b",
+        "title": "Jack-Ass",
+        "releaseDate": "1997-08-26",
+        "year": 1997,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/e0f16f47-4b45-33db-9439-6a216333e71b/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "582ca06b-0aba-35f8-8f0d-7f20288f0fcd",
+        "title": "The New Pollution and Other Favorites",
+        "releaseDate": "1997-07-24",
+        "year": 1997,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/582ca06b-0aba-35f8-8f0d-7f20288f0fcd/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "e9be2b7f-11b2-448b-bf72-a2b7318a9c35",
+        "title": "Live in Denmark 1995",
+        "releaseDate": "1997-06-29",
+        "year": 1997,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/e9be2b7f-11b2-448b-bf72-a2b7318a9c35/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "8bfc2b76-4c00-387b-a39e-a9f1a82ab530",
+        "title": "Sissyneck",
+        "releaseDate": "1997-05-26",
+        "year": 1997,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/8bfc2b76-4c00-387b-a39e-a9f1a82ab530/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "d8b87251-a253-3965-a3d5-7245d6895c1e",
+        "title": "The New Pollution",
+        "releaseDate": "1997-02-24",
+        "year": 1997,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/d8b87251-a253-3965-a3d5-7245d6895c1e/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "272a3533-0d81-48fa-981d-d7d2143f6a3e",
+        "title": "Devils Haircut",
+        "releaseDate": "1996-11-04",
+        "year": 1996,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/272a3533-0d81-48fa-981d-d7d2143f6a3e/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "cf6788a3-733e-3ae9-9009-06b788ed3115",
+        "title": "Where It's At",
+        "releaseDate": "1996-06-17",
+        "year": 1996,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/cf6788a3-733e-3ae9-9009-06b788ed3115/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "df0bfd42-78a9-40c3-a45f-a12e10d446f8",
+        "title": "Odelay",
+        "releaseDate": "1996-06-17",
+        "year": 1996,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/df0bfd42-78a9-40c3-a45f-a12e10d446f8/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "0e3f353e-6e4a-348e-a210-ce80eff571e9",
+        "title": "It's All in Your Mind",
+        "releaseDate": "1995",
+        "year": 1995,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/0e3f353e-6e4a-348e-a210-ce80eff571e9/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a29cffe8-d2d0-3d30-a3ec-bf19f15b1fa6",
+        "title": "We Are Bacteria",
+        "releaseDate": "1995",
+        "year": 1995,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a29cffe8-d2d0-3d30-a3ec-bf19f15b1fa6/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "6c932902-3b24-36b6-8b25-91a29d527d2d",
+        "title": "One Foot in the Grave",
+        "releaseDate": "1994-06-27",
+        "year": 1994,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6c932902-3b24-36b6-8b25-91a29d527d2d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "51d170b1-eddc-3b54-b885-33fed15c1ec3",
+        "title": "Pay No Mind (Snoozer)",
+        "releaseDate": "1994-05-09",
+        "year": 1994,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/51d170b1-eddc-3b54-b885-33fed15c1ec3/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "f4961cb1-49fe-35ac-b600-0d4dff310b6f",
+        "title": "Beercan",
+        "releaseDate": "1994-05",
+        "year": 1994,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/f4961cb1-49fe-35ac-b600-0d4dff310b6f/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "4f8bb33f-9e2d-34dc-8852-5d591cc104d8",
+        "title": "Mellow Gold",
+        "releaseDate": "1994-03-01",
+        "year": 1994,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/4f8bb33f-9e2d-34dc-8852-5d591cc104d8/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "4f331fd2-a997-3be6-bde5-025b5770576c",
+        "title": "Stereopathetic Soulmanure",
+        "releaseDate": "1994-02-22",
+        "year": 1994,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/4f331fd2-a997-3be6-bde5-025b5770576c/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "9c0c053f-534b-3b6c-b2a0-da4c77c85df1",
+        "title": "A Western Harvest Field by Moonlight",
+        "releaseDate": "1994-01",
+        "year": 1994,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/9c0c053f-534b-3b6c-b2a0-da4c77c85df1/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "3495d990-cafd-302c-9ec0-914263a76c09",
+        "title": "Mellow Gold Tour Sampler",
+        "releaseDate": "1994",
+        "year": 1994,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/3495d990-cafd-302c-9ec0-914263a76c09/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "54309032-4f16-329e-80a9-f1e8a44cbbf9",
+        "title": "Steve Threw Up",
+        "releaseDate": "1994",
+        "year": 1994,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/54309032-4f16-329e-80a9-f1e8a44cbbf9/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "c63b80c1-41d9-4542-a8a4-79f1298926bd",
+        "title": "Beck / Bean",
+        "releaseDate": "1993-04",
+        "year": 1993,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/c63b80c1-41d9-4542-a8a4-79f1298926bd/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "9439429f-1c78-3cf5-99cb-d1b86ed6ff02",
+        "title": "Loser",
+        "releaseDate": "1993-01-18",
+        "year": 1993,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/9439429f-1c78-3cf5-99cb-d1b86ed6ff02/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "7b6f66a9-4fae-3425-9773-6a577fa23519",
+        "title": "Golden Feelings",
+        "releaseDate": "1993",
+        "year": 1993,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/7b6f66a9-4fae-3425-9773-6a577fa23519/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "acbb0791-8505-34c9-830f-c3396d57e186",
+        "title": "Fresh Meat and Old Slabs",
+        "releaseDate": "1993",
+        "year": 1993,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Demo"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/acbb0791-8505-34c9-830f-c3396d57e186/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "6acbfd58-e2cd-4649-86a4-e16ff067fbb4",
+        "title": "Bek's a Loser",
+        "releaseDate": "1991",
+        "year": 1991,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6acbfd58-e2cd-4649-86a4-e16ff067fbb4/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "4e896049-8d5d-4a8c-96ba-2ab8858eb226",
+        "title": "The Complete Beck and Dava",
+        "releaseDate": "1990",
+        "year": 1990,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Demo"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/4e896049-8d5d-4a8c-96ba-2ab8858eb226/front-500.jpg",
+        "coverAvailable": true
+      }
+    ],
+    "fetchedAt": "2026-03-23T14:37:58.304Z",
+    "cachedAt": "2026-03-23T14:37:58.304Z"
   }
 }

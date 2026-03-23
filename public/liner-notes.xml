@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 16 Mar 2026 14:42:18 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 16 Mar 2026 16:04:48 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>Blancmange: Caught Once, Never Again</title>
+    <link>https://concerts.morperhaus.org/liner-notes/blancmange-caught-once-never-again</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/blancmange-caught-once-never-again</guid>
+    <pubDate>Mon, 16 Mar 2026 16:04:48 +0000</pubDate>
+    <description>I saw Blancmange exactly once in 38 years of concertgoing — April 15, 1986 at Crawford Hall in Irvine — and somehow never crossed paths with them again. This English synth-pop duo formed in 1979 and had albums like &quot;Happy Families&quot; and &quot;Mange Tout&quot; in their catalog, yet they became the ultimate one-and-done in my concert history. It&apos;s fascinating how some artists slip through your life just once, leaving you with a single snapshot of a moment that never repeated itself.</description>
+    <category>#rare-sighting</category>
+    <category>#one-time-only</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/blancmange-51c457e3276c1.jpg" medium="image" />
+  </item>
   <item>
     <title>March 23: 21 Years Since Social Distortion</title>
     <link>https://concerts.morperhaus.org/liner-notes/march-23-21-years-since-social-distortion</link>
@@ -201,16 +211,6 @@
     <category>#rare-sighting</category>
     <category>#one-time-only</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/qprtqv1342815862.jpg" medium="image" />
-  </item>
-  <item>
-    <title>Thompson Twins in 1984: The Year of 1984 Los Angeles Summer Olympics</title>
-    <link>https://concerts.morperhaus.org/liner-notes/thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics</guid>
-    <pubDate>Mon, 16 Feb 2026 07:12:00 +0000</pubDate>
-    <description>Los Angeles in 1984 was electric with Olympic fever, and the new wave acts flooding Irvine Meadows that year captured that same restless energy. I saw Thompson Twins in May, right in the thick of it — part of a four-show run at the venue that also brought Adam Ant, Billy Idol, and Echo and the Bunnymen between April and September. The Thompson Twins were riding high on &quot;Into the Gap,&quot; their synth-pop perfectly matching the city&apos;s futuristic Olympic optimism. Looking back, those 4 concerts feel like a snapshot of new wave&apos;s peak moment, when MTV and the Games made everything feel possible.</description>
-    <category>#city-pulse</category>
-    <category>#historical-context</category>
-    <media:content url="/images/venues/fallback.jpg" medium="image" />
   </item>
   </channel>
 </rss>

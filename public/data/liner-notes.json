@@ -1,7 +1,66 @@
 {
-  "generatedAt": "2026-03-16T14:42:18.807Z",
+  "generatedAt": "2026-03-16T16:04:48.880Z",
   "dataHash": "888efdf4",
   "posts": [
+    {
+      "id": "rare-sighting-blancmange",
+      "slug": "blancmange-caught-once-never-again",
+      "category": "deep-cut",
+      "temporality": "evergreen",
+      "headline": "Blancmange: Caught Once, Never Again",
+      "prose": "I saw Blancmange exactly once in 38 years of concertgoing — April 15, 1986 at Crawford Hall in Irvine — and somehow never crossed paths with them again. This English synth-pop duo formed in 1979 and had albums like \"Happy Families\" and \"Mange Tout\" in their catalog, yet they became the ultimate one-and-done in my concert history. It's fascinating how some artists slip through your life just once, leaving you with a single snapshot of a moment that never repeated itself.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/blancmange-51c457e3276c1.jpg",
+        "alt": "Blancmange",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Living On The Ceiling",
+        "artistName": "Blancmange",
+        "albumName": "Happy Families",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/31/ac/ab/31acabb9-ecaa-dbf7-e8e7-f0eefb0c3812/mzaf_8041436093787991363.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/b3/fd/5c/b3fd5cd0-37a9-89b2-44c3-cb2efc8db470/190295707156.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/living-on-the-ceiling/1317034256?i=1317034263&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "blancmange"
+      ],
+      "venues": [
+        "crawford-hall"
+      ],
+      "years": [
+        1986
+      ],
+      "tags": [
+        "#rare-sighting",
+        "#one-time-only"
+      ],
+      "deepLinks": [
+        {
+          "label": "Blancmange",
+          "url": "/?scene=artists&artist=blancmange",
+          "type": "artist"
+        },
+        {
+          "label": "Crawford Hall",
+          "url": "/?scene=venues&venue=crawford-hall",
+          "type": "venue"
+        },
+        {
+          "label": "1986",
+          "url": "/?scene=timeline&year=1986",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "the-alarm-caught-once-never-again"
+      ],
+      "score": 33,
+      "detector": "rare-sighting",
+      "publishedAt": "2026-03-16T16:04:48.880Z"
+    },
     {
       "id": "anniversary-social-distortion-2005-03-23",
       "slug": "march-23-21-years-since-social-distortion",
@@ -3274,10 +3333,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 41,
-    "totalGenerated": 50,
-    "averageScore": 39.4,
-    "lastPipelineRun": "2026-03-16T14:42:18.807Z",
+    "totalPosts": 42,
+    "totalGenerated": 53,
+    "averageScore": 39.2,
+    "lastPipelineRun": "2026-03-16T16:04:48.880Z",
     "concertsAnalyzed": 178,
     "feedUrl": "/liner-notes.xml"
   }
