@@ -1,7 +1,66 @@
 {
-  "generatedAt": "2026-03-16T16:04:48.880Z",
-  "dataHash": "888efdf4",
+  "generatedAt": "2026-03-24T00:47:49.925Z",
+  "dataHash": "bac9eb26",
   "posts": [
+    {
+      "id": "anniversary-bad-religion-2013-03-22",
+      "slug": "march-22-13-years-since-bad-religion",
+      "category": "personal",
+      "temporality": "timely",
+      "headline": "March 22: 13 Years Since Bad Religion",
+      "prose": "I remember walking into the 9:30 Club that March night in 2013, thirteen years ago now, and feeling like I was stepping into punk rock church. Bad Religion delivered their signature blend of melody and fury to a packed room, with Against Me!, The Bronx, and Polar Bear Club warming up the crowd beforehand. The whole evening felt like a masterclass in how punk has evolved since Bad Religion formed back in 1979, yet Greg Graffin's voice cut through the years like nothing had changed. Sometimes the best shows are the ones that remind you why you fell in love with live music in the first place.",
+      "image": {
+        "url": "https://www.theaudiodb.com/images/media/artist/thumb/yuswct1767893982.jpg",
+        "alt": "Bad Religion",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Bad Religion",
+        "artistName": "Bad Religion",
+        "albumName": "channel ORANGE",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/3d/9b/0e/3d9b0ead-8207-8d08-e5dd-a0e334613d3d/mzaf_7882569404908467417.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/04/f8/63/04f863fc-2852-604f-c910-a97ac069506b/12UMGIM40339.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/bad-religion/1440765580?i=1440766937&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "bad-religion"
+      ],
+      "venues": [
+        "9-30-club"
+      ],
+      "years": [
+        2013
+      ],
+      "tags": [
+        "#anniversary",
+        "#on-this-day"
+      ],
+      "deepLinks": [
+        {
+          "label": "Bad Religion",
+          "url": "/?scene=artists&artist=bad-religion",
+          "type": "artist"
+        },
+        {
+          "label": "9:30 Club",
+          "url": "/?scene=venues&venue=9-30-club",
+          "type": "venue"
+        },
+        {
+          "label": "2013",
+          "url": "/?scene=timeline&year=2013",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "my-international-chapter-177-concerts-over-41-years",
+        "social-distortion-14-more-2018-festival-bill"
+      ],
+      "score": 41,
+      "detector": "calendar-anniversary",
+      "publishedAt": "2026-03-24T00:47:49.925Z"
+    },
     {
       "id": "rare-sighting-blancmange",
       "slug": "blancmange-caught-once-never-again",
@@ -3333,10 +3392,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 42,
-    "totalGenerated": 53,
-    "averageScore": 39.2,
-    "lastPipelineRun": "2026-03-16T16:04:48.880Z",
+    "totalPosts": 43,
+    "totalGenerated": 56,
+    "averageScore": 39.3,
+    "lastPipelineRun": "2026-03-24T00:47:49.925Z",
     "concertsAnalyzed": 178,
     "feedUrl": "/liner-notes.xml"
   }

@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 16 Mar 2026 16:04:48 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 24 Mar 2026 00:47:49 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>March 22: 13 Years Since Bad Religion</title>
+    <link>https://concerts.morperhaus.org/liner-notes/march-22-13-years-since-bad-religion</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/march-22-13-years-since-bad-religion</guid>
+    <pubDate>Tue, 24 Mar 2026 00:47:49 +0000</pubDate>
+    <description>I remember walking into the 9:30 Club that March night in 2013, thirteen years ago now, and feeling like I was stepping into punk rock church. Bad Religion delivered their signature blend of melody and fury to a packed room, with Against Me!, The Bronx, and Polar Bear Club warming up the crowd beforehand. The whole evening felt like a masterclass in how punk has evolved since Bad Religion formed back in 1979, yet Greg Graffin&apos;s voice cut through the years like nothing had changed. Sometimes the best shows are the ones that remind you why you fell in love with live music in the first place.</description>
+    <category>#anniversary</category>
+    <category>#on-this-day</category>
+    <media:content url="https://www.theaudiodb.com/images/media/artist/thumb/yuswct1767893982.jpg" medium="image" />
+  </item>
   <item>
     <title>Blancmange: Caught Once, Never Again</title>
     <link>https://concerts.morperhaus.org/liner-notes/blancmange-caught-once-never-again</link>
@@ -201,16 +211,6 @@
     <category>#drought</category>
     <category>#comeback</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/new-order-4fd5f3e934e45.jpg" medium="image" />
-  </item>
-  <item>
-    <title>Billy Idol: Caught Once, Never Again</title>
-    <link>https://concerts.morperhaus.org/liner-notes/billy-idol-caught-once-never-again</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/billy-idol-caught-once-never-again</guid>
-    <pubDate>Wed, 18 Feb 2026 10:24:00 +0000</pubDate>
-    <description>I saw Billy Idol exactly once in four decades of concertgoing — August 13, 1984 at Irvine Meadows — and somehow never crossed paths with him again. This strikes me as nearly impossible given how ubiquitous he became after *Rebel Yell*, yet my archive shows a complete Billy Idol drought from 1985 to present. Maybe I was unconsciously avoiding the crowds, or maybe our touring schedules just never aligned, but it&apos;s wild that a single summer night in Orange County represents my entire Billy Idol experience.</description>
-    <category>#rare-sighting</category>
-    <category>#one-time-only</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/qprtqv1342815862.jpg" medium="image" />
   </item>
   </channel>
 </rss>
