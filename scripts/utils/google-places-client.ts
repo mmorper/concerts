@@ -32,6 +32,10 @@ interface PlaceDetails {
   websiteUri?: string
   types?: string[]
   photos?: PlacePhoto[]
+  location?: {
+    latitude: number
+    longitude: number
+  }
 }
 
 interface PlacesCache {
@@ -174,7 +178,7 @@ async function getPlaceDetails(placeId: string): Promise<PlaceDetails | null> {
       headers: {
         'X-Goog-Api-Key': GOOGLE_PLACES_API_KEY,
         'X-Goog-FieldMask':
-          'id,displayName,formattedAddress,rating,userRatingCount,websiteUri,types,photos',
+          'id,displayName,formattedAddress,rating,userRatingCount,websiteUri,types,photos,location',
       },
     })
 

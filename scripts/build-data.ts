@@ -1,4 +1,5 @@
 import { fetchGoogleSheet } from './fetch-google-sheet'
+import { geocodeVenues } from './geocode-venues'
 import { enrichConcertGenres } from './enrich-concert-genres'
 import { enrichArtists } from './enrich-artists'
 import { validateConcerts } from './validate-concerts'
@@ -44,6 +45,7 @@ async function buildData() {
   // Count active steps for progress tracking
   const steps = [
     { name: 'Fetch Google Sheets', active: true },
+    { name: 'Geocode venues', active: true },
     { name: 'Enrich concert genres', active: true },
     { name: 'Validate concerts', active: !skipValidation },
     { name: 'Enrich artist metadata', active: true },
@@ -90,7 +92,15 @@ async function buildData() {
     await fetchGoogleSheet({ dryRun })
     console.log()
 
-    // Step 2: Enrich concert genres from artist metadata (always runs)
+    // Step 2: Geocode any new venues (always runs)
+    currentStep++
+    console.log('=' .repeat(60))
+    console.log(`Step ${currentStep}/${activeSteps}: Geocoding venues`)
+    console.log('-'.repeat(60))
+    await geocodeVenues()
+    console.log()
+
+    // Step 3: Enrich concert genres from artist metadata (always runs)
     currentStep++
     console.log('=' .repeat(60))
     console.log(`Step ${currentStep}/${activeSteps}: Enriching concert genres`)

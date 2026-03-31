@@ -1,5 +1,5 @@
 {
-  "computedAt": "2026-03-23T14:40:51.259Z",
+  "computedAt": "2026-03-31T22:35:18.501Z",
   "facts": [
     {
       "id": "top-artist",
@@ -22,7 +22,7 @@
     {
       "id": "total-concerts",
       "category": "timeline",
-      "headline": "181 concerts since 1984",
+      "headline": "182 concerts since 1984",
       "detail": "43 years of live music memories",
       "route": "/?scene=timeline",
       "cta": "Explore the timeline",
@@ -49,7 +49,7 @@
     {
       "id": "top-state",
       "category": "geography",
-      "headline": "California: 120 concerts",
+      "headline": "California: 121 concerts",
       "detail": "Home base for most concert experiences",
       "route": "/?scene=geography",
       "cta": "Explore the map",
@@ -112,7 +112,7 @@
     {
       "id": "unique-venues",
       "category": "venue",
-      "headline": "77 unique venues",
+      "headline": "78 unique venues",
       "detail": "From clubs to arenas and amphitheaters",
       "route": "/?scene=venues",
       "cta": "Explore venues",

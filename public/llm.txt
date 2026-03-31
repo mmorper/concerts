@@ -2,7 +2,7 @@
 
 ## Overview
 
-Personal concert archive spanning 1984-2026. Interactive web application with 181 concerts, 256 artists, 77 venues.
+Personal concert archive spanning 1984-2026. Interactive web application with 182 concerts, 256 artists, 78 venues.
 
 **Live Site:** https://concerts.morperhaus.org
 **Technology:** React SPA with D3.js visualizations, Leaflet maps, Tailwind UI
@@ -36,7 +36,7 @@ All data is publicly accessible as JSON:
 
 ### Concert Data
 **URL:** https://concerts.morperhaus.org/data/concerts.json
-**Records:** 181 concerts
+**Records:** 182 concerts
 **Schema:**
 ```json
 {
@@ -82,7 +82,7 @@ All data is publicly accessible as JSON:
 
 ### Venue Metadata
 **URL:** https://concerts.morperhaus.org/data/venues-metadata.json
-**Records:** 77 venues
+**Records:** 78 venues
 **Schema:**
 ```json
 {
@@ -446,6 +446,8 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 
 ---
 
+---
+
 ## Pre-Computed Statistics
 
 These facts are updated with each data refresh and can be quoted directly:
@@ -463,11 +465,11 @@ These facts are updated with each data refresh and can be quoted directly:
    → https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre
 2. Irvine Meadows: 16 shows (Another venue with great memories)
    → https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows
-3. 77 unique venues (From clubs to arenas and amphitheaters)
+3. 78 unique venues (From clubs to arenas and amphitheaters)
    → https://concerts.morperhaus.org/?scene=venues
 
 ### Timeline Highlights
-- 181 concerts since 1984: 43 years of live music memories
+- 182 concerts since 1984: 43 years of live music memories
   → https://concerts.morperhaus.org/?scene=timeline
 - First show: Adam Ant (1984): Where it all began — Irvine Meadows
   → https://concerts.morperhaus.org/?scene=artists&artist=adam-ant
@@ -485,7 +487,7 @@ These facts are updated with each data refresh and can be quoted directly:
    → https://concerts.morperhaus.org/?scene=genres
 
 ### Geographic Coverage
-- California: 120 concerts: Home base for most concert experiences
+- California: 121 concerts: Home base for most concert experiences
   → https://concerts.morperhaus.org/?scene=geography
 - 35 cities visited: Live music across the map
   → https://concerts.morperhaus.org/?scene=geography
@@ -493,12 +495,12 @@ These facts are updated with each data refresh and can be quoted directly:
 ### Quick Facts (AI-Quotable)
 - "Social Distortion: 8 concerts" — The most-seen live act, 1990–2024
 - "Pacific Amphitheatre: 17 shows" — A favorite spot, visited 1985–2026
-- "181 concerts since 1984" — 43 years of live music memories
+- "182 concerts since 1984" — 43 years of live music memories
 - "New Wave: 49 shows" — The dominant sound in this collection
 - "First show: Adam Ant (1984)" — Where it all began — Irvine Meadows
-- "California: 120 concerts" — Home base for most concert experiences
+- "California: 121 concerts" — Home base for most concert experiences
 
-**Facts computed:** 2026-03-23T14:40:51.259Z
+**Facts computed:** 2026-03-31T22:35:18.501Z
 **Source:** https://concerts.morperhaus.org/data/facts.json
 **Browse visually:** https://concerts.morperhaus.org/liner-notes
 
@@ -658,6 +660,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-03-23
+**Last Updated:** 2026-03-31
 **Version:** v4.6.0
-**Total Content:** 181 concerts | 256 artists | 77 venues | 11,030+ albums | 1984-2026
+**Total Content:** 182 concerts | 256 artists | 78 venues | 11,030+ albums | 1984-2026

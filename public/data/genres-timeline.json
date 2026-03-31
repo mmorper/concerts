@@ -1253,6 +1253,46 @@
       ]
     },
     {
+      "name": "Swing",
+      "normalizedName": "swing",
+      "color": "#ca8a04",
+      "showsByYear": {
+        "1995": 1,
+        "1998": 1,
+        "1999": 1,
+        "2002": 1,
+        "2017": 1
+      },
+      "totalShows": 5,
+      "firstYear": 1995,
+      "lastYear": 2017,
+      "artists": [
+        {
+          "name": "The Brian Setzer Orchestra",
+          "normalizedName": "the-brian-setzer-orchestra",
+          "showCount": 4,
+          "years": [
+            1995,
+            1998,
+            2002,
+            2017
+          ],
+          "firstYear": 1995,
+          "lastYear": 2017
+        },
+        {
+          "name": "Alien Fashion Show",
+          "normalizedName": "alien-fashion-show",
+          "showCount": 1,
+          "years": [
+            1999
+          ],
+          "firstYear": 1999,
+          "lastYear": 1999
+        }
+      ]
+    },
+    {
       "name": "New Wave Pop",
       "normalizedName": "new-wave-pop",
       "color": "#3b82f6",
@@ -1324,44 +1364,6 @@
           ],
           "firstYear": 1990,
           "lastYear": 1990
-        }
-      ]
-    },
-    {
-      "name": "Swing",
-      "normalizedName": "swing",
-      "color": "#ca8a04",
-      "showsByYear": {
-        "1995": 1,
-        "1999": 1,
-        "2002": 1,
-        "2017": 1
-      },
-      "totalShows": 4,
-      "firstYear": 1995,
-      "lastYear": 2017,
-      "artists": [
-        {
-          "name": "The Brian Setzer Orchestra",
-          "normalizedName": "the-brian-setzer-orchestra",
-          "showCount": 3,
-          "years": [
-            1995,
-            2002,
-            2017
-          ],
-          "firstYear": 1995,
-          "lastYear": 2017
-        },
-        {
-          "name": "Alien Fashion Show",
-          "normalizedName": "alien-fashion-show",
-          "showCount": 1,
-          "years": [
-            1999
-          ],
-          "firstYear": 1999,
-          "lastYear": 1999
         }
       ]
     },
@@ -1482,7 +1484,7 @@
     "1993": 3,
     "1995": 4,
     "1997": 1,
-    "1998": 1,
+    "1998": 2,
     "1999": 2,
     "2000": 1,
     "2001": 1,
@@ -1517,11 +1519,11 @@
     },
     {
       "milestone": 50,
-      "year": 1999
+      "year": 1998
     },
     {
       "milestone": 75,
-      "year": 2009
+      "year": 2008
     },
     {
       "milestone": 100,
@@ -1529,7 +1531,7 @@
     },
     {
       "milestone": 125,
-      "year": 2018
+      "year": 2017
     },
     {
       "milestone": 150,
@@ -1537,12 +1539,12 @@
     },
     {
       "milestone": 175,
-      "year": 2025
+      "year": 2024
     }
   ],
   "yearRange": {
     "start": 1984,
     "end": 2026
   },
-  "generatedAt": "2026-03-23T14:40:51.249Z"
+  "generatedAt": "2026-03-31T22:35:18.491Z"
 }

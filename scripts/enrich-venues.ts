@@ -308,6 +308,15 @@ async function enrichVenues() {
         if (placeDetails) {
           metadata.places = placeDetails
 
+          // Use Places API location when geocode cache has no coordinates
+          if (!metadata.location && placeDetails.location) {
+            metadata.location = {
+              lat: placeDetails.location.latitude,
+              lng: placeDetails.location.longitude,
+            }
+            console.log(`  📍 Location from Places API: ${metadata.location.lat}, ${metadata.location.lng}`)
+          }
+
           // Generate photo URLs if photos available
           if (placeDetails.photos && placeDetails.photos.length > 0) {
             let photo = placeDetails.photos[0]
@@ -401,6 +410,24 @@ async function enrichVenues() {
     }
 
     fs.writeFileSync(outputPath, JSON.stringify(venuesMetadata, null, 2), 'utf-8')
+
+    // Patch concerts.json with any newly discovered coordinates from Places API
+    let patchedConcerts = 0
+    for (const concert of concerts) {
+      const normalizedName = normalizeVenueName(concert.venue)
+      const venueLocation = venuesMetadata[normalizedName]?.location
+      if (venueLocation && concert.location) {
+        if (concert.location.lat !== venueLocation.lat || concert.location.lng !== venueLocation.lng) {
+          concert.location = { lat: venueLocation.lat, lng: venueLocation.lng }
+          patchedConcerts++
+        }
+      }
+    }
+
+    if (patchedConcerts > 0) {
+      fs.writeFileSync(concertsPath, JSON.stringify(concertsData, null, 2), 'utf-8')
+      console.log(`\n📍 Patched ${patchedConcerts} concert${patchedConcerts > 1 ? 's' : ''} in concerts.json with corrected coordinates`)
+    }
 
     // Print summary
     console.log('\n=== Enrichment Complete ===')
