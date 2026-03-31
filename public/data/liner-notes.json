@@ -1,7 +1,77 @@
 {
-  "generatedAt": "2026-03-24T00:47:49.925Z",
-  "dataHash": "bac9eb26",
+  "generatedAt": "2026-03-31T22:51:47.305Z",
+  "dataHash": "2b36bbe9",
   "posts": [
+    {
+      "id": "longevity-the-brian-setzer-orchestra",
+      "slug": "the-brian-setzer-orchestra-22-years-of-shows",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "The Brian Setzer Orchestra: 22 Years of Shows",
+      "prose": "I remember discovering The Brian Setzer Orchestra at the Hard Rock Cafe in Newport Beach back in 1995, when swing revival was just starting to bubble up from the underground. That first show hooked me on Brian's rockabilly-meets-big-band sound, and I ended up catching them 4 times across 22 years, from that intimate club gig all the way to the Warner Theatre in DC in 2017. Four different venues, three different decades, but always that same electric energy when Brian strapped on his hollow-body Gretsch and the 17-piece orchestra kicked into high gear. There's something deeply satisfying about following an artist long enough to watch both of you age into the music.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg",
+        "alt": "The Brian Setzer Orchestra",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Jump, Jive an' Wail",
+        "artistName": "The Brian Setzer Orchestra",
+        "albumName": "The Dirty Boogie",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/7f/c5/43/7fc543bf-ee41-b3aa-81da-edbaf7995403/mzaf_7474708702167455145.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/1c/32/96/1c32968d-aadc-3eeb-552c-5604f7ccb3ea/00606949018320.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/jump-jive-an-wail/1440903312?i=1440903436&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "the-brian-setzer-orchestra"
+      ],
+      "venues": [
+        "hard-rock-cafe",
+        "greek-theatre",
+        "universal-amphitheater",
+        "warner-theatre"
+      ],
+      "years": [
+        1995,
+        1998,
+        2002,
+        2017
+      ],
+      "tags": [
+        "#artist-longevity",
+        "#multi-decade"
+      ],
+      "deepLinks": [
+        {
+          "label": "The Brian Setzer Orchestra",
+          "url": "/?scene=artists&artist=the-brian-setzer-orchestra",
+          "type": "artist"
+        },
+        {
+          "label": "Hard Rock Cafe",
+          "url": "/?scene=venues&venue=hard-rock-cafe",
+          "type": "venue"
+        },
+        {
+          "label": "Greek Theatre",
+          "url": "/?scene=venues&venue=greek-theatre",
+          "type": "venue"
+        },
+        {
+          "label": "1995",
+          "url": "/?scene=timeline&year=1995",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "the-brian-setzer-orchestra-a-jazz-blues-outlier-in-a-rock-electronic-reggae-arch",
+        "the-brian-setzer-orchestra-days-after-the-bends-dropped"
+      ],
+      "score": 41,
+      "detector": "artist-longevity",
+      "publishedAt": "2026-03-31T22:51:47.305Z"
+    },
     {
       "id": "anniversary-bad-religion-2013-03-22",
       "slug": "march-22-13-years-since-bad-religion",
@@ -3392,11 +3462,11 @@
     }
   ],
   "metadata": {
-    "totalPosts": 43,
-    "totalGenerated": 56,
+    "totalPosts": 44,
+    "totalGenerated": 59,
     "averageScore": 39.3,
-    "lastPipelineRun": "2026-03-24T00:47:49.925Z",
-    "concertsAnalyzed": 178,
+    "lastPipelineRun": "2026-03-31T22:51:47.305Z",
+    "concertsAnalyzed": 179,
     "feedUrl": "/liner-notes.xml"
   }
 }

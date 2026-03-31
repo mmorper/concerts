@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 24 Mar 2026 00:47:49 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 31 Mar 2026 22:51:47 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>The Brian Setzer Orchestra: 22 Years of Shows</title>
+    <link>https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-22-years-of-shows</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-22-years-of-shows</guid>
+    <pubDate>Tue, 31 Mar 2026 22:51:47 +0000</pubDate>
+    <description>I remember discovering The Brian Setzer Orchestra at the Hard Rock Cafe in Newport Beach back in 1995, when swing revival was just starting to bubble up from the underground. That first show hooked me on Brian&apos;s rockabilly-meets-big-band sound, and I ended up catching them 4 times across 22 years, from that intimate club gig all the way to the Warner Theatre in DC in 2017. Four different venues, three different decades, but always that same electric energy when Brian strapped on his hollow-body Gretsch and the 17-piece orchestra kicked into high gear. There&apos;s something deeply satisfying about following an artist long enough to watch both of you age into the music.</description>
+    <category>#artist-longevity</category>
+    <category>#multi-decade</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg" medium="image" />
+  </item>
   <item>
     <title>March 22: 13 Years Since Bad Religion</title>
     <link>https://concerts.morperhaus.org/liner-notes/march-22-13-years-since-bad-religion</link>
@@ -201,16 +211,6 @@
     <category>#festival-bill</category>
     <category>#mega-bill</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/xwtsqv1386887602.jpg" medium="image" />
-  </item>
-  <item>
-    <title>New Order: 37 Years Between Shows</title>
-    <link>https://concerts.morperhaus.org/liner-notes/new-order-37-years-between-shows</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/new-order-37-years-between-shows</guid>
-    <pubDate>Fri, 20 Feb 2026 13:36:00 +0000</pubDate>
-    <description>I saw New Order at Irvine Meadows in 1985 when I was just getting into their sound — that perfect blend of post-punk edge and dance floor pulse that made Brotherhood feel so essential. Then nothing. Thirty-seven years passed before I caught them again at the Hollywood Bowl in 2022, and walking into that venue, I couldn&apos;t help but think about how much had changed in both our lives since that summer night in Orange County. The music hit just as hard, but I was definitely standing in a very different place to receive it.</description>
-    <category>#drought</category>
-    <category>#comeback</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/new-order-4fd5f3e934e45.jpg" medium="image" />
   </item>
   </channel>
 </rss>
