@@ -1245,6 +1245,30 @@
     },
     {
       "id": "concert-50",
+      "date": "1998-08-08",
+      "headliner": "The Brian Setzer Orchestra",
+      "headlinerNormalized": "the-brian-setzer-orchestra",
+      "genre": "",
+      "genreNormalized": "",
+      "openers": [],
+      "venue": "Greek Theatre",
+      "venueNormalized": "greek-theatre",
+      "city": "Hollywood",
+      "state": "California",
+      "cityState": "Hollywood, California",
+      "reference": "",
+      "year": 1998,
+      "month": 8,
+      "day": 8,
+      "dayOfWeek": "Saturday",
+      "decade": "1990s",
+      "location": {
+        "lat": 39.7392,
+        "lng": -104.9903
+      }
+    },
+    {
+      "id": "concert-51",
       "date": "1999-04-02",
       "headliner": "Alien Fashion Show",
       "headlinerNormalized": "alien-fashion-show",
@@ -1271,7 +1295,7 @@
       }
     },
     {
-      "id": "concert-51",
+      "id": "concert-52",
       "date": "1999-10-13",
       "headliner": "The Art of Noise",
       "headlinerNormalized": "the-art-of-noise",
@@ -1295,7 +1319,7 @@
       }
     },
     {
-      "id": "concert-52",
+      "id": "concert-53",
       "date": "2000-11-17",
       "headliner": "Brian Setzer ’68 Comeback Special",
       "headlinerNormalized": "brian-setzer-68-comeback-special",
@@ -1319,7 +1343,7 @@
       }
     },
     {
-      "id": "concert-53",
+      "id": "concert-54",
       "date": "2001-02-11",
       "headliner": "Elton John",
       "headlinerNormalized": "elton-john",
@@ -1345,7 +1369,7 @@
       }
     },
     {
-      "id": "concert-54",
+      "id": "concert-55",
       "date": "2002-12-21",
       "headliner": "The Brian Setzer Orchestra",
       "headlinerNormalized": "the-brian-setzer-orchestra",
@@ -1371,7 +1395,7 @@
       }
     },
     {
-      "id": "concert-55",
+      "id": "concert-56",
       "date": "2003-06-08",
       "headliner": "Peter Gabriel",
       "headlinerNormalized": "peter-gabriel",
@@ -1395,7 +1419,7 @@
       }
     },
     {
-      "id": "concert-56",
+      "id": "concert-57",
       "date": "2003-08-24",
       "headliner": "The Human League",
       "headlinerNormalized": "the-human-league",
@@ -1421,7 +1445,7 @@
       }
     },
     {
-      "id": "concert-57",
+      "id": "concert-58",
       "date": "2003-08-29",
       "headliner": "Joe Jackson",
       "headlinerNormalized": "joe-jackson",
@@ -1445,7 +1469,7 @@
       }
     },
     {
-      "id": "concert-58",
+      "id": "concert-59",
       "date": "2003-09-20",
       "headliner": "The Cure",
       "headlinerNormalized": "the-cure",
@@ -1484,7 +1508,7 @@
       }
     },
     {
-      "id": "concert-59",
+      "id": "concert-60",
       "date": "2005-03-23",
       "headliner": "Social Distortion",
       "headlinerNormalized": "social-distortion",
@@ -1508,7 +1532,7 @@
       }
     },
     {
-      "id": "concert-60",
+      "id": "concert-61",
       "date": "2005-07-27",
       "headliner": "Garbage",
       "headlinerNormalized": "garbage",
@@ -1532,7 +1556,7 @@
       }
     },
     {
-      "id": "concert-61",
+      "id": "concert-62",
       "date": "2005-11-22",
       "headliner": "Depeche Mode",
       "headlinerNormalized": "depeche-mode",
@@ -1558,7 +1582,7 @@
       }
     },
     {
-      "id": "concert-62",
+      "id": "concert-63",
       "date": "2005-11-23",
       "headliner": "Tears For Fears",
       "headlinerNormalized": "tears-for-fears",
@@ -1584,7 +1608,7 @@
       }
     },
     {
-      "id": "concert-63",
+      "id": "concert-64",
       "date": "2006-02-02",
       "headliner": "Howard Jones",
       "headlinerNormalized": "howard-jones",
@@ -1608,7 +1632,7 @@
       }
     },
     {
-      "id": "concert-64",
+      "id": "concert-65",
       "date": "2006-05-03",
       "headliner": "Joe Satriani",
       "headlinerNormalized": "joe-satriani",
@@ -1634,7 +1658,7 @@
       }
     },
     {
-      "id": "concert-65",
+      "id": "concert-66",
       "date": "2006-10-27",
       "headliner": "Devo",
       "headlinerNormalized": "devo",
@@ -1662,7 +1686,7 @@
       }
     },
     {
-      "id": "concert-66",
+      "id": "concert-67",
       "date": "2007-02-10",
       "headliner": "The Tubes",
       "headlinerNormalized": "the-tubes",
@@ -1686,7 +1710,7 @@
       }
     },
     {
-      "id": "concert-67",
+      "id": "concert-68",
       "date": "2007-06-02",
       "headliner": "Berlin",
       "headlinerNormalized": "berlin",
@@ -1710,7 +1734,7 @@
       }
     },
     {
-      "id": "concert-68",
+      "id": "concert-69",
       "date": "2007-11-16",
       "headliner": "Lee Rocker",
       "headlinerNormalized": "lee-rocker",
@@ -1734,7 +1758,7 @@
       }
     },
     {
-      "id": "concert-69",
+      "id": "concert-70",
       "date": "2008-05-04",
       "headliner": "Duran Duran",
       "headlinerNormalized": "duran-duran",
@@ -1758,7 +1782,7 @@
       }
     },
     {
-      "id": "concert-70",
+      "id": "concert-71",
       "date": "2008-07-22",
       "headliner": "Stray Cats",
       "headlinerNormalized": "stray-cats",
@@ -1784,7 +1808,7 @@
       }
     },
     {
-      "id": "concert-71",
+      "id": "concert-72",
       "date": "2008-07-24",
       "headliner": "Yaz",
       "headlinerNormalized": "yaz",
@@ -1810,7 +1834,7 @@
       }
     },
     {
-      "id": "concert-72",
+      "id": "concert-73",
       "date": "2008-09-06",
       "headliner": "The English Beat",
       "headlinerNormalized": "the-english-beat",
@@ -1834,7 +1858,7 @@
       }
     },
     {
-      "id": "concert-73",
+      "id": "concert-74",
       "date": "2008-11-28",
       "headliner": "Berlin",
       "headlinerNormalized": "berlin",
@@ -1858,7 +1882,7 @@
       }
     },
     {
-      "id": "concert-74",
+      "id": "concert-75",
       "date": "2008-12-09",
       "headliner": "Mike Ness",
       "headlinerNormalized": "mike-ness",
@@ -1882,7 +1906,7 @@
       }
     },
     {
-      "id": "concert-75",
+      "id": "concert-76",
       "date": "2009-05-16",
       "headliner": "Brian Setzer and the Nashvillians",
       "headlinerNormalized": "brian-setzer-and-the-nashvillians",
@@ -1906,7 +1930,7 @@
       }
     },
     {
-      "id": "concert-76",
+      "id": "concert-77",
       "date": "2009-11-10",
       "headliner": "Rob Thomas",
       "headlinerNormalized": "rob-thomas",
@@ -1930,7 +1954,7 @@
       }
     },
     {
-      "id": "concert-77",
+      "id": "concert-78",
       "date": "2010-02-22",
       "headliner": "The English Beat",
       "headlinerNormalized": "the-english-beat",
@@ -1956,7 +1980,7 @@
       }
     },
     {
-      "id": "concert-78",
+      "id": "concert-79",
       "date": "2010-04-30",
       "headliner": "Echo and the Bunnymen",
       "headlinerNormalized": "echo-and-the-bunnymen",
@@ -1983,7 +2007,7 @@
       }
     },
     {
-      "id": "concert-79",
+      "id": "concert-80",
       "date": "2010-10-26",
       "headliner": "Social Distortion",
       "headlinerNormalized": "social-distortion",
@@ -2007,7 +2031,7 @@
       }
     },
     {
-      "id": "concert-80",
+      "id": "concert-81",
       "date": "2011-04-26",
       "headliner": "Bad Religion",
       "headlinerNormalized": "bad-religion",
@@ -2033,7 +2057,7 @@
       }
     },
     {
-      "id": "concert-81",
+      "id": "concert-82",
       "date": "2011-05-06",
       "headliner": "The Dollyrots",
       "headlinerNormalized": "the-dollyrots",
@@ -2059,7 +2083,7 @@
       }
     },
     {
-      "id": "concert-82",
+      "id": "concert-83",
       "date": "2011-06-10",
       "headliner": "The Go-Go's",
       "headlinerNormalized": "the-go-go-s",
@@ -2085,7 +2109,7 @@
       }
     },
     {
-      "id": "concert-83",
+      "id": "concert-84",
       "date": "2012-04-24",
       "headliner": "Squeeze",
       "headlinerNormalized": "squeeze",
@@ -2111,7 +2135,7 @@
       }
     },
     {
-      "id": "concert-84",
+      "id": "concert-85",
       "date": "2012-05-10",
       "headliner": "Red Hot Chili Peppers",
       "headlinerNormalized": "red-hot-chili-peppers",
@@ -2137,7 +2161,7 @@
       }
     },
     {
-      "id": "concert-85",
+      "id": "concert-86",
       "date": "2012-06-12",
       "headliner": "The Cult",
       "headlinerNormalized": "the-cult",
@@ -2163,7 +2187,7 @@
       }
     },
     {
-      "id": "concert-86",
+      "id": "concert-87",
       "date": "2012-07-05",
       "headliner": "Howard Jones",
       "headlinerNormalized": "howard-jones",
@@ -2187,7 +2211,7 @@
       }
     },
     {
-      "id": "concert-87",
+      "id": "concert-88",
       "date": "2012-09-15",
       "headliner": "Joe Jackson",
       "headlinerNormalized": "joe-jackson",
@@ -2211,7 +2235,7 @@
       }
     },
     {
-      "id": "concert-88",
+      "id": "concert-89",
       "date": "2012-11-06",
       "headliner": "Social Distortion",
       "headlinerNormalized": "social-distortion",
@@ -2237,7 +2261,7 @@
       }
     },
     {
-      "id": "concert-89",
+      "id": "concert-90",
       "date": "2013-03-10",
       "headliner": "Dropkick Murphys",
       "headlinerNormalized": "dropkick-murphys",
@@ -2264,7 +2288,7 @@
       }
     },
     {
-      "id": "concert-90",
+      "id": "concert-91",
       "date": "2013-03-22",
       "headliner": "Bad Religion",
       "headlinerNormalized": "bad-religion",
@@ -2292,7 +2316,7 @@
       }
     },
     {
-      "id": "concert-91",
+      "id": "concert-92",
       "date": "2013-03-24",
       "headliner": "Garbage",
       "headlinerNormalized": "garbage",
@@ -2316,7 +2340,7 @@
       }
     },
     {
-      "id": "concert-92",
+      "id": "concert-93",
       "date": "2013-06-01",
       "headliner": "Rancid",
       "headlinerNormalized": "rancid",
@@ -2343,7 +2367,7 @@
       }
     },
     {
-      "id": "concert-93",
+      "id": "concert-94",
       "date": "2013-06-02",
       "headliner": "The Smithereens",
       "headlinerNormalized": "the-smithereens",
@@ -2367,7 +2391,7 @@
       }
     },
     {
-      "id": "concert-94",
+      "id": "concert-95",
       "date": "2013-10-27",
       "headliner": "Gary Numan",
       "headlinerNormalized": "gary-numan",
@@ -2391,7 +2415,7 @@
       }
     },
     {
-      "id": "concert-95",
+      "id": "concert-96",
       "date": "2014-04-04",
       "headliner": "Kraftwerk",
       "headlinerNormalized": "kraftwerk",
@@ -2415,7 +2439,7 @@
       }
     },
     {
-      "id": "concert-96",
+      "id": "concert-97",
       "date": "2014-05-02",
       "headliner": "Berlin",
       "headlinerNormalized": "berlin",
@@ -2439,7 +2463,7 @@
       }
     },
     {
-      "id": "concert-97",
+      "id": "concert-98",
       "date": "2014-06-25",
       "headliner": "Snarky Puppy",
       "headlinerNormalized": "snarky-puppy",
@@ -2463,7 +2487,7 @@
       }
     },
     {
-      "id": "concert-98",
+      "id": "concert-99",
       "date": "2014-07-30",
       "headliner": "The Offspring",
       "headlinerNormalized": "the-offspring",
@@ -2491,7 +2515,7 @@
       }
     },
     {
-      "id": "concert-99",
+      "id": "concert-100",
       "date": "2014-10-26",
       "headliner": "Streetlight Manifesto",
       "headlinerNormalized": "streetlight-manifesto",
@@ -2518,7 +2542,7 @@
       }
     },
     {
-      "id": "concert-100",
+      "id": "concert-101",
       "date": "2014-12-09",
       "headliner": "The Head and the Heart",
       "headlinerNormalized": "the-head-and-the-heart",
@@ -2544,7 +2568,7 @@
       }
     },
     {
-      "id": "concert-101",
+      "id": "concert-102",
       "date": "2015-03-06",
       "headliner": "Dropkick Murphys",
       "headlinerNormalized": "dropkick-murphys",
@@ -2572,7 +2596,7 @@
       }
     },
     {
-      "id": "concert-102",
+      "id": "concert-103",
       "date": "2015-06-10",
       "headliner": "Royal Blood",
       "headlinerNormalized": "royal-blood",
@@ -2598,7 +2622,7 @@
       }
     },
     {
-      "id": "concert-103",
+      "id": "concert-104",
       "date": "2015-06-15",
       "headliner": "Snarky Puppy",
       "headlinerNormalized": "snarky-puppy",
@@ -2622,7 +2646,7 @@
       }
     },
     {
-      "id": "concert-104",
+      "id": "concert-105",
       "date": "2015-07-04",
       "headliner": "Foo Fighters",
       "headlinerNormalized": "foo-fighters",
@@ -2656,7 +2680,7 @@
       }
     },
     {
-      "id": "concert-105",
+      "id": "concert-106",
       "date": "2015-08-25",
       "headliner": "Social Distortion",
       "headlinerNormalized": "social-distortion",
@@ -2683,7 +2707,7 @@
       }
     },
     {
-      "id": "concert-106",
+      "id": "concert-107",
       "date": "2015-10-28",
       "headliner": "Garbage",
       "headlinerNormalized": "garbage",
@@ -2709,7 +2733,7 @@
       }
     },
     {
-      "id": "concert-107",
+      "id": "concert-108",
       "date": "2016-04-29",
       "headliner": "Dirty Heads",
       "headlinerNormalized": "dirty-heads",
@@ -2735,7 +2759,7 @@
       }
     },
     {
-      "id": "concert-108",
+      "id": "concert-109",
       "date": "2016-05-02",
       "headliner": "Snarky Puppy",
       "headlinerNormalized": "snarky-puppy",
@@ -2759,7 +2783,7 @@
       }
     },
     {
-      "id": "concert-109",
+      "id": "concert-110",
       "date": "2016-08-19",
       "headliner": "Prophets of Rage",
       "headlinerNormalized": "prophets-of-rage",
@@ -2785,7 +2809,7 @@
       }
     },
     {
-      "id": "concert-110",
+      "id": "concert-111",
       "date": "2016-08-26",
       "headliner": "The Smithereens",
       "headlinerNormalized": "the-smithereens",
@@ -2809,7 +2833,7 @@
       }
     },
     {
-      "id": "concert-111",
+      "id": "concert-112",
       "date": "2016-09-03",
       "headliner": "Howard Jones",
       "headlinerNormalized": "howard-jones",
@@ -2833,7 +2857,7 @@
       }
     },
     {
-      "id": "concert-112",
+      "id": "concert-113",
       "date": "2016-09-24",
       "headliner": "The Roots",
       "headlinerNormalized": "the-roots",
@@ -2860,7 +2884,7 @@
       }
     },
     {
-      "id": "concert-113",
+      "id": "concert-114",
       "date": "2017-01-01",
       "headliner": "Duran Duran",
       "headlinerNormalized": "duran-duran",
@@ -2884,7 +2908,7 @@
       }
     },
     {
-      "id": "concert-114",
+      "id": "concert-115",
       "date": "2017-05-09",
       "headliner": "Midnight Oil",
       "headlinerNormalized": "midnight-oil",
@@ -2908,7 +2932,7 @@
       }
     },
     {
-      "id": "concert-115",
+      "id": "concert-116",
       "date": "2017-06-06",
       "headliner": "Royal Blood",
       "headlinerNormalized": "royal-blood",
@@ -2932,7 +2956,7 @@
       }
     },
     {
-      "id": "concert-116",
+      "id": "concert-117",
       "date": "2017-06-10",
       "headliner": "Joe Jackson",
       "headlinerNormalized": "joe-jackson",
@@ -2956,7 +2980,7 @@
       }
     },
     {
-      "id": "concert-117",
+      "id": "concert-118",
       "date": "2017-07-13",
       "headliner": "The Skints",
       "headlinerNormalized": "the-skints",
@@ -2980,7 +3004,7 @@
       }
     },
     {
-      "id": "concert-118",
+      "id": "concert-119",
       "date": "2017-08-03",
       "headliner": "Blondie",
       "headlinerNormalized": "blondie",
@@ -3006,7 +3030,7 @@
       }
     },
     {
-      "id": "concert-119",
+      "id": "concert-120",
       "date": "2017-09-11",
       "headliner": "Alison Moyet",
       "headlinerNormalized": "alison-moyet",
@@ -3030,7 +3054,7 @@
       }
     },
     {
-      "id": "concert-120",
+      "id": "concert-121",
       "date": "2017-10-08",
       "headliner": "Bat Fangs",
       "headlinerNormalized": "bat-fangs",
@@ -3058,7 +3082,7 @@
       }
     },
     {
-      "id": "concert-121",
+      "id": "concert-122",
       "date": "2017-10-12",
       "headliner": "Foo Fighters",
       "headlinerNormalized": "foo-fighters",
@@ -3084,7 +3108,7 @@
       }
     },
     {
-      "id": "concert-122",
+      "id": "concert-123",
       "date": "2017-10-21",
       "headliner": "Colin Hay",
       "headlinerNormalized": "colin-hay",
@@ -3108,7 +3132,7 @@
       }
     },
     {
-      "id": "concert-123",
+      "id": "concert-124",
       "date": "2017-11-25",
       "headliner": "The Brian Setzer Orchestra",
       "headlinerNormalized": "the-brian-setzer-orchestra",
@@ -3132,7 +3156,7 @@
       }
     },
     {
-      "id": "concert-124",
+      "id": "concert-125",
       "date": "2017-12-09",
       "headliner": "Gary Numan",
       "headlinerNormalized": "gary-numan",
@@ -3156,7 +3180,7 @@
       }
     },
     {
-      "id": "concert-125",
+      "id": "concert-126",
       "date": "2018-04-27",
       "headliner": "Beck",
       "headlinerNormalized": "beck",
@@ -3182,7 +3206,7 @@
       }
     },
     {
-      "id": "concert-126",
+      "id": "concert-127",
       "date": "2018-05-12",
       "headliner": "The Human League",
       "headlinerNormalized": "the-human-league",
@@ -3215,7 +3239,7 @@
       }
     },
     {
-      "id": "concert-127",
+      "id": "concert-128",
       "date": "2018-05-19",
       "headliner": "Lee Rocker",
       "headlinerNormalized": "lee-rocker",
@@ -3239,7 +3263,7 @@
       }
     },
     {
-      "id": "concert-128",
+      "id": "concert-129",
       "date": "2018-06-17",
       "headliner": "U2",
       "headlinerNormalized": "u2",
@@ -3263,7 +3287,7 @@
       }
     },
     {
-      "id": "concert-129",
+      "id": "concert-130",
       "date": "2018-08-17",
       "headliner": "Stray Cats",
       "headlinerNormalized": "stray-cats",
@@ -3289,7 +3313,7 @@
       }
     },
     {
-      "id": "concert-130",
+      "id": "concert-131",
       "date": "2018-09-21",
       "headliner": "Gary Numan",
       "headlinerNormalized": "gary-numan",
@@ -3315,7 +3339,7 @@
       }
     },
     {
-      "id": "concert-131",
+      "id": "concert-132",
       "date": "2018-10-28",
       "headliner": "Social Distortion",
       "headlinerNormalized": "social-distortion",
@@ -3354,7 +3378,7 @@
       }
     },
     {
-      "id": "concert-132",
+      "id": "concert-133",
       "date": "2018-11-03",
       "headliner": "Streetlight Manifesto",
       "headlinerNormalized": "streetlight-manifesto",
@@ -3378,7 +3402,7 @@
       }
     },
     {
-      "id": "concert-133",
+      "id": "concert-134",
       "date": "2019-03-24",
       "headliner": "Foals",
       "headlinerNormalized": "foals",
@@ -3405,7 +3429,7 @@
       }
     },
     {
-      "id": "concert-134",
+      "id": "concert-135",
       "date": "2019-04-14",
       "headliner": "The Interrupters",
       "headlinerNormalized": "the-interrupters",
@@ -3432,7 +3456,7 @@
       }
     },
     {
-      "id": "concert-135",
+      "id": "concert-136",
       "date": "2019-05-16",
       "headliner": "Garbage",
       "headlinerNormalized": "garbage",
@@ -3456,7 +3480,7 @@
       }
     },
     {
-      "id": "concert-136",
+      "id": "concert-137",
       "date": "2019-05-18",
       "headliner": "Bandits of the Acoustic Revolution",
       "headlinerNormalized": "bandits-of-the-acoustic-revolution",
@@ -3480,7 +3504,7 @@
       }
     },
     {
-      "id": "concert-137",
+      "id": "concert-138",
       "date": "2019-05-26",
       "headliner": "The Skints",
       "headlinerNormalized": "the-skints",
@@ -3504,7 +3528,7 @@
       }
     },
     {
-      "id": "concert-138",
+      "id": "concert-139",
       "date": "2019-07-19",
       "headliner": "The English Beat",
       "headlinerNormalized": "the-english-beat",
@@ -3528,7 +3552,7 @@
       }
     },
     {
-      "id": "concert-139",
+      "id": "concert-140",
       "date": "2019-07-30",
       "headliner": "Streetlight Manifesto",
       "headlinerNormalized": "streetlight-manifesto",
@@ -3552,7 +3576,7 @@
       }
     },
     {
-      "id": "concert-140",
+      "id": "concert-141",
       "date": "2019-09-21",
       "headliner": "Lenny Kravitz",
       "headlinerNormalized": "lenny-kravitz",
@@ -3576,7 +3600,7 @@
       }
     },
     {
-      "id": "concert-141",
+      "id": "concert-142",
       "date": "2019-10-06",
       "headliner": "Lee Rocker",
       "headlinerNormalized": "lee-rocker",
@@ -3600,7 +3624,7 @@
       }
     },
     {
-      "id": "concert-142",
+      "id": "concert-143",
       "date": "2021-08-14",
       "headliner": "The Aquabats!",
       "headlinerNormalized": "the-aquabats",
@@ -3626,7 +3650,7 @@
       }
     },
     {
-      "id": "concert-144",
+      "id": "concert-145",
       "date": "2021-08-31",
       "headliner": "Future Islands",
       "headlinerNormalized": "future-islands",
@@ -3650,7 +3674,7 @@
       }
     },
     {
-      "id": "concert-143",
+      "id": "concert-144",
       "date": "2022-05-07",
       "headliner": "Royal Blood",
       "headlinerNormalized": "royal-blood",
@@ -3676,7 +3700,7 @@
       }
     },
     {
-      "id": "concert-145",
+      "id": "concert-146",
       "date": "2022-06-04",
       "headliner": "Tears For Fears",
       "headlinerNormalized": "tears-for-fears",
@@ -3702,7 +3726,7 @@
       }
     },
     {
-      "id": "concert-146",
+      "id": "concert-147",
       "date": "2022-06-10",
       "headliner": "Joe Jackson",
       "headlinerNormalized": "joe-jackson",
@@ -3726,7 +3750,7 @@
       }
     },
     {
-      "id": "concert-147",
+      "id": "concert-148",
       "date": "2022-07-05",
       "headliner": "Kraftwerk",
       "headlinerNormalized": "kraftwerk",
@@ -3750,7 +3774,7 @@
       }
     },
     {
-      "id": "concert-148",
+      "id": "concert-149",
       "date": "2022-07-12",
       "headliner": "Streetlight Manifesto",
       "headlinerNormalized": "streetlight-manifesto",
@@ -3774,7 +3798,7 @@
       }
     },
     {
-      "id": "concert-149",
+      "id": "concert-150",
       "date": "2022-08-01",
       "headliner": "X",
       "headlinerNormalized": "x",
@@ -3801,7 +3825,7 @@
       }
     },
     {
-      "id": "concert-150",
+      "id": "concert-151",
       "date": "2022-08-18",
       "headliner": "Culture Club",
       "headlinerNormalized": "culture-club",
@@ -3827,7 +3851,7 @@
       }
     },
     {
-      "id": "concert-151",
+      "id": "concert-152",
       "date": "2022-09-09",
       "headliner": "Peter Hook and the Light",
       "headlinerNormalized": "peter-hook-and-the-light",
@@ -3853,7 +3877,7 @@
       }
     },
     {
-      "id": "concert-152",
+      "id": "concert-153",
       "date": "2022-09-25",
       "headliner": "Gorillaz",
       "headlinerNormalized": "gorillaz",
@@ -3879,7 +3903,7 @@
       }
     },
     {
-      "id": "concert-153",
+      "id": "concert-154",
       "date": "2022-10-01",
       "headliner": "Heaven 17",
       "headlinerNormalized": "heaven-17",
@@ -3903,7 +3927,7 @@
       }
     },
     {
-      "id": "concert-154",
+      "id": "concert-155",
       "date": "2022-10-07",
       "headliner": "New Order",
       "headlinerNormalized": "new-order",
@@ -3930,7 +3954,7 @@
       }
     },
     {
-      "id": "concert-155",
+      "id": "concert-156",
       "date": "2022-10-28",
       "headliner": "Danny Elfman",
       "headlinerNormalized": "danny-elfman",
@@ -3956,7 +3980,7 @@
       }
     },
     {
-      "id": "concert-156",
+      "id": "concert-157",
       "date": "2022-11-16",
       "headliner": "Foals",
       "headlinerNormalized": "foals",
@@ -3982,7 +4006,7 @@
       }
     },
     {
-      "id": "concert-157",
+      "id": "concert-158",
       "date": "2022-12-08",
       "headliner": "Social Distortion",
       "headlinerNormalized": "social-distortion",
@@ -4008,7 +4032,7 @@
       }
     },
     {
-      "id": "concert-158",
+      "id": "concert-159",
       "date": "2023-03-03",
       "headliner": "The English Beat",
       "headlinerNormalized": "the-english-beat",
@@ -4032,7 +4056,7 @@
       }
     },
     {
-      "id": "concert-159",
+      "id": "concert-160",
       "date": "2023-03-28",
       "headliner": "Depeche Mode",
       "headlinerNormalized": "depeche-mode",
@@ -4058,7 +4082,7 @@
       }
     },
     {
-      "id": "concert-160",
+      "id": "concert-161",
       "date": "2023-04-12",
       "headliner": "Dr Sick",
       "headlinerNormalized": "dr-sick",
@@ -4082,7 +4106,7 @@
       }
     },
     {
-      "id": "concert-161",
+      "id": "concert-162",
       "date": "2023-05-09",
       "headliner": "Crowded House",
       "headlinerNormalized": "crowded-house",
@@ -4108,7 +4132,7 @@
       }
     },
     {
-      "id": "concert-162",
+      "id": "concert-163",
       "date": "2023-05-24",
       "headliner": "The Cure",
       "headlinerNormalized": "the-cure",
@@ -4134,7 +4158,7 @@
       }
     },
     {
-      "id": "concert-163",
+      "id": "concert-164",
       "date": "2023-07-18",
       "headliner": "Foals",
       "headlinerNormalized": "foals",
@@ -4160,7 +4184,7 @@
       }
     },
     {
-      "id": "concert-164",
+      "id": "concert-165",
       "date": "2023-07-21",
       "headliner": "UB40",
       "headlinerNormalized": "ub40",
@@ -4187,7 +4211,7 @@
       }
     },
     {
-      "id": "concert-165",
+      "id": "concert-166",
       "date": "2023-07-30",
       "headliner": "X",
       "headlinerNormalized": "x",
@@ -4214,7 +4238,7 @@
       }
     },
     {
-      "id": "concert-166",
+      "id": "concert-167",
       "date": "2023-09-23",
       "headliner": "Streetlight Manifesto",
       "headlinerNormalized": "streetlight-manifesto",
@@ -4240,7 +4264,7 @@
       }
     },
     {
-      "id": "concert-167",
+      "id": "concert-168",
       "date": "2023-11-16",
       "headliner": "Devo",
       "headlinerNormalized": "devo",
@@ -4264,7 +4288,7 @@
       }
     },
     {
-      "id": "concert-168",
+      "id": "concert-169",
       "date": "2023-11-22",
       "headliner": "Kasabian",
       "headlinerNormalized": "kasabian",
@@ -4288,7 +4312,7 @@
       }
     },
     {
-      "id": "concert-170",
+      "id": "concert-171",
       "date": "2024-02-15",
       "headliner": "Umphrey's McGee",
       "headlinerNormalized": "umphrey-s-mcgee",
@@ -4312,7 +4336,7 @@
       }
     },
     {
-      "id": "concert-169",
+      "id": "concert-170",
       "date": "2024-02-27",
       "headliner": "Brian Setzer",
       "headlinerNormalized": "brian-setzer",
@@ -4338,7 +4362,7 @@
       }
     },
     {
-      "id": "concert-171",
+      "id": "concert-172",
       "date": "2024-07-26",
       "headliner": "The English Beat",
       "headlinerNormalized": "the-english-beat",
@@ -4365,7 +4389,7 @@
       }
     },
     {
-      "id": "concert-172",
+      "id": "concert-173",
       "date": "2024-08-20",
       "headliner": "Howard Jones",
       "headlinerNormalized": "howard-jones",
@@ -4392,7 +4416,7 @@
       }
     },
     {
-      "id": "concert-173",
+      "id": "concert-174",
       "date": "2024-11-16",
       "headliner": "Cold War Kids",
       "headlinerNormalized": "cold-war-kids",
@@ -4418,7 +4442,7 @@
       }
     },
     {
-      "id": "concert-175",
+      "id": "concert-176",
       "date": "2024-12-05",
       "headliner": "Social Distortion",
       "headlinerNormalized": "social-distortion",
@@ -4442,7 +4466,7 @@
       }
     },
     {
-      "id": "concert-174",
+      "id": "concert-175",
       "date": "2025-03-01",
       "headliner": "Klangphonics",
       "headlinerNormalized": "klangphonics",
@@ -4466,7 +4490,7 @@
       }
     },
     {
-      "id": "concert-176",
+      "id": "concert-177",
       "date": "2025-03-07",
       "headliner": "Molchat Doma",
       "headlinerNormalized": "molchat-doma",
@@ -4492,7 +4516,7 @@
       }
     },
     {
-      "id": "concert-177",
+      "id": "concert-178",
       "date": "2025-08-16",
       "headliner": "The Black Keys",
       "headlinerNormalized": "the-black-keys",
@@ -4518,7 +4542,7 @@
       }
     },
     {
-      "id": "concert-178",
+      "id": "concert-179",
       "date": "2025-11-20",
       "headliner": "David Byrne",
       "headlinerNormalized": "david-byrne",
@@ -4542,7 +4566,7 @@
       }
     },
     {
-      "id": "concert-180",
+      "id": "concert-181",
       "date": "2026-06-04",
       "headliner": "The Human League",
       "headlinerNormalized": "the-human-league",
@@ -4569,7 +4593,7 @@
       }
     },
     {
-      "id": "concert-181",
+      "id": "concert-182",
       "date": "2026-07-31",
       "headliner": "Nile Rodgers",
       "headlinerNormalized": "nile-rodgers",
@@ -4593,7 +4617,7 @@
       }
     },
     {
-      "id": "concert-179",
+      "id": "concert-180",
       "date": "2026-09-16",
       "headliner": "Thompson Twins",
       "headlinerNormalized": "thompson-twins",
@@ -4620,14 +4644,14 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-03-24T14:34:19.104Z",
-    "totalConcerts": 181,
+    "lastUpdated": "2026-03-31T14:34:39.410Z",
+    "totalConcerts": 182,
     "dateRange": {
       "earliest": "1984-04-27",
       "latest": "2026-09-16"
     },
     "uniqueArtists": 106,
-    "uniqueVenues": 77,
+    "uniqueVenues": 78,
     "uniqueCities": 35
   }
 }

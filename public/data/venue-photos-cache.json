@@ -10714,5 +10714,174 @@
     },
     "searchedAt": "2026-03-07T20:30:43.274Z",
     "expiresAt": "2026-06-05T19:30:43.274Z"
+  },
+  "greek theatre|hollywood|california": {
+    "placeId": "ChIJRUJ9pJjAwoARhqQ6EhQynzs",
+    "placeDetails": {
+      "id": "ChIJRUJ9pJjAwoARhqQ6EhQynzs",
+      "types": [
+        "amphitheatre",
+        "tourist_attraction",
+        "concert_hall",
+        "auditorium",
+        "performing_arts_theater",
+        "live_music_venue",
+        "event_venue",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2700 N Vermont Ave, Los Angeles, CA 90027, USA",
+      "rating": 4.7,
+      "websiteUri": "http://www.lagreektheatre.com/",
+      "userRatingCount": 6771,
+      "displayName": {
+        "text": "The Greek Theatre",
+        "languageCode": "en"
+      },
+      "photos": [
+        {
+          "name": "places/ChIJRUJ9pJjAwoARhqQ6EhQynzs/photos/AU_ZVEE3hbWzmE3JmVwaYobBZBH1NI61m4yuXPZnGKsECC4XtjahngdfdUckfKnhcbFN3qugDAHNzuRSrRMdaYntTHaNxKCKCP-JszxlniMX0yPGD0IY-xKriwhN56MyEwWg_bBxtMmhp31CJK3y3p5SKab71tXBpUQVus1EixJZIoNjEGRM-aJDlXU3pAs-_bchBgR_paL0zhtxXAgrJjk-mhRlvFRSOpFeUR9r6Okc23J4jnWLqvWnQ2tsLPvcKAnwHIXpwWmKmfp7cCcHf_7vEfuywYhaHRnUCLvivDwhY8zFMg",
+          "widthPx": 1600,
+          "heightPx": 900,
+          "authorAttributions": [
+            {
+              "displayName": "The Greek Theatre",
+              "uri": "https://maps.google.com/maps/contrib/108383165923538930629",
+              "photoUri": "https://lh3.googleusercontent.com/a-/ALV-UjWvWsRILlI-LdNqnJCIWapoykRKJkeDRntHD3XjbimGrh9MJKR-=s100-p-k-no-mo"
+            }
+          ],
+          "flagContentUri": "https://www.google.com/local/imagery/report/?cb_client=maps_api_places.places_api&image_key=!1e10!2sAF1QipP2Cwcbphfl3dpSU4v1O5le0tQk4wWl3Nb83d8J&hl=en-US",
+          "googleMapsUri": "https://www.google.com/maps/place//data=!3m4!1e2!3m2!1sAF1QipP2Cwcbphfl3dpSU4v1O5le0tQk4wWl3Nb83d8J!2e10!4m2!3m1!1s0x80c2c098a47d4245:0x3b9f3214123aa486"
+        },
+        {
+          "name": "places/ChIJRUJ9pJjAwoARhqQ6EhQynzs/photos/AU_ZVEFDak3sXhkr2ZIW2pMU8ZeMB8CRyCs39AgtwhlhrEwCzObcQ7DJkl-Fh0ugErTolguoEd-6MWeaSHa1i21EhvXQDR0gym0eKIEZGy82pgvnEqk5Yc4f4ktLJwXMaANILsOYJ4tU6acVIvbtr6yrjudO6K3AC2AFBT9eBaqymuJ_GNlESTL-1gKSlQ2ORWVNJYq12k1e4OzA4t315IPNFDStolcioR-XI5ao3oe4etDtNiehzk7GnwdCDuh0Sz8RUVHGhWFmJBDqAEIMKP2NyepNSFnS2pjTnFCNo__WhKI1p-ho9K2i4R5aLwTsr5CDeo8bvQ-029cTFOFABu_41X_oUM4wxnMYK4QAEh5DAesQHz5nQ5KwweJoNcBC46ViTLKP__e9g_2JG1m_VBvkIJBzmNnwkQGE3lbvd6l0NXA0Xg",
+          "widthPx": 4080,
+          "heightPx": 3072,
+          "authorAttributions": [
+            {
+              "displayName": "Gabe",
+              "uri": "https://maps.google.com/maps/contrib/100141846553305232662",
+              "photoUri": "https://lh3.googleusercontent.com/a-/ALV-UjX_282GJXw5b63GuREGKExyWqX8U5KNo-x36gZSjcqPp2VIfU775A=s100-p-k-no-mo"
+            }
+          ],
+          "flagContentUri": "https://www.google.com/local/imagery/report/?cb_client=maps_api_places.places_api&image_key=!1e10!2sCIHM0ogKEICAgIDp_LGqMQ&hl=en-US",
+          "googleMapsUri": "https://www.google.com/maps/place//data=!3m4!1e2!3m2!1sCIHM0ogKEICAgIDp_LGqMQ!2e10!4m2!3m1!1s0x80c2c098a47d4245:0x3b9f3214123aa486"
+        },
+        {
+          "name": "places/ChIJRUJ9pJjAwoARhqQ6EhQynzs/photos/AU_ZVEFO86Dy1BjuA57HB3sJyC8DmdouF777JeCXQKmHkEIoqHbxKZO_3T175Hk7xDFfuM2P_OhWVgDxTLm5O91hV76Yl0AgCHtrNvs7QjalrkoPS7DqPgI-UW5HVzzrGdUKs1L7qCo_V_RThBTpNrnFYWY1e8cscvcYaUW1xh9t7DMIVJKrjOkecFpNdcqj3vyxyUgO01ivMFCpLyOlLPPjlAW8cCRbn1JQLhBkW-K1DcgkP_C23YdVzEZqhuR4u5RsnWTdRrYTnPcja4J0TQQYoPic_sKhEtlr4_sztwejJHVvZZj3HyMaL-lluBjJ9gsIiJKgJjpUopoGKZ8ban5ngRaFyrArRwJWRfy_WJUYv5NfpINmS2ZZtzvAKY_OxvGTAa6RTn88XdQPDDaJ7yZwphROKeV62qlKQA68-vafQ0jgqw",
+          "widthPx": 4080,
+          "heightPx": 3072,
+          "authorAttributions": [
+            {
+              "displayName": "Ivan Lopez",
+              "uri": "https://maps.google.com/maps/contrib/101390597943314738198",
+              "photoUri": "https://lh3.googleusercontent.com/a-/ALV-UjUhOvQWqCcdGOro0dcOFHnyovBr6pfknHvIB3qMxHOb55jyW2j1=s100-p-k-no-mo"
+            }
+          ],
+          "flagContentUri": "https://www.google.com/local/imagery/report/?cb_client=maps_api_places.places_api&image_key=!1e10!2sCIHM0ogKEICAgICHj93iWQ&hl=en-US",
+          "googleMapsUri": "https://www.google.com/maps/place//data=!3m4!1e2!3m2!1sCIHM0ogKEICAgICHj93iWQ!2e10!4m2!3m1!1s0x80c2c098a47d4245:0x3b9f3214123aa486"
+        },
+        {
+          "name": "places/ChIJRUJ9pJjAwoARhqQ6EhQynzs/photos/AU_ZVEEz_psm1ZBepA95ZGUxrZeAnx4sVXAHRAyr3MVAfPYU5EKGmneapNH9bHQkMKyYWG-3UOIysDvqN8YgrSw-01d6RT5rh9MiyiYo3_UYuNw-mYYye14WuYAED66qq3Rsvv_bY765MZNsUp7UOctax3TyAcxD6eB5yU6ADvEbWe1q140yvHA03jZS5gMZSymyJ7foJhXjqpYwf6CjfJWc8--1Aro0ll4Fkhn30MeCAG66IEMjZf5q3A-5lwi6ooa3RIIt1ElRiQd90Ir7uwS7dT8ljIjU_l_blQVe0zAPkd-32SoDEVWbBxBs_YRakR_8OgygVki3oZGF2lQtx_kyR6nvu4-JP7i4daQ6dldU0Yo7cZ8EuANlTx25PAd7Jkkft6skj-hcywXIIJr6LfR5vQvzHr7PaOab4gnfdHBr94rRRQ",
+          "widthPx": 4000,
+          "heightPx": 3000,
+          "authorAttributions": [
+            {
+              "displayName": "Ray Subias",
+              "uri": "https://maps.google.com/maps/contrib/108334732586611067160",
+              "photoUri": "https://lh3.googleusercontent.com/a-/ALV-UjUR3nhXt7ujRLE0PgGISLvGEcI1ZhteOPZfoPh2BftpQQqTesEj=s100-p-k-no-mo"
+            }
+          ],
+          "flagContentUri": "https://www.google.com/local/imagery/report/?cb_client=maps_api_places.places_api&image_key=!1e10!2sCIHM0ogKEICAgIDpgv30bQ&hl=en-US",
+          "googleMapsUri": "https://www.google.com/maps/place//data=!3m4!1e2!3m2!1sCIHM0ogKEICAgIDpgv30bQ!2e10!4m2!3m1!1s0x80c2c098a47d4245:0x3b9f3214123aa486"
+        },
+        {
+          "name": "places/ChIJRUJ9pJjAwoARhqQ6EhQynzs/photos/AU_ZVEHsHG_AE02Ymoxyd5JilBFP2L0OmfLOR78Mgx9YjZ45xU7kgM2F2Ql5EEu9k2qh77og5jFYAdy5_cvlN3xjPBkwOF4gFZD9qNDQansNzGQ-UDmIic34i_xf3JQwIA_UFQ7s0GEwV5ZJCO3H_MGNEDMlFkFNoH6NhlKTBnaIu7c44HYs-wDHJi0PlsR8DYXj-RQIVm2OYZBBiP68NWRgJIWruezeg5ZJ_4XchyKFGCyNSk5SRyE78XqOFJyGGWipJe_XvyNYKE9DyQ7XZB0VRAX1C0mhETVIbZL5AeRKflHDgugSonVnyh5I5_eak-LpbNTTOOVrg1B5jP3oBY0IZeWwriK2JNu-4S4YF2oL6Z1vhSFvcinMswWbpbSqin1e8SNLaqMkHt-EUsuvJCYbOO4r2ONBPvpf42175UXBiXIDx7T4HWerFMrMtvQ3Pg",
+          "widthPx": 4000,
+          "heightPx": 3000,
+          "authorAttributions": [
+            {
+              "displayName": "Anthony King",
+              "uri": "https://maps.google.com/maps/contrib/115722267777656299559",
+              "photoUri": "https://lh3.googleusercontent.com/a-/ALV-UjWWp5Dw4JldemQ_n-3WsAqYk8kTC7wKw8vgGxG8glbrei7pjMep8A=s100-p-k-no-mo"
+            }
+          ],
+          "flagContentUri": "https://www.google.com/local/imagery/report/?cb_client=maps_api_places.places_api&image_key=!1e10!2sCIABIhCA450bZ7d4iImXhXWAJ19Y&hl=en-US",
+          "googleMapsUri": "https://www.google.com/maps/place//data=!3m4!1e2!3m2!1sCIABIhCA450bZ7d4iImXhXWAJ19Y!2e10!4m2!3m1!1s0x80c2c098a47d4245:0x3b9f3214123aa486"
+        },
+        {
+          "name": "places/ChIJRUJ9pJjAwoARhqQ6EhQynzs/photos/AU_ZVEGWV75pmhA69RYWHlzTc_JcmkOMOrnoV8k8_rXwnDLuUwUl0vrVsQMHaUEy5YGlilE7vNfdB_6fJae8TvkBtExKtG75veHGbmRCDyumVYE4CMEwVdvOTUNTYJwU6C-8OQVJWsvX_uXsYrcx2h4-VPaE_u2Ik7ktBZmhtI67xjJi3rF5DnY8Lst-lJW4HemicQ8h3P1gMJPf9yPF4dfj0MdXnKwHNWZGjavqWTvx0c9odXXFoPSqx3AAIvzTYK2VxiM494Aj5YzYHS6j1kYcKifubdt3ikRZZNdih_X7mhDhyQ",
+          "widthPx": 4800,
+          "heightPx": 3200,
+          "authorAttributions": [
+            {
+              "displayName": "The Greek Theatre",
+              "uri": "https://maps.google.com/maps/contrib/108383165923538930629",
+              "photoUri": "https://lh3.googleusercontent.com/a-/ALV-UjWvWsRILlI-LdNqnJCIWapoykRKJkeDRntHD3XjbimGrh9MJKR-=s100-p-k-no-mo"
+            }
+          ],
+          "flagContentUri": "https://www.google.com/local/imagery/report/?cb_client=maps_api_places.places_api&image_key=!1e10!2sAF1QipP0sdc8i7S3G_0RTlNVsuDpIQaQqVUDW5qzc_hz&hl=en-US",
+          "googleMapsUri": "https://www.google.com/maps/place//data=!3m4!1e2!3m2!1sAF1QipP0sdc8i7S3G_0RTlNVsuDpIQaQqVUDW5qzc_hz!2e10!4m2!3m1!1s0x80c2c098a47d4245:0x3b9f3214123aa486"
+        },
+        {
+          "name": "places/ChIJRUJ9pJjAwoARhqQ6EhQynzs/photos/AU_ZVEGkD2WEP-qov8Jf2MaGIGJjfmZnj8AzDTYBXThR6NC9lFby2_2o1aejjWm19kuEY7Nh15TXnRUl8-ENd5i1Bdrqa9BoU7dE7a-obN9afqRjwv975PKV5u4wzZdA5ZN_aeRvxrQ0NwZeZXim9dtuHDMqf8sBc_39x2YMIkXJUVDlDxJWz4INii1u9fhYpzQJ0U8V4BhF9bUwRnSouPIo90dGPlmiVB0SR9mmPAyEF3007KLTtQHZAuMBG7bfhKrtRPoZnLLtP1vVk4LEXFvxDQSa4lcLN8p8hofunNIqN_Ul6rF24JqpFcykNcYDrkxSpTjB2veEr4BevGG87oEef4RTSIqm6cZew4JOHSq-Yis0YaaPoR0psEBBJHzEPWA030HTgn5nleedfTbiy5Ytw1rGDd0eIi9ZcobSliMv9LqTsg",
+          "widthPx": 3866,
+          "heightPx": 2400,
+          "authorAttributions": [
+            {
+              "displayName": "NAKI STUDIO",
+              "uri": "https://maps.google.com/maps/contrib/112023622972042257383",
+              "photoUri": "https://lh3.googleusercontent.com/a-/ALV-UjW93kqvMPmW-SkoY5NXrd_GEQZgbp2-zF8PF4bqWDQqtfbJuYJVaw=s100-p-k-no-mo"
+            }
+          ],
+          "flagContentUri": "https://www.google.com/local/imagery/report/?cb_client=maps_api_places.places_api&image_key=!1e10!2sCIHM0ogKEICAgICqlqHSRQ&hl=en-US",
+          "googleMapsUri": "https://www.google.com/maps/place//data=!3m4!1e2!3m2!1sCIHM0ogKEICAgICqlqHSRQ!2e10!4m2!3m1!1s0x80c2c098a47d4245:0x3b9f3214123aa486"
+        },
+        {
+          "name": "places/ChIJRUJ9pJjAwoARhqQ6EhQynzs/photos/AU_ZVEHtZVTJC3a15hOp0UprS8UNH84wGC4zn47dBUQII3TpPRgMKTpWwY3pfPQuu9ctQ-rUKz8dZ2xDVtCycSt7L9qfr2HUhF5uggVkLggKxGDnJNcryIFdi6ivAYXrsyQ8jK9zMmNFPFN_6QuuihR-mw3lYrt9SNynKvCeQ75XsYIJCXJFfjL0G64lYz8BNc6ahXDkkgWsehJbZwzcM3mid8rS-P2WEAL2TBPIsntAdqkRRCmQgT7O8bsjOvpfm4JmmD0oBLYiBOHs-i0TmjsXjG818KWV9XDAzuFVNWAZy4DCWytR8dTroURcSEC3mi4qy6XLmArxiKE7lx3NNjD7Q8OxXrLyXfM0DmRpvjY93sMb8__TfXbG0xPSaamVCPAVD-7Gc4bwukkXt3F91amXBg3GyitICr3BhLpD0qvlG-PiERUjh7cJQ_DG1QBr8Q",
+          "widthPx": 3011,
+          "heightPx": 2258,
+          "authorAttributions": [
+            {
+              "displayName": "Paco Jimenez",
+              "uri": "https://maps.google.com/maps/contrib/106200883969760135368",
+              "photoUri": "https://lh3.googleusercontent.com/a-/ALV-UjXAjBTbVNUpvG_ZmgPRxXfwQZABa3bpzKmlET0CqP-ru31KwC2doA=s100-p-k-no-mo"
+            }
+          ],
+          "flagContentUri": "https://www.google.com/local/imagery/report/?cb_client=maps_api_places.places_api&image_key=!1e10!2sCIABIhCaHTz9M_rD9sXmg7ikbmxP&hl=en-US",
+          "googleMapsUri": "https://www.google.com/maps/place//data=!3m4!1e2!3m2!1sCIABIhCaHTz9M_rD9sXmg7ikbmxP!2e10!4m2!3m1!1s0x80c2c098a47d4245:0x3b9f3214123aa486"
+        },
+        {
+          "name": "places/ChIJRUJ9pJjAwoARhqQ6EhQynzs/photos/AU_ZVEF0rXfUf434G7kxV-p_eQ5jFGbywuchMpkOI_oBrFq8fc4QJNByjGq3wwhVvWfGDEr6b9H70NZRHhg8PJPi0YterlKjq0aX6jNBEea9Spg_3uocbfG0bem_zwQqmqWdl8NrtFl2zf3AYin8hV89PIt3yWG2G8L6XAn7kS34LZyMFmMjMQzutKDXJ5A4qprf74xNdm_V-XN9SzALuDmZNRcCM-5MsQVHzYxQ637eKai2guzgi_cO-iM0GZhgtBHxru_NRcZ2psP0Fp8iVrIU_xf2NUON0ZpQOSm_akohzjs_Jn8GRfUcFTlUUJbElVrKE__LYAzxmlxVL5vaDyrdX1Ko4nQrg-V8-ziNielN_MftymyZN9CcMHMraISIGiZ7_UHX53sS3smLyilYqDoa1CMpED7JZC2igj1U_WRW3vw3Yw",
+          "widthPx": 4032,
+          "heightPx": 3024,
+          "authorAttributions": [
+            {
+              "displayName": "Doerte Sennecke-Chow",
+              "uri": "https://maps.google.com/maps/contrib/103672496642934440985",
+              "photoUri": "https://lh3.googleusercontent.com/a-/ALV-UjXkLS6uGOrocAUvE9HVubzlk6WjRaBC6c-a7lCZF9kE6StpfY18Jw=s100-p-k-no-mo"
+            }
+          ],
+          "flagContentUri": "https://www.google.com/local/imagery/report/?cb_client=maps_api_places.places_api&image_key=!1e10!2sCIHM0ogKEICAgIDmmvbtSw&hl=en-US",
+          "googleMapsUri": "https://www.google.com/maps/place//data=!3m4!1e2!3m2!1sCIHM0ogKEICAgIDmmvbtSw!2e10!4m2!3m1!1s0x80c2c098a47d4245:0x3b9f3214123aa486"
+        },
+        {
+          "name": "places/ChIJRUJ9pJjAwoARhqQ6EhQynzs/photos/AU_ZVEEUyPc9y511LrlceIYiULR4_-FIAmWvsTo-TnXILuXPylbVrbz61mlEFGPF271danWLnxEtrtFpp_lAkgJuJsguqvrayZyJ2y8c1Xk4RZcOLR7xP-hSRADwucMKi4DRD1hSm1ws3TYRzQNnun1eAYb3daRyT8_-GpKOyslBEg60zwctvU2qT1C5dwQKdl6K3U0i91CHUpL_vZsuxB6zTGzRR0Baiq6ULuz5_qNRF-ghJQKlkn88ckZoY1UGFvHY2wrryA6ssiE88ZAYc4axkrBlywe5HAwUKjQy4kXocQjw9-f6ob4JeHWTWZlMRwqpzlinIsNELvzCV5fM97ws458eMBe7a8tzN9D6SHISsvX0Ucs8U1shy80PHG9R3bJnIJ7SfG0KsMiFfU6zy93YGcI9agDdRqWl02Fh5CVqgqYZW96z",
+          "widthPx": 4032,
+          "heightPx": 3024,
+          "authorAttributions": [
+            {
+              "displayName": "R",
+              "uri": "https://maps.google.com/maps/contrib/104009740509737171515",
+              "photoUri": "https://lh3.googleusercontent.com/a/ACg8ocJzKBCqCrCnMs8SWuVScyo1UVmQ_itYvcN0TsoGp6hQ_WY5oeTf=s100-p-k-no-mo"
+            }
+          ],
+          "flagContentUri": "https://www.google.com/local/imagery/report/?cb_client=maps_api_places.places_api&image_key=!1e10!2sCIHM0ogKEICAgIDMpeSO4AE&hl=en-US",
+          "googleMapsUri": "https://www.google.com/maps/place//data=!3m4!1e2!3m2!1sCIHM0ogKEICAgIDMpeSO4AE!2e10!4m2!3m1!1s0x80c2c098a47d4245:0x3b9f3214123aa486"
+        }
+      ]
+    },
+    "searchedAt": "2026-03-31T14:35:03.720Z",
+    "expiresAt": "2026-06-29T14:35:03.720Z"
   }
 }
