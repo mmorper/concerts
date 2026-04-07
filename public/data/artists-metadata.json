@@ -2,7 +2,6 @@
   "abc": {
     "name": "ABC",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/763mxe1620465861.jpg",
-    "bio": "ABC has its roots in the band Vice Versa, a Sheffield band formed in 1977 by synthesiser-players Stephen Singleton and Mark White. Their debut gig was as the support to Wire at the Outlook club in Sheffield. They founded their own label, Neutron Records, releasing the EP Music 4. Martin Fry, who wrote the fanzine Modern Drugs, interviewed Vice Versa and shortly afterwards they asked him to join as synthesizer player. Fry accepted and by late 1980 the band had evolved into ABC, with Fry becoming ",
     "genres": [
       "Synthpop",
       "Rock/Pop"
@@ -10,31 +9,29 @@
     "formed": "1980",
     "website": "www.abcmartinfry.com/ABC.html",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:24.183Z"
+    "fetchedAt": "2026-04-07T16:36:10.798Z"
   },
   "awolnation": {
     "name": "AWOLNATION",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/awolnation-4fc89631c2e3a.jpg",
-    "bio": "Awolnation (often stylized as AWOLNATION) is an American electronic rock band, formed and fronted by Aaron Bruno, formerly of Under the Influence of Giants, Hometown Hero and Insurgence. The band is signed to Red Bull Records, and their first EP, Back from Earth, was released on iTunes on May 18, 2010.",
     "genres": [
       "Electronic"
     ],
     "formed": "2009",
     "website": "awolnationmusic.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:59.925Z"
+    "fetchedAt": "2026-04-07T16:35:46.232Z"
   },
   "aaron-lee-tasjan": {
     "name": "Aaron Lee Tasjan",
     "image": "https://cdn-images.dzcdn.net/images/artist/f677c8ee24435969d037a527bc9a0d53/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:10.701Z"
+    "fetchedAt": "2026-04-07T16:35:56.950Z"
   },
   "adam-ant": {
     "name": "Adam Ant",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/ant-adam-500052f733720.jpg",
-    "bio": "Adam Ant is best known as a singer. He led Adam and the Ants in the early 1980s. Soon after he began a solo career with hits like \"Goody Two Shoes\" His most recent solo album was 1995's \"Wonderful\", which spawned the top 40 US single by the same name. His biggest contribution to music was probably his pioneering use of videos in the early 1980s.",
     "genres": [
       "Punk Rock",
       "Rock/Pop"
@@ -42,12 +39,11 @@
     "formed": null,
     "website": "www.adam-ant.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:16.712Z"
+    "fetchedAt": "2026-04-07T16:34:04.348Z"
   },
   "against-me": {
     "name": "Against Me!",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/tb7i2t1669174893.jpg",
-    "bio": "Against Me! is an American punk rock band formed in Naples, Florida in 1997 by singer and guitarist Laura Jane Grace (born Thomas Gabel). Since 2002 the band's lineup has also included guitarist James Bowman and bassist Andrew Seward; current drummer Jay Weinberg joined in 2010. After releasing three studio albums through independent record labels, Against Me! moved to Sire Records for 2007's New Wave, which reached no. 57 on the Billboard 200. Their fifth and most recent album, 2010's White Cro",
     "genres": [
       "Punk Rock",
       "Rock/Pop"
@@ -55,12 +51,11 @@
     "formed": "1997",
     "website": "againstme.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:44.533Z"
+    "fetchedAt": "2026-04-07T16:35:31.715Z"
   },
   "alison-moyet": {
     "name": "Alison Moyet",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xyswvr1342645255.jpg",
-    "bio": "Alison Moyet (born Geneviève Alison Jane Moyet, 18 June 1961), is an English pop singer-songwriter noted for her bluesy voice. Moyet was born in Billericay, Essex, England, to a French father and English mother. She grew up in Basildon, where she attended St Nicholas School. After leaving school at 16, she worked as a shop assistant and trained as a piano tuner. She was involved in a number of punk rock, pub rock and blues bands in the South East Essex area during the late 1970s and early 1980s,",
     "genres": [
       "Pop",
       "Rock/Pop"
@@ -68,26 +63,25 @@
     "formed": "1984",
     "website": "alisonmoyet.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:56.734Z"
+    "fetchedAt": "2026-04-07T16:34:44.102Z"
   },
   "andrew-tosh": {
     "name": "Andrew Tosh",
     "image": "https://cdn-images.dzcdn.net/images/artist/c6b16bfe7010d7631b49e45323514af1/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:20.834Z"
+    "fetchedAt": "2026-04-07T16:35:07.902Z"
   },
   "andy-stavas": {
     "name": "Andy Stavas",
     "image": "https://cdn-images.dzcdn.net/images/artist/cd46025e21971b34803cedbea147ecb2/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:20.507Z"
+    "fetchedAt": "2026-04-07T16:36:06.474Z"
   },
   "animotion": {
     "name": "Animotion",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qquysp1382946065.jpg",
-    "bio": "Animotion is a 1980s American New Wave/synthpop band from Los Angeles, California best known for their songs \"Obsession,\" (written and performed originally by Holly Knight and Michael Des Barres) \"Let Him Go,\" \"I Engineer,\" (written by Holly Knight, Bernie Taupin and Mike Chapman) and \"Room to Move\" (written and originally performed by Climie Fisher).\n\nFormed in 1983 from the remnants of a retro science-fiction band called Red Zone, they signed a record deal with Polygram Records in 1984 and mad",
     "genres": [
       "Synthpop",
       "Rock/Pop"
@@ -95,7 +89,7 @@
     "formed": "1983",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:10.814Z"
+    "fetchedAt": "2026-04-07T16:34:58.139Z"
   },
   "aquabats": {
     "name": "Aquabats",
@@ -106,7 +100,6 @@
   "aswad": {
     "name": "Aswad",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rrvupw1361542441.jpg",
-    "bio": "Aswad (“Black” in Arabic) are a long-lasting British reggae group, noted for adding strong R&B, soul, and soca influences to the reggae sound. They have been performing since the early 1970s, and have released a total of twenty-one albums.\n\nAs naturalised children of immigrants from the Caribbean, part of the aftermath of World War II, the children were moved to London. They attended a local high school near Ladbroke Grove, and various junior schools as Tan Tan children of immigrants from the Ca",
     "genres": [
       "Reggae",
       "Reggae"
@@ -114,12 +107,11 @@
     "formed": "1975",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:23.491Z"
+    "fetchedAt": "2026-04-07T16:35:10.662Z"
   },
   "bad-religion": {
     "name": "Bad Religion",
     "image": "https://www.theaudiodb.com/images/media/artist/thumb/yuswct1767893982.jpg",
-    "bio": "Bad Religion is a punk rock band that formed in Los Angeles in 1979. They are particularly known for their use of soaring 3-part vocal harmonies (which they refer to in their album liner notes as the \"oozin' aahs\"), guitar solos, sophisticated and intellectual lyrics, and political or religious commentary. Their lyrics often relate to matters of social responsibility. The band's lineup has changed several times over its lifespan, with lead vocalist Greg Graffin being the only continuous member. ",
     "genres": [
       "Punk Rock",
       "Punk"
@@ -127,7 +119,7 @@
     "formed": "1979",
     "website": "www.badreligion.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:45.715Z"
+    "fetchedAt": "2026-04-07T16:34:33.099Z"
   },
   "bandits-of-the-accoustic-revolution": {
     "name": "Bandits of the Accoustic Revolution",
@@ -158,19 +150,17 @@
   "bat-fangs": {
     "name": "Bat Fangs",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/iapux71632929602.jpg",
-    "bio": "Formed in 2016 by guitarist/singer Betsy Wright (Ex Hex) and drummer Laura King (Flesh Wounds, Speed Stick), the duo specialize in prescription-strength shred and churn meant to stiffen the upper lip and crack the third-eye. Slick and sick visions channeled from the midnight mirror world. Acid-soaked hard-rock to thrill the living and raise dead.\nThe band began just as Wright’s other gig, Ex Hex, settled down for an extended breather. After two years touring as a bassist, she was eager to reconn",
     "genres": [
       "Pop-Rock"
     ],
     "formed": "2016",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:57.233Z"
+    "fetchedAt": "2026-04-07T16:34:44.609Z"
   },
   "beach-boys": {
     "name": "The Beach Boys",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rvqysx1385325837.jpg",
-    "bio": "The Beach Boys are an American rock band, formed in 1961 in Hawthorne, California. The group initially comprised brothers Brian, Dennis and Carl Wilson, their cousin Mike Love, and friend Al Jardine. They were managed early on by the Wilsons' father, Murry. The band's leader, composer, arranger and producer, Brian Wilson was responsible for writing most of the band's early singles and albums. After signing with Capitol Records in mid-1962, Wilson wrote or co-wrote more than two dozen Top 40 hits",
     "genres": [
       "Rock",
       "Rock/Pop"
@@ -178,12 +168,11 @@
     "formed": "1961",
     "website": "thebeachboys.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:23.170Z"
+    "fetchedAt": "2026-04-07T16:34:10.523Z"
   },
   "bear-hands": {
     "name": "Bear Hands",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/swqpsr1397536972.jpg",
-    "bio": "Bear Hands are a post-punk and indie rock band consisting of Dylan Rau (vocals/guitar), Val Loper (bass), Ted Feldman (guitar), and TJ Orscher (drums). Hailing from New York, United States (USA), and formed in 2006, the band signed with Cantora Records in 2010 upon the release of its single, \"What a Drag.\"\n\nAfter releasing their debut LP Burning Bush Supper Club in 2010, Bear Hands toured as the opening act for Passion Pit, Gza, and We Were Promised Jetpacks \nDylan Rau met Ted Feldman while the ",
     "genres": [
       "Post-Punk",
       "Rock/Pop"
@@ -191,12 +180,11 @@
     "formed": "2006",
     "website": "bearhandsband.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:11.515Z"
+    "fetchedAt": "2026-04-07T16:35:57.764Z"
   },
   "beastie-boys": {
     "name": "Beastie Boys",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wqxuuw1362669617.jpg",
-    "bio": "Beastie Boys is an American hip hop band from New York City, formed in 1979. For the majority of its career, the group has consisted of three MCs and musicians Michael \"Mike D\" Diamond (vocals, drums), Adam \"MCA\" Yauch (vocals, bass) and Adam \"Ad-Rock\" Horovitz (vocals, guitar).\nOriginally formed as a four-piece hardcore punk band in 1979 by Michael Diamond (vocals), John Berry (guitar), Adam Yauch (bass) and Kate Schellenbach (drums), the band appeared on the compilation cassette New York Thras",
     "genres": [
       "Hip-Hop",
       "Urban/R&B"
@@ -204,7 +192,7 @@
     "formed": "1979",
     "website": "beastieboys.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:14.311Z"
+    "fetchedAt": "2026-04-07T16:35:01.651Z"
   },
   "bel-biv-devoe": {
     "name": "Bel Biv DeVoe",
@@ -215,7 +203,6 @@
   "berlin": {
     "name": "Berlin",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/berlin-508e21ae9f72b.jpg",
-    "bio": "Berlin is an American synthpop band. The group was formed in Los Angeles in 1978 by John Crawford (bass guitar). Bandmembers included Crawford, Terri Nunn (vocals), David Diamond (keyboards), Ric Olsen (guitar), Matt Reid (keyboards) and Rod Learned (drums). Learned left during the first EU tour and was replaced by Rob Brill (drums). The band gained mainstream-commercial success in the early 1980s with singles including \"The Metro\", \"Sex (I'm A...)\", \"No More Words\" and then in the mid 80s with ",
     "genres": [
       "Synthpop",
       "Rock/Pop"
@@ -223,12 +210,11 @@
     "formed": "1982",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:41.202Z"
+    "fetchedAt": "2026-04-07T16:34:28.573Z"
   },
   "big-audio-dynamite": {
     "name": "Big Audio Dynamite",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/usvswv1393089652.jpg",
-    "bio": "Big Audio Dynamite (later known as Big Audio Dynamite II and Big Audio, and often abbreviated BAD) is a British musical group formed in 1984 by the ex-guitarist and singer of the Clash, Mick Jones. The group is noted for its effective mixture of varied musical styles, incorporating elements of punk rock, dance music, hip hop, reggae, and funk. BAD's one constant throughout frequent shifts in membership and musical direction is the vocals provided by Mick Jones. After releasing a number of well r",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -236,12 +222,11 @@
     "formed": "1984",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:34.692Z"
+    "fetchedAt": "2026-04-07T16:34:22.112Z"
   },
   "billy-joel": {
     "name": "Billy Joel",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/ttsxwr1425765041.jpg",
-    "bio": "William Martin \"Billy\" Joel (born May 9, 1949, New York, USA) is an American pianist, singer-songwriter, and composer. Since releasing his first hit song, \"Piano Man\", in 1973, Joel has become the sixth-best-selling recording artist and the third-best-selling solo artist in the United States, according to the RIAA. His compilation album Greatest Hits Vol. 1 & 2 is the third-best-selling album in the United States by discs shipped.\nJoel had Top 40 hits in the 1970s, 1980s, and 1990s, achieving 33",
     "genres": [
       "Pop",
       "Rock/Pop"
@@ -249,12 +234,11 @@
     "formed": "1964",
     "website": "www.billyjoel.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:32.511Z"
+    "fetchedAt": "2026-04-07T16:35:19.711Z"
   },
   "black-rebel-motorcycle-club": {
     "name": "Black Rebel Motorcycle Club",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/spvyxr1340742603.jpg",
-    "bio": "Black Rebel Motorcycle Club (BRMC) is an American rock band from San Francisco, California, now based in Los Angeles. BRMC is known for their garage rock, blues, folk revival, neo-psychedelia sound. They are influenced by bands such as: The Brian Jonestown Massacre, The Verve, The Rolling Stones, Oasis, T. Rex, The Velvet Underground and The Jesus and Mary Chain.\nBlack Rebel Motorcycle Club formed in 1998, taking its name from Marlon Brando's motorcycle gang in the 1953 film The Wild One. Bassis",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -262,12 +246,11 @@
     "formed": "1998",
     "website": "www.blackrebelmotorcycleclub.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:08.466Z"
+    "fetchedAt": "2026-04-07T16:35:54.749Z"
   },
   "blancmange": {
     "name": "Blancmange",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/blancmange-51c457e3276c1.jpg",
-    "bio": "Blancmange was formed in Harrow, Middlesex in 1979 by singer Neil Arthur (born 15 June 1958, Darwen, Lancashire) and instrumentalists Stephen Luscombe (born 29 October 1954, Hillingdon, Middlesex) and Laurence Stevens. Stevens left shortly after the band was formed, and Arthur and Luscombe continued as a duo. The duo released their first EP, Irene and Mavis, the following year, but their first real exposure came via a track on the seminal Some Bizzare Album, alongside fellow acts Soft Cell and D",
     "genres": [
       "Pop",
       "Rock/Pop"
@@ -275,12 +258,11 @@
     "formed": "1979",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:22.665Z"
+    "fetchedAt": "2026-04-07T16:34:10.021Z"
   },
   "blondie": {
     "name": "Blondie",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/4kj6071638975443.jpg",
-    "bio": "Blondie is an American rock band, founded by singer Deborah Harry and guitarist Chris Stein. The band was a pioneer in the early American New Wave and punk scenes of the mid-1970s. Their first two albums contained strong elements of these genres, and although successful in the United Kingdom and Australia, Blondie was regarded as an underground band in the United States until the release of Parallel Lines in 1978.\nOver the next three years, the band achieved several hit singles including \"Call M",
     "genres": [
       "New Wave",
       "Punk"
@@ -288,19 +270,18 @@
     "formed": "1974",
     "website": "www.blondie.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:56.232Z"
+    "fetchedAt": "2026-04-07T16:34:43.608Z"
   },
   "blood-or-whiskey": {
     "name": "Blood or Whiskey",
     "image": "https://cdn-images.dzcdn.net/images/artist/c852e05f5116a503eb705ca8d52f2e5d/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:52.135Z"
+    "fetchedAt": "2026-04-07T16:35:38.392Z"
   },
   "book-of-love": {
     "name": "Book of Love",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/urtusy1367151263.jpg",
-    "bio": "Book of Love was, from 1984 to 1993, a popular synthpop and dance music band, alongside Sire Records labelmates Depeche Mode and Erasure. Led by vocalist Susan Ottaviano, the band also included Ted Ottaviano (no relation to Susan), Lauren Roselli and Jade Lee.",
     "genres": [
       "Synthpop",
       "Rock/Pop"
@@ -308,12 +289,11 @@
     "formed": "0",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:11.306Z"
+    "fetchedAt": "2026-04-07T16:34:58.635Z"
   },
   "bow-wow-wow": {
     "name": "Bow Wow Wow",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/uuvusv1361159374.jpg",
-    "bio": "Bow Wow Wow are an English 1980s New Wave band, created by Malcolm McLaren to promote his and business partner Vivienne Westwood's New Romantic fashion lines. The group's music is described as having an \"African-derived drum sound\".\n\nMcLaren persuaded guitarist Matthew Ashman, bassist Leigh Gorman and drummer David Barbarossa (also known as Dave Barbe), of the then line-up of Adam and the Ants to leave the founder of the band Adam Ant and form a new group.\n\nAfter a six-month-long audition proces",
     "genres": [
       "New Wave",
       "Rock/Pop"
@@ -321,12 +301,11 @@
     "formed": "1980",
     "website": "www.bowwowwow.org",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:34.016Z"
+    "fetchedAt": "2026-04-07T16:35:21.184Z"
   },
   "bowling-for-soup": {
     "name": "Bowling for Soup",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wyprts1358068923.jpg",
-    "bio": "Bowling for Soup (often typeset as ¡Bowling for Soup! or abbreviated as BFS) is an American rock band which originally formed in Wichita Falls, Texas in 1994. Now based in Denton, Texas, the band is best known for its singles \"Girl All the Bad Guys Want\" (a 2003 Grammy Award nominee), \"Almost\", \"Punk Rock 101\", \"High School Never Ends\", and SR-71 cover \"1985\". Bowling for Soup was formed in Wichita Falls, Texas during the first week of June 1994 by Jaret Reddick (lead vocals, rhythm guitar), Chr",
     "genres": [
       "Rock",
       "Rock/Pop"
@@ -334,24 +313,22 @@
     "formed": "1994",
     "website": "www.bowlingforsoup.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:43.532Z"
+    "fetchedAt": "2026-04-07T16:35:30.709Z"
   },
   "boy-harsher": {
     "name": "Boy Harsher",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/fnuwi21638537047.jpg",
-    "bio": "Boy Harsher is an American electronic music group, formed in 2013 in Savannah, Georgia. Currently based in Northampton, Massachusetts, the band consists of vocalist Jae Matthews and producer Augustus Muller. Muller temporarily resided in Matthews' attic in the beginning of their relationship.",
     "genres": [
       "Pop-Punk"
     ],
     "formed": "2013",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:17.125Z"
+    "fetchedAt": "2026-04-07T16:36:03.266Z"
   },
   "brian-setzer": {
     "name": "Brian Setzer",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qrvsyt1365505313.jpg",
-    "bio": "Brian Robert Setzer (born April 10, 1959) is an American guitarist, singer and songwriter. He first found widespread success in the early 1980s with the 1950s-style rockabilly revival group Stray Cats, and revitalized his career in the late 1990s with his Swing revival band, The Brian Setzer Orchestra.\n\nSetzer was born in Massapequa, New York. Beginning in January 1979, he fronted the rockabilly band The Tomcats before transforming them into the later successful Stray Cats.  After only four year",
     "genres": [
       "Rock & Roll",
       "Rock/Pop"
@@ -359,7 +336,7 @@
     "formed": "1979",
     "website": "www.briansetzer.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:06.798Z"
+    "fetchedAt": "2026-04-07T16:34:54.122Z"
   },
   "brian-setzer-orchestra": {
     "name": "Brian Setzer Orchestra",
@@ -370,7 +347,6 @@
   "bruce-springsteen": {
     "name": "Bruce Springsteen",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/pj57t31658769167.jpg",
-    "bio": "Bruce Frederick Joseph Springsteen (born September 23, 1949) is an American musician, singer, songwriter and humanitarian. He is best known for his work with his E Street Band. Nicknamed \"The Boss,\" Springsteen is widely known for his brand of poetic lyrics, Americana, working class and sometimes political sentiments centered on his native New Jersey, his distinctive voice and his lengthy and energetic stage performances, with concerts from the 1970s to the present decade running over three hour",
     "genres": [
       "Rock",
       "Rock/Pop"
@@ -378,19 +354,18 @@
     "formed": "1969",
     "website": "brucespringsteen.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:21.667Z"
+    "fetchedAt": "2026-04-07T16:34:09.017Z"
   },
   "bryan-mcpherson": {
     "name": "Bryan McPherson",
     "image": "https://cdn-images.dzcdn.net/images/artist/5d593f906eb8ef73de06f1d5e129828b/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:52.645Z"
+    "fetchedAt": "2026-04-07T16:35:38.896Z"
   },
   "buddy-guy": {
     "name": "Buddy Guy",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qwswws1364760190.jpg",
-    "bio": "Buddy Guy (born George Guy, July 30, 1936 in Lettsworth, Louisiana) is an American blues music and rock music guitarist, as well as a singer. Known as an inspiration to Jimi Hendrix and other 1960s blues and rock legends, Guy is considered as an important proponent of chicago blues made famous by Muddy Waters and Howlin’ Wolf. He has influenced both widely known and local blues guitarists.\n\nGuy is known for his showmanship; for example, he plays with drumsticks and walks into the audience whilst",
     "genres": [
       "Blues",
       "Blues"
@@ -398,12 +373,11 @@
     "formed": "1953",
     "website": "www.buddyguy.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:53.416Z"
+    "fetchedAt": "2026-04-07T16:35:39.743Z"
   },
   "burning-spear": {
     "name": "Burning Spear",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/tjalxx1666294612.jpg",
-    "bio": "Winston Rodney OD (born 1 March 1945), better known by the stage name Burning Spear, is a Jamaican roots reggae singer and musician. Burning Spear is a Rastafarian and one of the most influential and long-standing roots artist to emerge out of the 1970s.",
     "genres": [
       "Reggae",
       "Reggae"
@@ -411,29 +385,27 @@
     "formed": null,
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:31.186Z"
+    "fetchedAt": "2026-04-07T16:34:18.542Z"
   },
   "carlene-davis": {
     "name": "Carlene Davis",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/s9ayfd1666446192.jpg",
-    "bio": "",
     "genres": [],
     "formed": "0",
     "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:20.987Z"
+    "fetchedAt": "2026-04-07T16:35:08.156Z"
   },
   "chaka-kahn": {
     "name": "Chaka Kahn",
     "image": "https://cdn-images.dzcdn.net/images/artist/8ecc6be8fca55d0d5cf7698e076f5993/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:13.062Z"
+    "fetchedAt": "2026-04-07T16:35:00.341Z"
   },
   "chris-isaak": {
     "name": "Chris Isaak",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/isaak-chris-50002dc90376a.jpg",
-    "bio": "Christopher Joseph \"Chris\" Isaak (born June 26, 1956) is an American rock musician and occasional actor. Isaak signed a contract to Warner Bros. Records in 1984 for his first album Silvertone. The tracks \"Gone Ridin'\" and \"Livin' for Your Lover\", from this album, were featured in David Lynch's cult classic Blue Velvet. Isaak's second self-titled album Chris Isaak was photographed by fashion photographer Bruce Weber. Isaak's contract was renewed in 1988 when Warner Bros. moved him to their Repris",
     "genres": [
       "Rock",
       "Rock/Pop"
@@ -441,26 +413,25 @@
     "formed": "1956",
     "website": "www.chrisisaak.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:15.812Z"
+    "fetchedAt": "2026-04-07T16:35:03.147Z"
   },
   "chris-murray": {
     "name": "Chris Murray",
     "image": "https://cdn-images.dzcdn.net/images/artist/bf175c78f095602c679c404a18f6e33e/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:50.366Z"
+    "fetchedAt": "2026-04-07T16:35:36.940Z"
   },
   "chris-shiflett": {
     "name": "Chris Shiflett",
     "image": "https://cdn-images.dzcdn.net/images/artist/57e8d3afe859ba4e0336a102252ce8c7/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:18.375Z"
+    "fetchedAt": "2026-04-07T16:36:04.505Z"
   },
   "cold-war-kids": {
     "name": "Cold War Kids",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/cold-war-kids-50bc967bda014.jpg",
-    "bio": "Los Angeles four-piece Cold War Kids elevate their passionate take on indie rock with their emotionally-raw fourth album Dear Miss Lonelyhearts. \n\nFormed in 2004, the band’s breakthrough debut Robbers & Cowards was released to considerable acclaim in 2006. The darker Loyalty To Loyalty followed two years later, and 2011’s Mine Is Yours introduced deeper anthemic qualities to the eclectic group’s catalog. ",
     "genres": [
       "Indie",
       "Rock/Pop"
@@ -468,12 +439,11 @@
     "formed": "2004",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:07.298Z"
+    "fetchedAt": "2026-04-07T16:34:54.634Z"
   },
   "colin-hay": {
     "name": "Colin Hay",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rvsssy1363778020.jpg",
-    "bio": "Colin James Hay (born 29 June 1953) is a Scottish born musician and actor who made his mark during the 1980s as lead vocalist of the Australian band Men at Work, and later as a solo artist. Regarding his solo career, Hay stated, in 2011: \"I feel like it’s been building for the last fifteen or so years that I’ve been touring. It’s slow and steady. It’s been word-of-mouth. People see the show, like it, and tell their friends. It feels very organic.\"\n\nHay's music has been frequently used by actor a",
     "genres": [
       "Acoustic",
       "Rock/Pop"
@@ -481,19 +451,18 @@
     "formed": "1978",
     "website": "www.myspace.com/colinhay",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:57.734Z"
+    "fetchedAt": "2026-04-07T16:34:45.109Z"
   },
   "common-sense": {
     "name": "Common Sense",
     "image": "https://cdn-images.dzcdn.net/images/artist/a139ccc921d2bd7cee1eef7194b3dfa8/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:23.426Z"
+    "fetchedAt": "2026-04-07T16:36:09.517Z"
   },
   "crowded-house": {
     "name": "Crowded House",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/ywuyqr1348102507.jpg",
-    "bio": "Crowded House are a pop rock band formed in Melbourne, Australia in 1985 by lead-vocalist and primary songwriter, New Zealand-born Neil Finn. Other members have included his brother Tim Finn, Australians Paul Hester, Nick Seymour and Peter Jones and Americans Mark Hart and Matt Sherrod.\nCrowded House has won several national and international awards. In Australia, the group has won eleven ARIA Awards from 26 nominations, including the inaugural Best New Talent award in 1987. The majority of thei",
     "genres": [
       "Pop-Rock",
       "Rock/Pop"
@@ -501,7 +470,7 @@
     "formed": "1985",
     "website": "www.crowdedhouse.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:05.298Z"
+    "fetchedAt": "2026-04-07T16:34:52.616Z"
   },
   "crown-of-thornz": {
     "name": "Crown of Thornz",
@@ -513,7 +482,6 @@
   "culture-club": {
     "name": "Culture Club",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/usxpur1347992567.jpg",
-    "bio": "Culture Club is an English pop band that was part of the 1980s New Romantic movement. The original band comprised Boy George (lead vocals), Mikey Craig (bass guitar), Roy Hay (guitar and keyboards) and Jon Moss (drums and percussion). Their second album, Colour by Numbers, has sold more than 10 million copies worldwide, and they had several international hits with songs such as \"Church of the Poison Mind\", \"Karma Chameleon\" and \"Do You Really Want to Hurt Me\". Boy George's androgynous style of d",
     "genres": [
       "New Wave",
       "Rock/Pop"
@@ -521,7 +489,7 @@
     "formed": "1981",
     "website": "boygeorgeandcultureclub.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:02.245Z"
+    "fetchedAt": "2026-04-07T16:34:49.619Z"
   },
   "z-trip": {
     "name": "Z-Trip",
@@ -541,19 +509,18 @@
     "image": "https://cdn-images.dzcdn.net/images/artist/5b88d16d8472af06493e37379792ea9c/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:49.763Z"
+    "fetchedAt": "2026-04-07T16:35:36.409Z"
   },
   "danger-painters": {
     "name": "Danger Painters",
     "image": "https://cdn-images.dzcdn.net/images/artist/32062162d767c9622938e5621188f152/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:02.173Z"
+    "fetchedAt": "2026-04-07T16:35:48.411Z"
   },
   "danny-elfman": {
     "name": "Danny Elfman",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/elfman-danny-4ff30aade04f5.jpg",
-    "bio": "Daniel Robert \"Danny\" Elfman (born May 29, 1953) is an American composer, best known for scoring music for television and film and creating The Simpsons main title theme as well as the 1989 Batman movie theme. He was the lead singer and songwriter for the rock band Oingo Boingo, from 1976 to 1995. He has scored the majority of the films for his long-time friend Tim Burton.\nBorn in Los Angeles, he entered the film industry in 1976, initially as an actor. He made his film scoring début in 1980 for",
     "genres": [
       "OST",
       "Rock/Pop"
@@ -561,12 +528,11 @@
     "formed": "1972",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:04.245Z"
+    "fetchedAt": "2026-04-07T16:34:51.619Z"
   },
   "dashboard-confessional": {
     "name": "Dashboard Confessional",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/yxupsq1364751511.jpg",
-    "bio": "Dashboard Confessional (often referred to as simply Dashboard) is an American emo/acoustic band from Boca Raton, Florida, led by singer-songwriter Chris Carrabba. The name of the band is derived from the song \"The Sharp Hint of New Tears\" from the debut album The Swiss Army Romance.\n\nInitially a solo side project of Chris Carrabba while in Further Seems Forever, Dashboard Confessional's first recording was the 2000 LP The Swiss Army Romance.\n\nThe following year, Further Seems Forever, with Carra",
     "genres": [
       "Emo",
       "Rock/Pop"
@@ -574,12 +540,11 @@
     "formed": "1999",
     "website": "www.dashboardconfessional.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:34.512Z"
+    "fetchedAt": "2026-04-07T16:35:21.680Z"
   },
   "david-byrne": {
     "name": "David Byrne",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qyvqxu1345667079.jpg",
-    "bio": "David Byrne was born in Dumbarton, Scotland, on 14 May 1952. When he was 2 years old, his parents moved to Canada at the expense of a company that was recruiting engineers and semi-scientists from Europe. When David was 8 or 9 years old, his parents moved again, this time to the suburbs of Baltimore, Maryland.\n\nIn September 1970, David went straight from High School to the Rhode Island School Of Design. It was here that he met Chris Frantz and Tina Weymouth who were also enrolled as Freshmen. Da",
     "genres": [
       "Pop",
       "Rock/Pop"
@@ -587,24 +552,22 @@
     "formed": "1970",
     "website": "journal.davidbyrne.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:09.302Z"
+    "fetchedAt": "2026-04-07T16:34:56.634Z"
   },
   "dennis-brown": {
     "name": "Dennis Brown",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/9l4zv81667347442.jpg",
-    "bio": "Dennis Emmanuel Brown (1 February 1957 – 1 July 1999) was a Jamaican reggae singer. During his prolific career, which began in the late 1960s when he was aged eleven, he recorded more than 75 albums and was one of the major stars of lovers rock, a sub-genre of reggae. Bob Marley cited Brown as his favourite singer, dubbing him \"The Crown Prince of Reggae\", and Brown would prove hugely influential on future generations of reggae singers. In 1972, Brown began an association that would result in hi",
     "genres": [
       "Reggae"
     ],
     "formed": "1957",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:21.492Z"
+    "fetchedAt": "2026-04-07T16:35:08.652Z"
   },
   "depeche-mode": {
     "name": "Depeche Mode",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg",
-    "bio": "Depeche Mode are an English electronic music band formed in 1980 in Basildon, Essex. The group's original line-up consisted of Dave Gahan (lead vocals, occasional songwriter since 2005), Martin Gore (keyboards, guitar, vocals, chief songwriter after 1981), Andy Fletcher (keyboards) and Vince Clarke (keyboards, chief songwriter 1980-81). Vince Clarke left the band after the release of their 1981 debut album, Speak & Spell, and was replaced by Alan Wilder (keyboards, drums, occasional songwriter) ",
     "genres": [
       "Synthpop",
       "Rock/Pop"
@@ -612,12 +575,11 @@
     "formed": "1980",
     "website": "www.depechemode.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:18.662Z"
+    "fetchedAt": "2026-04-07T16:34:06.033Z"
   },
   "devo": {
     "name": "DEVO",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/devo-507ffb535419f.jpg",
-    "bio": "Devo is an American New Wave band formed in 1972 consisting of members from Kent and Akron, Ohio. The classic line-up of the band includes two sets of brothers, the Mothersbaughs (Mark and Bob) and the Casales (Gerald and Bob), along with Alan Myers. The band had a No. 14 Billboard chart hit in 1980 with the single \"Whip It\", and has maintained a cult following throughout its existence. Their style over time has shifted between punk, art rock, post-punk, and New Wave. Their music and stage show ",
     "genres": [
       "New Wave",
       "Electronic"
@@ -625,12 +587,11 @@
     "formed": "1972",
     "website": "www.clubdevo.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:40.205Z"
+    "fetchedAt": "2026-04-07T16:34:27.567Z"
   },
   "dirty-heads": {
     "name": "Dirty Heads",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/brpgls1661694235.jpg",
-    "bio": "The Dirty Heads is a reggae band from Southern California with a melodic style that includes hip hop and ska punk genres. Their debut album, Any Port in a Storm, was released on September 23, 2008, by Executive Music Group (Fontana/Universal).\n\nThe band was founded in 1996 by Jared “Dirty J” Watson and vocalist/guitarist Dustin “Duddy B” Bushnell in Orange County, CA. The two first met at a party during their freshman year of high school. Upon hearing one of Bushnell’s rap demo tapes, Watson bec",
     "genres": [
       "Rock",
       "Reggae"
@@ -638,12 +599,11 @@
     "formed": "2006",
     "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:53.728Z"
+    "fetchedAt": "2026-04-07T16:34:41.100Z"
   },
   "dirty-vegas": {
     "name": "Dirty Vegas",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/dirty-vegas-5060da995d607.jpg",
-    "bio": "Dirty Vegas is a British house music trio made up of Ben Harris and Paul Harris (no relation) on instruments and production and Steve Smith on vocals. The group formed in 2001, then broke up in 2005 before reforming in December 2008 to record new material.\nThey are best known for their international hit single \"Days Go By\", which gained mainstream popularity in a 2003 Mitsubishi Eclipse television commercial, and for remixing songs created by other artists.",
     "genres": [
       "House",
       "Electronic"
@@ -651,39 +611,36 @@
     "formed": "2001",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:38.522Z"
+    "fetchedAt": "2026-04-07T16:35:25.691Z"
   },
   "dr-sick": {
     "name": "Dr. Sick",
     "image": "https://cdn-images.dzcdn.net/images/artist/5036ca7e4ea852df30ed09073086fd6f/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:05.140Z"
+    "fetchedAt": "2026-04-07T16:34:52.368Z"
   },
   "drag-the-river": {
     "name": "Drag the River",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xrqyvv1389849126.jpg",
-    "bio": "Based out of Fort Collins, CO, Drag the River was a musical outlet for some of punk's seasoned veterans. All frontman Chad Price hooked up with Armchair Martian's Jon Snodgrass and Paul Rucker and the Nobodys' J.J. Nobody and formed Drag the River for a country-rock fix in 1996. Hobo's Demo's was released in mid-2000 (reissued by Suburban Home in late 2006) and captured Drag the River's rough-cut rock & roll woven around lyrical introspections. Pedal steel guitarist Zach Boddicker was added to t",
     "genres": [],
     "formed": "1996",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:58.930Z"
+    "fetchedAt": "2026-04-07T16:35:45.231Z"
   },
   "dramarama": {
     "name": "Dramarama",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wwsypq1585324062.jpg",
-    "bio": "Dramarama is an alternative rock group which formed in 1982 in Wayne, New Jersey, United States, although they relocated to Los Angeles, California sometime later. Throughout all their incarnations, the band was led by singer/songwriter John Easdale. The band was best known for their 1985 single \"Anything, Anything (I'll Give You)\" which remains the most requested song in the history of the legendary L.A. alternative station KROQ. The band split in 1994 and reformed in 2003 after the original li",
     "genres": [],
     "formed": "1982",
     "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:35.012Z"
+    "fetchedAt": "2026-04-07T16:35:22.186Z"
   },
   "dropkick-murphys": {
     "name": "Dropkick Murphys",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/utwpss1362603462.jpg",
-    "bio": "Dropkick Murphys are an American punk rock band formed in Quincy, Massachusetts in 1996. The band was initially signed to independent punk record label Hellcat Records, releasing five albums for the label, and making a name for themselves locally through constant touring and yearly St. Patrick's Day week shows, held in and around Boston. The 2004 single \"Tessie\" became the band's first and one of their biggest charting singles to date. The band's final Hellcat release, 2005's The Warrior's Code,",
     "genres": [
       "Punk Rock",
       "Rock/Pop"
@@ -691,12 +648,11 @@
     "formed": "1996",
     "website": "www.dropkickmurphys.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:48.721Z"
+    "fetchedAt": "2026-04-07T16:34:36.093Z"
   },
   "duran-duran": {
     "name": "Duran Duran",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/73oxf41638977308.jpg",
-    "bio": "Duran Duran are an English Rock band, formed in Birmingham in 1978. They were one of the most successful bands of the 1980s and a leading band in the MTV-driven \"Second British Invasion\" of the United States. Since the 1980s, they have placed 14 singles in the Top 10 of the UK Singles Chart and 21 in the Billboard Hot 100 and have, according to the Sunday Mercury, sold more than 100 million records. While they were generally considered part of the New Romantic scene along with bands such as Span",
     "genres": [
       "New Wave",
       "Rock/Pop"
@@ -704,12 +660,11 @@
     "formed": "1978",
     "website": "www.duranduran.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:25.175Z"
+    "fetchedAt": "2026-04-07T16:34:12.534Z"
   },
   "emf": {
     "name": "EMF",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wutsws1369730435.jpg",
-    "bio": "EMF are an alternative dance band from England. The band, from the Forest of Dean in Gloucestershire, came to prominence at the beginning of the 1990s. During its initial eight-year run (1989–1997), EMF had released three studio albums and had gone on hiatus and reformed twice. Their first single, \"Unbelievable,\" reached number 3 in the UK Singles Chart, and was a number one hit on the US Billboard Hot 100 chart. Their debut album, Schubert Dip, went to number 3 in the UK Albums Chart.\n\nThe band",
     "genres": [
       "Alternative Rock",
       "Electronic"
@@ -717,24 +672,22 @@
     "formed": "1989",
     "website": "www.emf-theband.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:18.818Z"
+    "fetchedAt": "2026-04-07T16:35:06.158Z"
   },
   "earthgang": {
     "name": "EARTHGANG",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/tyvysv1567873962.jpg",
-    "bio": "\"EarthGang\"  formed in 2008, is an American hip hop duo from Atlanta, Georgia, composed of Atlanta-based rappers Olu (aka Johnny Venus) and WowGr8 (aka Doctur Dot). They are co-founders of the musical collective Spillage Village, with J.I.D, Hollywood JB, JordxnBryant, 6LACK, and Mereba.\nIncorporating Southern hip hop and genres such as funk and soul music, EarthGang has drawn comparisons to groups such as Outkast, Dungeon Family and The Pharcyde, among other artists.",
     "genres": [
       "Hip-Hop"
     ],
     "formed": "2008",
     "website": "www.earthgang.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:15.623Z"
+    "fetchedAt": "2026-04-07T16:36:01.758Z"
   },
   "echo-and-the-bunnymen": {
     "name": "Echo & The Bunnymen",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/22zdag1638977527.jpg",
-    "bio": "Echo & the Bunnymen are an English post-punk band, formed in Liverpool in 1978. The original line-up consisted of vocalist Ian McCulloch, guitarist Will Sergeant and bass player Les Pattinson, supplemented by a drum machine. By 1980, Pete de Freitas joined as the band's drummer, and their debut album, Crocodiles, met with critical acclaim and made the UK Top 20. Their second album, Heaven Up Here (1981), again found favour with the critics and reached number 10 in the UK Album chart. The band's ",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -742,19 +695,18 @@
     "formed": "1978",
     "website": "www.bunnymen.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:18.159Z"
+    "fetchedAt": "2026-04-07T16:34:05.567Z"
   },
   "eek-a-mouse": {
     "name": "Eek-A-Mouse",
     "image": "https://cdn-images.dzcdn.net/images/artist/ccce781d9fbe9437f890abe48e90e61c/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:24.242Z"
+    "fetchedAt": "2026-04-07T16:35:11.386Z"
   },
   "el-ten-eleven": {
     "name": "El Ten Eleven",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rxrvwu1382760247.jpg",
-    "bio": "El Ten Eleven is a Los Angeles, CA post-rock duo known for combining guitar/bass doubleneck or fretless bass, with heavy looping, or vamping, and the utility of an effects pedal, over acoustic or electric drumming. They have released five full length albums, earning generally positive reviews.\n\nThe band has earned some attention due to many of their songs being featured in the soundtracks of Gary Hustwit's design documentaries Helvetica, Objectified, and Urbanized.\n\nThe name El Ten Eleven is der",
     "genres": [
       "Post-Rock",
       "Rock/Pop"
@@ -762,12 +714,11 @@
     "formed": "2004",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:15.123Z"
+    "fetchedAt": "2026-04-07T16:36:01.260Z"
   },
   "elton-john": {
     "name": "Elton John",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/9o30sk1687869267.jpg",
-    "bio": "Sir Elton Hercules John, CBE (born Reginald Kenneth Dwight on 25 March 1947 in Pinner, Middlesex, England) is an English rock singer-songwriter, composer, pianist and occasional actor. He has worked with lyricist Bernie Taupin as his songwriter partner since 1967; they have collaborated on more than 30 albums to date.\nIn his four-decade career John has sold more than 250 million records, making him one of the most successful artists of all time. His single \"Candle in the Wind 1997\" has sold over",
     "genres": [
       "Pop",
       "Rock/Pop"
@@ -775,12 +726,11 @@
     "formed": "1969",
     "website": "eltonjohn.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:37.196Z"
+    "fetchedAt": "2026-04-07T16:34:24.555Z"
   },
   "the-english-beat": {
     "name": "The Beat",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wtwxsv1367710023.jpg",
-    "bio": "One of the earliest and most important ska revivalist groups, Birmingham's the Beat formed in 1978 (the band had to change its name to the English Beat in the U.S. to avoid confusion with Paul Collins' band of the same name). The multiracial band carved a distinct sound through the use of alternating lead vocals by guitarist Dave Wakeling and punk toaster/rapper Ranking Roger, supported by a tight band consisting of Andy Cox (guitar), David Steele (bass), and Everett Moreton (drums). The additio",
     "genres": [
       "Reggae",
       "Reggae"
@@ -788,12 +738,11 @@
     "formed": "1979",
     "website": "www.thebeatofficial.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:43.438Z"
+    "fetchedAt": "2026-04-07T16:34:30.571Z"
   },
   "erasure": {
     "name": "Erasure",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xpytqt1342444014.jpg",
-    "bio": "Erasure are an English synthpop duo, consisting of songwriter and keyboardist Vince Clarke and singer Andy Bell. Erasure entered the music scene in 1985 with their debut single \"Who Needs Love Like That\". Following the release of their fourth single \"Sometimes\", the duo established itself on the UK Singles Chart and became one of the most successful artists of the mid-to-late 1980s and early 1990s.\n \nFrom 1986 to 1997, Erasure achieved 24 consecutive Top 20 hits in the UK, while only having 3 To",
     "genres": [
       "Synthpop",
       "Rock/Pop"
@@ -801,41 +750,38 @@
     "formed": "1985",
     "website": "erasureinfo.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:28.179Z"
+    "fetchedAt": "2026-04-07T16:34:15.553Z"
   },
   "fear": {
     "name": "Fear",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vstwsr1389870115.jpg",
-    "bio": "FEAR has always been regarded as a vital element of the early Los Angeles, California, United States punk scene by those who witnessed their fury firsthand. Formed by the mysterious Lee Ving (b. Lee James Jude Capallero) and his friend Derf Scratch (b. Fred Milner) in 1978 after the former attended a Black Randy concert, the two quickly recruited scene regulars Burt Good and Johnny Backbeat to play guitar and drums, respectively, in their new project. Their early lyrics delivered a humorous and ",
     "genres": [],
     "formed": "1977",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:09.471Z"
+    "fetchedAt": "2026-04-07T16:35:55.750Z"
   },
   "fishbone": {
     "name": "Fishbone",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xnw0uv1760490481.jpg",
-    "bio": "Fishbone is a long-lived, influential band, self-described as jazzy ska-gospel punk rock-reggae. The band was formed in 1979 in the ghettos of South Central Los Angeles by Angelo Moore, also known as \"Dr. Madd Vibe\" (vocals, saxophones ranging from soprano to bass, and theremin); Kendall Jones (guitar); John Norwood Fisher (bass); Philip \"Fish\" Fisher (drums); \"Dirty\" Walter A. Kibby II (trumpet); and Chris Dowd (keyboards, trombone). The group came from the same Los Angeles scene that spawned t",
     "genres": [
       "Ska Punk"
     ],
     "formed": "1979",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:41.529Z"
+    "fetchedAt": "2026-04-07T16:35:28.725Z"
   },
   "flock-of-seagulls": {
     "name": "Flock Of Seagulls",
     "image": "https://cdn-images.dzcdn.net/images/artist/51ef6bce3ca57436d521fa61fab84136/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:39.749Z"
+    "fetchedAt": "2026-04-07T16:35:26.870Z"
   },
   "foals": {
     "name": "Foals",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/hqj1961665173344.jpg",
-    "bio": "Foals are an indie rock band which formed in Oxford, England in 2005. They are currently signed to Transgressive Records in the United Kingdom and Sub Pop in the United States. They released their debut album Antidotes on 24 March 2008 in the UK, and 8 April 2008 in the US. The band’s second album, Total Life Forever, was released on 10 May 2010. Their third album is to be released in 2013. The band also released a mixtape named \"Tapes\" in July 2012.\n\nThe lead singer of Youthmovies, Andrew Mears",
     "genres": [
       "Indie",
       "Rock/Pop"
@@ -843,12 +789,11 @@
     "formed": "2005",
     "website": "www.foals.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:58.736Z"
+    "fetchedAt": "2026-04-07T16:34:46.143Z"
   },
   "foo-fighters": {
     "name": "Foo Fighters",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vuvqxr1352453964.jpg",
-    "bio": "Foo Fighters are an American rock band formed in 1994 in Seattle, Washington. The band was founded by former Nirvana drummer Dave Grohl as a one-man project following the dissolution of Nirvana after the suicide of Kurt Cobain. The group took its name from foo fighter, a nickname coined by Allied aircraft pilots for UFOs and other aerial phenomena. Over the course of their career, Foo Fighters have won 12 Grammy Awards, including Best Rock Album four times. They were inducted into the Rock and R",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -856,12 +801,11 @@
     "formed": "1994",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:53.229Z"
+    "fetchedAt": "2026-04-07T16:34:40.603Z"
   },
   "fountains-of-wayne": {
     "name": "Fountains of Wayne",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qxxqyr1359280812.jpg",
-    "bio": "After Montclair-based Adam Schlesinger and Sellersville-based Chris Collingwood first met as freshmen at Williams College, they played music in various bands and eventually went their separate ways, with Collingwood forming the Mercy Buckets in Boston and Schlesinger forming Ivy in New York City. In the mid-1990s, they came together to form Fountains of Wayne, named after a lawn ornament store in Wayne, New Jersey, located at the intersection of U.S. Route 46 and New Jersey Route 23. Previous ba",
     "genres": [
       "Rock",
       "Rock/Pop"
@@ -869,24 +813,22 @@
     "formed": "1996",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:35.514Z"
+    "fetchedAt": "2026-04-07T16:35:22.687Z"
   },
   "future-islands": {
     "name": "Future Islands",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rsrvuy1489438204.jpg",
-    "bio": "Future Islands is a new wave synthpop band based in Baltimore, Maryland, USA.  The band is composed of Gerrit Welmers (keyboards and programming), William Cashion (bass, acoustic and electric guitars), and Samuel T. Herring (lyrics and vocals).  Their sound has been described as \"terse yet passionate music wrought from a stripped back palette,\" where \"Gerrit Welmers' synthesizer melodies tumble across the austere wilderness of William Cashion's post-punk bass pulse, driven ever forward by ecstat",
     "genres": [
       "Synthpop"
     ],
     "formed": "2006",
     "website": "www.future-islands.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:01.272Z"
+    "fetchedAt": "2026-04-07T16:34:48.621Z"
   },
   "garbage": {
     "name": "Garbage",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wwswpy1366731211.jpg",
-    "bio": "Garbage is an alternative rock band formed in Madison, Wisconsin, in 1994. The group consists of Scottish singer Shirley Manson (vocals, guitar) and American musicians Duke Erikson (bass, guitar, keyboards, percussion), Steve Marker (guitar, keyboards) and Butch Vig (drums, percussion). All four members are involved in songwriting and production. The band have counted worldwide album sales of over 17 million units.\n\nGarbage released a string of increasingly successful singles in 1995-1996, inclu",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -894,12 +836,11 @@
     "formed": "1994",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:39.201Z"
+    "fetchedAt": "2026-04-07T16:34:26.565Z"
   },
   "gary-clark-jr": {
     "name": "Gary Clark, Jr.",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qwyuvx1413677567.jpg",
-    "bio": "Texas guitarist Gary Clark Jr. has been compared to guitar icons like Jimi Hendrix and Stevie Ray Vaughan, and his playing is a powerful and inspired mix of blues roots with contemporary soul and hip-hop, and when he’s rolling at his best, he sounds like nothing so much as a natural hybrid of both the past and the future of the blues. Born and raised in Austin, Texas, Clark first picked up a guitar at the age of 12 and spent his teens playing whatever gig he could get in the Austin area, eventua",
     "genres": [
       "Rock",
       "Rock/Pop"
@@ -907,12 +848,11 @@
     "formed": null,
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:53.916Z"
+    "fetchedAt": "2026-04-07T16:35:40.220Z"
   },
   "gary-numan": {
     "name": "Gary Numan",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/c83nrm1638978271.jpg",
-    "bio": "One of the founding fathers of synth pop, Gary Numan’s influence extends far beyond his lone American hit, “Cars,” which still stands as one of the defining new wave singles. That seminal track helped usher in the synthpop era on both sides of the Atlantic, especially his native England, where he was a genuine pop star and consistent hitmaker during the early ’80s. Even after new wave had petered out, Numan’s influence continued to make itself felt; his dark, paranoid vision, theatrically icy al",
     "genres": [
       "Rock",
       "Electronic"
@@ -920,7 +860,7 @@
     "formed": "1977",
     "website": "www.garynuman.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:49.719Z"
+    "fetchedAt": "2026-04-07T16:34:37.100Z"
   },
   "gene-loves-jezebel": {
     "name": "Gene Loves Jezebel",
@@ -932,7 +872,6 @@
   "george-michael": {
     "name": "George Michael",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/hbmwem1637696093.jpg",
-    "bio": "Georgios Kyriacos Panayiotou (25 June 1963 – 25 December 2016), known professionally as George Michael, was an English singer, songwriter, record producer, and philanthropist who rose to fame as a member of the music duo Wham! He was best known for his work in the 1980s and 1990s, including hit singles such as \"Wake Me Up Before You Go-Go\" and \"Last Christmas\", and albums such as Faith (1987) and Listen Without Prejudice Vol. 1 (1990).\n\nMichael sold more than 100 million records worldwide. His d",
     "genres": [
       "Pop",
       "Rock/Pop"
@@ -940,7 +879,7 @@
     "formed": "1977",
     "website": "georgemichael.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:27.176Z"
+    "fetchedAt": "2026-04-07T16:34:14.546Z"
   },
   "gorrillaz": {
     "name": "Gorrillaz",
@@ -953,19 +892,18 @@
     "image": "https://cdn-images.dzcdn.net/images/artist/56bf897753bdb3475e1fc1b8b272aa06/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:24.843Z"
+    "fetchedAt": "2026-04-07T16:36:11.458Z"
   },
   "hatcham-social": {
     "name": "Hatcham Social",
     "image": "https://cdn-images.dzcdn.net/images/artist/97a9a65ced29f730f6f27f46361d5fdd/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:42.258Z"
+    "fetchedAt": "2026-04-07T16:35:29.397Z"
   },
   "heart": {
     "name": "Heart",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/heart-507e5577ec37f.jpg",
-    "bio": "Sisters Ann and Nancy Wilson were the creative spark behind Heart, a hard-rock group who initially found success in the mid-'70s, only to reach greater heights after engineering a major comeback a decade later. The daughters of a Marine Corps captain, Ann (born June 19, 1950) and Nancy (born March 16, 1954) grew up in both Southern California and Taiwan before the Wilson family settled in Seattle, Washington. Throughout their formative years, both were interested in folk and pop music; while Ann",
     "genres": [
       "Classic Rock",
       "Rock/Pop"
@@ -973,12 +911,11 @@
     "formed": "1973",
     "website": "www.heart-music.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:54.417Z"
+    "fetchedAt": "2026-04-07T16:35:40.726Z"
   },
   "heaven-17": {
     "name": "Heaven 17",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/tuvsvy1373048794.jpg",
-    "bio": "Heaven 17 are an English New Wave synthpop band originating from Sheffield in the early 1980s. Originally a trio, the band comprised Martyn Ware (keyboards), Ian Craig Marsh (keyboards) (both previously with The Human League) and Glenn Gregory (vocals). Although most of the band's music was recorded in the 1980s, they have occasionally reformed to record and perform since then, playing their first ever live concerts in 1997. Marsh left the band in 2007 and Ware and Gregory continued to perform a",
     "genres": [
       "New Wave",
       "Rock/Pop"
@@ -986,12 +923,11 @@
     "formed": "1980",
     "website": "www.heaven17.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:03.746Z"
+    "fetchedAt": "2026-04-07T16:34:51.120Z"
   },
   "hoodoo-gurus": {
     "name": "Hoodoo Gurus",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/ytywvu1347864646.jpg",
-    "bio": "Hoodoo Gurus (referred to as the Gurus by fans) are an Australian rock band, formed in Sydney in 1981, by the mainstay Dave Faulkner (songwriter, lead singer and guitarist) and later joined by Richard Grossman (bass), Mark Kingsmill (drums), and Brad Shepherd (guitar, vocals, harmonica). Their popularity peaked in the mid to late 1980s with albums Mars Needs Guitars!, Blow Your Cool! and Magnum Cum Louder.\n\nHoodoo Gurus had a string of acclaimed pop-rock singles including \"Leilani\" (1982), \"Tojo",
     "genres": [
       "Rock",
       "Rock/Pop"
@@ -999,31 +935,29 @@
     "formed": "1982",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:14.812Z"
+    "fetchedAt": "2026-04-07T16:35:02.149Z"
   },
   "hot-hot-heat": {
     "name": "Hot Hot Heat",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wvsxwv1345767929.jpg",
-    "bio": "Dustin Hawthorne and Steve Bays had been in many different bands together since 1995 and met Hawley in 1998. In 1999, Hawley bought a Juno 6 keyboard and asked Bays to try playing it, as no one else knew how. Hawley took over the drums from Bays and Hawthorne played bass. Matthew Marnik, who was a friend of the band, sang vocals. The band's original sound can be considered synthpunk.\n\nThe band soon changed direction to a more melodic, pop-influenced style, losing Marnik and adding guitarist Dant",
     "genres": [
       "Alternative rock"
     ],
     "formed": "1999",
     "website": "hothotheat.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:36.014Z"
+    "fetchedAt": "2026-04-07T16:35:23.195Z"
   },
   "hot-rod-lincoln": {
     "name": "Hot Rod Lincoln",
     "image": "https://cdn-images.dzcdn.net/images/artist/5bdcc36e176e03dfae88c536c734e968/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:40.758Z"
+    "fetchedAt": "2026-04-07T16:35:27.872Z"
   },
   "howard-jones": {
     "name": "Howard Jones",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/jones-howard-50fbc0fcc99a1.jpg",
-    "bio": "Howard Jones is a English musician, singer and songwriter. According to the Guinness Book of British Hit Singles & Albums, \"Jones is an accomplished singer-songwriter who was a regular chart visitor in the mid-1980s with his brand of synthpop. Jones, who was equally popular in the U.S., appeared at Live Aid\". Allmusic journalist, Stephen Thomas Erlewine adds, \"Jones was one of the defining figures of mid-1980s synthpop. His music merged the technology intensive sound of New Wave with the cheery ",
     "genres": [
       "Pop",
       "Rock/Pop"
@@ -1031,43 +965,40 @@
     "formed": "1955",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:19.662Z"
+    "fetchedAt": "2026-04-07T16:34:07.018Z"
   },
   "husbands": {
     "name": "Husbands",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/mmntbg1621481418.jpg",
-    "bio": "There are multiple artists called Husbands...\n\n1. Husbands are an indie rock band from OKC. \nHusbandsokc.bandcamp.com\n\n2. Not to be confused with \"the husbands\", husbands are a london DIY drum/synth couple into self reliance, making community, organised resistance, autonomous spaces, and counter-culture art as duty not career. They have been playing since early 2006 around the UK and Europe with UK bands such as the corey orbison, sleeping states, chaps and drunk granny. They have a split 7\" wit",
     "genres": [
       "Pop"
     ],
     "formed": "2013",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:25.177Z"
+    "fetchedAt": "2026-04-07T16:36:11.787Z"
   },
   "ian-mcculloch": {
     "name": "Ian McCulloch",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qyuxuu1470227790.jpg",
-    "bio": "Ian McCulloch ( born in Liverpool May 5, 1959 ) is a British singer . It is known pour Have Been singer Groups Echo & the Bunnymen and Electrafixion .",
     "genres": [
       "Pop-Punk"
     ],
     "formed": "1989",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:24.492Z"
+    "fetchedAt": "2026-04-07T16:35:11.663Z"
   },
   "inner-wave": {
     "name": "Inner Wave",
     "image": "https://cdn-images.dzcdn.net/images/artist/b2b06b4671ef99fe4c04125b27774f9c/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:18.004Z"
+    "fetchedAt": "2026-04-07T16:36:04.049Z"
   },
   "interpol": {
     "name": "Interpol",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/83wmbt1760692256.jpg",
-    "bio": "Interpol is an American indie rock and post-punk revival band from New York City. Formed in 1997, the band's original line-up consisted of Paul Banks (vocals, guitar), Daniel Kessler (guitar, vocals), Carlos Dengler (bass guitar, keyboards) and Greg Drudy (drums, percussion). Drudy left the band in 2000 and was replaced by Sam Fogarino. In 2010, shortly after recording finished for the band's fourth album, Dengler left to pursue personal projects. According to drummer Sam Fogarino, the band is g",
     "genres": [
       "Indie",
       "Rock/Pop"
@@ -1075,7 +1006,7 @@
     "formed": "1997",
     "website": "www.interpolnyc.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:36.520Z"
+    "fetchedAt": "2026-04-07T16:35:23.689Z"
   },
   "jane-wiedlin": {
     "name": "Jane Wiedlin",
@@ -1087,7 +1018,6 @@
   "jesus-jones": {
     "name": "Jesus Jones",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/trqwst1340718689.jpg",
-    "bio": "Jesus Jones are a British alternative dance band. The Wiltshire-based group, formed in late 1988, recorded and performed in the late 1980s, throughout the 1990s, and into the 2000s. They are best remembered for their track, \"Right Here, Right Now\", an international hit and subsequently globally appropriated for promotional and advertising campaigns. They are also well-remembered for the songs \"Real Real Real\" and \"International Bright Young Thing.\"",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -1095,12 +1025,11 @@
     "formed": "1988",
     "website": "www.jesusjones.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:28.678Z"
+    "fetchedAt": "2026-04-07T16:34:16.039Z"
   },
   "jimmy-buffett": {
     "name": "Jimmy Buffett",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/tspqvv1366946673.jpg",
-    "bio": "James William \"Jimmy\" Buffett (born December 25, 1946 - September 1, 2023) was an American singer–songwriter, author, and businessman. He is best known for his music, which often portrays an \"island escapism\" lifestyle. Together with his Coral Reefer Band, Buffett has recorded hit songs including \"Margaritaville\" (ranked 234th on the Recording Industry Association of America's list of \"Songs of the Century\") and \"Come Monday\". He has a devoted base of fans known as \"Parrotheads\".\n\nAside from his",
     "genres": [
       "Classic Rock",
       "Country"
@@ -1108,7 +1037,7 @@
     "formed": "1965",
     "website": "www.margaritaville.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:30.688Z"
+    "fetchedAt": "2026-04-07T16:34:18.067Z"
   },
   "joan-jett-and-the-blackhearts": {
     "name": "Joan Jett and the Blackhearts",
@@ -1126,7 +1055,6 @@
   "joe-jackson": {
     "name": "Joe Jackson",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wqxvvw1362151298.jpg",
-    "bio": "Dave Houghton, Graham Maby, Joe Jackson : Dave Houghton, Graham Maby, Joe Jackson\nJoe Jackson (born David Ian Jackson, 11 August 1954) is an English musician and singer-songwriter now living in Berlin, whose five Grammy Award nominations span from 1979 to 2001. He is probably best known for the 1979 hit song and first single \"Is She Really Going Out with Him?\", which still gets extensive US FM radio airplay; for his 1982 hit, \"Steppin' Out\"; and for his 1984 success with \"You Can't Get What You ",
     "genres": [
       "New Wave",
       "Rock/Pop"
@@ -1134,32 +1062,29 @@
     "formed": "1970",
     "website": "joejackson.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:38.199Z"
+    "fetchedAt": "2026-04-07T16:34:25.565Z"
   },
   "john-doe": {
     "name": "John Doe",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xvqwyq1390363385.jpg",
-    "bio": "As one of the founding members of the Los Angeles punk band X, John Doe was one of the most influential figures in American alternative rock during the early '80s, but when he launched a solo career in the early '90s, he decided to pursue a rootsy, country-rock direction instead of continuing with punk. X's latter-day albums exhibited a rockabilly and country influence, but it wasn't until Doe's 1990 debut, Meet John Doe, that he recorded a pure country album.\n\nMeet John Doe was recorded during ",
     "genres": [],
     "formed": "1954",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:30.510Z"
+    "fetchedAt": "2026-04-07T16:35:17.677Z"
   },
   "johnny-gill": {
     "name": "Johnny Gill",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rusyws1348092428.jpg",
-    "bio": "Johnny Gill (born May 22, 1966) is an American R&B singer-songwriter. He is the sixth and final member of the R&B supergroup New Edition, and was also a member of another supergroup called LSG; with Gerald Levert and Keith Sweat. His signature song \"My, My, My\" has been included on numerous romantic compilations.",
     "genres": [],
     "formed": "1966",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:19.320Z"
+    "fetchedAt": "2026-04-07T16:35:06.648Z"
   },
   "kasabian": {
     "name": "Kasabian",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rpxwvt1521641597.jpg",
-    "bio": "Kasabian are an English rock band formed in Leicester in 1997. The band's original members were vocalist Tom Meighan, guitarist and backing vocalist Sergio Pizzorno, and bassist Chris Edwards. \n\nThe band's line-up was completed by Jay Mehler in 2006, replacing guitarist Christopher Karloff, and drummer Ian Matthews in 2004 after a string of session drummers. Kasabian have released four studio albums - Kasabian (2004), Empire (2006), West Ryder Pauper Lunatic Asylum (2009), and Velociraptor! (201",
     "genres": [
       "Indie",
       "Rock/Pop"
@@ -1167,12 +1092,11 @@
     "formed": "1999",
     "website": "www.kasabian.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:05.797Z"
+    "fetchedAt": "2026-04-07T16:34:53.119Z"
   },
   "katrina-and-the-waves": {
     "name": "Katrina and the Waves",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/yxvyrv1383097928.jpg",
-    "bio": "Katrina and the Waves were an English rock band best known for the 1985 hit \"Walking on Sunshine.\" They also won the 1997 Eurovision Song Contest with the song \"Love Shine a Light.\"\nThe band's earliest incarnation was as The Waves, a group that played in and around Cambridge, England, from 1975 to 1977 and featured guitarist Kimberley Rew and drummer Alex Cooper. This incarnation of the Waves never issued any recordings, and broke up when Rew left to join the Soft Boys.\n\nA more direct ancestor o",
     "genres": [
       "Pop",
       "Rock/Pop"
@@ -1180,7 +1104,7 @@
     "formed": "1981",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:13.307Z"
+    "fetchedAt": "2026-04-07T16:35:00.635Z"
   },
   "keb-mo": {
     "name": "Keb Mo",
@@ -1191,7 +1115,6 @@
   "keith-sweat": {
     "name": "Keith Sweat",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/sprpqq1383083456.jpg",
-    "bio": "Keith Sweat (born July 22, 1961) is an American R&B/soul, singer-songwriter, record producer, radio personality and an innovator of New Jack Swing.\n\nSweat started his musical career as a member of a Harlem band called \"Jamilah\" in 1975. With the help of Jamilah, Sweat was able to hone his craft as a lead singer by performing regionally throughout the tri-State area of New York, New Jersey and Connecticut. The group was started by bassist Larry Peoples, guitarist Michael Samuels, and drummer Walt",
     "genres": [
       "R&B",
       "Urban/R&B"
@@ -1199,48 +1122,45 @@
     "formed": "1984",
     "website": "www.thesweathotel.com/main.html",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:19.827Z"
+    "fetchedAt": "2026-04-07T16:35:07.160Z"
   },
   "kelley-stoltz": {
     "name": "Kelley Stoltz",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/uurtyy1418893329.jpg",
-    "bio": "Multi-instrumentalist Kelley Stoltz grew up in the Detroit area, but eventually found his way to San Francisco after taking a detour to New York City, where he worked in the mailroom at Jeff Buckley's management company. Armed with a four-track recorder and tons of great ideas, Stoltz began recording his own songs, performing all the parts himself. These songs caught the ear of Monte Vallier, who helped Stoltz clean up and sweeten the recordings for release as The Past Was Faster on The Telegrap",
     "genres": [],
     "formed": "1971",
     "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:42.529Z"
+    "fetchedAt": "2026-04-07T16:35:29.708Z"
   },
   "kelly-lee-owens": {
     "name": "Kelly Lee Owens",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xvyxyt1484802923.jpg",
-    "bio": "Kelly Lee Owens (born August 24, 1988, in Rhuddlan, Wales) is a Welsh electronic musician, singer, and producer who constantly reinvents her sound across ambient, dream pop, techno, and pop/dance.\n\nHer self-titled debut album Kelly Lee Owens (2017) established her signature blend of minimal techno, dream pop, and atmospheric soundscapes. With Inner Song in 2020, melodic vocals and club-friendly rhythms became more prominent, including a collaboration with John Cale. On LP.8 (2022), she explored ",
     "genres": [
       "Electronic"
     ],
     "formed": "0",
     "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:18.657Z"
+    "fetchedAt": "2026-04-07T16:36:04.775Z"
   },
   "kid-congo-powers": {
     "name": "Kid Congo Powers",
     "image": "https://cdn-images.dzcdn.net/images/artist/96f6e475c8559974aa5df210d8bb7c3f/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:02.627Z"
+    "fetchedAt": "2026-04-07T16:35:48.933Z"
   },
   "kiev": {
     "name": "KIEV",
     "image": "https://cdn-images.dzcdn.net/images/artist/9c05926af9e95375b0d6b46139e5d4ea/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:12.389Z"
+    "fetchedAt": "2026-04-07T16:35:58.488Z"
   },
   "kings-of-leon": {
     "name": "Kings of Leon",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qwvtpy1348252213.jpg",
-    "bio": "Kings of Leon is an American rock band that formed in Nashville, Tennessee, in 2000. The band is composed of brothers Caleb Followill (b. January 14, 1982, lead vocals, rhythm guitar), Nathan Followill (b. June 26, 1979, drums, percussion, backing vocals) and Jared Followill (b. November 20, 1986, bass guitar, backing vocals), with their cousin Matthew Followill (b. September 10, 1984, lead guitar, backing vocals).\nThe band's early music was a blend of Southern rock and blues influences, but it ",
     "genres": [
       "Rock",
       "Rock/Pop"
@@ -1248,19 +1168,18 @@
     "formed": "1999",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:37.018Z"
+    "fetchedAt": "2026-04-07T16:35:24.202Z"
   },
   "klangphonics": {
     "name": "Klangphonics",
     "image": "https://cdn-images.dzcdn.net/images/artist/7b03ca0cda5923080a791c54c3f86b9e/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:08.027Z"
+    "fetchedAt": "2026-04-07T16:34:55.325Z"
   },
   "kraftwerk": {
     "name": "Kraftwerk",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/80nobh1639054989.jpg",
-    "bio": "The influential electronic music project Kraftwerk, meaning power station) from Dusseldorf, Germany, was formed by Ralf Hatter and Florian Schneider (1947-2020) in 1970, and was fronted by them until Schneider's departure in 2008. The signature Kraftwerk sound combines driving, repetitive rhythms with catchy melodies, mainly following a Western Classical style of harmony, with a minimalistic and strictly electronic instrumentation. The group's simplified lyrics are at times sung through a vocode",
     "genres": [
       "Electronic",
       "Electronic"
@@ -1268,12 +1187,11 @@
     "formed": "1970",
     "website": "www.kraftwerk.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:50.232Z"
+    "fetchedAt": "2026-04-07T16:34:37.610Z"
   },
   "ll-cool-j": {
     "name": "LL Cool J",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/h9sioq1685788788.jpg",
-    "bio": "James Todd Smith (born January 14, 1968), better known as LL Cool J (an abbreviation for Ladies Love Cool James), is an American rapper, entrepreneur, and actor from Bay Shore, New York. He is known for romantic ballads such as \"I Need Love\", \"Around the Way Girl\" and \"Hey Lover\" as well as pioneering hip-hop such as \"I Can't Live Without My Radio\", \"I'm Bad\", \"The Boomin' System\", and \"Mama Said Knock You Out\". He has released thirteen studio albums and two greatest hits compilations, including",
     "genres": [
       "Hip-Hop",
       "Urban/R&B"
@@ -1281,12 +1199,11 @@
     "formed": "1968",
     "website": "llcoolj.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:55.418Z"
+    "fetchedAt": "2026-04-07T16:35:41.723Z"
   },
   "lee-rocker": {
     "name": "Lee Rocker",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qvxpsr1454807114.jpg",
-    "bio": "Lee Rocker (born August 3, 1961 in Long Island, New York) is a rockabilly double bass player. He is best known for his time as a member of Stray Cats. He is now a solo musician.  Rocker has reunited with former Stray Cats band members Brian Setzer and Slim Jim Phantom and they toured the U.S. with The Pretenders and ZZ Top in the summer of 2007.  Lee Rocker released Black Cat Bone in August 2007, an album featuring his loyal musicians Brophy Dale on guitar and Jimmy Sage on drums, while Buzz Cam",
     "genres": [
       "Rockabilly",
       "Rock/Pop"
@@ -1294,12 +1211,11 @@
     "formed": null,
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:41.704Z"
+    "fetchedAt": "2026-04-07T16:34:29.070Z"
   },
   "lenny-kravitz": {
     "name": "Lenny Kravitz",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vqquup1340472598.jpg",
-    "bio": "Leonard Albert \"Lenny\" Kravitz (born May 26, 1964) is an American singer-songwriter, multi-instrumentalist, record producer, actor and arranger, whose \"retro\" style incorporates elements of rock, soul, R&B, funk, reggae, hard rock, psychedelic, folk and ballads. In addition to singing lead and backing vocals, Kravitz often plays all the guitar, bass, drums, keyboards and percussion himself when recording. He is known for his elaborate stage performances and music videos.\nHe won the Grammy Award ",
     "genres": [
       "Pop-Rock",
       "Rock/Pop"
@@ -1307,19 +1223,18 @@
     "formed": "1988",
     "website": "www.lennykravitz.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:00.238Z"
+    "fetchedAt": "2026-04-07T16:34:47.624Z"
   },
   "liam-finn": {
     "name": "Liam Finn",
     "image": "https://cdn-images.dzcdn.net/images/artist/50392fa8a63b6dfccd2759e470c26c21/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:19.516Z"
+    "fetchedAt": "2026-04-07T16:36:05.514Z"
   },
   "lindi-ortega": {
     "name": "Lindi Ortega",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/sxusyw1441830623.jpg",
-    "bio": "\" Lindi Ortega\"  is a Canadian singer and songwriter who has become a rising star on the North American alt-country scene. Ortega was born and raised in the suburbs of Ontario; her mother was of Irish heritage, while her father's family came from Mexico. Her father was a musician who played bass in a Latino band, and Lindi has cited growing up in a house filled with music and seeing her dad work with gifted Latina vocalists as a key formative experience. When she was sixteen, she borrowed a guit",
     "genres": [
       "Alternative Country",
       "Country"
@@ -1327,19 +1242,18 @@
     "formed": "2000",
     "website": "lindiortega.ca",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:45.034Z"
+    "fetchedAt": "2026-04-07T16:35:32.208Z"
   },
   "little-lenny": {
     "name": "Little Lenny",
     "image": "https://cdn-images.dzcdn.net/images/artist/1acd1fec0242d31efbc4709b6fbf7011/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:22.262Z"
+    "fetchedAt": "2026-04-07T16:35:09.384Z"
   },
   "living-colour": {
     "name": "Living Colour",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/yuustp1386258520.jpg",
-    "bio": "During the 1980s, rock had become completely segregated and predictable, the opposite of the late '60s/early '70s, when such musically and ethnically varied artists as Jimi Hendrix, Sly & the Family Stone, and Santana ruled the Earth. But bands such as New York's Living Colour helped break down the doors by the end of the '80s, leading to a much more open-minded musical landscape that would eventually pave the way for future bands (Rage Against the Machine, Sevendust, etc.). The group (singer Co",
     "genres": [
       "Fusion",
       "Rock/Pop"
@@ -1347,12 +1261,11 @@
     "formed": "1984",
     "website": "www.livingcolour.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:00.423Z"
+    "fetchedAt": "2026-04-07T16:35:46.732Z"
   },
   "los-lobos": {
     "name": "Los Lobos",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/lobos-los-5148cf732d77d.jpg",
-    "bio": "Los Lobos were one of America's most distinctive and original bands of the '80s. They may have had a hit with \"La Bamba\" in 1987, yet that cover barely scratches the surface of their talents. Los Lobos are eclectic in the best sense of the word. While they draw equally from rock, Tex-Mex, country, folk, R&B, blues, and traditional Spanish and Mexican music, their music never sounds forced or self-conscious. Instead, all of their influences become one graceful, gritty sound. From their very first",
     "genres": [
       "Blues",
       "Blues"
@@ -1360,12 +1273,11 @@
     "formed": "1973",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:14.625Z"
+    "fetchedAt": "2026-04-07T16:36:00.764Z"
   },
   "mad-caddies": {
     "name": "Mad Caddies",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/mad-caddies-500a72be023e7.jpg",
-    "bio": "The Mad Caddies (or the Caddies) are a ska punk band from Solvang, California. The band formed in 1995 and has released five full-length albums, one live album, and two EPs.\nFounding members Chuck Robertson, Sascha Lazor, Todd Rosenberg, Carter Benson and James Malis started the group while attending Santa Ynez Valley Union High School but the band's membership has changed frequently since its inception. Robertson, Lazor and Rosenberg all play in the current lineup which also includes horn playe",
     "genres": [
       "Ska",
       "Rock/Pop"
@@ -1373,19 +1285,18 @@
     "formed": "1995",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:09.971Z"
+    "fetchedAt": "2026-04-07T16:35:56.250Z"
   },
   "mahones": {
     "name": "Mahones",
     "image": "https://cdn-images.dzcdn.net/images/artist/656fcd723dbe579e7b6d568310633c2c/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:51.761Z"
+    "fetchedAt": "2026-04-07T16:35:37.965Z"
   },
   "marc-almond": {
     "name": "Marc Almond",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wxvquq1364402952.jpg",
-    "bio": "Peter Mark Sinclair \"Marc\" Almond (/ˈɑːmənd/; born 9 July 1957, Southport) is an English singer-songwriter and musician. Almond first began performing and recording in the synthpop/New Wave duo Soft Cell. He has also had a diverse career as a solo artist. He has sold over 30 million records worldwide.",
     "genres": [
       "New Wave",
       "Rock/Pop"
@@ -1393,19 +1304,18 @@
     "formed": "1956",
     "website": "www.marcalmond.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:33.510Z"
+    "fetchedAt": "2026-04-07T16:35:20.685Z"
   },
   "masked-intruder": {
     "name": "Masked Intruder",
     "image": "https://cdn-images.dzcdn.net/images/artist/c00a0cec7db1227c47d1ed3845836806/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:12.730Z"
+    "fetchedAt": "2026-04-07T16:35:58.950Z"
   },
   "maxi-priest": {
     "name": "Maxi Priest",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xtvyvp1364378396.jpg",
-    "bio": "Max Alfred \"Maxi\" Elliot (born 10 June 1961) is a British reggae vocalist of Jamaican descent. He is best known for singing reggae music with an R&B influence, otherwise known as reggae fusion, and became one of the first international successes who regularly dabbled in the genre and one of the most successful reggae fusion acts of all-time. Maxi Priest was born in Lewisham, London. His parents moved to England from Jamaica to provide more opportunity for their family and he grew up listening to",
     "genres": [
       "Reggae",
       "Reggae"
@@ -1413,19 +1323,18 @@
     "formed": "1961",
     "website": "www.maxipriest.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:30.187Z"
+    "fetchedAt": "2026-04-07T16:34:17.542Z"
   },
   "me-not-you": {
     "name": "Me Not You",
     "image": "https://cdn-images.dzcdn.net/images/artist/24e86541bc9f8be3cf5d976bdac7674b/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:06.666Z"
+    "fetchedAt": "2026-04-07T16:35:53.006Z"
   },
   "men-at-work": {
     "name": "Men at Work",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vrsspv1349564761.jpg",
-    "bio": "Men at Work were an Australian rock band which formed in 1979. Their founding mainstay was Colin Hay on lead vocals; he formed the group with Jerry Speiser on drums; and Ron Strykert on lead guitar; they were joined by Greg Ham on flute and keyboards; and then John Rees on bass guitar. This line up achieved national and international success in the early 1980s. In January 1983 they were the first Australian artists to have a simultaneous No. 1 album and No. 1 single in the United States Billboar",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -1433,12 +1342,11 @@
     "formed": "1979",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:20.677Z"
+    "fetchedAt": "2026-04-07T16:36:06.779Z"
   },
   "midge-ure": {
     "name": "Midge Ure",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/ure-midge-52c7cd0dea928.jpg",
-    "bio": "James \"Midge\" Ure, OBE (born 10 October 1953) is a Scottish guitarist, singer, keyboard player, and songwriter. His stage name, Midge, is a phonetic reversal of Jim, the diminutive form of his real name.\nUre enjoyed particular success in the 1970s and 1980s in bands including Slik, Thin Lizzy, The Rich Kids, and Visage, and most notably as frontman of Ultravox. Ure co-wrote and produced the charity single \"Do They Know It's Christmas?\", whose reissue won an Ivor Novello Award in 2005 for Best Se",
     "genres": [
       "Synthpop",
       "Rock/Pop"
@@ -1446,12 +1354,11 @@
     "formed": "1953",
     "website": "www.midgeure.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:18.317Z"
+    "fetchedAt": "2026-04-07T16:35:05.651Z"
   },
   "midnight-oil": {
     "name": "Midnight Oil",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xxxuyx1428415320.jpg",
-    "bio": "Midnight Oil (also known informally as \"The Oils\" to fans), were an Australian rock band from Sydney originally performing as Farm from 1972 with drummer Rob Hirst, bass guitarist Andrew James and keyboard player/lead guitarist Jim Moginie. While vocalist Peter Garrett was studying at Australian National University in Canberra, he answered an advertisement for a spot in Farm, and by 1975 the band was touring the east coast. By late 1976, Garrett moved to Sydney to complete his law degree, and Fa",
     "genres": [
       "Rock",
       "Rock/Pop"
@@ -1459,12 +1366,11 @@
     "formed": "1975",
     "website": "www.midnightoil.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:55.227Z"
+    "fetchedAt": "2026-04-07T16:34:42.608Z"
   },
   "mike-ness": {
     "name": "Mike Ness",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/ytxvys1399309445.jpg",
-    "bio": "Michael James \"Mike\" Ness (born April 3, 1962) is an American guitarist, vocalist, and chief songwriter for the punk rock band Social Distortion, which was formed in 1978.\n\nIn 1999, Ness released his first solo album, Cheating at Solitaire. Although some of Social Distortion's songs paid homage to country music artists, Cheating at Solitaire was an unalloyed expression of Ness' country influences. Solitaire included guest appearances by Bruce Springsteen, Brian Setzer, Billy Zoom and Josh Freese",
     "genres": [
       "Blues",
       "Country"
@@ -1472,43 +1378,40 @@
     "formed": null,
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:43.710Z"
+    "fetchedAt": "2026-04-07T16:34:31.077Z"
   },
   "mini-mansions": {
     "name": "Mini Mansions",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/uyxwuq1447065903.jpg",
-    "bio": "\"Mini Mansions\"  is the dark psych-pop project of Los Angeles-based vocalist/multi-instrumentalist Michael Shuman (also of Wires on Fire and bassist for Queens of the Stone Age), vocalist/bassist/keyboardist Zach Dawes, and vocalist/keyboardist/guitarist Tyler Parkford. Shuman had known Dawes since childhood, and Dawes met Parkford when they went to school in Santa Cruz, CA. Dawes sent Shuman some of Parkford's songs in 2005, and when Parkford returned to Los Angeles in 2008, they made plans to ",
     "genres": [
       "Indie Pop"
     ],
     "formed": "2009",
     "website": "www.minimansionsmusic.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:52.916Z"
+    "fetchedAt": "2026-04-07T16:35:39.220Z"
   },
   "molchat-doma": {
     "name": "Molchat Doma",
     "image": "https://cdn-images.dzcdn.net/images/artist/1a2c0a157de5dcf5b675f12dc2047a13/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:08.511Z"
+    "fetchedAt": "2026-04-07T16:34:55.811Z"
   },
   "naked-eyes": {
     "name": "Naked Eyes",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vtxtvt1383194709.jpg",
-    "bio": "Naked Eyes is a British New Wave band that rose to prominence in the early 1980s. Originally a duo, the band is known largely for its four top 40 singles.\n\nThe first, a cover of the Burt Bacharach/Hal David standard \"(There's) Always Something There to Remind Me\" (Bacharach himself has cited the cover as a personal favourite). The band had subsequent hits with their own compositions, \"Promises, Promises\" (not to be confused with the Bacharach/David musical number), \"When the Lights Go Out,\" and ",
     "genres": [
       "Rock/Pop"
     ],
     "formed": "0",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:03.931Z"
+    "fetchedAt": "2026-04-07T16:35:50.240Z"
   },
   "new-order": {
     "name": "New Order",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/new-order-4fd5f3e934e45.jpg",
-    "bio": "New Order are an English rock band formed in 1980 by Bernard Sumner (vocals, guitars, synthesisers), Peter Hook (bass, synthesisers) and Stephen Morris (drums, electronic drums, synthesisers) - the remaining members of Joy Division, following the suicide of vocalist Ian Curtis - with the addition of Gillian Gilbert (keyboards, guitars, synthesisers). In 1993 the band broke-up amidst tension between bandmembers, but reformed in 1998. In 2001, Phil Cunningham (guitars, synthesisers) replaced Gilbe",
     "genres": [
       "Synthpop",
       "Rock/Pop"
@@ -1516,12 +1419,11 @@
     "formed": "1980",
     "website": "www.neworderonline.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:20.670Z"
+    "fetchedAt": "2026-04-07T16:34:08.041Z"
   },
   "nikki-lane": {
     "name": "Nikki Lane",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vxxstu1466003572.jpg",
-    "bio": "One glorious day some years back, a teenage high school dropout Nikki Lane (nee Nicole Lane Frady) packed a trailer with her worldly possessions. With one hand firmly gripping a steering wheel and the other flipping the bird, she said so long to her home, Greenville, South Carolina, The South and any sort of life it had suggested she should live. Western bound, she was headed to Los Angeles for no other reason than just because.\nFlash forward to today and we find Lane an empowered artist, having",
     "genres": [
       "Country",
       "Country"
@@ -1529,12 +1431,11 @@
     "formed": "0",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:58.424Z"
+    "fetchedAt": "2026-04-07T16:35:44.732Z"
   },
   "no-doubt": {
     "name": "No Doubt",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vxvvtr1348513703.jpg",
-    "bio": "No Doubt is an American rock band from Anaheim, California that formed in 1986. The group currently consists of vocalist Gwen Stefani, guitarist Tom Dumont, bassist Tony Kanal, and drummer Adrian Young. The ska sound of their first album No Doubt (1992) failed to make an impact. The band's diamond-certified album Tragic Kingdom helped launch the ska revival of the 1990s, and \"Don't Speak\", the third single from the album, set a record when it spent 16 weeks at the number one spot on the Billboar",
     "genres": [
       "Pop",
       "Rock/Pop"
@@ -1542,19 +1443,18 @@
     "formed": "1986",
     "website": "www.nodoubt.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:25.695Z"
+    "fetchedAt": "2026-04-07T16:34:13.030Z"
   },
   "omd": {
     "name": "OMD",
     "image": "https://cdn-images.dzcdn.net/images/artist/5008f192a6e9fc1240848c5600555869/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:14.058Z"
+    "fetchedAt": "2026-04-07T16:35:01.371Z"
   },
   "oingo-boingo": {
     "name": "Oingo Boingo",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/oingo-boingo-4ff3036de887f.jpg",
-    "bio": "Oingo Boingo (pronounced /ˈɔɪ̯ŋgo ˈbɔɪ̯ŋgo/) was an American rock band. They are best known for their influence on other musicians, their soundtrack contributions, and their high energy Halloween concerts. The band was founded in 1972 as The Mystic Knights of the Oingo Boingo, a performance art group. From 1976 it was led by songwriter/vocalist Danny Elfman, who has since achieved success as a composer for film and television.\nThe group's format changed twice. In 1979, it reshaped from a semi-th",
     "genres": [
       "Pop-Rock",
       "Rock/Pop"
@@ -1562,19 +1462,18 @@
     "formed": "1995",
     "website": "www.oingoboingo.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:24.675Z"
+    "fetchedAt": "2026-04-07T16:34:12.036Z"
   },
   "pat-dinizio": {
     "name": "Pat Dinizio",
     "image": "https://cdn-images.dzcdn.net/images/artist/9f5c0dce079d83be9d9740e215d3dac6/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:55:35.514Z"
+    "fetchedAt": "2026-04-07T16:34:22.844Z"
   },
   "paul-oakenfold": {
     "name": "Paul Oakenfold",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/oakenfold-paul-4fda45d041a17.jpg",
-    "bio": "Paul Mark Oakenfold (born 30 August 1963) is an English record producer and a trance DJ.\n\nPaul Oakenfold was set to be a chef, after having hopes of becoming part of a band. He describes his early life as a \"bedroom deejay\" in a podcasted interview with Vancouver's 24 Hours, stating he grew up listening to The Beatles. Later 21-year-old Oakenfold and Ian Paul moved to 254 West 54th Street. Studio 54's Steve Rubell ran the place and only allowed popular people inside. Oakenfold and Paul used fake",
     "genres": [
       "Trance",
       "Electronic"
@@ -1582,12 +1481,11 @@
     "formed": "1980",
     "website": "www.pauloakenfold.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:16.631Z"
+    "fetchedAt": "2026-04-07T16:36:02.766Z"
   },
   "pennywise": {
     "name": "Pennywise",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/pennywise-4fcf0c03aa4c6.jpg",
-    "bio": "Pennywise is a Californian punk rock band from Hermosa Beach, California, formed in 1988. The name is derived from the monster, It, from the Stephen King novel of the same title.\n\nBetween their 1991 self-titled debut and 2005's The Fuse, Pennywise had released an album every two years on Epitaph Records, a label owned by Bad Religion guitarist Brett Gurewitz. To date, the band has released ten full-length studio albums (the last being 2012's All or Nothing), one live album, two EPs and one DVD. ",
     "genres": [
       "Punk Rock",
       "Rock/Pop"
@@ -1595,12 +1493,11 @@
     "formed": "1988",
     "website": "www.pennywisdom.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:48.538Z"
+    "fetchedAt": "2026-04-07T16:35:35.221Z"
   },
   "pet-shop-boys": {
     "name": "Pet Shop Boys",
-    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vyxwrw1341329974.jpg",
-    "bio": "Pet Shop Boys are an English electronic dance music duo, consisting of Neil Tennant, who provides main vocals, keyboards and occasional guitar, and Chris Lowe on keyboards.\nOne of the world's best-selling music artists, Pet Shop Boys have sold over 100 million records worldwide and are listed as the most successful duo in UK music history by The Guinness Book of Records. Three-time Brit Award winners and six-time Grammy nominees, since 1986 they have achieved 42 Top 30 singles and 22 Top 10 hits",
+    "image": "https://www.theaudiodb.com/images/media/artist/thumb/mh3fji1773015678.jpg",
     "genres": [
       "Synthpop",
       "Rock/Pop"
@@ -1608,12 +1505,11 @@
     "formed": "1981",
     "website": "petshopboys.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:16.131Z"
+    "fetchedAt": "2026-04-07T16:36:02.258Z"
   },
   "peter-gabriel": {
     "name": "Peter Gabriel",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xwtsqv1386887602.jpg",
-    "bio": "Peter Brian Gabriel (born 13 February 1950) is an English singer-songwriter, musician and humanitarian activist who rose to fame as the original lead singer and flautist of the progressive rock band Genesis. After leaving Genesis in 1975, Gabriel went on to a successful solo career, with \"Solsbury Hill\" his first single. His 1986 album, So, is his most commercially successful, and is certified triple platinum in the UK and five times platinum in the U.S. The album's biggest hit, \"Sledgehammer\", ",
     "genres": [
       "Progressive Rock",
       "Rock/Pop"
@@ -1621,12 +1517,11 @@
     "formed": "1967",
     "website": "petergabriel.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:33.190Z"
+    "fetchedAt": "2026-04-07T16:34:20.554Z"
   },
   "peter-hook-and-the-light": {
     "name": "Peter Hook & The Light",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/tuxxvx1587303826.jpg",
-    "bio": "Peter Hook and The Light are an English rock band, formed in May 2010 by bass guitarist/vocalist Peter Hook, formerly of the influential post-punk bands Joy Division and New Order. The band also features Hook's son Jack Bates (bass), as well as Andy Poole (keyboards) and Paul Kehoe (drums), who both played with Hook as part of Monaco, one of Hook's previous groups. From the first gigs in May 2010, Nat Wason (formerly of Haven) was the group's guitarist, however in July 2013 he was replaced by Da",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -1634,19 +1529,18 @@
     "formed": "2010",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:02.740Z"
+    "fetchedAt": "2026-04-07T16:34:50.116Z"
   },
   "phox": {
     "name": "Phox",
     "image": "https://cdn-images.dzcdn.net/images/artist/e67d84aaeb76a35a65f35ee1e3c93dea/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:50.952Z"
+    "fetchedAt": "2026-04-07T16:35:37.449Z"
   },
   "polar-bear-club": {
     "name": "Polar Bear Club",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/uusswx1406908708.jpg",
-    "bio": "\"Polar Bear Club\" is an American post-hardcore band from Rochester and Syracuse, upstate New York. Formed in 2005, the band as of 2014, currently consists of vocalist Jimmy Stadt, lead guitarist Chris Browne, Patrick Benson, Tyler Smith, and drummer Steve Port.\nPolar Bear Club formed in summer 2005 with its members coming from a variety of upstate New York-based hardcore punk and indie rock bands. Their influences are said to include Small Brown Bike, Third Eye Blind, Silent Majority, Hot Water ",
     "genres": [
       "Post-Hardcore",
       "Punk"
@@ -1654,31 +1548,29 @@
     "formed": "2005",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:47.039Z"
+    "fetchedAt": "2026-04-07T16:35:34.209Z"
   },
   "prophets-of-rage": {
     "name": "Prophets of Rage",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vvrxry1506149904.jpg",
-    "bio": "Prophets of Rage is an American rap rock supergroup. Formed in 2016, the group consists of three members of Rage Against the Machine and Audioslave (bassist and backing vocalist Tim Commerford, guitarist Tom Morello, and drummer Brad Wilk), two members of Public Enemy (DJ Lord and rapper Chuck D), and rapper B-Real of Cypress Hill.\n\nMorello declared to Rolling Stone: \"We're an elite task force of revolutionary musicians determined to confront this mountain of election year bullshit, and confront",
     "genres": [
       "Rock"
     ],
     "formed": "2016",
     "website": "prophetsofrage.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:54.228Z"
+    "fetchedAt": "2026-04-07T16:34:41.593Z"
   },
   "psychedelic-furs": {
     "name": "Psychedelic Furs",
     "image": "https://cdn-images.dzcdn.net/images/artist/6fed68e50b6320ff59cc5354e99b7787/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:37.779Z"
+    "fetchedAt": "2026-04-07T16:35:24.922Z"
   },
   "public-enemy": {
     "name": "Public Enemy",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qypvyr1495921375.jpg",
-    "bio": "Public Enemy is an American hip hop group consisting of Chuck D, Flavor Flav, Professor Griff and his S1W group, DJ Lord (DJ who replaced Terminator X in 1999), and Music Director Khari Wynn. Formed in Long Island, New York, in 1982, Public Enemy is known for their politically charged lyrics and criticism of the American media, with an active interest in the frustrations and concerns of the African American community.\nIn 2004, Rolling Stone Magazine ranked Public Enemy number forty-four on its l",
     "genres": [
       "Hip-Hop",
       "Urban/R&B"
@@ -1686,19 +1578,18 @@
     "formed": "1982",
     "website": "publicenemy.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:00.925Z"
+    "fetchedAt": "2026-04-07T16:35:47.233Z"
   },
   "rdgldgrn": {
     "name": "RDGLDGRN",
     "image": "https://cdn-images.dzcdn.net/images/artist/cc1412235a4fc4ca3a8ff0c1d57bfda6/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:58.163Z"
+    "fetchedAt": "2026-04-07T16:35:44.494Z"
   },
   "rancid": {
     "name": "Rancid",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/syswtv1348428604.jpg",
-    "bio": "Rancid is an American punk rock band formed in Berkeley, California in 1991. Founded by 80s punk veterans Tim Armstrong and Matt Freeman, both of whom previously played in the highly influential ska punk band Operation Ivy, Rancid is credited—along with Green Day and The Offspring—for reviving mainstream interest in punk rock in the United States during the mid-1990s. Unlike Green Day and The Offspring however, Rancid remained signed to an independent record label and retained much of its origin",
     "genres": [
       "Punk Rock",
       "Punk"
@@ -1706,14 +1597,14 @@
     "formed": "1991",
     "website": "rancidrancid.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:49.216Z"
+    "fetchedAt": "2026-04-07T16:34:36.593Z"
   },
   "rat-boy": {
     "name": "Rat Boy",
     "image": "https://cdn-images.dzcdn.net/images/artist/e66be1ca1c9fc08d5af351266aebfe2c/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:13.469Z"
+    "fetchedAt": "2026-04-07T16:35:59.503Z"
   },
   "the-raveonettes": {
     "name": "The Raveonettes",
@@ -1727,22 +1618,20 @@
     "image": "https://cdn-images.dzcdn.net/images/artist/289da594432bdbb853711b6f8187109a/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:22.450Z"
+    "fetchedAt": "2026-04-07T16:36:08.493Z"
   },
   "richard-cheese-lounge-against-the-machine": {
     "name": "Richard Cheese & Lounge Against The Machine",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/astmqc1662087221.jpg",
-    "bio": "Richard Cheese & Lounge Against The Machine (or simply Richard Cheese) is a cover band and comedy act, performing popular songs in a lounge/swing style, reminiscent of Frank Sinatra, Dean Martin, and Tony Bennett. Lounge singer Richard Cheese is a character created and portrayed by Los Angeles-based actor/comedian/singer Mark Jonathan Davis.\n\nDavis developed the Richard Cheese lounge singer idea in the mid-1990s while working as a producer at KROQ-FM in Los Angeles. Davis portrayed a character n",
     "genres": [],
     "formed": "0",
     "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:33.009Z"
+    "fetchedAt": "2026-04-07T16:35:20.189Z"
   },
   "rise-against": {
     "name": "Rise Against",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rise-against-4fd5ebde379bd.jpg",
-    "bio": "Rise Against is an American punk band from Chicago, Illinois, formed in December 1999. The band currently consists of Tim McIlrath (lead vocals, rhythm guitar), Zach Blair (lead guitar, backing vocals), Joe Principe (bass guitar, backing vocals) and Brandon Barnes (drums, percussion).\nRise Against spent its first five years signed to the independent record label Fat Wreck Chords, on which it released two studio albums, The Unraveling (2001) and Revolutions per Minute (2003). Both the albums met ",
     "genres": [
       "Punk Rock",
       "Rock/Pop"
@@ -1750,12 +1639,11 @@
     "formed": "1999",
     "website": "www.riseagainst.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:43.034Z"
+    "fetchedAt": "2026-04-07T16:35:30.240Z"
   },
   "rob-thomas": {
     "name": "Rob Thomas",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vpruvy1363985809.jpg",
-    "bio": "Robert Kelly \"Rob\" Thomas (born February 14, 1972) is an American singer and songwriter, best known as the primary songwriter and lead singer of the band Matchbox Twenty. Thomas also records and performs as a solo artist with \"Lonely No More\" released in 2005 becoming his biggest solo chart success. Thomas earned three Grammy Awards for co-writing and singing on the Santana triple-platinum hit \"Smooth\", on the album Supernatural in 1999.\nHe has also lent his songwriting talents to such artists a",
     "genres": [
       "Rock",
       "Rock/Pop"
@@ -1763,12 +1651,11 @@
     "formed": "1995",
     "website": "www.robthomasmusic.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:45.213Z"
+    "fetchedAt": "2026-04-07T16:34:32.581Z"
   },
   "royal-blood": {
     "name": "Royal Blood",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vqwstv1429364744.jpg",
-    "bio": "Royal Blood is a British rock duo band formed in Brighton in 2013. The band's sound is reminiscent and rooted in modern garage rock and blues rock.\nThe duo rock band was formed in Worthing in 2013, composed of friends Mike Kerr (Vocals, Bass) and Ben Thatcher (Drums). During the summer of 2013, Arctic Monkeys drummer Matt Helders, was seen wearing a shirt supporting the band (before the release of their first single) during their Glastonbury Festival concert in July. On November 11, 2013, the du",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -1776,12 +1663,11 @@
     "formed": "2011",
     "website": "royalbloodband.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:52.722Z"
+    "fetchedAt": "2026-04-07T16:34:40.098Z"
   },
   "run-dmc": {
     "name": "Run-D.M.C.",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wvrqqx1341250863.jpg",
-    "bio": "Run-D.M.C. was an American hip hop group from Hollis, Queens, New York, founded in 1981 by Joseph \"Run\" Simmons, Darryl \"D.M.C.\" McDaniels, and Jason \"Jam-Master Jay\" Mizell. The group is widely acknowledged as one of the most influential acts in the history of hip hop culture.\nRun-D.M.C. were one of the most well-known hip hop acts in the 1980s who, along with LL Cool J, signified the advent of the new school of hip hop music. They were the first group in the genre to have a gold album (Run-D.M",
     "genres": [
       "Hip-Hop",
       "Urban/R&B"
@@ -1789,24 +1675,22 @@
     "formed": "1982",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:24.173Z"
+    "fetchedAt": "2026-04-07T16:34:11.527Z"
   },
   "save-ferris": {
     "name": "Save Ferris",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qtvurw1390708967.jpg",
-    "bio": "The band formed in early 1995 after the dissolution of a number of Southern California third-wave ska bands. Los Pantelones members Brian Mashburn (guitar/vocals), Bill Uechi (bass), Eric Zamora (saxophone), and José Castellaños (trumpet) joined with singer Adrienne Knoff, Nuckle Brothers trombonist Jesse Tunnell, and drummer Steve Cordero to form the original Save Ferris. After Knoff was fired from the band about five or six months after joining, Uechi and Williams invited vocalist Monique Powe",
     "genres": [
       "Ska"
     ],
     "formed": "1995",
     "website": "www.saveferrisofficial.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:21.672Z"
+    "fetchedAt": "2026-04-07T16:36:07.783Z"
   },
   "school-of-fish": {
     "name": "School of Fish",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/uxpsty1386178496.jpg",
-    "bio": "School of Fish was an alternative rock band which formed in 1989 and disbanded in 1994. The core members were Josh Clayton-Felt and Michael Ward who would play club dates in Los Angeles, California as a duo accompanied by programmed drums and bass. The band signed with Capitol Records in 1990, and released their first single on that same year on 7-inch vinyl. Their self-titled debut was released in March 1991, followed by their first single, \"Three Strange Days.\" Also during the same year, they ",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -1814,12 +1698,11 @@
     "formed": "1990",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:24.993Z"
+    "fetchedAt": "2026-04-07T16:35:12.163Z"
   },
   "sextile": {
     "name": "Sextile",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/hl0khg1752059907.jpg",
-    "bio": "Sextile is an American post-punk band from Los Angeles, California. The band consists of founding members Brady Keehn (vocals, guitar, electronics) and Melissa Scaduto (drums, electronics, guitar). The band takes its name from the aspect of the same name in astrology. Los Angeles, California, U.S.",
     "genres": [
       "Electronic",
       "Punk"
@@ -1827,17 +1710,16 @@
     "formed": "2015",
     "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:25.677Z"
+    "fetchedAt": "2026-04-07T16:36:12.282Z"
   },
   "shinehead": {
     "name": "Shinehead",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/quxuxt1593729534.jpg",
-    "bio": "Shinehead (born Carl Aiken, or Edmund Aiken) is a Jamaican reggae singer/toaster/rapper.  He began his music career by performing for different New York reggae dancehall sound systems in the 1980s, most notably Tony Screw's Downbeat the Ruler, based in The Bronx.  His recording debut was in 1986 on the African Love Music independent record label with \"Who The Cap Fits (Let Them Wear It)\" from the album Rough & Rugged. In his early years, Jeff Buckley lead his group on guitar and lent a hand with",
     "genres": [],
     "formed": "1962",
     "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:22.489Z"
+    "fetchedAt": "2026-04-07T16:35:09.653Z"
   },
   "siouxsie-and-banshees": {
     "name": "Siouxsie and Banshees",
@@ -1848,7 +1730,6 @@
   "sleigh-bells": {
     "name": "Sleigh Bells",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/sleigh-bells-514cbe560deb7.jpg",
-    "bio": "Sleigh Bells is an American musical duo based in Brooklyn, New York, formed in 2008 and consisting of vocalist Alexis Krauss and guitarist/producer Derek E. Miller. They became known for their overdriven style of noise pop, which incorporates elements from various genres including pop, hip hop, metal, and punk.\n\nAfter signing to M.I.A.'s N.E.E.T. Recordings and the independent label Mom + Pop Music, Sleigh Bells released their debut album Treats (2010) to critical acclaim. They followed with Rei",
     "genres": [
       "Noise",
       "Rock/Pop"
@@ -1856,12 +1737,11 @@
     "formed": "2008",
     "website": "reignofterror.tv",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:44.034Z"
+    "fetchedAt": "2026-04-07T16:35:31.214Z"
   },
   "smash-mouth": {
     "name": "Smash Mouth",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/tvyssr1364307640.jpg",
-    "bio": "Smash Mouth is an American rock band from San Jose, California. The band was formed in 1994, and was originally composed of Steve Harwell (vocals), Kevin Coleman (drums), Greg Camp (guitar), and Paul De Lisle (bass). They are known for such songs as \"Walkin' on the Sun\" (1997) and \"All Star\" (1999).\nThe band has adopted retro styles covering several decades of popular music. They have also performed numerous covers of popular songs, including The Monkees' \"I'm a Believer\", War's \"Why Can't We Be",
     "genres": [
       "Rock",
       "Rock/Pop"
@@ -1869,7 +1749,7 @@
     "formed": "1994",
     "website": "www.smashmouth.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:21.172Z"
+    "fetchedAt": "2026-04-07T16:36:07.272Z"
   },
   "smoke-and-mirrors-sound-system": {
     "name": "Smoke and Mirrors Sound System",
@@ -1881,19 +1761,17 @@
   "snarky-puppy": {
     "name": "Snarky Puppy",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qxqxrp1440203712.jpg",
-    "bio": "Snarky Puppy is a Grammy-winning instrumental fusion band from Denton, Texas led by bassist, composer and producer Michael League. Formed in Denton, Texas in 2004, the band features a collective of nearly 30 musicians, referred to as \"The Fam\" on their recordings and tours. The musicians perform on a variety of instruments including guitars, keyboards, saxophones, brass, percussion and strings. Many of the current and former band members were once students at the University of North Texas.  The ",
     "genres": [
       "Jazz"
     ],
     "formed": "0",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:50.720Z"
+    "fetchedAt": "2026-04-07T16:34:38.097Z"
   },
   "snuff": {
     "name": "Snuff",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/uuqryp1363728940.jpg",
-    "bio": "Snuff are a British punk rock band formed in Hendon in 1986. Their name reportedly came about after a long discussion about names ended up with one of them claiming \"That's Enough\", which was then shortened to Snuff. The original line-up was Duncan Redmonds on drums and vocals, Simon Wells on guitar and vocals and Andy Crighton on bass, with Dave Redmonds being added to the line-up on trombone before the release of Flibbiddydibbiddydob.\n\nSnuff have released their material through a variety of in",
     "genres": [
       "Punk Rock",
       "Rock/Pop"
@@ -1901,12 +1779,11 @@
     "formed": "1986",
     "website": "www.fatwreck.com/band/index/17",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:08.967Z"
+    "fetchedAt": "2026-04-07T16:35:55.305Z"
   },
   "social-distortion": {
     "name": "Social Distortion",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
-    "bio": "Social Distortion is an American punk rock band formed in 1978 in Fullerton, California. The band currently consists of Mike Ness (lead vocals, lead guitar), Jonny Wickersham (rhythm guitar, backing vocals), Brent Harding (bass, backing vocals), David Hidalgo Jr. (drums), and David Kalish (keyboards).\n\nStarting as a hardcore punk band in the late 1970s to the early 1980s, Social Distortion would go on a temporary hiatus in the mid-1980s, due to Ness's drug addiction and troubles with the law whi",
     "genres": [
       "Punk Rock",
       "Punk"
@@ -1914,19 +1791,18 @@
     "formed": "1979",
     "website": "www.socialdistortion.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:29.178Z"
+    "fetchedAt": "2026-04-07T16:34:16.547Z"
   },
   "solemn-sun": {
     "name": "Solemn Sun",
     "image": "https://cdn-images.dzcdn.net/images/artist/96252222fa434ccf0a74b60a8ca1946d/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:45.799Z"
+    "fetchedAt": "2026-04-07T16:35:32.920Z"
   },
   "squeeze": {
     "name": "Squeeze",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/stywtv1376542198.jpg",
-    "bio": "Squeeze are a British band that came to prominence in the United Kingdom during the New Wave period of the late 1970s and continued recording successfully in the 1980s and 1990s. They are known in the UK for their hit songs \"Cool for Cats\", \"Up the Junction\", \"Tempted\", \"Labelled With Love\", \"Black Coffee In Bed\", \"Another Nail in My Heart\",\"Pulling Mussels (From the Shell)\" and \"Hourglass\". Though not as commercially successful in the U.S., Squeeze had American chart hits with \"Tempted\", \"Hourg",
     "genres": [
       "New Wave",
       "Rock/Pop"
@@ -1934,12 +1810,11 @@
     "formed": "1974",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:47.213Z"
+    "fetchedAt": "2026-04-07T16:34:34.586Z"
   },
   "sting": {
     "name": "Sting",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wuprus1340023845.jpg",
-    "bio": "After disbanding the Police at the peak of their popularity in 1984, Sting quickly established himself as a viable solo artist, one obsessed with expanding the boundaries of pop music. Sting incorporated heavy elements of jazz, classical, and worldbeat into his music, writing lyrics that were literate and self-consciously meaningful, and he was never afraid to emphasize this fact in the press. For such unabashed ambition, he was equally loved and reviled, with supporters believing that he was at",
     "genres": [
       "Pop-Rock",
       "Rock/Pop"
@@ -1947,12 +1822,11 @@
     "formed": "1985",
     "website": "sting.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:31.687Z"
+    "fetchedAt": "2026-04-07T16:34:19.049Z"
   },
   "stray-cats": {
     "name": "Stray Cats",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vrywvp1520117258.jpg",
-    "bio": "Stray Cats are an American rockabilly band formed in 1979 by guitarist and vocalist Brian Setzer, double bassist Lee Rocker, and drummer Slim Jim Phantom in the Long Island town of Massapequa, New York. The group had numerous hit singles in the UK, Australia, Canada, and the U.S. including \"Stray Cat Strut\", \"(She's) Sexy + 17\", \"Look at That Cadillac\", \"I Won't Stand in Your Way\", \"Bring It Back Again\", and \"Rock This Town\", which the Rock and Roll Hall of Fame has listed as one of the songs th",
     "genres": [
       "Rockabilly",
       "Rock/Pop"
@@ -1960,12 +1834,11 @@
     "formed": "1980",
     "website": "straycats.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:42.203Z"
+    "fetchedAt": "2026-04-07T16:34:29.581Z"
   },
   "streetlight-manifesto": {
     "name": "Streetlight Manifesto",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vpppqu1407953773.jpg",
-    "bio": "Streetlight Manifesto is a third wave ska punk band from East Brunswick, New Jersey, under the creative leadership of singer/guitarist Tomas Kalnoky. Since forming in 2002, the band has released four full-length albums.\n\nSeveral of Streetlight’s members were already well known among the New Jersey ska community for their roles in past ska bands from that area, most notably Catch 22’s Tomas Kalnoky, James Egan, Mike Soprano, and Josh Ansley, as well as One Cool Guy’s Stuart Karmatz, Pete Sibilia,",
     "genres": [
       "Ska",
       "Rock/Pop"
@@ -1973,12 +1846,11 @@
     "formed": "2002",
     "website": "streetlightmanifesto.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:51.724Z"
+    "fetchedAt": "2026-04-07T16:34:39.100Z"
   },
   "stryper": {
     "name": "Stryper",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/8nyeap1666438385.jpg",
-    "bio": "Stryper is a Christian glam metal band from Orange County, California. The group's lineup consists of Michael Sweet (lead vocals, guitar), Oz Fox (guitar), Tim Gaines (bass guitar), and Robert Sweet (drums). In 2004, Gaines left the band and was replaced by Tracy Ferrie (bass guitar) but rejoined in 2009.\nFormed in 1983 as Roxx Regime, the band would soon change their musical message to reflect their Christian beliefs, and the band's name was also changed to Stryper. They would go on to become t",
     "genres": [
       "Hard Rock",
       "Metal"
@@ -1986,12 +1858,11 @@
     "formed": "1983",
     "website": "www.stryper.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:19.159Z"
+    "fetchedAt": "2026-04-07T16:34:06.538Z"
   },
   "suicidal-tendencies": {
     "name": "Suicidal Tendencies",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/6n84np1637333528.jpg",
-    "bio": "Suicidal Tendencies is an American hardcore punk band formed in 1980 in Venice, California, by vocalist Mike Muir, who is the only remaining original member of the band. Along with D.R.I., Corrosion of Conformity, and Stormtroopers of Death, they are often credited as one of \"the fathers of crossover thrash\". Their current lineup includes Muir, guitarists Dean Pleasants and Ben Weinman, bassist Ra Díaz and drummer Dave Lombardo. Notable musicians who have contributed to the band's studio or live",
     "genres": [
       "Hardcore Punk",
       "Rock/Pop"
@@ -1999,31 +1870,29 @@
     "formed": "1982",
     "website": "www.suicidaltendencies.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:06.983Z"
+    "fetchedAt": "2026-04-07T16:35:53.249Z"
   },
   "t-s-o-l": {
     "name": "T.S.O.L.",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/trtuvs1367267448.jpg",
-    "bio": "T.S.O.L. (True Sounds of Liberty) is a punk rock band formed in 1978 in Long Beach, California. Although most commonly associated with hardcore punk, T.S.O.L.'s music varies on each release. They have also released music in the styles of deathrock, art punk, horror punk, and other varieties of punk music.",
     "genres": [
       "Punk Rock"
     ],
     "formed": "1979",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:07.970Z"
+    "fetchedAt": "2026-04-07T16:35:54.248Z"
   },
   "team-band": {
     "name": "Team Band",
     "image": "https://cdn-images.dzcdn.net/images/artist/80334d3e0e21b8f076d5304714067fae/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:23.331Z"
+    "fetchedAt": "2026-04-07T16:35:10.408Z"
   },
   "tears-for-fears": {
     "name": "Tears for Fears",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/yusuxr1341941676.jpg",
-    "bio": "Tears for Fears are an English rock band formed in 1981 by Roland Orzabal and Curt Smith.\nFounded after the dissolution of their first band, the mod-influenced Graduate, they were initially associated with the New Wave synthesizer bands of the early 1980s but later branched out into mainstream rock and pop, which led to international chart success.\nTheir platinum-selling debut album, The Hurting, reached number one on the UK Album Chart, while their second album, Songs from the Big Chair, reache",
     "genres": [
       "Pop-Rock",
       "Rock/Pop"
@@ -2031,12 +1900,11 @@
     "formed": "1981",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:20.171Z"
+    "fetchedAt": "2026-04-07T16:34:07.514Z"
   },
   "the-alarm": {
     "name": "The Alarm",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wswstt1388681264.jpg",
-    "bio": "The Alarm are an alternative rock/New Wave band that formed in Rhyl, North Wales in 1981. Initially formed as a punk band 'The Toilets' under lead singer Mike Peters the band soon embraced rock, displaying marked influences from Welsh language and culture. By opening for acts such as U2 and Bob Dylan, they became a popular alternative rock band of the 1980s, retaining a loyal following to the present day.",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -2044,12 +1912,11 @@
     "formed": "1981",
     "website": "www.thealarm.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:22.168Z"
+    "fetchedAt": "2026-04-07T16:34:09.517Z"
   },
   "the-art-of-noise": {
     "name": "Art of Noise",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/art-of-noise-50dfd27c82328.jpg",
-    "bio": "Art of Noise (also The Art of Noise) were an avant-garde synthpop group formed in early 1983 by engineer/producer Gary Langan and programmer J. J. Jeczalik, along with arranger Anne Dudley, producer Trevor Horn and music journalist Paul Morley. The group's mostly instrumental compositions were novel melodic sound collages based on digital sampler technology, which was new at the time. Inspired by turn-of-the-20th-century revolutions in music, the Art of Noise were initially packaged as a faceles",
     "genres": [
       "Synthpop",
       "Electronic"
@@ -2057,12 +1924,11 @@
     "formed": "1983",
     "website": "www.theartofnoiseonline.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:23.672Z"
+    "fetchedAt": "2026-04-07T16:34:11.028Z"
   },
   "the-black-keys": {
     "name": "The Black Keys",
     "image": "https://www.theaudiodb.com/images/media/artist/thumb/9sr7m01767342345.jpg",
-    "bio": "The Black Keys are an American rock duo formed in Akron, Ohio, in 2001. The group consists of Dan Auerbach (guitar, vocals) and Patrick Carney (drums). The duo began as an independent act, recording music in basements and self-producing their records, before they eventually emerged as one of the most popular garage rock artists during a second wave of the genre's revival in the 2010s. The band's raw blues rock sound draws heavily from Auerbach's blues influences, including Junior Kimbrough, Howl",
     "genres": [
       "Indie",
       "Rock/Pop"
@@ -2070,24 +1936,22 @@
     "formed": "2001",
     "website": "www.theblackkeys.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:08.799Z"
+    "fetchedAt": "2026-04-07T16:34:56.133Z"
   },
   "the-blasters": {
     "name": "The Blasters",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xuywsr1397206039.jpg",
-    "bio": "The all-American roots music band the Blasters were principally brothers Dave and Phil Alvin, whose first-hand experience with blues masters shaped their sound and turned them both into contemporary singer/songwriters whose interest in roots rock has never waned.\n\nThe brothers, along with Bill Bateman on drums and John Bazz on bass, grew up in Downey, California, in the shadow of Disneyland. Their musical education involved hanging out with musicians like Lee Allen, Marcus Johnson, and T-Bone Wa",
     "genres": [
       "Rockabilly"
     ],
     "formed": "1978",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:14.122Z"
+    "fetchedAt": "2026-04-07T16:36:00.265Z"
   },
   "the-bronx": {
     "name": "The Bronx",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xvysqw1365010127.jpg",
-    "bio": "The Bronx is an American hardcore punk band from Los Angeles formed in 2002. The band's current lineup consists of vocalist Matt Caughthran, guitarists Joby J. Ford and Ken Horne, bass guitarist Brad Magers, and drummer Jorma Vik. They have released four eponymous rock albums, and two additional albums of mariachi music under the alter ego Mariachi El Bronx.",
     "genres": [
       "Hardcore Punk",
       "Punk"
@@ -2095,12 +1959,11 @@
     "formed": "2002",
     "website": "thebronxxx.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:46.534Z"
+    "fetchedAt": "2026-04-07T16:35:33.717Z"
   },
   "the-cult": {
     "name": "The Cult",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/t73kw91755266539.jpg",
-    "bio": "The Cult are an English rock band formed in 1983 in Bradford, West Yorkshire. Before settling on their current name in January 1984, the band performed under the name Death Cult, which was an evolution of the name of lead singer Ian Astbury's previous band Southern Death Cult. They gained a dedicated following in the United Kingdom in the mid-1980s as a post-punk/gothic rock band, with singles such as \"She Sells Sanctuary\", before breaking into the mainstream in the United States in the late 198",
     "genres": [
       "Hard Rock",
       "Rock/Pop"
@@ -2108,12 +1971,11 @@
     "formed": "1983",
     "website": "www.thecult.us",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:48.215Z"
+    "fetchedAt": "2026-04-07T16:34:35.590Z"
   },
   "the-cure": {
     "name": "The Cure",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wwwwtv1455324256.jpg",
-    "bio": "The Cure are an English rock band from Crawley, formed in 1976 by Robert Smith (vocals, guitar) and Lol Tolhurst (drums). What began as a post-punk band among school friends quickly developed into something far greater. Their debut album Three Imaginary Boys (1979) was released on Chris Parry’s Fiction Records, and with the arrival of bassist Simon Gallup on Seventeen Seconds (1980) the band began shaping their dark, atmospheric identity. The subsequent albums Faith (1981) and Pornography (1982)",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -2121,24 +1983,22 @@
     "formed": "1977",
     "website": "www.thecure.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:38.701Z"
+    "fetchedAt": "2026-04-07T16:34:26.056Z"
   },
   "the-dollyrots": {
     "name": "The Dollyrots",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qsrtvt1532970819.jpg",
-    "bio": "The Dollyrots are an American pop punk band formed in 2000, composed of wife Kelly Ogden (bass, lead vocals) and husband Luis Cabezas (guitar, backing vocals). They have released six studio albums and are currently under their own label, Arrested Youth Records. They have played over 1,000 live shows throughout their career, and have released albums under Panic Button (part of Lookout! Records), Joan Jett's Blackheart Records, Little Steven's Wicked Cool Records and their own label, Arrested Yout",
     "genres": [
       "Pop-Punk"
     ],
     "formed": "2001",
     "website": "www.dollyrots.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:46.215Z"
+    "fetchedAt": "2026-04-07T16:34:33.581Z"
   },
   "the-fixx": {
     "name": "The Fixx",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/fixx-the-50fc793ee850a.jpg",
-    "bio": "The Fixx are an English New Wave band formed in London in 1979. Their biggest hits include \"One Thing Leads to Another,\" \"Saved by Zero,\" and \"Deeper and Deeper,\" which was featured on the soundtrack of Streets of Fire.",
     "genres": [
       "New Wave",
       "Rock/Pop"
@@ -2146,12 +2006,11 @@
     "formed": "1980",
     "website": "www.thefixx.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:16.311Z"
+    "fetchedAt": "2026-04-07T16:35:03.650Z"
   },
   "the-go-go-s": {
     "name": "The Go-Go's",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/go-gos-the-5101e33f14eee.jpg",
-    "bio": "The Go-Go's were the most popular all-female band to emerge from the punk/new wave explosion of the late '70s and early '80s, becoming one of the first commercially successful female groups that wasn't controlled by male producers or managers. While their hit singles -- \"We Got the Beat,\" \"Our Lips Are Sealed,\" \"Vacation,\" \"Head Over Heels\" -- were bright, energetic new wave pop, the group was an integral part of the Californian punk scene. And they did play punk rock, even if many of their roug",
     "genres": [
       "New Wave",
       "Electronic"
@@ -2159,12 +2018,11 @@
     "formed": "1978",
     "website": "www.gogos.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:46.718Z"
+    "fetchedAt": "2026-04-07T16:34:34.084Z"
   },
   "the-head-and-the-heart": {
     "name": "The Head and the Heart",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vxrppp1359054732.jpg",
-    "bio": "The Head and The Heart is an indie folk-pop band from Seattle, Washington. Formed in the summer of 2009 by Josiah Johnson (vocals, guitar, percussion) and Jonathan Russell (vocals, guitar, percussion), the band also includes Charity Rose Thielen (violin, vocals), Chris Zasche (bass), Kenny Hensley (piano), and Tyler Williams (drums). The band signed to Sub Pop Records in November 2010.\n\nThe band self-released their debut album The Head and The Heart in June 2009, selling it at concerts, by word ",
     "genres": [
       "Indie",
       "Folk"
@@ -2172,12 +2030,11 @@
     "formed": "2009",
     "website": "www.theheadandtheheart.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:52.224Z"
+    "fetchedAt": "2026-04-07T16:34:39.594Z"
   },
   "the-human-league": {
     "name": "The Human League",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wysuyt1345666474.jpg",
-    "bio": "The Human League are an English electronic New Wave band formed in Sheffield in 1977. The band had an early hit with \"Being Boiled\", but achieved stardom after a key change in line-up in 1980, releasing multiple international hits from the early 1980s to the mid 1990s. Dare (1981), the band's most popular album, yielded the single \"Don't You Want Me\", a #1 hit in the UK, US, and many other territories. Other international hits include: \"Love Action\", \"Open Your Heart\", \"Mirror Man\", \"Fascination",
     "genres": [
       "New Wave",
       "Rock/Pop"
@@ -2185,53 +2042,49 @@
     "formed": "1977",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:37.696Z"
+    "fetchedAt": "2026-04-07T16:34:25.061Z"
   },
   "the-interrupters": {
     "name": "The Interrupters",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wstvxp1530275217.jpg",
-    "bio": "Bound by their rebel spirit and deep love for 2 Tone, The Interrupters make super-high-energy ska-punk that’s equal parts catchy and confrontational. Produced by Rancid’s Tim Armstrong, the band’s self-titled debut for Hellcat Records sees frontwoman Aimee Interrupter, guitarist Kevin Bivona, bassist Justin Bivona, and drummer Jesse Bivona spitting out lyrics that take on matters as thorny as martial law and Big Brotherism while churning out rocksteady rhythms and snarly guitar riffs.\n\nAfter tea",
     "genres": [
       "Ska Punk"
     ],
     "formed": "2011",
     "website": "https://www.wearetheinterrupters.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:59.234Z"
+    "fetchedAt": "2026-04-07T16:34:46.617Z"
   },
   "the-messthetics": {
     "name": "The Messthetics",
     "image": "https://cdn-images.dzcdn.net/images/artist/15cc61c46491dc3a65ab386b2da08d02/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:01.666Z"
+    "fetchedAt": "2026-04-07T16:35:47.927Z"
   },
   "the-motels": {
     "name": "The Motels",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/uuxqpr1367898205.jpg",
-    "bio": "Led by the charismatic Martha Davis, the Motels were one of the most successful and acclaimed bands to emerge from the fertile Los Angeles new wave scene, reaching the Top Ten in 1982 with their biggest hit, \"Only the Lonely.\" Davis formed the group in 1972 while living in Berkeley, California, recruiting guitarist Dean Chamberlain and bassist Richard d'Andrea; originally dubbed the Warfield Foxes, they became the Motels upon relocating to L.A., but despite interest from a number of record label",
     "genres": [],
     "formed": "1975",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:03.428Z"
+    "fetchedAt": "2026-04-07T16:35:49.739Z"
   },
   "the-nylons": {
     "name": "The Nylons",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/87cfy91610992073.jpg",
-    "bio": "The Nylons are an a cappella group founded in 1978 in Toronto, Ontario, Canada, best known for their covers of The Turtles' \"Happy Together\", Steam's \"Na Na Hey Hey Kiss Him Goodbye\", and The Tokens' version of the traditional \"The Lion Sleeps Tonight\".  The origins of the Nylons date back to 1978 when four experienced Toronto stage actors, Connors, Cooper, Morrison, and Simpson, used to get together in the back of a delicatessen to sing doo-wop together. They took their ensemble to parties and ",
     "genres": [
       "Pop"
     ],
     "formed": "1978",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:16.812Z"
+    "fetchedAt": "2026-04-07T16:35:04.153Z"
   },
   "the-offspring": {
     "name": "The Offspring",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/offspring-the-4fd645eace27c.jpg",
-    "bio": "The Offspring is an American punk rock band from Orange County, California, formed in 1984. They are widely credited, alongside fellow California pop punk bands Sublime, Green Day, Bad Religion, and Rancid, with popularizing and reviving mainstream interest in punk rock in the United States in the 1990s. Known as Manic Subsidal until 1986, the band consists of lead vocalist and rhythm guitarist Dexter Holland, lead guitarist Noodles, bassist Greg K. and drummer Pete Parada. Parada replaced forme",
     "genres": [
       "Punk Rock",
       "Punk"
@@ -2239,26 +2092,25 @@
     "formed": "1984",
     "website": "www.offspring.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:51.222Z"
+    "fetchedAt": "2026-04-07T16:34:38.597Z"
   },
   "the-paladins": {
     "name": "The Paladins",
     "image": "https://cdn-images.dzcdn.net/images/artist/fcef284e1aa9cabe0fbf502b4f8f485b/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:06.245Z"
+    "fetchedAt": "2026-04-07T16:35:52.452Z"
   },
   "the-polecats": {
     "name": "The Polecats",
     "image": "https://cdn-images.dzcdn.net/images/artist/a9e43c09807942e386a812d421d8495d/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:05.812Z"
+    "fetchedAt": "2026-04-07T16:35:51.954Z"
   },
   "the-psychedelic-furs": {
     "name": "The Psychedelic Furs",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/psychedelic-furs-the-50bf1170430b1.jpg",
-    "bio": "The Psychedelic Furs are an English post-punk/New Wave band founded in 1977. Led by singer Richard Butler and his brother Tim on bass guitar, the Psychedelic Furs are one of the many acts spawned from the British post-punk scene. Their music went through several phases, from an initially austere art rock sound, later touching on new wave and hard rock.\n\nThey scored several hits in their early career, but were launched to international attention in 1986 when the film director John Hughes used the",
     "genres": [
       "Post-Punk",
       "Rock/Pop"
@@ -2266,7 +2118,7 @@
     "formed": "1978",
     "website": "www.thepsychedelicfurs.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:41.025Z"
+    "fetchedAt": "2026-04-07T16:35:28.200Z"
   },
   "the-red-hot-chilli-peppers": {
     "name": "The Red Hot Chilli Peppers",
@@ -2279,12 +2131,11 @@
     "image": "https://cdn-images.dzcdn.net/images/artist/2696e0fa5d4ab132e709b842ad0fb74f/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:10.614Z"
+    "fetchedAt": "2026-04-07T16:34:57.882Z"
   },
   "the-roots": {
     "name": "The Roots",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/roots-the-509d890e21e4d.jpg",
-    "bio": "The Roots are an American Grammy Award-winning hip hop/neo soul band formed in 1987 by Tariq \"Black Thought\" Trotter and Ahmir \"Questlove\" Thompson in Philadelphia, Pennsylvania. They are known for a jazzy, eclectic approach to hip hop which includes live instrumentals. Malik B., Leonard \"Hub\" Hubbard, and Josh Abrams were added to the band, originally called The Square Roots.\nSince their first independent album release, the band has released 10 studio albums, two EPs, two collaboration albums a",
     "genres": [
       "Hip-Hop",
       "Urban/R&B"
@@ -2292,36 +2143,33 @@
     "formed": "1993",
     "website": "theroots.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:54.730Z"
+    "fetchedAt": "2026-04-07T16:34:42.100Z"
   },
   "the-skints": {
     "name": "The Skints",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/lxvgym1663170770.jpg",
-    "bio": "",
     "genres": [
       "Punk Rock"
     ],
     "formed": "2005",
     "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:55.729Z"
+    "fetchedAt": "2026-04-07T16:34:43.107Z"
   },
   "the-smithereens": {
     "name": "The Smithereens",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qswpwx1377465655.jpg",
-    "bio": " Dressed in leather, brandishing heavy guitars, and exhibiting an unabashed fetish for British Invasion pop, the Smithereens were an anomaly in the American college rock scene of the late '80s. Lead singer/songwriter/guitarist Pat DiNizio stood out not only with his strange beatnik goatee, but also because his catchy hooks were haunting, not punchy, and because his lyrics were morose. As time wore on, the group became more straightforward, turning into an excellent bar band, one that attacked po",
     "genres": [
       "Rock/Pop"
     ],
     "formed": "1980",
     "website": "officialsmithereens.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:32.691Z"
+    "fetchedAt": "2026-04-07T16:34:20.051Z"
   },
   "the-struts": {
     "name": "The Struts",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/1c77731762345299.jpg",
-    "bio": "",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -2329,12 +2177,11 @@
     "formed": "2012",
     "website": "www.thestruts.com/home",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:02.929Z"
+    "fetchedAt": "2026-04-07T16:35:49.275Z"
   },
   "the-tubes": {
     "name": "The Tubes",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vwtupr1367773697.jpg",
-    "bio": "The Tubes were arch satirists of popular culture whose outrageous performance art concepts -- which swung wildly from softcore pornography to suit-and-tie conservatism -- frequently eclipsed their elusive musical identity. The beginnings of the group originated in Phoenix, Arizona in the late '60s, where guitarist Bill Spooner, keyboardist Vince Welnick, and bassist Rick Anderson formed as the Beans (alternately billing themselves as the Radar Men from Uranus). After moving to San Francisco in 1",
     "genres": [
       "Hard Rock",
       "Rock/Pop"
@@ -2342,12 +2189,11 @@
     "formed": "1972",
     "website": "The Tubes are a San Francisco-based rock band, whose 1975 debut album included the hit single, \"White Punks on Dope\". During its first fifteen years or so, the ban",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:40.704Z"
+    "fetchedAt": "2026-04-07T16:34:28.070Z"
   },
   "the-twilight-sad": {
     "name": "The Twilight Sad",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/uuprtw1373734615.jpg",
-    "bio": "The Twilight Sad are an indie rock band from Kilsyth, Scotland, comprising James Graham (vocals), Andy MacFarlane (guitar), and Mark Devine (drums). The band are currently signed to Fat Cat Records and have released three full-length albums, as well as several EPs and singles. Their 2007 debut album, Fourteen Autumns & Fifteen Winters, drew widespread acclaim from critics, who noted Graham's thick Scottish accent and MacFarlane's dense sonic walls of shoegazing guitar and wheezing accordion. The",
     "genres": [
       "Indie",
       "Rock/Pop"
@@ -2355,14 +2201,14 @@
     "formed": "2003",
     "website": "www.thetwilightsad.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:19.672Z"
+    "fetchedAt": "2026-04-07T16:36:05.769Z"
   },
   "the-untouchables": {
     "name": "The Untouchables",
     "image": "https://cdn-images.dzcdn.net/images/artist/609c7d71009c69a037fc52154b14a107/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:04.695Z"
+    "fetchedAt": "2026-04-07T16:35:50.965Z"
   },
   "the-wonder-stuff": {
     "name": "The Wonder Stuff",
@@ -2374,7 +2220,6 @@
   "thomas-dolby": {
     "name": "Thomas Dolby",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/dolby-thomas-506ff919e6f15.jpg",
-    "bio": "Thomas Dolby (born Thomas Morgan Robertson; 14 October 1958) is an English musician and producer. Best known for his 1982 hit \"She Blinded Me with Science\", and 1984 single \"Hyperactive!\" he has also worked extensively in production and as a session musician.",
     "genres": [
       "New Wave",
       "Rock/Pop"
@@ -2382,12 +2227,11 @@
     "formed": null,
     "website": "www.thomasdolby.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:17.333Z"
+    "fetchedAt": "2026-04-07T16:35:04.653Z"
   },
   "thompson-twins": {
     "name": "Thompson Twins",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wprwyr1360161305.jpg",
-    "bio": "The Thompson Twins were a British New Wave pop group that formed in April 1977 and disbanded in May 1993. They achieved considerable popularity in the mid-1980s, scoring a string of hits in the United Kingdom, the United States, and around the globe.\nThe band was named after the two bumbling detectives Thomson and Thompson in Hergé's comic strip The Adventures of Tintin. At various stages, the band had up to seven members though their best known incarnation was as a trio between 1982-86. They be",
     "genres": [
       "New Wave",
       "Rock/Pop"
@@ -2395,7 +2239,7 @@
     "formed": "1977",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:17.162Z"
+    "fetchedAt": "2026-04-07T16:34:04.520Z"
   },
   "tom-cochrane": {
     "name": "Tom Cochrane",
@@ -2406,7 +2250,6 @@
   "tone-loc": {
     "name": "Tone-Lōc",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/tpqvpr1362756419.jpg",
-    "bio": "Anthony Terrell Smith (born March 3, 1966), better known by his stage name Tone Lōc or Tone-Lōc (pron.: /ˈtoʊn ˈloʊk/), is an American rapper and actor. Smith was born in Los Angeles, California, and is best known for his deep, gravelly voice and his million-selling hit singles, \"Wild Thing\" and \"Funky Cold Medina\". Tone Lōc is also a voice actor, having voiced characters in several cartoon series. He also voiced Fud Wrapper, the host of the animatronic show Food Rocks, which played at Epcot fro",
     "genres": [
       "Hip-Hop",
       "Urban/R&B"
@@ -2414,24 +2257,22 @@
     "formed": "1989",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:27.681Z"
+    "fetchedAt": "2026-04-07T16:34:15.038Z"
   },
   "torres": {
     "name": "TORRES",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wrtrqu1446130746.jpg",
-    "bio": "\"Torres\"   real name Mackenzie Scott, (born January 23, 1991) is an independent American singer, songwriter, musician and artist. \nMackenzie Scott was raised in Macon, Georgia, United States. She started singing in her high school's musical production of Fiddler on the Roof after being told by her family, \"If you actually tried being serious, you'd probably have a good voice\". Soon after beginning to perform in musicals, she learned to play guitar and began playing and singing hymns during churc",
     "genres": [
       "Alternative Rock"
     ],
     "formed": "2012",
     "website": "torrestorrestorres.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:59.422Z"
+    "fetchedAt": "2026-04-07T16:35:45.761Z"
   },
   "transplants": {
     "name": "Transplants",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rvryut1362241590.jpg",
-    "bio": "Transplants is an American punk rock/rap rock supergroup. They formed in 1999 when Tim Armstrong (of the bands Rancid and Operation Ivy) played his friend and roadie Rob Aston some beats he had made using Pro Tools and asked Rob if he would consider contributing lyrics. Initially, Tim played all the instruments himself but as the project grew, he invited musician friends such as Matt Freeman (Rancid), Lars Frederiksen (Rancid), and Vic Ruggiero (The Slackers) to add to the sound. Before long, Ti",
     "genres": [
       "Punk Rock",
       "Rock/Pop"
@@ -2439,7 +2280,7 @@
     "formed": "1999",
     "website": "thetransplants.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:47.536Z"
+    "fetchedAt": "2026-04-07T16:35:34.738Z"
   },
   "trombone-shorty": {
     "name": "Trombone Shorty",
@@ -2457,17 +2298,15 @@
   "trouble-funk": {
     "name": "Trouble Funk",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/sqqvuq1523791613.jpg",
-    "bio": "Trouble Funk is an American R&B and funk band from Washington, DC. It helped to popularize that area's local funk subgenre known as go-go. Among the band's well-known songs are the go-go anthem \"Hey, Fellas.\" They released several studio albums including Drop the Bomb, In Times of Trouble, Live, and Trouble Over Here, Trouble Over There (UK #54), and two live albums, Trouble Funk - Straight Up Go-Go Style and Saturday Night Live. In 1982, they released a single \"So Early In The Morning\" on D.E.T",
     "genres": [],
     "formed": "0",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:56.420Z"
+    "fetchedAt": "2026-04-07T16:35:42.724Z"
   },
   "u2": {
     "name": "U2",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qvuxvs1347997318.jpg",
-    "bio": "U2 are an Irish rock band from Dublin, formed in 1976. The group consists of Bono (lead vocals and rhythm guitar), the Edge (lead guitar, keyboards, and backing vocals), Adam Clayton (bass guitar), and Larry Mullen Jr. (drums and percussion). Initially rooted in post-punk, U2's musical style has evolved throughout their career, yet has maintained an anthemic quality built on Bono's expressive vocals and the Edge's chiming, effects-based guitar sounds. Bono's lyrics, often embellished with spirit",
     "genres": [
       "Rock",
       "Rock/Pop"
@@ -2475,12 +2314,11 @@
     "formed": "1976",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:58.237Z"
+    "fetchedAt": "2026-04-07T16:34:45.614Z"
   },
   "ub40": {
     "name": "UB40",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/tsysvw1341332686.jpg",
-    "bio": "UB40 are an English reggae and pop band, formed in December 1978 in Birmingham, England. The band has had more than 50 singles in the UK Singles Chart, and has also achieved considerable international success. They have been nominated for the Grammy Award for Best Reggae Album four times, and in 1984 were nominated for the Brit Award for Best British Group. UB40 have sold more than 70 million records worldwide. The ethnic make-up of the band's original line-up was diverse, with musicians of Engl",
     "genres": [
       "Reggae",
       "Reggae"
@@ -2488,17 +2326,16 @@
     "formed": "1978",
     "website": "www.ub40.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:26.180Z"
+    "fetchedAt": "2026-04-07T16:34:13.532Z"
   },
   "umphrey-s-mcgee": {
     "name": "Umphrey's McGee",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/umphreys-mcgee-5102299737aa1.jpg",
-    "bio": "Umphrey's McGee is a progressive rock / jam band from South Bend, IN now based in Chicago, IL.  They are influenced musically by progressive rock bands such as King Crimson, Yes, Dream Theater, and Genesis, as well as heavy metal bands such as Iron Maiden. The band also identifies The Police, The Beatles, Pink Floyd, and Led Zeppelin as primary influences. However, there really isn't a style of popular music that Umphrey's does not cover. Artists covered in concert by Umphrey's range from Lionel",
     "genres": [],
     "formed": "1997",
     "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:06.300Z"
+    "fetchedAt": "2026-04-07T16:34:53.632Z"
   },
   "the-vandals": {
     "name": "The Vandals",
@@ -2510,19 +2347,17 @@
   "violent-femmes": {
     "name": "Violent Femmes",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qxqtvs1348113644.jpg",
-    "bio": "Violent Femmes were an American alternative rock band from Milwaukee, Wisconsin, initially active between 1980 and 1987 and again from 1988 to 2009. The band performed as a trio, including: singer, guitarist and songwriter Gordon Gano, bassist Brian Ritchie, and two drummers, Victor DeLorenzo (1980-1993 and 2002-2009) and Guy Hoffman (1993-2002).\n\nThe Violent Femmes released eight studio albums and fifteen singles during the course of their career. The band found immediate success with the relea",
     "genres": [
       "Alternative Rock"
     ],
     "formed": "1980",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:33.690Z"
+    "fetchedAt": "2026-04-07T16:34:21.051Z"
   },
   "voodoo-glow-skulls": {
     "name": "Voodoo Glow Skulls",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qwwrpv1362241895.jpg",
-    "bio": "Voodoo Glow Skulls are an American ska punk band formed in 1988 in Riverside, California by brothers Frank, Eddie and Jorge Casillas and their longtime friend Jerry O'Neill. Voodoo Glow Skulls first played out at backyard parties and later at Spanky's Café in their hometown of Riverside, where they played shows with the Angry Samoans, Mighty Mighty Bosstones, Firehose, Murphy's Law and The Dickies.",
     "genres": [
       "Ska",
       "Rock/Pop"
@@ -2530,12 +2365,11 @@
     "formed": "1988",
     "website": "www.voodooglowskulls.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:07.466Z"
+    "fetchedAt": "2026-04-07T16:35:53.745Z"
   },
   "wham": {
     "name": "Wham!",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xuwupw1439139539.jpg",
-    "bio": "Wham! was a pop band formed in 1981 from Bushey, England. They were briefly known in the United States as Wham! UK due to a naming conflict with another band.\nGeorge Michael and Andrew Ridgeley met at Bushey Meads School in Watford, England. At first, they performed in a short-lived rock and roll band called The Executive. They then changed their name and signed with Innervision Records. Soon after a legal victory over Innervision, the duo was signed to CBS, Columbia Records in the United States",
     "genres": [
       "Pop",
       "Rock/Pop"
@@ -2543,24 +2377,22 @@
     "formed": "1981",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:21.163Z"
+    "fetchedAt": "2026-04-07T16:34:08.511Z"
   },
   "when-in-rome": {
     "name": "When in Rome",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qsxxyq1383267746.jpg",
-    "bio": "When in Rome is an English new wave group, which originally consisted of vocalists Clive Farrington and Andrew Mann, and keyboards player Michael Floreale. They are best known for their 1988 single \"The Promise\".\n\nMichael Floreale and Andy O'Connell were recruited by Clive Farrington to replace departed members of his Manchester-based group Beau Leisure. Floreale and Farrington began to write songs together. Later, Farrington and Floreale saw Andrew Mann, a beat poet, and had him join their perf",
     "genres": [
       "Rock/Pop"
     ],
     "formed": "0",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:40.023Z"
+    "fetchedAt": "2026-04-07T16:35:27.199Z"
   },
   "wire": {
     "name": "Wire",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/twqrxr1365083909.jpg",
-    "bio": "Wire are an English rock band, formed in London in October 1976 by Colin Newman (vocals, guitar), Graham Lewis (bass, vocals), Bruce Gilbert (guitar), and Robert Gotobed (drums). They were originally associated with the punk rock scene, appearing on The Roxy London WC2 album—a key early document of the scene—and were later central to the development of post-punk.\n\nInspired by the burgeoning UK punk scene, Wire are often cited as one of the more important rock groups of the 1970s and 1980s. Criti",
     "genres": [
       "Post-Punk",
       "Punk"
@@ -2568,7 +2400,7 @@
     "formed": "1976",
     "website": "pinkflag.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:17.815Z"
+    "fetchedAt": "2026-04-07T16:35:05.154Z"
   },
   "the-wrecks": {
     "name": "The Wrecks",
@@ -2580,7 +2412,6 @@
   "x": {
     "name": "X",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rrtxsr1401206573.jpg",
-    "bio": "X is an American punk rock band, formed in Los Angeles in 1977. Established among the first wave of American punk, the original members are vocalist Exene Cervenka, vocalist/bassist John Doe, guitarist Billy Zoom, and drummer DJ Bonebrake. The band released seven studio albums from 1980 to 1993. After a period of inactivity during the mid to late 1990s, X reunited in the early 2000s, and currently tours.\n\nX achieved limited mainstream success but influenced various genres of music, including pun",
     "genres": [
       "Punk Rock",
       "Rock/Pop"
@@ -2588,19 +2419,18 @@
     "formed": "1977",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:01.752Z"
+    "fetchedAt": "2026-04-07T16:34:49.113Z"
   },
   "yates-mckendree": {
     "name": "Yates McKendree",
     "image": "https://cdn-images.dzcdn.net/images/artist/024d782adc17439dff3620e9e3db350c/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:22.894Z"
+    "fetchedAt": "2026-04-07T16:36:08.961Z"
   },
   "yaz": {
     "name": "Yazoo",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/yazoo-5076d3d48a8af.jpg",
-    "bio": "Yazoo (also known as Yaz in the United States) is a British synthpop duo from Basildon, Essex. It had a number of Top 10 hits in the UK charts in the early 1980s. Formed in late 1981 by former Depeche Mode songwriter Vince Clarke (synthesizer) and Alison Moyet (vocals), Yazoo was signed to Mute Records in the United Kingdom and (as \"Yaz\") to Sire Records in the United States.\n \nYazoo's debut single \"Only You\" backed with \"Situation\", was released on 15 March 1982 and rose to number two in the UK",
     "genres": [
       "New Wave",
       "Rock/Pop"
@@ -2608,36 +2438,33 @@
     "formed": "1982",
     "website": "yazooinfo.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:42.708Z"
+    "fetchedAt": "2026-04-07T16:34:30.074Z"
   },
   "ziggy-marley": {
     "name": "Ziggy Marley",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/marley-ziggy-508440fb16be3.jpg",
-    "bio": "David Nesta \"Ziggy\" Marley (born 17 October 1968, Trenchtown, Jamaica) is a Jamaican musician and leader of the band Ziggy Marley and the Melody Makers. He is the oldest son of famed reggae musician Bob Marley. His father gave him the nickname \"Ziggy\" due to an incident when a soccer ball \"zigged\" and hit him and it is a nickname for \"a small joint\".",
     "genres": [
       "Reggae"
     ],
     "formed": null,
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:26.677Z"
+    "fetchedAt": "2026-04-07T16:34:14.033Z"
   },
   "cleopatrick": {
     "name": "cleopatrick",
     "image": "https://www.theaudiodb.com/images/media/artist/logo/43dyn01770309128.png",
-    "bio": "",
     "genres": [
       "Unknown"
     ],
     "formed": "2015",
     "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:13.624Z"
+    "fetchedAt": "2026-04-07T16:35:59.767Z"
   },
   "siouxsie-and-the-banshees": {
     "name": "Siouxsie and the Banshees",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rvqpuy1348109917.jpg",
-    "bio": "Siouxsie and the Banshees were an English rock band formed in London in 1976 by vocalist Siouxsie Sioux and bass guitarist Steven Severin. Initially associated with the English punk rock scene, the band rapidly evolved to create \"a form of post-punk discord full of daring rhythmic and sonic experimentation\". The Times cited Siouxsie and the Banshees as \"one of the most audacious and uncompromising musical adventurers of the post-punk era.\"\nTheir music combined elements of pop and avant-garde. Th",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -2645,12 +2472,11 @@
     "formed": "1976",
     "website": "www.siouxsieandthebanshees.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:32.184Z"
+    "fetchedAt": "2026-04-07T16:34:19.546Z"
   },
   "the-brian-setzer-orchestra": {
     "name": "The Brian Setzer Orchestra",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg",
-    "bio": "The Brian Setzer Orchestra (sometimes going by the acronym BSO) is a swing and jump blues band formed in 1990 by Stray Cats frontman Brian Setzer. The group had success covering Louis Prima's \"Jump Jive an' Wail\", which appeared on Prima's 1957 album The Wildest!. The BSO's follow up single was \"Gettin' In the Mood.\"\n\nIn 1990, Setzer organized the orchestra, styled as a big band which included full sections of trumpet, trombone and saxophone players, and a rhythm section with Setzer on guitar an",
     "genres": [
       "Swing",
       "Blues"
@@ -2658,12 +2484,11 @@
     "formed": "1990",
     "website": "www.briansetzer.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:34.191Z"
+    "fetchedAt": "2026-04-07T16:34:21.550Z"
   },
   "red-hot-chili-peppers": {
     "name": "Red Hot Chili Peppers",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/6gwagp1698329821.jpg",
-    "bio": "Red Hot Chili Peppers, also sometimes shortened to \"The Chili Peppers\" or abbreviated as \"RHCP\", are an American rock band formed in Los Angeles in 1983. The group's musical style primarily consists of rock with an emphasis on funk, as well as elements from other genres such as punk rock and psychedelic rock. When played live, their music incorporates elements of jam band due to the improvised nature of much of their performances. Currently, the band consists of founding members Anthony Kiedis (",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -2671,22 +2496,20 @@
     "formed": "1983",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:47.718Z"
+    "fetchedAt": "2026-04-07T16:34:35.092Z"
   },
   "bandits-of-the-acoustic-revolution": {
     "name": "Bandits of the Acoustic Revolution",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xxpqsy1507572945.jpg",
-    "bio": "Bandits of the Acoustic Revolution (commonly abbreviated BOTAR) is an acoustic band started by Tomas Kalnoky. Often viewed as a precursor to Streetlight Manifesto, BOTAR is recognized as something of a side-project. 2001 marked the release of their only recording to date, “A Call To Arms”. With 5 songs, including an updated version of Catch 22’s “Dear Sergio”, and the future Streetlight Manifesto song “Here’s To Life”, this collection marked something of a transition for Kalnoky.",
     "genres": [],
     "formed": "0",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:59.739Z"
+    "fetchedAt": "2026-04-07T16:34:47.111Z"
   },
   "the-aquabats": {
     "name": "The Aquabats!",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/aquabats-the-501ad78967ae8.jpg",
-    "bio": "The Aquabats are an American rock band formed in Orange County, California in 1994. Throughout many fluctuations in the group's line-up, singer The MC Bat Commander and bassist Crash McLarson have remained regular fixtures. Since 2006, the band's members also include keyboardist Jimmy the Robot, drummer Ricky Fitness, and guitarist Eagle \"Bones\" Falconhawk.\n\nEasily identified by their masks and matching costumes, The Aquabats are perhaps most recognized for their theatrical persona in which they",
     "genres": [
       "Ska",
       "Rock/Pop"
@@ -2694,12 +2517,11 @@
     "formed": "1994",
     "website": "theaquabats.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:00.742Z"
+    "fetchedAt": "2026-04-07T16:34:48.125Z"
   },
   "gorillaz": {
     "name": "Gorillaz",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/yuvrtv1359741191.jpg",
-    "bio": "Gorillaz are an English virtual band created in 1998 by Damon Albarn and Jamie Hewlett. The band consists of four animated members: 2D (lead vocals, keyboard), Murdoc Niccals (bass guitar), Noodle (guitar, keyboard, and backing vocals) and Russel Hobbs (drums and percussion). These members are completely fictional and are not personas of any \"real life\" musicians involved in the project. Their fictional universe is explored through the band's website and music videos, as well as a number of othe",
     "genres": [
       "Alternative Rock",
       "Rock/Pop"
@@ -2707,12 +2529,11 @@
     "formed": "1999",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:03.245Z"
+    "fetchedAt": "2026-04-07T16:34:50.616Z"
   },
   "billy-idol": {
     "name": "Billy Idol",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qprtqv1342815862.jpg",
-    "bio": "Born William Michael Albert Broad in Middlesex, England, in 1955, the first child of Bill and Joan Broad. When he was 2, his father moved the family to Long Island, New York, in pursuit of the American dream. They returned 4 years later (now with a baby sister, Jane) to Dorking. America made a big impression on Billy; he loved the big cars and rock music. The family moved next to the Running Horses Public House in Mickleham, until 1963, while their home in Goring, Sussex, was being built.\n\nThe t",
     "genres": [
       "Post-Punk",
       "Rock/Pop"
@@ -2720,12 +2541,11 @@
     "formed": "1976",
     "website": "billyidol.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:17.660Z"
+    "fetchedAt": "2026-04-07T16:34:05.061Z"
   },
   "joe-satriani": {
     "name": "Joe Satriani",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xxxxtu1385856091.jpg",
-    "bio": "Joseph \"Joe\" Satriani (born July 15, 1956) is an American instrumental rock guitarist, multi-instrumentalist and multiple Grammy Award nominee. Early in his career, Satriani worked as a guitar instructor; many of his former students have achieved fame, such as Steve Vai, Larry LaLonde, Rick Hunolt, Kirk Hammett, Andy Timmons, Charlie Hunter, Kevin Cadogan and Alex Skolnick.\nIn 1988, Satriani was recruited by Mick Jagger as lead guitarist for his first solo tour.In 1994, Satriani was the lead gui",
     "genres": [
       "Guitarist",
       "Rock/Pop"
@@ -2733,12 +2553,11 @@
     "formed": "1978",
     "website": "www.satriani.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:39.708Z"
+    "fetchedAt": "2026-04-07T16:34:27.068Z"
   },
   "bell-biv-devoe": {
     "name": "Bell Biv DeVoe",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/j1riuq1681646207.jpg",
-    "bio": "Bell Biv DeVoe is an American R&B musical group that branched off from New Edition. It consists of three of New Edition's previous members, Ricky Bell, Michael Bivins, and Ronnie DeVoe.\nAfter closing the doors for 1980's R&B act New Edition, Bell, Bivins, and DeVoe went on to form Bell Biv Devoe, at the suggestion of producers Jimmy Jam & Terry Lewis. Upon accepting the idea, MCA records wrote down the name Bell Bivins Devoe, but Bivins suggested they remove the ins from his name and just call t",
     "genres": [
       "R&B",
       "Urban/R&B"
@@ -2746,19 +2565,18 @@
     "formed": "1989",
     "website": "www.bellbivdevoe.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:55:29.680Z"
+    "fetchedAt": "2026-04-07T16:34:17.036Z"
   },
   "alien-fashion-show": {
     "name": "Alien Fashion Show",
     "image": "https://cdn-images.dzcdn.net/images/artist/e54862f5a83b43c28aea04e590c840e7/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:55:35.998Z"
+    "fetchedAt": "2026-04-07T16:34:23.222Z"
   },
   "a-certain-ratio": {
     "name": "A Certain Ratio",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/a2jlgs1683323060.jpg",
-    "bio": "A Certain Ratio (aka ACR or A.C.R.) are a post-punk/funk band from Manchester, UK. Formed in the late 1970s, they were one of the bands (along with Gang of Four and The Pop Group) who forged the new musical hybrid which became  known as punk-funk, a style which fused the energy and aggression of punk rock with the rhythms and musicianship of funk and soul.  The band's members were originally Simon Topping, Jeremy Kerr, Martin Moscrop, Donald Johnson and Pete Terrell. In live performance, the ban",
     "genres": [
       "Post-Punk",
       "Punk"
@@ -2766,19 +2584,18 @@
     "formed": "1977",
     "website": "https://www.acrmcr.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:11.804Z"
+    "fetchedAt": "2026-04-07T16:34:59.155Z"
   },
   "abecedarians": {
     "name": "Abecedarians",
     "image": "https://cdn-images.dzcdn.net/images/artist/53bb38b8bc6756407c4dc6e643bd7181/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:12.518Z"
+    "fetchedAt": "2026-04-07T16:34:59.828Z"
   },
   "inner-circle": {
     "name": "Inner Circle",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qypsvr1512052912.jpg",
-    "bio": "Inner Circle are a Jamaican reggae group. The group was originally called The Inner Circle Band and formed in 1968. The band achieved major success in the 1970s with Jacob Miller as their lead singer, but split up after his death in 1980. They reformed in 1986 and had a major hit with the 1987 song \"Bad Boys\", which serves as the theme song for Fox Network's long-running television program COPS. The band is known for blending pop and rock with reggae.",
     "genres": [
       "Reggae",
       "Reggae"
@@ -2786,22 +2603,20 @@
     "formed": "1968",
     "website": "www.badboysofreggae.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:25.996Z"
+    "fetchedAt": "2026-04-07T16:35:13.165Z"
   },
   "jah-wobble-s-invaders-of-the-heart": {
     "name": "Jah Wobble's Invaders of the Heart",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/sqywrv1366374270.jpg",
-    "bio": "John Joseph Wardle (born 11 August 1958), known by the stage name Jah Wobble, is an English bass guitarist, singer, poet and composer. He became known to a wider audience as the original bass player in Public Image Ltd (PiL) in the late 1970s and early 1980s, but left the band after two albums. Following his departure from PiL, he went on to a successful solo career, continuing to the present. Wobble has four children: two daughters, actress Hayley Angel Wardle and Natalie Wardle from his first ",
     "genres": [],
     "formed": "0",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:26.496Z"
+    "fetchedAt": "2026-04-07T16:35:13.671Z"
   },
   "james": {
     "name": "James",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/sqvrvu1363697356.jpg",
-    "bio": "James is a British rock band from Manchester, England. They formed in 1982 and were active throughout the 1980s, but most successful during the 1990s. Their hit singles include \"Come Home\", \"Sit Down\", and \"She's a Star\" as well as their American college radio hit \"Laid\". Following the departure of lead singer Tim Booth in 2001, the band became inactive but re-formed in January 2007, returning for a new album and international tour. Up to 2010, the band had sold more than 25 million albums world",
     "genres": [
       "Pop",
       "Rock/Pop"
@@ -2809,12 +2624,11 @@
     "formed": "1982",
     "website": "www.wearejames.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:26.998Z"
+    "fetchedAt": "2026-04-07T16:35:14.187Z"
   },
   "p-m-dawn": {
     "name": "P.M. Dawn",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/uvwtvx1593593886.jpg",
-    "bio": "P.M. Dawn is a hip hop duo which formed in 1988 in Jersey City, New Jersey, United States. The duo consists of brothers Attrell (Prince Be the Nocturnal) and Jarrett (DJ Minutemix) Cordes. They have released five since their formation: “Of the Heart, of the Soul and of the Cross: The Utopian Experience” (1991), “The Bliss Album…?” (1993), “Jesus Wept” (1995), “Dearest Christian, I’m So Very Sorry for Bringing You Here. Love, Dad” (1998) and “F*cked Music” (2000). Their best known song, 1991’s “S",
     "genres": [
       "R&B",
       "Urban/R&B"
@@ -2822,22 +2636,20 @@
     "formed": "1988",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:27.498Z"
+    "fetchedAt": "2026-04-07T16:35:14.682Z"
   },
   "sheila-chandra": {
     "name": "Sheila Chandra",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/upypwu1373144910.jpg",
-    "bio": "Sheila Chandra (b. 1965) is a singer of Indian descent and British nationality.  Born on the 14th March 1965, as a teenager she formed the band Monsoon, and created a fusion of Western and Indian pop styles. She married Steve Coe, who became the band's producer, and along with Martin Smith, the band became a trio. They made a single album, Third Eye, in 1982, from which they had a surprise hit single \"Ever So Lonely\". However, resenting pressure from their record company over musical direction, ",
     "genres": [],
     "formed": "1965",
     "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:27.999Z"
+    "fetchedAt": "2026-04-07T16:35:15.177Z"
   },
   "sin-ad-o-connor": {
     "name": "Sinéad O'Connor",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/5oe2rz1690465923.jpg",
-    "bio": "",
     "genres": [
       "Reggae",
       "Rock/Pop"
@@ -2845,7 +2657,7 @@
     "formed": "1987",
     "website": "www.sineadoconnor.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:28.517Z"
+    "fetchedAt": "2026-04-07T16:35:15.695Z"
   },
   "stereo-mcs": {
     "name": "Stereo MCs",
@@ -2865,14 +2677,14 @@
     "image": "https://cdn-images.dzcdn.net/images/artist/91f25089985fe858f56166b4017abf0e/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:29.750Z"
+    "fetchedAt": "2026-04-07T16:35:16.854Z"
   },
   "the-drummers-of-burundi": {
     "name": "The Drummers Of Burundi",
     "image": "https://cdn-images.dzcdn.net/images/artist/0f840abdcf0a0cf4f22a58197085f876/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:30.218Z"
+    "fetchedAt": "2026-04-07T16:35:17.365Z"
   },
   "the-new-morty-show": {
     "name": "The New Morty Show",
@@ -2884,7 +2696,6 @@
   "eric-johnson": {
     "name": "Eric Johnson",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/truwqw1363615596.jpg",
-    "bio": "Eric Johnson (born August 17, 1954) is a Grammy Award winning guitarist and recording artist from Austin, Texas USA. Best known for his success in the instrumental rock format, Johnson regularly incorporates jazz, fusion, New Age, and even country and western elements into his recordings. A widely recognized virtuoso, Johnson’s stylistic diversity, technical proficiency, and unique playing style have drawn praise from Carlos Santana, Eric Clapton, Jeff Beck, Prince, B.B. King, and the late Stevi",
     "genres": [
       "Rock",
       "Rock/Pop"
@@ -2892,12 +2703,11 @@
     "formed": "1969",
     "website": "www.ericjohnson.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:39.031Z"
+    "fetchedAt": "2026-04-07T16:35:26.206Z"
   },
   "soft-cell": {
     "name": "Soft Cell",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/uqxwts1342458629.jpg",
-    "bio": "Soft Cell are an English synthpop duo who came to prominence in the early 1980s. They consist of vocalist Marc Almond and instrumentalist David Ball. The duo is most widely known for their 1981 worldwide hit version of \"Tainted Love\" and platinum debut Non-Stop Erotic Cabaret. In the UK, they had ten Top 40 hits, including \"Bedsitter\" (#4), \"Say Hello, Wave Goodbye\" (#3), \"Torch\" (#2), and \"What!\" (#3), and also had four Top 20 albums between 1981 and 1984. The duo split in 1984, but reformed in",
     "genres": [
       "Synthpop",
       "Rock/Pop"
@@ -2905,12 +2715,11 @@
     "formed": "1980",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:57:26.180Z"
+    "fetchedAt": "2026-04-07T16:36:12.789Z"
   },
   "nile-rodgers": {
     "name": "Nile Rodgers",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qsqsqq1394998284.jpg",
-    "bio": "Nile Gregory Rodgers is an American musician, producer, composer, arranger, and guitarist. He is the lead guitarist and co-founding member with Bernard Edwards of the band Chic, which has been active since 1976.\n\nAlthough he recorded four solo act albums throughout the 1980s and the '90s, Rodgers found more success in collaboration as producer and performer with many artists including Diana Ross, David Bowie, Duran Duran, Madonna, and more recently, French house duo Daft Punk and Swedish progres",
     "genres": [
       "Funk",
       "Urban/R&B"
@@ -2918,19 +2727,18 @@
     "formed": "1977",
     "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T19:51:00.868Z"
+    "fetchedAt": "2026-04-07T16:34:57.133Z"
   },
   "blue-plate-special": {
     "name": "Blue Plate Special",
     "image": "https://cdn-images.dzcdn.net/images/artist/a542bde1608bce33b0df3001418ca0d4/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:32.247Z"
+    "fetchedAt": "2026-04-07T16:35:19.422Z"
   },
   "brian-setzer-68-comeback-special": {
     "name": "Brian Setzer",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qrvsyt1365505313.jpg",
-    "bio": "Brian Robert Setzer (born April 10, 1959) is an American guitarist, singer and songwriter. He first found widespread success in the early 1980s with the 1950s-style rockabilly revival group Stray Cats, and revitalized his career in the late 1990s with his Swing revival band, The Brian Setzer Orchestra.\n\nSetzer was born in Massapequa, New York. Beginning in January 1979, he fronted the rockabilly band The Tomcats before transforming them into the later successful Stray Cats.  After only four year",
     "genres": [
       "Rock & Roll",
       "Rock/Pop"
@@ -2938,12 +2746,11 @@
     "formed": "1979",
     "website": "www.briansetzer.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T20:05:26.156Z"
+    "fetchedAt": "2026-04-07T16:34:24.058Z"
   },
   "brian-setzer-and-the-nashvillians": {
     "name": "Brian Setzer",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/qrvsyt1365505313.jpg",
-    "bio": "Brian Robert Setzer (born April 10, 1959) is an American guitarist, singer and songwriter. He first found widespread success in the early 1980s with the 1950s-style rockabilly revival group Stray Cats, and revitalized his career in the late 1990s with his Swing revival band, The Brian Setzer Orchestra.\n\nSetzer was born in Massapequa, New York. Beginning in January 1979, he fronted the rockabilly band The Tomcats before transforming them into the later successful Stray Cats.  After only four year",
     "genres": [
       "Rock & Roll",
       "Rock/Pop"
@@ -2951,12 +2758,11 @@
     "formed": "1979",
     "website": "www.briansetzer.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T20:05:27.154Z"
+    "fetchedAt": "2026-04-07T16:34:32.080Z"
   },
   "bangles": {
     "name": "The Bangles",
     "image": "https://www.theaudiodb.com/images/media/artist/thumb/pyn8121771639745.jpg",
-    "bio": "The Bangles are an American all-female band that originated in the early 1980s, scoring several hit singles during the decade. Susanna Hoffs joined sisters Vicki and Debbi Peterson to form a band in Los Angeles in December, 1980. The trio briefly called themselves The Colours, then renamed themselves The Supersonic Bangs, and shortly afterwards The Bangs. The band was part of the Los Angeles Paisley Underground scene, which featured groups that played a mixture of 1960s-influenced folk-rock and ",
     "genres": [
       "Pop-Rock",
       "Rock/Pop"
@@ -2964,19 +2770,18 @@
     "formed": "1981",
     "website": "thebangles.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T20:05:27.653Z"
+    "fetchedAt": "2026-04-07T16:35:02.648Z"
   },
   "the-wonderstuff": {
     "name": "The Wonder Stuff",
     "image": "https://cdn-images.dzcdn.net/images/artist/8ed56b9c8cb67577f09f992e85ea5d3e/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T20:05:28.446Z"
+    "fetchedAt": "2026-04-07T16:35:12.873Z"
   },
   "stereo-mc-s": {
     "name": "Stereo MCs",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/yxxsut1340536292.jpg",
-    "bio": "Stereo MCs are an English electronic dance group, which formed in Clapham, London, in 1985. They are best known worldwide for their 1992 transatlantic Top 20 hit single, \"Connected\". The book Guinness Rockopedia described them as \"the big boys of British rap\".",
     "genres": [
       "Hip-Hop",
       "Electronic"
@@ -2984,47 +2789,46 @@
     "formed": "1985",
     "website": "www.stereomcs.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T20:05:28.657Z"
+    "fetchedAt": "2026-04-07T16:35:16.176Z"
   },
   "jane-weidlin": {
     "name": "Jane Wiedlin",
     "image": "https://cdn-images.dzcdn.net/images/artist/9f66d3b720769fc71d42f952ba44d39a/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T20:05:29.347Z"
+    "fetchedAt": "2026-04-07T16:35:18.397Z"
   },
   "new-morty-show": {
     "name": "The New Morty Show",
     "image": "https://cdn-images.dzcdn.net/images/artist/8612d0d5f399c2645088e50ed7d94991/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T20:05:29.854Z"
+    "fetchedAt": "2026-04-07T16:35:18.869Z"
   },
   "raveonettes": {
     "name": "The Raveonettes",
     "image": "https://cdn-images.dzcdn.net/images/artist/cd110f2861161cdae6afc36cb20a2117/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T20:05:30.338Z"
+    "fetchedAt": "2026-04-07T16:35:25.385Z"
   },
   "barroom-heroes": {
     "name": "Bar Room Heroes",
     "image": "https://cdn-images.dzcdn.net/images/artist/d26000eec45e589887d0a37d723fd33c/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T20:05:30.846Z"
+    "fetchedAt": "2026-04-07T16:35:33.394Z"
   },
   "vandals": {
     "name": "The Vandals",
     "image": "https://cdn-images.dzcdn.net/images/artist/285c6d88b0a7e5e1b387322915251ca6/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T20:05:31.946Z"
+    "fetchedAt": "2026-04-07T16:35:35.921Z"
   },
   "joan-jett-the-blackhearts": {
     "name": "Joan Jett and the Blackhearts",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/ttpurq1348092223.jpg",
-    "bio": "Joan Jett (born Joan Marie Larkin September 22, 1958) is an American rock guitarist, singer, songwriter, producer and occasional actress, best known for her work with Joan Jett & the Blackhearts, including their hit cover \"I Love Rock 'n' Roll\", which was No. 1 on the Billboard Hot 100 from March 20 to May 1, 1982, as well as for their other popular recordings including \"Crimson and Clover\", \"I Hate Myself for Loving You\", \"Do You Want to Touch Me\", \"Light of Day\", \"Love Is All Around\", \"Bad Rep",
     "genres": [
       "Hard Rock",
       "Rock/Pop"
@@ -3032,12 +2836,11 @@
     "formed": "1981",
     "website": "joanjett.com/index.html",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T20:05:32.159Z"
+    "fetchedAt": "2026-04-07T16:35:41.223Z"
   },
   "dj-z-trip": {
     "name": "Z-Trip",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/z-trip-508c638b55e1e.jpg",
-    "bio": "Zach Sciacca, better known as Z-Trip, is an American DJ and producer. He is best known as a pioneer of the mashup movement and an award-winning global DJ (he was the 2009 recipient of the \"America's Best DJ Award\", among others). His skill as a world-class DJ has also afforded him success as a producer, working with the likes of LL Cool J, Kasabian and Dan the Automator. As of 2012, he has also been featured as hip-hop legend LL Cool J's touring DJ in shows that have been described as so exempla",
     "genres": [
       "Hip-Hop",
       "Electronic"
@@ -3045,12 +2848,11 @@
     "formed": "1989",
     "website": "www.djztrip.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T20:05:32.664Z"
+    "fetchedAt": "2026-04-07T16:35:42.230Z"
   },
   "trombone-shorty-orleans-avenue": {
     "name": "Trombone Shorty",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/yyyywr1377834331.jpg",
-    "bio": "Troy Andrews (born January 2, 1986), also known by the stage name Trombone Shorty, is a trombone and trumpet player from New Orleans, Louisiana, United States. He has worked in jazz, funk and rap music. Andrews is the younger brother of trumpeter and bandleader James Andrews as well as the grandson of singer and songwriter Jessie Hill. Andrews began playing trombone at age six, and since 2009 has toured with his own band, Trombone Shorty & Orleans Avenue.\n\nAndrews grew up in New Orleans' Tremé n",
     "genres": [
       "Funk",
       "Jazz"
@@ -3058,31 +2860,30 @@
     "formed": "2009",
     "website": "tromboneshorty.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T20:05:33.666Z"
+    "fetchedAt": "2026-04-07T16:35:43.733Z"
   },
   "gene-loves-jezabel": {
     "name": "Gene Loves Jezebel",
     "image": "https://cdn-images.dzcdn.net/images/artist/9cb7cbc1ac48b2c35c8d7fd06a7fddad/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T20:05:34.387Z"
+    "fetchedAt": "2026-04-07T16:35:51.454Z"
   },
   "wrecks": {
     "name": "The Wrecks",
     "image": "https://cdn-images.dzcdn.net/images/artist/8bc553643d6293601920ac57a46631bc/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-03-07T20:05:34.895Z"
+    "fetchedAt": "2026-04-07T16:35:57.544Z"
   },
   "smoke-mirrors-sound-system": {
     "name": "smcke",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/078so21714596352.jpg",
-    "bio": "smcke is the short-lived side project of vaporwave artist R.E.A.L.",
     "genres": [],
     "formed": "2018",
     "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T20:05:35.665Z"
+    "fetchedAt": "2026-04-07T16:36:10.279Z"
   },
   "beck": {
     "name": "Beck",

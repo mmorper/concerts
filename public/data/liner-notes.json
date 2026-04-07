@@ -1,7 +1,66 @@
 {
-  "generatedAt": "2026-03-31T22:51:47.305Z",
-  "dataHash": "2b36bbe9",
+  "generatedAt": "2026-04-07T16:46:53.677Z",
+  "dataHash": "f32c4524",
   "posts": [
+    {
+      "id": "anniversary-the-alarm-1986-04-12",
+      "slug": "april-12-40-years-since-the-alarm",
+      "category": "personal",
+      "temporality": "timely",
+      "headline": "April 12: 40 Years Since The Alarm",
+      "prose": "I remember standing in that UCLA crowd 40 years ago today, watching The Alarm tear through their set with an intensity that felt almost desperate. Mike Peters had this way of leaning into the microphone like he was trying to pull every person in the venue into whatever urgent message he was delivering, and at 19, I was completely susceptible to that kind of raw conviction. They were still riding high on Strength, and you could feel the band's belief that rock music could still change the world—a notion that seemed both naive and absolutely necessary in 1986. Forty years later, I still get that same surge of adrenaline when \"68 Guns\" comes on shuffle.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wswstt1388681264.jpg",
+        "alt": "The Alarm",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Strength",
+        "artistName": "The Alarm",
+        "albumName": "Strength 1985-1986 (Deluxe 2000 Remaster)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/3d/87/80/3d8780de-6ab2-1d63-bc56-8a085dd9d3fd/mzaf_11114072592712370582.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b7/c6/80/b7c6806f-dd02-3942-1bc4-632fc66ef8d9/801963843624_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/strength/1324886851?i=1324887143&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "the-alarm"
+      ],
+      "venues": [
+        "ucla"
+      ],
+      "years": [
+        1986
+      ],
+      "tags": [
+        "#anniversary",
+        "#on-this-day"
+      ],
+      "deepLinks": [
+        {
+          "label": "The Alarm",
+          "url": "/?scene=artists&artist=the-alarm",
+          "type": "artist"
+        },
+        {
+          "label": "UCLA",
+          "url": "/?scene=venues&venue=ucla",
+          "type": "venue"
+        },
+        {
+          "label": "1986",
+          "url": "/?scene=timeline&year=1986",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "the-alarm-caught-once-never-again",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 42,
+      "detector": "calendar-anniversary",
+      "publishedAt": "2026-04-07T16:46:53.677Z"
+    },
     {
       "id": "longevity-the-brian-setzer-orchestra",
       "slug": "the-brian-setzer-orchestra-22-years-of-shows",
@@ -3462,10 +3521,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 44,
-    "totalGenerated": 59,
-    "averageScore": 39.3,
-    "lastPipelineRun": "2026-03-31T22:51:47.305Z",
+    "totalPosts": 45,
+    "totalGenerated": 61,
+    "averageScore": 39.4,
+    "lastPipelineRun": "2026-04-07T16:46:53.677Z",
     "concertsAnalyzed": 179,
     "feedUrl": "/liner-notes.xml"
   }
