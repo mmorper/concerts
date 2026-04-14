@@ -5,7 +5,7 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 07 Apr 2026 16:46:53 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 14 Apr 2026 14:41:46 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
@@ -13,11 +13,21 @@
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
   <item>
+    <title>April 15: 40 Years Since Blancmange</title>
+    <link>https://concerts.morperhaus.org/liner-notes/april-15-40-years-since-blancmange</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/april-15-40-years-since-blancmange</guid>
+    <pubDate>Tue, 14 Apr 2026 14:41:46 +0000</pubDate>
+    <description>I saw Blancmange at Crawford Hall in Irvine 40 years ago today, and I can still picture Neil Arthur&apos;s theatrical gestures as they played through songs from Happy Families. This was during their synth-pop peak, when their blend of electronic beats and Arthur&apos;s distinctive vocals felt like the future of pop music. Crawford Hall was an intimate venue for a band that was getting significant radio play, making it feel like catching lightning in a bottle. Looking back, that April night in 1986 captured a specific moment when British new wave was reshaping American college radio.</description>
+    <category>#anniversary</category>
+    <category>#on-this-day</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/blancmange-51c457e3276c1.jpg" medium="image" />
+  </item>
+  <item>
     <title>April 12: 40 Years Since The Alarm</title>
     <link>https://concerts.morperhaus.org/liner-notes/april-12-40-years-since-the-alarm</link>
     <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/april-12-40-years-since-the-alarm</guid>
     <pubDate>Tue, 07 Apr 2026 16:46:53 +0000</pubDate>
-    <description>I remember standing in that UCLA crowd 40 years ago today, watching The Alarm tear through their set with an intensity that felt almost desperate. Mike Peters had this way of leaning into the microphone like he was trying to pull every person in the venue into whatever urgent message he was delivering, and at 19, I was completely susceptible to that kind of raw conviction. They were still riding high on Strength, and you could feel the band&apos;s belief that rock music could still change the world—a notion that seemed both naive and absolutely necessary in 1986. Forty years later, I still get that same surge of adrenaline when &quot;68 Guns&quot; comes on shuffle.</description>
+    <description>I remember standing in that UCLA crowd 40 years ago today, watching The Alarm tear through their set with an intensity that felt almost desperate. Mike Peters had this way of leaning into the microphone like he was trying to pull every person in the venue into whatever urgent message he was delivering, and at 15, I was completely susceptible to that kind of raw conviction. They were still riding high on Strength, and you could feel the band&apos;s belief that rock music could still change the world—a notion that seemed both naive and absolutely necessary in 1986. Forty years later, I still get that same surge of adrenaline when &quot;68 Guns&quot; comes on shuffle.</description>
     <category>#anniversary</category>
     <category>#on-this-day</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/wswstt1388681264.jpg" medium="image" />
@@ -201,16 +211,6 @@
     <category>#drought</category>
     <category>#comeback</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/jones-howard-50fbc0fcc99a1.jpg" medium="image" />
-  </item>
-  <item>
-    <title>Irvine Meadows: 16 Shows Before It Was Demolished</title>
-    <link>https://concerts.morperhaus.org/liner-notes/irvine-meadows-16-shows-before-it-was-demolished</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/irvine-meadows-16-shows-before-it-was-demolished</guid>
-    <pubDate>Tue, 24 Feb 2026 20:00:00 +0000</pubDate>
-    <description>I discovered I saw 16 shows at Irvine Meadows between 1984 and 2003, from Adam Ant&apos;s April &apos;84 performance to Peter Gabriel in June 2003, before the venue was demolished in 2016. What strikes me is how this amphitheater captured a specific era — my concert history there reads like a New Wave and post-punk time capsule, heavy on acts like Thompson Twins, Billy Idol, Echo and the Bunnymen, and Depeche Mode. Thirteen different artists across nearly two decades, and now it&apos;s all tract housing where those summer nights used to echo with synthesizers and guitar feedback.</description>
-    <category>#venue-ghost</category>
-    <category>#demolished</category>
-    <media:content url="/images/venues/fallback.jpg" medium="image" />
   </item>
   </channel>
 </rss>

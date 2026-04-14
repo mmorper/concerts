@@ -1600,7 +1600,7 @@
   "brian-setzer": {
     "name": "Brian Setzer",
     "source": "itunes",
-    "fetchedAt": "2026-03-07T19:10:04.105Z",
+    "fetchedAt": "2026-04-14T14:34:58.586Z",
     "tracks": [
       {
         "name": "Rock This Town",
@@ -1619,28 +1619,28 @@
         "streamingUrl": "https://music.apple.com/us/album/summertime-blues/342347858?i=342347948&uo=4"
       },
       {
-        "name": "Stray Cat Strut",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b5/75/5d/b5755dd2-b061-c9aa-6722-c96ff855618e/mzaf_9857991074546161189.plus.aac.p.m4a",
+        "name": "Let's Shake",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/20/77/29/2077291d-8185-c89a-3b19-706021ad9113/mzaf_10707735890395810051.plus.aac.p.m4a",
+        "durationMs": 208507,
+        "albumName": "Rockabilly Riot! All Original",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ee/2c/73/ee2c73c4-0697-b608-3b38-993a49d968c6/822685664816_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/lets-shake/1867773559?i=1867773562&uo=4"
+      },
+      {
+        "name": "Stray Cat Strut (Live)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6b/1d/51/6b1d5158-733b-ddbd-f501-c9eee5cddb0c/mzaf_3644074374124839271.plus.aac.p.m4a",
         "durationMs": 299320,
         "albumName": "Red Hot & Live!",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/69/a3/6f/69a36f5f-275b-7501-264b-0be90be7eace/mzi.msxlukit.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/stray-cat-strut/307572701?i=307572804&uo=4"
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/d9/e1/16/d9e11686-d06c-73c9-bb63-5abf051b0bc4/196292591262_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/stray-cat-strut-live/1861774240?i=1861774895&uo=4"
       },
       {
-        "name": "Rockabilly Blues",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b1/72/22/b1722253-d4c5-c637-b8ea-09e89ba6c83c/mzaf_2506531577129854973.plus.aac.p.m4a",
-        "durationMs": 223893,
-        "albumName": "Rockabilly Riot! All Original",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/89/4a/79/894a797c-9e77-4aa6-bf65-648da7093491/640424419189.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/rockabilly-blues/1591131744?i=1591131751&uo=4"
-      },
-      {
-        "name": "Blue Moon of Kentucky",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8c/21/3f/8c213f1e-373e-293e-11be-7f13f73268c4/mzaf_16436912822423954213.plus.aac.p.m4a",
-        "durationMs": 258773,
-        "albumName": "Setzer Goes Instru-MENTAL!",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/2c/20/90/mzi.udhlvoji.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/blue-moon-of-kentucky/429949001?i=429949034&uo=4"
+        "name": "Really Rockabilly",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/37/cd/34/37cd341d-2cfd-23a7-5389-eeb774fd0a12/mzaf_5404743707464718977.plus.aac.p.m4a",
+        "durationMs": 187867,
+        "albumName": "13",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/54/9d/de/549dde15-d981-6e4d-6495-11f40f1b4a82/196292589870_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/really-rockabilly/1866734547?i=1866734560&uo=4"
       }
     ]
   },
@@ -7804,23 +7804,15 @@
   "the-bronx": {
     "name": "The Bronx",
     "source": "itunes",
-    "fetchedAt": "2026-03-07T19:16:46.894Z",
+    "fetchedAt": "2026-04-14T14:35:01.171Z",
     "tracks": [
       {
         "name": "Heart Attack American",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/14/20/2e/14202e4b-593d-1af5-5374-3eabeb5cb6b8/mzaf_2044958059307163272.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/60/11/5e/60115e4f-ab4d-9c29-619b-35db68df345e/mzaf_11327366280276444467.plus.aac.p.m4a",
         "durationMs": 171093,
         "albumName": "The Bronx (I)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/59/ba/43/59ba4378-c1a3-c016-cbb0-283b07a41cb1/859709015613_cover.jpg/100x100bb.jpg",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ca/f8/34/caf834a9-e8b2-239e-d992-2589f895e4c2/859709015613_cover.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/heart-attack-american/573282988?i=573283210&uo=4"
-      },
-      {
-        "name": "Knifeman",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/11/54/b9/1154b9e9-6986-6a2b-dadc-f719a873ee33/mzaf_1082120147544053442.plus.aac.p.m4a",
-        "durationMs": 235213,
-        "albumName": "The Bronx (III)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/a2/a1/d8/a2a1d8e9-aade-92a2-1e63-b4c6c3d55c34/859709015736_cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/knifeman/573285367?i=573285372&uo=4"
       },
       {
         "name": "Youth Wasted",
@@ -7831,12 +7823,20 @@
         "streamingUrl": "https://music.apple.com/us/album/youth-wasted/1058636018?i=1058636594&uo=4"
       },
       {
-        "name": "Bulls in the Bronx",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/77/4a/d1/774ad100-6003-5b18-42fc-e757e20a6139/mzaf_3815161463557281244.plus.aac.p.m4a",
-        "durationMs": 267867,
-        "albumName": "Collide With the Sky",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ec/c9/52/ecc952ff-4a0d-8f7d-2565-2b9a141a35ea/16CMGIM00744.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/bulls-in-the-bronx/1440941951?i=1440941975&uo=4"
+        "name": "Knifeman",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/11/54/b9/1154b9e9-6986-6a2b-dadc-f719a873ee33/mzaf_1082120147544053442.plus.aac.p.m4a",
+        "durationMs": 235213,
+        "albumName": "The Bronx (III)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/a2/a1/d8/a2a1d8e9-aade-92a2-1e63-b4c6c3d55c34/859709015736_cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/knifeman/573285367?i=573285372&uo=4"
+      },
+      {
+        "name": "The Bronx",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d8/d8/df/d8d8df9c-9c94-258f-b386-6b850a568e4a/mzaf_13365483602981256846.plus.aac.p.m4a",
+        "durationMs": 230733,
+        "albumName": "Kingdom Blow",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/bb/e2/59/bbe25904-d2dc-a2a6-790e-d74a0ec774b9/00042283021525.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-bronx/1443815592?i=1443815889&uo=4"
       },
       {
         "name": "The Bronx (feat. Lou Reed)",
@@ -11893,7 +11893,7 @@
   "brian-setzer-and-the-nashvillians": {
     "name": "Brian Setzer and the Nashvillians",
     "source": "itunes",
-    "fetchedAt": "2026-03-08T01:03:22.565Z",
+    "fetchedAt": "2026-04-14T14:34:59.026Z",
     "tracks": [
       {
         "name": "Rock This Town",
@@ -11912,28 +11912,28 @@
         "streamingUrl": "https://music.apple.com/us/album/summertime-blues/342347858?i=342347948&uo=4"
       },
       {
-        "name": "Stray Cat Strut",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b5/75/5d/b5755dd2-b061-c9aa-6722-c96ff855618e/mzaf_9857991074546161189.plus.aac.p.m4a",
+        "name": "Let's Shake",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/20/77/29/2077291d-8185-c89a-3b19-706021ad9113/mzaf_10707735890395810051.plus.aac.p.m4a",
+        "durationMs": 208507,
+        "albumName": "Rockabilly Riot! All Original",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ee/2c/73/ee2c73c4-0697-b608-3b38-993a49d968c6/822685664816_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/lets-shake/1867773559?i=1867773562&uo=4"
+      },
+      {
+        "name": "Stray Cat Strut (Live)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6b/1d/51/6b1d5158-733b-ddbd-f501-c9eee5cddb0c/mzaf_3644074374124839271.plus.aac.p.m4a",
         "durationMs": 299320,
         "albumName": "Red Hot & Live!",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/69/a3/6f/69a36f5f-275b-7501-264b-0be90be7eace/mzi.msxlukit.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/stray-cat-strut/307572701?i=307572804&uo=4"
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/d9/e1/16/d9e11686-d06c-73c9-bb63-5abf051b0bc4/196292591262_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/stray-cat-strut-live/1861774240?i=1861774895&uo=4"
       },
       {
-        "name": "Rockabilly Blues",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b1/72/22/b1722253-d4c5-c637-b8ea-09e89ba6c83c/mzaf_2506531577129854973.plus.aac.p.m4a",
-        "durationMs": 223893,
-        "albumName": "Rockabilly Riot! All Original",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/89/4a/79/894a797c-9e77-4aa6-bf65-648da7093491/640424419189.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/rockabilly-blues/1591131744?i=1591131751&uo=4"
-      },
-      {
-        "name": "Blue Moon of Kentucky",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8c/21/3f/8c213f1e-373e-293e-11be-7f13f73268c4/mzaf_16436912822423954213.plus.aac.p.m4a",
-        "durationMs": 258773,
-        "albumName": "Setzer Goes Instru-MENTAL!",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/2c/20/90/mzi.udhlvoji.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/blue-moon-of-kentucky/429949001?i=429949034&uo=4"
+        "name": "Really Rockabilly",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/37/cd/34/37cd341d-2cfd-23a7-5389-eeb774fd0a12/mzaf_5404743707464718977.plus.aac.p.m4a",
+        "durationMs": 187867,
+        "albumName": "13",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/54/9d/de/549dde15-d981-6e4d-6495-11f40f1b4a82/196292589870_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/really-rockabilly/1866734547?i=1866734560&uo=4"
       }
     ]
   },
@@ -11987,7 +11987,7 @@
   "brian-setzer-68-comeback-special": {
     "name": "Brian Setzer ’68 Comeback Special",
     "source": "itunes",
-    "fetchedAt": "2026-03-08T01:10:06.897Z",
+    "fetchedAt": "2026-04-14T14:34:59.627Z",
     "tracks": [
       {
         "name": "Rock This Town",
@@ -12006,35 +12006,35 @@
         "streamingUrl": "https://music.apple.com/us/album/summertime-blues/342347858?i=342347948&uo=4"
       },
       {
-        "name": "Stray Cat Strut",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b5/75/5d/b5755dd2-b061-c9aa-6722-c96ff855618e/mzaf_9857991074546161189.plus.aac.p.m4a",
+        "name": "Let's Shake",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/20/77/29/2077291d-8185-c89a-3b19-706021ad9113/mzaf_10707735890395810051.plus.aac.p.m4a",
+        "durationMs": 208507,
+        "albumName": "Rockabilly Riot! All Original",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ee/2c/73/ee2c73c4-0697-b608-3b38-993a49d968c6/822685664816_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/lets-shake/1867773559?i=1867773562&uo=4"
+      },
+      {
+        "name": "Stray Cat Strut (Live)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6b/1d/51/6b1d5158-733b-ddbd-f501-c9eee5cddb0c/mzaf_3644074374124839271.plus.aac.p.m4a",
         "durationMs": 299320,
         "albumName": "Red Hot & Live!",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/69/a3/6f/69a36f5f-275b-7501-264b-0be90be7eace/mzi.msxlukit.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/stray-cat-strut/307572701?i=307572804&uo=4"
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/d9/e1/16/d9e11686-d06c-73c9-bb63-5abf051b0bc4/196292591262_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/stray-cat-strut-live/1861774240?i=1861774895&uo=4"
       },
       {
-        "name": "Rockabilly Blues",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b1/72/22/b1722253-d4c5-c637-b8ea-09e89ba6c83c/mzaf_2506531577129854973.plus.aac.p.m4a",
-        "durationMs": 223893,
-        "albumName": "Rockabilly Riot! All Original",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/89/4a/79/894a797c-9e77-4aa6-bf65-648da7093491/640424419189.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/rockabilly-blues/1591131744?i=1591131751&uo=4"
-      },
-      {
-        "name": "Blue Moon of Kentucky",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8c/21/3f/8c213f1e-373e-293e-11be-7f13f73268c4/mzaf_16436912822423954213.plus.aac.p.m4a",
-        "durationMs": 258773,
-        "albumName": "Setzer Goes Instru-MENTAL!",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/2c/20/90/mzi.udhlvoji.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/blue-moon-of-kentucky/429949001?i=429949034&uo=4"
+        "name": "Really Rockabilly",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/37/cd/34/37cd341d-2cfd-23a7-5389-eeb774fd0a12/mzaf_5404743707464718977.plus.aac.p.m4a",
+        "durationMs": 187867,
+        "albumName": "13",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/54/9d/de/549dde15-d981-6e4d-6495-11f40f1b4a82/196292589870_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/really-rockabilly/1866734547?i=1866734560&uo=4"
       }
     ]
   },
   "beck": {
     "name": "Beck",
     "source": "itunes",
-    "fetchedAt": "2026-03-09T16:13:22.465Z",
+    "fetchedAt": "2026-04-14T14:34:57.795Z",
     "tracks": [
       {
         "name": "Loser",
@@ -12043,14 +12043,6 @@
         "albumName": "Mellow Gold",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/27/43/8f/27438f8b-dc4c-569f-34fb-caf1091b71da/00075021017931.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/loser/1443287652?i=1443287670&uo=4"
-      },
-      {
-        "name": "Lilac Wine",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e5/b5/f6/e5b5f6e3-78aa-b062-f37f-96ca98d57907/mzaf_4870779438149818558.plus.aac.p.m4a",
-        "durationMs": 226076,
-        "albumName": "HELP(2)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e6/1c/41/e61c4157-3864-e904-acc3-75613984e326/191400691650.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/lilac-wine/1870313498?i=1870313507&uo=4"
       },
       {
         "name": "Where It's At",
@@ -12075,6 +12067,14 @@
         "albumName": "play with earth! 0.03 (Extended Version)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0c/c9/ca/0cc9ca8e-a83d-6326-c1db-742538b16c43/198846522081.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/beck/1771834051?i=1771834494&uo=4"
+      },
+      {
+        "name": "Beck (feat. Wonder)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/c5/89/2e/c5892e87-9074-b18e-48d9-b7a6bdedf566/mzaf_1731317800901921246.plus.aac.p.m4a",
+        "durationMs": 127276,
+        "albumName": "Beck (feat. Wonder) - Single",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/5e/e7/7a/5ee77acf-4c48-edf8-9255-aaf5c0d15aea/artwork.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/beck-feat-wonder/1533457681?i=1533457682&uo=4"
       }
     ]
   }

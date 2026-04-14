@@ -1,7 +1,66 @@
 {
-  "generatedAt": "2026-04-07T16:46:53.677Z",
-  "dataHash": "f32c4524",
+  "generatedAt": "2026-04-14T14:41:46.749Z",
+  "dataHash": "3bc1723a",
   "posts": [
+    {
+      "id": "anniversary-blancmange-1986-04-15",
+      "slug": "april-15-40-years-since-blancmange",
+      "category": "personal",
+      "temporality": "timely",
+      "headline": "April 15: 40 Years Since Blancmange",
+      "prose": "I saw Blancmange at Crawford Hall in Irvine 40 years ago today, and I can still picture Neil Arthur's theatrical gestures as they played through songs from Happy Families. This was during their synth-pop peak, when their blend of electronic beats and Arthur's distinctive vocals felt like the future of pop music. Crawford Hall was an intimate venue for a band that was getting significant radio play, making it feel like catching lightning in a bottle. Looking back, that April night in 1986 captured a specific moment when British new wave was reshaping American college radio.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/blancmange-51c457e3276c1.jpg",
+        "alt": "Blancmange",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Don't Tell Me",
+        "artistName": "Blancmange",
+        "albumName": "Second Helpings",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/23/40/32/23403294-81f2-0669-9377-0e6a9748d41a/mzaf_16038336825732917314.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/ae/7e/78/ae7e7881-a0dc-d082-4711-0b89ae31d4c2/190295707163.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/dont-tell-me/1317033284?i=1317033296&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "blancmange"
+      ],
+      "venues": [
+        "crawford-hall"
+      ],
+      "years": [
+        1986
+      ],
+      "tags": [
+        "#anniversary",
+        "#on-this-day"
+      ],
+      "deepLinks": [
+        {
+          "label": "Blancmange",
+          "url": "/?scene=artists&artist=blancmange",
+          "type": "artist"
+        },
+        {
+          "label": "Crawford Hall",
+          "url": "/?scene=venues&venue=crawford-hall",
+          "type": "venue"
+        },
+        {
+          "label": "1986",
+          "url": "/?scene=timeline&year=1986",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "blancmange-caught-once-never-again",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 42,
+      "detector": "calendar-anniversary",
+      "publishedAt": "2026-04-14T14:41:46.749Z"
+    },
     {
       "id": "anniversary-the-alarm-1986-04-12",
       "slug": "april-12-40-years-since-the-alarm",
@@ -3521,10 +3580,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 45,
-    "totalGenerated": 61,
+    "totalPosts": 46,
+    "totalGenerated": 63,
     "averageScore": 39.4,
-    "lastPipelineRun": "2026-04-07T16:46:53.677Z",
+    "lastPipelineRun": "2026-04-14T14:41:46.749Z",
     "concertsAnalyzed": 179,
     "feedUrl": "/liner-notes.xml"
   }
