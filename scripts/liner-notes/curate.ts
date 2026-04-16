@@ -11,7 +11,7 @@
  *   2. buildPosts() — enrich selected findings (with prose) into LinerNotesPost[]
  */
 
-import type { ScoredFinding } from "./types.ts";
+import type { ContentCategory, ScoredFinding } from "./types.ts";
 import type {
   DeepLink,
   LinerNotesPost,
@@ -42,6 +42,14 @@ const STANDARD_THRESHOLD = 30;
 const FALLBACK_THRESHOLD = 20;
 /** Months before the same artist can appear twice for the same detector. */
 const RERUN_COOLDOWN_MONTHS = 6;
+/** A finding whose primary artist (artists[0]) headlined any of the last N posts is skipped. */
+const ARTIST_COOLDOWN_POSTS = 10;
+/** Window of most-recent posts used to measure category dominance. */
+const RECENT_CATEGORY_WINDOW = 10;
+/** A category occupying this share (or more) of the recent window is deprioritized this run. */
+const CATEGORY_DOMINANCE_THRESHOLD = 0.5;
+/** In standard (non-seed) runs, no single category may exceed this many posts per run. */
+const PER_CATEGORY_CAP_STANDARD = 2;
 
 // ── Step 1: Selection ─────────────────────────────────────────────────────────
 
@@ -58,61 +66,104 @@ export function select(
   maxPosts: number = MAX_POSTS
 ): ScoredFinding[] {
   const sorted = [...findings].sort((a, b) => b.score - a.score);
+  const recentPosts = [...existingPosts].sort(
+    (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  );
 
-  // Filter out deduplicated findings (same artist + same detector, within cooldown)
-  const candidates = sorted.filter((f) => !isDuplicate(f, existingPosts));
+  // Filter: dedup (detector+artist, 6-month) AND primary-artist cooldown (last N posts, any detector)
+  const candidates = sorted.filter(
+    (f) => !isDuplicate(f, existingPosts) && !isInPrimaryArtistCooldown(f, recentPosts)
+  );
 
-  // Phase 1: category diversity — pick best from each category above threshold
+  // Deprioritize any category that already owns ≥50% of the recent publishing window
+  const dominant = getDominantCategories(recentPosts);
+  const preferred = candidates.filter((c) => !dominant.has(c.category));
+  const deprioritized = candidates.filter((c) => dominant.has(c.category));
+
+  const isSeeding = maxPosts > MAX_POSTS;
+  const standardCap = isSeeding ? Math.floor(maxPosts / 3) : PER_CATEGORY_CAP_STANDARD;
+  const deepCutCap = isSeeding ? maxPosts - 2 * standardCap : PER_CATEGORY_CAP_STANDARD;
+  const getCap = (cat: string): number => (cat === "deep-cut" ? deepCutCap : standardCap);
+
   const selected: ScoredFinding[] = [];
   const usedCategories = new Set<string>();
+  const categoryCounts: Record<string, number> = {};
 
-  for (const f of candidates) {
+  // Phase 1: category diversity from preferred pool — pick best of each new category above threshold
+  for (const f of preferred) {
     if (selected.length >= maxPosts) break;
-    if (f.score < STANDARD_THRESHOLD) break; // sorted descending, so remaining are lower
+    if (f.score < STANDARD_THRESHOLD) break; // sorted descending
     if (!usedCategories.has(f.category)) {
       selected.push(f);
       usedCategories.add(f.category);
+      categoryCounts[f.category] = (categoryCounts[f.category] ?? 0) + 1;
     }
   }
 
-  // Phase 2: fill remaining slots with per-category cap to prevent any one category dominating.
-  // In seed mode: personal and cultural cap at floor(maxPosts/3); deep-cut gets the remaining
-  // slots (maxPosts − 2×floor). This intentionally protects deep-cut, which scores lowest.
+  // Phase 2: fill from preferred pool, respecting per-category cap
   const phase2Target = maxPosts !== MAX_POSTS ? maxPosts : 2;
-  const isSeeding = maxPosts > MAX_POSTS;
-  const standardCap = isSeeding ? Math.floor(maxPosts / 3) : Infinity;
-  const deepCutCap = isSeeding ? maxPosts - 2 * standardCap : Infinity;
-  const getCap = (cat: string): number =>
-    cat === "deep-cut" ? deepCutCap : standardCap;
-
-  const categoryCounts: Record<string, number> = {};
-  for (const f of selected) {
-    categoryCounts[f.category] = (categoryCounts[f.category] ?? 0) + 1;
-  }
-  if (selected.length < phase2Target) {
-    for (const f of candidates) {
-      if (selected.length >= phase2Target) break;
+  const fillFrom = (pool: ScoredFinding[], target: number) => {
+    for (const f of pool) {
+      if (selected.length >= target) break;
       if (f.score < FALLBACK_THRESHOLD) break;
       if (selected.includes(f)) continue;
       if ((categoryCounts[f.category] ?? 0) >= getCap(f.category)) continue;
       selected.push(f);
       categoryCounts[f.category] = (categoryCounts[f.category] ?? 0) + 1;
     }
-  }
+  };
+  if (selected.length < phase2Target) fillFrom(preferred, phase2Target);
 
-  // Phase 3: cap at maxPosts, tie-break timely > evergreen
-  const capped = selected
-    .slice(0, maxPosts)
-    .sort((a, b) => {
-      // First by score
-      if (b.score !== a.score) return b.score - a.score;
-      // Tie-break: timely > evergreen
-      const ta = a.temporality === "timely" ? 1 : 0;
-      const tb = b.temporality === "timely" ? 1 : 0;
-      return tb - ta;
-    });
+  // Phase 3: last-resort fallback — dip into deprioritized (dominant-category) pool if still short
+  if (selected.length < phase2Target) fillFrom(deprioritized, phase2Target);
+
+  // Cap at maxPosts, tie-break timely > evergreen
+  const capped = selected.slice(0, maxPosts).sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    const ta = a.temporality === "timely" ? 1 : 0;
+    const tb = b.temporality === "timely" ? 1 : 0;
+    return tb - ta;
+  });
 
   return capped;
+}
+
+/**
+ * True if this finding's primary (headliner) artist headlined any of the last
+ * ARTIST_COOLDOWN_POSTS published posts. Exempt for `venue-ghost`, which is a
+ * venue-centric story — we don't want a recent post about an artist who happened
+ * to play at a now-demolished venue to block the venue's own story.
+ *
+ * `recentPosts` must be sorted newest-first.
+ */
+function isInPrimaryArtistCooldown(
+  finding: ScoredFinding,
+  recentPosts: LinerNotesPost[]
+): boolean {
+  if (finding.detector === "venue-ghost") return false;
+  const primary = finding.artists[0];
+  if (!primary) return false;
+  const window = recentPosts.slice(0, ARTIST_COOLDOWN_POSTS);
+  return window.some((p) => p.artists[0] === primary);
+}
+
+/**
+ * Returns the set of categories that occupy ≥ CATEGORY_DOMINANCE_THRESHOLD of
+ * the last RECENT_CATEGORY_WINDOW posts. Those categories are deprioritized
+ * (moved to a last-resort pool) during selection this run.
+ *
+ * `recentPosts` must be sorted newest-first.
+ */
+function getDominantCategories(recentPosts: LinerNotesPost[]): Set<ContentCategory> {
+  const window = recentPosts.slice(0, RECENT_CATEGORY_WINDOW);
+  const over = new Set<ContentCategory>();
+  if (window.length === 0) return over;
+  const counts: Record<string, number> = {};
+  for (const p of window) counts[p.category] = (counts[p.category] ?? 0) + 1;
+  for (const [cat, c] of Object.entries(counts)) {
+    if (c / window.length >= CATEGORY_DOMINANCE_THRESHOLD) over.add(cat as ContentCategory);
+  }
+  return over;
 }
 
 // ── Step 2: Post building ─────────────────────────────────────────────────────
