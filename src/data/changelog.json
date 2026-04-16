@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "4.6.1",
+      "date": "2026-04-16",
+      "title": "Liner Notes Tuning & Polish",
+      "description": "The liner notes feed now surfaces a smarter variety — the same headliner won't reappear too soon, and no single story type will dominate the feed for long. Plus a handful of UI polish fixes accumulated since v4.6.0.",
+      "route": "/liner-notes",
+      "highlights": [
+        "Liner Notes selection now enforces a 10-post cooldown per headliner — no more seeing the same artist two weeks in a row",
+        "Category balance self-corrects: if \"I Was There\" posts dominate recently, the feed deprioritizes them until the mix evens out",
+        "Fixed a data error in The Alarm liner note",
+        "How It Works page now scrolls correctly on iPad portrait"
+      ]
+    },
+    {
       "version": "4.6.0",
       "date": "2026-03-10",
       "title": "How It Works",

@@ -2,9 +2,9 @@
 
 ## Quick Start
 
-**Version:** v4.6.0 (Production)
+**Version:** v4.6.1 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-03-12
+**Last Sync:** 2026-04-16
 
 ### Commands
 
@@ -104,22 +104,20 @@ docs/
 
 **Live Site:** https://concerts.morperhaus.org
 
-**v4.6.0 Production (Latest — 2026-03-10):**
+**v4.6.1 Production (Latest — 2026-04-16):**
 
-- ✅ How It Works interactive cascade at `/how-it-works`
-- ✅ 7-tier data enrichment visualization with slot-machine counters and post-build glow
-- ✅ Auto-loads with a featured Sting concert on arrival
-- ✅ iPad portrait scrollability fixed
+- ✅ Liner Notes selection: 10-post primary-artist cooldown prevents headliner repetition
+- ✅ Liner Notes selection: recent-category deprioritization corrects "I Was There" overrepresentation
+- ✅ Liner Notes selection: per-category cap (max 2/run) in standard mode
+- ✅ Various UI polish: iPad portrait scroll, nav contrast, About nav position, RSS ghost posts
 
 **Recent Releases:**
 
+- **v4.6.1** (2026-04-16): Liner Notes Tuning & Polish — smarter artist/category variety, UI fixes
 - **v4.6.0** (2026-03-10): How It Works — interactive animated cascade showing 7 enrichment tiers
 - **v4.5.1** (2026-03-08): Mobile Polish — Liner Notes card layout, share button, artist modal badge
 - **v4.5.0** (2026-03-08): Deep Cuts — liner notes in gatefold, year deep links, mobile bottom nav, unified toast
 - **v4.4.0** (2026-03-08): Liner Notes — agentic AI-written weekly stories, blog feed, RSS, /whats-playing, Cloudflare Worker OG tags
-- **v4.3.x** (2026-03-07): On Deck (upcoming badges), iTunes-only audio (dropped Deezer), 100% track coverage
-- **v4.2.x** (2026-02-05): SEO Foundations, iOS Home Screen Icons
-- **v4.0.x** (2026-02-03): Audio Preview Player (iTunes), mobile audio, artist gatefold polish
 
 ---
 
