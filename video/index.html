@@ -14,89 +14,649 @@
         height: 1920px;
         overflow: hidden;
         background: #000;
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        color: #fff;
       }
+
       #root {
         position: relative;
-        width: 100%;
-        height: 100%;
+        width: 1080px;
+        height: 1920px;
       }
+
+      /* ------- Scene container ------- */
       .scene {
         position: absolute;
         inset: 0;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
         padding: 220px 80px 450px;
         box-sizing: border-box;
       }
-      .year {
+
+      /* ------- Signature: Meridian Rule ------- */
+      /* Phase 1 placeholder — Candidate A from signature-element-candidates.md */
+      .meridian {
+        position: absolute;
+        left: 80px;
+        right: 80px;
+        top: 1152px;           /* golden-ratio lower-center of 1920 */
+        height: 1px;
+        background: rgba(255, 255, 255, 0.7);
+        transform-origin: left center;
+        z-index: 50;
+        pointer-events: none;
+      }
+
+      /* ------- Typography ------- */
+      .playfair { font-family: 'Playfair Display', Georgia, serif; }
+      .sans { font-family: 'Source Sans 3', system-ui, sans-serif; }
+
+      /* Beat 1 — Cold Open */
+      .year-big {
         font-family: 'Playfair Display', Georgia, serif;
         font-size: 320px;
         font-weight: 500;
-        color: #fff;
         letter-spacing: -0.03em;
         line-height: 1;
+        margin-top: 260px;
       }
-      .venue {
+      .venue-big {
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 96px;
-        font-weight: 400;
-        color: #fff;
+        font-size: 120px;
+        font-weight: 500;
         letter-spacing: -0.02em;
         line-height: 1.05;
-        text-align: center;
+        margin-top: 340px;
         max-width: 920px;
       }
-      .artist-name {
+
+      /* Beat 2 — Artist Identity */
+      .s2-photo {
+        position: absolute;
+        inset: 0;
+        background: url("compositions/social-distortion-34-years/assets/social-distortion-artist.jpg") center/cover no-repeat;
+        filter: grayscale(100%) contrast(1.05) brightness(0.55);
+        z-index: 1;
+      }
+      .s2-scrim {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.75) 100%);
+        z-index: 2;
+      }
+      .s2-content {
+        position: absolute;
+        inset: 0;
+        padding: 1050px 80px 450px;  /* push down, within bottom safe zone */
+        display: flex;
+        flex-direction: column;
+        z-index: 3;
+      }
+      .s2-artist {
         font-family: 'Playfair Display', Georgia, serif;
         font-size: 140px;
         font-weight: 500;
-        color: #fff;
         letter-spacing: -0.02em;
         line-height: 1;
-        text-align: center;
       }
-      .stats {
+      .s2-stats {
         font-family: 'Source Sans 3', system-ui, sans-serif;
-        font-size: 36px;
+        font-size: 40px;
         font-weight: 500;
-        color: #fff;
-        letter-spacing: 0.15em;
+        letter-spacing: 0.18em;
         text-transform: uppercase;
+        margin-top: 32px;
+      }
+
+      /* Beat 3 — The Thread */
+      .s3-label {
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 32px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.7);
+        margin-top: 160px;
+      }
+      .s3-yearrange {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 96px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        margin-top: 32px;
+      }
+      .s3-timeline {
+        position: relative;
+        width: 920px;
+        height: 220px;
+        margin-top: 140px;
+      }
+      .s3-axis {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 110px;
+        height: 1px;
+        background: rgba(255,255,255,0.4);
+        transform-origin: left center;
+      }
+      .s3-sweep {
+        position: absolute;
+        left: 0;
+        top: 105px;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: #c084fc;
+        box-shadow: 0 0 16px rgba(168,85,247,0.8);
+      }
+      .s3-dot {
+        position: absolute;
+        top: 103px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: #6366f1;
+        opacity: 0;
+      }
+      .s3-venue {
+        position: absolute;
+        bottom: 140px;
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 22px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        color: rgba(255,255,255,0.85);
+        transform: translateX(-50%);
+        white-space: nowrap;
+        text-align: center;
+        opacity: 0;
+      }
+      .s3-year {
+        position: absolute;
+        top: 148px;
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 20px;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        color: rgba(255,255,255,0.55);
+        transform: translateX(-50%);
+        opacity: 0;
+      }
+      .s3-counter {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 300px;
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 48px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        font-variant-numeric: tabular-nums;
+      }
+      .s3-counter .num { color: #c084fc; }
+      .s3-counter .suffix { color: rgba(255,255,255,0.7); }
+
+      /* Beat 4 — Pull Quote */
+      .s4-quote {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-style: italic;
+        font-weight: 400;
+        font-size: 80px;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        max-width: 900px;
+        margin-top: 380px;
+      }
+      .s4-quote em {
+        font-style: italic;
+      }
+      .s4-mark {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 160px;
+        font-weight: 500;
+        line-height: 0;
+        color: rgba(255,255,255,0.45);
+        position: absolute;
+        top: 340px;
+        left: 60px;
+      }
+
+      /* Beat 5 — The Artifact */
+      .s5-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 200px;
+      }
+      .s5-album {
+        width: 720px;
+        height: 720px;
+        object-fit: cover;
+      }
+      .s5-meta {
+        width: 720px;
         margin-top: 48px;
+        padding-top: 32px;
+        border-top: 1px solid rgba(255,255,255,0.35);
+      }
+      .s5-track {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 64px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+      }
+      .s5-album-name {
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 28px;
+        font-weight: 400;
+        letter-spacing: 0.05em;
+        color: rgba(255,255,255,0.7);
+        margin-top: 12px;
+      }
+      .s5-year-artist {
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 24px;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.9);
+        margin-top: 20px;
+      }
+
+      /* Beat 6 — Outro */
+      .s6-mark {
+        margin-top: 500px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .s6-mark-top {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 96px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+      .s6-mark-bot {
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 28px;
+        font-weight: 500;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.8);
+        margin-top: 16px;
+      }
+      .s6-cta {
+        margin-top: 280px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .s6-cta-label {
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 24px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.6);
+      }
+      .s6-cta-url {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 40px;
+        font-weight: 500;
+        margin-top: 16px;
       }
     </style>
   </head>
   <body>
     <div
       id="root"
-      data-composition-id="capability-test"
+      data-composition-id="social-distortion-thread"
       data-start="0"
-      data-duration="6"
+      data-duration="20"
       data-width="1080"
       data-height="1920"
     >
-      <div id="s1" class="scene clip" data-start="0" data-duration="2.5" data-track-index="1">
-        <div class="year">1990.</div>
+      <!-- Signature element (Meridian Rule — Phase 1 placeholder) -->
+      <div class="meridian" id="meridian"></div>
+
+      <!-- Beat 1a — "1990." (0.0–1.2s) -->
+      <div id="s1a" class="scene clip" data-start="0" data-duration="1.2" data-track-index="1">
+        <div class="year-big" id="s1a-year">1990.</div>
       </div>
-      <div id="s2" class="scene clip" data-start="2.5" data-duration="1.5" data-track-index="1">
-        <div class="venue">Cal State Fullerton.</div>
+
+      <!-- Beat 1b — "Cal State Fullerton." (1.2–2.5s) -->
+      <div id="s1b" class="scene clip" data-start="1.2" data-duration="1.3" data-track-index="1">
+        <div class="venue-big" id="s1b-venue">Cal State Fullerton.</div>
       </div>
-      <div id="s3" class="scene clip" data-start="4" data-duration="2" data-track-index="1">
-        <div class="artist-name">Social Distortion</div>
-        <div class="stats">34 years &middot; 8 shows</div>
+
+      <!-- Beat 2 — Artist Identity (2.5–4.0s) -->
+      <div id="s2" class="clip" data-start="2.5" data-duration="1.5" data-track-index="1" style="position:absolute;inset:0;">
+        <div class="s2-photo" id="s2-photo"></div>
+        <div class="s2-scrim" id="s2-scrim"></div>
+        <div class="s2-content">
+          <div class="s2-artist" id="s2-artist">Social Distortion</div>
+          <div class="s2-stats" id="s2-stats">34 years &middot; 8 shows</div>
+        </div>
+      </div>
+
+      <!-- Beat 3 — The Thread (4.0–11.0s) -->
+      <div id="s3" class="scene clip" data-start="4" data-duration="7" data-track-index="1">
+        <div class="s3-label" id="s3-label">The Thread</div>
+        <div class="s3-yearrange" id="s3-yearrange"><span id="s3-year-current">1990</span> <span style="color:rgba(255,255,255,0.4);font-weight:400;">&mdash;</span> <span id="s3-year-end" style="color:rgba(255,255,255,0.55);">2024</span></div>
+        <div class="s3-timeline" id="s3-timeline">
+          <div class="s3-axis" id="s3-axis"></div>
+          <div class="s3-sweep" id="s3-sweep"></div>
+          <!-- Dots and labels populated by script below -->
+        </div>
+        <div class="s3-counter"><span class="num" id="s3-count">0</span><span class="suffix">&nbsp;/ 8 shows</span></div>
+      </div>
+
+      <!-- Beat 4 — Pull Quote (11.0–15.0s) -->
+      <div id="s4" class="scene clip" data-start="11" data-duration="4" data-track-index="1">
+        <div class="s4-mark" id="s4-mark">&ldquo;</div>
+        <div class="s4-quote">
+          <span id="s4-quote-a"><em>Each one felt like checking in with an old friend</em></span>
+          <span id="s4-quote-b"><em> who&rsquo;d weathered the same storms.</em></span>
+        </div>
+      </div>
+
+      <!-- Beat 5 — The Artifact (15.0–17.5s) -->
+      <div id="s5" class="scene clip" data-start="15" data-duration="2.5" data-track-index="1">
+        <div class="s5-card">
+          <img
+            id="s5-album"
+            class="s5-album"
+            src="compositions/social-distortion-34-years/assets/social-distortion-album.jpg"
+            alt=""
+            crossorigin="anonymous" />
+          <div class="s5-meta">
+            <div class="s5-track" id="s5-track">&ldquo;Ball and Chain&rdquo;</div>
+            <div class="s5-album-name" id="s5-album-name"><em>Social Distortion</em>, 1990</div>
+            <div class="s5-year-artist" id="s5-year-artist">Social Distortion</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Beat 6 — Outro (17.5–20.0s) -->
+      <div id="s6" class="scene clip" data-start="17.5" data-duration="2.5" data-track-index="1">
+        <div class="s6-mark">
+          <div class="s6-mark-top" id="s6-mark-top">morperhaus</div>
+          <div class="s6-mark-bot" id="s6-mark-bot">Concerts</div>
+        </div>
+        <div class="s6-cta">
+          <div class="s6-cta-label" id="s6-cta-label">Full story at</div>
+          <div class="s6-cta-url" id="s6-cta-url">concerts.morperhaus.org/liner-notes</div>
+        </div>
       </div>
     </div>
 
     <script>
+      // ======================================================================
+      // Payload — inlined from compositions/social-distortion-34-years/payload.json.
+      // For Phase 2, consider generating this from payload.json at build time.
+      // ======================================================================
+      const PAYLOAD = {
+        firstYear: 1990,
+        lastYear: 2024,
+        showCount: 8,
+        shows: [
+          { year: 1990, date: "1990-09-13", venue: "Cal State Fullerton" },
+          { year: 2005, date: "2005-03-23", venue: "Hard Rock Hotel Las Vegas" },
+          { year: 2010, date: "2010-10-26", venue: "9:30 Club" },
+          { year: 2012, date: "2012-11-06", venue: "9:30 Club" },
+          { year: 2015, date: "2015-08-25", venue: "The Fillmore Silver Spring" },
+          { year: 2018, date: "2018-10-28", venue: "Huntington State Beach" },
+          { year: 2022, date: "2022-12-08", venue: "House of Blues Anaheim" },
+          { year: 2024, date: "2024-12-05", venue: "The Belasco" },
+        ],
+      };
+
+      // ======================================================================
+      // Beat 3 DOM population — deterministic, synchronous
+      // Each show becomes a dot + venue label + year label, positioned along
+      // the timeline by year-proportional x-coordinate.
+      // ======================================================================
+      const timelineEl = document.getElementById("s3-timeline");
+      const spanYears = PAYLOAD.lastYear - PAYLOAD.firstYear;
+      const timelineWidth = 920;
+
+      PAYLOAD.shows.forEach((show, i) => {
+        const x = ((show.year - PAYLOAD.firstYear) / spanYears) * timelineWidth;
+
+        // Dot
+        const dot = document.createElement("div");
+        dot.className = "s3-dot";
+        dot.id = `s3-dot-${i}`;
+        dot.style.left = `${x - 7.5}px`;
+        timelineEl.appendChild(dot);
+
+        // Venue label (above)
+        const label = document.createElement("div");
+        label.className = "s3-venue";
+        label.id = `s3-venue-${i}`;
+        label.style.left = `${x}px`;
+        label.textContent = show.venue;
+        timelineEl.appendChild(label);
+
+        // Year label (below)
+        const year = document.createElement("div");
+        year.className = "s3-year";
+        year.id = `s3-year-${i}`;
+        year.style.left = `${x}px`;
+        year.textContent = show.year;
+        timelineEl.appendChild(year);
+      });
+
+      // ======================================================================
+      // Timeline construction — synchronous, deterministic
+      // ======================================================================
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      tl.from("#s1 .year", { y: 60, opacity: 0, duration: 0.7, ease: "power3.out" }, 0.2);
-      tl.from("#s2 .venue", { y: 40, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
-      tl.from("#s3 .artist-name", { y: 50, opacity: 0, duration: 0.7, ease: "power3.out" }, 4.1);
-      tl.from("#s3 .stats", { y: 30, opacity: 0, duration: 0.5, ease: "power2.out" }, 4.4);
-      window.__timelines["capability-test"] = tl;
+
+      // ===== Meridian Rule (signature) — draws on from left to right =====
+      tl.from("#meridian", {
+        scaleX: 0,
+        duration: 1.0,
+        ease: "power3.out",
+      }, 0.3);
+
+      // ===== Beat 1a — "1990." =====
+      tl.from("#s1a-year", {
+        y: 60,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power3.out",
+      }, 0.3);
+
+      // ===== Beat 1b — "Cal State Fullerton." =====
+      tl.from("#s1b-venue", {
+        y: 50,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power3.out",
+      }, 1.3);
+
+      // ===== Beat 2 — Artist Identity =====
+      tl.from("#s2-photo", {
+        opacity: 0,
+        scale: 1.06,
+        duration: 0.8,
+        ease: "power2.out",
+      }, 2.5);
+      tl.from("#s2-scrim", {
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+      }, 2.6);
+      tl.from("#s2-artist", {
+        y: 40,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power3.out",
+      }, 2.8);
+      tl.from("#s2-stats", {
+        y: 24,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.out",
+      }, 3.05);
+
+      // ===== Beat 3 — The Thread =====
+      tl.from("#s3-label", {
+        y: 30,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.out",
+      }, 4.1);
+      tl.from("#s3-yearrange", {
+        y: 40,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power3.out",
+      }, 4.3);
+      tl.from("#s3-axis", {
+        scaleX: 0,
+        duration: 1.2,
+        ease: "power3.out",
+      }, 4.6);
+
+      // Sweep travels left to right across the axis from t=4.8 to t=9.8 (5s)
+      tl.fromTo("#s3-sweep",
+        { x: 0 },
+        { x: timelineWidth, duration: 5.0, ease: "none" },
+        4.8
+      );
+
+      // As the sweep passes each show-x, light up the dot, flash the venue name,
+      // and bump the counter. Dots time out proportionally over the 5s sweep.
+      PAYLOAD.shows.forEach((show, i) => {
+        const progress = (show.year - PAYLOAD.firstYear) / spanYears;
+        const t = 4.8 + progress * 5.0;
+
+        // Dot lights up
+        tl.to(`#s3-dot-${i}`, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.2,
+          ease: "back.out(1.6)",
+        }, t);
+
+        // Venue label fades in then out
+        tl.to(`#s3-venue-${i}`, {
+          opacity: 1,
+          duration: 0.25,
+          ease: "power2.out",
+        }, t);
+        tl.to(`#s3-venue-${i}`, {
+          opacity: 0,
+          duration: 0.4,
+          ease: "power2.in",
+        }, t + 0.7);
+
+        // Year label fades in then out
+        tl.to(`#s3-year-${i}`, {
+          opacity: 0.55,
+          duration: 0.25,
+          ease: "power2.out",
+        }, t);
+        tl.to(`#s3-year-${i}`, {
+          opacity: 0,
+          duration: 0.4,
+          ease: "power2.in",
+        }, t + 0.8);
+
+        // Counter increments
+        tl.to("#s3-count", {
+          innerText: i + 1,
+          duration: 0.01,
+          snap: { innerText: 1 },
+        }, t + 0.05);
+
+        // Year-range current-year text advances
+        tl.to("#s3-year-current", {
+          innerText: show.year,
+          duration: 0.01,
+          snap: { innerText: 1 },
+        }, t + 0.05);
+      });
+
+      // Final dot pulse — rightmost (The Belasco, 2024)
+      tl.to(`#s3-dot-${PAYLOAD.shows.length - 1}`, {
+        scale: 1.8,
+        duration: 0.25,
+        ease: "power2.out",
+      }, 9.9);
+      tl.to(`#s3-dot-${PAYLOAD.shows.length - 1}`, {
+        scale: 1,
+        duration: 0.35,
+        ease: "power2.in",
+      }, 10.15);
+
+      // ===== Beat 4 — Pull Quote =====
+      tl.from("#s4-mark", {
+        opacity: 0,
+        scale: 0.9,
+        duration: 0.5,
+        ease: "power2.out",
+      }, 11.1);
+      tl.from("#s4-quote-a", {
+        y: 30,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power3.out",
+      }, 11.2);
+      tl.from("#s4-quote-b", {
+        y: 20,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+      }, 13.0);
+
+      // ===== Beat 5 — The Artifact =====
+      tl.from("#s5-album", {
+        opacity: 0,
+        scale: 0.94,
+        duration: 0.6,
+        ease: "power2.out",
+      }, 15.1);
+      tl.from(".s5-meta", {
+        y: 30,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.out",
+      }, 15.4);
+
+      // ===== Beat 6 — Outro =====
+      tl.from("#s6-mark-top", {
+        y: 40,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power3.out",
+      }, 17.7);
+      tl.from("#s6-mark-bot", {
+        y: 20,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.out",
+      }, 17.9);
+      tl.from(".s6-cta-label", {
+        y: 20,
+        opacity: 0,
+        duration: 0.4,
+        ease: "power2.out",
+      }, 18.3);
+      tl.from(".s6-cta-url", {
+        y: 20,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.out",
+      }, 18.5);
+
+      window.__timelines["social-distortion-thread"] = tl;
     </script>
   </body>
 </html>
