@@ -75,3 +75,11 @@ seo-reports/*.md
 # Keep baseline snapshots and README
 !seo-reports/*-baseline.json
 !seo-reports/README.md
+
+# Hyperframes video pilot workspace
+# Ignore rendered MP4s (large binaries) and node_modules
+# Keep source HTML, payload JSON, and asset references versioned
+video/node_modules/
+video/compositions/*/output/
+video/output/
+video/.hyperframes-cache/
