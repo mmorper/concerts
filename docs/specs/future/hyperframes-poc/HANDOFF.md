@@ -2,7 +2,9 @@
 
 **Paused:** 2026-04-19
 **Branch:** `pilot/hyperframes-poc` (pushed to `origin`, not merged)
-**Status:** Pilot built + delivered, awaiting pilot review (#100) decision
+**Status:** Pilot built + delivered **with audio track**, awaiting pilot review (#100) decision
+
+**Update 2026-04-19 (post-pause touch-up):** User added a 24.024s MP3 audio track; re-rendered with audio embedded. Source changes committed; MP4 stays gitignored. See final commit for details.
 
 ---
 
