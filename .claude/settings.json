@@ -22,7 +22,10 @@
       "Bash(git -C /Users/mmorper/projects/concerts/. diff main...claude/goofy-archimedes --stat)",
       "Bash(git -C /Users/mmorper/projects/concerts worktree remove --force .claude/worktrees/charming-shockley)",
       "Bash(git -C /Users/mmorper/projects/concerts worktree remove --force .claude/worktrees/goofy-archimedes)",
-      "Bash(git -C /Users/mmorper/projects/concerts branch -d claude/charming-shockley claude/goofy-archimedes)"
+      "Bash(git -C /Users/mmorper/projects/concerts branch -d claude/charming-shockley claude/goofy-archimedes)",
+      "Bash(gh auth *)",
+      "Bash(gh repo *)",
+      "Bash(gh label *)"
     ],
     "additionalDirectories": [
       "/Users/mmorper/projects/concerts/docs/tasks",
