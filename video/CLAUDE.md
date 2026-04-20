@@ -1,5 +1,7 @@
 # HyperFrames Composition Project
 
+> **Project conventions, directory layout, render commands, and naming rules live in [README.md](README.md).** Read it first. This file documents how AI agents work in this directory (skills, linting, framework rules).
+
 ## Skills — USE THESE FIRST
 
 **Always invoke the relevant skill before writing or modifying compositions.** Skills encode framework-specific patterns (e.g., `window.__timelines` registration, `data-*` attribute semantics, shader-compatible CSS rules) that are NOT in generic web docs. Skipping them produces broken compositions.
@@ -42,10 +44,13 @@ https://hyperframes.heygen.com/llms.txt
 
 ## Project Structure
 
-- `index.html` — main composition (root timeline)
-- `compositions/` — sub-compositions referenced via `data-composition-src`
-- `meta.json` — project metadata (id, name)
-- `transcript.json` — whisper word-level transcript (if generated)
+See [README.md](README.md) for the full directory layout and conventions. Key agent-relevant facts:
+
+- `index.html` — master composition (root timeline, currently monolithic/inline)
+- `compositions/{slug}/` — per-video source data (`payload.json`, `build-payload.mjs`). No sub-composition HTMLs are currently used.
+- `scripts/render.mjs` — wrapper for rendering. **Use this**, not `npx hyperframes render` directly, so output naming stays consistent.
+- `assets/` — shared across all videos (flat).
+- `renders/` — deliverables only, named `YYYYMMDD-{slug}.mp4`. No intermediate artifacts here.
 
 ## Linting — ALWAYS RUN AFTER CHANGES
 

@@ -82,4 +82,8 @@ seo-reports/*.md
 video/node_modules/
 video/compositions/*/output/
 video/output/
+video/renders/
 video/.hyperframes-cache/
+
+# Hyperframes stuck-session transcript (debugging artifact, 450KB+)
+docs/specs/future/hyperframes-poc/session-recovery/
