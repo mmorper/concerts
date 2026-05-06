@@ -4,7 +4,7 @@
 
 **Version:** v4.6.1 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-04-16
+**Last Sync:** 2026-05-06
 
 ### Commands
 
@@ -123,6 +123,25 @@ docs/
 
 ## Active Work & Next Steps
 
+### In-flight Gate (blocking MCP work)
+
+**Morperhaus Concert Archive MCP Server** — epic [#102](https://github.com/mmorper/concerts/issues/102)
+
+- **Status:** Window 0 Transport POC scaffolded but **not yet verified**. The 2-hour gate clock has not started — verification is the gate.
+- **Branch:** `mcp/w0-transport-poc` (POC code at `workers/mcp-poc/`)
+- **Spec:** [docs/specs/future/global-mcp-server.md](../docs/specs/future/global-mcp-server.md)
+- **First action when next at a laptop** (do this before any other MCP work):
+  1. `git checkout mcp/w0-transport-poc`
+  2. `cd workers/mcp-poc && npm install && npx wrangler dev`
+  3. In another terminal: `npx @modelcontextprotocol/inspector`
+  4. Inspector → Streamable HTTP → `http://localhost:8787/mcp` → Connect → call `ping` → expect `"pong"`
+- **On pass:** delete `workers/mcp-poc/`, close [#103](https://github.com/mmorper/concerts/issues/103), start W1 ([#104](https://github.com/mmorper/concerts/issues/104)) on a new `mcp/w1-restructure` branch.
+- **On fail:** paste error in [#103](https://github.com/mmorper/concerts/issues/103); regroup before burning the cap.
+- **Housekeeping (cosmetic):** delete stale local branch `claude/add-mcp-server-spec-GAzJd`; backfill `Target Version` and `Last Updated` lines in the spec header.
+- **Do not start W1 / W2 work until this gate clears.**
+
+---
+
 See [docs/ROADMAP.md](../docs/ROADMAP.md) for current priorities.
 
 **Open GitHub issues:**
@@ -187,4 +206,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-03-12 by Claude Code*
+*Last updated: 2026-05-06 by Claude Code*
