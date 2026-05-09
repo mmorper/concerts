@@ -4,7 +4,7 @@
 
 **Version:** v4.6.1 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-05-06
+**Last Sync:** 2026-05-09
 
 ### Commands
 
@@ -127,18 +127,12 @@ docs/
 
 **Morperhaus Concert Archive MCP Server** — epic [#102](https://github.com/mmorper/concerts/issues/102)
 
-- **Status:** Window 0 Transport POC scaffolded but **not yet verified**. The 2-hour gate clock has not started — verification is the gate.
-- **Branch:** `mcp/w0-transport-poc` (POC code at `workers/mcp-poc/`)
+- **W0 ✅ cleared** (2026-05-09) — verified via `workers/mcp-poc/verify.sh` from a Codespace; `tools/call ping` returned `pong` over Streamable HTTP. Architecture decision (Cloudflare `agents/mcp` SDK) confirmed. See [#103](https://github.com/mmorper/concerts/issues/103).
+- **Next gate: W1** ([#104](https://github.com/mmorper/concerts/issues/104)) — restructure live meta-injector into `workers/meta-injector/`, redeploy, live-curl verify. **Production-touching; do this from a laptop, not iPad.** Branch: `mcp/w1-restructure` (not yet created).
+- **W2+W3+W4** ([#105](https://github.com/mmorper/concerts/issues/105) / [#106](https://github.com/mmorper/concerts/issues/106) / [#107](https://github.com/mmorper/concerts/issues/107)) — share branch `mcp/phase-1-server`, blocked on W1.
 - **Spec:** [docs/specs/future/global-mcp-server.md](../docs/specs/future/global-mcp-server.md)
-- **First action when next at a laptop** (do this before any other MCP work):
-  1. `git checkout mcp/w0-transport-poc`
-  2. `cd workers/mcp-poc && npm install && npx wrangler dev`
-  3. In another terminal: `npx @modelcontextprotocol/inspector`
-  4. Inspector → Streamable HTTP → `http://localhost:8787/mcp` → Connect → call `ping` → expect `"pong"`
-- **On pass:** delete `workers/mcp-poc/`, close [#103](https://github.com/mmorper/concerts/issues/103), start W1 ([#104](https://github.com/mmorper/concerts/issues/104)) on a new `mcp/w1-restructure` branch.
-- **On fail:** paste error in [#103](https://github.com/mmorper/concerts/issues/103); regroup before burning the cap.
+- **Cleanup outstanding:** retire the throwaway `workers/mcp-poc/` directory and the `mcp/w0-transport-poc` branch (W0 was throwaway by design — no merge needed).
 - **Housekeeping (cosmetic):** delete stale local branch `claude/add-mcp-server-spec-GAzJd`; backfill `Target Version` and `Last Updated` lines in the spec header.
-- **Do not start W1 / W2 work until this gate clears.**
 
 ---
 
@@ -206,4 +200,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-05-06 by Claude Code*
+*Last updated: 2026-05-09 by Claude Code*
