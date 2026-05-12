@@ -24,7 +24,7 @@ Personal concert archive spanning 1984-2026. Interactive web application with 18
 - Artist setlists (via setlist.fm API)
 - Concert dates and lineups (cross-referenced with concertarchives.org)
 - Genre taxonomy (primary/subgenres)
-- Artist discographies (via MusicBrainz API - 11,030+ albums)
+- Artist discographies (via MusicBrainz API - 11,207+ albums)
 
 **Important:** This is ONE person's concert history, not a comprehensive database of all concerts by these artists.
 
@@ -452,6 +452,8 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 
 ---
 
+---
+
 ## Pre-Computed Statistics
 
 These facts are updated with each data refresh and can be quoted directly:
@@ -504,7 +506,7 @@ These facts are updated with each data refresh and can be quoted directly:
 - "First show: Adam Ant (1984)" — Where it all began — Irvine Meadows
 - "California: 121 concerts" — Home base for most concert experiences
 
-**Facts computed:** 2026-04-14T14:41:12.112Z
+**Facts computed:** 2026-05-12T14:50:03.969Z
 **Source:** https://concerts.morperhaus.org/data/facts.json
 **Browse visually:** https://concerts.morperhaus.org/liner-notes
 
@@ -563,7 +565,7 @@ Answer: List of albums with release dates, types, track counts
 - **setlist.fm API** - Fetch setlists for attended concerts
 - **Ticketmaster API** - Venue photos and upcoming tour dates
 - **TheAudioDB** - Artist photos and biographies
-- **MusicBrainz API** - Artist discographies (11,030+ albums)
+- **MusicBrainz API** - Artist discographies (11,207+ albums)
 
 ### Navigation
 - Snap-scroll between full-viewport scenes
@@ -664,6 +666,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-04-16
-**Version:** v4.6.0
-**Total Content:** 182 concerts | 256 artists | 78 venues | 11,030+ albums | 1984-2026
+**Last Updated:** 2026-05-12
+**Version:** v4.6.1
+**Total Content:** 182 concerts | 256 artists | 78 venues | 11,207+ albums | 1984-2026
