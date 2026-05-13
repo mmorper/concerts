@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 14 Apr 2026 14:41:46 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 13 May 2026 19:56:15 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>Siouxsie and the Banshees — Days After Achtung Baby Dropped</title>
+    <link>https://concerts.morperhaus.org/liner-notes/siouxsie-and-the-banshees-days-after-achtung-baby-dropped</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/siouxsie-and-the-banshees-days-after-achtung-baby-dropped</guid>
+    <pubDate>Wed, 13 May 2026 19:56:15 +0000</pubDate>
+    <description>December 1991 was the month U2 shattered expectations with Achtung Baby, trading earnest anthems for industrial textures and irony — and just 33 days after that seismic shift dropped, I caught Siouxsie and the Banshees at the Universal Amphitheater. Here were two bands who&apos;d spent the &apos;80s proving that reinvention was survival, but Siouxsie had been mining that dark, electronic-tinged territory since 1976 while Bono was still figuring out how to be mysterious. Watching her command that stage in the shadow of U2&apos;s supposed &quot;breakthrough&quot; felt like a reminder of who&apos;d been doing the real pioneering work all along.</description>
+    <category>#album-context</category>
+    <category>#cultural-moment</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/rvqpuy1348109917.jpg" medium="image" />
+  </item>
   <item>
     <title>April 15: 40 Years Since Blancmange</title>
     <link>https://concerts.morperhaus.org/liner-notes/april-15-40-years-since-blancmange</link>
@@ -201,16 +211,6 @@
     <category>#festival-bill</category>
     <category>#mega-bill</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/wwwwtv1455324256.jpg" medium="image" />
-  </item>
-  <item>
-    <title>Howard Jones: 17 Years Between Shows</title>
-    <link>https://concerts.morperhaus.org/liner-notes/howard-jones-17-years-between-shows</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/howard-jones-17-years-between-shows</guid>
-    <pubDate>Thu, 26 Feb 2026 23:12:00 +0000</pubDate>
-    <description>I remember standing in the Universal Amphitheater in 1989, watching Howard Jones perform what I didn&apos;t know would be his last show in my collection for nearly two decades. When I finally saw him again in 2006 at the intimate Coach House in San Juan Capistrano, it felt like reconnecting with an old friend after years of silence. That 17-year gap represents the longest drought between any artist&apos;s appearances in my concert history. The shift from arena to club venue somehow made his synth-pop anthems feel more personal, like he was playing just for the handful of us who had waited all those years.</description>
-    <category>#drought</category>
-    <category>#comeback</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/jones-howard-50fbc0fcc99a1.jpg" medium="image" />
   </item>
   </channel>
 </rss>

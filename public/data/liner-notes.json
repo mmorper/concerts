@@ -1,7 +1,66 @@
 {
-  "generatedAt": "2026-04-14T14:41:46.749Z",
+  "generatedAt": "2026-05-13T19:56:15.253Z",
   "dataHash": "3bc1723a",
   "posts": [
+    {
+      "id": "album-context-achtung-baby-siouxsie-and-the-banshees",
+      "slug": "siouxsie-and-the-banshees-days-after-achtung-baby-dropped",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Siouxsie and the Banshees — Days After Achtung Baby Dropped",
+      "prose": "December 1991 was the month U2 shattered expectations with Achtung Baby, trading earnest anthems for industrial textures and irony — and just 33 days after that seismic shift dropped, I caught Siouxsie and the Banshees at the Universal Amphitheater. Here were two bands who'd spent the '80s proving that reinvention was survival, but Siouxsie had been mining that dark, electronic-tinged territory since 1976 while Bono was still figuring out how to be mysterious. Watching her command that stage in the shadow of U2's supposed \"breakthrough\" felt like a reminder of who'd been doing the real pioneering work all along.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/rvqpuy1348109917.jpg",
+        "alt": "Siouxsie and the Banshees",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Cities In Dust",
+        "artistName": "Siouxsie and the Banshees",
+        "albumName": "Tinderbox (Remastered & Expanded)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/61/c3/3c/61c33c60-b1b1-e807-669b-b5e55ea50865/mzaf_14744696204040940587.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/2d/f4/91/2df491a6-a3bd-35df-2447-d1765cf1ba72/00600753148938.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/cities-in-dust/1443841582?i=1443842139&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "siouxsie-and-the-banshees"
+      ],
+      "venues": [
+        "universal-amphitheater"
+      ],
+      "years": [
+        1991
+      ],
+      "tags": [
+        "#album-context",
+        "#cultural-moment"
+      ],
+      "deepLinks": [
+        {
+          "label": "Siouxsie and the Banshees",
+          "url": "/?scene=artists&artist=siouxsie-and-the-banshees",
+          "type": "artist"
+        },
+        {
+          "label": "Universal Amphitheater",
+          "url": "/?scene=venues&venue=universal-amphitheater",
+          "type": "venue"
+        },
+        {
+          "label": "1991",
+          "url": "/?scene=timeline&year=1991",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "universal-amphitheater-5-shows-before-it-was-demolished",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 30,
+      "detector": "album-context",
+      "publishedAt": "2026-05-13T19:56:15.253Z"
+    },
     {
       "id": "anniversary-blancmange-1986-04-15",
       "slug": "april-15-40-years-since-blancmange",
@@ -3580,10 +3639,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 46,
-    "totalGenerated": 63,
-    "averageScore": 39.4,
-    "lastPipelineRun": "2026-04-14T14:41:46.749Z",
+    "totalPosts": 47,
+    "totalGenerated": 65,
+    "averageScore": 39.2,
+    "lastPipelineRun": "2026-05-13T19:56:15.253Z",
     "concertsAnalyzed": 179,
     "feedUrl": "/liner-notes.xml"
   }
