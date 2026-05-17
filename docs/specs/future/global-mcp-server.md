@@ -22,6 +22,21 @@ Worker, read-only data, tiny blast radius.
 
 -----
 
+## Scope (locked 2026-05-17)
+
+**The MCP server reads from `public/data/*.json` and returns what's there. It does not call upstream APIs at runtime.**
+
+- ✅ In scope: query, filter, paginate, narrate over `concerts.json`, `artists-metadata.json`, `artists-top-tracks.json`, `setlists-cache.json`, `venues-metadata.json`, `facts.json`, `genres-timeline.json`
+- ❌ Out of scope: outbound calls to Ticketmaster, setlist.fm, Spotify, Google Places, or any other upstream service
+- ❌ Out of scope: proxying or relaying any client-side key from the main site
+- Data freshness ceiling = whatever the existing build pipeline (`scripts/build-data.ts`, the venue-photos cron, etc.) produces. The MCP never widens that ceiling on its own.
+
+**Why this matters:** keeps the Worker stateless, removes any need for upstream-API secret management inside the MCP, and bounds the blast radius to the same surface as the static site itself. Any future case for live API calls inside the MCP triggers a scope renegotiation, not a quiet expansion.
+
+This decision was reached during the architecture risk review sprint (see [#108](https://github.com/mmorper/concerts/issues/108), spike [#109](https://github.com/mmorper/concerts/issues/109)) and dissolves the W1-blocking concern about "repeating the upstream-secret-leakage mistake one Worker over."
+
+-----
+
 ## Voice
 
 All narration inherits from `.claude/skills/liner-notes-voice/SKILL.md`. That file is the
