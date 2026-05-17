@@ -1,5 +1,7 @@
 # Session Handoff — 2026-05-10
 
+> **Update 2026-05-17:** PR #117 merged at commit `229d826` (squash). Sprint state otherwise unchanged — no spikes run yet. Branch `claude/architecture-risk-review-sTxNX` kept alive for URL stability.
+
 ## What Was Completed
 
 - **Architecture risk review** — full walkthrough of workers, services, build pipeline, data layout, MCP spec. Surfaced ~15 latent risks; cut to the ones worth tracking.
