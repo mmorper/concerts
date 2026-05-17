@@ -60,7 +60,7 @@ The pattern resolves both: move LLM work to build time, where it costs $13 once 
 | `surprise_me` | **Deterministic** | Angle selection is deterministic per the existing spec; angle prose stays templated (one short sentence per angle variant — doesn't benefit from agentic creativity) |
 | `get_artist_history` | **Hybrid: deterministic list + build-time narration** | Show list deterministic; opening context line + closing arc read from `public/data/narrations/artists.json`. Template fallback if narration missing |
 | `get_venue_history` | **Hybrid: deterministic list + build-time narration** | Same pattern. Reads from `public/data/narrations/venues.json` |
-| `query` (potential 7th tool) | **Runtime LLM** — **OPEN QUESTION** | See "Open question" below |
+| `query` | **Runtime LLM** | New 7th tool — in scope for v1. See "Decision: runtime `query` escape hatch" below for caps, enforcement, and budget |
 
 ### Build-time narration pipeline
 
@@ -102,20 +102,48 @@ Each hash combines those fields + a `PROMPT_VERSION` constant. On `npm run gener
 
 Steady-state cost: **$0** (no-op when nothing changed). New concert added: **~$0.04** (one entity regenerates). Prompt rewrite — bump `PROMPT_VERSION`: **~$13 once** (full regen of 78 venues + 256 artists).
 
-### Open question: runtime `query` escape hatch
+### Decision: runtime `query` escape hatch (resolved 2026-05-17)
 
-A potential 7th tool for freeform questions that don't fit the other 6 — e.g., *"artists I've seen in both LA and SF in the same year"*. Hard to write as a fixed tool, trivial for an LLM with the concerts JSON in context.
+**In scope for v1.** A 7th tool for freeform questions that don't fit the other 6 — e.g., *"artists I've seen in both LA and SF in the same year"*. Hard to write as a fixed tool, trivial for an LLM with the concerts JSON in context.
 
-**If added**, required guardrails:
+#### Budget
 
-- Per-day call cap (configurable, default 50/day) — prevents runaway cost from public abuse
-- Max input size (concerts JSON only, no full data dump)
-- Refusal patterns for non-archive questions
-- Output framed as "I think…" rather than authoritative — runtime LLM may miscount
+Hard cap: **≤ $10/month**. Two daily limits, whichever trips first:
 
-**If skipped**, the 6 deterministic + hybrid tools cover the curated paths and freeform questions go unanswered.
+- **250K tokens/day combined** (input + output, recorded from Anthropic API response's `usage` field, not estimated)
+- **8 calls/day**
 
-**Owner's call before W2 begins.** Defaulting to "skipped for v1, revisit in Phase 2" if no decision by W2 kickoff.
+Either limit reached → tool returns a polite refusal (*"today's query budget is spent — try a deterministic tool, or come back tomorrow"*) without calling Anthropic.
+
+**Math** (Haiku 4.5 assumed pricing: $1/MTok input, $5/MTok output — verify current pricing before W2 implementation):
+
+- Typical call: ~50K input + ~500 output ≈ **$0.06/call**
+- Worst-case day at cap: 250K × ($1 + $5)/2 = $0.75 — but realistic 95/5 input/output blend = **~$0.30/day = $9/month**
+- The 8-calls/day cap prevents the failure mode where one runaway request elaborates to 100K output tokens and eats the daily budget in a single hit
+
+#### Enforcement (Worker-side)
+
+State lives in **Cloudflare KV**, key `query-usage:YYYY-MM-DD`, value `{tokens: N, calls: N}`, TTL 48h (self-cleaning).
+
+Per-request flow inside the Worker:
+
+1. **Pre-flight**: read today's KV record. If `tokens >= 250000` OR `calls >= 8`, return refusal immediately — never call Anthropic.
+2. **Call**: hit Anthropic with the user's question + concerts.json context.
+3. **Post-flight**: update KV with `{tokens: previous + usage.input_tokens + usage.output_tokens, calls: previous + 1}`. Use `ctx.waitUntil(...)` so the write doesn't block the response.
+
+**Concurrency note**: KV reads are eventually consistent (~60s propagation). Two simultaneous calls could both see "under cap" and both proceed. For this scale (8/day) the worst case is a one-call overage — acceptable. If usage ever justifies it, swap KV for a Durable Object for atomic counters; out of scope for v1.
+
+**Free-tier headroom**: KV free tier is 100K reads/day + 1K writes/day. At 8 calls/day we use 8 reads + 8 writes. Effectively unmetered.
+
+#### Other guardrails (kept from open-question draft)
+
+- **Max input size**: send `concerts.json` only (~50K tokens). Do NOT include venues-metadata.json or artists-metadata.json — those bloat context without helping freeform queries answer better.
+- **Refusal patterns**: prompt instructs the model to refuse non-archive questions ("politics", "weather", "code help") with a one-line redirect.
+- **Output framing**: prompt instructs *"I think..."* / *"my count says..."* rather than authoritative claims — runtime LLM may miscount; the user should know.
+
+#### What this opens up
+
+Questions like *"which years did I see the most ska shows?"* or *"artists I saw exactly twice"* now have an answer path. Deterministic tools stay primary; `query` is the escape hatch when none of the other 6 fit.
 
 ### W2 (#105) scope changes
 
@@ -123,6 +151,8 @@ A potential 7th tool for freeform questions that don't fit the other 6 — e.g.,
 - `scripts/generate-narrations.ts` lands as a W2 deliverable (or split as a parallel work stream — owner's call). Includes the hash logic and the Anthropic client wiring.
 - Narration prompt file lives at `scripts/narrations/prompt.md` (or similar) — kept separate from code so prompt-only edits don't trigger a full repo review.
 - `public/data/narrations/.gitkeep` + add `narrations/*.json` to the data refresh contract.
+- **`query` tool wiring**: KV namespace `MCP_QUERY_USAGE` declared in `workers/mcp-server/wrangler.toml`; bound to the Worker. Anthropic SDK or raw `fetch` to `api.anthropic.com` (lightweight enough that a SDK may be overkill in a Worker). `ANTHROPIC_API_KEY` stored as a Wrangler secret, not in source.
+- **`query` tool prompt** lives at `workers/mcp-server/prompts/query.md` — separate file so prompt-only edits stay small. Includes refusal patterns + "I think..." framing instructions.
 
 ### Cost model
 
@@ -134,7 +164,7 @@ A potential 7th tool for freeform questions that don't fit the other 6 — e.g.,
 | Full cold regen | ≤ twice/year | ~$13 |
 | Annual estimate (steady state) | — | **~$30–50** |
 
-This is bounded and cheap. If the `query` escape hatch lands, add a per-day cap × $0.04 max — at 50/day it's $730/year worst case, more realistically $50–100/year for an unadvertised personal MCP.
+The `query` escape hatch (see "Decision" above) adds **≤ $10/month** capped — at 8 calls/day × $0.06 = $14.40/month worst case before the token cap kicks in, ~$9/month at the realistic input-heavy mix. Combined ceiling: **~$40/year build-time + ~$108/year query = ~$150/year all-in** for the entire MCP server.
 
 ### What this addendum does NOT change
 
