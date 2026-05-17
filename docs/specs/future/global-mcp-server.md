@@ -37,6 +37,113 @@ This decision was reached during the architecture risk review sprint (see [#108]
 
 -----
 
+## Addendum 2026-05-17: Agentic Layer
+
+Decided after W1 ([#104](https://github.com/mmorper/concerts/issues/104)) shipped and before W2 ([#105](https://github.com/mmorper/concerts/issues/105)) began. Reshapes how narration is produced. Does not change the scope lock above — the MCP server still reads only from `public/data/*.json` at runtime. Haiku is invoked **at build time** to author narration prose; the MCP Worker itself remains a static-file reader.
+
+### Why this exists
+
+Two observations from W1's verification work pushed the design:
+
+1. **Schema thinness**: `venues-metadata.json` has no `capacity`/`neighborhood`/`description` fields and only 12/78 venues have `notes`. `artists-metadata.json` has bios on only 5/279 artists. Templated narration over this data sounds formulaic at scale — a known weakness that won't go away by writing better templates.
+2. **The 10ms CPU ceiling is tight**: post-W1 measurements show p99 cpuTime at 14ms even with `caches.default` warming. Runtime LLM calls would add 500ms–2s of latency and ~$0.04 per request — wrong cost shape for a personal-scale archive.
+
+The pattern resolves both: move LLM work to build time, where it costs $13 once per full regen and zero per MCP request. The site is also already running build-time agentic content via the liner-notes pipeline ([.claude/skills/liner-notes-pipeline/SKILL.md](../../../.claude/skills/liner-notes-pipeline/SKILL.md)), so this fits the established architecture.
+
+### Three layers
+
+| Tool | Layer | Notes |
+| --- | --- | --- |
+| `get_archive_info` | **Deterministic** | Reads `facts.json`; templated prose |
+| `search_concerts` | **Deterministic** | Filter + list; drop the "if a pattern is obvious" closing sentence in v1 |
+| `on_this_day` | **Deterministic** | List by `MM-DD` |
+| `surprise_me` | **Deterministic** | Angle selection is deterministic per the existing spec; angle prose stays templated (one short sentence per angle variant — doesn't benefit from agentic creativity) |
+| `get_artist_history` | **Hybrid: deterministic list + build-time narration** | Show list deterministic; opening context line + closing arc read from `public/data/narrations/artists.json`. Template fallback if narration missing |
+| `get_venue_history` | **Hybrid: deterministic list + build-time narration** | Same pattern. Reads from `public/data/narrations/venues.json` |
+| `query` (potential 7th tool) | **Runtime LLM** — **OPEN QUESTION** | See "Open question" below |
+
+### Build-time narration pipeline
+
+New script: `scripts/generate-narrations.ts`. **Not wired into `build-data`** — runs on its own. Keeps the default data pipeline Anthropic-free.
+
+Output shape (`public/data/narrations/venues.json`):
+
+```json
+{
+  "irvine-meadows": {
+    "narration": {
+      "context": "Irvine Meadows in Irvine, California — demolished in 2016 for residential development after hosting 16 shows from 1984 to 2003.",
+      "closingArc": "One of the venues I returned to most through the late '80s amphitheater boom."
+    },
+    "inputHash": "sha256:a3f8...",
+    "generatedAt": "2026-05-17T...",
+    "promptVersion": 1
+  }
+}
+```
+
+Same shape for artists.
+
+### Hash-based regeneration
+
+The dataset is nearly static (182 concerts, adds maybe a handful per year). Cadence-based regeneration is wasteful. Trigger on change instead.
+
+**Per-entity hash inputs:**
+
+- **Venues**: `name, cityState, status, closedDate, notes, stats.totalConcerts, stats.firstEvent, stats.lastEvent, stats.uniqueArtists, top-3 headliners from concerts[]`
+- **Artists**: `name, concert count, dateRange first–last, top venue + count, top tour year if discernible`
+
+Each hash combines those fields + a `PROMPT_VERSION` constant. On `npm run generate:narrations`:
+
+1. Walk every entity in source JSON
+2. Recompute hash
+3. Regenerate only entities where `currentHash != storedHash`
+4. Write back to `narrations/{venues,artists}.json`
+
+Steady-state cost: **$0** (no-op when nothing changed). New concert added: **~$0.04** (one entity regenerates). Prompt rewrite — bump `PROMPT_VERSION`: **~$13 once** (full regen of 78 venues + 256 artists).
+
+### Open question: runtime `query` escape hatch
+
+A potential 7th tool for freeform questions that don't fit the other 6 — e.g., *"artists I've seen in both LA and SF in the same year"*. Hard to write as a fixed tool, trivial for an LLM with the concerts JSON in context.
+
+**If added**, required guardrails:
+
+- Per-day call cap (configurable, default 50/day) — prevents runaway cost from public abuse
+- Max input size (concerts JSON only, no full data dump)
+- Refusal patterns for non-archive questions
+- Output framed as "I think…" rather than authoritative — runtime LLM may miscount
+
+**If skipped**, the 6 deterministic + hybrid tools cover the curated paths and freeform questions go unanswered.
+
+**Owner's call before W2 begins.** Defaulting to "skipped for v1, revisit in Phase 2" if no decision by W2 kickoff.
+
+### W2 (#105) scope changes
+
+- Data-access helpers read `narrations/{venues,artists}.json` alongside source JSON; expose a `getNarration(kind, slug)` lookup that returns `null` on miss so callers can fall back to templates.
+- `scripts/generate-narrations.ts` lands as a W2 deliverable (or split as a parallel work stream — owner's call). Includes the hash logic and the Anthropic client wiring.
+- Narration prompt file lives at `scripts/narrations/prompt.md` (or similar) — kept separate from code so prompt-only edits don't trigger a full repo review.
+- `public/data/narrations/.gitkeep` + add `narrations/*.json` to the data refresh contract.
+
+### Cost model
+
+| Event | Frequency | Cost |
+| --- | --- | --- |
+| Routine MCP query | Per request | $0 (build-time prose, no runtime LLM) |
+| Add one concert + regen | Weekly-ish | ~$0.04 |
+| Prompt iteration (bump version) | Quarterly-ish | ~$13 |
+| Full cold regen | ≤ twice/year | ~$13 |
+| Annual estimate (steady state) | — | **~$30–50** |
+
+This is bounded and cheap. If the `query` escape hatch lands, add a per-day cap × $0.04 max — at 50/day it's $730/year worst case, more realistically $50–100/year for an unadvertised personal MCP.
+
+### What this addendum does NOT change
+
+- Scope lock above — still no outbound *data* APIs at runtime. Haiku-at-build-time is build infrastructure, not a runtime upstream dependency.
+- The 6 tool descriptions in "The 6 Tools" — those still describe externally-observable behavior. The addendum changes how the prose inside the response is produced, not what's returned.
+- W1 — already shipped. The restructure and `caches.default` work stand independently.
+
+-----
+
 ## Voice
 
 All narration inherits from `.claude/skills/liner-notes-voice/SKILL.md`. That file is the
