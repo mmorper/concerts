@@ -134,6 +134,20 @@ docs/
 - **Cleanup outstanding:** retire the throwaway `workers/mcp-poc/` directory and the `mcp/w0-transport-poc` branch (W0 was throwaway by design — no merge needed).
 - **Housekeeping (cosmetic):** delete stale local branch `claude/add-mcp-server-spec-GAzJd`; backfill `Target Version` and `Last Updated` lines in the spec header.
 
+### Paused Initiatives
+
+**HyperFrames video pilot — Social Distortion Thread** (shelved 2026-05-17)
+
+- **Status:** First pilot video built, rendered, and delivered with audio. Paused awaiting pilot review decision [#100](https://github.com/mmorper/concerts/issues/100). Templates A/B/D ([#99](https://github.com/mmorper/concerts/issues/99)) not started.
+- **Branch:** `pilot/hyperframes-poc` (pushed to origin, not merged)
+- **Tag:** `pilot/social-distortion-thread-v1` at commit `09f065d` (permanent reference even if branch is ever deleted)
+- **Handoff doc:** [docs/specs/future/hyperframes-poc/HANDOFF.md](../docs/specs/future/hyperframes-poc/HANDOFF.md) — read this first if resuming
+- **Pattern library (reusable for future videos):** [video/PATTERNS.md](../video/PATTERNS.md)
+- **Postmortem:** [video/compositions/social-distortion-thread/POSTMORTEM.md](../video/compositions/social-distortion-thread/POSTMORTEM.md)
+- **Final MP4** is gitignored (regenerable in ~37s via `cd video && node scripts/render.mjs --slug social-distortion-thread`)
+
+To resume: read HANDOFF.md, make the [#100](https://github.com/mmorper/concerts/issues/100) green/yellow/red call, then either merge or iterate.
+
 ---
 
 See [docs/ROADMAP.md](../docs/ROADMAP.md) for current priorities.
