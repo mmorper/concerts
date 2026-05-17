@@ -870,7 +870,7 @@ curl -A "Googlebot/2.1" \
 **Solution**:
 ```bash
 # Check worker deployment
-cd workers
+cd workers/meta-injector
 npx wrangler tail
 
 # In another terminal, trigger a request
@@ -953,7 +953,7 @@ curl -A "facebookexternalhit/1.1" \
   | grep "og:title"
 
 # If OG tags missing, check worker logs
-cd workers
+cd workers/meta-injector
 npx wrangler tail
 
 # Force Facebook to re-scrape
@@ -967,7 +967,7 @@ npx wrangler tail
 **Diagnosis**:
 ```bash
 # View real-time worker logs
-cd workers
+cd workers/meta-injector
 npx wrangler tail
 
 # Trigger requests and watch for errors
@@ -989,7 +989,7 @@ cat public/data/venues-metadata.json | jq . > /dev/null
 npm run build-data
 
 # Re-deploy worker
-cd workers
+cd workers/meta-injector
 npx wrangler deploy
 ```
 
@@ -1030,8 +1030,8 @@ Bot indexes with dynamic title/description
 - `public/og-stats.json` - Stats for OG image generation
 
 **Worker Files**:
-- `workers/meta-injector.js` - Dynamic meta injection logic
-- `workers/wrangler.toml` - Worker configuration
+- `workers/meta-injector/worker.js` - Dynamic meta injection logic
+- `workers/meta-injector/wrangler.toml` - Worker configuration
 - `workers/README.md` - Deployment guide
 
 **Data Pipeline Scripts**:

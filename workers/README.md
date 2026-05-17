@@ -68,7 +68,7 @@ account_id = "abc123def456..."
 ### Start Local Development Server
 
 ```bash
-cd workers
+cd workers/meta-injector
 wrangler dev
 ```
 
@@ -106,7 +106,7 @@ Expected: Dynamic description with concert count and featured artists.
 ### Step 1: Deploy Worker
 
 ```bash
-cd workers
+cd workers/meta-injector
 wrangler deploy
 ```
 
@@ -250,7 +250,7 @@ Check user agent in logs:
 wrangler tail
 ```
 
-Verify user agent is in `BOT_USER_AGENTS` list (line 14-41 in `meta-injector.js`).
+Verify user agent is in `BOT_USER_AGENTS` list (line 14-41 in `meta-injector/worker.js`).
 
 ### Metadata Not Loading
 
@@ -302,7 +302,7 @@ Enter: `https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode`
 
 **Redeployment:**
 ```bash
-cd workers
+cd workers/meta-injector
 wrangler deploy
 ```
 

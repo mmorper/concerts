@@ -57,7 +57,7 @@
     "generate:rss": "tsx scripts/generate-rss.ts",
     "generate:liner-notes-rss": "tsx scripts/generate-liner-notes-rss.ts",
     "generate:liner-notes": "tsx scripts/liner-notes/index.ts",
-    "deploy:worker": "cd workers && wrangler deploy"
+    "deploy:worker": "cd workers/meta-injector && npx wrangler deploy"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

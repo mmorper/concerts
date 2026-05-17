@@ -98,7 +98,7 @@ Select "Get detailed help" to see step-by-step playbooks:
 
   HOW TO FIX (4 steps)
 
-  Step 1: Open workers/meta-injector.js
+  Step 1: Open workers/meta-injector/worker.js
   Step 2: Add scene-specific titles
   Step 3: Deploy the Worker
   Step 4: Verify with curl

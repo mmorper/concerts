@@ -351,7 +351,7 @@ The site is automatically deployed via Cloudflare Pages:
 
 ### Cloudflare Worker (Dynamic Meta Tags)
 
-**Location**: `workers/meta-injector.js`
+**Location**: `workers/meta-injector/worker.js`
 **Purpose**: Inject dynamic meta tags for bots while keeping SPA fast for humans
 **Status**: Deployed to production
 **Worker URL**: <https://concerts-meta-injector.morps.workers.dev>
@@ -461,7 +461,7 @@ See [workers/README.md](../workers/README.md) for:
 **Social Media**: Facebook, Twitter, LinkedIn, WhatsApp, Telegram, Slack, Discord
 **AI Assistants**: ChatGPT, Claude, Perplexity, Google-Extended
 
-Full list: See `BOT_USER_AGENTS` in [workers/meta-injector.js:18-44](../workers/meta-injector.js#L18-L44)
+Full list: See `BOT_USER_AGENTS` in [workers/meta-injector/worker.js:18-44](../workers/meta-injector/worker.js#L18-L44)
 
 ## NPM Scripts Reference
 
