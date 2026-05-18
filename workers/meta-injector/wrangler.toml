@@ -2,7 +2,7 @@
 # This worker injects dynamic meta tags for bots while keeping the SPA fast for humans
 
 name = "concerts-meta-injector"
-main = "meta-injector.js"
+main = "worker.js"
 compatibility_date = "2024-01-01"
 
 # Account ID (get from Cloudflare Dashboard > Workers & Pages > Overview)

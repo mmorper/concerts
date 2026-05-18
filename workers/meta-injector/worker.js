@@ -43,6 +43,24 @@ const BOT_USER_AGENTS = [
   'google-extended',
 ];
 
+// Cache same-origin JSON between requests so we don't pay fetch+parse on every bot hit.
+// Spike #110 measured cold-isolate CPU at 11–16 ms on venue routes (over the 10 ms free-tier limit);
+// the parse dominates. 300s TTL keeps SEO bots within acceptable staleness.
+async function cachedJsonFetch(url, ctx) {
+  const cache = caches.default;
+  const cacheKey = new Request(url, { method: 'GET' });
+  const cached = await cache.match(cacheKey);
+  if (cached) return cached;
+
+  const response = await fetch(url);
+  if (!response.ok) return response;
+
+  const cacheable = new Response(response.body, response);
+  cacheable.headers.set('Cache-Control', 'public, max-age=300');
+  ctx.waitUntil(cache.put(cacheKey, cacheable.clone()));
+  return cacheable;
+}
+
 /**
  * Main request handler
  */
@@ -78,25 +96,25 @@ export default {
 
     // Inject dynamic meta tags — pathname routes take precedence over query params
     if (url.pathname === '/how-it-works') {
-      html = await injectHowItWorksMeta(html, url.origin);
+      html = await injectHowItWorksMeta(html, url.origin, ctx);
     } else if (url.pathname === '/liner-notes') {
-      html = await injectLinerNotesFeedMeta(html, url.origin);
+      html = await injectLinerNotesFeedMeta(html, url.origin, ctx);
     } else if (url.pathname.startsWith('/liner-notes/') && url.pathname !== '/liner-notes/rss') {
       const slug = url.pathname.slice('/liner-notes/'.length);
-      html = await injectLinerNotesPostMeta(html, slug, url.origin);
+      html = await injectLinerNotesPostMeta(html, slug, url.origin, ctx);
     } else if (url.pathname === '/whats-playing') {
       html = await injectWhatsPlayingMeta(html, url.origin);
     } else if (scene === 'artists' && artist) {
-      html = await injectArtistMeta(html, artist, url.origin);
+      html = await injectArtistMeta(html, artist, url.origin, ctx);
     } else if ((scene === 'venues' || scene === 'geography') && venue) {
-      html = await injectVenueMeta(html, venue, url.origin, scene);
+      html = await injectVenueMeta(html, venue, url.origin, scene, ctx);
     } else if (scene === 'genres' && genre) {
-      html = await injectGenreMeta(html, genre, url.origin);
+      html = await injectGenreMeta(html, genre, url.origin, ctx);
     } else if (scene === 'geography' && region) {
-      html = await injectRegionMeta(html, region, url.origin);
+      html = await injectRegionMeta(html, region, url.origin, ctx);
     } else {
       // Scene-only or homepage — inject scene meta
-      html = await injectSceneMeta(html, scene, url.origin);
+      html = await injectSceneMeta(html, scene, url.origin, ctx);
     }
 
     // Preserve all original headers (CORS, CSP, security headers, etc.)
@@ -144,10 +162,10 @@ function isHTMLRequest(request) {
 /**
  * Inject artist-specific meta tags
  */
-async function injectArtistMeta(html, artistNormalized, origin) {
+async function injectArtistMeta(html, artistNormalized, origin, ctx) {
   try {
     // Fetch artist metadata
-    const artistsResponse = await fetch(`${origin}/data/artists-metadata.json`);
+    const artistsResponse = await cachedJsonFetch(`${origin}/data/artists-metadata.json`, ctx);
     if (!artistsResponse.ok) {
       console.error('Failed to fetch artists-metadata.json');
       return html;
@@ -161,7 +179,7 @@ async function injectArtistMeta(html, artistNormalized, origin) {
     }
 
     // Fetch concert data to count concerts
-    const concertsResponse = await fetch(`${origin}/data/concerts.json`);
+    const concertsResponse = await cachedJsonFetch(`${origin}/data/concerts.json`, ctx);
     if (!concertsResponse.ok) {
       console.error('Failed to fetch concerts.json');
       return html;
@@ -244,10 +262,10 @@ async function injectArtistMeta(html, artistNormalized, origin) {
 /**
  * Inject venue-specific meta tags
  */
-async function injectVenueMeta(html, venueNormalized, origin, scene) {
+async function injectVenueMeta(html, venueNormalized, origin, scene, ctx) {
   try {
     // Fetch venue metadata
-    const venuesResponse = await fetch(`${origin}/data/venues-metadata.json`);
+    const venuesResponse = await cachedJsonFetch(`${origin}/data/venues-metadata.json`, ctx);
     if (!venuesResponse.ok) {
       console.error('Failed to fetch venues-metadata.json');
       return html;
@@ -261,7 +279,7 @@ async function injectVenueMeta(html, venueNormalized, origin, scene) {
     }
 
     // Fetch concert data to count concerts
-    const concertsResponse = await fetch(`${origin}/data/concerts.json`);
+    const concertsResponse = await cachedJsonFetch(`${origin}/data/concerts.json`, ctx);
     if (!concertsResponse.ok) {
       console.error('Failed to fetch concerts.json');
       return html;
@@ -335,9 +353,9 @@ async function injectVenueMeta(html, venueNormalized, origin, scene) {
 /**
  * Inject region-specific meta tags
  */
-async function injectRegionMeta(html, regionNormalized, origin) {
+async function injectRegionMeta(html, regionNormalized, origin, ctx) {
   try {
-    const concertsResponse = await fetch(`${origin}/data/concerts.json`);
+    const concertsResponse = await cachedJsonFetch(`${origin}/data/concerts.json`, ctx);
     if (!concertsResponse.ok) {
       console.error('Failed to fetch concerts.json');
       return html;
@@ -422,9 +440,9 @@ async function injectRegionMeta(html, regionNormalized, origin) {
 /**
  * Inject genre-specific meta tags
  */
-async function injectGenreMeta(html, genreNormalized, origin) {
+async function injectGenreMeta(html, genreNormalized, origin, ctx) {
   try {
-    const concertsResponse = await fetch(`${origin}/data/concerts.json`);
+    const concertsResponse = await cachedJsonFetch(`${origin}/data/concerts.json`, ctx);
     if (!concertsResponse.ok) {
       console.error('Failed to fetch concerts.json');
       return html;
@@ -482,9 +500,9 @@ async function injectGenreMeta(html, genreNormalized, origin) {
 /**
  * Inject meta tags for /how-it-works — the interactive data pipeline explainer
  */
-async function injectHowItWorksMeta(html, origin) {
+async function injectHowItWorksMeta(html, origin, ctx) {
   try {
-    const concertsResponse = await fetch(`${origin}/data/concerts.json`);
+    const concertsResponse = await cachedJsonFetch(`${origin}/data/concerts.json`, ctx);
     if (!concertsResponse.ok) return html;
     const concertsData = await concertsResponse.json();
 
@@ -515,10 +533,10 @@ async function injectHowItWorksMeta(html, origin) {
 /**
  * Inject scene-specific meta tags (no entity deep link)
  */
-async function injectSceneMeta(html, scene, origin) {
+async function injectSceneMeta(html, scene, origin, ctx) {
   try {
     // Fetch stats from concerts.json
-    const concertsResponse = await fetch(`${origin}/data/concerts.json`);
+    const concertsResponse = await cachedJsonFetch(`${origin}/data/concerts.json`, ctx);
     if (!concertsResponse.ok) {
       console.error('Failed to fetch concerts.json');
       return html;
@@ -584,9 +602,9 @@ async function injectSceneMeta(html, scene, origin) {
 /**
  * Inject meta tags for /liner-notes feed page
  */
-async function injectLinerNotesFeedMeta(html, origin) {
+async function injectLinerNotesFeedMeta(html, origin, ctx) {
   try {
-    const feedResponse = await fetch(`${origin}/data/liner-notes.json`);
+    const feedResponse = await cachedJsonFetch(`${origin}/data/liner-notes.json`, ctx);
     const title = 'Liner Notes | Morperhaus Concert Archives';
     const description = 'Stories from 42 years of live music — personal essays, cultural context, and deep cuts.';
     const pageUrl = `${origin}/liner-notes`;
@@ -621,9 +639,9 @@ async function injectLinerNotesFeedMeta(html, origin) {
 /**
  * Inject meta tags for /liner-notes/:slug post permalink
  */
-async function injectLinerNotesPostMeta(html, slug, origin) {
+async function injectLinerNotesPostMeta(html, slug, origin, ctx) {
   try {
-    const feedResponse = await fetch(`${origin}/data/liner-notes.json`);
+    const feedResponse = await cachedJsonFetch(`${origin}/data/liner-notes.json`, ctx);
     if (!feedResponse.ok) {
       console.error('Failed to fetch liner-notes.json');
       return html;
