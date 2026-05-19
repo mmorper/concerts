@@ -477,7 +477,7 @@
     "image": "https://cdn-images.dzcdn.net/images/artist/1b2ca964de4c4f693dada3fe1dc25a39/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-04-14T14:34:38.753Z"
+    "fetchedAt": "2026-05-19T14:35:44.175Z"
   },
   "culture-club": {
     "name": "Culture Club",
@@ -2895,6 +2895,6 @@
     "formed": "1988",
     "website": "www.beck.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-04-14T14:34:38.051Z"
+    "fetchedAt": "2026-05-19T14:35:43.463Z"
   }
 }
