@@ -1,7 +1,66 @@
 {
-  "generatedAt": "2026-05-18T16:04:55.091Z",
-  "dataHash": "79f885de",
+  "generatedAt": "2026-05-25T16:04:48.152Z",
+  "dataHash": "00406d6d",
   "posts": [
+    {
+      "id": "rare-sighting-run-dmc",
+      "slug": "run-dmc-caught-once-never-again",
+      "category": "deep-cut",
+      "temporality": "evergreen",
+      "headline": "Run DMC: Caught Once, Never Again",
+      "prose": "I caught Run DMC exactly once in my entire concert history — June 20, 1987 at Pacific Amphitheatre with the Beastie Boys opening. This was right in their Raising Hell era, when both acts were ascending rapidly, and somehow I never managed to see either of them again despite decades of concertgoing. Looking back, that single show captured lightning in a bottle: two pioneering hip-hop acts sharing a stage just as the genre was breaking into the mainstream. I can't believe I let 37 years pass without another Run DMC sighting.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wvrqqx1341250863.jpg",
+        "alt": "Run-D.M.C.",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "It's Tricky",
+        "artistName": "Run DMC",
+        "albumName": "Raising Hell (Expanded Edition)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/22/42/00/22420075-91d2-7350-cbce-b195c296eb8a/mzaf_7064894115664637056.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6c/52/83/6c5283eb-146f-bde5-30aa-0e9892b6fc04/888880788566.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/its-tricky/1308514619?i=1308514621&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "run-dmc"
+      ],
+      "venues": [
+        "pacific-amphitheatre"
+      ],
+      "years": [
+        1987
+      ],
+      "tags": [
+        "#rare-sighting",
+        "#one-time-only"
+      ],
+      "deepLinks": [
+        {
+          "label": "Run-D.M.C.",
+          "url": "/?scene=artists&artist=run-dmc",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=venues&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "1987",
+          "url": "/?scene=timeline&year=1987",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "pacific-amphitheatre-16-shows-over-5-decades",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 28,
+      "detector": "rare-sighting",
+      "publishedAt": "2026-05-25T16:04:48.152Z"
+    },
     {
       "id": "album-context-nevermind-sting",
       "slug": "sting-days-after-nevermind-dropped",
@@ -3698,10 +3757,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 48,
-    "totalGenerated": 67,
-    "averageScore": 39,
-    "lastPipelineRun": "2026-05-18T16:04:55.091Z",
+    "totalPosts": 49,
+    "totalGenerated": 69,
+    "averageScore": 38.8,
+    "lastPipelineRun": "2026-05-25T16:04:48.152Z",
     "concertsAnalyzed": 179,
     "feedUrl": "/liner-notes.xml"
   }

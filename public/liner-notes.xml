@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 18 May 2026 16:04:55 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 25 May 2026 16:04:48 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>Run DMC: Caught Once, Never Again</title>
+    <link>https://concerts.morperhaus.org/liner-notes/run-dmc-caught-once-never-again</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/run-dmc-caught-once-never-again</guid>
+    <pubDate>Mon, 25 May 2026 16:04:48 +0000</pubDate>
+    <description>I caught Run DMC exactly once in my entire concert history — June 20, 1987 at Pacific Amphitheatre with the Beastie Boys opening. This was right in their Raising Hell era, when both acts were ascending rapidly, and somehow I never managed to see either of them again despite decades of concertgoing. Looking back, that single show captured lightning in a bottle: two pioneering hip-hop acts sharing a stage just as the genre was breaking into the mainstream. I can&apos;t believe I let 37 years pass without another Run DMC sighting.</description>
+    <category>#rare-sighting</category>
+    <category>#one-time-only</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/wvrqqx1341250863.jpg" medium="image" />
+  </item>
   <item>
     <title>Sting — Days After Nevermind Dropped</title>
     <link>https://concerts.morperhaus.org/liner-notes/sting-days-after-nevermind-dropped</link>
@@ -201,16 +211,6 @@
     <category>#drought</category>
     <category>#comeback</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg" medium="image" />
-  </item>
-  <item>
-    <title>Universal Amphitheater: 5 Shows Before It Was Demolished</title>
-    <link>https://concerts.morperhaus.org/liner-notes/universal-amphitheater-5-shows-before-it-was-demolished</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/universal-amphitheater-5-shows-before-it-was-demolished</guid>
-    <pubDate>Tue, 03 Mar 2026 05:36:00 +0000</pubDate>
-    <description>I somehow caught 5 shows at Universal Amphitheater across 16 years, from Howard Jones in 1989 to Tears For Fears in 2005 — but here&apos;s the twist: the venue was actually demolished in 1999 and rebuilt as Gibson Amphitheatre. That means my last show there technically happened at a completely different building on the same site, six years after the original was torn down. Four different artists, two different venues, one address that fooled my concert tracking for decades.</description>
-    <category>#venue-ghost</category>
-    <category>#demolished</category>
-    <media:content url="/images/venues/fallback.jpg" medium="image" />
   </item>
   </channel>
 </rss>
