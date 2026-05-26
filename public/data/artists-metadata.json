@@ -2896,5 +2896,17 @@
     "website": "www.beck.com",
     "source": "theaudiodb",
     "fetchedAt": "2026-05-19T14:35:43.463Z"
+  },
+  "pinhead-gunpowder": {
+    "name": "Pinhead Gunpowder",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/7za54g1717752096.jpg",
+    "genres": [
+      "Punk Rock",
+      "Punk"
+    ],
+    "formed": "1990",
+    "website": null,
+    "source": "theaudiodb",
+    "fetchedAt": "2026-05-26T14:34:53.063Z"
   }
 }
