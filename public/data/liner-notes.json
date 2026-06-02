@@ -1,7 +1,66 @@
 {
-  "generatedAt": "2026-05-25T16:04:48.152Z",
-  "dataHash": "00406d6d",
+  "generatedAt": "2026-06-02T15:15:21.680Z",
+  "dataHash": "39141741",
   "posts": [
+    {
+      "id": "album-context-late-registration-garbage",
+      "slug": "garbage-days-before-late-registration-dropped",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Garbage — Days Before Late Registration Dropped",
+      "prose": "In July 2005, hip-hop was about to get its most orchestral moment yet — Kanye West's Late Registration would drop just 34 days after I saw Garbage at Pacific Amphitheatre. I remember thinking how perfectly Shirley Manson's electronic-rock theatrics felt that summer, all moody synthesizers and guitar distortion. What I didn't know was that across town, Kanye was putting finishing touches on an album that would blend hip-hop with string arrangements in ways that echoed Garbage's own genre-blending DNA from the '90s. Sometimes the musical zeitgeist reveals itself in hindsight.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wwswpy1366731211.jpg",
+        "alt": "Garbage",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Only Happy When It Rains",
+        "artistName": "Garbage",
+        "albumName": "Garbage (20th Anniversary Edition) [2015 Remaster]",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/75/ad/d5/75add5f0-b359-6686-0a28-19da67e689b3/mzaf_9626845392030467520.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/81/8e/64/818e6487-df77-bb60-7245-7f87c40d6f2d/00602547364890.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/only-happy-when-it-rains/1440827138?i=1440827326&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "garbage"
+      ],
+      "venues": [
+        "pacific-amphitheatre"
+      ],
+      "years": [
+        2005
+      ],
+      "tags": [
+        "#album-context",
+        "#cultural-moment"
+      ],
+      "deepLinks": [
+        {
+          "label": "Garbage",
+          "url": "/?scene=artists&artist=garbage",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=venues&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "2005",
+          "url": "/?scene=timeline&year=2005",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "pacific-amphitheatre-16-shows-over-5-decades",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 29,
+      "detector": "album-context",
+      "publishedAt": "2026-06-02T15:15:21.680Z"
+    },
     {
       "id": "rare-sighting-run-dmc",
       "slug": "run-dmc-caught-once-never-again",
@@ -3757,10 +3816,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 49,
-    "totalGenerated": 69,
-    "averageScore": 38.8,
-    "lastPipelineRun": "2026-05-25T16:04:48.152Z",
+    "totalPosts": 50,
+    "totalGenerated": 71,
+    "averageScore": 38.6,
+    "lastPipelineRun": "2026-06-02T15:15:21.680Z",
     "concertsAnalyzed": 179,
     "feedUrl": "/liner-notes.xml"
   }

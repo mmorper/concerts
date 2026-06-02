@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 25 May 2026 16:04:48 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 02 Jun 2026 15:15:21 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>Garbage — Days Before Late Registration Dropped</title>
+    <link>https://concerts.morperhaus.org/liner-notes/garbage-days-before-late-registration-dropped</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/garbage-days-before-late-registration-dropped</guid>
+    <pubDate>Tue, 02 Jun 2026 15:15:21 +0000</pubDate>
+    <description>In July 2005, hip-hop was about to get its most orchestral moment yet — Kanye West&apos;s Late Registration would drop just 34 days after I saw Garbage at Pacific Amphitheatre. I remember thinking how perfectly Shirley Manson&apos;s electronic-rock theatrics felt that summer, all moody synthesizers and guitar distortion. What I didn&apos;t know was that across town, Kanye was putting finishing touches on an album that would blend hip-hop with string arrangements in ways that echoed Garbage&apos;s own genre-blending DNA from the &apos;90s. Sometimes the musical zeitgeist reveals itself in hindsight.</description>
+    <category>#album-context</category>
+    <category>#cultural-moment</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/wwswpy1366731211.jpg" medium="image" />
+  </item>
   <item>
     <title>Run DMC: Caught Once, Never Again</title>
     <link>https://concerts.morperhaus.org/liner-notes/run-dmc-caught-once-never-again</link>
@@ -201,16 +211,6 @@
     <category>#festival-bill</category>
     <category>#mega-bill</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg" medium="image" />
-  </item>
-  <item>
-    <title>Depeche Mode: 18 Years Between Shows</title>
-    <link>https://concerts.morperhaus.org/liner-notes/depeche-mode-18-years-between-shows</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/depeche-mode-18-years-between-shows</guid>
-    <pubDate>Thu, 05 Mar 2026 08:48:00 +0000</pubDate>
-    <description>I remember walking out of Staples Center in November 2005 after seeing Depeche Mode, never imagining it would be 18 years before I&apos;d see them again. Life happened — moves, kids, priorities shifted — and suddenly it was 2023 and I was driving to the Kia Forum in Inglewood, practically the same neighborhood where I&apos;d last seen them. The gap felt surreal, like I was reconnecting with a version of myself I&apos;d almost forgotten. Eighteen years is long enough to raise a child, but Dave Gahan&apos;s voice still hit exactly the same way it did when I was younger.</description>
-    <category>#drought</category>
-    <category>#comeback</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg" medium="image" />
   </item>
   </channel>
 </rss>
