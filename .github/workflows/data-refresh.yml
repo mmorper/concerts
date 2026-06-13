@@ -1,0 +1,81 @@
+name: Data Refresh
+
+# Full enrichment pipeline (NO Anthropic / liner-notes — that runs separately).
+# Covers: Google Sheet fetch, geocoding, venue photos, artist data + photos,
+# top tracks, discography, setlists, validation, facts, genres, sitemap, RSS.
+#
+# Runs weekly on a schedule, and on-demand via the "Run workflow" button
+# (Actions tab → Data Refresh → Run workflow). The inputs below let you do
+# controlled ad-hoc runs without editing this file.
+
+on:
+  schedule:
+    - cron: '0 7 * * 1'  # Mondays 07:00 UTC
+  workflow_dispatch:
+    inputs:
+      force_refresh_setlists:
+        description: 'Re-fetch ALL setlists, ignoring the cache'
+        type: boolean
+        default: false
+      extra_flags:
+        description: 'Extra build-data flags (e.g. "--skip-venues --skip-tracks")'
+        type: string
+        default: ''
+
+concurrency:
+  group: data-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run enrichment pipeline
+        env:
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+          SHEET_RANGE: ${{ secrets.SHEET_RANGE }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+          THEAUDIODB_API_KEY: ${{ secrets.THEAUDIODB_API_KEY }}
+          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
+          VITE_SETLISTFM_API_KEY: ${{ secrets.VITE_SETLISTFM_API_KEY }}
+        run: |
+          FLAGS=""
+          if [ "${{ inputs.force_refresh_setlists }}" = "true" ]; then
+            FLAGS="$FLAGS --force-refresh-setlists"
+          fi
+          FLAGS="$FLAGS ${{ inputs.extra_flags }}"
+          echo "Running: npm run build-data --$FLAGS"
+          npm run build-data -- $FLAGS
+
+      - name: Commit refreshed data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/*.json public/sitemap.xml public/rss.xml
+          git add public/llm.txt public/og-stats.json index.html 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No data changes to commit."
+          else
+            git commit -m "data: refresh enrichment pipeline [automated]"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
