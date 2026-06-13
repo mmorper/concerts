@@ -66,6 +66,27 @@ jobs:
           echo "Running: npm run build-data --$FLAGS"
           npm run build-data -- $FLAGS
 
+      - name: Guard against data regression
+        # Converts a silently-degraded run (e.g. expired Google token returning
+        # partial sheet data) into an actual job failure, so the built-in GitHub
+        # "failed workflow" email fires instead of committing bad data. A hard
+        # crash already fails the job above; this catches the quiet cases.
+        # ALLOWED_DROP tolerates intentional removals (e.g. a duplicate row).
+        run: |
+          ALLOWED_DROP=2
+          NEW=$(jq '.metadata.totalConcerts // (.concerts | length)' public/data/concerts.json)
+          OLD=$(git show HEAD:public/data/concerts.json | jq '.metadata.totalConcerts // (.concerts | length)' 2>/dev/null || echo 0)
+          echo "concert count: old=$OLD new=$NEW (allowed drop: $ALLOWED_DROP)"
+          if [ "$NEW" -le 0 ]; then
+            echo "::error::concerts.json is empty or unreadable after the run"
+            exit 1
+          fi
+          if [ $((OLD - NEW)) -gt "$ALLOWED_DROP" ]; then
+            echo "::error::concert count regressed $OLD -> $NEW (drop exceeds $ALLOWED_DROP) — not committing"
+            exit 1
+          fi
+          echo "Regression guard passed."
+
       - name: Commit refreshed data
         run: |
           git config user.name "github-actions[bot]"
