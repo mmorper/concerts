@@ -1,7 +1,184 @@
 {
-  "generatedAt": "2026-05-13T19:56:15.253Z",
-  "dataHash": "3bc1723a",
+  "generatedAt": "2026-06-02T15:15:21.680Z",
+  "dataHash": "39141741",
   "posts": [
+    {
+      "id": "album-context-late-registration-garbage",
+      "slug": "garbage-days-before-late-registration-dropped",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Garbage — Days Before Late Registration Dropped",
+      "prose": "In July 2005, hip-hop was about to get its most orchestral moment yet — Kanye West's Late Registration would drop just 34 days after I saw Garbage at Pacific Amphitheatre. I remember thinking how perfectly Shirley Manson's electronic-rock theatrics felt that summer, all moody synthesizers and guitar distortion. What I didn't know was that across town, Kanye was putting finishing touches on an album that would blend hip-hop with string arrangements in ways that echoed Garbage's own genre-blending DNA from the '90s. Sometimes the musical zeitgeist reveals itself in hindsight.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wwswpy1366731211.jpg",
+        "alt": "Garbage",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Only Happy When It Rains",
+        "artistName": "Garbage",
+        "albumName": "Garbage (20th Anniversary Edition) [2015 Remaster]",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/75/ad/d5/75add5f0-b359-6686-0a28-19da67e689b3/mzaf_9626845392030467520.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/81/8e/64/818e6487-df77-bb60-7245-7f87c40d6f2d/00602547364890.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/only-happy-when-it-rains/1440827138?i=1440827326&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "garbage"
+      ],
+      "venues": [
+        "pacific-amphitheatre"
+      ],
+      "years": [
+        2005
+      ],
+      "tags": [
+        "#album-context",
+        "#cultural-moment"
+      ],
+      "deepLinks": [
+        {
+          "label": "Garbage",
+          "url": "/?scene=artists&artist=garbage",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=venues&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "2005",
+          "url": "/?scene=timeline&year=2005",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "pacific-amphitheatre-16-shows-over-5-decades",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 29,
+      "detector": "album-context",
+      "publishedAt": "2026-06-02T15:15:21.680Z"
+    },
+    {
+      "id": "rare-sighting-run-dmc",
+      "slug": "run-dmc-caught-once-never-again",
+      "category": "deep-cut",
+      "temporality": "evergreen",
+      "headline": "Run DMC: Caught Once, Never Again",
+      "prose": "I caught Run DMC exactly once in my entire concert history — June 20, 1987 at Pacific Amphitheatre with the Beastie Boys opening. This was right in their Raising Hell era, when both acts were ascending rapidly, and somehow I never managed to see either of them again despite decades of concertgoing. Looking back, that single show captured lightning in a bottle: two pioneering hip-hop acts sharing a stage just as the genre was breaking into the mainstream. I can't believe I let 37 years pass without another Run DMC sighting.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wvrqqx1341250863.jpg",
+        "alt": "Run-D.M.C.",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "It's Tricky",
+        "artistName": "Run DMC",
+        "albumName": "Raising Hell (Expanded Edition)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/22/42/00/22420075-91d2-7350-cbce-b195c296eb8a/mzaf_7064894115664637056.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6c/52/83/6c5283eb-146f-bde5-30aa-0e9892b6fc04/888880788566.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/its-tricky/1308514619?i=1308514621&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "run-dmc"
+      ],
+      "venues": [
+        "pacific-amphitheatre"
+      ],
+      "years": [
+        1987
+      ],
+      "tags": [
+        "#rare-sighting",
+        "#one-time-only"
+      ],
+      "deepLinks": [
+        {
+          "label": "Run-D.M.C.",
+          "url": "/?scene=artists&artist=run-dmc",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=venues&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "1987",
+          "url": "/?scene=timeline&year=1987",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "pacific-amphitheatre-16-shows-over-5-decades",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 28,
+      "detector": "rare-sighting",
+      "publishedAt": "2026-05-25T16:04:48.152Z"
+    },
+    {
+      "id": "album-context-nevermind-sting",
+      "slug": "sting-days-after-nevermind-dropped",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Sting — Days After Nevermind Dropped",
+      "prose": "Nevermind hit shelves on September 24th, 1991, and within days the entire rock landscape had shifted — yet there I was on October 4th, just 10 days later, watching Sting perform his polished pop-rock at Pacific Amphitheatre in Costa Mesa. I remember thinking how surreal it felt to be hearing \"Fields of Gold\" while the radio was still figuring out what to do with \"Smells Like Teen Spirit.\" The timing captures this perfect moment when the old guard was still touring their greatest hits, completely unaware that the ground had already moved beneath them.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wuprus1340023845.jpg",
+        "alt": "Sting",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Desert Rose",
+        "artistName": "Sting",
+        "albumName": "Brand New Day",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ae/51/bb/ae51bb74-5531-8179-f046-ca553aa3ee6e/mzaf_15551579502089560370.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/eb/29/4c/eb294c36-1f54-fade-0de3-463ff57ea09a/16UMGIM59578.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/desert-rose/1440863519?i=1440863652&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "sting"
+      ],
+      "venues": [
+        "pacific-amphitheatre"
+      ],
+      "years": [
+        1991
+      ],
+      "tags": [
+        "#album-context",
+        "#cultural-moment"
+      ],
+      "deepLinks": [
+        {
+          "label": "Sting",
+          "url": "/?scene=artists&artist=sting",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=venues&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "1991",
+          "url": "/?scene=timeline&year=1991",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "pacific-amphitheatre-16-shows-over-5-decades",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 30,
+      "detector": "album-context",
+      "publishedAt": "2026-05-18T16:04:55.091Z"
+    },
     {
       "id": "album-context-achtung-baby-siouxsie-and-the-banshees",
       "slug": "siouxsie-and-the-banshees-days-after-achtung-baby-dropped",
@@ -3639,10 +3816,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 47,
-    "totalGenerated": 65,
-    "averageScore": 39.2,
-    "lastPipelineRun": "2026-05-13T19:56:15.253Z",
+    "totalPosts": 50,
+    "totalGenerated": 71,
+    "averageScore": 38.6,
+    "lastPipelineRun": "2026-06-02T15:15:21.680Z",
     "concertsAnalyzed": 179,
     "feedUrl": "/liner-notes.xml"
   }
