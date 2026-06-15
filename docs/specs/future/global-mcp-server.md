@@ -498,6 +498,8 @@ The longest stretch without a show: [N] days, between [show A] and [show B].
 `limit`. If results hit the cap: append “That’s [limit] of [N] matches — try narrowing
 the search.” No arc summaries, no pagination.
 
+> **Note (per Addendum 2026-05-17):** In v1, drop the `[If a pattern is obvious: one closing sentence.]` line below — `search_concerts` is fully deterministic; pattern-spotting moves to the `query` escape hatch.
+
 **Returns:**
 
 ```
@@ -530,6 +532,7 @@ every year.”*
 - Genres + formed year from `artists-metadata.json` if present (5/279 have data)
 - Top tracks from `artists-top-tracks.json` if present (257/279 coverage)
 - Opener context from `concerts.json`
+- Opening context line + closing arc from `public/data/narrations/artists.json` (per Addendum 2026-05-17 — hybrid layer). The templated arc shown in the Returns block below is the **fallback** when narration is missing.
 
 **Returns:**
 
@@ -567,6 +570,8 @@ I've seen [Artist] [N] time(s)[, across [X] years ([first]–[last])].
 
 **Enrichment from venues-metadata.json:** city, capacity, address, any description fields
 present (schema confirmed in Window 1).
+
+> **Note (per Addendum 2026-05-17):** Opening context line + closing arc read from `public/data/narrations/venues.json` (hybrid layer). The templated closing note in the Returns block is the **fallback** when narration is missing. Caveat: `capacity`, `neighborhood`, and `description` are NOT in the venues-metadata schema today — narration prompt must not depend on them.
 
 **Returns:**
 

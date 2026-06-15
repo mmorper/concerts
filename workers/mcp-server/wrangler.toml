@@ -1,0 +1,32 @@
+# Cloudflare Worker Configuration — Morperhaus Concert Archive MCP Server
+# Spec: docs/specs/future/global-mcp-server.md (Addendum 2026-05-17: Agentic Layer)
+# Deploys to: concerts.morperhaus.org/mcp* (more specific than meta-injector's /*)
+
+name = "morperhaus-mcp"
+main = "src/index.ts"
+compatibility_date = "2026-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+account_id = "6db8591bbcba4588ae4ef9c3839cd209"
+
+[[routes]]
+pattern = "concerts.morperhaus.org/mcp*"
+zone_name = "morperhaus.org"
+
+[vars]
+DATA_BASE_URL = "https://concerts.morperhaus.org/data"
+
+# KV namespace for `query` tool daily-cap enforcement (Addendum §Decision: runtime `query` escape hatch).
+# Stores per-day {tokens, calls}; pre-flight read refuses if over cap, post-flight write via ctx.waitUntil.
+# Create the namespace once with:
+#   npx wrangler kv namespace create MCP_QUERY_USAGE
+# then paste the returned `id` below (and replace this comment).
+[[kv_namespaces]]
+binding = "MCP_QUERY_USAGE"
+id = "8aee948db1eb48c6ad9bbed2c4a43fa8"
+
+# Anthropic API key for the `query` tool is stored as a Wrangler secret, NOT in this file:
+#   cd workers/mcp-server && npx wrangler secret put ANTHROPIC_API_KEY
+
+[build]
+command = ""
