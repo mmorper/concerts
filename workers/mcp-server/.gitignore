@@ -1,2 +1,5 @@
 # Local wrangler dev state (KV/DO simulation, build cache)
 .wrangler/
+
+# Local dev secrets (ANTHROPIC_API_KEY for `query` tool)
+.dev.vars

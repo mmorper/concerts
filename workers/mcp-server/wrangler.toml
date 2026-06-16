@@ -22,6 +22,12 @@ DATA_BASE_URL = "https://concerts.morperhaus.org/data"
 [alias]
 ai = "./src/ai-stub.ts"
 
+# Bundle prompt files as text so they can be imported (the `query` tool's system prompt
+# lives in prompts/query.md — kept separate from code so prompt-only edits stay small).
+[[rules]]
+type = "Text"
+globs = ["**/*.md"]
+
 # KV namespace for `query` tool daily-cap enforcement (Addendum §Decision: runtime `query` escape hatch).
 # Stores per-day {tokens, calls}; pre-flight read refuses if over cap, post-flight write via ctx.waitUntil.
 # Create the namespace once with:

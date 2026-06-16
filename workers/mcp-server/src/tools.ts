@@ -28,7 +28,11 @@ import {
   getNarration,
   getSetlistsCache,
   getVenuesMetadata,
+  isQueryUsageOverCap,
+  readQueryUsage,
+  recordQueryUsage,
 } from "./data.js";
+import QUERY_PROMPT from "../prompts/query.md";
 
 function textResult(text: string, isError = false): CallToolResult {
   return { content: [{ type: "text", text }], isError };
@@ -568,7 +572,70 @@ const DESC = {
   venue: "The rooms I've kept returning to — every show at a single venue, in order.",
   onThisDay: "Concerts that share a date — across all the years, whatever's happened on this day.",
   surprise: "I'll pick one. A random concert, and why it's worth remembering.",
+  query: "When none of my other tools fit, ask me anything about the shows and I'll reason over the whole archive. I count these by hand, so I'll hedge when I'm unsure.",
 };
+
+// ---------- query: runtime LLM escape hatch ----------
+// Addendum 2026-05-17 §"Decision: runtime `query` escape hatch". Build-time Haiku pricing
+// verified $1/$5 per MTok (2026-06-16). Raw fetch — the Anthropic SDK is overkill in a
+// Worker for a single Messages call. concerts.json only (~50K tokens); the other files
+// bloat context without helping freeform questions.
+
+const ANTHROPIC_MODEL = "claude-haiku-4-5";
+
+interface QueryResult {
+  text: string;
+  inputTokens: number;
+  outputTokens: number;
+}
+
+async function runQuery(
+  env: Env,
+  question: string,
+  concertsJson: string,
+): Promise<QueryResult | null> {
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-api-key": env.ANTHROPIC_API_KEY ?? "",
+      "anthropic-version": "2023-06-01",
+    },
+    body: JSON.stringify({
+      model: ANTHROPIC_MODEL,
+      max_tokens: 1024,
+      system: QUERY_PROMPT,
+      messages: [
+        {
+          role: "user",
+          content: `Here is my full concert archive as JSON (concerts.json):\n\n${concertsJson}\n\nQuestion: ${question}`,
+        },
+      ],
+    }),
+  });
+
+  if (!res.ok) {
+    console.error(`Anthropic query failed ${res.status}`);
+    return null;
+  }
+
+  const data = (await res.json()) as {
+    content?: { type: string; text?: string }[];
+    usage?: { input_tokens?: number; output_tokens?: number };
+  };
+  const text = data.content
+    ?.filter((b) => b.type === "text")
+    .map((b) => b.text ?? "")
+    .join("")
+    .trim();
+  if (!text) return null;
+
+  return {
+    text,
+    inputTokens: data.usage?.input_tokens ?? 0,
+    outputTokens: data.usage?.output_tokens ?? 0,
+  };
+}
 
 export function registerTools(server: McpServer, env: Env): void {
   server.registerTool(
@@ -683,6 +750,46 @@ export function registerTools(server: McpServer, env: Env): void {
       return textResult(
         surpriseMe(data.concerts, pick, setlists, meta ?? {}, tracks ?? {}).text,
       );
+    }),
+  );
+
+  server.registerTool(
+    "query",
+    {
+      title: "Ask the archive anything",
+      description: DESC.query,
+      inputSchema: { question: z.string() },
+    },
+    wrapTool("query", async (args) => {
+      if (!env.ANTHROPIC_API_KEY) {
+        return textResult(
+          "Freeform questions aren't available right now — try one of my other tools.",
+          true,
+        );
+      }
+      // Pre-flight: refuse without spending if today's budget is gone (spec §Enforcement).
+      const usage = await readQueryUsage(env);
+      if (isQueryUsageOverCap(usage)) {
+        return textResult(
+          "Today's query budget is spent — try one of my deterministic tools, or come back tomorrow.",
+        );
+      }
+      const data = await getConcerts(env, bgCtx);
+      if (!data) return dataUnavailableResult();
+
+      const result = await runQuery(env, String(args.question ?? ""), JSON.stringify(data.concerts));
+      if (!result) {
+        return textResult(
+          "I couldn't work that one out just now — try again, or use one of my deterministic tools.",
+          true,
+        );
+      }
+      // Post-flight: record real token usage so the cap reflects what was actually spent.
+      recordQueryUsage(env, bgCtx, usage, {
+        inputTokens: result.inputTokens,
+        outputTokens: result.outputTokens,
+      });
+      return textResult(result.text);
     }),
   );
 }
