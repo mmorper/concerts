@@ -625,7 +625,7 @@ Implemented in `scripts/liner-notes/curate.ts`.
 
 Implemented in `scripts/liner-notes/generate.ts`.
 
-**Model:** `claude-sonnet-4-20250514` | **Temperature:** 0.7 | **Max tokens:** 400 (800 for `historical-moment`)
+**Model:** `claude-sonnet-4-6` | **Temperature:** 0.7 | **Max tokens:** 400 (800 for `historical-moment`)
 
 ---
 

@@ -137,7 +137,7 @@ Before accepting generated prose, verify:
 ## Anthropic API Parameters
 
 ```typescript
-model: "claude-sonnet-4-20250514"
+model: "claude-sonnet-4-6"
 max_tokens: 400
 temperature: 0.7
 ```

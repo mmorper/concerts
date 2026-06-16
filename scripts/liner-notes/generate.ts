@@ -28,7 +28,7 @@ export interface GenerateOptions {
   dryRun?: boolean;
 }
 
-const MODEL = "claude-sonnet-4-20250514";
+const MODEL = "claude-sonnet-4-6";
 const MAX_TOKENS = 400;
 const TEMPERATURE = 0.7;
 
