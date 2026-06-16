@@ -21,7 +21,12 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { config } from "dotenv";
 import Anthropic from "@anthropic-ai/sdk";
+
+// Load .env so `npm run generate:narrations` picks up ANTHROPIC_API_KEY locally
+// (matches the other scripts). In CI the key comes from the workflow's env block.
+config();
 
 const MODEL = "claude-haiku-4-5";
 const MAX_TOKENS = 400;
