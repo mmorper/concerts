@@ -1,8 +1,9 @@
 name: Data Refresh
 
-# Full enrichment pipeline (NO Anthropic / liner-notes — that runs separately).
-# Covers: Google Sheet fetch, geocoding, venue photos, artist data + photos,
-# top tracks, discography, setlists, validation, facts, genres, sitemap, RSS.
+# Full enrichment pipeline. Covers: Google Sheet fetch, geocoding, venue photos,
+# artist data + photos, top tracks, discography, setlists, validation, facts,
+# genres, sitemap, RSS — then incremental MCP narration prose (build-time Haiku).
+# (Long-form liner-notes generation still runs in its own workflow.)
 #
 # Runs weekly on a schedule, and on-demand via the "Run workflow" button
 # (Actions tab → Data Refresh → Run workflow). The inputs below let you do
@@ -101,6 +102,41 @@ jobs:
             echo "No data changes to commit."
           else
             git commit -m "data: refresh enrichment pipeline [automated]"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Generate MCP narration prose (incremental)
+        # Build-time Haiku narration for the MCP server's hybrid tools
+        # (get_artist_history / get_venue_history). Hash-based: only artists/venues
+        # whose facts changed regenerate, so a normal week is a few cents.
+        #
+        # --limit caps per-run spend: a cold start (narrations never hydrated) or a
+        # PROMPT_VERSION bump drains ~25 entities/run (~$0.10) over several weeks
+        # instead of a surprise full regen (~$13). For a fast full hydration, run
+        # `npm run generate:narrations` (no limit) locally.
+        #
+        # Runs AFTER the data commit on purpose: a flaky Anthropic week must not block
+        # the core data refresh (already pushed above). A hard failure here still fails
+        # the job, so the failed-workflow email fires. Skipped if no key is configured.
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY not set — skipping narration generation."
+            exit 0
+          fi
+          npm run generate:narrations -- --limit=25
+
+      - name: Commit narrations
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/narrations
+          if git diff --staged --quiet; then
+            echo "No narration changes to commit."
+          else
+            git commit -m "content: refresh MCP narrations [automated]"
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
