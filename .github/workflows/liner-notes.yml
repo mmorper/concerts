@@ -1,0 +1,80 @@
+name: Liner Notes
+
+# Decoupled, independent liner-notes generation. This is the ONLY workflow that
+# calls the Anthropic API (the accepted ~$0.10-0.15/run cost). It reads the
+# already-committed concert/artist/venue data — it does NOT re-run enrichment.
+#
+# Runs weekly on a schedule, and on-demand via the "Run workflow" button.
+# Generated prose is committed directly (no review gate).
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Mondays 08:00 UTC (after Data Refresh)
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Run mode'
+        type: choice
+        default: normal
+        options:
+          - normal     # standard run, 2-3 posts
+          - seed       # bootstrap up to 10 posts
+          - force      # bypass the 6-month dedup cooldown
+          - dry-run    # preview selection only, no API calls, no commit
+      date:
+        description: 'Override "today" (YYYY-MM-DD), e.g. to test anniversaries'
+        type: string
+        default: ''
+
+concurrency:
+  group: liner-notes
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate liner notes
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          MODE="${{ inputs.mode }}"
+          MODE="${MODE:-normal}"
+          ARGS=""
+          case "$MODE" in
+            seed)    ARGS="--seed" ;;
+            force)   ARGS="--force" ;;
+            dry-run) ARGS="--dry-run" ;;
+          esac
+          if [ -n "${{ inputs.date }}" ]; then
+            ARGS="$ARGS --date ${{ inputs.date }}"
+          fi
+          echo "Running: npm run generate:liner-notes --$ARGS"
+          npm run generate:liner-notes -- $ARGS
+
+      - name: Commit generated posts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/liner-notes.json public/liner-notes.xml public/og/liner-notes 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No new liner notes to commit."
+          else
+            git commit -m "content: generate liner notes [automated]"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
