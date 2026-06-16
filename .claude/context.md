@@ -2,9 +2,9 @@
 
 ## Quick Start
 
-**Version:** v4.6.1 (Production)
+**Version:** v4.7.0 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-05-09
+**Last Sync:** 2026-06-16
 
 ### Commands
 
