@@ -2,8 +2,9 @@ import { McpAgent } from "agents/mcp";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 import type { Env } from "./types.js";
-import { prefetchLazyFiles, prefetchLoadFiles } from "./data.js";
+import { getConcerts, prefetchLazyFiles, prefetchLoadFiles } from "./data.js";
 import { registerTools } from "./tools.js";
+import { renderLandingPage } from "./landing.js";
 
 const SERVER_NAME = "Morperhaus Concert Archive";
 const SERVER_VERSION = "0.1.0";
@@ -104,6 +105,35 @@ export class MorperhausMcp extends McpAgent<Env> {
   }
 }
 
+// Computes the live headline stats for the landing page from concerts.json. Falls back
+// to sensible static numbers if the data can't be loaded (the page must always render).
+async function serveLandingPage(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<Response> {
+  let stats = { shows: 183, venues: 79, cities: 36, firstYear: 1984 };
+  try {
+    const data = await getConcerts(env, ctx);
+    if (data?.concerts.length) {
+      const c = data.concerts;
+      stats = {
+        shows: c.length,
+        venues: new Set(c.map((x) => x.venueNormalized)).size,
+        cities: new Set(c.map((x) => x.cityState)).size,
+        firstYear: Math.min(...c.map((x) => x.year)),
+      };
+    }
+  } catch (e) {
+    console.error("Landing stats compute failed; using defaults", e);
+  }
+  return new Response(renderLandingPage(stats), {
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "public, max-age=300",
+    },
+  });
+}
+
 export default {
   async fetch(
     request: Request,
@@ -113,6 +143,19 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === "/mcp" || url.pathname.startsWith("/mcp/")) {
+      // A human visiting the endpoint in a browser gets a friendly landing page; MCP
+      // clients POST (or send an SSE GET with a session id) and fall through to the
+      // protocol handler. Discriminator: GET + Accept: text/html + no session header —
+      // no client sends text/html, so this never intercepts real MCP traffic.
+      if (
+        url.pathname === "/mcp" &&
+        request.method === "GET" &&
+        (request.headers.get("accept") ?? "").includes("text/html") &&
+        !request.headers.get("mcp-session-id")
+      ) {
+        return serveLandingPage(env, ctx);
+      }
+
       warmCachesOnce(env, ctx);
       // Outermost guard (spec Error Handling §5): a runtime exception in the transport
       // is logged and returned as a JSON-RPC error rather than a bare 500.
