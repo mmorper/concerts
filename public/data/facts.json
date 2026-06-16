@@ -1,5 +1,5 @@
 {
-  "computedAt": "2026-05-19T14:41:10.223Z",
+  "computedAt": "2026-06-16T14:48:47.665Z",
   "facts": [
     {
       "id": "top-artist",
@@ -22,7 +22,7 @@
     {
       "id": "total-concerts",
       "category": "timeline",
-      "headline": "182 concerts since 1984",
+      "headline": "183 concerts since 1984",
       "detail": "43 years of live music memories",
       "route": "/?scene=timeline",
       "cta": "Explore the timeline",
@@ -49,7 +49,7 @@
     {
       "id": "top-state",
       "category": "geography",
-      "headline": "California: 121 concerts",
+      "headline": "California: 122 concerts",
       "detail": "Home base for most concert experiences",
       "route": "/?scene=geography",
       "cta": "Explore the map",
@@ -85,9 +85,9 @@
     {
       "id": "latest-concert",
       "category": "timeline",
-      "headline": "Latest: Thompson Twins (2026)",
-      "detail": "The most recent addition — Pavilion Theatre",
-      "route": "/?scene=artists&artist=thompson-twins",
+      "headline": "Latest: Pinhead Gunpowder (2026)",
+      "detail": "The most recent addition — Garden Amp",
+      "route": "/?scene=artists&artist=pinhead-gunpowder",
       "cta": "View artist details",
       "priority": 10
     },
@@ -103,7 +103,7 @@
     {
       "id": "unique-cities",
       "category": "geography",
-      "headline": "35 cities visited",
+      "headline": "36 cities visited",
       "detail": "Live music across the map",
       "route": "/?scene=geography",
       "cta": "Explore the map",
@@ -112,7 +112,7 @@
     {
       "id": "unique-venues",
       "category": "venue",
-      "headline": "78 unique venues",
+      "headline": "79 unique venues",
       "detail": "From clubs to arenas and amphitheaters",
       "route": "/?scene=venues",
       "cta": "Explore venues",

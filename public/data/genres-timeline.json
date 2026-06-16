@@ -316,9 +316,9 @@
         "2022": 3,
         "2024": 1,
         "2025": 1,
-        "2026": 1
+        "2026": 2
       },
-      "totalShows": 30,
+      "totalShows": 31,
       "firstYear": 1985,
       "lastYear": 2026,
       "artists": [
@@ -588,6 +588,16 @@
         {
           "name": "Nile Rodgers",
           "normalizedName": "nile-rodgers",
+          "showCount": 1,
+          "years": [
+            2026
+          ],
+          "firstYear": 2026,
+          "lastYear": 2026
+        },
+        {
+          "name": "Pinhead Gunpowder",
+          "normalizedName": "pinhead-gunpowder",
           "showCount": 1,
           "years": [
             2026
@@ -1510,7 +1520,7 @@
     "2023": 11,
     "2024": 6,
     "2025": 4,
-    "2026": 3
+    "2026": 4
   },
   "milestones": [
     {
@@ -1546,5 +1556,5 @@
     "start": 1984,
     "end": 2026
   },
-  "generatedAt": "2026-05-19T14:41:10.214Z"
+  "generatedAt": "2026-06-16T14:48:47.658Z"
 }

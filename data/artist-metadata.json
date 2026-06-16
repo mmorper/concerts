@@ -563,6 +563,15 @@
       "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/tuxxvx1587303826.jpg"
     },
     {
+      "name": "Pinhead Gunpowder",
+      "normalizedName": "pinhead-gunpowder",
+      "genre": "Punk Rock",
+      "genreNormalized": "punk-rock",
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/7za54g1717752096.jpg",
+      "source": "theaudiodb",
+      "fetchedAt": "2026-06-16T14:35:02.455Z"
+    },
+    {
       "name": "Prophets of Rage",
       "normalizedName": "prophets-of-rage",
       "genre": "Political Hip Hop",
@@ -950,5 +959,5 @@
       "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/marley-ziggy-508440fb16be3.jpg"
     }
   ],
-  "lastUpdated": "2026-03-23T14:37:46.540Z"
+  "lastUpdated": "2026-06-16T14:35:02.460Z"
 }
