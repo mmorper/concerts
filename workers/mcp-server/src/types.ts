@@ -65,6 +65,19 @@ export interface ArtistMetadata {
   website?: string;
 }
 
+export interface VenueConcertRef {
+  id: string;
+  date: string;
+  headliner: string;
+}
+
+export interface VenueStats {
+  totalConcerts: number;
+  firstEvent: string;
+  lastEvent: string;
+  uniqueArtists: number;
+}
+
 export interface VenueMetadata {
   name: string;
   normalizedName: string;
@@ -72,6 +85,26 @@ export interface VenueMetadata {
   state: string;
   cityState: string;
   location?: { lat: number; lng: number };
+  stats?: VenueStats;
+  concerts?: VenueConcertRef[];
+  status?: string; // active | closed | demolished | renamed
+  closedDate?: string;
+  notes?: string;
+}
+
+// setlist.fm shape (nested). Songs live at setlist.sets.set[].song[].name.
+// `setlist` is null for ~21% of cached entries (lookup ran, no setlist found).
+export interface SetlistSong {
+  name: string;
+}
+
+export interface SetlistSet {
+  song?: SetlistSong[];
+}
+
+export interface Setlist {
+  tour?: { name?: string };
+  sets?: { set?: SetlistSet[] };
 }
 
 export interface SetlistEntry {
@@ -79,7 +112,9 @@ export interface SetlistEntry {
   artistName: string;
   date: string;
   venue: string;
-  songs?: string[];
+  city?: string;
+  setlist: Setlist | null;
+  fetchedAt?: string;
 }
 
 export interface SetlistsCache {

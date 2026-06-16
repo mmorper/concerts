@@ -1,0 +1,92 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`get_archive_info > narrates the collection's shape 1`] = `
+"I've been to 11 concerts across 40 years, from 1984 to 2024 — 8 venues in 6 cities.
+
+The artists I've seen most: Social Distortion (5), Depeche Mode (3), Adam Ant (1), Peter Gabriel (1), Peter Hook and the Light (1).
+The rooms I keep returning to: Pacific Amphitheatre (4), Dodger Stadium (1), Hollywood Bowl (1), Irvine Meadows (1), Rose Bowl (1).
+My busiest decade was the 1980s, with 3 shows.
+More New Wave than anything else — 6 shows.
+
+The longest I went without a show was 3060 days, between Peter Gabriel in May 2002 and Social Distortion in Sep 2010."
+`;
+
+exports[`get_artist_history > 5+ shows scales the closing arc 1`] = `
+"I've seen Social Distortion 5 times, across 34 years (1990–2024).
+Formed 1978, Punk.
+
+1. June 4, 1990 — Pacific Amphitheatre, Costa Mesa [concert-5]
+2. July 10, 1995 — Pacific Amphitheatre, Costa Mesa [concert-6]
+3. August 15, 2000 — The Roxy, Los Angeles [concert-7]
+4. September 20, 2010 — Pacific Amphitheatre, Costa Mesa [concert-8]
+5. October 25, 2024 — Pacific Amphitheatre, Costa Mesa [concert-9]
+
+Known for Story of My Life and Ball and Chain.
+
+Social Distortion is one of the artists I've seen most — 5 times over 34 years."
+`;
+
+exports[`get_artist_history > single show 1`] = `
+"I've seen Adam Ant 1 time.
+Formed 1977, New Wave.
+
+1. April 27, 1984 — Irvine Meadows, Irvine [concert-1]
+   With Romeo Void opening.
+
+A single show. Adam Ant appears in the archive once."
+`;
+
+exports[`get_venue_history > repeat venue 1`] = `
+"Pacific Amphitheatre, Costa Mesa, California — 4 shows in the archive.
+
+1. June 4, 1990 — Social Distortion [concert-5]
+2. July 10, 1995 — Social Distortion [concert-6]
+3. September 20, 2010 — Social Distortion [concert-8]
+4. October 25, 2024 — Social Distortion [concert-9]
+
+Visited 4 times, 1990 to 2024."
+`;
+
+exports[`get_venue_history > single visit pulls closure context from notes 1`] = `
+"Irvine Meadows, Irvine, California — 1 show in the archive.
+Demolished for residential development.
+
+1. April 27, 1984 — Adam Ant [concert-1]
+   With Romeo Void opening.
+
+A single visit — April 27, 1984, Adam Ant."
+`;
+
+exports[`on_this_day > multiple shares of a date 1`] = `
+"On June 4, across the years:
+
+1988: Depeche Mode at Rose Bowl, Pasadena [concert-3]
+1990: Social Distortion at Pacific Amphitheatre, Costa Mesa [concert-5]"
+`;
+
+exports[`search_concerts > caps results and says so honestly 1`] = `
+"5 concerts matching "Social Distortion":
+
+Social Distortion — Pacific Amphitheatre, Costa Mesa (Jun 1990) [concert-5]
+Social Distortion — Pacific Amphitheatre, Costa Mesa (Jul 1995) [concert-6]
+
+That's 2 of 5 — try narrowing the search."
+`;
+
+exports[`search_concerts > single result 1`] = `
+"1 concert matching "Adam Ant":
+
+Adam Ant — Irvine Meadows, Irvine (Apr 1984) [concert-1]
+  With Romeo Void opening."
+`;
+
+exports[`search_concerts > zero results say something real 1`] = `"I don't have anything matching "Nobody At All" in the archive."`;
+
+exports[`surprise_me > only appearance of an artist 1`] = `
+"I'm surfacing this one because it's the only time Adam Ant appears in the archive.
+
+Adam Ant at Irvine Meadows, Irvine
+April 27, 1984 [concert-1]
+New Wave • Formed 1977
+With Romeo Void opening."
+`;

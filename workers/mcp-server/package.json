@@ -9,6 +9,8 @@
     "deploy": "npx wrangler deploy",
     "dev": "npx wrangler dev",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "tail": "npx wrangler tail"
   },
   "dependencies": {
@@ -20,6 +22,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260101.0",
     "typescript": "^5.7.0",
+    "vitest": "^3.0.0",
     "wrangler": "^4.0.0"
   }
 }
