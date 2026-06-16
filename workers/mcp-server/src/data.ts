@@ -1,9 +1,15 @@
 import type {
+  ArtistsMetadata,
+  ArtistsTopTracks,
+  ConcertData,
   Env,
+  FactsData,
   Narration,
   NarrationKind,
   NarrationRecord,
   QueryUsageRecord,
+  SetlistsCache,
+  VenuesMetadata,
 } from "./types.js";
 import { QUERY_DAILY_CALL_CAP, QUERY_DAILY_TOKEN_CAP } from "./types.js";
 
@@ -41,6 +47,111 @@ export async function cachedJsonFetch<T>(
     console.error(`Malformed JSON at ${url}`, e);
     return null;
   }
+}
+
+// ---------- Data file registry ----------
+// Spec §"Data Flow". LOAD = eager (warmed on cold start, ~215K total). LAZY = fetched
+// on first tool use that needs them. SKIP files (geocode, venue-photos, liner-notes,
+// discography) are intentionally absent — not useful for a text-based MCP.
+
+const LOAD_FILES = [
+  "concerts.json",
+  "facts.json",
+  "artists-metadata.json",
+] as const;
+
+const LAZY_FILES = [
+  "venues-metadata.json",
+  "setlists-cache.json",
+  "artists-top-tracks.json",
+] as const;
+
+function dataUrl(env: Env, file: string): string {
+  return `${env.DATA_BASE_URL}/${file}`;
+}
+
+// ---------- LOAD (eager) helpers ----------
+
+export function getConcerts(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<ConcertData | null> {
+  return cachedJsonFetch<ConcertData>(dataUrl(env, "concerts.json"), ctx);
+}
+
+export function getFacts(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<FactsData | null> {
+  return cachedJsonFetch<FactsData>(dataUrl(env, "facts.json"), ctx);
+}
+
+export function getArtistsMetadata(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<ArtistsMetadata | null> {
+  return cachedJsonFetch<ArtistsMetadata>(
+    dataUrl(env, "artists-metadata.json"),
+    ctx,
+  );
+}
+
+// ---------- LAZY helpers ----------
+// First caller pays the fetch latency for the specific file their tool needs;
+// background prefetch (below) warms the rest for subsequent callers.
+
+export function getVenuesMetadata(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<VenuesMetadata | null> {
+  return cachedJsonFetch<VenuesMetadata>(
+    dataUrl(env, "venues-metadata.json"),
+    ctx,
+  );
+}
+
+export function getSetlistsCache(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<SetlistsCache | null> {
+  return cachedJsonFetch<SetlistsCache>(
+    dataUrl(env, "setlists-cache.json"),
+    ctx,
+  );
+}
+
+export function getArtistsTopTracks(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<ArtistsTopTracks | null> {
+  return cachedJsonFetch<ArtistsTopTracks>(
+    dataUrl(env, "artists-top-tracks.json"),
+    ctx,
+  );
+}
+
+// ---------- Background cache warming ----------
+// Spec §"Lazy-Load UX: Background Prefetch on First Hot Path". Both helpers run under
+// ctx.waitUntil so they warm caches.default without blocking the response — the LAZY
+// files are never fetched synchronously on the cold-start path. cachedJsonFetch swallows
+// and logs its own failures, so these never reject (Promise.allSettled belt-and-braces).
+
+export async function prefetchLoadFiles(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<void> {
+  await Promise.allSettled(
+    LOAD_FILES.map((file) => cachedJsonFetch(dataUrl(env, file), ctx)),
+  );
+}
+
+export async function prefetchLazyFiles(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<void> {
+  await Promise.allSettled(
+    LAZY_FILES.map((file) => cachedJsonFetch(dataUrl(env, file), ctx)),
+  );
 }
 
 // Returns null on miss so callers can fall back to templated narration.

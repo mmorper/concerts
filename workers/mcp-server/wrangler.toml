@@ -16,6 +16,12 @@ zone_name = "morperhaus.org"
 [vars]
 DATA_BASE_URL = "https://concerts.morperhaus.org/data"
 
+# `agents` lazily imports the Vercel `ai` SDK from its MCP *client* path (dead code for a
+# server). Alias it to a local no-op stub so esbuild doesn't try to bundle the whole SDK.
+# See src/ai-stub.ts.
+[alias]
+ai = "./src/ai-stub.ts"
+
 # KV namespace for `query` tool daily-cap enforcement (Addendum §Decision: runtime `query` escape hatch).
 # Stores per-day {tokens, calls}; pre-flight read refuses if over cap, post-flight write via ctx.waitUntil.
 # Create the namespace once with:
@@ -24,6 +30,16 @@ DATA_BASE_URL = "https://concerts.morperhaus.org/data"
 [[kv_namespaces]]
 binding = "MCP_QUERY_USAGE"
 id = "8aee948db1eb48c6ad9bbed2c4a43fa8"
+
+# McpAgent is a Durable Object. `serve("/mcp")` resolves it through the default
+# MCP_OBJECT binding; the Agents SDK requires SQLite-backed DO storage (new_sqlite_classes).
+[[durable_objects.bindings]]
+name = "MCP_OBJECT"
+class_name = "MorperhausMcp"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["MorperhausMcp"]
 
 # Anthropic API key for the `query` tool is stored as a Wrangler secret, NOT in this file:
 #   cd workers/mcp-server && npx wrangler secret put ANTHROPIC_API_KEY
