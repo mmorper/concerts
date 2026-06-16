@@ -1,7 +1,8 @@
-# MCP Deep Links — Mock
+# MCP Deep Links — Rendered Reference
 
-> Scratch mock for review. Not a spec. Delete when decided.
+> Visual reference for the deep links emitted by the MCP tools (#132 / PR #133).
 > Preview this file (Cmd+Shift+V in VS Code) to see the links render as clickable.
+> Source of truth is `workers/mcp-server/src/tools.ts`; this shows what the output looks like.
 
 Base URL: `https://concerts.morperhaus.org`
 
@@ -54,7 +55,7 @@ exist yet).
 ## What's linked vs. not
 
 | Element | Linked? | Why |
-|---|---|---|
+| --- | --- | --- |
 | Headliner | ✅ | Always has an artist card (`headlinerNormalized`) |
 | Venue | ✅ | Always has a venue page (`venueNormalized`) |
 | Opener | ❌ | Plain string, no slug, may have no page → dead link |
