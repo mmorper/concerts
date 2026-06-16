@@ -57,6 +57,7 @@
     "generate:rss": "tsx scripts/generate-rss.ts",
     "generate:liner-notes-rss": "tsx scripts/generate-liner-notes-rss.ts",
     "generate:liner-notes": "tsx scripts/liner-notes/index.ts",
+    "generate:narrations": "tsx scripts/generate-narrations.ts",
     "deploy:worker": "cd workers/meta-injector && npx wrangler deploy",
     "deploy:mcp-server": "cd workers/mcp-server && npx wrangler deploy"
   },
