@@ -58,6 +58,20 @@ export class MorperhausMcp extends McpAgent<Env> {
     {
       name: SERVER_NAME,
       version: SERVER_VERSION,
+       title: SERVER_NAME,
+      websiteUrl: "https://concerts.morperhaus.org",
+      // Connector icon (MCP Implementation.icons). SVG first (scalable); .ico fallback.
+      icons: [
+        {
+          src: "https://concerts.morperhaus.org/favicon.svg",
+          mimeType: "image/svg+xml",
+        },
+        {
+          src: "https://concerts.morperhaus.org/favicon.ico",
+          mimeType: "image/vnd.microsoft.icon",
+          sizes: ["48x48"],
+        },
+      ],
     },
     {
       instructions: SERVER_INSTRUCTIONS,
