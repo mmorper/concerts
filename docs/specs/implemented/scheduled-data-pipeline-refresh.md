@@ -1,8 +1,16 @@
 # Scheduled Data Pipeline Refresh
 
-> **Status:** Planned
+> **Status:** Implemented (2026-06-16) — via **GitHub Actions**, not Claude Code scheduled tasks
 > **Created:** 2026-03-07
-> **Related:** `scripts/build-data.ts`, `docs/DATA_PIPELINE.md`
+> **Related:** `scripts/build-data.ts`, `docs/DATA_PIPELINE.md`, PR #119, issue #42
+>
+> **Implementation note:** Shipped as two independent GitHub Actions workflows
+> (`.github/workflows/data-refresh.yml` and `liner-notes.yml`) rather than the
+> Claude Code scheduled-task approach this spec proposed — the pipeline needs
+> puppeteer/sharp/googleapis and a commit-to-git deploy model that fit Actions
+> better. Same capability: weekly automated refresh + decoupled liner-notes
+> generation, with a concert-count regression guard and failure-email alerting.
+> See PR #119 / issue #120 for the activation record.
 
 ---
 
