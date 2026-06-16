@@ -1,0 +1,46 @@
+name: MCP CI
+
+# Typecheck + tests for the MCP server Worker. Runs only when the worker (or this
+# workflow) changes, so it's a fast gate on PRs without touching the rest of the repo.
+# The worker is its own npm package with its own vitest config — these don't run as
+# part of the root test suite, so this is the automated guard for it.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/mcp-server/**'
+      - '.github/workflows/mcp-ci.yml'
+  pull_request:
+    paths:
+      - 'workers/mcp-server/**'
+      - '.github/workflows/mcp-ci.yml'
+
+concurrency:
+  group: mcp-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: workers/mcp-server
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      # package-lock.json is gitignored for this package, so use `npm install`.
+      - name: Install dependencies
+        run: npm install
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
