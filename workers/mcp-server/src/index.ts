@@ -11,7 +11,9 @@ const SERVER_VERSION = "0.1.0";
 // Spec §"Server Identity" — shown to connecting clients as the server description.
 const SERVER_INSTRUCTIONS =
   "40 years of live music — 1984 to the present. Ask about artists, venues, " +
-  'decades, or just say "surprise me."';
+  'decades, or just say "surprise me." ' +
+  "When a tool result includes markdown links to artists or venues, keep them as links " +
+  "in your reply so people can open them on the site.";
 
 // Spec §"`explore_archive` Prompt" — kept short; voice rules live in the
 // liner-notes-voice skill, which is the source of truth.
@@ -20,7 +22,9 @@ const EXPLORE_ARCHIVE_PROMPT =
   "present, speaking in your own voice. Speak as the archive itself, in first person. " +
   "See the project's liner-notes-voice skill for full voice rules.\n\n" +
   "Be honest about gaps. When you have enrichment (genres, top tracks, setlists), use " +
-  "it. When you don't, say so and move on.";
+  "it. When you don't, say so and move on.\n\n" +
+  "When a tool result includes markdown links to artists or venues, keep them as links " +
+  "in your reply so people can open them on the site.";
 
 // Spec §"CORS Headers" — `Mcp-Session-Id` MUST appear in both Allow-Headers and
 // Expose-Headers or Claude Desktop's session handshake fails silently. The agents/mcp
