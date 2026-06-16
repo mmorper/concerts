@@ -124,6 +124,24 @@ function openerLine(openers: string[], indent: string): string | null {
   return `${indent}With ${joinList(openers)} opening.`;
 }
 
+// ---------- deep links back to the site (#132) ----------
+// The Artists and Venues scenes are both generated from the same concerts these tools
+// read, so any headlinerNormalized / venueNormalized slug resolves to a real card — no
+// lookup needed. URL shape per docs/DEEP_LINKING.md. Markdown renders as a clickable link
+// in MCP clients; clients that don't render markdown still show readable text.
+//
+// Note: the model paraphrases tool output before the user sees it, so SERVER_INSTRUCTIONS
+// and the explore_archive prompt tell it to preserve these links (see index.ts).
+const SITE_BASE_URL = "https://concerts.morperhaus.org";
+
+function artistLink(name: string, slug: string): string {
+  return `[${name}](${SITE_BASE_URL}/?scene=artists&artist=${slug})`;
+}
+
+function venueLink(name: string, slug: string): string {
+  return `[${name}](${SITE_BASE_URL}/?scene=venues&venue=${slug})`;
+}
+
 // Count occurrences keyed by a selector, returned as [label, count] sorted desc.
 function tally(concerts: Concert[], key: (c: Concert) => string): [string, number][] {
   const counts = new Map<string, number>();
@@ -256,7 +274,9 @@ export function searchConcerts(concerts: Concert[], params: SearchParams): strin
   const shown = matches.slice(0, limit);
   const lines: string[] = [`${total} ${total === 1 ? "concert" : "concerts"} matching ${summary}:`, ""];
   for (const c of shown) {
-    lines.push(`${c.headliner} — ${c.venue}, ${c.city} (${monYear(c.date)}) [${c.id}]`);
+    lines.push(
+      `${artistLink(c.headliner, c.headlinerNormalized)} — ${venueLink(c.venue, c.venueNormalized)}, ${c.city} (${monYear(c.date)}) [${c.id}]`,
+    );
     const opener = openerLine(c.openers, "  ");
     if (opener) lines.push(opener);
   }
@@ -326,7 +346,7 @@ export function artistHistory(
   const firstY = shows[0].year;
   const lastY = shows[n - 1].year;
 
-  let header = `I've seen ${r.name} ${n} ${n === 1 ? "time" : "times"}`;
+  let header = `I've seen ${artistLink(r.name, r.slug)} ${n} ${n === 1 ? "time" : "times"}`;
   if (n > 1) header += lastY > firstY ? `, across ${lastY - firstY} years (${firstY}–${lastY})` : `, all in ${firstY}`;
   header += ".";
 
@@ -342,7 +362,7 @@ export function artistHistory(
 
   lines.push("");
   shows.forEach((c, i) => {
-    lines.push(`${i + 1}. ${fullDate(c.date)} — ${c.venue}, ${c.city} [${c.id}]`);
+    lines.push(`${i + 1}. ${fullDate(c.date)} — ${venueLink(c.venue, c.venueNormalized)}, ${c.city} [${c.id}]`);
     const opener = openerLine(c.openers, "   ");
     if (opener) lines.push(opener);
   });
@@ -416,8 +436,11 @@ export function venueHistory(
   const lastY = parseISO(v.stats?.lastEvent ?? shows[shows.length - 1]?.date ?? "0-0-0").y;
 
   const openersById = new Map(concerts.map((c) => [c.id, c.openers]));
+  const slugById = new Map(concerts.map((c) => [c.id, c.headlinerNormalized]));
 
-  const lines = [`${v.name}, ${v.cityState} — ${n} ${n === 1 ? "show" : "shows"} in the archive.`];
+  const lines = [
+    `${venueLink(v.name, v.normalizedName)}, ${v.cityState} — ${n} ${n === 1 ? "show" : "shows"} in the archive.`,
+  ];
 
   let ctx = "";
   if (narration?.context) ctx = narration.context;
@@ -429,7 +452,9 @@ export function venueHistory(
 
   lines.push("");
   shows.forEach((s, i) => {
-    lines.push(`${i + 1}. ${fullDate(s.date)} — ${s.headliner} [${s.id}]`);
+    const slug = slugById.get(s.id);
+    const headliner = slug ? artistLink(s.headliner, slug) : s.headliner;
+    lines.push(`${i + 1}. ${fullDate(s.date)} — ${headliner} [${s.id}]`);
     const opener = openerLine(openersById.get(s.id) ?? [], "   ");
     if (opener) lines.push(opener);
   });
@@ -460,7 +485,9 @@ export function onThisDay(concerts: Concert[], month: number, day: number): stri
 
   const lines = [`On ${mName} ${day}, across the years:`, ""];
   for (const c of matches) {
-    lines.push(`${c.year}: ${c.headliner} at ${c.venue}, ${c.city} [${c.id}]`);
+    lines.push(
+      `${c.year}: ${artistLink(c.headliner, c.headlinerNormalized)} at ${venueLink(c.venue, c.venueNormalized)}, ${c.city} [${c.id}]`,
+    );
   }
   if (matches.length === 1) {
     lines.push("", `One show on this date — ${matches[0].headliner}, ${matches[0].year}.`);
@@ -538,7 +565,12 @@ export function surpriseMe(
     why = `I'm pulling this from the ${artistCount} times I've seen ${c.headliner}.`;
   }
 
-  const lines = [why, "", `${c.headliner} at ${c.venue}, ${c.city}`, `${fullDate(c.date)} [${c.id}]`];
+  const lines = [
+    why,
+    "",
+    `${artistLink(c.headliner, c.headlinerNormalized)} at ${venueLink(c.venue, c.venueNormalized)}, ${c.city}`,
+    `${fullDate(c.date)} [${c.id}]`,
+  ];
 
   const meta = artistsMeta[c.headlinerNormalized];
   const enrich: string[] = [];

@@ -226,8 +226,8 @@ describe("on_this_day", () => {
   it("multiple shares of a date", () => {
     const text = onThisDay(archive(), 6, 4);
     expect(text).toContain("On June 4, across the years:");
-    expect(text).toContain("1988: Depeche Mode");
-    expect(text).toContain("1990: Social Distortion");
+    expect(text).toContain("1988: [Depeche Mode](");
+    expect(text).toContain("1990: [Social Distortion](");
     expect(text).toMatchSnapshot();
   });
 
