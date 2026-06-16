@@ -1,7 +1,66 @@
 {
-  "generatedAt": "2026-06-02T15:15:21.680Z",
-  "dataHash": "39141741",
+  "generatedAt": "2026-06-16T20:31:24.271Z",
+  "dataHash": "e3d47149",
   "posts": [
+    {
+      "id": "rare-sighting-no-doubt",
+      "slug": "no-doubt-caught-once-never-again",
+      "category": "deep-cut",
+      "temporality": "evergreen",
+      "headline": "No Doubt: Caught Once, Never Again",
+      "prose": "Here's something that stopped me cold when I was flipping through my oldest entries: I saw No Doubt at Disneyland in March 1988 — just two years after they formed — opening alongside The Nylons in Anaheim before virtually anyone outside Southern California knew their name. That's the only No Doubt entry in my entire archive, which means I caught them exactly once, at what had to be one of their earliest public performances, and never crossed paths with them again through *Tragic Kingdom*, *Rock Steady*, or any of the singles years. The fact that my sole sighting happened at a theme park in 1988 is the kind of detail I couldn't have invented.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/vxvvtr1348513703.jpg",
+        "alt": "No Doubt",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Just a Girl",
+        "artistName": "No Doubt",
+        "albumName": "Tragic Kingdom",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/34/c2/72/34c27293-0cdf-a7cc-a354-52f5a601b336/mzaf_5323950264219890652.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/fe/0a/68/fe0a687a-537e-e902-0778-90465c118f77/00602547870575.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/just-a-girl/1440845400?i=1440845532&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "no-doubt"
+      ],
+      "venues": [
+        "disneyland"
+      ],
+      "years": [
+        1988
+      ],
+      "tags": [
+        "#rare-sighting",
+        "#one-time-only"
+      ],
+      "deepLinks": [
+        {
+          "label": "No Doubt",
+          "url": "/?scene=artists&artist=no-doubt",
+          "type": "artist"
+        },
+        {
+          "label": "Disneyland",
+          "url": "/?scene=venues&venue=disneyland",
+          "type": "venue"
+        },
+        {
+          "label": "1988",
+          "url": "/?scene=timeline&year=1988",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "no-doubt-days-before-it-takes-a-nation-of-millions-to-hold-us-back-dropped",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 28,
+      "detector": "rare-sighting",
+      "publishedAt": "2026-06-16T20:31:24.271Z"
+    },
     {
       "id": "album-context-late-registration-garbage",
       "slug": "garbage-days-before-late-registration-dropped",
@@ -3816,11 +3875,11 @@
     }
   ],
   "metadata": {
-    "totalPosts": 50,
-    "totalGenerated": 71,
-    "averageScore": 38.6,
-    "lastPipelineRun": "2026-06-02T15:15:21.680Z",
-    "concertsAnalyzed": 179,
+    "totalPosts": 51,
+    "totalGenerated": 73,
+    "averageScore": 38.4,
+    "lastPipelineRun": "2026-06-16T20:31:24.271Z",
+    "concertsAnalyzed": 180,
     "feedUrl": "/liner-notes.xml"
   }
 }

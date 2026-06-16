@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 02 Jun 2026 15:15:21 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 16 Jun 2026 20:31:24 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>No Doubt: Caught Once, Never Again</title>
+    <link>https://concerts.morperhaus.org/liner-notes/no-doubt-caught-once-never-again</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/no-doubt-caught-once-never-again</guid>
+    <pubDate>Tue, 16 Jun 2026 20:31:24 +0000</pubDate>
+    <description>Here&apos;s something that stopped me cold when I was flipping through my oldest entries: I saw No Doubt at Disneyland in March 1988 — just two years after they formed — opening alongside The Nylons in Anaheim before virtually anyone outside Southern California knew their name. That&apos;s the only No Doubt entry in my entire archive, which means I caught them exactly once, at what had to be one of their earliest public performances, and never crossed paths with them again through *Tragic Kingdom*, *Rock Steady*, or any of the singles years. The fact that my sole sighting happened at a theme park in 1988 is the kind of detail I couldn&apos;t have invented.</description>
+    <category>#rare-sighting</category>
+    <category>#one-time-only</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/vxvvtr1348513703.jpg" medium="image" />
+  </item>
   <item>
     <title>Garbage — Days Before Late Registration Dropped</title>
     <link>https://concerts.morperhaus.org/liner-notes/garbage-days-before-late-registration-dropped</link>
@@ -201,16 +211,6 @@
     <category>#album-context</category>
     <category>#cultural-moment</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg" medium="image" />
-  </item>
-  <item>
-    <title>Social Distortion + 14 More: 2018 Festival Bill</title>
-    <link>https://concerts.morperhaus.org/liner-notes/social-distortion-14-more-2018-festival-bill</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/social-distortion-14-more-2018-festival-bill</guid>
-    <pubDate>Sat, 07 Mar 2026 12:00:00 +0000</pubDate>
-    <description>California punk&apos;s founding fathers assembled for what felt like a family reunion at Huntington State Beach in 2018, with Social Distortion, Bad Religion, and 13 other acts spanning four decades of West Coast rebellion. I witnessed bands that had been shaping punk since 1979 sharing the same sand with newer torchbearers like The Interrupters, creating this perfect cross-generational snapshot of the scene&apos;s evolution. Seeing Fear and Suicidal Tendencies on the same bill as Black Rebel Motorcycle Club reminded me how punk&apos;s DNA keeps mutating while staying fundamentally defiant. Standing on that beach with 15 bands cycling through, I felt like I was getting a master class in how Southern California invented its own brand of sunny nihilism.</description>
-    <category>#festival-bill</category>
-    <category>#mega-bill</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg" medium="image" />
   </item>
   </channel>
 </rss>
