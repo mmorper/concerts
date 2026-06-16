@@ -458,6 +458,8 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 
 ---
 
+---
+
 ## Pre-Computed Statistics
 
 These facts are updated with each data refresh and can be quoted directly:
@@ -510,7 +512,7 @@ These facts are updated with each data refresh and can be quoted directly:
 - "First show: Adam Ant (1984)" — Where it all began — Irvine Meadows
 - "California: 122 concerts" — Home base for most concert experiences
 
-**Facts computed:** 2026-06-16T14:48:47.665Z
+**Facts computed:** 2026-06-16T20:22:16.015Z
 **Source:** https://concerts.morperhaus.org/data/facts.json
 **Browse visually:** https://concerts.morperhaus.org/liner-notes
 

@@ -1741,7 +1741,7 @@
   "buddy-guy": {
     "name": "Buddy Guy",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:38:14.220Z",
+    "fetchedAt": "2026-06-16T20:18:09.865Z",
     "tracks": [
       {
         "name": "Ain't No Sunshine (feat. Tracy Chapman)",
@@ -1752,20 +1752,20 @@
         "streamingUrl": "https://music.apple.com/us/album/aint-no-sunshine-feat-tracy-chapman/299734207?i=299734281&uo=4"
       },
       {
-        "name": "Travelin'",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/11/85/7e/11857ea3-8a9c-a881-c1d2-8555dd9c73fd/mzaf_16264242019281664442.plus.aac.p.m4a",
-        "durationMs": 69733,
-        "albumName": "Sinners (Original Motion Picture Soundtrack)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/01/7c/54/017c5407-0cdd-7017-bb05-91be2266f7e6/196873066868.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/travelin/1808534010?i=1808534208&uo=4"
-      },
-      {
         "name": "Mustang Sally",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/2b/ea/0c/2bea0cd2-ce2a-c566-f2bd-3c76c7c3cf99/mzaf_7513509818603357353.plus.aac.p.m4a",
         "durationMs": 285800,
         "albumName": "Buddy's Baddest: The Best of Buddy Guy",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/8a/4f/1b/mzi.gmeyrmdu.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/mustang-sally/266700910?i=266701228&uo=4"
+      },
+      {
+        "name": "Travelin'",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/11/85/7e/11857ea3-8a9c-a881-c1d2-8555dd9c73fd/mzaf_16264242019281664442.plus.aac.p.m4a",
+        "durationMs": 69733,
+        "albumName": "Sinners (Original Motion Picture Soundtrack)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/01/7c/54/017c5407-0cdd-7017-bb05-91be2266f7e6/196873066868.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/travelin/1808534010?i=1808534208&uo=4"
       },
       {
         "name": "What Kind of Woman Is This?",
@@ -1776,12 +1776,12 @@
         "streamingUrl": "https://music.apple.com/us/album/what-kind-of-woman-is-this/299734207?i=299734267&uo=4"
       },
       {
-        "name": "Cognac (feat. Jeff Beck & Keith Richards)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/71/d8/86/71d8860d-169d-8e62-d0b2-48c9b45f2c15/mzaf_16032188899630712041.plus.aac.p.m4a",
-        "durationMs": 322280,
-        "albumName": "The Blues Is Alive and Well",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/7f/bc/e6/7fbce6bb-64d0-3e22-1d33-d4f4bba35138/886446858012.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/cognac-feat-jeff-beck-keith-richards/1385292932?i=1385293265&uo=4"
+        "name": "Damn Right, I've Got the Blues",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/f8/ab/c0/f8abc0a4-b8cc-c8d1-532a-d1a6453460db/mzaf_15808633885271872806.plus.aac.p.m4a",
+        "durationMs": 271653,
+        "albumName": "Damn Right, I've Got the Blues (Expanded Edition)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features/4e/e0/61/dj.jwlzwfwd.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/damn-right-ive-got-the-blues/298384794?i=298384893&uo=4"
       }
     ]
   },
@@ -2963,15 +2963,15 @@
   "emf": {
     "name": "EMF",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:39:11.383Z",
+    "fetchedAt": "2026-06-16T20:18:10.664Z",
     "tracks": [
       {
-        "name": "Unbelievable",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/8c/16/80/8c168018-da35-8beb-1056-4bcfc4a22789/mzaf_283868354064702945.plus.aac.p.m4a",
-        "durationMs": 209667,
-        "albumName": "Cool '90s Hits",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/7e/91/de/7e91defa-c8ea-3d2a-2f09-b60741e84bae/13UADIM60832.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/unbelievable/716787198?i=716787335&uo=4"
+        "name": "Children",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/97/29/a2/9729a261-bb06-c819-4e2c-7e0709ae0535/mzaf_7551256805206982349.plus.aac.p.m4a",
+        "durationMs": 315733,
+        "albumName": "Schubert Dip",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/42/fd/2a/42fd2a6a-35f4-4682-e503-d82ba7d91314/cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/children/1242337425?i=1242337446&uo=4"
       },
       {
         "name": "EMF (Mixed)",
@@ -2983,19 +2983,11 @@
       },
       {
         "name": "Unbelievable",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ef/32/9a/ef329a41-079a-43d6-5745-21db5f9440ca/mzaf_13495923089564931358.plus.aac.p.m4a",
-        "durationMs": 209773,
-        "albumName": "Thumbplay Presents: The 90s",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/fa/d5/fd/fad5fd6e-e7d2-7ee0-d683-9b5c3628a670/13UABIM49270.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/unbelievable/1470680759?i=1470680764&uo=4"
-      },
-      {
-        "name": "EMF",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/4f/20/48/4f2048f0-0767-ee71-8ca4-5b5cf831e8f2/mzaf_12647846531709841922.plus.aac.p.m4a",
-        "durationMs": 413538,
-        "albumName": "Emf - Single",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/6d/b6/d9/6db6d971-1ac8-413d-4d47-0f0206bc065d/5060731228260.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/emf/1678398923?i=1678398930&uo=4"
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/8c/16/80/8c168018-da35-8beb-1056-4bcfc4a22789/mzaf_283868354064702945.plus.aac.p.m4a",
+        "durationMs": 209667,
+        "albumName": "Cool '90s Hits",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/7e/91/de/7e91defa-c8ea-3d2a-2f09-b60741e84bae/13UADIM60832.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/unbelievable/716787198?i=716787335&uo=4"
       },
       {
         "name": "EMF (Jamie Jones Rework Mix)",
@@ -3004,6 +2996,14 @@
         "albumName": "Emf - Single",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/6d/b6/d9/6db6d971-1ac8-413d-4d47-0f0206bc065d/5060731228260.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/emf-jamie-jones-rework-mix/1678398923?i=1678399207&uo=4"
+      },
+      {
+        "name": "EMF",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/4f/20/48/4f2048f0-0767-ee71-8ca4-5b5cf831e8f2/mzaf_12647846531709841922.plus.aac.p.m4a",
+        "durationMs": 413538,
+        "albumName": "Emf - Single",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/6d/b6/d9/6db6d971-1ac8-413d-4d47-0f0206bc065d/5060731228260.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/emf/1678398923?i=1678398930&uo=4"
       }
     ]
   },
@@ -3151,7 +3151,7 @@
   "el-ten-eleven": {
     "name": "El Ten Eleven",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:39:13.787Z",
+    "fetchedAt": "2026-06-16T20:18:11.218Z",
     "tracks": [
       {
         "name": "My Only Swerving",
@@ -3170,12 +3170,12 @@
         "streamingUrl": "https://music.apple.com/us/album/fanshawe/1764141470?i=1764141486&uo=4"
       },
       {
-        "name": "Björk's Alarm Clock",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/4c/c2/2c/4cc22cb0-2b2a-e78d-5e21-3b0c360b61be/mzaf_9312564444880977582.plus.aac.p.m4a",
-        "durationMs": 241432,
-        "albumName": "Nowhere Faster",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e0/2e/2a/e02e2aa6-6dd2-c407-2745-374a1eef3424/61243.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/bj%C3%B6rks-alarm-clock/1866614862?i=1866614865&uo=4"
+        "name": "Connie",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/00/2d/57/002d57ad-6f06-6b51-84d8-fff960728d47/mzaf_17763710947320147051.plus.aac.p.m4a",
+        "durationMs": 384600,
+        "albumName": "El Ten Eleven",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/fc/c3/ec/fcc3ecf3-a1cc-89d0-c1b3-e8895ce26227/47978.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/connie/1764141470?i=1764141490&uo=4"
       },
       {
         "name": "Transitions",
@@ -3186,12 +3186,12 @@
         "streamingUrl": "https://music.apple.com/us/album/transitions/1472608591?i=1472608599&uo=4"
       },
       {
-        "name": "Connie",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/00/2d/57/002d57ad-6f06-6b51-84d8-fff960728d47/mzaf_17763710947320147051.plus.aac.p.m4a",
-        "durationMs": 384600,
+        "name": "Sorry About Your Irony",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/2c/b4/52/2cb452d2-cdd2-96c6-6a1e-a6085c8cc5c2/mzaf_2553315960073253099.plus.aac.p.m4a",
+        "durationMs": 198440,
         "albumName": "El Ten Eleven",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/fc/c3/ec/fcc3ecf3-a1cc-89d0-c1b3-e8895ce26227/47978.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/connie/1764141470?i=1764141490&uo=4"
+        "streamingUrl": "https://music.apple.com/us/album/sorry-about-your-irony/1764141470?i=1764141472&uo=4"
       }
     ]
   },
@@ -3574,7 +3574,7 @@
   "fountains-of-wayne": {
     "name": "Fountains of Wayne",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:39:19.499Z",
+    "fetchedAt": "2026-06-16T20:18:12.427Z",
     "tracks": [
       {
         "name": "Stacy's Mom",
@@ -3593,14 +3593,6 @@
         "streamingUrl": "https://music.apple.com/us/album/sink-to-the-bottom/31110089?i=31110105&uo=4"
       },
       {
-        "name": "Radiation Vibe",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/bb/5a/3f/bb5a3fbf-b312-61e4-8576-b68561e72362/mzaf_15421290673594001152.plus.aac.p.m4a",
-        "durationMs": 221173,
-        "albumName": "Fountains of Wayne",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2004/m11/d21/h17/s06.hzddsmpe.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/radiation-vibe/31110089?i=31110098&uo=4"
-      },
-      {
         "name": "Hey Julie",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/37/8a/13/378a1309-e971-918b-c872-43c2d8f8edf7/mzaf_9229195008606019263.plus.aac.p.m4a",
         "durationMs": 156933,
@@ -3615,6 +3607,14 @@
         "albumName": "Welcome Interstate Managers",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1e/45/bd/1e45bdc7-54fb-1b2c-e401-b30ce8e08442/13UABIM51319.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/hackensack/712721721?i=712721790&uo=4"
+      },
+      {
+        "name": "Radiation Vibe",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/bb/5a/3f/bb5a3fbf-b312-61e4-8576-b68561e72362/mzaf_15421290673594001152.plus.aac.p.m4a",
+        "durationMs": 221173,
+        "albumName": "Fountains of Wayne",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2004/m11/d21/h17/s06.hzddsmpe.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/radiation-vibe/31110089?i=31110098&uo=4"
       }
     ]
   },
@@ -3762,7 +3762,7 @@
   "gary-numan": {
     "name": "Gary Numan",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:39:21.937Z",
+    "fetchedAt": "2026-06-16T20:18:12.999Z",
     "tracks": [
       {
         "name": "Cars",
@@ -3789,20 +3789,20 @@
         "streamingUrl": "https://music.apple.com/us/album/are-friends-electric-1998-remaster/1027458090?i=1027458755&uo=4"
       },
       {
-        "name": "Down in the Park (1998 Remaster)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ff/0b/0b/ff0b0b12-d0a0-60df-2e8b-640d25343eaf/mzaf_5369274295628358661.plus.aac.p.m4a",
-        "durationMs": 263240,
-        "albumName": "Replicas (1998 Remaster)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/c0/89/a9/c089a977-548d-da89-a601-0f0eb050ee9f/607618000707.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/down-in-the-park-1998-remaster/1027458090?i=1027458758&uo=4"
-      },
-      {
         "name": "Metal",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/1c/f3/77/1cf37759-74a9-8429-96f2-38bd36649295/mzaf_18194685664962495514.plus.aac.p.m4a",
         "durationMs": 212933,
         "albumName": "The Pleasure Principle (Bonus Tracks)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6d/48/fd/6d48fdae-76f8-cb9b-62c6-51606741c7d5/607618001063.png/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/metal/251652523?i=251652538&uo=4"
+      },
+      {
+        "name": "Are Friends Electric?",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/40/77/c3/4077c377-9930-23ee-2e88-87adca46fb60/mzaf_3992238595602053276.plus.aac.p.m4a",
+        "durationMs": 325200,
+        "albumName": "Replicas Redux",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/73/e6/9e/73e69e9f-4d36-a225-72f8-a9b16ebf3870/607618205751.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/are-friends-electric/273106964?i=273106968&uo=4"
       }
     ]
   },
@@ -4091,7 +4091,7 @@
   "heaven-17": {
     "name": "Heaven 17",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:39:30.680Z",
+    "fetchedAt": "2026-06-16T20:18:13.729Z",
     "tracks": [
       {
         "name": "Let Me Go",
@@ -4118,20 +4118,20 @@
         "streamingUrl": "https://music.apple.com/us/album/temptation-edit/885783690?i=885783715&uo=4"
       },
       {
-        "name": "Penthouse and Pavement",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/91/96/9e/91969ece-384b-5621-e1a9-5c4012fb295d/mzaf_16608839863568393741.plus.aac.p.m4a",
-        "durationMs": 393667,
-        "albumName": "Endless",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music7/v4/5b/9d/69/5b9d698d-9c0c-0c69-cdeb-ced615c71263/dj.mnytzaxh.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/penthouse-and-pavement/880679869?i=880682893&uo=4"
+        "name": "Let Me Go",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/90/18/e4/9018e4ae-5704-6012-88b8-35846309ec42/mzaf_12574680588277131890.plus.aac.p.m4a",
+        "durationMs": 256240,
+        "albumName": "Best of Heaven 17",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/30/85/85/3085851d-3f57-df8f-812e-67e0076a1d4e/00724384808754_T-1021_Image.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/let-me-go/884131101?i=884131139&uo=4"
       },
       {
-        "name": "Don't Fear the Reaper",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/fc/95/b0/fc95b039-dd52-eaf3-762b-51dceb8cb5a9/mzaf_4342316393720097905.plus.aac.p.m4a",
-        "durationMs": 279320,
-        "albumName": "Before After",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/a5/0b/f3/mzi.ohqylxez.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/dont-fear-the-reaper/160701365?i=160701530&uo=4"
+        "name": "Temptation",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/c1/57/56/c15756e1-e70c-2ae3-ee46-a8e4dd4eb8a4/mzaf_9088603014924192719.plus.aac.p.m4a",
+        "durationMs": 278920,
+        "albumName": "Best of Heaven 17",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/30/85/85/3085851d-3f57-df8f-812e-67e0076a1d4e/00724384808754_T-1021_Image.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/temptation/884131101?i=884131203&uo=4"
       }
     ]
   },
@@ -4326,11 +4326,11 @@
   "husbands": {
     "name": "Husbands",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:39:49.373Z",
+    "fetchedAt": "2026-06-16T20:18:14.372Z",
     "tracks": [
       {
         "name": "Husbands",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f9/f4/70/f9f47098-11cb-75a1-a93c-b7972ffadb13/mzaf_16125713247378474632.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/9b/c3/ee/9bc3eedc-d47c-43d6-9953-0f338cdeb694/mzaf_10681992617464334681.plus.aac.p.m4a",
         "durationMs": 248229,
         "albumName": "Getting Killed",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/0b/b8/f1/0bb8f1d7-1df0-20c0-9539-51d08058eeb1/5400863191436_Cover.jpg/100x100bb.jpg",
@@ -4420,7 +4420,7 @@
   "inner-wave": {
     "name": "Inner Wave",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:40:06.782Z",
+    "fetchedAt": "2026-06-16T20:18:20.454Z",
     "tracks": [
       {
         "name": "1 4 2",
@@ -4440,19 +4440,19 @@
       },
       {
         "name": "Take 3",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a8/64/26/a864266c-5224-4dd8-5a88-18124ee4f674/mzaf_13829077746140359660.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/71/0c/c6/710cc670-e6e7-5451-4f93-5a9c0b197db9/mzaf_3950259052071865207.plus.aac.p.m4a",
         "durationMs": 236600,
         "albumName": "Apoptosis",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/6c/df/51/6cdf5147-81f6-54ae-772e-f919fc1d89ad/5056495338048.png/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/take-3/1820521335?i=1820521346&uo=4"
       },
       {
-        "name": "88",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/7c/47/3a/7c473ac9-40d6-7303-459a-1ab62ab6a792/mzaf_8888849950242172769.plus.aac.p.m4a",
-        "durationMs": 233747,
-        "albumName": "Sun Transmission",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/70/8e/d5/708ed576-8d9b-d64c-facf-885b661e750a/5054526166981_SunTransmission.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/88/1745550496?i=1745550801&uo=4"
+        "name": "Rose",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/57/54/8b/57548be1-283e-d279-b9c4-6533272f5cfa/mzaf_3916949383611394984.plus.aac.p.m4a",
+        "durationMs": 226091,
+        "albumName": "Rose - Single",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a4/22/af/a422af9b-64f8-da19-35cb-cfce397b4d06/5054526559462_innerwaveroseartwork.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/rose/1745550558?i=1745550559&uo=4"
       },
       {
         "name": "Inner Wave",
@@ -4467,7 +4467,7 @@
   "interpol": {
     "name": "Interpol",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:40:07.430Z",
+    "fetchedAt": "2026-06-16T20:18:21.138Z",
     "tracks": [
       {
         "name": "Obstacle 1",
@@ -4478,6 +4478,14 @@
         "streamingUrl": "https://music.apple.com/us/album/obstacle-1/1589272584?i=1589272590&uo=4"
       },
       {
+        "name": "This Mirror Weighs a Ton",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/73/6b/ba/736bbaf5-d18a-89d3-3311-bdbbee65490c/mzaf_11571809029902348195.plus.aac.p.m4a",
+        "durationMs": 312253,
+        "albumName": "This Mirror Weighs a Ton",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/55/d4/e0/55d4e024-14d5-48d3-cd2b-2f4d8ca3a1d8/0720841306801_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/this-mirror-weighs-a-ton/6768694728?i=6768694731&uo=4"
+      },
+      {
         "name": "Evil",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/76/d4/6f/76d46f0c-1212-5af0-9c6a-a288d2b48fa0/mzaf_3680371839288852445.plus.aac.p.m4a",
         "durationMs": 215827,
@@ -4486,28 +4494,20 @@
         "streamingUrl": "https://music.apple.com/us/album/evil/1589250507?i=1589250944&uo=4"
       },
       {
+        "name": "See Out Loud",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a6/51/bc/a651bced-afe9-075b-6203-a5464f49f12c/mzaf_16875750465030199286.plus.aac.p.m4a",
+        "durationMs": 296747,
+        "albumName": "This Mirror Weighs a Ton",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/55/d4/e0/55d4e024-14d5-48d3-cd2b-2f4d8ca3a1d8/0720841306801_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/see-out-loud/6768694728?i=6768694734&uo=4"
+      },
+      {
         "name": "PDA",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/21/86/f6/2186f6ce-20a9-2ab5-6fa3-2a8cf0e14099/mzaf_16152210839582994796.plus.aac.p.m4a",
         "durationMs": 299773,
         "albumName": "Turn On the Bright Lights",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/be/ef/aa/beefaad1-64ba-1288-d2ce-95a5964a020b/744861054566.png/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/pda/1589272584?i=1589272809&uo=4"
-      },
-      {
-        "name": "Slow Hands",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/b1/ac/d1/b1acd107-8641-c3af-d864-694c5db63024/mzaf_14528683897994667960.plus.aac.p.m4a",
-        "durationMs": 184133,
-        "albumName": "Antics",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/fa/89/c9/fa89c99e-21c3-25fc-bbe4-7d9bcfba379d/744861061663.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/slow-hands/1589250507?i=1589251210&uo=4"
-      },
-      {
-        "name": "Untitled",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/31/30/38/31303876-184a-4c4f-1429-31f03a3afd0a/mzaf_7898063828891989587.plus.aac.p.m4a",
-        "durationMs": 236707,
-        "albumName": "Turn On the Bright Lights",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/be/ef/aa/beefaad1-64ba-1288-d2ce-95a5964a020b/744861054566.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/untitled/1589272584?i=1589272588&uo=4"
       }
     ]
   },
@@ -4702,7 +4702,7 @@
   "joan-jett-the-blackhearts": {
     "name": "Joan Jett & The Blackhearts",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:40:11.185Z",
+    "fetchedAt": "2026-06-16T20:18:22.477Z",
     "tracks": [
       {
         "name": "I Love Rock 'N Roll",
@@ -4713,14 +4713,6 @@
         "streamingUrl": "https://music.apple.com/us/album/i-love-rock-n-roll/1881685281?i=1881685586&uo=4"
       },
       {
-        "name": "I Hate Myself for Loving You",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/ac/32/dd/ac32ddd3-ced6-9c8f-a702-0698fbe28430/mzaf_13339219701094274193.plus.aac.p.m4a",
-        "durationMs": 246800,
-        "albumName": "Up Your Alley",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/49/f7/8b/49f78bb0-c748-1c5c-e634-b1cad8fbe803/074644414622.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/i-hate-myself-for-loving-you/190178956?i=190178976&uo=4"
-      },
-      {
         "name": "Crimson and Clover",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/45/dd/71/45dd71ff-31b5-bafd-40de-2d0b78699072/mzaf_2942256963982745752.plus.aac.p.m4a",
         "durationMs": 197493,
@@ -4729,27 +4721,35 @@
         "streamingUrl": "https://music.apple.com/us/album/crimson-and-clover/1881685281?i=1881685605&uo=4"
       },
       {
-        "name": "Cherry Bomb",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/9c/32/e3/9c32e356-1b33-6418-a136-898682e76504/mzaf_13588804381420446601.plus.aac.p.m4a",
-        "durationMs": 155747,
-        "albumName": "Glorious Results of a Misspent Youth (Expanded Edition)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6f/2b/ed/6f2bed81-7862-de0f-25d2-9dfec4d88e97/886447254615_Cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/cherry-bomb/1872182191?i=1872182194&uo=4"
+        "name": "I Hate Myself for Loving You",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/ac/32/dd/ac32ddd3-ced6-9c8f-a702-0698fbe28430/mzaf_13339219701094274193.plus.aac.p.m4a",
+        "durationMs": 246800,
+        "albumName": "Up Your Alley",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/49/f7/8b/49f78bb0-c748-1c5c-e634-b1cad8fbe803/074644414622.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/i-hate-myself-for-loving-you/190178956?i=190178976&uo=4"
       },
       {
-        "name": "Everyday People",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d5/52/f9/d552f998-3e8e-e3d0-bf06-d4c70dafdbcd/mzaf_11244234890774405110.plus.aac.p.m4a",
-        "durationMs": 159987,
-        "albumName": "Album (Expanded Edition)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/d1/1e/a3/d11ea339-a9a1-a7fb-0d75-c3a59eec0685/886447249178_Cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/everyday-people/1872453144?i=1872453152&uo=4"
+        "name": "Bad Reputation",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/59/77/06/597706e4-e5c5-bfae-ee2a-46396d731e72/mzaf_9478006586280183287.plus.aac.p.m4a",
+        "durationMs": 169187,
+        "albumName": "Bad Reputation (Expanded Edition)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/da/4d/d7/da4dd7de-933f-9abd-9771-819e3b00bd77/886447249321_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/bad-reputation/1872452689?i=1872452691&uo=4"
+      },
+      {
+        "name": "Do You Wanna Touch Me (Oh Yeah)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/39/0a/49/390a4981-512a-0a8a-b63a-6e7783408d80/mzaf_4853762132909789298.plus.aac.p.m4a",
+        "durationMs": 226520,
+        "albumName": "Bad Reputation (Expanded Edition)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/da/4d/d7/da4dd7de-933f-9abd-9771-819e3b00bd77/886447249321_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/do-you-wanna-touch-me-oh-yeah/1872452689?i=1872452704&uo=4"
       }
     ]
   },
   "joe-satriani": {
     "name": "Joe Satriani",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:40:12.379Z",
+    "fetchedAt": "2026-06-16T20:18:22.961Z",
     "tracks": [
       {
         "name": "Always with Me, Always with You",
@@ -4784,12 +4784,12 @@
         "streamingUrl": "https://music.apple.com/us/album/if-i-could-fly/198119996?i=198120014&uo=4"
       },
       {
-        "name": "Flying In a Blue Dream",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8b/84/bc/8b84bc3f-8e6a-d12b-dbb6-cf3226193bae/mzaf_14292858434776653156.plus.aac.p.m4a",
-        "durationMs": 321973,
-        "albumName": "Flying In a Blue Dream",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/90/e0/8d/90e08dcb-041f-356a-eb67-ab57ff912d29/884977854145.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/flying-in-a-blue-dream/407604190?i=407604343&uo=4"
+        "name": "Satch Boogie",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/7e/ac/24/7eac243d-29be-908d-6674-5e29e59f79e2/mzaf_10158746209022600359.plus.aac.p.m4a",
+        "durationMs": 193585,
+        "albumName": "Surfing with the Alien",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/40/cc/4a/40cc4a28-8630-bf68-fe8d-5fe4801fc915/884977849714.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/satch-boogie/405602019?i=405602064&uo=4"
       }
     ]
   },
@@ -5031,7 +5031,7 @@
   "kiev": {
     "name": "Kiev",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:40:18.610Z",
+    "fetchedAt": "2026-06-16T20:18:24.261Z",
     "tracks": [
       {
         "name": "Kiev",
@@ -5051,19 +5051,19 @@
       },
       {
         "name": "Kiev",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/46/20/61/4620610a-fb30-78d6-9c88-4e551f3ec50a/mzaf_10800838375119836706.plus.aac.p.m4a",
-        "durationMs": 207065,
-        "albumName": "Kiev - Single",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/13/59/1f/13591ff5-b7a1-b84d-b6cb-b736e2ad274a/artwork.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/kiev/1444484452?i=1444484453&uo=4"
-      },
-      {
-        "name": "Kiev",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/a9/ae/35/a9ae35a8-2037-a7f6-2107-0fbe64e2b2e4/mzaf_10497607377468288309.plus.aac.p.m4a",
         "durationMs": 207065,
         "albumName": "Stay 4 Lunch - EP",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/76/b2/65/76b26509-53e2-5643-0255-72f69f38220a/artwork.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/kiev/1450628147?i=1450628149&uo=4"
+      },
+      {
+        "name": "Kiev",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/46/20/61/4620610a-fb30-78d6-9c88-4e551f3ec50a/mzaf_10800838375119836706.plus.aac.p.m4a",
+        "durationMs": 207065,
+        "albumName": "Kiev - Single",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/13/59/1f/13591ff5-b7a1-b84d-b6cb-b736e2ad274a/artwork.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/kiev/1444484452?i=1444484453&uo=4"
       },
       {
         "name": "Kiev",
@@ -5078,8 +5078,16 @@
   "kings-of-leon": {
     "name": "Kings of Leon",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:40:19.235Z",
+    "fetchedAt": "2026-06-16T20:18:24.898Z",
     "tracks": [
+      {
+        "name": "Sex On Fire",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8f/39/df/8f39df6b-9b97-1313-b26d-368d9cc0d20f/mzaf_16643660259914950728.plus.aac.p.m4a",
+        "durationMs": 203287,
+        "albumName": "Only By the Night",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/74/25/4c/74254c8b-e03d-44e8-304d-4cde508b8cfb/dj.swemfdrr.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/sex-on-fire/290302885?i=290303003&uo=4"
+      },
       {
         "name": "Use Somebody",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/ae/78/eb/ae78eb81-01e0-a02a-1442-eea0cff76f41/mzaf_17219616663227158625.plus.aac.p.m4a",
@@ -5089,12 +5097,12 @@
         "streamingUrl": "https://music.apple.com/us/album/use-somebody/290302885?i=290303018&uo=4"
       },
       {
-        "name": "Sex On Fire",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8f/39/df/8f39df6b-9b97-1313-b26d-368d9cc0d20f/mzaf_16643660259914950728.plus.aac.p.m4a",
-        "durationMs": 203287,
-        "albumName": "Only By the Night",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/74/25/4c/74254c8b-e03d-44e8-304d-4cde508b8cfb/dj.swemfdrr.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/sex-on-fire/290302885?i=290303003&uo=4"
+        "name": "Wait for Me",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/ec/ef/74/ecef74f5-2be7-2230-a1dd-067de59f00cd/mzaf_1997788188531410832.plus.aac.p.m4a",
+        "durationMs": 210159,
+        "albumName": "Mechanical Bull (Expanded Edition)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/07/ae/f4/07aef449-241e-fca0-028f-cc71fe65db52/886444064361.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/wait-for-me/1435640185?i=1435640294&uo=4"
       },
       {
         "name": "Closer",
@@ -5111,14 +5119,6 @@
         "albumName": "Come Around Sundown (Expanded Edition)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/80/5c/ab/805cab32-df9c-ce43-be39-9f5af0e075b2/mzi.bwjyitjb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/pyro/457503067?i=457503078&uo=4"
-      },
-      {
-        "name": "Wait for Me",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/ec/ef/74/ecef74f5-2be7-2230-a1dd-067de59f00cd/mzaf_1997788188531410832.plus.aac.p.m4a",
-        "durationMs": 210159,
-        "albumName": "Mechanical Bull (Expanded Edition)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/07/ae/f4/07aef449-241e-fca0-028f-cc71fe65db52/886444064361.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/wait-for-me/1435640185?i=1435640294&uo=4"
       }
     ]
   },
@@ -5454,16 +5454,8 @@
   "los-lobos": {
     "name": "Los Lobos",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:40:25.566Z",
+    "fetchedAt": "2026-06-16T20:18:25.615Z",
     "tracks": [
-      {
-        "name": "La Bamba",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e3/cd/2c/e3cd2c50-f2ed-fca0-4c7d-9512d0d1c21c/mzaf_6337186935789110712.plus.aac.p.m4a",
-        "durationMs": 174200,
-        "albumName": "La Bamba (Original Motion Picture Soundtrack)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/11/ac/57/mzi.gihwdlmg.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/la-bamba/342347858?i=342347879&uo=4"
-      },
       {
         "name": "Canción del Mariachi (Ilia Topuria \"El Matador\" Anthem)",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/a0/06/ce/a006ce42-018c-e013-9be7-64e1463a274a/mzaf_11388658228180646933.plus.aac.p.m4a",
@@ -5471,6 +5463,14 @@
         "albumName": "Mexico and Mariachis - Single",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/e2/85/83/e28583fc-74f7-3ddf-95b1-f0d2305339b6/886448176930.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/canci%C3%B3n-del-mariachi-ilia-topuria-el-matador-anthem/1522788451?i=1522788452&uo=4"
+      },
+      {
+        "name": "La Bamba",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e3/cd/2c/e3cd2c50-f2ed-fca0-4c7d-9512d0d1c21c/mzaf_6337186935789110712.plus.aac.p.m4a",
+        "durationMs": 174200,
+        "albumName": "La Bamba (Original Motion Picture Soundtrack)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/11/ac/57/mzi.gihwdlmg.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/la-bamba/342347858?i=342347879&uo=4"
       },
       {
         "name": "We Belong Together",
@@ -5501,7 +5501,7 @@
   "mad-caddies": {
     "name": "Mad Caddies",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:24.937Z",
+    "fetchedAt": "2026-06-16T20:18:26.170Z",
     "tracks": [
       {
         "name": "Drinking for 11",
@@ -5689,7 +5689,7 @@
   "me-not-you": {
     "name": "Me Not You",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:40:31.522Z",
+    "fetchedAt": "2026-06-16T20:18:26.926Z",
     "tracks": [
       {
         "name": "Kill the Noise",
@@ -5709,19 +5709,19 @@
       },
       {
         "name": "Me Not You",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/62/20/d0/6220d026-8902-deff-ea1c-d38a440baf20/mzaf_10370019287877159615.plus.aac.p.m4a",
+        "durationMs": 192000,
+        "albumName": "Me Not You - Single",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c2/ee/7d/c2ee7d63-f5f7-83af-202d-4529e0b918f6/artwork.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/me-not-you/1818863110?i=1818863111&uo=4"
+      },
+      {
+        "name": "Me Not You",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/2f/a6/26/2fa626dc-326a-94d3-1a0a-7b25876529a1/mzaf_4628028713925088591.plus.aac.p.m4a",
         "durationMs": 136927,
         "albumName": "Me Not You - Single",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e4/e3/b5/e4e3b5d6-77cb-76bd-bf57-94cca8af1bc6/196100591286.png/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/me-not-you/1564139874?i=1564139875&uo=4"
-      },
-      {
-        "name": "Me Not You (Club Version)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/2c/a1/8d/2ca18d3c-3302-6134-825a-1ca3113ebcc8/mzaf_9229853462849191706.plus.aac.p.m4a",
-        "durationMs": 234166,
-        "albumName": "Me Not You (Club Version) - Single",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/11/b0/35/11b03561-af67-b0e8-aee7-6fed4c006075/aftne082sc.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/me-not-you-club-version/1889486188?i=1889486189&uo=4"
       },
       {
         "name": "Me Not You",
@@ -5736,7 +5736,7 @@
   "men-at-work": {
     "name": "Men At Work",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:40:32.128Z",
+    "fetchedAt": "2026-06-16T20:18:27.504Z",
     "tracks": [
       {
         "name": "Down Under",
@@ -5830,7 +5830,7 @@
   "midnight-oil": {
     "name": "Midnight Oil",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:29.751Z",
+    "fetchedAt": "2026-06-16T20:18:28.129Z",
     "tracks": [
       {
         "name": "Beds Are Burning",
@@ -5857,20 +5857,20 @@
         "streamingUrl": "https://music.apple.com/us/album/the-dead-heart/288955172?i=288955184&uo=4"
       },
       {
-        "name": "Midnight Oil",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/e8/a9/ec/e8a9ec82-cace-9b40-7189-446734319e1f/mzaf_2257366091717826204.plus.aac.p.m4a",
-        "durationMs": 195827,
-        "albumName": "Wake-Up Call",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/29/de/a3/29dea3db-b491-2afd-fd42-a653043f3964/080688252861.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/midnight-oil/1165976173?i=1165976222&uo=4"
-      },
-      {
         "name": "MIDNIGHT OIL",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/cf/83/11/cf831139-ae1a-1ecc-26c4-bcc222a89af4/mzaf_16093306986336888630.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/91/25/70/9125703a-b8da-632b-f1de-200421bec85e/mzaf_5307169012951801984.plus.aac.p.m4a",
         "durationMs": 179693,
         "albumName": "MIDNIGHT OIL - Single",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9d/f8/62/9df862b4-5e95-083a-6c57-07a06aa7f1b5/840389871460_phoenixcover.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/midnight-oil/1840924085?i=1840924086&uo=4"
+      },
+      {
+        "name": "Midnight Oil",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/37/17/1e/37171e97-dd1e-3a79-ba2b-65604892eda6/mzaf_5543687330740958118.plus.aac.p.m4a",
+        "durationMs": 284133,
+        "albumName": "Phillips Craig & Dean Ultimate Collection",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/92/6e/3e/926e3efb-222a-909a-7a8b-2b55fb4bff9e/00094634722155.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/midnight-oil/716629544?i=716629563&uo=4"
       }
     ]
   },
@@ -5971,7 +5971,7 @@
   "molchat-doma": {
     "name": "Molchat Doma",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:31.543Z",
+    "fetchedAt": "2026-06-16T20:18:28.707Z",
     "tracks": [
       {
         "name": "Судно (Борис Рыжий)",
@@ -6006,12 +6006,12 @@
         "streamingUrl": "https://music.apple.com/us/album/%D0%B2%D0%BE%D0%BB%D0%BD%D1%8B/1492386136?i=1492386152&uo=4"
       },
       {
-        "name": "На Дне",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b8/cd/92/b8cd92a3-211a-053f-47f7-cae30d3a5d27/mzaf_14479612824386636368.plus.aac.p.m4a",
-        "durationMs": 247409,
+        "name": "Танцевать",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/09/a5/0c/09a50c99-ab73-8e37-f1fc-87811c8ad8a3/mzaf_11906421221558505123.plus.aac.p.m4a",
+        "durationMs": 202846,
         "albumName": "Этажи",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/70/46/b4/7046b4a9-14aa-af8f-e273-07b4d45a0c0a/cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/%D0%BD%D0%B0-%D0%B4%D0%BD%D0%B5/1492386136?i=1492386141&uo=4"
+        "streamingUrl": "https://music.apple.com/us/album/%D1%82%D0%B0%D0%BD%D1%86%D0%B5%D0%B2%D0%B0%D1%82%D1%8C/1492386136?i=1492386145&uo=4"
       }
     ]
   },
@@ -6206,16 +6206,8 @@
   "pat-dinizio": {
     "name": "Pat DiNizio",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:37.572Z",
+    "fetchedAt": "2026-06-16T20:18:30.013Z",
     "tracks": [
-      {
-        "name": "A World Apart",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/77/04/15/7704154d-d9f6-7a14-4454-642b5b9f349b/mzaf_5068780932261615584.plus.aac.p.m4a",
-        "durationMs": 214040,
-        "albumName": "God Save The Smithereens (Deluxe Edition)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c5/6f/34/c56f3470-3088-1beb-3189-9e81e8120230/5549.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/a-world-apart/1766367566?i=1766368625&uo=4"
-      },
       {
         "name": "Blood And Roses (Live In Spain) [Bonus Track]",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/65/7f/c5/657fc51d-1436-4629-94cc-fcccbaa5b355/mzaf_8676664464619961608.plus.aac.p.m4a",
@@ -6223,14 +6215,6 @@
         "albumName": "God Save The Smithereens (Deluxe Edition)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c5/6f/34/c56f3470-3088-1beb-3189-9e81e8120230/5549.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/blood-and-roses-live-in-spain-bonus-track/1766367566?i=1766369268&uo=4"
-      },
-      {
-        "name": "Everyday World",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f9/30/73/f9307341-7194-d2d1-86b3-ac824d91d32e/mzaf_10639719652442332675.plus.aac.p.m4a",
-        "durationMs": 167667,
-        "albumName": "God Save The Smithereens (Deluxe Edition)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c5/6f/34/c56f3470-3088-1beb-3189-9e81e8120230/5549.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/everyday-world/1766367566?i=1766368615&uo=4"
       },
       {
         "name": "Where I Am Going (Jennie's Song)",
@@ -6241,12 +6225,28 @@
         "streamingUrl": "https://music.apple.com/us/album/where-i-am-going-jennies-song/1766367566?i=1766368299&uo=4"
       },
       {
-        "name": "Witchita Lineman",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/cd/3b/fd/cd3bfd5f-f107-ab40-ddd6-667b5dfa869c/mzaf_5395648522256779433.plus.aac.p.m4a",
-        "durationMs": 194280,
-        "albumName": "This Is Pat DiNizio",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/5f/a5/ef/mzi.onehvhpk.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/witchita-lineman/193450959?i=193451088&uo=4"
+        "name": "Everyday World",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f9/30/73/f9307341-7194-d2d1-86b3-ac824d91d32e/mzaf_10639719652442332675.plus.aac.p.m4a",
+        "durationMs": 167667,
+        "albumName": "God Save The Smithereens (Deluxe Edition)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c5/6f/34/c56f3470-3088-1beb-3189-9e81e8120230/5549.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/everyday-world/1766367566?i=1766368615&uo=4"
+      },
+      {
+        "name": "No Love Lost",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/35/f4/5c/35f45c9b-4e70-78cf-e3aa-fed80a68fc4a/mzaf_14441015922474118195.plus.aac.p.m4a",
+        "durationMs": 305773,
+        "albumName": "God Save The Smithereens (Deluxe Edition)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c5/6f/34/c56f3470-3088-1beb-3189-9e81e8120230/5549.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/no-love-lost/1766367566?i=1766368621&uo=4"
+      },
+      {
+        "name": "A World Apart",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/77/04/15/7704154d-d9f6-7a14-4454-642b5b9f349b/mzaf_5068780932261615584.plus.aac.p.m4a",
+        "durationMs": 214040,
+        "albumName": "God Save The Smithereens (Deluxe Edition)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c5/6f/34/c56f3470-3088-1beb-3189-9e81e8120230/5549.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/a-world-apart/1766367566?i=1766368625&uo=4"
       }
     ]
   },
@@ -6347,16 +6347,8 @@
   "peter-hook-and-the-light": {
     "name": "Peter Hook and the Light",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:40.563Z",
+    "fetchedAt": "2026-06-16T20:18:31.965Z",
     "tracks": [
-      {
-        "name": "Age of Consent (Live)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/99/7c/53/997c53fd-45d9-cba2-09e3-8c2c02c830b0/mzaf_14000738617906684041.plus.aac.p.m4a",
-        "durationMs": 349080,
-        "albumName": "Power Corruption & Lies Tour 2013",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/34/f5/3d/34f53de6-3acc-3c6d-65a5-9d3b143f361b/803343146264.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/age-of-consent-live/1211808312?i=1211809305&uo=4"
-      },
       {
         "name": "Love Will Tear Us Apart",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/cf/eb/15/cfeb1541-9d5b-7ed3-ac6b-d88166006f4c/mzaf_8070280852312930879.plus.aac.p.m4a",
@@ -6366,20 +6358,20 @@
         "streamingUrl": "https://music.apple.com/us/album/love-will-tear-us-apart/464947327?i=464947393&uo=4"
       },
       {
-        "name": "Ceremony (Live)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/ed/a1/9b/eda19b69-e01c-ada5-4d94-9dc78225303c/mzaf_14907243070319599929.plus.aac.p.m4a",
-        "durationMs": 326640,
-        "albumName": "Substance: The Albums of Joy Division & New Order (Live At Apollo Theatre Manchester 9/16/2016)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/ff/69/f8/ff69f815-2c1b-faea-8988-aaf62654b75e/5060483410388.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/ceremony-live/1581760181?i=1581760231&uo=4"
+        "name": "Age of Consent (Live)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/99/7c/53/997c53fd-45d9-cba2-09e3-8c2c02c830b0/mzaf_14000738617906684041.plus.aac.p.m4a",
+        "durationMs": 349080,
+        "albumName": "Power Corruption & Lies Tour 2013",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/34/f5/3d/34f53de6-3acc-3c6d-65a5-9d3b143f361b/803343146264.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/age-of-consent-live/1211808312?i=1211809305&uo=4"
       },
       {
-        "name": "Day of the Lords (Live)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/2e/86/5f/2e865fc0-1340-9060-ef29-409d96f4db3d/mzaf_3271437320424930536.plus.aac.p.m4a",
-        "durationMs": 299520,
-        "albumName": "Unknown Pleasures - Live in Leeds",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music111/v4/ee/0a/4a/ee0a4a38-17bb-78ab-f639-a73b346640d0/803343146240.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/day-of-the-lords-live/1196395656?i=1196395891&uo=4"
+        "name": "True Faith (Live)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/12/6c/7f/126c7f0a-ca43-4938-8524-a3510230d294/mzaf_1777293438371907421.plus.aac.p.m4a",
+        "durationMs": 306563,
+        "albumName": "Get Ready (Live At Victoria Warehouse Manchester)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/97/85/21/9785210f-65c0-6ad1-3860-b295b9bad013/5037300568041.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/true-faith-live/1888001174?i=1888002148&uo=4"
       },
       {
         "name": "She's Lost Control (Live)",
@@ -6388,6 +6380,14 @@
         "albumName": "Unknown Pleasures - Live in Leeds",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music111/v4/ee/0a/4a/ee0a4a38-17bb-78ab-f639-a73b346640d0/803343146240.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/shes-lost-control-live/1196395656?i=1196395934&uo=4"
+      },
+      {
+        "name": "Day of the Lords (Live)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/2e/86/5f/2e865fc0-1340-9060-ef29-409d96f4db3d/mzaf_3271437320424930536.plus.aac.p.m4a",
+        "durationMs": 299520,
+        "albumName": "Unknown Pleasures - Live in Leeds",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music111/v4/ee/0a/4a/ee0a4a38-17bb-78ab-f639-a73b346640d0/803343146240.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/day-of-the-lords-live/1196395656?i=1196395891&uo=4"
       }
     ]
   },
@@ -6441,7 +6441,7 @@
   "polar-bear-club": {
     "name": "Polar Bear Club",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:41.767Z",
+    "fetchedAt": "2026-06-16T20:18:33.234Z",
     "tracks": [
       {
         "name": "Living Saints",
@@ -6452,6 +6452,14 @@
         "streamingUrl": "https://music.apple.com/us/album/living-saints/714740905?i=714741262&uo=4"
       },
       {
+        "name": "Convinced I'm Wrong",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b1/41/58/b141587c-f630-f198-b194-a14bc827cd0c/mzaf_15993145566373906169.plus.aac.p.m4a",
+        "durationMs": 333013,
+        "albumName": "Sometimes Things Just Disappear",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/d4/4a/ce/d44acef5-a25f-0263-18fe-d5b016e6e0c6/mzi.ckcjzueo.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/convinced-im-wrong/487256473?i=487256733&uo=4"
+      },
+      {
         "name": "Burned Out In a Jar",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/7c/47/73/7c477341-0e83-8742-8bec-85101063214c/mzaf_6222424132324451828.plus.aac.p.m4a",
         "durationMs": 198240,
@@ -6460,20 +6468,12 @@
         "streamingUrl": "https://music.apple.com/us/album/burned-out-in-a-jar/487256473?i=487256677&uo=4"
       },
       {
-        "name": "Screams In Caves",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/4b/b7/c8/4bb7c89d-c856-15a9-0bce-c4669ebbc9c7/mzaf_5287772624353582463.plus.aac.p.m4a",
-        "durationMs": 226093,
-        "albumName": "Clash Battle Guilt Pride",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/72/70/85/72708556-334f-0975-7078-90983fa52b12/00842812110542.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/screams-in-caves/1437185894?i=1437185917&uo=4"
-      },
-      {
-        "name": "Convinced I'm Wrong",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b1/41/58/b141587c-f630-f198-b194-a14bc827cd0c/mzaf_15993145566373906169.plus.aac.p.m4a",
-        "durationMs": 333013,
+        "name": "Hollow Place",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/bc/36/0c/bc360c5c-1f2c-af33-1c4d-103c36570551/mzaf_15650389152093273778.plus.aac.p.m4a",
+        "durationMs": 253560,
         "albumName": "Sometimes Things Just Disappear",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/d4/4a/ce/d44acef5-a25f-0263-18fe-d5b016e6e0c6/mzi.ckcjzueo.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/convinced-im-wrong/487256473?i=487256733&uo=4"
+        "streamingUrl": "https://music.apple.com/us/album/hollow-place/487256473?i=487256480&uo=4"
       },
       {
         "name": "Polar Bear Club",
@@ -6488,7 +6488,7 @@
   "psychedelic-furs": {
     "name": "Psychedelic Furs",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:42.982Z",
+    "fetchedAt": "2026-06-16T20:18:36.490Z",
     "tracks": [
       {
         "name": "Love My Way",
@@ -6499,20 +6499,12 @@
         "streamingUrl": "https://music.apple.com/us/album/love-my-way/169718883?i=169719259&uo=4"
       },
       {
-        "name": "The Ghost In You",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/e9/56/10/e9561028-e565-950b-a18d-4c46a0cdd8bd/mzaf_1187412404871035093.plus.aac.p.m4a",
-        "durationMs": 257440,
-        "albumName": "Greatest Hits",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c9/65/46/c9654693-d5ae-183e-d946-95e008ae0a5a/074646148129.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-ghost-in-you/169718883?i=169719497&uo=4"
-      },
-      {
-        "name": "Heaven",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/08/e1/eb/08e1eb89-e099-06eb-cd52-97d66c9c025e/mzaf_16854839553231973329.plus.aac.p.m4a",
-        "durationMs": 205760,
-        "albumName": "Greatest Hits",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c9/65/46/c9654693-d5ae-183e-d946-95e008ae0a5a/074646148129.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/heaven/169718883?i=169719314&uo=4"
+        "name": "Heartbreak Beat",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/31/8b/d5/318bd5f0-40d6-d189-eab2-a4979a367c78/mzaf_9854761322018928856.plus.aac.p.m4a",
+        "durationMs": 309360,
+        "albumName": "Midnight to Midnight",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features/6d/45/fc/dj.nkdrgelx.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/heartbreak-beat/203793452?i=203793469&uo=4"
       },
       {
         "name": "Pretty In Pink",
@@ -6523,12 +6515,20 @@
         "streamingUrl": "https://music.apple.com/us/album/pretty-in-pink/169718883?i=169719209&uo=4"
       },
       {
-        "name": "Heartbreak Beat",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/31/8b/d5/318bd5f0-40d6-d189-eab2-a4979a367c78/mzaf_9854761322018928856.plus.aac.p.m4a",
-        "durationMs": 309360,
-        "albumName": "Midnight to Midnight",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features/6d/45/fc/dj.nkdrgelx.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/heartbreak-beat/203793452?i=203793469&uo=4"
+        "name": "Heaven",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/08/e1/eb/08e1eb89-e099-06eb-cd52-97d66c9c025e/mzaf_16854839553231973329.plus.aac.p.m4a",
+        "durationMs": 205760,
+        "albumName": "Greatest Hits",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c9/65/46/c9654693-d5ae-183e-d946-95e008ae0a5a/074646148129.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/heaven/169718883?i=169719314&uo=4"
+      },
+      {
+        "name": "The Ghost In You",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/e9/56/10/e9561028-e565-950b-a18d-4c46a0cdd8bd/mzaf_1187412404871035093.plus.aac.p.m4a",
+        "durationMs": 257440,
+        "albumName": "Greatest Hits",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c9/65/46/c9654693-d5ae-183e-d946-95e008ae0a5a/074646148129.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-ghost-in-you/169718883?i=169719497&uo=4"
       }
     ]
   },
@@ -6723,7 +6723,7 @@
   "royal-blood": {
     "name": "Royal Blood",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:41:21.347Z",
+    "fetchedAt": "2026-06-16T20:18:39.957Z",
     "tracks": [
       {
         "name": "Figure It Out",
@@ -6770,16 +6770,8 @@
   "sheila-chandra": {
     "name": "Sheila Chandra",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:41:24.540Z",
+    "fetchedAt": "2026-06-16T20:18:45.168Z",
     "tracks": [
-      {
-        "name": "Arwen's Fate / \"The Grace of the Valar\" (feat. Sheila Chandra)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/76/77/b9/7677b991-ca0f-49e5-1a3c-3c74d8ed46fb/mzaf_12843181859379627927.plus.aac.p.m4a",
-        "durationMs": 238733,
-        "albumName": "The Lord of the Rings: The Two Towers (The Complete Recordings)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/da/4b/9e/da4b9e85-ceeb-9f2d-19fb-3f0afc88d4c6/603497859221.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/arwens-fate-the-grace-of-the-valar-feat-sheila-chandra/1386667298?i=1386670790&uo=4"
-      },
       {
         "name": "Ever So Lonely / Eyes / Ocean",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/0e/91/c8/0e91c8c1-e35a-bb25-acfe-bf7342355ef2/mzaf_1621021892095487565.plus.aac.p.m4a",
@@ -6789,12 +6781,20 @@
         "streamingUrl": "https://music.apple.com/us/album/ever-so-lonely-eyes-ocean/1653885047?i=1653885170&uo=4"
       },
       {
-        "name": "Shanti, Shanti, Shanti",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/01/f6/79/01f67966-c73d-5c2d-55cd-c49edff1f2f7/mzaf_212857240266069742.plus.aac.p.m4a",
-        "durationMs": 275267,
-        "albumName": "Roots and Wings",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/ae/e8/5d/aee85d79-90b4-3e45-bef7-64cb55c61ebe/28563.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/shanti-shanti-shanti/554978443?i=554978497&uo=4"
+        "name": "Arwen's Fate / \"The Grace of the Valar\" (feat. Sheila Chandra)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/76/77/b9/7677b991-ca0f-49e5-1a3c-3c74d8ed46fb/mzaf_12843181859379627927.plus.aac.p.m4a",
+        "durationMs": 238733,
+        "albumName": "The Lord of the Rings: The Two Towers (The Complete Recordings)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/da/4b/9e/da4b9e85-ceeb-9f2d-19fb-3f0afc88d4c6/603497859221.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/arwens-fate-the-grace-of-the-valar-feat-sheila-chandra/1386667298?i=1386670790&uo=4"
+      },
+      {
+        "name": "ABoneCroneDrone 7",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b8/1f/60/b81f60e0-973f-e84d-43a7-29e2e4f9ebc7/mzaf_10225281510430006748.plus.aac.p.m4a",
+        "durationMs": 939040,
+        "albumName": "This Sentence Is True (The Previous Sentence Is False)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/35/56/10/35561039-787f-cb23-6c7a-e1df4e76d70b/28689.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/abonecronedrone-7/554285994?i=554286030&uo=4"
       },
       {
         "name": "Om Namaha Shiva",
@@ -6805,12 +6805,12 @@
         "streamingUrl": "https://music.apple.com/us/album/om-namaha-shiva/1653885047?i=1653885386&uo=4"
       },
       {
-        "name": "Speaking in Tongues I",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/2a/18/0b/2a180b9f-3304-c17d-a231-05f7e1224948/mzaf_8383477780447100213.plus.aac.p.m4a",
-        "durationMs": 137143,
-        "albumName": "Brood VII",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/91/e1/86/91e186c2-8536-97cd-915a-1082324af640/198084213796_cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/speaking-in-tongues-i/1792291550?i=1792291558&uo=4"
+        "name": "Shanti, Shanti, Shanti",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/01/f6/79/01f67966-c73d-5c2d-55cd-c49edff1f2f7/mzaf_212857240266069742.plus.aac.p.m4a",
+        "durationMs": 275267,
+        "albumName": "Roots and Wings",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/ae/e8/5d/aee85d79-90b4-3e45-bef7-64cb55c61ebe/28563.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/shanti-shanti-shanti/554978443?i=554978497&uo=4"
       }
     ]
   },
@@ -6864,7 +6864,7 @@
   "sleigh-bells": {
     "name": "Sleigh Bells",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:41:26.954Z",
+    "fetchedAt": "2026-06-16T20:18:48.550Z",
     "tracks": [
       {
         "name": "Rill Rill",
@@ -6883,14 +6883,6 @@
         "streamingUrl": "https://music.apple.com/us/album/crown-on-the-ground/1596850637?i=1596850651&uo=4"
       },
       {
-        "name": "Sleigh Bells",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/09/6c/af/096caffb-5294-b100-438c-7e5834b596e1/mzaf_13352980755273083767.plus.aac.p.m4a",
-        "durationMs": 146053,
-        "albumName": "A Christmas Story (Music From the Motion Picture)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/f6/6d/47/f66d472b-e1fb-873b-a338-309f66363688/794043162732.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/sleigh-bells/1454451154?i=1454451572&uo=4"
-      },
-      {
         "name": "Riot Rhythm",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/30/51/3b/30513b9b-6510-b0c0-4e4d-1dfb20f4dbd5/mzaf_13511713516363945703.plus.aac.p.m4a",
         "durationMs": 156760,
@@ -6899,12 +6891,20 @@
         "streamingUrl": "https://music.apple.com/us/album/riot-rhythm/1596850637?i=1596850645&uo=4"
       },
       {
+        "name": "Infinity Guitars",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/86/69/15/86691537-b9d8-9905-bcf0-aa29dfcc16e3/mzaf_1310932768044905896.plus.aac.p.m4a",
+        "durationMs": 151773,
+        "albumName": "Treats",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/26/2a/00/262a0009-599a-bc23-a8b9-364da9ec036c/0884977617191_treatscoverx.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/infinity-guitars/1596850637?i=1596850647&uo=4"
+      },
+      {
         "name": "Sleigh Bells",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/64/9c/f4/649cf44e-ca08-5d42-e63e-54b7fb7458b1/mzaf_3062656793001759697.plus.aac.p.m4a",
-        "durationMs": 150880,
-        "albumName": "The Original: Gene Autry Sings Rudolph the Red-Nosed Reindeer & Other Christmas Favorites",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/42/d5/47/42d547d0-b38b-c6ad-f688-1de33efb2c77/13UMDIM01306.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/sleigh-bells/1440492346?i=1440492650&uo=4"
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/09/6c/af/096caffb-5294-b100-438c-7e5834b596e1/mzaf_13352980755273083767.plus.aac.p.m4a",
+        "durationMs": 146053,
+        "albumName": "A Christmas Story (Music From the Motion Picture)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/f6/6d/47/f66d472b-e1fb-873b-a338-309f66363688/794043162732.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/sleigh-bells/1454451154?i=1454451572&uo=4"
       }
     ]
   },
@@ -7663,7 +7663,7 @@
   "the-art-of-noise": {
     "name": "The Art of Noise",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:43:08.002Z",
+    "fetchedAt": "2026-06-16T20:19:02.882Z",
     "tracks": [
       {
         "name": "Moments In Love",
@@ -7682,14 +7682,6 @@
         "streamingUrl": "https://music.apple.com/us/album/moments-in-love/1364593455?i=1364594622&uo=4"
       },
       {
-        "name": "Love",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/20/17/75/2017755c-7d34-7cb9-6e8e-cc65a84e9e3a/mzaf_1525395247294500141.plus.aac.p.m4a",
-        "durationMs": 421093,
-        "albumName": "Daft",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/c3/3b/55/c33b5581-7da4-0a5c-e3ff-076af410df44/00602567502029.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/love/1365524904?i=1365525224&uo=4"
-      },
-      {
         "name": "Beat Box",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/20/2b/92/202b9298-da22-063b-a6ef-a0c58678f453/mzaf_11225256092037346640.plus.aac.p.m4a",
         "durationMs": 291707,
@@ -7698,8 +7690,16 @@
         "streamingUrl": "https://music.apple.com/us/album/beat-box/1370789250?i=1370789982&uo=4"
       },
       {
+        "name": "Love",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/20/17/75/2017755c-7d34-7cb9-6e8e-cc65a84e9e3a/mzaf_1525395247294500141.plus.aac.p.m4a",
+        "durationMs": 421093,
+        "albumName": "Daft",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/c3/3b/55/c33b5581-7da4-0a5c-e3ff-076af410df44/00602567502029.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/love/1365524904?i=1365525224&uo=4"
+      },
+      {
         "name": "Moments In Love (Mixed)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6f/72/fe/6f72fef2-44fa-b62b-5403-7ef07282a8ec/mzaf_9964388713279100516.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/c6/0a/2a/c60a2a64-b504-17ac-8646-751e0e7200d2/mzaf_1562677755572722008.plus.aac.p.m4a",
         "durationMs": 153272,
         "albumName": "Palace London Event (DJ Mix)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/3c/48/80/3c488071-7072-bd35-a0df-a9ba4df042aa/43c85bdc-471b-46c1-9b52-fd828a4ea446.jpg/100x100bb.jpg",
@@ -7851,7 +7851,7 @@
   "the-cult": {
     "name": "The Cult",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:43:10.967Z",
+    "fetchedAt": "2026-06-16T20:19:04.045Z",
     "tracks": [
       {
         "name": "She Sells Sanctuary",
@@ -7945,7 +7945,7 @@
   "the-drummers-of-burundi": {
     "name": "The Drummers of Burundi",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:17.309Z",
+    "fetchedAt": "2026-06-16T20:19:05.212Z",
     "tracks": [
       {
         "name": "Extract",
@@ -7992,7 +7992,7 @@
   "the-head-and-the-heart": {
     "name": "The Head and the Heart",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:20.095Z",
+    "fetchedAt": "2026-06-16T20:19:07.142Z",
     "tracks": [
       {
         "name": "Rivers and Roads",
@@ -8027,28 +8027,20 @@
         "streamingUrl": "https://music.apple.com/us/album/lets-be-still/677361076?i=677361473&uo=4"
       },
       {
-        "name": "Every Shade of Blue",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e4/70/52/e4705250-0830-b9e2-a272-eb0e3b7ecb12/mzaf_6234065072167688871.plus.aac.p.m4a",
-        "durationMs": 213293,
-        "albumName": "Every Shade of Blue",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/ae/57/41/ae5741ca-ee2e-6b96-4702-e91c6c99e011/093624873976.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/every-shade-of-blue/1609277380?i=1609277381&uo=4"
+        "name": "Shake",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/a5/03/a0/a503a098-3add-96d6-61bc-7600cb609e45/mzaf_11017863105822237233.plus.aac.p.m4a",
+        "durationMs": 241707,
+        "albumName": "Let's Be Still",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/8b/19/1a/8b191a5d-d95e-e5a1-5201-aaeb3150fcfd/THATH_LetsBeStill_2400.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/shake/677361076?i=677361465&uo=4"
       }
     ]
   },
   "the-human-league": {
     "name": "The Human League",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:20.739Z",
+    "fetchedAt": "2026-06-16T20:19:07.688Z",
     "tracks": [
-      {
-        "name": "Human",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/6b/e2/df/6be2df75-5c16-e6a3-cf4d-5feecc43f6f8/mzaf_3185171022652100282.plus.aac.p.m4a",
-        "durationMs": 265320,
-        "albumName": "Crash (Bonus Track Version)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/ae/1e/2f/ae1e2f65-8f1d-18fc-ba28-c88e2ef3db6e/00094633341555.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/human/714506198?i=714506573&uo=4"
-      },
       {
         "name": "Don't You Want Me",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/59/01/2c/59012c96-3e72-3c32-3193-fd72de799bcc/mzaf_3416399182024015094.plus.aac.p.m4a",
@@ -8056,6 +8048,14 @@
         "albumName": "Dare",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/60/b1/b0/60b1b052-1a98-b1c7-7554-dc68d91da6e7/13UABIM56819.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/dont-you-want-me/724437555?i=724437870&uo=4"
+      },
+      {
+        "name": "Human",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/6b/e2/df/6be2df75-5c16-e6a3-cf4d-5feecc43f6f8/mzaf_3185171022652100282.plus.aac.p.m4a",
+        "durationMs": 265320,
+        "albumName": "Crash (Bonus Track Version)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/ae/1e/2f/ae1e2f65-8f1d-18fc-ba28-c88e2ef3db6e/00094633341555.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/human/714506198?i=714506573&uo=4"
       },
       {
         "name": "(Keep Feeling) Fascination",
@@ -8074,12 +8074,12 @@
         "streamingUrl": "https://music.apple.com/us/album/love-action-i-believe-in-love/724437555?i=724437815&uo=4"
       },
       {
-        "name": "The Things That Dreams Are Made Of",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a9/13/e8/a913e8ed-917f-fabe-c51e-35b59e1d3b2d/mzaf_10062771901017512702.plus.aac.p.m4a",
-        "durationMs": 257867,
-        "albumName": "Dare",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/60/b1/b0/60b1b052-1a98-b1c7-7554-dc68d91da6e7/13UABIM56819.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-things-that-dreams-are-made-of/724437555?i=724437759&uo=4"
+        "name": "Mirror Man",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/13/87/4c/13874c95-4d9b-be24-12ac-f5651f69d95b/mzaf_13671721864438270305.plus.aac.p.m4a",
+        "durationMs": 230373,
+        "albumName": "Fascination! - EP",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/95/1c/0e/951c0e6e-dfe4-75df-6937-4359f9aa2b57/05099926568652.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/mirror-man/714960219?i=714960341&uo=4"
       }
     ]
   },
@@ -8321,7 +8321,7 @@
   "the-psychedelic-furs": {
     "name": "The Psychedelic Furs",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:43:20.813Z",
+    "fetchedAt": "2026-06-16T20:19:10.208Z",
     "tracks": [
       {
         "name": "Love My Way",
@@ -8556,7 +8556,7 @@
   "the-twilight-sad": {
     "name": "The Twilight Sad",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:31.291Z",
+    "fetchedAt": "2026-06-16T20:19:12.644Z",
     "tracks": [
       {
         "name": "GET AWAY FROM IT ALL",
@@ -8567,14 +8567,6 @@
         "streamingUrl": "https://music.apple.com/us/album/get-away-from-it-all/1858940948?i=1858940952&uo=4"
       },
       {
-        "name": "There's a Girl in the Corner",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/1e/b9/5e/1eb95e3a-2cbe-1564-3146-89a713cae1ae/mzaf_3521716822761952273.plus.aac.p.m4a",
-        "durationMs": 230219,
-        "albumName": "Nobody Wants to Be Here & Nobody Wants to Leave",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/4f/a9/87/4fa98799-b20d-8f0d-b712-242c55d0f175/0600116513250_cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/theres-a-girl-in-the-corner/1495597213?i=1495597217&uo=4"
-      },
-      {
         "name": "DESIGNED TO LOSE",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d9/94/63/d99463d8-e30a-c0b5-1f19-1ebb8ce94fb2/mzaf_4912101428721695682.plus.aac.p.m4a",
         "durationMs": 226217,
@@ -8583,20 +8575,28 @@
         "streamingUrl": "https://music.apple.com/us/album/designed-to-lose/1858940948?i=1858941138&uo=4"
       },
       {
-        "name": "Last Year's Rain Didn't Fall Quite so Hard",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/9f/7c/d6/9f7cd606-5454-aeac-4a3a-fce4d2762995/mzaf_11328628396496228489.plus.aac.p.m4a",
-        "durationMs": 199760,
-        "albumName": "Fourteen Autumns and Fifteen Winters",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/ae/2a/d0/ae2ad075-126e-0bf0-7a98-1c094f897c7e/0600116995506_cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/last-years-rain-didnt-fall-quite-so-hard/1497928594?i=1497928773&uo=4"
+        "name": "There's a Girl in the Corner",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/1e/b9/5e/1eb95e3a-2cbe-1564-3146-89a713cae1ae/mzaf_3521716822761952273.plus.aac.p.m4a",
+        "durationMs": 230219,
+        "albumName": "Nobody Wants to Be Here & Nobody Wants to Leave",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/4f/a9/87/4fa98799-b20d-8f0d-b712-242c55d0f175/0600116513250_cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/theres-a-girl-in-the-corner/1495597213?i=1495597217&uo=4"
       },
       {
-        "name": "Floating in the Forth",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/5a/c3/40/5ac340bc-3db8-6b90-990a-76c7a3430b8c/mzaf_8745927784402275086.plus.aac.p.m4a",
-        "durationMs": 231587,
-        "albumName": "Tiny Changes: A Celebration of Frightened Rabbit's 'The Midnight Organ Fight'",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/31/97/69/3197696d-bc3c-1bdd-f542-895eaa7c12c0/190295525637.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/floating-in-the-forth/1466256950?i=1466257091&uo=4"
+        "name": "That Summer, At Home I Had Become the Invisible Boy",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/e6/ea/ca/e6eaca2a-197a-fc28-2e5d-66788fd0e8a5/mzaf_14070272342512583919.plus.aac.p.m4a",
+        "durationMs": 288080,
+        "albumName": "Fourteen Autumns and Fifteen Winters",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/7b/97/e3/7b97e3d6-a6d6-b69f-919b-c07c249e3286/0191018346300_cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/that-summer-at-home-i-had-become-the-invisible-boy/1495593320?i=1495593324&uo=4"
+      },
+      {
+        "name": "Last January",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f1/d4/46/f1d44643-a1dc-ffb7-36f4-62fac4be13d0/mzaf_8845533726095896116.plus.aac.p.m4a",
+        "durationMs": 311576,
+        "albumName": "Nobody Wants to Be Here & Nobody Wants to Leave",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/4f/a9/87/4fa98799-b20d-8f0d-b712-242c55d0f175/0600116513250_cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/last-january/1495597213?i=1495597218&uo=4"
       }
     ]
   },
@@ -8650,7 +8650,7 @@
   "the-wonderstuff": {
     "name": "The Wonderstuff",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:32.731Z",
+    "fetchedAt": "2026-06-16T20:19:13.868Z",
     "tracks": [
       {
         "name": "The Size of a Cow",
@@ -8669,28 +8669,28 @@
         "streamingUrl": "https://music.apple.com/us/album/a-wish-away/1444101451?i=1444101975&uo=4"
       },
       {
-        "name": "Dizzy (feat. The Wonder Stuff)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/5c/e5/7d/5ce57dfb-5b44-44c8-380c-c80fe2bc711b/mzaf_10561443573551766323.plus.aac.p.m4a",
-        "durationMs": 198133,
-        "albumName": "If the Beatles Had Read Hunter... The Singles",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/93/a6/1d/93a61d7f-e078-193a-9173-ba5a13a14ee8/00731452139726.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/dizzy-feat-the-wonder-stuff/1443906881?i=1443906894&uo=4"
+        "name": "Unbearable",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/2d/ca/b9/2dcab9a1-56e0-dce0-7f74-a3cc2301213a/mzaf_14629561449845701891.plus.aac.p.m4a",
+        "durationMs": 147613,
+        "albumName": "The Eight Legged Groove Machine (Remastered)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3b/d0/b5/3bd0b576-94b4-ace8-3ade-0f2465f53597/00731454926324.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/unbearable/1444101451?i=1444101992&uo=4"
       },
       {
-        "name": "Welcome to the Cheap Seats",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/9f/eb/05/9feb0533-bfc0-f344-7be8-522790bf58dc/mzaf_11525835163409704074.plus.aac.p.m4a",
-        "durationMs": 174440,
+        "name": "Don't Let Me Down, Gently",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/c6/5c/4d/c65c4d43-5b86-713b-646d-69eb15adc698/mzaf_3920557484732622906.plus.aac.p.m4a",
+        "durationMs": 181133,
+        "albumName": "Hup (Remastered)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1f/26/61/1f266138-1874-5f8d-5b71-896d97ad8197/00731454926423.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/dont-let-me-down-gently/1443772473?i=1443772646&uo=4"
+      },
+      {
+        "name": "Caught In My Shadow",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/24/cb/8f/24cb8fb6-8549-3324-cf16-97105eed29d3/mzaf_7833976740884496150.plus.aac.p.m4a",
+        "durationMs": 228827,
         "albumName": "Never Loved Elvis (Remastered)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/5d/17/f4/5d17f4f0-d4f9-937a-0ff4-366666aaf786/00731454926522.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/welcome-to-the-cheap-seats/1443938336?i=1443938785&uo=4"
-      },
-      {
-        "name": "Don't Let Me Down Gently",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/7e/86/11/7e8611ef-f9b8-05e0-fea2-ace4e8ab402a/mzaf_16334297756921601559.plus.aac.p.m4a",
-        "durationMs": 185680,
-        "albumName": "This Is the Rocking 80's",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/34/1b/dd/mzi.ypoxedwl.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/dont-let-me-down-gently/317262187?i=317262409&uo=4"
+        "streamingUrl": "https://music.apple.com/us/album/caught-in-my-shadow/1443938336?i=1443939327&uo=4"
       }
     ]
   },
@@ -8791,11 +8791,11 @@
   "tone-loc": {
     "name": "Tone Loc",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:40.703Z",
+    "fetchedAt": "2026-06-16T20:19:15.054Z",
     "tracks": [
       {
         "name": "Funky Cold Medina",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c2/7d/44/c27d4403-95c8-59b4-d1bb-17eb1ce7b05f/mzaf_14173631384744831136.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/8a/85/ca/8a85ca3e-e790-6ecb-5be6-922531e45636/mzaf_4257423288375355625.plus.aac.p.m4a",
         "durationMs": 248160,
         "albumName": "Loc-ed After Dark (Expanded Edition)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c7/8b/1e/c78b1eae-509c-31c3-8c37-25439ad62c46/14CMGIM01104.rgb.jpg/100x100bb.jpg",
@@ -8819,19 +8819,19 @@
       },
       {
         "name": "Wild Thing",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/5e/53/74/5e537499-d9a2-a447-7ead-359f5d194380/mzaf_4052208282632812609.plus.aac.p.m4a",
+        "durationMs": 264640,
+        "albumName": "RMXXOLOGY (Deluxe Edition)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/10/0d/df/100ddf2a-d296-46fd-9122-20cf9f3f6d83/00829357904027.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/wild-thing/1444050928?i=1444052276&uo=4"
+      },
+      {
+        "name": "Wild Thing",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/b4/62/a6/b462a6b5-ab5a-4212-96a9-943d548b1277/mzaf_10157540622923707101.plus.aac.p.m4a",
         "durationMs": 263573,
         "albumName": "Loc-ed After Dark",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/6e/a7/bc/6ea7bcc6-4b7c-a6ba-2680-e409478eb7de/00669910397251.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/wild-thing/1440904844?i=1440904848&uo=4"
-      },
-      {
-        "name": "Funky Cold Medina",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/6b/76/7e/6b767e0c-5453-4452-7ae6-3f7e563dbaa2/mzaf_1125327581199443746.plus.aac.p.m4a",
-        "durationMs": 248160,
-        "albumName": "Loc-ed After Dark",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/6e/a7/bc/6ea7bcc6-4b7c-a6ba-2680-e409478eb7de/00669910397251.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/funky-cold-medina/1440904844?i=1440904856&uo=4"
       }
     ]
   },
@@ -9590,7 +9590,7 @@
   "cleopatrick": {
     "name": "cleopatrick",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:43:10.894Z",
+    "fetchedAt": "2026-06-16T20:19:17.508Z",
     "tracks": [
       {
         "name": "hometown",
@@ -9625,12 +9625,12 @@
         "streamingUrl": "https://music.apple.com/us/album/scaring-me/1647013175?i=1647013559&uo=4"
       },
       {
-        "name": "HAMMER",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/bd/81/ea/bd81ea5c-308a-f583-e031-9497ab69c204/mzaf_9046521694222362016.plus.aac.p.m4a",
-        "durationMs": 200245,
-        "albumName": "HAMMER - Single",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/6f/14/2c/6f142cf5-66c7-e6d3-1aeb-f11f208ea130/198846315768.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/hammer/1769048900?i=1769048902&uo=4"
+        "name": "WHY JULY",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/38/d4/2c/38d42c1e-c61d-185c-5c8c-acfc4af1f4f8/mzaf_2409139983091764927.plus.aac.p.m4a",
+        "durationMs": 173509,
+        "albumName": "BUMMER",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/e2/8f/d3/e28fd32f-b177-fb5e-4da3-eec936e43c38/196006392611.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/why-july/1559808477?i=1559809277&uo=4"
       }
     ]
   },
@@ -10013,7 +10013,7 @@
   "prophets-of-rage": {
     "name": "Prophets of Rage",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:42.367Z",
+    "fetchedAt": "2026-06-16T20:18:35.894Z",
     "tracks": [
       {
         "name": "Living on the 110",
@@ -10033,19 +10033,11 @@
       },
       {
         "name": "Prophets of Rage (Power Version)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/d6/03/75/d6037516-d824-d2e8-78ab-3811b0a33a03/mzaf_8496052062721198327.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/62/d8/19/62d81912-c4c3-74e2-5286-83af38eba4ab/mzaf_12641897455689393018.plus.aac.p.m4a",
         "durationMs": 200200,
         "albumName": "It Takes a Nation of Millions To Hold Us Back (Deluxe Edition)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/af/03/8d/af038d98-b8a7-d115-4982-1aeb9939be70/14UMGIM38996.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/prophets-of-rage-power-version/1443639373?i=1443639729&uo=4"
-      },
-      {
-        "name": "Prophets of Rage",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e2/72/63/e2726378-7204-53ff-6b4e-bedd724a76df/mzaf_1944177950655811592.plus.aac.p.m4a",
-        "durationMs": 198907,
-        "albumName": "It Takes a Nation of Millions To Hold Us Back (Deluxe Edition)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/af/03/8d/af038d98-b8a7-d115-4982-1aeb9939be70/14UMGIM38996.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/prophets-of-rage/1443639373?i=1443639713&uo=4"
       },
       {
         "name": "Prophets Of Rage",
@@ -10054,13 +10046,21 @@
         "albumName": "Power To The People And The Beats - Public Enemy's Greatest Hits",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0d/bd/e2/0dbde2bd-4cb4-dee7-1ed4-11148ab454b9/06UMGIM19737.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/prophets-of-rage/1440751334?i=1440751761&uo=4"
+      },
+      {
+        "name": "Prophets of Rage",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ae/34/02/ae34027d-2053-79ca-0727-d2dae6eeef92/mzaf_1435570626490117435.plus.aac.p.m4a",
+        "durationMs": 198907,
+        "albumName": "It Takes a Nation of Millions To Hold Us Back (Deluxe Edition)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/af/03/8d/af038d98-b8a7-d115-4982-1aeb9939be70/14UMGIM38996.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/prophets-of-rage/1443639373?i=1443639713&uo=4"
       }
     ]
   },
   "public-enemy": {
     "name": "Public Enemy",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:43.597Z",
+    "fetchedAt": "2026-06-16T20:18:37.235Z",
     "tracks": [
       {
         "name": "Fight the Power",
@@ -10069,14 +10069,6 @@
         "albumName": "Fear of a Black Planet",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5f/56/ff/5f56ff7b-71b3-3e5f-208a-3b20d96bb4b0/06UMGIM21173.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/fight-the-power/1440837282?i=1440838444&uo=4"
-      },
-      {
-        "name": "Harder Than You Think",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/25/8b/2f/258b2ffa-04fd-ad0a-af6b-21db368813ba/mzaf_15332825341022969867.plus.aac.p.m4a",
-        "durationMs": 249522,
-        "albumName": "How You Sell Soul to a Soulless People Who Sold Their Soul? (Audio Version)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/54/e7/05/mzi.ueufdcaw.tif/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/harder-than-you-think/260786494?i=260786601&uo=4"
       },
       {
         "name": "Rebel Without a Pause",
@@ -10095,19 +10087,27 @@
         "streamingUrl": "https://music.apple.com/us/album/cant-truss-it/1434918687?i=1434918699&uo=4"
       },
       {
-        "name": "Bring the Noise",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/12/1a/12/121a1232-3fad-9a7a-9734-11972e86b7a8/mzaf_13075811155776916431.plus.aac.p.m4a",
-        "durationMs": 226040,
-        "albumName": "It Takes a Nation of Millions to Hold Us Back",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9f/49/d0/9f49d09b-6842-081e-8cec-67b19a686397/06UMGIM18700.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/bring-the-noise/1440837788?i=1440837951&uo=4"
+        "name": "Harder Than You Think",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/25/8b/2f/258b2ffa-04fd-ad0a-af6b-21db368813ba/mzaf_15332825341022969867.plus.aac.p.m4a",
+        "durationMs": 249522,
+        "albumName": "How You Sell Soul to a Soulless People Who Sold Their Soul? (Audio Version)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/54/e7/05/mzi.ueufdcaw.tif/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/harder-than-you-think/260786494?i=260786601&uo=4"
+      },
+      {
+        "name": "Welcome to the Terrordome",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/87/f8/4c/87f84c8e-9f0d-ffcc-7d79-37da82e8a043/mzaf_14937218102865064311.plus.aac.p.m4a",
+        "durationMs": 325880,
+        "albumName": "Fear of a Black Planet",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5f/56/ff/5f56ff7b-71b3-3e5f-208a-3b20d96bb4b0/06UMGIM21173.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/welcome-to-the-terrordome/1440837282?i=1440837631&uo=4"
       }
     ]
   },
   "rancid": {
     "name": "Rancid",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:41:16.367Z",
+    "fetchedAt": "2026-06-16T20:18:38.445Z",
     "tracks": [
       {
         "name": "Ruby Soho",
@@ -10154,7 +10154,7 @@
   "the-dollyrots": {
     "name": "The Dollyrots",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:43:12.179Z",
+    "fetchedAt": "2026-06-16T20:19:04.681Z",
     "tracks": [
       {
         "name": "Because I'm Awesome",
@@ -10173,20 +10173,12 @@
         "streamingUrl": "https://music.apple.com/us/album/brand-new-key/262137881?i=262138119&uo=4"
       },
       {
-        "name": "The Bitch Song",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/de/11/46/de1146c1-4f56-adc2-5929-a2882ce2daa0/mzaf_13241390588555780848.plus.aac.p.m4a",
-        "durationMs": 203560,
-        "albumName": "Bowling for Soup Presents One Big Happy",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/ae/0d/3d/ae0d3d4d-ffdd-5ca1-91e7-c5e6c12bc811/Cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-bitch-song/554449714?i=554449719&uo=4"
-      },
-      {
-        "name": "I Touch Myself",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/c8/cb/a4/c8cba422-2323-d232-2ed8-e4945e77c7e9/mzaf_14430770161398269460.plus.aac.p.m4a",
-        "durationMs": 195470,
-        "albumName": "Hey Girl - Single",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/19/7b/1d/197b1da0-8be4-0dfe-be6e-0c70fd02d9ce/197187338009.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/i-touch-myself/1652971085?i=1652971822&uo=4"
+        "name": "Animal",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/6a/1f/1f/6a1f1fec-a4cc-c9d1-0696-ead2b1101ff9/mzaf_11264327397066560290.plus.aac.p.m4a",
+        "durationMs": 156071,
+        "albumName": "Daydream Explosion",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/32/a2/cb/32a2cb1e-7a47-cd89-58d9-70e4fa041efd/193483561097.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/animal/1457103842?i=1457103845&uo=4"
       },
       {
         "name": "My Best Friend's Hot",
@@ -10195,13 +10187,21 @@
         "albumName": "Because I'm Awesome (Audio Version)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/89/77/43/897743e6-e29e-cef4-5e8c-743381ec1b1f/mzi.zohzhmci.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/my-best-friends-hot/262137881?i=262138030&uo=4"
+      },
+      {
+        "name": "I Know How to Party",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/12/ab/df/12abdfce-48ab-7ae2-bd54-d9ed8d6c3ebd/mzaf_10864665103226585371.plus.aac.p.m4a",
+        "durationMs": 170853,
+        "albumName": "Daydream Explosion",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/32/a2/cb/32a2cb1e-7a47-cd89-58d9-70e4fa041efd/193483561097.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/i-know-how-to-party/1457103842?i=1457103997&uo=4"
       }
     ]
   },
   "the-english-beat": {
     "name": "The English Beat",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:17.978Z",
+    "fetchedAt": "2026-06-16T20:19:05.885Z",
     "tracks": [
       {
         "name": "Save It for Later (2012 Remaster)",
@@ -10236,12 +10236,12 @@
         "streamingUrl": "https://music.apple.com/us/album/the-tears-of-a-clown/1629177500?i=1629177501&uo=4"
       },
       {
-        "name": "End of the Party (2012 Remaster)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/30/b6/1c/30b61cb0-cc24-b75e-d0fa-6bdaa9a9e764/mzaf_9113064564868505982.plus.aac.p.m4a",
-        "durationMs": 209480,
-        "albumName": "Special Beat Service (Expanded) [2012 Remaster]",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/7c/58/53/7c585395-c849-1b47-a8fd-f0faa9375497/603497828319.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/end-of-the-party-2012-remaster/1714523393?i=1714523406&uo=4"
+        "name": "Can't Get Used to Losing You (2012 Remaster)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f8/20/47/f820474f-7e44-212e-0253-1a6dd2023ab7/mzaf_17470607564587205275.plus.aac.p.m4a",
+        "durationMs": 185067,
+        "albumName": "I Just Can’t Stop It (2012 Remaster)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/e3/96/5e/e3965e7e-3840-eaac-c24c-c177800cc288/603497828357.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/cant-get-used-to-losing-you-2012-remaster/1714521032?i=1714521044&uo=4"
       }
     ]
   },
@@ -10295,7 +10295,7 @@
   "the-messthetics": {
     "name": "The Messthetics",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:43:16.990Z",
+    "fetchedAt": "2026-06-16T20:19:08.332Z",
     "tracks": [
       {
         "name": "Deface The Currency",
@@ -10322,20 +10322,20 @@
         "streamingUrl": "https://music.apple.com/us/album/emergence/1724872880?i=1724872884&uo=4"
       },
       {
-        "name": "Mythomania",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/97/8c/67/978c67d8-ada5-c014-9c7a-3917f61f6bb5/mzaf_8047441055267609266.plus.aac.p.m4a",
-        "durationMs": 249420,
-        "albumName": "The Messthetics",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/79/da/67/79da6714-c56b-d235-e48e-07425ef8143a/Messthetics_Cover-3000x3000_pixels.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/mythomania/1338266828?i=1338266829&uo=4"
-      },
-      {
         "name": "That Thang",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/0e/7e/07/0e7e0752-53b0-51a0-bab9-82a377c26a08/mzaf_15669939687307689247.plus.aac.p.m4a",
         "durationMs": 191218,
         "albumName": "The Messthetics and James Brandon Lewis",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/8a/1d/ce/8a1dce9f-00dd-f9cb-197b-52302d916758/23UM1IM58138.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/that-thang/1724872880?i=1724872885&uo=4"
+      },
+      {
+        "name": "Mythomania",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/97/8c/67/978c67d8-ada5-c014-9c7a-3917f61f6bb5/mzaf_8047441055267609266.plus.aac.p.m4a",
+        "durationMs": 249420,
+        "albumName": "The Messthetics",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/79/da/67/79da6714-c56b-d235-e48e-07425ef8143a/Messthetics_Cover-3000x3000_pixels.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/mythomania/1338266828?i=1338266829&uo=4"
       }
     ]
   },
@@ -10436,7 +10436,7 @@
   "ian-mcculloch": {
     "name": "Ian McCulloch",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:39:52.077Z",
+    "fetchedAt": "2026-06-16T20:18:19.886Z",
     "tracks": [
       {
         "name": "Proud to Fall",
@@ -10447,12 +10447,12 @@
         "streamingUrl": "https://music.apple.com/us/album/proud-to-fall/1436502516?i=1436502826&uo=4"
       },
       {
-        "name": "Heaven's Gate",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/c6/ba/0a/c6ba0a6f-901d-701a-1d48-8ddb07574a51/mzaf_16690921522795027701.plus.aac.p.m4a",
-        "durationMs": 240213,
-        "albumName": "Mysterio (Expanded)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/a8/7f/22/a87f22d1-57f3-d3bc-ed39-b561bdc38c23/190295549435.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/heavens-gate/1436619155?i=1436619413&uo=4"
+        "name": "The Flickering Wall",
+        "previewUrl": null,
+        "durationMs": 215933,
+        "albumName": "Candleland (Expanded)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/ee/84/e6/ee84e66a-0323-2af8-0428-8cecc57131da/190295549459.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-flickering-wall/1436502516?i=1436502822&uo=4"
       },
       {
         "name": "Honey Drip",
@@ -10463,27 +10463,27 @@
         "streamingUrl": "https://music.apple.com/us/album/honey-drip/1436619155?i=1436619403&uo=4"
       },
       {
-        "name": "The Flickering Wall",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/be/59/44/be5944fd-5b4d-fb6a-a172-92284da01a05/mzaf_16911509092532729509.plus.aac.p.m4a",
-        "durationMs": 215933,
-        "albumName": "Candleland (Expanded)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/ee/84/e6/ee84e66a-0323-2af8-0428-8cecc57131da/190295549459.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-flickering-wall/1436502516?i=1436502822&uo=4"
+        "name": "Lover, Lover, Lover",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/b9/0d/7d/b90d7d8f-d411-b38f-1d6c-e7f27f7292d1/mzaf_7630459039753485694.plus.aac.p.m4a",
+        "durationMs": 237066,
+        "albumName": "Mysterio (Expanded)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/a8/7f/22/a87f22d1-57f3-d3bc-ed39-b561bdc38c23/190295549435.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/lover-lover-lover/1436619155?i=1436619405&uo=4"
       },
       {
-        "name": "Faith and Healing",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/11/6b/10/116b10cc-ba02-19e2-05d0-83d2f53c9cad/mzaf_4423403288420117236.plus.aac.p.m4a",
-        "durationMs": 277120,
+        "name": "The White Hotel",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/80/58/68/8058683e-f76e-1aa0-612b-fe3b05701f29/mzaf_8740952336403204991.plus.aac.p.m4a",
+        "durationMs": 195293,
         "albumName": "Candleland (Expanded)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/ee/84/e6/ee84e66a-0323-2af8-0428-8cecc57131da/190295549459.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/faith-and-healing/1436502516?i=1436502833&uo=4"
+        "streamingUrl": "https://music.apple.com/us/album/the-white-hotel/1436502516?i=1436502825&uo=4"
       }
     ]
   },
   "jesus-jones": {
     "name": "Jesus Jones",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:40:09.988Z",
+    "fetchedAt": "2026-06-16T20:18:21.866Z",
     "tracks": [
       {
         "name": "Right Here Right Now",
@@ -10518,12 +10518,12 @@
         "streamingUrl": "https://music.apple.com/us/album/the-devil-you-know/692116461?i=692116467&uo=4"
       },
       {
-        "name": "Jesus Jones",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/85/1a/a0/851aa0ff-cb60-dc8e-9ca6-06ad193c7433/mzaf_3916479540097812908.plus.aac.p.m4a",
-        "durationMs": 306188,
-        "albumName": "You Gotta Go",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/38/f0/63/38f063cb-e37c-e11d-2ed3-4b942aeb5ef7/887516999185.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/jesus-jones/643335392?i=643335538&uo=4"
+        "name": "Who? Where? Why?",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/99/b7/14/99b7142b-0cb6-8444-4c2c-b9da387d3a48/mzaf_654278975804704613.plus.aac.p.m4a",
+        "durationMs": 215800,
+        "albumName": "Doubt",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/04/a5/68/04a5685f-3fcc-235f-5ee9-ed0789f2f46e/094639031450.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/who-where-why/693294187?i=693294229&uo=4"
       }
     ]
   },
@@ -10812,7 +10812,7 @@
   "oingo-boingo": {
     "name": "Oingo Boingo",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:41:07.758Z",
+    "fetchedAt": "2026-06-16T20:18:29.197Z",
     "tracks": [
       {
         "name": "Dead Man's Party",
@@ -10859,7 +10859,7 @@
   "pet-shop-boys": {
     "name": "Pet Shop Boys",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:39.365Z",
+    "fetchedAt": "2026-06-16T20:18:30.671Z",
     "tracks": [
       {
         "name": "West End Girls",
@@ -10878,20 +10878,20 @@
         "streamingUrl": "https://music.apple.com/us/album/always-on-my-mind-2003-remaster/696887254?i=696889916&uo=4"
       },
       {
-        "name": "It's a Sin",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/66/10/87/661087cd-adf1-627a-0549-984bf081b2c9/mzaf_9548692749421546834.plus.aac.p.m4a",
-        "durationMs": 299253,
-        "albumName": "Actually (2018 Remaster)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/37/95/1a/37951a3d-6f9b-b5fc-fdac-e4818029ba00/5054197358579.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/its-a-sin/1645128416?i=1645129014&uo=4"
-      },
-      {
         "name": "What Have I Done to Deserve This? (with Dusty Springfield)",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/07/e5/d6/07e5d641-777f-7131-e9e4-9c6b4d5bee50/mzaf_16876244274547520573.plus.aac.p.m4a",
         "durationMs": 263240,
         "albumName": "Actually (2018 Remaster)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/37/95/1a/37951a3d-6f9b-b5fc-fdac-e4818029ba00/5054197358579.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/what-have-i-done-to-deserve-this-with-dusty-springfield/1645128416?i=1645128736&uo=4"
+      },
+      {
+        "name": "It's a Sin",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/66/10/87/661087cd-adf1-627a-0549-984bf081b2c9/mzaf_9548692749421546834.plus.aac.p.m4a",
+        "durationMs": 299253,
+        "albumName": "Actually (2018 Remaster)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/37/95/1a/37951a3d-6f9b-b5fc-fdac-e4818029ba00/5054197358579.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/its-a-sin/1645128416?i=1645129014&uo=4"
       },
       {
         "name": "Opportunities (Let's Make Lots of Money)",
@@ -10906,7 +10906,7 @@
   "peter-gabriel": {
     "name": "Peter Gabriel",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:41:11.419Z",
+    "fetchedAt": "2026-06-16T20:18:31.319Z",
     "tracks": [
       {
         "name": "In Your Eyes",
@@ -10917,20 +10917,20 @@
         "streamingUrl": "https://music.apple.com/us/album/in-your-eyes/986800858?i=986800927&uo=4"
       },
       {
-        "name": "Solsbury Hill",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/f0/e2/8a/f0e28a5a-8105-b492-3b4d-49e1fdbdc142/mzaf_2965103815336652830.plus.aac.p.m4a",
-        "durationMs": 261440,
-        "albumName": "Peter Gabriel 1: Car (Remastered)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/4b/06/9b/4b069b0a-d9b1-5f22-0c5c-c5d053fc8575/dj.eufymulu.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/solsbury-hill/986695072?i=986695905&uo=4"
-      },
-      {
         "name": "Sledgehammer",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/fa/22/f7/fa22f780-d6b3-7f79-bd6f-917d97f7f7fc/mzaf_12203058584136347938.plus.aac.p.m4a",
         "durationMs": 311986,
         "albumName": "So (Special Edition)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/7a/ee/3a/7aee3ac5-7627-0c97-e859-19ae7a6320b1/So_cover_iTunes_copy.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/sledgehammer/987872541?i=987872731&uo=4"
+      },
+      {
+        "name": "Solsbury Hill",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/f0/e2/8a/f0e28a5a-8105-b492-3b4d-49e1fdbdc142/mzaf_2965103815336652830.plus.aac.p.m4a",
+        "durationMs": 261440,
+        "albumName": "Peter Gabriel 1: Car (Remastered)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/4b/06/9b/4b069b0a-d9b1-5f22-0c5c-c5d053fc8575/dj.eufymulu.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/solsbury-hill/986695072?i=986695905&uo=4"
       },
       {
         "name": "Shock the Monkey",
@@ -10941,27 +10941,35 @@
         "streamingUrl": "https://music.apple.com/us/album/shock-the-monkey/986723282?i=986723832&uo=4"
       },
       {
-        "name": "Red Rain",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/aa/6e/13/aa6e13a7-0d87-0c2f-7c10-c4093eaea35e/mzaf_1581269875533296251.plus.aac.p.m4a",
-        "durationMs": 340493,
-        "albumName": "So (Special Edition)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/7a/ee/3a/7aee3ac5-7627-0c97-e859-19ae7a6320b1/So_cover_iTunes_copy.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/red-rain/987872541?i=987872730&uo=4"
+        "name": "Games Without Frontiers",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d3/6f/43/d36f437a-1e25-141a-814e-c823f59744bc/mzaf_2293866475732801274.plus.aac.p.m4a",
+        "durationMs": 246973,
+        "albumName": "Peter Gabriel 3: Melt (Remastered)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/f4/a5/7d/f4a57dc3-4941-5a90-e487-1781ed025cd6/dj.eknlykaw.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/games-without-frontiers/986713177?i=986713201&uo=4"
       }
     ]
   },
   "rdgldgrn": {
     "name": "RDGLDGRN",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:44.173Z",
+    "fetchedAt": "2026-06-16T20:18:37.828Z",
     "tracks": [
       {
         "name": "Stay With Me (feat. Little Stranger)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e5/f5/75/e5f575fd-088c-f2c3-170f-c42c68d86b39/mzaf_14554740290260901195.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/41/4f/39/414f39e6-689a-6989-9e3a-46ca00d08b36/mzaf_15092838025741411238.plus.aac.p.m4a",
         "durationMs": 172667,
         "albumName": "Stay With Me (feat. Little Stranger) - Single",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/33/cc/d8/33ccd848-0e10-53be-c4e8-765ef4a05e42/199257998359_cover.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/stay-with-me-feat-little-stranger/1824595690?i=1824595691&uo=4"
+      },
+      {
+        "name": "I Love Lamp",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/d7/c6/30/d7c63071-03b9-9225-4965-e5d36581c29e/mzaf_903304508749977663.plus.aac.p.m4a",
+        "durationMs": 159505,
+        "albumName": "Red Gold Green",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/dd/c2/fc/ddc2fc0f-86ac-164b-de6d-cd2e0e17be4d/00602537501762.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/i-love-lamp/1443152027?i=1443152030&uo=4"
       },
       {
         "name": "Heads Are Gonna Roll",
@@ -10980,20 +10988,12 @@
         "streamingUrl": "https://music.apple.com/us/album/runnin-away/1021797847?i=1021797858&uo=4"
       },
       {
-        "name": "I Love Lamp",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/d7/c6/30/d7c63071-03b9-9225-4965-e5d36581c29e/mzaf_903304508749977663.plus.aac.p.m4a",
-        "durationMs": 159505,
+        "name": "Million Fans",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/be/35/1c/be351c08-66d8-1ddf-59bb-0d6d4a54a44d/mzaf_12841796436864591778.plus.aac.p.m4a",
+        "durationMs": 236545,
         "albumName": "Red Gold Green",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/dd/c2/fc/ddc2fc0f-86ac-164b-de6d-cd2e0e17be4d/00602537501762.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/i-love-lamp/1443152027?i=1443152030&uo=4"
-      },
-      {
-        "name": "Double Dutch",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/16/cf/3a/16cf3acd-1625-0a4b-ee3b-6465e1dbb8d9/mzaf_4898628171490093284.plus.aac.p.m4a",
-        "durationMs": 187991,
-        "albumName": "Red Gold Green",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/dd/c2/fc/ddc2fc0f-86ac-164b-de6d-cd2e0e17be4d/00602537501762.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/double-dutch/1443152027?i=1443152261&uo=4"
+        "streamingUrl": "https://music.apple.com/us/album/million-fans/1443152027?i=1443152037&uo=4"
       }
     ]
   },
@@ -11047,7 +11047,7 @@
   "rise-against": {
     "name": "Rise Against",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:48.386Z",
+    "fetchedAt": "2026-06-16T20:18:39.117Z",
     "tracks": [
       {
         "name": "Savior",
@@ -11066,14 +11066,6 @@
         "streamingUrl": "https://music.apple.com/us/album/prayer-of-the-refugee/1440858078?i=1440858616&uo=4"
       },
       {
-        "name": "Swing Life Away",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d2/2f/d6/d22fd624-81c0-2f71-10b6-757ee74fc477/mzaf_3833133470550897025.plus.aac.p.m4a",
-        "durationMs": 199988,
-        "albumName": "Siren Song of the Counter Culture (Deluxe)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/bd/bb/7f/bdbb7f6d-5b8c-bf67-9650-58c1485cee09/00602537900510.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/swing-life-away/1440852654?i=1440852777&uo=4"
-      },
-      {
         "name": "Re-Education (Through Labor)",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/66/8e/0f/668e0f5d-fdce-1e86-c230-6251b0654416/mzaf_6892543872414053300.plus.aac.p.m4a",
         "durationMs": 222453,
@@ -11082,12 +11074,20 @@
         "streamingUrl": "https://music.apple.com/us/album/re-education-through-labor/1440851524?i=1440851989&uo=4"
       },
       {
-        "name": "Satellite",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/52/11/74/5211743e-3e23-87c2-4333-afee08abd429/mzaf_6560294099495477057.plus.aac.p.m4a",
-        "durationMs": 238581,
-        "albumName": "Endgame",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/58/72/cb/5872cb65-1dd8-2178-2891-a779f099a131/00602537898787.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/satellite/1440859030?i=1440859529&uo=4"
+        "name": "Swing Life Away",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d2/2f/d6/d22fd624-81c0-2f71-10b6-757ee74fc477/mzaf_3833133470550897025.plus.aac.p.m4a",
+        "durationMs": 199988,
+        "albumName": "Siren Song of the Counter Culture (Deluxe)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/bd/bb/7f/bdbb7f6d-5b8c-bf67-9650-58c1485cee09/00602537900510.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/swing-life-away/1440852654?i=1440852777&uo=4"
+      },
+      {
+        "name": "Good Left Undone",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/05/36/17/053617de-0546-e03e-7385-67aae088a409/mzaf_11059304941993491128.plus.aac.p.m4a",
+        "durationMs": 250960,
+        "albumName": "The Sufferer & the Witness",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/87/d3/7e/87d37ee6-ad9c-c676-9239-5f1651780001/00602537898824.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/good-left-undone/1440858078?i=1440858630&uo=4"
       }
     ]
   },
@@ -11141,7 +11141,7 @@
   "run-dmc": {
     "name": "Run DMC",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:50.534Z",
+    "fetchedAt": "2026-06-16T20:18:40.476Z",
     "tracks": [
       {
         "name": "It's Tricky",
@@ -11176,19 +11176,19 @@
         "streamingUrl": "https://music.apple.com/us/album/king-of-rock/250873663?i=250873683&uo=4"
       },
       {
-        "name": "Sucker M.C.'s (Krush-Groove 1)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/8e/26/fe/8e26feb5-3045-2e76-732f-c795d949d4f2/mzaf_13648044852487341842.plus.aac.p.m4a",
-        "durationMs": 189947,
-        "albumName": "RUN-DMC (Expanded Edition)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/6b/8b/83/6b8b83ef-751f-6bf6-53e2-0270d863db19/828766956023.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/sucker-m-c-s-krush-groove-1/281812827?i=281812957&uo=4"
+        "name": "My Adidas",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4c/65/14/4c651492-5a8a-35b9-51f4-315194b4d57f/mzaf_7823226870575706074.plus.aac.p.m4a",
+        "durationMs": 167067,
+        "albumName": "Raising Hell (Expanded Edition)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6c/52/83/6c5283eb-146f-bde5-30aa-0e9892b6fc04/888880788566.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/my-adidas/1308514619?i=1308514622&uo=4"
       }
     ]
   },
   "save-ferris": {
     "name": "Save Ferris",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:41:22.629Z",
+    "fetchedAt": "2026-06-16T20:18:41.172Z",
     "tracks": [
       {
         "name": "Come On Eileen",
@@ -11215,27 +11215,27 @@
         "streamingUrl": "https://music.apple.com/us/album/goodbye/192858630?i=192859205&uo=4"
       },
       {
-        "name": "Spam 9",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/0e/97/9f/0e979fcf-99e8-ec3f-477f-9c5af057cf6b/mzaf_5611717044310161400.plus.aac.p.m4a",
-        "durationMs": 148800,
-        "albumName": "It Means Everything",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features124/v4/ce/3d/d1/ce3dd17e-778d-fee5-11c2-d25e7b37fe93/dj.wiyxhbda.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/spam-9/192858630?i=192859760&uo=4"
-      },
-      {
         "name": "Superspy 3",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d5/f6/1b/d5f61b4d-46ce-3505-c0d6-734a5483564a/mzaf_4576088670009009534.plus.aac.p.m4a",
         "durationMs": 175600,
         "albumName": "It Means Everything",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features124/v4/ce/3d/d1/ce3dd17e-778d-fee5-11c2-d25e7b37fe93/dj.wiyxhbda.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/superspy-3/192858630?i=192858982&uo=4"
+      },
+      {
+        "name": "I'm Not Cryin' for You",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/dd/ca/b5/ddcab5a8-da8e-d56e-b791-bdbe94b177fd/mzaf_9391923120604716812.plus.aac.p.m4a",
+        "durationMs": 243107,
+        "albumName": "Modified",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/6b/62/79/mzi.upffenpy.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/im-not-cryin-for-you/476989100?i=476989107&uo=4"
       }
     ]
   },
   "school-of-fish": {
     "name": "School of Fish",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:41:23.200Z",
+    "fetchedAt": "2026-06-16T20:18:41.764Z",
     "tracks": [
       {
         "name": "3 Strange Days",
@@ -11282,7 +11282,7 @@
   "sextile": {
     "name": "Sextile",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:52.338Z",
+    "fetchedAt": "2026-06-16T20:18:44.388Z",
     "tracks": [
       {
         "name": "Contortion",
@@ -11317,12 +11317,12 @@
         "streamingUrl": "https://music.apple.com/us/album/women-respond-to-bass/1792057111?i=1792057116&uo=4"
       },
       {
-        "name": "Hazing",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/9b/43/11/9b43110e-eeff-472b-dfb7-53bea5d296c4/mzaf_3474943161352370756.plus.aac.p.m4a",
-        "durationMs": 192276,
-        "albumName": "3 - EP",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/2f/37/17/2f37178b-6a77-efa3-9b9b-c3ae79f01a4a/artwork.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/hazing/1680277138?i=1680277145&uo=4"
+        "name": "New York",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/46/07/65/4607651c-0774-7938-404c-a6e15360284e/mzaf_1090875198245018408.plus.aac.p.m4a",
+        "durationMs": 214387,
+        "albumName": "Push",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/39/67/9e/39679e8c-093f-b533-070f-05910c5255d1/40033.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/new-york/1694051935?i=1694052388&uo=4"
       }
     ]
   },
@@ -11376,7 +11376,7 @@
   "sinad-oconnor": {
     "name": "Sinéad O'Connor",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:54.154Z",
+    "fetchedAt": "2026-06-16T20:18:47.831Z",
     "tracks": [
       {
         "name": "Nothing Compares 2 U",
@@ -11387,20 +11387,20 @@
         "streamingUrl": "https://music.apple.com/us/album/nothing-compares-2-u/1629185300?i=1629185307&uo=4"
       },
       {
-        "name": "The Emperor's New Clothes",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/8d/4e/b6/8d4eb6fe-de4f-b7ad-cb01-ff55eae5ea5f/mzaf_16787729419588519418.plus.aac.p.m4a",
-        "durationMs": 316493,
-        "albumName": "I Do Not Want What I Haven't Got",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/fa/19/3f/fa193fc7-f9cf-c84e-c7ef-77b2fceb3a3e/5054526647565.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-emperors-new-clothes/1629185300?i=1629185305&uo=4"
-      },
-      {
         "name": "Drink Before the War",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/ff/a0/18/ffa01823-a9fe-7318-3a24-25171dfe181b/mzaf_329800267969589120.plus.aac.p.m4a",
         "durationMs": 323133,
         "albumName": "The Lion and the Cobra",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/3e/c8/00/3ec80000-5f41-b9d4-0ccd-6350fa102fb1/5054526780682.png/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/drink-before-the-war/1629181905?i=1629181913&uo=4"
+      },
+      {
+        "name": "The Emperor's New Clothes",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/8d/4e/b6/8d4eb6fe-de4f-b7ad-cb01-ff55eae5ea5f/mzaf_16787729419588519418.plus.aac.p.m4a",
+        "durationMs": 316493,
+        "albumName": "I Do Not Want What I Haven't Got",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/fa/19/3f/fa193fc7-f9cf-c84e-c7ef-77b2fceb3a3e/5054526647565.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-emperors-new-clothes/1629185300?i=1629185305&uo=4"
       },
       {
         "name": "Mandinka",
@@ -11411,19 +11411,19 @@
         "streamingUrl": "https://music.apple.com/us/album/mandinka/1629181905?i=1629181907&uo=4"
       },
       {
-        "name": "Take Me to Church",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/90/07/41/90074173-094c-8c3d-bc6a-d13bace44f00/mzaf_9793660551360364088.plus.aac.p.m4a",
-        "durationMs": 181280,
-        "albumName": "I'm Not Bossy, I'm the Boss (Deluxe Edition)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music2/v4/a2/8c/21/a28c217b-f01d-2d07-63d1-2c3837ed46f6/S_O_Connor_Boss2400.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/take-me-to-church/888509592?i=888509629&uo=4"
+        "name": "I Want Your (Hands On Me)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/1c/27/33/1c273307-57b8-baf0-4ac2-6eb3e6326e0f/mzaf_18322408960907931516.plus.aac.p.m4a",
+        "durationMs": 278907,
+        "albumName": "The Lion and the Cobra",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/3e/c8/00/3ec80000-5f41-b9d4-0ccd-6350fa102fb1/5054526780682.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/i-want-your-hands-on-me/1629181905?i=1629181912&uo=4"
       }
     ]
   },
   "smash-mouth": {
     "name": "Smash Mouth",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:42:55.957Z",
+    "fetchedAt": "2026-06-16T20:18:49.137Z",
     "tracks": [
       {
         "name": "All Star",
@@ -11517,7 +11517,7 @@
   "squeeze": {
     "name": "Squeeze",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:43:00.172Z",
+    "fetchedAt": "2026-06-16T20:18:55.790Z",
     "tracks": [
       {
         "name": "Tempted",
@@ -11529,19 +11529,19 @@
       },
       {
         "name": "Squeeze",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/29/89/ec/2989ece5-0cfc-59d3-1db2-7f7765a172b1/mzaf_8790941242308258946.plus.aac.p.m4a",
-        "durationMs": 179439,
-        "albumName": "Squeeze - Single",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b9/6f/f0/b96ff0a1-4b95-3641-8b3c-8587fcb98dc1/656465473196_cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/squeeze/1867282970?i=1867282971&uo=4"
-      },
-      {
-        "name": "Squeeze",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/20/59/af/2059afa1-be65-1faa-2675-aa1da39b22d1/mzaf_14207493490132843782.plus.aac.p.m4a",
         "durationMs": 213086,
         "albumName": "7/27 (Deluxe)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5e/35/68/5e3568b7-3e08-cdac-d0d9-122fc0429f08/886445883091.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/squeeze/1107095298?i=1107095583&uo=4"
+      },
+      {
+        "name": "Squeeze",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/29/89/ec/2989ece5-0cfc-59d3-1db2-7f7765a172b1/mzaf_8790941242308258946.plus.aac.p.m4a",
+        "durationMs": 179439,
+        "albumName": "Squeeze - Single",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b9/6f/f0/b96ff0a1-4b95-3641-8b3c-8587fcb98dc1/656465473196_cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/squeeze/1867282970?i=1867282971&uo=4"
       },
       {
         "name": "Squeeze",
@@ -11564,11 +11564,11 @@
   "tears-for-fears": {
     "name": "Tears For Fears",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:43:05.584Z",
+    "fetchedAt": "2026-06-16T20:19:02.267Z",
     "tracks": [
       {
         "name": "Everybody Wants to Rule the World",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/56/65/5f/56655f64-f26f-3a21-b2c8-c78f1c9a0a20/mzaf_11752705800252350393.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ed/23/1f/ed231f7c-78cb-3b4d-f312-fc6b7ec09063/mzaf_14579022326895349191.plus.aac.p.m4a",
         "durationMs": 251480,
         "albumName": "Songs from the Big Chair",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/100x100bb.jpg",
@@ -11576,7 +11576,7 @@
       },
       {
         "name": "Head Over Heels",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/46/1a/a6/461aa608-6a1e-d6df-df2f-05f9621eab68/mzaf_15252684868909802430.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c4/5e/f3/c45ef383-ea62-18e9-53f2-d20b1d3b189e/mzaf_17682187674438307496.plus.aac.p.m4a",
         "durationMs": 256627,
         "albumName": "Songs From the Big Chair (Super Deluxe Version)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/38/97/cb/3897cb85-279f-6698-0158-ad3f73937050/14UMGIM37917.rgb.jpg/100x100bb.jpg",
@@ -11584,7 +11584,7 @@
       },
       {
         "name": "Shout",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/2e/6d/a6/2e6da667-f040-acde-16a5-99da2387a76a/mzaf_17227335804321987349.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d8/dc/a2/d8dca290-f445-0f78-f9d9-12104cf4ec3e/mzaf_6118928587616054721.plus.aac.p.m4a",
         "durationMs": 392667,
         "albumName": "Songs from the Big Chair",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/100x100bb.jpg",
@@ -11611,7 +11611,7 @@
   "the-brian-setzer-orchestra": {
     "name": "The Brian Setzer Orchestra",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:14.572Z",
+    "fetchedAt": "2026-06-16T20:19:03.438Z",
     "tracks": [
       {
         "name": "Jump, Jive an' Wail",
@@ -11630,14 +11630,6 @@
         "streamingUrl": "https://music.apple.com/us/album/rock-this-town/1440903312?i=1440903447&uo=4"
       },
       {
-        "name": "This Cat's on a Hot Tin Roof",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/86/f2/b8/86f2b81c-0e62-9f9e-4225-96861317b9ea/mzaf_14806956995409109518.plus.aac.p.m4a",
-        "durationMs": 139467,
-        "albumName": "The Dirty Boogie",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/1c/32/96/1c32968d-aadc-3eeb-552c-5604f7ccb3ea/00606949018320.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/this-cats-on-a-hot-tin-roof/1440903312?i=1440903318&uo=4"
-      },
-      {
         "name": "The Dirty Boogie",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/2e/dd/b9/2eddb987-235f-8a73-9873-81b92ee72da9/mzaf_1054118349532514383.plus.aac.p.m4a",
         "durationMs": 193627,
@@ -11646,19 +11638,27 @@
         "streamingUrl": "https://music.apple.com/us/album/the-dirty-boogie/1440903312?i=1440903325&uo=4"
       },
       {
-        "name": "Jingle Bell Rock",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/75/ce/87/75ce8781-0595-79ad-4850-977dd6afbfc5/mzaf_10362945411505379562.plus.aac.p.m4a",
-        "durationMs": 154853,
-        "albumName": "Christmas Rocks: The Best of Collection",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/37/fe/0a/37fe0ab7-1da9-5d24-061d-0d4bd0204907/196292593594_Cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/jingle-bell-rock/1868647823?i=1868648400&uo=4"
+        "name": "This Cat's on a Hot Tin Roof",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/86/f2/b8/86f2b81c-0e62-9f9e-4225-96861317b9ea/mzaf_14806956995409109518.plus.aac.p.m4a",
+        "durationMs": 139467,
+        "albumName": "The Dirty Boogie",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/1c/32/96/1c32968d-aadc-3eeb-552c-5604f7ccb3ea/00606949018320.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/this-cats-on-a-hot-tin-roof/1440903312?i=1440903318&uo=4"
+      },
+      {
+        "name": "Sleepwalk (Instrumental)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/a5/a0/30/a5a030d6-f9d0-e8ad-fd07-323a6866b648/mzaf_17427963513437132297.plus.aac.p.m4a",
+        "durationMs": 229533,
+        "albumName": "The Dirty Boogie",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/1c/32/96/1c32968d-aadc-3eeb-552c-5604f7ccb3ea/00606949018320.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/sleepwalk-instrumental/1440903312?i=1440903431&uo=4"
       }
     ]
   },
   "the-go-gos": {
     "name": "The Go-Go's",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:19.325Z",
+    "fetchedAt": "2026-06-16T20:19:06.530Z",
     "tracks": [
       {
         "name": "We Got the Beat",
@@ -11705,7 +11705,7 @@
   "the-nylons": {
     "name": "The Nylons",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:23.682Z",
+    "fetchedAt": "2026-06-16T20:19:09.044Z",
     "tracks": [
       {
         "name": "The Lion Sleeps Tonight (Remix)",
@@ -11724,14 +11724,6 @@
         "streamingUrl": "https://music.apple.com/us/album/na-na-hey-hey-kiss-him-goodbye/289458311?i=289458326&uo=4"
       },
       {
-        "name": "The Lion Sleeps Tonight",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/02/30/d5/0230d55a-8cfd-60ec-8303-6bdb76be0c91/mzaf_7486586174649676768.plus.aac.p.m4a",
-        "durationMs": 289467,
-        "albumName": "The Nylons",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music2/v4/70/c7/d4/70c7d4be-5530-5e03-7510-58badbad77a0/dj.iagbxjce.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-lion-sleeps-tonight/289295712?i=289295716&uo=4"
-      },
-      {
         "name": "Up the Ladder to the Roof",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c2/8b/53/c28b530a-8332-f5d5-6b90-8731945ee056/mzaf_2070788951083261476.plus.aac.p.m4a",
         "durationMs": 152533,
@@ -11740,12 +11732,20 @@
         "streamingUrl": "https://music.apple.com/us/album/up-the-ladder-to-the-roof/289458311?i=289458361&uo=4"
       },
       {
-        "name": "Silhouettes",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8d/dc/d9/8ddcd991-d871-c8e1-5622-f1c1c14fa1ca/mzaf_15683527476177505450.plus.aac.p.m4a",
-        "durationMs": 168573,
-        "albumName": "One Size Fits All",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/95/4c/0c/mzi.ssyqozff.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/silhouettes/289297369?i=289297373&uo=4"
+        "name": "Happy Together",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/e4/53/49/e4534901-fd3b-9207-a3dd-fb513107e125/mzaf_3370374717614066497.plus.aac.p.m4a",
+        "durationMs": 171800,
+        "albumName": "The Best of the Nylons",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/65/77/01/6577018c-a2ce-9a67-65cc-16dbcd7eb4d9/mzi.egeevqrq.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/happy-together/289458311?i=289458390&uo=4"
+      },
+      {
+        "name": "Chain Gang",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/74/87/94/74879407-3b9d-f6d4-0955-cb6a0ced4113/mzaf_6359007901785639739.plus.aac.p.m4a",
+        "durationMs": 190107,
+        "albumName": "The Best of the Nylons",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/65/77/01/6577018c-a2ce-9a67-65cc-16dbcd7eb4d9/mzi.egeevqrq.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/chain-gang/289458311?i=289458474&uo=4"
       }
     ]
   },
@@ -12075,6 +12075,53 @@
         "albumName": "play with earth! 0.03",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/be/4f/5f/be4f5f81-a6fd-5b91-67b8-b2e9bd6c78ad/5021732481481.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/beck/1770519879?i=1770520308&uo=4"
+      }
+    ]
+  },
+  "pinhead-gunpowder": {
+    "name": "Pinhead Gunpowder",
+    "source": "itunes",
+    "fetchedAt": "2026-06-16T20:18:32.542Z",
+    "tracks": [
+      {
+        "name": "Losers of the Year",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/65/9b/f8/659bf828-b60d-4299-6b05-f9a531ba55d2/mzaf_7665468744459444263.plus.aac.p.m4a",
+        "durationMs": 164049,
+        "albumName": "Jump Salty",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/b1/01/50/mzi.pveddope.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/losers-of-the-year/312260986?i=312260991&uo=4"
+      },
+      {
+        "name": "2nd Street",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/15/d7/50/15d750fc-fac1-58dc-24ba-6b19e4020ddc/mzaf_8341878823377670839.plus.aac.p.m4a",
+        "durationMs": 128813,
+        "albumName": "Compulsive Disclosure",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/6a/8b/e7/6a8be70e-8576-9b6e-a7a4-c12bbb410c5c/859703237110_cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/2nd-street/428505164?i=428505225&uo=4"
+      },
+      {
+        "name": "Mahogany",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/73/44/69/7344697f-80a3-1f0d-0b27-3ee3e0084f08/mzaf_16904268145456918180.plus.aac.p.m4a",
+        "durationMs": 120140,
+        "albumName": "Carry the Banner",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/39/70/7e/mzi.bmntgcmu.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/mahogany/312263788?i=312263798&uo=4"
+      },
+      {
+        "name": "Life During Wartime",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/65/3e/fe/653efeda-8e12-4dd2-00b5-ba89b6e6e969/mzaf_9247559791599932691.plus.aac.p.m4a",
+        "durationMs": 108333,
+        "albumName": "Goodbye Ellston Avenue",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/2c/40/9b/2c409bce-6fea-59e5-006c-93e213f5a54e/859701539612_cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/life-during-wartime/312159340?i=312159504&uo=4"
+      },
+      {
+        "name": "Anniversary Song",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/81/1d/f4/811df453-e60d-57d5-60ea-14c57625b51b/mzaf_14504072309142380556.plus.aac.p.m4a",
+        "durationMs": 120047,
+        "albumName": "7\" - EP",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/a4/18/20/a41820d7-1e4a-a7db-9bb3-03bcfed9f760/859700933350_cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/anniversary-song/288843239?i=288843265&uo=4"
       }
     ]
   }
