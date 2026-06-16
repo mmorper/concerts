@@ -1,0 +1,25 @@
+{
+  "name": "morperhaus-mcp-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Morperhaus Concert Archive MCP server — Cloudflare Worker exposing 40 years of concert history as a Model Context Protocol server",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "deploy": "npx wrangler deploy",
+    "dev": "npx wrangler dev",
+    "typecheck": "tsc --noEmit",
+    "tail": "npx wrangler tail"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
+    "@modelcontextprotocol/sdk": "1.23.0",
+    "agents": "^0.2.35",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260101.0",
+    "typescript": "^5.7.0",
+    "wrangler": "^4.0.0"
+  }
+}
