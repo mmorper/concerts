@@ -24,7 +24,8 @@ export function renderLandingPage(stats: LandingStats): string {
 <meta property="og:title" content="Ask the Archive Anything" />
 <meta property="og:description" content="Bring 40 years of concerts into Claude and just ask — your history with a band, every show at a venue, or just 'surprise me.'" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="${SITE}/mcp" />
+<meta property="og:url" content="${SITE}/mcp/about" />
+<link rel="canonical" href="${SITE}/mcp/about" />
 <meta property="og:image" content="${OG_IMAGE}" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="${OG_IMAGE}" />

@@ -5,12 +5,12 @@
       "date": "2026-06-16",
       "title": "Ask the Archive Anything",
       "description": "You can now bring four decades of shows into Claude and just talk to them. Ask what concerts happened on your birthday, what the archive remembers about a band, every gig at a favorite venue — or let it surprise you with one worth remembering. It answers like the archive itself, in its own voice, always true to the shows that really happened.",
-      "route": "/mcp",
+      "route": "/mcp/about",
       "highlights": [
         "If you use Claude, you can add the archive and ask the way you'd ask a friend — “have you seen Depeche Mode?”, “what happened on June 4th over the years?”, “show me everything at the 9:30 Club”",
         "Get the shape of the whole collection in a sentence — four decades, the bands and rooms it keeps coming back to — or just say “surprise me”",
         "Every answer is grounded in the real shows and told in the archive's own voice — and it's honest when it's just counting from memory",
-        "Visit concerts.morperhaus.org/mcp to see how to connect"
+        "Visit concerts.morperhaus.org/mcp/about to see how to connect"
       ]
     },
     {

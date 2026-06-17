@@ -163,9 +163,12 @@ export default {
       // reuse it to break the real navigation, which is the "load it twice" bug). The only
       // legitimate GET an MCP client makes is the SSE stream, which always sends
       // `Accept: text/event-stream` (and a session id) — that's the one case we defer.
+      // /mcp/about is the canonical, shareable human URL (the changelog + OG point here);
+      // /mcp also serves the page so the connection URL is self-documenting. Both render
+      // for any browser GET that isn't a genuine MCP SSE request.
       const accept = request.headers.get("accept") ?? "";
       if (
-        url.pathname === "/mcp" &&
+        (url.pathname === "/mcp" || url.pathname === "/mcp/about") &&
         request.method === "GET" &&
         !accept.includes("text/event-stream") &&
         !request.headers.get("mcp-session-id")
