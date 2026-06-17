@@ -32,7 +32,11 @@ export function renderLandingPage(stats: LandingStats): string {
 <link rel="icon" href="${SITE}/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+<!-- Load web fonts non-blocking: the page renders immediately with the system fallbacks
+     (Georgia / system-ui) and swaps in Playfair/Source Sans only if Google Fonts is
+     reachable. A blocked or slow fonts.googleapis.com can no longer hang the page. -->
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&display=swap" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&display=swap" /></noscript>
 <style>
   :root { --bg:#fafaf9; --ink:#1c1917; --muted:#57534e; --faint:#78716c; --line:#e7e5e4; --accent:#4f46e5; --accent-soft:#eef2ff; --accent-ink:#3730a3; --card:#fff; }
   * { box-sizing:border-box; }
