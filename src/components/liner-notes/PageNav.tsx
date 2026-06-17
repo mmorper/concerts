@@ -5,6 +5,7 @@
 
 import { ChevronLeft } from 'lucide-react'
 import { useNavigate, Link } from 'react-router-dom'
+import { analytics } from '../../services/analytics'
 
 interface PageNavProps {
   /** Which page this nav is on — used to hide the self-link */
@@ -86,6 +87,16 @@ export function PageNav({ current, theme }: PageNavProps) {
           </Link>
         </>
       )}
+
+      <span className={dividerClass} aria-hidden="true">·</span>
+      {/* /ask is a static (non-SPA) page — full-navigation <a>, not <Link>. */}
+      <a
+        href="/ask"
+        className={`font-sans text-sm transition-colors ${linkClass}`}
+        onClick={() => analytics.trackEvent('ask_archive_nav_clicked', { surface: 'pagenav', current })}
+      >
+        Ask the Archive
+      </a>
     </nav>
   )
 }

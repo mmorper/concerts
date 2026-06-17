@@ -7,6 +7,8 @@ import { analytics } from '../services/analytics'
 const NAV_LINKS = [
   { to: '/liner-notes', label: 'Liner Notes', event: 'liner_notes_nav_clicked' },
   { to: '/whats-playing', label: "What's Playing", event: 'whats_playing_nav_clicked' },
+  // /ask is a static (non-SPA) page, so it renders as a full-navigation <a>, not <Link>.
+  { to: '/ask', label: 'Ask', event: 'ask_archive_nav_clicked', external: true },
   { to: '/about', label: 'About', event: 'about_nav_clicked' },
 ] as const
 
@@ -70,6 +72,23 @@ export function SceneNavigation() {
     })
   }
 
+  // Scenes 1 (Timeline) and 5 (Artists) are light backgrounds; the rest are dark.
+  const onLight = [1, 5].includes(activeScene)
+  const railLabel = onLight ? 'rgba(30,41,59,0.55)' : 'rgba(255,255,255,0.4)'
+  const railLabelStrong = onLight ? 'rgba(30,41,59,0.82)' : 'rgba(255,255,255,0.72)'
+  const railEdge = onLight ? 'rgba(30,41,59,0.15)' : 'rgba(255,255,255,0.1)'
+
+  // Shared vertical-text style for the rail's two destination labels.
+  const vLabel = (color: string) => ({
+    fontSize: 11,
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase' as const,
+    color,
+    writingMode: 'vertical-rl' as const,
+    transform: 'rotate(180deg)',
+    lineHeight: 1,
+  })
+
   return (
     <>
     <motion.div
@@ -78,7 +97,33 @@ export function SceneNavigation() {
       transition={{ delay: 2, duration: 0.8 }}
       className="fixed right-8 top-1/2 -translate-y-1/2 z-40 hidden md:block"
     >
-      <div className="flex flex-col gap-3">
+      {/* The dots are the flow content, so the outer -translate-y-1/2 centers THEM at the
+          viewport middle. "Ask the Archive" (above) and "Liner Notes" (below) are floated
+          out of flow, so their unequal heights never shift the dots off center. */}
+      <div className="relative flex flex-col gap-3 items-center">
+        {/* Ask the Archive — floated above the dots */}
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 flex flex-col items-center gap-2.5">
+          <a
+            href="/ask"
+            className="group flex flex-col items-center gap-2 min-w-[44px]"
+            aria-label="Ask the Archive"
+            onClick={() => {
+              haptics.light()
+              analytics.trackEvent('ask_archive_nav_clicked', { surface: 'rail', from_scene: activeScene })
+            }}
+          >
+            {/* "live" dot — decorative; the label carries the meaning */}
+            <span
+              aria-hidden="true"
+              style={{ width: 5, height: 5, borderRadius: '50%', background: '#4f46e5', boxShadow: '0 0 8px 1px rgba(99,102,241,0.7)' }}
+            />
+            <span className="font-sans transition-colors duration-200" style={vLabel(railLabelStrong)}>
+              Ask the Archive
+            </span>
+          </a>
+          <span aria-hidden="true" style={{ width: 18, height: 1, background: railEdge }} />
+        </div>
+
         {scenes.map((scene) => (
           <button
             key={scene.id}
@@ -123,33 +168,16 @@ export function SceneNavigation() {
           </button>
         ))}
 
-        {/* Liner Notes link — separated from scene dots */}
-        <div
-          className="flex flex-col items-center"
-          style={{
-            borderTop: `1px solid ${[1, 5].includes(activeScene) ? 'rgba(30,41,59,0.15)' : 'rgba(255,255,255,0.1)'}`,
-            paddingTop: 10,
-            marginTop: 4,
-          }}
-        >
+        {/* Liner Notes — floated below the dots (mirrors the Ask block above) */}
+        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 flex flex-col items-center gap-2.5">
+          <span aria-hidden="true" style={{ width: 18, height: 1, background: railEdge }} />
           <Link
             to="/liner-notes"
-            className="group relative flex items-center justify-center min-w-[44px] min-h-[44px]"
+            className="group flex items-center justify-center min-w-[44px]"
             aria-label="Go to Liner Notes"
             onClick={() => analytics.trackEvent('liner_notes_nav_clicked', { from_scene: activeScene })}
           >
-            <span
-              className="font-sans transition-colors duration-200"
-              style={{
-                fontSize: 11,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: [1, 5].includes(activeScene) ? 'rgba(30,41,59,0.55)' : 'rgba(255,255,255,0.4)',
-                writingMode: 'vertical-rl',
-                transform: 'rotate(180deg)',
-                lineHeight: 1,
-              }}
-            >
+            <span className="font-sans transition-colors duration-200" style={vLabel(railLabel)}>
               Liner Notes
             </span>
           </Link>
@@ -173,21 +201,29 @@ export function SceneNavigation() {
       }}
     >
       <div className="flex items-center justify-center py-3" style={{ gap: 16 }}>
-        {NAV_LINKS.map(({ to, label, event }, i) => (
-          <Fragment key={to}>
-            {i > 0 && (
-              <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.2)', fontSize: 10, lineHeight: 1 }}>·</span>
-            )}
-            <Link
-              to={to}
-              className="font-sans transition-colors duration-200 hover:text-white active:text-white"
-              style={{ fontSize: 11, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)' }}
-              onClick={() => analytics.trackEvent(event, { from_scene: activeScene })}
-            >
-              {label}
-            </Link>
-          </Fragment>
-        ))}
+        {NAV_LINKS.map((link, i) => {
+          const external = 'external' in link && link.external
+          const cls = 'font-sans transition-colors duration-200 hover:text-white active:text-white'
+          const baseStyle = { fontSize: 11, letterSpacing: '0.10em', textTransform: 'uppercase' as const }
+          // The Ask pill is lightly emphasized so it reads as the newest invitation.
+          const style = external
+            ? { ...baseStyle, color: '#fff', background: 'rgba(99,102,241,0.32)', boxShadow: 'inset 0 0 0 1px rgba(129,140,248,0.6)', borderRadius: 999, padding: '5px 11px' }
+            : { ...baseStyle, color: 'rgba(255,255,255,0.45)' }
+          const onClick = () =>
+            analytics.trackEvent(link.event, { from_scene: activeScene, ...(external ? { surface: 'mobile' } : {}) })
+          return (
+            <Fragment key={link.to}>
+              {i > 0 && (
+                <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.2)', fontSize: 10, lineHeight: 1 }}>·</span>
+              )}
+              {external ? (
+                <a href={link.to} className={cls} style={style} onClick={onClick}>{link.label}</a>
+              ) : (
+                <Link to={link.to} className={cls} style={style} onClick={onClick}>{link.label}</Link>
+              )}
+            </Fragment>
+          )
+        })}
       </div>
     </motion.nav>
   </>
