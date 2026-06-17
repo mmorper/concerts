@@ -157,13 +157,17 @@ export default {
 
     if (url.pathname === "/mcp" || url.pathname.startsWith("/mcp/")) {
       // A human visiting the endpoint in a browser gets a friendly landing page; MCP
-      // clients POST (or send an SSE GET with a session id) and fall through to the
-      // protocol handler. Discriminator: GET + Accept: text/html + no session header —
-      // no client sends text/html, so this never intercepts real MCP traffic.
+      // clients fall through to the protocol handler. Serve the page for ANY browser GET,
+      // not just Accept: text/html — speculative prefetches, address-bar preconnects, and
+      // `Accept: */*` requests must NOT hit the transport's 406 (browsers cache that and
+      // reuse it to break the real navigation, which is the "load it twice" bug). The only
+      // legitimate GET an MCP client makes is the SSE stream, which always sends
+      // `Accept: text/event-stream` (and a session id) — that's the one case we defer.
+      const accept = request.headers.get("accept") ?? "";
       if (
         url.pathname === "/mcp" &&
         request.method === "GET" &&
-        (request.headers.get("accept") ?? "").includes("text/html") &&
+        !accept.includes("text/event-stream") &&
         !request.headers.get("mcp-session-id")
       ) {
         return serveLandingPage(env, ctx);
