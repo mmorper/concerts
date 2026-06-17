@@ -153,22 +153,19 @@ the thing to design away — the destination (dark) is fixed.
 changelog ([`src/data/changelog.json`](../../../src/data/changelog.json)). So pointing this
 feature's CTAs at `/ask` is safe **today** — no Phase 0 gate.
 
-How it's wired (from git history):
+How it's wired:
 
-- `public/ask.html` — a **static, hand-duplicated copy** of the worker landing page,
-  served by Pages at `/ask` (clean human URL on the main domain, no worker hop). Commit
-  `c1cce93`, canonicalized in `742a101`.
+- `public/ask.html` — **generated at build time** by `scripts/gen-mcp-landing.ts`, which
+  imports the **same** `renderLandingPage()` the worker uses. Served by Pages at `/ask`
+  (clean human URL on the main domain, no worker hop).
 - [`workers/mcp-server/src/landing.ts`](../../../workers/mcp-server/src/landing.ts) — the
-  same page rendered by the **worker** at `/mcp` and `/mcp/about`, with **live** stats.
+  single source of truth, also rendered by the worker at `/mcp` and `/mcp/about`.
 
-**The real issue is drift, not breakage:** the two are the same page in two places, so they
-diverge — most visibly, `public/ask.html` has **frozen** hardcoded stats while the worker
-injects live ones. This predates this feature and doesn't block it.
-
-**Recommended cleanup (not a gate):** collapse to one source of truth — either generate
-`public/ask.html` from `landing.ts` at build time, or redirect `/ask` → the worker landing
-and retire the static file. Worth doing soon to stop the stats drift, but A + B can ship
-against `/ask` as-is.
+**There is already one source of truth** — the page structure/copy can't drift, by design.
+The only residual is that the **stat numbers** are hardcoded in two spots (the generator's
+`STATS` const and the worker's `serveLandingPage`), so they must be bumped together. Minor,
+pre-existing, and not part of this feature. **No `/ask` work is needed here** — CTAs point
+at `/ask` and it just works.
 
 ---
 
