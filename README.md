@@ -11,7 +11,7 @@ An interactive web app for exploring personal concert history. Five scenes—Tim
 
 ## What's new
 
-**v4.7.0** 🎙️ Ask the Archive Anything! Bring four decades of shows into Claude and just talk to them — what happened on your birthday, your history with a band, every gig at a venue, or just “surprise me.” It answers in the archive’s own voice, always true to the shows that really happened. [See how to connect](https://concerts.morperhaus.org/mcp).
+**v4.7.0** 🎙️ Ask the Archive Anything! Bring four decades of shows into Claude and just talk to them — what happened on your birthday, your history with a band, every gig at a venue, or just “surprise me.” It answers in the archive’s own voice, always true to the shows that really happened. [See how to connect](https://concerts.morperhaus.org/ask).
 
 **v4.6.0** ✨ How It Works! Ever wonder how a spreadsheet row becomes a richly connected concert record? Now you can watch it happen. The new [How It Works](https://concerts.morperhaus.org/how-it-works) page walks you through every enrichment tier—from raw artist name and venue to geographic coordinates, artist photos, audio previews, and song-by-song setlists—as an animated cascade in real time.
 

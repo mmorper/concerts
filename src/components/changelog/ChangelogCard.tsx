@@ -4,13 +4,11 @@
  */
 
 import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
 import type { ChangelogCardProps } from './types'
 
 const INDIGO = '#4f46e5'
 
 export function ChangelogCard({ release, isLatest = false }: ChangelogCardProps) {
-  const navigate = useNavigate()
 
   const formattedDate = new Date(release.date).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -79,17 +77,18 @@ export function ChangelogCard({ release, isLatest = false }: ChangelogCardProps)
           ))}
         </ul>
 
-        {/* CTA — text link, not full-width button */}
+        {/* CTA — full navigation (anchor), so it works for both in-app routes and
+            static pages like /ask (client-side navigate() can't reach a non-SPA path). */}
         {release.route && (
-          <button
-            onClick={() => navigate(release.route!)}
+          <a
+            href={release.route}
             className="font-sans text-sm font-medium transition-colors"
             style={{ color: INDIGO }}
             onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
             onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
           >
             See it live →
-          </button>
+          </a>
         )}
       </div>
     </motion.article>
