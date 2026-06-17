@@ -65,18 +65,27 @@ export class MorperhausMcp extends McpAgent<Env> {
     {
       name: SERVER_NAME,
       version: SERVER_VERSION,
-       title: SERVER_NAME,
+      title: SERVER_NAME,
       websiteUrl: "https://concerts.morperhaus.org",
-      // Connector icon (MCP Implementation.icons). SVG first (scalable); .ico fallback.
+      // Connector icon (MCP Implementation.icons). PNG first: clients commonly refuse
+      // remote SVG (XSS risk) and don't decode .ico, so the prior SVG/ICO-only array
+      // rendered as the default cube. These PNGs live under /icons/ — note root-level
+      // paths like /icon-512.png resolve to the SPA's HTML fallback, not a real image.
       icons: [
+        {
+          src: "https://concerts.morperhaus.org/icons/apple-touch-icon-180.png",
+          mimeType: "image/png",
+          sizes: ["180x180"],
+        },
+        {
+          src: "https://concerts.morperhaus.org/icons/favicon-32.png",
+          mimeType: "image/png",
+          sizes: ["32x32"],
+        },
         {
           src: "https://concerts.morperhaus.org/favicon.svg",
           mimeType: "image/svg+xml",
-        },
-        {
-          src: "https://concerts.morperhaus.org/favicon.ico",
-          mimeType: "image/vnd.microsoft.icon",
-          sizes: ["48x48"],
+          sizes: ["any"],
         },
       ],
     },
