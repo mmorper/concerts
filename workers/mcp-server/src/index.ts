@@ -13,8 +13,9 @@ const SERVER_VERSION = "0.1.0";
 const SERVER_INSTRUCTIONS =
   "40 years of live music — 1984 to the present. Ask about artists, venues, " +
   'decades, or just say "surprise me." ' +
-  "When a tool result includes markdown links to artists or venues, keep them as links " +
-  "in your reply so people can open them on the site.";
+  "Tool results end with an \"Open on the site\" line of markdown links to the artists " +
+  "and venues mentioned — always include that line, exactly as given, at the end of your " +
+  "reply so people can click through to the site.";
 
 // Spec §"`explore_archive` Prompt" — kept short; voice rules live in the
 // liner-notes-voice skill, which is the source of truth.
@@ -24,8 +25,9 @@ const EXPLORE_ARCHIVE_PROMPT =
   "See the project's liner-notes-voice skill for full voice rules.\n\n" +
   "Be honest about gaps. When you have enrichment (genres, top tracks, setlists), use " +
   "it. When you don't, say so and move on.\n\n" +
-  "When a tool result includes markdown links to artists or venues, keep them as links " +
-  "in your reply so people can open them on the site.";
+  "Tool results end with an \"Open on the site\" line of markdown links to the artists " +
+  "and venues mentioned — always include that line, exactly as given, at the end of your " +
+  "reply so people can click through to the site.";
 
 // Spec §"CORS Headers" — `Mcp-Session-Id` MUST appear in both Allow-Headers and
 // Expose-Headers or Claude Desktop's session handshake fails silently. The agents/mcp

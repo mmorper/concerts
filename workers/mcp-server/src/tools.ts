@@ -142,6 +142,22 @@ function venueLink(name: string, slug: string): string {
   return `[${name}](${SITE_BASE_URL}/?scene=venues&venue=${slug})`;
 }
 
+// Liner-notes-style links footer. The model paraphrases tool prose (and drops inline
+// links woven into it), but a clearly-delimited block at the very end survives far more
+// reliably. We extract the links already present in the response, dedupe by URL, and
+// append them as one labelled footer. No-op when a response has no links.
+function linkFooter(text: string): string {
+  const re = /\[([^\]]+)\]\((https:\/\/[^)]+)\)/g;
+  const byUrl = new Map<string, string>();
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text)) !== null) {
+    if (!byUrl.has(m[2])) byUrl.set(m[2], m[1]);
+  }
+  if (byUrl.size === 0) return "";
+  const items = [...byUrl].map(([url, label]) => `[${label}](${url})`);
+  return `\n\n---\n**Open on the site:** ${items.join(" · ")}`;
+}
+
 // Count occurrences keyed by a selector, returned as [label, count] sorted desc.
 function tally(concerts: Concert[], key: (c: Concert) => string): [string, number][] {
   const counts = new Map<string, number>();
@@ -216,7 +232,8 @@ export function archiveInfo(concerts: Concert[], facts: FactsData | null): strin
     "",
     `The longest I went without a show was ${maxGap} days, between ${gapA.headliner} in ${monYear(gapA.date)} and ${gapB.headliner} in ${monYear(gapB.date)}.`,
   );
-  return lines.join("\n");
+  const out = lines.join("\n");
+  return out + linkFooter(out);
 }
 
 // ===================================================================
@@ -283,7 +300,8 @@ export function searchConcerts(concerts: Concert[], params: SearchParams): strin
   if (total > limit) {
     lines.push("", `That's ${limit} of ${total} — try narrowing the search.`);
   }
-  return lines.join("\n");
+  const out = lines.join("\n");
+  return out + linkFooter(out);
 }
 
 // ===================================================================
@@ -379,7 +397,8 @@ export function artistHistory(
   else arc = `${r.name} is one of the artists I've seen most — ${n} times over ${lastY - firstY} years.`;
   lines.push("", arc);
 
-  return lines.join("\n");
+  const out = lines.join("\n");
+  return out + linkFooter(out);
 }
 
 // ===================================================================
@@ -466,7 +485,8 @@ export function venueHistory(
   else note = `One of the venues I've returned to most — ${n} times across ${lastY - firstY} years.`;
   lines.push("", note);
 
-  return lines.join("\n");
+  const out = lines.join("\n");
+  return out + linkFooter(out);
 }
 
 // ===================================================================
@@ -492,7 +512,8 @@ export function onThisDay(concerts: Concert[], month: number, day: number): stri
   if (matches.length === 1) {
     lines.push("", `One show on this date — ${matches[0].headliner}, ${matches[0].year}.`);
   }
-  return lines.join("\n");
+  const out = lines.join("\n");
+  return out + linkFooter(out);
 }
 
 // ===================================================================
@@ -589,21 +610,27 @@ export function surpriseMe(
     lines.push(`Known for ${joinList(tracks.slice(0, 2).map((t) => t.name))}.`);
   }
 
-  return { text: lines.join("\n"), angle };
+  const out = lines.join("\n");
+  return { text: out + linkFooter(out), angle };
 }
 
 // ===================================================================
 // Registration — the I/O seam
 // ===================================================================
 
+// Appended to the list tools: the model paraphrases prose and drops inline links, so the
+// durable contract is the footer block — tell it explicitly to keep that block.
+const LINK_NOTE =
+  ' Each result ends with an "Open on the site" line of links — always include it, exactly as given, at the end of your reply so people can click through to the artists and venues.';
+
 // Tool descriptions read as the archive offering them (spec §"The 6 Tools").
 const DESC = {
   archive: "The front door. A sense of the collection's shape — four decades, the artists and venues that keep coming back, the rhythm of a concert life.",
-  search: "Search memory by name, by place, by year.",
-  artist: "Everything I remember about an artist — every show, every venue, every year.",
-  venue: "The rooms I've kept returning to — every show at a single venue, in order.",
-  onThisDay: "Concerts that share a date — across all the years, whatever's happened on this day.",
-  surprise: "I'll pick one. A random concert, and why it's worth remembering.",
+  search: "Search memory by name, by place, by year." + LINK_NOTE,
+  artist: "Everything I remember about an artist — every show, every venue, every year." + LINK_NOTE,
+  venue: "The rooms I've kept returning to — every show at a single venue, in order." + LINK_NOTE,
+  onThisDay: "Concerts that share a date — across all the years, whatever's happened on this day." + LINK_NOTE,
+  surprise: "I'll pick one. A random concert, and why it's worth remembering." + LINK_NOTE,
   query: "When none of my other tools fit, ask me anything about the shows and I'll reason over the whole archive. I count these by hand, so I'll hedge when I'm unsure.",
 };
 

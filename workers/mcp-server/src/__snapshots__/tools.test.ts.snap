@@ -23,7 +23,10 @@ Formed 1978, Punk.
 
 Known for Story of My Life and Ball and Chain.
 
-Social Distortion is one of the artists I've seen most — 5 times over 34 years."
+Social Distortion is one of the artists I've seen most — 5 times over 34 years.
+
+---
+**Open on the site:** [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) · [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre) · [The Roxy](https://concerts.morperhaus.org/?scene=venues&venue=the-roxy)"
 `;
 
 exports[`get_artist_history > single show 1`] = `
@@ -33,7 +36,10 @@ Formed 1977, New Wave.
 1. April 27, 1984 — [Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows), Irvine [concert-1]
    With Romeo Void opening.
 
-A single show. Adam Ant appears in the archive once."
+A single show. Adam Ant appears in the archive once.
+
+---
+**Open on the site:** [Adam Ant](https://concerts.morperhaus.org/?scene=artists&artist=adam-ant) · [Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows)"
 `;
 
 exports[`get_venue_history > repeat venue 1`] = `
@@ -44,7 +50,10 @@ exports[`get_venue_history > repeat venue 1`] = `
 3. September 20, 2010 — [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) [concert-8]
 4. October 25, 2024 — [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) [concert-9]
 
-Visited 4 times, 1990 to 2024."
+Visited 4 times, 1990 to 2024.
+
+---
+**Open on the site:** [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre) · [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion)"
 `;
 
 exports[`get_venue_history > single visit pulls closure context from notes 1`] = `
@@ -54,14 +63,20 @@ Demolished for residential development.
 1. April 27, 1984 — [Adam Ant](https://concerts.morperhaus.org/?scene=artists&artist=adam-ant) [concert-1]
    With Romeo Void opening.
 
-A single visit — April 27, 1984, Adam Ant."
+A single visit — April 27, 1984, Adam Ant.
+
+---
+**Open on the site:** [Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows) · [Adam Ant](https://concerts.morperhaus.org/?scene=artists&artist=adam-ant)"
 `;
 
 exports[`on_this_day > multiple shares of a date 1`] = `
 "On June 4, across the years:
 
 1988: [Depeche Mode](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) at [Rose Bowl](https://concerts.morperhaus.org/?scene=venues&venue=rose-bowl), Pasadena [concert-3]
-1990: [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) at [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre), Costa Mesa [concert-5]"
+1990: [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) at [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre), Costa Mesa [concert-5]
+
+---
+**Open on the site:** [Depeche Mode](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) · [Rose Bowl](https://concerts.morperhaus.org/?scene=venues&venue=rose-bowl) · [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) · [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre)"
 `;
 
 exports[`search_concerts > caps results and says so honestly 1`] = `
@@ -70,14 +85,20 @@ exports[`search_concerts > caps results and says so honestly 1`] = `
 [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) — [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre), Costa Mesa (Jun 1990) [concert-5]
 [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) — [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre), Costa Mesa (Jul 1995) [concert-6]
 
-That's 2 of 5 — try narrowing the search."
+That's 2 of 5 — try narrowing the search.
+
+---
+**Open on the site:** [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) · [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre)"
 `;
 
 exports[`search_concerts > single result 1`] = `
 "1 concert matching "Adam Ant":
 
 [Adam Ant](https://concerts.morperhaus.org/?scene=artists&artist=adam-ant) — [Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows), Irvine (Apr 1984) [concert-1]
-  With Romeo Void opening."
+  With Romeo Void opening.
+
+---
+**Open on the site:** [Adam Ant](https://concerts.morperhaus.org/?scene=artists&artist=adam-ant) · [Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows)"
 `;
 
 exports[`search_concerts > zero results say something real 1`] = `"I don't have anything matching "Nobody At All" in the archive."`;
@@ -88,5 +109,8 @@ exports[`surprise_me > only appearance of an artist 1`] = `
 [Adam Ant](https://concerts.morperhaus.org/?scene=artists&artist=adam-ant) at [Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows), Irvine
 April 27, 1984 [concert-1]
 New Wave • Formed 1977
-With Romeo Void opening."
+With Romeo Void opening.
+
+---
+**Open on the site:** [Adam Ant](https://concerts.morperhaus.org/?scene=artists&artist=adam-ant) · [Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows)"
 `;
