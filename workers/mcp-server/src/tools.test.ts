@@ -9,11 +9,13 @@ import {
   onThisDay,
   surpriseMe,
   concertSetlist,
+  archiveTopSongs,
 } from "./tools.js";
 import type {
   ArtistsMetadata,
   ArtistsTopTracks,
   Concert,
+  MostPlayedSongs,
   SetlistsCache,
   VenuesMetadata,
 } from "./types.js";
@@ -442,5 +444,54 @@ describe("get_concert_setlist", () => {
   it("unknown artist says so", () => {
     const text = concertSetlist(archive(), SETLISTS, { artist: "Nobody" });
     expect(text).toBe("Nobody isn't in the archive.");
+  });
+});
+
+// ---------- get_archive_top_songs ----------
+
+const MOST_PLAYED: MostPlayedSongs = {
+  version: "1",
+  generatedAt: "",
+  coverage: { concertsWithSetlist: 117, totalConcerts: 183, distinctSongs: 1607 },
+  // Pre-sorted by count desc, as the build script emits it.
+  songs: [
+    { name: "Ring of Fire", count: 7, artists: ["Social Distortion"] },
+    { name: "Ball and Chain", count: 6, artists: ["Social Distortion"] },
+    { name: "Rock This Town", count: 5, artists: ["Brian Setzer", "Stray Cats", "The Brian Setzer Orchestra"] },
+  ],
+};
+
+describe("get_archive_top_songs", () => {
+  it("leads with the coverage caveat and counts honestly", () => {
+    const text = archiveTopSongs(MOST_PLAYED);
+    assertVoice(text);
+    expect(text).toContain("Across the 117 of 183 shows I have setlists for");
+    expect(text).toContain("leans toward the artists I've seen most");
+    expect(text).toMatchSnapshot();
+  });
+
+  it("links single-artist rows and summarizes multi-artist ones", () => {
+    const text = archiveTopSongs(MOST_PLAYED);
+    // single artist → clickable link
+    expect(text).toContain("(["); // markdown link opener inside the parens
+    expect(text).toContain("Ring of Fire — 7 times");
+    // multi-artist standard → counted, not linked
+    expect(text).toContain("Rock This Town — 5 times (across 3 artists)");
+    expect(text).toContain("Open on the site:");
+  });
+
+  it("respects the limit", () => {
+    const text = archiveTopSongs(MOST_PLAYED, 1);
+    expect(text).toContain("1. Ring of Fire");
+    expect(text).not.toContain("2. ");
+  });
+
+  it("empty data says so honestly", () => {
+    const text = archiveTopSongs({ ...MOST_PLAYED, songs: [] });
+    expect(text).toContain("don't have enough setlists on record yet");
+  });
+
+  it("null data says so honestly", () => {
+    expect(archiveTopSongs(null)).toContain("don't have enough setlists on record yet");
   });
 });

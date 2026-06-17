@@ -11,6 +11,19 @@ More New Wave than anything else — 6 shows.
 The longest I went without a show was 3060 days, between Peter Gabriel in May 2002 and Social Distortion in Sep 2010."
 `;
 
+exports[`get_archive_top_songs > leads with the coverage caveat and counts honestly 1`] = `
+"Across the 117 of 183 shows I have setlists for, these are the songs I've heard most:
+
+1. Ring of Fire — 7 times ([Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion))
+2. Ball and Chain — 6 times ([Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion))
+3. Rock This Town — 5 times (across 3 artists)
+
+That's only the 117 shows with a setlist on record, so it leans toward the artists I've seen most.
+
+---
+**Open on the site:** [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion)"
+`;
+
 exports[`get_artist_history > 5+ shows scales the closing arc 1`] = `
 "I've seen [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) 5 times, across 34 years (1990–2024).
 Formed 1978, Punk.

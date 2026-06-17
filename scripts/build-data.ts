@@ -55,6 +55,7 @@ async function buildData() {
     { name: 'Enrich discography', active: !skipDiscography },
     { name: 'Pre-fetch setlists', active: !skipSetlists },
     { name: 'Aggregate genres timeline', active: true },
+    { name: 'Aggregate most-played songs', active: true },
     { name: 'Generate facts for liner notes', active: true },
     { name: 'Update meta tags and SEO files', active: !dryRun },
     { name: 'Generate sitemap', active: !dryRun },
@@ -226,6 +227,16 @@ async function buildData() {
     await aggregateGenresTimeline()
     console.log()
 
+    // Step 9b: Aggregate most-played songs from setlists (always runs — reads the cache,
+    // independent of whether the setlist pre-fetch step ran this pass)
+    currentStep++
+    console.log('=' .repeat(60))
+    console.log(`Step ${currentStep}/${activeSteps}: Aggregating most-played songs`)
+    console.log('-'.repeat(60))
+    const { writeMostPlayedSongs } = await import('./aggregate-most-played-songs.ts')
+    await writeMostPlayedSongs()
+    console.log()
+
     // Step 10: Generate facts for liner notes (always runs — legacy, deprecated by agentic system)
     // Note: liner notes generation runs via its own dedicated scheduled task (liner-notes-generate)
     currentStep++
@@ -285,6 +296,7 @@ async function buildData() {
       if (!skipVenues) console.log('   - public/data/venues-metadata.json')
       if (!skipDiscography) console.log('   - public/data/discography.json')
       if (!skipSetlists) console.log('   - public/data/setlists-cache.json')
+      console.log('   - public/data/most-played-songs.json')
       console.log('   - public/data/facts.json')
       console.log('   - public/sitemap.xml')
       console.log('   - public/rss.xml')

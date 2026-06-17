@@ -15,6 +15,7 @@ import type {
   Concert,
   Env,
   FactsData,
+  MostPlayedSongs,
   Narration,
   SetlistEntry,
   SetlistsCache,
@@ -26,6 +27,7 @@ import {
   getArtistsTopTracks,
   getConcerts,
   getFacts,
+  getMostPlayedSongs,
   getNarration,
   getSetlistsCache,
   getVenuesMetadata,
@@ -778,6 +780,40 @@ export function concertSetlist(
 }
 
 // ===================================================================
+// 8. get_archive_top_songs
+// ===================================================================
+
+// Build-time aggregation of song frequency across the setlists on record. Coverage is
+// partial, so the narration leads with the caveat — these counts describe the shows I
+// actually have setlists for, not the whole archive.
+export function archiveTopSongs(data: MostPlayedSongs | null, limit = 10): string {
+  if (!data || data.songs.length === 0) {
+    return "I don't have enough setlists on record yet to say which songs come up most.";
+  }
+  const { concertsWithSetlist, totalConcerts } = data.coverage;
+  const top = data.songs.slice(0, Math.min(Math.max(limit, 1), 25));
+
+  const lines = [
+    `Across the ${concertsWithSetlist} of ${totalConcerts} shows I have setlists for, these are the songs I've heard most:`,
+    "",
+  ];
+  top.forEach((s, i) => {
+    const who =
+      s.artists.length === 1
+        ? artistLink(s.artists[0], normalizeName(s.artists[0]))
+        : `across ${s.artists.length} artists`;
+    lines.push(`${i + 1}. ${s.name} — ${s.count} times (${who})`);
+  });
+  lines.push(
+    "",
+    `That's only the ${concertsWithSetlist} shows with a setlist on record, so it leans toward the artists I've seen most.`,
+  );
+
+  const out = lines.join("\n");
+  return out + linkFooter(out);
+}
+
+// ===================================================================
 // Registration — the I/O seam
 // ===================================================================
 
@@ -795,6 +831,7 @@ const DESC = {
   onThisDay: "Concerts that share a date — across all the years, whatever's happened on this day." + LINK_NOTE,
   surprise: "I'll pick one. A random concert, and why it's worth remembering." + LINK_NOTE,
   setlist: "The songs from a specific night — give me an artist (and a date if you have one) or a concert id, and I'll tell you what they played, if I have it on record." + LINK_NOTE,
+  topSongs: "The songs I've heard most across every setlist on record — counted honestly from the shows I have setlists for, not the whole archive." + LINK_NOTE,
   query: "When none of my other tools fit, ask me anything about the shows and I'll reason over the whole archive. I count these by hand, so I'll hedge when I'm unsure.",
 };
 
@@ -1002,6 +1039,20 @@ export function registerTools(server: McpServer, env: Env): void {
           tracks ?? {},
         ),
       );
+    }),
+  );
+
+  server.registerTool(
+    "get_archive_top_songs",
+    {
+      title: "Most-played songs",
+      description: DESC.topSongs,
+      inputSchema: { limit: z.number().int().min(1).max(25).optional() },
+    },
+    wrapTool("get_archive_top_songs", async (args) => {
+      const songs = await getMostPlayedSongs(env, bgCtx);
+      if (!songs) return dataUnavailableResult();
+      return textResult(archiveTopSongs(songs, args.limit as number | undefined));
     }),
   );
 

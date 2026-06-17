@@ -54,6 +54,7 @@
     "cleanup:backups": "tsx scripts/cleanup-backups.ts",
     "seo": "tsx scripts/analyze-seo.ts",
     "generate:facts": "tsx scripts/generate-facts.ts",
+    "generate:most-played-songs": "tsx scripts/aggregate-most-played-songs.ts",
     "generate:rss": "tsx scripts/generate-rss.ts",
     "generate:liner-notes-rss": "tsx scripts/generate-liner-notes-rss.ts",
     "generate:liner-notes": "tsx scripts/liner-notes/index.ts",

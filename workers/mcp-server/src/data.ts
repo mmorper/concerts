@@ -4,6 +4,7 @@ import type {
   ConcertData,
   Env,
   FactsData,
+  MostPlayedSongs,
   Narration,
   NarrationKind,
   NarrationRecord,
@@ -64,6 +65,7 @@ const LAZY_FILES = [
   "venues-metadata.json",
   "setlists-cache.json",
   "artists-top-tracks.json",
+  "most-played-songs.json",
 ] as const;
 
 function dataUrl(env: Env, file: string): string {
@@ -126,6 +128,16 @@ export function getArtistsTopTracks(
 ): Promise<ArtistsTopTracks | null> {
   return cachedJsonFetch<ArtistsTopTracks>(
     dataUrl(env, "artists-top-tracks.json"),
+    ctx,
+  );
+}
+
+export function getMostPlayedSongs(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<MostPlayedSongs | null> {
+  return cachedJsonFetch<MostPlayedSongs>(
+    dataUrl(env, "most-played-songs.json"),
     ctx,
   );
 }
