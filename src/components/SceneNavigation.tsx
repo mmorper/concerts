@@ -198,11 +198,8 @@ export function SceneNavigation() {
         {NAV_LINKS.map((link, i) => {
           const external = 'external' in link && link.external
           const cls = 'font-sans transition-colors duration-200 hover:text-white active:text-white'
-          const baseStyle = { fontSize: 11, letterSpacing: '0.10em', textTransform: 'uppercase' as const }
-          // The Ask pill is lightly emphasized so it reads as the newest invitation.
-          const style = external
-            ? { ...baseStyle, color: '#fff', background: 'rgba(99,102,241,0.32)', boxShadow: 'inset 0 0 0 1px rgba(129,140,248,0.6)', borderRadius: 999, padding: '5px 11px' }
-            : { ...baseStyle, color: 'rgba(255,255,255,0.45)' }
+          // Ask is a plain peer of the other links (matches the quiet rail treatment).
+          const style = { fontSize: 11, letterSpacing: '0.10em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.45)' }
           const onClick = () =>
             analytics.trackEvent(link.event, { from_scene: activeScene, ...(external ? { surface: 'mobile' } : {}) })
           return (

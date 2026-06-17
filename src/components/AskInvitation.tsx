@@ -13,9 +13,6 @@ import { haptics } from '../utils/haptics'
  * fade rather than a hard cut.
  */
 
-// Matches the Artists scene above (Tailwind bg-stone-50) for a seamless transition.
-const ARTISTS_BG = '#fafaf9'
-
 export function AskInvitation() {
   const reduce = useReducedMotion()
   const viewed = useRef(false)
@@ -24,7 +21,14 @@ export function AskInvitation() {
     <section
       className="h-screen flex items-center justify-center snap-start snap-always relative overflow-hidden px-6"
       style={{
-        background: `linear-gradient(180deg, ${ARTISTS_BG} 0%, #1e1b4b 24%, #3b0764 100%)`,
+        // "House lights down." The Artists scene above ends on a wall of (dark) photos,
+        // so the coda opens DARK — the gallery dims into deep indigo rather than flashing a
+        // light band at the seam. A soft overhead glow gives the dark field depth and lifts
+        // the card. Deep indigo → plum keeps it in the brand's violet family end to end.
+        background: [
+          'radial-gradient(1200px 620px at 50% 34%, rgba(140,122,224,0.26), transparent 62%)',
+          'linear-gradient(180deg, #181334 0%, #1e1b4b 40%, #241253 78%, #2c1660 100%)',
+        ].join(', '),
       }}
       aria-label="Ask the Archive"
     >
