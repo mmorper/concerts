@@ -14,7 +14,7 @@ const SITE = "https://concerts.morperhaus.org";
 
 export function renderLandingPage(
   stats: LandingStats,
-  pageUrl: string = `${SITE}/ask.html`,
+  pageUrl: string = `${SITE}/ask`,
 ): string {
   const { shows, venues, cities, firstYear } = stats;
   return `<!DOCTYPE html>

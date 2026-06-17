@@ -11,7 +11,7 @@ import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { renderLandingPage } from "../workers/mcp-server/src/landing.ts";
 
-const PAGE_URL = "https://concerts.morperhaus.org/ask.html";
+const PAGE_URL = "https://concerts.morperhaus.org/ask";
 // Headline stats — bump at releases (the page is informational, not live-data-driven).
 const STATS = { shows: 183, venues: 79, cities: 36, firstYear: 1984 };
 
