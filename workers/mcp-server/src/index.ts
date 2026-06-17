@@ -2,7 +2,7 @@ import { McpAgent } from "agents/mcp";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 import type { Env } from "./types.js";
-import { getConcerts, prefetchLazyFiles, prefetchLoadFiles } from "./data.js";
+import { prefetchLazyFiles, prefetchLoadFiles } from "./data.js";
 import { registerTools } from "./tools.js";
 import { renderLandingPage } from "./landing.js";
 
@@ -107,40 +107,21 @@ export class MorperhausMcp extends McpAgent<Env> {
   }
 }
 
-// Computes the live headline stats for the landing page from concerts.json. The defaults
-// are current, so a slow/failed cold-start fetch still renders correct numbers — we never
-// block the page on data. A short timeout race guarantees the HTML ships promptly.
-async function serveLandingPage(
-  env: Env,
-  ctx: ExecutionContext,
-): Promise<Response> {
-  let stats = { shows: 183, venues: 79, cities: 36, firstYear: 1984 };
-  try {
-    // getConcerts never rejects (returns null on failure); the timeout just caps how long
-    // we'll wait before falling back to the (current) defaults so the page can't hang.
-    const data = await Promise.race([
-      getConcerts(env, ctx),
-      new Promise<null>((resolve) => setTimeout(() => resolve(null), 700)),
-    ]);
-    if (data?.concerts.length) {
-      const c = data.concerts;
-      stats = {
-        shows: c.length,
-        venues: new Set(c.map((x) => x.venueNormalized)).size,
-        cities: new Set(c.map((x) => x.cityState)).size,
-        firstYear: Math.min(...c.map((x) => x.year)),
-      };
-    }
-  } catch (e) {
-    console.error("Landing stats compute failed; using defaults", e);
-  }
-  return new Response(renderLandingPage(stats), {
+// Fully synchronous: no fetch, no timer, no ctx.waitUntil — so the request context ends
+// the instant the Response is returned and the HTTP/2 stream closes cleanly. (A lingering
+// context + missing Content-Length made browsers wait for an end-of-stream that was being
+// delayed, which presented as a hung page.) Stats are hardcoded to current values; the
+// page is informational, so a periodic manual bump is fine. An explicit Content-Length
+// tells the browser exactly when the body is complete.
+function serveLandingPage(): Response {
+  const stats = { shows: 183, venues: 79, cities: 36, firstYear: 1984 };
+  const html = renderLandingPage(stats);
+  return new Response(html, {
     headers: {
       "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": String(new TextEncoder().encode(html).byteLength),
       // /mcp serves HTML to browsers and the MCP protocol to clients off the SAME url,
-      // so caches MUST key on Accept or they'll serve the wrong representation (a likely
-      // cause of "load it twice in Safari"). no-store sidesteps it entirely — the page is
-      // tiny and fast to regenerate.
+      // so caches must key on Accept; no-store sidesteps any wrong-representation caching.
       Vary: "Accept",
       "Cache-Control": "no-store",
     },
@@ -173,7 +154,7 @@ export default {
         !accept.includes("text/event-stream") &&
         !request.headers.get("mcp-session-id")
       ) {
-        return serveLandingPage(env, ctx);
+        return serveLandingPage();
       }
 
       warmCachesOnce(env, ctx);
