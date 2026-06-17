@@ -75,7 +75,6 @@ export function SceneNavigation() {
   // Scenes 1 (Timeline) and 5 (Artists) are light backgrounds; the rest are dark.
   const onLight = [1, 5].includes(activeScene)
   const railLabel = onLight ? 'rgba(30,41,59,0.55)' : 'rgba(255,255,255,0.4)'
-  const railLabelStrong = onLight ? 'rgba(30,41,59,0.82)' : 'rgba(255,255,255,0.72)'
   const railEdge = onLight ? 'rgba(30,41,59,0.15)' : 'rgba(255,255,255,0.1)'
 
   // Shared vertical-text style for the rail's two destination labels.
@@ -101,23 +100,18 @@ export function SceneNavigation() {
           viewport middle. "Ask the Archive" (above) and "Liner Notes" (below) are floated
           out of flow, so their unequal heights never shift the dots off center. */}
       <div className="relative flex flex-col gap-3 items-center">
-        {/* Ask the Archive — floated above the dots */}
+        {/* Ask the Archive — floated above the dots; a quiet peer of Liner Notes below */}
         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 flex flex-col items-center gap-2.5">
           <a
             href="/ask"
-            className="group flex flex-col items-center gap-2 min-w-[44px]"
+            className="group flex items-center justify-center min-w-[44px]"
             aria-label="Ask the Archive"
             onClick={() => {
               haptics.light()
               analytics.trackEvent('ask_archive_nav_clicked', { surface: 'rail', from_scene: activeScene })
             }}
           >
-            {/* "live" dot — decorative; the label carries the meaning */}
-            <span
-              aria-hidden="true"
-              style={{ width: 5, height: 5, borderRadius: '50%', background: '#4f46e5', boxShadow: '0 0 8px 1px rgba(99,102,241,0.7)' }}
-            />
-            <span className="font-sans transition-colors duration-200" style={vLabel(railLabelStrong)}>
+            <span className="font-sans transition-colors duration-200" style={vLabel(railLabel)}>
               Ask the Archive
             </span>
           </a>
