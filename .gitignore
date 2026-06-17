@@ -26,6 +26,9 @@ build/
 .DS_Store
 Thumbs.db
 
+# Video production render outputs (large binaries; the video/ workspace is local)
+video/renders/
+
 # Logs
 npm-debug.log*
 yarn-debug.log*

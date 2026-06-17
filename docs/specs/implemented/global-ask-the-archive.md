@@ -1,6 +1,6 @@
 # Ask the Archive — Site Presence
 
-**Status:** Planned
+**Status:** Implemented — shipped via #135 (#134 closed)
 **Target Version:** next
 **Priority:** Medium
 **Estimated Complexity:** Medium

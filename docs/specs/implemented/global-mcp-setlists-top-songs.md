@@ -1,6 +1,6 @@
 # MCP Setlists & Top Songs
 
-**Status:** Planned
+**Status:** Implemented — shipped to production 2026-06-17 (#136, #137)
 **Target Version:** next (MCP follow-on; archive currently v4.6.1)
 **Priority:** Medium
 **Estimated Complexity:** Medium
