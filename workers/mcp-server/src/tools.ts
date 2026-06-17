@@ -15,7 +15,9 @@ import type {
   Concert,
   Env,
   FactsData,
+  MostPlayedSongs,
   Narration,
+  SetlistEntry,
   SetlistsCache,
   VenueMetadata,
   VenuesMetadata,
@@ -25,6 +27,7 @@ import {
   getArtistsTopTracks,
   getConcerts,
   getFacts,
+  getMostPlayedSongs,
   getNarration,
   getSetlistsCache,
   getVenuesMetadata,
@@ -529,12 +532,51 @@ export type SurpriseAngle =
   | "has-setlist"
   | "one-of-many";
 
-function setlistSongs(setlists: SetlistsCache | null, concertId: string): string[] {
-  const entry = setlists?.entries.find((e) => e.concertId === concertId);
-  const sets = entry?.setlist?.sets?.set ?? [];
+// Matches src/utils/normalize.ts: lowercase, non-alphanumeric runs → hyphens, trimmed.
+function normalizeName(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+function songsOf(entry: SetlistEntry): string[] {
+  const sets = entry.setlist?.sets?.set ?? [];
   const songs: string[] = [];
   for (const s of sets) for (const song of s.song ?? []) if (song.name) songs.push(song.name);
   return songs;
+}
+
+export interface ResolvedSetlist {
+  songs: string[];
+  tour?: string;
+  isOpener: boolean;
+  artistName?: string;
+}
+
+// A single concert can have several cache entries — the headliner AND each opener get
+// their own setlist.fm lookup (34 of 183 concerts, verified). Prefer the headliner's set;
+// fall back to the richest opener set (flagged isOpener) so a covered night never reads as
+// empty just because the headliner lookup missed. Empty/null setlists are skipped entirely.
+function resolveSetlistEntry(
+  setlists: SetlistsCache | null,
+  concertId: string,
+  headlinerNormalized: string,
+): ResolvedSetlist {
+  const withSongs = (setlists?.entries ?? [])
+    .filter((e) => e.concertId === concertId)
+    .map((e) => ({ e, songs: songsOf(e) }))
+    .filter((x) => x.songs.length > 0);
+  if (withSongs.length === 0) return { songs: [], isOpener: false };
+
+  const headliner = withSongs.find(
+    (x) => normalizeName(x.e.artistName) === headlinerNormalized,
+  );
+  const chosen =
+    headliner ?? [...withSongs].sort((a, b) => b.songs.length - a.songs.length)[0];
+  return {
+    songs: chosen.songs,
+    tour: chosen.e.setlist?.tour?.name,
+    isOpener: !headliner,
+    artistName: chosen.e.artistName,
+  };
 }
 
 export function surpriseMe(
@@ -556,7 +598,7 @@ export function surpriseMe(
   const busiestYear = Number(yearCounts[0][0]);
   const quietestYear = Number(yearCounts[yearCounts.length - 1][0]);
 
-  const songs = setlistSongs(setlists, c.id);
+  const songs = resolveSetlistEntry(setlists, c.id, c.headlinerNormalized).songs;
 
   let angle: SurpriseAngle;
   let why: string;
@@ -615,6 +657,163 @@ export function surpriseMe(
 }
 
 // ===================================================================
+// 7. get_concert_setlist
+// ===================================================================
+
+// Resolve a concert from {concertId} or {artist, date}. Returns the matched concert, a
+// disambiguation/whiff message to return as-is, or null context the caller turns into a
+// "tell me which show" prompt.
+type ConcertResolution =
+  | { kind: "match"; concert: Concert }
+  | { kind: "message"; text: string };
+
+function resolveConcert(
+  concerts: Concert[],
+  args: { artist?: string; date?: string; concertId?: string },
+): ConcertResolution {
+  if (args.concertId) {
+    const c = concerts.find((x) => x.id === args.concertId);
+    if (c) return { kind: "match", concert: c };
+    return { kind: "message", text: `I don't have a concert with id "${args.concertId}" in the archive.` };
+  }
+
+  if (!args.artist) {
+    return {
+      kind: "message",
+      text: "Tell me which show — an artist (with a date if you have one), or a concert id like concert-59.",
+    };
+  }
+
+  const r = resolveArtist(concerts, args.artist);
+  if (r.kind === "none") return { kind: "message", text: `${args.artist.trim()} isn't in the archive.` };
+  if (r.kind === "ambiguous") {
+    return {
+      kind: "message",
+      text: [
+        `I have a few artists matching "${args.artist.trim()}":`,
+        ...r.options.map((o) => `- ${o}`),
+        "",
+        "Which one did you mean?",
+      ].join("\n"),
+    };
+  }
+
+  let shows = concerts.filter((c) => c.headliner === r.name).sort(byDate);
+  if (args.date) {
+    const d = args.date.trim();
+    const matched = shows.filter(
+      (c) => c.date === d || c.date.startsWith(d) || String(c.year) === d,
+    );
+    if (matched.length === 0) {
+      return {
+        kind: "message",
+        text: `I don't have a ${r.name} show on ${d} in the archive — I've seen them ${shows.length} ${shows.length === 1 ? "time" : "times"}.`,
+      };
+    }
+    shows = matched;
+  }
+
+  if (shows.length === 1) return { kind: "match", concert: shows[0] };
+
+  // Multiple candidates and no date narrowed it to one — ask which night.
+  return {
+    kind: "message",
+    text: [
+      `I've seen ${r.name} ${shows.length} times — which night?`,
+      ...shows.map((c) => `- ${fullDate(c.date)} — ${c.venue}, ${c.city} [${c.id}]`),
+    ].join("\n"),
+  };
+}
+
+export function concertSetlist(
+  concerts: Concert[],
+  setlists: SetlistsCache | null,
+  args: { artist?: string; date?: string; concertId?: string },
+  topTracks: ArtistsTopTracks = {},
+): string {
+  const r = resolveConcert(concerts, args);
+  if (r.kind === "message") return r.text;
+
+  const c = r.concert;
+  const head = [
+    `${artistLink(c.headliner, c.headlinerNormalized)} at ${venueLink(c.venue, c.venueNormalized)}, ${c.city}`,
+    `${fullDate(c.date)} [${c.id}]`,
+  ];
+
+  const sl = resolveSetlistEntry(setlists, c.id, c.headlinerNormalized);
+
+  // Graceful fallback — covers no-entry, setlist === null, and empty song lists alike.
+  // State the gap plainly, then offer something that works (openers, best-known tracks).
+  if (sl.songs.length === 0) {
+    const lines = [
+      `I don't have a setlist on record for ${artistLink(c.headliner, c.headlinerNormalized)} at ${venueLink(c.venue, c.venueNormalized)} on ${fullDate(c.date)} [${c.id}].`,
+    ];
+    const extras: string[] = [];
+    if (c.openers.length) extras.push(`That night ${joinList(c.openers)} opened.`);
+    const tracks = topTracks[c.headlinerNormalized]?.tracks;
+    if (tracks?.length) {
+      extras.push(`If it helps, they're best known for ${joinList(tracks.slice(0, 3).map((t) => t.name))}.`);
+    }
+    if (extras.length) lines.push("", ...extras);
+    const out = lines.join("\n");
+    return out + linkFooter(out);
+  }
+
+  const lines = [...head];
+
+  // Opener-only coverage: be explicit that this is the opener's set, not the headliner's.
+  if (sl.isOpener) {
+    lines.push(
+      "",
+      `I don't have ${c.headliner}'s own setlist from that night, but I do have ${sl.artistName}'s opening set${sl.tour ? ` (${sl.tour} tour)` : ""}:`,
+    );
+  } else if (sl.tour) {
+    lines.push(`On the ${sl.tour} tour.`, "");
+  } else {
+    lines.push("");
+  }
+
+  sl.songs.forEach((song, i) => lines.push(`${i + 1}. ${song}`));
+
+  const out = lines.join("\n");
+  return out + linkFooter(out);
+}
+
+// ===================================================================
+// 8. get_archive_top_songs
+// ===================================================================
+
+// Build-time aggregation of song frequency across the setlists on record. Coverage is
+// partial, so the narration leads with the caveat — these counts describe the shows I
+// actually have setlists for, not the whole archive.
+export function archiveTopSongs(data: MostPlayedSongs | null, limit = 10): string {
+  if (!data || data.songs.length === 0) {
+    return "I don't have enough setlists on record yet to say which songs come up most.";
+  }
+  const { concertsWithSetlist, totalConcerts } = data.coverage;
+  const top = data.songs.slice(0, Math.min(Math.max(limit, 1), 25));
+
+  const lines = [
+    `Across the ${concertsWithSetlist} of ${totalConcerts} shows I have setlists for, these are the songs I've heard most:`,
+    "",
+  ];
+  top.forEach((s, i) => {
+    const who =
+      s.artists.length === 1
+        ? artistLink(s.artists[0], normalizeName(s.artists[0]))
+        : `across ${s.artists.length} artists`;
+    lines.push(`${i + 1}. ${s.name} — ${s.count} times (${who})`);
+  });
+  lines.push(
+    "",
+    `That's only the ${concertsWithSetlist} shows with a setlist on record, so it leans toward the artists I've seen most.`,
+  );
+
+  const out = lines.join("\n");
+  return out + linkFooter(out);
+}
+
+// ===================================================================
 // Registration — the I/O seam
 // ===================================================================
 
@@ -631,6 +830,8 @@ const DESC = {
   venue: "The rooms I've kept returning to — every show at a single venue, in order." + LINK_NOTE,
   onThisDay: "Concerts that share a date — across all the years, whatever's happened on this day." + LINK_NOTE,
   surprise: "I'll pick one. A random concert, and why it's worth remembering." + LINK_NOTE,
+  setlist: "The songs from a specific night — give me an artist (and a date if you have one) or a concert id, and I'll tell you what they played, if I have it on record." + LINK_NOTE,
+  topSongs: "The songs I've heard most across every setlist on record — counted honestly from the shows I have setlists for, not the whole archive." + LINK_NOTE,
   query: "When none of my other tools fit, ask me anything about the shows and I'll reason over the whole archive. I count these by hand, so I'll hedge when I'm unsure.",
 };
 
@@ -809,6 +1010,49 @@ export function registerTools(server: McpServer, env: Env): void {
       return textResult(
         surpriseMe(data.concerts, pick, setlists, meta ?? {}, tracks ?? {}).text,
       );
+    }),
+  );
+
+  server.registerTool(
+    "get_concert_setlist",
+    {
+      title: "Concert setlist",
+      description: DESC.setlist,
+      inputSchema: {
+        artist: z.string().optional(),
+        date: z.string().optional(),
+        concertId: z.string().optional(),
+      },
+    },
+    wrapTool("get_concert_setlist", async (args) => {
+      const data = await getConcerts(env, bgCtx);
+      if (!data) return dataUnavailableResult();
+      const [setlists, tracks] = await Promise.all([
+        getSetlistsCache(env, bgCtx),
+        getArtistsTopTracks(env, bgCtx),
+      ]);
+      return textResult(
+        concertSetlist(
+          data.concerts,
+          setlists,
+          args as { artist?: string; date?: string; concertId?: string },
+          tracks ?? {},
+        ),
+      );
+    }),
+  );
+
+  server.registerTool(
+    "get_archive_top_songs",
+    {
+      title: "Most-played songs",
+      description: DESC.topSongs,
+      inputSchema: { limit: z.number().int().min(1).max(25).optional() },
+    },
+    wrapTool("get_archive_top_songs", async (args) => {
+      const songs = await getMostPlayedSongs(env, bgCtx);
+      if (!songs) return dataUnavailableResult();
+      return textResult(archiveTopSongs(songs, args.limit as number | undefined));
     }),
   );
 

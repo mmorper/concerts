@@ -11,6 +11,19 @@ More New Wave than anything else — 6 shows.
 The longest I went without a show was 3060 days, between Peter Gabriel in May 2002 and Social Distortion in Sep 2010."
 `;
 
+exports[`get_archive_top_songs > leads with the coverage caveat and counts honestly 1`] = `
+"Across the 117 of 183 shows I have setlists for, these are the songs I've heard most:
+
+1. Ring of Fire — 7 times ([Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion))
+2. Ball and Chain — 6 times ([Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion))
+3. Rock This Town — 5 times (across 3 artists)
+
+That's only the 117 shows with a setlist on record, so it leans toward the artists I've seen most.
+
+---
+**Open on the site:** [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion)"
+`;
+
 exports[`get_artist_history > 5+ shows scales the closing arc 1`] = `
 "I've seen [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) 5 times, across 34 years (1990–2024).
 Formed 1978, Punk.
@@ -40,6 +53,39 @@ A single show. Adam Ant appears in the archive once.
 
 ---
 **Open on the site:** [Adam Ant](https://concerts.morperhaus.org/?scene=artists&artist=adam-ant) · [Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows)"
+`;
+
+exports[`get_concert_setlist > falls back to the opener's set, clearly labeled, when the headliner's is missing 1`] = `
+"[Adam Ant](https://concerts.morperhaus.org/?scene=artists&artist=adam-ant) at [Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows), Irvine
+April 27, 1984 [concert-1]
+
+I don't have Adam Ant's own setlist from that night, but I do have Romeo Void's opening set:
+1. Never Say Never
+
+---
+**Open on the site:** [Adam Ant](https://concerts.morperhaus.org/?scene=artists&artist=adam-ant) · [Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows)"
+`;
+
+exports[`get_concert_setlist > headliner setlist by concert id, with tour and link footer 1`] = `
+"[Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) at [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre), Costa Mesa
+June 4, 1990 [concert-5]
+On the Stories of Life tour.
+
+1. Story of My Life
+2. Ball and Chain
+3. Mommy's Little Monster
+
+---
+**Open on the site:** [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) · [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre)"
+`;
+
+exports[`get_concert_setlist > no cache entry at all → graceful gap that offers best-known tracks 1`] = `
+"I don't have a setlist on record for [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) at [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre) on October 25, 2024 [concert-9].
+
+If it helps, they're best known for Story of My Life and Ball and Chain.
+
+---
+**Open on the site:** [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) · [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre)"
 `;
 
 exports[`get_venue_history > repeat venue 1`] = `

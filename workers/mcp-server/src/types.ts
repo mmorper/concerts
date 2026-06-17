@@ -123,6 +123,26 @@ export interface SetlistsCache {
   entries: SetlistEntry[];
 }
 
+// Archive-wide song frequency, computed at build time from setlists-cache.json.
+// Coverage is partial — see scripts/aggregate-most-played-songs.ts — so the `coverage`
+// block is narrated up front by get_archive_top_songs.
+export interface SongStat {
+  name: string;
+  count: number;
+  artists: string[];
+}
+
+export interface MostPlayedSongs {
+  version: string;
+  generatedAt: string;
+  coverage: {
+    concertsWithSetlist: number;
+    totalConcerts: number;
+    distinctSongs: number;
+  };
+  songs: SongStat[];
+}
+
 export interface TopTrack {
   name: string;
   previewUrl?: string;

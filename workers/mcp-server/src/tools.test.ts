@@ -8,11 +8,14 @@ import {
   venueHistory,
   onThisDay,
   surpriseMe,
+  concertSetlist,
+  archiveTopSongs,
 } from "./tools.js";
 import type {
   ArtistsMetadata,
   ArtistsTopTracks,
   Concert,
+  MostPlayedSongs,
   SetlistsCache,
   VenuesMetadata,
 } from "./types.js";
@@ -115,6 +118,52 @@ const VENUES: VenuesMetadata = {
     stats: { totalConcerts: 1, firstEvent: "1984-04-27", lastEvent: "1984-04-27", uniqueArtists: 1 },
     concerts: [{ id: "concert-1", date: "1984-04-27", headliner: "Adam Ant" }],
   },
+};
+
+// Setlist cache keyed to archive() ids. Exercises every coverage shape: headliner set
+// (concert-5), headliner-vs-opener contention (concert-3), opener-only (concert-1),
+// looked-up-but-empty (concert-6 null, concert-7 empty sets). concert-9 has NO entry.
+const SETLISTS: SetlistsCache = {
+  version: "1",
+  generatedAt: "",
+  entries: [
+    {
+      concertId: "concert-5",
+      artistName: "Social Distortion",
+      date: "1990-06-04",
+      venue: "Pacific Amphitheatre",
+      setlist: {
+        tour: { name: "Stories of Life" },
+        sets: { set: [{ song: [{ name: "Story of My Life" }, { name: "Ball and Chain" }, { name: "Mommy's Little Monster" }] }] },
+      },
+    },
+    // concert-3 has both an opener set and the headliner set — headliner must win.
+    {
+      concertId: "concert-3",
+      artistName: "OMD",
+      date: "1988-06-04",
+      venue: "Rose Bowl",
+      setlist: { sets: { set: [{ song: [{ name: "Enola Gay" }] }] } },
+    },
+    {
+      concertId: "concert-3",
+      artistName: "Depeche Mode",
+      date: "1988-06-04",
+      venue: "Rose Bowl",
+      setlist: { sets: { set: [{ song: [{ name: "Everything Counts" }, { name: "Never Let Me Down Again" }] }] } },
+    },
+    // concert-1: headliner lookup whiffed (null), but the opener's set is on record.
+    { concertId: "concert-1", artistName: "Adam Ant", date: "1984-04-27", venue: "Irvine Meadows", setlist: null },
+    {
+      concertId: "concert-1",
+      artistName: "Romeo Void",
+      date: "1984-04-27",
+      venue: "Irvine Meadows",
+      setlist: { sets: { set: [{ song: [{ name: "Never Say Never" }] }] } },
+    },
+    { concertId: "concert-6", artistName: "Social Distortion", date: "1995-07-10", venue: "Pacific Amphitheatre", setlist: null },
+    { concertId: "concert-7", artistName: "Social Distortion", date: "2000-08-15", venue: "The Roxy", setlist: { sets: { set: [] } } },
+  ],
 };
 
 const BANNED = ["journey", "tapestry", "legendary", "it goes without saying", "a diverse range of"];
@@ -327,5 +376,122 @@ describe("surprise_me", () => {
       angles.add(angle);
     }
     expect(angles.size).toBeGreaterThanOrEqual(3);
+  });
+});
+
+// ---------- get_concert_setlist ----------
+
+describe("get_concert_setlist", () => {
+  it("headliner setlist by concert id, with tour and link footer", () => {
+    const text = concertSetlist(archive(), SETLISTS, { concertId: "concert-5" }, TOP_TRACKS);
+    assertVoice(text);
+    expect(text).toContain("On the Stories of Life tour.");
+    expect(text).toContain("1. Story of My Life");
+    expect(text).toContain("3. Mommy's Little Monster");
+    expect(text).toContain("Open on the site:");
+    expect(text).toMatchSnapshot();
+  });
+
+  it("prefers the headliner's set when an opener also has one", () => {
+    const text = concertSetlist(archive(), SETLISTS, { concertId: "concert-3" }, TOP_TRACKS);
+    expect(text).toContain("Everything Counts");
+    expect(text).not.toContain("opening set");
+    expect(text).not.toContain("Enola Gay");
+  });
+
+  it("falls back to the opener's set, clearly labeled, when the headliner's is missing", () => {
+    const text = concertSetlist(archive(), SETLISTS, { concertId: "concert-1" }, TOP_TRACKS);
+    expect(text).toContain("Romeo Void's opening set");
+    expect(text).toContain("Never Say Never");
+    expect(text).toMatchSnapshot();
+  });
+
+  it("setlist === null reads as an honest gap, not an empty list", () => {
+    const text = concertSetlist(archive(), SETLISTS, { concertId: "concert-6" }, TOP_TRACKS);
+    expect(text).toContain("I don't have a setlist on record");
+    expect(text).not.toMatch(/^1\. /m);
+    assertVoice(text);
+  });
+
+  it("non-null but empty song list is treated as no setlist", () => {
+    const text = concertSetlist(archive(), SETLISTS, { concertId: "concert-7" }, TOP_TRACKS);
+    expect(text).toContain("I don't have a setlist on record");
+  });
+
+  it("no cache entry at all → graceful gap that offers best-known tracks", () => {
+    const text = concertSetlist(archive(), SETLISTS, { concertId: "concert-9" }, TOP_TRACKS);
+    expect(text).toContain("I don't have a setlist on record");
+    expect(text).toContain("best known for Story of My Life and Ball and Chain.");
+    expect(text).toMatchSnapshot();
+  });
+
+  it("resolves by artist + year", () => {
+    const text = concertSetlist(archive(), SETLISTS, { artist: "Social Distortion", date: "1990" }, TOP_TRACKS);
+    expect(text).toContain("1. Story of My Life");
+  });
+
+  it("asks which night when an artist has many shows and no date", () => {
+    const text = concertSetlist(archive(), SETLISTS, { artist: "Social Distortion" }, TOP_TRACKS);
+    expect(text).toContain("which night?");
+    expect(text).toContain("[concert-5]");
+  });
+
+  it("unknown concert id says so", () => {
+    const text = concertSetlist(archive(), SETLISTS, { concertId: "concert-999" });
+    expect(text).toBe('I don\'t have a concert with id "concert-999" in the archive.');
+  });
+
+  it("unknown artist says so", () => {
+    const text = concertSetlist(archive(), SETLISTS, { artist: "Nobody" });
+    expect(text).toBe("Nobody isn't in the archive.");
+  });
+});
+
+// ---------- get_archive_top_songs ----------
+
+const MOST_PLAYED: MostPlayedSongs = {
+  version: "1",
+  generatedAt: "",
+  coverage: { concertsWithSetlist: 117, totalConcerts: 183, distinctSongs: 1607 },
+  // Pre-sorted by count desc, as the build script emits it.
+  songs: [
+    { name: "Ring of Fire", count: 7, artists: ["Social Distortion"] },
+    { name: "Ball and Chain", count: 6, artists: ["Social Distortion"] },
+    { name: "Rock This Town", count: 5, artists: ["Brian Setzer", "Stray Cats", "The Brian Setzer Orchestra"] },
+  ],
+};
+
+describe("get_archive_top_songs", () => {
+  it("leads with the coverage caveat and counts honestly", () => {
+    const text = archiveTopSongs(MOST_PLAYED);
+    assertVoice(text);
+    expect(text).toContain("Across the 117 of 183 shows I have setlists for");
+    expect(text).toContain("leans toward the artists I've seen most");
+    expect(text).toMatchSnapshot();
+  });
+
+  it("links single-artist rows and summarizes multi-artist ones", () => {
+    const text = archiveTopSongs(MOST_PLAYED);
+    // single artist → clickable link
+    expect(text).toContain("(["); // markdown link opener inside the parens
+    expect(text).toContain("Ring of Fire — 7 times");
+    // multi-artist standard → counted, not linked
+    expect(text).toContain("Rock This Town — 5 times (across 3 artists)");
+    expect(text).toContain("Open on the site:");
+  });
+
+  it("respects the limit", () => {
+    const text = archiveTopSongs(MOST_PLAYED, 1);
+    expect(text).toContain("1. Ring of Fire");
+    expect(text).not.toContain("2. ");
+  });
+
+  it("empty data says so honestly", () => {
+    const text = archiveTopSongs({ ...MOST_PLAYED, songs: [] });
+    expect(text).toContain("don't have enough setlists on record yet");
+  });
+
+  it("null data says so honestly", () => {
+    expect(archiveTopSongs(null)).toContain("don't have enough setlists on record yet");
   });
 });
