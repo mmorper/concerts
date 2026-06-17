@@ -42,6 +42,39 @@ A single show. Adam Ant appears in the archive once.
 **Open on the site:** [Adam Ant](https://concerts.morperhaus.org/?scene=artists&artist=adam-ant) · [Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows)"
 `;
 
+exports[`get_concert_setlist > falls back to the opener's set, clearly labeled, when the headliner's is missing 1`] = `
+"[Adam Ant](https://concerts.morperhaus.org/?scene=artists&artist=adam-ant) at [Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows), Irvine
+April 27, 1984 [concert-1]
+
+I don't have Adam Ant's own setlist from that night, but I do have Romeo Void's opening set:
+1. Never Say Never
+
+---
+**Open on the site:** [Adam Ant](https://concerts.morperhaus.org/?scene=artists&artist=adam-ant) · [Irvine Meadows](https://concerts.morperhaus.org/?scene=venues&venue=irvine-meadows)"
+`;
+
+exports[`get_concert_setlist > headliner setlist by concert id, with tour and link footer 1`] = `
+"[Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) at [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre), Costa Mesa
+June 4, 1990 [concert-5]
+On the Stories of Life tour.
+
+1. Story of My Life
+2. Ball and Chain
+3. Mommy's Little Monster
+
+---
+**Open on the site:** [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) · [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre)"
+`;
+
+exports[`get_concert_setlist > no cache entry at all → graceful gap that offers best-known tracks 1`] = `
+"I don't have a setlist on record for [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) at [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre) on October 25, 2024 [concert-9].
+
+If it helps, they're best known for Story of My Life and Ball and Chain.
+
+---
+**Open on the site:** [Social Distortion](https://concerts.morperhaus.org/?scene=artists&artist=social-distortion) · [Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre)"
+`;
+
 exports[`get_venue_history > repeat venue 1`] = `
 "[Pacific Amphitheatre](https://concerts.morperhaus.org/?scene=venues&venue=pacific-amphitheatre), Costa Mesa, California — 4 shows in the archive.
 
