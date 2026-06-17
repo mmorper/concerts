@@ -1,0 +1,58 @@
+# Cloudflare Worker — "Ask the Archive" in-app chat backend (Epic #138, issue #139).
+# A SIBLING worker to morphehaus-mcp: it imports the same pure tool fns + data layer
+# (workers/mcp-server/src/{tools,data}.ts) but is a separate deploy so the public,
+# unauthenticated LLM proxy is isolated from the MCP server. Decided 2026-06-17.
+#
+# Routes: concerts.morperhaus.org/api/ask*  (more specific than the SPA's /*; sits
+# alongside the MCP worker's /mcp*). The end-user UI (#141) calls /api/ask/chat (SSE).
+
+name = "morperhaus-ask-chat"
+main = "src/index.ts"
+compatibility_date = "2026-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+account_id = "6db8591bbcba4588ae4ef9c3839cd209"
+
+[[routes]]
+pattern = "concerts.morperhaus.org/api/ask*"
+zone_name = "morperhaus.org"
+
+[vars]
+# Same data origin the MCP worker reads — the pure tool fns fetch these by URL.
+DATA_BASE_URL = "https://concerts.morperhaus.org/data"
+# Monthly spend ceiling (USD). The DO counter derives a daily cap from this. Knob: $25/mo.
+ASK_MONTHLY_USD = "25"
+
+# The reused tool module imports its system prompt as text: `import X from "../prompts/query.md"`.
+# Keep the Text rule so that static import resolves when esbuild bundles the shared module.
+[[rules]]
+type = "Text"
+globs = ["**/*.md"]
+fallthrough = true
+
+# Atomic per-day spend counter. KV is eventually-consistent + read-modify-write races under
+# concurrent public traffic, and the $/day cap is the kill-switch's independent ceiling — so
+# the counter lives in a Durable Object (serialized, accurate). Decided 2026-06-17.
+[[durable_objects.bindings]]
+name = "SPEND_COUNTER"
+class_name = "SpendCounter"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["SpendCounter"]
+
+# Kill-switch flag `ask:mode` ∈ {on, paused, deterministic-only}. KV is the right primitive
+# here: a brake tolerates ≤10s staleness and must be flippable from a phone without redeploy.
+# Create once:  npx wrangler kv namespace create ASK_CONTROL
+# then paste the returned id below.
+[[kv_namespaces]]
+binding = "ASK_CONTROL"
+id = "PLACEHOLDER_CREATE_WITH_wrangler_kv_namespace_create"
+
+# Secrets (NOT in this file) — set with `npx wrangler secret put <NAME>`:
+#   ANTHROPIC_API_KEY   — the Messages API key for the agent loop
+#   TURNSTILE_SECRET    — Cloudflare Turnstile server-side secret (session issuance, #139 gate)
+#   SESSION_HMAC_KEY    — signs the short-lived session token Turnstile success issues
+
+[build]
+command = ""
