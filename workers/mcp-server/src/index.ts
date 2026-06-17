@@ -107,15 +107,21 @@ export class MorperhausMcp extends McpAgent<Env> {
   }
 }
 
-// Computes the live headline stats for the landing page from concerts.json. Falls back
-// to sensible static numbers if the data can't be loaded (the page must always render).
+// Computes the live headline stats for the landing page from concerts.json. The defaults
+// are current, so a slow/failed cold-start fetch still renders correct numbers — we never
+// block the page on data. A short timeout race guarantees the HTML ships promptly.
 async function serveLandingPage(
   env: Env,
   ctx: ExecutionContext,
 ): Promise<Response> {
   let stats = { shows: 183, venues: 79, cities: 36, firstYear: 1984 };
   try {
-    const data = await getConcerts(env, ctx);
+    // getConcerts never rejects (returns null on failure); the timeout just caps how long
+    // we'll wait before falling back to the (current) defaults so the page can't hang.
+    const data = await Promise.race([
+      getConcerts(env, ctx),
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), 700)),
+    ]);
     if (data?.concerts.length) {
       const c = data.concerts;
       stats = {
@@ -131,7 +137,12 @@ async function serveLandingPage(
   return new Response(renderLandingPage(stats), {
     headers: {
       "Content-Type": "text/html; charset=utf-8",
-      "Cache-Control": "public, max-age=300",
+      // /mcp serves HTML to browsers and the MCP protocol to clients off the SAME url,
+      // so caches MUST key on Accept or they'll serve the wrong representation (a likely
+      // cause of "load it twice in Safari"). no-store sidesteps it entirely — the page is
+      // tiny and fast to regenerate.
+      Vary: "Accept",
+      "Cache-Control": "no-store",
     },
   });
 }
