@@ -6,6 +6,7 @@ import { Scene3Map } from './components/scenes/Scene3Map'
 import { Scene4Bands } from './components/scenes/Scene4Bands'
 import { Scene5Genres } from './components/scenes/Scene5Genres/index'
 import { ArtistScene } from './components/scenes/ArtistScene/ArtistScene'
+import { AskInvitation } from './components/AskInvitation'
 import { SceneNavigation } from './components/SceneNavigation'
 import { ChangelogToast, ChangelogRSS } from './components/changelog'
 import { WhatsPlayingPage } from './components/changelog/WhatsPlayingPage'
@@ -317,6 +318,9 @@ function MainScenes() {
           pendingArtistFocus={pendingArtistFocus}
           onArtistFocusComplete={() => setPendingArtistFocus(null)}
         />
+
+        {/* End-of-scroll coda — not a scene (no nav dot). Issue #134. */}
+        <AskInvitation />
       </div>
 
       {/* Scene Navigation */}
