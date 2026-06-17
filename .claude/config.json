@@ -14,14 +14,14 @@
     ]
   },
   "version": {
-    "current": "3.1.0",
+    "current": "4.7.0",
     "status": "production",
     "live_url": "https://concerts.morperhaus.org"
   },
   "status": {
-    "lastContextSync": "2026-01-07",
-    "lastCommit": "Remove upcoming tour dates section from README (c607bd0)",
-    "notes": "v3.1.0 production. iPad touch support for timeline exploration. Genre treemap with timeline animation. Real-time tour dates via Ticketmaster API."
+    "lastContextSync": "2026-06-17",
+    "lastCommit": "chore: housekeeping — gitignore video renders, file completed specs (ef8f4e3)",
+    "notes": "v4.7.0 production. MCP server live at /mcp (9 tools, incl. get_concert_setlist + get_archive_top_songs shipped 2026-06-17). Active workstream: Ask the Archive in-app chat client (epic #138)."
   },
   "deployment": {
     "platform": "cloudflare-pages",

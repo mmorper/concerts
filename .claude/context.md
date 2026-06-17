@@ -4,7 +4,7 @@
 
 **Version:** v4.7.0 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-06-16
+**Last Sync:** 2026-06-17
 
 ### Commands
 
@@ -51,7 +51,8 @@ npm run build-data   # Fetch & enrich concert data
 
 **Infrastructure:** Cloudflare Pages (hosting) + Cloudflare Worker (dynamic OG tags for `/liner-notes` and `/whats-playing`)
 
-**Data:** 181 concerts (1984-2026), 256 artists (104 headliners + openers), 77 venues
+**Data:** 183 concerts (1984-2026), 257 artists (107 headliners + openers), 79 venues
+**SEO:** 92/100 (last analyzed: 2026-02-05)
 
 ---
 
@@ -201,17 +202,17 @@ See `.claude/commands/README.md` for full documentation.
 
 ## Recent Commits (Last 10)
 
-- `2733e30` — fix: make How It Works scrollable on iPad portrait
-- `fe73b03` — fix: remove ghost posts from liner-notes RSS, add generate:liner-notes-rss script
-- `917b291` — fix: move About to last nav position across all pages
-- `8ec13ab` — fix: improve nav contrast + How It Works layout
-- `d00e366` — release: v4.6.0 - How It Works
-- `339cb8e` — feat: cascade UX overhaul — post-build glow, centered cards, data-driven stats
-- `7a19280` — fix: remove corpus scale label from T4
-- `da11aeb` — feat: cascade counters — slot-machine spin + honest field counts
-- `681dd5a` — release: v4.5.1 - Mobile Polish
-- `c862ebb` — release: v4.5.0 - Deep Cuts
+- `ef8f4e3` — chore: housekeeping — gitignore video renders, file completed specs
+- `ffc521d` — fix(mcp): connector icon — serve PNG, not SVG/ICO only
+- `d7c09f3` — feat(mcp): setlists & top songs — get_concert_setlist + get_archive_top_songs (#145)
+- `bf18ead` — feat(mcp): Ask the Archive — site presence (nav + end-of-scroll coda) (#135)
+- `049804d` — fix(changelog): 'See it live' uses a real navigation, not client-side navigate
+- `742a101` — chore(mcp): canonical landing URL is /ask (extensionless, no redirect hop)
+- `c1cce93` — fix(mcp): serve the landing page as a static Pages file at /ask.html
+- `04bc81c` — fix(mcp): fully synchronous landing handler so the page can't hang
+- `ecd91d6` — fix(mcp): non-blocking web fonts so the landing page never hangs
+- `f7ef54d` — feat(mcp): serve landing at /mcp/about (fresh URL) to dodge cached /mcp
 
 ---
 
-*Last updated: 2026-05-09 by Claude Code*
+*Last updated: 2026-06-17 by Claude Code*
