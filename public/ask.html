@@ -1,38 +1,19 @@
-// Human-facing landing page served on a browser GET /mcp. MCP clients POST (or send
-// an SSE GET with a session id) and never see this — see index.ts for the branch.
-// Self-contained HTML (inline CSS + SVG); stats are injected live from the data layer.
-
-export interface LandingStats {
-  shows: number;
-  venues: number;
-  cities: number;
-  firstYear: number;
-}
-
-const OG_IMAGE = "https://concerts.morperhaus.org/og-mcp.png";
-const SITE = "https://concerts.morperhaus.org";
-
-export function renderLandingPage(
-  stats: LandingStats,
-  pageUrl: string = `${SITE}/ask.html`,
-): string {
-  const { shows, venues, cities, firstYear } = stats;
-  return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ask the Archive — Morperhaus Concert Archive</title>
-<meta name="description" content="Forty years of live music, ${firstYear} to now — explore the Morperhaus Concert Archive inside Claude. Just ask." />
+<meta name="description" content="Forty years of live music, 1984 to now — explore the Morperhaus Concert Archive inside Claude. Just ask." />
 <meta property="og:title" content="Ask the Archive Anything" />
 <meta property="og:description" content="Bring 40 years of concerts into Claude and just ask — your history with a band, every show at a venue, or just 'surprise me.'" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="${pageUrl}" />
-<link rel="canonical" href="${pageUrl}" />
-<meta property="og:image" content="${OG_IMAGE}" />
+<meta property="og:url" content="https://concerts.morperhaus.org/ask.html" />
+<link rel="canonical" href="https://concerts.morperhaus.org/ask.html" />
+<meta property="og:image" content="https://concerts.morperhaus.org/og-mcp.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="${OG_IMAGE}" />
-<link rel="icon" href="${SITE}/favicon.svg" />
+<meta name="twitter:image" content="https://concerts.morperhaus.org/og-mcp.png" />
+<link rel="icon" href="https://concerts.morperhaus.org/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <!-- Load web fonts non-blocking: the page renders immediately with the system fallbacks
@@ -80,8 +61,8 @@ export function renderLandingPage(
   .chips { display:flex; flex-wrap:wrap; gap:10px; }
   .chip { background:var(--card); border:1px solid var(--line); border-radius:999px; padding:9px 16px; font-size:15px; color:var(--ink); transition:border-color .15s,transform .15s; }
   .chip:hover { border-color:var(--accent); transform:translateY(-1px); }
-  .chip::before { content:"\\201C"; color:var(--accent); }
-  .chip::after { content:"\\201D"; color:var(--accent); }
+  .chip::before { content:"\201C"; color:var(--accent); }
+  .chip::after { content:"\201D"; color:var(--accent); }
   .connect { border-top:1px solid var(--line); padding-top:32px; }
   .connect h2 { font-family:"Playfair Display",Georgia,serif; font-weight:500; font-size:24px; margin:0 0 8px; }
   .connect p { color:var(--muted); font-size:16px; margin:0 0 18px; max-width:36em; }
@@ -109,12 +90,12 @@ export function renderLandingPage(
       <span class="eyebrow">Morperhaus Concert Archive</span>
     </div>
     <h1>Ask the archive anything<span class="pt">.</span></h1>
-    <p class="lede">Forty years of live music — ${firstYear} to now — ready to explore inside Claude. Ask it the way you'd ask a friend who never misses a show.</p>
+    <p class="lede">Forty years of live music — 1984 to now — ready to explore inside Claude. Ask it the way you'd ask a friend who never misses a show.</p>
     <div class="stats">
-      <span><b>${shows}</b> shows</span><i></i>
-      <span><b>${venues}</b> venues</span><i></i>
-      <span><b>${cities}</b> cities</span><i></i>
-      <span>since <b>${firstYear}</b></span>
+      <span><b>183</b> shows</span><i></i>
+      <span><b>79</b> venues</span><i></i>
+      <span><b>36</b> cities</span><i></i>
+      <span>since <b>1984</b></span>
     </div>
     <div class="chat" role="img" aria-label="Example conversation with the archive in Claude">
       <div class="chat__bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="chat__title">Claude</span></div>
@@ -138,8 +119,8 @@ export function renderLandingPage(
       <h2>Bring it into Claude</h2>
       <p>If you use Claude, you can add the archive as a connector and start asking. It answers in its own voice — always true to the shows that really happened.</p>
       <div class="url">
-        <code>${SITE.replace("https://", "")}/mcp</code>
-        <button class="copy" onclick="navigator.clipboard&&navigator.clipboard.writeText('${SITE}/mcp');this.textContent='Copied \\u2713';this.classList.add('ok')">Copy</button>
+        <code>concerts.morperhaus.org/mcp</code>
+        <button class="copy" onclick="navigator.clipboard&&navigator.clipboard.writeText('https://concerts.morperhaus.org/mcp');this.textContent='Copied \u2713';this.classList.add('ok')">Copy</button>
       </div>
       <details>
         <summary>Using Claude Desktop? Setup details</summary>
@@ -148,15 +129,14 @@ export function renderLandingPage(
   "mcpServers": {
     "morperhaus": {
       "type": "http",
-      "url": "${SITE}/mcp"
+      "url": "https://concerts.morperhaus.org/mcp"
     }
   }
 }</pre>
         <p>Any AI assistant that supports remote connectors works the same way — point it at the link above.</p>
       </details>
     </section>
-    <footer>&larr; Back to <a href="${SITE}">the Morperhaus Concert Archive</a></footer>
+    <footer>&larr; Back to <a href="https://concerts.morperhaus.org">the Morperhaus Concert Archive</a></footer>
   </main>
 </body>
-</html>`;
-}
+</html>
