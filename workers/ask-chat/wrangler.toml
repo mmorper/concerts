@@ -22,6 +22,27 @@ zone_name = "morperhaus.org"
 DATA_BASE_URL = "https://concerts.morperhaus.org/data"
 # Monthly spend ceiling (USD). The DO counter derives a daily cap from this. Knob: $25/mo.
 ASK_MONTHLY_USD = "25"
+# /ask/admin Cloudflare Access identifiers (NOT secrets). Set after creating the Access app:
+#   ACCESS_TEAM_DOMAIN = "<team>"          # <team>.cloudflareaccess.com
+#   ACCESS_AUD = "<application-aud-tag>"   # from the Access application
+# Left blank deliberately — verifyAccess() FAILS CLOSED (denies admin) when either is unset.
+ACCESS_TEAM_DOMAIN = ""
+ACCESS_AUD = ""
+
+# Primary abuse gate — native Rate Limiting bindings (edge-local; the cost cap is only a
+# backstop). Still under `unsafe`. namespace_id is an arbitrary per-account integer; each
+# binding = one {limit, period}. Tighten/loosen as the knobs in the spec settle.
+[[unsafe.bindings]]
+name = "IP_LIMITER"
+type = "ratelimit"
+namespace_id = "2001"
+simple = { limit = 30, period = 60 }   # 30 turns / 60s per IP
+
+[[unsafe.bindings]]
+name = "SESSION_LIMITER"
+type = "ratelimit"
+namespace_id = "2002"
+simple = { limit = 20, period = 60 }   # 20 turns / 60s per session
 
 # The reused tool module imports its system prompt as text: `import X from "../prompts/query.md"`.
 # Keep the Text rule so that static import resolves when esbuild bundles the shared module.
@@ -53,6 +74,7 @@ id = "PLACEHOLDER_CREATE_WITH_wrangler_kv_namespace_create"
 #   ANTHROPIC_API_KEY   — the Messages API key for the agent loop
 #   TURNSTILE_SECRET    — Cloudflare Turnstile server-side secret (session issuance, #139 gate)
 #   SESSION_HMAC_KEY    — signs the short-lived session token Turnstile success issues
+#   NOTIFY_WEBHOOK_URL  — (optional) tripwire push endpoint (ntfy/Pushover-style)
 
 [build]
 command = ""

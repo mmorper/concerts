@@ -79,7 +79,8 @@ export class SpendCounter implements DurableObject {
     const s = await this.load(now);
 
     if (url.pathname === "/status") {
-      return Response.json(this.status(s, capMicroUsd));
+      // Wrapped in {status} like the other endpoints so the cost.ts client reads it uniformly.
+      return Response.json({ ok: true, status: this.status(s, capMicroUsd) });
     }
 
     if (url.pathname === "/reserve") {

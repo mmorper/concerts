@@ -1,5 +1,7 @@
 // Environment bindings for the Ask-the-Archive chat worker. See wrangler.toml.
 
+import type { RateLimit } from "./ratelimit.js";
+
 export interface Env {
   // Same data origin the MCP worker reads; the reused tool fns fetch these by URL.
   DATA_BASE_URL: string;
@@ -11,10 +13,20 @@ export interface Env {
   // Kill-switch flag + small control state. `ask:mode` ∈ {on, paused, deterministic-only}.
   ASK_CONTROL: KVNamespace;
 
+  // Primary abuse gate — native Rate Limiting bindings (edge-local). Optional so local/test
+  // runs without them fail open (defense-in-depth; session gate + cost cap still apply).
+  IP_LIMITER?: RateLimit;
+  SESSION_LIMITER?: RateLimit;
+
+  // /ask/admin Cloudflare Access config (vars, not secrets — they're identifiers, not keys).
+  ACCESS_TEAM_DOMAIN?: string; // <team>.cloudflareaccess.com
+  ACCESS_AUD?: string; // the Access application's AUD tag
+
   // Secrets (wrangler secret put):
   ANTHROPIC_API_KEY?: string;
-  TURNSTILE_SECRET?: string;
-  SESSION_HMAC_KEY?: string;
+  TURNSTILE_SECRET?: string; // Turnstile server-side secret (session issuance)
+  SESSION_HMAC_KEY?: string; // signs the short-lived session token
+  NOTIFY_WEBHOOK_URL?: string; // tripwire push endpoint (ntfy/Pushover-style); optional
 }
 
 // The reused data layer (workers/mcp-server/src/data.ts) only ever reads env.DATA_BASE_URL,

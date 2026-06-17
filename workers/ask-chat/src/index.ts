@@ -12,19 +12,22 @@
 
 import type { Env } from "./types.js";
 import { getMode } from "./control.js";
-import { reserveTurn, commitTurn, releaseTurn, spendStatus } from "./cost.js";
+import { reserveTurn, commitTurn, releaseTurn } from "./cost.js";
 import { runAgentTurn } from "./agent-loop.js";
+import { issueSession, verifySession } from "./session.js";
+import { allow } from "./ratelimit.js";
+import { maybeTripwire } from "./notify.js";
+import { handleAdmin } from "./admin.js";
 
 export { SpendCounter } from "./spend-counter.js";
 
 const MAX_INPUT_CHARS = 2000; // single-message length cap
 const MAX_TURNS = 24; // transcript length cap (session-ephemeral; client sends the history)
-const TRIPWIRE_FRACTION = 0.8; // ≥80% of cap → alert (push notification is #6)
 
 const CORS: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization, x-ask-session",
 };
 
 interface Turn {
@@ -64,6 +67,19 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
   }
   const v = validate(body.turns);
   if (!v.ok) return Response.json({ error: v.reason }, { status: 400, headers: CORS });
+
+  // Gate: a valid, unexpired Turnstile-issued session bound to a session id, then per-session
+  // + per-IP rate limits (the PRIMARY abuse defense). All before a single token is spent.
+  const session = await verifySession(env, request.headers.get("x-ask-session"));
+  if (!session.valid) {
+    return Response.json({ error: "session_required" }, { status: 401, headers: CORS });
+  }
+  const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
+  const okSession = await allow(env.SESSION_LIMITER, `sess:${session.sid}`, "session");
+  const okIp = await allow(env.IP_LIMITER, `ip:${ip}`, "ip");
+  if (!okSession || !okIp) {
+    return Response.json({ error: "rate_limited" }, { status: 429, headers: CORS });
+  }
 
   const { readable, writable } = new TransformStream();
   const writer = writable.getWriter();
@@ -105,10 +121,8 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
       const status = await commitTurn(env, reservationId!, result.usage);
       reservationId = undefined;
 
-      if (status.fraction >= TRIPWIRE_FRACTION) {
-        // #6: this is where the ≥80% push notification fires. For now it's a logged tripwire.
-        console.warn(`ask spend tripwire: ${(status.fraction * 100).toFixed(0)}% of daily cap`);
-      }
+      // ≥80% of cap → push a deep link to /ask/admin (once/day). Backgrounded.
+      ctx.waitUntil(maybeTripwire(env, status, ctx));
       await send("done", { fraction: status.fraction });
     } catch (err) {
       console.error("chat turn failed:", err);
@@ -131,17 +145,43 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
   });
 }
 
+// Public status: mode only (so the frontend can collapse the dock when Ask is resting).
+// Spend $ is NOT exposed here — that lives behind Access on /ask/admin.
 async function handleStatus(env: Env): Promise<Response> {
-  const [mode, spend] = await Promise.all([getMode(env), spendStatus(env)]);
-  return Response.json({ mode, spend }, { headers: CORS });
+  const mode = await getMode(env);
+  return Response.json({ mode }, { headers: CORS });
+}
+
+// Exchange a Turnstile token for a signed session token (required by /chat).
+async function handleSession(request: Request, env: Env): Promise<Response> {
+  let body: { token?: string };
+  try {
+    body = (await request.json()) as { token?: string };
+  } catch {
+    return Response.json({ error: "Bad JSON." }, { status: 400, headers: CORS });
+  }
+  const ip = request.headers.get("CF-Connecting-IP");
+  const result = await issueSession(env, body.token ?? "", ip);
+  if (!result.ok) return Response.json({ error: result.reason }, { status: 403, headers: CORS });
+  return Response.json({ session: result.token }, { headers: CORS });
 }
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
-    if (request.method === "OPTIONS") return new Response(null, { headers: CORS });
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: { ...CORS, "Access-Control-Allow-Headers": "Content-Type, Authorization, x-ask-session" } });
+    }
 
+    // Admin (behind Cloudflare Access; fail-closed inside handleAdmin).
+    if (url.pathname === "/api/ask/admin" || url.pathname === "/api/ask/admin/mode") {
+      return handleAdmin(request, env, url);
+    }
+
+    if (url.pathname === "/api/ask/session" && request.method === "POST") {
+      return handleSession(request, env);
+    }
     if (url.pathname === "/api/ask/chat" && request.method === "POST") {
       return handleChat(request, env, ctx);
     }
