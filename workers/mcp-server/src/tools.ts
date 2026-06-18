@@ -254,7 +254,7 @@ export interface SearchParams {
 }
 
 export function searchConcerts(concerts: Concert[], params: SearchParams): { text: string; matches: Concert[] } {
-  const limit = Math.min(Math.max(params.limit ?? 25, 1), 25);
+  const limit = Math.min(Math.max(params.limit ?? 10, 1), 25);
 
   const matches = concerts
     .filter((c) => {
@@ -920,6 +920,7 @@ export function registerTools(server: McpServer, env: Env): void {
       inputSchema: {
         artist: z.string().optional(),
         year: z.number().int().optional(),
+        month: z.number().int().min(1).max(12).optional(),
         decade: z.enum(["1980s", "1990s", "2000s", "2010s", "2020s"]).optional(),
         city: z.string().optional(),
         genre: z.string().optional(),

@@ -233,7 +233,7 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
         decade: input.decade ? str(input.decade) : undefined,
         city: input.city ? str(input.city) : undefined,
         genre: input.genre ? str(input.genre) : undefined,
-        limit: num(input.limit),
+        limit: num(input.limit) ?? 25, // chat list-exhibit wants the full set; MCP default stays 10
       } as Parameters<typeof searchConcerts>[1]);
       if (!matches.length) return { text }; // plain ("nothing matching")
       const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
