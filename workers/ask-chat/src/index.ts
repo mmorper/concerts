@@ -41,13 +41,18 @@ const MAX_TURNS = 24; // transcript length cap (session-ephemeral; client sends 
 // A browser sets `Origin` to the real page origin, so echoing only allowlisted origins keeps
 // other sites out while same-origin prod requests (no Origin) still work.
 const SITE_ORIGIN = "https://concerts.morperhaus.org";
+// This project's Cloudflare Pages domain — preview deployments are <hash|branch>.<this>, so
+// allowing the suffix lets PR previews exercise the real backend. Scoped to OUR project (a
+// different account's pages.dev project is a different subdomain), so it stays first-party.
+const PAGES_DOMAIN = "concerts-9xp.pages.dev";
 
 function isAllowedOrigin(origin: string | null): boolean {
   if (!origin) return false;
   if (origin === SITE_ORIGIN) return true;
   try {
     const u = new URL(origin);
-    return u.hostname === "localhost" || u.hostname === "127.0.0.1";
+    if (u.hostname === "localhost" || u.hostname === "127.0.0.1") return true;
+    return u.hostname === PAGES_DOMAIN || u.hostname.endsWith(`.${PAGES_DOMAIN}`);
   } catch {
     return false;
   }
