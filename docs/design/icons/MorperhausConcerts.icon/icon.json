@@ -1,0 +1,63 @@
+{
+  "color-space-for-untagged-svg-colors" : "display-p3",
+  "fill" : {
+    "linear-gradient" : [
+      "srgb:0.11765,0.10588,0.29412,1.00000",
+      "srgb:0.34510,0.10980,0.52941,1.00000"
+    ]
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "nodes.svg",
+          "name" : "nodes"
+        }
+      ],
+      "lighting" : "individual",
+      "name" : "Nodes",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "layers" : [
+        {
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "hero.png",
+          "name" : "hero"
+        },
+        {
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "connections.svg",
+          "name" : "connections"
+        }
+      ],
+      "lighting" : "individual",
+      "name" : "Hero",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.4
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}

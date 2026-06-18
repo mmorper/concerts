@@ -6,27 +6,29 @@
       <stop offset="100%" style="stop-color:#581c87;stop-opacity:1" />
     </linearGradient>
 
-    <!-- Central node glow -->
-    <radialGradient id="nodeGlow2" cx="50%" cy="50%">
-      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:0.9" />
-      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+    <!-- Central hero node — luminous lavender bloom (Liquid Glass "C" treatment) -->
+    <radialGradient id="nodeGlow2" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" style="stop-color:#f5f3ff;stop-opacity:1" />
+      <stop offset="45%" style="stop-color:#c4b5fd;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
     </radialGradient>
   </defs>
 
   <!-- Background -->
   <rect width="180" height="180" fill="url(#bgGradient2)"/>
 
-  <!-- Connection lines (more complex network) -->
-  <line x1="90" y1="90" x2="45" y2="45" stroke="#a855f7" stroke-width="2" opacity="0.5"/>
-  <line x1="90" y1="90" x2="135" y2="45" stroke="#a855f7" stroke-width="2" opacity="0.5"/>
-  <line x1="90" y1="90" x2="135" y2="135" stroke="#a855f7" stroke-width="2" opacity="0.5"/>
-  <line x1="90" y1="90" x2="45" y2="135" stroke="#a855f7" stroke-width="2" opacity="0.5"/>
-  <line x1="90" y1="90" x2="90" y2="30" stroke="#a855f7" stroke-width="2.5" opacity="0.6"/>
-  <line x1="90" y1="90" x2="150" y2="90" stroke="#a855f7" stroke-width="2.5" opacity="0.6"/>
+  <!-- Connection lines — far ends tucked just inside each node edge so they
+       connect cleanly without showing through the (semi-transparent) nodes. -->
+  <line x1="90" y1="90" x2="50" y2="50" stroke="#a855f7" stroke-width="2" opacity="0.5"/>
+  <line x1="90" y1="90" x2="130" y2="50" stroke="#a855f7" stroke-width="2" opacity="0.5"/>
+  <line x1="90" y1="90" x2="131" y2="131" stroke="#a855f7" stroke-width="2" opacity="0.5"/>
+  <line x1="90" y1="90" x2="49" y2="131" stroke="#a855f7" stroke-width="2" opacity="0.5"/>
+  <line x1="90" y1="90" x2="90" y2="39" stroke="#a855f7" stroke-width="2.5" opacity="0.6"/>
+  <line x1="90" y1="90" x2="141" y2="90" stroke="#a855f7" stroke-width="2.5" opacity="0.6"/>
 
-  <!-- Secondary connections -->
-  <line x1="45" y1="45" x2="90" y2="30" stroke="#7c3aed" stroke-width="1.5" opacity="0.3"/>
-  <line x1="135" y1="45" x2="150" y2="90" stroke="#7c3aed" stroke-width="1.5" opacity="0.3"/>
+  <!-- Secondary connections (tucked under both node edges) -->
+  <line x1="52" y1="43" x2="81" y2="33" stroke="#7c3aed" stroke-width="1.5" opacity="0.3"/>
+  <line x1="137" y1="52" x2="147" y2="81" stroke="#7c3aed" stroke-width="1.5" opacity="0.3"/>
 
   <!-- Peripheral nodes -->
   <circle cx="90" cy="30" r="10" fill="#6366f1" opacity="0.95"/>
@@ -36,8 +38,6 @@
   <circle cx="45" cy="45" r="8" fill="#8b5cf6" opacity="0.85"/>
   <circle cx="135" cy="45" r="8" fill="#8b5cf6" opacity="0.85"/>
 
-  <!-- Central node (hero) -->
+  <!-- Central hero node (bloom) -->
   <circle cx="90" cy="90" r="32" fill="url(#nodeGlow2)"/>
-  <circle cx="90" cy="90" r="32" fill="#ffffff" opacity="0.2"/>
-  <circle cx="90" cy="90" r="24" fill="#ffffff" opacity="0.1"/>
 </svg>

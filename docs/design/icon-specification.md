@@ -1,8 +1,14 @@
 # Icon Design Specification
 
-**Version:** 1.0
-**Date:** 2026-02-05
+**Version:** 2.0
+**Date:** 2026-06-18
 **Status:** Implemented
+
+> **v2.0 — Liquid Glass.** The mark now ships as a layered [Apple Icon Composer](https://developer.apple.com/icon-composer/)
+> source (`MorperhausConcerts.icon`) for iOS 26 / macOS Tahoe Liquid Glass, and the
+> central hero node uses a **luminous lavender bloom** (radial `#f5f3ff → #c4b5fd → #7c3aed`)
+> in place of the earlier flat-overlay glow. All raster web icons are regenerated from the
+> same updated source SVGs. See [Liquid Glass App Icon](#liquid-glass-app-icon-icon-composer).
 
 ---
 
@@ -27,6 +33,42 @@ Morperhaus Concert Archives uses a unified icon design system based on **network
 
 ---
 
+## Liquid Glass App Icon (Icon Composer)
+
+**Source file:** `docs/design/icons/MorperhausConcerts.icon/` (Apple Icon Composer package)
+
+The canonical app-icon artifact for iOS 26 / iPadOS 26 / macOS Tahoe and later. It
+recreates the network-node mark as a layered, multi-appearance Liquid Glass icon that the
+system renders with dynamic specular, translucency, and shadow. Open with
+`open docs/design/icons/MorperhausConcerts.icon` (Icon Composer ships with Xcode 26+).
+
+### Structure
+
+A `.icon` file is a package: an `icon.json` manifest plus an `Assets/` folder of layers.
+
+| Component | Format | Role |
+|-----------|--------|------|
+| Base `fill` (in `icon.json`) | linear-gradient | Background `#1e1b4b → #581c87`, **not** baked into artwork |
+| `Assets/connections.svg` | SVG | Network connection lines (bottom) |
+| `Assets/nodes.svg` | SVG | Six peripheral nodes (middle) |
+| `Assets/hero.png` | PNG | Central luminous bloom (top) |
+
+**Format rule:** flat-fill shapes are SVG (scalable); the radial-gradient hero is **PNG**,
+because Icon Composer's SVG import does not reliably support gradients. Layers carry **no
+background** — the gradient lives in the manifest so Liquid Glass applies correctly.
+
+### Authoring rules (per Apple)
+
+- Canvas **1024×1024** (1088 for a watchOS-specific variant).
+- No background colors/gradients, blurs, shadows, or specular baked into layers — apply in Icon Composer.
+- Convert text to outlines; don't export the canvas mask (the system crops automatically).
+- Max **4 groups**, 1–4 layers each.
+
+A flattened reference render (no live glass) lives at
+`docs/design/icons/MorperhausConcerts-preview.png`; see also `MorperhausConcerts-icon-README.md`.
+
+---
+
 ## iOS Home Screen Icon (180×180px)
 
 ### Design: Version 2 "Dense Network"
@@ -35,12 +77,13 @@ Morperhaus Concert Archives uses a unified icon design system based on **network
 
 **Characteristics:**
 - 6-node asymmetric network with interconnections
-- Central hero node with varied peripheral node sizes
+- Central hero node rendered as a **luminous lavender bloom** (radial, bright core → violet edge)
 - Multiple connection weights (primary and secondary lines)
 - Organic, non-geometric layout
 
 **Colors:**
 - Background gradient: `#1e1b4b → #581c87` (Venues scene gradient)
+- Hero bloom: radial `#f5f3ff → #c4b5fd → #7c3aed` (bright lavender core to violet edge)
 - Primary nodes: `#6366f1` (indigo-500), `#8b5cf6` (violet-500)
 - Secondary nodes: `#7c3aed` (violet-600)
 - Connection lines: `#a855f7` (purple-500), `#7c3aed` (violet-600)
@@ -73,7 +116,7 @@ Morperhaus Concert Archives uses a unified icon design system based on **network
 
 **Colors:**
 - Background gradient: `#2e1065 → #581c87` (darker purple variant)
-- Central node: `#c084fc → #8b5cf6` (radial gradient, purple-400 to violet-500)
+- Central node: bloom radial `#f5f3ff → #c4b5fd → #7c3aed` (matches app-icon hero)
 - Peripheral nodes: `#8b5cf6`, `#6366f1`, `#7c3aed` (varied purples)
 - Connection lines: `#a855f7` (purple-500)
 
@@ -105,6 +148,8 @@ All colors from the design system ([design-system/SKILL.md](../../.claude/skills
 | Purple 500 | `#a855f7` | purple-500 | Primary connection lines |
 | Purple 400 | `#c084fc` | purple-400 | Node glow/highlights |
 | Indigo 500 | `#6366f1` | indigo-500 | Primary nodes |
+| Violet 300 | `#c4b5fd` | violet-300 | Hero bloom mid-stop |
+| Lavender White | `#f5f3ff` | violet-50 | Hero bloom bright core |
 
 ---
 
@@ -134,6 +179,11 @@ node scripts/generate-favicon-ico.js
 3. Verify output in `public/icons/` and `public/`
 4. Test in browser: `npm run dev`
 5. Build and verify: `npm run build`
+
+> **Keep the two surfaces in sync.** The web raster icons (above) and the Liquid Glass
+> `MorperhausConcerts.icon` share the same mark and hero treatment but are authored
+> separately — the web SVGs bake in the background gradient and hero bloom, while the
+> `.icon` keeps them as a manifest fill + PNG layer. When the mark changes, update both.
 
 ---
 
@@ -223,6 +273,6 @@ Icons are referenced in `index.html`:
 
 ---
 
-**Last Updated:** 2026-02-05
+**Last Updated:** 2026-06-18
 **Designed by:** Claude Code (lead designer) + Mike Morper
 **Implemented by:** Claude Code
