@@ -39,8 +39,11 @@ function whenReady(timeoutMs = 8000): Promise<TurnstileAPI> {
 }
 
 /**
- * Run one Turnstile challenge and resolve with a one-time token (to be exchanged server-side for
- * a session). Renders an invisible widget into an off-screen container, executes it, and cleans
+ * Run one Turnstile challenge and resolve with a one-time token (exchanged server-side for a
+ * session). The widget is **Managed** (Cloudflare-decided), rendered with
+ * `appearance: 'interaction-only'`: it stays invisible for virtually everyone and only paints a
+ * challenge on the rare occasion one is actually required — so the container must be real and
+ * on-screen (a hidden/0×0 box would make an interactive challenge impossible to complete). Cleans
  * up regardless of outcome. Rejects if Turnstile isn't configured/available or the challenge fails.
  */
 export async function getTurnstileToken(): Promise<string> {
@@ -49,17 +52,15 @@ export async function getTurnstileToken(): Promise<string> {
 
   return new Promise<string>((resolve, reject) => {
     const host = document.createElement('div')
-    host.style.position = 'fixed'
-    host.style.bottom = '0'
-    host.style.left = '0'
-    host.style.width = '0'
-    host.style.height = '0'
-    host.style.overflow = 'hidden'
+    // Centered, high z-index, empty until/unless Turnstile paints a challenge into it.
+    host.className = 'ts-gate'
     document.body.appendChild(host)
 
     let widgetId: string | undefined
     let settled = false
-    const cleanup = () => {
+    const done = (fn: () => void) => {
+      if (settled) return
+      settled = true
       if (widgetId) {
         try {
           ts.remove(widgetId)
@@ -68,30 +69,25 @@ export async function getTurnstileToken(): Promise<string> {
         }
       }
       host.remove()
-    }
-    const done = (fn: () => void) => {
-      if (settled) return
-      settled = true
-      cleanup()
       fn()
     }
 
     try {
       widgetId = ts.render(host, {
         sitekey: SITE_KEY,
-        size: 'invisible',
+        appearance: 'interaction-only', // invisible unless a challenge is genuinely needed
+        theme: 'dark',
         retry: 'never',
         callback: (token: string) => done(() => resolve(token)),
         'error-callback': () => done(() => reject(new Error('turnstile_error'))),
         'expired-callback': () => done(() => reject(new Error('turnstile_expired'))),
         'timeout-callback': () => done(() => reject(new Error('turnstile_timeout'))),
       })
-      ts.execute(host, { sitekey: SITE_KEY })
     } catch (e) {
       done(() => reject(e instanceof Error ? e : new Error('turnstile_error')))
     }
 
     // Hard backstop so a silently-stuck challenge can't hang the caller forever.
-    setTimeout(() => done(() => reject(new Error('turnstile_timeout'))), 20000)
+    setTimeout(() => done(() => reject(new Error('turnstile_timeout'))), 30000)
   })
 }
