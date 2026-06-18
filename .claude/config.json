@@ -19,9 +19,9 @@
     "live_url": "https://concerts.morperhaus.org"
   },
   "status": {
-    "lastContextSync": "2026-06-17",
-    "lastCommit": "chore: housekeeping — gitignore video renders, file completed specs (ef8f4e3)",
-    "notes": "v4.7.0 production. MCP server live at /mcp (9 tools, incl. get_concert_setlist + get_archive_top_songs shipped 2026-06-17). Active workstream: Ask the Archive in-app chat client (epic #138)."
+    "lastContextSync": "2026-06-18",
+    "lastCommit": "docs: secret management runbook — key→store matrix (#148) (ffcada2)",
+    "notes": "v4.7.0 production. MCP server live at /mcp (9 tools); search_concerts gained a month filter, deployed 2026-06-18. Ask the Archive chat: #140 (exhibit schema + rendering) MERGED 2026-06-18 — backend SSE event:exhibit + React exhibit cards, behind dev-only /ask-dev (no prod entry yet). ask-chat worker NOT yet deployed (deploy with #141). Next: #141 (Spotlight overlay + /ask canvas + Turnstile session exchange). Deferred polish + Sonnet-vs-Haiku watch tracked on issue #140."
   },
   "deployment": {
     "platform": "cloudflare-pages",

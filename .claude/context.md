@@ -4,7 +4,7 @@
 
 **Version:** v4.7.0 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-06-17
+**Last Sync:** 2026-06-18
 
 ### Commands
 
@@ -202,17 +202,17 @@ See `.claude/commands/README.md` for full documentation.
 
 ## Recent Commits (Last 10)
 
+- `ffcada2` — docs: secret management runbook + key→store matrix (#148)
+- `bd26c28` — feat(ask): exhibit schema + rendering (#140) (#147)
+- `57a055a` — feat(ask-chat): chat backend — tool-grounded loop + cost/abuse gate (#139) (#146)
+- `53fcae1` — docs(spec): Ask the Archive in-app conversational client (epic #138) (#144)
+- `7f4bb30` — docs: context-sync + roadmap refresh (post setlists/top-songs)
 - `ef8f4e3` — chore: housekeeping — gitignore video renders, file completed specs
 - `ffc521d` — fix(mcp): connector icon — serve PNG, not SVG/ICO only
 - `d7c09f3` — feat(mcp): setlists & top songs — get_concert_setlist + get_archive_top_songs (#145)
 - `bf18ead` — feat(mcp): Ask the Archive — site presence (nav + end-of-scroll coda) (#135)
 - `049804d` — fix(changelog): 'See it live' uses a real navigation, not client-side navigate
-- `742a101` — chore(mcp): canonical landing URL is /ask (extensionless, no redirect hop)
-- `c1cce93` — fix(mcp): serve the landing page as a static Pages file at /ask.html
-- `04bc81c` — fix(mcp): fully synchronous landing handler so the page can't hang
-- `ecd91d6` — fix(mcp): non-blocking web fonts so the landing page never hangs
-- `f7ef54d` — feat(mcp): serve landing at /mcp/about (fresh URL) to dodge cached /mcp
 
 ---
 
-*Last updated: 2026-06-17 by Claude Code*
+*Last updated: 2026-06-18 by Claude Code*
