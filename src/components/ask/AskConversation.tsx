@@ -28,7 +28,7 @@ export function AskConversation({
   archive,
   onAsk,
   suggestedPrompts,
-  placeholder = 'Ask about a band, a venue, a year… or "surprise me"',
+  placeholder = 'Ask me about a band, a venue, a year… or just say "surprise me"',
   autoFocus,
   inputRef,
 }: AskConversationProps) {
