@@ -66,7 +66,14 @@ export async function streamAskTurn(
   if (!res.ok || !res.body) {
     if (res.status === 401) throw new Error('session_required')
     if (res.status === 429) throw new Error('rate_limited')
-    throw new Error(`ask request failed: ${res.status}`)
+    // 400s carry a human-readable reason (e.g. "This conversation has gone long…") — surface it.
+    let detail = ''
+    try {
+      detail = ((await res.json()) as { error?: string })?.error ?? ''
+    } catch {
+      /* no body */
+    }
+    throw new Error(detail || `ask request failed: ${res.status}`)
   }
 
   const reader = res.body.pipeThrough(new TextDecoderStream()).getReader()

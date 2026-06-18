@@ -95,7 +95,9 @@ export function useAskArchive() {
               ? 'No session — mint a dev token first.'
               : reason === 'rate_limited'
                 ? 'Easy there — too many questions too fast. Give it a moment.'
-                : 'Something went sideways reaching the archive.',
+                : reason && !reason.startsWith('ask request failed')
+                  ? reason // worker's own message, e.g. "This conversation has gone long — start a fresh one."
+                  : 'Something went sideways reaching the archive.',
         }))
       } finally {
         // A stream that closed without a terminal event still resolves the turn.

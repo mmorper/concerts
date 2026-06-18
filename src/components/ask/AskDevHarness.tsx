@@ -29,7 +29,7 @@ const BATTERY: { label: string; q: string }[] = [
 
 export function AskDevHarness() {
   const archive = useArchiveData()
-  const { exchanges, busy, ask } = useAskArchive()
+  const { exchanges, busy, ask, reset } = useAskArchive()
   const [input, setInput] = useState('')
   const [hasSession, setHasSession] = useState(!!getSessionToken())
   const [mode, setMode] = useState<string>('…')
@@ -79,6 +79,13 @@ export function AskDevHarness() {
                 style={{ background: busy ? 'rgba(255,255,255,.15)' : 'rgba(52,211,153,.18)', border: '1px solid rgba(52,211,153,.5)', color: '#fff', borderRadius: 8, padding: '7px 14px', fontSize: 13, cursor: busy ? 'default' : 'pointer' }}
               >
                 ▶ Run full battery ({BATTERY.length})
+              </button>
+              <button
+                onClick={reset}
+                disabled={busy || exchanges.length === 0}
+                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,.2)', color: 'rgba(255,255,255,.7)', borderRadius: 8, padding: '7px 12px', fontSize: 13, cursor: busy || exchanges.length === 0 ? 'default' : 'pointer' }}
+              >
+                ↺ Clear ({exchanges.length})
               </button>
               <span style={{ fontSize: 12, color: 'rgba(255,255,255,.4)' }}>every category, in order — for the design/UX audit</span>
             </div>
