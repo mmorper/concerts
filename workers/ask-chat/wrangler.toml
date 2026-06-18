@@ -1,0 +1,79 @@
+# Cloudflare Worker — "Ask the Archive" in-app chat backend (Epic #138, issue #139).
+# A SIBLING worker to morphehaus-mcp: it imports the same pure tool fns + data layer
+# (workers/mcp-server/src/{tools,data}.ts) but is a separate deploy so the public,
+# unauthenticated LLM proxy is isolated from the MCP server. Decided 2026-06-17.
+#
+# Routes: concerts.morperhaus.org/api/ask*  (more specific than the SPA's /*; sits
+# alongside the MCP worker's /mcp*). The end-user UI (#141) calls /api/ask/chat (SSE).
+
+name = "morperhaus-ask-chat"
+main = "src/index.ts"
+compatibility_date = "2026-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+account_id = "6db8591bbcba4588ae4ef9c3839cd209"
+
+[[routes]]
+pattern = "concerts.morperhaus.org/api/ask*"
+zone_name = "morperhaus.org"
+
+[vars]
+# Same data origin the MCP worker reads — the pure tool fns fetch these by URL.
+DATA_BASE_URL = "https://concerts.morperhaus.org/data"
+# Monthly spend ceiling (USD). The DO counter derives a daily cap from this. Knob: $25/mo.
+ASK_MONTHLY_USD = "25"
+# /ask/admin Cloudflare Access identifiers (NOT secrets — they identify the Access app and
+# verify the Cf-Access-Jwt-Assertion; knowing them grants nothing). verifyAccess() FAILS
+# CLOSED if either is unset. Team domain = <team> in <team>.cloudflareaccess.com.
+ACCESS_TEAM_DOMAIN = "mike-6db"
+ACCESS_AUD = "0b00770581a186384e8a097dae26cc59e80e9e7d60a8b04595dd924256503203"
+
+# Primary abuse gate — native Rate Limiting bindings (edge-local; the cost cap is only a
+# backstop). Still under `unsafe`. namespace_id is an arbitrary per-account integer; each
+# binding = one {limit, period}. Tighten/loosen as the knobs in the spec settle.
+[[unsafe.bindings]]
+name = "IP_LIMITER"
+type = "ratelimit"
+namespace_id = "2001"
+simple = { limit = 30, period = 60 }   # 30 turns / 60s per IP
+
+[[unsafe.bindings]]
+name = "SESSION_LIMITER"
+type = "ratelimit"
+namespace_id = "2002"
+simple = { limit = 20, period = 60 }   # 20 turns / 60s per session
+
+# The reused tool module imports its system prompt as text: `import X from "../prompts/query.md"`.
+# Keep the Text rule so that static import resolves when esbuild bundles the shared module.
+[[rules]]
+type = "Text"
+globs = ["**/*.md"]
+fallthrough = true
+
+# Atomic per-day spend counter. KV is eventually-consistent + read-modify-write races under
+# concurrent public traffic, and the $/day cap is the kill-switch's independent ceiling — so
+# the counter lives in a Durable Object (serialized, accurate). Decided 2026-06-17.
+[[durable_objects.bindings]]
+name = "SPEND_COUNTER"
+class_name = "SpendCounter"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["SpendCounter"]
+
+# Kill-switch flag `ask:mode` ∈ {on, paused, deterministic-only}. KV is the right primitive
+# here: a brake tolerates ≤10s staleness and must be flippable from a phone without redeploy.
+# Create once:  npx wrangler kv namespace create ASK_CONTROL
+# then paste the returned id below.
+[[kv_namespaces]]
+binding = "ASK_CONTROL"
+id = "9784703871e543f9aa6b0c3eea88fa91"
+
+# Secrets (NOT in this file) — set with `npx wrangler secret put <NAME>`:
+#   ANTHROPIC_API_KEY   — the Messages API key for the agent loop
+#   TURNSTILE_SECRET    — Cloudflare Turnstile server-side secret (session issuance, #139 gate)
+#   SESSION_HMAC_KEY    — signs the short-lived session token Turnstile success issues
+#   NOTIFY_WEBHOOK_URL  — (optional) tripwire push endpoint (ntfy/Pushover-style)
+
+[build]
+command = ""

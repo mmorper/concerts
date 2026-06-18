@@ -1,0 +1,25 @@
+{
+  "name": "morperhaus-ask-chat",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Morperhaus Concert Archive — in-app 'Ask the Archive' chat backend (tool-grounded agent loop). Sibling worker to morperhaus-mcp; reuses its pure tool fns + data layer.",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "deploy": "npx wrangler deploy",
+    "dev": "npx wrangler dev",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "tail": "npx wrangler tail"
+  },
+  "dependencies": {
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260101.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0",
+    "wrangler": "^4.0.0"
+  }
+}

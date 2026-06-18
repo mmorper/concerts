@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022"],
+    "types": ["@cloudflare/workers-types"],
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true
+  },
+  // The sibling worker reuses the MCP server's pure fns; include them so tsc resolves the
+  // shared module (its type-only SDK imports resolve from workers/mcp-server/node_modules).
+  "include": ["src/**/*.ts", "../mcp-server/src/tools.ts", "../mcp-server/src/data.ts"],
+  "exclude": ["node_modules"]
+}
