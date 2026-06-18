@@ -41,4 +41,10 @@ describe("pickDeterministicTool — explicit intents (no LLM, no data fetch)", (
   it("routes 'on this day' to on_this_day", async () => {
     expect((await pickDeterministicTool(env, "anything on this day?")).name).toBe("on_this_day");
   });
+
+  it("routes recency questions to get_recent_shows", async () => {
+    expect((await pickDeterministicTool(env, "who are the last three artists I have seen play?")).name).toBe("get_recent_shows");
+    expect((await pickDeterministicTool(env, "what's the most recent concert you've been to?")).name).toBe("get_recent_shows");
+    expect((await pickDeterministicTool(env, "my latest shows")).name).toBe("get_recent_shows");
+  });
 });

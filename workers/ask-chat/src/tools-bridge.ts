@@ -136,6 +136,16 @@ export const TOOL_DEFS = [
       additionalProperties: false,
     },
   },
+  {
+    name: "get_recent_shows",
+    description:
+      "The most recent shows I've actually been to — the last few that have ALREADY happened, newest first. Use for 'who did I see last', 'my last three shows', 'most recent concerts I've been to'. Never answer those from the upcoming-shows list.",
+    input_schema: {
+      type: "object",
+      properties: { limit: { type: "integer", minimum: 1, maximum: 25, description: "How many recent shows (default 5)." } },
+      additionalProperties: false,
+    },
+  },
 ] as const;
 
 export const TOOL_NAMES = TOOL_DEFS.map((t) => t.name);
@@ -344,6 +354,23 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       return { text: archiveTopSongs(songs, num(input.limit)) }; // plain
     }
 
+    case "get_recent_shows": {
+      const data = await getConcerts(e, bgCtx);
+      if (!data) return { text: DATA_UNAVAILABLE };
+      const today = todayISO();
+      // Only shows that have ALREADY happened (date ≤ today), newest first — the deterministic
+      // answer to "most recent / last seen", so the model can't reach for an upcoming show.
+      const past = data.concerts
+        .filter((c) => c.date <= today)
+        .sort((a, b) => b.date.localeCompare(a.date));
+      if (!past.length) return { text: "I don't have any past shows on record yet." };
+      const limit = Math.min(num(input.limit) ?? 5, 25);
+      const recent = past.slice(0, limit);
+      const lines = recent.map((c, i) => `${i + 1}. ${c.headliner} — ${c.venue}, ${c.city} (${c.date})`);
+      const text = `The ${recent.length} most recent ${recent.length === 1 ? "show" : "shows"} I've been to, newest first:\n${lines.join("\n")}${timingNote(recent, today)}`;
+      return { text, exhibit: { kind: "list", title: `Last ${recent.length} ${recent.length === 1 ? "show" : "shows"}`, rows: recent.map(concertRow) } };
+    }
+
     default:
       return { text: `Unknown tool: ${name}` };
   }
@@ -386,6 +413,7 @@ export async function pickDeterministicTool(env: Env, question: string): Promise
   const q = question.toLowerCase();
   if (/\b(surprise|random|pick (one|something|a show))\b/.test(q)) return { name: "surprise_me", input: {} };
   if (/\b(top songs|most[ -]played|songs (you'?ve |i'?ve )?heard most)\b/.test(q)) return { name: "get_archive_top_songs", input: {} };
+  if (/\b(most recent|recent|latest|last)\b.*\b(show|shows|concert|concerts|gig|gigs|seen|saw|played)\b/.test(q)) return { name: "get_recent_shows", input: {} };
   if (/\bon this day\b|\btoday\b/.test(q)) return { name: "on_this_day", input: {} };
 
   const e = asReused(env);
