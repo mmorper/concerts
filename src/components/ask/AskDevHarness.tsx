@@ -42,6 +42,12 @@ export function AskDevHarness() {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [exchanges])
 
+  // A token that expires mid-session 401s and clears itself — re-show the paste gate.
+  useEffect(() => {
+    const last = exchanges[exchanges.length - 1]
+    if (last?.status === 'error' && last.message?.startsWith('No session')) setHasSession(false)
+  }, [exchanges])
+
   const submit = (q: string) => {
     if (!q.trim() || busy) return
     setInput('')

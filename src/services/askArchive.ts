@@ -31,6 +31,13 @@ export function setSessionToken(token: string): void {
     /* ignore */
   }
 }
+export function clearSessionToken(): void {
+  try {
+    localStorage.removeItem(DEV_SESSION_KEY)
+  } catch {
+    /* ignore */
+  }
+}
 
 export async function getStatus(): Promise<{ mode: 'on' | 'paused' | 'deterministic-only' } | null> {
   try {
@@ -64,7 +71,10 @@ export async function streamAskTurn(
   })
 
   if (!res.ok || !res.body) {
-    if (res.status === 401) throw new Error('session_required')
+    if (res.status === 401) {
+      clearSessionToken() // expired/invalid — force the gate to re-prompt
+      throw new Error('session_required')
+    }
     if (res.status === 429) throw new Error('rate_limited')
     // 400s carry a human-readable reason (e.g. "This conversation has gone long…") — surface it.
     let detail = ''
