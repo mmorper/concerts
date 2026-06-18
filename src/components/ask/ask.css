@@ -50,10 +50,10 @@
 .ex-prose a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
 .ex-prose ul, .ex-prose ol { margin: 0 0 10px; padding-left: 20px; }
 .ex-prose li { margin: 2px 0; }
-/* GFM tables — scroll-wrapped so they never overflow a narrow card */
-.ex-table-wrap { overflow-x: auto; margin: 8px 0 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.12); }
+/* GFM tables — cells soft-wrap so the table fits the card (no horizontal scroll) */
+.ex-table-wrap { margin: 8px 0 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.12); overflow: hidden; }
 .ex-prose table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.ex-prose th, .ex-prose td { padding: 7px 11px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); border-right: 1px solid rgba(255, 255, 255, 0.07); white-space: nowrap; }
+.ex-prose th, .ex-prose td { padding: 7px 11px; text-align: left; vertical-align: top; overflow-wrap: anywhere; border-bottom: 1px solid rgba(255, 255, 255, 0.1); border-right: 1px solid rgba(255, 255, 255, 0.07); }
 .ex-prose th { background: rgba(255, 255, 255, 0.07); color: #fff; font-weight: 600; }
 .ex-prose td { color: rgba(255, 255, 255, 0.82); }
 .ex-prose tr:last-child td { border-bottom: none; }
