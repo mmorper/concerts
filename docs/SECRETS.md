@@ -1,0 +1,146 @@
+# Secrets & Credential Management
+
+How secrets are stored across this project and how to rotate them safely. This is the
+**operational** companion to [`api-setup.md`](./api-setup.md) — that doc explains how to
+*obtain* each key; this one explains *where each lives* and *how to rotate it*.
+
+> **Why this doc exists:** secrets are sprawled across several stores. On 2026-06-17 the
+> Anthropic key was rotated but only one of its six homes was updated; because the old key
+> was already revoked, a production worker and both CI workflows silently ran on a dead key
+> until the gap was found. The matrix below is the inventory that prevents a repeat.
+
+---
+
+## The golden rules
+
+1. **Update every home _before_ revoking the old credential.** Revoking first = guaranteed
+   outage. Order is always: rotate-new → propagate to all homes → verify → *then* revoke old.
+2. **Never print a secret value.** Compare across files by fingerprint, never by `cat`:
+   ```bash
+   grep -i '^ANTHROPIC_API_KEY' <file> | sed 's/^[^=]*=//' | tr -d '"' | xargs printf '%s' | shasum -a 256 | cut -c1-12
+   ```
+   Same 12-char hash = same value. (Also compare `last6` of the value as a sanity check.)
+3. **Pipe, don't paste.** When setting a remote secret, stream it from the local file so the
+   value never appears in your terminal, shell history, or this transcript (see commands below).
+4. **Local secret files are gitignored** (`.env`, `**/.dev.vars`). Never commit them; never
+   add a real value to a `*.example` file.
+5. **`VITE_`-prefixed vars are NOT secret** — Vite compiles them into the public client bundle.
+   Anything truly secret must never carry the `VITE_` prefix.
+
+---
+
+## Secret → store matrix
+
+Every secret and every place it must be set. "Local" = gitignored file for dev; "Prod" =
+the live runtime store; "CI" = GitHub Actions repo secret.
+
+### Anthropic API key — **6 homes** (the one that bit us)
+
+| Home | Store | Used by |
+|------|-------|---------|
+| root `.env` | local | `scripts/` — liner-notes pipeline, narration generation |
+| `workers/ask-chat/.dev.vars` | local | ask-chat dev server |
+| ask-chat | **prod** `wrangler secret` | ask-chat agent loop (`/api/ask/chat`) |
+| `workers/mcp-server/.dev.vars` | local | mcp-server dev server |
+| mcp-server | **prod** `wrangler secret` | MCP `query` tool (`/mcp`) |
+| GitHub Actions | **CI** repo secret | `liner-notes.yml`, `data-refresh.yml` |
+
+> meta-injector does **not** use the Anthropic key.
+
+### Worker-only secrets (ask-chat) — prod `wrangler secret` + local `.dev.vars`
+
+| Secret | Purpose | Notes |
+|--------|---------|-------|
+| `SESSION_HMAC_KEY` | signs the short-lived Turnstile→session token | local dev mints sessions with `scripts/mint-dev-session.mjs` using the **same** value |
+| `TURNSTILE_SECRET` | Turnstile server-side verification (session issuance) | public **site** key is separate (frontend, not secret) |
+| `NOTIFY_WEBHOOK_URL` | optional ≥80%-cap tripwire push | optional — tripwire logs only if unset |
+
+`ACCESS_TEAM_DOMAIN` / `ACCESS_AUD` in `ask-chat/wrangler.toml` `[vars]` are **identifiers,
+not secrets** — they identify the Cloudflare Access app; knowing them grants nothing.
+
+### Data-pipeline secrets — root `.env` (local) + GitHub Actions (CI)
+
+Google OAuth + Maps/Places + music APIs, consumed by `scripts/` locally and by the
+`data-refresh.yml` / `liner-notes.yml` workflows in CI:
+
+`GOOGLE_SHEET_ID` · `GOOGLE_CLIENT_ID` · `GOOGLE_CLIENT_SECRET` · `GOOGLE_REDIRECT_URI` ·
+`GOOGLE_REFRESH_TOKEN` · `GOOGLE_MAPS_API_KEY` · `GOOGLE_PLACES_API_KEY` · `SHEET_RANGE` ·
+`THEAUDIODB_API_KEY` · `LASTFM_API_KEY`
+
+Build-time / public (compiled into the client bundle — **not secret**, but set in CI for the
+build): `VITE_SETLISTFM_API_KEY` · `VITE_GA_MEASUREMENT_ID`.
+
+---
+
+## Rotation runbook
+
+Replace `<NAME>` with the secret. Example shown for `ANTHROPIC_API_KEY`; adapt the home list
+from the matrix above for any other secret.
+
+**1. Mint the new credential** in the provider console (Anthropic / Google / etc.).
+**Do not revoke the old one yet.**
+
+**2. Update every LOCAL home.** Edit each gitignored file by hand, or propagate from one
+known-good file. Confirm convergence by fingerprint (never by printing):
+
+```bash
+for f in .env workers/ask-chat/.dev.vars workers/mcp-server/.dev.vars; do
+  v=$(grep -i '^ANTHROPIC_API_KEY' "$f" | sed 's/^[^=]*=//' | tr -d '"' | xargs printf '%s')
+  printf '%-40s %s\n' "$f" "$(printf '%s' "$v" | shasum -a 256 | cut -c1-12)"
+done
+# all three hashes must match
+```
+
+**3. Update every PROD home** — stream from the local file so the value is never printed:
+
+```bash
+# ask-chat prod
+( cd workers/ask-chat && grep '^ANTHROPIC_API_KEY' .dev.vars | sed 's/^[^=]*=//' | tr -d '"' \
+  | xargs printf '%s' | npx wrangler secret put ANTHROPIC_API_KEY )
+
+# mcp-server prod
+( cd workers/mcp-server && grep '^ANTHROPIC_API_KEY' .dev.vars | sed 's/^[^=]*=//' | tr -d '"' \
+  | xargs printf '%s' | npx wrangler secret put ANTHROPIC_API_KEY )
+```
+
+`wrangler secret put` takes effect immediately — **no redeploy needed**; the running worker
+picks it up on the next request.
+
+**4. Update CI** — stream into the GitHub repo secret:
+
+```bash
+grep '^ANTHROPIC_API_KEY' .env | sed 's/^[^=]*=//' | tr -d '"' | xargs printf '%s' \
+  | gh secret set ANTHROPIC_API_KEY
+gh secret list | grep ANTHROPIC   # confirm the "Updated" timestamp is now
+```
+
+**5. Verify before revoking.**
+- Prod MCP: call the `query` tool against `concerts.morperhaus.org/mcp` (a 401/auth error
+  means a stale key somewhere).
+- Prod ask-chat: `GET /api/ask/status` → `{mode}`; then a real `/api/ask/chat` turn.
+- CI: `gh workflow run liner-notes.yml` (or wait for the next scheduled run).
+
+**6. Now revoke the old credential** in the provider console. Done.
+
+---
+
+## Incident shortcut (leaked key)
+
+If a key **leaks** (e.g. surfaces in a transcript/log), the old key is compromised and must
+die — but the runbook order still holds to avoid an outage:
+
+1. Mint new → propagate to **all** homes (steps 2–4) as fast as possible.
+2. Verify (step 5).
+3. Revoke the leaked key (step 6).
+
+If you must revoke *immediately* (active abuse) and accept downtime, do so first — then expect
+mcp-server `/mcp` and CI to fail until every home is updated. Know the matrix before choosing.
+
+---
+
+## See also
+
+- [`api-setup.md`](./api-setup.md) — how to obtain each API key/credential.
+- `workers/ask-chat/wrangler.toml` — inline secret list + Access identifiers.
+- `docs/specs/future/global-ask-the-archive-chat/SPEC.md` §"Kill switch" — the ask-chat
+  cost/abuse controls those secrets gate.

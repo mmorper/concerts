@@ -69,6 +69,7 @@ npm run build-data   # Refresh data pipeline
 | Writing changelogs | `.claude/readme-maintenance.md` (voice guidelines) |
 | Current state & recent work | `.claude/context.md` |
 | Liner notes pipeline & detectors | `docs/LINER_NOTES_PIPELINE.md` |
+| Rotating a secret / where keys live | `docs/SECRETS.md` |
 
 ---
 
