@@ -14,6 +14,10 @@ import { LinerNotesPage, LinerNotePermalink } from './components/liner-notes'
 import { AboutPage } from './components/about'
 import { CascadePage } from './components/cascade/CascadePage'
 import { AskDevHarness } from './components/ask/AskDevHarness'
+import { AskProvider } from './components/ask/AskProvider'
+import { AskSpotlight } from './components/ask/AskSpotlight'
+import { AskCanvas } from './components/ask/AskCanvas'
+import { AskHotkeys } from './components/ask/AskHotkeys'
 import { SCENE_MAP, TOAST } from './components/changelog/constants'
 import { useChangelogCheck } from './hooks/useChangelogCheck'
 import { useLinerNotesCheck } from './hooks/useLinerNotesCheck'
@@ -22,22 +26,28 @@ import { buildPagePath, buildPageTitle } from './utils/pageTracking'
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<MainScenes />} />
-      <Route path="/liner-notes" element={<LinerNotesPage />} />
-      <Route path="/liner-notes/rss" element={<ChangelogRSS />} />
-      <Route path="/liner-notes/:slug" element={<LinerNotePermalink />} />
-      <Route path="/whats-playing" element={<WhatsPlayingPage />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/how-it-works" element={<CascadePage />} />
-      {/* Dev-only: #140 exhibit harness (no shipped UI yet; containers are #141). Gated to dev
-          builds — in prod it can't function (no Turnstile/token path), so it 404s instead. */}
-      {import.meta.env.DEV && <Route path="/ask-dev" element={<AskDevHarness />} />}
-      {/* Legacy redirects */}
-      <Route path="/cascade" element={<Navigate to="/how-it-works" replace />} />
-      <Route path="/changelog" element={<WhatsPlayingPage />} />
-      <Route path="/changelog/rss" element={<ChangelogRSS />} />
-    </Routes>
+    <AskProvider>
+      <Routes>
+        <Route path="/" element={<MainScenes />} />
+        {/* Container A — the full-canvas Ask destination (#141); also the mobile target. */}
+        <Route path="/ask" element={<AskCanvas />} />
+        <Route path="/liner-notes" element={<LinerNotesPage />} />
+        <Route path="/liner-notes/rss" element={<ChangelogRSS />} />
+        <Route path="/liner-notes/:slug" element={<LinerNotePermalink />} />
+        <Route path="/whats-playing" element={<WhatsPlayingPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/how-it-works" element={<CascadePage />} />
+        {/* Dev-only: #140 exhibit harness. Gated to dev builds (404s in prod). */}
+        {import.meta.env.DEV && <Route path="/ask-dev" element={<AskDevHarness />} />}
+        {/* Legacy redirects */}
+        <Route path="/cascade" element={<Navigate to="/how-it-works" replace />} />
+        <Route path="/changelog" element={<WhatsPlayingPage />} />
+        <Route path="/changelog/rss" element={<ChangelogRSS />} />
+      </Routes>
+      {/* Container B — the Spotlight overlay + its power keys, available over any route. */}
+      <AskSpotlight />
+      <AskHotkeys />
+    </AskProvider>
   )
 }
 

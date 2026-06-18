@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { usageMicroUsd, dailyCapMicroUsd, RESERVE_EST_MICRO_USD } from "./cost.js";
+import { usageMicroUsd, dailyCapMicroUsd, ipDailyCapMicroUsd, RESERVE_EST_MICRO_USD } from "./cost.js";
 import type { Env } from "./types.js";
 
 // $1/MTok input == 1 microUSD/token, so the per-class rates are exact and easy to assert.
@@ -39,6 +39,23 @@ describe("dailyCapMicroUsd", () => {
   it("scales with the knob", () => {
     const env = { ASK_MONTHLY_USD: "60" } as Env;
     expect(dailyCapMicroUsd(env)).toBe(2_000_000); // $2/day
+  });
+});
+
+describe("ipDailyCapMicroUsd", () => {
+  it("defaults to ~$0.15/day when the var is unset", () => {
+    expect(ipDailyCapMicroUsd({} as Env)).toBe(150_000);
+  });
+
+  it("honours the knob", () => {
+    expect(ipDailyCapMicroUsd({ ASK_IP_DAILY_USD: "0.30" } as Env)).toBe(300_000);
+  });
+
+  it("is a fraction of the global day cap so one IP can't drain it", () => {
+    const env = { ASK_MONTHLY_USD: "25", ASK_IP_DAILY_USD: "0.15" } as Env;
+    const ipShare = ipDailyCapMicroUsd(env) / dailyCapMicroUsd(env);
+    expect(ipShare).toBeGreaterThan(0); // a real slice
+    expect(ipShare).toBeLessThan(0.5); // but well short of the whole budget
   });
 });
 

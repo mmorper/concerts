@@ -111,3 +111,96 @@
 .ask-row .who { color: #fff; font-size: 14px; }
 .ask-row .where { color: rgba(255, 255, 255, 0.6); font-size: 13px; margin-left: auto; }
 .ask-row:hover .who { text-decoration: underline; }
+
+/* =====================================================================================
+   Containers (#141) — the shared conversation surface + the two answer containers.
+   ===================================================================================== */
+
+/* Shared surface: suggested chips (empty state) → scrolling transcript → input dock. */
+.ask-convo { display: flex; flex-direction: column; min-height: 0; flex: 1; }
+.ask-transcript { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+.ask-suggest { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 18px; }
+.ask-suggest .chip { cursor: pointer; }
+
+.ask-dock {
+  display: flex; align-items: center; gap: 8px; margin-top: 14px;
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px; padding: 6px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.ask-dock:focus-within { border-color: rgba(167, 139, 250, 0.6); }
+.ask-dock-input {
+  flex: 1; min-width: 0; background: transparent; border: none; outline: none;
+  color: #fff; font-size: 15px; padding: 9px 12px; font-family: 'Source Sans 3', system-ui, sans-serif;
+}
+.ask-dock-input::placeholder { color: rgba(255, 255, 255, 0.45); }
+.ask-dock-send {
+  flex: none; width: 40px; height: 40px; border: none; border-radius: 10px; cursor: pointer;
+  background: #fff; color: #111; font-size: 18px; line-height: 1;
+}
+.ask-dock-send:disabled { background: rgba(255, 255, 255, 0.2); color: rgba(255,255,255,.5); cursor: default; }
+
+/* ---- Container B — Spotlight overlay (summoned over a scene; esc restores) ---- */
+.ask-spotlight-scrim {
+  position: fixed; inset: 0; z-index: 60;
+  background: rgba(15, 12, 40, 0.55); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 10vh 16px 16px; animation: ask-scrim-in 0.18s ease both;
+}
+@keyframes ask-scrim-in { from { opacity: 0; } to { opacity: 1; } }
+
+.ask-spotlight {
+  width: min(620px, 94vw); max-height: 70vh; display: flex; flex-direction: column;
+  background: rgba(30, 27, 75, 0.92); border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 18px; box-shadow: 0 40px 90px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  padding: 16px 18px; overflow: hidden;
+  animation: ask-bloom 0.22s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+@keyframes ask-bloom { from { opacity: 0; transform: translateY(8px) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .ask-spotlight-scrim, .ask-spotlight { animation: none; }
+}
+
+.ask-spot-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex: none; }
+.ask-spot-mark { display: flex; align-items: center; gap: 9px; font-size: 13px; letter-spacing: 0.04em; color: rgba(255, 255, 255, 0.85); }
+.ask-live-dot { width: 7px; height: 7px; border-radius: 50%; background: #818cf8; box-shadow: 0 0 8px rgba(129, 140, 248, 0.9); }
+.ask-esc {
+  margin-left: auto; font-size: 11px; color: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 6px; padding: 2px 7px;
+  background: transparent; cursor: pointer;
+}
+.ask-esc:hover { color: #fff; border-color: rgba(255, 255, 255, 0.35); }
+
+.ask-spot-foot { flex: none; display: flex; justify-content: flex-end; padding-top: 10px; }
+.ask-fullview {
+  font-size: 13px; color: rgba(255, 255, 255, 0.7); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.ask-fullview:hover { color: #fff; }
+
+/* ---- Container A — full-canvas /ask (the coda gradient destination + mobile) ---- */
+.ask-canvas {
+  min-height: 100vh; display: flex; flex-direction: column; color: #fff;
+  background: linear-gradient(180deg, #181334 0%, #1e1b4b 40%, #241253 78%, #2c1660 100%);
+}
+.ask-canvas-bar {
+  display: flex; align-items: center; gap: 10px; padding: 16px 20px; flex: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.ask-back {
+  display: inline-flex; align-items: center; gap: 6px; color: rgba(255, 255, 255, 0.75);
+  text-decoration: none; font-size: 14px;
+}
+.ask-back:hover { color: #fff; }
+.ask-canvas-mark { display: flex; align-items: center; gap: 9px; margin-left: auto; font-size: 13px; letter-spacing: 0.04em; color: rgba(255, 255, 255, 0.8); }
+
+.ask-canvas-inner {
+  width: 100%; max-width: 720px; margin: 0 auto; flex: 1; display: flex; flex-direction: column;
+  min-height: 0; padding: 28px 20px 24px;
+}
+.ask-opener { text-align: center; margin: 12px 0 26px; flex: none; }
+.ask-opener h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: 30px; line-height: 1.15; margin: 0 0 10px; color: #fff; }
+.ask-opener p { font-size: 15.5px; color: rgba(255, 255, 255, 0.72); margin: 0 auto; max-width: 460px; }
+.ask-canvas-foot { flex: none; text-align: center; font-size: 13px; color: rgba(255, 255, 255, 0.5); margin: 14px 0 0; }
+.ask-canvas-foot a { color: rgba(255, 255, 255, 0.78); text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, 0.25); }
+.ask-canvas-foot a:hover { color: #fff; }

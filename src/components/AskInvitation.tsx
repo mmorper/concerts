@@ -1,7 +1,9 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { analytics } from '../services/analytics'
 import { haptics } from '../utils/haptics'
+import { useAsk } from './ask/AskProvider'
 
 /**
  * AskInvitation — the end-of-scroll coda (spec B, issue #134).
@@ -16,6 +18,21 @@ import { haptics } from '../utils/haptics'
 export function AskInvitation() {
   const reduce = useReducedMotion()
   const viewed = useRef(false)
+  const navigate = useNavigate()
+  const { openSpotlight } = useAsk()
+
+  // The earned moment (#141 invocation tier 2): the end-of-scroll card opens the Spotlight on
+  // desktop; on mobile (where overlays are too tight) it goes to the full /ask canvas.
+  const invokeAsk = (e: React.MouseEvent) => {
+    e.preventDefault()
+    haptics.light()
+    analytics.trackEvent('ask_archive_invite_clicked', { path: 'primary_cta' })
+    if (window.matchMedia('(max-width: 767px)').matches) {
+      navigate('/ask')
+    } else {
+      openSpotlight('endscroll')
+    }
+  }
 
   return (
     <section
@@ -66,13 +83,10 @@ export function AskInvitation() {
           You&rsquo;ve been reading the archive. Inside Claude, you can talk to it &mdash; your
           history with a band, every show at a venue, or just &ldquo;surprise me.&rdquo;
         </p>
-        {/* /ask is a static (non-SPA) page — full-navigation <a>, not <Link>. */}
+        {/* href kept for accessibility / right-click; onClick routes to overlay or canvas. */}
         <a
           href="/ask"
-          onClick={() => {
-            haptics.light()
-            analytics.trackEvent('ask_archive_invite_clicked', { path: 'primary_cta' })
-          }}
+          onClick={invokeAsk}
           className="font-sans group"
           style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff', color: '#1e1b4b', fontWeight: 700, fontSize: 15.5, borderRadius: 999, padding: '12px 22px', textDecoration: 'none' }}
         >
@@ -82,7 +96,7 @@ export function AskInvitation() {
         <p className="font-sans" style={{ marginTop: 16, fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>
           or add{' '}
           <a
-            href="/ask"
+            href="/about-mcp"
             onClick={() => analytics.trackEvent('ask_archive_invite_clicked', { path: 'connector_url' })}
             style={{ fontFamily: 'ui-monospace, Menlo, monospace', color: 'rgba(255,255,255,0.8)', fontWeight: 600, textDecoration: 'none' }}
           >

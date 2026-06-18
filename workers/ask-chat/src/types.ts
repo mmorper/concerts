@@ -7,6 +7,9 @@ export interface Env {
   DATA_BASE_URL: string;
   // Monthly USD ceiling as a string var (Workers vars are strings). Daily cap derived from it.
   ASK_MONTHLY_USD: string;
+  // Per-IP daily spend ceiling (USD, string var). A slice of the global day cap so one source
+  // can't drain the whole budget and deny service to everyone. Optional; defaults in cost.ts.
+  ASK_IP_DAILY_USD?: string;
 
   // Atomic per-day spend counter (Durable Object) — the cost cap's accurate ceiling.
   SPEND_COUNTER: DurableObjectNamespace;

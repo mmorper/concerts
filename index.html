@@ -75,6 +75,10 @@
     <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e783090c97624000b4b9816b209190a1"}'></script>
     <!-- End Cloudflare Web Analytics -->
 
+    <!-- Cloudflare Turnstile — gates "Ask the Archive" session minting (#141). Loaded lazily
+         (defer + explicit render) so it never blocks first paint for the ~99% who don't ask. -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
     {

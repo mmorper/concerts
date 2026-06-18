@@ -55,12 +55,13 @@ interface ModelTurn {
   usage: AnthropicUsage;
 }
 
-// One streaming Messages call. Forwards text deltas via onText; accumulates tool_use blocks
-// and usage. Parses Anthropic's SSE event-stream.
+// One streaming Messages call. Accumulates this round's text, its tool_use blocks, and usage.
+// Parses Anthropic's SSE event-stream. Text is NOT forwarded live: the caller decides per round
+// whether it's the final answer (emit) or interim narration before a tool call (discard) — so a
+// "let me check…" preamble never reaches the client. See runAgentTurn.
 async function streamModelTurn(
   env: Env,
   messages: unknown[],
-  onText: (delta: string) => void,
   today: string,
   upcoming: string[],
 ): Promise<ModelTurn> {
@@ -118,7 +119,7 @@ async function streamModelTurn(
       } catch {
         continue;
       }
-      handleEvent(ev, turn, blocks, onText);
+      handleEvent(ev, turn, blocks);
     }
   }
   return turn;
@@ -128,7 +129,6 @@ function handleEvent(
   ev: any,
   turn: ModelTurn,
   blocks: Record<number, ToolUse>,
-  onText: (delta: string) => void,
 ): void {
   switch (ev.type) {
     case "message_start":
@@ -142,7 +142,6 @@ function handleEvent(
     case "content_block_delta":
       if (ev.delta?.type === "text_delta") {
         turn.text += ev.delta.text;
-        onText(ev.delta.text);
       } else if (ev.delta?.type === "input_json_delta" && blocks[ev.index]) {
         blocks[ev.index].inputJson += ev.delta.partial_json ?? "";
       }
@@ -195,10 +194,13 @@ export async function runAgentTurn(
   const upcoming = await getUpcomingShows(env, today);
 
   for (let i = 0; i < MAX_TOOL_ITERATIONS; i++) {
-    const turn = await streamModelTurn(env, work, events.onText, today, upcoming);
+    const turn = await streamModelTurn(env, work, today, upcoming);
     mergeUsage(total, turn.usage);
 
     if (turn.toolUses.length === 0 || turn.stopReason !== "tool_use") {
+      // Final round: this is the answer. Emit it now (the only prose the client ever sees).
+      // Any text from earlier rounds was pre-tool narration and is intentionally dropped.
+      if (turn.text) events.onText(turn.text);
       return { text: turn.text, usage: total, exhibits };
     }
 

@@ -29,9 +29,12 @@ describe("pickPrimaryExhibit", () => {
     expect(pickPrimaryExhibit([{ kind: "plain" }, list])).toBe(list);
   });
 
-  it("breaks ties to the last tool call (the prose usually follows it)", () => {
+  it("breaks ties to the FIRST tool call (the sentence's subject is resolved first)", () => {
+    // "did Depeche Mode play at the 9:30 Club?" resolves the subject (Depeche Mode) first, so its
+    // card — not the later venue/second-entity lookup — is the one the prose is about.
     const a2: Exhibit = { kind: "artist", entity: "artist", slug: "the-cure", name: "The Cure", deepLink: artistDeepLink("the-cure") };
-    expect(pickPrimaryExhibit([artist, a2])).toBe(a2);
+    expect(pickPrimaryExhibit([artist, a2])).toBe(artist);
+    expect(pickPrimaryExhibit([artist, venue])).toBe(artist);
   });
 });
 

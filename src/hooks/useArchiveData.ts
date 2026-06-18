@@ -56,12 +56,15 @@ function topGenre(shows: Concert[]): string | undefined {
   return [...counts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0]
 }
 
-export function useArchiveData(): ArchiveData {
+// `enabled` lets a caller defer the three fetches until Ask is actually used (the provider passes
+// false until the first open / the /ask route), so unrelated pages don't pay for the metadata.
+export function useArchiveData(enabled = true): ArchiveData {
   const [concerts, setConcerts] = useState<Concert[] | null>(null)
   const [artists, setArtists] = useState<Record<string, ArtistMeta> | null>(null)
   const [venues, setVenues] = useState<Record<string, VenueMeta> | null>(null)
 
   useEffect(() => {
+    if (!enabled) return
     let cancelled = false
     async function load() {
       const [c, a, v] = await Promise.all([
@@ -84,7 +87,7 @@ export function useArchiveData(): ArchiveData {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [enabled])
 
   // Index concerts by id and by artist/venue slug once loaded.
   const indexes = useMemo(() => {

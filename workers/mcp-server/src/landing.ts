@@ -14,7 +14,8 @@ const SITE = "https://concerts.morperhaus.org";
 
 export function renderLandingPage(
   stats: LandingStats,
-  pageUrl: string = `${SITE}/ask`,
+  // The shareable static home of this page is /about-mcp (the in-app chat now owns /ask, #141).
+  pageUrl: string = `${SITE}/about-mcp`,
 ): string {
   const { shows, venues, cities, firstYear } = stats;
   return `<!DOCTYPE html>
