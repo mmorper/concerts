@@ -9,9 +9,19 @@ export interface Turn {
   text: string
 }
 
-// Same-origin in production (the worker owns /api/ask*). For local dev the SPA runs on :5173
-// and the worker on another port — set VITE_ASK_BASE_URL to e.g. http://localhost:8799.
-const BASE = (import.meta.env.VITE_ASK_BASE_URL ?? '').replace(/\/$/, '')
+// Where the chat worker lives. The worker route is `concerts.morperhaus.org/api/ask*` — so
+// same-origin only reaches it ON the custom domain. On *.pages.dev previews (and local dev), the
+// SPA must call the worker ABSOLUTELY; CORS allows our preview/localhost origins for exactly this.
+//   • VITE_ASK_BASE_URL set    → use it (e.g. http://localhost:8799 for a local `wrangler dev`)
+//   • on concerts.morperhaus.org → same-origin ('')
+//   • anywhere else (pages.dev preview, localhost) → the prod worker absolutely
+const PROD_API_ORIGIN = 'https://concerts.morperhaus.org'
+const EXPLICIT_BASE = (import.meta.env.VITE_ASK_BASE_URL ?? '').replace(/\/$/, '')
+const BASE = EXPLICIT_BASE
+  ? EXPLICIT_BASE
+  : typeof window !== 'undefined' && window.location.hostname === 'concerts.morperhaus.org'
+    ? ''
+    : PROD_API_ORIGIN
 
 // The signed session token (HMAC payload.sig), stashed in localStorage. Two ways it lands here:
 //   • prod — exchangeTurnstileForSession() trades a Turnstile token for one (the real gate);

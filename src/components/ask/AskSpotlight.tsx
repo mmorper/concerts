@@ -55,7 +55,7 @@ export function AskSpotlight() {
 
   const openFullView = () => {
     analytics.trackEvent('ask_full_view_opened')
-    close()
+    close({ clear: false }) // carry the conversation into /ask
     navigate('/ask')
   }
 
@@ -79,7 +79,7 @@ export function AskSpotlight() {
             <span className="ask-live-dot" aria-hidden="true" />
             Ask the archive
           </span>
-          <button type="button" className="ask-esc" onClick={close} aria-label="Close (Esc)">
+          <button type="button" className="ask-esc" onClick={() => close()} aria-label="Close (Esc)">
             esc
           </button>
         </div>

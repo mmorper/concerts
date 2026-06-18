@@ -15,7 +15,9 @@ export type AskOpenSurface = 'dock' | 'kbd' | 'endscroll' | 'navpill' | 'firstvi
 interface AskContextValue {
   open: boolean
   openSpotlight: (surface: AskOpenSurface) => void
-  close: () => void
+  // Dismissing the overlay clears the conversation (a fresh ask each open). Promotion to the
+  // full /ask view passes { clear: false } so the conversation carries over instead.
+  close: (opts?: { clear?: boolean }) => void
   // The conversation + controls (shared between overlay and /ask).
   exchanges: Exchange[]
   busy: boolean
@@ -53,12 +55,18 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
     [ensureSession],
   )
 
-  const close = useCallback(() => {
-    setOpen(false)
-    // Restore focus to the trigger (esc returns you exactly where you were).
-    const el = restoreFocusRef.current
-    if (el && typeof el.focus === 'function') requestAnimationFrame(() => el.focus())
-  }, [])
+  const close = useCallback(
+    (opts?: { clear?: boolean }) => {
+      setOpen(false)
+      // Clear the transcript on a plain dismiss (esc / scrim / esc button) so each open starts
+      // fresh; skip clearing when promoting to the full view, which carries the conversation.
+      if (opts?.clear !== false) reset()
+      // Restore focus to the trigger (esc returns you exactly where you were).
+      const el = restoreFocusRef.current
+      if (el && typeof el.focus === 'function') requestAnimationFrame(() => el.focus())
+    },
+    [reset],
+  )
 
   const value = useMemo<AskContextValue>(
     () => ({ open, openSpotlight, close, exchanges, busy, ask, reset, archive, activate }),
