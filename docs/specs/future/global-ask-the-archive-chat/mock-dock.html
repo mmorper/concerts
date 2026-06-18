@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<!--
+  MOCK — "Ask the Archive" wayfinding dock. Issue/PR TBD. Open in a browser.
+  NOT shippable markup — fakes scenes so the *bottom-center dock* idea can be judged.
+
+  Thesis (Mike's reframe): the bottom-center collision isn't two primaries fighting —
+  it's ONE composed control. A persistent "Ask" pill is the anchor; the scene's
+  navigation instruction rides ABOVE it as an EYEBROW. The pill persists (always there);
+  the eyebrow adapts per scene and fades on scroll. Where a scene's bottom content can't
+  be an eyebrow (Genres' slider), the dock yields to the rail dot.
+
+  Tokens mirror src/constants/colors.ts + landing.ts. Genre colors + the real bottom-center
+  conflicts (Map nav pill/stats/hint, Genres slider) are from the actual scene code.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mock — Ask the Archive · wayfinding dock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&display=swap" />
+<style>
+  :root{
+    --bg:#fafaf9; --ink:#1c1917; --muted:#57534e; --faint:#78716c; --line:#e7e5e4;
+    --accent:#4f46e5; --accent-soft:#eef2ff; --accent-ink:#3730a3;
+    --scene:linear-gradient(160deg,#1e1b4b 0%,#3b0764 100%);
+    --venues:linear-gradient(135deg,#1e1b4b 0%,#581c87 100%);
+    --g-synthpop:#8b5cf6; --g-newwave:#1e40af; --g-postpunk:#be123c; --g-alt:#5b21b6;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .doc{max-width:1000px;margin:0 auto;padding:48px 24px 90px;}
+  .kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-family:"Playfair Display",Georgia,serif;font-weight:500;font-size:40px;letter-spacing:-.02em;margin:6px 0 10px;}
+  .doc>header p{color:var(--muted);font-size:17px;max-width:66ch;margin:0 0 8px;}
+  .legend{font-size:13.5px;color:var(--faint);margin-top:10px;}
+  .legend b{color:var(--ink);}
+
+  .panel{margin-top:56px;}
+  .panel>h2{font-family:"Playfair Display",Georgia,serif;font-weight:500;font-size:25px;margin:0 0 4px;}
+  .panel>.sub{color:var(--muted);font-size:15.5px;margin:0 0 18px;max-width:68ch;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);border-radius:999px;padding:3px 10px;margin-bottom:10px;}
+  .tag.rec{color:#065f46;background:#d1fae5;}
+
+  /* scene frame */
+  .scene{position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--scene);}
+  .scene.venues{background:var(--venues);}
+  .scene.light{background:#ede9fe;}
+  .scene .lbl{position:absolute;top:16px;left:18px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:600;z-index:4;}
+  .scene.light .lbl{color:rgba(28,25,23,.4);}
+  .scene .title{position:absolute;top:30px;left:0;right:0;text-align:center;font-family:"Playfair Display",Georgia,serif;font-size:30px;color:#fff;pointer-events:none;}
+  .scene.light .title{color:var(--ink);}
+  .mosaic{position:absolute;inset:74px 18px 110px;display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:1fr;gap:8px;opacity:.4;}
+  .mosaic div{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:5px;}
+  .scene.light .mosaic div{background:rgba(28,25,23,.05);border-color:rgba(28,25,23,.06);}
+
+  /* ===== THE DOCK ===== */
+  .dock{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:11px;z-index:5;}
+  .dock .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.5);text-decoration:none;transition:opacity .35s;}
+  .scene.light .dock .eyebrow{color:rgba(28,25,23,.5);}
+  .dock .eyebrow .ar{font-size:13px;opacity:.8;}
+  .dock .eyebrow.bob .ar{display:inline-block;animation:bob 2s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+  .dock .pill{display:inline-flex;align-items:center;gap:12px;background:rgba(20,18,50,.62);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:11px 12px 11px 17px;box-shadow:0 16px 38px rgba(0,0,0,.42);cursor:pointer;}
+  .scene.light .dock .pill{background:rgba(255,255,255,.82);border-color:rgba(28,25,23,.12);box-shadow:0 14px 30px rgba(28,25,23,.14);}
+  .dock .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 9px 1px rgba(99,102,241,.95);flex:none;}
+  .dock .pill .ph{font-size:14px;color:rgba(255,255,255,.7);white-space:nowrap;}
+  .scene.light .dock .pill .ph{color:rgba(28,25,23,.6);}
+  .dock .pill .kbd{font-size:11px;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.24);border-radius:6px;padding:3px 7px;font-family:ui-monospace,Menlo,monospace;}
+  .scene.light .dock .pill .kbd{color:rgba(28,25,23,.55);border-color:rgba(28,25,23,.2);}
+  .dock .eyebrow.faded{opacity:.18;}
+
+  /* rehomed stats (corner) */
+  .stats-corner{position:absolute;top:18px;right:18px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:600;text-align:right;z-index:4;}
+  /* transient on-map hint */
+  .map-hint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:12.5px;color:rgba(255,255,255,.7);background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:6px 14px;}
+
+  /* genres slider (the yield case) */
+  .slider{position:absolute;left:40px;right:40px;bottom:34px;z-index:5;}
+  .slider .track{height:4px;border-radius:999px;background:rgba(28,25,23,.15);position:relative;}
+  .slider .fill{position:absolute;left:0;top:0;height:100%;width:62%;border-radius:999px;background:var(--g-synthpop);}
+  .slider .knob{position:absolute;left:62%;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3);border:2px solid var(--g-synthpop);}
+  .slider .yr{position:absolute;left:62%;top:-26px;transform:translateX(-50%);font-family:"Playfair Display",Georgia,serif;font-size:18px;color:var(--ink);}
+  /* rail dot fallback on yield scenes */
+  .railv{position:absolute;top:50%;right:18px;transform:translateY(-50%);writing-mode:vertical-rl;text-orientation:mixed;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink);padding-left:10px;z-index:6;}
+  .railv::after{content:"";position:absolute;left:-3px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px 2px rgba(99,102,241,.9);}
+
+  /* mobile */
+  .phone{width:300px;margin:0 auto;}
+  .phone .scene{height:300px;}
+  .phone .mosaic{inset:50px 16px 64px;grid-template-columns:repeat(3,1fr);}
+  .bottomnav{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:4px;align-items:center;background:rgba(0,0,0,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:7px 8px;z-index:5;}
+  .bottomnav a{font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;padding:5px 11px;border-radius:999px;white-space:nowrap;}
+  .bottomnav a.new{color:#fff;background:rgba(99,102,241,.34);box-shadow:inset 0 0 0 1px rgba(129,140,248,.6);}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:780px){.grid2{grid-template-columns:1fr;}}
+  .h300 .scene{height:300px;}
+  .h360 .scene{height:360px;}
+
+  .caption{font-size:13.5px;color:var(--faint);margin-top:14px;padding-left:14px;border-left:2px solid var(--accent-soft);max-width:74ch;}
+  .caption b{color:var(--ink);}
+  .badge{position:absolute;bottom:14px;left:14px;font-size:10.5px;font-weight:700;letter-spacing:.06em;border-radius:6px;padding:3px 8px;z-index:6;}
+  .badge.ok{background:#d1fae5;color:#065f46;}
+  .badge.yield{background:#fef3c7;color:#92400e;}
+  .note{font-size:13.5px;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:12px;padding:16px 18px;margin-top:16px;}
+  .note b{color:var(--accent-ink);}
+  .note ul{margin:8px 0 0;padding-left:20px;} .note li{margin:5px 0;}
+
+  /* anatomy callout */
+  .anat{position:relative;}
+  .anat .tagline{position:absolute;font-size:12px;color:var(--accent-ink);font-weight:600;white-space:nowrap;}
+  .anat .t-eye{right:calc(50% + 96px);bottom:64px;text-align:right;}
+  .anat .t-pill{right:calc(50% + 130px);bottom:30px;text-align:right;}
+  .anat .tagline::after{content:"";position:absolute;top:50%;width:60px;height:1px;background:var(--accent);opacity:.5;}
+  .anat .t-eye::after{left:100%;margin-left:6px;}
+  .anat .t-pill::after{left:100%;margin-left:6px;}
+</style>
+</head>
+<body>
+<main class="doc">
+  <header>
+    <div class="kicker">Mock · UX exploration</div>
+    <h1>Ask the Archive — the wayfinding dock</h1>
+    <p>Reframe: the bottom-center "collision" isn't two controls fighting — it's <b>one composed dock</b>. A persistent <b>Ask pill</b> is the anchor; the scene's <b>navigation instruction becomes its eyebrow</b>. The pill is always there; the eyebrow adapts per scene and fades on scroll. This doesn't just park "Ask" — it gives the whole bottom lane a system it doesn't have today.</p>
+    <p class="legend"><b>Real in this mock:</b> tokens, genre colors, and the actual scene conflicts (Map's nav pill + stats + hint; Genres' timeline slider). Faked: backdrops.</p>
+  </header>
+
+  <!-- anatomy -->
+  <section class="panel">
+    <span class="tag rec">Anatomy</span>
+    <h2>One control, two tiers</h2>
+    <p class="sub">The eyebrow carries the scene's voice (a hint or a nav target — small, muted). The pill is the one weighted, interactive affordance. Clear hierarchy means no "which one moves me forward?" ambiguity.</p>
+    <div class="anat h360">
+      <div class="scene venues">
+        <div class="lbl">Venues</div>
+        <div class="title">The Venues</div>
+        <div class="mosaic"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <div class="dock">
+          <a class="eyebrow bob" href="#">The Music <span class="ar">↓</span></a>
+          <span class="pill"><span class="dot"></span><span class="ph">Ask the archive…</span><span class="kbd">⌘K</span></span>
+        </div>
+      </div>
+      <div class="tagline t-eye">eyebrow — scene instruction, fades on scroll</div>
+      <div class="tagline t-pill">pill — persistent Ask anchor</div>
+    </div>
+    <p class="caption">The eyebrow can be a passive hint (<i>Scroll to explore</i>) or a real link (<i>The Music ↓</i>, click to advance). Either way it sits <b>above</b> and lighter, so the pill reads as the primary interactive element and the dock reads as wayfinding furniture — not a CTA.</p>
+  </section>
+
+  <!-- across scenes: the real test -->
+  <section class="panel">
+    <span class="tag rec">The real test · across scenes</span>
+    <h2>Same dock, different eyebrow — and where it yields</h2>
+    <p class="sub">The pill stays put scene to scene; only the eyebrow changes. The honest edges: the Map's <i>stats</i> aren't navigation (they rehome to a corner), and Genres' <i>slider</i> can't be an eyebrow (the dock yields there).</p>
+
+    <div class="grid2 h300">
+      <!-- Hero / free scene -->
+      <div>
+        <div class="scene light">
+          <div class="lbl">The Beginning</div>
+          <div class="title">1984</div>
+          <div class="mosaic"><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <span class="railv" style="display:none"></span>
+          <div class="dock">
+            <span class="eyebrow bob">Scroll to explore <span class="ar">↓</span></span>
+            <span class="pill"><span class="dot"></span><span class="ph">Ask the archive…</span><span class="kbd">⌘K</span></span>
+          </div>
+          <span class="badge ok">✓ free lane · theme-aware (light)</span>
+        </div>
+      </div>
+
+      <!-- Map: rehomed stats + transient hint + dock -->
+      <div>
+        <div class="scene">
+          <div class="lbl">The Geography</div>
+          <div class="title">The Geography</div>
+          <div class="stats-corner">183 shows<br/>32 cities</div>
+          <div class="mosaic"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <span class="map-hint">Tap to explore the map</span>
+          <div class="dock">
+            <a class="eyebrow" href="#">The Music <span class="ar">↓</span></a>
+            <span class="pill"><span class="dot"></span><span class="ph">Ask the archive…</span><span class="kbd">⌘K</span></span>
+          </div>
+          <span class="badge ok">✓ stats → corner · hint → on-map</span>
+        </div>
+      </div>
+
+      <!-- Genres: dock YIELDS to slider -->
+      <div>
+        <div class="scene light">
+          <div class="lbl">The Music</div>
+          <div class="title">The Music</div>
+          <div class="mosaic" style="inset:74px 18px 90px"><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <div class="slider">
+            <div class="yr">1987</div>
+            <div class="track"><div class="fill"></div><div class="knob"></div></div>
+          </div>
+          <span class="railv">Ask</span>
+          <span class="badge yield">⚠ dock yields → slider owns the lane</span>
+        </div>
+      </div>
+
+      <!-- Bands: eyebrow nav -->
+      <div>
+        <div class="scene">
+          <div class="lbl">The Bands</div>
+          <div class="title">The Bands</div>
+          <div class="mosaic"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <div class="dock">
+            <a class="eyebrow bob" href="#">Keep going <span class="ar">↓</span></a>
+            <span class="pill"><span class="dot"></span><span class="ph">Ask the archive…</span><span class="kbd">⌘K</span></span>
+          </div>
+          <span class="badge ok">✓ free lane (dark)</span>
+        </div>
+      </div>
+    </div>
+    <p class="caption"><b>The degrade rule:</b> where the scene's bottom content <i>is</i> an instruction → it becomes the eyebrow. Where it's <i>information</i> (Map stats) → rehome to a corner. Where it's an <i>interactive control</i> (Genres slider) → the dock yields entirely and the rail dot carries Ask. Honest, predictable, per-scene.</p>
+  </section>
+
+  <!-- persistence behavior -->
+  <section class="panel">
+    <span class="tag rec">Persistence · pill stays, eyebrow breathes</span>
+    <h2>The synthesis: persistent anchor, adaptive eyebrow</h2>
+    <p class="sub">You wanted persistence; I worried about standing chrome. The dock resolves it: the <b>pill never leaves</b> (quiet, calm). The <b>eyebrow</b> is what responds — present when you settle, dimmed while you actively scroll, so the dock never nags during motion.</p>
+    <div class="grid2 h300">
+      <div>
+        <div class="scene venues">
+          <div class="lbl">Dwelling — you've paused</div>
+          <div class="mosaic"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <div class="dock">
+            <a class="eyebrow" href="#">The Music ↓</a>
+            <span class="pill"><span class="dot"></span><span class="ph">Ask the archive…</span><span class="kbd">⌘K</span></span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="scene venues">
+          <div class="lbl">Scrolling — in motion</div>
+          <div class="mosaic"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <div class="dock">
+            <a class="eyebrow faded" href="#">The Music ↓</a>
+            <span class="pill"><span class="dot"></span><span class="ph">Ask the archive…</span><span class="kbd">⌘K</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Left: settled — eyebrow at full strength. Right: mid-scroll — eyebrow dims to near-nothing, pill holds steady. Tapping the pill blooms it into the Spotlight overlay (see the chat mock); <code>esc</code> collapses it back to the dock.</p>
+  </section>
+
+  <!-- mobile -->
+  <section class="panel">
+    <span class="tag">Mobile · the dock is a desktop pattern</span>
+    <h2>On phones, the bottom nav already owns the floor</h2>
+    <p class="sub">A persistent dock can't share the bottom edge with the fixed bottom nav. So mobile keeps the nav-pill "Ask" entry from spec #134 — tapping opens the full-screen ask page. No floating dock on small screens.</p>
+    <div class="phone">
+      <div class="scene">
+        <div class="lbl">The Bands</div>
+        <div class="mosaic"><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <nav class="bottomnav">
+          <a href="#">Liner Notes</a>
+          <a href="#">What's Playing</a>
+          <a href="#" class="new">Ask</a>
+          <a href="#">About</a>
+        </nav>
+      </div>
+    </div>
+    <p class="caption">The eyebrow concept is desktop-first by design. Mobile's wayfinding is the snap-scroll itself plus the bottom nav, so "Ask" lives there as a highlighted peer.</p>
+  </section>
+
+  <!-- scope honesty -->
+  <section class="panel">
+    <span class="tag">Scope · eyes open</span>
+    <h2>What this actually is</h2>
+    <div class="note">
+      <b>This is a bottom-center navigation <i>system</i>, not just an Ask feature.</b> Worth naming before <code>/spec</code>:
+      <ul>
+        <li><b>Touches shipped scenes.</b> Map gets the biggest edit (rehome stats, make "tap to explore" transient). Hero/Bands are light. Genres barely changes (it yields).</li>
+        <li><b>Upside beyond Ask:</b> the bottom lane finally gets a consistent grammar instead of five improvised treatments.</li>
+        <li><b>Desktop-first:</b> mobile keeps the #134 nav-pill approach — one solution does not cover both.</li>
+        <li><b>Regression surface:</b> each scene's bottom chrome + the snap-scroll nav need a pass. Higher risk than a self-contained widget — but that's the cost of coherence.</li>
+      </ul>
+    </div>
+    <p class="caption">If this direction feels right, the next step is a <code>/spec</code> that supersedes the invocation section of #134 with this dock model — eyebrow grammar, the degrade rules, the dwell behavior, and the Spotlight bloom.</p>
+  </section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<!--
+  MOCK — "Ask the Archive" in-app chat UX exploration. Issue/PR TBD.
+  Open in a browser. NOT shippable markup — fakes the conversation + scenes so the
+  *interaction model* and use of rich metadata can be judged before any spec.
+
+  Core thesis: answers don't look like chat. Each reply is a COMPOSED EXHIBIT the
+  archive assembles from real metadata — artist photo, genre-colored spine, first-person
+  prose, deep-link show chips, venue map tile. The transcript reads like the archive
+  building little pages on demand, not a bot returning text bubbles.
+
+  Design tokens mirror src/constants/colors.ts + workers/mcp-server/src/landing.ts.
+  Artist photos + genre colors are REAL (from public/data/*-metadata.json).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mock — Ask the Archive · in-app chat UX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&display=swap" />
+<style>
+  :root{
+    --bg:#fafaf9; --ink:#1c1917; --muted:#57534e; --faint:#78716c; --line:#e7e5e4;
+    --accent:#4f46e5; --accent-soft:#eef2ff; --accent-ink:#3730a3; --card:#fff;
+    --scene:linear-gradient(160deg,#1e1b4b 0%,#3b0764 100%);
+    /* real genre colors from colors.ts */
+    --g-synthpop:#8b5cf6; --g-newwave:#1e40af; --g-alt:#5b21b6; --g-postpunk:#be123c;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .doc{max-width:980px;margin:0 auto;padding:48px 24px 90px;}
+  .kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-family:"Playfair Display",Georgia,serif;font-weight:500;font-size:40px;letter-spacing:-.02em;margin:6px 0 10px;}
+  .doc>header p{color:var(--muted);font-size:17px;max-width:64ch;margin:0 0 8px;}
+  .legend{font-size:13.5px;color:var(--faint);margin-top:10px;}
+  .legend b{color:var(--ink);}
+
+  .panel{margin-top:56px;}
+  .panel>h2{font-family:"Playfair Display",Georgia,serif;font-weight:500;font-size:25px;margin:0 0 4px;}
+  .panel>.sub{color:var(--muted);font-size:15.5px;margin:0 0 18px;max-width:66ch;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);border-radius:999px;padding:3px 10px;margin-bottom:10px;}
+  .tag.rec{color:#065f46;background:#d1fae5;}
+
+  .frame{position:relative;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04),0 18px 40px rgba(28,25,23,.07);}
+  .frame.dark{background:var(--scene);}
+
+  /* ---- shared: the "ask" canvas chrome ---- */
+  .askbar{display:flex;align-items:center;gap:10px;padding:16px 22px;border-bottom:1px solid rgba(255,255,255,.1);}
+  .askbar .back{color:rgba(255,255,255,.55);text-decoration:none;font-size:13.5px;}
+  .askbar .mark{color:#fff;font-weight:600;font-size:14px;letter-spacing:.02em;display:flex;align-items:center;gap:8px;}
+  .askbar .live{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px 1px rgba(99,102,241,.9);}
+  .canvas{padding:30px 30px 26px;}
+
+  /* opener */
+  .opener{text-align:center;max-width:46ch;margin:14px auto 26px;}
+  .opener h3{font-family:"Playfair Display",Georgia,serif;font-weight:500;font-size:30px;line-height:1.12;color:#fff;margin:0 0 8px;}
+  .opener p{color:rgba(255,255,255,.62);font-size:15px;margin:0 0 18px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+  .chip{font-size:13px;color:rgba(255,255,255,.82);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:7px 14px;cursor:pointer;white-space:nowrap;}
+  .chip:hover{background:rgba(255,255,255,.13);}
+  .chip .d{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:1px;}
+
+  /* the user's question — quiet, not a bubble */
+  .ask-q{max-width:680px;margin:30px auto 14px;display:flex;gap:12px;align-items:flex-start;}
+  .ask-q .you{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);font-weight:600;padding-top:3px;white-space:nowrap;}
+  .ask-q .q{font-family:"Playfair Display",Georgia,serif;font-size:21px;color:rgba(255,255,255,.95);font-style:italic;line-height:1.35;}
+
+  /* THE HERO: composed answer exhibit */
+  .exhibit{max-width:680px;margin:0 auto 30px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;display:flex;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+  .exhibit .spine{width:5px;flex:none;}
+  .exhibit .body{padding:20px 22px;flex:1;min-width:0;}
+  .ex-head{display:flex;gap:14px;align-items:center;margin-bottom:12px;}
+  .ex-photo{width:54px;height:54px;border-radius:11px;flex:none;background-size:cover;background-position:center;box-shadow:0 0 0 2px rgba(255,255,255,.12), 0 0 0 4px rgba(0,0,0,.2);}
+  .ex-title{min-width:0;}
+  .ex-title .n{font-family:"Playfair Display",Georgia,serif;font-size:21px;color:#fff;line-height:1.1;}
+  .ex-title .meta{font-size:12.5px;color:rgba(255,255,255,.55);margin-top:3px;}
+  .ex-title .meta .gd{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:0;}
+  .ex-prose{color:rgba(255,255,255,.82);font-size:15px;line-height:1.6;margin:0 0 16px;}
+  .ex-prose .hi{color:#fff;font-weight:600;}
+
+  /* show chips — deep-links into the real scenes */
+  .shows{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;}
+  .show{font-size:12.5px;color:rgba(255,255,255,.85);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:5px 10px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;}
+  .show:hover{background:rgba(255,255,255,.12);}
+  .show .yr{font-variant-numeric:tabular-nums;font-weight:600;color:#fff;}
+  .show .vn{color:rgba(255,255,255,.6);}
+  .deep{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;color:#c7d2fe;text-decoration:none;}
+  .deep:hover{color:#fff;}
+  .deep .arr{transition:transform .15s;}
+  .deep:hover .arr{transform:translateX(3px);}
+
+  /* venue exhibit with map tile */
+  .map{height:120px;border-radius:10px;margin-bottom:14px;position:relative;overflow:hidden;
+    background:linear-gradient(135deg,#312e81,#4c1d95);border:1px solid rgba(255,255,255,.1);}
+  .map::before{content:"";position:absolute;inset:0;opacity:.25;
+    background-image:linear-gradient(rgba(255,255,255,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.18) 1px,transparent 1px);background-size:26px 26px;}
+  .map .pin{position:absolute;left:50%;top:52%;transform:translate(-50%,-100%);width:16px;height:16px;border-radius:50% 50% 50% 0;background:var(--accent);rotate:-45deg;box-shadow:0 4px 10px rgba(0,0,0,.4);}
+  .map .pin::after{content:"";position:absolute;left:4px;top:4px;width:8px;height:8px;border-radius:50%;background:#fff;}
+  .map .cap{position:absolute;left:12px;bottom:10px;font-size:12px;color:rgba(255,255,255,.85);text-shadow:0 1px 4px rgba(0,0,0,.6);rotate:0deg;}
+
+  /* mini stat strip */
+  .stats{display:flex;gap:18px;margin-bottom:14px;}
+  .stat .v{font-family:"Playfair Display",Georgia,serif;font-size:24px;color:#fff;line-height:1;}
+  .stat .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:4px;}
+
+  /* input dock */
+  .dock{max-width:680px;margin:6px auto 0;display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 8px 8px 20px;}
+  .dock input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:15px;font-family:inherit;}
+  .dock input::placeholder{color:rgba(255,255,255,.4);}
+  .dock .send{width:38px;height:38px;border-radius:50%;background:#fff;color:#1e1b4b;border:none;font-size:17px;cursor:pointer;flex:none;}
+
+  /* ---- Concept B: command-palette takeover ---- */
+  .scene-stub{height:520px;position:relative;background:var(--bg);}
+  .scene-stub .lbl{position:absolute;top:20px;left:24px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:600;}
+  .scene-stub .mosaic{position:absolute;inset:60px 28px 28px;display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:1fr;gap:8px;}
+  .scene-stub .mosaic div{background:#ece9e4;border-radius:6px;}
+  .scrim{position:absolute;inset:0;background:rgba(15,12,40,.55);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:grid;place-items:start center;padding-top:64px;}
+  .palette{width:min(560px,92%);background:rgba(30,27,75,.92);border:1px solid rgba(255,255,255,.16);border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.5);overflow:hidden;}
+  .palette .pdock{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.1);}
+  .palette .pdock .k{font-size:18px;color:rgba(255,255,255,.5);}
+  .palette .pdock input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:17px;font-family:inherit;}
+  .palette .pdock .esc{font-size:11px;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:2px 7px;}
+  .palette .phint{padding:12px 18px 16px;}
+  .palette .phint .h{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:9px;}
+  .pconvo{max-height:300px;overflow:auto;padding:16px 16px 6px;}
+  .pconvo .ask-q{margin:0 0 12px;max-width:none;}
+  .pconvo .ask-q .q{font-size:18px;}
+  .pconvo .exhibit{max-width:none;margin:0;}
+  .pfoot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px;border-top:1px solid rgba(255,255,255,.1);}
+  .pfoot .hint{font-size:12px;color:rgba(255,255,255,.4);}
+  .pfoot .full{font-size:13px;font-weight:600;color:#c7d2fe;text-decoration:none;}
+  .pfoot .full:hover{color:#fff;}
+
+  /* ---- invocation cues ---- */
+  .invoke-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:760px){.invoke-grid{grid-template-columns:1fr;}}
+  .demo{position:relative;height:230px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--scene);}
+  .demo .dlabel{position:absolute;top:14px;left:16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:600;z-index:2;}
+  .demo .dmosaic{position:absolute;inset:42px 16px 16px;display:grid;grid-template-columns:repeat(5,1fr);grid-auto-rows:1fr;gap:7px;opacity:.4;}
+  .demo .dmosaic div{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:5px;}
+  .demo .democap{position:absolute;left:0;right:0;bottom:0;text-align:center;font-size:11.5px;color:rgba(255,255,255,.5);padding:7px;background:rgba(0,0,0,.25);}
+
+  .askpill{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:12px;background:rgba(20,18,50,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:10px 10px 10px 16px;box-shadow:0 14px 34px rgba(0,0,0,.4);}
+  .askpill .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 9px 1px rgba(99,102,241,.95);flex:none;}
+  .askpill .ph{font-size:14px;color:rgba(255,255,255,.62);white-space:nowrap;}
+  .askpill .kbd{font-size:11px;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.24);border-radius:6px;padding:3px 7px;font-family:ui-monospace,Menlo,monospace;}
+
+  .railv{position:absolute;top:50%;right:20px;transform:translateY(-50%);writing-mode:vertical-rl;text-orientation:mixed;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:#fff;padding-left:10px;}
+  .railv::after{content:"";position:absolute;left:-2px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px 2px rgba(99,102,241,.95);}
+  .railhint{position:absolute;top:50%;right:46px;transform:translateY(-50%);display:inline-flex;align-items:center;gap:9px;background:rgba(20,18,50,.72);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:8px 12px;font-size:13px;color:rgba(255,255,255,.85);white-space:nowrap;box-shadow:0 10px 26px rgba(0,0,0,.4);}
+  .railhint .kbd{font-size:11px;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.24);border-radius:6px;padding:2px 6px;font-family:ui-monospace,Menlo,monospace;}
+
+  /* bloom filmstrip */
+  .film{display:flex;gap:10px;align-items:center;margin-top:18px;flex-wrap:wrap;}
+  .film .arrow{color:var(--faint);font-size:22px;line-height:1;}
+  .ff{position:relative;width:190px;height:118px;border-radius:10px;overflow:hidden;background:var(--scene);border:1px solid var(--line);}
+  .ff .fcap{position:absolute;top:8px;left:10px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:600;}
+  .ff .shape{position:absolute;left:50%;transform:translateX(-50%);background:rgba(20,18,50,.72);border:1px solid rgba(255,255,255,.22);box-shadow:0 8px 20px rgba(0,0,0,.4);}
+  .ff .s1{bottom:14px;width:120px;height:30px;border-radius:999px;}
+  .ff .s2{bottom:24px;width:150px;height:54px;border-radius:16px;}
+  .ff .s3{top:24px;width:164px;height:74px;border-radius:14px;}
+  .ff .s3::before{content:"";position:absolute;left:14px;right:14px;top:16px;height:9px;border-radius:4px;background:rgba(255,255,255,.18);}
+  .ff .s3::after{content:"";position:absolute;left:14px;top:40px;width:90px;height:7px;border-radius:4px;background:rgba(255,255,255,.1);}
+
+  /* persistence + collisions */
+  .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  @media(max-width:760px){.trio{grid-template-columns:1fr;}}
+  .trio .demo{height:210px;}
+  .demo.bad{outline:2px dashed #f87171;outline-offset:-2px;}
+  .navpill{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;background:rgba(17,24,39,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:8px 15px;font-size:12.5px;color:rgba(255,255,255,.72);white-space:nowrap;}
+  .demo .askpill.low{bottom:18px;}
+  .demo .askpill.sm{padding:8px 8px 8px 13px;}
+  .demo .askpill.sm .ph{font-size:12.5px;}
+  .badge{position:absolute;top:12px;right:12px;font-size:10.5px;font-weight:700;letter-spacing:.06em;border-radius:6px;padding:3px 8px;z-index:5;}
+  .badge.x{background:#fee2e2;color:#991b1b;}
+  .badge.ok{background:#d1fae5;color:#065f46;}
+  .seedlabel{position:absolute;right:44px;top:50%;transform:translateY(-50%);font-size:11.5px;color:rgba(255,255,255,.7);background:rgba(20,18,50,.7);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:5px 10px;white-space:nowrap;}
+
+  .caption{font-size:13.5px;color:var(--faint);margin-top:14px;padding-left:14px;border-left:2px solid var(--accent-soft);max-width:70ch;}
+  .caption b{color:var(--ink);}
+
+  /* vocabulary legend */
+  .vocab{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:18px;}
+  .vocab .v{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff;}
+  .vocab .v .t{font-weight:600;font-size:14px;margin-bottom:3px;}
+  .vocab .v .d{font-size:12.5px;color:var(--faint);}
+  .vocab .v .src{font-size:11px;color:var(--accent);margin-top:6px;font-family:ui-monospace,Menlo,monospace;}
+
+  .note{font-size:13.5px;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:12px;padding:16px 18px;margin-top:16px;}
+  .note b{color:var(--accent-ink);}
+  .note .x{color:#991b1b;font-weight:700;}
+  .note ul{margin:8px 0 0;padding-left:20px;}
+  .note li{margin:4px 0;}
+</style>
+</head>
+<body>
+<main class="doc">
+  <header>
+    <div class="kicker">Mock · UX exploration</div>
+    <h1>Ask the Archive — in the site itself</h1>
+    <p>For the 99% of visitors who'll never set up an MCP connector. The bet: an answer should never look like a <i>chat bubble from a bot</i> — it should look like the archive <b>composing a little exhibit</b> for your question, out of the same photos, colors, and links the rest of the site is made of.</p>
+    <p class="legend"><b>Real in this mock:</b> artist photos · genre colors · deep-link targets — all pulled from <code>public/data/*-metadata.json</code>. Faked: the conversation + scene backdrops.</p>
+  </header>
+
+  <!-- ============ The answer "exhibit" — the core idea ============ -->
+  <section class="panel">
+    <span class="tag rec">The core idea · the answer exhibit</span>
+    <h2>An answer is a composed exhibit, not a text reply</h2>
+    <p class="sub">Every reply is assembled from real metadata: a genre-colored spine, the artist's photo, prose in the archive's first-person voice, deep-link show chips, and a way into the real scene. Two of these stacked already <i>feel</i> like the site — because they're made of the site.</p>
+
+    <div class="frame dark">
+      <div class="askbar">
+        <span class="mark"><span class="live"></span> Ask the Archive</span>
+      </div>
+      <div class="canvas">
+
+        <!-- exchange 1: artist -->
+        <div class="ask-q">
+          <span class="you">You</span>
+          <span class="q">"What was my first Depeche Mode show?"</span>
+        </div>
+        <div class="exhibit">
+          <div class="spine" style="background:var(--g-synthpop)"></div>
+          <div class="body">
+            <div class="ex-head">
+              <div class="ex-photo" style="background-image:url('https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg');background-color:var(--g-synthpop)"></div>
+              <div class="ex-title">
+                <div class="n">Depeche Mode</div>
+                <div class="meta"><span class="gd" style="background:var(--g-synthpop)"></span>Synthpop · 7 shows · 1985–2017</div>
+              </div>
+            </div>
+            <p class="ex-prose">Your first was <span class="hi">March 31st, 1985 — Irvine Meadows</span>, the <i>Some Great Reward</i> tour. A spring night under that amphitheater shell, before the band became the stadium act they'd grow into. You'd go back six more times across the next three decades.</p>
+            <div class="shows">
+              <a class="show" href="#"><span class="yr">1985</span> <span class="vn">Irvine Meadows</span></a>
+              <a class="show" href="#"><span class="yr">1988</span> <span class="vn">Rose Bowl</span></a>
+              <a class="show" href="#"><span class="yr">1990</span> <span class="vn">Dodger Stadium</span></a>
+              <a class="show" href="#"><span class="yr">+4 more</span></a>
+            </div>
+            <a class="deep" href="#">See all 7 Depeche Mode shows on the site <span class="arr">→</span></a>
+          </div>
+        </div>
+
+        <!-- exchange 2: venue, with map tile -->
+        <div class="ask-q">
+          <span class="you">You</span>
+          <span class="q">"Tell me about Irvine Meadows."</span>
+        </div>
+        <div class="exhibit">
+          <div class="spine" style="background:var(--g-newwave)"></div>
+          <div class="body">
+            <div class="map">
+              <div class="pin"></div>
+              <div class="cap">Irvine Meadows · Irvine, California</div>
+            </div>
+            <div class="stats">
+              <div class="stat"><div class="v">23</div><div class="k">Shows</div></div>
+              <div class="stat"><div class="v">1984</div><div class="k">First</div></div>
+              <div class="stat"><div class="v">'17</div><div class="k">Closed</div></div>
+            </div>
+            <p class="ex-prose">My amphitheater of the '80s — torn down in 2017, but 23 nights of mine happened on that hillside. Adam Ant opened it for me in April '84; I kept coming back through the New Wave years.</p>
+            <a class="deep" href="#">Open Irvine Meadows on the map <span class="arr">→</span></a>
+          </div>
+        </div>
+
+        <div class="dock">
+          <input placeholder="Ask about a band, a venue, a year… or say &ldquo;surprise me&rdquo;" />
+          <button class="send">↑</button>
+        </div>
+
+      </div>
+    </div>
+    <p class="caption">The transcript is the user's questions (quiet, italic, set like pull-quotes) interleaved with <b>exhibits</b> the archive composes. No avatars, no "typing…" dots, no bot persona — just the archive's voice and its own materials. Every chip and link <b>navigates into the real scenes</b> — the loop Claude.ai can't close.</p>
+  </section>
+
+  <!-- ============ Container A ============ -->
+  <section class="panel">
+    <span class="tag rec">Container A · full-canvas /ask</span>
+    <h2>The opener: a page, not a popup</h2>
+    <p class="sub">The <code>/ask</code> destination opens on the dark coda gradient (continuity from the end-of-scroll invitation). Suggested prompts do the heavy lifting — they teach a non-technical visitor what's even askable, and solve the blank-box freeze.</p>
+    <div class="frame dark">
+      <div class="askbar">
+        <a class="back" href="#">‹ Back to the archive</a>
+        <span class="mark" style="margin-left:auto"><span class="live"></span> Ask the Archive</span>
+      </div>
+      <div class="canvas">
+        <div class="opener">
+          <h3>Forty years of shows.<br/>Ask me anything.</h3>
+          <p>I count 183 nights, 256 artists, 79 venues — from 1984 to now. Where do you want to start?</p>
+          <div class="chips">
+            <span class="chip"><span class="d" style="background:var(--g-synthpop)"></span>My history with Depeche Mode</span>
+            <span class="chip"><span class="d" style="background:var(--g-newwave)"></span>What did I see in 1985?</span>
+            <span class="chip"><span class="d" style="background:var(--g-postpunk)"></span>Most-seen bands</span>
+            <span class="chip">✨ Surprise me</span>
+          </div>
+        </div>
+        <div class="dock">
+          <input placeholder="Ask about a band, a venue, a year…" />
+          <button class="send">↑</button>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Best for the deliberate visitor who clicked "Ask" from the nav or the end-of-scroll card. It's a destination you <b>arrive at</b> — full attention, room for the exhibits to breathe.</p>
+  </section>
+
+  <!-- ============ Container B ============ -->
+  <section class="panel">
+    <span class="tag">Container B · command-palette takeover</span>
+    <h2>Invoke from anywhere — ⌘K, not a corner bubble</h2>
+    <p class="sub">A focused overlay (think Spotlight) summoned from the nav or a keystroke, over whatever scene you're on. Dims the scene, takes center stage, dismisses with Esc back to exactly where you were. Same exhibits render inline.</p>
+    <div class="frame">
+      <div class="scene-stub">
+        <div class="lbl">Artists</div>
+        <div class="mosaic"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <div class="scrim">
+          <div class="palette">
+            <div class="pdock">
+              <span class="k">⌘K</span>
+              <input placeholder="Ask the archive…" value="who did I see the most?" />
+              <span class="esc">esc</span>
+            </div>
+            <div class="phint">
+              <div class="h">Try</div>
+              <div class="chips" style="justify-content:flex-start">
+                <span class="chip"><span class="d" style="background:var(--g-newwave)"></span>Shows at Irvine Meadows</span>
+                <span class="chip">✨ Surprise me</span>
+                <span class="chip">My first-ever show</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Best for the explorer already <b>inside</b> a scene who gets curious — no context switch, no leaving the view. Trade-off: less room than the full page, so long exhibits scroll within the palette. <b>A &amp; B aren't exclusive</b> — same engine, same exhibits; ⌘K could even open the full <code>/ask</code> page on mobile where overlays are cramped.</p>
+  </section>
+
+  <!-- ============ Container B — in conversation (the grown lightbox) ============ -->
+  <section class="panel">
+    <span class="tag">Container B · in conversation</span>
+    <h2>The lightbox grows — and the scene never leaves</h2>
+    <p class="sub">Same overlay, after the first question. It expanded from the command bar to hold the exhibit; the Artists scene is still mounted, dimmed behind you, so <code>esc</code> returns you to the exact spot. Past a couple of exchanges it caps its height, scrolls inside, and offers a one-way door to the full page.</p>
+    <div class="frame">
+      <div class="scene-stub">
+        <div class="lbl">Artists</div>
+        <div class="mosaic"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <div class="scrim">
+          <div class="palette">
+            <div class="pdock">
+              <span class="k">⌘K</span>
+              <input value="my history with Depeche Mode" />
+              <span class="esc">esc</span>
+            </div>
+            <div class="pconvo">
+              <div class="ask-q">
+                <span class="you">You</span>
+                <span class="q">"my history with Depeche Mode"</span>
+              </div>
+              <div class="exhibit">
+                <div class="spine" style="background:var(--g-synthpop)"></div>
+                <div class="body">
+                  <div class="ex-head">
+                    <div class="ex-photo" style="background-image:url('https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg');background-color:var(--g-synthpop)"></div>
+                    <div class="ex-title">
+                      <div class="n">Depeche Mode</div>
+                      <div class="meta"><span class="gd" style="background:var(--g-synthpop)"></span>Synthpop · 7 shows · 1985–2017</div>
+                    </div>
+                  </div>
+                  <p class="ex-prose">Seven nights across three decades, from <span class="hi">Irvine Meadows in '85</span> to the stadiums later on. The band you kept coming back to.</p>
+                  <div class="shows">
+                    <a class="show" href="#"><span class="yr">1985</span> <span class="vn">Irvine Meadows</span></a>
+                    <a class="show" href="#"><span class="yr">1988</span> <span class="vn">Rose Bowl</span></a>
+                    <a class="show" href="#"><span class="yr">+5 more</span></a>
+                  </div>
+                  <a class="deep" href="#">See all 7 on the site <span class="arr">→</span></a>
+                </div>
+              </div>
+            </div>
+            <div class="pfoot">
+              <span class="hint">Ask another, or…</span>
+              <a class="full" href="#">Open full view ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">This is the answer to "is the whole experience a lightbox?" — <b>yes, and it's one element that morphs</b>: command bar → reading surface. The scene behind is dimmed, not gone. <b>"Open full view ↗"</b> promotes this same conversation into Container A when it outgrows the box. Note: the suggested-prompt chips are <b>gone</b> here — they vanish the moment the first exhibit lands, reclaiming the real estate, and only reappear if you clear back to empty.</p>
+  </section>
+
+  <!-- ============ Invoking it · the visible cue ============ -->
+  <section class="panel">
+    <span class="tag rec">Invoking it · the cue, not just the keystroke</span>
+    <h2>⌘K is invisible to the people this is for</h2>
+    <p class="sub">A keyboard-only trigger would hide the feature from exactly the non-technical visitor it exists for. So the keystroke is the accelerant, never the doorway. Three tiers of cue, loudest to quietest:</p>
+
+    <div class="invoke-grid">
+      <!-- explicit "type here" cue -->
+      <div class="demo">
+        <div class="dlabel">Any scene</div>
+        <div class="dmosaic"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <div class="askpill">
+          <span class="dot"></span>
+          <span class="ph">Ask the archive…</span>
+          <span class="kbd">⌘K</span>
+        </div>
+        <div class="democap"><b>1 · The ask-pill</b> — a slim bar, not a bubble. Reads "type here" to anyone. Low and quiet; fades while you read a scene.</div>
+      </div>
+
+      <!-- ambient persistent cue -->
+      <div class="demo">
+        <div class="dlabel">Desktop right rail</div>
+        <div class="dmosaic"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <span class="railhint"><span>Ask the archive</span><span class="kbd">⌘K</span></span>
+        <span class="railv">Ask the Archive</span>
+        <div class="democap"><b>2 · The rail's "live" dot</b> (from spec #134) — always present, glowing indigo. Hover blooms the hint pill. Reuses existing chrome.</div>
+      </div>
+    </div>
+
+    <p class="caption" style="margin-bottom:8px"><b>3 · The earned moment</b> — the end-of-scroll invitation card (already in spec #134) is the loud, once-only cue at the natural finish line. And the power keys, free on top: <b>⌘K</b> from anywhere, <b>/</b> to focus like a search box.</p>
+
+    <h2 style="font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:19px;margin:24px 0 6px;">The bloom — the cue <i>becomes</i> the Spotlight</h2>
+    <p class="sub">The microinteraction is itself a teacher: tap the slim pill and it expands in place into the centered overlay, so you see exactly where the surface came from (and where <code>esc</code> sends it back).</p>
+    <div class="film">
+      <div class="ff"><span class="fcap">Rest</span><span class="shape s1"></span></div>
+      <span class="arrow">→</span>
+      <div class="ff"><span class="fcap">Expanding</span><span class="shape s2"></span></div>
+      <span class="arrow">→</span>
+      <div class="ff"><span class="fcap">Spotlight</span><span class="shape s3"></span></div>
+    </div>
+    <p class="caption">A shared-element transition: the pill is the seed, the overlay is the bloom — one object, not two. Honors <code>prefers-reduced-motion</code> (cross-fade instead of scale).</p>
+  </section>
+
+  <!-- ============ Persistence & collisions ============ -->
+  <section class="panel">
+    <span class="tag rec">Persistence · dwell-reveal, scene-deferential</span>
+    <h2>Bottom-center is a contested lane — so the pill yields</h2>
+    <p class="sub">5 of 6 scenes already own bottom-center (the Map stacks a nav pill + stats + hint there). A pill nailed to the screen would collide <i>and</i> create two competing "primary" pills. So it's present-but-deferential: collapsed to the rail dot by default, blooming bottom-center only on a scroll-pause, and only where the lane is free.</p>
+    <div class="trio">
+      <!-- BAD: naive persistent on the map -->
+      <div class="demo bad">
+        <span class="badge x">✕ collision</span>
+        <div class="dlabel">Map · The Geography</div>
+        <div class="dmosaic" style="opacity:.25"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <span class="navpill">The Music ↓</span>
+        <span class="askpill low sm"><span class="dot"></span><span class="ph">Ask the archive…</span><span class="kbd">⌘K</span></span>
+        <div class="democap">Naive always-on pill lands on the scene's own forward-nav pill. Two primaries, one lane.</div>
+      </div>
+      <!-- GOOD: free scene -->
+      <div class="demo">
+        <span class="badge ok">✓ free lane</span>
+        <div class="dlabel">Venues</div>
+        <div class="dmosaic"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <span class="askpill sm"><span class="dot"></span><span class="ph">Ask the archive…</span><span class="kbd">⌘K</span></span>
+        <div class="democap">Bottom-center is empty here, so the bar takes it — revealed after a scroll-pause, gone while scrolling.</div>
+      </div>
+      <!-- GOOD: contested scene → collapse to dot -->
+      <div class="demo">
+        <span class="badge ok">✓ yields</span>
+        <div class="dlabel">Map · contested</div>
+        <div class="dmosaic" style="opacity:.25"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <span class="navpill">The Music ↓</span>
+        <span class="seedlabel">Ask · ⌘K</span>
+        <span class="railv">Ask</span>
+        <div class="democap">On contested scenes the bar stays collapsed to the rail dot (the seed). Hover surfaces the hint; the scene keeps its lane.</div>
+      </div>
+    </div>
+    <p class="caption"><b>The model:</b> standing cue = the rail's live dot (desktop) / nav "Ask" (mobile), always there for ~free. The full bar is <b>dwell-revealed</b> (blooms on scroll-pause, recedes on motion) and <b>scene-deferential</b> (collapses to the dot on contested scenes). Discoverability without permanent chrome: the dot is always visible, a <b>one-time</b> reveal greets first-time visitors, and the end-of-scroll card guarantees one loud exposure.</p>
+  </section>
+
+  <!-- ============ Rich-data vocabulary ============ -->
+  <section class="panel">
+    <span class="tag">The vocabulary · what the metadata realistically buys us</span>
+    <h2>The atoms an exhibit is built from</h2>
+    <p class="sub">Everything below already exists in the data. This is the whole kit — deliberately small, so exhibits stay composed rather than cluttered.</p>
+    <div class="vocab">
+      <div class="v"><div class="t">Artist photo</div><div class="d">Thumbnail with a genre-colored ring.</div><div class="src">headlinerImage</div></div>
+      <div class="v"><div class="t">Genre spine + dot</div><div class="d">The site's color language, reused as accent.</div><div class="src">GENRE_COLORS</div></div>
+      <div class="v"><div class="t">Show chip</div><div class="d">Year · venue, deep-linked into the scene.</div><div class="src">/?scene=…</div></div>
+      <div class="v"><div class="t">Map tile</div><div class="d">Venue pin from real coordinates.</div><div class="src">location.lat/lng</div></div>
+      <div class="v"><div class="t">Stat strip</div><div class="d">Counts / first / last — the deterministic truth.</div><div class="src">tool output</div></div>
+      <div class="v"><div class="t">Deep-link</div><div class="d">"See all N on the site →" — ends in navigation.</div><div class="src">links footer</div></div>
+    </div>
+  </section>
+
+  <!-- ============ guardrails ============ -->
+  <section class="panel">
+    <span class="tag">Restraint · what this deliberately is not</span>
+    <h2>Where we stop, so it stays craft</h2>
+    <div class="note">
+      <b>Deliberately NOT:</b>
+      <ul>
+        <li><span class="x">✕</span> A persistent bottom-right bubble following you around every scene.</li>
+        <li><span class="x">✕</span> A bot persona, avatar, or "typing…" theater. The archive has a voice, not a mascot.</li>
+        <li><span class="x">✕</span> Live-steering the canvas (flying the map, filtering the mosaic <i>as you type</i>) — that's the tempting over-build. Exhibits <b>link into</b> the scenes; they don't puppet them. <b>Concept C, a later swing if it earns it.</b></li>
+        <li><span class="x">✕</span> Free-form answers ungrounded in tools — every stat in an exhibit comes from the deterministic tools, so the archive's voice never invents a number.</li>
+      </ul>
+    </div>
+    <p class="caption">Pick a container (A, B, or "both, shared engine"), pick whether exhibits scroll inline or as cards — then it's ready for <code>/spec</code>.</p>
+  </section>
+
+</main>
+</body>
+</html>
