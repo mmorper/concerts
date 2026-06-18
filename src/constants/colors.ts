@@ -30,6 +30,9 @@ export const GENRE_COLORS: Record<string, string> = {
   'Hip Hop': '#ea580c',         // Bright orange (street, bold)
   'Rap': '#f97316',             // Orange (hip hop variant)
   'R&B': '#a855f7',             // Purple (smooth, soulful)
+  'Alternative Rock': '#6d28d9', // Violet (sibling of Alternative)
+  'Punk Rock': '#b91c1c',       // Bright blood red (sibling of Punk)
+  'Funk': '#9333ea',            // Vivid purple (groove, soul)
 
   // Rare genres (collapsed to Other in treemap)
   'Electronic': '#06b6d4',      // Bright cyan

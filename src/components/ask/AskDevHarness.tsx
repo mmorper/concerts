@@ -11,11 +11,20 @@ import { useArchiveData } from '@/hooks/useArchiveData'
 import { getSessionToken, setSessionToken, getStatus } from '@/services/askArchive'
 import { AskExhibit } from './AskExhibit'
 
-const SUGGESTIONS = [
-  'Tell me about Depeche Mode',
-  'What shows did you see in 1998?',
-  'Tell me about Irvine Meadows',
-  'Surprise me with a show',
+// One prompt per category — covers every exhibit kind plus the two grounding cases the
+// pressure test flagged (Irvine Meadows = tool-skip; Peter = disambiguation never fired).
+const BATTERY: { label: string; q: string }[] = [
+  { label: 'Artist', q: 'Tell me about Depeche Mode' },
+  { label: 'Artist · not in archive', q: 'Tell me about Taylor Swift' },
+  { label: 'Venue', q: 'Tell me about Irvine Meadows' },
+  { label: 'Venue · one-show', q: 'Tell me about the Greek Theatre' },
+  { label: 'List · year', q: 'What shows did you see in 1998?' },
+  { label: 'List · genre', q: 'Show me your punk shows' },
+  { label: 'On this day', q: 'What concerts happened on June 4?' },
+  { label: 'Disambiguation', q: 'I\'m looking for Peter, the band' },
+  { label: 'Serendipity', q: 'Surprise me with a show' },
+  { label: 'Top songs', q: 'What songs have you heard most often?' },
+  { label: 'Off-topic', q: 'Write me a python function' },
 ]
 
 export function AskDevHarness() {
@@ -39,6 +48,14 @@ export function AskDevHarness() {
     ask(q)
   }
 
+  // Fire every category prompt in sequence so all card kinds stack for a visual/UX audit.
+  const runBattery = async () => {
+    if (busy) return
+    for (const { q } of BATTERY) {
+      await ask(q)
+    }
+  }
+
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(160deg,#0c0a1f 0%,#1a103a 100%)', color: '#fff', fontFamily: 'Inter, system-ui, sans-serif' }}>
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '28px 20px 140px' }}>
@@ -53,13 +70,25 @@ export function AskDevHarness() {
 
         {!hasSession && <SessionGate onSet={() => setHasSession(true)} />}
 
-        {exchanges.length === 0 && hasSession && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
-            {SUGGESTIONS.map((s) => (
-              <button key={s} onClick={() => submit(s)} className="chip" style={{ cursor: 'pointer', background: 'rgba(255,255,255,.07)', border: '1px solid rgba(255,255,255,.16)', color: 'rgba(255,255,255,.82)', borderRadius: 999, padding: '8px 15px', fontSize: 13 }}>
-                {s}
+        {hasSession && (
+          <div style={{ marginBottom: 24 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+              <button
+                onClick={runBattery}
+                disabled={busy}
+                style={{ background: busy ? 'rgba(255,255,255,.15)' : 'rgba(52,211,153,.18)', border: '1px solid rgba(52,211,153,.5)', color: '#fff', borderRadius: 8, padding: '7px 14px', fontSize: 13, cursor: busy ? 'default' : 'pointer' }}
+              >
+                ▶ Run full battery ({BATTERY.length})
               </button>
-            ))}
+              <span style={{ fontSize: 12, color: 'rgba(255,255,255,.4)' }}>every category, in order — for the design/UX audit</span>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              {BATTERY.map((b) => (
+                <button key={b.label} onClick={() => submit(b.q)} disabled={busy} title={b.q} className="chip" style={{ cursor: busy ? 'default' : 'pointer', background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.14)', color: 'rgba(255,255,255,.7)', borderRadius: 999, padding: '6px 13px', fontSize: 12.5 }}>
+                  {b.label}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
