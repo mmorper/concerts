@@ -9,13 +9,6 @@ import { useAsk } from './AskProvider'
 import { AskConversation } from './AskConversation'
 import { analytics } from '@/services/analytics'
 
-const SUGGESTED = [
-  'Tell me about Depeche Mode',
-  'What shows did you see in 1998?',
-  'Surprise me',
-  'Most-played songs',
-]
-
 export function AskSpotlight() {
   const { open, close, exchanges, busy, ask, archive } = useAsk()
   const navigate = useNavigate()
@@ -89,7 +82,6 @@ export function AskSpotlight() {
           busy={busy}
           archive={archive}
           onAsk={ask}
-          suggestedPrompts={SUGGESTED}
           autoFocus
           inputRef={inputRef}
         />

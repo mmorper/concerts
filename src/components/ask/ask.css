@@ -104,6 +104,15 @@
 .stat .k { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); margin-top: 4px; }
 
 .ask-consulting { font-size: 13px; color: rgba(255, 255, 255, 0.5); font-style: italic; margin: 2px 0 10px; }
+
+/* Minimal "composing an answer" cue — shown in place of an empty card while the answer is being
+   composed; the control grows by just this row, then the real exhibit hydrates in. */
+.ask-loading { display: flex; gap: 6px; align-items: center; padding: 12px 4px 18px; }
+.ask-loading-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 255, 255, 0.5); animation: ask-pulse 1.2s ease-in-out infinite; }
+.ask-loading-dot:nth-child(2) { animation-delay: 0.15s; }
+.ask-loading-dot:nth-child(3) { animation-delay: 0.3s; }
+@keyframes ask-pulse { 0%, 100% { opacity: 0.25; transform: translateY(0); } 50% { opacity: 0.9; transform: translateY(-2px); } }
+@media (prefers-reduced-motion: reduce) { .ask-loading-dot { animation: none; opacity: 0.5; } }
 .ask-list-title { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); margin-bottom: 12px; }
 .ask-row { display: flex; gap: 10px; align-items: baseline; padding: 7px 0; border-top: 1px solid rgba(255, 255, 255, 0.07); text-decoration: none; }
 .ask-row:first-of-type { border-top: none; }
