@@ -30,8 +30,9 @@ function App() {
       <Route path="/whats-playing" element={<WhatsPlayingPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/how-it-works" element={<CascadePage />} />
-      {/* Dev-only: #140 exhibit harness (no shipped UI yet; containers are #141) */}
-      <Route path="/ask-dev" element={<AskDevHarness />} />
+      {/* Dev-only: #140 exhibit harness (no shipped UI yet; containers are #141). Gated to dev
+          builds — in prod it can't function (no Turnstile/token path), so it 404s instead. */}
+      {import.meta.env.DEV && <Route path="/ask-dev" element={<AskDevHarness />} />}
       {/* Legacy redirects */}
       <Route path="/cascade" element={<Navigate to="/how-it-works" replace />} />
       <Route path="/changelog" element={<WhatsPlayingPage />} />
