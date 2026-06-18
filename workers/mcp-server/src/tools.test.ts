@@ -188,19 +188,19 @@ describe("get_archive_info", () => {
 
 describe("search_concerts", () => {
   it("single result", () => {
-    const text = searchConcerts(archive(), { artist: "Adam Ant" });
+    const { text } = searchConcerts(archive(), { artist: "Adam Ant" });
     expect(text).toContain("[concert-1]");
     expect(text).toMatchSnapshot();
   });
 
   it("caps results and says so honestly", () => {
-    const text = searchConcerts(archive(), { artist: "Social Distortion", limit: 2 });
+    const { text } = searchConcerts(archive(), { artist: "Social Distortion", limit: 2 });
     expect(text).toContain("That's 2 of 5 — try narrowing the search.");
     expect(text).toMatchSnapshot();
   });
 
   it("zero results say something real", () => {
-    const text = searchConcerts(archive(), { artist: "Nobody At All" });
+    const { text } = searchConcerts(archive(), { artist: "Nobody At All" });
     assertVoice(text);
     expect(text).toContain("Nobody At All");
     expect(text).toMatchSnapshot();
@@ -273,7 +273,7 @@ describe("get_venue_history", () => {
 
 describe("on_this_day", () => {
   it("multiple shares of a date", () => {
-    const text = onThisDay(archive(), 6, 4);
+    const { text } = onThisDay(archive(), 6, 4);
     expect(text).toContain("On June 4, across the years:");
     expect(text).toContain("1988: [Depeche Mode](");
     expect(text).toContain("1990: [Social Distortion](");
@@ -281,7 +281,7 @@ describe("on_this_day", () => {
   });
 
   it("quiet date", () => {
-    expect(onThisDay(archive(), 1, 2)).toBe("Nothing in the archive on January 2. A quiet date.");
+    expect(onThisDay(archive(), 1, 2).text).toBe("Nothing in the archive on January 2. A quiet date.");
   });
 });
 

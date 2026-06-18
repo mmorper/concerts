@@ -6,6 +6,16 @@
 //   POST /api/ask/chat    — run a turn, stream the answer as SSE
 //   GET  /api/ask/status  — current mode + today's spend (JSON)
 //
+// SSE events from /api/ask/chat (consumed by #140 frontend):
+//   token    { text }        — prose delta (stream into the exhibit's stable frame)
+//   tool     { name }        — a tool is being consulted ("consulting…")
+//   exhibit  <Exhibit>       — the composed card to render (kind + slugs; see exhibits.ts).
+//                              Emitted once, after prose, before `done`. Thin: frontend hydrates
+//                              photo/genre/map/chips from the SPA's local data via the slugs/ids.
+//   refusal  { message }     — kill-switch / cap / backstop, graceful (never a 500)
+//   done     { fraction }    — turn complete (spend fraction of the daily cap)
+//   error    { message }     — unexpected failure
+//
 // SHIPS BEHIND A FLAG, NO END-USER UI. The Turnstile session gate + per-session/IP rate
 // limits + /admin control page are the next layer (#139 remaining scope) and must land
 // before this route is exposed publicly.
@@ -14,6 +24,7 @@ import type { Env } from "./types.js";
 import { getMode } from "./control.js";
 import { reserveTurn, commitTurn, releaseTurn } from "./cost.js";
 import { runAgentTurn } from "./agent-loop.js";
+import { pickPrimaryExhibit } from "./exhibits.js";
 import { issueSession, verifySession } from "./session.js";
 import { allow } from "./ratelimit.js";
 import { maybeTripwire } from "./notify.js";
@@ -120,6 +131,20 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
 
       const status = await commitTurn(env, reservationId!, result.usage);
       reservationId = undefined;
+
+      // Empty prose = the tool loop hit its backstop. Degrade to a graceful refusal rather
+      // than streaming an answerless `done` (which would render an empty exhibit).
+      if (!result.text.trim()) {
+        await send("refusal", { message: "I got a little tangled chasing that one down — try asking it a different way." });
+        await send("done", { fraction: status.fraction });
+        return;
+      }
+
+      // The composed exhibit: pick the primary descriptor from the turn's tool trace. The
+      // frontend scaffolds this card kind and hydrates its atoms (photo/genre/map/chips) from
+      // the SPA's local data using the slugs/ids here (see exhibits.ts thin-envelope contract).
+      const exhibit = pickPrimaryExhibit(result.exhibits);
+      await send("exhibit", exhibit);
 
       // ≥80% of cap → push a deep link to /ask/admin (once/day). Backgrounded.
       ctx.waitUntil(maybeTripwire(env, status, ctx));

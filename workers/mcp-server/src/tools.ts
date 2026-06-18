@@ -252,7 +252,7 @@ export interface SearchParams {
   limit?: number;
 }
 
-export function searchConcerts(concerts: Concert[], params: SearchParams): string {
+export function searchConcerts(concerts: Concert[], params: SearchParams): { text: string; matches: Concert[] } {
   const limit = Math.min(Math.max(params.limit ?? 10, 1), 25);
 
   const matches = concerts
@@ -288,7 +288,7 @@ export function searchConcerts(concerts: Concert[], params: SearchParams): strin
 
   const total = matches.length;
   if (total === 0) {
-    return `I don't have anything matching ${summary} in the archive.`;
+    return { text: `I don't have anything matching ${summary} in the archive.`, matches: [] };
   }
 
   const shown = matches.slice(0, limit);
@@ -304,7 +304,7 @@ export function searchConcerts(concerts: Concert[], params: SearchParams): strin
     lines.push("", `That's ${limit} of ${total} — try narrowing the search.`);
   }
   const out = lines.join("\n");
-  return out + linkFooter(out);
+  return { text: out + linkFooter(out), matches: shown };
 }
 
 // ===================================================================
@@ -496,14 +496,14 @@ export function venueHistory(
 // 5. on_this_day
 // ===================================================================
 
-export function onThisDay(concerts: Concert[], month: number, day: number): string {
+export function onThisDay(concerts: Concert[], month: number, day: number): { text: string; matches: Concert[] } {
   const matches = concerts
     .filter((c) => c.month === month && c.day === day)
     .sort((a, b) => a.year - b.year);
   const mName = MONTHS[month - 1];
 
   if (matches.length === 0) {
-    return `Nothing in the archive on ${mName} ${day}. A quiet date.`;
+    return { text: `Nothing in the archive on ${mName} ${day}. A quiet date.`, matches: [] };
   }
 
   const lines = [`On ${mName} ${day}, across the years:`, ""];
@@ -516,7 +516,7 @@ export function onThisDay(concerts: Concert[], month: number, day: number): stri
     lines.push("", `One show on this date — ${matches[0].headliner}, ${matches[0].year}.`);
   }
   const out = lines.join("\n");
-  return out + linkFooter(out);
+  return { text: out + linkFooter(out), matches };
 }
 
 // ===================================================================
@@ -585,7 +585,7 @@ export function surpriseMe(
   setlists: SetlistsCache | null,
   artistsMeta: ArtistsMetadata,
   topTracks: ArtistsTopTracks,
-): { text: string; angle: SurpriseAngle } {
+): { text: string; angle: SurpriseAngle; concert: Concert } {
   const c = concerts[pick(concerts.length)];
 
   const sameArtist = concerts.filter((x) => x.headlinerNormalized === c.headlinerNormalized).sort(byDate);
@@ -653,7 +653,7 @@ export function surpriseMe(
   }
 
   const out = lines.join("\n");
-  return { text: out + linkFooter(out), angle };
+  return { text: out + linkFooter(out), angle, concert: c };
 }
 
 // ===================================================================
@@ -926,7 +926,7 @@ export function registerTools(server: McpServer, env: Env): void {
     wrapTool("search_concerts", async (args) => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
-      return textResult(searchConcerts(data.concerts, args as SearchParams));
+      return textResult(searchConcerts(data.concerts, args as SearchParams).text);
     }),
   );
 
@@ -991,7 +991,7 @@ export function registerTools(server: McpServer, env: Env): void {
       const now = new Date();
       const month = (args.month as number | undefined) ?? now.getUTCMonth() + 1;
       const day = (args.day as number | undefined) ?? now.getUTCDate();
-      return textResult(onThisDay(data.concerts, month, day));
+      return textResult(onThisDay(data.concerts, month, day).text);
     }),
   );
 

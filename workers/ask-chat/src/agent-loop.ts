@@ -7,6 +7,7 @@
 
 import type { Env } from "./types.js";
 import { TOOL_DEFS, dispatchTool } from "./tools-bridge.js";
+import type { Exhibit } from "./exhibits.js";
 import type { AnthropicUsage } from "./cost.js";
 
 const ANTHROPIC_MODEL = "claude-haiku-4-5";
@@ -154,6 +155,7 @@ export interface AgentEvents {
 export interface AgentResult {
   text: string;
   usage: AnthropicUsage; // summed across all iterations of the turn
+  exhibits: Exhibit[]; // structured descriptors from each entity-shaped tool call, in call order
 }
 
 // Run one user turn to completion, looping over tool_use. `messages` is the running
@@ -166,13 +168,14 @@ export async function runAgentTurn(
 ): Promise<AgentResult> {
   const work = [...messages];
   const total: AnthropicUsage = {};
+  const exhibits: Exhibit[] = [];
 
   for (let i = 0; i < MAX_TOOL_ITERATIONS; i++) {
     const turn = await streamModelTurn(env, work, events.onText);
     mergeUsage(total, turn.usage);
 
     if (turn.toolUses.length === 0 || turn.stopReason !== "tool_use") {
-      return { text: turn.text, usage: total };
+      return { text: turn.text, usage: total, exhibits };
     }
 
     // Rebuild the assistant message with its text + tool_use blocks, then answer each
@@ -202,7 +205,9 @@ export async function runAgentTurn(
       let content: string;
       let isError = false;
       try {
-        content = await dispatchTool(env, tu.name, input);
+        const result = await dispatchTool(env, tu.name, input);
+        content = result.text;
+        if (result.exhibit) exhibits.push(result.exhibit);
       } catch (err) {
         console.error(`tool ${tu.name} threw:`, err);
         content = "That lookup didn't work just now — try another angle.";
@@ -214,5 +219,6 @@ export async function runAgentTurn(
   }
 
   // Hit the iteration backstop — return whatever prose we have rather than loop forever.
-  return { text: "", usage: total };
+  // (index.ts treats empty text as a graceful refusal, not an empty exhibit.)
+  return { text: "", usage: total, exhibits };
 }
