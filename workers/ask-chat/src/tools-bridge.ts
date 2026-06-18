@@ -180,6 +180,17 @@ export async function getUpcomingShows(env: Env, today: string): Promise<string[
     .map((c) => `${c.headliner} at ${c.venue} (${c.date})`);
 }
 
+// Haiku can't reliably judge past-vs-upcoming from dates, so we hand it the verdict inline in the
+// tool result (right next to the dates it's reading) — far more reliable than asking it to infer.
+function timingNote(shows: { date: string }[], today: string): string {
+  const upcoming = shows.filter((c) => c.date > today);
+  if (!upcoming.length) return "\n\n(Timing — authoritative, do not re-judge: every show above has ALREADY HAPPENED.)";
+  return `\n\n(Timing — authoritative, do not re-judge: of the shows above, only ${upcoming
+    .map((c) => c.date)
+    .join(", ")} ${upcoming.length === 1 ? "is" : "are"} still UPCOMING; every other show has ALREADY HAPPENED.)`;
+}
+const todayISO = () => new Date().toISOString().slice(0, 10);
+
 // A concert carries its own slugs, so a list row needs no resolver — just shape it.
 type ConcertLike = {
   id: string;
@@ -230,7 +241,7 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       const monthName = m && m >= 1 && m <= 12 ? MONTHS[m - 1] : undefined;
       const filters = [input.artist, input.genre, input.city, monthName, input.year, input.decade].filter(Boolean).map(str);
       const title = `${matches.length} ${matches.length === 1 ? "concert" : "concerts"}${filters.length ? ` · ${filters.join(", ")}` : ""}`;
-      return { text, exhibit: { kind: "list", title, rows: matches.map(concertRow) } };
+      return { text: text + timingNote(matches, todayISO()), exhibit: { kind: "list", title, rows: matches.map(concertRow) } };
     }
 
     case "get_artist_history": {
@@ -243,11 +254,12 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       ]);
       const r = resolveArtist(data.concerts, query);
       const narration = r.kind === "match" ? await getNarration("artists", r.slug, e, bgCtx) : null;
-      const text = artistHistory(data.concerts, query, meta ?? {}, tracks ?? {}, narration);
+      let text = artistHistory(data.concerts, query, meta ?? {}, tracks ?? {}, narration);
 
       let exhibit: Exhibit | undefined;
       if (r.kind === "match") {
         exhibit = { kind: "artist", entity: "artist", slug: r.slug, name: r.name, deepLink: artistDeepLink(r.slug) };
+        text += timingNote(data.concerts.filter((c) => c.headlinerNormalized === r.slug), todayISO());
       } else if (r.kind === "ambiguous") {
         const candidates = r.options.map((o) => artistRef(data.concerts, o)).filter((x): x is EntityRef => x !== null);
         if (candidates.length) exhibit = { kind: "disambiguation", entity: "artist", candidates };
@@ -262,12 +274,13 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       const r = resolveVenue(venues, query);
       const narration =
         r.kind === "match" ? await getNarration("venues", r.venue.normalizedName, e, bgCtx) : null;
-      const text = venueHistory(venues, data.concerts, query, narration);
+      let text = venueHistory(venues, data.concerts, query, narration);
 
       let exhibit: Exhibit | undefined;
       if (r.kind === "match") {
         const v = r.venue;
         exhibit = { kind: "venue", entity: "venue", slug: v.normalizedName, name: v.name, deepLink: venueDeepLink(v.normalizedName) };
+        text += timingNote(data.concerts.filter((c) => c.venueNormalized === v.normalizedName), todayISO());
       } else if (r.kind === "ambiguous") {
         const candidates = r.options.map((o) => venueRef(venues, o)).filter((x): x is EntityRef => x !== null);
         if (candidates.length) exhibit = { kind: "disambiguation", entity: "venue", candidates };
@@ -283,7 +296,7 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       const day = num(input.day) ?? now.getUTCDate();
       const { text, matches } = onThisDay(data.concerts, month, day);
       if (!matches.length) return { text }; // plain ("a quiet date")
-      return { text, exhibit: { kind: "list", title: `On this day · ${matches.length} ${matches.length === 1 ? "show" : "shows"}`, rows: matches.map(concertRow) } };
+      return { text: text + timingNote(matches, todayISO()), exhibit: { kind: "list", title: `On this day · ${matches.length} ${matches.length === 1 ? "show" : "shows"}`, rows: matches.map(concertRow) } };
     }
 
     case "surprise_me": {
