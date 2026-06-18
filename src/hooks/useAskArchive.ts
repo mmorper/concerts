@@ -65,7 +65,9 @@ export function useAskArchive() {
                 patch(id, (x) => ({ ...x, prose: x.prose + event.text, consulting: null }))
                 break
               case 'tool':
-                patch(id, (x) => ({ ...x, consulting: event.name }))
+                // Any prose streamed before a tool call is the model thinking out loud
+                // ("let me check…"); the real answer comes after the last tool. Drop it.
+                patch(id, (x) => ({ ...x, consulting: event.name, prose: '' }))
                 break
               case 'exhibit':
                 patch(id, (x) => ({ ...x, exhibit: event.exhibit }))

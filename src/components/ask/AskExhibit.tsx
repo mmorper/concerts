@@ -40,6 +40,9 @@ function DeepLink({ href, kind, children }: { href: string; kind: Exhibit['kind'
 // clients). In-app the exhibit's own chips/deep-link handle navigation, so strip it for display.
 function cleanProse(text: string): string {
   let t = text.split(/\n*-{3,}\n*\*\*Open on the site:|\n*\*\*Open on the site:/)[0].trimEnd()
+  // Backup: strip a trailing line that's only deep-links (the model sometimes appends the footer
+  // links without the "Open on the site:" label). The exhibit's own chips handle navigation.
+  t = t.replace(/\n+\s*(?:\[[^\]]+\]\([^)]+\)\s*(?:·\s*)?)+\s*$/, '').trimEnd()
   // A GFM table must start on its own line, but the model often glues the header to the
   // preceding sentence ("…shows.| Date | … |\n|---|---|"). Force a blank line before a
   // header+separator pair so remark-gfm actually parses it as a table.
