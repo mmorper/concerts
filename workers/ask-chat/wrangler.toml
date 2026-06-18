@@ -22,12 +22,11 @@ zone_name = "morperhaus.org"
 DATA_BASE_URL = "https://concerts.morperhaus.org/data"
 # Monthly spend ceiling (USD). The DO counter derives a daily cap from this. Knob: $25/mo.
 ASK_MONTHLY_USD = "25"
-# /ask/admin Cloudflare Access identifiers (NOT secrets). Set after creating the Access app:
-#   ACCESS_TEAM_DOMAIN = "<team>"          # <team>.cloudflareaccess.com
-#   ACCESS_AUD = "<application-aud-tag>"   # from the Access application
-# Left blank deliberately — verifyAccess() FAILS CLOSED (denies admin) when either is unset.
-ACCESS_TEAM_DOMAIN = ""
-ACCESS_AUD = ""
+# /ask/admin Cloudflare Access identifiers (NOT secrets — they identify the Access app and
+# verify the Cf-Access-Jwt-Assertion; knowing them grants nothing). verifyAccess() FAILS
+# CLOSED if either is unset. Team domain = <team> in <team>.cloudflareaccess.com.
+ACCESS_TEAM_DOMAIN = "mike-6db"
+ACCESS_AUD = "0b00770581a186384e8a097dae26cc59e80e9e7d60a8b04595dd924256503203"
 
 # Primary abuse gate — native Rate Limiting bindings (edge-local; the cost cap is only a
 # backstop). Still under `unsafe`. namespace_id is an arbitrary per-account integer; each
@@ -68,7 +67,7 @@ new_sqlite_classes = ["SpendCounter"]
 # then paste the returned id below.
 [[kv_namespaces]]
 binding = "ASK_CONTROL"
-id = "PLACEHOLDER_CREATE_WITH_wrangler_kv_namespace_create"
+id = "9784703871e543f9aa6b0c3eea88fa91"
 
 # Secrets (NOT in this file) — set with `npx wrangler secret put <NAME>`:
 #   ANTHROPIC_API_KEY   — the Messages API key for the agent loop
