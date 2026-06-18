@@ -13,6 +13,7 @@ import { WhatsPlayingPage } from './components/changelog/WhatsPlayingPage'
 import { LinerNotesPage, LinerNotePermalink } from './components/liner-notes'
 import { AboutPage } from './components/about'
 import { CascadePage } from './components/cascade/CascadePage'
+import { AskDevHarness } from './components/ask/AskDevHarness'
 import { SCENE_MAP, TOAST } from './components/changelog/constants'
 import { useChangelogCheck } from './hooks/useChangelogCheck'
 import { useLinerNotesCheck } from './hooks/useLinerNotesCheck'
@@ -29,6 +30,9 @@ function App() {
       <Route path="/whats-playing" element={<WhatsPlayingPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/how-it-works" element={<CascadePage />} />
+      {/* Dev-only: #140 exhibit harness (no shipped UI yet; containers are #141). Gated to dev
+          builds — in prod it can't function (no Turnstile/token path), so it 404s instead. */}
+      {import.meta.env.DEV && <Route path="/ask-dev" element={<AskDevHarness />} />}
       {/* Legacy redirects */}
       <Route path="/cascade" element={<Navigate to="/how-it-works" replace />} />
       <Route path="/changelog" element={<WhatsPlayingPage />} />

@@ -30,6 +30,8 @@ import {
   getNarration,
 } from "../../mcp-server/src/data.js";
 import type { Env } from "./types.js";
+import type { Exhibit, EntityRef } from "./exhibits.js";
+import { artistDeepLink, venueDeepLink } from "./exhibits.js";
 
 // The reused data fns are typed against the MCP worker's Env; they only ever read
 // DATA_BASE_URL. One cast at this seam (see types.ts §DataEnv note).
@@ -63,6 +65,7 @@ export const TOOL_DEFS = [
       properties: {
         artist: { type: "string" },
         year: { type: "integer" },
+        month: { type: "integer", minimum: 1, maximum: 12, description: "Calendar month across all years, e.g. 6 for every June show." },
         decade: { type: "string", enum: ["1980s", "1990s", "2000s", "2010s", "2020s"] },
         city: { type: "string" },
         genre: { type: "string" },
@@ -142,90 +145,187 @@ const str = (v: unknown): string => (v == null ? "" : String(v));
 const num = (v: unknown): number | undefined =>
   typeof v === "number" ? v : v == null ? undefined : Number(v);
 
-// Dispatch a single tool_use to the reused pure fn, returning its markdown string. Throwing
-// is fine — the loop catches and feeds an error tool_result back to the model.
-export async function dispatchTool(env: Env, name: string, input: Input): Promise<string> {
+// A tool result: the markdown the model reads (grounding) + an OPTIONAL structured exhibit
+// descriptor the frontend renders (#140). Most numbers/atoms are hydrated client-side from the
+// SPA's local data, so the descriptor carries only identity + selection (see exhibits.ts).
+export interface ToolResult {
+  text: string;
+  exhibit?: Exhibit;
+}
+
+// Build an EntityRef for an artist, resolving the display name to its data-layer slug. Returns
+// null if the name doesn't resolve to a single artist (so disambiguation candidates stay clean).
+function artistRef(concerts: Parameters<typeof resolveArtist>[0], name: string): EntityRef | null {
+  const r = resolveArtist(concerts, name);
+  if (r.kind !== "match") return null;
+  return { entity: "artist", slug: r.slug, name: r.name, deepLink: artistDeepLink(r.slug) };
+}
+
+function venueRef(venues: Parameters<typeof resolveVenue>[0], name: string): EntityRef | null {
+  const r = resolveVenue(venues, name);
+  if (r.kind !== "match") return null;
+  const v = r.venue;
+  return { entity: "venue", slug: v.normalizedName, name: v.name, deepLink: venueDeepLink(v.normalizedName) };
+}
+
+// The genuinely-upcoming shows (date strictly after `today`). Haiku can't reliably compare dates
+// (it treats same-month shows as "upcoming"), so instead of asking it to do the math we hand it
+// the short, explicit list of future shows and tell it everything else is past. Deterministic.
+export async function getUpcomingShows(env: Env, today: string): Promise<string[]> {
+  const data = await getConcerts(asReused(env), bgCtx);
+  if (!data) return [];
+  return data.concerts
+    .filter((c) => c.date > today)
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .map((c) => `${c.headliner} at ${c.venue} (${c.date})`);
+}
+
+// Haiku can't reliably judge past-vs-upcoming from dates, so we hand it the verdict inline in the
+// tool result (right next to the dates it's reading) — far more reliable than asking it to infer.
+function timingNote(shows: { date: string }[], today: string): string {
+  const upcoming = shows.filter((c) => c.date > today);
+  if (!upcoming.length) return "\n\n(Timing — authoritative, do not re-judge: every show above has ALREADY HAPPENED.)";
+  return `\n\n(Timing — authoritative, do not re-judge: of the shows above, only ${upcoming
+    .map((c) => c.date)
+    .join(", ")} ${upcoming.length === 1 ? "is" : "are"} still UPCOMING; every other show has ALREADY HAPPENED.)`;
+}
+const todayISO = () => new Date().toISOString().slice(0, 10);
+
+// A concert carries its own slugs, so a list row needs no resolver — just shape it.
+type ConcertLike = {
+  id: string;
+  date: string;
+  headliner: string;
+  headlinerNormalized: string;
+  venue: string;
+  venueNormalized: string;
+};
+function concertRow(c: ConcertLike) {
+  return {
+    concertId: c.id,
+    date: c.date,
+    artist: { entity: "artist" as const, slug: c.headlinerNormalized, name: c.headliner, deepLink: artistDeepLink(c.headlinerNormalized) },
+    venue: { entity: "venue" as const, slug: c.venueNormalized, name: c.venue, deepLink: venueDeepLink(c.venueNormalized) },
+  };
+}
+
+// Dispatch a single tool_use to the reused pure fn. Returns the markdown for the model plus, when
+// the tool resolved to something entity-shaped, a structured exhibit descriptor. Throwing is fine
+// — the loop catches and feeds an error tool_result back to the model.
+export async function dispatchTool(env: Env, name: string, input: Input): Promise<ToolResult> {
   const e = asReused(env);
 
   switch (name) {
     case "get_archive_info": {
       const data = await getConcerts(e, bgCtx);
-      if (!data) return DATA_UNAVAILABLE;
+      if (!data) return { text: DATA_UNAVAILABLE };
       const facts = await getFacts(e, bgCtx);
-      return archiveInfo(data.concerts, facts);
+      return { text: archiveInfo(data.concerts, facts) }; // plain
     }
 
     case "search_concerts": {
       const data = await getConcerts(e, bgCtx);
-      if (!data) return DATA_UNAVAILABLE;
-      return searchConcerts(data.concerts, {
+      if (!data) return { text: DATA_UNAVAILABLE };
+      const { text, matches } = searchConcerts(data.concerts, {
         artist: input.artist ? str(input.artist) : undefined,
         year: num(input.year),
+        month: num(input.month),
         decade: input.decade ? str(input.decade) : undefined,
         city: input.city ? str(input.city) : undefined,
         genre: input.genre ? str(input.genre) : undefined,
-        limit: num(input.limit),
+        limit: num(input.limit) ?? 25, // chat list-exhibit wants the full set; MCP default stays 10
       } as Parameters<typeof searchConcerts>[1]);
+      if (!matches.length) return { text }; // plain ("nothing matching")
+      const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const m = num(input.month);
+      const monthName = m && m >= 1 && m <= 12 ? MONTHS[m - 1] : undefined;
+      const filters = [input.artist, input.genre, input.city, monthName, input.year, input.decade].filter(Boolean).map(str);
+      const title = `${matches.length} ${matches.length === 1 ? "concert" : "concerts"}${filters.length ? ` · ${filters.join(", ")}` : ""}`;
+      return { text: text + timingNote(matches, todayISO()), exhibit: { kind: "list", title, rows: matches.map(concertRow) } };
     }
 
     case "get_artist_history": {
       const data = await getConcerts(e, bgCtx);
-      if (!data) return DATA_UNAVAILABLE;
+      if (!data) return { text: DATA_UNAVAILABLE };
       const query = str(input.artist);
       const [meta, tracks] = await Promise.all([
         getArtistsMetadata(e, bgCtx),
         getArtistsTopTracks(e, bgCtx),
       ]);
       const r = resolveArtist(data.concerts, query);
-      const narration =
-        r.kind === "match" ? await getNarration("artists", r.slug, e, bgCtx) : null;
-      return artistHistory(data.concerts, query, meta ?? {}, tracks ?? {}, narration);
+      const narration = r.kind === "match" ? await getNarration("artists", r.slug, e, bgCtx) : null;
+      let text = artistHistory(data.concerts, query, meta ?? {}, tracks ?? {}, narration);
+
+      let exhibit: Exhibit | undefined;
+      if (r.kind === "match") {
+        exhibit = { kind: "artist", entity: "artist", slug: r.slug, name: r.name, deepLink: artistDeepLink(r.slug) };
+        text += timingNote(data.concerts.filter((c) => c.headlinerNormalized === r.slug), todayISO());
+      } else if (r.kind === "ambiguous") {
+        const candidates = r.options.map((o) => artistRef(data.concerts, o)).filter((x): x is EntityRef => x !== null);
+        if (candidates.length) exhibit = { kind: "disambiguation", entity: "artist", candidates };
+      }
+      return { text, exhibit };
     }
 
     case "get_venue_history": {
-      const [data, venues] = await Promise.all([
-        getConcerts(e, bgCtx),
-        getVenuesMetadata(e, bgCtx),
-      ]);
-      if (!data || !venues) return DATA_UNAVAILABLE;
+      const [data, venues] = await Promise.all([getConcerts(e, bgCtx), getVenuesMetadata(e, bgCtx)]);
+      if (!data || !venues) return { text: DATA_UNAVAILABLE };
       const query = str(input.venue);
       const r = resolveVenue(venues, query);
       const narration =
-        r.kind === "match"
-          ? await getNarration("venues", r.venue.normalizedName, e, bgCtx)
-          : null;
-      return venueHistory(venues, data.concerts, query, narration);
+        r.kind === "match" ? await getNarration("venues", r.venue.normalizedName, e, bgCtx) : null;
+      let text = venueHistory(venues, data.concerts, query, narration);
+
+      let exhibit: Exhibit | undefined;
+      if (r.kind === "match") {
+        const v = r.venue;
+        exhibit = { kind: "venue", entity: "venue", slug: v.normalizedName, name: v.name, deepLink: venueDeepLink(v.normalizedName) };
+        text += timingNote(data.concerts.filter((c) => c.venueNormalized === v.normalizedName), todayISO());
+      } else if (r.kind === "ambiguous") {
+        const candidates = r.options.map((o) => venueRef(venues, o)).filter((x): x is EntityRef => x !== null);
+        if (candidates.length) exhibit = { kind: "disambiguation", entity: "venue", candidates };
+      }
+      return { text, exhibit };
     }
 
     case "on_this_day": {
       const data = await getConcerts(e, bgCtx);
-      if (!data) return DATA_UNAVAILABLE;
+      if (!data) return { text: DATA_UNAVAILABLE };
       const now = new Date();
       const month = num(input.month) ?? now.getUTCMonth() + 1;
       const day = num(input.day) ?? now.getUTCDate();
-      return onThisDay(data.concerts, month, day);
+      const { text, matches } = onThisDay(data.concerts, month, day);
+      if (!matches.length) return { text }; // plain ("a quiet date")
+      return { text: text + timingNote(matches, todayISO()), exhibit: { kind: "list", title: `On this day · ${matches.length} ${matches.length === 1 ? "show" : "shows"}`, rows: matches.map(concertRow) } };
     }
 
     case "surprise_me": {
       const data = await getConcerts(e, bgCtx);
-      if (!data) return DATA_UNAVAILABLE;
+      if (!data) return { text: DATA_UNAVAILABLE };
       const [setlists, meta, tracks] = await Promise.all([
         getSetlistsCache(e, bgCtx),
         getArtistsMetadata(e, bgCtx),
         getArtistsTopTracks(e, bgCtx),
       ]);
       const pick = (n: number) => Math.floor(Math.random() * n);
-      return surpriseMe(data.concerts, pick, setlists, meta ?? {}, tracks ?? {}).text;
+      const r = surpriseMe(data.concerts, pick, setlists, meta ?? {}, tracks ?? {});
+      const c = r.concert;
+      const exhibit: Exhibit = {
+        kind: "serendipity",
+        concertId: c.id,
+        artist: { entity: "artist", slug: c.headlinerNormalized, name: c.headliner, deepLink: artistDeepLink(c.headlinerNormalized) },
+      };
+      return { text: r.text, exhibit };
     }
 
     case "get_concert_setlist": {
       const data = await getConcerts(e, bgCtx);
-      if (!data) return DATA_UNAVAILABLE;
+      if (!data) return { text: DATA_UNAVAILABLE };
       const [setlists, tracks] = await Promise.all([
         getSetlistsCache(e, bgCtx),
         getArtistsTopTracks(e, bgCtx),
       ]);
-      return concertSetlist(
+      const text = concertSetlist(
         data.concerts,
         setlists,
         {
@@ -235,15 +335,16 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
         },
         tracks ?? {},
       );
+      return { text }; // plain (songs, not an entity card) in v1
     }
 
     case "get_archive_top_songs": {
       const songs = await getMostPlayedSongs(e, bgCtx);
-      if (!songs) return DATA_UNAVAILABLE;
-      return archiveTopSongs(songs, num(input.limit));
+      if (!songs) return { text: DATA_UNAVAILABLE };
+      return { text: archiveTopSongs(songs, num(input.limit)) }; // plain
     }
 
     default:
-      return `Unknown tool: ${name}`;
+      return { text: `Unknown tool: ${name}` };
   }
 }
