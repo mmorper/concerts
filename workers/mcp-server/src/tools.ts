@@ -246,6 +246,7 @@ export function archiveInfo(concerts: Concert[], facts: FactsData | null): strin
 export interface SearchParams {
   artist?: string;
   year?: number;
+  month?: number; // 1-12 — calendar month across all years (e.g. "shows in June")
   decade?: string;
   city?: string;
   genre?: string;
@@ -253,7 +254,7 @@ export interface SearchParams {
 }
 
 export function searchConcerts(concerts: Concert[], params: SearchParams): { text: string; matches: Concert[] } {
-  const limit = Math.min(Math.max(params.limit ?? 10, 1), 25);
+  const limit = Math.min(Math.max(params.limit ?? 25, 1), 25);
 
   const matches = concerts
     .filter((c) => {
@@ -264,6 +265,7 @@ export function searchConcerts(concerts: Concert[], params: SearchParams): { tex
         if (!inHeadliner && !inOpeners) return false;
       }
       if (params.year && c.year !== params.year) return false;
+      if (params.month && c.month !== params.month) return false;
       if (params.decade && c.decade.toLowerCase() !== params.decade.toLowerCase()) return false;
       if (params.city) {
         const q = params.city.toLowerCase();
@@ -282,6 +284,7 @@ export function searchConcerts(concerts: Concert[], params: SearchParams): { tex
   if (params.artist) bits.push(`"${params.artist}"`);
   if (params.genre) bits.push(params.genre);
   if (params.city) bits.push(params.city);
+  if (params.month) bits.push(MONTHS[params.month - 1]);
   if (params.year) bits.push(String(params.year));
   else if (params.decade) bits.push(`the ${params.decade}`);
   const summary = bits.length ? bits.join(", ") : "everything";

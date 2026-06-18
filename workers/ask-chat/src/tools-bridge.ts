@@ -65,6 +65,7 @@ export const TOOL_DEFS = [
       properties: {
         artist: { type: "string" },
         year: { type: "integer" },
+        month: { type: "integer", minimum: 1, maximum: 12, description: "Calendar month across all years, e.g. 6 for every June show." },
         decade: { type: "string", enum: ["1980s", "1990s", "2000s", "2010s", "2020s"] },
         city: { type: "string" },
         genre: { type: "string" },
@@ -205,13 +206,17 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       const { text, matches } = searchConcerts(data.concerts, {
         artist: input.artist ? str(input.artist) : undefined,
         year: num(input.year),
+        month: num(input.month),
         decade: input.decade ? str(input.decade) : undefined,
         city: input.city ? str(input.city) : undefined,
         genre: input.genre ? str(input.genre) : undefined,
         limit: num(input.limit),
       } as Parameters<typeof searchConcerts>[1]);
       if (!matches.length) return { text }; // plain ("nothing matching")
-      const filters = [input.artist, input.genre, input.city, input.year, input.decade].filter(Boolean).map(str);
+      const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const m = num(input.month);
+      const monthName = m && m >= 1 && m <= 12 ? MONTHS[m - 1] : undefined;
+      const filters = [input.artist, input.genre, input.city, monthName, input.year, input.decade].filter(Boolean).map(str);
       const title = `${matches.length} ${matches.length === 1 ? "concert" : "concerts"}${filters.length ? ` · ${filters.join(", ")}` : ""}`;
       return { text, exhibit: { kind: "list", title, rows: matches.map(concertRow) } };
     }
