@@ -168,6 +168,18 @@ function venueRef(venues: Parameters<typeof resolveVenue>[0], name: string): Ent
   return { entity: "venue", slug: v.normalizedName, name: v.name, deepLink: venueDeepLink(v.normalizedName) };
 }
 
+// The genuinely-upcoming shows (date strictly after `today`). Haiku can't reliably compare dates
+// (it treats same-month shows as "upcoming"), so instead of asking it to do the math we hand it
+// the short, explicit list of future shows and tell it everything else is past. Deterministic.
+export async function getUpcomingShows(env: Env, today: string): Promise<string[]> {
+  const data = await getConcerts(asReused(env), bgCtx);
+  if (!data) return [];
+  return data.concerts
+    .filter((c) => c.date > today)
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .map((c) => `${c.headliner} at ${c.venue} (${c.date})`);
+}
+
 // A concert carries its own slugs, so a list row needs no resolver — just shape it.
 type ConcertLike = {
   id: string;

@@ -6,7 +6,7 @@
 // tools, prose from the model. Haiku 4.5 + prompt caching on the system prompt + tool defs.
 
 import type { Env } from "./types.js";
-import { TOOL_DEFS, dispatchTool } from "./tools-bridge.js";
+import { TOOL_DEFS, dispatchTool, getUpcomingShows } from "./tools-bridge.js";
 import type { Exhibit } from "./exhibits.js";
 import type { AnthropicUsage } from "./cost.js";
 
@@ -17,10 +17,13 @@ const MAX_OUTPUT_TOKENS = 1024;
 // The archive's voice + the hard grounding/refusal rules. Built per request with today's date so
 // the model can reason about past vs. upcoming shows. Cached (cache_control below) — the date is
 // stable within the short cache TTL, so caching still holds.
-function buildSystemPrompt(today: string): string {
+function buildSystemPrompt(today: string, upcoming: string[]): string {
+  const upcomingBlock = upcoming.length
+    ? `These are the ONLY upcoming shows — just these have NOT happened yet:\n${upcoming.map((u) => `  • ${u}`).join("\n")}\nEVERY other show in the archive has ALREADY happened — including every other 2026 date. A show is "upcoming," "coming up," or "still to come" ONLY if it is in this exact list. If a show is not in this list, it is in the past; never say it "hasn't happened yet."`
+    : `Every show in the archive has already happened — there are no upcoming shows. Never describe any show as "upcoming" or "coming up."`;
   return `You are the Morperhaus Concert Archive — 40 years of live music, 1984 to the present — speaking in your own voice. Speak as the archive itself, in the first person ("I saw…", "I've kept returning to…"), in a warm music-journalist register. Never adopt a chatbot or assistant persona; no "How can I help you?", no emoji, no bullet-pointed feature talk.
 
-TODAY'S DATE is ${today}. This is your "now" — trust it over any sense of time from your own training. A show dated on or before ${today} has already happened; a show dated after ${today} is upcoming/announced. Decide past-vs-upcoming ONLY by comparing the show's date to ${today} — never call a show "in the future" or "upcoming" just because of its year. If a past show has no setlist on record, say its setlist isn't recorded — do NOT say the show "hasn't happened yet."
+TODAY'S DATE is ${today}. ${upcomingBlock} If a past show has no setlist on record, say its setlist simply isn't recorded — do NOT explain it away as the show being in the future.
 
 GROUNDING — this is absolute and OVERRIDES any prior knowledge you have:
 - You know NOTHING about THIS collection except what the tools return. Your own memory of any band, venue, song, year, or city is unreliable here — a name you recognize from the real world may or may not be in this specific archive. Only a tool can tell you.
@@ -58,6 +61,8 @@ async function streamModelTurn(
   env: Env,
   messages: unknown[],
   onText: (delta: string) => void,
+  today: string,
+  upcoming: string[],
 ): Promise<ModelTurn> {
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -72,9 +77,9 @@ async function streamModelTurn(
       stream: true,
       // cache_control marks the cache breakpoint — system prompt + tool defs are stable, so
       // they're written once and read cheaply on later calls (mandatory for cost, per spec).
-      // Today's date is injected so the model can tell past shows from upcoming ones; it's stable
-      // within the cache TTL, so caching still holds.
-      system: [{ type: "text", text: buildSystemPrompt(new Date().toISOString().slice(0, 10)), cache_control: { type: "ephemeral" } }],
+      // Today's date + the explicit upcoming-shows list are injected so the model can tell past
+      // shows from upcoming ones without doing date math. Stable within the cache TTL.
+      system: [{ type: "text", text: buildSystemPrompt(today, upcoming), cache_control: { type: "ephemeral" } }],
       tools: TOOL_DEFS.map((t, i) =>
         i === TOOL_DEFS.length - 1
           ? { ...t, cache_control: { type: "ephemeral" } }
@@ -184,8 +189,13 @@ export async function runAgentTurn(
   const total: AnthropicUsage = {};
   const exhibits: Exhibit[] = [];
 
+  // Computed once per turn and injected into the system prompt so the model never has to compare
+  // dates itself (which Haiku does unreliably).
+  const today = new Date().toISOString().slice(0, 10);
+  const upcoming = await getUpcomingShows(env, today);
+
   for (let i = 0; i < MAX_TOOL_ITERATIONS; i++) {
-    const turn = await streamModelTurn(env, work, events.onText);
+    const turn = await streamModelTurn(env, work, events.onText, today, upcoming);
     mergeUsage(total, turn.usage);
 
     if (turn.toolUses.length === 0 || turn.stopReason !== "tool_use") {
