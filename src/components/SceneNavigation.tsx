@@ -7,8 +7,8 @@ import { analytics } from '../services/analytics'
 const NAV_LINKS = [
   { to: '/liner-notes', label: 'Liner Notes', event: 'liner_notes_nav_clicked' },
   { to: '/whats-playing', label: "What's Playing", event: 'whats_playing_nav_clicked' },
-  // /ask is a static (non-SPA) page, so it renders as a full-navigation <a>, not <Link>.
-  { to: '/ask', label: 'Ask', event: 'ask_archive_nav_clicked', external: true },
+  // /ask is now an in-app route (#141 Container A), so it's an SPA <Link> like its peers.
+  { to: '/ask', label: 'Ask', event: 'ask_archive_nav_clicked' },
   { to: '/about', label: 'About', event: 'about_nav_clicked' },
 ] as const
 
@@ -102,8 +102,8 @@ export function SceneNavigation() {
       <div className="relative flex flex-col gap-3 items-center">
         {/* Ask the Archive — floated above the dots; a quiet peer of Liner Notes below */}
         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 flex flex-col items-center gap-2.5">
-          <a
-            href="/ask"
+          <Link
+            to="/ask"
             className="group flex items-center justify-center min-w-[44px]"
             aria-label="Ask the Archive"
             onClick={() => {
@@ -114,7 +114,7 @@ export function SceneNavigation() {
             <span className="font-sans transition-colors duration-200" style={vLabel(railLabel)}>
               Ask the Archive
             </span>
-          </a>
+          </Link>
           <span aria-hidden="true" style={{ width: 18, height: 1, background: railEdge }} />
         </div>
 

@@ -33,6 +33,7 @@ GROUNDING — this is absolute and OVERRIDES any prior knowledge you have:
   • a single calendar day or "on this day" → on_this_day (ONE day like June 18 — never use this for a whole month)
   • "surprise me" / "pick one" → surprise_me   • the collection overall → get_archive_info
   • most-played songs → get_archive_top_songs   • a specific night's setlist → get_concert_setlist
+  • "my last / most recent / latest shows", "who did I see last", "the last three I saw" → get_recent_shows (it returns ONLY shows that have already happened, newest first — never use upcoming shows to answer a "most recent / last seen" question)
 - NEVER say that something or someone "isn't in the archive," "isn't on record," or that you don't have it, UNLESS a tool you just called came back with no match. Recognizing a name is not knowing whether it's in this collection — call the tool first, every time.
 - Every number, date, and name in your reply must come from a tool result. Never invent, estimate, or round.
 - Tool results end with an "Open on the site" line of markdown links. That footer is for other clients — in THIS app the page renders its own navigation, so do NOT repeat it or include any markdown links in your reply. End on your prose.
@@ -55,12 +56,13 @@ interface ModelTurn {
   usage: AnthropicUsage;
 }
 
-// One streaming Messages call. Forwards text deltas via onText; accumulates tool_use blocks
-// and usage. Parses Anthropic's SSE event-stream.
+// One streaming Messages call. Accumulates this round's text, its tool_use blocks, and usage.
+// Parses Anthropic's SSE event-stream. Text is NOT forwarded live: the caller decides per round
+// whether it's the final answer (emit) or interim narration before a tool call (discard) — so a
+// "let me check…" preamble never reaches the client. See runAgentTurn.
 async function streamModelTurn(
   env: Env,
   messages: unknown[],
-  onText: (delta: string) => void,
   today: string,
   upcoming: string[],
 ): Promise<ModelTurn> {
@@ -118,7 +120,7 @@ async function streamModelTurn(
       } catch {
         continue;
       }
-      handleEvent(ev, turn, blocks, onText);
+      handleEvent(ev, turn, blocks);
     }
   }
   return turn;
@@ -128,7 +130,6 @@ function handleEvent(
   ev: any,
   turn: ModelTurn,
   blocks: Record<number, ToolUse>,
-  onText: (delta: string) => void,
 ): void {
   switch (ev.type) {
     case "message_start":
@@ -142,7 +143,6 @@ function handleEvent(
     case "content_block_delta":
       if (ev.delta?.type === "text_delta") {
         turn.text += ev.delta.text;
-        onText(ev.delta.text);
       } else if (ev.delta?.type === "input_json_delta" && blocks[ev.index]) {
         blocks[ev.index].inputJson += ev.delta.partial_json ?? "";
       }
@@ -195,10 +195,13 @@ export async function runAgentTurn(
   const upcoming = await getUpcomingShows(env, today);
 
   for (let i = 0; i < MAX_TOOL_ITERATIONS; i++) {
-    const turn = await streamModelTurn(env, work, events.onText, today, upcoming);
+    const turn = await streamModelTurn(env, work, today, upcoming);
     mergeUsage(total, turn.usage);
 
     if (turn.toolUses.length === 0 || turn.stopReason !== "tool_use") {
+      // Final round: this is the answer. Emit it now (the only prose the client ever sees).
+      // Any text from earlier rounds was pre-tool narration and is intentionally dropped.
+      if (turn.text) events.onText(turn.text);
       return { text: turn.text, usage: total, exhibits };
     }
 

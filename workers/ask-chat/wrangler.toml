@@ -22,6 +22,9 @@ zone_name = "morperhaus.org"
 DATA_BASE_URL = "https://concerts.morperhaus.org/data"
 # Monthly spend ceiling (USD). The DO counter derives a daily cap from this. Knob: $25/mo.
 ASK_MONTHLY_USD = "25"
+# Per-IP daily spend ceiling (USD) — a slice of the ~$0.83/day global cap so a single source
+# can't drain the whole budget and deny service to everyone. Knob: ~18% of the day.
+ASK_IP_DAILY_USD = "0.15"
 # /ask/admin Cloudflare Access identifiers (NOT secrets — they identify the Access app and
 # verify the Cf-Access-Jwt-Assertion; knowing them grants nothing). verifyAccess() FAILS
 # CLOSED if either is unset. Team domain = <team> in <team>.cloudflareaccess.com.

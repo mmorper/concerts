@@ -22,8 +22,9 @@
 
 import type { Env } from "./types.js";
 import { getMode } from "./control.js";
-import { reserveTurn, commitTurn, releaseTurn } from "./cost.js";
+import { reserveTurn, commitTurn, releaseTurn, type ReserveTicket } from "./cost.js";
 import { runAgentTurn } from "./agent-loop.js";
+import { dispatchTool, pickDeterministicTool, readerProse } from "./tools-bridge.js";
 import { pickPrimaryExhibit } from "./exhibits.js";
 import { issueSession, verifySession } from "./session.js";
 import { allow } from "./ratelimit.js";
@@ -35,11 +36,37 @@ export { SpendCounter } from "./spend-counter.js";
 const MAX_INPUT_CHARS = 2000; // single-message length cap
 const MAX_TURNS = 24; // transcript length cap (session-ephemeral; client sends the history)
 
-const CORS: Record<string, string> = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization, x-ask-session",
-};
+// CORS is scoped to the first-party site (plus localhost for the dev SPA), not `*` — there's no
+// reason for a third-party page to script the public LLM endpoint through a visitor's browser.
+// A browser sets `Origin` to the real page origin, so echoing only allowlisted origins keeps
+// other sites out while same-origin prod requests (no Origin) still work.
+const SITE_ORIGIN = "https://concerts.morperhaus.org";
+// This project's Cloudflare Pages domain — preview deployments are <hash|branch>.<this>, so
+// allowing the suffix lets PR previews exercise the real backend. Scoped to OUR project (a
+// different account's pages.dev project is a different subdomain), so it stays first-party.
+const PAGES_DOMAIN = "concerts-9xp.pages.dev";
+
+function isAllowedOrigin(origin: string | null): boolean {
+  if (!origin) return false;
+  if (origin === SITE_ORIGIN) return true;
+  try {
+    const u = new URL(origin);
+    if (u.hostname === "localhost" || u.hostname === "127.0.0.1") return true;
+    return u.hostname === PAGES_DOMAIN || u.hostname.endsWith(`.${PAGES_DOMAIN}`);
+  } catch {
+    return false;
+  }
+}
+
+function cors(request: Request): Record<string, string> {
+  const origin = request.headers.get("Origin");
+  return {
+    "Access-Control-Allow-Origin": isAllowedOrigin(origin) ? origin! : SITE_ORIGIN,
+    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, x-ask-session",
+    Vary: "Origin",
+  };
+}
 
 interface Turn {
   role: "user" | "assistant";
@@ -74,22 +101,22 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
   try {
     body = (await request.json()) as { turns?: unknown };
   } catch {
-    return Response.json({ error: "Bad JSON." }, { status: 400, headers: CORS });
+    return Response.json({ error: "Bad JSON." }, { status: 400, headers: cors(request) });
   }
   const v = validate(body.turns);
-  if (!v.ok) return Response.json({ error: v.reason }, { status: 400, headers: CORS });
+  if (!v.ok) return Response.json({ error: v.reason }, { status: 400, headers: cors(request) });
 
   // Gate: a valid, unexpired Turnstile-issued session bound to a session id, then per-session
   // + per-IP rate limits (the PRIMARY abuse defense). All before a single token is spent.
   const session = await verifySession(env, request.headers.get("x-ask-session"));
   if (!session.valid) {
-    return Response.json({ error: "session_required" }, { status: 401, headers: CORS });
+    return Response.json({ error: "session_required" }, { status: 401, headers: cors(request) });
   }
   const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
   const okSession = await allow(env.SESSION_LIMITER, `sess:${session.sid}`, "session");
   const okIp = await allow(env.IP_LIMITER, `ip:${ip}`, "ip");
   if (!okSession || !okIp) {
-    return Response.json({ error: "rate_limited" }, { status: 429, headers: CORS });
+    return Response.json({ error: "rate_limited" }, { status: 429, headers: cors(request) });
   }
 
   const { readable, writable } = new TransformStream();
@@ -98,7 +125,7 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
   const send = (event: string, data: unknown) => writer.write(enc.encode(sseEvent(event, data)));
 
   const pump = async () => {
-    let reservationId: string | undefined;
+    let ticket: ReserveTicket | undefined;
     try {
       if (!env.ANTHROPIC_API_KEY) {
         await send("refusal", { message: "Ask is resting just now — try one of the scenes." });
@@ -111,39 +138,59 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
         return;
       }
       if (mode === "deterministic-only") {
-        // TODO(#139): answer straight from the tools with no LLM. v1 degrades gracefully.
-        await send("refusal", { message: "Ask is in quiet mode right now — explore the scenes, and try again soon." });
+        // Middle kill-switch tier: keep answering from the cheap tools with NO LLM call (and no
+        // spend) during an LLM-specific incident. Route to one tool, show its grounded answer +
+        // the rich exhibit card. The agent loop stays suppressed.
+        const lastText = (v.turns[v.turns.length - 1] as Turn).text;
+        try {
+          const choice = await pickDeterministicTool(env, lastText);
+          const result = await dispatchTool(env, choice.name, choice.input);
+          const prose = readerProse(result.text);
+          if (prose) await send("token", { text: prose });
+          await send("exhibit", result.exhibit ?? { kind: "plain" });
+          await send("done", { fraction: 0, deterministic: true });
+        } catch (err) {
+          console.error("deterministic turn failed:", err);
+          await send("refusal", { message: "Ask is in quiet mode right now — explore the scenes, and try again soon." });
+        }
         return;
       }
 
-      const reservation = await reserveTurn(env);
+      const reservation = await reserveTurn(env, ip);
       if (!reservation.ok) {
-        await send("refusal", { message: "Today's questions have worn me out — the archive's still here to wander. Try again tomorrow." });
+        // Per-IP slice exhausted = this visitor specifically; global cap = the whole archive.
+        const message =
+          reservation.scope === "ip"
+            ? "You've asked a good many today — give the archive a rest and come back tomorrow."
+            : "Today's questions have worn me out — the archive's still here to wander. Try again tomorrow.";
+        await send("refusal", { message });
         await send("done", { capHit: true, fraction: reservation.status.fraction });
         return;
       }
-      reservationId = reservation.id;
+      ticket = reservation.ticket;
 
       const result = await runAgentTurn(env, toMessages(v.turns), {
         onText: (text) => void send("token", { text }),
         onTool: (name) => void send("tool", { name }),
       });
 
-      const status = await commitTurn(env, reservationId!, result.usage);
-      reservationId = undefined;
-
-      // Empty prose = the tool loop hit its backstop. Degrade to a graceful refusal rather
-      // than streaming an answerless `done` (which would render an empty exhibit).
-      if (!result.text.trim()) {
-        await send("refusal", { message: "I got a little tangled chasing that one down — try asking it a different way." });
-        await send("done", { fraction: status.fraction });
-        return;
-      }
+      const status = await commitTurn(env, ticket!, result.usage);
+      ticket = undefined;
 
       // The composed exhibit: pick the primary descriptor from the turn's tool trace. The
       // frontend scaffolds this card kind and hydrates its atoms (photo/genre/map/chips) from
       // the SPA's local data using the slugs/ids here (see exhibits.ts thin-envelope contract).
       const exhibit = pickPrimaryExhibit(result.exhibits);
+
+      // Empty prose = the tool loop hit its backstop. If a real entity card was still resolved,
+      // render it (a wrong-shaped answer with a good card beats a flat refusal); only refuse when
+      // there's nothing to show at all.
+      if (!result.text.trim() && exhibit.kind === "plain") {
+        await send("refusal", { message: "I got a little tangled chasing that one down — try asking it a different way." });
+        await send("done", { fraction: status.fraction });
+        return;
+      }
+
       await send("exhibit", exhibit);
 
       // ≥80% of cap → push a deep link to /ask/admin (once/day). Backgrounded.
@@ -151,7 +198,7 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
       await send("done", { fraction: status.fraction });
     } catch (err) {
       console.error("chat turn failed:", err);
-      if (reservationId) ctx.waitUntil(releaseTurn(env, reservationId)); // charge nothing for a failed turn
+      if (ticket) ctx.waitUntil(releaseTurn(env, ticket)); // charge nothing for a failed turn
       await send("error", { message: "Something went sideways — try that again." });
     } finally {
       await writer.close();
@@ -165,16 +212,16 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
       "Content-Type": "text/event-stream; charset=utf-8",
       "Cache-Control": "no-store",
       Connection: "keep-alive",
-      ...CORS,
+      ...cors(request),
     },
   });
 }
 
 // Public status: mode only (so the frontend can collapse the dock when Ask is resting).
 // Spend $ is NOT exposed here — that lives behind Access on /ask/admin.
-async function handleStatus(env: Env): Promise<Response> {
+async function handleStatus(request: Request, env: Env): Promise<Response> {
   const mode = await getMode(env);
-  return Response.json({ mode }, { headers: CORS });
+  return Response.json({ mode }, { headers: cors(request) });
 }
 
 // Exchange a Turnstile token for a signed session token (required by /chat).
@@ -183,12 +230,12 @@ async function handleSession(request: Request, env: Env): Promise<Response> {
   try {
     body = (await request.json()) as { token?: string };
   } catch {
-    return Response.json({ error: "Bad JSON." }, { status: 400, headers: CORS });
+    return Response.json({ error: "Bad JSON." }, { status: 400, headers: cors(request) });
   }
   const ip = request.headers.get("CF-Connecting-IP");
   const result = await issueSession(env, body.token ?? "", ip);
-  if (!result.ok) return Response.json({ error: result.reason }, { status: 403, headers: CORS });
-  return Response.json({ session: result.token }, { headers: CORS });
+  if (!result.ok) return Response.json({ error: result.reason }, { status: 403, headers: cors(request) });
+  return Response.json({ session: result.token }, { headers: cors(request) });
 }
 
 export default {
@@ -196,7 +243,7 @@ export default {
     const url = new URL(request.url);
 
     if (request.method === "OPTIONS") {
-      return new Response(null, { headers: { ...CORS, "Access-Control-Allow-Headers": "Content-Type, Authorization, x-ask-session" } });
+      return new Response(null, { headers: { ...cors(request), "Access-Control-Allow-Headers": "Content-Type, Authorization, x-ask-session" } });
     }
 
     // Admin (behind Cloudflare Access; fail-closed inside handleAdmin).
@@ -211,9 +258,9 @@ export default {
       return handleChat(request, env, ctx);
     }
     if (url.pathname === "/api/ask/status" && request.method === "GET") {
-      return handleStatus(env);
+      return handleStatus(request, env);
     }
 
-    return new Response("Not found", { status: 404, headers: CORS });
+    return new Response("Not found", { status: 404, headers: cors(request) });
   },
 };

@@ -136,6 +136,16 @@ export const TOOL_DEFS = [
       additionalProperties: false,
     },
   },
+  {
+    name: "get_recent_shows",
+    description:
+      "The most recent shows I've actually been to — the last few that have ALREADY happened, newest first. Use for 'who did I see last', 'my last three shows', 'most recent concerts I've been to'. Never answer those from the upcoming-shows list.",
+    input_schema: {
+      type: "object",
+      properties: { limit: { type: "integer", minimum: 1, maximum: 25, description: "How many recent shows (default 5)." } },
+      additionalProperties: false,
+    },
+  },
 ] as const;
 
 export const TOOL_NAMES = TOOL_DEFS.map((t) => t.name);
@@ -344,7 +354,97 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       return { text: archiveTopSongs(songs, num(input.limit)) }; // plain
     }
 
+    case "get_recent_shows": {
+      const data = await getConcerts(e, bgCtx);
+      if (!data) return { text: DATA_UNAVAILABLE };
+      const today = todayISO();
+      // Only shows that have ALREADY happened (date ≤ today), newest first — the deterministic
+      // answer to "most recent / last seen", so the model can't reach for an upcoming show.
+      const past = data.concerts
+        .filter((c) => c.date <= today)
+        .sort((a, b) => b.date.localeCompare(a.date));
+      if (!past.length) return { text: "I don't have any past shows on record yet." };
+      const limit = Math.min(num(input.limit) ?? 5, 25);
+      const recent = past.slice(0, limit);
+      const lines = recent.map((c, i) => `${i + 1}. ${c.headliner} — ${c.venue}, ${c.city} (${c.date})`);
+      const text = `The ${recent.length} most recent ${recent.length === 1 ? "show" : "shows"} I've been to, newest first:\n${lines.join("\n")}${timingNote(recent, today)}`;
+      return { text, exhibit: { kind: "list", title: `Last ${recent.length} ${recent.length === 1 ? "show" : "shows"}`, rows: recent.map(concertRow) } };
+    }
+
     default:
       return { text: `Unknown tool: ${name}` };
   }
+}
+
+// ---------------------------------------------------------------------------------------------
+// Deterministic ("no-LLM") path — the kill switch's middle tier (`ask:mode = deterministic-only`).
+// When the LLM agent loop is suppressed during an incident, we still answer from the cheap tools:
+// route the question to ONE tool by keyword + a substring scan over the known artist/venue
+// vocabulary (safe — an exact-substring hit can't mismatch the way a fuzzy guess could), then show
+// the tool's own grounded answer + the rich exhibit card. No Anthropic call, no spend.
+// ---------------------------------------------------------------------------------------------
+
+const DECADES: Array<[RegExp, string]> = [
+  [/\b(1980s|'80s|80s)\b/, "1980s"],
+  [/\b(1990s|'90s|90s)\b/, "1990s"],
+  [/\b(2000s|'00s|00s)\b/, "2000s"],
+  [/\b(2010s|'10s|10s)\b/, "2010s"],
+  [/\b(2020s|'20s|20s)\b/, "2020s"],
+];
+
+const escapeRe = (s: string): string => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// The longest known name that appears in the question as a whole token-run (word-bounded so a
+// 2-char name like "U2" can't match mid-word). Returns the display name, or null.
+function longestNameInText(q: string, names: Iterable<string>): string | null {
+  let best: string | null = null;
+  for (const name of names) {
+    const lc = name.toLowerCase();
+    if (lc.length < 2) continue;
+    const re = new RegExp(`(^|[^a-z0-9])${escapeRe(lc)}([^a-z0-9]|$)`);
+    if (re.test(q) && (!best || lc.length > best.length)) best = name;
+  }
+  return best;
+}
+
+// Choose the single best tool for a question without an LLM. Order: explicit intents → known
+// entity (artist, then venue) → year/decade → archive overview as the graceful fallback.
+export async function pickDeterministicTool(env: Env, question: string): Promise<{ name: string; input: Input }> {
+  const q = question.toLowerCase();
+  if (/\b(surprise|random|pick (one|something|a show))\b/.test(q)) return { name: "surprise_me", input: {} };
+  if (/\b(top songs|most[ -]played|songs (you'?ve |i'?ve )?heard most)\b/.test(q)) return { name: "get_archive_top_songs", input: {} };
+  if (/\b(most recent|recent|latest|last)\b.*\b(show|shows|concert|concerts|gig|gigs|seen|saw|played)\b/.test(q)) return { name: "get_recent_shows", input: {} };
+  if (/\bon this day\b|\btoday\b/.test(q)) return { name: "on_this_day", input: {} };
+
+  const e = asReused(env);
+  const data = await getConcerts(e, bgCtx);
+  if (data) {
+    const artist = longestNameInText(q, new Set(data.concerts.map((c) => c.headliner)));
+    if (artist) return { name: "get_artist_history", input: { artist } };
+  }
+  const venues = await getVenuesMetadata(e, bgCtx);
+  if (venues) {
+    const venue = longestNameInText(q, Object.values(venues).map((v) => v.name));
+    if (venue) return { name: "get_venue_history", input: { venue } };
+  }
+
+  const year = q.match(/\b(19[89]\d|20[0-4]\d)\b/);
+  if (year) return { name: "search_concerts", input: { year: Number(year[1]) } };
+  for (const [re, decade] of DECADES) if (re.test(q)) return { name: "search_concerts", input: { decade } };
+
+  return { name: "get_archive_info", input: {} };
+}
+
+// Strip the model-only scaffolding from a tool's markdown so the raw text reads as a direct
+// answer to a person: the "Open on the site" footer (the frontend renders its own nav), the
+// authoritative timing note (an instruction to the model), inline deep-links (→ their label),
+// and the bracketed concert-id tags.
+export function readerProse(raw: string): string {
+  let t = raw;
+  const cut = t.indexOf("\n\n---\n**Open on the site:");
+  if (cut !== -1) t = t.slice(0, cut);
+  t = t.replace(/\n\n\(Timing —[\s\S]*$/m, "");
+  t = t.replace(/\[([^\]]+)\]\((?:https?:)?\/\/[^)]*\)/g, "$1"); // [label](url) → label
+  t = t.replace(/\s*\[[0-9]{4}-[0-9]{2}-[0-9]{2}[^\]]*\]/g, ""); // " [1998-04-27-...]" id tags
+  return t.trim();
 }

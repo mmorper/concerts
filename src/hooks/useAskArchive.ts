@@ -22,7 +22,14 @@ export interface Exchange {
 let seq = 0
 const nextId = () => `ex-${++seq}`
 
-export function useAskArchive() {
+export interface UseAskArchiveOptions {
+  // Lazily mint / silently re-mint the Turnstile-issued session (from useAskSession). Omitted in
+  // the dev harness, which uses a pasted token.
+  ensureSession?: (force?: boolean) => Promise<string | null>
+}
+
+export function useAskArchive(options: UseAskArchiveOptions = {}) {
+  const { ensureSession } = options
   const [exchanges, setExchanges] = useState<Exchange[]>([])
   const [busy, setBusy] = useState(false)
   const abortRef = useRef<AbortController | null>(null)
@@ -65,9 +72,10 @@ export function useAskArchive() {
                 patch(id, (x) => ({ ...x, prose: x.prose + event.text, consulting: null }))
                 break
               case 'tool':
-                // Any prose streamed before a tool call is the model thinking out loud
-                // ("let me check…"); the real answer comes after the last tool. Drop it.
-                patch(id, (x) => ({ ...x, consulting: event.name, prose: '' }))
+                // The worker now buffers interim prose and streams only the final answer
+                // (see agent-loop.ts), so there's no "let me check…" preamble to wipe here —
+                // just surface which tool is being consulted.
+                patch(id, (x) => ({ ...x, consulting: event.name }))
                 break
               case 'exhibit':
                 patch(id, (x) => ({ ...x, exhibit: event.exhibit }))
@@ -84,7 +92,7 @@ export function useAskArchive() {
                 break
             }
           },
-          controller.signal,
+          { signal: controller.signal, ensureSession },
         )
       } catch (err) {
         const reason = err instanceof Error ? err.message : 'error'
@@ -108,7 +116,7 @@ export function useAskArchive() {
         abortRef.current = null
       }
     },
-    [busy, exchanges],
+    [busy, exchanges, ensureSession],
   )
 
   const reset = useCallback(() => {

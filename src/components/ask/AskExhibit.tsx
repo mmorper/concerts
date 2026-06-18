@@ -233,19 +233,21 @@ function Frame({ color, children }: { color: string; children: ReactNode }) {
 // ---------- entry point ----------
 
 export function AskExhibit({ exchange, archive }: { exchange: Exchange; archive: ArchiveLookups }) {
-  const { exhibit, consulting, status } = exchange
+  const { exhibit, status } = exchange
 
   // Refusal/error: one quiet card regardless of any partial exhibit.
   if (status === 'refused' || status === 'error') return <RefusalCard ex={exchange} />
 
-  // Scaffold: the exhibit event lands after the prose, so until it arrives show a stable frame
-  // with the streaming prose and a "consulting…" line.
+  // Hold the card back until the answer is composed: rather than paint an empty frame (which
+  // reads as "broken") and a churn of "consulting…" text, show one quiet loading cue and only
+  // hydrate the real exhibit once the `exhibit` event lands.
   if (!exhibit) {
     return (
-      <Frame color={DEFAULT_GENRE_COLOR}>
-        {consulting && <div className="ask-consulting">consulting the archive…</div>}
-        <Prose ex={exchange} />
-      </Frame>
+      <div className="ask-loading" role="status" aria-label="Composing an answer">
+        <span className="ask-loading-dot" />
+        <span className="ask-loading-dot" />
+        <span className="ask-loading-dot" />
+      </div>
     )
   }
 

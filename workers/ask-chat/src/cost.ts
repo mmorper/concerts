@@ -38,14 +38,25 @@ export function dailyCapMicroUsd(env: Env): number {
   return Math.round((monthly / 30) * 1_000_000);
 }
 
+// Per-IP daily ceiling — a slice of the global day cap so a single source can't drain the whole
+// budget (a denial-of-service-by-budget-exhaustion lever the global cap alone doesn't close).
+// Defaults to ~$0.15/day (≈18% of the ~$0.83/day global ceiling). microUSD.
+export function ipDailyCapMicroUsd(env: Env): number {
+  return Math.round(Number(env.ASK_IP_DAILY_USD || "0.15") * 1_000_000);
+}
+
 // Conservative pre-flight reservation for one user turn (the loop may make several model
 // calls). commit() swaps this for the measured cost, so over-estimating only briefly tightens
 // headroom under concurrency — it never overcharges. ~$0.10.
 export const RESERVE_EST_MICRO_USD = 100_000;
 
-// One global counter instance — the cap is account-wide, not per-user.
-function stub(env: Env): DurableObjectStub {
+// The account-wide counter and a per-IP counter are two instances of the same DO class — each
+// tracks its own DayState; the cap is passed per call.
+function globalStub(env: Env): DurableObjectStub {
   return env.SPEND_COUNTER.get(env.SPEND_COUNTER.idFromName("global"));
+}
+function ipStub(env: Env, ip: string): DurableObjectStub {
+  return env.SPEND_COUNTER.get(env.SPEND_COUNTER.idFromName(`ip:${ip}`));
 }
 
 interface CounterReply {
@@ -54,33 +65,64 @@ interface CounterReply {
   status: SpendStatus;
 }
 
-async function call(env: Env, path: string, params: Record<string, string>): Promise<CounterReply> {
-  const qs = new URLSearchParams({ cap: String(dailyCapMicroUsd(env)), ...params });
-  const res = await stub(env).fetch(`https://do/${path}?${qs}`);
+async function call(
+  stub: DurableObjectStub,
+  path: string,
+  cap: number,
+  params: Record<string, string>,
+): Promise<CounterReply> {
+  const qs = new URLSearchParams({ cap: String(cap), ...params });
+  const res = await stub.fetch(`https://do/${path}?${qs}`);
   return (await res.json()) as CounterReply;
+}
+
+// A reservation holds a slot on BOTH counters; commit/release must settle both.
+export interface ReserveTicket {
+  ip: string;
+  globalId: string;
+  ipId: string;
 }
 
 export interface Reservation {
   ok: boolean;
-  id?: string;
-  status: SpendStatus;
+  ticket?: ReserveTicket;
+  status: SpendStatus; // the GLOBAL status — drives the done fraction + ≥80% tripwire
+  scope?: "global" | "ip"; // which ceiling blocked, when !ok (for the right refusal copy)
 }
 
-export async function reserveTurn(env: Env): Promise<Reservation> {
-  const r = await call(env, "reserve", { est: String(RESERVE_EST_MICRO_USD) });
-  return { ok: r.ok ?? false, id: r.id, status: r.status };
+// Reserve global first, then per-IP. If the per-IP slice is exhausted, release the global slot we
+// just took so a refused turn never leaks budget. Both must pass for the turn to proceed.
+export async function reserveTurn(env: Env, ip: string): Promise<Reservation> {
+  const gCap = dailyCapMicroUsd(env);
+  const g = await call(globalStub(env), "reserve", gCap, { est: String(RESERVE_EST_MICRO_USD) });
+  if (!g.ok || !g.id) return { ok: false, status: g.status, scope: "global" };
+
+  const iCap = ipDailyCapMicroUsd(env);
+  const i = await call(ipStub(env, ip), "reserve", iCap, { est: String(RESERVE_EST_MICRO_USD) });
+  if (!i.ok || !i.id) {
+    await call(globalStub(env), "release", gCap, { id: g.id }).catch(() => {});
+    return { ok: false, status: g.status, scope: "ip" };
+  }
+  return { ok: true, ticket: { ip, globalId: g.id, ipId: i.id }, status: g.status };
 }
 
-export async function commitTurn(env: Env, id: string, usage: AnthropicUsage): Promise<SpendStatus> {
-  const r = await call(env, "commit", { id, actual: String(usageMicroUsd(usage)) });
-  return r.status;
+export async function commitTurn(env: Env, ticket: ReserveTicket, usage: AnthropicUsage): Promise<SpendStatus> {
+  const actual = String(usageMicroUsd(usage));
+  const [g] = await Promise.all([
+    call(globalStub(env), "commit", dailyCapMicroUsd(env), { id: ticket.globalId, actual }),
+    call(ipStub(env, ticket.ip), "commit", ipDailyCapMicroUsd(env), { id: ticket.ipId, actual }),
+  ]);
+  return g.status;
 }
 
-export async function releaseTurn(env: Env, id: string): Promise<void> {
-  await call(env, "release", { id });
+export async function releaseTurn(env: Env, ticket: ReserveTicket): Promise<void> {
+  await Promise.all([
+    call(globalStub(env), "release", dailyCapMicroUsd(env), { id: ticket.globalId }),
+    call(ipStub(env, ticket.ip), "release", ipDailyCapMicroUsd(env), { id: ticket.ipId }),
+  ]);
 }
 
 export async function spendStatus(env: Env): Promise<SpendStatus> {
-  const r = await call(env, "status", {});
+  const r = await call(globalStub(env), "status", dailyCapMicroUsd(env), {});
   return r.status;
 }

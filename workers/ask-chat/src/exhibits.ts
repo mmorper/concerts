@@ -129,15 +129,17 @@ const KIND_PRIORITY: Record<Exhibit["kind"], number> = {
 
 /**
  * Pick the primary exhibit from the descriptors a turn produced, in tool-call order. Ties break
- * to the LAST one (the model's final tool call is usually the one the prose is about). Returns a
- * plain exhibit if nothing entity-shaped was produced.
+ * to the FIRST one: on a multi-entity turn ("did X play at venue Y?") the model resolves the
+ * sentence's subject first, so the first descriptor at a given priority is the card the prose is
+ * actually about. (Using the last one mismatched the card to the prose.) Returns a plain exhibit
+ * if nothing entity-shaped was produced.
  */
 export function pickPrimaryExhibit(descriptors: Exhibit[]): Exhibit {
   let best: Exhibit = { kind: "plain" };
   let bestRank = -1;
   for (const d of descriptors) {
     const rank = KIND_PRIORITY[d.kind];
-    if (rank >= bestRank) {
+    if (rank > bestRank) {
       best = d;
       bestRank = rank;
     }

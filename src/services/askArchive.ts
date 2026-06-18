@@ -9,34 +9,67 @@ export interface Turn {
   text: string
 }
 
-// Same-origin in production (the worker owns /api/ask*). For local dev the SPA runs on :5173
-// and the worker on another port — set VITE_ASK_BASE_URL to e.g. http://localhost:8799.
-const BASE = (import.meta.env.VITE_ASK_BASE_URL ?? '').replace(/\/$/, '')
+// Where the chat worker lives. The worker route is `concerts.morperhaus.org/api/ask*` — so
+// same-origin only reaches it ON the custom domain. On *.pages.dev previews (and local dev), the
+// SPA must call the worker ABSOLUTELY; CORS allows our preview/localhost origins for exactly this.
+//   • VITE_ASK_BASE_URL set    → use it (e.g. http://localhost:8799 for a local `wrangler dev`)
+//   • on concerts.morperhaus.org → same-origin ('')
+//   • anywhere else (pages.dev preview, localhost) → the prod worker absolutely
+const PROD_API_ORIGIN = 'https://concerts.morperhaus.org'
+const EXPLICIT_BASE = (import.meta.env.VITE_ASK_BASE_URL ?? '').replace(/\/$/, '')
+const BASE = EXPLICIT_BASE
+  ? EXPLICIT_BASE
+  : typeof window !== 'undefined' && window.location.hostname === 'concerts.morperhaus.org'
+    ? ''
+    : PROD_API_ORIGIN
 
-// Dev-only: a session token minted via workers/ask-chat/scripts/mint-dev-session.mjs, stashed
-// in localStorage so the harness can call /chat without the (still-unbuilt, #141) Turnstile
-// widget. In production this is replaced by the /api/ask/session exchange.
-const DEV_SESSION_KEY = 'ask_dev_session'
+// The signed session token (HMAC payload.sig), stashed in localStorage. Two ways it lands here:
+//   • prod — exchangeTurnstileForSession() trades a Turnstile token for one (the real gate);
+//   • dev  — pasted from workers/ask-chat/scripts/mint-dev-session.mjs (bypasses Turnstile).
+// Both are interchangeable session tokens; /chat treats them identically.
+const SESSION_KEY = 'ask_session'
 export function getSessionToken(): string | null {
   try {
-    return localStorage.getItem(DEV_SESSION_KEY)
+    return localStorage.getItem(SESSION_KEY)
   } catch {
     return null
   }
 }
 export function setSessionToken(token: string): void {
   try {
-    localStorage.setItem(DEV_SESSION_KEY, token)
+    localStorage.setItem(SESSION_KEY, token)
   } catch {
     /* ignore */
   }
 }
 export function clearSessionToken(): void {
   try {
-    localStorage.removeItem(DEV_SESSION_KEY)
+    localStorage.removeItem(SESSION_KEY)
   } catch {
     /* ignore */
   }
+}
+
+// Exchange a one-time Turnstile token for a signed session token, storing it on success. The
+// session is required on every /chat turn; it expires (~30 min) and is silently re-minted.
+export async function exchangeTurnstileForSession(turnstileToken: string): Promise<string> {
+  const res = await fetch(`${BASE}/api/ask/session`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ token: turnstileToken }),
+  })
+  if (!res.ok) {
+    let reason = ''
+    try {
+      reason = ((await res.json()) as { error?: string })?.error ?? ''
+    } catch {
+      /* no body */
+    }
+    throw new Error(reason || `session exchange failed: ${res.status}`)
+  }
+  const { session } = (await res.json()) as { session: string }
+  setSessionToken(session)
+  return session
 }
 
 export async function getStatus(): Promise<{ mode: 'on' | 'paused' | 'deterministic-only' } | null> {
@@ -49,18 +82,16 @@ export async function getStatus(): Promise<{ mode: 'on' | 'paused' | 'determinis
   }
 }
 
-/**
- * Stream one turn. Calls `onEvent` for each parsed SSE event. Resolves when the stream closes;
- * rejects only on a transport/HTTP failure (the worker reports kill-switch/cap as graceful
- * `refusal` events, never an error status). Pass an AbortSignal to cancel mid-stream.
- */
-export async function streamAskTurn(
-  turns: Turn[],
-  onEvent: (event: AskEvent) => void,
-  signal?: AbortSignal,
-): Promise<void> {
-  const token = getSessionToken()
-  const res = await fetch(`${BASE}/api/ask/chat`, {
+export interface StreamOpts {
+  signal?: AbortSignal
+  // Lazily provide (and, when forced, re-mint) the session token. Injected by the containers via
+  // useAskSession so the SSE client stays UI-agnostic. Omitted in the dev harness, which falls
+  // back to a pasted token in localStorage.
+  ensureSession?: (force?: boolean) => Promise<string | null>
+}
+
+function postChat(turns: Turn[], token: string | null, signal?: AbortSignal): Promise<Response> {
+  return fetch(`${BASE}/api/ask/chat`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
@@ -69,6 +100,33 @@ export async function streamAskTurn(
     body: JSON.stringify({ turns }),
     signal,
   })
+}
+
+/**
+ * Stream one turn. Calls `onEvent` for each parsed SSE event. Resolves when the stream closes;
+ * rejects only on a transport/HTTP failure (the worker reports kill-switch/cap as graceful
+ * `refusal` events, never an error status).
+ *
+ * Session handling: if `ensureSession` is supplied, the token is minted lazily before the call
+ * and silently re-minted + retried once on a 401 (an expired session mid-conversation never
+ * surfaces an error). Without it, falls back to a stored token (dev harness).
+ */
+export async function streamAskTurn(
+  turns: Turn[],
+  onEvent: (event: AskEvent) => void,
+  opts: StreamOpts = {},
+): Promise<void> {
+  const { signal, ensureSession } = opts
+
+  let token = ensureSession ? await ensureSession(false) : getSessionToken()
+  let res = await postChat(turns, token, signal)
+
+  // Expired/invalid session — re-mint once and retry transparently.
+  if (res.status === 401 && ensureSession) {
+    clearSessionToken()
+    token = await ensureSession(true)
+    if (token) res = await postChat(turns, token, signal)
+  }
 
   if (!res.ok || !res.body) {
     if (res.status === 401) {
