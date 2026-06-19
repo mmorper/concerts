@@ -1,0 +1,28 @@
+name = "concerts-dashboard-refresh"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+
+# Daily refresh at 06:00 UTC.
+[triggers]
+crons = ["0 6 * * *"]
+
+# Shared with the Concerts site's CONCERTS_DASHBOARD binding — same namespace.
+# Create it once:  wrangler kv namespace create CONCERTS_DASHBOARD
+# then paste the id here AND bind the same id on the site's serving layer.
+[[kv_namespaces]]
+binding = "CONCERTS_DASHBOARD"
+id = "<CONCERTS_DASHBOARD_KV_ID>"   # TODO(concerts)
+
+# Non-secret. Same Cloudflare account as Pitch.
+[vars]
+CF_ACCOUNT_ID = "6db8591bbcba4588ae4ef9c3839cd209"
+
+# Secrets — set with `wrangler secret put <NAME>` (never committed):
+#   CF_API_TOKEN            Account Analytics:Read (same account-level GraphQL as Pitch).
+#                           If you add AI Gateway analytics, the same Analytics:Read covers it.
+#   GA_SA_KEY_JSON          The SAME GA service-account JSON Pitch uses (one line). Unset → ga null.
+#   GA_IMPERSONATE_SUBJECT  "mike@morper.net" — domain-wide delegation subject (same as Pitch).
+#   ANTHROPIC_ADMIN_KEY     Anthropic org Admin API key (sk-ant-admin…). Unset → anthropic null.
+#                           SKIP this if you read cost from AI Gateway instead.
+#   GH_TOKEN                Optional — fine-grained PAT on the Concerts repo (Development tab). Unset → github null.
+#   REFRESH_KEY             Optional — enables GET /?key=<REFRESH_KEY> to seed/trigger a refresh.

@@ -1,11 +1,11 @@
 # Ask the Archive — Observability & Discoverability
 
-**Status:** Implemented (branch `ask-analytics-and-seo`, PR pending)
+**Status:** Merged in #156 · live for SEO + MCP query-tripwire; **analytics + ask-chat alerts pending deploy (#157)** — see Deployment Notes.
 **Target Version:** next (post-v4.7.0)
 **Priority:** Medium
 **Estimated Complexity:** Medium (two workers + frontend events + static SEO files)
 **Dependencies:** Builds on Epic #138 (Ask the Archive chat, #139–#143) and the MCP server (#102).
-**Tracking issues:** #153 (analytics), #154 (spend alerts), #155 (AI discoverability) — all under Epic #138.
+**Tracking issues:** #153 (analytics), #154 (spend alerts), #155 (AI discoverability) — all under Epic #138. Deploy follow-up: #157.
 
 > **Note on provenance.** This spec was **reverse-engineered after implementation** to restore the
 > audit trail (spec → issues → code) that the work skipped. It documents what shipped and *why*,
