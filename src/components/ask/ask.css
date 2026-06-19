@@ -148,7 +148,9 @@
 
 /* ---- Container B — Spotlight overlay (summoned over a scene; esc restores) ---- */
 .ask-spotlight-scrim {
-  position: fixed; inset: 0; z-index: 60;
+  /* Above scene overlays (the Map scene's title/tabs use z-[1000]/z-[1001]) so the modal isn't
+     pierced by scene chrome. The Turnstile challenge layer (.ts-gate) sits above this. */
+  position: fixed; inset: 0; z-index: 2000;
   background: rgba(15, 12, 40, 0.55); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
   display: flex; align-items: flex-start; justify-content: center;
   padding: 10vh 16px 16px; animation: ask-scrim-in 0.18s ease both;
@@ -165,8 +167,19 @@
 }
 @keyframes ask-bloom { from { opacity: 0; transform: translateY(8px) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @media (prefers-reduced-motion: reduce) {
-  .ask-spotlight-scrim, .ask-spotlight { animation: none; }
+  /* Spec #142: bloom honors reduced-motion as a cross-fade, not a scale. Keep the scrim's
+     opacity fade; replace the palette's scale/translate bloom with an opacity-only fade. */
+  .ask-spotlight { animation: ask-fade-in 0.18s ease both; }
 }
+/* Mobile (#142): the Spotlight is the one chat surface here too — no overlay quirks, just a
+   full-screen sheet (there's no ⌘K / hover register on phones, and no separate /ask page). The
+   sheet is opaque and fills the screen, so the scrim's backdrop-blur would be fully occluded —
+   drop it (a full-viewport backdrop-filter is an expensive, invisible compositing pass on phones). */
+@media (max-width: 767px) {
+  .ask-spotlight-scrim { padding: 0; align-items: stretch; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .ask-spotlight { width: 100%; max-height: none; height: 100%; border-radius: 0; border: none; background: #1e1b4b; }
+}
+@keyframes ask-fade-in { from { opacity: 0; } to { opacity: 1; } }
 
 .ask-spot-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex: none; }
 /* Serif mark — Playfair (the site's title voice), so the overlay reads as the archive, not a
@@ -180,41 +193,46 @@
 }
 .ask-esc:hover { color: #fff; border-color: rgba(255, 255, 255, 0.35); }
 
-.ask-spot-foot { flex: none; display: flex; justify-content: flex-end; padding-top: 10px; }
-.ask-fullview {
-  font-size: 13px; color: rgba(255, 255, 255, 0.7); text-decoration: none;
-  display: inline-flex; align-items: center; gap: 5px;
+/* ---- The Ask scene (#142) — the blended invitation; final snap panel + /?scene=ask ----
+   The storytelling coda fused with the /ask warmth. The composer + prompts open the Spotlight in
+   place (the one chat surface). One invitation, one home — no dock, no separate chat page. */
+.ask-scene {
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 80px 20px; position: relative; overflow: hidden;
+  background:
+    radial-gradient(1100px 620px at 50% 30%, rgba(140, 122, 224, 0.26), transparent 62%),
+    linear-gradient(180deg, #181334 0%, #1e1b4b 40%, #241253 78%, #2c1660 100%);
 }
-.ask-fullview:hover { color: #fff; }
+.ask-scene-wrap { width: min(620px, 94vw); }
+.ask-scene-kicker { font-size: 11.5px; letter-spacing: 0.22em; text-transform: uppercase; color: #818cf8; font-weight: 600; margin-bottom: 18px; }
+.ask-scene h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(32px, 5vw, 52px); line-height: 1.08; letter-spacing: -0.015em; margin: 0 0 16px; color: #fff; }
+/* text-wrap:balance evens line lengths so no single word dangles. */
+.ask-scene-sub { font-size: 17px; line-height: 1.55; color: rgba(255, 255, 255, 0.72); max-width: 62ch; margin: 0 auto 32px; text-wrap: balance; }
 
-/* ---- Container A — full-canvas /ask (the coda gradient destination + mobile) ---- */
-.ask-canvas {
-  min-height: 100vh; display: flex; flex-direction: column; color: #fff;
-  background: linear-gradient(180deg, #181334 0%, #1e1b4b 40%, #241253 78%, #2c1660 100%);
+/* Composer — a button styled like the Spotlight input; clicking blooms the overlay open in place. */
+.ask-scene-composer {
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 16px;
+  padding: 6px 6px 6px 16px; cursor: pointer; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
-.ask-canvas-bar {
-  display: flex; align-items: center; gap: 10px; padding: 16px 20px; flex: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-.ask-back {
-  display: inline-flex; align-items: center; gap: 6px; color: rgba(255, 255, 255, 0.75);
-  text-decoration: none; font-size: 14px;
-}
-.ask-back:hover { color: #fff; }
-.ask-canvas-mark { display: flex; align-items: center; gap: 10px; margin-left: auto; font-family: 'Playfair Display', Georgia, serif; font-size: 16px; letter-spacing: 0.005em; color: rgba(255, 255, 255, 0.9); }
+.ask-scene-composer:hover { border-color: rgba(165, 180, 252, 0.55); background: rgba(255, 255, 255, 0.09); }
+.ask-scene-composer .ph { flex: 1; font-size: 15.5px; color: rgba(255, 255, 255, 0.55); padding: 8px 0; }
+.ask-scene-composer .send { width: 42px; height: 42px; flex: none; border: none; border-radius: 11px; background: #fff; color: #1e1b4b; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 
-.ask-canvas-inner {
-  width: 100%; max-width: 720px; margin: 0 auto; flex: 1; display: flex; flex-direction: column;
-  min-height: 0; padding: 28px 20px 24px;
-}
-.ask-opener { text-align: center; margin: 12px 0 26px; flex: none; }
-.ask-opener h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: 30px; line-height: 1.15; margin: 0 0 10px; color: #fff; }
-.ask-opener p { font-size: 15.5px; color: rgba(255, 255, 255, 0.72); margin: 0 auto; max-width: 460px; }
-.ask-canvas-foot { flex: none; text-align: center; font-size: 13px; color: rgba(255, 255, 255, 0.5); margin: 14px 0 0; }
-.ask-canvas-foot a { color: rgba(255, 255, 255, 0.78); text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, 0.25); }
-.ask-canvas-foot a:hover { color: #fff; }
+/* Suggested prompts — demoted to hints (not buttons) so they don't compete with the composer. */
+.ask-scene-try { margin: 32px 0 12px; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.36); font-weight: 600; }
+.ask-scene-prompts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.ask-scene-prompts button { font-family: inherit; font-size: 13.5px; color: rgba(255, 255, 255, 0.62); cursor: pointer; background: transparent; border: none; border-radius: 999px; padding: 6px 12px; transition: background 0.2s ease, color 0.2s ease; }
+.ask-scene-prompts button:hover { background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.95); }
+
+.ask-scene-funnel { margin-top: 32px; font-size: 13px; color: rgba(255, 255, 255, 0.5); }
+.ask-scene-funnel a { color: #818cf8; text-decoration: none; }
+.ask-scene-funnel a:hover { text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) { .ask-scene-composer { transition: none; } }
 
 /* Turnstile mount — centered, above the overlay (z 60). With appearance:interaction-only the
    widget paints nothing unless a challenge is actually required, so no frame of our own here;
    Turnstile carries its own challenge UI when it appears. */
-.ts-gate { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 80; }
+.ts-gate { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2100; }

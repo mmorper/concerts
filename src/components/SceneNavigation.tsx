@@ -3,14 +3,20 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { haptics } from '../utils/haptics'
 import { analytics } from '../services/analytics'
+import { useActiveScene } from '../hooks/useActiveScene'
+import { useAsk } from './ask/AskProvider'
+import { SCENE_MAP } from './changelog/constants'
 
 const NAV_LINKS = [
+  // Ask leads (#142); it opens the Spotlight in place — handled specially below, not a nav link.
+  { to: '/ask', label: 'Ask', event: 'ask_archive_nav_clicked', ask: true },
   { to: '/liner-notes', label: 'Liner Notes', event: 'liner_notes_nav_clicked' },
   { to: '/whats-playing', label: "What's Playing", event: 'whats_playing_nav_clicked' },
-  // /ask is now an in-app route (#141 Container A), so it's an SPA <Link> like its peers.
-  { to: '/ask', label: 'Ask', event: 'ask_archive_nav_clicked' },
   { to: '/about', label: 'About', event: 'about_nav_clicked' },
 ] as const
+
+// Ask is the last scene (from the canonical roster); the data dots cover the rest.
+const ASK_SCENE = SCENE_MAP.ask
 
 const scenes = [
   { id: 1, label: 'Timeline' },
@@ -21,26 +27,16 @@ const scenes = [
 ]
 
 export function SceneNavigation() {
-  const [activeScene, setActiveScene] = useState(1)
+  // Shared scroll observer (#142) — the rail and the wayfinding dock read the same source so they
+  // can never disagree on the active scene.
+  const { scene: activeScene, isScrolling } = useActiveScene({ sceneCount: ASK_SCENE })
+  const { openSpotlight } = useAsk()
   const [revealedLabel, setRevealedLabel] = useState<number | null>(null)
 
+  // Dismiss any revealed dot-label as soon as the user starts scrolling.
   useEffect(() => {
-    const scrollContainer = document.querySelector('.snap-y')
-    if (!scrollContainer) return
-
-    const handleScroll = () => {
-      const scrollPosition = scrollContainer.scrollTop
-      const windowHeight = window.innerHeight
-      const sceneIndex = Math.round(scrollPosition / windowHeight) + 1
-      setActiveScene(Math.min(Math.max(sceneIndex, 1), scenes.length))
-
-      // Dismiss label on scroll
-      setRevealedLabel(null)
-    }
-
-    scrollContainer.addEventListener('scroll', handleScroll, { passive: true })
-    return () => scrollContainer.removeEventListener('scroll', handleScroll)
-  }, [])
+    if (isScrolling) setRevealedLabel(null)
+  }, [isScrolling])
 
   // Auto-dismiss label after 3 seconds
   useEffect(() => {
@@ -97,24 +93,29 @@ export function SceneNavigation() {
       className="fixed right-8 top-1/2 -translate-y-1/2 z-40 hidden md:block"
     >
       {/* The dots are the flow content, so the outer -translate-y-1/2 centers THEM at the
-          viewport middle. "Ask the Archive" (above) and "Liner Notes" (below) are floated
-          out of flow, so their unequal heights never shift the dots off center. */}
+          viewport middle. "Ask the Archive" (above) and "Liner Notes" (below) are floated out of
+          flow, so their unequal heights never shift the dots off center. */}
       <div className="relative flex flex-col gap-3 items-center">
-        {/* Ask the Archive — floated above the dots; a quiet peer of Liner Notes below */}
+        {/* Ask the Archive — opens the Spotlight over the current scene (#142). Brightens when you're
+            on the Ask scene (scene 6), so it doubles as the "you're here" cue. */}
         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 flex flex-col items-center gap-2.5">
-          <Link
-            to="/ask"
+          <button
+            type="button"
             className="group flex items-center justify-center min-w-[44px]"
             aria-label="Ask the Archive"
             onClick={() => {
               haptics.light()
               analytics.trackEvent('ask_archive_nav_clicked', { surface: 'rail', from_scene: activeScene })
+              openSpotlight('rail')
             }}
           >
-            <span className="font-sans transition-colors duration-200" style={vLabel(railLabel)}>
+            <span
+              className="font-sans transition-colors duration-200"
+              style={vLabel(activeScene === ASK_SCENE ? 'rgba(255,255,255,0.9)' : railLabel)}
+            >
               Ask the Archive
             </span>
-          </Link>
+          </button>
           <span aria-hidden="true" style={{ width: 18, height: 1, background: railEdge }} />
         </div>
 
@@ -197,17 +198,28 @@ export function SceneNavigation() {
       <div className="flex items-center justify-center py-3" style={{ gap: 16 }}>
         {NAV_LINKS.map((link, i) => {
           const external = 'external' in link && link.external
+          const isAsk = 'ask' in link && link.ask
           const cls = 'font-sans transition-colors duration-200 hover:text-white active:text-white'
           // Ask is a plain peer of the other links (matches the quiet rail treatment).
           const style = { fontSize: 11, letterSpacing: '0.10em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.45)' }
-          const onClick = () =>
-            analytics.trackEvent(link.event, { from_scene: activeScene, ...(external ? { surface: 'mobile' } : {}) })
+          const onClick = () => {
+            analytics.trackEvent(link.event, {
+              from_scene: activeScene,
+              ...(isAsk ? { surface: 'navmobile' } : external ? { surface: 'mobile' } : {}),
+            })
+            // Ask opens the Spotlight (full-screen sheet on phones) instead of navigating (#142).
+            if (isAsk) openSpotlight('navmobile')
+          }
           return (
             <Fragment key={link.to}>
               {i > 0 && (
                 <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.2)', fontSize: 10, lineHeight: 1 }}>·</span>
               )}
-              {external ? (
+              {isAsk ? (
+                <button type="button" className={cls} style={{ ...style, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }} onClick={onClick}>
+                  {link.label}
+                </button>
+              ) : external ? (
                 <a href={link.to} className={cls} style={style} onClick={onClick}>{link.label}</a>
               ) : (
                 <Link to={link.to} className={cls} style={style} onClick={onClick}>{link.label}</Link>

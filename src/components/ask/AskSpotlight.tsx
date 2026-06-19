@@ -4,14 +4,11 @@
 // Capped at ~70vh with internal scroll; "Open full view ↗" promotes the same conversation to /ask.
 
 import { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useAsk } from './AskProvider'
 import { AskConversation } from './AskConversation'
-import { analytics } from '@/services/analytics'
 
 export function AskSpotlight() {
   const { open, close, exchanges, busy, ask, archive } = useAsk()
-  const navigate = useNavigate()
   const paletteRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -46,12 +43,6 @@ export function AskSpotlight() {
 
   if (!open) return null
 
-  const openFullView = () => {
-    analytics.trackEvent('ask_full_view_opened')
-    close({ clear: false }) // carry the conversation into /ask
-    navigate('/ask')
-  }
-
   return (
     <div
       className="ask-spotlight-scrim"
@@ -85,14 +76,6 @@ export function AskSpotlight() {
           autoFocus
           inputRef={inputRef}
         />
-
-        {exchanges.length > 0 && (
-          <div className="ask-spot-foot">
-            <button type="button" className="ask-fullview" onClick={openFullView}>
-              Open full view <span aria-hidden="true">↗</span>
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )

@@ -69,6 +69,21 @@ export default {
     const url = new URL(request.url);
     const userAgent = request.headers.get('User-Agent') || '';
 
+    // TEMPORARY WORKAROUND — REMOVE AFTER ~2026-06-26.
+    // /ask was a static landing page until #141 reclaimed it for the SPA. The retired file was
+    // served with a 7-day s-maxage and is wedged in the edge cache on the query-less /ask key;
+    // by-URL and full purges did not reliably evict it. A query-string variant misses that stale
+    // key and returns the live SPA shell, so we fetch /ask that way and return it in place (the
+    // client URL stays /ask; React Router then redirects /ask → /?scene=ask per #142).
+    // NOT a no-op: this runs an extra origin fetch on EVERY /ask request. It is only needed until
+    // the stale object expires (cached ~2026-06-19, s-maxage 7d → gone ~2026-06-26) — delete this
+    // whole branch then. (Subrequests to the worker's own route go to origin, so no recursion.)
+    if (url.pathname === '/ask' && !url.searchParams.has('__spa')) {
+      const fresh = new URL(request.url);
+      fresh.searchParams.set('__spa', '1');
+      return fetch(new Request(fresh.toString(), request));
+    }
+
     // Only process HTML requests from bots
     if (!isBot(userAgent) || !isHTMLRequest(request)) {
       return fetch(request);

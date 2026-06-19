@@ -89,14 +89,14 @@ export function PageNav({ current, theme }: PageNavProps) {
       )}
 
       <span className={dividerClass} aria-hidden="true">·</span>
-      {/* /ask is a static (non-SPA) page — full-navigation <a>, not <Link>. */}
-      <a
-        href="/ask"
+      {/* Ask is the in-app Ask scene now (#142) — SPA <Link> to the deep link, no full reload. */}
+      <Link
+        to="/?scene=ask"
         className={`font-sans text-sm transition-colors ${linkClass}`}
         onClick={() => analytics.trackEvent('ask_archive_nav_clicked', { surface: 'pagenav', current })}
       >
         Ask the Archive
-      </a>
+      </Link>
     </nav>
   )
 }
