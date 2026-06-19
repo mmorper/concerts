@@ -103,8 +103,6 @@
 .stat .v { font-family: 'Playfair Display', Georgia, serif; font-size: 24px; color: #fff; line-height: 1; }
 .stat .k { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); margin-top: 4px; }
 
-.ask-consulting { font-size: 13px; color: rgba(255, 255, 255, 0.5); font-style: italic; margin: 2px 0 10px; }
-
 /* Minimal "composing an answer" cue — shown in place of an empty card while the answer is being
    composed; the control grows by just this row, then the real exhibit hydrates in. */
 .ask-loading { display: flex; gap: 6px; align-items: center; padding: 12px 4px 18px; }

@@ -146,8 +146,16 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
           const choice = await pickDeterministicTool(env, lastText);
           const result = await dispatchTool(env, choice.name, choice.input);
           const prose = readerProse(result.text);
+          const exhibit = result.exhibit ?? { kind: "plain" as const };
+          // No prose AND no real card → a graceful refusal, never a blank exhibit (mirror the LLM
+          // path's empty-answer guard below).
+          if (!prose && exhibit.kind === "plain") {
+            await send("refusal", { message: "I got a little tangled chasing that one down — try asking it a different way." });
+            await send("done", { fraction: 0, deterministic: true });
+            return;
+          }
           if (prose) await send("token", { text: prose });
-          await send("exhibit", result.exhibit ?? { kind: "plain" });
+          await send("exhibit", exhibit);
           await send("done", { fraction: 0, deterministic: true });
         } catch (err) {
           console.error("deterministic turn failed:", err);
@@ -174,7 +182,16 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
         onTool: (name) => void send("tool", { name }),
       });
 
-      const status = await commitTurn(env, ticket!, result.usage);
+      // Best-effort: the answer already streamed, so a transient cost-counter failure must NOT
+      // fail the turn (that would send an `error` event and drop the exhibit on a good answer).
+      // Fall back to the reservation's status; a truly-uncommitted reservation self-heals via the
+      // DO's TTL prune.
+      let status = reservation.status;
+      try {
+        status = await commitTurn(env, ticket!, result.usage);
+      } catch (err) {
+        console.error("cost commit failed (answer already produced):", err);
+      }
       ticket = undefined;
 
       // The composed exhibit: pick the primary descriptor from the turn's tool trace. The

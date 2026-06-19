@@ -14,7 +14,6 @@ export interface Exchange {
   question: string
   prose: string
   exhibit: Exhibit | null
-  consulting: string | null // tool currently being consulted, for the "consulting…" affordance
   status: ExchangeStatus
   message?: string // refusal / error copy
 }
@@ -55,7 +54,7 @@ export function useAskArchive(options: UseAskArchiveOptions = {}) {
       const id = nextId()
       setExchanges((xs) => [
         ...xs,
-        { id, question: q, prose: '', exhibit: null, consulting: null, status: 'streaming' },
+        { id, question: q, prose: '', exhibit: null, status: 'streaming' },
       ])
       setBusy(true)
       analytics.trackEvent('ask_question_sent', { turn_index: history.length / 2, char_len: q.length })
@@ -69,37 +68,34 @@ export function useAskArchive(options: UseAskArchiveOptions = {}) {
           (event) => {
             switch (event.type) {
               case 'token':
-                patch(id, (x) => ({ ...x, prose: x.prose + event.text, consulting: null }))
+                patch(id, (x) => ({ ...x, prose: x.prose + event.text }))
                 break
-              case 'tool':
-                // The worker now buffers interim prose and streams only the final answer
-                // (see agent-loop.ts), so there's no "let me check…" preamble to wipe here —
-                // just surface which tool is being consulted.
-                patch(id, (x) => ({ ...x, consulting: event.name }))
-                break
+              // 'tool' events are ignored: the worker buffers interim prose and streams only the
+              // final answer, and the UI shows a single loading cue until the exhibit lands.
               case 'exhibit':
                 patch(id, (x) => ({ ...x, exhibit: event.exhibit }))
                 analytics.trackEvent('ask_exhibit_shown', { kind: event.exhibit.kind })
                 break
               case 'refusal':
-                patch(id, (x) => ({ ...x, status: 'refused', message: event.message, consulting: null }))
+                patch(id, (x) => ({ ...x, status: 'refused', message: event.message }))
                 break
               case 'done':
-                patch(id, (x) => (x.status === 'streaming' ? { ...x, status: 'done', consulting: null } : x))
+                patch(id, (x) => (x.status === 'streaming' ? { ...x, status: 'done' } : x))
                 break
               case 'error':
-                patch(id, (x) => ({ ...x, status: 'error', message: event.message, consulting: null }))
+                patch(id, (x) => ({ ...x, status: 'error', message: event.message }))
                 break
             }
           },
           { signal: controller.signal, ensureSession },
         )
       } catch (err) {
+        // A deliberate cancel (overlay closed/cleared) isn't an error — drop it silently.
+        if (controller.signal.aborted) return
         const reason = err instanceof Error ? err.message : 'error'
         patch(id, (x) => ({
           ...x,
           status: 'error',
-          consulting: null,
           message:
             reason === 'session_required'
               ? 'No session — mint a dev token first.'
@@ -111,7 +107,7 @@ export function useAskArchive(options: UseAskArchiveOptions = {}) {
         }))
       } finally {
         // A stream that closed without a terminal event still resolves the turn.
-        patch(id, (x) => (x.status === 'streaming' ? { ...x, status: 'done', consulting: null } : x))
+        patch(id, (x) => (x.status === 'streaming' ? { ...x, status: 'done' } : x))
         setBusy(false)
         abortRef.current = null
       }

@@ -90,20 +90,28 @@ export interface Reservation {
   scope?: "global" | "ip"; // which ceiling blocked, when !ok (for the right refusal copy)
 }
 
-// Reserve global first, then per-IP. If the per-IP slice is exhausted, release the global slot we
-// just took so a refused turn never leaks budget. Both must pass for the turn to proceed.
+// Reserve the global and per-IP slots in PARALLEL (two independent DOs — no need to pay their
+// latency serially on every turn). Both must pass; if exactly one passes, release it so a refused
+// turn never leaks budget.
 export async function reserveTurn(env: Env, ip: string): Promise<Reservation> {
   const gCap = dailyCapMicroUsd(env);
-  const g = await call(globalStub(env), "reserve", gCap, { est: String(RESERVE_EST_MICRO_USD) });
-  if (!g.ok || !g.id) return { ok: false, status: g.status, scope: "global" };
-
   const iCap = ipDailyCapMicroUsd(env);
-  const i = await call(ipStub(env, ip), "reserve", iCap, { est: String(RESERVE_EST_MICRO_USD) });
-  if (!i.ok || !i.id) {
-    await call(globalStub(env), "release", gCap, { id: g.id }).catch(() => {});
-    return { ok: false, status: g.status, scope: "ip" };
+  const est = String(RESERVE_EST_MICRO_USD);
+  const [g, i] = await Promise.all([
+    call(globalStub(env), "reserve", gCap, { est }),
+    call(ipStub(env, ip), "reserve", iCap, { est }),
+  ]);
+  const gOk = !!(g.ok && g.id);
+  const iOk = !!(i.ok && i.id);
+
+  if (gOk && iOk) {
+    return { ok: true, ticket: { ip, globalId: g.id!, ipId: i.id! }, status: g.status };
   }
-  return { ok: true, ticket: { ip, globalId: g.id, ipId: i.id }, status: g.status };
+  // One side blocked (or both): release whichever slot we did take.
+  if (gOk) await call(globalStub(env), "release", gCap, { id: g.id! }).catch(() => {});
+  if (iOk) await call(ipStub(env, ip), "release", iCap, { id: i.id! }).catch(() => {});
+  // Report the global cap as the blocker only if it's actually what blocked; else the per-IP slice.
+  return { ok: false, status: g.status, scope: gOk ? "ip" : "global" };
 }
 
 export async function commitTurn(env: Env, ticket: ReserveTicket, usage: AnthropicUsage): Promise<SpendStatus> {
