@@ -121,11 +121,13 @@ export async function streamAskTurn(
   let token = ensureSession ? await ensureSession(false) : getSessionToken()
   let res = await postChat(turns, token, signal)
 
-  // Expired/invalid session — re-mint once and retry transparently.
-  if (res.status === 401 && ensureSession) {
+  // Expired/invalid session — re-mint once and retry transparently. Skip if the caller already
+  // aborted (closed/cleared the overlay), so we don't re-post on a dead signal and surface an
+  // AbortError as a generic failure.
+  if (res.status === 401 && ensureSession && !signal?.aborted) {
     clearSessionToken()
     token = await ensureSession(true)
-    if (token) res = await postChat(turns, token, signal)
+    if (token && !signal?.aborted) res = await postChat(turns, token, signal)
   }
 
   if (!res.ok || !res.body) {
