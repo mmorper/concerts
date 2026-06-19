@@ -9,6 +9,10 @@ dist/
 build/
 *.local
 
+# Session handoff docs — ephemeral, local-only scratch (consumed at /release).
+# Durable cross-session knowledge lives in the Claude auto-memory, not here.
+memory/session-handoff-*.md
+
 # Environment variables
 .env
 .env.local
