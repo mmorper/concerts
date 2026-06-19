@@ -29,6 +29,8 @@ import { pickPrimaryExhibit } from "./exhibits.js";
 import { issueSession, verifySession } from "./session.js";
 import { allow } from "./ratelimit.js";
 import { maybeTripwire } from "./notify.js";
+import { logTurn, type TurnOutcome } from "./telemetry.js";
+import type { AnthropicUsage } from "./cost.js";
 import { handleAdmin } from "./admin.js";
 
 export { SpendCounter } from "./spend-counter.js";
@@ -126,14 +128,24 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
 
   const pump = async () => {
     let ticket: ReserveTicket | undefined;
+    // Per-turn telemetry, accumulated through the branches and written once in `finally` (one row
+    // per turn, every exit path). Defaults assume the worst; each success path refines them.
+    const lastUserText = (v.turns[v.turns.length - 1] as Turn).text;
+    const day = new Date().toISOString().slice(0, 10);
+    let outcome: TurnOutcome = "error";
+    let usage: AnthropicUsage = {};
+    let exhibitKind = "none";
+    let fraction = 0;
     try {
       if (!env.ANTHROPIC_API_KEY) {
+        outcome = "paused";
         await send("refusal", { message: "Ask is resting just now — try one of the scenes." });
         return;
       }
 
       const mode = await getMode(env);
       if (mode === "paused") {
+        outcome = "paused";
         await send("refusal", { message: "Ask is resting just now. The archive's still here — wander the scenes." });
         return;
       }
@@ -147,13 +159,16 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
           const result = await dispatchTool(env, choice.name, choice.input);
           const prose = readerProse(result.text);
           const exhibit = result.exhibit ?? { kind: "plain" as const };
+          exhibitKind = exhibit.kind;
           // No prose AND no real card → a graceful refusal, never a blank exhibit (mirror the LLM
           // path's empty-answer guard below).
           if (!prose && exhibit.kind === "plain") {
+            outcome = "refused";
             await send("refusal", { message: "I got a little tangled chasing that one down — try asking it a different way." });
             await send("done", { fraction: 0, deterministic: true });
             return;
           }
+          outcome = "deterministic";
           if (prose) await send("token", { text: prose });
           await send("exhibit", exhibit);
           await send("done", { fraction: 0, deterministic: true });
@@ -166,6 +181,8 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
 
       const reservation = await reserveTurn(env, ip);
       if (!reservation.ok) {
+        outcome = "cap";
+        fraction = reservation.status.fraction;
         // Per-IP slice exhausted = this visitor specifically; global cap = the whole archive.
         const message =
           reservation.scope === "ip"
@@ -193,24 +210,30 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
         console.error("cost commit failed (answer already produced):", err);
       }
       ticket = undefined;
+      usage = result.usage;
+      fraction = status.fraction;
 
       // The composed exhibit: pick the primary descriptor from the turn's tool trace. The
       // frontend scaffolds this card kind and hydrates its atoms (photo/genre/map/chips) from
       // the SPA's local data using the slugs/ids here (see exhibits.ts thin-envelope contract).
       const exhibit = pickPrimaryExhibit(result.exhibits);
+      exhibitKind = exhibit.kind;
 
       // Empty prose = the tool loop hit its backstop. If a real entity card was still resolved,
       // render it (a wrong-shaped answer with a good card beats a flat refusal); only refuse when
       // there's nothing to show at all.
       if (!result.text.trim() && exhibit.kind === "plain") {
+        outcome = "refused";
         await send("refusal", { message: "I got a little tangled chasing that one down — try asking it a different way." });
         await send("done", { fraction: status.fraction });
         return;
       }
 
+      outcome = "answered";
       await send("exhibit", exhibit);
 
-      // ≥80% of cap → push a deep link to /ask/admin (once/day). Backgrounded.
+      // Crossing a budget milestone (50/75/100%) → push a deep link to /ask/admin (once/day each).
+      // Backgrounded.
       ctx.waitUntil(maybeTripwire(env, status, ctx));
       await send("done", { fraction: status.fraction });
     } catch (err) {
@@ -218,6 +241,8 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
       if (ticket) ctx.waitUntil(releaseTurn(env, ticket)); // charge nothing for a failed turn
       await send("error", { message: "Something went sideways — try that again." });
     } finally {
+      // One ledger row per turn, whatever happened (Analytics Engine; no-op if unbound).
+      logTurn(env, { day, query: lastUserText, outcome, exhibitKind, usage, fraction });
       await writer.close();
     }
   };

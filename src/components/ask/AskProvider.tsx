@@ -10,11 +10,13 @@ import { useArchiveData } from '@/hooks/useArchiveData'
 import type { ArchiveLookups } from './types'
 import { analytics } from '@/services/analytics'
 
-export type AskOpenSurface = 'dock' | 'kbd' | 'endscroll' | 'navpill' | 'firstvisit' | 'canvas'
+export type AskOpenSurface = 'kbd' | 'rail' | 'navmobile' | 'scene' | 'prompt'
 
 interface AskContextValue {
   open: boolean
-  openSpotlight: (surface: AskOpenSurface) => void
+  // The Spotlight is the one chat surface (#142). Opened over any scene from the rail, ⌘K, the
+  // mobile nav, or the Ask scene. An optional `prefill` (from a suggested prompt) is asked at once.
+  openSpotlight: (surface: AskOpenSurface, prefill?: string) => void
   // Dismissing the overlay clears the conversation (a fresh ask each open). Promotion to the
   // full /ask view passes { clear: false } so the conversation carries over instead.
   close: (opts?: { clear?: boolean }) => void
@@ -44,20 +46,29 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
   const activate = useCallback(() => setActive(true), [])
 
   const openSpotlight = useCallback(
-    (surface: AskOpenSurface) => {
+    (surface: AskOpenSurface, prefill?: string) => {
       restoreFocusRef.current = (document.activeElement as HTMLElement) ?? null
       setActive(true)
       setOpen(true)
       // Warm a session in the background so the first answer doesn't wait on the challenge.
       void ensureSession()
       analytics.trackEvent('ask_opened', { surface })
+      // A suggested prompt opens straight into its answer instead of an empty composer.
+      if (prefill) ask(prefill)
     },
-    [ensureSession],
+    [ensureSession, ask],
   )
 
   const close = useCallback(
     (opts?: { clear?: boolean }) => {
       setOpen(false)
+      // `clear === false` means we're promoting to the full /ask view (conversation carries over);
+      // anything else is a plain dismiss. turn_count = how many questions this session got before
+      // closing — the raw material for "how far do people get" / dwell.
+      analytics.trackEvent('ask_closed', {
+        reason: opts?.clear === false ? 'promote' : 'dismiss',
+        turn_count: exchanges.length,
+      })
       // Clear the transcript on a plain dismiss (esc / scrim / esc button) so each open starts
       // fresh; skip clearing when promoting to the full view, which carries the conversation.
       if (opts?.clear !== false) reset()
@@ -65,7 +76,7 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
       const el = restoreFocusRef.current
       if (el && typeof el.focus === 'function') requestAnimationFrame(() => el.focus())
     },
-    [reset],
+    [reset, exchanges.length],
   )
 
   const value = useMemo<AskContextValue>(

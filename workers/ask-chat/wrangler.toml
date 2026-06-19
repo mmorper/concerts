@@ -72,6 +72,13 @@ new_sqlite_classes = ["SpendCounter"]
 binding = "ASK_CONTROL"
 id = "9784703871e543f9aa6b0c3eea88fa91"
 
+# Per-turn ledger (query + outcome + tokens + cost) → Analytics Engine. The durable spend + query
+# history the SpendCounter DO can't keep (it forgets at the UTC rollover). No migration needed.
+# Query it with the SQL API:  SELECT blob2 AS query, double5/1e6 AS usd FROM ask_turns WHERE ...
+[[analytics_engine_datasets]]
+binding = "ASK_ANALYTICS"
+dataset = "ask_turns"
+
 # Secrets (NOT in this file) — set with `npx wrangler secret put <NAME>`:
 #   ANTHROPIC_API_KEY   — the Messages API key for the agent loop
 #   TURNSTILE_SECRET    — Cloudflare Turnstile server-side secret (session issuance, #139 gate)

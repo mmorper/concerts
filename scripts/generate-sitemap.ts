@@ -141,6 +141,12 @@ async function generateSitemap() {
   // How It Works — interactive data pipeline explainer
   xml += generateUrlEntry('/how-it-works', 0.6, 'monthly', lastmod)
 
+  // Ask the Archive — in-app conversational interface
+  xml += generateUrlEntry('/ask', 0.7, 'monthly', lastmod)
+
+  // MCP server — human-facing connect/about landing page
+  xml += generateUrlEntry('/mcp/about', 0.6, 'monthly', lastmod)
+
   // About page
   xml += generateUrlEntry('/about', 0.6, 'monthly')
 
@@ -156,6 +162,8 @@ async function generateSitemap() {
     sortedVenues.length * 2 + // 2 scenes per venue
     2 + linerNotesSlugs.length + // liner notes feed + permalinks
     1 + // how-it-works
+    1 + // ask the archive
+    1 + // mcp/about
     1 // about page
 
   console.log(`✅ Sitemap generated: ${OUTPUT_PATH}`)
@@ -166,6 +174,8 @@ async function generateSitemap() {
   console.log(`   - Venues: ${sortedVenues.length} × 2 scenes = ${sortedVenues.length * 2}`)
   console.log(`   - Liner notes: ${2 + linerNotesSlugs.length} (feed + ${linerNotesSlugs.length} posts)`)
   console.log(`   - How It Works: 1`)
+  console.log(`   - Ask the Archive: 1`)
+  console.log(`   - MCP About: 1`)
   console.log(`   - About: 1`)
   console.log()
 }

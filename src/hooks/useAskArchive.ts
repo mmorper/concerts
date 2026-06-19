@@ -78,12 +78,16 @@ export function useAskArchive(options: UseAskArchiveOptions = {}) {
                 break
               case 'refusal':
                 patch(id, (x) => ({ ...x, status: 'refused', message: event.message }))
+                // Refusals are a real signal (off-topic asks, daily cap hit) — worth seeing
+                // separately from technical errors.
+                analytics.trackEvent('ask_refused', { turn_index: history.length / 2 })
                 break
               case 'done':
                 patch(id, (x) => (x.status === 'streaming' ? { ...x, status: 'done' } : x))
                 break
               case 'error':
                 patch(id, (x) => ({ ...x, status: 'error', message: event.message }))
+                analytics.trackEvent('ask_error', { reason: 'stream' })
                 break
             }
           },
@@ -93,6 +97,12 @@ export function useAskArchive(options: UseAskArchiveOptions = {}) {
         // A deliberate cancel (overlay closed/cleared) isn't an error — drop it silently.
         if (controller.signal.aborted) return
         const reason = err instanceof Error ? err.message : 'error'
+        // Bucket by the worker's machine-readable reasons so session/rate-limit friction is
+        // visible in analytics without leaking free-text error copy.
+        analytics.trackEvent('ask_error', {
+          reason:
+            reason === 'session_required' || reason === 'rate_limited' ? reason : 'request_failed',
+        })
         patch(id, (x) => ({
           ...x,
           status: 'error',

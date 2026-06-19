@@ -2,6 +2,9 @@ export interface Env {
   DATA_BASE_URL: string;
   MCP_QUERY_USAGE: KVNamespace;
   ANTHROPIC_API_KEY?: string;
+  // Optional spend tripwire for the `query` escape hatch — same simple push endpoint shape as the
+  // ask-chat worker (ntfy/Pushover-style). Absent → the tripwire is a log line only.
+  NOTIFY_WEBHOOK_URL?: string;
 }
 
 // ---------- Source data payloads ----------

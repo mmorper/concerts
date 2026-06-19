@@ -218,4 +218,47 @@ export function recordQueryUsage(
       expirationTtl: QUERY_USAGE_TTL_SECONDS,
     }),
   );
+  ctx.waitUntil(maybeQueryTripwire(env, previous, next));
+}
+
+// ---------- `query` daily-cap tripwire ----------
+// The `query` escape hatch has its own small daily budget (tokens + calls). Warn once/day when it
+// crosses 80% of EITHER ceiling, so a quiet $10/mo line item never silently maxes out unnoticed.
+// Same push shape as the ask-chat worker; latched in the same KV namespace the usage lives in.
+
+function queryUsageFraction(u: QueryUsageRecord): number {
+  return Math.max(u.tokens / QUERY_DAILY_TOKEN_CAP, u.calls / QUERY_DAILY_CALL_CAP);
+}
+
+async function maybeQueryTripwire(
+  env: Env,
+  previous: QueryUsageRecord,
+  next: QueryUsageRecord,
+): Promise<void> {
+  const TRIP = 0.8;
+  // Only on the call that actually crosses the line (not every call once over it).
+  if (!(queryUsageFraction(previous) < TRIP && queryUsageFraction(next) >= TRIP)) return;
+
+  const day = new Date().toISOString().slice(0, 10);
+  const latchKey = `query-tripwire:${day}`;
+  try {
+    if (await env.MCP_QUERY_USAGE.get(latchKey)) return; // already fired today
+    await env.MCP_QUERY_USAGE.put(latchKey, "1", { expirationTtl: QUERY_USAGE_TTL_SECONDS });
+  } catch (e) {
+    console.error("query tripwire latch failed", e);
+  }
+
+  const pct = Math.round(queryUsageFraction(next) * 100);
+  console.warn(`mcp query tripwire: ${pct}% of daily query cap (${next.calls} calls, ${next.tokens} tokens)`);
+
+  if (!env.NOTIFY_WEBHOOK_URL) return;
+  const body = `MCP archive: query tool at ${pct}% of today's cap (${next.calls}/${QUERY_DAILY_CALL_CAP} calls).`;
+  await fetch(env.NOTIFY_WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain" },
+    body,
+  }).then(
+    () => undefined,
+    (e) => console.error("query tripwire push failed", e),
+  );
 }
