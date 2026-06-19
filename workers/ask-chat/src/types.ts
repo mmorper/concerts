@@ -16,6 +16,11 @@ export interface Env {
   // Kill-switch flag + small control state. `ask:mode` ∈ {on, paused, deterministic-only}.
   ASK_CONTROL: KVNamespace;
 
+  // Per-turn ledger (query + outcome + tokens + cost) for analytics + a future /dashboard. The
+  // durable history the SpendCounter DO isn't. Optional: absent → telemetry is a no-op (see
+  // telemetry.ts). Queryable via the account-level Analytics Engine SQL API.
+  ASK_ANALYTICS?: AnalyticsEngineDataset;
+
   // Primary abuse gate — native Rate Limiting bindings (edge-local). Optional so local/test
   // runs without them fail open (defense-in-depth; session gate + cost cap still apply).
   IP_LIMITER?: RateLimit;

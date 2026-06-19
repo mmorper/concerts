@@ -1,0 +1,25 @@
+# Morperhaus Concert Archives
+
+> A personal archive of 40+ years of live music (1984–present): 183 concerts, 257 artists, 79 venues. An interactive web app with deep-linkable entity pages, a public MCP server, and an in-app "Ask the Archive" chat — all grounded in structured JSON data.
+
+This is ONE person's concert attendance history, not a comprehensive database of all concerts by these artists. Treat "not in the archive" as "not attended," never as "doesn't exist." Every fact is grounded in the data below — venue locations, dates, lineups, setlists (via setlist.fm), and discographies (via MusicBrainz) are authoritative; genre classifications and commentary are personal.
+
+## AI access
+
+- [Full AI documentation (llm.txt)](https://concerts.morperhaus.org/llm.txt): Detailed schema, endpoints, deep-linking patterns, and usage policy
+- [MCP server](https://concerts.morperhaus.org/mcp): Remote Model Context Protocol server exposing the archive as grounded tools (search, artist/venue history, setlists, top songs, on-this-day, surprise-me, freeform query)
+- [MCP connect / about](https://concerts.morperhaus.org/mcp/about): How to connect an AI client to the server
+- [Ask the Archive](https://concerts.morperhaus.org/ask): In-app conversational, tool-grounded interface
+
+## Data
+
+- [concerts.json](https://concerts.morperhaus.org/data/concerts.json): 183 concerts with dates, venues, lineups, genres, and geo-coordinates
+- [artists-metadata.json](https://concerts.morperhaus.org/data/artists-metadata.json): Artist metadata and discographies
+- [venues-metadata.json](https://concerts.morperhaus.org/data/venues-metadata.json): Venue locations and details
+- [Sitemap](https://concerts.morperhaus.org/sitemap.xml): Every artist and venue deep-link
+
+## Site
+
+- [Home](https://concerts.morperhaus.org/): Interactive timeline, venue network, geography map, genre sunburst, and artist mosaic
+- [Liner notes / changelog](https://concerts.morperhaus.org/liner-notes): Written reflections and project updates
+- [About the creator](https://concerts.morperhaus.org/about): Mike Morper (Morperhaus)

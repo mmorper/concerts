@@ -12,6 +12,11 @@ Crawl-delay: 1
 # Sitemap location
 Sitemap: https://concerts.morperhaus.org/sitemap.xml
 
+# AI assistant docs & live tools:
+#   https://concerts.morperhaus.org/llms.txt   (concise index)
+#   https://concerts.morperhaus.org/llm.txt    (full documentation)
+#   https://concerts.morperhaus.org/mcp        (MCP server)
+
 # AI Bots - Explicitly welcome
 User-agent: GPTBot
 User-agent: ChatGPT-User

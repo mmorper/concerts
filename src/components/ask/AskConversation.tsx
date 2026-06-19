@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { Exchange } from '@/hooks/useAskArchive'
 import type { ArchiveLookups } from './types'
 import { AskExhibit } from './AskExhibit'
+import { analytics } from '@/services/analytics'
 
 export interface AskConversationProps {
   exchanges: Exchange[]
@@ -58,8 +59,17 @@ export function AskConversation({
     <div className="ask-convo">
       {empty && suggestedPrompts && suggestedPrompts.length > 0 && (
         <div className="ask-suggest" aria-label="Suggested questions">
-          {suggestedPrompts.map((p) => (
-            <button key={p} type="button" className="chip" onClick={() => submit(p)} disabled={busy}>
+          {suggestedPrompts.map((p, i) => (
+            <button
+              key={p}
+              type="button"
+              className="chip"
+              onClick={() => {
+                analytics.trackEvent('ask_suggested_prompt_clicked', { prompt: p, position: i })
+                submit(p)
+              }}
+              disabled={busy}
+            >
               {p}
             </button>
           ))}

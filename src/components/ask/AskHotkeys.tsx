@@ -1,9 +1,8 @@
 // Power-key invocation for Ask (#141, invocation tier 3): ⌘K / Ctrl-K from anywhere opens the
-// Spotlight; `/` focuses it like a search field. Both are no-ops on the /ask canvas (already open)
-// and while the user is typing in a field. Renders nothing.
+// Spotlight; `/` focuses it like a search field. Both are no-ops while the user is typing in a
+// field. The Spotlight is the one chat surface (#142), so the keys work on every route. Renders nothing.
 
 import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
 import { useAsk } from './AskProvider'
 
 function isTyping(el: EventTarget | null): boolean {
@@ -15,12 +14,8 @@ function isTyping(el: EventTarget | null): boolean {
 
 export function AskHotkeys() {
   const { open, openSpotlight } = useAsk()
-  const location = useLocation()
 
   useEffect(() => {
-    // On the full-canvas /ask route the Spotlight would be redundant.
-    if (location.pathname === '/ask') return
-
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
         e.preventDefault()
@@ -35,7 +30,7 @@ export function AskHotkeys() {
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [open, openSpotlight, location.pathname])
+  }, [open, openSpotlight])
 
   return null
 }

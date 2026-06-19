@@ -736,12 +736,13 @@ export function Scene1Hero({ concerts, onNavigateToArtist, pendingYearFocus, onY
         </motion.p>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — lifted on mobile so it clears the fixed bottom nav; desktop has no
+          bottom nav, so it sits lower there. */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 0.8 }}
-        className="absolute bottom-8"
+        className="absolute bottom-24 md:bottom-8"
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}

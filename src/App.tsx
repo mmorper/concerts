@@ -6,7 +6,7 @@ import { Scene3Map } from './components/scenes/Scene3Map'
 import { Scene4Bands } from './components/scenes/Scene4Bands'
 import { Scene5Genres } from './components/scenes/Scene5Genres/index'
 import { ArtistScene } from './components/scenes/ArtistScene/ArtistScene'
-import { AskInvitation } from './components/AskInvitation'
+import { AskScene } from './components/ask/AskScene'
 import { SceneNavigation } from './components/SceneNavigation'
 import { ChangelogToast, ChangelogRSS } from './components/changelog'
 import { WhatsPlayingPage } from './components/changelog/WhatsPlayingPage'
@@ -16,9 +16,9 @@ import { CascadePage } from './components/cascade/CascadePage'
 import { AskDevHarness } from './components/ask/AskDevHarness'
 import { AskProvider } from './components/ask/AskProvider'
 import { AskSpotlight } from './components/ask/AskSpotlight'
-import { AskCanvas } from './components/ask/AskCanvas'
 import { AskHotkeys } from './components/ask/AskHotkeys'
-import { SCENE_MAP, TOAST } from './components/changelog/constants'
+import { SCENE_MAP, SCENE_NAMES, TOAST } from './components/changelog/constants'
+import { sceneIndexFromScroll } from './hooks/useActiveScene'
 import { useChangelogCheck } from './hooks/useChangelogCheck'
 import { useLinerNotesCheck } from './hooks/useLinerNotesCheck'
 import { analytics } from './services/analytics'
@@ -29,8 +29,10 @@ function App() {
     <AskProvider>
       <Routes>
         <Route path="/" element={<MainScenes />} />
-        {/* Container A — the full-canvas Ask destination (#141); also the mobile target. */}
-        <Route path="/ask" element={<AskCanvas />} />
+        {/* #142: Ask is the final scene, not a separate page. /ask is kept as a friendly alias
+            that lands on that scene (preserves the URL + shareability + SEO). The chat itself is
+            the Spotlight overlay, opened in place from the scene / rail / ⌘K. */}
+        <Route path="/ask" element={<Navigate to="/?scene=ask" replace />} />
         <Route path="/liner-notes" element={<LinerNotesPage />} />
         <Route path="/liner-notes/rss" element={<ChangelogRSS />} />
         <Route path="/liner-notes/:slug" element={<LinerNotePermalink />} />
@@ -143,10 +145,7 @@ function MainScenes() {
     if (!scrollContainer) return
 
     const handleScroll = () => {
-      const scrollPosition = scrollContainer.scrollTop
-      const windowHeight = window.innerHeight
-      const sceneIndex = Math.round(scrollPosition / windowHeight) + 1
-      const newScene = Math.min(Math.max(sceneIndex, 1), 5)
+      const newScene = sceneIndexFromScroll(scrollContainer, SCENE_NAMES.length)
 
       if (newScene !== currentScene) {
         setCurrentScene(newScene)
@@ -157,8 +156,7 @@ function MainScenes() {
         analytics.trackPageView(pagePath, pageTitle)
 
         // Keep legacy scene_view event for continuity
-        const sceneNames = ['timeline', 'venues', 'geography', 'genres', 'artists']
-        const sceneName = sceneNames[newScene - 1]
+        const sceneName = SCENE_NAMES[newScene - 1]
         analytics.trackEvent('scene_view', {
           scene_name: sceneName,
           scene_number: newScene,
@@ -333,8 +331,8 @@ function MainScenes() {
           onArtistFocusComplete={() => setPendingArtistFocus(null)}
         />
 
-        {/* End-of-scroll coda — not a scene (no nav dot). Issue #134. */}
-        <AskInvitation />
+        {/* Scene 6: Ask the Archive — the blended invitation (#142). Deep link /?scene=ask. */}
+        <AskScene />
       </div>
 
       {/* Scene Navigation */}

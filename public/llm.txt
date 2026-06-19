@@ -10,6 +10,31 @@ Personal concert archive spanning 1984-2026. Interactive web application with 18
 
 ---
 
+## AI Access (MCP Server & Ask the Archive)
+
+Beyond the raw JSON below, the archive is available to AI agents and assistants two ways. Both are
+strictly grounded — every number, date, and name comes from the archive's own data, never invented.
+
+### MCP Server (Model Context Protocol)
+**Endpoint:** https://concerts.morperhaus.org/mcp
+**Connect / about:** https://concerts.morperhaus.org/mcp/about
+A remote MCP server that exposes the archive as structured tools, so an assistant can answer
+grounded questions without scraping. Tools: `search_concerts`, `get_artist_history`,
+`get_venue_history`, `get_concert_setlist`, `get_archive_top_songs`, `get_archive_info`,
+`on_this_day`, `surprise_me`, and a freeform `query` escape hatch. Each tool result ends with an
+"Open on the site" line of deep links to the entities mentioned.
+
+### Ask the Archive (in-app chat)
+**URL:** https://concerts.morperhaus.org/ask
+A conversational, tool-grounded interface on the site itself: ask about any band, venue, year,
+city, genre, or just say "surprise me," and get an answer composed only from the archive's data,
+with a deep-linked exhibit card to click through.
+
+**Remember:** this is ONE person's concert attendance history. Treat "not in the archive" as "not
+attended," never as "doesn't exist."
+
+---
+
 ## Content Scope & Authority
 
 ### Personal Experience (Subjective)

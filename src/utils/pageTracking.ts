@@ -10,6 +10,7 @@ const SCENE_TITLES: Record<number, string> = {
   3: 'Geography | Concert Archives',
   4: 'Genres | Concert Archives',
   5: 'Artists | Concert Archives',
+  6: 'Ask the Archive | Concert Archives',
 }
 
 /**
@@ -21,6 +22,7 @@ const SCENE_NAMES: Record<number, string> = {
   3: 'geography',
   4: 'genres',
   5: 'artists',
+  6: 'ask',
 }
 
 interface DeepLinkParams {
