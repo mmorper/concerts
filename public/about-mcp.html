@@ -26,9 +26,12 @@
   * { box-sizing:border-box; }
   body { margin:0; background:radial-gradient(1200px 480px at 50% -8%, #fff 0%, rgba(255,255,255,0) 60%), var(--bg); color:var(--ink); font-family:"Source Sans 3",system-ui,sans-serif; -webkit-font-smoothing:antialiased; line-height:1.55; }
   .wrap { max-width:680px; margin:0 auto; padding:60px 24px 56px; }
-  .brand { display:flex; align-items:center; gap:9px; margin:0 0 20px; }
+  .brand { display:inline-flex; align-items:center; gap:9px; margin:0 0 20px; text-decoration:none; color:inherit; }
   .brand svg { display:block; animation:spin 9s linear infinite; }
-  .eyebrow { font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  .brand .back { color:var(--faint); font-size:16px; font-weight:600; transition:transform .15s,color .15s; }
+  .brand:hover .back { transform:translateX(-3px); color:var(--accent); }
+  .brand:hover .eyebrow { color:var(--ink); }
+  .eyebrow { font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:600; transition:color .15s; }
   h1 { font-family:"Playfair Display",Georgia,serif; font-weight:500; letter-spacing:-.02em; font-size:52px; line-height:1.05; margin:0 0 18px; }
   h1 .pt { color:var(--accent); }
   .lede { font-size:19px; color:var(--muted); margin:0 0 26px; max-width:34em; }
@@ -85,10 +88,11 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="brand">
+    <a class="brand" href="https://concerts.morperhaus.org" aria-label="Back to the Morperhaus Concert Archive">
+      <span class="back" aria-hidden="true">&larr;</span>
       <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2" fill="#1c1917"/><circle cx="12" cy="12" r="4.6" fill="none" stroke="#fafaf9" stroke-width="1.1"/><circle cx="12" cy="12" r="1.7" fill="#fafaf9"/></svg>
       <span class="eyebrow">Morperhaus Concert Archive</span>
-    </div>
+    </a>
     <h1>Ask the archive anything<span class="pt">.</span></h1>
     <p class="lede">Forty years of live music — 1984 to now — ready to explore inside Claude. Ask it the way you'd ask a friend who never misses a show.</p>
     <div class="stats">

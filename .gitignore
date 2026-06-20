@@ -82,3 +82,6 @@ seo-reports/*.md
 # Keep baseline snapshots and README
 !seo-reports/*-baseline.json
 !seo-reports/README.md
+
+# Playwright MCP scratch (screenshots, console logs)
+.playwright-mcp/

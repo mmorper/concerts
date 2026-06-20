@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "5.0.0",
+      "date": "2026-06-20",
+      "title": "Forty Years, Now a Conversation",
+      "description": "Forty years of shows are now a conversation. Ask right here on the site — the journey ends in a chat with the whole collection — or bring the archive into Claude as a connector. Ask about a band, a venue, a year, or just say \"surprise me,\" and it answers in the archive's own voice, always true to the shows that really happened.",
+      "route": "/?scene=ask",
+      "highlights": [
+        "Ask on the site — the final scene is a conversation: type a question and the answer paints in, grounded in the real shows",
+        "Press ⌘K (or /) from anywhere to summon it without losing your place — esc brings you back",
+        "Or bring it into Claude — add the archive as a connector and ask there too (concerts.morperhaus.org/about-mcp)",
+        "Try \"have you ever seen Depeche Mode?\", \"everything at the 9:30 Club\", or \"what did you see in 1998?\""
+      ]
+    },
+    {
       "version": "4.7.0",
       "date": "2026-06-16",
       "title": "Ask the Archive Anything",
