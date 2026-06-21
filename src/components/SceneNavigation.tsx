@@ -8,7 +8,9 @@ import { useAsk } from './ask/AskProvider'
 import { SCENE_MAP } from './changelog/constants'
 
 const NAV_LINKS = [
-  // Ask leads (#142); it opens the Spotlight in place — handled specially below, not a nav link.
+  // Ask leads (#142). It OPENS THE SPOTLIGHT in place (⌘K-style), like the 5 rail scene dots which
+  // are also buttons — not a navigation. The /?scene=ask URL is addressable on its own (App.tsx
+  // deep-links it; /ask redirects to it), so CTAs/shared links don't need this to be an anchor.
   { to: '/ask', label: 'Ask', event: 'ask_archive_nav_clicked', ask: true },
   { to: '/liner-notes', label: 'Liner Notes', event: 'liner_notes_nav_clicked' },
   { to: '/whats-playing', label: "What's Playing", event: 'whats_playing_nav_clicked' },
