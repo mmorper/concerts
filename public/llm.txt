@@ -17,7 +17,7 @@ strictly grounded — every number, date, and name comes from the archive's own 
 
 ### MCP Server (Model Context Protocol)
 **Endpoint:** https://concerts.morperhaus.org/mcp
-**Connect / about:** https://concerts.morperhaus.org/mcp/about
+**Connect / about:** https://concerts.morperhaus.org/about-mcp
 A remote MCP server that exposes the archive as structured tools, so an assistant can answer
 grounded questions without scraping. Tools: `search_concerts`, `get_artist_history`,
 `get_venue_history`, `get_concert_setlist`, `get_archive_top_songs`, `get_archive_info`,

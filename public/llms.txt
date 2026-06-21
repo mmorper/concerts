@@ -8,7 +8,7 @@ This is ONE person's concert attendance history, not a comprehensive database of
 
 - [Full AI documentation (llm.txt)](https://concerts.morperhaus.org/llm.txt): Detailed schema, endpoints, deep-linking patterns, and usage policy
 - [MCP server](https://concerts.morperhaus.org/mcp): Remote Model Context Protocol server exposing the archive as grounded tools (search, artist/venue history, setlists, top songs, on-this-day, surprise-me, freeform query)
-- [MCP connect / about](https://concerts.morperhaus.org/mcp/about): How to connect an AI client to the server
+- [MCP connect / about](https://concerts.morperhaus.org/about-mcp): How to connect an AI client to the server
 - [Ask the Archive](https://concerts.morperhaus.org/ask): In-app conversational, tool-grounded interface
 
 ## Data

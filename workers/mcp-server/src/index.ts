@@ -4,7 +4,6 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { Env } from "./types.js";
 import { prefetchLazyFiles, prefetchLoadFiles } from "./data.js";
 import { registerTools } from "./tools.js";
-import { renderLandingPage } from "./landing.js";
 
 const SERVER_NAME = "Morperhaus Concert Archive";
 const SERVER_VERSION = "0.1.0";
@@ -45,6 +44,10 @@ const CORS_RESPONSE_HEADERS: Record<string, string> = {
   "Access-Control-Allow-Headers": CORS_OPTIONS.headers,
   "Access-Control-Expose-Headers": CORS_OPTIONS.exposeHeaders,
 };
+
+// The canonical connector page is the static /about-mcp (Cloudflare Pages) — the single source.
+// Browser hits on /mcp redirect here instead of the Worker rendering its own HTML copy.
+const ABOUT_MCP_URL = "https://concerts.morperhaus.org/about-mcp";
 
 // Per-isolate cold-start latch. Warm caches once on the first request that reaches
 // this isolate; subsequent requests skip straight through.
@@ -116,27 +119,6 @@ export class MorperhausMcp extends McpAgent<Env> {
   }
 }
 
-// Fully synchronous: no fetch, no timer, no ctx.waitUntil — so the request context ends
-// the instant the Response is returned and the HTTP/2 stream closes cleanly. (A lingering
-// context + missing Content-Length made browsers wait for an end-of-stream that was being
-// delayed, which presented as a hung page.) Stats are hardcoded to current values; the
-// page is informational, so a periodic manual bump is fine. An explicit Content-Length
-// tells the browser exactly when the body is complete.
-function serveLandingPage(): Response {
-  const stats = { shows: 183, venues: 79, cities: 36, firstYear: 1984 };
-  const html = renderLandingPage(stats);
-  return new Response(html, {
-    headers: {
-      "Content-Type": "text/html; charset=utf-8",
-      "Content-Length": String(new TextEncoder().encode(html).byteLength),
-      // /mcp serves HTML to browsers and the MCP protocol to clients off the SAME url,
-      // so caches must key on Accept; no-store sidesteps any wrong-representation caching.
-      Vary: "Accept",
-      "Cache-Control": "no-store",
-    },
-  });
-}
-
 export default {
   async fetch(
     request: Request,
@@ -146,16 +128,14 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === "/mcp" || url.pathname.startsWith("/mcp/")) {
-      // A human visiting the endpoint in a browser gets a friendly landing page; MCP
-      // clients fall through to the protocol handler. Serve the page for ANY browser GET,
-      // not just Accept: text/html — speculative prefetches, address-bar preconnects, and
-      // `Accept: */*` requests must NOT hit the transport's 406 (browsers cache that and
-      // reuse it to break the real navigation, which is the "load it twice" bug). The only
-      // legitimate GET an MCP client makes is the SSE stream, which always sends
-      // `Accept: text/event-stream` (and a session id) — that's the one case we defer.
-      // /mcp/about is the canonical, shareable human URL (the changelog + OG point here);
-      // /mcp also serves the page so the connection URL is self-documenting. Both render
-      // for any browser GET that isn't a genuine MCP SSE request.
+      // A human visiting the endpoint in a browser is 302-redirected to the canonical connector
+      // page at /about-mcp (static Pages — the single source). MCP clients fall through to the
+      // protocol handler: the only legitimate GET a client makes is the SSE stream, which always
+      // sends `Accept: text/event-stream` (and a session id) — that's the one case we defer.
+      // Everything else that's a browser GET (incl. speculative prefetches, address-bar
+      // preconnects, and `Accept: */*`) gets the redirect. A 302 has no body, so it can't hit the
+      // transport's 406 (the old "load it twice" bug) or the Content-Length hang that made us
+      // render HTML here in the first place.
       const accept = request.headers.get("accept") ?? "";
       if (
         (url.pathname === "/mcp" || url.pathname === "/mcp/about") &&
@@ -163,7 +143,7 @@ export default {
         !accept.includes("text/event-stream") &&
         !request.headers.get("mcp-session-id")
       ) {
-        return serveLandingPage();
+        return Response.redirect(ABOUT_MCP_URL, 302);
       }
 
       warmCachesOnce(env, ctx);
