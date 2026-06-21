@@ -144,6 +144,7 @@
   <nav class="tabs" id="tabs">
     <button data-tab="overview" class="active">Overview</button>
     <button data-tab="engagement">Engagement</button>
+    <button data-tab="topics">Topics &amp; Gaps</button>
     <button data-tab="mcp">MCP &amp; Ask</button>
     <button data-tab="cost">Cost &amp; Control</button>
     <button data-tab="archive">Archive Health<span class="pill">v1.1</span></button>
@@ -320,6 +321,54 @@
         <p class="hint" style="margin-top:12px">Per-song clicks <em>within</em> a setlist <span class="badge off">needs new event</span> — today only "open setlist" is tracked.</p>
       </div>
     </div>
+
+    <div class="grid g-2" style="margin-top:16px">
+      <div class="card">
+        <h3>Audio preview attention · 30d</h3>
+        <p class="hint">artist_preview_played / paused · playback_duration</p>
+        <div class="stat-row"><span class="k">Previews played</span><span class="v">980</span></div>
+        <div class="stat-row"><span class="k">Avg listen</span><span class="v">22s / 30s</span></div>
+        <div class="stat-row"><span class="k">Completion rate</span><span class="v">61%</span></div>
+        <div class="stat-row"><span class="k">Skipped within 5s</span><span class="v">14%</span></div>
+      </div>
+      <div class="card">
+        <h3>Device split · 30d</h3>
+        <p class="hint">device_type across interaction events</p>
+        <div id="en-device"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TOPICS & GAPS ================= -->
+  <section class="panel" id="topics">
+    <h2 class="sec">Topics &amp; Gaps</h2>
+    <p class="sec-sub">What people ask, what they wish you'd seen, and the questions we can't yet answer.</p>
+    <div class="grid g-4">
+      <div class="card kpi"><div class="label">Questions · 30d</div><div class="val">1,604</div><div class="delta up">▲ 9%</div></div>
+      <div class="card kpi"><div class="label">Answered w/ exhibit</div><div class="val">87<small>%</small></div></div>
+      <div class="card kpi"><div class="label">Refusal rate</div><div class="val">6.1<small>%</small></div><div class="delta down">watch</div></div>
+      <div class="card kpi"><div class="label">Zero-result searches</div><div class="val">67</div></div>
+    </div>
+    <div class="grid g-2" style="margin-top:16px">
+      <div class="card"><h3>Question intent mix · 30d</h3><p class="hint">nightly LLM classification of ask_turns query text</p><div id="tp-intent"></div></div>
+      <div class="card"><h3>Most-asked topics · 30d</h3><p class="hint">clustered ask_turns queries + search terms</p><div id="tp-topics"></div></div>
+    </div>
+    <div class="grid g-2" style="margin-top:16px">
+      <div class="card">
+        <h3>🛠️ Content gaps — in the archive, can't answer</h3>
+        <p class="hint">refused / no-exhibit where the entity EXISTS → prioritized enrichment work</p>
+        <div id="tp-gaps"></div>
+      </div>
+      <div class="card">
+        <h3>💭 Wishlist — shows people wish you'd seen</h3>
+        <p class="hint">questions about concerts NOT in the archive — a delight + a story hook</p>
+        <div id="tp-wish"></div>
+      </div>
+    </div>
+    <div class="grid g-2" style="margin-top:16px">
+      <div class="card"><h3>Zero-result searches · 30d</h3><p class="hint">artist_search_performed · results_found = 0</p><div id="tp-zero"></div></div>
+      <div class="card"><h3>Suggested-prompt performance</h3><p class="hint">ask_suggested_prompt_clicked · click-through rate</p><div id="tp-prompts"></div></div>
+    </div>
   </section>
 
   <!-- ================= MCP & ASK ================= -->
@@ -361,6 +410,20 @@
           <span><i class="sw" style="background:#16a34a"></i> venue 24%</span>
           <span><i class="sw" style="background:#f59e0b"></i> concert 15%</span>
         </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Ask as a navigation engine · 30d</h3>
+      <p class="hint">ask_deeplink_clicked · does the chat actually drive people into the archive?</p>
+      <div class="grid g-2" style="gap:24px">
+        <div>
+          <div class="stat-row"><span class="k">Ask sessions that click through to a scene</span><span class="v">42%</span></div>
+          <div class="stat-row"><span class="k">Deep-links clicked</span><span class="v">604</span></div>
+          <div class="stat-row"><span class="k">Scene entries originating from Ask</span><span class="v">11%</span></div>
+          <p class="hint" style="margin-top:12px">High pass-through → Ask is a top discovery surface, not a dead-end. Worth more real estate.</p>
+        </div>
+        <div id="mcp-nav"></div>
       </div>
     </div>
   </section>
@@ -448,6 +511,26 @@
     <div class="grid g-2" style="margin-top:16px">
       <div class="card" id="cov-left"></div>
       <div class="card" id="cov-right"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Demand × Coverage — what to enrich next</h3>
+      <p class="hint">popularity (clicks) vs enrichment completeness · the red quadrant = high demand, low coverage</p>
+      <div id="ah-scatter"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>🎯 Prioritized enrichment backlog</h3>
+      <p class="hint">auto-derived: most-engaged entities with the biggest coverage gaps</p>
+      <table>
+        <thead><tr><th>Entity</th><th class="num">Demand 30d</th><th class="num">Coverage</th><th>What's missing</th></tr></thead>
+        <tbody>
+          <tr><td>Morrissey</td><td class="num">240</td><td class="num">45%</td><td>setlists · recent photo</td></tr>
+          <tr><td>Bad Religion</td><td class="num">150</td><td class="num">35%</td><td>bio · genres</td></tr>
+          <tr><td>The Vandals</td><td class="num">120</td><td class="num">40%</td><td>photo · setlists</td></tr>
+          <tr><td>The Roxy <span class="badge off">venue</span></td><td class="num">160</td><td class="num">52%</td><td>venue photo · geocode</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
@@ -579,6 +662,31 @@ function coverage(el,title,rows){
   }).join('');
 }
 
+// ---------- scatter / quadrant ----------
+function scatter(el,pts,opts={}){
+  const W=720,H=320,pl=46,pr=120,pt=16,pb=42;
+  const xMax=Math.max(...pts.map(p=>p.x))*1.14||1, yMax=100;
+  const X=v=>pl+(v/xMax)*(W-pl-pr), Y=v=>H-pb-(v/yMax)*(H-pt-pb);
+  const xT=opts.xThresh??xMax*0.42, yT=opts.yThresh??70;
+  const shade=`<rect x="${X(xT)}" y="${Y(yT)}" width="${X(xMax)-X(xT)}" height="${Y(0)-Y(yT)}" fill="#dc2626" opacity=".06"/>`;
+  let g='';
+  for(let t=0;t<=4;t++){const v=yMax*t/4,yy=Y(v);g+=`<line class="grid-line" x1="${pl}" y1="${yy}" x2="${W-pr}" y2="${yy}"/><text x="${pl-8}" y="${yy+4}" text-anchor="end" font-size="11">${v}%</text>`;}
+  g+=`<line x1="${X(xT)}" y1="${pt}" x2="${X(xT)}" y2="${H-pb}" stroke="#cbd5e1" stroke-dasharray="4 4"/>`;
+  g+=`<line x1="${pl}" y1="${Y(yT)}" x2="${W-pr}" y2="${Y(yT)}" stroke="#cbd5e1" stroke-dasharray="4 4"/>`;
+  const p=pts.map(d=>{const hot=d.x>=xT&&d.y<=yT,c=hot?'#dc2626':'#4f46e5';
+    return `<circle cx="${X(d.x)}" cy="${Y(d.y)}" r="6" fill="${c}" opacity=".85"/>
+      <text x="${X(d.x)+9}" y="${Y(d.y)+4}" font-size="11" fill="${hot?'#991b1b':'#475569'}">${esc(d.label)}</text>`;}).join('');
+  const ql=`<text x="${W-pr+6}" y="${Y(0)-4}" font-size="11" fill="#dc2626" font-weight="700">enrich next ↘</text>`;
+  const ax=`<text x="${(pl+W-pr)/2}" y="${H-6}" text-anchor="middle" font-size="11">Demand — clicks / 30d →</text>
+    <text transform="translate(14,${(pt+H-pb)/2}) rotate(-90)" text-anchor="middle" font-size="11">Coverage %</text>`;
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" preserveAspectRatio="xMidYMid meet">${shade}${g}${p}${ql}${ax}</svg>`;
+}
+
+// ---------- question/gap list ----------
+function qlist(el,items){
+  el.innerHTML=items.map(it=>`<div class="iprow"><span>${esc(it.text)}</span>${it.tag?`<span class="badge ${it.cls||'off'}">${esc(it.tag)}</span>`:''}<span style="margin-left:auto;font-weight:700;color:var(--violet-800);font-variant-numeric:tabular-nums">${it.n}×</span></div>`).join('');
+}
+
 // ---------- mock series ----------
 function series(n,base,amp,seed){const a=[];let s=seed||7;for(let i=0;i<n;i++){s=(s*9301+49297)%233280;const r=s/233280;a.push(Math.max(0,Math.round(base+Math.sin(i/3)*amp*0.5+(r-0.5)*amp+i*base*0.004)));}return a;}
 const days=Array.from({length:30},(_,i)=>{const d=new Date(2026,4,23);d.setDate(d.getDate()+i);return (d.getMonth()+1)+'/'+d.getDate();});
@@ -660,6 +768,50 @@ coverage(document.getElementById('cov-right'),' ',[
 hbar(document.getElementById('dev-labels'),[
   {label:'operational',value:6},{label:'enhancement',value:7},{label:'performance',value:3},
   {label:'chore',value:4},{label:'pilot',value:6},{label:'documentation',value:2},{label:'(unlabeled)',value:7}]);
+
+// engagement depth
+donut(document.getElementById('en-device'),[
+  {label:'Phone',value:58,color:VIOLET},{label:'Desktop',value:42,color:INDIGO}]);
+
+// MCP — ask as navigation
+hbar(document.getElementById('mcp-nav'),[
+  {label:'→ artists',value:240},{label:'→ timeline',value:150},{label:'→ map',value:110},
+  {label:'→ venues',value:64},{label:'→ genres',value:40}]);
+
+// Topics & Gaps
+donut(document.getElementById('tp-intent'),[
+  {label:'Lookup (who/when/where)',value:38,color:'#1e40af'},{label:'Counting / stats',value:18,color:'#0ea5e9'},
+  {label:'"Have you seen…"',value:16,color:'#7c3aed'},{label:'Comparison',value:12,color:'#16a34a'},
+  {label:'Recommendation',value:9,color:'#f59e0b'},{label:'On this day',value:7,color:'#ec4899'}]);
+hbar(document.getElementById('tp-topics'),[
+  {label:'Depeche Mode',value:312},{label:'setlists',value:204},{label:'1980s shows',value:176},
+  {label:'LA venues',value:141},{label:'Social Distortion',value:128},{label:'first concert',value:96},{label:'on this day',value:72}]);
+qlist(document.getElementById('tp-gaps'),[
+  {text:'Setlist — Morrissey @ Greek Theatre 2019',n:22,tag:'no setlist',cls:'warn'},
+  {text:'What did The Vandals look like?',n:14,tag:'no photo',cls:'warn'},
+  {text:'Bad Religion — what genre?',n:11,tag:'no genre',cls:'warn'},
+  {text:'Openers for Depeche Mode 1988',n:9,tag:'opener gap',cls:'warn'},
+  {text:'Bio for Fishbone',n:7,tag:'no bio',cls:'warn'}]);
+qlist(document.getElementById('tp-wish'),[
+  {text:'Did you ever see Nirvana?',n:31,tag:'not seen',cls:'off'},
+  {text:'Radiohead — OK Computer tour?',n:24,tag:'not seen',cls:'off'},
+  {text:'Talking Heads / Stop Making Sense?',n:18,tag:'not seen',cls:'off'},
+  {text:'Joy Division?',n:15,tag:'not seen',cls:'off'},
+  {text:'The Smiths reunion?',n:12,tag:'not seen',cls:'off'}]);
+qlist(document.getElementById('tp-zero'),[
+  {text:'"the the"',n:14},{text:'"xtc"',n:9},{text:'"wire"',n:7},
+  {text:'"gang of four"',n:6},{text:'"the fall"',n:5}]);
+hbar(document.getElementById('tp-prompts'),[
+  {label:'"Surprise me"',value:41},{label:'"Show me the 1980s"',value:34},
+  {label:'"Who have you seen most?"',value:28},{label:'"Concerts in LA"',value:22},
+  {label:'"On this day"',value:19}],{fmt:v=>v+'%'});
+
+// Archive Health — demand × coverage
+scatter(document.getElementById('ah-scatter'),[
+  {label:'Depeche Mode',x:412,y:95},{label:'The Cure',x:318,y:90},{label:'Social Distortion',x:286,y:72},
+  {label:'Morrissey',x:240,y:45},{label:'New Order',x:198,y:62},{label:'Pixies',x:164,y:88},
+  {label:'U2',x:150,y:92},{label:'Bad Religion',x:150,y:35},{label:'The Vandals',x:120,y:40},
+  {label:'Fishbone',x:90,y:30}],{xThresh:140,yThresh:70});
 
 line(document.getElementById('tr-sessions'),[{name:'sessions',color:INDIGO,points:series(30,180,90,2)}],days);
 line(document.getElementById('tr-mcp'),[{name:'queries',color:VIOLET,points:series(30,98,60,4)}],days);

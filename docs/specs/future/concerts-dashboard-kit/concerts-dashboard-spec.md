@@ -335,8 +335,9 @@ Drop Pitch's App / Downloads / Strategy framing.
 | Tab | Wave | Source | Contents |
 | --- | --- | --- | --- |
 | **Overview** | v1 | all | Three-job hero: **spend vs cap** (cost control), **sessions** (traffic), **Topics of Interest** (top ask themes + searches). Data-freshness strip, error glance, top pages, sessions by channel. |
-| **Engagement** | v1 | GA custom events | Scenes by usage (bar), search volume + top terms, interaction-event breakdowns, Ask funnel (opened→sent→exhibit/refused). |
-| **MCP & Ask** | v1 | `ask_turns` + `mcp_queries` | Queries over time (line), by tool (bar), in-SPA vs external split (doughnut), outcomes. |
+| **Engagement** | v1 | GA custom events | Scenes by usage (bar), search volume + top terms, **what's getting clicked** (top artists/venues/songs/setlists), audio attention, device split, Ask funnel. |
+| **Topics & Gaps** | v1 | `ask_turns` + GA search | Question **intent mix**, most-asked topics, **content gaps** (asked + unanswerable, entity exists), **wishlist** (asked re: shows not in the archive), zero-result searches, suggested-prompt CTR. See Appendix D. |
+| **MCP & Ask** | v1 | `ask_turns` + `mcp_queries` | Queries over time (line), by tool (bar), in-SPA vs external split (doughnut), outcomes, **Ask-as-navigation** (deep-link pass-through). |
 | **Cost & Control** | v1 | spend + #158 + #164 | Spend day/week/month vs cap (line + cap reference), by model, by surface (ask/mcp). **Live controls:** mode toggle, admin-IP management, current-day spend, tripwire/alert status. |
 | **Archive Health** | v1.1 | `public/data/*` | One coverage bar per enrichment stage (all equal), last-build timestamp, notable gaps (e.g. opener genre coverage). |
 | **Development** | v1.1 | GitHub | Commit/PR velocity, open issues by label, recent PRs. |
@@ -503,7 +504,55 @@ One equally-weighted coverage row per stage. Computed from generated files (no n
 
 ---
 
+## Appendix D — Usage-insight enhancements
+
+Higher-leverage analytics that turn raw counts into *decisions*. Most are cheap (GA custom
+dimensions + Analytics Engine SQL over `ask_turns`); a couple need small additions, noted.
+
+**1. Mine the questions (highest value).** The `ask_turns` ledger carries query text + outcome +
+exhibit kind — a direct read on intent.
+- **Content gaps** — cluster questions that were **refused / returned no exhibit** *and* GA searches
+  with `results_found = 0`, where the entity **exists** in the archive → a prioritized enrichment
+  queue (powers the Topics & Gaps "content gaps" panel and feeds Demand × Coverage below).
+- **Wishlist** — questions about concerts **not** in the archive ("did you see Nirvana?") → an
+  on-brand "shows people wish I'd been to" list and a liner-notes story hook.
+- **Intent taxonomy** — a cheap nightly LLM batch labels each question (lookup / counting /
+  comparison / recommendation / "have you seen" / on-this-day). Small, bounded cost; surfaces what
+  the chat is *for* and which intents fail most. (New: a scheduled classify step writing back to a
+  small KV/D1 table or an `ask_turns` enrichment.)
+- **Suggested-prompt performance** — rank `ask_suggested_prompt_clicked` (`prompt`, `position`) by
+  CTR; retire dead prompts, promote winners.
+
+**2. Demand × Coverage (the "what to fix next" quadrant).** Join Engagement clicks (popularity)
+against Archive Health coverage. The **high-demand + low-coverage** quadrant is the prioritized
+enrichment backlog — the single most actionable cross-tab. Requires the per-entity click dims
+(Appendix B) + the coverage rows (Appendix C); no new collection.
+
+**3. Ask-as-a-navigation engine.** `ask_deeplink_clicked` → `target_scene`: measures whether the
+chat drives people *into* the archive (pass-through %, scene entries originating from Ask). High
+pass-through ⇒ invest in Ask as a discovery surface.
+
+**4. Engagement depth.** Audio completion rate / skip-within-5s from `artist_preview_played` +
+`artist_preview_paused.playback_duration`; per-impression click rates (normalize by views);
+**device split** via the `device_type` param already on most events.
+
+**5. Texture (later).** Day/hour heatmap and tour-announcement spikes; decade/era interest from
+`timeline_year_selected` + genre-timeline scrubbing; geo ↔ archive match (do LA visitors click LA
+venues?); human-vs-agent question comparison once external MCP is instrumented; liner-notes
+readership **by detector type** (which editorial patterns resonate); Search Console inbound queries
+(if the property is granted).
+
+**New data dependencies introduced by this appendix:**
+- GA4 **event-scoped custom dimensions** for the entity params (Appendix B) — config, no code.
+- A nightly **question-intent classification** job (bounded LLM cost) — feeds intent + gap/wishlist
+  clustering.
+- `setlist_song_clicked` event for per-song-in-setlist engagement (relates to #22).
+
 ## Revision History
+- **Usage-insight pass:** Added the Topics & Gaps tab (intent mix, content gaps, wishlist,
+  zero-result searches, prompt CTR), Demand × Coverage quadrant (Archive Health), Ask-as-navigation
+  (MCP & Ask), and Engagement depth (audio attention, device split, what's-getting-clicked).
+  Captured the analytics roadmap in Appendix D with its new data dependencies.
 - **Final (this revision):** Locked owner decisions — Archive Health tab, active control panel
   (#158), spend bootstrapped from `ask_turns` (AI Gateway later), all optionals in (phased v1/v1.1),
   primary jobs (cost/traffic/topics), Concerts reskin, same Google SSO. Filled the GA taxonomy
