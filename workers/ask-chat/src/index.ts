@@ -173,6 +173,7 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
           await send("exhibit", exhibit);
           await send("done", { fraction: 0, deterministic: true });
         } catch (err) {
+          outcome = "refused"; // graceful refusal, not an unexpected error — keep the ledger honest
           console.error("deterministic turn failed:", err);
           await send("refusal", { message: "Ask is in quiet mode right now — explore the scenes, and try again soon." });
         }
