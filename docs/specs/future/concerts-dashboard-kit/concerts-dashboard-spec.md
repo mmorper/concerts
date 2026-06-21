@@ -247,15 +247,23 @@ Worker secret.
 (a `var`) so the trend chart can draw the cap line. Keep it in sync with however
 spend is actually constrained (DISCOVER(4)).
 
-### 4. MCP telemetry — net-new, needs instrumentation first
+### 4. MCP telemetry — the ask/chat half is built; external tool-calls are net-new
 
-This is the only source with **no existing store to read**. MCP queries arrive
-two ways:
+> **Update (2026-06-21): reuse `ask_turns`, don't re-instrument the ask side.** The
+> in-app "Ask the Archive" chat (`ask-chat` Worker) already writes a per-turn ledger to
+> Analytics Engine — `dataset = ask_turns`, **live in prod** — carrying query text,
+> outcome, exhibit kind, tokens, and cost µUSD (full schema + SQL-API access in
+> `docs/specs/implemented/global-ask-the-archive-observability.md` §Problem 1). Phase 5
+> consumes that directly. Only the **external MCP-client tool-calls** (Claude etc. hitting
+> `/mcp` from outside the SPA) still need new instrumentation — that's the work below.
 
-- **In-SPA** ("ask" / query UI) — these *can* fire GA4 custom events, but GA is
-  lossy/sampled and won't distinguish tools cleanly.
+The **external-client** side has **no existing store to read**. Queries arrive two ways:
+
+- **In-SPA** ("Ask the Archive") — **already captured** in the `ask_turns` ledger above
+  (server-side, not lossy GA). Read it directly; no new work.
 - **External clients (Claude, etc.)** — these hit the MCP Worker directly and
-  **never touch GA**. The only place to count them is server-side.
+  **never touch GA or `ask_turns`**. The only place to count them is server-side — the
+  net-new instrumentation below.
 
 **Therefore the MCP server must log each query somewhere queryable.** Recommended
 for a Worker-based MCP server: **Cloudflare Workers Analytics Engine** — write
@@ -339,8 +347,9 @@ extend the CF query for AI Gateway). Set `capUsd`. **Gate:** Cost & Infra tab
 shows real spend vs cap.
 
 ### Phase 5 — Worker: MCP telemetry
-Implement the MCP instrumentation from Phase 0 (Analytics Engine / D1 / KV),
-then `fetchMcp()` to read it. **Gate:** MCP tab shows real query counts split by
+Reuse the live `ask_turns` ledger for the in-SPA ask side; implement only the remaining
+**external MCP-client** tool-call instrumentation from Phase 0 (Analytics Engine / D1 / KV),
+then `fetchMcp()` to read both. **Gate:** MCP tab shows real query counts split by
 tool and SPA-vs-external.
 
 ---
