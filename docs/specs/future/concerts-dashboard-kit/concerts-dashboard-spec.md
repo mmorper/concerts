@@ -53,7 +53,7 @@ These were open `DISCOVER`/design questions in the bootstrap. Resolved with the 
 | **Scope** | Operational **+ an Archive Health tab** | Surface enrichment-pipeline coverage (data-ops), all stages weighted equally. |
 | **Control** | **Active control panel**, not read-only | Fold #158 in: ask mode toggle, live spend vs cap, admin-IP management. Retires the standalone HTML admin page over time. |
 | **Spend source** | **Bootstrap from `ask_turns` µUSD now; AI Gateway later** | Real spend series on day one, zero new credentials. AI Gateway is a documented fast-follow for authoritative org-wide cost. |
-| **Optionals (all in)** | Spend-alert status (#164), Development tab, Trends view, Uptime/error monitoring | Owner wants the full set; phased v1 / v1.1 (see [Phasing](#phasing)). |
+| **Optionals (all in)** | Spend-alert status (#164), Development tab, Trends view, Uptime/error monitoring | Owner wants the full set; value-first phasing — see [Phasing](#phasing-pragmatic-re-cut). |
 | **Primary jobs** | Cost control · traffic · topics of interest | Drives the Overview hero. |
 | **Archive Health detail** | Follow the **data-enrichment pipeline** — one coverage row per stage | "Accommodate each" stage; no single headline metric. |
 | **Auth** | Same Cloudflare Access + Google SSO as Pitch | Point the policy at `concerts.morperhaus.org/dashboard*`. Zero auth code. |
@@ -67,15 +67,39 @@ These were open `DISCOVER`/design questions in the bootstrap. Resolved with the 
 
 ---
 
-## Phasing
+## Phasing (pragmatic re-cut)
 
-The full scope is ambitious. Ship in two waves so daily operator value lands fast.
+The full scope is broad; build it value-first and avoid over-engineering. The guiding principle:
+**lead with exact, server-side data we already have** (`ask_turns`, Cloudflare GraphQL) — it needs
+no new instrumentation and isn't subject to GA's sampling/thresholding at our traffic. GA-shaped and
+new-subsystem work comes *after*, once data has accrued. **Phases 0–2 are the product**; everything
+after is additive.
 
-**v1 (core — the three jobs):**
-Overview · Engagement · MCP & Ask · **Cost & Control** (spend + #158 controls + #164 alerts).
+> ⚠️ **Capture limits — be honest about these (don't build around them):**
+> - **No per-user journeys / identity.** GA4 is aggregate + sampled + consent-gated; `ask_turns` is
+>   per-turn, not per-person. Aggregate funnels only.
+> - **GA4 custom dimensions are not retroactive** — "what's getting clicked" starts at zero the day
+>   we register them. → **Register them in Phase 0** so history accrues while we build.
+> - **Spend from `ask_turns` is an estimate** (tokens × price table), great for trend/cap, not
+>   invoice-accurate. AI Gateway/Admin API only if accounting-grade is ever needed.
+> - **Low-traffic noise** — fine-grained GA breakdowns get sampled/withheld; show "low data" guards.
+> - **Wishlist/gap split is heuristic** (depends on refusal-reason quality) — flavor, not fact.
+> - **No impressions logged** → rank entities by clicks, not CTR. Don't add impression events.
 
-**v1.1 (fast-follow):**
-Archive Health · Development · Trends · full uptime/error monitoring.
+| Phase | Milestone | Why here |
+|---|---|---|
+| **0** | **Config-only, no code** | Highest leverage / lowest effort. |
+| **1** | **Operator MVP** — Overview from Cloudflare + `ask_turns` only | Exact data we already have; the quick win. |
+| **2** | **Control surface** (#158/#164) | Contained, reuses Access, high daily value. |
+| **3** | **Engagement** (GA) | Needs Phase-0 dims to have accrued data. |
+| **4** | **MCP external** instrumentation | Small net-new code in mcp-server. |
+| **5** | **Archive Health + Demand×Coverage** | Coverage from `public/data`; quadrant needs Phase-3 data. |
+| **6** | **Topics & Gaps depth · Trends · Development** | Delight/texture; Trends back-fills for free. |
+
+**Cut to avoid over-engineering:** start the intent view as top-N query frequency (no LLM classifier
+unless it proves too coarse); skip `setlist_song_clicked` unless #22 ships; no per-impression CTR;
+no AI-Gateway migration or per-IP-reset until needed; let `dashboard:history:*` back-fill Trends
+rather than building a pipeline; keep the Development tab trivial or drop it.
 
 ---
 
@@ -332,16 +356,16 @@ auth. The current HTML `admin.ts` page stays as the interim UI until the dashboa
 
 Drop Pitch's App / Downloads / Strategy framing.
 
-| Tab | Wave | Source | Contents |
+| Tab | Phase | Source | Contents |
 | --- | --- | --- | --- |
-| **Overview** | v1 | all | Three-job hero: **spend vs cap** (cost control), **sessions** (traffic), **Topics of Interest** (top ask themes + searches). Data-freshness strip, error glance, top pages, sessions by channel. |
-| **Engagement** | v1 | GA custom events | Scenes by usage (bar), search volume + top terms, **what's getting clicked** (top artists/venues/songs/setlists), audio attention, device split, Ask funnel. |
-| **Topics & Gaps** | v1 | `ask_turns` + GA search | Question **intent mix**, most-asked topics, **content gaps** (asked + unanswerable, entity exists), **wishlist** (asked re: shows not in the archive), zero-result searches, suggested-prompt CTR. See Appendix D. |
-| **MCP & Ask** | v1 | `ask_turns` + `mcp_queries` | Queries over time (line), by tool (bar), in-SPA vs external split (doughnut), outcomes, **Ask-as-navigation** (deep-link pass-through). |
-| **Cost & Control** | v1 | spend + #158 + #164 | Spend day/week/month vs cap (line + cap reference), by model, by surface (ask/mcp). **Live controls:** mode toggle, admin-IP management, current-day spend, tripwire/alert status. |
-| **Archive Health** | v1.1 | `public/data/*` | One coverage bar per enrichment stage (all equal), last-build timestamp, notable gaps (e.g. opener genre coverage). |
-| **Development** | v1.1 | GitHub | Commit/PR velocity, open issues by label, recent PRs. |
-| **Trends** | v1.1 | `dashboard:timeseries` | Per-day sessions / MCP queries / spend. Ports Pitch's timeseries-merge logic. |
+| **Overview** | P1 | CF + `ask_turns` (GA added P3) | Three-job hero: **spend vs cap** (cost control), **traffic**, **Topics of Interest** (top ask themes). Data-freshness strip, error glance; channels/countries/referrers/pages added in P3. |
+| **Cost & Control** | P2 | spend + #158 + #164 | Spend day/week/month vs cap (line + cap reference), by model, by surface (ask/mcp). **Live controls:** mode toggle, admin-IP management, current-day spend, tripwire/alert status. |
+| **Engagement** | P3 | GA custom events | Scenes by usage (bar), search volume + top terms, **what's getting clicked** (top artists/venues/songs/setlists), audio attention, device split, Ask funnel. |
+| **MCP & Ask** | P4 | `ask_turns` + `mcp_queries` | Queries over time (line), by tool (bar), in-SPA vs external split (doughnut), outcomes, **Ask-as-navigation** (deep-link pass-through). |
+| **Archive Health** | P5 | `public/data/*` + P3 clicks | One coverage bar per enrichment stage (all equal), last-build timestamp, **Demand × Coverage** quadrant + enrichment backlog. |
+| **Topics & Gaps** | P6 | `ask_turns` + GA search | Question **intent mix**, most-asked topics, **content gaps** (asked + unanswerable, entity exists), **wishlist** (asked re: shows not in the archive), zero-result searches, suggested-prompt CTR. See Appendix D. |
+| **Trends** | P6 | `dashboard:history:*` | Per-day sessions / MCP queries / spend (back-fills from daily history). |
+| **Development** | P6 | GitHub | Commit/PR velocity, open issues by label, recent PRs. Kept trivial or dropped. |
 
 **Charting:** Pitch uses Chart.js via CDN. In the React SPA, **Recharts** is more idiomatic — your
 call; D3 is already a dependency if consistency with the app's viz is preferred. The data contract
@@ -370,43 +394,54 @@ Keep the Pitch dashboard's **layout, grid, card structure, and interaction patte
 
 ## Implementation Plan
 
-### Phase 0 — Codebase audit & contract lock (no dashboard code)
-Resolve `DISCOVER(1)` GA numeric property id and `DISCOVER(2)` serving topology (Pages vs Worker →
-which `data-endpoint.ts` variant + `/dashboard` route home + how `/dashboard*` coexists with the
-`/*` meta-injector). Confirm the `ask_turns` schema/SQL access and the `public/data` fields for
-Archive Health. Output a findings report; lock the data contract. **Gate:** contract agreed.
+Value-first ordering (see [Phasing](#phasing-pragmatic-re-cut)). **Phases 0–2 are the product**;
+3–6 are additive.
 
-### Phase 1 — Infra + auth
-Create KV `CONCERTS_DASHBOARD`; bind to the serving layer. Set up CF Access on `/dashboard*` and
-`/api/ask/admin*`. Ship the data endpoint + a `/dashboard` route shell (loading/empty/error states).
-**Gate:** `/dashboard` requires Google login; `/dashboard/data/` returns 503 (no snapshot yet);
-degrades gracefully.
+### Phase 0 — Config-only, no code  *(do first)*
+- Resolve `DISCOVER(1)` GA numeric property id (map the `G-XXXX` gtag id) and `DISCOVER(2)` serving
+  topology (Pages vs Worker → which `data-endpoint.ts` variant + `/dashboard` route home + how
+  `/dashboard*` coexists with the `/*` meta-injector).
+- **Register the GA4 event-scoped custom dimensions** now (Appendix B params) so history starts
+  accruing — they are *not* retroactive.
+- Set up CF Access on `/dashboard*` + `/api/ask/admin*`. Verify `ask_turns` SQL access (Appendix A
+  for GA). Decide the monthly `capUsd`. Confirm `public/data` fields for Archive Health.
+- **Gate:** unknowns resolved, custom dims live, Access policy in place, data contract locked.
 
-### Phase 2 — Dashboard UI (reskinned shell)
-Build the v1 tabs against a **seeded sample snapshot** in KV, in the Concerts skin. Skeletons for
-dynamic sections; "Pending" placeholders for null sections; `fetchErrors` → partial-data banner;
-`dataAge:'stale'` → staleness warning. **Gate:** full render from sample, no console errors.
+### Phase 1 — Operator MVP  *(the quick win — exact server-side data only)*
+Create KV `CONCERTS_DASHBOARD`; stand up `workers/dashboard-refresh/` + the data endpoint + a
+`/dashboard` route shell behind Access. Sources: **Cloudflare GraphQL** (traffic / worker requests /
+5xx) + **`ask_turns`** (spend µUSD vs cap, ask volume, outcomes, top topics by raw query frequency).
+One **Overview** page. No GA, no new instrumentation, no sampling.
+**Gate:** `/dashboard` requires Google login, renders real spend + traffic + ask volume from the
+daily snapshot; degrades gracefully (503 before first refresh).
 
-### Phase 3 — Worker: GA + Cloudflare
-Stand up `workers/dashboard-refresh/` from the starter. Wire GA (website + the real engagement
-events, Appendix B) + CF (requests + 5xx). Seed via the `?key=` trigger. **Gate:** snapshot has real
-sessions, request counts, and populated `engagement`.
+### Phase 2 — Control surface (#158 / #164)
+Add the Access-gated `/api/ask/admin/*` JSON endpoints (state / mode / ips) and wire the live control
+widgets: mode toggle, admin-IP management, current-day spend, tripwire/alert status. Reuse existing
+Access; HTML `admin.ts` stays as interim UI.
+**Gate:** mode + admin-IP changes work end-to-end; tripwire status reflects reality.
 
-### Phase 4 — Spend + Control
-`fetchSpend()` from `ask_turns` µUSD (today/7d/30d/MTD + daily series); set `capUsd`. Add the
-Access-gated `/api/ask/admin/*` JSON endpoints (#158) and wire the Cost & Control tab's live
-widgets + alert/tripwire status (#164). **Gate:** Cost & Control shows real spend vs cap and the
-mode/admin-IP controls work end-to-end.
+### Phase 3 — Engagement (GA)
+Now Phase-0 dims have accrued data. Add the **Engagement** tab from GA: scenes, search volume + top
+terms, what's-getting-clicked (artists/venues/songs/setlists), audio attention, device split, Ask
+funnel. Add the website block (channels/countries/referrers/pages) to Overview.
+**Gate:** engagement populates with "low data" guards where sampling bites.
 
-### Phase 5 — MCP & Ask telemetry
-Add Analytics Engine `writeDataPoint([tool, source])` to `morperhaus-mcp`. `fetchMcp()` reads
-`mcp_queries` (external) + `ask_turns` (spa). Build the Topics section from `ask_turns` queries + GA
-search terms. **Gate:** MCP & Ask tab shows real counts split by tool and spa-vs-external; Overview
-Topics panel populated.
+### Phase 4 — MCP external instrumentation
+Add Analytics Engine `writeDataPoint([tool, source])` to `morperhaus-mcp`; `fetchMcp()` unions
+`mcp_queries` (external) + `ask_turns` (spa). Build the **MCP & Ask** tab + Ask-as-navigation.
+**Gate:** real counts split by tool and spa-vs-external.
 
-### Phase 6 (v1.1) — Archive Health · Development · Trends · Monitoring
-`fetchArchiveHealth()` over `public/data/*` (Appendix C); `fetchGitHub()`; port the timeseries
-builder; finish the Monitoring section. **Gate:** all v1.1 tabs render real data.
+### Phase 5 — Archive Health + Demand × Coverage
+`fetchArchiveHealth()` over `public/data/*` (Appendix C); join Phase-3 click data for the
+**Demand × Coverage** quadrant + enrichment backlog.
+**Gate:** coverage per stage + the "enrich next" list render.
+
+### Phase 6 — Topics & Gaps depth · Trends · Development
+Topics & Gaps starting with **top-N query frequency** (add the nightly intent classifier / wishlist
+clustering only if frequency proves too coarse — Appendix D). Trends back-fills from
+`dashboard:history:*`. Development tab kept trivial (or dropped).
+**Gate:** additive tabs render; no new subsystem built that isn't earning its keep.
 
 ---
 
@@ -549,6 +584,10 @@ readership **by detector type** (which editorial patterns resonate); Search Cons
 - `setlist_song_clicked` event for per-song-in-setlist engagement (relates to #22).
 
 ## Revision History
+- **Pragmatic re-cut:** Reordered to value-first phases 0–6 (Phases 0–2 = the product): config-only
+  first, then an Operator MVP from exact server-side data (Cloudflare + `ask_turns`), then control,
+  then GA engagement, MCP external, Archive Health, and finally Topics/Trends/Dev. Documented honest
+  capture limits and an over-engineering cut-list. Tab table re-keyed to phases.
 - **Usage-insight pass:** Added the Topics & Gaps tab (intent mix, content gaps, wishlist,
   zero-result searches, prompt CTR), Demand × Coverage quadrant (Archive Health), Ask-as-navigation
   (MCP & Ask), and Engagement depth (audio attention, device split, what's-getting-clicked).
