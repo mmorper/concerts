@@ -113,6 +113,13 @@ export function renderLandingPage(
   .chip::before { content:"\\201C"; color:var(--accent); }
   .chip::after { content:"\\201D"; color:var(--accent); }
 
+  /* Cross-sell: the on-site Ask scene, for anyone who doesn't use Claude. */
+  .alt { margin:40px 0 0; padding:20px 22px; background:var(--accent-soft); border-radius:14px; }
+  .alt h3 { font-family:"Playfair Display",Georgia,serif; font-weight:500; font-size:19px; margin:0 0 6px; color:var(--ink); }
+  .alt p { font-size:15.5px; color:var(--muted); margin:0; max-width:40em; }
+  .alt a { color:var(--accent-ink); font-weight:600; text-decoration:none; }
+  .alt a:hover { text-decoration:underline; }
+
   footer { margin-top:48px; padding-top:22px; border-top:1px solid var(--line); font-size:14px; color:var(--muted); }
   footer a { color:var(--accent); text-decoration:none; }
   @media (max-width:520px){
@@ -199,6 +206,11 @@ export function renderLandingPage(
         <span class="chip">Surprise me with a show worth remembering</span>
       </div>
     </div>
+
+    <section class="alt">
+      <h3>Don't use Claude?</h3>
+      <p>The whole archive is also a conversation right here on the site — <a href="${SITE}/?scene=ask">ask it anything</a>, no connector and no account needed.</p>
+    </section>
 
     <footer>&larr; Back to <a href="${SITE}">the Morperhaus Concert Archive</a></footer>
   </main>
