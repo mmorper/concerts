@@ -136,9 +136,11 @@ export default {
       // preconnects, and `Accept: */*`) — and HEAD, which link unfurlers / preview bots send
       // first — gets the redirect. A 302 has no body, so it can't hit the transport's 406 (the
       // old "load it twice" bug) or the Content-Length hang that made us render HTML here.
+      // The outer branch already scoped to /mcp and /mcp/* — so ANY browser GET/HEAD that reaches
+      // here (incl. a trailing-slash /mcp/ or any speculative /mcp/<subpath>) redirects; only real
+      // MCP requests fall through (POST, or the SSE GET carved out by the two checks below).
       const accept = request.headers.get("accept") ?? "";
       if (
-        (url.pathname === "/mcp" || url.pathname === "/mcp/about") &&
         (request.method === "GET" || request.method === "HEAD") &&
         !accept.includes("text/event-stream") &&
         !request.headers.get("mcp-session-id")
