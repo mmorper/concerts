@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Network connection lines radiating from the central hero node.
+       Far ends terminate ~6px inside each node edge so the line meets the
+       node cleanly (tucked under its rim, like the hero) with no gap and no
+       long tail showing through. No background — the base gradient is in icon.json. -->
+  <g stroke="#a855f7" stroke-linecap="round" fill="none">
+    <line x1="512" y1="512" x2="512" y2="222" stroke-width="14" opacity="0.60"/>
+    <line x1="512" y1="512" x2="802" y2="512" stroke-width="14" opacity="0.60"/>
+    <line x1="512" y1="512" x2="284" y2="284" stroke-width="11" opacity="0.50"/>
+    <line x1="512" y1="512" x2="740" y2="284" stroke-width="11" opacity="0.50"/>
+    <line x1="512" y1="512" x2="744" y2="744" stroke-width="11" opacity="0.50"/>
+    <line x1="512" y1="512" x2="280" y2="744" stroke-width="11" opacity="0.50"/>
+  </g>
+  <!-- Secondary inter-node connections (tucked under both node edges) -->
+  <g stroke="#7c3aed" stroke-linecap="round" fill="none">
+    <line x1="294" y1="243" x2="464" y2="187" stroke-width="8.5" opacity="0.32"/>
+    <line x1="781" y1="294" x2="837" y2="464" stroke-width="8.5" opacity="0.32"/>
+  </g>
+</svg>
