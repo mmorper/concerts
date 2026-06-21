@@ -133,13 +133,13 @@ export default {
       // protocol handler: the only legitimate GET a client makes is the SSE stream, which always
       // sends `Accept: text/event-stream` (and a session id) — that's the one case we defer.
       // Everything else that's a browser GET (incl. speculative prefetches, address-bar
-      // preconnects, and `Accept: */*`) gets the redirect. A 302 has no body, so it can't hit the
-      // transport's 406 (the old "load it twice" bug) or the Content-Length hang that made us
-      // render HTML here in the first place.
+      // preconnects, and `Accept: */*`) — and HEAD, which link unfurlers / preview bots send
+      // first — gets the redirect. A 302 has no body, so it can't hit the transport's 406 (the
+      // old "load it twice" bug) or the Content-Length hang that made us render HTML here.
       const accept = request.headers.get("accept") ?? "";
       if (
         (url.pathname === "/mcp" || url.pathname === "/mcp/about") &&
-        request.method === "GET" &&
+        (request.method === "GET" || request.method === "HEAD") &&
         !accept.includes("text/event-stream") &&
         !request.headers.get("mcp-session-id")
       ) {
