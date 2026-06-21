@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Concerts Operator Dashboard — Mock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --indigo:#4f46e5; --indigo-700:#4338ca; --violet:#7c3aed; --violet-800:#5b21b6;
+    --ink:#1e1b4b; --bg:#f6f5f9; --card:#ffffff; --line:#e7e5ef;
+    --muted:#6b7280; --muted-2:#9aa1ad; --ok:#16a34a; --warn:#f59e0b; --bad:#dc2626;
+    --serif:'Playfair Display',Georgia,serif; --sans:'Source Sans 3',system-ui,sans-serif;
+    --shadow:0 1px 2px rgba(30,27,75,.06),0 4px 16px rgba(30,27,75,.05);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45}
+  a{color:var(--indigo);text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px 64px}
+
+  /* Header */
+  header.top{position:sticky;top:0;z-index:50;background:rgba(246,245,249,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .top-inner{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px}
+  .brand{display:flex;flex-direction:column}
+  .brand h1{font-family:var(--serif);font-weight:600;font-size:22px;margin:0;letter-spacing:-.02em}
+  .brand .sub{font-size:12px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+  .top-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+  .freshness{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+  .dot.stale{background:var(--warn);box-shadow:0 0 0 3px rgba(245,158,11,.15)}
+  .user{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);padding:5px 10px;border-radius:999px}
+  .avatar{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--indigo),var(--violet));color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700}
+
+  /* Banner */
+  .banner{margin:16px 0 0;padding:10px 14px;border-radius:10px;font-size:13.5px;display:flex;gap:10px;align-items:center}
+  .banner.warn{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
+  .banner b{font-weight:700}
+
+  /* Tabs */
+  nav.tabs{display:flex;gap:4px;flex-wrap:wrap;margin:18px 0 22px;border-bottom:1px solid var(--line)}
+  nav.tabs button{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);background:none;border:none;padding:10px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;border-radius:6px 6px 0 0}
+  nav.tabs button:hover{color:var(--ink);background:#efedf6}
+  nav.tabs button.active{color:var(--indigo);border-bottom-color:var(--indigo)}
+  nav.tabs .pill{font-size:10px;font-weight:700;color:#fff;background:var(--violet);border-radius:999px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+
+  /* Layout */
+  .grid{display:grid;gap:16px}
+  .g-3{grid-template-columns:repeat(3,1fr)} .g-2{grid-template-columns:repeat(2,1fr)} .g-4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:900px){.g-3,.g-2,.g-4{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+  .card h3{margin:0 0 2px;font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.03em;text-transform:uppercase}
+  .card .hint{font-size:12px;color:var(--muted-2);margin:0 0 12px}
+  .span-2{grid-column:span 2}@media(max-width:900px){.span-2{grid-column:auto}}
+
+  /* KPI / hero */
+  .kpi .label{font-size:12.5px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+  .kpi .val{font-family:var(--serif);font-size:46px;font-weight:600;letter-spacing:-.02em;line-height:1.05;margin:8px 0 2px}
+  .kpi .val small{font-size:20px;color:var(--muted);font-family:var(--sans);font-weight:600}
+  .kpi .delta{font-size:13px;font-weight:600}
+  .delta.up{color:var(--ok)} .delta.down{color:var(--bad)} .delta.flat{color:var(--muted)}
+  .hero .val{font-size:54px}
+
+  .progress{height:9px;border-radius:999px;background:#eceaf4;overflow:hidden;margin-top:12px}
+  .progress > span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--indigo),var(--violet))}
+  .progress.warn > span{background:linear-gradient(90deg,#f59e0b,#dc2626)}
+  .capnote{font-size:12px;color:var(--muted);margin-top:8px;display:flex;justify-content:space-between}
+
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted-2);font-weight:600}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr:last-child td{border-bottom:none}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:#f1eff9;border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:13px;display:flex;align-items:center;gap:7px}
+  .chip .n{font-weight:700;color:var(--violet-800);font-variant-numeric:tabular-nums}
+
+  .legend{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:10px;font-size:13px}
+  .legend span{display:flex;align-items:center;gap:6px;color:var(--muted)}
+  .sw{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+  .stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--line)}
+  .stat-row:last-child{border-bottom:none}
+  .stat-row .k{color:var(--muted)} .stat-row .v{font-weight:700;font-variant-numeric:tabular-nums}
+
+  /* coverage */
+  .cov{margin:11px 0}
+  .cov .cov-top{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px}
+  .cov .cov-top .pct{font-weight:700;font-variant-numeric:tabular-nums}
+  .cov .track{height:8px;border-radius:999px;background:#eceaf4;overflow:hidden}
+  .cov .track > span{display:block;height:100%;border-radius:999px}
+  .cov .note{font-size:12px;color:var(--muted-2);margin-top:4px}
+
+  /* controls */
+  .seg{display:inline-flex;background:#efedf6;border-radius:10px;padding:3px;gap:3px}
+  .seg button{border:none;background:none;font-family:var(--sans);font-weight:600;font-size:13.5px;color:var(--muted);padding:8px 14px;border-radius:8px;cursor:pointer;min-height:40px}
+  .seg button.on{background:#fff;color:var(--indigo);box-shadow:var(--shadow)}
+  .seg button.on.danger{color:var(--bad)} .seg button.on.warn{color:#b45309}
+  .iplist{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+  .iprow{display:flex;align-items:center;gap:10px;background:#f8f7fb;border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-variant-numeric:tabular-nums}
+  .iprow .rm{margin-left:auto;color:var(--bad);background:none;border:none;cursor:pointer;font-size:13px;font-weight:600}
+  .addip{display:flex;gap:8px;margin-top:10px}
+  .addip input{flex:1;border:1px solid var(--line);border-radius:9px;padding:9px 12px;font-family:var(--sans);font-size:14px;background:#fff}
+  .btn{background:var(--indigo);color:#fff;border:none;border-radius:9px;padding:9px 16px;font-family:var(--sans);font-weight:600;font-size:14px;cursor:pointer;min-height:40px}
+  .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+
+  .trip{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .trip:last-child{border-bottom:none}
+  .trip .ring{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff}
+  .badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
+  .badge.ok{background:#dcfce7;color:#166534}.badge.warn{background:#fef3c7;color:#92400e}.badge.bad{background:#fee2e2;color:#991b1b}.badge.off{background:#eceaf4;color:#6b7280}
+
+  .src-strip{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--muted)}
+  .src-strip span{display:flex;align-items:center;gap:6px}
+
+  svg .grid-line{stroke:#eceaf4;stroke-width:1}
+  svg text{font-family:var(--sans);fill:var(--muted)}
+  .panel{display:none} .panel.active{display:block}
+  .note-foot{font-size:12px;color:var(--muted-2);margin-top:18px;text-align:center}
+  h2.sec{font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:-.01em;margin:4px 0 4px}
+  p.sec-sub{color:var(--muted);margin:0 0 16px;font-size:14px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <h1>Concerts — Operator Console</h1>
+      <span class="sub">concerts.morperhaus.org/dashboard · mock</span>
+    </div>
+    <div class="top-right">
+      <div class="freshness"><span class="dot" id="freshDot"></span><span id="freshTxt">Refreshed 2h ago · 06:00 UTC cron</span></div>
+      <div class="user"><span class="avatar">MM</span> mike@morper.net</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="banner warn" id="banner">⚠️ <span><b>Partial data:</b> external MCP tool-call instrumentation pending — the in-SPA (Ask) side is live; external client counts shown as 0. <a href="#" onclick="show('mcp');return false;">View MCP&nbsp;&amp;&nbsp;Ask →</a></span></div>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="overview" class="active">Overview</button>
+    <button data-tab="engagement">Engagement</button>
+    <button data-tab="mcp">MCP &amp; Ask</button>
+    <button data-tab="cost">Cost &amp; Control</button>
+    <button data-tab="archive">Archive Health<span class="pill">v1.1</span></button>
+    <button data-tab="dev">Development<span class="pill">v1.1</span></button>
+    <button data-tab="trends">Trends<span class="pill">v1.1</span></button>
+  </nav>
+
+  <!-- ================= OVERVIEW ================= -->
+  <section class="panel active" id="overview">
+    <h2 class="sec">The three jobs</h2>
+    <p class="sec-sub">Cost control · traffic · topics of interest — at a glance.</p>
+    <div class="grid g-3">
+      <div class="card kpi hero">
+        <div class="label">💸 Anthropic spend · month-to-date</div>
+        <div class="val">$31.40 <small>/ $50 cap</small></div>
+        <div class="delta flat">62.8% of cap · ~$1.05/day pace</div>
+        <div class="progress"><span style="width:62.8%"></span></div>
+        <div class="capnote"><span>Today $1.12</span><span>7d $9.80 · 30d $42.10</span></div>
+      </div>
+      <div class="card kpi hero">
+        <div class="label">📈 Sessions · last 7 days</div>
+        <div class="val">1,240</div>
+        <div class="delta up">▲ 11.3% vs prior 7d</div>
+        <div class="capnote"><span>30d 5,380</span><span>90d 14,900</span></div>
+      </div>
+      <div class="card kpi hero">
+        <div class="label">💬 Topics of interest · 30d</div>
+        <div class="chips" style="margin-top:14px">
+          <div class="chip">Depeche Mode <span class="n">312</span></div>
+          <div class="chip">setlists <span class="n">204</span></div>
+          <div class="chip">1980s shows <span class="n">176</span></div>
+          <div class="chip">LA venues <span class="n">141</span></div>
+          <div class="chip">Social Distortion <span class="n">128</span></div>
+          <div class="chip">first concert <span class="n">96</span></div>
+        </div>
+        <div class="capnote" style="margin-top:14px"><span>ask + search blended</span><span>refusal rate 6.1%</span></div>
+      </div>
+    </div>
+
+    <div class="grid g-2" style="margin-top:16px">
+      <div class="card">
+        <h3>Sessions by channel · 30d</h3>
+        <p class="hint">GA4 — sessionDefaultChannelGroup</p>
+        <div id="ov-channels"></div>
+      </div>
+      <div class="card">
+        <h3>Top pages · 30d</h3>
+        <p class="hint">GA4 — pagePath / screenPageViews</p>
+        <table>
+          <thead><tr><th>Page</th><th class="num">Views</th></tr></thead>
+          <tbody>
+            <tr><td>/</td><td class="num">6,140</td></tr>
+            <tr><td>/?scene=artists</td><td class="num">3,205</td></tr>
+            <tr><td>/?scene=timeline</td><td class="num">2,410</td></tr>
+            <tr><td>/?scene=map</td><td class="num">1,880</td></tr>
+            <tr><td>/liner-notes</td><td class="num">1,422</td></tr>
+            <tr><td>/?scene=ask</td><td class="num">1,190</td></tr>
+            <tr><td>/?scene=venues</td><td class="num">980</td></tr>
+            <tr><td>/about</td><td class="num">612</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid g-4" style="margin-top:16px">
+      <div class="card kpi"><div class="label">MCP queries · 30d</div><div class="val">2,940</div><div class="delta up">▲ 18%</div></div>
+      <div class="card kpi"><div class="label">Worker requests · 30d</div><div class="val">214<small>k</small></div><div class="delta flat">edge 1.1M</div></div>
+      <div class="card kpi"><div class="label">Ask turns · 30d</div><div class="val">1,604</div><div class="delta up">▲ 9%</div></div>
+      <div class="card kpi"><div class="label">Errors · 30d</div><div class="val" style="color:var(--ok)">0.3<small>%</small></div><div class="delta flat">12 of 3.4k</div></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Source freshness &amp; status</h3>
+      <p class="hint">Every section is independently nullable — one dead source never blanks the page.</p>
+      <div class="src-strip">
+        <span><span class="dot"></span> GA4 · ok</span>
+        <span><span class="dot"></span> Cloudflare · ok</span>
+        <span><span class="dot"></span> Spend (ask_turns) · ok</span>
+        <span><span class="dot"></span> Ask telemetry · ok</span>
+        <span><span class="dot stale"></span> MCP external · pending</span>
+        <span><span class="dot"></span> Archive health · ok</span>
+        <span><span class="dot"></span> GitHub · ok</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ENGAGEMENT ================= -->
+  <section class="panel" id="engagement">
+    <h2 class="sec">Engagement</h2>
+    <p class="sec-sub">The SPA's custom GA4 events — what people do across the scenes.</p>
+    <div class="grid g-2">
+      <div class="card">
+        <h3>Scenes by usage · 30d</h3>
+        <p class="hint">scene_view · eventCount by scene_name</p>
+        <div id="en-scenes"></div>
+      </div>
+      <div class="card">
+        <h3>Ask funnel · 30d</h3>
+        <p class="hint">ask_opened → question_sent → exhibit / refused</p>
+        <div id="en-funnel"></div>
+      </div>
+    </div>
+    <div class="grid g-2" style="margin-top:16px">
+      <div class="card">
+        <h3>High-signal interactions · 30d</h3>
+        <p class="hint">eventCount per interaction event</p>
+        <div id="en-interactions"></div>
+      </div>
+      <div class="card span-2" style="grid-column:auto">
+        <h3>Search volume &amp; top terms · 30d</h3>
+        <p class="hint">artist_search_performed · search_term</p>
+        <div class="stat-row"><span class="k">Searches</span><span class="v">842</span></div>
+        <div class="stat-row"><span class="k">Avg results returned</span><span class="v">4.7</span></div>
+        <div class="stat-row"><span class="k">Zero-result rate</span><span class="v">7.9%</span></div>
+        <div class="chips" style="margin-top:14px">
+          <div class="chip">depeche <span class="n">88</span></div>
+          <div class="chip">cure <span class="n">61</span></div>
+          <div class="chip">social d <span class="n">54</span></div>
+          <div class="chip">morrissey <span class="n">47</span></div>
+          <div class="chip">u2 <span class="n">39</span></div>
+          <div class="chip">pixies <span class="n">31</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MCP & ASK ================= -->
+  <section class="panel" id="mcp">
+    <h2 class="sec">MCP &amp; Ask</h2>
+    <p class="sec-sub">Query volume from the in-SPA chat (ask_turns) and external MCP clients.</p>
+    <div class="grid g-3">
+      <div class="card kpi"><div class="label">Queries · 7d</div><div class="val">690</div><div class="delta up">▲ 14%</div></div>
+      <div class="card kpi"><div class="label">Queries · 30d</div><div class="val">2,940</div><div class="delta up">▲ 18%</div></div>
+      <div class="card kpi"><div class="label">SPA vs external</div><div class="val">55<small>/45</small></div><div class="delta flat">in-app / Claude et al.</div></div>
+    </div>
+    <div class="grid g-2" style="margin-top:16px">
+      <div class="card span-2" style="grid-column:auto">
+        <h3>Queries over time · 30d</h3>
+        <p class="hint">daily · in-SPA (ask_turns) + external (mcp_queries)</p>
+        <div id="mcp-line"></div>
+      </div>
+      <div class="card">
+        <h3>Source split · 30d</h3>
+        <p class="hint">in-SPA vs external clients</p>
+        <div id="mcp-donut"></div>
+      </div>
+    </div>
+    <div class="grid g-2" style="margin-top:16px">
+      <div class="card">
+        <h3>By tool · 30d</h3>
+        <p class="hint">MCP tool name → call count</p>
+        <div id="mcp-tools"></div>
+      </div>
+      <div class="card">
+        <h3>Ask outcomes · 30d</h3>
+        <p class="hint">ask_turns · outcome + exhibit kind</p>
+        <div class="stat-row"><span class="k">Answered with exhibit</span><span class="v">1,402</span></div>
+        <div class="stat-row"><span class="k">Answered, no exhibit</span><span class="v">104</span></div>
+        <div class="stat-row"><span class="k">Refused (out of scope)</span><span class="v">98</span></div>
+        <div class="stat-row"><span class="k">Errors</span><span class="v">12</span></div>
+        <div class="legend" style="margin-top:6px">
+          <span><i class="sw" style="background:#1e40af"></i> artist 61%</span>
+          <span><i class="sw" style="background:#16a34a"></i> venue 24%</span>
+          <span><i class="sw" style="background:#f59e0b"></i> concert 15%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= COST & CONTROL ================= -->
+  <section class="panel" id="cost">
+    <h2 class="sec">Cost &amp; Control</h2>
+    <p class="sec-sub">Spend vs cap (from the ask_turns µUSD ledger) and live operator controls.</p>
+    <div class="grid g-4">
+      <div class="card kpi"><div class="label">Today</div><div class="val">$1.12</div></div>
+      <div class="card kpi"><div class="label">7 days</div><div class="val">$9.80</div></div>
+      <div class="card kpi"><div class="label">30 days</div><div class="val">$42.10</div></div>
+      <div class="card kpi"><div class="label">Month-to-date</div><div class="val">$31.40</div><div class="delta flat">cap $50</div></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Daily spend vs cap · 30d</h3>
+      <p class="hint">source: ask_turns (µUSD) — AI Gateway is a documented fast-follow · dashed line = daily cap ($1.67)</p>
+      <div id="cost-line"></div>
+    </div>
+
+    <div class="grid g-2" style="margin-top:16px">
+      <div class="card">
+        <h3>By model · 30d</h3>
+        <div id="cost-model"></div>
+      </div>
+      <div class="card">
+        <h3>By surface · 30d</h3>
+        <p class="hint">ask-chat vs mcp-server query tool</p>
+        <div id="cost-surface"></div>
+      </div>
+    </div>
+
+    <h2 class="sec" style="margin-top:28px">Live controls</h2>
+    <p class="sec-sub">Reads/writes the Access-gated /api/ask/admin/* endpoints — live, not the daily snapshot. (#158)</p>
+    <div class="grid g-2">
+      <div class="card">
+        <h3>Ask mode</h3>
+        <p class="hint">POST /api/ask/admin/mode</p>
+        <div class="seg" id="modeSeg">
+          <button class="on" data-mode="active" onclick="setMode(this,'active')">Active</button>
+          <button data-mode="deterministic" onclick="setMode(this,'deterministic')">Deterministic-only</button>
+          <button data-mode="paused" onclick="setMode(this,'paused')">Paused</button>
+        </div>
+        <div class="capnote" style="margin-top:14px"><span>Current: <b id="modeNow">Active — full LLM turns</b></span></div>
+        <div class="stat-row" style="margin-top:8px"><span class="k">Live day spend (public budget)</span><span class="v">$0.71 / $0.83</span></div>
+        <div class="progress warn" style="margin-top:6px"><span style="width:85%"></span></div>
+        <div class="capnote"><span>kill-switch arms at 100%</span><span>resets 00:00 UTC</span></div>
+      </div>
+      <div class="card">
+        <h3>Admin IP allowlist</h3>
+        <p class="hint">ASK_CONTROL KV · admin:ips — bypasses public caps (#158)</p>
+        <div class="iplist" id="ipList">
+          <div class="iprow">73.162.44.10 <span class="badge ok">home</span><button class="rm" onclick="this.closest('.iprow').remove()">Remove</button></div>
+          <div class="iprow">98.45.12.201 <span class="badge ok">mobile</span><button class="rm" onclick="this.closest('.iprow').remove()">Remove</button></div>
+        </div>
+        <div class="addip">
+          <input id="ipInput" placeholder="Add IP (e.g. 203.0.113.7)" />
+          <button class="btn" onclick="addIp()">Add</button>
+        </div>
+        <p class="hint" style="margin-top:12px">Per-IP reset (surgical unblock) — <span class="badge off">planned</span> needs SpendCounter.reset()</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Spend-alert tripwires (#164)</h3>
+      <p class="hint">Notifications log-only until NOTIFY_WEBHOOK_URL is set</p>
+      <div class="trip"><div class="ring" style="background:var(--ok)">50</div><div><b>ask-chat · 50% daily cap</b><br><span style="color:var(--muted);font-size:13px">last fired 2026-06-19 14:22 UTC</span></div><span class="badge ok" style="margin-left:auto">armed</span></div>
+      <div class="trip"><div class="ring" style="background:var(--warn)">75</div><div><b>ask-chat · 75% daily cap</b><br><span style="color:var(--muted);font-size:13px">last fired 2026-06-21 09:10 UTC</span></div><span class="badge warn" style="margin-left:auto">tripped today</span></div>
+      <div class="trip"><div class="ring" style="background:var(--bad)">100</div><div><b>ask-chat · 100% daily cap (kill-switch)</b><br><span style="color:var(--muted);font-size:13px">no recent trips</span></div><span class="badge ok" style="margin-left:auto">armed</span></div>
+      <div class="trip"><div class="ring" style="background:var(--violet)">80</div><div><b>mcp-server · 80% query cap</b><br><span style="color:var(--muted);font-size:13px">no recent trips</span></div><span class="badge ok" style="margin-left:auto">armed</span></div>
+      <div class="capnote" style="margin-top:10px"><span>Transport: <span class="badge off">log-only — set NOTIFY_WEBHOOK_URL</span></span><span><a href="#">configure →</a></span></div>
+    </div>
+  </section>
+
+  <!-- ================= ARCHIVE HEALTH ================= -->
+  <section class="panel" id="archive">
+    <h2 class="sec">Archive Health</h2>
+    <p class="sec-sub">Enrichment-pipeline coverage — one row per stage, all weighted equally. Last build: 2026-06-21 05:12 UTC.</p>
+    <div class="grid g-3">
+      <div class="card kpi"><div class="label">Concerts</div><div class="val">183</div></div>
+      <div class="card kpi"><div class="label">Artists</div><div class="val">257</div></div>
+      <div class="card kpi"><div class="label">Venues</div><div class="val">79</div></div>
+    </div>
+    <div class="grid g-2" style="margin-top:16px">
+      <div class="card" id="cov-left"></div>
+      <div class="card" id="cov-right"></div>
+    </div>
+  </section>
+
+  <!-- ================= DEVELOPMENT ================= -->
+  <section class="panel" id="dev">
+    <h2 class="sec">Development</h2>
+    <p class="sec-sub">mmorper/concerts — velocity and flow.</p>
+    <div class="grid g-4">
+      <div class="card kpi"><div class="label">Commits · 7d</div><div class="val">38</div></div>
+      <div class="card kpi"><div class="label">Commits · 30d</div><div class="val">164</div></div>
+      <div class="card kpi"><div class="label">Merged PRs · 30d</div><div class="val">27</div></div>
+      <div class="card kpi"><div class="label">Open issues</div><div class="val">35</div></div>
+    </div>
+    <div class="grid g-2" style="margin-top:16px">
+      <div class="card">
+        <h3>Open issues by label</h3>
+        <div id="dev-labels"></div>
+      </div>
+      <div class="card">
+        <h3>Recently merged PRs</h3>
+        <table>
+          <thead><tr><th>#</th><th>Title</th><th class="num">Merged</th></tr></thead>
+          <tbody>
+            <tr><td>#160</td><td>docs(specs): commit dashboard port kit</td><td class="num">Jun 21</td></tr>
+            <tr><td>#157</td><td>feat(ask): enable Analytics Engine + redeploy</td><td class="num">Jun 21</td></tr>
+            <tr><td>#155</td><td>feat(ask): spend tripwires &amp; alerts</td><td class="num">Jun 20</td></tr>
+            <tr><td>#153</td><td>feat: ask_turns observability ledger</td><td class="num">Jun 19</td></tr>
+            <tr><td>#149</td><td>feat: liner-notes deferred detectors</td><td class="num">Jun 17</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TRENDS ================= -->
+  <section class="panel" id="trends">
+    <h2 class="sec">Trends</h2>
+    <p class="sec-sub">Per-day series from dashboard:timeseries — sessions, MCP queries, spend.</p>
+    <div class="card"><h3>Sessions · per day (30d)</h3><div id="tr-sessions"></div></div>
+    <div class="card" style="margin-top:16px"><h3>MCP queries · per day (30d)</h3><div id="tr-mcp"></div></div>
+    <div class="card" style="margin-top:16px"><h3>Anthropic spend · per day (30d)</h3><div id="tr-spend"></div></div>
+  </section>
+
+  <p class="note-foot">Mock · all data fabricated for layout review · spec: concerts-dashboard-spec.md · Epic #159</p>
+</div>
+
+<script>
+// ---------- tab switching ----------
+function show(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===id));
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.tab)));
+
+// ---------- palette ----------
+const PAL=['#1e40af','#991b1b','#5b21b6','#f59e0b','#0ea5e9','#06b6d4','#dc2626','#ec4899','#16a34a','#7c3aed'];
+const INDIGO='#4f46e5', VIOLET='#7c3aed';
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+// ---------- horizontal bar chart ----------
+function hbar(el,data,opts={}){
+  const max=Math.max(...data.map(d=>d.value))||1;
+  const fmt=opts.fmt||(v=>v.toLocaleString());
+  el.innerHTML=data.map((d,i)=>{
+    const w=Math.max(2,(d.value/max)*100), c=d.color||PAL[i%PAL.length];
+    return `<div style="margin:10px 0">
+      <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:4px">
+        <span>${esc(d.label)}</span><span style="font-weight:700;font-variant-numeric:tabular-nums">${fmt(d.value)}</span></div>
+      <div style="height:9px;border-radius:999px;background:#eceaf4;overflow:hidden">
+        <span style="display:block;height:100%;width:${w}%;border-radius:999px;background:${c}"></span></div></div>`;
+  }).join('');
+}
+
+// ---------- line chart (multi-series) ----------
+function line(el,series,labels,opts={}){
+  const W=720,H=240,pl=44,pr=14,pt=14,pb=26;
+  const all=series.flatMap(s=>s.points);
+  let max=Math.max(...all,opts.capLine||0); max=max*1.12||1;
+  const n=labels.length;
+  const x=i=>pl+(i*(W-pl-pr))/(n-1);
+  const y=v=>H-pb-(v/max)*(H-pt-pb);
+  const ticks=4; let g='';
+  for(let t=0;t<=ticks;t++){const v=max*t/ticks,yy=y(v);
+    g+=`<line class="grid-line" x1="${pl}" y1="${yy}" x2="${W-pr}" y2="${yy}"/>`;
+    g+=`<text x="${pl-8}" y="${yy+4}" text-anchor="end" font-size="11">${opts.fmtY?opts.fmtY(v):Math.round(v)}</text>`;}
+  let xl='';const step=Math.ceil(n/6);
+  for(let i=0;i<n;i+=step)xl+=`<text x="${x(i)}" y="${H-6}" text-anchor="middle" font-size="11">${labels[i]}</text>`;
+  let paths=series.map(s=>{
+    const d=s.points.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(' ');
+    const area=`M${x(0)} ${y(0)} `+s.points.map((v,i)=>`L${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(' ')+` L${x(n-1)} ${y(0)} Z`;
+    const id='g'+Math.random().toString(36).slice(2,7);
+    return `<defs><linearGradient id="${id}" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="${s.color}" stop-opacity="0.18"/><stop offset="1" stop-color="${s.color}" stop-opacity="0"/></linearGradient></defs>
+      ${s.fill!==false?`<path d="${area}" fill="url(#${id})"/>`:''}
+      <path d="${d}" fill="none" stroke="${s.color}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`;
+  }).join('');
+  let cap='';
+  if(opts.capLine){const yy=y(opts.capLine);
+    cap=`<line x1="${pl}" y1="${yy}" x2="${W-pr}" y2="${yy}" stroke="${INDIGO}" stroke-width="1.5" stroke-dasharray="5 4" opacity=".7"/>
+    <text x="${W-pr}" y="${yy-6}" text-anchor="end" font-size="11" fill="${INDIGO}">cap</text>`;}
+  const leg=series.length>1?`<div class="legend">`+series.map(s=>`<span><i class="sw" style="background:${s.color}"></i>${esc(s.name)}</span>`).join('')+`</div>`:'';
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" preserveAspectRatio="xMidYMid meet">${g}${paths}${cap}${xl}</svg>${leg}`;
+}
+
+// ---------- doughnut ----------
+function donut(el,data){
+  const tot=data.reduce((a,d)=>a+d.value,0)||1,cx=90,cy=90,r=70,sw=26;let a=-Math.PI/2,seg='';
+  data.forEach(d=>{const ang=d.value/tot*2*Math.PI,a2=a+ang;
+    const x1=cx+r*Math.cos(a),y1=cy+r*Math.sin(a),x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2);
+    const large=ang>Math.PI?1:0;
+    seg+=`<path d="M${x1.toFixed(2)} ${y1.toFixed(2)} A${r} ${r} 0 ${large} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}" fill="none" stroke="${d.color}" stroke-width="${sw}"/>`;
+    a=a2;});
+  const leg=data.map(d=>`<span><i class="sw" style="background:${d.color}"></i>${esc(d.label)} <b style="color:var(--ink)">${Math.round(d.value/tot*100)}%</b></span>`).join('');
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+    <svg viewBox="0 0 180 180" width="160" height="160">${seg}
+      <text x="90" y="86" text-anchor="middle" font-size="26" font-family="Playfair Display,serif" fill="#1e1b4b">${tot.toLocaleString()}</text>
+      <text x="90" y="106" text-anchor="middle" font-size="11">total</text></svg>
+    <div class="legend" style="flex-direction:column;gap:8px">${leg}</div></div>`;
+}
+
+// ---------- coverage rows ----------
+function coverage(el,title,rows){
+  el.innerHTML=`<h3>${title}</h3>`+rows.map(r=>{
+    const c=r.pct>=85?'#16a34a':r.pct>=60?'#f59e0b':'#dc2626';
+    return `<div class="cov"><div class="cov-top"><span>${esc(r.stage)}</span><span class="pct">${r.pct}%</span></div>
+      <div class="track"><span style="width:${r.pct}%;background:${c}"></span></div>
+      ${r.note?`<div class="note">${esc(r.note)}</div>`:''}</div>`;
+  }).join('');
+}
+
+// ---------- mock series ----------
+function series(n,base,amp,seed){const a=[];let s=seed||7;for(let i=0;i<n;i++){s=(s*9301+49297)%233280;const r=s/233280;a.push(Math.max(0,Math.round(base+Math.sin(i/3)*amp*0.5+(r-0.5)*amp+i*base*0.004)));}return a;}
+const days=Array.from({length:30},(_,i)=>{const d=new Date(2026,4,23);d.setDate(d.getDate()+i);return (d.getMonth()+1)+'/'+d.getDate();});
+
+// ---------- render ----------
+hbar(document.getElementById('ov-channels'),[
+  {label:'Organic Search',value:3100},{label:'Direct',value:1200},{label:'Referral',value:640},
+  {label:'Social',value:440},{label:'Email',value:0}].filter(d=>d.value));
+
+hbar(document.getElementById('en-scenes'),[
+  {label:'Artists',value:4180},{label:'Timeline',value:3360},{label:'Map',value:2540},
+  {label:'Genres',value:1720},{label:'Venues',value:1480},{label:'Ask',value:1190}]);
+
+hbar(document.getElementById('en-funnel'),[
+  {label:'ask_opened',value:2210,color:VIOLET},{label:'ask_question_sent',value:1604,color:INDIGO},
+  {label:'ask_exhibit_shown',value:1402,color:'#16a34a'},{label:'ask_refused',value:98,color:'#dc2626'}]);
+
+hbar(document.getElementById('en-interactions'),[
+  {label:'artist_card_opened',value:3120},{label:'timeline_card_clicked',value:2440},
+  {label:'map_marker_clicked',value:1610},{label:'setlist_button_clicked',value:1180},
+  {label:'artist_preview_played',value:980},{label:'genre_tile_clicked',value:720},
+  {label:'tour_badge_clicked',value:240}]);
+
+line(document.getElementById('mcp-line'),[
+  {name:'in-SPA (ask)',color:INDIGO,points:series(30,55,30,3)},
+  {name:'external (Claude)',color:VIOLET,points:series(30,42,34,9)}],days);
+
+donut(document.getElementById('mcp-donut'),[
+  {label:'in-SPA',value:1617,color:INDIGO},{label:'external',value:1323,color:VIOLET}]);
+
+hbar(document.getElementById('mcp-tools'),[
+  {label:'query',value:1180},{label:'search_concerts',value:620},{label:'get_artist_history',value:430},
+  {label:'get_venue_history',value:240},{label:'on_this_day',value:180},{label:'surprise_me',value:120},
+  {label:'get_concert_setlist',value:96},{label:'get_archive_top_songs',value:74}]);
+
+line(document.getElementById('cost-line'),[
+  {name:'spend',color:VIOLET,points:series(30,120,90,5).map(v=>v/100)}],days,
+  {capLine:1.67,fmtY:v=>'$'+v.toFixed(1)});
+
+hbar(document.getElementById('cost-model'),[
+  {label:'claude-haiku-4-5',value:24.80,color:'#16a34a'},
+  {label:'claude-sonnet-4-6',value:14.10,color:INDIGO},
+  {label:'claude-opus-4-8',value:3.20,color:VIOLET}],{fmt:v=>'$'+v.toFixed(2)});
+
+hbar(document.getElementById('cost-surface'),[
+  {label:'ask-chat (in-SPA)',value:29.40,color:INDIGO},
+  {label:'mcp-server query tool',value:12.70,color:VIOLET}],{fmt:v=>'$'+v.toFixed(2)});
+
+coverage(document.getElementById('cov-left'),'Coverage by enrichment stage',[
+  {stage:'Concert metadata',pct:100,note:'date · headliner · venue validated at build'},
+  {stage:'Genres',pct:81,note:'headliners 93% · openers 62%'},
+  {stage:'Artist metadata (bio/photo)',pct:88,note:'14 artists unresolved'},
+  {stage:'Audio previews',pct:99,note:'iTunes 98.8% · Deezer fallback'}]);
+
+coverage(document.getElementById('cov-right'),' ',[
+  {stage:'Venue photos / geocode',pct:78,note:'62 of 79 venues with photos · all geocoded'},
+  {stage:'Setlists',pct:87,note:'159 of 183 concerts'},
+  {stage:'Discography',pct:81,note:'covers available 74% of albums'},
+  {stage:'Liner notes (published/analyzed)',pct:64,note:'14 detectors · score ≥ 20 to publish'}]);
+
+hbar(document.getElementById('dev-labels'),[
+  {label:'operational',value:6},{label:'enhancement',value:7},{label:'performance',value:3},
+  {label:'chore',value:4},{label:'pilot',value:6},{label:'documentation',value:2},{label:'(unlabeled)',value:7}]);
+
+line(document.getElementById('tr-sessions'),[{name:'sessions',color:INDIGO,points:series(30,180,90,2)}],days);
+line(document.getElementById('tr-mcp'),[{name:'queries',color:VIOLET,points:series(30,98,60,4)}],days);
+line(document.getElementById('tr-spend'),[{name:'spend',color:'#16a34a',points:series(30,120,90,5).map(v=>v/100)}],days,{fmtY:v=>'$'+v.toFixed(1)});
+
+// ---------- controls (mock interactivity) ----------
+function setMode(btn,mode){
+  document.querySelectorAll('#modeSeg button').forEach(b=>{b.classList.remove('on','danger','warn');});
+  btn.classList.add('on');
+  const txt={active:'Active — full LLM turns',deterministic:'Deterministic-only — no LLM spend',paused:'Paused — chat disabled'}[mode];
+  if(mode==='paused')btn.classList.add('danger'); if(mode==='deterministic')btn.classList.add('warn');
+  document.getElementById('modeNow').textContent=txt;
+}
+function addIp(){
+  const v=document.getElementById('ipInput').value.trim(); if(!v)return;
+  const row=document.createElement('div');row.className='iprow';
+  row.innerHTML=`${esc(v)} <span class="badge ok">new</span><button class="rm" onclick="this.closest('.iprow').remove()">Remove</button>`;
+  document.getElementById('ipList').appendChild(row);document.getElementById('ipInput').value='';
+}
+</script>
+</body>
+</html>
+</content>

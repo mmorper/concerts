@@ -1,78 +1,81 @@
 # Concerts Operator Dashboard (concerts.morperhaus.org/dashboard)
 
-**Status:** Ready
-**Type:** Architecture / Infrastructure (not a user-facing app feature)
+**Status:** Final — ready to implement
+**Type:** Architecture / Infrastructure (operator console, not a user-facing app feature)
 **Priority:** Medium
 **Estimated Complexity:** High
-**Ported from:** Pitch dashboard (`pitch.morperhaus.org/dashboard/`) — same architecture, same CF account, same GA service account.
+**Epic:** #159
+**Ported from:** Pitch dashboard (`pitch.morperhaus.org/dashboard/`) — same architecture, same
+CF account (`6db8591bbcba4588ae4ef9c3839cd209`), same GA service account, same Google-SSO Access model.
+
+> **Look & feel:** Keep the Pitch dashboard's proven layout and component structure — do **not**
+> materially redesign it. Reskin only: apply the Concerts app's design tokens (Playfair Display +
+> Source Sans 3, the indigo/violet UI palette, genre jewel-tones for data-viz series). See
+> [Design](#design--look--feel).
 
 ---
 
 ## Executive Summary
 
-A standalone **operator console** for Morperhaus Concerts at
-`concerts.morperhaus.org/dashboard/`, behind Cloudflare Access (Google SSO, one
-user). A standalone Cloudflare Worker runs on a daily cron, fans out to four
-data sources in parallel, and writes a single JSON snapshot to Cloudflare KV. A
-data endpoint serves that snapshot; a React route in the SPA renders it.
+A standalone **operator console** at `concerts.morperhaus.org/dashboard/`, behind Cloudflare
+Access (Google SSO, single user). A standalone Cloudflare Worker runs on a daily cron, fans out to
+its data sources in parallel, and writes one JSON snapshot to Cloudflare KV. An Access-gated data
+endpoint serves that snapshot; a React route in the SPA renders it. A small set of **live**
+Access-gated JSON endpoints power the control surface (mode/spend/admin-IP), which must reflect
+real-time state rather than the daily snapshot.
 
-**This dashboard is strictly operational. It is NOT a concert-data showcase**
-(no artists/venues/setlists — that data is out of scope). The four things it
-surfaces:
+**This dashboard is operational + archive-health.** It is *not* a public concert-data showcase.
+The three jobs it exists to do, in priority order:
 
-1. **SPA traffic & engagement** — GA4 standard web stats + the custom events the
-   app already fires ("scenes": timeline, venues, artists, ask, search…).
-2. **MCP usage** — query volume from both the in-SPA experience and external
-   clients (Claude), by tool, over time.
-3. **Cloudflare infra** — edge + Worker request volume, and (if AI Gateway is
-   used) Anthropic cost/token analytics.
-4. **Anthropic spend** — total cost per day/week/month, against the configured
-   spend cap.
+1. **Cost control** — Anthropic spend per day/week/month vs. the configured cap, plus the live
+   spend-cap state and the spend-alert tripwires (#164), and the controls to act on it (#158).
+2. **Traffic** — GA4 web stats + the SPA's custom engagement events (the "scenes").
+3. **Topics of interest** — what people actually ask and search: top themes from the `ask_turns`
+   query ledger and the SPA's search events.
 
-The architecture is a verbatim port of the Pitch dashboard; the value of this
-spec is in **what changes** (the four sources above) and **what's deleted**
-(everything tied to a desktop app: downloads, installs, auto-update, release
-mirror, code coverage, the Pitch strategy tab).
+Supporting tabs round it out: **MCP & Ask** usage, **Archive Health** (enrichment-pipeline
+coverage), **Development** (GitHub velocity), and a **Trends** view. The architecture is a port of
+the Pitch dashboard; this spec documents **what changes** for Concerts and **what's deleted**
+(everything tied to a desktop app: downloads, installs, auto-update, release mirror, code coverage,
+the Pitch "Strategy" tab).
+
+> **Distinct from** the user-facing "Ask the Archive" chat (Epic #138) and the public MCP server.
+> This dashboard *observes and controls* those; it is not part of them.
 
 ---
 
-## Implementation Quick Start
+## Decisions (locked)
 
-**Copy/paste this prompt into a NEW Claude Code session in the Concerts repo.**
+These were open `DISCOVER`/design questions in the bootstrap. Resolved with the owner:
 
-```
-I'm building an operator dashboard for Morperhaus Concerts, ported from the
-Pitch dashboard. The full spec is in this kit: concerts-dashboard-spec.md.
-The refresh Worker starter is in worker-starter/. Read the spec first — it is
-the source of truth.
+| # | Decision | Rationale |
+|---|----------|-----------|
+| **Scope** | Operational **+ an Archive Health tab** | Surface enrichment-pipeline coverage (data-ops), all stages weighted equally. |
+| **Control** | **Active control panel**, not read-only | Fold #158 in: ask mode toggle, live spend vs cap, admin-IP management. Retires the standalone HTML admin page over time. |
+| **Spend source** | **Bootstrap from `ask_turns` µUSD now; AI Gateway later** | Real spend series on day one, zero new credentials. AI Gateway is a documented fast-follow for authoritative org-wide cost. |
+| **Optionals (all in)** | Spend-alert status (#164), Development tab, Trends view, Uptime/error monitoring | Owner wants the full set; phased v1 / v1.1 (see [Phasing](#phasing)). |
+| **Primary jobs** | Cost control · traffic · topics of interest | Drives the Overview hero. |
+| **Archive Health detail** | Follow the **data-enrichment pipeline** — one coverage row per stage | "Accommodate each" stage; no single headline metric. |
+| **Auth** | Same Cloudflare Access + Google SSO as Pitch | Point the policy at `concerts.morperhaus.org/dashboard*`. Zero auth code. |
+| **Serving (DISCOVER 2)** | Confirm in Phase 0 (see below) | `concerts-meta-injector` owns `/*` and `morperhaus-mcp` owns `/mcp*`; `/dashboard*` must slot in deliberately. Lean: a dedicated route on `/dashboard/data*` (more-specific wins, mirrors `/mcp*`). |
 
-This is a serverless operator console:
-  CF Worker (daily cron) → fetch 4 sources → write JSON to CF KV
-  data endpoint reads KV → returns JSON
-  React /dashboard route fetches it → renders with a charting lib
-  Cloudflare Access (Google SSO) fences /dashboard/* — no auth code
+**Still genuinely unknown — resolve in Phase 0:**
+- **GA4 numeric property id** for `concerts.morperhaus.org` (have the `G-XXXX` gtag id in
+  `.env.example`; map to the numeric property id). `DISCOVER(1)`.
+- **Exact serving topology** (Pages vs. Worker) → which `data-endpoint.ts` variant + where the
+  `/dashboard` route ships. `DISCOVER(2)`.
 
-Start with PHASE 0 — CODEBASE AUDIT. Do NOT write dashboard code yet. Produce a
-findings report that resolves the five DISCOVER blanks in the spec:
-  1. The GA4 property ID for concerts.morperhaus.org (find the G-XXXX gtag id;
-     map to numeric property id).
-  2. How the SPA is served (a Worker that renders/serves the React app? CF
-     Pages? both?) — decides where the /dashboard route + data endpoint live.
-  3. The custom GA4 event taxonomy the SPA already fires — exact event names +
-     params (the "scenes" and any search/interaction events).
-  4. How Anthropic is called and how spend is constrained today. Specifically:
-     is Cloudflare AI Gateway in the path? (If yes, we get cost analytics from
-     the CF GraphQL API for free and should use it. If no, we use the Anthropic
-     Admin API cost_report and need an admin key.)
-  5. Where MCP queries can be read from so BOTH the in-SPA calls AND external
-     clients (Claude) are counted. There is probably no such store yet — propose
-     the instrumentation (Cloudflare Workers Analytics Engine is the natural fit
-     for a Worker-based MCP server; D1 or KV counters also work).
+---
 
-While you're in there, also recommend any additional operator telemetry worth
-capturing that this spec doesn't list. Then we'll lock the data contract and
-implement phases 1–5.
-```
+## Phasing
+
+The full scope is ambitious. Ship in two waves so daily operator value lands fast.
+
+**v1 (core — the three jobs):**
+Overview · Engagement · MCP & Ask · **Cost & Control** (spend + #158 controls + #164 alerts).
+
+**v1.1 (fast-follow):**
+Archive Health · Development · Trends · full uptime/error monitoring.
 
 ---
 
@@ -83,15 +86,15 @@ implement phases 1–5.
         │                                  │
         ▼                                  ▼
 workers/dashboard-refresh/   (standalone CF Worker — cron + manual trigger)
-   secrets: GH_TOKEN?, CF_API_TOKEN, CF_ACCOUNT_ID, GA_SA_KEY_JSON,
-            GA_IMPERSONATE_SUBJECT, ANTHROPIC_ADMIN_KEY?, REFRESH_KEY?
+   secrets: CF_API_TOKEN, CF_ACCOUNT_ID, GA_SA_KEY_JSON, GA_IMPERSONATE_SUBJECT,
+            GH_TOKEN?, REFRESH_KEY?   (no Anthropic admin key in v1 — spend from ask_turns)
         │
-        ├─ GA Data API ───── sessions + channels + countries + top pages
-        │                    + custom SPA events  (SA-key JWT via Web Crypto)
-        ├─ CF GraphQL ─────── edge + Worker requests  [+ AI Gateway cost/tokens]
-        ├─ Anthropic Admin ── cost_report: $ by day/model   (skip if AI Gateway)
-        ├─ MCP telemetry ──── Analytics Engine / D1 / KV  (queries by tool+source)
-        └─ GitHub (optional)─ commits / PRs / issues for a Development tab
+        ├─ GA Data API ───── sessions + channels + countries + pages + custom SPA events
+        ├─ CF GraphQL ─────── edge + Worker requests + 5xx error rates [+ AI Gateway later]
+        ├─ Analytics Engine ─ ask_turns ledger → spend µUSD series + ask topics + outcomes
+        ├─ Analytics Engine ─ mcp_queries (NET-NEW instrumentation) → external tool-calls
+        ├─ public/data/*  ─── enrichment coverage per stage  (Archive Health)
+        └─ GitHub (optional)─ commits / PRs / issues  (Development tab)
         │
         ▼
 CF KV namespace: CONCERTS_DASHBOARD
@@ -100,46 +103,51 @@ CF KV namespace: CONCERTS_DASHBOARD
           dashboard:timeseries          ← per-day series for the Trends view
         │
         ▼
-data endpoint   GET /dashboard/data/    (reads KV, stamps dataAge, returns JSON)
-   — Pages Function  website/functions/dashboard/data.ts        (if Pages)
-   — or Worker route handler inside the SPA's serving Worker     (if Worker)
+data endpoint   GET /dashboard/data/    (reads KV, stamps dataAge, returns JSON)  [snapshot — daily]
+control endpoints  GET/POST /api/ask/admin/*   (live mode/spend/admin-IP — NOT the snapshot)
         │
         ▼
-React /dashboard route   — fetch('/dashboard/data/') on mount → render
+React /dashboard route  — fetch snapshot on mount; control panel polls the live admin endpoints
         │
         ▼
-Cloudflare Access (Zero Trust) fences /dashboard/*  — Google SSO, allowlist=you
+Cloudflare Access (Zero Trust) fences /dashboard/*  +  /api/ask/admin/*  — Google SSO, allowlist=you
 ```
 
-**Why a standalone Worker (not folded into the SPA Worker):** only standalone
-Workers get cron triggers. The refresh Worker writes KV; the SPA's serving layer
-only ever *reads* KV at `/dashboard/data/`. They share one KV namespace.
+**Two data planes, deliberately separate:**
+- **Snapshot plane (daily):** everything in the KV `dashboard:snapshot`. Cheap, cacheable
+  (browser-private), tolerant of one dead source.
+- **Live plane (on demand):** the control surface (mode, current-day spend, admin-IP list, alert
+  state). These must be *current*, so the dashboard reads the Access-gated `/api/ask/admin/*`
+  endpoints directly — never the stale daily snapshot.
+
+**Why a standalone refresh Worker:** only standalone Workers get cron triggers. It *writes* KV; the
+SPA serving layer only ever *reads* KV at `/dashboard/data/`. They share one KV namespace.
 
 ---
 
-## KV Data Contract
+## KV Data Contract (the snapshot)
 
-The Worker writes this to `dashboard:snapshot`; the data endpoint serves it
-verbatim; the React route consumes it. **All three must agree.** Every section
-is independently nullable so one dead source never blanks the page.
+The Worker writes this to `dashboard:snapshot`; the data endpoint serves it verbatim; the React
+route consumes it. **All three must agree.** Every section is independently nullable so one dead
+source never blanks the page.
 
 ```typescript
 interface ConcertsDashboardSnapshot {
-  refreshedAt: string;            // ISO 8601 UTC
-  ga: GaSection | null;           // null if GA_SA_KEY_JSON unset or all GA calls fail
-  cloudflare: CloudflareSection;  // always present (zeros on failure)
-  anthropic: AnthropicSection | null;  // null if not configured / AI Gateway path
-  mcp: McpSection | null;         // null until MCP telemetry store exists
-  github: GitHubSection | null;   // optional Development tab; null if unused
-  sourceStatus: {
-    ga: 'ok' | 'error' | 'not_configured';
-    cloudflare: 'ok' | 'error';
-    anthropic: 'ok' | 'error' | 'not_configured';
-    mcp: 'ok' | 'error' | 'not_configured';
-    github: 'ok' | 'error' | 'not_configured';
-  };
+  refreshedAt: string;                 // ISO 8601 UTC
+  ga: GaSection | null;
+  cloudflare: CloudflareSection;       // always present (zeros on failure)
+  spend: SpendSection | null;          // from ask_turns µUSD (v1); AI Gateway-augmented later
+  mcp: McpSection | null;              // ask side from ask_turns; external side net-new
+  topics: TopicsSection | null;        // derived from ask_turns queries + GA search events
+  archiveHealth: ArchiveHealthSection | null;  // v1.1 — enrichment coverage
+  github: GitHubSection | null;        // v1.1 — Development tab
+  monitoring: MonitoringSection | null;        // 5xx + ask/mcp error outcomes
+  sourceStatus: Record<
+    'ga' | 'cloudflare' | 'spend' | 'mcp' | 'topics' | 'archiveHealth' | 'github' | 'monitoring',
+    'ok' | 'error' | 'not_configured'
+  >;
   fetchErrors: string[];
-  dataAge: 'fresh' | 'stale';     // stamped by the data endpoint at serve time
+  dataAge: 'fresh' | 'stale';          // stamped by the data endpoint at serve time
 }
 
 interface GaSection {
@@ -150,225 +158,267 @@ interface GaSection {
     topReferrers: Array<{ source: string; sessions: number }>; // sessionSource (30d)
     topPages: Array<{ page: string; views: number }>;          // pagePath (30d, top 8)
   };
-  // The SPA-engagement analog of Pitch's "app telemetry" — sourced from the
-  // custom GA4 events the Concerts app already fires. DISCOVER(3): replace these
-  // placeholder keys with the real event taxonomy in Phase 0.
+  // Concerts custom events (real taxonomy — see Appendix B). eventCount per event, 30d.
   engagement: {
-    byScene: Record<string, number>;        // e.g. eventCount per "scene" event
-    searches30d: number;                     // if a search event exists
-    // ...add per-event/per-param breakdowns once the taxonomy is known
-    [k: string]: unknown;
+    byScene: Record<string, number>;        // scene_view, keyed by scene_name
+    sceneNav: number;                        // scene_nav_clicked
+    deepLinks: number;                       // deep_link_accessed
+    interactions: Record<string, number>;    // counts for the high-signal interaction events
+    searches: { count: number; topTerms: Array<{ term: string; n: number }> }; // artist_search_performed
+    audioPreviews: number;                   // artist_preview_played
+    ask: Record<string, number>;             // ask_* event counts (opened/sent/exhibit/refused/error/deeplink)
   };
 }
 
 interface CloudflareSection {
-  requests7d: number; requests30d: number;        // httpRequests1dGroups
+  requests7d: number; requests30d: number;             // httpRequests1dGroups
   workerRequests7d: number; workerRequests30d: number; // workersInvocationsAdaptive
-  // Present only if Anthropic is proxied through AI Gateway (DISCOVER(4)).
-  aiGateway: {
+  aiGateway: {                                          // null until AI Gateway is in the path
     requests30d: number; costUsd30d: number;
     tokensIn30d: number; tokensOut30d: number;
   } | null;
 }
 
-interface AnthropicSection {            // direct Admin-API path (skip if AI Gateway)
+// SPEND — v1 source is the ask_turns µUSD ledger (ask-chat) + mcp query-cap usage.
+// Authoritative org-wide cost via AI Gateway / Admin API is a documented fast-follow.
+interface SpendSection {
+  source: 'ask_turns' | 'ai_gateway' | 'admin_api';
   costUsdToday: number;
   costUsd7d: number;
   costUsd30d: number;
   costUsdMonthToDate: number;
-  capUsd: number | null;                // your configured monthly cap (static config)
-  byModel30d: Record<string, number>;   // model → $ (if cost_report exposes it)
+  capUsd: number | null;                 // configured monthly cap (static config), drives the cap line
+  byModel30d: Record<string, number>;    // model → $ (if the source exposes model)
+  bySurface30d: { ask: number; mcp: number }; // ask-chat vs mcp-server query tool
   series: Array<{ date: string; costUsd: number }>; // daily, for the trend + cap line
 }
 
 interface McpSection {
   queries7d: number; queries30d: number;
-  byTool: Record<string, number>;       // tool name → call count (30d)
-  bySource: { spa: number; external: number }; // in-SPA vs Claude/other clients
+  byTool: Record<string, number>;        // tool name → call count (30d)
+  bySource: { spa: number; external: number }; // ask_turns (spa) vs mcp_queries (external clients)
   series: Array<{ date: string; queries: number }>;
 }
 
-interface GitHubSection {               // optional — same shape Pitch uses, trimmed
+// TOPICS OF INTEREST — derived: what people ask + search. A headline job.
+interface TopicsSection {
+  askTopics: Array<{ term: string; n: number }>;   // clustered/normalized ask_turns query text (30d)
+  searchTerms: Array<{ term: string; n: number }>; // artist_search_performed search_term (30d)
+  exhibitKinds: Record<string, number>;            // ask_turns exhibit kind (artist/venue/concert)
+  refusalRate30d: number;                           // ask_refused / ask_question_sent
+}
+
+// ARCHIVE HEALTH — one row per enrichment stage (Appendix C). All stages weighted equally.
+interface ArchiveHealthSection {
+  lastBuildAt: string | null;            // newest fetchedAt/generated timestamp across data files
+  stages: Array<{
+    stage: string;                        // e.g. "Artist genres", "Venue photos", "Setlists"
+    covered: number; total: number; pct: number;
+    note?: string;                        // e.g. "openers 62% vs headliners 93%"
+  }>;
+}
+
+interface GitHubSection {
   velocity: { commitsLast7d: number; commitsLast30d: number; mergedPrsLast30d: number };
-  issues: { open: number; byPriority?: Record<string, number> };
+  issues: { open: number; byLabel?: Record<string, number> };
   recentPrs: Array<{ number: number; title: string; mergedAt: string }>;
+}
+
+interface MonitoringSection {
+  edge5xx30d: number;                     // CF GraphQL: 5xx responses
+  worker5xx30d: number;
+  askErrors30d: number;                   // ask_turns outcome=error / GA ask_error
+  askRefusals30d: number;                 // GA ask_refused
+  mcpErrors30d: number;                   // mcp_queries outcome=error (once instrumented)
 }
 ```
 
 ---
 
-## The four data sources
+## Data sources
 
 ### 1. GA4 — ports verbatim, config-only
+The Worker's `fetchGA()`, Web-Crypto JWT signing, domain-wide-delegation OAuth exchange, and
+`runReport` plumbing are reused unchanged. Two differences:
+- **Property id** — `GA_PROPERTY` constant. `DISCOVER(1)`.
+- **Engagement block** — fetch the real Concerts event taxonomy (Appendix B), not Pitch's app
+  events. The website block (sessions/channels/countries/pages/referrers) is generic, stays as-is.
 
-The Worker's `fetchGA()`, the Web-Crypto JWT signing, the domain-wide-delegation
-OAuth exchange, and `runReport` plumbing are **reused unchanged** from Pitch.
-Only two things differ:
+**Credentials carry over for free.** The SA, its DWD authorization, and the
+`pitch-dashboard-readers@morper.net` group already hold **account-level** Viewer on the GA account —
+which includes the Concerts property. Verify with Appendix A; set the same `GA_SA_KEY_JSON` +
+`GA_IMPERSONATE_SUBJECT` secrets.
 
-- **Property ID** — `GA_PROPERTY` constant. DISCOVER(1).
-- **The app-event block** — Pitch reads `app_launched`/`pitch_created`/…;
-  Concerts reads its own `byScene` custom events. DISCOVER(3). The *website*
-  block (sessions/channels/countries/pages/referrers) is generic and stays as-is.
+### 2. Cloudflare — ports verbatim (+ 5xx + optional AI Gateway)
+`fetchCloudflare()` reuses the account-level GraphQL query (`httpRequests1dGroups` +
+`workersInvocationsAdaptive`) with the same `CF_API_TOKEN` (Analytics:Read) and the **same account
+id** (`6db8591bbcba4588ae4ef9c3839cd209`). Extend it to also pull **5xx counts** for the Monitoring
+section. **AI Gateway:** if/when Anthropic is proxied through it, add the AI Gateway analytics
+dataset here (per-gateway cost/tokens/requests) and populate `cloudflare.aiGateway` +
+`spend.source = 'ai_gateway'`. Verify dataset/field names against current CF docs.
 
-**Credentials carry over for free.** The service account, its DWD authorization,
-and the `pitch-dashboard-readers@morper.net` Google Group already hold
-**account-level** Viewer on the GA account — which includes the Concerts
-property. No new GCP/Workspace setup. Just verify (see Appendix A) and set the
-same `GA_SA_KEY_JSON` + `GA_IMPERSONATE_SUBJECT` Worker secrets.
+### 3. Spend — from the `ask_turns` ledger (v1), AI Gateway later
+The `ask-chat` worker already writes a per-turn ledger to Cloudflare **Analytics Engine**
+(`ASK_ANALYTICS → ask_turns`, **live in prod** as of #157), carrying query text, outcome, exhibit
+kind, tokens, and **cost in µUSD** (`double5`). Schema in
+`docs/specs/implemented/global-ask-the-archive-observability.md` §Problem 1. `fetchSpend()` queries
+it via the Analytics Engine SQL API to build the daily cost series and the today/7d/30d/MTD windows.
+Add the `mcp-server` query-tool spend once it logs tokens (Source #4). `capUsd` is static config
+(hand-set `var`), kept in sync with the real caps (`ASK_MONTHLY_USD`, the per-IP `ASK_IP_DAILY_USD`).
 
-### 2. Cloudflare — ports verbatim (+ optional AI Gateway)
+> **Fast-follow:** when authoritative org-wide cost is wanted, route Anthropic through **AI Gateway**
+> (cost via CF GraphQL — Source #2) or call the **Anthropic Admin API** `cost_report` with an
+> `sk-ant-admin…` key. Flip `spend.source` accordingly; the contract is unchanged.
 
-`fetchCloudflare()` reuses the same account-level GraphQL query
-(`httpRequests1dGroups` + `workersInvocationsAdaptive`) with the same
-`CF_API_TOKEN` (Analytics:Read). New account? No — same Cloudflare account, so
-even the `CF_ACCOUNT_ID` is identical.
+### 4. MCP & Ask telemetry — ask side built; external tool-calls net-new
+- **Ask / in-SPA** — already captured in `ask_turns` (server-side, not lossy GA). Read directly.
+- **External MCP clients (Claude, etc.)** — hit the `morperhaus-mcp` Worker directly and touch
+  neither GA nor `ask_turns`. Today `mcp-server` only keeps `MCP_QUERY_USAGE` KV counters for
+  cap enforcement — **no per-tool/per-source telemetry.** It's a Durable Object (`McpAgent`), so
+  add an **Analytics Engine** binding and `writeDataPoint([tool, source])` per query (one new
+  binding + a few lines). The refresh Worker then reads `mcp_queries` via the SQL API and unions it
+  with the `ask_turns` (spa) side. Until the instrumentation ships, `mcp.bySource.external` is 0 and
+  the tab notes "external tool-calls pending instrumentation."
 
-**If Anthropic runs through AI Gateway (recommended):** extend this fetcher with
-the AI Gateway analytics dataset (CF GraphQL exposes per-gateway cost, tokens,
-requests, errors). This collapses source #4 into source #2 — one token, one
-query, and AI Gateway *also* gives you the spend-capping + caching you want.
-DISCOVER(4): confirm gateway name + the exact GraphQL dataset/field names
-against current CF docs (the `cloudflare` skill / `search_cloudflare_documentation`).
+### 5. Topics of Interest — derived (a headline job)
+- **Ask topics** — cluster/normalize the `ask_turns` query text (30d). Start simple
+  (lowercase + strip + top-N by frequency, optional light stemming); a smarter clustering pass is a
+  later enhancement.
+- **Search terms** — `artist_search_performed.search_term` from GA (30d).
+- **Exhibit kinds / refusal rate** — straight from `ask_turns`. High refusal rate on a recurring
+  topic = a gap worth filling.
 
-### 3. Anthropic spend — net-new
+### 6. Archive Health — enrichment-pipeline coverage (v1.1)
+One coverage row per enrichment stage (Appendix C), computed from the generated `public/data/*.json`
+the refresh Worker fetches (no new external APIs). All stages weighted equally. See Appendix C for
+the exact files/fields and the coverage formula per stage.
 
-If **not** using AI Gateway, `fetchAnthropic()` calls the **Anthropic Admin API
-Cost report** to get spend by day. This requires an **Admin API key**
-(`sk-ant-admin…`), which is org-scoped and distinct from a regular API key —
-created by an org admin in the Console. Store it as the `ANTHROPIC_ADMIN_KEY`
-Worker secret.
+### 7. GitHub — Development tab (v1.1)
+Trim-down of Pitch's `fetchGitHub`: point at `mmorper/concerts`; pull commit velocity, open issues
+(by label), recent merged PRs. Optional `GH_TOKEN` secret; null → tab hidden.
 
-> ⚠️ The Usage & Cost Admin API surface evolves. Before finalizing the fetcher,
-> verify the current endpoint, params, auth headers, and response shape via the
-> `claude-api` skill / Anthropic docs. The starter codes the cost-report call as
-> a best-effort stub with a clear `TODO(concerts)` and a doc-check reminder.
+---
 
-`capUsd` is not an API value — it's your configured cap, hand-set in the Worker
-(a `var`) so the trend chart can draw the cap line. Keep it in sync with however
-spend is actually constrained (DISCOVER(4)).
+## Control surface (live plane — folds #158 + #164)
 
-### 4. MCP telemetry — the ask/chat half is built; external tool-calls are net-new
+The dashboard is an **active control panel**, not just charts. The control widgets read/write the
+**live** Access-gated JSON endpoints (added to `ask-chat`), *not* the daily snapshot:
 
-> **Update (2026-06-21): reuse `ask_turns`, don't re-instrument the ask side.** The
-> in-app "Ask the Archive" chat (`ask-chat` Worker) already writes a per-turn ledger to
-> Analytics Engine — `dataset = ask_turns`, **live in prod** — carrying query text,
-> outcome, exhibit kind, tokens, and cost µUSD (full schema + SQL-API access in
-> `docs/specs/implemented/global-ask-the-archive-observability.md` §Problem 1). Phase 5
-> consumes that directly. Only the **external MCP-client tool-calls** (Claude etc. hitting
-> `/mcp` from outside the SPA) still need new instrumentation — that's the work below.
+- `GET /api/ask/admin/state` → `{ mode, spend, adminIps }` — machine-readable sibling of today's
+  HTML admin page (`admin.ts`).
+- `POST /api/ask/admin/mode` → set mode (`active` / `deterministic-only` / `paused`). *(exists)*
+- `POST /api/ask/admin/ips` → `{ op: 'add' | 'remove', ip }` — manage the admin-IP allowlist
+  (#158), stored in `ASK_CONTROL` KV (`admin:ips`), read on the turn path with a ~60s isolation
+  cache; `ASK_ADMIN_IPS` env stays as a break-glass bootstrap.
+- *(later, don't build yet)* `POST /api/ask/admin/reset-ip` — surgical per-IP `SpendCounter`
+  reset; needs a `reset` method on the DO. Note it so the UI can offer it later.
 
-The **external-client** side has **no existing store to read**. Queries arrive two ways:
+**Alerts (#164):** surface the spend-cap tripwire state (ask-chat fires at 50/75/100% of the daily
+cap; mcp-server at 80% of the query cap) and recent alert history. Setting `NOTIFY_WEBHOOK_URL` is
+an operational action tracked in #164; the dashboard *displays* tripwire status regardless.
 
-- **In-SPA** ("Ask the Archive") — **already captured** in the `ask_turns` ledger above
-  (server-side, not lossy GA). Read it directly; no new work.
-- **External clients (Claude, etc.)** — these hit the MCP Worker directly and
-  **never touch GA or `ask_turns`**. The only place to count them is server-side — the
-  net-new instrumentation below.
-
-**Therefore the MCP server must log each query somewhere queryable.** Recommended
-for a Worker-based MCP server: **Cloudflare Workers Analytics Engine** — write
-one data point per query with blobs `[tool, source]` and let the refresh Worker
-query it via the Analytics Engine SQL/GraphQL API. Alternatives: a D1 table
-(one row per query, or pre-aggregated daily counters) or KV counters. Whatever
-the Concerts Claude finds cleanest given the existing MCP Worker — but it is a
-**prerequisite** for the MCP tab, and a prime candidate for the "recommend
-additional telemetry" pass. Until it exists, `mcp` stays `null` and the tab
-shows a "Pending — MCP telemetry not yet instrumented" placeholder (same
-graceful-null pattern GA uses in Pitch).
+All of the above reuse the **existing Cloudflare Access** gate (fail-closed). Do not invent new
+auth. The current HTML `admin.ts` page stays as the interim UI until the dashboard supersedes it.
 
 ---
 
 ## Tabs (the UI)
 
-Drop Pitch's App/Development-downloads/Strategy framing. Proposed Concerts tabs:
+Drop Pitch's App / Downloads / Strategy framing.
 
-| Tab | Source | Contents |
-| --- | --- | --- |
-| **Overview** | GA + CF + Anthropic + MCP | Hero KPIs (sessions, MCP queries, 30d Anthropic spend vs cap, worker requests), data-freshness strip, top pages, sessions by channel |
-| **Engagement** | GA custom events | Scenes by usage (bar), search volume, any interaction-event breakdowns — the Concerts analog of Pitch's App tab |
-| **MCP** | MCP telemetry | Queries over time (line), by tool (bar), in-SPA vs external split (doughnut) |
-| **Cost & Infra** | Anthropic + CF | Spend day/week/month vs cap (line + cap reference line), spend by model, CF edge/worker requests, AI Gateway tokens/cost (if used) |
-| **Development** *(optional)* | GitHub | Commit/PR velocity, open issues, recent PRs — include only if useful |
+| Tab | Wave | Source | Contents |
+| --- | --- | --- | --- |
+| **Overview** | v1 | all | Three-job hero: **spend vs cap** (cost control), **sessions** (traffic), **Topics of Interest** (top ask themes + searches). Data-freshness strip, error glance, top pages, sessions by channel. |
+| **Engagement** | v1 | GA custom events | Scenes by usage (bar), search volume + top terms, interaction-event breakdowns, Ask funnel (opened→sent→exhibit/refused). |
+| **MCP & Ask** | v1 | `ask_turns` + `mcp_queries` | Queries over time (line), by tool (bar), in-SPA vs external split (doughnut), outcomes. |
+| **Cost & Control** | v1 | spend + #158 + #164 | Spend day/week/month vs cap (line + cap reference), by model, by surface (ask/mcp). **Live controls:** mode toggle, admin-IP management, current-day spend, tripwire/alert status. |
+| **Archive Health** | v1.1 | `public/data/*` | One coverage bar per enrichment stage (all equal), last-build timestamp, notable gaps (e.g. opener genre coverage). |
+| **Development** | v1.1 | GitHub | Commit/PR velocity, open issues by label, recent PRs. |
+| **Trends** | v1.1 | `dashboard:timeseries` | Per-day sessions / MCP queries / spend. Ports Pitch's timeseries-merge logic. |
 
-**Trends view** (optional, ports from Pitch's `dashboard:timeseries`): per-day
-sessions / MCP queries / Anthropic spend. The Worker's timeseries-merge logic is
-reusable; swap the Pitch-specific series for these.
-
-Charting: the Pitch dashboard uses Chart.js via CDN. In a React SPA, **Recharts**
-(or `react-chartjs-2`) is the more idiomatic choice — your call. The data
-contract is framework-agnostic, so this is purely a rendering decision.
+**Charting:** Pitch uses Chart.js via CDN. In the React SPA, **Recharts** is more idiomatic — your
+call; D3 is already a dependency if consistency with the app's viz is preferred. The data contract
+is framework-agnostic, so this is purely a rendering decision.
 
 ---
 
-## Auth — Cloudflare Access (identical to Pitch)
+## Design — look & feel
 
-Configure once in the CF dashboard, zero code:
+Keep the Pitch dashboard's **layout, grid, card structure, and interaction patterns**. Reskin only:
 
-- Application domain: `concerts.morperhaus.org/dashboard*` (covers page + `/dashboard/data/`)
-- Policy: Include → Google → restricted to your email
-- Session: 24h
-
-The `Cache-Control: private` on the data endpoint matters — keeps the snapshot
-in the *browser* cache only, never the shared edge (so CF Access is always
-honored). Ported as-is.
+- **Type:** Playfair Display for titles/stat numbers; Source Sans 3 for everything else
+  (matches the app).
+- **UI palette:** the app's indigo/violet system — `indigo-600` / `violet-600` for active controls,
+  glassmorphism (`white/10`, `white/80`) for inputs and secondary actions, charcoal/stone neutrals.
+  See `docs/design/color-specification.md` and the design-system skill.
+- **Data-viz series:** use the genre jewel-tones (`@/constants/colors`, `GENRE_COLORS`) for
+  categorical series where it reads well; never use genre colors for UI chrome.
+- **Auth:** identical Cloudflare Access + Google SSO. Configure once in the CF dashboard:
+  - Application domain: `concerts.morperhaus.org/dashboard*` **and** `/api/ask/admin*`
+  - Policy: Include → Google → restricted to your email; Session 24h.
+  - `Cache-Control: private` on the data endpoint keeps the snapshot in the *browser* cache only
+    (never the shared edge), so Access is always honored.
 
 ---
 
 ## Implementation Plan
 
-### Phase 0 — Codebase audit (no dashboard code)
-Resolve the five `DISCOVER` items (see Quick Start prompt). Output a findings
-report + a telemetry-recommendations section. Lock the data contract (fill the
-`engagement` keys, decide AI-Gateway-vs-Admin-API, decide the MCP store).
-**Gate:** contract agreed before Phase 3.
+### Phase 0 — Codebase audit & contract lock (no dashboard code)
+Resolve `DISCOVER(1)` GA numeric property id and `DISCOVER(2)` serving topology (Pages vs Worker →
+which `data-endpoint.ts` variant + `/dashboard` route home + how `/dashboard*` coexists with the
+`/*` meta-injector). Confirm the `ask_turns` schema/SQL access and the `public/data` fields for
+Archive Health. Output a findings report; lock the data contract. **Gate:** contract agreed.
 
 ### Phase 1 — Infra + auth
-Create KV namespace `CONCERTS_DASHBOARD`. Bind it to the SPA serving layer.
-Set up CF Access on `/dashboard*`. Ship the data endpoint (`data-endpoint.ts`,
-right variant) + a `/dashboard` route shell that fetches and shows
-loading/empty/error states. **Gate:** `/dashboard` requires Google login;
-`/dashboard/data/` returns 503 (no snapshot yet); page degrades gracefully.
+Create KV `CONCERTS_DASHBOARD`; bind to the serving layer. Set up CF Access on `/dashboard*` and
+`/api/ask/admin*`. Ship the data endpoint + a `/dashboard` route shell (loading/empty/error states).
+**Gate:** `/dashboard` requires Google login; `/dashboard/data/` returns 503 (no snapshot yet);
+degrades gracefully.
 
-### Phase 2 — Dashboard UI
-Build the tabs against a **seeded sample snapshot** in KV. Static loads instant;
-dynamic sections show skeletons; null sections show "Pending" placeholders;
-`fetchErrors` drives a partial-data banner; `dataAge:'stale'` drives a staleness
-warning. **Gate:** full render from sample snapshot, no console errors.
+### Phase 2 — Dashboard UI (reskinned shell)
+Build the v1 tabs against a **seeded sample snapshot** in KV, in the Concerts skin. Skeletons for
+dynamic sections; "Pending" placeholders for null sections; `fetchErrors` → partial-data banner;
+`dataAge:'stale'` → staleness warning. **Gate:** full render from sample, no console errors.
 
 ### Phase 3 — Worker: GA + Cloudflare
-Stand up `workers/dashboard-refresh/` from the starter. Wire GA (verify Appendix
-A first) + CF. Set secrets, deploy, seed via the `?key=` trigger. **Gate:**
-snapshot has real sessions + request counts; GA custom events populate
-`engagement`.
+Stand up `workers/dashboard-refresh/` from the starter. Wire GA (website + the real engagement
+events, Appendix B) + CF (requests + 5xx). Seed via the `?key=` trigger. **Gate:** snapshot has real
+sessions, request counts, and populated `engagement`.
 
-### Phase 4 — Worker: Anthropic + AI Gateway
-Implement whichever spend path Phase 0 chose. Set `ANTHROPIC_ADMIN_KEY` (or
-extend the CF query for AI Gateway). Set `capUsd`. **Gate:** Cost & Infra tab
-shows real spend vs cap.
+### Phase 4 — Spend + Control
+`fetchSpend()` from `ask_turns` µUSD (today/7d/30d/MTD + daily series); set `capUsd`. Add the
+Access-gated `/api/ask/admin/*` JSON endpoints (#158) and wire the Cost & Control tab's live
+widgets + alert/tripwire status (#164). **Gate:** Cost & Control shows real spend vs cap and the
+mode/admin-IP controls work end-to-end.
 
-### Phase 5 — Worker: MCP telemetry
-Reuse the live `ask_turns` ledger for the in-SPA ask side; implement only the remaining
-**external MCP-client** tool-call instrumentation from Phase 0 (Analytics Engine / D1 / KV),
-then `fetchMcp()` to read both. **Gate:** MCP tab shows real query counts split by
-tool and SPA-vs-external.
+### Phase 5 — MCP & Ask telemetry
+Add Analytics Engine `writeDataPoint([tool, source])` to `morperhaus-mcp`. `fetchMcp()` reads
+`mcp_queries` (external) + `ask_turns` (spa). Build the Topics section from `ask_turns` queries + GA
+search terms. **Gate:** MCP & Ask tab shows real counts split by tool and spa-vs-external; Overview
+Topics panel populated.
+
+### Phase 6 (v1.1) — Archive Health · Development · Trends · Monitoring
+`fetchArchiveHealth()` over `public/data/*` (Appendix C); `fetchGitHub()`; port the timeseries
+builder; finish the Monitoring section. **Gate:** all v1.1 tabs render real data.
 
 ---
 
-## Edge cases (all inherited from the Pitch pattern)
+## Edge cases (inherited from the Pitch pattern)
 
 - **No snapshot yet** → endpoint 503 → "No data yet, first refresh 06:00 UTC".
-- **One source down** → zeros/null for it + `fetchErrors` entry + partial-data banner; snapshot still written.
+- **One source down** → zeros/null + `fetchErrors` entry + partial-data banner; snapshot still written.
 - **Snapshot >26h old** → `dataAge:'stale'` → staleness warning.
-- **GA / Anthropic / MCP not configured** → that section `null` → "Pending" placeholder, never a crash.
+- **GA / spend / MCP / archive not configured** → that section `null` → "Pending" placeholder, never a crash.
 - **CF Access session expired** → transparent Google re-auth.
-- **Admin/PAT/SA key expired** → that source errors, rest of dashboard fine; rotate via `wrangler secret put`.
+- **Live control endpoint down** → control widgets show "unavailable", snapshot tabs unaffected.
+- **Key expired (SA / PAT / CF token)** → that source errors, rest of dashboard fine; rotate via `wrangler secret put`.
 
 ---
 
 ## Appendix A — GA access verification (config-only)
 
-Because the SA + Google Group already hold **account-level** Viewer, the Concerts
-property should already be reachable. Verify before writing `fetchGA()`:
+Because the SA + Google Group already hold **account-level** Viewer, the Concerts property should be
+reachable. Verify before writing `fetchGA()`:
 
 ```bash
 export GOOGLE_APPLICATION_CREDENTIALS=".secrets/<the-same-ga-sa-key>.json"
@@ -387,15 +437,63 @@ print('SUCCESS — sessions(7d):', r.rows[0].metric_values[0].value if r.rows el
 EOF
 ```
 
-`SUCCESS` → set `GA_SA_KEY_JSON` + `GA_IMPERSONATE_SUBJECT` Worker secrets and
-proceed. `403 PERMISSION_DENIED` → the group's Viewer was granted at the
-*property* level on Pitch instead of the *account* level; re-grant the group at
-the GA **Account** level (Admin → Account Access Management) and it inherits to
-Concerts. Full troubleshooting table: see the Pitch spec's Appendix A.
+`SUCCESS` → set the secrets and proceed. `403 PERMISSION_DENIED` → the group's Viewer was granted at
+the *property* level on Pitch; re-grant at the GA **Account** level (Admin → Account Access
+Management) and it inherits to Concerts.
+
+---
+
+## Appendix B — GA4 custom event taxonomy (engagement source)
+
+Events the SPA fires (defined in `src/services/analytics.ts`). Query `eventCount` by `eventName`
+over 30d for the Engagement tab; pull named params for breakdowns.
+
+**Navigation:** `scene_view` (`scene_name`, `scene_number`) · `scene_nav_clicked`
+(`from_scene`, `to_scene`) · `deep_link_accessed` (`scene`, `artist`, `venue`).
+
+**Search (topics):** `artist_search_performed` (`search_term`, `results_found`, `selected_artist`).
+
+**High-signal interactions:** `timeline_card_clicked` · `venue_node_clicked` · `map_marker_clicked` ·
+`genre_tile_clicked` · `artist_card_opened` (`device_type`, `times_seen`) · `artist_tab_viewed`
+(`tab_name`) · `setlist_button_clicked` · `liner_notes_badge_clicked` · `tour_badge_clicked`.
+
+**Audio:** `artist_preview_played` (`track_position`, `source`, `device_type`) ·
+`artist_preview_streaming_link_clicked`.
+
+**Ask funnel:** `ask_opened` (`surface`) · `ask_question_sent` (`turn_index`, `char_len`) ·
+`ask_exhibit_shown` (`kind`) · `ask_refused` · `ask_error` (`reason`) · `ask_deeplink_clicked`
+(`kind`, `target_scene`) · `ask_suggested_prompt_clicked`.
+
+> GA `ask_*` events count client interactions; the **`ask_turns` Analytics Engine ledger** is the
+> authoritative server-side source for spend, query text, and outcomes (use it for Topics + Spend).
+
+---
+
+## Appendix C — Enrichment stages → Archive Health coverage
+
+One equally-weighted coverage row per stage. Computed from generated files (no new APIs).
+
+| Stage | Script(s) | File · field | Coverage = |
+| --- | --- | --- | --- |
+| Concert metadata | `fetch-google-sheet.ts` | `concerts.json` · `date`, `headliner`, `venue` | valid concerts / total |
+| Concert/artist **genres** | `enrich-concert-genres.ts`, `enrich-artists.ts` | `concerts.json` · `genreNormalized`; `artists-metadata.json` · `genres[]` | non-empty / total (split openers vs headliners — note ~62% vs ~93%) |
+| Artist **metadata** (bio/photo) | `enrich-artists.ts` | `artists-metadata.json` · `bio`, `image` | non-empty / unique artists |
+| Artist **audio previews** | `enrich-top-tracks.ts` | `artists-top-tracks.json` · `tracks[].previewUrl` | artists ≥2/5 previews / total |
+| Venue **photos/geocode** | `enrich-venues.ts`, `geocode-venues.ts` | `venues-metadata.json` · `photoUrls`, `location` | venues w/ photo / total; venues w/ geocode / total |
+| **Setlists** | `prefetch-setlists.ts` | `setlists-cache.json` | concerts w/ setlist / total (~87%) |
+| **Discography** | `enrich-discography.ts` | `discography.json` · `albums[].coverUrl` | artists w/ ≥1 album / total; albums w/ cover / total |
+| **Liner notes** | `liner-notes/*.ts` | `liner-notes.json` | published findings / analyzed findings (by detector) |
+
+`lastBuildAt` = newest `fetchedAt`/generated timestamp across these files.
 
 ---
 
 ## Revision History
-- Initial port from the Pitch hosted-dashboard spec. Four sources retargeted
-  (GA property/events, CF, Anthropic spend, MCP telemetry); desktop-app sources
-  removed.
+- **Final (this revision):** Locked owner decisions — Archive Health tab, active control panel
+  (#158), spend bootstrapped from `ask_turns` (AI Gateway later), all optionals in (phased v1/v1.1),
+  primary jobs (cost/traffic/topics), Concerts reskin, same Google SSO. Filled the GA taxonomy
+  (Appendix B) and enrichment stages (Appendix C) from the live repo. Added the live control plane
+  and Topics/Monitoring/ArchiveHealth contract sections.
+- Initial port from the Pitch hosted-dashboard spec.
+</content>
+</invoke>
