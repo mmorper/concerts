@@ -57,13 +57,13 @@ These were open `DISCOVER`/design questions in the bootstrap. Resolved with the 
 | **Primary jobs** | Cost control · traffic · topics of interest | Drives the Overview hero. |
 | **Archive Health detail** | Follow the **data-enrichment pipeline** — one coverage row per stage | "Accommodate each" stage; no single headline metric. |
 | **Auth** | Same Cloudflare Access + Google SSO as Pitch | Point the policy at `concerts.morperhaus.org/dashboard*`. Zero auth code. |
-| **Serving (DISCOVER 2)** | Confirm in Phase 0 (see below) | `concerts-meta-injector` owns `/*` and `morperhaus-mcp` owns `/mcp*`; `/dashboard*` must slot in deliberately. Lean: a dedicated route on `/dashboard/data*` (more-specific wins, mirrors `/mcp*`). |
+| **Serving (DISCOVER 2)** | ✅ **Resolved** (Phase 0 — `phase0-findings.md`) | **Cloudflare Pages** serves the SPA; `concerts-meta-injector` owns `/*` (passes non-bot traffic through) and `morperhaus-mcp` owns `/mcp*`. Use **Variant A — a Pages Function** at `functions/dashboard/data.ts` + KV on the Pages project; Access fences at the edge. |
 
-**Still genuinely unknown — resolve in Phase 0:**
-- **GA4 numeric property id** for `concerts.morperhaus.org` (have the `G-XXXX` gtag id in
-  `.env.example`; map to the numeric property id). `DISCOVER(1)`.
-- **Exact serving topology** (Pages vs. Worker) → which `data-endpoint.ts` variant + where the
-  `/dashboard` route ships. `DISCOVER(2)`.
+**Phase 0 outcome (see `phase0-findings.md`):**
+- ✅ **GA measurement id** = `G-VKSC8MCN5N`; serving topology + data-endpoint approach; `ask_turns`
+  schema/SQL; archive coverage actuals; `capUsd = 25` (mirror `ASK_MONTHLY_USD`).
+- ⚠️ **Owner console actions still required:** GA **numeric** property id (`DISCOVER(1)`); register the
+  7 GA4 custom dimensions (not retroactive); create the Cloudflare Access app.
 
 ---
 
