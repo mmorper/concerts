@@ -167,6 +167,12 @@ interface GaSection {
     searches: { count: number; topTerms: Array<{ term: string; n: number }> }; // artist_search_performed
     audioPreviews: number;                   // artist_preview_played
     ask: Record<string, number>;             // ask_* event counts (opened/sent/exhibit/refused/error/deeplink)
+    // "What's getting clicked" — per-entity breakdowns from event params. Each requires the
+    // param to be registered as a GA4 event-scoped CUSTOM DIMENSION (one-time config, no code).
+    topArtists: Array<{ name: string; n: number }>;   // artist_card_opened.artist_name
+    topVenues: Array<{ name: string; n: number }>;    // venue_node_clicked + map_marker_clicked.venue_name
+    topSongs: Array<{ name: string; n: number }>;     // artist_preview_played.track_name
+    topSetlists: Array<{ name: string; n: number }>;  // setlist_button_clicked.artist_name + venue_name
   };
 }
 
@@ -466,6 +472,15 @@ over 30d for the Engagement tab; pull named params for breakdowns.
 
 > GA `ask_*` events count client interactions; the **`ask_turns` Analytics Engine ledger** is the
 > authoritative server-side source for spend, query text, and outcomes (use it for Topics + Spend).
+
+**"What's getting clicked" (per-entity breakdowns).** The events above already carry the entity in
+their params — `artist_card_opened.artist_name`, `venue_node_clicked`/`map_marker_clicked.venue_name`,
+`artist_preview_played.track_name`, `setlist_button_clicked.artist_name`+`venue_name`. To slice GA by
+those *values* (e.g. "most-opened artists"), each param must be registered as a GA4 **event-scoped
+custom dimension** (Admin → Custom definitions — one-time config, no code change). Tracked as a
+Phase-0/Phase-3 setup task. **Gap:** clicks on an *individual song within a setlist* are not tracked
+today (only "open setlist" fires); per-song-in-setlist engagement needs a small new event
+(`setlist_song_clicked`) — relates to #22 (audio preview on setlist items).
 
 ---
 

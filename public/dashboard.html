@@ -208,6 +208,30 @@
       </div>
     </div>
 
+    <div class="grid g-2" style="margin-top:16px">
+      <div class="card">
+        <h3>Top countries · 30d</h3>
+        <p class="hint">GA4 — country / sessions</p>
+        <div id="ov-geo"></div>
+      </div>
+      <div class="card">
+        <h3>Referring traffic · 30d</h3>
+        <p class="hint">GA4 — sessionSource / sessions (excludes direct)</p>
+        <table>
+          <thead><tr><th>Referrer</th><th class="num">Sessions</th></tr></thead>
+          <tbody>
+            <tr><td>google</td><td class="num">2,810</td></tr>
+            <tr><td>bsky.app</td><td class="num">240</td></tr>
+            <tr><td>reddit.com</td><td class="num">180</td></tr>
+            <tr><td>news.ycombinator.com</td><td class="num">95</td></tr>
+            <tr><td>t.co</td><td class="num">70</td></tr>
+            <tr><td>last.fm</td><td class="num">44</td></tr>
+            <tr><td>setlist.fm</td><td class="num">31</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="grid g-4" style="margin-top:16px">
       <div class="card kpi"><div class="label">MCP queries · 30d</div><div class="val">2,940</div><div class="delta up">▲ 18%</div></div>
       <div class="card kpi"><div class="label">Worker requests · 30d</div><div class="val">214<small>k</small></div><div class="delta flat">edge 1.1M</div></div>
@@ -266,6 +290,34 @@
           <div class="chip">u2 <span class="n">39</span></div>
           <div class="chip">pixies <span class="n">31</span></div>
         </div>
+      </div>
+    </div>
+
+    <h2 class="sec" style="margin-top:28px">What's getting clicked</h2>
+    <p class="sec-sub">Event params surfaced as GA4 custom dimensions — the actual artists, venues, songs &amp; setlists people engage with.</p>
+    <div class="grid g-2">
+      <div class="card">
+        <h3>Most-opened artists · 30d</h3>
+        <p class="hint">artist_card_opened · artist_name</p>
+        <div id="en-artists"></div>
+      </div>
+      <div class="card">
+        <h3>Most-clicked venues · 30d</h3>
+        <p class="hint">venue_node_clicked + map_marker_clicked · venue_name</p>
+        <div id="en-venues"></div>
+      </div>
+    </div>
+    <div class="grid g-2" style="margin-top:16px">
+      <div class="card">
+        <h3>Most-played songs · 30d</h3>
+        <p class="hint">artist_preview_played · track_name</p>
+        <div id="en-songs"></div>
+      </div>
+      <div class="card">
+        <h3>Most-viewed setlists · 30d</h3>
+        <p class="hint">setlist_button_clicked · artist_name + venue_name</p>
+        <div id="en-setlists"></div>
+        <p class="hint" style="margin-top:12px">Per-song clicks <em>within</em> a setlist <span class="badge off">needs new event</span> — today only "open setlist" is tracked.</p>
       </div>
     </div>
   </section>
@@ -535,6 +587,24 @@ const days=Array.from({length:30},(_,i)=>{const d=new Date(2026,4,23);d.setDate(
 hbar(document.getElementById('ov-channels'),[
   {label:'Organic Search',value:3100},{label:'Direct',value:1200},{label:'Referral',value:640},
   {label:'Social',value:440},{label:'Email',value:0}].filter(d=>d.value));
+
+hbar(document.getElementById('ov-geo'),[
+  {label:'United States',value:3920},{label:'United Kingdom',value:410},{label:'Canada',value:360},
+  {label:'Germany',value:240},{label:'Australia',value:180},{label:'Netherlands',value:120}]);
+
+hbar(document.getElementById('en-artists'),[
+  {label:'Depeche Mode',value:412},{label:'The Cure',value:318},{label:'Social Distortion',value:286},
+  {label:'Morrissey',value:240},{label:'New Order',value:198},{label:'Pixies',value:164},{label:'U2',value:150}]);
+hbar(document.getElementById('en-venues'),[
+  {label:'The Forum',value:280},{label:'Hollywood Bowl',value:240},{label:'Greek Theatre',value:210},
+  {label:'The Roxy',value:160},{label:'The Wiltern',value:140},{label:'Troubadour',value:96}]);
+hbar(document.getElementById('en-songs'),[
+  {label:'Just Like Heaven — The Cure',value:88},{label:'Personal Jesus — Depeche Mode',value:81},
+  {label:'Story of My Life — Social D',value:64},{label:'Bizarre Love Triangle — New Order',value:58},
+  {label:'Enjoy the Silence — Depeche Mode',value:52},{label:'Ball and Chain — Social D',value:44}]);
+hbar(document.getElementById('en-setlists'),[
+  {label:'Depeche Mode @ The Forum',value:96},{label:'The Cure @ Hollywood Bowl',value:78},
+  {label:'Social Distortion @ The Roxy',value:61},{label:'Morrissey @ Greek Theatre',value:47}]);
 
 hbar(document.getElementById('en-scenes'),[
   {label:'Artists',value:4180},{label:'Timeline',value:3360},{label:'Map',value:2540},
