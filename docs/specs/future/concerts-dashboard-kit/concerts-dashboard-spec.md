@@ -392,6 +392,82 @@ Keep the Pitch dashboard's **layout, grid, card structure, and interaction patte
 
 ---
 
+## Visual reference & build inventory
+
+**Design source of truth:** `docs/specs/future/concerts-dashboard-kit/dashboard-mock.html` — a
+self-contained, fully-rendered mock of every tab (hand-rolled SVG charts, mock data, the Concerts
+reskin, working control interactions). It lives under `docs/` and is **never built or deployed**
+(only files in `public/` ship). Open it locally to see exact layout, spacing, and chart styling; the
+final React build should match it. *(A `public/dashboard.html` copy was used for preview during
+spec'ing and is removed before merge — see [Pre-merge](#pre-merge--deployment-notes).)*
+
+**Chart primitives** (the mock implements all of these — reuse or port to Recharts/D3): KPI card,
+horizontal bar, multi-series line (+ optional dashed cap reference), doughnut, scatter quadrant,
+coverage bar, data table, chips, stat rows, segmented control, IP/list rows, tripwire rows.
+
+**Panel inventory** — every tab, its panels, chart type, and the contract field / source feeding it:
+
+| Tab (phase) | Panel | Chart | Source · field |
+| --- | --- | --- | --- |
+| **Overview** (P1; GA panels P3) | Spend MTD vs cap | KPI + progress | `spend` |
+| | Traffic (sessions 7/30/90d) | KPI | `cloudflare` / `ga.website` |
+| | Topics of Interest | chips | `topics.askTopics` + `searchTerms` |
+| | Sessions by channel | h-bar | `ga.website.byChannel` *(P3)* |
+| | Top pages | table | `ga.website.topPages` *(P3)* |
+| | Top countries (geo) | h-bar | `ga.website.byCountry` *(P3)* |
+| | Referring traffic | table | `ga.website.topReferrers` *(P3)* |
+| | KPI strip (MCP / workers / ask / err%) | KPI ×4 | `mcp`, `cloudflare`, `monitoring` |
+| | Source freshness & status | status strip | `sourceStatus`, `dataAge`, `fetchErrors` |
+| **Cost & Control** (P2) | Today / 7d / 30d / MTD | KPI ×4 | `spend` |
+| | Daily spend vs cap | line + cap ref | `spend.series`, `spend.capUsd` |
+| | By model | h-bar | `spend.byModel30d` |
+| | By surface (ask/mcp) | h-bar | `spend.bySurface30d` |
+| | Ask mode | segmented control | `POST /api/ask/admin/mode` |
+| | Day spend vs public budget | progress | live `/api/ask/admin/state` |
+| | Admin-IP allowlist | list + add/remove | `/api/ask/admin/ips` (#158) |
+| | Spend-alert tripwires | tripwire rows | alert state (#164) |
+| **Engagement** (P3) | Scenes by usage | h-bar | `engagement.byScene` |
+| | Ask funnel | h-bar | `engagement.ask` |
+| | High-signal interactions | h-bar | `engagement.interactions` |
+| | Search volume + top terms | stats + chips | `engagement.searches` |
+| | What's getting clicked | h-bar ×4 | `engagement.topArtists/topVenues/topSongs/topSetlists` |
+| | Audio preview attention | stats | `artist_preview_played/paused` |
+| | Device split | doughnut | `device_type` |
+| **MCP & Ask** (P4) | Queries 7d/30d, spa/external | KPI ×3 | `mcp` |
+| | Queries over time | multi-line | `mcp.series` |
+| | Source split | doughnut | `mcp.bySource` |
+| | By tool | h-bar | `mcp.byTool` |
+| | Ask outcomes | stats + legend | `ask_turns` outcomes / exhibit kind |
+| | Ask-as-navigation | stats + h-bar | `ask_deeplink_clicked.target_scene` |
+| **Archive Health** (P5) | Concerts / artists / venues | KPI ×3 | `public/data` counts |
+| | Coverage by stage | coverage bars ×8 | `archiveHealth.stages` (Appendix C) |
+| | Demand × Coverage | scatter quadrant | clicks (P3) × coverage |
+| | Enrichment backlog | table | derived (high-demand, low-coverage) |
+| **Topics & Gaps** (P6) | Questions / answered% / refusal% / zero-result | KPI ×4 | `topics`, `ask_turns` |
+| | Question intent mix | doughnut | `topics` (classifier or freq) |
+| | Most-asked topics | h-bar | `topics.askTopics` |
+| | Content gaps | list | derived (refused, entity exists) |
+| | Wishlist | list | derived (refused, not in archive) |
+| | Zero-result searches | list | GA `results_found = 0` |
+| | Suggested-prompt CTR | h-bar | `ask_suggested_prompt_clicked` |
+| **Trends** (P6) | Sessions / MCP / spend per day | line ×3 | `dashboard:history:*` |
+| **Development** (P6) | Commits / PRs / issues | KPI ×4 | `github.velocity`, `github.issues` |
+| | Open issues by label | h-bar | `github.issues.byLabel` |
+| | Recent merged PRs | table | `github.recentPrs` |
+
+---
+
+## Pre-merge & deployment notes
+
+- **Remove `public/dashboard.html` before merging** so the mock never ships to production. The
+  `docs/` mock stays as the design reference (it is not part of the build).
+- The **real** dashboard is the React `/dashboard` route (behind Cloudflare Access), **not** a static
+  HTML page. `/dashboard.html` is a mock-only path and is not part of the final design.
+- Nothing else in this kit ships to prod by itself: `worker-starter/` and `data-endpoint.ts` are
+  copied into `workers/dashboard-refresh/` and the serving layer during implementation (Phase 1).
+
+---
+
 ## Implementation Plan
 
 Value-first ordering (see [Phasing](#phasing-pragmatic-re-cut)). **Phases 0–2 are the product**;
@@ -584,6 +660,10 @@ readership **by detector type** (which editorial patterns resonate); Search Cons
 - `setlist_song_clicked` event for per-song-in-setlist engagement (relates to #22).
 
 ## Revision History
+- **Build-ready:** Added the Visual reference & full panel/chart **build inventory** (every tab →
+  panel → chart type → contract field) so the dashboard is buildable from spec + the `docs/` mock
+  alone. Added Pre-merge notes: `public/dashboard.html` is removed before merge (never ships); the
+  real dashboard is the Access-gated React `/dashboard` route.
 - **Pragmatic re-cut:** Reordered to value-first phases 0–6 (Phases 0–2 = the product): config-only
   first, then an Operator MVP from exact server-side data (Cloudflare + `ask_turns`), then control,
   then GA engagement, MCP external, Archive Health, and finally Topics/Trends/Dev. Documented honest
