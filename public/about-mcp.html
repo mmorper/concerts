@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Ask the Archive — Morperhaus Concert Archive</title>
-<meta name="description" content="Forty years of live music, 1984 to now — explore the Morperhaus Concert Archive inside Claude. Just ask." />
-<meta property="og:title" content="Ask the Archive Anything" />
-<meta property="og:description" content="Bring 40 years of concerts into Claude and just ask — your history with a band, every show at a venue, or just 'surprise me.'" />
+<title>Add the Archive to Claude — Morperhaus Concert Archive</title>
+<meta name="description" content="Connect the Morperhaus Concert Archive to Claude as a custom MCP connector — forty years of live music, answerable inside Claude. Copy the URL, add the connector, start asking." />
+<meta property="og:title" content="Add the Archive to Claude" />
+<meta property="og:description" content="A remote MCP connector that brings 40 years of concerts into Claude. Copy the URL, add it as a custom connector, and just ask." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://concerts.morperhaus.org/about-mcp" />
 <link rel="canonical" href="https://concerts.morperhaus.org/about-mcp" />
@@ -39,51 +39,65 @@
   .stats span { font-size:13.5px; letter-spacing:.04em; color:var(--faint); font-weight:600; }
   .stats span b { color:var(--ink); }
   .stats i { width:1px; height:13px; background:var(--line); margin:0 16px; }
-  .chat { background:var(--card); border:1px solid var(--line); border-radius:16px; box-shadow:0 1px 2px rgba(0,0,0,.04),0 14px 36px rgba(28,25,23,.07); overflow:hidden; margin:0 0 40px; }
-  .chat__bar { display:flex; align-items:center; gap:7px; padding:13px 16px; border-bottom:1px solid var(--line); }
-  .dot { width:11px; height:11px; border-radius:50%; background:#e7e5e4; }
-  .chat__title { margin-left:8px; font-size:13px; color:var(--muted); font-weight:600; }
-  .chat__body { padding:22px 20px 24px; }
-  .row { display:flex; margin-bottom:16px; }
-  .row:last-child { margin-bottom:0; }
-  .row.user { justify-content:flex-end; }
-  .bubble { max-width:80%; padding:11px 15px; border-radius:14px; font-size:15.5px; }
-  .bubble.user { background:var(--accent-soft); color:var(--accent-ink); border-bottom-right-radius:5px; }
-  .answer { display:flex; gap:12px; align-items:flex-start; }
-  .avatar { flex:none; width:34px; height:34px; border-radius:50%; background:#1c1917; display:grid; place-items:center; margin-top:2px; }
-  .avatar svg { animation:spin 7s linear infinite; }
-  .bubble.bot { background:#fafaf9; border:1px solid var(--line); color:var(--ink); border-bottom-left-radius:5px; }
-  .bubble.bot b { font-weight:600; }
-  .anim { opacity:0; transform:translateY(8px); animation:rise .55s cubic-bezier(.2,.7,.3,1) forwards; }
-  .row.user .anim { animation-delay:.15s; }
-  .row.bot .anim { animation-delay:.7s; }
-  @keyframes rise { to { opacity:1; transform:none; } }
-  @keyframes spin { to { transform:rotate(360deg); } }
-  .try { margin:0 0 40px; }
-  .try__label { font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600; margin:0 0 14px; }
-  .chips { display:flex; flex-wrap:wrap; gap:10px; }
-  .chip { background:var(--card); border:1px solid var(--line); border-radius:999px; padding:9px 16px; font-size:15px; color:var(--ink); transition:border-color .15s,transform .15s; }
-  .chip:hover { border-color:var(--accent); transform:translateY(-1px); }
-  .chip::before { content:"\201C"; color:var(--accent); }
-  .chip::after { content:"\201D"; color:var(--accent); }
+
+  /* Conceptual connector diagram: Claude → MCP server → archive. */
+  .flow { display:flex; align-items:stretch; margin:0 0 44px; }
+  .node { flex:1; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 12px; text-align:center; box-shadow:0 1px 2px rgba(0,0,0,.04),0 10px 28px rgba(28,25,23,.06); display:flex; flex-direction:column; align-items:center; gap:7px; }
+  .node__icon { width:44px; height:44px; border-radius:12px; display:grid; place-items:center; background:var(--accent-soft); }
+  .node--claude .node__icon { background:#1c1917; }
+  .node__name { font-weight:600; font-size:15px; color:var(--ink); }
+  .node__name.mono { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:14px; }
+  .node__sub { font-size:11.5px; color:var(--faint); line-height:1.3; }
+  .link { flex:0 0 58px; position:relative; align-self:center; height:2px; }
+  .link__line { position:absolute; inset:0; background-image:linear-gradient(90deg,var(--accent) 0 6px,transparent 6px 12px); background-size:12px 2px; opacity:.55; animation:flow 1s linear infinite; }
+  .link__line::after { content:""; position:absolute; right:-2px; top:50%; transform:translateY(-50%); width:0; height:0; border-left:7px solid var(--accent); border-top:5px solid transparent; border-bottom:5px solid transparent; }
+  .link__label { position:absolute; left:50%; bottom:8px; transform:translateX(-50%); white-space:nowrap; font-size:10px; letter-spacing:.05em; text-transform:uppercase; color:var(--faint); font-weight:600; }
+  @keyframes flow { to { background-position:12px 0; } }
+  @keyframes flowv { to { background-position:0 12px; } }
+
+  /* Explicit connect steps. */
   .connect { border-top:1px solid var(--line); padding-top:32px; }
   .connect h2 { font-family:"Playfair Display",Georgia,serif; font-weight:500; font-size:24px; margin:0 0 8px; }
-  .connect p { color:var(--muted); font-size:16px; margin:0 0 18px; max-width:36em; }
-  .url { display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+  .connect .sub { color:var(--muted); font-size:16px; margin:0 0 22px; max-width:36em; }
+  .steps { counter-reset:step; list-style:none; padding:0; margin:0 0 22px; display:grid; gap:15px; }
+  .steps li { position:relative; padding-left:46px; font-size:16px; color:var(--ink); min-height:32px; padding-top:3px; }
+  .steps li::before { counter-increment:step; content:counter(step); position:absolute; left:0; top:0; width:31px; height:31px; border-radius:50%; background:var(--accent-soft); color:var(--accent-ink); font-weight:700; display:grid; place-items:center; font-size:15px; }
+  .steps b { font-weight:600; }
+  .steps kbd { font-family:inherit; font-weight:600; background:var(--accent-soft); color:var(--accent-ink); border-radius:5px; padding:1px 7px; font-size:14.5px; white-space:nowrap; }
+  .url { display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin:0 0 18px; }
   .url code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:15.5px; color:var(--ink); }
   .copy { flex:none; border:1px solid var(--accent); background:var(--accent); color:#fff; border-radius:8px; padding:8px 14px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:background .15s; min-width:80px; }
   .copy.ok { background:#16a34a; border-color:#16a34a; }
+  .docs { display:inline-flex; align-items:center; gap:5px; font-size:15px; color:var(--accent); font-weight:600; text-decoration:none; }
+  .docs:hover { text-decoration:underline; }
   details { margin:18px 0 0; }
   summary { cursor:pointer; font-size:14.5px; color:var(--accent); font-weight:600; list-style:none; }
   summary::-webkit-details-marker { display:none; }
   summary::after { content:" →"; }
   details[open] summary::after { content:""; }
-  details p { font-size:14.5px; }
+  details p { font-size:14.5px; color:var(--muted); }
   pre { background:#1c1917; color:#fafaf9; border-radius:10px; padding:16px 18px; overflow:auto; font-size:13.5px; line-height:1.5; margin:12px 0 0; }
+
+  /* What it does once connected. */
+  .try { margin:40px 0 0; }
+  .try__label { font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600; margin:0 0 14px; }
+  .chips { display:flex; flex-wrap:wrap; gap:10px; }
+  .chip { background:var(--card); border:1px solid var(--line); border-radius:999px; padding:9px 16px; font-size:15px; color:var(--ink); }
+  .chip::before { content:"\201C"; color:var(--accent); }
+  .chip::after { content:"\201D"; color:var(--accent); }
+
   footer { margin-top:48px; padding-top:22px; border-top:1px solid var(--line); font-size:14px; color:var(--muted); }
   footer a { color:var(--accent); text-decoration:none; }
-  @media (max-width:520px){ h1{font-size:40px;} .wrap{padding-top:44px;} .stats i{margin:0 11px;} }
-  @media (prefers-reduced-motion:reduce){ .anim{animation:none;opacity:1;transform:none;} .brand svg,.avatar svg{animation:none;} }
+  @media (max-width:520px){
+    h1{font-size:40px;} .wrap{padding-top:44px;} .stats i{margin:0 11px;}
+    .flow{flex-direction:column;}
+    .node{width:100%;}
+    .link{flex-basis:auto; width:2px; height:30px; align-self:center;}
+    .link__label{display:none;}
+    .link__line{background-image:linear-gradient(180deg,var(--accent) 0 6px,transparent 6px 12px); background-size:2px 12px; animation:flowv 1s linear infinite;}
+    .link__line::after{right:auto; left:50%; top:auto; bottom:-2px; transform:translateX(-50%); border-left:5px solid transparent; border-right:5px solid transparent; border-top:7px solid var(--accent); border-bottom:0;}
+  }
+  @media (prefers-reduced-motion:reduce){ .brand svg{animation:none;} .link__line{animation:none;} }
 </style>
 </head>
 <body>
@@ -93,41 +107,50 @@
       <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2" fill="#1c1917"/><circle cx="12" cy="12" r="4.6" fill="none" stroke="#fafaf9" stroke-width="1.1"/><circle cx="12" cy="12" r="1.7" fill="#fafaf9"/></svg>
       <span class="eyebrow">Morperhaus Concert Archive</span>
     </a>
-    <h1>Ask the archive anything<span class="pt">.</span></h1>
-    <p class="lede">Forty years of live music — 1984 to now — ready to explore inside Claude. Ask it the way you'd ask a friend who never misses a show.</p>
+    <h1>Add the archive to Claude<span class="pt">.</span></h1>
+    <p class="lede">The Morperhaus Concert Archive is a remote <b>MCP connector</b>. Add it to Claude and ask about forty years of live music — answered from the shows that really happened, never invented.</p>
     <div class="stats">
       <span><b>183</b> shows</span><i></i>
       <span><b>79</b> venues</span><i></i>
       <span><b>36</b> cities</span><i></i>
       <span>since <b>1984</b></span>
     </div>
-    <div class="chat" role="img" aria-label="Example conversation with the archive in Claude">
-      <div class="chat__bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="chat__title">Claude</span></div>
-      <div class="chat__body">
-        <div class="row user"><div class="bubble user anim">What shows happened on June 4th, over the years?</div></div>
-        <div class="row bot"><div class="answer anim">
-          <span class="avatar" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#fafaf9" stroke-width="1.5"/><circle cx="12" cy="12" r="2.3" fill="#fafaf9"/></svg></span>
-          <div class="bubble bot">On June 4th, across the years: <b>Howard Jones</b> at Irvine Meadows in &rsquo;85, <b>The Smithereens</b> at the Celebrity Theatre in &rsquo;92, and <b>Tears for Fears</b> at the Kia Forum in 2022. Four different decades, same date on the calendar.</div>
-        </div></div>
+
+    <div class="flow" role="img" aria-label="How the connector works: Claude connects to the archive's remote MCP server, which answers from 183 shows of concert history.">
+      <div class="node node--claude">
+        <span class="node__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" stroke="#fafaf9" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <span class="node__name">Claude</span>
+        <span class="node__sub">desktop · web · mobile</span>
+      </div>
+      <div class="link"><span class="link__line"></span><span class="link__label">custom connector</span></div>
+      <div class="node node--server">
+        <span class="node__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 15l6-6M8.5 7.5l1.1-1.1a3.4 3.4 0 0 1 4.8 4.8l-1.1 1.1M15.5 16.5l-1.1 1.1a3.4 3.4 0 0 1-4.8-4.8l1.1-1.1" stroke="#3730a3" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <span class="node__name mono">/mcp</span>
+        <span class="node__sub">remote MCP server</span>
+      </div>
+      <div class="link"><span class="link__line"></span><span class="link__label">grounded answers</span></div>
+      <div class="node node--archive">
+        <span class="node__icon"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2" fill="#1c1917"/><circle cx="12" cy="12" r="4.6" fill="none" stroke="#fafaf9" stroke-width="1.1"/><circle cx="12" cy="12" r="1.7" fill="#fafaf9"/></svg></span>
+        <span class="node__name">The archive</span>
+        <span class="node__sub">183 shows · 1984&ndash;now</span>
       </div>
     </div>
-    <div class="try">
-      <p class="try__label">Try asking</p>
-      <div class="chips">
-        <span class="chip">Have you ever seen Depeche Mode?</span>
-        <span class="chip">Show me everything at the 9:30 Club</span>
-        <span class="chip">Surprise me with a show worth remembering</span>
-      </div>
-    </div>
+
     <section class="connect">
-      <h2>Bring it into Claude</h2>
-      <p>If you use Claude, you can add the archive as a connector and start asking. It answers in its own voice — always true to the shows that really happened.</p>
+      <h2>Connect it in three steps</h2>
+      <p class="sub">Adding it once makes the archive available across every Claude client — desktop, web, and mobile.</p>
+      <ol class="steps">
+        <li><b>Copy the connector URL</b> just below.</li>
+        <li>In Claude, open <kbd>Settings</kbd> → <kbd>Connectors</kbd> → <kbd>Add custom connector</kbd> and paste the URL.</li>
+        <li>Click <b>Add</b>, then turn it on in any chat from the <kbd>+</kbd> menu → <kbd>Connectors</kbd>. Now just ask.</li>
+      </ol>
       <div class="url">
         <code>concerts.morperhaus.org/mcp</code>
         <button class="copy" onclick="navigator.clipboard&&navigator.clipboard.writeText('https://concerts.morperhaus.org/mcp');this.textContent='Copied \u2713';this.classList.add('ok')">Copy</button>
       </div>
+      <a class="docs" href="https://support.anthropic.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp" target="_blank" rel="noopener">See Claude's full walkthrough &rarr;</a>
       <details>
-        <summary>Using Claude Desktop? Setup details</summary>
+        <summary>Prefer Claude Desktop's config file?</summary>
         <p>Add this to your <code>claude_desktop_config.json</code>, then restart Claude Desktop:</p>
         <pre>{
   "mcpServers": {
@@ -137,9 +160,19 @@
     }
   }
 }</pre>
-        <p>Any AI assistant that supports remote connectors works the same way — point it at the link above.</p>
+        <p>Any AI assistant that supports remote MCP connectors works the same way — point it at the URL above.</p>
       </details>
     </section>
+
+    <div class="try">
+      <p class="try__label">Once connected, try asking</p>
+      <div class="chips">
+        <span class="chip">Have you ever seen Depeche Mode?</span>
+        <span class="chip">Show me everything at the 9:30 Club</span>
+        <span class="chip">Surprise me with a show worth remembering</span>
+      </div>
+    </div>
+
     <footer>&larr; Back to <a href="https://concerts.morperhaus.org">the Morperhaus Concert Archive</a></footer>
   </main>
 </body>

@@ -16,14 +16,14 @@
     {
       "version": "4.7.0",
       "date": "2026-06-16",
-      "title": "Ask the Archive Anything",
-      "description": "You can now bring four decades of shows into Claude and just talk to them. Ask what concerts happened on your birthday, what the archive remembers about a band, every gig at a favorite venue — or let it surprise you with one worth remembering. It answers like the archive itself, in its own voice, always true to the shows that really happened.",
+      "title": "Add the Archive to Claude",
+      "description": "The archive is also a connector. If you use Claude, add the Morperhaus Concert Archive as a custom MCP connector and the whole collection answers right inside your chats — what shows happened on your birthday, every gig at a favorite venue, the shape of four decades. Add it once and it's there across Claude on desktop, web, and mobile, always true to the shows that really happened.",
       "route": "/about-mcp",
       "highlights": [
-        "If you use Claude, you can add the archive and ask the way you'd ask a friend — “have you seen Depeche Mode?”, “what happened on June 4th over the years?”, “show me everything at the 9:30 Club”",
-        "Get the shape of the whole collection in a sentence — four decades, the bands and rooms it keeps coming back to — or just say “surprise me”",
-        "Every answer is grounded in the real shows and told in the archive's own voice — and it's honest when it's just counting from memory",
-        "Visit concerts.morperhaus.org/about-mcp to see how to connect"
+        "Add it as a custom connector — copy concerts.morperhaus.org/mcp into Claude → Settings → Connectors → Add custom connector",
+        "Once connected, ask in any chat — “have you seen Depeche Mode?”, “what happened on June 4th over the years?”, “everything at the 9:30 Club”",
+        "Works across every Claude client — desktop, web, and mobile — and any AI assistant that speaks remote MCP",
+        "See the step-by-step at concerts.morperhaus.org/about-mcp"
       ]
     },
     {
