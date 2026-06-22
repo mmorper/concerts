@@ -22,11 +22,42 @@
       "Bash(git -C /Users/mmorper/projects/concerts/. diff main...claude/goofy-archimedes --stat)",
       "Bash(git -C /Users/mmorper/projects/concerts worktree remove --force .claude/worktrees/charming-shockley)",
       "Bash(git -C /Users/mmorper/projects/concerts worktree remove --force .claude/worktrees/goofy-archimedes)",
-      "Bash(git -C /Users/mmorper/projects/concerts branch -d claude/charming-shockley claude/goofy-archimedes)"
+      "Bash(git -C /Users/mmorper/projects/concerts branch -d claude/charming-shockley claude/goofy-archimedes)",
+      "Bash(gh pr create --base main --head fix/ask-review-followups --title 'fix\\(ask\\): code-review follow-ups \\(#141\\)' --body ' *)",
+      "Bash(gh pr *)",
+      "mcp__plugin_playwright_playwright__browser_press_key",
+      "mcp__claude_ai_Cloudflare_Developer_Platform__workers_list",
+      "mcp__plugin_playwright_playwright__browser_resize",
+      "Bash(npx vitest *)",
+      "Bash(cd /Users/mmorper/projects/concerts; rm -f map-spotlight-zfix.png map-zfix2.png dock-*.png spotlight-*.png 2>/dev/null; echo \"cleaned\"; echo \"=== final z-index ladder in ask.css ===\"; grep -nE \"z-index\" src/components/ask/ask.css)",
+      "Bash(rm -f mock-coda-render.png mock-coda-bloom.png map-*.png spotlight*.png)",
+      "Bash(pkill -f \"http.server 8123\")",
+      "Bash(git diff *)",
+      "Read(//private/tmp/**)",
+      "Read(//tmp/**)",
+      "Bash(gh auth *)",
+      "Bash(gh repo *)",
+      "Skill(schedule)",
+      "Skill(schedule:*)",
+      "Bash(grep -rln \"go-forward-sequencing-2026-06-15\" .)",
+      "Bash(grep -rlnE \"v5\\\\.0\\\\.0|scene=ask|about-mcp\" .)",
+      "WebSearch",
+      "Bash(shasum public/favicon.svg)",
+      "Bash(shasum)",
+      "Bash(env -u CLOUDFLARE_API_TOKEN -u CLOUDFLARE_ACCOUNT_ID npx wrangler kv namespace create CONCERTS_DASHBOARD)",
+      "Bash(env -u CLOUDFLARE_API_TOKEN npx wrangler kv namespace list)",
+      "mcp__claude_ai_Cloudflare_Developer_Platform__search_cloudflare_documentation",
+      "mcp__pitch-analytics__get_account_summaries",
+      "mcp__claude_ai_Cloudflare_Developer_Platform__workers_get_worker_code",
+      "Bash(env -u CLOUDFLARE_API_TOKEN npx wrangler deploy)",
+      "Bash(exit 1)"
     ],
     "additionalDirectories": [
       "/Users/mmorper/projects/concerts/docs/tasks",
-      "/Users/mmorper/projects/concerts/.claude"
+      "/Users/mmorper/projects/concerts/.claude",
+      "/Users/mmorper/projects/concerts",
+      "/tmp",
+      "/private/tmp"
     ]
   }
 }
