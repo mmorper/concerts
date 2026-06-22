@@ -51,6 +51,7 @@ export interface SpendSection {
   costUsdToday: number;
   costUsd7d: number;
   costUsd30d: number;
+  costUsd90d: number;
   costUsdMonthToDate: number;
   capUsd: number | null;
   series: Array<{ date: string; costUsd: number }>;
@@ -59,6 +60,7 @@ export interface SpendSection {
 export interface AskSection {
   turns7d: number;
   turns30d: number;
+  turns90d: number;
   byOutcome: Record<string, number>;
   topTopics: Array<{ term: string; n: number }>;
   refusalRate30d: number;
@@ -183,7 +185,7 @@ export interface TrendsSection {
 export interface GitHubSection {
   velocity: { commitsLast7d: number; commitsLast30d: number; mergedPrsLast30d: number };
   issues: { open: number; byLabel: Record<string, number> };
-  recentPrs: Array<{ number: number; title: string; mergedAt: string }>;
+  recentPrs: Array<{ number: number; title: string; mergedAt: string; url: string }>;
 }
 
 // Phase 6 (#176) — Monitoring. Edge/worker 5xx from CF GraphQL + ask/mcp error & refusal counts read
@@ -224,6 +226,12 @@ const HISTORY_TTL = 60 * 60 * 24 * 400; // ~400 days — bounds the daily-histor
 // Trends tab reads up to a year) so they don't accumulate in KV forever.
 const DAY_MS = 86_400_000;
 const CF_GRAPHQL = "https://api.cloudflare.com/client/v4/graphql";
+
+// All Cloudflare stats are scoped to the concerts site only — the account also hosts other zones
+// (e.g. pitch.morperhaus.org) and *.pages.dev / *.workers.dev preview hosts that must NOT be counted.
+const CONCERTS_HOST = "concerts.morperhaus.org";
+// The concerts-owned Workers, so worker-invocation counts exclude other zones' Workers on the account.
+const CONCERTS_WORKER_SCRIPTS = ["morperhaus-ask-chat", "morperhaus-mcp", "concerts-dashboard-refresh"];
 
 // ──────────────────────────── pure helpers (unit-tested) ─────────────────────────────
 
@@ -315,10 +323,10 @@ async function fetchCloudflare(env: Env, nowMs: number): Promise<CloudflareSecti
   const dt30 = `${d30}T00:00:00Z`;
   const query = `{
     viewer { accounts(filter: { accountTag: "${env.CF_ACCOUNT_ID}" }) {
-      r7: httpRequestsAdaptiveGroups(limit: 100, filter: { datetime_geq: "${dt7}", edgeResponseStatus_geq: 0 }) { count }
-      r30: httpRequestsAdaptiveGroups(limit: 100, filter: { datetime_geq: "${dt30}", edgeResponseStatus_geq: 0 }) { count }
-      w7: workersInvocationsAdaptive(limit: 100, filter: { datetime_geq: "${dt7}" }) { sum { requests } }
-      w30: workersInvocationsAdaptive(limit: 100, filter: { datetime_geq: "${dt30}" }) { sum { requests } }
+      r7: httpRequestsAdaptiveGroups(limit: 100, filter: { datetime_geq: "${dt7}", edgeResponseStatus_geq: 0, clientRequestHTTPHost: "${CONCERTS_HOST}" }) { count }
+      r30: httpRequestsAdaptiveGroups(limit: 100, filter: { datetime_geq: "${dt30}", edgeResponseStatus_geq: 0, clientRequestHTTPHost: "${CONCERTS_HOST}" }) { count }
+      w7: workersInvocationsAdaptive(limit: 100, filter: { datetime_geq: "${dt7}", scriptName_in: ${JSON.stringify(CONCERTS_WORKER_SCRIPTS)} }) { sum { requests } }
+      w30: workersInvocationsAdaptive(limit: 100, filter: { datetime_geq: "${dt30}", scriptName_in: ${JSON.stringify(CONCERTS_WORKER_SCRIPTS)} }) { sum { requests } }
     } }
   }`;
   const r = await fetch(CF_GRAPHQL, {
@@ -371,7 +379,7 @@ async function fetchAskAndSpend(
             SUM(_sample_interval) AS n,
             SUM(double5 * _sample_interval) AS micro
      FROM ask_turns
-     WHERE timestamp >= NOW() - INTERVAL '30' DAY
+     WHERE timestamp >= NOW() - INTERVAL '90' DAY
      GROUP BY day, outcome
      ORDER BY day`,
   );
@@ -391,15 +399,21 @@ async function fetchAskAndSpend(
   const byOutcome: Record<string, number> = {};
   const since7 = isoDay(nowMs - 6 * DAY_MS);
   const since30 = isoDay(nowMs - 29 * DAY_MS);
-  let turns7d = 0, turns30d = 0;
+  const since90 = isoDay(nowMs - 89 * DAY_MS);
+  let turns7d = 0, turns30d = 0, turns90d = 0, costUsd90d = 0;
   for (const row of rows) {
     const day = row.day;
     const n = numOf(row.n);
     const usd = numOf(row.micro) / 1e6;
-    seriesMap.set(day, (seriesMap.get(day) ?? 0) + usd); // full series → sparkline
-    // Aggregates are windowed to 30 clean days (today + 29 prior); the rolling SQL cutoff can
-    // include a 31st partial bucket, which we exclude here so the named windows are exact.
+    // 90d window (today + 89 prior) for the named totals; the SQL cutoff can include a 91st partial
+    // bucket, which these explicit windows exclude so the named numbers stay exact.
+    if (day >= since90) {
+      turns90d += n;
+      costUsd90d += usd;
+    }
+    // Sparkline series stays 30d even though the query now spans 90d (so the chart length is stable).
     if (day >= since30) {
+      seriesMap.set(day, (seriesMap.get(day) ?? 0) + usd);
       byOutcome[row.outcome] = (byOutcome[row.outcome] ?? 0) + n;
       turns30d += n;
       if (day >= since7) turns7d += n;
@@ -416,10 +430,11 @@ async function fetchAskAndSpend(
   const w = spendWindows(series, nowMs);
 
   return {
-    spend: { source: "ask_turns", ...w, capUsd, series },
+    spend: { source: "ask_turns", ...w, costUsd90d, capUsd, series },
     ask: {
       turns7d,
       turns30d,
+      turns90d,
       byOutcome,
       topTopics: topics,
       refusalRate30d: turns30d ? refused / turns30d : 0,
@@ -1177,7 +1192,7 @@ async function fetchGitHub(env: Env, nowMs: number): Promise<GitHubSection> {
   const since7 = new Date(nowMs - 7 * DAY_MS).toISOString();
   const since30 = new Date(nowMs - 30 * DAY_MS).toISOString();
   type Issue = { pull_request?: unknown; labels?: Array<{ name: string }> };
-  type Pull = { number: number; title: string; merged_at: string | null };
+  type Pull = { number: number; title: string; merged_at: string | null; html_url: string };
 
   const [commits7d, commits30d, issuesRes, pullsRes] = await Promise.all([
     ghCount(`/commits?since=${since7}`),
@@ -1202,7 +1217,7 @@ async function fetchGitHub(env: Env, nowMs: number): Promise<GitHubSection> {
     issues: { open: realIssues.length, byLabel },
     recentPrs: merged
       .slice(0, 8)
-      .map((p) => ({ number: p.number, title: p.title, mergedAt: p.merged_at as string })),
+      .map((p) => ({ number: p.number, title: p.title, mergedAt: p.merged_at as string, url: p.html_url })),
   };
 }
 
@@ -1215,8 +1230,8 @@ async function fetchMonitoring(env: Env, nowMs: number): Promise<MonitoringSecti
   const dt30 = `${isoDay(nowMs - 29 * DAY_MS)}T00:00:00Z`;
   const cfQuery = `{
     viewer { accounts(filter: { accountTag: "${env.CF_ACCOUNT_ID}" }) {
-      edge: httpRequestsAdaptiveGroups(limit: 100, filter: { datetime_geq: "${dt30}", edgeResponseStatus_geq: 500 }) { count }
-      worker: workersInvocationsAdaptive(limit: 100, filter: { datetime_geq: "${dt30}" }) { sum { errors } }
+      edge: httpRequestsAdaptiveGroups(limit: 100, filter: { datetime_geq: "${dt30}", edgeResponseStatus_geq: 500, clientRequestHTTPHost: "${CONCERTS_HOST}" }) { count }
+      worker: workersInvocationsAdaptive(limit: 100, filter: { datetime_geq: "${dt30}", scriptName_in: ${JSON.stringify(CONCERTS_WORKER_SCRIPTS)} }) { sum { errors } }
     } }
   }`;
   // The CF 5xx call is NOT swallowed: if it fails (bad token, wrong field names), fetchMonitoring
