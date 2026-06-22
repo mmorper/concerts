@@ -1,0 +1,21 @@
+{
+  "name": "concerts-dashboard-refresh",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Morperhaus Concerts operator dashboard — daily refresh Worker (Phase 1: Cloudflare traffic + ask_turns spend/volume → KV snapshot).",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "deploy": "npx wrangler deploy",
+    "dev": "npx wrangler dev",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "tail": "npx wrangler tail"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260101.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0",
+    "wrangler": "^4.0.0"
+  }
+}

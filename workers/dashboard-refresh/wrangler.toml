@@ -1,0 +1,25 @@
+name = "concerts-dashboard-refresh"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+
+# Daily refresh at 06:00 UTC.
+[triggers]
+crons = ["0 6 * * *"]
+
+# Shared with the Concerts site's CONCERTS_DASHBOARD binding — same namespace.
+# Create it once:  npx wrangler kv namespace create CONCERTS_DASHBOARD
+# then paste the id here AND bind the same id on the Pages project (functions/dashboard/data.ts).
+[[kv_namespaces]]
+binding = "CONCERTS_DASHBOARD"
+id = "<CONCERTS_DASHBOARD_KV_ID>"   # TODO(concerts) — Phase 1 (#171)
+
+[vars]
+# Same Cloudflare account as the rest of the project.
+CF_ACCOUNT_ID = "6db8591bbcba4588ae4ef9c3839cd209"
+# Monthly Anthropic spend cap (USD) the trend draws a line at. Mirrors ask-chat ASK_MONTHLY_USD ($25).
+CAP_USD = "25"
+
+# Secrets — set with `npx wrangler secret put <NAME>` (never committed):
+#   CF_API_TOKEN   Account token with Analytics:Read + Account Analytics
+#                  (covers BOTH the GraphQL traffic query AND the ask_turns Analytics Engine SQL API).
+#   REFRESH_KEY    Optional — enables GET /?key=<REFRESH_KEY> to seed/trigger a refresh out of band.

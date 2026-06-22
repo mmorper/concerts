@@ -13,6 +13,7 @@ import { WhatsPlayingPage } from './components/changelog/WhatsPlayingPage'
 import { LinerNotesPage, LinerNotePermalink } from './components/liner-notes'
 import { AboutPage } from './components/about'
 import { CascadePage } from './components/cascade/CascadePage'
+import { DashboardPage } from './components/dashboard/DashboardPage'
 import { AskDevHarness } from './components/ask/AskDevHarness'
 import { AskProvider } from './components/ask/AskProvider'
 import { AskSpotlight } from './components/ask/AskSpotlight'
@@ -39,6 +40,9 @@ function App() {
         <Route path="/whats-playing" element={<WhatsPlayingPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/how-it-works" element={<CascadePage />} />
+        {/* Operator dashboard (#171). Fenced by Cloudflare Access at the edge; data from /dashboard/data/. */}
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/dashboard/*" element={<DashboardPage />} />
         {/* Dev-only: #140 exhibit harness. Gated to dev builds (404s in prod). */}
         {import.meta.env.DEV && <Route path="/ask-dev" element={<AskDevHarness />} />}
         {/* Legacy redirects */}
