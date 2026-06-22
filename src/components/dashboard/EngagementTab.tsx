@@ -234,6 +234,10 @@ function EngagementView({ ga }: { ga: GaSection }) {
           <HBar data={recordBars(w.byCountry, 6, (k) => k)} />
         </Card>
         <Card>
+          <CardTitle hint="region · sessions (30d, top 6)">Top regions</CardTitle>
+          <HBar data={recordBars(w.byRegion, 6, (k) => k)} />
+        </Card>
+        <Card>
           <CardTitle hint="pagePath · screenPageViews (30d)">Top pages</CardTitle>
           {w.topPages.length === 0 ? (
             <p className="mt-3 text-sm text-stone-400">No data in range.</p>

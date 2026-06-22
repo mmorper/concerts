@@ -116,6 +116,14 @@
         "Australia": 320,
         "France": 220
       },
+      "byRegion": {
+        "Virginia": 115,
+        "California": 80,
+        "Washington": 9,
+        "New York": 7,
+        "Colorado": 5,
+        "Texas": 5
+      },
       "topReferrers": [
         {
           "source": "google",

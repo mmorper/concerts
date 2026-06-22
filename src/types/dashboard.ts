@@ -39,6 +39,7 @@ export interface GaWebsite {
   sessions90d: number
   byChannel: Record<string, number>
   byCountry: Record<string, number>
+  byRegion: Record<string, number>
   topReferrers: Array<{ source: string; sessions: number }>
   topPages: Array<{ page: string; views: number }>
 }

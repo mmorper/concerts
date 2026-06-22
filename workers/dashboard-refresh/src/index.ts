@@ -76,6 +76,7 @@ export interface GaWebsite {
   sessions90d: number;
   byChannel: Record<string, number>; // sessionDefaultChannelGroup (30d)
   byCountry: Record<string, number>; // country (30d, top 6)
+  byRegion: Record<string, number>; // region/state (30d, top 6) — coarser than city to dodge datacenter skew
   topReferrers: Array<{ source: string; sessions: number }>; // sessionSource (30d)
   topPages: Array<{ page: string; views: number }>; // pagePath (30d, top 8)
 }
@@ -704,6 +705,10 @@ async function fetchGA(env: Env): Promise<GaSection> {
     { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:artist_name" }], metrics: [ec], dimensionFilter: eventFilter(["setlist_button_clicked"]), orderBys: orderByMetric("eventCount"), limit: 8 },
     // Phase 4 (#174) — Ask-as-navigation: ask_deeplink_clicked by target_scene (the MCP & Ask tab).
     { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:target_scene" }], metrics: [ec], dimensionFilter: eventFilter(["ask_deeplink_clicked"]), orderBys: orderByMetric("eventCount"), limit: 8 },
+    // A website geo breakdown — lives in this batch only because the website batch is already at the
+    // 5-report cap. region (state/province) rather than city: granular geo skews toward datacenter
+    // cities (Ashburn etc.), so region is the cleaner signal. Read below as clicked[4].
+    { dateRanges: [dr(30)], dimensions: [{ name: "region" }], metrics: [{ name: "sessions" }], orderBys: orderByMetric("sessions"), limit: 6 },
   ];
   // Phase 6 (#176) — per-day sessions for the Trends tab. `date` is a standard (retroactive) GA
   // dimension — no custom dimension needed, so this back-fills the last 30 days immediately.
@@ -726,6 +731,7 @@ async function fetchGA(env: Env): Promise<GaSection> {
       sessions90d: gaScalarByRange(web[0], 2),
       byChannel: gaRecord(web[1]),
       byCountry: gaRecord(web[2]),
+      byRegion: gaRecord(clicked[4]),
       topReferrers: gaTopN(web[3], 8).map(({ name, n }) => ({ source: name, sessions: n })),
       topPages: gaTopN(web[4], 8).map(({ name, n }) => ({ page: name, views: n })),
     },
