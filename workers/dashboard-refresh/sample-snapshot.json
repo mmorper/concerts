@@ -1,0 +1,46 @@
+{
+  "refreshedAt": "2026-06-22T06:00:00.000Z",
+  "dataAge": "fresh",
+  "cloudflare": {
+    "requests7d": 41280,
+    "requests30d": 214900,
+    "workerRequests7d": 9120,
+    "workerRequests30d": 38640
+  },
+  "spend": {
+    "source": "ask_turns",
+    "costUsdToday": 1.12,
+    "costUsd7d": 9.8,
+    "costUsd30d": 42.1,
+    "costUsdMonthToDate": 31.4,
+    "capUsd": 25,
+    "series": [
+      { "date": "2026-05-24", "costUsd": 0.9 },
+      { "date": "2026-05-27", "costUsd": 1.4 },
+      { "date": "2026-05-31", "costUsd": 1.1 },
+      { "date": "2026-06-03", "costUsd": 1.8 },
+      { "date": "2026-06-07", "costUsd": 0.7 },
+      { "date": "2026-06-10", "costUsd": 2.1 },
+      { "date": "2026-06-14", "costUsd": 1.3 },
+      { "date": "2026-06-18", "costUsd": 1.9 },
+      { "date": "2026-06-20", "costUsd": 2.4 },
+      { "date": "2026-06-22", "costUsd": 1.12 }
+    ]
+  },
+  "ask": {
+    "turns7d": 312,
+    "turns30d": 1604,
+    "byOutcome": { "answered": 1402, "deterministic": 92, "refused": 98, "cap": 8, "error": 4 },
+    "topTopics": [
+      { "term": "depeche mode", "n": 312 },
+      { "term": "setlists", "n": 204 },
+      { "term": "first concert", "n": 96 },
+      { "term": "social distortion", "n": 88 },
+      { "term": "shows in la", "n": 72 },
+      { "term": "the cure", "n": 61 }
+    ],
+    "refusalRate30d": 0.061
+  },
+  "sourceStatus": { "cloudflare": "ok", "spend": "ok", "ask": "ok" },
+  "fetchErrors": []
+}
