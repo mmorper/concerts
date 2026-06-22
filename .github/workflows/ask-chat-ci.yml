@@ -1,0 +1,54 @@
+name: Ask-chat CI
+
+# Typecheck + tests for the Ask-the-Archive chat Worker (incl. the Phase 2 operator-control
+# admin API). Runs only when the worker (or its sibling mcp-server, which it imports tool fns
+# from) changes, so it's a fast PR gate without touching the rest of the repo. The worker is its
+# own npm package with its own vitest config — it doesn't run as part of the root test suite, so
+# this is its automated guard.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/ask-chat/**'
+      - 'workers/mcp-server/**'
+      - '.github/workflows/ask-chat-ci.yml'
+  pull_request:
+    paths:
+      - 'workers/ask-chat/**'
+      - 'workers/mcp-server/**'
+      - '.github/workflows/ask-chat-ci.yml'
+
+concurrency:
+  group: ask-chat-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      # The ask-chat typecheck reuses the mcp-server's tool fns (../mcp-server/src), so its
+      # type deps must be present. package-lock.json is gitignored for both packages → npm install.
+      - name: Install mcp-server dependencies (sibling, for shared types)
+        run: npm install
+        working-directory: workers/mcp-server
+
+      - name: Install ask-chat dependencies
+        run: npm install
+        working-directory: workers/ask-chat
+
+      - name: Typecheck
+        run: npm run typecheck
+        working-directory: workers/ask-chat
+
+      - name: Test
+        run: npm test
+        working-directory: workers/ask-chat

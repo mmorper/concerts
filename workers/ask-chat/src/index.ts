@@ -290,7 +290,9 @@ export default {
     }
 
     // Admin (behind Cloudflare Access; fail-closed inside handleAdmin).
-    if (url.pathname === "/api/ask/admin" || url.pathname === "/api/ask/admin/mode") {
+    // Covers the HTML page (/admin), the mode flip (/admin/mode), and the dashboard JSON API
+    // (/admin/state, /admin/ips) — Phase 2 / #172.
+    if (url.pathname === "/api/ask/admin" || url.pathname.startsWith("/api/ask/admin/")) {
       return handleAdmin(request, env, url);
     }
 

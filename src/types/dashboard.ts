@@ -38,3 +38,25 @@ export interface DashboardSnapshot {
   sourceStatus: Record<'cloudflare' | 'spend' | 'ask', SourceStatus>
   fetchErrors: string[]
 }
+
+// ── Live control plane (Phase 2 / #172) ──────────────────────────────────────────────────────
+// Real-time state from the Access-gated ask-chat admin API (workers/ask-chat/src/admin.ts), NOT
+// the daily KV snapshot above. Mirrors the JSON shapes returned by /api/ask/admin/state etc.
+
+export type AskMode = 'on' | 'deterministic-only' | 'paused'
+
+// SpendStatus mirror — workers/ask-chat/src/types.ts. Today's live spend from the SpendCounter DO.
+export interface AskSpendStatus {
+  day: string // YYYY-MM-DD (UTC)
+  committedMicroUsd: number
+  reservedMicroUsd: number
+  capMicroUsd: number
+  fraction: number // committed / cap, drives the ≥80% tripwire
+}
+
+// GET /api/ask/admin/state
+export interface AskAdminState {
+  mode: AskMode
+  spend: AskSpendStatus
+  adminIps: string[]
+}
