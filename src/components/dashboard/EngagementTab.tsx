@@ -123,12 +123,14 @@ function EngagementView({ ga }: { ga: GaSection }) {
   const funnelBars: Bar[] = FUNNEL.map((f) => ({ label: f.label, value: e.ask[f.key] ?? 0, color: f.color }))
   const sceneBars = recordBars(e.byScene, 12, capitalize)
   const interactionBars = recordBars(e.interactions, 10, (k) => INTERACTION_LABELS[k] ?? k)
+  // device arrives as raw eventCount per device_type; render as share-of-total so the "%" reads true.
+  const deviceTotal = Object.values(e.device).reduce((a, b) => a + b, 0)
   const deviceBars = recordBars(e.device, 5, capitalize).map((b) => ({
-    ...b,
+    label: b.label,
+    value: deviceTotal > 0 ? Math.round((b.value / deviceTotal) * 100) : 0,
     color: b.label.toLowerCase().startsWith('mob') || b.label.toLowerCase().startsWith('phone') ? VIOLET : INDIGO,
   }))
   const toBars = (xs: Array<{ name: string; n: number }>): Bar[] => xs.map((x) => ({ label: x.name, value: x.n }))
-  const zeroResultRate = '' // (no result-count param wired yet — omitted to avoid a fabricated stat)
 
   return (
     <div className="mx-auto max-w-5xl px-6 pb-20">
@@ -158,7 +160,6 @@ function EngagementView({ ga }: { ga: GaSection }) {
           <StatRow k="Searches" v={fmtInt(e.searches.count)} />
           <StatRow k="Scene navigations" v={fmtInt(e.sceneNav)} />
           <StatRow k="Deep links accessed" v={fmtInt(e.deepLinks)} />
-          {zeroResultRate && <StatRow k="Zero-result rate" v={zeroResultRate} />}
           {e.searches.topTerms.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-2">
               {e.searches.topTerms.map((t) => (
@@ -192,14 +193,14 @@ function EngagementView({ ga }: { ga: GaSection }) {
           <HBar data={toBars(e.topSongs)} />
         </Card>
         <Card>
-          <CardTitle hint="setlist_button_clicked · artist_name + venue_name">Most-viewed setlists · 30d</CardTitle>
+          <CardTitle hint="setlist_button_clicked · artist_name">Most-viewed setlists · 30d</CardTitle>
           <HBar data={toBars(e.topSetlists)} />
         </Card>
       </div>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <Card>
-          <CardTitle hint="artist_preview_played · device_type">Audio &amp; device</CardTitle>
+          <CardTitle hint="audio: artist_preview_played · device: device_type share">Audio &amp; device</CardTitle>
           <StatRow k="Audio previews played" v={fmtInt(e.audioPreviews)} />
           <div className="mt-3">
             <HBar data={deviceBars} fmt={(n) => `${n}%`} />

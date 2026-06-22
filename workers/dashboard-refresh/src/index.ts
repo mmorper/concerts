@@ -73,7 +73,7 @@ export interface GaEngagement {
   searches: { count: number; topTerms: Array<{ term: string; n: number }> }; // artist_search_performed
   audioPreviews: number; // artist_preview_played
   ask: Record<string, number>; // ask_* funnel event counts
-  device: Record<string, number>; // device_type split across interaction events
+  device: Record<string, number>; // device_type → raw eventCount (the client renders as share-of-total)
   topArtists: Array<{ name: string; n: number }>; // artist_card_opened.artist_name
   topVenues: Array<{ name: string; n: number }>; // venue_node_clicked + map_marker_clicked.venue_name
   topSongs: Array<{ name: string; n: number }>; // artist_preview_played.track_name
@@ -454,7 +454,13 @@ async function gaBatch(token: string, property: string, requests: unknown[]): Pr
   });
   if (!r.ok) throw new Error(`GA batchRunReports ${r.status}: ${(await r.text()).slice(0, 200)}`);
   const j = (await r.json()) as { reports?: GaReport[] };
-  return j.reports ?? [];
+  const reports = j.reports ?? [];
+  // Reports come back in request order; we read them positionally. A short array would silently
+  // shift every index (byChannel reading the country report, etc.) — fail the section instead.
+  if (reports.length < requests.length) {
+    throw new Error(`GA batchRunReports returned ${reports.length}/${requests.length} reports`);
+  }
+  return reports;
 }
 
 // Small request builders for the Data API JSON.
@@ -481,7 +487,7 @@ async function fetchGA(env: Env): Promise<GaSection> {
     { dateRanges: [dr(30)], dimensions: [{ name: "pagePath" }], metrics: [{ name: "screenPageViews" }], orderBys: orderByMetric("screenPageViews"), limit: 8 },
   ];
   const eventReqs = [
-    { dateRanges: [dr(30)], dimensions: [{ name: "eventName" }], metrics: [ec], limit: 200 }, // 0 — all events
+    { dateRanges: [dr(30)], dimensions: [{ name: "eventName" }], metrics: [ec], orderBys: orderByMetric("eventCount"), limit: 200 }, // 0 — all events (ordered so any cap drops lowest-volume)
     { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:scene_name" }], metrics: [ec], dimensionFilter: eventFilter(["scene_view"]), orderBys: orderByMetric("eventCount"), limit: 12 },
     { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:search_term" }], metrics: [ec], dimensionFilter: eventFilter(["artist_search_performed"]), orderBys: orderByMetric("eventCount"), limit: 10 },
     { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:device_type" }], metrics: [ec], orderBys: orderByMetric("eventCount"), limit: 5 },

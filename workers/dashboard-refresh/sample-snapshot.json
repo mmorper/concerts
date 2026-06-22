@@ -88,7 +88,7 @@
       },
       "audioPreviews": 980,
       "ask": { "ask_opened": 2210, "ask_question_sent": 1604, "ask_exhibit_shown": 1402, "ask_refused": 98, "ask_error": 4 },
-      "device": { "mobile": 58, "desktop": 42 },
+      "device": { "mobile": 4420, "desktop": 3200 },
       "topArtists": [
         { "name": "Depeche Mode", "n": 312 },
         { "name": "The Cure", "n": 244 },
