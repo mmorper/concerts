@@ -5,7 +5,7 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>New features, updates, and statistics for the Morperhaus Concert Archives</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 16 Jun 2026 20:22:17 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 22 Jun 2026 12:54:19 GMT</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://concerts.morperhaus.org/og-image.jpg</url>
@@ -16,10 +16,28 @@
     <item>
       <title>By the Numbers - Archive Statistics</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
-      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#facts-2026-06-16</guid>
-      <pubDate>Tue, 16 Jun 2026 20:22:16 GMT</pubDate>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#facts-2026-06-22</guid>
+      <pubDate>Mon, 22 Jun 2026 12:54:18 GMT</pubDate>
       <category>Statistics</category>
       <description><![CDATA[<h3>Archive Statistics</h3><h4>Artists</h4><ul><li><strong>Social Distortion: 8 concerts</strong> — The most-seen live act, 1990–2024</li><li><strong>Howard Jones: 6 concerts</strong> — Another favorite who keeps drawing me back</li><li><strong>Depeche Mode: 5 concerts</strong> — Rounding out the top three most-seen</li></ul><h4>Venues</h4><ul><li><strong>Pacific Amphitheatre: 17 shows</strong> — A favorite spot, visited 1985–2026</li><li><strong>Irvine Meadows: 16 shows</strong> — Another venue with great memories</li><li><strong>79 unique venues</strong> — From clubs to arenas and amphitheaters</li></ul><h4>Timeline</h4><ul><li><strong>183 concerts since 1984</strong> — 43 years of live music memories</li><li><strong>First show: Adam Ant (1984)</strong> — Where it all began — Irvine Meadows</li><li><strong>Latest: Pinhead Gunpowder (2026)</strong> — The most recent addition — Garden Amp</li><li><strong>2022: 14 shows</strong> — The peak year for live music attendance</li><li><strong>2010s: 65 shows</strong> — The golden era of concert-going</li></ul><h4>Genres</h4><ul><li><strong>New Wave: 49 shows</strong> — The dominant sound in this collection</li><li><strong>Punk: 15 shows</strong> — Another genre that shaped the journey</li></ul><h4>Geography</h4><ul><li><strong>California: 122 concerts</strong> — Home base for most concert experiences</li><li><strong>36 cities visited</strong> — Live music across the map</li></ul><p><a href="https://concerts.morperhaus.org/liner-notes">View all statistics</a></p>]]></description>
+    </item>
+
+    <item>
+      <title>Forty Years, Now a Conversation - v5.0.0</title>
+      <link>https://concerts.morperhaus.org/?scene=ask</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v5.0.0</guid>
+      <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Forty years of shows are now a conversation. Ask right here on the site — the journey ends in a chat with the whole collection — or bring the archive into Claude as a connector. Ask about a band, a venue, a year, or just say &quot;surprise me,&quot; and it answers in the archive&apos;s own voice, always true to the shows that really happened.</p><ul><li>Ask on the site — the final scene is a conversation: type a question and the answer paints in, grounded in the real shows</li><li>Press ⌘K (or /) from anywhere to summon it without losing your place — esc brings you back</li><li>Or bring it into Claude — add the archive as a connector and ask there too (concerts.morperhaus.org/about-mcp)</li><li>Try &quot;have you ever seen Depeche Mode?&quot;, &quot;everything at the 9:30 Club&quot;, or &quot;what did you see in 1998?&quot;</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>Add the Archive to Claude - v4.7.0</title>
+      <link>https://concerts.morperhaus.org/about-mcp</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v4.7.0</guid>
+      <pubDate>Tue, 16 Jun 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>The archive is also a connector. If you use Claude, add the Morperhaus Concert Archive as a custom MCP connector and the whole collection answers right inside your chats — what shows happened on your birthday, every gig at a favorite venue, the shape of four decades. Add it once and it&apos;s there across Claude on desktop, web, and mobile, always true to the shows that really happened.</p><ul><li>Add it as a custom connector — copy concerts.morperhaus.org/mcp into Claude → Settings → Connectors → Add custom connector</li><li>Once connected, ask in any chat — “have you seen Depeche Mode?”, “what happened on June 4th over the years?”, “everything at the 9:30 Club”</li><li>Works across every Claude client — desktop, web, and mobile — and any AI assistant that speaks remote MCP</li><li>See the step-by-step at concerts.morperhaus.org/about-mcp</li></ul>]]></description>
     </item>
 
     <item>

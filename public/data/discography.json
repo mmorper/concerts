@@ -133174,17 +133174,30 @@
     "artistName": "Beck",
     "normalizedName": "beck",
     "mbid": "309c62ba-7a22-4277-9f67-4a162526d18a",
-    "albumCount": 97,
+    "albumCount": 98,
     "albums": [
       {
         "id": "068934af-7698-40b8-998e-5c62b6e19c83",
         "title": "Everybody’s Gotta Learn Sometime",
         "releaseDate": "2026-01-29",
         "year": 2026,
-        "primaryType": "EP",
-        "secondaryTypes": [],
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/068934af-7698-40b8-998e-5c62b6e19c83/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "27e932f2-ea98-467b-861d-82a92de3a5e7",
+        "title": "Chain Reaction",
+        "releaseDate": "2022-04-22",
+        "year": 2022,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/27e932f2-ea98-467b-861d-82a92de3a5e7/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -133998,17 +134011,6 @@
         "coverAvailable": true
       },
       {
-        "id": "e0f16f47-4b45-33db-9439-6a216333e71b",
-        "title": "Jack-Ass",
-        "releaseDate": "1997-08-26",
-        "year": 1997,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/e0f16f47-4b45-33db-9439-6a216333e71b/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "582ca06b-0aba-35f8-8f0d-7f20288f0fcd",
         "title": "The New Pollution and Other Favorites",
         "releaseDate": "1997-07-24",
@@ -134017,6 +134019,17 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/582ca06b-0aba-35f8-8f0d-7f20288f0fcd/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "e0f16f47-4b45-33db-9439-6a216333e71b",
+        "title": "Jack-Ass",
+        "releaseDate": "1997-07-20",
+        "year": 1997,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/e0f16f47-4b45-33db-9439-6a216333e71b/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -134268,8 +134281,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-03-23T14:37:58.304Z",
-    "cachedAt": "2026-03-23T14:37:58.304Z"
+    "fetchedAt": "2026-06-22T12:51:39.287Z",
+    "cachedAt": "2026-06-22T12:51:39.287Z"
   },
   "orchestral-manoeuvres-in-the-dark": {
     "artistName": "Orchestral Manoeuvres in the Dark",

@@ -3245,7 +3245,7 @@
   "erasure": {
     "name": "Erasure",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:39:15.039Z",
+    "fetchedAt": "2026-06-22T12:51:19.954Z",
     "tracks": [
       {
         "name": "A Little Respect",
@@ -8180,7 +8180,7 @@
   "the-offspring": {
     "name": "The Offspring",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:24.340Z",
+    "fetchedAt": "2026-06-22T12:51:21.186Z",
     "tracks": [
       {
         "name": "Self Esteem",
@@ -8368,7 +8368,7 @@
   "the-reflex": {
     "name": "The Reflex",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:27.221Z",
+    "fetchedAt": "2026-06-22T12:51:21.997Z",
     "tracks": [
       {
         "name": "The Reflex",
@@ -8387,14 +8387,6 @@
         "streamingUrl": "https://music.apple.com/us/album/the-reflex-dance-mix/693604709?i=693605231&uo=4"
       },
       {
-        "name": "The Reflex (Live)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/4d/4c/56/4d4c5622-a38b-45c9-c3da-b2a233f7c188/mzaf_11960958568189461551.plus.aac.p.m4a",
-        "durationMs": 314493,
-        "albumName": "A Diamond In the Mind (Live At the MEN Arena, Manchester, England 2011)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/11/90/a0/1190a000-ddd3-4e3e-de58-bc3ba7fe9a84/00826992027722.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-reflex-live/1443737820?i=1443737929&uo=4"
-      },
-      {
         "name": "The Reflex (The Dance Mix) [Edited Version]",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/1f/40/cd/1f40cd15-2417-6ce3-7bb7-6dbd8316cd58/mzaf_4590381696614368708.plus.aac.p.m4a",
         "durationMs": 266933,
@@ -8409,6 +8401,14 @@
         "albumName": "Seven and the Ragged Tiger (Deluxe Edition)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/b5/51/ef/b551ef34-d19a-379b-636a-f412af9a0a5b/5099962609159.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/the-reflex-single-mix/693604709?i=693604724&uo=4"
+      },
+      {
+        "name": "The Reflex",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/15/84/6c/15846c77-aaa1-70d4-a8a6-79ced238736d/mzaf_12310528344221354811.plus.aac.p.m4a",
+        "durationMs": 329773,
+        "albumName": "Seven and the Ragged Tiger (Deluxe Edition)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/b5/51/ef/b551ef34-d19a-379b-636a-f412af9a0a5b/5099962609159.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-reflex/693604709?i=693604710&uo=4"
       }
     ]
   },
@@ -8462,7 +8462,7 @@
   "the-smithereens": {
     "name": "The Smithereens",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:43:23.224Z",
+    "fetchedAt": "2026-06-22T12:51:22.964Z",
     "tracks": [
       {
         "name": "A Girl Like You",
@@ -8497,19 +8497,19 @@
         "streamingUrl": "https://music.apple.com/us/album/blood-and-roses/724080417?i=724080786&uo=4"
       },
       {
-        "name": "Yesterday Girl",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/dd/10/42/dd1042a9-9cfc-b58d-314e-ca2f1c515b81/mzaf_1325334416890070197.plus.aac.p.m4a",
-        "durationMs": 207267,
-        "albumName": "11",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/fe/4d/38/fe4d3834-b114-f4fd-3e06-f01457c1ddfc/00077779119455.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/yesterday-girl/724465905?i=724466313&uo=4"
+        "name": "Only a Memory",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/bb/d4/b0/bbd4b035-deca-ebe5-1800-79ea50867e35/mzaf_4512718769375903090.plus.aac.p.m4a",
+        "durationMs": 223293,
+        "albumName": "Green Thoughts",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/8d/5b/e1/8d5be1cf-0ce1-2ec6-51a5-32e427580300/13UABIM00811.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/only-a-memory/716221198?i=716221707&uo=4"
       }
     ]
   },
   "the-tubes": {
     "name": "The Tubes",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:30.455Z",
+    "fetchedAt": "2026-06-22T12:51:24.070Z",
     "tracks": [
       {
         "name": "She's a Beauty",
@@ -8603,16 +8603,8 @@
   "the-untouchables": {
     "name": "The Untouchables",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:43:25.621Z",
+    "fetchedAt": "2026-06-22T12:51:25.231Z",
     "tracks": [
-      {
-        "name": "Free Yourself (7\" Version)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/d3/29/e7/d329e77e-51bc-355d-8658-dbed2a6f2c84/mzaf_16884430338951234414.plus.aac.p.m4a",
-        "durationMs": 219720,
-        "albumName": "Wild Child",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/0a/76/2e/0a762e43-f68f-6e47-34b7-69250caa0954/00602567505860.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/free-yourself-7-version/1365524968?i=1365526441&uo=4"
-      },
       {
         "name": "What's Gone Wrong",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/dc/17/53/dc1753b0-8f99-3342-e513-0f9e092ba42d/mzaf_1240270777615501754.plus.aac.p.m4a",
@@ -8620,6 +8612,14 @@
         "albumName": "Wild Child",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/0a/76/2e/0a762e43-f68f-6e47-34b7-69250caa0954/00602567505860.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/whats-gone-wrong/1365524968?i=1365526307&uo=4"
+      },
+      {
+        "name": "Free Yourself (7\" Version)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/d3/29/e7/d329e77e-51bc-355d-8658-dbed2a6f2c84/mzaf_16884430338951234414.plus.aac.p.m4a",
+        "durationMs": 219720,
+        "albumName": "Wild Child",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/0a/76/2e/0a762e43-f68f-6e47-34b7-69250caa0954/00602567505860.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/free-yourself-7-version/1365524968?i=1365526441&uo=4"
       },
       {
         "name": "The Untouchables",
@@ -8631,11 +8631,11 @@
       },
       {
         "name": "The Untouchables",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/e5/59/78/e55978b0-447e-5302-bd10-04cb66bb24b1/mzaf_7810655625914257770.plus.aac.p.m4a",
-        "durationMs": 65173,
-        "albumName": "Television's Greatest Hits: Classic TV Theme Songs",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/ca/fe/2c/cafe2c1f-bc68-06cb-c67d-fce529c85e8e/21CRGIM29813.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-untouchables/1589309151?i=1589312677&uo=4"
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/27/93/6e/27936efd-7183-65fb-12a3-0b23c8895a29/mzaf_11438432145101841533.plus.aac.p.m4a",
+        "durationMs": 140467,
+        "albumName": "Route 66 and Other TV Themes",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/67/38/91/673891f2-673e-b459-a488-6a40023a54f7/00602557443363.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-untouchables/1443855196?i=1443855845&uo=4"
       },
       {
         "name": "The Untouchables (End Title)",
@@ -8744,7 +8744,7 @@
   "thompson-twins": {
     "name": "Thompson Twins",
     "source": "itunes",
-    "fetchedAt": "2026-04-07T16:43:27.409Z",
+    "fetchedAt": "2026-06-22T12:51:26.205Z",
     "tracks": [
       {
         "name": "Hold Me Now",
@@ -8755,20 +8755,20 @@
         "streamingUrl": "https://music.apple.com/us/album/hold-me-now/1675310461?i=1675310468&uo=4"
       },
       {
-        "name": "Lay Your Hands on Me",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/7e/81/53/7e815327-ddc6-9645-7b2f-d7bc72b814e5/mzaf_10894774942090167065.plus.aac.p.m4a",
-        "durationMs": 260973,
-        "albumName": "Here's to Future Days",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/34/ea/21/34ea2167-3a61-f07d-5619-640aba9f658d/0888880799364.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/lay-your-hands-on-me/1675307905?i=1675307907&uo=4"
-      },
-      {
         "name": "If You Were Here",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/2b/c6/42/2bc64274-3eaa-aaf4-61cc-0b155984030a/mzaf_8453194345233254123.plus.aac.p.m4a",
         "durationMs": 176827,
         "albumName": "Love, Lies and Other Strange Things: Greatest Hits",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/dd/39/c2/dd39c279-e40d-d665-ab9d-527c62a9f4bb/0888880752994.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/if-you-were-here/1700447566?i=1700447571&uo=4"
+      },
+      {
+        "name": "Lay Your Hands on Me",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/7e/81/53/7e815327-ddc6-9645-7b2f-d7bc72b814e5/mzaf_10894774942090167065.plus.aac.p.m4a",
+        "durationMs": 260973,
+        "albumName": "Here's to Future Days",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/34/ea/21/34ea2167-3a61-f07d-5619-640aba9f658d/0888880799364.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/lay-your-hands-on-me/1675307905?i=1675307907&uo=4"
       },
       {
         "name": "Doctor! Doctor!",
@@ -9026,7 +9026,7 @@
   "u2": {
     "name": "U2",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:42:46.773Z",
+    "fetchedAt": "2026-06-22T12:51:26.943Z",
     "tracks": [
       {
         "name": "With or Without You",
@@ -9402,7 +9402,7 @@
   "x": {
     "name": "X",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:43:08.113Z",
+    "fetchedAt": "2026-06-22T12:51:28.334Z",
     "tracks": [
       {
         "name": "X (feat. Maluma & Ozuna) [Remix]",
@@ -9429,20 +9429,20 @@
         "streamingUrl": "https://music.apple.com/us/album/x-spanglish-version/1375117271?i=1375117422&uo=4"
       },
       {
-        "name": "X",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/7a/2c/1b/7a2c1b47-96fb-509f-fda0-542252ef73aa/mzaf_7861210173160063135.plus.aac.p.m4a",
-        "durationMs": 118160,
-        "albumName": "Toxicity",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/82/51/52/825152b4-9423-b23b-c036-cc67ead732d4/888888046775.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/x/273714443?i=273714626&uo=4"
-      },
-      {
         "name": "X (feat. KAROL G)",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b6/87/36/b68736a3-e0a3-8fcd-41c7-62121c6859be/mzaf_6162627016812579952.plus.aac.p.m4a",
         "durationMs": 185277,
         "albumName": "XV - Single",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/ce/27/bd/ce27bd6b-3cdf-b86f-2aa4-b3cedb3a406a/20UMGIM25072.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/x-feat-karol-g/1512806018?i=1512806019&uo=4"
+      },
+      {
+        "name": "X",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/7a/2c/1b/7a2c1b47-96fb-509f-fda0-542252ef73aa/mzaf_7861210173160063135.plus.aac.p.m4a",
+        "durationMs": 118160,
+        "albumName": "Toxicity",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/82/51/52/825152b4-9423-b23b-c036-cc67ead732d4/888888046775.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/x/273714443?i=273714626&uo=4"
       }
     ]
   },
@@ -11846,7 +11846,7 @@
   "wrecks": {
     "name": "Wrecks",
     "source": "itunes",
-    "fetchedAt": "2026-05-12T14:43:07.380Z",
+    "fetchedAt": "2026-06-22T12:51:27.709Z",
     "tracks": [
       {
         "name": "Favorite Liar",
@@ -11865,12 +11865,20 @@
         "streamingUrl": "https://music.apple.com/us/album/always-everytime/1769298632?i=1769298633&uo=4"
       },
       {
-        "name": "Infinitely Ordinary",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/90/0d/b2/900db227-96d6-5915-58ab-778e3d33abe0/mzaf_9165148265319964126.plus.aac.p.m4a",
-        "durationMs": 172987,
-        "albumName": "Infinitely Ordinary",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/e6/8f/1c/e68f1cdf-bfb0-d80b-b9a1-d925414986a6/192641068706_Cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/infinitely-ordinary/1506854603?i=1506854806&uo=4"
+        "name": "Mint Tobacco",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/15/21/7e/15217eb4-ccd2-5a03-0f5d-7d0508d14772/mzaf_4723576651310663849.plus.aac.p.m4a",
+        "durationMs": 247970,
+        "albumName": "Mint Tobacco - Single",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/26/b7/6c/26b76c93-9504-7887-a465-4dc2cc733308/1055085.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/mint-tobacco/1894656788?i=1894656789&uo=4"
+      },
+      {
+        "name": "James Dean",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/47/8e/3c/478e3c94-ba29-6436-f3ba-c385fe426268/mzaf_1108434520800519527.plus.aac.p.m4a",
+        "durationMs": 198668,
+        "albumName": "Panic Vertigo - EP",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/34/bd/d2/34bdd22c-3c9b-7843-a8a1-eb08504e29a1/886446706849.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/james-dean/1342384587?i=1342385384&uo=4"
       },
       {
         "name": "Freaking Out",
@@ -11879,14 +11887,6 @@
         "albumName": "Infinitely Ordinary",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/e6/8f/1c/e68f1cdf-bfb0-d80b-b9a1-d925414986a6/192641068706_Cover.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/freaking-out/1506854603?i=1506854797&uo=4"
-      },
-      {
-        "name": "Panic Vertigo",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/6d/94/60/6d94600e-e943-8bbc-df59-2487d44e69b2/mzaf_14733726123525878640.plus.aac.p.m4a",
-        "durationMs": 209897,
-        "albumName": "Panic Vertigo - EP",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/34/bd/d2/34bdd22c-3c9b-7843-a8a1-eb08504e29a1/886446706849.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/panic-vertigo/1342384587?i=1342385395&uo=4"
       }
     ]
   },
