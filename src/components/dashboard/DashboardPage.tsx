@@ -62,6 +62,27 @@ function Label({ children }: { children: ReactNode }) {
   return <div className="text-xs font-semibold uppercase tracking-wide text-stone-500">{children}</div>
 }
 
+type Window = 7 | 30 | 90
+/** Segmented 7 / 30 / 90-day picker driving the Overview hero cards. */
+function WindowToggle({ value, onChange }: { value: Window; onChange: (w: Window) => void }) {
+  return (
+    <div className="inline-flex overflow-hidden rounded-lg border border-stone-200 text-xs font-semibold">
+      {([7, 30, 90] as Window[]).map((w) => (
+        <button
+          key={w}
+          type="button"
+          onClick={() => onChange(w)}
+          className={`px-3 py-1.5 transition-colors ${
+            value === w ? 'bg-indigo-600 text-white' : 'bg-white text-stone-500 hover:bg-stone-50'
+          }`}
+        >
+          {w}d
+        </button>
+      ))}
+    </div>
+  )
+}
+
 function MiniBar({ data }: { data: Array<[string, number]> }) {
   if (data.length === 0) return <p className="mt-3 text-sm text-stone-400">No data in range.</p>
   const max = Math.max(1, ...data.map(([, v]) => v))
@@ -84,6 +105,7 @@ function MiniBar({ data }: { data: Array<[string, number]> }) {
 
 function OverviewView({ snapshot }: { snapshot: DashboardSnapshot }) {
   const { spend, cloudflare, ask, ga, monitoring, sourceStatus, fetchErrors, dataAge, refreshedAt } = snapshot
+  const [win, setWin] = useState<Window>(30)
   const topN = (rec: Record<string, number>, n: number): Array<[string, number]> =>
     Object.entries(rec)
       .sort((a, b) => b[1] - a[1])
@@ -91,6 +113,11 @@ function OverviewView({ snapshot }: { snapshot: DashboardSnapshot }) {
   const capPct =
     spend && spend.capUsd ? Math.min(100, (spend.costUsdMonthToDate / spend.capUsd) * 100) : 0
   const capColor = capPct >= 100 ? 'bg-red-500' : capPct >= 75 ? 'bg-amber-500' : 'bg-indigo-600'
+  // The 7/30/90 toggle drives the three hero cards. Each metric carries all three windows in the snapshot.
+  const pick = <T,>(d7: T, d30: T, d90: T): T => (win === 7 ? d7 : win === 90 ? d90 : d30)
+  const spendWin = spend ? pick(spend.costUsd7d, spend.costUsd30d, spend.costUsd90d) : 0
+  const turnsWin = ask ? pick(ask.turns7d, ask.turns30d, ask.turns90d) : 0
+  const visitsWin = ga ? pick(ga.website.sessions7d, ga.website.sessions30d, ga.website.sessions90d) : 0
 
   return (
     <div className="mx-auto max-w-5xl px-6 pb-20">
@@ -105,7 +132,10 @@ function OverviewView({ snapshot }: { snapshot: DashboardSnapshot }) {
           )}
         </span>
       </div>
-      <p className="mb-6 text-sm text-stone-500">Cost control · traffic · topics of interest</p>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-stone-500">Cost control · visits · topics of interest</p>
+        <WindowToggle value={win} onChange={setWin} />
+      </div>
 
       {fetchErrors.length > 0 && (
         <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
@@ -116,18 +146,13 @@ function OverviewView({ snapshot }: { snapshot: DashboardSnapshot }) {
       {/* Hero KPIs */}
       <div className="grid gap-4 sm:grid-cols-3">
         <Card>
-          <Label>💸 Spend · month-to-date</Label>
+          <Label>💸 Spend · {win}d</Label>
           {spend ? (
             <>
-              <div className="mt-2 font-serif text-4xl font-semibold text-indigo-950">
-                {fmtUsd(spend.costUsdMonthToDate)}
-                {spend.capUsd != null && (
-                  <span className="ml-1 font-sans text-lg text-stone-400">/ {fmtUsd(spend.capUsd)}</span>
-                )}
-              </div>
+              <div className="mt-2 font-serif text-4xl font-semibold text-indigo-950">{fmtUsd(spendWin)}</div>
               <div className="mt-1 text-sm text-stone-500">
-                {spend.capUsd != null ? `${capPct.toFixed(0)}% of cap` : 'no cap set'} · today{' '}
-                {fmtUsd(spend.costUsdToday)}
+                {fmtUsd(spend.costUsdMonthToDate)} this month
+                {spend.capUsd != null ? ` · ${capPct.toFixed(0)}% of ${fmtUsd(spend.capUsd)} cap` : ' · no cap set'}
               </div>
               <div className="mt-3 h-2 overflow-hidden rounded-full bg-stone-100">
                 <div className={`h-full rounded-full ${capColor}`} style={{ width: `${capPct}%` }} />
@@ -142,12 +167,12 @@ function OverviewView({ snapshot }: { snapshot: DashboardSnapshot }) {
         </Card>
 
         <Card>
-          <Label>💬 Ask turns · 30 days</Label>
+          <Label>💬 Ask turns · {win}d</Label>
           {ask ? (
             <>
-              <div className="mt-2 font-serif text-4xl font-semibold text-indigo-950">{fmtInt(ask.turns30d)}</div>
+              <div className="mt-2 font-serif text-4xl font-semibold text-indigo-950">{fmtInt(turnsWin)}</div>
               <div className="mt-1 text-sm text-stone-500">
-                {fmtInt(ask.turns7d)} in 7d · {(ask.refusalRate30d * 100).toFixed(1)}% refused
+                {(ask.refusalRate30d * 100).toFixed(1)}% refused · 30d
               </div>
             </>
           ) : (
@@ -156,15 +181,11 @@ function OverviewView({ snapshot }: { snapshot: DashboardSnapshot }) {
         </Card>
 
         <Card>
-          <Label>📈 Traffic · 30 days</Label>
-          {cloudflare ? (
+          <Label>📈 Visits · {win}d</Label>
+          {ga ? (
             <>
-              <div className="mt-2 font-serif text-4xl font-semibold text-indigo-950">
-                {fmtInt(cloudflare.requests30d)}
-              </div>
-              <div className="mt-1 text-sm text-stone-500">
-                edge requests · {fmtInt(cloudflare.workerRequests30d)} worker
-              </div>
+              <div className="mt-2 font-serif text-4xl font-semibold text-indigo-950">{fmtInt(visitsWin)}</div>
+              <div className="mt-1 text-sm text-stone-500">sessions · concerts.morperhaus.org</div>
             </>
           ) : (
             <Pending />
@@ -241,6 +262,12 @@ function OverviewView({ snapshot }: { snapshot: DashboardSnapshot }) {
                 </div>
               ))}
             </div>
+            {cloudflare && (
+              <div className="mt-3 border-t border-stone-100 pt-3 text-xs text-stone-500">
+                Infra · 30d: <b className="text-stone-700">{fmtInt(cloudflare.requests30d)}</b> edge requests ·{' '}
+                <b className="text-stone-700">{fmtInt(cloudflare.workerRequests30d)}</b> worker invocations
+              </div>
+            )}
           </Card>
         </div>
       )}

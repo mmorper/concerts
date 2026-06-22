@@ -16,6 +16,7 @@ export interface SpendSection {
   costUsdToday: number
   costUsd7d: number
   costUsd30d: number
+  costUsd90d: number
   costUsdMonthToDate: number
   capUsd: number | null
   series: Array<{ date: string; costUsd: number }>
@@ -24,6 +25,7 @@ export interface SpendSection {
 export interface AskSection {
   turns7d: number
   turns30d: number
+  turns90d: number
   byOutcome: Record<string, number>
   topTopics: Array<{ term: string; n: number }>
   refusalRate30d: number
@@ -134,7 +136,7 @@ export interface TrendsSection {
 export interface GitHubSection {
   velocity: { commitsLast7d: number; commitsLast30d: number; mergedPrsLast30d: number }
   issues: { open: number; byLabel: Record<string, number> }
-  recentPrs: Array<{ number: number; title: string; mergedAt: string }>
+  recentPrs: Array<{ number: number; title: string; mergedAt: string; url: string }>
 }
 
 // Phase 6 (#176) — Monitoring. Edge/worker 5xx + ask/mcp error & refusal counts.

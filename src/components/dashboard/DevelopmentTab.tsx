@@ -86,12 +86,17 @@ function DevelopmentView({ github }: { github: GitHubSection }) {
             <ul className="mt-3 space-y-2">
               {recentPrs.map((pr) => (
                 <li key={pr.number} className="border-b border-stone-100 pb-2 text-sm last:border-0">
-                  <div className="flex items-baseline justify-between gap-3">
+                  <a
+                    href={pr.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-baseline justify-between gap-3 hover:text-indigo-700"
+                  >
                     <span className="truncate text-stone-700">
                       <span className="font-mono text-stone-400">#{pr.number}</span> {pr.title}
                     </span>
                     <span className="shrink-0 text-xs text-stone-400">{relativeDay(pr.mergedAt)}</span>
-                  </div>
+                  </a>
                 </li>
               ))}
             </ul>
