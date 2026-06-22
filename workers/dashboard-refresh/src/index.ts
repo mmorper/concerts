@@ -1,12 +1,14 @@
 /**
- * concerts-dashboard-refresh — Phase 1 (Operator MVP).
+ * concerts-dashboard-refresh — Phase 1 (Operator MVP) + Phase 3 (GA engagement layer).
  *
- * Daily cron (06:00 UTC) → fan out to the two EXACT, server-side sources we already have —
- * Cloudflare GraphQL (traffic) + the `ask_turns` Analytics Engine ledger (spend + ask volume +
- * topics) — and write one snapshot to the CONCERTS_DASHBOARD KV namespace. No GA, no new
- * instrumentation, no sampling caveats. Later phases (#173–#176) add GA, MCP-external, archive
- * health, etc. Every source is independently try/caught: a dead source → null + a fetchErrors
- * entry, never an uncaught throw.
+ * Daily cron (06:00 UTC) → fan out to its sources in parallel and write one snapshot to the
+ * CONCERTS_DASHBOARD KV namespace:
+ *   - Cloudflare GraphQL (traffic) + the `ask_turns` Analytics Engine ledger (spend + ask volume +
+ *     topics) — exact, server-side, no sampling caveats (Phase 1).
+ *   - GA4 Data API (Phase 3, #173) — website report + the Concerts custom-event taxonomy. OPTIONAL:
+ *     absent GA creds → the `ga` section is null + sourceStatus.ga = "not_configured".
+ * Later phases (#174–#176) add MCP-external, archive health, etc. Every source is independently
+ * try/caught: a dead source → null + a fetchErrors entry, never an uncaught throw.
  *
  * Data contract mirrored on the client in src/types/dashboard.ts — keep the two in sync.
  */
@@ -19,7 +21,8 @@ export interface DashboardSnapshot {
   cloudflare: CloudflareSection | null;
   spend: SpendSection | null;
   ask: AskSection | null;
-  sourceStatus: Record<"cloudflare" | "spend" | "ask", SourceStatus>;
+  ga: GaSection | null; // Phase 3 (#173) — GA4 website + custom-event engagement
+  sourceStatus: Record<"cloudflare" | "spend" | "ask" | "ga", SourceStatus>;
   fetchErrors: string[];
 }
 
@@ -48,6 +51,40 @@ export interface AskSection {
   refusalRate30d: number;
 }
 
+// Phase 3 (#173) — GA4 via the Data API (service account + domain-wide delegation). Two blocks:
+// the generic website report (sessions / channels / countries / referrers / pages) and the Concerts
+// custom-event taxonomy (Appendix B). Custom-dimension breakdowns ("what's getting clicked") only
+// carry data from the day their GA4 custom dimensions were registered — NOT retroactive.
+export interface GaWebsite {
+  sessions7d: number;
+  sessions30d: number;
+  sessions90d: number;
+  byChannel: Record<string, number>; // sessionDefaultChannelGroup (30d)
+  byCountry: Record<string, number>; // country (30d, top 6)
+  topReferrers: Array<{ source: string; sessions: number }>; // sessionSource (30d)
+  topPages: Array<{ page: string; views: number }>; // pagePath (30d, top 8)
+}
+
+export interface GaEngagement {
+  byScene: Record<string, number>; // scene_view, keyed by scene_name
+  sceneNav: number; // scene_nav_clicked
+  deepLinks: number; // deep_link_accessed
+  interactions: Record<string, number>; // high-signal interaction event counts
+  searches: { count: number; topTerms: Array<{ term: string; n: number }> }; // artist_search_performed
+  audioPreviews: number; // artist_preview_played
+  ask: Record<string, number>; // ask_* funnel event counts
+  device: Record<string, number>; // device_type → raw eventCount (the client renders as share-of-total)
+  topArtists: Array<{ name: string; n: number }>; // artist_card_opened.artist_name
+  topVenues: Array<{ name: string; n: number }>; // venue_node_clicked + map_marker_clicked.venue_name
+  topSongs: Array<{ name: string; n: number }>; // artist_preview_played.track_name
+  topSetlists: Array<{ name: string; n: number }>; // setlist_button_clicked.artist_name
+}
+
+export interface GaSection {
+  website: GaWebsite;
+  engagement: GaEngagement;
+}
+
 export interface Env {
   CONCERTS_DASHBOARD: KVNamespace;
   /** Account-level token with Analytics:Read + Account Analytics (covers GraphQL + the AE SQL API). */
@@ -57,6 +94,12 @@ export interface Env {
   CAP_USD?: string;
   /** Optional: GET /?key=<REFRESH_KEY> triggers an out-of-band refresh. */
   REFRESH_KEY?: string;
+  /** Phase 3 GA — numeric GA4 property id (e.g. "123456789") for G-VKSC8MCN5N. */
+  GA_PROPERTY?: string;
+  /** Phase 3 GA — the GA service-account key JSON (client_email + private_key + token_uri). */
+  GA_SA_KEY_JSON?: string;
+  /** Phase 3 GA — optional DWD subject the SA impersonates (a GA-Viewer user/group). */
+  GA_IMPERSONATE_SUBJECT?: string;
 }
 
 const SNAPSHOT_KEY = "dashboard:snapshot";
@@ -264,6 +307,235 @@ async function fetchAskAndSpend(
   };
 }
 
+// ──────────────────────────── GA4 Data API ─────────────────────────────
+// Service-account JWT (RS256, signed via Web Crypto) → DWD OAuth token → batchRunReports.
+// I/O is not unit-tested (matching the CF/AE pattern); the row-shaping helpers below are.
+
+interface GaServiceAccount {
+  client_email: string;
+  private_key: string;
+  token_uri?: string;
+}
+
+export interface GaReportRow {
+  dimensionValues?: Array<{ value?: string }>;
+  metricValues?: Array<{ value?: string }>;
+}
+export interface GaReport {
+  rows?: GaReportRow[];
+}
+
+// High-signal interaction + Ask funnel event names we pull out of the all-events report.
+const INTERACTION_EVENTS = [
+  "artist_card_opened",
+  "timeline_card_clicked",
+  "map_marker_clicked",
+  "venue_node_clicked",
+  "setlist_button_clicked",
+  "artist_preview_played",
+  "genre_tile_clicked",
+  "artist_tab_viewed",
+  "liner_notes_badge_clicked",
+  "tour_badge_clicked",
+];
+const ASK_EVENTS = [
+  "ask_opened",
+  "ask_question_sent",
+  "ask_exhibit_shown",
+  "ask_refused",
+  "ask_error",
+  "ask_deeplink_clicked",
+  "ask_suggested_prompt_clicked",
+];
+
+export function gaConfigured(env: Env): boolean {
+  return Boolean(env.GA_PROPERTY && env.GA_SA_KEY_JSON);
+}
+
+/** First metric of a chosen row as a number (used for single-value / per-date-range totals). */
+export function gaScalar(report: GaReport | undefined, rowIdx = 0, metricIdx = 0): number {
+  return numOf(report?.rows?.[rowIdx]?.metricValues?.[metricIdx]?.value);
+}
+
+/** dimension[dimIdx] → metric[metricIdx] number, folded into a Record (skips empty keys). */
+export function gaRecord(report: GaReport | undefined, dimIdx = 0, metricIdx = 0): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const row of report?.rows ?? []) {
+    const key = row.dimensionValues?.[dimIdx]?.value;
+    if (!key) continue;
+    out[key] = (out[key] ?? 0) + numOf(row.metricValues?.[metricIdx]?.value);
+  }
+  return out;
+}
+
+/** Top-N {name,n} from a single-dimension report (re-sorted defensively even though GA orders). */
+export function gaTopN(
+  report: GaReport | undefined,
+  limit = 8,
+  dimIdx = 0,
+  metricIdx = 0,
+): Array<{ name: string; n: number }> {
+  return (report?.rows ?? [])
+    .map((r) => ({ name: r.dimensionValues?.[dimIdx]?.value ?? "", n: numOf(r.metricValues?.[metricIdx]?.value) }))
+    .filter((x) => x.name !== "")
+    .sort((a, b) => b.n - a.n)
+    .slice(0, limit);
+}
+
+/** Pick only the named keys that are present in a counts Record (drops absent events cleanly). */
+export function pickCounts(rec: Record<string, number>, keys: string[]): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const k of keys) if (rec[k] != null) out[k] = rec[k];
+  return out;
+}
+
+function b64urlStr(s: string): string {
+  return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function b64urlBytes(buf: ArrayBuffer): string {
+  let bin = "";
+  for (const b of new Uint8Array(buf)) bin += String.fromCharCode(b);
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function pemToPkcs8(pem: string): ArrayBuffer {
+  const b64 = pem
+    .replace(/-----BEGIN PRIVATE KEY-----/, "")
+    .replace(/-----END PRIVATE KEY-----/, "")
+    .replace(/\s+/g, "");
+  const bin = atob(b64);
+  const buf = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+  return buf.buffer;
+}
+
+const GA_SCOPE = "https://www.googleapis.com/auth/analytics.readonly";
+const GA_DATA_API = "https://analyticsdata.googleapis.com/v1beta";
+
+async function gaAccessToken(sa: GaServiceAccount, subject?: string): Promise<string> {
+  const tokenUri = sa.token_uri ?? "https://oauth2.googleapis.com/token";
+  const now = Math.floor(Date.now() / 1000);
+  const header = b64urlStr(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  const claim = b64urlStr(
+    JSON.stringify({
+      iss: sa.client_email,
+      scope: GA_SCOPE,
+      aud: tokenUri,
+      iat: now,
+      exp: now + 3600,
+      ...(subject ? { sub: subject } : {}),
+    }),
+  );
+  const signingInput = `${header}.${claim}`;
+  const key = await crypto.subtle.importKey(
+    "pkcs8",
+    pemToPkcs8(sa.private_key),
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const sig = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", key, new TextEncoder().encode(signingInput));
+  const assertion = `${signingInput}.${b64urlBytes(sig)}`;
+  const r = await fetch(tokenUri, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer", assertion }),
+  });
+  if (!r.ok) throw new Error(`GA token ${r.status}: ${(await r.text()).slice(0, 200)}`);
+  const j = (await r.json()) as { access_token?: string };
+  if (!j.access_token) throw new Error("GA token: no access_token in response");
+  return j.access_token;
+}
+
+async function gaBatch(token: string, property: string, requests: unknown[]): Promise<GaReport[]> {
+  const r = await fetch(`${GA_DATA_API}/properties/${property}:batchRunReports`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ requests }),
+  });
+  if (!r.ok) throw new Error(`GA batchRunReports ${r.status}: ${(await r.text()).slice(0, 200)}`);
+  const j = (await r.json()) as { reports?: GaReport[] };
+  const reports = j.reports ?? [];
+  // Reports come back in request order; we read them positionally. A short array would silently
+  // shift every index (byChannel reading the country report, etc.) — fail the section instead.
+  if (reports.length < requests.length) {
+    throw new Error(`GA batchRunReports returned ${reports.length}/${requests.length} reports`);
+  }
+  return reports;
+}
+
+// Small request builders for the Data API JSON.
+const dr = (days: number) => ({ startDate: `${days}daysAgo`, endDate: "today" });
+const ec = { name: "eventCount" };
+const orderByMetric = (name: string) => [{ metric: { metricName: name }, desc: true }];
+function eventFilter(names: string[]) {
+  return names.length === 1
+    ? { filter: { fieldName: "eventName", stringFilter: { value: names[0] } } }
+    : { filter: { fieldName: "eventName", inListFilter: { values: names } } };
+}
+
+async function fetchGA(env: Env): Promise<GaSection> {
+  const sa = JSON.parse(env.GA_SA_KEY_JSON as string) as GaServiceAccount;
+  const property = env.GA_PROPERTY as string;
+  const token = await gaAccessToken(sa, env.GA_IMPERSONATE_SUBJECT);
+
+  // Three ≤5-report batches: website, events, "what's getting clicked".
+  const websiteReqs = [
+    { dateRanges: [dr(7), dr(30), dr(90)], metrics: [{ name: "sessions" }] }, // 0 — one row per range
+    { dateRanges: [dr(30)], dimensions: [{ name: "sessionDefaultChannelGroup" }], metrics: [{ name: "sessions" }] },
+    { dateRanges: [dr(30)], dimensions: [{ name: "country" }], metrics: [{ name: "sessions" }], orderBys: orderByMetric("sessions"), limit: 6 },
+    { dateRanges: [dr(30)], dimensions: [{ name: "sessionSource" }], metrics: [{ name: "sessions" }], orderBys: orderByMetric("sessions"), limit: 8 },
+    { dateRanges: [dr(30)], dimensions: [{ name: "pagePath" }], metrics: [{ name: "screenPageViews" }], orderBys: orderByMetric("screenPageViews"), limit: 8 },
+  ];
+  const eventReqs = [
+    { dateRanges: [dr(30)], dimensions: [{ name: "eventName" }], metrics: [ec], orderBys: orderByMetric("eventCount"), limit: 200 }, // 0 — all events (ordered so any cap drops lowest-volume)
+    { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:scene_name" }], metrics: [ec], dimensionFilter: eventFilter(["scene_view"]), orderBys: orderByMetric("eventCount"), limit: 12 },
+    { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:search_term" }], metrics: [ec], dimensionFilter: eventFilter(["artist_search_performed"]), orderBys: orderByMetric("eventCount"), limit: 10 },
+    { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:device_type" }], metrics: [ec], orderBys: orderByMetric("eventCount"), limit: 5 },
+    { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:artist_name" }], metrics: [ec], dimensionFilter: eventFilter(["artist_card_opened"]), orderBys: orderByMetric("eventCount"), limit: 8 },
+  ];
+  const clickedReqs = [
+    { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:venue_name" }], metrics: [ec], dimensionFilter: eventFilter(["venue_node_clicked", "map_marker_clicked"]), orderBys: orderByMetric("eventCount"), limit: 8 },
+    { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:track_name" }], metrics: [ec], dimensionFilter: eventFilter(["artist_preview_played"]), orderBys: orderByMetric("eventCount"), limit: 8 },
+    { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:artist_name" }], metrics: [ec], dimensionFilter: eventFilter(["setlist_button_clicked"]), orderBys: orderByMetric("eventCount"), limit: 8 },
+  ];
+
+  const [web, events, clicked] = await Promise.all([
+    gaBatch(token, property, websiteReqs),
+    gaBatch(token, property, eventReqs),
+    gaBatch(token, property, clickedReqs),
+  ]);
+
+  const allEvents = gaRecord(events[0]);
+  return {
+    website: {
+      sessions7d: gaScalar(web[0], 0),
+      sessions30d: gaScalar(web[0], 1),
+      sessions90d: gaScalar(web[0], 2),
+      byChannel: gaRecord(web[1]),
+      byCountry: gaRecord(web[2]),
+      topReferrers: gaTopN(web[3], 8).map(({ name, n }) => ({ source: name, sessions: n })),
+      topPages: gaTopN(web[4], 8).map(({ name, n }) => ({ page: name, views: n })),
+    },
+    engagement: {
+      byScene: gaRecord(events[1]),
+      sceneNav: allEvents["scene_nav_clicked"] ?? 0,
+      deepLinks: allEvents["deep_link_accessed"] ?? 0,
+      interactions: pickCounts(allEvents, INTERACTION_EVENTS),
+      searches: {
+        count: allEvents["artist_search_performed"] ?? 0,
+        topTerms: gaTopN(events[2], 10).map(({ name, n }) => ({ term: name, n })),
+      },
+      audioPreviews: allEvents["artist_preview_played"] ?? 0,
+      ask: pickCounts(allEvents, ASK_EVENTS),
+      device: gaRecord(events[3]),
+      topArtists: gaTopN(events[4], 8),
+      topVenues: gaTopN(clicked[0], 8),
+      topSongs: gaTopN(clicked[1], 8),
+      topSetlists: gaTopN(clicked[2], 8),
+    },
+  };
+}
+
 // ──────────────────────────── snapshot assembly ─────────────────────────────
 
 export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promise<DashboardSnapshot> {
@@ -271,10 +543,12 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
   let cloudflare: CloudflareSection | null = null;
   let spend: SpendSection | null = null;
   let ask: AskSection | null = null;
+  let ga: GaSection | null = null;
   const sourceStatus: DashboardSnapshot["sourceStatus"] = {
     cloudflare: "error",
     spend: "error",
     ask: "error",
+    ga: "not_configured", // GA creds are optional — stays not_configured until they land
   };
   const msg = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
@@ -288,6 +562,12 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
         sourceStatus.spend = "ok"; sourceStatus.ask = "ok";
       })
       .catch((e) => { fetchErrors.push(`ask_turns unavailable — ${msg(e)}`); }),
+    // GA is independently optional: unconfigured → not_configured (no error); a live failure → error.
+    gaConfigured(env)
+      ? fetchGA(env)
+          .then((g) => { ga = g; sourceStatus.ga = "ok"; })
+          .catch((e) => { sourceStatus.ga = "error"; fetchErrors.push(`GA unavailable — ${msg(e)}`); })
+      : Promise.resolve(),
   ]);
 
   return {
@@ -296,6 +576,7 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
     cloudflare,
     spend,
     ask,
+    ga,
     sourceStatus,
     fetchErrors,
   };

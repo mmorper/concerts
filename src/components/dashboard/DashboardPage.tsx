@@ -2,15 +2,14 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { analytics } from '@/services/analytics'
 import type { DashboardSnapshot } from '@/types/dashboard'
 import { CostControlTab } from './CostControlTab'
+import { EngagementTab, type SnapshotLoadState } from './EngagementTab'
 
-// Phase 1 (#171) — Operator MVP. Overview tab only: spend vs cap, traffic, ask volume + topics,
-// from the daily KV snapshot (Cloudflare + ask_turns). Later phases add the remaining tabs.
+// Phase 1 (#171) — Operator MVP (Overview) + Phase 2 (#172) Cost & Control + Phase 3 (#173)
+// Engagement (GA4). Overview + Engagement read the daily KV snapshot; Cost & Control reads the live
+// ask-chat admin API.
 
-type LoadState =
-  | { status: 'loading' }
-  | { status: 'empty' } // no snapshot yet (first refresh hasn't run) — or dev with no Pages Function
-  | { status: 'error'; message: string }
-  | { status: 'ready'; snapshot: DashboardSnapshot }
+// Snapshot load-state (the daily KV plane), shared with the Engagement tab.
+type LoadState = SnapshotLoadState
 
 const fmtInt = (n: number) => n.toLocaleString()
 const fmtUsd = (n: number) => '$' + n.toFixed(2)
@@ -224,11 +223,12 @@ function Centered({ children }: { children: ReactNode }) {
   )
 }
 
-type TabId = 'overview' | 'cost'
+type TabId = 'overview' | 'cost' | 'engagement'
 
 const TABS: { id: TabId; label: string }[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'cost', label: 'Cost & Control' },
+  { id: 'engagement', label: 'Engagement' },
 ]
 
 function OverviewTab({ state }: { state: LoadState }) {
@@ -314,7 +314,9 @@ export function DashboardPage() {
         </nav>
       </div>
 
-      {tab === 'overview' ? <OverviewTab state={state} /> : <CostControlTab />}
+      {tab === 'overview' && <OverviewTab state={state} />}
+      {tab === 'cost' && <CostControlTab />}
+      {tab === 'engagement' && <EngagementTab state={state} />}
     </div>
   )
 }
