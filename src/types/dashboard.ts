@@ -54,11 +54,27 @@ export interface GaEngagement {
   topVenues: Array<{ name: string; n: number }>
   topSongs: Array<{ name: string; n: number }>
   topSetlists: Array<{ name: string; n: number }>
+  // Phase 4 (#174) — Ask-as-navigation: ask_deeplink_clicked by target_scene. Empty until the
+  // `target_scene` GA4 custom dimension is registered (an owner console task, not retroactive).
+  askNav: Array<{ name: string; n: number }>
 }
 
 export interface GaSection {
   website: GaWebsite
   engagement: GaEngagement
+}
+
+// Phase 4 (#174) — MCP & Ask telemetry. Unions the in-SPA Ask chat (ask_turns) with external MCP
+// clients (mcp_queries — the net-new Analytics Engine collector in the morperhaus-mcp Worker).
+// `series` carries both planes per day for the multi-line chart; `byTool` is external-only. Until
+// mcp-server ships its instrumentation, `bySource.external` is 0 and the tab notes it's pending.
+export interface McpSection {
+  queries7d: number
+  queries30d: number
+  byTool: Record<string, number>
+  bySource: { spa: number; external: number }
+  series: Array<{ date: string; spa: number; external: number }>
+  askExhibitKinds: Record<string, number>
 }
 
 // Phase 5 (#175) — Archive Health. One equally-weighted coverage row per enrichment stage,
@@ -86,8 +102,9 @@ export interface DashboardSnapshot {
   spend: SpendSection | null
   ask: AskSection | null
   ga: GaSection | null
+  mcp: McpSection | null
   archiveHealth: ArchiveHealthSection | null
-  sourceStatus: Record<'cloudflare' | 'spend' | 'ask' | 'ga' | 'archiveHealth', SourceStatus>
+  sourceStatus: Record<'cloudflare' | 'spend' | 'ask' | 'ga' | 'mcp' | 'archiveHealth', SourceStatus>
   fetchErrors: string[]
 }
 

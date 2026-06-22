@@ -3,11 +3,12 @@ import { analytics } from '@/services/analytics'
 import type { DashboardSnapshot } from '@/types/dashboard'
 import { CostControlTab } from './CostControlTab'
 import { EngagementTab, type SnapshotLoadState } from './EngagementTab'
+import { McpAskTab } from './McpAskTab'
 import { ArchiveHealthTab } from './ArchiveHealthTab'
 
 // Phase 1 (#171) Overview + Phase 2 (#172) Cost & Control + Phase 3 (#173) Engagement (GA4) +
-// Phase 5 (#175) Archive Health. Overview / Engagement / Archive Health read the daily KV snapshot;
-// Cost & Control reads the live ask-chat admin API.
+// Phase 4 (#174) MCP & Ask + Phase 5 (#175) Archive Health. Overview / Engagement / MCP & Ask /
+// Archive Health read the daily KV snapshot; Cost & Control reads the live ask-chat admin API.
 
 // Snapshot load-state (the daily KV plane), shared with the Engagement tab.
 type LoadState = SnapshotLoadState
@@ -224,12 +225,13 @@ function Centered({ children }: { children: ReactNode }) {
   )
 }
 
-type TabId = 'overview' | 'cost' | 'engagement' | 'archive'
+type TabId = 'overview' | 'cost' | 'engagement' | 'mcp' | 'archive'
 
 const TABS: { id: TabId; label: string }[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'cost', label: 'Cost & Control' },
   { id: 'engagement', label: 'Engagement' },
+  { id: 'mcp', label: 'MCP & Ask' },
   { id: 'archive', label: 'Archive Health' },
 ]
 
@@ -319,6 +321,7 @@ export function DashboardPage() {
       {tab === 'overview' && <OverviewTab state={state} />}
       {tab === 'cost' && <CostControlTab />}
       {tab === 'engagement' && <EngagementTab state={state} />}
+      {tab === 'mcp' && <McpAskTab state={state} />}
       {tab === 'archive' && <ArchiveHealthTab state={state} />}
     </div>
   )

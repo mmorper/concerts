@@ -39,6 +39,17 @@ fallthrough = true
 binding = "MCP_QUERY_USAGE"
 id = "8aee948db1eb48c6ad9bbed2c4a43fa8"
 
+# Analytics Engine — per-tool-call telemetry (Phase 4 / #174). One row per tool invocation
+# (blob1=day, blob2=tool, blob3=source, blob4=outcome; double1=1). The dataset is created on the
+# first writeDataPoint after deploy — there is NO namespace to pre-create. The operator dashboard's
+# refresh Worker reads it via the account SQL API:
+#   SELECT blob1 AS day, blob2 AS tool, SUM(_sample_interval) AS n FROM mcp_queries
+#   WHERE timestamp >= NOW() - INTERVAL '30' DAY GROUP BY day, tool
+# NOTE: not retroactive — external tool-call history only accrues once this is deployed.
+[[analytics_engine_datasets]]
+binding = "MCP_ANALYTICS"
+dataset = "mcp_queries"
+
 # McpAgent is a Durable Object. `serve("/mcp")` resolves it through the default
 # MCP_OBJECT binding; the Agents SDK requires SQLite-backed DO storage (new_sqlite_classes).
 [[durable_objects.bindings]]

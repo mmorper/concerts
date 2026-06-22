@@ -113,8 +113,38 @@
         { "name": "The Cure @ Hollywood Bowl", "n": 78 },
         { "name": "Social Distortion @ The Roxy", "n": 61 },
         { "name": "Morrissey @ Greek Theatre", "n": 47 }
+      ],
+      "askNav": [
+        { "name": "artists", "n": 240 },
+        { "name": "timeline", "n": 150 },
+        { "name": "map", "n": 110 },
+        { "name": "venues", "n": 64 },
+        { "name": "genres", "n": 40 }
       ]
     }
+  },
+  "mcp": {
+    "queries7d": 690,
+    "queries30d": 2940,
+    "byTool": {
+      "query": 530,
+      "search_concerts": 280,
+      "get_artist_history": 190,
+      "get_venue_history": 110,
+      "on_this_day": 80,
+      "surprise_me": 55,
+      "get_concert_setlist": 45,
+      "get_archive_top_songs": 33
+    },
+    "bySource": { "spa": 1617, "external": 1323 },
+    "series": [
+      { "date": "2026-06-14", "spa": 52, "external": 38 },
+      { "date": "2026-06-16", "spa": 61, "external": 44 },
+      { "date": "2026-06-18", "spa": 58, "external": 51 },
+      { "date": "2026-06-20", "spa": 67, "external": 49 },
+      { "date": "2026-06-22", "spa": 49, "external": 41 }
+    ],
+    "askExhibitKinds": { "artist": 856, "venue": 337, "concert": 209 }
   },
   "archiveHealth": {
     "lastBuildAt": "2026-06-16T20:31:24.271Z",
@@ -132,6 +162,6 @@
       { "stage": "Liner notes", "covered": 51, "total": 73, "pct": 70, "note": "published / analyzed findings" }
     ]
   },
-  "sourceStatus": { "cloudflare": "ok", "spend": "ok", "ask": "ok", "ga": "ok", "archiveHealth": "ok" },
+  "sourceStatus": { "cloudflare": "ok", "spend": "ok", "ask": "ok", "ga": "ok", "mcp": "ok", "archiveHealth": "ok" },
   "fetchErrors": []
 }

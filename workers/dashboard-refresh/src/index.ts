@@ -9,8 +9,10 @@
  *     absent GA creds → the `ga` section is null + sourceStatus.ga = "not_configured".
  *   - Archive Health (Phase 5, #175) — enrichment coverage computed from the generated
  *     public/data/*.json (no new APIs); one equally-weighted row per stage (spec Appendix C).
- * Later phases (#174/#176) add MCP-external, Topics/Trends/Dev, etc. Every source is independently
- * try/caught: a dead source → null + a fetchErrors entry, never an uncaught throw.
+ *   - MCP & Ask (Phase 4, #174) — unions the mcp_queries Analytics Engine table (external MCP
+ *     clients; net-new collector in the morperhaus-mcp Worker) with the ask_turns (in-SPA) side.
+ * Later phases (#176) add Topics/Trends/Dev, etc. Every source is independently try/caught: a dead
+ * source → null + a fetchErrors entry, never an uncaught throw.
  *
  * Data contract mirrored on the client in src/types/dashboard.ts — keep the two in sync.
  */
@@ -24,8 +26,9 @@ export interface DashboardSnapshot {
   spend: SpendSection | null;
   ask: AskSection | null;
   ga: GaSection | null; // Phase 3 (#173) — GA4 website + custom-event engagement
+  mcp: McpSection | null; // Phase 4 (#174) — ask_turns (in-SPA) ∪ mcp_queries (external clients)
   archiveHealth: ArchiveHealthSection | null; // Phase 5 (#175) — enrichment coverage
-  sourceStatus: Record<"cloudflare" | "spend" | "ask" | "ga" | "archiveHealth", SourceStatus>;
+  sourceStatus: Record<"cloudflare" | "spend" | "ask" | "ga" | "mcp" | "archiveHealth", SourceStatus>;
   fetchErrors: string[];
 }
 
@@ -81,11 +84,29 @@ export interface GaEngagement {
   topVenues: Array<{ name: string; n: number }>; // venue_node_clicked + map_marker_clicked.venue_name
   topSongs: Array<{ name: string; n: number }>; // artist_preview_played.track_name
   topSetlists: Array<{ name: string; n: number }>; // setlist_button_clicked.artist_name
+  // Phase 4 (#174) — Ask-as-navigation: ask_deeplink_clicked by target_scene. Empty until the
+  // `target_scene` GA4 custom dimension is registered (an owner console task, not retroactive).
+  askNav: Array<{ name: string; n: number }>;
 }
 
 export interface GaSection {
   website: GaWebsite;
   engagement: GaEngagement;
+}
+
+// Phase 4 (#174) — MCP & Ask telemetry. Unions the two planes that can drive the archive's tools:
+// the in-SPA Ask chat (ask_turns, server-side, already live) and external MCP clients (mcp_queries,
+// the net-new Analytics Engine collector in the morperhaus-mcp Worker). `series` carries BOTH planes
+// per day so the tab can draw a multi-line chart (spec mock); `byTool` is external-only (the in-SPA
+// side has no per-tool breakdown). Until mcp-server ships its instrumentation, the external side is
+// 0 and the tab notes "external tool-calls pending instrumentation."
+export interface McpSection {
+  queries7d: number; // spa + external
+  queries30d: number; // spa + external
+  byTool: Record<string, number>; // external mcp_queries: tool name → call count (30d)
+  bySource: { spa: number; external: number }; // 30d call counts per plane
+  series: Array<{ date: string; spa: number; external: number }>; // daily, last 30d
+  askExhibitKinds: Record<string, number>; // ask_turns exhibit kind (30d) — feeds the outcomes legend
 }
 
 // Phase 5 (#175) — Archive Health. One equally-weighted coverage row per enrichment stage,
@@ -405,6 +426,63 @@ export function gaTopN(
     .slice(0, limit);
 }
 
+// ──────────────────────────── MCP & Ask aggregation (Phase 4) ─────────────────────────────
+// Pure assembler over the two AE queries (unit-tested); fetchMcp below is the I/O seam (not).
+// Both planes are windowed to a clean 30d (today + 29 prior) in JS — the rolling SQL cutoff can
+// admit a 31st partial bucket, which we drop here so the named windows are exact (matches the
+// ask_turns spend/volume pass). `byTool` is external-only (the in-SPA side has no per-tool dimension).
+
+export function assembleMcp(
+  externalRows: Array<{ day: string; tool: string; n: number }>,
+  spaRows: Array<{ day: string; n: number }>,
+  exhibitRows: Array<{ kind: string; n: number }>,
+  nowMs: number,
+): McpSection {
+  const since7 = isoDay(nowMs - 6 * DAY_MS);
+  const since30 = isoDay(nowMs - 29 * DAY_MS);
+  const byTool: Record<string, number> = {};
+  const dayMap = new Map<string, { spa: number; external: number }>();
+  const dayBucket = (d: string) => {
+    let b = dayMap.get(d);
+    if (!b) {
+      b = { spa: 0, external: 0 };
+      dayMap.set(d, b);
+    }
+    return b;
+  };
+
+  let extTotal = 0, ext7 = 0, spaTotal = 0, spa7 = 0;
+  for (const r of externalRows) {
+    if (r.day < since30) continue;
+    dayBucket(r.day).external += r.n;
+    extTotal += r.n;
+    if (r.day >= since7) ext7 += r.n;
+    if (r.tool) byTool[r.tool] = (byTool[r.tool] ?? 0) + r.n;
+  }
+  for (const r of spaRows) {
+    if (r.day < since30) continue;
+    dayBucket(r.day).spa += r.n;
+    spaTotal += r.n;
+    if (r.day >= since7) spa7 += r.n;
+  }
+
+  const series = [...dayMap.entries()]
+    .map(([date, v]) => ({ date, spa: v.spa, external: v.external }))
+    .sort((a, b) => (a.date < b.date ? -1 : 1));
+
+  const askExhibitKinds: Record<string, number> = {};
+  for (const r of exhibitRows) if (r.kind) askExhibitKinds[r.kind] = (askExhibitKinds[r.kind] ?? 0) + r.n;
+
+  return {
+    queries7d: spa7 + ext7,
+    queries30d: spaTotal + extTotal,
+    byTool,
+    bySource: { spa: spaTotal, external: extTotal },
+    series,
+    askExhibitKinds,
+  };
+}
+
 /** Pick only the named keys that are present in a counts Record (drops absent events cleanly). */
 export function pickCounts(rec: Record<string, number>, keys: string[]): Record<string, number> {
   const out: Record<string, number> = {};
@@ -520,6 +598,8 @@ async function fetchGA(env: Env): Promise<GaSection> {
     { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:venue_name" }], metrics: [ec], dimensionFilter: eventFilter(["venue_node_clicked", "map_marker_clicked"]), orderBys: orderByMetric("eventCount"), limit: 8 },
     { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:track_name" }], metrics: [ec], dimensionFilter: eventFilter(["artist_preview_played"]), orderBys: orderByMetric("eventCount"), limit: 8 },
     { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:artist_name" }], metrics: [ec], dimensionFilter: eventFilter(["setlist_button_clicked"]), orderBys: orderByMetric("eventCount"), limit: 8 },
+    // Phase 4 (#174) — Ask-as-navigation: ask_deeplink_clicked by target_scene (the MCP & Ask tab).
+    { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:target_scene" }], metrics: [ec], dimensionFilter: eventFilter(["ask_deeplink_clicked"]), orderBys: orderByMetric("eventCount"), limit: 8 },
   ];
 
   const [web, events, clicked] = await Promise.all([
@@ -555,8 +635,58 @@ async function fetchGA(env: Env): Promise<GaSection> {
       topVenues: gaTopN(clicked[0], 8),
       topSongs: gaTopN(clicked[1], 8),
       topSetlists: gaTopN(clicked[2], 8),
+      askNav: gaTopN(clicked[3], 8),
     },
   };
+}
+
+// ──────────────────────────── MCP & Ask (Phase 4) ─────────────────────────────
+// Two AE tables, unioned: mcp_queries (external clients — net-new, may not exist until mcp-server
+// deploys its instrumentation) and ask_turns (the in-SPA Ask side — already live). The external
+// query is independently caught → [] so the section still renders the in-SPA side with external 0
+// (the "pending instrumentation" state). A failure of the required ask_turns pass throws → the whole
+// mcp section goes null (handled by buildSnapshot's try/catch), exactly like the other sources.
+
+async function fetchMcp(env: Env, nowMs: number): Promise<McpSection> {
+  // External (mcp_queries): blob1=day, blob2=tool. Best-effort — the dataset doesn't exist until
+  // the first writeDataPoint post-deploy, and querying a missing table errors; treat that as zero.
+  const externalP = aeSql<{ day: string; tool: string; n: string }>(
+    env,
+    `SELECT blob1 AS day, blob2 AS tool, SUM(_sample_interval) AS n
+     FROM mcp_queries
+     WHERE timestamp >= NOW() - INTERVAL '30' DAY
+     GROUP BY day, tool
+     ORDER BY day`,
+  ).catch((): Array<{ day: string; tool: string; n: string }> => []);
+
+  // In-SPA (ask_turns): one row per day. Required — a failure fails the section.
+  const spaP = aeSql<{ day: string; n: string }>(
+    env,
+    `SELECT blob1 AS day, SUM(_sample_interval) AS n
+     FROM ask_turns
+     WHERE timestamp >= NOW() - INTERVAL '30' DAY
+     GROUP BY day
+     ORDER BY day`,
+  );
+
+  // Exhibit-kind mix (ask_turns blob3) for the outcomes legend. Best-effort → [] on error.
+  const exhibitP = aeSql<{ kind: string; n: string }>(
+    env,
+    `SELECT blob3 AS kind, SUM(_sample_interval) AS n
+     FROM ask_turns
+     WHERE timestamp >= NOW() - INTERVAL '30' DAY AND blob3 != '' AND blob3 != 'none'
+     GROUP BY kind
+     ORDER BY n DESC`,
+  ).catch((): Array<{ kind: string; n: string }> => []);
+
+  const [external, spa, exhibits] = await Promise.all([externalP, spaP, exhibitP]);
+
+  return assembleMcp(
+    external.map((r) => ({ day: r.day, tool: r.tool, n: numOf(r.n) })),
+    spa.map((r) => ({ day: r.day, n: numOf(r.n) })),
+    exhibits.map((r) => ({ kind: r.kind, n: numOf(r.n) })),
+    nowMs,
+  );
 }
 
 // ──────────────────────────── Archive Health (public/data) ─────────────────────────────
@@ -759,12 +889,14 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
   let spend: SpendSection | null = null;
   let ask: AskSection | null = null;
   let ga: GaSection | null = null;
+  let mcp: McpSection | null = null;
   let archiveHealth: ArchiveHealthSection | null = null;
   const sourceStatus: DashboardSnapshot["sourceStatus"] = {
     cloudflare: "error",
     spend: "error",
     ask: "error",
     ga: "not_configured", // GA creds are optional — stays not_configured until they land
+    mcp: "error",
     archiveHealth: "error",
   };
   const msg = (e: unknown) => (e instanceof Error ? e.message : String(e));
@@ -785,6 +917,9 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
           .then((g) => { ga = g; sourceStatus.ga = "ok"; })
           .catch((e) => { sourceStatus.ga = "error"; fetchErrors.push(`GA unavailable — ${msg(e)}`); })
       : Promise.resolve(),
+    fetchMcp(env, nowMs)
+      .then((m) => { mcp = m; sourceStatus.mcp = "ok"; })
+      .catch((e) => { fetchErrors.push(`MCP unavailable — ${msg(e)}`); }),
     fetchArchiveHealth(env)
       .then((h) => { archiveHealth = h; sourceStatus.archiveHealth = "ok"; })
       .catch((e) => { fetchErrors.push(`Archive health unavailable — ${msg(e)}`); }),
@@ -797,6 +932,7 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
     spend,
     ask,
     ga,
+    mcp,
     archiveHealth,
     sourceStatus,
     fetchErrors,
