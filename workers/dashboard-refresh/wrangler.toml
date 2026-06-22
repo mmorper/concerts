@@ -11,7 +11,7 @@ crons = ["0 6 * * *"]
 # then paste the id here AND bind the same id on the Pages project (functions/dashboard/data.ts).
 [[kv_namespaces]]
 binding = "CONCERTS_DASHBOARD"
-id = "<CONCERTS_DASHBOARD_KV_ID>"   # TODO(concerts) — Phase 1 (#171)
+id = "502609752daf419e9b7e1727329f2485"
 
 [vars]
 # Same Cloudflare account as the rest of the project.
