@@ -61,6 +61,8 @@ export interface Env {
 
 const SNAPSHOT_KEY = "dashboard:snapshot";
 const SNAPSHOT_TTL = 60 * 60 * 48; // 48h safety net behind the daily cron
+const HISTORY_TTL = 60 * 60 * 24 * 400; // ~400 days — bounds the daily-history keys (a future
+// Trends tab reads up to a year) so they don't accumulate in KV forever.
 const DAY_MS = 86_400_000;
 const CF_GRAPHQL = "https://api.cloudflare.com/client/v4/graphql";
 
@@ -100,10 +102,13 @@ export function spendWindows(
 ): { costUsdToday: number; costUsd7d: number; costUsd30d: number; costUsdMonthToDate: number } {
   const today = isoDay(nowMs);
   const since7 = isoDay(nowMs - 6 * DAY_MS);
+  const since30 = isoDay(nowMs - 29 * DAY_MS);
   const monthPrefix = today.slice(0, 7);
   let costUsdToday = 0, costUsd7d = 0, costUsd30d = 0, costUsdMonthToDate = 0;
   for (const { date, costUsd } of series) {
-    costUsd30d += costUsd;
+    // Window 30d explicitly (today + 29 prior) rather than "whatever the series carried", so the
+    // total stays correct even if the series is ever wider than the query window.
+    if (date >= since30) costUsd30d += costUsd;
     if (date === today) costUsdToday += costUsd;
     if (date >= since7) costUsd7d += costUsd;
     if (date.startsWith(monthPrefix)) costUsdMonthToDate += costUsd;
@@ -119,17 +124,32 @@ const numOf = (v: unknown): number => {
   return Number.isFinite(n) ? n : 0;
 };
 
+/**
+ * Resolve the spend-cap line (USD). Unset → 25 (mirrors ask-chat's ASK_MONTHLY_USD default); a
+ * numeric value is used as-is INCLUDING 0 (an intentional zero cap); anything non-numeric → null
+ * (no cap line) rather than silently coercing a real "0" into "no cap".
+ */
+export function parseCapUsd(raw: string | undefined): number | null {
+  if (raw == null || raw === "") return 25;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : null;
+}
+
 // ──────────────────────────── Cloudflare GraphQL ─────────────────────────────
 
+// httpRequests1dGroups / workersInvocationsAdaptive return ONE group per UTC day — sum across all
+// of them for the window total (taking [0] would report just a single day, undercounting ~7–30×).
 function cfSum(groups: Array<{ sum?: { requests?: number } }> | undefined): number {
-  return groups?.[0]?.sum?.requests ?? 0;
+  return (groups ?? []).reduce((total, g) => total + (g.sum?.requests ?? 0), 0);
 }
 
 async function fetchCloudflare(env: Env, nowMs: number): Promise<CloudflareSection> {
-  const d7 = isoDay(nowMs - 7 * DAY_MS);
-  const d30 = isoDay(nowMs - 30 * DAY_MS);
-  const dt7 = new Date(nowMs - 7 * DAY_MS).toISOString();
-  const dt30 = new Date(nowMs - 30 * DAY_MS).toISOString();
+  // Inclusive day windows matching the ask/spend sections: "7d" = today + 6 prior, "30d" = today
+  // + 29 prior. (Datetimes anchored to the start of the first day so the worker series lines up.)
+  const d7 = isoDay(nowMs - 6 * DAY_MS);
+  const d30 = isoDay(nowMs - 29 * DAY_MS);
+  const dt7 = `${d7}T00:00:00Z`;
+  const dt30 = `${d30}T00:00:00Z`;
   const query = `{
     viewer { accounts(filter: { accountTag: "${env.CF_ACCOUNT_ID}" }) {
       r7: httpRequests1dGroups(limit: 100, filter: { date_geq: "${d7}" }) { sum { requests } }
@@ -180,8 +200,9 @@ async function fetchAskAndSpend(
   env: Env,
   nowMs: number,
 ): Promise<{ spend: SpendSection; ask: AskSection }> {
-  // One pass for spend + volume + outcome, grouped by day.
-  const rows = await aeSql<{ day: string; outcome: string; n: string; micro: string }>(
+  // Two independent passes over the same table/window — fire them concurrently. Spend/volume is
+  // required (a failure fails the whole ask_turns section); topics is best-effort (→ [] on error).
+  const rowsP = aeSql<{ day: string; outcome: string; n: string; micro: string }>(
     env,
     `SELECT blob1 AS day, blob4 AS outcome,
             SUM(_sample_interval) AS n,
@@ -191,41 +212,44 @@ async function fetchAskAndSpend(
      GROUP BY day, outcome
      ORDER BY day`,
   );
+  const topicsP = aeSql<{ q: string; n: string }>(
+    env,
+    `SELECT blob2 AS q, SUM(_sample_interval) AS n
+     FROM ask_turns
+     WHERE timestamp >= NOW() - INTERVAL '30' DAY AND blob2 != ''
+     GROUP BY q ORDER BY n DESC LIMIT 300`,
+  )
+    .then((qrows) => topTopics(qrows.map((r) => ({ q: r.q, n: numOf(r.n) }))))
+    .catch((): Array<{ term: string; n: number }> => []);
+
+  const rows = await rowsP;
 
   const seriesMap = new Map<string, number>();
   const byOutcome: Record<string, number> = {};
   const since7 = isoDay(nowMs - 6 * DAY_MS);
+  const since30 = isoDay(nowMs - 29 * DAY_MS);
   let turns7d = 0, turns30d = 0;
   for (const row of rows) {
     const day = row.day;
     const n = numOf(row.n);
     const usd = numOf(row.micro) / 1e6;
-    seriesMap.set(day, (seriesMap.get(day) ?? 0) + usd);
-    byOutcome[row.outcome] = (byOutcome[row.outcome] ?? 0) + n;
-    turns30d += n;
-    if (day >= since7) turns7d += n;
+    seriesMap.set(day, (seriesMap.get(day) ?? 0) + usd); // full series → sparkline
+    // Aggregates are windowed to 30 clean days (today + 29 prior); the rolling SQL cutoff can
+    // include a 31st partial bucket, which we exclude here so the named windows are exact.
+    if (day >= since30) {
+      byOutcome[row.outcome] = (byOutcome[row.outcome] ?? 0) + n;
+      turns30d += n;
+      if (day >= since7) turns7d += n;
+    }
   }
   const series = [...seriesMap.entries()]
     .map(([date, costUsd]) => ({ date, costUsd }))
     .sort((a, b) => (a.date < b.date ? -1 : 1));
 
-  // Top topics — a second, cheap pass (no LLM; normalized frequency).
-  let topics: Array<{ term: string; n: number }> = [];
-  try {
-    const qrows = await aeSql<{ q: string; n: string }>(
-      env,
-      `SELECT blob2 AS q, SUM(_sample_interval) AS n
-       FROM ask_turns
-       WHERE timestamp >= NOW() - INTERVAL '30' DAY AND blob2 != ''
-       GROUP BY q ORDER BY n DESC LIMIT 300`,
-    );
-    topics = topTopics(qrows.map((r) => ({ q: r.q, n: numOf(r.n) })));
-  } catch {
-    topics = [];
-  }
+  const topics = await topicsP;
 
   const refused = byOutcome["refused"] ?? 0;
-  const capUsd = env.CAP_USD ? Number(env.CAP_USD) || null : 25;
+  const capUsd = parseCapUsd(env.CAP_USD);
   const w = spendWindows(series, nowMs);
 
   return {
@@ -279,7 +303,11 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
 
 async function writeSnapshot(env: Env, snapshot: DashboardSnapshot): Promise<void> {
   await env.CONCERTS_DASHBOARD.put(SNAPSHOT_KEY, JSON.stringify(snapshot), { expirationTtl: SNAPSHOT_TTL });
-  await env.CONCERTS_DASHBOARD.put(`dashboard:history:${snapshot.refreshedAt.slice(0, 10)}`, JSON.stringify(snapshot));
+  await env.CONCERTS_DASHBOARD.put(
+    `dashboard:history:${snapshot.refreshedAt.slice(0, 10)}`,
+    JSON.stringify(snapshot),
+    { expirationTtl: HISTORY_TTL },
+  );
 }
 
 export default {

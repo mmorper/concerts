@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { normalizeQuery, topTopics, spendWindows } from "./index.js";
+import { normalizeQuery, topTopics, spendWindows, parseCapUsd } from "./index.js";
 
 describe("normalizeQuery", () => {
   it("lowercases, strips punctuation, collapses whitespace", () => {
@@ -41,7 +41,27 @@ describe("spendWindows", () => {
     const w = spendWindows(series, now);
     expect(w.costUsdToday).toBe(4);
     expect(w.costUsd7d).toBe(7); // 06-20 + 06-22
-    expect(w.costUsd30d).toBe(10); // all
+    expect(w.costUsd30d).toBe(10); // all four are within today + 29 prior (>= 05-24)
     expect(w.costUsdMonthToDate).toBe(9); // 06-01 + 06-20 + 06-22
+  });
+
+  it("excludes rows older than 30 days (today + 29 prior) from the 30d window", () => {
+    // 05-23 is 30 days before 06-22 → just outside the inclusive 30d window (since = 05-24).
+    const w = spendWindows([{ date: "2026-05-23", costUsd: 99 }, ...series], now);
+    expect(w.costUsd30d).toBe(10); // the 99 is excluded
+  });
+});
+
+describe("parseCapUsd", () => {
+  it("defaults to 25 when unset/empty", () => {
+    expect(parseCapUsd(undefined)).toBe(25);
+    expect(parseCapUsd("")).toBe(25);
+  });
+  it("honours a numeric value, including an explicit 0 cap", () => {
+    expect(parseCapUsd("50")).toBe(50);
+    expect(parseCapUsd("0")).toBe(0);
+  });
+  it("returns null (no cap) for non-numeric junk rather than coercing", () => {
+    expect(parseCapUsd("abc")).toBeNull();
   });
 });
