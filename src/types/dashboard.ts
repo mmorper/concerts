@@ -61,6 +61,24 @@ export interface GaSection {
   engagement: GaEngagement
 }
 
+// Phase 5 (#175) — Archive Health. One equally-weighted coverage row per enrichment stage,
+// computed from the generated public/data/*.json (spec Appendix C).
+export interface ArchiveStage {
+  stage: string
+  covered: number
+  total: number
+  pct: number
+  note?: string
+}
+
+export interface ArchiveHealthSection {
+  lastBuildAt: string | null
+  concerts: number
+  artists: number
+  venues: number
+  stages: ArchiveStage[]
+}
+
 export interface DashboardSnapshot {
   refreshedAt: string
   dataAge: 'fresh' | 'stale'
@@ -68,7 +86,8 @@ export interface DashboardSnapshot {
   spend: SpendSection | null
   ask: AskSection | null
   ga: GaSection | null
-  sourceStatus: Record<'cloudflare' | 'spend' | 'ask' | 'ga', SourceStatus>
+  archiveHealth: ArchiveHealthSection | null
+  sourceStatus: Record<'cloudflare' | 'spend' | 'ask' | 'ga' | 'archiveHealth', SourceStatus>
   fetchErrors: string[]
 }
 

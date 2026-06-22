@@ -7,7 +7,9 @@
  *     topics) — exact, server-side, no sampling caveats (Phase 1).
  *   - GA4 Data API (Phase 3, #173) — website report + the Concerts custom-event taxonomy. OPTIONAL:
  *     absent GA creds → the `ga` section is null + sourceStatus.ga = "not_configured".
- * Later phases (#174–#176) add MCP-external, archive health, etc. Every source is independently
+ *   - Archive Health (Phase 5, #175) — enrichment coverage computed from the generated
+ *     public/data/*.json (no new APIs); one equally-weighted row per stage (spec Appendix C).
+ * Later phases (#174/#176) add MCP-external, Topics/Trends/Dev, etc. Every source is independently
  * try/caught: a dead source → null + a fetchErrors entry, never an uncaught throw.
  *
  * Data contract mirrored on the client in src/types/dashboard.ts — keep the two in sync.
@@ -22,7 +24,8 @@ export interface DashboardSnapshot {
   spend: SpendSection | null;
   ask: AskSection | null;
   ga: GaSection | null; // Phase 3 (#173) — GA4 website + custom-event engagement
-  sourceStatus: Record<"cloudflare" | "spend" | "ask" | "ga", SourceStatus>;
+  archiveHealth: ArchiveHealthSection | null; // Phase 5 (#175) — enrichment coverage
+  sourceStatus: Record<"cloudflare" | "spend" | "ask" | "ga" | "archiveHealth", SourceStatus>;
   fetchErrors: string[];
 }
 
@@ -85,6 +88,24 @@ export interface GaSection {
   engagement: GaEngagement;
 }
 
+// Phase 5 (#175) — Archive Health. One equally-weighted coverage row per enrichment stage,
+// computed from the generated public/data/*.json (no new external APIs). See spec Appendix C.
+export interface ArchiveStage {
+  stage: string;
+  covered: number;
+  total: number;
+  pct: number; // 0..100, rounded
+  note?: string;
+}
+
+export interface ArchiveHealthSection {
+  lastBuildAt: string | null; // newest generated/lastUpdated timestamp across the data files
+  concerts: number;
+  artists: number; // unique headliners + openers
+  venues: number;
+  stages: ArchiveStage[];
+}
+
 export interface Env {
   CONCERTS_DASHBOARD: KVNamespace;
   /** Account-level token with Analytics:Read + Account Analytics (covers GraphQL + the AE SQL API). */
@@ -100,6 +121,8 @@ export interface Env {
   GA_SA_KEY_JSON?: string;
   /** Phase 3 GA — optional DWD subject the SA impersonates (a GA-Viewer user/group). */
   GA_IMPERSONATE_SUBJECT?: string;
+  /** Phase 5 — base URL the generated public/data/*.json are served from (no trailing slash). */
+  DATA_BASE_URL?: string;
 }
 
 const SNAPSHOT_KEY = "dashboard:snapshot";
@@ -536,6 +559,198 @@ async function fetchGA(env: Env): Promise<GaSection> {
   };
 }
 
+// ──────────────────────────── Archive Health (public/data) ─────────────────────────────
+// Pure computation over the generated data files (unit-tested); the fetch wrapper is not.
+
+const DATA_FILES = [
+  "concerts",
+  "artists-metadata",
+  "artists-top-tracks",
+  "venues-metadata",
+  "setlists-cache",
+  "discography",
+  "liner-notes",
+] as const;
+
+// Minimal shapes — only the fields the coverage formulas read.
+interface ArchiveData {
+  concerts: {
+    metadata?: { lastUpdated?: string };
+    concerts: Array<{
+      id: string;
+      date?: string;
+      headliner?: string;
+      headlinerNormalized?: string;
+      venue?: string;
+      genreNormalized?: string;
+      openers?: string[];
+    }>;
+  };
+  "artists-metadata": Record<string, { image?: string; bio?: string; genres?: string[] }>;
+  "artists-top-tracks": Record<string, { tracks?: Array<{ previewUrl?: string }> }>;
+  "venues-metadata": Record<string, { photoUrls?: Record<string, unknown> | unknown[]; location?: { lat?: number } }>;
+  "setlists-cache": {
+    generatedAt?: string;
+    entries?: Array<{ concertId?: string; setlist?: { sets?: { set?: Array<{ song?: unknown[] }> } } }>;
+  };
+  discography: Record<string, { albums?: Array<{ coverUrl?: string; coverAvailable?: boolean }> }>;
+  "liner-notes": {
+    generatedAt?: string;
+    metadata?: { totalPosts?: number; totalGenerated?: number; lastPipelineRun?: string };
+  };
+}
+
+/** Slugify a display name to the data files' key convention (mirrors src/utils/normalize). */
+export function normalizeName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/** Rounded coverage percentage; 0 when there's nothing to cover. */
+export function pct(covered: number, total: number): number {
+  return total > 0 ? Math.round((covered / total) * 100) : 0;
+}
+
+const mkStage = (stage: string, covered: number, total: number, note?: string): ArchiveStage => ({
+  stage,
+  covered,
+  total,
+  pct: pct(covered, total),
+  note,
+});
+
+// A venue photo only counts if it's a real image — every venue carries a placeholder
+// (/images/venues/fallback.jpg) in photoUrls, so a non-empty object alone would read as 100%.
+const isRealPhoto = (url: unknown): url is string =>
+  typeof url === "string" && url.length > 0 && !/fallback|placeholder/i.test(url);
+
+/** Newest ISO timestamp among the candidates (ISO 8601 sorts lexically); null if none. */
+function newestIso(candidates: Array<string | undefined>): string | null {
+  const valid = candidates.filter((s): s is string => typeof s === "string" && s.length > 0);
+  return valid.length ? valid.reduce((a, b) => (a > b ? a : b)) : null;
+}
+
+export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
+  const concerts = d.concerts.concerts ?? [];
+  const total = concerts.length;
+  const am = d["artists-metadata"] ?? {};
+  const tt = d["artists-top-tracks"] ?? {};
+  const venues = d["venues-metadata"] ?? {};
+  const disco = d.discography ?? {};
+
+  // Artist universe: headliners ∪ openers (openers-only tracked separately for the genre split).
+  const headliners = new Set<string>();
+  for (const c of concerts) {
+    const h = c.headlinerNormalized || (c.headliner ? normalizeName(c.headliner) : "");
+    if (h) headliners.add(h);
+  }
+  const openersOnly = new Set<string>();
+  for (const c of concerts) {
+    for (const o of c.openers ?? []) {
+      const n = normalizeName(o);
+      if (n && !headliners.has(n)) openersOnly.add(n);
+    }
+  }
+  // Materialize the artist sets once — every per-artist stage below reads the same universe.
+  const headlinerList = [...headliners];
+  const openerList = [...openersOnly];
+  const artistList = [...headliners, ...openersOnly];
+  const artistCount = artistList.length;
+
+  // 1. Concert metadata — required fields present.
+  const validConcerts = concerts.filter((c) => c.date && c.headliner && c.venue).length;
+
+  // 2. Genres — artist-level genres, split headliner vs opener (the gap the spec calls out).
+  const hasGenre = (a: string) => (am[a]?.genres?.length ?? 0) > 0;
+  const hg = headlinerList.filter(hasGenre).length;
+  const og = openerList.filter(hasGenre).length;
+
+  // 3. Artist metadata — photo (bio is not currently populated by the pipeline; noted, not scored).
+  const withImage = artistList.filter((a) => am[a]?.image).length;
+  const withBio = artistList.filter((a) => am[a]?.bio).length;
+
+  // 4. Audio previews — artists with ≥2 of 5 preview URLs.
+  const previewCount = (a: string) => (tt[a]?.tracks ?? []).filter((t) => t.previewUrl).length;
+  const withPreviews = artistList.filter((a) => previewCount(a) >= 2).length;
+
+  // 5. Venues — real photos (placeholders excluded) and geocode (a real lat).
+  const venueVals = Object.values(venues);
+  const withPhoto = venueVals.filter((v) => Object.values(v.photoUrls ?? {}).some(isRealPhoto)).length;
+  const withGeo = venueVals.filter((v) => typeof v.location?.lat === "number").length;
+
+  // 6. Setlists — concerts whose cached setlist actually carries songs.
+  const concertIds = new Set(concerts.map((c) => c.id));
+  const withSetlist = new Set<string>();
+  for (const e of d["setlists-cache"].entries ?? []) {
+    if (!e.concertId || !concertIds.has(e.concertId)) continue;
+    const sets = e.setlist?.sets?.set ?? [];
+    if (sets.some((s) => (s.song?.length ?? 0) > 0)) withSetlist.add(e.concertId);
+  }
+
+  // 7. Discography — artists with ≥1 album; cover-art availability noted (one pass).
+  let withAlbums = 0;
+  let albumTotal = 0;
+  let albumCover = 0;
+  for (const a of artistList) {
+    const albums = disco[a]?.albums ?? [];
+    if (albums.length > 0) withAlbums++;
+    for (const al of albums) {
+      albumTotal++;
+      if (al.coverAvailable) albumCover++;
+    }
+  }
+
+  // 8. Liner notes — published findings / analyzed findings.
+  const ln = d["liner-notes"].metadata ?? {};
+  const published = ln.totalPosts ?? 0;
+  const analyzed = ln.totalGenerated ?? 0;
+
+  const stages: ArchiveStage[] = [
+    mkStage("Concert metadata", validConcerts, total, "date · headliner · venue present"),
+    mkStage(
+      "Genres",
+      hg + og,
+      artistCount,
+      `headliners ${pct(hg, headliners.size)}% · openers ${pct(og, openersOnly.size)}%`,
+    ),
+    mkStage("Artist photos", withImage, artistCount, `bio sparse — ${withBio}/${artistCount} have one`),
+    mkStage("Audio previews", withPreviews, artistCount, "≥2 of 5 preview URLs"),
+    mkStage("Venue photos", withPhoto, venueVals.length, `geocoded ${pct(withGeo, venueVals.length)}%`),
+    mkStage("Setlists", withSetlist.size, total, "concerts with ≥1 song"),
+    mkStage("Discography", withAlbums, artistCount, `${pct(albumCover, albumTotal)}% of albums have cover art`),
+    mkStage("Liner notes", published, analyzed, "published / analyzed findings"),
+  ];
+
+  return {
+    lastBuildAt: newestIso([
+      d.concerts.metadata?.lastUpdated,
+      d["setlists-cache"].generatedAt,
+      d["liner-notes"].generatedAt,
+      d["liner-notes"].metadata?.lastPipelineRun,
+    ]),
+    concerts: total,
+    artists: artistCount,
+    venues: venueVals.length,
+    stages,
+  };
+}
+
+async function fetchArchiveHealth(env: Env): Promise<ArchiveHealthSection> {
+  const base = (env.DATA_BASE_URL ?? "https://concerts.morperhaus.org/data").replace(/\/$/, "");
+  const entries = await Promise.all(
+    DATA_FILES.map(async (name) => {
+      const r = await fetch(`${base}/${name}.json`);
+      if (!r.ok) throw new Error(`${name}.json ${r.status}`);
+      return [name, await r.json()] as const;
+    }),
+  );
+  const data = Object.fromEntries(entries) as unknown as ArchiveData;
+  return computeArchiveHealth(data);
+}
+
 // ──────────────────────────── snapshot assembly ─────────────────────────────
 
 export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promise<DashboardSnapshot> {
@@ -544,11 +759,13 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
   let spend: SpendSection | null = null;
   let ask: AskSection | null = null;
   let ga: GaSection | null = null;
+  let archiveHealth: ArchiveHealthSection | null = null;
   const sourceStatus: DashboardSnapshot["sourceStatus"] = {
     cloudflare: "error",
     spend: "error",
     ask: "error",
     ga: "not_configured", // GA creds are optional — stays not_configured until they land
+    archiveHealth: "error",
   };
   const msg = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
@@ -568,6 +785,9 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
           .then((g) => { ga = g; sourceStatus.ga = "ok"; })
           .catch((e) => { sourceStatus.ga = "error"; fetchErrors.push(`GA unavailable — ${msg(e)}`); })
       : Promise.resolve(),
+    fetchArchiveHealth(env)
+      .then((h) => { archiveHealth = h; sourceStatus.archiveHealth = "ok"; })
+      .catch((e) => { fetchErrors.push(`Archive health unavailable — ${msg(e)}`); }),
   ]);
 
   return {
@@ -577,6 +797,7 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
     spend,
     ask,
     ga,
+    archiveHealth,
     sourceStatus,
     fetchErrors,
   };
