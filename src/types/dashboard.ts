@@ -62,6 +62,7 @@ export interface GaEngagement {
 export interface GaSection {
   website: GaWebsite
   engagement: GaEngagement
+  daily: Array<{ date: string; sessions: number }> // Phase 6 — per-day sessions (30d) for Trends
 }
 
 // Phase 4 (#174) — MCP & Ask telemetry. Unions the in-SPA Ask chat (ask_turns) with external MCP
@@ -97,6 +98,52 @@ export interface ArchiveHealthSection {
   artists: number
   venues: number
   stages: ArchiveStage[]
+  coverageByArtist: Record<string, number> // Phase 6 — per-headliner enrichment % for Demand×Coverage
+}
+
+// Phase 6 (#176) — Topics & Gaps. Intent is rule-based bucketing of ask_turns query text (no LLM);
+// the gap/wishlist split is heuristic. searchTerms comes from GA; zeroResultSearches & suggestedPrompts
+// stay empty until their GA4 custom dimensions (results_found / prompt) are registered.
+export interface TopicsSection {
+  questions30d: number
+  answeredRate30d: number
+  refusalRate30d: number
+  askTopics: Array<{ term: string; n: number }>
+  intentMix: Record<string, number>
+  exhibitKinds: Record<string, number>
+  contentGaps: Array<{ term: string; n: number }>
+  wishlist: Array<{ term: string; n: number }>
+  searchTerms: Array<{ term: string; n: number }>
+  zeroResultSearches: Array<{ term: string; n: number }>
+  suggestedPrompts: Array<{ prompt: string; n: number }>
+}
+
+// Phase 6 (#176) — Trends. Per-day union of GA sessions + MCP queries + ask_turns spend.
+export interface TrendPoint {
+  date: string
+  sessions: number
+  mcpQueries: number
+  spendUsd: number
+}
+
+export interface TrendsSection {
+  series: TrendPoint[]
+}
+
+// Phase 6 (#176) — Development tab. Optional GH_TOKEN → null when absent.
+export interface GitHubSection {
+  velocity: { commitsLast7d: number; commitsLast30d: number; mergedPrsLast30d: number }
+  issues: { open: number; byLabel: Record<string, number> }
+  recentPrs: Array<{ number: number; title: string; mergedAt: string }>
+}
+
+// Phase 6 (#176) — Monitoring. Edge/worker 5xx + ask/mcp error & refusal counts.
+export interface MonitoringSection {
+  edge5xx30d: number
+  worker5xx30d: number
+  askErrors30d: number
+  askRefusals30d: number
+  mcpErrors30d: number
 }
 
 export interface DashboardSnapshot {
@@ -108,7 +155,14 @@ export interface DashboardSnapshot {
   ga: GaSection | null
   mcp: McpSection | null
   archiveHealth: ArchiveHealthSection | null
-  sourceStatus: Record<'cloudflare' | 'spend' | 'ask' | 'ga' | 'mcp' | 'archiveHealth', SourceStatus>
+  topics: TopicsSection | null
+  trends: TrendsSection | null
+  github: GitHubSection | null
+  monitoring: MonitoringSection | null
+  sourceStatus: Record<
+    'cloudflare' | 'spend' | 'ask' | 'ga' | 'mcp' | 'archiveHealth' | 'topics' | 'trends' | 'github' | 'monitoring',
+    SourceStatus
+  >
   fetchErrors: string[]
 }
 

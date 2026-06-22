@@ -121,7 +121,13 @@
         { "name": "venues", "n": 64 },
         { "name": "genres", "n": 40 }
       ]
-    }
+    },
+    "daily": [
+      { "date": "2026-06-16", "sessions": 240 },
+      { "date": "2026-06-18", "sessions": 268 },
+      { "date": "2026-06-20", "sessions": 312 },
+      { "date": "2026-06-22", "sessions": 284 }
+    ]
   },
   "mcp": {
     "queries7d": 690,
@@ -161,8 +167,83 @@
       { "stage": "Setlists", "covered": 117, "total": 183, "pct": 64, "note": "concerts with ≥1 song" },
       { "stage": "Discography", "covered": 224, "total": 257, "pct": 87, "note": "100% of albums have cover art" },
       { "stage": "Liner notes", "covered": 51, "total": 73, "pct": 70, "note": "published / analyzed findings" }
+    ],
+    "coverageByArtist": {
+      "depeche-mode": 100,
+      "the-cure": 100,
+      "social-distortion": 75,
+      "morrissey": 100,
+      "new-order": 75,
+      "u2": 50,
+      "pixies": 25
+    }
+  },
+  "topics": {
+    "questions30d": 1604,
+    "answeredRate30d": 0.931,
+    "refusalRate30d": 0.061,
+    "askTopics": [
+      { "term": "depeche mode", "n": 312 },
+      { "term": "setlists", "n": 204 },
+      { "term": "first concert", "n": 96 },
+      { "term": "social distortion", "n": 88 },
+      { "term": "shows in la", "n": 72 },
+      { "term": "the cure", "n": 61 }
+    ],
+    "intentMix": {
+      "Lookup": 610,
+      "Counting / stats": 289,
+      "Have you seen…": 256,
+      "Comparison": 192,
+      "Recommendation": 144,
+      "On this day": 113
+    },
+    "exhibitKinds": { "artist": 856, "venue": 337, "concert": 209, "none": 202 },
+    "contentGaps": [
+      { "term": "depeche mode setlist 1988", "n": 14 },
+      { "term": "the cure opener 1989", "n": 9 },
+      { "term": "social distortion roxy", "n": 6 }
+    ],
+    "wishlist": [
+      { "term": "did you see nirvana", "n": 18 },
+      { "term": "have you seen radiohead", "n": 11 },
+      { "term": "ever see talking heads", "n": 7 }
+    ],
+    "searchTerms": [
+      { "term": "depeche", "n": 88 },
+      { "term": "cure", "n": 61 },
+      { "term": "social d", "n": 54 }
+    ],
+    "zeroResultSearches": [],
+    "suggestedPrompts": []
+  },
+  "trends": {
+    "series": [
+      { "date": "2026-06-16", "sessions": 240, "mcpQueries": 105, "spendUsd": 1.1 },
+      { "date": "2026-06-18", "sessions": 268, "mcpQueries": 109, "spendUsd": 1.9 },
+      { "date": "2026-06-20", "sessions": 312, "mcpQueries": 116, "spendUsd": 2.4 },
+      { "date": "2026-06-22", "sessions": 284, "mcpQueries": 90, "spendUsd": 1.12 }
     ]
   },
-  "sourceStatus": { "cloudflare": "ok", "spend": "ok", "ask": "ok", "ga": "ok", "mcp": "ok", "archiveHealth": "ok" },
+  "github": {
+    "velocity": { "commitsLast7d": 23, "commitsLast30d": 118, "mergedPrsLast30d": 14 },
+    "issues": {
+      "open": 12,
+      "byLabel": { "enhancement": 7, "operational": 6, "pilot": 1, "documentation": 2 }
+    },
+    "recentPrs": [
+      { "number": 183, "title": "Phase 4 — MCP-external instrumentation & MCP & Ask tab", "mergedAt": "2026-06-22T04:38:00Z" },
+      { "number": 182, "title": "Phase 5 — Archive Health", "mergedAt": "2026-06-22T02:10:00Z" },
+      { "number": 181, "title": "Phase 3 — GA engagement layer", "mergedAt": "2026-06-22T01:30:00Z" }
+    ]
+  },
+  "monitoring": {
+    "edge5xx30d": 42,
+    "worker5xx30d": 7,
+    "askErrors30d": 4,
+    "askRefusals30d": 98,
+    "mcpErrors30d": 3
+  },
+  "sourceStatus": { "cloudflare": "ok", "spend": "ok", "ask": "ok", "ga": "ok", "mcp": "ok", "archiveHealth": "ok", "topics": "ok", "trends": "ok", "github": "ok", "monitoring": "ok" },
   "fetchErrors": []
 }

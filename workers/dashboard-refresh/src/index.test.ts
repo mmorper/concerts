@@ -10,6 +10,9 @@ import {
   gaTopN,
   pickCounts,
   assembleMcp,
+  classifyIntent,
+  assembleTopics,
+  assembleTrends,
   normalizeName,
   pct,
   computeArchiveHealth,
@@ -240,6 +243,63 @@ describe("assembleMcp", () => {
   });
 });
 
+// ──────────────────────────── Topics & Gaps (Phase 6) ─────────────────────────────
+
+describe("classifyIntent", () => {
+  it("buckets questions by the first matching rule", () => {
+    expect(classifyIntent("Have you ever seen Nirvana?")).toBe("Have you seen…");
+    expect(classifyIntent("How many times did you see The Cure?")).toBe("Counting / stats");
+    expect(classifyIntent("Who opened for Depeche Mode?")).toBe("Lookup");
+    expect(classifyIntent("Recommend a show from the 90s")).toBe("Recommendation");
+    expect(classifyIntent("What's on this day?")).toBe("On this day");
+    expect(classifyIntent("The Cure versus The Smiths")).toBe("Comparison");
+    expect(classifyIntent("tell me something cool")).toBe("Other");
+  });
+});
+
+describe("assembleTopics", () => {
+  const rows = [
+    { q: "how many times did you see the cure", outcome: "answered", kind: "concert", n: 4 },
+    { q: "did you see nirvana", outcome: "refused", kind: "none", n: 3 }, // wishlist (not in archive)
+    { q: "depeche mode setlist", outcome: "answered", kind: "none", n: 2 }, // gap (entity exists, no exhibit)
+    { q: "who is the cure", outcome: "answered", kind: "artist", n: 1 },
+  ];
+  const names = ["the cure", "depeche mode", "the forum"];
+  const t = assembleTopics(rows, names, Date.parse("2026-06-22T12:00:00Z"));
+
+  it("computes question totals and answered/refusal rates", () => {
+    expect(t.questions30d).toBe(10);
+    expect(t.answeredRate30d).toBeCloseTo(7 / 10); // 4 + 2 + 1 answered
+    expect(t.refusalRate30d).toBeCloseTo(3 / 10);
+  });
+
+  it("splits refused/no-exhibit questions into gaps (entity exists) vs wishlist (not in archive)", () => {
+    expect(t.contentGaps.map((g) => g.term)).toContain("depeche mode setlist"); // names a known artist
+    expect(t.wishlist.map((w) => w.term)).toContain("did you see nirvana"); // unknown entity
+    expect(t.contentGaps.map((g) => g.term)).not.toContain("did you see nirvana");
+  });
+
+  it("buckets intent and rolls up exhibit kinds", () => {
+    expect(t.intentMix["Counting / stats"]).toBe(4);
+    expect(t.exhibitKinds.none).toBe(5); // 3 + 2
+  });
+});
+
+describe("assembleTrends", () => {
+  it("unions the three daily sources by date, summing the MCP planes", () => {
+    const trends = assembleTrends(
+      [{ date: "2026-06-20", sessions: 100 }, { date: "2026-06-22", sessions: 120 }],
+      [{ date: "2026-06-22", spa: 10, external: 5 }],
+      [{ date: "2026-06-21", costUsd: 1.5 }, { date: "2026-06-22", costUsd: 2.0 }],
+    );
+    expect(trends.series).toEqual([
+      { date: "2026-06-20", sessions: 100, mcpQueries: 0, spendUsd: 0 },
+      { date: "2026-06-21", sessions: 0, mcpQueries: 0, spendUsd: 1.5 },
+      { date: "2026-06-22", sessions: 120, mcpQueries: 15, spendUsd: 2.0 },
+    ]);
+  });
+});
+
 // ──────────────────────────── Archive Health (Phase 5) ─────────────────────────────
 
 describe("normalizeName", () => {
@@ -337,5 +397,12 @@ describe("computeArchiveHealth", () => {
   it("liner notes use published/analyzed and picks the newest build timestamp", () => {
     expect(byStage["Liner notes"]).toMatchObject({ covered: 2, total: 5 });
     expect(h.lastBuildAt).toBe("2026-06-16T20:31:24.271Z");
+  });
+
+  it("emits per-headliner coverage % for the Demand×Coverage join", () => {
+    // depeche-mode: genre ✓ image ✓ ≥2 previews ✓ albums ✓ → 100; the-cure: genre ✗ image ✓ previews ✗ albums ✗ → 25.
+    expect(h.coverageByArtist["depeche-mode"]).toBe(100);
+    expect(h.coverageByArtist["the-cure"]).toBe(25);
+    expect(h.coverageByArtist["some-opener"]).toBeUndefined(); // openers aren't clickable in GA
   });
 });
