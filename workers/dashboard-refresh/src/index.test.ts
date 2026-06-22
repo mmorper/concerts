@@ -6,6 +6,7 @@ import {
   parseCapUsd,
   gaConfigured,
   gaScalar,
+  gaScalarByRange,
   gaRecord,
   gaTopN,
   pickCounts,
@@ -120,6 +121,27 @@ describe("gaScalar", () => {
   it("returns 0 for missing rows/reports", () => {
     expect(gaScalar(undefined)).toBe(0);
     expect(gaScalar({ rows: [] }, 5)).toBe(0);
+  });
+});
+
+describe("gaScalarByRange", () => {
+  it("maps each window by its date_range tag, not row position", () => {
+    // GA's real shape: rows tagged date_range_N, ordered by metric value DESC (so the 90d total is
+    // row 0). A positional read would invert the windows — this asserts we key off the tag instead.
+    const r: GaReport = {
+      rows: [
+        { dimensionValues: [{ value: "date_range_2" }], metricValues: [{ value: "250" }] }, // 90d
+        { dimensionValues: [{ value: "date_range_1" }], metricValues: [{ value: "97" }] }, // 30d
+        { dimensionValues: [{ value: "date_range_0" }], metricValues: [{ value: "58" }] }, // 7d
+      ],
+    };
+    expect(gaScalarByRange(r, 0)).toBe(58); // 7d
+    expect(gaScalarByRange(r, 1)).toBe(97); // 30d
+    expect(gaScalarByRange(r, 2)).toBe(250); // 90d
+  });
+  it("returns 0 when the range tag or report is absent", () => {
+    expect(gaScalarByRange(undefined, 0)).toBe(0);
+    expect(gaScalarByRange({ rows: [{ metricValues: [{ value: "5" }] }] }, 0)).toBe(0);
   });
 });
 

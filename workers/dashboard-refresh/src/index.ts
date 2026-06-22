@@ -477,6 +477,17 @@ export function gaScalar(report: GaReport | undefined, rowIdx = 0, metricIdx = 0
   return numOf(report?.rows?.[rowIdx]?.metricValues?.[metricIdx]?.value);
 }
 
+/**
+ * Metric for a specific dateRange in a multi-dateRange, no-dimension report. GA returns one row per
+ * range tagged with a `date_range_N` dimension and orders rows by metric value (descending) — NOT by
+ * range index — so a positional read inverts the windows (90d total lands in row 0). Match the tag.
+ */
+export function gaScalarByRange(report: GaReport | undefined, rangeIdx: number, metricIdx = 0): number {
+  const tag = `date_range_${rangeIdx}`;
+  const row = report?.rows?.find((r) => r.dimensionValues?.some((d) => d.value === tag));
+  return numOf(row?.metricValues?.[metricIdx]?.value);
+}
+
 /** dimension[dimIdx] → metric[metricIdx] number, folded into a Record (skips empty keys). */
 export function gaRecord(report: GaReport | undefined, dimIdx = 0, metricIdx = 0): Record<string, number> {
   const out: Record<string, number> = {};
@@ -695,9 +706,9 @@ async function fetchGA(env: Env): Promise<GaSection> {
   const allEvents = gaRecord(events[0]);
   return {
     website: {
-      sessions7d: gaScalar(web[0], 0),
-      sessions30d: gaScalar(web[0], 1),
-      sessions90d: gaScalar(web[0], 2),
+      sessions7d: gaScalarByRange(web[0], 0),
+      sessions30d: gaScalarByRange(web[0], 1),
+      sessions90d: gaScalarByRange(web[0], 2),
       byChannel: gaRecord(web[1]),
       byCountry: gaRecord(web[2]),
       topReferrers: gaTopN(web[3], 8).map(({ name, n }) => ({ source: name, sessions: n })),
