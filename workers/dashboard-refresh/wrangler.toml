@@ -21,6 +21,8 @@ CAP_USD = "25"
 # Phase 3 GA — numeric GA4 property id for G-VKSC8MCN5N (DISCOVER(1), owner console task #170).
 # Leave unset to keep the GA source `not_configured` (the rest of the snapshot is unaffected).
 # GA_PROPERTY = "<CONCERTS_GA4_NUMERIC_PROPERTY_ID>"
+# Phase 5 Archive Health — where the generated public/data/*.json are served (no trailing slash).
+DATA_BASE_URL = "https://concerts.morperhaus.org/data"
 
 # Secrets — set with `npx wrangler secret put <NAME>` (never committed):
 #   CF_API_TOKEN          Account token with Analytics:Read + Account Analytics

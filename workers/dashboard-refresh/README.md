@@ -7,6 +7,10 @@ try/caught:
 - **GA4 Data API** (Phase 3) — website report + the Concerts custom-event taxonomy (scenes, Ask
   funnel, interactions, search, "what's getting clicked", device split). **Optional:** without
   `GA_PROPERTY` + `GA_SA_KEY_JSON` the `ga` section is `null` / `sourceStatus.ga = "not_configured"`.
+- **Archive Health** (Phase 5) — enrichment coverage computed from the generated
+  `public/data/*.json` (fetched from `DATA_BASE_URL`); one equally-weighted row per stage
+  (concert metadata, genres, artist photos, audio previews, venue photos, setlists, discography,
+  liner notes). No credentials — runs every refresh.
 
 Reads: snapshot → `functions/dashboard/data.ts` (Pages Function) → React `/dashboard` route.
 
@@ -44,5 +48,5 @@ npm install && npm test   # vitest — covers the pure helpers (normalizeQuery, 
 ```
 
 ## Next phases
-MCP-external instrumentation (#174), Archive Health (#175), Topics & Gaps depth / Trends /
-Development (#176) extend the snapshot contract.
+MCP-external instrumentation (#174), Topics & Gaps depth / Trends / Development (#176) extend the
+snapshot contract.

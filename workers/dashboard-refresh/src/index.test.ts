@@ -9,6 +9,9 @@ import {
   gaRecord,
   gaTopN,
   pickCounts,
+  normalizeName,
+  pct,
+  computeArchiveHealth,
   type GaReport,
 } from "./index.js";
 
@@ -152,5 +155,103 @@ describe("pickCounts", () => {
       ask_opened: 2210,
       ask_question_sent: 1604,
     });
+  });
+});
+
+// ──────────────────────────── Archive Health (Phase 5) ─────────────────────────────
+
+describe("normalizeName", () => {
+  it("slugifies to the data files' key convention", () => {
+    expect(normalizeName("Depeche Mode")).toBe("depeche-mode");
+    expect(normalizeName("R.E.M.")).toBe("r-e-m");
+    expect(normalizeName("9:30 Club")).toBe("9-30-club");
+    expect(normalizeName("  Guns N' Roses  ")).toBe("guns-n-roses");
+  });
+});
+
+describe("pct", () => {
+  it("rounds, and returns 0 for an empty denominator", () => {
+    expect(pct(1, 3)).toBe(33);
+    expect(pct(117, 183)).toBe(64);
+    expect(pct(5, 0)).toBe(0);
+    expect(pct(0, 10)).toBe(0);
+  });
+});
+
+describe("computeArchiveHealth", () => {
+  // Two headliners (depeche-mode, the-cure) + one opener-only (some-opener).
+  const data = {
+    concerts: {
+      metadata: { lastUpdated: "2026-06-16T20:18:07.436Z" },
+      concerts: [
+        { id: "concert-1", date: "1988-01-01", headliner: "Depeche Mode", venue: "The Forum", openers: ["Some Opener"] },
+        { id: "concert-2", date: "1989-01-01", headliner: "The Cure", venue: "The Roxy", openers: [] },
+        { id: "concert-3", headliner: "The Cure", venue: "The Roxy", openers: [] }, // missing date → invalid
+      ],
+    },
+    "artists-metadata": {
+      "depeche-mode": { image: "x", genres: ["synth-pop"] },
+      "the-cure": { image: "y", genres: [] }, // photo yes, genre no
+      "some-opener": {}, // nothing
+    },
+    "artists-top-tracks": {
+      "depeche-mode": { tracks: [{ previewUrl: "a" }, { previewUrl: "b" }] }, // ≥2
+      "the-cure": { tracks: [{ previewUrl: "a" }] }, // <2
+    },
+    "venues-metadata": {
+      "the-forum": { photoUrls: { p1: "u" }, location: { lat: 34 } },
+      "the-roxy": { photoUrls: {}, location: {} }, // no photo, no geo
+    },
+    "setlists-cache": {
+      generatedAt: "2026-06-16T20:22:15.975Z",
+      entries: [
+        { concertId: "concert-1", setlist: { sets: { set: [{ song: [{}, {}] }] } } }, // has songs
+        { concertId: "concert-2", setlist: { sets: { set: [{ song: [] }] } } }, // entry, no songs
+      ],
+    },
+    discography: {
+      "depeche-mode": { albums: [{ coverUrl: "c" }, { coverUrl: "" }] },
+      "the-cure": { albums: [] },
+    },
+    "liner-notes": {
+      generatedAt: "2026-06-16T20:30:00.000Z",
+      metadata: { totalPosts: 2, totalGenerated: 5, lastPipelineRun: "2026-06-16T20:31:24.271Z" },
+    },
+  };
+
+  const h = computeArchiveHealth(data as Parameters<typeof computeArchiveHealth>[0]);
+  const byStage = Object.fromEntries(h.stages.map((s) => [s.stage, s]));
+
+  it("counts the artist universe (headliners ∪ openers) and headline entities", () => {
+    expect(h.concerts).toBe(3);
+    expect(h.artists).toBe(3); // depeche-mode, the-cure, some-opener
+    expect(h.venues).toBe(2);
+  });
+
+  it("scores concert metadata on required fields", () => {
+    expect(byStage["Concert metadata"]).toMatchObject({ covered: 2, total: 3 }); // concert-3 missing date
+  });
+
+  it("scores genres with the headliner/opener split in the note", () => {
+    expect(byStage["Genres"]).toMatchObject({ covered: 1, total: 3 }); // only depeche-mode has a genre
+    expect(byStage["Genres"].note).toBe("headliners 50% · openers 0%");
+  });
+
+  it("counts only setlists with ≥1 logged song", () => {
+    expect(byStage["Setlists"]).toMatchObject({ covered: 1, total: 3 }); // concert-2's empty set excluded
+  });
+
+  it("audio previews require ≥2 preview URLs", () => {
+    expect(byStage["Audio previews"]).toMatchObject({ covered: 1, total: 3 });
+  });
+
+  it("venue photos count non-empty photoUrls and note geocode share", () => {
+    expect(byStage["Venue photos"]).toMatchObject({ covered: 1, total: 2 });
+    expect(byStage["Venue photos"].note).toBe("geocoded 50%");
+  });
+
+  it("liner notes use published/analyzed and picks the newest build timestamp", () => {
+    expect(byStage["Liner notes"]).toMatchObject({ covered: 2, total: 5 });
+    expect(h.lastBuildAt).toBe("2026-06-16T20:31:24.271Z");
   });
 });
