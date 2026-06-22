@@ -1,0 +1,45 @@
+name: Dashboard-refresh CI
+
+# Typecheck + tests for the operator-dashboard refresh Worker (Cloudflare GraphQL + ask_turns
+# Analytics Engine → KV snapshot). Its own npm package with its own vitest config, so it doesn't
+# run as part of the root test suite — this is its automated PR gate. Standalone (no sibling deps).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/dashboard-refresh/**'
+      - '.github/workflows/dashboard-refresh-ci.yml'
+  pull_request:
+    paths:
+      - 'workers/dashboard-refresh/**'
+      - '.github/workflows/dashboard-refresh-ci.yml'
+
+concurrency:
+  group: dashboard-refresh-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: workers/dashboard-refresh
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      # package-lock.json is gitignored for this package, so use `npm install`.
+      - name: Install dependencies
+        run: npm install
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
