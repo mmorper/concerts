@@ -35,6 +35,7 @@ import {
   readQueryUsage,
   recordQueryUsage,
 } from "./data.js";
+import { recordMcpQuery } from "./telemetry.js";
 import QUERY_PROMPT from "../prompts/query.md";
 
 function textResult(text: string, isError = false): CallToolResult {
@@ -58,6 +59,23 @@ export function wrapTool(
         true,
       );
     }
+  };
+}
+
+// Phase 4 (#174) — the same error-wrapped handler, plus a fire-and-forget telemetry write per call
+// (dataset `mcp_queries`). wrapTool never throws and stamps isError on a failed result, so reading
+// that flag here gives a clean ok/error outcome without a second try/catch. The write is a no-op
+// unless MCP_ANALYTICS is bound (see telemetry.ts), so this changes nothing in dev/test.
+export function instrument(
+  env: Env,
+  name: string,
+  handler: (args: Record<string, unknown>) => Promise<CallToolResult>,
+): (args: Record<string, unknown>) => Promise<CallToolResult> {
+  const wrapped = wrapTool(name, handler);
+  return async (args: Record<string, unknown>) => {
+    const result = await wrapped(args ?? {});
+    recordMcpQuery(env, name, result.isError ? "error" : "ok");
+    return result;
   };
 }
 
@@ -904,7 +922,7 @@ export function registerTools(server: McpServer, env: Env): void {
   server.registerTool(
     "get_archive_info",
     { title: "Archive overview", description: DESC.archive, inputSchema: {} },
-    wrapTool("get_archive_info", async () => {
+    instrument(env, "get_archive_info", async () => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
       const facts = await getFacts(env, bgCtx);
@@ -927,7 +945,7 @@ export function registerTools(server: McpServer, env: Env): void {
         limit: z.number().int().min(1).max(25).optional(),
       },
     },
-    wrapTool("search_concerts", async (args) => {
+    instrument(env, "search_concerts", async (args) => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
       return textResult(searchConcerts(data.concerts, args as SearchParams).text);
@@ -941,7 +959,7 @@ export function registerTools(server: McpServer, env: Env): void {
       description: DESC.artist,
       inputSchema: { artist: z.string() },
     },
-    wrapTool("get_artist_history", async (args) => {
+    instrument(env, "get_artist_history", async (args) => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
       const query = String(args.artist ?? "");
@@ -965,7 +983,7 @@ export function registerTools(server: McpServer, env: Env): void {
       description: DESC.venue,
       inputSchema: { venue: z.string() },
     },
-    wrapTool("get_venue_history", async (args) => {
+    instrument(env, "get_venue_history", async (args) => {
       const [data, venues] = await Promise.all([
         getConcerts(env, bgCtx),
         getVenuesMetadata(env, bgCtx),
@@ -989,7 +1007,7 @@ export function registerTools(server: McpServer, env: Env): void {
         day: z.number().int().min(1).max(31).optional(),
       },
     },
-    wrapTool("on_this_day", async (args) => {
+    instrument(env, "on_this_day", async (args) => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
       const now = new Date();
@@ -1002,7 +1020,7 @@ export function registerTools(server: McpServer, env: Env): void {
   server.registerTool(
     "surprise_me",
     { title: "Surprise me", description: DESC.surprise, inputSchema: {} },
-    wrapTool("surprise_me", async () => {
+    instrument(env, "surprise_me", async () => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
       const [setlists, meta, tracks] = await Promise.all([
@@ -1028,7 +1046,7 @@ export function registerTools(server: McpServer, env: Env): void {
         concertId: z.string().optional(),
       },
     },
-    wrapTool("get_concert_setlist", async (args) => {
+    instrument(env, "get_concert_setlist", async (args) => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
       const [setlists, tracks] = await Promise.all([
@@ -1053,7 +1071,7 @@ export function registerTools(server: McpServer, env: Env): void {
       description: DESC.topSongs,
       inputSchema: { limit: z.number().int().min(1).max(25).optional() },
     },
-    wrapTool("get_archive_top_songs", async (args) => {
+    instrument(env, "get_archive_top_songs", async (args) => {
       const songs = await getMostPlayedSongs(env, bgCtx);
       if (!songs) return dataUnavailableResult();
       return textResult(archiveTopSongs(songs, args.limit as number | undefined));
@@ -1067,7 +1085,7 @@ export function registerTools(server: McpServer, env: Env): void {
       description: DESC.query,
       inputSchema: { question: z.string() },
     },
-    wrapTool("query", async (args) => {
+    instrument(env, "query", async (args) => {
       if (!env.ANTHROPIC_API_KEY) {
         return textResult(
           "Freeform questions aren't available right now — try one of my other tools.",

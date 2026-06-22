@@ -5,6 +5,10 @@ export interface Env {
   // Optional spend tripwire for the `query` escape hatch — same simple push endpoint shape as the
   // ask-chat worker (ntfy/Pushover-style). Absent → the tripwire is a log line only.
   NOTIFY_WEBHOOK_URL?: string;
+  // Phase 4 (#174) — per-tool-call telemetry to Cloudflare Analytics Engine (dataset `mcp_queries`).
+  // OPTIONAL: absent in dev/test and any deploy that hasn't added the dataset → recordMcpQuery no-ops.
+  // The operator dashboard's refresh Worker reads this via the SQL API to count external tool-calls.
+  MCP_ANALYTICS?: AnalyticsEngineDataset;
 }
 
 // ---------- Source data payloads ----------
