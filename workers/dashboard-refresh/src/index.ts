@@ -107,6 +107,10 @@ export interface McpSection {
   bySource: { spa: number; external: number }; // 30d call counts per plane
   series: Array<{ date: string; spa: number; external: number }>; // daily, last 30d
   askExhibitKinds: Record<string, number>; // ask_turns exhibit kind (30d) — feeds the outcomes legend
+  // Did the mcp_queries dataset respond? Distinguishes "collector not deployed yet" (false → the tab
+  // shows the pending-instrumentation note) from "deployed, but zero external calls in the window"
+  // (true, external 0). Without this a legitimately-quiet month would read as undeployed.
+  externalLive: boolean;
 }
 
 // Phase 5 (#175) — Archive Health. One equally-weighted coverage row per enrichment stage,
@@ -437,6 +441,7 @@ export function assembleMcp(
   spaRows: Array<{ day: string; n: number }>,
   exhibitRows: Array<{ kind: string; n: number }>,
   nowMs: number,
+  externalLive: boolean,
 ): McpSection {
   const since7 = isoDay(nowMs - 6 * DAY_MS);
   const since30 = isoDay(nowMs - 29 * DAY_MS);
@@ -480,6 +485,7 @@ export function assembleMcp(
     bySource: { spa: spaTotal, external: extTotal },
     series,
     askExhibitKinds,
+    externalLive,
   };
 }
 
@@ -649,7 +655,8 @@ async function fetchGA(env: Env): Promise<GaSection> {
 
 async function fetchMcp(env: Env, nowMs: number): Promise<McpSection> {
   // External (mcp_queries): blob1=day, blob2=tool. Best-effort — the dataset doesn't exist until
-  // the first writeDataPoint post-deploy, and querying a missing table errors; treat that as zero.
+  // the first writeDataPoint post-deploy, and querying a missing table errors; treat that as zero
+  // but remember the query DIDN'T respond, so the tab can tell "not deployed" from "deployed, quiet".
   const externalP = aeSql<{ day: string; tool: string; n: string }>(
     env,
     `SELECT blob1 AS day, blob2 AS tool, SUM(_sample_interval) AS n
@@ -657,7 +664,9 @@ async function fetchMcp(env: Env, nowMs: number): Promise<McpSection> {
      WHERE timestamp >= NOW() - INTERVAL '30' DAY
      GROUP BY day, tool
      ORDER BY day`,
-  ).catch((): Array<{ day: string; tool: string; n: string }> => []);
+  )
+    .then((rows) => ({ live: true, rows }))
+    .catch(() => ({ live: false, rows: [] as Array<{ day: string; tool: string; n: string }> }));
 
   // In-SPA (ask_turns): one row per day. Required — a failure fails the section.
   const spaP = aeSql<{ day: string; n: string }>(
@@ -682,10 +691,11 @@ async function fetchMcp(env: Env, nowMs: number): Promise<McpSection> {
   const [external, spa, exhibits] = await Promise.all([externalP, spaP, exhibitP]);
 
   return assembleMcp(
-    external.map((r) => ({ day: r.day, tool: r.tool, n: numOf(r.n) })),
+    external.rows.map((r) => ({ day: r.day, tool: r.tool, n: numOf(r.n) })),
     spa.map((r) => ({ day: r.day, n: numOf(r.n) })),
     exhibits.map((r) => ({ kind: r.kind, n: numOf(r.n) })),
     nowMs,
+    external.live,
   );
 }
 

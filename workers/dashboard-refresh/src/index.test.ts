@@ -174,9 +174,10 @@ describe("assembleMcp", () => {
       { day: "2026-06-22", n: 10 },
       { day: "2026-06-20", n: 5 },
     ];
-    const m = assembleMcp(external, spa, [], now);
+    const m = assembleMcp(external, spa, [], now, true);
 
     expect(m.bySource).toEqual({ spa: 15, external: 9 });
+    expect(m.externalLive).toBe(true);
     expect(m.queries30d).toBe(24); // 15 spa + 9 external
     expect(m.queries7d).toBe(24); // all four days are within today + 6 prior
     expect(m.byTool).toEqual({ query: 7, search_concerts: 2 }); // external only, summed across days
@@ -188,10 +189,19 @@ describe("assembleMcp", () => {
   });
 
   it("renders the in-SPA side alone when external is empty (instrumentation pending)", () => {
-    const m = assembleMcp([], [{ day: "2026-06-22", n: 12 }], [], now);
+    // externalLive=false models the mcp_queries dataset not existing yet (query rejected).
+    const m = assembleMcp([], [{ day: "2026-06-22", n: 12 }], [], now, false);
     expect(m.bySource).toEqual({ spa: 12, external: 0 });
+    expect(m.externalLive).toBe(false);
     expect(m.byTool).toEqual({});
     expect(m.series).toEqual([{ date: "2026-06-22", spa: 12, external: 0 }]);
+  });
+
+  it("marks external live with zero rows (deployed but a quiet window) distinctly from pending", () => {
+    // The dataset responded (live) but had no external calls in range — must NOT read as pending.
+    const m = assembleMcp([], [{ day: "2026-06-22", n: 12 }], [], now, true);
+    expect(m.bySource.external).toBe(0);
+    expect(m.externalLive).toBe(true);
   });
 
   it("excludes rows older than the 30d window (today + 29 prior) from both planes", () => {
@@ -201,6 +211,7 @@ describe("assembleMcp", () => {
       [{ day: "2026-05-23", n: 99 }],
       [],
       now,
+      true,
     );
     expect(m.bySource).toEqual({ spa: 0, external: 0 });
     expect(m.byTool).toEqual({});
@@ -213,6 +224,7 @@ describe("assembleMcp", () => {
       [{ day: "2026-06-22", n: 3 }], // today
       [],
       now,
+      true,
     );
     expect(m.queries7d).toBe(3); // only today's spa turn
     expect(m.queries30d).toBe(8); // both
@@ -223,7 +235,7 @@ describe("assembleMcp", () => {
       { kind: "artist", n: 856 },
       { kind: "venue", n: 337 },
       { kind: "", n: 9 }, // empty kind dropped
-    ], now);
+    ], now, true);
     expect(m.askExhibitKinds).toEqual({ artist: 856, venue: 337 });
   });
 });

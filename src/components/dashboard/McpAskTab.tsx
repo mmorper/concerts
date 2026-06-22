@@ -137,7 +137,9 @@ function SourceDonut({ spa, external }: { spa: number; external: number }) {
   )
 }
 
-// Multi-line chart: in-SPA + external queries per day. Pure SVG (mirrors DashboardPage's Sparkline).
+// Multi-line chart: in-SPA + external queries per day. Pure SVG. x is positioned by CALENDAR DATE
+// (not array index) so sparse days read truthfully — a 6-day quiet gap is six times wider than a
+// 1-day gap, instead of collapsing to an equal step the way an index-based sparkline would.
 function MultiLine({ series }: { series: McpSection['series'] }) {
   if (series.length < 2)
     return <p className="mt-3 text-sm text-stone-400">Not enough days in range to chart yet.</p>
@@ -145,10 +147,14 @@ function MultiLine({ series }: { series: McpSection['series'] }) {
   const h = 160
   const pad = 6
   const max = Math.max(1, ...series.flatMap((p) => [p.spa, p.external]))
-  const step = (w - pad * 2) / (series.length - 1)
+  const dayNum = (d: string) => Math.round(Date.parse(d) / 86_400_000)
+  // series is sorted ascending by date (assembleMcp); span the x-axis across the real date range.
+  const first = dayNum(series[0].date)
+  const span = Math.max(1, dayNum(series[series.length - 1].date) - first)
+  const x = (d: string) => pad + ((dayNum(d) - first) / span) * (w - pad * 2)
   const path = (key: 'spa' | 'external') =>
     series
-      .map((p, i) => `${(pad + i * step).toFixed(1)},${(h - pad - (p[key] / max) * (h - pad * 2)).toFixed(1)}`)
+      .map((p) => `${x(p.date).toFixed(1)},${(h - pad - (p[key] / max) * (h - pad * 2)).toFixed(1)}`)
       .join(' ')
   const lines = [
     { key: 'spa' as const, label: 'in-SPA (ask)', color: INDIGO },
@@ -199,13 +205,16 @@ function McpAskView({ mcp, ask, ga }: { mcp: McpSection; ask: AskSection | null;
   const { bySource } = mcp
   const total = bySource.spa + bySource.external
   const spaPct = total > 0 ? Math.round((bySource.spa / total) * 100) : 0
-  const externalPending = bySource.external === 0
 
   const toolBars: Bar[] = Object.entries(mcp.byTool)
     .map(([tool, value]) => ({ label: TOOL_LABELS[tool] ?? tool, value }))
     .sort((a, b) => b.value - a.value)
 
   const exhibitTotal = Object.values(mcp.askExhibitKinds).reduce((a, b) => a + b, 0)
+
+  // "Pending" means the collector hasn't responded (not deployed) — NOT merely zero external calls.
+  // Once deployed, a quiet 30d window (external 0, externalLive true) reads as real data, not pending.
+  const externalPending = !mcp.externalLive
 
   const navBars: Bar[] = (ga?.engagement.askNav ?? []).map((x) => ({ label: `→ ${x.name}`, value: x.n }))
   const deepLinksClicked = ga?.engagement.ask['ask_deeplink_clicked'] ?? 0

@@ -75,6 +75,10 @@ export interface McpSection {
   bySource: { spa: number; external: number }
   series: Array<{ date: string; spa: number; external: number }>
   askExhibitKinds: Record<string, number>
+  // false → the mcp_queries collector isn't deployed yet (tab shows "pending instrumentation");
+  // true with external 0 → deployed but a quiet window. Distinguishes the two so a legitimately
+  // quiet month doesn't read as undeployed.
+  externalLive: boolean
 }
 
 // Phase 5 (#175) — Archive Health. One equally-weighted coverage row per enrichment stage,

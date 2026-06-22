@@ -144,7 +144,8 @@
       { "date": "2026-06-20", "spa": 67, "external": 49 },
       { "date": "2026-06-22", "spa": 49, "external": 41 }
     ],
-    "askExhibitKinds": { "artist": 856, "venue": 337, "concert": 209 }
+    "askExhibitKinds": { "artist": 856, "venue": 337, "concert": 209 },
+    "externalLive": true
   },
   "archiveHealth": {
     "lastBuildAt": "2026-06-16T20:31:24.271Z",
