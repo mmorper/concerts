@@ -296,10 +296,14 @@ export function parseCapUsd(raw: string | undefined): number | null {
 
 // ──────────────────────────── Cloudflare GraphQL ─────────────────────────────
 
-// httpRequests1dGroups / workersInvocationsAdaptive return ONE group per UTC day — sum across all
-// of them for the window total (taking [0] would report just a single day, undercounting ~7–30×).
+// Adaptive groups return ONE group per UTC day — sum across all of them for the window total
+// (taking [0] would report just a single day, undercounting ~7–30×).
 function cfSum(groups: Array<{ sum?: { requests?: number } }> | undefined): number {
   return (groups ?? []).reduce((total, g) => total + (g.sum?.requests ?? 0), 0);
+}
+// httpRequestsAdaptiveGroups exposes request volume via `count` (not `sum { requests }`).
+function cfCount(groups: Array<{ count?: number }> | undefined): number {
+  return (groups ?? []).reduce((total, g) => total + (g.count ?? 0), 0);
 }
 
 async function fetchCloudflare(env: Env, nowMs: number): Promise<CloudflareSection> {
@@ -311,8 +315,8 @@ async function fetchCloudflare(env: Env, nowMs: number): Promise<CloudflareSecti
   const dt30 = `${d30}T00:00:00Z`;
   const query = `{
     viewer { accounts(filter: { accountTag: "${env.CF_ACCOUNT_ID}" }) {
-      r7: httpRequests1dGroups(limit: 100, filter: { date_geq: "${d7}" }) { sum { requests } }
-      r30: httpRequests1dGroups(limit: 100, filter: { date_geq: "${d30}" }) { sum { requests } }
+      r7: httpRequestsAdaptiveGroups(limit: 100, filter: { datetime_geq: "${dt7}", edgeResponseStatus_geq: 0 }) { count }
+      r30: httpRequestsAdaptiveGroups(limit: 100, filter: { datetime_geq: "${dt30}", edgeResponseStatus_geq: 0 }) { count }
       w7: workersInvocationsAdaptive(limit: 100, filter: { datetime_geq: "${dt7}" }) { sum { requests } }
       w30: workersInvocationsAdaptive(limit: 100, filter: { datetime_geq: "${dt30}" }) { sum { requests } }
     } }
@@ -325,14 +329,14 @@ async function fetchCloudflare(env: Env, nowMs: number): Promise<CloudflareSecti
   if (!r.ok) throw new Error(`Cloudflare GraphQL ${r.status}`);
   const json = (await r.json()) as {
     errors?: unknown[] | null;
-    data?: { viewer?: { accounts?: Array<Record<string, Array<{ sum?: { requests?: number } }>>> } };
+    data?: { viewer?: { accounts?: Array<Record<string, Array<{ count?: number; sum?: { requests?: number } }>>> } };
   };
   if (json.errors && json.errors.length) throw new Error(`Cloudflare GraphQL: ${JSON.stringify(json.errors)}`);
   const acc = json.data?.viewer?.accounts?.[0];
   if (!acc) throw new Error("Cloudflare GraphQL: no account in response");
   return {
-    requests7d: cfSum(acc.r7),
-    requests30d: cfSum(acc.r30),
+    requests7d: cfCount(acc.r7),
+    requests30d: cfCount(acc.r30),
     workerRequests7d: cfSum(acc.w7),
     workerRequests30d: cfSum(acc.w30),
   };
