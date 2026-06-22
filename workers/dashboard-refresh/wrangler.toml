@@ -18,8 +18,14 @@ id = "<CONCERTS_DASHBOARD_KV_ID>"   # TODO(concerts) — Phase 1 (#171)
 CF_ACCOUNT_ID = "6db8591bbcba4588ae4ef9c3839cd209"
 # Monthly Anthropic spend cap (USD) the trend draws a line at. Mirrors ask-chat ASK_MONTHLY_USD ($25).
 CAP_USD = "25"
+# Phase 3 GA — numeric GA4 property id for G-VKSC8MCN5N (DISCOVER(1), owner console task #170).
+# Leave unset to keep the GA source `not_configured` (the rest of the snapshot is unaffected).
+# GA_PROPERTY = "<CONCERTS_GA4_NUMERIC_PROPERTY_ID>"
 
 # Secrets — set with `npx wrangler secret put <NAME>` (never committed):
-#   CF_API_TOKEN   Account token with Analytics:Read + Account Analytics
-#                  (covers BOTH the GraphQL traffic query AND the ask_turns Analytics Engine SQL API).
-#   REFRESH_KEY    Optional — enables GET /?key=<REFRESH_KEY> to seed/trigger a refresh out of band.
+#   CF_API_TOKEN          Account token with Analytics:Read + Account Analytics
+#                         (covers BOTH the GraphQL traffic query AND the ask_turns Analytics Engine SQL API).
+#   REFRESH_KEY           Optional — enables GET /?key=<REFRESH_KEY> to seed/trigger a refresh out of band.
+#   GA_SA_KEY_JSON        Phase 3 GA — the GA service-account key JSON (client_email + private_key +
+#                         token_uri). Same SA/DWD as the Pitch dashboard; account-level GA Viewer.
+#   GA_IMPERSONATE_SUBJECT Phase 3 GA — optional DWD subject the SA impersonates (a GA-Viewer user).

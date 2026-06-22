@@ -41,6 +41,81 @@
     ],
     "refusalRate30d": 0.061
   },
-  "sourceStatus": { "cloudflare": "ok", "spend": "ok", "ask": "ok" },
+  "ga": {
+    "website": {
+      "sessions7d": 1840,
+      "sessions30d": 7620,
+      "sessions90d": 21450,
+      "byChannel": { "Organic Search": 3980, "Direct": 2110, "Referral": 880, "Organic Social": 650 },
+      "byCountry": { "United States": 5210, "United Kingdom": 720, "Canada": 540, "Germany": 410, "Australia": 320, "France": 220 },
+      "topReferrers": [
+        { "source": "google", "sessions": 3980 },
+        { "source": "(direct)", "sessions": 2110 },
+        { "source": "bsky.app", "sessions": 420 },
+        { "source": "reddit.com", "sessions": 260 }
+      ],
+      "topPages": [
+        { "page": "/?scene=artists", "views": 3205 },
+        { "page": "/?scene=timeline", "views": 2410 },
+        { "page": "/?scene=map", "views": 1880 },
+        { "page": "/?scene=ask", "views": 1190 },
+        { "page": "/?scene=venues", "views": 980 }
+      ]
+    },
+    "engagement": {
+      "byScene": { "artists": 4180, "timeline": 3360, "map": 2540, "genres": 1720, "venues": 1480, "ask": 1190 },
+      "sceneNav": 5240,
+      "deepLinks": 712,
+      "interactions": {
+        "artist_card_opened": 3120,
+        "timeline_card_clicked": 2440,
+        "map_marker_clicked": 1610,
+        "setlist_button_clicked": 1180,
+        "artist_preview_played": 980,
+        "genre_tile_clicked": 720,
+        "tour_badge_clicked": 240
+      },
+      "searches": {
+        "count": 842,
+        "topTerms": [
+          { "term": "depeche", "n": 88 },
+          { "term": "cure", "n": 61 },
+          { "term": "social d", "n": 54 },
+          { "term": "morrissey", "n": 47 },
+          { "term": "u2", "n": 39 },
+          { "term": "pixies", "n": 31 }
+        ]
+      },
+      "audioPreviews": 980,
+      "ask": { "ask_opened": 2210, "ask_question_sent": 1604, "ask_exhibit_shown": 1402, "ask_refused": 98, "ask_error": 4 },
+      "device": { "mobile": 58, "desktop": 42 },
+      "topArtists": [
+        { "name": "Depeche Mode", "n": 312 },
+        { "name": "The Cure", "n": 244 },
+        { "name": "Social Distortion", "n": 188 },
+        { "name": "Morrissey", "n": 141 },
+        { "name": "New Order", "n": 96 }
+      ],
+      "topVenues": [
+        { "name": "The Forum", "n": 210 },
+        { "name": "Hollywood Bowl", "n": 178 },
+        { "name": "The Roxy", "n": 132 },
+        { "name": "Greek Theatre", "n": 97 }
+      ],
+      "topSongs": [
+        { "name": "Just Like Heaven — The Cure", "n": 88 },
+        { "name": "Personal Jesus — Depeche Mode", "n": 81 },
+        { "name": "Story of My Life — Social D", "n": 64 },
+        { "name": "Bizarre Love Triangle — New Order", "n": 58 }
+      ],
+      "topSetlists": [
+        { "name": "Depeche Mode @ The Forum", "n": 96 },
+        { "name": "The Cure @ Hollywood Bowl", "n": 78 },
+        { "name": "Social Distortion @ The Roxy", "n": 61 },
+        { "name": "Morrissey @ Greek Theatre", "n": 47 }
+      ]
+    }
+  },
+  "sourceStatus": { "cloudflare": "ok", "spend": "ok", "ask": "ok", "ga": "ok" },
   "fetchErrors": []
 }

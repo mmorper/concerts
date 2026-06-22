@@ -1,10 +1,18 @@
-# concerts-dashboard-refresh (Phase 1 — #171)
+# concerts-dashboard-refresh (Phase 1 — #171 · Phase 3 GA — #173)
 
-Daily Worker that writes the operator-dashboard snapshot to KV from the two exact, server-side
-sources we already have: **Cloudflare GraphQL** (traffic) + the **`ask_turns`** Analytics Engine
-ledger (spend, ask volume, outcomes, top topics). No GA, no new instrumentation.
+Daily Worker that writes the operator-dashboard snapshot to KV. Sources, each independently
+try/caught:
+- **Cloudflare GraphQL** (traffic / worker requests) + the **`ask_turns`** Analytics Engine ledger
+  (spend, ask volume, outcomes, top topics) — exact, server-side, no sampling (Phase 1).
+- **GA4 Data API** (Phase 3) — website report + the Concerts custom-event taxonomy (scenes, Ask
+  funnel, interactions, search, "what's getting clicked", device split). **Optional:** without
+  `GA_PROPERTY` + `GA_SA_KEY_JSON` the `ga` section is `null` / `sourceStatus.ga = "not_configured"`.
 
 Reads: snapshot → `functions/dashboard/data.ts` (Pages Function) → React `/dashboard` route.
+
+> ⏰ **GA4 custom dimensions are not retroactive.** Register the 7 event-scoped dimensions
+> (artist_name, venue_name, track_name, scene_name, device_type, search_term, target_scene) in the
+> GA console ASAP — the "what's getting clicked" breakdowns only carry data from registration onward.
 
 ## One-time setup
 ```bash
@@ -15,6 +23,9 @@ npx wrangler kv namespace create CONCERTS_DASHBOARD
 npx wrangler secret put CF_API_TOKEN
 #    Optional: enable the manual refresh trigger.
 npx wrangler secret put REFRESH_KEY
+#    Phase 3 GA (optional): set GA_PROPERTY in wrangler.toml, then the SA key (+ optional subject).
+npx wrangler secret put GA_SA_KEY_JSON
+npx wrangler secret put GA_IMPERSONATE_SUBJECT
 
 # 3. Deploy (cron runs 06:00 UTC; or trigger manually with the key).
 npx wrangler deploy
@@ -33,5 +44,5 @@ npm install && npm test   # vitest — covers the pure helpers (normalizeQuery, 
 ```
 
 ## Next phases
-GA engagement (#173), MCP-external instrumentation (#174), Archive Health (#175),
-Topics & Gaps depth / Trends / Development (#176) extend the snapshot contract.
+MCP-external instrumentation (#174), Archive Health (#175), Topics & Gaps depth / Trends /
+Development (#176) extend the snapshot contract.

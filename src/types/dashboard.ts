@@ -29,13 +29,46 @@ export interface AskSection {
   refusalRate30d: number
 }
 
+// Phase 3 (#173) — GA4 website + custom-event engagement. The custom-dimension breakdowns
+// ("what's getting clicked") only carry data from the day their GA4 dimensions were registered.
+export interface GaWebsite {
+  sessions7d: number
+  sessions30d: number
+  sessions90d: number
+  byChannel: Record<string, number>
+  byCountry: Record<string, number>
+  topReferrers: Array<{ source: string; sessions: number }>
+  topPages: Array<{ page: string; views: number }>
+}
+
+export interface GaEngagement {
+  byScene: Record<string, number>
+  sceneNav: number
+  deepLinks: number
+  interactions: Record<string, number>
+  searches: { count: number; topTerms: Array<{ term: string; n: number }> }
+  audioPreviews: number
+  ask: Record<string, number>
+  device: Record<string, number>
+  topArtists: Array<{ name: string; n: number }>
+  topVenues: Array<{ name: string; n: number }>
+  topSongs: Array<{ name: string; n: number }>
+  topSetlists: Array<{ name: string; n: number }>
+}
+
+export interface GaSection {
+  website: GaWebsite
+  engagement: GaEngagement
+}
+
 export interface DashboardSnapshot {
   refreshedAt: string
   dataAge: 'fresh' | 'stale'
   cloudflare: CloudflareSection | null
   spend: SpendSection | null
   ask: AskSection | null
-  sourceStatus: Record<'cloudflare' | 'spend' | 'ask', SourceStatus>
+  ga: GaSection | null
+  sourceStatus: Record<'cloudflare' | 'spend' | 'ask' | 'ga', SourceStatus>
   fetchErrors: string[]
 }
 
