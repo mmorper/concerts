@@ -23,6 +23,10 @@ const BASE = EXPLICIT_BASE
     ? ''
     : PROD_API_ORIGIN
 
+// Origin the ask-chat worker is reachable at. Exported so sibling clients (e.g. the operator
+// dashboard's live admin controls) hit the same worker via the same dev/preview/prod resolution.
+export const ASK_API_BASE = BASE
+
 // The signed session token (HMAC payload.sig), stashed in localStorage. Two ways it lands here:
 //   • prod — exchangeTurnstileForSession() trades a Turnstile token for one (the real gate);
 //   • dev  — pasted from workers/ask-chat/scripts/mint-dev-session.mjs (bypasses Turnstile).

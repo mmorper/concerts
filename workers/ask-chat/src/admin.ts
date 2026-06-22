@@ -4,7 +4,7 @@
 
 import type { Env, AskMode, SpendStatus } from "./types.js";
 import { verifyAccess } from "./access.js";
-import { getMode, setMode } from "./control.js";
+import { getMode, setMode, getAdminIps, setAdminIps } from "./control.js";
 import { spendStatus } from "./cost.js";
 
 const MODES: AskMode[] = ["on", "deterministic-only", "paused"];
@@ -75,11 +75,43 @@ export async function handleAdmin(request: Request, env: Env, url: URL): Promise
   const identity = await verifyAccess(env, request);
   if (!identity.ok) return deny();
 
-  // Flip the mode.
+  // ── JSON API for the operator dashboard (Phase 2 / #172) — same Access gate, no new auth. ──
+
+  // Machine-readable state: mode + today's spend + the admin-IP allowlist.
+  if (url.pathname === "/api/ask/admin/state" && request.method === "GET") {
+    const [mode, spend, adminIps] = await Promise.all([getMode(env), spendStatus(env), getAdminIps(env)]);
+    return Response.json({ mode, spend, adminIps }, { headers: { "Cache-Control": "no-store" } });
+  }
+
+  // Manage the admin-IP allowlist (#158 storage; turn-path enforcement lands with #158).
+  if (url.pathname === "/api/ask/admin/ips" && request.method === "POST") {
+    let body: { op?: string; ip?: string };
+    try {
+      body = (await request.json()) as { op?: string; ip?: string };
+    } catch {
+      return Response.json({ error: "invalid JSON body" }, { status: 400 });
+    }
+    const ip = (body.ip ?? "").trim();
+    if ((body.op !== "add" && body.op !== "remove") || !ip) {
+      return Response.json({ error: "expected { op: 'add' | 'remove', ip }" }, { status: 400 });
+    }
+    const current = await getAdminIps(env);
+    const next = body.op === "add" ? [...current, ip] : current.filter((x) => x !== ip);
+    const adminIps = await setAdminIps(env, next);
+    return Response.json({ adminIps }, { headers: { "Cache-Control": "no-store" } });
+  }
+
+  // Flip the mode. Serves both the HTML page (303 redirect) and the dashboard (?format=json).
   if (url.pathname === "/api/ask/admin/mode" && request.method === "POST") {
     const to = url.searchParams.get("to") as AskMode | null;
     if (to && MODES.includes(to)) {
       await setMode(env, to);
+    }
+    const wantsJson =
+      url.searchParams.get("format") === "json" ||
+      (request.headers.get("accept") ?? "").includes("application/json");
+    if (wantsJson) {
+      return Response.json({ ok: true, mode: await getMode(env) }, { headers: { "Cache-Control": "no-store" } });
     }
     // Re-render the page (PRG: redirect back to the dashboard).
     return new Response(null, { status: 303, headers: { Location: "/api/ask/admin" } });

@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { analytics } from '@/services/analytics'
 import type { DashboardSnapshot } from '@/types/dashboard'
+import { CostControlTab } from './CostControlTab'
 
 // Phase 1 (#171) — Operator MVP. Overview tab only: spend vs cap, traffic, ask volume + topics,
 // from the daily KV snapshot (Cloudflare + ask_turns). Later phases add the remaining tabs.
@@ -65,11 +66,8 @@ function OverviewView({ snapshot }: { snapshot: DashboardSnapshot }) {
 
   return (
     <div className="mx-auto max-w-5xl px-6 pb-20">
-      {/* Header */}
-      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 pt-10">
-        <h1 className="font-serif text-3xl font-semibold tracking-tight text-indigo-950">
-          Concerts — Operator Console
-        </h1>
+      {/* Snapshot meta */}
+      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 pt-2">
         <span className="text-sm text-stone-500">
           Refreshed {relativeTime(refreshedAt)}
           {dataAge === 'stale' && (
@@ -226,9 +224,35 @@ function Centered({ children }: { children: ReactNode }) {
   )
 }
 
+type TabId = 'overview' | 'cost'
+
+const TABS: { id: TabId; label: string }[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'cost', label: 'Cost & Control' },
+]
+
+function OverviewTab({ state }: { state: LoadState }) {
+  return (
+    <>
+      {state.status === 'loading' && <Centered>Loading dashboard…</Centered>}
+      {state.status === 'empty' && (
+        <Centered>
+          No data yet — the first refresh runs at 06:00 UTC.
+          <br />
+          (Seed <code>dashboard:snapshot</code> in KV to preview.)
+        </Centered>
+      )}
+      {state.status === 'error' && <Centered>Couldn’t load the dashboard: {state.message}</Centered>}
+      {state.status === 'ready' && <OverviewView snapshot={state.snapshot} />}
+    </>
+  )
+}
+
 export function DashboardPage() {
   const [state, setState] = useState<LoadState>({ status: 'loading' })
+  const [tab, setTab] = useState<TabId>('overview')
 
+  // Overview snapshot (daily KV plane). The Cost & Control tab loads its own LIVE data.
   useEffect(() => {
     analytics.trackPageView('/dashboard', 'Operator Dashboard')
     let cancelled = false
@@ -260,18 +284,37 @@ export function DashboardPage() {
     }
   }, [])
 
+  const switchTab = (id: TabId) => {
+    setTab(id)
+    analytics.trackEvent('dashboard_tab', { tab: id })
+  }
+
   return (
     <div className="h-screen overflow-y-auto bg-stone-50 font-sans text-stone-900">
-      {state.status === 'loading' && <Centered>Loading dashboard…</Centered>}
-      {state.status === 'empty' && (
-        <Centered>
-          No data yet — the first refresh runs at 06:00 UTC.
-          <br />
-          (Seed <code>dashboard:snapshot</code> in KV to preview.)
-        </Centered>
-      )}
-      {state.status === 'error' && <Centered>Couldn’t load the dashboard: {state.message}</Centered>}
-      {state.status === 'ready' && <OverviewView snapshot={state.snapshot} />}
+      <div className="mx-auto max-w-5xl px-6 pt-10">
+        <h1 className="font-serif text-3xl font-semibold tracking-tight text-indigo-950">
+          Concerts — Operator Console
+        </h1>
+        <nav className="mt-4 flex flex-wrap gap-1 border-b border-stone-200">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => switchTab(t.id)}
+              className={[
+                '-mb-px rounded-t-md border-b-2 px-3.5 py-2.5 text-sm font-semibold transition',
+                tab === t.id
+                  ? 'border-indigo-600 text-indigo-700'
+                  : 'border-transparent text-stone-500 hover:bg-stone-100 hover:text-stone-900',
+              ].join(' ')}
+            >
+              {t.label}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      {tab === 'overview' ? <OverviewTab state={state} /> : <CostControlTab />}
     </div>
   )
 }
