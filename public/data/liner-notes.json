@@ -1,7 +1,66 @@
 {
-  "generatedAt": "2026-06-16T20:31:24.271Z",
-  "dataHash": "e3d47149",
+  "generatedAt": "2026-06-22T13:38:37.273Z",
+  "dataHash": "77b7e968",
   "posts": [
+    {
+      "id": "anniversary-jimmy-buffett-1991-06-21",
+      "slug": "june-21-35-years-since-jimmy-buffett",
+      "category": "personal",
+      "temporality": "timely",
+      "headline": "June 21: 35 Years Since Jimmy Buffett",
+      "prose": "I was at Irvine Meadows on June 21, 1991 — 35 years ago today — and I remember the sun going down over the amphitheater in a way that felt almost staged, like the sky was in on the joke. Jimmy Buffett had been playing that Southern California crowd like a warm ocean current, and somewhere between *Changes In Latitudes* and *Songs You Know By Heart*, the whole place stopped being a concert and started being a backyard party for 15,000 strangers. I didn't own a single piece of Parrothead gear, but I understood it completely by the end of the night. Some shows teach you why a fanbase exists — this was one of them.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/tspqvv1366946673.jpg",
+        "alt": "Jimmy Buffett",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Margaritaville",
+        "artistName": "Jimmy Buffett",
+        "albumName": "Changes In Latitudes, Changes In Attitudes",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/79/1c/b1/791cb108-fdcc-8be5-60d1-7905ba09f23a/mzaf_7276039656148761220.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e9/62/57/e9625701-913c-59a4-6c5e-76c34b3bf103/24UMGIM63090.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/margaritaville/1751417478?i=1751417875&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "jimmy-buffett"
+      ],
+      "venues": [
+        "irvine-meadows"
+      ],
+      "years": [
+        1991
+      ],
+      "tags": [
+        "#anniversary",
+        "#on-this-day"
+      ],
+      "deepLinks": [
+        {
+          "label": "Jimmy Buffett",
+          "url": "/?scene=artists&artist=jimmy-buffett",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=venues&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "1991",
+          "url": "/?scene=timeline&year=1991",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "irvine-meadows-16-shows-before-it-was-demolished",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 44,
+      "detector": "calendar-anniversary",
+      "publishedAt": "2026-06-22T13:38:37.273Z"
+    },
     {
       "id": "rare-sighting-no-doubt",
       "slug": "no-doubt-caught-once-never-again",
@@ -3875,10 +3934,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 51,
-    "totalGenerated": 73,
-    "averageScore": 38.4,
-    "lastPipelineRun": "2026-06-16T20:31:24.271Z",
+    "totalPosts": 52,
+    "totalGenerated": 75,
+    "averageScore": 38.5,
+    "lastPipelineRun": "2026-06-22T13:38:37.273Z",
     "concertsAnalyzed": 180,
     "feedUrl": "/liner-notes.xml"
   }

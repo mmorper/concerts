@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 16 Jun 2026 20:31:24 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 22 Jun 2026 13:38:37 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>June 21: 35 Years Since Jimmy Buffett</title>
+    <link>https://concerts.morperhaus.org/liner-notes/june-21-35-years-since-jimmy-buffett</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/june-21-35-years-since-jimmy-buffett</guid>
+    <pubDate>Mon, 22 Jun 2026 13:38:37 +0000</pubDate>
+    <description>I was at Irvine Meadows on June 21, 1991 — 35 years ago today — and I remember the sun going down over the amphitheater in a way that felt almost staged, like the sky was in on the joke. Jimmy Buffett had been playing that Southern California crowd like a warm ocean current, and somewhere between *Changes In Latitudes* and *Songs You Know By Heart*, the whole place stopped being a concert and started being a backyard party for 15,000 strangers. I didn&apos;t own a single piece of Parrothead gear, but I understood it completely by the end of the night. Some shows teach you why a fanbase exists — this was one of them.</description>
+    <category>#anniversary</category>
+    <category>#on-this-day</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/tspqvv1366946673.jpg" medium="image" />
+  </item>
   <item>
     <title>No Doubt: Caught Once, Never Again</title>
     <link>https://concerts.morperhaus.org/liner-notes/no-doubt-caught-once-never-again</link>
@@ -200,16 +210,6 @@
     <description>I just discovered that The Brian Setzer Orchestra represents my only swing and blues shows in an archive that&apos;s 86% rock, electronic, and reggae. Three shows across 22 years — Hard Rock Cafe in Newport Beach in 1995, Universal Amphitheater in 2002, and the Warner Theatre in DC in 2017 — stand as complete genre outliers in my concert history. It&apos;s fascinating that my musical wandering led me to catch them during three different decades, from the &quot;Dirty Boogie&quot; era through their Christmas tours. Sometimes the most revealing thing about your taste is what doesn&apos;t fit the pattern.</description>
     <category>#genre-outlier</category>
     <category>#jazz-blues</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg" medium="image" />
-  </item>
-  <item>
-    <title>The Brian Setzer Orchestra — Days After The Bends Dropped</title>
-    <link>https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-days-after-the-bends-dropped</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-days-after-the-bends-dropped</guid>
-    <pubDate>Sun, 08 Mar 2026 23:08:41 +0000</pubDate>
-    <description>March 1995 was a pivotal moment in rock history — Radiohead had just released The Bends, the album that signaled they were doing something different from everyone else, and I found myself at the Hard Rock Cafe in Newport Beach just 13 days later watching The Brian Setzer Orchestra swing through their rockabilly revival. While Thom Yorke was pushing guitar music into uncharted emotional territory, I was experiencing the opposite impulse: Brian Setzer&apos;s calculated nostalgia, all pompadour and upright bass, pulling rock back to its 1950s roots. The timing feels like a perfect snapshot of mid-&apos;90s music culture — innovation and retro-fetishism existing in the same two-week span, both trying to solve the problem of what rock could be after grunge.</description>
-    <category>#album-context</category>
-    <category>#cultural-moment</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg" medium="image" />
   </item>
   </channel>
