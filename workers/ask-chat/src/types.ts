@@ -35,6 +35,7 @@ export interface Env {
   TURNSTILE_SECRET?: string; // Turnstile server-side secret (session issuance)
   SESSION_HMAC_KEY?: string; // signs the short-lived session token
   NOTIFY_WEBHOOK_URL?: string; // tripwire push endpoint (ntfy/Pushover-style); optional
+  ASK_ADMIN_IPS?: string; // optional comma-separated break-glass admin IPs (KV admin:ips is primary)
 }
 
 // The reused data layer (workers/mcp-server/src/data.ts) only ever reads env.DATA_BASE_URL,

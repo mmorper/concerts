@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { normalizeIps, getAdminIps, setAdminIps } from "./control.js";
+import { normalizeIps, getAdminIps, setAdminIps, isAdminIp } from "./control.js";
 import type { Env } from "./types.js";
 
 // A minimal Map-backed KVNamespace stand-in — control.ts only ever calls get/put. Pure in-memory,
@@ -89,5 +89,29 @@ describe("setAdminIps", () => {
     const kv = fakeKv({ "admin:ips": JSON.stringify(["1.1.1.1"]) });
     expect(await setAdminIps(envWith(kv), [])).toEqual([]);
     expect(await getAdminIps(envWith(kv))).toEqual([]);
+  });
+});
+
+describe("isAdminIp (turn-path bypass)", () => {
+  // setAdminIps() clears the module memo, so each test starts from a known cache state.
+  it("bypasses a listed IP but not an unlisted one", async () => {
+    const env = envWith(fakeKv());
+    await setAdminIps(env, ["1.2.3.4"]);
+    expect(await isAdminIp(env, "1.2.3.4")).toBe(true);
+    expect(await isAdminIp(env, "9.9.9.9")).toBe(false);
+  });
+
+  it("never bypasses for unknown/empty IPs (fail-safe)", async () => {
+    const env = envWith(fakeKv());
+    await setAdminIps(env, ["1.2.3.4"]);
+    expect(await isAdminIp(env, "unknown")).toBe(false);
+    expect(await isAdminIp(env, "")).toBe(false);
+  });
+
+  it("unions the ASK_ADMIN_IPS break-glass env with the KV list", async () => {
+    const env = { ASK_CONTROL: fakeKv(), ASK_ADMIN_IPS: "5.5.5.5, 6.6.6.6" } as unknown as Env;
+    await setAdminIps(env, ["1.2.3.4"]); // KV path
+    expect(await isAdminIp(env, "1.2.3.4")).toBe(true); // from KV
+    expect(await isAdminIp(env, "6.6.6.6")).toBe(true); // from env bootstrap
   });
 });
