@@ -28,7 +28,14 @@ export interface DashboardSnapshot {
   ga: GaSection | null; // Phase 3 (#173) — GA4 website + custom-event engagement
   mcp: McpSection | null; // Phase 4 (#174) — ask_turns (in-SPA) ∪ mcp_queries (external clients)
   archiveHealth: ArchiveHealthSection | null; // Phase 5 (#175) — enrichment coverage
-  sourceStatus: Record<"cloudflare" | "spend" | "ask" | "ga" | "mcp" | "archiveHealth", SourceStatus>;
+  topics: TopicsSection | null; // Phase 6 (#176) — Topics & Gaps depth (ask_turns + GA search)
+  trends: TrendsSection | null; // Phase 6 (#176) — per-day series from dashboard:history:*
+  github: GitHubSection | null; // Phase 6 (#176) — Development tab (optional GH_TOKEN)
+  monitoring: MonitoringSection | null; // Phase 6 (#176) — 5xx + ask/mcp error outcomes
+  sourceStatus: Record<
+    "cloudflare" | "spend" | "ask" | "ga" | "mcp" | "archiveHealth" | "topics" | "trends" | "github" | "monitoring",
+    SourceStatus
+  >;
   fetchErrors: string[];
 }
 
@@ -92,6 +99,7 @@ export interface GaEngagement {
 export interface GaSection {
   website: GaWebsite;
   engagement: GaEngagement;
+  daily: Array<{ date: string; sessions: number }>; // Phase 6 (#176) — per-day sessions (30d) for Trends
 }
 
 // Phase 4 (#174) — MCP & Ask telemetry. Unions the two planes that can drive the archive's tools:
@@ -129,6 +137,64 @@ export interface ArchiveHealthSection {
   artists: number; // unique headliners + openers
   venues: number;
   stages: ArchiveStage[];
+  // Phase 6 (#176) — per-headliner enrichment % (genre · photo · previews · discography), keyed by
+  // slug. Powers the Demand×Coverage quadrant: join against GA's most-clicked artists (popularity).
+  coverageByArtist: Record<string, number>;
+}
+
+// Phase 6 (#176) — Topics & Gaps. Derived from the ask_turns query ledger (intent, gaps, wishlist)
+// plus GA search events (zero-result searches, suggested-prompt CTR). Intent is a cheap rule-based
+// bucketing of query text — NOT an LLM classifier (the spec's deliberate over-engineering cut). The
+// gap/wishlist split is heuristic ("flavor, not fact", spec Appendix D): a refused/no-exhibit
+// question that names a known artist/venue is a content GAP (we have the entity, couldn't answer);
+// one that doesn't is a WISHLIST item (asked about a show not in the archive). GA-fed panels stay
+// empty until the search_term / prompt GA4 custom dimensions are registered (not retroactive).
+export interface TopicsSection {
+  questions30d: number; // total ask_turns this window
+  answeredRate30d: number; // answered+deterministic / total
+  refusalRate30d: number; // refused / total
+  askTopics: Array<{ term: string; n: number }>; // most-asked, normalized top-N
+  intentMix: Record<string, number>; // rule-based intent bucket → count
+  exhibitKinds: Record<string, number>; // artist/venue/concert/none
+  contentGaps: Array<{ term: string; n: number }>; // refused, entity exists
+  wishlist: Array<{ term: string; n: number }>; // refused, entity not in archive
+  searchTerms: Array<{ term: string; n: number }>; // GA artist_search_performed.search_term
+  zeroResultSearches: Array<{ term: string; n: number }>; // GA searches with results_found = 0
+  suggestedPrompts: Array<{ prompt: string; n: number }>; // GA ask_suggested_prompt_clicked.prompt
+}
+
+// Phase 6 (#176) — Trends. A per-day union of the three daily sources already in the snapshot: GA
+// sessions (retroactive 30d), MCP queries (mcp.series), and ask_turns spend (spend.series). No KV
+// accumulation — sessions/spend back-fill 30 days immediately; only the external-MCP slice is
+// forward-only (it accrues from the day mcp-server's collector is deployed). One point per UTC day.
+export interface TrendPoint {
+  date: string; // YYYY-MM-DD
+  sessions: number; // GA website sessions that day (0 if GA absent)
+  mcpQueries: number; // spa + external queries that day
+  spendUsd: number; // ask_turns cost that day
+}
+
+export interface TrendsSection {
+  series: TrendPoint[]; // chronological, last ~90 days
+}
+
+// Phase 6 (#176) — Development tab. Trim-down of the Pitch fetchGitHub: commit velocity, open issues
+// by label, recent merged PRs for mmorper/concerts. Optional GH_TOKEN — absent → section null.
+export interface GitHubSection {
+  velocity: { commitsLast7d: number; commitsLast30d: number; mergedPrsLast30d: number };
+  issues: { open: number; byLabel: Record<string, number> };
+  recentPrs: Array<{ number: number; title: string; mergedAt: string }>;
+}
+
+// Phase 6 (#176) — Monitoring. Edge/worker 5xx from CF GraphQL + ask/mcp error & refusal counts read
+// straight from the AE ledgers (its own queries, per the per-source-isolation model). The CF 5xx call
+// is required; the ask/mcp error counts are best-effort (→ 0).
+export interface MonitoringSection {
+  edge5xx30d: number;
+  worker5xx30d: number;
+  askErrors30d: number;
+  askRefusals30d: number;
+  mcpErrors30d: number;
 }
 
 export interface Env {
@@ -148,6 +214,8 @@ export interface Env {
   GA_IMPERSONATE_SUBJECT?: string;
   /** Phase 5 — base URL the generated public/data/*.json are served from (no trailing slash). */
   DATA_BASE_URL?: string;
+  /** Phase 6 — optional GitHub token (repo:read) for the Development tab. Absent → section hidden. */
+  GH_TOKEN?: string;
 }
 
 const SNAPSHOT_KEY = "dashboard:snapshot";
@@ -607,11 +675,17 @@ async function fetchGA(env: Env): Promise<GaSection> {
     // Phase 4 (#174) — Ask-as-navigation: ask_deeplink_clicked by target_scene (the MCP & Ask tab).
     { dateRanges: [dr(30)], dimensions: [{ name: "customEvent:target_scene" }], metrics: [ec], dimensionFilter: eventFilter(["ask_deeplink_clicked"]), orderBys: orderByMetric("eventCount"), limit: 8 },
   ];
+  // Phase 6 (#176) — per-day sessions for the Trends tab. `date` is a standard (retroactive) GA
+  // dimension — no custom dimension needed, so this back-fills the last 30 days immediately.
+  const dailyReqs = [
+    { dateRanges: [dr(30)], dimensions: [{ name: "date" }], metrics: [{ name: "sessions" }], orderBys: [{ dimension: { dimensionName: "date" }, desc: false }], limit: 40 },
+  ];
 
-  const [web, events, clicked] = await Promise.all([
+  const [web, events, clicked, daily] = await Promise.all([
     gaBatch(token, property, websiteReqs),
     gaBatch(token, property, eventReqs),
     gaBatch(token, property, clickedReqs),
+    gaBatch(token, property, dailyReqs),
   ]);
 
   const allEvents = gaRecord(events[0]);
@@ -643,8 +717,15 @@ async function fetchGA(env: Env): Promise<GaSection> {
       topSetlists: gaTopN(clicked[2], 8),
       askNav: gaTopN(clicked[3], 8),
     },
+    daily: (daily[0].rows ?? [])
+      .map((r) => ({ date: gaDate(r.dimensionValues?.[0]?.value), sessions: numOf(r.metricValues?.[0]?.value) }))
+      .filter((x) => x.date),
   };
 }
+
+/** GA `date` dimension is YYYYMMDD — normalize to the ISO YYYY-MM-DD the rest of the snapshot uses. */
+const gaDate = (s?: string): string =>
+  s && /^\d{8}$/.test(s) ? `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}` : "";
 
 // ──────────────────────────── MCP & Ask (Phase 4) ─────────────────────────────
 // Two AE tables, unioned: mcp_queries (external clients — net-new, may not exist until mcp-server
@@ -843,6 +924,19 @@ export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
     }
   }
 
+  // Per-headliner enrichment % over four equally-weighted signals (genre · photo · ≥2 previews ·
+  // ≥1 album). Headliners only — those are the artists GA's artist_card_opened tracks (the demand
+  // axis of the Demand×Coverage quadrant).
+  const coverageByArtist: Record<string, number> = {};
+  for (const a of headlinerList) {
+    let signals = 0;
+    if (hasGenre(a)) signals++;
+    if (am[a]?.image) signals++;
+    if (previewCount(a) >= 2) signals++;
+    if ((disco[a]?.albums?.length ?? 0) > 0) signals++;
+    coverageByArtist[a] = Math.round((signals / 4) * 100);
+  }
+
   // 8. Liner notes — published findings / analyzed findings.
   const ln = d["liner-notes"].metadata ?? {};
   const published = ln.totalPosts ?? 0;
@@ -875,6 +969,7 @@ export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
     artists: artistCount,
     venues: venueVals.length,
     stages,
+    coverageByArtist,
   };
 }
 
@@ -891,6 +986,270 @@ async function fetchArchiveHealth(env: Env): Promise<ArchiveHealthSection> {
   return computeArchiveHealth(data);
 }
 
+// ──────────────────────────── Topics & Gaps (Phase 6) ─────────────────────────────
+// Derived from the ask_turns ledger. Intent is rule-based bucketing of the question text (the spec's
+// "top-N frequency, no LLM classifier" cut). The gap/wishlist split is heuristic: a refused/no-exhibit
+// question that names a known artist/venue is a content GAP; one that doesn't is a WISHLIST item.
+
+// Order matters — earlier rules win. "Counting" precedes "Have you seen…" so that
+// "how many times did you see X" reads as counting, not a have-you-seen question.
+const INTENT_RULES: Array<[string, RegExp]> = [
+  ["Counting / stats", /\bhow many\b|\bhow often\b|\bnumber of\b|\bcount\b|\bmost\b|\btotal\b|\bhow much\b/],
+  ["Have you seen…", /\b(have|did) you (ever )?(see|seen|been to)\b|\bever seen\b/],
+  ["On this day", /\bon this (day|date)\b|\btoday\b/],
+  ["Comparison", /\b(vs|versus|compared? to|more than|better than)\b/],
+  ["Recommendation", /\brecommend|\bsuggest|\bshould i\b|\bwhat should\b|\bbest\b/],
+  ["Lookup", /\bwho\b|\bwhen\b|\bwhere\b|\bwhich\b|\bwhat (year|venue|city|date)\b/],
+];
+
+/** Cheap rule-based intent bucket for a question (first matching rule wins; else "Other"). */
+export function classifyIntent(query: string): string {
+  const s = query.toLowerCase();
+  for (const [label, re] of INTENT_RULES) if (re.test(s)) return label;
+  return "Other";
+}
+
+export interface AskTopicRow {
+  q: string;
+  outcome: string;
+  kind: string;
+  n: number;
+}
+
+export function assembleTopics(rows: AskTopicRow[], archiveNames: string[], nowMs: number): TopicsSection {
+  void nowMs; // window is applied in SQL; topics are approximate (no per-day re-window)
+  // Normalize the archive names the SAME way as the query text (refusedAgg keys are normalizeQuery'd)
+  // so the gap/wishlist match compares like with like — otherwise a punctuated name ("Guns N' Roses")
+  // never matches its stripped query form ("guns n roses").
+  const normNames = [...new Set(archiveNames.map(normalizeQuery))].filter((n) => n.length > 1);
+  let total = 0,
+    answered = 0,
+    refused = 0;
+  const intentMix: Record<string, number> = {};
+  const exhibitKinds: Record<string, number> = {};
+  const refusedAgg = new Map<string, number>(); // normalized question → count (gap/wishlist candidates)
+
+  for (const r of rows) {
+    total += r.n;
+    if (r.outcome === "answered" || r.outcome === "deterministic") answered += r.n;
+    if (r.outcome === "refused") refused += r.n;
+    const intent = classifyIntent(r.q);
+    intentMix[intent] = (intentMix[intent] ?? 0) + r.n;
+    const kind = r.kind || "none";
+    exhibitKinds[kind] = (exhibitKinds[kind] ?? 0) + r.n;
+    // A question we couldn't answer with an exhibit is a gap/wishlist candidate.
+    if (r.outcome === "refused" || kind === "none") {
+      const key = normalizeQuery(r.q);
+      if (key) refusedAgg.set(key, (refusedAgg.get(key) ?? 0) + r.n);
+    }
+  }
+
+  const gaps: Array<{ term: string; n: number }> = [];
+  const wishlist: Array<{ term: string; n: number }> = [];
+  for (const [term, n] of refusedAgg) {
+    // Whole-word match (padded) so a known name counts only as a standalone token — avoids short
+    // names ("u2", "air") substring-matching unrelated words.
+    const padded = ` ${term} `;
+    const namesAKnown = normNames.some((name) => padded.includes(` ${name} `));
+    (namesAKnown ? gaps : wishlist).push({ term, n });
+  }
+  const byN = (a: { n: number }, b: { n: number }) => b.n - a.n;
+
+  return {
+    questions30d: total,
+    answeredRate30d: total ? answered / total : 0,
+    refusalRate30d: total ? refused / total : 0,
+    askTopics: topTopics(
+      rows.map((r) => ({ q: r.q, n: r.n })),
+      10,
+    ),
+    intentMix,
+    exhibitKinds,
+    contentGaps: gaps.sort(byN).slice(0, 8),
+    wishlist: wishlist.sort(byN).slice(0, 8),
+    searchTerms: [], // filled from the GA section in buildSnapshot (if GA is configured)
+    zeroResultSearches: [], // pending the `results_found` GA4 custom dimension (not in the current set)
+    suggestedPrompts: [], // pending the `prompt` GA4 custom dimension (not in the current set)
+  };
+}
+
+/** Lowercased headliner / opener / venue names from concerts.json — the gap-vs-wishlist test set. */
+async function fetchArchiveNames(env: Env): Promise<string[]> {
+  const base = (env.DATA_BASE_URL ?? "https://concerts.morperhaus.org/data").replace(/\/$/, "");
+  const r = await fetch(`${base}/concerts.json`);
+  if (!r.ok) throw new Error(`concerts.json ${r.status}`);
+  const data = (await r.json()) as {
+    concerts?: Array<{ headliner?: string; venue?: string; openers?: string[] }>;
+  };
+  const set = new Set<string>();
+  for (const c of data.concerts ?? []) {
+    if (c.headliner) set.add(c.headliner.toLowerCase());
+    if (c.venue) set.add(c.venue.toLowerCase());
+    for (const o of c.openers ?? []) if (o) set.add(o.toLowerCase());
+  }
+  return [...set];
+}
+
+async function fetchTopics(env: Env, nowMs: number): Promise<TopicsSection> {
+  const rowsP = aeSql<{ q: string; outcome: string; kind: string; n: string }>(
+    env,
+    `SELECT blob2 AS q, blob4 AS outcome, blob3 AS kind, SUM(_sample_interval) AS n
+     FROM ask_turns
+     WHERE timestamp >= NOW() - INTERVAL '30' DAY AND blob2 != ''
+     GROUP BY q, outcome, kind`,
+  );
+  // Archive names are best-effort: without them the gap/wishlist split degrades (everything reads as
+  // wishlist) but the rest of the section is unaffected.
+  const namesP = fetchArchiveNames(env).catch((): string[] => []);
+  const [rows, names] = await Promise.all([rowsP, namesP]);
+  return assembleTopics(
+    rows.map((r) => ({ q: r.q, outcome: r.outcome, kind: r.kind, n: numOf(r.n) })),
+    names,
+    nowMs,
+  );
+}
+
+// ──────────────────────────── Trends (Phase 6) ─────────────────────────────
+// One per-day series unioned from the three daily sources already in the snapshot: GA sessions
+// (retroactive 30d), MCP queries (mcp.series), and ask_turns spend (spend.series). No KV
+// accumulation — sessions/spend back-fill 30d immediately; only the external-MCP slice is forward-only.
+
+export function assembleTrends(
+  gaDaily: Array<{ date: string; sessions: number }>,
+  mcpSeries: Array<{ date: string; spa: number; external: number }>,
+  spendSeries: Array<{ date: string; costUsd: number }>,
+): TrendsSection {
+  const map = new Map<string, TrendPoint>();
+  const at = (date: string): TrendPoint => {
+    let p = map.get(date);
+    if (!p) {
+      p = { date, sessions: 0, mcpQueries: 0, spendUsd: 0 };
+      map.set(date, p);
+    }
+    return p;
+  };
+  for (const d of gaDaily) if (d.date) at(d.date).sessions += d.sessions;
+  for (const m of mcpSeries) at(m.date).mcpQueries += m.spa + m.external;
+  for (const s of spendSeries) at(s.date).spendUsd += s.costUsd;
+  return { series: [...map.values()].sort((a, b) => (a.date < b.date ? -1 : 1)) };
+}
+
+// ──────────────────────────── Development / GitHub (Phase 6) ─────────────────────────────
+// Trim-down of the Pitch fetchGitHub. Optional GH_TOKEN; absent → the section stays not_configured.
+
+const GH_REPO = "mmorper/concerts";
+
+async function fetchGitHub(env: Env, nowMs: number): Promise<GitHubSection> {
+  const headers = {
+    Authorization: `Bearer ${env.GH_TOKEN}`,
+    "User-Agent": "concerts-dashboard-refresh",
+    Accept: "application/vnd.github+json",
+  };
+  const gh = async <T>(path: string): Promise<{ body: T; link: string | null }> => {
+    const r = await fetch(`https://api.github.com/repos/${GH_REPO}${path}`, { headers });
+    if (!r.ok) throw new Error(`GitHub ${path} ${r.status}`);
+    return { body: (await r.json()) as T, link: r.headers.get("link") };
+  };
+  // Exact count without fetching every row: request one item and read the `rel="last"` page number
+  // from the Link header (= the total count). Falls back to the page length when there's no Link
+  // header (≤1 page).
+  const ghCount = async (path: string): Promise<number> => {
+    const sep = path.includes("?") ? "&" : "?";
+    const { body, link } = await gh<unknown[]>(`${path}${sep}per_page=1`);
+    const last = link?.match(/[?&]page=(\d+)[^>]*>;\s*rel="last"/);
+    return last ? Number(last[1]) : body.length;
+  };
+  const since7 = new Date(nowMs - 7 * DAY_MS).toISOString();
+  const since30 = new Date(nowMs - 30 * DAY_MS).toISOString();
+  type Issue = { pull_request?: unknown; labels?: Array<{ name: string }> };
+  type Pull = { number: number; title: string; merged_at: string | null };
+
+  const [commits7d, commits30d, issuesRes, pullsRes] = await Promise.all([
+    ghCount(`/commits?since=${since7}`),
+    ghCount(`/commits?since=${since30}`),
+    gh<Issue[]>(`/issues?state=open&per_page=100`),
+    gh<Pull[]>(`/pulls?state=closed&per_page=50&sort=updated&direction=desc`),
+  ]);
+
+  // The issues endpoint returns PRs too — drop anything carrying a pull_request key.
+  const realIssues = issuesRes.body.filter((i) => !i.pull_request);
+  const byLabel: Record<string, number> = {};
+  for (const i of realIssues) for (const l of i.labels ?? []) byLabel[l.name] = (byLabel[l.name] ?? 0) + 1;
+
+  // Sort merged PRs by merge time (the API only sorts by `updated`, which a late comment can bump).
+  const merged = pullsRes.body
+    .filter((p) => p.merged_at)
+    .sort((a, b) => (b.merged_at as string).localeCompare(a.merged_at as string));
+  const mergedLast30d = merged.filter((p) => (p.merged_at as string) >= since30).length;
+
+  return {
+    velocity: { commitsLast7d: commits7d, commitsLast30d: commits30d, mergedPrsLast30d: mergedLast30d },
+    issues: { open: realIssues.length, byLabel },
+    recentPrs: merged
+      .slice(0, 8)
+      .map((p) => ({ number: p.number, title: p.title, mergedAt: p.merged_at as string })),
+  };
+}
+
+// ──────────────────────────── Monitoring (Phase 6) ─────────────────────────────
+// Edge/worker 5xx from CF GraphQL + ask/mcp error & refusal counts. Every sub-query is best-effort
+// (→ 0) so a single dead dataset never blanks the section. NOTE: the CF 5xx dataset/field names
+// should be re-verified against current CF GraphQL on first hydration (spec Data sources #2).
+
+async function fetchMonitoring(env: Env, nowMs: number): Promise<MonitoringSection> {
+  const dt30 = `${isoDay(nowMs - 29 * DAY_MS)}T00:00:00Z`;
+  const cfQuery = `{
+    viewer { accounts(filter: { accountTag: "${env.CF_ACCOUNT_ID}" }) {
+      edge: httpRequestsAdaptiveGroups(limit: 100, filter: { datetime_geq: "${dt30}", edgeResponseStatus_geq: 500 }) { count }
+      worker: workersInvocationsAdaptive(limit: 100, filter: { datetime_geq: "${dt30}" }) { sum { errors } }
+    } }
+  }`;
+  // The CF 5xx call is NOT swallowed: if it fails (bad token, wrong field names), fetchMonitoring
+  // throws → sourceStatus.monitoring = "error". Swallowing it would render an all-zero "all clear"
+  // board during an actual outage of the telemetry meant to surface errors.
+  const cfP = fetch(CF_GRAPHQL, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${env.CF_API_TOKEN}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ query: cfQuery }),
+  }).then(async (r) => {
+    if (!r.ok) throw new Error(`CF 5xx ${r.status}`);
+    const j = (await r.json()) as {
+      errors?: unknown[] | null;
+      data?: { viewer?: { accounts?: Array<{ edge?: Array<{ count?: number }>; worker?: Array<{ sum?: { errors?: number } }> }> } };
+    };
+    if (j.errors && j.errors.length) throw new Error(`CF 5xx: ${JSON.stringify(j.errors)}`);
+    const acc = j.data?.viewer?.accounts?.[0];
+    const edge = (acc?.edge ?? []).reduce((t, g) => t + (g.count ?? 0), 0);
+    const worker = (acc?.worker ?? []).reduce((t, g) => t + (g.sum?.errors ?? 0), 0);
+    return { edge, worker };
+  });
+
+  const askP = aeSql<{ outcome: string; n: string }>(
+    env,
+    `SELECT blob4 AS outcome, SUM(_sample_interval) AS n
+     FROM ask_turns
+     WHERE timestamp >= NOW() - INTERVAL '30' DAY AND blob4 IN ('error', 'refused')
+     GROUP BY outcome`,
+  ).catch((): Array<{ outcome: string; n: string }> => []);
+  const mcpP = aeSql<{ n: string }>(
+    env,
+    `SELECT SUM(_sample_interval) AS n FROM mcp_queries
+     WHERE timestamp >= NOW() - INTERVAL '30' DAY AND blob4 = 'error'`,
+  ).catch((): Array<{ n: string }> => []);
+
+  const [cf, ask, mcp] = await Promise.all([cfP, askP, mcpP]);
+  const byOutcome: Record<string, number> = {};
+  for (const r of ask) byOutcome[r.outcome] = numOf(r.n);
+
+  return {
+    edge5xx30d: cf.edge,
+    worker5xx30d: cf.worker,
+    askErrors30d: byOutcome["error"] ?? 0,
+    askRefusals30d: byOutcome["refused"] ?? 0,
+    mcpErrors30d: numOf(mcp[0]?.n),
+  };
+}
+
 // ──────────────────────────── snapshot assembly ─────────────────────────────
 
 export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promise<DashboardSnapshot> {
@@ -901,6 +1260,9 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
   let ga: GaSection | null = null;
   let mcp: McpSection | null = null;
   let archiveHealth: ArchiveHealthSection | null = null;
+  let topics: TopicsSection | null = null;
+  let github: GitHubSection | null = null;
+  let monitoring: MonitoringSection | null = null;
   const sourceStatus: DashboardSnapshot["sourceStatus"] = {
     cloudflare: "error",
     spend: "error",
@@ -908,6 +1270,10 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
     ga: "not_configured", // GA creds are optional — stays not_configured until they land
     mcp: "error",
     archiveHealth: "error",
+    topics: "error",
+    trends: "ok", // derived locally from other sections — never a fetch of its own
+    github: "not_configured", // GH_TOKEN is optional — stays not_configured until it lands
+    monitoring: "error",
   };
   const msg = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
@@ -933,7 +1299,33 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
     fetchArchiveHealth(env)
       .then((h) => { archiveHealth = h; sourceStatus.archiveHealth = "ok"; })
       .catch((e) => { fetchErrors.push(`Archive health unavailable — ${msg(e)}`); }),
+    fetchTopics(env, nowMs)
+      .then((t) => { topics = t; sourceStatus.topics = "ok"; })
+      .catch((e) => { fetchErrors.push(`Topics unavailable — ${msg(e)}`); }),
+    fetchMonitoring(env, nowMs)
+      .then((m) => { monitoring = m; sourceStatus.monitoring = "ok"; })
+      .catch((e) => { fetchErrors.push(`Monitoring unavailable — ${msg(e)}`); }),
+    // GitHub is optional like GA: no token → not_configured; a live failure → error.
+    env.GH_TOKEN
+      ? fetchGitHub(env, nowMs)
+          .then((g) => { github = g; sourceStatus.github = "ok"; })
+          .catch((e) => { sourceStatus.github = "error"; fetchErrors.push(`GitHub unavailable — ${msg(e)}`); })
+      : Promise.resolve(),
   ]);
+
+  // Trends unions the daily sources just fetched (no fetch of its own). Topics borrows GA search
+  // terms when GA is configured — the rest of Topics is already assembled from ask_turns.
+  // (The sources are assigned inside the Promise.all callbacks above, so TS can't see they're set —
+  // re-widen them to read the daily series back out.)
+  const gaOut = ga as GaSection | null;
+  const trends = assembleTrends(
+    gaOut?.daily ?? [],
+    (mcp as McpSection | null)?.series ?? [],
+    (spend as SpendSection | null)?.series ?? [],
+  );
+  if (topics && gaOut) {
+    (topics as TopicsSection).searchTerms = gaOut.engagement.searches.topTerms;
+  }
 
   return {
     refreshedAt: new Date(nowMs).toISOString(),
@@ -944,6 +1336,10 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
     ga,
     mcp,
     archiveHealth,
+    topics,
+    trends,
+    github,
+    monitoring,
     sourceStatus,
     fetchErrors,
   };

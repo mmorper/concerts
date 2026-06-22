@@ -5,10 +5,13 @@ import { CostControlTab } from './CostControlTab'
 import { EngagementTab, type SnapshotLoadState } from './EngagementTab'
 import { McpAskTab } from './McpAskTab'
 import { ArchiveHealthTab } from './ArchiveHealthTab'
+import { TopicsGapsTab } from './TopicsGapsTab'
+import { TrendsTab } from './TrendsTab'
+import { DevelopmentTab } from './DevelopmentTab'
 
-// Phase 1 (#171) Overview + Phase 2 (#172) Cost & Control + Phase 3 (#173) Engagement (GA4) +
-// Phase 4 (#174) MCP & Ask + Phase 5 (#175) Archive Health. Overview / Engagement / MCP & Ask /
-// Archive Health read the daily KV snapshot; Cost & Control reads the live ask-chat admin API.
+// Phases 1–6 (Epic #159). Overview · Cost & Control · Engagement · MCP & Ask · Archive Health ·
+// Topics & Gaps · Trends · Development. All snapshot tabs read the daily KV plane; Cost & Control
+// reads the live ask-chat admin API.
 
 // Snapshot load-state (the daily KV plane), shared with the Engagement tab.
 type LoadState = SnapshotLoadState
@@ -59,8 +62,32 @@ function Label({ children }: { children: ReactNode }) {
   return <div className="text-xs font-semibold uppercase tracking-wide text-stone-500">{children}</div>
 }
 
+function MiniBar({ data }: { data: Array<[string, number]> }) {
+  if (data.length === 0) return <p className="mt-3 text-sm text-stone-400">No data in range.</p>
+  const max = Math.max(1, ...data.map(([, v]) => v))
+  return (
+    <div className="mt-3 space-y-2">
+      {data.map(([label, v]) => (
+        <div key={label}>
+          <div className="flex items-baseline justify-between gap-2 text-sm">
+            <span className="truncate text-stone-600">{label}</span>
+            <span className="font-semibold tabular-nums text-indigo-950">{fmtInt(v)}</span>
+          </div>
+          <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-stone-100">
+            <div className="h-full rounded-full bg-indigo-600" style={{ width: `${(v / max) * 100}%` }} />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function OverviewView({ snapshot }: { snapshot: DashboardSnapshot }) {
-  const { spend, cloudflare, ask, sourceStatus, fetchErrors, dataAge, refreshedAt } = snapshot
+  const { spend, cloudflare, ask, ga, monitoring, sourceStatus, fetchErrors, dataAge, refreshedAt } = snapshot
+  const topN = (rec: Record<string, number>, n: number): Array<[string, number]> =>
+    Object.entries(rec)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, n)
   const capPct =
     spend && spend.capUsd ? Math.min(100, (spend.costUsdMonthToDate / spend.capUsd) * 100) : 0
   const capColor = capPct >= 100 ? 'bg-red-500' : capPct >= 75 ? 'bg-amber-500' : 'bg-indigo-600'
@@ -189,6 +216,57 @@ function OverviewView({ snapshot }: { snapshot: DashboardSnapshot }) {
         </Card>
       </div>
 
+      {/* Reliability glance (Phase 6 monitoring) */}
+      {monitoring && (
+        <div className="mt-4">
+          <Card>
+            <Label>Reliability · 30d</Label>
+            <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-5">
+              {[
+                ['Edge 5xx', monitoring.edge5xx30d],
+                ['Worker 5xx', monitoring.worker5xx30d],
+                ['Ask errors', monitoring.askErrors30d],
+                ['Ask refusals', monitoring.askRefusals30d],
+                ['MCP errors', monitoring.mcpErrors30d],
+              ].map(([label, n]) => (
+                <div key={label as string} className="rounded-xl bg-stone-50 py-3 text-center">
+                  <div
+                    className={`font-serif text-2xl font-semibold ${
+                      (n as number) > 0 ? 'text-amber-700' : 'text-indigo-950'
+                    }`}
+                  >
+                    {fmtInt(n as number)}
+                  </div>
+                  <div className="text-xs uppercase tracking-wide text-stone-400">{label}</div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {/* GA website report (Phase 3 panels surfaced on Overview — deferred fast-follow) */}
+      {ga && (
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <Card>
+            <Label>Sessions by channel · 30d</Label>
+            <MiniBar data={topN(ga.website.byChannel, 6)} />
+          </Card>
+          <Card>
+            <Label>Top countries · 30d</Label>
+            <MiniBar data={topN(ga.website.byCountry, 6)} />
+          </Card>
+          <Card>
+            <Label>Top pages · 30d</Label>
+            <MiniBar data={ga.website.topPages.slice(0, 6).map((p) => [p.page, p.views] as [string, number])} />
+          </Card>
+          <Card>
+            <Label>Referring traffic · 30d</Label>
+            <MiniBar data={ga.website.topReferrers.slice(0, 6).map((r) => [r.source, r.sessions] as [string, number])} />
+          </Card>
+        </div>
+      )}
+
       {/* Source status */}
       <div className="mt-4">
         <Card>
@@ -225,7 +303,7 @@ function Centered({ children }: { children: ReactNode }) {
   )
 }
 
-type TabId = 'overview' | 'cost' | 'engagement' | 'mcp' | 'archive'
+type TabId = 'overview' | 'cost' | 'engagement' | 'mcp' | 'archive' | 'topics' | 'trends' | 'dev'
 
 const TABS: { id: TabId; label: string }[] = [
   { id: 'overview', label: 'Overview' },
@@ -233,6 +311,9 @@ const TABS: { id: TabId; label: string }[] = [
   { id: 'engagement', label: 'Engagement' },
   { id: 'mcp', label: 'MCP & Ask' },
   { id: 'archive', label: 'Archive Health' },
+  { id: 'topics', label: 'Topics & Gaps' },
+  { id: 'trends', label: 'Trends' },
+  { id: 'dev', label: 'Development' },
 ]
 
 function OverviewTab({ state }: { state: LoadState }) {
@@ -323,6 +404,9 @@ export function DashboardPage() {
       {tab === 'engagement' && <EngagementTab state={state} />}
       {tab === 'mcp' && <McpAskTab state={state} />}
       {tab === 'archive' && <ArchiveHealthTab state={state} />}
+      {tab === 'topics' && <TopicsGapsTab state={state} />}
+      {tab === 'trends' && <TrendsTab state={state} />}
+      {tab === 'dev' && <DevelopmentTab state={state} />}
     </div>
   )
 }
