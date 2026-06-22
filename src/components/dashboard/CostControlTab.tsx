@@ -15,7 +15,15 @@ const MODES: { value: AskMode; label: string; blurb: string }[] = [
   { value: 'paused', label: 'Paused', blurb: 'graceful resting reply' },
 ]
 
-const fmtUsd = (microUsd: number) => '$' + (microUsd / 1_000_000).toFixed(2)
+// Named for its unit (microUSD) to avoid colliding with DashboardPage's plain-USD `fmtUsd`.
+// Guards non-finite input (e.g. a malformed snapshot, or cap 0 → fraction NaN) so the UI never
+// renders "$NaN".
+const fmtMicroUsd = (microUsd: number) =>
+  '$' + (Number.isFinite(microUsd) ? microUsd / 1_000_000 : 0).toFixed(2)
+
+// Live-spend percentage from the cap fraction. NaN-safe; floored at 0 (callers clamp the top).
+const spendPct = (fraction: number) =>
+  Number.isFinite(fraction) ? Math.max(0, Math.round(fraction * 100)) : 0
 
 function relativeTime(ms: number): string {
   const s = Math.round((Date.now() - ms) / 1000)
@@ -53,7 +61,7 @@ function ModeControl({
   onSet: (m: AskMode) => void
 }) {
   const { spend } = state
-  const pct = Math.min(100, Math.round(spend.fraction * 100))
+  const pct = Math.min(100, spendPct(spend.fraction))
   const barColor = pct >= 100 ? 'bg-red-500' : pct >= 80 ? 'bg-amber-500' : 'bg-indigo-600'
   const current = MODES.find((m) => m.value === state.mode)
 
@@ -94,7 +102,7 @@ function ModeControl({
       <div className="mt-4 flex items-baseline justify-between text-sm">
         <span className="text-stone-500">Live day spend (public budget)</span>
         <span className="font-semibold tabular-nums text-indigo-950">
-          {fmtUsd(spend.committedMicroUsd)} / {fmtUsd(spend.capMicroUsd)}
+          {fmtMicroUsd(spend.committedMicroUsd)} / {fmtMicroUsd(spend.capMicroUsd)}
         </span>
       </div>
       <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-stone-100">
@@ -105,7 +113,7 @@ function ModeControl({
         <span>resets 00:00 UTC</span>
       </div>
       {spend.reservedMicroUsd > 0 && (
-        <p className="mt-1 text-xs text-stone-400">Reserved in flight: {fmtUsd(spend.reservedMicroUsd)}</p>
+        <p className="mt-1 text-xs text-stone-400">Reserved in flight: {fmtMicroUsd(spend.reservedMicroUsd)}</p>
       )}
     </Card>
   )
@@ -229,10 +237,6 @@ function Tripwires({ fraction }: { fraction: number }) {
   )
 }
 
-function spendPct(fraction: number): number {
-  return Math.round(fraction * 100)
-}
-
 type LoadState =
   | { status: 'loading' }
   | { status: 'auth' }
@@ -267,11 +271,24 @@ export function CostControlTab() {
     return () => ac.abort()
   }, [load])
 
+  // Poll once the first load settles (including from 'error', so a transient blip self-heals; not
+  // from 'auth', which needs a real sign-in). Each tick is abortable and the effect tears the
+  // controller down on unmount. We pause polling while a mutation is in flight so an in-flight
+  // poll can't clobber the just-applied optimistic mode/IP update (the cleanup aborts it too).
+  const mutating = modeBusy !== null || ipBusy
   useEffect(() => {
-    if (stateStatus !== 'ready') return
-    const id = window.setInterval(() => void load(), POLL_MS)
-    return () => window.clearInterval(id)
-  }, [stateStatus, load])
+    if ((stateStatus !== 'ready' && stateStatus !== 'error') || mutating) return
+    let ac = new AbortController()
+    const id = window.setInterval(() => {
+      ac.abort()
+      ac = new AbortController()
+      void load(ac.signal)
+    }, POLL_MS)
+    return () => {
+      window.clearInterval(id)
+      ac.abort()
+    }
+  }, [stateStatus, mutating, load])
 
   const onSetMode = async (mode: AskMode) => {
     setActionError(null)

@@ -40,7 +40,12 @@ export async function setAskMode(mode: AskMode): Promise<AskMode> {
       headers: { accept: 'application/json' },
     }),
   )
-  const body = (await res.json()) as { ok: boolean; mode: AskMode }
+  const body = (await res.json()) as { ok?: boolean; mode?: AskMode }
+  // Guard the wire shape: a 2xx with a missing/unknown mode must not silently become `undefined`
+  // and corrupt the optimistic UI state — surface it as an error instead.
+  if (body.mode !== 'on' && body.mode !== 'deterministic-only' && body.mode !== 'paused') {
+    throw new Error('unexpected mode response')
+  }
   return body.mode
 }
 

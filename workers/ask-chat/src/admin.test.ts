@@ -187,3 +187,19 @@ describe("unknown admin route", () => {
     expect(res.status).toBe(404);
   });
 });
+
+// Each route is guarded on BOTH pathname AND method; a known path with the wrong verb must fall
+// through to 404, not silently serve the handler. These pin that seam so a loosened guard fails CI.
+describe("method-mismatched admin routes fall through to 404", () => {
+  it("POST /api/ask/admin/state (GET-only) → 404", async () => {
+    expect((await call("/api/ask/admin/state", { method: "POST" })).status).toBe(404);
+  });
+
+  it("GET /api/ask/admin/ips (POST-only) → 404", async () => {
+    expect((await call("/api/ask/admin/ips")).status).toBe(404);
+  });
+
+  it("GET /api/ask/admin/mode (POST-only) → 404", async () => {
+    expect((await call("/api/ask/admin/mode?to=paused")).status).toBe(404);
+  });
+});
