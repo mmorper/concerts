@@ -21,7 +21,7 @@
 // before this route is exposed publicly.
 
 import type { Env } from "./types.js";
-import { getMode } from "./control.js";
+import { getMode, isAdminIp } from "./control.js";
 import { reserveTurn, commitTurn, releaseTurn, type ReserveTicket } from "./cost.js";
 import { runAgentTurn } from "./agent-loop.js";
 import { dispatchTool, pickDeterministicTool, readerProse } from "./tools-bridge.js";
@@ -115,10 +115,15 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
     return Response.json({ error: "session_required" }, { status: 401, headers: cors(request) });
   }
   const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
-  const okSession = await allow(env.SESSION_LIMITER, `sess:${session.sid}`, "session");
-  const okIp = await allow(env.IP_LIMITER, `ip:${ip}`, "ip");
-  if (!okSession || !okIp) {
-    return Response.json({ error: "rate_limited" }, { status: 429, headers: cors(request) });
+  // Allowlisted admin IPs bypass the public rate limits AND the spend cap below (#158), so the
+  // operator can test/debug without burning budget or tripping per-IP limits. KV-managed (no redeploy).
+  const adminIp = await isAdminIp(env, ip);
+  if (!adminIp) {
+    const okSession = await allow(env.SESSION_LIMITER, `sess:${session.sid}`, "session");
+    const okIp = await allow(env.IP_LIMITER, `ip:${ip}`, "ip");
+    if (!okSession || !okIp) {
+      return Response.json({ error: "rate_limited" }, { status: 429, headers: cors(request) });
+    }
   }
 
   const { readable, writable } = new TransformStream();
@@ -180,37 +185,43 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
         return;
       }
 
-      const reservation = await reserveTurn(env, ip);
-      if (!reservation.ok) {
-        outcome = "cap";
-        fraction = reservation.status.fraction;
-        // Per-IP slice exhausted = this visitor specifically; global cap = the whole archive.
-        const message =
-          reservation.scope === "ip"
-            ? "You've asked a good many today — give the archive a rest and come back tomorrow."
-            : "Today's questions have worn me out — the archive's still here to wander. Try again tomorrow.";
-        await send("refusal", { message });
-        await send("done", { capHit: true, fraction: reservation.status.fraction });
-        return;
+      // Non-admin turns reserve against the daily cap; admin IPs skip the gate with a synthetic
+      // zero-status so the downstream fraction/tripwire logic stays uniform.
+      let status = { day, committedMicroUsd: 0, reservedMicroUsd: 0, capMicroUsd: 0, fraction: 0 };
+      if (!adminIp) {
+        const reservation = await reserveTurn(env, ip);
+        if (!reservation.ok) {
+          outcome = "cap";
+          fraction = reservation.status.fraction;
+          // Per-IP slice exhausted = this visitor specifically; global cap = the whole archive.
+          const message =
+            reservation.scope === "ip"
+              ? "You've asked a good many today — give the archive a rest and come back tomorrow."
+              : "Today's questions have worn me out — the archive's still here to wander. Try again tomorrow.";
+          await send("refusal", { message });
+          await send("done", { capHit: true, fraction: reservation.status.fraction });
+          return;
+        }
+        ticket = reservation.ticket;
+        status = reservation.status;
       }
-      ticket = reservation.ticket;
 
       const result = await runAgentTurn(env, toMessages(v.turns), {
         onText: (text) => void send("token", { text }),
         onTool: (name) => void send("tool", { name }),
       });
 
-      // Best-effort: the answer already streamed, so a transient cost-counter failure must NOT
-      // fail the turn (that would send an `error` event and drop the exhibit on a good answer).
-      // Fall back to the reservation's status; a truly-uncommitted reservation self-heals via the
-      // DO's TTL prune.
-      let status = reservation.status;
-      try {
-        status = await commitTurn(env, ticket!, result.usage);
-      } catch (err) {
-        console.error("cost commit failed (answer already produced):", err);
+      // Best-effort: the answer already streamed, so a transient cost-counter failure must NOT fail
+      // the turn (that would send an `error` event and drop the exhibit on a good answer). Only
+      // non-admin turns hold a ticket to commit; an uncommitted reservation self-heals via TTL prune.
+      if (ticket) {
+        try {
+          status = await commitTurn(env, ticket, result.usage);
+        } catch (err) {
+          console.error("cost commit failed (answer already produced):", err);
+        }
+        ticket = undefined;
       }
-      ticket = undefined;
       usage = result.usage;
       fraction = status.fraction;
 
