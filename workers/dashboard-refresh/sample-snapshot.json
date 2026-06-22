@@ -126,7 +126,7 @@
       { "stage": "Genres", "covered": 185, "total": 257, "pct": 72, "note": "headliners 93% · openers 57%" },
       { "stage": "Artist photos", "covered": 257, "total": 257, "pct": 100, "note": "bio sparse — 0/257 have one" },
       { "stage": "Audio previews", "covered": 250, "total": 257, "pct": 97, "note": "≥2 of 5 preview URLs" },
-      { "stage": "Venue photos", "covered": 79, "total": 79, "pct": 100, "note": "geocoded 100%" },
+      { "stage": "Venue photos", "covered": 67, "total": 79, "pct": 85, "note": "geocoded 100%" },
       { "stage": "Setlists", "covered": 117, "total": 183, "pct": 64, "note": "concerts with ≥1 song" },
       { "stage": "Discography", "covered": 224, "total": 257, "pct": 87, "note": "100% of albums have cover art" },
       { "stage": "Liner notes", "covered": 51, "total": 73, "pct": 70, "note": "published / analyzed findings" }

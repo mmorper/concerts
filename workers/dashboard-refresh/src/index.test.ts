@@ -199,8 +199,9 @@ describe("computeArchiveHealth", () => {
       "the-cure": { tracks: [{ previewUrl: "a" }] }, // <2
     },
     "venues-metadata": {
-      "the-forum": { photoUrls: { p1: "u" }, location: { lat: 34 } },
+      "the-forum": { photoUrls: { large: "https://x/forum.jpg" }, location: { lat: 34 } }, // real photo + geo
       "the-roxy": { photoUrls: {}, location: {} }, // no photo, no geo
+      "the-greek": { photoUrls: { large: "/images/venues/fallback.jpg" }, location: { lat: 40 } }, // placeholder only
     },
     "setlists-cache": {
       generatedAt: "2026-06-16T20:22:15.975Z",
@@ -225,7 +226,7 @@ describe("computeArchiveHealth", () => {
   it("counts the artist universe (headliners ∪ openers) and headline entities", () => {
     expect(h.concerts).toBe(3);
     expect(h.artists).toBe(3); // depeche-mode, the-cure, some-opener
-    expect(h.venues).toBe(2);
+    expect(h.venues).toBe(3);
   });
 
   it("scores concert metadata on required fields", () => {
@@ -245,9 +246,10 @@ describe("computeArchiveHealth", () => {
     expect(byStage["Audio previews"]).toMatchObject({ covered: 1, total: 3 });
   });
 
-  it("venue photos count non-empty photoUrls and note geocode share", () => {
-    expect(byStage["Venue photos"]).toMatchObject({ covered: 1, total: 2 });
-    expect(byStage["Venue photos"].note).toBe("geocoded 50%");
+  it("venue photos exclude placeholders and note geocode share", () => {
+    // the-forum has a real photo; the-roxy has none; the-greek has only the fallback placeholder.
+    expect(byStage["Venue photos"]).toMatchObject({ covered: 1, total: 3 });
+    expect(byStage["Venue photos"].note).toBe("geocoded 67%"); // forum + greek geocoded, roxy not
   });
 
   it("liner notes use published/analyzed and picks the newest build timestamp", () => {

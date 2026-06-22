@@ -593,7 +593,7 @@ interface ArchiveData {
     generatedAt?: string;
     entries?: Array<{ concertId?: string; setlist?: { sets?: { set?: Array<{ song?: unknown[] }> } } }>;
   };
-  discography: Record<string, { albums?: Array<{ coverUrl?: string }> }>;
+  discography: Record<string, { albums?: Array<{ coverUrl?: string; coverAvailable?: boolean }> }>;
   "liner-notes": {
     generatedAt?: string;
     metadata?: { totalPosts?: number; totalGenerated?: number; lastPipelineRun?: string };
@@ -622,6 +622,11 @@ const mkStage = (stage: string, covered: number, total: number, note?: string): 
   note,
 });
 
+// A venue photo only counts if it's a real image — every venue carries a placeholder
+// (/images/venues/fallback.jpg) in photoUrls, so a non-empty object alone would read as 100%.
+const isRealPhoto = (url: unknown): url is string =>
+  typeof url === "string" && url.length > 0 && !/fallback|placeholder/i.test(url);
+
 /** Newest ISO timestamp among the candidates (ISO 8601 sorts lexically); null if none. */
 function newestIso(candidates: Array<string | undefined>): string | null {
   const valid = candidates.filter((s): s is string => typeof s === "string" && s.length > 0);
@@ -649,27 +654,31 @@ export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
       if (n && !headliners.has(n)) openersOnly.add(n);
     }
   }
-  const artists = new Set<string>([...headliners, ...openersOnly]);
+  // Materialize the artist sets once — every per-artist stage below reads the same universe.
+  const headlinerList = [...headliners];
+  const openerList = [...openersOnly];
+  const artistList = [...headliners, ...openersOnly];
+  const artistCount = artistList.length;
 
   // 1. Concert metadata — required fields present.
   const validConcerts = concerts.filter((c) => c.date && c.headliner && c.venue).length;
 
   // 2. Genres — artist-level genres, split headliner vs opener (the gap the spec calls out).
   const hasGenre = (a: string) => (am[a]?.genres?.length ?? 0) > 0;
-  const hg = [...headliners].filter(hasGenre).length;
-  const og = [...openersOnly].filter(hasGenre).length;
+  const hg = headlinerList.filter(hasGenre).length;
+  const og = openerList.filter(hasGenre).length;
 
   // 3. Artist metadata — photo (bio is not currently populated by the pipeline; noted, not scored).
-  const withImage = [...artists].filter((a) => am[a]?.image).length;
-  const withBio = [...artists].filter((a) => am[a]?.bio).length;
+  const withImage = artistList.filter((a) => am[a]?.image).length;
+  const withBio = artistList.filter((a) => am[a]?.bio).length;
 
   // 4. Audio previews — artists with ≥2 of 5 preview URLs.
   const previewCount = (a: string) => (tt[a]?.tracks ?? []).filter((t) => t.previewUrl).length;
-  const withPreviews = [...artists].filter((a) => previewCount(a) >= 2).length;
+  const withPreviews = artistList.filter((a) => previewCount(a) >= 2).length;
 
-  // 5. Venues — photos (photoUrls non-empty) and geocode (a real lat).
+  // 5. Venues — real photos (placeholders excluded) and geocode (a real lat).
   const venueVals = Object.values(venues);
-  const withPhoto = venueVals.filter((v) => v.photoUrls && Object.keys(v.photoUrls).length > 0).length;
+  const withPhoto = venueVals.filter((v) => Object.values(v.photoUrls ?? {}).some(isRealPhoto)).length;
   const withGeo = venueVals.filter((v) => typeof v.location?.lat === "number").length;
 
   // 6. Setlists — concerts whose cached setlist actually carries songs.
@@ -681,14 +690,16 @@ export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
     if (sets.some((s) => (s.song?.length ?? 0) > 0)) withSetlist.add(e.concertId);
   }
 
-  // 7. Discography — artists with ≥1 album; cover availability noted.
-  const withAlbums = [...artists].filter((a) => (disco[a]?.albums?.length ?? 0) > 0).length;
+  // 7. Discography — artists with ≥1 album; cover-art availability noted (one pass).
+  let withAlbums = 0;
   let albumTotal = 0;
   let albumCover = 0;
-  for (const a of artists) {
-    for (const al of disco[a]?.albums ?? []) {
+  for (const a of artistList) {
+    const albums = disco[a]?.albums ?? [];
+    if (albums.length > 0) withAlbums++;
+    for (const al of albums) {
       albumTotal++;
-      if (al.coverUrl) albumCover++;
+      if (al.coverAvailable) albumCover++;
     }
   }
 
@@ -702,14 +713,14 @@ export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
     mkStage(
       "Genres",
       hg + og,
-      artists.size,
+      artistCount,
       `headliners ${pct(hg, headliners.size)}% · openers ${pct(og, openersOnly.size)}%`,
     ),
-    mkStage("Artist photos", withImage, artists.size, `bio sparse — ${withBio}/${artists.size} have one`),
-    mkStage("Audio previews", withPreviews, artists.size, "≥2 of 5 preview URLs"),
+    mkStage("Artist photos", withImage, artistCount, `bio sparse — ${withBio}/${artistCount} have one`),
+    mkStage("Audio previews", withPreviews, artistCount, "≥2 of 5 preview URLs"),
     mkStage("Venue photos", withPhoto, venueVals.length, `geocoded ${pct(withGeo, venueVals.length)}%`),
     mkStage("Setlists", withSetlist.size, total, "concerts with ≥1 song"),
-    mkStage("Discography", withAlbums, artists.size, `${pct(albumCover, albumTotal)}% of albums have cover art`),
+    mkStage("Discography", withAlbums, artistCount, `${pct(albumCover, albumTotal)}% of albums have cover art`),
     mkStage("Liner notes", published, analyzed, "published / analyzed findings"),
   ];
 
@@ -721,7 +732,7 @@ export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
       d["liner-notes"].metadata?.lastPipelineRun,
     ]),
     concerts: total,
-    artists: artists.size,
+    artists: artistCount,
     venues: venueVals.length,
     stages,
   };
