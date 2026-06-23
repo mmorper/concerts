@@ -1,0 +1,5 @@
+# Local wrangler dev state (KV/DO simulation, build cache)
+.wrangler/
+
+# Local dev secrets (CF_API_TOKEN, GA_SA_KEY_JSON, GA_PROPERTY, GA_IMPERSONATE_SUBJECT, REFRESH_KEY, GH_TOKEN)
+.dev.vars

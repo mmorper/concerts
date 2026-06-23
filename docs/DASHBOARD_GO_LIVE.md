@@ -1,5 +1,9 @@
 # Operator Dashboard — Go-Live Runbook
 
+> ✅ **Completed 2026-06-22 — the dashboard is live.** This is the historical one-time setup record.
+> For **ongoing** administration (refresh, admin-IP allowlist, source-status troubleshooting,
+> deploys, spend caps), use [`DASHBOARD_OPERATIONS.md`](./DASHBOARD_OPERATIONS.md).
+
 **Goal:** take the dashboard from "code-complete, fail-closed shell" to **live, hydrated data** at
 `https://concerts.morperhaus.org/dashboard`.
 

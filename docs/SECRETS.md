@@ -58,6 +58,21 @@ the live runtime store; "CI" = GitHub Actions repo secret.
 `ACCESS_TEAM_DOMAIN` / `ACCESS_AUD` in `ask-chat/wrangler.toml` `[vars]` are **identifiers,
 not secrets** — they identify the Cloudflare Access app; knowing them grants nothing.
 
+### Worker-only secrets (dashboard-refresh) — prod `wrangler secret` (single home each)
+
+The operator dashboard's daily snapshot builder. Each has **one home** (the prod worker) — they
+were set straight to prod, so there is normally no `.dev.vars` for this worker. See
+[`DASHBOARD_OPERATIONS.md`](./DASHBOARD_OPERATIONS.md) for how they're used.
+
+| Secret | Purpose | Notes |
+|--------|---------|-------|
+| `CF_API_TOKEN` | Cloudflare GraphQL (traffic/5xx) + Analytics Engine SQL (`ask_turns`/`mcp_queries`) | Account token, **Account Analytics: Read**. Rotate at Cloudflare → My Profile → API Tokens. |
+| `GA_SA_KEY_JSON` | GA4 service-account key (full JSON) for sessions/engagement | **Shared with the Pitch dashboard** (`pitch-dashboard-ga@pitch-analytics-mcp…`). Rotating the SA key affects **both** dashboards — update Pitch too. |
+| `GA_IMPERSONATE_SUBJECT` | domain-wide-delegation subject the SA impersonates (`mike@morper.net`) | identifier-ish, not a credential; required because GA access is via DWD |
+| `GA_PROPERTY` | numeric GA4 property id (`343639505`) | not secret (an identifier); stored as a secret for convenience |
+| `REFRESH_KEY` | gates the manual-refresh endpoint (`GET /?key=…`) | optional; any random string. Rotate by `wrangler secret put` + re-share. |
+| `GH_TOKEN` | fine-grained PAT (`mmorper/concerts`, read Contents/Issues/PRs) for the Development tab | optional; expires — re-mint on the GitHub PAT page and re-put |
+
 ### Data-pipeline secrets — root `.env` (local) + GitHub Actions (CI)
 
 Google OAuth + Maps/Places + music APIs, consumed by `scripts/` locally and by the
