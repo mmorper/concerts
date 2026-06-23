@@ -299,9 +299,7 @@ function MainScenes() {
 
   return (
     <>
-      {/* overflow-x-hidden: `overflow-y-scroll` alone promotes overflow-x to `auto`, so any over-wide
-          scene child could bleed the viewport right on mobile. Clip it explicitly (#189). */}
-      <div ref={scrollContainerRef} className="relative snap-y snap-mandatory h-screen overflow-y-scroll overflow-x-hidden">
+      <div ref={scrollContainerRef} className="relative snap-y snap-mandatory h-screen overflow-y-scroll">
         {/* Scene 1: Hero/Timeline */}
         <Scene1Hero
           concerts={concerts}
