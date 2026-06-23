@@ -186,7 +186,17 @@
   /* 100dvh + interactive-widget=resizes-content (index.html): the sheet shrinks to the space above
      the keyboard, so the composer rides above it instead of hiding behind it. Padding moves to the
      edges so safe-area insets apply per-edge (the fixed scrim escapes the body's safe-area padding). */
-  .ask-spotlight { width: 100%; max-height: none; height: 100dvh; border-radius: 0; border: none; background: #1e1b4b; padding: 0; }
+  /* height/offset follow the visual viewport (vars set by AskSpotlight) so the sheet shrinks above
+     the keyboard; falls back to 100dvh where visualViewport isn't wired (#191 reverted the global
+     interactive-widget meta, so we track the keyboard locally instead). */
+  .ask-spotlight {
+    width: 100%; max-height: none; height: var(--ask-vvh, 100dvh);
+    transform: translateY(var(--ask-vvtop, 0px));
+    border-radius: 0; border: none; background: #1e1b4b; padding: 0;
+    /* opacity-only intro on mobile: a full-screen sheet shouldn't scale-bloom, and ask-bloom's
+       transform (fill:both) would otherwise clobber the keyboard-offset translateY above. */
+    animation: ask-fade-in 0.18s ease both;
+  }
   .ask-spot-head { margin-bottom: 0; padding: calc(env(safe-area-inset-top) + 12px) 16px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
   .ask-convo { padding: 12px 16px 0; }
   /* Specific selectors so these win over the base .ask-back/.ask-esc rules defined later in the file. */

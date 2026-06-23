@@ -50,6 +50,30 @@ export function AskSpotlight() {
     return () => document.removeEventListener('keydown', onKey)
   }, [open, close])
 
+  // Keyboard tracking without a global viewport change. #191 had to revert
+  // `interactive-widget=resizes-content` because that meta resizes the whole app and broke the
+  // iPad snap-scroll scenes on rotation. Instead, mirror the visual viewport's height/offset into
+  // CSS vars that ONLY the mobile `.ask-spotlight` sheet consumes — so the full-screen sheet shrinks
+  // to sit above the on-screen keyboard, and nothing else (iPad scenes included) is affected.
+  useEffect(() => {
+    const vv = window.visualViewport
+    if (!open || !vv) return
+    const root = document.documentElement
+    const sync = () => {
+      root.style.setProperty('--ask-vvh', `${vv.height}px`)
+      root.style.setProperty('--ask-vvtop', `${vv.offsetTop}px`)
+    }
+    sync()
+    vv.addEventListener('resize', sync)
+    vv.addEventListener('scroll', sync)
+    return () => {
+      vv.removeEventListener('resize', sync)
+      vv.removeEventListener('scroll', sync)
+      root.style.removeProperty('--ask-vvh')
+      root.style.removeProperty('--ask-vvtop')
+    }
+  }, [open])
+
   if (!open) return null
 
   return (
