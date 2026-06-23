@@ -66,8 +66,6 @@ function MainScenes() {
   // Mirror currentScene in a ref so the resize handler (mounted once) always re-aligns to the live scene.
   const currentSceneRef = useRef(currentScene)
   currentSceneRef.current = currentScene
-  // TEMP DIAGNOSTIC (#191): on-screen readout of viewport/scene metrics after rotation.
-  const [dbg, setDbg] = useState('')
   const [showToast, setShowToast] = useState(false)
   const [toastShownThisSession, setToastShownThisSession] = useState(false)
   const [pendingVenueFocus, setPendingVenueFocus] = useState<string | null>(null)
@@ -199,12 +197,6 @@ function MainScenes() {
       lastWidth = window.innerWidth
       setAppHeight()
       scrollContainer.scrollTo({ top: (currentSceneRef.current - 1) * window.innerHeight, behavior: 'auto' })
-      // TEMP DIAGNOSTIC (#191)
-      const sec = scrollContainer.querySelector('section')
-      setDbg(
-        `win ${window.innerWidth}x${window.innerHeight} scene#${currentSceneRef.current}\n` +
-        `sceneH ${sec ? Math.round(sec.getBoundingClientRect().height) : '?'} scrollTop ${Math.round(scrollContainer.scrollTop)}`,
-      )
     }
     // rAF catches the post-layout frame; the delayed pass covers Safari reporting stale dimensions
     // on the orientationchange event itself.
@@ -350,16 +342,6 @@ function MainScenes() {
 
   return (
     <>
-      {/* TEMP DIAGNOSTIC (#191): viewport/scene readout, removed once the rotation fix is confirmed. */}
-      <div
-        style={{
-          position: 'fixed', top: 0, left: 0, zIndex: 999999,
-          font: '700 12px/1.35 monospace', whiteSpace: 'pre', color: '#000',
-          background: '#00e000', padding: '4px 7px', pointerEvents: 'none',
-        }}
-      >
-        {dbg || 'rotate to test'}
-      </div>
       <div ref={scrollContainerRef} className="relative snap-y snap-mandatory h-screen overflow-y-scroll">
         {/* Scene 1: Hero/Timeline */}
         <Scene1Hero
