@@ -70,6 +70,7 @@ npm run build-data   # Refresh data pipeline
 | Current state & recent work | `.claude/context.md` |
 | Liner notes pipeline & detectors | `docs/LINER_NOTES_PIPELINE.md` |
 | Rotating a secret / where keys live | `docs/SECRETS.md` |
+| Operating the internal dashboard | `docs/DASHBOARD_OPERATIONS.md` |
 
 ---
 

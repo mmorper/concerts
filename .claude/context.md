@@ -22,6 +22,7 @@ npm run build-data   # Fetch & enrich concert data
 - **Main App:** [src/App.tsx](../src/App.tsx)
 - **Concert Data:** [public/data/concerts.json](../public/data/concerts.json)
 - **Version Management:** [.claude/version-management.md](./.claude/version-management.md)
+- **Operator dashboard (internal):** [docs/DASHBOARD_OPERATIONS.md](../docs/DASHBOARD_OPERATIONS.md) — admin/ops guide for the private `/dashboard` console
 
 ---
 
