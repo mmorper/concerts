@@ -63,6 +63,9 @@ function MainScenes() {
   const [data, setData] = useState<ConcertData | null>(null)
   const [loading, setLoading] = useState(true)
   const [currentScene, setCurrentScene] = useState(1)
+  // Mirror currentScene in a ref so the resize handler (mounted once) always re-aligns to the live scene.
+  const currentSceneRef = useRef(currentScene)
+  currentSceneRef.current = currentScene
   const [showToast, setShowToast] = useState(false)
   const [toastShownThisSession, setToastShownThisSession] = useState(false)
   const [pendingVenueFocus, setPendingVenueFocus] = useState<string | null>(null)
@@ -171,6 +174,46 @@ function MainScenes() {
     scrollContainer.addEventListener('scroll', handleScroll, { passive: true })
     return () => scrollContainer.removeEventListener('scroll', handleScroll)
   }, [currentScene, currentDeepLinkParams])
+
+  // Re-align the snap scroll to the in-focus scene after an orientation change. Scene offsets are
+  // absolute pixels ((sceneId-1) * innerHeight); on rotation innerHeight changes but scrollTop does
+  // not, so you land between two scenes (rotate landscape→portrait from the Ask scene and you drop
+  // halfway between Genres and Artists — they appear to overlap). Chromium re-snaps scroll-snap on
+  // resize and self-corrects; Safari doesn't, so we force it. Guarded to width changes so the iOS
+  // toolbar showing/hiding (a height-only resize during normal scrolling) never yanks the page.
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current
+    if (!scrollContainer) return
+
+    // Pin scene/container heights to the measured viewport (index.css consumes --app-vh). iOS Safari
+    // leaves CSS 100vh stale after a rotation, so scenes keep the old orientation's height and the
+    // snap scenes overlap; an explicit px value isn't subject to that bug.
+    const setAppHeight = () => document.documentElement.style.setProperty('--app-vh', `${window.innerHeight}px`)
+    setAppHeight()
+
+    let lastWidth = window.innerWidth
+    const apply = () => {
+      if (window.innerWidth === lastWidth) return // height-only change (iOS toolbar) — leave it alone
+      lastWidth = window.innerWidth
+      setAppHeight()
+      scrollContainer.scrollTo({ top: (currentSceneRef.current - 1) * window.innerHeight, behavior: 'auto' })
+    }
+    // rAF catches the post-layout frame; the delayed pass covers Safari reporting stale dimensions
+    // on the orientationchange event itself.
+    const realign = () => {
+      requestAnimationFrame(apply)
+      setTimeout(apply, 300)
+    }
+
+    window.addEventListener('resize', realign)
+    window.addEventListener('orientationchange', realign)
+    return () => {
+      window.removeEventListener('resize', realign)
+      window.removeEventListener('orientationchange', realign)
+    }
+    // Depend on `loading`: the scroll container isn't mounted during the loading state, so an []-deps
+    // effect would run once with a null ref and bail forever. Re-run once data loads and it exists.
+  }, [loading])
 
   // Show toast with delay — one per session, highest priority wins
   useEffect(() => {
@@ -299,9 +342,7 @@ function MainScenes() {
 
   return (
     <>
-      {/* overflow-x-hidden: `overflow-y-scroll` alone promotes overflow-x to `auto`, so any over-wide
-          scene child could bleed the viewport right on mobile. Clip it explicitly (#189). */}
-      <div ref={scrollContainerRef} className="relative snap-y snap-mandatory h-screen overflow-y-scroll overflow-x-hidden">
+      <div ref={scrollContainerRef} className="relative snap-y snap-mandatory h-screen overflow-y-scroll">
         {/* Scene 1: Hero/Timeline */}
         <Scene1Hero
           concerts={concerts}
