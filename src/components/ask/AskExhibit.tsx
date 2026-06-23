@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import './ask.css'
 import { VenueMiniMap } from './VenueMiniMap'
+import { cleanProse } from './prose'
 import { getGenreColor, DEFAULT_GENRE_COLOR } from '@/constants/colors'
 import { analytics } from '@/services/analytics'
 import type { Exchange } from '@/hooks/useAskArchive'
@@ -36,19 +37,6 @@ function DeepLink({ href, kind, children }: { href: string; kind: Exhibit['kind'
   )
 }
 
-// The tool prose ends with a markdown "Open on the site" deep-link footer (for external MCP
-// clients). In-app the exhibit's own chips/deep-link handle navigation, so strip it for display.
-function cleanProse(text: string): string {
-  let t = text.split(/\n*-{3,}\n*\*\*Open on the site:|\n*\*\*Open on the site:/)[0].trimEnd()
-  // Backup: strip a trailing line that's only deep-links (the model sometimes appends the footer
-  // links without the "Open on the site:" label). The exhibit's own chips handle navigation.
-  t = t.replace(/\n+\s*(?:\[[^\]]+\]\([^)]+\)\s*(?:·\s*)?)+\s*$/, '').trimEnd()
-  // A GFM table must start on its own line, but the model often glues the header to the
-  // preceding sentence ("…shows.| Date | … |\n|---|---|"). Force a blank line before a
-  // header+separator pair so remark-gfm actually parses it as a table.
-  t = t.replace(/([^\n|])\s*(\|[^\n]*\|\n\s*\|[\s|:-]+\|)/g, '$1\n\n$2')
-  return t
-}
 
 // The model may emit markdown — bold, lists, and (when asked) GFM tables. Render it, don't print
 // raw pipes. Tables get a horizontal-scroll wrapper so they never blow out a narrow card.
