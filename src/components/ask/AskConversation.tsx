@@ -16,6 +16,8 @@ export interface AskConversationProps {
   onAsk: (question: string) => void
   /** Empty-state chips that teach what's askable; hidden once the first exhibit lands. */
   suggestedPrompts?: string[]
+  /** Empty-state line above the chips, setting the tone of what to ask. */
+  emptyHint?: string
   placeholder?: string
   /** Focus the input on mount (overlay opens straight into a ready cursor). */
   autoFocus?: boolean
@@ -29,6 +31,7 @@ export function AskConversation({
   archive,
   onAsk,
   suggestedPrompts,
+  emptyHint,
   placeholder = 'Ask me about a band, a venue, a year… or just say "surprise me"',
   autoFocus,
   inputRef,
@@ -57,37 +60,48 @@ export function AskConversation({
 
   return (
     <div className="ask-convo">
-      {empty && suggestedPrompts && suggestedPrompts.length > 0 && (
-        <div className="ask-suggest" aria-label="Suggested questions">
-          {suggestedPrompts.map((p, i) => (
-            <button
-              key={p}
-              type="button"
-              className="chip"
-              onClick={() => {
-                analytics.trackEvent('ask_suggested_prompt_clicked', { prompt: p, position: i })
-                submit(p)
-              }}
-              disabled={busy}
-            >
-              {p}
-            </button>
+      {/* Empty state: a centered, teaching block (hint + chips) that fills the space above the
+          persistent composer — so a just-opened sheet never reads as a blank void (#189). Once the
+          first exhibit lands it gives way to the scrolling transcript. */}
+      {empty ? (
+        <div className="ask-empty">
+          {emptyHint && <p className="ask-empty-hint">{emptyHint}</p>}
+          {suggestedPrompts && suggestedPrompts.length > 0 && (
+            <>
+              <p className="ask-empty-try">Try asking</p>
+              <div className="ask-suggest" aria-label="Suggested questions">
+                {suggestedPrompts.map((p, i) => (
+                  <button
+                    key={p}
+                    type="button"
+                    className="chip"
+                    onClick={() => {
+                      analytics.trackEvent('ask_suggested_prompt_clicked', { prompt: p, position: i })
+                      submit(p)
+                    }}
+                    disabled={busy}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      ) : (
+        <div className="ask-transcript">
+          {exchanges.map((ex) => (
+            <div key={ex.id}>
+              <div className="ask-q">
+                <span className="you">You</span>
+                <span className="q">&ldquo;{ex.question}&rdquo;</span>
+              </div>
+              <AskExhibit exchange={ex} archive={archive} />
+            </div>
           ))}
+          <div ref={endRef} />
         </div>
       )}
-
-      <div className="ask-transcript">
-        {exchanges.map((ex) => (
-          <div key={ex.id}>
-            <div className="ask-q">
-              <span className="you">You</span>
-              <span className="q">&ldquo;{ex.question}&rdquo;</span>
-            </div>
-            <AskExhibit exchange={ex} archive={archive} />
-          </div>
-        ))}
-        <div ref={endRef} />
-      </div>
 
       <form
         className="ask-dock"

@@ -125,8 +125,14 @@
 
 /* Shared surface: suggested chips (empty state) → scrolling transcript → input dock. */
 .ask-convo { display: flex; flex-direction: column; min-height: 0; flex: 1; }
-.ask-transcript { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
-.ask-suggest { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 18px; }
+/* overflow-x:hidden — `overflow-y:auto` alone promotes overflow-x to `auto`, which would let a stray
+   over-wide child scroll the transcript sideways. overscroll-behavior keeps flings off the scene (#189). */
+.ask-transcript { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
+/* Empty state — centered teaching block that fills the space above the persistent composer (#189). */
+.ask-empty { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 0 8px; }
+.ask-empty-hint { margin: 0; max-width: 34ch; font-size: 14px; line-height: 1.5; color: rgba(255, 255, 255, 0.55); }
+.ask-empty-try { margin: 0; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; color: rgba(255, 255, 255, 0.38); }
+.ask-suggest { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .ask-suggest .chip { cursor: pointer; }
 
 .ask-dock {
@@ -177,7 +183,20 @@
    drop it (a full-viewport backdrop-filter is an expensive, invisible compositing pass on phones). */
 @media (max-width: 767px) {
   .ask-spotlight-scrim { padding: 0; align-items: stretch; backdrop-filter: none; -webkit-backdrop-filter: none; }
-  .ask-spotlight { width: 100%; max-height: none; height: 100%; border-radius: 0; border: none; background: #1e1b4b; }
+  /* 100dvh + interactive-widget=resizes-content (index.html): the sheet shrinks to the space above
+     the keyboard, so the composer rides above it instead of hiding behind it. Padding moves to the
+     edges so safe-area insets apply per-edge (the fixed scrim escapes the body's safe-area padding). */
+  .ask-spotlight { width: 100%; max-height: none; height: 100dvh; border-radius: 0; border: none; background: #1e1b4b; padding: 0; }
+  .ask-spot-head { margin-bottom: 0; padding: calc(env(safe-area-inset-top) + 12px) 16px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+  .ask-convo { padding: 12px 16px 0; }
+  /* Specific selectors so these win over the base .ask-back/.ask-esc rules defined later in the file. */
+  .ask-spot-head .ask-back { display: flex; }
+  .ask-spot-head .ask-esc { display: none; }
+  /* Composer reads as a real input: brighter fill + glow; 16px kills iOS focus-zoom; 44px tap target;
+     bottom margin clears the home indicator. */
+  .ask-dock { margin-bottom: calc(env(safe-area-inset-bottom) + 10px); background: rgba(255, 255, 255, 0.12); border-color: rgba(165, 180, 252, 0.5); }
+  .ask-dock-input { font-size: 16px; }
+  .ask-dock-send { width: 44px; height: 44px; }
 }
 @keyframes ask-fade-in { from { opacity: 0; } to { opacity: 1; } }
 
@@ -192,6 +211,9 @@
   background: transparent; cursor: pointer;
 }
 .ask-esc:hover { color: #fff; border-color: rgba(255, 255, 255, 0.35); }
+/* Mobile-only back affordance (revealed in the max-width:767px block); hidden on desktop. */
+.ask-back { display: none; flex: none; width: 38px; height: 38px; align-items: center; justify-content: center; margin-right: 2px; border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 11px; background: rgba(255, 255, 255, 0.05); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
+.ask-back:active { background: rgba(255, 255, 255, 0.12); }
 
 /* ---- The Ask scene (#142) — the blended invitation; final snap panel + /?scene=ask ----
    The storytelling coda fused with the /ask warmth. The composer + prompts open the Spotlight in

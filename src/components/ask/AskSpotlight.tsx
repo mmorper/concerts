@@ -7,6 +7,15 @@ import { useEffect, useRef } from 'react'
 import { useAsk } from './AskProvider'
 import { AskConversation } from './AskConversation'
 
+// Empty-state scaffolding for a just-opened sheet (#189). Mirrors the Ask scene's voice + prompts
+// so opening the overlay never lands on a blank surface (especially the full-screen mobile sheet).
+const EMPTY_HINT = "Ask it the way you'd ask a friend who never misses a show."
+const SUGGESTED_PROMPTS = [
+  'Have you ever seen Depeche Mode?',
+  'Everything at the 9:30 Club',
+  'Surprise me',
+]
+
 export function AskSpotlight() {
   const { open, close, exchanges, busy, ask, archive } = useAsk()
   const paletteRef = useRef<HTMLDivElement>(null)
@@ -59,6 +68,11 @@ export function AskSpotlight() {
         aria-label="Ask the Archive"
       >
         <div className="ask-spot-head">
+          {/* Mobile back affordance — on a full-screen sheet there's no esc key or scrim to tap, so
+              "esc" (kept for desktop) is replaced by a real ‹ control (#189). */}
+          <button type="button" className="ask-back" onClick={() => close()} aria-label="Back">
+            &lsaquo;
+          </button>
           <span className="ask-spot-mark">
             <span className="ask-live-dot" aria-hidden="true" />
             Ask the archive
@@ -73,6 +87,8 @@ export function AskSpotlight() {
           busy={busy}
           archive={archive}
           onAsk={ask}
+          suggestedPrompts={SUGGESTED_PROMPTS}
+          emptyHint={EMPTY_HINT}
           autoFocus
           inputRef={inputRef}
         />
