@@ -10,6 +10,13 @@
   scroll-behavior: smooth;
 }
 
+/* Snap scroller + scenes: drive height from a JS-measured pixel value (App sets --app-vh =
+   window.innerHeight, updated on rotation) instead of CSS 100vh. iOS Safari leaves 100vh stale
+   after a rotation, so scenes keep the old orientation's height — too short in portrait — and the
+   snap scenes visibly overlap. An explicit px value sidesteps that. Falls back to 100vh. */
+.snap-y { height: var(--app-vh, 100vh) !important; }
+.snap-y > section { height: var(--app-vh, 100vh) !important; min-height: var(--app-vh, 100vh) !important; }
+
 body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;

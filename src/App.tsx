@@ -66,6 +66,8 @@ function MainScenes() {
   // Mirror currentScene in a ref so the resize handler (mounted once) always re-aligns to the live scene.
   const currentSceneRef = useRef(currentScene)
   currentSceneRef.current = currentScene
+  // TEMP DIAGNOSTIC (#191): on-screen readout of viewport/scene metrics after rotation.
+  const [dbg, setDbg] = useState('')
   const [showToast, setShowToast] = useState(false)
   const [toastShownThisSession, setToastShownThisSession] = useState(false)
   const [pendingVenueFocus, setPendingVenueFocus] = useState<string | null>(null)
@@ -185,11 +187,24 @@ function MainScenes() {
     const scrollContainer = scrollContainerRef.current
     if (!scrollContainer) return
 
+    // Pin scene/container heights to the measured viewport (index.css consumes --app-vh). iOS Safari
+    // leaves CSS 100vh stale after a rotation, so scenes keep the old orientation's height and the
+    // snap scenes overlap; an explicit px value isn't subject to that bug.
+    const setAppHeight = () => document.documentElement.style.setProperty('--app-vh', `${window.innerHeight}px`)
+    setAppHeight()
+
     let lastWidth = window.innerWidth
     const apply = () => {
-      if (window.innerWidth === lastWidth) return // height-only change — leave the scroll alone
+      if (window.innerWidth === lastWidth) return // height-only change (iOS toolbar) — leave it alone
       lastWidth = window.innerWidth
+      setAppHeight()
       scrollContainer.scrollTo({ top: (currentSceneRef.current - 1) * window.innerHeight, behavior: 'auto' })
+      // TEMP DIAGNOSTIC (#191)
+      const sec = scrollContainer.querySelector('section')
+      setDbg(
+        `win ${window.innerWidth}x${window.innerHeight} scene#${currentSceneRef.current}\n` +
+        `sceneH ${sec ? Math.round(sec.getBoundingClientRect().height) : '?'} scrollTop ${Math.round(scrollContainer.scrollTop)}`,
+      )
     }
     // rAF catches the post-layout frame; the delayed pass covers Safari reporting stale dimensions
     // on the orientationchange event itself.
@@ -204,7 +219,9 @@ function MainScenes() {
       window.removeEventListener('resize', realign)
       window.removeEventListener('orientationchange', realign)
     }
-  }, [])
+    // Depend on `loading`: the scroll container isn't mounted during the loading state, so an []-deps
+    // effect would run once with a null ref and bail forever. Re-run once data loads and it exists.
+  }, [loading])
 
   // Show toast with delay — one per session, highest priority wins
   useEffect(() => {
@@ -333,6 +350,16 @@ function MainScenes() {
 
   return (
     <>
+      {/* TEMP DIAGNOSTIC (#191): viewport/scene readout, removed once the rotation fix is confirmed. */}
+      <div
+        style={{
+          position: 'fixed', top: 0, left: 0, zIndex: 999999,
+          font: '700 12px/1.35 monospace', whiteSpace: 'pre', color: '#000',
+          background: '#00e000', padding: '4px 7px', pointerEvents: 'none',
+        }}
+      >
+        {dbg || 'rotate to test'}
+      </div>
       <div ref={scrollContainerRef} className="relative snap-y snap-mandatory h-screen overflow-y-scroll">
         {/* Scene 1: Hero/Timeline */}
         <Scene1Hero
