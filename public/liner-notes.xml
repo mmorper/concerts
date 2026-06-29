@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 22 Jun 2026 13:38:37 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 29 Jun 2026 12:38:25 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>Ziggy Marley: Caught Once, Never Again</title>
+    <link>https://concerts.morperhaus.org/liner-notes/ziggy-marley-caught-once-never-again</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/ziggy-marley-caught-once-never-again</guid>
+    <pubDate>Mon, 29 Jun 2026 12:38:25 +0000</pubDate>
+    <description>One show in 36 years of concert-going — just Ziggy Marley, Mesa Amphitheatre, September 1988, and then nothing. I&apos;ve seen artists dozens of times, built whole chapters of this archive around them, but somehow Ziggy never crossed my path again despite releasing records like *Rebellion Rises* and *Love Is My Religion* that I genuinely love. That single 1988 date sits in the archive like a polaroid found in a jacket pocket — vivid, a little mysterious, and making me wonder how I let 36 years slip by without a second show.</description>
+    <category>#rare-sighting</category>
+    <category>#one-time-only</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/marley-ziggy-508440fb16be3.jpg" medium="image" />
+  </item>
   <item>
     <title>June 21: 35 Years Since Jimmy Buffett</title>
     <link>https://concerts.morperhaus.org/liner-notes/june-21-35-years-since-jimmy-buffett</link>
@@ -201,16 +211,6 @@
     <category>#drought</category>
     <category>#comeback</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/tsysvw1341332686.jpg" medium="image" />
-  </item>
-  <item>
-    <title>The Brian Setzer Orchestra: A Jazz/Blues Outlier in a Rock / Electronic / Reggae Archive</title>
-    <link>https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-a-jazz-blues-outlier-in-a-rock-electronic-reggae-arch</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-a-jazz-blues-outlier-in-a-rock-electronic-reggae-arch</guid>
-    <pubDate>Sun, 08 Mar 2026 23:08:41 +0000</pubDate>
-    <description>I just discovered that The Brian Setzer Orchestra represents my only swing and blues shows in an archive that&apos;s 86% rock, electronic, and reggae. Three shows across 22 years — Hard Rock Cafe in Newport Beach in 1995, Universal Amphitheater in 2002, and the Warner Theatre in DC in 2017 — stand as complete genre outliers in my concert history. It&apos;s fascinating that my musical wandering led me to catch them during three different decades, from the &quot;Dirty Boogie&quot; era through their Christmas tours. Sometimes the most revealing thing about your taste is what doesn&apos;t fit the pattern.</description>
-    <category>#genre-outlier</category>
-    <category>#jazz-blues</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg" medium="image" />
   </item>
   </channel>
 </rss>
