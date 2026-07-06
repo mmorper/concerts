@@ -1,7 +1,84 @@
 {
-  "generatedAt": "2026-06-29T12:38:25.105Z",
-  "dataHash": "8c1a972d",
+  "generatedAt": "2026-07-06T12:07:53.758Z",
+  "dataHash": "324aedbc",
   "posts": [
+    {
+      "id": "venue-loyalty-house-of-blues-anaheim",
+      "slug": "house-of-blues-anaheim-6-shows-over-3-decades-2",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "House of Blues Anaheim: 6 Shows Over 3 Decades",
+      "prose": "I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who'd been making records since before I probably knew what a record was. Six shows across three decades at that same room, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.",
+      "image": {
+        "url": "https://lh3.googleusercontent.com/place-photos/AJRVUZPCITI_BHZUk8bj7rKgVnp0AlQa8ObkB9wRMGUmFLBL7EKfVSR8ow0_RTgJGiiaSH1NWYcXvG4UQIVKDuuKP-dyZ69DI4L0A9e0rjt0AyoBXl9AajsvI18qSPpwoFIgIXFzapYDWx-hU6EfeX8=s4800-h1200",
+        "alt": "House of Blues Anaheim",
+        "source": "venue"
+      },
+      "audio": {
+        "trackName": "Steppin' Out",
+        "artistName": "Joe Jackson",
+        "albumName": "Night and Day",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/7f/b8/85/7fb88577-a301-beab-da78-c5f20a39f9a8/mzaf_6319136707027446662.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/23/74/62/23746272-49a1-fd05-d64f-9c5235b024b3/00075021333420.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/steppin-out/1440641327?i=1440641332&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "joe-jackson",
+        "streetlight-manifesto",
+        "future-islands",
+        "royal-blood",
+        "social-distortion"
+      ],
+      "venues": [
+        "house-of-blues-anaheim"
+      ],
+      "years": [
+        2003,
+        2019,
+        2021,
+        2022,
+        2022,
+        2022
+      ],
+      "tags": [
+        "#venue-loyalty"
+      ],
+      "deepLinks": [
+        {
+          "label": "Joe Jackson",
+          "url": "/?scene=artists&artist=joe-jackson",
+          "type": "artist"
+        },
+        {
+          "label": "Streetlight Manifesto",
+          "url": "/?scene=artists&artist=streetlight-manifesto",
+          "type": "artist"
+        },
+        {
+          "label": "Future Islands",
+          "url": "/?scene=artists&artist=future-islands",
+          "type": "artist"
+        },
+        {
+          "label": "House of Blues Anaheim",
+          "url": "/?scene=venues&venue=house-of-blues-anaheim",
+          "type": "venue"
+        },
+        {
+          "label": "2003",
+          "url": "/?scene=timeline&year=2003",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "house-of-blues-anaheim-6-shows-over-3-decades",
+        "social-distortion-34-years-of-shows"
+      ],
+      "score": 36,
+      "detector": "venue-loyalty",
+      "publishedAt": "2026-07-06T12:07:53.758Z"
+    },
     {
       "id": "rare-sighting-ziggy-marley",
       "slug": "ziggy-marley-caught-once-never-again",
@@ -3744,83 +3821,6 @@
       "publishedAt": "2026-01-08T21:36:00.000Z"
     },
     {
-      "id": "venue-loyalty-house-of-blues-anaheim",
-      "slug": "house-of-blues-anaheim-6-shows-over-3-decades",
-      "category": "personal",
-      "temporality": "evergreen",
-      "headline": "House of Blues Anaheim: 6 Shows Over 3 Decades",
-      "prose": "I keep finding myself back at House of Blues Anaheim, apparently — 6 shows across 20 years, from Joe Jackson's sophisticated pop in 2003 to Social Distortion's punk grit last December. The venue has this reliable intimacy that works whether I'm watching Future Islands' synth-pop theatrics or Streetlight Manifesto's ska-punk energy, and somehow I've managed to see 5 completely different artists there without ever planning it as a destination. It's become my accidental musical constant, this Anaheim room where I've consistently stumbled into great performances.",
-      "image": {
-        "url": "https://lh3.googleusercontent.com/places/ANXAkqGcDXUnrmVw_u2Qf4v3LUE9jC1eNwBTSQvFPuseWoBQRa_JrVmjrdWuC6UNeiCliWsM3Z0xJ6bg1T3qs9UjUKke9TF8Y9cxr9k=s4800-h800",
-        "alt": "House of Blues Anaheim",
-        "source": "venue"
-      },
-      "audio": {
-        "trackName": "Steppin' Out",
-        "artistName": "Joe Jackson",
-        "albumName": "Night and Day",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/7f/b8/85/7fb88577-a301-beab-da78-c5f20a39f9a8/mzaf_6319136707027446662.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/23/74/62/23746272-49a1-fd05-d64f-9c5235b024b3/00075021333420.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/steppin-out/1440641327?i=1440641332&uo=4",
-        "source": "itunes"
-      },
-      "artists": [
-        "joe-jackson",
-        "streetlight-manifesto",
-        "future-islands",
-        "royal-blood",
-        "social-distortion"
-      ],
-      "venues": [
-        "house-of-blues-anaheim"
-      ],
-      "years": [
-        2003,
-        2019,
-        2021,
-        2022,
-        2022,
-        2022
-      ],
-      "tags": [
-        "#venue-loyalty"
-      ],
-      "deepLinks": [
-        {
-          "label": "Joe Jackson",
-          "url": "/?scene=artists&artist=joe-jackson",
-          "type": "artist"
-        },
-        {
-          "label": "Streetlight Manifesto",
-          "url": "/?scene=artists&artist=streetlight-manifesto",
-          "type": "artist"
-        },
-        {
-          "label": "Future Islands",
-          "url": "/?scene=artists&artist=future-islands",
-          "type": "artist"
-        },
-        {
-          "label": "House of Blues Anaheim",
-          "url": "/?scene=venues&venue=house-of-blues-anaheim",
-          "type": "venue"
-        },
-        {
-          "label": "2003",
-          "url": "/?scene=timeline&year=2003",
-          "type": "timeline"
-        }
-      ],
-      "relatedSlugs": [
-        "depeche-mode-38-years-of-shows",
-        "squeeze-from-opener-to-headliner"
-      ],
-      "score": 36,
-      "detector": "venue-loyalty",
-      "publishedAt": "2026-01-06T18:24:00.000Z"
-    },
-    {
       "id": "venue-loyalty-irvine-meadows",
       "slug": "irvine-meadows-16-shows-over-3-decades",
       "category": "personal",
@@ -3994,9 +3994,9 @@
   ],
   "metadata": {
     "totalPosts": 53,
-    "totalGenerated": 77,
+    "totalGenerated": 79,
     "averageScore": 38.3,
-    "lastPipelineRun": "2026-06-29T12:38:25.105Z",
+    "lastPipelineRun": "2026-07-06T12:07:53.758Z",
     "concertsAnalyzed": 180,
     "feedUrl": "/liner-notes.xml"
   }

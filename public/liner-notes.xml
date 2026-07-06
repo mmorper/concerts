@@ -5,13 +5,22 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 29 Jun 2026 12:38:25 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 06 Jul 2026 12:07:53 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>House of Blues Anaheim: 6 Shows Over 3 Decades</title>
+    <link>https://concerts.morperhaus.org/liner-notes/house-of-blues-anaheim-6-shows-over-3-decades-2</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/house-of-blues-anaheim-6-shows-over-3-decades-2</guid>
+    <pubDate>Mon, 06 Jul 2026 12:07:53 +0000</pubDate>
+    <description>I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who&apos;d been making records since before I probably knew what a record was. Six shows across three decades at that same room, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.</description>
+    <category>#venue-loyalty</category>
+    <media:content url="https://lh3.googleusercontent.com/place-photos/AJRVUZPCITI_BHZUk8bj7rKgVnp0AlQa8ObkB9wRMGUmFLBL7EKfVSR8ow0_RTgJGiiaSH1NWYcXvG4UQIVKDuuKP-dyZ69DI4L0A9e0rjt0AyoBXl9AajsvI18qSPpwoFIgIXFzapYDWx-hU6EfeX8=s4800-h1200" medium="image" />
+  </item>
   <item>
     <title>Ziggy Marley: Caught Once, Never Again</title>
     <link>https://concerts.morperhaus.org/liner-notes/ziggy-marley-caught-once-never-again</link>
@@ -201,16 +210,6 @@
     <category>#rare-sighting</category>
     <category>#one-time-only</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/pj57t31658769167.jpg" medium="image" />
-  </item>
-  <item>
-    <title>UB40: 35 Years Between Shows</title>
-    <link>https://concerts.morperhaus.org/liner-notes/ub40-35-years-between-shows</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/ub40-35-years-between-shows</guid>
-    <pubDate>Sun, 08 Mar 2026 23:08:41 +0000</pubDate>
-    <description>I saw UB40 at Pacific Amphitheatre in 1988, back when &quot;Red Red Wine&quot; was still fresh and their reggae-pop was everywhere on the radio. Thirty-five years passed before I caught them again at the Peacock Theater in 2023 — the longest gap between any artist in my concert history. Walking into that LA venue, I wondered if they&apos;d still have that Birmingham-meets-Jamaica energy that made their Labour of Love covers so infectious. Time had changed us both, but the music hit exactly the same way it did in Costa Mesa all those decades ago.</description>
-    <category>#drought</category>
-    <category>#comeback</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/tsysvw1341332686.jpg" medium="image" />
   </item>
   </channel>
 </rss>
