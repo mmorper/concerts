@@ -370,11 +370,11 @@
   },
   "the-fillmore-silver-spring": {
     "narration": {
-      "context": "I caught eight shows at the Fillmore Silver Spring between 2012 and 2017, starting with The Cult in June of '12 and ending with Midnight Oil five years later.",
-      "closingArc": "It wasn't a home venue for me—just a run of occasional nights—but I saw some fierce lineups there: Garbage, Dropkick Murphys, Dirty Heads, and bands I haven't thought of in years."
+      "context": "I've been to The Fillmore in Silver Spring nine times since it opened in 2012, always catching headliners on their way through town — I saw The Cult that first night and Danny Elfman just this past September.",
+      "closingArc": "A small room with a reliable rotation of mid-tier rock and alternative acts, where I kept bumping into the same crowd and the same sticky floors year after year."
     },
-    "inputHash": "sha256:d34a01fd7e4947e8c9ebb3d6824b67b54389ce62030f4f07a367b4c1734f0419",
-    "generatedAt": "2026-06-16T22:48:20.732Z",
+    "inputHash": "sha256:558df43907d29324ef6955ce7d9df535a37638c4fb2706d713e45311d120d147",
+    "generatedAt": "2026-07-13T10:30:52.090Z",
     "promptVersion": 1
   },
   "howard-theater": {

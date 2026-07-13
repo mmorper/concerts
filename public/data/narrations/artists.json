@@ -847,11 +847,11 @@
   },
   "danny-elfman": {
     "narration": {
-      "context": "I saw Danny Elfman once, in 2022 at the Hollywood Bowl.",
-      "closingArc": "A single night, but the kind that stays — his world of strings and xylophone and minor-key magic, live and exact."
+      "context": "I saw Danny Elfman twice — first at the Hollywood Bowl in 2022, then four years later at the Fillmore Silver Spring.",
+      "closingArc": "A long gap between shows, but I made it to both."
     },
-    "inputHash": "sha256:010c260e6029cf78582608807389d8072162dc2b6a5ce7b97e0cb6e6125b584d",
-    "generatedAt": "2026-06-16T22:51:15.309Z",
+    "inputHash": "sha256:ae4868ced7400c89227963826f0e43a9b29b1ae6e22a440430d8ed83ba069b63",
+    "generatedAt": "2026-07-13T10:30:53.732Z",
     "promptVersion": 1
   },
   "dr-sick": {
