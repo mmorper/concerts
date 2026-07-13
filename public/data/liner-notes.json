@@ -1,7 +1,66 @@
 {
-  "generatedAt": "2026-07-06T12:07:53.758Z",
-  "dataHash": "324aedbc",
+  "generatedAt": "2026-07-13T11:15:21.276Z",
+  "dataHash": "3a036794",
   "posts": [
+    {
+      "id": "anniversary-beach-boys-1986-07-16",
+      "slug": "july-16-40-years-since-beach-boys",
+      "category": "personal",
+      "temporality": "timely",
+      "headline": "July 16: 40 Years Since Beach Boys",
+      "prose": "I was at the Pacific Amphitheatre in Costa Mesa on July 16, 1986 — 40 years ago today — and I still remember the way the summer air felt when the opening notes hit. The Beach Boys had been together 25 years by then, and somehow they made those harmonies sound like they were being invented right there in front of me. It was one of my earliest entries in what would become decades of concert-going, and I had no idea I was starting something. Forty years later, that night still feels like the right place to have begun.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/rvqysx1385325837.jpg",
+        "alt": "The Beach Boys",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Surfin' U.S.A.",
+        "artistName": "Beach Boys",
+        "albumName": "The Very Best of The Beach Boys: Sounds of Summer",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/7a/52/3c/7a523c91-952d-e847-c8b6-9a2645b4583e/mzaf_15248344319460929349.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/e7/23/02/e7230264-d5a9-a3b0-9eee-c6af522781fb/13UABIM59247.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/surfin-u-s-a/725823104?i=725823658&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "beach-boys"
+      ],
+      "venues": [
+        "pacific-amphitheatre"
+      ],
+      "years": [
+        1986
+      ],
+      "tags": [
+        "#anniversary",
+        "#on-this-day"
+      ],
+      "deepLinks": [
+        {
+          "label": "The Beach Boys",
+          "url": "/?scene=artists&artist=beach-boys",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=venues&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "1986",
+          "url": "/?scene=timeline&year=1986",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "pacific-amphitheatre-16-shows-over-5-decades",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 42,
+      "detector": "calendar-anniversary",
+      "publishedAt": "2026-07-13T11:15:21.276Z"
+    },
     {
       "id": "venue-loyalty-house-of-blues-anaheim",
       "slug": "house-of-blues-anaheim-6-shows-over-3-decades-2",
@@ -3993,10 +4052,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 53,
-    "totalGenerated": 79,
-    "averageScore": 38.3,
-    "lastPipelineRun": "2026-07-06T12:07:53.758Z",
+    "totalPosts": 54,
+    "totalGenerated": 81,
+    "averageScore": 38.4,
+    "lastPipelineRun": "2026-07-13T11:15:21.276Z",
     "concertsAnalyzed": 180,
     "feedUrl": "/liner-notes.xml"
   }

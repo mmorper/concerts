@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Jul 2026 12:07:53 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 13 Jul 2026 11:15:21 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>July 16: 40 Years Since Beach Boys</title>
+    <link>https://concerts.morperhaus.org/liner-notes/july-16-40-years-since-beach-boys</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/july-16-40-years-since-beach-boys</guid>
+    <pubDate>Mon, 13 Jul 2026 11:15:21 +0000</pubDate>
+    <description>I was at the Pacific Amphitheatre in Costa Mesa on July 16, 1986 — 40 years ago today — and I still remember the way the summer air felt when the opening notes hit. The Beach Boys had been together 25 years by then, and somehow they made those harmonies sound like they were being invented right there in front of me. It was one of my earliest entries in what would become decades of concert-going, and I had no idea I was starting something. Forty years later, that night still feels like the right place to have begun.</description>
+    <category>#anniversary</category>
+    <category>#on-this-day</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/rvqysx1385325837.jpg" medium="image" />
+  </item>
   <item>
     <title>House of Blues Anaheim: 6 Shows Over 3 Decades</title>
     <link>https://concerts.morperhaus.org/liner-notes/house-of-blues-anaheim-6-shows-over-3-decades-2</link>
@@ -200,16 +210,6 @@
     <category>#album-context</category>
     <category>#cultural-moment</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/vxvvtr1348513703.jpg" medium="image" />
-  </item>
-  <item>
-    <title>Bruce Springsteen: Caught Once, Never Again</title>
-    <link>https://concerts.morperhaus.org/liner-notes/bruce-springsteen-caught-once-never-again</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/bruce-springsteen-caught-once-never-again</guid>
-    <pubDate>Sun, 08 Mar 2026 23:15:48 +0000</pubDate>
-    <description>I saw Bruce Springsteen exactly once in my entire concert-going life — September 29, 1985 at the Los Angeles Memorial Coliseum during the Born in the U.S.A. tour. Despite attending hundreds of shows across four decades, The Boss never crossed my path again, making him one of the most glaring single-sighting artists in my archive. It&apos;s almost impossible to believe that someone who built a career on marathon three-hour shows and relentless touring somehow became my ultimate one-and-done experience. Sometimes the biggest names leave the smallest footprints.</description>
-    <category>#rare-sighting</category>
-    <category>#one-time-only</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/pj57t31658769167.jpg" medium="image" />
   </item>
   </channel>
 </rss>
