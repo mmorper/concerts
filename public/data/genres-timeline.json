@@ -316,9 +316,9 @@
         "2022": 3,
         "2024": 1,
         "2025": 1,
-        "2026": 2
+        "2026": 3
       },
-      "totalShows": 31,
+      "totalShows": 32,
       "firstYear": 1985,
       "lastYear": 2026,
       "artists": [
@@ -354,6 +354,17 @@
           ],
           "firstYear": 2017,
           "lastYear": 2019
+        },
+        {
+          "name": "Danny Elfman",
+          "normalizedName": "danny-elfman",
+          "showCount": 2,
+          "years": [
+            2022,
+            2026
+          ],
+          "firstYear": 2022,
+          "lastYear": 2026
         },
         {
           "name": "Stryper",
@@ -554,16 +565,6 @@
           ],
           "firstYear": 2018,
           "lastYear": 2018
-        },
-        {
-          "name": "Danny Elfman",
-          "normalizedName": "danny-elfman",
-          "showCount": 1,
-          "years": [
-            2022
-          ],
-          "firstYear": 2022,
-          "lastYear": 2022
         },
         {
           "name": "Umphrey's McGee",
@@ -1520,7 +1521,7 @@
     "2023": 11,
     "2024": 6,
     "2025": 4,
-    "2026": 4
+    "2026": 5
   },
   "milestones": [
     {
@@ -1556,5 +1557,5 @@
     "start": 1984,
     "end": 2026
   },
-  "generatedAt": "2026-07-06T11:32:14.746Z"
+  "generatedAt": "2026-07-13T10:30:38.890Z"
 }

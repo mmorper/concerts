@@ -1,5 +1,5 @@
 {
-  "computedAt": "2026-07-06T11:32:14.779Z",
+  "computedAt": "2026-07-13T10:30:38.922Z",
   "facts": [
     {
       "id": "top-artist",
@@ -22,7 +22,7 @@
     {
       "id": "total-concerts",
       "category": "timeline",
-      "headline": "183 concerts since 1984",
+      "headline": "184 concerts since 1984",
       "detail": "43 years of live music memories",
       "route": "/?scene=timeline",
       "cta": "Explore the timeline",

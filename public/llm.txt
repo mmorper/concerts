@@ -2,7 +2,7 @@
 
 ## Overview
 
-Personal concert archive spanning 1984-2026. Interactive web application with 183 concerts, 257 artists, 79 venues.
+Personal concert archive spanning 1984-2026. Interactive web application with 184 concerts, 257 artists, 79 venues.
 
 **Live Site:** https://concerts.morperhaus.org
 **Technology:** React SPA with D3.js visualizations, Leaflet maps, Tailwind UI
@@ -61,7 +61,7 @@ All data is publicly accessible as JSON:
 
 ### Concert Data
 **URL:** https://concerts.morperhaus.org/data/concerts.json
-**Records:** 183 concerts
+**Records:** 184 concerts
 **Schema:**
 ```json
 {
@@ -491,6 +491,8 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 
 ---
 
+---
+
 ## Pre-Computed Statistics
 
 These facts are updated with each data refresh and can be quoted directly:
@@ -512,7 +514,7 @@ These facts are updated with each data refresh and can be quoted directly:
    → https://concerts.morperhaus.org/?scene=venues
 
 ### Timeline Highlights
-- 183 concerts since 1984: 43 years of live music memories
+- 184 concerts since 1984: 43 years of live music memories
   → https://concerts.morperhaus.org/?scene=timeline
 - First show: Adam Ant (1984): Where it all began — Irvine Meadows
   → https://concerts.morperhaus.org/?scene=artists&artist=adam-ant
@@ -538,12 +540,12 @@ These facts are updated with each data refresh and can be quoted directly:
 ### Quick Facts (AI-Quotable)
 - "Social Distortion: 8 concerts" — The most-seen live act, 1990–2024
 - "Pacific Amphitheatre: 17 shows" — A favorite spot, visited 1985–2026
-- "183 concerts since 1984" — 43 years of live music memories
+- "184 concerts since 1984" — 43 years of live music memories
 - "New Wave: 49 shows" — The dominant sound in this collection
 - "First show: Adam Ant (1984)" — Where it all began — Irvine Meadows
 - "California: 122 concerts" — Home base for most concert experiences
 
-**Facts computed:** 2026-07-06T11:32:14.779Z
+**Facts computed:** 2026-07-13T10:30:38.922Z
 **Source:** https://concerts.morperhaus.org/data/facts.json
 **Browse visually:** https://concerts.morperhaus.org/liner-notes
 
@@ -703,6 +705,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-07-06
+**Last Updated:** 2026-07-13
 **Version:** v5.0.0
-**Total Content:** 183 concerts | 257 artists | 79 venues | 11,290+ albums | 1984-2026
+**Total Content:** 184 concerts | 257 artists | 79 venues | 11,290+ albums | 1984-2026

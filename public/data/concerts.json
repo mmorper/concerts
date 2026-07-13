@@ -4617,6 +4617,30 @@
       }
     },
     {
+      "id": "concert-183",
+      "date": "2026-09-14",
+      "headliner": "Danny Elfman",
+      "headlinerNormalized": "danny-elfman",
+      "genre": "Orchestral Soundtrack",
+      "genreNormalized": "orchestral-soundtrack",
+      "openers": [],
+      "venue": "The Fillmore Silver Spring",
+      "venueNormalized": "the-fillmore-silver-spring",
+      "city": "Silver Spring",
+      "state": "Maryland",
+      "cityState": "Silver Spring, Maryland",
+      "reference": "",
+      "year": 2026,
+      "month": 9,
+      "day": 14,
+      "dayOfWeek": "Monday",
+      "decade": "2020s",
+      "location": {
+        "lat": 38.997449,
+        "lng": -77.027579
+      }
+    },
+    {
       "id": "concert-180",
       "date": "2026-09-16",
       "headliner": "Thompson Twins",
@@ -4643,7 +4667,7 @@
       }
     },
     {
-      "id": "concert-183",
+      "id": "concert-184",
       "date": "2026-11-11",
       "headliner": "Pinhead Gunpowder",
       "headlinerNormalized": "pinhead-gunpowder",
@@ -4668,8 +4692,8 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-07-06T11:28:07.085Z",
-    "totalConcerts": 183,
+    "lastUpdated": "2026-07-13T10:27:07.704Z",
+    "totalConcerts": 184,
     "dateRange": {
       "earliest": "1984-04-27",
       "latest": "2026-11-11"
