@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 13 Jul 2026 11:15:21 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jul 2026 10:55:39 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>Pacific Amphitheatre: 16 Shows Over 5 Decades</title>
+    <link>https://concerts.morperhaus.org/liner-notes/pacific-amphitheatre-16-shows-over-5-decades-2</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/pacific-amphitheatre-16-shows-over-5-decades-2</guid>
+    <pubDate>Mon, 20 Jul 2026 10:55:39 +0000</pubDate>
+    <description>I was 16 years old the first time I walked into the Pacific Amphitheatre, catching Tears For Fears in the summer of 1985 — right in the thick of the *Songs from the Big Chair* era. Thirty-nine years later, I closed the loop with The English Beat in July 2024, and somewhere in between I fit in 14 more nights at that Costa Mesa bowl, from the Beach Boys to Run-DMC to UB40. Sixteen shows across 5 decades at the same venue feels less like a habit and more like a relationship. I didn&apos;t plan any of this, which somehow makes it better.</description>
+    <category>#venue-loyalty</category>
+    <category>#home-venue</category>
+    <media:content url="https://lh3.googleusercontent.com/place-photos/AJRVUZMmx3IWoqc_Cu5NAy1MrGlLBSOCuYvQq8YNqXQS969l4hSjaJtOkRCl5c1iZVu1YX1D5d4-gyTu3_ojq-MIN6l6G9Cm5keLfmlScA1iSAdQCmjcRTb2jpmKxnZcn2-d1r0lHpjdE-zGEmyfTA=s4800-h1200" medium="image" />
+  </item>
   <item>
     <title>July 16: 40 Years Since Beach Boys</title>
     <link>https://concerts.morperhaus.org/liner-notes/july-16-40-years-since-beach-boys</link>
@@ -200,16 +210,6 @@
     <category>#drought</category>
     <category>#comeback</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/22zdag1638977527.jpg" medium="image" />
-  </item>
-  <item>
-    <title>No Doubt — Days Before It Takes a Nation of Millions to Hold Us Back Dropped</title>
-    <link>https://concerts.morperhaus.org/liner-notes/no-doubt-days-before-it-takes-a-nation-of-millions-to-hold-us-back-dropped</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/no-doubt-days-before-it-takes-a-nation-of-millions-to-hold-us-back-dropped</guid>
-    <pubDate>Sun, 08 Mar 2026 23:15:48 +0000</pubDate>
-    <description>Hip-hop was about to get its political manifesto, but I was watching a ska band from Orange County play at the happiest place on earth. I caught No Doubt at Disneyland on March 4, 1988, just 37 days before Public Enemy would drop It Takes a Nation of Millions to Hold Us Back and change everything about what rap could say and do. While Chuck D was putting the finishing touches on hip-hop&apos;s first true political landmark, I was experiencing the early stirrings of what would become the ska revival, watching Gwen Stefani and company work through their sound in front of families with mouse ears. Two completely different revolutions brewing at the same time — one I witnessed firsthand, the other I&apos;d discover when it hit like a manifesto five weeks later.</description>
-    <category>#album-context</category>
-    <category>#cultural-moment</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/vxvvtr1348513703.jpg" medium="image" />
   </item>
   </channel>
 </rss>

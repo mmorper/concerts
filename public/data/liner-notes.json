@@ -1,7 +1,104 @@
 {
-  "generatedAt": "2026-07-13T11:15:21.276Z",
-  "dataHash": "3a036794",
+  "generatedAt": "2026-07-20T10:55:39.484Z",
+  "dataHash": "08399d86",
   "posts": [
+    {
+      "id": "venue-loyalty-pacific-amphitheatre",
+      "slug": "pacific-amphitheatre-16-shows-over-5-decades-2",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Pacific Amphitheatre: 16 Shows Over 5 Decades",
+      "prose": "I was 16 years old the first time I walked into the Pacific Amphitheatre, catching Tears For Fears in the summer of 1985 — right in the thick of the *Songs from the Big Chair* era. Thirty-nine years later, I closed the loop with The English Beat in July 2024, and somewhere in between I fit in 14 more nights at that Costa Mesa bowl, from the Beach Boys to Run-DMC to UB40. Sixteen shows across 5 decades at the same venue feels less like a habit and more like a relationship. I didn't plan any of this, which somehow makes it better.",
+      "image": {
+        "url": "https://lh3.googleusercontent.com/place-photos/AJRVUZMmx3IWoqc_Cu5NAy1MrGlLBSOCuYvQq8YNqXQS969l4hSjaJtOkRCl5c1iZVu1YX1D5d4-gyTu3_ojq-MIN6l6G9Cm5keLfmlScA1iSAdQCmjcRTb2jpmKxnZcn2-d1r0lHpjdE-zGEmyfTA=s4800-h1200",
+        "alt": "Pacific Amphitheatre",
+        "source": "venue"
+      },
+      "audio": {
+        "trackName": "Everybody Wants to Rule the World",
+        "artistName": "Tears For Fears",
+        "albumName": "Songs from the Big Chair",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ed/23/1f/ed231f7c-78cb-3b4d-f312-fc6b7ec09063/mzaf_14579022326895349191.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/everybody-wants-to-rule-the-world/1440813508?i=1440813515&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "tears-for-fears",
+        "beach-boys",
+        "the-art-of-noise",
+        "run-dmc",
+        "ub40",
+        "maxi-priest",
+        "sting",
+        "garbage",
+        "stray-cats",
+        "yaz",
+        "the-aquabats",
+        "x",
+        "culture-club",
+        "the-english-beat"
+      ],
+      "venues": [
+        "pacific-amphitheatre"
+      ],
+      "years": [
+        1985,
+        1986,
+        1986,
+        1987,
+        1988,
+        1991,
+        1991,
+        2005,
+        2008,
+        2008,
+        2018,
+        2021,
+        2022,
+        2022,
+        2023,
+        2024
+      ],
+      "tags": [
+        "#venue-loyalty",
+        "#home-venue"
+      ],
+      "deepLinks": [
+        {
+          "label": "Tears for Fears",
+          "url": "/?scene=artists&artist=tears-for-fears",
+          "type": "artist"
+        },
+        {
+          "label": "The Beach Boys",
+          "url": "/?scene=artists&artist=beach-boys",
+          "type": "artist"
+        },
+        {
+          "label": "Art of Noise",
+          "url": "/?scene=artists&artist=the-art-of-noise",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=venues&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "1985",
+          "url": "/?scene=timeline&year=1985",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "pacific-amphitheatre-16-shows-over-5-decades",
+        "july-16-40-years-since-beach-boys"
+      ],
+      "score": 39,
+      "detector": "venue-loyalty",
+      "publishedAt": "2026-07-20T10:55:39.484Z"
+    },
     {
       "id": "anniversary-beach-boys-1986-07-16",
       "slug": "july-16-40-years-since-beach-boys",
@@ -3082,103 +3179,6 @@
       "publishedAt": "2026-01-21T16:48:00.000Z"
     },
     {
-      "id": "venue-loyalty-pacific-amphitheatre",
-      "slug": "pacific-amphitheatre-16-shows-over-5-decades",
-      "category": "personal",
-      "temporality": "evergreen",
-      "headline": "Pacific Amphitheatre: 16 Shows Over 5 Decades",
-      "prose": "I've been returning to Pacific Amphitheatre in Costa Mesa for nearly 40 years now, starting with Tears For Fears in 1985 when I was young enough to think outdoor concerts in July were a good idea. Sixteen shows across five decades means this venue has been a constant through every phase of my life — from that first synth-pop experience to catching The English Beat just this past summer. Something about the way sound carries in that amphitheater keeps pulling me back, whether it's for multiple Beach Boys shows or discovering acts like The Art of Noise live. I realize now that Pacific Amphitheatre isn't just where I see concerts — it's where I measure time.",
-      "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AL8-SNGSSz2YBXsmGKQPiyhXYTZ54PjtjDYXqspbbtEGHPL3dYclgv7A1KmCbhkFjdWzLj2RVaW_B1k9JHbp7EoTY7Ig3GjexQazz9UhZwMPc3SAIh_f_2lU9cZQm339ij5gL0ugUEr5YFofGKh0jQ=s4800-h800",
-        "alt": "Pacific Amphitheatre",
-        "source": "venue"
-      },
-      "audio": {
-        "trackName": "Everybody Wants to Rule the World",
-        "artistName": "Tears For Fears",
-        "albumName": "Songs from the Big Chair",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/56/65/5f/56655f64-f26f-3a21-b2c8-c78f1c9a0a20/mzaf_11752705800252350393.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/everybody-wants-to-rule-the-world/1440813508?i=1440813515&uo=4",
-        "source": "itunes"
-      },
-      "artists": [
-        "tears-for-fears",
-        "beach-boys",
-        "the-art-of-noise",
-        "run-dmc",
-        "ub40",
-        "maxi-priest",
-        "sting",
-        "garbage",
-        "stray-cats",
-        "yaz",
-        "the-aquabats",
-        "x",
-        "culture-club",
-        "the-english-beat"
-      ],
-      "venues": [
-        "pacific-amphitheatre"
-      ],
-      "years": [
-        1985,
-        1986,
-        1986,
-        1987,
-        1988,
-        1991,
-        1991,
-        2005,
-        2008,
-        2008,
-        2018,
-        2021,
-        2022,
-        2022,
-        2023,
-        2024
-      ],
-      "tags": [
-        "#venue-loyalty",
-        "#home-venue"
-      ],
-      "deepLinks": [
-        {
-          "label": "Tears for Fears",
-          "url": "/?scene=artists&artist=tears-for-fears",
-          "type": "artist"
-        },
-        {
-          "label": "The Beach Boys",
-          "url": "/?scene=artists&artist=beach-boys",
-          "type": "artist"
-        },
-        {
-          "label": "Art of Noise",
-          "url": "/?scene=artists&artist=the-art-of-noise",
-          "type": "artist"
-        },
-        {
-          "label": "Pacific Amphitheatre",
-          "url": "/?scene=venues&venue=pacific-amphitheatre",
-          "type": "venue"
-        },
-        {
-          "label": "1985",
-          "url": "/?scene=timeline&year=1985",
-          "type": "timeline"
-        }
-      ],
-      "relatedSlugs": [
-        "depeche-mode-38-years-of-shows",
-        "squeeze-from-opener-to-headliner"
-      ],
-      "score": 39,
-      "detector": "venue-loyalty",
-      "publishedAt": "2026-01-19T13:36:00.000Z"
-    },
-    {
       "id": "opener-to-headliner-crowded-house",
       "slug": "crowded-house-from-opener-to-headliner",
       "category": "cultural",
@@ -4053,9 +4053,9 @@
   ],
   "metadata": {
     "totalPosts": 54,
-    "totalGenerated": 81,
+    "totalGenerated": 83,
     "averageScore": 38.4,
-    "lastPipelineRun": "2026-07-13T11:15:21.276Z",
+    "lastPipelineRun": "2026-07-20T10:55:39.484Z",
     "concertsAnalyzed": 180,
     "feedUrl": "/liner-notes.xml"
   }
