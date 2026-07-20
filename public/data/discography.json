@@ -108424,8 +108424,8 @@
     "mbid": null,
     "albumCount": 0,
     "albums": [],
-    "fetchedAt": "2026-03-07T19:31:01.098Z",
-    "cachedAt": "2026-03-07T19:31:01.098Z"
+    "fetchedAt": "2026-07-20T10:17:15.206Z",
+    "cachedAt": "2026-07-20T10:17:15.206Z"
   },
   "pat-dinizio": {
     "artistName": "Pat Dinizio",
@@ -111624,8 +111624,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-03-07T19:31:15.113Z",
-    "cachedAt": "2026-03-07T19:31:15.113Z"
+    "fetchedAt": "2026-07-20T10:17:17.226Z",
+    "cachedAt": "2026-07-20T10:17:17.226Z"
   },
   "public-enemy": {
     "artistName": "Public Enemy",
@@ -135628,5 +135628,799 @@
     ],
     "fetchedAt": "2026-06-16T14:45:58.481Z",
     "cachedAt": "2026-06-16T14:45:58.481Z"
+  },
+  "eeka-mouse": {
+    "artistName": "Eeka Mouse",
+    "normalizedName": "eeka-mouse",
+    "mbid": "c7e31260-7372-46dc-adf1-bd6e3e983e32",
+    "albumCount": 64,
+    "albums": [
+      {
+        "id": "5eb87be4-72b0-4911-9166-d481342d241a",
+        "title": "I Can See Clearly Now",
+        "releaseDate": "2025-05-02",
+        "year": 2025,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/5eb87be4-72b0-4911-9166-d481342d241a/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "ed7a1af0-7403-4a17-9822-fd9b09a613cd",
+        "title": "Billy Jean",
+        "releaseDate": "2025-04-10",
+        "year": 2025,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/ed7a1af0-7403-4a17-9822-fd9b09a613cd/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "9e6c18cd-8d2d-4340-baa7-1e3500cc283b",
+        "title": "You're My Dawta",
+        "releaseDate": "2024-10-04",
+        "year": 2024,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/9e6c18cd-8d2d-4340-baa7-1e3500cc283b/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "6d333911-57be-4d71-87d2-cf755f7070f8",
+        "title": "Skateland Rocking",
+        "releaseDate": "2024-08-24",
+        "year": 2024,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6d333911-57be-4d71-87d2-cf755f7070f8/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "643f5882-f928-408c-accf-275d8608a109",
+        "title": "This Pain",
+        "releaseDate": "2024-05-17",
+        "year": 2024,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/643f5882-f928-408c-accf-275d8608a109/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "1105badf-dbe6-4898-9f9f-bbc7d1fda871",
+        "title": "An Original Rude Bwoy",
+        "releaseDate": "2023-05-05",
+        "year": 2023,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1105badf-dbe6-4898-9f9f-bbc7d1fda871/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a07a9ecf-94b6-4f58-9781-b851f57bf8fc",
+        "title": "Yu Soon Come A Road",
+        "releaseDate": "2023-04-07",
+        "year": 2023,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a07a9ecf-94b6-4f58-9781-b851f57bf8fc/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "e9ad5b50-2871-4d83-aba8-570c1b17c6de",
+        "title": "She Feels It",
+        "releaseDate": "2023-03-03",
+        "year": 2023,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/e9ad5b50-2871-4d83-aba8-570c1b17c6de/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "3be2acfd-5c27-4652-a722-3c3c9340536a",
+        "title": "Tell Jesus to Call Me Back",
+        "releaseDate": "2023-02-24",
+        "year": 2023,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/3be2acfd-5c27-4652-a722-3c3c9340536a/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "507e73bd-e289-4e77-9a56-ed75c7a29114",
+        "title": "No Stress",
+        "releaseDate": "2023-02-16",
+        "year": 2023,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Remix"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/507e73bd-e289-4e77-9a56-ed75c7a29114/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "3a62f24c-7f0f-4eb4-8bd9-4ad033f9f30c",
+        "title": "Obeahlyn",
+        "releaseDate": "2022-11-19",
+        "year": 2022,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/3a62f24c-7f0f-4eb4-8bd9-4ad033f9f30c/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "ca72c520-8cec-4ce9-b574-24d1dd2202f7",
+        "title": "Put Food Pon De Ghetto Youths Table",
+        "releaseDate": "2022-09-23",
+        "year": 2022,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/ca72c520-8cec-4ce9-b574-24d1dd2202f7/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "d5c4c16f-8f7a-4e12-98c7-67c9c86bdd78",
+        "title": "Ganjaville (Ganjaville Riddim)",
+        "releaseDate": "2022-08-05",
+        "year": 2022,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/d5c4c16f-8f7a-4e12-98c7-67c9c86bdd78/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "29e48284-3ef2-455b-87a2-6c69fd462633",
+        "title": "Runaway",
+        "releaseDate": "2022-07-11",
+        "year": 2022,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/29e48284-3ef2-455b-87a2-6c69fd462633/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "556966aa-2736-4ddb-8816-7608900bb939",
+        "title": "Roun' di World",
+        "releaseDate": "2021-08-06",
+        "year": 2021,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/556966aa-2736-4ddb-8816-7608900bb939/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "5137bd86-ad1f-49c0-9c31-61057f61e4cb",
+        "title": "Mosquito Dem A Bite",
+        "releaseDate": "2021-06-25",
+        "year": 2021,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/5137bd86-ad1f-49c0-9c31-61057f61e4cb/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "76acf9a9-0b4e-41a8-b7fb-7ac2a15d6253",
+        "title": "One Man Survival",
+        "releaseDate": "2021-05-28",
+        "year": 2021,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/76acf9a9-0b4e-41a8-b7fb-7ac2a15d6253/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a0e7ad86-59ba-4554-a7af-1f3c32d7924f",
+        "title": "Disney Land",
+        "releaseDate": "2021-04-22",
+        "year": 2021,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a0e7ad86-59ba-4554-a7af-1f3c32d7924f/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "82e6a693-1ede-4feb-bbe7-546f01a73e77",
+        "title": "Pimpin",
+        "releaseDate": "2020-12-31",
+        "year": 2020,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/82e6a693-1ede-4feb-bbe7-546f01a73e77/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a493d7ac-848a-45ee-8c2d-ee3adba7e246",
+        "title": "Radio Broadcast Live",
+        "releaseDate": "2020-09-02",
+        "year": 2020,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a493d7ac-848a-45ee-8c2d-ee3adba7e246/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "fcb13203-d4a1-4c29-9b87-66f808cda25f",
+        "title": "Signz Series #7",
+        "releaseDate": "2020",
+        "year": 2020,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/fcb13203-d4a1-4c29-9b87-66f808cda25f/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "1cd4251b-4729-46f4-aa8a-a515de228bc6",
+        "title": "Peel Session 1983 / 1984",
+        "releaseDate": "2018",
+        "year": 2018,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1cd4251b-4729-46f4-aa8a-a515de228bc6/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "757afec8-b876-445d-b686-6d35e910c506",
+        "title": "Rude Boys",
+        "releaseDate": "2017-12-22",
+        "year": 2017,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/757afec8-b876-445d-b686-6d35e910c506/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "6196af1b-e9c7-4abd-948f-7f2f1be561a8",
+        "title": "A Badmind Dem",
+        "releaseDate": "2016-01-29",
+        "year": 2016,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6196af1b-e9c7-4abd-948f-7f2f1be561a8/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "79e455b4-f38b-4777-ac3e-39a4407e65e3",
+        "title": "Arena Long Beach, May, ’83 Wa-Do-Dem... Live",
+        "releaseDate": "2016",
+        "year": 2016,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/79e455b4-f38b-4777-ac3e-39a4407e65e3/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "c1dc2e1d-b215-41f4-a7a0-dcc7132d6f9b",
+        "title": "Money Making",
+        "releaseDate": "2015-08-21",
+        "year": 2015,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/c1dc2e1d-b215-41f4-a7a0-dcc7132d6f9b/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "482d22d1-fea7-4eab-9014-9ec06cca2380",
+        "title": "Glory",
+        "releaseDate": "2015-07-31",
+        "year": 2015,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/482d22d1-fea7-4eab-9014-9ec06cca2380/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "f6af37d3-78e7-4410-88ec-a19f01dcae93",
+        "title": "Trading Guns For Weed",
+        "releaseDate": "2015-07-24",
+        "year": 2015,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/f6af37d3-78e7-4410-88ec-a19f01dcae93/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "65fab95d-40fb-46d6-9596-ddf672269023",
+        "title": "Reggae Anthology: Eek-Ology",
+        "releaseDate": "2013-10-28",
+        "year": 2013,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/65fab95d-40fb-46d6-9596-ddf672269023/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "7484aacf-9e7b-483c-8a47-d82698670c49",
+        "title": "Kung Fu Know How",
+        "releaseDate": "2012",
+        "year": 2012,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/7484aacf-9e7b-483c-8a47-d82698670c49/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "b47f8f0f-42c4-4052-b62b-e081c219f8d1",
+        "title": "Eekziled",
+        "releaseDate": "2011-02-15",
+        "year": 2011,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/b47f8f0f-42c4-4052-b62b-e081c219f8d1/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "2e58a37a-3a74-3bc4-8926-6a5ae8f058ed",
+        "title": "Most Wanted",
+        "releaseDate": "2008-03-24",
+        "year": 2008,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/2e58a37a-3a74-3bc4-8926-6a5ae8f058ed/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "ed479a08-11bd-46d8-8990-2f2f462aa8ac",
+        "title": "Creation",
+        "releaseDate": "2006-06",
+        "year": 2006,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/ed479a08-11bd-46d8-8990-2f2f462aa8ac/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "124e8126-23dd-3474-a7fd-a1aac0da9705",
+        "title": "Live in San Francisco",
+        "releaseDate": "2006",
+        "year": 2006,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/124e8126-23dd-3474-a7fd-a1aac0da9705/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a0a263b4-b117-41d5-8154-113a0a6d6cb6",
+        "title": "Wicked Shall Not Reign",
+        "releaseDate": "2006",
+        "year": 2006,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a0a263b4-b117-41d5-8154-113a0a6d6cb6/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "fb663ab2-8956-3b64-bf5d-9923bb1a6c03",
+        "title": "Mouse Gone Wild",
+        "releaseDate": "2004-03-22",
+        "year": 2004,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/fb663ab2-8956-3b64-bf5d-9923bb1a6c03/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "5358b3ff-5f35-358a-9246-6dd26666da90",
+        "title": "Eek-A-Speeka",
+        "releaseDate": "2004",
+        "year": 2004,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/5358b3ff-5f35-358a-9246-6dd26666da90/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "80b1b82e-8d08-3ff0-88c5-2215df067ec4",
+        "title": "Very Best of Eek a Mouse, Volume 2",
+        "releaseDate": "2003-01-21",
+        "year": 2003,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/80b1b82e-8d08-3ff0-88c5-2215df067ec4/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "2e11bd9b-cdbc-3874-a882-27540b058bfc",
+        "title": "Eeksperience",
+        "releaseDate": "2001-08-14",
+        "year": 2001,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/2e11bd9b-cdbc-3874-a882-27540b058bfc/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "86ffc1e4-4ca8-403f-aaac-b7eb06df97a0",
+        "title": "Live @ Central Station in Darmstadt",
+        "releaseDate": "2001",
+        "year": 2001,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/86ffc1e4-4ca8-403f-aaac-b7eb06df97a0/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "6fefcf8b-37bb-339b-83e8-d14968e43701",
+        "title": "RAS Portraits",
+        "releaseDate": "1997",
+        "year": 1997,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6fefcf8b-37bb-339b-83e8-d14968e43701/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "1c54452f-df69-3f0d-be05-de50e0ad4c3a",
+        "title": "Black Cowboy",
+        "releaseDate": "1996-04-16",
+        "year": 1996,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1c54452f-df69-3f0d-be05-de50e0ad4c3a/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "0bcb383f-aff8-43e5-a384-f9484f747a20",
+        "title": "Live in Rotterdam",
+        "releaseDate": "1994",
+        "year": 1994,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/0bcb383f-aff8-43e5-a384-f9484f747a20/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "9593292a-e823-3bee-a753-5c5b03ba0de2",
+        "title": "U-Neek",
+        "releaseDate": "1991-07-09",
+        "year": 1991,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/9593292a-e823-3bee-a753-5c5b03ba0de2/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "05996da1-97e9-4c88-b45a-d49d349f31a2",
+        "title": "At His Best",
+        "releaseDate": "1988",
+        "year": 1988,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/05996da1-97e9-4c88-b45a-d49d349f31a2/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "41bdc19d-adb2-3bfa-a506-3c1424f48a3e",
+        "title": "Eek-A-Nomics",
+        "releaseDate": "1988",
+        "year": 1988,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/41bdc19d-adb2-3bfa-a506-3c1424f48a3e/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "1fba9ae2-bc39-46fb-8988-ce637eef93f1",
+        "title": "Taller Than King Kong",
+        "releaseDate": "1987",
+        "year": 1987,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1fba9ae2-bc39-46fb-8988-ce637eef93f1/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "be1539b6-e1e2-372d-8f3e-3ea31fea6feb",
+        "title": "The Very Best Of",
+        "releaseDate": "1987",
+        "year": 1987,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/be1539b6-e1e2-372d-8f3e-3ea31fea6feb/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "db939968-d96a-3def-b06d-5dd23a114b0b",
+        "title": "Mouse-A-Mania",
+        "releaseDate": "1987",
+        "year": 1987,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/db939968-d96a-3def-b06d-5dd23a114b0b/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "9bf5c3cc-4339-3de0-a418-1a37b75a72d6",
+        "title": "The King and I",
+        "releaseDate": "1986",
+        "year": 1986,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/9bf5c3cc-4339-3de0-a418-1a37b75a72d6/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "7091ea30-fdfe-3d2f-acca-44501002daef",
+        "title": "Live at Reggae Sunsplash",
+        "releaseDate": "1984",
+        "year": 1984,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/7091ea30-fdfe-3d2f-acca-44501002daef/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "e0729bec-b335-3bc5-ae95-223bb358692d",
+        "title": "Mouseketeer",
+        "releaseDate": "1984",
+        "year": 1984,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/e0729bec-b335-3bc5-ae95-223bb358692d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "100da9e5-4391-3797-bc54-1e130e5a93df",
+        "title": "The Mouse & The Man",
+        "releaseDate": "1983",
+        "year": 1983,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/100da9e5-4391-3797-bc54-1e130e5a93df/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "63ba28ed-36ea-4651-b6b2-295b1b972a68",
+        "title": "Peeni-Walli",
+        "releaseDate": "1983",
+        "year": 1983,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/63ba28ed-36ea-4651-b6b2-295b1b972a68/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "8c08859f-3434-3f0e-9adb-32c219c088a6",
+        "title": "Assassinator",
+        "releaseDate": "1983",
+        "year": 1983,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/8c08859f-3434-3f0e-9adb-32c219c088a6/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "4186a3ce-4cdd-3d33-b25c-bf51662fb886",
+        "title": "Skidip!",
+        "releaseDate": "1982",
+        "year": 1982,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/4186a3ce-4cdd-3d33-b25c-bf51662fb886/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a567c6cf-721c-40ab-b3cf-06694e6a91ed",
+        "title": "Smuggling",
+        "releaseDate": "1982",
+        "year": 1982,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a567c6cf-721c-40ab-b3cf-06694e6a91ed/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a8a0e20d-397c-47a0-a473-f986ca55c63d",
+        "title": "For Hire And Removal / Lu-Be-Lu",
+        "releaseDate": "1982",
+        "year": 1982,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a8a0e20d-397c-47a0-a473-f986ca55c63d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "6df8e144-a05c-3f77-b57c-ebad7fcb8928",
+        "title": "Wa-Do-Dem",
+        "releaseDate": "1981",
+        "year": 1981,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6df8e144-a05c-3f77-b57c-ebad7fcb8928/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "7fdcaccd-be3b-49a5-83d1-2de9f2f2b04e",
+        "title": "Christmas-A-Come",
+        "releaseDate": "1981",
+        "year": 1981,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/7fdcaccd-be3b-49a5-83d1-2de9f2f2b04e/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "afc8d49d-1977-466e-a9a3-3e6db28055cc",
+        "title": "Tell Them / Tall Man Dub",
+        "releaseDate": "1981",
+        "year": 1981,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/afc8d49d-1977-466e-a9a3-3e6db28055cc/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "cf8626b3-f9bf-4a92-888c-85eb7bea37fb",
+        "title": "Georgie Porgie",
+        "releaseDate": "1981",
+        "year": 1981,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/cf8626b3-f9bf-4a92-888c-85eb7bea37fb/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "dcb048fa-9282-3371-aee3-7ed41acfd6bc",
+        "title": "Bubble Up Yu Hip",
+        "releaseDate": "1980",
+        "year": 1980,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/dcb048fa-9282-3371-aee3-7ed41acfd6bc/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "34ce8db3-eb35-4267-9a6f-51a47f449291",
+        "title": "My Father's Land / Land Dub",
+        "releaseDate": "1975",
+        "year": 1975,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/34ce8db3-eb35-4267-9a6f-51a47f449291/front-500.jpg",
+        "coverAvailable": true
+      }
+    ],
+    "fetchedAt": "2026-07-20T10:17:14.226Z",
+    "cachedAt": "2026-07-20T10:17:14.226Z"
+  },
+  "ratboy": {
+    "artistName": "Ratboy",
+    "normalizedName": "ratboy",
+    "mbid": "2baebaec-cdc4-48db-b233-5e9ba57cff23",
+    "albumCount": 0,
+    "albums": [],
+    "fetchedAt": "2026-07-20T10:17:19.280Z",
+    "cachedAt": "2026-07-20T10:17:19.280Z"
+  },
+  "wrecks": {
+    "artistName": "Wrecks",
+    "normalizedName": "wrecks",
+    "mbid": "0d1c76c9-0ab4-42af-8451-0bbe8849102b",
+    "albumCount": 3,
+    "albums": [
+      {
+        "id": "4d548bde-f16e-4739-ac2b-2dc4831e4ffe",
+        "title": "Wrecks",
+        "releaseDate": "2002",
+        "year": 2002,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/4d548bde-f16e-4739-ac2b-2dc4831e4ffe/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "1d313294-a229-4a8e-b72a-8c2ce7e506ac",
+        "title": "Demon Trip / Alright",
+        "releaseDate": "1999",
+        "year": 1999,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1d313294-a229-4a8e-b72a-8c2ce7e506ac/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "7cc87cd9-3a5c-4666-b9fc-25f3df403fd9",
+        "title": "Gimme Hell vs. Rock'n'Roll Man",
+        "releaseDate": "1999",
+        "year": 1999,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/7cc87cd9-3a5c-4666-b9fc-25f3df403fd9/front-500.jpg",
+        "coverAvailable": true
+      }
+    ],
+    "fetchedAt": "2026-07-20T10:17:21.317Z",
+    "cachedAt": "2026-07-20T10:17:21.317Z"
   }
 }
