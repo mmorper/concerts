@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Jul 2026 10:55:39 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 27 Jul 2026 11:27:39 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>July 31: 40 Years Since The Art of Noise</title>
+    <link>https://concerts.morperhaus.org/liner-notes/july-31-40-years-since-the-art-of-noise</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/july-31-40-years-since-the-art-of-noise</guid>
+    <pubDate>Mon, 27 Jul 2026 11:27:39 +0000</pubDate>
+    <description>I drove down to the Pacific Amphitheatre in Costa Mesa on July 31, 1986, genuinely unsure what a live Art of Noise show would even look like — they were a studio project, built from samples and synthesizers, and the stage setup felt more like a science experiment than a concert. It&apos;s been 40 years since that night, and I still remember the disorientation of watching music that seemed to exist only on record suddenly fill an outdoor amphitheatre with actual air and heat and crowd noise. They had already released *(Who&apos;s Afraid of) The Art of Noise?* by then, and hearing those fractured rhythms in the open California summer felt genuinely strange in the best way. Some shows you attend; that one attended me.</description>
+    <category>#anniversary</category>
+    <category>#on-this-day</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/art-of-noise-50dfd27c82328.jpg" medium="image" />
+  </item>
   <item>
     <title>Pacific Amphitheatre: 16 Shows Over 5 Decades</title>
     <link>https://concerts.morperhaus.org/liner-notes/pacific-amphitheatre-16-shows-over-5-decades-2</link>
@@ -200,16 +210,6 @@
     <category>#rare-sighting</category>
     <category>#one-time-only</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/wswstt1388681264.jpg" medium="image" />
-  </item>
-  <item>
-    <title>Echo and the Bunnymen: 26 Years Between Shows</title>
-    <link>https://concerts.morperhaus.org/liner-notes/echo-and-the-bunnymen-26-years-between-shows</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/echo-and-the-bunnymen-26-years-between-shows</guid>
-    <pubDate>Sun, 08 Mar 2026 23:15:48 +0000</pubDate>
-    <description>I caught Echo and the Bunnymen at Irvine Meadows in 1984, when their post-punk atmospherics still felt urgent and new. Twenty-six years passed before I saw them again — a quarter-century gap that took me from California amphitheaters to a cramped club in D.C. called The Black Cat in 2010. By then, Ian McCulloch&apos;s voice had weathered but the songs from *Porcupine* and those early albums still carried that same moody weight. Sometimes the longest waits between shows make you appreciate how certain bands become part of your internal soundtrack, whether you&apos;re actively listening or not.</description>
-    <category>#drought</category>
-    <category>#comeback</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/22zdag1638977527.jpg" medium="image" />
   </item>
   </channel>
 </rss>

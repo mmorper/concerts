@@ -1,7 +1,66 @@
 {
-  "generatedAt": "2026-07-20T10:55:39.484Z",
-  "dataHash": "08399d86",
+  "generatedAt": "2026-07-27T11:27:39.231Z",
+  "dataHash": "8dd5e9e7",
   "posts": [
+    {
+      "id": "anniversary-the-art-of-noise-1986-07-31",
+      "slug": "july-31-40-years-since-the-art-of-noise",
+      "category": "personal",
+      "temporality": "timely",
+      "headline": "July 31: 40 Years Since The Art of Noise",
+      "prose": "I drove down to the Pacific Amphitheatre in Costa Mesa on July 31, 1986, genuinely unsure what a live Art of Noise show would even look like — they were a studio project, built from samples and synthesizers, and the stage setup felt more like a science experiment than a concert. It's been 40 years since that night, and I still remember the disorientation of watching music that seemed to exist only on record suddenly fill an outdoor amphitheatre with actual air and heat and crowd noise. They had already released *(Who's Afraid of) The Art of Noise?* by then, and hearing those fractured rhythms in the open California summer felt genuinely strange in the best way. Some shows you attend; that one attended me.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/art-of-noise-50dfd27c82328.jpg",
+        "alt": "Art of Noise",
+        "source": "artist"
+      },
+      "audio": {
+        "trackName": "Moments In Love",
+        "artistName": "The Art of Noise",
+        "albumName": "And What Have You Done With My Body, God?",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/cd/0d/96/cd0d962e-094c-4145-fa7f-ef6de300bc65/mzaf_11977445022339308549.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/43/49/f7/4349f7fd-6b50-3a29-b0b7-8c23b526494b/00602567503330.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/moments-in-love/1370789250?i=1370789256&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "the-art-of-noise"
+      ],
+      "venues": [
+        "pacific-amphitheatre"
+      ],
+      "years": [
+        1986
+      ],
+      "tags": [
+        "#anniversary",
+        "#on-this-day"
+      ],
+      "deepLinks": [
+        {
+          "label": "Art of Noise",
+          "url": "/?scene=artists&artist=the-art-of-noise",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=venues&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "1986",
+          "url": "/?scene=timeline&year=1986",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "pacific-amphitheatre-16-shows-over-5-decades-2",
+        "my-international-chapter-177-concerts-over-41-years"
+      ],
+      "score": 42,
+      "detector": "calendar-anniversary",
+      "publishedAt": "2026-07-27T11:27:39.231Z"
+    },
     {
       "id": "venue-loyalty-pacific-amphitheatre",
       "slug": "pacific-amphitheatre-16-shows-over-5-decades-2",
@@ -4052,10 +4111,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 54,
-    "totalGenerated": 83,
+    "totalPosts": 55,
+    "totalGenerated": 85,
     "averageScore": 38.4,
-    "lastPipelineRun": "2026-07-20T10:55:39.484Z",
+    "lastPipelineRun": "2026-07-27T11:27:39.231Z",
     "concertsAnalyzed": 180,
     "feedUrl": "/liner-notes.xml"
   }
