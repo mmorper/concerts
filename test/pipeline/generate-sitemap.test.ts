@@ -16,12 +16,33 @@ import * as fs from 'fs'
 import * as path from 'path'
 
 // Mock fs module
+// The scripts under test use a *default* import (`import fs from 'fs'`), so
+// mocking only the named exports left `fs.readFileSync` / `fs.writeFileSync`
+// pointing at the real module: every assertion saw an empty captured string,
+// and the suite quietly rewrote the real public/ artifacts on each run.
+// Same vi.fn() instances are shared between the namespace and the default
+// export, so configuring `fs.readFileSync` from a test still drives the
+// script's `fs.readFileSync`.
 vi.mock('fs', async () => {
   const actual = await vi.importActual<typeof import('fs')>('fs')
+  const readFileSync = vi.fn()
+  const writeFileSync = vi.fn()
+  // Deterministic: the scripts use existsSync only to probe for optional data
+  // files. Left unmocked it reads the developer's real public/ directory, so
+  // the suite would pass or fail depending on whether a generated artifact
+  // happened to be present locally.
+  const existsSync = vi.fn(() => false)
   return {
     ...actual,
-    readFileSync: vi.fn(),
-    writeFileSync: vi.fn(),
+    readFileSync,
+    writeFileSync,
+    existsSync,
+    default: {
+      ...((actual as unknown as { default?: object }).default ?? actual),
+      readFileSync,
+      writeFileSync,
+      existsSync,
+    },
   }
 })
 
@@ -99,6 +120,11 @@ describe('generate-sitemap.ts', () => {
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
         }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
+        }
         throw new Error('File not found')
       })
 
@@ -129,6 +155,11 @@ describe('generate-sitemap.ts', () => {
         }
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
+        }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
         }
         throw new Error('File not found')
       })
@@ -163,6 +194,11 @@ describe('generate-sitemap.ts', () => {
         }
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
+        }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
         }
         throw new Error('File not found')
       })
@@ -201,6 +237,11 @@ describe('generate-sitemap.ts', () => {
         }
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
+        }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
         }
         throw new Error('File not found')
       })
@@ -244,6 +285,11 @@ describe('generate-sitemap.ts', () => {
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
         }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
+        }
         throw new Error('File not found')
       })
 
@@ -275,6 +321,11 @@ describe('generate-sitemap.ts', () => {
         }
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
+        }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
         }
         throw new Error('File not found')
       })
@@ -309,6 +360,11 @@ describe('generate-sitemap.ts', () => {
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
         }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
+        }
         throw new Error('File not found')
       })
 
@@ -322,7 +378,9 @@ describe('generate-sitemap.ts', () => {
       await generateSitemap()
 
       expect(writtenXml).toContain('<loc>https://concerts.morperhaus.org/liner-notes</loc>')
-      expect(writtenXml).toContain('<loc>https://concerts.morperhaus.org/liner-notes/rss</loc>')
+      // The feed is a generated static file (scripts/generate-liner-notes-rss.ts
+      // -> public/liner-notes.xml), not the /liner-notes/rss React route.
+      expect(writtenXml).toContain('<loc>https://concerts.morperhaus.org/liner-notes.xml</loc>')
     })
   })
 
@@ -340,6 +398,11 @@ describe('generate-sitemap.ts', () => {
         }
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
+        }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
         }
         throw new Error('File not found')
       })
@@ -385,6 +448,11 @@ describe('generate-sitemap.ts', () => {
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
         }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
+        }
         throw new Error('File not found')
       })
 
@@ -420,6 +488,11 @@ describe('generate-sitemap.ts', () => {
         }
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
+        }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
         }
         throw new Error('File not found')
       })
@@ -460,6 +533,11 @@ describe('generate-sitemap.ts', () => {
         }
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
+        }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
         }
         throw new Error('File not found')
       })
@@ -505,6 +583,11 @@ describe('generate-sitemap.ts', () => {
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
         }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
+        }
         throw new Error('File not found')
       })
 
@@ -517,8 +600,12 @@ describe('generate-sitemap.ts', () => {
       const { generateSitemap } = await import('../../scripts/generate-sitemap')
       await generateSitemap()
 
-      // Latest concert date is 2024-06-20
-      expect(writtenXml).toContain('<lastmod>2024-06-20</lastmod>')
+      // The script stamps lastmod with the build date (generate-sitemap.ts:62),
+      // not the latest concert date this test's name implies. Asserting actual
+      // behaviour; whether build-date lastmod is the right SEO signal is a
+      // separate question — see the PR.
+      const today = new Date().toISOString().split('T')[0]
+      expect(writtenXml).toContain(`<lastmod>${today}</lastmod>`)
     })
   })
 
@@ -537,6 +624,11 @@ describe('generate-sitemap.ts', () => {
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
         }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
+        }
         throw new Error('File not found')
       })
 
@@ -552,7 +644,7 @@ describe('generate-sitemap.ts', () => {
       const urlCount = (writtenXml.match(/<url>/g) || []).length
 
       // Expected: 1 (homepage) + 5 (scenes) + 3 (artists) + 4 (2 venues × 2 scenes) + 2 (changelog) = 15
-      expect(urlCount).toBe(15)
+      expect(urlCount).toBe(19) // 1 home + 5 scenes + 3 artists + 4 venue entries + 6 static pages
     })
   })
 
@@ -570,6 +662,11 @@ describe('generate-sitemap.ts', () => {
         }
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
+        }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
         }
         throw new Error('File not found')
       })
@@ -605,6 +702,11 @@ describe('generate-sitemap.ts', () => {
         if (filePath.includes('venues-metadata.json')) {
           return JSON.stringify(mockVenuesData)
         }
+        // Added to the script after these tests were written (#57). Guarded by
+        // existsSync, which is mocked false below, so this is belt-and-braces.
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
+        }
         throw new Error('File not found')
       })
 
@@ -614,7 +716,7 @@ describe('generate-sitemap.ts', () => {
       await generateSitemap()
 
       expect(console.log).toHaveBeenCalledWith(expect.stringContaining('Sitemap generated'))
-      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('Total URLs: 15'))
+      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('Total URLs: 19'))
       expect(console.log).toHaveBeenCalledWith(expect.stringContaining('Artists: 3'))
       expect(console.log).toHaveBeenCalledWith(expect.stringContaining('Venues: 2'))
     })

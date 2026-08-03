@@ -415,4 +415,18 @@ These facts are updated with each data refresh and can be quoted directly:
   console.log('  3. Commit changes as part of your release')
 }
 
-main().catch(console.error)
+// Exported so tests can invoke it explicitly. They previously imported this
+// module purely for its side effect ("Dynamically import to trigger
+// execution"), which meant module caching let only the first test actually run
+// it — and it ran against the real filesystem.
+export default main
+
+// Only when invoked directly (`npm run update:meta`). Without this guard an
+// `await import()` in a test ran main() for real, rewriting index.html,
+// public/llm.txt and public/og-stats.json on every test run.
+const isDirectRun =
+  !!process.argv[1] && path.resolve(process.argv[1]) === __filename
+
+if (isDirectRun) {
+  main().catch(console.error)
+}

@@ -208,10 +208,19 @@ function generateUrlEntry(
   return entry
 }
 
-// Run if called directly
-generateSitemap().catch((err) => {
-  console.error('❌ Sitemap generation failed:', err)
-  process.exit(1)
-})
+// Run if called directly — and *only* then. The comment always said "if called
+// directly"; the guard was missing, so `await import()` in a test ran the real
+// generator and overwrote public/sitemap.xml on every test run.
+// Invoked via `npm run generate:sitemap` (tsx scripts/generate-sitemap.ts);
+// nothing imports this module for its side effect.
+const isDirectRun =
+  !!process.argv[1] && path.resolve(process.argv[1]) === __filename
+
+if (isDirectRun) {
+  generateSitemap().catch((err) => {
+    console.error('❌ Sitemap generation failed:', err)
+    process.exit(1)
+  })
+}
 
 export { generateSitemap }
