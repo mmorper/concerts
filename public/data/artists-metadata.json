@@ -2919,5 +2919,12 @@
     "website": null,
     "source": "theaudiodb",
     "fetchedAt": "2026-07-06T11:28:09.586Z"
+  },
+  "karl-denson-s-tiny-universe": {
+    "name": "Karl Denson's Tiny Universe",
+    "image": "https://cdn-images.dzcdn.net/images/artist/7b3cd032209f1bd16cf41f79149e4d83/500x500-000000-80-0-0.jpg",
+    "genres": [],
+    "source": "deezer",
+    "fetchedAt": "2026-08-03T10:42:58.094Z"
   }
 }

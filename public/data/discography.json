@@ -136422,5 +136422,107 @@
     ],
     "fetchedAt": "2026-07-20T10:17:21.317Z",
     "cachedAt": "2026-07-20T10:17:21.317Z"
+  },
+  "karl-denson-s-tiny-universe": {
+    "artistName": "Karl Denson's Tiny Universe",
+    "normalizedName": "karl-denson-s-tiny-universe",
+    "mbid": "ff24a74c-237b-481b-adb5-7f4f6171f5f5",
+    "albumCount": 8,
+    "albums": [
+      {
+        "id": "059695c8-0e94-46bf-8c1f-7ecb4979d2d5",
+        "title": "Gnomes & Badgers",
+        "releaseDate": "2019-03-08",
+        "year": 2019,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/059695c8-0e94-46bf-8c1f-7ecb4979d2d5/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "0a7c3c26-931f-4e50-b893-aa4867aa759b",
+        "title": "New Ammo",
+        "releaseDate": "2014-02-04",
+        "year": 2014,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/0a7c3c26-931f-4e50-b893-aa4867aa759b/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "660c7761-ccd1-4619-bb4b-6318cf4095fd",
+        "title": "Brother's Keeper",
+        "releaseDate": "2009-09-15",
+        "year": 2009,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/660c7761-ccd1-4619-bb4b-6318cf4095fd/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "dade26aa-82fb-497e-aef6-c067f0d0c66b",
+        "title": "Karl Denson's Tiny Universe",
+        "releaseDate": "2007-11-27",
+        "year": 2007,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/dade26aa-82fb-497e-aef6-c067f0d0c66b/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "1572a753-5169-45b4-a132-13b74727aa56",
+        "title": "Once You're There",
+        "releaseDate": "2006",
+        "year": 2006,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1572a753-5169-45b4-a132-13b74727aa56/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "20ae0a64-2674-4c92-a071-a7e4f4319b82",
+        "title": "2004-04-04: Majestic Theatre, Detroit, MI, USA",
+        "releaseDate": "2004-04-04",
+        "year": 2004,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/20ae0a64-2674-4c92-a071-a7e4f4319b82/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "2de52a1f-5974-32f7-b4f9-22fb3830ac63",
+        "title": "The Bridge",
+        "releaseDate": "2002-08-20",
+        "year": 2002,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/2de52a1f-5974-32f7-b4f9-22fb3830ac63/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "02cdff98-fe6e-4a6b-9c83-1e087daa2e46",
+        "title": "Baby Food",
+        "releaseDate": "1995-05-31",
+        "year": 1995,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/02cdff98-fe6e-4a6b-9c83-1e087daa2e46/front-500.jpg",
+        "coverAvailable": true
+      }
+    ],
+    "fetchedAt": "2026-08-03T10:43:33.706Z",
+    "cachedAt": "2026-08-03T10:43:33.706Z"
   }
 }

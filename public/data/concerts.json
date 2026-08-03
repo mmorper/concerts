@@ -4599,7 +4599,9 @@
       "headlinerNormalized": "nile-rodgers",
       "genre": "Funk",
       "genreNormalized": "funk",
-      "openers": [],
+      "openers": [
+        "Karl Denson's Tiny Universe"
+      ],
       "venue": "Pacific Amphitheatre",
       "venueNormalized": "pacific-amphitheatre",
       "city": "Costa Mesa",
@@ -4692,7 +4694,7 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-07-27T10:43:33.606Z",
+    "lastUpdated": "2026-08-03T10:42:55.549Z",
     "totalConcerts": 184,
     "dateRange": {
       "earliest": "1984-04-27",

@@ -1,10 +1,10 @@
 {
   "version": "1",
-  "generatedAt": "2026-07-27T10:48:27.063Z",
+  "generatedAt": "2026-08-03T10:46:27.289Z",
   "coverage": {
-    "concertsWithSetlist": 117,
+    "concertsWithSetlist": 118,
     "totalConcerts": 184,
-    "distinctSongs": 1607
+    "distinctSongs": 1630
   },
   "songs": [
     {
@@ -479,6 +479,14 @@
       "count": 3,
       "artists": [
         "Foals"
+      ]
+    },
+    {
+      "name": "Notorious",
+      "count": 3,
+      "artists": [
+        "Duran Duran",
+        "Nile Rodgers"
       ]
     },
     {
@@ -1442,6 +1450,14 @@
       ]
     },
     {
+      "name": "Let's Dance",
+      "count": 2,
+      "artists": [
+        "Heaven 17",
+        "Nile Rodgers"
+      ]
+    },
+    {
       "name": "Lights Out",
       "count": 2,
       "artists": [
@@ -1604,13 +1620,6 @@
       "artists": [
         "Alison Moyet",
         "Yaz"
-      ]
-    },
-    {
-      "name": "Notorious",
-      "count": 2,
-      "artists": [
-        "Duran Duran"
       ]
     },
     {
