@@ -28,6 +28,24 @@ const SCENE_NAMES: Record<number, string> = {
 interface DeepLinkParams {
   artist?: string | null
   venue?: string | null
+  /** Concert date from `?show=` (#196), already resolved against the archive */
+  show?: string | null
+  /** Venue of the resolved show — display only, never part of the URL */
+  showVenue?: string | null
+}
+
+/**
+ * Formats an ISO date for a page title: "2026-07-31" → "July 31, 2026"
+ *
+ * Parsed at local midnight rather than as a bare ISO string, which JS would
+ * treat as UTC and render as the previous day west of Greenwich.
+ */
+function formatShowDate(date: string): string {
+  return new Date(`${date}T00:00:00`).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
 }
 
 /**
@@ -61,6 +79,9 @@ export function buildPagePath(
   if (params?.venue) {
     searchParams.set('venue', params.venue)
   }
+  if (params?.show) {
+    searchParams.set('show', params.show)
+  }
 
   return `/?${searchParams.toString()}`
 }
@@ -75,13 +96,21 @@ export function buildPageTitle(
   const baseTitle = SCENE_TITLES[sceneNumber]
 
   // If no deep link params, return base scene title
-  if (!params?.artist && !params?.venue) {
+  if (!params?.artist && !params?.venue && !params?.show) {
     return baseTitle
   }
 
   // Format entity names for display
   const artistDisplay = params.artist ? formatEntityName(params.artist) : null
   const venueDisplay = params.venue ? formatEntityName(params.venue) : null
+
+  // #196 — a setlist view is a distinct page. Without this, arriving on a
+  // shared setlist link and browsing to the artist report as the same
+  // pageview, which also muddies #36's setlist_button_clicked reporting.
+  if (params.show && artistDisplay) {
+    const where = params.showVenue ? ` at ${params.showVenue}` : ''
+    return `${artistDisplay}${where} · ${formatShowDate(params.show)} | Concert Archives`
+  }
 
   // Build descriptive title based on deep link combination
   if (artistDisplay && venueDisplay) {

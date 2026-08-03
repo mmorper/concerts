@@ -15,6 +15,12 @@ import { analytics } from '../../../services/analytics'
 interface ArtistSceneProps {
   concerts: Concert[]
   pendingArtistFocus?: string | null
+  /**
+   * Concert date from `?show=` (#196). Stage three of the deep-link restore:
+   * the scene opens the gatefold, the gatefold expands this night's setlist.
+   * Already validated and resolved against the archive in App.tsx.
+   */
+  pendingSetlistFocus?: string | null
   onArtistFocusComplete?: () => void
 }
 
@@ -22,7 +28,7 @@ interface ArtistSceneProps {
  * Main Artist Scene container
  * Album mosaic visualization with flip cards
  */
-export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplete }: ArtistSceneProps) {
+export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus, onArtistFocusComplete }: ArtistSceneProps) {
   const { artistCards, isLoading } = useArtistData(concerts)
   const { getArtistImage, loading: artistImageLoading } = useArtistMetadata()
   const { isPhone } = useGatefoldOrientation()
@@ -346,6 +352,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
             artist={openArtist}
             onClose={handleCloseGatefold}
             reducedMotion={reducedMotion}
+            pendingSetlistFocus={pendingSetlistFocus}
           />
         ) : (
           <ArtistGatefold
@@ -354,6 +361,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, onArtistFocusComplet
             clickedTileRect={clickedTileRect}
             reducedMotion={reducedMotion}
             getArtistImage={getArtistImage}
+            pendingSetlistFocus={pendingSetlistFocus}
           />
         )
       )}

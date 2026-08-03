@@ -24,6 +24,7 @@ import { useChangelogCheck } from './hooks/useChangelogCheck'
 import { useLinerNotesCheck } from './hooks/useLinerNotesCheck'
 import { analytics } from './services/analytics'
 import { buildPagePath, buildPageTitle } from './utils/pageTracking'
+import { resolveShow } from './utils/deepLinks'
 
 function App() {
   return (
@@ -76,9 +77,13 @@ function MainScenes() {
     artist?: string
   } | null>(null)
   const [pendingYearFocus, setPendingYearFocus] = useState<number | null>(null)
+  // #196 — the concert date from `?show=`, handed to the Artist scene so the
+  // gatefold can expand that night's setlist once it has mounted.
+  const [pendingSetlistFocus, setPendingSetlistFocus] = useState<string | null>(null)
   const [currentDeepLinkParams, setCurrentDeepLinkParams] = useState<{
     artist?: string | null
     venue?: string | null
+    show?: string | null
   }>({})
 
   // Check for new changelog entries and liner notes posts
@@ -236,19 +241,32 @@ function MainScenes() {
     const artistParam = params.get('artist')
     const venueParam = params.get('venue')
     const yearParam = params.get('year')
+    const showParam = params.get('show')
+
+    // #196 — resolve `?show=` against the archive before trusting it. A value
+    // that doesn't match a real concert is dropped here, so the link degrades
+    // to the artist gatefold instead of leaving a panel half-opened.
+    // Matching is date + artist with a first-match fallback: date uniqueness
+    // holds in the current data but isn't an enforced invariant.
+    const resolvedShow = resolveShow(data?.concerts ?? [], showParam, artistParam)
 
     // Store deep link parameters in state for pageview tracking
     setCurrentDeepLinkParams({
       artist: artistParam,
       venue: venueParam,
+      show: resolvedShow?.date ?? null,
     })
 
     // Track deep link access with legacy event (for continuity)
-    if (sceneParam || artistParam || venueParam) {
+    if (sceneParam || artistParam || venueParam || showParam) {
       analytics.trackEvent('deep_link_accessed', {
         scene: sceneParam || undefined,
         artist: artistParam || undefined,
         venue: venueParam || undefined,
+        show: resolvedShow?.date || undefined,
+        // A `show` that arrived but didn't resolve is worth seeing separately —
+        // it means links are drifting (renamed artist, removed concert).
+        show_unresolved: !!(showParam && !resolvedShow) || undefined,
         has_artist_filter: !!(artistParam && venueParam),
       })
     }
@@ -257,19 +275,22 @@ function MainScenes() {
       const sceneId = SCENE_MAP[sceneParam]
 
       // Track virtual pageview for deep link
-      const pagePath = buildPagePath(sceneId, {
+      const trackedParams = {
         artist: artistParam,
         venue: venueParam,
-      })
-      const pageTitle = buildPageTitle(sceneId, {
-        artist: artistParam,
-        venue: venueParam,
-      })
+        show: resolvedShow?.date ?? null,
+        showVenue: resolvedShow?.venue ?? null,
+      }
+      const pagePath = buildPagePath(sceneId, trackedParams)
+      const pageTitle = buildPageTitle(sceneId, trackedParams)
       analytics.trackPageView(pagePath, pageTitle)
 
       // If artist parameter is provided, set it for the ArtistScene
       if (artistParam && sceneId === 5) {
         setPendingArtistFocus(artistParam)
+        // #196 — stage three of the restore. The Artist scene opens the
+        // gatefold first; the gatefold expands this setlist once mounted.
+        setPendingSetlistFocus(resolvedShow?.date ?? null)
       }
 
       // If year parameter is provided, expand that year's card stack on the timeline
@@ -308,7 +329,7 @@ function MainScenes() {
     } else if (sceneParam) {
       console.warn('Invalid scene parameter:', sceneParam)
     }
-  }, [location.search, loading])
+  }, [location.search, loading, data])
 
   if (loading) {
     return (
@@ -375,6 +396,7 @@ function MainScenes() {
         <ArtistScene
           concerts={concerts}
           pendingArtistFocus={pendingArtistFocus}
+          pendingSetlistFocus={pendingSetlistFocus}
           onArtistFocusComplete={() => setPendingArtistFocus(null)}
         />
 

@@ -10,10 +10,13 @@ import { format } from 'date-fns'
 import type { Setlist } from '../../../types/setlist'
 import type { ArtistConcert } from './types'
 import { haptics } from '../../../utils/haptics'
+import { useShareSetlistLink } from '../../../hooks/useShareSetlistLink'
 
 interface LinerNotesPanelProps {
   concert: ArtistConcert
   artistName: string
+  /** Normalized artist name — the `artist` value in the share link (#196) */
+  artistSlug: string
   setlist: Setlist | null
   isLoading: boolean
   error: string | null
@@ -29,6 +32,7 @@ interface LinerNotesPanelProps {
 export function LinerNotesPanel({
   concert,
   artistName,
+  artistSlug,
   setlist,
   isLoading,
   error,
@@ -37,6 +41,22 @@ export function LinerNotesPanel({
 }: LinerNotesPanelProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const [isClosing, setIsClosing] = useState(false)
+
+  // #196 — share link for this specific night. Desktop copies to clipboard;
+  // the confirmation is the inline icon swap below, never a toast (the toast
+  // system carries session-priority logic this has no business entering).
+  const { share, status: shareStatus } = useShareSetlistLink({
+    artistSlug,
+    date: concert.date,
+    artistName,
+    venue: concert.venue,
+    isPhone
+  })
+
+  // Only offer the link once there's a setlist to link to. Mirrors the
+  // content area below: loading, error, and no-setlist all render instead of
+  // a setlist, and a link promising one would be a lie in all three.
+  const canShare = !isLoading && !error && !!setlist
 
   // Focus close button when panel opens (accessibility)
   useEffect(() => {
@@ -118,6 +138,34 @@ export function LinerNotesPanel({
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
+
+          {/* Share Link Button (#196) - left of the close button, with a gap.
+              Close is destructive here (it discards the panel you're about to
+              share), so the two must not sit flush. */}
+          {canShare && (
+            <button
+              onClick={share}
+              className="absolute top-[20px] right-[52px] w-6 h-6 flex items-center justify-center text-[#4a4a40] hover:text-[#1DB954] transition-all duration-150 hover:scale-110 touchable-subtle"
+              aria-label={`Copy link to this setlist — ${artistName} at ${concert.venue}`}
+              title={shareStatus === 'copied' ? 'Link copied' : 'Copy link to this setlist'}
+              style={{ zIndex: 30 }}
+            >
+              {shareStatus === 'copied' ? (
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              ) : shareStatus === 'error' ? (
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+                  <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+                </svg>
+              )}
+            </button>
+          )}
 
           {/* Compact Header - Just date and venue */}
           <div className="flex-shrink-0 pt-6 px-7 pb-3">
