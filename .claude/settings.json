@@ -50,7 +50,8 @@
       "mcp__pitch-analytics__get_account_summaries",
       "mcp__claude_ai_Cloudflare_Developer_Platform__workers_get_worker_code",
       "Bash(env -u CLOUDFLARE_API_TOKEN npx wrangler deploy)",
-      "Bash(git stash *)"
+      "Bash(git stash *)",
+      "mcp__chrome-devtools__emulate"
     ],
     "additionalDirectories": [
       "/Users/mmorper/projects/concerts/docs/tasks",
