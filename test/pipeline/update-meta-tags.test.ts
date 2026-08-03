@@ -16,12 +16,33 @@ import * as fs from 'fs'
 import * as path from 'path'
 
 // Mock fs module
+// The scripts under test use a *default* import (`import fs from 'fs'`), so
+// mocking only the named exports left `fs.readFileSync` / `fs.writeFileSync`
+// pointing at the real module: every assertion saw an empty captured string,
+// and the suite quietly rewrote the real public/ artifacts on each run.
+// Same vi.fn() instances are shared between the namespace and the default
+// export, so configuring `fs.readFileSync` from a test still drives the
+// script's `fs.readFileSync`.
 vi.mock('fs', async () => {
   const actual = await vi.importActual<typeof import('fs')>('fs')
+  const readFileSync = vi.fn()
+  const writeFileSync = vi.fn()
+  // Deterministic: the scripts use existsSync only to probe for optional data
+  // files. Left unmocked it reads the developer's real public/ directory, so
+  // the suite would pass or fail depending on whether a generated artifact
+  // happened to be present locally.
+  const existsSync = vi.fn(() => false)
   return {
     ...actual,
-    readFileSync: vi.fn(),
-    writeFileSync: vi.fn(),
+    readFileSync,
+    writeFileSync,
+    existsSync,
+    default: {
+      ...((actual as unknown as { default?: object }).default ?? actual),
+      readFileSync,
+      writeFileSync,
+      existsSync,
+    },
   }
 })
 
@@ -165,6 +186,22 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
     it('should calculate concert count correctly', async () => {
       const mockFs = fs as any
       mockFs.readFileSync.mockImplementation((filePath: string) => {
+        // package.json and facts.json are read by the script but were never
+        // mocked — the suite only ever "passed" because importing the module
+        // ran it against the real filesystem.
+        if (filePath.includes('package.json')) {
+          return JSON.stringify({ version: '9.9.9' })
+        }
+        if (filePath.includes('facts.json')) {
+          return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+        }
+        // main() calls generateSitemap() at the end, which reads these two.
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+        }
         if (filePath.includes('concerts.json')) {
           return JSON.stringify(mockConcertsData)
         }
@@ -179,6 +216,7 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
 
       // Dynamically import to trigger execution
       const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
 
       expect(console.log).toHaveBeenCalledWith(expect.stringContaining('3 concerts'))
     })
@@ -186,6 +224,22 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
     it('should calculate unique artist count (headliners + openers)', async () => {
       const mockFs = fs as any
       mockFs.readFileSync.mockImplementation((filePath: string) => {
+        // package.json and facts.json are read by the script but were never
+        // mocked — the suite only ever "passed" because importing the module
+        // ran it against the real filesystem.
+        if (filePath.includes('package.json')) {
+          return JSON.stringify({ version: '9.9.9' })
+        }
+        if (filePath.includes('facts.json')) {
+          return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+        }
+        // main() calls generateSitemap() at the end, which reads these two.
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+        }
         if (filePath.includes('concerts.json')) {
           return JSON.stringify(mockConcertsData)
         }
@@ -199,6 +253,7 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       })
 
       const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
 
       // Should count: Depeche Mode, New Order, Goldfrapp, Pet Shop Boys = 4 unique artists
       expect(console.log).toHaveBeenCalledWith(expect.stringContaining('4 artists'))
@@ -207,6 +262,22 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
     it('should calculate unique venue count', async () => {
       const mockFs = fs as any
       mockFs.readFileSync.mockImplementation((filePath: string) => {
+        // package.json and facts.json are read by the script but were never
+        // mocked — the suite only ever "passed" because importing the module
+        // ran it against the real filesystem.
+        if (filePath.includes('package.json')) {
+          return JSON.stringify({ version: '9.9.9' })
+        }
+        if (filePath.includes('facts.json')) {
+          return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+        }
+        // main() calls generateSitemap() at the end, which reads these two.
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+        }
         if (filePath.includes('concerts.json')) {
           return JSON.stringify(mockConcertsData)
         }
@@ -220,6 +291,7 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       })
 
       const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
 
       // Should count: 9:30 Club, Hollywood Palladium = 2 unique venues
       expect(console.log).toHaveBeenCalledWith(expect.stringContaining('2 venues'))
@@ -228,6 +300,22 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
     it('should calculate album count from discography.json', async () => {
       const mockFs = fs as any
       mockFs.readFileSync.mockImplementation((filePath: string) => {
+        // package.json and facts.json are read by the script but were never
+        // mocked — the suite only ever "passed" because importing the module
+        // ran it against the real filesystem.
+        if (filePath.includes('package.json')) {
+          return JSON.stringify({ version: '9.9.9' })
+        }
+        if (filePath.includes('facts.json')) {
+          return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+        }
+        // main() calls generateSitemap() at the end, which reads these two.
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+        }
         if (filePath.includes('concerts.json')) {
           return JSON.stringify(mockConcertsData)
         }
@@ -244,6 +332,7 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       })
 
       const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
 
       // Should count: 2 (Depeche Mode) + 1 (New Order) = 3 albums
       expect(console.log).toHaveBeenCalledWith(expect.stringContaining('3 albums'))
@@ -252,6 +341,22 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
     it('should handle missing discography.json gracefully', async () => {
       const mockFs = fs as any
       mockFs.readFileSync.mockImplementation((filePath: string) => {
+        // package.json and facts.json are read by the script but were never
+        // mocked — the suite only ever "passed" because importing the module
+        // ran it against the real filesystem.
+        if (filePath.includes('package.json')) {
+          return JSON.stringify({ version: '9.9.9' })
+        }
+        if (filePath.includes('facts.json')) {
+          return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+        }
+        // main() calls generateSitemap() at the end, which reads these two.
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+        }
         if (filePath.includes('concerts.json')) {
           return JSON.stringify(mockConcertsData)
         }
@@ -268,6 +373,7 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       })
 
       const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
 
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining('Could not read discography.json')
@@ -278,6 +384,22 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
     it('should calculate correct year range', async () => {
       const mockFs = fs as any
       mockFs.readFileSync.mockImplementation((filePath: string) => {
+        // package.json and facts.json are read by the script but were never
+        // mocked — the suite only ever "passed" because importing the module
+        // ran it against the real filesystem.
+        if (filePath.includes('package.json')) {
+          return JSON.stringify({ version: '9.9.9' })
+        }
+        if (filePath.includes('facts.json')) {
+          return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+        }
+        // main() calls generateSitemap() at the end, which reads these two.
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+        }
         if (filePath.includes('concerts.json')) {
           return JSON.stringify(mockConcertsData)
         }
@@ -291,6 +413,7 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       })
 
       const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
 
       // Year range: 1990-2024
       expect(console.log).toHaveBeenCalledWith(expect.stringContaining('1990-2024'))
@@ -299,6 +422,22 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
     it('should find earliest and latest concert dates', async () => {
       const mockFs = fs as any
       mockFs.readFileSync.mockImplementation((filePath: string) => {
+        // package.json and facts.json are read by the script but were never
+        // mocked — the suite only ever "passed" because importing the module
+        // ran it against the real filesystem.
+        if (filePath.includes('package.json')) {
+          return JSON.stringify({ version: '9.9.9' })
+        }
+        if (filePath.includes('facts.json')) {
+          return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+        }
+        // main() calls generateSitemap() at the end, which reads these two.
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+        }
         if (filePath.includes('concerts.json')) {
           return JSON.stringify(mockConcertsData)
         }
@@ -312,6 +451,7 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       })
 
       const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
 
       // Earliest: 1990-03-10, Latest: 2024-05-15
       expect(console.log).toHaveBeenCalledWith(expect.stringContaining('1990-03-10 to 2024-05-15'))
@@ -324,6 +464,22 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       let writtenIndexHtml = ''
 
       mockFs.readFileSync.mockImplementation((filePath: string) => {
+        // package.json and facts.json are read by the script but were never
+        // mocked — the suite only ever "passed" because importing the module
+        // ran it against the real filesystem.
+        if (filePath.includes('package.json')) {
+          return JSON.stringify({ version: '9.9.9' })
+        }
+        if (filePath.includes('facts.json')) {
+          return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+        }
+        // main() calls generateSitemap() at the end, which reads these two.
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+        }
         if (filePath.includes('concerts.json')) {
           return JSON.stringify(mockConcertsData)
         }
@@ -343,6 +499,7 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       })
 
       const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
 
       // Check that new description is present
       expect(writtenIndexHtml).toContain('3 concerts from 1990-2024')
@@ -355,6 +512,22 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       let writtenIndexHtml = ''
 
       mockFs.readFileSync.mockImplementation((filePath: string) => {
+        // package.json and facts.json are read by the script but were never
+        // mocked — the suite only ever "passed" because importing the module
+        // ran it against the real filesystem.
+        if (filePath.includes('package.json')) {
+          return JSON.stringify({ version: '9.9.9' })
+        }
+        if (filePath.includes('facts.json')) {
+          return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+        }
+        // main() calls generateSitemap() at the end, which reads these two.
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+        }
         if (filePath.includes('concerts.json')) {
           return JSON.stringify(mockConcertsData)
         }
@@ -374,6 +547,7 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       })
 
       const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
 
       // Check Schema.org fields updated
       expect(writtenIndexHtml).toContain('"numberOfEvents": 3')
@@ -387,6 +561,22 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       let writtenLlmTxt = ''
 
       mockFs.readFileSync.mockImplementation((filePath: string) => {
+        // package.json and facts.json are read by the script but were never
+        // mocked — the suite only ever "passed" because importing the module
+        // ran it against the real filesystem.
+        if (filePath.includes('package.json')) {
+          return JSON.stringify({ version: '9.9.9' })
+        }
+        if (filePath.includes('facts.json')) {
+          return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+        }
+        // main() calls generateSitemap() at the end, which reads these two.
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+        }
         if (filePath.includes('concerts.json')) {
           return JSON.stringify(mockConcertsData)
         }
@@ -406,6 +596,7 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       })
 
       const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
 
       // Check llm.txt updated
       expect(writtenLlmTxt).toContain('3 concerts, 4 artists, 2 venues')
@@ -419,6 +610,22 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       let writtenOgStats = ''
 
       mockFs.readFileSync.mockImplementation((filePath: string) => {
+        // package.json and facts.json are read by the script but were never
+        // mocked — the suite only ever "passed" because importing the module
+        // ran it against the real filesystem.
+        if (filePath.includes('package.json')) {
+          return JSON.stringify({ version: '9.9.9' })
+        }
+        if (filePath.includes('facts.json')) {
+          return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+        }
+        // main() calls generateSitemap() at the end, which reads these two.
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+        }
         if (filePath.includes('concerts.json')) {
           return JSON.stringify(mockConcertsData)
         }
@@ -438,6 +645,7 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       })
 
       const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
 
       const ogStats = JSON.parse(writtenOgStats)
       expect(ogStats).toEqual({
@@ -445,6 +653,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         scenes: 5,
         artists: 4,
         venues: 2,
+        // Added by the liner notes work (#57). Zero here because existsSync is
+        // mocked false, so the optional liner-notes.json read is skipped.
+        linerNotesCount: 0,
       })
     })
 
@@ -454,6 +665,22 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       const today = new Date().toISOString().split('T')[0]
 
       mockFs.readFileSync.mockImplementation((filePath: string) => {
+        // package.json and facts.json are read by the script but were never
+        // mocked — the suite only ever "passed" because importing the module
+        // ran it against the real filesystem.
+        if (filePath.includes('package.json')) {
+          return JSON.stringify({ version: '9.9.9' })
+        }
+        if (filePath.includes('facts.json')) {
+          return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+        }
+        // main() calls generateSitemap() at the end, which reads these two.
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+        }
         if (filePath.includes('concerts.json')) {
           return JSON.stringify(mockConcertsData)
         }
@@ -473,6 +700,7 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       })
 
       const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
 
       expect(writtenIndexHtml).toContain(`"dateModified": "${today}"`)
       expect(writtenIndexHtml).toContain(`<meta property="article:modified_time" content="${today}T00:00:00Z"`)
@@ -483,6 +711,22 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
     it('should log success messages for all file updates', async () => {
       const mockFs = fs as any
       mockFs.readFileSync.mockImplementation((filePath: string) => {
+        // package.json and facts.json are read by the script but were never
+        // mocked — the suite only ever "passed" because importing the module
+        // ran it against the real filesystem.
+        if (filePath.includes('package.json')) {
+          return JSON.stringify({ version: '9.9.9' })
+        }
+        if (filePath.includes('facts.json')) {
+          return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+        }
+        // main() calls generateSitemap() at the end, which reads these two.
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+        }
         if (filePath.includes('concerts.json')) {
           return JSON.stringify(mockConcertsData)
         }
@@ -496,6 +740,7 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       })
 
       const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
 
       expect(console.log).toHaveBeenCalledWith(
         expect.stringContaining('Updated index.html meta tags and Schema.org JSON-LD')
