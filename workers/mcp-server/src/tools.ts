@@ -163,6 +163,19 @@ function venueLink(name: string, slug: string): string {
   return `[${name}](${SITE_BASE_URL}/?scene=venues&venue=${slug})`;
 }
 
+// #200 — a link to one specific night, opening the gatefold with that setlist
+// already expanded. Keyed on the concert date, never c.id: those are row-order
+// artifacts, so a re-import that renumbers rows would break every link already
+// sent. Shape asserted against test/fixtures/deep-link-urls.json.
+//
+// Only emit this where a setlist actually exists. The URL resolves either way
+// (the panel renders "No setlist available"), but a link offered *as* a setlist
+// that turns out to be empty is worse than no link — only 117 of 183 concerts
+// have one, so that branch is load-bearing, not an edge case.
+function showLink(label: string, artistSlug: string, date: string): string {
+  return `[${label}](${SITE_BASE_URL}/?scene=artists&artist=${artistSlug}&show=${date})`;
+}
+
 // Liner-notes-style links footer. The model paraphrases tool prose (and drops inline
 // links woven into it), but a clearly-delimited block at the very end survives far more
 // reliably. We extract the links already present in the response, dedupe by URL, and
@@ -517,7 +530,14 @@ export function venueHistory(
 // 5. on_this_day
 // ===================================================================
 
-export function onThisDay(concerts: Concert[], month: number, day: number): { text: string; matches: Concert[] } {
+// `setlists` is optional so existing callers and tests keep working; when it's
+// supplied, each night that has a setlist on record links straight to it (#200).
+export function onThisDay(
+  concerts: Concert[],
+  month: number,
+  day: number,
+  setlists: SetlistsCache | null = null,
+): { text: string; matches: Concert[] } {
   const matches = concerts
     .filter((c) => c.month === month && c.day === day)
     .sort((a, b) => a.year - b.year);
@@ -529,8 +549,14 @@ export function onThisDay(concerts: Concert[], month: number, day: number): { te
 
   const lines = [`On ${mName} ${day}, across the years:`, ""];
   for (const c of matches) {
+    // The year label carries the link to that night, where a setlist exists.
+    const hasSetlist =
+      resolveSetlistEntry(setlists, c.id, c.headlinerNormalized).songs.length > 0;
+    const year = hasSetlist
+      ? showLink(String(c.year), c.headlinerNormalized, c.date)
+      : String(c.year);
     lines.push(
-      `${c.year}: ${artistLink(c.headliner, c.headlinerNormalized)} at ${venueLink(c.venue, c.venueNormalized)}, ${c.city} [${c.id}]`,
+      `${year}: ${artistLink(c.headliner, c.headlinerNormalized)} at ${venueLink(c.venue, c.venueNormalized)}, ${c.city} [${c.id}]`,
     );
   }
   if (matches.length === 1) {
@@ -653,7 +679,11 @@ export function surpriseMe(
     why,
     "",
     `${artistLink(c.headliner, c.headlinerNormalized)} at ${venueLink(c.venue, c.venueNormalized)}, ${c.city}`,
-    `${fullDate(c.date)} [${c.id}]`,
+    // Link the night only when there's a setlist behind it (#200) — this tool
+    // already narrates two of its songs below, so the link pays off here.
+    songs.length
+      ? `${showLink(fullDate(c.date), c.headlinerNormalized, c.date)} [${c.id}]`
+      : `${fullDate(c.date)} [${c.id}]`,
   ];
 
   const meta = artistsMeta[c.headlinerNormalized];
@@ -756,12 +786,15 @@ export function concertSetlist(
   if (r.kind === "message") return r.text;
 
   const c = r.concert;
+  const sl = resolveSetlistEntry(setlists, c.id, c.headlinerNormalized);
+
+  // The date becomes the link to the night itself — but only below, on the
+  // path where songs exist. The no-setlist fallback keeps artist/venue links
+  // only, so we never hand back a "here's the setlist" link to an empty panel.
   const head = [
     `${artistLink(c.headliner, c.headlinerNormalized)} at ${venueLink(c.venue, c.venueNormalized)}, ${c.city}`,
-    `${fullDate(c.date)} [${c.id}]`,
+    `${showLink(fullDate(c.date), c.headlinerNormalized, c.date)} [${c.id}]`,
   ];
-
-  const sl = resolveSetlistEntry(setlists, c.id, c.headlinerNormalized);
 
   // Graceful fallback — covers no-entry, setlist === null, and empty song lists alike.
   // State the gap plainly, then offer something that works (openers, best-known tracks).
@@ -1010,10 +1043,13 @@ export function registerTools(server: McpServer, env: Env): void {
     instrument(env, "on_this_day", async (args) => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
+      // Same cached loader surprise_me and get_concert_setlist already use, so
+      // linking the nights that have setlists costs no extra fetch (#200).
+      const setlists = await getSetlistsCache(env, bgCtx);
       const now = new Date();
       const month = (args.month as number | undefined) ?? now.getUTCMonth() + 1;
       const day = (args.day as number | undefined) ?? now.getUTCDate();
-      return textResult(onThisDay(data.concerts, month, day).text);
+      return textResult(onThisDay(data.concerts, month, day, setlists).text);
     }),
   );
 
