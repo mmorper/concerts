@@ -7,6 +7,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { format } from 'date-fns'
+import { Link2 } from 'lucide-react'
 import type { Setlist } from '../../../types/setlist'
 import type { ArtistConcert } from './types'
 import { haptics } from '../../../utils/haptics'
@@ -139,32 +140,40 @@ export function LinerNotesPanel({
             </svg>
           </button>
 
-          {/* Share Link Button (#196) - left of the close button, with a gap.
-              Close is destructive here (it discards the panel you're about to
-              share), so the two must not sit flush. */}
+          {/* Share Link Button (#196).
+              Deliberately identical to the artist copy-link in
+              ConcertHistoryPanel: same Link2 glyph at 18px, same 44px touch
+              target, same tooltip confirmation. Copying a link is one pattern —
+              what differs between here and there is *what* gets linked, and
+              that belongs in the aria-label, not the icon.
+              Sits left of the close button with a gap: close discards the panel
+              you're about to share, so they must not sit flush. */}
           {canShare && (
-            <button
-              onClick={share}
-              className="absolute top-[20px] right-[52px] w-6 h-6 flex items-center justify-center text-[#4a4a40] hover:text-[#1DB954] transition-all duration-150 hover:scale-110 touchable-subtle"
-              aria-label={`Copy link to this setlist — ${artistName} at ${concert.venue}`}
-              title={shareStatus === 'copied' ? 'Link copied' : 'Copy link to this setlist'}
-              style={{ zIndex: 30 }}
-            >
-              {shareStatus === 'copied' ? (
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M20 6L9 17l-5-5" />
-                </svg>
-              ) : shareStatus === 'error' ? (
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
-                </svg>
-              ) : (
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
-                  <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
-                </svg>
+            <>
+              <button
+                onClick={share}
+                className="absolute top-[10px] right-[50px] w-11 h-11 flex items-center justify-center text-[#4a4a40]/60 hover:text-[#1DB954] transition-colors duration-150 touchable-subtle"
+                aria-label={`Copy link to this setlist — ${artistName} at ${concert.venue}`}
+                title="Copy link"
+                style={{ zIndex: 30 }}
+              >
+                <Link2 size={18} />
+              </button>
+
+              {/* Copy confirmation — a local tooltip, not the toast system.
+                  role/aria-live carry the result to screen readers, which a
+                  silent icon swap would not. */}
+              {(shareStatus === 'copied' || shareStatus === 'error') && (
+                <div
+                  className="absolute top-[52px] right-[44px] px-2 py-1 bg-black/90 text-white text-xs font-medium rounded shadow-lg animate-fade-in pointer-events-none"
+                  role="status"
+                  aria-live="polite"
+                  style={{ zIndex: 30 }}
+                >
+                  {shareStatus === 'copied' ? 'Copied!' : 'Copy failed'}
+                </div>
               )}
-            </button>
+            </>
           )}
 
           {/* Compact Header - Just date and venue */}

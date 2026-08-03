@@ -12,7 +12,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
-import { X, Link2, History, Calendar, Music, Share2, Check, AlertTriangle } from 'lucide-react'
+import { X, Link2, History, Calendar, Music } from 'lucide-react'
 import { useShareSetlistLink } from '../../../hooks/useShareSetlistLink'
 import { artistDeepLink, absoluteUrl } from '../../../utils/deepLinks'
 import { getGenreColor } from '../../../constants/colors'
@@ -787,26 +787,25 @@ function SetlistOverlay({
               {format(new Date(concert.date + 'T00:00:00'), 'MMMM d, yyyy')}
             </p>
           </div>
-          <div className="flex items-start gap-1 -mr-2 -mt-2">
-            {/* Share (#196). stopPropagation matters here: the overlay root
-                listens for a right-swipe to close, and this control sits in
-                the corner where that gesture starts. */}
+          <div className="relative flex items-start gap-1 -mr-2 -mt-2">
+            {/* Share (#196). Same Link2 glyph at 18px as the artist copy-link
+                elsewhere in this modal — one pattern, one icon. The share
+                sheet vs clipboard difference is behaviour, not iconography,
+                and the artist link right beside it is a Link2, so internal
+                consistency wins over a marginally more precise glyph.
+                stopPropagation matters: the overlay root listens for a
+                right-swipe to close and this sits where that gesture starts. */}
             {canShare && (
               <button
                 onClick={(e) => {
                   e.stopPropagation()
                   share()
                 }}
-                className="w-11 h-11 flex items-center justify-center text-gray-400 hover:text-white active:text-[#1DB954] transition-colors"
+                className="w-11 h-11 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
                 aria-label={`Share link to this setlist — ${artistName} at ${concert.venue}`}
+                title="Copy link"
               >
-                {shareStatus === 'copied' ? (
-                  <Check size={22} className="text-[#1DB954]" />
-                ) : shareStatus === 'error' ? (
-                  <AlertTriangle size={22} />
-                ) : (
-                  <Share2 size={22} />
-                )}
+                <Link2 size={18} />
               </button>
             )}
             <button
@@ -816,6 +815,18 @@ function SetlistOverlay({
             >
               <X size={24} />
             </button>
+
+            {/* Clipboard-fallback confirmation. Silent after a successful
+                native share — the OS sheet is its own feedback. */}
+            {(shareStatus === 'copied' || shareStatus === 'error') && (
+              <div
+                className="absolute top-12 right-0 px-2 py-1 bg-black/90 text-white text-xs font-medium rounded shadow-lg animate-fade-in pointer-events-none whitespace-nowrap"
+                role="status"
+                aria-live="polite"
+              >
+                {shareStatus === 'copied' ? 'Copied!' : 'Copy failed'}
+              </div>
+            )}
           </div>
         </div>
       </div>
