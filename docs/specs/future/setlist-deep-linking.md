@@ -133,7 +133,19 @@ gatefold → expand that concert's setlist panel. The existing deep-link effect 
 and a 100ms `setTimeout` before `scrollTo`. The setlist restore must **sequence behind** that timeout,
 not race it.
 
-`PhoneArtistModal.tsx` is a separate layout and needs the same treatment — #66 had to handle both.
+**Mobile is a separate component, not a responsive variant.** `PhoneArtistModal.tsx` defines a local
+`SetlistOverlay` that slides in from the right, dark-themed, with its own header, its own swipe-to-close
+gestures, and **three** suppression states the desktop panel does not expose the same way (`isLoading`,
+`error`, and an explicit "No setlist available for this concert"). The share affordance must be absent
+in all three.
+
+The two surfaces should also **differ deliberately in behaviour**: phone uses `navigator.share()` with a
+clipboard fallback, desktop uses clipboard. Sharing on a phone means sending to a person, not parking
+text on a clipboard, and the OS sheet doubles as the confirmation. Branch on the existing `isPhone`
+convention; feature-detect `navigator.share` inside that branch. Put the URL construction, availability
+guard, and analytics in **one shared hook** — only the render should differ. Full guidance in #196.
+
+#66 had to handle both layouts for the same reason.
 
 Also extend `buildPagePath` / `buildPageTitle` in [`pageTracking.ts`](../../../src/utils/pageTracking.ts)
 so GA4 distinguishes a setlist pageview from an artist pageview. Without this, shared-link traffic and
@@ -232,7 +244,7 @@ filtered view the visitor never sees. Out of scope here — flagged for its own 
 ## Acceptance Criteria
 
 - [ ] `/?scene=artists&artist=nile-rodgers&show=2026-07-31` opens the gatefold with that setlist expanded
-- [ ] Works in both desktop gatefold and `PhoneArtistModal`
+- [ ] Works in both the desktop gatefold and the phone `SetlistOverlay`, with the icon suppressed in its loading / error / no-setlist states
 - [ ] Link icon in the **setlist panel header** (left of the ✕) copies the URL for that setlist
 - [ ] Artist-only URLs behave **identically** to today — no regression
 - [ ] Unresolvable `show` degrades to the artist gatefold, no error state
