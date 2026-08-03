@@ -19,6 +19,7 @@ import type {
   SetlistsCache,
   VenuesMetadata,
 } from "./types.js";
+import DEEP_LINKS from "../../../test/fixtures/deep-link-urls.json";
 
 // ---------- fixtures ----------
 
@@ -460,6 +461,70 @@ const MOST_PLAYED: MostPlayedSongs = {
     { name: "Rock This Town", count: 5, artists: ["Brian Setzer", "Stray Cats", "The Brian Setzer Orchestra"] },
   ],
 };
+
+// #200 — the show link is the whole point of this issue: get_concert_setlist
+// renders a setlist for one night and, before this, had no link to it.
+// URL shape is asserted against the shared fixture that the SPA, sitemap and
+// exhibits also check themselves against (test/fixtures/deep-link-urls.json),
+// so the surfaces cannot drift apart independently.
+describe("show deep links (#200)", () => {
+  const showUrl = (slugName: string, date: string) =>
+    `https://concerts.morperhaus.org${DEEP_LINKS.setlist.url
+      .replace(DEEP_LINKS.setlist.input.slug, slugName)
+      .replace(DEEP_LINKS.setlist.input.date, date)}`;
+
+  it("matches the shared fixture's URL shape", () => {
+    expect(showUrl(DEEP_LINKS.setlist.input.slug, DEEP_LINKS.setlist.input.date)).toBe(
+      `https://concerts.morperhaus.org${DEEP_LINKS.setlist.url}`,
+    );
+  });
+
+  it("links the night in get_concert_setlist when a setlist exists", () => {
+    const a = archive();
+    const c = a.find((x) => x.id === "concert-5")!;
+    const text = concertSetlist(a, SETLISTS, { concertId: "concert-5" }, TOP_TRACKS);
+    expect(text).toContain(showUrl(c.headlinerNormalized, c.date));
+  });
+
+  it("never emits an id-keyed show param", () => {
+    const text = concertSetlist(archive(), SETLISTS, { concertId: "concert-5" }, TOP_TRACKS);
+    expect(text).not.toMatch(/show=concert-/);
+  });
+
+  it("omits the show link when there is no setlist on record", () => {
+    // A link offered as a setlist that opens an empty panel is worse than no
+    // link — 66 of 183 concerts are in this state.
+    const a = archive();
+    const noSetlist = a.find((x) => x.id === "concert-1")!;
+    const text = concertSetlist(a, null, { concertId: noSetlist.id }, TOP_TRACKS);
+    expect(text).not.toContain("&show=");
+    // ...but still links artist and venue, so the reply stays actionable.
+    expect(text).toContain("?scene=artists&artist=");
+  });
+
+  it("links only the nights with setlists in on_this_day", () => {
+    const a = archive();
+    const c = a.find((x) => x.id === "concert-5")!;
+    const withSetlists = onThisDay(a, c.month, c.day, SETLISTS).text;
+    const without = onThisDay(a, c.month, c.day, null).text;
+    expect(withSetlists).toContain(showUrl(c.headlinerNormalized, c.date));
+    expect(without).not.toContain("&show=");
+  });
+
+  it("leaves artist and venue links untouched", () => {
+    // Regression guard: `show` is additive, so the existing shapes must be
+    // byte-identical to before.
+    const a = archive();
+    const c = a.find((x) => x.id === "concert-5")!;
+    const text = concertSetlist(a, SETLISTS, { concertId: "concert-5" }, TOP_TRACKS);
+    expect(text).toContain(
+      `https://concerts.morperhaus.org/?scene=artists&artist=${c.headlinerNormalized}`,
+    );
+    expect(text).toContain(
+      `https://concerts.morperhaus.org/?scene=venues&venue=${c.venueNormalized}`,
+    );
+  });
+});
 
 describe("get_archive_top_songs", () => {
   it("leads with the coverage caveat and counts honestly", () => {
