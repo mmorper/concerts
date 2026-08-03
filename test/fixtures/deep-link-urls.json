@@ -1,0 +1,54 @@
+{
+  "_comment": "Canonical deep-link URL shapes. THE contract — docs/DEEP_LINKING.md v1.2 is its prose form. Every surface that emits or parses these URLs asserts against this file: the SPA (src/utils/deepLinks.ts), the MCP server, ask-chat exhibits, the sitemap generator, and the facts generator. Adding a shape here without updating DEEP_LINKING.md, or vice versa, is a bug. See docs/specs/future/setlist-deep-linking.md.",
+  "_why": "Before this file existed the contract was enforced by a comment (workers/ask-chat/src/exhibits.ts: 'mirror docs/DEEP_LINKING.md'). That is how the superseded '&tab=setlists' sketch survived in the docs long enough to read as intended design.",
+
+  "scene": {
+    "timeline": "/?scene=timeline",
+    "venues": "/?scene=venues",
+    "geography": "/?scene=geography",
+    "genres": "/?scene=genres",
+    "artists": "/?scene=artists",
+    "ask": "/?scene=ask"
+  },
+
+  "artist": {
+    "input": { "slug": "depeche-mode" },
+    "url": "/?scene=artists&artist=depeche-mode"
+  },
+
+  "venue": {
+    "input": { "slug": "irvine-meadows" },
+    "url": "/?scene=venues&venue=irvine-meadows"
+  },
+
+  "venueOnMap": {
+    "input": { "slug": "9-30-club" },
+    "url": "/?scene=geography&venue=9-30-club"
+  },
+
+  "timelineYear": {
+    "input": { "year": 2024 },
+    "url": "/?scene=timeline&year=2024"
+  },
+
+  "setlist": {
+    "input": { "slug": "nile-rodgers", "date": "2026-07-31" },
+    "url": "/?scene=artists&artist=nile-rodgers&show=2026-07-31",
+    "notes": "Keyed on concert date, which is globally unique across the archive. Never concert.id — those are row-order artifacts and a re-import that renumbers rows would break every shared link."
+  },
+
+  "setlistEarliest": {
+    "input": { "slug": "adam-ant", "date": "1984-04-27" },
+    "url": "/?scene=artists&artist=adam-ant&show=1984-04-27"
+  },
+
+  "invalidShowValues": [
+    "banana",
+    "2026-7-31",
+    "31-07-2026",
+    "2026/07/31",
+    "",
+    "2026-13-01",
+    "2026-02-30"
+  ]
+}

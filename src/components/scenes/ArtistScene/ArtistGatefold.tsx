@@ -22,6 +22,8 @@ interface ArtistGatefoldProps {
   clickedTileRect: DOMRect | null
   reducedMotion: boolean
   getArtistImage: (artistName: string) => string | undefined
+  /** Concert date from `?show=` — opens that setlist once open (#196) */
+  pendingSetlistFocus?: string | null
 }
 
 // Constants matching prototype
@@ -41,7 +43,8 @@ export function ArtistGatefold({
   onClose,
   clickedTileRect,
   reducedMotion,
-  getArtistImage
+  getArtistImage,
+  pendingSetlistFocus
 }: ArtistGatefoldProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -312,6 +315,26 @@ export function ArtistGatefold({
       setIsLoadingSetlist(false)
     }
   }
+
+  // #196 — stage three of the deep-link restore. Stages one and two (scroll to
+  // the Artist scene, open this gatefold) have already run by the time
+  // showGatefold flips; only then does the panel have somewhere to render.
+  // Sequenced behind that flag rather than racing the open animation.
+  const restoredSetlistRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (!pendingSetlistFocus || !showGatefold || !artist) return
+    // Restore once per deep link — otherwise closing the panel would fight
+    // the effect and immediately reopen it.
+    if (restoredSetlistRef.current === pendingSetlistFocus) return
+
+    const concert = artist.concerts.find(c => c.date === pendingSetlistFocus)
+    // No matching row means the link is stale for this artist. Leave the
+    // gatefold open on its own — degrade, don't error.
+    if (!concert) return
+
+    restoredSetlistRef.current = pendingSetlistFocus
+    openSetlistPanel(concert)
+  }, [pendingSetlistFocus, showGatefold, artist])
 
   // Handle tour badge click (v1.6.0)
   const handleTourBadgeClick = () => {
@@ -614,6 +637,7 @@ export function ArtistGatefold({
                     <LinerNotesPanel
                       concert={selectedConcert}
                       artistName={artist.name}
+                      artistSlug={artist.normalizedName}
                       setlist={setlistData}
                       isLoading={isLoadingSetlist}
                       error={setlistError}
@@ -730,6 +754,7 @@ export function ArtistGatefold({
                     <LinerNotesPanel
                       concert={selectedConcert}
                       artistName={artist.name}
+                      artistSlug={artist.normalizedName}
                       setlist={setlistData}
                       isLoading={isLoadingSetlist}
                       error={setlistError}

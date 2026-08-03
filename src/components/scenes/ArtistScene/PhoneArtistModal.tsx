@@ -13,6 +13,8 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { X, Link2, History, Calendar, Music } from 'lucide-react'
+import { useShareSetlistLink } from '../../../hooks/useShareSetlistLink'
+import { artistDeepLink, absoluteUrl } from '../../../utils/deepLinks'
 import { getGenreColor } from '../../../constants/colors'
 import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
 import { useTourDates } from '../../../hooks/useTourDates'
@@ -36,6 +38,8 @@ interface PhoneArtistModalProps {
   artist: ArtistCard | null
   onClose: () => void
   reducedMotion: boolean
+  /** Concert date from `?show=` — opens that setlist on mount (#196) */
+  pendingSetlistFocus?: string | null
 }
 
 /**
@@ -67,7 +71,8 @@ function adjustColor(hex: string, amount: number): string {
 export function PhoneArtistModal({
   artist,
   onClose,
-  reducedMotion
+  reducedMotion,
+  pendingSetlistFocus
 }: PhoneArtistModalProps) {
   const navigate = useNavigate()
   const { getArtistImage } = useArtistMetadata()
@@ -231,7 +236,9 @@ export function PhoneArtistModal({
     // Haptic feedback immediately on tap
     haptics.light()
 
-    const url = `${window.location.origin}/?scene=artists&artist=${artist.normalizedName}`
+    // Built from the shared builder so this link can't drift from the
+    // contract (docs/DEEP_LINKING.md v1.2 / test/fixtures/deep-link-urls.json).
+    const url = absoluteUrl(artistDeepLink(artist.normalizedName))
 
     try {
       await navigator.clipboard.writeText(url)
@@ -301,6 +308,24 @@ export function PhoneArtistModal({
       setIsLoadingSetlist(false)
     }
   }
+
+  // #196 — stage three of the deep-link restore, phone path. The modal is
+  // already mounted by the time this runs (ArtistScene only renders it once
+  // an artist is open), so there's no open-animation to sequence behind here.
+  const restoredSetlistRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (!pendingSetlistFocus || !artist) return
+    // Restore once per deep link, or dismissing the overlay would reopen it.
+    if (restoredSetlistRef.current === pendingSetlistFocus) return
+
+    const concert = artist.concerts.find(c => c.date === pendingSetlistFocus)
+    // Stale link for this artist — leave the modal open, don't error.
+    if (!concert) return
+
+    restoredSetlistRef.current = pendingSetlistFocus
+    handleSetlistClick(concert)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingSetlistFocus, artist])
 
   // Handle close setlist
   const handleCloseSetlist = () => {
@@ -615,6 +640,7 @@ export function PhoneArtistModal({
           <SetlistOverlay
             concert={selectedConcert}
             artistName={artist.name}
+            artistSlug={artist.normalizedName}
             setlist={setlistData}
             isLoading={isLoadingSetlist}
             error={setlistError}
@@ -633,6 +659,8 @@ export function PhoneArtistModal({
 interface SetlistOverlayProps {
   concert: ArtistConcert
   artistName: string
+  /** Normalized artist name — the `artist` value in the share link (#196) */
+  artistSlug: string
   setlist: Setlist | null
   isLoading: boolean
   error: string | null
@@ -643,6 +671,7 @@ interface SetlistOverlayProps {
 function SetlistOverlay({
   concert,
   artistName,
+  artistSlug,
   setlist,
   isLoading,
   error,
@@ -713,6 +742,20 @@ function SetlistOverlay({
     }
   }, [handleClose])
 
+  // #196 — phone shares via the OS sheet when available, clipboard otherwise.
+  const { share, status: shareStatus } = useShareSetlistLink({
+    artistSlug,
+    date: concert.date,
+    artistName,
+    venue: concert.venue,
+    isPhone: true
+  })
+
+  // The overlay renders one of four things: a skeleton, an error, "No setlist
+  // available", or the setlist. Only the last one is shareable — a link
+  // promising a setlist would be a lie in the other three.
+  const canShare = !isLoading && !error && !!setlist
+
   // Count total songs
   let totalSongs = 0
   if (setlist?.sets?.set) {
@@ -744,13 +787,47 @@ function SetlistOverlay({
               {format(new Date(concert.date + 'T00:00:00'), 'MMMM d, yyyy')}
             </p>
           </div>
-          <button
-            onClick={handleClose}
-            className="w-11 h-11 flex items-center justify-center text-gray-400 hover:text-white transition-colors -mr-2 -mt-2"
-            aria-label="Close setlist"
-          >
-            <X size={24} />
-          </button>
+          <div className="relative flex items-start gap-1 -mr-2 -mt-2">
+            {/* Share (#196). Same Link2 glyph at 18px as the artist copy-link
+                elsewhere in this modal — one pattern, one icon. The share
+                sheet vs clipboard difference is behaviour, not iconography,
+                and the artist link right beside it is a Link2, so internal
+                consistency wins over a marginally more precise glyph.
+                stopPropagation matters: the overlay root listens for a
+                right-swipe to close and this sits where that gesture starts. */}
+            {canShare && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  share()
+                }}
+                className="w-11 h-11 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+                aria-label={`Share link to this setlist — ${artistName} at ${concert.venue}`}
+                title="Copy link"
+              >
+                <Link2 size={18} />
+              </button>
+            )}
+            <button
+              onClick={handleClose}
+              className="w-11 h-11 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+              aria-label="Close setlist"
+            >
+              <X size={24} />
+            </button>
+
+            {/* Clipboard-fallback confirmation. Silent after a successful
+                native share — the OS sheet is its own feedback. */}
+            {(shareStatus === 'copied' || shareStatus === 'error') && (
+              <div
+                className="absolute top-12 right-0 px-2 py-1 bg-black/90 text-white text-xs font-medium rounded shadow-lg animate-fade-in pointer-events-none whitespace-nowrap"
+                role="status"
+                aria-live="polite"
+              >
+                {shareStatus === 'copied' ? 'Copied!' : 'Copy failed'}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

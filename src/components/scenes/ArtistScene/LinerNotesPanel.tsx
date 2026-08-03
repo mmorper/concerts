@@ -7,13 +7,17 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { format } from 'date-fns'
+import { Link2 } from 'lucide-react'
 import type { Setlist } from '../../../types/setlist'
 import type { ArtistConcert } from './types'
 import { haptics } from '../../../utils/haptics'
+import { useShareSetlistLink } from '../../../hooks/useShareSetlistLink'
 
 interface LinerNotesPanelProps {
   concert: ArtistConcert
   artistName: string
+  /** Normalized artist name — the `artist` value in the share link (#196) */
+  artistSlug: string
   setlist: Setlist | null
   isLoading: boolean
   error: string | null
@@ -29,6 +33,7 @@ interface LinerNotesPanelProps {
 export function LinerNotesPanel({
   concert,
   artistName,
+  artistSlug,
   setlist,
   isLoading,
   error,
@@ -37,6 +42,22 @@ export function LinerNotesPanel({
 }: LinerNotesPanelProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const [isClosing, setIsClosing] = useState(false)
+
+  // #196 — share link for this specific night. Desktop copies to clipboard;
+  // the confirmation is the inline icon swap below, never a toast (the toast
+  // system carries session-priority logic this has no business entering).
+  const { share, status: shareStatus } = useShareSetlistLink({
+    artistSlug,
+    date: concert.date,
+    artistName,
+    venue: concert.venue,
+    isPhone
+  })
+
+  // Only offer the link once there's a setlist to link to. Mirrors the
+  // content area below: loading, error, and no-setlist all render instead of
+  // a setlist, and a link promising one would be a lie in all three.
+  const canShare = !isLoading && !error && !!setlist
 
   // Focus close button when panel opens (accessibility)
   useEffect(() => {
@@ -118,6 +139,42 @@ export function LinerNotesPanel({
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
+
+          {/* Share Link Button (#196).
+              Deliberately identical to the artist copy-link in
+              ConcertHistoryPanel: same Link2 glyph at 18px, same 44px touch
+              target, same tooltip confirmation. Copying a link is one pattern —
+              what differs between here and there is *what* gets linked, and
+              that belongs in the aria-label, not the icon.
+              Sits left of the close button with a gap: close discards the panel
+              you're about to share, so they must not sit flush. */}
+          {canShare && (
+            <>
+              <button
+                onClick={share}
+                className="absolute top-[10px] right-[50px] w-11 h-11 flex items-center justify-center text-[#4a4a40]/60 hover:text-[#1DB954] transition-colors duration-150 touchable-subtle"
+                aria-label={`Copy link to this setlist — ${artistName} at ${concert.venue}`}
+                title="Copy link"
+                style={{ zIndex: 30 }}
+              >
+                <Link2 size={18} />
+              </button>
+
+              {/* Copy confirmation — a local tooltip, not the toast system.
+                  role/aria-live carry the result to screen readers, which a
+                  silent icon swap would not. */}
+              {(shareStatus === 'copied' || shareStatus === 'error') && (
+                <div
+                  className="absolute top-[52px] right-[44px] px-2 py-1 bg-black/90 text-white text-xs font-medium rounded shadow-lg animate-fade-in pointer-events-none"
+                  role="status"
+                  aria-live="polite"
+                  style={{ zIndex: 30 }}
+                >
+                  {shareStatus === 'copied' ? 'Copied!' : 'Copy failed'}
+                </div>
+              )}
+            </>
+          )}
 
           {/* Compact Header - Just date and venue */}
           <div className="flex-shrink-0 pt-6 px-7 pb-3">
