@@ -88,7 +88,7 @@ to the right gatefold instead of failing.
 
 | # | Surface | File | Change |
 |---|---------|------|--------|
-| 1 | **Gatefold (SPA)** | `src/components/scenes/ArtistScene/`, `src/App.tsx` | Link affordance + param parsing + three-stage restore |
+| 1 | **Gatefold (SPA)** | `src/components/scenes/ArtistScene/`, `src/App.tsx` | Link icon in setlist panel + param parsing + three-stage restore |
 | 2 | **MCP server** | `workers/mcp-server/src/tools.ts` | `showLink()` builder; use in `get_concert_setlist` |
 | 3 | **Ask exhibits** | `workers/ask-chat/src/exhibits.ts` | `showDeepLink()` builder alongside artist/venue |
 | 4 | **Facts / llm.txt** | `scripts/generate-facts.ts`, `public/llm{,s}.txt` | Route emission + documented grammar |
@@ -97,8 +97,35 @@ to the right gatefold instead of failing.
 
 ### 1. Gatefold — the origin
 
-A link affordance in the gatefold header, beside the artist name, that copies a URL to the currently
-open setlist. Scoped to the Artist scene.
+A link icon **in the setlist panel header**, beside the date and venue line, left of the ✕. Clicking it
+copies the deep link to that setlist. Scoped to the Artist scene.
+
+**Why the panel and not the gatefold header or the concert row:**
+
+- **The row cannot know whether a setlist exists.** The Setlist button at
+  [`ConcertHistoryPanel.tsx:237`](../../../src/components/scenes/ArtistScene/ConcertHistoryPanel.tsx#L237)
+  renders on `onSetlistClick && (...)` — that tests whether a *handler was passed*, not whether *data
+  exists*. Every past concert gets one. Availability isn't resolved until `handleSetlistClick` opens the
+  panel. A row-level icon would therefore point at nothing for 36% of shows (117 of 183 have setlists),
+  or require plumbing availability into the row purely to gate it — which would expose the same
+  pre-existing gap in the Setlist button and drag it into this feature's scope.
+- **The referent is unambiguous.** Beside the artist name the icon has two plausible objects, and the
+  artist *already* has a shareable URL. In the panel header, adjacent to the date and venue it links to,
+  there is nothing to misread.
+- **No state logic.** The panel exists only when a setlist is open, so the icon cannot occupy an invalid
+  state. No hide/disable branch to write or test.
+- **It joins an existing control cluster.** The panel header already carries the ✕.
+
+Place it **left of the ✕ with clear spacing** — a destructive-adjacent control (close) and a generative
+one (copy link) should not sit flush, or a mis-tap costs the user the panel they were about to share.
+
+Bulk-copying links for many shows at once is not a journey worth optimizing for here: 64% of headliners
+(69 of 107) have exactly one show, and the maximum is 8.
+
+**Known consequence:** the affordance is only reachable after opening a setlist. That is correct — you
+cannot share what you have not looked at — but it does mean the feature is invisible until a panel is
+open. If discoverability proves a problem, the answer is a tooltip or first-run hint, not a second icon
+elsewhere.
 
 On load the URL must restore **three layers in sequence**: scroll to scene 5 → focus the artist
 gatefold → expand that concert's setlist panel. The existing deep-link effect at
@@ -206,7 +233,7 @@ filtered view the visitor never sees. Out of scope here — flagged for its own 
 
 - [ ] `/?scene=artists&artist=nile-rodgers&show=2026-07-31` opens the gatefold with that setlist expanded
 - [ ] Works in both desktop gatefold and `PhoneArtistModal`
-- [ ] Link affordance in the gatefold header copies the URL for the currently open setlist
+- [ ] Link icon in the **setlist panel header** (left of the ✕) copies the URL for that setlist
 - [ ] Artist-only URLs behave **identically** to today — no regression
 - [ ] Unresolvable `show` degrades to the artist gatefold, no error state
 - [ ] `get_concert_setlist` includes a link to the show it rendered
