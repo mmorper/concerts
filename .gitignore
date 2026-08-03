@@ -85,3 +85,7 @@ seo-reports/*.md
 
 # Playwright MCP scratch (screenshots, console logs)
 .playwright-mcp/
+
+# Per-suite scratch dirs for the enrich-* pipeline tests. Removed in afterEach,
+# but an interrupted run leaves them behind — and CI asserts a clean tree.
+test/temp-output*/

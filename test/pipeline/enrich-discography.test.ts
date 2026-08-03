@@ -8,7 +8,13 @@ const __dirname = path.dirname(__filename)
 
 describe('enrich-discography.ts', () => {
   const fixturesDir = path.join(__dirname, '../fixtures')
-  const testOutputDir = path.join(__dirname, '../temp-output')
+  // Per-suite temp dir. All three enrich-* suites previously shared
+  // ../temp-output and each rmSync'd it in afterEach — with vitest running
+  // files in parallel, one suite's teardown deleted the directory another
+  // was mid-write in, so the full run failed intermittently while each file
+  // passed in isolation. (The old cleanup even swallowed the error: "Ignore
+  // cleanup errors (race condition with parallel tests)".)
+  const testOutputDir = path.join(__dirname, '../temp-output-discography')
 
   beforeEach(() => {
     // Create temp output directory
