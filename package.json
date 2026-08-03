@@ -38,6 +38,8 @@
     "test:scenes": "vitest run test/scenes",
     "test:utils": "vitest run test/utils",
     "test:sanity": "node test/test-simple.mjs",
+    "test:workers": "npm --prefix workers/mcp-server test && npm --prefix workers/ask-chat test",
+    "test:everything": "npm run test:run && npm run test:workers",
     "test:all": "tsx scripts/run-tests.ts",
     "test:all:quick": "tsx scripts/run-tests.ts --quick",
     "test:all:coverage": "tsx scripts/run-tests.ts --coverage",

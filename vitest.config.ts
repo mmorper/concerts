@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig, configDefaults } from 'vitest/config'
 import path from 'path'
 
 export default defineConfig({
@@ -6,6 +6,16 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     setupFiles: ['./test/setup.ts'],
+    // The workers are self-contained projects — own package.json, own tsconfig,
+    // own vitest.config.ts — and this config cannot run their tests: it has no
+    // plugin for the `.md` imports they use, so collection dies with
+    // "Failed to parse source for import analysis" and reports "no tests".
+    //
+    // Before this exclusion those files showed up as failures in `npm test`,
+    // which was worse than useless: 118 worker tests that pass under their own
+    // configs looked broken, and the noise buried the three root suites that
+    // are genuinely failing. Run them with `npm run test:workers`.
+    exclude: [...configDefaults.exclude, 'workers/**'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
@@ -14,6 +24,7 @@ export default defineConfig({
         'test/',
         '*.config.ts',
         'dist/',
+        'workers/', // Covered by each worker's own vitest config
         'scripts/generate-version.ts', // Build-time only
         'scripts/generate-og-simple.ts', // Manual tool
         'scripts/preview-og-crops.ts', // Manual tool
