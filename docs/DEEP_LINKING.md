@@ -1,7 +1,7 @@
 # Deep Linking Guide
 
-**Version:** 1.1 (v1.9.0+)
-**Last Updated:** 2026-01-05
+**Version:** 1.2 (v1.9.0+)
+**Last Updated:** 2026-08-03
 
 ---
 
@@ -20,6 +20,8 @@ https://concerts.morperhaus.org/?scene={scene}&{entity_type}={entity_name}
 - **`scene`** (required): Target scene name
 - **`artist`** (optional): Normalized artist name
 - **`venue`** (optional): Normalized venue name
+- **`show`** (optional): Concert date, `YYYY-MM-DD` — expands that night's setlist. Requires `scene=artists`; pairs with `artist`. See [Setlist Deep Links](#setlist-deep-links-scene-5)
+- **`year`** (optional): Four-digit year — expands that year's card stack. Requires `scene=timeline`
 
 ---
 
@@ -82,6 +84,56 @@ https://concerts.morperhaus.org/?scene=artists&artist=duran-duran
 3. Scrolls to specific artist card
 4. Highlights card briefly
 5. Opens gatefold with full details
+
+### Setlist Deep Links (Scene 5)
+
+Opens the artist's gatefold **and expands a specific night's setlist**:
+
+```
+https://concerts.morperhaus.org/?scene=artists&artist={normalized-name}&show={YYYY-MM-DD}
+```
+
+**Examples:**
+
+```
+# Nile Rodgers at Pacific Amphitheatre, July 31 2026
+https://concerts.morperhaus.org/?scene=artists&artist=nile-rodgers&show=2026-07-31
+
+# Adam Ant at Irvine Meadows, April 27 1984
+https://concerts.morperhaus.org/?scene=artists&artist=adam-ant&show=1984-04-27
+```
+
+**Behavior:**
+
+1. Scrolls to Artists scene (Scene 5)
+2. Opens the artist gatefold (as an artist-only link does)
+3. Expands the setlist panel for the matching concert
+
+**The `show` parameter is purely additive.** Artist-only links behave exactly as before; `show` is
+ignored when absent, and an unresolvable `show` value falls back to the artist gatefold rather than
+erroring.
+
+**Key format:** `show` is the concert `date`, which is globally unique across the archive (verified:
+183 records, zero collisions). Do **not** key on `concert.id` — those values are row-order artifacts
+and a data re-import that renumbers rows would break every shared link.
+
+**Disambiguation:** uniqueness is a property of the current data, not an enforced invariant. Two shows
+on one date is possible (a festival; an early and late set). Resolvers must match on date **and**
+artist when both are present, then fall back to first-match.
+
+**Consumers of this shape** — keep in sync when changing it:
+
+| Consumer | Location |
+| -------- | -------- |
+| SPA param parsing | `src/App.tsx` |
+| GA4 virtual pageviews | `src/utils/pageTracking.ts` |
+| MCP tool responses | `workers/mcp-server/src/tools.ts` |
+| Ask exhibits | `workers/ask-chat/src/exhibits.ts` |
+| Sitemap | `scripts/generate-sitemap.ts` |
+| Bot meta / OG cards | `workers/meta-injector/worker.js` |
+| Liner notes deep links | `scripts/liner-notes/curate.ts` |
+
+See [Setlist Deep Linking spec](./specs/future/setlist-deep-linking.md) for the full rollout.
 
 ### Venue Deep Links (Scene 2 - Graph)
 
@@ -421,26 +473,40 @@ navigate(location.pathname, { replace: true })
 Planned deep linking capabilities:
 
 ```typescript
-// Timeline year focus
-/?scene=timeline&year=2024
-
-// Map region filtering
-/?scene=geography&region=california
-
-// Genre selection
-/?scene=genres&genre=alternative-rock
-
-// Concert-specific links
-/?scene=timeline&concert=concert-123
-
-// Setlist deep linking
-/?scene=artists&artist=foo-fighters&tab=setlists
+// Concert-specific links on the timeline
+/?scene=timeline&show=2026-07-31
 ```
+
+**Note on the key format:** an earlier draft of this section sketched
+`/?scene=timeline&concert=concert-123`. Prefer the date-keyed `show` form above, for the same reason
+given in [Setlist Deep Links](#setlist-deep-links-scene-5) — `concert.id` values are row-order
+artifacts and a re-import that renumbers rows would break every shared link.
+
+### Superseded
+
+- **`/?scene=artists&artist={name}&tab=setlists`** — sketched in v1.1 as "setlist deep linking".
+  Superseded by [`&show={date}`](#setlist-deep-links-scene-5) in v1.2. A `tab` selector identifies
+  *which panel*, not *which show*, so it cannot express a link to one night's setlist.
+
+### Already implemented (moved out of this section in v1.2)
+
+These were listed as planned but already ship:
+
+| Capability | Status |
+| ---------- | ------ |
+| `/?scene=timeline&year=2024` | **Implemented** — parsed in `src/App.tsx`, sets `pendingYearFocus` |
+| `/?scene=genres&genre=alternative-rock` | **Bot-only** — `workers/meta-injector/worker.js` injects meta; the SPA does not act on the param |
+| `/?scene=geography&region=california` | **Bot-only** — same split as `genre` |
+
+⚠️ The two **bot-only** rows are a known behavioural gap, not a documentation error: a crawler
+receives tailored meta for a URL the app itself ignores, so a shared genre or region link unfurls
+promising a filtered view the visitor never sees. Tracked separately.
 
 ---
 
 ## Related Documentation
 
+- [Setlist Deep Linking](./specs/future/setlist-deep-linking.md) - The `show` parameter, cross-surface rollout
 - [Changelog System](./specs/implemented/whats-playing-changelog.md) - Toast notifications using deep links
 - [Venue Cross-Navigation](./specs/implemented/venue-cross-navigation.md) - Map → Venues scene navigation
 - [Artist Scene](./specs/implemented/artist-scene.md) - Gatefold card system
