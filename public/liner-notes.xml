@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 27 Jul 2026 11:27:39 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 03 Aug 2026 11:28:23 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>Foo Fighters + 9 More: 2015 Festival Bill</title>
+    <link>https://concerts.morperhaus.org/liner-notes/foo-fighters-9-more-2015-festival-bill-2</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/foo-fighters-9-more-2015-festival-bill-2</guid>
+    <pubDate>Mon, 03 Aug 2026 11:28:23 +0000</pubDate>
+    <description>A July 4th festival bill that stretches from Buddy Guy&apos;s blues roots — he&apos;d been performing since 1953 — all the way through Gary Clark Jr., Heart, LL Cool J, and Foo Fighters headlining is a pretty remarkable cross-section of American rock and roll in a single afternoon. I saw all 10 acts at RFK Stadium in Washington, D.C. in 2015, and the range felt almost curatorial, like someone had deliberately traced a lineage from Chicago blues to grunge-era alt-rock in one sweeping outdoor show. Trombone Shorty brought New Orleans brass heat, DJ Z-Trip held the crowd between sets, and by the time the Foo Fighters closed it out — a band that had been at it since 1994 — the whole thing felt less like a concert and more like a living argument for why live music still matters. I&apos;ve seen a lot of festival bills, but this one had genuine connective tissue running through it.</description>
+    <category>#festival-bill</category>
+    <category>#mega-bill</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/vuvqxr1352453964.jpg" medium="image" />
+  </item>
   <item>
     <title>July 31: 40 Years Since The Art of Noise</title>
     <link>https://concerts.morperhaus.org/liner-notes/july-31-40-years-since-the-art-of-noise</link>
@@ -200,16 +210,6 @@
     <category>#album-context</category>
     <category>#cultural-moment</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/xpytqt1342444014.jpg" medium="image" />
-  </item>
-  <item>
-    <title>The Alarm: Caught Once, Never Again</title>
-    <link>https://concerts.morperhaus.org/liner-notes/the-alarm-caught-once-never-again</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/the-alarm-caught-once-never-again</guid>
-    <pubDate>Sun, 08 Mar 2026 23:19:11 +0000</pubDate>
-    <description>I caught The Alarm exactly once in my entire concert-going life — April 12, 1986 at UCLA — and somehow never circled back to them again across nearly four decades of shows. This Welsh alternative rock band, formed in 1981, was riding high on their Strength album when I saw them, yet they became a complete one-and-done in my archive despite releasing Eye of the Hurricane the following year. It&apos;s genuinely puzzling how a band can make enough of an impression to get me to a show, then vanish entirely from my radar for the next 38 years.</description>
-    <category>#rare-sighting</category>
-    <category>#one-time-only</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/wswstt1388681264.jpg" medium="image" />
   </item>
   </channel>
 </rss>
