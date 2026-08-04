@@ -80,7 +80,15 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
+      # Same reason as the test job: this Worker imports the mcp-server's tool fns, and esbuild
+      # resolves those files' own imports (zod) from workers/mcp-server/node_modules. Installing
+      # only ask-chat's deps bundles fine locally — where the sibling is already installed — and
+      # fails in CI with `Could not resolve "zod"`.
+      - name: Install mcp-server dependencies (sibling, for bundling)
+        run: npm install
+        working-directory: workers/mcp-server
+
+      - name: Install ask-chat dependencies
         run: npm install
 
       - name: Deploy to Cloudflare
