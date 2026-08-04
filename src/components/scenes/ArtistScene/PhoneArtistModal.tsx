@@ -13,8 +13,8 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { X, Link2, History, Calendar, Music } from 'lucide-react'
-import { useShareSetlistLink } from '../../../hooks/useShareSetlistLink'
-import { artistDeepLink, absoluteUrl } from '../../../utils/deepLinks'
+import { useShareLink } from '../../../hooks/useShareLink'
+import { artistDeepLink, setlistDeepLink, absoluteUrl } from '../../../utils/deepLinks'
 import { getGenreColor } from '../../../constants/colors'
 import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
 import { useTourDates } from '../../../hooks/useTourDates'
@@ -90,9 +90,6 @@ export function PhoneArtistModal({
   const [isLoadingSetlist, setIsLoadingSetlist] = useState(false)
   const [setlistError, setSetlistError] = useState<string | null>(null)
   const [showSetlistOverlay, setShowSetlistOverlay] = useState(false)
-
-  // Copy link toast
-  const [showCopiedToast, setShowCopiedToast] = useState(false)
 
   // Refs
   const modalRef = useRef<HTMLDivElement>(null)
@@ -226,42 +223,23 @@ export function PhoneArtistModal({
     }
   }
 
-  // Handle copy link
-  const handleCopyLink = async (e: React.MouseEvent) => {
+  // Artist link — same hook as every other share in the app (#204). Gains the
+  // native share sheet, which it never had: this copied to the clipboard while
+  // the setlist control beside it opened the sheet. The iOS Safari
+  // execCommand fallback that used to live here moved into the hook, so it now
+  // covers every share surface rather than just this one.
+  const { share: shareArtist, status: artistShareStatus } = useShareLink({
+    url: absoluteUrl(artistDeepLink(artist?.normalizedName ?? '')),
+    title: artist?.name ?? '',
+    isPhone: true,
+    analyticsEvent: { name: 'artist_link_shared', params: { artist_name: artist?.name ?? '' } }
+  })
+
+  const handleCopyLink = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-
     if (!artist) return
-
-    // Haptic feedback immediately on tap
-    haptics.light()
-
-    // Built from the shared builder so this link can't drift from the
-    // contract (docs/DEEP_LINKING.md v1.2 / test/fixtures/deep-link-urls.json).
-    const url = absoluteUrl(artistDeepLink(artist.normalizedName))
-
-    try {
-      await navigator.clipboard.writeText(url)
-      setShowCopiedToast(true)
-      setTimeout(() => setShowCopiedToast(false), 2000)
-    } catch (err) {
-      console.error('Failed to copy link:', err)
-      // Fallback for iOS Safari in secure context
-      const textArea = document.createElement('textarea')
-      textArea.value = url
-      textArea.style.position = 'fixed'
-      textArea.style.left = '-9999px'
-      document.body.appendChild(textArea)
-      textArea.select()
-      try {
-        document.execCommand('copy')
-        setShowCopiedToast(true)
-        setTimeout(() => setShowCopiedToast(false), 2000)
-      } catch {
-        console.error('Fallback copy failed')
-      }
-      document.body.removeChild(textArea)
-    }
+    shareArtist()
   }
 
   // Handle tour badge click - switch to Upcoming tab
@@ -428,12 +406,13 @@ export function PhoneArtistModal({
                 </button>
 
                 {/* Copy confirmation toast */}
-                {showCopiedToast && (
+                {(artistShareStatus === 'copied' || artistShareStatus === 'error') && (
                   <div
                     className="absolute top-2 right-16 px-2 py-1 bg-black/90 text-white text-xs font-medium rounded shadow-lg animate-fade-in"
                     role="status"
+                    aria-live="polite"
                   >
-                    Copied!
+                    {artistShareStatus === 'copied' ? 'Copied!' : 'Copy failed'}
                   </div>
                 )}
               </div>
@@ -743,12 +722,15 @@ function SetlistOverlay({
   }, [handleClose])
 
   // #196 — phone shares via the OS sheet when available, clipboard otherwise.
-  const { share, status: shareStatus } = useShareSetlistLink({
-    artistSlug,
-    date: concert.date,
-    artistName,
-    venue: concert.venue,
-    isPhone: true
+  const { share, status: shareStatus } = useShareLink({
+    url: absoluteUrl(setlistDeepLink(artistSlug, concert.date)),
+    title: `${artistName} at ${concert.venue}`,
+    text: `${artistName} at ${concert.venue} — the setlist`,
+    isPhone: true,
+    analyticsEvent: {
+      name: 'setlist_link_shared',
+      params: { artist_name: artistName, concert_date: concert.date, venue_name: concert.venue }
+    }
   })
 
   // The overlay renders one of four things: a skeleton, an error, "No setlist

@@ -1,7 +1,8 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { Link2 } from 'lucide-react'
+import { useShareLink } from '../../../hooks/useShareLink'
+import { artistDeepLink, absoluteUrl } from '../../../utils/deepLinks'
 import { getGenreColor } from '../../../constants/colors'
 import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
 import { TourBadge } from './TourBadge'
@@ -60,23 +61,19 @@ export function ConcertHistoryPanel({
   const artistImage = getArtistImage(artist.name)
   const genreColor = getGenreColor(artist.primaryGenre)
   const initials = getArtistInitials(artist.name)
-  const [showCopiedToast, setShowCopiedToast] = useState(false)
 
   // Create gradient for album art placeholder
   const gradient = `linear-gradient(135deg, ${genreColor} 0%, ${adjustColor(genreColor, -30)} 100%)`
 
-  const handleCopyLink = async () => {
-    const url = `${window.location.origin}/?scene=artists&artist=${artist.normalizedName}`
-
-    try {
-      await navigator.clipboard.writeText(url)
-      haptics.light() // Haptic feedback on successful copy
-      setShowCopiedToast(true)
-      setTimeout(() => setShowCopiedToast(false), 2000)
-    } catch (err) {
-      console.error('Failed to copy link:', err)
-    }
-  }
+  // #204 — was the last place building a deep link by hand, which made it the
+  // one surface that could drift from docs/DEEP_LINKING.md without any test
+  // noticing. URL now comes from the shared builder, behaviour from the shared hook.
+  const { share: handleCopyLink, status: shareStatus } = useShareLink({
+    url: absoluteUrl(artistDeepLink(artist.normalizedName)),
+    title: artist.name,
+    isPhone,
+    analyticsEvent: { name: 'artist_link_shared', params: { artist_name: artist.name } }
+  })
 
   const handleVenueClick = (venueName: string, concertDate: string) => {
     const normalizedVenue = normalizeVenueName(venueName)
@@ -151,13 +148,13 @@ export function ConcertHistoryPanel({
             </button>
 
             {/* Copy confirmation tooltip */}
-            {showCopiedToast && (
+            {(shareStatus === 'copied' || shareStatus === 'error') && (
               <div
                 className="absolute -top-8 right-0 px-2 py-1 bg-black/90 text-white text-xs font-medium rounded shadow-lg animate-fade-in pointer-events-none"
                 role="status"
                 aria-live="polite"
               >
-                Copied!
+                {shareStatus === 'copied' ? 'Copied!' : 'Copy failed'}
               </div>
             )}
           </div>

@@ -3,7 +3,7 @@
  * Spec: docs/specs/future/liner-notes-design-mocks.md
  */
 
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { format } from 'date-fns'
@@ -11,6 +11,9 @@ import { Link2, Check } from 'lucide-react'
 import type { LinerNotesPost, DeepLink } from '../../types/liner-notes'
 import { CATEGORY_ACCENT_COLORS, CATEGORY_LABELS } from './constants'
 import { LinerNoteMiniPlayer } from './LinerNoteMiniPlayer'
+import { useShareLink } from '../../hooks/useShareLink'
+import { absoluteUrl } from '../../utils/deepLinks'
+import { useGatefoldOrientation } from '../../hooks/useGatefoldOrientation'
 
 interface LinerNoteCardProps {
   post: LinerNotesPost
@@ -73,22 +76,26 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
 
   const hasImage = post.image.url && post.image.source !== 'placeholder'
 
-  const [copied, setCopied] = useState(false)
+  // #204 — was the fourth hand-rolled share in the app. Two behaviour changes
+  // come with the shared hook, both deliberate:
+  //   - the sheet is now gated on isPhone rather than pure feature detection,
+  //     so desktop Safari and desktop Chrome stop behaving differently
+  //   - clipboard failures now surface, and pick up the iOS execCommand
+  //     fallback, instead of rejecting silently
+  // Same viewport signal the Artist scene uses to pick modal vs gatefold, so
+  // "is this a phone" means one thing across the app.
+  const { isPhone } = useGatefoldOrientation()
+  const { share, status: shareStatus } = useShareLink({
+    url: absoluteUrl(`/liner-notes/${post.slug}`),
+    title: post.headline,
+    isPhone,
+    analyticsEvent: { name: 'liner_note_shared', params: { slug: post.slug } }
+  })
+  const copied = shareStatus === 'copied'
 
-  const handleShare = async (e: React.MouseEvent) => {
+  const handleShare = (e: React.MouseEvent) => {
     e.preventDefault()
-    const url = `${window.location.origin}/liner-notes/${post.slug}`
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: post.headline, url })
-      } catch {
-        // User cancelled share sheet — no-op
-      }
-    } else {
-      await navigator.clipboard.writeText(url)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
-    }
+    share()
   }
 
   return (
