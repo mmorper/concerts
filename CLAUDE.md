@@ -108,7 +108,10 @@ docs/                      # Documentation & specs
 ## Conventions
 
 - **Normalized names:** Hyphenated lowercase (`"Depeche Mode"` → `"depeche-mode"`)
-- **Deep links:** `/?scene=artists&artist=depeche-mode`
+- **Deep links:** `/?scene=artists&artist=depeche-mode`, plus `&show=YYYY-MM-DD` for one
+  night's setlist. Grammar and the list of surfaces that emit it: `docs/DEEP_LINKING.md`
+  (v1.2). Build URLs with `src/utils/deepLinks.ts` and assert against
+  `test/fixtures/deep-link-urls.json` — never hand-build them.
 - **Commit prefixes:** `feat:`, `fix:`, `docs:`, `data:`, `refactor:`
 - **Version validation:** `npm run validate:version`
 

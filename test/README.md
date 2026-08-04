@@ -8,6 +8,21 @@ Comprehensive testing infrastructure for data pipeline integrity, scene interact
 
 ---
 
+## Two test roots
+
+The root vitest config **excludes `workers/**`** and cannot run those tests: the
+Workers are self-contained npm packages with their own `vitest.config.ts`, and
+the root config has no plugin for the `.md` imports they use — collection fails
+with *"Failed to parse source for import analysis"* and reports "no tests".
+
+Before that exclusion (#206) those files surfaced as FAIL lines indistinguishable
+from real failures, so 121 passing worker tests looked broken and buried the
+suites that were genuinely failing.
+
+**`npm run test:run` covers the root app only.** Use `npm run test:everything`
+for full coverage, and note that CI runs the root gate (`.github/workflows/ci.yml`)
+while each Worker has its own path-filtered workflow (`mcp-ci.yml`, `ask-chat-ci.yml`).
+
 ## Quick Start
 
 ```bash
@@ -31,6 +46,10 @@ npm run test:venues      # Venue network scene (7 tests)
 npm run test:map         # Map scene (8 tests)
 npm run test:genres      # Genres scene (8 tests)
 npm run test:artists     # Artists scene (7 tests)
+
+# Cloudflare Workers — separate npm packages with their own vitest configs
+npm run test:workers     # mcp-server (46) + ask-chat (75)
+npm run test:everything  # root suite + workers
 
 # Development mode
 npm run test:watch       # Watch mode for Vitest tests
