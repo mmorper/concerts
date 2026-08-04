@@ -421,7 +421,19 @@ function generateSlug(headline: string, existingSlugSet: Set<string>): string {
 
 // ── Deep link generation ──────────────────────────────────────────────────────
 
-function buildDeepLinks(finding: ScoredFinding, options: CurateOptions): DeepLink[] {
+
+// "2026-07-31" -> "July 31, 2026". Parsed at UTC midnight so the label can't
+// slip a day west of Greenwich.
+function formatConcertDate(date: string): string {
+  return new Date(`${date}T00:00:00Z`).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+export function buildDeepLinks(finding: ScoredFinding, options: CurateOptions): DeepLink[] {
   const links: DeepLink[] = [];
 
   // Artist links (up to 3)
@@ -439,6 +451,23 @@ function buildDeepLinks(finding: ScoredFinding, options: CurateOptions): DeepLin
       label: displayVenueName(venueSlug, options),
       url: `/?scene=venues&venue=${encodeURIComponent(venueSlug)}`,
       type: "venue",
+    });
+  }
+
+  // Setlist link — one night, when the finding is about a specific one (#198).
+  // Needs an artist too, since the URL is the artist deep link plus `show=`.
+  // Keyed on the concert date, never the concert id: those are row-order
+  // artifacts and a data re-import that renumbers rows would break every link
+  // in every published post. See docs/DEEP_LINKING.md v1.2.
+  if (finding.concertDate && finding.artists.length > 0) {
+    const artistSlug = finding.artists[0];
+    links.push({
+      // A date reads well in a link row and, unlike an artist or venue name,
+      // won't collide with the other labels when linkifyProse matches them
+      // inside the prose.
+      label: formatConcertDate(finding.concertDate),
+      url: `/?scene=artists&artist=${encodeURIComponent(artistSlug)}&show=${finding.concertDate}`,
+      type: "setlist",
     });
   }
 

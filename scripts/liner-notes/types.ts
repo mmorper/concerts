@@ -68,6 +68,13 @@ export interface AnalysisFinding {
   artists: string[];        // Normalized artist names
   venues: string[];         // Normalized venue names
   years: number[];
+  /**
+   * The specific night this story is about, ISO YYYY-MM-DD, when it is about
+   * one (#198). Detectors that are inherently concert-scoped — doubleHeader,
+   * temporalPattern (#68) — should set it; the rest leave it undefined and
+   * simply get no setlist link. Optional so no existing detector changes.
+   */
+  concertDate?: string;
   suggestedImage?: SuggestedImage;
   suggestedTrack?: SuggestedTrack;
   /** Auto-derived tags, e.g. ["#artist-longevity", "#multi-decade"] */

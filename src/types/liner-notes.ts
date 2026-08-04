@@ -37,7 +37,13 @@ export interface DeepLink {
   label: string;
   /** App URL, e.g. "/?scene=artists&artist=depeche-mode" */
   url: string;
-  type: "artist" | "venue" | "timeline";
+  /**
+   * Members name the *destination the reader arrives at*, not the param that
+   * selects it — which is why `"timeline"` covers `?scene=timeline&year=2024`
+   * rather than being called `"year"`. By the same rule a link to one night's
+   * setlist is `"setlist"`, even though the URL param is `show=` (#198).
+   */
+  type: "artist" | "venue" | "timeline" | "setlist";
 }
 
 // ── Post ─────────────────────────────────────────────────────────────────────
