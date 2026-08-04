@@ -2,7 +2,18 @@
 /**
  * Simplified OG Image Generator
  *
- * Takes a screenshot of the Venues scene and overlays title + dynamic stats
+ * Takes a screenshot of the Venues scene and overlays title + dynamic stats.
+ *
+ * REQUIRES A RUNNING SITE. It drives a real browser against SITE_URL, which
+ * defaults to the local dev server. Two ways to run it:
+ *
+ *   npm run dev                                    # in another terminal, then
+ *   npm run og:generate
+ *
+ *   OG_SITE_URL=https://concerts.morperhaus.org npm run og:generate   # no server needed
+ *
+ * Without one of those, puppeteer fails with ERR_CONNECTION_REFUSED — or, in a
+ * sandbox where it can't reach localhost at all, simply hangs.
  */
 
 import puppeteer from 'puppeteer'

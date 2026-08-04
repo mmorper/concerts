@@ -253,7 +253,7 @@ Update in order:
 |------|--------|---------|
 | `package.json` | Set `"version": "{VERSION}"` | - |
 | `index.html` + `og-stats.json` | Run `npm run update:meta` to refresh stats | - |
-| `public/og-image.jpg` | Run `npm run og:generate` to regenerate with current stats | - |
+| `public/og-image.jpg` | Run `npm run og:generate` — **needs a running site**: either `npm run dev` in another terminal, or `OG_SITE_URL=https://concerts.morperhaus.org npm run og:generate` against production (no server needed) | - |
 | `docs/ROADMAP.md` | Move completed items (see below) | No items selected |
 | `README.md` "What's New" | Update with this release's highlights | No user-facing changes |
 | `CLAUDE.md` | Update version + stats in header line | - |
