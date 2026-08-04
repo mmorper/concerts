@@ -1,0 +1,67 @@
+name: CI
+
+# Quality gate for the root app (#116): typecheck, tests, build.
+#
+# Scope note: the Workers are deliberately NOT run here. They are separate npm
+# packages with their own vitest configs, and each already has its own
+# path-filtered gate — see mcp-ci.yml and ask-chat-ci.yml. The root vitest
+# config explicitly excludes `workers/**` (it cannot parse their .md imports),
+# so `npm run test:run` covering them is not merely untrue, it is impossible.
+# If you add a third worker, give it a workflow rather than folding it in here.
+#
+# Deploys are not gated: Cloudflare Pages runs its own build on every push.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Typecheck, test, build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      # package-lock.json is gitignored repo-wide (.gitignore:3), so there is no
+      # lock file to restore from — which rules out both `npm ci` and
+      # setup-node's `cache: npm`, since that keys off the lock file. Same
+      # constraint and same workaround as mcp-ci.yml and ask-chat-ci.yml.
+      # Committing the lock file would buy reproducible installs and caching;
+      # that's a deliberate repo decision to revisit separately, not here.
+      - name: Install dependencies
+        run: npm install
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm run test:run
+
+      # Catches Vite-time failures that tsc and vitest both miss.
+      - name: Build
+        run: npm run build
+
+      # The pipeline scripts write real artifacts when run directly, and their
+      # tests used to do the same by accident (#207). If a future change makes
+      # the suite or the build mutate tracked files again, fail here rather
+      # than letting phantom diffs land in someone's next commit.
+      - name: Assert no tracked files were modified
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Build or tests modified tracked files:"
+            git status --porcelain
+            git diff
+            exit 1
+          fi
+          echo "Working tree clean."
