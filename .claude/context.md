@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v4.7.0 (Production)
+**Version:** v5.1.0 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-06-18
 
@@ -115,11 +115,11 @@ docs/
 
 **Recent Releases:**
 
+- **v5.1.0** (2026-08-04): Setlist deep linking (`&show=`) across six surfaces (#195); root CI gate (#116); three pipeline/SEO suites repaired (#207); share implementations consolidated (#204)
+- **v5.0.0** (2026-06-20): Ask the Archive — in-app conversational client, ⌘K spotlight, MCP connector; Operator Dashboard phases 0–6 (#159)
 - **v4.6.1** (2026-04-16): Liner Notes Tuning & Polish — smarter artist/category variety, UI fixes
 - **v4.6.0** (2026-03-10): How It Works — interactive animated cascade showing 7 enrichment tiers
 - **v4.5.1** (2026-03-08): Mobile Polish — Liner Notes card layout, share button, artist modal badge
-- **v4.5.0** (2026-03-08): Deep Cuts — liner notes in gatefold, year deep links, mobile bottom nav, unified toast
-- **v4.4.0** (2026-03-08): Liner Notes — agentic AI-written weekly stories, blog feed, RSS, /whats-playing, Cloudflare Worker OG tags
 
 ---
 
@@ -216,4 +216,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-06-18 by Claude Code*
+*Last updated: 2026-08-04 by Claude Code for v5.1.0 release*

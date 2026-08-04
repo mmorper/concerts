@@ -1,7 +1,7 @@
 # Setlist Deep Linking
 
-**Status:** Proposed — not yet scheduled
-**Target Version:** next
+**Status:** Implemented — shipped in v5.1.0 (epic #195)
+**Target Version:** v5.1.0
 **Priority:** Medium
 **Estimated Complexity:** Medium (small per surface; the cost is breadth, not depth)
 **Dependencies:** None blocking. Touches the deep-link contract in [`docs/DEEP_LINKING.md`](../../DEEP_LINKING.md) (v1.2+)

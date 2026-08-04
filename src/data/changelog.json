@@ -1,6 +1,20 @@
 {
   "releases": [
     {
+      "version": "5.1.0",
+      "date": "2026-08-04",
+      "title": "One Night, One Link",
+      "description": "Until now I could send you to an artist, but not to a night. Open any setlist and there's a link icon beside the date — copy it, and whoever opens it lands exactly where you were: that band, that venue, that evening's songs, already open. Paste it anywhere and it says which show it is, not just which band.",
+      "route": "/?scene=artists&artist=nile-rodgers&show=2026-07-31",
+      "highlights": [
+        "Share a single night — the link icon in any open setlist copies a link straight to it, and on a phone it opens your share sheet",
+        "Pasted into Slack or Messages, the card names the show: \"Nile Rodgers at Pacific Amphitheatre · July 31, 2026\"",
+        "Ask the archive in Claude what a band played on a given night and the answer now links back to that setlist, not just the artist",
+        "118 of my 184 shows have a setlist on record — those are the ones you can link to, and the number grows as I fill the gaps",
+        "The Ask sheet reads better on a phone, the iPad no longer overlaps scenes when you rotate it, and there's a new Liquid Glass app icon"
+      ]
+    },
+    {
       "version": "5.0.0",
       "date": "2026-06-20",
       "title": "Forty Years, Now a Conversation",

@@ -1,17 +1,58 @@
 # Roadmap
 
-## Current State (v4.6.0)
+## Current State (v5.1.0)
 
-- **181 concerts** spanning 1984-2026
-- **256 artists** (including openers) with 100% imagery coverage
-- **77 unique venues** across 35 cities
+- **184 concerts** spanning 1984-2026
+- **258 artists** (including openers) with 100% imagery coverage
+- **79 unique venues** across 35 cities
 - **5 interactive scenes**: Timeline, Venues, Geography, Genres, Artists
-- **Standalone pages**: /liner-notes, /whats-playing, /how-it-works, /about
-- **Latest**: How It Works — interactive 7-tier data enrichment cascade at /how-it-works
+- **Standalone pages**: /liner-notes, /whats-playing, /how-it-works, /about, /about-mcp, /dashboard
+- **Latest**: setlist deep linking — share one night, not just an artist
 
 ---
 
 ## Recently Completed
+
+### ✅ Setlist Deep Linking (v5.1.0)
+
+**Epic**: #195 · **Spec**: [setlist-deep-linking.md](specs/implemented/setlist-deep-linking.md) · **Contract**: [DEEP_LINKING.md](../DEEP_LINKING.md) v1.2
+
+Adds the `show` URL parameter — `/?scene=artists&artist={slug}&show={YYYY-MM-DD}` — so a single
+night's setlist can be shared. Purely additive: every link shared before this resolves unchanged,
+and an unresolvable date degrades to the artist gatefold at every layer.
+
+Six surfaces, all gated on setlist availability (118 of 184 concerts):
+
+- **Gatefold** (#196) — share affordance in the setlist panel, three-stage restore, phone + desktop
+- **MCP server** (#200) — `get_concert_setlist`, `surprise_me` and `on_this_day` link the night
+- **Ask exhibits, facts, llm.txt** (#197)
+- **SEO** (#193) — per-show sitemap URLs and `injectShowMeta` for show-specific unfurls
+- **Liner notes** (#198) — `DeepLink` union widened; producers can link a specific night
+
+`test/fixtures/deep-link-urls.json` is now the machine-readable contract every emitting surface
+asserts against, replacing a comment that had already allowed one documented URL shape to drift.
+
+### ✅ Operator Dashboard (v5.0.x)
+
+**Epic**: #159 · Phases 0–6 — traffic, MCP/Ask usage, spend, archive health, topics & gaps.
+Internal operator tool at /dashboard, fenced by Cloudflare Access. See
+[DASHBOARD_OPERATIONS.md](../DASHBOARD_OPERATIONS.md).
+
+### ✅ Test & CI Infrastructure (v5.1.0)
+
+**Issue**: #116
+
+- Root quality gate (`.github/workflows/ci.yml`) — typecheck, tests, build, and a clean-tree
+  assertion, ~2m30s. The Workers keep their own path-filtered gates.
+- Repaired three pipeline/SEO suites that had been failing silently while overwriting tracked
+  files on every run (#207), and stopped the root config collecting Worker tests it cannot
+  parse (#206).
+- De-flaked three enrich-* suites racing over a shared temp directory.
+- Consolidated four hand-rolled share implementations into one hook (#204).
+
+### ✅ Ask the Archive (v5.0.0)
+
+**Epic**: #138 — in-app conversational client, ⌘K spotlight, MCP connector at /about-mcp.
 
 ### ✅ Cascade Progressive Disclosure — How It Works (v4.6.0)
 
