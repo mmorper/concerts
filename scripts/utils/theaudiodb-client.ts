@@ -18,6 +18,24 @@ interface AudioDBResponse {
   }>
 }
 
+/**
+ * TheAudioDB fills unknown fields with sentinels rather than omitting them: "0" for a
+ * formed year it doesn't have, "" for a missing website. Those are truthy-or-empty
+ * strings, not absences, so storing them verbatim leaks into anything that guards with
+ * a plain `if (meta.formed)` — which is how 11 artists ended up narrated as "Formed 0".
+ *
+ * Normalize at the boundary so the sentinel never enters our data in the first place.
+ */
+function cleanYear(value?: string): string | undefined {
+  const v = value?.trim()
+  return v && /^(1[89]|20)\d{2}$/.test(v) ? v : undefined
+}
+
+function cleanText(value?: string): string | undefined {
+  const v = value?.trim()
+  return v ? v : undefined
+}
+
 export class TheAudioDBClient {
   private apiKey: string
   private baseUrl = 'https://www.theaudiodb.com/api/v1/json'
@@ -60,10 +78,10 @@ export class TheAudioDBClient {
     return {
       name: artist.strArtist,
       image: artist.strArtistThumb || artist.strArtistLogo,
-      bio: artist.strBiographyEN?.slice(0, 500), // Truncate to 500 chars
+      bio: cleanText(artist.strBiographyEN)?.slice(0, 500), // Truncate to 500 chars
       genres: [artist.strGenre, artist.strStyle].filter((g): g is string => Boolean(g)),
-      formed: artist.intFormedYear,
-      website: artist.strWebsite,
+      formed: cleanYear(artist.intFormedYear),
+      website: cleanText(artist.strWebsite),
       source: 'theaudiodb' as const,
       fetchedAt: new Date().toISOString(),
     }

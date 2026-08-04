@@ -286,7 +286,6 @@
       "Synthpop",
       "Rock/Pop"
     ],
-    "formed": "0",
     "website": "",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:09.077Z"
@@ -391,7 +390,6 @@
     "name": "Carlene Davis",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/s9ayfd1666446192.jpg",
     "genres": [],
-    "formed": "0",
     "website": null,
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:18.752Z"
@@ -1139,7 +1137,6 @@
     "genres": [
       "Electronic"
     ],
-    "formed": "0",
     "website": null,
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:13:15.279Z"
@@ -1411,7 +1408,6 @@
     "genres": [
       "Rock/Pop"
     ],
-    "formed": "0",
     "website": "",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:13:00.769Z"
@@ -1435,7 +1431,6 @@
       "Country",
       "Country"
     ],
-    "formed": "0",
     "website": "",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:55.263Z"
@@ -1624,7 +1619,6 @@
     "name": "Richard Cheese & Lounge Against The Machine",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/astmqc1662087221.jpg",
     "genres": [],
-    "formed": "0",
     "website": null,
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:30.753Z"
@@ -1764,7 +1758,6 @@
     "genres": [
       "Jazz"
     ],
-    "formed": "0",
     "website": "",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:11:48.571Z"
@@ -2299,7 +2292,6 @@
     "name": "Trouble Funk",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/sqqvuq1523791613.jpg",
     "genres": [],
-    "formed": "0",
     "website": "",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:53.264Z"
@@ -2385,7 +2377,6 @@
     "genres": [
       "Rock/Pop"
     ],
-    "formed": "0",
     "website": "",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:37.756Z"
@@ -2502,7 +2493,6 @@
     "name": "Bandits of the Acoustic Revolution",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xxpqsy1507572945.jpg",
     "genres": [],
-    "formed": "0",
     "website": "",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:11:57.571Z"
@@ -2613,7 +2603,6 @@
     "name": "Jah Wobble's Invaders of the Heart",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/sqywrv1366374270.jpg",
     "genres": [],
-    "formed": "0",
     "website": "",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:24.251Z"
