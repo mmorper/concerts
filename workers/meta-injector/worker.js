@@ -97,6 +97,7 @@ export default {
     const venue = url.searchParams.get('venue');
     const genre = url.searchParams.get('genre');
     const region = url.searchParams.get('region');
+    const show = url.searchParams.get('show'); // #193 — concert date, YYYY-MM-DD
 
     // Fetch original HTML from origin
     const response = await fetch(request);
@@ -119,6 +120,10 @@ export default {
       html = await injectLinerNotesPostMeta(html, slug, url.origin, ctx);
     } else if (url.pathname === '/whats-playing') {
       html = await injectWhatsPlayingMeta(html, url.origin);
+    } else if (scene === 'artists' && artist && show) {
+      // More specific than the artist branch, so it must come first (#193).
+      // Falls back to injectArtistMeta internally if `show` doesn't resolve.
+      html = await injectShowMeta(html, artist, show, url.origin, ctx);
     } else if (scene === 'artists' && artist) {
       html = await injectArtistMeta(html, artist, url.origin, ctx);
     } else if ((scene === 'venues' || scene === 'geography') && venue) {
@@ -177,6 +182,101 @@ function isHTMLRequest(request) {
 /**
  * Inject artist-specific meta tags
  */
+/**
+ * Inject meta tags for one specific night (#193).
+ *
+ * A shared setlist link previously unfurled as the generic artist card — correct,
+ * but it couldn't say *which* show. This makes the card name the venue and date.
+ *
+ * Degrades rather than fails: if `show` doesn't resolve to a concert (stale link,
+ * renamed artist, malformed date), this hands off to injectArtistMeta so the
+ * visitor still gets a good artist card instead of an error or empty meta.
+ *
+ * Matches on date AND artist. Date uniqueness holds in the current data but is
+ * not an enforced invariant — two shows on one date is physically possible — so
+ * this never assumes a single result.
+ */
+async function injectShowMeta(html, artistNormalized, showDate, origin, ctx) {
+  try {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(showDate)) {
+      return injectArtistMeta(html, artistNormalized, origin, ctx);
+    }
+
+    const concertsResponse = await cachedJsonFetch(`${origin}/data/concerts.json`, ctx);
+    if (!concertsResponse.ok) {
+      console.error('Failed to fetch concerts.json');
+      return injectArtistMeta(html, artistNormalized, origin, ctx);
+    }
+    const concertsData = await concertsResponse.json();
+    const concert =
+      concertsData.concerts.find(
+        c => c.date === showDate && c.headlinerNormalized === artistNormalized
+      ) || concertsData.concerts.find(c => c.date === showDate);
+
+    if (!concert) {
+      console.warn(`Show not found: ${artistNormalized} on ${showDate}`);
+      return injectArtistMeta(html, artistNormalized, origin, ctx);
+    }
+
+    const artistsResponse = await cachedJsonFetch(`${origin}/data/artists-metadata.json`, ctx);
+    const artistsData = artistsResponse.ok ? await artistsResponse.json() : {};
+    const metadata = artistsData[artistNormalized];
+    const artistName = metadata?.name || concert.headliner;
+
+    const longDate = new Date(`${concert.date}T00:00:00Z`).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      timeZone: 'UTC',
+    });
+
+    const title = `${artistName} at ${concert.venue} · ${longDate} | Morperhaus Concert Archives`;
+    const description =
+      `The setlist from ${artistName} at ${concert.venue}, ${concert.cityState || concert.city} ` +
+      `on ${longDate}, from a personal concert archive spanning four decades.`;
+    // Per-show cards are a follow-up (#194); until then the artist image is the
+    // best available, and a missing one falls back to the site card.
+    const imageUrl = metadata?.image || `${origin}/og-image.jpg`;
+    const pageUrl = `${origin}/?scene=artists&artist=${artistNormalized}&show=${concert.date}`;
+
+    html = html.replace(/<title>.*?<\/title>/, `<title>${escapeTitleText(title)}</title>`);
+    html = html.replace(
+      /<meta name="description" content="[^"]*" \/>/,
+      `<meta name="description" content="${escapeHtml(description)}" />`
+    );
+    html = html.replace(
+      /<meta property="og:title" content="[^"]*" \/>/,
+      `<meta property="og:title" content="${escapeHtml(title)}" />`
+    );
+    html = html.replace(
+      /<meta property="og:description" content="[^"]*" \/>/,
+      `<meta property="og:description" content="${escapeHtml(description)}" />`
+    );
+    html = html.replace(
+      /<meta property="og:url" content="[^"]*" \/>/,
+      `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`
+    );
+    html = html.replace(
+      /<meta property="og:image" content="[^"]*" \/>/,
+      `<meta property="og:image" content="${escapeHtml(imageUrl)}" />`
+    );
+    html = html.replace(
+      /<meta property="twitter:description" content="[^"]*" \/>/,
+      `<meta property="twitter:description" content="${escapeHtml(description)}" />`
+    );
+    html = html.replace(
+      /<meta property="twitter:image" content="[^"]*" \/>/,
+      `<meta property="twitter:image" content="${escapeHtml(imageUrl)}" />`
+    );
+
+    console.log(`[Show Meta Injected] ${artistName} at ${concert.venue}, ${concert.date}`);
+    return html;
+  } catch (err) {
+    console.error('injectShowMeta failed:', err);
+    return injectArtistMeta(html, artistNormalized, origin, ctx);
+  }
+}
+
 async function injectArtistMeta(html, artistNormalized, origin, ctx) {
   try {
     // Fetch artist metadata

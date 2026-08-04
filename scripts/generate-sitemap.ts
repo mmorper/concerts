@@ -22,6 +22,8 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 interface Concert {
+  /** e.g. "concert-182" — used only to join against the setlist cache (#193) */
+  id: string
   headlinerNormalized: string
   venueNormalized: string
   date: string
@@ -45,6 +47,10 @@ async function generateSitemap() {
   const concertsData: ConcertsData = JSON.parse(fs.readFileSync(concertsPath, 'utf-8'))
   const artistsData = JSON.parse(fs.readFileSync(artistsPath, 'utf-8'))
   const venuesData = JSON.parse(fs.readFileSync(venuesPath, 'utf-8'))
+
+  // Setlist coverage, for the per-show URLs below (#193). Optional — the cache
+  // may not exist on a fresh checkout, in which case no per-show URLs are emitted.
+  const setlistsPath = path.join(__dirname, '..', 'public', 'data', 'setlists-cache.json')
 
   // Load liner notes posts (optional — may not exist on first run)
   const linerNotesPath = path.join(__dirname, '..', 'public', 'data', 'liner-notes.json')
@@ -110,6 +116,42 @@ async function generateSitemap() {
   sortedArtists.forEach((artist) => {
     xml += generateUrlEntry(`/?scene=artists&artist=${artist}`, 0.8, 'monthly')
   })
+
+  // Per-show setlist deep links (#193). One URL per concert that actually has a
+  // setlist on record — a show without one is a thin page and shouldn't be
+  // indexed. Coverage is roughly 2/3 of the archive, so the gate matters.
+  //
+  // priority 0.6   below artist pages (0.8): narrower intent
+  // changefreq     yearly — a past setlist is immutable once enriched
+  // ordering       newest first, mirroring the "most relevant first" convention
+  //                used for artists and venues above
+  const setlistConcertIds = new Set<string>()
+  if (fs.existsSync(setlistsPath)) {
+    const setlistsCache = JSON.parse(fs.readFileSync(setlistsPath, 'utf-8'))
+    for (const entry of setlistsCache.entries ?? []) {
+      const sets = entry.setlist?.sets?.set ?? []
+      const hasSongs = sets.some((s: { song?: unknown[] }) => (s.song ?? []).length > 0)
+      if (hasSongs && entry.concertId) setlistConcertIds.add(entry.concertId)
+    }
+  }
+
+  const showConcerts = concerts
+    .filter((c) => setlistConcertIds.has(c.id))
+    .sort((a, b) => b.date.localeCompare(a.date))
+
+  showConcerts.forEach((concert) => {
+    xml += generateUrlEntry(
+      `/?scene=artists&artist=${concert.headlinerNormalized}&show=${concert.date}`,
+      0.6,
+      'yearly',
+    )
+  })
+
+  // Say what was left out. A silent gate reads as "we covered everything".
+  const skipped = concerts.length - showConcerts.length
+  console.log(
+    `  ${showConcerts.length} per-show setlist URLs (${skipped} concerts skipped — no setlist on record)`,
+  )
 
   // Venue deep links (both scenes, sorted by concert count)
   const venueConcertCounts = new Map<string, number>()

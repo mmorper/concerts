@@ -53,21 +53,25 @@ describe('generate-sitemap.ts', () => {
   const mockConcertsData = {
     concerts: [
       {
+        id: 'concert-1',
         headlinerNormalized: 'depeche-mode',
         venueNormalized: '9-30-club',
         date: '2024-05-15',
       },
       {
+        id: 'concert-2',
         headlinerNormalized: 'depeche-mode',
         venueNormalized: 'hollywood-palladium',
         date: '2024-06-20',
       },
       {
+        id: 'concert-3',
         headlinerNormalized: 'new-order',
         venueNormalized: '9-30-club',
         date: '2023-08-20',
       },
       {
+        id: 'concert-4',
         headlinerNormalized: 'pet-shop-boys',
         venueNormalized: '9-30-club',
         date: '1990-03-10',
@@ -103,6 +107,127 @@ describe('generate-sitemap.ts', () => {
     // Restore originals
     console.log = originalLog
     console.error = originalError
+  })
+
+  // #193 — per-show setlist URLs. Gated on setlist availability: a show with no
+  // setlist is a thin page and shouldn't be indexed.
+  describe('Per-show setlist URLs (#193)', () => {
+    const mockSetlistsCache = {
+      entries: [
+        {
+          // Has songs -> gets a URL
+          concertId: 'concert-1',
+          setlist: { sets: { set: [{ song: [{ name: 'Enjoy the Silence' }] }] } },
+        },
+        {
+          // Looked up but came back empty -> no URL. This is the common case for
+          // the third of the archive without coverage.
+          concertId: 'concert-2',
+          setlist: { sets: { set: [] } },
+        },
+        {
+          // Present but null -> no URL
+          concertId: 'concert-3',
+          setlist: null,
+        },
+      ],
+    }
+
+    function mockFsFor(writtenXml: { value: string }, withSetlists: boolean) {
+      const mockFs = fs as any
+      mockFs.existsSync.mockImplementation((p: string) =>
+        withSetlists ? p.includes('setlists-cache.json') : false,
+      )
+      mockFs.readFileSync.mockImplementation((filePath: string) => {
+        if (filePath.includes('setlists-cache.json')) {
+          return JSON.stringify(mockSetlistsCache)
+        }
+        if (filePath.includes('concerts.json')) {
+          return JSON.stringify(mockConcertsData)
+        }
+        if (filePath.includes('artists-metadata.json')) {
+          return JSON.stringify(mockArtistsData)
+        }
+        if (filePath.includes('venues-metadata.json')) {
+          return JSON.stringify(mockVenuesData)
+        }
+        if (filePath.includes('liner-notes.json')) {
+          return JSON.stringify({ posts: [] })
+        }
+        throw new Error('File not found')
+      })
+      mockFs.writeFileSync.mockImplementation((filePath: string, content: string) => {
+        if (filePath.includes('sitemap.xml')) {
+          writtenXml.value = content
+        }
+      })
+    }
+
+    it('emits a URL only for concerts with a setlist on record', async () => {
+      const writtenXml = { value: '' }
+      mockFsFor(writtenXml, true)
+
+      const { generateSitemap } = await import('../../scripts/generate-sitemap')
+      await generateSitemap()
+
+      // concert-1 has songs
+      expect(writtenXml.value).toContain(
+        '?scene=artists&amp;artist=depeche-mode&amp;show=2024-05-15',
+      )
+      // concert-2 (empty set) and concert-3 (null setlist) do not
+      expect(writtenXml.value).not.toContain('show=2024-06-20')
+      expect(writtenXml.value).not.toContain('show=2023-08-20')
+    })
+
+    it('uses priority 0.6 and changefreq yearly', async () => {
+      const writtenXml = { value: '' }
+      mockFsFor(writtenXml, true)
+
+      const { generateSitemap } = await import('../../scripts/generate-sitemap')
+      await generateSitemap()
+
+      const entry = writtenXml.value
+        .split('<url>')
+        .find((chunk) => chunk.includes('show=2024-05-15'))
+      expect(entry).toBeDefined()
+      expect(entry).toContain('<priority>0.6</priority>')
+      expect(entry).toContain('<changefreq>yearly</changefreq>')
+    })
+
+    it('never emits an id-keyed show param', async () => {
+      const writtenXml = { value: '' }
+      mockFsFor(writtenXml, true)
+
+      const { generateSitemap } = await import('../../scripts/generate-sitemap')
+      await generateSitemap()
+
+      expect(writtenXml.value).not.toMatch(/show=concert-/)
+    })
+
+    it('logs how many concerts were skipped rather than hiding the gate', async () => {
+      const writtenXml = { value: '' }
+      mockFsFor(writtenXml, true)
+
+      const { generateSitemap } = await import('../../scripts/generate-sitemap')
+      await generateSitemap()
+
+      // 4 concerts in the fixture, 1 with a setlist -> 3 skipped
+      expect(console.log).toHaveBeenCalledWith(
+        expect.stringContaining('3 concerts skipped'),
+      )
+    })
+
+    it('emits nothing when the setlist cache is absent', async () => {
+      const writtenXml = { value: '' }
+      mockFsFor(writtenXml, false)
+
+      const { generateSitemap } = await import('../../scripts/generate-sitemap')
+      await generateSitemap()
+
+      expect(writtenXml.value).not.toContain('&amp;show=')
+      // ...and the artist links are untouched — `show` is purely additive.
+      expect(writtenXml.value).toContain('?scene=artists&amp;artist=depeche-mode')
+    })
   })
 
   describe('URL Generation', () => {
