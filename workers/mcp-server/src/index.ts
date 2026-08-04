@@ -127,6 +127,27 @@ export default {
   ): Promise<Response> {
     const url = new URL(request.url);
 
+    // OAuth discovery — this server is unauthenticated, and it has to SAY so out loud.
+    // concerts.morperhaus.org is a Pages SPA whose catch-all answers 200 + index.html to every
+    // GET (and 405 to every POST), so a client probing for auth metadata reads "200 = this
+    // endpoint exists" and walks an OAuth path it should never enter: RFC 9728 protected-resource
+    // metadata → RFC 8414 authorization-server metadata → the MCP spec's default-endpoint
+    // fallback → POST /register → 405 → `mcp_registration_failed` on the client side, which is
+    // what broke Claude Desktop's connect flow (2026-08-04).
+    // 404 is the ONLY response that means "no such thing here" and lets a client correctly
+    // conclude that no authorization is required. 405 does not work — Method Not Allowed asserts
+    // the resource exists. These paths sit at the zone root, not under /mcp, so wrangler.toml
+    // routes them here purely so they can 404 honestly instead of hitting the SPA fallback.
+    if (
+      url.pathname.startsWith("/.well-known/oauth") ||
+      url.pathname === "/register"
+    ) {
+      return new Response("Not found", {
+        status: 404,
+        headers: CORS_RESPONSE_HEADERS,
+      });
+    }
+
     if (url.pathname === "/mcp" || url.pathname.startsWith("/mcp/")) {
       // A human visiting the endpoint in a browser is 302-redirected to the canonical connector
       // page at /about-mcp (static Pages — the single source). MCP clients fall through to the
