@@ -235,3 +235,37 @@ describe('generate-facts.ts', () => {
     })
   })
 })
+
+// #197 — night-scoped facts (first/latest concert) link to that night's setlist
+// when one exists, and keep routing to the artist when it doesn't. Exercised
+// against the real archive: whether either currently qualifies depends on
+// setlist coverage, so assert the invariant rather than a fixed route.
+describe('night-scoped fact routes (#197)', () => {
+  it('only ever emits a show param alongside an artist param', async () => {
+    const result = await generateFactsData()
+    for (const fact of result.facts) {
+      if (fact.route.includes('show=')) {
+        expect(fact.route).toMatch(/\?scene=artists&artist=[^&]+&show=\d{4}-\d{2}-\d{2}$/)
+      }
+    }
+  })
+
+  it('never keys a show param on a concert id', async () => {
+    const result = await generateFactsData()
+    for (const fact of result.facts) {
+      expect(fact.route).not.toMatch(/show=concert-/)
+    }
+  })
+
+  it('pairs the setlist CTA with a show route and never with an artist route', async () => {
+    const result = await generateFactsData()
+    for (const fact of result.facts) {
+      if (fact.cta === 'See the setlist') {
+        expect(fact.route).toContain('&show=')
+      }
+      if (fact.route.includes('&show=')) {
+        expect(fact.cta).toBe('See the setlist')
+      }
+    }
+  })
+})
