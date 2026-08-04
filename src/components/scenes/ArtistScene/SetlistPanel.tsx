@@ -1,5 +1,11 @@
 /**
- * LinerNotesPanel - Displays concert setlist from setlist.fm
+ * SetlistPanel — displays one concert's setlist from setlist.fm
+ *
+ * Was named LinerNotesPanel until v5.1.x. It renders a *setlist*; the name was
+ * an album-sleeve metaphor for how it slides out, and it collided with the
+ * unrelated liner-notes blog feature in src/components/liner-notes/. Renamed
+ * because the old name cost real time during #195 — someone looking for the
+ * setlist panel searched for "SetlistPanel" and found nothing.
  * Slides in from the left (Concert History panel) like pulling liner notes from a vinyl sleeve
  * Covers the Spotify panel when open
  * Size: 440×440px (10px margin inside 460×460px panel on desktop), 380×380px on smaller viewports
@@ -14,7 +20,7 @@ import { haptics } from '../../../utils/haptics'
 import { useShareLink } from '../../../hooks/useShareLink'
 import { setlistDeepLink, absoluteUrl } from '../../../utils/deepLinks'
 
-interface LinerNotesPanelProps {
+interface SetlistPanelProps {
   concert: ArtistConcert
   artistName: string
   /** Normalized artist name — the `artist` value in the share link (#196) */
@@ -27,11 +33,11 @@ interface LinerNotesPanelProps {
 }
 
 /**
- * Main liner notes panel component
+ * Main setlist panel component
  * Desktop: Slides from left (Concert History → Spotify)
  * Phone: Slides from top (covering Concert History panel)
  */
-export function LinerNotesPanel({
+export function SetlistPanel({
   concert,
   artistName,
   artistSlug,
@@ -40,7 +46,7 @@ export function LinerNotesPanel({
   error,
   onClose,
   isPhone = false
-}: LinerNotesPanelProps) {
+}: SetlistPanelProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const [isClosing, setIsClosing] = useState(false)
 

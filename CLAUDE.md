@@ -69,6 +69,7 @@ npm run build-data   # Refresh data pipeline
 | Writing changelogs | `.claude/readme-maintenance.md` (voice guidelines) |
 | Current state & recent work | `.claude/context.md` |
 | Liner notes pipeline & detectors | `docs/LINER_NOTES_PIPELINE.md` |
+| Running tests / why CI is split | `test/README.md` — the root suite excludes `workers/**`; each Worker has its own config and its own CI workflow |
 | Rotating a secret / where keys live | `docs/SECRETS.md` |
 | Operating the internal dashboard | `docs/DASHBOARD_OPERATIONS.md` |
 

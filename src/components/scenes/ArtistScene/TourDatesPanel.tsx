@@ -1,7 +1,7 @@
 /**
  * TourDatesPanel - Displays upcoming tour dates from Bandsintown
  * Slides in from left (Concert History panel) covering Spotify panel
- * Uses identical animation pattern as LinerNotesPanel (slideInFromLeft)
+ * Uses identical animation pattern as SetlistPanel (slideInFromLeft)
  * Size: 440×440px content (10px padding inside 460×460px panel on desktop), 380×380px on smaller viewports
  */
 
