@@ -380,6 +380,22 @@ export function resolveArtist(concerts: Concert[], query: string): ArtistResolut
   const exact = byName.get(q);
   if (exact) return { kind: "match", name: exact.display, slug: exact.slug };
 
+  // Then an exact slug, so a caller can hand back the slug out of a link these tools
+  // emitted — "the-psychedelic-furs" as readily as "The Psychedelic Furs". resolveVenue
+  // has always accepted its normalizedName; artists were the inconsistent one, and a
+  // multi-word artist was unreachable that way (only 21 of 107 headliners resolved).
+  //
+  // Placed after the display-name check and before partials so it can only ever convert
+  // a miss into a hit: an exact name still wins, and a query that matches no slug falls
+  // through to the same partial/ambiguity handling as before. Insertion order puts
+  // headliners first, so a band that has both headlined and opened keeps its slug.
+  const qSlug = normalizeName(q);
+  if (qSlug) {
+    for (const v of byName.values()) {
+      if (v.slug === qSlug) return { kind: "match", name: v.display, slug: v.slug };
+    }
+  }
+
   const partials = [...byName.entries()].filter(([name]) => name.includes(q));
   if (partials.length === 0) return { kind: "none" };
   if (partials.length === 1) {

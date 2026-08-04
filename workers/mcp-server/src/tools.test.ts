@@ -313,6 +313,30 @@ describe("openers count as artists (#219)", () => {
     expect(resolveArtist(split, "The Psychedelic Furs")).toMatchObject({ slug: "the-psychedelic-furs" });
   });
 
+  it("resolves a slug lifted out of an emitted link", () => {
+    expect(resolveArtist(openerArchive(), "the-psychedelic-furs")).toEqual({
+      kind: "match",
+      name: "The Psychedelic Furs",
+      slug: "the-psychedelic-furs",
+    });
+    expect(resolveArtist(archive(), "peter-hook-and-the-light")).toMatchObject({
+      slug: "peter-hook-and-the-light",
+    });
+  });
+
+  it("still prefers an exact display name over a slug", () => {
+    expect(resolveArtist(openerArchive(), "The Bangles")).toEqual({
+      kind: "match",
+      name: "The Bangles",
+      slug: "the-bangles",
+    });
+  });
+
+  it("leaves ambiguity intact — a slug lookup only converts a miss into a hit", () => {
+    const text = artistHistory(archive(), "Peter", ARTISTS_META, TOP_TRACKS);
+    expect(text).toContain("Which one did you mean?");
+  });
+
   it("leaves headliner-only histories untouched", () => {
     const text = artistHistory(archive(), "Adam Ant", ARTISTS_META, TOP_TRACKS);
     expect(text).toContain("With Romeo Void opening.");
