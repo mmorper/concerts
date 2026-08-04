@@ -593,11 +593,11 @@ export function ArtistGatefold({
             style={{ transformStyle: 'preserve-3d' }}
             onClick={(e) => e.stopPropagation()}
           >
-              /* ============ DESKTOP LAYOUT (Horizontal) ============ */
-              /* This component is desktop-only: ArtistScene renders PhoneArtistModal
-                 when isPhone, and ArtistGatefold otherwise, so there is no phone path
-                 through here. A vertical phone layout used to live below this block —
-                 unreachable, and removed rather than left to look implementable. */
+              {/* ============ DESKTOP LAYOUT (Horizontal) ============ */}
+              {/* This component is desktop-only: ArtistScene renders PhoneArtistModal
+                  when isPhone, and ArtistGatefold otherwise, so there is no phone path
+                  through here. A vertical phone layout used to live below this block —
+                  unreachable, and removed rather than left to look implementable. */}
               <div
                 className="flex relative"
                 style={{ transformStyle: 'preserve-3d' }}

@@ -6485,53 +6485,6 @@
       }
     ]
   },
-  "psychedelic-furs": {
-    "name": "Psychedelic Furs",
-    "source": "itunes",
-    "fetchedAt": "2026-07-27T10:44:23.372Z",
-    "tracks": [
-      {
-        "name": "Love My Way",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/8e/37/b8/8e37b82f-e05e-3f53-b6e3-d158e3700281/mzaf_835287220810190424.plus.aac.p.m4a",
-        "durationMs": 211667,
-        "albumName": "Greatest Hits",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c9/65/46/c9654693-d5ae-183e-d946-95e008ae0a5a/074646148129.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/love-my-way/169718883?i=169719259&uo=4"
-      },
-      {
-        "name": "Heartbreak Beat",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/31/8b/d5/318bd5f0-40d6-d189-eab2-a4979a367c78/mzaf_9854761322018928856.plus.aac.p.m4a",
-        "durationMs": 309360,
-        "albumName": "Midnight to Midnight",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features/6d/45/fc/dj.nkdrgelx.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/heartbreak-beat/203793452?i=203793469&uo=4"
-      },
-      {
-        "name": "Pretty In Pink",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/2d/46/a6/2d46a66d-53f8-a61d-bb78-fd49c33a2551/mzaf_16734075060811795648.plus.aac.p.m4a",
-        "durationMs": 238773,
-        "albumName": "Greatest Hits",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c9/65/46/c9654693-d5ae-183e-d946-95e008ae0a5a/074646148129.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/pretty-in-pink/169718883?i=169719209&uo=4"
-      },
-      {
-        "name": "Heaven",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/08/e1/eb/08e1eb89-e099-06eb-cd52-97d66c9c025e/mzaf_16854839553231973329.plus.aac.p.m4a",
-        "durationMs": 205760,
-        "albumName": "Greatest Hits",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c9/65/46/c9654693-d5ae-183e-d946-95e008ae0a5a/074646148129.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/heaven/169718883?i=169719314&uo=4"
-      },
-      {
-        "name": "The Ghost In You",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/e9/56/10/e9561028-e565-950b-a18d-4c46a0cdd8bd/mzaf_1187412404871035093.plus.aac.p.m4a",
-        "durationMs": 257440,
-        "albumName": "Greatest Hits",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c9/65/46/c9654693-d5ae-183e-d946-95e008ae0a5a/074646148129.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-ghost-in-you/169718883?i=169719497&uo=4"
-      }
-    ]
-  },
   "rat-boy": {
     "name": "Rat Boy",
     "source": "itunes",
