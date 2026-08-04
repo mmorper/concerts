@@ -99,10 +99,20 @@ export interface VenueMetadata {
   notes?: string;
 }
 
-// setlist.fm shape (nested). Songs live at setlist.sets.set[].song[].name.
+// setlist.fm shape (nested). Songs live at setlist.sets.set[].song[].
 // `setlist` is null for ~21% of cached entries (lookup ran, no setlist found).
+//
+// Kept in step with src/types/setlist.ts, which the site's SetlistPanel renders in
+// full. This type was `{ name }` alone, which silently discarded the rest of the
+// cached record: asked whether Nile Rodgers played any Duran Duran, the tools saw a
+// bare "Notorious" and answered no, while the site showed "(Duran Duran cover)" from
+// the very same cache entry. A song is not just its title.
 export interface SetlistSong {
   name: string;
+  cover?: { name: string };
+  with?: { name: string };
+  tape?: boolean;
+  info?: string;
 }
 
 export interface SetlistSet {
