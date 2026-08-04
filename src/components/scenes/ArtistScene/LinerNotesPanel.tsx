@@ -11,7 +11,8 @@ import { Link2 } from 'lucide-react'
 import type { Setlist } from '../../../types/setlist'
 import type { ArtistConcert } from './types'
 import { haptics } from '../../../utils/haptics'
-import { useShareSetlistLink } from '../../../hooks/useShareSetlistLink'
+import { useShareLink } from '../../../hooks/useShareLink'
+import { setlistDeepLink, absoluteUrl } from '../../../utils/deepLinks'
 
 interface LinerNotesPanelProps {
   concert: ArtistConcert
@@ -46,12 +47,15 @@ export function LinerNotesPanel({
   // #196 — share link for this specific night. Desktop copies to clipboard;
   // the confirmation is the inline icon swap below, never a toast (the toast
   // system carries session-priority logic this has no business entering).
-  const { share, status: shareStatus } = useShareSetlistLink({
-    artistSlug,
-    date: concert.date,
-    artistName,
-    venue: concert.venue,
-    isPhone
+  const { share, status: shareStatus } = useShareLink({
+    url: absoluteUrl(setlistDeepLink(artistSlug, concert.date)),
+    title: `${artistName} at ${concert.venue}`,
+    text: `${artistName} at ${concert.venue} — the setlist`,
+    isPhone,
+    analyticsEvent: {
+      name: 'setlist_link_shared',
+      params: { artist_name: artistName, concert_date: concert.date, venue_name: concert.venue }
+    }
   })
 
   // Only offer the link once there's a setlist to link to. Mirrors the
