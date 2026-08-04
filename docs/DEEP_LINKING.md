@@ -130,8 +130,12 @@ artist when both are present, then fall back to first-match.
 | MCP tool responses | `workers/mcp-server/src/tools.ts` |
 | Ask exhibits | `workers/ask-chat/src/exhibits.ts` |
 | Sitemap | `scripts/generate-sitemap.ts` |
-| Bot meta / OG cards | `workers/meta-injector/worker.js` |
+| Bot meta / OG cards | `workers/meta-injector/worker.js` (`injectShowMeta`) |
 | Liner notes deep links | `scripts/liner-notes/curate.ts` |
+
+**Indexing:** per-show URLs are in the sitemap only where a setlist exists — a show
+without one is a thin page. Roughly two-thirds of the archive qualifies; the generator
+logs how many were skipped rather than hiding the gate.
 
 See [Setlist Deep Linking spec](./specs/future/setlist-deep-linking.md) for the full rollout.
 

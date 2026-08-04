@@ -2,37 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://concerts.morperhaus.org/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=timeline</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=venues</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=geography</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=genres</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -1442,6 +1442,596 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=nile-rodgers&amp;show=2026-07-31</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=david-byrne&amp;show=2025-11-20</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-black-keys&amp;show=2025-08-16</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=molchat-doma&amp;show=2025-03-07</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=klangphonics&amp;show=2025-03-01</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=social-distortion&amp;show=2024-12-05</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=cold-war-kids&amp;show=2024-11-16</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=howard-jones&amp;show=2024-08-20</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=brian-setzer&amp;show=2024-02-27</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=umphrey-s-mcgee&amp;show=2024-02-15</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=kasabian&amp;show=2023-11-22</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=devo&amp;show=2023-11-16</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=streetlight-manifesto&amp;show=2023-09-23</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=x&amp;show=2023-07-30</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=ub40&amp;show=2023-07-21</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=foals&amp;show=2023-07-18</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-cure&amp;show=2023-05-24</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=crowded-house&amp;show=2023-05-09</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=depeche-mode&amp;show=2023-03-28</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=social-distortion&amp;show=2022-12-08</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=foals&amp;show=2022-11-16</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=danny-elfman&amp;show=2022-10-28</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=new-order&amp;show=2022-10-07</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=heaven-17&amp;show=2022-10-01</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=gorillaz&amp;show=2022-09-25</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=peter-hook-and-the-light&amp;show=2022-09-09</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=x&amp;show=2022-08-01</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=streetlight-manifesto&amp;show=2022-07-12</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=kraftwerk&amp;show=2022-07-05</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=joe-jackson&amp;show=2022-06-10</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=tears-for-fears&amp;show=2022-06-04</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=royal-blood&amp;show=2022-05-07</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=future-islands&amp;show=2021-08-31</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-aquabats&amp;show=2021-08-14</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=lenny-kravitz&amp;show=2019-09-21</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=streetlight-manifesto&amp;show=2019-07-30</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=garbage&amp;show=2019-05-16</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-interrupters&amp;show=2019-04-14</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=foals&amp;show=2019-03-24</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=streetlight-manifesto&amp;show=2018-11-03</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=social-distortion&amp;show=2018-10-28</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=gary-numan&amp;show=2018-09-21</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=stray-cats&amp;show=2018-08-17</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=u2&amp;show=2018-06-17</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-human-league&amp;show=2018-05-12</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=beck&amp;show=2018-04-27</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=gary-numan&amp;show=2017-12-09</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-brian-setzer-orchestra&amp;show=2017-11-25</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=colin-hay&amp;show=2017-10-21</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=foo-fighters&amp;show=2017-10-12</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=bat-fangs&amp;show=2017-10-08</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=alison-moyet&amp;show=2017-09-11</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=blondie&amp;show=2017-08-03</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=joe-jackson&amp;show=2017-06-10</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=royal-blood&amp;show=2017-06-06</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=midnight-oil&amp;show=2017-05-09</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-roots&amp;show=2016-09-24</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-smithereens&amp;show=2016-08-26</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=prophets-of-rage&amp;show=2016-08-19</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=garbage&amp;show=2015-10-28</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=social-distortion&amp;show=2015-08-25</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=foo-fighters&amp;show=2015-07-04</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=snarky-puppy&amp;show=2015-06-15</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=royal-blood&amp;show=2015-06-10</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=dropkick-murphys&amp;show=2015-03-06</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-head-and-the-heart&amp;show=2014-12-09</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=streetlight-manifesto&amp;show=2014-10-26</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-offspring&amp;show=2014-07-30</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=snarky-puppy&amp;show=2014-06-25</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=berlin&amp;show=2014-05-02</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=kraftwerk&amp;show=2014-04-04</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=gary-numan&amp;show=2013-10-27</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=rancid&amp;show=2013-06-01</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=garbage&amp;show=2013-03-24</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=bad-religion&amp;show=2013-03-22</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=dropkick-murphys&amp;show=2013-03-10</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=social-distortion&amp;show=2012-11-06</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-cult&amp;show=2012-06-12</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=red-hot-chili-peppers&amp;show=2012-05-10</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=squeeze&amp;show=2012-04-24</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=bad-religion&amp;show=2011-04-26</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=social-distortion&amp;show=2010-10-26</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-english-beat&amp;show=2010-02-22</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=rob-thomas&amp;show=2009-11-10</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=yaz&amp;show=2008-07-24</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=stray-cats&amp;show=2008-07-22</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=duran-duran&amp;show=2008-05-04</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=devo&amp;show=2006-10-27</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=joe-satriani&amp;show=2006-05-03</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=depeche-mode&amp;show=2005-11-22</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=garbage&amp;show=2005-07-27</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=social-distortion&amp;show=2005-03-23</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-cure&amp;show=2003-09-20</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=joe-jackson&amp;show=2003-08-29</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-human-league&amp;show=2003-08-24</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=peter-gabriel&amp;show=2003-06-08</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=brian-setzer-68-comeback-special&amp;show=2000-11-17</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-brian-setzer-orchestra&amp;show=1998-08-08</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=jimmy-buffett&amp;show=1997-10-25</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=peter-gabriel&amp;show=1993-09-18</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=siouxsie-and-the-banshees&amp;show=1991-12-21</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=jimmy-buffett&amp;show=1991-06-21</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=depeche-mode&amp;show=1990-08-05</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=erasure&amp;show=1990-03-11</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=howard-jones&amp;show=1989-07-05</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=oingo-boingo&amp;show=1988-10-29</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=george-michael&amp;show=1988-10-07</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=depeche-mode&amp;show=1988-06-18</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=duran-duran&amp;show=1987-07-27</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=oingo-boingo&amp;show=1987-06-30</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-art-of-noise&amp;show=1986-07-31</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-alarm&amp;show=1986-04-12</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=bruce-springsteen&amp;show=1985-09-29</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=wham&amp;show=1985-08-30</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=new-order&amp;show=1985-08-23</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=depeche-mode&amp;show=1985-03-31</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=billy-idol&amp;show=1984-08-13</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=thompson-twins&amp;show=1984-05-12</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://concerts.morperhaus.org/?scene=venues&amp;venue=pacific-amphitheatre</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -2233,361 +2823,367 @@
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes.xml</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://concerts.morperhaus.org/liner-notes/foo-fighters-9-more-2015-festival-bill-2</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://concerts.morperhaus.org/liner-notes/july-31-40-years-since-the-art-of-noise</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/pacific-amphitheatre-16-shows-over-5-decades-2</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/july-16-40-years-since-beach-boys</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/house-of-blues-anaheim-6-shows-over-3-decades-2</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/ziggy-marley-caught-once-never-again</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/june-21-35-years-since-jimmy-buffett</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/no-doubt-caught-once-never-again</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/garbage-days-before-late-registration-dropped</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/run-dmc-caught-once-never-again</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/sting-days-after-nevermind-dropped</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/siouxsie-and-the-banshees-days-after-achtung-baby-dropped</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/april-15-40-years-since-blancmange</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/april-12-40-years-since-the-alarm</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-22-years-of-shows</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/march-22-13-years-since-bad-religion</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/blancmange-caught-once-never-again</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/march-23-21-years-since-social-distortion</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/tears-for-fears-17-years-between-shows</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/erasure-days-before-violator-dropped</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-alarm-caught-once-never-again</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/echo-and-the-bunnymen-26-years-between-shows</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/no-doubt-days-before-it-takes-a-nation-of-millions-to-hold-us-back-dropped</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/bruce-springsteen-caught-once-never-again</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/ub40-35-years-between-shows</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-a-jazz-blues-outlier-in-a-rock-electronic-reggae-arch</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-days-after-the-bends-dropped</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/social-distortion-14-more-2018-festival-bill</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/depeche-mode-18-years-between-shows</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/universal-amphitheater-5-shows-before-it-was-demolished</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-cure-14-more-2003-festival-bill</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/howard-jones-17-years-between-shows</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/irvine-meadows-16-shows-before-it-was-demolished</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/peter-gabriel-11-more-1993-festival-bill</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/new-order-37-years-between-shows</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/billy-idol-caught-once-never-again</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/duran-duran-21-years-between-shows</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/stryper-caught-once-never-again</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-human-league-8-more-2018-festival-bill</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-smithereens-21-years-between-shows</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/wham-caught-once-never-again</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/foo-fighters-9-more-2015-festival-bill</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/depeche-mode-38-years-of-shows-2</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/howard-jones-39-years-of-shows</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/maxi-priest-6-more-1991-festival-bill</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/social-distortion-34-years-of-shows</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/oingo-boingo-5-more-1987-festival-bill</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/crowded-house-from-opener-to-headliner</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/my-international-chapter-177-concerts-over-41-years</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/squeeze-from-opener-to-headliner</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/tears-for-fears-37-years-of-shows</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/universal-amphitheater-5-shows-over-3-decades</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/irvine-meadows-16-shows-over-3-decades</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/kia-forum-5-shows-over-3-decades</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/how-it-works</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/ask</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/about-mcp</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
