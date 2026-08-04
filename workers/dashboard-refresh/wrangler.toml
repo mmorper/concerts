@@ -2,6 +2,12 @@ name = "concerts-dashboard-refresh"
 main = "src/index.ts"
 compatibility_date = "2024-11-01"
 
+# The other three Workers pin this; without it wrangler resolves the account by calling
+# /memberships, which a least-privilege CI token has no reason to be allowed to read —
+# and that's exactly how the first automated deploy failed (Authentication error 10000).
+# Pinning it removes the lookup instead of widening the token.
+account_id = "6db8591bbcba4588ae4ef9c3839cd209"
+
 # Daily refresh at 06:00 UTC.
 [triggers]
 crons = ["0 6 * * *"]
