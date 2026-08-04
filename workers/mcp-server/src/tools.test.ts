@@ -533,6 +533,84 @@ describe("get_concert_setlist", () => {
     expect(text).toContain("1. Story of My Life");
   });
 
+  // A night of covers used to read as a list of songs the headliner appears to have
+  // written: the cache records who each song belongs to, the type discarded it, and
+  // "did Nile Rodgers play any Duran Duran?" got a confident no.
+  describe("per-song attribution", () => {
+    const annotated: SetlistsCache = {
+      version: "1",
+      generatedAt: "",
+      entries: [
+        {
+          concertId: "concert-5",
+          artistName: "Social Distortion",
+          date: "1990-06-04",
+          venue: "Pacific Amphitheatre",
+          setlist: {
+            sets: {
+              set: [
+                {
+                  song: [
+                    { name: "Notorious", cover: { name: "Duran Duran" } },
+                    { name: "Ball and Chain", with: { name: "Nile Rodgers" } },
+                    { name: "Intro Tape", tape: true },
+                    { name: "Story of My Life", info: "First time live since 1984." },
+                    { name: "Plain Song" },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      ],
+    };
+
+    it("names the original artist on a cover", () => {
+      const text = concertSetlist(archive(), annotated, { concertId: "concert-5" }, TOP_TRACKS);
+      expect(text).toContain("1. Notorious (Duran Duran cover)");
+    });
+
+    it("credits a guest and marks tape", () => {
+      const text = concertSetlist(archive(), annotated, { concertId: "concert-5" }, TOP_TRACKS);
+      expect(text).toContain("2. Ball and Chain (with Nile Rodgers)");
+      expect(text).toContain("3. Intro Tape (tape)");
+    });
+
+    it("carries setlist.fm's free-text note under its song", () => {
+      const text = concertSetlist(archive(), annotated, { concertId: "concert-5" }, TOP_TRACKS);
+      expect(text).toContain("4. Story of My Life");
+      expect(text).toContain("   First time live since 1984.");
+    });
+
+    it("leaves an unannotated song as a bare title", () => {
+      const text = concertSetlist(archive(), annotated, { concertId: "concert-5" }, TOP_TRACKS);
+      expect(text).toContain("5. Plain Song");
+      expect(text).not.toContain("5. Plain Song (");
+    });
+
+    it("keeps surprise_me's prose free of attribution noise", () => {
+      const data = [mk("2001-05-05", "The Band", "The Echo"), mk("2002-05-05", "The Band", "The Echo")];
+      const picked = 0;
+      const setlists: SetlistsCache = {
+        version: "1",
+        generatedAt: "",
+        entries: [
+          {
+            concertId: data[picked].id,
+            artistName: "The Band",
+            date: "2001-05-05",
+            venue: "The Echo",
+            setlist: {
+              sets: { set: [{ song: [{ name: "Notorious", cover: { name: "Duran Duran" } }, { name: "Closer" }] }] },
+            },
+          },
+        ],
+      };
+      const { text } = surpriseMe(data, () => picked, setlists, {}, {});
+      expect(text).toContain("The setlist that night included Notorious and Closer.");
+    });
+  });
+
   it("asks which night when an artist has many shows and no date", () => {
     const text = concertSetlist(archive(), SETLISTS, { artist: "Social Distortion" }, TOP_TRACKS);
     expect(text).toContain("which night?");

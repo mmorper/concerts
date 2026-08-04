@@ -18,6 +18,7 @@ import type {
   MostPlayedSongs,
   Narration,
   SetlistEntry,
+  SetlistSong,
   SetlistsCache,
   VenueMetadata,
   VenuesMetadata,
@@ -646,15 +647,26 @@ function normalizeName(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
-function songsOf(entry: SetlistEntry): string[] {
+function songsOf(entry: SetlistEntry): SetlistSong[] {
   const sets = entry.setlist?.sets?.set ?? [];
-  const songs: string[] = [];
-  for (const s of sets) for (const song of s.song ?? []) if (song.name) songs.push(song.name);
+  const songs: SetlistSong[] = [];
+  for (const s of sets) for (const song of s.song ?? []) if (song.name) songs.push(song);
   return songs;
 }
 
+// What the site prints beside a title, in the same order: "(Duran Duran cover)",
+// "(with Nile Rodgers)", "(tape)". Without this, a night of covers reads as a list of
+// songs the headliner appears to have written.
+function songLine(song: SetlistSong): string {
+  const notes: string[] = [];
+  if (song.cover?.name) notes.push(`${song.cover.name} cover`);
+  if (song.with?.name) notes.push(`with ${song.with.name}`);
+  if (song.tape) notes.push("tape");
+  return song.name + notes.map((n) => ` (${n})`).join("");
+}
+
 export interface ResolvedSetlist {
-  songs: string[];
+  songs: SetlistSong[];
   tour?: string;
   isOpener: boolean;
   artistName?: string;
@@ -758,7 +770,7 @@ export function surpriseMe(
   if (opener) lines.push(opener);
 
   if (songs.length) {
-    lines.push("", `The setlist that night included ${joinList(songs.slice(0, 2))}.`);
+    lines.push("", `The setlist that night included ${joinList(songs.slice(0, 2).map((s) => s.name))}.`);
   }
   const tracks = topTracks[c.headlinerNormalized]?.tracks;
   if (tracks?.length) {
@@ -889,7 +901,12 @@ export function concertSetlist(
     lines.push("");
   }
 
-  sl.songs.forEach((song, i) => lines.push(`${i + 1}. ${song}`));
+  sl.songs.forEach((song, i) => {
+    lines.push(`${i + 1}. ${songLine(song)}`);
+    // setlist.fm's free-text note — "first time live since 1984", that kind of thing.
+    // Indented under its song, the way the panel renders it.
+    if (song.info) lines.push(`   ${song.info}`);
+  });
 
   const out = lines.join("\n");
   return out + linkFooter(out);
