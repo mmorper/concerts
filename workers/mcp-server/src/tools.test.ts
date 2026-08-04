@@ -243,6 +243,108 @@ describe("get_artist_history", () => {
   });
 });
 
+// ---------- openers count as artists (#219) ----------
+
+// Romeo Void and The Psychedelic Furs only ever open; The Bangles do both, which is
+// what pins the precedence rule; "Yaz!" spells the 1984 bill differently on purpose.
+function openerArchive(): Concert[] {
+  seq = 0;
+  return [
+    mk("1984-04-27", "Yaz!", "Irvine Meadows", { city: "Irvine", openers: ["Romeo Void", "The Bangles"] }),
+    mk("1986-05-02", "The Bangles", "The Roxy"),
+    mk("2008-07-24", "Yaz", "Pacific Amphitheatre", { city: "Costa Mesa", openers: ["The Psychedelic Furs"] }),
+  ];
+}
+
+describe("openers count as artists (#219)", () => {
+  it("resolves an artist who has only ever opened", () => {
+    expect(resolveArtist(openerArchive(), "Romeo Void")).toEqual({
+      kind: "match",
+      name: "Romeo Void",
+      slug: "romeo-void",
+    });
+  });
+
+  it("returns the opening slot as a show instead of denying the artist exists", () => {
+    const text = artistHistory(openerArchive(), "The Psychedelic Furs", ARTISTS_META, TOP_TRACKS);
+    expect(text).not.toContain("isn't in the archive");
+    expect(text).toContain("[concert-3]");
+    expect(text).toContain("Pacific Amphitheatre");
+  });
+
+  it("names who they opened for rather than listing the rest of the undercard", () => {
+    const text = artistHistory(openerArchive(), "The Psychedelic Furs", ARTISTS_META, TOP_TRACKS);
+    expect(text).toContain("Opening for [Yaz]");
+    expect(text).toContain("never a headline show of their own");
+  });
+
+  it("derives an opener slug matching the site's artist URLs", () => {
+    const text = artistHistory(openerArchive(), "The Psychedelic Furs", ARTISTS_META, TOP_TRACKS);
+    expect(text).toContain("?scene=artists&artist=the-psychedelic-furs");
+  });
+
+  it("counts both roles for an artist who has headlined and opened", () => {
+    const text = artistHistory(openerArchive(), "The Bangles", ARTISTS_META, TOP_TRACKS);
+    expect(text).toContain("2 times");
+    expect(text).toContain("1 headlining, 1 opening.");
+  });
+
+  it("keeps the headline spelling and slug when a band appears in both roles", () => {
+    expect(resolveArtist(openerArchive(), "The Bangles")).toEqual({
+      kind: "match",
+      name: "The Bangles",
+      slug: "the-bangles",
+    });
+  });
+
+  it("folds spellings differing only in punctuation into one history", () => {
+    const text = artistHistory(openerArchive(), "Yaz", ARTISTS_META, TOP_TRACKS);
+    expect(text).toContain("2 times");
+    expect(text).toContain("Irvine Meadows");
+    expect(text).toContain("Pacific Amphitheatre");
+  });
+
+  it("still treats a leading article as a distinct artist — that split is a data fix", () => {
+    const split = [
+      mk("2003-09-20", "The Cure", "Hyundai Pavilion", { openers: ["Psychedelic Furs"] }),
+      mk("2008-07-24", "Yaz", "Pacific Amphitheatre", { openers: ["The Psychedelic Furs"] }),
+    ];
+    expect(resolveArtist(split, "Psychedelic Furs")).toMatchObject({ slug: "psychedelic-furs" });
+    expect(resolveArtist(split, "The Psychedelic Furs")).toMatchObject({ slug: "the-psychedelic-furs" });
+  });
+
+  it("resolves a slug lifted out of an emitted link", () => {
+    expect(resolveArtist(openerArchive(), "the-psychedelic-furs")).toEqual({
+      kind: "match",
+      name: "The Psychedelic Furs",
+      slug: "the-psychedelic-furs",
+    });
+    expect(resolveArtist(archive(), "peter-hook-and-the-light")).toMatchObject({
+      slug: "peter-hook-and-the-light",
+    });
+  });
+
+  it("still prefers an exact display name over a slug", () => {
+    expect(resolveArtist(openerArchive(), "The Bangles")).toEqual({
+      kind: "match",
+      name: "The Bangles",
+      slug: "the-bangles",
+    });
+  });
+
+  it("leaves ambiguity intact — a slug lookup only converts a miss into a hit", () => {
+    const text = artistHistory(archive(), "Peter", ARTISTS_META, TOP_TRACKS);
+    expect(text).toContain("Which one did you mean?");
+  });
+
+  it("leaves headliner-only histories untouched", () => {
+    const text = artistHistory(archive(), "Adam Ant", ARTISTS_META, TOP_TRACKS);
+    expect(text).toContain("With Romeo Void opening.");
+    expect(text).not.toContain("Opening for");
+    expect(text).not.toContain("headlining,");
+  });
+});
+
 // ---------- get_venue_history ----------
 
 describe("get_venue_history", () => {

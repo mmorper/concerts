@@ -353,13 +353,48 @@ export type ArtistResolution =
 export function resolveArtist(concerts: Concert[], query: string): ArtistResolution {
   const q = query.trim().toLowerCase();
   const byName = new Map<string, { display: string; slug: string }>();
+
+  // Headliners first — their slug ships with the record, so it is authoritative.
   for (const c of concerts) {
     const key = c.headliner.toLowerCase();
     if (!byName.has(key)) byName.set(key, { display: c.headliner, slug: c.headlinerNormalized });
   }
 
+  // #219 — openers are artists too. Most of the archive has never headlined, and
+  // indexing headliners alone made those bands answer "isn't in the archive" while
+  // search_concerts found them fine. Added in a second pass so a band that has both
+  // headlined and opened keeps its headline spelling and slug.
+  //
+  // No *Normalized field ships for openers, so the slug is derived the way the site
+  // derives it (src/utils/normalize.ts) — that equivalence is what keeps the links
+  // these tools emit pointing at real artist cards.
+  for (const c of concerts) {
+    for (const opener of c.openers) {
+      const name = opener.trim();
+      if (!name) continue;
+      const key = name.toLowerCase();
+      if (!byName.has(key)) byName.set(key, { display: name, slug: normalizeName(name) });
+    }
+  }
+
   const exact = byName.get(q);
   if (exact) return { kind: "match", name: exact.display, slug: exact.slug };
+
+  // Then an exact slug, so a caller can hand back the slug out of a link these tools
+  // emitted — "the-psychedelic-furs" as readily as "The Psychedelic Furs". resolveVenue
+  // has always accepted its normalizedName; artists were the inconsistent one, and a
+  // multi-word artist was unreachable that way (only 21 of 107 headliners resolved).
+  //
+  // Placed after the display-name check and before partials so it can only ever convert
+  // a miss into a hit: an exact name still wins, and a query that matches no slug falls
+  // through to the same partial/ambiguity handling as before. Insertion order puts
+  // headliners first, so a band that has both headlined and opened keeps its slug.
+  const qSlug = normalizeName(q);
+  if (qSlug) {
+    for (const v of byName.values()) {
+      if (v.slug === qSlug) return { kind: "match", name: v.display, slug: v.slug };
+    }
+  }
 
   const partials = [...byName.entries()].filter(([name]) => name.includes(q));
   if (partials.length === 0) return { kind: "none" };
@@ -396,16 +431,37 @@ export function artistHistory(
     ].join("\n");
   }
 
-  const shows = concerts.filter((c) => c.headliner === r.name).sort(byDate);
+  // Matched on slug rather than display name so an opening slot counts as a show
+  // (#219). Slug comparison also folds together spellings differing only in case or
+  // punctuation ("Yaz!" / "Yaz"). It does NOT fold a leading article — "Psychedelic
+  // Furs" and "The Psychedelic Furs" are still distinct slugs, which is why that split
+  // had to be corrected in the source data rather than papered over here.
+  const headlined = (c: Concert) => c.headlinerNormalized === r.slug;
+  const shows = concerts
+    .filter((c) => headlined(c) || c.openers.some((o) => normalizeName(o) === r.slug))
+    .sort(byDate);
   const n = shows.length;
   const firstY = shows[0].year;
   const lastY = shows[n - 1].year;
+  const openingSlots = shows.filter((c) => !headlined(c)).length;
 
   let header = `I've seen ${artistLink(r.name, r.slug)} ${n} ${n === 1 ? "time" : "times"}`;
   if (n > 1) header += lastY > firstY ? `, across ${lastY - firstY} years (${firstY}–${lastY})` : `, all in ${firstY}`;
   header += ".";
 
   const lines = [header];
+
+  // An opening slot is a different memory from a headline set — say which, rather than
+  // flattening both into a show count.
+  if (openingSlots === n) {
+    lines.push(
+      n === 1
+        ? "An opening set — never a headline show of their own in my archive."
+        : "Always in the opening slot — never a headline show of their own in my archive.",
+    );
+  } else if (openingSlots > 0) {
+    lines.push(`${n - openingSlots} headlining, ${openingSlots} opening.`);
+  }
 
   const meta = artistsMeta[r.slug];
   const formedGenre: string[] = [];
@@ -418,8 +474,14 @@ export function artistHistory(
   lines.push("");
   shows.forEach((c, i) => {
     lines.push(`${i + 1}. ${fullDate(c.date)} — ${venueLink(c.venue, c.venueNormalized)}, ${c.city} [${c.id}]`);
-    const opener = openerLine(c.openers, "   ");
-    if (opener) lines.push(opener);
+    if (headlined(c)) {
+      const opener = openerLine(c.openers, "   ");
+      if (opener) lines.push(opener);
+    } else {
+      // Who they opened for is the fact that places the night; the rest of the
+      // undercard belongs to the headliner's history, not theirs.
+      lines.push(`   Opening for ${artistLink(c.headliner, c.headlinerNormalized)}.`);
+    }
   });
 
   const tracks = topTracks[r.slug]?.tracks;
