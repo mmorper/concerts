@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { getGenreColor } from '../../../constants/colors'
 import { ConcertHistoryPanel } from './ConcertHistoryPanel'
 import { AudioPreviewPanel } from './AudioPreviewPanel'
-import { LinerNotesPanel } from './LinerNotesPanel'
+import { SetlistPanel } from './SetlistPanel'
 import { TourDatesPanel } from './TourDatesPanel'
 import { fetchSetlist } from '../../../services/setlistfm'
 import { useTourDates } from '../../../hooks/useTourDates'
@@ -593,8 +593,11 @@ export function ArtistGatefold({
             style={{ transformStyle: 'preserve-3d' }}
             onClick={(e) => e.stopPropagation()}
           >
-            {!isPhone ? (
               /* ============ DESKTOP LAYOUT (Horizontal) ============ */
+              /* This component is desktop-only: ArtistScene renders PhoneArtistModal
+                 when isPhone, and ArtistGatefold otherwise, so there is no phone path
+                 through here. A vertical phone layout used to live below this block —
+                 unreachable, and removed rather than left to look implementable. */
               <div
                 className="flex relative"
                 style={{ transformStyle: 'preserve-3d' }}
@@ -634,7 +637,7 @@ export function ArtistGatefold({
 
                   {/* Liner Notes Panel - slides from left (desktop) */}
                   {activePanel === 'setlist' && selectedConcert && (
-                    <LinerNotesPanel
+                    <SetlistPanel
                       concert={selectedConcert}
                       artistName={artist.name}
                       artistSlug={artist.normalizedName}
@@ -722,141 +725,6 @@ export function ArtistGatefold({
                   </div>
                 </div>
               </div>
-            ) : (
-              /* ============ PHONE LAYOUT (Vertical) ============ */
-              <div
-                className="flex flex-col relative"
-                style={{ transformStyle: 'preserve-3d', width: getPhoneClosedPosition().width, height: '100vh' }}
-              >
-                {/* Top Panel (Concert History) - revealed by cover opening */}
-                <div
-                  className={`flex-1 transform-gpu transition-transform duration-800 ${
-                    isOpen ? 'rotate-x-[-15deg]' : 'rotate-x-0'
-                  } origin-center-bottom`}
-                  style={{
-                    transformStyle: 'preserve-3d',
-                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
-                  }}
-                >
-                  <ConcertHistoryPanel
-                    artist={artist}
-                    onSetlistClick={handleSetlistClick}
-                    openSetlistConcert={selectedConcert}
-                    tourCount={tourCount}
-                    isTourPanelActive={activePanel === 'tour-dates'}
-                    onTourBadgeClick={handleTourBadgeClick}
-                    linerNotesCount={linerNotesCount}
-                    isPhone={true}
-                  />
-
-                  {/* Liner Notes Panel - slides from top (phone) */}
-                  {activePanel === 'setlist' && selectedConcert && (
-                    <LinerNotesPanel
-                      concert={selectedConcert}
-                      artistName={artist.name}
-                      artistSlug={artist.normalizedName}
-                      setlist={setlistData}
-                      isLoading={isLoadingSetlist}
-                      error={setlistError}
-                      onClose={handleClosePanel}
-                      isPhone={true}
-                    />
-                  )}
-
-                  {/* Tour Dates Panel - slides from top (phone) */}
-                  {activePanel === 'tour-dates' && (
-                    <TourDatesPanel
-                      artistName={artist.name}
-                      tourDates={tourDates}
-                      isLoading={isLoadingTourDates}
-                      error={tourDatesError}
-                      onClose={handleClosePanel}
-                      isPhone={true}
-                    />
-                  )}
-                </div>
-
-                {/* Horizontal Spine (Phone) */}
-                <div
-                  className={`relative transition-opacity duration-400 ${
-                    isOpen ? 'opacity-100 delay-300' : 'opacity-0'
-                  }`}
-                  style={{
-                    height: SPINE_HEIGHT,
-                    width: '100%',
-                    background: 'linear-gradient(to bottom, #0a0a0a 0%, #1a1a1a 20%, #0a0a0a 50%, #1a1a1a 80%, #0a0a0a 100%)',
-                    boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.8)',
-                    zIndex: 15
-                  }}
-                >
-                  <div
-                    className="absolute left-2.5 right-2.5 top-1/2 h-0.5 -translate-y-1/2"
-                    style={{
-                      background: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 10%, rgba(0,0,0,0.6) 90%, transparent 100%)'
-                    }}
-                  />
-                </div>
-
-                {/* Bottom Panel (Spotify) */}
-                <div
-                  className={`flex-1 transform-gpu transition-transform duration-800 ${
-                    isOpen ? 'rotate-x-15' : 'rotate-x-0'
-                  } origin-center-top`}
-                  style={{
-                    transformStyle: 'preserve-3d',
-                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
-                  }}
-                >
-                  <AudioPreviewPanel artist={artist} isPhone={true} />
-                </div>
-
-                {/* Cover (opens upward from bottom half) */}
-                <div
-                  className={`absolute transform-gpu transition-transform duration-800 ${
-                    isOpen ? 'rotate-x-165' : 'rotate-x-0'
-                  } origin-center-bottom`}
-                  style={{
-                    width: '100%',
-                    height: getPhonePanelHeight(),
-                    bottom: 0,
-                    left: 0,
-                    transformStyle: 'preserve-3d',
-                    zIndex: 20,
-                    cursor: 'pointer',
-                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
-                  }}
-                >
-                  {/* Front of cover (album art) */}
-                  <div
-                    className="absolute inset-0 flex items-center justify-center text-[6rem] font-sans font-semibold text-white/90 overflow-hidden"
-                    style={{
-                      background: gradient,
-                      backfaceVisibility: 'hidden',
-                      WebkitBackfaceVisibility: 'hidden',
-                      boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)'
-                    }}
-                  >
-                    {!coverImageLoaded && (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        {initials}
-                      </div>
-                    )}
-                    {imageUrl && (
-                      <img
-                        key={artist.name}
-                        src={imageUrl}
-                        alt={artist.name}
-                        className={`absolute inset-0 w-full h-full object-cover ${
-                          coverImageLoaded ? 'opacity-100' : 'opacity-0 transition-opacity duration-300'
-                        }`}
-                        onLoad={() => setCoverImageLoaded(true)}
-                        onError={() => setCoverImageLoaded(false)}
-                      />
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       )}
