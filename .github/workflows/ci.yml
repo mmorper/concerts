@@ -32,10 +32,15 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '20'
-          cache: npm
 
+      # package-lock.json is gitignored repo-wide (.gitignore:3), so there is no
+      # lock file to restore from — which rules out both `npm ci` and
+      # setup-node's `cache: npm`, since that keys off the lock file. Same
+      # constraint and same workaround as mcp-ci.yml and ask-chat-ci.yml.
+      # Committing the lock file would buy reproducible installs and caching;
+      # that's a deliberate repo decision to revisit separately, not here.
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Typecheck
         run: npm run typecheck
