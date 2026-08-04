@@ -13,6 +13,19 @@ account_id = "6db8591bbcba4588ae4ef9c3839cd209"
 pattern = "concerts.morperhaus.org/mcp*"
 zone_name = "morperhaus.org"
 
+# OAuth-discovery paths live at the zone root, NOT under /mcp, so they need their own routes.
+# Without them they fall through to meta-injector's /* → the Pages SPA catch-all, which answers
+# 200 + index.html to any GET — and a client reads that as "an authorization server exists here."
+# These routes exist so src/index.ts can answer 404 (= no auth on this server). More-specific
+# patterns win over meta-injector's /*, same as /mcp* already does.
+[[routes]]
+pattern = "concerts.morperhaus.org/.well-known/oauth*"
+zone_name = "morperhaus.org"
+
+[[routes]]
+pattern = "concerts.morperhaus.org/register"
+zone_name = "morperhaus.org"
+
 [vars]
 DATA_BASE_URL = "https://concerts.morperhaus.org/data"
 
