@@ -18,7 +18,9 @@ on:
 
 concurrency:
   group: mcp-ci-${{ github.ref }}
-  cancel-in-progress: true
+  # Superseded PR runs are worth cancelling; a main-branch run is not, because it may be mid-deploy
+  # and job-level concurrency can't save a job whose whole workflow run got cancelled.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   test:
@@ -44,3 +46,45 @@ jobs:
 
       - name: Test
         run: npm test
+
+  # Ship it. The SITE auto-deploys via Cloudflare Pages on push to main; the Workers did not,
+  # and `/release` only ever ran `npm run deploy:worker` (meta-injector). So a green run of the
+  # `test` job above meant "tested", never "shipped" — this Worker served 2026-06-22 code until
+  # 2026-08-04 while CI stayed green through it, which is how a latent OAuth-discovery bug sat
+  # undetected for six weeks. Gated on `test`, and the path filters above already scope the whole
+  # workflow to real changes to this Worker.
+  #
+  # `wrangler deploy` does NOT touch secrets (ANTHROPIC_API_KEY stays put) — it uploads the
+  # script, bindings, and the routes declared in wrangler.toml.
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    # Never run two deploys of this Worker at once, and never cancel one midway — unlike the
+    # test job, a halted deploy is a half-applied change.
+    concurrency:
+      group: mcp-deploy
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: workers/mcp-server
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      # Uses the wrangler pinned in this package's devDependencies — the same binary that runs
+      # locally — rather than a third-party action resolving its own version.
+      - name: Deploy to Cloudflare
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

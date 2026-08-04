@@ -21,7 +21,8 @@ on:
 
 concurrency:
   group: ask-chat-ci-${{ github.ref }}
-  cancel-in-progress: true
+  # PR runs cancel on supersede; main-branch runs don't, since they may be mid-deploy.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   test:
@@ -52,3 +53,37 @@ jobs:
       - name: Test
         run: npm test
         working-directory: workers/ask-chat
+
+  # See mcp-ci.yml's deploy job for the full rationale: the site auto-deploys on push, the
+  # Workers did not, and `/release` only covered meta-injector — so this Worker drifted to
+  # 2026-06-22 code while CI stayed green. Note the path filter above also fires on sibling
+  # mcp-server changes (shared tool fns), which is intended: a shared-code change that this
+  # Worker's tests cover should also reach its running copy.
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    concurrency:
+      group: ask-chat-deploy
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: workers/ask-chat
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Deploy to Cloudflare
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

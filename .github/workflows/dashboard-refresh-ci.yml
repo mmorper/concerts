@@ -17,7 +17,8 @@ on:
 
 concurrency:
   group: dashboard-refresh-ci-${{ github.ref }}
-  cancel-in-progress: true
+  # PR runs cancel on supersede; main-branch runs don't, since they may be mid-deploy.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   test:
@@ -43,3 +44,36 @@ jobs:
 
       - name: Test
         run: npm test
+
+  # See mcp-ci.yml's deploy job for the full rationale: the site auto-deploys on push, the
+  # Workers did not, and `/release` only covered meta-injector. This Worker happened to be in
+  # sync on 2026-08-04 only because nothing had changed it since its last manual deploy —
+  # luck, not process.
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    concurrency:
+      group: dashboard-refresh-deploy
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: workers/dashboard-refresh
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Deploy to Cloudflare
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
