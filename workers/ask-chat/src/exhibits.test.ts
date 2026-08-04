@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { pickPrimaryExhibit, artistDeepLink, venueDeepLink, type Exhibit } from "./exhibits.js";
+import { pickPrimaryExhibit, artistDeepLink, venueDeepLink, showDeepLink, type Exhibit } from "./exhibits.js";
+import DEEP_LINKS from "../../../test/fixtures/deep-link-urls.json";
 
 const artist: Exhibit = { kind: "artist", entity: "artist", slug: "depeche-mode", name: "Depeche Mode", deepLink: artistDeepLink("depeche-mode") };
 const venue: Exhibit = { kind: "venue", entity: "venue", slug: "9-30-club", name: "9:30 Club", deepLink: venueDeepLink("9-30-club") };
@@ -42,5 +43,25 @@ describe("deep-link builders", () => {
   it("build scene-scoped URLs matching DEEP_LINKING.md", () => {
     expect(artistDeepLink("depeche-mode")).toBe("/?scene=artists&artist=depeche-mode");
     expect(venueDeepLink("9-30-club")).toBe("/?scene=venues&venue=9-30-club");
+  });
+});
+
+// #197 — asserted against the shared fixture (test/fixtures/deep-link-urls.json)
+// rather than a hand-written string, so this worker cannot drift from the SPA,
+// the MCP server or the sitemap independently.
+describe("showDeepLink (#197)", () => {
+  it("matches the shared contract fixture", () => {
+    expect(
+      showDeepLink(DEEP_LINKS.setlist.input.slug, DEEP_LINKS.setlist.input.date),
+    ).toBe(DEEP_LINKS.setlist.url);
+  });
+
+  it("is additive — the artist link is a strict prefix", () => {
+    const artist = artistDeepLink(DEEP_LINKS.setlist.input.slug);
+    expect(showDeepLink(DEEP_LINKS.setlist.input.slug, DEEP_LINKS.setlist.input.date)).toContain(artist);
+  });
+
+  it("never emits an id-keyed show param", () => {
+    expect(showDeepLink("adam-ant", "1984-04-27")).not.toMatch(/show=concert-/);
   });
 });

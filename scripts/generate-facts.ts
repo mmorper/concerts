@@ -110,7 +110,25 @@ function createFact(
 /**
  * Generate all facts from concert data
  */
-function generateFacts(concerts: Concert[]): Fact[] {
+
+// A fact about one specific night links to that night when a setlist exists,
+// and to the artist otherwise. Keyed on date, never concert.id — those are
+// row-order artifacts a re-import would renumber. See docs/DEEP_LINKING.md v1.2.
+function showRoute(concert: Concert, setlistConcertIds: Set<string>): string {
+  const artistRoute = `/?scene=artists&artist=${concert.headlinerNormalized}`
+  return setlistConcertIds.has(concert.id)
+    ? `${artistRoute}&show=${concert.date}`
+    : artistRoute
+}
+
+/**
+ * `setlistConcertIds` (#197) — concerts with a setlist on record. Optional and
+ * defaulting to empty, so existing callers and tests keep working. Facts about
+ * one specific night route to that night's setlist when we have one; otherwise
+ * they keep routing to the artist, because a link offered as a setlist that
+ * opens an empty panel is worse than no link.
+ */
+function generateFacts(concerts: Concert[], setlistConcertIds: Set<string> = new Set()): Fact[] {
   const facts: Fact[] = []
 
   // Sort concerts by date for first/last calculations
@@ -240,8 +258,8 @@ function generateFacts(concerts: Concert[]): Fact[] {
       'timeline',
       `First show: ${firstConcert.headliner} (${firstConcert.year})`,
       `Where it all began — ${firstConcert.venue}`,
-      `/?scene=artists&artist=${firstConcert.headlinerNormalized}`,
-      'View artist details',
+      showRoute(firstConcert, setlistConcertIds),
+      setlistConcertIds.has(firstConcert.id) ? 'See the setlist' : 'View artist details',
       5
     )
   )
@@ -315,8 +333,8 @@ function generateFacts(concerts: Concert[]): Fact[] {
       'timeline',
       `Latest: ${latestConcert.headliner} (${latestConcert.year})`,
       `The most recent addition — ${latestConcert.venue}`,
-      `/?scene=artists&artist=${latestConcert.headlinerNormalized}`,
-      'View artist details',
+      showRoute(latestConcert, setlistConcertIds),
+      setlistConcertIds.has(latestConcert.id) ? 'See the setlist' : 'View artist details',
       10
     )
   )
@@ -401,8 +419,22 @@ export async function generateFactsData(): Promise<FactsData> {
   const dataPath = path.join(__dirname, '..', 'public', 'data', 'concerts.json')
   const concertsData: ConcertsData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'))
 
+  // Setlist coverage, so night-scoped facts can link to the night (#197).
+  // Optional — absent on a fresh checkout, in which case those facts keep
+  // routing to the artist.
+  const setlistsPath = path.join(__dirname, '..', 'public', 'data', 'setlists-cache.json')
+  const setlistConcertIds = new Set<string>()
+  if (fs.existsSync(setlistsPath)) {
+    const cache = JSON.parse(fs.readFileSync(setlistsPath, 'utf-8'))
+    for (const entry of cache.entries ?? []) {
+      const sets = entry.setlist?.sets?.set ?? []
+      const hasSongs = sets.some((set: { song?: unknown[] }) => (set.song ?? []).length > 0)
+      if (hasSongs && entry.concertId) setlistConcertIds.add(entry.concertId)
+    }
+  }
+
   // Generate facts
-  const facts = generateFacts(concertsData.concerts)
+  const facts = generateFacts(concertsData.concerts, setlistConcertIds)
 
   // Create output
   const factsData: FactsData = {

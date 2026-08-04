@@ -148,5 +148,16 @@ export function pickPrimaryExhibit(descriptors: Exhibit[]): Exhibit {
 }
 
 // Deep-link builders — mirror docs/DEEP_LINKING.md so the worker and the SPA agree on URL shape.
+// Since #196 that agreement is also machine-checked: test/fixtures/deep-link-urls.json is the
+// shared contract every emitting surface asserts against, rather than trusting this comment.
 export const artistDeepLink = (slug: Slug): string => `/?scene=artists&artist=${slug}`;
 export const venueDeepLink = (slug: Slug): string => `/?scene=venues&venue=${slug}`;
+
+/**
+ * A specific night (#197). Keyed on the concert date — never the concert id, which is a
+ * row-order artifact that a data re-import would renumber, breaking every link already sent.
+ * Additive: this is `artistDeepLink` plus one param, so it degrades to the artist gatefold
+ * if the date no longer resolves.
+ */
+export const showDeepLink = (slug: Slug, date: string): string =>
+  `${artistDeepLink(slug)}&show=${date}`;

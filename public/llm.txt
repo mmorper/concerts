@@ -162,6 +162,14 @@ All entities are deep-linkable via query parameters:
 - Artist: `/?scene=artists&artist={normalized-name}`
   Example: https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode
 
+- Setlist for one night: `/?scene=artists&artist={normalized-name}&show={YYYY-MM-DD}`
+  Example: https://concerts.morperhaus.org/?scene=artists&artist=nile-rodgers&show=2026-07-31
+  Opens the artist's gatefold with that concert's setlist expanded. The date is the
+  concert date and is unique across the archive. Purely additive — an artist link
+  without `show` behaves exactly as before, and an unresolvable date falls back to
+  the artist view. Only ~2/3 of concerts have a setlist on record; the sitemap lists
+  only those.
+
 - Venue (Network): `/?scene=venues&venue={normalized-name}`
   Example: https://concerts.morperhaus.org/?scene=venues&venue=9-30-club
 
