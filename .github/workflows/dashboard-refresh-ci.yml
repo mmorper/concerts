@@ -77,3 +77,9 @@ jobs:
         run: npx wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      # No post-deploy smoke test here, unlike mcp-ci.yml and ask-chat-ci.yml — deliberately.
+      # This Worker is cron-driven with no [[routes]] and no workers.dev, so it has no public
+      # surface to probe, and its `fetch` handler is not a health check: it requires REFRESH_KEY
+      # and rebuilds the whole snapshot (Cloudflare GraphQL + Analytics Engine + GA + a KV write),
+      # i.e. it runs the daily job. Its next scheduled 06:00 UTC run is the real signal.

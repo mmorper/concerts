@@ -88,3 +88,41 @@ jobs:
         run: npx wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      # A successful `wrangler deploy` means "uploaded", not "answers requests" — and the gap
+      # between those two is the entire reason this workflow exists. So assert against the live
+      # URL. This does NOT roll back on failure; the deploy is already applied by this point, so
+      # a red run means go look (`npx wrangler rollback` is the escape hatch).
+      - name: Smoke test the live endpoint
+        run: |
+          set -euo pipefail
+          BASE=https://concerts.morperhaus.org
+
+          # Route changes can take a few seconds to propagate at the edge, so retry rather than
+          # racing the deploy we just made.
+          for i in $(seq 1 10); do
+            body=$(curl -sS --max-time 20 -X POST "$BASE/mcp" \
+              -H 'content-type: application/json' \
+              -H 'accept: application/json, text/event-stream' \
+              -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"ci-smoke","version":"1"}}}' || true)
+            case "$body" in *'"serverInfo"'*) echo "initialize -> ok"; ok=1; break ;; esac
+            echo "attempt $i: no serverInfo yet"
+            sleep 6
+          done
+          if [ "${ok:-}" != 1 ]; then
+            echo "::error::initialize did not return serverInfo"
+            echo "$body"
+            exit 1
+          fi
+
+          # Regression guard for #217. If these ever answer 200 again, the Pages SPA catch-all is
+          # shadowing them, and MCP clients get pushed into an OAuth flow this server does not
+          # implement — which is exactly how Claude Desktop broke on 2026-08-04.
+          for path in /.well-known/oauth-authorization-server /.well-known/oauth-protected-resource/mcp /register; do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$BASE$path")
+            if [ "$code" != 404 ]; then
+              echo "::error::$path returned $code, expected 404"
+              exit 1
+            fi
+            echo "$path -> 404"
+          done

@@ -95,3 +95,20 @@ jobs:
         run: npx wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      # See mcp-ci.yml: "uploaded" is not "answers requests". /api/ask/status is the only safe
+      # probe here — an unauthenticated GET that returns the operator mode. /session needs a
+      # Turnstile token and /chat spends Anthropic credit, so neither belongs in CI.
+      - name: Smoke test the live endpoint
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 10); do
+            body=$(curl -sS --max-time 20 https://concerts.morperhaus.org/api/ask/status || true)
+            case "$body" in *'"mode"'*) echo "status -> $body"; ok=1; break ;; esac
+            echo "attempt $i: $body"
+            sleep 6
+          done
+          if [ "${ok:-}" != 1 ]; then
+            echo "::error::/api/ask/status did not return a mode"
+            exit 1
+          fi
