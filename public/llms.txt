@@ -1,6 +1,6 @@
 # Morperhaus Concert Archives
 
-> A personal archive of 40+ years of live music (1984–present): 183 concerts, 257 artists, 79 venues. An interactive web app with deep-linkable entity pages, a public MCP server, and an in-app "Ask the Archive" chat — all grounded in structured JSON data.
+> A personal archive of 40+ years of live music (1984–present): 184 concerts, 258 artists, 79 venues. An interactive web app with deep-linkable entity pages, a public MCP server, and an in-app "Ask the Archive" chat — all grounded in structured JSON data.
 
 This is ONE person's concert attendance history, not a comprehensive database of all concerts by these artists. Treat "not in the archive" as "not attended," never as "doesn't exist." Every fact is grounded in the data below — venue locations, dates, lineups, setlists (via setlist.fm), and discographies (via MusicBrainz) are authoritative; genre classifications and commentary are personal.
 
@@ -13,7 +13,7 @@ This is ONE person's concert attendance history, not a comprehensive database of
 
 ## Data
 
-- [concerts.json](https://concerts.morperhaus.org/data/concerts.json): 183 concerts with dates, venues, lineups, genres, and geo-coordinates
+- [concerts.json](https://concerts.morperhaus.org/data/concerts.json): 184 concerts with dates, venues, lineups, genres, and geo-coordinates
 - [artists-metadata.json](https://concerts.morperhaus.org/data/artists-metadata.json): Artist metadata and discographies
 - [venues-metadata.json](https://concerts.morperhaus.org/data/venues-metadata.json): Venue locations and details
 - [Sitemap](https://concerts.morperhaus.org/sitemap.xml): Every artist and venue deep-link
