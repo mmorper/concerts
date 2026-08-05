@@ -42,7 +42,7 @@ describe('validate-concerts.ts', () => {
 
     // Mock console
     console.log = vi.fn()
-    console.warn = vi.warn
+    console.warn = vi.fn()
     console.error = vi.fn()
 
     // Mock process.exit to throw so execution stops

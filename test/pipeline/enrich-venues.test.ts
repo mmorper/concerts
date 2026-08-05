@@ -229,7 +229,7 @@ CBGB,New York,NY,closed,2006-10-15,Historic punk venue`
     })
 
     it('handles missing cache entries gracefully', () => {
-      const geocodeCache = {}
+      const geocodeCache: Record<string, unknown> = {}
       const cacheKey = 'nonexistent venue|city|state'
 
       const location = geocodeCache[cacheKey]
@@ -265,8 +265,8 @@ CBGB,New York,NY,closed,2006-10-15,Historic punk venue`
       }
 
       expect(placeDetails).toBeDefined()
-      expect(placeDetails.displayName.text).toBe('The Fillmore')
-      expect(placeDetails.photos).toHaveLength(1)
+      expect(placeDetails!.displayName.text).toBe('The Fillmore')
+      expect(placeDetails!.photos).toHaveLength(1)
     })
 
     it('generates photo URLs with correct sizes', () => {

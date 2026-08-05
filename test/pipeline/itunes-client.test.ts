@@ -60,7 +60,7 @@ describe('iTunesClient', () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
         json: async () => mockResponse,
-      } as Response)
+      } as unknown as Response)
 
       const result = await client.getTopTracks('Thompson Twins', 5)
 
@@ -250,7 +250,7 @@ describe('iTunesClient', () => {
         json: async () => {
           throw new Error('Invalid JSON')
         },
-      } as Response)
+      } as unknown as Response)
 
       const result = await client.getTopTracks('Test Artist', 5)
 

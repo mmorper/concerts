@@ -314,9 +314,10 @@ async function main(options: { forceRefresh?: boolean } = {}) {
 
   if (fs.existsSync(cachePath)) {
     try {
-      existingCache = JSON.parse(fs.readFileSync(cachePath, 'utf-8'))
-      console.log(`📦 Found existing cache with ${existingCache.entries.length} entries`)
-      console.log(`   Cache generated: ${existingCache.generatedAt}`)
+      const parsed = JSON.parse(fs.readFileSync(cachePath, 'utf-8'))
+      existingCache = parsed
+      console.log(`📦 Found existing cache with ${parsed.entries.length} entries`)
+      console.log(`   Cache generated: ${parsed.generatedAt}`)
 
       if (forceRefresh) {
         console.log('   🔄 Force refresh enabled - will re-fetch all setlists')

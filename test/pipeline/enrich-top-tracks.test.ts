@@ -277,7 +277,7 @@ describe('enrich-top-tracks.ts - Helper Functions', () => {
         headers: {
           get: (name: string) => name === 'content-type' ? 'audio/mpeg' : null
         }
-      } as Response)
+      } as unknown as Response)
 
       // Test HEAD request validation
       const response = await fetch('https://audio-ssl.itunes.apple.com/preview.m4a', { method: 'HEAD' })
@@ -308,7 +308,7 @@ describe('enrich-top-tracks.ts - Helper Functions', () => {
         headers: {
           get: () => null
         }
-      } as Response)
+      } as unknown as Response)
 
       const response = await fetch('https://preview.url/track.m4a', { method: 'HEAD' })
       expect(response.ok).toBe(true)
