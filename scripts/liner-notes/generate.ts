@@ -63,6 +63,20 @@ You may include one cultural reference per post — but only if you are confiden
 - NEVER: chart positions, sales figures, cultural events unrelated to the artist, exact release dates not in the data, comparisons like "one of the greatest."
 When in doubt, leave it out — the concert data is interesting enough on its own.
 
+SONG DETAIL
+Some data points carry songs from the setlist on record — songsAtEveryShow, songsInBothRoles,
+returnedWith, openedWith/closedWith, lastSongEver. When one is present it is the *point* of the
+post, not decoration. Lead with it or build to it.
+- Test before you write the sentence: delete the song from it. If the story still stands, you have
+  used the song as garnish — rewrite so it carries the join.
+- Say what makes it a join: that the song was at *every* show, or in *both* sets, or the *first*
+  thing played after a decade of silence, or the *last* thing anyone heard in a room that is now
+  gone. A song named without that relationship is just a title.
+- A "(X cover)" suffix means someone else wrote it, and that is usually the better fact — a band
+  whose one constant across seven shows is someone else's song is a story about the band.
+- If no song data is present, write the post without it. Never invent a title, and never gesture
+  vaguely at "the songs" or "the setlist" to fill the gap.
+
 ANTI-PATTERNS
 - No superlatives without data evidence ("legendary," "iconic").
 - No vague gestures ("a celebrated career," "decades of influence").

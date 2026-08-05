@@ -882,6 +882,38 @@ Full type definitions live in `scripts/liner-notes/types.ts` (pipeline) and `src
 
 ---
 
+## Song Joins (#229)
+
+Until #229 every detector took `concerts: Concert[]` and none had ever opened a setlist — 2,700-odd performances across 159 concerts, entirely unexploited. `scripts/liner-notes/setlists.ts` builds the index and five detectors join against it.
+
+| Detector | The join | Tag |
+| -------- | -------- | --- |
+| `artist-longevity` | the song played at **every** show on record | `#never-left` |
+| `opener-to-headliner` | the song played in **both** roles | `#same-song` |
+| `drought-comeback` | what they opened the **comeback** with | `#first-song-back` |
+| `rare-sighting` | what the **only** night opened and closed with | `#only-setlist` |
+| `venue-ghost` | the **last** song played in a room that's gone | `#last-song` |
+
+`artist-longevity` absorbs `never-left` and `venue-ghost` absorbs `last-song-standing`, both from #228 — two detectors telling one story would spend two rotation slots on it.
+
+### Three rules
+
+**The index is keyed on date + artist, never `concertId`.** Row ids are re-import artifacts; keying on one shipped a duplicate post in #242.
+
+**Tape entries are excluded.** setlist.fm marks PA music, walk-on tracks and video interludes with `tape: true`. Taking the literal last row made `venue-ghost` claim RFK Stadium closed with an AC/DC record played over the fireworks, when the Foo Fighters' last song was *"Best of You"*. Same for the first song back: #229 records New Order returning after 37 years with a Wagner prelude, but that entry is tape — they actually opened with *"Regret"*.
+
+**Song data is a join, never a lone title.** The rule from the issue: delete the song from the sentence, and if the story still stands, the song was garnish. `generate.ts` carries this as an explicit prompt section, because the data points alone don't stop a model naming a title and moving on.
+
+### Degrading silently
+
+A concert without a setlist produces the same finding it always did, minus the song detail — the pipeline never emits a stub sentence or a half-populated data point. Asserted directly: running `analyze()` with and without the index yields identical finding ids and counts.
+
+### Scoring
+
+A finding carrying a song join earns **+2 Data Richness**. Without it the enrichment mostly wouldn't surface: selection publishes each detector's highest-scoring finding, and both `rare-sighting`'s and `venue-ghost`'s champions were findings with no setlist on record — 42 of 68 enriched rare-sightings would have sat behind one that had nothing to say. The bonus only ranks findings against others from the same detector, which is all the score is for.
+
+---
+
 ## Setlist Deep Links
 
 A finding that is about **one specific night** sets `AnalysisFinding.concertDate`, and `buildDeepLinks` turns it into a `?show=` link into that night's setlist (#198):

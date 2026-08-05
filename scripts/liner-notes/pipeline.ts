@@ -19,6 +19,7 @@ import { analyze } from "./analyze.ts";
 import { score } from "./score.ts";
 import { select, buildPosts, POSTS_PER_RUN } from "./curate.ts";
 import { generate } from "./generate.ts";
+import { buildSetlistIndex, type SetlistIndex } from "./setlists.ts";
 import type { PipelineOptions, ScoredFinding } from "./types.ts";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesData, LinerNotesPost } from "../../src/types/liner-notes.ts";
@@ -88,7 +89,10 @@ export async function run(options: PipelineOptions): Promise<void> {
   const venuesMetadata = JSON.parse(
     readFileSync(join(DATA_DIR, "venues-metadata.json"), "utf8")
   );
-  const datesWithSetlists = loadDatesWithSetlists();
+  const setlists = loadSetlistIndex();
+  // Same source, two uses: the detectors join against it, and buildDeepLinks
+  // uses the dates to decide whether a ?show= link would open an empty panel.
+  const datesWithSetlists = new Set([...setlists.keys()].map((k) => k.split("::")[0]));
 
   const dataHash = createHash("sha256")
     .update(concertsRaw)
@@ -102,7 +106,7 @@ export async function run(options: PipelineOptions): Promise<void> {
 
   // ── Stage 1: Analyze ─────────────────────────────────────────────────────
   console.log("\n🔍 Stage 1: Analyzing concert patterns...");
-  const { findings, stats } = analyze(concerts, today, { venuesMetadata, artistsMetadata });
+  const { findings, stats } = analyze(concerts, today, { venuesMetadata, artistsMetadata, setlists });
   console.log(`   Found ${findings.length} raw findings (${stats.concertsAnalyzed} concerts analyzed)`);
   for (const [detector, count] of Object.entries(stats.findingsByDetector)) {
     console.log(`   • ${detector}: ${count}`);
@@ -244,30 +248,22 @@ export async function run(options: PipelineOptions): Promise<void> {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 /**
- * Concert dates with at least one song on record. Used to suppress `?show=`
- * links to nights the setlist panel would open empty. Missing or unreadable
- * cache degrades to an empty set, which suppresses every setlist link rather
- * than emitting ones we can't stand behind.
+ * Setlist index for the detectors and the deep-link gate. Missing or unreadable
+ * cache degrades to an empty index: every detector then behaves exactly as it
+ * did before #229 and simply carries no song detail, and no `?show=` link is
+ * emitted — rather than emitting links we can't stand behind.
  */
-function loadDatesWithSetlists(): Set<string> {
+function loadSetlistIndex(): SetlistIndex {
   const path = join(DATA_DIR, "setlists-cache.json");
   if (!existsSync(path)) {
-    console.warn("   ⚠️  setlists-cache.json missing — setlist deep links suppressed this run");
-    return new Set();
+    console.warn("   ⚠️  setlists-cache.json missing — song joins and setlist links disabled this run");
+    return new Map();
   }
   try {
-    const cache = JSON.parse(readFileSync(path, "utf8"));
-    const dates = new Set<string>();
-    for (const entry of Object.values<any>(cache.entries ?? {})) {
-      const sets = entry?.setlist?.sets?.set;
-      if (!Array.isArray(sets)) continue;
-      const songs = sets.reduce((n: number, s: any) => n + (s.song?.length ?? 0), 0);
-      if (songs > 0 && entry.date) dates.add(entry.date);
-    }
-    return dates;
+    return buildSetlistIndex(JSON.parse(readFileSync(path, "utf8")));
   } catch (err) {
-    console.warn(`   ⚠️  Could not read setlists-cache.json (${(err as Error).message}) — setlist links suppressed`);
-    return new Set();
+    console.warn(`   ⚠️  Could not read setlists-cache.json (${(err as Error).message}) — song joins disabled`);
+    return new Map();
   }
 }
 
