@@ -60,8 +60,31 @@ function statsMatch(a: OGStats, b: OGStats): boolean {
          a.venues === b.venues
 }
 
+/**
+ * Fail in seconds with an actionable message rather than blocking on a
+ * connection that will never arrive.
+ *
+ * Puppeteer launches Chrome fine when nothing is listening on SITE_URL — it is
+ * `page.goto` that stalls. With a terminal that surfaces as
+ * ERR_CONNECTION_REFUSED, but in a sandbox that cannot reach localhost at all
+ * it hangs silently, which cost ~10 minutes during the v5.1.0 release and got
+ * misdiagnosed as "Puppeteer can't launch Chrome" (#216).
+ */
+async function assertSiteReachable(): Promise<void> {
+  try {
+    await fetch(SITE_URL, { signal: AbortSignal.timeout(5000) })
+  } catch {
+    console.error(`❌ Nothing responding at ${SITE_URL}`)
+    console.error('   Run `npm run dev` in another terminal, or point at production:')
+    console.error('   OG_SITE_URL=https://concerts.morperhaus.org npm run og:generate')
+    process.exit(1)
+  }
+}
+
 async function main() {
   console.log('🎨 OG Image Generator\n')
+
+  await assertSiteReachable()
 
   // Read stats directly from data file
   const dataPath = path.join(__dirname, '..', 'public', 'data', 'concerts.json')
