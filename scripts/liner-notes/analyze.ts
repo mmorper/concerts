@@ -47,26 +47,50 @@ function anniversaryDistance(a: Date, b: Date): number {
   return Math.min(diff, 365 - diff);
 }
 
+// Keyed on the full state name as it appears in concert data ("California"),
+// matching the convention CITY_PULSE_EVENTS already documents. This map was
+// originally keyed on postal codes ("CA"), which never matched a single row —
+// every concert resolved to "International" and geographic-chapter emitted one
+// meaningless archive-wide finding. See #232.
 const STATE_REGION: Record<string, string> = {
-  CA: "West Coast", OR: "West Coast", WA: "West Coast",
-  NV: "Mountain West", AZ: "Mountain West", UT: "Mountain West",
-  CO: "Mountain West", ID: "Mountain West", MT: "Mountain West", WY: "Mountain West",
-  IL: "Midwest", OH: "Midwest", MI: "Midwest", IN: "Midwest",
-  WI: "Midwest", MN: "Midwest", IA: "Midwest", MO: "Midwest",
-  KS: "Midwest", NE: "Midwest", SD: "Midwest", ND: "Midwest",
-  TX: "South", LA: "South", MS: "South", AL: "South",
-  GA: "South", FL: "South", SC: "South", NC: "South",
-  TN: "South", AR: "South", OK: "South", VA: "South",
-  WV: "South", KY: "South",
-  NY: "Northeast", NJ: "Northeast", PA: "Northeast", CT: "Northeast",
-  MA: "Northeast", RI: "Northeast", VT: "Northeast", NH: "Northeast",
-  ME: "Northeast", MD: "Northeast", DE: "Northeast", DC: "Northeast",
-  NM: "Southwest", HI: "Pacific", AK: "Pacific",
+  "california": "West Coast", "oregon": "West Coast", "washington": "West Coast",
+  "nevada": "Mountain West", "arizona": "Mountain West", "utah": "Mountain West",
+  "colorado": "Mountain West", "idaho": "Mountain West", "montana": "Mountain West",
+  "wyoming": "Mountain West",
+  "illinois": "Midwest", "ohio": "Midwest", "michigan": "Midwest", "indiana": "Midwest",
+  "wisconsin": "Midwest", "minnesota": "Midwest", "iowa": "Midwest", "missouri": "Midwest",
+  "kansas": "Midwest", "nebraska": "Midwest", "south dakota": "Midwest", "north dakota": "Midwest",
+  "texas": "South", "louisiana": "South", "mississippi": "South", "alabama": "South",
+  "georgia": "South", "florida": "South", "south carolina": "South", "north carolina": "South",
+  "tennessee": "South", "arkansas": "South", "oklahoma": "South", "virginia": "South",
+  "west virginia": "South", "kentucky": "South",
+  "new york": "Northeast", "new jersey": "Northeast", "pennsylvania": "Northeast",
+  "connecticut": "Northeast", "massachusetts": "Northeast", "rhode island": "Northeast",
+  "vermont": "Northeast", "new hampshire": "Northeast", "maine": "Northeast",
+  "maryland": "Northeast", "delaware": "Northeast", "district of columbia": "Northeast",
+  "new mexico": "Southwest", "hawaii": "Pacific", "alaska": "Pacific",
 };
 
-function regionOf(state: string): string {
-  return STATE_REGION[state?.toUpperCase()] ?? "International";
+/**
+ * US region for a concert's state. Non-US states ("Mexico", "UK") correctly
+ * fall through to "International".
+ *
+ * The fallback warns rather than passing silently: an unmapped US state looks
+ * exactly like a foreign one to this function, and that indistinguishability is
+ * what let #232 publish wrong prose for six months.
+ */
+export function regionOf(state: string): string {
+  const key = state?.trim().toLowerCase();
+  const region = STATE_REGION[key];
+  if (region) return region;
+  if (key && !KNOWN_NON_US.has(key)) {
+    console.warn(`[analyze] regionOf: unmapped state "${state}" → International. Add it to STATE_REGION if it's a US state.`);
+  }
+  return "International";
 }
+
+/** States known to be outside the US — these are expected to be "International". */
+export const KNOWN_NON_US = new Set(["mexico", "uk"]);
 
 // ── Filter: past concerts only ────────────────────────────────────────────────
 
