@@ -1,3 +1,4 @@
+import type { ArtistAliasData } from "./aliases.js";
 import type {
   ArtistsMetadata,
   ArtistsTopTracks,
@@ -79,6 +80,13 @@ export function getConcerts(
   ctx: ExecutionContext,
 ): Promise<ConcertData | null> {
   return cachedJsonFetch<ConcertData>(dataUrl(env, "concerts.json"), ctx);
+}
+
+export function getArtistAliases(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<ArtistAliasData | null> {
+  return cachedJsonFetch<ArtistAliasData>(dataUrl(env, "artist-aliases.json"), ctx);
 }
 
 export function getFacts(

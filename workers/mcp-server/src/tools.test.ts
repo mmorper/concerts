@@ -1,3 +1,4 @@
+import { buildAliasIndex } from "./aliases.js";
 import { describe, it, expect } from "vitest";
 import {
   archiveInfo,
@@ -239,7 +240,7 @@ describe("get_artist_history", () => {
 
   it("narrows to the family match when one name contains the others", () => {
     const r = resolveArtist(archive(), "Peter Hook");
-    expect(r).toEqual({ kind: "match", name: "Peter Hook and the Light", slug: "peter-hook-and-the-light" });
+    expect(r).toEqual({ kind: "match", name: "Peter Hook and the Light", slug: "peter-hook-and-the-light", slugs: ["peter-hook-and-the-light"] });
   });
 });
 
@@ -262,6 +263,7 @@ describe("openers count as artists (#219)", () => {
       kind: "match",
       name: "Romeo Void",
       slug: "romeo-void",
+      slugs: ["romeo-void"],
     });
   });
 
@@ -294,6 +296,7 @@ describe("openers count as artists (#219)", () => {
       kind: "match",
       name: "The Bangles",
       slug: "the-bangles",
+      slugs: ["the-bangles"],
     });
   });
 
@@ -318,6 +321,7 @@ describe("openers count as artists (#219)", () => {
       kind: "match",
       name: "The Psychedelic Furs",
       slug: "the-psychedelic-furs",
+      slugs: ["the-psychedelic-furs"],
     });
     expect(resolveArtist(archive(), "peter-hook-and-the-light")).toMatchObject({
       slug: "peter-hook-and-the-light",
@@ -329,6 +333,7 @@ describe("openers count as artists (#219)", () => {
       kind: "match",
       name: "The Bangles",
       slug: "the-bangles",
+      slugs: ["the-bangles"],
     });
   });
 
@@ -738,5 +743,70 @@ describe("get_archive_top_songs", () => {
 
   it("null data says so honestly", () => {
     expect(archiveTopSongs(null)).toContain("don't have enough setlists on record yet");
+  });
+});
+
+describe("artist billing aliases (#227)", () => {
+  // Four marquees, eight shows, one man — the archive's real Setzer situation.
+  const setzerArchive = (): Concert[] => [
+    mk("1995-12-15", "The Brian Setzer Orchestra", "The Wiltern"),
+    mk("1998-08-08", "The Brian Setzer Orchestra", "The Greek Theatre"),
+    mk("2000-06-10", "Brian Setzer '68 Comeback Special", "House of Blues"),
+    mk("2009-04-04", "Brian Setzer and the Nashvillians", "The Canyon"),
+    mk("2024-02-27", "Brian Setzer", "The Wiltern"),
+  ];
+
+  const aliases = buildAliasIndex({
+    sameAct: [
+      {
+        canonical: "brian-setzer",
+        name: "Brian Setzer",
+        billings: [
+          "brian-setzer",
+          "the-brian-setzer-orchestra",
+          "brian-setzer-and-the-nashvillians",
+          "brian-setzer-68-comeback-special",
+        ],
+      },
+    ],
+  });
+
+  it("without the map, an exact name match answers for one billing only", () => {
+    // The bug: "I've seen Brian Setzer 1 time" against an archive holding five.
+    const r = resolveArtist(setzerArchive(), "Brian Setzer");
+    expect(r).toMatchObject({ kind: "match", slug: "brian-setzer" });
+    if (r.kind !== "match") throw new Error("unreachable");
+    expect(r.slugs).toEqual(["brian-setzer"]);
+  });
+
+  it("resolves any billing to the canonical act", () => {
+    for (const q of [
+      "The Brian Setzer Orchestra",
+      "Brian Setzer '68 Comeback Special",
+      "brian-setzer-and-the-nashvillians",
+    ]) {
+      const r = resolveArtist(setzerArchive(), q, aliases);
+      expect(r, q).toMatchObject({ kind: "match", slug: "brian-setzer", name: "Brian Setzer" });
+    }
+  });
+
+  it("counts every billing as the same artist's history", () => {
+    const text = artistHistory(setzerArchive(), "Brian Setzer", {}, {}, null, aliases);
+    expect(text).toContain("5 times");
+    expect(text).toContain("1995");
+    expect(text).toContain("2024");
+  });
+
+  it("leaves unmapped artists exactly as they were", () => {
+    const r = resolveArtist(openerArchive(), "Romeo Void", aliases);
+    expect(r).toMatchObject({ kind: "match", slug: "romeo-void" });
+    if (r.kind !== "match") throw new Error("unreachable");
+    expect(r.slugs).toEqual(["romeo-void"]);
+  });
+
+  it("degrades to today's behaviour when the map is unavailable", () => {
+    const empty = buildAliasIndex(null);
+    const text = artistHistory(setzerArchive(), "Brian Setzer", {}, {}, null, empty);
+    expect(text).toContain("1 time");
   });
 });

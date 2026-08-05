@@ -8,7 +8,7 @@ import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { format } from 'date-fns'
 import type { LinerNotesPost, LinerNotesData } from '../../types/liner-notes'
-import { CATEGORY_ACCENT_COLORS, CATEGORY_LABELS } from './constants'
+import { CATEGORY_ACCENT_COLORS, CATEGORY_LABELS, handleImageError } from './constants'
 import { LinerNoteMiniPlayer } from './LinerNoteMiniPlayer'
 import { PageNav } from './PageNav'
 
@@ -168,6 +168,7 @@ export function LinerNotePermalink() {
               <img
                 src={post.image.url}
                 alt={post.image.alt}
+                onError={handleImageError}
                 className="flex-shrink-0"
                 style={{
                   width: 160,
@@ -239,6 +240,7 @@ export function LinerNotePermalink() {
                         <img
                           src={rel.image.url}
                           alt={rel.image.alt}
+                          onError={handleImageError}
                           className="flex-shrink-0 rounded-lg"
                           style={{ width: 64, height: 64, objectFit: 'cover' }}
                         />

@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import type { ChangelogToastProps } from './types'
 import { TOAST } from './constants'
+import { handleImageError } from '../liner-notes/constants'
 
 export function ChangelogToast({
   isVisible,
@@ -86,6 +87,7 @@ export function ChangelogToast({
                 <img
                   src={latestPost.image.url}
                   alt={latestPost.image.alt}
+                  onError={handleImageError}
                   className="rounded-md object-cover flex-shrink-0"
                   style={{ width: 40, height: 40 }}
                 />

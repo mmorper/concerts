@@ -61,11 +61,13 @@
     "generate:rss": "tsx scripts/generate-rss.ts",
     "generate:liner-notes-rss": "tsx scripts/generate-liner-notes-rss.ts",
     "generate:liner-notes": "tsx scripts/liner-notes/index.ts",
+    "refresh:liner-note-images": "tsx scripts/refresh-liner-note-images.ts",
     "generate:narrations": "tsx scripts/generate-narrations.ts",
     "deploy:worker": "cd workers/meta-injector && npx wrangler deploy",
     "deploy:mcp-server": "cd workers/mcp-server && npx wrangler deploy",
     "typecheck:scripts": "tsc --noEmit -p tsconfig.scripts.json",
-    "typecheck:all": "npm run typecheck && npm run typecheck:scripts"
+    "typecheck:all": "npm run typecheck && npm run typecheck:scripts",
+    "sync:aliases": "tsx scripts/sync-artist-aliases.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

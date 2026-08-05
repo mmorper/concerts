@@ -247,6 +247,13 @@ async function buildData() {
     await writeFacts()
     console.log()
 
+    // Step 10b: Publish the artist alias map (always runs — cheap, and keeps
+    // public/data in step with the hand-maintained source, #227)
+    if (!dryRun) {
+      const { syncArtistAliases } = await import('./sync-artist-aliases.ts')
+      syncArtistAliases()
+    }
+
     // Step 11: Update meta tags and SEO files (always runs)
     if (!dryRun) {
       currentStep++

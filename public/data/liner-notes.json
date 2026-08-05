@@ -12,7 +12,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/art-of-noise-50dfd27c82328.jpg",
         "alt": "Art of Noise",
-        "source": "artist"
+        "source": "artist",
+        "ref": "the-art-of-noise"
       },
       "audio": {
         "trackName": "Moments In Love",
@@ -76,7 +77,8 @@
       "image": {
         "url": "https://lh3.googleusercontent.com/place-photos/AJRVUZMmx3IWoqc_Cu5NAy1MrGlLBSOCuYvQq8YNqXQS969l4hSjaJtOkRCl5c1iZVu1YX1D5d4-gyTu3_ojq-MIN6l6G9Cm5keLfmlScA1iSAdQCmjcRTb2jpmKxnZcn2-d1r0lHpjdE-zGEmyfTA=s4800-h1200",
         "alt": "Pacific Amphitheatre",
-        "source": "venue"
+        "source": "venue",
+        "ref": "pacific-amphitheatre"
       },
       "audio": {
         "trackName": "Everybody Wants to Rule the World",
@@ -172,7 +174,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/rvqysx1385325837.jpg",
         "alt": "The Beach Boys",
-        "source": "artist"
+        "source": "artist",
+        "ref": "beach-boys"
       },
       "audio": {
         "trackName": "Surfin' U.S.A.",
@@ -228,9 +231,10 @@
       "headline": "House of Blues Anaheim: 6 Shows Over 3 Decades",
       "prose": "I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who'd been making records since before I probably knew what a record was. Six shows across three decades at that same room, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AJRVUZPCITI_BHZUk8bj7rKgVnp0AlQa8ObkB9wRMGUmFLBL7EKfVSR8ow0_RTgJGiiaSH1NWYcXvG4UQIVKDuuKP-dyZ69DI4L0A9e0rjt0AyoBXl9AajsvI18qSPpwoFIgIXFzapYDWx-hU6EfeX8=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjBkAvy5J97RTMkxf1VygT13-0kug7D17lhlfTeVJCQCiCD4v8SYpWubtVNGRmhFy80k7_HhrFcvW3Wlxg7RUYryJFLLweoOMevmQZ-saEu6YQQRHc4GbNeJf7Lx99x4wo_nM4FCdtLdu1d0Wk0=s4800-h1200",
         "alt": "House of Blues Anaheim",
-        "source": "venue"
+        "source": "venue",
+        "ref": "house-of-blues-anaheim"
       },
       "audio": {
         "trackName": "Steppin' Out",
@@ -306,7 +310,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/marley-ziggy-508440fb16be3.jpg",
         "alt": "Ziggy Marley",
-        "source": "artist"
+        "source": "artist",
+        "ref": "ziggy-marley"
       },
       "audio": {
         "trackName": "Beach In Hawaii",
@@ -365,7 +370,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/tspqvv1366946673.jpg",
         "alt": "Jimmy Buffett",
-        "source": "artist"
+        "source": "artist",
+        "ref": "jimmy-buffett"
       },
       "audio": {
         "trackName": "Margaritaville",
@@ -429,7 +435,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/vxvvtr1348513703.jpg",
         "alt": "No Doubt",
-        "source": "artist"
+        "source": "artist",
+        "ref": "no-doubt"
       },
       "audio": {
         "trackName": "Just a Girl",
@@ -488,7 +495,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wwswpy1366731211.jpg",
         "alt": "Garbage",
-        "source": "artist"
+        "source": "artist",
+        "ref": "garbage"
       },
       "audio": {
         "trackName": "Only Happy When It Rains",
@@ -551,7 +559,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wvrqqx1341250863.jpg",
         "alt": "Run-D.M.C.",
-        "source": "artist"
+        "source": "artist",
+        "ref": "run-dmc"
       },
       "audio": {
         "trackName": "It's Tricky",
@@ -609,7 +618,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wuprus1340023845.jpg",
         "alt": "Sting",
-        "source": "artist"
+        "source": "artist",
+        "ref": "sting"
       },
       "audio": {
         "trackName": "Desert Rose",
@@ -667,7 +677,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/rvqpuy1348109917.jpg",
         "alt": "Siouxsie and the Banshees",
-        "source": "artist"
+        "source": "artist",
+        "ref": "siouxsie-and-the-banshees"
       },
       "audio": {
         "trackName": "Cities In Dust",
@@ -731,7 +742,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/blancmange-51c457e3276c1.jpg",
         "alt": "Blancmange",
-        "source": "artist"
+        "source": "artist",
+        "ref": "blancmange"
       },
       "audio": {
         "trackName": "Don't Tell Me",
@@ -790,7 +802,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wswstt1388681264.jpg",
         "alt": "The Alarm",
-        "source": "artist"
+        "source": "artist",
+        "ref": "the-alarm"
       },
       "audio": {
         "trackName": "Strength",
@@ -854,7 +867,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg",
         "alt": "The Brian Setzer Orchestra",
-        "source": "artist"
+        "source": "artist",
+        "ref": "the-brian-setzer-orchestra"
       },
       "audio": {
         "trackName": "Jump, Jive an' Wail",
@@ -922,9 +936,10 @@
       "headline": "March 22: 13 Years Since Bad Religion",
       "prose": "I remember walking into the 9:30 Club that March night in 2013, thirteen years ago now, and feeling like I was stepping into punk rock church. Bad Religion delivered their signature blend of melody and fury to a packed room, with Against Me!, The Bronx, and Polar Bear Club warming up the crowd beforehand. The whole evening felt like a masterclass in how punk has evolved since Bad Religion formed back in 1979, yet Greg Graffin's voice cut through the years like nothing had changed. Sometimes the best shows are the ones that remind you why you fell in love with live music in the first place.",
       "image": {
-        "url": "https://www.theaudiodb.com/images/media/artist/thumb/yuswct1767893982.jpg",
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/yuswct1767893982.jpg",
         "alt": "Bad Religion",
-        "source": "artist"
+        "source": "artist",
+        "ref": "bad-religion"
       },
       "audio": {
         "trackName": "Bad Religion",
@@ -988,7 +1003,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/blancmange-51c457e3276c1.jpg",
         "alt": "Blancmange",
-        "source": "artist"
+        "source": "artist",
+        "ref": "blancmange"
       },
       "audio": {
         "trackName": "Living On The Ceiling",
@@ -1047,7 +1063,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
         "alt": "Social Distortion",
-        "source": "artist"
+        "source": "artist",
+        "ref": "social-distortion"
       },
       "audio": {
         "trackName": "Ball and Chain",
@@ -1111,7 +1128,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/yusuxr1341941676.jpg",
         "alt": "Tears for Fears",
-        "source": "artist"
+        "source": "artist",
+        "ref": "tears-for-fears"
       },
       "audio": {
         "trackName": "Everybody Wants to Rule the World",
@@ -1180,7 +1198,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/xpytqt1342444014.jpg",
         "alt": "Erasure",
-        "source": "artist"
+        "source": "artist",
+        "ref": "erasure"
       },
       "audio": {
         "trackName": "A Little Respect",
@@ -1244,7 +1263,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wswstt1388681264.jpg",
         "alt": "The Alarm",
-        "source": "artist"
+        "source": "artist",
+        "ref": "the-alarm"
       },
       "audio": {
         "trackName": "Strength",
@@ -1308,7 +1328,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/22zdag1638977527.jpg",
         "alt": "Echo & The Bunnymen",
-        "source": "artist"
+        "source": "artist",
+        "ref": "echo-and-the-bunnymen"
       },
       "audio": {
         "trackName": "Lips Like Sugar",
@@ -1374,7 +1395,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/vxvvtr1348513703.jpg",
         "alt": "No Doubt",
-        "source": "artist"
+        "source": "artist",
+        "ref": "no-doubt"
       },
       "audio": {
         "trackName": "Don't Speak",
@@ -1433,7 +1455,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/pj57t31658769167.jpg",
         "alt": "Bruce Springsteen",
-        "source": "artist"
+        "source": "artist",
+        "ref": "bruce-springsteen"
       },
       "audio": {
         "trackName": "I'm On Fire",
@@ -1497,7 +1520,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/tsysvw1341332686.jpg",
         "alt": "UB40",
-        "source": "artist"
+        "source": "artist",
+        "ref": "ub40"
       },
       "audio": {
         "trackName": "Red Red Wine (12'' Version)",
@@ -1562,7 +1586,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg",
         "alt": "The Brian Setzer Orchestra",
-        "source": "artist"
+        "source": "artist",
+        "ref": "the-brian-setzer-orchestra"
       },
       "audio": {
         "trackName": "Jump, Jive an' Wail",
@@ -1630,7 +1655,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg",
         "alt": "The Brian Setzer Orchestra",
-        "source": "artist"
+        "source": "artist",
+        "ref": "the-brian-setzer-orchestra"
       },
       "audio": {
         "trackName": "Jump, Jive an' Wail",
@@ -1689,7 +1715,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
         "alt": "Social Distortion",
-        "source": "artist"
+        "source": "artist",
+        "ref": "social-distortion"
       },
       "audio": {
         "trackName": "Ball and Chain",
@@ -1777,7 +1804,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg",
         "alt": "Depeche Mode",
-        "source": "artist"
+        "source": "artist",
+        "ref": "depeche-mode"
       },
       "audio": {
         "trackName": "Universal Soldier",
@@ -1849,7 +1877,8 @@
       "image": {
         "url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b4/30/b7/b430b70f-1cc8-b120-1217-6ada0096fe7a/5037300817439.jpg/600x600bb.jpg",
         "alt": "Action Replay",
-        "source": "album"
+        "source": "album",
+        "ref": "howard-jones"
       },
       "audio": {
         "trackName": "No One Is To Blame",
@@ -1925,7 +1954,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wwwwtv1455324256.jpg",
         "alt": "The Cure",
-        "source": "artist"
+        "source": "artist",
+        "ref": "the-cure"
       },
       "audio": {
         "trackName": "Just Like Heaven",
@@ -2012,7 +2042,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/jones-howard-50fbc0fcc99a1.jpg",
         "alt": "Howard Jones",
-        "source": "artist"
+        "source": "artist",
+        "ref": "howard-jones"
       },
       "audio": {
         "trackName": "No One Is To Blame",
@@ -2086,7 +2117,8 @@
       "image": {
         "url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/de/b4/09deb44c-e956-6d43-e4cf-840784faf7d7/mzi.ogdifckc.jpg/600x600bb.jpg",
         "alt": "The Essential Adam Ant",
-        "source": "album"
+        "source": "album",
+        "ref": "adam-ant"
       },
       "audio": {
         "trackName": "Goody Two Shoes",
@@ -2182,7 +2214,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/xwtsqv1386887602.jpg",
         "alt": "Peter Gabriel",
-        "source": "artist"
+        "source": "artist",
+        "ref": "peter-gabriel"
       },
       "audio": {
         "trackName": "In Your Eyes",
@@ -2267,7 +2300,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/new-order-4fd5f3e934e45.jpg",
         "alt": "New Order",
-        "source": "artist"
+        "source": "artist",
+        "ref": "new-order"
       },
       "audio": {
         "trackName": "Bizarre Love Triangle",
@@ -2333,7 +2367,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qprtqv1342815862.jpg",
         "alt": "Billy Idol",
-        "source": "artist"
+        "source": "artist",
+        "ref": "billy-idol"
       },
       "audio": {
         "trackName": "Rebel Yell",
@@ -2397,7 +2432,8 @@
       "image": {
         "url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/de/b4/09deb44c-e956-6d43-e4cf-840784faf7d7/mzi.ogdifckc.jpg/600x600bb.jpg",
         "alt": "The Essential Adam Ant",
-        "source": "album"
+        "source": "album",
+        "ref": "adam-ant"
       },
       "audio": {
         "trackName": "Hold Me Now",
@@ -2474,7 +2510,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/73oxf41638977308.jpg",
         "alt": "Duran Duran",
-        "source": "artist"
+        "source": "artist",
+        "ref": "duran-duran"
       },
       "audio": {
         "trackName": "Come Undone",
@@ -2542,7 +2579,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/8nyeap1666438385.jpg",
         "alt": "Stryper",
-        "source": "artist"
+        "source": "artist",
+        "ref": "stryper"
       },
       "audio": {
         "trackName": "Honestly",
@@ -2601,7 +2639,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wysuyt1345666474.jpg",
         "alt": "The Human League",
-        "source": "artist"
+        "source": "artist",
+        "ref": "the-human-league"
       },
       "audio": {
         "trackName": "Human",
@@ -2683,7 +2722,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qswpwx1377465655.jpg",
         "alt": "The Smithereens",
-        "source": "artist"
+        "source": "artist",
+        "ref": "the-smithereens"
       },
       "audio": {
         "trackName": "A Girl Like You",
@@ -2751,7 +2791,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/xuwupw1439139539.jpg",
         "alt": "Wham!",
-        "source": "artist"
+        "source": "artist",
+        "ref": "wham"
       },
       "audio": {
         "trackName": "Everything She Wants",
@@ -2815,7 +2856,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/vuvqxr1352453964.jpg",
         "alt": "Foo Fighters",
-        "source": "artist"
+        "source": "artist",
+        "ref": "foo-fighters"
       },
       "audio": {
         "trackName": "Everlong",
@@ -2897,7 +2939,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg",
         "alt": "Depeche Mode",
-        "source": "artist"
+        "source": "artist",
+        "ref": "depeche-mode"
       },
       "audio": {
         "trackName": "Universal Soldier",
@@ -2968,7 +3011,8 @@
       "image": {
         "url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/fe/4d/38/fe4d3834-b114-f4fd-3e06-f01457c1ddfc/00077779119455.jpg/600x600bb.jpg",
         "alt": "11",
-        "source": "album"
+        "source": "album",
+        "ref": "the-smithereens"
       },
       "audio": {
         "trackName": "A Girl Like You",
@@ -3027,7 +3071,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/jones-howard-50fbc0fcc99a1.jpg",
         "alt": "Howard Jones",
-        "source": "artist"
+        "source": "artist",
+        "ref": "howard-jones"
       },
       "audio": {
         "trackName": "No One Is To Blame",
@@ -3101,7 +3146,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/xtvyvp1364378396.jpg",
         "alt": "Maxi Priest",
-        "source": "artist"
+        "source": "artist",
+        "ref": "maxi-priest"
       },
       "audio": {
         "trackName": "Close To You",
@@ -3175,7 +3221,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
         "alt": "Social Distortion",
-        "source": "artist"
+        "source": "artist",
+        "ref": "social-distortion"
       },
       "audio": {
         "trackName": "Ball and Chain",
@@ -3252,7 +3299,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/oingo-boingo-4ff3036de887f.jpg",
         "alt": "Oingo Boingo",
-        "source": "artist"
+        "source": "artist",
+        "ref": "oingo-boingo"
       },
       "audio": {
         "trackName": "Dead Man's Party",
@@ -3331,7 +3379,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/ywuyqr1348102507.jpg",
         "alt": "Crowded House",
-        "source": "artist"
+        "source": "artist",
+        "ref": "crowded-house"
       },
       "audio": {
         "trackName": "Don't Dream It's Over",
@@ -3397,7 +3446,8 @@
       "image": {
         "url": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/be/5b/14/be5b14fc-5480-81cc-53a1-59f98f185f2b/06UMGIM03141.rgb.jpg/600x600bb.jpg",
         "alt": "Dead Man's Party",
-        "source": "album"
+        "source": "album",
+        "ref": "oingo-boingo"
       },
       "audio": {
         "trackName": "Dead Man's Party",
@@ -3532,7 +3582,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/stywtv1376542198.jpg",
         "alt": "Squeeze",
-        "source": "artist"
+        "source": "artist",
+        "ref": "squeeze"
       },
       "audio": {
         "trackName": "What More Can I Say",
@@ -3595,7 +3646,8 @@
       "image": {
         "url": "https://r2.theaudiodb.com/images/media/artist/thumb/yusuxr1341941676.jpg",
         "alt": "Tears for Fears",
-        "source": "artist"
+        "source": "artist",
+        "ref": "tears-for-fears"
       },
       "audio": {
         "trackName": "Everybody Wants to Rule the World",
@@ -3664,7 +3716,8 @@
       "image": {
         "url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b4/30/b7/b430b70f-1cc8-b120-1217-6ada0096fe7a/5037300817439.jpg/600x600bb.jpg",
         "alt": "Action Replay",
-        "source": "album"
+        "source": "album",
+        "ref": "howard-jones"
       },
       "audio": {
         "trackName": "No One Is To Blame",
@@ -3739,7 +3792,8 @@
       "image": {
         "url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/de/b4/09deb44c-e956-6d43-e4cf-840784faf7d7/mzi.ogdifckc.jpg/600x600bb.jpg",
         "alt": "The Essential Adam Ant",
-        "source": "album"
+        "source": "album",
+        "ref": "adam-ant"
       },
       "audio": {
         "trackName": "Goody Two Shoes",
@@ -3833,9 +3887,10 @@
       "headline": "Kia Forum: 5 Shows Over 3 Decades",
       "prose": "I remember walking into the Forum for the first time in 1990 to see Erasure, that massive bowl of a venue feeling both intimate and overwhelming at 19 years old. Five shows across 33 years have brought me back to Inglewood — from Bell Biv DeVoe's New Jack Swing energy to Elton John's piano grandeur to Tears for Fears' nostalgic pull. My most recent visit was Depeche Mode in 2023, and I realized I've been loyal to this place longer than some of my friendships. There's something about the Forum's acoustics that makes every synthesizer sound like it's coming from the future.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/places/ANXAkqFrsAsDXMteTIY6ga--SEOpQNdLlWVhrMzMDgyAPVywfxwUIzDPx1iaaiF2CHdSUi6HJIgpZHScndEzxqy5yhZIqvtMoUUBjec=s4800-h800",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjAvrNMwUfAmE5RV_5b4OEUahEnIDOSOk2nn35t_KHCaYaas4dO-iDXbUOnVWKQAMiHS8LE-6-oR8ZH3Q3yXZokQdaclNUgYeFH75febwQ__rNfQSEoA0h2uHYIWYDXlk_KezRzZxIBEZTTDAbM=s4800-h1200",
         "alt": "Kia Forum",
-        "source": "venue"
+        "source": "venue",
+        "ref": "kia-forum"
       },
       "audio": {
         "trackName": "A Little Respect",

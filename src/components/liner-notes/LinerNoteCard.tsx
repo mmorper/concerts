@@ -9,7 +9,7 @@ import { motion } from 'framer-motion'
 import { format } from 'date-fns'
 import { Link2, Check } from 'lucide-react'
 import type { LinerNotesPost, DeepLink } from '../../types/liner-notes'
-import { CATEGORY_ACCENT_COLORS, CATEGORY_LABELS } from './constants'
+import { CATEGORY_ACCENT_COLORS, CATEGORY_LABELS, handleImageError } from './constants'
 import { LinerNoteMiniPlayer } from './LinerNoteMiniPlayer'
 import { useShareLink } from '../../hooks/useShareLink'
 import { absoluteUrl } from '../../utils/deepLinks'
@@ -214,6 +214,7 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
             <img
               src={post.image.url}
               alt={post.image.alt}
+              onError={handleImageError}
               style={{
                 width: 160,
                 height: 160,
