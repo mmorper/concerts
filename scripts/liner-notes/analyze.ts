@@ -13,11 +13,14 @@ import type { AnalysisFinding, ContentCategory, DetectorName } from "./types.ts"
 import {
   EMPTY_ALIAS_MAP,
   canonicalOf,
+  displayNameOf,
+  relatedActs,
   sharedMemberOf,
   type AliasMap,
 } from "./artist-aliases.ts";
 import {
   describeSong,
+  guestAppearances,
   songsAtEveryShow,
   songsFor,
   songsInCommon,
@@ -31,6 +34,23 @@ function slugify(text: string): string {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
+}
+
+/**
+ * Display names for everyone who appears on a bill, openers included. The
+ * concert record only names the headliner, and a slug is not presentable —
+ * detectors that surface openers or setlist guests need this or they print
+ * "pennywise" at the reader.
+ */
+function buildDisplayNames(concerts: Concert[]): (slug: string) => string {
+  const names = new Map<string, string>();
+  for (const concert of concerts) {
+    names.set(concert.headlinerNormalized, concert.headliner);
+    for (const opener of concert.openers) {
+      if (!names.has(slugify(opener))) names.set(slugify(opener), opener);
+    }
+  }
+  return (slug: string) => names.get(slug) ?? slug;
 }
 
 function spanYears(dateA: string, dateB: string): number {
@@ -1437,6 +1457,7 @@ export function analyze(
     ...detectAlbumContext(past),
     ...detectGenreOutlier(past, options.artistsMetadata ?? {}),
     ...detectFullCircle(past, options.setlists, options.aliases),
+    ...detectGuestBridge(past, options.setlists, options.aliases),
   ];
 
   const findingsByDetector: Record<string, number> = {};
@@ -1503,16 +1524,7 @@ function detectFullCircle(
     original?: string;
   }
 
-  // Display names for everyone on a bill, headliners and openers alike — the
-  // slug is not presentable and the concert record only names the headliner.
-  const displayNames = new Map<string, string>();
-  for (const concert of concerts) {
-    displayNames.set(concert.headlinerNormalized, concert.headliner);
-    for (const opener of concert.openers) {
-      if (!displayNames.has(slugify(opener))) displayNames.set(slugify(opener), opener);
-    }
-  }
-  const nameOf = (slug: string) => displayNames.get(slug) ?? slug;
+  const nameOf = buildDisplayNames(concerts);
 
   const performances: Performance[] = [];
   for (const concert of concerts) {
@@ -1605,6 +1617,119 @@ function detectFullCircle(
       years: [...new Set([original.concert.year, cover.concert.year])],
       suggestedImage: { type: "artist", artistNormalized: cover.by },
       suggestedTrack: { artistNormalized: cover.by },
+      tags,
+    });
+  }
+
+  return findings;
+}
+
+// ── 17. Guest Bridge Detector ────────────────────────────────────────────────
+
+/**
+ * Someone walked on stage during another act's set — and you also saw them
+ * perform in their own right (#228).
+ *
+ * The "in their own right" half is the entire detector. Gorillaz alone account
+ * for 10 of the 27 guest walk-ons in the corpus; they are a guest-heavy act by
+ * design, and without the join this becomes The Gorillaz Show. With it, the
+ * Gorillaz guests who are strangers to the archive drop out on their own and no
+ * special-casing is needed.
+ *
+ * Alias-aware (#227), and that is not a nicety: three of the eight bridges exist
+ * only because the map links a guest to an act billed under another name — Terri
+ * Nunn to Berlin, Gwen Stefani to No Doubt, Brian Baker to Bad Religion. Without
+ * it the detector has five findings instead of eight.
+ */
+function detectGuestBridge(
+  concerts: Concert[],
+  setlists?: SetlistIndex,
+  aliases: AliasMap = EMPTY_ALIAS_MAP
+): AnalysisFinding[] {
+  if (!setlists) return [];
+
+  // Everyone who performed under their own billing, and when.
+  const ownShows = new Map<string, Concert[]>();
+  for (const concert of concerts) {
+    for (const slug of [concert.headlinerNormalized, ...concert.openers.map(slugify)]) {
+      const act = canonicalOf(aliases, slug);
+      if (!ownShows.has(act)) ownShows.set(act, []);
+      ownShows.get(act)!.push(concert);
+    }
+  }
+
+  const byDate = new Map(concerts.map((c) => [c.date, c]));
+  const nameOf = buildDisplayNames(concerts);
+  const findings: AnalysisFinding[] = [];
+  const seen = new Set<string>();
+
+  for (const appearance of guestAppearances(setlists)) {
+    const guestAct = canonicalOf(aliases, appearance.guest);
+    const hostAct = canonicalOf(aliases, appearance.host);
+
+    // Walking on with your own act is not a bridge.
+    if (guestAct === hostAct) continue;
+
+    // The act they front, when the guest is a person billed under a band name.
+    const candidates = [guestAct, ...relatedActs(aliases, appearance.guest)];
+    const ownAct = candidates.find((act) => ownShows.has(act) && act !== hostAct);
+    if (!ownAct) continue;
+
+    const guestNight = byDate.get(appearance.date);
+    if (!guestNight) continue;
+
+    // Their own shows, and how far the nearest sits from the walk-on.
+    const own = [...ownShows.get(ownAct)!].sort((a, b) => a.date.localeCompare(b.date));
+    const nearest = own.reduce((best, show) =>
+      Math.abs(Date.parse(show.date) - Date.parse(appearance.date)) <
+      Math.abs(Date.parse(best.date) - Date.parse(appearance.date))
+        ? show
+        : best
+    );
+
+    const key = `${guestAct}::${hostAct}::${appearance.song.toLowerCase()}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    const viaAlias = ownAct !== guestAct;
+    const hostName = nameOf(appearance.host);
+    const ownName = displayNameOf(aliases, ownAct) ?? nameOf(ownAct);
+    const gap = spanYears(nearest.date, appearance.date);
+
+    const tags = ["#guest-bridge", "#walk-on"];
+    if (viaAlias) tags.push("#shares-member");
+
+    findings.push({
+      id: `guest-bridge-${guestAct}-${hostAct}-${slugify(appearance.song)}`,
+      detector: "guest-bridge",
+      category: "cultural",
+      temporality: "evergreen",
+      headline: `${appearance.guestName} Walked On for ${hostName}`,
+      dataPoints: {
+        guest: appearance.guestName,
+        host: hostName,
+        song: appearance.song,
+        guestDate: appearance.date,
+        guestVenue: guestNight.venue,
+        ownAct: ownName,
+        ownShowCount: own.length,
+        nearestOwnShow: { date: nearest.date, venue: nearest.venue },
+        gapYears: gap,
+        // Present when the guest is in the archive under a different marquee —
+        // Terri Nunn seen as Berlin, Gwen Stefani as No Doubt.
+        ...(viaAlias ? { seenAs: ownName } : {}),
+      },
+      // The night they walked on.
+      concertDate: appearance.date,
+      // The host leads. artists[0] is what the setlist link pairs with the date,
+      // and the guest walked on without being billed — a link naming them would
+      // point at a night they don't appear on. The image and audio still come
+      // from the guest's own act via suggestedImage/suggestedTrack.
+      artists: [...new Set([guestNight.headlinerNormalized, appearance.guest])],
+      venues: [...new Set([guestNight.venueNormalized, nearest.venueNormalized])],
+      years: [...new Set([guestNight.year, nearest.year])],
+      suggestedImage: { type: "artist", artistNormalized: ownAct },
+      suggestedTrack: { artistNormalized: ownAct },
       tags,
     });
   }

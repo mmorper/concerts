@@ -68,9 +68,10 @@ describe('the setlist index', () => {
 })
 
 describe('degrading silently without setlists', () => {
-  // full-circle is setlist-*native* — no setlists, no findings, by design. The
-  // invariant here is about the detectors the corpus merely enriches.
-  const SETLIST_NATIVE = new Set(['full-circle'])
+  // full-circle and guest-bridge are setlist-*native* — no setlists, no findings,
+  // by design. The invariant here is about the detectors that predate the corpus
+  // and which it merely enriches.
+  const SETLIST_NATIVE = new Set(['full-circle', 'guest-bridge'])
   const enriched = (fs: typeof withSongs) => fs.filter((f) => !SETLIST_NATIVE.has(f.detector))
 
   it('produces the same findings with or without the index', () => {

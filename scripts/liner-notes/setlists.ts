@@ -151,3 +151,35 @@ export const SONG_JOIN_TAGS = [
 export function hasSongJoin(tags: readonly string[]): boolean {
   return tags.some((t) => (SONG_JOIN_TAGS as readonly string[]).includes(t));
 }
+
+/** A guest walk-on: who joined, on whose set, on what song, which night. */
+export interface GuestAppearance {
+  /** Slugified guest name as it appears in the setlist data. */
+  guest: string;
+  /** Display name, for prose. */
+  guestName: string;
+  /** Slug of whoever's set they walked onto. */
+  host: string;
+  song: string;
+  date: string;
+}
+
+/** Every guest walk-on in the corpus. 27 on current data, across 19 people. */
+export function guestAppearances(index: SetlistIndex | undefined): GuestAppearance[] {
+  if (!index) return [];
+  const out: GuestAppearance[] = [];
+  for (const [key, songs] of index) {
+    const [date, host] = key.split("::");
+    for (const song of songs) {
+      if (!song.with?.name) continue;
+      out.push({
+        guest: slugify(song.with.name),
+        guestName: song.with.name,
+        host,
+        song: song.name,
+        date,
+      });
+    }
+  }
+  return out;
+}

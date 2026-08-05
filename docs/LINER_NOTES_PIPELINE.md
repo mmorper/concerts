@@ -491,6 +491,33 @@ Each detector produces one or more `AnalysisFinding` objects with a `category`, 
 
 ---
 
+### 17. Guest Bridge (`guest-bridge`)
+
+**What it finds:** Someone walked on stage during another act's set — and you also saw them perform in their own right.
+
+**Category:** Cultural | **Temporality:** Evergreen
+
+**Data points:** Guest, host, song, the walk-on date and venue, the guest's own act and show count, nearest own show, gap in years, and `seenAs` when the guest is in the archive under a different marquee.
+
+**The "in their own right" join is the whole detector.** Gorillaz supply 10 of the 27 walk-ons in the corpus — they are guest-heavy by design, and unfiltered this becomes The Gorillaz Show. With the join, guests who are strangers to the archive (Bootie Brown, Del the Funky Homosapien, De La Soul, Fatoumata Diawara) drop out on their own, and Gorillaz end up as 3 of 8 findings. No special-casing needed.
+
+**Alias-aware ([#227](https://github.com/mmorper/concerts/issues/227)), as a supply prerequisite rather than just a correctness one.** Three of the eight findings exist *only* because the map links a guest to an act billed under another name — Terri Nunn → Berlin, Gwen Stefani → No Doubt, Brian Baker → Bad Religion. Without it the detector finds five.
+
+**Artist ordering:** the host leads. `artists[0]` is what the setlist link pairs with the date, and a guest walked on *without being billed* — a link naming them would point at a night they don't appear on. The image and audio still come from the guest's own act via `suggestedImage` / `suggestedTrack`.
+
+**Auto-tags:** `#guest-bridge`, `#walk-on`, plus `#shares-member` when resolved through the alias map.
+
+**Deep link:** sets `concertDate` to the night of the walk-on.
+
+**Returns:** 8 findings on current data.
+
+**Example headlines:**
+- *Lee Rocker Walked On for Brian Setzer '68 Comeback Special* — "Rock This Town", the Stray Cats song, played by the Stray Cats' bassist
+- *Sinéad O'Connor Walked On for Peter Gabriel* — "Blood of Eden"
+- *Terri Nunn Walked On for Devo* — "Beautiful World" (seen as Berlin)
+
+---
+
 ## Planned Detectors (Tier 2)
 
 Tracked in [GitHub issue #68](https://github.com/mmorper/concerts/issues/68). These four detectors were scoped during v4.4.x but deferred — each has a specific reason it can't ship yet. They are declared in `types.ts` but have no implementation in `analyze.ts`.
