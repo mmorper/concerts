@@ -219,6 +219,7 @@ export function buildPosts(
 ): LinerNotesPost[] {
   const publishedAt = options.publishedAt ?? new Date().toISOString();
   const existingSlugSet = new Set(options.existingPosts.map((p) => p.slug));
+  const previousById = new Map(options.existingPosts.map((p) => [p.id, p]));
   const newPosts: LinerNotesPost[] = [];
 
   for (const finding of selected) {
@@ -227,7 +228,15 @@ export function buildPosts(
       continue;
     }
 
-    const slug = generateSlug(finding.headline, existingSlugSet);
+    // Regenerating a post keeps its slug. `mergePosts` deduplicates by id, so
+    // the previous post is about to be overwritten — but it was still in the
+    // collision set, so `generateSlug` would dodge it with a "-2" suffix and
+    // then the un-suffixed original would vanish from the feed. Every other
+    // post's `relatedSlugs` pointing at that base slug went dangling, and the
+    // post's own URL 404'd. The URL is the longest-lived thing a post emits
+    // (#234).
+    const previous = previousById.get(finding.id);
+    const slug = previous?.slug ?? generateSlug(finding.headline, existingSlugSet);
     existingSlugSet.add(slug); // prevent collision within this batch
 
     const image = resolveImage(finding, options);
@@ -386,6 +395,19 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
   return PLACEHOLDER_IMAGE;
 }
 
+/**
+ * The generic venue placeholder. `venues-metadata.json` stores this *as* the
+ * photo for 11 of 79 venues, so a missing photo is indistinguishable from a
+ * present one unless the chain checks for it — which meant `resolveImage`
+ * short-circuited on the placeholder and never reached album art or an artist
+ * photo further down the chain (#235).
+ */
+const VENUE_PHOTO_PLACEHOLDER = "/images/venues/fallback.jpg";
+
+function isRealVenuePhoto(url: string | undefined): url is string {
+  return !!url && !url.endsWith(VENUE_PHOTO_PLACEHOLDER);
+}
+
 function getVenueImageUrl(
   venueSlug: string,
   options: CurateOptions
@@ -395,12 +417,12 @@ function getVenueImageUrl(
 
   // photoUrls is either a string[] (legacy) or { thumbnail, medium, large } object
   const photoUrls = venue.photoUrls;
-  if (Array.isArray(photoUrls)) return photoUrls[0];
+  if (Array.isArray(photoUrls)) return photoUrls.find(isRealVenuePhoto);
   if (photoUrls && typeof photoUrls === "object") {
-    return photoUrls.large ?? photoUrls.medium ?? photoUrls.thumbnail;
+    return [photoUrls.large, photoUrls.medium, photoUrls.thumbnail].find(isRealVenuePhoto);
   }
 
-  return venue.manualPhotos?.[0];
+  return venue.manualPhotos?.find(isRealVenuePhoto);
 }
 
 function getAlbumArt(
