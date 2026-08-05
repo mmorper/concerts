@@ -300,7 +300,9 @@ Each detector produces one or more `AnalysisFinding` objects with a `category`, 
 
 **Auto-tag:** `#back-to-back` if any two shows are on adjacent days.
 
-**Returns:** Top 3 streaks by show count.
+**Window semantics:** The 30 days are measured from the *first* show in the streak, not from the previously added one. Until #233 each gap was compared to its predecessor, so runs chained transitively and produced findings like "14 Concerts in 215 Days" — a busy stretch, not a streak.
+
+**Returns:** Top 3 by show count, then **densest first** (fewest days), then by id. Every qualifying streak on current data has exactly 3 shows, so without the density tie-break the ranking fell through to array order and the three chronologically earliest won.
 
 **Example headline:** *"4 Concerts in 12 Days"*
 
@@ -312,9 +314,11 @@ Each detector produces one or more `AnalysisFinding` objects with a `category`, 
 
 **Category:** Personal | **Temporality:** Evergreen
 
-**Data points:** Milestone number, artist, venue, city, date, year, openers present at that show.
+**Data points:** Milestone number, artist, venue, city, date, year, openers present at that show, `spanYears` (years elapsed since concert #1), and a `firstShow` block naming that first night.
 
-**Scoring note:** Lowest surprise factor of any detector (3 pts) — milestone posts are intentionally understated.
+**Scoring note:** Lowest surprise factor of any detector (3 pts) — milestone posts are intentionally understated. Span is measured as the distance back to concert #1, which is what a milestone actually accumulates. Until #233 this case was missing from `computeSpan` and scored 0, capping every milestone at 19 against a floor of 20 — the detector had never published. Milestones inside the first decade still fall below the floor by design.
+
+**Deep link:** Sets `concertDate`, so posts carry a `?show=` setlist link.
 
 **Example headline:** *"Concert #100: My Centennial Show"*
 
@@ -547,7 +551,7 @@ Each detector uses a different measure of scale. The thresholds are:
 | `city-pulse` | years ago | — | >10 yrs | >20 yrs | >30 yrs |
 | `album-context` | years ago | — | >10 yrs | >20 yrs | >30 yrs |
 | `concert-streak` | — | 0 | — | — | — |
-| `milestone-marker` | — | 0 | — | — | — |
+| `milestone-marker` | years since concert #1 | — | >10 yrs | >20 yrs | >30 yrs |
 
 ---
 
