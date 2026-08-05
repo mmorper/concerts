@@ -93,6 +93,13 @@ jobs:
       # between those two is the entire reason this workflow exists. So assert against the live
       # URL. This does NOT roll back on failure; the deploy is already applied by this point, so
       # a red run means go look (`npx wrangler rollback` is the escape hatch).
+      #
+      # Deliberate: the tool assertions below do NOT auto-roll-back either (#223). It is tempting,
+      # since a correctness failure means users are getting wrong answers right now. But this
+      # server reads its data from the live site via DATA_BASE_URL, so a red tool assertion is
+      # ambiguous between "this deploy broke the tool" and "the data underneath moved" — a 404 on
+      # a renamed data file, or a stale 300s cache entry. Auto-rollback assumes the first and would
+      # revert a perfectly good deploy for a problem it cannot fix. Keep it loud and manual.
       - name: Smoke test the live endpoint
         run: |
           set -euo pipefail
@@ -100,8 +107,9 @@ jobs:
 
           # Route changes can take a few seconds to propagate at the edge, so retry rather than
           # racing the deploy we just made.
+          hdrs="$(mktemp)"
           for i in $(seq 1 10); do
-            body=$(curl -sS --max-time 20 -X POST "$BASE/mcp" \
+            body=$(curl -sS --max-time 20 -D "$hdrs" -X POST "$BASE/mcp" \
               -H 'content-type: application/json' \
               -H 'accept: application/json, text/event-stream' \
               -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"ci-smoke","version":"1"}}}' || true)
@@ -114,6 +122,54 @@ jobs:
             echo "$body"
             exit 1
           fi
+
+          # Every tools/call needs the session minted by initialize.
+          SID=$(grep -i '^mcp-session-id:' "$hdrs" | tr -d '\r' | awk '{print $2}')
+          if [ -z "${SID:-}" ]; then
+            echo "::error::initialize succeeded but returned no Mcp-Session-Id"
+            exit 1
+          fi
+
+          call_tool() {
+            curl -sS --max-time 25 -X POST "$BASE/mcp" \
+              -H 'content-type: application/json' \
+              -H 'accept: application/json, text/event-stream' \
+              -H "mcp-session-id: $SID" \
+              -d "$1" || true
+          }
+
+          # Assert a tool actually answers correctly, not just that the server is reachable (#223).
+          #
+          # `initialize` proves the Worker is up. It proves nothing about the data path: this server
+          # reads from the live site via DATA_BASE_URL with a 300s cache, so it can be healthy,
+          # freshly deployed, and still serving wrong answers because a data file moved, 404s and a
+          # tool degraded to empty, or the site shipped data the tools don't handle. None of that
+          # touches initialize; all of it changes what a user gets.
+          #
+          # Marker-matching, not exact prose — narration gets reworded, and asserting a show count
+          # would break every time a concert is added.
+          artist=$(call_tool '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_artist_history","arguments":{"artist":"Depeche Mode"}}}')
+          case "$artist" in
+            *'"isError":true'*) echo "::error::get_artist_history returned isError"; echo "$artist"; exit 1 ;;
+          esac
+          # A bracketed concert id proves the whole path: artist resolved, concerts.json fetched off
+          # the live site, show lines rendered.
+          case "$artist" in
+            *'[concert-'*) echo "tools/call get_artist_history -> ok" ;;
+            *) echo "::error::get_artist_history returned no concert id marker"; echo "$artist"; exit 1 ;;
+          esac
+
+          # The setlist path is separately load-bearing — it carries per-song cover attribution
+          # (#225) and the ?show= deep links the liner notes now emit (#198). Nothing else tests it.
+          setlist=$(call_tool '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"get_concert_setlist","arguments":{"artist":"Nile Rodgers","date":"2026-07-31"}}}')
+          case "$setlist" in
+            *'"isError":true'*) echo "::error::get_concert_setlist returned isError"; echo "$setlist"; exit 1 ;;
+          esac
+          # This night is 22-of-25 covers, so "cover)" is a stable canary for attribution surviving.
+          case "$setlist" in
+            *'cover)'*) echo "tools/call get_concert_setlist -> ok (songs + cover attribution)" ;;
+            *) echo "::error::get_concert_setlist lost per-song cover attribution"; echo "$setlist"; exit 1 ;;
+          esac
 
           # Regression guard for #217. If these ever answer 200 again, the Pages SPA catch-all is
           # shadowing them, and MCP clients get pushed into an OAuth flow this server does not
