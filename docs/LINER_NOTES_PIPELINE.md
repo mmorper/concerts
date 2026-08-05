@@ -141,6 +141,7 @@ This shows exactly which stages each flag affects:
 | 3. Select | ✓ | — | ✓ then stop | up to 10 posts | waives both cooldowns | ages the rerun cooldown |
 | 4. Generate prose | ✓ | — | — | ✓ | ✓ | — |
 | 5. Build posts | ✓ | — | — | ✓ | ✓ | — |
+| 5c. Refresh images | ✓ | — | — | ✓ | ✓ | runs even with 0 new posts |
 | 6. Write JSON | ✓ | — | — | ✓ | ✓ | — |
 | 7. RSS feed | ✓ | — | — | ✓ | ✓ | — |
 | 8. OG images | ✓ | — | — | ✓ | ✓ | — |
@@ -184,6 +185,13 @@ concerts.json (source of truth)
 │  Stage 5: BUILD                     │  scripts/liner-notes/curate.ts
 │  Resolve image, audio, deep links,  │  → LinerNotesPost[]
 │  related posts                      │
+└─────────────────────────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────┐
+│  Stage 5c: REFRESH IMAGES           │  scripts/liner-notes/refresh-images.ts
+│  Re-resolve every post's image from │  → repairs published posts
+│  its ref; validate and repair       │     (runs even with 0 new posts)
 └─────────────────────────────────────┘
         │
         ▼
@@ -905,7 +913,7 @@ Full type definitions live in `scripts/liner-notes/types.ts` (pipeline) and `src
   temporality: PostTemporality
   headline: string
   prose: string
-  image: { url, alt, source: "artist"|"venue"|"album"|"placeholder", credit? }
+  image: { url, alt, source: "artist"|"venue"|"album"|"placeholder", ref?, albumName?, credit? }
   audio?: { trackName, artistName, albumName, previewUrl, albumArt, streamingUrl, source: "itunes" }
   artists: string[]
   venues: string[]
@@ -1055,9 +1063,56 @@ Both are asserted in `test/pipeline/liner-notes-integrity.test.ts` against the r
 2. Album art from primary artist's top tracks
 3. Artist photo from artist metadata
 4. Venue photo from venue metadata
-5. Placeholder: `/images/liner-notes-placeholder.jpg`
+5. Placeholder: `/images/venues/fallback-active.jpg`
 
 Apple Music album art URLs are upsized from `100x100` to `600x600` automatically.
+
+### `ref` is the source of truth, `url` is derived
+
+Every non-placeholder image carries a `ref` — the normalized venue or artist key
+it came from (plus `albumName` for album art). **`ref` is authoritative; `url` is
+a cache.** Never hand-edit `url`: Stage 5c recomputes it from `ref` on the next
+run and your edit disappears.
+
+This exists because a resolved third-party URL can be revoked at any time.
+Google Places photo URLs die when the underlying photo is unpublished from a
+place listing — a *content event*, not an expiry clock, so it cannot be avoided
+by tuning a TTL or refreshing more often. Before #252 a post froze the URL at
+publish time and nothing ever revisited it, so a revoked photo meant a broken
+image on the live site indefinitely. `venues-metadata.json` and
+`artists-metadata.json` already self-heal on the weekly data refresh; resolving
+through `ref` lets published posts inherit that healing.
+
+### Stage 5c: image refresh (`refresh-images.ts`)
+
+Runs over **every** post on every pipeline run — new and long-published:
+
+1. **Backfill** `ref` on posts written before the field existed.
+2. **Re-resolve** `url` from `ref` against current metadata. Local, no network.
+3. **Validate** remote URLs with a `HEAD` request. On a definitive `4xx`, walk
+   the post's own artists/venues for a live alternative, and only settle for the
+   placeholder if nothing resolves.
+
+Two deliberate properties:
+
+- **It runs before the no-new-posts early return.** Image rot is independent of
+  whether a run produced content; skipping the refresh on a quiet week is exactly
+  how a post stays broken.
+- **A `5xx`, timeout or network error never downgrades a post.** Only a `4xx` is
+  treated as evidence the image is gone. Otherwise one bad CI run could rewrite
+  every post to a placeholder at once.
+
+Step 3 hits the image CDNs directly, **not** the Google Places API — no key, no
+quota, no billing. Posts whose image changed are also re-fed to OG card
+generation in Stage 8, since a card composited from a revoked photo is stale the
+same way the post was.
+
+Runnable on its own, without an Anthropic key or a generation cycle:
+
+```bash
+npm run refresh:liner-note-images            # repair and write
+npm run refresh:liner-note-images -- --dry-run
+```
 
 ### Audio resolution (`curate.ts → resolveAudio`)
 

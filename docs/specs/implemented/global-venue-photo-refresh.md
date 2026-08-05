@@ -8,6 +8,44 @@
 
 ---
 
+> ## ⚠️ Amendment — 2026-08-05 (#252)
+>
+> **The failure model below is wrong, and the correction matters for anything
+> built on top of it.** The spec as written was implemented and works; this note
+> corrects its stated *premise*, not its outcome. Left in place rather than
+> rewritten, since the reasoning it drove is still visible in the code.
+>
+> **Claimed:** Google Places photo URLs carry embedded tokens that "expire after
+> approximately 10-14 days," so a weekly refresh stays ahead of them.
+>
+> **Observed** (all three venue-sourced liner notes, checked 2026-08-05):
+>
+> | published  | age  | status  |
+> | ---------- | ---- | ------- |
+> | 2026-01-02 | 215d | **200** |
+> | 2026-07-06 | 30d  | **403** |
+> | 2026-07-20 | 16d  | **200** |
+>
+> A 215-day-old URL was healthy while a 30-day-old one was dead. **Age does not
+> predict breakage.** Resolved `lh3.googleusercontent.com` URLs are long-lived;
+> they die when the underlying photo is *unpublished from the place listing*.
+>
+> **Consequences:**
+>
+> - This is a **content event, not an expiry clock.** No refresh cadence and no
+>   TTL can prevent it — only detection can catch it. `photoCacheExpiry`
+>   (`enrich-venues.ts`, written but never read) cannot be tuned into a fix.
+> - The comment in `google-places-client.ts` calling the resolved CDN URL
+>   "stable" and "permanent" is inaccurate for the same reason.
+> - The weekly cadence this spec established is still correct — `enrich-venues`
+>   re-resolves and force-refreshes Place Details each run, which is why venue
+>   metadata self-heals. The gap was **downstream**: liner notes froze a copy of
+>   the resolved URL and never revisited it.
+>
+> See #252 and `docs/LINER_NOTES_PIPELINE.md` → "Stage 5c: image refresh".
+
+---
+
 ## Executive Summary
 
 Implement a fully autonomous GitHub Actions workflow that refreshes venue photo URLs from Google Places API every 7 days. This solves the critical issue where venue images break after ~10-14 days due to Google's time-limited photo tokens.

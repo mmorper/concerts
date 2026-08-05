@@ -198,6 +198,9 @@ export async function run(options: PipelineOptions): Promise<void> {
 
   console.log("\n🖼️  Stage 5c: Refreshing post images...");
   let refreshedSlugs: string[] = [];
+  // Backfilling a `ref` mutates a post without changing its URL, so it must
+  // count toward "something changed" or the write below would discard it.
+  let refreshMutated = false;
   try {
     const refresh = await refreshPostImages(
       allPosts,
@@ -205,6 +208,7 @@ export async function run(options: PipelineOptions): Promise<void> {
       { validate: true, verbose: true }
     );
     refreshedSlugs = refresh.changedSlugs;
+    refreshMutated = refresh.backfilled > 0 || refresh.changedSlugs.length > 0;
     console.log(
       `   ✓ ${refresh.posts} post${refresh.posts !== 1 ? "s" : ""} checked — ` +
         `${refresh.backfilled} ref backfilled, ${refresh.reresolved} re-resolved, ` +
@@ -218,14 +222,12 @@ export async function run(options: PipelineOptions): Promise<void> {
     console.warn("   ⚠️  Image refresh skipped:", (err as Error).message);
   }
 
-  if (newPosts.length === 0 && refreshedSlugs.length === 0) {
+  if (newPosts.length === 0 && !refreshMutated) {
     console.log("\n⚠️  No posts built and no image changes. Nothing written.");
     return;
   }
   if (newPosts.length === 0) {
-    console.log(
-      `\n📝 No new posts, but ${refreshedSlugs.length} image${refreshedSlugs.length !== 1 ? "s" : ""} changed — writing.`
-    );
+    console.log("\n📝 No new posts, but the image refresh made changes — writing.");
   }
 
   // ── Stage 6: Merge and write ─────────────────────────────────────────────
