@@ -67,6 +67,11 @@
           "type": "venue"
         },
         {
+          "label": "July 4, 2015",
+          "url": "/?scene=artists&artist=foo-fighters&show=2015-07-04",
+          "type": "setlist"
+        },
+        {
           "label": "2015",
           "url": "/?scene=timeline&year=2015",
           "type": "timeline"
@@ -124,6 +129,11 @@
           "label": "Pacific Amphitheatre",
           "url": "/?scene=venues&venue=pacific-amphitheatre",
           "type": "venue"
+        },
+        {
+          "label": "July 31, 1986",
+          "url": "/?scene=artists&artist=the-art-of-noise&show=1986-07-31",
+          "type": "setlist"
         },
         {
           "label": "1986",
@@ -476,6 +486,11 @@
           "type": "venue"
         },
         {
+          "label": "June 21, 1991",
+          "url": "/?scene=artists&artist=jimmy-buffett&show=1991-06-21",
+          "type": "setlist"
+        },
+        {
           "label": "1991",
           "url": "/?scene=timeline&year=1991",
           "type": "timeline"
@@ -592,6 +607,11 @@
           "label": "Pacific Amphitheatre",
           "url": "/?scene=venues&venue=pacific-amphitheatre",
           "type": "venue"
+        },
+        {
+          "label": "July 27, 2005",
+          "url": "/?scene=artists&artist=garbage&show=2005-07-27",
+          "type": "setlist"
         },
         {
           "label": "2005",
@@ -768,6 +788,11 @@
           "type": "venue"
         },
         {
+          "label": "December 21, 1991",
+          "url": "/?scene=artists&artist=siouxsie-and-the-banshees&show=1991-12-21",
+          "type": "setlist"
+        },
+        {
           "label": "1991",
           "url": "/?scene=timeline&year=1991",
           "type": "timeline"
@@ -884,6 +909,11 @@
           "label": "UCLA",
           "url": "/?scene=venues&venue=ucla",
           "type": "venue"
+        },
+        {
+          "label": "April 12, 1986",
+          "url": "/?scene=artists&artist=the-alarm&show=1986-04-12",
+          "type": "setlist"
         },
         {
           "label": "1986",
@@ -1015,6 +1045,11 @@
           "type": "venue"
         },
         {
+          "label": "March 22, 2013",
+          "url": "/?scene=artists&artist=bad-religion&show=2013-03-22",
+          "type": "setlist"
+        },
+        {
           "label": "2013",
           "url": "/?scene=timeline&year=2013",
           "type": "timeline"
@@ -1131,6 +1166,11 @@
           "label": "Hard Rock Hotel Las Vegas",
           "url": "/?scene=venues&venue=hard-rock-hotel-las-vegas",
           "type": "venue"
+        },
+        {
+          "label": "March 23, 2005",
+          "url": "/?scene=artists&artist=social-distortion&show=2005-03-23",
+          "type": "setlist"
         },
         {
           "label": "2005",
@@ -1261,6 +1301,11 @@
           "type": "venue"
         },
         {
+          "label": "March 11, 1990",
+          "url": "/?scene=artists&artist=erasure&show=1990-03-11",
+          "type": "setlist"
+        },
+        {
           "label": "1990",
           "url": "/?scene=timeline&year=1990",
           "type": "timeline"
@@ -1318,6 +1363,11 @@
           "label": "UCLA",
           "url": "/?scene=venues&venue=ucla",
           "type": "venue"
+        },
+        {
+          "label": "April 12, 1986",
+          "url": "/?scene=artists&artist=the-alarm&show=1986-04-12",
+          "type": "setlist"
         },
         {
           "label": "1986",
@@ -1502,6 +1552,11 @@
           "label": "Los Angeles Memorial Coliseum",
           "url": "/?scene=venues&venue=los-angeles-memorial-coliseum",
           "type": "venue"
+        },
+        {
+          "label": "September 29, 1985",
+          "url": "/?scene=artists&artist=bruce-springsteen&show=1985-09-29",
+          "type": "setlist"
         },
         {
           "label": "1985",
@@ -1779,6 +1834,11 @@
           "type": "venue"
         },
         {
+          "label": "October 28, 2018",
+          "url": "/?scene=artists&artist=social-distortion&show=2018-10-28",
+          "type": "setlist"
+        },
+        {
           "label": "2018",
           "url": "/?scene=timeline&year=2018",
           "type": "timeline"
@@ -2008,6 +2068,11 @@
           "label": "Hyundai Pavilion",
           "url": "/?scene=venues&venue=hyundai-pavilion",
           "type": "venue"
+        },
+        {
+          "label": "September 20, 2003",
+          "url": "/?scene=artists&artist=the-cure&show=2003-09-20",
+          "type": "setlist"
         },
         {
           "label": "2003",
@@ -2259,6 +2324,11 @@
           "type": "venue"
         },
         {
+          "label": "September 18, 1993",
+          "url": "/?scene=artists&artist=peter-gabriel&show=1993-09-18",
+          "type": "setlist"
+        },
+        {
           "label": "1993",
           "url": "/?scene=timeline&year=1993",
           "type": "timeline"
@@ -2384,6 +2454,11 @@
           "type": "venue"
         },
         {
+          "label": "August 13, 1984",
+          "url": "/?scene=artists&artist=billy-idol&show=1984-08-13",
+          "type": "setlist"
+        },
+        {
           "label": "1984",
           "url": "/?scene=timeline&year=1984",
           "type": "timeline"
@@ -2419,8 +2494,8 @@
         "source": "itunes"
       },
       "artists": [
-        "adam-ant",
         "thompson-twins",
+        "adam-ant",
         "billy-idol",
         "echo-and-the-bunnymen"
       ],
@@ -2436,13 +2511,13 @@
       ],
       "deepLinks": [
         {
-          "label": "Adam Ant",
-          "url": "/?scene=artists&artist=adam-ant",
+          "label": "Thompson Twins",
+          "url": "/?scene=artists&artist=thompson-twins",
           "type": "artist"
         },
         {
-          "label": "Thompson Twins",
-          "url": "/?scene=artists&artist=thompson-twins",
+          "label": "Adam Ant",
+          "url": "/?scene=artists&artist=adam-ant",
           "type": "artist"
         },
         {
@@ -2454,6 +2529,11 @@
           "label": "Irvine Meadows",
           "url": "/?scene=venues&venue=irvine-meadows",
           "type": "venue"
+        },
+        {
+          "label": "May 12, 1984",
+          "url": "/?scene=artists&artist=thompson-twins&show=1984-05-12",
+          "type": "setlist"
         },
         {
           "label": "1984",
@@ -2660,6 +2740,11 @@
           "type": "venue"
         },
         {
+          "label": "May 12, 2018",
+          "url": "/?scene=artists&artist=the-human-league&show=2018-05-12",
+          "type": "setlist"
+        },
+        {
           "label": "2018",
           "url": "/?scene=timeline&year=2018",
           "type": "timeline"
@@ -2787,6 +2872,11 @@
           "type": "venue"
         },
         {
+          "label": "August 30, 1985",
+          "url": "/?scene=artists&artist=wham&show=1985-08-30",
+          "type": "setlist"
+        },
+        {
           "label": "1985",
           "url": "/?scene=timeline&year=1985",
           "type": "timeline"
@@ -2863,6 +2953,11 @@
           "label": "RFK Stadium",
           "url": "/?scene=venues&venue=rfk-stadium",
           "type": "venue"
+        },
+        {
+          "label": "July 4, 2015",
+          "url": "/?scene=artists&artist=foo-fighters&show=2015-07-04",
+          "type": "setlist"
         },
         {
           "label": "2015",
@@ -3292,6 +3387,11 @@
           "label": "Caliente Racetrack",
           "url": "/?scene=venues&venue=caliente-racetrack",
           "type": "venue"
+        },
+        {
+          "label": "June 30, 1987",
+          "url": "/?scene=artists&artist=oingo-boingo&show=1987-06-30",
+          "type": "setlist"
         },
         {
           "label": "1987",

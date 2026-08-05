@@ -248,3 +248,95 @@ describe('generateUpTo — one API call per published post (#231)', () => {
     expect(seen).toEqual(['first', 'reserve-1', 'reserve-2'])
   })
 })
+
+// ── Setlist deep links ──────────────────────────────────────────────────────
+
+describe('setlist deep links (#198 wiring)', () => {
+  const concerts: Array<{ date: string; headlinerNormalized: string }> =
+    JSON.parse(readFileSync(join(DATA, 'concerts.json'), 'utf8')).concerts
+
+  const nightsByDate = new Map<string, Set<string>>()
+  for (const c of concerts) {
+    if (!nightsByDate.has(c.date)) nightsByDate.set(c.date, new Set())
+    nightsByDate.get(c.date)!.add(c.headlinerNormalized)
+  }
+
+  const datesWithSongs = (() => {
+    const cache = JSON.parse(readFileSync(join(DATA, 'setlists-cache.json'), 'utf8'))
+    const dates = new Set<string>()
+    for (const entry of Object.values<any>(cache.entries ?? {})) {
+      const sets = entry?.setlist?.sets?.set
+      if (!Array.isArray(sets)) continue
+      if (sets.reduce((n: number, s: any) => n + (s.song?.length ?? 0), 0) > 0 && entry.date) {
+        dates.add(entry.date)
+      }
+    }
+    return dates
+  })()
+
+  const setlistLinks = feed.posts
+    .map((p) => ({ post: p, link: p.deepLinks?.find((l) => l.type === 'setlist') }))
+    .filter((x) => x.link)
+
+  it('the feed actually carries setlist links', () => {
+    // Regression guard: for the archive's whole history this was zero, because
+    // no detector set `concertDate` — the field existed and nothing fed it.
+    expect(setlistLinks.length).toBeGreaterThan(0)
+  })
+
+  it('every setlist link pairs an artist with a night they actually headlined', () => {
+    const bad = setlistLinks
+      .map(({ post, link }) => {
+        const m = link!.url.match(/artist=([^&]+)&show=(\d{4}-\d{2}-\d{2})/)
+        if (!m) return `${post.slug}: malformed ${link!.url}`
+        const [, artist, date] = m
+        const played = nightsByDate.get(date)?.has(decodeURIComponent(artist))
+        return played ? null : `${post.slug}: ${artist} did not headline ${date}`
+      })
+      .filter(Boolean)
+
+    // city-pulse used to list every matching year's artist chronologically, so
+    // artists[0] — which the link pairs with concertDate — was a different
+    // artist from the one the post is about (#239).
+    expect(bad).toEqual([])
+  })
+
+  it('never links to a night with no setlist on record', () => {
+    const empty = setlistLinks
+      .map(({ post, link }) => {
+        const date = link!.url.match(/show=(\d{4}-\d{2}-\d{2})/)?.[1]
+        return date && !datesWithSongs.has(date) ? `${post.slug} → ${date}` : null
+      })
+      .filter(Boolean)
+
+    // A link promising a setlist and opening an empty panel is worse than none.
+    expect(empty).toEqual([])
+  })
+})
+
+describe('buildDeepLinks setlist gating', () => {
+  const withDate = (over: Partial<ScoredFinding> = {}) =>
+    finding({ concertDate: '2000-06-01', artists: ['depeche-mode'], ...over } as Partial<ScoredFinding>)
+
+  it('emits the link when the night has a setlist', () => {
+    const [built] = buildPosts(
+      [withDate()],
+      options({ datesWithSetlists: new Set(['2000-06-01']) } as Partial<CurateOptions>)
+    )
+    const link = built.deepLinks.find((l) => l.type === 'setlist')
+    expect(link?.url).toBe('/?scene=artists&artist=depeche-mode&show=2000-06-01')
+  })
+
+  it('suppresses the link when that night has no setlist', () => {
+    const [built] = buildPosts(
+      [withDate()],
+      options({ datesWithSetlists: new Set(['1999-01-01']) } as Partial<CurateOptions>)
+    )
+    expect(built.deepLinks.find((l) => l.type === 'setlist')).toBeUndefined()
+  })
+
+  it('emits unconditionally when no setlist index is supplied', () => {
+    const [built] = buildPosts([withDate()], options())
+    expect(built.deepLinks.find((l) => l.type === 'setlist')).toBeDefined()
+  })
+})
