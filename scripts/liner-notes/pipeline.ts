@@ -88,6 +88,7 @@ export async function run(options: PipelineOptions): Promise<void> {
   const venuesMetadata = JSON.parse(
     readFileSync(join(DATA_DIR, "venues-metadata.json"), "utf8")
   );
+  const datesWithSetlists = loadDatesWithSetlists();
 
   const dataHash = createHash("sha256")
     .update(concertsRaw)
@@ -170,6 +171,7 @@ export async function run(options: PipelineOptions): Promise<void> {
     artistsMetadata,
     artistsTopTracks,
     venuesMetadata,
+    datesWithSetlists,
     existingPosts,
     publishedAt,
   });
@@ -240,6 +242,34 @@ export async function run(options: PipelineOptions): Promise<void> {
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
+
+/**
+ * Concert dates with at least one song on record. Used to suppress `?show=`
+ * links to nights the setlist panel would open empty. Missing or unreadable
+ * cache degrades to an empty set, which suppresses every setlist link rather
+ * than emitting ones we can't stand behind.
+ */
+function loadDatesWithSetlists(): Set<string> {
+  const path = join(DATA_DIR, "setlists-cache.json");
+  if (!existsSync(path)) {
+    console.warn("   ⚠️  setlists-cache.json missing — setlist deep links suppressed this run");
+    return new Set();
+  }
+  try {
+    const cache = JSON.parse(readFileSync(path, "utf8"));
+    const dates = new Set<string>();
+    for (const entry of Object.values<any>(cache.entries ?? {})) {
+      const sets = entry?.setlist?.sets?.set;
+      if (!Array.isArray(sets)) continue;
+      const songs = sets.reduce((n: number, s: any) => n + (s.song?.length ?? 0), 0);
+      if (songs > 0 && entry.date) dates.add(entry.date);
+    }
+    return dates;
+  } catch (err) {
+    console.warn(`   ⚠️  Could not read setlists-cache.json (${(err as Error).message}) — setlist links suppressed`);
+    return new Set();
+  }
+}
 
 function loadExistingData(): LinerNotesData | null {
   if (!existsSync(LINER_NOTES_PATH)) return null;

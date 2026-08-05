@@ -350,6 +350,9 @@ function detectCalendarAnniversary(
         isMilestone,
         openers: c.openers,
       },
+      // The one night this story is about, so the post carries a ?show= setlist
+      // deep link (#198). Pairs with artists[0] in buildDeepLinks.
+      concertDate: c.date,
       artists: [c.headlinerNormalized],
       venues: [c.venueNormalized],
       years: [c.year],
@@ -665,6 +668,9 @@ function detectRareSighting(concerts: Concert[]): AnalysisFinding[] {
         year: concert.year,
         openers: concert.openers,
       },
+      // The one night this story is about, so the post carries a ?show= setlist
+      // deep link (#198). Pairs with artists[0] in buildDeepLinks.
+      concertDate: concert.date,
       artists: [normalized],
       venues: [concert.venueNormalized],
       years: [concert.year],
@@ -719,6 +725,9 @@ function detectHistoricalMoment(concerts: Concert[]): AnalysisFinding[] {
         month: new Date(concert.date + "T12:00:00Z").toLocaleString("en-US", { month: "long" }),
         concertsInYear: yearConcerts.length,
       },
+      // The one night this story is about, so the post carries a ?show= setlist
+      // deep link (#198). Pairs with artists[0] in buildDeepLinks.
+      concertDate: concert.date,
       artists: [concert.headlinerNormalized],
       venues: [concert.venueNormalized],
       years: [year],
@@ -833,6 +842,8 @@ function detectFestivalMegaBill(concerts: Concert[]): AnalysisFinding[] {
           date: concert.date,
           year: concert.year,
         },
+        // The one night this story is about (#198). allNorm[0] is the headliner.
+        concertDate: concert.date,
         artists: allNorm,
         venues: [concert.venueNormalized],
         years: [concert.year],
@@ -1003,7 +1014,18 @@ function detectCityPulse(concerts: Concert[]): AnalysisFinding[] {
           venue: c.venue,
         })),
       },
-      artists: matching.map((c) => c.headlinerNormalized),
+      // The one night this story is about, so the post carries a ?show= setlist
+      // deep link (#198). Pairs with artists[0] in buildDeepLinks.
+      concertDate: concert.date,
+      // The headlined concert's artist must lead: artists[0] drives the setlist
+      // deep link, the image, the audio and the dedup key. Listing every matching
+      // year's artist chronologically put a different artist first (#239).
+      artists: [
+        concert.headlinerNormalized,
+        ...matching
+          .map((c) => c.headlinerNormalized)
+          .filter((a) => a !== concert.headlinerNormalized),
+      ],
       venues: [...new Set(matching.map((c) => c.venueNormalized))],
       years: [event.year],
       suggestedImage: { type: "venue", venueNormalized: concert.venueNormalized },
@@ -1121,6 +1143,9 @@ function detectAlbumContext(concerts: Concert[]): AnalysisFinding[] {
         timing,
         isSameArtist: byArtist.length > 0,
       },
+      // The one night this story is about, so the post carries a ?show= setlist
+      // deep link (#198). Pairs with artists[0] in buildDeepLinks.
+      concertDate: anchor.date,
       artists: [anchor.headlinerNormalized],
       venues: [anchor.venueNormalized],
       years: [anchor.year],
@@ -1260,6 +1285,8 @@ function detectGenreOutlier(
         showCount: shows.length,
         shows: sorted.map((s) => ({ date: s.date, venue: s.venue, city: s.cityState })),
       },
+      // Only a single-show outlier is about one night; a multi-show one isn't.
+      ...(sorted.length === 1 ? { concertDate: sorted[0].date } : {}),
       artists: [normalized],
       venues: [...new Set(sorted.map((s) => s.venueNormalized))],
       years: sorted.map((s) => s.year),

@@ -882,6 +882,35 @@ Full type definitions live in `scripts/liner-notes/types.ts` (pipeline) and `src
 
 ---
 
+## Setlist Deep Links
+
+A finding that is about **one specific night** sets `AnalysisFinding.concertDate`, and `buildDeepLinks` turns it into a `?show=` link into that night's setlist (#198):
+
+```text
+/?scene=artists&artist=social-distortion&show=2024-12-05
+```
+
+Grammar and the full list of surfaces that emit it: [docs/DEEP_LINKING.md](DEEP_LINKING.md).
+
+### Which detectors set it
+
+| Sets `concertDate` | Why not |
+| ------------------ | ------- |
+| `calendar-anniversary`, `rare-sighting`, `historical-moment`, `festival-mega-bill`, `city-pulse`, `album-context`, `milestone-marker` | — |
+| `genre-outlier` | Only when the outlier is a single show |
+| `artist-longevity`, `venue-loyalty`, `drought-comeback`, `venue-ghost`, `opener-to-headliner`, `geographic-chapter`, `concert-streak` | Span several nights — there is no single night to anchor to. `drought-comeback` and `opener-to-headliner` each concern two specific shows and could carry one once it's decided which; tracked with the song-join work in [#229](https://github.com/mmorper/concerts/issues/229). |
+
+> **History:** for the archive's entire life this emitted nothing — the field existed and no detector ever set it, so all 56 posts shipped without a setlist link. `calendar-anniversary` had a `concertDate` key inside its `dataPoints` and `album-context` had a local variable of that name, which is how a grep made it look wired.
+
+### Two invariants
+
+1. **`artists[0]` must have headlined `concertDate`.** The link pairs the finding's primary artist with the date, so a detector that puts a different artist first produces a link to a night that artist didn't play — exactly what `city-pulse` did before [#239](https://github.com/mmorper/concerts/issues/239).
+2. **The night must actually have songs on record.** `CurateOptions.datesWithSetlists` is built from `setlists-cache.json`; a link is only emitted for nights in it. 118 of 184 concerts qualify. A link promising a setlist and opening an empty panel is worse than no link. Omitting the option emits unconditionally, which is what the unit tests rely on.
+
+Both are asserted in `test/pipeline/liner-notes-integrity.test.ts` against the real published feed.
+
+---
+
 ## Image & Audio Resolution
 
 ### Image priority chain (`curate.ts → resolveImage`)

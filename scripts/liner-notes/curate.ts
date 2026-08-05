@@ -29,6 +29,12 @@ export interface CurateOptions {
     tracks: Array<{ name: string; albumName?: string; albumArt?: string; previewUrl?: string; streamingUrl?: string; durationMs?: number }>;
   }>;
   venuesMetadata: Record<string, { name?: string; photoUrls?: string[] | { thumbnail?: string; medium?: string; large?: string }; manualPhotos?: string[] }>;
+  /**
+   * Concert dates that actually have songs on record, from setlists-cache.json.
+   * A `?show=` link to a night with no setlist opens an empty panel, so the link
+   * is only emitted for nights we can actually show. Omit to emit unconditionally.
+   */
+  datesWithSetlists?: Set<string>;
   /** Published posts to dedup against and resolve related slugs. */
   existingPosts: LinerNotesPost[];
   /** ISO timestamp to stamp publishedAt on new posts. Defaults to now. */
@@ -525,7 +531,11 @@ export function buildDeepLinks(finding: ScoredFinding, options: CurateOptions): 
   // Keyed on the concert date, never the concert id: those are row-order
   // artifacts and a data re-import that renumbers rows would break every link
   // in every published post. See docs/DEEP_LINKING.md v1.2.
-  if (finding.concertDate && finding.artists.length > 0) {
+  // Only when that night has songs on record — a link promising a setlist and
+  // opening an empty panel is worse than no link.
+  const nightHasSetlist =
+    !options.datesWithSetlists || options.datesWithSetlists.has(finding.concertDate ?? "");
+  if (finding.concertDate && finding.artists.length > 0 && nightHasSetlist) {
     const artistSlug = finding.artists[0];
     links.push({
       // A date reads well in a link row and, unlike an artist or venue name,
