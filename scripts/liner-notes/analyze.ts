@@ -827,7 +827,13 @@ function detectFestivalMegaBill(concerts: Concert[]): AnalysisFinding[] {
       ];
 
       return {
-        id: `festival-mega-bill-${concert.id ?? slugify(concert.date + concert.headliner)}`,
+        // Keyed on date + headliner, never concert.id. Row ids are re-import
+        // artifacts, and finding ids are load-bearing: mergePosts deduplicates on
+        // them, and slug preservation looks the previous post up by id. A sheet
+        // re-import that renumbered rows would silently duplicate every
+        // festival-mega-bill post and break its URL (#242). Four of them had
+        // already drifted out of reach by the time this was found.
+        id: `festival-mega-bill-${slugify(`${concert.date}-${concert.headliner}`)}`,
         detector: "festival-mega-bill" as const,
         category: "cultural" as const,
         temporality: "evergreen" as const,
@@ -1109,6 +1115,8 @@ function detectAlbumContext(concerts: Concert[]): AnalysisFinding[] {
       return dA - dB;
     })[0];
 
+    // Safe use of a row id: this set is built and discarded inside this call, so it
+    // never outlives the numbering it depends on. Unlike a finding id (#242).
     if (usedConcertIds.has(anchor.id + album.album)) continue;
     usedConcertIds.add(anchor.id + album.album);
 
