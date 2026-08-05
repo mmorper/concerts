@@ -68,10 +68,17 @@ describe('the setlist index', () => {
 })
 
 describe('degrading silently without setlists', () => {
+  // full-circle is setlist-*native* — no setlists, no findings, by design. The
+  // invariant here is about the detectors the corpus merely enriches.
+  const SETLIST_NATIVE = new Set(['full-circle'])
+  const enriched = (fs: typeof withSongs) => fs.filter((f) => !SETLIST_NATIVE.has(f.detector))
+
   it('produces the same findings with or without the index', () => {
     // The corpus enriches; it must never gate. Same count, same ids.
-    expect(withSongs.length).toBe(withoutSongs.length)
-    expect(withSongs.map((f) => f.id).sort()).toEqual(withoutSongs.map((f) => f.id).sort())
+    expect(enriched(withSongs).length).toBe(enriched(withoutSongs).length)
+    expect(enriched(withSongs).map((f) => f.id).sort()).toEqual(
+      enriched(withoutSongs).map((f) => f.id).sort()
+    )
   })
 
   it('carries no song join at all when the index is absent', () => {
@@ -151,13 +158,18 @@ describe('the joins themselves', () => {
 })
 
 describe('setlist links stay honest', () => {
+  // Everyone who performed that night, openers included: `artists-metadata.json`
+  // covers 280 artists against 107 headliners, and a `?show=` link naming an
+  // opener resolves — verified live against the deployed meta-injector.
+  const slugOf = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
   const byDate = new Map<string, Set<string>>()
   for (const c of concerts) {
     if (!byDate.has(c.date)) byDate.set(c.date, new Set())
     byDate.get(c.date)!.add(c.headlinerNormalized)
+    for (const o of (c as any).openers ?? []) byDate.get(c.date)!.add(slugOf(o))
   }
 
-  it('artists[0] headlined the night concertDate points at', () => {
+  it('artists[0] performed on the night concertDate points at', () => {
     // venue-ghost lists every artist who played the venue; leading with the
     // *first* night's headliner while pointing at the *last* night's date is
     // the #239 mismatch, which this detector would have reintroduced.

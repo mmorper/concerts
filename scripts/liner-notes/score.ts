@@ -136,6 +136,14 @@ function computeSpan(f: AnalysisFinding): number {
       const yearsAgo = new Date().getFullYear() - year;
       return yearsAgo > 30 ? 10 : yearsAgo > 20 ? 7 : yearsAgo > 10 ? 4 : 2;
     }
+    case "full-circle": {
+      // Distance between hearing the cover and hearing the original. A same-night
+      // pairing has a gap of 0 but is the *most* striking version, so it is
+      // scored at the top rather than the bottom — see computeSurpriseFactor.
+      if (dp.sameNight === true) return 10;
+      const gap = dp.gapYears as number;
+      return gap > 30 ? 10 : gap > 20 ? 7 : gap > 10 ? 4 : 2;
+    }
     case "genre-outlier": {
       // Span = how many years ago the show(s) happened
       const year = f.years[0];
@@ -246,6 +254,14 @@ function computeSurpriseFactor(f: AnalysisFinding): number {
     case "album-context": {
       const isSameArtist = (f.dataPoints as Record<string, unknown>).isSameArtist as boolean;
       return isSameArtist ? 9 : 6; // Higher wow if you saw the artist themselves
+    }
+    case "full-circle": {
+      // Two acts on one bill playing the same song is the strongest version there
+      // is (#230). Two acts sharing a member is the weakest — Brian Setzer playing
+      // a Stray Cats song is a man playing his own back catalogue, where Dropkick
+      // Murphys playing Springsteen is a genuine stranger-to-stranger join.
+      if (dp.sameNight === true) return 10;
+      return dp.sharedMember ? 6 : 9;
     }
     case "genre-outlier":
       return 8; // A genuine anomaly in an otherwise coherent archive

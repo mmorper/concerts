@@ -11,6 +11,12 @@
 import type { Concert } from "../../src/types/concert.ts";
 import type { AnalysisFinding, ContentCategory, DetectorName } from "./types.ts";
 import {
+  EMPTY_ALIAS_MAP,
+  canonicalOf,
+  sharedMemberOf,
+  type AliasMap,
+} from "./artist-aliases.ts";
+import {
   describeSong,
   songsAtEveryShow,
   songsFor,
@@ -1397,6 +1403,8 @@ export interface AnalysisResult {
 export interface AnalyzeOptions {
   venuesMetadata?: Record<string, VenueMetaSlim>;
   artistsMetadata?: Record<string, { genres?: string[] }>;
+  /** Artist billing aliases (#227). Absent means every billing is its own act. */
+  aliases?: AliasMap;
   /**
    * Setlist lookup (#229). Optional: without it every detector behaves exactly
    * as before and simply carries no song detail, which is how concerts with no
@@ -1428,6 +1436,7 @@ export function analyze(
     ...detectCityPulse(past),
     ...detectAlbumContext(past),
     ...detectGenreOutlier(past, options.artistsMetadata ?? {}),
+    ...detectFullCircle(past, options.setlists, options.aliases),
   ];
 
   const findingsByDetector: Record<string, number> = {};
@@ -1450,4 +1459,155 @@ export function analyze(
       findingsByCategory,
     },
   };
+}
+
+// ── 16. Full Circle Detector ─────────────────────────────────────────────────
+
+/**
+ * You watched someone play a song, and you also watched the artist whose song it
+ * is play it themselves (#228).
+ *
+ * This is a join, not an aggregation — two records that have no business knowing
+ * about each other, connected across decades. "Ring of Fire, 7 times" is a
+ * spreadsheet; "you saw Nile Rodgers play Notorious in 2026, and you saw Duran
+ * Duran play it in 1987, and he produced the record" is a story.
+ *
+ * Alias-aware in two directions (#227):
+ *
+ *   - the original artist is matched on canonical identity, so a cover credited
+ *     to one billing still finds a performance under another;
+ *   - a performer covering their own act is not a finding. Without this,
+ *     "you've heard Rock This Town from four different artists" is about one man.
+ *
+ * Same-act billings are also collapsed when deduplicating, so Brian Setzer
+ * playing a Stray Cats song does not publish three times — once for each of his
+ * marquees — which is what the raw data does.
+ *
+ * Absorbs #230: two acts playing the same song on the *same bill* is not a
+ * separate detector with one instance in it, it is the most extreme full circle
+ * there is. Living Colour covered "Welcome to the Terrordome" on a night Public
+ * Enemy played it themselves.
+ */
+function detectFullCircle(
+  concerts: Concert[],
+  setlists?: SetlistIndex,
+  aliases: AliasMap = EMPTY_ALIAS_MAP
+): AnalysisFinding[] {
+  if (!setlists) return [];
+
+  interface Performance {
+    song: string;
+    by: string;
+    concert: Concert;
+    /** Canonical slug of whoever's song it is, when it's a cover. */
+    original?: string;
+  }
+
+  // Display names for everyone on a bill, headliners and openers alike — the
+  // slug is not presentable and the concert record only names the headliner.
+  const displayNames = new Map<string, string>();
+  for (const concert of concerts) {
+    displayNames.set(concert.headlinerNormalized, concert.headliner);
+    for (const opener of concert.openers) {
+      if (!displayNames.has(slugify(opener))) displayNames.set(slugify(opener), opener);
+    }
+  }
+  const nameOf = (slug: string) => displayNames.get(slug) ?? slug;
+
+  const performances: Performance[] = [];
+  for (const concert of concerts) {
+    const onBill = [concert.headlinerNormalized, ...concert.openers.map(slugify)];
+    for (const artist of onBill) {
+      for (const song of songsFor(setlists, concert.date, artist)) {
+        performances.push({
+          song: song.name,
+          by: artist,
+          concert,
+          original: song.cover ? canonicalOf(aliases, slugify(song.cover.name)) : undefined,
+        });
+      }
+    }
+  }
+
+  // Songs performed by the act that owns them, keyed for lookup by the covers.
+  const owned = new Map<string, Performance[]>();
+  for (const p of performances) {
+    if (p.original) continue;
+    const key = `${p.song.toLowerCase()}::${canonicalOf(aliases, p.by)}`;
+    if (!owned.has(key)) owned.set(key, []);
+    owned.get(key)!.push(p);
+  }
+
+  const findings: AnalysisFinding[] = [];
+  const seen = new Set<string>();
+
+  for (const cover of performances) {
+    if (!cover.original) continue;
+
+    const coverAct = canonicalOf(aliases, cover.by);
+    // Playing your own act's song is not a full circle.
+    if (coverAct === cover.original) continue;
+
+    const originals = owned.get(`${cover.song.toLowerCase()}::${cover.original}`);
+    if (!originals?.length) continue;
+
+    // The *first* time the original act played it, not the nearest. "I'd seen
+    // Duran Duran play Notorious back in 1987" is the anchor the story wants;
+    // picking the closest performance would quietly shrink a 39-year span to 18.
+    const original = [...originals].sort((a, b) =>
+      a.concert.date.localeCompare(b.concert.date)
+    )[0];
+
+    // One story per song per pair of acts, regardless of how many billings or
+    // nights it turns up under.
+    const key = `${cover.song.toLowerCase()}::${coverAct}::${cover.original}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    const gap = spanYears(original.concert.date, cover.concert.date);
+    const sameNight = original.concert.date === cover.concert.date;
+    // Two acts who share a person is a weaker surprise than two unrelated ones —
+    // still a story (Danny Elfman playing Oingo Boingo songs 35 years on), but it
+    // shouldn't outrank a genuine stranger-to-stranger join.
+    const member = sharedMemberOf(aliases, coverAct, cover.original);
+
+    const coverName = nameOf(cover.by);
+    const originalName = nameOf(original.by);
+
+    const tags = ["#full-circle", "#cover"];
+    if (sameNight) tags.push("#same-night");
+    if (member) tags.push("#shares-member");
+
+    findings.push({
+      id: `full-circle-${slugify(cover.song)}-${coverAct}-${cover.original}`,
+      detector: "full-circle",
+      category: "cultural",
+      temporality: "evergreen",
+      headline: sameNight
+        ? `"${cover.song}": Twice in One Night`
+        : `"${cover.song}": ${coverName} and ${originalName}, ${gap} Years Apart`,
+      dataPoints: {
+        song: cover.song,
+        coverArtist: coverName,
+        coverDate: cover.concert.date,
+        coverVenue: cover.concert.venue,
+        originalArtist: originalName,
+        originalDate: original.concert.date,
+        originalVenue: original.concert.venue,
+        gapYears: gap,
+        sameNight,
+        ...(member ? { sharedMember: member } : {}),
+      },
+      // The night the circle closed.
+      concertDate: cover.concert.date,
+      artists: [...new Set([cover.by, original.by])],
+      venues: [...new Set([cover.concert.venueNormalized, original.concert.venueNormalized])],
+      years: [...new Set([original.concert.year, cover.concert.year])],
+      suggestedImage: { type: "artist", artistNormalized: cover.by },
+      suggestedTrack: { artistNormalized: cover.by },
+      tags,
+    });
+  }
+
+  return findings;
 }
