@@ -136,6 +136,11 @@ function computeSpan(f: AnalysisFinding): number {
       const yearsAgo = new Date().getFullYear() - year;
       return yearsAgo > 30 ? 10 : yearsAgo > 20 ? 7 : yearsAgo > 10 ? 4 : 2;
     }
+    case "guest-bridge": {
+      // Years between the walk-on and the nearest time you saw them headline.
+      const gap = dp.gapYears as number;
+      return gap > 20 ? 10 : gap > 10 ? 7 : gap > 5 ? 4 : 2;
+    }
     case "full-circle": {
       // Distance between hearing the cover and hearing the original. A same-night
       // pairing has a gap of 0 but is the *most* striking version, so it is
@@ -255,6 +260,12 @@ function computeSurpriseFactor(f: AnalysisFinding): number {
       const isSameArtist = (f.dataPoints as Record<string, unknown>).isSameArtist as boolean;
       return isSameArtist ? 9 : 6; // Higher wow if you saw the artist themselves
     }
+    case "guest-bridge":
+      // Someone stepping onto a stage that isn't theirs, whom you also saw
+      // headline, is a strong join — but a shade below full-circle, because it
+      // is one night connecting to a career rather than two performances of the
+      // same song across decades.
+      return 8;
     case "full-circle": {
       // Two acts on one bill playing the same song is the strongest version there
       // is (#230). Two acts sharing a member is the weakest — Brian Setzer playing

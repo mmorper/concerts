@@ -29,6 +29,7 @@ export type DetectorName =
   | "album-context"
   | "genre-outlier"
   | "full-circle"
+  | "guest-bridge"
   // Tier 2 — stubbed for future phases
   | "discography-crossref"
   | "temporal-pattern"
