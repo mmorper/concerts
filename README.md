@@ -7,11 +7,11 @@ _A visual love letter to four decades of live music._
 
 An interactive web app for exploring personal concert history. Five scenes—Timeline, Venues, Geography, Genres, Artists—each offering a different lens on 178 shows spanning 1984 to today. Click through decades, trace connections between venues and artists, see where the music happened on a map. All enriched with artist photos, venue imagery, and setlist data.
 
-**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 184 shows • 258 artists • 79 venues • 5+ decades
+**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 184 shows • 257 artists • 79 venues • 5+ decades
 
 ## What's new
 
-**v5.1.0** 🔗 One night, one link. Until now I could send you to a band, but not to a night. Open any setlist and there's a link icon beside the date — copy it, and whoever opens it lands exactly where you were: that band, that venue, that evening's songs, already open. Pasted into Slack it names the show, not just the artist. [See a setlist](https://concerts.morperhaus.org/?scene=artists&artist=nile-rodgers&show=2026-07-31).
+**v5.2.0** 🎲 Every story gets a turn. The archive writes its own liner notes, and it had fallen into a rut — of fifteen kinds of story it can tell, the same five kept coming up and five had never appeared once. They weren't worse; they just couldn't score as highly, and the highest score won every week. Now they take turns, and twenty posts link straight through to what was played that night. [Read the liner notes](https://concerts.morperhaus.org/liner-notes).
 
 **v5.0.0** 🎙️ Ask the Archive — right here. Forty years of shows are now a conversation: ask on the site (the journey ends in a chat — or press ⌘K from anywhere), or bring it into Claude. It answers in the archive’s own voice, always true to the shows that really happened. [Ask the archive](https://concerts.morperhaus.org/?scene=ask).
 

@@ -1,6 +1,21 @@
 {
   "releases": [
     {
+      "version": "5.2.0",
+      "date": "2026-08-05",
+      "title": "Every Story Gets a Turn",
+      "description": "The archive writes its own liner notes — short pieces about patterns it finds across forty years of gigs. It had fallen into a rut: there are fifteen kinds of story it can tell, but the same five kept coming up and five had never appeared once. The reason turned out to be dull. Every story was scored out of 60 and the highest score won, but some kinds of story simply can't score as highly as others — so they lost every week, on arithmetic rather than merit. Now they take turns: every kind gets written before any comes round again.",
+      "route": "/liner-notes",
+      "highlights": [
+        "Five kinds of story that had never appeared are now in the mix — a fortnight with too many gigs in it, a milestone show, a room that's since been knocked down, a year with something in the air",
+        "Nothing repeats until all fifteen have had a turn",
+        "Twenty posts now link straight to what was played that night — from a Foo Fighters post through to the 24 songs they played at RFK Stadium on 4 July 2015, fireworks and all",
+        "Ask the archive what a band played on a given night and it tells you whose song it originally was — a Nile Rodgers set turns out to be almost entirely other people's records, from Chic to Bowie to Daft Punk",
+        "A “streak” used to mean any loose run of gigs — “14 Concerts in 215 Days”. Now it means what you'd expect: three shows in ten days",
+        "A post claiming an “International Chapter” of 177 concerts was neither — a lookup bug filed every California show as international. It reads as a West Coast run of 26 shows now, and a few others got their album art and their broken “related” links back"
+      ]
+    },
+    {
       "version": "5.1.0",
       "date": "2026-08-04",
       "title": "One Night, One Link",

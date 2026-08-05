@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v5.1.0 (Production)
+**Version:** v5.2.0 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-06-18
 
@@ -115,6 +115,7 @@ docs/
 
 **Recent Releases:**
 
+- **v5.2.0** (2026-08-05): Liner notes selection rewritten to detector rotation — all 15 detectors publish, first repeat at post 16 (#226/#231); setlist deep links wired for the first time, 20 posts (#198/#239); geographic-chapter region mapping (#232); milestone-marker scoring + concert-streak window (#233); dangling relatedSlugs + venue image chain (#234/#235)
 - **v5.1.0** (2026-08-04): Setlist deep linking (`&show=`) across six surfaces (#195); root CI gate (#116); three pipeline/SEO suites repaired (#207); share implementations consolidated (#204)
 - **v5.0.0** (2026-06-20): Ask the Archive — in-app conversational client, ⌘K spotlight, MCP connector; Operator Dashboard phases 0–6 (#159)
 - **v4.6.1** (2026-04-16): Liner Notes Tuning & Polish — smarter artist/category variety, UI fixes
@@ -216,4 +217,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-08-04 by Claude Code for v5.1.0 release*
+*Last updated: 2026-08-05 by Claude Code for v5.2.0 release*
