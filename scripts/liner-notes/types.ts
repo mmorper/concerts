@@ -28,6 +28,7 @@ export type DetectorName =
   | "city-pulse"
   | "album-context"
   | "genre-outlier"
+  | "full-circle"
   // Tier 2 — stubbed for future phases
   | "discography-crossref"
   | "temporal-pattern"

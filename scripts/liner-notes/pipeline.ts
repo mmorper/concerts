@@ -20,6 +20,7 @@ import { score } from "./score.ts";
 import { select, buildPosts, POSTS_PER_RUN } from "./curate.ts";
 import { generate } from "./generate.ts";
 import { buildSetlistIndex, type SetlistIndex } from "./setlists.ts";
+import { buildAliasMap, EMPTY_ALIAS_MAP, type AliasMap } from "./artist-aliases.ts";
 import type { PipelineOptions, ScoredFinding } from "./types.ts";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesData, LinerNotesPost } from "../../src/types/liner-notes.ts";
@@ -90,6 +91,7 @@ export async function run(options: PipelineOptions): Promise<void> {
     readFileSync(join(DATA_DIR, "venues-metadata.json"), "utf8")
   );
   const setlists = loadSetlistIndex();
+  const aliases = loadAliasMap();
   // Same source, two uses: the detectors join against it, and buildDeepLinks
   // uses the dates to decide whether a ?show= link would open an empty panel.
   const datesWithSetlists = new Set([...setlists.keys()].map((k) => k.split("::")[0]));
@@ -106,7 +108,7 @@ export async function run(options: PipelineOptions): Promise<void> {
 
   // ── Stage 1: Analyze ─────────────────────────────────────────────────────
   console.log("\n🔍 Stage 1: Analyzing concert patterns...");
-  const { findings, stats } = analyze(concerts, today, { venuesMetadata, artistsMetadata, setlists });
+  const { findings, stats } = analyze(concerts, today, { venuesMetadata, artistsMetadata, setlists, aliases });
   console.log(`   Found ${findings.length} raw findings (${stats.concertsAnalyzed} concerts analyzed)`);
   for (const [detector, count] of Object.entries(stats.findingsByDetector)) {
     console.log(`   • ${detector}: ${count}`);
@@ -253,6 +255,24 @@ export async function run(options: PipelineOptions): Promise<void> {
  * did before #229 and simply carries no song detail, and no `?show=` link is
  * emitted — rather than emitting links we can't stand behind.
  */
+/**
+ * Hand-maintained artist billing aliases (#227). A missing file means every
+ * billing is treated as its own act — exactly the behaviour before the map.
+ */
+function loadAliasMap(): AliasMap {
+  const path = join(ROOT, "data", "artist-aliases.json");
+  if (!existsSync(path)) {
+    console.warn("   ⚠️  data/artist-aliases.json missing — billings will not be collapsed");
+    return EMPTY_ALIAS_MAP;
+  }
+  try {
+    return buildAliasMap(JSON.parse(readFileSync(path, "utf8")));
+  } catch (err) {
+    console.warn(`   ⚠️  Could not read artist-aliases.json (${(err as Error).message})`);
+    return EMPTY_ALIAS_MAP;
+  }
+}
+
 function loadSetlistIndex(): SetlistIndex {
   const path = join(DATA_DIR, "setlists-cache.json");
   if (!existsSync(path)) {

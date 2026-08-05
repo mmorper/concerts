@@ -462,6 +462,35 @@ Each detector produces one or more `AnalysisFinding` objects with a `category`, 
 
 ---
 
+### 16. Full Circle (`full-circle`)
+
+**What it finds:** A song you watched someone cover, which you also watched the artist whose song it is play themselves.
+
+**Category:** Cultural | **Temporality:** Evergreen
+
+**Data points:** Song, cover artist / date / venue, original artist / date / venue, gap in years, `sameNight`, and `sharedMember` when the two acts have a person in common.
+
+**Anchors on the *first* time the original act played it**, not the nearest performance — "I'd seen Duran Duran play Notorious back in 1987" is the story, and picking the closest performance would shrink a 39-year span to 18.
+
+**Alias-aware** ([#227](https://github.com/mmorper/concerts/issues/227)) in two directions: the original artist is matched on canonical identity, and an act covering itself is never a finding. Billings are collapsed when deduplicating, so Brian Setzer playing a Stray Cats song publishes once rather than once per marquee — the raw data yields three.
+
+**Scoring note:** surprise is 10 for a same-night pairing, 9 for two unrelated acts, 6 when they share a member. Setzer playing Stray Cats songs is a man playing his own back catalogue; Dropkick Murphys playing Springsteen is a genuine stranger-to-stranger join.
+
+**Absorbs [#230](https://github.com/mmorper/concerts/issues/230).** Two acts playing the same song on the *same bill* is not a one-instance detector, it is the most extreme full circle there is — and it scores top of the detector rather than bottom, which a purely gap-driven score would have done.
+
+**Auto-tags:** `#full-circle`, `#cover`, plus `#same-night` / `#shares-member`.
+
+**Deep link:** sets `concertDate` to the night the circle closed.
+
+**Returns:** 26 findings on current data.
+
+**Example headlines:**
+- *"Notorious": Nile Rodgers and Duran Duran, 39 Years Apart*
+- *"Welcome to the Terrordome": Twice in One Night*
+- *"No Surrender": Dropkick Murphys and Bruce Springsteen, 28 Years Apart*
+
+---
+
 ## Planned Detectors (Tier 2)
 
 Tracked in [GitHub issue #68](https://github.com/mmorper/concerts/issues/68). These four detectors were scoped during v4.4.x but deferred — each has a specific reason it can't ship yet. They are declared in `types.ts` but have no implementation in `analyze.ts`.
