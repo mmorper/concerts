@@ -475,13 +475,18 @@ function detectConcertStreak(concerts: Concert[]): AnalysisFinding[] {
     const streakStart = sorted[i];
     const streakShows: Concert[] = [streakStart];
 
+    // The window is anchored to the first show in the streak, not to the
+    // previously added one. Measuring gap-to-previous chains transitively — each
+    // hop restarts the 30 days — so a run extended without bound and produced
+    // "14 Concerts in 215 Days", which is a busy stretch, not a streak (#233).
+    const windowStart = new Date(streakStart.date + "T12:00:00Z").getTime();
+
     let j = i + 1;
     while (j < sorted.length) {
-      const prev = new Date(streakShows[streakShows.length - 1].date + "T12:00:00Z");
-      const curr = new Date(sorted[j].date + "T12:00:00Z");
-      const dayGap = Math.round((curr.getTime() - prev.getTime()) / 86_400_000);
+      const curr = new Date(sorted[j].date + "T12:00:00Z").getTime();
+      const daysFromStart = Math.round((curr - windowStart) / 86_400_000);
 
-      if (dayGap <= 30) {
+      if (daysFromStart <= STREAK_WINDOW_DAYS) {
         streakShows.push(sorted[j]);
         j++;
       } else {
@@ -549,15 +554,29 @@ function detectConcertStreak(concerts: Concert[]): AnalysisFinding[] {
     i = j > i + 1 ? j : i + 1;
   }
 
-  // Return the top 3 longest streaks
+  // Return the top 3 streaks — densest first.
+  //
+  // Ranking on showCount alone leaves a 9-way tie on current data (every
+  // qualifying streak has exactly 3 shows), resolved by array order, so the
+  // three chronologically earliest won and "3 Concerts in 28 Days" beat
+  // "3 Concerts in 10 Days". Break on density, then id, so the comparator is
+  // total and never falls through to insertion order (#233).
   return findings
-    .sort((a, b) => (b.dataPoints.showCount as number) - (a.dataPoints.showCount as number))
+    .sort(
+      (a, b) =>
+        (b.dataPoints.showCount as number) - (a.dataPoints.showCount as number) ||
+        (a.dataPoints.totalDays as number) - (b.dataPoints.totalDays as number) ||
+        a.id.localeCompare(b.id)
+    )
     .slice(0, 3);
 }
 
 // ── 7. Milestone Marker Detector ──────────────────────────────────────────────
 
 const MILESTONES = new Set([1, 25, 50, 75, 100, 150, 175, 200]);
+
+/** Length of the window a concert streak must fit inside, in days. */
+const STREAK_WINDOW_DAYS = 30;
 
 function detectMilestoneMarker(concerts: Concert[]): AnalysisFinding[] {
   const sorted = [...concerts].sort((a, b) => a.date.localeCompare(b.date));
@@ -589,10 +608,23 @@ function detectMilestoneMarker(concerts: Concert[]): AnalysisFinding[] {
         date: concert.date,
         year: concert.year,
         openers: concert.openers,
+        // A milestone is an accumulation, so the story is the distance back to
+        // the first show. `spanYears` is what computeSpan scores (#233); the
+        // firstShow block is what lets the prose say which night it counts from.
+        spanYears: concert.year - sorted[0].year,
+        firstShow: {
+          date: sorted[0].date,
+          artist: sorted[0].headliner,
+          venue: sorted[0].venue,
+          year: sorted[0].year,
+        },
       },
       artists: [concert.headlinerNormalized],
       venues: [concert.venueNormalized],
       years: [concert.year],
+      // A milestone is one specific night — it should carry a setlist deep link
+      // like any other concert-scoped finding (#198).
+      concertDate: concert.date,
       suggestedImage: { type: "artist", artistNormalized: concert.headlinerNormalized },
       suggestedTrack: { artistNormalized: concert.headlinerNormalized },
       tags: ["#milestone"],

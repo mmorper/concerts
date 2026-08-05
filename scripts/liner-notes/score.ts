@@ -155,8 +155,15 @@ function computeSpan(f: AnalysisFinding): number {
       const yearsAgo = new Date().getFullYear() - year;
       return yearsAgo > 30 ? 10 : yearsAgo > 20 ? 7 : yearsAgo > 10 ? 4 : 2;
     }
+    case "milestone-marker": {
+      // A milestone is inherently a span measure — the years accumulated from
+      // concert #1 to concert #N. This case was missing entirely and fell
+      // through to `default: 0`, which capped every milestone at 19: one point
+      // under MIN_SCORE. The detector had never published a post (#233).
+      const span = dp.spanYears as number;
+      return span > 30 ? 10 : span > 20 ? 7 : span > 10 ? 4 : 0;
+    }
     case "concert-streak":
-    case "milestone-marker":
     default:
       return 0;
   }
