@@ -18,6 +18,7 @@ import { fileURLToPath } from "url";
 import { analyze } from "./analyze.ts";
 import { score } from "./score.ts";
 import { select, buildPosts, POSTS_PER_RUN } from "./curate.ts";
+import { refreshPostImages } from "./refresh-images.ts";
 import { generate } from "./generate.ts";
 import { buildSetlistIndex, type SetlistIndex } from "./setlists.ts";
 import { buildAliasMap, EMPTY_ALIAS_MAP, type AliasMap } from "./artist-aliases.ts";
@@ -183,19 +184,52 @@ export async function run(options: PipelineOptions): Promise<void> {
   });
   console.log(`   Built ${newPosts.length} post${newPosts.length !== 1 ? "s" : ""}`);
 
-  if (newPosts.length === 0) {
-    console.log("\n⚠️  No posts built (prose may have failed validation). Nothing written.");
-    return;
-  }
-
   // Stage 5b — the post-prose "pick one, discard the rest" filter — is gone.
   // It was a depth-1 detector cooldown ("don't repeat the previous detector")
   // applied after the API calls had already been paid for. Rotation generalizes
   // it into the selection stage with a memory longer than a single post (#231).
 
+  // ── Stage 5c: Refresh images ─────────────────────────────────────────────
+  // Deliberately ahead of the no-new-posts early return: published posts hold
+  // third-party image URLs that can be revoked at any time, and that rot is
+  // independent of whether this week produced content. Skipping it on a quiet
+  // week is exactly how a post stays broken indefinitely (#252).
+  const allPosts = mergePosts(newPosts, existingPosts);
+
+  console.log("\n🖼️  Stage 5c: Refreshing post images...");
+  let refreshedSlugs: string[] = [];
+  try {
+    const refresh = await refreshPostImages(
+      allPosts,
+      { artistsMetadata, artistsTopTracks, venuesMetadata },
+      { validate: true, verbose: true }
+    );
+    refreshedSlugs = refresh.changedSlugs;
+    console.log(
+      `   ✓ ${refresh.posts} post${refresh.posts !== 1 ? "s" : ""} checked — ` +
+        `${refresh.backfilled} ref backfilled, ${refresh.reresolved} re-resolved, ` +
+        `${refresh.repaired} repaired, ${refresh.fellBack} to placeholder`
+    );
+    for (const dead of refresh.deadUrls) {
+      console.warn(`   ⚠️  Dead image URL — ${dead}`);
+    }
+  } catch (err) {
+    // Never fail the run over image refresh; posts are still publishable.
+    console.warn("   ⚠️  Image refresh skipped:", (err as Error).message);
+  }
+
+  if (newPosts.length === 0 && refreshedSlugs.length === 0) {
+    console.log("\n⚠️  No posts built and no image changes. Nothing written.");
+    return;
+  }
+  if (newPosts.length === 0) {
+    console.log(
+      `\n📝 No new posts, but ${refreshedSlugs.length} image${refreshedSlugs.length !== 1 ? "s" : ""} changed — writing.`
+    );
+  }
+
   // ── Stage 6: Merge and write ─────────────────────────────────────────────
   console.log("\n💾 Stage 6: Writing liner-notes.json...");
-  const allPosts = mergePosts(newPosts, existingPosts);
   // Counts prose generations actually performed, not candidates ranked — the
   // reserve is usually never touched, so `selected.length` would overstate it.
   const totalGenerated = (existingData?.metadata.totalGenerated ?? 0) + attempted;
@@ -230,11 +264,22 @@ export async function run(options: PipelineOptions): Promise<void> {
   }
 
   // ── Stage 8: OG images ───────────────────────────────────────────────────
+  // New posts plus any whose image changed in Stage 5c — an OG card composited
+  // from a since-revoked photo is stale in exactly the same way the post was.
   try {
     console.log("\n🖼️  Stage 8: Generating OG images...");
     const { generateOgImages } = await import("./og-image.ts");
-    await generateOgImages(newPosts);
-    console.log(`   ✓ Generated OG images for ${newPosts.length} new post${newPosts.length !== 1 ? "s" : ""}`);
+    const changed = new Set(refreshedSlugs);
+    const newSlugs = new Set(newPosts.map((p) => p.slug));
+    const ogTargets = [
+      ...newPosts,
+      ...allPosts.filter((p) => changed.has(p.slug) && !newSlugs.has(p.slug)),
+    ];
+    await generateOgImages(ogTargets);
+    console.log(
+      `   ✓ Generated OG images for ${ogTargets.length} post${ogTargets.length !== 1 ? "s" : ""}` +
+        ` (${newPosts.length} new, ${ogTargets.length - newPosts.length} refreshed)`
+    );
   } catch (err) {
     console.warn("   ⚠️  OG image generation skipped:", (err as Error).message);
   }

@@ -966,7 +966,17 @@ Over-collapsing is the more expensive mistake, because it destroys findings sile
 
 ### Consumers
 
-`scripts/liner-notes/artist-aliases.ts`, used by the liner notes pipeline only. **The site, the Artist scene and the MCP server do not read it** — merging the artist mosaic is a visible product change and needs its own decision (#227 Q4). Anything added to that list changes the blast radius.
+Three, since #227 Q4:
+
+| consumer | reads | uses |
+| -------- | ----- | ---- |
+| liner notes pipeline | `data/artist-aliases.json` via `scripts/liner-notes/artist-aliases.ts` | both relations |
+| Artist scene (SPA) | `/data/artist-aliases.json` via `src/utils/artistAliases.ts` | `sameAct` only — merges the mosaic cards |
+| MCP server | `/data/artist-aliases.json` via `workers/mcp-server/src/aliases.ts` | `sameAct` only — merges artist history |
+
+The two readers outside the pipeline are deliberately narrower: they use `sameAct` and ignore `sharesMember`. That relation exists to keep acts *apart*, so folding Oingo Boingo into Danny Elfman in the mosaic would invert its purpose.
+
+`scripts/sync-artist-aliases.ts` publishes the source file to `public/data/`, wired into `build-data` so the two can't drift. The MCP reads it from the live site like every other data file.
 
 ### Failure mode
 

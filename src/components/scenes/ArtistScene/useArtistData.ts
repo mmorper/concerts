@@ -1,5 +1,12 @@
 import { useMemo, useState, useEffect } from 'react'
 import { normalizeArtistName } from '../../../utils/normalize'
+import {
+  aliasDisplayName,
+  buildArtistAliasMap,
+  canonicalArtist,
+  EMPTY_ARTIST_ALIAS_MAP,
+  type ArtistAliasMap
+} from '../../../utils/artistAliases'
 import type { Concert } from '../../../types/concert'
 import type {
   ArtistCard,
@@ -21,6 +28,9 @@ function getSizeClass(_timesSeen: number): SizeClass {
  */
 export function useArtistData(concerts: Concert[]) {
   const [spotifyMetadata, setSpotifyMetadata] = useState<ArtistsMetadataFile | null>(null)
+  // Billing aliases (#227). Starts empty and stays empty if the fetch fails, so
+  // a missing file leaves the mosaic exactly as it was rather than breaking it.
+  const [aliases, setAliases] = useState<ArtistAliasMap>(EMPTY_ARTIST_ALIAS_MAP)
 
   // Load Spotify metadata on mount
   useEffect(() => {
@@ -28,6 +38,13 @@ export function useArtistData(concerts: Concert[]) {
       .then(res => res.json())
       .then(data => setSpotifyMetadata(data))
       .catch(err => console.error('Failed to load artist metadata:', err))
+  }, [])
+
+  useEffect(() => {
+    fetch('/data/artist-aliases.json')
+      .then(res => res.json())
+      .then(data => setAliases(buildArtistAliasMap(data)))
+      .catch(err => console.warn('Artist aliases unavailable, billings stay separate:', err))
   }, [])
 
   // Aggregate concert data by artist
@@ -48,11 +65,13 @@ export function useArtistData(concerts: Concert[]) {
     // Process all concerts (headliners AND openers)
     concerts.forEach(concert => {
       // Add headliner
-      const headlinerNorm = normalizeArtistName(concert.headliner)
+      // One act, however it was billed (#227). Brian Setzer occupied four cards
+      // across eight shows before this.
+      const headlinerNorm = canonicalArtist(aliases, normalizeArtistName(concert.headliner))
 
       if (!artistMap.has(headlinerNorm)) {
         artistMap.set(headlinerNorm, {
-          name: concert.headliner,
+          name: aliasDisplayName(aliases, headlinerNorm) ?? concert.headliner,
           normalizedName: headlinerNorm,
           concerts: [],
           genres: new Map()
@@ -77,11 +96,11 @@ export function useArtistData(concerts: Concert[]) {
         concert.openers.forEach(opener => {
           if (!opener || !opener.trim()) return
 
-          const openerNorm = normalizeArtistName(opener)
+          const openerNorm = canonicalArtist(aliases, normalizeArtistName(opener))
 
           if (!artistMap.has(openerNorm)) {
             artistMap.set(openerNorm, {
-              name: opener.trim(),
+              name: aliasDisplayName(aliases, openerNorm) ?? opener.trim(),
               normalizedName: openerNorm,
               concerts: [],
               genres: new Map()
@@ -157,7 +176,7 @@ export function useArtistData(concerts: Concert[]) {
     })
 
     return cards
-  }, [concerts, spotifyMetadata])
+  }, [concerts, spotifyMetadata, aliases])
 
   return { artistCards, isLoading: !spotifyMetadata }
 }

@@ -7,6 +7,7 @@
 // network. registerTools() is the I/O seam: it fetches via the data layer, then narrates.
 
 import { z } from "zod";
+import { EMPTY_ALIAS_INDEX, aliasName, buildAliasIndex, canonicalSlug, slugsFor, type AliasIndex } from "./aliases.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
@@ -35,7 +36,7 @@ import {
   isQueryUsageOverCap,
   readQueryUsage,
   recordQueryUsage,
-} from "./data.js";
+  getArtistAliases,} from "./data.js";
 import { recordMcpQuery } from "./telemetry.js";
 import QUERY_PROMPT from "../prompts/query.md";
 
@@ -347,11 +348,31 @@ export function searchConcerts(concerts: Concert[], params: SearchParams): { tex
 // ===================================================================
 
 export type ArtistResolution =
-  | { kind: "match"; name: string; slug: string }
+  | { kind: "match"; name: string; slug: string; slugs: string[] }
   | { kind: "ambiguous"; options: string[] }
   | { kind: "none" };
 
-export function resolveArtist(concerts: Concert[], query: string): ArtistResolution {
+/**
+ * Fold a raw billing match onto its canonical act (#227). "The Brian Setzer
+ * Orchestra" and "Brian Setzer '68 Comeback Special" answer as one artist with
+ * eight shows rather than four artists with one or four each. `slugs` carries
+ * every billing so callers can match concerts under any of them.
+ */
+function matched(aliases: AliasIndex, name: string, slug: string): ArtistResolution {
+  const canon = canonicalSlug(aliases, slug);
+  return {
+    kind: "match",
+    name: aliasName(aliases, slug) ?? name,
+    slug: canon,
+    slugs: slugsFor(aliases, slug),
+  };
+}
+
+export function resolveArtist(
+  concerts: Concert[],
+  query: string,
+  aliases: AliasIndex = EMPTY_ALIAS_INDEX,
+): ArtistResolution {
   const q = query.trim().toLowerCase();
   const byName = new Map<string, { display: string; slug: string }>();
 
@@ -379,7 +400,7 @@ export function resolveArtist(concerts: Concert[], query: string): ArtistResolut
   }
 
   const exact = byName.get(q);
-  if (exact) return { kind: "match", name: exact.display, slug: exact.slug };
+  if (exact) return matched(aliases, exact.display, exact.slug);
 
   // Then an exact slug, so a caller can hand back the slug out of a link these tools
   // emitted — "the-psychedelic-furs" as readily as "The Psychedelic Furs". resolveVenue
@@ -393,7 +414,7 @@ export function resolveArtist(concerts: Concert[], query: string): ArtistResolut
   const qSlug = normalizeName(q);
   if (qSlug) {
     for (const v of byName.values()) {
-      if (v.slug === qSlug) return { kind: "match", name: v.display, slug: v.slug };
+      if (v.slug === qSlug) return matched(aliases, v.display, v.slug);
     }
   }
 
@@ -401,7 +422,7 @@ export function resolveArtist(concerts: Concert[], query: string): ArtistResolut
   if (partials.length === 0) return { kind: "none" };
   if (partials.length === 1) {
     const [, v] = partials[0];
-    return { kind: "match", name: v.display, slug: v.slug };
+    return matched(aliases, v.display, v.slug);
   }
 
   // Multiple partials. If the shortest is contained in all the others, they're one family
@@ -409,7 +430,7 @@ export function resolveArtist(concerts: Concert[], query: string): ArtistResolut
   const sorted = [...partials].sort((a, b) => a[0].length - b[0].length);
   const [shortestName, shortestVal] = sorted[0];
   if (sorted.every(([name]) => name.includes(shortestName))) {
-    return { kind: "match", name: shortestVal.display, slug: shortestVal.slug };
+    return matched(aliases, shortestVal.display, shortestVal.slug);
   }
   return { kind: "ambiguous", options: sorted.map(([, v]) => v.display).sort() };
 }
@@ -420,8 +441,9 @@ export function artistHistory(
   artistsMeta: ArtistsMetadata,
   topTracks: ArtistsTopTracks,
   narration: Narration | null = null,
+  aliases: AliasIndex = EMPTY_ALIAS_INDEX,
 ): string {
-  const r = resolveArtist(concerts, query);
+  const r = resolveArtist(concerts, query, aliases);
   if (r.kind === "none") return `${query.trim()} isn't in the archive.`;
   if (r.kind === "ambiguous") {
     return [
@@ -437,9 +459,11 @@ export function artistHistory(
   // punctuation ("Yaz!" / "Yaz"). It does NOT fold a leading article — "Psychedelic
   // Furs" and "The Psychedelic Furs" are still distinct slugs, which is why that split
   // had to be corrected in the source data rather than papered over here.
-  const headlined = (c: Concert) => c.headlinerNormalized === r.slug;
+  // Any of the act's billings counts as the act (#227).
+  const isThem = new Set(r.slugs);
+  const headlined = (c: Concert) => isThem.has(c.headlinerNormalized);
   const shows = concerts
-    .filter((c) => headlined(c) || c.openers.some((o) => normalizeName(o) === r.slug))
+    .filter((c) => headlined(c) || c.openers.some((o) => isThem.has(normalizeName(o))))
     .sort(byDate);
   const n = shows.length;
   const firstY = shows[0].year;
@@ -1075,15 +1099,17 @@ export function registerTools(server: McpServer, env: Env): void {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
       const query = String(args.artist ?? "");
-      const [meta, tracks] = await Promise.all([
+      const [meta, tracks, aliasData] = await Promise.all([
         getArtistsMetadata(env, bgCtx),
         getArtistsTopTracks(env, bgCtx),
+        getArtistAliases(env, bgCtx),
       ]);
-      const r = resolveArtist(data.concerts, query);
+      const aliases = buildAliasIndex(aliasData);
+      const r = resolveArtist(data.concerts, query, aliases);
       const narration =
         r.kind === "match" ? await getNarration("artists", r.slug, env, bgCtx) : null;
       return textResult(
-        artistHistory(data.concerts, query, meta ?? {}, tracks ?? {}, narration),
+        artistHistory(data.concerts, query, meta ?? {}, tracks ?? {}, narration, aliases),
       );
     }),
   );

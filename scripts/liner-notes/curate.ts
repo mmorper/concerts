@@ -12,6 +12,12 @@
  */
 
 import { MIN_SCORE } from "./score.ts";
+import {
+  PLACEHOLDER_IMAGE_URL,
+  getAlbumArt,
+  getVenueImageUrl,
+  upsizeAppleMusicUrl,
+} from "./image-refs.ts";
 import type { ScoredFinding } from "./types.ts";
 import type {
   DeepLink,
@@ -307,20 +313,17 @@ function isDuplicate(
 
 // ── Image resolution ──────────────────────────────────────────────────────────
 
-/**
- * Apple Music album art URLs support resolution suffixes.
- * Upsize from 100x100 (mini player thumbnail) to 600x600 for card hero images.
- */
-function upsizeAppleMusicUrl(url: string): string {
-  return url.replace(/\/\d+x\d+bb\.jpg$/, '/600x600bb.jpg')
-}
-
 const PLACEHOLDER_IMAGE: PostImage = {
-  url: "/images/liner-notes-placeholder.jpg",
+  url: PLACEHOLDER_IMAGE_URL,
   alt: "Concert",
   source: "placeholder",
 };
 
+/**
+ * Every non-placeholder branch sets `ref` alongside `url`. `ref` is the durable
+ * part — the pipeline re-resolves `url` from it on every run, so a revoked
+ * third-party URL heals instead of stranding the post (#252).
+ */
 function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage {
   const { suggestedImage } = finding;
 
@@ -333,6 +336,7 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
           url,
           alt: displayName(suggestedImage.artistNormalized, options.artistsMetadata),
           source: "artist",
+          ref: suggestedImage.artistNormalized,
         };
       }
     }
@@ -343,6 +347,7 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
           url,
           alt: displayVenueName(suggestedImage.venueNormalized, options),
           source: "venue",
+          ref: suggestedImage.venueNormalized,
         };
       }
     }
@@ -357,6 +362,8 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
           url: upsizeAppleMusicUrl(albumArt),
           alt: suggestedImage.albumName ?? "Album art",
           source: "album",
+          ref: suggestedImage.artistNormalized,
+          albumName: suggestedImage.albumName,
         };
       }
     }
@@ -369,7 +376,13 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
   if (primaryArtist) {
     const track = options.artistsTopTracks[primaryArtist]?.tracks.find((t) => t.albumArt);
     if (track?.albumArt) {
-      return { url: upsizeAppleMusicUrl(track.albumArt), alt: track.albumName ?? "Album art", source: "album" };
+      return {
+        url: upsizeAppleMusicUrl(track.albumArt),
+        alt: track.albumName ?? "Album art",
+        source: "album",
+        ref: primaryArtist,
+        albumName: track.albumName,
+      };
     }
   }
 
@@ -381,6 +394,7 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
         url,
         alt: displayName(primaryArtist, options.artistsMetadata),
         source: "artist",
+        ref: primaryArtist,
       };
     }
   }
@@ -394,6 +408,7 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
         url,
         alt: displayVenueName(primaryVenue, options),
         source: "venue",
+        ref: primaryVenue,
       };
     }
   }
@@ -402,48 +417,16 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
 }
 
 /**
- * The generic venue placeholder. `venues-metadata.json` stores this *as* the
- * photo for 11 of 79 venues, so a missing photo is indistinguishable from a
- * present one unless the chain checks for it — which meant `resolveImage`
- * short-circuited on the placeholder and never reached album art or an artist
- * photo further down the chain (#235).
+ * Venue photo, album art and artist photo resolution live in `image-refs.ts`,
+ * shared with the pipeline's re-resolve stage so a published post's image is
+ * recomputed the same way it was first computed (#252).
+ *
+ * Note on the venue placeholder: `venues-metadata.json` stores the generic
+ * fallback *as* the photo for 11 of 79 venues, so a missing photo is
+ * indistinguishable from a present one unless the chain checks for it — which
+ * meant `resolveImage` short-circuited on the placeholder and never reached
+ * album art or an artist photo further down the chain (#235).
  */
-const VENUE_PHOTO_PLACEHOLDER = "/images/venues/fallback.jpg";
-
-function isRealVenuePhoto(url: string | undefined): url is string {
-  return !!url && !url.endsWith(VENUE_PHOTO_PLACEHOLDER);
-}
-
-function getVenueImageUrl(
-  venueSlug: string,
-  options: CurateOptions
-): string | undefined {
-  const venue = options.venuesMetadata[venueSlug];
-  if (!venue) return undefined;
-
-  // photoUrls is either a string[] (legacy) or { thumbnail, medium, large } object
-  const photoUrls = venue.photoUrls;
-  if (Array.isArray(photoUrls)) return photoUrls.find(isRealVenuePhoto);
-  if (photoUrls && typeof photoUrls === "object") {
-    return [photoUrls.large, photoUrls.medium, photoUrls.thumbnail].find(isRealVenuePhoto);
-  }
-
-  return venue.manualPhotos?.find(isRealVenuePhoto);
-}
-
-function getAlbumArt(
-  artistSlug: string,
-  albumName: string | undefined,
-  options: CurateOptions
-): string | undefined {
-  const tracks = options.artistsTopTracks[artistSlug]?.tracks;
-  if (!tracks?.length) return undefined;
-  if (albumName) {
-    const match = tracks.find((t) => t.albumName === albumName && t.albumArt);
-    if (match?.albumArt) return match.albumArt;
-  }
-  return tracks.find((t) => t.albumArt)?.albumArt;
-}
 
 // ── Audio resolution ──────────────────────────────────────────────────────────
 

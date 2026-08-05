@@ -14,9 +14,22 @@ export type PostTemporality = "evergreen" | "timely";
 // ── Media ───────────────────────────────────────────────────────────────────
 
 export interface PostImage {
+  /**
+   * Derived, not authoritative. Re-resolved from `ref` on every pipeline run —
+   * third-party image URLs (notably Google Places) can be revoked at any time
+   * when the underlying photo is unpublished. Never hand-edit; edit `ref`.
+   */
   url: string;
   alt: string;
   source: "artist" | "venue" | "album" | "placeholder";
+  /**
+   * Source of truth for the image: the normalized venue or artist key this
+   * image belongs to. Resolved against venues-metadata / artists-metadata,
+   * both of which self-heal on the weekly refresh.
+   */
+  ref?: string;
+  /** Album to match when `source` is "album"; `ref` holds the artist key. */
+  albumName?: string;
   credit?: string;
 }
 

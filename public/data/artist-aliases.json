@@ -1,0 +1,97 @@
+{
+  "sameAct": [
+    {
+      "canonical": "brian-setzer",
+      "name": "Brian Setzer",
+      "billings": [
+        "brian-setzer",
+        "the-brian-setzer-orchestra",
+        "brian-setzer-and-the-nashvillians",
+        "brian-setzer-68-comeback-special"
+      ],
+      "note": "Eight shows, four marquees, 1995–2024. One man."
+    }
+  ],
+  "sharesMember": [
+    {
+      "acts": [
+        "brian-setzer",
+        "stray-cats"
+      ],
+      "who": "Brian Setzer",
+      "note": "Stray Cats is a band, not a Setzer billing. Kept separate on purpose."
+    },
+    {
+      "acts": [
+        "stray-cats",
+        "lee-rocker"
+      ],
+      "who": "Lee Rocker",
+      "note": "Stray Cats bassist, seen three times under his own name."
+    },
+    {
+      "acts": [
+        "oingo-boingo",
+        "danny-elfman"
+      ],
+      "who": "Danny Elfman",
+      "note": "Boingo 1987–88, Elfman solo 2022 and 2026 — 35 years apart. Collapsing these would destroy one of the best joins in the archive."
+    },
+    {
+      "acts": [
+        "wham",
+        "george-michael"
+      ],
+      "who": "George Michael",
+      "note": "Wham! 1985, solo 1988. A duo and a solo career are not the same act."
+    },
+    {
+      "acts": [
+        "social-distortion",
+        "mike-ness"
+      ],
+      "who": "Mike Ness",
+      "note": "Social Distortion frontman, seen solo in 2008."
+    },
+    {
+      "acts": [
+        "streetlight-manifesto",
+        "bandits-of-the-acoustic-revolution"
+      ],
+      "who": "Tomas Kalnoky",
+      "note": "BOTAR is the acoustic project; both seen in their own right."
+    },
+    {
+      "acts": [
+        "berlin",
+        "terri-nunn"
+      ],
+      "who": "Terri Nunn",
+      "note": "Berlin's singer. Appears as a setlist guest, never as a billing — the link is what lets a guest resolve to an act I actually saw."
+    },
+    {
+      "acts": [
+        "no-doubt",
+        "gwen-stefani"
+      ],
+      "who": "Gwen Stefani",
+      "note": "Setlist guest only; No Doubt seen in 1988."
+    },
+    {
+      "acts": [
+        "colin-hay",
+        "men-at-work"
+      ],
+      "who": "Colin Hay",
+      "note": "Men At Work opened in 2023; Colin Hay headlined solo in 2017. Two acts, one voice."
+    },
+    {
+      "acts": [
+        "bad-religion",
+        "brian-baker"
+      ],
+      "who": "Brian Baker",
+      "note": "Setlist guest only; Bad Religion seen four times."
+    }
+  ]
+}
