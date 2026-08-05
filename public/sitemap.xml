@@ -1047,11 +1047,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=psychedelic-furs</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=public-enemy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -3134,7 +3129,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://concerts.morperhaus.org/liner-notes/my-international-chapter-177-concerts-over-41-years</loc>
+    <loc>https://concerts.morperhaus.org/liner-notes/my-west-coast-chapter-26-concerts-over-11-years</loc>
     <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

@@ -74,7 +74,7 @@
       ],
       "relatedSlugs": [
         "foo-fighters-9-more-2015-festival-bill",
-        "my-international-chapter-177-concerts-over-41-years"
+        "social-distortion-14-more-2018-festival-bill"
       ],
       "score": 38,
       "detector": "festival-mega-bill",
@@ -133,7 +133,7 @@
       ],
       "relatedSlugs": [
         "pacific-amphitheatre-16-shows-over-5-decades-2",
-        "my-international-chapter-177-concerts-over-41-years"
+        "july-16-40-years-since-beach-boys"
       ],
       "score": 42,
       "detector": "calendar-anniversary",
@@ -288,8 +288,7 @@
         }
       ],
       "relatedSlugs": [
-        "pacific-amphitheatre-16-shows-over-5-decades",
-        "my-international-chapter-177-concerts-over-41-years"
+        "pacific-amphitheatre-16-shows-over-5-decades-2"
       ],
       "score": 42,
       "detector": "calendar-anniversary",
@@ -424,8 +423,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "peter-gabriel-11-more-1993-festival-bill"
+        "peter-gabriel-11-more-1993-festival-bill",
+        "billy-idol-caught-once-never-again"
       ],
       "score": 28,
       "detector": "rare-sighting",
@@ -484,7 +483,7 @@
       ],
       "relatedSlugs": [
         "irvine-meadows-16-shows-before-it-was-demolished",
-        "my-international-chapter-177-concerts-over-41-years"
+        "irvine-meadows-16-shows-over-3-decades"
       ],
       "score": 44,
       "detector": "calendar-anniversary",
@@ -543,7 +542,7 @@
       ],
       "relatedSlugs": [
         "no-doubt-days-before-it-takes-a-nation-of-millions-to-hold-us-back-dropped",
-        "my-international-chapter-177-concerts-over-41-years"
+        "billy-idol-caught-once-never-again"
       ],
       "score": 28,
       "detector": "rare-sighting",
@@ -601,8 +600,7 @@
         }
       ],
       "relatedSlugs": [
-        "pacific-amphitheatre-16-shows-over-5-decades",
-        "my-international-chapter-177-concerts-over-41-years"
+        "pacific-amphitheatre-16-shows-over-5-decades-2"
       ],
       "score": 29,
       "detector": "album-context",
@@ -660,8 +658,7 @@
         }
       ],
       "relatedSlugs": [
-        "pacific-amphitheatre-16-shows-over-5-decades",
-        "my-international-chapter-177-concerts-over-41-years"
+        "pacific-amphitheatre-16-shows-over-5-decades-2"
       ],
       "score": 28,
       "detector": "rare-sighting",
@@ -719,8 +716,7 @@
         }
       ],
       "relatedSlugs": [
-        "pacific-amphitheatre-16-shows-over-5-decades",
-        "my-international-chapter-177-concerts-over-41-years"
+        "my-west-coast-chapter-26-concerts-over-11-years"
       ],
       "score": 30,
       "detector": "album-context",
@@ -779,7 +775,7 @@
       ],
       "relatedSlugs": [
         "universal-amphitheater-5-shows-before-it-was-demolished",
-        "my-international-chapter-177-concerts-over-41-years"
+        "my-west-coast-chapter-26-concerts-over-11-years"
       ],
       "score": 30,
       "detector": "album-context",
@@ -838,7 +834,7 @@
       ],
       "relatedSlugs": [
         "blancmange-caught-once-never-again",
-        "my-international-chapter-177-concerts-over-41-years"
+        "april-12-40-years-since-the-alarm"
       ],
       "score": 42,
       "detector": "calendar-anniversary",
@@ -897,7 +893,7 @@
       ],
       "relatedSlugs": [
         "the-alarm-caught-once-never-again",
-        "my-international-chapter-177-concerts-over-41-years"
+        "the-human-league-8-more-2018-festival-bill"
       ],
       "score": 42,
       "detector": "calendar-anniversary",
@@ -1025,8 +1021,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "social-distortion-14-more-2018-festival-bill"
+        "social-distortion-14-more-2018-festival-bill",
+        "social-distortion-34-years-of-shows"
       ],
       "score": 41,
       "detector": "calendar-anniversary",
@@ -1084,8 +1080,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "the-alarm-caught-once-never-again"
+        "the-alarm-caught-once-never-again",
+        "april-15-40-years-since-blancmange"
       ],
       "score": 33,
       "detector": "rare-sighting",
@@ -1144,7 +1140,7 @@
       ],
       "relatedSlugs": [
         "social-distortion-34-years-of-shows",
-        "my-international-chapter-177-concerts-over-41-years"
+        "house-of-blues-anaheim-6-shows-over-3-decades-2"
       ],
       "score": 46,
       "detector": "calendar-anniversary",
@@ -1271,8 +1267,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "kia-forum-5-shows-over-3-decades"
+        "kia-forum-5-shows-over-3-decades",
+        "my-west-coast-chapter-26-concerts-over-11-years"
       ],
       "score": 35,
       "detector": "album-context",
@@ -1330,8 +1326,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "the-human-league-8-more-2018-festival-bill"
+        "the-human-league-8-more-2018-festival-bill",
+        "april-12-40-years-since-the-alarm"
       ],
       "score": 33,
       "detector": "rare-sighting",
@@ -1455,8 +1451,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "the-brian-setzer-orchestra-days-after-the-bends-dropped"
+        "the-brian-setzer-orchestra-days-after-the-bends-dropped",
+        "no-doubt-caught-once-never-again"
       ],
       "score": 35,
       "detector": "album-context",
@@ -1514,8 +1510,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "billy-idol-caught-once-never-again"
+        "billy-idol-caught-once-never-again",
+        "blancmange-caught-once-never-again"
       ],
       "score": 33,
       "detector": "rare-sighting",
@@ -1580,8 +1576,7 @@
         }
       ],
       "relatedSlugs": [
-        "pacific-amphitheatre-16-shows-over-5-decades",
-        "my-international-chapter-177-concerts-over-41-years"
+        "pacific-amphitheatre-16-shows-over-5-decades-2"
       ],
       "score": 41,
       "detector": "drought-comeback",
@@ -1649,7 +1644,7 @@
       ],
       "relatedSlugs": [
         "universal-amphitheater-5-shows-before-it-was-demolished",
-        "my-international-chapter-177-concerts-over-41-years"
+        "my-west-coast-chapter-26-concerts-over-11-years"
       ],
       "score": 40,
       "detector": "genre-outlier",
@@ -1707,8 +1702,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "universal-amphitheater-5-shows-before-it-was-demolished"
+        "universal-amphitheater-5-shows-before-it-was-demolished",
+        "my-west-coast-chapter-26-concerts-over-11-years"
       ],
       "score": 37,
       "detector": "album-context",
@@ -1791,7 +1786,7 @@
       ],
       "relatedSlugs": [
         "social-distortion-34-years-of-shows",
-        "my-international-chapter-177-concerts-over-41-years"
+        "the-human-league-8-more-2018-festival-bill"
       ],
       "score": 50,
       "detector": "festival-mega-bill",
@@ -1863,7 +1858,7 @@
       ],
       "relatedSlugs": [
         "depeche-mode-38-years-of-shows-2",
-        "my-international-chapter-177-concerts-over-41-years"
+        "irvine-meadows-16-shows-before-it-was-demolished"
       ],
       "score": 44,
       "detector": "drought-comeback",
@@ -1939,7 +1934,7 @@
       ],
       "relatedSlugs": [
         "howard-jones-39-years-of-shows",
-        "my-international-chapter-177-concerts-over-41-years"
+        "howard-jones-17-years-between-shows"
       ],
       "score": 41,
       "detector": "venue-ghost",
@@ -2021,8 +2016,7 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "pacific-amphitheatre-16-shows-over-5-decades"
+        "the-human-league-8-more-2018-festival-bill"
       ],
       "score": 48,
       "detector": "festival-mega-bill",
@@ -2271,8 +2265,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "crowded-house-from-opener-to-headliner"
+        "crowded-house-from-opener-to-headliner",
+        "my-west-coast-chapter-26-concerts-over-11-years"
       ],
       "score": 48,
       "detector": "festival-mega-bill",
@@ -2337,8 +2331,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "irvine-meadows-16-shows-over-3-decades"
+        "irvine-meadows-16-shows-over-3-decades",
+        "irvine-meadows-16-shows-before-it-was-demolished"
       ],
       "score": 41,
       "detector": "drought-comeback",
@@ -2397,7 +2391,7 @@
       ],
       "relatedSlugs": [
         "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics",
-        "my-international-chapter-177-concerts-over-41-years"
+        "irvine-meadows-16-shows-before-it-was-demolished"
       ],
       "score": 33,
       "detector": "rare-sighting",
@@ -2468,8 +2462,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "irvine-meadows-16-shows-over-3-decades"
+        "irvine-meadows-16-shows-over-3-decades",
+        "billy-idol-caught-once-never-again"
       ],
       "score": 46,
       "detector": "city-pulse",
@@ -2536,8 +2530,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "irvine-meadows-16-shows-over-3-decades"
+        "irvine-meadows-16-shows-over-3-decades",
+        "irvine-meadows-16-shows-before-it-was-demolished"
       ],
       "score": 41,
       "detector": "drought-comeback",
@@ -2595,8 +2589,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics"
+        "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics",
+        "billy-idol-caught-once-never-again"
       ],
       "score": 33,
       "detector": "rare-sighting",
@@ -2672,8 +2666,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "social-distortion-34-years-of-shows"
+        "social-distortion-34-years-of-shows",
+        "social-distortion-14-more-2018-festival-bill"
       ],
       "score": 45,
       "detector": "festival-mega-bill",
@@ -2740,8 +2734,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "howard-jones-39-years-of-shows"
+        "howard-jones-39-years-of-shows",
+        "my-west-coast-chapter-26-concerts-over-11-years"
       ],
       "score": 41,
       "detector": "drought-comeback",
@@ -2799,8 +2793,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics"
+        "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics",
+        "billy-idol-caught-once-never-again"
       ],
       "score": 33,
       "detector": "rare-sighting",
@@ -2877,8 +2871,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "howard-jones-39-years-of-shows"
+        "howard-jones-39-years-of-shows",
+        "foo-fighters-9-more-2015-festival-bill-2"
       ],
       "score": 43,
       "detector": "festival-mega-bill",
@@ -2949,8 +2943,7 @@
         }
       ],
       "relatedSlugs": [
-        "depeche-mode-38-years-of-shows",
-        "my-international-chapter-177-concerts-over-41-years"
+        "depeche-mode-18-years-between-shows"
       ],
       "score": 39,
       "detector": "artist-longevity",
@@ -3009,7 +3002,7 @@
       ],
       "relatedSlugs": [
         "the-smithereens-21-years-between-shows",
-        "my-international-chapter-177-concerts-over-41-years"
+        "my-west-coast-chapter-26-concerts-over-11-years"
       ],
       "score": 39,
       "detector": "city-pulse",
@@ -3157,8 +3150,7 @@
         }
       ],
       "relatedSlugs": [
-        "pacific-amphitheatre-16-shows-over-5-decades",
-        "my-international-chapter-177-concerts-over-41-years"
+        "my-west-coast-chapter-26-concerts-over-11-years"
       ],
       "score": 38,
       "detector": "festival-mega-bill",
@@ -3308,8 +3300,8 @@
         }
       ],
       "relatedSlugs": [
-        "my-international-chapter-177-concerts-over-41-years",
-        "squeeze-from-opener-to-headliner"
+        "squeeze-from-opener-to-headliner",
+        "irvine-meadows-16-shows-before-it-was-demolished"
       ],
       "score": 38,
       "detector": "festival-mega-bill",
@@ -3382,52 +3374,32 @@
       "publishedAt": "2026-01-17T10:24:00.000Z"
     },
     {
-      "id": "geographic-international-1984",
-      "slug": "my-international-chapter-177-concerts-over-41-years",
+      "id": "geographic-west-coast-1988",
+      "slug": "my-west-coast-chapter-26-concerts-over-11-years",
       "category": "personal",
-      "aggregate": true,
       "temporality": "evergreen",
-      "headline": "My International Chapter: 177 Concerts Over 41 Years",
-      "prose": "I remember standing at Irvine Meadows in 1984, watching Adam Ant command the stage in what would become the first of 177 international concerts spanning 41 years of my life. From that punk rock moment through 76 different venues and 104 artists, I've collected a geography of sound that stretches across five decades. The bookend feels perfect somehow — David Byrne at the Dolby Theatre this November, two cerebral performers separated by four decades of evolution in how we experience live music. It's wild to think I've been chasing that same electric feeling since Reagan was president.",
+      "headline": "My West Coast Chapter: 26 Concerts Over 11 Years",
+      "prose": "I still remember standing at Irvine Meadows in October 1988, watching Oingo Boingo tear through the night air, thinking I had no idea what the next 11 years of California shows would look like. That first West Coast concert cracked something open — 26 shows across 16 venues, from Irvine to Redondo Beach, two full decades bleeding into each other. I caught 22 different artists during that chapter, ending quietly at Club Caprice in 1999 with Alien Fashion Show, which is honestly a perfect last entry for a run that started with Oingo Boingo. Some chapters close before you realize they've closed.",
       "image": {
-        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/de/b4/09deb44c-e956-6d43-e4cf-840784faf7d7/mzi.ogdifckc.jpg/600x600bb.jpg",
-        "alt": "The Essential Adam Ant",
-        "source": "album"
+        "url": "/images/venues/fallback.jpg",
+        "alt": "Irvine Meadows",
+        "source": "venue"
       },
       "audio": {
-        "trackName": "Goody Two Shoes",
-        "artistName": "Adam Ant",
-        "albumName": "The Essential Adam Ant",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/15/4f/be/154fbe11-e98b-d65e-e933-fb03516b2dfc/mzaf_3769504448482768076.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/de/b4/09deb44c-e956-6d43-e4cf-840784faf7d7/mzi.ogdifckc.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/goody-two-shoes/391324319?i=391324334&uo=4",
+        "trackName": "Dead Man's Party",
+        "artistName": "Oingo Boingo",
+        "albumName": "Dead Man's Party",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/3a/69/8f/3a698f90-e99c-a8dc-ef52-87c3becf2bd3/mzaf_18094485913850446498.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/be/5b/14/be5b14fc-5480-81cc-53a1-59f98f185f2b/06UMGIM03141.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/dead-mans-party/1440740144?i=1440740152&uo=4",
         "source": "itunes"
       },
       "artists": [
-        "adam-ant",
-        "thompson-twins",
-        "billy-idol",
-        "echo-and-the-bunnymen",
-        "depeche-mode",
-        "stryper",
-        "howard-jones",
-        "tears-for-fears",
-        "new-order",
-        "wham",
-        "bruce-springsteen",
-        "the-alarm",
-        "blancmange",
-        "beach-boys",
-        "the-art-of-noise",
-        "run-dmc",
         "oingo-boingo",
-        "duran-duran",
-        "no-doubt",
-        "ub40",
-        "ziggy-marley",
-        "george-michael",
+        "howard-jones",
         "tone-loc",
         "erasure",
+        "depeche-mode",
         "jesus-jones",
         "social-distortion",
         "bell-biv-devoe",
@@ -3437,182 +3409,34 @@
         "sting",
         "siouxsie-and-the-banshees",
         "the-smithereens",
+        "adam-ant",
         "peter-gabriel",
+        "tears-for-fears",
         "violent-femmes",
         "the-brian-setzer-orchestra",
         "big-audio-dynamite",
         "pat-dinizio",
-        "alien-fashion-show",
-        "brian-setzer-68-comeback-special",
-        "elton-john",
-        "the-human-league",
-        "joe-jackson",
-        "the-cure",
-        "garbage",
-        "joe-satriani",
-        "devo",
-        "the-tubes",
-        "berlin",
-        "lee-rocker",
-        "stray-cats",
-        "yaz",
-        "the-english-beat",
-        "mike-ness",
-        "brian-setzer-and-the-nashvillians",
-        "rob-thomas",
-        "bad-religion",
-        "the-dollyrots",
-        "the-go-go-s",
-        "squeeze",
-        "red-hot-chili-peppers",
-        "the-cult",
-        "dropkick-murphys",
-        "rancid",
-        "gary-numan",
-        "kraftwerk",
-        "snarky-puppy",
-        "the-offspring",
-        "streetlight-manifesto",
-        "the-head-and-the-heart",
-        "royal-blood",
-        "foo-fighters",
-        "dirty-heads",
-        "prophets-of-rage",
-        "the-roots",
-        "midnight-oil",
-        "the-skints",
-        "blondie",
-        "alison-moyet",
-        "bat-fangs",
-        "colin-hay",
-        "u2",
-        "foals",
-        "the-interrupters",
-        "bandits-of-the-acoustic-revolution",
-        "lenny-kravitz",
-        "the-aquabats",
-        "future-islands",
-        "x",
-        "culture-club",
-        "peter-hook-and-the-light",
-        "gorillaz",
-        "heaven-17",
-        "danny-elfman",
-        "dr-sick",
-        "crowded-house",
-        "kasabian",
-        "umphrey-s-mcgee",
-        "brian-setzer",
-        "cold-war-kids",
-        "klangphonics",
-        "molchat-doma",
-        "the-black-keys",
-        "david-byrne"
+        "alien-fashion-show"
       ],
       "venues": [
         "irvine-meadows",
-        "knots-berry-farm",
-        "pacific-amphitheatre",
-        "hollywood-park-racetrack",
-        "los-angeles-memorial-coliseum",
-        "ucla",
-        "crawford-hall",
-        "caliente-racetrack",
-        "disneyland",
-        "the-rose-bowl",
-        "mesa-amphitheatre",
-        "arizona-veterans-memorial-coliseum",
         "universal-amphitheater",
         "jets",
         "kia-forum",
         "dodger-stadium",
         "hollywood-palladium",
         "cal-state-fullerton",
+        "pacific-amphitheatre",
         "long-beach-arena",
         "the-celebrity-theatre",
         "the-coach-house",
         "olympic-velodrome",
         "hard-rock-cafe",
         "the-galaxy-theatre",
-        "club-caprice",
-        "paradise-rock-club",
-        "the-grove-of-anaheim",
-        "house-of-blues-anaheim",
-        "hyundai-pavilion",
-        "hard-rock-hotel-las-vegas",
-        "staples-center",
-        "nokia-center",
-        "doheny",
-        "eaglebank-arena",
-        "9-30-club",
-        "the-black-cat",
-        "the-ballroom",
-        "wolftrap",
-        "rams-head-live-baltimore",
-        "capitol-one-arena",
-        "the-fillmore-silver-spring",
-        "howard-theater",
-        "the-strathmore",
-        "the-hamilton-live",
-        "rams-head-center-stage",
-        "pier-6-pavillion",
-        "dar-constitution-hall",
-        "rfk-stadium",
-        "bethesda-jazz-and-blues-club",
-        "birchmere",
-        "national-museum-of-african-american-history-and-culture",
-        "mgm-national-harbor",
-        "dc9-nightclub",
-        "sixth-i-synagogue",
-        "the-anthem",
-        "lincoln-theatre",
-        "warner-theatre",
-        "huntington-state-beach",
-        "carpenter-performing-arts-center",
-        "capital-one-center",
-        "the-observatory",
-        "the-shrine-auditorium",
-        "dolby-theatre",
-        "mozambique",
-        "oc-fair-event-center",
-        "orpheum-theatre",
-        "theatre-at-the-ace-hotel",
-        "youtube-theatre",
-        "hollywood-bowl",
-        "the-belly-up-tavern",
-        "21st-amendment",
-        "the-wiltern",
-        "the-belasco",
-        "peacock-theater",
-        "the-roxy",
-        "mgm-music-hall-at-fenway"
+        "greek-theatre",
+        "club-caprice"
       ],
       "years": [
-        1984,
-        1984,
-        1984,
-        1984,
-        1985,
-        1985,
-        1985,
-        1985,
-        1985,
-        1985,
-        1985,
-        1985,
-        1986,
-        1986,
-        1986,
-        1986,
-        1987,
-        1987,
-        1987,
-        1988,
-        1988,
-        1988,
-        1988,
-        1988,
-        1988,
         1988,
         1989,
         1990,
@@ -3637,152 +3461,27 @@
         1995,
         1997,
         1998,
-        1999,
-        1999,
-        2000,
-        2001,
-        2002,
-        2003,
-        2003,
-        2003,
-        2003,
-        2005,
-        2005,
-        2005,
-        2005,
-        2006,
-        2006,
-        2006,
-        2007,
-        2007,
-        2007,
-        2008,
-        2008,
-        2008,
-        2008,
-        2008,
-        2008,
-        2009,
-        2009,
-        2010,
-        2010,
-        2010,
-        2011,
-        2011,
-        2011,
-        2012,
-        2012,
-        2012,
-        2012,
-        2012,
-        2012,
-        2013,
-        2013,
-        2013,
-        2013,
-        2013,
-        2013,
-        2014,
-        2014,
-        2014,
-        2014,
-        2014,
-        2014,
-        2015,
-        2015,
-        2015,
-        2015,
-        2015,
-        2015,
-        2016,
-        2016,
-        2016,
-        2016,
-        2016,
-        2016,
-        2017,
-        2017,
-        2017,
-        2017,
-        2017,
-        2017,
-        2017,
-        2017,
-        2017,
-        2017,
-        2017,
-        2017,
-        2018,
-        2018,
-        2018,
-        2018,
-        2018,
-        2018,
-        2018,
-        2019,
-        2019,
-        2019,
-        2019,
-        2019,
-        2019,
-        2019,
-        2019,
-        2019,
-        2021,
-        2021,
-        2022,
-        2022,
-        2022,
-        2022,
-        2022,
-        2022,
-        2022,
-        2022,
-        2022,
-        2022,
-        2022,
-        2022,
-        2022,
-        2022,
-        2023,
-        2023,
-        2023,
-        2023,
-        2023,
-        2023,
-        2023,
-        2023,
-        2023,
-        2023,
-        2023,
-        2024,
-        2024,
-        2024,
-        2024,
-        2024,
-        2024,
-        2025,
-        2025,
-        2025,
-        2025
+        1998,
+        1999
       ],
       "tags": [
-        "#geographic"
+        "#geographic",
+        "#two-coasts"
       ],
       "deepLinks": [
         {
-          "label": "Adam Ant",
-          "url": "/?scene=artists&artist=adam-ant",
+          "label": "Oingo Boingo",
+          "url": "/?scene=artists&artist=oingo-boingo",
           "type": "artist"
         },
         {
-          "label": "Thompson Twins",
-          "url": "/?scene=artists&artist=thompson-twins",
+          "label": "Howard Jones",
+          "url": "/?scene=artists&artist=howard-jones",
           "type": "artist"
         },
         {
-          "label": "Billy Idol",
-          "url": "/?scene=artists&artist=billy-idol",
+          "label": "Tone-Lōc",
+          "url": "/?scene=artists&artist=tone-loc",
           "type": "artist"
         },
         {
@@ -3791,21 +3490,21 @@
           "type": "venue"
         },
         {
-          "label": "Knots Berry Farm",
-          "url": "/?scene=venues&venue=knots-berry-farm",
+          "label": "Universal Amphitheater",
+          "url": "/?scene=venues&venue=universal-amphitheater",
           "type": "venue"
         },
         {
-          "label": "1984",
-          "url": "/?scene=timeline&year=1984",
+          "label": "1988",
+          "url": "/?scene=timeline&year=1988",
           "type": "timeline"
         }
       ],
       "relatedSlugs": [
-        "depeche-mode-38-years-of-shows",
-        "squeeze-from-opener-to-headliner"
+        "pacific-amphitheatre-16-shows-over-5-decades-2",
+        "june-21-35-years-since-jimmy-buffett"
       ],
-      "score": 39,
+      "score": 33,
       "detector": "geographic-chapter",
       "publishedAt": "2026-01-15T07:12:00.000Z"
     },
@@ -4191,7 +3890,7 @@
   "metadata": {
     "totalPosts": 56,
     "totalGenerated": 87,
-    "averageScore": 38.4,
+    "averageScore": 38.3,
     "lastPipelineRun": "2026-08-03T11:28:23.447Z",
     "concertsAnalyzed": 181,
     "feedUrl": "/liner-notes.xml"
