@@ -120,7 +120,11 @@ npm run generate:liner-notes -- --date 2026-06-15  # Override today's date
 | Timeliness Bonus | 10 | Calendar anniversary proximity, recency |
 | Category Balance | 5 | Underrepresented category gets bonus |
 
-Candidates below a minimum threshold (TBD in `score.ts`) are dropped. Top 2–3 per weekly run are passed to the generator.
+Findings below `MIN_SCORE` (20, in `score.ts`) are dropped.
+
+**The score is not comparable across detectors** — it ranks findings *within* a detector and acts as a global floor. `surpriseFactor` is a fixed per-detector constant and `specificity` counts however many entities a detector put in its arrays, so a 28 from one detector doesn't mean what a 28 from another does.
+
+Selection therefore **rotates across detectors** (#231): each detector nominates its best eligible finding, and the turn goes to whichever detector has gone longest without publishing, with score only breaking ties. A detector whose champion sits at the floor passes its turn. One post publishes per run; see `docs/LINER_NOTES_PIPELINE.md` for the full algorithm.
 
 ---
 
