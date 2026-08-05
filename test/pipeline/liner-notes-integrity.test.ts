@@ -15,6 +15,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'fs'
 import { join } from 'path'
+import { analyze } from '../../scripts/liner-notes/analyze'
 import { buildPosts } from '../../scripts/liner-notes/curate'
 import { generateUpTo } from '../../scripts/liner-notes/pipeline'
 import type { CurateOptions } from '../../scripts/liner-notes/curate'
@@ -338,5 +339,42 @@ describe('buildDeepLinks setlist gating', () => {
   it('emits unconditionally when no setlist index is supplied', () => {
     const [built] = buildPosts([withDate()], options())
     expect(built.deepLinks.find((l) => l.type === 'setlist')).toBeDefined()
+  })
+})
+
+// ── Finding id stability ────────────────────────────────────────────────────
+
+describe('finding ids survive a data re-import (#242)', () => {
+  const concerts = JSON.parse(readFileSync(join(DATA, 'concerts.json'), 'utf8')).concerts
+  const meta = {
+    venuesMetadata: JSON.parse(readFileSync(join(DATA, 'venues-metadata.json'), 'utf8')),
+    artistsMetadata: JSON.parse(readFileSync(join(DATA, 'artists-metadata.json'), 'utf8')),
+  }
+  const TODAY = new Date('2026-08-05T00:00:00Z')
+
+  it('no finding id changes when every concert.id is renumbered', () => {
+    // Row ids are re-import artifacts. Finding ids are load-bearing: mergePosts
+    // deduplicates on them and slug preservation looks the previous post up by
+    // id, so a shifted id republishes the same story as a new post with a "-2"
+    // slug. That already happened once — two Foo Fighters posts about
+    // 2015-07-04, published six months apart.
+    const before = analyze(concerts, TODAY, meta).findings.map((f) => f.id)
+    const renumbered = concerts.map((c: any, i: number) => ({ ...c, id: `concert-${i + 5000}` }))
+    const after = new Set(analyze(renumbered, TODAY, meta).findings.map((f) => f.id))
+
+    expect(before.filter((id) => !after.has(id))).toEqual([])
+  })
+
+  it('no two posts tell the same story about the same night', () => {
+    const seen = new Map<string, string>()
+    const dupes: string[] = []
+    for (const p of feed.posts) {
+      const date = p.deepLinks?.find((l) => l.type === 'setlist')?.url?.match(/show=(\d{4}-\d{2}-\d{2})/)?.[1]
+      if (!date) continue
+      const key = `${p.detector}@${date}`
+      if (seen.has(key)) dupes.push(`${seen.get(key)} + ${p.slug}`)
+      else seen.set(key, p.slug)
+    }
+    expect(dupes).toEqual([])
   })
 })

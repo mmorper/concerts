@@ -968,6 +968,20 @@ All components live in `src/components/liner-notes/`.
 
 ## Maintenance Notes
 
+### Finding ids must be stable
+
+`AnalysisFinding.id` is load-bearing, not cosmetic: `mergePosts` deduplicates published posts on it, and slug preservation (#234) looks the previous post up by it. An id that changes for the same story republishes it as a *new* post with a `-2` slug rather than replacing the old one.
+
+**Never key an id on `concert.id`.** Row ids are re-import artifacts — the same warning `docs/DEEP_LINKING.md` gives for URLs applies here for the same reason. `festival-mega-bill` did, and it shipped two posts about the Foo Fighters at RFK Stadium on 2015-07-04, six months apart (#242).
+
+Use stable content instead — date plus headliner is what both this and the deep-link grammar settled on:
+
+```ts
+id: `festival-mega-bill-${slugify(`${concert.date}-${concert.headliner}`)}`,
+```
+
+A test renumbers every `concert.id` and asserts no finding id moves.
+
 ### Adding a new Tier 1 detector
 
 1. Add the detector name to `DetectorName` in `scripts/liner-notes/types.ts`
