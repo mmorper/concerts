@@ -1,0 +1,87 @@
+{
+  "$schema": "See docs/LINER_NOTES_PIPELINE.md → Artist Alias Map",
+  "$comment": [
+    "HAND-MAINTAINED. There is no parser and no derivation — nothing in the concert",
+    "data can know that The Brian Setzer Orchestra is Brian Setzer. Add rows by hand.",
+    "",
+    "Two relations, deliberately distinct (#227):",
+    "",
+    "  sameAct      — one act under several marquees. Collapse them. A cover detector",
+    "                 that treats these as different artists produces 'you have heard",
+    "                 Rock This Town from four different artists' about one man.",
+    "",
+    "  sharesMember — different acts with a person in common. DO NOT collapse. These",
+    "                 are the stories, not the noise: Danny Elfman playing Oingo Boingo",
+    "                 songs at the Hollywood Bowl 35 years later is only a story",
+    "                 because they are two different acts.",
+    "",
+    "Consumed only by the liner notes pipeline (scripts/liner-notes/artist-aliases.ts).",
+    "The site, the Artist scene and the MCP server do not read this file — merging the",
+    "artist mosaic is a visible product change and needs its own decision (#227 Q4).",
+    "",
+    "An artist absent from this file behaves exactly as it always has: no collapse,",
+    "no link, never an error."
+  ],
+
+  "sameAct": [
+    {
+      "canonical": "brian-setzer",
+      "name": "Brian Setzer",
+      "billings": [
+        "brian-setzer",
+        "the-brian-setzer-orchestra",
+        "brian-setzer-and-the-nashvillians",
+        "brian-setzer-68-comeback-special"
+      ],
+      "note": "Eight shows, four marquees, 1995–2024. One man."
+    }
+  ],
+
+  "sharesMember": [
+    {
+      "acts": ["brian-setzer", "stray-cats"],
+      "who": "Brian Setzer",
+      "note": "Stray Cats is a band, not a Setzer billing. Kept separate on purpose."
+    },
+    {
+      "acts": ["stray-cats", "lee-rocker"],
+      "who": "Lee Rocker",
+      "note": "Stray Cats bassist, seen three times under his own name."
+    },
+    {
+      "acts": ["oingo-boingo", "danny-elfman"],
+      "who": "Danny Elfman",
+      "note": "Boingo 1987–88, Elfman solo 2022 and 2026 — 35 years apart. Collapsing these would destroy one of the best joins in the archive."
+    },
+    {
+      "acts": ["wham", "george-michael"],
+      "who": "George Michael",
+      "note": "Wham! 1985, solo 1988. A duo and a solo career are not the same act."
+    },
+    {
+      "acts": ["social-distortion", "mike-ness"],
+      "who": "Mike Ness",
+      "note": "Social Distortion frontman, seen solo in 2008."
+    },
+    {
+      "acts": ["streetlight-manifesto", "bandits-of-the-acoustic-revolution"],
+      "who": "Tomas Kalnoky",
+      "note": "BOTAR is the acoustic project; both seen in their own right."
+    },
+    {
+      "acts": ["berlin", "terri-nunn"],
+      "who": "Terri Nunn",
+      "note": "Berlin's singer. Appears as a setlist guest, never as a billing — the link is what lets a guest resolve to an act I actually saw."
+    },
+    {
+      "acts": ["no-doubt", "gwen-stefani"],
+      "who": "Gwen Stefani",
+      "note": "Setlist guest only; No Doubt seen in 1988."
+    },
+    {
+      "acts": ["bad-religion", "brian-baker"],
+      "who": "Brian Baker",
+      "note": "Setlist guest only; Bad Religion seen four times."
+    }
+  ]
+}

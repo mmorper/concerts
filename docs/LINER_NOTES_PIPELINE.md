@@ -882,6 +882,44 @@ Full type definitions live in `scripts/liner-notes/types.ts` (pipeline) and `src
 
 ---
 
+## Artist Alias Map (#227)
+
+Artist *name* is not artist *identity*. The archive stores every billing as a separate artist:
+
+```
+The Brian Setzer Orchestra          1995, 1998, 2002, 2017
+Brian Setzer '68 Comeback Special   2000
+Brian Setzer and the Nashvillians   2009
+Brian Setzer                        2024
+```
+
+Eight shows, four marquees, one man. A cover detector that doesn't know this announces *"you've heard Rock This Town from four different artists."*
+
+**`data/artist-aliases.json` — hand-maintained.** There is no parser and no derivation; nothing in the concert data can infer that The Brian Setzer Orchestra is Brian Setzer. Add rows by hand. It sits in `data/` alongside `venue-status.csv`, the existing hand-maintained precedent — *not* `public/data/`, because nothing at runtime reads it.
+
+### Two relations, and the distinction is the point
+
+| Relation | Behaviour | Example |
+| -------- | --------- | ------- |
+| `sameAct` | **Collapse.** Different marquees, one act. | the four Setzer billings |
+| `sharesMember` | **Link, never collapse.** Different acts, a person in common. | Oingo Boingo ↔ Danny Elfman |
+
+Over-collapsing is the more expensive mistake, because it destroys findings silently rather than producing visibly silly ones. Danny Elfman playing Oingo Boingo songs at the Hollywood Bowl 35 years later is a story *precisely because* they are two different acts. Same for Wham! ↔ George Michael and Brian Setzer ↔ Stray Cats.
+
+`sharesMember` also carries setlist guests who never appear on a bill — Terri Nunn → Berlin, Gwen Stefani → No Doubt, Brian Baker → Bad Religion. That link is what lets a guest resolve to an act actually seen.
+
+### Consumers
+
+`scripts/liner-notes/artist-aliases.ts`, used by the liner notes pipeline only. **The site, the Artist scene and the MCP server do not read it** — merging the artist mosaic is a visible product change and needs its own decision (#227 Q4). Anything added to that list changes the blast radius.
+
+### Failure mode
+
+An artist with no entry resolves to itself: no collapse, no relations, never an error. An empty or malformed file degrades to the identity map, which is exactly today's behaviour. A test asserts every slug in the map matches an artist that actually appears on a bill, since a typo'd slug would otherwise silently never match.
+
+**No `successor` relation.** Joy Division → New Order is the obvious candidate and Joy Division isn't in the archive, so it would be speculative. Add it when something needs it.
+
+---
+
 ## Song Joins (#229)
 
 Until #229 every detector took `concerts: Concert[]` and none had ever opened a setlist — 2,700-odd performances across 159 concerts, entirely unexploited. `scripts/liner-notes/setlists.ts` builds the index and five detectors join against it.
