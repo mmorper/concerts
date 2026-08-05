@@ -197,7 +197,7 @@ async function validateConcerts() {
     }
 
     // Check 2: No duplicate albums within artist
-    for (const [key, entry] of Object.entries(discography) as any[]) {
+    for (const [_key, entry] of Object.entries(discography) as any[]) {
       const albumIds = entry.albums.map((a: any) => a.id)
       const uniqueIds = new Set(albumIds)
 
@@ -215,7 +215,7 @@ async function validateConcerts() {
     }
 
     // Check 3: Warn if artist has 0 albums
-    for (const [key, entry] of Object.entries(discography) as any[]) {
+    for (const [_key, entry] of Object.entries(discography) as any[]) {
       if (entry.albumCount === 0 && entry.mbid) {
         warnings.push({
           row: 0,
@@ -229,7 +229,7 @@ async function validateConcerts() {
     // Check 4: Warn if discography is stale (>90 days)
     const NINETY_DAYS = 90 * 24 * 60 * 60 * 1000
     let staleCount = 0
-    for (const [key, entry] of Object.entries(discography) as any[]) {
+    for (const [_key, entry] of Object.entries(discography) as any[]) {
       const age = Date.now() - new Date(entry.cachedAt).getTime()
       if (age > NINETY_DAYS) {
         staleCount++

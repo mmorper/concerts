@@ -12,7 +12,7 @@
 
 import { google } from 'googleapis'
 import * as dotenv from 'dotenv'
-import type { GA4Data, GA4PageMetrics, TrafficSource, CoreWebVitals } from '../types.js'
+import type { GA4Data, GA4PageMetrics, TrafficSource } from '../types.js'
 import { getRateLimiter, withRateLimitAndRetry } from '../rate-limiter.js'
 
 dotenv.config()
@@ -94,7 +94,7 @@ export function getGA4PropertyId(): string | undefined {
  * Returns null if not configured, empty data if no results
  */
 export async function fetchGA4Data(
-  siteUrl: string,
+  _siteUrl: string,
   dateRangeDays: number = DEFAULT_DATE_RANGE
 ): Promise<{ data: GA4Data | null; status: GA4Status }> {
   const auth = getAuth()

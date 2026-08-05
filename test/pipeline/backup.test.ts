@@ -13,7 +13,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { createBackup, createBackups, listBackups } from '../../scripts/utils/backup'
 import * as fs from 'fs'
-import * as path from 'path'
 
 // Mock fs module
 vi.mock('fs', async () => {

@@ -89,7 +89,7 @@ export function isGSCConfigured(): boolean {
  * Returns null if not configured, empty data if no results yet
  */
 export async function fetchGSCData(
-  siteUrl: string,
+  _siteUrl: string,
   dateRangeDays: number = DEFAULT_DATE_RANGE
 ): Promise<{ data: GSCData | null; status: GSCStatus }> {
   const auth = getAuth()

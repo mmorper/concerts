@@ -16,15 +16,14 @@
     // resolves in the `src/` modules the tests and scripts import.
     "types": ["node", "vite/client"],
 
-    // Off deliberately. These are lint preferences, not correctness, and the
-    // class of bug that motivated this issue — a referenced-but-undeclared
-    // variable — is caught regardless. Turning them on adds ~70 findings that
-    // would bury it. Tighten later if the noise is worth clearing.
-    "noUnusedLocals": false,
-    "noUnusedParameters": false
+    // On. These started off while the ~70 pre-existing findings were cleared;
+    // they stay on so the cruft can't come back.
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
-  "include": ["scripts", "test"],
-  // Abandoned work-in-progress kept for reference; imports modules that no
-  // longer exist, so it can never typecheck and isn't worth repairing.
-  "exclude": ["scripts/archive"]
+  // scripts/archive is included deliberately. Excluding it is what hid the fact
+  // that convert-csv-to-json.ts — a documented fallback for the Google Sheets
+  // pipeline — had been moved without its relative imports being fixed, so it
+  // crashed on startup.
+  "include": ["scripts", "test"]
 }

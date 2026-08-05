@@ -16,8 +16,7 @@ import {
   savePropertyMapping,
   printCredentialSummary,
 } from './credentials.js'
-import { runOAuthFlow, getValidAccessToken } from './oauth.js'
-import type { CredentialStore } from './types.js'
+import { runOAuthFlow } from './oauth.js'
 
 // ============================================================================
 // Readline Interface

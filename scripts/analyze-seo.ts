@@ -25,7 +25,6 @@
 
 import fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
 import {
   isGSCConfigured,
   fetchGSCData,
@@ -78,8 +77,6 @@ import type {
   SiteStats,
 } from './seo/types.js'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 // Configuration
 const DEFAULT_URL = 'https://concerts.morperhaus.org'
@@ -443,19 +440,6 @@ async function checkAboutPage(baseUrl: string): Promise<{ exists: boolean; hasSc
 }
 
 // Extract Schema.org type from HTML
-function extractSchemaType(html: string): string | null {
-  const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)
-  if (!match) return null
-  try {
-    const schema = JSON.parse(match[1])
-    if (Array.isArray(schema)) {
-      return schema.map(s => s['@type']).join(' + ')
-    }
-    return schema['@type'] || null
-  } catch {
-    return 'present'
-  }
-}
 
 // Score the technical foundation category
 function scoreTechnical(pages: PageAnalysis[], checks: Record<string, any>): number {
@@ -526,7 +510,7 @@ function scoreContent(pages: PageAnalysis[], checks: Record<string, any>): numbe
 }
 
 // Score semantic intelligence
-function scoreSemantic(checks: Record<string, any>): number {
+function scoreSemantic(_checks: Record<string, any>): number {
   let score = 0
 
   // Topical Authority (10 pts)
@@ -617,7 +601,7 @@ function calculateScores(pages: PageAnalysis[], checks: Record<string, any>): SE
 }
 
 // Generate recommendations based on analysis
-function generateRecommendations(scores: SEOScore, pages: PageAnalysis[], checks: Record<string, any>): SEOReport['recommendations'] {
+function generateRecommendations(_scores: SEOScore, pages: PageAnalysis[], _checks: Record<string, any>): SEOReport['recommendations'] {
   const recommendations: SEOReport['recommendations'] = []
 
   // Check for missing Schema.org

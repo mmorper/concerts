@@ -712,7 +712,7 @@ The following scripts are **CSV-specific** and intended **only** for parsing `do
 
 | File | Purpose | Status |
 |------|---------|--------|
-| `scripts/convert-csv-to-json.ts` | Parse CSV export to JSON | ⚠️ Backup only, not primary pipeline |
+| `scripts/archive/convert-csv-to-json.ts` | Parse CSV export to JSON | ⚠️ Backup only, not primary pipeline |
 | `docs/inspiration/sampleData.csv` | CSV export of Google Sheet | ⚠️ Backup only, manually exported |
 
 **When to use `convert-csv-to-json.ts`:**

@@ -398,7 +398,7 @@ public/data/
 When adding fields to concerts:
 
 1. **Update source data** (Google Sheet or input)
-2. **Update `scripts/convert-csv-to-json.ts`** — Add field mapping
+2. **Update `scripts/archive/convert-csv-to-json.ts`** — Add field mapping
 3. **Update TypeScript types** — `src/types/concert.ts`
 4. **Update this skill** — Document new field
 5. **Regenerate data** — `npm run build-data`
@@ -431,7 +431,7 @@ const venue = Object.values(venuesMetadata)
 ## Source Files
 
 - `public/data/concerts.json` — Primary data
-- `scripts/convert-csv-to-json.ts` — Data generation
+- `scripts/archive/convert-csv-to-json.ts` — Data generation
 - `scripts/services/` — API integration services
 - `src/types/` — TypeScript interfaces
 

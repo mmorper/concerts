@@ -6,7 +6,6 @@
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'fs'
-import { join } from 'path'
 import { normalizeArtistName, normalizeGenreName } from '../../src/utils/normalize.js'
 import { TheAudioDBClient } from './theaudiodb-client.js'
 import { LastFmClient } from './lastfm-client.js'

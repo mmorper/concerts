@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -7,7 +7,6 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 describe('enrich-venues.ts', () => {
-  const fixturesDir = path.join(__dirname, '../fixtures')
   // Per-suite temp dir. All three enrich-* suites previously shared
   // ../temp-output and each rmSync'd it in afterEach — with vitest running
   // files in parallel, one suite's teardown deleted the directory another

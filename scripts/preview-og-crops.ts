@@ -9,7 +9,6 @@
  */
 
 import puppeteer from 'puppeteer'
-import fs from 'fs'
 import path from 'path'
 
 const SITE_URL = process.env.OG_SITE_URL || 'http://localhost:5173'

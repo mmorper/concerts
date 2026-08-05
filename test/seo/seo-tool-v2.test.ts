@@ -9,10 +9,7 @@
  * - Score calculations
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import * as fs from 'fs'
-import * as path from 'path'
-import * as os from 'os'
+import { describe, it, expect } from 'vitest'
 
 import type {
   PageAnalysis,

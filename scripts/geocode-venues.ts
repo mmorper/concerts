@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { batchGeocodeVenues, loadCache, saveCache } from './services/geocoding.js'
+import { batchGeocodeVenues } from './services/geocoding.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

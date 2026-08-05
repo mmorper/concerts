@@ -71,7 +71,7 @@ export class RateLimiter {
   private dayStart: number
 
   constructor(
-    private name: string,
+    name: string,
     config?: Partial<RateLimitConfig>
   ) {
     const defaultConfig = RATE_LIMITS[name] || RATE_LIMITS.backlinks
