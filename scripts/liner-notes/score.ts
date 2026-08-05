@@ -8,6 +8,7 @@
  * Output: ScoredFinding[]    sorted descending, threshold-filtered
  */
 
+import { hasSongJoin } from "./setlists.ts";
 import type { AnalysisFinding, ContentCategory, ScoreBreakdown, ScoredFinding } from "./types.ts";
 
 // ── Public interface ──────────────────────────────────────────────────────────
@@ -190,6 +191,16 @@ function computeDataRichness(f: AnalysisFinding, options: ScoreOptions): number 
   // 2 pts: artist has 3+ concert appearances in the archive
   const count = options.concertCountByArtist[primaryArtist] ?? 0;
   if (count >= 3) pts += 2;
+
+  // 2 pts: the finding carries a song join from the setlist corpus (#229).
+  //
+  // Without this the enrichment mostly wouldn't surface: selection publishes each
+  // detector's highest-scoring finding, and rare-sighting's and venue-ghost's
+  // champions were both findings with no setlist on record — so 42 of 68 enriched
+  // rare-sightings would have sat unpublished behind one that had nothing to say.
+  // Only ranks findings against others from the same detector, which is all the
+  // score is for (#231).
+  if (hasSongJoin(f.tags)) pts += 2;
 
   return Math.min(pts, 10);
 }

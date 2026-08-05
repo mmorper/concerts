@@ -10,6 +10,13 @@
 
 import type { Concert } from "../../src/types/concert.ts";
 import type { AnalysisFinding, ContentCategory, DetectorName } from "./types.ts";
+import {
+  describeSong,
+  songsAtEveryShow,
+  songsFor,
+  songsInCommon,
+  type SetlistIndex,
+} from "./setlists.ts";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -101,7 +108,7 @@ function pastConcerts(concerts: Concert[], today: Date): Concert[] {
 
 // ── 1. Artist Longevity Detector ─────────────────────────────────────────────
 
-function detectArtistLongevity(concerts: Concert[]): AnalysisFinding[] {
+function detectArtistLongevity(concerts: Concert[], setlists?: SetlistIndex): AnalysisFinding[] {
   const byArtist = new Map<string, Concert[]>();
 
   for (const c of concerts) {
@@ -129,6 +136,13 @@ function detectArtistLongevity(concerts: Concert[]): AnalysisFinding[] {
     const tags = ["#artist-longevity"];
     if (decades.length >= 3) tags.push("#multi-decade");
 
+    // The song that survived every show on record (#229, absorbing `never-left`
+    // from #228). A stronger fact than the first/last pair: "Everything Counts
+    // at all five Depeche Mode shows, 1985 to 2023" is a streak, not a
+    // coincidence. Empty when fewer than three of the shows have a setlist.
+    const constants = songsAtEveryShow(setlists, sorted, normalized);
+    if (constants.length) tags.push("#never-left");
+
     findings.push({
       id: `longevity-${normalized}`,
       detector: "artist-longevity",
@@ -143,6 +157,9 @@ function detectArtistLongevity(concerts: Concert[]): AnalysisFinding[] {
         spanYears: span,
         showCount: shows.length,
         decades,
+        // Present only when there is one — the prose must not reach for a song
+        // that isn't there (#229).
+        ...(constants.length ? { songsAtEveryShow: constants } : {}),
         venueCount: venues.length,
       },
       artists: [normalized],
@@ -159,7 +176,7 @@ function detectArtistLongevity(concerts: Concert[]): AnalysisFinding[] {
 
 // ── 2. Opener-to-Headliner Detector ──────────────────────────────────────────
 
-function detectOpenerToHeadliner(concerts: Concert[]): AnalysisFinding[] {
+function detectOpenerToHeadliner(concerts: Concert[], setlists?: SetlistIndex): AnalysisFinding[] {
   // Build set of normalized headliner names
   const headlinerSlugs = new Set(concerts.map((c) => c.headlinerNormalized));
 
@@ -197,6 +214,11 @@ function detectOpenerToHeadliner(concerts: Concert[]): AnalysisFinding[] {
     const gap = spanYears(earliestOpener.date, firstHeadline.date);
     const artistName = openerNames.get(norm) ?? norm;
 
+    // Songs they played in both roles (#229). Compared against the same
+    // headlining night the rest of the finding describes, so the numbers and
+    // the songs agree; no shared songs simply means no song detail.
+    const bothRoles = songsInCommon(setlists, earliestOpener, firstHeadline, norm);
+
     findings.push({
       id: `opener-to-headliner-${norm}`,
       detector: "opener-to-headliner",
@@ -220,7 +242,10 @@ function detectOpenerToHeadliner(concerts: Concert[]): AnalysisFinding[] {
         gapYears: gap,
         openerShowCount: openerConcerts.length,
         headlinerShowCount: headlinerShows.length,
+        ...(bothRoles.length ? { songsInBothRoles: bothRoles } : {}),
       },
+      // The headlining night — the one the song join lands on.
+      ...(bothRoles.length ? { concertDate: firstHeadline.date } : {}),
       artists: [norm],
       venues: [
         ...new Set([
@@ -231,7 +256,9 @@ function detectOpenerToHeadliner(concerts: Concert[]): AnalysisFinding[] {
       years: [earliestOpener.year, firstHeadline.year],
       suggestedImage: { type: "artist", artistNormalized: norm },
       suggestedTrack: { artistNormalized: norm },
-      tags: ["#opener-to-headliner", "#career-arc"],
+      tags: bothRoles.length
+        ? ["#opener-to-headliner", "#career-arc", "#same-song"]
+        : ["#opener-to-headliner", "#career-arc"],
     });
   }
 
@@ -639,7 +666,7 @@ function detectMilestoneMarker(concerts: Concert[]): AnalysisFinding[] {
 
 // ── 8. Rare Sighting Detector ─────────────────────────────────────────────────
 
-function detectRareSighting(concerts: Concert[]): AnalysisFinding[] {
+function detectRareSighting(concerts: Concert[], setlists?: SetlistIndex): AnalysisFinding[] {
   const countByArtist = new Map<string, Concert[]>();
 
   for (const c of concerts) {
@@ -654,6 +681,13 @@ function detectRareSighting(concerts: Concert[]): AnalysisFinding[] {
     if (shows.length !== 1) continue;
 
     const concert = shows[0];
+    // The only time you saw them — so what they opened and closed with is the
+    // whole shape of that night (#229). 41 of the 68 one-timers have a setlist;
+    // the rest simply carry no song detail.
+    const songs = songsFor(setlists, concert.date, normalized);
+    const openedWith = describeSong(songs[0]);
+    const closedWith = describeSong(songs[songs.length - 1]);
+
     findings.push({
       id: `rare-sighting-${normalized}`,
       detector: "rare-sighting",
@@ -667,6 +701,9 @@ function detectRareSighting(concerts: Concert[]): AnalysisFinding[] {
         date: concert.date,
         year: concert.year,
         openers: concert.openers,
+        ...(songs.length
+          ? { songCount: songs.length, openedWith, closedWith }
+          : {}),
       },
       // The one night this story is about, so the post carries a ?show= setlist
       // deep link (#198). Pairs with artists[0] in buildDeepLinks.
@@ -674,7 +711,9 @@ function detectRareSighting(concerts: Concert[]): AnalysisFinding[] {
       artists: [normalized],
       venues: [concert.venueNormalized],
       years: [concert.year],
-      tags: ["#rare-sighting", "#one-time-only"],
+      tags: songs.length
+        ? ["#rare-sighting", "#one-time-only", "#only-setlist"]
+        : ["#rare-sighting", "#one-time-only"],
       suggestedImage: { type: "artist", artistNormalized: normalized },
       suggestedTrack: { artistNormalized: concert.headlinerNormalized },
     });
@@ -754,7 +793,8 @@ const GHOST_STATUSES = new Set(["demolished", "closed"]);
 
 function detectVenueGhost(
   concerts: Concert[],
-  venuesMetadata: Record<string, VenueMetaSlim>
+  venuesMetadata: Record<string, VenueMetaSlim>,
+  setlists?: SetlistIndex
 ): AnalysisFinding[] {
   const byVenue = new Map<string, Concert[]>();
   for (const c of concerts) {
@@ -778,6 +818,23 @@ function detectVenueGhost(
     const years = sorted.map((s) => s.year);
     const statusLabel = meta.status === "demolished" ? "Demolished" : "Closed";
 
+    // The last thing played in a room that no longer exists (#229, absorbing
+    // `last-song-standing` from #228). venue-ghost already knew which venues
+    // died; it never knew what was played. Resolved to the closing night's
+    // headliner, which is also what stops a festival bill returning several
+    // competing "last songs". Tape entries are filtered upstream, so this is the
+    // last thing performed — not the record the fireworks went off to.
+    const finalSongs = songsFor(setlists, last.date, last.headlinerNormalized);
+    const lastSongEver = describeSong(finalSongs[finalSongs.length - 1]);
+
+    // The closing night's headliner leads. artists[0] is what the setlist link
+    // pairs with concertDate, and pairing the *first* night's artist with the
+    // *last* night's date is exactly the mismatch #239 was about — this detector
+    // would have reintroduced it the moment it started emitting a link.
+    const orderedArtists = lastSongEver
+      ? [last.headlinerNormalized, ...artists.filter((a) => a !== last.headlinerNormalized)]
+      : artists;
+
     findings.push({
       id: `venue-ghost-${venueNorm}`,
       detector: "venue-ghost",
@@ -795,14 +852,21 @@ function detectVenueGhost(
         notes: meta.notes,
         firstShow: { date: first.date, artist: first.headliner },
         lastShow: { date: last.date, artist: last.headliner },
+        ...(lastSongEver ? { lastSongEver } : {}),
         artistCount: artists.length,
         topArtists: artists.slice(0, 5),
       },
-      artists,
+      // The final night. venue-ghost is venue-scoped, but the last song happened
+      // on one specific evening — and artists[0] is that night's headliner, so
+      // the setlist link resolves.
+      ...(lastSongEver ? { concertDate: last.date } : {}),
+      artists: orderedArtists,
       venues: [venueNorm],
       years,
       suggestedImage: { type: "venue", venueNormalized: venueNorm },
-      tags: ["#venue-ghost", `#${meta.status}`],
+      tags: lastSongEver
+        ? ["#venue-ghost", `#${meta.status}`, "#last-song"]
+        : ["#venue-ghost", `#${meta.status}`],
     });
   }
 
@@ -864,7 +928,7 @@ function detectFestivalMegaBill(concerts: Concert[]): AnalysisFinding[] {
 
 const DROUGHT_MIN_GAP_YEARS = 5;
 
-function detectDroughtComeback(concerts: Concert[]): AnalysisFinding[] {
+function detectDroughtComeback(concerts: Concert[], setlists?: SetlistIndex): AnalysisFinding[] {
   const byArtist = new Map<string, Concert[]>();
   for (const c of concerts) {
     if (!byArtist.has(c.headlinerNormalized)) byArtist.set(c.headlinerNormalized, []);
@@ -893,6 +957,12 @@ function detectDroughtComeback(concerts: Concert[]): AnalysisFinding[] {
 
     if (maxGap < DROUGHT_MIN_GAP_YEARS || !gapStart || !gapEnd) continue;
 
+    // What they opened the comeback show with (#229). The first song after a
+    // decades-long silence is the join; a bare gap count is just arithmetic.
+    // Tape entries are excluded upstream, so this is the first thing actually
+    // played, not the walk-on music.
+    const returnedWith = describeSong(songsFor(setlists, gapEnd.date, normalized)[0]);
+
     findings.push({
       id: `drought-comeback-${normalized}`,
       detector: "drought-comeback",
@@ -914,13 +984,16 @@ function detectDroughtComeback(concerts: Concert[]): AnalysisFinding[] {
         },
         gapYears: maxGap,
         totalShows: shows.length,
+        ...(returnedWith ? { returnedWith } : {}),
       },
+      // The comeback night — the one the song lands on.
+      ...(returnedWith ? { concertDate: gapEnd.date } : {}),
       artists: [normalized],
       venues: [...new Set(sorted.map((s) => s.venueNormalized))],
       years: sorted.map((s) => s.year),
       suggestedImage: { type: "artist", artistNormalized: normalized },
       suggestedTrack: { artistNormalized: normalized },
-      tags: ["#drought", "#comeback"],
+      tags: returnedWith ? ["#drought", "#comeback", "#first-song-back"] : ["#drought", "#comeback"],
     });
   }
 
@@ -1324,6 +1397,12 @@ export interface AnalysisResult {
 export interface AnalyzeOptions {
   venuesMetadata?: Record<string, VenueMetaSlim>;
   artistsMetadata?: Record<string, { genres?: string[] }>;
+  /**
+   * Setlist lookup (#229). Optional: without it every detector behaves exactly
+   * as before and simply carries no song detail, which is how concerts with no
+   * setlist degrade — silently, never with a stub sentence.
+   */
+  setlists?: SetlistIndex;
 }
 
 export function analyze(
@@ -1334,18 +1413,18 @@ export function analyze(
   const past = pastConcerts(concerts, today);
 
   const allFindings: AnalysisFinding[] = [
-    ...detectArtistLongevity(past),
-    ...detectOpenerToHeadliner(past),
+    ...detectArtistLongevity(past, options.setlists),
+    ...detectOpenerToHeadliner(past, options.setlists),
     ...detectVenueLoyalty(past),
     ...detectCalendarAnniversary(past, today),
     ...detectGeographicChapter(past),
     ...detectConcertStreak(past),
     ...detectMilestoneMarker(past),
-    ...detectRareSighting(past),
+    ...detectRareSighting(past, options.setlists),
     ...detectHistoricalMoment(past),
-    ...detectVenueGhost(past, options.venuesMetadata ?? {}),
+    ...detectVenueGhost(past, options.venuesMetadata ?? {}, options.setlists),
     ...detectFestivalMegaBill(past),
-    ...detectDroughtComeback(past),
+    ...detectDroughtComeback(past, options.setlists),
     ...detectCityPulse(past),
     ...detectAlbumContext(past),
     ...detectGenreOutlier(past, options.artistsMetadata ?? {}),
