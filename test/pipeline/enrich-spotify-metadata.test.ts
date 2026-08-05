@@ -217,7 +217,7 @@ describe('enrich-spotify-metadata.ts', () => {
     })
 
     it('handles missing overrides gracefully', () => {
-      const overrides = {}
+      const overrides: Record<string, unknown> = {}
       const normalizedName = 'unknown-artist'
 
       const override = overrides[normalizedName]
@@ -288,7 +288,7 @@ describe('enrich-spotify-metadata.ts', () => {
     })
 
     it('handles missing release date', () => {
-      const releaseDate = undefined
+      const releaseDate = undefined as string | undefined
       const releaseYear = releaseDate ? parseInt(releaseDate.split('-')[0]) : 0
 
       expect(releaseYear).toBe(0)
@@ -393,7 +393,7 @@ describe('enrich-spotify-metadata.ts', () => {
       const artist = {
         name: 'Bauhaus',
         dataSource: 'mock',
-      }
+      } as { name: string; dataSource: string; fetchedAt?: string }
 
       const shouldFetch = !artist.fetchedAt
 

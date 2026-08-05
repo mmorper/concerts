@@ -63,7 +63,9 @@
     "generate:liner-notes": "tsx scripts/liner-notes/index.ts",
     "generate:narrations": "tsx scripts/generate-narrations.ts",
     "deploy:worker": "cd workers/meta-injector && npx wrangler deploy",
-    "deploy:mcp-server": "cd workers/mcp-server && npx wrangler deploy"
+    "deploy:mcp-server": "cd workers/mcp-server && npx wrangler deploy",
+    "typecheck:scripts": "tsc --noEmit -p tsconfig.scripts.json",
+    "typecheck:all": "npm run typecheck && npm run typecheck:scripts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

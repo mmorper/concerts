@@ -182,9 +182,9 @@ async function main() {
   console.log(`\n${colors.cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${colors.reset}`)
   console.log(`${colors.blue}Cache Statistics${colors.reset}`)
   console.log(`${colors.cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${colors.reset}`)
-  console.log(`\nTotal entries: ${cacheStats.size}`)
+  console.log(`\nTotal entries: ${cacheStats.memoryCache.size}`)
   console.log(`\nCached items:`)
-  for (const entry of cacheStats.entries) {
+  for (const entry of cacheStats.memoryCache.entries) {
     const status = entry.hasData ? colors.green + '✓ Found' : colors.yellow + '○ Not Found'
     console.log(`  ${status}${colors.reset} - ${entry.key}`)
   }

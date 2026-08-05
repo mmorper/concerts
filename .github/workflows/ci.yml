@@ -42,8 +42,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Typecheck
+      - name: Typecheck (app)
         run: npm run typecheck
+
+      # tsconfig.json is scoped to `src`, so the app typecheck covers none of the
+      # liner-notes pipeline, the data pipeline, or the tests. Code with a
+      # referenced-but-undeclared variable passed clean until it was run by hand
+      # (#246).
+      - name: Typecheck (scripts + tests)
+        run: npm run typecheck:scripts
 
       - name: Test
         run: npm run test:run

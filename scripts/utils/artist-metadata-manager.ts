@@ -91,7 +91,7 @@ export class ArtistMetadataManager {
     // If artist not found, try to enrich from APIs
     if (!metadata) {
       console.log(`🔍 New artist detected: ${artistName}`)
-      metadata = await this.enrichNewArtist(artistName)
+      metadata = (await this.enrichNewArtist(artistName)) ?? undefined
 
       if (metadata) {
         this.metadataMap.set(artistName, metadata)
