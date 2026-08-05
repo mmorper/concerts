@@ -1,17 +1,18 @@
 /**
  * Agentic Liner Notes — Content Curator
  *
- * Selects the best 2–3 findings from scored candidates, resolves media,
+ * Rotates across detectors to choose what publishes, resolves media,
  * generates slugs, deep links, and related-post references, then emits
  * fully-formed LinerNotesPost objects ready for liner-notes.json.
  *
  * Two exported functions allow the pipeline to interleave generation:
  *
- *   1. select()     — choose 2–3 candidates from scored findings (pre-prose)
+ *   1. select()     — rotate across detectors to choose what publishes (pre-prose)
  *   2. buildPosts() — enrich selected findings (with prose) into LinerNotesPost[]
  */
 
-import type { ContentCategory, ScoredFinding } from "./types.ts";
+import { MIN_SCORE } from "./score.ts";
+import type { ScoredFinding } from "./types.ts";
 import type {
   DeepLink,
   LinerNotesPost,
@@ -34,98 +35,156 @@ export interface CurateOptions {
   publishedAt?: string;
 }
 
-/** Max posts to publish per pipeline run. */
-const MAX_POSTS = 3;
-/** Min score to consider for standard selection. */
-const STANDARD_THRESHOLD = 30;
-/** Fallback score if we can't reach 2 posts at standard threshold. */
-const FALLBACK_THRESHOLD = 20;
+/** Posts published per normal run. */
+export const POSTS_PER_RUN = 1;
+/**
+ * Extra ranked candidates returned beyond the target. Only consumed if an
+ * earlier candidate's prose fails validation, so a normal run still costs one
+ * API call — see the generation loop in pipeline.ts.
+ */
+export const CANDIDATE_RESERVE = 2;
 /** Months before the same artist can appear twice for the same detector. */
 const RERUN_COOLDOWN_MONTHS = 6;
 /** A finding whose primary artist (artists[0]) headlined any of the last N posts is skipped. */
 const ARTIST_COOLDOWN_POSTS = 10;
-/** Window of most-recent posts used to measure category dominance. */
-const RECENT_CATEGORY_WINDOW = 10;
-/** A category occupying this share (or more) of the recent window is deprioritized this run. */
-const CATEGORY_DOMINANCE_THRESHOLD = 0.5;
-/** In standard (non-seed) runs, no single category may exceed this many posts per run. */
+/** In seed runs, the most posts any one category may take. Never binds at POSTS_PER_RUN = 1. */
 const PER_CATEGORY_CAP_STANDARD = 2;
 
 // ── Step 1: Selection ─────────────────────────────────────────────────────────
 
+export interface SelectOptions {
+  /** Posts this run should publish. Seed mode passes 10. */
+  maxPosts?: number;
+  /**
+   * `--force`: bypass both the 6-month rerun cooldown and the primary-artist
+   * cooldown, so a recently-covered artist can be regenerated. Publication
+   * history is still read for rotation staleness — the old code passed an empty
+   * history to achieve this, which also blanked staleness and would have
+   * collapsed rotation back into score ranking.
+   */
+  force?: boolean;
+  /**
+   * "Now" for the rerun cooldown. Defaults to the wall clock. Threaded through
+   * so `--date` and forward simulations age cooldowns correctly — measuring
+   * against `Date.now()` meant a cooldown could never expire in either.
+   * Identical to the wall clock in a normal run.
+   */
+  today?: Date;
+}
+
 /**
- * Select candidate findings using the spec's category-diversity algorithm.
- * Applies deduplication against previously published posts.
- * Returns findings sorted by score descending — no prose yet.
+ * Select what to publish, by rotating across detectors (#226 → #231).
  *
- * @param maxPosts Override the default cap (used by seed mode).
+ * The old algorithm ranked all ~196 scored findings by score and took the top
+ * few, diversifying only on category — three buckets for fifteen detectors.
+ * That ranked the *detectors*, not the findings, and it did so in near-identical
+ * order every week: two of the six rubric dimensions are properties of the
+ * detector rather than the finding (`surpriseFactor` is a hardcoded constant per
+ * detector, `specificity` counts how many entities a detector chose to put in
+ * its arrays). Anything below the tallest detector in its category starved
+ * indefinitely — `historical-moment` produced 27 viable findings and published
+ * nothing across 56 posts, and `venue-ghost` was next in line.
+ *
+ * So: the score ranks findings *within* a detector, and rotation decides
+ * *between* detectors.
+ *
+ *   1. Filter  — dedup and artist cooldown, unchanged. These work.
+ *   2. Champion — each detector's single best eligible finding. 15, not 196.
+ *   3. Pass    — a detector whose champion sits on the floor sits this one out
+ *                rather than publishing its worst finding just because its turn
+ *                came up. It stays stale and returns when it has more to say.
+ *   4. Rank    — staleness desc, then score desc, then id asc. Staleness is how
+ *                many posts have published since that detector last appeared;
+ *                never-published sorts first.
+ *   5. Fill    — take the target plus a small reserve, honouring the category cap.
+ *
+ * The comparator is total: it can never fall through to array order, which is
+ * what let a stable sort and two adjacent lines in `analyze.ts` decide
+ * publication between two detectors tied at 28.
+ *
+ * Returns `maxPosts + CANDIDATE_RESERVE` candidates in publish order. The
+ * caller publishes the first `maxPosts` whose prose validates; the reserve
+ * exists only so a validation failure doesn't cost the whole run.
  */
 export function select(
   findings: ScoredFinding[],
   existingPosts: LinerNotesPost[],
-  maxPosts: number = MAX_POSTS
+  options: SelectOptions = {}
 ): ScoredFinding[] {
-  const sorted = [...findings].sort((a, b) => b.score - a.score);
+  const maxPosts = options.maxPosts ?? POSTS_PER_RUN;
+  const now = (options.today ?? new Date()).getTime();
+
   const recentPosts = [...existingPosts].sort(
     (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
   );
 
-  // Filter: dedup (detector+artist, 6-month) AND primary-artist cooldown (last N posts, any detector)
-  const candidates = sorted.filter(
-    (f) => !isDuplicate(f, existingPosts) && !isInPrimaryArtistCooldown(f, recentPosts)
+  const eligible = findings.filter(
+    (f) =>
+      options.force ||
+      (!isDuplicate(f, existingPosts, now) && !isInPrimaryArtistCooldown(f, recentPosts))
   );
 
-  // Deprioritize any category that already owns ≥50% of the recent publishing window
-  const dominant = getDominantCategories(recentPosts);
-  const preferred = candidates.filter((c) => !dominant.has(c.category));
-  const deprioritized = candidates.filter((c) => dominant.has(c.category));
-
-  const isSeeding = maxPosts > MAX_POSTS;
-  const standardCap = isSeeding ? Math.floor(maxPosts / 3) : PER_CATEGORY_CAP_STANDARD;
-  const deepCutCap = isSeeding ? maxPosts - 2 * standardCap : PER_CATEGORY_CAP_STANDARD;
-  const getCap = (cat: string): number => (cat === "deep-cut" ? deepCutCap : standardCap);
-
-  const selected: ScoredFinding[] = [];
-  const usedCategories = new Set<string>();
-  const categoryCounts: Record<string, number> = {};
-
-  // Phase 1: category diversity from preferred pool — pick best of each new category above threshold
-  for (const f of preferred) {
-    if (selected.length >= maxPosts) break;
-    if (f.score < STANDARD_THRESHOLD) break; // sorted descending
-    if (!usedCategories.has(f.category)) {
-      selected.push(f);
-      usedCategories.add(f.category);
-      categoryCounts[f.category] = (categoryCounts[f.category] ?? 0) + 1;
+  // Each detector nominates its best eligible finding. This is where the score
+  // does its real work — comparing findings that are actually comparable.
+  const champions = new Map<string, ScoredFinding>();
+  for (const f of eligible) {
+    const held = champions.get(f.detector);
+    if (!held || f.score > held.score || (f.score === held.score && f.id < held.id)) {
+      champions.set(f.detector, f);
     }
   }
 
-  // Phase 2: fill from preferred pool, respecting per-category cap
-  const phase2Target = maxPosts !== MAX_POSTS ? maxPosts : 2;
-  const fillFrom = (pool: ScoredFinding[], target: number) => {
-    for (const f of pool) {
-      if (selected.length >= target) break;
-      if (f.score < FALLBACK_THRESHOLD) break;
-      if (selected.includes(f)) continue;
-      if ((categoryCounts[f.category] ?? 0) >= getCap(f.category)) continue;
-      selected.push(f);
-      categoryCounts[f.category] = (categoryCounts[f.category] ?? 0) + 1;
-    }
-  };
-  if (selected.length < phase2Target) fillFrom(preferred, phase2Target);
+  // A detector may pass its turn. If its best available finding is sitting on
+  // the absolute floor, publishing it just because rotation reached that
+  // detector produces posts like "Club Caprice: 1 Show Before It Was Closed" —
+  // venue-ghost's stronger findings were inside the dedup window, so its
+  // champion really was a one-visit room.
+  //
+  // Deliberately NOT a global threshold. It never removes a detector from
+  // rotation and never excludes a whole category the way STANDARD_THRESHOLD=30
+  // did — the detector simply stays stale and comes back the moment it has
+  // something better to say.
+  for (const [detector, champion] of champions) {
+    if (champion.score <= MIN_SCORE) champions.delete(detector);
+  }
 
-  // Phase 3: last-resort fallback — dip into deprioritized (dominant-category) pool if still short
-  if (selected.length < phase2Target) fillFrom(deprioritized, phase2Target);
-
-  // Cap at maxPosts, tie-break timely > evergreen
-  const capped = selected.slice(0, maxPosts).sort((a, b) => {
+  const ranked = [...champions.values()].sort((a, b) => {
+    const sa = stalenessOf(a.detector, recentPosts);
+    const sb = stalenessOf(b.detector, recentPosts);
+    if (sa !== sb) return sb - sa;
     if (b.score !== a.score) return b.score - a.score;
-    const ta = a.temporality === "timely" ? 1 : 0;
-    const tb = b.temporality === "timely" ? 1 : 0;
-    return tb - ta;
+    return a.id.localeCompare(b.id);
   });
 
-  return capped;
+  // Category cap only bites in seed mode; at one post per run it cannot.
+  const cap =
+    maxPosts > POSTS_PER_RUN
+      ? Math.max(PER_CATEGORY_CAP_STANDARD, Math.ceil(maxPosts / 3))
+      : Number.POSITIVE_INFINITY;
+
+  const limit = maxPosts + CANDIDATE_RESERVE;
+  const selected: ScoredFinding[] = [];
+  const categoryCounts: Record<string, number> = {};
+
+  for (const f of ranked) {
+    if (selected.length >= limit) break;
+    if ((categoryCounts[f.category] ?? 0) >= cap) continue;
+    selected.push(f);
+    categoryCounts[f.category] = (categoryCounts[f.category] ?? 0) + 1;
+  }
+
+  return selected;
+}
+
+/**
+ * Posts published since this detector last appeared. `Infinity` if it never has,
+ * so a detector that has never published sorts ahead of every detector that has.
+ *
+ * `recentPosts` must be sorted newest-first.
+ */
+function stalenessOf(detector: string, recentPosts: LinerNotesPost[]): number {
+  const index = recentPosts.findIndex((p) => p.detector === detector);
+  return index === -1 ? Number.POSITIVE_INFINITY : index;
 }
 
 /**
@@ -145,25 +204,6 @@ function isInPrimaryArtistCooldown(
   if (!primary) return false;
   const window = recentPosts.slice(0, ARTIST_COOLDOWN_POSTS);
   return window.some((p) => p.artists[0] === primary);
-}
-
-/**
- * Returns the set of categories that occupy ≥ CATEGORY_DOMINANCE_THRESHOLD of
- * the last RECENT_CATEGORY_WINDOW posts. Those categories are deprioritized
- * (moved to a last-resort pool) during selection this run.
- *
- * `recentPosts` must be sorted newest-first.
- */
-function getDominantCategories(recentPosts: LinerNotesPost[]): Set<ContentCategory> {
-  const window = recentPosts.slice(0, RECENT_CATEGORY_WINDOW);
-  const over = new Set<ContentCategory>();
-  if (window.length === 0) return over;
-  const counts: Record<string, number> = {};
-  for (const p of window) counts[p.category] = (counts[p.category] ?? 0) + 1;
-  for (const [cat, c] of Object.entries(counts)) {
-    if (c / window.length >= CATEGORY_DOMINANCE_THRESHOLD) over.add(cat as ContentCategory);
-  }
-  return over;
 }
 
 // ── Step 2: Post building ─────────────────────────────────────────────────────
@@ -223,7 +263,11 @@ export function buildPosts(
 
 // ── Deduplication ─────────────────────────────────────────────────────────────
 
-function isDuplicate(finding: ScoredFinding, existingPosts: LinerNotesPost[]): boolean {
+function isDuplicate(
+  finding: ScoredFinding,
+  existingPosts: LinerNotesPost[],
+  now: number
+): boolean {
   for (const post of existingPosts) {
     if (post.detector !== finding.detector) continue;
 
@@ -240,7 +284,7 @@ function isDuplicate(finding: ScoredFinding, existingPosts: LinerNotesPost[]): b
     // Within cooldown window?
     const publishedDate = new Date(post.publishedAt);
     const monthsAgo =
-      (Date.now() - publishedDate.getTime()) / (1000 * 60 * 60 * 24 * 30);
+      (now - publishedDate.getTime()) / (1000 * 60 * 60 * 24 * 30);
     if (monthsAgo < RERUN_COOLDOWN_MONTHS) return true;
   }
   return false;

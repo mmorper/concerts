@@ -17,7 +17,7 @@ import { fileURLToPath } from "url";
 
 import { analyze } from "./analyze.ts";
 import { score } from "./score.ts";
-import { select, buildPosts } from "./curate.ts";
+import { select, buildPosts, POSTS_PER_RUN } from "./curate.ts";
 import { generate } from "./generate.ts";
 import type { PipelineOptions } from "./types.ts";
 import type { Concert } from "../../src/types/concert.ts";
@@ -28,7 +28,7 @@ const ROOT = join(__dirname, "..", "..");
 const DATA_DIR = join(ROOT, "public", "data");
 const LINER_NOTES_PATH = join(DATA_DIR, "liner-notes.json");
 
-/** Posts selected per normal weekly run. Seed mode uses 10. */
+/** Posts published in `--seed` mode. Normal runs publish POSTS_PER_RUN. */
 const SEED_POST_COUNT = 10;
 
 // ── Main export ───────────────────────────────────────────────────────────────
@@ -90,14 +90,20 @@ export async function run(options: PipelineOptions): Promise<void> {
   }
 
   // ── Stage 3: Select candidates ───────────────────────────────────────────
-  console.log("\n🎯 Stage 3: Selecting candidates...");
-  const dedupeSource = options.force ? [] : existingPosts;
-  const maxPosts = options.seed ? SEED_POST_COUNT : undefined;
-  const selected = select(scoredFindings, dedupeSource, maxPosts);
-  console.log(`   Selected ${selected.length} candidate${selected.length !== 1 ? "s" : ""}:`);
-  for (const f of selected) {
-    console.log(`   • [${f.score}/60] [${f.category}] ${f.headline}`);
-  }
+  console.log("\n🎯 Stage 3: Selecting candidates (detector rotation)...");
+  // `--force` skips the rerun cooldown but must NOT hide publication history:
+  // rotation reads it to decide which detector is stalest (#231).
+  const target = options.seed ? SEED_POST_COUNT : POSTS_PER_RUN;
+  const selected = select(scoredFindings, existingPosts, {
+    maxPosts: target,
+    force: options.force,
+    today,
+  });
+  console.log(`   Publishing ${target}, with ${Math.max(0, selected.length - target)} in reserve:`);
+  selected.forEach((f, i) => {
+    const role = i < target ? "→" : "  reserve:";
+    console.log(`   ${role} [${f.score}/60] [${f.category}] ${f.detector} — ${f.headline}`);
+  });
 
   if (selected.length === 0) {
     console.log("\n⚠️  No candidates selected — nothing to publish this run.");
@@ -114,14 +120,29 @@ export async function run(options: PipelineOptions): Promise<void> {
   if (!process.env.ANTHROPIC_API_KEY) {
     throw new Error("ANTHROPIC_API_KEY environment variable is required for prose generation.");
   }
-  const withProse = await generate(selected, { artistsMetadata, artistsTopTracks });
-  const proseCount = withProse.filter((f) => f.prose).length;
-  console.log(`   Prose generated for ${proseCount}/${selected.length} findings`);
+  // Generate in rank order and stop once we have what we're publishing. The old
+  // pipeline generated for every selected finding and then discarded all but one
+  // in Stage 5b — 2–3 API calls per published post. Selection now decides the
+  // winner before any prose is written, and the reserve candidates are only
+  // touched if an earlier one fails validation (#231).
+  const withProse: typeof selected = [];
+  let attempted = 0;
+  for (const candidate of selected) {
+    if (withProse.length >= target) break;
+    attempted++;
+    const [result] = await generate([candidate], { artistsMetadata, artistsTopTracks });
+    if (result?.prose) {
+      withProse.push(result);
+    } else {
+      console.warn(`   ⚠️  Prose failed for "${candidate.headline}" — falling through to reserve`);
+    }
+  }
+  console.log(`   Prose generated for ${withProse.length}/${target} (${attempted} API call${attempted !== 1 ? "s" : ""})`);
 
   // ── Stage 5: Build posts ─────────────────────────────────────────────────
   console.log("\n🏗️  Stage 5: Building posts...");
   const publishedAt = new Date().toISOString();
-  let newPosts = buildPosts(withProse, {
+  const newPosts = buildPosts(withProse, {
     artistsMetadata,
     artistsTopTracks,
     venuesMetadata,
@@ -135,27 +156,17 @@ export async function run(options: PipelineOptions): Promise<void> {
     return;
   }
 
-  // ── Stage 5b: Pick single best post (normal mode only) ────────────────────
-  if (!options.seed && !options.force && newPosts.length > 1) {
-    const lastDetector = existingPosts[0]?.detector;
-    const sorted = [...newPosts].sort((a, b) => b.score - a.score);
-    const pick =
-      (lastDetector && sorted.find((p) => p.detector !== lastDetector)) ??
-      sorted[0];
-    const skipped = newPosts.filter((p) => p !== pick);
-    console.log(`\n🎯 Stage 5b: Single-post filter...`);
-    console.log(`   Prior detector: ${lastDetector ?? "(none)"}`);
-    console.log(`   Selected: [${pick.score}/60] ${pick.headline} (${pick.detector})`);
-    for (const s of skipped) {
-      console.log(`   Skipped:  [${s.score}/60] ${s.headline} (${s.detector})`);
-    }
-    newPosts = [pick];
-  }
+  // Stage 5b — the post-prose "pick one, discard the rest" filter — is gone.
+  // It was a depth-1 detector cooldown ("don't repeat the previous detector")
+  // applied after the API calls had already been paid for. Rotation generalizes
+  // it into the selection stage with a memory longer than a single post (#231).
 
   // ── Stage 6: Merge and write ─────────────────────────────────────────────
   console.log("\n💾 Stage 6: Writing liner-notes.json...");
   const allPosts = mergePosts(newPosts, existingPosts);
-  const totalGenerated = (existingData?.metadata.totalGenerated ?? 0) + selected.length;
+  // Counts prose generations actually performed, not candidates ranked — the
+  // reserve is usually never touched, so `selected.length` would overstate it.
+  const totalGenerated = (existingData?.metadata.totalGenerated ?? 0) + attempted;
   const averageScore =
     allPosts.reduce((sum, p) => sum + p.score, 0) / allPosts.length;
 

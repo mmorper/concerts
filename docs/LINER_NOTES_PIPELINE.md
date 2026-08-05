@@ -1,14 +1,14 @@
 # Liner Notes Pipeline
 
-> **Status:** v1.0 — 14 Tier 1 detectors shipped (v4.4.0)
-> **Last Updated:** 2026-03-08
+> **Status:** v1.1 — 15 Tier 1 detectors; selection rewritten to detector rotation (#231)
+> **Last Updated:** 2026-08-05
 > **Original Spec:** [docs/specs/implemented/agentic-liner-notes-v3.md](specs/implemented/agentic-liner-notes-v3.md)
 
 ---
 
 ## What Is This?
 
-The Liner Notes system is an **agentic content generation pipeline** that automatically discovers stories from the concert archive and publishes them as first-person editorial posts. It runs weekly as part of `npm run build-data`, producing 2–3 new posts per run.
+The Liner Notes system is an **agentic content generation pipeline** that automatically discovers stories from the concert archive and publishes them as first-person editorial posts. It runs weekly as part of `npm run build-data`, publishing one new post per run.
 
 Each post is:
 
@@ -73,9 +73,9 @@ npm run generate:liner-notes -- --dry-run
 
 #### `--seed`
 
-**Runs the full pipeline but selects up to 10 posts instead of the normal 2–3.**
+**Runs the full pipeline but publishes up to 10 posts instead of the normal one.**
 
-Intended for the first run when bootstrapping an empty feed. The selection algorithm still applies category diversity and deduplication — it just fills more slots. After seeding, switch back to normal runs.
+Intended for the first run when bootstrapping an empty feed. Rotation and deduplication still apply — it just fills more slots, and a per-category cap keeps one category from taking the whole seed. After seeding, switch back to normal runs.
 
 ```bash
 npm run generate:liner-notes -- --seed
@@ -85,9 +85,11 @@ npm run generate:liner-notes -- --seed
 
 #### `--force`
 
-**Bypasses the 6-month deduplication cooldown at Stage 3.**
+**Bypasses both cooldowns at Stage 3.**
 
-Normally, any finding that shares the same detector + primary artist as a recently published post is skipped. `--force` passes an empty deduplication source, allowing the pipeline to re-select the same detector/artist combinations it has already published.
+Normally a finding is skipped if it shares a detector + primary artist with a post from the last 6 months, or if its primary artist headlined any of the last 10 posts. `--force` waives both, so the pipeline can re-select combinations it has already published.
+
+Publication history is still read for rotation staleness. Before #231 this flag passed an empty history, which also blanked staleness and would have collapsed rotation back into score ranking.
 
 Use this to republish or regenerate posts for an artist that was covered recently — for example, after updating the voice rules or fixing a data issue.
 
@@ -136,7 +138,7 @@ This shows exactly which stages each flag affects:
 | ----- | ------- | ---------------- | ----------- | -------- | --------- | -------- |
 | 1. Analyze | ✓ | ✓ | ✓ | ✓ | ✓ | uses override date |
 | 2. Score | ✓ | ✓ then stop | ✓ | ✓ | ✓ | uses override date |
-| 3. Select | ✓ | — | ✓ then stop | max 10 posts | skips deduplication | — |
+| 3. Select | ✓ | — | ✓ then stop | up to 10 posts | waives both cooldowns | ages the rerun cooldown |
 | 4. Generate prose | ✓ | — | — | ✓ | ✓ | — |
 | 5. Build posts | ✓ | — | — | ✓ | ✓ | — |
 | 6. Write JSON | ✓ | — | — | ✓ | ✓ | — |
@@ -166,8 +168,8 @@ concerts.json (source of truth)
         ▼
 ┌─────────────────────────────────────┐
 │  Stage 3: SELECT                    │  scripts/liner-notes/curate.ts
-│  Category diversity algorithm       │  → 2–3 candidates
-│  + 6-month deduplication cooldown   │
+│  Detector rotation over per-        │  → 1 post (+2 reserve)
+│  detector champions + cooldowns     │
 └─────────────────────────────────────┘
         │
         ▼
@@ -510,7 +512,9 @@ Tracked in [GitHub issue #68](https://github.com/mmorper/concerts/issues/68). Th
 
 ## Scoring Rubric (60 points)
 
-Implemented in `scripts/liner-notes/score.ts`. Findings below **20 points** are dropped before prose generation. The remaining findings are sorted descending by score before selection.
+Implemented in `scripts/liner-notes/score.ts`. Findings below **20 points** are dropped before prose generation.
+
+> **The score is not comparable across detectors.** It ranks findings *within* a detector and acts as a global floor — nothing more. `surpriseFactor` is a fixed per-detector constant and `specificity` counts however many entities a detector chose to put in its arrays, so a 28 from `historical-moment` and a 28 from `rare-sighting` do not mean the same thing. Selection relies on this: see [Selection Algorithm](#selection-algorithm).
 
 | Dimension | Max | Description |
 | --------- | --- | ----------- |
@@ -614,14 +618,32 @@ The scorer pre-computes how many findings fall into each category across the ful
 
 ## Selection Algorithm
 
-Implemented in `scripts/liner-notes/curate.ts`.
+Implemented in `scripts/liner-notes/curate.ts`. **Rewritten in #231** — selection rotates across detectors rather than ranking all findings by score.
 
-1. **Category diversity pass** — pick the top-scoring finding from each of the three categories (Cultural, Personal, Deep-Cut), provided it scores ≥ 30.
-2. **Fill pass** — if fewer than 2 posts selected, fill from remaining candidates at ≥ 20 threshold.
-3. **Cap** — 3 posts maximum per normal run; 10 maximum in `--seed` mode.
-4. **Tie-break** — timely findings beat evergreen when scores are equal.
+### Why rotation
 
-**Deduplication:** Any finding that shares the same detector + primary artist as a post published in the last 6 months is skipped. Override with `--force`.
+The score is a **within-detector quality rank and a global floor. It is not a cross-detector comparison.** Two of the six rubric dimensions are properties of the *detector*, not the finding:
+
+- `surpriseFactor` is a hardcoded constant per detector — all 66 `rare-sighting` findings score 9, all 27 `historical-moment` findings score 7.
+- `specificity` counts `artists.length + venues.length`, which reflects how many entities a detector chose to put in its arrays.
+
+So ranking ~200 findings by score largely re-ranked the *detectors*, in near-identical order every week. Anything below the tallest detector in its category starved indefinitely: `historical-moment` produced 27 viable findings and published nothing across 56 posts, and `venue-ghost` was next in line. Diversifying on category — three buckets for fifteen detectors — could not fix that, because `deep-cut` alone held 107 of the findings.
+
+### The algorithm
+
+1. **Filter** — drop findings failing the rerun cooldown (same detector + artist within 6 months) or the primary-artist cooldown (last 10 posts).
+2. **Champion** — each detector nominates its single best remaining finding. Fifteen candidates, not two hundred. This is where the score does its real work, comparing findings that are actually comparable.
+3. **Pass** — a detector whose champion sits at `MIN_SCORE` sits the round out rather than publishing its weakest finding just because its turn arrived. It stays stale and returns when it has something better. This is *not* a global threshold: it never excludes a category the way the old `STANDARD_THRESHOLD = 30` did.
+4. **Rank** — `staleness desc → score desc → id asc`. Staleness is the number of posts published since that detector last appeared; a detector that has never published sorts first. **The comparator is total** — it can never fall through to array order, which is what previously let a stable sort and two adjacent lines in `analyze.ts` decide publication between detectors tied at 28.
+5. **Fill** — take `POSTS_PER_RUN` (1; `--seed` uses 10) plus `CANDIDATE_RESERVE` (2). The reserve is only consumed if an earlier candidate's prose fails validation, so a normal run costs **one** API call.
+
+`STANDARD_THRESHOLD` is retired; `MIN_SCORE = 20` in `score.ts` is the single floor.
+
+**Measured over 26 simulated weekly runs:** all 15 detectors publish, the first repeat comes at post 16, mean score is 33.5 (up from 33.0), and nothing publishes below 26.
+
+**Deduplication:** unchanged. `--force` bypasses both cooldowns so a recently-covered artist can be regenerated — but publication history is still read for rotation staleness.
+
+> **Note:** normal runs publish one post. Before #231, `select()` returned 2–3 and a post-prose filter in `pipeline.ts` (Stage 5b) discarded all but one — paying 2–3 Claude API calls per published post. That filter was itself a depth-1 detector cooldown ("don't repeat the previous detector"); rotation generalizes it and moves it before generation.
 
 ---
 
@@ -905,10 +927,10 @@ All components live in `src/components/liner-notes/`.
 | ---- | ---------------- |
 | Analysis (9 detectors, no API) | ~500 ms |
 | Scoring | ~50 ms |
-| Prose generation (3 posts × Claude API) | ~30 seconds |
-| **Full run** | **~35 seconds** |
+| Prose generation (1 post × Claude API) | ~10 seconds |
+| **Full run** | **~12 seconds** |
 
-- **API cost:** ~$0.10–0.15 per weekly run
+- **API cost:** ~$0.03–0.05 per weekly run (one call; #231 removed the 2–3 generate-then-discard calls)
 - **Requires:** `ANTHROPIC_API_KEY` in environment (only needed for generation; `--analyze-only` and `--dry-run` work without it)
 
 ---
