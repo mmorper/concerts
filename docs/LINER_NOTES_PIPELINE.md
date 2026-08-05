@@ -280,6 +280,8 @@ Each detector produces one or more `AnalysisFinding` objects with a `category`, 
 
 **Regions:** West Coast, Mountain West, Midwest, South, Northeast, Southwest, Pacific
 
+> **`STATE_REGION` is keyed on full state names** (`"California"`), matching what `concerts.json` stores and the convention `CITY_PULSE_EVENTS` uses. It was originally keyed on postal codes (`"CA"`), which never matched a single row — every concert resolved to `"International"`, the detector collapsed the whole archive into one "chapter", and it published a post describing a California/DC archive as *"177 international concerts"* (#232). `regionOf()` now warns on an unmapped state rather than falling through silently, and a test asserts every state in `concerts.json` resolves. Non-US states are expected to reach `"International"` and are listed in `KNOWN_NON_US`.
+
 **Data points:** Region name, show count, first/last show, span in years, distinct venues and artists, decades covered.
 
 **Returns:** Top 3 regions by show count.

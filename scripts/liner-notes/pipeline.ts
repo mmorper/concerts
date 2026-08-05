@@ -19,7 +19,7 @@ import { analyze } from "./analyze.ts";
 import { score } from "./score.ts";
 import { select, buildPosts, POSTS_PER_RUN } from "./curate.ts";
 import { generate } from "./generate.ts";
-import type { PipelineOptions } from "./types.ts";
+import type { PipelineOptions, ScoredFinding } from "./types.ts";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesData, LinerNotesPost } from "../../src/types/liner-notes.ts";
 
@@ -30,6 +30,43 @@ const LINER_NOTES_PATH = join(DATA_DIR, "liner-notes.json");
 
 /** Posts published in `--seed` mode. Normal runs publish POSTS_PER_RUN. */
 const SEED_POST_COUNT = 10;
+
+/**
+ * Generate prose for ranked candidates until `target` posts have valid prose.
+ *
+ * Before #231 the pipeline generated prose for every selected finding and then
+ * discarded all but one in a post-prose filter — 2–3 Claude API calls per
+ * published post. Selection now decides the winner before any prose is written,
+ * so this walks the ranked list and stops as soon as it has enough. The reserve
+ * candidates below the target exist only so one failed validation doesn't cost
+ * the whole run; in the normal case they are never touched.
+ *
+ * `generateOne` is injected so the loop is testable without an API key.
+ * It resolves to `undefined`, or to a finding without `prose`, when generation
+ * or validation fails — `generate()` catches per-finding failures rather than
+ * throwing.
+ */
+export async function generateUpTo(
+  candidates: ScoredFinding[],
+  target: number,
+  generateOne: (candidate: ScoredFinding) => Promise<ScoredFinding | undefined>
+): Promise<{ withProse: ScoredFinding[]; attempted: number }> {
+  const withProse: ScoredFinding[] = [];
+  let attempted = 0;
+
+  for (const candidate of candidates) {
+    if (withProse.length >= target) break;
+    attempted++;
+    const result = await generateOne(candidate);
+    if (result?.prose) {
+      withProse.push(result);
+    } else {
+      console.warn(`   ⚠️  Prose failed for "${candidate.headline}" — falling through to reserve`);
+    }
+  }
+
+  return { withProse, attempted };
+}
 
 // ── Main export ───────────────────────────────────────────────────────────────
 
@@ -120,23 +157,10 @@ export async function run(options: PipelineOptions): Promise<void> {
   if (!process.env.ANTHROPIC_API_KEY) {
     throw new Error("ANTHROPIC_API_KEY environment variable is required for prose generation.");
   }
-  // Generate in rank order and stop once we have what we're publishing. The old
-  // pipeline generated for every selected finding and then discarded all but one
-  // in Stage 5b — 2–3 API calls per published post. Selection now decides the
-  // winner before any prose is written, and the reserve candidates are only
-  // touched if an earlier one fails validation (#231).
-  const withProse: typeof selected = [];
-  let attempted = 0;
-  for (const candidate of selected) {
-    if (withProse.length >= target) break;
-    attempted++;
+  const { withProse, attempted } = await generateUpTo(selected, target, async (candidate) => {
     const [result] = await generate([candidate], { artistsMetadata, artistsTopTracks });
-    if (result?.prose) {
-      withProse.push(result);
-    } else {
-      console.warn(`   ⚠️  Prose failed for "${candidate.headline}" — falling through to reserve`);
-    }
-  }
+    return result;
+  });
   console.log(`   Prose generated for ${withProse.length}/${target} (${attempted} API call${attempted !== 1 ? "s" : ""})`);
 
   // ── Stage 5: Build posts ─────────────────────────────────────────────────

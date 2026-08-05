@@ -229,7 +229,7 @@
         }
       ],
       "relatedSlugs": [
-        "pacific-amphitheatre-16-shows-over-5-decades",
+        "pacific-amphitheatre-16-shows-over-5-decades-2",
         "july-16-40-years-since-beach-boys"
       ],
       "score": 39,
@@ -364,7 +364,7 @@
         }
       ],
       "relatedSlugs": [
-        "house-of-blues-anaheim-6-shows-over-3-decades",
+        "house-of-blues-anaheim-6-shows-over-3-decades-2",
         "social-distortion-34-years-of-shows"
       ],
       "score": 36,
@@ -1209,7 +1209,7 @@
       ],
       "relatedSlugs": [
         "universal-amphitheater-5-shows-before-it-was-demolished",
-        "pacific-amphitheatre-16-shows-over-5-decades"
+        "pacific-amphitheatre-16-shows-over-5-decades-2"
       ],
       "score": 41,
       "detector": "drought-comeback",
@@ -1872,9 +1872,9 @@
       "headline": "Universal Amphitheater: 5 Shows Before It Was Demolished",
       "prose": "I somehow caught 5 shows at Universal Amphitheater across 16 years, from Howard Jones in 1989 to Tears For Fears in 2005 — but here's the twist: the venue was actually demolished in 1999 and rebuilt as Gibson Amphitheatre. That means my last show there technically happened at a completely different building on the same site, six years after the original was torn down. Four different artists, two different venues, one address that fooled my concert tracking for decades.",
       "image": {
-        "url": "/images/venues/fallback.jpg",
-        "alt": "Universal Amphitheater",
-        "source": "venue"
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b4/30/b7/b430b70f-1cc8-b120-1217-6ada0096fe7a/5037300817439.jpg/600x600bb.jpg",
+        "alt": "Action Replay",
+        "source": "album"
       },
       "audio": {
         "trackName": "No One Is To Blame",
@@ -2104,9 +2104,9 @@
       "headline": "Irvine Meadows: 16 Shows Before It Was Demolished",
       "prose": "I discovered I saw 16 shows at Irvine Meadows between 1984 and 2003, from Adam Ant's April '84 performance to Peter Gabriel in June 2003, before the venue was demolished in 2016. What strikes me is how this amphitheater captured a specific era — my concert history there reads like a New Wave and post-punk time capsule, heavy on acts like Thompson Twins, Billy Idol, Echo and the Bunnymen, and Depeche Mode. Thirteen different artists across nearly two decades, and now it's all tract housing where those summer nights used to echo with synthesizers and guitar feedback.",
       "image": {
-        "url": "/images/venues/fallback.jpg",
-        "alt": "Irvine Meadows",
-        "source": "venue"
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/de/b4/09deb44c-e956-6d43-e4cf-840784faf7d7/mzi.ogdifckc.jpg/600x600bb.jpg",
+        "alt": "The Essential Adam Ant",
+        "source": "album"
       },
       "audio": {
         "trackName": "Goody Two Shoes",
@@ -2405,9 +2405,9 @@
       "headline": "Thompson Twins in 1984: The Year of 1984 Los Angeles Summer Olympics",
       "prose": "Los Angeles in 1984 was electric with Olympic fever, and the new wave acts flooding Irvine Meadows that year captured that same restless energy. I saw Thompson Twins in May, right in the thick of it — part of a four-show run at the venue that also brought Adam Ant, Billy Idol, and Echo and the Bunnymen between April and September. The Thompson Twins were riding high on \"Into the Gap,\" their synth-pop perfectly matching the city's futuristic Olympic optimism. Looking back, those 4 concerts feel like a snapshot of new wave's peak moment, when MTV and the Games made everything feel possible.",
       "image": {
-        "url": "/images/venues/fallback.jpg",
-        "alt": "Irvine Meadows",
-        "source": "venue"
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/09/de/b4/09deb44c-e956-6d43-e4cf-840784faf7d7/mzi.ogdifckc.jpg/600x600bb.jpg",
+        "alt": "The Essential Adam Ant",
+        "source": "album"
       },
       "audio": {
         "trackName": "Hold Me Now",
@@ -2957,9 +2957,9 @@
       "headline": "The Smithereens in 1992: The Year of Los Angeles uprising after the Rodney King verdict",
       "prose": "The Smithereens were hitting their stride in 1992, riding the wave of their most successful period, when I caught them at The Celebrity Theatre in Anaheim that June. The streets that summer were fractured and raw after the acquittal, and going out felt charged with something unresolved. I remember the drive down to Orange County feeling different somehow — like the whole region was still processing what had happened just weeks before. The Smithereens' blend of power pop and heartland rock felt like the right soundtrack for that moment, their earnest melodies cutting through the tension that lingered in the California air.",
       "image": {
-        "url": "/images/venues/fallback.jpg",
-        "alt": "The Celebrity Theatre",
-        "source": "venue"
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/fe/4d/38/fe4d3834-b114-f4fd-3e06-f01457c1ddfc/00077779119455.jpg/600x600bb.jpg",
+        "alt": "11",
+        "source": "album"
       },
       "audio": {
         "trackName": "A Girl Like You",
@@ -3075,7 +3075,7 @@
         }
       ],
       "relatedSlugs": [
-        "depeche-mode-38-years-of-shows",
+        "depeche-mode-38-years-of-shows-2",
         "squeeze-from-opener-to-headliner"
       ],
       "score": 39,
@@ -3226,7 +3226,7 @@
         }
       ],
       "relatedSlugs": [
-        "depeche-mode-38-years-of-shows",
+        "depeche-mode-38-years-of-shows-2",
         "squeeze-from-opener-to-headliner"
       ],
       "score": 39,
@@ -3367,7 +3367,7 @@
       ],
       "relatedSlugs": [
         "squeeze-from-opener-to-headliner",
-        "depeche-mode-38-years-of-shows"
+        "depeche-mode-38-years-of-shows-2"
       ],
       "score": 38,
       "detector": "opener-to-headliner",
@@ -3381,9 +3381,9 @@
       "headline": "My West Coast Chapter: 26 Concerts Over 11 Years",
       "prose": "I still remember standing at Irvine Meadows in October 1988, watching Oingo Boingo tear through the night air, thinking I had no idea what the next 11 years of California shows would look like. That first West Coast concert cracked something open — 26 shows across 16 venues, from Irvine to Redondo Beach, two full decades bleeding into each other. I caught 22 different artists during that chapter, ending quietly at Club Caprice in 1999 with Alien Fashion Show, which is honestly a perfect last entry for a run that started with Oingo Boingo. Some chapters close before you realize they've closed.",
       "image": {
-        "url": "/images/venues/fallback.jpg",
-        "alt": "Irvine Meadows",
-        "source": "venue"
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/be/5b/14/be5b14fc-5480-81cc-53a1-59f98f185f2b/06UMGIM03141.rgb.jpg/600x600bb.jpg",
+        "alt": "Dead Man's Party",
+        "source": "album"
       },
       "audio": {
         "trackName": "Dead Man's Party",
@@ -3633,7 +3633,7 @@
         }
       ],
       "relatedSlugs": [
-        "depeche-mode-38-years-of-shows",
+        "depeche-mode-38-years-of-shows-2",
         "squeeze-from-opener-to-headliner"
       ],
       "score": 36,
@@ -3708,7 +3708,7 @@
         }
       ],
       "relatedSlugs": [
-        "depeche-mode-38-years-of-shows",
+        "depeche-mode-38-years-of-shows-2",
         "squeeze-from-opener-to-headliner"
       ],
       "score": 36,
@@ -3804,7 +3804,7 @@
         }
       ],
       "relatedSlugs": [
-        "depeche-mode-38-years-of-shows",
+        "depeche-mode-38-years-of-shows-2",
         "squeeze-from-opener-to-headliner"
       ],
       "score": 34,
@@ -3880,7 +3880,7 @@
         }
       ],
       "relatedSlugs": [
-        "depeche-mode-38-years-of-shows"
+        "depeche-mode-38-years-of-shows-2"
       ],
       "score": 34,
       "detector": "venue-loyalty",
