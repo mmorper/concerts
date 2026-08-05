@@ -13,7 +13,6 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import type { RawConcertRow } from '../../scripts/utils/google-sheets-client'
 
 // Create mock functions
 const mockFetchConcerts = vi.fn()
@@ -303,7 +302,7 @@ describe('fetch-google-sheet.ts', () => {
       ;(fs.existsSync as any).mockReturnValue(false)
 
       let writtenData: any
-      ;(fs.writeFileSync as any).mockImplementation((path: string, data: string) => {
+      ;(fs.writeFileSync as any).mockImplementation((_path: string, data: string) => {
         writtenData = JSON.parse(data)
       })
 
@@ -339,7 +338,7 @@ describe('fetch-google-sheet.ts', () => {
       ;(fs.existsSync as any).mockReturnValue(false)
 
       let writtenData: any
-      ;(fs.writeFileSync as any).mockImplementation((path: string, data: string) => {
+      ;(fs.writeFileSync as any).mockImplementation((_path: string, data: string) => {
         writtenData = JSON.parse(data)
       })
 
@@ -373,7 +372,7 @@ describe('fetch-google-sheet.ts', () => {
       ;(fs.existsSync as any).mockReturnValue(false)
 
       let writtenData: any
-      ;(fs.writeFileSync as any).mockImplementation((path: string, data: string) => {
+      ;(fs.writeFileSync as any).mockImplementation((_path: string, data: string) => {
         writtenData = JSON.parse(data)
       })
 
@@ -404,7 +403,7 @@ describe('fetch-google-sheet.ts', () => {
       ;(fs.existsSync as any).mockReturnValue(false)
 
       let writtenData: any
-      ;(fs.writeFileSync as any).mockImplementation((path: string, data: string) => {
+      ;(fs.writeFileSync as any).mockImplementation((_path: string, data: string) => {
         writtenData = JSON.parse(data)
       })
 
@@ -433,7 +432,7 @@ describe('fetch-google-sheet.ts', () => {
       ;(fs.existsSync as any).mockReturnValue(false)
 
       let writtenData: any
-      ;(fs.writeFileSync as any).mockImplementation((path: string, data: string) => {
+      ;(fs.writeFileSync as any).mockImplementation((_path: string, data: string) => {
         writtenData = JSON.parse(data)
       })
 
@@ -472,7 +471,7 @@ describe('fetch-google-sheet.ts', () => {
       ;(fs.existsSync as any).mockReturnValue(false)
 
       let writtenData: any
-      ;(fs.writeFileSync as any).mockImplementation((path: string, data: string) => {
+      ;(fs.writeFileSync as any).mockImplementation((_path: string, data: string) => {
         writtenData = JSON.parse(data)
       })
 
@@ -532,7 +531,7 @@ describe('fetch-google-sheet.ts', () => {
       ;(fs.readFileSync as any).mockReturnValue(JSON.stringify(mockCache))
 
       let writtenData: any
-      ;(fs.writeFileSync as any).mockImplementation((path: string, data: string) => {
+      ;(fs.writeFileSync as any).mockImplementation((_path: string, data: string) => {
         writtenData = JSON.parse(data)
       })
 
@@ -570,7 +569,7 @@ describe('fetch-google-sheet.ts', () => {
       ;(fs.readFileSync as any).mockReturnValue(JSON.stringify(mockCache))
 
       let writtenData: any
-      ;(fs.writeFileSync as any).mockImplementation((path: string, data: string) => {
+      ;(fs.writeFileSync as any).mockImplementation((_path: string, data: string) => {
         writtenData = JSON.parse(data)
       })
 
@@ -601,7 +600,7 @@ describe('fetch-google-sheet.ts', () => {
       ;(fs.readFileSync as any).mockReturnValue('{}')
 
       let writtenData: any
-      ;(fs.writeFileSync as any).mockImplementation((path: string, data: string) => {
+      ;(fs.writeFileSync as any).mockImplementation((_path: string, data: string) => {
         writtenData = JSON.parse(data)
       })
 
@@ -634,7 +633,7 @@ describe('fetch-google-sheet.ts', () => {
       ;(fs.existsSync as any).mockReturnValue(false)
 
       let writtenData: any
-      ;(fs.writeFileSync as any).mockImplementation((path: string, data: string) => {
+      ;(fs.writeFileSync as any).mockImplementation((_path: string, data: string) => {
         writtenData = JSON.parse(data)
       })
 
@@ -689,7 +688,7 @@ describe('fetch-google-sheet.ts', () => {
       ;(fs.existsSync as any).mockReturnValue(false)
 
       let writtenData: any
-      ;(fs.writeFileSync as any).mockImplementation((path: string, data: string) => {
+      ;(fs.writeFileSync as any).mockImplementation((_path: string, data: string) => {
         writtenData = JSON.parse(data)
       })
 

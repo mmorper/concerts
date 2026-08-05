@@ -7,7 +7,7 @@
  * Feed URL: https://concerts.morperhaus.org/liner-notes.xml
  */
 
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import type { LinerNotesPost } from "../../src/types/liner-notes.ts";

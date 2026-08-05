@@ -208,7 +208,7 @@ function generateOutreachPlaybook(
  */
 function generateDuplicatePlaybook(
   insight: CorrelationInsight,
-  context: AnalysisContext
+  _context: AnalysisContext
 ): ActionablePlaybook {
   return {
     insight,
@@ -252,7 +252,7 @@ html = html.replace('</head>', \`\${tag}</head>\`)`,
  */
 function generateGenericPlaybook(
   insight: CorrelationInsight,
-  context: AnalysisContext
+  _context: AnalysisContext
 ): ActionablePlaybook {
   return {
     insight,

@@ -8,7 +8,6 @@ import {
   fetchPhotoUri,
   loadCache as loadPlacesCache,
   saveCache as savePlacesCache,
-  getCacheKey,
 } from './utils/google-places-client.js'
 
 const __filename = fileURLToPath(import.meta.url)

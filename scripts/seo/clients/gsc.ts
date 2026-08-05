@@ -156,53 +156,12 @@ async function fetchQueryMetrics(
   }))
 }
 
-interface GSCUrlInspectionResponse {
-  inspectionResult?: {
-    indexStatusResult?: {
-      verdict: string
-      coverageState: string
-    }
-  }
-}
 
-/**
- * Inspect URL for index status
- */
-async function inspectUrl(
-  siteUrl: string,
-  inspectionUrl: string
-): Promise<{ indexed: boolean; status: string } | null> {
-  try {
-    // Note: URL Inspection API requires different endpoint
-    const response = await gscRequest<GSCUrlInspectionResponse>(
-      '/urlInspection/index:inspect',
-      'POST',
-      {
-        inspectionUrl,
-        siteUrl,
-      }
-    )
-
-    const result = response.inspectionResult?.indexStatusResult
-
-    if (!result) {
-      return null
-    }
-
-    return {
-      indexed: result.verdict === 'PASS',
-      status: result.coverageState,
-    }
-  } catch (error) {
-    // URL Inspection API may not be available
-    return null
-  }
-}
 
 /**
  * Get index coverage summary (from sites endpoint)
  */
-async function fetchIndexCoverage(siteUrl: string): Promise<{
+async function fetchIndexCoverage(_siteUrl: string): Promise<{
   valid: number
   warning: number
   error: number

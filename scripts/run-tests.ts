@@ -106,8 +106,6 @@ function runCommand(
 ): Promise<TestResult> {
   return new Promise((resolve) => {
     const startTime = Date.now()
-    let stdout = ''
-    let stderr = ''
 
     const proc = spawn(command, args, {
       cwd: options.cwd || process.cwd(),

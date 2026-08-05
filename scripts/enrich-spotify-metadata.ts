@@ -1,6 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
-import { normalizeArtistName } from '../src/utils/normalize.js'
 import * as dotenv from 'dotenv'
 
 /**
@@ -38,34 +37,6 @@ import * as dotenv from 'dotenv'
 
 dotenv.config()
 
-interface SpotifyArtistMetadata {
-  name: string
-  normalizedName: string
-  spotifyArtistId?: string
-  spotifyArtistUrl?: string
-  mostPopularAlbum?: {
-    name: string
-    spotifyAlbumId: string
-    spotifyAlbumUrl: string
-    coverArt: {
-      small: string | null
-      medium: string | null
-      large: string | null
-    }
-    releaseYear: number
-  }
-  topTracks?: Array<{
-    name: string
-    spotifyTrackId: string
-    spotifyUrl: string
-    previewUrl: string | null
-    durationMs: number
-  }>
-  genres?: string[]
-  popularity?: number
-  fetchedAt: string
-  dataSource: 'spotify' | 'mock'
-}
 
 interface SpotifyOverride {
   spotifyArtistId: string

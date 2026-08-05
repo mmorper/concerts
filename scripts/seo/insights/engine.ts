@@ -10,9 +10,6 @@ import type {
   GA4Data,
   BacklinkData,
   CorrelationInsight,
-  ActionablePlaybook,
-  AnalysisContext,
-  InsightType,
 } from '../types.js'
 
 // ============================================================================
@@ -256,7 +253,7 @@ function detectCTROpportunities(
  * Engagement Mismatch: Traffic but high bounce
  */
 function detectEngagementMismatches(
-  crawlData: PageAnalysis[],
+  _crawlData: PageAnalysis[],
   ga4Data: GA4Data
 ): CorrelationInsight[] {
   const insights: CorrelationInsight[] = []
@@ -424,7 +421,6 @@ function detectCannibalization(gscData: GSCData): CorrelationInsight[] {
   const insights: CorrelationInsight[] = []
 
   // Group queries by page to find overlaps
-  const queryPageMap = new Map<string, string[]>()
 
   // Note: This is simplified. Real cannibalization detection would need
   // query + page combined data from GSC API

@@ -12,7 +12,6 @@ import {
   updateGoogleAccessToken,
   isGoogleTokenExpired,
 } from './credentials.js'
-import type { CredentialStore } from './types.js'
 
 // ============================================================================
 // Constants

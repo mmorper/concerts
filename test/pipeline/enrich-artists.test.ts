@@ -56,7 +56,6 @@ vi.mock('fs', async () => {
 // Import after mocks
 import { enrichArtists } from '../../scripts/enrich-artists'
 import { TheAudioDBClient } from '../../scripts/utils/theaudiodb-client'
-import { LastFmClient } from '../../scripts/utils/lastfm-client'
 import { createBackup } from '../../scripts/utils/backup'
 
 describe('enrich-artists.ts', () => {

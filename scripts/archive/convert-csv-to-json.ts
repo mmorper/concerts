@@ -19,8 +19,8 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { parse } from 'csv-parse/sync'
-import { normalizeArtistName } from '../src/utils/normalize.js'
-import { getVenueCoordinates } from './services/geocoding.js'
+import { normalizeArtistName } from '../../src/utils/normalize.js'
+import { getVenueCoordinates } from '../services/geocoding.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -165,8 +165,6 @@ async function convertRowToConcert(row: ConcertRow, index: number): Promise<Conc
   )
   const coordinates = venueCoordinates || CITY_COORDINATES[cityState] || { lat: 0, lng: 0 }
 
-  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-                      'July', 'August', 'September', 'October', 'November', 'December']
 
   const isoDate = `${dateInfo.year}-${String(dateInfo.month).padStart(2, '0')}-${String(dateInfo.day).padStart(2, '0')}`
 
@@ -194,7 +192,7 @@ async function convertRowToConcert(row: ConcertRow, index: number): Promise<Conc
 async function main() {
   try {
     // Read CSV file
-    const csvPath = path.join(__dirname, '../docs/inspiration/sampleData.csv')
+    const csvPath = path.join(__dirname, '../../docs/inspiration/sampleData.csv')
     const csvContent = fs.readFileSync(csvPath, 'utf-8')
 
     console.log('Parsing CSV...')
@@ -213,7 +211,6 @@ async function main() {
     console.log(`Converted ${concerts.length} valid concerts`)
 
     // Calculate metadata
-    const years = concerts.map(c => c.year)
     const uniqueArtists = new Set<string>()
     const uniqueVenues = new Set<string>()
     const uniqueCities = new Set<string>()
@@ -241,7 +238,7 @@ async function main() {
     }
 
     // Write to JSON
-    const outputPath = path.join(__dirname, '../public/data/concerts.json')
+    const outputPath = path.join(__dirname, '../../public/data/concerts.json')
     fs.writeFileSync(outputPath, JSON.stringify(output, null, 2))
 
     console.log(`✓ Successfully wrote ${concerts.length} concerts to concerts.json`)

@@ -17,7 +17,6 @@ import type {
   BacklinkData,
   SEOAnalysisConfig,
 } from './types.js'
-import { generatePlaybook } from './insights/playbooks.js'
 
 // ============================================================================
 // Readline Utilities

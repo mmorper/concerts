@@ -75,7 +75,7 @@ async function buildData() {
 
   // Show what will run
   console.log('📋 Pipeline Steps:')
-  steps.forEach((step, i) => {
+  steps.forEach((step, _i) => {
     const icon = step.active ? '✓' : '⏭️'
     const status = step.active ? '' : ' (skipped)'
     console.log(`   ${icon} ${step.name}${status}`)
