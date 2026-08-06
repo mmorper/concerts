@@ -473,7 +473,7 @@ Create `fallback-active.jpg` with a generic, professional image like:
 | `photoUrls`          | Generated photo URLs            | thumbnail/medium/large           |
 | `concerts`           | Array of concerts at venue      | `[{id, date, headliner}]`        |
 | `stats`              | Venue statistics                | totalConcerts, uniqueArtists     |
-| `photoCacheExpiry`   | Cache expiration (90 days)      | ISO timestamp                    |
+| `fetchedAt`          | Last refresh — and, since #255, last time the photo URL was confirmed to load | ISO timestamp |
 
 #### Workflow: Venue Photo Integration
 
@@ -528,17 +528,28 @@ This script:
 3. For **legacy** venues (closed/demolished):
    - Sets `places = null`
    - Checks for manual photos in `/public/images/venues/`
-   - Sets `photoCacheExpiry = null` (manual photos don't expire)
 4. Saves output to `public/data/venues-metadata.json`
 
 #### Caching Strategy
 
 **Cache file:** `public/data/venue-photos-cache.json`
 
-- **Active venues**: Cached for 90 days
+- **Active venues**: Place *details* cached for 90 days
 - **Legacy venues**: Cached indefinitely (no need to re-check Places API)
 - **Failed lookups**: Cached to avoid repeated failures
 - **Force refresh**: `npm run enrich-venues -- --force` (not yet implemented)
+
+**Photo URLs are not governed by a TTL.** They are validated instead. A Google
+Places photo URL is long-lived but revocable — it dies when the underlying photo
+is unpublished from the listing, which is a content event with no clock behind
+it. Measurement bore this out: a 215-day-old URL was healthy while a 30-day-old
+one returned 403 (#252).
+
+So every run HEAD-checks the URL it is about to store and walks the place's photo
+list if it does not load (#255). A `photoCacheExpiry` field used to record a
+90-day window; it was written on every run, never read, and could not have worked
+regardless. It was removed in #256 — `fetchedAt` is the meaningful timestamp,
+since a refresh now includes verification.
 
 #### Manual Photo Curation
 

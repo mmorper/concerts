@@ -392,13 +392,6 @@ CBGB,New York,NY,closed,2006-10-15,Historic punk venue`
       expect(photoUrls?.thumbnail).toBe('/images/venues/fallback.jpg')
     })
 
-    it('sets null cache expiry for legacy venues', () => {
-      const isActive = false
-      const photoCacheExpiry = isActive ? new Date().toISOString() : null
-
-      expect(photoCacheExpiry).toBeNull()
-    })
-
     it('handles multiple manual photos', () => {
       const venuesImagesDir = path.join(testOutputDir, 'images', 'venues')
       fs.mkdirSync(venuesImagesDir, { recursive: true })
@@ -450,7 +443,6 @@ CBGB,New York,NY,closed,2006-10-15,Historic punk venue`
           large: '/images/venues/the-fillmore-large.jpg',
         },
         fetchedAt: '2024-01-01T00:00:00.000Z',
-        photoCacheExpiry: '2024-03-31T00:00:00.000Z',
       }
 
       expect(metadata.name).toBe('The Fillmore')
@@ -490,7 +482,6 @@ CBGB,New York,NY,closed,2006-10-15,Historic punk venue`
         places: null,
         photoUrls: null,
         fetchedAt: '2024-01-01T00:00:00.000Z',
-        photoCacheExpiry: null,
       }
 
       expect(metadata.location).toBeUndefined()
@@ -520,7 +511,6 @@ CBGB,New York,NY,closed,2006-10-15,Historic punk venue`
           places: null,
           photoUrls: null,
           fetchedAt: '2024-01-01T00:00:00.000Z',
-          photoCacheExpiry: null,
         },
       }
 

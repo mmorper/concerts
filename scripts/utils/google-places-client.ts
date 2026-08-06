@@ -196,10 +196,23 @@ async function getPlaceDetails(placeId: string): Promise<PlaceDetails | null> {
 }
 
 /**
- * Fetch the permanent CDN photo URI for a given photo resource name.
- * Uses skipHttpRedirect=true to resolve the API reference to a stable
- * lh3.googleusercontent.com URL at data-refresh time, avoiding expiring
- * API resource references being stored in venues-metadata.json.
+ * Resolve a photo resource name to a CDN photo URI.
+ *
+ * `skipHttpRedirect=true` returns the lh3.googleusercontent.com URL rather than
+ * a redirect, so venues-metadata.json stores a directly usable URL instead of a
+ * short-lived API resource reference.
+ *
+ * **The returned URL is long-lived but revocable, not permanent.** This comment
+ * previously called it "permanent" and "stable"; measurement disproved that
+ * (#252) — on 2026-08-05 a 215-day-old URL was healthy while a 30-day-old one
+ * returned 403. Age does not predict breakage: these URLs die when the
+ * underlying photo is unpublished from the place listing, a content event with
+ * no clock behind it.
+ *
+ * The practical consequence is that no TTL or refresh cadence can prevent a
+ * dead URL, which is why callers validate rather than trust. A successful
+ * response here is not evidence that the URL loads — `enrich-venues` HEAD-checks
+ * it and walks the place's photo list when it does not (#255).
  */
 export async function fetchPhotoUri(photoName: string, maxHeightPx: number): Promise<string | null> {
   if (!GOOGLE_PLACES_API_KEY) {

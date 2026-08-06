@@ -92,8 +92,11 @@ interface VenueMetadata {
     medium: string
     large: string
   } | null
+  /**
+   * When this record was last refreshed. Since #255 a refresh also validates
+   * the photo URL, so this doubles as "last confirmed to load".
+   */
   fetchedAt: string
-  photoCacheExpiry?: string | null
 }
 
 /**
@@ -390,10 +393,11 @@ async function enrichVenues() {
             console.log(`  ⚠ No photos available from Places API (using fallback)`)
           }
 
-          // Set cache expiry (90 days)
-          const expiryDate = new Date()
-          expiryDate.setDate(expiryDate.getDate() + 90)
-          metadata.photoCacheExpiry = expiryDate.toISOString()
+          // No photo expiry is recorded. Photo URLs do not expire on a clock —
+          // they are revoked when the underlying photo is unpublished, which no
+          // TTL can predict (#252). `fetchedAt` above is the useful timestamp:
+          // since #255 every run validates the URL it stores, so it means "last
+          // confirmed to load", which is what an expiry field was reaching for.
         } else {
           // API error or no Place ID found - use generic fallback
           metadata.photoUrls = generateFallbackPhotoUrls(FALLBACK_IMAGES.API_ERROR)
@@ -423,8 +427,6 @@ async function enrichVenues() {
           metadata.photoUrls = generateFallbackPhotoUrls(FALLBACK_IMAGES.LEGACY_NO_PHOTO)
           console.log(`  ⚠ No manual photos found (using fallback)`)
         }
-
-        metadata.photoCacheExpiry = null // Manual photos don't expire
       }
 
       venuesMetadata[normalizedName] = metadata
