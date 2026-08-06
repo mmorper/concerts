@@ -585,6 +585,20 @@ routes does, and that is a change to `workers/meta-injector/`.
 these do not auto-roll-back. Check the run, and use `npx wrangler rollback` from
 that Worker's directory if needed.
 
+**If a Worker workflow never ran at all:** check
+[githubstatus.com](https://www.githubstatus.com) before assuming the config is
+broken. During an Actions incident GitHub throttles webhook triggers and *drops*
+push/PR events rather than queuing them, so a merge can land with no run against
+it — that happened on 2026-08-06. `meta-injector-ci.yml` accepts
+`workflow_dispatch` for exactly this case:
+
+```bash
+gh workflow run meta-injector-ci.yml --ref main
+```
+
+That runs the tests only — the deploy job is gated on `push`, so a manual trigger
+validates without shipping.
+
 **Manual escape hatch** (still works, rarely needed):
 
 ```bash

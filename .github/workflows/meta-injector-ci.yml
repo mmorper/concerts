@@ -25,6 +25,15 @@ on:
     paths:
       - 'workers/meta-injector/**'
       - '.github/workflows/meta-injector-ci.yml'
+  # Manual escape hatch. During the 2026-08-06 Actions outage, GitHub throttled
+  # webhook triggers — "many push and pull request events are not triggering new
+  # workflow runs" — which left no way to validate this workflow at all: you
+  # could not push your way to a run. Events were dropped, not queued.
+  #
+  # Deliberately test-only: the deploy job below is gated on
+  # `github.event_name == 'push'`, so a manual run proves the workflow parses and
+  # the tests pass without shipping anything.
+  workflow_dispatch:
 
 concurrency:
   group: meta-injector-ci-${{ github.ref }}
