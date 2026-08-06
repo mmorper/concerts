@@ -26,18 +26,38 @@ const OG_DIR = join(ROOT, "public", "og", "liner-notes");
 const WIDTH = 1200;
 const HEIGHT = 630;
 
+/** Cap on fetching a post's background image. See the call site for why. */
+const FETCH_TIMEOUT_MS = 15_000;
+
 const CATEGORY_COLORS: Record<string, string> = {
   cultural: "#7c3aed",
   personal: "#0ea5e9",
   "deep-cut": "#059669",
 };
 
-export async function generateOgImages(posts: LinerNotesPost[]): Promise<void> {
+export interface OgImageOptions {
+  /**
+   * Slugs to rebuild even though a PNG already exists.
+   *
+   * Cards are normally generated once and skipped forever, which is right for
+   * new posts. But a card composited from an image URL that was later revoked
+   * is stale in exactly the way the post was, and the existing-file skip means
+   * it would never be rebuilt. Stage 5c passes the posts whose image changed
+   * (#252) — without this, that hand-off was silently a no-op.
+   */
+  force?: Iterable<string>;
+}
+
+export async function generateOgImages(
+  posts: LinerNotesPost[],
+  options: OgImageOptions = {}
+): Promise<void> {
   mkdirSync(OG_DIR, { recursive: true });
+  const force = new Set(options.force ?? []);
 
   for (const post of posts) {
     const outPath = join(OG_DIR, `${post.slug}.png`);
-    if (existsSync(outPath)) continue; // Skip if already generated
+    if (existsSync(outPath) && !force.has(post.slug)) continue;
 
     try {
       await generateOgImage(post, outPath);
@@ -57,7 +77,11 @@ async function generateOgImage(post: LinerNotesPost, outPath: string): Promise<v
 
   if (imageUrl && (imageUrl.startsWith("http://") || imageUrl.startsWith("https://"))) {
     try {
-      const res = await fetch(imageUrl);
+      // Bounded: this runs unattended in the weekly workflow against
+      // third-party CDNs. An unbounded fetch here stalls the whole job until
+      // GitHub's 6-hour default timeout, and the try/catch below cannot help —
+      // a hang is not an exception.
+      const res = await fetch(imageUrl, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
       if (res.ok) {
         const buffer = Buffer.from(await res.arrayBuffer());
         background = sharp(buffer)

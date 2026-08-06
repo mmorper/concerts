@@ -277,7 +277,10 @@ export async function run(options: PipelineOptions): Promise<void> {
       ...newPosts,
       ...allPosts.filter((p) => changed.has(p.slug) && !newSlugs.has(p.slug)),
     ];
-    await generateOgImages(ogTargets);
+    // `changed` must be passed as `force`: cards are skipped when a PNG already
+    // exists, so a repaired post — which by definition already has one — would
+    // otherwise be silently ignored.
+    await generateOgImages(ogTargets, { force: changed });
     console.log(
       `   ✓ Generated OG images for ${ogTargets.length} post${ogTargets.length !== 1 ? "s" : ""}` +
         ` (${newPosts.length} new, ${ogTargets.length - newPosts.length} refreshed)`
