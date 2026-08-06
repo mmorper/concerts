@@ -188,6 +188,28 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
     }
   }
 
+  // Drop records for artists no longer in the archive.
+  //
+  // Records were once keyed by the *enrichment API's* display name rather than
+  // ours. TheAudioDB is user-contributed and carries typos, so we inherited
+  // spellings like "Gorrillaz" and "The Red Hot Chilli Peppers" as primary keys.
+  // That was fixed in 2f1a94b, but the fix only wrote correct keys — it never
+  // deleted the unreachable old ones, and this function writes the whole object
+  // back with no delete path. Five months on, 23 of 280 records were dead weight
+  // still shipping to every client (#255).
+  //
+  // Pruning is also the drift guard: any future key mismatch shows up here as a
+  // named removal on the next run instead of accumulating silently.
+  const liveKeys = new Set(uniqueArtists.map(normalizeArtistName))
+  const orphans = Object.keys(metadata).filter(key => !liveKeys.has(key))
+  for (const key of orphans) {
+    delete metadata[key]
+  }
+  if (orphans.length > 0) {
+    console.log(`\n🧹 Pruned ${orphans.length} record(s) with no artist in concerts.json:`)
+    for (const key of orphans) console.log(`   − ${key}`)
+  }
+
   // Save metadata
   if (dryRun) {
     console.log('\n=' .repeat(30))
@@ -207,6 +229,7 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
   console.log(`   ✅ Enriched: ${enriched}`)
   console.log(`   ⏭️  Skipped (cached): ${skipped}`)
   console.log(`   ❌ Failed: ${failed}`)
+  console.log(`   🧹 Pruned (orphaned): ${orphans.length}`)
 
   if (dryRun) {
     console.log('\n💡 To apply these changes, run without --dry-run flag')

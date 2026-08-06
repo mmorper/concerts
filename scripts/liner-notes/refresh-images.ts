@@ -29,8 +29,8 @@ import {
   upsizeAppleMusicUrl,
   type ImageSources,
 } from "./image-refs.ts";
+import { checkUrl } from "../utils/url-health.ts";
 
-const HEAD_TIMEOUT_MS = 10_000;
 const HEAD_CONCURRENCY = 8;
 
 export interface RefreshOptions {
@@ -50,29 +50,6 @@ export interface RefreshResult {
   deadUrls: string[];
   /** Slugs whose image URL changed, so callers can regenerate derived assets. */
   changedSlugs: string[];
-}
-
-type UrlHealth = "ok" | "dead" | "unknown";
-
-/**
- * A local asset is always fine; a 4xx is definitive; a 5xx, timeout or network
- * error is "unknown" and must NOT downgrade a post — otherwise a blip in CI
- * would rewrite good data to placeholders.
- */
-async function checkUrl(url: string): Promise<UrlHealth> {
-  if (!url.startsWith("http://") && !url.startsWith("https://")) return "ok";
-  try {
-    const res = await fetch(url, {
-      method: "HEAD",
-      redirect: "follow",
-      signal: AbortSignal.timeout(HEAD_TIMEOUT_MS),
-    });
-    if (res.ok) return "ok";
-    if (res.status >= 400 && res.status < 500) return "dead";
-    return "unknown";
-  } catch {
-    return "unknown";
-  }
 }
 
 /** Candidate images for a post, best first, used when its own ref goes dead. */

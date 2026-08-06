@@ -91,12 +91,6 @@
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:08.579Z"
   },
-  "aquabats": {
-    "name": "Aquabats",
-    "normalizedName": "aquabats",
-    "fetchedAt": "2025-12-30T00:05:33.629Z",
-    "dataSource": "mock"
-  },
   "aswad": {
     "name": "Aswad",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rrvupw1361542441.jpg",
@@ -120,32 +114,6 @@
     "website": "www.badreligion.com",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:11:43.566Z"
-  },
-  "bandits-of-the-accoustic-revolution": {
-    "name": "Bandits of the Accoustic Revolution",
-    "normalizedName": "bandits-of-the-accoustic-revolution",
-    "fetchedAt": "2025-12-30T00:05:33.629Z",
-    "dataSource": "mock"
-  },
-  "the-bangles": {
-    "name": "The Bangles",
-    "image": "https://www.theaudiodb.com/images/media/artist/thumb/pyn8121771639745.jpg",
-    "bio": "The Bangles are an American all-female band that originated in the early 1980s, scoring several hit singles during the decade. Susanna Hoffs joined sisters Vicki and Debbi Peterson to form a band in Los Angeles in December, 1980. The trio briefly called themselves The Colours, then renamed themselves The Supersonic Bangs, and shortly afterwards The Bangs. The band was part of the Los Angeles Paisley Underground scene, which featured groups that played a mixture of 1960s-influenced folk-rock and ",
-    "genres": [
-      "Pop-Rock",
-      "Rock/Pop"
-    ],
-    "formed": "1981",
-    "website": "thebangles.com",
-    "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:15.311Z"
-  },
-  "bar-room-heroes": {
-    "name": "Bar Room Heroes",
-    "image": "https://cdn-images.dzcdn.net/images/artist/d26000eec45e589887d0a37d723fd33c/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:46.256Z"
   },
   "bat-fangs": {
     "name": "Bat Fangs",
@@ -193,12 +161,6 @@
     "website": "beastieboys.com",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:12.079Z"
-  },
-  "bel-biv-devoe": {
-    "name": "Bel Biv DeVoe",
-    "normalizedName": "bel-biv-devoe",
-    "fetchedAt": "2025-12-30T00:05:33.629Z",
-    "dataSource": "mock"
   },
   "berlin": {
     "name": "Berlin",
@@ -337,12 +299,6 @@
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:04.577Z"
   },
-  "brian-setzer-orchestra": {
-    "name": "Brian Setzer Orchestra",
-    "normalizedName": "brian-setzer-orchestra",
-    "fetchedAt": "2025-12-30T00:05:33.629Z",
-    "dataSource": "mock"
-  },
   "bruce-springsteen": {
     "name": "Bruce Springsteen",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/pj57t31658769167.jpg",
@@ -475,7 +431,7 @@
     "image": "https://cdn-images.dzcdn.net/images/artist/1b2ca964de4c4f693dada3fe1dc25a39/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-06T11:28:10.452Z"
+    "fetchedAt": "2026-08-06T14:49:55.675Z"
   },
   "culture-club": {
     "name": "Culture Club",
@@ -488,19 +444,6 @@
     "website": "boygeorgeandcultureclub.net",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:00.076Z"
-  },
-  "z-trip": {
-    "name": "Z-Trip",
-    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/z-trip-508c638b55e1e.jpg",
-    "bio": "Zach Sciacca, better known as Z-Trip, is an American DJ and producer. He is best known as a pioneer of the mashup movement and an award-winning global DJ (he was the 2009 recipient of the \"America's Best DJ Award\", among others). His skill as a world-class DJ has also afforded him success as a producer, working with the likes of LL Cool J, Kasabian and Dan the Automator. As of 2012, he has also been featured as hip-hop legend LL Cool J's touring DJ in shows that have been described as so exempla",
-    "genres": [
-      "Hip-Hop",
-      "Electronic"
-    ],
-    "formed": "1989",
-    "website": "www.djztrip.com",
-    "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:55.916Z"
   },
   "dan-potthast": {
     "name": "Dan Potthast",
@@ -860,13 +803,6 @@
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:11:47.569Z"
   },
-  "gene-loves-jezebel": {
-    "name": "Gene Loves Jezebel",
-    "image": "https://cdn-images.dzcdn.net/images/artist/9cb7cbc1ac48b2c35c8d7fd06a7fddad/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:05.157Z"
-  },
   "george-michael": {
     "name": "George Michael",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/hbmwem1637696093.jpg",
@@ -878,12 +814,6 @@
     "website": "georgemichael.com",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:11:25.056Z"
-  },
-  "gorrillaz": {
-    "name": "Gorrillaz",
-    "normalizedName": "gorrillaz",
-    "fetchedAt": "2025-12-30T00:05:33.629Z",
-    "dataSource": "mock"
   },
   "haircut-100": {
     "name": "Haircut 100",
@@ -1006,13 +936,6 @@
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:34.254Z"
   },
-  "jane-wiedlin": {
-    "name": "Jane Wiedlin",
-    "image": "https://cdn-images.dzcdn.net/images/artist/9f66d3b720769fc71d42f952ba44d39a/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:31.239Z"
-  },
   "jesus-jones": {
     "name": "Jesus Jones",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/trqwst1340718689.jpg",
@@ -1036,19 +959,6 @@
     "website": "www.margaritaville.com",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:11:28.558Z"
-  },
-  "joan-jett-and-the-blackhearts": {
-    "name": "Joan Jett and the Blackhearts",
-    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/ttpurq1348092223.jpg",
-    "bio": "Joan Jett (born Joan Marie Larkin September 22, 1958) is an American rock guitarist, singer, songwriter, producer and occasional actress, best known for her work with Joan Jett & the Blackhearts, including their hit cover \"I Love Rock 'n' Roll\", which was No. 1 on the Billboard Hot 100 from March 20 to May 1, 1982, as well as for their other popular recordings including \"Crimson and Clover\", \"I Hate Myself for Loving You\", \"Do You Want to Touch Me\", \"Light of Day\", \"Love Is All Around\", \"Bad Rep",
-    "genres": [
-      "Hard Rock",
-      "Rock/Pop"
-    ],
-    "formed": "1981",
-    "website": "joanjett.com/index.html",
-    "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:54.917Z"
   },
   "joe-jackson": {
     "name": "Joe Jackson",
@@ -1103,12 +1013,6 @@
     "website": "",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:11.077Z"
-  },
-  "keb-mo": {
-    "name": "Keb Mo",
-    "normalizedName": "keb-mo",
-    "fetchedAt": "2025-12-30T00:05:33.629Z",
-    "dataSource": "mock"
   },
   "keith-sweat": {
     "name": "Keith Sweat",
@@ -1601,13 +1505,6 @@
     "source": "deezer",
     "fetchedAt": "2026-07-20T10:13:09.963Z"
   },
-  "the-raveonettes": {
-    "name": "The Raveonettes",
-    "image": "https://cdn-images.dzcdn.net/images/artist/cd110f2861161cdae6afc36cb20a2117/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:38.219Z"
-  },
   "rebuilder": {
     "name": "Rebuilder",
     "image": "https://cdn-images.dzcdn.net/images/artist/289da594432bdbb853711b6f8187109a/500x500-000000-80-0-0.jpg",
@@ -1715,12 +1612,6 @@
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:20.251Z"
   },
-  "siouxsie-and-banshees": {
-    "name": "Siouxsie and Banshees",
-    "normalizedName": "siouxsie-and-banshees",
-    "fetchedAt": "2025-12-30T00:05:33.629Z",
-    "dataSource": "mock"
-  },
   "sleigh-bells": {
     "name": "Sleigh Bells",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/sleigh-bells-514cbe560deb7.jpg",
@@ -1744,13 +1635,6 @@
     "website": "www.smashmouth.com",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:13:17.781Z"
-  },
-  "smoke-and-mirrors-sound-system": {
-    "name": "Smoke and Mirrors Sound System",
-    "image": "https://cdn-images.dzcdn.net/images/artist/a084d5faded06f7816d68ed8aff8936d/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:23.901Z"
   },
   "snarky-puppy": {
     "name": "Snarky Puppy",
@@ -2113,12 +1997,6 @@
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:38.754Z"
   },
-  "the-red-hot-chilli-peppers": {
-    "name": "The Red Hot Chilli Peppers",
-    "normalizedName": "the-red-hot-chilli-peppers",
-    "fetchedAt": "2025-12-30T00:05:33.629Z",
-    "dataSource": "mock"
-  },
   "the-reflex": {
     "name": "The Reflex",
     "image": "https://cdn-images.dzcdn.net/images/artist/2696e0fa5d4ab132e709b842ad0fb74f/500x500-000000-80-0-0.jpg",
@@ -2203,13 +2081,6 @@
     "source": "deezer",
     "fetchedAt": "2026-07-20T10:13:01.445Z"
   },
-  "the-wonder-stuff": {
-    "name": "The Wonder Stuff",
-    "image": "https://cdn-images.dzcdn.net/images/artist/8ed56b9c8cb67577f09f992e85ea5d3e/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:25.739Z"
-  },
   "thomas-dolby": {
     "name": "Thomas Dolby",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/dolby-thomas-506ff919e6f15.jpg",
@@ -2233,12 +2104,6 @@
     "website": "",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:11:15.045Z"
-  },
-  "tom-cochrane": {
-    "name": "Tom Cochrane",
-    "normalizedName": "tom-cochrane",
-    "fetchedAt": "2025-12-30T00:05:33.629Z",
-    "dataSource": "mock"
   },
   "tone-loc": {
     "name": "Tone-Lōc",
@@ -2274,19 +2139,6 @@
     "website": "thetransplants.com",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:45.259Z"
-  },
-  "trombone-shorty": {
-    "name": "Trombone Shorty",
-    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/yyyywr1377834331.jpg",
-    "bio": "Troy Andrews (born January 2, 1986), also known by the stage name Trombone Shorty, is a trombone and trumpet player from New Orleans, Louisiana, United States. He has worked in jazz, funk and rap music. Andrews is the younger brother of trumpeter and bandleader James Andrews as well as the grandson of singer and songwriter Jessie Hill. Andrews began playing trombone at age six, and since 2009 has toured with his own band, Trombone Shorty & Orleans Avenue.\n\nAndrews grew up in New Orleans' Tremé n",
-    "genres": [
-      "Funk",
-      "Jazz"
-    ],
-    "formed": "2009",
-    "website": "tromboneshorty.com",
-    "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:57.419Z"
   },
   "trouble-funk": {
     "name": "Trouble Funk",
@@ -2328,13 +2180,6 @@
     "website": null,
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:04.075Z"
-  },
-  "the-vandals": {
-    "name": "The Vandals",
-    "image": "https://cdn-images.dzcdn.net/images/artist/285c6d88b0a7e5e1b387322915251ca6/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:49.290Z"
   },
   "violent-femmes": {
     "name": "Violent Femmes",
@@ -2392,13 +2237,6 @@
     "website": "pinkflag.com",
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:15.581Z"
-  },
-  "the-wrecks": {
-    "name": "The Wrecks",
-    "image": "https://cdn-images.dzcdn.net/images/artist/8bc553643d6293601920ac57a46631bc/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-03-07T18:57:11.357Z"
   },
   "x": {
     "name": "X",
@@ -2652,19 +2490,6 @@
     "source": "theaudiodb",
     "fetchedAt": "2026-07-20T10:12:26.255Z"
   },
-  "stereo-mcs": {
-    "name": "Stereo MCs",
-    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/yxxsut1340536292.jpg",
-    "bio": "Stereo MCs are an English electronic dance group, which formed in Clapham, London, in 1985. They are best known worldwide for their 1992 transatlantic Top 20 hit single, \"Connected\". The book Guinness Rockopedia described them as \"the big boys of British rap\".",
-    "genres": [
-      "Hip-Hop",
-      "Electronic"
-    ],
-    "formed": "1985",
-    "website": "www.stereomcs.com",
-    "source": "theaudiodb",
-    "fetchedAt": "2026-03-07T18:56:29.003Z"
-  },
   "terem-quartet": {
     "name": "Terem Quartet",
     "image": "https://cdn-images.dzcdn.net/images/artist/91f25089985fe858f56166b4017abf0e/500x500-000000-80-0-0.jpg",
@@ -2678,13 +2503,6 @@
     "genres": [],
     "source": "deezer",
     "fetchedAt": "2026-07-20T10:12:27.885Z"
-  },
-  "the-new-morty-show": {
-    "name": "The New Morty Show",
-    "image": "https://cdn-images.dzcdn.net/images/artist/8612d0d5f399c2645088e50ed7d94991/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-03-07T18:56:31.779Z"
   },
   "eric-johnson": {
     "name": "Eric Johnson",
@@ -2888,7 +2706,7 @@
     "formed": "1988",
     "website": "www.beck.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-06T11:28:09.292Z"
+    "fetchedAt": "2026-08-06T14:49:54.512Z"
   },
   "pinhead-gunpowder": {
     "name": "Pinhead Gunpowder",
@@ -2898,9 +2716,8 @@
       "Punk"
     ],
     "formed": "1990",
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-06T11:28:09.586Z"
+    "fetchedAt": "2026-08-06T14:49:54.873Z"
   },
   "karl-denson-s-tiny-universe": {
     "name": "Karl Denson's Tiny Universe",

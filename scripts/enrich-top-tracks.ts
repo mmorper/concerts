@@ -288,12 +288,26 @@ export async function enrichTopTracks() {
     }
   }
 
+  // Drop records for artists no longer in the archive. Same accumulation as
+  // artists-metadata.json (#255): this writes the whole object back with no
+  // delete path, so any key ever written survives forever.
+  const liveKeys = new Set(artists.map(normalizeArtistName))
+  const orphans = Object.keys(results).filter(key => !liveKeys.has(key))
+  for (const key of orphans) {
+    delete results[key]
+  }
+  if (orphans.length > 0) {
+    console.log(`\n🧹 Pruned ${orphans.length} record(s) with no artist in concerts.json:`)
+    for (const key of orphans) console.log(`   − ${key}`)
+  }
+
   // Save results
   const outputPath = resolve('public/data/artists-top-tracks.json')
   writeFileSync(outputPath, JSON.stringify(results, null, 2), 'utf-8')
 
   console.log(`\n📊 Enrichment Summary:`)
   console.log(`   ✅ Enriched: ${enriched}`)
+  console.log(`   🧹 Pruned (orphaned): ${orphans.length}`)
   console.log(`   ⏭️  Skipped (cached): ${skipped}`)
   console.log(`   ❌ Failed: ${failed}`)
   console.log(`   📁 Total in cache: ${Object.keys(results).length}`)
