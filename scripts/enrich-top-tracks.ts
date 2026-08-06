@@ -9,6 +9,7 @@
 import { readFileSync, writeFileSync } from 'fs'
 import { resolve } from 'path'
 import { iTunesClient, type NormalizedTrack } from './utils/itunes-client.js'
+import { normalizeArtistName } from '../src/utils/normalize.js'
 
 // Configuration
 const AUDIO_PREVIEW_CONFIG = {
@@ -55,17 +56,18 @@ class RateLimiter {
   }
 }
 
-/**
- * Normalize artist name to hyphenated lowercase
- */
-function normalizeArtistName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')  // Remove special chars
-    .replace(/\s+/g, '-')          // Spaces to hyphens
-    .replace(/-+/g, '-')           // Collapse hyphens
-    .replace(/^-|-$/g, '')         // Trim hyphens
-}
+// normalizeArtistName is imported from src/utils/normalize.ts.
+//
+// This file used to carry its own copy that *deleted* special characters
+// (`[^a-z0-9\s-]` → '') where the canonical one *hyphenates* them. The two agree
+// whenever punctuation sits next to a space — which is most names — so the
+// divergence hid for a long time. It only shows up on internal punctuation:
+// "The Go-Go's" keyed as `the-go-gos` here but `the-go-go-s` everywhere else.
+//
+// The SPA hook matched this file's spelling, so audio previews worked there. The
+// liner-notes pipeline uses the canonical form, so `curate.ts` (album art,
+// audio) and `score.ts` (the 3-point audio-preview bonus) silently missed for
+// eight artists (#259).
 
 /**
  * Validate that a preview URL is actually accessible
