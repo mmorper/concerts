@@ -9,6 +9,7 @@ import {
   loadCache as loadPlacesCache,
   saveCache as savePlacesCache,
 } from './utils/google-places-client.js'
+import { checkUrl } from './utils/url-health.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -190,6 +191,47 @@ function generateFallbackPhotoUrls(fallbackPath: string) {
   }
 }
 
+/** How many of a place's photos to try before giving up and falling back. */
+const MAX_PHOTO_CANDIDATES = 5
+
+/**
+ * Resolve the first photo whose CDN URL actually loads.
+ *
+ * A successful Places API response is not evidence of a usable image: the API
+ * returns a photo URI for a photo that has since been unpublished, and that URI
+ * 403s on fetch. Until #255 this function's predecessor fell back only when the
+ * *API call* failed, so dead URLs were stored and served — `greek-theatre` and
+ * `garden-amp` were both processed by a successful weekly run and left broken.
+ *
+ * Places typically returns ~10 photos per venue, so one unpublished photo is no
+ * reason to drop the venue to a generic fallback; we walk the list.
+ *
+ * Only a definitive 4xx rejects a candidate. A 5xx or timeout returns "unknown"
+ * and is accepted — a transient blip must not cost a venue its photo.
+ */
+async function resolveLivePhotoUrls(
+  photos: Array<{ name: string }>
+): Promise<{ thumbnail: string; medium: string; large: string } | null> {
+  for (const photo of photos.slice(0, MAX_PHOTO_CANDIDATES)) {
+    const [thumbnail, medium, large] = await Promise.all([
+      fetchPhotoUri(photo.name, 400),
+      fetchPhotoUri(photo.name, 800),
+      fetchPhotoUri(photo.name, 1200),
+    ])
+    if (!thumbnail || !medium || !large) continue
+
+    // All three sizes are the same photo reference with a different size
+    // suffix, so one check settles all three.
+    if ((await checkUrl(large)) === 'dead') {
+      console.log(`  ⚠ Photo resolved but does not load — trying the next one`)
+      continue
+    }
+
+    return { thumbnail, medium, large }
+  }
+  return null
+}
+
 /**
  * Main enrichment function
  */
@@ -318,16 +360,11 @@ async function enrichVenues() {
 
           // Generate photo URLs if photos available
           if (placeDetails.photos && placeDetails.photos.length > 0) {
-            let photo = placeDetails.photos[0]
-            // Resolve to permanent CDN URLs at refresh time — API resource names expire
-            let [thumbnail, medium, large] = await Promise.all([
-              fetchPhotoUri(photo.name, 400),
-              fetchPhotoUri(photo.name, 800),
-              fetchPhotoUri(photo.name, 1200),
-            ])
-            // Photo names may have expired in the cache — retry with a fresh API call
-            if (!thumbnail || !medium || !large) {
-              console.log(`  ↩ Photo names expired, re-fetching from API...`)
+            let photoUrls = await resolveLivePhotoUrls(placeDetails.photos)
+
+            // Cached photo names may be stale — retry with a fresh API call
+            if (!photoUrls) {
+              console.log(`  ↩ No live photo from cached names, re-fetching from API...`)
               const freshDetails = await getVenuePlaceDetails(
                 venue.name, venue.city, venue.state,
                 venue.location?.lat, venue.location?.lng,
@@ -335,21 +372,17 @@ async function enrichVenues() {
               )
               if (freshDetails?.photos?.length) {
                 metadata.places = freshDetails
-                photo = freshDetails.photos[0];
-                [thumbnail, medium, large] = await Promise.all([
-                  fetchPhotoUri(photo.name, 400),
-                  fetchPhotoUri(photo.name, 800),
-                  fetchPhotoUri(photo.name, 1200),
-                ])
+                photoUrls = await resolveLivePhotoUrls(freshDetails.photos)
               }
             }
-            if (thumbnail && medium && large) {
-              metadata.photoUrls = { thumbnail, medium, large }
+
+            if (photoUrls) {
+              metadata.photoUrls = photoUrls
               photosFoundCount++
               console.log(`  ✓ Found ${placeDetails.photos.length} photo(s)`)
             } else {
               metadata.photoUrls = generateFallbackPhotoUrls(FALLBACK_IMAGES.ACTIVE_NO_PHOTO)
-              console.log(`  ⚠ Could not resolve photo URIs (using fallback)`)
+              console.log(`  ⚠ Could not resolve a live photo URI (using fallback)`)
             }
           } else {
             // Active venue but no photos from API - use generic fallback
@@ -442,5 +475,11 @@ async function enrichVenues() {
   }
 }
 
-// Run if executed directly
-enrichVenues()
+// Run if called directly — matches the guard in enrich-artists.ts. Without it,
+// merely importing this module (as a test does) runs the whole enrichment,
+// hitting the Places API and rewriting venues-metadata.json.
+if (import.meta.url === `file://${process.argv[1]}`) {
+  enrichVenues()
+}
+
+export { enrichVenues, resolveLivePhotoUrls }
