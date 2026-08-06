@@ -560,22 +560,50 @@ git push origin main --tags  # unless --no-push
 
 **Note:** If remote has new commits, the push will be rejected. Run `git pull --rebase` and push again.
 
-### Step 8.5: Deploy Cloudflare Worker
+### Step 8.5: Cloudflare Workers — no action required
 
-**Purpose:** Keep the meta-injection worker in sync with the site. The worker handles bot-facing meta tags for all pathname routes (`/how-it-works`, `/liner-notes`, `/whats-playing`, etc.). It must be deployed separately — it does NOT auto-deploy on git push.
+**All four Workers now deploy themselves on merge to `main`.** The meta-injector
+was the last manual one; it ships via `.github/workflows/meta-injector-ci.yml`
+since #262, behind a test gate and a post-deploy smoke test.
 
-**Skip if:** `--no-push` flag was used (worker deploy requires site to be live first).
+Nothing to run here. This step is informational — confirm the Worker workflows
+went green and move on.
+
+| Worker | Workflow |
+| ------ | -------- |
+| meta-injector | `meta-injector-ci.yml` |
+| mcp-server | `mcp-ci.yml` |
+| ask-chat | `ask-chat-ci.yml` |
+| dashboard-refresh | `dashboard-refresh-ci.yml` |
+
+Each is path-filtered, so a Worker only redeploys when its own directory changes.
+The meta-injector reads `liner-notes.json` and `concerts.json` from the origin at
+request time, so **new posts never require a redeploy** — only a change to its
+routes does, and that is a change to `workers/meta-injector/`.
+
+**If a Worker workflow is red:** the deploy is already applied by that point —
+these do not auto-roll-back. Check the run, and use `npx wrangler rollback` from
+that Worker's directory if needed.
+
+**If a Worker workflow never ran at all:** check
+[githubstatus.com](https://www.githubstatus.com) before assuming the config is
+broken. During an Actions incident GitHub throttles webhook triggers and *drops*
+push/PR events rather than queuing them, so a merge can land with no run against
+it — that happened on 2026-08-06. `meta-injector-ci.yml` accepts
+`workflow_dispatch` for exactly this case:
+
+```bash
+gh workflow run meta-injector-ci.yml --ref main
+```
+
+That runs the tests only — the deploy job is gated on `push`, so a manual trigger
+validates without shipping.
+
+**Manual escape hatch** (still works, rarely needed):
 
 ```bash
 npm run deploy:worker
 ```
-
-**If deploy fails:**
-> ❌ Worker deployment failed. The site is live but bots will receive stale meta tags.
->
-> Check Cloudflare dashboard or run `cd workers && wrangler deploy` manually.
-
-**Checkpoint:** > Deploy Cloudflare Worker? (yes / skip)
 
 ---
 
