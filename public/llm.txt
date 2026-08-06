@@ -511,6 +511,8 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 
 ---
 
+---
+
 ## Pre-Computed Statistics
 
 These facts are updated with each data refresh and can be quoted directly:
@@ -723,6 +725,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-08-05
-**Version:** v5.1.0
+**Last Updated:** 2026-08-06
+**Version:** v5.3.0
 **Total Content:** 184 concerts | 257 artists | 79 venues | 11,359+ albums | 1984-2026

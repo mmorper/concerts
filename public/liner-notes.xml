@@ -5,23 +5,13 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Aug 2026 11:28:23 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 27 Jul 2026 11:27:39 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
-  <item>
-    <title>Foo Fighters + 9 More: 2015 Festival Bill</title>
-    <link>https://concerts.morperhaus.org/liner-notes/foo-fighters-9-more-2015-festival-bill-2</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/foo-fighters-9-more-2015-festival-bill-2</guid>
-    <pubDate>Mon, 03 Aug 2026 11:28:23 +0000</pubDate>
-    <description>A July 4th festival bill that stretches from Buddy Guy&apos;s blues roots — he&apos;d been performing since 1953 — all the way through Gary Clark Jr., Heart, LL Cool J, and Foo Fighters headlining is a pretty remarkable cross-section of American rock and roll in a single afternoon. I saw all 10 acts at RFK Stadium in Washington, D.C. in 2015, and the range felt almost curatorial, like someone had deliberately traced a lineage from Chicago blues to grunge-era alt-rock in one sweeping outdoor show. Trombone Shorty brought New Orleans brass heat, DJ Z-Trip held the crowd between sets, and by the time the Foo Fighters closed it out — a band that had been at it since 1994 — the whole thing felt less like a concert and more like a living argument for why live music still matters. I&apos;ve seen a lot of festival bills, but this one had genuine connective tissue running through it.</description>
-    <category>#festival-bill</category>
-    <category>#mega-bill</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/vuvqxr1352453964.jpg" medium="image" />
-  </item>
   <item>
     <title>July 31: 40 Years Since The Art of Noise</title>
     <link>https://concerts.morperhaus.org/liner-notes/july-31-40-years-since-the-art-of-noise</link>
@@ -59,7 +49,7 @@
     <pubDate>Mon, 06 Jul 2026 12:07:53 +0000</pubDate>
     <description>I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who&apos;d been making records since before I probably knew what a record was. Six shows across three decades at that same room, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.</description>
     <category>#venue-loyalty</category>
-    <media:content url="https://lh3.googleusercontent.com/place-photos/AJRVUZPCITI_BHZUk8bj7rKgVnp0AlQa8ObkB9wRMGUmFLBL7EKfVSR8ow0_RTgJGiiaSH1NWYcXvG4UQIVKDuuKP-dyZ69DI4L0A9e0rjt0AyoBXl9AajsvI18qSPpwoFIgIXFzapYDWx-hU6EfeX8=s4800-h1200" medium="image" />
+    <media:content url="https://lh3.googleusercontent.com/place-photos/AG9NLjBkAvy5J97RTMkxf1VygT13-0kug7D17lhlfTeVJCQCiCD4v8SYpWubtVNGRmhFy80k7_HhrFcvW3Wlxg7RUYryJFLLweoOMevmQZ-saEu6YQQRHc4GbNeJf7Lx99x4wo_nM4FCdtLdu1d0Wk0=s4800-h1200" medium="image" />
   </item>
   <item>
     <title>Ziggy Marley: Caught Once, Never Again</title>
@@ -169,7 +159,7 @@
     <description>I remember walking into the 9:30 Club that March night in 2013, thirteen years ago now, and feeling like I was stepping into punk rock church. Bad Religion delivered their signature blend of melody and fury to a packed room, with Against Me!, The Bronx, and Polar Bear Club warming up the crowd beforehand. The whole evening felt like a masterclass in how punk has evolved since Bad Religion formed back in 1979, yet Greg Graffin&apos;s voice cut through the years like nothing had changed. Sometimes the best shows are the ones that remind you why you fell in love with live music in the first place.</description>
     <category>#anniversary</category>
     <category>#on-this-day</category>
-    <media:content url="https://www.theaudiodb.com/images/media/artist/thumb/yuswct1767893982.jpg" medium="image" />
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/yuswct1767893982.jpg" medium="image" />
   </item>
   <item>
     <title>Blancmange: Caught Once, Never Again</title>
@@ -210,6 +200,16 @@
     <category>#album-context</category>
     <category>#cultural-moment</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/xpytqt1342444014.jpg" medium="image" />
+  </item>
+  <item>
+    <title>The Alarm: Caught Once, Never Again</title>
+    <link>https://concerts.morperhaus.org/liner-notes/the-alarm-caught-once-never-again</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/the-alarm-caught-once-never-again</guid>
+    <pubDate>Sun, 08 Mar 2026 23:19:11 +0000</pubDate>
+    <description>I caught The Alarm exactly once in my entire concert-going life — April 12, 1986 at UCLA — and somehow never circled back to them again across nearly four decades of shows. This Welsh alternative rock band, formed in 1981, was riding high on their Strength album when I saw them, yet they became a complete one-and-done in my archive despite releasing Eye of the Hurricane the following year. It&apos;s genuinely puzzling how a band can make enough of an impression to get me to a show, then vanish entirely from my radar for the next 38 years.</description>
+    <category>#rare-sighting</category>
+    <category>#one-time-only</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/wswstt1388681264.jpg" medium="image" />
   </item>
   </channel>
 </rss>

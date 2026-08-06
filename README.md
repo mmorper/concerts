@@ -11,6 +11,8 @@ An interactive web app for exploring personal concert history. Five scenes—Tim
 
 ## What's new
 
+**v5.3.0** 🎭 One man, four marquees. Brian Setzer has played here seven times since 1995 — as himself, as the Orchestra, as the Nashvillians, once as a '68 Comeback Special — and the archive had him down as four different artists. It knows better now. It also learned to read setlists properly, so it can spot a song coming back years later or a guest who was never on the ticket, and a few photographs that had quietly stopped loading are back where they belong. [See the mosaic](https://concerts.morperhaus.org/?scene=artists&artist=brian-setzer).
+
 **v5.2.0** 🎲 Every story gets a turn. The archive writes its own liner notes, and it had fallen into a rut — of fifteen kinds of story it can tell, the same five kept coming up and five had never appeared once. They weren't worse; they just couldn't score as highly, and the highest score won every week. Now they take turns, and twenty posts link straight through to what was played that night. [Read the liner notes](https://concerts.morperhaus.org/liner-notes).
 
 **v5.0.0** 🎙️ Ask the Archive — right here. Forty years of shows are now a conversation: ask on the site (the journey ends in a chat — or press ⌘K from anywhere), or bring it into Claude. It answers in the archive’s own voice, always true to the shows that really happened. [Ask the archive](https://concerts.morperhaus.org/?scene=ask).

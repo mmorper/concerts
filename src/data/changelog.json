@@ -1,6 +1,21 @@
 {
   "releases": [
     {
+      "version": "5.3.0",
+      "date": "2026-08-06",
+      "title": "One Man, Four Marquees",
+      "description": "Brian Setzer has played here seven times since 1995 — as Brian Setzer, as the Brian Setzer Orchestra, as Brian Setzer and the Nashvillians, and once as a '68 Comeback Special. The archive had him down as four different artists. It knows better now, and the same goes for anyone else who has changed how they're billed. It also learned to read setlists properly, so it can spot a song coming back years later or someone walking on stage who was never on the ticket. And a few photographs that had quietly stopped loading are back where they belong.",
+      "route": "/?scene=artists&artist=brian-setzer",
+      "highlights": [
+        "One artist, however they were billed — seven Brian Setzer shows across four marquees, 1995 to 2024, are one man again",
+        "Bands who merely share a member stay apart — Oingo Boingo and Danny Elfman are two acts, and Elfman playing Boingo songs 35 years on is a story precisely because of that",
+        "Two new kinds of story it can tell: a song that finds its way back years later, and a guest who walked on unbilled",
+        "Five of the existing story types now know what was actually played that night, not just who was on the bill",
+        "Photographs that had quietly stopped loading are back — a venue picture had been pulled at the source and nothing noticed for a month",
+        "The archive now checks its own pictures every week rather than assuming they still work, and stops advertising artists it no longer has"
+      ]
+    },
+    {
       "version": "5.2.0",
       "date": "2026-08-05",
       "title": "Every Story Gets a Turn",

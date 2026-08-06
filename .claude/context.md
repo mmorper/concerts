@@ -2,9 +2,9 @@
 
 ## Quick Start
 
-**Version:** v5.2.0 (Production)
+**Version:** v5.3.0 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-06-18
+**Last Sync:** 2026-08-06
 
 ### Commands
 
@@ -106,15 +106,17 @@ docs/
 
 **Live Site:** https://concerts.morperhaus.org
 
-**v4.6.1 Production (Latest — 2026-04-16):**
+**v5.3.0 Production (Latest — 2026-08-06):**
 
-- ✅ Liner Notes selection: 10-post primary-artist cooldown prevents headliner repetition
-- ✅ Liner Notes selection: recent-category deprioritization corrects "I Was There" overrepresentation
-- ✅ Liner Notes selection: per-category cap (max 2/run) in standard mode
-- ✅ Various UI polish: iPad portrait scroll, nav contrast, About nav position, RSS ghost posts
+- ✅ Artist billing-alias map consumed by the Artist scene and the MCP — `sameAct` collapses billings, `sharesMember` deliberately does not (#227)
+- ✅ Two setlist-native detectors, `full-circle` and `guest-bridge`; song joins added to five existing detectors (#228/#229/#230)
+- ✅ Image integrity across posts, artists and venues — `image.ref` is authoritative, enrichment validates what it stores, 24 orphan records pruned (#252/#255/#259/#256)
+- ✅ All four Cloudflare Workers now deploy on merge; meta-injector was the last manual one (#262)
+- ✅ `scripts/` and `test/` typechecked in CI; MCP smoke test asserts real `tools/call` (#246/#223)
 
 **Recent Releases:**
 
+- **v5.3.0** (2026-08-06): Artist billing aliases in the mosaic and MCP (#227); `full-circle` + `guest-bridge` detectors and song joins across five more (#228/#229/#230); image-rot fixes with validation at the source and orphan pruning (#252/#255/#259/#256); meta-injector auto-deploy completes Worker automation (#262)
 - **v5.2.0** (2026-08-05): Liner notes selection rewritten to detector rotation — all 15 detectors publish, first repeat at post 16 (#226/#231); setlist deep links wired for the first time, 20 posts (#198/#239); geographic-chapter region mapping (#232); milestone-marker scoring + concert-streak window (#233); dangling relatedSlugs + venue image chain (#234/#235)
 - **v5.1.0** (2026-08-04): Setlist deep linking (`&show=`) across six surfaces (#195); root CI gate (#116); three pipeline/SEO suites repaired (#207); share implementations consolidated (#204)
 - **v5.0.0** (2026-06-20): Ask the Archive — in-app conversational client, ⌘K spotlight, MCP connector; Operator Dashboard phases 0–6 (#159)
