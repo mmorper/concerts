@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import type { TopTrack } from '../types/artist'
+import { normalizeArtistName } from '../utils/normalize'
 
 interface TopTracksData {
   tracks: TopTrack[] | null
@@ -9,17 +10,13 @@ interface TopTracksData {
   error: string | null
 }
 
-/**
- * Normalize artist name to match the format used in artists-top-tracks.json
- */
-function normalizeArtistName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')  // Remove special chars
-    .replace(/\s+/g, '-')          // Spaces to hyphens
-    .replace(/-+/g, '-')           // Collapse hyphens
-    .replace(/^-|-$/g, '')         // Trim hyphens
-}
+// normalizeArtistName is imported from ../utils/normalize.
+//
+// This hook used to carry its own copy, matching a spelling artists-top-tracks
+// .json used and nothing else did. That kept audio previews working here while
+// the liner-notes pipeline — which uses the canonical form — silently found
+// nothing for eight artists with internal punctuation (#259). The data file is
+// now keyed canonically, so this must use the canonical function too.
 
 /**
  * Get Apple Music search URL for the artist
