@@ -1,0 +1,131 @@
+name: Meta-injector CI
+
+# Tests + deploy for the meta-injection Worker.
+#
+# This Worker was deployed by hand from /release until #262. Two facts made
+# automating it safe:
+#
+#   - It reads liner-notes.json and concerts.json from the origin at *request*
+#     time, so new posts need no redeploy. Content changes never required this.
+#   - Its routes are hardcoded in worker.js, so a new SPA route is a change to
+#     this directory — which means the paths filter below fires exactly when a
+#     deploy is actually needed.
+#
+# It also fronts EVERY request to concerts.morperhaus.org, not just bot traffic,
+# so the test gate is weighted toward passthrough: the failure that matters is
+# breaking the site for humans, not serving a generic card to a crawler.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/meta-injector/**'
+      - '.github/workflows/meta-injector-ci.yml'
+  pull_request:
+    paths:
+      - 'workers/meta-injector/**'
+      - '.github/workflows/meta-injector-ci.yml'
+
+concurrency:
+  group: meta-injector-ci-${{ github.ref }}
+  # Superseded PR runs are worth cancelling; a main-branch run is not, because it
+  # may be mid-deploy and job-level concurrency can't save a job whose whole
+  # workflow run got cancelled.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: workers/meta-injector
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      # Catches config/bundling errors that unit tests cannot see — a bad
+      # wrangler.toml, an unresolvable entrypoint. Needs no API token.
+      - name: Validate the Worker bundle
+        run: npx wrangler deploy --dry-run
+
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    # Never run two deploys of this Worker at once, and never cancel one midway —
+    # unlike the test job, a halted deploy is a half-applied change.
+    concurrency:
+      group: meta-injector-deploy
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: workers/meta-injector
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      # Uses the wrangler pinned in this package's devDependencies — the same
+      # binary that runs locally — rather than a third-party action resolving its
+      # own version.
+      - name: Deploy to Cloudflare
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      # A successful `wrangler deploy` means "uploaded", not "serving correctly".
+      # Since this Worker intercepts all traffic, the smoke test asserts the human
+      # path first — a regression there is a site outage, and it is the one thing
+      # unit tests cannot prove against the real edge.
+      #
+      # No auto-rollback: the deploy is already applied by this point, so a red
+      # run means go look. `npx wrangler rollback` is the escape hatch.
+      - name: Smoke test — humans get a working page
+        run: |
+          set -euo pipefail
+          echo "→ requesting / as a browser"
+          code=$(curl -sS -o /tmp/human.html -w '%{http_code}' \
+            -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/120.0 Safari/537.36' \
+            -H 'Accept: text/html' \
+            https://concerts.morperhaus.org/)
+          echo "  HTTP $code"
+          test "$code" = "200"
+          grep -qi '<html' /tmp/human.html
+          echo "  ✓ human path serves HTML"
+
+      - name: Smoke test — bots get injected meta
+        run: |
+          set -euo pipefail
+          # A plain curl always sees the generic title; only a bot UA exercises the
+          # injection path. Asserting with a browser UA here would pass forever
+          # regardless of whether the Worker still works.
+          echo "→ requesting a liner-note permalink as Googlebot"
+          curl -sS -o /tmp/bot.html \
+            -H 'User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' \
+            -H 'Accept: text/html' \
+            https://concerts.morperhaus.org/liner-notes
+          if grep -q '<title>Morperhaus Concert Archives</title>' /tmp/bot.html; then
+            echo "  ✗ bot received the generic title — injection is not running"
+            exit 1
+          fi
+          echo "  ✓ bot path injects per-route meta"

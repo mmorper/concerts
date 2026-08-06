@@ -1,0 +1,18 @@
+{
+  "name": "concerts-meta-injector",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cloudflare Worker injecting per-route meta tags for bots while passing humans straight through to the SPA",
+  "type": "module",
+  "main": "worker.js",
+  "scripts": {
+    "deploy": "npx wrangler deploy",
+    "dev": "npx wrangler dev",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0",
+    "wrangler": "^4.0.0"
+  }
+}
