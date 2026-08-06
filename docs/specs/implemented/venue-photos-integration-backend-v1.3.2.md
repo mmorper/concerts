@@ -6,6 +6,27 @@
 
 ---
 
+> ## ⚠️ Amendment — 2026-08-06 (#256)
+>
+> **`photoCacheExpiry` no longer exists.** It appears throughout this spec as a
+> 90-day expiry timestamp on each venue record. It was implemented, written on
+> every run, and **never read** — and the model behind it does not hold.
+>
+> Google Places photo URLs do not expire on a clock. They are revoked when the
+> underlying photo is unpublished from the place listing, which is a content
+> event with no schedule. Measured 2026-08-05: a 215-day-old URL was healthy
+> while a 30-day-old one returned 403 (#252). No TTL value would have been
+> correct.
+>
+> What replaced it: every run HEAD-checks the URL before storing it and walks the
+> place's photo list when it does not load (#255). `fetchedAt` is now the
+> meaningful timestamp, because a refresh includes verification.
+>
+> The rest of this spec — the fallback tiers, the legacy/manual-photo handling,
+> the three size variants — is accurate and still in force.
+
+---
+
 ## Overview
 
 Integrate Google Places API to fetch venue photos and details, creating a rich visual layer for venue-related features. This spec addresses both active and legacy (closed/demolished) venues with appropriate fallback strategies.

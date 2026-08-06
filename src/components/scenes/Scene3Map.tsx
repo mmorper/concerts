@@ -43,7 +43,6 @@ interface VenueMetadata {
     large: string
   } | null
   fetchedAt: string
-  photoCacheExpiry?: string | null
 }
 
 interface Scene3MapProps {

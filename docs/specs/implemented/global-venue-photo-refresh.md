@@ -420,10 +420,15 @@ jq 'keys | length' public/data/venue-photos-cache.json
 - Or integrate with Discord/Slack webhook
 - Avoid email spam for transient failures
 
-**2. Differential refresh**
-- Only refresh venues with expired tokens (check `photoCacheExpiry`)
+**2. Differential refresh** — ⚠️ *superseded, see the amendment at the top*
+- ~~Only refresh venues with expired tokens (check `photoCacheExpiry`)~~
 - Reduce API calls from 132 to ~20-30 per run
 - Lower monthly cost to ~$2-3
+
+  This rested on the same disproven premise: there is no "expired token" to
+  check for, and `photoCacheExpiry` was removed in #256. If differential
+  refresh is revisited, the selector has to be *observed* liveness — HEAD the
+  stored URL, which is free — not an expiry timestamp.
 
 **3. Dry-run mode**
 - Add workflow input: `dry-run: true`
