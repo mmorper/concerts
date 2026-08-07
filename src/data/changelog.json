@@ -1,6 +1,20 @@
 {
   "releases": [
     {
+      "version": "5.4.0",
+      "date": "2026-08-07",
+      "title": "Twenty Months Before Violator",
+      "description": "I sat in the Rose Bowl in June 1988 watching Depeche Mode, and Violator was still twenty months away. Nine more albums after that. Three of the five Depeche Mode songs I still reach for come from a record that didn't exist that night — and I had no idea. The archive can see that now. For every show, it knows which album the band was touring, how new it was, and what hadn't happened yet. It's the first thing here that knows something I didn't at the time.",
+      "route": "/?scene=artists&artist=depeche-mode",
+      "highlights": [
+        "Every show now knows the record it sat inside — and the ones that were still to come",
+        "A new kind of story: the night I saw a band before the album they'd be remembered for existed",
+        "Ask the archive where a band was in their career on any given night, or which shows I caught on a brand-new record",
+        "Ten artists whose albums the archive couldn't find are reunited with them — including The Go-Go's, filed under a stranger's name for years",
+        "Album covers now come from the record itself rather than a store listing"
+      ]
+    },
+    {
       "version": "5.3.0",
       "date": "2026-08-06",
       "title": "One Man, Four Marquees",

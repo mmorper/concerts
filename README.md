@@ -11,6 +11,8 @@ An interactive web app for exploring personal concert history. Five scenes—Tim
 
 ## What's new
 
+**v5.4.0** 🎸 Twenty months before *Violator*. I sat in the Rose Bowl in June 1988 watching Depeche Mode, and the record I'd play most didn't exist yet — nine more albums were still to come, and I had no idea. The archive can see that now: for every show it knows which album the band was touring, how new it was, and what hadn't happened yet. It's the first thing here that knows something I didn't at the time. [See the arc](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode).
+
 **v5.3.0** 🎭 One man, four marquees. Brian Setzer has played here seven times since 1995 — as himself, as the Orchestra, as the Nashvillians, once as a '68 Comeback Special — and the archive had him down as four different artists. It knows better now. It also learned to read setlists properly, so it can spot a song coming back years later or a guest who was never on the ticket, and a few photographs that had quietly stopped loading are back where they belong. [See the mosaic](https://concerts.morperhaus.org/?scene=artists&artist=brian-setzer).
 
 **v5.2.0** 🎲 Every story gets a turn. The archive writes its own liner notes, and it had fallen into a rut — of fifteen kinds of story it can tell, the same five kept coming up and five had never appeared once. They weren't worse; they just couldn't score as highly, and the highest score won every week. Now they take turns, and twenty posts link straight through to what was played that night. [Read the liner notes](https://concerts.morperhaus.org/liner-notes).
