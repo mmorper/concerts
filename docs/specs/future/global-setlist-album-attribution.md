@@ -4,8 +4,10 @@
 **Target Version:** v5.5.0
 **Priority:** Medium
 **Estimated Complexity:** Medium
-**Dependencies:** [Discography Trajectory (v5.4.0)](global-discography-trajectory.md) — **hard dependency**, consumes `scripts/utils/album-title.ts` and `album-eras.json`
+**Dependencies:** [Discography Trajectory (v5.4.0)](global-discography-trajectory.md) — **hard dependency, now SHIPPED.** Consumes `scripts/utils/album-title.ts` and `public/data/album-eras.json`, both live as of `v5.4.0`.
 **Epic:** [#267](https://github.com/mmorper/concerts/issues/267)
+
+> **Reconciled against v5.4.0 as shipped (2026-08-07).** This spec was drafted before its dependency existed. Every claim it makes about v5.4's surface has since been checked against the code, and the [Drift Log](#drift-log--v54-implementation) is **closed** — its items are folded into the body below and the log is retained only as the record of why. The one thing still assumed rather than measured is the **≥ 60% attribution floor**; see [Acceptance target](#acceptance-target).
 
 | Spec section | Issue |
 | --- | --- |
@@ -18,7 +20,7 @@
 
 v5.4.0 answers *where an artist stood in their career* on a given night. It cannot answer **what was actually played, and where those songs came from** — because nothing in the archive connects a setlist song to an album.
 
-The archive holds **2,731 song performances** across 187 setlists, and a discography of 11,359 releases. The two have never been joined. Every question that sits between them is currently unanswerable:
+The archive holds **2,731 song performances** across 187 setlists, and a discography of 11,382 releases. The two have never been joined. Every question that sits between them is currently unanswerable:
 
 - *Which album is most represented in the shows I've actually witnessed?*
 - *Did I hear that song before its record existed?*
@@ -49,16 +51,18 @@ I need to implement Setlist Song → Album Attribution for Morperhaus Concerts.
 - Read files proactively to understand existing patterns before writing code
 
 **PREREQUISITE CHECK — run this first:**
-This spec depends on v5.4.0 (Discography Trajectory) being shipped. Verify that
-scripts/utils/album-title.ts and public/data/album-eras.json both exist before
-starting. If they do not, STOP — implement
-docs/specs/future/global-discography-trajectory.md first.
+This spec depends on v5.4.0 (Discography Trajectory), which SHIPPED on
+2026-08-07. scripts/utils/album-title.ts and public/data/album-eras.json both
+exist — confirm, then proceed. Read the Drift Log at the end of this spec
+before Window 1: it is closed and folded into the body, but it records why
+several design points landed where they did.
 
 **Feature Overview:**
 - Build public/data/song-albums.json mapping artist::song -> studio album
 - Tier 0: reuse album names already in artists-top-tracks.json (0 API calls)
-- Tier 1: fetch MusicBrainz track listings for studio release-groups we already
-  hold MBIDs for, building a local song->album index (free, 1 req/sec)
+- Tier 1: fetch MusicBrainz track listings for the studio release-groups listed
+  in album-eras.json (artists[key].studioAlbums — already filtered, sorted and
+  exclusion-aware), building a local song->album index (free, 1 req/sec)
 - Tier 2: iTunes Search fallback for residual misses (free, keyless)
 - Attribute cover songs against the ORIGINAL artist's discography
 - Ship two detectors: road-tested (song played before its album existed) and
@@ -149,7 +153,15 @@ This costs nothing and should be run to exhaustion before any network call.
 
 ### Tier 1 — MusicBrainz track-listing index (free, ~25 min one-time)
 
-For each of the 130 artists with setlists, fetch track listings for their **studio release-groups only** (`primaryType === "Album"`, empty `secondaryTypes`) — MBIDs already held in `discography.json`.
+For each of the 130 artists with setlists, fetch track listings for their **studio release-groups only**.
+
+**Read that list from `album-eras.json`, not `discography.json`.** `artists[key].studioAlbums` is already filtered to `primaryType: "Album"` with empty `secondaryTypes`, already sorted by release date, and already carries `{ mbid, title, releaseDate, coverAvailable }` — the exact shape this tier needs. More importantly it is **the same set the era join uses**, so the two cannot diverge.
+
+Re-filtering `discography.json` here would reintroduce that divergence, because the predicate is not purely structural:
+
+> `derive-album-eras.ts` holds `RELEASE_EXCLUSIONS`, a hand-maintained list of release-groups MusicBrainz mistags as studio albums (currently one 1993 Depeche Mode bootleg, *Houston Night Volume 2*). A naive `primaryType`/`secondaryTypes` filter includes it. Indexing its tracks would attribute songs to a record the era join has already decided does not exist — v5.4 would say the Rose Bowl show sat in the *Music for the Masses* cycle while v5.5 said one of its songs came off a bootleg.
+
+`isStudioAlbum` is currently **private** to `derive-album-eras.ts`. Window 1 must **export it** (alongside the already-exported `coverArtUrl`) and use it anywhere this pipeline touches a raw `discography.json` album. One definition of "studio album", two consumers — the same rule §Part 4 applies to derived fields.
 
 Extend `scripts/utils/musicbrainz-client.ts` with a release-group → recordings fetch. Honour the existing conventions: **1 req/sec**, `User-Agent: Morperhaus-Concerts/5.5.0 (concerts@morperhaus.org)`, 90-day cache.
 
@@ -183,9 +195,18 @@ No fuzzy fallback, no edit distance, no "closest album." `null` is a valid and e
 
 369 of 2,731 performances are covers, flagged by setlist.fm's `cover` field. These must **never** be attributed against the performing artist's discography — Dropkick Murphys playing *"No Surrender"* did not put it on a Dropkick Murphys album.
 
-Route covers against the **original** artist's discography. The `full-circle` detector already resolves original-artist identity and is alias-aware (#227); reuse that resolution rather than rebuilding it. When the original artist is not in our discography, the song is left unattributed — which is correct and common, since most covered artists were never seen live.
+Route covers against the **original** artist's discography. This takes **two hops**, and conflating them is the trap:
 
-Songs flagged `tape` (walk-on/playback music) are excluded entirely.
+1. **Billing → act.** `canonicalOf(aliases, slugify(song.cover.name))` — exactly what the `full-circle` detector does (#227). This collapses marquees into one act (`the-brian-setzer-orchestra` → `brian-setzer`).
+2. **Act → discography key.** `resolveArtistKey(...)` with an `aliasesOf` built from **both** `sameAct` billings and the `discographyKeys` relation, wired as `derive-album-eras.ts` does it — plus its `isUsable` guard, since a record with zero albums is a worse answer than no record at all (`omd` exists and is empty; the real catalogue is under `orchestral-manoeuvres-in-the-dark`).
+
+> **Why hop 2 cannot be skipped.** `buildAliasMap` in `scripts/liner-notes/artist-aliases.ts` reads only `sameAct` and `sharesMember` — it **ignores `discographyKeys` entirely**, which today is consumed only by `derive-album-eras.ts` and `validate-concerts.ts`. So `canonicalOf` returns the *concert-side canonical* slug, which is deliberately not the discography key for the exact three cases the relation exists to fix — `yaz`→`yazoo`, `the-english-beat`→`the-beat`, `omd`→`orchestral-manoeuvres-in-the-dark`. Reusing `full-circle`'s resolution alone silently drops those artists to `null`.
+>
+> Either wire hop 2 explicitly, or teach `buildAliasMap` the relation. **Prefer wiring it explicitly:** the two relations are deliberately unmerged, and a test asserts every `sameAct` billing appeared on a real bill — a constraint `discographyKeys` cannot satisfy, because nobody ever saw a marquee that said "Yazoo."
+
+When the original artist is not in our discography, the song is left unattributed — which is correct and common, since most covered artists were never seen live.
+
+Songs flagged `tape` (walk-on/playback music) are excluded entirely — **including the 15 performances flagged both `tape` and `cover`.** Of 2,742 raw song entries, 2,731 carry a name (11 are segue markers), 369 are cover-flagged and 38 are tape-flagged; `tape` wins wherever they overlap.
 
 ---
 
@@ -201,11 +222,11 @@ Songs flagged `tape` (walk-on/playback music) are excluded entirely.
     "depeche-mode::never-let-me-down-again": {
       "artistKey": "depeche-mode",
       "songTitle": "Never Let Me Down Again",
-      "albumSlug": "music-for-the-masses",
+      "albumSlug": "music-for-the-masses",  // kept: stable grouping key, per album-eras' erasSeen
       "albumTitle": "Music for the Masses",
       "mbid": "…",
       "releaseDate": "1987-09-28",
-      "coverUrl": "https://coverartarchive.org/release-group/…/front-500.jpg",
+      "coverAvailable": true,        // NOT coverUrl — see below
       "source": "musicbrainz",       // top-tracks | musicbrainz | itunes
       "matchTier": 1,
       "isCover": false,
@@ -222,13 +243,24 @@ Songs flagged `tape` (walk-on/playback music) are excluded entirely.
 }
 ```
 
-**Size budget: 400 KB.** The MCP fetches this over the network; keep it lazy-loaded.
+**Store nothing derivable** — v5.4's hardest-won budget lesson, inherited here rather than relearned:
+
+- **No `coverUrl`.** It is a pure function of the MBID, verified across all 11,382 covers with zero exceptions. Call the exported `coverArtUrl(mbid)` from `derive-album-eras.ts`, and only when `coverAvailable` is true — the archive 404s otherwise. Carrying the URL cost v5.4 **284 KB**, more than this file's entire budget.
+- **No `albumSlug` beyond the grouping key.** It is `normalizeAlbumName(title)` from `src/utils/normalize.ts`. Keep the field only where it earns its place as a stable lookup key, exactly as `erasSeen` does in `album-eras.json`.
+
+**Size budget: 400 KB.** The MCP fetches this over the network; keep it lazy-loaded. For calibration, `album-eras.json` ships at **306 KB** after the same discipline was applied — it began at 534 KB.
 
 **Pipeline:** new `scripts/resolve-song-albums.ts`, wired into `build-data.ts` as **Step 9.6** (immediately after `derive-album-eras`), with `npm run resolve:song-albums`, `--dry-run`, `--force`, and a `--skip-song-albums` flag on `build-data.ts` for parity.
 
 ### Acceptance target
 
-**≥ 60% of non-cover unique pairs attributed.** Deliberately modest, and stated as a floor rather than a goal: the corpus contains songs that never appeared on a studio album (live-only material, B-sides, unreleased songs — the last of which is itself a finding, see §5a). A 100% attribution rate would be evidence of a bug, not success.
+**≥ 60% of non-cover unique pairs attributed — PROVISIONAL. Re-derive before treating it as a gate.**
+
+Stated as a floor rather than a goal: the corpus contains songs that never appeared on a studio album (live-only material, B-sides, unreleased songs — the last of which is itself a finding, see §5a). A 100% attribution rate would be evidence of a bug, not success.
+
+**What changed.** 60% was estimated when `album-title.ts` was projected to match **74.8%** of album names. The shipped matcher measures **74.0% (758 of 1,024)** on live data — a prefix-match tier was built, measured at 13 of 766 matches, found to be wrong in the worst direction (*Replicas* → *Replicas Live*; The Bronx's four self-titled albums collapsed into one) and **removed**. The gap is small and neither Tier 0 nor Tier 1 depends on the removed tier, so 60% is very likely still met — but it was never derived from a real run of *this* pipeline, only from a sibling metric.
+
+**The rule:** report the real Tier 0 + Tier 1 rate at the end of Window 1, then either confirm 60% or restate the floor with the measured number and the reason. Do not fail a build against a number nobody has measured, and do not quietly lower it either — v5.4 dropped its own bar from 74% to 73% *on evidence*, and said so.
 
 Report the tier breakdown in stdout so the cost/benefit of Tier 2 is visible and can be dropped if it earns little.
 
@@ -251,6 +283,8 @@ This is the exact inverse of v5.4's `album-trajectory` — there, the *record* w
 **Auto-tags:** `#road-tested`, `#before-the-record`.
 
 > **Voice caution.** Setlist.fm data is fan-contributed and song titles drift, so a false positive here would claim the archive owner heard something they did not. Require **≥ 14 days** before release to fire, absorbing off-by-a-few-days release-date disagreements between sources.
+>
+> **`careerYear` is `null`, never negative.** A `road-tested` show is by definition early, and the earliest are pre-debut. v5.4 shipped with a negative `careerYear` and a generated post rendered No Doubt's `-4` as *"four years into their existence"* when the truth was four years **before** their debut. It is now `null` for those shows, with the magnitude carried by the new `yearsBeforeDebut`. If this detector wants to say how early a show was, **read `yearsBeforeDebut` explicitly** — treating a missing `careerYear` as zero puts the same fabrication back.
 
 ### 5b. NEW detector — `most-witnessed-album` (Personal)
 
@@ -284,7 +318,7 @@ Per v5.4 §5f, `discography-crossref` ships disabled in v5.4 and is enabled here
 Add to `.claude/skills/liner-notes-voice/SKILL.md`:
 
 - Song → album attributions are **Tier 1** when present in `song-albums.json`.
-- Never state or imply an album a song came from when attribution is `null`. The generator must not fill this gap from its own knowledge — this is the single most likely hallucination vector the feature introduces.
+- Never state or imply an album a song came from when attribution is `null`. The generator must not fill this gap from its own knowledge — this is the single most likely hallucination vector the feature introduces. **This is a sibling of the rule v5.4 already added to the generator prompt** — invented biographical specifics, "numbers you could plausibly infer" — and should cross-reference it rather than restate it, so the two cannot drift apart.
 - `road-tested` prose must frame the memory as retrospective — *"I'd heard it a year before the record came out"* — never as foresight in the moment.
 
 ---
@@ -293,7 +327,7 @@ Add to `.claude/skills/liner-notes-voice/SKILL.md`:
 
 ### 6a. Enrich `get_concert_setlist`
 
-Annotate songs with their album inline, and lead with the era summary v5.4 already added:
+**The era line already exists.** `eraLine()` in `workers/mcp-server/src/tools.ts` emits it as of v5.4 (#271). v5.5's work here is **additive song annotations underneath it** — not a rewrite of the header. The example below shows the finished state; only the indented song block and the trailing count are new.
 
 ```
 Depeche Mode — The Rose Bowl, June 18 1988
@@ -314,9 +348,15 @@ Rules:
 - Always state the identified/total count, so a partially attributed setlist reads as partial rather than complete.
 - Covers annotate with the original artist, not an album.
 
+**Follow `eraLine`'s discipline exactly.** It returns `null` rather than a placeholder when data is missing, and a test asserts the tool's output is **byte-identical to its pre-v5.4 form** in that case. "Unattributed songs render with no annotation" is the same rule one level down and gets the same test: with `song-albums.json` absent or empty, `get_concert_setlist` must be byte-identical to its v5.4 output.
+
+*Placement:* `careerPosition` lives in `tools.ts` section 9, not a separate `career.ts`. If v5.5 adds setlist-attribution helpers, follow that precedent — the prose helpers are private to `tools.ts`, and extracting them is not worth the churn.
+
 ### 6b. Data registry
 
-Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with a `getSongAlbums()` helper. No new tool — this is inline enrichment of an existing one.
+Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with a `getSongAlbums()` helper. It joins the five already there (`venues-metadata`, `setlists-cache`, `artists-top-tracks`, `most-played-songs`, `album-eras`). No new tool — this is inline enrichment of an existing one.
+
+**`discography.json` stays out of the registry.** v5.4 decided this deliberately: enumerating a discography is a commodity, the join against attendance is not. v5.5 consumes `discography.json` as a *build input* only; nothing it ships changes what the MCP exposes.
 
 ---
 
@@ -326,28 +366,35 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 
 - [ ] Tier 0 resolves *"Enjoy the Silence"* → *Violator* with 0 network calls
 - [ ] Tier 1 index prefers the **earliest** release date when a song appears on multiple studio albums
+- [ ] Tier 1 **skips a `RELEASE_EXCLUSIONS` release-group** — the Depeche Mode bootleg is never indexed, so no song attributes to it
 - [ ] Tier 2 rejects an iTunes `collectionName` with no matching release-group in our discography
 - [ ] **Negative:** a song present only on a compilation resolves to `null`
 - [ ] **Negative:** unresolvable song → `null`, never a nearest guess
 - [ ] Cover song routes to the original artist's discography, never the performer's
+- [ ] Cover routing survives **hop 2** — an act whose discography lives under a different key (the `discographyKeys` relation) resolves, rather than dropping to `null`
 - [ ] Cover by an artist absent from our discography → `null`, no crash
-- [ ] `tape` songs are excluded entirely
+- [ ] An artist whose discography record exists but holds **zero albums** is not treated as a hit (the `isUsable` guard)
+- [ ] `tape` songs are excluded entirely, **including `tape` + `cover`**
 - [ ] `road-tested` requires ≥ 14 days before release
+- [ ] `road-tested` reads `yearsBeforeDebut` for pre-debut shows and never coerces a `null` `careerYear` to 0
 
 ### Integration
 
-- [ ] ≥ 60% of non-cover unique pairs attributed
+- [ ] Attribution rate meets the floor **as re-derived in Window 1** (see [Acceptance target](#acceptance-target)) — not the provisional 60% as written
 - [ ] `song-albums.json` ≤ 400 KB
 - [ ] Full re-run with warm cache makes **0** network calls
-- [ ] Pipeline degrades cleanly when `song-albums.json` is absent — detectors return `[]`, `get_concert_setlist` reverts to v5.4 output (snapshot)
+- [ ] Pipeline degrades cleanly when `song-albums.json` is absent — detectors return `[]`, `get_concert_setlist` **byte-identical** to v5.4 output (snapshot)
+- [ ] Every studio release-group indexed by Tier 1 also appears in `album-eras.json` — the two files agree on what a studio album is, by construction
 
 ### Known test data
 
 | Fact | Value |
 | --- | --- |
 | Unique pairs | 1,865 across 130 artists |
-| Cover performances | 369 of 2,731 |
+| Cover performances | 369 of 2,731 named songs (2,742 raw entries; 11 are unnamed segue markers) |
+| Tape performances | 38, of which 15 are also cover-flagged |
 | Setlists with songs | 187 of 371 entries |
+| Studio albums excluded by hand | 1 (`RELEASE_EXCLUSIONS`, 1 of 1,146 spine albums) |
 | iTunes probe | *Never Let Me Down Again* → *Music for the Masses (Deluxe Edition)*, 1987-08-24 |
 | MusicBrainz probe | Same song → 165 recordings, compilation-dominated (why per-song search was rejected) |
 
@@ -361,14 +408,16 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 **Modify:** `scripts/utils/musicbrainz-client.ts`, `package.json`
 
 **Tasks:**
-1. **Verify the v5.4 prerequisite** — `album-title.ts` and `album-eras.json` must exist
-2. Add release-group track-listing fetch to the MusicBrainz client (1 req/sec, cached)
-3. Implement Tier 0 and Tier 1; emit `song-albums.json` with tier stats
-4. Backfill run over all 130 artists
+1. **Verify the v5.4 prerequisite** — `album-title.ts` and `album-eras.json` must exist (they do, as of v5.4.0)
+2. **Export `isStudioAlbum` from `derive-album-eras.ts`** so one predicate serves both pipelines (§Part 2, Tier 1)
+3. Add release-group track-listing fetch to the MusicBrainz client (1 req/sec, cached)
+4. Implement Tier 0 and Tier 1, reading studio release-groups from `album-eras.json`; emit `song-albums.json` with tier stats
+5. Backfill run over all 130 artists
 
 **Acceptance:**
-- [ ] Tier 0 + Tier 1 attribution rate reported; ≥ 60% floor met or gap explained by tier
+- [ ] Tier 0 + Tier 1 attribution rate reported, and **the floor re-derived from it** — confirm 60% or restate with the measured number and the reason
 - [ ] Warm-cache re-run makes 0 network calls
+- [ ] No song attributes to a `RELEASE_EXCLUSIONS` release-group
 
 ### Phase 2 — Fallback & Covers (Window 2)
 
@@ -377,13 +426,14 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 
 **Tasks:**
 1. Implement the Tier 2 iTunes fallback with studio-release-group gating
-2. Implement cover routing via the `full-circle` original-artist resolution
+2. Implement **two-hop** cover routing — `canonicalOf` for the act, then `resolveArtistKey` with the `discographyKeys` relation for the key (§Part 3)
 3. Wire as build-data Step 9.6 with `--skip-song-albums`
 4. Add validation; write the test suite
 
 **Acceptance:**
 - [ ] All negative tests pass — no guessing anywhere
 - [ ] Covers never attributed to the performing artist
+- [ ] An act whose discography lives under a different key still resolves
 - [ ] Tier 2's marginal contribution reported, so it can be dropped if negligible
 
 ### Phase 3 — Detectors, MCP & Docs (Window 3)
@@ -414,14 +464,19 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 
 ## Drift Log — v5.4 implementation
 
-> **How to use this.** Appended as v5.4 windows land, so contract changes are captured while the reasoning is fresh rather than reconstructed archaeologically. A **full reconciliation pass happens at v5.4 ceremony** — this log makes that pass mechanical. Until then, treat every item below as amending the spec text above.
+> **✅ CLOSED — reconciled 2026-08-07.** All ten items are folded into the spec body above; the body is now the source of truth and this log is history. **Do not treat these items as amendments any more** — that instruction applied only until reconciliation.
+>
+> Kept because the *reasoning* does not survive in the body. Item 5 explains why one predicate must be exported, item 1 why an acceptance floor is provisional, item 10 why cover routing needs two hops. A future reader who wants to change one of those decisions should read the item before doing so.
+>
+> **Verification:** every item was re-checked against shipped code during reconciliation, not taken on trust from the log. That found item 1's own figure to be stale (below) and surfaced item 10, which no window had logged.
 
 ### Window 1 (#268–#270) — shipped 2026-08-07
 
 **5 items. All contract-level, because v5.5's entire dependency surface is Window 1.**
 
-1. **`album-title.ts` has no prefix tier.** Removed after measurement (13 of 766 matches, most wrong — see v5.4 spec §Part 1). Match rate is **73.5%**, not the 74.8% this spec's §Part 4 floor was reasoned against.
+1. **`album-title.ts` has no prefix tier.** Removed after measurement (13 of 766 matches, most wrong — see v5.4 spec §Part 1). Match rate is **74.0% (758 of 1,024)**, not the 74.8% this spec's §Part 4 floor was reasoned against.
    → *Impact:* the ≥60% attribution floor was estimated from the higher figure. It is almost certainly still met — Tier 0/1 do the heavy lifting and neither depends on the prefix tier — but **re-derive the floor from a real Tier 0+1 run before treating it as an acceptance gate.**
+   → *Corrected at reconciliation:* this item was logged as **73.5%** mid-implementation. The shipped matcher's header comment records **74.0% (758 of 1,024)**, which the v5.4.0 release notes confirm. Folded into §Part 4 with the corrected number. The direction of the drift is unchanged — the figure is still below the 74.8% the floor was reasoned against.
 
 2. **`AlbumRef` no longer carries `coverUrl` or `albumSlug`.** Both were derived data. §Part 4's `song-albums.json` schema still shows `"coverUrl": "https://coverartarchive.org/…"` — **that field must be dropped**; call the exported `coverArtUrl(mbid)` from `derive-album-eras.ts` instead. Slugs come from `normalizeAlbumName(title)` in `src/utils/normalize.ts`.
 
@@ -456,6 +511,14 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 
 **Confirmation of the log's premise:** Window 1 produced 5 contract-level items, Windows 2 and 3 produced 1 and 3 pattern-level ones. Weighting the sniff toward Window 1 was correct, and the ceremony reconciliation should be mechanical.
 
+### Found at reconciliation — not logged by any window
+
+10. **`buildAliasMap` ignores the `discographyKeys` relation.** Item 4 recorded that the relation exists and that cover routing must use it. What no window noticed is that the liner-notes alias map — `scripts/liner-notes/artist-aliases.ts`, the thing §Part 3 said to reuse — reads only `sameAct` and `sharesMember`. `discographyKeys` is consumed today by exactly two files, `derive-album-eras.ts` and `validate-concerts.ts`, neither of them in the liner-notes path.
+    → *Impact:* §Part 3's original instruction — "reuse `full-circle`'s resolution" — was **insufficient, not merely underspecified**. `canonicalOf` returns the concert-side canonical slug, which is deliberately *not* the discography key for the cases the relation exists to fix. Following the instruction literally would have silently dropped Yaz and The English Beat covers to `null`, and silently is the operative word: the failure looks exactly like the common, correct outcome of "original artist not in our discography."
+    → §Part 3 now specifies both hops explicitly, and the test list has a case that fails if hop 2 is missing.
+
+**What this says about the log's premise.** The mechanical items were mechanical, as predicted. The one that was not is the one where the spec pointed at existing code and said *reuse it* — the reuse was correct in intent and wrong in reach, and only reading the referenced file showed it. **A reconciliation pass that trusts its own drift log finds nine items; one that re-checks each against the code finds ten and corrects an eleventh.**
+
 ---
 
 ## Resolved Decisions
@@ -463,6 +526,9 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 1. **Apple Music API — EXCLUDED.** Requires a $99/year Apple Developer membership, violating the no-incremental-cost constraint. The free, keyless **iTunes Search API** already used by `enrich-top-tracks.ts` supplies the same `collectionName` data and is used instead.
 2. **Per-album indexing over per-song search.** Live probe showed per-song MusicBrainz search returns 165 compilation-dominated results for a single well-known track. Indexing our own studio release-groups eliminates the disambiguation problem rather than solving it.
 3. **Scoped as v5.5, not folded into v5.4.** Different risk profile — two live API enrichment passes versus pure local derivation — and v5.4 is already the largest spec in `specs/future/`. The dependency runs one way: v5.5 consumes `album-title.ts`.
+4. **One predicate for "studio album", exported rather than duplicated.** Settled at reconciliation. `isStudioAlbum` is not a pure structural test — it consults a hand-maintained exclusion list — so a second implementation is a second source of truth on a question both files must answer identically. Export it from `derive-album-eras.ts`; do not re-filter `discography.json` here.
+5. **`song-albums.json` carries no derived fields.** Same rule v5.4 landed on after measuring: `coverUrl` is a pure function of `mbid`, `albumSlug` of `title`. Both are computed at read time.
+6. **The ≥ 60% floor is provisional until measured.** It was reasoned against a sibling metric that has since moved. Confirm or restate it from a real Tier 0+1 run at the end of Window 1 — a build must not fail against a number nobody has measured.
 
 ---
 
@@ -472,6 +538,7 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 - **2026-08-07:** Traceability table added; issues #267, #276–#277 created.
 - **2026-08-07 (v1.1):** Drift log opened; Window 1 contract changes recorded (5 items).
 - **2026-08-07 (v1.2):** Windows 2–3 drift logged. v5.4 implementation complete.
-- **Version:** 1.2.0
+- **2026-08-07 (v1.3):** **Drift reconciliation.** All 9 logged items re-verified against shipped v5.4 code and folded into the body; a 10th found (§Part 3, cover routing needs two hops) and item 1's match rate corrected 73.5% → 74.0%. Design changes: Tier 1 reads `album-eras.json`, `isStudioAlbum` to be exported, `coverUrl` dropped from the schema, `get_concert_setlist` degradation is a byte-identical snapshot. The ≥ 60% floor is now explicitly **provisional**. Spec is no longer provisional; it is ready to implement.
+- **Version:** 1.3.0
 - **Author:** Lead architect (via Claude Code)
-- **Status:** Planned
+- **Status:** Planned — reconciled against v5.4.0, ready for Window 1
