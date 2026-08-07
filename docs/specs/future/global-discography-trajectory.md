@@ -264,11 +264,11 @@ Run against live data (`public/data/` as of 2026-08-07), 1,285 total track album
 | Single/EP, correctly excluded | 101 | — (excluded from denominator) |
 | **Eligible for matching** | **1,024** | **100%** |
 | Matched — lowercase exact (baseline) | 595 | 58.1% |
-| **Matched — normalizer + tiered matcher** | **753** | **73.5%** |
+| **Matched — normalizer + tiered matcher** | **758** | **74.0%** |
 | Unmatched — compilations / greatest hits / live | 60 | 5.9% (correct miss — no studio release-group exists) |
 | Unmatched — residual | 211 | 20.6% (see below) |
 
-**Net: +158 matched names, +15.4 percentage points.** Downstream, artists with an identifiable defining album rise from **106 → 129 (+22%)**.
+**Net: +163 matched names, +15.9 percentage points.** (Measured post-merge; the figure was 73.5% at implementation and rose when the Go-Go's MBID correction added 24 albums — the hygiene fix paying the matcher back.) Downstream, artists with an identifiable defining album rise from **106 → 129 (+22%)**.
 
 **Acceptance criterion: ≥ 73% of eligible names must match, with zero regressions in the fixture set.**
 

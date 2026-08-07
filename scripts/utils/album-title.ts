@@ -13,7 +13,7 @@
  *   "Honky Château (Bonus Track Version)"   ->   "Honky Château"
  *
  * Measured on live data: a naive lowercase comparison matches 58.1% of eligible
- * names; this module matches 73.5% (753 of 1,024).
+ * names; this module matches 74.0% (758 of 1,024) on current data.
  *
  * ── DESIGN CONSTRAINT: FAIL CLOSED ───────────────────────────────────────────
  * Returning null is a valid, common, and CORRECT outcome. Do not add a

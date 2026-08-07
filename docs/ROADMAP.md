@@ -144,7 +144,7 @@ Click-to-filter year cards, animated genre treemap with timeline slider, mobile-
 
 ### Discography Trajectory (v5.4.0)
 
-**Status**: Planned
+**Status**: Merged, awaiting release — [#278](https://github.com/mmorper/concerts/pull/278), epic [#266](https://github.com/mmorper/concerts/issues/266)
 **Spec**: [global-discography-trajectory.md](specs/future/global-discography-trajectory.md)
 
 Joins the 11,359-release discography against 40 years of attendance to answer where an artist stood in their career on the night I saw them — and what hadn't happened yet. Ships a shared album-title normalizer, a derived `album-eras.json`, a `get_career_position` MCP tool, and the first liner notes detector where the narrator doesn't know the ending.

@@ -130,7 +130,7 @@ docs/
 
 ### In flight — Discography Trajectory (v5.4.0)
 
-**Epic** [#266](https://github.com/mmorper/concerts/issues/266) · **Spec** [global-discography-trajectory.md](../docs/specs/future/global-discography-trajectory.md) (v1.3) · **Branch** `feat/discography-trajectory` — implemented, **not pushed**
+**Epic** [#266](https://github.com/mmorper/concerts/issues/266) · **Spec** [global-discography-trajectory.md](../docs/specs/future/global-discography-trajectory.md) (v1.3) · **Merged** [#278](https://github.com/mmorper/concerts/pull/278) → `f426575`, live in production
 
 Joins the 11,359-release discography against 40 years of attendance to answer where an artist stood in their arc on a given night — and what hadn't happened yet. Ships the first liner-notes detector where the narrator is wrong about the future.
 
@@ -146,7 +146,9 @@ All three windows complete (#268–#274). Full suites green.
 | `discography-crossref` | Implemented, tested, **deliberately not registered** — enable in v5.5 |
 | `scripts/liner-notes/voice-check.ts` | The voice checklist as code; errors drop a post from the run |
 
-**Before release:** push + PR, watch the first `album-trajectory` post publish (rotation has kept it in reserve so far), then `/release` ceremony including the v5.5 drift reconciliation.
+**Shipped, NOT released.** Production runs this code under the v5.3.0 label — the Workers auto-deployed on merge, but there is no version bump or changelog entry yet. `/release` still owes: version bump, changelog, meta-injector manual deploy, and the v5.5 drift reconciliation.
+
+⚠️ **The liner-notes cron (Mondays 08:00 UTC) publishes independently of `/release`.** The first `album-trajectory` post and the first real run of the voice gate will happen on schedule whether or not a release has been cut. The gate drops posts on error rather than publishing them, so the failure mode is conservative — but it has never run outside a manual invocation.
 
 **Follow-on:** [#267](https://github.com/mmorper/concerts/issues/267) v5.5 setlist song → album attribution (spec written, **provisional** until v5.4 ships). [#275](https://github.com/mmorper/concerts/issues/275) iTunes wrong-artist bug — fixing it raises the match rate for free.
 
