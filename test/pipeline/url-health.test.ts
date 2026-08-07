@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { checkUrl, isDead } from '../../scripts/utils/url-health.ts'
+import { checkUrl, checkUrls, isDead } from '../../scripts/utils/url-health.ts'
 
 /**
  * The liveness check both enrichment scripts and the liner-notes refresh now
@@ -61,5 +61,66 @@ describe('checkUrl', () => {
     expect(await isDead('https://cdn.test/a.jpg')).toBe(false)
     respond(200)
     expect(await isDead('https://cdn.test/a.jpg')).toBe(false)
+  })
+})
+
+/**
+ * The batch form `enrich-artists` sweeps its whole cache with (#264). Serially,
+ * a few hundred HEADs is minutes of wall clock for an incidental check.
+ */
+describe('checkUrls', () => {
+  beforeEach(() => vi.stubGlobal('fetch', vi.fn()))
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    vi.restoreAllMocks()
+  })
+
+  const byUrl = (fn: (url: string) => number) =>
+    vi.mocked(fetch).mockImplementation(async (input) => {
+      const status = fn(String(input))
+      return { ok: status >= 200 && status < 300, status } as Response
+    })
+
+  it('returns one verdict per URL, in input order', async () => {
+    byUrl((url) => (url.endsWith('b.jpg') ? 404 : url.endsWith('c.jpg') ? 500 : 200))
+
+    const health = await checkUrls([
+      'https://cdn.test/a.jpg',
+      'https://cdn.test/b.jpg',
+      'https://cdn.test/c.jpg',
+    ])
+
+    expect(health).toEqual(['ok', 'dead', 'unknown'])
+  })
+
+  it('checks every URL exactly once', async () => {
+    byUrl(() => 200)
+    const urls = Array.from({ length: 25 }, (_, i) => `https://cdn.test/${i}.jpg`)
+
+    expect(await checkUrls(urls, 4)).toHaveLength(25)
+    expect(fetch).toHaveBeenCalledTimes(25)
+  })
+
+  it('never exceeds the concurrency limit', async () => {
+    let inFlight = 0
+    let peak = 0
+    vi.mocked(fetch).mockImplementation(async () => {
+      peak = Math.max(peak, ++inFlight)
+      await new Promise((r) => setTimeout(r, 1))
+      inFlight--
+      return { ok: true, status: 200 } as Response
+    })
+
+    await checkUrls(
+      Array.from({ length: 20 }, (_, i) => `https://cdn.test/${i}.jpg`),
+      3
+    )
+
+    expect(peak).toBeLessThanOrEqual(3)
+  })
+
+  it('handles an empty list without a network call', async () => {
+    expect(await checkUrls([])).toEqual([])
+    expect(fetch).not.toHaveBeenCalled()
   })
 })

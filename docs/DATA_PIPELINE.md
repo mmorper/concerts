@@ -333,8 +333,31 @@ Net change: +3
 #### Caching Strategy
 
 - Metadata is cached for 30 days
-- Skips artists with recent data (< 30 days old)
+- Skips artists with recent data (< 30 days old) **whose stored image still loads**
 - Re-fetches stale data automatically
+
+#### Image Validation
+
+`fetchedAt` records when we asked the API, not whether what it gave us still
+works. Images die when the upstream photo is unpublished — a content event with
+no schedule, so no cache TTL predicts it (#256). The script therefore checks the
+artifact, not just the answer (#255, #264):
+
+- **Before trusting the cache** — every otherwise-fresh record's `image` is
+  HEAD-checked. A definitive 4xx demotes it to "must re-fetch" rather than
+  leaving a broken image live for the rest of the 30 days.
+- **After writing** — images newly returned by TheAudioDB/Last.fm/Deezer are
+  checked too. Anything still dead loses its `image` field, and the Artist scene
+  falls back to `albumCover` or its own placeholder.
+
+Only a definitive 4xx counts as dead. A 5xx or timeout is "unknown" and changes
+nothing, so one bad run cannot strip every artist of its image at once. The
+checks hit the image CDNs, not the metadata APIs — no key, quota or billing. The
+full sweep of ~257 artists takes about 6 seconds.
+
+The same rule and the same `scripts/utils/url-health.ts` helper cover venues
+(`enrich-venues.ts`) and liner-note posts
+(`scripts/liner-notes/refresh-images.ts`).
 
 #### Example Output
 
@@ -345,9 +368,12 @@ Found 101 unique artists to enrich
 
 Loaded 2 existing artist records
 
+Checking 2 cached artist image(s) still load...
+  ⚠️  1 cached image(s) are gone — re-fetching those artists
+
 Fetching metadata for: Depeche Mode
   ✅ Found on TheAudioDB
-Fetching metadata for: The Cure
+Fetching metadata for: The Cure (stored image is gone)
   ✅ Found on TheAudioDB
 Fetching metadata for: The Go Go's
   ⚠️  No metadata found
@@ -358,6 +384,8 @@ Fetching metadata for: The Go Go's
    ✅ Enriched: 87
    ⏭️  Skipped (cached): 0
    ❌ Failed: 14
+   🧹 Pruned (orphaned): 0
+   🖼️  Dropped (dead image): 0
 
 💾 Saved metadata to: public/data/artists-metadata.json
 

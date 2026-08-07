@@ -3,6 +3,7 @@ import { LastFmClient } from './utils/lastfm-client'
 import { DeezerClient } from './utils/deezer-client'
 import { RateLimiter } from './utils/rate-limiter'
 import { normalizeArtistName } from '../src/utils/normalize.js'
+import { checkUrls } from './utils/url-health.js'
 import { createBackup } from './utils/backup'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { join } from 'path'
@@ -60,6 +61,57 @@ function getArtistNameVariants(artistName: string): string[] {
   return [...new Set(variants)] // Remove duplicates
 }
 
+const CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000
+
+type ArtistRecord = ArtistMetadata[string]
+
+/**
+ * Mock records carry no image, so they are always re-fetched. `source` predates
+ * the current union and older records spell it `dataSource`, hence both reads.
+ */
+function isMockRecord(record: ArtistRecord | undefined): boolean {
+  if (!record) return false
+  const { source, dataSource } = record as { source?: string; dataSource?: string }
+  return source === 'mock' || dataSource === 'mock'
+}
+
+function isFresh(record: ArtistRecord, now: number): boolean {
+  return now - new Date(record.fetchedAt).getTime() < CACHE_TTL_MS
+}
+
+/**
+ * Of the given records, which ones' stored image is definitively gone?
+ *
+ * `fetchedAt` says when we asked the API, not whether what it gave us still
+ * loads — and image death is a content event with no schedule (#256), so no TTL
+ * predicts it. Without this, a record enriched on day 1 whose image is
+ * unpublished on day 2 serves a broken image for the remaining 29 days while the
+ * weekly run walks straight past it (#264).
+ *
+ * Only a definitive 4xx counts. A 5xx or timeout is "unknown" and is left alone,
+ * so one bad run cannot strip every artist of its image at once.
+ */
+export async function findDeadImages(
+  entries: Array<{ key: string; url: string }>
+): Promise<Set<string>> {
+  if (entries.length === 0) return new Set()
+  const health = await checkUrls(entries.map(e => e.url))
+  return new Set(entries.filter((_, i) => health[i] === 'dead').map(e => e.key))
+}
+
+/** The `{ key, url }` pairs `findDeadImages` takes, for records that have an image. */
+function imageEntries(
+  metadata: ArtistMetadata,
+  keys: Iterable<string>
+): Array<{ key: string; url: string }> {
+  const entries: Array<{ key: string; url: string }> = []
+  for (const key of keys) {
+    const url = metadata[key]?.image
+    if (url) entries.push({ key, url })
+  }
+  return entries
+}
+
 /**
  * Enrich concert data with artist metadata from free APIs
  */
@@ -101,27 +153,47 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
 
   const rateLimiter = new RateLimiter(2) // TheAudioDB: 2 calls/sec
 
+  // Which cached records are we about to trust? Check their images before we do.
+  //
+  // This is the artist half of #255's rule — a successful API response is not
+  // evidence of a usable image — which v5.3.0 applied to venues and liner notes
+  // but not here (#264). A dead image demotes the record from "fresh" to "must
+  // re-fetch" below.
+  const now = Date.now()
+  const trusted = uniqueArtists
+    .map(name => normalizeArtistName(name))
+    .filter(key => {
+      const record = metadata[key]
+      return !!record && !isMockRecord(record) && isFresh(record, now)
+    })
+  console.log(`Checking ${trusted.length} cached artist image(s) still load...`)
+  const staleImages = await findDeadImages(imageEntries(metadata, trusted))
+  if (staleImages.size > 0) {
+    console.log(`  ⚠️  ${staleImages.size} cached image(s) are gone — re-fetching those artists`)
+  }
+  console.log()
+
   let enriched = 0
   let skipped = 0
   let failed = 0
+  const written = new Set<string>()
 
   for (const artistName of uniqueArtists) {
     const normalized = normalizeArtistName(artistName)
 
-    // Skip if already enriched and recent (within 30 days)
-    // BUT always re-fetch mock data since it has no images
-    const existingData = metadata[normalized] as any
-    const isMockData = existingData && (existingData.source === 'mock' || existingData.dataSource === 'mock')
-    if (existingData && !isMockData) {
-      const age = Date.now() - new Date(existingData.fetchedAt).getTime()
-      const thirtyDays = 30 * 24 * 60 * 60 * 1000
-      if (age < thirtyDays) {
+    // Skip if already enriched, recent (within 30 days) and still serving a live
+    // image. BUT always re-fetch mock data since it has no images.
+    const existingData = metadata[normalized]
+    if (existingData && !isMockRecord(existingData)) {
+      if (isFresh(existingData, now) && !staleImages.has(normalized)) {
         skipped++
         continue
       }
     }
 
-    console.log(`Fetching metadata for: ${artistName}`)
+    console.log(
+      `Fetching metadata for: ${artistName}${staleImages.has(normalized) ? ' (stored image is gone)' : ''}`
+    )
 
     try {
       let found = false
@@ -140,6 +212,7 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
         const audioDbInfo = await audioDb.getArtistInfo(variantName)
         if (audioDbInfo && audioDbInfo.image) {
           metadata[normalized] = audioDbInfo
+          written.add(normalized)
           console.log(`  ✅ Found on TheAudioDB${isOriginalName ? '' : ' (using simplified name)'}`)
           enriched++
           found = true
@@ -155,6 +228,7 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
           const lastFmInfo = await lastFm.getArtistInfo(variantName)
           if (lastFmInfo && lastFmInfo.image) {
             metadata[normalized] = lastFmInfo
+            written.add(normalized)
             console.log(`  ✅ Found on Last.fm${isOriginalName ? '' : ' (using simplified name)'}`)
             enriched++
             found = true
@@ -171,6 +245,7 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
           const deezerInfo = await deezer.getArtistInfo(variantName)
           if (deezerInfo && deezerInfo.image) {
             metadata[normalized] = deezerInfo
+            written.add(normalized)
             console.log(`  ✅ Found on Deezer${isOriginalName ? '' : ' (using simplified name)'}`)
             enriched++
             found = true
@@ -210,6 +285,28 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
     for (const key of orphans) console.log(`   − ${key}`)
   }
 
+  // Validate what we just stored, not merely that an API answered (#264).
+  //
+  // TheAudioDB, Last.fm and Deezer all hand back image URLs that can already be
+  // 404ing, so a fresh write is no more trustworthy than a cached one. Anything
+  // still definitively dead loses its `image` — the Artist scene falls back to
+  // `albumCover` or its own placeholder, which beats rendering a broken image.
+  const rewritten = imageEntries(metadata, written)
+  const nowDead = await findDeadImages(rewritten)
+
+  // Records whose image was already known dead and that no source could repair.
+  // They are dead by the pre-pass; re-checking would only risk an "unknown" blip
+  // letting a URL we know is gone survive.
+  for (const key of staleImages) {
+    if (!written.has(key) && metadata[key]) nowDead.add(key)
+  }
+
+  for (const key of nowDead) delete metadata[key].image
+  if (nowDead.size > 0) {
+    console.log(`\n🖼️  Dropped ${nowDead.size} dead image URL(s); the client will fall back:`)
+    for (const key of nowDead) console.log(`   − ${key}`)
+  }
+
   // Save metadata
   if (dryRun) {
     console.log('\n=' .repeat(30))
@@ -230,6 +327,7 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
   console.log(`   ⏭️  Skipped (cached): ${skipped}`)
   console.log(`   ❌ Failed: ${failed}`)
   console.log(`   🧹 Pruned (orphaned): ${orphans.length}`)
+  console.log(`   🖼️  Dropped (dead image): ${nowDead.size}`)
 
   if (dryRun) {
     console.log('\n💡 To apply these changes, run without --dry-run flag')

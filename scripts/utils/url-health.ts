@@ -46,3 +46,33 @@ export async function checkUrl(
 export async function isDead(url: string, timeoutMs?: number): Promise<boolean> {
   return (await checkUrl(url, timeoutMs)) === "dead";
 }
+
+export const DEFAULT_CONCURRENCY = 8;
+
+/**
+ * Check many URLs at once, bounded, results in input order.
+ *
+ * `enrich-artists` sweeps every cached record on each run (#264), which is a few
+ * hundred HEADs — serially that is minutes of wall clock for a check that should
+ * be incidental. These are CDN hits, not API calls, so the only budget that
+ * matters is time.
+ */
+export async function checkUrls(
+  urls: string[],
+  concurrency: number = DEFAULT_CONCURRENCY,
+  timeoutMs: number = DEFAULT_TIMEOUT_MS
+): Promise<UrlHealth[]> {
+  const results: UrlHealth[] = new Array(urls.length);
+  let next = 0;
+  const workers = Array.from(
+    { length: Math.max(1, Math.min(concurrency, urls.length)) },
+    async () => {
+      while (next < urls.length) {
+        const i = next++;
+        results[i] = await checkUrl(urls[i], timeoutMs);
+      }
+    }
+  );
+  await Promise.all(workers);
+  return results;
+}
