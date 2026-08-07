@@ -412,6 +412,34 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 
 ---
 
+## Drift Log — v5.4 implementation
+
+> **How to use this.** Appended as v5.4 windows land, so contract changes are captured while the reasoning is fresh rather than reconstructed archaeologically. A **full reconciliation pass happens at v5.4 ceremony** — this log makes that pass mechanical. Until then, treat every item below as amending the spec text above.
+
+### Window 1 (#268–#270) — shipped 2026-08-07
+
+**5 items. All contract-level, because v5.5's entire dependency surface is Window 1.**
+
+1. **`album-title.ts` has no prefix tier.** Removed after measurement (13 of 766 matches, most wrong — see v5.4 spec §Part 1). Match rate is **73.5%**, not the 74.8% this spec's §Part 4 floor was reasoned against.
+   → *Impact:* the ≥60% attribution floor was estimated from the higher figure. It is almost certainly still met — Tier 0/1 do the heavy lifting and neither depends on the prefix tier — but **re-derive the floor from a real Tier 0+1 run before treating it as an acceptance gate.**
+
+2. **`AlbumRef` no longer carries `coverUrl` or `albumSlug`.** Both were derived data. §Part 4's `song-albums.json` schema still shows `"coverUrl": "https://coverartarchive.org/…"` — **that field must be dropped**; call the exported `coverArtUrl(mbid)` from `derive-album-eras.ts` instead. Slugs come from `normalizeAlbumName(title)` in `src/utils/normalize.ts`.
+
+3. **`album-eras.json` exposes `artists[key].studioAlbums`** — every studio release-group for an artist, normalized, sorted, already filtered to `primaryType: Album` with empty `secondaryTypes`.
+   → *This simplifies Tier 1.* §Part 2 says "fetch track listings for their studio release-groups only — MBIDs already held in `discography.json`." Read that list from `album-eras.json` instead: the filtering and sorting is done, and it is the same set the era join uses, so the two cannot diverge.
+
+4. **`artist-aliases.json` gained a `discographyKeys` relation** (separate from `sameAct`, which is marquees-only — an existing test enforces that every `sameAct` billing appeared on a real bill).
+   → *Impact:* §Part 3's cover-song routing must resolve the original artist through `resolveArtistKey` with **both** relations, exactly as `derive-album-eras.ts` does. Reuse that wiring rather than re-deriving it.
+
+5. **`RELEASE_EXCLUSIONS` exists in `derive-album-eras.ts`** — a manual list of release-groups MusicBrainz mistags as studio albums (currently one Depeche Mode bootleg).
+   → *Impact:* Tier 1's track-listing fetch must **skip excluded release-groups**, or songs get attributed to a bootleg that the era join has already decided does not exist. Two sources of truth on what counts as a studio album is exactly the divergence item 3 is meant to prevent — consider exporting the predicate.
+
+### Window 2 (#271) — pending
+
+### Window 3 (#272–#274) — pending
+
+---
+
 ## Resolved Decisions
 
 1. **Apple Music API — EXCLUDED.** Requires a $99/year Apple Developer membership, violating the no-incremental-cost constraint. The free, keyless **iTunes Search API** already used by `enrich-top-tracks.ts` supplies the same `collectionName` data and is used instead.
@@ -424,6 +452,7 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 
 - **2026-08-07:** Initial specification created
 - **2026-08-07:** Traceability table added; issues #267, #276–#277 created.
-- **Version:** 1.0.1
+- **2026-08-07 (v1.1):** Drift log opened; Window 1 contract changes recorded (5 items).
+- **Version:** 1.1.0
 - **Author:** Lead architect (via Claude Code)
 - **Status:** Planned
