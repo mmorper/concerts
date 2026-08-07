@@ -4,7 +4,7 @@
 
 **Version:** v5.3.0 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-08-06
+**Last Sync:** 2026-08-07
 
 ### Commands
 
@@ -128,6 +128,28 @@ docs/
 
 ## Active Work & Next Steps
 
+### In flight — Discography Trajectory (v5.4.0)
+
+**Epic** [#266](https://github.com/mmorper/concerts/issues/266) · **Spec** [global-discography-trajectory.md](../docs/specs/future/global-discography-trajectory.md) (v1.3) · **Branch** `feat/discography-trajectory` — implemented, **not pushed**
+
+Joins the 11,359-release discography against 40 years of attendance to answer where an artist stood in their arc on a given night — and what hadn't happened yet. Ships the first liner-notes detector where the narrator is wrong about the future.
+
+All three windows complete (#268–#274). Full suites green.
+
+| Artefact | Note |
+| --- | --- |
+| `scripts/utils/album-title.ts` | iTunes ↔ MusicBrainz titles, 58.1% → 73.5%. **Fail-closed by design** — do not add a fuzzy tier |
+| `scripts/utils/artist-key.ts` | Comparison only. **Never** wire into slug generation — published deep links depend on `normalize.ts` |
+| `public/data/album-eras.json` | 302 KB, build-data Step 7.5. Stores nothing derivable |
+| `get_career_position` | MCP tool; `search_concerts` gained `cycleBucket` |
+| `album-trajectory` | 8 findings, `surpriseFactor` 10 |
+| `discography-crossref` | Implemented, tested, **deliberately not registered** — enable in v5.5 |
+| `scripts/liner-notes/voice-check.ts` | The voice checklist as code; errors drop a post from the run |
+
+**Before release:** push + PR, watch the first `album-trajectory` post publish (rotation has kept it in reserve so far), then `/release` ceremony including the v5.5 drift reconciliation.
+
+**Follow-on:** [#267](https://github.com/mmorper/concerts/issues/267) v5.5 setlist song → album attribution (spec written, **provisional** until v5.4 ships). [#275](https://github.com/mmorper/concerts/issues/275) iTunes wrong-artist bug — fixing it raises the match rate for free.
+
 ### In-flight Gate (blocking MCP work)
 
 **Morperhaus Concert Archive MCP Server** — epic [#102](https://github.com/mmorper/concerts/issues/102)
@@ -219,4 +241,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-08-05 by Claude Code for v5.2.0 release*
+*Last updated: 2026-08-07 by Claude Code — v5.4.0 Discography Trajectory implementation*

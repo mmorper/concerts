@@ -15,7 +15,8 @@ import { createHash } from "crypto";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
-import { analyze } from "./analyze.ts";
+import { analyze, type AlbumErasSlim } from "./analyze.ts";
+import { checkVoice, formatVoiceIssues } from "./voice-check.ts";
 import { score } from "./score.ts";
 import { select, buildPosts, POSTS_PER_RUN } from "./curate.ts";
 import { refreshPostImages } from "./refresh-images.ts";
@@ -93,6 +94,9 @@ export async function run(options: PipelineOptions): Promise<void> {
   );
   const setlists = loadSetlistIndex();
   const aliases = loadAliasMap();
+  // Optional (#270). Absent -> the discography detectors return [], album art
+  // falls back to iTunes, and every other detector is byte-identical.
+  const albumEras = loadAlbumEras();
   // Same source, two uses: the detectors join against it, and buildDeepLinks
   // uses the dates to decide whether a ?show= link would open an empty panel.
   const datesWithSetlists = new Set([...setlists.keys()].map((k) => k.split("::")[0]));
@@ -109,7 +113,13 @@ export async function run(options: PipelineOptions): Promise<void> {
 
   // ── Stage 1: Analyze ─────────────────────────────────────────────────────
   console.log("\n🔍 Stage 1: Analyzing concert patterns...");
-  const { findings, stats } = analyze(concerts, today, { venuesMetadata, artistsMetadata, setlists, aliases });
+  const { findings, stats } = analyze(concerts, today, {
+    venuesMetadata,
+    artistsMetadata,
+    setlists,
+    aliases,
+    eras: albumEras,
+  });
   console.log(`   Found ${findings.length} raw findings (${stats.concertsAnalyzed} concerts analyzed)`);
   for (const [detector, count] of Object.entries(stats.findingsByDetector)) {
     console.log(`   • ${detector}: ${count}`);
@@ -122,7 +132,7 @@ export async function run(options: PipelineOptions): Promise<void> {
     concertCountByArtist[c.headlinerNormalized] =
       (concertCountByArtist[c.headlinerNormalized] ?? 0) + 1;
   }
-  const scoredFindings = score(findings, { artistsMetadata, artistsTopTracks, concertCountByArtist }, today);
+  const scoredFindings = score(findings, { artistsMetadata, artistsTopTracks, concertCountByArtist, albumEras }, today);
   console.log(`   ${scoredFindings.length}/${findings.length} findings pass threshold (≥20)`);
 
   if (options.analyzeOnly) {
@@ -171,13 +181,39 @@ export async function run(options: PipelineOptions): Promise<void> {
   });
   console.log(`   Prose generated for ${withProse.length}/${target} (${attempted} API call${attempted !== 1 ? "s" : ""})`);
 
+  // ── Stage 4b: Voice checks ───────────────────────────────────────────────
+  //
+  // The voice skill has carried a validation checklist since v4.4 and nothing
+  // ever ran it. Two defects reached generated prose during v5.4 — an invented
+  // distance, and a negative field rendered as its absolute value — both of
+  // which a human had already read past. Errors block the run; warnings print.
+  const clean: typeof withProse = [];
+  let voiceErrors = 0;
+  for (const candidate of withProse) {
+    const issues = checkVoice(candidate);
+    if (issues.length) console.log(formatVoiceIssues(candidate, issues));
+    if (issues.some((i) => i.severity === "error")) {
+      voiceErrors++;
+      continue; // Drop it rather than publish it. Reserve candidates remain.
+    }
+    clean.push(candidate);
+  }
+  if (voiceErrors > 0) {
+    console.log(`   ⚠️  ${voiceErrors} post(s) failed voice checks and were dropped`);
+  }
+  if (clean.length === 0) {
+    console.log("\n⚠️  Nothing passed voice checks — nothing to publish this run.");
+    return;
+  }
+
   // ── Stage 5: Build posts ─────────────────────────────────────────────────
   console.log("\n🏗️  Stage 5: Building posts...");
   const publishedAt = new Date().toISOString();
-  const newPosts = buildPosts(withProse, {
+  const newPosts = buildPosts(clean, {
     artistsMetadata,
     artistsTopTracks,
     venuesMetadata,
+    albumEras,
     datesWithSetlists,
     existingPosts,
     publishedAt,
@@ -204,7 +240,7 @@ export async function run(options: PipelineOptions): Promise<void> {
   try {
     const refresh = await refreshPostImages(
       allPosts,
-      { artistsMetadata, artistsTopTracks, venuesMetadata },
+      { artistsMetadata, artistsTopTracks, venuesMetadata, albumEras },
       { validate: true, verbose: true }
     );
     refreshedSlugs = refresh.changedSlugs;
@@ -309,6 +345,25 @@ export async function run(options: PipelineOptions): Promise<void> {
  * Hand-maintained artist billing aliases (#227). A missing file means every
  * billing is treated as its own act — exactly the behaviour before the map.
  */
+/**
+ * album-eras.json (#270). Missing is a supported state, not an error: the three
+ * discography detectors return [] and album art falls back to iTunes, so the
+ * pipeline produces exactly its pre-v5.4 output.
+ */
+function loadAlbumEras(): AlbumErasSlim | undefined {
+  const path = join(DATA_DIR, "album-eras.json");
+  if (!existsSync(path)) {
+    console.warn("   ⚠️  album-eras.json missing — discography detectors will find nothing");
+    return undefined;
+  }
+  try {
+    return JSON.parse(readFileSync(path, "utf8")) as AlbumErasSlim;
+  } catch (err) {
+    console.warn(`   ⚠️  Could not read album-eras.json (${(err as Error).message})`);
+    return undefined;
+  }
+}
+
 function loadAliasMap(): AliasMap {
   const path = join(ROOT, "data", "artist-aliases.json");
   if (!existsSync(path)) {

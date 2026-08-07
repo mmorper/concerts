@@ -1186,28 +1186,137 @@ const LANDMARK_ALBUMS: LandmarkAlbum[] = [
   { artist: "Taylor Swift", album: "Midnights", released: "2022-10-21", significance: "broke every streaming record in its first week — the conversation of the fall" },
 ];
 
-const ALBUM_WINDOW_DAYS = 42; // 6 weeks
+const ALBUM_WINDOW_DAYS = 42; // 6 weeks — same-artist findings only
 
-function detectAlbumContext(concerts: Concert[]): AnalysisFinding[] {
+/**
+ * Cross-artist proximity bar, tightened from 42 days (#272).
+ *
+ * Measured: at 42 days this detector produced 17 findings of which ZERO were
+ * same-artist — the byArtist preference branch below had never once fired, so
+ * every album-context post ever published was a cross-artist coincidence. That
+ * is why the prose strains ("across town, Kanye was putting finishing touches
+ * on an album that would blend hip-hop with string arrangements...").
+ *
+ * 21 days costs 6 of those 17. The detector simultaneously gains ~25
+ * same-artist findings from the discography join, so net supply roughly
+ * doubles while the weakest third of the old supply retires.
+ */
+const CROSS_ARTIST_WINDOW_DAYS = 21;
+
+function detectAlbumContext(
+  concerts: Concert[],
+  aliases: AliasMap = EMPTY_ALIAS_MAP,
+  eras?: AlbumErasSlim
+): AnalysisFinding[] {
   const findings: AnalysisFinding[] = [];
   const usedConcertIds = new Set<string>(); // one finding per concert max
+
+  // ── Same-artist findings from the discography join ────────────────────────
+  //
+  // The 31 hand-curated LANDMARK_ALBUMS below produce ZERO same-artist
+  // findings — measured, not assumed. The `byArtist` preference branch had
+  // never once fired, which is why every album-context post ever published was
+  // a cross-artist coincidence and why the prose strained to justify itself.
+  //
+  // These are the real thing: a night that actually sat inside a release week.
+  // No `albumSignificance` — that string is editorial and the corpus cannot
+  // supply it. For a same-artist finding the significance IS the personal
+  // fact ("I was there four days after it came out"), not a cultural claim.
+  if (eras) {
+    for (const concert of concerts) {
+      const era = eras.concerts[concert.id];
+      if (!era) continue;
+
+      const artist = eras.artists[era.artistKey];
+      const previous = era.currentAlbum;
+      const next = artist?.studioAlbums[era.albumsBefore];
+
+      const concertMs = new Date(concert.date + "T12:00:00Z").getTime();
+      const daysFrom = (release: string) =>
+        Math.round((concertMs - new Date(release + "T12:00:00Z").getTime()) / 86_400_000);
+
+      // Nearest release in either direction, inside the window.
+      const candidates: Array<{ album: { title: string; releaseDate: string; mbid: string }; days: number }> = [];
+      if (previous) {
+        const d = daysFrom(previous.releaseDate);
+        if (d >= 0 && d <= ALBUM_WINDOW_DAYS) candidates.push({ album: previous, days: d });
+      }
+      if (next) {
+        const d = daysFrom(next.releaseDate);
+        if (d < 0 && Math.abs(d) <= ALBUM_WINDOW_DAYS) candidates.push({ album: next, days: d });
+      }
+      if (!candidates.length) continue;
+
+      const best = candidates.sort((a, b) => Math.abs(a.days) - Math.abs(b.days))[0];
+      const timing =
+        best.days < 0
+          ? `${Math.abs(best.days)} days before it dropped`
+          : best.days === 0
+          ? "the same day it dropped"
+          : `${best.days} days after it dropped`;
+
+      usedConcertIds.add(concert.id + best.album.title);
+
+      findings.push({
+        id: `album-context-own-${concert.headlinerNormalized}-${concert.date}`,
+        detector: "album-context",
+        category: "cultural",
+        temporality: "evergreen",
+        headline: `${concert.headliner} — ${best.days < 0 ? "Days Before" : "Days After"} ${best.album.title} Dropped`,
+        dataPoints: {
+          concertArtist: concert.headliner,
+          concertVenue: concert.venue,
+          concertCity: concert.cityState,
+          concertDate: concert.date,
+          concertYear: concert.year,
+          album: best.album.title,
+          albumArtist: concert.headliner,
+          albumReleased: best.album.releaseDate,
+          daysApart: Math.abs(best.days),
+          timing,
+          isSameArtist: true,
+          albumMbid: best.album.mbid,
+          albumSlug: slugify(best.album.title),
+        },
+        concertDate: concert.date,
+        artists: [concert.headlinerNormalized],
+        venues: [concert.venueNormalized],
+        years: [concert.year],
+        suggestedImage: {
+          type: "album",
+          artistNormalized: concert.headlinerNormalized,
+          albumName: best.album.title,
+        },
+        suggestedTrack: { artistNormalized: concert.headlinerNormalized },
+        tags: ["#album-context", "#cultural-moment", "#release-week"],
+      });
+    }
+  }
 
   for (const album of LANDMARK_ALBUMS) {
     const albumDate = new Date(album.released + "T12:00:00Z");
 
-    const nearby = concerts.filter((c) => {
+    // Alias-aware, consistent with full-circle and guest-bridge (#227): a
+    // landmark credited to one billing still matches a show under another.
+    const albumArtistCanon = canonicalOf(aliases, slugify(album.artist));
+    const isAlbumArtist = (c: Concert) =>
+      canonicalOf(aliases, c.headlinerNormalized) === albumArtistCanon;
+
+    const withinDays = (c: Concert, limit: number) => {
       const concertDate = new Date(c.date + "T12:00:00Z");
-      const diffDays = Math.abs(concertDate.getTime() - albumDate.getTime()) / 86_400_000;
-      return diffDays <= ALBUM_WINDOW_DAYS;
-    });
+      return Math.abs(concertDate.getTime() - albumDate.getTime()) / 86_400_000 <= limit;
+    };
+
+    // Same-artist gets the full 6 weeks; a stranger coincidence must be much
+    // tighter to earn a post at all.
+    const byArtist = concerts.filter((c) => isAlbumArtist(c) && withinDays(c, ALBUM_WINDOW_DAYS));
+    const nearby = byArtist.length
+      ? byArtist
+      : concerts.filter((c) => withinDays(c, CROSS_ARTIST_WINDOW_DAYS));
 
     if (nearby.length === 0) continue;
 
-    // Prefer concert by the same artist; otherwise pick chronologically closest
-    const byArtist = nearby.filter(
-      (c) => c.headlinerNormalized === slugify(album.artist)
-    );
-    const pool = byArtist.length > 0 ? byArtist : nearby;
+    const pool = nearby;
     const anchor = pool.sort((a, b) => {
       const dA = Math.abs(new Date(a.date + "T12:00:00Z").getTime() - albumDate.getTime());
       const dB = Math.abs(new Date(b.date + "T12:00:00Z").getTime() - albumDate.getTime());
@@ -1431,6 +1540,220 @@ export interface AnalyzeOptions {
    * setlist degrade — silently, never with a stub sentence.
    */
   setlists?: SetlistIndex;
+  /**
+   * Album-era join (#270). Absent means the three discography detectors return
+   * [] and every other detector behaves exactly as before — the same graceful
+   * degradation the setlist index uses.
+   */
+  eras?: AlbumErasSlim;
+}
+
+/** The slice of album-eras.json the detectors read. */
+export interface AlbumErasSlim {
+  concerts: Record<string, {
+    artistKey: string;
+    currentAlbum: { title: string; mbid: string; releaseDate: string } | null;
+    albumsBefore: number;
+    albumsAfter: number;
+    careerYear: number | null;
+    yearsBeforeDebut: number | null;
+    definingAlbum:
+      | { mbid: string; title: string; releaseDate: string; topTrackCount: number; topTrackTotal: number }
+      | null;
+    definingAlbumAhead: boolean;
+    definingAlbumMonthsAway: number | null;
+  }>;
+  artists: Record<string, {
+    displayName: string;
+    studioAlbumCount: number;
+    studioAlbums: Array<{ mbid: string; title: string; releaseDate: string; coverAvailable: boolean }>;
+    erasSeen: Array<{ albumSlug: string; title: string; showCount: number; dates: string[] }>;
+  }>;
+}
+
+
+// ── 18. Album Trajectory Detector ────────────────────────────────────────────
+
+/**
+ * A night when the record they'd be remembered for did not exist yet.
+ *
+ * This is the first detector in the pipeline where the narrator is WRONG about
+ * the future, and that is the entire point. Every other detector tells a
+ * pattern story from now, looking backwards at a shape — longevity, loyalty,
+ * gaps. Here the reader knows something the person in the seat does not.
+ *
+ * Depeche Mode at the Rose Bowl, June 1988: Violator was twenty months away.
+ *
+ * "Defining album" is the record carrying a plurality of the artist's still-
+ * streamed top tracks — a proxy for what ENDURED, not for critical canon. The
+ * finding carries topTrackCount/topTrackTotal so prose can cite that evidence
+ * rather than assert a judgment the data cannot support.
+ *
+ * Spec: docs/specs/future/global-discography-trajectory.md §5a
+ */
+
+/** Below this the gap is a release-schedule accident, not a story. */
+const TRAJECTORY_MIN_MONTHS = 3;
+
+export function detectAlbumTrajectory(
+  concerts: Concert[],
+  eras?: AlbumErasSlim
+): AnalysisFinding[] {
+  if (!eras) return [];
+  const findings: AnalysisFinding[] = [];
+
+  for (const concert of concerts) {
+    const era = eras.concerts[concert.id];
+    if (!era?.definingAlbumAhead || !era.definingAlbum) continue;
+    if ((era.definingAlbumMonthsAway ?? 0) < TRAJECTORY_MIN_MONTHS) continue;
+
+    const artist = eras.artists[era.artistKey];
+    const defining = era.definingAlbum;
+    const monthsAway = era.definingAlbumMonthsAway as number;
+    const years = Math.round((monthsAway / 12) * 10) / 10;
+    const away =
+      monthsAway >= 24 ? `${years} Years` : `${monthsAway} Months`;
+
+    // Self-titled records collide with the artist name: "Bat Fangs — 4 Months
+    // Before Bat Fangs" reads like a typo. Name the relationship instead.
+    const selfTitled = slugify(defining.title) === slugify(concert.headliner);
+    const target = selfTitled
+      ? era.albumsBefore === 0
+        ? "Their First Record"
+        : "The Album That Shares Their Name"
+      : defining.title;
+
+    findings.push({
+      id: `album-trajectory-${concert.headlinerNormalized}-${concert.date}`,
+      detector: "album-trajectory",
+      category: "cultural",
+      temporality: "evergreen",
+      headline: `${concert.headliner} — ${away} Before ${target}`,
+      dataPoints: {
+        artist: concert.headliner,
+        venue: concert.venue,
+        city: concert.cityState,
+        date: concert.date,
+        year: concert.year,
+        definingAlbumTitle: defining.title,
+        definingAlbumReleaseDate: defining.releaseDate,
+        monthsAway,
+        // The evidence, so prose cites rather than asserts (voice rule §6b).
+        topTrackCount: defining.topTrackCount,
+        topTrackTotal: defining.topTrackTotal,
+        albumsAfter: era.albumsAfter,
+        albumsBefore: era.albumsBefore,
+        currentAlbumTitle: era.currentAlbum?.title ?? null,
+        careerYear: era.careerYear,
+        yearsBeforeDebut: era.yearsBeforeDebut,
+        // Album identity rides along inert (spec §Part 7): the future
+        // discography deep link becomes a rendering change, not a migration.
+        definingAlbumMbid: defining.mbid,
+        definingAlbumSlug: slugify(defining.title),
+        albumsAheadIdentity: (artist?.studioAlbums ?? [])
+          .slice(era.albumsBefore)
+          .slice(0, 5)
+          .map((a) => ({ mbid: a.mbid, slug: slugify(a.title), title: a.title, releaseDate: a.releaseDate })),
+      },
+      concertDate: concert.date,
+      artists: [concert.headlinerNormalized],
+      venues: [concert.venueNormalized],
+      years: [concert.year],
+      // The record that did not exist yet is the right image for the post.
+      suggestedImage: {
+        type: "album",
+        artistNormalized: concert.headlinerNormalized,
+        albumName: defining.title,
+      },
+      suggestedTrack: { artistNormalized: concert.headlinerNormalized },
+      tags: ["#album-trajectory", "#before-the-breakthrough"],
+    });
+  }
+
+  return findings.sort(
+    (a, b) => (b.dataPoints.monthsAway as number) - (a.dataPoints.monthsAway as number)
+  );
+}
+
+// ── 19. Discography Crossref Detector ────────────────────────────────────────
+
+/**
+ * An artist seen across two or more distinct album cycles (#68).
+ *
+ * The angle is the COMEDY OF TIMING, not the fact of longevity — otherwise this
+ * is `artist-longevity` with extra steps. "Six shows, six records" is the
+ * story; "forty years of Howard Jones" is already a post we've published.
+ *
+ * NOTE: this detector was unblocked by v3.5.0 and the deferral note in
+ * LINER_NOTES_PIPELINE.md went stale for two minor versions. It is scoped to
+ * ship DISABLED — see the dispatcher in analyze(), and spec §5f for why.
+ */
+export function detectDiscographyCrossref(
+  concerts: Concert[],
+  eras?: AlbumErasSlim
+): AnalysisFinding[] {
+  if (!eras) return [];
+  const findings: AnalysisFinding[] = [];
+
+  const nameOf = buildDisplayNames(concerts);
+  const slugForKey = new Map<string, string>();
+  for (const c of concerts) {
+    const era = eras.concerts[c.id];
+    if (era && !slugForKey.has(era.artistKey)) slugForKey.set(era.artistKey, c.headlinerNormalized);
+  }
+
+  for (const [artistKey, artist] of Object.entries(eras.artists)) {
+    if (artist.erasSeen.length < 2) continue;
+
+    const slug = slugForKey.get(artistKey);
+    if (!slug) continue;
+
+    const shows = concerts
+      .filter((c) => c.headlinerNormalized === slug)
+      .sort((a, b) => a.date.localeCompare(b.date));
+    if (shows.length < 2) continue;
+
+    const display = nameOf(slug) || artist.displayName;
+    const eraCount = artist.erasSeen.length;
+    const headline =
+      shows.length === eraCount
+        ? `${display}: ${shows.length} Shows, ${eraCount} Records`
+        : `${display} Across ${eraCount} Album Eras`;
+
+    findings.push({
+      id: `discography-crossref-${slug}`,
+      detector: "discography-crossref",
+      category: "cultural",
+      temporality: "evergreen",
+      headline,
+      dataPoints: {
+        artist: display,
+        showCount: shows.length,
+        eraCount,
+        eras: artist.erasSeen.map((e) => ({
+          album: e.title,
+          showCount: e.showCount,
+          dates: e.dates,
+        })),
+        firstShow: shows[0].date,
+        lastShow: shows[shows.length - 1].date,
+        spanYears: spanYears(shows[0].date, shows[shows.length - 1].date),
+        // Never the same set twice — the comedy this detector is actually about.
+        neverRepeated: shows.length === eraCount,
+        studioAlbumCount: artist.studioAlbumCount,
+      },
+      artists: [slug],
+      venues: [...new Set(shows.map((c) => c.venueNormalized))].slice(0, 3),
+      years: [...new Set(shows.map((c) => c.year))],
+      suggestedImage: { type: "artist", artistNormalized: slug },
+      suggestedTrack: { artistNormalized: slug },
+      tags: ["#discography-crossref", "#album-eras"],
+    });
+  }
+
+  return findings.sort(
+    (a, b) => (b.dataPoints.eraCount as number) - (a.dataPoints.eraCount as number)
+  );
 }
 
 export function analyze(
@@ -1454,10 +1777,24 @@ export function analyze(
     ...detectFestivalMegaBill(past),
     ...detectDroughtComeback(past, options.setlists),
     ...detectCityPulse(past),
-    ...detectAlbumContext(past),
+    ...detectAlbumContext(past, options.aliases, options.eras),
     ...detectGenreOutlier(past, options.artistsMetadata ?? {}),
     ...detectFullCircle(past, options.setlists, options.aliases),
     ...detectGuestBridge(past, options.setlists, options.aliases),
+    ...detectAlbumTrajectory(past, options.eras),
+    // detectDiscographyCrossref is DELIBERATELY NOT REGISTERED here.
+    //
+    // It has 3.5x the supply of album-trajectory and is the simpler build, so
+    // shipping it would be the safe engineering choice. But the feed's
+    // constraint is distinctiveness, not volume: its supply concentrates on
+    // Howard Jones, Tears For Fears, Brian Setzer and Social Distortion, who
+    // already hold 13 of 55 published posts. Enabling it now deepens the same
+    // well and fights rotation.
+    //
+    // Enablement is scheduled into v5.5 (#267 §5d) so ONE rotation judgement
+    // gets made with the full detector pool visible, after >= 2 publication
+    // cycles of album-trajectory. The function is exported and tested; flipping
+    // it on is a one-line change here.
   ];
 
   const findingsByDetector: Record<string, number> = {};

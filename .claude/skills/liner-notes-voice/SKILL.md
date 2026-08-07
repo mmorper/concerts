@@ -64,6 +64,9 @@ Cultural references add era flavor. Use the tiers strictly:
 - Artists, albums, genres, and dates **in concerts.json or enriched data**
 - Artist's top tracks (from `artists-top-tracks.json`)
 - Genre from `enriched data` ("they were part of the New Wave scene")
+- **Album release dates and titles present in `album-eras.json`** ✨ v5.4
+- **Where a show sat in an artist's arc** — the record they were touring, how
+  old it was, how many albums came before or after ✨ v5.4
 
 ### Tier 2 — Allowed with approximate framing
 - Well-known band breakups and reunions for major artists
@@ -76,7 +79,43 @@ Cultural references add era flavor. Use the tiers strictly:
 - Specific chart positions ("debuted at #4")
 - Sales figures ("15 million copies worldwide")
 - Unrelated cultural events ("same week Kurt Cobain died")
-- Specific dates not in the dataset ("released March 19, 1990")
+- Specific dates not in the dataset
+
+> ⚠️ **Changed in v5.4.** This list used to read *"Specific dates not in the
+> dataset (\"released March 19, 1990\")"*. Album release dates **are** now in
+> the dataset — `album-eras.json` carries them for every studio album by every
+> artist in the archive. For those albums the date is **Tier 1**: state it
+> plainly. The rule still bites for albums by artists we've never seen.
+
+### The defining-album citation ✨ v5.4
+
+A shape the tiers above don't cover, because it is evidence about **the
+listener** rather than a claim about the artist.
+
+`album-eras.json` records which album carries a plurality of an artist's
+still-streamed top tracks, with the counts (`topTrackCount` / `topTrackTotal`).
+That supports a statement about what endured in *my* listening. It does **not**
+support a critical verdict — the corpus has no notion of quality.
+
+**Cite the evidence. Never assert the judgment.**
+
+```
+✅ "Three of the five Depeche Mode songs I still reach for come from an album
+    that didn't exist that night"
+   (Tier 1 — grounded in topTrackCount/topTrackTotal, and a claim about MY
+    listening, which is the only claim the data can carry)
+
+✅ "The record most of what I still play came from was two years away"
+
+❌ "Violator was their masterpiece"
+   (Critical judgment — nothing in the data supports it)
+
+❌ "Violator was their most important album"
+   (Same problem, softer wording)
+
+❌ "Violator was their best-selling record"
+   (Tier 3 — sales figures, unchanged)
+```
 
 ### Examples
 
@@ -116,10 +155,40 @@ These phrases are banned. If you see them in generated prose, regenerate:
 | "a diverse range of" | Filler |
 | "over the years" (as opener) | Weak opening |
 | Any claim without a specific fact | Every sentence must earn its place |
+| "they never made another record" | **Perishable** — see below |
+| "their last album" | Perishable, unless pinned to a stated year |
+| "the peak of their career" | Unfalsifiable, and unsupported by the data |
+
+### Perishable claims ✨ v5.4
+
+Posts are permalinked, RSS-syndicated, and never revisited. A sentence that is
+true today and false next year does not age into being wrong — it *is* wrong,
+permanently, under a first-person byline.
+
+The line is about **which direction time runs**:
+
+| | |
+|---|---|
+| ✅ Facts about the future *relative to the show* | *"Violator was 20 months away."* True about June 1988 forever. |
+| ❌ Facts about the present | *"They never made another record."* True until the day it isn't. |
+
+The Roots and Blondie are both active bands sitting in our data with no
+album after their last show. Writing "nothing since" about either is a
+liability, not an observation. If a claim of that shape is unavoidable, pin it:
+*"the last album they'd released as of 2026."*
 
 ---
 
 ## Validation Checklist
+
+> ✅ **Automated since v5.4.** `scripts/liner-notes/voice-check.ts` runs these
+> as code after generation and before anything is written — a post that fails
+> an `error` rule is dropped from the run rather than published. This list had
+> been prose-only for four minor versions, and two defects reached generated
+> output that a human had already read past.
+>
+> The checker is not a substitute for reading the prose; it catches the rules
+> that are mechanically checkable, which is most of the ones below.
 
 Before accepting generated prose, verify:
 
@@ -131,6 +200,8 @@ Before accepting generated prose, verify:
 - [ ] No banned phrases
 - [ ] Ends with a human moment (not a dry restatement of facts)
 - [ ] 40–500 words total
+- [ ] **No claim that could become false without the post changing** ✨ v5.4
+- [ ] **Album facts cite the data, not a critical verdict** ✨ v5.4
 
 ---
 
@@ -152,4 +223,4 @@ Full voice and generation spec: `docs/specs/future/agentic-liner-notes-v3.md`
 - System prompt design: "Story Generator — Agentic Prose Layer"
 - Cultural context tiers: "Cultural Context Correlation (Era Flavor)"
 
-**Last Updated:** 2026-03-08
+**Last Updated:** 2026-08-07

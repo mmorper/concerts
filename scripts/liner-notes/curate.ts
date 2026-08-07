@@ -35,6 +35,10 @@ export interface CurateOptions {
     tracks: Array<{ name: string; albumName?: string; albumArt?: string; previewUrl?: string; streamingUrl?: string; durationMs?: number }>;
   }>;
   venuesMetadata: Record<string, { name?: string; photoUrls?: string[] | { thumbnail?: string; medium?: string; large?: string }; manualPhotos?: string[] }>;
+  /** album-eras.json (#273) — preferred source for album art. Optional. */
+  albumEras?: {
+    artists: Record<string, { studioAlbums: Array<{ mbid: string; title: string; coverAvailable: boolean }> }>;
+  };
   /**
    * Concert dates that actually have songs on record, from setlists-cache.json.
    * A `?show=` link to a night with no setlist opens an empty panel, so the link

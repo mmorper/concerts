@@ -1,5 +1,6 @@
 import type { ArtistAliasData } from "./aliases.js";
 import type {
+  AlbumEras,
   ArtistsMetadata,
   ArtistsTopTracks,
   ConcertData,
@@ -53,8 +54,15 @@ export async function cachedJsonFetch<T>(
 
 // ---------- Data file registry ----------
 // Spec §"Data Flow". LOAD = eager (warmed on cold start, ~215K total). LAZY = fetched
-// on first tool use that needs them. SKIP files (geocode, venue-photos, liner-notes,
-// discography) are intentionally absent — not useful for a text-based MCP.
+// on first tool use that needs them.
+//
+// SKIP files (geocode, venue-photos, liner-notes, discography) are intentionally
+// absent. For discography.json specifically that judgment still holds and got
+// sharper in v5.4: 4.6 MB, 11,359 releases, 3,887 of them singles, median 38 per
+// artist. Enumerating an artist's catalogue is a commodity every other service
+// does better. What ships instead is album-eras.json — the *join* against 40
+// years of attendance, which is the only thing here nobody else has.
+// See docs/specs/future/global-discography-trajectory.md §"Ship the join, not the catalogue".
 
 const LOAD_FILES = [
   "concerts.json",
@@ -67,6 +75,7 @@ const LAZY_FILES = [
   "setlists-cache.json",
   "artists-top-tracks.json",
   "most-played-songs.json",
+  "album-eras.json",
 ] as const;
 
 function dataUrl(env: Env, file: string): string {
@@ -138,6 +147,13 @@ export function getArtistsTopTracks(
     dataUrl(env, "artists-top-tracks.json"),
     ctx,
   );
+}
+
+export function getAlbumEras(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<AlbumEras | null> {
+  return cachedJsonFetch<AlbumEras>(dataUrl(env, "album-eras.json"), ctx);
 }
 
 export function getMostPlayedSongs(

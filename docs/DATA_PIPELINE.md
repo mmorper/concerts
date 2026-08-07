@@ -915,6 +915,7 @@ See [docs/specs/future/artists-discography.md](specs/future/artists-discography.
 5. **Enrich venue metadata** → Google Places API (optional)
 6. **Enrich audio preview data** → iTunes/Apple Music (primary), Deezer (fallback) (optional)
 7. **Enrich discography** → MusicBrainz albums (optional)
+7.5. **Derive album eras** → `album-eras.json`, the discography × attendance join (local, no API calls)
 8. **Pre-fetch setlists** → setlist.fm cache (optional)
 9. **Aggregate genres timeline** → Genre statistics (always runs)
 10. **Generate facts** → Liner notes facts (always runs)
@@ -933,6 +934,7 @@ See [docs/specs/future/artists-discography.md](specs/future/artists-discography.
 | `--skip-venues` | Skip venue enrichment | Saving API quota/cost |
 | `--skip-tracks` | Skip audio preview enrichment (iTunes/Deezer) | Faster builds, no track data needed |
 | `--skip-discography` | Skip discography enrichment | Faster builds, no MusicBrainz needed |
+| `--skip-album-eras` | Skip album-era derivation | Rarely needed — it's local and fast |
 | `--skip-setlists` | Skip setlist pre-fetch | No setlist.fm API key |
 | `--skip-spotify` | Skip legacy Spotify enrichment (deprecated) | Should always be skipped (no longer used) |
 | `--force-refresh-setlists` | Re-fetch all setlists | Updating existing setlists |

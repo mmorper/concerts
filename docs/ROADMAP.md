@@ -142,6 +142,28 @@ Click-to-filter year cards, animated genre treemap with timeline slider, mobile-
 
 ## Short-Term Roadmap
 
+### Discography Trajectory (v5.4.0)
+
+**Status**: Planned
+**Spec**: [global-discography-trajectory.md](specs/future/global-discography-trajectory.md)
+
+Joins the 11,359-release discography against 40 years of attendance to answer where an artist stood in their career on the night I saw them — and what hadn't happened yet. Ships a shared album-title normalizer, a derived `album-eras.json`, a `get_career_position` MCP tool, and the first liner notes detector where the narrator doesn't know the ending.
+
+**Supersedes**: #5 (Artist Discography UI Panel). **Unblocks**: `discography-crossref` in #68.
+
+---
+
+### Setlist Song → Album Attribution (v5.5.0)
+
+**Status**: Planned
+**Spec**: [global-setlist-album-attribution.md](specs/future/global-setlist-album-attribution.md)
+
+Joins 2,731 setlist song performances to the discography at zero incremental API cost — per-album indexing rather than per-song search, with a free iTunes Search fallback. Unlocks "I heard that song before its album existed" and "the album I've witnessed most," and is where `discography-crossref` gets enabled.
+
+**Depends on**: Discography Trajectory (v5.4.0) — consumes its `album-title.ts` matcher.
+
+---
+
 ### How It Works — Interactive Thumbnails (#88)
 
 **Status**: Planned
@@ -195,6 +217,8 @@ Add page structure and H1/H2 hierarchy documentation to `llm.txt` to help AI ass
 
 Four pattern detectors scoped but deferred during v4.4.x: `genreOutlier` (statistical genre anomalies), `doubleHeader` (same-venue multi-artist nights), `discographyCrossref` (albums released around concert dates), `temporalPattern` (multi-decade return patterns). Some require improved genre data (#69) first.
 
+`discographyCrossref` is **no longer blocked** — its stated dependency (structured album release dates) shipped in v3.5.0 as `discography.json`. It is scoped for delivery in [Discography Trajectory](specs/future/global-discography-trajectory.md); `genreOutlier` has since shipped.
+
 ---
 
 ### Audio Preview in Setlist Items (#22)
@@ -208,10 +232,12 @@ Clickable song previews directly in the setlist panel. Users open a concert setl
 
 ### Artist Discography UI Panel (#5)
 
-**Status**: Planned (data pipeline completed in v3.5.0)
+**Status**: Superseded — see [Discography Trajectory](specs/future/global-discography-trajectory.md)
 **Spec**: [artists-discography.md](specs/future/artists-discography.md)
 
 Visual discography panel in Artist Scene gatefold showing album covers and release timeline. Data already available in `discography.json` (15k+ albums).
+
+**Why superseded**: a cover grid renders the catalogue, not the join — the same discography anyone can find elsewhere. The surface this data argues for is an album-era timeline (releases as a spine, concerts as marks along it), which reads at archive scale rather than per-artist. Retained here for the layout notes; revisit after Discography Trajectory ships.
 
 **Key Features**:
 

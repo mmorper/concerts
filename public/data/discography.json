@@ -56600,23 +56600,292 @@
   "the-go-go-s": {
     "artistName": "The Go-Go's",
     "normalizedName": "the-go-go-s",
-    "mbid": "dae9c45a-6f2f-4ab0-ac49-4147568a89cf",
-    "albumCount": 1,
+    "mbid": "eec163e4-a013-4af0-9641-c5b2df41fff7",
+    "albumCount": 24,
     "albums": [
       {
-        "id": "8be4a18c-1389-47fe-9a56-57e0ddcfaac5",
-        "title": "Swim With The Go-Go's",
-        "releaseDate": "1964",
-        "year": 1964,
+        "id": "b2275813-50bb-42b6-bdc0-7b8806026384",
+        "title": "Live in Japan '82 (live)",
+        "releaseDate": "2021-08-20",
+        "year": 2021,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/b2275813-50bb-42b6-bdc0-7b8806026384/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "47ceca2c-f262-432f-83c8-f21bd6bf1b6d",
+        "title": "Club Zero",
+        "releaseDate": "2020-07-31",
+        "year": 2020,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/47ceca2c-f262-432f-83c8-f21bd6bf1b6d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "cec310ac-4a12-4741-ad02-16f80e737e63",
+        "title": "Automatic (live)",
+        "releaseDate": "2019-08-14",
+        "year": 2019,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/cec310ac-4a12-4741-ad02-16f80e737e63/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "4eb398e5-45c6-46d7-a7c3-2daffc3e0e87",
+        "title": "The Go-Go's - Live Radio Broadcast",
+        "releaseDate": "2019-05-15",
+        "year": 2019,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/4eb398e5-45c6-46d7-a7c3-2daffc3e0e87/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "d23bc3e1-d951-4bb8-848c-4af4eef2a46d",
+        "title": "Greatest Hits, At Emerald City, Cherry Hill, Nj - 31 Aug '81 (Live)",
+        "releaseDate": "2016-09-23",
+        "year": 2016,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/d23bc3e1-d951-4bb8-848c-4af4eef2a46d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "3e2ea2c0-c028-415b-a1d1-4b0adcc74578",
+        "title": "We Got the Beat (karaoke version)",
+        "releaseDate": "2010-01-01",
+        "year": 2010,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/3e2ea2c0-c028-415b-a1d1-4b0adcc74578/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "55a025c8-ef1f-4d3a-99e8-028ed4210bd8",
+        "title": "Live in Central Park",
+        "releaseDate": "2001-12-11",
+        "year": 2001,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/55a025c8-ef1f-4d3a-99e8-028ed4210bd8/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "cdab00e0-313e-31ce-ac6e-56398a5eb7f7",
+        "title": "God Bless the Go‐Go’s",
+        "releaseDate": "2001-05-15",
+        "year": 2001,
         "primaryType": "Album",
         "secondaryTypes": [],
         "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/8be4a18c-1389-47fe-9a56-57e0ddcfaac5/front-500.jpg",
+        "coverUrl": "https://coverartarchive.org/release-group/cdab00e0-313e-31ce-ac6e-56398a5eb7f7/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "28307f6c-22cd-46dd-8b10-5ec116db6478",
+        "title": "Unforgiven",
+        "releaseDate": "2001",
+        "year": 2001,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/28307f6c-22cd-46dd-8b10-5ec116db6478/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "4f7eab02-6293-3920-a4a3-e655d10077b3",
+        "title": "VH1 Behind the Music: Go-Go’s Collection",
+        "releaseDate": "2000",
+        "year": 2000,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/4f7eab02-6293-3920-a4a3-e655d10077b3/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "b0e8aff9-eab9-31d8-92ec-932789ce35ef",
+        "title": "Return to the Valley of the Go‐Go’s",
+        "releaseDate": "1994-10-18",
+        "year": 1994,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/b0e8aff9-eab9-31d8-92ec-932789ce35ef/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "3444ab07-1078-44bd-bc2a-61028c4cf92c",
+        "title": "Good Girl",
+        "releaseDate": "1994",
+        "year": 1994,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/3444ab07-1078-44bd-bc2a-61028c4cf92c/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "c6a85349-caae-45bd-87a6-32937de190ce",
+        "title": "The Whole World Lost Its Head",
+        "releaseDate": "1994",
+        "year": 1994,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/c6a85349-caae-45bd-87a6-32937de190ce/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "7941419d-5486-3929-b109-ad6f591a9c3f",
+        "title": "Greatest",
+        "releaseDate": "1990-10-05",
+        "year": 1990,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/7941419d-5486-3929-b109-ad6f591a9c3f/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "b7d5a38e-25c2-43d0-b5be-5d8619e849da",
+        "title": "Cool Jerk",
+        "releaseDate": "1990-10-05",
+        "year": 1990,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/b7d5a38e-25c2-43d0-b5be-5d8619e849da/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "920f86b1-7fc5-4616-8801-df3082fb68e2",
+        "title": "Go-Go's",
+        "releaseDate": "1988",
+        "year": 1988,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/920f86b1-7fc5-4616-8801-df3082fb68e2/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "32903259-f9ee-4ca0-8877-662e7c219976",
+        "title": "Head Over Heels / Good for Gone",
+        "releaseDate": "1984",
+        "year": 1984,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/32903259-f9ee-4ca0-8877-662e7c219976/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "fddd435a-4f4a-3b25-ae67-0f059e5183d7",
+        "title": "Talk Show",
+        "releaseDate": "1984",
+        "year": 1984,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/fddd435a-4f4a-3b25-ae67-0f059e5183d7/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "80b7f073-4c8f-3003-9d77-94167f795b3e",
+        "title": "Vacation",
+        "releaseDate": "1982-08-11",
+        "year": 1982,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/80b7f073-4c8f-3003-9d77-94167f795b3e/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "66103e28-90c5-4747-948b-27a61c130cc2",
+        "title": "Vacation / Casablanca",
+        "releaseDate": "1982",
+        "year": 1982,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/66103e28-90c5-4747-948b-27a61c130cc2/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "933cd7e1-e225-43f3-b635-3b5e5f84f103",
+        "title": "Vacation",
+        "releaseDate": "1982",
+        "year": 1982,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/933cd7e1-e225-43f3-b635-3b5e5f84f103/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "8b64edc9-1a59-3840-8b12-85a4e19cf48a",
+        "title": "Beauty and the Beat",
+        "releaseDate": "1981-07",
+        "year": 1981,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/8b64edc9-1a59-3840-8b12-85a4e19cf48a/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "fb70fa1a-13de-4fef-b5b6-d05dd74d3837",
+        "title": "Our Lips Are Sealed",
+        "releaseDate": "1981",
+        "year": 1981,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/fb70fa1a-13de-4fef-b5b6-d05dd74d3837/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "f6cd4475-82a2-36c7-917f-e5b05aaad45e",
+        "title": "We Got the Beat",
+        "releaseDate": "1980",
+        "year": 1980,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/f6cd4475-82a2-36c7-917f-e5b05aaad45e/front-500.jpg",
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-05-12T14:45:44.856Z",
-    "cachedAt": "2026-05-12T14:45:44.856Z"
+    "fetchedAt": "2026-08-07T15:45:30.610Z",
+    "cachedAt": "2026-08-07T15:45:30.611Z"
   },
   "the-head-and-the-heart": {
     "artistName": "The Head and the Heart",

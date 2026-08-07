@@ -489,7 +489,7 @@ artifacts and a re-import that renumbers rows would break every shared link.
 ### Superseded
 
 - **`/?scene=artists&artist={name}&tab=setlists`** — sketched in v1.1 as "setlist deep linking".
-  Superseded by [`&show={date}`](#setlist-deep-links-scene-5) in v1.2. A `tab` selector identifies
+  Superseded by [`&show={date}`](#setlist-deep-links-scene-5) in v1.3. A `tab` selector identifies
   *which panel*, not *which show*, so it cannot express a link to one night's setlist.
 
 ### Already implemented (moved out of this section in v1.2)
@@ -518,3 +518,26 @@ promising a filtered view the visitor never sees. Tracked separately.
 ---
 
 **Questions?** See the [main project documentation](./STATUS.md) or review [implementation specs](./specs/implemented/).
+
+## Reserved: album deep links (v1.3, not yet emitted)
+
+```
+/?scene=artists&artist={artistSlug}&album={albumSlug}
+```
+
+**Reserved, not live.** Nothing emits this today and no route resolves it — a link
+to a route that does not exist is a broken link, so `buildDeepLinks` deliberately
+does not produce album entries.
+
+It is documented now because `album-eras.json` and every `album-trajectory`
+finding already carry the album identity (`mbid`, and a slug derived via
+`normalizeAlbumName`) needed to construct it. Published liner notes freeze their
+`deepLinks` array at generation time, so identity had to ride along *before* the
+route existed — otherwise adding album links later would mean regenerating posts
+and breaking permalinks.
+
+`albumDeepLink()` exists in `src/utils/deepLinks.ts` marked unused. Build the URL
+with it rather than by hand when the route lands, per the project convention that
+deep links are never hand-built.
+
+See `docs/specs/future/global-discography-trajectory.md` §Part 7.

@@ -16,6 +16,7 @@
  * See: https://github.com/mmorper/concerts/issues/252
  */
 
+import { normalizeAlbumTitle } from "../utils/album-title.ts";
 import type { PostImage } from "../../src/types/liner-notes.ts";
 
 export const VENUE_PHOTO_PLACEHOLDER = "/images/venues/fallback.jpg";
@@ -31,6 +32,14 @@ export const VENUE_PHOTO_PLACEHOLDER = "/images/venues/fallback.jpg";
  */
 export const PLACEHOLDER_IMAGE_URL = "/images/venues/fallback-active.jpg";
 
+/**
+ * Cover Art Archive URL for a release-group. Deterministic from the MBID —
+ * verified across all 11,382 covers in discography.json, zero exceptions.
+ */
+export function coverArtUrl(mbid: string): string {
+  return `https://coverartarchive.org/release-group/${mbid}/front-500.jpg`;
+}
+
 export interface ImageSources {
   artistsMetadata: Record<string, { name?: string; image?: string }>;
   artistsTopTracks: Record<
@@ -45,6 +54,13 @@ export interface ImageSources {
       manualPhotos?: string[];
     }
   >;
+  /** album-eras.json (#273). Absent → album art falls back to iTunes as before. */
+  albumEras?: {
+    artists: Record<
+      string,
+      { studioAlbums: Array<{ mbid: string; title: string; coverAvailable: boolean }> }
+    >;
+  };
 }
 
 /**
@@ -79,17 +95,46 @@ export function getVenueImageUrl(
   return venue.manualPhotos?.find(isRealVenuePhoto);
 }
 
+/**
+ * Album art for a named album, preferring the real record over a store listing.
+ *
+ * Fallback chain (#273):
+ *   1. Cover Art Archive via album-eras.json — the actual release-group cover
+ *   2. iTunes top-track art, matched on normalized title
+ *   3. any iTunes art for the artist
+ *
+ * Tier 1 exists because iTunes returns store editions: posts were carrying
+ * covers captioned "Garbage (20th Anniversary Edition) [2015 Remaster]" when
+ * the subject was the 1995 album. `SuggestedImage.type: "album"` has been in
+ * the types since v4.4 with only tier 2 wired behind it — a socket with
+ * nothing good plugged into it.
+ */
 export function getAlbumArt(
   artistSlug: string,
   albumName: string | undefined,
   sources: ImageSources
 ): string | undefined {
+  if (albumName) {
+    const spine = sources.albumEras?.artists[artistSlug]?.studioAlbums;
+    if (spine?.length) {
+      const wanted = normalizeAlbumTitle(albumName);
+      const hit = spine.find((a) => a.coverAvailable && normalizeAlbumTitle(a.title) === wanted);
+      if (hit) return coverArtUrl(hit.mbid);
+    }
+  }
+
   const tracks = sources.artistsTopTracks[artistSlug]?.tracks;
   if (!tracks?.length) return undefined;
+
   if (albumName) {
-    const match = tracks.find((t) => t.albumName === albumName && t.albumArt);
+    // Normalized rather than exact (#268): iTunes says "Violator (Deluxe)".
+    const wanted = normalizeAlbumTitle(albumName);
+    const match = tracks.find(
+      (t) => t.albumName && normalizeAlbumTitle(t.albumName) === wanted && t.albumArt
+    );
     if (match?.albumArt) return match.albumArt;
   }
+
   return tracks.find((t) => t.albumArt)?.albumArt;
 }
 
