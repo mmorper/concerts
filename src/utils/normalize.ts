@@ -86,3 +86,31 @@ export function normalizeGenreName(name: string): string {
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '')
 }
+
+/**
+ * Normalize album title to a consistent URL-friendly format
+ *
+ * ✨ NEW in v5.4.0 — used by album-eras.json to satisfy the reserved album
+ * deep-link grammar (`?scene=artists&artist={slug}&album={slug}`, DEEP_LINKING.md v1.3).
+ *
+ * NOTE: this is for SLUG GENERATION. Cross-file album title *matching* is a
+ * different problem with different rules — see scripts/utils/album-title.ts,
+ * which normalizes for comparison only and never produces a stored value.
+ *
+ * @example
+ * normalizeAlbumName("Violator") // => "violator"
+ * normalizeAlbumName("Speak & Spell") // => "speak-spell"
+ * normalizeAlbumName("Music for the Masses") // => "music-for-the-masses"
+ *
+ * @param name - The album title to normalize
+ * @returns Normalized album slug
+ */
+export function normalizeAlbumName(name: string): string {
+  return name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')  // fold diacritics so slugs stay ASCII
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+}

@@ -27,6 +27,7 @@ const exec = promisify(execCallback)
  *   --skip-venues             Skip venue metadata enrichment (Google Places)
  *   --skip-spotify            Skip Spotify metadata enrichment
  *   --skip-discography        Skip discography enrichment (MusicBrainz)
+ *   --skip-album-eras         Skip album-era derivation (local, no API calls)
  *   --skip-tracks             Skip top tracks enrichment (iTunes/Deezer)
  *   --skip-setlists           Skip setlist pre-fetch (setlist.fm)
  *   --force-refresh-setlists  Re-fetch all setlists (ignore cache)
@@ -38,6 +39,7 @@ async function buildData() {
   const skipVenues = process.argv.includes('--skip-venues')
   const skipSpotify = process.argv.includes('--skip-spotify')
   const skipDiscography = process.argv.includes('--skip-discography')
+  const skipAlbumEras = process.argv.includes('--skip-album-eras')
   const skipTracks = process.argv.includes('--skip-tracks')
   const skipSetlists = process.argv.includes('--skip-setlists')
   const forceRefreshSetlists = process.argv.includes('--force-refresh-setlists')
@@ -53,6 +55,7 @@ async function buildData() {
     { name: 'Enrich venue metadata', active: !skipVenues },
     { name: 'Enrich Spotify data', active: !skipSpotify },
     { name: 'Enrich discography', active: !skipDiscography },
+    { name: 'Derive album eras', active: !skipAlbumEras },
     { name: 'Pre-fetch setlists', active: !skipSetlists },
     { name: 'Aggregate genres timeline', active: true },
     { name: 'Aggregate most-played songs', active: true },
@@ -197,6 +200,25 @@ async function buildData() {
       console.log('⏭️  Skipping discography enrichment (--skip-discography flag set)\n')
     }
 
+    // Step 7.5: Derive album eras — the discography x attendance join.
+    //
+    // Purely local: reads discography.json, concerts.json and
+    // artists-top-tracks.json, makes no API calls, and is safe to re-run. Must
+    // follow discography enrichment, and must precede liner-notes generation
+    // (three detectors read album-eras.json).
+    if (!skipAlbumEras) {
+      currentStep++
+      console.log('=' .repeat(60))
+      console.log(`Step ${currentStep}/${activeSteps}: Deriving album eras`)
+      console.log('-'.repeat(60))
+
+      const { deriveAlbumErasFile } = await import('./derive-album-eras.ts')
+      await deriveAlbumErasFile()
+      console.log()
+    } else {
+      console.log('⏭️  Skipping album-era derivation (--skip-album-eras flag set)\n')
+    }
+
     // Step 8: Pre-fetch setlists (optional)
     if (!skipSetlists) {
       currentStep++
@@ -302,6 +324,7 @@ async function buildData() {
       if (!skipTracks) console.log('   - public/data/artists-top-tracks.json')
       if (!skipVenues) console.log('   - public/data/venues-metadata.json')
       if (!skipDiscography) console.log('   - public/data/discography.json')
+      if (!skipAlbumEras) console.log('   - public/data/album-eras.json')
       if (!skipSetlists) console.log('   - public/data/setlists-cache.json')
       console.log('   - public/data/most-played-songs.json')
       console.log('   - public/data/facts.json')
