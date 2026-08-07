@@ -87,6 +87,14 @@ describe('enrich-artists.ts', () => {
     process.env.THEAUDIODB_API_KEY = '2'
     process.env.LASTFM_API_KEY = 'test-lastfm-key'
 
+    // Stub fetch so the image liveness sweep (#264) stays offline. Without this
+    // the suite HEADs whatever placeholder URL a fixture happens to carry, and a
+    // 404 from example.com reads as a dead image and forces a re-fetch.
+    // "Healthy" is the right default here — these cases are about the cache
+    // rules, not about image rot; the rot cases live in
+    // enrich-artists-image-validation.test.ts.
+    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, status: 200 }) as Response))
+
     // Clear all mocks
     vi.clearAllMocks()
   })
@@ -98,6 +106,7 @@ describe('enrich-artists.ts', () => {
     console.log = originalLog
     console.warn = originalWarn
     console.error = originalError
+    vi.unstubAllGlobals()
   })
 
   describe('File Existence', () => {
