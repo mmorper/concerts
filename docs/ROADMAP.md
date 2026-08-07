@@ -1,17 +1,29 @@
 # Roadmap
 
-## Current State (v5.1.0)
+## Current State (v5.4.0)
 
 - **184 concerts** spanning 1984-2026
 - **258 artists** (including openers) with 100% imagery coverage
 - **79 unique venues** across 35 cities
+- **11,359 releases** joined against attendance — 178 shows carry album-cycle data
 - **5 interactive scenes**: Timeline, Venues, Geography, Genres, Artists
 - **Standalone pages**: /liner-notes, /whats-playing, /how-it-works, /about, /about-mcp, /dashboard
-- **Latest**: setlist deep linking — share one night, not just an artist
+- **Latest**: discography trajectory — where a band was in their career the night I saw them
 
 ---
 
 ## Recently Completed
+
+### ✅ Discography Trajectory (v5.4.0)
+
+**Status**: Released 2026-08-07 — [#278](https://github.com/mmorper/concerts/pull/278), epic [#266](https://github.com/mmorper/concerts/issues/266)
+**Spec**: [global-discography-trajectory.md](specs/future/global-discography-trajectory.md) (v1.3)
+
+Joins 11,359 releases against 40 years of attendance. For every show: the record being toured, how new it was, and what was still to come. Ships `album-eras.json`, the `get_career_position` MCP tool, the `album-trajectory` detector, and an executable voice checklist.
+
+**Supersedes** #5. **Unblocks** `discography-crossref` (#68), enabled in v5.5.
+
+---
 
 ### ✅ Setlist Deep Linking (v5.1.0)
 
@@ -141,17 +153,6 @@ Click-to-filter year cards, animated genre treemap with timeline slider, mobile-
 ---
 
 ## Short-Term Roadmap
-
-### Discography Trajectory (v5.4.0)
-
-**Status**: Merged, awaiting release — [#278](https://github.com/mmorper/concerts/pull/278), epic [#266](https://github.com/mmorper/concerts/issues/266)
-**Spec**: [global-discography-trajectory.md](specs/future/global-discography-trajectory.md)
-
-Joins the 11,359-release discography against 40 years of attendance to answer where an artist stood in their career on the night I saw them — and what hadn't happened yet. Ships a shared album-title normalizer, a derived `album-eras.json`, a `get_career_position` MCP tool, and the first liner notes detector where the narrator doesn't know the ending.
-
-**Supersedes**: #5 (Artist Discography UI Panel). **Unblocks**: `discography-crossref` in #68.
-
----
 
 ### Setlist Song → Album Attribution (v5.5.0)
 

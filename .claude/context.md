@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v5.3.0 (Production)
+**Version:** v5.4.0 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-08-07
 
@@ -106,7 +106,7 @@ docs/
 
 **Live Site:** https://concerts.morperhaus.org
 
-**v5.3.0 Production (Latest — 2026-08-06):**
+**v5.4.0 Production (Latest — 2026-08-07):**
 
 - ✅ Artist billing-alias map consumed by the Artist scene and the MCP — `sameAct` collapses billings, `sharesMember` deliberately does not (#227)
 - ✅ Two setlist-native detectors, `full-circle` and `guest-bridge`; song joins added to five existing detectors (#228/#229/#230)
@@ -116,6 +116,7 @@ docs/
 
 **Recent Releases:**
 
+- **v5.4.0** (2026-08-07): Discography trajectory — `album-eras.json` joins 11,359 releases against attendance; `get_career_position` MCP tool + `cycleBucket` search; `album-trajectory` detector; `album-context` repaired 17→24; voice checklist made executable (epic #266, PR #278)
 - **v5.3.0** (2026-08-06): Artist billing aliases in the mosaic and MCP (#227); `full-circle` + `guest-bridge` detectors and song joins across five more (#228/#229/#230); image-rot fixes with validation at the source and orphan pruning (#252/#255/#259/#256); meta-injector auto-deploy completes Worker automation (#262)
 - **v5.2.0** (2026-08-05): Liner notes selection rewritten to detector rotation — all 15 detectors publish, first repeat at post 16 (#226/#231); setlist deep links wired for the first time, 20 posts (#198/#239); geographic-chapter region mapping (#232); milestone-marker scoring + concert-streak window (#233); dangling relatedSlugs + venue image chain (#234/#235)
 - **v5.1.0** (2026-08-04): Setlist deep linking (`&show=`) across six surfaces (#195); root CI gate (#116); three pipeline/SEO suites repaired (#207); share implementations consolidated (#204)
@@ -146,9 +147,9 @@ All three windows complete (#268–#274). Full suites green.
 | `discography-crossref` | Implemented, tested, **deliberately not registered** — enable in v5.5 |
 | `scripts/liner-notes/voice-check.ts` | The voice checklist as code; errors drop a post from the run |
 
-**Shipped, NOT released.** Production runs this code under the v5.3.0 label — the Workers auto-deployed on merge, but there is no version bump or changelog entry yet. `/release` still owes: version bump, changelog, meta-injector manual deploy, and the v5.5 drift reconciliation.
+**Released 2026-08-07** as v5.4.0 (`a3abfe7`, tag `v5.4.0`). Pages + all three auto-deploying Workers green; verified live via a `tools/call` against `concerts.morperhaus.org/mcp`.
 
-⚠️ **The liner-notes cron (Mondays 08:00 UTC) publishes independently of `/release`.** The first `album-trajectory` post and the first real run of the voice gate will happen on schedule whether or not a release has been cut. The gate drops posts on error rather than publishing them, so the failure mode is conservative — but it has never run outside a manual invocation.
+⚠️ **The liner-notes cron (Mondays 08:00 UTC) runs independently of `/release`.** The first `album-trajectory` post and the first real run of the voice gate happen on schedule. The gate drops posts on error rather than publishing them, so the failure mode is conservative — but it has never run outside a manual invocation. **Check the feed Monday afternoon.**
 
 **Follow-on:** [#267](https://github.com/mmorper/concerts/issues/267) v5.5 setlist song → album attribution (spec written, **provisional** until v5.4 ships). [#275](https://github.com/mmorper/concerts/issues/275) iTunes wrong-artist bug — fixing it raises the match rate for free.
 
@@ -243,4 +244,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-08-07 by Claude Code — v5.4.0 Discography Trajectory implementation*
+*Last updated: 2026-08-07 by Claude Code — v5.4.0 released*

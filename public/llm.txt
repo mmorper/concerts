@@ -49,7 +49,7 @@ attended," never as "doesn't exist."
 - Artist setlists (via setlist.fm API)
 - Concert dates and lineups (cross-referenced with concertarchives.org)
 - Genre taxonomy (primary/subgenres)
-- Artist discographies (via MusicBrainz API - 11,359+ albums)
+- Artist discographies (via MusicBrainz API - 11,382+ albums)
 
 **Important:** This is ONE person's concert history, not a comprehensive database of all concerts by these artists.
 
@@ -513,6 +513,8 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 
 ---
 
+---
+
 ## Pre-Computed Statistics
 
 These facts are updated with each data refresh and can be quoted directly:
@@ -624,7 +626,7 @@ Answer: List of albums with release dates, types, track counts
 - **setlist.fm API** - Fetch setlists for attended concerts
 - **Ticketmaster API** - Venue photos and upcoming tour dates
 - **TheAudioDB** - Artist photos and biographies
-- **MusicBrainz API** - Artist discographies (11,359+ albums)
+- **MusicBrainz API** - Artist discographies (11,382+ albums)
 
 ### Navigation
 - Snap-scroll between full-viewport scenes
@@ -725,6 +727,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-08-06
-**Version:** v5.3.0
-**Total Content:** 184 concerts | 257 artists | 79 venues | 11,359+ albums | 1984-2026
+**Last Updated:** 2026-08-07
+**Version:** v5.4.0
+**Total Content:** 184 concerts | 257 artists | 79 venues | 11,382+ albums | 1984-2026

@@ -5,7 +5,7 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>New features, updates, and statistics for the Morperhaus Concert Archives</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 06 Aug 2026 23:39:31 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 07 Aug 2026 23:05:17 GMT</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://concerts.morperhaus.org/og-image.jpg</url>
@@ -20,6 +20,24 @@
       <pubDate>Mon, 03 Aug 2026 10:46:27 GMT</pubDate>
       <category>Statistics</category>
       <description><![CDATA[<h3>Archive Statistics</h3><h4>Artists</h4><ul><li><strong>Social Distortion: 8 concerts</strong> — The most-seen live act, 1990–2024</li><li><strong>Howard Jones: 6 concerts</strong> — Another favorite who keeps drawing me back</li><li><strong>Depeche Mode: 5 concerts</strong> — Rounding out the top three most-seen</li></ul><h4>Venues</h4><ul><li><strong>Pacific Amphitheatre: 17 shows</strong> — A favorite spot, visited 1985–2026</li><li><strong>Irvine Meadows: 16 shows</strong> — Another venue with great memories</li><li><strong>79 unique venues</strong> — From clubs to arenas and amphitheaters</li></ul><h4>Timeline</h4><ul><li><strong>184 concerts since 1984</strong> — 43 years of live music memories</li><li><strong>First show: Adam Ant (1984)</strong> — Where it all began — Irvine Meadows</li><li><strong>Latest: Pinhead Gunpowder (2026)</strong> — The most recent addition — Garden Amp</li><li><strong>2022: 14 shows</strong> — The peak year for live music attendance</li><li><strong>2010s: 65 shows</strong> — The golden era of concert-going</li></ul><h4>Genres</h4><ul><li><strong>New Wave: 49 shows</strong> — The dominant sound in this collection</li><li><strong>Punk: 15 shows</strong> — Another genre that shaped the journey</li></ul><h4>Geography</h4><ul><li><strong>California: 122 concerts</strong> — Home base for most concert experiences</li><li><strong>36 cities visited</strong> — Live music across the map</li></ul><p><a href="https://concerts.morperhaus.org/liner-notes">View all statistics</a></p>]]></description>
+    </item>
+
+    <item>
+      <title>Twenty Months Before Violator - v5.4.0</title>
+      <link>https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v5.4.0</guid>
+      <pubDate>Fri, 07 Aug 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>I sat in the Rose Bowl in June 1988 watching Depeche Mode, and Violator was still twenty months away. Nine more albums after that. Three of the five Depeche Mode songs I still reach for come from a record that didn&apos;t exist that night — and I had no idea. The archive can see that now. For every show, it knows which album the band was touring, how new it was, and what hadn&apos;t happened yet. It&apos;s the first thing here that knows something I didn&apos;t at the time.</p><ul><li>Every show now knows the record it sat inside — and the ones that were still to come</li><li>A new kind of story: the night I saw a band before the album they&apos;d be remembered for existed</li><li>Ask the archive where a band was in their career on any given night, or which shows I caught on a brand-new record</li><li>Ten artists whose albums the archive couldn&apos;t find are reunited with them — including The Go-Go&apos;s, filed under a stranger&apos;s name for years</li><li>Album covers now come from the record itself rather than a store listing</li></ul>]]></description>
+    </item>
+
+    <item>
+      <title>One Man, Four Marquees - v5.3.0</title>
+      <link>https://concerts.morperhaus.org/?scene=artists&artist=brian-setzer</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v5.3.0</guid>
+      <pubDate>Thu, 06 Aug 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>Brian Setzer has played here seven times since 1995 — as Brian Setzer, as the Brian Setzer Orchestra, as Brian Setzer and the Nashvillians, and once as a &apos;68 Comeback Special. The archive had him down as four different artists. It knows better now, and the same goes for anyone else who has changed how they&apos;re billed. It also learned to read setlists properly, so it can spot a song coming back years later or someone walking on stage who was never on the ticket. And a few photographs that had quietly stopped loading are back where they belong.</p><ul><li>One artist, however they were billed — seven Brian Setzer shows across four marquees, 1995 to 2024, are one man again</li><li>Bands who merely share a member stay apart — Oingo Boingo and Danny Elfman are two acts, and Elfman playing Boingo songs 35 years on is a story precisely because of that</li><li>Two new kinds of story it can tell: a song that finds its way back years later, and a guest who walked on unbilled</li><li>Five of the existing story types now know what was actually played that night, not just who was on the bill</li><li>Photographs that had quietly stopped loading are back — a venue picture had been pulled at the source and nothing noticed for a month</li><li>The archive now checks its own pictures every week rather than assuming they still work, and stops advertising artists it no longer has</li></ul>]]></description>
     </item>
 
     <item>
