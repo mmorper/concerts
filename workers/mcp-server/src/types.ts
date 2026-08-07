@@ -198,3 +198,75 @@ export interface QueryUsageRecord {
 
 export const QUERY_DAILY_TOKEN_CAP = 250_000;
 export const QUERY_DAILY_CALL_CAP = 8;
+
+// ---------- album-eras.json (v5.4, #270) ----------
+// The discography x attendance join. Derived at build time by
+// scripts/derive-album-eras.ts; see docs/specs/future/global-discography-trajectory.md.
+//
+// Nothing derivable is stored: cover URLs are a pure function of `mbid`
+// (coverArtUrl below) and slugs of `title`. Album refs are normalized too — an
+// artist's studio spine lives once on ArtistEra.studioAlbums, and a concert's
+// "albums still to come" is `studioAlbums.slice(albumsBefore)`, not a copy.
+
+export interface AlbumRef {
+  mbid: string;
+  title: string;
+  releaseDate: string;
+  coverAvailable: boolean;
+}
+
+export interface DefiningAlbum extends AlbumRef {
+  /** How many of the artist's top tracks come from this album. */
+  topTrackCount: number;
+  topTrackTotal: number;
+  matchTier: string;
+}
+
+export type CycleBucket = "fresh" | "current" | "mature" | "deep" | "catalog";
+
+export interface ConcertEra {
+  concertId: string;
+  artistKey: string;
+  date: string;
+  currentAlbum: AlbumRef | null;
+  daysSinceRelease: number | null;
+  cycleBucket: CycleBucket | null;
+  /** Doubles as the slice index into ArtistEra.studioAlbums. */
+  albumsBefore: number;
+  albumsAfter: number;
+  careerYear: number | null;
+  careerPercentile: number | null;
+  isDebutEra: boolean;
+  definingAlbum: DefiningAlbum | null;
+  definingAlbumAhead: boolean;
+  definingAlbumMonthsAway: number | null;
+}
+
+export interface ArtistEra {
+  artistKey: string;
+  displayName: string;
+  studioAlbumCount: number;
+  studioAlbums: AlbumRef[];
+  debutAlbum: AlbumRef | null;
+  latestAlbum: AlbumRef | null;
+  definingAlbum: DefiningAlbum | null;
+  /** Release list hit the 100-item fetch cap — first/last album claims are unsafe. */
+  truncated: boolean;
+  erasSeen: Array<{ albumSlug: string; title: string; showCount: number; dates: string[] }>;
+}
+
+export interface AlbumEras {
+  version: string;
+  generatedAt: string;
+  concerts: Record<string, ConcertEra>;
+  artists: Record<string, ArtistEra>;
+  stats: Record<string, unknown>;
+}
+
+/**
+ * Cover Art Archive URL for a release-group. Verified deterministic across all
+ * 11,382 covers in discography.json. Only call when `coverAvailable` is true.
+ */
+export function coverArtUrl(mbid: string): string {
+  return `https://coverartarchive.org/release-group/${mbid}/front-500.jpg`;
+}

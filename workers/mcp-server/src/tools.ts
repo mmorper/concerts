@@ -11,9 +11,13 @@ import { EMPTY_ALIAS_INDEX, aliasName, buildAliasIndex, canonicalSlug, slugsFor,
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
+  AlbumEras,
+  ArtistEra,
   ArtistsMetadata,
   ArtistsTopTracks,
   Concert,
+  ConcertEra,
+  CycleBucket,
   Env,
   FactsData,
   MostPlayedSongs,
@@ -24,7 +28,9 @@ import type {
   VenueMetadata,
   VenuesMetadata,
 } from "./types.js";
+import { coverArtUrl } from "./types.js";
 import {
+  getAlbumEras,
   getArtistsMetadata,
   getArtistsTopTracks,
   getConcerts,
@@ -284,10 +290,30 @@ export interface SearchParams {
   city?: string;
   genre?: string;
   limit?: number;
+  /** v5.4 (#271) — where the show sat in the artist's album cycle. */
+  cycleBucket?: CycleBucket;
 }
 
-export function searchConcerts(concerts: Concert[], params: SearchParams): { text: string; matches: Concert[] } {
+const CYCLE_LABEL: Record<CycleBucket, string> = {
+  fresh: "on a brand-new record (under 90 days out)",
+  current: "inside the first year of a record",
+  mature: "one to three years into a record",
+  deep: "three to ten years into a record",
+  catalog: "more than a decade past the last record",
+};
+
+export function searchConcerts(
+  concerts: Concert[],
+  params: SearchParams,
+  eras: AlbumEras | null = null,
+): { text: string; matches: Concert[] } {
   const limit = Math.min(Math.max(params.limit ?? 10, 1), 25);
+
+  // Concerts with no era data can't answer a cycle question. They're excluded
+  // rather than guessed at, and the count is reported below — a silent drop
+  // would read as "these are all the shows", which is a different claim.
+  const cycleFilterActive = Boolean(params.cycleBucket && eras);
+  let missingEra = 0;
 
   const matches = concerts
     .filter((c) => {
@@ -309,6 +335,14 @@ export function searchConcerts(concerts: Concert[], params: SearchParams): { tex
       if (params.genre && !c.genre.toLowerCase().includes(params.genre.toLowerCase())) {
         return false;
       }
+      if (cycleFilterActive) {
+        const era = eras!.concerts[c.id];
+        if (!era?.cycleBucket) {
+          missingEra++;
+          return false;
+        }
+        if (era.cycleBucket !== params.cycleBucket) return false;
+      }
       return true;
     })
     .sort(byDate);
@@ -320,6 +354,7 @@ export function searchConcerts(concerts: Concert[], params: SearchParams): { tex
   if (params.month) bits.push(MONTHS[params.month - 1]);
   if (params.year) bits.push(String(params.year));
   else if (params.decade) bits.push(`the ${params.decade}`);
+  if (cycleFilterActive) bits.push(CYCLE_LABEL[params.cycleBucket!]);
   const summary = bits.length ? bits.join(", ") : "everything";
 
   const total = matches.length;
@@ -338,6 +373,14 @@ export function searchConcerts(concerts: Concert[], params: SearchParams): { tex
   }
   if (total > limit) {
     lines.push("", `That's ${limit} of ${total} — try narrowing the search.`);
+  }
+  if (missingEra > 0) {
+    lines.push(
+      "",
+      missingEra === 1
+        ? "1 show has no album-cycle data and wasn't considered."
+        : `${missingEra} shows have no album-cycle data and weren't considered.`,
+    );
   }
   const out = lines.join("\n");
   return { text: out + linkFooter(out), matches: shown };
@@ -442,6 +485,7 @@ export function artistHistory(
   topTracks: ArtistsTopTracks,
   narration: Narration | null = null,
   aliases: AliasIndex = EMPTY_ALIAS_INDEX,
+  eras: AlbumEras | null = null,
 ): string {
   const r = resolveArtist(concerts, query, aliases);
   if (r.kind === "none") return `${query.trim()} isn't in the archive.`;
@@ -495,6 +539,15 @@ export function artistHistory(
   if (formedGenre.length) lines.push(`${formedGenre.join(", ")}.`);
 
   if (narration?.context) lines.push(narration.context);
+
+  // v5.4 (#271) — the album cycles these shows fell across. Only worth saying
+  // when there is more than one; "seen across 1 album cycle" is noise.
+  const artistEra = eras?.artists[r.slug] ?? (eras ? eras.artists[canonicalSlug(aliases, r.slug)] : undefined);
+  if (artistEra && artistEra.erasSeen.length >= 2) {
+    lines.push(
+      `Seen across ${artistEra.erasSeen.length} album cycles: ${joinList(artistEra.erasSeen.map((e) => e.title))}.`,
+    );
+  }
 
   lines.push("");
   shows.forEach((c, i) => {
@@ -874,11 +927,23 @@ function resolveConcert(
   };
 }
 
+/**
+ * One line naming the record an act was touring. Emits NOTHING when the data
+ * is absent — a placeholder would be worse than silence, and every caller here
+ * degrades to exactly its pre-v5.4 output.
+ */
+function eraLine(eras: AlbumEras | null, concertId: string): string | null {
+  const era = eras?.concerts[concertId];
+  if (!era?.currentAlbum || era.daysSinceRelease === null) return null;
+  return `Touring ${era.currentAlbum.title} (released ${agePhrase(era.daysSinceRelease)} earlier).`;
+}
+
 export function concertSetlist(
   concerts: Concert[],
   setlists: SetlistsCache | null,
   args: { artist?: string; date?: string; concertId?: string },
   topTracks: ArtistsTopTracks = {},
+  eras: AlbumEras | null = null,
 ): string {
   const r = resolveConcert(concerts, args);
   if (r.kind === "message") return r.text;
@@ -913,6 +978,10 @@ export function concertSetlist(
 
   const lines = [...head];
 
+  // v5.4 (#271): the album cycle this night sat in, when known.
+  const era = eraLine(eras, c.id);
+  if (era && !sl.isOpener) lines.push(era);
+
   // Opener-only coverage: be explicit that this is the opener's set, not the headliner's.
   if (sl.isOpener) {
     lines.push(
@@ -931,6 +1000,139 @@ export function concertSetlist(
     // Indented under its song, the way the panel renders it.
     if (song.info) lines.push(`   ${song.info}`);
   });
+
+  const out = lines.join("\n");
+  return out + linkFooter(out);
+}
+
+
+// ===================================================================
+// 9. get_career_position (v5.4, #271)
+// ===================================================================
+
+/**
+ * Where an artist stood in their arc on a given night — and what hadn't
+ * happened yet.
+ *
+ * The forward-looking half is the point. "Violator was 20 months away" is a
+ * permanent fact about June 1988 and will never stop being true. Claims about
+ * the PRESENT decay ("they never made another record"), so this deliberately
+ * says nothing when there is nothing ahead — see the albumsAfter guard below.
+ *
+ * Spec: docs/specs/future/global-discography-trajectory.md §Part 4
+ */
+
+/** Years, to one decimal, between an album release and a concert date. */
+function yearsBetween(fromISO: string, toISO: string): number {
+  const from = Date.parse(`${fromISO.padEnd(10, fromISO.length === 4 ? "-01-01" : "-01")}T12:00:00Z`);
+  const to = Date.parse(`${toISO}T12:00:00Z`);
+  return Math.abs(to - from) / 86_400_000 / 365.25;
+}
+
+function agePhrase(days: number): string {
+  if (days < 45) return `${days} days old`;
+  if (days < 365) return `${Math.round(days / 30.44)} months old`;
+  const years = days / 365.25;
+  return `${years < 10 ? years.toFixed(1) : Math.round(years)} years old`;
+}
+
+export function careerPosition(
+  concerts: Concert[],
+  eras: AlbumEras | null,
+  args: { artist?: string; date?: string; concertId?: string },
+  aliases: AliasIndex = EMPTY_ALIAS_INDEX,
+): string {
+  if (!eras) return "I don't have album-cycle data on hand right now.";
+
+  // Deliberately NOT resolveConcert: with no date that asks "which night?",
+  // and the spec's contract here is "omit -> most recent show".
+  let concert: Concert | undefined;
+
+  if (args.concertId) {
+    concert = concerts.find((c) => c.id === args.concertId);
+    if (!concert) return `I don't have a concert with id "${args.concertId}" in the archive.`;
+  } else {
+    if (!args.artist) {
+      return "Tell me which artist — and a date, if you want a particular night.";
+    }
+    const r = resolveArtist(concerts, args.artist, aliases);
+    if (r.kind === "none") return `${args.artist.trim()} isn't in the archive.`;
+    if (r.kind === "ambiguous") {
+      return [
+        `I have a few artists matching "${args.artist.trim()}":`,
+        ...r.options.map((o) => `- ${o}`),
+        "",
+        "Which one did you mean?",
+      ].join("\n");
+    }
+    const isThem = new Set(r.slugs);
+    let shows = concerts.filter((c) => isThem.has(c.headlinerNormalized)).sort(byDate);
+    if (args.date) {
+      const d = args.date.trim();
+      const narrowed = shows.filter((c) => c.date === d || c.date.startsWith(d) || String(c.year) === d);
+      if (narrowed.length === 0) {
+        return `I don't have a ${r.name} show on ${d} in the archive — I've seen them ${shows.length} ${shows.length === 1 ? "time" : "times"}.`;
+      }
+      shows = narrowed;
+    }
+    concert = shows[shows.length - 1];
+    if (!concert) return `${r.name} isn't in the archive as a headliner.`;
+  }
+
+  const era: ConcertEra | undefined = eras.concerts[concert.id];
+  const artistEra: ArtistEra | undefined = era ? eras.artists[era.artistKey] : undefined;
+  if (!era || !artistEra) {
+    return `I don't have album-cycle data for ${artistLink(concert.headliner, concert.headlinerNormalized)} — their discography isn't detailed enough in my sources.`;
+  }
+
+  const lines = [
+    `${artistLink(concert.headliner, concert.headlinerNormalized)} — ${venueLink(concert.venue, concert.venueNormalized)}, ${showLink(fullDate(concert.date), concert.headlinerNormalized, concert.date)}`,
+    "",
+  ];
+
+  // --- Where they were ---
+  if (era.currentAlbum && era.daysSinceRelease !== null) {
+    const parts = [
+      `They were touring ${era.currentAlbum.title}, ${agePhrase(era.daysSinceRelease)} by then`,
+    ];
+    // "first album" is unsafe when the release list hit the fetch cap.
+    if (!artistEra.truncated && artistEra.debutAlbum) {
+      const since = yearsBetween(artistEra.debutAlbum.releaseDate, concert.date);
+      if (since >= 1) parts.push(`${Math.round(since)} years on from ${artistEra.debutAlbum.title}`);
+    }
+    parts.push(`with ${era.albumsBefore} studio ${era.albumsBefore === 1 ? "album" : "albums"} behind them`);
+    lines.push(`${parts.join(", ")}.`);
+  } else {
+    lines.push(`I saw them before they'd released a studio album.`);
+  }
+
+  // --- What hadn't happened yet ---
+  //
+  // Silent when albumsAfter is 0. Writing "and nothing came after" would be a
+  // claim about the present, true until the day it isn't, and this text is
+  // quoted into conversations that outlive it.
+  if (era.albumsAfter > 0) {
+    const ahead = artistEra.studioAlbums.slice(era.albumsBefore);
+    const forward: string[] = [];
+
+    if (era.definingAlbumAhead && era.definingAlbum && era.definingAlbumMonthsAway !== null) {
+      const d = era.definingAlbum;
+      forward.push(
+        `${d.title} was still ${era.definingAlbumMonthsAway} months away — ${d.topTrackCount} of their ${d.topTrackTotal} best-known songs come from it.`,
+      );
+    }
+
+    const rest = ahead.slice(0, 3).map((a) => a.title);
+    if (era.albumsAfter === 1) {
+      // "1 more album would follow, starting with X" reads like a list of one.
+      forward.push(`One more studio album would follow${rest.length ? `: ${rest[0]}` : ""}.`);
+    } else {
+      forward.push(
+        `${era.albumsAfter} more studio albums would follow${rest.length ? `, starting with ${joinList(rest)}` : ""}.`,
+      );
+    }
+    lines.push("", ...forward);
+  }
 
   const out = lines.join("\n");
   return out + linkFooter(out);
@@ -988,6 +1190,9 @@ const DESC = {
   onThisDay: "Concerts that share a date — across all the years, whatever's happened on this day." + LINK_NOTE,
   surprise: "I'll pick one. A random concert, and why it's worth remembering." + LINK_NOTE,
   setlist: "The songs from a specific night — give me an artist (and a date if you have one) or a concert id, and I'll tell you what they played, if I have it on record." + LINK_NOTE,
+  career:
+    "Where an artist stood in their career the night I saw them — the record they were touring, and what hadn't happened yet." +
+    LINK_NOTE,
   topSongs: "The songs I've heard most across every setlist on record — counted honestly from the shows I have setlists for, not the whole archive." + LINK_NOTE,
   query: "When none of my other tools fit, ask me anything about the shows and I'll reason over the whole archive. I count these by hand, so I'll hedge when I'm unsure.",
 };
@@ -1079,12 +1284,20 @@ export function registerTools(server: McpServer, env: Env): void {
         city: z.string().optional(),
         genre: z.string().optional(),
         limit: z.number().int().min(1).max(25).optional(),
+        cycleBucket: z
+          .enum(["fresh", "current", "mature", "deep", "catalog"])
+          .optional()
+          .describe(
+            "Where the show sat in the artist's album cycle: fresh (<90 days after a new record), current (<1yr), mature (1-3yr), deep (3-10yr), catalog (10yr+).",
+          ),
       },
     },
     instrument(env, "search_concerts", async (args) => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
-      return textResult(searchConcerts(data.concerts, args as SearchParams).text);
+      // Only pay for the era file when the filter is actually in play.
+      const eras = (args as SearchParams).cycleBucket ? await getAlbumEras(env, bgCtx) : null;
+      return textResult(searchConcerts(data.concerts, args as SearchParams, eras).text);
     }),
   );
 
@@ -1099,17 +1312,18 @@ export function registerTools(server: McpServer, env: Env): void {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
       const query = String(args.artist ?? "");
-      const [meta, tracks, aliasData] = await Promise.all([
+      const [meta, tracks, aliasData, eras] = await Promise.all([
         getArtistsMetadata(env, bgCtx),
         getArtistsTopTracks(env, bgCtx),
         getArtistAliases(env, bgCtx),
+        getAlbumEras(env, bgCtx),
       ]);
       const aliases = buildAliasIndex(aliasData);
       const r = resolveArtist(data.concerts, query, aliases);
       const narration =
         r.kind === "match" ? await getNarration("artists", r.slug, env, bgCtx) : null;
       return textResult(
-        artistHistory(data.concerts, query, meta ?? {}, tracks ?? {}, narration, aliases),
+        artistHistory(data.concerts, query, meta ?? {}, tracks ?? {}, narration, aliases, eras),
       );
     }),
   );
@@ -1190,9 +1404,10 @@ export function registerTools(server: McpServer, env: Env): void {
     instrument(env, "get_concert_setlist", async (args) => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
-      const [setlists, tracks] = await Promise.all([
+      const [setlists, tracks, eras] = await Promise.all([
         getSetlistsCache(env, bgCtx),
         getArtistsTopTracks(env, bgCtx),
+        getAlbumEras(env, bgCtx),
       ]);
       return textResult(
         concertSetlist(
@@ -1200,6 +1415,36 @@ export function registerTools(server: McpServer, env: Env): void {
           setlists,
           args as { artist?: string; date?: string; concertId?: string },
           tracks ?? {},
+          eras,
+        ),
+      );
+    }),
+  );
+
+  server.registerTool(
+    "get_career_position",
+    {
+      title: "Career position",
+      description: DESC.career,
+      inputSchema: {
+        artist: z.string().optional(),
+        date: z.string().optional().describe("YYYY-MM-DD, YYYY-MM or YYYY. Omit for their most recent show."),
+        concertId: z.string().optional(),
+      },
+    },
+    instrument(env, "get_career_position", async (args) => {
+      const data = await getConcerts(env, bgCtx);
+      if (!data) return dataUnavailableResult();
+      const [eras, aliasData] = await Promise.all([
+        getAlbumEras(env, bgCtx),
+        getArtistAliases(env, bgCtx),
+      ]);
+      return textResult(
+        careerPosition(
+          data.concerts,
+          eras,
+          args as { artist?: string; date?: string; concertId?: string },
+          buildAliasIndex(aliasData),
         ),
       );
     }),
