@@ -434,7 +434,14 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 5. **`RELEASE_EXCLUSIONS` exists in `derive-album-eras.ts`** — a manual list of release-groups MusicBrainz mistags as studio albums (currently one Depeche Mode bootleg).
    → *Impact:* Tier 1's track-listing fetch must **skip excluded release-groups**, or songs get attributed to a bootleg that the era join has already decided does not exist. Two sources of truth on what counts as a studio album is exactly the divergence item 3 is meant to prevent — consider exporting the predicate.
 
-### Window 2 (#271) — pending
+### Window 2 (#271) — shipped 2026-08-07
+
+**1 item.** As predicted, Window 2 produced pattern drift rather than contract drift.
+
+6. **`get_concert_setlist` already carries an era line.** §6a of this spec shows the enriched output leading with `Touring Music for the Masses (released 264 days earlier).` — that line **now exists**, emitted by `eraLine()` in `tools.ts`. v5.5's work is therefore *additive song annotations underneath it*, not a rewrite of the header.
+   → Also reuse `eraLine`'s discipline: it returns `null` rather than a placeholder when data is missing, and a test asserts the tool is byte-identical to its pre-v5.4 output in that case. §6a's "unattributed songs render with no annotation" is the same rule one level down, and should be tested the same way.
+
+   *Non-drift worth noting:* `careerPosition` lives in `tools.ts` section 9, not a `career.ts`. If v5.5 adds setlist-attribution helpers, follow that precedent — the prose helpers are private to `tools.ts` and extracting them is not worth the churn.
 
 ### Window 3 (#272–#274) — pending
 
