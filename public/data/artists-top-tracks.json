@@ -46,53 +46,6 @@
       }
     ]
   },
-  "abc": {
-    "name": "ABC",
-    "source": "itunes",
-    "fetchedAt": "2026-07-20T10:13:24.709Z",
-    "tracks": [
-      {
-        "name": "ABC",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ea/44/00/ea440058-088d-f372-9800-c74352d06cf7/mzaf_2764204519073032939.plus.aac.p.m4a",
-        "durationMs": 178267,
-        "albumName": "The Ultimate Collection",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/00/cd/7400cdf5-08e3-afb7-f95d-6be9ebd9149a/06UMGIM01808.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/abc/1440912101?i=1440912109&uo=4"
-      },
-      {
-        "name": "Abc (Alphabet Song)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/fb/8f/7f/fb8f7fe6-379a-ad22-65d1-19a7734a9c0d/mzaf_10148910737733340855.plus.aac.p.m4a",
-        "durationMs": 115091,
-        "albumName": "Abc (Alphabet Song) - Single",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/55/dd/ac/55ddace8-bfad-d797-5008-7e7864116846/859704687747_cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/abc-alphabet-song/1809613953?i=1809613956&uo=4"
-      },
-      {
-        "name": "ABC (Alphabet Song)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c6/f0/aa/c6f0aae1-238c-1d67-b58d-275f42203a3e/mzaf_9350578178835119644.plus.aac.p.m4a",
-        "durationMs": 72789,
-        "albumName": "Nursery Rhymes",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/59/10/3a/59103af0-a288-3bde-ccd8-28f76e57bd6f/58644.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/abc-alphabet-song/1467934634?i=1467934767&uo=4"
-      },
-      {
-        "name": "ABC Song",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/3d/cd/b9/3dcdb9ee-194d-7e78-0f83-76873a72e3f0/mzaf_15006609536625130828.plus.aac.p.m4a",
-        "durationMs": 76187,
-        "albumName": "Start Singing with Barney",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/60/19/c3/6019c395-dda4-3ce2-8e15-0c9a1e347208/886788310919.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/abc-song/1509046383?i=1509046385&uo=4"
-      },
-      {
-        "name": "ABC",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/d3/f6/91/d3f691a2-382e-3b90-0de3-4d04ba712460/mzaf_14105990881068979168.plus.aac.p.m4a",
-        "durationMs": 56671,
-        "albumName": "Word Songs (Pt. 1-2)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1d/f8/e1/1df8e170-1d77-acb9-61b8-b9f4bac55fb6/196925075510.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/abc/1628980346?i=1628982050&uo=4"
-      }
-    ]
-  },
   "awolnation": {
     "name": "AWOLNATION",
     "source": "itunes",
@@ -607,53 +560,6 @@
         "albumName": "Crucial Tracks",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/fd/25/a1/fd25a174-8d75-ca39-f475-9b2a3425a334/00016253983328.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/need-your-love-each-and-every-day/1444024652?i=1444024659&uo=4"
-      }
-    ]
-  },
-  "bad-religion": {
-    "name": "Bad Religion",
-    "source": "itunes",
-    "fetchedAt": "2026-07-20T10:13:32.986Z",
-    "tracks": [
-      {
-        "name": "Bad Religion",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/3d/9b/0e/3d9b0ead-8207-8d08-e5dd-a0e334613d3d/mzaf_7882569404908467417.plus.aac.p.m4a",
-        "durationMs": 175453,
-        "albumName": "channel ORANGE",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/04/f8/63/04f863fc-2852-604f-c910-a97ac069506b/12UMGIM40339.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/bad-religion/1440765580?i=1440766937&uo=4"
-      },
-      {
-        "name": "21st Century (Digital Boy)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/68/45/26/684526a6-486d-c095-6744-4d5b40e93dd2/mzaf_12017976791777527910.plus.aac.p.m4a",
-        "durationMs": 168657,
-        "albumName": "Stranger Than Fiction (Deluxe Edition Remastered)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/79/8d/24/798d24ab-26fa-82a3-c917-27eaa938bdec/0045778699452.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/21st-century-digital-boy/1485071127?i=1485071592&uo=4"
-      },
-      {
-        "name": "American Jesus",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/6c/87/51/6c8751a2-6e50-936f-c09e-0571146873b7/mzaf_9085621224688426973.plus.aac.p.m4a",
-        "durationMs": 197667,
-        "albumName": "Recipe for Hate",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/b0/fc/97/b0fc9717-e035-d437-e9d4-9cd006fa35f2/0045778642069.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/american-jesus/1485011076?i=1485011080&uo=4"
-      },
-      {
-        "name": "Sorrow",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/2a/6b/26/2a6b2646-c27d-1e01-2111-8f9afa528837/mzaf_3524695523206757603.plus.aac.p.m4a",
-        "durationMs": 201293,
-        "albumName": "The Process of Belief",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/33/45/95/3345956d-f7c2-a85a-f4a1-53daf3fab6f0/0045778663569.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/sorrow/1485040386?i=1485040394&uo=4"
-      },
-      {
-        "name": "Infected",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f4/d5/eb/f4d5ebf4-5f35-b0a4-5c1d-759d171d0c99/mzaf_18009781448644390144.plus.aac.p.m4a",
-        "durationMs": 249907,
-        "albumName": "Stranger Than Fiction (Deluxe Edition Remastered)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/79/8d/24/798d24ab-26fa-82a3-c917-27eaa938bdec/0045778699452.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/infected/1485071127?i=1485071134&uo=4"
       }
     ]
   },
@@ -2020,53 +1926,6 @@
       }
     ]
   },
-  "chris-shiflett": {
-    "name": "Chris Shiflett",
-    "source": "itunes",
-    "fetchedAt": "2026-07-20T10:14:07.205Z",
-    "tracks": [
-      {
-        "name": "Goin’ Nowhere (feat. Chris Shiflett)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/00/87/cb/0087cbaf-e92f-5c1c-29dd-c294d2143eb9/mzaf_3874088174289512824.plus.aac.p.m4a",
-        "durationMs": 189153,
-        "albumName": "HIXTAPE: Vol. 2",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3b/20/ca/3b20ca68-b6a2-5fb7-d9ef-ede42295ad3b/198704028649_Cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/goin-nowhere-feat-chris-shiflett/1752605419?i=1752605596&uo=4"
-      },
-      {
-        "name": "This Ol' World",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d1/b9/c4/d1b9c41c-c927-4a33-40ae-c8c6b97ec84a/mzaf_8659840105657175723.plus.aac.p.m4a",
-        "durationMs": 252787,
-        "albumName": "Hard Lessons",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/18/c1/60/18c1602b-333f-b678-8eb5-c804180af722/193483517476.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/this-ol-world/1453225784?i=1453225888&uo=4"
-      },
-      {
-        "name": "Sticks & Stones",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/b3/b4/89/b3b489f9-1817-c41f-a3e2-00e9e0602b98/mzaf_12262948046150229418.plus.aac.p.m4a",
-        "durationMs": 210680,
-        "albumName": "West Coast Town",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/d5/9f/c9/d59fc9fc-6f1e-bc22-8ead-439d4b7ebda0/109723.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/sticks-stones/1880826671?i=1880826673&uo=4"
-      },
-      {
-        "name": "Everlong",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/35/25/c7/3525c700-8776-5b4d-fdd2-7754b26c7fbf/mzaf_10256655135081434791.plus.aac.p.m4a",
-        "durationMs": 250547,
-        "albumName": "The Colour And The Shape",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/68/f5/86/68f586ca-a375-9965-a864-9e227e77ef5b/884977570328.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/everlong/362133451?i=362133505&uo=4"
-      },
-      {
-        "name": "The Pretender",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/5f/41/f8/5f41f86a-1d7a-0c1e-7b29-55cd5fa40c4c/mzaf_1876575708645472937.plus.aac.p.m4a",
-        "durationMs": 269306,
-        "albumName": "Echoes, Silence, Patience & Grace",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/1a/a8/d2/1aa8d22d-f1ab-0462-e6f0-4f19b2594383/886971151626.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-pretender/262743410?i=262743414&uo=4"
-      }
-    ]
-  },
   "cold-war-kids": {
     "name": "Cold War Kids",
     "source": "itunes",
@@ -2158,53 +2017,6 @@
         "albumName": "Man @ Work",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a1/83/e7/a183e74e-def0-e2bf-d5bf-04eb4a8bf196/s05.ezjjpqke.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/down-under-acoustic-version/63859981?i=63859170&uo=4"
-      }
-    ]
-  },
-  "common-sense": {
-    "name": "Common Sense",
-    "source": "itunes",
-    "fetchedAt": "2026-07-20T10:14:08.529Z",
-    "tracks": [
-      {
-        "name": "Common Sense",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/14/89/10/1489108e-f006-b292-8ef5-76b7142479d1/mzaf_12107008542915452322.plus.aac.p.m4a",
-        "durationMs": 166646,
-        "albumName": "Common Sense - Single",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/16/5f/2a/165f2ab0-a6f4-2f18-6ec5-8e787945cd1c/054391936455.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/common-sense/1503559167?i=1503559169&uo=4"
-      },
-      {
-        "name": "Common Sense (feat. Jen-B)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c9/ed/28/c9ed2845-5af3-a16c-867b-af9238ff6550/mzaf_10545250266714146127.plus.aac.p.m4a",
-        "durationMs": 400266,
-        "albumName": "Tomohiko Gondo Solo Works Vol.33",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/71/68/b37168e2-bc59-f1cf-4a53-8da51f0692be/4550757991398_cover.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/common-sense-feat-jen-b/6783769661?i=6783769692&uo=4"
-      },
-      {
-        "name": "Common Sense",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/2f/3b/68/2f3b680a-716c-6cd0-997c-aa4db68b8897/mzaf_5856094582573426710.plus.aac.p.m4a",
-        "durationMs": 176177,
-        "albumName": "Wishful Thinking (At Its Best)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/bf/dd/31/bfdd31e7-ab1d-fcc4-21ea-b2862b9838be/193872479248_cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/common-sense/1472638161?i=1472638227&uo=4"
-      },
-      {
-        "name": "Common Sense",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/82/21/61/82216184-a633-6a8b-3e72-58f27480588f/mzaf_5729747471759219507.plus.aac.p.m4a",
-        "durationMs": 191867,
-        "albumName": "Common Sense",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/78/84/23/mzi.ybgoqsgl.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/common-sense/301002134?i=301002136&uo=4"
-      },
-      {
-        "name": "Common Sense",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/e1/7d/8d/e17d8d1d-2559-e17d-39af-039f38020a34/mzaf_390803664220644063.plus.aac.p.m4a",
-        "durationMs": 204977,
-        "albumName": "Schmilco",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/7d/35/ea/7d35ea22-9d12-97df-3ad6-319279892865/196871169448.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/common-sense/1690693983?i=1690694180&uo=4"
       }
     ]
   },
@@ -12075,6 +11887,206 @@
         "albumName": "ZONKEY",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/f6/27/19/f6271965-d679-97a0-45ae-9888588605a7/886446087221.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/national-loser-anthem/1148793191?i=1148793196&uo=4"
+      }
+    ]
+  },
+  "abc": {
+    "name": "ABC",
+    "source": "itunes",
+    "fetchedAt": "2026-08-07T23:34:41.967Z",
+    "resolvedVia": "artist-id",
+    "itunesArtistId": 391195,
+    "itunesArtistName": "ABC",
+    "tracks": [
+      {
+        "name": "The Look of Love, Pt. 1",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/66/b8/44/66b84484-7b14-627d-7f35-87927962a206/mzaf_9098074416832543505.plus.aac.p.m4a",
+        "durationMs": 209533,
+        "albumName": "Look of Love: The Very Best of ABC",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/80/05/aa/8005aaa7-8aac-ad8f-1464-01a0f342169d/06UMGIM52982.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-look-of-love-pt-1/1440931128?i=1440931147&uo=4"
+      },
+      {
+        "name": "Be Near Me",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/62/6e/f5/626ef5bc-c5b7-43a0-e0de-2006d4ddd837/mzaf_15638778360147438754.plus.aac.p.m4a",
+        "durationMs": 217600,
+        "albumName": "Look of Love: The Very Best of ABC",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/80/05/aa/8005aaa7-8aac-ad8f-1464-01a0f342169d/06UMGIM52982.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/be-near-me/1440931128?i=1440931988&uo=4"
+      },
+      {
+        "name": "When Smokey Sings",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a5/b1/63/a5b163ba-e2c5-ed80-197e-4d1542618d89/mzaf_14173121908863313240.plus.aac.p.m4a",
+        "durationMs": 258840,
+        "albumName": "Look of Love: The Very Best of ABC",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/80/05/aa/8005aaa7-8aac-ad8f-1464-01a0f342169d/06UMGIM52982.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/when-smokey-sings/1440931128?i=1440931476&uo=4"
+      },
+      {
+        "name": "Poison Arrow (Single Version)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/42/42/85/42428580-ae38-5a65-64e3-3aeb9dc8605b/mzaf_7000818356457443137.plus.aac.p.m4a",
+        "durationMs": 203160,
+        "albumName": "Look of Love: The Very Best of ABC",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/80/05/aa/8005aaa7-8aac-ad8f-1464-01a0f342169d/06UMGIM52982.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/poison-arrow-single-version/1440931128?i=1440931464&uo=4"
+      },
+      {
+        "name": "The Look of Love, Pt. 1",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4e/9d/71/4e9d7174-51aa-9327-d0ef-96315b4e996e/mzaf_17965108291491512399.plus.aac.p.m4a",
+        "durationMs": 209160,
+        "albumName": "The Lexicon of Love",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/41/99/4d/41994d04-d8f0-ca92-0cb3-ec4f931ed75b/06UMGIM47803.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-look-of-love-pt-1/1440920887?i=1440921183&uo=4"
+      }
+    ]
+  },
+  "bad-religion": {
+    "name": "Bad Religion",
+    "source": "itunes",
+    "fetchedAt": "2026-08-07T23:34:42.803Z",
+    "resolvedVia": "artist-id",
+    "itunesArtistId": 150160,
+    "itunesArtistName": "Bad Religion",
+    "tracks": [
+      {
+        "name": "Infected",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/df/8e/07/df8e07ef-45cc-8cb2-c6ec-fd1876323771/mzaf_16526251852722583779.plus.aac.p.m4a",
+        "durationMs": 247600,
+        "albumName": "Stranger Than Fiction",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/8e/0a/0a/8e0a0aae-3c29-3b92-b82b-85c8426d62ba/0045778699469.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/infected/1485011728?i=1485011856&uo=4"
+      },
+      {
+        "name": "Sorrow",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/2a/6b/26/2a6b2646-c27d-1e01-2111-8f9afa528837/mzaf_3524695523206757603.plus.aac.p.m4a",
+        "durationMs": 201293,
+        "albumName": "The Process of Belief",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/33/45/95/3345956d-f7c2-a85a-f4a1-53daf3fab6f0/0045778663569.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/sorrow/1485040386?i=1485040394&uo=4"
+      },
+      {
+        "name": "21st Century (Digital Boy)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ab/6c/fe/ab6cfef9-e51c-02a8-1105-83e5ccc86c5a/mzaf_15754116657958837007.plus.aac.p.m4a",
+        "durationMs": 167973,
+        "albumName": "Stranger Than Fiction",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/8e/0a/0a/8e0a0aae-3c29-3b92-b82b-85c8426d62ba/0045778699469.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/21st-century-digital-boy/1485011728?i=1485011864&uo=4"
+      },
+      {
+        "name": "American Jesus",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/6c/87/51/6c8751a2-6e50-936f-c09e-0571146873b7/mzaf_9085621224688426973.plus.aac.p.m4a",
+        "durationMs": 197667,
+        "albumName": "Recipe for Hate",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/b0/fc/97/b0fc9717-e035-d437-e9d4-9cd006fa35f2/0045778642069.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/american-jesus/1485011076?i=1485011080&uo=4"
+      },
+      {
+        "name": "You",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/a8/e2/0a/a8e20af8-3b72-5de6-eab4-f4d660c754bb/mzaf_17080730036668605665.plus.aac.p.m4a",
+        "durationMs": 126520,
+        "albumName": "No Control",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/d8/49/9d/d8499d48-9439-83ec-c8e3-d44a420631dd/0045778670260.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/you/1485042097?i=1485042107&uo=4"
+      }
+    ]
+  },
+  "chris-shiflett": {
+    "name": "Chris Shiflett",
+    "source": "itunes",
+    "fetchedAt": "2026-08-07T23:34:43.870Z",
+    "resolvedVia": "artist-id",
+    "itunesArtistId": 214324366,
+    "itunesArtistName": "Chris Shiflett",
+    "tracks": [
+      {
+        "name": "Long, Long Year",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/cb/fe/34/cbfe349f-290b-7253-c5a0-e98245e4160a/mzaf_8494333989957789296.plus.aac.p.m4a",
+        "durationMs": 259078,
+        "albumName": "Long, Long Year - Single",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/1a/47/2b/1a472bcb-b5d8-086e-3b36-15a1774352ba/610012530152_cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/long-long-year/1613819073?i=1613819074&uo=4"
+      },
+      {
+        "name": "This Ol' World",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d1/b9/c4/d1b9c41c-c927-4a33-40ae-c8c6b97ec84a/mzaf_8659840105657175723.plus.aac.p.m4a",
+        "durationMs": 252787,
+        "albumName": "Hard Lessons",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/18/c1/60/18c1602b-333f-b678-8eb5-c804180af722/193483517476.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/this-ol-world/1453225784?i=1453225888&uo=4"
+      },
+      {
+        "name": "Overboard",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/ba/b4/0e/bab40e3f-4318-f450-06cb-39363262d482/mzaf_12245177382192569103.plus.aac.p.m4a",
+        "durationMs": 157720,
+        "albumName": "Lost at Sea",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/27/a0/ea/27a0ea15-b001-0e15-f09c-e60a54b5e2fa/197187494668.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/overboard/1687776669?i=1687776674&uo=4"
+      },
+      {
+        "name": "The One You Go Home To",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/b0/11/ed/b011ede0-75eb-0b56-635f-3b2d01e46fdf/mzaf_14517855539788345183.plus.aac.p.m4a",
+        "durationMs": 194472,
+        "albumName": "Hard Lessons",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/18/c1/60/18c1602b-333f-b678-8eb5-c804180af722/193483517476.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-one-you-go-home-to/1453225784?i=1453225909&uo=4"
+      },
+      {
+        "name": "Liar's Word",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/2a/38/8c/2a388c01-ec07-7202-ea54-b91814e5f27d/mzaf_1704434268391163361.plus.aac.p.m4a",
+        "durationMs": 175907,
+        "albumName": "Hard Lessons",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/18/c1/60/18c1602b-333f-b678-8eb5-c804180af722/193483517476.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/liars-word/1453225784?i=1453225826&uo=4"
+      }
+    ]
+  },
+  "common-sense": {
+    "name": "Common Sense",
+    "source": "itunes",
+    "fetchedAt": "2026-08-07T23:34:44.714Z",
+    "resolvedVia": "artist-id",
+    "itunesArtistId": 15898676,
+    "itunesArtistName": "Common Sense",
+    "tracks": [
+      {
+        "name": "Never Give Up",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/36/e2/b1/36e2b1c1-e13a-87cb-c4e2-1ae39a8e1d37/mzaf_12745351475706549152.plus.aac.p.m4a",
+        "durationMs": 251293,
+        "albumName": "State of the Nation (Now & Then)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2004/m06/d21/h18/s05.ppyiwxwd.tif/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/never-give-up/15898731?i=15898721&uo=4"
+      },
+      {
+        "name": "Summertime",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/1c/a6/e3/1ca6e354-2ee5-1acd-7f16-66189b5f278b/mzaf_930251622697440143.plus.aac.p.m4a",
+        "durationMs": 244533,
+        "albumName": "Common Sense",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2005/m09/d08/h20/mzi.nykshdzz.tif/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/summertime/80060742?i=80060714&uo=4"
+      },
+      {
+        "name": "Sexual Healing",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/c4/f9/29/c4f929bb-9b63-66f7-7107-443ab8e139b1/mzaf_13624092888443505806.plus.aac.p.m4a",
+        "durationMs": 325027,
+        "albumName": "Live! At the Belly Up Tavern",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/e2/65/69/mzi.mvcugotj.tif/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/sexual-healing/216040405?i=216040546&uo=4"
+      },
+      {
+        "name": "Let It Roll",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/26/f9/40/26f94044-1277-6107-8bc5-d3a22340481d/mzaf_16066331285216766737.plus.aac.p.m4a",
+        "durationMs": 180013,
+        "albumName": "State of the Nation (Now & Then)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2004/m06/d21/h18/s05.ppyiwxwd.tif/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/let-it-roll/15898731?i=15898674&uo=4"
+      },
+      {
+        "name": "All Along the Watchtower",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/de/5a/a4/de5aa4b4-3c48-6981-cfc9-f476acc0df86/mzaf_14643398878632913631.plus.aac.p.m4a",
+        "durationMs": 389493,
+        "albumName": "Live! At the Belly Up Tavern",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/e2/65/69/mzi.mvcugotj.tif/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/all-along-the-watchtower/216040405?i=216040514&uo=4"
       }
     ]
   }

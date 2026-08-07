@@ -11,6 +11,8 @@ interface iTunesTrack {
   collectionName: string
   artworkUrl100: string
   trackViewUrl: string
+  artistName: string
+  artistId: number
 }
 
 interface iTunesSearchResponse {
@@ -25,6 +27,24 @@ export interface NormalizedTrack {
   albumName: string
   albumArt: string
   streamingUrl: string
+
+  /**
+   * Who iTunes thinks recorded this — PROVENANCE, not persisted.
+   *
+   * A name search returns whoever the term matched, which is not necessarily
+   * who we asked for: "Bad Religion" once returned Frank Ocean's *channel
+   * ORANGE* and "ABC" returned children's alphabet songs (#275). Nothing in
+   * the stored record captured that, so the only symptom was an album title
+   * that failed to match the artist's discography — a silent recall loss two
+   * layers downstream.
+   *
+   * The caller compares these against the artist it asked for, records the
+   * outcome once per artist, and STRIPS these fields before writing. They are
+   * ~80% duplicated across an artist's five tracks, and this file is fetched
+   * by the SPA on every artist view.
+   */
+  artistName: string
+  artistId: number
 }
 
 export class iTunesClient {
@@ -86,7 +106,9 @@ export class iTunesClient {
           durationMs: track.trackTimeMillis,
           albumName: track.collectionName,
           albumArt: track.artworkUrl100,
-          streamingUrl: track.trackViewUrl
+          streamingUrl: track.trackViewUrl,
+          artistName: track.artistName,
+          artistId: track.artistId
         }))
 
       } catch (error) {
