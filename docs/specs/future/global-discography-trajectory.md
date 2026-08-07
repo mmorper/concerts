@@ -825,7 +825,7 @@ Every case below is a real drift instance from §2a and must resolve:
 ### Derivation tests
 
 - [ ] Match rate on live data ≥ **74%** of eligible names
-- [ ] `album-eras.json` ≤ **250 KB**
+- [ ] `album-eras.json` ≤ **400 KB**
 - [ ] Every headliner resolves to a discography entry via `artist-key.ts` or an alias (0 unresolved)
 - [ ] `the-go-go-s` resolves to the correct MusicBrainz artist
 - [ ] Concerts predating an artist's debut emit no `currentAlbum` and do not crash

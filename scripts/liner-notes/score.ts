@@ -9,6 +9,7 @@
  */
 
 import { hasSongJoin } from "./setlists.ts";
+import { normalizeAlbumTitle } from "../utils/album-title.ts";
 import type { AnalysisFinding, ContentCategory, ScoreBreakdown, ScoredFinding } from "./types.ts";
 
 // ── Public interface ──────────────────────────────────────────────────────────
@@ -20,6 +21,13 @@ export interface ScoreOptions {
   artistsTopTracks: Record<string, { tracks: Array<{ previewUrl?: string }> }>;
   /** Concert appearances per normalized artist name, derived from concerts.json */
   concertCountByArtist: Record<string, number>;
+  /**
+   * album-eras.json (#273). Optional: absent means no finding earns the album-art
+   * point and scoring is otherwise identical.
+   */
+  albumEras?: {
+    artists: Record<string, { studioAlbums: Array<{ title: string; coverAvailable: boolean }> }>;
+  };
 }
 
 /** Findings scoring below this threshold are discarded before prose generation. */
@@ -225,7 +233,32 @@ function computeDataRichness(f: AnalysisFinding, options: ScoreOptions): number 
   // score is for (#231).
   if (hasSongJoin(f.tags)) pts += 2;
 
+  // 1 pt: a real album cover will resolve for this post (#273).
+  //
+  // Same reasoning as the song-join point above (#229): selection publishes
+  // each detector's highest-scoring finding, so a finding that renders with the
+  // actual record should outrank one that falls back to a press photo. Only
+  // ranks findings against others from the same detector, which is all the
+  // score is for.
+  if (resolvesAlbumArt(f, options)) pts += 1;
+
   return Math.min(pts, 10);
+}
+
+/**
+ * Whether this finding's suggested album image will actually resolve to a
+ * Cover Art Archive cover. Title comparison is normalized because the finding
+ * carries a display title and the spine carries MusicBrainz's.
+ */
+function resolvesAlbumArt(f: AnalysisFinding, options: ScoreOptions): boolean {
+  const image = f.suggestedImage;
+  if (image?.type !== "album" || !image.albumName || !image.artistNormalized) return false;
+
+  const spine = options.albumEras?.artists[image.artistNormalized]?.studioAlbums;
+  if (!spine?.length) return false;
+
+  const wanted = normalizeAlbumTitle(image.albumName);
+  return spine.some((a) => a.coverAvailable && normalizeAlbumTitle(a.title) === wanted);
 }
 
 /**

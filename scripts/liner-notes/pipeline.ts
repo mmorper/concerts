@@ -132,7 +132,7 @@ export async function run(options: PipelineOptions): Promise<void> {
     concertCountByArtist[c.headlinerNormalized] =
       (concertCountByArtist[c.headlinerNormalized] ?? 0) + 1;
   }
-  const scoredFindings = score(findings, { artistsMetadata, artistsTopTracks, concertCountByArtist }, today);
+  const scoredFindings = score(findings, { artistsMetadata, artistsTopTracks, concertCountByArtist, albumEras }, today);
   console.log(`   ${scoredFindings.length}/${findings.length} findings pass threshold (≥20)`);
 
   if (options.analyzeOnly) {
