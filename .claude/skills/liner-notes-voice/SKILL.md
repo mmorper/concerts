@@ -181,6 +181,15 @@ liability, not an observation. If a claim of that shape is unavoidable, pin it:
 
 ## Validation Checklist
 
+> ✅ **Automated since v5.4.** `scripts/liner-notes/voice-check.ts` runs these
+> as code after generation and before anything is written — a post that fails
+> an `error` rule is dropped from the run rather than published. This list had
+> been prose-only for four minor versions, and two defects reached generated
+> output that a human had already read past.
+>
+> The checker is not a substitute for reading the prose; it catches the rules
+> that are mechanically checkable, which is most of the ones below.
+
 Before accepting generated prose, verify:
 
 - [ ] Written in first person (contains "I" or "my")

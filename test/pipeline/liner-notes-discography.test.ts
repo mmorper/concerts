@@ -116,20 +116,42 @@ describe('discography-crossref', () => {
 })
 
 describe('graceful degradation', () => {
-  it('produces identical non-discography findings with and without era data', () => {
-    const withEras = analyze(concerts, TODAY, { eras, artistsMetadata })
-    const without = analyze(concerts, TODAY, { artistsMetadata })
+  const withEras = analyze(concerts, TODAY, { eras, artistsMetadata })
+  const without = analyze(concerts, TODAY, { artistsMetadata })
 
-    const strip = (r: typeof withEras) =>
-      r.findings.filter((f) => f.detector !== 'album-trajectory').map((f) => f.id)
+  it('leaves every detector that does not consume era data untouched', () => {
+    // The load-bearing invariant: adding album-eras.json must not perturb the
+    // 15 detectors that predate it.
+    const untouched = (r: typeof withEras) =>
+      r.findings
+        .filter((f) => f.detector !== 'album-trajectory' && f.detector !== 'album-context')
+        .map((f) => f.id)
+        .sort()
 
-    expect(strip(withEras)).toEqual(strip(without))
+    expect(untouched(withEras)).toEqual(untouched(without))
   })
 
-  it('only album-trajectory appears when era data is added', () => {
-    const withEras = analyze(concerts, TODAY, { eras, artistsMetadata })
-    const without = analyze(concerts, TODAY, { artistsMetadata })
-    expect(withEras.findings.length - without.findings.length).toBe(8)
+  it('adds only trajectory findings and same-artist album-context', () => {
+    const added = withEras.findings.length - without.findings.length
+    const trajectory = withEras.findings.filter((f) => f.detector === 'album-trajectory').length
+    const sameArtist = withEras.findings.filter(
+      (f) => f.detector === 'album-context' && (f.dataPoints as Record<string, unknown>).isSameArtist
+    ).length
+
+    expect(trajectory).toBe(8)
+    expect(added).toBe(trajectory + sameArtist)
+  })
+
+  it('keeps every pre-existing cross-artist album-context finding', () => {
+    // Era data must only ADD to album-context, never displace what the
+    // landmark list already produced.
+    const cross = (r: typeof withEras) =>
+      r.findings
+        .filter((f) => f.detector === 'album-context' && !(f.dataPoints as Record<string, unknown>).isSameArtist)
+        .map((f) => f.id)
+        .sort()
+
+    expect(cross(withEras)).toEqual(cross(without))
   })
 })
 
@@ -138,9 +160,22 @@ describe('album-context repair (#272)', () => {
     (f) => f.detector === 'album-context'
   )
 
+  it('gains same-artist supply the landmark list never produced', () => {
+    // The 31 hand-curated landmarks yield ZERO same-artist findings — the
+    // preference branch had never fired. These come from the discography join.
+    const same = findings.filter((f) => (f.dataPoints as Record<string, unknown>).isSameArtist)
+    expect(same.length).toBeGreaterThanOrEqual(10)
+  })
+
   it('drops the weakest cross-artist coincidences', () => {
-    // 17 findings at the old 42-day bar; 11 at 21 days.
-    expect(findings.length).toBeLessThan(17)
+    // 17 cross-artist findings at the old 42-day bar; 11 at 21 days.
+    const cross = findings.filter((f) => !(f.dataPoints as Record<string, unknown>).isSameArtist)
+    expect(cross.length).toBeLessThan(17)
+  })
+
+  it('nets out ahead of where it started', () => {
+    // The repair must not leave the detector poorer than it found it.
+    expect(findings.length).toBeGreaterThan(17)
   })
 
   it('never publishes a cross-artist finding beyond the tightened window', () => {

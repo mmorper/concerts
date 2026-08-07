@@ -16,6 +16,7 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
 import { analyze, type AlbumErasSlim } from "./analyze.ts";
+import { checkVoice, formatVoiceIssues } from "./voice-check.ts";
 import { score } from "./score.ts";
 import { select, buildPosts, POSTS_PER_RUN } from "./curate.ts";
 import { refreshPostImages } from "./refresh-images.ts";
@@ -180,10 +181,35 @@ export async function run(options: PipelineOptions): Promise<void> {
   });
   console.log(`   Prose generated for ${withProse.length}/${target} (${attempted} API call${attempted !== 1 ? "s" : ""})`);
 
+  // ── Stage 4b: Voice checks ───────────────────────────────────────────────
+  //
+  // The voice skill has carried a validation checklist since v4.4 and nothing
+  // ever ran it. Two defects reached generated prose during v5.4 — an invented
+  // distance, and a negative field rendered as its absolute value — both of
+  // which a human had already read past. Errors block the run; warnings print.
+  const clean: typeof withProse = [];
+  let voiceErrors = 0;
+  for (const candidate of withProse) {
+    const issues = checkVoice(candidate);
+    if (issues.length) console.log(formatVoiceIssues(candidate, issues));
+    if (issues.some((i) => i.severity === "error")) {
+      voiceErrors++;
+      continue; // Drop it rather than publish it. Reserve candidates remain.
+    }
+    clean.push(candidate);
+  }
+  if (voiceErrors > 0) {
+    console.log(`   ⚠️  ${voiceErrors} post(s) failed voice checks and were dropped`);
+  }
+  if (clean.length === 0) {
+    console.log("\n⚠️  Nothing passed voice checks — nothing to publish this run.");
+    return;
+  }
+
   // ── Stage 5: Build posts ─────────────────────────────────────────────────
   console.log("\n🏗️  Stage 5: Building posts...");
   const publishedAt = new Date().toISOString();
-  const newPosts = buildPosts(withProse, {
+  const newPosts = buildPosts(clean, {
     artistsMetadata,
     artistsTopTracks,
     venuesMetadata,

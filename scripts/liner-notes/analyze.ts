@@ -1205,10 +1205,93 @@ const CROSS_ARTIST_WINDOW_DAYS = 21;
 
 function detectAlbumContext(
   concerts: Concert[],
-  aliases: AliasMap = EMPTY_ALIAS_MAP
+  aliases: AliasMap = EMPTY_ALIAS_MAP,
+  eras?: AlbumErasSlim
 ): AnalysisFinding[] {
   const findings: AnalysisFinding[] = [];
   const usedConcertIds = new Set<string>(); // one finding per concert max
+
+  // ── Same-artist findings from the discography join ────────────────────────
+  //
+  // The 31 hand-curated LANDMARK_ALBUMS below produce ZERO same-artist
+  // findings — measured, not assumed. The `byArtist` preference branch had
+  // never once fired, which is why every album-context post ever published was
+  // a cross-artist coincidence and why the prose strained to justify itself.
+  //
+  // These are the real thing: a night that actually sat inside a release week.
+  // No `albumSignificance` — that string is editorial and the corpus cannot
+  // supply it. For a same-artist finding the significance IS the personal
+  // fact ("I was there four days after it came out"), not a cultural claim.
+  if (eras) {
+    for (const concert of concerts) {
+      const era = eras.concerts[concert.id];
+      if (!era) continue;
+
+      const artist = eras.artists[era.artistKey];
+      const previous = era.currentAlbum;
+      const next = artist?.studioAlbums[era.albumsBefore];
+
+      const concertMs = new Date(concert.date + "T12:00:00Z").getTime();
+      const daysFrom = (release: string) =>
+        Math.round((concertMs - new Date(release + "T12:00:00Z").getTime()) / 86_400_000);
+
+      // Nearest release in either direction, inside the window.
+      const candidates: Array<{ album: { title: string; releaseDate: string; mbid: string }; days: number }> = [];
+      if (previous) {
+        const d = daysFrom(previous.releaseDate);
+        if (d >= 0 && d <= ALBUM_WINDOW_DAYS) candidates.push({ album: previous, days: d });
+      }
+      if (next) {
+        const d = daysFrom(next.releaseDate);
+        if (d < 0 && Math.abs(d) <= ALBUM_WINDOW_DAYS) candidates.push({ album: next, days: d });
+      }
+      if (!candidates.length) continue;
+
+      const best = candidates.sort((a, b) => Math.abs(a.days) - Math.abs(b.days))[0];
+      const timing =
+        best.days < 0
+          ? `${Math.abs(best.days)} days before it dropped`
+          : best.days === 0
+          ? "the same day it dropped"
+          : `${best.days} days after it dropped`;
+
+      usedConcertIds.add(concert.id + best.album.title);
+
+      findings.push({
+        id: `album-context-own-${concert.headlinerNormalized}-${concert.date}`,
+        detector: "album-context",
+        category: "cultural",
+        temporality: "evergreen",
+        headline: `${concert.headliner} — ${best.days < 0 ? "Days Before" : "Days After"} ${best.album.title} Dropped`,
+        dataPoints: {
+          concertArtist: concert.headliner,
+          concertVenue: concert.venue,
+          concertCity: concert.cityState,
+          concertDate: concert.date,
+          concertYear: concert.year,
+          album: best.album.title,
+          albumArtist: concert.headliner,
+          albumReleased: best.album.releaseDate,
+          daysApart: Math.abs(best.days),
+          timing,
+          isSameArtist: true,
+          albumMbid: best.album.mbid,
+          albumSlug: slugify(best.album.title),
+        },
+        concertDate: concert.date,
+        artists: [concert.headlinerNormalized],
+        venues: [concert.venueNormalized],
+        years: [concert.year],
+        suggestedImage: {
+          type: "album",
+          artistNormalized: concert.headlinerNormalized,
+          albumName: best.album.title,
+        },
+        suggestedTrack: { artistNormalized: concert.headlinerNormalized },
+        tags: ["#album-context", "#cultural-moment", "#release-week"],
+      });
+    }
+  }
 
   for (const album of LANDMARK_ALBUMS) {
     const albumDate = new Date(album.released + "T12:00:00Z");
@@ -1694,7 +1777,7 @@ export function analyze(
     ...detectFestivalMegaBill(past),
     ...detectDroughtComeback(past, options.setlists),
     ...detectCityPulse(past),
-    ...detectAlbumContext(past, options.aliases),
+    ...detectAlbumContext(past, options.aliases, options.eras),
     ...detectGenreOutlier(past, options.artistsMetadata ?? {}),
     ...detectFullCircle(past, options.setlists, options.aliases),
     ...detectGuestBridge(past, options.setlists, options.aliases),
