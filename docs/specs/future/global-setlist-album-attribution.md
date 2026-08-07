@@ -443,7 +443,18 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 
    *Non-drift worth noting:* `careerPosition` lives in `tools.ts` section 9, not a `career.ts`. If v5.5 adds setlist-attribution helpers, follow that precedent — the prose helpers are private to `tools.ts` and extracting them is not worth the churn.
 
-### Window 3 (#272–#274) — pending
+### Window 3 (#272–#274) — shipped 2026-08-07
+
+**3 items.**
+
+7. **`careerYear` is now `null` for pre-debut shows, never negative**, with a new `yearsBeforeDebut` field. Found by generating real prose: a post rendered No Doubt's `-4` as *"four years into their existence"* when the truth was four years **before** their debut.
+   → *Impact:* v5.5's detectors read the same era records. Any consumer treating `careerYear` as elapsed time is now safe, but **check `yearsBeforeDebut` explicitly** if a `road-tested` post wants to say how early a show was.
+
+8. **The generator prompt now forbids invented biographical specifics** — formation years, ages, distances, "numbers you could plausibly infer." §5e of this spec already says never to state an album when attribution is `null`; that rule now has a sibling in the prompt and should reference it rather than restating it.
+
+9. **`getAlbumArt` prefers Cover Art Archive and matches on normalized titles.** §Part 4's `song-albums.json` carries `mbid` per song, so v5.5 gets album art for setlist songs free via `coverArtUrl(mbid)` — no new image plumbing needed.
+
+**Confirmation of the log's premise:** Window 1 produced 5 contract-level items, Windows 2 and 3 produced 1 and 3 pattern-level ones. Weighting the sniff toward Window 1 was correct, and the ceremony reconciliation should be mechanical.
 
 ---
 
@@ -460,6 +471,7 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 - **2026-08-07:** Initial specification created
 - **2026-08-07:** Traceability table added; issues #267, #276–#277 created.
 - **2026-08-07 (v1.1):** Drift log opened; Window 1 contract changes recorded (5 items).
-- **Version:** 1.1.0
+- **2026-08-07 (v1.2):** Windows 2–3 drift logged. v5.4 implementation complete.
+- **Version:** 1.2.0
 - **Author:** Lead architect (via Claude Code)
 - **Status:** Planned
