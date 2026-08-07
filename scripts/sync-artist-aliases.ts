@@ -26,6 +26,7 @@ export function syncArtistAliases(): void {
 
   const sameAct = parsed.sameAct?.length ?? 0;
   const sharesMember = parsed.sharesMember?.length ?? 0;
+  const discographyKeys = parsed.discographyKeys?.length ?? 0;
 
   // Drop the $comment block — it's authoring guidance, not payload, and it is
   // most of the file's bytes.
@@ -33,7 +34,7 @@ export function syncArtistAliases(): void {
   writeFileSync(PUBLISHED, JSON.stringify(payload, null, 2) + "\n");
 
   console.log(
-    `   ✓ public/data/artist-aliases.json (${sameAct} same-act, ${sharesMember} shares-member)`
+    `   ✓ public/data/artist-aliases.json (${sameAct} same-act, ${sharesMember} shares-member, ${discographyKeys} discography-key)`
   );
 }
 

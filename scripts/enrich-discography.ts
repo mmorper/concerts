@@ -12,9 +12,11 @@ import * as dotenv from 'dotenv'
  * for all artists in the concert database. Data is cached for 90 days.
  *
  * Usage:
- *   npm run enrich:discography              # Enrich new/stale artists only
- *   npm run enrich:discography -- --dry-run # Preview without writing
- *   npm run enrich:discography -- --force   # Re-fetch all artists
+ *   npm run enrich:discography                        # Enrich new/stale artists only
+ *   npm run enrich:discography -- --dry-run           # Preview without writing
+ *   npm run enrich:discography -- --force             # Re-fetch all artists
+ *   npm run enrich:discography -- --artist the-go-go-s --force
+ *                                                     # Re-fetch ONE artist
  *
  * Output: public/data/discography.json
  */
@@ -45,12 +47,46 @@ interface DiscographyFile {
 }
 
 /**
+ * MBIDs that MusicBrainz's own artist search gets wrong.
+ *
+ * This is an *enrichment input* — which MusicBrainz artist to fetch — not a
+ * lookup concern, which is why it lives beside the fetch rather than in a data
+ * file. Name-variance between our files is handled by scripts/utils/artist-key.ts,
+ * and act identity by public/data/artist-aliases.json. Keep the three separate:
+ * a general-purpose override map would absorb all of them and hide real bugs.
+ *
+ * Add an entry only when search returns a *different artist*, never to paper
+ * over a thin-but-correct discography.
+ *
+ * Spec: docs/specs/future/global-discography-trajectory.md §2b
+ */
+const MBID_CORRECTIONS: Record<string, { mbid: string; note: string }> = {
+  // Search resolved to "The Go-Go's (RCA Victor group)" — an unrelated act with
+  // a single 1964 release, "Swim With The Go-Go's". That produced a fictitious
+  // 47-year album-era gap on a marquee artist.
+  //
+  // Root cause: the correct record is spelled "Go\u2010Go's" with a TYPOGRAPHIC
+  // hyphen (U+2010), so an ASCII-hyphen name search scores it below the wrong
+  // one. This is the 1978 Belinda Carlisle band.
+  'the-go-go-s': {
+    mbid: 'eec163e4-a013-4af0-9641-c5b2df41fff7',
+    note: 'ASCII-hyphen search matches the wrong act; correct record uses U+2010',
+  },
+}
+
+/**
  * Enrich artist discographies from MusicBrainz
  */
-async function enrichDiscography(options: { dryRun?: boolean; force?: boolean } = {}) {
+async function enrichDiscography(
+  options: { dryRun?: boolean; force?: boolean; artist?: string } = {}
+) {
+  const artistFlagIndex = process.argv.indexOf('--artist')
   const {
     dryRun = process.argv.includes('--dry-run'),
-    force = process.argv.includes('--force')
+    force = process.argv.includes('--force'),
+    // Targeted re-fetch. Exists so an MBID_CORRECTIONS entry can be applied
+    // without 257 MusicBrainz round-trips at 1 req/sec.
+    artist = artistFlagIndex >= 0 ? process.argv[artistFlagIndex + 1] : undefined
   } = options
 
   console.log(`🎵 Enriching artist discographies from MusicBrainz...${dryRun ? ' (DRY RUN)' : ''}\n`)
@@ -88,8 +124,20 @@ async function enrichDiscography(options: { dryRun?: boolean; force?: boolean } 
   let skipped = 0
   let failed = 0
 
-  for (const artist of uniqueArtists) {
+  const artistFilter = artist
+  if (artistFilter) {
+    console.log(`🎯 Restricted to a single artist: ${artistFilter}\n`)
+  }
+
+  for (const artistRecord of uniqueArtists) {
+    const artist = artistRecord
     const normalized = normalizeArtistName(artist.name)
+
+    // --artist restricts the run to one slug (see the flag comment above)
+    if (artistFilter && normalized !== artistFilter) {
+      skipped++
+      continue
+    }
 
     // Skip mock data artists (no real metadata yet)
     const isMockData = artist.dataSource === 'mock' || artist.source === 'mock'
@@ -111,8 +159,12 @@ async function enrichDiscography(options: { dryRun?: boolean; force?: boolean } 
     console.log(`Fetching: ${artist.name}`)
 
     try {
-      // Search for artist MBID
-      const mbid = await mbClient.searchArtist(artist.name)
+      // Search for artist MBID — unless we've recorded that the search is wrong
+      const correction = MBID_CORRECTIONS[normalized]
+      if (correction) {
+        console.log(`  📌 Using corrected MBID (${correction.note})`)
+      }
+      const mbid = correction?.mbid ?? (await mbClient.searchArtist(artist.name))
 
       if (!mbid) {
         console.log(`  ⚠️  Not found in MusicBrainz`)

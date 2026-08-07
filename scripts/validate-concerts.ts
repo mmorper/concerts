@@ -1,5 +1,6 @@
 import { readFileSync, existsSync } from 'fs'
 import { join } from 'path'
+import { buildArtistKeyIndex, resolveArtistKey } from './utils/artist-key'
 
 interface ValidationError {
   row: number
@@ -12,6 +13,7 @@ interface Concert {
   id: string
   date: string
   headliner: string
+  headlinerNormalized: string
   venue: string
   city: string
   state: string
@@ -181,19 +183,35 @@ async function validateConcerts() {
       ? JSON.parse(readFileSync(artistsMetadataPath, 'utf-8'))
       : {}
 
-    // Check 1: Every non-mock artist should have discography entry
+    // Check 1: Every non-mock artist should reach a discography entry.
+    //
+    // Resolution-aware since #269. A raw `discography[key]` test reported eight
+    // false positives — The Beach Boys, Echo & The Bunnymen, Run-D.M.C.,
+    // Tone-Lōc and friends all HAVE records, just under a differently-spelled
+    // key. Those false alarms are exactly what let the real drift hide in the
+    // noise for two minor versions.
+    const metadataKeyIndex = buildArtistKeyIndex(discography as any)
+    const missingDiscography: string[] = []
     for (const [key, artist] of Object.entries(artistsMetadata) as any[]) {
       const isMockData = artist.dataSource === 'mock' || artist.source === 'mock'
       if (isMockData) continue
 
-      if (!discography[key]) {
-        warnings.push({
-          row: 0,
-          field: 'discography',
-          message: `Artist "${artist.name}" has no discography data`,
-          severity: 'warning',
-        })
-      }
+      const resolution = resolveArtistKey(key, artist.name, metadataKeyIndex, discography as any)
+      if (!resolution.key) missingDiscography.push(artist.name)
+    }
+
+    // Rolled into one warning: 20+ individually-listed obscure openers drowned
+    // every other line in this report.
+    if (missingDiscography.length > 0) {
+      warnings.push({
+        row: 0,
+        field: 'discography',
+        message:
+          `${missingDiscography.length} artist(s) have no discography data: ` +
+          missingDiscography.slice(0, 8).join(', ') +
+          (missingDiscography.length > 8 ? `, +${missingDiscography.length - 8} more` : ''),
+        severity: 'warning',
+      })
     }
 
     // Check 2: No duplicate albums within artist
@@ -244,6 +262,78 @@ async function validateConcerts() {
         severity: 'warning',
       })
     }
+
+    // Check 5: every headliner must REACH a discography record (#269).
+    //
+    // Ten headliners were silently unreachable because discography.json is keyed
+    // off the artists-metadata display name while lookups arrive as
+    // headlinerNormalized. This makes that class of drift self-reporting rather
+    // than something rediscovered in a year.
+    //
+    //   ERROR — no record reachable at all: key drift, or enrichment never ran
+    //   WARN  — record reachable but thin (<3 releases): probable mis-resolution,
+    //           or a genuinely obscure act. Both are worth a human glance.
+    const aliasPath = join(process.cwd(), 'public', 'data', 'artist-aliases.json')
+    const billingsOf = new Map<string, string[]>()
+    if (existsSync(aliasPath)) {
+      const aliasFile = JSON.parse(readFileSync(aliasPath, 'utf-8'))
+      for (const entry of aliasFile.sameAct ?? []) {
+        for (const billing of entry.billings ?? []) billingsOf.set(billing, entry.billings)
+      }
+      // discographyKeys is a separate relation from sameAct: it records where an
+      // act's discography is FILED, not what marquee they played under.
+      for (const entry of aliasFile.discographyKeys ?? []) {
+        if (!entry.act || !entry.discographyKey) continue
+        billingsOf.set(entry.act, [...(billingsOf.get(entry.act) ?? []), entry.discographyKey])
+      }
+    }
+
+    const keyIndex = buildArtistKeyIndex(discography as any)
+    const headliners = new Map<string, string>()
+    for (const concert of concerts) {
+      if (!headliners.has(concert.headlinerNormalized)) {
+        headliners.set(concert.headlinerNormalized, concert.headliner)
+      }
+    }
+
+    let unreachable = 0
+    let thin = 0
+    for (const [slug, displayName] of headliners) {
+      const resolution = resolveArtistKey(slug, displayName, keyIndex, discography as any, {
+        aliasesOf: (s: string) => billingsOf.get(s) ?? [],
+      })
+
+      if (!resolution.key) {
+        unreachable++
+        errors.push({
+          row: 0,
+          field: 'discography',
+          message:
+            `Headliner "${displayName}" (${slug}) reaches no discography record. ` +
+            `Add a sameAct entry to artist-aliases.json, or check scripts/utils/artist-key.ts.`,
+          severity: 'error',
+        })
+        continue
+      }
+
+      const albumCount = (discography as any)[resolution.key]?.albums?.length ?? 0
+      if (albumCount < 3) {
+        thin++
+        warnings.push({
+          row: 0,
+          field: 'discography',
+          message:
+            `Headliner "${displayName}" resolves to "${resolution.key}" with only ${albumCount} ` +
+            `release(s) — possible artist mis-resolution (see MBID_CORRECTIONS in enrich-discography.ts)`,
+          severity: 'warning',
+        })
+      }
+    }
+
+    console.log(
+      `   Headliner reachability: ${headliners.size - unreachable}/${headliners.size} resolved` +
+        (thin > 0 ? `, ${thin} thin` : '')
+    )
 
     console.log(`   Checked ${Object.keys(discography).length} discography records`)
   } else {
