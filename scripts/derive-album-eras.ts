@@ -156,7 +156,18 @@ export interface ConcertEra {
   cycleBucket: CycleBucket | null
   albumsBefore: number
   albumsAfter: number
+  /**
+   * Years since the debut album. NULL for a show that predates the debut —
+   * never negative.
+   *
+   * It used to go negative, and a generated post rendered No Doubt's -4 as
+   * "four years into their existence" when the truth was four years BEFORE
+   * their first record. A field whose name says "career year" holding a
+   * negative number is a footgun for any consumer that reads it as elapsed
+   * time; yearsBeforeDebut carries that case explicitly instead.
+   */
   careerYear: number | null
+  yearsBeforeDebut: number | null
   careerPercentile: number | null
   isDebutEra: boolean
   definingAlbum: DefiningAlbum | null
@@ -387,7 +398,9 @@ export function deriveAlbumEras(input: {
     const latestMs = parseReleaseDate(latest.releaseDate)
     const span = latestMs - debutMs
 
-    const careerYear = Number(((concertMs - debutMs) / DAY_MS / DAYS_PER_YEAR).toFixed(1))
+    const yearsFromDebut = (concertMs - debutMs) / DAY_MS / DAYS_PER_YEAR
+    const careerYear = yearsFromDebut >= 0 ? Number(yearsFromDebut.toFixed(1)) : null
+    const yearsBeforeDebut = yearsFromDebut < 0 ? Number(Math.abs(yearsFromDebut).toFixed(1)) : null
     const careerPercentile =
       span > 0 ? Number(Math.min(1, Math.max(0, (concertMs - debutMs) / span)).toFixed(3)) : null
 
@@ -406,6 +419,7 @@ export function deriveAlbumEras(input: {
       albumsBefore: before.length,
       albumsAfter: after.length,
       careerYear,
+      yearsBeforeDebut,
       careerPercentile,
       isDebutEra: Math.abs(concertMs - debutMs) / DAY_MS <= 730,
       definingAlbum: defining,

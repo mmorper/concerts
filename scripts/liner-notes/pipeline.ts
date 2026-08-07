@@ -15,7 +15,7 @@ import { createHash } from "crypto";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
-import { analyze } from "./analyze.ts";
+import { analyze, type AlbumErasSlim } from "./analyze.ts";
 import { score } from "./score.ts";
 import { select, buildPosts, POSTS_PER_RUN } from "./curate.ts";
 import { refreshPostImages } from "./refresh-images.ts";
@@ -93,6 +93,9 @@ export async function run(options: PipelineOptions): Promise<void> {
   );
   const setlists = loadSetlistIndex();
   const aliases = loadAliasMap();
+  // Optional (#270). Absent -> the discography detectors return [], album art
+  // falls back to iTunes, and every other detector is byte-identical.
+  const albumEras = loadAlbumEras();
   // Same source, two uses: the detectors join against it, and buildDeepLinks
   // uses the dates to decide whether a ?show= link would open an empty panel.
   const datesWithSetlists = new Set([...setlists.keys()].map((k) => k.split("::")[0]));
@@ -109,7 +112,13 @@ export async function run(options: PipelineOptions): Promise<void> {
 
   // ── Stage 1: Analyze ─────────────────────────────────────────────────────
   console.log("\n🔍 Stage 1: Analyzing concert patterns...");
-  const { findings, stats } = analyze(concerts, today, { venuesMetadata, artistsMetadata, setlists, aliases });
+  const { findings, stats } = analyze(concerts, today, {
+    venuesMetadata,
+    artistsMetadata,
+    setlists,
+    aliases,
+    eras: albumEras,
+  });
   console.log(`   Found ${findings.length} raw findings (${stats.concertsAnalyzed} concerts analyzed)`);
   for (const [detector, count] of Object.entries(stats.findingsByDetector)) {
     console.log(`   • ${detector}: ${count}`);
@@ -178,6 +187,7 @@ export async function run(options: PipelineOptions): Promise<void> {
     artistsMetadata,
     artistsTopTracks,
     venuesMetadata,
+    albumEras,
     datesWithSetlists,
     existingPosts,
     publishedAt,
@@ -204,7 +214,7 @@ export async function run(options: PipelineOptions): Promise<void> {
   try {
     const refresh = await refreshPostImages(
       allPosts,
-      { artistsMetadata, artistsTopTracks, venuesMetadata },
+      { artistsMetadata, artistsTopTracks, venuesMetadata, albumEras },
       { validate: true, verbose: true }
     );
     refreshedSlugs = refresh.changedSlugs;
@@ -309,6 +319,25 @@ export async function run(options: PipelineOptions): Promise<void> {
  * Hand-maintained artist billing aliases (#227). A missing file means every
  * billing is treated as its own act — exactly the behaviour before the map.
  */
+/**
+ * album-eras.json (#270). Missing is a supported state, not an error: the three
+ * discography detectors return [] and album art falls back to iTunes, so the
+ * pipeline produces exactly its pre-v5.4 output.
+ */
+function loadAlbumEras(): AlbumErasSlim | undefined {
+  const path = join(DATA_DIR, "album-eras.json");
+  if (!existsSync(path)) {
+    console.warn("   ⚠️  album-eras.json missing — discography detectors will find nothing");
+    return undefined;
+  }
+  try {
+    return JSON.parse(readFileSync(path, "utf8")) as AlbumErasSlim;
+  } catch (err) {
+    console.warn(`   ⚠️  Could not read album-eras.json (${(err as Error).message})`);
+    return undefined;
+  }
+}
+
 function loadAliasMap(): AliasMap {
   const path = join(ROOT, "data", "artist-aliases.json");
   if (!existsSync(path)) {

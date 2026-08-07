@@ -30,8 +30,11 @@ export type DetectorName =
   | "genre-outlier"
   | "full-circle"
   | "guest-bridge"
-  // Tier 2 — stubbed for future phases
+  | "album-trajectory"
+  // Implemented and tested, but NOT registered in analyze()'s dispatcher.
+  // Enablement is scheduled into v5.5 (#267 §5d) — see the comment there.
   | "discography-crossref"
+  // Tier 2 — stubbed for future phases
   | "temporal-pattern"
   | "double-header";
 

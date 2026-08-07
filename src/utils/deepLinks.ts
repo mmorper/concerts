@@ -57,6 +57,25 @@ export function setlistDeepLink(artistSlug: string, date: string): string {
   return `${artistDeepLink(artistSlug)}&show=${encodeURIComponent(date)}`
 }
 
+/**
+ * Album deep link — RESERVED, NOT YET EMITTED (DEEP_LINKING.md v1.3).
+ *
+ * No route resolves this yet, so nothing calls it: `buildDeepLinks` must not
+ * emit album entries until the Artist Scene renders one, because a link to a
+ * route that does not exist is worse than no link.
+ *
+ * It exists now so the grammar is fixed in one place. `album-eras.json` and
+ * every `album-trajectory` finding already carry album identity — published
+ * posts freeze their deepLinks at generation time, so identity had to ship
+ * before the route did. When the route lands, build URLs with this rather than
+ * by hand, per the project convention.
+ *
+ * Slugs come from `normalizeAlbumName` in src/utils/normalize.ts.
+ */
+export function albumDeepLink(artistSlug: string, albumSlug: string): string {
+  return `${artistDeepLink(artistSlug)}&album=${encodeURIComponent(albumSlug)}`
+}
+
 /** Absolute form, for anything that leaves the app (share sheets, clipboard). */
 export function absoluteUrl(path: string, origin?: string): string {
   const base =

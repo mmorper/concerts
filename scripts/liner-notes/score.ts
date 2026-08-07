@@ -128,6 +128,16 @@ function computeSpan(f: AnalysisFinding): number {
       const gap = (f.dataPoints as Record<string, unknown>).gapYears as number;
       return gap > 20 ? 10 : gap > 15 ? 7 : gap > 10 ? 4 : 2;
     }
+    case "album-trajectory": {
+      // How far ahead the record still was. A 17-year gap (Ziggy Marley) is a
+      // different order of story from a 4-month one (Bat Fangs).
+      const months = dp.monthsAway as number;
+      return months >= 60 ? 10 : months >= 36 ? 7 : months >= 12 ? 4 : 2;
+    }
+    case "discography-crossref": {
+      const eras = dp.eraCount as number;
+      return eras >= 4 ? 10 : eras >= 3 ? 7 : 4;
+    }
     case "city-pulse":
     case "album-context": {
       // Span = how many years ago this happened
@@ -257,9 +267,19 @@ function computeSurpriseFactor(f: AnalysisFinding): number {
     case "city-pulse":
       return 8; // Historical context is compelling
     case "album-context": {
+      // Split widened (#272). Selection publishes each detector's top finding,
+      // so this guarantees a real same-artist join outranks a coincidence
+      // whenever both exist — the window bar removes the worst cross-artist
+      // findings, this demotes the rest.
       const isSameArtist = (f.dataPoints as Record<string, unknown>).isSameArtist as boolean;
-      return isSameArtist ? 9 : 6; // Higher wow if you saw the artist themselves
+      return isSameArtist ? 9 : 5;
     }
+    case "album-trajectory":
+      // The highest-tension finding the pipeline can produce: the only one
+      // where the narrator does not know how the story ends.
+      return 10;
+    case "discography-crossref":
+      return 7;
     case "guest-bridge":
       // Someone stepping onto a stage that isn't theirs, whom you also saw
       // headline, is a strong join — but a shade below full-circle, because it

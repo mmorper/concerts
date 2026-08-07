@@ -1,7 +1,7 @@
 # Liner Notes Pipeline
 
-> **Status:** v1.1 — 15 Tier 1 detectors; selection rewritten to detector rotation (#231)
-> **Last Updated:** 2026-08-05
+> **Status:** v1.2 — 18 Tier 1 detectors; `album-trajectory` added and `discography-crossref` implemented-but-disabled (#272)
+> **Last Updated:** 2026-08-07
 > **Original Spec:** [docs/specs/implemented/agentic-liner-notes-v3.md](specs/implemented/agentic-liner-notes-v3.md)
 
 ---
@@ -526,6 +526,41 @@ Each detector produces one or more `AnalysisFinding` objects with a `category`, 
 
 ---
 
+### 18. Album Trajectory (`album-trajectory`)
+
+**What it finds:** a night when the record the artist would be remembered for did not exist yet.
+
+**Category:** Cultural | **Temporality:** Evergreen
+
+**This is the only detector where the narrator is wrong about the future**, and that is the entire point. Every other detector tells a pattern story from now, looking back at a shape — longevity, loyalty, gaps. Here the reader knows something the person in the seat does not.
+
+**Trigger:** the artist's defining album post-dates the show by ≥3 months. "Defining album" is the record carrying a plurality of their still-streamed top tracks — a proxy for what **endured**, not for critical canon.
+
+**Data points:** artist, venue, city, date; `definingAlbumTitle`, `definingAlbumReleaseDate`, `monthsAway`, `topTrackCount`/`topTrackTotal`, `albumsBefore`/`albumsAfter`, `currentAlbumTitle`, `careerYear`, `yearsBeforeDebut`, plus inert album identity for a future deep link (spec §Part 7).
+
+**Voice rule:** `topTrackCount`/`topTrackTotal` is **evidence to cite**, never a verdict to assert. *"Three of the five songs I still reach for"* is grounded; *"their masterpiece"* is not. See `.claude/skills/liner-notes-voice/SKILL.md` §"The defining-album citation".
+
+**Scoring note:** `surpriseFactor` = 10, the highest in the pipeline. Span scales with `monthsAway`.
+
+**Auto-tags:** `#album-trajectory`, `#before-the-breakthrough`.
+
+**Returns:** 8 findings on current data.
+
+**Example headlines:**
+- *No Doubt — 7.6 Years Before Tragic Kingdom*
+- *Depeche Mode — 20 Months Before Violator*
+- *Stryper — 8 Months Before To Hell With the Devil*
+
+---
+
+### Rejected: "never released another album"
+
+The mirror image of `album-trajectory` — artists with no studio album after the last show — returns 5 findings and **must not be built**. The Roots and Blondie are active bands. *"Nothing since Pollinator"* is true today and becomes a permanent falsehood the moment they release a record, frozen into a permalinked, syndicated post under a first-person byline.
+
+Recorded here so it is not rediscovered as a good idea. See the voice skill's §"Perishable claims".
+
+---
+
 ## Planned Detectors (Tier 2)
 
 Tracked in [GitHub issue #68](https://github.com/mmorper/concerts/issues/68). These four detectors were scoped during v4.4.x but deferred — each has a specific reason it can't ship yet. They are declared in `types.ts` but have no implementation in `analyze.ts`.
@@ -552,13 +587,17 @@ Tracked in [GitHub issue #68](https://github.com/mmorper/concerts/issues/68). Th
 
 ---
 
-### `discography-crossref` (Cultural)
+### `discography-crossref` (Cultural) — IMPLEMENTED, NOT YET ENABLED
 
-**What it will find:** Seeing an artist multiple times across clearly different album eras. *"You caught them in three eras: Violator, Ultra, Sounds of the Universe."*
+**What it finds:** an artist seen across two or more distinct album cycles. 32 findings on current data (10 with 3+ eras, 5 with 4+). Howard Jones spans six cycles across six shows — never the same set twice.
 
-**Why deferred:** Requires structured album release date data (album → release year) per artist, which isn't currently in `artists-metadata.json`.
+**The angle is the comedy of timing, not longevity.** *"Six Shows, Six Records"*, not *"Howard Jones: 40 Years"* — otherwise it collides with `artist-longevity`.
 
-**Unblock when:** Album release year data is populated via MusicBrainz or Discogs API enrichment.
+> ⚠️ **The old deferral note on this detector was wrong for two minor versions.** It read: *"Requires structured album release date data (album → release year) per artist, which isn't currently in `artists-metadata.json`."* That data shipped in **v3.5.0** — into `discography.json` rather than `artists-metadata.json` — and nobody updated this file. If you are deferring a detector, name the file the data would land in, not the file you happened to be looking at.
+
+**Why not enabled:** supply, not capability. Its findings concentrate on Howard Jones, Tears For Fears, Brian Setzer and Social Distortion, who already hold 13 of 55 published posts. Enabling it now deepens the same well and fights rotation. `detectDiscographyCrossref` is implemented, exported and tested; registering it in `analyze()`'s dispatcher is a one-line change.
+
+**Enable when:** v5.5 (#267 §5d), after ≥2 publication cycles of `album-trajectory`, so one rotation judgement is made with the full detector pool visible.
 
 ---
 

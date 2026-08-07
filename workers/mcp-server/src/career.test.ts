@@ -63,6 +63,7 @@ const eras: AlbumEras = {
       albumsBefore: 2,
       albumsAfter: 2,
       careerYear: 6.7,
+      yearsBeforeDebut: null,
       careerPercentile: 0.162,
       isDebutEra: false,
       definingAlbum: {
@@ -85,6 +86,7 @@ const eras: AlbumEras = {
       // Nothing after — the trajectory paragraph must stay silent.
       albumsAfter: 0,
       careerYear: 41.5,
+      yearsBeforeDebut: null,
       careerPercentile: 1,
       isDebutEra: false,
       definingAlbum: null,

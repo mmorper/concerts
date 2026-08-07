@@ -234,7 +234,9 @@ export interface ConcertEra {
   /** Doubles as the slice index into ArtistEra.studioAlbums. */
   albumsBefore: number;
   albumsAfter: number;
+  /** Years since debut. Null for a pre-debut show — never negative (#272). */
   careerYear: number | null;
+  yearsBeforeDebut: number | null;
   careerPercentile: number | null;
   isDebutEra: boolean;
   definingAlbum: DefiningAlbum | null;
