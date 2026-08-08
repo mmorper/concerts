@@ -79,7 +79,8 @@ npm run build-data   # Refresh data pipeline
 
 ```
 src/
-├── components/scenes/     # 5 interactive scenes
+├── components/scenes/     # Scenes 1-5: Timeline, Venues, Map, Genres, Artists
+├── components/ask/        # Scene 6: Ask the Archive (scene, ⌘K spotlight, chat)
 ├── services/              # API clients (Ticketmaster, setlist.fm)
 ├── hooks/                 # React hooks
 ├── types/                 # TypeScript interfaces
