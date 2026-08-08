@@ -142,6 +142,26 @@ export const SCENE_MAP: Record<string, number> = {
 export const SCENE_NAMES = ['timeline', 'venues', 'geography', 'genres', 'artists', 'ask']
 
 /**
+ * Documentation-facing display name for each scene, keyed by SCENE_NAMES entry.
+ *
+ * This is the roster README, docs/ROADMAP.md and CLAUDE.md are validated
+ * against by `npm run validate:docs` (#284). Adding a scene means adding it
+ * here; the validator then fails until the prose lists it too.
+ *
+ * Deliberately separate from the labels in `SceneNavigation.tsx` — the rail
+ * shows "Map" for geography because it has ~40px of room, which is UI copy,
+ * not what the archive is called in prose.
+ */
+export const SCENE_LABELS: Record<string, string> = {
+  timeline: 'Timeline',
+  venues: 'Venues',
+  geography: 'Geography',
+  genres: 'Genres',
+  artists: 'Artists',
+  ask: 'Ask the Archive',
+}
+
+/**
  * Get scene number from scene name
  */
 export function getSceneNumber(sceneName: string): number | null {

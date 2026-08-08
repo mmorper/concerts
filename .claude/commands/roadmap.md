@@ -18,7 +18,13 @@ Analyzes open GitHub issues and generates a compelling, user-friendly roadmap fo
 
 ## Output
 
-Updates README.md lines 132-139 (What's Next section) with AI-generated roadmap summary.
+Updates README.md's "What's Next" section with an AI-generated roadmap summary.
+
+**This command does not touch `docs/ROADMAP.md`.** Despite the name, its only
+target is that one README section. `docs/ROADMAP.md` is maintained by hand in
+`/release` Step 5. That name collision is most of why the drift in #283 went
+unnoticed for seven months: running `/roadmap` reads like the roadmap document
+was refreshed, and it never was.
 
 ---
 
@@ -263,7 +269,7 @@ Foundational work that keeps everything running smoothly.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Target: README.md lines 132-139 (What's Next section)
+Target: README.md "What's Next" section (located by its surrounding text)
 ```
 
 ---
@@ -300,7 +306,7 @@ Options:
 
 ### Step 6: Update README.md
 
-**Target section:** Lines 132-139
+**Target section:** "What's Next" — located by the marker strings below, never by line number
 
 **Current content:**
 ```markdown

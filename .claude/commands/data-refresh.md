@@ -217,6 +217,32 @@ npm run prefetch:setlists
 ⏱️  Total time: 2m 34s
 ```
 
+**Check documented claims:**
+
+```bash
+npm run validate:docs
+```
+
+**This is where doc drift is created.** Adding concerts changes the counts.
+`build-data` refreshes the machine-readable surfaces for you — `index.html`,
+`og-stats.json`, `llm.txt`, `sitemap.xml` all flow from `update:meta`. Nothing
+touches README, `docs/ROADMAP.md` or `CLAUDE.md`, so the prose is stale from this
+moment until someone updates it.
+
+That is the whole mechanism behind #283: README said "178 shows" and "174+ shows"
+because shows kept being added, the machine surfaces kept healing themselves, and
+the prose never did.
+
+> ⚠️ **3 documented claims are now out of date**
+>
+> [validator output]
+>
+> Fix now, or leave them for `/release` Step 5 — which owns these files and will
+> block on them at Step 7.
+
+**Warning, not a hard stop.** A data refresh shouldn't fail because README hasn't
+caught up; the release gate is where this becomes blocking.
+
 **Update context:**
 > Update .claude/context.md with new stats? (yes / no)
 

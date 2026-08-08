@@ -121,10 +121,16 @@ New:     v{NEW_VERSION}
 
 ```bash
 npm run validate:version
+npm run validate:docs
 npm run build
 ```
 
 **If validation fails:** Stop and fix issues before proceeding. Hotfixes still require passing checks.
+
+`validate:docs` is blocking here for the same reason it is in `/release`: this
+command pushes straight to `main`, so the PR-triggered CI run that gates every
+other change never happens. The push-triggered run fires after the tag exists
+and after Pages has started building.
 
 **Production Safety:** Even for urgent fixes, check if changes affect:
 

@@ -116,6 +116,12 @@ docs/                      # Documentation & specs
   `test/fixtures/deep-link-urls.json` — never hand-build them.
 - **Commit prefixes:** `feat:`, `fix:`, `docs:`, `data:`, `refactor:`
 - **Version validation:** `npm run validate:version`
+- **Scene roster:** `SCENE_MAP` / `SCENE_NAMES` / `SCENE_LABELS` in
+  `src/components/changelog/constants.ts` are the single source of truth. Adding
+  a scene means adding it there, then running `npm run validate:docs` — it fails
+  naming the prose in README, `docs/ROADMAP.md` and this file that still
+  disagrees. Stats in those files are checked the same way, against
+  `concerts.json`. CI runs it on every PR (#284).
 
 **Avoid:**
 - Creating new docs without checking if content belongs in existing files
