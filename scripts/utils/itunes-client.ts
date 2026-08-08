@@ -96,6 +96,21 @@ export class iTunesClient {
    * Search for tracks by artist name (returns top tracks by relevance/popularity).
    * No authentication required. Retries up to 3 times on 429 with exponential backoff.
    */
+  /**
+   * Search for one specific song by one specific artist (v6.0 Tier 2, #276).
+   *
+   * Returns candidates only — the CALLER decides whether to believe them. A
+   * result is acceptable only if its album is one this archive already holds
+   * as a studio release-group; iTunes must never be able to introduce a record
+   * our discography has never heard of.
+   */
+  async searchSong(artistName: string, songTitle: string, limit: number = 5): Promise<NormalizedTrack[]> {
+    const term = encodeURIComponent(`${artistName} ${songTitle}`)
+    const url = `${this.baseUrl}/search?term=${term}&entity=song&limit=${limit}&country=US`
+
+    return this.fetchTracks(url, `${artistName} — ${songTitle}`)
+  }
+
   async getTopTracks(artistName: string, limit: number = 5): Promise<NormalizedTrack[]> {
     const encodedName = encodeURIComponent(artistName)
     const url = `${this.baseUrl}/search?term=${encodedName}&entity=song&limit=${limit}&country=US`

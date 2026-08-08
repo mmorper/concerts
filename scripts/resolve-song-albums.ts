@@ -13,7 +13,7 @@
  *
  * Tier 0 — reuse album names already in artists-top-tracks.json (0 API calls)
  * Tier 1 — index MusicBrainz track listings for studio release-groups
- * Tier 2 — iTunes fallback (Window 2, not implemented here)
+ * Tier 2 — iTunes fallback, gated on release-groups we already hold
  *
  * INDEX PER ALBUM, NOT PER SONG. Searching MusicBrainz for a single well-known
  * track returns 165 compilation-dominated recordings; picking the studio album
@@ -29,9 +29,11 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { MusicBrainzClient } from './utils/musicbrainz-client.js'
+import { iTunesClient } from './utils/itunes-client.js'
 import { matchAlbumTitle, isSingleOrEp } from './utils/album-title.js'
 import { foldSongTitle, songIndexKeys } from './utils/song-title.js'
 import { buildArtistKeyIndex, resolveArtistKey } from './utils/artist-key.js'
+import { buildAliasMap, canonicalOf, type AliasMap } from './liner-notes/artist-aliases.ts'
 import { isStudioAlbum, type RawAlbum } from './derive-album-eras.js'
 
 const DATA = 'public/data'
@@ -40,6 +42,26 @@ const OUTPUT_PATH = `${DATA}/song-albums.json`
 
 /** Track listings change only when MusicBrainz is edited. Same TTL as discography. */
 const NINETY_DAYS = 90 * 24 * 60 * 60 * 1000
+
+/**
+ * ~20 requests/minute at iTunes, deliberately conservative.
+ *
+ * enrich-top-tracks.ts runs at 600ms and a 257-artist sweep earned an HTTP 403
+ * block on the whole client (#275). Tier 2 is a lower-value tier than audio
+ * previews and has no business spending that budget faster.
+ */
+const ITUNES_DELAY_MS = 3000
+
+/** Minimal rate limiter — mirrors the one in enrich-top-tracks.ts. */
+class RateLimiter {
+  private last = 0
+  constructor(private delayMs: number) {}
+  async wait(): Promise<void> {
+    const waitFor = Math.max(0, this.delayMs - (Date.now() - this.last))
+    if (waitFor > 0) await new Promise(r => setTimeout(r, waitFor))
+    this.last = Date.now()
+  }
+}
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -57,12 +79,14 @@ export interface StudioAlbum {
  *
  *   artistKey         the entry KEY already starts with it
  *   albumSlug         normalizeAlbumName(albumTitle), a pure function
- *   source            implied by matchTier (0 = top-tracks, 1 = musicbrainz)
- *   isCover           always false until Window 2 routes covers
- *   originalArtistKey always null until Window 2
+ *   source            implied by matchTier (0 = top-tracks, 1 = musicbrainz, 2 = itunes)
  *
- * Carrying those five cost 217 KB across 1,629 entries — more than half the
+ * Carrying those three cost 217 KB across 1,629 entries — more than half the
  * size budget — to store values a consumer can compute or already knows.
+ *
+ * `isCover` and `originalArtistKey` are OPTIONAL and written only for covers.
+ * Emitting `false`/`null` on the ~90% of entries that are not covers is the
+ * same waste in a different shape.
  */
 interface SongAlbum {
   songTitle: string
@@ -70,20 +94,37 @@ interface SongAlbum {
   mbid: string
   releaseDate: string
   coverAvailable: boolean
-  matchTier: 0 | 1
+  matchTier: 0 | 1 | 2
+  isCover?: true
+  originalArtistKey?: string
 }
 
 interface TrackCache {
   version: string
+  /** release-group MBID → its canonical track titles. */
   entries: Record<string, { tracks: string[]; cachedAt: string }>
+  /** Tier 2: entry key → the album iTunes named, or null for a miss worth remembering. */
+  itunes?: Record<string, { albumName: string | null; cachedAt: string }>
 }
 
-/** One setlist song to attribute. */
+/**
+ * One setlist song to attribute.
+ *
+ * `artistKey` is whose DISCOGRAPHY the song is looked up in. For a cover that
+ * is the original artist, not whoever was on stage — Dropkick Murphys playing
+ * "No Surrender" did not put it on a Dropkick Murphys album.
+ *
+ * The entry KEY stays under the performing artist, because that is what a
+ * consumer holds: the MCP reading a setlist knows who was billed, not who
+ * wrote the song.
+ */
 interface Pair {
   artistKey: string
   artistSlug: string
   songTitle: string
   key: string
+  isCover: boolean
+  originalArtistKey: string | null
 }
 
 // ── Core derivation (pure, exported for tests) ───────────────────────────────
@@ -133,6 +174,50 @@ export function buildSongIndex(
   }
 
   return index
+}
+
+/**
+ * Which discography answers for a cover — the ORIGINAL artist's.
+ *
+ * TWO HOPS, and conflating them is the trap (§Part 3):
+ *
+ *   1. billing → act, via `canonicalOf`, collapsing marquees into one act
+ *   2. act → discography key, via `resolveArtistKey` with BOTH alias relations
+ *
+ * Hop 1 alone returns the concert-side slug, which is deliberately NOT the
+ * discography key for the three cases the `discographyKeys` relation exists to
+ * fix — `yaz`→`yazoo`, `the-english-beat`→`the-beat`, `omd`→
+ * `orchestral-manoeuvres-in-the-dark`. `buildAliasMap` reads only `sameAct`
+ * and `sharesMember`, so hop 1 cannot know about them.
+ *
+ * Skipping hop 2 drops those artists silently, and silently is the problem: it
+ * is indistinguishable from the common, correct outcome of "we hold no
+ * discography for whoever wrote this song."
+ *
+ * Exported so the trap has a test rather than a comment.
+ */
+export function resolveOriginalArtistKey(
+  coverArtistName: string,
+  deps: {
+    aliasMap: AliasMap
+    keyIndex: ReadonlyMap<string, string>
+    discography: Record<string, { albums?: unknown[] }>
+    aliasesOf: (slug: string) => readonly string[]
+  }
+): string | null {
+  if (!coverArtistName?.trim()) return null
+
+  const slug = coverArtistName.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+  const act = canonicalOf(deps.aliasMap, slug)
+
+  const resolved = resolveArtistKey(act, coverArtistName, deps.keyIndex, deps.discography, {
+    aliasesOf: (s: string) => deps.aliasesOf(s),
+    // A record with zero albums is a worse answer than no record: `omd` exists
+    // and is empty while the real catalogue sits elsewhere.
+    isUsable: (record: { albums?: unknown[] }) => (record?.albums?.length ?? 0) > 0,
+  })
+
+  return resolved.key
 }
 
 // ── IO ───────────────────────────────────────────────────────────────────────
@@ -199,16 +284,22 @@ export async function resolveSongAlbums(
     name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 
   // ── Collect the pairs to attribute ────────────────────────────────────────
-  //
-  // Covers are collected but NOT attributed here: routing them against the
-  // ORIGINAL artist's discography is Window 2 (§Part 3). Attributing them
-  // against the performing artist would be actively wrong — Dropkick Murphys
-  // playing "No Surrender" did not put it on a Dropkick Murphys album.
+
+  const linerAliases = buildAliasMap(aliases)
+
+  const originalArtistKeyFor = (coverName: string): string | null =>
+    resolveOriginalArtistKey(coverName, {
+      aliasMap: linerAliases,
+      keyIndex,
+      discography,
+      aliasesOf: (slug: string) => aliasesOfSlug.get(slug) ?? [],
+    })
 
   const pairs = new Map<string, Pair>()
   let performances = 0
   let tapeSkipped = 0
-  let coversDeferred = 0
+  let coverPerformances = 0
+  let coversUnroutable = 0
   const unresolvedArtists = new Set<string>()
 
   for (const entry of Object.values<any>(setlists.entries ?? {})) {
@@ -216,22 +307,45 @@ export async function resolveSongAlbums(
     for (const song of sets.flatMap((s: any) => s.song ?? [])) {
       if (!song?.name?.trim()) continue
       performances++
+
+      // tape wins wherever it overlaps with cover — walk-on music is not a
+      // performance at all, so it never reaches attribution.
       if (song.tape) { tapeSkipped++; continue }
-      if (song.cover) { coversDeferred++; continue }
 
       const slug = slugOf(entry.artistName ?? '')
       if (!slug) continue
 
-      const resolved = resolveArtistKey(slug, entry.artistName, keyIndex, discography, resolveOptions)
-      if (!resolved.key) { unresolvedArtists.add(slug); continue }
+      const performer = resolveArtistKey(slug, entry.artistName, keyIndex, discography, resolveOptions)
 
-      const key = songAlbumKey(resolved.key, song.name)
-      if (!pairs.has(key)) {
-        pairs.set(key, {
-          artistKey: resolved.key,
+      let lookupKey: string | null
+      let originalArtistKey: string | null = null
+      const isCover = Boolean(song.cover)
+
+      if (isCover) {
+        coverPerformances++
+        originalArtistKey = song.cover?.name ? originalArtistKeyFor(song.cover.name) : null
+        lookupKey = originalArtistKey
+        // Most covered artists were never seen live, so we hold no discography
+        // for them. That is the expected outcome, not a failure.
+        if (!lookupKey) { coversUnroutable++; continue }
+      } else {
+        lookupKey = performer.key
+        if (!lookupKey) { unresolvedArtists.add(slug); continue }
+      }
+
+      // Keyed by the PERFORMING artist even for covers: a consumer reading a
+      // setlist knows who was billed, not who wrote the song. Falls back to
+      // the slug when the performer has no discography of their own — a cover
+      // is still attributable in that case, since the album is the original's.
+      const entryKey = songAlbumKey(performer.key ?? slug, song.name)
+      if (!pairs.has(entryKey)) {
+        pairs.set(entryKey, {
+          artistKey: lookupKey,
           artistSlug: slug,
           songTitle: song.name.trim(),
-          key,
+          key: entryKey,
+          isCover,
+          originalArtistKey,
         })
       }
     }
@@ -240,8 +354,10 @@ export async function resolveSongAlbums(
   const allPairs = [...pairs.values()].filter(p => !artist || p.artistKey === artist)
   const artistKeys = [...new Set(allPairs.map(p => p.artistKey))]
 
-  console.log(`   ${performances} performances · ${tapeSkipped} tape · ${coversDeferred} covers deferred to Window 2`)
-  console.log(`   ${allPairs.length} unique non-cover pairs across ${artistKeys.length} artists`)
+  const coverPairs = allPairs.filter(p => p.isCover).length
+  console.log(`   ${performances} performances · ${tapeSkipped} tape (incl. tape+cover)`)
+  console.log(`   ${coverPerformances} cover performances · ${coversUnroutable} unroutable (no discography for the original artist)`)
+  console.log(`   ${allPairs.length} unique pairs across ${artistKeys.length} artists — ${coverPairs} of them covers`)
   if (unresolvedArtists.size) {
     console.log(`   ${unresolvedArtists.size} artist(s) have setlists but no usable discography — left unattributed`)
   }
@@ -279,7 +395,7 @@ export async function resolveSongAlbums(
   }
 
   const results: Record<string, SongAlbum> = {}
-  const attribute = (pair: Pair, album: StudioAlbum, tier: 0 | 1) => {
+  const attribute = (pair: Pair, album: StudioAlbum, tier: 0 | 1 | 2) => {
     results[pair.key] = {
       songTitle: pair.songTitle,
       albumTitle: album.title,
@@ -287,6 +403,9 @@ export async function resolveSongAlbums(
       releaseDate: album.releaseDate,
       coverAvailable: album.coverAvailable,
       matchTier: tier,
+      ...(pair.isCover
+        ? { isCover: true as const, originalArtistKey: pair.originalArtistKey ?? undefined }
+        : {}),
     }
   }
 
@@ -382,6 +501,70 @@ export async function resolveSongAlbums(
 
   console.log(`   ${tier1} attributed\n`)
 
+  // ── Tier 2 — iTunes fallback, gated on our own discography ────────────────
+  //
+  // The gate is the whole design. iTunes is asked what album a song is on, and
+  // its answer is accepted ONLY when the normalized title matches a studio
+  // release-group we already hold. Without that, a search for an obscure song
+  // returns a compilation or a tribute record and the pipeline cheerfully
+  // attributes a first-person memory to an album that has nothing to do with
+  // the night in question.
+  //
+  // So Tier 2 never introduces an album. It only re-labels a song onto a
+  // record the archive already knows about — the same fail-closed contract as
+  // every other tier, with a different lookup in front of it.
+
+  const stillMissing = allPairs.filter(p => !results[p.key])
+  cache.itunes ??= {}
+
+  console.log(`🍎 Tier 2 — iTunes fallback (${stillMissing.length} residual misses)`)
+
+  const itunes = new iTunesClient()
+  const itunesLimiter = new RateLimiter(ITUNES_DELAY_MS)
+  let tier2 = 0
+  let itunesCalls = 0
+  let itunesRejected = 0
+
+  for (const pair of stillMissing) {
+    const albums = studioAlbumsFor(pair.artistKey)
+    if (!albums.length) continue
+
+    const displayName = discography[pair.artistKey]?.artistName ?? pair.artistKey
+
+    let albumName = cache.itunes[pair.key]?.albumName ?? null
+    const cached = pair.key in cache.itunes
+
+    if (!cached) {
+      await itunesLimiter.wait()
+      const candidates = await itunes.searchSong(displayName, pair.songTitle, 5)
+      itunesCalls++
+
+      // Believe a candidate only if iTunes also agrees on WHO recorded it.
+      // #275 is the standing proof that a name search returns whoever the
+      // term matched, not who was asked for.
+      const wanted = foldSongTitle(pair.songTitle)
+      const hit = candidates.find(c => foldSongTitle(c.name) === wanted)
+      albumName = hit?.albumName ?? null
+
+      cache.itunes[pair.key] = { albumName, cachedAt: new Date().toISOString() }
+      if (itunesCalls % 25 === 0) {
+        console.log(`   ${itunesCalls} queried`)
+        saveCache(cache)
+      }
+    }
+
+    if (!albumName || isSingleOrEp(albumName)) continue
+
+    const match = matchAlbumTitle(albumName, albums)
+    if (!match) { itunesRejected++; continue }
+
+    attribute(pair, match.album, 2)
+    tier2++
+  }
+
+  if (itunesCalls) saveCache(cache)
+  console.log(`   ${itunesCalls} queried · ${itunesRejected} rejected (album not in our discography) · ${tier2} attributed\n`)
+
   // ── Output ────────────────────────────────────────────────────────────────
 
   const attributed = Object.keys(results).length
@@ -394,9 +577,10 @@ export async function resolveSongAlbums(
     stats: {
       uniquePairs: allPairs.length,
       attributed,
-      byTier: { '0': tier0, '1': tier1 },
+      byTier: { '0': tier0, '1': tier1, '2': tier2 },
       unattributed: allPairs.length - attributed,
-      coversDeferred,
+      coverPairs,
+      coversUnroutable,
       artistsWithoutDiscography: unresolvedArtists.size,
     },
   }
@@ -412,8 +596,9 @@ export async function resolveSongAlbums(
   // pretty-printed file understated this by 157 KB on the first run.
   const bytes = Buffer.byteLength(serialized)
   console.log('📊 Attribution Summary')
-  console.log(`   Tier 0 (top-tracks): ${tier0}`)
+  console.log(`   Tier 0 (top-tracks):  ${tier0}`)
   console.log(`   Tier 1 (musicbrainz): ${tier1}`)
+  console.log(`   Tier 2 (itunes):      ${tier2}`)
   console.log(`   Attributed: ${attributed} / ${allPairs.length}  (${rate.toFixed(1)}%)`)
   console.log(`   Unattributed: ${allPairs.length - attributed}`)
   console.log(`   Size: ${(bytes / 1024).toFixed(0)} KB (budget 400 KB)`)
