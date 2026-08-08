@@ -276,7 +276,7 @@ Report the tier breakdown in stdout so the cost/benefit of Tier 2 is visible and
 
 **What it finds:** a song heard live **before the album containing it existed**.
 
-**Trigger:** attributed song where `album.releaseDate > concert.date`, **bounded on both sides**: at least 14 days and **at most 1,095 days (3 years)**. Both bounds are measured, not chosen — see below.
+**Trigger:** attributed song where `album.releaseDate > concert.date`, **bounded on both sides**: the gap must exceed the release date's own precision window (see below) and be **at most 1,095 days (3 years)**. Both bounds are measured, not chosen — see below.
 
 This is the exact inverse of v5.4's `album-trajectory` — there, the *record* was ahead; here, the *song* was. It requires no additional API work: once attribution carries a release date, the finding falls out of a date comparison. setlist.fm formally tracks live debuts and unreleased-song performances, so the practice is well-attested; this simply detects the archive owner's own instances of it.
 
@@ -311,7 +311,49 @@ None of those is a memory. They are **re-recordings and late reissues**: the son
 
 **Cost of the bound, stated honestly:** it also suppresses ~8 plausible findings above three years (RDGLDGRN, Wire). That trade is correct for a feature whose failure mode is a fabricated memory published under the archive owner's own name.
 
-> **Voice caution.** Setlist.fm data is fan-contributed and song titles drift, so a false positive here would claim the archive owner heard something they did not. Require **≥ 14 days** before release to fire, absorbing off-by-a-few-days release-date disagreements between sources.
+#### The lower bound — precision, not a flat floor
+
+The ≥ 14-day floor was **reasoned, never measured** — the same defect the ≥ 60% floor had (Resolved Decision 6). Measured against the shipped Window 2 data, it fails in both directions.
+
+**It is not where the findings are.** Counting raw candidates by gap:
+
+| gap band | count |
+| --- | --- |
+| 1–13 days (blocked by a 14-day floor) | 6 |
+| 14–30 days | 7 |
+| 31–90 days | 11 |
+
+Four of the six it blocks are **Royal Blood playing four songs from *How Did We Get So Dark?* ten days before release** — an unambiguous pre-release tour, and exactly the finding this detector exists to surface. A flat floor's dominant effect is deleting a real finding, which is the failure the 3-year ceiling was set to avoid at the other end.
+
+**It is unmeasurable on 14.8% of the data.** Of 1,716 attributed songs, **145 carry month-only precision (`YYYY-MM`) and 109 year-only (`YYYY`)**. A 14-day test against a month-precision date is not strict or lenient, it is undefined:
+
+```
+13d  Crowded House — "In My Command" (Together Alone, 1993-10) @ 1993-09-18
+```
+
+`1993-10` places the release anywhere from Oct 1 to Oct 31 — a true gap between 13 and 43 days. It reads as 13 only because the earliest possible date was assumed. Whether a flat floor fires is decided by a storage artifact.
+
+**The rule instead:** the gap must exceed the release date's **own uncertainty window**.
+
+| `releaseDate` precision | required gap to fire |
+| --- | --- |
+| `YYYY-MM-DD` | > 7 days |
+| `YYYY-MM` | > 31 days |
+| `YYYY` | **never fires** |
+
+The flat 14-day floor was doing two jobs at once — absorbing source disagreement *and* standing in for date precision — and doing the second badly. Split them, and each can be set from the data. Precision handles imprecise dates outright; 7 days still absorbs the few-day disagreement between setlist.fm and MusicBrainz that the original floor was written for.
+
+**What the lower floor actually admits, measured:** the entire sub-14-day population is six rows — the four Royal Blood rows at 10 days (day precision) and the two Crowded House rows at 13 days (month precision). The precision rule removes the Crowded House pair on its own. So moving 14 → 7 admits **exactly the Royal Blood finding and nothing else** in the shipped data, and that finding carries `songCountFromSameFutureAlbum = 4` — four songs from one unreleased album in one night, corroboration a single-song finding does not have.
+
+Same shape as the ceiling: bound the claim by what the data can actually support, and set the bound by counting rather than by intuition.
+
+#### Why the bound is a permanence guarantee, not a quality filter
+
+`.github/workflows/data-refresh.yml` re-runs enrichment **every Monday at 07:00 UTC**; `.github/workflows/liner-notes.yml` generates prose **at 08:00 UTC** and commits it directly, with no review gate. Liner notes are permalinked and never revisited.
+
+So a `road-tested` claim is published unreviewed and is **permanent**, while the release date underneath it is contributor-edited upstream and can change on any Monday. A finding sitting just above a flat floor is one MusicBrainz edit away from being false forever, and nothing will ever re-check it. The precision rule exists because of this: a claim must be robust to a refresh, not merely true at the moment it was generated.
+
+> **Voice caution.** Setlist.fm data is fan-contributed and song titles drift, so a false positive here would claim the archive owner heard something they did not. Never fire on a year-precision release date, and require the gap to clear the date's precision window (table above) — absorbing both off-by-a-few-days source disagreement and the width of an imprecise date.
 >
 > **Claim the ALBUM, never the song's existence.** *"I'd heard it a year before the record came out"* is safe. *"before the song existed"* is not, and the difference is not pedantry: Garbage's "No Horses" was a standalone 2017 single that only landed on an album in 2021. The song existed the night it was heard. Only the **album** was in the future, and that is the only thing this detector actually knows.
 >
@@ -406,7 +448,9 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 - [ ] Cover by an artist absent from our discography → `null`, no crash
 - [ ] An artist whose discography record exists but holds **zero albums** is not treated as a hit (the `isUsable` guard)
 - [ ] `tape` songs are excluded entirely, **including `tape` + `cover`**
-- [ ] `road-tested` requires ≥ 14 days before release
+- [ ] `road-tested` clears the release date's precision window — **> 7 days** on `YYYY-MM-DD`, **> 31 days** on `YYYY-MM`, **never** on `YYYY`
+- [ ] `road-tested` does NOT fire on a month-precision date inside its own uncertainty window — use **Crowded House, "In My Command" (*Together Alone*, `1993-10`, 13d)**, a real row in the shipped data whose true gap is unknowable between 13 and 43 days
+- [ ] `road-tested` DOES fire on a day-precision finding between 7 and 14 days — use **Royal Blood, *How Did We Get So Dark?* (`2017-06-16`, 10d, 4 songs)**, so a future re-tightening to a flat floor fails loudly instead of silently deleting it
 - [ ] `road-tested` does NOT fire above 1,095 days — **use James' "Sit Down" (10,856d) and The Alarm's "The Stand" (10,169d) as the fixtures**, since both are real rows in the shipped `song-albums.json` and both would otherwise publish a fabricated memory
 - [ ] `road-tested` still fires in the 1–3 year band — use The Cure's *Songs of a Lost World* (527d), so a future tightening of the cap fails loudly instead of silently deleting 18 real findings
 - [ ] `road-tested` reads `yearsBeforeDebut` for pre-debut shows and never coerces a `null` `careerYear` to 0
@@ -562,7 +606,9 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 4. **One predicate for "studio album", exported rather than duplicated.** Settled at reconciliation. `isStudioAlbum` is not a pure structural test — it consults a hand-maintained exclusion list — so a second implementation is a second source of truth on a question both files must answer identically. Export it from `derive-album-eras.ts`; do not re-filter `discography.json` here.
 5. **`song-albums.json` carries no derived fields.** Same rule v5.4 landed on after measuring: `coverUrl` is a pure function of `mbid`, `albumSlug` of `title`. Both are computed at read time.
 6. **The ≥ 60% floor is provisional until measured.** It was reasoned against a sibling metric that has since moved. Confirm or restate it from a real Tier 0+1 run at the end of Window 1 — a build must not fail against a number nobody has measured. **SETTLED:** measured at **88.2%** in Window 1 (#282). The floor stands.
-7. **`road-tested` is bounded above at 1,095 days.** Settled by reading all 71 findings the shipped data produces, not by intuition — everything up to 3 years is genuine, and past it the population is re-recordings and reissues. The ≥ 14-day floor guards against source disagreement; the 3-year ceiling guards against attributing a song to a record made decades after the night it was heard. See §5a.
+7. **`road-tested` is bounded above at 1,095 days.** Settled by reading all 71 findings the shipped data produces, not by intuition — everything up to 3 years is genuine, and past it the population is re-recordings and reissues. The 3-year ceiling guards against attributing a song to a record made decades after the night it was heard. See §5a.
+8. **The lower bound is a precision rule, not a flat floor.** The ≥ 14-day floor was reasoned, never measured — the same defect as Decision 6. Measured against Window 2 data it blocked a genuine finding (Royal Blood, 4 songs, 10 days) while being undefined on the 14.8% of release dates that are not day-precise. Replaced by a per-precision threshold: **> 7 days** for `YYYY-MM-DD`, **> 31 days** for `YYYY-MM`, **never** for `YYYY`. See §5a.
+9. **The bounds are a permanence guarantee, not a quality filter.** Data Refresh re-runs enrichment every Monday 07:00 UTC and Liner Notes publishes unreviewed at 08:00 UTC, permalinked and never revisited — while release dates are contributor-edited upstream. Any threshold a finding sits near is a claim that can silently become false forever. Bounds must therefore be robust to a refresh, not merely correct at generation time. See §5a.
 
 ---
 
@@ -573,6 +619,7 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 - **2026-08-07 (v1.1):** Drift log opened; Window 1 contract changes recorded (5 items).
 - **2026-08-07 (v1.2):** Windows 2–3 drift logged. v5.4 implementation complete.
 - **2026-08-07 (v1.3):** **Drift reconciliation.** All 9 logged items re-verified against shipped v5.4 code and folded into the body; a 10th found (§Part 3, cover routing needs two hops) and item 1's match rate corrected 73.5% → 74.0%. Design changes: Tier 1 reads `album-eras.json`, `isStudioAlbum` to be exported, `coverUrl` dropped from the schema, `get_concert_setlist` degradation is a byte-identical snapshot. The ≥ 60% floor is now explicitly **provisional**. Spec is no longer provisional; it is ready to implement.
-- **Version:** 1.3.0
+- **2026-08-08 (v1.4):** **`road-tested` lower bound measured and replaced.** The ≥ 14-day floor was reasoned, never measured; counting raw candidates against shipped Window 2 data showed it blocked a genuine 4-song finding and was undefined on the 254 of 1,716 attributed songs whose release date is not day-precise. Replaced by a per-precision rule (§5a). Recorded why the bounds are a permanence guarantee: the Monday 07:00 UTC refresh can move a release date under an already-published, permalinked, unreviewed post. Resolved Decisions 8 and 9 added.
+- **Version:** 1.4.0
 - **Author:** Lead architect (via Claude Code)
-- **Status:** Planned — reconciled against v5.4.0, ready for Window 1
+- **Status:** Planned — Windows 1–2 shipped, ready for Window 3
