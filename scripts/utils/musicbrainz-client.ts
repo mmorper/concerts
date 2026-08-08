@@ -12,6 +12,18 @@ import { RateLimiter } from './rate-limiter'
 // User-Agent required by MusicBrainz API
 const USER_AGENT = 'Morperhaus-Concerts/3.5.0 (concerts@morperhaus.org)'
 
+/**
+ * 503 handling for the track-listing methods.
+ *
+ * The attempt count is threaded through the recursive call rather than held in
+ * a helper — a helper that defaults its own depth parameter resets to zero on
+ * every recursion, so the bound never fires and a sustained outage becomes a
+ * silent infinite loop. The older methods in this file still recurse on 503
+ * with no bound at all.
+ */
+const MAX_503_RETRIES = 2
+const RETRY_DELAY_MS = 2000
+
 interface MusicBrainzArtist {
   id: string
   name: string
@@ -256,7 +268,10 @@ export class MusicBrainzClient {
    * B-sides and demos to the album as though they had always been on it —
    * exactly the plausible-but-false claim this feature must never generate.
    */
-  private async pickCanonicalRelease(releaseGroupMbid: string): Promise<string | null> {
+  private async pickCanonicalRelease(
+    releaseGroupMbid: string,
+    attempt = 0
+  ): Promise<string | null> {
     await this.rateLimiter.wait()
 
     try {
@@ -266,7 +281,14 @@ export class MusicBrainzClient {
       })
 
       if (!response.ok) {
-        if (response.status === 503) return this.retryAfter503(() => this.pickCanonicalRelease(releaseGroupMbid))
+        if (response.status === 503) {
+          if (attempt >= MAX_503_RETRIES) {
+            console.warn(`  ⚠️  MusicBrainz still 503 after ${MAX_503_RETRIES} retries — skipping ${releaseGroupMbid}`)
+            return null
+          }
+          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS))
+          return this.pickCanonicalRelease(releaseGroupMbid, attempt + 1)
+        }
         throw new Error(`MusicBrainz API error: ${response.status}`)
       }
 
@@ -289,7 +311,7 @@ export class MusicBrainzClient {
   }
 
   /** Track titles for one specific release. */
-  private async getReleaseTracks(releaseMbid: string): Promise<string[]> {
+  private async getReleaseTracks(releaseMbid: string, attempt = 0): Promise<string[]> {
     await this.rateLimiter.wait()
 
     try {
@@ -299,7 +321,14 @@ export class MusicBrainzClient {
       })
 
       if (!response.ok) {
-        if (response.status === 503) return this.retryAfter503(() => this.getReleaseTracks(releaseMbid))
+        if (response.status === 503) {
+          if (attempt >= MAX_503_RETRIES) {
+            console.warn(`  ⚠️  MusicBrainz still 503 after ${MAX_503_RETRIES} retries — skipping ${releaseMbid}`)
+            return []
+          }
+          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS))
+          return this.getReleaseTracks(releaseMbid, attempt + 1)
+        }
         throw new Error(`MusicBrainz API error: ${response.status}`)
       }
 
@@ -316,23 +345,6 @@ export class MusicBrainzClient {
       console.error(`  ❌ Failed to fetch tracks for release: ${releaseMbid}`, error)
       return []
     }
-  }
-
-  /**
-   * Back off once on a 503, then hand back to the caller.
-   *
-   * Bounded on purpose. The older methods in this file recurse on 503 with no
-   * depth limit, which turns a sustained upstream outage into a silent
-   * infinite loop rather than a failure anyone can see.
-   */
-  private async retryAfter503<T>(retry: () => Promise<T>, depth = 0): Promise<T | null> {
-    if (depth >= 2) {
-      console.warn('  ⚠️  MusicBrainz still returning 503 after 2 retries — giving up on this record')
-      return null
-    }
-    console.warn('  ⚠️  Rate limit hit, waiting 2 seconds...')
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    return retry()
   }
 
   /**

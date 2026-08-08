@@ -26,7 +26,7 @@
  * Spec:   docs/specs/future/global-setlist-album-attribution.md
  */
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs'
+import { readFileSync, writeFileSync, mkdirSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { MusicBrainzClient } from './utils/musicbrainz-client.js'
 import { matchAlbumTitle, isSingleOrEp } from './utils/album-title.js'
