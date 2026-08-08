@@ -28,6 +28,7 @@ const exec = promisify(execCallback)
  *   --skip-spotify            Skip Spotify metadata enrichment
  *   --skip-discography        Skip discography enrichment (MusicBrainz)
  *   --skip-album-eras         Skip album-era derivation (local, no API calls)
+ *   --skip-song-albums        Skip song→album resolution (MusicBrainz + iTunes, cached)
  *   --skip-tracks             Skip top tracks enrichment (iTunes/Deezer)
  *   --skip-setlists           Skip setlist pre-fetch (setlist.fm)
  *   --force-refresh-setlists  Re-fetch all setlists (ignore cache)
@@ -40,6 +41,7 @@ async function buildData() {
   const skipSpotify = process.argv.includes('--skip-spotify')
   const skipDiscography = process.argv.includes('--skip-discography')
   const skipAlbumEras = process.argv.includes('--skip-album-eras')
+  const skipSongAlbums = process.argv.includes('--skip-song-albums')
   const skipTracks = process.argv.includes('--skip-tracks')
   const skipSetlists = process.argv.includes('--skip-setlists')
   const forceRefreshSetlists = process.argv.includes('--force-refresh-setlists')
@@ -57,6 +59,7 @@ async function buildData() {
     { name: 'Enrich discography', active: !skipDiscography },
     { name: 'Derive album eras', active: !skipAlbumEras },
     { name: 'Pre-fetch setlists', active: !skipSetlists },
+    { name: 'Resolve songs to albums', active: !skipSongAlbums },
     { name: 'Aggregate genres timeline', active: true },
     { name: 'Aggregate most-played songs', active: true },
     { name: 'Generate facts for liner notes', active: true },
@@ -240,6 +243,30 @@ async function buildData() {
       console.log('⏭️  Skipping setlist pre-fetch (--skip-setlists flag set)\n')
     }
 
+    // Step 8.5: Resolve setlist songs to studio albums.
+    //
+    // Placed AFTER setlists, not after derive-album-eras as the spec's §Part 4
+    // says. The spec put it at "Step 9.6, immediately after derive-album-eras"
+    // — but this reads setlists-cache.json, which Step 8 is what produces. Run
+    // it earlier and a fresh clone attributes an empty setlist corpus and
+    // reports 0% without failing.
+    //
+    // Reads album-eras.json, setlists-cache.json, discography.json and
+    // artists-top-tracks.json. Network calls only for release-groups and songs
+    // not already in data/cache/ — a warm re-run makes none at all.
+    if (!skipSongAlbums) {
+      currentStep++
+      console.log('=' .repeat(60))
+      console.log(`Step ${currentStep}/${activeSteps}: Resolving songs to albums`)
+      console.log('-'.repeat(60))
+
+      const { resolveSongAlbums } = await import('./resolve-song-albums.ts')
+      await resolveSongAlbums({ dryRun })
+      console.log()
+    } else {
+      console.log('⏭️  Skipping song→album resolution (--skip-song-albums flag set)\n')
+    }
+
     // Step 9: Aggregate genres timeline (always runs)
     currentStep++
     console.log('=' .repeat(60))
@@ -325,6 +352,7 @@ async function buildData() {
       if (!skipVenues) console.log('   - public/data/venues-metadata.json')
       if (!skipDiscography) console.log('   - public/data/discography.json')
       if (!skipAlbumEras) console.log('   - public/data/album-eras.json')
+      if (!skipSongAlbums) console.log('   - public/data/song-albums.json')
       if (!skipSetlists) console.log('   - public/data/setlists-cache.json')
       console.log('   - public/data/most-played-songs.json')
       console.log('   - public/data/facts.json')
