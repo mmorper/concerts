@@ -68,6 +68,35 @@ describe('keepTracksBilledTo', () => {
     expect(sawInstead).toBe('Duran Duran')
   })
 
+  it('keeps a track where the artist is one of several credited', () => {
+    // "Get Lucky" is Nile Rodgers' most-played track and iTunes bills it to all
+    // three credited artists. Exact-billing matching left him with nothing.
+    const { kept } = keepTracksBilledTo('Nile Rodgers', [
+      track('Get Lucky', 'Daft Punk, Pharrell Williams & Nile Rodgers', 'Random Access Memories'),
+      track('Le Freak', 'Kid Congo Powers & Sally Norvell', 'Fever'),
+    ])
+
+    expect(kept).toHaveLength(1)
+    expect(kept[0].name).toBe('Get Lucky')
+  })
+
+  it('matches whole tokens, so a shorter name does not match a longer one', () => {
+    // "Common" and "Common Sense" are different artists — both in this archive's
+    // orbit, and substring matching would collapse them.
+    expect(keepTracksBilledTo('Common', [track('Summertime', 'Common Sense')]).kept).toHaveLength(0)
+    expect(keepTracksBilledTo('Berlin', [track('Berlin', 'RY X')]).kept).toHaveLength(0)
+  })
+
+  it('accepts any known billing of the same act', () => {
+    // iTunes files OMD under the full name — exactly the case the
+    // discographyKeys relation in artist-aliases.json exists to record.
+    const { kept } = keepTracksBilledTo(['OMD', 'orchestral-manoeuvres-in-the-dark'], [
+      track('Enola Gay', 'Orchestral Manoeuvres In the Dark', 'Organisation'),
+    ])
+
+    expect(kept).toHaveLength(1)
+  })
+
   it('matches through the same folding the rest of the pipeline uses', () => {
     // foldArtistName handles diacritics, ampersands and leading articles, so
     // the filter must not reject a legitimate spelling difference.
