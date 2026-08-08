@@ -177,3 +177,29 @@ export function songIndexKeys(trackTitle: string): string[] {
   const keys = splitMedley(trackTitle).map(foldSongTitle).filter(Boolean)
   return [...new Set(keys)]
 }
+
+/**
+ * The lookup key for one artist's performance of one song.
+ *
+ * Hyphenated lowercase, matching the project's normalized-name convention:
+ * `depeche-mode::never-let-me-down-again`.
+ *
+ * EXPORTED so no consumer hand-builds it. Every reader — the MCP, the v6.0
+ * detectors — must derive the key through this function, or a caller that
+ * folds differently will miss every entry while looking like it simply found
+ * nothing. Same discipline as deepLinks.ts.
+ *
+ * ── WHY IT LIVES HERE AND NOT IN THE RESOLVER ────────────────────────────────
+ * It was defined in `resolve-song-albums.ts` through Window 2. That file imports
+ * `fs` and both API clients, so the MCP Worker — named above as a required
+ * consumer — could not import it without dragging Node built-ins into a Workers
+ * bundle. The instruction above and the file it sat in were in direct conflict,
+ * and the Worker would have had to hand-build the key to read the data at all.
+ *
+ * This module is pure string manipulation with zero imports, so both the build
+ * scripts and the Worker can share the one implementation. `resolve-song-albums.ts`
+ * re-exports it, so existing importers are unaffected.
+ */
+export function songAlbumKey(artistKey: string, songTitle: string): string {
+  return `${artistKey}::${foldSongTitle(songTitle).replace(/ /g, '-')}`
+}

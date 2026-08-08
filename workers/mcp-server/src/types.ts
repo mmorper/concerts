@@ -266,6 +266,33 @@ export interface AlbumEras {
 }
 
 /**
+ * One attributed song → the earliest studio album carrying it.
+ *
+ * `releaseDate` is NOT always a full date: MusicBrainz supplies `YYYY-MM` and
+ * bare `YYYY` for older records. 254 of 1,716 entries are imprecise. Any
+ * consumer measuring a gap against it must respect that precision — see
+ * §5a of the attribution spec.
+ */
+export interface SongAlbum {
+  songTitle: string;
+  albumTitle: string;
+  mbid: string;
+  releaseDate: string;
+  coverAvailable: boolean;
+  matchTier: number;
+  /** Set when the performance was a cover; the album belongs to the original act. */
+  isCover?: boolean;
+  /** Present only for covers: the key of the artist whose record carries the song. */
+  originalArtistKey?: string;
+}
+
+export interface SongAlbums {
+  version: string;
+  generatedAt: string;
+  songs: Record<string, SongAlbum>;
+}
+
+/**
  * Cover Art Archive URL for a release-group. Verified deterministic across all
  * 11,382 covers in discography.json. Only call when `coverAvailable` is true.
  */

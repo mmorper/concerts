@@ -7,7 +7,11 @@
 // network. registerTools() is the I/O seam: it fetches via the data layer, then narrates.
 
 import { z } from "zod";
-import { EMPTY_ALIAS_INDEX, aliasName, buildAliasIndex, canonicalSlug, slugsFor, type AliasIndex } from "./aliases.js";
+import { EMPTY_ALIAS_INDEX, aliasName, buildAliasIndex, canonicalSlug, slugsFor, type AliasIndex, type ArtistAliasData } from "./aliases.js";
+// The ONE implementation of the song-albums lookup key, shared with the build
+// scripts. Pure string code with zero imports, so it bundles into a Worker.
+// Hand-building this key is how a reader silently matches nothing.
+import { songAlbumKey } from "../../../scripts/utils/song-title.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
@@ -25,6 +29,8 @@ import type {
   SetlistEntry,
   SetlistSong,
   SetlistsCache,
+  SongAlbum,
+  SongAlbums,
   VenueMetadata,
   VenuesMetadata,
 } from "./types.js";
@@ -38,6 +44,7 @@ import {
   getMostPlayedSongs,
   getNarration,
   getSetlistsCache,
+  getSongAlbums,
   getVenuesMetadata,
   isQueryUsageOverCap,
   readQueryUsage,
@@ -938,12 +945,56 @@ function eraLine(eras: AlbumEras | null, concertId: string): string | null {
   return `Touring ${era.currentAlbum.title} (released ${agePhrase(era.daysSinceRelease)} earlier).`;
 }
 
+/**
+ * The artist key `song-albums.json` files this billing under.
+ *
+ * Three candidates, tried in order. All are cheap, and a wrong guess cannot
+ * produce a wrong annotation — it simply misses, because the song key it builds
+ * will not exist under that artist.
+ *
+ *   1. hop 2 — `discographyKeys` (omd -> orchestral-manoeuvres-in-the-dark)
+ *   2. the billing slug itself, which is right for 122 of 126 artists
+ *   3. the slug of the artist's DISPLAY name, which is what the discography is
+ *      keyed by. Mechanical, and the only route that reaches
+ *      "Echo & The Bunnymen" -> echo-the-bunnymen and
+ *      "Joan Jett and the Blackhearts" -> joan-jett-and-the-blackhearts.
+ *
+ * Verified to reach all 126 artist prefixes present in the shipped file.
+ */
+function songAlbumArtistKeys(
+  billing: string,
+  meta: ArtistsMetadata,
+  aliases: ArtistAliasData | null,
+): string[] {
+  const slug = normalizeName(billing);
+  const hop = aliases?.discographyKeys?.find((d) => d.act === slug)?.discographyKey;
+  const viaDisplayName = normalizeName(meta[slug]?.name ?? "");
+  return [hop, slug, viaDisplayName].filter((k): k is string => Boolean(k));
+}
+
+/** The attribution for one performed song, or null. Covers resolve like any other song. */
+function songAlbumOf(
+  song: SetlistSong,
+  artistKeys: string[],
+  songAlbums: SongAlbums | null,
+): SongAlbum | null {
+  if (!songAlbums?.songs) return null;
+  for (const key of artistKeys) {
+    const hit = songAlbums.songs[songAlbumKey(key, song.name)];
+    if (hit) return hit;
+  }
+  return null;
+}
+
 export function concertSetlist(
   concerts: Concert[],
   setlists: SetlistsCache | null,
   args: { artist?: string; date?: string; concertId?: string },
   topTracks: ArtistsTopTracks = {},
   eras: AlbumEras | null = null,
+  songAlbums: SongAlbums | null = null,
+  artistsMeta: ArtistsMetadata = {},
+  aliases: ArtistAliasData | null = null,
 ): string {
   const r = resolveConcert(concerts, args);
   if (r.kind === "message") return r.text;
@@ -994,12 +1045,61 @@ export function concertSetlist(
     lines.push("");
   }
 
+  // v6.0 (#277 §6a): the album each song came off, when we know it.
+  //
+  // Covers are deliberately NOT annotated. songLine() already prints
+  // "(Public Enemy cover)", which names the original act — and the spec's rule
+  // is that a cover annotates with the artist, not the album. Printing the
+  // album too would read as though the headliner played a Public Enemy record.
+  const artistKeys = songAlbumArtistKeys(
+    sl.artistName ?? c.headliner,
+    artistsMeta,
+    aliases,
+  );
+  const attributions = sl.songs.map((song) =>
+    song.tape ? null : songAlbumOf(song, artistKeys, songAlbums),
+  );
+  const albumOf = (i: number): string | null => {
+    const a = attributions[i];
+    return a && !a.isCover ? a.albumTitle : null;
+  };
+
+  const numbered = sl.songs.map((song, i) => `${i + 1}. ${songLine(song)}`);
+  const identified = sl.songs.filter((_, i) => albumOf(i) !== null).length;
+
+  // Column width for the annotations, capped so one long title cannot push the
+  // whole block off to the right.
+  const annotatedWidths = numbered
+    .map((l, i) => (albumOf(i) === null ? 0 : l.length))
+    .filter((n) => n > 0);
+  const width = annotatedWidths.length
+    ? Math.min(Math.max(...annotatedWidths), 44)
+    : 0;
+
   sl.songs.forEach((song, i) => {
-    lines.push(`${i + 1}. ${songLine(song)}`);
+    const album = albumOf(i);
+    // No attribution renders EXACTLY as it did pre-v6 — never "Unknown album",
+    // and never a trailing pad.
+    lines.push(album === null ? numbered[i] : `${numbered[i].padEnd(width)}  ${album}`);
     // setlist.fm's free-text note — "first time live since 1984", that kind of thing.
     // Indented under its song, the way the panel renders it.
     if (song.info) lines.push(`   ${song.info}`);
   });
+
+  // Only when something was actually identified. With the data file absent —
+  // or present and matching nothing — this whole block is silent and the output
+  // is byte-identical to v5.4.
+  if (identified > 0) {
+    const performed = sl.songs.filter((s) => !s.tape).length;
+    const counts = new Map<string, number>();
+    sl.songs.forEach((_, i) => {
+      const a = albumOf(i);
+      if (a) counts.set(a, (counts.get(a) ?? 0) + 1);
+    });
+    const [topAlbum, topCount] = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
+    const tail = topCount > 1 ? ` ${topCount} from ${topAlbum}.` : "";
+    lines.push("", `${identified} of ${performed} songs identified.${tail}`);
+  }
 
   const out = lines.join("\n");
   return out + linkFooter(out);
@@ -1404,10 +1504,13 @@ export function registerTools(server: McpServer, env: Env): void {
     instrument(env, "get_concert_setlist", async (args) => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
-      const [setlists, tracks, eras] = await Promise.all([
+      const [setlists, tracks, eras, songAlbums, meta, aliases] = await Promise.all([
         getSetlistsCache(env, bgCtx),
         getArtistsTopTracks(env, bgCtx),
         getAlbumEras(env, bgCtx),
+        getSongAlbums(env, bgCtx),
+        getArtistsMetadata(env, bgCtx),
+        getArtistAliases(env, bgCtx),
       ]);
       return textResult(
         concertSetlist(
@@ -1416,6 +1519,9 @@ export function registerTools(server: McpServer, env: Env): void {
           args as { artist?: string; date?: string; concertId?: string },
           tracks ?? {},
           eras,
+          songAlbums,
+          meta ?? {},
+          aliases,
         ),
       );
     }),
