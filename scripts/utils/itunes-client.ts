@@ -1,8 +1,39 @@
 /**
  * iTunes Search API Client
- * Free tier: No rate limits (Apple encourages usage)
+ *
+ * Keyless and free, but NOT unlimited — the previous version of this comment
+ * said "no rate limits (Apple encourages usage)" and that is measurably wrong.
+ * Two full 257-artist sweeps, measured 2026-08-08:
+ *
+ *   600ms cadence   27x HTTP 429, then 149x HTTP 403
+ *   3000ms cadence   0x HTTP 429, then 156x HTTP 403
+ *
+ * Both runs died at roughly the same ARTIST COUNT (~45-90) despite a 5x
+ * difference in cadence. That is a request-budget signature, not a rate one:
+ * slowing down does not buy more requests, it just spreads the same allowance
+ * over more wall-clock. Sustained 429s escalate to a 403 block on the whole
+ * client, which clears on its own within minutes.
+ *
+ * The practical consequence: a full sweep must be CHUNKED (~40 artists, pause,
+ * repeat), not slowed. And a 403 must stop the run — see ITunesBlockedError.
+ *
  * Docs: https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/
  */
+
+/**
+ * Apple has blocked this client, not merely throttled it.
+ *
+ * Distinct from an empty result because the correct response is different:
+ * an empty result means "this artist has no tracks", a block means "nothing
+ * you ask for will succeed until this expires." Retrying is not just futile,
+ * it is counterproductive — the block is what sustained retrying earns.
+ */
+export class ITunesBlockedError extends Error {
+  constructor(label: string) {
+    super(`iTunes returned 403 for "${label}" — client is blocked, not rate limited`)
+    this.name = 'ITunesBlockedError'
+  }
+}
 
 interface iTunesTrack {
   trackName: string
@@ -87,6 +118,12 @@ export class iTunesClient {
           throw new Error(`iTunes API error: 429 (exhausted retries)`)
         }
 
+        // Not retried, and deliberately not swallowed into an empty result:
+        // every subsequent request will fail the same way until it expires.
+        if (response.status === 403) {
+          throw new ITunesBlockedError(label)
+        }
+
         if (!response.ok) {
           throw new Error(`iTunes API error: ${response.status}`)
         }
@@ -112,6 +149,9 @@ export class iTunesClient {
         }))
 
       } catch (error) {
+        // A block is the caller's problem to act on, not a per-artist miss.
+        if (error instanceof ITunesBlockedError) throw error
+
         if (attempt < this.maxRetries && error instanceof Error && error.message.includes('429')) {
           continue
         }

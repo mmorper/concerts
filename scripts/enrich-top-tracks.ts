@@ -22,7 +22,7 @@
 
 import { readFileSync, writeFileSync } from 'fs'
 import { resolve } from 'path'
-import { iTunesClient, type NormalizedTrack } from './utils/itunes-client.js'
+import { iTunesClient, ITunesBlockedError, type NormalizedTrack } from './utils/itunes-client.js'
 import { normalizeArtistName } from '../src/utils/normalize.js'
 import { foldArtistName } from './utils/artist-key.js'
 
@@ -211,6 +211,11 @@ const SEARCH_ALIASES: Record<string, string> = {
   "Chaka Kahn": "Chaka Khan",
   "Jane Weidlin": "Jane Wiedlin",
   "Gene Loves Jezabel": "Gene Loves Jezebel",
+
+  // The marquee said DJ Z-Trip; iTunes bills every track to "Z-Trip". Needed
+  // even though his ID is pinned — the billing guard compares against the
+  // search name, and a pinned ID does not exempt an artist from it.
+  "DJ Z-Trip": "Z-Trip",
 }
 
 /**
@@ -269,6 +274,24 @@ const ARTIST_ID_OVERRIDES: Record<string, number> = {
   "Bad Religion": 150160,     // was returning Frank Ocean's channel ORANGE
   "Common Sense": 15898676,   // the SoCal reggae band that opened for The English Beat — not Common, not the dance act
   "Chris Shiflett": 214324366, // his solo work (Hard Lessons, Lost at Sea) — was returning Foo Fighters
+
+  // Found by the first --force --dry-run sweep. Each ID disambiguated against
+  // our OWN discography rather than by genre guess — where two acts share a
+  // name, the one whose albums we already hold is the one who played here.
+  "Berlin": 364321,             // was returning RY X's song "Berlin"; this is Terri Nunn's Berlin
+  "Blue Plate Special": 1693845167, // the blues act (Can You Dig It, 2006, in our discography) — not the bluegrass one
+  "Book of Love": 903133,       // was returning Peter Gabriel's "Book of Love"
+  "Bow Wow Wow": 636669,        // was returning The Wiggles
+  "DJ Z-Trip": 6199422,         // was returning Tommy Lee; iTunes bills him "Z-Trip" (see SEARCH_ALIASES)
+  "Husbands": 955931737,        // the CUATRO band that opened for Cold War Kids — not HUSBANDS of New England Casket Co.
+  "Inner Circle": 100091,       // was returning Jacob Miller, their late singer, under his own billing
+  "John Doe": 2354096,          // was returning Public Announcement; this is X's John Doe
+
+  // NOT pinned, deliberately: Kiev. All four iTunes candidates are hip-hop
+  // acts; ours is the LA indie band that opened for Foals (Falling Bough
+  // Wisdom Teeth, Willing Eyes). No correct answer exists to pin, so the
+  // billing guard rejects it and the artist carries no previews. A gap is the
+  // right outcome — see the FAIL CLOSED note in scripts/utils/album-title.ts.
 }
 
 /**
@@ -374,6 +397,20 @@ export function keepTracksBilledTo(
 }
 
 /**
+ * The billing iTunes used most often across an artist's kept tracks.
+ *
+ * Not simply the first track's: a collaboration can sit at the top of the list
+ * and misreport the artist we resolved. Z-Trip's most-played track is billed
+ * "Z-Trip & Chester Bennington", which is true of the track and misleading as
+ * a record of who we asked for and got.
+ */
+function commonBilling(tracks: NormalizedTrack[]): string | undefined {
+  const tally = new Map<string, number>()
+  for (const t of tracks) tally.set(t.artistName, (tally.get(t.artistName) ?? 0) + 1)
+  return [...tally.entries()].sort((a, b) => b[1] - a[1])[0]?.[0]
+}
+
+/**
  * Strip transient provenance before persisting. See NormalizedTrack.
  */
 function forStorage(tracks: NormalizedTrack[]): Omit<NormalizedTrack, 'artistName' | 'artistId'>[] {
@@ -430,6 +467,7 @@ export async function enrichTopTracks(
   let skipped = 0
   let failed = 0
   const misresolved: Array<{ artist: string; got: string }> = []
+  let blockedAt: string | null = null
 
   for (const artistName of artists) {
     const normalized = normalizeArtistName(artistName)
@@ -501,7 +539,7 @@ export async function enrichTopTracks(
             fetchedAt: new Date().toISOString(),
             resolvedVia: artistIdOverride ? 'artist-id' : searchName !== artistName ? 'alias' : 'search',
             itunesArtistId: validatedTracks[0]?.artistId,
-            itunesArtistName: validatedTracks[0]?.artistName,
+            itunesArtistName: commonBilling(validatedTracks),
             tracks: forStorage(validatedTracks)
           }
           enriched++
@@ -529,6 +567,14 @@ export async function enrichTopTracks(
       failed++
 
     } catch (error) {
+      // Stop the run. Every remaining artist would fail identically, and the
+      // requests that fail are themselves what deepens the block — the first
+      // sweep fired ~200 doomed requests after it was already locked out.
+      if (error instanceof ITunesBlockedError) {
+        blockedAt = artistName
+        break
+      }
+
       console.error(`  ❌ Error fetching ${artistName}:`, error)
       failed++
     }
@@ -538,9 +584,11 @@ export async function enrichTopTracks(
   // artists-metadata.json (#255): this writes the whole object back with no
   // delete path, so any key ever written survives forever.
   //
-  // Skipped under --artist: that run only visited one artist, so every other
-  // record looks orphaned when it is simply untouched.
-  const liveKeys = new Set(artist ? Object.keys(results) : artists.map(normalizeArtistName))
+  // Skipped under --artist, and after a block: those runs only visited some of
+  // the artists, so every record they never reached looks orphaned when it is
+  // simply untouched. Pruning on a partial run would delete real data.
+  const partialRun = Boolean(artist) || blockedAt !== null
+  const liveKeys = new Set(partialRun ? Object.keys(results) : artists.map(normalizeArtistName))
   const orphans = Object.keys(results).filter(key => !liveKeys.has(key))
   for (const key of orphans) {
     delete results[key]
@@ -556,6 +604,14 @@ export async function enrichTopTracks(
     console.log(`\n🌵 DRY RUN — ${outputPath} not written`)
   } else {
     writeFileSync(outputPath, JSON.stringify(results, null, 2), 'utf-8')
+  }
+
+  if (blockedAt) {
+    const reached = enriched + failed + misresolved.length
+    console.log(`\n🛑 STOPPED — iTunes returned 403 at "${blockedAt}". This is a block, not a rate limit.`)
+    console.log(`   Reached ${reached} of ${artists.length} artists. The rest were NOT checked.`)
+    console.log(`   The block clears on its own in minutes. Re-run to continue — records`)
+    console.log(`   already fetched are kept, and nothing that failed was overwritten.`)
   }
 
   if (misresolved.length > 0) {
