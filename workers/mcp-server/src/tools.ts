@@ -942,7 +942,10 @@ function resolveConcert(
 function eraLine(eras: AlbumEras | null, concertId: string): string | null {
   const era = eras?.concerts[concertId];
   if (!era?.currentAlbum || era.daysSinceRelease === null) return null;
-  return `Touring ${era.currentAlbum.title} (released ${agePhrase(era.daysSinceRelease)} earlier).`;
+  // agePhrase yields "9 months old", which reads correctly after a copula
+  // ("...was 9 months old by then") but not inside this sentence, where it
+  // produced "released 9 months old earlier" — shipped since v5.4.
+  return `Touring ${era.currentAlbum.title} (released ${agePhrase(era.daysSinceRelease).replace(/ old$/, "")} earlier).`;
 }
 
 /**

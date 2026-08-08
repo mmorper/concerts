@@ -992,3 +992,20 @@ describe("get_concert_setlist — album annotations (v6.0 §6a)", () => {
     expect(mixed()).toContain("1 of 2 songs identified.");
   });
 });
+
+describe("eraLine phrasing", () => {
+  it("does not say 'released N months old earlier'", () => {
+    const eras: any = {
+      version: "1", generatedAt: "", artists: {}, stats: {},
+      concerts: {
+        "concert-5": {
+          currentAlbum: { title: "Somewhere Between Heaven and Hell" },
+          daysSinceRelease: 274,
+        },
+      },
+    };
+    const text = concertSetlist(archive(), SETLISTS, { concertId: "concert-5" }, TOP_TRACKS, eras);
+    expect(text).toContain("(released 9 months earlier)");
+    expect(text).not.toContain("old earlier");
+  });
+});
