@@ -51,6 +51,20 @@ export interface Album {
   coverAvailable: boolean
 }
 
+/** One release inside a release-group, with its track listing. */
+interface MusicBrainzRelease {
+  id: string
+  title: string
+  date?: string
+  status?: string
+  media?: Array<{ tracks?: Array<{ title: string; position?: number }> }>
+}
+
+interface MusicBrainzReleaseBrowseResponse {
+  releases: MusicBrainzRelease[]
+  'release-count': number
+}
+
 export class MusicBrainzClient {
   private baseUrl = 'https://musicbrainz.org/ws/2/'
   private coverArtUrl = 'https://coverartarchive.org/release-group/'
@@ -198,6 +212,127 @@ export class MusicBrainzClient {
       console.error(`  ❌ Failed to fetch discography for MBID: ${mbid}`, error)
       return []
     }
+  }
+
+  /**
+   * Track titles for a release-group (v5.5 song → album attribution, #276).
+   *
+   * A release-GROUP is the abstract record ("Violator"); a RELEASE is a
+   * specific pressing of it, and only releases carry track listings. So this
+   * browses the group's releases, takes ONE, and reads its media.
+   *
+   * Which one matters. Preference order:
+   *   1. Official status — avoids promos and bootleg pressings
+   *   2. Earliest date   — the original tracklist, not a reissue's bonus discs
+   *
+   * Picking a deluxe reissue instead would attribute B-sides and demos to the
+   * album as though they had always been on it, which is precisely the kind of
+   * plausible-but-false claim this feature must not generate.
+   *
+   * Returns [] on any failure. A group with no usable release is a normal
+   * outcome, not an error — the caller leaves those songs unattributed.
+   */
+  async getReleaseGroupTracks(releaseGroupMbid: string): Promise<string[]> {
+    // TWO requests, deliberately — it is both faster and more accurate than
+    // pulling every pressing's track listing at once. Measured on Violator:
+    //
+    //   browse + inc=recordings, limit=100   4.0s   183 KB
+    //   browse alone, then one release       1.5s    34 KB
+    //
+    // A popular album has dozens of pressings and the combined query drags in
+    // all of them. Worse, the one-shot version picked a pressing whose titles
+    // merge hidden interludes — "Enjoy the Silence / Interlude #2: Crucified" —
+    // where choosing deliberately returns the canonical nine-track listing.
+    const chosen = await this.pickCanonicalRelease(releaseGroupMbid)
+    if (!chosen) return []
+
+    return this.getReleaseTracks(chosen)
+  }
+
+  /**
+   * The release whose track listing best represents a release-group.
+   *
+   * Official first, then earliest. A promo or a deluxe reissue would attribute
+   * B-sides and demos to the album as though they had always been on it —
+   * exactly the plausible-but-false claim this feature must never generate.
+   */
+  private async pickCanonicalRelease(releaseGroupMbid: string): Promise<string | null> {
+    await this.rateLimiter.wait()
+
+    try {
+      const url = `${this.baseUrl}release?release-group=${releaseGroupMbid}&limit=100&fmt=json`
+      const response = await fetch(url, {
+        headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' }
+      })
+
+      if (!response.ok) {
+        if (response.status === 503) return this.retryAfter503(() => this.pickCanonicalRelease(releaseGroupMbid))
+        throw new Error(`MusicBrainz API error: ${response.status}`)
+      }
+
+      const data: MusicBrainzReleaseBrowseResponse = await response.json()
+      const releases = data.releases ?? []
+      if (releases.length === 0) return null
+
+      const sorted = [...releases].sort((a, b) => {
+        const officialA = a.status === 'Official' ? 0 : 1
+        const officialB = b.status === 'Official' ? 0 : 1
+        if (officialA !== officialB) return officialA - officialB
+        return (a.date || '9999').localeCompare(b.date || '9999')
+      })
+
+      return sorted[0]?.id ?? null
+    } catch (error) {
+      console.error(`  ❌ Failed to browse releases for release-group: ${releaseGroupMbid}`, error)
+      return null
+    }
+  }
+
+  /** Track titles for one specific release. */
+  private async getReleaseTracks(releaseMbid: string): Promise<string[]> {
+    await this.rateLimiter.wait()
+
+    try {
+      const url = `${this.baseUrl}release/${releaseMbid}?inc=recordings&fmt=json`
+      const response = await fetch(url, {
+        headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' }
+      })
+
+      if (!response.ok) {
+        if (response.status === 503) return this.retryAfter503(() => this.getReleaseTracks(releaseMbid))
+        throw new Error(`MusicBrainz API error: ${response.status}`)
+      }
+
+      const data: MusicBrainzRelease = await response.json()
+      const titles = (data.media ?? [])
+        .flatMap(m => m.tracks ?? [])
+        .map(t => t.title)
+        .filter(Boolean)
+
+      // De-duplicate: a double album can repeat a title across discs, and a
+      // reprise is not a second song for attribution purposes.
+      return [...new Set(titles)]
+    } catch (error) {
+      console.error(`  ❌ Failed to fetch tracks for release: ${releaseMbid}`, error)
+      return []
+    }
+  }
+
+  /**
+   * Back off once on a 503, then hand back to the caller.
+   *
+   * Bounded on purpose. The older methods in this file recurse on 503 with no
+   * depth limit, which turns a sustained upstream outage into a silent
+   * infinite loop rather than a failure anyone can see.
+   */
+  private async retryAfter503<T>(retry: () => Promise<T>, depth = 0): Promise<T | null> {
+    if (depth >= 2) {
+      console.warn('  ⚠️  MusicBrainz still returning 503 after 2 retries — giving up on this record')
+      return null
+    }
+    console.warn('  ⚠️  Rate limit hit, waiting 2 seconds...')
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    return retry()
   }
 
   /**

@@ -94,7 +94,8 @@ const DAYS_PER_MONTH = 30.44
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
-interface RawAlbum {
+/** A raw `discography.json` album, as MusicBrainz gave it to us. */
+export interface RawAlbum {
   id: string
   title: string
   releaseDate: string
@@ -206,8 +207,19 @@ export interface ArtistEra {
  * This deliberately excludes 1,832 compilations and 1,381 live albums. Leaving
  * them in wrecks every era calculation: a 2011 greatest-hits package would make
  * a 1985 show look like it sat inside a 2011 album cycle.
+ *
+ * EXPORTED because v5.5's song→album attribution needs the same answer, and
+ * the predicate is not reproducible from structure alone — it consults
+ * RELEASE_EXCLUSIONS. A second implementation would be a second source of
+ * truth on whether a mistagged bootleg is a studio album, and the two would
+ * disagree exactly where it matters: v5.4 would place a show in one album
+ * cycle while v5.5 attributed its songs to a record v5.4 says never existed.
+ *
+ * Callers pass raw `discography.json` album objects. Anything already reading
+ * `album-eras.json`'s `studioAlbums` has been filtered by this function
+ * already and must not re-filter.
  */
-function isStudioAlbum(album: RawAlbum): boolean {
+export function isStudioAlbum(album: RawAlbum): boolean {
   if (RELEASE_EXCLUSIONS[album.id]) return false
   return (
     album.primaryType === 'Album' &&
