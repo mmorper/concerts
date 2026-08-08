@@ -248,65 +248,72 @@ async function main() {
   const llmPath = path.join(__dirname, '..', 'public', 'llm.txt')
   let llmContent = fs.readFileSync(llmPath, 'utf-8')
 
-  // Update overview stats (first line)
-  llmContent = llmContent.replace(
+  /**
+   * Replace a stat in llm.txt, and SAY SO when the pattern does not match.
+   *
+   * A plain .replace() that misses is a silent no-op: the file keeps its old
+   * number, the script reports success, and nothing ever flags it. That is
+   * exactly what happened to the discography line, which sat at "15,000+
+   * albums across 247 artists" against a real 11,382 and 257 — the pattern
+   * wrote a "+" its own search could not match, so it never fired again after
+   * the first run. The footer on the same page said 11,382+, so llm.txt was
+   * publicly contradicting itself to the agents it exists to inform.
+   *
+   * Every miss is now a warning. Being loud is the point.
+   */
+  const llmMisses: string[] = []
+  const sub = (label: string, pattern: RegExp, replacement: string) => {
+    if (!pattern.test(llmContent)) {
+      llmMisses.push(label)
+      return
+    }
+    llmContent = llmContent.replace(pattern, replacement)
+  }
+
+  sub(
+    'overview stats',
     /Personal concert archive spanning \d+-\d+\. Interactive web application with \d+ concerts, \d+ artists, \d+ venues\./,
     `Personal concert archive spanning ${startYear}-${endYear}. Interactive web application with ${concerts} concerts, ${artists} artists, ${venues} venues.`
   )
 
-  // Update album count in authoritative data section
-  llmContent = llmContent.replace(
+  sub(
+    'authoritative discographies',
     /- Artist discographies \(via MusicBrainz API - [^)]+\)/,
     `- Artist discographies (via MusicBrainz API - ${totalAlbums.toLocaleString()}+ albums)`
   )
 
-  // Update concert records count
-  llmContent = llmContent.replace(
-    /\*\*Records:\*\* \d+ concerts/,
-    `**Records:** ${concerts} concerts`
-  )
+  sub('records: concerts', /\*\*Records:\*\* \d+ concerts/, `**Records:** ${concerts} concerts`)
+  sub('records: artists', /\*\*Records:\*\* \d+ artists/, `**Records:** ${artists} artists`)
+  sub('records: venues', /\*\*Records:\*\* \d+ venues/, `**Records:** ${venues} venues`)
 
-  // Update artist records count
-  llmContent = llmContent.replace(
-    /\*\*Records:\*\* \d+ artists/,
-    `**Records:** ${artists} artists`
-  )
-
-  // Update venue records count
-  llmContent = llmContent.replace(
-    /\*\*Records:\*\* \d+ venues/,
-    `**Records:** ${venues} venues`
-  )
-
-  // Update discography records count
-  llmContent = llmContent.replace(
-    /\*\*Records:\*\* [0-9,]+ albums across \d+ artists/,
+  // The "+" is optional in the pattern precisely because the replacement adds
+  // one. Without it this matches only a file the script has never touched.
+  sub(
+    'records: albums',
+    /\*\*Records:\*\* [0-9,]+\+? albums across \d+ artists/,
     `**Records:** ${totalAlbums.toLocaleString()}+ albums across ${artists} artists`
   )
 
-  // Update MusicBrainz description
-  llmContent = llmContent.replace(
+  sub(
+    'musicbrainz description',
     /- \*\*MusicBrainz API\*\* - Artist discographies \([^)]+\)/,
     `- **MusicBrainz API** - Artist discographies (${totalAlbums.toLocaleString()}+ albums)`
   )
 
-  // Update last updated date
-  llmContent = llmContent.replace(
-    /\*\*Last Updated:\*\* [0-9-]+/,
-    `**Last Updated:** ${today}`
-  )
+  sub('last updated', /\*\*Last Updated:\*\* [0-9-]+/, `**Last Updated:** ${today}`)
+  sub('version', /\*\*Version:\*\* v[0-9.]+/, `**Version:** v${version}`)
 
-  // Update version number
-  llmContent = llmContent.replace(
-    /\*\*Version:\*\* v[0-9.]+/,
-    `**Version:** v${version}`
-  )
-
-  // Update total content footer
-  llmContent = llmContent.replace(
+  sub(
+    'total content footer',
     /\*\*Total Content:\*\* \d+ concerts \| \d+ artists \| \d+ venues \| [^|]+ \| \d+-\d+/,
     `**Total Content:** ${concerts} concerts | ${artists} artists | ${venues} venues | ${totalAlbums.toLocaleString()}+ albums | ${startYear}-${endYear}`
   )
+
+  if (llmMisses.length > 0) {
+    console.warn(`⚠️  llm.txt: ${llmMisses.length} stat(s) NOT updated — pattern did not match:`)
+    for (const miss of llmMisses) console.warn(`     - ${miss}`)
+    console.warn('     These are stale in the published file. Fix the pattern in update-meta-tags.ts.')
+  }
 
   // Generate and update Pre-Computed Statistics section from facts.json
   if (factsData?.facts) {
@@ -374,9 +381,16 @@ These facts are updated with each data refresh and can be quoted directly:
 ---
 `
 
-    // Remove existing statistics section if present
+    // Remove the existing section, up to the SAME anchor the new one is
+    // inserted before.
+    //
+    // The old pattern stopped at `---\n\n##`, which is the separator the
+    // section itself emits — so the separator survived the delete and a fresh
+    // one arrived with the replacement. One stray `---` accumulated in
+    // published llm.txt on every single run. Deleting to the insertion anchor
+    // makes this idempotent: run it twice, get the same file.
     llmContent = llmContent.replace(
-      /## Pre-Computed Statistics[\s\S]*?(?=## Common Queries|## Features|---\n\n##)/,
+      /## Pre-Computed Statistics[\s\S]*?(?=## Common Queries & Answers)/,
       ''
     )
 

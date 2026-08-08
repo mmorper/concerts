@@ -125,7 +125,7 @@ All data is publicly accessible as JSON:
 
 ### Artist Discography
 **URL:** https://concerts.morperhaus.org/data/discography.json
-**Records:** 15,000+ albums across 247 artists
+**Records:** 11,382+ albums across 257 artists
 **Source:** MusicBrainz API
 **Schema:**
 ```json
@@ -727,6 +727,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-08-07
+**Last Updated:** 2026-08-08
 **Version:** v5.4.0
 **Total Content:** 184 concerts | 257 artists | 79 venues | 11,382+ albums | 1984-2026

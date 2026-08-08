@@ -1,12 +1,16 @@
 # Setlist Song → Album Attribution
 
-**Status:** Planned
-**Target Version:** v5.5.0
+**Status:** Window 1 shipped ([#282](https://github.com/mmorper/concerts/pull/282)) · Windows 2–3 remain
+**Target Version:** **v6.0.0** — the discography release
 **Priority:** Medium
 **Estimated Complexity:** Medium
 **Dependencies:** [Discography Trajectory (v5.4.0)](global-discography-trajectory.md) — **hard dependency, now SHIPPED.** Consumes `scripts/utils/album-title.ts` and `public/data/album-eras.json`, both live as of `v5.4.0`.
 **Epic:** [#267](https://github.com/mmorper/concerts/issues/267)
 
+> **Renamed from v5.5.0 (2026-08-08).** This work ships inside **v6.0.0**, together with the rest of the discography domain, tracked by the *v6.0.0 — Discography* milestone. References to "v5.5" further down are left alone deliberately: in the Drift Log and Resolved Decisions they record what was decided under that name, and rewriting history to match a later rename makes the reasoning harder to follow, not easier.
+>
+> **Window 1 shipped** in [#282](https://github.com/mmorper/concerts/pull/282): Tier 0 + Tier 1, `song-albums.json`, **88.2% attributed** (1,629 of 1,846 non-cover pairs). The ≥60% floor below is therefore no longer provisional — it was measured and met. Windows 2 and 3 remain.
+>
 > **Reconciled against v5.4.0 as shipped (2026-08-07).** This spec was drafted before its dependency existed. Every claim it makes about v5.4's surface has since been checked against the code, and the [Drift Log](#drift-log--v54-implementation) is **closed** — its items are folded into the body below and the log is retained only as the record of why. The one thing still assumed rather than measured is the **≥ 60% attribution floor**; see [Acceptance target](#acceptance-target).
 
 | Spec section | Issue |
@@ -272,7 +276,7 @@ Report the tier breakdown in stdout so the cost/benefit of Tier 2 is visible and
 
 **What it finds:** a song heard live **before the album containing it existed**.
 
-**Trigger:** attributed song where `album.releaseDate > concert.date`.
+**Trigger:** attributed song where `album.releaseDate > concert.date`, **bounded on both sides**: at least 14 days and **at most 1,095 days (3 years)**. Both bounds are measured, not chosen — see below.
 
 This is the exact inverse of v5.4's `album-trajectory` — there, the *record* was ahead; here, the *song* was. It requires no additional API work: once attribution carries a release date, the finding falls out of a date comparison. setlist.fm formally tracks live debuts and unreleased-song performances, so the practice is well-attested; this simply detects the archive owner's own instances of it.
 
@@ -282,7 +286,34 @@ This is the exact inverse of v5.4's `album-trajectory` — there, the *record* w
 
 **Auto-tags:** `#road-tested`, `#before-the-record`.
 
+#### The upper bound — measured against Window 1's real output
+
+A bare `album.releaseDate > concert.date` comparison over the shipped `song-albums.json` yields **71 findings**. Reading all 71 by hand:
+
+| gap | count | verdict |
+| --- | --- | --- |
+| ≤ 1 year | 37 | **all genuine** |
+| 1–3 years | 18 | **all genuine** |
+| > 3 years | 16 | majority artifacts |
+
+The middle band was expected to be the ambiguous one and is not. It is The Cure playing five songs from *Songs of a Lost World* 527 days early, Social Distortion four from *Born to Kill* 519 days early, plus Garbage, X, Crowded House, New Order, Duran Duran, The Offspring, Future Islands and The Struts. **A tighter cap than 3 years would throw away real findings**, which is why the bound is set here and not at one year.
+
+Past three years the population turns:
+
+```
+10,856d  James — "Sit Down" -> Be Opened by the Wonderful: 40 Years Orchestrated
+10,169d  The Alarm — "The Stand" -> Declaration 2014
+ 2,749d  Social Distortion — "Over You" -> Born to Kill
+ 1,734d  U2 — "Desire" -> Songs of Surrender
+```
+
+None of those is a memory. They are **re-recordings and late reissues**: the song existed decades earlier, and the album we attribute it to is a re-made version. Attribution is not at fault — it is 0.2% suspect across the whole file — the album we hold simply is not where the song first appeared.
+
+**Cost of the bound, stated honestly:** it also suppresses ~8 plausible findings above three years (RDGLDGRN, Wire). That trade is correct for a feature whose failure mode is a fabricated memory published under the archive owner's own name.
+
 > **Voice caution.** Setlist.fm data is fan-contributed and song titles drift, so a false positive here would claim the archive owner heard something they did not. Require **≥ 14 days** before release to fire, absorbing off-by-a-few-days release-date disagreements between sources.
+>
+> **Claim the ALBUM, never the song's existence.** *"I'd heard it a year before the record came out"* is safe. *"before the song existed"* is not, and the difference is not pedantry: Garbage's "No Horses" was a standalone 2017 single that only landed on an album in 2021. The song existed the night it was heard. Only the **album** was in the future, and that is the only thing this detector actually knows.
 >
 > **`careerYear` is `null`, never negative.** A `road-tested` show is by definition early, and the earliest are pre-debut. v5.4 shipped with a negative `careerYear` and a generated post rendered No Doubt's `-4` as *"four years into their existence"* when the truth was four years **before** their debut. It is now `null` for those shows, with the magnitude carried by the new `yearsBeforeDebut`. If this detector wants to say how early a show was, **read `yearsBeforeDebut` explicitly** — treating a missing `careerYear` as zero puts the same fabrication back.
 
@@ -376,6 +407,8 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 - [ ] An artist whose discography record exists but holds **zero albums** is not treated as a hit (the `isUsable` guard)
 - [ ] `tape` songs are excluded entirely, **including `tape` + `cover`**
 - [ ] `road-tested` requires ≥ 14 days before release
+- [ ] `road-tested` does NOT fire above 1,095 days — **use James' "Sit Down" (10,856d) and The Alarm's "The Stand" (10,169d) as the fixtures**, since both are real rows in the shipped `song-albums.json` and both would otherwise publish a fabricated memory
+- [ ] `road-tested` still fires in the 1–3 year band — use The Cure's *Songs of a Lost World* (527d), so a future tightening of the cap fails loudly instead of silently deleting 18 real findings
 - [ ] `road-tested` reads `yearsBeforeDebut` for pre-debut shows and never coerces a `null` `careerYear` to 0
 
 ### Integration
@@ -528,7 +561,8 @@ Add `song-albums.json` to `LAZY_FILES` in `workers/mcp-server/src/data.ts` with 
 3. **Scoped as v5.5, not folded into v5.4.** Different risk profile — two live API enrichment passes versus pure local derivation — and v5.4 is already the largest spec in `specs/future/`. The dependency runs one way: v5.5 consumes `album-title.ts`.
 4. **One predicate for "studio album", exported rather than duplicated.** Settled at reconciliation. `isStudioAlbum` is not a pure structural test — it consults a hand-maintained exclusion list — so a second implementation is a second source of truth on a question both files must answer identically. Export it from `derive-album-eras.ts`; do not re-filter `discography.json` here.
 5. **`song-albums.json` carries no derived fields.** Same rule v5.4 landed on after measuring: `coverUrl` is a pure function of `mbid`, `albumSlug` of `title`. Both are computed at read time.
-6. **The ≥ 60% floor is provisional until measured.** It was reasoned against a sibling metric that has since moved. Confirm or restate it from a real Tier 0+1 run at the end of Window 1 — a build must not fail against a number nobody has measured.
+6. **The ≥ 60% floor is provisional until measured.** It was reasoned against a sibling metric that has since moved. Confirm or restate it from a real Tier 0+1 run at the end of Window 1 — a build must not fail against a number nobody has measured. **SETTLED:** measured at **88.2%** in Window 1 (#282). The floor stands.
+7. **`road-tested` is bounded above at 1,095 days.** Settled by reading all 71 findings the shipped data produces, not by intuition — everything up to 3 years is genuine, and past it the population is re-recordings and reissues. The ≥ 14-day floor guards against source disagreement; the 3-year ceiling guards against attributing a song to a record made decades after the night it was heard. See §5a.
 
 ---
 
