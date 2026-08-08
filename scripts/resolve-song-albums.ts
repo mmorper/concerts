@@ -250,19 +250,18 @@ export async function resolveSongAlbums(
   /**
    * The artist's studio albums, oldest first.
    *
-   * Prefers `album-eras.json`, which is pre-filtered and pre-sorted. But that
-   * file covers **headliners only** — 101 artists, where we hold discographies
-   * for 260 — because derive-album-eras.ts walks `concert.headlinerNormalized`
-   * and never looks at the bill. Openers play setlists too: ABC, Pet Shop
-   * Boys, Public Enemy, OMD and 48 others were reaching this function with
-   * nothing to match against, which is 412 of 1,846 pairs (22.3%) denied
-   * attribution for want of a lookup rather than want of data.
+   * `album-eras.json` is the source of truth — pre-filtered, pre-sorted, and
+   * since #281 it covers openers as well as headliners (101 -> 238 artists).
+   * Before that it held headliners only, which silently denied 412 of 1,846
+   * pairs (22.3%) any chance of attribution: ABC, Pet Shop Boys, Public Enemy,
+   * OMD and 48 others reached this function with nothing to match against.
    *
-   * The fallback re-filters `discography.json` through the SAME exported
-   * predicate. That is not the divergence §Part 2 warns about — the warning is
-   * against a second *implementation*, and there is still exactly one. It
-   * consults RELEASE_EXCLUSIONS either way, so a mistagged bootleg is excluded
-   * on both paths.
+   * The discography fallback is kept as a guard, not a second path. It filters
+   * through the SAME exported predicate, so it cannot disagree with the era
+   * join about what a studio album is — the divergence §Part 2 warns about is
+   * a second *implementation*, and there is still exactly one. It should now
+   * be unreachable for anyone on a bill; if it starts firing, album-eras has
+   * lost coverage and that is worth knowing rather than papering over.
    */
   const studioAlbumsFor = (artistKey: string): StudioAlbum[] => {
     const fromEras = eras.artists?.[artistKey]?.studioAlbums

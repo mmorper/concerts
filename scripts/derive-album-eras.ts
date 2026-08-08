@@ -3,7 +3,7 @@ import { join } from 'path'
 import { createBackup } from './utils/backup'
 import { buildArtistKeyIndex, resolveArtistKey } from './utils/artist-key'
 import { matchAlbumTitle, isSingleOrEp } from './utils/album-title'
-import { normalizeAlbumName } from '../src/utils/normalize.js'
+import { normalizeAlbumName, normalizeArtistName } from '../src/utils/normalize.js'
 
 /**
  * Derive album-eras.json — the join at the centre of Discography Trajectory.
@@ -60,8 +60,19 @@ import { normalizeAlbumName } from '../src/utils/normalize.js'
  * accommodate bloat: every redundancy it caught (cover URLs, album slugs,
  * per-concert album copies, pretty-printing) stayed removed, taking the file
  * from 534 KB to 302 KB on the way.
+ *
+ * Raised 400 -> 700 KB (#281) to cover openers. 129 acts who have only ever
+ * opened have a discography we hold, and excluding them left them with no
+ * career data at all. That is 306 -> 538 KB of real, non-derivable records:
+ * every field is an artist's own release spine, and the same trimming applies
+ * to them as to headliners.
+ *
+ * Still the fourth largest of the MCP's lazy files, behind venues-metadata
+ * (963 KB), setlists-cache (831 KB) and artists-top-tracks (746 KB). The gate
+ * stays — it exists to catch derivable data creeping back in, and that job is
+ * unchanged by the new ceiling.
  */
-const SIZE_BUDGET_KB = 400
+const SIZE_BUDGET_KB = 700
 
 /** A defining album needs at least this many top tracks to be asserted. */
 const MIN_DEFINING_TOP_TRACKS = 2
@@ -117,6 +128,8 @@ interface Concert {
   date: string
   headliner: string
   headlinerNormalized: string
+  /** Display names, as billed. Openers contribute to `artists`, not `concerts`. */
+  openers?: string[]
 }
 
 export interface AlbumRef {
@@ -355,19 +368,16 @@ export function deriveAlbumEras(input: {
   }
 
   const resolvedKey = new Map<string, string | null>()
-  const resolveFor = (concert: Concert): string | null => {
-    const cached = resolvedKey.get(concert.headlinerNormalized)
+  const resolveSlug = (slug: string, displayName: string): string | null => {
+    const cached = resolvedKey.get(slug)
     if (cached !== undefined) return cached
-    const resolution = resolveArtistKey(
-      concert.headlinerNormalized,
-      concert.headliner,
-      keyIndex,
-      discography,
-      resolveOptions
-    )
-    resolvedKey.set(concert.headlinerNormalized, resolution.key)
+    const resolution = resolveArtistKey(slug, displayName, keyIndex, discography, resolveOptions)
+    resolvedKey.set(slug, resolution.key)
     return resolution.key
   }
+
+  const resolveFor = (concert: Concert): string | null =>
+    resolveSlug(concert.headlinerNormalized, concert.headliner)
 
   const definingCache = new Map<string, DefiningAlbum | null>()
   const definingFor = (artistKey: string, concertSlug: string, albums: RawAlbum[]) => {
@@ -383,6 +393,34 @@ export function deriveAlbumEras(input: {
   const concertEras: Record<string, ConcertEra> = {}
   const artistEras: Record<string, ArtistEra> = {}
   const erasSeenAcc = new Map<string, Map<string, { title: string; dates: string[] }>>()
+
+  /**
+   * Create this artist's record once. Shared by the headliner and opener
+   * passes so a support act's record is identical in shape to a headliner's —
+   * a consumer must not have to know how someone was billed.
+   */
+  const recordArtist = (
+    artistKey: string,
+    entry: RawDiscographyEntry,
+    albums: RawAlbum[],
+    topTracksSlug: string
+  ) => {
+    if (artistEras[artistKey]) return
+
+    artistEras[artistKey] = {
+      artistKey,
+      displayName: entry.artistName,
+      studioAlbumCount: albums.length,
+      studioAlbums: albums.map(toRef),
+      debutAlbum: toRef(albums[0]),
+      latestAlbum: toRef(albums[albums.length - 1]),
+      definingAlbum: definingFor(artistKey, topTracksSlug, albums),
+      // At the fetch cap the release list may be incomplete, so first/last
+      // album claims are unsafe for this artist.
+      truncated: (entry.albums?.length ?? 0) >= RELEASE_CAP,
+      erasSeen: [],
+    }
+  }
 
   const todayMs = parseConcertDate(today)
   const pastConcerts = concerts.filter((c) => parseConcertDate(c.date) <= todayMs)
@@ -451,20 +489,48 @@ export function deriveAlbumEras(input: {
       else eras.set(slug, { title: currentAlbum.title, dates: [concert.date] })
     }
 
-    if (!artistEras[artistKey]) {
-      artistEras[artistKey] = {
-        artistKey,
-        displayName: entry.artistName,
-        studioAlbumCount: albums.length,
-        studioAlbums: albums.map(toRef),
-        debutAlbum: toRef(debut),
-        latestAlbum: toRef(latest),
-        definingAlbum: defining,
-        // At the fetch cap the release list may be incomplete, so first/last
-        // album claims are unsafe for this artist.
-        truncated: (entry.albums?.length ?? 0) >= RELEASE_CAP,
-        erasSeen: [],
-      }
+    recordArtist(artistKey, entry, albums, concert.headlinerNormalized)
+  }
+
+  // ── Openers ───────────────────────────────────────────────────────────────
+  //
+  // The `artists` map covers everyone who played, not just whoever was billed
+  // last. 169 acts have opened here and 150 have never headlined; skipping them
+  // left 129 artists whose discography we hold with no career data at all, and
+  // made a support act's career position unreachable — an opener four albums in
+  // supporting a headliner twenty years in is a story we could not tell.
+  //
+  // `concerts` is deliberately NOT extended. A concert's era is the headliner's
+  // era: it answers "what album cycle was this SHOW in", which has one answer
+  // per night. Per-opener concert eras are a different question and a different
+  // shape, so they are not smuggled in here.
+  for (const concert of pastConcerts) {
+    for (const billing of concert.openers ?? []) {
+      if (!billing?.trim()) continue
+
+      const slug = normalizeArtistName(billing)
+      const artistKey = resolveSlug(slug, billing)
+      if (!artistKey) continue
+
+      const entry = discography[artistKey]
+      const albums = studioAlbums(entry)
+      if (!albums.length) continue
+
+      recordArtist(artistKey, entry, albums, slug)
+
+      // Openers get erasSeen for the same reason headliners do: seeing an act
+      // twice in different album cycles is the interesting part.
+      const concertMs = parseConcertDate(concert.date)
+      const before = albums.filter((a) => parseReleaseDate(a.releaseDate) <= concertMs)
+      const currentAlbum = before.length ? before[before.length - 1] : null
+      if (!currentAlbum) continue
+
+      if (!erasSeenAcc.has(artistKey)) erasSeenAcc.set(artistKey, new Map())
+      const eras = erasSeenAcc.get(artistKey)!
+      const slugKey = normalizeAlbumName(currentAlbum.title)
+      const existing = eras.get(slugKey)
+      if (existing) existing.dates.push(concert.date)
+      else eras.set(slugKey, { title: currentAlbum.title, dates: [concert.date] })
     }
   }
 
