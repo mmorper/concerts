@@ -1,12 +1,16 @@
 # Setlist Song → Album Attribution
 
-**Status:** Planned
-**Target Version:** v5.5.0
+**Status:** Window 1 shipped ([#282](https://github.com/mmorper/concerts/pull/282)) · Windows 2–3 remain
+**Target Version:** **v6.0.0** — the discography release
 **Priority:** Medium
 **Estimated Complexity:** Medium
 **Dependencies:** [Discography Trajectory (v5.4.0)](global-discography-trajectory.md) — **hard dependency, now SHIPPED.** Consumes `scripts/utils/album-title.ts` and `public/data/album-eras.json`, both live as of `v5.4.0`.
 **Epic:** [#267](https://github.com/mmorper/concerts/issues/267)
 
+> **Renamed from v5.5.0 (2026-08-08).** This work ships inside **v6.0.0**, together with the rest of the discography domain, tracked by the *v6.0.0 — Discography* milestone. References to "v5.5" further down are left alone deliberately: in the Drift Log and Resolved Decisions they record what was decided under that name, and rewriting history to match a later rename makes the reasoning harder to follow, not easier.
+>
+> **Window 1 shipped** in [#282](https://github.com/mmorper/concerts/pull/282): Tier 0 + Tier 1, `song-albums.json`, **88.2% attributed** (1,629 of 1,846 non-cover pairs). The ≥60% floor below is therefore no longer provisional — it was measured and met. Windows 2 and 3 remain.
+>
 > **Reconciled against v5.4.0 as shipped (2026-08-07).** This spec was drafted before its dependency existed. Every claim it makes about v5.4's surface has since been checked against the code, and the [Drift Log](#drift-log--v54-implementation) is **closed** — its items are folded into the body below and the log is retained only as the record of why. The one thing still assumed rather than measured is the **≥ 60% attribution floor**; see [Acceptance target](#acceptance-target).
 
 | Spec section | Issue |
