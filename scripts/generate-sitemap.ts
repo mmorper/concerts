@@ -87,10 +87,12 @@ async function generateSitemap() {
 
   // Scene links with adjusted priorities based on update frequency
   // Timeline & Artists update frequently (0.9)
+  // Ask is a headline surface but its content doesn't change with new shows (0.8)
   // Venues, Map, Genres update least (0.7)
   const scenes = [
     { path: 'timeline', priority: 0.9, changefreq: 'weekly' }, // Updates frequently
     { path: 'artists', priority: 0.9, changefreq: 'weekly' }, // Updates frequently
+    { path: 'ask', priority: 0.8, changefreq: 'monthly' }, // Scene 6 (#283)
     { path: 'venues', priority: 0.7, changefreq: 'monthly' }, // Updates least
     { path: 'geography', priority: 0.7, changefreq: 'monthly' }, // Updates least (map)
     { path: 'genres', priority: 0.7, changefreq: 'monthly' }, // Updates least
@@ -183,8 +185,9 @@ async function generateSitemap() {
   // How It Works — interactive data pipeline explainer
   xml += generateUrlEntry('/how-it-works', 0.6, 'monthly', lastmod)
 
-  // Ask the Archive — in-app conversational interface
-  xml += generateUrlEntry('/ask', 0.7, 'monthly', lastmod)
+  // Ask the Archive is emitted with the scenes above as its canonical
+  // `/?scene=ask` URL. `/ask` is a redirect to that URL — listing both told
+  // search engines the doormat and the room were separate pages (#283).
 
   // MCP server — human-facing connector page (canonical, static via Pages)
   xml += generateUrlEntry('/about-mcp', 0.6, 'monthly', lastmod)
@@ -204,7 +207,6 @@ async function generateSitemap() {
     sortedVenues.length * 2 + // 2 scenes per venue
     2 + linerNotesSlugs.length + // liner notes feed + permalinks
     1 + // how-it-works
-    1 + // ask the archive
     1 + // about-mcp (connector page)
     1 // about page
 
@@ -216,7 +218,6 @@ async function generateSitemap() {
   console.log(`   - Venues: ${sortedVenues.length} × 2 scenes = ${sortedVenues.length * 2}`)
   console.log(`   - Liner notes: ${2 + linerNotesSlugs.length} (feed + ${linerNotesSlugs.length} posts)`)
   console.log(`   - How It Works: 1`)
-  console.log(`   - Ask the Archive: 1`)
   console.log(`   - Connector (about-mcp): 1`)
   console.log(`   - About: 1`)
   console.log()

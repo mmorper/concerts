@@ -21,6 +21,7 @@ import sharp from 'sharp'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { SCENE_NAMES } from '../src/components/changelog/constants'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -91,7 +92,9 @@ async function main() {
   const concertsData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'))
 
   const concerts = concertsData.concerts.length
-  const scenes = 5
+  // Canonical roster, not a literal (#283) — this renders into the public OG
+  // card subtitle, so a stale count ships to every social unfurl.
+  const scenes = SCENE_NAMES.length
 
   // Count unique artists (headliners + openers)
   const artistSet = new Set<string>()

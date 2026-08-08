@@ -13,6 +13,7 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import * as fs from 'fs'
+import { SCENE_NAMES } from '../../src/components/changelog/constants'
 
 // Mock fs module
 // The scripts under test use a *default* import (`import fs from 'fs'`), so
@@ -649,7 +650,10 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       const ogStats = JSON.parse(writtenOgStats)
       expect(ogStats).toEqual({
         concerts: 3,
-        scenes: 5,
+        // Derived, not pinned (#283). Asserting a literal here is what let the
+        // count sit at 5 for seven months after Ask shipped as scene 6 — the
+        // test defended the stale value instead of catching it.
+        scenes: SCENE_NAMES.length,
         artists: 4,
         venues: 2,
         // Added by the liner notes work (#57). Zero here because existsSync is

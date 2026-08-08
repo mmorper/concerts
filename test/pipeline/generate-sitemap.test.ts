@@ -303,6 +303,11 @@ describe('generate-sitemap.ts', () => {
       expect(writtenXml).toContain('?scene=venues')
       expect(writtenXml).toContain('?scene=geography')
       expect(writtenXml).toContain('?scene=genres')
+      expect(writtenXml).toContain('?scene=ask')
+
+      // `/ask` redirects to `?scene=ask`. Only the canonical URL belongs here —
+      // listing both advertised a redirect and its target as separate pages (#283).
+      expect(writtenXml).not.toContain('<loc>https://concerts.morperhaus.org/ask</loc>')
     })
 
     it('should assign priority 0.9 to timeline and artists scenes', async () => {
@@ -767,8 +772,10 @@ describe('generate-sitemap.ts', () => {
 
       const urlCount = (writtenXml.match(/<url>/g) || []).length
 
-      // Expected: 1 (homepage) + 5 (scenes) + 3 (artists) + 4 (2 venues × 2 scenes) + 2 (changelog) = 15
-      expect(urlCount).toBe(19) // 1 home + 5 scenes + 3 artists + 4 venue entries + 6 static pages
+      // 1 home + 6 scenes + 3 artists + 4 venue entries (2 venues × 2 scenes)
+      // + 5 static pages = 19. Ask moved from the static list into the scenes
+      // list in #283, so the total is unchanged from before that fix.
+      expect(urlCount).toBe(19)
     })
   })
 
