@@ -52,6 +52,7 @@ Orchestrates the release workflow. References existing docs for details.
 | Code builds successfully | ❌ Hard stop |
 | File integrity | ❌ Hard stop |
 | Metadata files current | ⚠️ Warning, suggest data refresh |
+| Documented claims current | ⚠️ Warning, note what Step 5 must fix |
 
 **Build Check:**
 
@@ -83,6 +84,28 @@ If metadata files are older than the most recent commit:
 > **Recommendation:** Run `npm run build-data` to refresh all metadata files.
 >
 > Continue anyway? (yes / refresh-and-continue / cancel)
+
+**Documented Claims Check:**
+
+```bash
+npm run validate:docs
+```
+
+If it fails here, that is expected on any release that follows a data refresh:
+adding concerts changes the counts, `build-data` refreshes the machine-readable
+surfaces via `update:meta`, and README / `docs/ROADMAP.md` / `CLAUDE.md` are left
+behind until someone updates the prose. That someone is Step 5.
+
+> ⚠️ **Documented claims are out of date**
+>
+> [validator output — file, claim, says, should be]
+>
+> Step 5 owns these. Note them now and fix them there.
+>
+> Continue? (yes / cancel)
+
+**Warning, not a hard stop** — this is precisely the work the release is about to
+do. It becomes blocking in Step 7, after Step 5 has had its chance.
 
 **If any hard stop:** Exit immediately. User must fix first.
 
