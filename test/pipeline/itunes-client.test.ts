@@ -12,7 +12,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { iTunesClient } from '../../scripts/utils/itunes-client'
+import { iTunesClient, ITunesBlockedError } from '../../scripts/utils/itunes-client'
 
 describe('iTunesClient', () => {
   let client: iTunesClient
@@ -215,6 +215,27 @@ describe('iTunesClient', () => {
         'Failed to fetch tracks from iTunes: Test Artist',
         expect.any(Error)
       )
+    })
+
+    it('should throw on 403 rather than returning an empty result', async () => {
+      // A 403 is a block on the whole client, not a miss on one artist. Every
+      // subsequent request fails identically, and it is sustained retrying
+      // that earns the block in the first place — so the caller has to be able
+      // to tell this apart from "this artist has no tracks" and stop.
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: false,
+        status: 403,
+      } as Response)
+
+      await expect(client.getTopTracks('Test Artist', 5)).rejects.toThrow(ITunesBlockedError)
+    })
+
+    it('should not retry a 403', async () => {
+      const fetchMock = vi.fn().mockResolvedValue({ ok: false, status: 403 } as Response)
+      global.fetch = fetchMock
+
+      await expect(client.getTopTracks('Test Artist', 5)).rejects.toThrow(ITunesBlockedError)
+      expect(fetchMock).toHaveBeenCalledTimes(1)
     })
 
     it('should handle 500 server errors', async () => {

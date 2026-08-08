@@ -4,12 +4,27 @@
  * Quality bar: At least 40% of tracks must have VALIDATED preview URLs (2 of 5 tracks)
  * Preview URLs are tested with HEAD requests to ensure they're actually accessible
  * Only artists meeting this threshold are included in output
+ *
+ * Usage (flags mirror enrich-discography.ts):
+ *   npm run enrich:tracks                     # New/stale artists only (30-day TTL)
+ *   npm run enrich:tracks -- --dry-run        # Preview without writing
+ *   npm run enrich:tracks -- --force          # Re-fetch every artist, ignoring the TTL
+ *   npm run enrich:tracks -- --artist abc --force
+ *                                             # Re-fetch ONE artist
+ *
+ * --force exists for the artist-billing guard (#275): it only runs on fetch, so
+ * a cached record keeps whatever wrong artist it was born with until the TTL
+ * expires. Pair it with --dry-run to see what the guard would reject before
+ * touching the file.
+ *
+ * Output: public/data/artists-top-tracks.json
  */
 
 import { readFileSync, writeFileSync } from 'fs'
 import { resolve } from 'path'
-import { iTunesClient, type NormalizedTrack } from './utils/itunes-client.js'
+import { iTunesClient, ITunesBlockedError, type NormalizedTrack } from './utils/itunes-client.js'
 import { normalizeArtistName } from '../src/utils/normalize.js'
+import { foldArtistName } from './utils/artist-key.js'
 
 // Configuration
 const AUDIO_PREVIEW_CONFIG = {
@@ -31,7 +46,11 @@ interface ArtistTopTracksData {
     name: string
     source: 'itunes'
     fetchedAt: string
-    tracks: NormalizedTrack[]
+    /** How this artist was resolved, and to whom. One record, not one per track (#275). */
+    resolvedVia?: ResolvedVia
+    itunesArtistId?: number
+    itunesArtistName?: string
+    tracks: Omit<NormalizedTrack, 'artistName' | 'artistId'>[]
   }
 }
 
@@ -184,22 +203,234 @@ function shouldSkip(
 const SEARCH_ALIASES: Record<string, string> = {
   "Brian Setzer \u201968 Comeback Special": "Brian Setzer",
   "Brian Setzer and the Nashvillians": "Brian Setzer",
+
+  // The archive spells these three differently from every catalogue on earth.
+  // Corrected here rather than loosened in the matcher: a matcher slack enough
+  // to bridge "Kahn"/"Khan" also bridges things that are genuinely different.
+  // The concert data is what is actually wrong \u2014 see #275 follow-up.
+  "Chaka Kahn": "Chaka Khan",
+  "Jane Weidlin": "Jane Wiedlin",
+  "Gene Loves Jezabel": "Gene Loves Jezebel",
+
+  // The marquee said DJ Z-Trip; iTunes bills every track to "Z-Trip". Needed
+  // even though his ID is pinned — the billing guard compares against the
+  // search name, and a pinned ID does not exempt an artist from it.
+  "DJ Z-Trip": "Z-Trip",
+}
+
+/**
+ * Billings that mean the same act, from artist-aliases.json.
+ *
+ * Built exactly as derive-album-eras.ts builds it, from BOTH relations:
+ *   sameAct         \u2014 marquees this act played under
+ *   discographyKeys \u2014 the name their catalogue is filed under
+ *
+ * The second one is why this exists. iTunes bills OMD as "Orchestral Manoeuvres
+ * In the Dark", which is precisely the case `discographyKeys` was created to
+ * record. Without it the billing guard rejects them and deletes five good
+ * tracks.
+ */
+function buildAliasIndex(): Map<string, string[]> {
+  const index = new Map<string, string[]>()
+  const add = (slug: string, alias: string) => {
+    const list = index.get(slug) ?? []
+    if (!list.includes(alias)) list.push(alias)
+    index.set(slug, list)
+  }
+
+  try {
+    const raw = JSON.parse(readFileSync(resolve('public/data/artist-aliases.json'), 'utf-8'))
+    for (const entry of raw.sameAct ?? []) {
+      for (const billing of entry.billings ?? []) {
+        for (const other of entry.billings ?? []) add(billing, other)
+      }
+    }
+    for (const entry of raw.discographyKeys ?? []) {
+      if (entry.act && entry.discographyKey) add(entry.act, entry.discographyKey)
+    }
+  } catch {
+    // No alias file is survivable \u2014 every artist just resolves to itself.
+  }
+
+  return index
 }
 
 /**
  * iTunes artist ID overrides for artists where name-based search is unreliable.
  * Maps the concert data name → iTunes artist ID (from music.apple.com/us/artist/.../ID).
  * Uses the iTunes Lookup API which is exact and unambiguous.
+ *
+ * Add an entry only with a stated reason — same discipline as MBID_CORRECTIONS
+ * in enrich-discography.ts and RELEASE_EXCLUSIONS in derive-album-eras.ts. A
+ * short common word is the tell: the shorter and more generic the name, the
+ * more of the catalogue competes for it.
  */
 const ARTIST_ID_OVERRIDES: Record<string, number> = {
   "The Roots": 43680,
+
+  // #275 — all four resolved to a different act entirely under name search.
+  // IDs verified against the Lookup API's top tracks before pinning.
+  "ABC": 391195,              // was matching children's alphabet songs; this is Martin Fry's ABC (The Lexicon of Love)
+  "Bad Religion": 150160,     // was returning Frank Ocean's channel ORANGE
+  "Common Sense": 15898676,   // the SoCal reggae band that opened for The English Beat — not Common, not the dance act
+  "Chris Shiflett": 214324366, // his solo work (Hard Lessons, Lost at Sea) — was returning Foo Fighters
+
+  // Found by the first --force --dry-run sweep. Each ID disambiguated against
+  // our OWN discography rather than by genre guess — where two acts share a
+  // name, the one whose albums we already hold is the one who played here.
+  "Berlin": 364321,             // was returning RY X's song "Berlin"; this is Terri Nunn's Berlin
+  "Blue Plate Special": 1693845167, // the blues act (Can You Dig It, 2006, in our discography) — not the bluegrass one
+  "Book of Love": 903133,       // was returning Peter Gabriel's "Book of Love"
+  "Bow Wow Wow": 636669,        // was returning The Wiggles
+  "DJ Z-Trip": 6199422,         // was returning Tommy Lee; iTunes bills him "Z-Trip" (see SEARCH_ALIASES)
+  "Husbands": 955931737,        // the CUATRO band that opened for Cold War Kids — not HUSBANDS of New England Casket Co.
+  "Inner Circle": 100091,       // was returning Jacob Miller, their late singer, under his own billing
+  "John Doe": 2354096,          // was returning Public Announcement; this is X's John Doe
+
+  // NOT pinned, deliberately: Kiev. All four iTunes candidates are hip-hop
+  // acts; ours is the LA indie band that opened for Foals (Falling Bough
+  // Wisdom Teeth, Willing Eyes). No correct answer exists to pin, so the
+  // billing guard rejects it and the artist carries no previews. A gap is the
+  // right outcome — see the FAIL CLOSED note in scripts/utils/album-title.ts.
+}
+
+/**
+ * How an artist's tracks were resolved. Stored once per artist, never per track.
+ */
+type ResolvedVia = 'artist-id' | 'alias' | 'search'
+
+/**
+ * Over-fetch, then discard impostors. Filtering a 5-track response leaves fewer
+ * than 5; asking for 10 means five genuine tracks usually survive.
+ */
+const CANDIDATE_MULTIPLIER = 2
+
+/**
+ * Separators that join several credited artists into one billing string.
+ *
+ * Deliberately NOT a bare "and": plenty of single acts carry it inside their
+ * name — Simon and Garfunkel, Florence and the Machine, Belle and Sebastian —
+ * and splitting those invents two artists where there is one. The ampersand
+ * form is handled because it is what iTunes actually emits between credits.
+ */
+const BILLING_SEPARATORS = /\s*(?:,|&|\bfeat\.?\b|\bft\.?\b|\bfeaturing\b)\s*/i
+
+/**
+ * Every artist credited in a billing string, folded.
+ *
+ * The whole string is kept alongside its parts, because a billing is only
+ * sometimes a list: "Simon & Garfunkel" splits into two names that are each
+ * meaningless on their own, so the unsplit form has to stay a candidate.
+ */
+function creditedArtists(billing: string): string[] {
+  const whole = foldArtistName(billing)
+  const parts = billing.split(BILLING_SEPARATORS).map(foldArtistName).filter(Boolean)
+  return [whole, ...parts]
+}
+
+/**
+ * Is this artist one of the acts credited on the track?
+ *
+ * Exact match against each credited name, never a substring. iTunes bills "Get
+ * Lucky" to "Daft Punk, Pharrell Williams & Nile Rodgers" — Rodgers is credited
+ * and it is his most-played track, so requiring the whole billing to match
+ * leaves him with nothing. But "Common" must NOT match "Common Sense", and a
+ * substring rule cannot tell those two situations apart. Splitting can.
+ *
+ * The asymmetry is deliberate — the artist must appear in the BILLING, not the
+ * track title. Chris Shiflett's guest spot is billed to "HIXTAPE, HARDY &
+ * Morgan Wallen" with his name only in the title, so it stays dropped.
+ * Appearing on a record is not the same as being credited for it.
+ */
+function isCredited(wanted: readonly string[], billing: string): boolean {
+  const credited = creditedArtists(billing)
+  return wanted.some(want => credited.includes(want))
+}
+
+/**
+ * Keep only the tracks actually billed to the artist we asked for.
+ *
+ * The failure this catches is silent by construction (#275): a wrong-artist
+ * track is well-formed, has a working preview, and clears the quality bar. Its
+ * only symptom is an album title that will not match the artist's discography,
+ * surfacing two layers downstream as unexplained recall loss.
+ *
+ * **Per track, not per artist.** An artist-level verdict is not enough, because
+ * contamination is not all-or-nothing:
+ *
+ *   Bad Religion   4 of 5 genuine, 1 Frank Ocean (channel ORANGE)
+ *   Chris Shiflett 2 of 5 genuine, 2 Foo Fighters, 1 guest credit on a comp
+ *   ABC            1 of 5 genuine, 4 children's alphabet songs
+ *
+ * A majority rule keeps Bad Religion's Frank Ocean track. A unanimity rule
+ * throws away four good Bad Religion tracks to remove one bad one. Filtering
+ * per track does neither.
+ *
+ * **Pinning an artist ID does not remove the need for this.** The Lookup API is
+ * exact about the artist but still returns guest credits — Chris Shiflett's
+ * top five includes "Goin' Nowhere (feat. Chris Shiflett)", billed to another
+ * act on a compilation. A record he appears on is not a record he made, and
+ * that distinction is the whole point of the album signal downstream.
+ */
+export function keepTracksBilledTo(
+  expected: string | readonly string[],
+  candidates: NormalizedTrack[]
+): { kept: NormalizedTrack[]; dropped: NormalizedTrack[]; sawInstead: string | null } {
+  const wanted = (typeof expected === 'string' ? [expected] : expected)
+    .map(foldArtistName)
+    .filter(Boolean)
+
+  const kept: NormalizedTrack[] = []
+  const dropped: NormalizedTrack[] = []
+
+  for (const track of candidates) {
+    ;(isCredited(wanted, track.artistName) ? kept : dropped).push(track)
+  }
+
+  // The most common impostor — what iTunes actually thought we meant, which is
+  // the useful thing to print when a whole artist fails.
+  const tally = new Map<string, number>()
+  for (const t of dropped) tally.set(t.artistName, (tally.get(t.artistName) ?? 0) + 1)
+  const sawInstead = [...tally.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null
+
+  return { kept, dropped, sawInstead }
+}
+
+/**
+ * The billing iTunes used most often across an artist's kept tracks.
+ *
+ * Not simply the first track's: a collaboration can sit at the top of the list
+ * and misreport the artist we resolved. Z-Trip's most-played track is billed
+ * "Z-Trip & Chester Bennington", which is true of the track and misleading as
+ * a record of who we asked for and got.
+ */
+function commonBilling(tracks: NormalizedTrack[]): string | undefined {
+  const tally = new Map<string, number>()
+  for (const t of tracks) tally.set(t.artistName, (tally.get(t.artistName) ?? 0) + 1)
+  return [...tally.entries()].sort((a, b) => b[1] - a[1])[0]?.[0]
+}
+
+/**
+ * Strip transient provenance before persisting. See NormalizedTrack.
+ */
+function forStorage(tracks: NormalizedTrack[]): Omit<NormalizedTrack, 'artistName' | 'artistId'>[] {
+  return tracks.map(({ artistName: _a, artistId: _i, ...track }) => track)
 }
 
 /**
  * Main enrichment function
  */
-export async function enrichTopTracks() {
-  console.log('🎵 Enriching artist top tracks...\n')
+export async function enrichTopTracks(
+  options: { dryRun?: boolean; force?: boolean; artist?: string } = {}
+) {
+  const artistFlagIndex = process.argv.indexOf('--artist')
+  const {
+    dryRun = process.argv.includes('--dry-run'),
+    force = process.argv.includes('--force'),
+    artist = artistFlagIndex >= 0 ? process.argv[artistFlagIndex + 1] : undefined
+  } = options
+
+  console.log(`🎵 Enriching artist top tracks...${dryRun ? ' (DRY RUN)' : ''}${force ? ' (FORCE)' : ''}\n`)
 
   // Load concerts data
   const concertsPath = resolve('public/data/concerts.json')
@@ -219,9 +450,14 @@ export async function enrichTopTracks() {
 
   console.log(`Found ${artists.length} unique artists\n`)
 
-  // Initialize clients
+  // Initialize clients. A full sweep is 257 back-to-back searches and iTunes
+  // starts returning 429 partway through at the incremental cadence — measured,
+  // not guessed: a --force run throttled after ~90 artists and the retries
+  // returned empty, which reads downstream as "artist has no tracks".
   const itunes = new iTunesClient()
-  const rateLimiter = new RateLimiter(AUDIO_PREVIEW_CONFIG.rateLimitMs)
+  const rateLimiter = new RateLimiter(force ? 3000 : AUDIO_PREVIEW_CONFIG.rateLimitMs)
+
+  const aliasIndex = buildAliasIndex()
 
   // Load existing cache
   const existingCache = loadExistingCache()
@@ -230,12 +466,20 @@ export async function enrichTopTracks() {
   let enriched = 0
   let skipped = 0
   let failed = 0
+  const misresolved: Array<{ artist: string; got: string }> = []
+  let blockedAt: string | null = null
 
   for (const artistName of artists) {
     const normalized = normalizeArtistName(artistName)
 
+    // Targeted re-fetch — apply one ARTIST_ID_OVERRIDES entry without 257 round-trips.
+    if (artist && normalized !== artist) {
+      skipped++
+      continue
+    }
+
     // Skip if already enriched recently (within 30 days)
-    if (shouldSkip(normalized, existingCache)) {
+    if (!force && shouldSkip(normalized, existingCache)) {
       console.log(`⏭️  Skipping ${artistName} (cached)`)
       skipped++
       continue
@@ -251,11 +495,37 @@ export async function enrichTopTracks() {
       const searchName = SEARCH_ALIASES[artistName] ?? artistName
 
       console.log(`  → Trying iTunes${artistIdOverride ? ` (by artist ID ${artistIdOverride})` : searchName !== artistName ? ` (alias: "${searchName}")` : ''}...`)
-      const iTunesTracks = artistIdOverride
-        ? await itunes.getTopTracksByArtistId(artistIdOverride, AUDIO_PREVIEW_CONFIG.trackLimit)
-        : await itunes.getTopTracks(searchName, AUDIO_PREVIEW_CONFIG.trackLimit)
+      const candidateLimit = AUDIO_PREVIEW_CONFIG.trackLimit * CANDIDATE_MULTIPLIER
+      const candidates = artistIdOverride
+        ? await itunes.getTopTracksByArtistId(artistIdOverride, candidateLimit)
+        : await itunes.getTopTracks(searchName, candidateLimit)
 
-      if (iTunesTracks && iTunesTracks.length === AUDIO_PREVIEW_CONFIG.trackLimit) {
+      // Compare against the SEARCH name plus every known billing of the act.
+      // Aliases exist precisely to redirect, so "Brian Setzer '68 Comeback
+      // Special" resolving to "Brian Setzer" is the alias working, not drift.
+      const acceptedNames = [searchName, ...(aliasIndex.get(normalized) ?? [])]
+      const { kept, dropped, sawInstead } = keepTracksBilledTo(acceptedNames, candidates)
+      if (dropped.length > 0) {
+        console.log(`  🚫 Dropped ${dropped.length} track(s) billed to someone else (e.g. "${sawInstead}")`)
+      }
+
+      const iTunesTracks = kept.slice(0, AUDIO_PREVIEW_CONFIG.trackLimit)
+
+      // Too few genuine tracks to work with. Fail closed and say why — storing
+      // the impostors is what #275 did, and the wrong album names it left
+      // behind are indistinguishable from missing data.
+      if (candidates.length > 0 && iTunesTracks.length < AUDIO_PREVIEW_CONFIG.trackLimit) {
+        console.log(
+          `  ❌ Only ${iTunesTracks.length}/${AUDIO_PREVIEW_CONFIG.trackLimit} tracks billed to "${searchName}"` +
+          (sawInstead ? ` — iTunes mostly returned "${sawInstead}".` : '.') +
+          (artistIdOverride ? '' : ' Pin an ARTIST_ID_OVERRIDE to fix.')
+        )
+        misresolved.push({ artist: artistName, got: sawInstead ?? '(too few tracks)' })
+        failed++
+        continue
+      }
+
+      if (iTunesTracks.length === AUDIO_PREVIEW_CONFIG.trackLimit) {
         console.log(`  🔍 Validating ${iTunesTracks.length} iTunes previews...`)
         const validatedTracks = await validateTracks(iTunesTracks)
 
@@ -267,7 +537,10 @@ export async function enrichTopTracks() {
             name: artistName,
             source: 'itunes',
             fetchedAt: new Date().toISOString(),
-            tracks: validatedTracks
+            resolvedVia: artistIdOverride ? 'artist-id' : searchName !== artistName ? 'alias' : 'search',
+            itunesArtistId: validatedTracks[0]?.artistId,
+            itunesArtistName: commonBilling(validatedTracks),
+            tracks: forStorage(validatedTracks)
           }
           enriched++
           continue
@@ -275,6 +548,15 @@ export async function enrichTopTracks() {
           const previewCount = countPreviews(validatedTracks)
           console.log(`  ⚠️  iTunes: only ${previewCount}/${AUDIO_PREVIEW_CONFIG.trackLimit} validated (below quality bar)`)
         }
+      }
+
+      // An empty response is not a quality problem — it is usually a 429 the
+      // client already retried into the ground. Say so, or a throttled sweep
+      // reads as 150 artists who suddenly have no music.
+      if (candidates.length === 0) {
+        console.log(`  ⚠️  iTunes returned nothing (rate limit or no match) — existing record left as-is`)
+        failed++
+        continue
       }
 
       // iTunes did not meet quality bar — no preview available for this artist
@@ -285,6 +567,14 @@ export async function enrichTopTracks() {
       failed++
 
     } catch (error) {
+      // Stop the run. Every remaining artist would fail identically, and the
+      // requests that fail are themselves what deepens the block — the first
+      // sweep fired ~200 doomed requests after it was already locked out.
+      if (error instanceof ITunesBlockedError) {
+        blockedAt = artistName
+        break
+      }
+
       console.error(`  ❌ Error fetching ${artistName}:`, error)
       failed++
     }
@@ -293,7 +583,12 @@ export async function enrichTopTracks() {
   // Drop records for artists no longer in the archive. Same accumulation as
   // artists-metadata.json (#255): this writes the whole object back with no
   // delete path, so any key ever written survives forever.
-  const liveKeys = new Set(artists.map(normalizeArtistName))
+  //
+  // Skipped under --artist, and after a block: those runs only visited some of
+  // the artists, so every record they never reached looks orphaned when it is
+  // simply untouched. Pruning on a partial run would delete real data.
+  const partialRun = Boolean(artist) || blockedAt !== null
+  const liveKeys = new Set(partialRun ? Object.keys(results) : artists.map(normalizeArtistName))
   const orphans = Object.keys(results).filter(key => !liveKeys.has(key))
   for (const key of orphans) {
     delete results[key]
@@ -305,10 +600,29 @@ export async function enrichTopTracks() {
 
   // Save results
   const outputPath = resolve('public/data/artists-top-tracks.json')
-  writeFileSync(outputPath, JSON.stringify(results, null, 2), 'utf-8')
+  if (dryRun) {
+    console.log(`\n🌵 DRY RUN — ${outputPath} not written`)
+  } else {
+    writeFileSync(outputPath, JSON.stringify(results, null, 2), 'utf-8')
+  }
+
+  if (blockedAt) {
+    const reached = enriched + failed + misresolved.length
+    console.log(`\n🛑 STOPPED — iTunes returned 403 at "${blockedAt}". This is a block, not a rate limit.`)
+    console.log(`   Reached ${reached} of ${artists.length} artists. The rest were NOT checked.`)
+    console.log(`   The block clears on its own in minutes. Re-run to continue — records`)
+    console.log(`   already fetched are kept, and nothing that failed was overwritten.`)
+  }
+
+  if (misresolved.length > 0) {
+    console.log(`\n⚠️  ${misresolved.length} artist(s) rejected — iTunes returned the wrong act:`)
+    for (const m of misresolved) console.log(`   − ${m.artist} → got "${m.got}"`)
+    console.log(`   Fix by pinning an ARTIST_ID_OVERRIDE. Rejected, not stored — see #275.`)
+  }
 
   console.log(`\n📊 Enrichment Summary:`)
   console.log(`   ✅ Enriched: ${enriched}`)
+  console.log(`   🚫 Wrong artist (rejected): ${misresolved.length}`)
   console.log(`   🧹 Pruned (orphaned): ${orphans.length}`)
   console.log(`   ⏭️  Skipped (cached): ${skipped}`)
   console.log(`   ❌ Failed: ${failed}`)
@@ -317,7 +631,7 @@ export async function enrichTopTracks() {
   const coveragePercent = ((Object.keys(results).length / artists.length) * 100).toFixed(1)
   console.log(`   📈 Coverage: ${coveragePercent}% (${Object.keys(results).length}/${artists.length} artists)`)
 
-  console.log(`\n🎉 Done! Saved to ${outputPath}`)
+  console.log(dryRun ? `\n🎉 Done! (dry run — nothing written)` : `\n🎉 Done! Saved to ${outputPath}`)
 }
 
 // Run the enrichment (only when executed directly, not when imported for testing)

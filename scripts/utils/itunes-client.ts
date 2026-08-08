@@ -1,8 +1,39 @@
 /**
  * iTunes Search API Client
- * Free tier: No rate limits (Apple encourages usage)
+ *
+ * Keyless and free, but NOT unlimited — the previous version of this comment
+ * said "no rate limits (Apple encourages usage)" and that is measurably wrong.
+ * Two full 257-artist sweeps, measured 2026-08-08:
+ *
+ *   600ms cadence   27x HTTP 429, then 149x HTTP 403
+ *   3000ms cadence   0x HTTP 429, then 156x HTTP 403
+ *
+ * Both runs died at roughly the same ARTIST COUNT (~45-90) despite a 5x
+ * difference in cadence. That is a request-budget signature, not a rate one:
+ * slowing down does not buy more requests, it just spreads the same allowance
+ * over more wall-clock. Sustained 429s escalate to a 403 block on the whole
+ * client, which clears on its own within minutes.
+ *
+ * The practical consequence: a full sweep must be CHUNKED (~40 artists, pause,
+ * repeat), not slowed. And a 403 must stop the run — see ITunesBlockedError.
+ *
  * Docs: https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/
  */
+
+/**
+ * Apple has blocked this client, not merely throttled it.
+ *
+ * Distinct from an empty result because the correct response is different:
+ * an empty result means "this artist has no tracks", a block means "nothing
+ * you ask for will succeed until this expires." Retrying is not just futile,
+ * it is counterproductive — the block is what sustained retrying earns.
+ */
+export class ITunesBlockedError extends Error {
+  constructor(label: string) {
+    super(`iTunes returned 403 for "${label}" — client is blocked, not rate limited`)
+    this.name = 'ITunesBlockedError'
+  }
+}
 
 interface iTunesTrack {
   trackName: string
@@ -11,6 +42,8 @@ interface iTunesTrack {
   collectionName: string
   artworkUrl100: string
   trackViewUrl: string
+  artistName: string
+  artistId: number
 }
 
 interface iTunesSearchResponse {
@@ -25,6 +58,24 @@ export interface NormalizedTrack {
   albumName: string
   albumArt: string
   streamingUrl: string
+
+  /**
+   * Who iTunes thinks recorded this — PROVENANCE, not persisted.
+   *
+   * A name search returns whoever the term matched, which is not necessarily
+   * who we asked for: "Bad Religion" once returned Frank Ocean's *channel
+   * ORANGE* and "ABC" returned children's alphabet songs (#275). Nothing in
+   * the stored record captured that, so the only symptom was an album title
+   * that failed to match the artist's discography — a silent recall loss two
+   * layers downstream.
+   *
+   * The caller compares these against the artist it asked for, records the
+   * outcome once per artist, and STRIPS these fields before writing. They are
+   * ~80% duplicated across an artist's five tracks, and this file is fetched
+   * by the SPA on every artist view.
+   */
+  artistName: string
+  artistId: number
 }
 
 export class iTunesClient {
@@ -67,6 +118,12 @@ export class iTunesClient {
           throw new Error(`iTunes API error: 429 (exhausted retries)`)
         }
 
+        // Not retried, and deliberately not swallowed into an empty result:
+        // every subsequent request will fail the same way until it expires.
+        if (response.status === 403) {
+          throw new ITunesBlockedError(label)
+        }
+
         if (!response.ok) {
           throw new Error(`iTunes API error: ${response.status}`)
         }
@@ -86,10 +143,15 @@ export class iTunesClient {
           durationMs: track.trackTimeMillis,
           albumName: track.collectionName,
           albumArt: track.artworkUrl100,
-          streamingUrl: track.trackViewUrl
+          streamingUrl: track.trackViewUrl,
+          artistName: track.artistName,
+          artistId: track.artistId
         }))
 
       } catch (error) {
+        // A block is the caller's problem to act on, not a per-artist miss.
+        if (error instanceof ITunesBlockedError) throw error
+
         if (attempt < this.maxRetries && error instanceof Error && error.message.includes('429')) {
           continue
         }
