@@ -16,6 +16,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { generateSitemap } from './generate-sitemap.ts'
+import { SCENE_NAMES } from '../src/components/changelog/constants'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -86,7 +87,10 @@ async function main() {
 
   // Calculate stats
   const concerts = concertsData.concerts.length
-  const scenes = 5
+  // Derived from the canonical roster, not hardcoded (#283). This sat at 5 for
+  // the seven months after Ask shipped as scene 6, while every other stat on
+  // this line was computed from the data.
+  const scenes = SCENE_NAMES.length
 
   // Count unique artists (headliners + openers)
   const artistSet = new Set<string>()

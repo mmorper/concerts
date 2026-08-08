@@ -5,7 +5,7 @@ _A visual love letter to four decades of live music._
 
 ## What is this?
 
-An interactive web app for exploring personal concert history. Five scenes—Timeline, Venues, Geography, Genres, Artists—each offering a different lens on 178 shows spanning 1984 to today. Click through decades, trace connections between venues and artists, see where the music happened on a map. All enriched with artist photos, venue imagery, and setlist data.
+An interactive web app for exploring personal concert history. Six scenes—Timeline, Venues, Geography, Genres, Artists, Ask the Archive—each offering a different lens on 184 shows spanning 1984 to today. Click through decades, trace connections between venues and artists, see where the music happened on a map. All enriched with artist photos, venue imagery, and setlist data.
 
 **Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 184 shows • 257 artists • 79 venues • 5+ decades
 
@@ -37,7 +37,7 @@ This project is my attempt to turn that data into something that actually captur
 
 ## Features
 
-Five interactive scenes, each one a different lens on the same history:
+Six interactive scenes, each one a different lens on the same history:
 
 **[The Timeline](https://concerts.morperhaus.org/?scene=timeline)** — Every concert laid out chronologically. Scroll through four decades, see the density of shows ebb and flow. Hover over any year to preview artist imagery and concert counts with subtle parallax effects.
 
@@ -48,6 +48,8 @@ Five interactive scenes, each one a different lens on the same history:
 **[The Genres](https://concerts.morperhaus.org/?scene=genres)** — A sunburst chart breaking down our musical diet. Click into a genre to see every artist.
 
 **[The Artists](https://concerts.morperhaus.org/?scene=artists)** — Browse everyone we've seen, from headliners to openers. [Gatefold album art vibes](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) with artist photos, concert histories, setlist integration, and live tour dates with ticket links.
+
+**[Ask the Archive](https://concerts.morperhaus.org/?scene=ask)** — Forty years of shows, as a conversation. Ask in plain language—which venue we've been to most, who we saw twice in one year, what we played on repeat that summer—and get answers grounded in shows that actually happened, rendered as small exhibits rather than walls of text. Press ⌘K from anywhere.
 
 ## Where the data comes from
 
@@ -94,7 +96,7 @@ npm install
 npm run dev
 ```
 
-The app includes my concert data as static JSON—no setup required. Browse 174+ shows to see how it works.
+The app includes my concert data as static JSON—no setup required. Browse 184 shows to see how it works.
 
 ### Using Your Own Concert Data
 

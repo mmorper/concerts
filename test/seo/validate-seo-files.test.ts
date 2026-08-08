@@ -250,7 +250,13 @@ describe('SEO Files Validation', () => {
         const parsed = JSON.parse(jsonLdMatch[1])
 
         expect(parsed.hasPart).toBeDefined()
-        expect(parsed.hasPart).toHaveLength(7) // 5 scenes + How It Works + About page
+        // 5 of the 6 scenes + How It Works + About page.
+        //
+        // Ask the Archive (scene 6, shipped v5.0.0) is deliberately NOT in
+        // hasPart yet — exposing it to search engines is a pending call on
+        // #283, along with the sitemap's canonical `?scene=ask` URL. Bump this
+        // to 8 and add the Ask assertion below when that lands.
+        expect(parsed.hasPart).toHaveLength(7)
 
         const sceneNames = parsed.hasPart.map((scene: any) => scene.name)
         expect(sceneNames).toContain('Timeline')

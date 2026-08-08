@@ -3,10 +3,10 @@
 ## Current State (v5.4.0)
 
 - **184 concerts** spanning 1984-2026
-- **258 artists** (including openers) with 100% imagery coverage
+- **257 artists** (including openers) with 100% imagery coverage
 - **79 unique venues** across 35 cities
 - **11,359 releases** joined against attendance — 178 shows carry album-cycle data
-- **5 interactive scenes**: Timeline, Venues, Geography, Genres, Artists
+- **6 interactive scenes**: Timeline, Venues, Geography, Genres, Artists, Ask the Archive
 - **Standalone pages**: /liner-notes, /whats-playing, /how-it-works, /about, /about-mcp, /dashboard
 - **Latest**: discography trajectory — where a band was in their career the night I saw them
 
