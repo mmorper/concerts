@@ -29,7 +29,7 @@ Orchestrates the release workflow. References existing docs for details.
 | 4 | Changelog entry | `/changelog` command (if user-facing changes) |
 | 5 | Update files | `.claude/readme-maintenance.md` → "Callable Checklist" |
 | 6 | Preview & confirm | Review all changes |
-| 7 | Validate | `npm run validate:version` |
+| 7 | Validate | `npm run validate:version` + `npm run validate:docs` |
 | 8 | Git operations | Below |
 | 9 | GitHub release | `gh release create` (all commits) |
 | 10 | Close related issues | `gh issue close` (selected issues) |
@@ -254,12 +254,44 @@ Update in order:
 | `package.json` | Set `"version": "{VERSION}"` | - |
 | `index.html` + `og-stats.json` | Run `npm run update:meta` to refresh stats | - |
 | `public/og-image.jpg` | Run `npm run og:generate` — **needs a running site**: either `npm run dev` in another terminal, or `OG_SITE_URL=https://concerts.morperhaus.org npm run og:generate` against production (no server needed) | - |
-| `docs/ROADMAP.md` | Move completed items (see below) | No items selected |
+| `docs/ROADMAP.md` "Recently Completed" | Move completed items (see below) | No items selected |
+| `docs/ROADMAP.md` "Current State" | Refresh stats + scene roster (see below) | - |
 | `README.md` "What's New" | Update with this release's highlights | No user-facing changes |
+| `README.md` intro + "Features" | Refresh stats + scene roster (see below) | - |
 | `CLAUDE.md` | Update version + stats in header line | - |
 | `.claude/context.md` | Update version, recent releases | - |
+| **All of the above** | **Run `npm run validate:docs` — must pass** | - |
 
 **Note:** README.md "What's Next" will be updated in Step 5.6 after issues are closed.
+
+#### Stats & Scene Roster
+
+**These have an owner now, and it is this step (#284).**
+
+Before #284 the only parts of README this process touched were "What's New" and
+"What's Next". The intro paragraph, the Features list and ROADMAP's Current State
+block belonged to nobody. README said "Five scenes" for the seven months after Ask
+the Archive shipped as scene 6, through roughly forty releases, while the two owned
+sections were rewritten every time. Nothing was broken — those lines were simply
+never anyone's job.
+
+Run the validator rather than eyeballing it:
+
+```bash
+npm run validate:docs
+```
+
+It derives the counts from `public/data/concerts.json` and the scene roster from
+`SCENE_LABELS` in `src/components/changelog/constants.ts`, then names the exact
+line that disagrees. It also fails when a claim can no longer be found at all —
+reworded prose stops being checked otherwise, which is how this drift starts.
+
+**Adding a scene?** Add it to `SCENE_MAP`, `SCENE_NAMES` and `SCENE_LABELS`, then
+run the validator and let it tell you which prose to update. Also add a Features
+entry in README — that section is where a new scene is announced to anyone reading
+the repo.
+
+CI runs this on every PR, so a stale claim fails the build rather than shipping.
 
 #### ROADMAP Updates
 
@@ -423,7 +455,7 @@ If confirmed (or default Yes):
 - Fetches current open GitHub issues (after Step 5.5 closures)
 - Categorizes into New Capabilities, Enhancements, Fixes
 - Generates Product Marketer voice summaries
-- Updates README.md lines 132-139 ("What's Next" section)
+- Updates README.md's "What's Next" section (located by its surrounding text, not line numbers)
 - Links to 2-3 representative issues per category
 
 **Output:**
@@ -440,8 +472,8 @@ Categorized:
 ```
 
 **Result:** README.md now has BOTH sections updated:
-- Lines 12-20: "What's New" (this release's work)
-- Lines 132-139: "What's Next" (remaining open issues)
+- "What's New" (this release's work)
+- "What's Next" (remaining open issues)
 
 **If declined:**
 Skip roadmap update. README "What's Next" remains unchanged.
@@ -504,6 +536,7 @@ Then **STOP**.
 2. Run validation:
    ```bash
    npm run validate:version
+   npm run validate:docs
    npm run build
    ```
 
@@ -841,6 +874,7 @@ Output: `✓ Removed N handoff file(s)`
 | "Working directory not clean" | Uncommitted changes | `git stash` or commit first |
 | "Version already exists" | Duplicate in changelog | Choose different version |
 | "Validation failed" | Version mismatch | Run `npm run validate:version`, fix discrepancy |
+| "Documented claim(s) out of date" | README/ROADMAP/CLAUDE.md prose disagrees with the data or the scene roster | Run `npm run validate:docs` — it names the line and the expected value |
 | "Push rejected" | Remote has new commits | `git pull --rebase`, then push |
 
 ---

@@ -29,12 +29,21 @@ Update README.md whenever:
 
 ### "What's Next" Section
 
-**Source of truth:** `docs/specs/future/`
+**Source of truth: open GitHub issues.** `/roadmap` fetches them with
+`gh issue list --state open`, categorises them into New Capabilities /
+Enhancements / Fixes, and rewrites the section. It runs automatically as
+`/release` Step 5.6, after Step 5.5 closes whatever this release completed.
 
-**Selection criteria:**
-- User-facing features only (no dev tooling)
-- High or medium priority specs
+This file used to say the source of truth was `docs/specs/future/` while the
+command read the issue tracker (#284). Both statements had been true at
+different times and neither was ever reconciled. If you want something to
+appear in "What's Next", it needs an open issue — a spec alone will not
+surface it.
+
+**Selection criteria** (applied by `/roadmap` when summarising):
+- User-facing outcomes only (no dev tooling)
 - Things that add user value or delight
+- 1-3 representative issues linked per category
 
 **Tone & Language:**
 - Exploratory, not committal ("thinking about" not "will ship")
@@ -42,24 +51,29 @@ Update README.md whenever:
 - Benefits first, implementation details never
 - Casual voice matching the rest of README
 
-**When to update:**
-- When a "next" feature ships (move to "What's New", replace with next item)
-- When priorities shift in planning docs
-- When new interesting specs are added to future/
-
-**Review:** Before each release, scan `docs/specs/future/` and verify "What's Next" still reflects current thinking.
+**When to update:** automatically, at release. Run `/roadmap --preview` any time
+to see what it would write without touching the file.
 
 ### Stats (Always Current)
 
-Update these whenever data refreshes:
-- Concert count: `cat public/data/concerts.json | jq '.concerts | length'`
-- Artist count: Check concerts metadata or changelog
-- Venue count: Check concerts metadata
-- Decade range: First and last concert years
+**Don't hand-check these — run `npm run validate:docs`.** It derives the counts
+from `public/data/concerts.json` and the scene roster from `SCENE_LABELS`, and
+fails naming the specific line that's wrong. CI runs it on every PR.
 
-**Where stats appear:**
-- "What Is This?" section (opening paragraph)
-- Keep them accurate to within 5-10 concerts (exact precision not required)
+**Where stats and the scene roster appear:**
+- README "What Is This?" opening paragraph — scene count, scene roster, show count
+- README stats line — shows, artists, venues
+- README "Features" — one entry per scene
+- README "Running it yourself" — show count
+- `docs/ROADMAP.md` "Current State" — all of the above
+- `CLAUDE.md` header line — concerts, artists, venues
+
+**Exact, not approximate.** This used to read "keep them accurate to within
+5-10 concerts (exact precision not required)". That tolerance is why README
+said "174+ shows" and "178 shows" while the real number was 184, and why
+"Five scenes" survived seven months after Ask shipped as the sixth (#283) —
+an approximate number is one nobody feels obliged to correct. The counts are
+derived in milliseconds; there is no reason to round them.
 
 ## Version Release Checklist
 
@@ -168,7 +182,7 @@ cat src/data/changelog.json | jq '.releases[0:3]'
 2. **What Is This?** - Crisp 2-3 sentence description + stats
 3. **What's New** - Latest production feature (link to /liner-notes)
 4. **Backstory** - Origin story, personal narrative
-5. **Features** - Five interactive scenes
+5. **Features** - One entry per interactive scene (see `SCENE_LABELS`)
 6. **Where Data Comes From** - Sources + enrichment (high-level)
 7. **How It's Built** - Tech stack + architecture
 8. **Running It Yourself** - Installation instructions

@@ -24,6 +24,7 @@ Run comprehensive validation checks before releases or after data changes.
 | Check | Command | Blocks Release |
 |-------|---------|----------------|
 | Version consistency | `npm run validate:version` | Yes |
+| Doc claims vs code & data | `npm run validate:docs` | Yes |
 | Data quality | `npm run validate-data` | Yes |
 | TypeScript build | `npx tsc --noEmit` | Yes |
 | Normalization | `npm run validate-normalization` | No (warning) |
@@ -50,6 +51,25 @@ npm run validate:version
 > - changelog.json: v{VERSION_B}
 >
 > Run `/release` to create a new release, or manually sync versions.
+
+---
+
+### Step 1.5: Documented Claims
+
+**Check:** README, `docs/ROADMAP.md` and `CLAUDE.md` still describe the archive
+accurately — scene count, scene roster, concert/artist/venue counts, year span.
+
+```bash
+npm run validate:docs
+```
+
+Truth is derived, never typed: counts from `public/data/concerts.json`, the
+roster from `SCENE_LABELS` in `src/components/changelog/constants.ts`.
+
+**If fails:** the output names the file, the claim, what it says and what it
+should say. A claim it can no longer *find* is also a failure — reworded prose
+silently stops being checked otherwise, which is exactly how README came to
+claim five scenes for seven months after Ask shipped as the sixth (#283).
 
 ---
 

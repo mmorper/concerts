@@ -55,6 +55,14 @@ jobs:
       - name: Test
         run: npm run test:run
 
+      # README, docs/ROADMAP.md and CLAUDE.md describe the archive to people
+      # who have never used it, and nothing could fail when they stopped being
+      # true. README claimed "Five scenes" for seven months after Ask shipped
+      # as scene 6 (#283). This compares those claims against the scene roster
+      # and concerts.json (#284).
+      - name: Validate docs against code and data
+        run: npm run validate:docs
+
       # Catches Vite-time failures that tsc and vitest both miss.
       - name: Build
         run: npm run build
