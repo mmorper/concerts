@@ -249,7 +249,45 @@ Stores setlist.fm API results.
 
 ---
 
-## Relationships
+### Album Eras (`album-eras.json`) ✨ v5.4
+
+The join between the discography and 40 years of attendance — where an artist stood on a given night. Keyed by concert id and by artist key. Covers **openers as well as headliners** (238 artists); restricting it to headliners left 22.3% of song→album pairs unattributable.
+
+`careerYear` is `null`, never negative, for a pre-debut show. The magnitude lives in `yearsBeforeDebut`. Treating a missing `careerYear` as 0 is how v5.4 shipped a post calling a pre-debut show "four years into their existence".
+
+### Song → Album Attribution (`song-albums.json`) ✨ v6.0
+
+Which studio album a live-performed song came off. 1,716 of 1,912 unique artist+song pairs (89.7%), across three tiers: `artists-top-tracks` (253), MusicBrainz (1,428), iTunes (35).
+
+```json
+{
+  "version": "1.0.0",
+  "songs": {
+    "depeche-mode::just-cant-get-enough": {
+      "songTitle": "Just Can't Get Enough",
+      "albumTitle": "Speak & Spell",
+      "mbid": "7a0e0366-...",
+      "releaseDate": "1981-10-05",
+      "coverAvailable": true,
+      "matchTier": 0,
+      "isCover": false,
+      "originalArtistKey": null
+    }
+  }
+}
+```
+
+**Reading it — three things that will bite:**
+
+1. **Never hand-build the key.** It is `artistKey::foldedSongTitle`, where the fold strips version qualifiers, unicode punctuation and `&`→`and`. Use `songAlbumKey()` from `scripts/utils/song-title.ts`, or `lookupSongAlbum()` from `scripts/utils/song-album-lookup.ts` if you are starting from a billing name. A caller that folds differently matches **nothing**, and looks exactly like a caller that correctly found nothing.
+
+2. **The artist key is not always the marquee slug.** `omd` is filed as `orchestral-manoeuvres-in-the-dark`; `Echo & The Bunnymen` as `echo-the-bunnymen`. `lookupSongAlbum()` handles all three resolution routes. Skipping the `discographyKeys` hop fails silently.
+
+3. **`releaseDate` precision varies.** 1,462 full dates, 145 `YYYY-MM`, 109 bare `YYYY`. Any gap measured against it must clear the width of the date's own uncertainty — see `road-tested`'s precision rule.
+
+**What it does NOT say:** the album is the *earliest studio album carrying the song*, which is not always where the song first appeared. A standalone single that later reached an album attributes to that album. This file supports claims about the **album**, never about when the song came into existence.
+
+## Relationships## Relationships
 
 ```
                     ┌─────────────────┐
