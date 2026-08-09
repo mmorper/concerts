@@ -1,6 +1,6 @@
 # Liner Notes Pipeline
 
-> **Status:** v1.2 — 18 Tier 1 detectors; `album-trajectory` added and `discography-crossref` implemented-but-disabled (#272)
+> **Status:** v1.3 — 20 Tier 1 detectors; `road-tested` and `most-witnessed-album` added (#277), `discography-crossref` still implemented-but-disabled (#272, prerequisite unmet)
 > **Last Updated:** 2026-08-07
 > **Original Spec:** [docs/specs/implemented/agentic-liner-notes-v3.md](specs/implemented/agentic-liner-notes-v3.md)
 
@@ -550,6 +550,77 @@ Each detector produces one or more `AnalysisFinding` objects with a `category`, 
 - *No Doubt — 7.6 Years Before Tragic Kingdom*
 - *Depeche Mode — 20 Months Before Violator*
 - *Stryper — 8 Months Before To Hell With the Devil*
+
+---
+
+### 19. Road-Tested (`road-tested`) ✨ v6.0
+
+**What it finds:** a song heard live **before the album carrying it existed**.
+
+**Category:** Cultural | **Temporality:** Evergreen
+
+**The exact inverse of `album-trajectory`.** There the *record* was ahead; here the *song* was. Depeche Mode at the Rose Bowl were four years from *Violator*; Royal Blood at the 9:30 Club were ten days from a record nobody could buy yet.
+
+**Trigger:** an attributed song whose album release date post-dates the concert, bounded on **both** sides. Both bounds were settled by counting, not intuition.
+
+**Upper bound — 1,095 days (3 years).** Past three years the population turns into re-recordings and reissues: James' "Sit Down" at 10,856 days resolves to a 2023 orchestral re-recording. Settled by reading all 71 raw findings by hand — everything inside three years was genuine, so a tighter cap would have deleted 18 real ones.
+
+**Lower bound — the release date's own precision window**, not a flat floor:
+
+| `releaseDate` precision | required gap |
+| --- | --- |
+| `YYYY-MM-DD` | > 7 days |
+| `YYYY-MM` | > 31 days |
+| `YYYY` | never fires |
+
+A flat 14-day floor was **undefined** on the 254 of 1,716 attributed songs whose date is not day-precise — Crowded House's "In My Command" (*Together Alone*, `1993-10`) reads as a 13-day gap only because the earliest possible date is assumed, when the truth is somewhere between 13 and 43. It also deleted a genuine finding: Royal Blood, four songs, ten days.
+
+> **The bounds are a permanence guarantee, not a quality filter.** Data Refresh re-runs enrichment Mondays 07:00 UTC and Liner Notes publishes **unreviewed** at 08:00 UTC, permalinked and never revisited — while release dates are contributor-edited upstream. A finding sitting near a threshold is one MusicBrainz edit from being false forever, with nothing to re-check it.
+
+**Covers are excluded.** A cover's album belongs to the original act, so it says nothing about the night's performers.
+
+**Data points:** artist, venue, city, date, year; `albumTitle`, `albumReleaseDate`, `daysBeforeRelease`, `songCountFromSameFutureAlbum`, `songsHeardEarly`, `releaseDatePrecision`, `setlistLength`.
+
+**Voice rule — claim the ALBUM, never the song's existence.** The detector knows one thing: the record came out after the night. It does *not* know the song was unwritten or unreleased. Garbage's "No Horses" was a standalone 2017 single that only reached an album in 2021 — the song existed the night it was heard. Prose must also be **retrospective**, never foresight in the moment. Both are enforced as errors in `voice-check.ts` (`song-existence`, `foresight`).
+
+**Scoring note:** `surpriseFactor` = 9. Span scales with distance *and* corroboration — the ladder reaches down to the 7-day floor, because admitting a finding and then scoring it zero is the same as not admitting it.
+
+**Auto-tags:** `#road-tested`, `#before-the-record`.
+
+**Returns:** 14 findings on current data.
+
+**Example headlines:**
+- *The Cure — 1.4 Years Before Songs of a Lost World*
+- *Wham! — 10 Months Before Music From the Edge of Heaven*
+- *Royal Blood — 10 Days Before How Did We Get So Dark?*
+
+---
+
+### 20. Most-Witnessed Album (`most-witnessed-album`) ✨ v6.0
+
+**What it finds:** the record you have heard the most of, live, across every show.
+
+**Category:** Personal | **Temporality:** Evergreen
+
+The interesting part is that it is usually **not** the album you played most at home. Attendance samples a catalogue differently from listening: it favours whatever an act leaned on live across the years you happened to catch them.
+
+**Ranked by DISTINCT songs, not performances.** Hearing "Story of My Life" at five shows is one song five times; hearing seventeen different songs off one record is knowing the record.
+
+**Data points:** `albumTitle`, `albumMbid`, artist, `distinctSongsWitnessed`, `songsWitnessed`, `totalPerformances`, `showsSpanned`, `firstDate`, `lastDate`, `albumTrackCount`, plus the anchor show's venue/date/year.
+
+**`albumTrackCount` is null more often than you would expect, and that is deliberate.** The MusicBrainz cache's track list describes **one release** while the resolver indexes the whole release-group, so B-sides and expanded editions push the witnessed count above it — Garbage's debut counts 17 witnessed against a cached 12. The count is reported only when self-consistent. **Prose must not claim a fraction when it is null:** "seventeen songs", never "seventeen of twelve".
+
+**Covers are excluded**, as in `road-tested`.
+
+**Scoring note:** `surpriseFactor` = 6. Span from distinct songs (4 pts ≥ 4, 7 pts ≥ 6, 10 pts ≥ 8).
+
+**Auto-tags:** `#most-witnessed`, `#album-eras`.
+
+**Returns:** 1 finding — there is only one "most".
+
+> **Supply caution.** This detector favours repeat artists by construction. The spec predicted it would land on Social Distortion, Depeche Mode or Howard Jones; ranking by distinct songs rather than show count means it actually lands on Garbage. The rotation pressure is still real, and the per-artist cap that would relieve it ([#277](https://github.com/mmorper/concerts/issues/277) §5d) is **not** shipped — its prerequisite is unmet, `album-trajectory` having published zero posts.
+
+**Example headline:** *Garbage — 17 Songs From The Album That Shares Their Name, Live*
 
 ---
 

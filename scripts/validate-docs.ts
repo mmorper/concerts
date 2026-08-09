@@ -84,13 +84,49 @@ function deriveStats() {
   const venueSet = new Set(concerts.map((c) => c.venue))
   const years = concerts.map((c) => c.year)
 
+  // v6.0 data files. Optional: a fresh clone before enrichment has neither, and
+  // a missing file must not fail the doc gate — but a PRESENT file whose counts
+  // have drifted from the prose must.
+  const songAlbums = readOptionalJson<{ songs?: Record<string, { releaseDate?: string }> }>(
+    'public/data/song-albums.json'
+  )
+  const albumEras = readOptionalJson<{ artists?: Record<string, unknown> }>(
+    'public/data/album-eras.json'
+  )
+
+  const songEntries = Object.values(songAlbums?.songs ?? {})
+  const precision = { day: 0, month: 0, year: 0 }
+  for (const entry of songEntries) {
+    const parts = String(entry?.releaseDate ?? '').split('-').length
+    if (parts === 3) precision.day++
+    else if (parts === 2) precision.month++
+    else precision.year++
+  }
+
   return {
     concerts: concerts.length,
     artists: artistSet.size,
     venues: venueSet.size,
     startYear: Math.min(...years),
     endYear: Math.max(...years),
+    songAlbums: songAlbums ? songEntries.length : null,
+    albumErasArtists: albumEras ? Object.keys(albumEras.artists ?? {}).length : null,
+    precision,
   }
+}
+
+/** Null when absent — an un-enriched clone documents nothing, and that is fine. */
+function readOptionalJson<T>(relativePath: string): T | null {
+  try {
+    return JSON.parse(readRepoFile(relativePath)) as T
+  } catch {
+    return null
+  }
+}
+
+/** 1716 -> "1,716", matching how the prose writes them. */
+function withCommas(n: number): string {
+  return n.toLocaleString('en-US')
 }
 
 function buildClaims(): Claim[] {
@@ -209,6 +245,55 @@ function buildClaims(): Claim[] {
       pattern: /\| [\d,]+ concerts, [\d,]+ artists, ([\d,]+) venues/,
       expected: String(stats.venues),
     },
+
+    // ---- public/llm.txt: the v6.0 data-file counts (#290).
+    //
+    // llm.txt was OUTSIDE this gate until now, and it is the file whose stats
+    // froze at a number that was never true — the `.replace()` whose own regex
+    // could not match what it wrote (#287). That fix made the writer WARN on a
+    // miss; this makes the reader FAIL. Same file, same class of bug, now
+    // enforced rather than announced.
+    //
+    // Skipped entirely when the data file is absent: a fresh clone before
+    // enrichment documents nothing, and that is not drift.
+    ...(stats.songAlbums === null
+      ? []
+      : [
+          {
+            file: 'public/llm.txt',
+            label: 'song-albums record count',
+            pattern: /\*\*Records:\*\* ([\d,]+) of [\d,]+ unique artist\+song pairs/,
+            expected: withCommas(stats.songAlbums),
+          },
+          {
+            file: 'public/llm.txt',
+            label: 'song-albums full-date count',
+            pattern: /([\d,]+) entries are full dates/,
+            expected: withCommas(stats.precision.day),
+          },
+          {
+            file: 'public/llm.txt',
+            label: 'song-albums month-precision count',
+            pattern: /full dates, ([\d,]+) are `YYYY-MM`/,
+            expected: withCommas(stats.precision.month),
+          },
+          {
+            file: 'public/llm.txt',
+            label: 'song-albums year-precision count',
+            pattern: /([\d,]+) are bare `YYYY`/,
+            expected: withCommas(stats.precision.year),
+          },
+        ]),
+    ...(stats.albumErasArtists === null
+      ? []
+      : [
+          {
+            file: 'public/llm.txt',
+            label: 'album-eras artist count',
+            pattern: /\*\*Records:\*\* ([\d,]+) artists — the join/,
+            expected: withCommas(stats.albumErasArtists),
+          },
+        ]),
   ]
 }
 

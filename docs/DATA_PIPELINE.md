@@ -917,6 +917,7 @@ See [docs/specs/future/artists-discography.md](specs/future/artists-discography.
 7. **Enrich discography** → MusicBrainz albums (optional)
 7.5. **Derive album eras** → `album-eras.json`, the discography × attendance join (local, no API calls)
 8. **Pre-fetch setlists** → setlist.fm cache (optional)
+8.5. **Resolve songs → albums** → `song-albums.json`, three tiers over the setlist cache (cached; a warm re-run makes **0 network calls**)
 9. **Aggregate genres timeline** → Genre statistics (always runs)
 10. **Generate facts** → Liner notes facts (always runs)
 11. **Update meta tags** → SEO and meta tags (always runs)
@@ -936,6 +937,7 @@ See [docs/specs/future/artists-discography.md](specs/future/artists-discography.
 | `--skip-discography` | Skip discography enrichment | Faster builds, no MusicBrainz needed |
 | `--skip-album-eras` | Skip album-era derivation | Rarely needed — it's local and fast |
 | `--skip-setlists` | Skip setlist pre-fetch | No setlist.fm API key |
+| `--skip-song-albums` | Skip song→album resolution | Faster builds; detectors and MCP annotations degrade to silence |
 | `--skip-spotify` | Skip legacy Spotify enrichment (deprecated) | Should always be skipped (no longer used) |
 | `--force-refresh-setlists` | Re-fetch all setlists | Updating existing setlists |
 
@@ -1367,6 +1369,11 @@ Google Maps Geocoding API allows 50 requests/second. The geocoding script enforc
 - `public/data/artists-metadata.json` - Artist metadata from TheAudioDB (photos, bios, genres)
 - `public/data/venues-metadata.json` - Venue metadata with photos (v1.3.2+)
 - `public/data/venue-photos-cache.json` - Cached Google Places API responses (v1.3.2+)
+- `public/data/discography.json` - MusicBrainz albums per artist
+- `public/data/setlists-cache.json` - setlist.fm responses, keyed by concert
+- `public/data/album-eras.json` - discography × attendance join, 238 artists (v5.4+)
+- `public/data/song-albums.json` - song → earliest studio album, 1,716 pairs (v6.0+)
+- `data/cache/musicbrainz-tracks.json` - release-group track listings backing Tier 1 resolution (v6.0+)
 
 ### Temporary (Not Committed)
 - `public/data/concerts.json.backup` - Created manually for diff comparison

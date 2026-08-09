@@ -18,6 +18,7 @@ import type {
   Concert,
   MostPlayedSongs,
   SetlistsCache,
+  SongAlbums,
   VenuesMetadata,
 } from "./types.js";
 import DEEP_LINKS from "../../../test/fixtures/deep-link-urls.json";
@@ -808,5 +809,203 @@ describe("artist billing aliases (#227)", () => {
     const empty = buildAliasIndex(null);
     const text = artistHistory(setzerArchive(), "Brian Setzer", {}, {}, null, empty);
     expect(text).toContain("1 time");
+  });
+});
+
+// ---------- v6.0 §6a — song → album attribution ----------
+
+describe("get_concert_setlist — album annotations (v6.0 §6a)", () => {
+  const ALBUMS: SongAlbums = {
+    version: "1.0.0",
+    generatedAt: "",
+    songs: {
+      // Social Distortion, concert-5. "Mommy's Little Monster" is deliberately
+      // ABSENT so one song in the set is unattributed.
+      "social-distortion::story-of-my-life": {
+        songTitle: "Story of My Life",
+        albumTitle: "Somewhere Between Heaven and Hell",
+        mbid: "sd-1",
+        releaseDate: "1992-01-14",
+        coverAvailable: true,
+        matchTier: 1,
+      },
+      "social-distortion::ball-and-chain": {
+        songTitle: "Ball and Chain",
+        albumTitle: "Somewhere Between Heaven and Hell",
+        mbid: "sd-1",
+        releaseDate: "1992-01-14",
+        coverAvailable: true,
+        matchTier: 1,
+      },
+      // Filed under the DISCOGRAPHY key, which the marquee "OMD" never spells.
+      // Only reachable through hop 2.
+      "orchestral-manoeuvres-in-the-dark::enola-gay": {
+        songTitle: "Enola Gay",
+        albumTitle: "Organisation",
+        mbid: "omd-1",
+        releaseDate: "1980-10-24",
+        coverAvailable: true,
+        matchTier: 0,
+      },
+    },
+  };
+
+  const ALIASES = {
+    discographyKeys: [
+      { act: "omd", discographyKey: "orchestral-manoeuvres-in-the-dark" },
+    ],
+  };
+
+  const call = (concertId: string, albums: SongAlbums | null = ALBUMS) =>
+    concertSetlist(
+      archive(),
+      SETLISTS,
+      { concertId },
+      TOP_TRACKS,
+      null,
+      albums,
+      ARTISTS_META,
+      ALIASES,
+    );
+
+  it("annotates an attributed song with its album", () => {
+    const text = call("concert-5");
+    expect(text).toMatch(/1\. Story of My Life\s{2,}Somewhere Between Heaven and Hell/);
+  });
+
+  it("leaves an unattributed song with NO annotation and no trailing pad", () => {
+    const text = call("concert-5");
+    const line = text.split("\n").find((l) => l.includes("Mommy's Little Monster"))!;
+    expect(line).toBe("3. Mommy's Little Monster");
+  });
+
+  it("states identified of total, so a partial read reads as partial", () => {
+    const text = call("concert-5");
+    expect(text).toContain(
+      "2 of 3 songs identified. 2 from Somewhere Between Heaven and Hell.",
+    );
+  });
+
+  // concert-3's OMD row is the OPENER and the headliner set wins, so drop the
+  // headliner row to make OMD the resolved performer.
+  const OMD_ONLY: SetlistsCache = {
+    ...SETLISTS,
+    entries: SETLISTS.entries.filter(
+      (e) => e.concertId === "concert-3" && e.artistName === "OMD",
+    ),
+  };
+
+  it("reaches a discography filed under a different key than the marquee (hop 2)", () => {
+    const text = concertSetlist(
+      archive(), OMD_ONLY, { concertId: "concert-3" }, TOP_TRACKS, null, ALBUMS, ARTISTS_META, ALIASES,
+    );
+    expect(text).toMatch(/1\. Enola Gay\s{2,}Organisation/);
+  });
+
+  it("misses that discography entirely when hop 2 is skipped", () => {
+    // The failure this guards is SILENT — without discographyKeys the lookup
+    // returns nothing, which is indistinguishable from "we hold no discography
+    // for this act". That is why hop 2 gets its own test rather than being
+    // folded into the one above.
+    const text = concertSetlist(
+      archive(), OMD_ONLY, { concertId: "concert-3" }, TOP_TRACKS, null, ALBUMS, ARTISTS_META, null,
+    );
+    expect(text).toContain("1. Enola Gay");
+    expect(text).not.toContain("Organisation");
+  });
+
+  it("is byte-identical to its pre-v6 output when the data file is absent", () => {
+    const before = concertSetlist(archive(), SETLISTS, { concertId: "concert-5" }, TOP_TRACKS, null);
+    expect(call("concert-5", null)).toBe(before);
+  });
+
+  it("is byte-identical when the data file is present but empty", () => {
+    const before = concertSetlist(archive(), SETLISTS, { concertId: "concert-5" }, TOP_TRACKS, null);
+    const empty: SongAlbums = { version: "1.0.0", generatedAt: "", songs: {} };
+    expect(call("concert-5", empty)).toBe(before);
+  });
+
+  it("never says the count line when nothing was identified", () => {
+    const empty: SongAlbums = { version: "1.0.0", generatedAt: "", songs: {} };
+    expect(call("concert-5", empty)).not.toContain("identified");
+  });
+
+  // A cover and a tape, on one night, for the two rules that are easy to get wrong.
+  const MIXED: SetlistsCache = {
+    version: "1",
+    generatedAt: "",
+    entries: [
+      {
+        concertId: "concert-5",
+        artistName: "Social Distortion",
+        date: "1990-06-04",
+        venue: "Pacific Amphitheatre",
+        setlist: {
+          sets: {
+            set: [
+              {
+                song: [
+                  { name: "Story of My Life" },
+                  { name: "Ring of Fire", cover: { name: "Johnny Cash" } },
+                  { name: "Intro Tape", tape: true },
+                ],
+              },
+            ],
+          },
+        },
+      },
+    ],
+  };
+
+  const MIXED_ALBUMS: SongAlbums = {
+    version: "1.0.0",
+    generatedAt: "",
+    songs: {
+      ...ALBUMS.songs,
+      "social-distortion::ring-of-fire": {
+        songTitle: "Ring of Fire",
+        albumTitle: "Ring of Fire",
+        mbid: "jc-1",
+        releaseDate: "1963-08-01",
+        coverAvailable: true,
+        matchTier: 1,
+        isCover: true,
+        originalArtistKey: "johnny-cash",
+      },
+    },
+  };
+
+  const mixed = () =>
+    concertSetlist(
+      archive(), MIXED, { concertId: "concert-5" }, TOP_TRACKS, null, MIXED_ALBUMS, ARTISTS_META, ALIASES,
+    );
+
+  it("annotates a cover with the original artist, never with an album", () => {
+    // songLine already prints "(Johnny Cash cover)". Adding the album on top
+    // would read as though Social Distortion played a Johnny Cash record.
+    const line = mixed().split("\n").find((l) => l.includes("Ring of Fire"))!;
+    expect(line).toBe("2. Ring of Fire (Johnny Cash cover)");
+  });
+
+  it("excludes tape from the identified count — walk-on music is not a performance", () => {
+    // 3 rows print, but only 2 are performances and only 1 is attributed.
+    expect(mixed()).toContain("1 of 2 songs identified.");
+  });
+});
+
+describe("eraLine phrasing", () => {
+  it("does not say 'released N months old earlier'", () => {
+    const eras: any = {
+      version: "1", generatedAt: "", artists: {}, stats: {},
+      concerts: {
+        "concert-5": {
+          currentAlbum: { title: "Somewhere Between Heaven and Hell" },
+          daysSinceRelease: 274,
+        },
+      },
+    };
+    const text = concertSetlist(archive(), SETLISTS, { concertId: "concert-5" }, TOP_TRACKS, eras);
+    expect(text).toContain("(released 9 months earlier)");
+    expect(text).not.toContain("old earlier");
   });
 });

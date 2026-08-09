@@ -9,6 +9,7 @@
  */
 
 import type { Concert } from "../../src/types/concert.ts";
+import { lookupSongAlbum } from "../utils/song-album-lookup.ts";
 import type { AnalysisFinding, ContentCategory, DetectorName } from "./types.ts";
 import {
   EMPTY_ALIAS_MAP,
@@ -1531,7 +1532,12 @@ export interface AnalysisResult {
 
 export interface AnalyzeOptions {
   venuesMetadata?: Record<string, VenueMetaSlim>;
-  artistsMetadata?: Record<string, { genres?: string[] }>;
+  /**
+   * `name` is read alongside `genres`: the song-albums lookup needs the DISPLAY
+   * name, because the discography is keyed by its slug and the two disagree
+   * about ampersands (`Echo & The Bunnymen` -> `echo-the-bunnymen`).
+   */
+  artistsMetadata?: Record<string, { genres?: string[]; name?: string }>;
   /** Artist billing aliases (#227). Absent means every billing is its own act. */
   aliases?: AliasMap;
   /**
@@ -1546,6 +1552,30 @@ export interface AnalyzeOptions {
    * degradation the setlist index uses.
    */
   eras?: AlbumErasSlim;
+  /**
+   * Song → album attribution (#277). Absent means `road-tested` returns [] and
+   * every other detector is untouched — the same graceful degradation `eras`
+   * and the setlist index use.
+   */
+  songAlbums?: SongAlbumsSlim;
+  /** `artist-aliases.json`'s discographyKeys relation, for the song-albums lookup. */
+  discographyKeys?: ReadonlyArray<{ act: string; discographyKey: string }>;
+  /** album mbid → track count. Absent means most-witnessed-album reports null. */
+  albumTrackCounts?: Record<string, number>;
+}
+
+/** The slice of song-albums.json the detectors read. */
+export interface SongAlbumsSlim {
+  songs: Record<string, {
+    songTitle: string;
+    albumTitle: string;
+    mbid: string;
+    releaseDate: string;
+    coverAvailable: boolean;
+    matchTier: number;
+    isCover?: boolean;
+    originalArtistKey?: string;
+  }>;
 }
 
 /** The slice of album-eras.json the detectors read. */
@@ -1675,6 +1705,372 @@ export function detectAlbumTrajectory(
   );
 }
 
+// ── 18b. Road-Tested Detector ────────────────────────────────────────────────
+
+/**
+ * A song heard live before the album carrying it existed.
+ *
+ * The exact inverse of `album-trajectory`: there the RECORD was ahead, here the
+ * SONG was. Wham! playing "The Edge of Heaven" ten months early; Royal Blood
+ * playing four songs off an unreleased record ten days out.
+ *
+ * ── CLAIM THE ALBUM, NEVER THE SONG'S EXISTENCE ──────────────────────────────
+ * This detector knows one thing: the album we attribute the song to came out
+ * after the night. It does NOT know the song was unwritten or unreleased.
+ * Garbage's "No Horses" was a standalone 2017 single that only reached an album
+ * in 2021 — the song existed the night it was heard. Prose must say "before the
+ * record came out", never "before the song existed". See §5e.
+ *
+ * ── BOTH BOUNDS ARE MEASURED, NOT CHOSEN ─────────────────────────────────────
+ * Upper: 1,095 days. Past three years the population turns into re-recordings
+ * and reissues — James' "Sit Down" at 10,856 days resolves to a 2023 orchestral
+ * re-recording. Settled by reading all 71 findings by hand.
+ *
+ * Lower: the release date's OWN precision window, not a flat floor. A 14-day
+ * test against a `YYYY-MM` date is not strict or lenient, it is undefined —
+ * Crowded House's "In My Command" (`1993-10`) reads as 13 days only because the
+ * earliest possible date was assumed; the truth is somewhere in 13–43. And a
+ * flat 14-day floor deleted the Royal Blood finding outright.
+ *
+ * These bounds are a PERMANENCE guarantee, not a quality filter. Enrichment
+ * re-runs Mondays 07:00 UTC and liner notes publish unreviewed at 08:00 UTC,
+ * permalinked and never revisited, while release dates are contributor-edited
+ * upstream. A finding sitting near a threshold is one edit from being false
+ * forever, with nothing to re-check it.
+ *
+ * Spec: docs/specs/future/global-setlist-album-attribution.md §5a
+ */
+
+/** Past this the album is a re-recording or a reissue, not the record they were touring toward. */
+const ROAD_TESTED_MAX_DAYS = 1095;
+
+/**
+ * Minimum gap by release-date precision. The gap must clear the width of the
+ * date's own uncertainty, so the claim survives a Monday refresh.
+ */
+const ROAD_TESTED_MIN_DAYS: Record<"day" | "month" | "year", number | null> = {
+  day: 7,
+  month: 31,
+  year: null, // never fires — a bare year cannot support any gap claim
+};
+
+type DatePrecision = "day" | "month" | "year";
+
+function releaseDatePrecision(releaseDate: string): DatePrecision | null {
+  const parts = String(releaseDate ?? "").split("-");
+  if (parts.length === 3) return "day";
+  if (parts.length === 2) return "month";
+  if (parts.length === 1 && parts[0].length === 4) return "year";
+  return null;
+}
+
+/**
+ * Days between a concert and a release, measuring to the EARLIEST instant the
+ * release date can mean. Generous to the album on purpose: an imprecise date is
+ * never allowed to inflate the gap, and the precision floor above then discards
+ * anything the width could have swallowed.
+ */
+function daysBeforeRelease(concertDate: string, releaseDate: string): number | null {
+  const precision = releaseDatePrecision(releaseDate);
+  if (!precision) return null;
+  const earliest =
+    precision === "day"
+      ? releaseDate
+      : precision === "month"
+        ? `${releaseDate}-01`
+        : `${releaseDate}-01-01`;
+  const release = Date.parse(`${earliest}T12:00:00Z`);
+  const concert = Date.parse(`${concertDate}T12:00:00Z`);
+  if (Number.isNaN(release) || Number.isNaN(concert)) return null;
+  return Math.round((release - concert) / 86_400_000);
+}
+
+export function detectRoadTested(
+  concerts: Concert[],
+  setlists?: SetlistIndex,
+  songAlbums?: SongAlbumsSlim,
+  ctx: {
+    artistsMetadata?: Record<string, { name?: string } | undefined>;
+    discographyKeys?: ReadonlyArray<{ act: string; discographyKey: string }>;
+  } = {}
+): AnalysisFinding[] {
+  if (!songAlbums || !setlists) return [];
+  const findings: AnalysisFinding[] = [];
+
+  for (const concert of concerts) {
+    const songs = songsFor(setlists, concert.date, concert.headlinerNormalized);
+    if (!songs.length) continue;
+
+    const early: Array<{ song: string; album: string; releaseDate: string; days: number }> = [];
+
+    for (const song of songs) {
+      const rec = lookupSongAlbum(songAlbums.songs, concert.headliner, song.name, {
+        artistsMetadata: ctx.artistsMetadata,
+        discographyKeys: ctx.discographyKeys,
+      });
+      // A cover's album belongs to the original act, so "they played it before
+      // the record existed" is not a claim about this night's performers.
+      if (!rec || rec.isCover) continue;
+
+      const precision = releaseDatePrecision(rec.releaseDate);
+      if (!precision) continue;
+      const floor = ROAD_TESTED_MIN_DAYS[precision];
+      if (floor === null) continue;
+
+      const days = daysBeforeRelease(concert.date, rec.releaseDate);
+      if (days === null || days <= floor || days > ROAD_TESTED_MAX_DAYS) continue;
+
+      early.push({ song: song.name, album: rec.albumTitle, releaseDate: rec.releaseDate, days });
+    }
+
+    if (!early.length) continue;
+
+    // One finding per night, anchored on the album most of the early songs came
+    // from — a night with four songs off one unreleased record is one story.
+    const byAlbum = new Map<string, typeof early>();
+    for (const e of early) {
+      const list = byAlbum.get(e.album) ?? [];
+      list.push(e);
+      byAlbum.set(e.album, list);
+    }
+    const [albumTitle, songsFromAlbum] = [...byAlbum.entries()].sort(
+      (a, b) => b[1].length - a[1].length || b[1][0].days - a[1][0].days
+    )[0];
+
+    const days = Math.max(...songsFromAlbum.map((e) => e.days));
+
+    // Sub-month gaps must read in days. The lower bound now admits findings as
+    // close as 8 days, and "0 Months Before" is how Royal Blood rendered before
+    // this branch existed.
+    let away: string;
+    if (days < 45) {
+      away = `${days} Days`;
+    } else if (days < 365) {
+      away = `${Math.round(days / 30.44)} Months`;
+    } else {
+      const years = Math.round((days / 365.25) * 10) / 10;
+      away = `${years} ${years === 1 ? "Year" : "Years"}`;
+    }
+
+    // Self-titled records collide with the artist name — "Bat Fangs — 4 Months
+    // Before Bat Fangs" reads like a typo. Same problem album-trajectory solves,
+    // same solution: name the relationship instead of repeating the word.
+    const target =
+      slugify(albumTitle) === slugify(concert.headliner)
+        ? "The Album That Shares Their Name"
+        : albumTitle;
+
+    findings.push({
+      id: `road-tested-${concert.headlinerNormalized}-${concert.date}`,
+      detector: "road-tested",
+      category: "cultural",
+      temporality: "evergreen",
+      headline: `${concert.headliner} — ${away} Before ${target}`,
+      dataPoints: {
+        artist: concert.headliner,
+        venue: concert.venue,
+        city: concert.cityState,
+        date: concert.date,
+        year: concert.year,
+        albumTitle,
+        albumReleaseDate: songsFromAlbum[0].releaseDate,
+        daysBeforeRelease: days,
+        // The corroboration: four songs off one unreleased record is evidence a
+        // single-song finding does not have.
+        songCountFromSameFutureAlbum: songsFromAlbum.length,
+        songsHeardEarly: songsFromAlbum.map((e) => e.song),
+        releaseDatePrecision: releaseDatePrecision(songsFromAlbum[0].releaseDate),
+        setlistLength: songs.length,
+      },
+      concertDate: concert.date,
+      artists: [concert.headlinerNormalized],
+      venues: [concert.venueNormalized],
+      years: [concert.year],
+      suggestedImage: {
+        type: "album",
+        artistNormalized: concert.headlinerNormalized,
+        albumName: albumTitle,
+      },
+      suggestedTrack: { artistNormalized: concert.headlinerNormalized },
+      tags: ["#road-tested", "#before-the-record"],
+    });
+  }
+
+  return findings.sort(
+    (a, b) => (b.dataPoints.daysBeforeRelease as number) - (a.dataPoints.daysBeforeRelease as number)
+  );
+}
+
+// ── 18c. Most-Witnessed Album Detector ───────────────────────────────────────
+
+/**
+ * The record you have heard the most of, live — across every show, not one night.
+ *
+ * The interesting part is that it is usually NOT the album you played most at
+ * home. Attendance is a different sampling of a catalogue than listening is: it
+ * favours whatever an act leaned on live across the years you happened to catch
+ * them.
+ *
+ * Ranked by DISTINCT songs witnessed, not by performances. Hearing "Story of My
+ * Life" at five shows is one song five times; hearing eleven different songs off
+ * one record is knowing the record. Performances ride along so prose can say
+ * both.
+ *
+ * Covers are excluded. A cover's album belongs to the original act, so counting
+ * Social Distortion's "Ring of Fire" toward Johnny Cash's record would conflate
+ * what you witnessed with who you witnessed.
+ *
+ * ── SUPPLY CAUTION (spec §5b, carried from v5.4 §5f) ─────────────────────────
+ * This detector favours repeat artists by construction and will land on Social
+ * Distortion, Depeche Mode or Howard Jones — already the most-covered artists in
+ * the feed. The spec says ship it and expect rotation pressure. It is worth
+ * being explicit that §5d, the per-artist cap that would relieve that pressure,
+ * is NOT in this window: its prerequisite (album-trajectory published >= 2
+ * posts) is unmet at zero.
+ *
+ * Spec: docs/specs/future/global-setlist-album-attribution.md §5b
+ */
+
+export function detectMostWitnessedAlbum(
+  concerts: Concert[],
+  setlists?: SetlistIndex,
+  songAlbums?: SongAlbumsSlim,
+  ctx: {
+    artistsMetadata?: Record<string, { name?: string } | undefined>;
+    discographyKeys?: ReadonlyArray<{ act: string; discographyKey: string }>;
+    /** album mbid → track count, when the MusicBrainz cache is on disk. */
+    albumTrackCounts?: Record<string, number>;
+  } = {}
+): AnalysisFinding[] {
+  if (!songAlbums || !setlists) return [];
+
+  interface Agg {
+    albumTitle: string;
+    artist: string;
+    artistNormalized: string;
+    mbid: string;
+    songs: Set<string>;
+    performances: number;
+    dates: string[];
+    /** date → songs from this album heard that night, for the anchor show. */
+    perShow: Map<string, number>;
+    venueByDate: Map<string, { venue: string; venueNormalized: string; year: number }>;
+  }
+
+  const byAlbum = new Map<string, Agg>();
+
+  for (const concert of concerts) {
+    const songs = songsFor(setlists, concert.date, concert.headlinerNormalized);
+    if (!songs.length) continue;
+
+    for (const song of songs) {
+      const rec = lookupSongAlbum(songAlbums.songs, concert.headliner, song.name, {
+        artistsMetadata: ctx.artistsMetadata,
+        discographyKeys: ctx.discographyKeys,
+      });
+      if (!rec || rec.isCover) continue;
+
+      // Keyed by mbid: two artists can title a record the same thing.
+      const key = rec.mbid || `${concert.headlinerNormalized}::${rec.albumTitle}`;
+      let agg = byAlbum.get(key);
+      if (!agg) {
+        agg = {
+          albumTitle: rec.albumTitle,
+          artist: concert.headliner,
+          artistNormalized: concert.headlinerNormalized,
+          mbid: rec.mbid,
+          songs: new Set(),
+          performances: 0,
+          dates: [],
+          perShow: new Map(),
+          venueByDate: new Map(),
+        };
+        byAlbum.set(key, agg);
+      }
+      agg.songs.add(rec.songTitle);
+      agg.performances++;
+      if (!agg.perShow.has(concert.date)) {
+        agg.dates.push(concert.date);
+        agg.venueByDate.set(concert.date, {
+          venue: concert.venue,
+          venueNormalized: concert.venueNormalized,
+          year: concert.year,
+        });
+      }
+      agg.perShow.set(concert.date, (agg.perShow.get(concert.date) ?? 0) + 1);
+    }
+  }
+
+  if (!byAlbum.size) return [];
+
+  const top = [...byAlbum.values()].sort(
+    (a, b) => b.songs.size - a.songs.size || b.performances - a.performances
+  )[0];
+
+  // One song off one record is not "the album you've heard most of".
+  if (top.songs.size < 2) return [];
+
+  // Anchor on the night that supplied the most of it — a concrete room and date
+  // for prose to stand in, rather than an abstraction over the whole archive.
+  const anchorDate = [...top.perShow.entries()].sort(
+    (a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)
+  )[0][0];
+  const anchor = top.venueByDate.get(anchorDate)!;
+  const dates = [...top.dates].sort();
+  // The cached track list describes ONE release; the resolver indexes the whole
+  // release-group, so B-sides and expanded editions can push the witnessed count
+  // ABOVE it — Garbage's debut counts 17 witnessed against a cached 12. A
+  // fraction is only reported when it is self-consistent, because "17 of 12" in
+  // a permalinked post is worse than saying nothing.
+  const rawTrackCount = ctx.albumTrackCounts?.[top.mbid] ?? null;
+  const trackCount =
+    rawTrackCount !== null && rawTrackCount >= top.songs.size ? rawTrackCount : null;
+
+  return [
+    {
+      id: `most-witnessed-album-${top.artistNormalized}-${slugify(top.albumTitle)}`,
+      detector: "most-witnessed-album",
+      category: "personal",
+      temporality: "evergreen",
+      headline: `${top.artist} — ${top.songs.size} Songs From ${
+        slugify(top.albumTitle) === slugify(top.artist)
+          ? "The Album That Shares Their Name"
+          : top.albumTitle
+      }, Live`,
+      dataPoints: {
+        albumTitle: top.albumTitle,
+        albumMbid: top.mbid,
+        artist: top.artist,
+        distinctSongsWitnessed: top.songs.size,
+        songsWitnessed: [...top.songs].sort(),
+        totalPerformances: top.performances,
+        showsSpanned: top.dates.length,
+        firstDate: dates[0],
+        lastDate: dates[dates.length - 1],
+        // Null when the cache is absent OR when it disagrees with what we
+        // counted. Prose must NOT claim a fraction ("11 of 12") unless this is
+        // a number.
+        albumTrackCount: trackCount,
+        venue: anchor.venue,
+        city: null,
+        date: anchorDate,
+        year: anchor.year,
+      },
+      concertDate: anchorDate,
+      artists: [top.artistNormalized],
+      venues: [...new Set([...top.venueByDate.values()].map((v) => v.venueNormalized))],
+      years: [...new Set([...top.venueByDate.values()].map((v) => v.year))].sort(),
+      suggestedImage: {
+        type: "album",
+        artistNormalized: top.artistNormalized,
+        albumName: top.albumTitle,
+      },
+      suggestedTrack: { artistNormalized: top.artistNormalized },
+      tags: ["#most-witnessed", "#album-eras"],
+    },
+  ];
+}
+
 // ── 19. Discography Crossref Detector ────────────────────────────────────────
 
 /**
@@ -1782,6 +2178,15 @@ export function analyze(
     ...detectFullCircle(past, options.setlists, options.aliases),
     ...detectGuestBridge(past, options.setlists, options.aliases),
     ...detectAlbumTrajectory(past, options.eras),
+    ...detectRoadTested(past, options.setlists, options.songAlbums, {
+      artistsMetadata: options.artistsMetadata,
+      discographyKeys: options.discographyKeys,
+    }),
+    ...detectMostWitnessedAlbum(past, options.setlists, options.songAlbums, {
+      artistsMetadata: options.artistsMetadata,
+      discographyKeys: options.discographyKeys,
+      albumTrackCounts: options.albumTrackCounts,
+    }),
     // detectDiscographyCrossref is DELIBERATELY NOT REGISTERED here.
     //
     // It has 3.5x the supply of album-trajectory and is the simpler build, so

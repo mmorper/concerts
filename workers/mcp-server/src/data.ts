@@ -1,6 +1,7 @@
 import type { ArtistAliasData } from "./aliases.js";
 import type {
   AlbumEras,
+  SongAlbums,
   ArtistsMetadata,
   ArtistsTopTracks,
   ConcertData,
@@ -76,6 +77,7 @@ const LAZY_FILES = [
   "artists-top-tracks.json",
   "most-played-songs.json",
   "album-eras.json",
+  "song-albums.json",
 ] as const;
 
 function dataUrl(env: Env, file: string): string {
@@ -154,6 +156,16 @@ export function getAlbumEras(
   ctx: ExecutionContext,
 ): Promise<AlbumEras | null> {
   return cachedJsonFetch<AlbumEras>(dataUrl(env, "album-eras.json"), ctx);
+}
+
+// 340 KB. Lazy for the same reason album-eras.json is: only the setlist path
+// needs it, and a null here degrades that path to its pre-v6.0 output rather
+// than failing it.
+export function getSongAlbums(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<SongAlbums | null> {
+  return cachedJsonFetch<SongAlbums>(dataUrl(env, "song-albums.json"), ctx);
 }
 
 export function getMostPlayedSongs(

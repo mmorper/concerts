@@ -16,6 +16,14 @@
 
 export interface ArtistAliasData {
   sameAct?: Array<{ canonical: string; name?: string; billings: string[] }>;
+  /**
+   * Acts whose discography is filed under a different key than the marquee —
+   * Yaz/Yazoo, The English Beat/The Beat, OMD. This is "hop 2": `canonicalOf`
+   * alone returns the concert-side slug, which is deliberately NOT the
+   * discography key. Skipping it fails SILENTLY, indistinguishable from the
+   * correct "we hold no discography for this act".
+   */
+  discographyKeys?: Array<{ act: string; discographyKey: string; note?: string }>;
 }
 
 export interface AliasIndex {

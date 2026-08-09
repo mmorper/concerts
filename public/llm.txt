@@ -145,7 +145,74 @@ All data is publicly accessible as JSON:
 }
 ```
 
+### Album Eras
+**URL:** https://concerts.morperhaus.org/data/album-eras.json
+**Records:** 238 artists — the join between 40 years of attendance and the discography
+**Source:** derived from `discography.json` + `concerts.json` (no API calls)
+**What it answers:** where an artist stood in their arc on a given night, and what had not happened yet.
+**Note:** covers openers as well as headliners. Restricting it to headliners left 22.3% of song→album pairs unattributable.
+**Schema:**
+```json
+{
+  "concerts": {
+    "concert-21": {
+      "artistKey": "depeche-mode",
+      "currentAlbum": { "title": "Music for the Masses", "mbid": "...", "releaseDate": "1987-09-28" },
+      "albumsBefore": 5,
+      "albumsAfter": 9,
+      "careerYear": 8,
+      "yearsBeforeDebut": null,
+      "definingAlbum": { "title": "Violator", "releaseDate": "1990-03-19", "topTrackCount": 3, "topTrackTotal": 5 },
+      "definingAlbumAhead": true,
+      "definingAlbumMonthsAway": 20
+    }
+  },
+  "artists": { "depeche-mode": { "displayName": "Depeche Mode", "studioAlbumCount": 15, "studioAlbums": [], "erasSeen": [] } }
+}
+```
+
+### Song → Album Attribution
+**URL:** https://concerts.morperhaus.org/data/song-albums.json
+**Records:** 1,716 of 1,912 unique artist+song pairs (89.7%)
+**Source:** three tiers — `artists-top-tracks.json` (253), MusicBrainz (1,428), iTunes Search (35)
+**What it answers:** which studio album a song performed live came off.
+**Key format:** `artistKey::folded-song-title`. Derive it with `songAlbumKey()` from `scripts/utils/song-title.ts` — a caller that folds differently matches nothing while looking like it simply found nothing.
+
+**Two properties that matter when reading this file:**
+- **`releaseDate` precision varies.** 1,462 entries are full dates, 145 are `YYYY-MM`, 109 are bare `YYYY`. Any gap measured against it must respect that width — a 14-day claim against a month-precision date is undefined, not merely imprecise.
+- **The album is the EARLIEST studio album carrying the song**, which is not always where the song first appeared. A standalone single that later landed on an album attributes to that album. The file supports claims about the *album*, never about when the song came into existence.
+
+**Schema:**
+```json
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-08-08T18:17:15.354Z",
+  "songs": {
+    "depeche-mode::just-cant-get-enough": {
+      "songTitle": "Just Can't Get Enough",
+      "albumTitle": "Speak & Spell",
+      "mbid": "7a0e0366-91f4-3444-b45a-83b158004165",
+      "releaseDate": "1981-10-05",
+      "coverAvailable": true,
+      "matchTier": 0
+    },
+    "prophets-of-rage::prophets-of-rage": {
+      "songTitle": "Prophets of Rage",
+      "albumTitle": "It Takes a Nation of Millions to Hold Us Back",
+      "mbid": "01921d99-9d15-3fce-8734-46e58327cfb7",
+      "releaseDate": "1988-06-28",
+      "coverAvailable": true,
+      "matchTier": 0,
+      "isCover": true,
+      "originalArtistKey": "public-enemy"
+    }
+  }
+}
+```
+
 ---
+
+## Deep Linking System---
 
 ## Deep Linking System
 

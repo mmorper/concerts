@@ -89,3 +89,65 @@ describe('clean prose passes', () => {
     ).toEqual([])
   })
 })
+
+// ---------- v6.0 §5e — the fabrications attribution makes available ----------
+
+const rt = (prose: string, dataPoints: Record<string, unknown> = { albumTitle: 'Violator' }): ScoredFinding =>
+  ({
+    id: 'x', detector: 'road-tested', category: 'cultural', temporality: 'evergreen',
+    headline: 'H', dataPoints, artists: ['a'], venues: ['v'], years: [1988], tags: [],
+    score: 30, scoreBreakdown: {} as never, prose,
+  }) as unknown as ScoredFinding
+
+describe('v6.0 §5e — claim the album, never the song', () => {
+  it('rejects "before the song existed"', () => {
+    expect(rules(rt('I heard it live before the song existed. That still gets me.')))
+      .toContain('song-existence')
+  })
+
+  it('rejects claiming the song was unwritten or unreleased', () => {
+    expect(rules(rt('They played four unreleased songs that night. I had no idea.')))
+      .toContain('song-existence')
+    expect(rules(rt("The song hadn't been written yet when I heard it. Strange to think.")))
+      .toContain('song-existence')
+  })
+
+  it('allows the claim the data DOES support', () => {
+    // Garbage's "No Horses" was a 2017 single that reached an album in 2021 —
+    // the song existed; only the album was ahead.
+    expect(rules(rt("I'd heard four of these a year before the record came out. My copy came later.")))
+      .not.toContain('song-existence')
+  })
+})
+
+describe('v6.0 §5e — retrospective, never foresight', () => {
+  it('rejects foresight in the moment', () => {
+    expect(rules(rt('I knew that one would be huge. It took a year to arrive.')))
+      .toContain('foresight')
+    expect(rules(rt('Little did I know I was hearing the record early. My ticket says 1988.')))
+      .toContain('foresight')
+  })
+
+  it('allows retrospective framing', () => {
+    expect(rules(rt("I'd heard it a year before the record came out. I only worked that out later.")))
+      .not.toContain('foresight')
+  })
+
+  it('does not police foresight on detectors that are not road-tested', () => {
+    // "I knew they would be back" is ordinary retrospective writing elsewhere.
+    expect(rules(base('I knew they would be back. They were, eight years later.')))
+      .not.toContain('foresight')
+  })
+})
+
+describe('v6.0 §5e — no album without attribution', () => {
+  it('errors when album prose carries no albumTitle', () => {
+    expect(rules(rt('I heard three of them that night. The record came later.', {})))
+      .toContain('album-without-attribution')
+  })
+
+  it('passes when the album is in the data points', () => {
+    expect(rules(rt('I heard three of them that night. The record came later.', { albumTitle: 'Violator' })))
+      .not.toContain('album-without-attribution')
+  })
+})

@@ -31,7 +31,7 @@ import { resolve, dirname } from 'path'
 import { MusicBrainzClient } from './utils/musicbrainz-client.js'
 import { iTunesClient } from './utils/itunes-client.js'
 import { matchAlbumTitle, isSingleOrEp } from './utils/album-title.js'
-import { foldSongTitle, songIndexKeys } from './utils/song-title.js'
+import { foldSongTitle, songIndexKeys, songAlbumKey } from './utils/song-title.js'
 import { buildArtistKeyIndex, resolveArtistKey } from './utils/artist-key.js'
 import { buildAliasMap, canonicalOf, type AliasMap } from './liner-notes/artist-aliases.ts'
 import { isStudioAlbum, type RawAlbum } from './derive-album-eras.js'
@@ -130,19 +130,11 @@ interface Pair {
 // ── Core derivation (pure, exported for tests) ───────────────────────────────
 
 /**
- * The lookup key for one artist's performance of one song.
- *
- * Hyphenated lowercase, matching the project's normalized-name convention:
- * `depeche-mode::never-let-me-down-again`.
- *
- * EXPORTED so no consumer hand-builds it. Every reader — the MCP, the v5.5
- * detectors — must derive the key through this function, or a caller that
- * folds differently will miss every entry while looking like it simply found
- * nothing. Same discipline as deepLinks.ts.
+ * Re-exported from `utils/song-title.ts`, where it now lives so the MCP Worker
+ * can import it without pulling `fs` and the API clients into a Workers bundle.
+ * Importing it from here still works and still resolves to the one implementation.
  */
-export function songAlbumKey(artistKey: string, songTitle: string): string {
-  return `${artistKey}::${foldSongTitle(songTitle).replace(/ /g, '-')}`
-}
+export { songAlbumKey }
 
 /**
  * song key → the EARLIEST studio album carrying it.
