@@ -117,7 +117,53 @@ support a critical verdict — the corpus has no notion of quality.
    (Tier 3 — sales figures, unchanged)
 ```
 
-### Examples
+### Song → album attribution ✨ v6.0
+
+`song-albums.json` maps a performed song to the earliest studio album carrying
+it. When an entry is present, the album is **Tier 1**: name it plainly.
+
+**When attribution is absent, say nothing about the album.** Do not fill the gap
+from your own knowledge of the record. This is the single most likely
+hallucination this feature introduces, and it is the same rule the generator
+prompt already states for invented biographical specifics — *"a number that
+sounds right and is wrong is the single worst thing this pipeline can
+produce."* Same rule, different field: an album that sounds right and is wrong
+is a fabricated memory. Neither is a judgement call.
+
+**`road-tested` claims the ALBUM, never the song.** The detector knows one
+thing: the record we attribute the song to came out after the night. It does
+not know the song was unwritten, unreleased, or unheard — Garbage's "No Horses"
+was a standalone 2017 single that only reached an album in 2021, so the song
+existed the night it was heard. Only the album was ahead.
+
+**`road-tested` is retrospective, never foresight.** The sentence is written
+from now, looking back. Nobody in that room knew what was coming.
+
+```
+✅ "I'd heard four of these a year before the record came out"
+   (Tier 1 — grounded in songsHeardEarly and daysBeforeRelease)
+
+✅ "Half that set was from an album that didn't exist yet"
+
+❌ "They played songs that hadn't been written yet"
+   (Unsupported — only the ALBUM was in the future)
+
+❌ "Little did I know I was hearing the record a year early"
+   (Foresight in the moment — nobody in the room knew)
+
+❌ "Then they played something off Violator"
+   (No attribution for that song — say nothing rather than guess)
+```
+
+**`most-witnessed-album` must not claim a fraction unless it is given one.**
+`albumTrackCount` is `null` whenever the count cannot be trusted, and a null
+means "seventeen songs", never "seventeen of twelve".
+
+Enforced in `scripts/liner-notes/voice-check.ts` — rules `song-existence`,
+`foresight`, and `album-without-attribution`, all errors. The checklist below is
+executable; adding a rule here means adding it there.
+
+### Examples### Examples
 
 ```
 ✅ "The album that 'Enjoy the Silence' came from was already a classic by then"
@@ -197,6 +243,9 @@ Before accepting generated prose, verify:
 - [ ] Names at least one specific artist, venue, or year
 - [ ] Contains at least one number
 - [ ] No Tier 3 cultural references
+- [ ] No album named that is not in the finding's data points (v6.0)
+- [ ] `road-tested` claims the album, never the song's existence (v6.0)
+- [ ] `road-tested` reads as retrospective, not foresight in the moment (v6.0)
 - [ ] No banned phrases
 - [ ] Ends with a human moment (not a dry restatement of facts)
 - [ ] 40–500 words total

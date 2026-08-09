@@ -71,6 +71,40 @@ const VERDICTS: Array<[RegExp, string]> = [
   [/one of the greatest/i, '"one of the greatest" — unsupported comparison'],
 ];
 
+/**
+ * v6.0 §5e — the fabrication this feature makes newly available.
+ *
+ * road-tested knows ONE thing: the album we attribute the song to came out
+ * after the night. It does NOT know the song was unwritten, unreleased or
+ * unheard. Garbage's "No Horses" was a standalone 2017 single that only reached
+ * an album in 2021 — the song existed the night it was heard. Only the ALBUM
+ * was in the future, and the album is the only thing the detector can claim.
+ *
+ * Errors, not warnings: each of these is a first-person claim about a night the
+ * archive owner was in the room, published unreviewed and permalinked.
+ */
+const SONG_EXISTENCE: Array<[RegExp, string]> = [
+  [/before (?:the |that |this )?song (?:existed|was written|was recorded)/i, '"before the song existed" — claim the ALBUM, not the song'],
+  [/\bsong (?:did ?n[o']t|had ?n[o']t) (?:exist|been written|been recorded)/i, "claims the song did not exist — only the album was ahead"],
+  [/\b(?:un(?:written|released|recorded))\b/i, '"unwritten/unreleased" — unsupported; the song may predate the album'],
+  [/\bhad ?n[o']t (?:written|recorded) (?:it|the song)\b/i, "claims the song was unwritten — unsupported"],
+  [/\bno[- ]one had heard (?:it|this|the song)\b/i, "claims nobody had heard it — unsupported"],
+];
+
+/**
+ * v6.0 §5e — road-tested prose is RETROSPECTIVE, never foresight in the moment.
+ *
+ * "I'd heard it a year before the record came out" is a true sentence written
+ * from now. "I knew it would be huge" puts knowledge in the room that nobody
+ * had, which is the same fabrication as inventing a biographical detail.
+ */
+const FORESIGHT: Array<[RegExp, string]> = [
+  [/\bI (?:knew|could tell|sensed|had a feeling)\b[^.!?]*\b(?:would|was going to|it'd)\b/i, "foresight in the moment — road-tested prose must be retrospective"],
+  [/\bwe (?:all )?knew\b[^.!?]*\b(?:would|was going to)\b/i, "foresight in the moment — retrospective framing only"],
+  [/\blittle did (?:I|we) know\b/i, '"little did I know" — narrates the moment as foresight'],
+  [/\byou could (?:already )?tell (?:it|they) would\b/i, "foresight in the moment — retrospective framing only"],
+];
+
 /** Tier 3: chart positions and sales figures, unchanged since v4.4. */
 const TIER_THREE: Array<[RegExp, string]> = [
   [/\b(?:debuted|peaked|charted) at #?\d+/i, "chart position — Tier 3"],
@@ -155,6 +189,23 @@ export function checkVoice(finding: ScoredFinding): VoiceIssue[] {
   for (const [re, detail] of PERISHABLE) if (re.test(prose)) push("error", "perishable-claim", detail);
   for (const [re, detail] of VERDICTS) if (re.test(prose)) push("error", "critical-verdict", detail);
   for (const [re, detail] of TIER_THREE) if (re.test(prose)) push("error", "tier-3", detail);
+  for (const [re, detail] of SONG_EXISTENCE) if (re.test(prose)) push("error", "song-existence", detail);
+
+  // Foresight is only wrong where the narrator is positioned before a release.
+  // Elsewhere "I knew they would be back" is ordinary retrospective writing.
+  if (finding.detector === "road-tested") {
+    for (const [re, detail] of FORESIGHT) if (re.test(prose)) push("error", "foresight", detail);
+  }
+
+  // The hallucination vector §5e names first: an album stated where the data
+  // holds none. Only checkable for the detectors that carry an album, but those
+  // are exactly the ones whose prose is about a record.
+  if (finding.detector === "road-tested" || finding.detector === "most-witnessed-album") {
+    const album = (finding.dataPoints as Record<string, unknown>)?.albumTitle;
+    if (typeof album !== "string" || !album.trim()) {
+      push("error", "album-without-attribution", "album prose with no albumTitle in the data");
+    }
+  }
 
   if (!/\b(I|my|me)\b/.test(prose)) push("error", "person", "not written in first person");
 
