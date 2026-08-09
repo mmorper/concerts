@@ -136,6 +136,11 @@ function computeSpan(f: AnalysisFinding): number {
       const gap = (f.dataPoints as Record<string, unknown>).gapYears as number;
       return gap > 20 ? 10 : gap > 15 ? 7 : gap > 10 ? 4 : 2;
     }
+    case "most-witnessed-album": {
+      // Spec §5b: span from DISTINCT songs witnessed, not performances.
+      const n = dp.distinctSongsWitnessed as number;
+      return n >= 8 ? 10 : n >= 6 ? 7 : n >= 4 ? 4 : 0;
+    }
     case "road-tested": {
       // Ladder extended DOWN to the new 7-day floor. The lower bound was
       // widened precisely to keep Royal Blood at 10 days (four songs off an
@@ -299,6 +304,8 @@ function computeSurpriseFactor(f: AnalysisFinding): number {
       return 4;
     case "milestone-marker":
       return 3;
+    case "most-witnessed-album":
+      return 6; // Spec §5b fixes this at 6
     case "road-tested":
       return 9; // Hearing a record before it existed — spec §5a fixes this at 9
     case "venue-ghost":

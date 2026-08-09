@@ -1560,6 +1560,8 @@ export interface AnalyzeOptions {
   songAlbums?: SongAlbumsSlim;
   /** `artist-aliases.json`'s discographyKeys relation, for the song-albums lookup. */
   discographyKeys?: ReadonlyArray<{ act: string; discographyKey: string }>;
+  /** album mbid → track count. Absent means most-witnessed-album reports null. */
+  albumTrackCounts?: Record<string, number>;
 }
 
 /** The slice of song-albums.json the detectors read. */
@@ -1899,6 +1901,176 @@ export function detectRoadTested(
   );
 }
 
+// ── 18c. Most-Witnessed Album Detector ───────────────────────────────────────
+
+/**
+ * The record you have heard the most of, live — across every show, not one night.
+ *
+ * The interesting part is that it is usually NOT the album you played most at
+ * home. Attendance is a different sampling of a catalogue than listening is: it
+ * favours whatever an act leaned on live across the years you happened to catch
+ * them.
+ *
+ * Ranked by DISTINCT songs witnessed, not by performances. Hearing "Story of My
+ * Life" at five shows is one song five times; hearing eleven different songs off
+ * one record is knowing the record. Performances ride along so prose can say
+ * both.
+ *
+ * Covers are excluded. A cover's album belongs to the original act, so counting
+ * Social Distortion's "Ring of Fire" toward Johnny Cash's record would conflate
+ * what you witnessed with who you witnessed.
+ *
+ * ── SUPPLY CAUTION (spec §5b, carried from v5.4 §5f) ─────────────────────────
+ * This detector favours repeat artists by construction and will land on Social
+ * Distortion, Depeche Mode or Howard Jones — already the most-covered artists in
+ * the feed. The spec says ship it and expect rotation pressure. It is worth
+ * being explicit that §5d, the per-artist cap that would relieve that pressure,
+ * is NOT in this window: its prerequisite (album-trajectory published >= 2
+ * posts) is unmet at zero.
+ *
+ * Spec: docs/specs/future/global-setlist-album-attribution.md §5b
+ */
+
+export function detectMostWitnessedAlbum(
+  concerts: Concert[],
+  setlists?: SetlistIndex,
+  songAlbums?: SongAlbumsSlim,
+  ctx: {
+    artistsMetadata?: Record<string, { name?: string } | undefined>;
+    discographyKeys?: ReadonlyArray<{ act: string; discographyKey: string }>;
+    /** album mbid → track count, when the MusicBrainz cache is on disk. */
+    albumTrackCounts?: Record<string, number>;
+  } = {}
+): AnalysisFinding[] {
+  if (!songAlbums || !setlists) return [];
+
+  interface Agg {
+    albumTitle: string;
+    artist: string;
+    artistNormalized: string;
+    mbid: string;
+    songs: Set<string>;
+    performances: number;
+    dates: string[];
+    /** date → songs from this album heard that night, for the anchor show. */
+    perShow: Map<string, number>;
+    venueByDate: Map<string, { venue: string; venueNormalized: string; year: number }>;
+  }
+
+  const byAlbum = new Map<string, Agg>();
+
+  for (const concert of concerts) {
+    const songs = songsFor(setlists, concert.date, concert.headlinerNormalized);
+    if (!songs.length) continue;
+
+    for (const song of songs) {
+      const rec = lookupSongAlbum(songAlbums.songs, concert.headliner, song.name, {
+        artistsMetadata: ctx.artistsMetadata,
+        discographyKeys: ctx.discographyKeys,
+      });
+      if (!rec || rec.isCover) continue;
+
+      // Keyed by mbid: two artists can title a record the same thing.
+      const key = rec.mbid || `${concert.headlinerNormalized}::${rec.albumTitle}`;
+      let agg = byAlbum.get(key);
+      if (!agg) {
+        agg = {
+          albumTitle: rec.albumTitle,
+          artist: concert.headliner,
+          artistNormalized: concert.headlinerNormalized,
+          mbid: rec.mbid,
+          songs: new Set(),
+          performances: 0,
+          dates: [],
+          perShow: new Map(),
+          venueByDate: new Map(),
+        };
+        byAlbum.set(key, agg);
+      }
+      agg.songs.add(rec.songTitle);
+      agg.performances++;
+      if (!agg.perShow.has(concert.date)) {
+        agg.dates.push(concert.date);
+        agg.venueByDate.set(concert.date, {
+          venue: concert.venue,
+          venueNormalized: concert.venueNormalized,
+          year: concert.year,
+        });
+      }
+      agg.perShow.set(concert.date, (agg.perShow.get(concert.date) ?? 0) + 1);
+    }
+  }
+
+  if (!byAlbum.size) return [];
+
+  const top = [...byAlbum.values()].sort(
+    (a, b) => b.songs.size - a.songs.size || b.performances - a.performances
+  )[0];
+
+  // One song off one record is not "the album you've heard most of".
+  if (top.songs.size < 2) return [];
+
+  // Anchor on the night that supplied the most of it — a concrete room and date
+  // for prose to stand in, rather than an abstraction over the whole archive.
+  const anchorDate = [...top.perShow.entries()].sort(
+    (a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)
+  )[0][0];
+  const anchor = top.venueByDate.get(anchorDate)!;
+  const dates = [...top.dates].sort();
+  // The cached track list describes ONE release; the resolver indexes the whole
+  // release-group, so B-sides and expanded editions can push the witnessed count
+  // ABOVE it — Garbage's debut counts 17 witnessed against a cached 12. A
+  // fraction is only reported when it is self-consistent, because "17 of 12" in
+  // a permalinked post is worse than saying nothing.
+  const rawTrackCount = ctx.albumTrackCounts?.[top.mbid] ?? null;
+  const trackCount =
+    rawTrackCount !== null && rawTrackCount >= top.songs.size ? rawTrackCount : null;
+
+  return [
+    {
+      id: `most-witnessed-album-${top.artistNormalized}-${slugify(top.albumTitle)}`,
+      detector: "most-witnessed-album",
+      category: "personal",
+      temporality: "evergreen",
+      headline: `${top.artist} — ${top.songs.size} Songs From ${
+        slugify(top.albumTitle) === slugify(top.artist)
+          ? "The Album That Shares Their Name"
+          : top.albumTitle
+      }, Live`,
+      dataPoints: {
+        albumTitle: top.albumTitle,
+        albumMbid: top.mbid,
+        artist: top.artist,
+        distinctSongsWitnessed: top.songs.size,
+        songsWitnessed: [...top.songs].sort(),
+        totalPerformances: top.performances,
+        showsSpanned: top.dates.length,
+        firstDate: dates[0],
+        lastDate: dates[dates.length - 1],
+        // Null when the cache is absent OR when it disagrees with what we
+        // counted. Prose must NOT claim a fraction ("11 of 12") unless this is
+        // a number.
+        albumTrackCount: trackCount,
+        venue: anchor.venue,
+        city: null,
+        date: anchorDate,
+        year: anchor.year,
+      },
+      concertDate: anchorDate,
+      artists: [top.artistNormalized],
+      venues: [...new Set([...top.venueByDate.values()].map((v) => v.venueNormalized))],
+      years: [...new Set([...top.venueByDate.values()].map((v) => v.year))].sort(),
+      suggestedImage: {
+        type: "album",
+        artistNormalized: top.artistNormalized,
+        albumName: top.albumTitle,
+      },
+      suggestedTrack: { artistNormalized: top.artistNormalized },
+      tags: ["#most-witnessed", "#album-eras"],
+    },
+  ];
+}
+
 // ── 19. Discography Crossref Detector ────────────────────────────────────────
 
 /**
@@ -2009,6 +2181,11 @@ export function analyze(
     ...detectRoadTested(past, options.setlists, options.songAlbums, {
       artistsMetadata: options.artistsMetadata,
       discographyKeys: options.discographyKeys,
+    }),
+    ...detectMostWitnessedAlbum(past, options.setlists, options.songAlbums, {
+      artistsMetadata: options.artistsMetadata,
+      discographyKeys: options.discographyKeys,
+      albumTrackCounts: options.albumTrackCounts,
     }),
     // detectDiscographyCrossref is DELIBERATELY NOT REGISTERED here.
     //

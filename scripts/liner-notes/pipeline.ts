@@ -99,6 +99,7 @@ export async function run(options: PipelineOptions): Promise<void> {
   const albumEras = loadAlbumEras();
   const songAlbums = loadSongAlbums();
   const discographyKeys = loadDiscographyKeys();
+  const albumTrackCounts = loadAlbumTrackCounts();
   // Same source, two uses: the detectors join against it, and buildDeepLinks
   // uses the dates to decide whether a ?show= link would open an empty panel.
   const datesWithSetlists = new Set([...setlists.keys()].map((k) => k.split("::")[0]));
@@ -123,6 +124,7 @@ export async function run(options: PipelineOptions): Promise<void> {
     eras: albumEras,
     songAlbums,
     discographyKeys,
+    albumTrackCounts,
   });
   console.log(`   Found ${findings.length} raw findings (${stats.concertsAnalyzed} concerts analyzed)`);
   for (const [detector, count] of Object.entries(stats.findingsByDetector)) {
@@ -399,6 +401,30 @@ function loadDiscographyKeys(): Array<{ act: string; discographyKey: string }> |
       discographyKeys?: Array<{ act: string; discographyKey: string }>;
     };
     return raw.discographyKeys;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * album mbid → track count, from the MusicBrainz track cache the resolver
+ * builds. Optional by design: absent means `most-witnessed-album` reports a
+ * null track count and prose must not claim a fraction. This is the only
+ * detector input that comes from `data/cache/` rather than `public/data/`,
+ * because the count is not published anywhere else.
+ */
+function loadAlbumTrackCounts(): Record<string, number> | undefined {
+  const path = join(ROOT, "data", "cache", "musicbrainz-tracks.json");
+  if (!existsSync(path)) return undefined;
+  try {
+    const raw = JSON.parse(readFileSync(path, "utf8")) as {
+      entries?: Record<string, { tracks?: string[] }>;
+    };
+    const counts: Record<string, number> = {};
+    for (const [mbid, entry] of Object.entries(raw.entries ?? {})) {
+      if (Array.isArray(entry?.tracks)) counts[mbid] = entry.tracks.length;
+    }
+    return counts;
   } catch {
     return undefined;
   }
