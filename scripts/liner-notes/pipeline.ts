@@ -15,7 +15,7 @@ import { createHash } from "crypto";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
-import { analyze, type AlbumErasSlim } from "./analyze.ts";
+import { analyze, type AlbumErasSlim, type SongAlbumsSlim } from "./analyze.ts";
 import { checkVoice, formatVoiceIssues } from "./voice-check.ts";
 import { score } from "./score.ts";
 import { select, buildPosts, POSTS_PER_RUN } from "./curate.ts";
@@ -97,6 +97,8 @@ export async function run(options: PipelineOptions): Promise<void> {
   // Optional (#270). Absent -> the discography detectors return [], album art
   // falls back to iTunes, and every other detector is byte-identical.
   const albumEras = loadAlbumEras();
+  const songAlbums = loadSongAlbums();
+  const discographyKeys = loadDiscographyKeys();
   // Same source, two uses: the detectors join against it, and buildDeepLinks
   // uses the dates to decide whether a ?show= link would open an empty panel.
   const datesWithSetlists = new Set([...setlists.keys()].map((k) => k.split("::")[0]));
@@ -119,6 +121,8 @@ export async function run(options: PipelineOptions): Promise<void> {
     setlists,
     aliases,
     eras: albumEras,
+    songAlbums,
+    discographyKeys,
   });
   console.log(`   Found ${findings.length} raw findings (${stats.concertsAnalyzed} concerts analyzed)`);
   for (const [detector, count] of Object.entries(stats.findingsByDetector)) {
@@ -360,6 +364,42 @@ function loadAlbumEras(): AlbumErasSlim | undefined {
     return JSON.parse(readFileSync(path, "utf8")) as AlbumErasSlim;
   } catch (err) {
     console.warn(`   ⚠️  Could not read album-eras.json (${(err as Error).message})`);
+    return undefined;
+  }
+}
+
+/**
+ * Absent means `road-tested` returns [] and every other detector is untouched —
+ * the same degradation loadAlbumEras uses.
+ */
+function loadSongAlbums(): SongAlbumsSlim | undefined {
+  const path = join(DATA_DIR, "song-albums.json");
+  if (!existsSync(path)) {
+    console.warn("   ⚠️  song-albums.json missing — road-tested will find nothing");
+    return undefined;
+  }
+  try {
+    return JSON.parse(readFileSync(path, "utf8")) as SongAlbumsSlim;
+  } catch (err) {
+    console.warn(`   ⚠️  Could not read song-albums.json (${(err as Error).message})`);
+    return undefined;
+  }
+}
+
+/**
+ * Hop 2 for the song-albums lookup. Reads the SAME file loadAliasMap does, but
+ * a different relation — `canonicalOf` returns the concert-side slug, which is
+ * deliberately not the discography key.
+ */
+function loadDiscographyKeys(): Array<{ act: string; discographyKey: string }> | undefined {
+  const path = join(ROOT, "data", "artist-aliases.json");
+  if (!existsSync(path)) return undefined;
+  try {
+    const raw = JSON.parse(readFileSync(path, "utf8")) as {
+      discographyKeys?: Array<{ act: string; discographyKey: string }>;
+    };
+    return raw.discographyKeys;
+  } catch {
     return undefined;
   }
 }

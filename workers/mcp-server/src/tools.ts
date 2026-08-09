@@ -11,7 +11,10 @@ import { EMPTY_ALIAS_INDEX, aliasName, buildAliasIndex, canonicalSlug, slugsFor,
 // The ONE implementation of the song-albums lookup key, shared with the build
 // scripts. Pure string code with zero imports, so it bundles into a Worker.
 // Hand-building this key is how a reader silently matches nothing.
-import { songAlbumKey } from "../../../scripts/utils/song-title.js";
+// ONE implementation of the song-albums lookup, shared with the build scripts
+// and the liner-notes detectors. Pure string code, bundles into a Worker.
+// Resolving this key differently in any consumer silently matches nothing.
+import { lookupSongAlbum } from "../../../scripts/utils/song-album-lookup.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
@@ -948,45 +951,18 @@ function eraLine(eras: AlbumEras | null, concertId: string): string | null {
   return `Touring ${era.currentAlbum.title} (released ${agePhrase(era.daysSinceRelease).replace(/ old$/, "")} earlier).`;
 }
 
-/**
- * The artist key `song-albums.json` files this billing under.
- *
- * Three candidates, tried in order. All are cheap, and a wrong guess cannot
- * produce a wrong annotation — it simply misses, because the song key it builds
- * will not exist under that artist.
- *
- *   1. hop 2 — `discographyKeys` (omd -> orchestral-manoeuvres-in-the-dark)
- *   2. the billing slug itself, which is right for 122 of 126 artists
- *   3. the slug of the artist's DISPLAY name, which is what the discography is
- *      keyed by. Mechanical, and the only route that reaches
- *      "Echo & The Bunnymen" -> echo-the-bunnymen and
- *      "Joan Jett and the Blackhearts" -> joan-jett-and-the-blackhearts.
- *
- * Verified to reach all 126 artist prefixes present in the shipped file.
- */
-function songAlbumArtistKeys(
-  billing: string,
-  meta: ArtistsMetadata,
-  aliases: ArtistAliasData | null,
-): string[] {
-  const slug = normalizeName(billing);
-  const hop = aliases?.discographyKeys?.find((d) => d.act === slug)?.discographyKey;
-  const viaDisplayName = normalizeName(meta[slug]?.name ?? "");
-  return [hop, slug, viaDisplayName].filter((k): k is string => Boolean(k));
-}
-
 /** The attribution for one performed song, or null. Covers resolve like any other song. */
 function songAlbumOf(
   song: SetlistSong,
-  artistKeys: string[],
+  billing: string,
   songAlbums: SongAlbums | null,
+  meta: ArtistsMetadata,
+  aliases: ArtistAliasData | null,
 ): SongAlbum | null {
-  if (!songAlbums?.songs) return null;
-  for (const key of artistKeys) {
-    const hit = songAlbums.songs[songAlbumKey(key, song.name)];
-    if (hit) return hit;
-  }
-  return null;
+  return lookupSongAlbum<SongAlbum>(songAlbums?.songs, billing, song.name, {
+    discographyKeys: aliases?.discographyKeys,
+    artistsMetadata: meta,
+  });
 }
 
 export function concertSetlist(
@@ -1054,13 +1030,9 @@ export function concertSetlist(
   // "(Public Enemy cover)", which names the original act — and the spec's rule
   // is that a cover annotates with the artist, not the album. Printing the
   // album too would read as though the headliner played a Public Enemy record.
-  const artistKeys = songAlbumArtistKeys(
-    sl.artistName ?? c.headliner,
-    artistsMeta,
-    aliases,
-  );
+  const billing = sl.artistName ?? c.headliner;
   const attributions = sl.songs.map((song) =>
-    song.tape ? null : songAlbumOf(song, artistKeys, songAlbums),
+    song.tape ? null : songAlbumOf(song, billing, songAlbums, artistsMeta, aliases),
   );
   const albumOf = (i: number): string | null => {
     const a = attributions[i];

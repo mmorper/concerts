@@ -31,6 +31,7 @@ export type DetectorName =
   | "full-circle"
   | "guest-bridge"
   | "album-trajectory"
+  | "road-tested"
   // Implemented and tested, but NOT registered in analyze()'s dispatcher.
   // Enablement is scheduled into v5.5 (#267 §5d) — see the comment there.
   | "discography-crossref"

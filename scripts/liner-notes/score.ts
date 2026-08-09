@@ -136,6 +136,18 @@ function computeSpan(f: AnalysisFinding): number {
       const gap = (f.dataPoints as Record<string, unknown>).gapYears as number;
       return gap > 20 ? 10 : gap > 15 ? 7 : gap > 10 ? 4 : 2;
     }
+    case "road-tested": {
+      // Ladder extended DOWN to the new 7-day floor. The lower bound was
+      // widened precisely to keep Royal Blood at 10 days (four songs off an
+      // unreleased record); leaving the ladder at ">= 30d" would admit that
+      // finding and then score it zero, which is the same as not admitting it.
+      // Corroboration counts here as much as distance: songs from one future
+      // album is evidence a single-song finding lacks.
+      const days = dp.daysBeforeRelease as number;
+      const corroboration = (dp.songCountFromSameFutureAlbum as number) ?? 1;
+      const byDistance = days > 365 ? 10 : days > 180 ? 7 : days > 90 ? 4 : days > 30 ? 2 : 1;
+      return Math.min(10, byDistance + (corroboration >= 3 ? 2 : corroboration >= 2 ? 1 : 0));
+    }
     case "album-trajectory": {
       // How far ahead the record still was. A 17-year gap (Ziggy Marley) is a
       // different order of story from a 4-month one (Bat Fangs).
@@ -287,6 +299,8 @@ function computeSurpriseFactor(f: AnalysisFinding): number {
       return 4;
     case "milestone-marker":
       return 3;
+    case "road-tested":
+      return 9; // Hearing a record before it existed — spec §5a fixes this at 9
     case "venue-ghost":
       return 9; // A room you knew is gone — inherently powerful
     case "festival-mega-bill": {
