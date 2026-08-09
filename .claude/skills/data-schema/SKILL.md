@@ -285,6 +285,16 @@ Which studio album a live-performed song came off. 1,716 of 1,912 unique artist+
 
 3. **`releaseDate` precision varies.** 1,462 full dates, 145 `YYYY-MM`, 109 bare `YYYY`. Any gap measured against it must clear the width of the date's own uncertainty — see `road-tested`'s precision rule.
 
+**Fields deliberately NOT stored — do not re-add them.** Every one is derivable, and storing derivable data is what pushed Window 1 to 669 KB against a 400 KB budget:
+
+| Absent field | Derive it with | Why it is not stored |
+| --- | --- | --- |
+| `coverUrl` | `coverArtUrl(mbid)`, exported from `derive-album-eras.ts` — **only when `coverAvailable` is true**, the archive 404s otherwise | A pure function of the MBID, verified across all 11,382 covers with zero exceptions. Carrying it cost v5.4 **284 KB**, more than this file's entire budget. |
+| `albumSlug` | `normalizeAlbumName(title)` from `src/utils/normalize.ts` | Pure function of the title. Kept only in `album-eras.json`'s `erasSeen`, where it earns its place as a stable grouping key. |
+| `artistKey` as a field | it is the key prefix — `artistKey::foldedSongTitle` | Already present in every key. A second copy is a second thing to keep in sync. |
+
+`originalArtistKey` **is** stored, and is not an exception to the rule: it is the *original* act for a cover, which cannot be derived from the performing artist.
+
 **What it does NOT say:** the album is the *earliest studio album carrying the song*, which is not always where the song first appeared. A standalone single that later reached an album attributes to that album. This file supports claims about the **album**, never about when the song came into existence.
 
 ## Relationships## Relationships
