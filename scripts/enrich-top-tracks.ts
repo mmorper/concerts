@@ -10,6 +10,7 @@
  *   npm run enrich:tracks -- --dry-run        # Preview without writing
  *   npm run enrich:tracks -- --force          # Re-fetch every artist, ignoring the TTL
  *   npm run enrich:tracks -- --artist abc --force
+ *   npm run enrich:tracks -- --force --skip 40 --limit 40   # one chunk of a sweep
  *                                             # Re-fetch ONE artist
  *
  * --force exists for the artist-billing guard (#275): it only runs on fetch, so
@@ -421,13 +422,21 @@ function forStorage(tracks: NormalizedTrack[]): Omit<NormalizedTrack, 'artistNam
  * Main enrichment function
  */
 export async function enrichTopTracks(
-  options: { dryRun?: boolean; force?: boolean; artist?: string } = {}
+  options: { dryRun?: boolean; force?: boolean; artist?: string; skip?: number; limit?: number } = {}
 ) {
   const artistFlagIndex = process.argv.indexOf('--artist')
+  const numFlag = (name: string): number | undefined => {
+    const i = process.argv.indexOf(name)
+    if (i < 0) return undefined
+    const n = Number(process.argv[i + 1])
+    return Number.isFinite(n) && n >= 0 ? n : undefined
+  }
   const {
     dryRun = process.argv.includes('--dry-run'),
     force = process.argv.includes('--force'),
-    artist = artistFlagIndex >= 0 ? process.argv[artistFlagIndex + 1] : undefined
+    artist = artistFlagIndex >= 0 ? process.argv[artistFlagIndex + 1] : undefined,
+    skip = numFlag('--skip'),
+    limit = numFlag('--limit')
   } = options
 
   console.log(`🎵 Enriching artist top tracks...${dryRun ? ' (DRY RUN)' : ''}${force ? ' (FORCE)' : ''}\n`)
@@ -446,9 +455,30 @@ export async function enrichTopTracks(
     }
   })
 
-  const artists = Array.from(uniqueArtists).sort()
+  const allArtists = Array.from(uniqueArtists).sort()
 
-  console.log(`Found ${artists.length} unique artists\n`)
+  // ── Chunking (#275) ────────────────────────────────────────────────────────
+  // A --force sweep cannot finish in one run. iTunes enforces a request BUDGET,
+  // not a rate: two sweeps died at the same artist count despite a 5x cadence
+  // difference, so slowing down buys nothing and only burns wall-clock. The
+  // working shape is a slice, a pause, then the next slice.
+  //
+  // The order is a stable alphabetical sort, so `--skip N --limit M` addresses
+  // the same artists on every run and a sweep can be resumed exactly where the
+  // previous chunk stopped.
+  const artists =
+    skip !== undefined || limit !== undefined
+      ? allArtists.slice(skip ?? 0, limit !== undefined ? (skip ?? 0) + limit : undefined)
+      : allArtists
+
+  if (artists.length !== allArtists.length) {
+    console.log(
+      `Found ${allArtists.length} unique artists — processing ${artists.length} ` +
+        `(${skip ?? 0}–${(skip ?? 0) + artists.length - 1} of ${allArtists.length})\n`
+    )
+  } else {
+    console.log(`Found ${artists.length} unique artists\n`)
+  }
 
   // Initialize clients. A full sweep is 257 back-to-back searches and iTunes
   // starts returning 429 partway through at the incremental cadence — measured,
@@ -584,10 +614,17 @@ export async function enrichTopTracks(
   // artists-metadata.json (#255): this writes the whole object back with no
   // delete path, so any key ever written survives forever.
   //
-  // Skipped under --artist, and after a block: those runs only visited some of
-  // the artists, so every record they never reached looks orphaned when it is
-  // simply untouched. Pruning on a partial run would delete real data.
-  const partialRun = Boolean(artist) || blockedAt !== null
+  // Skipped under --artist, under --skip/--limit, and after a block: those runs
+  // only visited some of the artists, so every record they never reached looks
+  // orphaned when it is simply untouched. Pruning on a partial run would delete
+  // real data.
+  //
+  // The chunk flags were added for #275 and initially missed here, which took
+  // the cache from 257 records to 38 in three runs before the count was
+  // noticed. Any future flag that narrows the artist list MUST be added to this
+  // predicate — that is the whole contract of this variable.
+  const partialRun =
+    Boolean(artist) || blockedAt !== null || artists.length !== allArtists.length
   const liveKeys = new Set(partialRun ? Object.keys(results) : artists.map(normalizeArtistName))
   const orphans = Object.keys(results).filter(key => !liveKeys.has(key))
   for (const key of orphans) {
