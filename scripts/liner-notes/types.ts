@@ -50,8 +50,29 @@ export interface SuggestedImage {
 }
 
 export interface SuggestedTrack {
+  /**
+   * Whose best-known track to fall back to when no subject song resolves.
+   * This is the artist the POST is about, which for a cover is the act that
+   * played it live rather than the act that recorded it.
+   */
   artistNormalized: string;
+  /**
+   * The song this post is about (#299). Set only by detectors whose story has
+   * a single unambiguous subject song; the rest leave it undefined and keep
+   * artist-level audio, which for them is not wrong.
+   */
   trackName?: string;
+  /**
+   * Whose *recording* of `trackName` to look for — normalized, and NOT
+   * interchangeable with `artistNormalized`.
+   *
+   * Searching the act that performed it live returns a confidently wrong
+   * track: iTunes answers `Nile Rodgers` + `"Notorious"` with *Axel F*, since
+   * he played on the record but Duran Duran recorded it. Required alongside
+   * `trackName` — audio resolution ignores a subject song without it.
+   */
+  recordedByNormalized?: string;
+  /** The album `trackName` comes from, when the post's subject is an album. */
   albumName?: string;
 }
 

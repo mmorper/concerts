@@ -18,7 +18,8 @@ import { fileURLToPath } from "url";
 import { analyze, type AlbumErasSlim, type SongAlbumsSlim } from "./analyze.ts";
 import { checkVoice, formatVoiceIssues } from "./voice-check.ts";
 import { score } from "./score.ts";
-import { select, buildPosts, POSTS_PER_RUN } from "./curate.ts";
+import { select, buildPosts, fetchSubjectTracks, POSTS_PER_RUN } from "./curate.ts";
+import { iTunesClient } from "../utils/itunes-client.ts";
 import { refreshPostImages } from "./refresh-images.ts";
 import { generate } from "./generate.ts";
 import { buildSetlistIndex, type SetlistIndex } from "./setlists.ts";
@@ -213,7 +214,14 @@ export async function run(options: PipelineOptions): Promise<void> {
   }
 
   // ── Stage 5: Build posts ─────────────────────────────────────────────────
+  //
+  // Subject songs are fetched first, for the posts that are about one. It runs
+  // here rather than inside buildPosts so the build stays synchronous and every
+  // fallback tier is testable without a network (#299). A failure is not fatal:
+  // an empty map means every post falls back to a labelled best-known track.
   console.log("\n🏗️  Stage 5: Building posts...");
+  const subjectTracks = await fetchSubjectTracks(clean, artistsMetadata, new iTunesClient());
+
   const publishedAt = new Date().toISOString();
   const newPosts = buildPosts(clean, {
     artistsMetadata,
@@ -223,6 +231,7 @@ export async function run(options: PipelineOptions): Promise<void> {
     datesWithSetlists,
     existingPosts,
     publishedAt,
+    subjectTracks,
   });
   console.log(`   Built ${newPosts.length} post${newPosts.length !== 1 ? "s" : ""}`);
 

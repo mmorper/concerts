@@ -742,6 +742,11 @@ function detectRareSighting(concerts: Concert[], setlists?: SetlistIndex): Analy
         ? ["#rare-sighting", "#one-time-only", "#only-setlist"]
         : ["#rare-sighting", "#one-time-only"],
       suggestedImage: { type: "artist", artistNormalized: normalized },
+      // Deliberately artist-level, though #299 lists this detector as one that
+      // "knows the song". It knows TWO — an opener and a closer — and the story
+      // is the night, not either of them. `openedWith`/`closedWith` are also
+      // `describeSong` output, so a cover arrives as "Song (X cover)" and would
+      // be searched verbatim. Nothing here is a wrong song waiting to happen.
       suggestedTrack: { artistNormalized: concert.headlinerNormalized },
     });
   }
@@ -1839,6 +1844,14 @@ export function detectRoadTested(
 
     const days = Math.max(...songsFromAlbum.map((e) => e.days));
 
+    // The song heard furthest ahead of the record is the one the story is
+    // built on, so it is the one the footer should play (#299). Ties break on
+    // title: this is written into a permalinked post, and a rerun that picked
+    // a different song each time would be a silent inconsistency.
+    const earliestHeard = [...songsFromAlbum].sort(
+      (a, b) => b.days - a.days || a.song.localeCompare(b.song)
+    )[0].song;
+
     // Sub-month gaps must read in days. The lower bound now admits findings as
     // close as 8 days, and "0 Months Before" is how Royal Blood rendered before
     // this branch existed.
@@ -1891,7 +1904,14 @@ export function detectRoadTested(
         artistNormalized: concert.headlinerNormalized,
         albumName: albumTitle,
       },
-      suggestedTrack: { artistNormalized: concert.headlinerNormalized },
+      suggestedTrack: {
+        artistNormalized: concert.headlinerNormalized,
+        trackName: earliestHeard,
+        // The headliner played it live AND recorded it — the two roles that
+        // diverge for full-circle and guest-bridge coincide here.
+        recordedByNormalized: concert.headlinerNormalized,
+        albumName: albumTitle,
+      },
       tags: ["#road-tested", "#before-the-record"],
     });
   }
@@ -2065,6 +2085,10 @@ export function detectMostWitnessedAlbum(
         artistNormalized: top.artistNormalized,
         albumName: top.albumTitle,
       },
+      // Also artist-level, and also deliberate (#299). The subject is a record,
+      // not a song, and `songs` is a Set with no per-song counts — so there is
+      // no principled "the one to play", only an alphabetical accident. Add
+      // counts to the aggregate first if this should ever play an album track.
       suggestedTrack: { artistNormalized: top.artistNormalized },
       tags: ["#most-witnessed", "#album-eras"],
     },
@@ -2358,7 +2382,14 @@ function detectFullCircle(
       venues: [...new Set([cover.concert.venueNormalized, original.concert.venueNormalized])],
       years: [...new Set([original.concert.year, cover.concert.year])],
       suggestedImage: { type: "artist", artistNormalized: cover.by },
-      suggestedTrack: { artistNormalized: cover.by },
+      // The post IS the song, so the footer should play it (#299). The cover
+      // act is only the fallback: they played it, the original act recorded it,
+      // and it is the recording we want to hear.
+      suggestedTrack: {
+        artistNormalized: cover.by,
+        trackName: cover.song,
+        recordedByNormalized: cover.original,
+      },
       tags,
     });
   }
@@ -2471,7 +2502,13 @@ function detectGuestBridge(
       venues: [...new Set([guestNight.venueNormalized, nearest.venueNormalized])],
       years: [...new Set([guestNight.year, nearest.year])],
       suggestedImage: { type: "artist", artistNormalized: ownAct },
-      suggestedTrack: { artistNormalized: ownAct },
+      // The song they walked on for — the host's record, not the guest's own
+      // act, which stays the fallback exactly as the comment above describes.
+      suggestedTrack: {
+        artistNormalized: ownAct,
+        trackName: appearance.song,
+        recordedByNormalized: hostAct,
+      },
       tags,
     });
   }

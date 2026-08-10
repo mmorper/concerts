@@ -51,12 +51,26 @@ export function LinerNoteMiniPlayer({ audio, accentColor }: LinerNoteMiniPlayerP
     }
   }, [])
 
+  // The post names a song and this is not it — say so rather than letting the
+  // player imply otherwise (#299). Absent on posts about a night, an artist or
+  // a venue, and on everything published before the fix.
+  const isStandIn = audio.role === 'best-known'
+
   return (
+    <>
+      {isStandIn && (
+        <p className="font-sans text-xs text-gray-400 italic px-3 pb-1">
+          Not the song above — here&apos;s what they&apos;re best known for
+        </p>
+      )}
     <div
       onClick={handleToggle}
       className="group flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-gray-100"
       role="button"
-      aria-label={isPlaying ? `Pause ${audio.trackName}` : `Play ${audio.trackName}`}
+      aria-label={
+        `${isPlaying ? 'Pause' : 'Play'} ${audio.trackName}` +
+        (isStandIn ? ' — not the song this post is about' : '')
+      }
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleToggle() } }}
     >
@@ -93,5 +107,6 @@ export function LinerNoteMiniPlayer({ audio, accentColor }: LinerNoteMiniPlayerP
       {/* Duration */}
       <span className="font-sans text-xs text-gray-400 flex-shrink-0">0:30</span>
     </div>
+    </>
   )
 }
