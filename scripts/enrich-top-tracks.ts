@@ -288,6 +288,42 @@ const ARTIST_ID_OVERRIDES: Record<string, number> = {
   "Inner Circle": 100091,       // was returning Jacob Miller, their late singer, under his own billing
   "John Doe": 2354096,          // was returning Public Announcement; this is X's John Doe
 
+  // #275 full sweep, 2026-08-10. Every ID below was chosen by the archive owner
+  // against our own discography, not by genre or popularity — where two acts
+  // share a name, the one whose albums we already hold is the one who played
+  // here. A blank in the worksheet meant "could not verify", and those artists
+  // are deliberately left unpinned rather than guessed at: no previews is the
+  // correct outcome, a wrong band is not.
+  //
+  // Left unpinned as unverified: EarthGang, Rebuilder, Smoke & Mirrors Sound
+  // System, Torres.
+  "Against Me!": 6946251, // Against Me! (Alternative) — was "Jx.Zero"; Against Me! (1997)
+  "Dr Sick": 1230754055, // Dr. Sick (Hip-Hop/Rap) — was "Solo Sounds"; no discography held
+  "Drag The River": 42042457, // Drag the River (Rock) — was "Pere Ubu"; Live at the Starlight (2002)
+  "Fear": 45099030, // FEAR (Punk) — was "Current Joys"; The Record (1982)
+  "Hot Rod Lincoln": 280372295, // Hot Rod Lincoln (Rock) — was "Asleep At The Wheel"; The Boulevard (1996)
+  "James": 130451, // James (Rock) — was "Laufey"; Stutter (1986)
+  "Me Not You": 1177786368, // Me Not You (Alternative) — was "Pere Navarro & Kiko Navarro"; Already Gone (2019)
+  "Midnight Oil": 18747421, // Midnight Oil (Rock) — was "Elley Duhé & Whethan"; Midnight Oil (1978)
+  "Pennywise": 2820315, // Pennywise (Hard Rock) — was "Angerfist"; Pennywise (1991)
+  "Prophets of Rage": 1137215876, // Prophets of Rage (Hard Rock) — was "Public Enemy"; 2016-06-03: Hollywood Palladium, Los Angeles, CA, USA (2016)
+  "Richard Cheese & Lounge Against the Machine": 3572356, // Richard Cheese (Rock) — was "Richard Cheese"; no discography held
+  "Royal Blood": 809772445, // Royal Blood (Alternative) — was "RICHLIN"; Royal Blood (2014)
+  "Sleigh Bells": 370695831, // Sleigh Bells (Alternative) — was "Gene Autry"; Treats (2010)
+  "Snuff": 1896311816, // Snuff (Punk) — was "Slipknot"; SnuffSaidButGorBlimeyGuvStoneMeIfHeDidn’tThrowAWobblerChaChaChaChaChaChaChaChaChaYou’reGoingHomeInACosmicAmbience (1989)
+  "Squeeze": 93650, // Squeeze (Pop) — was "Fifth Harmony"; Squeeze (1978)
+  "Team Band": 318493222, // Team Band (Rock) — was "Chiquito Team Band"; Vodka Thieves (2009)
+  "The Alarm": 468568, // The Alarm (Rock) — was "Buckcherry"; Declaration (1984)
+  "The Bronx": 20918937, // The Bronx (Rock) — was "Kurtis Blow"; The Bronx (2003)
+  "The Reflex": 53055311, // Re-Flex (Dance) — was "Duran Duran"; Million Sellers (2013)
+  "The Untouchables": 1365524976, // The Untouchables (Reggae) — was "Ennio Morricone"; Live and Let Dance (1984)
+  "The Wonderstuff": 13129677, // The Wonder Stuff (Rock) — was "The Wonder Stuff"; no discography held
+  "Trombone Shorty & Orleans Avenue": 258779315, // Trombone Shorty (Jazz) — was "Trombone Shorty"; no discography held
+  "Vandals": 3563419, // The Vandals (Alternative) — was "CuBox"; no discography held
+  "When In Rome": 48883288, // When In Rome (Rock) — was "ROZZZQWEEN"; When in Rome (1988)
+  "Wire": 3184306, // Wire (Rock) — was "U2"; Pink Flag (1977)
+  "X": 1295432230, // X (Punk) — was "Nicky Jam & J Balvin"; Los Angeles (1980)
+
   // NOT pinned, deliberately: Kiev. All four iTunes candidates are hip-hop
   // acts; ours is the LA indie band that opened for Foals (Falling Bough
   // Wisdom Teeth, Willing Eyes). No correct answer exists to pin, so the
