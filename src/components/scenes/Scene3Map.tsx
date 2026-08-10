@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import type { Concert } from '../../types/concert'
+import { deriveArchiveStats } from '../../utils/archiveStats'
 import { normalizeVenueName } from '../../utils/normalize'
 import { haptics } from '../../utils/haptics'
 import { analytics } from '../../services/analytics'
@@ -148,11 +149,18 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
     return filter ? concerts.filter(filter) : concerts
   }, [concerts, selectedRegion])
 
-  // Count unique cities in filtered set
+  // Cities in the CURRENT region tab — this one is about the view, and changes
+  // as you browse. The footer below deliberately does not use it (#295).
   const cityCount = useMemo(() => {
     const cities = new Set(filteredConcerts.map(c => c.cityState))
     return cities.size
   }, [filteredConcerts])
+
+  // The footer is an archive summary, not a view summary. It previously paired
+  // an unfiltered `concerts.length` with this filtered `cityCount`, so picking
+  // a region rendered "184 Shows · 12 Cities" — two different questions on one
+  // line. Both halves now come from the one derivation (#295).
+  const archive = useMemo(() => deriveArchiveStats(concerts), [concerts])
 
   // Helper function to generate popup HTML with photo and legacy badge
   const generatePopupHTML = (venueName: string, cityState: string, concertCount: number): string => {
@@ -708,7 +716,7 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
         className="absolute bottom-20 left-0 right-0 z-[1000] text-center"
       >
         <p className="font-sans text-xs text-gray-500 font-medium uppercase tracking-widest">
-          {concerts.length} Shows · {cityCount} Cities
+          {archive.concerts} Shows · {archive.cities} Cities
         </p>
       </motion.div>
     </motion.section>

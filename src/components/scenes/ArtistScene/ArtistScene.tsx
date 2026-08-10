@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { ArtistMosaic } from './ArtistMosaic'
 import { ArtistGatefold } from './ArtistGatefold'
@@ -8,6 +8,7 @@ import { useArtistData } from './useArtistData'
 import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
 import { useGatefoldOrientation } from '../../../hooks/useGatefoldOrientation'
 import type { Concert } from '../../../types/concert'
+import { deriveArchiveStats } from '../../../utils/archiveStats'
 import type { SortOrder, ArtistCard } from './types'
 import { haptics } from '../../../utils/haptics'
 import { analytics } from '../../../services/analytics'
@@ -33,7 +34,6 @@ export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus,
   const { getArtistImage, loading: artistImageLoading } = useArtistMetadata()
   const { isPhone } = useGatefoldOrientation()
   const [sortOrder, setSortOrder] = useState<SortOrder>('timesSeen') // Default: Most Seen
-  const [artistCount, setArtistCount] = useState(0)
   const [openArtist, setOpenArtist] = useState<ArtistCard | null>(null)
   const [clickedTileRect, setClickedTileRect] = useState<DOMRect | null>(null)
   const [reducedMotion, setReducedMotion] = useState(false)
@@ -148,6 +148,23 @@ export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus,
     }, 1000) // 600ms highlight + 400ms pause
   }
 
+  // Concerts come from the one derivation (#295). Artists deliberately do NOT.
+  //
+  // This scene counts ACTS, not billings: `artistCards` is alias-collapsed, so
+  // Brian Setzer is one card rather than four (#227). That makes 254 here
+  // against the archive-wide 257 the README, OG card and meta tags quote — and
+  // the number has to match the mosaic directly below, which ends with
+  // "254 artists loaded". A footer disagreeing with the list it sits under is
+  // worse than two surfaces disagreeing across a site.
+  //
+  // Which of the two is "the" artist count is an open question, recorded in
+  // src/utils/archiveStats.ts. Do not reconcile them by editing this line.
+  //
+  // Above the early return on purpose: the value it replaced was a plain
+  // expression and could sit below, a hook cannot.
+  const archive = useMemo(() => deriveArchiveStats(concerts), [concerts])
+  const totalConcerts = archive.concerts
+
   if (isLoading) {
     return (
       <motion.section
@@ -168,8 +185,6 @@ export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus,
       </motion.section>
     )
   }
-
-  const totalConcerts = concerts.length
 
   return (
     <motion.section
@@ -200,7 +215,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus,
           className="font-sans text-lg md:text-xl text-white/85 mb-6"
           style={{ textShadow: '0 2px 20px rgba(0, 0, 0, 0.3)' }}
         >
-          {artistCount} artists · {totalConcerts} concerts
+          {artistCards.length} artists · {totalConcerts} concerts
         </p>
 
         {/* Artist Search */}
@@ -282,7 +297,6 @@ export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus,
         <ArtistMosaic
           artists={artistCards}
           sortOrder={sortOrder}
-          onArtistCountUpdate={setArtistCount}
           onCardClick={handleCardClick}
           openArtistName={openArtist?.normalizedName}
           getArtistImage={getArtistImage}

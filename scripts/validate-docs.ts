@@ -36,6 +36,7 @@
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import { SCENE_NAMES, SCENE_LABELS } from '../src/components/changelog/constants'
+import { deriveArchiveStats } from '../src/utils/archiveStats.js'
 
 interface Concert {
   headliner: string
@@ -75,14 +76,10 @@ function deriveStats() {
   )
   const concerts = data.concerts
 
-  const artistSet = new Set<string>()
-  concerts.forEach((c) => {
-    if (c.headliner) artistSet.add(c.headliner)
-    c.openers?.forEach((o) => artistSet.add(o))
-  })
-
-  const venueSet = new Set(concerts.map((c) => c.venue))
-  const years = concerts.map((c) => c.year)
+  // The one derivation (#295). This file used to keep its own copy of "artists
+  // means headliners plus openers", which made the doc gate a second opinion
+  // rather than a check against the definition the app applies.
+  const archive = deriveArchiveStats(concerts)
 
   // v6.0 data files. Optional: a fresh clone before enrichment has neither, and
   // a missing file must not fail the doc gate — but a PRESENT file whose counts
@@ -104,11 +101,11 @@ function deriveStats() {
   }
 
   return {
-    concerts: concerts.length,
-    artists: artistSet.size,
-    venues: venueSet.size,
-    startYear: Math.min(...years),
-    endYear: Math.max(...years),
+    concerts: archive.concerts,
+    artists: archive.artists,
+    venues: archive.venues,
+    startYear: archive.firstYear ?? 0,
+    endYear: archive.lastYear ?? 0,
     songAlbums: songAlbums ? songEntries.length : null,
     albumErasArtists: albumEras ? Object.keys(albumEras.artists ?? {}).length : null,
     precision,
@@ -127,6 +124,73 @@ function readOptionalJson<T>(relativePath: string): T | null {
 /** 1716 -> "1,716", matching how the prose writes them. */
 function withCommas(n: number): string {
   return n.toLocaleString('en-US')
+}
+
+/**
+ * Surfaces that must read the shared derivation rather than counting for
+ * themselves (#295).
+ *
+ * The Claim machinery above checks that a NUMBER in prose matches the data. It
+ * cannot check these, because the fix removed the numbers: a footer now renders
+ * `{archive.concerts}` and there is no literal left to compare. What is worth
+ * guarding is therefore the shape, not the value — that each of these still
+ * goes through `deriveArchiveStats`, and that none has quietly grown a second
+ * count beside it.
+ *
+ * The forbidden pattern is specific on purpose. `new Set(` is ordinary and
+ * appears all over these files for unrelated reasons; only a set built over the
+ * fields that define the archive roster is a competing derivation.
+ */
+const DERIVATION_CONSUMERS = [
+  'src/components/scenes/Scene1Hero.tsx',
+  'src/components/scenes/Scene3Map.tsx',
+  'src/components/scenes/ArtistScene/ArtistScene.tsx',
+  'scripts/generate-og-simple.ts',
+  'scripts/update-meta-tags.ts',
+]
+
+/**
+ * A Set built over any of these is an archive count, not a local lookup.
+ *
+ * Artists and venues only. `cityState` is deliberately absent: Scene3Map counts
+ * cities in the SELECTED REGION for its subtitle, which is a view count and a
+ * legitimate one — it is supposed to change as you browse. The archive-wide
+ * pair in that scene's footer comes from the derivation. Flagging every city
+ * set would have made this guard fire on correct code, and a guard that cries
+ * wolf gets deleted.
+ */
+const ROSTER_FIELDS = /new Set(<[^>]*>)?\(\s*[^)]*\bc(?:oncert)?\.(headliner|openers|venue|venueNormalized)\b/
+
+function checkDerivationUse(): Failure[] {
+  const failures: Failure[] = []
+
+  for (const file of DERIVATION_CONSUMERS) {
+    const content = readRepoFile(file)
+
+    if (!content.includes('deriveArchiveStats')) {
+      failures.push({
+        file,
+        label: 'reads the shared archive derivation',
+        reason: 'no-match',
+        expected: 'an import of deriveArchiveStats from src/utils/archiveStats',
+        pattern: /deriveArchiveStats/,
+      })
+    }
+
+    const rogue = content.match(ROSTER_FIELDS)
+    if (rogue) {
+      failures.push({
+        file,
+        label: 'counts the archive roster itself',
+        reason: 'mismatch',
+        expected: 'deriveArchiveStats(concerts)',
+        actual: rogue[0],
+        pattern: ROSTER_FIELDS,
+      })
+    }
+  }
+
+  return failures
 }
 
 function buildClaims(): Claim[] {
@@ -319,6 +383,8 @@ export function validateDocs(): Failure[] {
         `every doc is checked against.`
     )
   }
+
+  failures.push(...checkDerivationUse())
 
   const fileCache = new Map<string, string>()
 

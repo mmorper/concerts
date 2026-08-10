@@ -22,6 +22,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { SCENE_NAMES } from '../src/components/changelog/constants'
+import { deriveArchiveStats, countSetlistSongs } from '../src/utils/archiveStats.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -99,31 +100,14 @@ async function main() {
   // card subtitle, so a stale count ships to every social unfurl.
   const scenes = SCENE_NAMES.length
 
-  // Count unique artists (headliners + openers)
-  const artistSet = new Set<string>()
-  concertsData.concerts.forEach((concert: any) => {
-    if (concert.headliner) artistSet.add(concert.headliner)
-    concert.openers?.forEach((opener: string) => artistSet.add(opener))
-  })
-  const artists = artistSet.size
+  // Artists and venues come from the one derivation (#295) — the definitions
+  // for "does artists include openers" live beside it, not here.
+  const { artists, venues } = deriveArchiveStats(concertsData.concerts)
 
-  // Count unique venues
-  const venueSet = new Set(concertsData.concerts.map((c: any) => c.venue))
-  const venues = venueSet.size
-
-  // Songs actually watched being played. Tape is walk-on music, not a
-  // performance, and is excluded here exactly as it is everywhere else.
   let songs = 0
   try {
     const setlistPath = path.join(__dirname, '..', 'public', 'data', 'setlists-cache.json')
-    const cache = JSON.parse(fs.readFileSync(setlistPath, 'utf-8'))
-    for (const entry of Object.values<any>(cache.entries ?? {})) {
-      for (const set of entry?.setlist?.sets?.set ?? []) {
-        for (const song of set?.song ?? []) {
-          if (song?.name && !song.tape) songs++
-        }
-      }
-    }
+    songs = countSetlistSongs(JSON.parse(fs.readFileSync(setlistPath, 'utf-8')))
   } catch {
     // No setlist cache — the tile is dropped rather than rendered as zero.
   }

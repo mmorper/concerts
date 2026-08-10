@@ -60,6 +60,23 @@ function goodClaudeMd() {
   return `**Version:** v5.4.0 | ${EXPECTED.concerts} concerts, ${EXPECTED.artists} artists, ${EXPECTED.venues} venues`
 }
 
+/**
+ * The five surfaces the validator checks for #295 compliance. Content only has
+ * to satisfy the guard: mention `deriveArchiveStats`, and build no Set over the
+ * archive roster.
+ */
+const COMPLIANT_SURFACE = `const stats = deriveArchiveStats(concerts)`
+
+function compliantSurfaces(): Record<string, string> {
+  return {
+    'scenes/Scene1Hero.tsx': COMPLIANT_SURFACE,
+    'scenes/Scene3Map.tsx': COMPLIANT_SURFACE,
+    'ArtistScene/ArtistScene.tsx': COMPLIANT_SURFACE,
+    'generate-og-simple.ts': COMPLIANT_SURFACE,
+    'update-meta-tags.ts': COMPLIANT_SURFACE,
+  }
+}
+
 /** Wire the mocked fs up to a set of file contents. */
 function mockFiles(overrides: Partial<Record<string, string>> = {}) {
   const files: Record<string, string> = {
@@ -67,6 +84,7 @@ function mockFiles(overrides: Partial<Record<string, string>> = {}) {
     'README.md': goodReadme(),
     'ROADMAP.md': goodRoadmap(),
     'CLAUDE.md': goodClaudeMd(),
+    ...compliantSurfaces(),
     ...overrides,
   }
   const mockFs = fs as any
@@ -129,6 +147,42 @@ describe('validate-docs', () => {
         'header — venues',
       ])
       expect(failures.every((f) => f.reason === 'mismatch')).toBe(true)
+    })
+
+    it('flags a surface that stopped using the shared derivation (#295)', async () => {
+      // The counts moved out of the prose and into a function, so there is no
+      // literal left to compare. What is checkable is that the surface still
+      // asks the one derivation rather than answering for itself.
+      mockFiles({ 'scenes/Scene1Hero.tsx': `const total = concerts.length` })
+      const failures = await runValidator()
+
+      expect(failures.map((f) => f.label)).toEqual(['reads the shared archive derivation'])
+      expect(failures[0].file).toContain('Scene1Hero')
+    })
+
+    it('flags a surface that grew a second roster count beside it (#295)', async () => {
+      // The drift this whole issue is about: a surface that calls the shared
+      // derivation AND counts artists itself is one edit from disagreeing.
+      mockFiles({
+        'scenes/Scene3Map.tsx':
+          `const stats = deriveArchiveStats(concerts)\nconst mine = new Set(concerts.map(c => c.headliner))`,
+      })
+      const failures = await runValidator()
+
+      expect(failures.map((f) => f.label)).toEqual(['counts the archive roster itself'])
+      expect(failures[0].reason).toBe('mismatch')
+    })
+
+    it('allows a view-scoped city count, which is not an archive stat (#295)', async () => {
+      // Scene3Map counts cities in the SELECTED REGION for its subtitle. That
+      // is supposed to change as you browse, and a guard that fired on it
+      // would be a guard nobody keeps.
+      mockFiles({
+        'scenes/Scene3Map.tsx':
+          `const stats = deriveArchiveStats(concerts)\nconst cities = new Set(filteredConcerts.map(c => c.cityState))`,
+      })
+
+      expect(await runValidator()).toEqual([])
     })
 
     it('flags a scene missing from the roster prose', async () => {

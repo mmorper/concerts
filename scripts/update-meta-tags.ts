@@ -17,6 +17,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { generateSitemap } from './generate-sitemap.ts'
 import { SCENE_NAMES } from '../src/components/changelog/constants'
+import { deriveArchiveStats } from '../src/utils/archiveStats.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -92,22 +93,12 @@ async function main() {
   // this line was computed from the data.
   const scenes = SCENE_NAMES.length
 
-  // Count unique artists (headliners + openers)
-  const artistSet = new Set<string>()
-  concertsData.concerts.forEach((concert) => {
-    if (concert.headliner) artistSet.add(concert.headliner)
-    concert.openers?.forEach((opener: string) => artistSet.add(opener))
-  })
-  const artists = artistSet.size
-
-  // Count unique venues
-  const venueSet = new Set(concertsData.concerts.map((c) => c.venue))
-  const venues = venueSet.size
-
-  // Calculate year range and dates
-  const years = concertsData.concerts.map((c) => c.year)
-  const startYear = Math.min(...years)
-  const endYear = Math.max(...years)
+  // One derivation for the counts and the span (#295).
+  const archive = deriveArchiveStats(concertsData.concerts)
+  const artists = archive.artists
+  const venues = archive.venues
+  const startYear = archive.firstYear ?? new Date().getFullYear()
+  const endYear = archive.lastYear ?? startYear
   const currentYear = new Date().getFullYear()
   const decades = Math.ceil((currentYear - startYear) / 10)
 
