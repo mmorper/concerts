@@ -511,7 +511,7 @@ Each detector produces one or more `AnalysisFinding` objects with a `category`, 
 
 **Alias-aware ([#227](https://github.com/mmorper/concerts/issues/227)), as a supply prerequisite rather than just a correctness one.** Three of the eight findings exist *only* because the map links a guest to an act billed under another name — Terri Nunn → Berlin, Gwen Stefani → No Doubt, Brian Baker → Bad Religion. Without it the detector finds five.
 
-**Artist ordering:** the host leads. `artists[0]` is what the setlist link pairs with the date, and a guest walked on *without being billed* — a link naming them would point at a night they don't appear on. The image and audio still come from the guest's own act via `suggestedImage` / `suggestedTrack`.
+**Artist ordering:** the host leads. `artists[0]` is what the setlist link pairs with the date, and a guest walked on *without being billed* — a link naming them would point at a night they don't appear on. The image still comes from the guest's own act via `suggestedImage`, and so does the audio *fallback* — but the footer prefers the **host's** recording of the song that was walked on for, which is the song the story is about (#299).
 
 **Auto-tags:** `#guest-bridge`, `#walk-on`, plus `#shares-member` when resolved through the alias map.
 
@@ -1006,7 +1006,7 @@ Full type definitions live in `scripts/liner-notes/types.ts` (pipeline) and `src
   venues: string[]              // Normalized names ("the-hollywood-bowl")
   years: number[]
   suggestedImage?: { type: "artist"|"venue"|"album", ... }
-  suggestedTrack?: { artistNormalized, trackName?, albumName? }
+  suggestedTrack?: { artistNormalized, trackName?, recordedByNormalized?, albumName? }
   tags: string[]                // Auto-derived ("#artist-longevity", "#multi-decade")
   score?: number                // Populated by scorer (0–60)
   prose?: string                // Populated by generator
@@ -1024,7 +1024,8 @@ Full type definitions live in `scripts/liner-notes/types.ts` (pipeline) and `src
   headline: string
   prose: string
   image: { url, alt, source: "artist"|"venue"|"album"|"placeholder", ref?, albumName?, credit? }
-  audio?: { trackName, artistName, albumName, previewUrl, albumArt, streamingUrl, source: "itunes" }
+  audio?: { trackName, artistName, albumName, previewUrl, albumArt, streamingUrl, source: "itunes",
+            role?: "subject" | "best-known" }   // set only when the post names a song (#299)
   artists: string[]
   venues: string[]
   years: number[]
@@ -1226,7 +1227,55 @@ npm run refresh:liner-note-images -- --dry-run
 
 ### Audio resolution (`curate.ts → resolveAudio`)
 
-Uses `suggestedTrack.artistNormalized` if present, otherwise falls back to the primary artist. Returns the first track with a `previewUrl` from that artist's iTunes top tracks data.
+Most posts are about a night, an artist or a venue, and play the artist's
+best-known previewable track. A handful are about **one specific song**, and for
+those the footer plays that song (#299).
+
+A detector opts in by setting two fields on `suggestedTrack`:
+
+| field | meaning |
+| ----- | ------- |
+| `artistNormalized` | whose best-known track is the **fallback** — the act the post is about |
+| `trackName` | the subject song |
+| `recordedByNormalized` | **whose recording of it to look for** |
+
+The last one is not a formality. The act that played a song live is often not
+the act that recorded it, and searching the wrong one returns a confidently
+wrong result: iTunes answers `Nile Rodgers` + `"Notorious"` with *Axel F*. A
+`trackName` without a `recordedByNormalized` is ignored.
+
+**Order of preference:**
+
+1. The song itself, fetched from iTunes ahead of the build and verified.
+2. The song, if it happens to be in the cached top tracks — the recording
+   artist's list is searched before the post's own artist.
+3. The artist's best-known track, tagged `role: "best-known"` so the player can
+   say *"Not the song above — here's what they're best known for."*
+4. No audio.
+
+**Two guards, and both are load-bearing.** A candidate is accepted only if its
+title folds equal through `foldSongTitle()` *and* it is by the artist asked for.
+Title alone is not enough: searching `Gorillaz` + `"The Valley of the Pagans"`
+returns a **lullaby cover by Sweet Little Band** as result #1, with the right
+title and a working preview. Whatever is chosen is written into
+`liner-notes.json` and permalinked, so an unverified result is permanent — an
+honest labelled fallback beats a wrong song.
+
+**Cost and failure.** One iTunes call per published post that names a song, so
+roughly one request a week — negligible against the budget that constrains the
+artist sweep. Nothing here throws: a failed lookup falls back, and a **403 stops
+the sweep** rather than retrying, because a 403 means the client is blocked and
+every later request will fail the same way.
+
+Which detectors set a subject song, and which deliberately do not:
+
+| detector | subject song | why |
+| -------- | ------------ | --- |
+| `full-circle` | `dataPoints.song`, recorded by the original act | the post *is* the song |
+| `guest-bridge` | the song walked on for, recorded by the **host** | the guest's own act stays the fallback |
+| `road-tested` | the song heard furthest ahead of the record | ties break on title, so a rerun is stable |
+| `rare-sighting` | — | knows *two* songs and the story is the night; `openedWith`/`closedWith` are `describeSong` output, so a cover arrives as `"Song (X cover)"` |
+| `most-witnessed-album` | — | the subject is a record, and `songs` is a Set with no per-song counts — there is no principled "the one to play" |
 
 ---
 

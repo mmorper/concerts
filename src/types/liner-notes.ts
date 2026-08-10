@@ -41,6 +41,20 @@ export interface PostAudio {
   albumArt: string;
   streamingUrl: string;
   source: "itunes";
+  /**
+   * Why this track is the one playing (#299).
+   *
+   * `"subject"`    — the song the post is actually about.
+   * `"best-known"` — the post names a song, that song could not be resolved,
+   *                  and this is the artist's best-known track standing in.
+   *                  The player must SAY so: presenting it silently is how a
+   *                  post headlined *"Notorious"* came to play *Get Lucky*.
+   *
+   * Only ever set when the post HAS a subject song. Absent means the post is
+   * about a night, an artist or a venue — there is nothing to mislabel — or
+   * that it published before #299. Both render unlabelled, as they always have.
+   */
+  role?: "subject" | "best-known";
 }
 
 // ── Deep links ───────────────────────────────────────────────────────────────

@@ -18,6 +18,9 @@ import {
   getVenueImageUrl,
   upsizeAppleMusicUrl,
 } from "./image-refs.ts";
+import { foldSongTitle, songAlbumKey, songIndexKeys } from "../utils/song-title.ts";
+import { normalizeArtistName } from "../../src/utils/normalize.js";
+import type { NormalizedTrack } from "../utils/itunes-client.ts";
 import type { ScoredFinding } from "./types.ts";
 import type {
   DeepLink,
@@ -49,6 +52,16 @@ export interface CurateOptions {
   existingPosts: LinerNotesPost[];
   /** ISO timestamp to stamp publishedAt on new posts. Defaults to now. */
   publishedAt?: string;
+  /**
+   * Subject songs already fetched and verified, keyed by
+   * `songAlbumKey(recordedByNormalized, trackName)` (#299).
+   *
+   * Injected rather than fetched here so `buildPosts` stays synchronous and
+   * every tier of `resolveAudio` is unit-testable without a network. The
+   * pipeline fills it via `fetchSubjectTracks` immediately before building;
+   * omit it and audio resolution simply falls through to the cached tiers.
+   */
+  subjectTracks?: Record<string, NormalizedTrack>;
 }
 
 /** Posts published per normal run. */
@@ -434,6 +447,22 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
 
 // ── Audio resolution ──────────────────────────────────────────────────────────
 
+/**
+ * The track that plays in a post's footer, in descending order of preference
+ * (#299):
+ *
+ *   1. The subject song itself, fetched from iTunes and title-verified ahead
+ *      of the build by `fetchSubjectTracks`.
+ *   2. The subject song, if it happens to be in the cached top tracks — the
+ *      recording artist's list first, then the post's own artist.
+ *   3. The artist's best-known track, LABELLED `"best-known"` so the player
+ *      can say it is not the song the post names.
+ *   4. Nothing.
+ *
+ * Tier 3 is the old behaviour and remains correct for the ~15 detectors whose
+ * story is a night, an artist or a venue. The bug was reaching it silently on
+ * the handful whose story is one specific song.
+ */
 function resolveAudio(
   finding: ScoredFinding,
   options: CurateOptions
@@ -442,6 +471,55 @@ function resolveAudio(
   const artistSlug = suggestedTrack?.artistNormalized ?? finding.artists[0];
   if (!artistSlug) return undefined;
 
+  const wanted = suggestedTrack?.trackName;
+  // A subject song without a recording artist is unresolvable, not merely
+  // harder — see the field comment on SuggestedTrack.recordedByNormalized.
+  const recordedBy = wanted ? suggestedTrack?.recordedByNormalized : undefined;
+
+  // ── Tier 1: the real song, fetched and verified ──────────────────────────
+  if (wanted && recordedBy) {
+    const fetched = options.subjectTracks?.[songAlbumKey(recordedBy, wanted)];
+    if (fetched?.previewUrl) {
+      return {
+        trackName: fetched.name,
+        artistName:
+          fetched.artistName || displayName(recordedBy, options.artistsMetadata),
+        albumName: fetched.albumName ?? "",
+        previewUrl: fetched.previewUrl,
+        albumArt: fetched.albumArt ?? "",
+        streamingUrl: fetched.streamingUrl ?? "",
+        source: "itunes",
+        role: "subject",
+      };
+    }
+  }
+
+  // ── Tier 2: the real song, already in the cache ──────────────────────────
+  if (wanted) {
+    // Recording artist first: for a cover, their list is the one that can hold
+    // the song, and the performing act's list is where *Get Lucky* came from.
+    for (const slug of [recordedBy, artistSlug]) {
+      if (!slug) continue;
+      const entry = options.artistsTopTracks[slug];
+      const hit = entry?.tracks.find(
+        (t) => t.previewUrl && titleMatches(t.name, wanted)
+      );
+      if (hit?.previewUrl) {
+        return {
+          trackName: hit.name,
+          artistName: entry?.name ?? displayName(slug, options.artistsMetadata),
+          albumName: hit.albumName ?? "",
+          previewUrl: hit.previewUrl,
+          albumArt: hit.albumArt ?? "",
+          streamingUrl: hit.streamingUrl ?? "",
+          source: "itunes",
+          role: "subject",
+        };
+      }
+    }
+  }
+
+  // ── Tier 3: best-known track, labelled when the post named a song ────────
   const entry = options.artistsTopTracks[artistSlug];
   if (!entry) return undefined;
 
@@ -456,7 +534,126 @@ function resolveAudio(
     albumArt: track.albumArt ?? "",
     streamingUrl: track.streamingUrl ?? "",
     source: "itunes",
+    // Only when there was a song to miss. A post about a night has nothing to
+    // apologise for, and labelling it would be noise on ~15 detectors.
+    ...(wanted ? { role: "best-known" as const } : {}),
   };
+}
+
+// ── Subject-song lookup (network) ─────────────────────────────────────────────
+
+/** The one method of `iTunesClient` this module needs, so tests can stub it. */
+export interface SongSearch {
+  searchSong(
+    artistName: string,
+    songTitle: string,
+    limit?: number
+  ): Promise<NormalizedTrack[]>;
+}
+
+/**
+ * True when an iTunes result is the song we asked for.
+ *
+ * Folded on both sides via the project's canonical key, so
+ * "Notorious (Deluxe Edition)" matches "Notorious" and *Axel F* does not.
+ * `songIndexKeys` rather than a bare `foldSongTitle` so a merged pressing —
+ * "Enjoy the Silence / Interlude #2" — still matches its own components.
+ */
+function titleMatches(candidate: string, wanted: string): boolean {
+  const key = foldSongTitle(wanted);
+  if (!key) return false;
+  return songIndexKeys(candidate).includes(key);
+}
+
+/**
+ * True when an iTunes result is by the artist we asked for.
+ *
+ * Token containment, not string containment: iTunes bills the same recording
+ * as "Chic", "Nile Rodgers & Chic" and "CHIC feat. Nile Rodgers", so an exact
+ * compare rejects real matches — while a substring compare would accept
+ * *Chicago* for *Chic*.
+ *
+ * A title match alone is not enough to trust a result. "Notorious" is also a
+ * song by four other acts, and the search term is a plain keyword query that
+ * has already been observed answering with the wrong artist entirely (#275).
+ */
+function artistMatches(candidate: string, wanted: string): boolean {
+  const a = normalizeArtistName(candidate).split("-").filter(Boolean);
+  const b = normalizeArtistName(wanted).split("-").filter(Boolean);
+  if (!a.length || !b.length) return false;
+
+  const [shorter, longer] = a.length <= b.length ? [a, b] : [b, a];
+  const set = new Set(longer);
+  return shorter.every((token) => set.has(token));
+}
+
+/**
+ * Fetch the subject song for every finding that names one (#299).
+ *
+ * One iTunes call per finding that carries a subject song, deduplicated by
+ * artist+song. At one published post a week this is a single request per run,
+ * which is negligible against the budget that constrains the artist sweep —
+ * but the run must survive that request failing, so nothing here throws.
+ *
+ * A 403 STOPS the sweep rather than continuing: it means the client is blocked
+ * and every subsequent request will fail the same way. Remaining findings fall
+ * back to their best-known track, labelled, which is the designed behaviour
+ * rather than a degradation.
+ */
+export async function fetchSubjectTracks(
+  findings: ScoredFinding[],
+  artistsMetadata: CurateOptions["artistsMetadata"],
+  client: SongSearch
+): Promise<Record<string, NormalizedTrack>> {
+  const resolved: Record<string, NormalizedTrack> = {};
+  const attempted = new Set<string>();
+
+  for (const finding of findings) {
+    const wanted = finding.suggestedTrack?.trackName;
+    const recordedBy = finding.suggestedTrack?.recordedByNormalized;
+    if (!wanted || !recordedBy) continue;
+
+    const key = songAlbumKey(recordedBy, wanted);
+    if (attempted.has(key)) continue;
+    attempted.add(key);
+
+    const artistName = displayName(recordedBy, artistsMetadata);
+
+    let candidates: NormalizedTrack[];
+    try {
+      candidates = await client.searchSong(artistName, wanted, 5);
+    } catch (err) {
+      const message = (err as Error).message ?? String(err);
+      console.warn(`   ⚠️  Subject song lookup failed — ${artistName} — "${wanted}": ${message}`);
+      if ((err as Error).name === "ITunesBlockedError") {
+        console.warn("   ⚠️  iTunes is blocking this client — remaining lookups skipped.");
+        break;
+      }
+      continue;
+    }
+
+    // Both guards, or nothing. Whatever is chosen here is written into
+    // liner-notes.json and permalinked, so an unverified result is permanent —
+    // and a wrong song nobody asked for is worse than an honest fallback.
+    const hit = candidates.find(
+      (c) =>
+        c.previewUrl &&
+        titleMatches(c.name, wanted) &&
+        artistMatches(c.artistName, artistName)
+    );
+
+    if (hit) {
+      resolved[key] = hit;
+      console.log(`   ♪ "${hit.name}" — ${hit.artistName}`);
+    } else {
+      console.log(
+        `   ♪ No verified match for "${wanted}" by ${artistName} — ` +
+          `falling back to their best-known track`
+      );
+    }
+  }
+
+  return resolved;
 }
 
 // ── Slug generation ───────────────────────────────────────────────────────────
