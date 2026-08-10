@@ -10,6 +10,7 @@
  *   npm run enrich:tracks -- --dry-run        # Preview without writing
  *   npm run enrich:tracks -- --force          # Re-fetch every artist, ignoring the TTL
  *   npm run enrich:tracks -- --artist abc --force
+ *   npm run enrich:tracks -- --force --skip 40 --limit 40   # one chunk of a sweep
  *                                             # Re-fetch ONE artist
  *
  * --force exists for the artist-billing guard (#275): it only runs on fetch, so
@@ -287,6 +288,58 @@ const ARTIST_ID_OVERRIDES: Record<string, number> = {
   "Inner Circle": 100091,       // was returning Jacob Miller, their late singer, under his own billing
   "John Doe": 2354096,          // was returning Public Announcement; this is X's John Doe
 
+  // #275 full sweep, 2026-08-10. Every ID below was chosen by the archive owner
+  // against our own discography, not by genre or popularity — where two acts
+  // share a name, the one whose albums we already hold is the one who played
+  // here. A blank in the worksheet meant "could not verify", and those artists
+  // are deliberately left unpinned rather than guessed at: no previews is the
+  // correct outcome, a wrong band is not.
+  //
+  // Left unpinned as unverified: EarthGang, Rebuilder, Smoke & Mirrors Sound
+  // System, Torres.
+  "Against Me!": 6946251, // Against Me! (Alternative) — was "Jx.Zero"; Against Me! (1997)
+  "Dr Sick": 1230754055, // Dr. Sick (Hip-Hop/Rap) — was "Solo Sounds"; no discography held
+  "Drag The River": 42042457, // Drag the River (Rock) — was "Pere Ubu"; Live at the Starlight (2002)
+  "Fear": 45099030, // FEAR (Punk) — was "Current Joys"; The Record (1982)
+  "Hot Rod Lincoln": 280372295, // Hot Rod Lincoln (Rock) — was "Asleep At The Wheel"; The Boulevard (1996)
+  "James": 130451, // James (Rock) — was "Laufey"; Stutter (1986)
+  "Me Not You": 1177786368, // Me Not You (Alternative) — was "Pere Navarro & Kiko Navarro"; Already Gone (2019)
+  "Midnight Oil": 18747421, // Midnight Oil (Rock) — was "Elley Duhé & Whethan"; Midnight Oil (1978)
+  "Pennywise": 2820315, // Pennywise (Hard Rock) — was "Angerfist"; Pennywise (1991)
+  "Prophets of Rage": 1137215876, // Prophets of Rage (Hard Rock) — was "Public Enemy"; 2016-06-03: Hollywood Palladium, Los Angeles, CA, USA (2016)
+  "Richard Cheese & Lounge Against the Machine": 3572356, // Richard Cheese (Rock) — was "Richard Cheese"; no discography held
+  "Royal Blood": 809772445, // Royal Blood (Alternative) — was "RICHLIN"; Royal Blood (2014)
+  "Sleigh Bells": 370695831, // Sleigh Bells (Alternative) — was "Gene Autry"; Treats (2010)
+  "Snuff": 1896311816, // Snuff (Punk) — was "Slipknot"; SnuffSaidButGorBlimeyGuvStoneMeIfHeDidn’tThrowAWobblerChaChaChaChaChaChaChaChaChaYou’reGoingHomeInACosmicAmbience (1989)
+  "Squeeze": 93650, // Squeeze (Pop) — was "Fifth Harmony"; Squeeze (1978)
+  "Team Band": 318493222, // Team Band (Rock) — was "Chiquito Team Band"; Vodka Thieves (2009)
+  "The Alarm": 468568, // The Alarm (Rock) — was "Buckcherry"; Declaration (1984)
+  "The Bronx": 20918937, // The Bronx (Rock) — was "Kurtis Blow"; The Bronx (2003)
+  "The Reflex": 53055311, // Re-Flex (Dance) — was "Duran Duran"; Million Sellers (2013)
+  "The Untouchables": 1365524976, // The Untouchables (Reggae) — was "Ennio Morricone"; Live and Let Dance (1984)
+  "The Wonderstuff": 13129677, // The Wonder Stuff (Rock) — was "The Wonder Stuff"; no discography held
+  "Trombone Shorty & Orleans Avenue": 258779315, // Trombone Shorty (Jazz) — was "Trombone Shorty"; no discography held
+  "Vandals": 3563419, // The Vandals (Alternative) — was "CuBox"; no discography held
+  "When In Rome": 48883288, // When In Rome (Rock) — was "ROZZZQWEEN"; When in Rome (1988)
+  "Wire": 3184306, // Wire (Rock) — was "U2"; Pink Flag (1977)
+  "X": 1295432230, // X (Punk) — was "Nicky Jam & J Balvin"; Los Angeles (1980)
+
+  // ── Post-rename keys (#275) ────────────────────────────────────────────────
+  // The Google Sheet was corrected upstream on 2026-08-10, so `concerts.json`
+  // will carry the RIGHT spellings after the next data refresh. This table is
+  // keyed by the name as it appears there, so each of these five artists would
+  // silently stop matching the moment the refresh lands — and fall back to the
+  // name search that misresolved them in the first place.
+  //
+  // Both spellings are therefore pinned to the same ID: the old key keeps
+  // working until the refresh, the new key takes over after it. Drop the old
+  // keys once a refresh has run and `concerts.json` no longer contains them.
+  "Re-Flex": 53055311,          // was "The Reflex"
+  "The Wonder Stuff": 13129677, // was "The Wonderstuff"
+  "Richard Cheese": 3572356,    // was "Richard Cheese & Lounge Against the Machine"
+  "Trombone Shorty": 258779315, // was "Trombone Shorty & Orleans Avenue"
+  "The Vandals": 3563419,       // was "Vandals"
+
   // NOT pinned, deliberately: Kiev. All four iTunes candidates are hip-hop
   // acts; ours is the LA indie band that opened for Foals (Falling Bough
   // Wisdom Teeth, Willing Eyes). No correct answer exists to pin, so the
@@ -421,13 +474,21 @@ function forStorage(tracks: NormalizedTrack[]): Omit<NormalizedTrack, 'artistNam
  * Main enrichment function
  */
 export async function enrichTopTracks(
-  options: { dryRun?: boolean; force?: boolean; artist?: string } = {}
+  options: { dryRun?: boolean; force?: boolean; artist?: string; skip?: number; limit?: number } = {}
 ) {
   const artistFlagIndex = process.argv.indexOf('--artist')
+  const numFlag = (name: string): number | undefined => {
+    const i = process.argv.indexOf(name)
+    if (i < 0) return undefined
+    const n = Number(process.argv[i + 1])
+    return Number.isFinite(n) && n >= 0 ? n : undefined
+  }
   const {
     dryRun = process.argv.includes('--dry-run'),
     force = process.argv.includes('--force'),
-    artist = artistFlagIndex >= 0 ? process.argv[artistFlagIndex + 1] : undefined
+    artist = artistFlagIndex >= 0 ? process.argv[artistFlagIndex + 1] : undefined,
+    skip = numFlag('--skip'),
+    limit = numFlag('--limit')
   } = options
 
   console.log(`🎵 Enriching artist top tracks...${dryRun ? ' (DRY RUN)' : ''}${force ? ' (FORCE)' : ''}\n`)
@@ -446,9 +507,30 @@ export async function enrichTopTracks(
     }
   })
 
-  const artists = Array.from(uniqueArtists).sort()
+  const allArtists = Array.from(uniqueArtists).sort()
 
-  console.log(`Found ${artists.length} unique artists\n`)
+  // ── Chunking (#275) ────────────────────────────────────────────────────────
+  // A --force sweep cannot finish in one run. iTunes enforces a request BUDGET,
+  // not a rate: two sweeps died at the same artist count despite a 5x cadence
+  // difference, so slowing down buys nothing and only burns wall-clock. The
+  // working shape is a slice, a pause, then the next slice.
+  //
+  // The order is a stable alphabetical sort, so `--skip N --limit M` addresses
+  // the same artists on every run and a sweep can be resumed exactly where the
+  // previous chunk stopped.
+  const artists =
+    skip !== undefined || limit !== undefined
+      ? allArtists.slice(skip ?? 0, limit !== undefined ? (skip ?? 0) + limit : undefined)
+      : allArtists
+
+  if (artists.length !== allArtists.length) {
+    console.log(
+      `Found ${allArtists.length} unique artists — processing ${artists.length} ` +
+        `(${skip ?? 0}–${(skip ?? 0) + artists.length - 1} of ${allArtists.length})\n`
+    )
+  } else {
+    console.log(`Found ${artists.length} unique artists\n`)
+  }
 
   // Initialize clients. A full sweep is 257 back-to-back searches and iTunes
   // starts returning 429 partway through at the incremental cadence — measured,
@@ -584,10 +666,17 @@ export async function enrichTopTracks(
   // artists-metadata.json (#255): this writes the whole object back with no
   // delete path, so any key ever written survives forever.
   //
-  // Skipped under --artist, and after a block: those runs only visited some of
-  // the artists, so every record they never reached looks orphaned when it is
-  // simply untouched. Pruning on a partial run would delete real data.
-  const partialRun = Boolean(artist) || blockedAt !== null
+  // Skipped under --artist, under --skip/--limit, and after a block: those runs
+  // only visited some of the artists, so every record they never reached looks
+  // orphaned when it is simply untouched. Pruning on a partial run would delete
+  // real data.
+  //
+  // The chunk flags were added for #275 and initially missed here, which took
+  // the cache from 257 records to 38 in three runs before the count was
+  // noticed. Any future flag that narrows the artist list MUST be added to this
+  // predicate — that is the whole contract of this variable.
+  const partialRun =
+    Boolean(artist) || blockedAt !== null || artists.length !== allArtists.length
   const liveKeys = new Set(partialRun ? Object.keys(results) : artists.map(normalizeArtistName))
   const orphans = Object.keys(results).filter(key => !liveKeys.has(key))
   for (const key of orphans) {
