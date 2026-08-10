@@ -796,6 +796,41 @@ npm run enrich:tracks
 - Cache duration: 30 days
 - Rate limiting: 600ms between API requests
 
+**Which artist did we actually get? (#275)**
+
+A wrong-artist track is invisible by inspection: it is well-formed, has a working
+preview, clears the quality bar, and the stored record does not keep the artist
+it came from. So identity is established at fetch time, two different ways:
+
+| | how identity is settled | candidate pool |
+| --- | --- | --- |
+| **Pinned** (`ARTIST_ID_OVERRIDES`) | iTunes **artist ID** — a track is theirs or it is not | 25 |
+| **Unpinned** | **billing name**, folded, whole tokens only | 10 |
+
+A pin is checked by ID, never re-checked against our marquee spelling. Those
+disagree constantly and the pin is the more reliable answer: iTunes bills the
+pinned `The Reflex` as *Re-Flex*, `The Wonderstuff` as *The Wonder Stuff*. This
+does not weaken guest-credit filtering — it sharpens it, because a guest spot
+carries the **host's** artist ID (*"…(feat. Dr. Sick)"* is billed to Solo Sounds
+and drops on identity rather than on spelling).
+
+The deeper pool is **only** for pins, and the asymmetry is the point. A pin
+anchors identity, so more candidates can only add the artist's own records. An
+unpinned search has no anchor, and a deeper pool there fills the quota with
+records that merely *mention* the name — measured on EarthGang, 25 candidates
+yields five tracks billed "…& EARTHGANG" across **four different** iTunes
+artists.
+
+**Failing closed is not enough on its own.** The guard protects the next write;
+it does nothing about what is already on disk. A record written before the guard
+existed carries no `itunesArtistId`, cannot be vouched for, and survived every
+run that rejected it — which is how five artists shipped another act's music for
+weeks. Such a record is now **removed** when a run proves the artist misresolves.
+An empty response is a rate limit, not a verdict, and never triggers this.
+
+The intended end state for an artist we cannot identify is **no previews at
+all**. An artist with no record is normal and every consumer handles it.
+
 ---
 
 ### 8. Discography Enrichment (`enrich-discography.ts`)
