@@ -15,6 +15,10 @@
  * pin, so it carries no previews on purpose.
  *
  * Usage: npx tsx scripts/build-artist-pin-worksheet.ts
+ *
+ * Writes artist-pins-TODO.csv, which is gitignored: it is a transient working
+ * file, and the ANSWERS belong in ARTIST_ID_OVERRIDES rather than in a CSV that
+ * would rot next to the code it was used to write.
  */
 import { readFileSync, writeFileSync } from 'fs'
 import { resolve } from 'path'
