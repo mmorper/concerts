@@ -12598,5 +12598,55 @@
         "streamingUrl": "https://music.apple.com/us/album/all-along-the-watchtower/216040405?i=216040514&uo=4"
       }
     ]
+  },
+  "rebuilder": {
+    "name": "Rebuilder",
+    "source": "itunes",
+    "fetchedAt": "2026-08-10T19:45:33.028Z",
+    "resolvedVia": "artist-id",
+    "itunesArtistId": 671035943,
+    "itunesArtistName": "Rebuilder",
+    "tracks": [
+      {
+        "name": "Le Grand Fromage",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/b0/5e/fa/b05efa81-50d0-6e14-de29-49deeff4c37c/mzaf_4963818350059964995.plus.aac.p.m4a",
+        "durationMs": 157109,
+        "albumName": "Rock & Roll in America",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/a2/14/33/a21433bf-265e-19df-6dac-5cb339f005fb/artwork.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/le-grand-fromage/1529749736?i=1529749744&uo=4"
+      },
+      {
+        "name": "Mile or an Inch",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/10/fd/b9/10fdb9dd-6239-ec55-b96f-a06b0b64cd96/mzaf_17659404037419619183.plus.aac.p.m4a",
+        "durationMs": 225126,
+        "albumName": "Sounds from the Massachusetts Turnpike - EP",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/e7/36/11/e73611e7-32bf-b9c0-dd8f-107cca28ada4/750783002974.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/mile-or-an-inch/1278399869?i=1278399883&uo=4"
+      },
+      {
+        "name": "Get Up",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview128/v4/78/59/63/78596310-f41e-6942-b284-63901512667e/mzaf_6250472933122769222.plus.aac.p.m4a",
+        "durationMs": 242010,
+        "albumName": "Sounds from the Massachusetts Turnpike - EP",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/e7/36/11/e73611e7-32bf-b9c0-dd8f-107cca28ada4/750783002974.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/get-up/1278399869?i=1278399885&uo=4"
+      },
+      {
+        "name": "Another Round",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/8f/7b/06/8f7b0641-cd10-0ed4-2076-2430066fd10b/mzaf_17621061114410668625.plus.aac.p.m4a",
+        "durationMs": 245064,
+        "albumName": "Local Support",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/94/b5/f6/94b5f617-c4e2-8429-ae68-57b4c87fc39d/859773657634.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/another-round/1702214199?i=1702214533&uo=4"
+      },
+      {
+        "name": "Roadrunner (Live)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/26/c4/6a/26c46a86-ab27-a75e-8055-1f2ac1d241ee/mzaf_14845867893334997013.plus.aac.p.m4a",
+        "durationMs": 311700,
+        "albumName": "Live From 2021",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/e8/c4/b5/e8c4b54b-3cb5-cfba-a087-2cc16d3b7f81/artwork.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/roadrunner-live/1552863836?i=1552864222&uo=4"
+      }
+    ]
   }
 }

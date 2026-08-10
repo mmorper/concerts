@@ -295,8 +295,18 @@ const ARTIST_ID_OVERRIDES: Record<string, number> = {
   // are deliberately left unpinned rather than guessed at: no previews is the
   // correct outcome, a wrong band is not.
   //
-  // Left unpinned as unverified: EarthGang, Rebuilder, Smoke & Mirrors Sound
-  // System, Torres.
+  // Left unpinned as unverified: EarthGang, Smoke & Mirrors Sound System,
+  // Torres.
+  //
+  // Rebuilder was on that list and came off it (#275). The worksheet blank
+  // meant "could not verify", not "unverifiable" — and the album test above is
+  // exactly what settles it. iTunes artist 671035943 is billed "Rebuilder",
+  // genre Punk, and its records are *Rock & Roll in America*, *Local Support*
+  // and *Sounds from the Massachusetts Turnpike* — three titles we already hold
+  // in this artist's MusicBrainz discography. Corroborated by the booking: they
+  // opened for Streetlight Manifesto at The Wiltern. Matching a catalogue we
+  // already have is the standard the rest of this table was pinned to; matching
+  // a NAME is not, which is why the other three stay off.
   "Against Me!": 6946251, // Against Me! (Alternative) — was "Jx.Zero"; Against Me! (1997)
   "Dr Sick": 1230754055, // Dr. Sick (Hip-Hop/Rap) — was "Solo Sounds"; no discography held
   "Drag The River": 42042457, // Drag the River (Rock) — was "Pere Ubu"; Live at the Starlight (2002)
@@ -307,6 +317,7 @@ const ARTIST_ID_OVERRIDES: Record<string, number> = {
   "Midnight Oil": 18747421, // Midnight Oil (Rock) — was "Elley Duhé & Whethan"; Midnight Oil (1978)
   "Pennywise": 2820315, // Pennywise (Hard Rock) — was "Angerfist"; Pennywise (1991)
   "Prophets of Rage": 1137215876, // Prophets of Rage (Hard Rock) — was "Public Enemy"; 2016-06-03: Hollywood Palladium, Los Angeles, CA, USA (2016)
+  "Rebuilder": 671035943, // Rebuilder (Punk) — was "Carrollton"; Rock & Roll in America (2015)
   "Richard Cheese & Lounge Against the Machine": 3572356, // Richard Cheese (Rock) — was "Richard Cheese"; no discography held
   "Royal Blood": 809772445, // Royal Blood (Alternative) — was "RICHLIN"; Royal Blood (2014)
   "Sleigh Bells": 370695831, // Sleigh Bells (Alternative) — was "Gene Autry"; Treats (2010)
