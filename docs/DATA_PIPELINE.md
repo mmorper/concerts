@@ -917,7 +917,7 @@ See [docs/specs/future/artists-discography.md](specs/future/artists-discography.
 7. **Enrich discography** → MusicBrainz albums (optional)
 7.5. **Derive album eras** → `album-eras.json`, the discography × attendance join (local, no API calls)
 8. **Pre-fetch setlists** → setlist.fm cache (optional)
-8.5. **Resolve songs → albums** → `song-albums.json`, three tiers over the setlist cache (cached; a warm re-run makes **0 network calls**)
+8.5. **Resolve songs → albums** → `song-albums.json`, three tiers over the setlist cache. Backed by `data/cache/musicbrainz-tracks.json` on a **90-day TTL** (track listings only change when MusicBrainz is edited; same TTL as discography). A warm re-run makes **0 network calls** — if it starts fetching, something invalidated the cache. `npm run resolve:song-albums -- --force` ignores the TTL.
 9. **Aggregate genres timeline** → Genre statistics (always runs)
 10. **Generate facts** → Liner notes facts (always runs)
 11. **Update meta tags** → SEO and meta tags (always runs)
@@ -1373,7 +1373,7 @@ Google Maps Geocoding API allows 50 requests/second. The geocoding script enforc
 - `public/data/setlists-cache.json` - setlist.fm responses, keyed by concert
 - `public/data/album-eras.json` - discography × attendance join, 238 artists (v5.4+)
 - `public/data/song-albums.json` - song → earliest studio album, 1,716 pairs (v6.0+)
-- `data/cache/musicbrainz-tracks.json` - release-group track listings backing Tier 1 resolution (v6.0+)
+- `data/cache/musicbrainz-tracks.json` - release-group track listings backing Tier 1 resolution, 90-day TTL (v6.0+)
 
 ### Temporary (Not Committed)
 - `public/data/concerts.json.backup` - Created manually for diff comparison
