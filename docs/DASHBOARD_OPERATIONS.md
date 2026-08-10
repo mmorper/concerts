@@ -84,17 +84,23 @@ you can test/debug Ask without burning budget. Managed live from the tab (no red
 
 Change both together, then **redeploy** the affected worker(s) — `[vars]` are baked at deploy time.
 
-## Deploys (workers do NOT auto-deploy on merge)
+## Deploys (workers DO auto-deploy on merge)
 
-After merging to `main`, deploy each changed worker manually from `main`:
-
-```bash
-cd workers/ask-chat          && npx wrangler deploy   # live admin API + ask_turns ledger
-cd workers/dashboard-refresh && npx wrangler deploy   # the daily snapshot builder
-cd workers/mcp-server        && npx wrangler deploy   # external MCP collector
-```
+Every Worker ships from CI on merge to `main`, each gated on its own tests and filtered to its
+own directory — `ask-chat`, `dashboard-refresh`, `mcp-server` (#261) and `meta-injector` (#262).
+Nothing here needs a manual `wrangler deploy` any more.
 
 The `/dashboard` **frontend** ships automatically via Cloudflare Pages on merge to `main`.
+
+**A deploy is not a refresh.** The dashboard renders a KV snapshot, so a change to how a metric is
+computed does not appear until the next 06:00 UTC cron — or a **manual refresh** (above), which is
+what you want after merging a coverage change.
+
+Manual deploy is still the escape hatch when CI cannot run:
+
+```bash
+cd workers/dashboard-refresh && npx wrangler deploy
+```
 
 > If `wrangler` fails with `Authentication error [code: 10000]`, your shell has a stale
 > `CLOUDFLARE_API_TOKEN` exported (from the root `.env`) overriding your `wrangler login`.
