@@ -9,14 +9,23 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import { keepTracksBilledTo } from '../../scripts/enrich-top-tracks.ts'
+import {
+  keepTracksBilledTo,
+  keepTracksByArtistId,
+  lacksArtistProvenance,
+} from '../../scripts/enrich-top-tracks.ts'
 import type { NormalizedTrack } from '../../scripts/utils/itunes-client.ts'
 
 /** A track carrying only the fields the filter reads. */
-const track = (name: string, artistName: string, albumName = 'Album'): NormalizedTrack => ({
+const track = (
+  name: string,
+  artistName: string,
+  albumName = 'Album',
+  artistId = 1
+): NormalizedTrack => ({
   name,
   artistName,
-  artistId: 1,
+  artistId,
   albumName,
   previewUrl: 'https://example.test/preview.m4a',
   durationMs: 180_000,
@@ -122,5 +131,74 @@ describe('keepTracksBilledTo', () => {
     expect(kept).toHaveLength(0)
     expect(dropped).toHaveLength(0)
     expect(sawInstead).toBeNull()
+  })
+})
+
+describe('keepTracksByArtistId', () => {
+  it('keeps the act’s own tracks when iTunes bills them under another spelling', () => {
+    // The bug this replaces: "The Reflex" is pinned to 53055311 *because* that
+    // is Re-Flex, and the name check then dropped all ten of their tracks for
+    // not being spelled "The Reflex". The pin had already answered the
+    // question the name check was re-asking.
+    const { kept, dropped } = keepTracksByArtistId(53055311, [
+      track('The Politics of Dancing', 'Re-Flex', 'The Politics of Dancing', 53055311),
+      track('The Politics of Dancing (12" Mix)', 'Re-Flex', 'Million Sellers', 53055311),
+    ])
+
+    expect(kept).toHaveLength(2)
+    expect(dropped).toHaveLength(0)
+  })
+
+  it('still drops a guest credit — on identity, not on spelling', () => {
+    // Dr Sick's real lookup. Six of ten were "…(feat. Dr. Sick)" billed to
+    // Solo Sounds, whose own artist ID rides along and gives them away. A name
+    // check cannot see this: "Dr. Sick" IS credited in that billing.
+    const { kept, dropped, sawInstead } = keepTracksByArtistId(1230754055, [
+      track('Smells Like Teen Spirit', 'Dr. Sick', 'Nirvana Nevermind: Solo Violin', 1230754055),
+      track('Back in Black (feat. Dr. Sick)', 'Solo Sounds', 'AC/DC Back in Black', 1280208739),
+      track('Come as You Are', 'Dr. Sick', 'Nirvana Nevermind: Solo Violin', 1230754055),
+    ])
+
+    expect(kept).toHaveLength(2)
+    expect(dropped).toHaveLength(1)
+    expect(sawInstead).toBe('Solo Sounds')
+  })
+
+  it('drops a side project that shares the act’s name', () => {
+    // "Dizzy" is billed to Vic Reeves & The Wonder Stuff and carries its own
+    // artist ID — a different act, and the name check keeps it.
+    const { kept, dropped } = keepTracksByArtistId(13129677, [
+      track('The Size of a Cow', 'The Wonder Stuff', 'Never Loved Elvis', 13129677),
+      track('Dizzy', 'Vic Reeves & The Wonder Stuff', 'Dizzy', 14974363),
+    ])
+
+    expect(kept).toHaveLength(1)
+    expect(dropped[0].name).toBe('Dizzy')
+  })
+
+  it('returns nothing and blames nobody for an empty response', () => {
+    const { kept, dropped, sawInstead } = keepTracksByArtistId(1, [])
+
+    expect(kept).toHaveLength(0)
+    expect(dropped).toHaveLength(0)
+    expect(sawInstead).toBeNull()
+  })
+})
+
+describe('lacksArtistProvenance', () => {
+  it('flags a record written before the billing guard', () => {
+    // Exactly the shape on disk for Kiev, Torres and nine others: a name, a
+    // source, a timestamp, and nothing that says whose music it actually is.
+    expect(lacksArtistProvenance({ name: 'Kiev', source: 'itunes', fetchedAt: '2026-07-27T10:43:51.411Z' } as never)).toBe(true)
+  })
+
+  it('trusts a record that names the artist it resolved to', () => {
+    expect(lacksArtistProvenance({ itunesArtistId: 148377 })).toBe(false)
+  })
+
+  it('says nothing about an artist with no record at all', () => {
+    // There is nothing to evict, and treating absence as a defect would make
+    // every new artist look like one.
+    expect(lacksArtistProvenance(undefined)).toBe(false)
   })
 })

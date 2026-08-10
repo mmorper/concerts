@@ -359,6 +359,30 @@ type ResolvedVia = 'artist-id' | 'alias' | 'search'
 const CANDIDATE_MULTIPLIER = 2
 
 /**
+ * The same over-fetch for a PINNED artist, where it can safely go deeper (#275).
+ *
+ * An artist whose guest credits outrank their own catalogue never reaches five
+ * of their own in a pool of 10 — which is the whole of what was wrong with the
+ * two stragglers this issue had left:
+ *
+ *   Dr Sick         10 candidates -> 4 own · 25 -> 15 own
+ *   Drag The River  10 candidates -> 4 own · 25 ->  8 own
+ *
+ * Deeper only for a pin, and that asymmetry is the point. A pin settles
+ * identity by ID, so extra candidates can only ADD the artist's own records.
+ * An unpinned search has no such anchor: there, a deeper pool just offers more
+ * billings that happen to MENTION the name, and the quota fills with other
+ * people's records. Measured on EarthGang — at 25 candidates it finds five
+ * tracks billed "…& EARTHGANG" spread across FOUR different iTunes artists
+ * (Tiana Major9, Louis The Child, Rich Brian…), and stores that as EarthGang's
+ * top tracks. At 10 it correctly finds nothing.
+ *
+ * The limit is a query parameter, so depth costs the same ONE request —
+ * request count, not response size, is what the iTunes budget meters.
+ */
+const PINNED_CANDIDATE_MULTIPLIER = 5
+
+/**
  * Separators that join several credited artists into one billing string.
  *
  * Deliberately NOT a bare "and": plenty of single acts carry it inside their
@@ -447,6 +471,67 @@ export function keepTracksBilledTo(
   const sawInstead = [...tally.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null
 
   return { kept, dropped, sawInstead }
+}
+
+/**
+ * Keep only the tracks the PINNED artist actually recorded, by iTunes artist ID.
+ *
+ * A pin already answers "which act is ours" exactly — that is the entire point
+ * of choosing an ID off the worksheet. Re-checking the answer against our
+ * marquee spelling then throws away correct results whenever iTunes bills the
+ * act differently, which is often, and was rejecting four pinned artists whose
+ * pins were right all along (#275):
+ *
+ *   "The Reflex"                       -> iTunes bills them "Re-Flex"
+ *   "The Wonderstuff"                  -> "The Wonder Stuff"
+ *   "Trombone Shorty & Orleans Avenue" -> "Trombone Shorty"
+ *   "Richard Cheese & Lounge Against the Machine" -> "Richard Cheese"
+ *
+ * This does NOT weaken the guest-credit filter that `keepTracksBilledTo`
+ * exists for — it strengthens it, because a guest spot carries the HOST's
+ * artist ID and is dropped on identity rather than on spelling:
+ *
+ *   "You Shook Me All Night Long (feat. Dr. Sick)"  -> id 1280208739, Solo Sounds
+ *   "Big Black Bag (feat. Drag the River)"          -> id 476228, Michelle Malone
+ *   "Dizzy" — Vic Reeves & The Wonder Stuff         -> id 14974363
+ *
+ * Names remain the only tool for UNPINNED artists, where no ID has been
+ * established and a loose matcher would bridge acts that are genuinely
+ * different — see the note on SEARCH_ALIASES.
+ */
+export function keepTracksByArtistId(
+  artistId: number,
+  candidates: NormalizedTrack[]
+): { kept: NormalizedTrack[]; dropped: NormalizedTrack[]; sawInstead: string | null } {
+  const kept: NormalizedTrack[] = []
+  const dropped: NormalizedTrack[] = []
+
+  for (const track of candidates) {
+    ;(track.artistId === artistId ? kept : dropped).push(track)
+  }
+
+  const tally = new Map<string, number>()
+  for (const t of dropped) tally.set(t.artistName, (tally.get(t.artistName) ?? 0) + 1)
+  const sawInstead = [...tally.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null
+
+  return { kept, dropped, sawInstead }
+}
+
+/**
+ * Can this stored record vouch for whose tracks it holds?
+ *
+ * `itunesArtistId` has only been written since the billing guard landed
+ * (#275), so its absence dates a record to before anything checked the artist
+ * — which is exactly the population that can be holding another act's music.
+ * A record that carries one was verified when it was written and is trusted.
+ *
+ * The absence is not merely "old": it is the only evidence available, because
+ * the tracks themselves are stored with their artist stripped (see
+ * NormalizedTrack), so a wrong band on disk is indistinguishable from a right
+ * one by inspection.
+ */
+export function lacksArtistProvenance(stored?: { itunesArtistId?: number }): boolean {
+  return stored !== undefined && stored.itunesArtistId === undefined
 }
 
 /**
@@ -549,6 +634,8 @@ export async function enrichTopTracks(
   let skipped = 0
   let failed = 0
   const misresolved: Array<{ artist: string; got: string }> = []
+  /** Pre-guard records removed because this run proved them wrong (#275). */
+  const evicted: Array<{ artist: string; was: string }> = []
   let blockedAt: string | null = null
 
   for (const artistName of artists) {
@@ -577,16 +664,24 @@ export async function enrichTopTracks(
       const searchName = SEARCH_ALIASES[artistName] ?? artistName
 
       console.log(`  → Trying iTunes${artistIdOverride ? ` (by artist ID ${artistIdOverride})` : searchName !== artistName ? ` (alias: "${searchName}")` : ''}...`)
-      const candidateLimit = AUDIO_PREVIEW_CONFIG.trackLimit * CANDIDATE_MULTIPLIER
+      const candidateLimit =
+        AUDIO_PREVIEW_CONFIG.trackLimit *
+        (artistIdOverride ? PINNED_CANDIDATE_MULTIPLIER : CANDIDATE_MULTIPLIER)
       const candidates = artistIdOverride
         ? await itunes.getTopTracksByArtistId(artistIdOverride, candidateLimit)
         : await itunes.getTopTracks(searchName, candidateLimit)
 
+      // A pinned artist is verified by the ID they were pinned to; everyone
+      // else by billing name. Checking a pin against our marquee spelling is
+      // what rejected four artists whose pins were correct (#275).
+      //
       // Compare against the SEARCH name plus every known billing of the act.
       // Aliases exist precisely to redirect, so "Brian Setzer '68 Comeback
       // Special" resolving to "Brian Setzer" is the alias working, not drift.
       const acceptedNames = [searchName, ...(aliasIndex.get(normalized) ?? [])]
-      const { kept, dropped, sawInstead } = keepTracksBilledTo(acceptedNames, candidates)
+      const { kept, dropped, sawInstead } = artistIdOverride
+        ? keepTracksByArtistId(artistIdOverride, candidates)
+        : keepTracksBilledTo(acceptedNames, candidates)
       if (dropped.length > 0) {
         console.log(`  🚫 Dropped ${dropped.length} track(s) billed to someone else (e.g. "${sawInstead}")`)
       }
@@ -602,6 +697,28 @@ export async function enrichTopTracks(
           (sawInstead ? ` — iTunes mostly returned "${sawInstead}".` : '.') +
           (artistIdOverride ? '' : ' Pin an ARTIST_ID_OVERRIDE to fix.')
         )
+
+        // Failing closed protects the NEXT write. It did nothing about the
+        // record already on disk, so a wrong band written before this guard
+        // existed survived every run that has rejected it since — Kiev shipped
+        // five songs merely TITLED "Kiev", by five unrelated acts, for weeks
+        // after being "left unpinned" precisely to avoid that (#275).
+        //
+        // Evicted only when the record predates the guard, i.e. carries no
+        // `itunesArtistId` to vouch for it. A provenanced record was verified
+        // when it was written and is left alone. And only on this branch:
+        // an empty response below is a rate limit, not a verdict, and must
+        // never be read as evidence against stored data.
+        const stored = results[normalized]
+        if (lacksArtistProvenance(stored)) {
+          delete results[normalized]
+          evicted.push({ artist: artistName, was: sawInstead ?? '(unverifiable)' })
+          console.log(
+            `  🗑️  Removed the stored record — written before the billing guard, ` +
+            `and this run proves the name resolves to someone else. No previews beats a wrong band.`
+          )
+        }
+
         misresolved.push({ artist: artistName, got: sawInstead ?? '(too few tracks)' })
         failed++
         continue
@@ -709,9 +826,16 @@ export async function enrichTopTracks(
     console.log(`   Fix by pinning an ARTIST_ID_OVERRIDE. Rejected, not stored — see #275.`)
   }
 
+  if (evicted.length > 0) {
+    console.log(`\n🗑️  ${evicted.length} pre-guard record(s) removed — they were the wrong act:`)
+    for (const e of evicted) console.log(`   − ${e.artist} → was really "${e.was}"`)
+    console.log(`   These artists now carry NO previews, which is the intended outcome.`)
+  }
+
   console.log(`\n📊 Enrichment Summary:`)
   console.log(`   ✅ Enriched: ${enriched}`)
   console.log(`   🚫 Wrong artist (rejected): ${misresolved.length}`)
+  console.log(`   🗑️  Wrong artist (evicted from cache): ${evicted.length}`)
   console.log(`   🧹 Pruned (orphaned): ${orphans.length}`)
   console.log(`   ⏭️  Skipped (cached): ${skipped}`)
   console.log(`   ❌ Failed: ${failed}`)
