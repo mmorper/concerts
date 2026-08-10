@@ -324,6 +324,22 @@ const ARTIST_ID_OVERRIDES: Record<string, number> = {
   "Wire": 3184306, // Wire (Rock) — was "U2"; Pink Flag (1977)
   "X": 1295432230, // X (Punk) — was "Nicky Jam & J Balvin"; Los Angeles (1980)
 
+  // ── Post-rename keys (#275) ────────────────────────────────────────────────
+  // The Google Sheet was corrected upstream on 2026-08-10, so `concerts.json`
+  // will carry the RIGHT spellings after the next data refresh. This table is
+  // keyed by the name as it appears there, so each of these five artists would
+  // silently stop matching the moment the refresh lands — and fall back to the
+  // name search that misresolved them in the first place.
+  //
+  // Both spellings are therefore pinned to the same ID: the old key keeps
+  // working until the refresh, the new key takes over after it. Drop the old
+  // keys once a refresh has run and `concerts.json` no longer contains them.
+  "Re-Flex": 53055311,          // was "The Reflex"
+  "The Wonder Stuff": 13129677, // was "The Wonderstuff"
+  "Richard Cheese": 3572356,    // was "Richard Cheese & Lounge Against the Machine"
+  "Trombone Shorty": 258779315, // was "Trombone Shorty & Orleans Avenue"
+  "The Vandals": 3563419,       // was "Vandals"
+
   // NOT pinned, deliberately: Kiev. All four iTunes candidates are hip-hop
   // acts; ours is the LA indie band that opened for Foals (Falling Bough
   // Wisdom Teeth, Willing Eyes). No correct answer exists to pin, so the
