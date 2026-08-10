@@ -18,6 +18,7 @@ import { join } from 'path'
 import { analyze } from '../../scripts/liner-notes/analyze'
 import { buildPosts } from '../../scripts/liner-notes/curate'
 import { generateUpTo } from '../../scripts/liner-notes/pipeline'
+import { foldSongTitle } from '../../scripts/utils/song-title'
 import type { CurateOptions } from '../../scripts/liner-notes/curate'
 import type { ScoredFinding } from '../../scripts/liner-notes/types'
 import type { LinerNotesData, LinerNotesPost } from '../../src/types/liner-notes'
@@ -60,6 +61,30 @@ describe('published feed integrity', () => {
       placeheld.map((p) => p.slug),
       'The image chain should fall through to album art or an artist photo ' +
         'rather than short-circuiting on a stored placeholder (#235).'
+    ).toEqual([])
+  })
+
+  it('a post named after a song plays that song, or admits it is not (#299)', () => {
+    // A `full-circle` headline opens with the song in quotes:
+    //   "Notorious": Nile Rodgers and Duran Duran, 39 Years Apart
+    //   "Welcome to the Terrordome": Twice in One Night
+    // So the feed itself can be checked, which is where the bug was visible
+    // and where the unit tests could not see it. Playing a different song is
+    // only acceptable when the post SAYS it is a stand-in.
+    const wrong = feed.posts
+      .filter((p) => p.detector === 'full-circle' && p.audio)
+      .map((p) => ({ post: p, song: /^"([^"]+)"/.exec(p.headline)?.[1] }))
+      .filter(({ post, song }) => {
+        if (!song) return false
+        if (post.audio!.role === 'best-known') return false
+        return foldSongTitle(post.audio!.trackName) !== foldSongTitle(song)
+      })
+      .map(({ post, song }) => `${post.slug}: names "${song}", plays "${post.audio!.trackName}"`)
+
+    expect(
+      wrong,
+      'The post this bug was filed about was headlined "Notorious" and played ' +
+        'Get Lucky. Either resolve the song, or label the fallback.'
     ).toEqual([])
   })
 })

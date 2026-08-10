@@ -16,13 +16,14 @@
         "ref": "nile-rodgers"
       },
       "audio": {
-        "trackName": "Get Lucky",
-        "artistName": "Nile Rodgers",
-        "albumName": "Random Access Memories",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/d4/d3/1e/d4d31eb4-7405-b806-8346-3c52ad5b4cf4/mzaf_8095545455942962509.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/43/5f/e8435ffa-b6b9-b171-40ab-4ff3959ab661/886443919266.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/get-lucky/617154241?i=617154366&uo=4",
-        "source": "itunes"
+        "trackName": "Notorious",
+        "artistName": "Duran Duran",
+        "albumName": "Notorious (Deluxe Edition)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/e9/1d/ce/e91dce3b-8066-5c58-f15f-ba2f30f583ec/mzaf_11055301800655526648.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features114/v4/49/26/42/492642df-7519-ce37-15bc-d029ff0af1a1/dj.wjnirksf.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/notorious/693606394?i=693606402&uo=4",
+        "source": "itunes",
+        "role": "subject"
       },
       "artists": [
         "nile-rodgers",
