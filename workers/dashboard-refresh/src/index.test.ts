@@ -427,4 +427,88 @@ describe("computeArchiveHealth", () => {
     expect(h.coverageByArtist["the-cure"]).toBe(25);
     expect(h.coverageByArtist["some-opener"]).toBeUndefined(); // openers aren't clickable in GA
   });
+
+  // The fixture above deliberately has NO song-albums / album-eras keys, which
+  // is also the real degradation path: a fetch that 404s or a half-written file.
+  it("reads 0/0 for attribution when song-albums.json is absent, rather than throwing", () => {
+    expect(byStage["Song → album"]).toMatchObject({ covered: 0, total: 0, pct: 0 });
+    expect(byStage["Song → album"].note).toBe(
+      "unique setlist pairs · top-tracks 0 · musicbrainz 0 · itunes 0",
+    );
+  });
+});
+
+describe("computeArchiveHealth — song → album attribution (#289)", () => {
+  // Minimum viable archive; only the attribution inputs vary below.
+  const base = {
+    concerts: { metadata: { lastUpdated: "2026-08-01T00:00:00.000Z" }, concerts: [] },
+    "artists-metadata": {},
+    "artists-top-tracks": {},
+    "venues-metadata": {},
+    "setlists-cache": { generatedAt: "2026-08-02T00:00:00.000Z", entries: [] },
+    discography: {},
+    "liner-notes": {
+      generatedAt: "2026-08-03T00:00:00.000Z",
+      metadata: { totalPosts: 1, totalGenerated: 2, lastPipelineRun: "2026-08-03T01:00:00.000Z" },
+    },
+  };
+
+  const withAttribution = (extra: Record<string, unknown>) =>
+    computeArchiveHealth({ ...base, ...extra } as Parameters<typeof computeArchiveHealth>[0]);
+
+  it("reports the resolver's own rate, and names each tier by its source", () => {
+    const h = withAttribution({
+      "song-albums": {
+        generatedAt: "2026-08-10T08:30:23.618Z",
+        stats: { uniquePairs: 1912, attributed: 1716, byTier: { "0": 253, "1": 1428, "2": 35 } },
+      },
+    });
+    const stage = h.stages.find((s) => s.stage === "Song → album")!;
+
+    expect(stage).toMatchObject({ covered: 1716, total: 1912, pct: 90 });
+    // Named by source, not tier number: a collapse in musicbrainz is the
+    // signal that the track-listing cache has gone stale.
+    expect(stage.note).toBe("unique setlist pairs · top-tracks 253 · musicbrainz 1428 · itunes 35");
+  });
+
+  it("sits between Discography and Liner notes", () => {
+    // It reads the record and feeds the posts, so it belongs between them.
+    const names = withAttribution({}).stages.map((s) => s.stage);
+    expect(names.slice(-3)).toEqual(["Discography", "Song → album", "Liner notes"]);
+  });
+
+  it("moves lastBuildAt when the resolver runs", () => {
+    // The bug: re-running `resolve:song-albums` left the indicator untouched,
+    // because only concerts / setlists / liner-notes were consulted.
+    const before = withAttribution({}).lastBuildAt;
+    const after = withAttribution({
+      "song-albums": { generatedAt: "2026-08-09T09:00:00.000Z", stats: {} },
+    }).lastBuildAt;
+
+    expect(before).toBe("2026-08-03T01:00:00.000Z");
+    expect(after).toBe("2026-08-09T09:00:00.000Z");
+  });
+
+  it("moves lastBuildAt when album-eras is regenerated", () => {
+    const h = withAttribution({ "album-eras": { generatedAt: "2026-08-09T10:00:00.000Z" } });
+    expect(h.lastBuildAt).toBe("2026-08-09T10:00:00.000Z");
+  });
+
+  it("does not let a stale attribution run pull lastBuildAt backwards", () => {
+    const h = withAttribution({
+      "song-albums": { generatedAt: "2020-01-01T00:00:00.000Z", stats: {} },
+      "album-eras": { generatedAt: "2020-01-01T00:00:00.000Z" },
+    });
+    expect(h.lastBuildAt).toBe("2026-08-03T01:00:00.000Z");
+  });
+
+  it("survives a stats block with no tier breakdown", () => {
+    const h = withAttribution({
+      "song-albums": { generatedAt: "2026-08-09T09:00:00.000Z", stats: { uniquePairs: 10, attributed: 9 } },
+    });
+    const stage = h.stages.find((s) => s.stage === "Song → album")!;
+
+    expect(stage).toMatchObject({ covered: 9, total: 10, pct: 90 });
+    expect(stage.note).toBe("unique setlist pairs · top-tracks 0 · musicbrainz 0 · itunes 0");
+  });
 });

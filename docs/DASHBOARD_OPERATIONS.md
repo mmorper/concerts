@@ -54,6 +54,13 @@ shapes are doc-verified, not always live-tested). The fix is usually a one-line 
 `workers/dashboard-refresh/src/index.ts`, then redeploy + manual refresh. A dead source never
 blanks the page.
 
+`archiveHealth` is the exception to "one source, one failure": it fetches **nine** files from
+`public/data/` and any one of them 404-ing fails the whole section. So an `archiveHealth: error`
+right after a data change usually means a file stopped being published, not that a formula broke —
+check the `DATA_FILES` list in `index.ts` against what `public/data/` actually ships. Coverage
+formulas themselves degrade quietly instead: a file that parses but is missing the block a stage
+reads shows `0 / 0`, never an error.
+
 ## Admin-IP allowlist (Cost & Control tab)
 
 Allowlisted IPs **bypass the public rate limits and the daily spend cap** on `/api/ask/chat`, so
