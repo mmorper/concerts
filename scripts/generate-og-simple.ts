@@ -37,6 +37,8 @@ interface OGStats {
   scenes: number
   artists: number
   venues: number
+  /** Non-tape song performances across every setlist we hold. */
+  songs: number
 }
 
 function loadCachedStats(): OGStats | null {
@@ -58,7 +60,8 @@ function statsMatch(a: OGStats, b: OGStats): boolean {
   return a.concerts === b.concerts &&
          a.scenes === b.scenes &&
          a.artists === b.artists &&
-         a.venues === b.venues
+         a.venues === b.venues &&
+         a.songs === b.songs
 }
 
 /**
@@ -108,9 +111,26 @@ async function main() {
   const venueSet = new Set(concertsData.concerts.map((c: any) => c.venue))
   const venues = venueSet.size
 
-  const stats: OGStats = { concerts, scenes, artists, venues }
+  // Songs actually watched being played. Tape is walk-on music, not a
+  // performance, and is excluded here exactly as it is everywhere else.
+  let songs = 0
+  try {
+    const setlistPath = path.join(__dirname, '..', 'public', 'data', 'setlists-cache.json')
+    const cache = JSON.parse(fs.readFileSync(setlistPath, 'utf-8'))
+    for (const entry of Object.values<any>(cache.entries ?? {})) {
+      for (const set of entry?.setlist?.sets?.set ?? []) {
+        for (const song of set?.song ?? []) {
+          if (song?.name && !song.tape) songs++
+        }
+      }
+    }
+  } catch {
+    // No setlist cache — the tile is dropped rather than rendered as zero.
+  }
 
-  console.log(`Current stats: ${stats.concerts} shows, ${stats.artists} artists, ${stats.venues} venues, ${stats.scenes} scenes`)
+  const stats: OGStats = { concerts, scenes, artists, venues, songs }
+
+  console.log(`Current stats: ${stats.concerts} shows, ${stats.artists} artists, ${stats.venues} venues, ${stats.songs} songs, ${stats.scenes} scenes`)
 
   // Check if stats have changed
   const cachedStats = loadCachedStats()
@@ -198,17 +218,58 @@ async function main() {
   await browser.close()
   console.log('✓ Screenshot captured')
 
-  // Calculate decades dynamically
+  // ── Stat row ───────────────────────────────────────────────────────────────
+  // Was a single 22px run-on sentence ("4+ decades. 184 shows. 257 artists…").
+  // Social cards are read at roughly 500px wide in a feed, where a long thin
+  // line is the first thing to become illegible; a large numeral survives the
+  // downscale. Tiles also give hierarchy for free — number is the hero, label
+  // is support.
+  //
+  // No scrim: the card's established language is heavy multi-layer text shadows
+  // over the artwork, and a dark band fought that. Labels carry themselves at
+  // 17px/600 with a three-layer halo instead.
+  //
+  // Every tile is EXPERIENTIAL: something the archive owner did. `scenes` is an
+  // app mechanic and `albums` is MusicBrainz's catalogue rather than his
+  // listening, so neither belongs on the card. Both remain in og-stats.json for
+  // the meta tags — this changes what the image renders, not what we store.
+  //
+  // Counts are exact, never "2,700+". `validate-docs.ts` rejects that style of
+  // hedge on purpose: "an approximate number is one nobody feels obliged to
+  // correct". These are derived on every build, so they cannot go stale.
   const currentYear = new Date().getFullYear()
   const startYear = 1984
-  const decades = Math.ceil((currentYear - startYear) / 10)
+  const years = currentYear - startYear
+
+  const fmt = (n: number) => n.toLocaleString('en-US')
+  const tiles: Array<{ value: string; label: string }> = [
+    { value: fmt(stats.concerts), label: 'SHOWS' },
+    { value: fmt(stats.artists), label: 'ARTISTS' },
+    { value: fmt(stats.venues), label: 'VENUES' },
+    ...(stats.songs > 0 ? [{ value: fmt(stats.songs), label: 'SONGS' }] : []),
+    { value: fmt(years), label: 'YEARS' },
+  ]
+
+  // Centred row, evenly spaced. Width adapts so dropping a tile still centres.
+  const TILE_WIDTH = 216
+  const rowWidth = tiles.length * TILE_WIDTH
+  const rowLeft = (OUTPUT_WIDTH - rowWidth) / 2
+  const centreOf = (i: number) => rowLeft + i * TILE_WIDTH + TILE_WIDTH / 2
+
+  const statTiles = tiles
+    .map(
+      (t, i) => `
+      <text x="${centreOf(i)}" y="372" text-anchor="middle" class="stat-value">${t.value}</text>
+      <text x="${centreOf(i)}" y="401" text-anchor="middle" class="stat-label">${t.label}</text>`
+    )
+    .join('')
 
   // Create text overlay
   const textOverlay = `
     <svg width="${OUTPUT_WIDTH}" height="${OUTPUT_HEIGHT}">
       <defs>
         <style>
-          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&amp;family=Source+Sans+3:wght@400;500;600&amp;display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap');
           .title {
             font-family: 'Playfair Display', serif;
             font-size: 56px;
@@ -217,20 +278,27 @@ async function main() {
             letter-spacing: -0.02em;
             filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8)) drop-shadow(0 0 24px rgba(0,0,0,0.6));
           }
-          .subtitle {
+          .stat-value {
             font-family: 'Source Sans 3', sans-serif;
-            font-size: 22px;
-            font-weight: 400;
-            fill: rgba(255,255,255,0.95);
-            letter-spacing: 0;
-            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.9)) drop-shadow(0 0 16px rgba(0,0,0,0.7));
+            font-size: 44px;
+            font-weight: 600;
+            fill: white;
+            letter-spacing: -0.01em;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.95)) drop-shadow(0 0 22px rgba(0,0,0,0.85)) drop-shadow(0 0 36px rgba(0,0,0,0.6));
+          }
+          .stat-label {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            fill: white;
+            letter-spacing: 0.16em;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.95)) drop-shadow(0 0 16px rgba(0,0,0,0.85)) drop-shadow(0 0 28px rgba(0,0,0,0.6));
           }
         </style>
       </defs>
 
-      <!-- Vertically centered text (630/2 = 315, adjusted for text baseline) -->
       <text x="600" y="285" text-anchor="middle" class="title">Morperhaus Concert Archives</text>
-      <text x="600" y="325" text-anchor="middle" class="subtitle">${decades}+ decades. ${stats.concerts} shows. ${stats.artists} artists. ${stats.venues} venues. ${stats.scenes} interactive stories.</text>
+      ${statTiles}
     </svg>
   `
 
@@ -264,7 +332,7 @@ async function main() {
 
   console.log(`✓ OG image created: ${OUTPUT_PATH}`)
   console.log(`  Dimensions: ${OUTPUT_WIDTH}x${OUTPUT_HEIGHT}px`)
-  console.log(`  Subtitle: "${decades}+ decades. ${stats.concerts} shows. ${stats.artists} artists. ${stats.venues} venues. ${stats.scenes} interactive stories."`)
+  console.log(`  Stats row: ${tiles.map((t) => `${t.value} ${t.label}`).join(' · ')}`)
 }
 
 main().catch(console.error)
