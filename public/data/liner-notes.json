@@ -1,7 +1,85 @@
 {
-  "generatedAt": "2026-08-03T11:28:23.447Z",
-  "dataHash": "851e4f9b",
+  "generatedAt": "2026-08-10T09:25:37.420Z",
+  "dataHash": "e85399be",
   "posts": [
+    {
+      "id": "full-circle-notorious-nile-rodgers-duran-duran",
+      "slug": "notorious-nile-rodgers-and-duran-duran-39-years-apart",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "\"Notorious\": Nile Rodgers and Duran Duran, 39 Years Apart",
+      "prose": "\"Notorious\" is a song with two authors in a sense — Duran Duran wrote it, but Nile Rodgers produced it, and his fingerprints are all over that bassline. I heard Duran Duran play it at Irvine Meadows in July 1987, and then 39 years later I watched Rodgers claim it fully at the Pacific Amphitheatre, playing it as his own with complete justification. Two different Southern California venues, two different summers, the same song landing with the same authority both times. I didn't plan that symmetry — it just accumulated in my ticket stubs, waiting for me to notice.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qsqsqq1394998284.jpg",
+        "alt": "Nile Rodgers",
+        "source": "artist",
+        "ref": "nile-rodgers"
+      },
+      "audio": {
+        "trackName": "Get Lucky",
+        "artistName": "Nile Rodgers",
+        "albumName": "Random Access Memories",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/d4/d3/1e/d4d31eb4-7405-b806-8346-3c52ad5b4cf4/mzaf_8095545455942962509.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/43/5f/e8435ffa-b6b9-b171-40ab-4ff3959ab661/886443919266.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/get-lucky/617154241?i=617154366&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "nile-rodgers",
+        "duran-duran"
+      ],
+      "venues": [
+        "pacific-amphitheatre",
+        "irvine-meadows"
+      ],
+      "years": [
+        1987,
+        2026
+      ],
+      "tags": [
+        "#full-circle",
+        "#cover"
+      ],
+      "deepLinks": [
+        {
+          "label": "Nile Rodgers",
+          "url": "/?scene=artists&artist=nile-rodgers",
+          "type": "artist"
+        },
+        {
+          "label": "Duran Duran",
+          "url": "/?scene=artists&artist=duran-duran",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=venues&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=venues&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "July 31, 2026",
+          "url": "/?scene=artists&artist=nile-rodgers&show=2026-07-31",
+          "type": "setlist"
+        },
+        {
+          "label": "1987",
+          "url": "/?scene=timeline&year=1987",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "irvine-meadows-16-shows-before-it-was-demolished",
+        "duran-duran-21-years-between-shows"
+      ],
+      "score": 34,
+      "detector": "full-circle",
+      "publishedAt": "2026-08-10T09:25:37.420Z"
+    },
     {
       "id": "anniversary-the-art-of-noise-1986-07-31",
       "slug": "july-31-40-years-since-the-art-of-noise",
@@ -3957,10 +4035,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 55,
-    "totalGenerated": 87,
+    "totalPosts": 56,
+    "totalGenerated": 88,
     "averageScore": 38.3,
-    "lastPipelineRun": "2026-08-03T11:28:23.447Z",
+    "lastPipelineRun": "2026-08-10T09:25:37.420Z",
     "concertsAnalyzed": 181,
     "feedUrl": "/liner-notes.xml"
   }

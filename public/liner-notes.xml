@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 27 Jul 2026 11:27:39 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 10 Aug 2026 09:25:37 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>&quot;Notorious&quot;: Nile Rodgers and Duran Duran, 39 Years Apart</title>
+    <link>https://concerts.morperhaus.org/liner-notes/notorious-nile-rodgers-and-duran-duran-39-years-apart</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/notorious-nile-rodgers-and-duran-duran-39-years-apart</guid>
+    <pubDate>Mon, 10 Aug 2026 09:25:37 +0000</pubDate>
+    <description>&quot;Notorious&quot; is a song with two authors in a sense — Duran Duran wrote it, but Nile Rodgers produced it, and his fingerprints are all over that bassline. I heard Duran Duran play it at Irvine Meadows in July 1987, and then 39 years later I watched Rodgers claim it fully at the Pacific Amphitheatre, playing it as his own with complete justification. Two different Southern California venues, two different summers, the same song landing with the same authority both times. I didn&apos;t plan that symmetry — it just accumulated in my ticket stubs, waiting for me to notice.</description>
+    <category>#full-circle</category>
+    <category>#cover</category>
+    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/qsqsqq1394998284.jpg" medium="image" />
+  </item>
   <item>
     <title>July 31: 40 Years Since The Art of Noise</title>
     <link>https://concerts.morperhaus.org/liner-notes/july-31-40-years-since-the-art-of-noise</link>
@@ -200,16 +210,6 @@
     <category>#album-context</category>
     <category>#cultural-moment</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/xpytqt1342444014.jpg" medium="image" />
-  </item>
-  <item>
-    <title>The Alarm: Caught Once, Never Again</title>
-    <link>https://concerts.morperhaus.org/liner-notes/the-alarm-caught-once-never-again</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/the-alarm-caught-once-never-again</guid>
-    <pubDate>Sun, 08 Mar 2026 23:19:11 +0000</pubDate>
-    <description>I caught The Alarm exactly once in my entire concert-going life — April 12, 1986 at UCLA — and somehow never circled back to them again across nearly four decades of shows. This Welsh alternative rock band, formed in 1981, was riding high on their Strength album when I saw them, yet they became a complete one-and-done in my archive despite releasing Eye of the Hurricane the following year. It&apos;s genuinely puzzling how a band can make enough of an impression to get me to a show, then vanish entirely from my radar for the next 38 years.</description>
-    <category>#rare-sighting</category>
-    <category>#one-time-only</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/wswstt1388681264.jpg" medium="image" />
   </item>
   </channel>
 </rss>
