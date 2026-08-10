@@ -826,6 +826,11 @@ const DATA_FILES = [
   "venues-metadata",
   "setlists-cache",
   "discography",
+  // The discography release (#289). Without these the dashboard could not see
+  // song→album attribution at all, and re-running the resolver did not move
+  // the "last build" indicator.
+  "song-albums",
+  "album-eras",
   "liner-notes",
 ] as const;
 
@@ -851,6 +856,23 @@ interface ArchiveData {
     entries?: Array<{ concertId?: string; setlist?: { sets?: { set?: Array<{ song?: unknown[] }> } } }>;
   };
   discography: Record<string, { albums?: Array<{ coverUrl?: string; coverAvailable?: boolean }> }>;
+  // Attribution coverage is read from the resolver's own `stats` block rather
+  // than recounted here, so the dashboard reports the same rate the resolver
+  // prints and #276 was accepted against — a second derivation is a second
+  // definition waiting to drift (#295 is that lesson elsewhere).
+  // Optional because the coverage formulas genuinely tolerate their absence —
+  // a file that parses but carries no `stats` block reads as 0/0 rather than
+  // throwing and taking the whole section to "error".
+  "song-albums"?: {
+    generatedAt?: string;
+    stats?: {
+      uniquePairs?: number;
+      attributed?: number;
+      /** "0" top-tracks · "1" musicbrainz · "2" itunes. A collapse in "1" is a stale cache. */
+      byTier?: Record<string, number>;
+    };
+  };
+  "album-eras"?: { generatedAt?: string };
   "liner-notes": {
     generatedAt?: string;
     metadata?: { totalPosts?: number; totalGenerated?: number; lastPipelineRun?: string };
@@ -973,7 +995,17 @@ export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
     coverageByArtist[a] = Math.round((signals / 4) * 100);
   }
 
-  // 8. Liner notes — published findings / analyzed findings.
+  // 8. Song → album — attribution coverage over unique artist·song setlist pairs.
+  // Optional-chained throughout: an absent or half-written song-albums.json
+  // reads as 0/0 rather than throwing and taking the whole section to "error".
+  const saStats = d["song-albums"]?.stats ?? {};
+  const tiers = saStats.byTier ?? {};
+  // Named by SOURCE, not tier number. The number that matters is musicbrainz:
+  // if it collapses into the others, the track-listing cache has gone stale.
+  const tierNote =
+    `top-tracks ${tiers["0"] ?? 0} · musicbrainz ${tiers["1"] ?? 0} · itunes ${tiers["2"] ?? 0}`;
+
+  // 9. Liner notes — published findings / analyzed findings.
   const ln = d["liner-notes"].metadata ?? {};
   const published = ln.totalPosts ?? 0;
   const analyzed = ln.totalGenerated ?? 0;
@@ -991,6 +1023,13 @@ export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
     mkStage("Venue photos", withPhoto, venueVals.length, `geocoded ${pct(withGeo, venueVals.length)}%`),
     mkStage("Setlists", withSetlist.size, total, "concerts with ≥1 song"),
     mkStage("Discography", withAlbums, artistCount, `${pct(albumCover, albumTotal)}% of albums have cover art`),
+    // Sits between the record it reads from and the posts that consume it.
+    mkStage(
+      "Song → album",
+      saStats.attributed ?? 0,
+      saStats.uniquePairs ?? 0,
+      `unique setlist pairs · ${tierNote}`,
+    ),
     mkStage("Liner notes", published, analyzed, "published / analyzed findings"),
   ];
 
@@ -998,6 +1037,9 @@ export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
     lastBuildAt: newestIso([
       d.concerts.metadata?.lastUpdated,
       d["setlists-cache"].generatedAt,
+      // Without these, re-running attribution left "last build" unchanged (#289).
+      d["song-albums"]?.generatedAt,
+      d["album-eras"]?.generatedAt,
       d["liner-notes"].generatedAt,
       d["liner-notes"].metadata?.lastPipelineRun,
     ]),
