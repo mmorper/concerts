@@ -538,21 +538,6 @@ CBGB,New York,NY,closed,2006-10-15,Historic punk venue`
     })
   })
 
-  describe('rate limiting', () => {
-    it('enforces 100ms delay between venue requests', async () => {
-      const startTime = Date.now()
-
-      // Simulate 3 venue requests with rate limiting
-      await new Promise(resolve => setTimeout(resolve, 100))
-      await new Promise(resolve => setTimeout(resolve, 100))
-      await new Promise(resolve => setTimeout(resolve, 100))
-
-      const elapsedTime = Date.now() - startTime
-
-      expect(elapsedTime).toBeGreaterThanOrEqual(300)
-    })
-  })
-
   describe('summary statistics', () => {
     it('calculates correct summary counts', () => {
       const venues = [

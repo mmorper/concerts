@@ -418,29 +418,6 @@ describe('enrich-spotify-metadata.ts', () => {
     })
   })
 
-  describe('rate limiting', () => {
-    it('enforces 350ms delay between requests', async () => {
-      const startTime = Date.now()
-
-      // Simulate 3 requests with rate limiting
-      await new Promise(resolve => setTimeout(resolve, 350))
-      await new Promise(resolve => setTimeout(resolve, 350))
-      await new Promise(resolve => setTimeout(resolve, 350))
-
-      const elapsedTime = Date.now() - startTime
-
-      expect(elapsedTime).toBeGreaterThanOrEqual(1050) // 350 * 3
-    })
-
-    it('allows approximately 3 requests per second', () => {
-      const delayMs = 350
-      const requestsPerSecond = 1000 / delayMs
-
-      expect(requestsPerSecond).toBeGreaterThanOrEqual(2.5)
-      expect(requestsPerSecond).toBeLessThanOrEqual(3.5)
-    })
-  })
-
   describe('artist metadata structure', () => {
     it('includes all required Spotify fields', () => {
       const artistMetadata = {
