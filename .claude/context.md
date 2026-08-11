@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v5.4.0 (Production)
+**Version:** v6.0.0 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-08-07
 
@@ -106,16 +106,18 @@ docs/
 
 **Live Site:** https://concerts.morperhaus.org
 
-**v5.4.0 Production (Latest — 2026-08-07):**
+**v6.0.0 Production (Latest — 2026-08-10):**
 
-- ✅ Artist billing-alias map consumed by the Artist scene and the MCP — `sameAct` collapses billings, `sharesMember` deliberately does not (#227)
-- ✅ Two setlist-native detectors, `full-circle` and `guest-bridge`; song joins added to five existing detectors (#228/#229/#230)
-- ✅ Image integrity across posts, artists and venues — `image.ref` is authoritative, enrichment validates what it stores, 24 orphan records pruned (#252/#255/#259/#256)
-- ✅ All four Cloudflare Workers now deploy on merge; meta-injector was the last manual one (#262)
-- ✅ `scripts/` and `test/` typechecked in CI; MCP smoke test asserts real `tools/call` (#246/#223)
+- ✅ Song → album attribution across the archive — 1,716 of 1,912 unique artist·song pairs (89.7%), three tiers: top-tracks 253, MusicBrainz 1,428, iTunes 35 (#276/#282)
+- ✅ Two detectors off the back of it: `road-tested` (14 findings) and `most-witnessed-album`; `get_concert_setlist` annotates every song with its album (#277)
+- ✅ Liner note footers play the song the post is about, and label the fallback when they cannot (#299)
+- ✅ Wrong-band audio corrected or removed for 12 artists; Re-Flex's discography was a French remixer's (#275/#300)
+- ✅ One archive-stats derivation replaces six; `validate:docs` now guards the shape, not just the prose (#295)
+- ✅ Dashboard can see attribution coverage; `lastBuildAt` moves when the resolver runs (#289)
 
 **Recent Releases:**
 
+- **v6.0.0** (2026-08-10): Song → album attribution — `song-albums.json` at 89.7% across three tiers (#276/#282); `road-tested` + `most-witnessed-album` detectors and MCP setlist annotation (#277); liner-note footers play their subject song (#299); 12 artists' wrong-band audio fixed and Re-Flex's discography corrected (#275/#300); one archive-stats derivation (#295); dashboard attribution stage (#289)
 - **v5.4.0** (2026-08-07): Discography trajectory — `album-eras.json` joins 11,359 releases against attendance; `get_career_position` MCP tool + `cycleBucket` search; `album-trajectory` detector; `album-context` repaired 17→24; voice checklist made executable (epic #266, PR #278)
 - **v5.3.0** (2026-08-06): Artist billing aliases in the mosaic and MCP (#227); `full-circle` + `guest-bridge` detectors and song joins across five more (#228/#229/#230); image-rot fixes with validation at the source and orphan pruning (#252/#255/#259/#256); meta-injector auto-deploy completes Worker automation (#262)
 - **v5.2.0** (2026-08-05): Liner notes selection rewritten to detector rotation — all 15 detectors publish, first repeat at post 16 (#226/#231); setlist deep links wired for the first time, 20 posts (#198/#239); geographic-chapter region mapping (#232); milestone-marker scoring + concert-streak window (#233); dangling relatedSlugs + venue image chain (#234/#235)

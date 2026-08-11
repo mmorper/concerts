@@ -1,14 +1,15 @@
 # Roadmap
 
-## Current State (v5.4.0)
+## Current State (v6.0.0)
 
 - **184 concerts** spanning 1984-2026
 - **257 artists** (including openers) with 100% imagery coverage
 - **79 unique venues** across 35 cities
-- **11,359 releases** joined against attendance — 178 shows carry album-cycle data
+- **11,366 releases** joined against attendance — 178 shows carry album-cycle data
+- **1,716 of 1,912 setlist songs** matched to the studio album they came from (89.7%)
 - **6 interactive scenes**: Timeline, Venues, Geography, Genres, Artists, Ask the Archive
 - **Standalone pages**: /liner-notes, /whats-playing, /how-it-works, /about, /about-mcp, /dashboard
-- **Latest**: discography trajectory — where a band was in their career the night I saw them
+- **Latest**: song → album attribution — which record each song I've heard live came off
 
 ---
 

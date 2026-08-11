@@ -1,6 +1,6 @@
 {
   "name": "morperhaus-concerts",
-  "version": "5.4.0",
+  "version": "6.0.0",
   "private": true,
   "type": "module",
   "description": "Interactive concert history timeline application",

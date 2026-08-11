@@ -1,6 +1,20 @@
 {
   "releases": [
     {
+      "version": "6.0.0",
+      "date": "2026-08-10",
+      "title": "Five Songs That Didn't Exist Yet",
+      "description": "The Cure played the Hollywood Bowl in May 2023 and put five songs from Songs of a Lost World into the set. That record was still seventeen months away. I stood there hearing an album nobody had heard, and I didn't know it — you can't know it, not in the room. The archive knows now. It has worked out which record almost every song I've ever watched came off, so a setlist is no longer a list of titles: it's a shape. Which album the night leaned on, what was brand new, and what wouldn't arrive for another year and a half.",
+      "route": "/?scene=artists&artist=the-cure",
+      "highlights": [
+        "Every setlist now reads by record — 1,716 of 1,912 songs matched to the album they came from",
+        "The archive can spot a night I heard songs before their album existed, and there are fourteen of them",
+        "It can also tell me the record I've heard most of, live: seventeen songs from Garbage's debut, across the years",
+        "Liner notes finally play the song they're about — a post named for Notorious no longer plays Get Lucky",
+        "Twelve artists whose previews were quietly the wrong band are fixed or gone, including one playing a French remixer's catalogue"
+      ]
+    },
+    {
       "version": "5.4.0",
       "date": "2026-08-07",
       "title": "Twenty Months Before Violator",
