@@ -168,6 +168,17 @@ All three windows complete (#268–#274). Full suites green.
 
 ### Paused Initiatives
 
+**Artist Discography UI — #5** (deferred 2026-08-11)
+
+- **Status:** Data layer shipped; the **visual design does not exist**. Deliberately unmilestoned rather than parked on a v6.5 — a version number would stand in for a decision not yet made.
+- **Why it is not a scheduling accident:** #5 was opened 2026-02-03, the day after #1. Six releases have shipped past it. It is not blocked and not unimportant; nobody has cracked what it should look like.
+- **The spec misleads.** [docs/specs/future/artists-discography.md](../docs/specs/future/artists-discography.md) is 899 lines and reads as ready. It is a **data** spec — MusicBrainz endpoints, cover art, client architecture. That half shipped in v5.4/v6.0. The visual question was never answered.
+- **What unblocks it — not inspiration.** This data has never been on screen in any form, so designing a panel means guessing what reads well. Two cheap surfaces in v6.1 put it on screen inside an existing visual language first: [#286](https://github.com/mmorper/concerts/issues/286) (How It Works Tier 3 — one line of copy in a row that exists) and [#22](https://github.com/mmorper/concerts/issues/22) (setlist items — "which album, press play"). Ship those, learn which framing lands, then design the panel.
+- **Knock-on:** [#115](https://github.com/mmorper/concerts/issues/115) is **no longer sequenced behind #5** and goes standalone — with an `llm.txt` fix attached, since `llm.txt:127`/`:678` publish `discography.json` to agents and moving it would 404 for them. Sitemap album routes stay out until #5 lands.
+
+To resume: decide the visual framing first — that is the whole blocker. #5's own numbers are stale (`discography.json` is 4.6 MB / 260 artists / 11,366 releases, not 2.5 MB / 247 / 15k+).
+
+
 **HyperFrames video pilot — Social Distortion Thread** (shelved 2026-05-17)
 
 - **Status:** First pilot video built, rendered, and delivered with audio. Paused awaiting pilot review decision [#100](https://github.com/mmorper/concerts/issues/100). Templates A/B/D ([#99](https://github.com/mmorper/concerts/issues/99)) not started.
