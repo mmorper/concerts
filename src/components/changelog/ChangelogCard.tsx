@@ -5,16 +5,13 @@
 
 import { motion } from 'framer-motion'
 import type { ChangelogCardProps } from './types'
+import { formatReleaseDate } from './constants'
 
 const INDIGO = '#4f46e5'
 
 export function ChangelogCard({ release, isLatest = false }: ChangelogCardProps) {
 
-  const formattedDate = new Date(release.date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
+  const formattedDate = formatReleaseDate(release.date)
 
   return (
     <motion.article
