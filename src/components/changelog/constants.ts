@@ -199,3 +199,29 @@ export const STORAGE_KEYS = {
   /** Dismissed liner notes in session (sessionStorage) */
   LINER_NOTES_DISMISSED_SESSION: 'morperhaus_linernotes_dismissedSession',
 } as const
+
+/**
+ * "2026-08-10" -> "August 10, 2026".
+ *
+ * Parsed AND rendered at UTC, so the label cannot slip a day west of Greenwich.
+ * `new Date('2026-08-10')` is UTC midnight, and formatting that in a timezone
+ * behind UTC lands on the 9th — which is what every release date on
+ * /whats-playing did from the day the page shipped. v6.0.0 read "August 9";
+ * v5.0.0 read "June 19".
+ *
+ * `release.date` is a plain YYYY-MM-DD carrying no time and no zone, so UTC is
+ * the only reading that returns the day that was written down.
+ *
+ * The same defect and the same fix as `formatConcertDate` in
+ * scripts/liner-notes/curate.ts. Left as two implementations deliberately: that
+ * one is pipeline-side and this one is app-side, and a shared date utility is a
+ * bigger change than this bug warrants.
+ */
+export function formatReleaseDate(date: string): string {
+  return new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  })
+}
