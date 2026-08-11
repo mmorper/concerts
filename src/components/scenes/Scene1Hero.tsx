@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import * as d3 from 'd3'
 import type { Concert } from '../../types/concert'
+import { deriveArchiveStats } from '../../utils/archiveStats'
 import { TimelineHoverPreview, useTimelineHover } from '../TimelineHoverPreview'
 import { LAYOUT as POPUP_LAYOUT } from '../TimelineHoverPreview/constants'
 import { haptics } from '../../utils/haptics'
@@ -630,10 +631,11 @@ export function Scene1Hero({ concerts, onNavigateToArtist, pendingYearFocus, onY
 
   }, [concerts, dimensions, handleMouseEnter, handleMouseLeave, filterState, handleYearClick])
 
-  // Calculate stats from data
-  const totalConcerts = concerts.length
-  const years = concerts.map(c => c.year)
-  const yearSpan = years.length > 0 ? `${Math.min(...years)}–${Math.max(...years)}` : ''
+  // Archive headline numbers come from the one derivation (#295).
+  const { concerts: totalConcerts, yearSpan } = useMemo(
+    () => deriveArchiveStats(concerts),
+    [concerts]
+  )
 
   // Calculate popup position for card stack positioning
   const popupPosition = useMemo(() => {

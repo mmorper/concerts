@@ -7,7 +7,6 @@ import type { ArtistCard as ArtistCardType, SortOrder } from './types'
 interface ArtistMosaicProps {
   artists: ArtistCardType[]
   sortOrder: SortOrder
-  onArtistCountUpdate?: (count: number) => void
   onCardClick: (artist: ArtistCardType, rect: DOMRect) => void
   openArtistName?: string
   getArtistImage: (artistName: string) => string | undefined
@@ -24,7 +23,6 @@ const BATCH_SIZE = 50
 export function ArtistMosaic({
   artists,
   sortOrder,
-  onArtistCountUpdate,
   onCardClick,
   openArtistName,
   getArtistImage,
@@ -46,11 +44,6 @@ export function ArtistMosaic({
       ;(window as any).__loadAllArtistCards = loadAll
     }
   }, [artists.length, onLoadAllCards])
-
-  // Report artist count to parent
-  useEffect(() => {
-    onArtistCountUpdate?.(artists.length)
-  }, [artists.length, onArtistCountUpdate])
 
   // Sort artists (all uniform size now)
   const processedArtists = useMemo(() => {

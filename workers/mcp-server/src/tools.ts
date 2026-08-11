@@ -15,6 +15,7 @@ import { EMPTY_ALIAS_INDEX, aliasName, buildAliasIndex, canonicalSlug, slugsFor,
 // and the liner-notes detectors. Pure string code, bundles into a Worker.
 // Resolving this key differently in any consumer silently matches nothing.
 import { lookupSongAlbum } from "../../../scripts/utils/song-album-lookup.js";
+import { deriveArchiveStats } from "../../../src/utils/archiveStats.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
@@ -231,8 +232,9 @@ export function archiveInfo(concerts: Concert[], facts: FactsData | null): strin
 
   const first = sorted[0];
   const last = sorted[total - 1];
-  const venues = new Set(concerts.map((c) => c.venueNormalized)).size;
-  const cities = new Set(concerts.map((c) => c.cityState)).size;
+  // Same derivation the app and the OG card use (#295) — the MCP quoting a
+  // different venue count than the site would be drift nobody could see.
+  const { venues, cities } = deriveArchiveStats(concerts);
 
   const topArtists = tally(concerts, (c) => c.headliner).slice(0, 5);
   const topVenues = tally(concerts, (c) => c.venue).slice(0, 5);
