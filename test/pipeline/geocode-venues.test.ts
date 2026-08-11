@@ -386,8 +386,18 @@ describe('geocoding.ts', () => {
       await batchGeocodeVenues(venues)
       const elapsedTime = Date.now() - startTime
 
-      // Should take at least 40ms (2 venues * 20ms delay)
-      expect(elapsedTime).toBeGreaterThanOrEqual(40)
+      // 2 venues * 20ms = 40ms nominal (scripts/services/geocoding.ts:172).
+      //
+      // Asserted at 30, not 40, and the gap is the point rather than slack:
+      // `setTimeout(20)` may fire a fraction under 20ms, so a knife-edge bound
+      // fails on timer granularity rather than on behaviour. That is what took
+      // CI down on an unrelated docs PR — a sibling assertion measured 299
+      // against a 300 bound.
+      //
+      // 30 still separates the two states cleanly. With the delay removed,
+      // fetch is mocked and this loop returns in ~1ms, so the threshold has to
+      // be crossed by real waiting. Verified by deleting the delay: this fails.
+      expect(elapsedTime).toBeGreaterThanOrEqual(30)
     })
 
     it('should use cached coordinates and skip API calls', async () => {
