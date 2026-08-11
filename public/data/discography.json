@@ -120320,344 +120320,111 @@
   "the-reflex": {
     "artistName": "The Reflex",
     "normalizedName": "the-reflex",
-    "mbid": "77f76a58-612f-4cfe-a01d-dffb8e4cc948",
-    "albumCount": 25,
+    "mbid": "d4bdc7e1-d287-4f88-b9c3-ad9f74964629",
+    "albumCount": 9,
     "albums": [
       {
-        "id": "21febc29-f46a-47ee-bc8e-ed6ce85c817f",
-        "title": "Million Streamers Vol.2",
-        "releaseDate": "2025-10-03",
-        "year": 2025,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
+        "id": "8e29ad98-0ef7-4d00-b0a3-9f6700f2f71b",
+        "title": "Re-Fuse",
+        "releaseDate": "2010-09-17",
+        "year": 2010,
+        "primaryType": "Other",
+        "secondaryTypes": [],
         "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/21febc29-f46a-47ee-bc8e-ed6ce85c817f/front-500.jpg",
+        "coverUrl": "https://coverartarchive.org/release-group/8e29ad98-0ef7-4d00-b0a3-9f6700f2f71b/front-500.jpg",
         "coverAvailable": true
       },
       {
-        "id": "3ebfddb2-3b9e-475e-bb70-8fe28dc6b659",
-        "title": "Million Streamers",
-        "releaseDate": "2025-09-05",
-        "year": 2025,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/3ebfddb2-3b9e-475e-bb70-8fe28dc6b659/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "bebb3a98-2ca8-4b57-b64b-be39932f87fa",
-        "title": "Weekend (Extended Mix)",
-        "releaseDate": "2025-05-02",
-        "year": 2025,
+        "id": "92fb7789-f308-4ece-a1f9-ef6f484bad74",
+        "title": "Humanication",
+        "releaseDate": "2002",
+        "year": 2002,
         "primaryType": "Album",
         "secondaryTypes": [],
         "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/bebb3a98-2ca8-4b57-b64b-be39932f87fa/front-500.jpg",
+        "coverUrl": "https://coverartarchive.org/release-group/92fb7789-f308-4ece-a1f9-ef6f484bad74/front-500.jpg",
         "coverAvailable": true
       },
       {
-        "id": "f66eae3d-c18d-4975-92b4-07043e79c54d",
-        "title": "Robert De Niro’s Waiting / Velvet Lies (Remixes)",
-        "releaseDate": "2023-12-01",
-        "year": 2023,
+        "id": "14f7b6df-abae-4d10-81c3-8033e6ddc93d",
+        "title": "How Much Longer",
+        "releaseDate": "1985",
+        "year": 1985,
         "primaryType": "Single",
-        "secondaryTypes": [
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/f66eae3d-c18d-4975-92b4-07043e79c54d/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "01c544a9-5c0f-45bb-b788-3424c3ddb444",
-        "title": "73 Track Pack",
-        "releaseDate": "2021-12-31",
-        "year": 2021,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/01c544a9-5c0f-45bb-b788-3424c3ddb444/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "a08a69a0-55be-43ac-9bef-082b52241123",
-        "title": "Incapable / Narcissus (The Reflex Revisions)",
-        "releaseDate": "2021-07-02",
-        "year": 2021,
-        "primaryType": "Single",
-        "secondaryTypes": [
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/a08a69a0-55be-43ac-9bef-082b52241123/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "8bb6c8e7-1d8a-4b85-852e-e7727318e558",
-        "title": "VIP Downloads x 20",
-        "releaseDate": "2021-04-26",
-        "year": 2021,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/8bb6c8e7-1d8a-4b85-852e-e7727318e558/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "865dc31d-3ace-495b-9145-a4a26aea8db4",
-        "title": "Million Sellers, Vol. 7",
-        "releaseDate": "2020-05-16",
-        "year": 2020,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/865dc31d-3ace-495b-9145-a4a26aea8db4/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "d4959a31-a5a5-481b-a862-b27bb1a19d8f",
-        "title": "Stay Free",
-        "releaseDate": "2019-10-28",
-        "year": 2019,
-        "primaryType": "Single",
-        "secondaryTypes": [
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/d4959a31-a5a5-481b-a862-b27bb1a19d8f/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "42310736-6f2d-4022-853f-a6f5a58aac01",
-        "title": "The Reflex (73 tracks bumper pack)",
-        "releaseDate": "2019-09-01",
-        "year": 2019,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/42310736-6f2d-4022-853f-a6f5a58aac01/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "74ee4951-283c-4e9e-87ad-e0ebc8cf4c6d",
-        "title": "Million Sellers: Valentine Edition Vol. 2",
-        "releaseDate": "2019-02-09",
-        "year": 2019,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/74ee4951-283c-4e9e-87ad-e0ebc8cf4c6d/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "7ba16962-2cc6-4b43-a72a-0b5d9313869e",
-        "title": "Million Sellers Vol.6",
-        "releaseDate": "2018-12-11",
-        "year": 2018,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/7ba16962-2cc6-4b43-a72a-0b5d9313869e/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "5db60f25-e29a-44e8-ae5b-efa27da76fee",
-        "title": "Free Edits",
-        "releaseDate": "2018-01-12",
-        "year": 2018,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/5db60f25-e29a-44e8-ae5b-efa27da76fee/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "648be789-286f-4d3f-a3ca-2e153363eb55",
-        "title": "Million Sellers, Vol. 5",
-        "releaseDate": "2017-12-07",
-        "year": 2017,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/648be789-286f-4d3f-a3ca-2e153363eb55/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "52aad19d-431f-45c9-bc35-8c0f1090daa8",
-        "title": "Million Sellers: Rock Edition",
-        "releaseDate": "2017-10-07",
-        "year": 2017,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/52aad19d-431f-45c9-bc35-8c0f1090daa8/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "1554c39a-d148-425d-88ae-3486839db122",
-        "title": "Million Sellers: Valentine Edition",
-        "releaseDate": "2017",
-        "year": 2017,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/1554c39a-d148-425d-88ae-3486839db122/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "2dd4b007-fd1b-4042-8fc9-456cce9352ba",
-        "title": "Million Sellers, Vol. 4",
-        "releaseDate": "2016-12-01",
-        "year": 2016,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/2dd4b007-fd1b-4042-8fc9-456cce9352ba/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "37b9f3cd-0ca3-40a6-9a4f-33c7f49883f0",
-        "title": "Revision Collection",
-        "releaseDate": "2016-05-27",
-        "year": 2016,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/37b9f3cd-0ca3-40a6-9a4f-33c7f49883f0/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "1bcb3774-5740-4ef7-8960-02d76d032b3e",
-        "title": "The Reflex Revisions",
-        "releaseDate": "2016-04-29",
-        "year": 2016,
-        "primaryType": "EP",
-        "secondaryTypes": [
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/1bcb3774-5740-4ef7-8960-02d76d032b3e/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "0a136156-e736-4ea3-a1c1-645eb5a2fe14",
-        "title": "Archive Edits Vol 2",
-        "releaseDate": "2016-04-02",
-        "year": 2016,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/0a136156-e736-4ea3-a1c1-645eb5a2fe14/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "3bbd7cd1-3353-4c43-8e98-cebb21b9c057",
-        "title": "2016 Remasters: Freebies",
-        "releaseDate": "2016-02-26",
-        "year": 2016,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/3bbd7cd1-3353-4c43-8e98-cebb21b9c057/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "7ccae660-cb55-4cde-8987-5209223ad7ed",
-        "title": "Million Sellers Vol. 3",
-        "releaseDate": "2015-11-01",
-        "year": 2015,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/7ccae660-cb55-4cde-8987-5209223ad7ed/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "e110a35e-a109-474e-beff-a8efd23f1205",
-        "title": "Million Sellers Vol. 2",
-        "releaseDate": "2014-12-01",
-        "year": 2014,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/e110a35e-a109-474e-beff-a8efd23f1205/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "116897ee-a27f-4aad-be3f-f73f47df2eb3",
-        "title": "Million Sellers",
-        "releaseDate": "2013-12-01",
-        "year": 2013,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/116897ee-a27f-4aad-be3f-f73f47df2eb3/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "beb787f7-edfa-456c-b7ae-3092f2635fc6",
-        "title": "Re-Visions, Vol.2",
-        "releaseDate": "2012-01",
-        "year": 2012,
-        "primaryType": "EP",
         "secondaryTypes": [],
         "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/beb787f7-edfa-456c-b7ae-3092f2635fc6/front-500.jpg",
+        "coverUrl": "https://coverartarchive.org/release-group/14f7b6df-abae-4d10-81c3-8033e6ddc93d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "1bc36759-fcdf-4bc9-9153-b98e4bb62474",
+        "title": "Praying to the Beat",
+        "releaseDate": "1984",
+        "year": 1984,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1bc36759-fcdf-4bc9-9153-b98e4bb62474/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "273c0683-31fa-4cd6-b09d-54ce65dc5f38",
+        "title": "Couldn’t Stand a Day / What You Deserve",
+        "releaseDate": "1984",
+        "year": 1984,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/273c0683-31fa-4cd6-b09d-54ce65dc5f38/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "0899e479-0f24-4ecc-a597-bf4b506c61a0",
+        "title": "Hurt (Emotional mix)",
+        "releaseDate": "1983",
+        "year": 1983,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/0899e479-0f24-4ecc-a597-bf4b506c61a0/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "9990158d-3ab5-4c35-8286-d357767483f5",
+        "title": "Hitline",
+        "releaseDate": "1983",
+        "year": 1983,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/9990158d-3ab5-4c35-8286-d357767483f5/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "9d3fd456-8850-3622-9d4a-ee5b9261b12d",
+        "title": "The Politics of Dancing",
+        "releaseDate": "1983",
+        "year": 1983,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/9d3fd456-8850-3622-9d4a-ee5b9261b12d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "b274f2c9-087d-4fae-934c-6a08696cad80",
+        "title": "The Politics of Dancing",
+        "releaseDate": "1983",
+        "year": 1983,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/b274f2c9-087d-4fae-934c-6a08696cad80/front-500.jpg",
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-06-16T14:44:49.411Z",
-    "cachedAt": "2026-06-16T14:44:49.411Z"
+    "fetchedAt": "2026-08-11T01:10:49.356Z",
+    "cachedAt": "2026-08-11T01:10:49.357Z"
   },
   "the-struts": {
     "artistName": "The Struts",
