@@ -72,6 +72,28 @@ const MBID_CORRECTIONS: Record<string, { mbid: string; note: string }> = {
     mbid: 'eec163e4-a013-4af0-9641-c5b2df41fff7',
     note: 'ASCII-hyphen search matches the wrong act; correct record uses U+2010',
   },
+
+  // The SAME defect as the Go-Go's above, and worth noticing that it recurred:
+  // the correct record is "Re‐Flex" with a TYPOGRAPHIC hyphen (U+2010), so an
+  // ASCII-hyphen search scores it below "The Reflex" — a French remixer, type
+  // Person, still releasing (Million Streamers Vol.2, 2025). We held 25 of his
+  // releases for a band that made two albums.
+  //
+  // This one was invisible to the existing mis-resolution heuristic in
+  // validate-concerts.ts, which warns on a LOW release count: a wrong artist
+  // with a healthy catalogue looks perfectly normal, and 25 > 2 (#275).
+  //
+  // Both spellings are pinned because the Google Sheet was corrected upstream
+  // on 2026-08-10 — "The Reflex" becomes "Re-Flex" on the next refresh, and
+  // whichever key the data carries must land on the same band (#300).
+  'the-reflex': {
+    mbid: 'd4bdc7e1-d287-4f88-b9c3-ad9f74964629',
+    note: 'ASCII-hyphen search returns "The Reflex", a French remixer; correct record uses U+2010',
+  },
+  're-flex': {
+    mbid: 'd4bdc7e1-d287-4f88-b9c3-ad9f74964629',
+    note: 'post-rename key for the same band (#300)',
+  },
 }
 
 /**

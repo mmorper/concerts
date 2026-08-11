@@ -28,7 +28,15 @@ describe('album-trajectory', () => {
   )
 
   it('finds the shows where the defining record did not exist yet', () => {
-    expect(findings).toHaveLength(8)
+    // Data-coupled on purpose: this asserts against the real album-eras.json,
+    // so it moves when the underlying data does — which is the point.
+    //
+    // 8 -> 10 when album-eras was re-derived after #275 corrected
+    // artists-top-tracks.json (`definingAlbum` is derived from top tracks, so
+    // the eras file had been lagging it). Strictly additive, nothing lost:
+    //   + sting 1991-10-04            -> Ten Summoner's Tales
+    //   + prophets-of-rage 2016-08-19 -> Prophets of Rage
+    expect(findings).toHaveLength(10)
   })
 
   it('carries the Rose Bowl with its evidence, not just its claim', () => {
@@ -138,7 +146,7 @@ describe('graceful degradation', () => {
       (f) => f.detector === 'album-context' && (f.dataPoints as Record<string, unknown>).isSameArtist
     ).length
 
-    expect(trajectory).toBe(8)
+    expect(trajectory).toBe(10) // see the count note in the first describe
     expect(added).toBe(trajectory + sameArtist)
   })
 
