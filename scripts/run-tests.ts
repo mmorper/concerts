@@ -17,7 +17,6 @@
  */
 
 import { spawn } from 'child_process'
-import { createServer } from 'http'
 
 // ANSI color codes for terminal output
 const colors = {
@@ -62,38 +61,6 @@ function printMessage(message: string, type: 'info' | 'success' | 'error' | 'war
   }[type]
 
   console.log(`${icon} ${message}`)
-}
-
-/**
- * Check if dev server is running
- */
-async function checkDevServer(url: string): Promise<boolean> {
-  return new Promise((resolve) => {
-    const req = createServer().listen(0)
-    req.close()
-
-    const http = require('http')
-    const urlObj = new URL(url)
-    const options = {
-      hostname: urlObj.hostname,
-      port: urlObj.port,
-      path: urlObj.pathname,
-      method: 'GET',
-      timeout: 2000,
-    }
-
-    const request = http.request(options, (res: any) => {
-      resolve(res.statusCode === 200)
-    })
-
-    request.on('error', () => resolve(false))
-    request.on('timeout', () => {
-      request.destroy()
-      resolve(false)
-    })
-
-    request.end()
-  })
 }
 
 /**
@@ -153,33 +120,33 @@ async function runPipelineTests(coverage: boolean = false): Promise<void> {
 async function runSceneTests(): Promise<void> {
   printHeader('🎭 Running Scene Tests (Puppeteer)')
 
-  // Check if dev server is running
-  printMessage('Checking dev server...', 'info')
-  const serverRunning = await checkDevServer('http://localhost:5173')
+  // This used to probe for a dev server on 5173 and, finding none, print a warning
+  // and return — leaving the overall run green while testing no scenes at all.
+  // Anyone without a dev server already up (which is anyone running `test:all` on
+  // its own, and every release) got a pass that meant nothing.
+  //
+  // Delegate to the same runner CI uses instead. It builds the app, serves the
+  // build, runs every scene test including the smoke gate, and tears the server
+  // down — so there is no server to forget to start and nothing to skip. Honour
+  // TEST_BASE_URL if it is already set: the runner then reuses that server rather
+  // than rebuilding, which keeps the fast local loop fast.
+  const reusingServer = Boolean(process.env.TEST_BASE_URL)
 
-  if (!serverRunning) {
-    printMessage('Dev server not running on http://localhost:5173', 'warning')
-    printMessage('Scene tests will be skipped. Start dev server with: npm run dev', 'warning')
-    return
+  printMessage(
+    reusingServer
+      ? `Using existing server at ${process.env.TEST_BASE_URL}`
+      : 'Building the app and serving it for the scene tests…',
+    'info'
+  )
+
+  const result = await runCommand('npm', ['run', 'test:scenes:puppeteer'])
+  results.push(result)
+
+  if (result.exitCode === 0) {
+    printMessage(`Scene tests passed in ${(result.duration / 1000).toFixed(1)}s`, 'success')
+  } else {
+    printMessage('Scene tests failed', 'error')
   }
-
-  printMessage('Dev server is running', 'success')
-
-  // Run all scene tests
-  const scenes = ['timeline', 'venues', 'map', 'genres', 'artists']
-
-  for (const scene of scenes) {
-    printMessage(`Running ${scene} scene tests...`, 'info')
-    const result = await runCommand('npm', ['run', `test:${scene}`])
-    results.push(result)
-
-    if (result.exitCode !== 0) {
-      printMessage(`${scene} scene tests failed`, 'error')
-    }
-  }
-
-  printMessage('Scene tests completed', 'success')
-  printMessage('Screenshots saved to: /tmp/morperhaus-tests/', 'info')
 }
 
 /**
