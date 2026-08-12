@@ -38,14 +38,24 @@ npm run test:all:coverage
 # Run specific test suites
 npm run test:pipeline    # Data pipeline tests (268 tests)
 npm run test:utils       # Utility tests (37 tests)
-npm run test:scenes:puppeteer  # All scene tests (37 tests)
+# Scene tests in a real browser. Builds the app, serves the build with
+# `vite preview`, runs every scene test against it, then tears the server down.
+# This is exactly what Scene CI runs — same command, no CI-only steps.
+npm run test:scenes:puppeteer
 
-# Run individual scene tests
-npm run test:timeline    # Timeline scene (7 tests)
-npm run test:venues      # Venue network scene (7 tests)
-npm run test:map         # Map scene (8 tests)
-npm run test:genres      # Genres scene (8 tests)
-npm run test:artists     # Artists scene (7 tests)
+# Faster loop: point the suite at a dev server you already have running.
+# TEST_BASE_URL skips the build and the preview server entirely, and is also how
+# you avoid port 5173 when a second worktree already owns it.
+npm run dev
+TEST_BASE_URL=http://localhost:5173 npm run test:scenes:puppeteer
+
+# Individual scene tests (need a server — set TEST_BASE_URL or run the suite above)
+npm run test:smoke       # All six scene roots render, no uncaught errors
+npm run test:timeline    # Timeline scene
+npm run test:venues      # Venue network scene
+npm run test:map         # Map scene
+npm run test:genres      # Genres scene
+npm run test:artists     # Artists scene
 
 # Cloudflare Workers — separate npm packages with their own vitest configs
 npm run test:workers     # mcp-server (46) + ask-chat (75)
@@ -105,11 +115,13 @@ npm run test:ui          # Visual UI for Vitest tests
 test/
 ├── fixtures/              # Mock data and API responses (8 files)
 ├── pipeline/              # Data pipeline tests (Window 2-3)
-├── scenes/                # Visual/interaction tests (Window 4-6)
+├── scenes/                # Browser tests, driven by Puppeteer
+│   └── test-smoke.mjs     # The CI gate: all six scene roots render (#10)
 ├── utils/                 # Utility function tests
-│   └── normalize.test.ts  ✅ 37 tests passing
-├── setup.ts               # Global configuration
-└── test-simple.mjs        # Legacy smoke test (updated to port 5173)
+│   ├── normalize.test.ts  ✅ 37 tests passing
+│   ├── helpers.mjs        # Browser setup, navigation, waits (TEST_BASE_URL lives here)
+│   └── selectors.mjs      # Shared data-testid selectors
+└── setup.ts               # Global configuration
 ```
 
 ---

@@ -1,0 +1,72 @@
+name: Scene CI
+
+# Renders the app in a real browser and asserts every scene draws itself.
+#
+# Why this exists: v6.0.0 shipped a `useMemo` below an early return. It passed
+# `typecheck:all` and all 925 unit tests and still crashed on render, because
+# neither of those suites ever mounts a scene in a browser. This workflow is the
+# gap they leave (#10).
+#
+# Scoped to the front end, like mcp-ci.yml and ask-chat-ci.yml are scoped to
+# their Workers — a data-pipeline or docs PR has no reason to boot Chrome.
+#
+# `npm run test:scenes:puppeteer` builds the app, serves the built output with
+# `vite preview` and runs every scene test against it. Testing the build rather
+# than the dev server is deliberate: it is what actually ships, and it catches
+# build-only breakage that `npm run dev` hides.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'index.html'
+      - 'vite.config.ts'
+      - 'package.json'
+      - 'public/data/**'
+      - 'test/scenes/**'
+      - 'test/utils/helpers.mjs'
+      - 'test/utils/selectors.mjs'
+      - 'scripts/run-scene-tests.mjs'
+      - '.github/workflows/scene-ci.yml'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'index.html'
+      - 'vite.config.ts'
+      - 'package.json'
+      - 'public/data/**'
+      - 'test/scenes/**'
+      - 'test/utils/helpers.mjs'
+      - 'test/utils/selectors.mjs'
+      - 'scripts/run-scene-tests.mjs'
+      - '.github/workflows/scene-ci.yml'
+
+concurrency:
+  group: scene-ci-${{ github.ref }}
+  # Matches mcp-ci.yml: superseded PR runs are worth cancelling, a main run is not.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  scenes:
+    name: Render every scene
+    runs-on: ubuntu-latest
+    # A wedged browser should cost minutes, not the six-hour default.
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      # package-lock.json is gitignored repo-wide (.gitignore:3), so there is no
+      # lock file to restore from — same constraint and workaround as ci.yml.
+      # This also installs the Chrome build Puppeteer drives.
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build, serve and render every scene
+        run: npm run test:scenes:puppeteer

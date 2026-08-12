@@ -85,6 +85,7 @@ export function TimelineSlider({
       {/* Slider container with larger touch target (44px min for iOS) */}
       <div
         ref={sliderRef}
+        data-testid="timeline-slider-track"
         className="relative h-11 flex items-center cursor-pointer"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
