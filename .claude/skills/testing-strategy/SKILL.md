@@ -1,50 +1,66 @@
 # Testing Strategy Skill
 
-**Version:** 1.0.0
-**Last Updated:** 2026-01-09
+**Version:** 2.0.0
+**Last Updated:** 2026-08-12
 
 ---
 
 ## Overview
 
-The Morperhaus Concert Archives testing strategy prioritizes **build-time validation** over runtime tests. Given the static data nature and visualization-heavy UI, the focus is on data integrity, version consistency, and manual QA.
+Three layers run automatically, each covering what the one below it cannot.
 
-**Core Principles:**
-- Data validation at build time prevents bad data in production
-- Build scripts catch errors before deployment
-- Manual testing focuses on visual correctness and interactions
-- External API integration tested in development
-- TypeScript provides compile-time type safety
+| Layer | What runs it | What it catches |
+|-------|--------------|-----------------|
+| Build-time validation | `validate:data`, `validate:version`, `validate:docs` | bad data, version drift, prose that disagrees with the archive |
+| Type checking | `npm run typecheck:all` | type errors across **both** tsconfigs |
+| Unit tests | `npm run test:run` — 925 tests, 54 files | logic in the pipeline, utils and liner-notes detectors |
+| Scene tests | `npm run test:scenes:puppeteer` — six scenes in a real browser | render crashes and broken interactions |
+
+**Always `typecheck:all`, never plain `typecheck`.** `tsconfig.json` is scoped to
+`src`, so the plain command covers none of the pipeline, the scripts or the tests.
+
+**`npm ci` does not work here.** `package-lock.json` is gitignored by design
+(`.gitignore:3`), so every workflow uses `npm install`. This also rules out
+`setup-node`'s `cache: npm`, which keys off the lock file.
 
 ---
 
 ## Testing Philosophy
 
-### Why This Approach?
+### Each layer exists because the one below it let something through
 
-**Static Data-Driven Application:**
-- Concert data generated at build time (`npm run build-data`)
-- No user input or dynamic data mutations
-- Data structure guaranteed by TypeScript types
-- Visual correctness requires human judgment
+This is not a philosophical preference — it is a record of what has actually
+escaped.
 
-**Testing Pyramid (Inverted):**
-```
-Manual QA & Visual Testing    ← Heavy emphasis
-         ↑
-Build-Time Validation         ← Primary automation
-         ↑
-TypeScript Type Checking      ← Continuous validation
-         ↑
-Unit Tests                    ← Minimal (future)
-```
+- **v6.0.0 shipped a `useMemo` below an early return.** It passed `typecheck:all`
+  and all 925 unit tests, then crashed on render. Neither suite mounts a component
+  in a browser, so neither could have caught it. That is why the scene tests exist
+  (#10), and the smoke test was verified against exactly that crash shape in two
+  different scenes.
+- **#283: stale prose shipped for ~7 months and ~40 releases.** Nothing checked
+  that the README described the archive that exists. That is why `validate:docs`
+  exists (#284).
+- **#246: a referenced-but-undeclared variable passed CI** because the app
+  typecheck does not see `scripts/`. That is why `typecheck:scripts` exists.
 
-**Trade-offs:**
-- ✅ Fast iteration (no test suite slowdown)
-- ✅ Focus on high-value validation (data integrity)
-- ✅ Appropriate for static content app
-- ❌ No automated regression testing for UI
-- ❌ Requires disciplined manual testing
+**The general lesson worth carrying:** a test that cannot fail is worse than no
+test, because it reports success. #309 deleted two rate-limit tests that asserted
+nothing. #10 found 24 scene assertions that logged `⚠ may not be implemented` and
+returned a pass — three of them had been hiding real breakage for months, including
+a slider test that looked for an `input[type="range"]` the component never had.
+When something cannot be checked, fail or delete it; do not log a warning and pass.
+
+### What is still not automated
+
+- **`/release` runs no tests.** Step 1 is `npm run build` — `tsc` plus a bundle.
+  Release commits are pushed straight to `main`, so they never pass through the PR
+  gate where the tests actually run. #13 closes this by routing releases through a
+  pull request.
+- **The artist gatefold has no coverage** — the flying tile and 3D book-open
+  animation are untested by choice, being the flakiest thing in the app.
+- **There is no visual regression testing.** Despite the name "visual testing
+  suite", nothing compares images. Screenshots were removed in #310 because there
+  was no baseline and no comparator. Real visual regression would be new work.
 
 ---
 
@@ -181,8 +197,10 @@ function main() {
 
 **When to run:**
 - Before every release
-- In CI/CD pipeline (future)
 - After updating changelog or package.json
+
+Note that `validate:version` is *not* in `ci.yml` — on a PR the branch has no tag
+yet, so it would fail by construction. `validate:docs` is, and does run on every PR.
 
 ### 3. Normalization Validation
 
@@ -470,63 +488,41 @@ npm run test-places-api    # scripts/test-places-api.ts
 
 ---
 
-## Visual Regression Testing (Future)
+## Scene Tests (Puppeteer)
 
-### Planned: Automated Screenshot Comparison
+Six scenes, rendered in a real browser. `test-smoke.mjs` is the CI gate; the
+per-scene files cover interactions.
 
 ```bash
-# Install Puppeteer for E2E tests
-npm install --save-dev puppeteer
+# Build, serve the build, run every scene test, tear the server down.
+# Exactly what Scene CI runs — no CI-only steps.
+npm run test:scenes:puppeteer
 
-# Script: test/visual-regression.ts
+# Fast loop against a dev server you already have. Also how you avoid port 5173
+# when another worktree already owns it.
+npm run dev
+TEST_BASE_URL=http://localhost:5173 npm run test:scenes:puppeteer
 ```
 
-**Approach:**
-1. Launch headless browser
-2. Navigate to each scene
-3. Take screenshots
-4. Compare against baseline images
-5. Flag differences > threshold
+**Why one page load covers all six scenes:** the archive is a single scroll-snap
+page. Every scene is mounted at all times and `?scene=` only scrolls to one, and
+there is no error boundary between them — React unmounts the whole tree on a render
+throw. So asserting that all six roots are present and laid out is a real statement
+about all six.
 
-**Example:**
+**Writing assertions that hold up:**
 
-```typescript
-// test/visual-regression.ts
-import puppeteer from 'puppeteer'
-
-const scenes = [
-  { name: 'timeline', url: '/?scene=timeline' },
-  { name: 'venues', url: '/?scene=venues' },
-  { name: 'map', url: '/?scene=geography' },
-  { name: 'genres', url: '/?scene=genres' },
-  { name: 'artists', url: '/?scene=artists' }
-]
-
-async function captureScenes() {
-  const browser = await puppeteer.launch()
-  const page = await browser.newPage()
-
-  for (const scene of scenes) {
-    await page.goto(`http://localhost:5173${scene.url}`)
-    await page.waitForSelector('.snap-y')
-    await page.screenshot({ path: `test/screenshots/${scene.name}.png` })
-  }
-
-  await browser.close()
-}
-```
-
-**Benefits:**
-- Catch unintended visual changes
-- Automated CI/CD integration
-- Cross-browser testing
-
-**Challenges:**
-- Animation timing
-- Data-driven visualizations (D3 randomness)
-- External images (artist photos)
-
----
+- Assert on behaviour, not styling. The old sort tests checked for a
+  `bg-indigo-500` class; the component moved to `bg-violet-600` and nothing
+  noticed. They now assert the mosaic actually reorders.
+- Assert on shape, not exact data. The timeline stats test matches
+  `<n> shows across <year>–<year>` rather than `184`, so it survives a data
+  refresh but still fails if the derivation produces `0`, `NaN` or nothing.
+- Take fixtures from the DOM, not from memory. The deep-link test used to
+  hard-code year 2020, which has no concerts, so the dot it looked for could never
+  exist. It now reads a year off the rendered timeline.
+- If an element has no stable hook, add a `data-testid` rather than reaching for a
+  Tailwind class.
 
 ## Performance Testing
 
@@ -706,81 +702,27 @@ npm run build
 
 ---
 
-## Future Testing Enhancements
+## CI workflows
 
-### 1. CI/CD Pipeline
+All of these already exist. Each is path-filtered so it only runs when its own
+area changes.
 
-```yaml
-# .github/workflows/test.yml
-name: Test
+| Workflow | Fires on | Runs |
+|----------|----------|------|
+| `ci.yml` | every push to `main`, every PR | `typecheck`, `typecheck:scripts`, `test:run`, `validate:docs`, build |
+| `scene-ci.yml` | `src/`, `public/data/`, `test/scenes/`, build config | builds, serves the build, renders all six scenes |
+| `mcp-ci.yml` | `workers/mcp-server/` | that Worker's own typecheck + tests, then deploys |
+| `ask-chat-ci.yml` | `workers/ask-chat/` | as above |
+| `meta-injector-ci.yml` | `workers/meta-injector/` | as above |
+| `dashboard-refresh-ci.yml` | `workers/dashboard-refresh/` | as above |
 
-on: [push, pull_request]
+The Workers are deliberately excluded from the root suite: they are separate npm
+packages with their own vitest configs, and the root config cannot parse their
+`.md` imports. Adding a fifth Worker means giving it a workflow, not folding it in.
 
-jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - run: npm ci
-      - run: npm run validate-data
-      - run: npm run validate:version
-      - run: npm run build
-```
-
-### 2. Unit Tests (Vitest)
-
-```typescript
-// src/utils/normalize.test.ts
-import { describe, it, expect } from 'vitest'
-import { normalizeArtistName } from './normalize'
-
-describe('normalizeArtistName', () => {
-  it('converts to lowercase', () => {
-    expect(normalizeArtistName('Depeche Mode')).toBe('depeche-mode')
-  })
-
-  it('replaces spaces with hyphens', () => {
-    expect(normalizeArtistName('Social Distortion')).toBe('social-distortion')
-  })
-
-  it('removes special characters', () => {
-    expect(normalizeArtistName('AC/DC')).toBe('ac-dc')
-  })
-
-  it('removes consecutive hyphens', () => {
-    expect(normalizeArtistName('Foo--Bar')).toBe('foo-bar')
-  })
-})
-```
-
-### 3. Integration Tests (Playwright)
-
-```typescript
-// tests/e2e/navigation.spec.ts
-import { test, expect } from '@playwright/test'
-
-test('navigate between scenes', async ({ page }) => {
-  await page.goto('http://localhost:5173')
-
-  // Start on Scene 1
-  await expect(page.locator('h2')).toContainText('Concert Timeline')
-
-  // Navigate to Artists
-  await page.click('[aria-label="Go to Artists"]')
-  await expect(page.locator('h2')).toContainText('The Artists')
-})
-
-test('deep link to artist', async ({ page }) => {
-  await page.goto('http://localhost:5173/?scene=artists&artist=depeche-mode')
-
-  // Gatefold should open
-  await expect(page.locator('[data-gatefold]')).toBeVisible()
-  await expect(page.locator('h3')).toContainText('Depeche Mode')
-})
-```
-
----
+**A green CI run is not a green release.** `/release` pushes straight to `main`,
+so `ci.yml` fires *after* the commit is tagged and the deploy has started — a
+post-hoc alarm, not a gate. #13 is the fix.
 
 ## Related Documentation
 
