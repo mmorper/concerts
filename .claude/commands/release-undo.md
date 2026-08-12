@@ -22,13 +22,32 @@ Dedicated rollback for when a release goes wrong. Separate from `/release` for c
 
 First, identify the failure point:
 
+**Since #13, a release has more places to stop, and the early ones are free.**
+`/release` now puts the release on a `release/vX.Y.Z` branch, opens a PR, waits for
+CI, merges, then pushes the tag — and **the tag is what deploys**. So a release that
+has not been tagged has not been published, however far along it looks.
+
+Work out where it got to first:
+
+```bash
+gh pr list --head release/v{VERSION} --state all   # is there a PR, and was it merged?
+git ls-remote --tags origin "v{VERSION}"           # was the tag pushed? (this is the deploy trigger)
+```
+
 | Symptom | Likely Cause | Jump To |
 |---------|--------------|---------|
 | Files changed but not committed | Aborted mid-release | [Scenario A](#scenario-a-uncommitted-changes) |
+| Release PR open, CI red or unwanted | Stopped at the gate | [Scenario A2](#scenario-a2-release-pr-open-not-merged) |
+| PR merged, no tag pushed | Stopped before the deploy trigger | [Scenario B2](#scenario-b2-merged-but-not-tagged) |
 | Committed but not pushed | Stopped before push | [Scenario B](#scenario-b-committed-not-pushed) |
 | Pushed but wrong version | Typo or wrong bump | [Scenario C](#scenario-c-wrong-version-pushed) |
 | Pushed but deploy broken | Code issue | [Scenario D](#scenario-d-pushed-but-broken) |
 | Tag exists but shouldn't | Premature tag | [Scenario E](#scenario-e-delete-tag-only) |
+
+> **While the Cloudflare dashboard build is still enabled**, merging the release PR
+> also deploys the site, before any tag exists. So during the transition B2 *has*
+> published — treat it as Scenario D. Once the dashboard build is disabled (the last
+> step of #13) B2 becomes genuinely unpublished, as described.
 
 ---
 
@@ -52,6 +71,73 @@ git mv docs/specs/implemented/{name}.md docs/specs/future/{name}.md 2>/dev/null
 ```
 
 **Done.** No further action needed.
+
+---
+
+## Scenario A2: Release PR Open, Not Merged
+
+**Situation:** `/release` opened the release PR and stopped — CI went red, or you
+ran with `--no-merge`, or you changed your mind. Nothing has been tagged, so
+**nothing has been published.** This is the cheapest place a release can fail and
+it is where the #13 gate is designed to catch problems.
+
+**Check:**
+```bash
+gh pr list --head release/v{VERSION} --state open
+gh pr checks {PR}
+```
+
+**If you want to fix forward** (usual case — a test failed and the fix is small):
+push the fix to the same branch. The checks re-run, and the release continues from
+Step 8b. Nothing needs undoing.
+
+**If you want to abandon the release:**
+```bash
+gh pr close {PR} --delete-branch
+git checkout main   # or your worktree's branch
+git branch -D release/v{VERSION}
+```
+
+Nothing reached `main`, no tag exists, no deploy ran. The version was never
+published — a later release can reuse the same version number.
+
+---
+
+## Scenario B2: Merged But Not Tagged
+
+**Situation:** The release PR merged, but the tag was never pushed — `/release`
+errored between the two, or was interrupted.
+
+**Check:**
+```bash
+git fetch origin
+git log origin/main --oneline -1        # the release commit is on main
+git ls-remote --tags origin "v{VERSION}"  # empty: the deploy trigger never fired
+```
+
+**Important during the transition:** while the Cloudflare dashboard build is still
+enabled, merging already deployed the site. So in that state this is **not** an
+unpublished release — go to [Scenario D](#scenario-d-pushed-but-broken). Once the
+dashboard build is disabled (the last step of #13), the merge alone deploys nothing
+and the below applies.
+
+**To finish the release** (usual case — the merge was fine, only the tag is
+missing):
+```bash
+git fetch origin
+git tag v{VERSION} origin/main
+git push origin v{VERSION}
+```
+
+That triggers `deploy.yml`, which re-checks the tag against `package.json` before
+deploying.
+
+**To back the release out instead**, revert the merge on `main`:
+```bash
+gh pr view {PR} --json mergeCommit --jq .mergeCommit.oid
+git revert -m 1 {MERGE_COMMIT}
+```
+Open that revert as its own PR so it passes the same gate.
 
 ---
 

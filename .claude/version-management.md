@@ -124,14 +124,14 @@ Fix before deploying to production!
    npm run validate:version
    ```
 
-4. **Commit and tag:**
+4. **Ship it through `/release`:**
 
-   ```bash
-   git add src/data/changelog.json package.json
-   git commit -m "docs: Update changelog for v1.x.x"
-   git tag v1.x.x
-   git push origin main --tags
-   ```
+   Do not commit and tag by hand. Since #13 a release goes
+   `release/vX.Y.Z branch → PR → CI green → merge → tag on main`, and the **tag**
+   is what deploys (`.github/workflows/deploy.yml`). Pushing straight to `main`
+   skips the gate that runs the tests before anything is published.
+
+   `/release` performs that sequence — see `.claude/commands/release.md` Step 8.
 
 ---
 
