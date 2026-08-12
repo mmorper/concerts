@@ -97,11 +97,19 @@ jobs:
       # also avoids the /memberships lookup that a least-privilege token is not
       # allowed to make — the failure mode documented in
       # workers/dashboard-refresh/wrangler.toml:5-9 (Authentication error 10000).
+      # wranglerVersion is pinned deliberately. The action is referenced at `@v3`,
+      # a floating major, so the wrangler it installs by default can change on any
+      # release of the action — silently changing the tool that ships production.
+      # 3.90.0 is what it has installed on every run so far and what this deploy
+      # path was verified against. Upgrading is fine, but it should be a commit
+      # someone made on purpose and re-verified, not something that arrives on its
+      # own between one release and the next.
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 6db8591bbcba4588ae4ef9c3839cd209
+          wranglerVersion: '3.90.0'
           command: >-
             pages deploy dist
             --project-name=concerts
