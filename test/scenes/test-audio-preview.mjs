@@ -14,7 +14,6 @@
 import {
   setupBrowser,
   navigateToScene,
-  takeScreenshot,
   elementExists,
   clickElement,
   delay,
@@ -89,7 +88,6 @@ async function testNavigateToArtistWithAudio(page) {
   }
 
   console.log('  ✓ Navigated to artist with audio previews')
-  await takeScreenshot(page, 'audio-preview-01-navigation', { fullPage: true })
 }
 
 /**
@@ -111,7 +109,6 @@ async function testAudioPreviewPanelRenders(page) {
   }
 
   console.log('  ✓ Audio preview panel rendered successfully')
-  await takeScreenshot(page, 'audio-preview-02-panel-render')
 }
 
 /**
@@ -136,7 +133,6 @@ async function testTrackListRenders(page) {
 
   console.log('  ✓ Track list rendered with 5 tracks')
   console.log(`  ✓ First track hover state: ${hasHover ? 'active' : 'inactive'}`)
-  await takeScreenshot(page, 'audio-preview-03-track-list')
 }
 
 /**
@@ -163,7 +159,6 @@ async function testPlayFirstTrack(page) {
 
   console.log('  ✓ First track playing')
   console.log(`  ✓ Equalizer animation: ${equalizerExists ? 'visible' : 'not visible'}`)
-  await takeScreenshot(page, 'audio-preview-04-playing-first-track')
 }
 
 /**
@@ -186,7 +181,6 @@ async function testPausePlayback(page) {
   }
 
   console.log('  ✓ Playback paused')
-  await takeScreenshot(page, 'audio-preview-05-paused')
 }
 
 /**
@@ -218,7 +212,6 @@ async function testPlayDifferentTrack(page) {
   }
 
   console.log('  ✓ Switched to playing second track')
-  await takeScreenshot(page, 'audio-preview-06-second-track-playing')
 }
 
 /**
@@ -240,7 +233,6 @@ async function testTrackHoverStates(page) {
   await delay(200)
 
   // Check if play icon appears on hover (visual verification via screenshot)
-  await takeScreenshot(page, 'audio-preview-07-hover-state')
 
   console.log('  ✓ Track hover states working')
 }
@@ -269,7 +261,6 @@ async function testDisabledTracks(page) {
       throw new Error('Disabled track should not play')
     }
 
-    await takeScreenshot(page, 'audio-preview-08-disabled-track')
   } else {
     console.log('  ℹ  No disabled tracks in this artist (all have previews)')
   }
@@ -302,7 +293,6 @@ async function testStreamingLinkFooter(page) {
   }
 
   console.log('  ✓ Streaming link footer present')
-  await takeScreenshot(page, 'audio-preview-09-streaming-link')
 }
 
 /**
@@ -327,7 +317,6 @@ async function testMobileLayout(browser) {
   }
 
   console.log('  ✓ Mobile layout renders correctly')
-  await takeScreenshot(mobilePage, 'audio-preview-10-mobile-layout', { fullPage: true })
 
   await mobilePage.close()
 }

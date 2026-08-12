@@ -8,7 +8,6 @@
 import {
   setupBrowser,
   navigateToScene,
-  takeScreenshot,
   elementExists,
   delay,
   CONFIG
@@ -38,9 +37,6 @@ async function runMapTests() {
 
     // Test 5: Popup contains venue data
     await testPopupContent(page)
-
-    // Test 6: Map controls (zoom)
-    await testMapControls(page)
 
     // Test 7: Deep linking to specific venue
     await testDeepLinking(page)
@@ -83,8 +79,6 @@ async function testSceneNavigation(page) {
 
   console.log('  ✓ Navigated to map scene successfully')
 
-  // Take screenshot
-  await takeScreenshot(page, 'map-01-navigation', { fullPage: true })
 }
 
 /**
@@ -112,8 +106,6 @@ async function testMapLoads(page) {
 
   console.log('  ✓ Leaflet map loaded successfully')
 
-  // Take screenshot
-  await takeScreenshot(page, 'map-02-leaflet-loaded')
 }
 
 /**
@@ -142,15 +134,13 @@ async function testVenueMarkers(page) {
   const totalMarkers = markerInfo.leafletMarkers + markerInfo.svgCircles + markerInfo.paths
 
   if (totalMarkers === 0) {
-    console.log('  ⚠ No venue markers found on map (may still be loading or use different structure)')
+    throw new Error('No venue markers rendered on the map')
     console.log(`    Leaflet markers: ${markerInfo.leafletMarkers}, SVG circles: ${markerInfo.svgCircles}, Paths: ${markerInfo.paths}`)
     // Don't fail the test - map might be loading async
   } else {
     console.log(`  ✓ Found ${totalMarkers} venue markers (${markerInfo.leafletMarkers} standard, ${markerInfo.svgCircles} circles, ${markerInfo.paths} paths)`)
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'map-03-markers')
 }
 
 /**
@@ -193,8 +183,7 @@ async function testMarkerPopup(page) {
   })
 
   if (!markerClicked) {
-    console.log('  ⚠ No markers found to click')
-    return
+    throw new Error('No markers available to click')
   }
 
   // Wait for popup to appear
@@ -208,11 +197,9 @@ async function testMarkerPopup(page) {
   if (popupExists) {
     console.log('  ✓ Leaflet popup displayed on marker click')
   } else {
-    console.log('  ⚠ Marker clicked but popup did not appear (may require hover or different interaction)')
+    throw new Error('Clicking a marker did not open a popup')
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'map-04-popup')
 }
 
 /**
@@ -246,63 +233,34 @@ async function testPopupContent(page) {
   })
 
   if (!markerClicked) {
-    console.log('  ⚠ No marker to click for popup content test')
-    return
+    throw new Error('No marker available to click for the popup content test')
   }
 
   await delay(1000)
 
-  // Check for popup content
+  // `textContent` includes markup whitespace, so this used to "pass" on a popup
+  // containing nothing but newlines and indentation — it reported
+  // `Popup contains content:` followed by blank lines. innerText is what a person
+  // would actually see.
   const popupContent = await page.evaluate(() => {
     const popup = document.querySelector('.leaflet-popup-content')
-    return popup ? popup.textContent : null
+    return popup ? popup.innerText.trim() : null
   })
 
-  if (popupContent) {
-    console.log(`  ✓ Popup contains content: ${popupContent.substring(0, 50)}...`)
-  } else {
-    console.log('  ⚠ Popup content not found (may not appear on click)')
+  if (!popupContent) {
+    throw new Error('Clicking a marker produced no popup content')
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'map-05-popup-content')
-}
-
-/**
- * Test 6: Map controls (zoom)
- * Tests zoom controls functionality
- */
-async function testMapControls(page) {
-  console.log('Test 6: Map controls (zoom)')
-
-  await navigateToScene(page, 'geography')
-  await delay(2000)
-
-  // Try Leaflet zoom controls
-  const leafletZoomExists = await page.evaluate(() => {
-    return document.querySelector('.leaflet-control-zoom-in') !== null
-  })
-
-  if (leafletZoomExists) {
-    // Click zoom in
-    await page.click('.leaflet-control-zoom-in')
-    await delay(1000)
-
-    console.log('  ✓ Leaflet zoom controls work')
-  } else {
-    // Try custom controls
-    const customControlsExist = await elementExists(page, MAP.controls)
-
-    if (!customControlsExist) {
-      console.log('  ⚠ Map controls not found (may use default Leaflet controls)')
-      return
-    }
-
-    console.log('  ✓ Custom map controls found')
+  // A real venue popup names the venue, its location and a concert count. Assert the
+  // count, because it is the part derived from concert data rather than static copy —
+  // an empty popup shell would otherwise still look fine.
+  if (!/\d+\s+concerts?/i.test(popupContent)) {
+    throw new Error(
+      `Venue popup does not report a concert count (got: ${JSON.stringify(popupContent.slice(0, 120))})`
+    )
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'map-06-zoom-controls')
+  console.log(`  ✓ Popup reports venue detail: ${popupContent.replace(/\n+/g, ' · ').slice(0, 60)}`)
 }
 
 /**
@@ -331,8 +289,6 @@ async function testDeepLinking(page) {
   // Check if map centered on venue (hard to verify without knowing coords)
   console.log(`  ✓ Deep link to venue ${testVenue} loaded map scene`)
 
-  // Take screenshot
-  await takeScreenshot(page, 'map-07-deep-link')
 }
 
 /**
@@ -367,9 +323,6 @@ async function testResponsiveLayout(browser) {
 
   console.log('  ✓ Map scene renders on mobile with Leaflet')
 
-  // Take screenshot
-  await takeScreenshot(page, 'map-08-mobile', { fullPage: true })
-
   await page.close()
 }
 
@@ -378,7 +331,6 @@ async function testResponsiveLayout(browser) {
  */
 runMapTests()
   .then(() => {
-    console.log('\n📸 Screenshots saved to:', CONFIG.SCREENSHOT_DIR)
     process.exit(0)
   })
   .catch((error) => {

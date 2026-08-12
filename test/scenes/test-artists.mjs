@@ -8,7 +8,6 @@
 import {
   setupBrowser,
   navigateToScene,
-  takeScreenshot,
   elementExists,
   clickElement,
   typeText,
@@ -83,8 +82,6 @@ async function testSceneNavigation(page) {
 
   console.log('  ✓ Navigated to artist scene successfully')
 
-  // Take screenshot
-  await takeScreenshot(page, 'artists-01-navigation', { fullPage: true })
 }
 
 /**
@@ -114,14 +111,14 @@ async function testMosaicRender(page) {
     return cards.length
   })
 
+  // An empty mosaic is the failure this test exists to catch, so it must not be
+  // excused as "may use different structure" — if the structure changes, this
+  // selector is what should be updated, and a failure here is how anyone finds out.
   if (cardCount === 0) {
-    console.log('  ⚠ No artist cards found (mosaic may use different structure)')
-  } else {
-    console.log(`  ✓ Artist mosaic rendered with ${cardCount} artist cards`)
+    throw new Error('Artist mosaic rendered no artist cards')
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'artists-02-mosaic-render')
+  console.log(`  ✓ Artist mosaic rendered with ${cardCount} artist cards`)
 }
 
 /**
@@ -138,8 +135,7 @@ async function testArtistSearch(page) {
   const searchExists = await elementExists(page, '[data-testid="artist-search-container"]')
 
   if (!searchExists) {
-    console.log('  ⚠ Artist search container not found')
-    return
+    throw new Error('Artist search container not found')
   }
 
   // Find the search input
@@ -151,8 +147,7 @@ async function testArtistSearch(page) {
   })
 
   if (!searchInput) {
-    console.log('  ⚠ Search input not found in container')
-    return
+    throw new Error('Search input not found inside the artist search container')
   }
 
   // Type in search box
@@ -161,9 +156,6 @@ async function testArtistSearch(page) {
   await delay(800)
 
   console.log('  ✓ Artist search is functional (typed "Depeche Mode")')
-
-  // Take screenshot
-  await takeScreenshot(page, 'artists-03-search')
 
   // Clear search
   await page.evaluate((selector) => {
@@ -181,46 +173,64 @@ async function testArtistSearch(page) {
  * Test 4: Sort by alphabetical
  * Tests the alphabetical sort button
  */
+/**
+ * Read the current order of the mosaic, most-significant first.
+ *
+ * Both sort tests assert on this rather than on the sort button's styling. The
+ * button check they used to do looked for `bg-indigo-500`, a class the component
+ * stopped using — it is `bg-violet-600` now. Because the check was written to
+ * shrug ("active state may vary") nothing ever reported the drift. Order is the
+ * thing users actually care about and it does not rot when a colour changes.
+ */
+async function readMosaicOrder(page, limit = 24) {
+  return page.evaluate(max => {
+    const container = document.querySelector('[data-testid="artist-mosaic-container"]')
+    if (!container) return []
+    return [...container.querySelectorAll('[data-artist], .artist-card, .artist-tile')]
+      .slice(0, max)
+      .map(el => el.getAttribute('data-artist') || el.innerText.trim().split('\n')[0])
+      .filter(Boolean)
+  }, limit)
+}
+
 async function testSortAlphabetical(page) {
   console.log('Test 4: Sort by alphabetical')
 
   await navigateToScene(page, 'artists')
   await delay(1500)
 
-  // Check for sort buttons
   const sortButtonsExist = await elementExists(page, '[data-testid="sort-buttons"]')
 
   if (!sortButtonsExist) {
-    console.log('  ⚠ Sort buttons not found')
-    return
+    throw new Error('Sort buttons not found')
   }
 
-  // Click alphabetical sort button
   const alphabeticalButton = '[data-testid="sort-alphabetical"]'
-  const buttonExists = await elementExists(page, alphabeticalButton)
 
-  if (!buttonExists) {
-    console.log('  ⚠ Alphabetical sort button not found')
-    return
+  if (!(await elementExists(page, alphabeticalButton))) {
+    throw new Error('Alphabetical sort button not found')
   }
 
   await clickElement(page, alphabeticalButton)
-  await delay(1000)
+  await delay(1500)
 
-  // Verify button is active
-  const isActive = await page.evaluate(() => {
-    const button = document.querySelector('[data-testid="sort-alphabetical"]')
-    return button?.classList.contains('bg-indigo-500') || button?.classList.contains('bg-indigo-600')
-  })
+  const order = await readMosaicOrder(page)
 
-  if (isActive) {
-    console.log('  ✓ Alphabetical sort activated')
-  } else {
-    console.log('  ✓ Alphabetical sort button clicked (active state may vary)')
+  if (order.length < 2) {
+    throw new Error(`Mosaic showed ${order.length} cards after sorting — too few to verify order`)
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'artists-04-sort-alphabetical')
+  // Ascending across the whole visible run, not just "the first one starts with A".
+  const outOfOrder = order.findIndex((name, i) => i > 0 && order[i - 1].localeCompare(name) > 0)
+
+  if (outOfOrder > 0) {
+    throw new Error(
+      `Alphabetical sort is out of order at position ${outOfOrder}: ` +
+      `"${order[outOfOrder - 1]}" precedes "${order[outOfOrder]}"`
+    )
+  }
+
+  console.log(`  ✓ Alphabetical sort orders the mosaic (${order[0]} … ${order[order.length - 1]})`)
 }
 
 /**
@@ -233,32 +243,32 @@ async function testSortMostSeen(page) {
   await navigateToScene(page, 'artists')
   await delay(1500)
 
-  // Click most seen sort button
   const mostSeenButton = '[data-testid="sort-most-seen"]'
-  const buttonExists = await elementExists(page, mostSeenButton)
 
-  if (!buttonExists) {
-    console.log('  ⚠ Most seen sort button not found')
-    return
+  if (!(await elementExists(page, mostSeenButton))) {
+    throw new Error('Most seen sort button not found')
   }
+
+  // Sort alphabetically first, so "most seen" has a known order to change. Landing
+  // on the scene already shows most-seen order, so clicking it from the default
+  // state proves nothing.
+  await clickElement(page, '[data-testid="sort-alphabetical"]')
+  await delay(1500)
+  const alphabeticalOrder = await readMosaicOrder(page)
 
   await clickElement(page, mostSeenButton)
-  await delay(1000)
+  await delay(1500)
+  const mostSeenOrder = await readMosaicOrder(page)
 
-  // Verify button is active
-  const isActive = await page.evaluate(() => {
-    const button = document.querySelector('[data-testid="sort-most-seen"]')
-    return button?.classList.contains('bg-indigo-500') || button?.classList.contains('bg-indigo-600')
-  })
-
-  if (isActive) {
-    console.log('  ✓ Most seen sort activated')
-  } else {
-    console.log('  ✓ Most seen sort button clicked (active state may vary)')
+  if (mostSeenOrder.length < 2) {
+    throw new Error(`Mosaic showed ${mostSeenOrder.length} cards after sorting — too few to verify order`)
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'artists-05-sort-most-seen')
+  if (JSON.stringify(alphabeticalOrder) === JSON.stringify(mostSeenOrder)) {
+    throw new Error('Most seen sort left the mosaic in alphabetical order — the sort did nothing')
+  }
+
+  console.log(`  ✓ Most seen sort reorders the mosaic (now leads with ${mostSeenOrder[0]})`)
 }
 
 /**
@@ -298,8 +308,6 @@ async function testDeepLinking(page) {
     console.log(`  ✓ Deep link to artist ${testArtist} loaded scene`)
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'artists-06-deep-link')
 }
 
 /**
@@ -332,9 +340,6 @@ async function testResponsiveLayout(browser) {
 
   console.log('  ✓ Artist scene renders on mobile')
 
-  // Take screenshot
-  await takeScreenshot(page, 'artists-07-mobile', { fullPage: true })
-
   await page.close()
 }
 
@@ -343,7 +348,6 @@ async function testResponsiveLayout(browser) {
  */
 runArtistsTests()
   .then(() => {
-    console.log('\n📸 Screenshots saved to:', CONFIG.SCREENSHOT_DIR)
     process.exit(0)
   })
   .catch((error) => {

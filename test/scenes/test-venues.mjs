@@ -8,7 +8,6 @@
 import {
   setupBrowser,
   navigateToScene,
-  takeScreenshot,
   waitForD3Settle,
   elementExists,
   clickElement,
@@ -81,8 +80,6 @@ async function testSceneNavigation(page) {
 
   console.log('  ✓ Navigated to venue network scene successfully')
 
-  // Take screenshot
-  await takeScreenshot(page, 'venue-network-01-navigation', { fullPage: true })
 }
 
 /**
@@ -121,8 +118,6 @@ async function testInitialRender(page) {
 
   console.log('  ✓ Scene rendered with Top 10 view mode active')
 
-  // Take screenshot
-  await takeScreenshot(page, 'venue-network-02-initial-render')
 }
 
 /**
@@ -158,9 +153,6 @@ async function testViewModeToggle(page) {
 
   console.log('  ✓ View mode toggle works (switched to All Venues)')
 
-  // Take screenshot
-  await takeScreenshot(page, 'venue-network-03-all-venues-view')
-
   // Switch back to Top 10
   await clickElement(page, '[data-testid="view-mode-top10"]')
   await delay(2000)
@@ -194,8 +186,6 @@ async function testForceSimulation(page) {
 
   console.log(`  ✓ D3 force simulation settled with ${nodeCount} nodes`)
 
-  // Take screenshot
-  await takeScreenshot(page, 'venue-network-04-simulation-settled')
 }
 
 /**
@@ -226,16 +216,13 @@ async function testGraphInteractions(page) {
   })
 
   if (!nodeClicked) {
-    console.log('  ⚠ No venue node found to click (graph may be empty)')
-    return
+    throw new Error('Venue network rendered no nodes to click')
   }
 
   await delay(800)
 
   console.log('  ✓ Graph node interaction works')
 
-  // Take screenshot
-  await takeScreenshot(page, 'venue-network-05-node-interaction')
 }
 
 /**
@@ -264,8 +251,6 @@ async function testDeepLinking(page) {
 
   console.log(`  ✓ Deep link to venue ${testVenue} loaded scene`)
 
-  // Take screenshot
-  await takeScreenshot(page, 'venue-network-06-deep-link')
 }
 
 /**
@@ -298,9 +283,6 @@ async function testResponsiveLayout(browser) {
 
   console.log('  ✓ Venue network scene renders on mobile')
 
-  // Take screenshot
-  await takeScreenshot(page, 'venue-network-07-mobile', { fullPage: true })
-
   await page.close()
 }
 
@@ -309,7 +291,6 @@ async function testResponsiveLayout(browser) {
  */
 runVenuesTests()
   .then(() => {
-    console.log('\n📸 Screenshots saved to:', CONFIG.SCREENSHOT_DIR)
     process.exit(0)
   })
   .catch((error) => {

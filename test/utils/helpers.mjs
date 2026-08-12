@@ -6,18 +6,15 @@
  */
 
 import puppeteer from 'puppeteer'
-import fs from 'fs'
-import path from 'path'
 
 /**
  * Configuration constants for test environment
  */
 export const CONFIG = {
-  // Dev server URL (Vite default)
-  BASE_URL: 'http://localhost:5173',
-
-  // Screenshot output directory
-  SCREENSHOT_DIR: '/tmp/morperhaus-tests',
+  // Dev server URL. Defaults to the Vite default, but must stay overridable:
+  // this repo is routinely checked out into several worktrees at once, so 5173
+  // is often already taken by another session's server, and CI picks its own port.
+  BASE_URL: process.env.TEST_BASE_URL || 'http://localhost:5173',
 
   // Default viewport sizes
   VIEWPORTS: {
@@ -128,36 +125,6 @@ export async function navigateToScene(page, scene, params = {}) {
     waitUntil: 'networkidle2',
     timeout: CONFIG.TIMEOUTS.navigation
   })
-}
-
-/**
- * Take a screenshot and save to test output directory
- *
- * @param {Page} page - Puppeteer page instance
- * @param {string} filename - Screenshot filename (without extension)
- * @param {Object} options - Screenshot options
- * @param {boolean} options.fullPage - Capture full scrollable page (default: false)
- * @returns {Promise<string>} Path to saved screenshot
- *
- * @example
- * await takeScreenshot(page, 'timeline-initial', { fullPage: true })
- */
-export async function takeScreenshot(page, filename, options = {}) {
-  const { fullPage = false } = options
-
-  // Ensure screenshot directory exists
-  if (!fs.existsSync(CONFIG.SCREENSHOT_DIR)) {
-    fs.mkdirSync(CONFIG.SCREENSHOT_DIR, { recursive: true })
-  }
-
-  const filepath = path.join(CONFIG.SCREENSHOT_DIR, `${filename}.png`)
-
-  await page.screenshot({
-    path: filepath,
-    fullPage
-  })
-
-  return filepath
 }
 
 /**
@@ -453,18 +420,3 @@ export async function typeText(page, selector, text, options = {}) {
   await delay(CONFIG.TIMEOUTS.interaction)
 }
 
-/**
- * Clean up test artifacts
- *
- * @param {boolean} keepScreenshots - Keep screenshots after cleanup (default: false)
- * @returns {void}
- *
- * @example
- * cleanupTests() // Remove all screenshots
- * cleanupTests(true) // Keep screenshots
- */
-export function cleanupTests(keepScreenshots = false) {
-  if (!keepScreenshots && fs.existsSync(CONFIG.SCREENSHOT_DIR)) {
-    fs.rmSync(CONFIG.SCREENSHOT_DIR, { recursive: true, force: true })
-  }
-}

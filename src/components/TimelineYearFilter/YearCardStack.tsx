@@ -234,6 +234,7 @@ export function YearCardStack({
   return (
     <div
       ref={containerRef}
+      data-testid="year-card-stack"
       style={{
         position: 'fixed',
         left: layout.stackLeft,

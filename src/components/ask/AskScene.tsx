@@ -51,7 +51,7 @@ export function AskScene() {
   }
 
   return (
-    <section ref={ref} className="ask-scene snap-start snap-always" aria-label="Ask the Archive">
+    <section ref={ref} className="ask-scene snap-start snap-always" aria-label="Ask the Archive" data-testid="ask-scene">
       <div className="ask-scene-wrap">
         <p className="ask-scene-kicker">You&rsquo;ve reached the present</p>
         <h1>

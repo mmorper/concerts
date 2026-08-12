@@ -8,7 +8,6 @@
 import {
   setupBrowser,
   navigateToScene,
-  takeScreenshot,
   waitForElement,
   hoverElement,
   clickElement,
@@ -83,9 +82,6 @@ async function testInitialRender(page) {
     throw new Error('Timeline title or subtitle not found')
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'timeline-01-initial-render', { fullPage: true })
-
   console.log('  ✓ Timeline scene renders correctly')
 }
 
@@ -118,9 +114,6 @@ async function testYearDotsRender(page) {
     throw new Error('Some year dots missing data-year attribute')
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'timeline-02-year-dots')
-
   console.log('  ✓ Year dots render correctly with data attributes')
 }
 
@@ -150,26 +143,26 @@ async function testHoverPreview(page) {
   // Wait for hover preview to appear
   await delay(500)
 
-  // Check if hover preview exists
+  // The hover preview is implemented and does appear — verified against the running
+  // app. It previously logged "may not be implemented" and passed either way, which
+  // meant a regression that stopped the preview rendering would have gone unnoticed.
   const previewExists = await elementExists(page, TIMELINE.hoverPreview)
 
   if (!previewExists) {
-    console.log('  ⚠ Hover preview did not appear (may not be implemented)')
-    return
+    throw new Error(`Hover preview did not appear after hovering year ${yearValue}`)
   }
 
-  // Verify preview contains year (optional - child elements may not have test IDs yet)
-  const previewYearExists = await elementExists(page, TIMELINE.previewYear)
+  // The preview's child elements carry no test ids, so assert on its text: whatever
+  // the markup underneath becomes, it has to still name the year being hovered.
+  const previewText = await getTextContent(page, TIMELINE.hoverPreview)
 
-  if (previewYearExists) {
-    const yearText = await getTextContent(page, TIMELINE.previewYear)
-    console.log(`  ✓ Hover preview appears with year: ${yearText}`)
-  } else {
-    console.log(`  ✓ Hover preview appears for year ${yearValue} (child elements not yet instrumented)`)
+  if (!previewText || !previewText.includes(yearValue)) {
+    throw new Error(
+      `Hover preview for ${yearValue} does not mention that year (text: ${JSON.stringify(previewText)})`
+    )
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'timeline-03-hover-preview')
+  console.log(`  ✓ Hover preview appears and names year ${yearValue}`)
 }
 
 /**
@@ -194,18 +187,26 @@ async function testYearDotNavigation(page) {
   // Click the year dot
   await clickElement(page, `${TIMELINE.yearDot}[data-year="${yearValue}"]`)
 
-  // Wait for page to respond (might scroll or update URL)
+  // Wait for the card stack's entry animation.
   await delay(1000)
 
-  // Check if URL contains year parameter
-  const currentUrl = page.url()
-  const urlContainsYear = currentUrl.includes(`year=${yearValue}`)
+  // This test used to assert nothing at all. It checked whether the URL gained a
+  // `year=` param, logged the answer, and passed regardless — the answer has been
+  // `false` the whole time, because clicking a dot opens the year card stack rather
+  // than navigating. So assert the behaviour the scene actually has.
+  const stackExists = await elementExists(page, TIMELINE.yearCardStack)
 
-  // Note: This might not be implemented yet, so we just log the result
-  console.log(`  ✓ Clicked year ${yearValue} (URL contains year: ${urlContainsYear})`)
+  if (!stackExists) {
+    throw new Error(`Clicking year ${yearValue} did not open the year card stack`)
+  }
 
-  // Take screenshot
-  await takeScreenshot(page, 'timeline-04-year-click')
+  const stackText = await getTextContent(page, TIMELINE.yearCardStack)
+
+  if (!stackText || stackText.trim().length === 0) {
+    throw new Error(`Year card stack for ${yearValue} opened but rendered no content`)
+  }
+
+  console.log(`  ✓ Clicking year ${yearValue} opens the year card stack`)
 }
 
 /**
@@ -218,21 +219,38 @@ async function testTimelineStatistics(page) {
   await navigateToScene(page, null)
   await delay(1000)
 
-  // Check if stats element exists
   const statsExists = await elementExists(page, TIMELINE.stats)
 
   if (!statsExists) {
-    console.log('  ⚠ Timeline stats element not found (may not be implemented)')
-    return
+    throw new Error('Timeline stats element not found')
   }
 
-  // Get stats text
   const statsText = await getTextContent(page, TIMELINE.stats)
 
-  console.log(`  ✓ Timeline statistics: ${statsText}`)
+  // Shape, not exact numbers — "184 shows across 1984–2026" grows with the archive,
+  // so pinning the count would make this fail on every data refresh. What must not
+  // regress is that real numbers render at all: the derivation behind this line
+  // silently producing 0, NaN or an empty string is the failure worth catching.
+  const statsPattern = /(\d+)\s+shows?\s+across\s+(\d{4})\D+(\d{4})/i
+  const match = statsText && statsText.match(statsPattern)
 
-  // Take screenshot
-  await takeScreenshot(page, 'timeline-05-statistics')
+  if (!match) {
+    throw new Error(
+      `Timeline stats do not read as "<n> shows across <year>–<year>" (got: ${JSON.stringify(statsText)})`
+    )
+  }
+
+  const [, showCount, firstYear, lastYear] = match
+
+  if (Number(showCount) === 0) {
+    throw new Error(`Timeline stats report 0 shows (got: ${JSON.stringify(statsText)})`)
+  }
+
+  if (Number(firstYear) >= Number(lastYear)) {
+    throw new Error(`Timeline stats year range is not ascending: ${firstYear}–${lastYear}`)
+  }
+
+  console.log(`  ✓ Timeline statistics: ${statsText.trim()}`)
 }
 
 /**
@@ -242,8 +260,20 @@ async function testTimelineStatistics(page) {
 async function testDeepLinking(page) {
   console.log('Test 6: Deep linking to year')
 
-  // Navigate with year parameter
-  const testYear = '2020'
+  // This test used to hard-code 2020 — a year with no concerts in it, so the dot it
+  // looked for could never exist. It logged "may not have concerts that year" and
+  // passed, which made a deep-link regression indistinguishable from the fixture
+  // being wrong. Take the year from the rendered timeline instead, so it is always
+  // a year the archive actually contains.
+  await navigateToScene(page, 'timeline')
+  await delay(1500)
+
+  const testYear = await page.$eval(TIMELINE.yearDot, dot => dot.getAttribute('data-year'))
+
+  if (!testYear) {
+    throw new Error('Could not read a year from the timeline to deep link to')
+  }
+
   await page.goto(`${CONFIG.BASE_URL}?scene=timeline&year=${testYear}`, {
     waitUntil: 'networkidle2',
     timeout: CONFIG.TIMEOUTS.navigation
@@ -251,25 +281,20 @@ async function testDeepLinking(page) {
 
   await delay(1500)
 
-  // Verify timeline rendered
   const svgExists = await elementExists(page, TIMELINE.svg)
 
   if (!svgExists) {
     throw new Error('Timeline did not render with deep link')
   }
 
-  // Check if the specific year dot exists
   const yearDotSelector = `${TIMELINE.yearDot}[data-year="${testYear}"]`
   const yearDotExists = await page.$(yearDotSelector).then(el => el !== null)
 
-  if (yearDotExists) {
-    console.log(`  ✓ Deep link to year ${testYear} works (year dot found)`)
-  } else {
-    console.log(`  ⚠ Year ${testYear} dot not found (may not have concerts that year)`)
+  if (!yearDotExists) {
+    throw new Error(`Deep link to year ${testYear} rendered no dot for that year`)
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'timeline-06-deep-link')
+  console.log(`  ✓ Deep link to year ${testYear} works (year dot found)`)
 }
 
 /**
@@ -302,9 +327,6 @@ async function testResponsiveLayout(browser) {
 
   console.log(`  ✓ Timeline renders on mobile (${yearDotCount} year dots)`)
 
-  // Take screenshot
-  await takeScreenshot(page, 'timeline-07-mobile', { fullPage: true })
-
   await page.close()
 }
 
@@ -313,7 +335,6 @@ async function testResponsiveLayout(browser) {
  */
 runTimelineTests()
   .then(() => {
-    console.log('\n📸 Screenshots saved to:', CONFIG.SCREENSHOT_DIR)
     process.exit(0)
   })
   .catch((error) => {

@@ -8,7 +8,6 @@
 import {
   setupBrowser,
   navigateToScene,
-  takeScreenshot,
   waitForD3Settle,
   elementExists,
   clickElement,
@@ -85,8 +84,6 @@ async function testSceneNavigation(page) {
 
   console.log('  ✓ Navigated to genres scene successfully')
 
-  // Take screenshot
-  await takeScreenshot(page, 'genres-01-navigation', { fullPage: true })
 }
 
 /**
@@ -121,8 +118,6 @@ async function testInitialRender(page) {
 
   console.log(`  ✓ Treemap rendered with ${cellCount} genre cells`)
 
-  // Take screenshot
-  await takeScreenshot(page, 'genres-02-initial-render')
 }
 
 /**
@@ -152,8 +147,6 @@ async function testTimelineSlider(page) {
   const currentYear = await getTextContent(page, '[data-testid="current-year"]')
   console.log(`  ✓ Timeline slider exists (showing year: ${currentYear})`)
 
-  // Take screenshot
-  await takeScreenshot(page, 'genres-03-timeline-slider')
 }
 
 /**
@@ -184,8 +177,7 @@ async function testGenreSelection(page) {
   })
 
   if (!genreClicked) {
-    console.log('  ⚠ No genre cell found to click (treemap may be empty)')
-    return
+    throw new Error('Genre treemap rendered no cells to click')
   }
 
   await delay(1000)
@@ -200,8 +192,6 @@ async function testGenreSelection(page) {
     console.log('  ✓ Genre click registered (breadcrumb may not appear for all genres)')
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'genres-04-genre-selected')
 }
 
 /**
@@ -217,40 +207,41 @@ async function testYearNavigation(page) {
   // Get initial year
   const initialYear = await getTextContent(page, '[data-testid="current-year"]')
 
-  // Try to interact with slider (if it's an input range)
-  const sliderInteracted = await page.evaluate(() => {
-    const container = document.querySelector('[data-testid="timeline-slider-container"]')
-    if (!container) return false
+  // The slider is a pointer-driven div, not an `input[type="range"]`. This test used
+  // to look for a range input, find none, and return a pass — so it never once
+  // exercised the control it is named after. Drive the real thing: click near the
+  // left end of the track, which is a year far from wherever it currently sits.
+  const track = await page.$('[data-testid="timeline-slider-track"]')
 
-    const slider = container.querySelector('input[type="range"]')
-    if (!slider) return false
-
-    // Change slider value
-    const currentValue = parseInt(slider.value)
-    slider.value = String(currentValue + 1)
-    slider.dispatchEvent(new Event('input', { bubbles: true }))
-    slider.dispatchEvent(new Event('change', { bubbles: true }))
-    return true
-  })
-
-  if (!sliderInteracted) {
-    console.log('  ⚠ Timeline slider not found or not interactive')
-    return
+  if (!track) {
+    throw new Error('Genre timeline slider track not found')
   }
 
+  const box = await track.boundingBox()
+
+  if (!box) {
+    throw new Error('Genre timeline slider track is present but has no layout box')
+  }
+
+  await page.mouse.click(box.x + box.width * 0.1, box.y + box.height / 2)
   await delay(1000)
 
-  // Check if year changed
   const newYear = await getTextContent(page, '[data-testid="current-year"]')
 
-  if (newYear !== initialYear) {
-    console.log(`  ✓ Year navigation works (${initialYear} → ${newYear})`)
-  } else {
-    console.log('  ✓ Timeline slider is interactive (year may be at boundary)')
+  if (!newYear) {
+    throw new Error('Year display is empty after moving the slider')
   }
 
-  // Take screenshot
-  await takeScreenshot(page, 'genres-05-year-navigation')
+  // Clicking at 10% must land on a different year than wherever it started. If the
+  // scene ever opens at its first year this would be a false failure — it does not,
+  // and the assertion is worth more than the hypothetical.
+  if (newYear === initialYear) {
+    throw new Error(
+      `Moving the slider to the start of the range left the year at ${initialYear}`
+    )
+  }
+
+  console.log(`  ✓ Year navigation works (${initialYear} → ${newYear})`)
 }
 
 /**
@@ -279,8 +270,7 @@ async function testBreadcrumbNavigation(page) {
   })
 
   if (!genreClicked) {
-    console.log('  ⚠ Cannot test breadcrumb without selecting a genre first')
-    return
+    throw new Error('Could not select a genre — treemap rendered no clickable cells')
   }
 
   await delay(1000)
@@ -288,9 +278,10 @@ async function testBreadcrumbNavigation(page) {
   // Check if back button exists
   const backButtonExists = await elementExists(page, '[data-testid="breadcrumb-back"]')
 
+  // The back button is conditional on a genre being selected, not on which genre —
+  // and one was just selected above, so its absence is a regression, not a variant.
   if (!backButtonExists) {
-    console.log('  ⚠ Breadcrumb back button not found (may not appear for all genres)')
-    return
+    throw new Error('Breadcrumb back button did not appear after selecting a genre')
   }
 
   // Click back button
@@ -299,8 +290,6 @@ async function testBreadcrumbNavigation(page) {
 
   console.log('  ✓ Breadcrumb navigation works (clicked back button)')
 
-  // Take screenshot
-  await takeScreenshot(page, 'genres-06-breadcrumb-navigation')
 }
 
 /**
@@ -328,8 +317,6 @@ async function testDeepLinking(page) {
 
   console.log(`  ✓ Deep link to genre ${testGenre} loaded scene`)
 
-  // Take screenshot
-  await takeScreenshot(page, 'genres-07-deep-link')
 }
 
 /**
@@ -362,9 +349,6 @@ async function testResponsiveLayout(browser) {
 
   console.log('  ✓ Genres scene renders on mobile')
 
-  // Take screenshot
-  await takeScreenshot(page, 'genres-08-mobile', { fullPage: true })
-
   await page.close()
 }
 
@@ -373,7 +357,6 @@ async function testResponsiveLayout(browser) {
  */
 runGenresTests()
   .then(() => {
-    console.log('\n📸 Screenshots saved to:', CONFIG.SCREENSHOT_DIR)
     process.exit(0)
   })
   .catch((error) => {

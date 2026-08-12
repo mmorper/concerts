@@ -27,9 +27,8 @@ export const TIMELINE = {
   yearDot: `[data-testid="year-dot"]`,
   yearDotWithYear: (year) => `[data-testid="year-dot"][data-year="${year}"]`,
   hoverPreview: `[data-testid="timeline-hover-preview"]`,
-  previewYear: `[data-testid="preview-year"]`,
-  previewConcertCount: `[data-testid="preview-concert-count"]`,
-  previewArtists: `[data-testid="preview-artists"]`,
+  // Opened by clicking a year dot (clicking does NOT change the URL).
+  yearCardStack: `[data-testid="year-card-stack"]`,
   title: `[data-testid="timeline-title"]`,
   subtitle: `[data-testid="timeline-subtitle"]`,
   stats: `[data-testid="timeline-stats"]`
