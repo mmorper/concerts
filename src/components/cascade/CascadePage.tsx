@@ -5,6 +5,10 @@ import { CascadeAtom } from './CascadeAtom'
 import { ServiceGatewayPeer, CodeTransform, FlowArrow, API_BRANDS, PillGrid } from './CascadeApiEngine'
 import { useCascadeFocus } from './useCascadeFocus'
 import { AnimatedConnector } from './AnimatedConnector'
+// The one place song→album keys are resolved. Reimplementing the key here would
+// silently match nothing — see the docblock in song-album-lookup.ts. The MCP
+// Worker imports it by the same route.
+import { lookupSongAlbum } from '../../../scripts/utils/song-album-lookup.js'
 type SeedType = 'artist' | 'venue' | 'date'
 
 const SEED_GLOW: Record<SeedType, string> = {
@@ -57,6 +61,15 @@ interface VenueMeta {
   location: { lat: number; lng: number }
   photoUrls?: { thumbnail?: string; medium?: string }
   places?: { id?: string; formattedAddress?: string; websiteUri?: string }[]
+}
+
+/** One row of song-albums.json — the v6.0.0 attribution record. */
+interface SongAlbum {
+  songTitle: string
+  albumTitle: string
+  releaseDate?: string
+  coverAvailable?: boolean
+  matchTier?: number
 }
 
 interface Track {
@@ -547,6 +560,8 @@ export function CascadePage() {
   // shape was Record<string, entry> built with last-write-wins, so the page
   // could show another band's setlist under the selected artist's name.
   const setlistsByConcertId = useRef<Record<string, any[]>>({})
+  const songAlbumsRef = useRef<Record<string, SongAlbum>>({})
+  const discographyKeysRef = useRef<{ act: string; discographyKey: string }[]>([])
 
   // Promises for the four large files, so the selection handlers can await the
   // one dataset they need instead of the page waiting for all five (#114).
@@ -555,6 +570,8 @@ export function CascadePage() {
     venuesMeta: Promise<Record<string, VenueMeta>>
     topTracks: Promise<Record<string, { tracks: Track[] }>>
     setlists: Promise<Record<string, any>>
+    songAlbums: Promise<Record<string, SongAlbum>>
+    aliases: Promise<{ act: string; discographyKey: string }[]>
   } | null>(null)
 
   // Gate for the featured demo below: it walks the whole cascade unattended, so
@@ -575,6 +592,15 @@ export function CascadePage() {
     const artistsMetaP = json<Record<string, ArtistMeta>>('/data/artists-metadata.json')
     const venuesMetaP = json<Record<string, VenueMeta>>('/data/venues-metadata.json')
     const topTracksP = json<Record<string, { tracks: Track[] }>>('/data/artists-top-tracks.json')
+    // The v6.0.0 attribution record, plus the alias relation its key resolution
+    // needs. 340 KB and 3 KB — small next to the other four, and since #114 they
+    // load independently, so nothing waits on them.
+    const songAlbumsP = json<{ songs?: Record<string, SongAlbum> }>('/data/song-albums.json')
+      .then(sa => sa.songs ?? {})
+    const aliasesP = json<{ discographyKeys?: { act: string; discographyKey: string }[] }>(
+      '/data/artist-aliases.json'
+    ).then(a => a.discographyKeys ?? [])
+
     const setlistsP = json<{ entries?: Record<string, any> }>('/data/setlists-cache.json')
       .then(sl => {
         const slMap: Record<string, any[]> = {}
@@ -591,12 +617,16 @@ export function CascadePage() {
     venuesMetaP.then(vm => { venuesMetaRef.current = vm })
     topTracksP.then(tt => { topTracksRef.current = tt })
     setlistsP.then(sl => { setlistsByConcertId.current = sl })
+    songAlbumsP.then(sa => { songAlbumsRef.current = sa })
+    aliasesP.then(dk => { discographyKeysRef.current = dk })
 
     loadersRef.current = {
       artistsMeta: artistsMetaP,
       venuesMeta: venuesMetaP,
       topTracks: topTracksP,
       setlists: setlistsP,
+      songAlbums: songAlbumsP,
+      aliases: aliasesP,
     }
 
     concertsP.then(c => setConcerts(c.concerts ?? []))
@@ -663,6 +693,8 @@ export function CascadePage() {
   const [venueMeta, setVenueMeta] = useState<VenueMeta | null>(null)
   const [artistTracks, setArtistTracks] = useState<Track[]>([])
   const [setlistSongs, setSetlistSongs] = useState<string[]>([])
+  // Aligned by index with setlistSongs; null where the song has no attribution.
+  const [setlistAlbums, setSetlistAlbums] = useState<(SongAlbum | null)[]>([])
   const [tourName, setTourName] = useState<string | null>(null)
 
   // ── Seed glow state ───────────────────────────────────────────────────────
@@ -993,6 +1025,29 @@ export function CascadePage() {
     setSetlistSongs(songs)
     setTourName(tour)
 
+    // Attribute each song to its album (#286). Resolution goes through the shared
+    // lookup rather than building the key here: the key is
+    // `artistKey::foldedSongTitle`, where the artist key is not always the slug of
+    // the billing and the fold strips qualifiers ("- 2006 Remaster", "(Remix)").
+    // Getting either wrong misses silently, which is indistinguishable from
+    // holding no discography for the act.
+    if (loadersRef.current) {
+      const [songAlbums, discographyKeys, artistsMeta] = await Promise.all([
+        loadersRef.current.songAlbums,
+        loadersRef.current.aliases,
+        loadersRef.current.artistsMeta,
+      ])
+      if (gen !== genRef.current) return
+      setSetlistAlbums(
+        songs.map(name =>
+          lookupSongAlbum<SongAlbum>(songAlbums, concert.headliner, name, {
+            discographyKeys,
+            artistsMetadata: artistsMeta,
+          })
+        )
+      )
+    }
+
     const dataPoints = countSetlistDataPoints(entry)
 
     if (autoRun) {
@@ -1052,6 +1107,7 @@ export function CascadePage() {
     setDateOptions([])
     setVenueMeta(null)
     setSetlistSongs([])
+    setSetlistAlbums([])
     setTourName(null)
     setTiersVisible(new Set([0])); setConnectorPhase(0)
     setFlowPhase('artist-hydrating')
@@ -1102,7 +1158,7 @@ export function CascadePage() {
     setSelectedConcert(null)
     setVenueOptions([]); setDateOptions([])
     setArtistMeta(null); setVenueMeta(null)
-    setArtistTracks([]); setSetlistSongs([]); setTourName(null)
+    setArtistTracks([]); setSetlistSongs([]); setSetlistAlbums([]); setTourName(null)
     resetFocus(); setArtistSearch('')
     setCascadePending(false); pendingCascadeRef.current = null
     setTierAwaitingContinue(null); continueResolverRef.current = null
@@ -1833,16 +1889,29 @@ export function CascadePage() {
               {setlistSongs.length > 0 && (
               <div style={{ marginTop: 16 }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px 16px' }}>
-                  {setlistSongs.slice(0, setlistLines).map((song, i) => (
+                  {setlistSongs.slice(0, setlistLines).map((song, i) => {
+                    // #286: the discography release shipped song→album attribution
+                    // that no surface displayed. This is the page that explains the
+                    // pipeline, so it is where the attribution should be legible —
+                    // one night's setlist reaching back across an artist's catalogue.
+                    const album = setlistAlbums[i]
+                    const year = album?.releaseDate?.slice(0, 4)
+                    return (
                     <div key={song + i} style={{ display: 'flex', gap: 8, alignItems: 'baseline', padding: '3px 0', borderBottom: '1px solid rgba(124,58,237,0.08)' }}>
                       <span style={{ ...MONO, fontSize: 8, color: '#7c3aed55', width: 18, textAlign: 'right', flexShrink: 0 }}>
                         {String(i + 1).padStart(2, '0')}
                       </span>
-                      <span style={{ ...MONO, fontSize: 9, color: '#c4b5fd', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <span style={{ ...MONO, fontSize: 9, color: '#c4b5fd', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flexShrink: 0 }}>
                         {song}
                       </span>
+                      {album && (
+                        <span style={{ ...MONO, fontSize: 8, color: '#7c3aed99', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          → {album.albumTitle}{year ? ` (${year})` : ''}
+                        </span>
+                      )}
                     </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
               )}
