@@ -659,6 +659,11 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         // Added by the liner notes work (#57). Zero here because existsSync is
         // mocked false, so the optional liner-notes.json read is skipped.
         linerNotesCount: 0,
+        // Added by #286 — the discography release's headline number, which the
+        // social card did not carry. Zero here for the same reason as
+        // linerNotesCount: existsSync is mocked false, so discography.json is
+        // never read and totalAlbums stays at its initial value.
+        albumCount: 0,
       })
     })
 

@@ -119,7 +119,16 @@ async function main() {
   console.log(`  ${scenes} interactive scenes\n`)
 
   // Generate description
-  const description = `A visual love letter to ${decades}+ decades of live music. ${concerts} concerts from ${startYear}-${endYear}, featuring ${artists} artists across ${venues} venues. Explored through interactive timelines, maps, and network graphs.`
+  // `totalAlbums` is already derived above for llm.txt; the discography release
+  // is the largest thing the archive holds and was the one headline number the
+  // social card never carried (#286).
+  //
+  // Kept under ~160 characters, which is roughly where search engines truncate.
+  // The old string ran to 183 and adding the album count would have pushed it to
+  // 202, so the trailing "Explored through interactive timelines, maps, and
+  // network graphs." was dropped — it was the least distinctive clause and the
+  // one being cut off anyway. Adding to this sentence means taking something out.
+  const description = `A visual love letter to ${decades}+ decades of live music. ${concerts} concerts from ${startYear}-${endYear}, featuring ${artists} artists across ${venues} venues and ${totalAlbums.toLocaleString()} albums.`
 
   console.log(`New description:\n"${description}"\n`)
 
@@ -229,6 +238,9 @@ async function main() {
     scenes,
     artists,
     venues,
+    // Added #286. The OG image generator reads this file, so a "discography"
+    // release finally has its headline number on the social card.
+    albumCount: totalAlbums,
     linerNotesCount,
   }
 
