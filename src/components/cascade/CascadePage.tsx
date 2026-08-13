@@ -541,26 +541,67 @@ export function CascadePage() {
   const artistsMetaRef = useRef<Record<string, ArtistMeta>>({})
   const venuesMetaRef = useRef<Record<string, VenueMeta>>({})
   const topTracksRef = useRef<Record<string, { tracks: Track[] }>>({})
-  const setlistsByConcertId = useRef<Record<string, any>>({})
+  // Keyed by concertId, but holding *every* cached entry for that date — a
+  // festival has one concertId and many setlists (Huntington State Beach 2018
+  // has 15, including Rancid, Bad Religion and The Offspring). The previous
+  // shape was Record<string, entry> built with last-write-wins, so the page
+  // could show another band's setlist under the selected artist's name.
+  const setlistsByConcertId = useRef<Record<string, any[]>>({})
+
+  // Promises for the four large files, so the selection handlers can await the
+  // one dataset they need instead of the page waiting for all five (#114).
+  const loadersRef = useRef<{
+    artistsMeta: Promise<Record<string, ArtistMeta>>
+    venuesMeta: Promise<Record<string, VenueMeta>>
+    topTracks: Promise<Record<string, { tracks: Track[] }>>
+    setlists: Promise<Record<string, any>>
+  } | null>(null)
+
+  // Gate for the featured demo below: it walks the whole cascade unattended, so
+  // it should not start until the data that walk ends in has arrived.
+  const [demoDataReady, setDemoDataReady] = useState(false)
 
   useEffect(() => {
-    Promise.all([
-      fetch('/data/concerts.json').then(r => r.json()),
-      fetch('/data/artists-metadata.json').then(r => r.json()),
-      fetch('/data/venues-metadata.json').then(r => r.json()),
-      fetch('/data/artists-top-tracks.json').then(r => r.json()),
-      fetch('/data/setlists-cache.json').then(r => r.json()),
-    ]).then(([c, am, vm, tt, sl]) => {
-      setConcerts(c.concerts ?? [])
-      artistsMetaRef.current = am
-      venuesMetaRef.current = vm
-      topTracksRef.current = tt
-      const slMap: Record<string, any> = {}
-      Object.values(sl.entries ?? {}).forEach((entry: any) => {
-        if (entry.concertId) slMap[entry.concertId] = entry
+    // These five were behind a single Promise.all, which meant first paint waited
+    // on 2.7 MB — and the slowest fetch gated everything, including the 125 KB
+    // file that is the only one the page needs to become structurally real (#114).
+    //
+    // They still all start at once; what changed is that nothing waits for the
+    // set. concerts.json lands first by size and renders the archive; the other
+    // four settle into refs as they arrive.
+    const json = <T,>(url: string): Promise<T> => fetch(url).then(r => r.json())
+
+    const concertsP = json<{ concerts?: Concert[] }>('/data/concerts.json')
+    const artistsMetaP = json<Record<string, ArtistMeta>>('/data/artists-metadata.json')
+    const venuesMetaP = json<Record<string, VenueMeta>>('/data/venues-metadata.json')
+    const topTracksP = json<Record<string, { tracks: Track[] }>>('/data/artists-top-tracks.json')
+    const setlistsP = json<{ entries?: Record<string, any> }>('/data/setlists-cache.json')
+      .then(sl => {
+        const slMap: Record<string, any[]> = {}
+        Object.values(sl.entries ?? {}).forEach((entry: any) => {
+          if (!entry?.concertId) return
+          ;(slMap[entry.concertId] ||= []).push(entry)
+        })
+        return slMap
       })
-      setlistsByConcertId.current = slMap
-    })
+
+    // Handlers read the refs synchronously once populated; the promises above are
+    // what they await when a click lands before the file does.
+    artistsMetaP.then(am => { artistsMetaRef.current = am })
+    venuesMetaP.then(vm => { venuesMetaRef.current = vm })
+    topTracksP.then(tt => { topTracksRef.current = tt })
+    setlistsP.then(sl => { setlistsByConcertId.current = sl })
+
+    loadersRef.current = {
+      artistsMeta: artistsMetaP,
+      venuesMeta: venuesMetaP,
+      topTracks: topTracksP,
+      setlists: setlistsP,
+    }
+
+    concertsP.then(c => setConcerts(c.concerts ?? []))
+
+    Promise.all([topTracksP, setlistsP]).then(() => setDemoDataReady(true))
   }, [])
 
   // ── Data graph ────────────────────────────────────────────────────────────
@@ -916,13 +957,32 @@ export function CascadePage() {
 
   // ── Selection handlers ────────────────────────────────────────────────────
 
-  const doDateSelect = (concert: Concert, gen: number, autoRun = true) => {
+  const doDateSelect = async (concert: Concert, gen: number, autoRun = true) => {
     setSelectedConcert(concert)
     setDateOptions([])
 
+    // setlists-cache.json is the largest of the five (831 KB) and therefore the
+    // most likely to still be arriving when the cascade reaches this tier (#114).
+    if (loadersRef.current) {
+      await loadersRef.current.setlists
+      if (gen !== genRef.current) return
+    }
+
     let songs: string[] = []
     let tour: string | null = null
-    const entry = setlistsByConcertId.current[concert.id]
+    // Pick this concert's headliner out of the entries for that date, rather
+    // than whichever one happened to be stored last. Falling back to any entry
+    // that has songs keeps single-act shows working when the cached artistName
+    // is spelled differently from the headliner in concerts.json.
+    const candidates = setlistsByConcertId.current[concert.id] ?? []
+    const headliner = concert.headliner?.toLowerCase().trim()
+    const hasSongs = (e: any) =>
+      ((e?.setlist?.sets?.set ?? []) as any[]).some(set => (set.song ?? []).length > 0)
+    const entry =
+      candidates.find(e => e?.artistName?.toLowerCase().trim() === headliner && hasSongs(e)) ??
+      candidates.find(e => e?.artistName?.toLowerCase().trim() === headliner) ??
+      candidates.find(hasSongs) ??
+      candidates[0]
     if (entry?.setlist?.sets) {
       songs = (entry.setlist.sets.set as any[])
         .flatMap((s: any) => s.song as any[])
@@ -945,7 +1005,13 @@ export function CascadePage() {
     }
   }
 
-  const doVenueSelect = (venueNorm: string, artistNorm: string, gen: number, autoRun = true) => {
+  const doVenueSelect = async (venueNorm: string, artistNorm: string, gen: number, autoRun = true, preferConcertId?: string) => {
+    // See handleArtistSelect: the file may still be in flight now that the page
+    // no longer waits for all five before rendering (#114).
+    if (loadersRef.current) {
+      await loadersRef.current.venuesMeta
+      if (gen !== genRef.current) return
+    }
     const vm = venuesMetaRef.current[venueNorm] ?? null
     setSelectedVenueNorm(venueNorm)
     setSelectedVenueDisplay(vm?.name ?? venueNorm)
@@ -957,7 +1023,15 @@ export function CascadePage() {
     const available = (artistVenueToConcerts.get(key) ?? []).sort((a, b) =>
       a.date.localeCompare(b.date)
     )
-    if (available.length === 1) {
+    // `preferConcertId` is only ever set by the featured demo, which pins one
+    // specific show rather than depending on an artist happening to have played
+    // exactly one venue on exactly one night.
+    const preferred = preferConcertId
+      ? available.find(c => c.id === preferConcertId)
+      : undefined
+    if (preferred) {
+      doDateSelect(preferred, gen, autoRun)
+    } else if (available.length === 1) {
       doDateSelect(available[0], gen, autoRun)
     } else {
       setDateOptions(available)
@@ -965,7 +1039,7 @@ export function CascadePage() {
     }
   }
 
-  const handleArtistSelect = (artistNorm: string, artistDisplay: string, isPreview = false) => {
+  const handleArtistSelect = async (artistNorm: string, artistDisplay: string, isPreview = false, preferConcertId?: string) => {
     if (!isPreview) setCascadePending(false)
     const gen = ++genRef.current
 
@@ -979,17 +1053,39 @@ export function CascadePage() {
     setVenueMeta(null)
     setSetlistSongs([])
     setTourName(null)
-    setArtistMeta(artistsMetaRef.current[artistNorm] ?? null)
-    setArtistTracks(topTracksRef.current[artistNorm]?.tracks?.slice(0, 5) ?? [])
     setTiersVisible(new Set([0])); setConnectorPhase(0)
     setFlowPhase('artist-hydrating')
 
+    // Everything above is local state and paints immediately. The two datasets
+    // below may still be in flight — before #114 they could not be, because the
+    // page did not render until all five files had landed. Awaiting them here is
+    // what keeps that guarantee while letting the page paint early: a click that
+    // beats the data waits for it rather than rendering an empty artist.
+    const loaders = loadersRef.current
+    if (loaders) {
+      const [artistsMeta, topTracks] = await Promise.all([loaders.artistsMeta, loaders.topTracks])
+      // A reset (or another selection) during the await bumps the generation.
+      // Without this the stale flow would overwrite whatever the user did next.
+      if (gen !== genRef.current) return
+      setArtistMeta(artistsMeta[artistNorm] ?? null)
+      setArtistTracks(topTracks[artistNorm]?.tracks?.slice(0, 5) ?? [])
+    }
+
     const venues = [...(artistToVenues.get(artistNorm) ?? [])]
-    if (venues.length === 1) {
+    // A pinned show names its own venue, so the picker is skipped even for an
+    // artist seen at seven different venues.
+    const preferredVenue = preferConcertId
+      ? concerts.find(c => c.id === preferConcertId)?.venueNormalized
+      : undefined
+    if (preferredVenue) {
+      doVenueSelect(preferredVenue, artistNorm, gen, !isPreview, preferConcertId)
+    } else if (venues.length === 1) {
       doVenueSelect(venues[0], artistNorm, gen, !isPreview)
     } else {
+      const venuesMeta = loaders ? await loaders.venuesMeta : venuesMetaRef.current
+      if (gen !== genRef.current) return
       const opts = venues
-        .map(vn => ({ norm: vn, display: venuesMetaRef.current[vn]?.name ?? vn }))
+        .map(vn => ({ norm: vn, display: venuesMeta[vn]?.name ?? vn }))
         .sort((a, b) => a.display.localeCompare(b.display))
       setVenueOptions(opts)
       setFlowPhase('venue-pending')
@@ -1023,18 +1119,43 @@ export function CascadePage() {
     }
   }, [])
 
-  // ── Featured demo: auto-run Sting on load ─────────────────────────────────
+  // ── Featured demo ─────────────────────────────────────────────────────────
+  // Pinned to one specific show rather than to an artist. The previous featured
+  // artist was Sting, whose only show — Pacific Amphitheatre, 1991 — has **zero
+  // songs** on setlist.fm, so the tiers that exist to demonstrate setlists and
+  // song→album attribution rendered empty on the page whose entire job is to
+  // explain them. That is not a Sting problem: setlist.fm is crowd-sourced and
+  // its coverage of 1980s and early-90s shows is thin (52% for 1985-89, 22% for
+  // 1995-99, against 88% for 2020-24), so most early headliners would do the same.
+  //
+  // The Belasco, 2024-12-05: 18 songs, 15 of them attributed to albums spanning
+  // Mommy's Little Monster (1983) to Born to Kill — forty years of catalogue in
+  // one night, which is exactly what the attribution feature is for.
+  //
+  // Pinning the show, not the artist, also matters because Social Distortion has
+  // been seen at seven venues; without `preferConcertId` the demo would stall on
+  // a venue picker and the landing state would sit half-empty.
+  const FEATURED_CONCERT_ID = 'concert-176'
+
+  // Waits on `demoDataReady`, not just on the artist list. Before #114 the two
+  // were the same moment — nothing rendered until all five files had landed, so
+  // an artist list implied a full dataset. Now concerts.json arrives well ahead
+  // of the rest, and starting the demo on that alone would walk the cascade
+  // against tracks and setlists that had not arrived, ending in an empty tier
+  // with nothing to say it was still loading.
   useEffect(() => {
-    if (artistList.length === 0) return
-    const featured = artistList.find(a => a.norm === 'sting')
+    if (artistList.length === 0 || !demoDataReady) return
+    const show = concerts.find(c => c.id === FEATURED_CONCERT_ID)
+    if (!show) return
+    const featured = artistList.find(a => a.norm === show.headlinerNormalized)
     if (!featured) return
     const timer = setTimeout(() => {
-      setArtistSearch('Sting')
-      handleArtistSelect(featured.norm, featured.display, true)
+      setArtistSearch(featured.display)
+      handleArtistSelect(featured.norm, featured.display, true, FEATURED_CONCERT_ID)
     }, 400)
     return () => clearTimeout(timer)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [artistList.length])
+  }, [artistList.length, demoDataReady])
 
   // ── Helpers ───────────────────────────────────────────────────────────────
   const tierEntrance = (relevant: boolean) => ({
