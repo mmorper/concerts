@@ -10,7 +10,7 @@ Orchestrates the release workflow. References existing docs for details.
 | `minor` | No | - | Bump minor version (x.X.0) |
 | `major` | No | - | Bump major version (X.0.0) |
 | `--dry-run` | No | false | Preview all changes, write nothing |
-| `--no-push` | No | false | Commit and tag, but don't push |
+| `--no-merge` | No | false | Open the release PR and stop there — no merge, no tag, no deploy |
 
 **Examples:**
 ```
@@ -29,8 +29,8 @@ Orchestrates the release workflow. References existing docs for details.
 | 4 | Changelog entry | `/changelog` command (if user-facing changes) |
 | 5 | Update files | `.claude/readme-maintenance.md` → "Callable Checklist" |
 | 6 | Preview & confirm | Review all changes |
-| 7 | Validate | `npm run validate:version` + `npm run validate:docs` |
-| 8 | Git operations | Below |
+| 7 | Validate locally | `npm run validate:version` + `npm run validate:docs` |
+| 8 | Release PR → CI green → merge → tag | Below. The tag deploys, not the merge (#13) |
 | 9 | GitHub release | `gh release create` (all commits) |
 | 10 | Close related issues | `gh issue close` (selected issues) |
 | 11 | Post-release | Verification checklist |
@@ -555,6 +555,17 @@ Then **STOP**.
 
 ### Step 7: Write & Validate
 
+**These checks are for fast feedback, not the gate.** CI on the release PR
+(Step 8b) is the gate. Locally-green is not evidence CI will be green:
+`package-lock.json` is gitignored, so CI runs `npm install` and can resolve
+different dependencies than a laptop that installed weeks ago. Catching problems
+here is still worth it — it is quicker than a round trip through a PR.
+
+Note `validate:version` can only pass locally, before the tag exists on the
+remote. It is deliberately in no workflow: on a release branch there is no tag
+yet, so it would fail by construction. The equivalent check runs at deploy time
+instead — `deploy.yml` refuses to deploy a tag that disagrees with `package.json`.
+
 1. Write all files
 2. Run validation:
    ```bash
@@ -599,22 +610,95 @@ Then **STOP**.
 - `.claude/context.md`
 - `docs/specs/implemented/{name}.md` (if moved)
 
-**Commands:**
+**The release goes through a pull request, not straight to `main` (#13).**
+
+The old sequence was `commit → tag → push origin main --tags` in one motion. That
+meant CI started *after* the commit was on `main` and Cloudflare had already begun
+deploying — an alarm rather than a gate, on the largest and most hand-edited commit
+in the repo. This is the same sequence with the tests moved in front of the deploy.
+
+The tag is pushed **after** the merge, and the tag is what deploys
+(`.github/workflows/deploy.yml`).
+
+**8a. Put the release on a branch and open the PR**
+
 ```bash
+git checkout -b release/v{VERSION}
 git add {files}
 git commit -m "release: v{VERSION} - {TITLE}"
-git tag v{VERSION}
-git push origin main --tags  # unless --no-push
+git push -u origin release/v{VERSION}
+
+gh pr create \
+  --title "release: v{VERSION} - {TITLE}" \
+  --base main --head release/v{VERSION} \
+  --body "Release v{VERSION}. Merges when CI is green, then the tag deploys."
 ```
 
-> Execute git commands? (yes / commit-only / cancel)
+> Open the release PR? (yes / cancel)
 
-**Options:**
-- `yes` — Full commit + tag + push
-- `commit-only` — Commit + tag, no push (same as `--no-push`)
-- `cancel` — Changes written but not committed
+**8b. Wait for every check**
 
-**Note:** If remote has new commits, the push will be rejected. Run `git pull --rebase` and push again.
+```bash
+gh pr checks {PR} --watch --fail-fast
+```
+
+`--fail-fast` exits non-zero the moment any check fails. This is the gate — do not
+proceed past a non-zero exit.
+
+Expect **CI** (typecheck, 925 unit tests, `validate:docs`, build), **Scene CI**
+(six scenes rendered in a browser) and **Cloudflare Pages**. Scene CI only runs if
+the release touched `src/`, `public/data/` or the build config; a docs-only release
+legitimately will not have it.
+
+**If any check fails:** stop. Leave the PR open, report which check failed, and do
+not merge or tag. The release is recoverable at this point with nothing published —
+see `/release-undo` Scenario A2.
+
+**8c. Merge, then tag**
+
+**With `--no-merge`: stop here.** Report the PR URL and the check results and do
+nothing else — no merge, no tag, no deploy. Resume by merging by hand, or with
+`/release-undo` Scenario A2 to abandon it.
+
+Once every check is green, merge without stopping to ask — this is deliberate, so
+the release does not stall waiting on a confirmation after the checks have already
+answered the question:
+
+```bash
+gh pr merge {PR} --merge --delete-branch
+```
+
+Then tag the merge commit on `main`. Note this deliberately does **not**
+`git checkout main`: the primary checkout is routinely on `main` in another
+session, and a worktree cannot check out a branch another worktree holds.
+
+```bash
+git fetch origin
+git tag v{VERSION} origin/main
+git push origin v{VERSION}
+```
+
+Pushing the tag triggers `deploy.yml`, which re-checks that the tag matches
+`package.json` before it deploys, then builds and ships to production.
+
+**Note:** if the remote has new commits, the *merge* will conflict rather than the
+push being rejected. Rebase the release branch on `main` and let the checks re-run.
+
+**Expect two deploys, permanently.** The Cloudflare dashboard build stays enabled
+by decision (#13, 2026-08-12): the site continues to deploy on every push to
+`main`, so merging the release PR publishes it, and pushing the tag publishes the
+same code again a moment later. That is not a fault and there is nothing to clean
+up.
+
+What this means in practice: **the merge is the moment a release goes live, not the
+tag.** The tag still earns its place — it is what `deploy.yml` checks the version
+against, it is a deliberate, reviewable record of what shipped, and it is the only
+deploy path that runs a post-deploy smoke test — but it is not what makes the site
+change. Do not read a green `deploy.yml` run as "this is the moment it went live";
+it went live at the merge.
+
+The value #13 actually delivered is the gate above: the tests now run before a
+release reaches `main`, which they never did before.
 
 ### Step 8.5: Cloudflare Workers — no action required
 
@@ -842,8 +926,22 @@ git commit -m "release: v{VERSION} - {TITLE}"
 
 🚀 **v{VERSION} released!**
 
+**The deploy is triggered by the tag and takes a couple of minutes.** Watch it
+rather than assuming it finished:
+
+```bash
+gh run list --workflow=deploy.yml --limit 1
+gh run watch $(gh run list --workflow=deploy.yml --limit 1 --json databaseId --jq '.[0].databaseId')
+```
+
+It ends with a smoke test against `concerts.morperhaus.org`, so a green run means
+the site answered, not merely that files were uploaded. A red run means the deploy
+failed — the merge already happened, so `main` is correct and only the deploy needs
+re-running.
+
 **Verify (all releases):**
 
+- [ ] `deploy.yml` run green
 - [ ] Site live at concerts.morperhaus.org
 - [ ] GitHub release visible at `https://github.com/mmorper/concerts/releases`
 

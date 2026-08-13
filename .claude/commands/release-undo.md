@@ -22,13 +22,37 @@ Dedicated rollback for when a release goes wrong. Separate from `/release` for c
 
 First, identify the failure point:
 
+**Since #13, a release has more places to stop, and the early ones are free.**
+`/release` now puts the release on a `release/vX.Y.Z` branch, opens a PR, waits for
+CI, merges, then pushes the tag.
+
+**The merge is what publishes, not the tag.** The Cloudflare dashboard build stays
+enabled by decision (#13, 2026-08-12), so every push to `main` deploys — including
+the release merge. The tag deploys the same code again a moment later. So the
+question that decides how much work an undo is: **has the release PR merged?**
+Before the merge nothing is public and recovery is nearly free. After it, the site
+is already live and you are reverting, whether or not a tag exists.
+
+Work out where it got to first:
+
+```bash
+gh pr list --head release/v{VERSION} --state all   # is there a PR, and was it merged?
+git ls-remote --tags origin "v{VERSION}"           # was the tag pushed? (this is the deploy trigger)
+```
+
 | Symptom | Likely Cause | Jump To |
 |---------|--------------|---------|
 | Files changed but not committed | Aborted mid-release | [Scenario A](#scenario-a-uncommitted-changes) |
+| Release PR open, CI red or unwanted | Stopped at the gate | [Scenario A2](#scenario-a2-release-pr-open-not-merged) |
+| PR merged, no tag pushed | Stopped before tagging — already live | [Scenario B2](#scenario-b2-merged-but-not-tagged) |
 | Committed but not pushed | Stopped before push | [Scenario B](#scenario-b-committed-not-pushed) |
 | Pushed but wrong version | Typo or wrong bump | [Scenario C](#scenario-c-wrong-version-pushed) |
 | Pushed but deploy broken | Code issue | [Scenario D](#scenario-d-pushed-but-broken) |
 | Tag exists but shouldn't | Premature tag | [Scenario E](#scenario-e-delete-tag-only) |
+
+> **B2 is a published release.** Because every push to `main` deploys, the merge
+> already put the site live — the missing tag does not hold anything back. Finish
+> the tag if the release is fine, or treat it as Scenario D if it is not.
 
 ---
 
@@ -52,6 +76,77 @@ git mv docs/specs/implemented/{name}.md docs/specs/future/{name}.md 2>/dev/null
 ```
 
 **Done.** No further action needed.
+
+---
+
+## Scenario A2: Release PR Open, Not Merged
+
+**Situation:** `/release` opened the release PR and stopped — CI went red, or you
+ran with `--no-merge`, or you changed your mind. The PR has not merged, so
+**nothing has been published** — it is the merge that deploys, not the tag. This is
+the cheapest place a release can fail and it is where the #13 gate is designed to
+catch problems.
+
+**Check:**
+```bash
+gh pr list --head release/v{VERSION} --state open
+gh pr checks {PR}
+```
+
+**If you want to fix forward** (usual case — a test failed and the fix is small):
+push the fix to the same branch. The checks re-run, and the release continues from
+Step 8b. Nothing needs undoing.
+
+**If you want to abandon the release:**
+```bash
+gh pr close {PR} --delete-branch
+git checkout main   # or your worktree's branch
+git branch -D release/v{VERSION}
+```
+
+Nothing reached `main`, no tag exists, no deploy ran. The version was never
+published — a later release can reuse the same version number.
+
+---
+
+## Scenario B2: Merged But Not Tagged
+
+**Situation:** The release PR merged, but the tag was never pushed — `/release`
+errored between the two, or was interrupted.
+
+**Check:**
+```bash
+git fetch origin
+git log origin/main --oneline -1        # the release commit is on main
+git ls-remote --tags origin "v{VERSION}"  # empty: the deploy trigger never fired
+```
+
+**The site is already live.** Every push to `main` deploys (#13 kept the Cloudflare
+dashboard build on by decision), so the merge published this release — the missing
+tag is a bookkeeping gap, not a safety margin. If the released code is wrong, this
+is [Scenario D](#scenario-d-pushed-but-broken), not a near miss.
+
+What the missing tag *does* cost: no GitHub release points at it, `deploy.yml` never
+ran its version check or its post-deploy smoke test, and the next release's "commits
+since last tag" will reach back too far.
+
+**To finish the release** (usual case — the merge was fine, only the tag is
+missing):
+```bash
+git fetch origin
+git tag v{VERSION} origin/main
+git push origin v{VERSION}
+```
+
+That triggers `deploy.yml`, which re-checks the tag against `package.json` before
+deploying.
+
+**To back the release out instead**, revert the merge on `main`:
+```bash
+gh pr view {PR} --json mergeCommit --jq .mergeCommit.oid
+git revert -m 1 {MERGE_COMMIT}
+```
+Open that revert as its own PR so it passes the same gate.
 
 ---
 

@@ -132,6 +132,18 @@ command pushes straight to `main`, so the PR-triggered CI run that gates every
 other change never happens. The push-triggered run fires after the tag exists
 and after Pages has started building.
 
+**This is a deliberate difference from `/release`, not an oversight.** Since #13
+`/release` goes through a PR and waits for CI before anything ships. `/hotfix`
+does not, because the whole point is speed when production is already broken —
+trading the gate for minutes is the right call in that specific case, and it is
+the reason the local checks above are blocking rather than advisory.
+
+Two consequences worth knowing. `git push origin main --tags` pushes the commit
+*and* the tag, so `deploy.yml` fires on the tag as well as the Cloudflare
+dashboard build firing on the commit — two deploys of the same code, harmless.
+And `deploy.yml` refuses to deploy a tag that disagrees with `package.json`, so
+the version bump in Step 7 must land before the tag is pushed, which it does.
+
 **Production Safety:** Even for urgent fixes, check if changes affect:
 
 - Data structures or schemas

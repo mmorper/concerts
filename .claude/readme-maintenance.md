@@ -105,12 +105,9 @@ When tagging a new version:
 
 5. **Commit & Tag:**
 
-   ```bash
-   git add README.md src/data/changelog.json
-   git commit -m "docs: Update README and changelog for v1.x.x"
-   git tag v1.x.x
-   git push origin main --tags
-   ```
+   Handled by `/release` Step 8, not by hand. Since #13 the release commit goes
+   onto a `release/vX.Y.Z` branch and through a PR, and the tag is pushed after
+   the merge — the tag is the deploy trigger. See `.claude/commands/release.md`.
 
 ---
 
