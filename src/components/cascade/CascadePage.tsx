@@ -1846,6 +1846,24 @@ export function CascadePage() {
                 </div>
               </div>
               )}
+
+              {/* Say why the setlist is empty instead of rendering nothing.
+                  66 of 184 concerts have no songs logged, concentrated in the
+                  1980s and 90s — setlist.fm is crowd-sourced and its coverage
+                  thins the further back you go (52% of 1985-89 shows here, 22%
+                  of 1995-99, against 88% of 2020-24). Rendering an empty tier
+                  reads as a bug on a page whose subject is where data comes
+                  from; saying so is both honest and on-theme. */}
+              {selectedConcert && setlistSongs.length === 0 && t5FieldCount > 0 && (
+                <div style={{ marginTop: 16, padding: '10px 12px', border: '1px dashed rgba(124,58,237,0.25)', borderRadius: 6 }}>
+                  <div style={{ ...MONO, fontSize: 9, color: '#c4b5fd', letterSpacing: '0.08em' }}>
+                    no setlist logged for this show
+                  </div>
+                  <div style={{ ...MONO, fontSize: 8, color: '#7c3aed99', marginTop: 4, lineHeight: 1.5 }}>
+                    setlist.fm is crowd-sourced — coverage thins out for older shows
+                  </div>
+                </div>
+              )}
           </div>
 
           {t5FieldCount > 0 && (
