@@ -684,11 +684,21 @@ Pushing the tag triggers `deploy.yml`, which re-checks that the tag matches
 **Note:** if the remote has new commits, the *merge* will conflict rather than the
 push being rejected. Rebase the release branch on `main` and let the checks re-run.
 
-**During the transition — expect two deploys.** The Cloudflare dashboard build is
-still enabled, so merging deploys the site, and pushing the tag deploys it again a
-moment later. That is the intended safety net and not a fault. Disabling the
-dashboard build is the last step of #13 and should only happen after a release has
-been through this flow cleanly.
+**Expect two deploys, permanently.** The Cloudflare dashboard build stays enabled
+by decision (#13, 2026-08-12): the site continues to deploy on every push to
+`main`, so merging the release PR publishes it, and pushing the tag publishes the
+same code again a moment later. That is not a fault and there is nothing to clean
+up.
+
+What this means in practice: **the merge is the moment a release goes live, not the
+tag.** The tag still earns its place — it is what `deploy.yml` checks the version
+against, it is a deliberate, reviewable record of what shipped, and it is the only
+deploy path that runs a post-deploy smoke test — but it is not what makes the site
+change. Do not read a green `deploy.yml` run as "this is the moment it went live";
+it went live at the merge.
+
+The value #13 actually delivered is the gate above: the tests now run before a
+release reaches `main`, which they never did before.
 
 ### Step 8.5: Cloudflare Workers — no action required
 
