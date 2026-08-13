@@ -695,6 +695,10 @@ export function CascadePage() {
   const [setlistSongs, setSetlistSongs] = useState<string[]>([])
   // Aligned by index with setlistSongs; null where the song has no attribution.
   const [setlistAlbums, setSetlistAlbums] = useState<(SongAlbum | null)[]>([])
+  // Venue photos are Google Places CDN URLs that expire within days (#315), so a
+  // stored URL is not evidence of a loadable image. Scene3Map already degrades on
+  // error; this tier did not, which is why it showed a broken-image icon.
+  const [venuePhotoFailed, setVenuePhotoFailed] = useState(false)
   const [tourName, setTourName] = useState<string | null>(null)
 
   // ── Seed glow state ───────────────────────────────────────────────────────
@@ -1068,6 +1072,7 @@ export function CascadePage() {
       if (gen !== genRef.current) return
     }
     const vm = venuesMetaRef.current[venueNorm] ?? null
+    setVenuePhotoFailed(false)
     setSelectedVenueNorm(venueNorm)
     setSelectedVenueDisplay(vm?.name ?? venueNorm)
     setVenueOptions([])
@@ -1106,6 +1111,7 @@ export function CascadePage() {
     setVenueOptions([])
     setDateOptions([])
     setVenueMeta(null)
+    setVenuePhotoFailed(false)
     setSetlistSongs([])
     setSetlistAlbums([])
     setTourName(null)
@@ -1553,10 +1559,11 @@ export function CascadePage() {
               {/* Venue photo — fades in after badge pause */}
               {t2RevealStep >= 2 && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-                  {venueMeta.photoUrls?.thumbnail ? (
+                  {venueMeta.photoUrls?.thumbnail && !venuePhotoFailed ? (
                     <img
                       src={venueMeta.photoUrls.thumbnail}
                       alt={venueMeta.name}
+                      onError={() => setVenuePhotoFailed(true)}
                       style={{ width: '100%', height: 40, objectFit: 'cover', borderRadius: 4, marginBottom: 10 }}
                     />
                   ) : (
