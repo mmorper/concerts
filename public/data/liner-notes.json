@@ -1,7 +1,74 @@
 {
-  "generatedAt": "2026-08-10T09:25:37.420Z",
+  "generatedAt": "2026-08-17T08:46:30.786Z",
   "dataHash": "e85399be",
   "posts": [
+    {
+      "id": "road-tested-social-distortion-2024-12-05",
+      "slug": "social-distortion-1-4-years-before-born-to-kill",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Social Distortion — 1.4 Years Before Born to Kill",
+      "prose": "Punk rock has always been about the song before the studio catches up, and at The Belasco in Los Angeles on December 5, 2024, I heard four tracks from *Born to Kill* a full 519 days before the record existed in anyone's hands. Four songs — \"Tonight,\" \"Over You,\" \"The Way Things Were,\" and the title track itself — dropped into an 18-song set like they'd always belonged there, which, knowing Social Distortion, they probably had for years already. That's the thing about a band formed in 1979: they don't audition new material, they road-test it, and the crowd at The Belasco had no idea they were the test.",
+      "image": {
+        "url": "https://coverartarchive.org/release-group/453a2bca-8133-40bf-982a-d8c6a2faf48c/front-500.jpg",
+        "alt": "Born to Kill",
+        "source": "album",
+        "ref": "social-distortion",
+        "albumName": "Born to Kill"
+      },
+      "audio": {
+        "trackName": "Born to Kill",
+        "artistName": "Social Distortion",
+        "albumName": "Born to Kill",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/27/d8/e3/27d8e3bb-592a-a1be-91ac-3fa750127321/mzaf_1810468630697880797.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b6/b1/40/b6b140b8-c3fe-eeae-a73f-7500c5b1f3db/0045778736867.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/born-to-kill/1873280355?i=1873280357&uo=4",
+        "source": "itunes",
+        "role": "subject"
+      },
+      "artists": [
+        "social-distortion"
+      ],
+      "venues": [
+        "the-belasco"
+      ],
+      "years": [
+        2024
+      ],
+      "tags": [
+        "#road-tested",
+        "#before-the-record"
+      ],
+      "deepLinks": [
+        {
+          "label": "Social Distortion",
+          "url": "/?scene=artists&artist=social-distortion",
+          "type": "artist"
+        },
+        {
+          "label": "The Belasco",
+          "url": "/?scene=venues&venue=the-belasco",
+          "type": "venue"
+        },
+        {
+          "label": "December 5, 2024",
+          "url": "/?scene=artists&artist=social-distortion&show=2024-12-05",
+          "type": "setlist"
+        },
+        {
+          "label": "2024",
+          "url": "/?scene=timeline&year=2024",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "social-distortion-34-years-of-shows",
+        "house-of-blues-anaheim-6-shows-over-3-decades-2"
+      ],
+      "score": 31,
+      "detector": "road-tested",
+      "publishedAt": "2026-08-17T08:46:30.786Z"
+    },
     {
       "id": "full-circle-notorious-nile-rodgers-duran-duran",
       "slug": "notorious-nile-rodgers-and-duran-duran-39-years-apart",
@@ -154,10 +221,10 @@
       "headline": "Pacific Amphitheatre: 16 Shows Over 5 Decades",
       "prose": "I was 16 years old the first time I walked into the Pacific Amphitheatre, catching Tears For Fears in the summer of 1985 — right in the thick of the *Songs from the Big Chair* era. Thirty-nine years later, I closed the loop with The English Beat in July 2024, and somewhere in between I fit in 14 more nights at that Costa Mesa bowl, from the Beach Boys to Run-DMC to UB40. Sixteen shows across 5 decades at the same venue feels less like a habit and more like a relationship. I didn't plan any of this, which somehow makes it better.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AJRVUZMmx3IWoqc_Cu5NAy1MrGlLBSOCuYvQq8YNqXQS969l4hSjaJtOkRCl5c1iZVu1YX1D5d4-gyTu3_ojq-MIN6l6G9Cm5keLfmlScA1iSAdQCmjcRTb2jpmKxnZcn2-d1r0lHpjdE-zGEmyfTA=s4800-h1200",
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/600x600bb.jpg",
         "alt": "Pacific Amphitheatre",
-        "source": "venue",
-        "ref": "pacific-amphitheatre"
+        "source": "album",
+        "ref": "tears-for-fears"
       },
       "audio": {
         "trackName": "Everybody Wants to Rule the World",
@@ -310,10 +377,10 @@
       "headline": "House of Blues Anaheim: 6 Shows Over 3 Decades",
       "prose": "I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who'd been making records since before I probably knew what a record was. Six shows across three decades at that same room, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjBkAvy5J97RTMkxf1VygT13-0kug7D17lhlfTeVJCQCiCD4v8SYpWubtVNGRmhFy80k7_HhrFcvW3Wlxg7RUYryJFLLweoOMevmQZ-saEu6YQQRHc4GbNeJf7Lx99x4wo_nM4FCdtLdu1d0Wk0=s4800-h1200",
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/23/74/62/23746272-49a1-fd05-d64f-9c5235b024b3/00075021333420.rgb.jpg/600x600bb.jpg",
         "alt": "House of Blues Anaheim",
-        "source": "venue",
-        "ref": "house-of-blues-anaheim"
+        "source": "album",
+        "ref": "joe-jackson"
       },
       "audio": {
         "trackName": "Steppin' Out",
@@ -3966,10 +4033,10 @@
       "headline": "Kia Forum: 5 Shows Over 3 Decades",
       "prose": "I remember walking into the Forum for the first time in 1990 to see Erasure, that massive bowl of a venue feeling both intimate and overwhelming at 19 years old. Five shows across 33 years have brought me back to Inglewood — from Bell Biv DeVoe's New Jack Swing energy to Elton John's piano grandeur to Tears for Fears' nostalgic pull. My most recent visit was Depeche Mode in 2023, and I realized I've been loyal to this place longer than some of my friendships. There's something about the Forum's acoustics that makes every synthesizer sound like it's coming from the future.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjAvrNMwUfAmE5RV_5b4OEUahEnIDOSOk2nn35t_KHCaYaas4dO-iDXbUOnVWKQAMiHS8LE-6-oR8ZH3Q3yXZokQdaclNUgYeFH75febwQ__rNfQSEoA0h2uHYIWYDXlk_KezRzZxIBEZTTDAbM=s4800-h1200",
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/bc/5a/a0/bc5aa061-1010-6d23-9ff5-bae2f97720ce/mzi.ouqqcxnp.jpg/600x600bb.jpg",
         "alt": "Kia Forum",
-        "source": "venue",
-        "ref": "kia-forum"
+        "source": "album",
+        "ref": "erasure"
       },
       "audio": {
         "trackName": "A Little Respect",
@@ -4036,10 +4103,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 56,
-    "totalGenerated": 88,
-    "averageScore": 38.3,
-    "lastPipelineRun": "2026-08-10T09:25:37.420Z",
+    "totalPosts": 57,
+    "totalGenerated": 89,
+    "averageScore": 38.1,
+    "lastPipelineRun": "2026-08-17T08:46:30.786Z",
     "concertsAnalyzed": 181,
     "feedUrl": "/liner-notes.xml"
   }
