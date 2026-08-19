@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { readerProse, pickDeterministicTool } from "./tools-bridge.js";
+import { readerProse, pickDeterministicTool, TOOL_DEFS, TOOL_NAMES } from "./tools-bridge.js";
 import type { Env } from "./types.js";
 
 // A dummy env is fine for the explicit-intent routes — they return before any data fetch.
@@ -46,5 +46,40 @@ describe("pickDeterministicTool — explicit intents (no LLM, no data fetch)", (
     expect((await pickDeterministicTool(env, "who are the last three artists I have seen play?")).name).toBe("get_recent_shows");
     expect((await pickDeterministicTool(env, "what's the most recent concert you've been to?")).name).toBe("get_recent_shows");
     expect((await pickDeterministicTool(env, "my latest shows")).name).toBe("get_recent_shows");
+  });
+});
+
+// v5.4's album-cycle join shipped on the MCP server and never reached this surface. These
+// pin the wiring: the scene must offer the same questions the connector does.
+describe("tool parity with the MCP server — album-cycle join", () => {
+  const byName = (n: string) => TOOL_DEFS.find((t) => t.name === n);
+
+  it("offers get_career_position", () => {
+    const t = byName("get_career_position");
+    expect(t).toBeDefined();
+    expect(Object.keys(t!.input_schema.properties)).toEqual(["artist", "date", "concertId"]);
+  });
+
+  it("offers get_career_shape", () => {
+    expect(byName("get_career_shape")).toBeDefined();
+  });
+
+  it("accepts cycleBucket on search_concerts, with the same enum the server uses", () => {
+    const search = byName("search_concerts");
+    const bucket = (search!.input_schema.properties as Record<string, { enum?: string[] }>).cycleBucket;
+    expect(bucket?.enum).toEqual(["fresh", "current", "mature", "deep", "catalog"]);
+  });
+
+  it("declares no duplicate tool names", () => {
+    // A duplicate silently shadows in dispatchTool's switch and the Anthropic tools array,
+    // and the symptom is a tool that quietly stops being reachable.
+    expect(TOOL_NAMES).toEqual([...new Set(TOOL_NAMES)]);
+  });
+
+  it("gives every new tool a description that says when to reach for it", () => {
+    // These two overlap in subject and differ only in scope; a model picks between them
+    // on the description alone, so the one-artist vs whole-archive split has to be in there.
+    expect(byName("get_career_position")!.description).toMatch(/night I saw them/i);
+    expect(byName("get_career_shape")!.description).toMatch(/whole archive/i);
   });
 });

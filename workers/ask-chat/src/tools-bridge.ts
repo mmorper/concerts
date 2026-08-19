@@ -18,7 +18,10 @@ import {
   surpriseMe,
   concertSetlist,
   archiveTopSongs,
+  careerPosition,
+  careerShape,
 } from "../../mcp-server/src/tools.js";
+import { buildAliasIndex } from "../../mcp-server/src/aliases.js";
 import {
   getConcerts,
   getFacts,
@@ -28,6 +31,8 @@ import {
   getSetlistsCache,
   getMostPlayedSongs,
   getNarration,
+  getAlbumEras,
+  getArtistAliases,
 } from "../../mcp-server/src/data.js";
 import type { Env } from "./types.js";
 import type { Exhibit, EntityRef } from "./exhibits.js";
@@ -69,6 +74,12 @@ export const TOOL_DEFS = [
         decade: { type: "string", enum: ["1980s", "1990s", "2000s", "2010s", "2020s"] },
         city: { type: "string" },
         genre: { type: "string" },
+        cycleBucket: {
+          type: "string",
+          enum: ["fresh", "current", "mature", "deep", "catalog"],
+          description:
+            "Where the show sat in the artist's album cycle: fresh (<3 months after the record), current (<1 year), mature (1-3 years), deep (3-10 years), catalog (10+).",
+        },
         limit: { type: "integer", minimum: 1, maximum: 25 },
       },
       additionalProperties: false,
@@ -146,6 +157,29 @@ export const TOOL_DEFS = [
       additionalProperties: false,
     },
   },
+  // v5.4's album-cycle join (#271) shipped on the MCP server and never reached this
+  // surface, so the scene couldn't answer a question the connector could. Same pure
+  // functions, same data layer — this is the missing wiring, not new behaviour.
+  {
+    name: "get_career_position",
+    description:
+      "Where an artist stood in their own career the night I saw them — the record they were touring, how far in they were, and what hadn't happened yet. Omit the date for their most recent show.",
+    input_schema: {
+      type: "object",
+      properties: {
+        artist: { type: "string" },
+        date: { type: "string", description: "YYYY-MM-DD, YYYY-MM or YYYY. Omit for their most recent show." },
+        concertId: { type: "string" },
+      },
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "get_career_shape",
+    description:
+      "The same question across the whole archive: do I catch bands early or late? Where my nights fall across four decades of album cycles — and the ones where the record they'd be remembered for hadn't been made yet.",
+    input_schema: { type: "object", properties: {}, additionalProperties: false },
+  },
 ] as const;
 
 export const TOOL_NAMES = TOOL_DEFS.map((t) => t.name);
@@ -169,6 +203,20 @@ function artistRef(concerts: Parameters<typeof resolveArtist>[0], name: string):
   const r = resolveArtist(concerts, name);
   if (r.kind !== "match") return null;
   return { entity: "artist", slug: r.slug, name: r.name, deepLink: artistDeepLink(r.slug) };
+}
+
+// The artist card, for tools whose answer is about one act. Undefined when the name
+// doesn't resolve to exactly one artist — an ambiguous card is worse than none.
+function artistExhibit(
+  concerts: Parameters<typeof resolveArtist>[0],
+  name: string,
+): Exhibit | undefined {
+  const ref = artistRef(concerts, name);
+  // Fields listed rather than spread: EntityRef.entity is the artist|venue union, and
+  // ArtistExhibit needs the literal "artist".
+  return ref
+    ? { kind: "artist", entity: "artist", slug: ref.slug, name: ref.name, deepLink: ref.deepLink }
+    : undefined;
 }
 
 function venueRef(venues: Parameters<typeof resolveVenue>[0], name: string): EntityRef | null {
@@ -236,6 +284,9 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
     case "search_concerts": {
       const data = await getConcerts(e, bgCtx);
       if (!data) return { text: DATA_UNAVAILABLE };
+      // Era data only matters when a cycleBucket filter is in play; searchConcerts
+      // degrades to its pre-v5.4 behaviour without it, so a miss here costs nothing.
+      const eras = input.cycleBucket ? await getAlbumEras(e, bgCtx) : null;
       const { text, matches } = searchConcerts(data.concerts, {
         artist: input.artist ? str(input.artist) : undefined,
         year: num(input.year),
@@ -243,8 +294,9 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
         decade: input.decade ? str(input.decade) : undefined,
         city: input.city ? str(input.city) : undefined,
         genre: input.genre ? str(input.genre) : undefined,
+        cycleBucket: input.cycleBucket ? str(input.cycleBucket) : undefined,
         limit: num(input.limit) ?? 25, // chat list-exhibit wants the full set; MCP default stays 10
-      } as Parameters<typeof searchConcerts>[1]);
+      } as Parameters<typeof searchConcerts>[1], eras);
       if (!matches.length) return { text }; // plain ("nothing matching")
       const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       const m = num(input.month);
@@ -369,6 +421,29 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       const lines = recent.map((c, i) => `${i + 1}. ${c.headliner} — ${c.venue}, ${c.city} (${c.date})`);
       const text = `The ${recent.length} most recent ${recent.length === 1 ? "show" : "shows"} I've been to, newest first:\n${lines.join("\n")}${timingNote(recent, today)}`;
       return { text, exhibit: { kind: "list", title: `Last ${recent.length} ${recent.length === 1 ? "show" : "shows"}`, rows: recent.map(concertRow) } };
+    }
+
+    case "get_career_position": {
+      const data = await getConcerts(e, bgCtx);
+      if (!data) return { text: DATA_UNAVAILABLE };
+      const [eras, aliasData] = await Promise.all([getAlbumEras(e, bgCtx), getArtistAliases(e, bgCtx)]);
+      const args = {
+        artist: input.artist ? str(input.artist) : undefined,
+        date: input.date ? str(input.date) : undefined,
+        concertId: input.concertId ? str(input.concertId) : undefined,
+      };
+      const text = careerPosition(data.concerts, eras, args, buildAliasIndex(aliasData));
+      // The exhibit is the artist card, same as get_artist_history — the answer is about
+      // one act's arc, so that's the card worth clicking through to.
+      const exhibit = args.artist ? artistExhibit(data.concerts, args.artist) : undefined;
+      return exhibit ? { text, exhibit } : { text };
+    }
+
+    case "get_career_shape": {
+      const data = await getConcerts(e, bgCtx);
+      if (!data) return { text: DATA_UNAVAILABLE };
+      const eras = await getAlbumEras(e, bgCtx);
+      return { text: careerShape(data.concerts, eras) }; // plain — archive-wide, no single entity
     }
 
     default:

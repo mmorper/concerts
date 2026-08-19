@@ -43,6 +43,8 @@ Any MCP client that speaks Streamable HTTP works the same way — point it at th
 - "Show me every concert at the 9:30 Club"
 - "Search for concerts in the 1990s"
 - "Surprise me"
+- "Where were Depeche Mode in their career the night I saw them?"
+- "Do I catch bands early or late?"
 - "Which artists have I seen exactly twice?" — _(freeform; routes to `query`)_
 
 ## Tools
@@ -50,14 +52,18 @@ Any MCP client that speaks Streamable HTTP works the same way — point it at th
 | Tool | What it does |
 |------|--------------|
 | `get_archive_info` | Overview — counts, top artists/venues, busiest decade, longest gap. |
-| `search_concerts` | Filter by `artist` / `year` / `decade` / `city` / `genre` (limit 10, max 25). |
+| `search_concerts` | Filter by `artist` / `year` / `decade` / `city` / `genre` / `cycleBucket` (limit 10, max 25). |
 | `get_artist_history` | Every show for one artist, with enrichment + a count-scaled closing arc. |
 | `get_venue_history` | Every show at one venue, in order, with closure context. |
 | `on_this_day` | Concerts sharing a `month`/`day` across the years (defaults to today). |
 | `surprise_me` | A random concert and an explicit reason it's worth remembering. |
-| `query` | Freeform questions the other six can't answer. Runtime LLM — see below. |
+| `get_concert_setlist` | The songs from one night, with album annotations where they're known. |
+| `get_career_position` | Where one artist stood in their arc that night — and what hadn't happened yet. |
+| `get_career_shape` | The same question across the whole archive: early adopter or catalogue listener? |
+| `get_archive_top_songs` | Most-played songs across the setlists on record. |
+| `query` | Freeform questions the others can't answer. Runtime LLM — see below. |
 
-The first six are deterministic (or hybrid: deterministic data + build-time narration).
+Everything but `query` is deterministic (or hybrid: deterministic data + build-time narration).
 `get_artist_history` and `get_venue_history` read optional prose from
 `public/data/narrations/{artists,venues}.json` and fall back to templates when it's absent.
 
