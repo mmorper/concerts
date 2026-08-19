@@ -17,6 +17,8 @@ describe("isOwnerReference", () => {
       "MIKE MORPER",
       "Michael Morper",
       "Morper",
+      "Morps",
+      "morps",
       "Morperhaus",
       "the owner",
       "the archivist",

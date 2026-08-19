@@ -38,6 +38,9 @@ const OWNER_ALIASES: ReadonlySet<string> = new Set([
   "mike morper",
   "michael morper",
   "morper",
+  // The handle he goes by outside here (github.com/mmorper, linkedin.com/in/morps),
+  // so a question that uses it lands with the person and not with a near-miss act.
+  "morps",
   "morperhaus",
   "the owner",
   "the archive owner",
