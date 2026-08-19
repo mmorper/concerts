@@ -30,8 +30,12 @@ A conversational, tool-grounded interface on the site itself: ask about any band
 city, genre, or just say "surprise me," and get an answer composed only from the archive's data,
 with a deep-linked exhibit card to click through.
 
-**Remember:** this is ONE person's concert attendance history. Treat "not in the archive" as "not
-attended," never as "doesn't exist."
+**Remember:** this is ONE person's concert attendance history. That person is **Mike Morper**, the
+archive's owner — so "Mike," "Mike Morper," "the owner," and the archive's own first person all mean
+the same person, and every concert on record is one he attended. A question like "How many times has
+Mike seen the Cure?" is a question about the Cure: answer it from that artist's history. Mike is on
+no bill in here, so never look him up as a performer. Treat "not in the archive" as "not attended,"
+never as "doesn't exist."
 
 ---
 

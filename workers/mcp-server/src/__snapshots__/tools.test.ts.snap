@@ -1,7 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`get_archive_info > narrates the collection's shape 1`] = `
-"I've been to 11 concerts across 40 years, from 1984 to 2024 — 8 venues in 6 cities.
+"I'm Mike Morper's concert archive — every show in me is one Mike went to, which is why I tell them in the first person.
+
+I've been to 11 concerts across 40 years, from 1984 to 2024 — 8 venues in 6 cities.
 
 The artists I've seen most: Social Distortion (5), Depeche Mode (3), Adam Ant (1), Peter Gabriel (1), Peter Hook and the Light (1).
 The rooms I keep returning to: Pacific Amphitheatre (4), Dodger Stadium (1), Hollywood Bowl (1), Irvine Meadows (1), Rose Bowl (1).

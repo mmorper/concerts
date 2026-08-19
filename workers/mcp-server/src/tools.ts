@@ -16,6 +16,9 @@ import { EMPTY_ALIAS_INDEX, aliasName, buildAliasIndex, canonicalSlug, slugsFor,
 // Resolving this key differently in any consumer silently matches nothing.
 import { lookupSongAlbum } from "../../../scripts/utils/song-album-lookup.js";
 import { deriveArchiveStats } from "../../../src/utils/archiveStats.js";
+// Who "Mike" is — the owner is not an act, and asking for him by name must not
+// fuzzy-match a performer. See owner.ts for the whole story.
+import { OWNER_FIRST_NAME, OWNER_NAME, isOwnerReference, ownerNotAnArtist } from "./owner.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
@@ -275,6 +278,11 @@ export function archiveInfo(concerts: Concert[], facts: FactsData | null): strin
   const fmtCount = ([name, n]: [string, number]) => `${name} (${n})`;
 
   const lines = [
+    // Says whose archive this is, out loud, in the one tool a client reaches for
+    // first. A model that has read this can resolve "how many times has Mike seen
+    // them" on its own, without the resolver guard ever having to fire.
+    `I'm ${OWNER_NAME}'s concert archive — every show in me is one ${OWNER_FIRST_NAME} went to, which is why I tell them in the first person.`,
+    "",
     `I've been to ${total} concerts across ${span} years, from ${first.year} to ${last.year} — ${venues} venues in ${cities} cities.`,
     "",
     `The artists I've seen most: ${topArtists.map(fmtCount).join(", ")}.`,
@@ -319,6 +327,13 @@ export function searchConcerts(
   params: SearchParams,
   eras: AlbumEras | null = null,
 ): { text: string; matches: Concert[] } {
+  // The artist filter is a substring match, so `artist: "Mike"` would quietly return
+  // the shows of whichever performer happens to contain it. The owner is on no bill —
+  // he's in every row — so name him rather than answering with a stranger's shows.
+  if (params.artist && isOwnerReference(params.artist)) {
+    return { text: ownerNotAnArtist(concerts.length), matches: [] };
+  }
+
   const limit = Math.min(Math.max(params.limit ?? 10, 1), 25);
 
   // Concerts with no era data can't answer a cycle question. They're excluded
@@ -405,6 +420,12 @@ export function searchConcerts(
 export type ArtistResolution =
   | { kind: "match"; name: string; slug: string; slugs: string[] }
   | { kind: "ambiguous"; options: string[] }
+  /**
+   * The query named the archive's owner, not an act. Its own kind rather than
+   * "none" because the honest answer is not "isn't in the archive" — he's in all
+   * of it — and because every caller should say so in the same words.
+   */
+  | { kind: "owner"; name: string }
   | { kind: "none" };
 
 /**
@@ -473,6 +494,13 @@ export function resolveArtist(
     }
   }
 
+  // "Mike" is the person whose shows these are, not someone who played them. Checked
+  // here — after exact name and exact slug, before any partial matching — so a real
+  // act always wins its own name back, and only the guessing path is intercepted.
+  // Without this, `get_artist_history("Mike")` partial-matched the one headliner
+  // whose name starts with Mike and answered confidently about the wrong person.
+  if (isOwnerReference(q)) return { kind: "owner", name: OWNER_NAME };
+
   const partials = [...byName.entries()].filter(([name]) => name.includes(q));
   if (partials.length === 0) return { kind: "none" };
   if (partials.length === 1) {
@@ -500,6 +528,7 @@ export function artistHistory(
   eras: AlbumEras | null = null,
 ): string {
   const r = resolveArtist(concerts, query, aliases);
+  if (r.kind === "owner") return ownerNotAnArtist(concerts.length);
   if (r.kind === "none") return `${query.trim()} isn't in the archive.`;
   if (r.kind === "ambiguous") {
     return [
@@ -899,6 +928,7 @@ function resolveConcert(
   }
 
   const r = resolveArtist(concerts, args.artist);
+  if (r.kind === "owner") return { kind: "message", text: ownerNotAnArtist(concerts.length) };
   if (r.kind === "none") return { kind: "message", text: `${args.artist.trim()} isn't in the archive.` };
   if (r.kind === "ambiguous") {
     return {
@@ -1133,6 +1163,7 @@ export function careerPosition(
       return "Tell me which artist — and a date, if you want a particular night.";
     }
     const r = resolveArtist(concerts, args.artist, aliases);
+    if (r.kind === "owner") return ownerNotAnArtist(concerts.length);
     if (r.kind === "none") return `${args.artist.trim()} isn't in the archive.`;
     if (r.kind === "ambiguous") {
       return [
@@ -1260,9 +1291,13 @@ const LINK_NOTE =
 
 // Tool descriptions read as the archive offering them (spec §"The 6 Tools").
 const DESC = {
-  archive: "The front door. A sense of the collection's shape — four decades, the artists and venues that keep coming back, the rhythm of a concert life.",
+  archive: `The front door. A sense of the collection's shape — four decades, the artists and venues that keep coming back, the rhythm of a concert life. Also says whose archive this is: ${OWNER_NAME}'s, every show in it one he went to.`,
   search: "Search memory by name, by place, by year." + LINK_NOTE,
-  artist: "Everything I remember about an artist — every show, every venue, every year." + LINK_NOTE,
+  artist:
+    "Everything I remember about an artist — every show, every venue, every year. " +
+    `This is the tool for "how many times has ${OWNER_FIRST_NAME} seen X?" — pass X, the artist. ` +
+    `${OWNER_FIRST_NAME} is the archive's owner, not a performer; every show in here is already his.` +
+    LINK_NOTE,
   venue: "The rooms I've kept returning to — every show at a single venue, in order." + LINK_NOTE,
   onThisDay: "Concerts that share a date — across all the years, whatever's happened on this day." + LINK_NOTE,
   surprise: "I'll pick one. A random concert, and why it's worth remembering." + LINK_NOTE,

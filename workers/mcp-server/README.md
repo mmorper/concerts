@@ -44,6 +44,20 @@ Any MCP client that speaks Streamable HTTP works the same way — point it at th
 - "Search for concerts in the 1990s"
 - "Surprise me"
 - "Which artists have I seen exactly twice?" — _(freeform; routes to `query`)_
+- "How many times has Mike seen the Cure?" — _(third person works too; see below)_
+
+### Who "Mike" is
+
+The archive belongs to **Mike Morper**, and everything in it is a show he went to — which is
+why it answers in the first person. People don't always ask that way, though: through a
+connector the natural phrasing is third-person, "how many times has Mike seen X?"
+
+`src/owner.ts` is the single source of truth for that identity. It puts the fact where the
+model can act on it — in the server instructions, in the `get_archive_info` overview, in the
+`get_artist_history` description, and in the `explore_archive` and `query` prompts — so a
+question naming Mike routes to the artist in it. It also guards artist resolution: asking the
+tools for "Mike" gets told who he is, instead of fuzzy-matching a real performer whose name
+happens to start the same way and answering confidently about a stranger.
 
 ## Tools
 
