@@ -941,6 +941,32 @@ Every case below is a real drift instance from §2a and must resolve:
 
 ---
 
+## Shipped after v5.4
+
+- **`get_career_shape` — the archive-scale read.** v5.4 shipped the join per-night
+  (`get_career_position`) and per-artist, but nothing read the aggregate, so "do I catch bands
+  early or late?" had no tool shaped to hold it. Derived from the concert rows rather than the
+  file's `stats` block — that block is typed `Record<string, unknown>` and can drift from the rows
+  it summarizes, and deriving costs one pass over ~178 records.
+
+  Its examples clear an evidence bar (≥ 60% of the artist's top tracks from the defining album)
+  before the longest gap wins. Ranking by gap alone put the *weakest* claim first: the archive's
+  longest, 209 months, rests on a defining album backed by 2 of 5 top tracks, which reads as an
+  artifact of the top-tracks source rather than a story. The count still reports every
+  ahead-night; the bar only governs which three are quoted.
+
+  This resolves §4c's precedent in the other direction — cycle-bucket search stayed a *parameter*
+  because it filters the same list `search_concerts` already returns, whereas this answers a
+  question no existing tool's output shape can carry.
+
+- **Ask the Archive parity.** `get_career_position` and the `cycleBucket` search parameter shipped
+  to the MCP server in v5.4 and never reached the in-app scene, so the connector could answer
+  questions the site could not. Both surfaces now offer the same roster. Pinned by tests in
+  `workers/ask-chat/src/tools-bridge.test.ts` so the two can't drift apart silently again.
+
+  One known gap remains in the other direction: `get_recent_shows` exists in the scene and not on
+  the MCP server.
+
 ## Future Enhancements
 
 1. **Setlist song → album attribution — PROMOTED TO v5.5.** No longer a vague future item: architecture resolved and specced in [`global-setlist-album-attribution.md`](global-setlist-album-attribution.md). `album-title.ts` from this release is the matcher it consumes, which is the hard dependency ordering between the two releases.

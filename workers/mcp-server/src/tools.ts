@@ -1247,6 +1247,110 @@ export function careerPosition(
 }
 
 // ===================================================================
+// 10. get_career_shape
+// ===================================================================
+
+// The archive-scale read of the same join get_career_position does one night at a time:
+// "do I catch bands early or late?" Every other tool here is per-night or per-artist, so
+// there was no shape a question like that could land on — album-eras.json has carried the
+// aggregate since v5.4 and nothing read it.
+//
+// Derived from the concert entries rather than the file's own `stats` block: that block is
+// typed Record<string, unknown> and can drift from the rows it summarizes. Deriving costs
+// one pass over ~178 records and can't disagree with the data it came from.
+
+/** Months as a phrase — small gaps stay in months, long ones read better in years. */
+function monthsAwayPhrase(months: number): string {
+  if (months < 24) return `${months} months`;
+  const years = Math.round((months / 12) * 10) / 10;
+  return `${years} years`;
+}
+
+export function careerShape(concerts: Concert[], eras: AlbumEras | null): string {
+  if (!eras) return "I don't have album-cycle data on hand right now.";
+
+  const entries = Object.values(eras.concerts);
+  const placed = entries.filter(
+    (e): e is ConcertEra & { cycleBucket: CycleBucket; daysSinceRelease: number } =>
+      e.cycleBucket !== null && e.daysSinceRelease !== null,
+  );
+  if (placed.length === 0) {
+    return "I don't have enough album-cycle data yet to see a shape in it.";
+  }
+
+  const days = placed.map((e) => e.daysSinceRelease).sort((a, b) => a - b);
+  const medianDays = days[Math.floor(days.length / 2)];
+  const medianMonths = Math.round(medianDays / 30.44);
+
+  const buckets = placed.reduce<Record<CycleBucket, number>>(
+    (acc, e) => {
+      acc[e.cycleBucket]++;
+      return acc;
+    },
+    { fresh: 0, current: 0, mature: 0, deep: 0, catalog: 0 },
+  );
+
+  const lines = [
+    `I can place ${placed.length} of my ${concerts.length} nights inside the artist's own catalogue — where they stood, in their own arc, the evening I was in the room.`,
+    "",
+    `The median night lands about ${medianMonths} months after the record that was current that evening.`,
+    `${buckets.fresh} inside an album's first three months, ${buckets.current} within its first year, ${buckets.mature} one to three years on, ${buckets.deep} three to ten years deep, and ${buckets.catalog} deeper than ten.`,
+  ];
+
+  const debut = entries.filter((e) => e.isDebutEra).length;
+  if (debut > 0) {
+    lines.push(`${debut} of them were somebody's first record.`);
+  }
+
+  // The best thing in this data: nights where the album that would define the artist did
+  // not exist yet.
+  const ahead = entries.filter(
+    (e) => e.definingAlbumAhead && e.definingAlbum && e.definingAlbumMonthsAway !== null,
+  );
+
+  if (ahead.length > 0) {
+    // Which three to quote is not the same question as how many there are. Ranking by gap
+    // alone puts the weakest claims first: the longest gap in the archive (17 years) rests
+    // on a "defining album" backed by 2 of 5 top tracks, which is likelier an artifact of
+    // the top-tracks source than a story. So examples must clear an evidence bar first,
+    // and only then does the longest wait win. The count above stays honest at all of them.
+    const wellEvidenced = ahead.filter((e) => {
+      const d = e.definingAlbum!;
+      return d.topTrackTotal > 0 && d.topTrackCount / d.topTrackTotal >= 0.6;
+    });
+    const quotable = (wellEvidenced.length ? wellEvidenced : ahead)
+      .slice()
+      .sort((a, b) => (b.definingAlbumMonthsAway ?? 0) - (a.definingAlbumMonthsAway ?? 0));
+
+    const examples = quotable.slice(0, 3).map((e) => {
+      const name = eras.artists[e.artistKey]?.displayName ?? e.artistKey;
+      const year = e.date.slice(0, 4);
+      return `${artistLink(name, e.artistKey)} in ${year}, ${monthsAwayPhrase(e.definingAlbumMonthsAway!)} before ${e.definingAlbum!.title}`;
+    });
+    lines.push(
+      "",
+      `${ahead.length} ${ahead.length === 1 ? "night" : "nights"} I watched a band before the record they'd be remembered for existed — ${joinList(examples)}.`,
+    );
+  }
+
+  // erasSeen is per-album, so >1 means the same act caught in genuinely different chapters.
+  const multiEra = Object.values(eras.artists)
+    .filter((a) => (a.erasSeen?.length ?? 0) > 1)
+    .sort((a, b) => b.erasSeen.length - a.erasSeen.length);
+
+  if (multiEra.length > 0) {
+    const deepest = multiEra[0];
+    lines.push(
+      "",
+      `And ${multiEra.length} ${multiEra.length === 1 ? "artist" : "artists"} I've caught in more than one era — ${artistLink(deepest.displayName, deepest.artistKey)} across ${deepest.erasSeen.length} different records, which is as close as this archive gets to watching someone grow up.`,
+    );
+  }
+
+  const out = lines.join("\n");
+  return out + linkFooter(out);
+}
+
+// ===================================================================
 // 8. get_archive_top_songs
 // ===================================================================
 
@@ -1304,6 +1408,9 @@ const DESC = {
   setlist: "The songs from a specific night — give me an artist (and a date if you have one) or a concert id, and I'll tell you what they played, if I have it on record." + LINK_NOTE,
   career:
     "Where an artist stood in their career the night I saw them — the record they were touring, and what hadn't happened yet." +
+    LINK_NOTE,
+  careerShape:
+    "The same question asked of the whole archive: do I catch bands early or late? Where my nights fall across four decades of album cycles, and the ones where the record they'd be remembered for hadn't been made yet." +
     LINK_NOTE,
   topSongs: "The songs I've heard most across every setlist on record — counted honestly from the shows I have setlists for, not the whole archive." + LINK_NOTE,
   query: "When none of my other tools fit, ask me anything about the shows and I'll reason over the whole archive. I count these by hand, so I'll hedge when I'm unsure.",
@@ -1565,6 +1672,17 @@ export function registerTools(server: McpServer, env: Env): void {
           buildAliasIndex(aliasData),
         ),
       );
+    }),
+  );
+
+  server.registerTool(
+    "get_career_shape",
+    { title: "Career shape", description: DESC.careerShape, inputSchema: {} },
+    instrument(env, "get_career_shape", async () => {
+      const data = await getConcerts(env, bgCtx);
+      if (!data) return dataUnavailableResult();
+      const eras = await getAlbumEras(env, bgCtx);
+      return textResult(careerShape(data.concerts, eras));
     }),
   );
 

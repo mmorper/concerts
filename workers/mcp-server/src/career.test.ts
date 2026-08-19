@@ -7,7 +7,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { careerPosition, concertSetlist, artistHistory, searchConcerts } from "./tools.js";
+import { careerPosition, careerShape, concertSetlist, artistHistory, searchConcerts } from "./tools.js";
 import type { AlbumEras, Concert } from "./types.js";
 
 // ---------- fixtures ----------
@@ -241,5 +241,94 @@ describe("searchConcerts cycleBucket", () => {
     const withFilter = searchConcerts(concerts, { cycleBucket: "fresh" }, null);
     const without = searchConcerts(concerts, {}, null);
     expect(withFilter.matches).toEqual(without.matches);
+  });
+});
+
+// ---------- get_career_shape ----------
+
+// The archive-scale read of the same join. The invariants worth pinning are the ones a
+// future data refresh could silently break: it derives from the rows (not the file's
+// loosely-typed `stats` block), it counts every ahead-night while quoting only the
+// well-evidenced ones, and it stays silent rather than guessing when era data is absent.
+describe("careerShape", () => {
+  it("says nothing at all when there is no era data", () => {
+    expect(careerShape(concerts, null)).toBe("I don't have album-cycle data on hand right now.");
+  });
+
+  it("places the shows it can and names the archive total", () => {
+    const out = careerShape(concerts, eras);
+    expect(out).toContain("2 of my 2 nights");
+    expect(out).toContain("1 inside an album's first three months"); // Memento Mori, 4 days
+    expect(out).toContain("1 within its first year"); // Rose Bowl, 264 days
+  });
+
+  it("surfaces the night the defining album hadn't been made yet", () => {
+    const out = careerShape(concerts, eras);
+    expect(out).toContain("1 night I watched a band before the record");
+    expect(out).toContain("Depeche Mode");
+    expect(out).toContain("20 months before Violator");
+  });
+
+  it("counts multi-era artists and links the deepest", () => {
+    const out = careerShape(concerts, eras);
+    expect(out).toContain("1 artist I've caught in more than one era");
+    expect(out).toContain("across 2 different records");
+  });
+
+  it("derives from the rows, not the stats block", () => {
+    // A stats block that disagrees with the rows must not change the answer.
+    const lying: AlbumEras = { ...eras, stats: { cycleBuckets: { fresh: 999 }, medianDaysSinceRelease: 9999 } };
+    expect(careerShape(concerts, lying)).toBe(careerShape(concerts, eras));
+  });
+
+  it("prefers a well-evidenced defining album over a longer but weaker gap", () => {
+    // Same shape as the real archive's worst case: the longest gap rests on the weakest
+    // evidence (2 of 5 top tracks). It must still be COUNTED, just not quoted.
+    const weak = mk("1988-09-19", "Ziggy Marley", "The Palace");
+    const withWeak: AlbumEras = {
+      ...eras,
+      concerts: {
+        ...eras.concerts,
+        [weak.id]: {
+          concertId: weak.id,
+          artistKey: "ziggy-marley",
+          date: "1988-09-19",
+          currentAlbum: album("Conscious Party", "1988-01-01"),
+          daysSinceRelease: 262,
+          cycleBucket: "current",
+          albumsBefore: 1,
+          albumsAfter: 6,
+          careerYear: 3,
+          yearsBeforeDebut: null,
+          careerPercentile: 0.1,
+          isDebutEra: false,
+          definingAlbum: {
+            ...album("Love Is My Religion", "2006-01-01"),
+            topTrackCount: 2,
+            topTrackTotal: 5,
+            matchTier: "exact",
+          },
+          definingAlbumAhead: true,
+          definingAlbumMonthsAway: 209,
+        },
+      },
+    };
+    const out = careerShape([...concerts, weak], withWeak);
+    expect(out).toContain("2 nights I watched a band"); // counted
+    expect(out).not.toContain("Love Is My Religion"); // not quoted
+    expect(out).toContain("20 months before Violator"); // the stronger claim is
+  });
+
+  it("falls back to quoting the weak ones rather than saying nothing", () => {
+    const onlyWeak: AlbumEras = {
+      ...eras,
+      concerts: {
+        [roseBowl.id]: {
+          ...eras.concerts[roseBowl.id],
+          definingAlbum: { ...album("Violator", "1990-02-05"), topTrackCount: 1, topTrackTotal: 5, matchTier: "exact" },
+        },
+      },
+    };
+    expect(careerShape(concerts, onlyWeak)).toContain("20 months before Violator");
   });
 });

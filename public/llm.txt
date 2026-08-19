@@ -21,8 +21,14 @@ strictly grounded — every number, date, and name comes from the archive's own 
 A remote MCP server that exposes the archive as structured tools, so an assistant can answer
 grounded questions without scraping. Tools: `search_concerts`, `get_artist_history`,
 `get_venue_history`, `get_concert_setlist`, `get_archive_top_songs`, `get_archive_info`,
-`on_this_day`, `surprise_me`, and a freeform `query` escape hatch. Each tool result ends with an
-"Open on the site" line of deep links to the entities mentioned.
+`on_this_day`, `surprise_me`, `get_career_position`, `get_career_shape`, and a freeform `query`
+escape hatch. Each tool result ends with an "Open on the site" line of deep links to the entities
+mentioned.
+
+The two career tools read `album-eras.json` — the join between attendance and discography. They
+answer where an artist stood in their own arc on a given night (`get_career_position`) and how the
+whole archive falls across four decades of album cycles (`get_career_shape`), including the nights
+a band was seen before the record they'd be remembered for existed.
 
 ### Ask the Archive (in-app chat)
 **URL:** https://concerts.morperhaus.org/ask
