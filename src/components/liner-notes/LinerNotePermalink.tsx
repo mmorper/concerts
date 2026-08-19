@@ -11,6 +11,7 @@ import type { LinerNotesPost, LinerNotesData } from '../../types/liner-notes'
 import { CATEGORY_ACCENT_COLORS, CATEGORY_LABELS, handleImageError } from './constants'
 import { LinerNoteMiniPlayer } from './LinerNoteMiniPlayer'
 import { PageNav } from './PageNav'
+import { splitEmphasis, stripEmphasis } from '../../utils/prose'
 
 const SITE_URL = 'https://concerts.morperhaus.org'
 const RELATED_THRESHOLD = 30
@@ -58,7 +59,9 @@ export function LinerNotePermalink() {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
       headline: post.headline,
-      description: post.prose,
+      // Structured data is read by machines that do not parse markdown —
+      // the asterisks around album titles would be part of the description.
+      description: stripEmphasis(post.prose),
       datePublished: post.publishedAt,
       url: `${SITE_URL}/liner-notes/${post.slug}`,
       image: post.image.url || undefined,
@@ -193,7 +196,9 @@ export function LinerNotePermalink() {
               lineHeight: 1.7,
             }}
           >
-            {post.prose}
+            {splitEmphasis(post.prose).map((run, i) =>
+              run.emphasis ? <em key={i}>{run.text}</em> : run.text
+            )}
           </p>
 
           {/* MiniPlayer */}

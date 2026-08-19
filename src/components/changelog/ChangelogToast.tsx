@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import type { ChangelogToastProps } from './types'
 import { TOAST } from './constants'
 import { handleImageError } from '../liner-notes/constants'
+import { stripEmphasis } from '../../utils/prose'
 
 export function ChangelogToast({
   isVisible,
@@ -98,7 +99,9 @@ export function ChangelogToast({
             </div>
             {/* prose spans full width beneath */}
             <div className="text-xs text-slate-400 leading-relaxed">
-              {latestPost.prose.slice(0, 110).trimEnd()}…
+              {/* Strip before slicing — a 110-char cut can land inside an
+                  album title and leave a single dangling asterisk. */}
+              {stripEmphasis(latestPost.prose).slice(0, 110).trimEnd()}…
             </div>
           </>
         )

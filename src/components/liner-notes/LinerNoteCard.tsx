@@ -14,6 +14,7 @@ import { LinerNoteMiniPlayer } from './LinerNoteMiniPlayer'
 import { useShareLink } from '../../hooks/useShareLink'
 import { absoluteUrl } from '../../utils/deepLinks'
 import { useGatefoldOrientation } from '../../hooks/useGatefoldOrientation'
+import { splitEmphasis } from '../../utils/prose'
 
 interface LinerNoteCardProps {
   post: LinerNotesPost
@@ -24,20 +25,21 @@ const prefersReducedMotion =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+type Segment = string | React.ReactNode
+
 /**
- * Parses prose and wraps deepLink labels with <Link> elements.
+ * Wraps deepLink labels within one run of text with <Link> elements.
  * Matches are case-sensitive and non-overlapping (longer labels first).
  */
-function linkifyProse(prose: string, deepLinks: DeepLink[], accentColor: string) {
-  if (!deepLinks.length) return [prose]
+function linkifyRun(
+  text: string,
+  deepLinks: DeepLink[],
+  accentColor: string,
+  runIndex: number
+): Segment[] {
+  let segments: Segment[] = [text]
 
-  // Sort longest first to prevent shorter substrings clobbering longer matches
-  const sorted = [...deepLinks].sort((a, b) => b.label.length - a.label.length)
-
-  type Segment = string | React.ReactNode
-  let segments: Segment[] = [prose]
-
-  for (const link of sorted) {
+  for (const link of deepLinks) {
     const next: Segment[] = []
     for (const seg of segments) {
       if (typeof seg !== 'string') {
@@ -50,7 +52,7 @@ function linkifyProse(prose: string, deepLinks: DeepLink[], accentColor: string)
         if (i < parts.length - 1) {
           next.push(
             <Link
-              key={`${link.url}-${i}`}
+              key={`${runIndex}-${link.url}-${i}`}
               to={link.url}
               className="transition-colors hover:underline"
               style={{ color: accentColor, fontWeight: 500 }}
@@ -63,6 +65,29 @@ function linkifyProse(prose: string, deepLinks: DeepLink[], accentColor: string)
     }
     segments = next
   }
+
+  return segments
+}
+
+/**
+ * Renders prose: the *asterisk* album titles the generator leaves in the text
+ * become emphasis, and deepLink labels become <Link> elements.
+ *
+ * Emphasis is resolved first because an album title can contain a deep-link
+ * label — "*(Who's Afraid of) The Art of Noise?*" wraps the artist link —
+ * and linkifying first splits the two markers into separate runs where they
+ * no longer pair up, printing them literally.
+ */
+function linkifyProse(prose: string, deepLinks: DeepLink[], accentColor: string): Segment[] {
+  // Sort longest first to prevent shorter substrings clobbering longer matches
+  const sorted = [...deepLinks].sort((a, b) => b.label.length - a.label.length)
+
+  const segments: Segment[] = []
+  splitEmphasis(prose).forEach((run, i) => {
+    const linked = linkifyRun(run.text, sorted, accentColor, i)
+    if (run.emphasis) segments.push(<em key={`em-${i}`}>{linked}</em>)
+    else segments.push(...linked)
+  })
 
   return segments
 }
