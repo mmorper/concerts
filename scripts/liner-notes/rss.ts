@@ -11,6 +11,7 @@ import { writeFileSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import type { LinerNotesPost } from "../../src/types/liner-notes.ts";
+import { stripEmphasis } from "../../src/utils/prose.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..", "..");
@@ -66,7 +67,7 @@ function buildItem(post: LinerNotesPost): string {
     <link>${url}</link>
     <guid isPermaLink="true">${url}</guid>
     <pubDate>${pubDate}</pubDate>
-    <description>${escXml(post.prose)}</description>
+    <description>${escXml(stripEmphasis(post.prose))}</description>
 ${categories}
 ${imageEl}
   </item>`;

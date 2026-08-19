@@ -11,6 +11,7 @@ import type { LinerNotesPost, LinerNotesData } from '../../types/liner-notes'
 import { CATEGORY_ACCENT_COLORS, CATEGORY_LABELS, handleImageError } from './constants'
 import { LinerNoteMiniPlayer } from './LinerNoteMiniPlayer'
 import { PageNav } from './PageNav'
+import { splitEmphasis, stripEmphasis } from '../../utils/prose'
 
 const SITE_URL = 'https://concerts.morperhaus.org'
 const RELATED_THRESHOLD = 30
@@ -58,7 +59,9 @@ export function LinerNotePermalink() {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
       headline: post.headline,
-      description: post.prose,
+      // Structured data is read by machines that do not parse markdown —
+      // the asterisks around album titles would be part of the description.
+      description: stripEmphasis(post.prose),
       datePublished: post.publishedAt,
       url: `${SITE_URL}/liner-notes/${post.slug}`,
       image: post.image.url || undefined,
@@ -135,18 +138,20 @@ export function LinerNotePermalink() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
         >
-          {/* Header: metadata + headline alongside thumbnail */}
-          <div className="flex gap-6 items-start mb-6">
-            <div className="flex-1 min-w-0">
+          {/* Header: metadata + headline alongside thumbnail. Stacks on phones —
+              a fixed 160px thumbnail left the headline about a third of the
+              viewport to wrap in. */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start mb-6">
+            <div className="w-full min-w-0 sm:flex-1">
               {/* Category + date */}
               <div className="flex items-center gap-4 mb-3">
                 <span
-                  className="font-sans text-xs font-semibold uppercase tracking-wider"
+                  className="font-sans text-xs font-semibold uppercase tracking-wider whitespace-nowrap"
                   style={{ color: accentColor }}
                 >
                   {categoryLabel}
                 </span>
-                <span className="font-sans text-sm text-gray-400">{publishedDate}</span>
+                <span className="font-sans text-sm text-gray-400 whitespace-nowrap">{publishedDate}</span>
               </div>
 
               {/* Headline */}
@@ -169,10 +174,8 @@ export function LinerNotePermalink() {
                 src={post.image.url}
                 alt={post.image.alt}
                 onError={handleImageError}
-                className="flex-shrink-0"
+                className="w-full h-[200px] sm:w-40 sm:h-40 sm:flex-shrink-0"
                 style={{
-                  width: 160,
-                  height: 160,
                   objectFit: 'cover',
                   borderRadius: 10,
                   display: 'block',
@@ -187,10 +190,15 @@ export function LinerNotePermalink() {
             style={{
               fontSize: 'clamp(17px, 2.5vw, 18px)',
               color: '#374151',
-              lineHeight: 'clamp(1.65, 2vw, 1.7)',
+              // Was clamp(1.65, 2vw, 1.7) — mixing a number with a length is
+              // invalid CSS, so the whole declaration was dropped and phones
+              // rendered the prose at line-height: normal.
+              lineHeight: 1.7,
             }}
           >
-            {post.prose}
+            {splitEmphasis(post.prose).map((run, i) =>
+              run.emphasis ? <em key={i}>{run.text}</em> : run.text
+            )}
           </p>
 
           {/* MiniPlayer */}
