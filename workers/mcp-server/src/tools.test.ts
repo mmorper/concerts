@@ -1009,3 +1009,54 @@ describe("eraLine phrasing", () => {
     expect(text).not.toContain("old earlier");
   });
 });
+
+// The archive's owner is not on any bill — he's the reason every bill is in here.
+// A question phrased in the third person ("how many times has Mike seen X") used to
+// reach the tools as a lookup for an artist called Mike, and the fuzzy path answered
+// with the one headliner whose name starts with it.
+describe("owner identity", () => {
+  function archiveWithMikeNess(): Concert[] {
+    return [
+      ...archive(),
+      mk("1999-11-05", "Mike Ness", "The Troubadour", { genre: "Punk" }),
+    ];
+  }
+
+  it("resolves the owner to his own kind rather than guessing an artist", () => {
+    expect(resolveArtist(archiveWithMikeNess(), "Mike")).toEqual({
+      kind: "owner",
+      name: "Mike Morper",
+    });
+  });
+
+  it("still resolves the headliner whose name starts with the owner's", () => {
+    expect(resolveArtist(archiveWithMikeNess(), "Mike Ness")).toMatchObject({
+      kind: "match",
+      name: "Mike Ness",
+      slug: "mike-ness",
+    });
+  });
+
+  it("answers get_artist_history for the owner by saying who he is", () => {
+    const text = artistHistory(archiveWithMikeNess(), "Mike", ARTISTS_META, TOP_TRACKS);
+    expect(text).toContain("Mike Morper is me");
+    expect(text).not.toContain("Mike Ness");
+    expect(text).not.toContain("isn't in the archive");
+  });
+
+  it("does not let search_concerts substring-match the owner onto a performer", () => {
+    const { text, matches } = searchConcerts(archiveWithMikeNess(), { artist: "Mike" });
+    expect(matches).toEqual([]);
+    expect(text).toContain("Mike Morper is me");
+  });
+
+  it("leaves a real artist search untouched", () => {
+    const { matches } = searchConcerts(archiveWithMikeNess(), { artist: "Mike Ness" });
+    expect(matches.map((c) => c.headliner)).toEqual(["Mike Ness"]);
+  });
+
+  it("says whose archive it is in the overview, so a client learns it up front", () => {
+    const text = archiveInfo(archive(), null);
+    expect(text).toContain("Mike Morper's concert archive");
+  });
+});

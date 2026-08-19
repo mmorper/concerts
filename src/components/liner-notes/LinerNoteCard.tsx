@@ -14,6 +14,7 @@ import { LinerNoteMiniPlayer } from './LinerNoteMiniPlayer'
 import { useShareLink } from '../../hooks/useShareLink'
 import { absoluteUrl } from '../../utils/deepLinks'
 import { useGatefoldOrientation } from '../../hooks/useGatefoldOrientation'
+import { splitEmphasis } from '../../utils/prose'
 
 interface LinerNoteCardProps {
   post: LinerNotesPost
@@ -24,20 +25,21 @@ const prefersReducedMotion =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+type Segment = string | React.ReactNode
+
 /**
- * Parses prose and wraps deepLink labels with <Link> elements.
+ * Wraps deepLink labels within one run of text with <Link> elements.
  * Matches are case-sensitive and non-overlapping (longer labels first).
  */
-function linkifyProse(prose: string, deepLinks: DeepLink[], accentColor: string) {
-  if (!deepLinks.length) return [prose]
+function linkifyRun(
+  text: string,
+  deepLinks: DeepLink[],
+  accentColor: string,
+  runIndex: number
+): Segment[] {
+  let segments: Segment[] = [text]
 
-  // Sort longest first to prevent shorter substrings clobbering longer matches
-  const sorted = [...deepLinks].sort((a, b) => b.label.length - a.label.length)
-
-  type Segment = string | React.ReactNode
-  let segments: Segment[] = [prose]
-
-  for (const link of sorted) {
+  for (const link of deepLinks) {
     const next: Segment[] = []
     for (const seg of segments) {
       if (typeof seg !== 'string') {
@@ -50,7 +52,7 @@ function linkifyProse(prose: string, deepLinks: DeepLink[], accentColor: string)
         if (i < parts.length - 1) {
           next.push(
             <Link
-              key={`${link.url}-${i}`}
+              key={`${runIndex}-${link.url}-${i}`}
               to={link.url}
               className="transition-colors hover:underline"
               style={{ color: accentColor, fontWeight: 500 }}
@@ -63,6 +65,29 @@ function linkifyProse(prose: string, deepLinks: DeepLink[], accentColor: string)
     }
     segments = next
   }
+
+  return segments
+}
+
+/**
+ * Renders prose: the *asterisk* album titles the generator leaves in the text
+ * become emphasis, and deepLink labels become <Link> elements.
+ *
+ * Emphasis is resolved first because an album title can contain a deep-link
+ * label — "*(Who's Afraid of) The Art of Noise?*" wraps the artist link —
+ * and linkifying first splits the two markers into separate runs where they
+ * no longer pair up, printing them literally.
+ */
+function linkifyProse(prose: string, deepLinks: DeepLink[], accentColor: string): Segment[] {
+  // Sort longest first to prevent shorter substrings clobbering longer matches
+  const sorted = [...deepLinks].sort((a, b) => b.label.length - a.label.length)
+
+  const segments: Segment[] = []
+  splitEmphasis(prose).forEach((run, i) => {
+    const linked = linkifyRun(run.text, sorted, accentColor, i)
+    if (run.emphasis) segments.push(<em key={`em-${i}`}>{linked}</em>)
+    else segments.push(...linked)
+  })
 
   return segments
 }
@@ -115,22 +140,25 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
         overflow: 'hidden',
       }}
     >
-      {/* Content + thumbnail row */}
+      {/* Content + thumbnail row — stacks on phones, side-by-side from sm up.
+          A fixed 160px thumbnail beside the text left ~130px of reading width
+          on a 390px viewport, breaking the headline and date onto every other
+          word. */}
       <div
-        className="flex gap-5 items-start"
+        className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start"
         style={{ padding: 'clamp(16px, 4vw, 24px)' }}
       >
         {/* Left: all text content */}
-        <div className="flex-1 min-w-0">
+        <div className="w-full min-w-0 sm:flex-1">
           {/* Category label + date */}
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between gap-3 mb-2">
             <span
-              className="font-sans text-xs font-semibold uppercase tracking-wider"
+              className="font-sans text-xs font-semibold uppercase tracking-wider whitespace-nowrap"
               style={{ color: accentColor }}
             >
               {categoryLabel}
             </span>
-            <span className="font-sans text-[13px] text-gray-400">{publishedDate}</span>
+            <span className="font-sans text-[13px] text-gray-400 whitespace-nowrap">{publishedDate}</span>
           </div>
 
           {/* Headline */}
@@ -203,11 +231,13 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
           </div>
         </div>
 
-        {/* Thumbnail */}
+        {/* Thumbnail — banner above the text on phones (order-first), square
+            beside it from sm up. Decorative, so visual order can differ from
+            DOM order without affecting the reading order. */}
         {hasImage && (
           <Link
             to={`/liner-notes/${post.slug}`}
-            className="flex-shrink-0"
+            className="order-first w-full sm:order-none sm:w-auto sm:flex-shrink-0"
             tabIndex={-1}
             aria-hidden="true"
           >
@@ -215,9 +245,8 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
               src={post.image.url}
               alt={post.image.alt}
               onError={handleImageError}
+              className="w-full h-[180px] sm:w-40 sm:h-40"
               style={{
-                width: 160,
-                height: 160,
                 objectFit: 'cover',
                 borderRadius: 10,
                 display: 'block',

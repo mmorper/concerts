@@ -34,6 +34,7 @@ import {
   getAlbumEras,
   getArtistAliases,
 } from "../../mcp-server/src/data.js";
+import { OWNER_FIRST_NAME } from "../../mcp-server/src/owner.js";
 import type { Env } from "./types.js";
 import type { Exhibit, EntityRef } from "./exhibits.js";
 import { artistDeepLink, venueDeepLink } from "./exhibits.js";
@@ -87,7 +88,10 @@ export const TOOL_DEFS = [
   },
   {
     name: "get_artist_history",
-    description: "Everything I remember about an artist — every show, every venue, every year.",
+    description:
+      "Everything I remember about an artist — every show, every venue, every year. " +
+      `This is the tool for "how many times has ${OWNER_FIRST_NAME} seen X?" — pass X, the artist. ` +
+      `${OWNER_FIRST_NAME} is my owner, not a performer; every show in here is already his.`,
     input_schema: {
       type: "object",
       properties: { artist: { type: "string" } },

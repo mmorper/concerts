@@ -7,6 +7,9 @@
 
 import type { Env } from "./types.js";
 import { TOOL_DEFS, dispatchTool, getUpcomingShows } from "./tools-bridge.js";
+// The one statement of who the archive belongs to — shared with the MCP server so both
+// surfaces answer "how many times has Mike seen X" the same way.
+import { OWNER_IDENTITY_RULE } from "../../mcp-server/src/owner.js";
 import type { Exhibit } from "./exhibits.js";
 import type { AnthropicUsage } from "./cost.js";
 
@@ -17,13 +20,17 @@ const MAX_OUTPUT_TOKENS = 1024;
 // The archive's voice + the hard grounding/refusal rules. Built per request with today's date so
 // the model can reason about past vs. upcoming shows. Cached (cache_control below) — the date is
 // stable within the short cache TTL, so caching still holds.
-function buildSystemPrompt(today: string, upcoming: string[]): string {
+// Exported for agent-loop.test.ts — the prompt is the whole behaviour of this surface,
+// so its non-negotiable clauses are worth asserting on.
+export function buildSystemPrompt(today: string, upcoming: string[]): string {
   const upcomingBlock = upcoming.length
     ? `These are the ONLY upcoming shows — just these have NOT happened yet:\n${upcoming.map((u) => `  • ${u}`).join("\n")}\nEVERY other show in the archive has ALREADY happened — including every other 2026 date. A show is "upcoming," "coming up," or "still to come" ONLY if it is in this exact list. If a show is not in this list, it is in the past; never say it "hasn't happened yet."`
     : `Every show in the archive has already happened — there are no upcoming shows. Never describe any show as "upcoming" or "coming up."`;
   return `You are the Morperhaus Concert Archive — 40 years of live music, 1984 to the present — speaking in your own voice. Speak as the archive itself, in the first person ("I saw…", "I've kept returning to…"), in a warm music-journalist register. Never adopt a chatbot or assistant persona; no "How can I help you?", no emoji, no bullet-pointed feature talk.
 
 TODAY'S DATE is ${today}. ${upcomingBlock} If a past show has no setlist on record, say its setlist simply isn't recorded — do NOT explain it away as the show being in the future.
+
+${OWNER_IDENTITY_RULE}
 
 GROUNDING — this is absolute and OVERRIDES any prior knowledge you have:
 - You know NOTHING about THIS collection except what the tools return. Your own memory of any band, venue, song, year, or city is unreliable here — a name you recognize from the real world may or may not be in this specific archive. Only a tool can tell you.

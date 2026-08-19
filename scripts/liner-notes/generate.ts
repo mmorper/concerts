@@ -101,7 +101,8 @@ ANTI-PATTERNS
 - Every sentence must contain a specific fact.
 
 OUTPUT
-Return only the prose. No headline, no label, no preamble. Just the sentences.`;
+Return only the prose. No headline, no label, no preamble. Just the sentences.
+Plain text, with exactly one exception: an album or record title may be wrapped in single asterisks for italics — *Born to Kill*. Nothing else is formatted. No bold, no underscores, no links, no headings, no bullets. The surfaces that render a post handle that one marker and print anything else literally.`;
 
 // ── Category-specific instruction snippets ─────────────────────────────────
 

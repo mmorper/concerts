@@ -23,17 +23,20 @@ export function PageNav({ current, theme }: PageNavProps) {
       : 'text-gray-500 hover:text-gray-900'
 
   const linkClass =
-    theme === 'dark'
+    'whitespace-nowrap ' +
+    (theme === 'dark'
       ? 'text-slate-500 hover:text-indigo-400'
-      : 'text-gray-400 hover:text-indigo-600'
+      : 'text-gray-400 hover:text-indigo-600')
 
   const dividerClass = theme === 'dark' ? 'text-slate-700' : 'text-gray-300'
 
   return (
-    <nav className="flex items-center gap-3 mb-10" aria-label="Page navigation">
+    // Wraps rather than squeezing: on a phone the single non-wrapping row broke
+    // labels mid-phrase and pushed "Ask the Archive" past the clipped edge.
+    <nav className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-10" aria-label="Page navigation">
       <button
         onClick={() => navigate('/')}
-        className={`font-sans text-sm flex items-center gap-1 transition-colors ${backClass}`}
+        className={`font-sans text-sm flex items-center gap-1 whitespace-nowrap transition-colors ${backClass}`}
       >
         <ChevronLeft className="w-4 h-4" />
         Back to Archive
