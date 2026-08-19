@@ -64,6 +64,11 @@ export function isOwnerReference(query: string): boolean {
   const q = query
     .trim()
     .toLowerCase()
+    // Possessives first — "Mike's" has to become "mike", not "mikes". Stripping the
+    // apostrophe alone (the pass below) would leave a string that matches nothing.
+    // Safe here because an act whose own name carries an apostrophe-s has already
+    // won on the exact-name check by the time this runs.
+    .replace(/['’]s\b/g, "")
     .replace(/[.,!?'"’]/g, "")
     .replace(/\s+/g, " ")
     .replace(/^(?:about|for|by)\s+/, "");

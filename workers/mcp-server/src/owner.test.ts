@@ -39,6 +39,14 @@ describe("isOwnerReference", () => {
     }
   });
 
+  // "Mike's" has to fold to "mike" — dropping the apostrophe alone leaves "mikes",
+  // which matches no alias and falls through to the guessing path this exists to stop.
+  it("folds possessives, straight and curly", () => {
+    for (const q of ["Mike's", "Mike’s", "mike morper's", "Morps's", "the owner's"]) {
+      expect(isOwnerReference(q), q).toBe(true);
+    }
+  });
+
   // The whole reason this function is whole-string and not a substring test: the
   // archive holds a real headliner whose name starts with "Mike".
   it("never claims a performer whose name merely contains the owner's", () => {
