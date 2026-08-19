@@ -115,22 +115,25 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
         overflow: 'hidden',
       }}
     >
-      {/* Content + thumbnail row */}
+      {/* Content + thumbnail row — stacks on phones, side-by-side from sm up.
+          A fixed 160px thumbnail beside the text left ~130px of reading width
+          on a 390px viewport, breaking the headline and date onto every other
+          word. */}
       <div
-        className="flex gap-5 items-start"
+        className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start"
         style={{ padding: 'clamp(16px, 4vw, 24px)' }}
       >
         {/* Left: all text content */}
-        <div className="flex-1 min-w-0">
+        <div className="w-full min-w-0 sm:flex-1">
           {/* Category label + date */}
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between gap-3 mb-2">
             <span
-              className="font-sans text-xs font-semibold uppercase tracking-wider"
+              className="font-sans text-xs font-semibold uppercase tracking-wider whitespace-nowrap"
               style={{ color: accentColor }}
             >
               {categoryLabel}
             </span>
-            <span className="font-sans text-[13px] text-gray-400">{publishedDate}</span>
+            <span className="font-sans text-[13px] text-gray-400 whitespace-nowrap">{publishedDate}</span>
           </div>
 
           {/* Headline */}
@@ -203,11 +206,13 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
           </div>
         </div>
 
-        {/* Thumbnail */}
+        {/* Thumbnail — banner above the text on phones (order-first), square
+            beside it from sm up. Decorative, so visual order can differ from
+            DOM order without affecting the reading order. */}
         {hasImage && (
           <Link
             to={`/liner-notes/${post.slug}`}
-            className="flex-shrink-0"
+            className="order-first w-full sm:order-none sm:w-auto sm:flex-shrink-0"
             tabIndex={-1}
             aria-hidden="true"
           >
@@ -215,9 +220,8 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
               src={post.image.url}
               alt={post.image.alt}
               onError={handleImageError}
+              className="w-full h-[180px] sm:w-40 sm:h-40"
               style={{
-                width: 160,
-                height: 160,
                 objectFit: 'cover',
                 borderRadius: 10,
                 display: 'block',
