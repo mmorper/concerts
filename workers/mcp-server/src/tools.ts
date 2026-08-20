@@ -1430,10 +1430,57 @@ interface QueryResult {
   outputTokens: number;
 }
 
+/**
+ * The album-cycle join, compressed enough to ride along with every freeform question.
+ *
+ * `query` used to receive concerts.json and nothing else, so the one tool meant for
+ * questions the others can't answer was blind to the archive's most distinctive data —
+ * and a question like "which bands did I catch before they broke?" was either refused or,
+ * worse, answered from the model's own memory of release dates.
+ *
+ * Shipping album-eras.json whole was never an option: ~154K tokens, over four times the
+ * entire current context. This projection is ~4.1K (+11.5% on the concerts payload), which
+ * is what made the decision easy — see docs/specs/future/global-query-era-context.md for
+ * the measurement and the options weighed against it.
+ *
+ * Tuples, not objects: the keys would cost more than the values. Field order is documented
+ * for the model in prompts/query.md and must change in both places or neither.
+ */
+export type EraProjection = Record<
+  string,
+  [
+    artistKey: string,
+    cycleBucket: CycleBucket | null,
+    currentAlbum: string | null,
+    daysSinceRelease: number | null,
+    definingAlbum: string | null,
+    definingAlbumAhead: 0 | 1,
+    definingAlbumMonthsAway: number | null,
+  ]
+>;
+
+export function projectEras(eras: AlbumEras | null): EraProjection | null {
+  if (!eras) return null;
+  const out: EraProjection = {};
+  for (const [id, e] of Object.entries(eras.concerts)) {
+    out[id] = [
+      e.artistKey,
+      e.cycleBucket,
+      e.currentAlbum?.title ?? null,
+      e.daysSinceRelease,
+      e.definingAlbum?.title ?? null,
+      e.definingAlbumAhead ? 1 : 0,
+      e.definingAlbumMonthsAway,
+    ];
+  }
+  return out;
+}
+
 async function runQuery(
   env: Env,
   question: string,
   concertsJson: string,
+  eraProjection: EraProjection | null,
 ): Promise<QueryResult | null> {
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -1449,7 +1496,13 @@ async function runQuery(
       messages: [
         {
           role: "user",
-          content: `Here is my full concert archive as JSON (concerts.json):\n\n${concertsJson}\n\nQuestion: ${question}`,
+          // The era block is omitted entirely when the file is unreadable rather than sent
+          // empty — an empty map reads as "no album data exists for these shows", which is a
+          // different and false claim. Absent, the prompt's era section simply has nothing
+          // to describe and the model answers from concerts.json as it always did.
+          content: eraProjection
+            ? `Here is my full concert archive as JSON (concerts.json):\n\n${concertsJson}\n\nAnd here is where each of those shows sat in the artist's album cycle, keyed by concert id (album-eras.json, projected — field order is in your instructions):\n\n${JSON.stringify(eraProjection)}\n\nQuestion: ${question}`
+            : `Here is my full concert archive as JSON (concerts.json):\n\n${concertsJson}\n\nQuestion: ${question}`,
         },
       ],
     }),
@@ -1724,7 +1777,17 @@ export function registerTools(server: McpServer, env: Env): void {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
 
-      const result = await runQuery(env, String(args.question ?? ""), JSON.stringify(data.concerts));
+      // Era data stays LAZY: `query` is capped in the single digits per day, so a cold
+      // fetch on this path is cheap, and promoting it to LOAD would make every other
+      // tool pay for it. A miss degrades to the pre-v5.4 payload rather than failing.
+      const eras = await getAlbumEras(env, bgCtx);
+
+      const result = await runQuery(
+        env,
+        String(args.question ?? ""),
+        JSON.stringify(data.concerts),
+        projectEras(eras),
+      );
       if (!result) {
         return textResult(
           "I couldn't work that one out just now — try again, or use one of my deterministic tools.",

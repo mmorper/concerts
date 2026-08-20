@@ -7,7 +7,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { careerPosition, careerShape, concertSetlist, artistHistory, searchConcerts } from "./tools.js";
+import { careerPosition, careerShape, concertSetlist, artistHistory, searchConcerts, projectEras } from "./tools.js";
 import type { AlbumEras, Concert } from "./types.js";
 
 // ---------- fixtures ----------
@@ -330,5 +330,60 @@ describe("careerShape", () => {
       },
     };
     expect(careerShape(concerts, onlyWeak)).toContain("20 months before Violator");
+  });
+});
+
+// ---------- query era context ----------
+
+// `query` shipped concerts.json and nothing else, so the freeform tool was blind to the
+// album-cycle join. These pin the projection's contract: the tuple order the prompt
+// documents, the absent-data behaviour, and the size budget the decision rested on.
+// See docs/specs/future/global-query-era-context.md.
+describe("projectEras", () => {
+  it("returns null when there is no era data, so the block is omitted rather than sent empty", () => {
+    // An empty map would read to the model as "no album data exists for these shows" —
+    // a different and false claim from "I wasn't given any."
+    expect(projectEras(null)).toBeNull();
+  });
+
+  it("projects each concert to the tuple order the prompt documents", () => {
+    const p = projectEras(eras)!;
+    expect(p[roseBowl.id]).toEqual([
+      "depeche-mode",
+      "current",
+      "Music for the Masses",
+      264,
+      "Violator",
+      1, // definingAlbumAhead
+      20,
+    ]);
+  });
+
+  it("carries nulls through rather than inventing values", () => {
+    const p = projectEras(eras)!;
+    // The 2023 show has no defining album on record.
+    expect(p[recent.id]).toEqual(["depeche-mode", "fresh", "Memento Mori", 4, null, 0, null]);
+  });
+
+  it("keys on concert id so the model can join back to concerts.json", () => {
+    const p = projectEras(eras)!;
+    expect(Object.keys(p).sort()).toEqual(concerts.map((c) => c.id).sort());
+  });
+
+  it("drops the fields that would blow the context budget", () => {
+    // mbids, cover URLs, match tiers, percentiles and the entire `artists` block are the
+    // difference between ~4K tokens and ~154K. If one creeps back in, this fails.
+    const json = JSON.stringify(projectEras(eras));
+    for (const leak of ["mbid", "coverAvailable", "matchTier", "careerPercentile", "studioAlbums"]) {
+      expect(json, leak).not.toContain(leak);
+    }
+  });
+
+  it("stays inside its size budget per concert", () => {
+    // The whole decision rested on ~4.1K tokens for 178 concerts — about 23 tokens each,
+    // measured as chars/3.6. Generous ceiling; a schema change that doubles it should
+    // re-open the spec's cost question rather than land silently.
+    const perConcert = JSON.stringify(projectEras(eras)!).length / 3.6 / concerts.length;
+    expect(perConcert).toBeLessThan(45);
   });
 });
