@@ -1,2 +1,15 @@
 # Assembled canvas is a build output (~2MB of editor payload) — regenerate with /design
 social-imagery-directions.html
+
+# Photography held out of the repo until #327 records its provenance.
+#
+# This repo is public, so committing an image here publishes it — which is
+# the same act the provenance policy governs. The Track D artboard
+# references nile-rodgers-2026.jpg by filename and the published canvas
+# carries its own private copy, so the mock renders for review either way;
+# a fresh clone shows a broken image until the file is dropped back in.
+#
+# Remove this rule once #327 confirms the photo is ours to publish.
+*.jpg
+*.jpeg
+*.png
