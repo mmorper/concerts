@@ -1,9 +1,69 @@
 {
   "artboards": [
-    { "file": "Main.dc.html", "title": "Track A — Typographic", "x": 0, "y": 0, "w": 1080, "h": 1350 },
-    { "file": "Generative.dc.html", "title": "Track B — Data-derived", "x": 1240, "y": 0, "w": 1080, "h": 1350 },
-    { "file": "Material.dc.html", "title": "Track C — Material", "x": 2480, "y": 0, "w": 1080, "h": 1350 },
-    { "file": "Photographic.dc.html", "title": "Track D — Photographic", "x": 3720, "y": 0, "w": 1080, "h": 1350 }
+    {
+      "file": "Main.dc.html",
+      "title": "Track A — Typographic",
+      "x": 0,
+      "y": 0,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "Generative.dc.html",
+      "title": "Track B — Data-derived",
+      "x": 1240,
+      "y": 0,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "Material.dc.html",
+      "title": "Track C — Material",
+      "x": 2480,
+      "y": 0,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "Photographic.dc.html",
+      "title": "Track D — Photographic",
+      "x": 3720,
+      "y": 0,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "MainWave2.dc.html",
+      "title": "Track A — Typographic (Wave 2)",
+      "x": 0,
+      "y": 1780,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "GenerativeWave2.dc.html",
+      "title": "Track B — Data-derived (Wave 2)",
+      "x": 1240,
+      "y": 1780,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "MaterialWave2.dc.html",
+      "title": "Track C — Material (Wave 2)",
+      "x": 2480,
+      "y": 1780,
+      "w": 1080,
+      "h": 1350
+    },
+    {
+      "file": "PhotographicWave2.dc.html",
+      "title": "Track D — Photographic (Wave 2)",
+      "x": 3720,
+      "y": 1780,
+      "w": 1080,
+      "h": 1350
+    }
   ],
   "annotations": [
     {
@@ -40,7 +100,44 @@
       "y": -330,
       "w": 900,
       "text": "TRACK D — LICENSED PHOTOGRAPHY\n\nShown with a deliberately marked placeholder. No real photo is embedded here, because embedding one is the exact risk under review — see the provenance policy, #327.\n\nWhy it might win: photography outperforms graphics on Instagram, and it's the only direction that puts a human face in the feed.\n\nThe tradeoff, and it's the heavy one: every image source we have (Google Places, Spotify album art, Cover Art Archive) is licensed for display on our own site, not for republication under a brand account. Spotify's guidelines specifically prohibit the overlay treatment. The risk isn't a lawsuit, it's an automated strike on an account with no goodwill to absorb it.\n\nNote the caption line — CC-licensed sources need attribution, which costs a line of the design on every post forever."
+    },
+    {
+      "id": "brief-wave-2",
+      "x": -1020,
+      "y": 1780,
+      "w": 900,
+      "text": "WAVE 2 — ENGAGEMENT PASS\n\nSame four tracks, same post, reworked against an engagement critique of Wave 1. Five changes, applied to all four so the comparison stays about treatment:\n\n1. THE HOOK NO LONGER RESOLVES. Wave 1 told the whole story in the image — Duran Duran, Nile Rodgers, why it matters — so there was no reason to click. Wave 2 withholds WHO played it the second time. The names are gone from the cards; the permalink is the only place they resolve.\n\n2. TYPE IS MUCH BIGGER. Hook goes 82px -> 96-112px. At in-feed scale (~400px wide) Wave 1's 18-21px footers rendered around 7-8px — invisible, pure noise eating contrast.\n\n3. FOOTER CUT TO ONE LINE, URL DROPPED. Nobody types a URL off an image, and the handle is already on the post.\n\n4. A RESPONSE PROMPT. \"Were you at either one?\" — comments and saves drive distribution, and an archive audience has parallel memories. It is a real question from someone who was actually there, which is the line between prompting and clickbait.\n\n5. GROUNDS PULLED APART. Wave 1 was three dark cards out of four, and dark recedes in a feed. A now sits on saturated violet, C stays warm paper — so a nine-up grid has rhythm instead of monotony.\n\nJudge these at 400px, not at full size."
+    },
+    {
+      "id": "note-w2-a",
+      "x": 0,
+      "y": 1450,
+      "w": 900,
+      "text": "TRACK A — WAVE 2\n\nGround moved from near-black to saturated violet #4c1d95. Wave 1's dark card was handsome and receded in a feed; this one stops a thumb without leaving the palette.\n\nHook at 112px carrying only the setup. The turn sits below it in italic, and it names no one.\n\nWatch for: whether the two-part hook reads as one thought or two competing headlines. If it splits, the italic line is the one to cut."
+    },
+    {
+      "id": "note-w2-b",
+      "x": 1240,
+      "y": 1450,
+      "w": 900,
+      "text": "TRACK B — WAVE 2\n\nThe chart was decoration in Wave 1 — nobody reads a 43-bar histogram at feed scale. The number is now the hero at 300px, the two lit years and the span between them carry the story, and the histogram drops to background texture where it still signals \"real data\" without asking to be read.\n\nThis is the most save-worthy of the four, which matters more than likes for an archive account: saves compound.\n\nWatch for: whether \"39\" alone is intriguing enough without the years beside it."
+    },
+    {
+      "id": "note-w2-c",
+      "x": 2480,
+      "y": 1450,
+      "w": 900,
+      "text": "TRACK C — WAVE 2\n\nThe strongest structural idea in this wave: the 1987 stub sits ON TOP of the 2026 one, physically hiding the second artist's name. The open loop is expressed in the artwork rather than the copy — the answer is literally behind the other ticket.\n\nAlso pushed on artifact quality: asymmetric rather than two equal stubs, and a handwritten annotation standing in for the human presence a photograph would otherwise supply.\n\nWatch for: the handwriting. It either reads as genuinely personal or as a font choice. If it reads as a font, cut it — there's no middle ground."
+    },
+    {
+      "id": "note-w2-d",
+      "x": 3720,
+      "y": 1450,
+      "w": 900,
+      "text": "TRACK D — WAVE 2\n\nStill a marked placeholder, still gated on #327. Restructured to the new hierarchy so it stays comparable: photo region cut from 830px to 700px to buy room for a 96px hook, prompt added, attribution reduced to one quiet line.\n\nThat attribution line is the real ongoing cost of this track and it is worth looking at directly: a CC-licensed source needs crediting on every post, forever, inside the design.\n\nWatch for: whether the layout still holds when the placeholder becomes a real photograph with its own focal point competing with the type."
     }
   ],
-  "launch": { "view": "canvas" }
+  "launch": {
+    "view": "canvas"
+  }
 }
