@@ -325,6 +325,62 @@ Build all URLs with `src/utils/deepLinks.ts` and assert against `test/fixtures/d
 
 ---
 
+## Personal Media
+
+Own photography and video from the smartphone era. Tracked in #338–#341.
+
+### Coverage ceiling (measured)
+
+| Era | Shows | Share |
+|---|---|---|
+| Pre-2007 (film / no phone) | 66 | 36% |
+| 2007–2011 (early phone) | 17 | 9% |
+| 2012–2016 (usable stills) | 30 | 16% |
+| 2017+ (good cameras, 4K video) | 71 | 39% |
+
+**101 shows (55%) could plausibly have stills; 71 (39%) could have video.** Everything before 2012 is permanently out of reach.
+
+### The anti-correlation to design around
+
+The detectors reach backward — full-circle, drought-comeback, venue-ghost and artist-longevity are *by construction* stories about spans of decades. The camera only reaches forward. Across the 57 published notes, **147 year-mentions are pre-2012 against 43 from 2012+**, and only 42% of posts reference a 2012+ show at all.
+
+If roughly 20 of the 101 eligible shows carry usable media, the compound hit rate for a liner note carrying a real photograph is about **42% × 20% ≈ 8%** — one post in twelve.
+
+**So personal media is the ceiling of the imagery ladder, never its floor.** Track B (generative) covers the volume because it is the only direction that is both always-available and wholly-owned. #338 exists to replace that estimate with a count before anything is built around it.
+
+### The join is free
+
+Two facts make ingest almost entirely automatic:
+
+1. Phone photos carry `DateTimeOriginal` in EXIF.
+2. **No two concerts in the archive share a calendar date** — all 184 are unique.
+
+A photo's timestamp therefore maps to exactly one concert, with no tie-breaking. GPS EXIF confirms the venue as a second signal. Match on a **show window** (roughly 17:00 day-of through 04:00 next day) rather than date equality, because encore shots land after midnight; `DateTimeOriginal` carries no timezone, so let GPS break ties when travel puts the phone on the wrong wall-clock.
+
+### Submission
+
+**The album is the inbox.** A designated shared album syncs to a local folder; `npm run media:ingest` reads it. No upload UI — the capture action is already one-handed at a venue, and a workflow with more friction than that gets abandoned by the third show.
+
+Going forward, a four-frame shoot list (wide venue, marquee, one performer frame, the stub) turns N into N+6-to-12 a year for free. That is the only lever that changes this constraint over time.
+
+### Storage
+
+At N≈20, **commit the stills**; twenty optimised images is ~1MB and the project already ships venue imagery. R2 is correct at 100+ assets and over-engineering at 20. Storage lives behind a `url` field in `media-index.json` so the migration costs no consumer changes.
+
+Photography stays out of the repo until #327 records its provenance — this repo is public, so committing an image *is* the publishing act the policy governs.
+
+### Two rules that are not negotiable
+
+**The different-night rule.** A photo from another show may be used, but the post must say so. Implying a photo is *the* night when it is not is the fabricated-memory failure the voice rules exist to prevent.
+
+**Low-confidence matches don't publish.** An asset matched only by file mtime is a guess, and guesses do not get attached to a first-person account of a specific night.
+
+### Audio
+
+Audio is retained; muted by default wherever the player is under our control. Instagram and TikTok fingerprint commercial masters, which live venue audio will not match; the residual exposure is YouTube melody matching against the composition, which yields a publisher claim rather than a block. Acceptable for a non-monetised archive. Autoplay is muted everywhere anyway, so this is the default rather than a restriction.
+
+---
+
 ## Platform Notes
 
 **Bluesky.** Rich-text facets must be computed manually using **byte** offsets, not character offsets — a common source of mangled links. Link cards need the thumbnail uploaded as a blob first; Bluesky will not scrape our OG tag. Set the account handle to `concerts.morperhaus.org` via DNS TXT — free, self-verifying, and it puts the URL in front of every reader of every post.
