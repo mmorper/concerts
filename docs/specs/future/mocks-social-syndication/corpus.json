@@ -1,0 +1,79 @@
+{
+  "_comment": "Real-data mock corpus for social syndication design work (#324). Every social mock and, later, every render test draws from these records so designs are judged against genuine content — including the ugly cases. Extracted 2026-08-20 from public/data/. Re-derive rather than hand-edit if the archive changes.",
+
+  "medianLinerNote": {
+    "slug": "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics",
+    "detector": "city-pulse",
+    "category": "cultural",
+    "headline": "Thompson Twins in 1984: The Year of 1984 Los Angeles Summer Olympics",
+    "proseLength": 595,
+    "artists": ["thompson-twins", "adam-ant", "billy-idol", "echo-and-the-bunnymen"],
+    "venues": ["irvine-meadows"],
+    "years": [1984],
+    "why": "Median prose length across the 57 published posts. The baseline everything is judged against."
+  },
+
+  "fullCircle": {
+    "slug": "notorious-nile-rodgers-and-duran-duran-39-years-apart",
+    "detector": "full-circle",
+    "category": "cultural",
+    "headline": "\"Notorious\": Nile Rodgers and Duran Duran, 39 Years Apart",
+    "artists": ["nile-rodgers", "duran-duran"],
+    "venues": ["pacific-amphitheatre", "irvine-meadows"],
+    "years": [1987, 2026],
+    "tags": ["#full-circle", "#cover"],
+    "why": "Densest data payload any detector produces — two artists, two venues, two years, plus a song title and a gap. Used across all four artboards in the imagery-direction canvas (#325)."
+  },
+
+  "longestArtistName": {
+    "name": "Richard Cheese & Lounge Against The Machine",
+    "length": 42,
+    "runnersUp": ["Bandits of the Acoustic Revolution", "Jah Wobble's Invaders of the Heart"],
+    "why": "Type overflow in headline position."
+  },
+
+  "longestVenueName": {
+    "name": "National Museum of African American History and Culture",
+    "length": 54,
+    "runnersUp": ["Arizona Veterans Memorial Coliseum", "Carpenter Performing Arts Center"],
+    "why": "Type overflow in footer/metadata position. Longer than any artist name, and the footer has less room."
+  },
+
+  "fourShowDate": {
+    "monthDay": "06-04",
+    "shows": [
+      { "date": "1985-06-04", "artist": "Howard Jones", "venue": "Irvine Meadows", "city": "Irvine" },
+      { "date": "1992-06-04", "artist": "The Smithereens", "venue": "The Celebrity Theatre", "city": "Anaheim" },
+      { "date": "2022-06-04", "artist": "Tears For Fears", "venue": "Kia Forum", "city": "Inglewood" },
+      { "date": "2026-06-04", "artist": "The Human League", "venue": "Hollywood Bowl", "city": "Hollywood" }
+    ],
+    "otherFourShowDates": ["11-16", "06-10"],
+    "why": "Tests the On This Day multi-record layout. Only three dates in the archive carry four shows; every other day has three or fewer."
+  },
+
+  "fortyYearAnniversary": {
+    "candidates2026": [
+      { "date": "1986-04-12", "artist": "The Alarm", "venue": "UCLA" },
+      { "date": "1986-04-15", "artist": "Blancmange", "venue": "Crawford Hall" },
+      { "date": "1986-07-16", "artist": "Beach Boys", "venue": "Pacific Amphitheatre" },
+      { "date": "1986-07-31", "artist": "The Art of Noise", "venue": "Pacific Amphitheatre" }
+    ],
+    "why": "Best-case On This Day post — the high end of anniversary weighting."
+  },
+
+  "noImageRecord": {
+    "status": "TODO",
+    "why": "A post whose image ref resolves to nothing, exercising the PLACEHOLDER_IMAGE_URL branch that #252 made reachable. Not yet identified — needs a pipeline run with image resolution to surface one, since the ref is re-resolved every run rather than stored."
+  },
+
+  "supply": {
+    "totalConcerts": 184,
+    "distinctCalendarDaysCovered": 145,
+    "calendarCoveragePct": 39.6,
+    "daysWithOneShow": 117,
+    "daysWithTwoOrMore": 28,
+    "roundAnniversaries2026": 25,
+    "perYearCounts1984to2026": [4, 8, 4, 3, 7, 1, 6, 6, 1, 3, 0, 4, 0, 1, 2, 2, 1, 1, 1, 4, 0, 4, 3, 3, 6, 2, 3, 3, 6, 6, 6, 6, 6, 12, 8, 9, 0, 2, 14, 11, 6, 4, 5],
+    "why": "Drives On This Day cadence (#333) and Track B's generative artwork. perYearCounts is what the canvas actually renders."
+  }
+}

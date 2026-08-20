@@ -1,0 +1,46 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "Track A — Typographic", "x": 0, "y": 0, "w": 1080, "h": 1350 },
+    { "file": "Generative.dc.html", "title": "Track B — Data-derived", "x": 1240, "y": 0, "w": 1080, "h": 1350 },
+    { "file": "Material.dc.html", "title": "Track C — Material", "x": 2480, "y": 0, "w": 1080, "h": 1350 },
+    { "file": "Photographic.dc.html", "title": "Track D — Photographic", "x": 3720, "y": 0, "w": 1080, "h": 1350 }
+  ],
+  "annotations": [
+    {
+      "id": "brief",
+      "x": -1020,
+      "y": 0,
+      "w": 900,
+      "text": "PHASE 0 — IMAGERY DIRECTION\nIssue #325 · Epic #323\n\nFour directions for social imagery, all showing the SAME post so the comparison isn't rigged: the full-circle note about \"Notorious\" — Duran Duran at Irvine Meadows in 1987, Nile Rodgers at the Pacific Amphitheatre in 2026.\n\nAll content is real archive data, not placeholder.\n\nSize is Instagram's 1080x1350 (4:5). That's deliberate: it's the most demanding format, because the image carries the whole post there and captions have no clickable links. A direction that survives 4:5 will survive a 1200x630 link card.\n\nPick a direction (or a hybrid) and the next canvas expands it across all four channels, plus the nine-up grid and the timeline scroll.\n\nType is Playfair Display + Source Sans 3, lifted from the existing design system. Cultural-category violet #7c3aed is the same token og-image.ts already uses."
+    },
+    {
+      "id": "note-track-a",
+      "x": 0,
+      "y": -330,
+      "w": 900,
+      "text": "TRACK A — TYPOGRAPHIC / EDITORIAL\n\nThe hook is the entire image. Design-system ground, Playfair at 82px, category rule, venues and years as a footer.\n\nWhy it might win: nothing to license, nothing to break, no dead-image risk (#252, #315 simply don't exist here). Reads at feed scale. Cheapest to build — it's the solid-colour fallback already in og-image.ts, promoted to a primary treatment.\n\nThe tradeoff: austerity. This is the direction most at risk of feeling corporate rather than personal — a feed of type-on-colour can look like a SaaS changelog. Judge it in the nine-up grid, not here."
+    },
+    {
+      "id": "note-track-b",
+      "x": 1240,
+      "y": -330,
+      "w": 900,
+      "text": "TRACK B — DATA-DERIVED GENERATIVE\n\nThe bars are the real archive: 184 shows per year, 1984-2026. 1987 and 2026 are lit; the dotted arc spans the 39 years between them.\n\nWhy it might win: wholly owned, unique to this archive, impossible to mistake for stock, and already on-brand — the site IS data visualisation. Every post generates a different shape from its own records, so the feed varies without anyone art-directing it. No licensing exposure at all.\n\nThe tradeoff: it needs a story with a shape. A one-off show with no span, no gap and no repeat has nothing to draw, so this can't be the only direction — it needs a fallback for thin posts."
+    },
+    {
+      "id": "note-track-c",
+      "x": 2480,
+      "y": -330,
+      "w": 900,
+      "text": "TRACK C — MATERIAL / METAPHOR\n\nDesigned ticket stubs as original artwork — evoking the object, never a scan of one. The project's own metaphor is album liner notes, and the prose here literally ends on \"it accumulated in my ticket stubs.\"\n\nWhy it might win: warmest of the four and the most obviously personal. Thematically exact. Owned outright. The light ground also breaks up a feed that would otherwise be uniformly dark.\n\nThe tradeoff: the most template-like. Two stubs works beautifully for a full-circle post and awkwardly for a post about one night — the furniture may not survive contact with the other 13 detectors."
+    },
+    {
+      "id": "note-track-d",
+      "x": 3720,
+      "y": -330,
+      "w": 900,
+      "text": "TRACK D — LICENSED PHOTOGRAPHY\n\nShown with a deliberately marked placeholder. No real photo is embedded here, because embedding one is the exact risk under review — see the provenance policy, #327.\n\nWhy it might win: photography outperforms graphics on Instagram, and it's the only direction that puts a human face in the feed.\n\nThe tradeoff, and it's the heavy one: every image source we have (Google Places, Spotify album art, Cover Art Archive) is licensed for display on our own site, not for republication under a brand account. Spotify's guidelines specifically prohibit the overlay treatment. The risk isn't a lawsuit, it's an automated strike on an account with no goodwill to absorb it.\n\nNote the caption line — CC-licensed sources need attribution, which costs a line of the design on every post forever."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}
