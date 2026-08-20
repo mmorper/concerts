@@ -223,6 +223,37 @@ album after their last show. Writing "nothing since" about either is a
 liability, not an observation. If a claim of that shape is unavoidable, pin it:
 *"the last album they'd released as of 2026."*
 
+### Verbs must agree with their object ✨ v6.1
+
+A song is **heard** or listened to. A performance, a set, or a show is
+**watched** or **seen**. A band is **seen**.
+
+"I watched the same song twice" mismatches the verb to its object. It
+reads as slightly wrong without a reader being able to say why, which is the
+worst kind of wrong in a first-person sentence.
+
+```
+✅ "I heard the same song twice, thirty-nine years apart"
+
+✅ "I watched Rodgers claim it fully at the Pacific Amphitheatre"
+   (the object is a performer, not the song)
+
+✅ "watching Sting perform his polished pop-rock"
+
+❌ "I watched the same song twice"
+   (you do not watch a song)
+```
+
+The fix is usually just `heard`, which carries the passage of time more
+quietly than `watched` anyway. Where the performance genuinely is the subject,
+name the performer as the object and let them do something: *watched X play it*.
+
+Enforced as rule `verb-object` in `voice-check.ts`. The check is deliberately
+narrow — it fires only where a watch verb takes a song noun as its **direct**
+object, so *"watched them play the song"* passes. Bare "music" is excluded:
+*"watching music fill an outdoor amphitheatre"* is a scene, not a
+mis-agreement, and it is already published.
+
 ---
 
 ## Validation Checklist
@@ -247,6 +278,7 @@ Before accepting generated prose, verify:
 - [ ] `road-tested` claims the album, never the song's existence (v6.0)
 - [ ] `road-tested` reads as retrospective, not foresight in the moment (v6.0)
 - [ ] No banned phrases
+- [ ] **Verbs agree with their object — songs are heard, performers watched** ✨ v6.1
 - [ ] Ends with a human moment (not a dry restatement of facts)
 - [ ] 40–500 words total
 - [ ] **No claim that could become false without the post changing** ✨ v5.4
