@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #a78bfa; } a:hover { color: #c4b5fd; }
+  </style>
+</helmet>
+
+<div style="width: 1080px; height: 1350px; background: #14111f; position: relative; overflow: hidden; font-family: 'Source Sans 3', system-ui, sans-serif;">
+
+  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: #7c3aed;"></div>
+
+  <div style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 96px 88px 80px 88px; box-sizing: border-box;">
+
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <span style="font-size: 22px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #a78bfa;">Full Circle</span>
+      <span style="width: 6px; height: 6px; border-radius: 50%; background: #4c3a78;"></span>
+      <span style="font-size: 22px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; color: #6d6482;">Cultural</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <svg viewBox="0 0 904 420" width="904" height="420" style="display: block; overflow: visible;">
+        <path d="M 69.5 316 C 220 70, 740 70, 888.5 286" fill="none" stroke="#7c3aed" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round" opacity="0.85"></path>
+        <text x="479" y="112" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="52" fill="#c4b5fd" font-style="italic">39 years</text>
+
+        <sc-for list="{{bars}}" as="bar" hint-placeholder-count="43">
+          <rect x="{{bar.x}}" y="{{bar.y}}" width="13" height="{{bar.h}}" fill="{{bar.fill}}" rx="1.5"></rect>
+        </sc-for>
+
+        <line x1="0" y1="381" x2="904" y2="381" stroke="#2e2842" stroke-width="2"></line>
+
+        <circle cx="76" cy="316" r="9" fill="#c4b5fd"></circle>
+        <circle cx="888.5" cy="286" r="9" fill="#c4b5fd"></circle>
+
+        <text x="76" y="414" text-anchor="middle" font-family="'Source Sans 3', system-ui, sans-serif" font-size="24" font-weight="600" fill="#c4b5fd">1987</text>
+        <text x="888.5" y="414" text-anchor="middle" font-family="'Source Sans 3', system-ui, sans-serif" font-size="24" font-weight="600" fill="#c4b5fd">2026</text>
+      </svg>
+
+      <div style="display: flex; justify-content: space-between; padding-top: 34px;">
+        <span style="font-size: 19px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #524a6b;">184 shows · 1984—2026</span>
+        <span style="font-size: 19px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #524a6b;">One song, twice</span>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 36px;">
+      <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 52px; line-height: 1.22; letter-spacing: -0.015em; color: #f5f2ff; text-wrap: pretty;">
+        Duran Duran played <span style="font-style: italic; color: #c4b5fd;">Notorious</span> in 1987. Thirty-nine years later Nile Rodgers — who produced it — claimed it as his own.
+      </div>
+
+      <div style="height: 1px; background: #2e2842;"></div>
+
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 32px;">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <span style="font-size: 21px; font-weight: 500; color: #b9b0d0;">Irvine Meadows · Pacific Amphitheatre</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; text-align: right;">
+          <span style="font-size: 18px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #6d6482;">Morperhaus</span>
+          <span style="font-size: 18px; font-weight: 400; letter-spacing: 0.04em; color: #4c4560;">concerts.morperhaus.org</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    // Real per-year show counts from the archive, 1984 through 2026.
+    const counts = [4,8,4,3,7,1,6,6,1,3,0,4,0,1,2,2,1,1,1,4,0,4,3,3,6,2,3,3,6,6,6,6,6,12,8,9,0,2,14,11,6,4,5];
+    const baseline = 381;
+    const perShow = 15.7;
+    const bars = counts.map((n, i) => {
+      const h = n * perShow;
+      const lit = (i === 3 || i === 42);
+      return {
+        x: i * 21,
+        y: baseline - h,
+        h: h,
+        fill: lit ? '#c4b5fd' : '#332c4d'
+      };
+    });
+    return { bars: bars };
+  }
+}
+</script>
+</body>
+</html>

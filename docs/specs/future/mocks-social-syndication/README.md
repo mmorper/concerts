@@ -1,0 +1,43 @@
+# Social Syndication — Phase 0 Mocks
+
+Creative investigation for [`global-social-syndication.md`](../global-social-syndication.md). Epic [#323](https://github.com/mmorper/concerts/issues/323).
+
+**Design canvas:** https://claude.ai/code/artifact/1194ef41-e45e-489b-a57b-8efe275a8445 ([#325](https://github.com/mmorper/concerts/issues/325))
+
+---
+
+## Why this directory exists before any code
+
+The payload schema depends on creative outcomes. Whether a post is one `hook` or three-to-five carousel `beats` is a different schema, and the second isn't reachable from the first without breaking every adapter and regenerating anything already syndicated. Phase 0 produces decisions; Phase 1 is blocked until they land.
+
+## Contents
+
+| File | Purpose |
+|---|---|
+| `corpus.json` | Real-data mock corpus ([#324](https://github.com/mmorper/concerts/issues/324)) — the records every mock is built from, chosen to include the ugly cases |
+| `Main.dc.html` | Track A — typographic / editorial |
+| `Generative.dc.html` | Track B — data-derived generative |
+| `Material.dc.html` | Track C — material / metaphor |
+| `Photographic.dc.html` | Track D — licensed photography |
+| `canvas.json` | Canvas layout and the per-track motivation notes |
+
+`PROVENANCE.md` ([#327](https://github.com/mmorper/concerts/issues/327)) and `DECISIONS.md` ([#328](https://github.com/mmorper/concerts/issues/328)) land here as Phase 0 closes.
+
+## The two copies, and why both
+
+The **canvas** is the interactive copy — pan, zoom, click into elements, push pixels directly. The **repo** is the durable, diffable, reviewable copy that outlives any hosting.
+
+Neither alone is sufficient: a canvas isn't reviewable in a PR, and a committed HTML file isn't something you can push pixels around in. Repo precedent for committed mocks already exists — `mocks-agentic-liner-notes-v3/`, `renamed-venue-mockups.html`, `dashboard-mock.html`.
+
+**They do not sync automatically.** Visual edits made in the canvas live in the artifact, not in these files. Re-syncing is an explicit step: read the canvas back, extract the artboards, commit.
+
+## Regenerating the canvas
+
+The `.dc.html` files and `canvas.json` are the source. The assembled canvas file is a build output — a couple of megabytes of editor payload — and is deliberately **not** committed; regenerate it with the `/design` skill's seeder rather than hand-editing.
+
+## Conventions in these files
+
+- Type is **Playfair Display** + **Source Sans 3**, and the cultural-category violet `#7c3aed` is the same token `og-image.ts` already uses. The mocks extend the existing design system rather than inventing a parallel one.
+- All four tracks render **the same post** — the `full-circle` note about *"Notorious"* — so the comparison isn't rigged toward a favourite.
+- Every value is real archive data. Track B's bars are genuine per-year show counts, 1984–2026.
+- **Track D embeds no real photograph.** Publishing third-party imagery under a brand account is the exact risk [#327](https://github.com/mmorper/concerts/issues/327) exists to resolve, so it's drawn as a marked placeholder carrying the attribution line the design would need forever.
