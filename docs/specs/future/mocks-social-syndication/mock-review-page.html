@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Media Audit — Review Page Mock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Deliberately dark. Image review under a bright UI biases your read of
+       exposure — every photo looks darker than it is. Standard practice. */
+    --bg: #0b0b0d;
+    --panel: #141417;
+    --panel-2: #1c1c21;
+    --line: #2a2a31;
+    --text: #e7e5e4;
+    --muted: #8b8b93;
+    --dim: #5f5f68;
+    --usable: #6366f1;
+    --hero: #f59e0b;
+    --reject: #3f3f46;
+    --good: #22c55e;
+    --warn: #eab308;
+    --bad: #ef4444;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Sans 3', system-ui, sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Mock banner ── */
+  .mock-banner {
+    background: #4338ca; color: #fff; text-align: center;
+    padding: 7px; font-size: 11px; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  /* ── Header ── */
+  header {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(11,11,13,.93); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .hrow { display: flex; align-items: center; gap: 18px; padding: 12px 22px; }
+  .brand { font-family: 'Playfair Display', serif; font-size: 17px; white-space: nowrap; }
+  .brand span { color: var(--dim); font-weight: 400; }
+
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+  .chip {
+    font-size: 11px; padding: 3px 9px; border-radius: 20px;
+    background: var(--panel-2); border: 1px solid var(--line); color: var(--muted);
+  }
+  .chip b { color: var(--text); font-weight: 600; }
+
+  .tally { display: flex; gap: 16px; font-size: 12px; white-space: nowrap; }
+  .tally div { text-align: right; }
+  .tally .n { font-family: 'Playfair Display', serif; font-size: 18px; display: block; line-height: 1.1; }
+  .tally .l { color: var(--dim); font-size: 10px; text-transform: uppercase; letter-spacing: .05em; }
+  .tally .u .n { color: var(--usable); }
+  .tally .h .n { color: var(--hero); }
+
+  .btn {
+    font: inherit; font-size: 12px; font-weight: 600;
+    padding: 7px 14px; border-radius: 6px; cursor: pointer;
+    background: var(--panel-2); border: 1px solid var(--line); color: var(--text);
+  }
+  .btn:hover { background: #26262d; }
+  .btn.primary { background: var(--usable); border-color: var(--usable); color: #fff; }
+  .btn.primary:hover { background: #4f46e5; }
+
+  .progress { height: 2px; background: var(--panel-2); }
+  .progress i { display: block; height: 100%; background: var(--usable); transition: width .2s; }
+
+  /* ── Show sections ── */
+  .show { border-bottom: 1px solid var(--line); }
+  .showhead {
+    position: sticky; top: 55px; z-index: 30;
+    background: rgba(20,20,23,.96); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    padding: 11px 22px; display: flex; align-items: baseline; gap: 12px;
+  }
+  .showhead .date { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 12px; }
+  .showhead .artist { font-family: 'Playfair Display', serif; font-size: 16px; }
+  .showhead .venue { color: var(--muted); font-size: 13px; }
+  .showhead .genre { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .showhead .count { margin-left: auto; font-size: 11px; color: var(--dim); white-space: nowrap; }
+  .showhead .done { color: var(--good); }
+
+  .grid { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px 22px 24px; }
+
+  /* ── Tiles ── */
+  .tile {
+    position: relative; height: 230px; border-radius: 4px; overflow: hidden;
+    background: #000; border: 2px solid transparent; cursor: pointer;
+    flex: none; transition: border-color .12s, opacity .12s;
+  }
+  .tile img { height: 226px; display: block; }
+  .tile.cursor { outline: 2px solid #fff; outline-offset: 2px; }
+  .tile.usable { border-color: var(--usable); }
+  .tile.hero { border-color: var(--hero); }
+  .tile.rejected { opacity: .28; }
+  .tile.rejected:hover { opacity: .6; }
+
+  .tile .badges { position: absolute; top: 6px; left: 6px; display: flex; gap: 4px; }
+  .badge {
+    font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 3px;
+    background: rgba(0,0,0,.72); color: #fff; backdrop-filter: blur(4px);
+    display: flex; align-items: center; gap: 3px;
+  }
+  .badge.burst { background: rgba(99,102,241,.85); }
+  .badge.live  { background: rgba(245,158,11,.85); color: #1c1917; }
+  .badge.vid   { background: rgba(0,0,0,.8); }
+  .badge.cloud { background: rgba(0,0,0,.72); color: var(--muted); }
+
+  .tile .mark {
+    position: absolute; top: 6px; right: 6px;
+    width: 22px; height: 22px; border-radius: 50%;
+    display: none; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: #fff;
+  }
+  .tile.usable .mark { display: flex; background: var(--usable); }
+  .tile.hero .mark { display: flex; background: var(--hero); color: #1c1917; }
+
+  .tile .label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 14px 7px 5px;
+    background: linear-gradient(transparent, rgba(0,0,0,.88));
+    font-size: 10px; color: #d4d4d8;
+    display: flex; align-items: center; gap: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .label .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--dim); flex: none; }
+  .label .score { margin-left: auto; display: flex; gap: 2px; }
+  .label .score i { width: 4px; height: 9px; border-radius: 1px; background: #52525b; }
+  .label .score i.on { background: var(--good); }
+  .label .subj {
+    background: rgba(255,255,255,.16); padding: 1px 5px; border-radius: 3px;
+    text-transform: uppercase; letter-spacing: .04em; font-weight: 600; font-size: 9px;
+  }
+
+  /* ── Lightbox ── */
+  .lb {
+    position: fixed; inset: 0; z-index: 90; background: rgba(6,6,8,.97);
+    display: none; grid-template-columns: 1fr 300px;
+  }
+  .lb.open { display: grid; }
+  .lb .stage { display: flex; align-items: center; justify-content: center; padding: 28px; position: relative; }
+  /* Fills the stage: real exports are 1200px, the size #338's sharpness gate
+     is written for. Judge at gate size, not from a shrunken proxy. */
+  .lb .stage img { width: 100%; height: 100%; object-fit: contain; border-radius: 3px; }
+  .lb .nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line);
+    background: rgba(0,0,0,.5); color: var(--text); cursor: pointer; font-size: 18px;
+  }
+  .lb .nav.prev { left: 14px; } .lb .nav.next { right: 14px; }
+
+  .lb .side { border-left: 1px solid var(--line); background: var(--panel); padding: 22px; overflow-y: auto; }
+  .lb .side h3 { font-family: 'Playfair Display', serif; font-size: 17px; margin-bottom: 2px; }
+  .lb .side .sub { color: var(--muted); font-size: 12px; margin-bottom: 20px; }
+  .meta { display: grid; grid-template-columns: auto 1fr; gap: 7px 14px; font-size: 12px; margin-bottom: 22px; }
+  .meta dt { color: var(--dim); }
+  .meta dd { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .bars { margin-bottom: 22px; }
+  .bar { display: grid; grid-template-columns: 78px 1fr 30px; align-items: center; gap: 9px; font-size: 11px; margin-bottom: 6px; }
+  .bar .track { height: 5px; background: var(--panel-2); border-radius: 3px; overflow: hidden; }
+  .bar .track i { display: block; height: 100%; border-radius: 3px; }
+  .bar .v { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .bar .k { color: var(--dim); }
+
+  .mllabels { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 22px; }
+  .mllabel { font-size: 10px; padding: 2px 7px; border-radius: 20px; background: var(--panel-2); color: var(--muted); border: 1px solid var(--line); }
+
+  .verdict { display: flex; gap: 6px; margin-bottom: 12px; }
+  .verdict button {
+    flex: 1; font: inherit; font-size: 12px; font-weight: 600; padding: 9px;
+    border-radius: 6px; cursor: pointer; border: 1px solid var(--line);
+    background: var(--panel-2); color: var(--muted);
+  }
+  .verdict button.on.u { background: var(--usable); border-color: var(--usable); color: #fff; }
+  .verdict button.on.h { background: var(--hero); border-color: var(--hero); color: #1c1917; }
+
+  .subjrow { display: flex; gap: 5px; }
+  .subjrow button {
+    flex: 1; font: inherit; font-size: 11px; padding: 7px 2px; border-radius: 5px;
+    cursor: pointer; border: 1px solid var(--line); background: var(--panel-2); color: var(--muted);
+  }
+  .subjrow button.on { background: #fff; color: #0b0b0d; border-color: #fff; }
+  .sectlabel { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: var(--dim); margin-bottom: 7px; }
+
+  /* ── Overlays ── */
+  .overlay {
+    position: fixed; inset: 0; z-index: 100; background: rgba(6,6,8,.96);
+    display: none; align-items: center; justify-content: center; padding: 40px;
+  }
+  .overlay.open { display: flex; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 30px; max-width: 860px; width: 100%; max-height: 88vh; overflow-y: auto; }
+  .card h2 { font-family: 'Playfair Display', serif; font-size: 23px; margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
+  .card p b { color: var(--text); }
+  .calstrip { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+  .calstrip img { height: 130px; border-radius: 3px; }
+  pre {
+    background: #08080a; border: 1px solid var(--line); border-radius: 6px;
+    padding: 16px; font-size: 11.5px; line-height: 1.65; overflow-x: auto;
+    color: #d4d4d8; font-family: ui-monospace, Menlo, monospace; margin-bottom: 16px;
+    white-space: pre;
+  }
+  .cardfoot { display: flex; gap: 8px; justify-content: flex-end; }
+
+  /* ── Shortcut bar ── */
+  .keys {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 45;
+    background: rgba(20,20,23,.95); backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line); padding: 8px 22px;
+    display: flex; gap: 16px; font-size: 11px; color: var(--dim); flex-wrap: wrap;
+  }
+  .keys b {
+    display: inline-block; background: var(--panel-2); border: 1px solid var(--line);
+    border-radius: 3px; padding: 1px 6px; color: var(--text); font-weight: 600;
+    font-family: ui-monospace, Menlo, monospace; margin-right: 4px;
+  }
+  main { padding-bottom: 52px; }
+
+  .toast {
+    position: fixed; bottom: 54px; left: 50%; transform: translateX(-50%);
+    background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px;
+    padding: 8px 16px; font-size: 12px; z-index: 60; opacity: 0;
+    transition: opacity .2s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="mock-banner">Design mock · #338 media audit · synthetic placeholder imagery, no real photos</div>
+
+<header>
+  <div class="hrow">
+    <div class="brand">Media Audit <span>· review</span></div>
+    <div class="chips">
+      <div class="chip">query <b>all shows</b></div>
+      <div class="chip">eligible <b>101</b></div>
+      <div class="chip">candidates <b id="c-total">—</b></div>
+      <div class="chip">after burst-collapse <b id="c-shown">—</b></div>
+    </div>
+    <div class="tally">
+      <div class="u"><span class="n" id="t-usable">0</span><span class="l">usable</span></div>
+      <div class="h"><span class="n" id="t-hero">0</span><span class="l">heroes</span></div>
+      <div><span class="n" id="t-shows">0</span><span class="l">shows hit</span></div>
+    </div>
+    <button class="btn" id="btn-cal">Recalibrate</button>
+    <button class="btn primary" id="btn-export">Export audit</button>
+  </div>
+  <div class="progress"><i id="prog" style="width:0%"></i></div>
+</header>
+
+<main id="main"></main>
+
+<!-- Lightbox -->
+<div class="lb" id="lb">
+  <div class="stage">
+    <button class="nav prev" id="lb-prev">‹</button>
+    <img id="lb-img" alt="" />
+    <button class="nav next" id="lb-next">›</button>
+  </div>
+  <div class="side">
+    <h3 id="lb-artist"></h3>
+    <div class="sub" id="lb-sub"></div>
+
+    <dl class="meta" id="lb-meta"></dl>
+
+    <div class="sectlabel">Photos quality scores</div>
+    <div class="bars" id="lb-bars"></div>
+
+    <div class="sectlabel">Detected in image</div>
+    <div class="mllabels" id="lb-labels"></div>
+
+    <div class="sectlabel">Verdict</div>
+    <div class="verdict">
+      <button class="u" id="v-usable">1 · Usable</button>
+      <button class="h" id="v-hero">2 · Hero</button>
+    </div>
+    <div class="sectlabel">Subject <span style="color:var(--reject)">— keepers only</span></div>
+    <div class="subjrow" id="lb-subj">
+      <button data-s="performer">P</button>
+      <button data-s="venue">V</button>
+      <button data-s="crowd">C</button>
+      <button data-s="stub">S</button>
+    </div>
+  </div>
+</div>
+
+<!-- Calibration -->
+<div class="overlay open" id="cal">
+  <div class="card">
+    <h2>Set your bar first</h2>
+    <p>Twenty frames sampled across the whole set — best, worst, and middle. Look at them
+    before you judge anything for real. <b>Without this, the first show gets a different
+    standard than the fortieth, and the resulting count means nothing.</b></p>
+    <p>The gates: sharp at 1080px wide · subject readable, not a silhouette · performer or
+    venue identifiable · at least 1080×1350 after crop. <b>When you hesitate, that's a
+    no</b> — a bad photo under a first-person byline is worse than no photo.</p>
+    <div class="calstrip" id="calstrip"></div>
+    <div class="cardfoot">
+      <button class="btn primary" id="cal-go">Start reviewing</button>
+    </div>
+  </div>
+</div>
+
+<!-- Export -->
+<div class="overlay" id="exp">
+  <div class="card">
+    <h2>Audit output</h2>
+    <p>Written to <b>docs/specs/future/mocks-social-syndication/audit.md</b>, plus
+    <b>selects.json</b> carrying the per-asset UUIDs for #339 ingest.</p>
+    <pre id="exp-md"></pre>
+    <div class="cardfoot">
+      <button class="btn" id="exp-close">Close</button>
+      <button class="btn primary" id="exp-copy">Copy markdown</button>
+    </div>
+  </div>
+</div>
+
+<div class="keys">
+  <span><b>← →</b>move</span>
+  <span><b>1</b>usable</span>
+  <span><b>2</b>hero</span>
+  <span><b>0</b>clear</span>
+  <span><b>space</b>full size</span>
+  <span><b>P V C S</b>subject</span>
+  <span><b>E</b>expand burst</span>
+  <span><b>U</b>undo</span>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   Synthetic frame generator.
+   Stands in for exported 1200px previews so the mock shows how quality
+   actually reads at grid size vs full size. No real photos here.
+   ═══════════════════════════════════════════════════════════════════ */
+
+function rng(seed) {
+  let s = seed * 9301 + 49297;
+  return () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+}
+
+function svgFrame({ kind, quality, hue, w, h, seed }) {
+  const r = rng(seed);
+  const blur = quality === 'soft' ? 3 + r() * 4 : 0;
+  const dark = quality === 'dark';
+  // Stage light: a couple of tight cones over near-black, not coloured fog.
+  const beams = [];
+  const nBeams = 2 + Math.floor(r() * 2);
+  for (let i = 0; i < nBeams; i++) {
+    const cx = w * (0.25 + r() * 0.5), cy = h * (0.08 + r() * 0.22);
+    const rad = w * (0.16 + r() * 0.2);
+    const light = `hsl(${(hue + i * 26) % 360} 88% ${dark ? 40 : 60}%)`;
+    beams.push(`<radialGradient id="b${seed}${i}" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="${light}" stop-opacity="${dark ? .3 : .62}"/>
+      <stop offset="45%" stop-color="${light}" stop-opacity="${dark ? .1 : .22}"/>
+      <stop offset="100%" stop-color="${light}" stop-opacity="0"/></radialGradient>
+      <ellipse cx="${cx}" cy="${cy}" rx="${rad}" ry="${rad * 1.7}" fill="url(#b${seed}${i})"/>`);
+  }
+
+  let subject = '';
+  if (kind === 'performer') {
+    const cx = w * (0.35 + r() * 0.3), base = h * 0.92, sc = h * 0.42;
+    subject = `<g fill="#000" opacity="${dark ? .95 : .85}">
+      <circle cx="${cx}" cy="${base - sc}" r="${sc * 0.17}"/>
+      <path d="M${cx - sc * .26} ${base} L${cx - sc * .2} ${base - sc * .82}
+        Q${cx} ${base - sc * .95} ${cx + sc * .2} ${base - sc * .82} L${cx + sc * .26} ${base} Z"/>
+      <rect x="${cx + sc * .3}" y="${base - sc * .95}" width="${sc * .035}" height="${sc * .95}"/>
+      <circle cx="${cx + sc * .318}" cy="${base - sc * .97}" r="${sc * .06}"/>
+    </g>`;
+  } else if (kind === 'crowd') {
+    let heads = '';
+    for (let i = 0; i < 26; i++) {
+      const x = r() * w, y = h * (0.62 + r() * 0.38), s = h * (0.05 + r() * 0.05);
+      heads += `<circle cx="${x}" cy="${y}" r="${s}"/><rect x="${x - s * 1.3}" y="${y + s * .8}" width="${s * 2.6}" height="${h}" rx="${s}"/>`;
+    }
+    subject = `<g fill="#000" opacity=".9">${heads}</g>`;
+  } else if (kind === 'venue') {
+    const bw = w * 0.62, bh = h * 0.3, bx = (w - bw) / 2, by = h * 0.3;
+    subject = `<g>
+      <rect x="0" y="${h * .62}" width="${w}" height="${h * .38}" fill="#000" opacity=".82"/>
+      <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="4" fill="#111" stroke="hsl(${hue} 90% 62%)" stroke-width="4"/>
+      <rect x="${bx + bw * .1}" y="${by + bh * .26}" width="${bw * .8}" height="${bh * .16}" fill="hsl(${hue} 90% 70%)" opacity=".9"/>
+      <rect x="${bx + bw * .22}" y="${by + bh * .56}" width="${bw * .56}" height="${bh * .11}" fill="hsl(${hue} 90% 70%)" opacity=".6"/>
+    </g>`;
+  } else if (kind === 'stub') {
+    const pw = w * 0.7, ph = h * 0.4, px = (w - pw) / 2, py = (h - ph) / 2;
+    let lines = '';
+    for (let i = 0; i < 5; i++)
+      lines += `<rect x="${px + pw * .08}" y="${py + ph * (.18 + i * .14)}" width="${pw * (.3 + r() * .5)}" height="${ph * .06}" fill="#2a2622"/>`;
+    subject = `<g transform="rotate(${-6 + r() * 12} ${w / 2} ${h / 2})">
+      <rect x="${px}" y="${py}" width="${pw}" height="${ph}" rx="3" fill="#e8e2d5"/>
+      <rect x="${px + pw * .74}" y="${py}" width="1.5" height="${ph}" fill="#b9b2a3" stroke-dasharray="6 4"/>
+      ${lines}</g>`;
+  }
+
+  const obstruct = quality === 'obstructed'
+    ? `<ellipse cx="${w * .3}" cy="${h * 1.02}" rx="${w * .3}" ry="${h * .3}" fill="#000"/>` : '';
+
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+      <defs>
+        <filter id="f${seed}"><feGaussianBlur stdDeviation="${blur}"/></filter>
+        <radialGradient id="v${seed}" cx="50%" cy="45%">
+          <stop offset="55%" stop-color="#000" stop-opacity="0"/>
+          <stop offset="100%" stop-color="#000" stop-opacity=".75"/>
+        </radialGradient>
+      </defs>
+      <rect width="${w}" height="${h}" fill="#060608"/>
+      <g ${blur ? `filter="url(#f${seed})"` : ''}>
+        ${beams.join('')}${subject}${obstruct}
+      </g>
+      <rect width="${w}" height="${h}" fill="url(#v${seed})"/>
+      ${dark ? `<rect width="${w}" height="${h}" fill="#000" opacity=".5"/>` : ''}
+    </svg>`);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Mock data — real shows from concerts.json, invented media
+   ═══════════════════════════════════════════════════════════════════ */
+
+const GENRE = { 'New Wave': '#1e40af', 'Alternative': '#5b21b6', 'Rock': '#dc2626',
+  'Post Punk': '#991b1b', 'Indie': '#0ea5e9', 'Swing': '#f59e0b', 'Reggae Fusion': '#16a34a' };
+
+const SHOWS = [
+  { id: '2017-06-06', artist: 'Royal Blood', venue: '9:30 Club', genre: 'Alternative', n: 9 },
+  { id: '2017-08-03', artist: 'Blondie', venue: 'Wolftrap', genre: 'New Wave', n: 6 },
+  { id: '2017-10-12', artist: 'Foo Fighters', venue: 'The Anthem', genre: 'Rock', n: 11 },
+  { id: '2017-11-25', artist: 'The Brian Setzer Orchestra', venue: 'Warner Theatre', genre: 'Swing', n: 4 },
+  { id: '2017-12-09', artist: 'Gary Numan', venue: '9:30 Club', genre: 'Post Punk', n: 7 },
+  { id: '2018-04-27', artist: 'Beck', venue: 'The Anthem', genre: 'Alternative', n: 8 },
+];
+
+const KINDS = ['performer', 'performer', 'performer', 'crowd', 'venue', 'stub'];
+const QUALS = ['good', 'good', 'good', 'soft', 'dark', 'obstructed', 'good', 'soft'];
+const SUBJ_LABEL = { performer: 'PERFORMER', venue: 'VENUE', crowd: 'CROWD', stub: 'STUB' };
+const ML = { performer: ['Stage', 'Music', 'Performance', 'Guitar', 'Microphone'],
+  crowd: ['Crowd', 'People', 'Concert'], venue: ['Text', 'Sign', 'Architecture', 'Night'],
+  stub: ['Text', 'Document', 'Paper'] };
+
+let UID = 0;
+const ITEMS = [];
+SHOWS.forEach((s, si) => {
+  const r = rng(si * 77 + 13);
+  for (let i = 0; i < s.n; i++) {
+    const seed = si * 100 + i + 1;
+    const kind = KINDS[Math.floor(r() * KINDS.length)];
+    const qual = QUALS[Math.floor(r() * QUALS.length)];
+    const portrait = r() > 0.42;
+    const media = r() > 0.86 ? 'video' : (r() > 0.82 ? 'live' : 'photo');
+    const q = qual === 'good' ? 0.62 + r() * 0.35 : qual === 'soft' ? 0.15 + r() * 0.3
+      : qual === 'dark' ? 0.1 + r() * 0.28 : 0.25 + r() * 0.3;
+    ITEMS.push({
+      uid: 'A' + (++UID),
+      show: s.id, si,
+      kind, qual, media,
+      w: portrait ? 3024 : 4032, h: portrait ? 4032 : 3024,
+      time: `2${Math.floor(r() * 2)}:${String(Math.floor(r() * 60)).padStart(2, '0')}`,
+      burst: r() > 0.62 ? 2 + Math.floor(r() * 11) : 0,
+      icloud: r() > 0.45,
+      duration: media === 'video' ? 4 + Math.floor(r() * 40) : (media === 'live' ? 3 : 0),
+      iso: 1600 * (1 + Math.floor(r() * 5)),
+      scores: {
+        overall: q,
+        sharp: Math.max(0, Math.min(1, q + (r() - .5) * .3)),
+        light: Math.max(0, Math.min(1, (qual === 'dark' ? q * .5 : q) + (r() - .5) * .25)),
+        frame: Math.max(0, Math.min(1, (qual === 'obstructed' ? q * .4 : q) + (r() - .5) * .3)),
+      },
+      src: null, verdict: null, subject: null,
+    });
+  }
+});
+ITEMS.forEach(it => {
+  it.src = svgFrame({ kind: it.kind, quality: it.qual, hue: (it.si * 57 + it.uid.length * 31) % 360,
+    w: it.w > it.h ? 480 : 360, h: it.w > it.h ? 360 : 480, seed: parseInt(it.uid.slice(1)) });
+});
+// Rank within show, best first — the whole point of the score pass.
+ITEMS.sort((a, b) => a.si - b.si || b.scores.overall - a.scores.overall);
+
+/* ═══════════════════════════════════════════════════════════════════
+   Render + interaction
+   ═══════════════════════════════════════════════════════════════════ */
+
+const $ = s => document.querySelector(s);
+const main = $('#main');
+let cursor = 0;
+const history = [];
+
+function scoreDots(v) {
+  const n = Math.round(v * 4);
+  return `<span class="score">${[0,1,2,3].map(i => `<i class="${i < n ? 'on' : ''}"></i>`).join('')}</span>`;
+}
+
+function tileHTML(it, idx) {
+  const badges = [];
+  if (it.burst) badges.push(`<span class="badge burst">+${it.burst}</span>`);
+  if (it.media === 'video') badges.push(`<span class="badge vid">▶ ${it.duration}s</span>`);
+  if (it.media === 'live') badges.push(`<span class="badge live">LIVE 3s</span>`);
+  if (it.icloud) badges.push(`<span class="badge cloud">☁</span>`);
+  return `<div class="tile" data-i="${idx}">
+    <img src="${it.src}" alt="" />
+    <div class="badges">${badges.join('')}</div>
+    <div class="mark"></div>
+    <div class="label">
+      <span>${it.time}</span><span class="dot"></span>
+      <span>${it.w}×${it.h}</span>
+      <span>${it.w > it.h ? '↔' : '↕'}</span>
+      ${scoreDots(it.scores.overall)}
+    </div>
+  </div>`;
+}
+
+function render() {
+  let html = '';
+  SHOWS.forEach(s => {
+    const items = ITEMS.filter(i => i.show === s.id);
+    html += `<section class="show">
+      <div class="showhead">
+        <span class="genre" style="background:${GENRE[s.genre] || '#666'}"></span>
+        <span class="date">${s.id}</span>
+        <span class="artist">${s.artist}</span>
+        <span class="venue">${s.venue}</span>
+        <span class="count" id="cnt-${s.id}"></span>
+      </div>
+      <div class="grid">${items.map(it => tileHTML(it, ITEMS.indexOf(it))).join('')}</div>
+    </section>`;
+  });
+  main.innerHTML = html;
+  main.querySelectorAll('.tile').forEach(t => {
+    t.addEventListener('click', () => { cursor = +t.dataset.i; paint(); openLB(); });
+  });
+  paint();
+}
+
+function paint() {
+  main.querySelectorAll('.tile').forEach(t => {
+    const it = ITEMS[+t.dataset.i];
+    t.classList.toggle('cursor', +t.dataset.i === cursor);
+    t.classList.toggle('usable', it.verdict === 'usable');
+    t.classList.toggle('hero', it.verdict === 'hero');
+    t.classList.toggle('rejected', it.verdict === 'reject');
+    const m = t.querySelector('.mark');
+    m.textContent = it.verdict === 'hero' ? '★' : it.verdict === 'usable' ? '✓' : '';
+    const lab = t.querySelector('.label');
+    const old = lab.querySelector('.subj');
+    if (old) old.remove();
+    if (it.subject) {
+      const s = document.createElement('span');
+      s.className = 'subj'; s.textContent = SUBJ_LABEL[it.subject];
+      lab.insertBefore(s, lab.querySelector('.score'));
+    }
+  });
+
+  const usable = ITEMS.filter(i => i.verdict === 'usable' || i.verdict === 'hero');
+  const heroes = ITEMS.filter(i => i.verdict === 'hero');
+  const hitShows = new Set(usable.map(i => i.show));
+  $('#t-usable').textContent = usable.length;
+  $('#t-hero').textContent = heroes.length;
+  $('#t-shows').textContent = `${hitShows.size}/${SHOWS.length}`;
+  const judged = ITEMS.filter(i => i.verdict).length;
+  $('#prog').style.width = (judged / ITEMS.length * 100) + '%';
+
+  SHOWS.forEach(s => {
+    const items = ITEMS.filter(i => i.show === s.id);
+    const done = items.filter(i => i.verdict).length;
+    const keep = items.filter(i => i.verdict === 'usable' || i.verdict === 'hero').length;
+    const el = $(`#cnt-${s.id}`);
+    if (el) el.innerHTML = done === items.length
+      ? `<span class="done">✓ ${keep} usable</span> · ${items.length} judged`
+      : `${done}/${items.length} judged${keep ? ` · ${keep} usable` : ''}`;
+  });
+
+  if ($('#lb').classList.contains('open')) fillLB();
+}
+
+/* ── verdicts ── */
+function setVerdict(v) {
+  const it = ITEMS[cursor];
+  history.push({ uid: it.uid, verdict: it.verdict, subject: it.subject });
+  it.verdict = it.verdict === v ? null : v;
+  if (!it.verdict || it.verdict === 'reject') it.subject = null;
+  paint();
+  if (it.verdict) advance(1);
+}
+function setSubject(s) {
+  const it = ITEMS[cursor];
+  if (it.verdict !== 'usable' && it.verdict !== 'hero') { toast('Subject tags apply to keepers only'); return; }
+  history.push({ uid: it.uid, verdict: it.verdict, subject: it.subject });
+  it.subject = it.subject === s ? null : s;
+  paint();
+}
+function undo() {
+  const h = history.pop();
+  if (!h) return toast('Nothing to undo');
+  const it = ITEMS.find(i => i.uid === h.uid);
+  it.verdict = h.verdict; it.subject = h.subject;
+  cursor = ITEMS.indexOf(it);
+  paint(); scrollToCursor(); toast('Undone');
+}
+function advance(d) {
+  cursor = Math.max(0, Math.min(ITEMS.length - 1, cursor + d));
+  paint(); scrollToCursor();
+}
+function scrollToCursor() {
+  const t = main.querySelector(`.tile[data-i="${cursor}"]`);
+  if (t) t.scrollIntoView({ block: 'center', behavior: 'smooth' });
+}
+
+/* ── lightbox ── */
+function openLB() { $('#lb').classList.add('open'); fillLB(); }
+function closeLB() { $('#lb').classList.remove('open'); }
+function fillLB() {
+  const it = ITEMS[cursor], s = SHOWS.find(x => x.id === it.show);
+  $('#lb-img').src = it.src;
+  $('#lb-artist').textContent = s.artist;
+  $('#lb-sub').textContent = `${s.venue} · ${it.show} · ${it.time}`;
+  $('#lb-meta').innerHTML = `
+    <dt>Type</dt><dd>${it.media === 'video' ? `Video · ${it.duration}s` : it.media === 'live' ? 'Live Photo · 3s' : 'Photo'}</dd>
+    <dt>Dimensions</dt><dd>${it.w} × ${it.h}</dd>
+    <dt>Gate 1080×1350</dt><dd style="color:${Math.min(it.w, it.h) >= 1080 ? 'var(--good)' : 'var(--bad)'}">${Math.min(it.w, it.h) >= 1080 ? 'passes' : 'fails'}</dd>
+    <dt>ISO</dt><dd>${it.iso}</dd>
+    ${it.burst ? `<dt>Burst</dt><dd>${it.burst + 1} frames</dd>` : ''}
+    <dt>Original</dt><dd style="color:${it.icloud ? 'var(--warn)' : 'var(--good)'}">${it.icloud ? 'in iCloud' : 'on disk'}</dd>`;
+  const bars = [['Sharpness', it.scores.sharp], ['Lighting', it.scores.light],
+    ['Framing', it.scores.frame], ['Overall', it.scores.overall]];
+  $('#lb-bars').innerHTML = bars.map(([k, v]) => `<div class="bar">
+    <span class="k">${k}</span>
+    <span class="track"><i style="width:${v * 100}%;background:${v > .6 ? 'var(--good)' : v > .35 ? 'var(--warn)' : 'var(--bad)'}"></i></span>
+    <span class="v">${v.toFixed(2)}</span></div>`).join('');
+  $('#lb-labels').innerHTML = (ML[it.kind] || []).map(l => `<span class="mllabel">${l}</span>`).join('');
+  $('#v-usable').classList.toggle('on', it.verdict === 'usable');
+  $('#v-hero').classList.toggle('on', it.verdict === 'hero');
+  $('#lb-subj').querySelectorAll('button').forEach(b =>
+    b.classList.toggle('on', b.dataset.s === it.subject));
+}
+
+/* ── export ── */
+function exportMD() {
+  let rows = '';
+  let hitCount = 0;
+  SHOWS.forEach(s => {
+    const items = ITEMS.filter(i => i.show === s.id && (i.verdict === 'usable' || i.verdict === 'hero'));
+    const stills = items.filter(i => i.media === 'photo').length;
+    const clips = items.filter(i => i.media === 'video').length;
+    const live = items.filter(i => i.media === 'live').length;
+    const subj = [...new Set(items.map(i => i.subject).filter(Boolean))];
+    if (stills || clips || live) hitCount++;
+    rows += `| ${s.id} | ${s.artist} | ${s.venue} | ${stills} | ${clips} | ${live} | ${subj.join(', ') || '—'} |\n`;
+  });
+  const pct = Math.round(hitCount / SHOWS.length * 100);
+  $('#exp-md').textContent =
+`## #338 — Usable personal media by show
+
+| Date | Artist | Venue | Stills | Clips | Live | Subjects |
+|---|---|---|---|---|---|---|
+${rows}
+**Shows with >=1 usable still: ${hitCount} / ${SHOWS.length} (${pct}%)**
+**Compound liner-note hit rate: 42% x ${pct}% ~ ${Math.round(0.42 * pct)}%**
+
+_Mock figures — ${SHOWS.length} of 101 eligible shows shown._`;
+  $('#exp').classList.add('open');
+}
+
+/* ── calibration strip ── */
+$('#calstrip').innerHTML = [...ITEMS]
+  .sort((a, b) => b.scores.overall - a.scores.overall)
+  .filter((_, i) => i % 3 === 0).slice(0, 12)
+  .map(i => `<img src="${i.src}" alt="" />`).join('');
+
+/* ── toast ── */
+let toastT;
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1600);
+}
+
+/* ── wiring ── */
+document.addEventListener('keydown', e => {
+  if ($('#cal').classList.contains('open') || $('#exp').classList.contains('open')) {
+    if (e.key === 'Escape') { $('#cal').classList.remove('open'); $('#exp').classList.remove('open'); }
+    return;
+  }
+  const k = e.key.toLowerCase();
+  if (k === 'arrowright' || k === 'j') { advance(1); e.preventDefault(); }
+  else if (k === 'arrowleft' || k === 'k') { advance(-1); e.preventDefault(); }
+  else if (k === '1') setVerdict('usable');
+  else if (k === '2') setVerdict('hero');
+  else if (k === '0') setVerdict('reject');
+  else if (k === ' ') { $('#lb').classList.contains('open') ? closeLB() : openLB(); e.preventDefault(); }
+  else if (k === 'escape') closeLB();
+  else if (k === 'u') undo();
+  else if (k === 'e') toast(ITEMS[cursor].burst ? `Expanding ${ITEMS[cursor].burst + 1} burst frames…` : 'Not a burst');
+  else if (['p', 'v', 'c', 's'].includes(k))
+    setSubject({ p: 'performer', v: 'venue', c: 'crowd', s: 'stub' }[k]);
+});
+
+$('#v-usable').onclick = () => setVerdict('usable');
+$('#v-hero').onclick = () => setVerdict('hero');
+$('#lb-subj').querySelectorAll('button').forEach(b => b.onclick = () => setSubject(b.dataset.s));
+$('#lb-prev').onclick = () => advance(-1);
+$('#lb-next').onclick = () => advance(1);
+$('#lb').addEventListener('click', e => { if (e.target.id === 'lb') closeLB(); });
+$('#cal-go').onclick = () => $('#cal').classList.remove('open');
+$('#btn-cal').onclick = () => $('#cal').classList.add('open');
+$('#btn-export').onclick = exportMD;
+$('#exp-close').onclick = () => $('#exp').classList.remove('open');
+$('#exp-copy').onclick = () => { navigator.clipboard?.writeText($('#exp-md').textContent); toast('Copied'); };
+
+$('#c-total').textContent = ITEMS.length + ITEMS.reduce((a, i) => a + i.burst, 0);
+$('#c-shown').textContent = ITEMS.length;
+render();
+</script>
+</body>
+</html>
