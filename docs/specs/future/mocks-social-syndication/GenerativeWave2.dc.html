@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #a78bfa; } a:hover { color: #c4b5fd; }
+  </style>
+</helmet>
+
+<div style="width: 1080px; height: 1350px; background: #14111f; position: relative; overflow: hidden; font-family: 'Source Sans 3', system-ui, sans-serif;">
+
+  <div style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 78px 84px 84px 84px; box-sizing: border-box;">
+
+    <div style="display: flex; align-items: baseline; gap: 30px;">
+      <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 300px; line-height: 0.82; letter-spacing: -0.04em; color: #c4b5fd;">39</span>
+      <span style="font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 76px; line-height: 1; color: #7c6ba8;">years<br>apart</span>
+    </div>
+
+    <svg viewBox="0 0 912 270" width="912" height="270" style="display: block;">
+      <sc-for list="{{bars}}" as="bar" hint-placeholder-count="43">
+        <rect x="{{bar.x}}" y="{{bar.y}}" width="13" height="{{bar.h}}" fill="#241f38" rx="1.5"></rect>
+      </sc-for>
+
+      <line x1="70" y1="112" x2="897" y2="112" stroke="#4c3a78" stroke-width="4" stroke-dasharray="3 12" stroke-linecap="round"></line>
+
+      <circle cx="70" cy="112" r="18" fill="#c4b5fd"></circle>
+      <circle cx="897" cy="112" r="18" fill="#c4b5fd"></circle>
+
+      <text x="70" y="58" text-anchor="start" font-family="'Source Sans 3', system-ui, sans-serif" font-size="46" font-weight="600" fill="#f5f2ff">1987</text>
+      <text x="897" y="58" text-anchor="end" font-family="'Source Sans 3', system-ui, sans-serif" font-size="46" font-weight="600" fill="#f5f2ff">2026</text>
+    </svg>
+
+    <div style="display: flex; flex-direction: column; gap: 40px;">
+      <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 76px; line-height: 1.14; letter-spacing: -0.02em; color: #f5f2ff; text-wrap: pretty;">
+        The same song, twice. The second time, the man playing it wasn't in the band.
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <span style="width: 64px; height: 4px; background: #7c3aed;"></span>
+        <span style="font-size: 34px; font-weight: 600; color: #a294c4;">Were you at either one?</span>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 28px;">
+        <span style="font-size: 32px; font-weight: 500; color: #7a719a;">Irvine Meadows · Pacific Amphitheatre</span>
+        <span style="font-size: 26px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #574e75;">Morperhaus</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    // Real per-year show counts, 1984-2026. Demoted to background texture in
+    // Wave 2 — at feed scale the 43-bar detail was unreadable, so the two lit
+    // years and the span between them carry the story instead.
+    const counts = [4,8,4,3,7,1,6,6,1,3,0,4,0,1,2,2,1,1,1,4,0,4,3,3,6,2,3,3,6,6,6,6,6,12,8,9,0,2,14,11,6,4,5];
+    const baseline = 262;
+    const perShow = 6.4;
+    const bars = counts.map((n, i) => {
+      const h = n * perShow;
+      return { x: i * 21.2, y: baseline - h, h: h };
+    });
+    return { bars: bars };
+  }
+}
+</script>
+</body>
+</html>

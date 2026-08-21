@@ -105,6 +105,26 @@ const FORESIGHT: Array<[RegExp, string]> = [
   [/\byou could (?:already )?tell (?:it|they) would\b/i, "foresight in the moment — retrospective framing only"],
 ];
 
+/**
+ * v6.1 — a song is heard, a performance is watched.
+ *
+ * You listen to a song; you watch a performer. "I watched the same song twice"
+ * mismatches the verb to its object, which reads as slightly wrong without a
+ * reader being able to say why.
+ *
+ * Deliberately narrow: it fires only where a watch verb takes a song noun as its
+ * DIRECT object. "Watched Sting perform it" and "watched them play the song" are
+ * both correct and both pass, because a performer intervenes. Bare "music" is
+ * excluded too — "watching music fill an outdoor amphitheatre" is a scene, not a
+ * mis-agreement, and it is already published.
+ */
+const VERB_OBJECT: Array<[RegExp, string]> = [
+  [
+    /\bwatch(?:ed|ing|es)?\s+(?:the|that|this|a|an|my|his|her|their)?\s*(?:same\s+)?(?:song|track|tune|single)\b/i,
+    "a song is heard, not watched — use \"heard\", or name the performer as the object",
+  ],
+];
+
 /** Tier 3: chart positions and sales figures, unchanged since v4.4. */
 const TIER_THREE: Array<[RegExp, string]> = [
   [/\b(?:debuted|peaked|charted) at #?\d+/i, "chart position — Tier 3"],
@@ -190,6 +210,7 @@ export function checkVoice(finding: ScoredFinding): VoiceIssue[] {
   for (const [re, detail] of VERDICTS) if (re.test(prose)) push("error", "critical-verdict", detail);
   for (const [re, detail] of TIER_THREE) if (re.test(prose)) push("error", "tier-3", detail);
   for (const [re, detail] of SONG_EXISTENCE) if (re.test(prose)) push("error", "song-existence", detail);
+  for (const [re, detail] of VERB_OBJECT) if (re.test(prose)) push("error", "verb-object", detail);
 
   // Foresight is only wrong where the narrator is positioned before a release.
   // Elsewhere "I knew they would be back" is ordinary retrospective writing.
