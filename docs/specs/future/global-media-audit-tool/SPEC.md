@@ -27,17 +27,14 @@ looked at a given show is not an audit.
 
 ### What the archive can support
 
-Computed from `public/data/concerts.json`:
+The coverage ceiling, the pre-2012 cutoff, and the detector anti-correlation that makes
+the compound hit rate so much lower than the raw coverage are all measured in
+[`global-social-syndication.md` § Personal Media](../global-social-syndication.md#personal-media).
+Not restated here — that spec is the source of truth for the strategy; this one covers
+only the tooling that turns its estimate into a count.
 
-| Era | Shows | Share |
-|---|---|---|
-| Pre-2007 (film / no phone) | 66 | 36% |
-| 2007–2011 (early phone, poor cameras) | 17 | 9% |
-| 2012–2016 (usable stills) | 30 | 16% |
-| 2017+ (good cameras, 4K video) | 71 | 39% |
-
-**Hard ceiling: 101 shows (55%) could plausibly have stills; 71 (39%) could have decent
-video.** Everything before 2012 is out of reach regardless of effort.
+The number this tool must produce: **how many of the 101 eligible shows carry at least
+one usable still.**
 
 ---
 
@@ -294,7 +291,9 @@ video precisely because no one was trying to film.
 **Compound liner-note hit rate: 42% × 24% ≈ 10%**
 ```
 
-Committed to this directory.
+Committed to `docs/specs/future/mocks-social-syndication/audit.md`, which is where #338
+asks for it — alongside the Phase 0 creative work it sizes. The tooling lives here; its
+output lands there.
 
 ### `selects.json` — machine-readable
 
@@ -391,6 +390,10 @@ committing to the full audit.
 
 ## Related
 
+- [`global-social-syndication.md`](../global-social-syndication.md) — parent spec; owns the
+  strategy, the coverage ceiling, and the imagery ladder this feeds
+- [`mocks-social-syndication/`](../mocks-social-syndication/) — Phase 0 creative tracks;
+  `audit.md` lands there
 - [#338](https://github.com/mmorper/concerts/issues/338) — Inventory audit (this spec's reason to exist)
 - [#339](https://github.com/mmorper/concerts/issues/339) — Submission + ingest (sized by the output)
 - [#340](https://github.com/mmorper/concerts/issues/340) — Index schema + resolution ladder
