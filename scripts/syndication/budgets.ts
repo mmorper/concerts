@@ -18,7 +18,21 @@
  * preference.
  */
 
-/** DECISIONS.md §2. Confirmed by the carousel board; the longest beat measured 109. */
+/**
+ * DECISIONS.md §2. Confirmed by the carousel board; the longest beat measured 109.
+ *
+ * ⚠️  120 is only renderable if the card FITS THE HOOK TO ITS BOX. Every Phase 0
+ * board was drawn against a 53-68 char hook at a fixed type size, and at
+ * `Main.dc.html`'s 72px a 120-char hook runs 180px off the bottom of the 4:5
+ * card — taking the credit stack and the wordmark with it, silently, because
+ * the type column is `justify-content: flex-end` and flex falls back to
+ * start-alignment when it overflows. 120 chars needs 48px; 57 chars needs 68px.
+ * Measured in `StressMaxHook.dc.html`, which carries the full ramp table.
+ *
+ * This is a constraint on the L0 renderer (#361), not a reason to lower the
+ * number: pinning the hook at 72px would cap it near 55 and invalidate the
+ * beats budget too, since beats share HOOK_MAX and one measured 109.
+ */
 export const HOOK_MAX = 120;
 
 /** DECISIONS.md §3 — the five-beat arc holds. Carousel adapters only (Phase 3). */
