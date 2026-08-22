@@ -656,8 +656,70 @@ recommended. Nothing in the adapter depends on the choice; it reads
 - [ ] Instagram: convert to professional account, link a Facebook Page, create Meta app — Phase 3 (#334)
 - [ ] Instagram: bio link → `/liner-notes` with UTM — Phase 3 (#334)
 - [ ] X: developer app, confirm current free-tier write limits — Phase 3 (#335)
-- [ ] Store all credentials per `docs/SECRETS.md`
-- [ ] Profile copy, avatar and header — a Phase 0 design output, not an afterthought
+- [x] Store all credentials per `docs/SECRETS.md` — Bluesky and Mastodon done; Instagram and X are Phase 3
+- [ ] Profile copy, avatar and header — a Phase 0 design output, not an afterthought. Copy is done and recorded below (#358); avatar (#355) and header (#356) outstanding
+
+### Profile copy (set 2026-08-22, #358)
+
+**This is the source of truth.** The profiles themselves live on servers we do
+not control — an eaten edit, a lost login or a move to another instance leaves
+nothing to copy from. If you edit a profile, edit this too.
+
+**The rule that governs every line: a number is allowed only if it can never
+change.** `since 1984` is a fixed historical fact. `184 concerts` is wrong the
+next time a show is added, on a surface `npm run validate:docs` cannot reach.
+`40 years` deserves its own warning — it is the phrasing that feels safest and
+is already wrong, because 1984 to now is 42.
+
+**Instagram and X** — the core, 93 characters. Both are the binding constraints,
+so the core is written to their limit and the roomier channels extend it.
+
+> Every show I've been to since 1984. One person who kept the stubs. New liner note most weeks.
+
+**Bluesky** — 164 characters.
+
+> Every show I've been to since 1984 — one person who kept the stubs. Setlists, venues that aren't there any more, and the gaps in between. New liner note most weeks.
+
+**Mastodon** — 310 characters.
+
+> Every show I've been to since 1984 — one person who kept the stubs.
+>
+> Setlists, support acts, venues that aren't there any more, and the long gaps between seeing a band twice. I write one up as liner notes most weeks.
+>
+> It started with Adam Ant at Irvine Meadows, and Irvine Meadows is a housing development now.
+
+Both halves of that last line are checked against the data and permanently
+true: `concerts.json` has Adam Ant at Irvine Meadows on 1984-04-27 as the
+earliest record, and `venues-metadata.json` has the venue as `demolished`,
+closed 2016-10-30.
+
+"Most weeks" is deliberately hedged. `POSTS_PER_RUN = 1` on a weekly Monday
+cron, but a run publishes nothing when its candidate fails voice checks — so
+"every week" would be a perishable claim of exactly the kind the voice rules
+forbid in prose.
+
+**Mastodon metadata fields.** Field 1 is load-bearing: Mastodon fetches it
+looking for the `rel="me"` link in `index.html`, and that is what turns the
+profile link verified.
+
+| # | Label | Value |
+|---|---|---|
+| 1 | Website | `https://concerts.morperhaus.org` |
+| 2 | First show | `Adam Ant · Irvine Meadows · 27 April 1984` |
+| 3 | Liner notes | `concerts.morperhaus.org/liner-notes` |
+| 4 | Built in the open | `github.com/mmorper/concerts` |
+
+**Instagram bio link** — the only clickable link on that profile, and it points
+at `/liner-notes` rather than the homepage: newest-first means the top post is
+always the one the caption just referred to, and Instagram captions carry no
+link of their own.
+
+```
+https://concerts.morperhaus.org/liner-notes?utm_source=instagram&utm_medium=social&utm_campaign=bio
+```
+
+`campaign=bio` keeps profile visitors separate in GA4 from the per-post UTMs
+`scripts/syndication/utm.ts` emits (`campaign=liner-note` / `on-this-day`).
 
 ---
 
