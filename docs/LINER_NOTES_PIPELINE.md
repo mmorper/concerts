@@ -327,6 +327,45 @@ npm run syndicate -- --retract <slug> # delete from every channel it posted to
 npm run syndicate -- --backlog 1      # opt-in drip of one archived note
 ```
 
+### The kill switch
+
+**Nothing posts while this is engaged.**
+
+```bash
+npm run syndicate -- --status            # is posting on or off?
+npm run syndicate -- --pause "reason"    # stop everything
+npm run syndicate -- --resume            # allow posting again
+```
+
+The switch is `data/syndication-pause.json`, committed — diffable, reviewable,
+and self-explaining, the same argument the ledger makes. It lives in its own
+file rather than on the ledger because the lifecycles differ: the ledger is
+machine-written every run, the pause is human-written and rare, and sharing a
+file would let an automated commit clobber a human's pause.
+
+**It only takes effect once committed and pushed** — the scheduled workflow
+reads it from the repository, not from a working copy. `/social-pause` wraps
+the whole flow including the commit.
+
+Two independent layers honour it: the workflow gates its own step, and
+`run.ts` checks before anything reaches an adapter.
+
+The defaults are deliberately asymmetric — **ambiguity means stop**:
+
+| State | Result |
+|---|---|
+| File missing | Active. The normal state needs no ceremony. |
+| `paused: true` | Paused. |
+| Malformed or unreadable | **Paused**, and says why. "I cannot tell" must read as "do not post". |
+| `SYNDICATION_PAUSED=1` | Paused, whatever the file says. |
+
+There is **no environment variable that can force a resume**. An emergency stop
+should work from anywhere; an emergency start should require editing the file
+that records why it stopped.
+
+Retraction and ledger seeding still work while paused. A switch that also
+disabled the undo would be the wrong shape.
+
 > ⚠️ **Seed the ledger before the first real run.** 57 notes are already
 > published; an empty ledger means the first run fires all of them at once, on
 > a brand-new account, in one burst.

@@ -23,6 +23,7 @@ import {
   LEDGER_PATH,
 } from "./ledger.ts";
 import { buildOnThisDayPayload, buildPayload, ROOT, type PayloadSources } from "./payload.ts";
+import { readPause } from "./pause.ts";
 import { IMPLEMENTED_CHANNELS, type Channel, type SyndicationLedger, type SyndicationPayload } from "./types.ts";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesData, LinerNotesPost } from "../../src/types/liner-notes.ts";
@@ -50,6 +51,15 @@ export interface RunOptions {
   jitterMinutes: number;
   /** Injected in tests. */
   ledgerPath?: string;
+  /**
+   * Injected in tests. Defaults to the committed switch.
+   *
+   * Worth injecting rather than letting tests read the real file: the switch is
+   * repo-wide by design, so a genuinely paused repository would otherwise make
+   * every "it posts" test fail — which is exactly what happened the first time
+   * this was engaged for real.
+   */
+  pausePath?: string;
   adapters?: Adapter[];
   sleep?: (ms: number) => Promise<void>;
   /**
@@ -72,6 +82,8 @@ export const DEFAULT_OPTIONS: RunOptions = {
 };
 
 export interface RunSummary {
+  /** Set when the kill switch stopped this run before it posted anything. */
+  paused?: string;
   posted: Array<{ slug: string; channel: Channel; permalink?: string }>;
   failed: Array<{ slug: string; channel: Channel; error: string }>;
   skipped: Array<{ slug: string; reason: string }>;
@@ -91,6 +103,16 @@ export async function run(options: RunOptions): Promise<RunSummary> {
     options.channels.includes(a.channel)
   );
 
+  // The kill switch. Checked before anything reaches an adapter, and reported
+  // loudly — a paused run must never be mistakable for a quiet one. "Nothing
+  // to syndicate" and "posting is switched off" look identical in a log
+  // otherwise, and that is exactly when someone assumes the wrong one.
+  //
+  // Deliberately not applied to --seed-ledger or --retract below: seeding
+  // writes no posts, and retraction is the safety valve. A switch that also
+  // disabled the undo would be the wrong shape.
+  const pauseState = readPause(options.pausePath);
+
   // ── Seed ───────────────────────────────────────────────────────────────
   if (options.seedLedger) {
     const added = seed(
@@ -108,6 +130,22 @@ export async function run(options: RunOptions): Promise<RunSummary> {
   // ── Retract ────────────────────────────────────────────────────────────
   if (options.retract) {
     return retract(options.retract, ledger, adapters, options, ledgerPath, summary);
+  }
+
+  // ── Paused? ────────────────────────────────────────────────────────────
+  if (pauseState.paused) {
+    summary.paused = pauseState.detail;
+    console.log("⛔ SYNDICATION IS PAUSED — nothing will be posted.");
+    console.log(`   ${pauseState.detail}`);
+    console.log("   Resume with: npm run syndicate -- --resume\n");
+
+    // Still say what WOULD have gone out. During a development pause that is
+    // the useful half of the run, and it costs nothing.
+    const wouldPost = selectCandidates(posts, onThisDay, ledger, options, summary, sources);
+    for (const p of wouldPost) console.log(`   [held] ${p.slug}`);
+    if (!wouldPost.length) console.log("   (nothing was queued anyway)");
+    console.log();
+    return summary;
   }
 
   // ── Select ─────────────────────────────────────────────────────────────
