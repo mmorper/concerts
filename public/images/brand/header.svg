@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3000" height="1000" viewBox="0 0 3000 1000">
+  <style>@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&amp;display=swap');.ss{font-family:'Source Sans 3',system-ui,sans-serif}</style>
+  <defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14111f"/><stop offset="1" stop-color="#1d1633"/></linearGradient></defs>
+  <rect width="3000" height="1000" fill="url(#hg)"/>
+  <rect x="600.0" y="646.4" width="31.8" height="158.6" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="653.0" y="487.9" width="31.8" height="317.1" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="706.0" y="646.4" width="31.8" height="158.6" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="759.1" y="686.1" width="31.8" height="118.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="812.1" y="527.5" width="31.8" height="277.5" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="865.1" y="765.4" width="31.8" height="39.6" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="918.1" y="567.1" width="31.8" height="237.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="971.2" y="567.1" width="31.8" height="237.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1024.2" y="765.4" width="31.8" height="39.6" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1077.2" y="686.1" width="31.8" height="118.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1130.2" y="805.0" width="31.8" height="5.0" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1183.3" y="646.4" width="31.8" height="158.6" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1236.3" y="805.0" width="31.8" height="5.0" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1289.3" y="765.4" width="31.8" height="39.6" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1342.3" y="725.7" width="31.8" height="79.3" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1395.3" y="725.7" width="31.8" height="79.3" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1448.4" y="765.4" width="31.8" height="39.6" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1501.4" y="765.4" width="31.8" height="39.6" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1554.4" y="765.4" width="31.8" height="39.6" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1607.4" y="646.4" width="31.8" height="158.6" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1660.5" y="805.0" width="31.8" height="5.0" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1713.5" y="646.4" width="31.8" height="158.6" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1766.5" y="686.1" width="31.8" height="118.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1819.5" y="686.1" width="31.8" height="118.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1872.6" y="567.1" width="31.8" height="237.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1925.6" y="725.7" width="31.8" height="79.3" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="1978.6" y="686.1" width="31.8" height="118.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="2031.6" y="686.1" width="31.8" height="118.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="2084.7" y="567.1" width="31.8" height="237.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="2137.7" y="567.1" width="31.8" height="237.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="2190.7" y="567.1" width="31.8" height="237.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="2243.7" y="567.1" width="31.8" height="237.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="2296.7" y="567.1" width="31.8" height="237.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="2349.8" y="329.3" width="31.8" height="475.7" rx="4" fill="#c4b5fd" opacity="0.95"/>
+  <rect x="2402.8" y="487.9" width="31.8" height="317.1" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="2455.8" y="448.2" width="31.8" height="356.8" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="2508.8" y="805.0" width="31.8" height="5.0" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="2561.9" y="725.7" width="31.8" height="79.3" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="2614.9" y="250.0" width="31.8" height="555.0" rx="4" fill="#c4b5fd" opacity="0.95"/>
+  <rect x="2667.9" y="368.9" width="31.8" height="436.1" rx="4" fill="#c4b5fd" opacity="0.95"/>
+  <rect x="2720.9" y="567.1" width="31.8" height="237.9" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="2774.0" y="646.4" width="31.8" height="158.6" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <rect x="2827.0" y="606.8" width="31.8" height="198.2" rx="4" fill="#5b3fa0" opacity="0.6"/>
+  <line x1="600" y1="813" x2="2880" y2="813" stroke="#2e2749" stroke-width="3"/>
+  <text class="ss" x="615.9" y="857" text-anchor="middle" font-size="30" font-weight="600" fill="#6b5f94">1984</text>
+  <text class="ss" x="934.0" y="857" text-anchor="middle" font-size="30" font-weight="600" fill="#6b5f94">’90</text>
+  <text class="ss" x="1464.3" y="857" text-anchor="middle" font-size="30" font-weight="600" fill="#6b5f94">’00</text>
+  <text class="ss" x="1994.5" y="857" text-anchor="middle" font-size="30" font-weight="600" fill="#6b5f94">’10</text>
+  <text class="ss" x="2524.7" y="857" text-anchor="middle" font-size="30" font-weight="600" fill="#6b5f94">’20</text>
+  <text class="ss" x="2842.9" y="857" text-anchor="middle" font-size="30" font-weight="600" fill="#6b5f94">2026</text>
+  <text class="ss" x="2880" y="190" text-anchor="end" font-size="38" font-weight="600" letter-spacing="8" fill="#7d7099">EVERY SHOW SINCE 1984</text>
+</svg>

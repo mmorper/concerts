@@ -57,6 +57,7 @@
     "generate:sitemap": "tsx scripts/generate-sitemap.ts",
     "og:generate": "tsx scripts/generate-og-simple.ts",
     "og:preview": "tsx scripts/preview-og-crops.ts",
+    "generate:brand": "tsx scripts/generate-brand-assets.ts",
     "cleanup:backups": "tsx scripts/cleanup-backups.ts",
     "seo": "tsx scripts/analyze-seo.ts",
     "generate:facts": "tsx scripts/generate-facts.ts",
