@@ -14,20 +14,25 @@
   </style>
 </helmet>
 
-<!-- LANE 1 · TIER 1 (personal) — FULL-BLEED MEDIA BAND.
-     The image runs edge to edge and takes 880 of the card's 1350 — 65%, and
-     56% more area than the inset 780 square it replaces. Type still sits
-     entirely OUTSIDE it, which is the part of the square-well thesis that was
-     actually load-bearing: no scrim, no legibility risk, no long artist name
-     fighting a busy frame.
-     Personal frames are 3000px+, so real estate here costs nothing. -->
+<!-- LANE 1 · TIER 2 (sourced, artist) — SAME BAND, AND THE ONE REAL COST.
+     46 of the 57 published notes resolve here, to a 700x700 fan-uploaded press
+     shot on one host. Exactly ONE resolves to Cover Art Archive.
+
+     This is the only tier where "bigger" is not free. Filling an 1080-wide
+     band from a 700px square means 1.54x, and it crops 19% off the square's
+     height. At feed scale (~400px delivered) that is invisible; at 100% zoom
+     it is soft. Judge it here at 100% and decide whether the softness matters
+     more than the consistency of one layout. -->
 <div style="width: 1080px; height: 1350px; background: #14111f; position: relative; overflow: hidden; font-family: 'Source Sans 3', system-ui, sans-serif;">
 
   <div style="position: absolute; inset: 0; display: flex; flex-direction: column;">
 
-    <div style="width: 1080px; height: 820px; position: relative; overflow: hidden; flex-shrink: 0;">
-      <img src="nile-rodgers-2026.jpg" alt="Nile Rodgers playing a white Stratocaster in a floral jacket and bandana, a saxophonist and a singer in a pink dress on stage beside him, Pacific Amphitheatre 2026" style="width: 1080px; height: 820px; object-fit: cover; object-position: 40% 50%; display: block;">
-      <span style="position: absolute; left: 30px; bottom: 26px; font-size: 21px; font-weight: 600; letter-spacing: 0.03em; color: rgba(255,255,255,0.82); background: rgba(8,10,16,0.58); padding: 9px 15px; border-radius: 4px;">Mike Morper · 31 July 2026</span>
+    <div style="width: 1080px; height: 820px; position: relative; overflow: hidden; background: #241f38; flex-shrink: 0;">
+      <div style="position: absolute; inset: 0; background:
+        radial-gradient(46% 62% at 50% 42%, #574a6e 0%, rgba(87,74,110,0) 74%),
+        linear-gradient(155deg, #2e2745 0%, #1b1729 100%);"></div>
+      <span style="position: absolute; left: 30px; top: 30px; font-size: 19px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.28); padding: 7px 12px;">Press shot</span>
+      <span style="position: absolute; left: 30px; bottom: 26px; font-size: 18px; font-weight: 500; color: rgba(255,255,255,0.38);">theaudiodb · 700×700 source · upscaled 1.54× · 19% cropped</span>
     </div>
 
     <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; padding: 36px 72px 72px 72px; box-sizing: border-box;">

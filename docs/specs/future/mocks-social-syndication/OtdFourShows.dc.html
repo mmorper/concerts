@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #7dd3fc; } a:hover { color: #ffffff; }
+  </style>
+</helmet>
+
+<!-- LANE 4 · ON THIS DAY — FOUR SHOWS (06-04), THE DENSEST OTD CASE.
+     Only three dates in the archive carry four shows. A multi-show date has no
+     single subject, so no tier-1 or tier-2 image can be routed to it — which
+     means a busy date falls to tier 3 BY CONSTRUCTION. The year spine below is
+     that tier-3 artwork: it is the record, not decoration over it. -->
+<div style="width: 1080px; height: 1350px; background: #14111f; position: relative; overflow: hidden; font-family: 'Source Sans 3', system-ui, sans-serif;">
+
+  <div style="position: absolute; inset: 0; display: flex; flex-direction: column; padding: 72px; box-sizing: border-box;">
+
+    <div style="display: flex; align-items: baseline; justify-content: space-between; border-bottom: 3px solid #0ea5e9; padding-bottom: 22px; flex-shrink: 0;">
+      <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 96px; line-height: 0.9; letter-spacing: -0.03em; color: #ffffff;">June 4</span>
+      <span style="font-size: 30px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #0ea5e9;">On this day</span>
+    </div>
+
+    <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 60px; line-height: 1.1; letter-spacing: -0.02em; color: #ffffff; padding-top: 40px; flex-shrink: 0; text-wrap: pretty;">
+      Four different Junes, four different rooms.
+    </div>
+
+    <!-- TIER 3 · the year spine IS the artwork -->
+    <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 0; padding: 34px 0;">
+      <sc-for list="{{shows}}" as="s" hint-placeholder-count="4">
+        <div style="display: flex; align-items: center; gap: 32px; padding: 26px 0; border-top: 1px solid #2a2440;">
+          <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 62px; line-height: 1; color: #0ea5e9; width: 168px; flex-shrink: 0;">{{s.year}}</span>
+          <span style="width: 13px; height: 13px; border-radius: 7px; background: #0ea5e9; flex-shrink: 0;"></span>
+          <div style="display: flex; flex-direction: column; gap: 5px;">
+            <span style="font-size: 40px; font-weight: 600; line-height: 1.14; color: #ffffff;">{{s.artist}}</span>
+            <span style="font-size: 27px; font-weight: 400; color: #7e8aa4;">{{s.venue}}</span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 32px; border-top: 3px solid #2a2440; padding-top: 26px; flex-shrink: 0;">
+      <span style="font-size: 30px; font-weight: 500; color: #7e8aa4;">41 years, one calendar square</span>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0;">
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #55607a;">concerts.</span>
+          <span style="font-size: 26px; font-weight: 700; line-height: 1.1; letter-spacing: 0.01em; color: #7e8aa4;">morperhaus</span>
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #55607a;">.org</span>
+        </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    // corpus.json fourShowDate — real records, verbatim.
+    return { shows: [
+      { year: '1985', artist: 'Howard Jones',    venue: 'Irvine Meadows · Irvine' },
+      { year: '1992', artist: 'The Smithereens', venue: 'The Celebrity Theatre · Anaheim' },
+      { year: '2022', artist: 'Tears For Fears', venue: 'Kia Forum · Inglewood' },
+      { year: '2026', artist: 'The Human League', venue: 'Hollywood Bowl · Hollywood' }
+    ] };
+  }
+}
+</script>
+</body>
+</html>

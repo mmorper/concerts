@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #c4b5fd; } a:hover { color: #ffffff; }
+  </style>
+</helmet>
+
+<!-- LANE 3 · THE CAROUSEL — 5 PANES, THE SCHEMA DECIDER.
+     Pane 1 carries imagery (the rule). Panes 2-5 are text-only (permitted).
+     Counts under each pane are live: they are what the payload's per-beat
+     budget has to be, measured rather than guessed. On Instagram the caption
+     has no clickable link, so the carousel's job is dwell and saves, not
+     clicks — which is why the loop closes on pane 4 instead of being held
+     back for the permalink. -->
+<div style="width: 1980px; height: 800px; background: #0a0810; font-family: 'Source Sans 3', system-ui, sans-serif; box-sizing: border-box; padding: 54px 60px;">
+
+  <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px;">
+    <span style="font-size: 22px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #7c3aed;">Instagram carousel · beats[]</span>
+    <span style="font-size: 26px; color: #7d7596;">Longest beat sets the budget. Read the arc left to right, not the panes.</span>
+  </div>
+
+  <div style="display: flex; gap: 24px;">
+    <sc-for list="{{panes}}" as="p" hint-placeholder-count="5">
+      <div style="display: flex; flex-direction: column; gap: 12px; width: 340px;">
+
+        <div style="width: 340px; height: 425px; background: {{p.bg}}; box-sizing: border-box; padding: 26px; display: flex; flex-direction: column; position: relative;">
+
+          <sc-if value="{{p.hasImage}}" hint-placeholder-val="{{true}}">
+            <img src="nile-rodgers-2026.jpg" alt="Nile Rodgers playing a white Stratocaster in a floral jacket and bandana, a saxophonist and a singer in a pink dress on stage beside him, Pacific Amphitheatre 2026" style="width: 248px; height: 248px; object-fit: cover; object-position: 40% 50%; display: block; flex-shrink: 0;">
+          </sc-if>
+
+          <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; padding-top: 14px;">
+            <sc-if value="{{p.credit}}" hint-placeholder-val="{{true}}">
+              <span style="font-size: 13px; font-weight: 700; letter-spacing: 0.04em; line-height: 1.25; text-transform: uppercase; color: {{p.fg}}; text-wrap: pretty;">{{p.credit}}</span>
+            </sc-if>
+            <span style="width: 22px; height: 3px; background: {{p.accent}};"></span>
+            <span style="font-family: 'Playfair Display', Georgia, serif; font-size: {{p.size}}; line-height: 1.14; letter-spacing: -0.02em; color: {{p.fg}}; text-wrap: pretty;">{{p.text}}</span>
+          </div>
+
+          <span style="position: absolute; right: 20px; top: 18px; font-size: 14px; font-weight: 700; letter-spacing: 0.14em; color: {{p.dim}};">{{p.num}}</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <span style="font-size: 17px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #554d70;">{{p.role}}</span>
+          <span style="font-size: 19px; font-weight: 700; color: {{p.countColor}};">{{p.count}} ch</span>
+        </div>
+
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    const INK = '#14111f', PAPER = '#f2ece1';
+    const beats = [
+      { text: 'I heard the same song twice, thirty-nine years apart.',                                        role: 'hook · tier 1', img: true,  paper: false, credit: 'Nile Rodgers · Duran Duran · “Notorious”' },
+      { text: 'July 1987, Irvine Meadows. Duran Duran played “Notorious.”',                                   role: 'set-up',        img: false, paper: false },
+      { text: 'The song has two authors, in a sense. The band wrote it. Someone else produced it — and that bassline is his.', role: 'the turn', img: false, paper: true },
+      { text: 'July 2026, Pacific Amphitheatre. Nile Rodgers played it as his own, with complete justification.', role: 'the pay-off', img: false, paper: false },
+      { text: 'I didn’t plan the symmetry. It accumulated in my ticket stubs.',                                role: 'close',         img: false, paper: false }
+    ];
+    const panes = beats.map(function (b, i) {
+      const n = b.text.length;
+      return {
+        text: b.text,
+        role: b.role,
+        credit: b.credit || '',
+        num: (i + 1) + '/5',
+        count: n,
+        countColor: n > 120 ? '#ef5f7a' : '#34d399',
+        hasImage: b.img,
+        bg: b.paper ? PAPER : INK,
+        fg: b.paper ? '#1c1a24' : '#ffffff',
+        dim: b.paper ? '#a39a8b' : '#4f4770',
+        accent: b.paper ? '#6d28d9' : '#7c3aed',
+        size: b.img ? '20px' : (n > 90 ? '22px' : '26px')
+      };
+    });
+    return { panes: panes };
+  }
+}
+</script>
+</body>
+</html>

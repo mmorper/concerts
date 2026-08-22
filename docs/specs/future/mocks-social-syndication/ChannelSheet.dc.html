@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #c4b5fd; } a:hover { color: #ffffff; }
+  </style>
+</helmet>
+
+<!-- LANE 6 · CROSS-CHANNEL SHEET — ONE POST, FOUR CHANNELS, ADJACENT.
+     Whether these read as one brand is invisible until they sit side by side.
+     Two things this settles:
+     1. The authored hook (53ch) plus its turn (55ch) is 109 characters, so it
+        clears X's 280 and Bluesky's 300 WITH room for the disclosure. The
+        tightest channel does not force a shorter hook.
+     2. The different-night disclosure is drawn BOTH ways below. It belongs
+        in-image: a card gets screenshotted and re-shared without its caption,
+        and a claim about which night this was must travel with the picture. -->
+<div style="width: 2020px; height: 1300px; background: #0a0810; font-family: 'Source Sans 3', system-ui, sans-serif; box-sizing: border-box; padding: 56px 60px;">
+
+  <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 34px;">
+    <span style="font-size: 22px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #7c3aed;">Cross-channel · one post</span>
+    <span style="font-size: 26px; color: #7d7596;">Same payload. Adapters format and truncate; they never decide content.</span>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 47px;">
+
+    <sc-for list="{{channels}}" as="ch" hint-placeholder-count="4">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+
+        <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #241f38; padding-bottom: 11px;">
+          <span style="font-size: 21px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #ffffff;">{{ch.name}}</span>
+          <span style="font-size: 18px; font-weight: 600; color: {{ch.budgetColor}};">{{ch.used}}/{{ch.budget}}</span>
+        </div>
+
+        <span style="font-size: 18px; line-height: 1.42; color: #6f678a; min-height: 76px;">{{ch.note}}</span>
+
+        <div style="background: {{ch.chrome}}; border: 1px solid {{ch.border}}; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 11px;">
+
+          <div style="display: flex; align-items: center; gap: 9px;">
+            <div style="width: 30px; height: 30px; border-radius: 15px; background: #14111f; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; color: #c4b5fd;">m</span>
+            </div>
+            <span style="font-size: 14px; font-weight: 600; color: {{ch.fg}};">{{ch.handle}}</span>
+          </div>
+
+          <span style="font-size: 14px; line-height: 1.45; color: {{ch.fg}};">{{ch.hookText}}</span>
+
+          <div style="width: 100%; height: {{ch.mediaH}}; background: #14111f; position: relative; overflow: hidden; border-radius: 6px;">
+            <img src="nile-rodgers-2026.jpg" alt="Nile Rodgers playing a white Stratocaster in a floral jacket and bandana, a saxophonist and a singer in a pink dress on stage beside him, Pacific Amphitheatre 2026" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 40% 50%; display: block;">
+            <!-- IN-IMAGE DISCLOSURE · travels with a screenshot -->
+            <span style="position: absolute; left: 11px; bottom: 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: rgba(255,255,255,0.68); background: rgba(5,7,12,0.62); padding: 4px 8px; border-radius: 3px;">Photographed 2026 · not the 1987 night</span>
+          </div>
+
+          <sc-if value="{{ch.showLink}}" hint-placeholder-val="{{true}}">
+            <span style="font-size: 13px; color: #64748b;">concerts.morperhaus.org · utm_source={{ch.utm}}</span>
+          </sc-if>
+
+          <sc-if value="{{ch.showReply}}" hint-placeholder-val="{{true}}">
+            <div style="border-left: 2px solid #334155; padding-left: 11px; margin-top: 2px; display: flex; flex-direction: column; gap: 4px;">
+              <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #64748b;">Self-reply 1/1</span>
+              <span style="font-size: 13px; color: {{ch.fg}};">The whole note → concerts.morperhaus.org · utm_source=x</span>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ch.showBio}}" hint-placeholder-val="{{true}}">
+            <span style="font-size: 13px; font-style: italic; color: #8b8296;">No clickable link in caption — bio points at /liner-notes</span>
+          </sc-if>
+
+        </div>
+      </div>
+    </sc-for>
+
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    // Names first: they are the only strings a stranger can find this by.
+    const HOOK = "Duran Duran played \u201cNotorious\u201d at Irvine Meadows in July 1987. Thirty-nine years later Nile Rodgers \u2014 who produced it \u2014 played it himself at the Pacific Amphitheatre. #DuranDuran #NileRodgers";
+    const used = HOOK.length;
+    const mk = function (o) {
+      o.used = used;
+      o.hookText = HOOK;
+      o.budgetColor = used > o.budget ? '#ef5f7a' : '#34d399';
+      return o;
+    };
+    return { channels: [
+      mk({ name: 'Bluesky', budget: 300, handle: '@concerts.morperhaus.org',
+           note: 'Clean link card. Facets computed on BYTE offsets. Thumbnail must be uploaded as a blob — Bluesky will not scrape our OG tag.',
+           chrome: '#ffffff', border: '#d8dee6', fg: '#0f172a', mediaH: '150px',
+           showLink: true, showReply: false, showBio: false, utm: 'bluesky' }),
+      mk({ name: 'Mastodon', budget: 500, handle: '@morperhausconcerts',
+           note: 'No link penalty. Idempotency-Key header is a free second layer over the ledger. rel="me" on the site verifies the profile.',
+           chrome: '#ffffff', border: '#d8dee6', fg: '#0f172a', mediaH: '150px',
+           showLink: true, showReply: false, showBio: false, utm: 'mastodon' }),
+      mk({ name: 'X', budget: 280, handle: '@morperhausshows',
+           note: 'Post carries the story, first self-reply carries the link — built in from the start, not retrofitted onto a single-post adapter.',
+           chrome: '#ffffff', border: '#d8dee6', fg: '#0f172a', mediaH: '150px',
+           showLink: false, showReply: true, showBio: false, utm: 'x' }),
+      mk({ name: 'Instagram', budget: 2200, handle: 'morperhausconcerts',
+           note: 'The 4:5 card, and the one channel where the image carries the whole post. Carousel-capable, so this is the adapter that consumes beats[].',
+           chrome: '#ffffff', border: '#d8dee6', fg: '#0f172a', mediaH: '330px',
+           showLink: false, showReply: false, showBio: true, utm: 'instagram' })
+    ] };
+  }
+}
+</script>
+</body>
+</html>

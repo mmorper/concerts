@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #6d28d9; } a:hover { color: #4c1d95; }
+  </style>
+</helmet>
+
+<!-- LANE 5 · STRESS — THE TRUE FLOOR.
+     The hardest case in the corpus, and the one that decides whether "never
+     bare type" is holdable: no image resolves (the PLACEHOLDER branch #252
+     made reachable), AND the post has no span, no gap and no repeat, so the
+     data-derived treatment has nothing to draw either.
+
+     The answer is the material treatment. A designed stub needs only a venue,
+     a date and a name — which every record in the archive has by definition —
+     so it is the universal floor and the rule never has to be broken. Wave 2's
+     Track C survives here as the FALLBACK, not as the house style. -->
+<div style="width: 1080px; height: 1350px; background: #f2ece1; position: relative; overflow: hidden; font-family: 'Source Sans 3', system-ui, sans-serif;">
+
+  <div style="position: absolute; inset: 0; opacity: 0.05; background-image: repeating-linear-gradient(0deg, #1c1a24 0px, #1c1a24 1px, transparent 1px, transparent 4px);"></div>
+
+  <div style="position: absolute; inset: 0; display: flex; flex-direction: column;">
+
+    <!-- MEDIA BAND · 1080x820 of generated artwork. Authored at the frame,
+         same as the data-derived treatment — there is no source file to
+         upscale, so scaling it down would be pure waste. -->
+    <div style="width: 1080px; height: 820px; position: relative; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #ece4d6;">
+
+      <div style="width: 660px; height: 640px; transform: rotate(-1.6deg); background: #fdfaf4; border: 3px solid #1c1a24; box-shadow: 18px 20px 0 rgba(28,26,36,0.16); display: flex; flex-direction: column;">
+
+        <div style="flex-grow: 1; padding: 52px 48px; display: flex; flex-direction: column; gap: 24px;">
+          <span style="font-size: 22px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #8a8172;">Mesa Amphitheatre</span>
+          <span style="height: 2px; background: #d8cfbe;"></span>
+          <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 96px; line-height: 0.98; letter-spacing: -0.025em; color: #1c1a24; text-wrap: pretty;">Ziggy Marley</span>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto;">
+            <span style="font-size: 38px; font-weight: 600; color: #1c1a24;">19 September 1988</span>
+            <span style="font-size: 28px; font-weight: 500; color: #7d7466;">Mesa, Arizona</span>
+          </div>
+        </div>
+
+        <div style="height: 2px; border-top: 3px dashed #b9b0a0; flex-shrink: 0;"></div>
+
+        <div style="height: 158px; flex-shrink: 0; background: #f0e9dc; padding: 0 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+          <span style="font-size: 21px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #8a8172; white-space: nowrap;">Admit One</span>
+          <svg viewBox="0 0 250 66" width="250" height="66" style="display: block; flex-shrink: 0;">
+            <sc-for list="{{bars}}" as="b" hint-placeholder-count="34">
+              <rect x="{{b.x}}" y="0" width="{{b.w}}" height="66" fill="#1c1a24"></rect>
+            </sc-for>
+          </svg>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; padding: 36px 72px 72px 72px; box-sizing: border-box;">
+
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <span style="width: 56px; height: 5px; background: #059669; flex-shrink: 0;"></span>
+        <span style="font-size: 34px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #1c1a24;">Ziggy Marley</span>
+      </div>
+
+      <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 58px; line-height: 1.06; letter-spacing: -0.025em; color: #1c1a24; text-wrap: pretty;">
+        One night in a Phoenix suburb, and I never went back.
+      </div>
+
+      <!-- META SUPPRESSED, deliberately. The artwork above already states the
+           venue, the city and the date, so printing them again below is pure
+           duplication. That makes a render rule: when a tier-3 material asset
+           carries the credit facts, the meta line drops out and only the
+           wordmark remains. The other tiers never carry them in-image, so they
+           always print it. -->
+      <div style="display: flex; justify-content: flex-end;">
+        <div style="display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0;">
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #b3a898;">concerts.</span>
+          <span style="font-size: 26px; font-weight: 700; line-height: 1.1; letter-spacing: 0.01em; color: #8a8172;">morperhaus</span>
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #b3a898;">.org</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    // Decorative barcode: fixed widths, no data encoded, no randomness
+    // (Math.random is unavailable in this runtime and would break resume).
+    const widths = [3,6,2,4,7,2,3,5,2,6,3,2,8,3,4,2,5,3,6,2,3,7,2,4,3,5,2,6,3,2,4,7,3,5];
+    let x = 0;
+    const bars = widths.map(function (w) { const b = { x: x, w: w }; x += w + 3; return b; });
+    return { bars: bars };
+  }
+}
+</script>
+</body>
+</html>

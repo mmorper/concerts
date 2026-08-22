@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #6d28d9; } a:hover { color: #4c1d95; }
+  </style>
+</helmet>
+
+<!-- LANE 1 · TIER 2 (sourced, album) — THE TIER WITH NO UPSCALE PROBLEM.
+     Cover Art Archive serves front-250 / front-500 / front-1200 for the same
+     release, and the pipeline currently asks for front-500. Requesting
+     front-1200 makes the album path native at any size we want — a one-line
+     change in image-refs.ts, worth confirming against the CAA docs.
+
+     Paper ground: a feed of nothing but ink recedes, and the light card is the
+     variation that still reads at 124px. -->
+<div style="width: 1080px; height: 1350px; background: #f2ece1; position: relative; overflow: hidden; font-family: 'Source Sans 3', system-ui, sans-serif;">
+
+  <div style="position: absolute; inset: 0; opacity: 0.05; background-image: repeating-linear-gradient(0deg, #1c1a24 0px, #1c1a24 1px, transparent 1px, transparent 4px);"></div>
+
+  <div style="position: absolute; inset: 0; display: flex; flex-direction: column;">
+
+    <div style="width: 1080px; height: 820px; position: relative; overflow: hidden; background: #ded4c3; flex-shrink: 0;">
+      <div style="position: absolute; inset: 0; background:
+        radial-gradient(56% 62% at 40% 40%, #c9b9a2 0%, rgba(201,185,162,0) 76%),
+        linear-gradient(150deg, #e6dccb 0%, #cdbfaa 100%);"></div>
+      <span style="position: absolute; left: 30px; top: 30px; font-size: 19px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(28,26,36,0.42); border: 1px solid rgba(28,26,36,0.28); padding: 7px 12px;">Album cover</span>
+      <span style="position: absolute; left: 30px; bottom: 26px; font-size: 18px; font-weight: 500; color: rgba(28,26,36,0.4);">coverartarchive · front-1200 · native</span>
+    </div>
+
+    <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; padding: 36px 72px 72px 72px; box-sizing: border-box;">
+
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <span style="width: 56px; height: 5px; background: #6d28d9; flex-shrink: 0;"></span>
+        <span style="font-size: 34px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #1c1a24; text-wrap: pretty;">Social Distortion</span>
+      </div>
+
+      <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 56px; line-height: 1.06; letter-spacing: -0.025em; color: #1c1a24; text-wrap: pretty;">
+        Four songs, five hundred and nineteen days before the record existed.
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 32px;">
+        <span style="font-size: 29px; font-weight: 500; line-height: 1.42; color: #7d7466;">&ldquo;Born to Kill&rdquo;<br>The Belasco · Los Angeles<br>December 2024</span>
+        <div style="display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0;">
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #b3a898;">concerts.</span>
+          <span style="font-size: 26px; font-weight: 700; line-height: 1.1; letter-spacing: 0.01em; color: #8a8172;">morperhaus</span>
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #b3a898;">.org</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

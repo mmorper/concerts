@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #7c3aed; } a:hover { color: #4c1d95; }
+  </style>
+</helmet>
+
+<!-- LANE 6 · THE IDENTITY — AVATAR, BIO, LINK-IN-BIO.
+     The spec calls profile copy a Phase 0 output rather than an afterthought,
+     and it is the one surface every visitor sees before any post. The avatar
+     has to survive 32px, so it is a single letterform on the ink ground, not
+     a wordmark. Bio link goes to /liner-notes, not the homepage: newest-first
+     means the top post is always the one the caption just referred to. -->
+<div style="width: 1160px; height: 1300px; background: #ffffff; font-family: 'Source Sans 3', system-ui, sans-serif; box-sizing: border-box; padding: 60px 72px;">
+
+  <div style="display: flex; flex-direction: column; gap: 40px;">
+
+    <div style="display: flex; gap: 44px; align-items: flex-start;">
+
+      <div style="display: flex; flex-direction: column; gap: 16px; align-items: center; flex-shrink: 0;">
+        <div style="width: 168px; height: 168px; border-radius: 84px; background: #14111f; display: flex; align-items: center; justify-content: center;">
+          <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 92px; line-height: 1; color: #c4b5fd;">m</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: flex-end;">
+          <div style="width: 56px; height: 56px; border-radius: 28px; background: #14111f; display: flex; align-items: center; justify-content: center;">
+            <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 31px; color: #c4b5fd;">m</span>
+          </div>
+          <div style="width: 32px; height: 32px; border-radius: 16px; background: #14111f; display: flex; align-items: center; justify-content: center;">
+            <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 18px; color: #c4b5fd;">m</span>
+          </div>
+        </div>
+        <span style="font-size: 15px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8;">168 · 56 · 32px</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px; padding-top: 6px;">
+        <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 46px; line-height: 1.1; color: #0f172a;">Morperhaus Concerts</span>
+        <span style="font-size: 21px; font-weight: 500; color: #64748b;">@concerts.morperhaus.org</span>
+
+        <span style="font-size: 22px; line-height: 1.5; color: #0f172a; max-width: 620px; text-wrap: pretty;">Every show I've been to since 1984. 184 concerts, 257 artists, 79 venues, one person who kept the stubs. New liner note most weeks.</span>
+
+        <div style="display: flex; align-items: center; gap: 10px; padding-top: 4px;">
+          <span style="width: 34px; height: 3px; background: #7c3aed; flex-shrink: 0;"></span>
+          <span style="font-size: 20px; font-weight: 600; color: #7c3aed;">concerts.morperhaus.org/liner-notes</span>
+        </div>
+
+        <div style="display: flex; gap: 34px; padding-top: 12px;">
+          <div style="display: flex; flex-direction: column;">
+            <span style="font-size: 28px; font-weight: 700; color: #0f172a;">184</span>
+            <span style="font-size: 16px; color: #64748b;">concerts</span>
+          </div>
+          <div style="display: flex; flex-direction: column;">
+            <span style="font-size: 28px; font-weight: 700; color: #0f172a;">257</span>
+            <span style="font-size: 16px; color: #64748b;">artists</span>
+          </div>
+          <div style="display: flex; flex-direction: column;">
+            <span style="font-size: 28px; font-weight: 700; color: #0f172a;">79</span>
+            <span style="font-size: 16px; color: #64748b;">venues</span>
+          </div>
+          <div style="display: flex; flex-direction: column;">
+            <span style="font-size: 28px; font-weight: 700; color: #0f172a;">1984</span>
+            <span style="font-size: 16px; color: #64748b;">first show</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="height: 1px; background: #e2e8f0;"></div>
+
+    <div style="display: flex; flex-direction: column; gap: 18px;">
+      <span style="font-size: 17px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #94a3b8;">Grid preview · 4:5 tiles</span>
+      <div style="display: grid; grid-template-columns: repeat(3, 200px); gap: 4px;">
+        <sc-for list="{{tiles}}" as="t" hint-placeholder-count="9">
+          <div style="height: 250px; background: {{t.bg}}; box-sizing: border-box; padding: 14px; display: flex; flex-direction: column;">
+            <div style="width: {{t.well}}; height: {{t.well}}; background: {{t.wellBg}}; flex-shrink: 0;"></div>
+            <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding-top: 8px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="width: 11px; height: 2px; background: {{t.accent}}; flex-shrink: 0;"></span>
+                <span style="font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: {{t.fg}}; text-wrap: pretty;">{{t.artist}}</span>
+              </div>
+              <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 13px; line-height: 1.08; color: {{t.hookFg}};">{{t.hook}}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    const INK = '#14111f', PAPER = '#f2ece1';
+    const raw = [
+      { hook: 'One night in a Phoenix suburb, and I never went back.',            cat: 'deep-cut', tier: 2 , artist: 'Ziggy Marley' },
+      { hook: 'A theme park, seven years before Tragic Kingdom.',                 cat: 'deep-cut', tier: 1 , artist: 'No Doubt' },
+      { hook: 'The Beastie Boys opened. I caught neither of them again.',         cat: 'deep-cut', tier: 3 , artist: 'Run DMC' },
+      { hook: 'Forty years tonight — and thirteen more before the second time.',  cat: 'personal', tier: 2 , artist: 'The Art of Noise' },
+      { hook: 'Forty years tonight. Show number fifteen of one hundred eighty-four.', cat: 'personal', tier: 3 , artist: 'Beach Boys' },
+      { hook: 'Thirty-five years tonight, the first of three at one amphitheatre.', cat: 'personal', tier: 2 , artist: 'Jimmy Buffett' },
+      { hook: 'Thirty-four days before Late Registration.',                       cat: 'cultural', tier: 2 , artist: 'Garbage' },
+      { hook: 'Ten days after Nevermind, watching the exact opposite.',           cat: 'cultural', tier: 1 , artist: 'Sting' },
+      { hook: 'Four songs, five hundred and nineteen days early.',                cat: 'cultural', tier: 3 , artist: 'Social Distortion' },
+    ];
+    const ACCENT = { cultural: '#7c3aed', personal: '#0ea5e9', 'deep-cut': '#059669' };
+    return { tiles: raw.map(function (r) {
+      const paper = r.tier === 3;
+      return {
+        hook: r.hook,
+        artist: r.artist,
+        hookFg: paper ? '#4a4454' : '#b3a9d0',
+        accent: ACCENT[r.cat],
+        bg: paper ? PAPER : INK,
+        fg: paper ? '#1c1a24' : '#ffffff',
+        wellBg: paper
+          ? 'linear-gradient(150deg, #e6dccb 0%, #cdbfaa 100%)'
+          : 'linear-gradient(155deg, #2e2745 0%, #1b1729 100%)',
+        well: '146px'
+      };
+    }) };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #c4b5fd; } a:hover { color: #ffffff; }
+  </style>
+</helmet>
+
+<!-- LANE 7 · THE WIDE CARD, OPTION A — THE 4:5 SYSTEM SCALED DOWN.
+     1200x630, the format Bluesky, Mastodon and X all render. Three of four
+     channels, and it had never been drawn above thumbnail size.
+
+     The band ports, but not at 61%: at that share the type block does not fit,
+     so the band drops to 340 (54%) and every type size comes down with it. The
+     hook goes 72px -> 44px, and the meta loses its third line.
+
+     AND THEN THE RENDER SHOWS THE REAL PROBLEM, which the arithmetic did not:
+     a 1200x340 letterbox is a 3.5:1 slice, and it beheads the subject. Look at
+     where Rodgers' face is. Now apply that crop to tier 2 — every sourced
+     image we have is SQUARE, so a 700x700 press shot becomes a 2:1 band across
+     someone's eyes. This option is not a taste call; it structurally cannot
+     hold the imagery the archive actually has. -->
+<div style="width: 1200px; height: 630px; background: #14111f; position: relative; overflow: hidden; font-family: 'Source Sans 3', system-ui, sans-serif;">
+
+  <div style="position: absolute; inset: 0; display: flex; flex-direction: column;">
+
+    <div style="width: 1200px; height: 340px; position: relative; overflow: hidden; flex-shrink: 0;">
+      <img src="nile-rodgers-2026.jpg" alt="Nile Rodgers playing a white Stratocaster in a floral jacket and bandana, a saxophonist and a singer in a pink dress on stage beside him, Pacific Amphitheatre 2026" style="width: 1200px; height: 340px; object-fit: cover; object-position: 40% 46%; display: block;">
+      <span style="position: absolute; left: 22px; bottom: 18px; font-size: 15px; font-weight: 600; letter-spacing: 0.03em; color: rgba(255,255,255,0.82); background: rgba(8,10,16,0.58); padding: 6px 11px; border-radius: 3px;">Mike Morper · 31 July 2026</span>
+    </div>
+
+    <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 16px; padding: 22px 52px 40px 52px; box-sizing: border-box;">
+
+      <div style="display: flex; align-items: center; gap: 13px;">
+        <span style="width: 38px; height: 4px; background: #7c3aed; flex-shrink: 0;"></span>
+        <span style="font-size: 23px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #ffffff;">Nile Rodgers · Duran Duran</span>
+      </div>
+
+      <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 44px; line-height: 1.06; letter-spacing: -0.025em; color: #ffffff; text-wrap: pretty;">
+        I heard the same song twice, thirty-nine years apart.
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 28px;">
+        <span style="font-size: 19px; font-weight: 500; line-height: 1.42; color: #8a80ab;">&ldquo;Notorious&rdquo; · Irvine Meadows 1987<br>Pacific Amphitheatre · July 2026</span>
+        <div style="display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0;">
+          <span style="font-size: 17px; font-weight: 600; line-height: 1.1; color: #5d5480;">concerts.</span>
+          <span style="font-size: 17px; font-weight: 700; line-height: 1.1; color: #8a80ab;">morperhaus</span>
+          <span style="font-size: 17px; font-weight: 600; line-height: 1.1; color: #5d5480;">.org</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

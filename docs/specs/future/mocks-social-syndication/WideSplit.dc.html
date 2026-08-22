@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #c4b5fd; } a:hover { color: #ffffff; }
+  </style>
+</helmet>
+
+<!-- LANE 7 · THE WIDE CARD, OPTION B — SQUARE IMAGE, TYPE BESIDE IT.
+     1200x630 splits into a 630x630 square and a 570 type column.
+
+     THE ARGUMENT: a 1.91:1 frame is the one place a square image is the
+     natural fit rather than a compromise — and every sourced image we have is
+     square. A 700x700 press shot renders at 630 here, which is the only
+     format in the system where tier 2 is DOWNSCALED. No upscale, no crop.
+
+     It also gives the hook a real column instead of a strip, so the type does
+     not have to shrink to 44px the way the stacked option requires. The cost
+     is that this is a second composition to maintain, and it shares nothing
+     with the 4:5 card but its parts. -->
+<div style="width: 1200px; height: 630px; background: #14111f; position: relative; overflow: hidden; font-family: 'Source Sans 3', system-ui, sans-serif;">
+
+  <div style="position: absolute; inset: 0; display: flex; flex-direction: row;">
+
+    <div style="width: 630px; height: 630px; position: relative; overflow: hidden; flex-shrink: 0;">
+      <img src="nile-rodgers-2026.jpg" alt="Nile Rodgers playing a white Stratocaster in a floral jacket and bandana, a saxophonist and a singer in a pink dress on stage beside him, Pacific Amphitheatre 2026" style="width: 630px; height: 630px; object-fit: cover; object-position: 36% 50%; display: block;">
+      <span style="position: absolute; left: 22px; bottom: 20px; font-size: 16px; font-weight: 600; letter-spacing: 0.03em; color: rgba(255,255,255,0.82); background: rgba(8,10,16,0.58); padding: 7px 12px; border-radius: 3px;">Mike Morper · 31 July 2026</span>
+    </div>
+
+    <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 20px; padding: 48px 48px 44px 44px; box-sizing: border-box;">
+
+      <div style="display: flex; align-items: flex-start; gap: 14px;">
+        <span style="width: 38px; height: 4px; background: #7c3aed; flex-shrink: 0; margin-top: 11px;"></span>
+        <span style="font-size: 24px; font-weight: 700; letter-spacing: 0.05em; line-height: 1.25; text-transform: uppercase; color: #ffffff; text-wrap: pretty;">Nile Rodgers · Duran Duran</span>
+      </div>
+
+      <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 50px; line-height: 1.06; letter-spacing: -0.025em; color: #ffffff; text-wrap: pretty;">
+        I heard the same song twice, thirty-nine years apart.
+      </div>
+
+      <span style="font-size: 21px; font-weight: 500; line-height: 1.44; color: #8a80ab;">&ldquo;Notorious&rdquo;<br>Irvine Meadows · July 1987<br>Pacific Amphitheatre · July 2026</span>
+
+      <div style="display: flex; justify-content: flex-end;">
+        <div style="display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0;">
+          <span style="font-size: 18px; font-weight: 600; line-height: 1.1; color: #5d5480;">concerts.</span>
+          <span style="font-size: 18px; font-weight: 700; line-height: 1.1; color: #8a80ab;">morperhaus</span>
+          <span style="font-size: 18px; font-weight: 600; line-height: 1.1; color: #5d5480;">.org</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

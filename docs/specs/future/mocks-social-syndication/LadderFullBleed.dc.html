@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #c4b5fd; } a:hover { color: #ffffff; }
+  </style>
+</helmet>
+
+<!-- LANE 1 · THE COUNTER-CASE — FULL BLEED, TYPE OVER IMAGE.
+     Wave 2's treatment, drawn fairly rather than strawmanned. This is what the
+     square well is choosing against: to make 72px type legible over a lit
+     stage you need a scrim over the bottom 55% of the frame, and the scrim
+     eats the half of the photograph that carries the crowd. It also needs a
+     1.54x upscale on every tier-2 source, which are all 700px square. -->
+<div style="width: 1080px; height: 1350px; background: #0d1a24; position: relative; overflow: hidden; font-family: 'Source Sans 3', system-ui, sans-serif;">
+
+  <!-- Full bleed from a LANDSCAPE source: filling 1080x1350 needs a 1.93x
+       upscale and throws away 48% of the frame's width. Both crowd edges and
+       most of the stage go. That cost is part of what is being judged. -->
+  <img src="nile-rodgers-2026.jpg" alt="Nile Rodgers playing a white Stratocaster in a floral jacket and bandana, a saxophonist and a singer in a pink dress on stage beside him, Pacific Amphitheatre 2026" style="position: absolute; inset: 0; width: 1080px; height: 1350px; object-fit: cover; object-position: 40% 50%; display: block;">
+
+  <!-- the cost: a scrim from 45% down, or the headline is unreadable -->
+  <span style="position: absolute; left: 30px; top: 30px; font-size: 21px; font-weight: 600; letter-spacing: 0.03em; color: rgba(255,255,255,0.82); background: rgba(8,10,16,0.58); padding: 9px 15px; border-radius: 4px;">Mike Morper · 31 July 2026</span>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 740px; background: linear-gradient(to bottom, rgba(9,11,18,0) 0%, rgba(9,11,18,0.78) 40%, rgba(9,11,18,0.95) 74%, #090b12 100%);"></div>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 0 72px 72px 72px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px;">
+
+    <div style="display: flex; align-items: center; gap: 18px;">
+      <span style="width: 56px; height: 5px; background: #7c3aed;"></span>
+      <span style="font-size: 34px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #ffffff; text-shadow: 0 2px 14px rgba(0,0,0,0.6);">Nile Rodgers · Duran Duran</span>
+    </div>
+
+    <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 90px; line-height: 1.05; letter-spacing: -0.028em; color: #ffffff; text-shadow: 0 2px 24px rgba(0,0,0,0.55); text-wrap: pretty;">
+      I heard the same song twice, thirty-nine years apart.
+    </div>
+
+    <div style="font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 46px; line-height: 1.22; color: #cfc4ee; text-shadow: 0 2px 18px rgba(0,0,0,0.5); text-wrap: pretty;">
+      The second time, the man playing it wasn't in the band.
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 32px;">
+      <span style="font-size: 29px; font-weight: 500; line-height: 1.42; color: #9b90bd;">&ldquo;Notorious&rdquo;<br>Irvine Meadows · July 1987<br>Pacific Amphitheatre · July 2026</span>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0;">
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #6d6390;">concerts.</span>
+          <span style="font-size: 26px; font-weight: 700; line-height: 1.1; letter-spacing: 0.01em; color: #9b90bd;">morperhaus</span>
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #6d6390;">.org</span>
+        </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
