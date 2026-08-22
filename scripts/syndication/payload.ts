@@ -245,6 +245,11 @@ export function buildPayload(
     reasons.push(`unclassified image host: ${hostOf(post.image?.url)}`);
   } else if (!exists(path)) {
     reasons.push(`card not rendered: ${path}`);
+  } else if (post.image?.cardFallback) {
+    // The card exists and the URL classifies fine, but the image could not be
+    // fetched when it was rendered — so the card is type on a solid ground.
+    // That is bare type, and the source URL gives no hint of it.
+    reasons.push("card fell back to a solid ground — bare type");
   } else {
     const asset: MediaAsset = {
       role: "card",

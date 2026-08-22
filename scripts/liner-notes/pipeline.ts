@@ -384,11 +384,44 @@ export async function run(options: PipelineOptions): Promise<void> {
     // `changed` must be passed as `force`: cards are skipped when a PNG already
     // exists, so a repaired post — which by definition already has one — would
     // otherwise be silently ignored.
-    await generateOgImages(ogTargets, { force: changed });
+    const og = await generateOgImages(ogTargets, { force: changed });
     console.log(
       `   ✓ Generated OG images for ${ogTargets.length} post${ogTargets.length !== 1 ? "s" : ""}` +
         ` (${newPosts.length} new, ${ogTargets.length - newPosts.length} refreshed)`
     );
+
+    // A card whose image could not be fetched is type on a solid ground —
+    // bare type, which the imagery rubric forbids. The card is still written,
+    // because for the site's own og:image a plain card beats a broken one, but
+    // syndication has to refuse it. Nothing downstream can work this out for
+    // itself: buildPayload classifies tier and source from the image URL,
+    // which still looks perfectly good, and only checks the file exists.
+    //
+    // Recorded after the Stage 6 write, so the file is rewritten when it
+    // changes. Rare enough that the second write is not worth avoiding.
+    const fellBack = new Set(og.fellBack);
+    const renderedOk = new Set(og.rendered);
+    let flagsChanged = false;
+    for (const post of allPosts) {
+      const wasFlagged = post.image.cardFallback === true;
+      if (fellBack.has(post.slug) && !wasFlagged) {
+        post.image.cardFallback = true;
+        flagsChanged = true;
+      } else if (renderedOk.has(post.slug) && wasFlagged) {
+        delete post.image.cardFallback;
+        flagsChanged = true;
+      }
+    }
+    if (og.fellBack.length) {
+      console.warn(
+        `   ⚠️  ${og.fellBack.length} card(s) fell back to a solid ground and will not syndicate: ${og.fellBack.join(", ")}`
+      );
+    }
+    if (flagsChanged) {
+      output.posts = allPosts;
+      writeFileSync(LINER_NOTES_PATH, JSON.stringify(output, null, 2));
+      console.log("   ✓ Re-written with card-fallback flags");
+    }
   } catch (err) {
     console.warn("   ⚠️  OG image generation skipped:", (err as Error).message);
   }

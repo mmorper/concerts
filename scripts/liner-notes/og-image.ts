@@ -48,30 +48,47 @@ export interface OgImageOptions {
   force?: Iterable<string>;
 }
 
+export interface OgImageResult {
+  /**
+   * Slugs whose card was composited on a solid ground because the image could
+   * not be fetched. Those cards are bare type and must not syndicate — the
+   * caller records it on the post so `buildPayload` can refuse them.
+   */
+  fellBack: string[];
+  /** Slugs rendered with their real imagery, so a stale flag can be cleared. */
+  rendered: string[];
+}
+
 export async function generateOgImages(
   posts: LinerNotesPost[],
   options: OgImageOptions = {}
-): Promise<void> {
+): Promise<OgImageResult> {
   mkdirSync(OG_DIR, { recursive: true });
   const force = new Set(options.force ?? []);
+  const result: OgImageResult = { fellBack: [], rendered: [] };
 
   for (const post of posts) {
     const outPath = join(OG_DIR, `${post.slug}.png`);
     if (existsSync(outPath) && !force.has(post.slug)) continue;
 
     try {
-      await generateOgImage(post, outPath);
+      const usedFallback = await generateOgImage(post, outPath);
+      if (usedFallback) result.fellBack.push(post.slug);
+      else result.rendered.push(post.slug);
     } catch (err) {
       console.warn(`   ⚠️  OG image failed for ${post.slug}: ${(err as Error).message}`);
     }
   }
+
+  return result;
 }
 
-async function generateOgImage(post: LinerNotesPost, outPath: string): Promise<void> {
+/** Returns true when the card is type on a solid ground rather than over imagery. */
+async function generateOgImage(post: LinerNotesPost, outPath: string): Promise<boolean> {
   const accentColor = CATEGORY_COLORS[post.category] ?? "#6366f1";
   const categoryLabel = post.category.toUpperCase().replace("-", " ");
 
-  const { background } = await loadBackground(post.image?.url);
+  const { background, usedFallback } = await loadBackground(post.image?.url);
 
   // Apply dark overlay
   const darkOverlay = Buffer.from(
@@ -92,6 +109,7 @@ async function generateOgImage(post: LinerNotesPost, outPath: string): Promise<v
     .toBuffer();
 
   writeFileSync(outPath, composed);
+  return usedFallback;
 }
 
 export interface LoadedBackground {
