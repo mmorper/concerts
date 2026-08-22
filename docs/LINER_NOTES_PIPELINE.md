@@ -189,6 +189,13 @@ concerts.json (source of truth)
         │
         ▼
 ┌─────────────────────────────────────┐
+│  Stage 5b: SOCIAL                   │  scripts/liner-notes/social.ts
+│  Claude API → authored hook,        │  → post.social
+│  caption and carousel beats         │     (separate call from prose)
+└─────────────────────────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────┐
 │  Stage 5c: REFRESH IMAGES           │  scripts/liner-notes/refresh-images.ts
 │  Re-resolve every post's image from │  → repairs published posts
 │  its ref; validate and repair       │     (runs even with 0 new posts)
@@ -209,6 +216,66 @@ concerts.json (source of truth)
 | `public/data/liner-notes.json` | Primary data file consumed by the React UI |
 | `public/liner-notes.xml` | RSS 2.0 feed (20 most recent posts) |
 | `public/og/liner-notes/{slug}.png` | Social card per post (1200×630) |
+| `data/syndication-log.json` | Syndication ledger — written by the *separate* syndication stage, not by this pipeline |
+
+---
+
+## Syndication Stage (v7.0, #323)
+
+Syndication is a **separate command and a separate workflow** from the pipeline
+above. The pipeline writes the post; syndication carries it outward. Keeping
+them apart is what lets a social failure cost a tweet rather than a liner note.
+
+```bash
+npm run syndicate -- --seed-ledger    # ONCE, before anything else
+npm run syndicate -- --dry-run        # build payloads, print, post nothing
+npm run syndicate                     # post the new notes
+npm run syndicate -- --retract <slug> # delete from every channel it posted to
+npm run syndicate -- --backlog 1      # opt-in drip of one archived note
+```
+
+> ⚠️ **Seed the ledger before the first real run.** 57 notes are already
+> published; an empty ledger means the first run fires all of them at once, on
+> a brand-new account, in one burst.
+
+### Shape
+
+```text
+liner-notes.json ──► buildPayload() ──► SyndicationPayload ──► N dumb adapters
+   post.social            +credit             (frozen)          bluesky, mastodon
+   (authored)             +media                                 │
+                          +tags                                  ▼
+                          +eligible                    data/syndication-log.json
+                                                        (slug × platform)
+```
+
+| Module | Job |
+| ------ | --- |
+| `scripts/syndication/types.ts` | The frozen `SyndicationPayload` and the ledger shape |
+| `scripts/syndication/budgets.ts` | Measured text budgets; the caption figure is *derived* from Bluesky's limit |
+| `scripts/syndication/payload.ts` | Credit resolution, media, eligibility |
+| `scripts/syndication/provenance.ts` | Image host → `tier` / `source` (#327) |
+| `scripts/syndication/tags.ts` | Entity tags; four different per-channel answers |
+| `scripts/syndication/facets.ts` | Bluesky byte-offset rich text |
+| `scripts/syndication/ledger.ts` | Idempotency, seeding, the retraction index |
+| `scripts/syndication/run.ts` | Fan-out, jitter, partial-failure resume |
+
+**Adapters truncate and format only.** They never make content decisions — an
+adapter sees a finished payload, never a liner note or a detector. That is what
+makes a new channel a formatting function rather than a content pipeline.
+
+### Three things that are easy to get wrong
+
+1. **Bluesky facets are UTF-8 byte offsets**, its limit counts graphemes, and
+   `String.length` gives neither. See `scripts/syndication/text.ts`.
+2. **Bluesky will not scrape our OG tag** — the thumbnail must be uploaded as a
+   blob first and referenced from the embed.
+3. **Any ledger row blocks a post, including `retracted`.** A retracted post
+   coming back on the next weekly run is the failure a naive "skip if posted"
+   check gets catastrophically wrong.
+
+Full design: [`docs/specs/future/global-social-syndication.md`](specs/future/global-social-syndication.md).
+Credentials: [`docs/SECRETS.md`](SECRETS.md).
 
 ---
 

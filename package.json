@@ -64,6 +64,7 @@
     "generate:rss": "tsx scripts/generate-rss.ts",
     "generate:liner-notes-rss": "tsx scripts/generate-liner-notes-rss.ts",
     "generate:liner-notes": "tsx scripts/liner-notes/index.ts",
+    "syndicate": "tsx scripts/syndication/index.ts",
     "refresh:liner-note-images": "tsx scripts/refresh-liner-note-images.ts",
     "generate:narrations": "tsx scripts/generate-narrations.ts",
     "deploy:worker": "cd workers/meta-injector && npx wrangler deploy",

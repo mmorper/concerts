@@ -1,0 +1,117 @@
+name: Syndicate
+
+# Outbound social syndication for liner notes (#331).
+#
+# Runs in Actions rather than a Worker because the pipeline already runs here,
+# the secrets already live here, and logs, retries and manual re-runs come free.
+# A Worker cron would only win if syndication should be decoupled from the
+# build — and it shouldn't: the thing that produces posts is the thing that
+# should syndicate them.
+#
+# The committed ledger (data/syndication-log.json) is the idempotency record.
+# It MUST be seeded before the first real run, or 57 published notes fire at
+# once: run this workflow manually with mode "seed-ledger" first.
+
+on:
+  schedule:
+    # Mondays 10:00 UTC — two hours after Liner Notes, so the note, its RSS
+    # entry and its OG card are all committed and deployed before anything
+    # points at them. A social post that lands before the permalink does is a
+    # broken link to a stranger.
+    - cron: '0 10 * * 1'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Run mode'
+        type: choice
+        default: normal
+        options:
+          - normal       # syndicate new notes
+          - dry-run      # build payloads and print; post nothing
+          - seed-ledger  # suppress the back catalogue (run this FIRST, once)
+          - retract      # delete one slug from every channel it posted to
+      slug:
+        description: 'Slug to retract (mode "retract" only)'
+        type: string
+        default: ''
+      channels:
+        description: 'Comma-separated channels; blank = all implemented'
+        type: string
+        default: ''
+      backlog:
+        description: 'Archived notes to drip alongside the new one (0 = off)'
+        type: string
+        default: '0'
+
+concurrency:
+  # Never two fan-outs at once: the ledger is a committed file, and a
+  # concurrent run would race the commit and could double-post.
+  group: syndicate
+  cancel-in-progress: false
+
+jobs:
+  syndicate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Syndicate
+        env:
+          BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          MASTODON_BASE_URL: ${{ secrets.MASTODON_BASE_URL }}
+          MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          MODE="${{ inputs.mode }}"
+          MODE="${MODE:-normal}"
+          ARGS=""
+          case "$MODE" in
+            dry-run)     ARGS="--dry-run" ;;
+            seed-ledger) ARGS="--seed-ledger" ;;
+            retract)
+              if [ -z "${{ inputs.slug }}" ]; then
+                echo "::error::mode=retract requires a slug"
+                exit 1
+              fi
+              ARGS="--retract ${{ inputs.slug }}"
+              ;;
+          esac
+          if [ -n "${{ inputs.channels }}" ]; then
+            ARGS="$ARGS --channels ${{ inputs.channels }}"
+          fi
+          BACKLOG="${{ inputs.backlog }}"
+          if [ -n "${BACKLOG:-}" ] && [ "${BACKLOG}" != "0" ]; then
+            ARGS="$ARGS --backlog ${BACKLOG}"
+          fi
+          npm run syndicate -- $ARGS
+
+      - name: Commit the ledger
+        # Runs even when the previous step failed: a partial fan-out has
+        # already written rows for the channels that succeeded, and losing
+        # those is exactly how the retry double-posts. The job still reports
+        # failure — a later always() step does not mask an earlier one.
+        if: always() && inputs.mode != 'dry-run'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/syndication-log.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "Ledger unchanged."
+          else
+            git commit -m "content: update syndication ledger [automated]"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

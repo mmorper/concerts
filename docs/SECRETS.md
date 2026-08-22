@@ -85,6 +85,31 @@ Google OAuth + Maps/Places + music APIs, consumed by `scripts/` locally and by t
 Build-time / public (compiled into the client bundle — **not secret**, but set in CI for the
 build): `VITE_SETLISTFM_API_KEY` · `VITE_GA_MEASUREMENT_ID`.
 
+### Syndication credentials — root `.env` (local) + GitHub Actions (CI)
+
+Consumed by `scripts/syndication/` locally and by the `syndicate.yml` workflow in CI.
+Two homes each, no prod store: nothing in the Workers or the client bundle ever holds these.
+
+| Secret | Store | Used by | Notes |
+|--------|-------|---------|-------|
+| `BLUESKY_IDENTIFIER` | local + CI | Bluesky adapter | The handle (`concerts.morperhaus.org`). Not secret on its own; kept alongside the password so both rotate together. |
+| `BLUESKY_APP_PASSWORD` | local + CI | Bluesky adapter | **An app password, never the account password.** Scoped, revocable, and — unusually — it does not expire. Generated at Settings → Privacy and Security → App Passwords. |
+| `MASTODON_BASE_URL` | local + CI | Mastodon adapter | The instance, e.g. `https://mastodon.social`. An identifier, not a secret, but the adapter is useless without it. |
+| `MASTODON_ACCESS_TOKEN` | local + CI | Mastodon adapter | Settings → Development → your app. No expiry. Needs `write:statuses` and `write:media`. |
+
+`BLUESKY_SERVICE` overrides the PDS host (default `https://bsky.social`) and is
+configuration, not a secret — set it only when pointing at a different service.
+
+**A missing credential is not an error.** `configured()` returns false, the run
+skips that channel with a notice, and the other channel still posts. Adding
+Mastodon a week after Bluesky must not be a broken run.
+
+**Revoking beats rotating here.** Both credentials are revocable from the
+account's own settings, and neither has an expiry to race — so if either leaks,
+revoke it in the platform UI first and generate a new one, rather than
+following the rotate-then-revoke order the golden rules impose on API keys with
+no revocation surface.
+
 ---
 
 ## Rotation runbook

@@ -24,6 +24,8 @@
  * allowed because "17 years" from monthsAway: 209 is correct prose.
  */
 
+import { HOOK_MAX, BEATS_MIN, BEATS_MAX, CAPTION_MAX } from "../syndication/budgets.ts";
+import { graphemeLength } from "../syndication/text.ts";
 import type { ScoredFinding } from "./types.ts";
 
 export type VoiceIssueSeverity = "error" | "warning";
@@ -255,6 +257,124 @@ export function checkVoice(finding: ScoredFinding): VoiceIssue[] {
 
 export function formatVoiceIssues(finding: ScoredFinding, issues: VoiceIssue[]): string {
   const lines = [`   ${finding.headline}`];
+  for (const i of issues) {
+    lines.push(`     ${i.severity === "error" ? "✗" : "⚠"} [${i.rule}] ${i.detail}`);
+  }
+  return lines.join("\n");
+}
+
+// ── Social payload checks (#329) ─────────────────────────────────────────────
+//
+// The syndication ratchet, stated once: a note deleted from the site leaves its
+// social copies standing on servers we do not control. Every rule the prose
+// checks enforce applies here at least as hard, so the banned-phrase,
+// perishable-claim, verdict and Tier-3 tables are reused verbatim rather than
+// restated — one voice-check failure blocks syndication everywhere by
+// construction, which is the whole argument for one canonical payload.
+//
+// What is added on top is social-specific and structural: the measured budgets
+// from DECISIONS.md §2, and the marks that make a post look like it came out of
+// a feed tool rather than out of the archive.
+
+/** Rendered as furniture by the adapter, never authored into the copy. */
+const SOCIAL_FURNITURE: Array<[RegExp, string]> = [
+  [/#\w/, "hashtag in authored copy — tags are generated per channel, not written"],
+  [/https?:\/\//i, "URL in authored copy — the adapter appends the link"],
+  [/\blink in bio\b/i, '"link in bio" — feed-tool boilerplate'],
+  [/\b(?:read|see) more\b/i, '"read more" — feed-tool boilerplate'],
+  [
+    /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/u,
+    "emoji — not the archive's register",
+  ],
+];
+
+export interface SocialCheckInput {
+  hook: string;
+  caption: string;
+  beats?: string[];
+  /** The published note's headline. A hook that restates it is not authored copy. */
+  headline?: string;
+}
+
+/**
+ * `hook` and `headline` differing only in punctuation and case.
+ *
+ * DECISIONS.md §11 is the measured version of this: 28 of 57 headlines follow
+ * one of five detector templates, so a hook that mirrors its headline inherits
+ * the template — and three of them land adjacent in a profile grid, verbatim.
+ * The grid is what makes an account read as robotic, and the cause is copy.
+ */
+function isRestatement(hook: string, headline: string): boolean {
+  const flatten = (s: string) =>
+    s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  return flatten(hook) === flatten(headline);
+}
+
+export function checkSocial(input: SocialCheckInput): VoiceIssue[] {
+  const issues: VoiceIssue[] = [];
+  const push = (severity: VoiceIssueSeverity, rule: string, detail: string) =>
+    issues.push({ severity, rule, detail });
+
+  const hook = input.hook?.trim() ?? "";
+  const caption = input.caption?.trim() ?? "";
+  const beats = input.beats?.map((b) => b.trim()).filter(Boolean);
+
+  if (!hook) push("error", "empty", "no hook");
+  if (!caption) push("error", "empty", "no caption");
+
+  // Graphemes, not code units. A combining acute is two code units and one
+  // character to anyone reading it, and the budgets are stated in what a
+  // reader sees.
+  const len = graphemeLength;
+
+  if (hook && len(hook) > HOOK_MAX) {
+    push("error", "budget", `hook is ${len(hook)} chars (max ${HOOK_MAX})`);
+  }
+  if (caption && len(caption) > CAPTION_MAX) {
+    push("error", "budget", `caption is ${len(caption)} chars (max ${CAPTION_MAX})`);
+  }
+  if (beats) {
+    if (beats.length < BEATS_MIN || beats.length > BEATS_MAX) {
+      push("error", "budget", `${beats.length} beats (want ${BEATS_MIN}–${BEATS_MAX})`);
+    }
+    for (const beat of beats) {
+      if (len(beat) > HOOK_MAX) {
+        push("error", "budget", `beat is ${len(beat)} chars (max ${HOOK_MAX}): "${beat.slice(0, 40)}…"`);
+      }
+    }
+  }
+
+  const surfaces: Array<[string, string]> = [
+    ["hook", hook],
+    ["caption", caption],
+    ...(beats ?? []).map((b, i) => [`beat ${i + 1}`, b] as [string, string]),
+  ];
+
+  for (const [label, text] of surfaces) {
+    if (!text) continue;
+    for (const [re, detail] of BANNED_PHRASES) if (re.test(text)) push("error", "banned-phrase", `${label}: ${detail}`);
+    for (const [re, detail] of PERISHABLE) if (re.test(text)) push("error", "perishable-claim", `${label}: ${detail}`);
+    for (const [re, detail] of VERDICTS) if (re.test(text)) push("error", "critical-verdict", `${label}: ${detail}`);
+    for (const [re, detail] of TIER_THREE) if (re.test(text)) push("error", "tier-3", `${label}: ${detail}`);
+    for (const [re, detail] of SOCIAL_FURNITURE) if (re.test(text)) push("error", "social-furniture", `${label}: ${detail}`);
+  }
+
+  if (input.headline && hook && isRestatement(hook, input.headline)) {
+    push("error", "derived-copy", "hook restates the headline — authored, never derived");
+  }
+
+  // The caption travels without the card, so it carries the voice on its own.
+  // The hook does not: it sits above a credit stack that supplies the subject,
+  // and forcing "I" into 120 characters of display type produces worse copy.
+  if (caption && !/\b(I|my|me|I'd|I've)\b/.test(caption)) {
+    push("warning", "person", "caption is not written in first person");
+  }
+
+  return issues;
+}
+
+export function formatSocialIssues(slug: string, issues: VoiceIssue[]): string {
+  const lines = [`   ${slug}`];
   for (const i of issues) {
     lines.push(`     ${i.severity === "error" ? "✗" : "⚠"} [${i.rule}] ${i.detail}`);
   }
