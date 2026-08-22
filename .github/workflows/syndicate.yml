@@ -71,8 +71,32 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # A second, independent layer. The run loop checks the same switch, but a
+      # gate here means a paused repo cannot post even if the loop is changed,
+      # broken, or bypassed — and the job goes green rather than red, because a
+      # deliberate pause is not a failure to be chased.
+      - name: Check the kill switch
+        id: killswitch
+        run: |
+          set -euo pipefail
+          if [ "${SYNDICATION_PAUSED:-}" = "1" ]; then
+            echo "paused=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Syndication is PAUSED by repository variable. Nothing will post."
+            exit 0
+          fi
+          if [ -f data/syndication-pause.json ] \
+             && node -e "process.exit(JSON.parse(require('fs').readFileSync('data/syndication-pause.json','utf8')).paused === true ? 0 : 1)"; then
+            echo "paused=true" >> "$GITHUB_OUTPUT"
+            REASON=$(node -e "console.log(JSON.parse(require('fs').readFileSync('data/syndication-pause.json','utf8')).reason ?? 'no reason recorded')")
+            echo "::notice::Syndication is PAUSED — $REASON"
+            exit 0
+          fi
+          echo "paused=false" >> "$GITHUB_OUTPUT"
+
       - name: Syndicate
+        if: steps.killswitch.outputs.paused != 'true'
         env:
+          SYNDICATION_PAUSED: ${{ vars.SYNDICATION_PAUSED }}
           BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
           MASTODON_BASE_URL: ${{ secrets.MASTODON_BASE_URL }}
@@ -107,7 +131,7 @@ jobs:
         # already written rows for the channels that succeeded, and losing
         # those is exactly how the retry double-posts. The job still reports
         # failure — a later always() step does not mask an earlier one.
-        if: always() && inputs.mode != 'dry-run'
+        if: always() && inputs.mode != 'dry-run' && steps.killswitch.outputs.paused != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

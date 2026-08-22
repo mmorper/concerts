@@ -64,6 +64,7 @@ docs/
 ├── ROADMAP.md             # Short/medium-term feature planning (ACTIVE)
 ├── DEEP_LINKING.md        # URL navigation system (scene & entity deep links)
 ├── LINER_NOTES_PIPELINE.md # Liner notes generation architecture & detector reference
+├── SYNDICATION.md         # Social posting: kill switch, channels, schedule, retraction
 ├── api-setup.md           # API configuration
 ├── BUILD.md               # Build pipeline & deployment
 ├── DATA_PIPELINE.md       # Data fetch/validation/enrichment

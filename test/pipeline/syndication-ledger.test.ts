@@ -109,6 +109,10 @@ function options(overrides: Partial<RunOptions> = {}): RunOptions {
     ...DEFAULT_OPTIONS,
     jitterMinutes: 0,
     ledgerPath,
+    // A missing file means "active". Pointed at the temp dir so these stay
+    // hermetic: the switch is repo-wide by design, so without this a genuinely
+    // paused repository makes every "it posts" test fail.
+    pausePath: join(dir, "syndication-pause.json"),
     sleep: async () => {},
     archive: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

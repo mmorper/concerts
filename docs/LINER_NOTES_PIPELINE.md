@@ -319,96 +319,23 @@ Syndication is a **separate command and a separate workflow** from the pipeline
 above. The pipeline writes the post; syndication carries it outward. Keeping
 them apart is what lets a social failure cost a tweet rather than a liner note.
 
-```bash
-npm run syndicate -- --seed-ledger    # ONCE, before anything else
-npm run syndicate -- --dry-run        # build payloads, print, post nothing
-npm run syndicate                     # post the new notes
-npm run syndicate -- --retract <slug> # delete from every channel it posted to
-npm run syndicate -- --backlog 1      # opt-in drip of one archived note
-```
+Both streams above feed it: `buildPayload()` for liner notes,
+`buildOnThisDayPayload()` for On This Day, into one frozen payload shape.
 
-> ⚠️ **Seed the ledger before the first real run.** 57 notes are already
-> published; an empty ledger means the first run fires all of them at once, on
-> a brand-new account, in one burst.
+**Operating it — the kill switch, the channels, the schedule, retraction,
+backfilling the back catalogue, credentials — is documented in
+[`SYNDICATION.md`](SYNDICATION.md).** Start there; nothing about posting lives
+in this file.
 
-### Backfilling the back catalogue
-
-The 57 notes published before this stage existed carry no `post.social`, so
-they are permanently ineligible to syndicate and `--backlog` has nothing to
-draw on. `npm run backfill:social` authors copy for them through the **same**
-path a new note gets — `generateSocial()` then `checkSocial()` — one API call
-each.
-
-```bash
-npm run backfill:social -- --dry-run     # list what would be authored
-npm run backfill:social -- --limit 5     # author five, then stop
-npm run backfill:social                  # author every remaining note
-npm run backfill:social -- --slug <slug> # one note
-npm run backfill:social -- --force       # re-author notes that already have copy
-```
-
-Resumable: a re-run skips whatever already has copy, so the batch can be done
-in chunks or picked up after a failure. `liner-notes.json` is written once at
-the end — a crash loses that run's API calls, never leaves the file half-written.
-
-**Do not shortcut this by deriving copy from the headline.** DECISIONS.md §11
-measured the cost: 28 of the 57 headlines follow one of five detector
-templates, and "Caught Once, Never Again" alone accounts for nine. Derived copy
-would fill the profile grid with visible duplicates — the exact failure the
-"authored, never derived" rule exists to prevent. `checkSocial()`'s
-`derived-copy` rule fails a hook that restates its headline, so the backfill
-cannot take that shortcut even by accident.
-
-### Shape
-
-```text
-liner-notes.json ──► buildPayload() ──────┐
-   post.social            +credit         │
-   (authored)             +media          ├──► SyndicationPayload ──► N dumb adapters
-                          +tags           │         (frozen)          bluesky, mastodon
-                          +eligible       │                            │
-                                          │                            ▼
-on-this-day.json ──► buildOnThisDayPayload()                 data/syndication-log.json
-   post.social                                                 (slug × platform)
-   (authored)
-```
-
-**Two streams, one payload.** `kind` is the only field that differs, and the
-only thing that consumes it is `withUtm` for campaign attribution. No adapter
-branches on it, no channel formatting changed, and the ledger keys both streams
-identically — which is what makes "a new channel is a formatting function"
-true in the other direction too.
-
-| Module | Job |
-| ------ | --- |
-| `scripts/syndication/types.ts` | The frozen `SyndicationPayload` and the ledger shape |
-| `scripts/syndication/budgets.ts` | Measured text budgets; the caption figure is *derived* from Bluesky's limit |
-| `scripts/syndication/payload.ts` | Credit resolution, media, eligibility |
-| `scripts/syndication/provenance.ts` | Image host → `tier` / `source` (#327) |
-| `scripts/syndication/tags.ts` | Entity tags; four different per-channel answers |
-| `scripts/syndication/facets.ts` | Bluesky byte-offset rich text |
-| `scripts/syndication/ledger.ts` | Idempotency, seeding, the retraction index |
-| `scripts/syndication/run.ts` | Fan-out, jitter, partial-failure resume |
-| `scripts/liner-notes/backfill-social.ts` | Back-catalogue social copy: selection and application |
-
-**Adapters truncate and format only.** They never make content decisions — an
-adapter sees a finished payload, never a liner note or a detector. That is what
-makes a new channel a formatting function rather than a content pipeline.
-
-### Three things that are easy to get wrong
-
-1. **Bluesky facets are UTF-8 byte offsets**, its limit counts graphemes, and
-   `String.length` gives neither. See `scripts/syndication/text.ts`.
-2. **Bluesky will not scrape our OG tag** — the thumbnail must be uploaded as a
-   blob first and referenced from the embed.
-3. **Any ledger row blocks a post, including `retracted`.** A retracted post
-   coming back on the next weekly run is the failure a naive "skip if posted"
-   check gets catastrophically wrong.
-
-Full design: [`docs/specs/future/global-social-syndication.md`](specs/future/global-social-syndication.md).
-Credentials: [`docs/SECRETS.md`](SECRETS.md).
+The one thing worth repeating here, because it is a property of *this*
+pipeline's output: the hook, caption and carousel beats are **authored** by
+Stage 4, in the archive's voice, and never derived from the headline or the
+first paragraph of the prose. `checkSocial()` fails a hook that merely restates
+its headline. A post with no authored social copy is ineligible to syndicate
+rather than syndicated badly.
 
 ---
+
 
 ## Implemented Detectors (Tier 1)
 

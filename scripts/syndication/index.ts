@@ -7,6 +7,9 @@
  *   npm run syndicate -- --dry-run           # build payloads, print, post nothing
  *   npm run syndicate -- --seed-ledger       # suppress the back catalogue (run this FIRST)
  *   npm run syndicate -- --retract <slug>    # delete from every channel it posted to
+ *   npm run syndicate -- --pause "reason"    # STOP all posting until resumed
+ *   npm run syndicate -- --resume            # allow posting again
+ *   npm run syndicate -- --status            # is posting on or off?
  *   npm run syndicate -- --channels bluesky  # restrict the fan-out
  *   npm run syndicate -- --backlog 1         # opt-in drip of one archived note
  *   npm run syndicate -- --limit 2 --no-jitter
@@ -20,6 +23,7 @@ config({ override: true });
 
 import { run, DEFAULT_OPTIONS, type RunOptions } from "./run.ts";
 import { CHANNELS, type Channel } from "./types.ts";
+import { pause, resume, readPause, PAUSE_PATH } from "./pause.ts";
 
 const args = process.argv.slice(2);
 
@@ -87,6 +91,47 @@ try {
   options = parseArgs();
 } catch (err) {
   fail((err as Error).message);
+}
+
+// ── Kill switch, handled before anything else ────────────────────────────────
+//
+// These write or read one small file and exit. They deliberately do not load
+// the archive, touch the ledger, or need credentials — "stop everything" must
+// work even when something else is broken.
+if (flag("status")) {
+  const verdict = readPause();
+  console.log(
+    verdict.paused
+      ? `⛔ Syndication is PAUSED\n   ${verdict.detail}\n   Resume with: npm run syndicate -- --resume`
+      : "✅ Syndication is ACTIVE — posts will go out."
+  );
+  console.log(`   Switch: ${PAUSE_PATH}`);
+  process.exit(0);
+}
+
+if (args.includes("--pause")) {
+  let reason: string;
+  try {
+    reason = value("pause") ?? "";
+  } catch {
+    // A pause must never fail for want of a reason — take it, then complain.
+    reason = "";
+  }
+  const state = pause(reason || "paused from the CLI, no reason given");
+  console.log("⛔ Syndication PAUSED. Nothing will post until it is resumed.");
+  console.log(`   Reason: ${state.reason}`);
+  console.log(`   Written: ${PAUSE_PATH}`);
+  console.log("\n   ⚠️  COMMIT AND PUSH THIS FILE — the scheduled workflow reads it");
+  console.log("       from the repository, not from your machine.\n");
+  process.exit(0);
+}
+
+if (flag("resume")) {
+  resume();
+  console.log("✅ Syndication RESUMED. Posts will go out on the next run.");
+  console.log(`   Written: ${PAUSE_PATH}`);
+  console.log("\n   Remember to commit and push.\n");
+  process.exit(0);
 }
 
 console.log("📡 Social Syndication\n");
