@@ -36,6 +36,9 @@ npm run build-data   # Refresh data pipeline
 - `docs/LINER_NOTES_PIPELINE.md` — Full pipeline architecture, detector reference, schema
 - `.claude/skills/liner-notes-voice/SKILL.md` — Voice & tone rules for prose generation
 
+**Before touching anything that posts to social channels**, read:
+- `docs/SYNDICATION.md` — Kill switch, channels, schedule, retraction, credentials
+
 ---
 
 ## Slash Commands
@@ -69,6 +72,7 @@ npm run build-data   # Refresh data pipeline
 | Writing changelogs | `.claude/readme-maintenance.md` (voice guidelines) |
 | Current state & recent work | `.claude/context.md` |
 | Liner notes pipeline & detectors | `docs/LINER_NOTES_PIPELINE.md` |
+| Social posting — pausing it, channels, schedule | `docs/SYNDICATION.md` |
 | Running tests / why CI is split | `test/README.md` — the root suite excludes `workers/**`; each Worker has its own config and its own CI workflow |
 | Rotating a secret / where keys live | `docs/SECRETS.md` |
 | Operating the internal dashboard | `docs/DASHBOARD_OPERATIONS.md` |

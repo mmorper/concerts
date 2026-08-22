@@ -48,7 +48,7 @@ provenance mapping, entity tags, Bluesky byte-offset facets, the committed
 ledger with seeding and retraction, and the Bluesky + Mastodon adapters;
 scripts/liner-notes/social.ts authors the hook/caption/beats and
 checkSocial() in voice-check.ts enforces them. Read
-docs/LINER_NOTES_PIPELINE.md § "Syndication Stage" before adding a channel or
+docs/SYNDICATION.md before adding a channel or
 a content stream — On This Day is a second `kind` on the SAME payload, not a
 second pipeline. Start at Phase 2.
 
