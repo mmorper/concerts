@@ -1,0 +1,85 @@
+name: On This Day
+
+# The second content stream (#333). Runs DAILY, and most days produce nothing —
+# 145 of 366 calendar days carry a show, and only those scoring above the
+# threshold publish. That is the intended behaviour, not a misconfiguration:
+# the spec is explicit that widening the window to manufacture a daily cadence
+# makes every post weaker and turns the account into a content mill.
+#
+# Measured yield: ~73 posts a year, about 1.4 a week, clustered rather than even.
+
+on:
+  schedule:
+    # 07:00 UTC daily — an hour before Liner Notes on Mondays, so a day that
+    # produces both has the On This Day card written before the weekly note
+    # starts competing for the same Anthropic rate limit.
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Override the day (YYYY-MM-DD)'
+        type: string
+        default: ''
+      mode:
+        description: 'Run mode'
+        type: choice
+        default: normal
+        options:
+          - normal
+          - dry-run   # score and print, no API call, no files
+          - survey    # a year of supply at a glance, no writes
+          - force     # regenerate a day already in the store
+
+concurrency:
+  group: on-this-day
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -euo pipefail
+          MODE="${{ inputs.mode }}"
+          MODE="${MODE:-normal}"
+          ARGS=""
+          case "$MODE" in
+            dry-run) ARGS="--dry-run" ;;
+            survey)  ARGS="--survey" ;;
+            force)   ARGS="--force" ;;
+          esac
+          if [ -n "${{ inputs.date }}" ]; then
+            ARGS="$ARGS --date ${{ inputs.date }}"
+          fi
+          npm run generate:on-this-day -- $ARGS
+
+      - name: Commit
+        if: always() && inputs.mode != 'dry-run' && inputs.mode != 'survey'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/on-this-day.json public/og/on-this-day 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "Nothing published today."
+          else
+            git commit -m "content: on this day [automated]"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

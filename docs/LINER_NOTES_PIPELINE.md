@@ -220,6 +220,99 @@ concerts.json (source of truth)
 
 ---
 
+## On This Day (v7.0, #333)
+
+The **second content stream**. Liner notes publish once a week
+(`POSTS_PER_RUN = 1`); On This Day fills the gaps with short, dated posts about
+what happened on today's calendar day in a previous year.
+
+```bash
+npm run generate:on-this-day                    # today
+npm run generate:on-this-day -- --date 2027-06-30
+npm run generate:on-this-day -- --dry-run       # score and print, no API call
+npm run generate:on-this-day -- --survey        # a year of supply, no writes
+npm run generate:on-this-day -- --force         # regenerate a day already stored
+```
+
+Runs **daily** (`.github/workflows/on-this-day.yml`). **Most days produce
+nothing, and that is correct** — 145 of 366 calendar days carry a show, and only
+those scoring above the threshold publish. The spec is explicit that widening
+the window to "this week in" to manufacture a daily cadence makes every post
+weaker and turns the account into a content mill.
+
+### Supply, measured against live data
+
+| | |
+|---|---|
+| Calendar days with a show | 145 of 366 (39.6%) |
+| Single-show days | 117 |
+| Multi-show days | 28 — **deferred**, see below |
+| Publishable in a rolling year | ~73 (≈1.4/week) |
+
+`--survey` reprints this whenever the archive grows.
+
+### Scoring
+
+Its own module, not `score.ts`. `score.ts` grades a *detector finding* on
+specificity, span, data richness, surprise and category balance — properties of
+a story someone already decided was worth telling. An On This Day candidate has
+no story yet; it is a date and the shows on it, and the only question is whether
+the anniversary deserves a post. None of those six axes measures that.
+
+`PUBLISH_THRESHOLD` is **calibrated, not picked**: the spec's one worked example
+— "a one-off show from 7 years ago scores lowest and should usually not publish"
+— scores 6, so the threshold is 7.
+
+### Multi-show days are deferred, not dropped
+
+DECISIONS.md §10: a date with four shows has no single subject, so no tier-1 or
+tier-2 image can be routed to it and it falls to tier 3 by construction. **Tier
+3 artwork does not exist yet** — `/images/generative/` and `/images/material/`
+are paths the classifier recognises and nothing writes to.
+
+Those 28 days are scored and reported with a reason rather than silently
+skipped, so they light up with no scoring change once the artwork lands. Nine of
+a typical year's 28 round-anniversary days are among them.
+
+### Cross-linking, and why it is strict
+
+When a liner note already covers the show, the post links **the note** rather
+than a deep link — recycling evergreen content into fresh impressions.
+
+"Covers" has to mean "is about that night". Matching loosely does not fail
+loudly; it produces a confident link to the wrong post. An artist-plus-year
+match once linked a 40-years-since-Oingo-Boingo post (Caliente Racetrack, 1987)
+to a `venue-ghost` note about Irvine Meadows, because that note spans 13 artists
+and 16 years. Two tiers now, and no third:
+
+1. An explicit `?show=` deep link on the date — the pipeline only emits one when
+   a setlist backs that night, so it is conclusive on its own.
+2. Otherwise a **single-artist** note matching artist, venue *and* year. The
+   single-artist rule is what excludes venue-spanning and festival posts.
+
+### The card
+
+Date-forward, per DECISIONS.md §10: a masthead carrying the date with a rule
+under it, where a liner-note card leads with a sentence. That masthead is what
+separates the two streams at a glance in a feed. Built as a parameterization of
+`og-image.ts` — same sharp pipeline, same 1200×630, same bounded fetch.
+
+`renderCard` reports `usedFallback` when the background image could not be
+fetched. **A card composited on a solid ground is bare type**, which the imagery
+rubric forbids, so that day does not publish.
+
+| File | Job |
+| ---- | --- |
+| `scripts/on-this-day/detect.ts` | Which days hit, and what an anniversary is worth |
+| `scripts/on-this-day/build.ts` | Cross-linking, URL and image resolution, eligibility |
+| `scripts/on-this-day/card.ts` | The date-forward render |
+| `scripts/on-this-day/types.ts` | The published record and its slug |
+| `scripts/on-this-day/index.ts` | CLI |
+
+Output: `public/data/on-this-day.json` and `public/og/on-this-day/{slug}.png`.
+
+---
+
 ## Syndication Stage (v7.0, #323)
 
 Syndication is a **separate command and a separate workflow** from the pipeline
@@ -269,13 +362,22 @@ cannot take that shortcut even by accident.
 ### Shape
 
 ```text
-liner-notes.json ──► buildPayload() ──► SyndicationPayload ──► N dumb adapters
-   post.social            +credit             (frozen)          bluesky, mastodon
-   (authored)             +media                                 │
-                          +tags                                  ▼
-                          +eligible                    data/syndication-log.json
-                                                        (slug × platform)
+liner-notes.json ──► buildPayload() ──────┐
+   post.social            +credit         │
+   (authored)             +media          ├──► SyndicationPayload ──► N dumb adapters
+                          +tags           │         (frozen)          bluesky, mastodon
+                          +eligible       │                            │
+                                          │                            ▼
+on-this-day.json ──► buildOnThisDayPayload()                 data/syndication-log.json
+   post.social                                                 (slug × platform)
+   (authored)
 ```
+
+**Two streams, one payload.** `kind` is the only field that differs, and the
+only thing that consumes it is `withUtm` for campaign attribution. No adapter
+branches on it, no channel formatting changed, and the ledger keys both streams
+identically — which is what makes "a new channel is a formatting function"
+true in the other direction too.
 
 | Module | Job |
 | ------ | --- |

@@ -29,6 +29,7 @@ import { graphemeLength } from "./text.ts";
 import { normalizeArtistName } from "../../src/utils/normalize.js";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesPost } from "../../src/types/liner-notes.ts";
+import type { OnThisDayPost } from "../on-this-day/types.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const ROOT = join(__dirname, "..", "..");
@@ -296,4 +297,102 @@ export function buildPayload(
     eligible: reasons.length === 0,
     ineligibleReasons: reasons,
   };
+}
+
+// ── On This Day ──────────────────────────────────────────────────────────────
+
+/**
+ * The second stream, on the SAME canonical payload (#333).
+ *
+ * This function exists to prove the architecture rather than to extend it:
+ * nothing downstream of here knows there are two content streams. No adapter
+ * changed, no channel formatting branched, and the ledger keys On This Day
+ * rows exactly as it keys liner-note rows. `kind` is the only field that
+ * differs, and it is consumed by `withUtm` for campaign attribution — not by
+ * any adapter.
+ *
+ * Where the liner-note builder resolves an anchor concert out of a post that
+ * only implies one, On This Day already carries its show. Almost everything
+ * here is a read rather than a resolution, which is why it is short.
+ */
+export function buildOnThisDayPayload(post: OnThisDayPost): SyndicationPayload {
+  const reasons: string[] = [];
+
+  const credit: PayloadCredit = {
+    artists: [post.artist],
+    venue: post.venue,
+    city: post.city,
+    date: post.showDate,
+  };
+
+  const social = post.social;
+  if (!social) {
+    reasons.push("no authored social text");
+  } else {
+    if (!social.hook?.trim()) reasons.push("empty hook");
+    else if (graphemeLength(social.hook) > HOOK_MAX) {
+      reasons.push(`hook ${graphemeLength(social.hook)} chars (max ${HOOK_MAX})`);
+    }
+    if (!social.caption?.trim()) reasons.push("empty caption");
+    else if (graphemeLength(social.caption) > CAPTION_MAX) {
+      reasons.push(`caption ${graphemeLength(social.caption)} chars (max ${CAPTION_MAX})`);
+    }
+  }
+
+  const media: MediaAsset[] = [];
+  if (!existsSync(join(ROOT, post.cardPath))) {
+    reasons.push(`card not rendered: ${post.cardPath}`);
+  } else {
+    media.push({
+      role: "card",
+      aspect: "1.91:1",
+      path: post.cardPath,
+      alt: onThisDayAlt(post),
+      tier: post.tier,
+      source: post.source,
+    });
+  }
+
+  const publishable = media.filter(isPublishableTier);
+  if (media.length && !publishable.length) {
+    reasons.push("only a generic site fallback image — below the tier-3 floor");
+  }
+  if (!publishable.length && !reasons.length) {
+    reasons.push("no publishable media — never bare type");
+  }
+
+  return {
+    slug: post.slug,
+    kind: "on-this-day",
+    hook: social?.hook ?? "",
+    ...(social?.beats?.length ? { beats: social.beats } : {}),
+    caption: social?.caption ?? "",
+    credit,
+    url: post.url,
+    media: publishable,
+    tags: entityTags({
+      artists: [post.artist],
+      venue: post.venue,
+      city: post.city,
+      // Tagged by the DECADE OF THE SHOW, not of the anniversary. A 1987 show
+      // posted in 2027 belongs in #1980s; tagging it #2020s would file the
+      // archive's own history under the year someone happened to read it.
+      date: post.showDate,
+    }),
+    eligible: reasons.length === 0,
+    ineligibleReasons: reasons,
+  };
+}
+
+/**
+ * Alt text describing the card, not the source photograph.
+ *
+ * The date leads, because the card leads with it — a screen-reader user should
+ * meet the post the same way a sighted one does.
+ */
+export function onThisDayAlt(post: OnThisDayPost): string {
+  return (
+    `${post.age} years ago today: ${post.artist} at ${post.venue}, ${post.city}, ` +
+    `${formatDate(post.showDate)}.`
+  );
 }

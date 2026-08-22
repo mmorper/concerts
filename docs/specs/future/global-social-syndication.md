@@ -1,6 +1,6 @@
 # Social Syndication — Liner Notes & On This Day
 
-**Status:** Phases 0–1 complete — Phase 2 ready
+**Status:** Phases 0–2 complete — Phase 3 ready
 **Target Version:** v7.0.0
 **Priority:** High
 **Estimated Complexity:** Very High
@@ -601,6 +601,41 @@ recorded here because they are additive rather than reopenings:
 
 Supply scoring, anniversary weighting, cross-linking to existing notes, card variant.
 
+**Acceptance Criteria:**
+- [x] Posts only on days that hit — the window is never widened
+- [x] Anniversary weighting; weak hits score below threshold and do not publish
+- [x] Cross-links an existing liner note when one covers the show
+- [x] Date-forward card variant per DECISIONS.md §10
+- [x] Second `kind` on the same payload — no adapter changes
+- [ ] Multi-show days publish *(deferred — needs tier-3 artwork, see below)*
+
+**Shipped as:** `scripts/on-this-day/` (detect, build, card, types, CLI),
+`buildOnThisDayPayload` in `scripts/syndication/payload.ts`,
+`.github/workflows/on-this-day.yml`, `npm run generate:on-this-day`. Store at
+`public/data/on-this-day.json`.
+
+Three things Phase 2 decided:
+
+1. **Its own scorer, closing review question 2.** `score.ts` grades a detector
+   finding on specificity, span, data richness, surprise and category balance —
+   properties of a story someone already chose to tell. An On This Day candidate
+   is a date and the shows on it; none of those six axes measures whether an
+   anniversary deserves a post, so forcing it through `ScoreBreakdown` would
+   mean six fields with four constant.
+
+2. **The threshold is calibrated to this spec's own worked example.** "A one-off
+   show from 7 years ago scores lowest and should usually not publish" scores 6,
+   so `PUBLISH_THRESHOLD` is 7. Measured yield: ~73 posts a year, ≈1.4/week,
+   from the 117 single-show days.
+
+3. **Multi-show days are deferred rather than dropped.** §10 of DECISIONS.md
+   established that a date with several shows has no single subject and falls to
+   tier 3 by construction — and tier 3 artwork does not exist yet. The 28
+   multi-show days are scored and reported with a reason so they light up with
+   no scoring change once it does. **Nine of a typical year's 28
+   round-anniversary days are among them**, which is the measured cost of
+   deferring. Blocked on the same artwork direction as #356.
+
 ### Phase 3: Instagram + X (Window 4)
 
 4:5 render target, IG Graph publishing, X with reply-threaded links, carousels if Phase 0 selected them.
@@ -620,8 +655,8 @@ Supply scoring, anniversary weighting, cross-linking to existing notes, card var
 - [ ] Worst-case corpus renders without type overflow *(with the render target, #342)*
 - [x] Alt text present on every asset, every channel
 - [ ] Deep links assert against `test/fixtures/deep-link-urls.json` *(no syndication surface emits one yet — the permalink is not a deep link)*
-- [ ] On This Day returns nothing on an empty calendar day *(Phase 2)*
-- [ ] A 4-show date renders correctly *(Phase 2)*
+- [x] On This Day returns nothing on an empty calendar day
+- [ ] A 4-show date renders correctly *(deferred with the tier-3 artwork it needs)*
 - [ ] Token expiry surfaces on the dashboard rather than failing silently *(#337; neither Phase 1 credential expires)*
 
 Phase 1 tests live in `test/pipeline/syndication-{facets,ledger,payload,voice,adapters}.test.ts`.
@@ -726,7 +761,7 @@ https://concerts.morperhaus.org/liner-notes?utm_source=instagram&utm_medium=soci
 ## Questions for Review
 
 1. ~~**Which Mastodon instance?**~~ **RESOLVED 2026-08-22 — `mastodon.social`.** Joined an existing instance rather than self-hosting, as recommended. It rides in `MASTODON_BASE_URL`, so nothing in the adapter depends on it.
-2. **Does On This Day get its own detector-style scoring module, or reuse `score.ts`?** Depends on how much anniversary weighting diverges from post scoring.
+2. ~~**Does On This Day get its own detector-style scoring module, or reuse `score.ts`?**~~ **RESOLVED 2026-08-22 — its own module.** The inputs diverge completely: `score.ts` grades a story someone already chose to tell, and an On This Day candidate is a date with shows on it. See `scripts/on-this-day/detect.ts`.
 3. **Does the backlog drip run at launch or after the new-post flow is proven?** Recommend after — one variable at a time.
 4. **Should syndication respect a detector allowlist?** Belt-and-braces on top of the voice-check, given the ratchet.
 5. **Storage flips if #338 comes back large.** §"Storage" says commit the stills at N≈20 and move to R2 at 100+. If the inventory lands well above the withdrawn estimate, R2 is the day-one answer rather than a later migration — and this repo is public, so committing a photo *is* publishing it.
@@ -761,5 +796,6 @@ https://concerts.morperhaus.org/liner-notes?utm_source=instagram&utm_medium=soci
 - **2026-08-21 (later):** Phase 0 CLOSED. Canonical payload frozen against the mocks; render targets, text budgets, credit fields, byline and focal point all decided by rendering with real data. Crop safety spun out to #352. See `mocks-social-syndication/DECISIONS.md` and `PROVENANCE.md`.
 - **2026-08-22:** Phase 1 SHIPPED. Canonical payload built, social copy authored by the pipeline and enforced by `checkSocial()`, ledger with seeding and a working retraction path, Bluesky and Mastodon adapters, and the Actions stage. `MediaSource` extended additively with `album-itunes` and `site-fallback`; the 1.91:1 render target stays the existing OG card until #342.
 - **2026-08-22 (later):** Accounts registered on all four channels (#336). Mastodon instance decided: `mastodon.social`, closing review question 1. `rel="me"` verification link and the archive's `sameAs` profile set added to `index.html`.
-- **Version:** 1.4.0
-- **Status:** Phases 0–1 complete; payload frozen and built against; Phases 2–3 ready to build, Phase 4 gated on L3 video
+- **2026-08-22 (later still):** Phase 2 SHIPPED. On This Day detection, anniversary scoring (own module — closes review question 2), strict cross-linking, the date-forward card, and a second `kind` on the same payload with no adapter changes. Multi-show days deferred pending tier-3 artwork. Also fixed a Phase 1 hole: `loadBackground` fell back to a solid ground silently, so a bare-type card could report `tier: 2, eligible: true`.
+- **Version:** 1.5.0
+- **Status:** Phases 0–2 complete; payload frozen and built against; Phase 3 ready to build, Phase 4 gated on L3 video

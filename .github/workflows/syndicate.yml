@@ -14,11 +14,15 @@ name: Syndicate
 
 on:
   schedule:
-    # Mondays 10:00 UTC — two hours after Liner Notes, so the note, its RSS
-    # entry and its OG card are all committed and deployed before anything
-    # points at them. A social post that lands before the permalink does is a
-    # broken link to a stranger.
-    - cron: '0 10 * * 1'
+    # 10:00 UTC daily — two hours after Liner Notes on Mondays and three after
+    # On This Day every day, so a post's permalink, card and RSS entry are all
+    # committed and deployed before anything points at them. A social post that
+    # lands before the permalink does is a broken link to a stranger.
+    #
+    # Daily rather than weekly since #333: On This Day publishes on ~145 days a
+    # year and its posts should go out the day they are about, not wait for
+    # Monday. A day with nothing to send exits having posted nothing.
+    - cron: '0 10 * * *'
   workflow_dispatch:
     inputs:
       mode:

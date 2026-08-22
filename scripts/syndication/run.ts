@@ -22,10 +22,11 @@ import {
   takeFromBacklog,
   LEDGER_PATH,
 } from "./ledger.ts";
-import { buildPayload, ROOT, type PayloadSources } from "./payload.ts";
+import { buildOnThisDayPayload, buildPayload, ROOT, type PayloadSources } from "./payload.ts";
 import { IMPLEMENTED_CHANNELS, type Channel, type SyndicationLedger, type SyndicationPayload } from "./types.ts";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesData, LinerNotesPost } from "../../src/types/liner-notes.ts";
+import type { OnThisDayData, OnThisDayPost } from "../on-this-day/types.ts";
 
 const DATA_DIR = join(ROOT, "public", "data");
 
@@ -58,7 +59,7 @@ export interface RunOptions {
    * ledger arithmetic, and a test that has to publish a real liner note first
    * to exercise "do not double-post" tests the wrong thing.
    */
-  archive?: { posts: LinerNotesPost[]; sources: PayloadSources };
+  archive?: { posts: LinerNotesPost[]; sources: PayloadSources; onThisDay?: OnThisDayPost[] };
 }
 
 export const DEFAULT_OPTIONS: RunOptions = {
@@ -85,14 +86,18 @@ export async function run(options: RunOptions): Promise<RunSummary> {
   const ledger = loadLedger(ledgerPath);
   const summary: RunSummary = { posted: [], failed: [], skipped: [], seeded: 0, retracted: [] };
 
-  const { posts, sources } = options.archive ?? loadArchive();
+  const { posts, sources, onThisDay = [] } = options.archive ?? loadArchive();
   const adapters = (options.adapters ?? [new BlueskyAdapter(), new MastodonAdapter()]).filter((a) =>
     options.channels.includes(a.channel)
   );
 
   // ── Seed ───────────────────────────────────────────────────────────────
   if (options.seedLedger) {
-    const added = seed(ledger, posts.map((p) => p.slug), options.channels);
+    const added = seed(
+      ledger,
+      [...posts.map((p) => p.slug), ...onThisDay.map((p) => p.slug)],
+      options.channels
+    );
     summary.seeded = added;
     console.log(`🌱 Seeded ${added} ledger row${added === 1 ? "" : "s"} across ${options.channels.length} channel(s).`);
     console.log(`   ${posts.length} published note${posts.length === 1 ? "" : "s"} will not fire.`);
@@ -106,7 +111,7 @@ export async function run(options: RunOptions): Promise<RunSummary> {
   }
 
   // ── Select ─────────────────────────────────────────────────────────────
-  const candidates = selectCandidates(posts, ledger, options, summary, sources);
+  const candidates = selectCandidates(posts, onThisDay, ledger, options, summary, sources);
   if (!candidates.length) {
     console.log("📭 Nothing to syndicate this run.");
     return summary;
@@ -180,6 +185,7 @@ export async function run(options: RunOptions): Promise<RunSummary> {
 
 function selectCandidates(
   posts: LinerNotesPost[],
+  onThisDay: OnThisDayPost[],
   ledger: SyndicationLedger,
   options: RunOptions,
   summary: RunSummary,
@@ -196,6 +202,23 @@ function selectCandidates(
   for (const post of fresh) {
     if (payloads.length >= options.limit) break;
     const payload = buildPayload(post, sources);
+    if (!payload.eligible) {
+      summary.skipped.push({ slug: post.slug, reason: payload.ineligibleReasons.join("; ") });
+      continue;
+    }
+    payloads.push(payload);
+  }
+
+  // On This Day, newest first. It shares the run and the limit with the liner
+  // notes rather than getting a budget of its own: the point of one canonical
+  // payload is that the fan-out does not care which stream a post came from.
+  const freshOtd = [...onThisDay]
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+    .filter((p) => options.channels.some((c) => !alreadyHandled(ledger, p.slug, c)));
+
+  for (const post of freshOtd) {
+    if (payloads.length >= options.limit) break;
+    const payload = buildOnThisDayPayload(post);
     if (!payload.eligible) {
       summary.skipped.push({ slug: post.slug, reason: payload.ineligibleReasons.join("; ") });
       continue;
@@ -281,7 +304,11 @@ async function retract(
 
 // ── Data loading ──────────────────────────────────────────────────────────────
 
-export function loadArchive(): { posts: LinerNotesPost[]; sources: PayloadSources } {
+export function loadArchive(): {
+  posts: LinerNotesPost[];
+  sources: PayloadSources;
+  onThisDay: OnThisDayPost[];
+} {
   const linerNotesPath = join(DATA_DIR, "liner-notes.json");
   if (!existsSync(linerNotesPath)) {
     throw new Error("public/data/liner-notes.json missing — run the liner notes pipeline first");
@@ -289,8 +316,16 @@ export function loadArchive(): { posts: LinerNotesPost[]; sources: PayloadSource
   const data = JSON.parse(readFileSync(linerNotesPath, "utf8")) as LinerNotesData;
   const concerts = (JSON.parse(readFileSync(join(DATA_DIR, "concerts.json"), "utf8")) as { concerts: Concert[] }).concerts;
 
+  // Absent until the first On This Day run, which is a normal first-run state
+  // and not an error — the stream simply has nothing to syndicate yet.
+  const otdPath = join(DATA_DIR, "on-this-day.json");
+  const onThisDay = existsSync(otdPath)
+    ? (JSON.parse(readFileSync(otdPath, "utf8")) as OnThisDayData).posts
+    : [];
+
   return {
     posts: data.posts,
+    onThisDay,
     sources: {
       concerts,
       artistsMetadata: JSON.parse(readFileSync(join(DATA_DIR, "artists-metadata.json"), "utf8")),
