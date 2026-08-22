@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #c4b5fd; } a:hover { color: #ffffff; }
+  </style>
+</helmet>
+
+<!-- LANE 2 · GRID A — WHAT THE PIPELINE GIVES YOU FREE.
+     Nine real published notes, hook taken from the headline, one
+     layout for all nine. 28 of the 57 published headlines follow one of five
+     detector templates; three of them are on this grid verbatim. This is the
+     robotic failure, and it is a COPY failure, not a layout one. -->
+<div style="width: 1136px; height: 2060px; background: #0a0810; font-family: 'Source Sans 3', system-ui, sans-serif; box-sizing: border-box; padding: 60px 76px;">
+
+  <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px;">
+    <span style="font-size: 22px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #ef5f7a;">Grid A · derived hooks</span>
+    <span style="font-size: 27px; font-weight: 400; line-height: 1.4; color: #7d7596;">Hook lifted from the headline. One layout. No artist named anywhere on the card.</span>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;">
+    <sc-for list="{{cards}}" as="c" hint-placeholder-count="9">
+      <div style="height: 405px; background: #14111f; box-sizing: border-box; padding: 22px; display: flex; flex-direction: column;">
+        <div style="width: 100%; height: 236px; background: linear-gradient(155deg, #2e2745 0%, #1b1729 100%); flex-shrink: 0;"></div>
+        <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 9px; padding-top: 14px;">
+          <span style="width: 17px; height: 2px; background: #7c3aed;"></span>
+          <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 21px; line-height: 1.08; letter-spacing: -0.02em; color: #ffffff; text-wrap: pretty;">{{c.hook}}</span>
+          <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #4f4770;">Morperhaus</span>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 44px;">
+    <span style="font-size: 20px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #4f4770;">At true phone scale · 124px tiles</span>
+    <div style="display: grid; grid-template-columns: repeat(3, 124px); gap: 3px;">
+      <sc-for list="{{cards}}" as="c" hint-placeholder-count="9">
+        <div style="height: 155px; background: #14111f; box-sizing: border-box; padding: 8px; display: flex; flex-direction: column;">
+          <div style="width: 100%; height: 90px; background: linear-gradient(155deg, #2e2745 0%, #1b1729 100%); flex-shrink: 0;"></div>
+          <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 3px; padding-top: 5px;">
+            <span style="width: 7px; height: 1px; background: #7c3aed;"></span>
+            <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 8px; line-height: 1.08; color: #ffffff;">{{c.hook}}</span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    // Verbatim headlines from public/data/liner-notes.json. Nothing invented.
+    return { cards: [
+      { hook: 'Ziggy Marley: Caught Once, Never Again' },
+      { hook: 'No Doubt: Caught Once, Never Again' },
+      { hook: 'Run DMC: Caught Once, Never Again' },
+      { hook: 'July 31: 40 Years Since The Art of Noise' },
+      { hook: 'July 16: 40 Years Since Beach Boys' },
+      { hook: 'June 21: 35 Years Since Jimmy Buffett' },
+      { hook: 'Garbage — Days Before Late Registration Dropped' },
+      { hook: 'Sting — Days After Nevermind Dropped' },
+      { hook: 'Social Distortion — 1.4 Years Before Born to Kill' }
+    ] };
+  }
+}
+</script>
+</body>
+</html>

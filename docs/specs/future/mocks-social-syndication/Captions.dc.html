@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #c4b5fd; } a:hover { color: #ffffff; }
+  </style>
+</helmet>
+
+<!-- LANE 6 · THE CAPTION THAT TRAVELS WITH THE MEDIA.
+     Every caption below shares ONE core sentence pair, written once and
+     reused. What differs per channel is only what gets appended: the link,
+     and the tags. That is the "one payload, N dumb adapters" rule made
+     visible — an adapter formats and truncates, it never rewrites.
+     Counts are computed from the strings, not typed in. -->
+<div style="width: 2160px; height: 1140px; background: #0a0810; font-family: 'Source Sans 3', system-ui, sans-serif; box-sizing: border-box; padding: 56px 60px;">
+
+  <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px;">
+    <span style="font-size: 22px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #7c3aed;">Caption copy · one core, four appendices</span>
+    <span style="font-size: 26px; color: #7d7596;">Same two sentences everywhere. Only the link and the tags change.</span>
+  </div>
+
+  <!-- THE POSITION -->
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; margin-bottom: 40px; border-top: 2px solid #241f38; border-bottom: 2px solid #241f38; padding: 26px 0;">
+    <div style="display: flex; flex-direction: column; gap: 9px;">
+      <span style="font-size: 19px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #34d399;">Tags are not one decision</span>
+      <span style="font-size: 21px; line-height: 1.5; color: #9a92b3;">They do opposite things on different channels, so a single house rule would be wrong on three of four. Mastodon needs them most and X wants none.</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 9px;">
+      <span style="font-size: 19px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #34d399;">Tags come from entities</span>
+      <span style="font-size: 21px; line-height: 1.5; color: #9a92b3;">Artist, venue, city, decade — things the record already knows, so they are generated rather than authored, and they are what a stranger would actually search.</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 9px;">
+      <span style="font-size: 19px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #ef5f7a;">Never the detector tags</span>
+      <span style="font-size: 21px; line-height: 1.5; color: #9a92b3;">liner-notes.json carries <span style="color: #ef5f7a;">#full-circle</span> and <span style="color: #ef5f7a;">#cover</span>. That is internal taxonomy — meaningless to a reader and an instant tell that a machine wrote the post. Suppress them.</span>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px;">
+    <sc-for list="{{channels}}" as="ch" hint-placeholder-count="4">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+
+        <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #241f38; padding-bottom: 11px;">
+          <span style="font-size: 22px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #ffffff;">{{ch.name}}</span>
+          <span style="font-size: 19px; font-weight: 700; color: {{ch.countColor}};">{{ch.used}}/{{ch.budget}}</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="width: 10px; height: 10px; border-radius: 5px; background: {{ch.tagColor}}; flex-shrink: 0;"></span>
+          <span style="font-size: 19px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: {{ch.tagColor}};">{{ch.tagRule}}</span>
+        </div>
+
+        <span style="font-size: 19px; line-height: 1.5; color: #6f678a; min-height: 116px;">{{ch.why}}</span>
+
+        <div style="background: #14111f; border: 1px solid #241f38; border-radius: 8px; padding: 20px; flex-grow: 1;">
+          <span style="font-size: 20px; line-height: 1.56; color: #ded8ec; white-space: pre-line;">{{ch.caption}}</span>
+        </div>
+
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    // ONE core, authored once. Names first — that is what a stranger can find
+    // this by. Everything below only appends to it.
+    const CORE = 'Duran Duran played “Notorious” at Irvine Meadows in July 1987. '
+               + 'Thirty-nine years later Nile Rodgers — who produced it — played it '
+               + 'himself at the Pacific Amphitheatre.';
+    const URL = 'concerts.morperhaus.org/liner-notes';
+
+    const IG_BEAT = 'Two Southern California summers, the same song landing with the same '
+                  + 'authority both times. I didn’t plan the symmetry — it accumulated '
+                  + 'in my ticket stubs.';
+
+    const raw = [
+      { name: 'Bluesky', budget: 300,
+        tagRule: '1–2, inline', tagColor: '#fbbf24',
+        why: 'Tags are real here — clickable facets and followable feeds — but the culture punishes stacking. They ride as facets on BYTE offsets, the same machinery the link already needs.',
+        caption: CORE + '\n\n' + URL + '\n\n#NileRodgers' },
+
+      { name: 'Mastodon', budget: 500,
+        tagRule: '4–5, CamelCase', tagColor: '#34d399',
+        why: 'The channel that needs them MOST: no recommendation algorithm, and full-text search is opt-in per user, so tags are close to the only way anything is found. CamelCase is the accessibility norm — screen readers can parse it.',
+        caption: CORE + '\n\n' + URL + '\n\n#NileRodgers #DuranDuran #Notorious #LiveMusic #ConcertArchive' },
+
+      { name: 'X', budget: 280,
+        tagRule: 'none', tagColor: '#ef5f7a',
+        why: 'X has discouraged them outright, and they eat the tightest budget we have. Zero. The link is not here either — it goes in the first self-reply to sidestep the derank.',
+        caption: CORE },
+
+      { name: 'Instagram', budget: 2200,
+        tagRule: '3–5, in caption', tagColor: '#34d399',
+        why: 'The 30-tag block is obsolete and keyword search now carries much of discovery, so a few specific tags beat a wall. Put them in the caption — the "hashtags in the first comment" trick is folklore, not mechanism. No clickable link exists, hence the bio pointer.',
+        caption: CORE + '\n\n' + IG_BEAT + '\n\nFull note: link in bio\n\n#NileRodgers #DuranDuran #Notorious #PacificAmphitheatre #LiveMusic' }
+    ];
+
+    const channels = raw.map(function (c) {
+      const n = c.caption.length;
+      return {
+        name: c.name, budget: c.budget, used: n,
+        countColor: n > c.budget ? '#ef5f7a' : '#34d399',
+        tagRule: c.tagRule, tagColor: c.tagColor,
+        why: c.why, caption: c.caption
+      };
+    });
+    return { channels: channels };
+  }
+}
+</script>
+</body>
+</html>

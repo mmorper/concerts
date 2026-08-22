@@ -1,12 +1,192 @@
 {
+  "pages": [
+    {
+      "id": "w3-ladder",
+      "name": "W3 · The Ladder"
+    },
+    {
+      "id": "w3-wide",
+      "name": "W3 · The Wide Card"
+    },
+    {
+      "id": "w3-feed",
+      "name": "W3 · Feed Reality"
+    },
+    {
+      "id": "w3-story",
+      "name": "W3 · Carousel & On This Day"
+    },
+    {
+      "id": "w3-stress",
+      "name": "W3 · Stress & Channels"
+    },
+    {
+      "id": "archive-w12",
+      "name": "Waves 1–2 (archive)"
+    }
+  ],
   "artboards": [
     {
       "file": "Main.dc.html",
+      "title": "Tier 1 · personal · full well",
+      "x": 0,
+      "y": 0,
+      "w": 1080,
+      "h": 1350,
+      "page": "w3-ladder"
+    },
+    {
+      "file": "LadderSourced.dc.html",
+      "title": "Tier 2 · artist · half well",
+      "x": 1240,
+      "y": 0,
+      "w": 1080,
+      "h": 1350,
+      "page": "w3-ladder"
+    },
+    {
+      "file": "LadderAlbum.dc.html",
+      "title": "Tier 2 · album · full well",
+      "x": 2480,
+      "y": 0,
+      "w": 1080,
+      "h": 1350,
+      "page": "w3-ladder"
+    },
+    {
+      "file": "LadderDerived.dc.html",
+      "title": "Tier 3 · derived · full well",
+      "x": 3720,
+      "y": 0,
+      "w": 1080,
+      "h": 1350,
+      "page": "w3-ladder"
+    },
+    {
+      "file": "LadderFullBleed.dc.html",
+      "title": "The counter-case · full bleed",
+      "x": 4960,
+      "y": 0,
+      "w": 1080,
+      "h": 1350,
+      "page": "w3-ladder"
+    },
+    {
+      "file": "GridDerived.dc.html",
+      "title": "Grid A · derived hooks",
+      "x": 0,
+      "y": 0,
+      "w": 1136,
+      "h": 2060,
+      "page": "w3-feed"
+    },
+    {
+      "file": "GridAuthored.dc.html",
+      "title": "Grid B · authored hooks",
+      "x": 1296,
+      "y": 0,
+      "w": 1136,
+      "h": 2060,
+      "page": "w3-feed"
+    },
+    {
+      "file": "TimelineScroll.dc.html",
+      "title": "The scroll · Bluesky true scale",
+      "x": 2592,
+      "y": 0,
+      "w": 760,
+      "h": 1560,
+      "page": "w3-feed"
+    },
+    {
+      "file": "Carousel.dc.html",
+      "title": "Carousel · 5 beats",
+      "x": 0,
+      "y": 0,
+      "w": 1980,
+      "h": 800,
+      "page": "w3-story"
+    },
+    {
+      "file": "OtdSingle.dc.html",
+      "title": "OTD · single show",
+      "x": 0,
+      "y": 1080,
+      "w": 1080,
+      "h": 1350,
+      "page": "w3-story"
+    },
+    {
+      "file": "OtdFourShows.dc.html",
+      "title": "OTD · four shows (06-04)",
+      "x": 1240,
+      "y": 1080,
+      "w": 1080,
+      "h": 1350,
+      "page": "w3-story"
+    },
+    {
+      "file": "OtdAnniversary.dc.html",
+      "title": "OTD · 40 years",
+      "x": 2480,
+      "y": 1080,
+      "w": 1080,
+      "h": 1350,
+      "page": "w3-story"
+    },
+    {
+      "file": "StressLongArtist.dc.html",
+      "title": "Stress · longest artist name",
+      "x": 0,
+      "y": 0,
+      "w": 1080,
+      "h": 1350,
+      "page": "w3-stress"
+    },
+    {
+      "file": "StressLongVenue.dc.html",
+      "title": "Stress · longest venue name",
+      "x": 1240,
+      "y": 0,
+      "w": 1080,
+      "h": 1350,
+      "page": "w3-stress"
+    },
+    {
+      "file": "StressNoImage.dc.html",
+      "title": "Stress · the true floor",
+      "x": 2480,
+      "y": 0,
+      "w": 1080,
+      "h": 1350,
+      "page": "w3-stress"
+    },
+    {
+      "file": "ChannelSheet.dc.html",
+      "title": "Cross-channel sheet",
+      "x": 0,
+      "y": 1620,
+      "w": 2020,
+      "h": 1300,
+      "page": "w3-stress"
+    },
+    {
+      "file": "Profile.dc.html",
+      "title": "The identity",
+      "x": 2240,
+      "y": 1620,
+      "w": 1160,
+      "h": 1300,
+      "page": "w3-stress"
+    },
+    {
+      "file": "TrackA.dc.html",
       "title": "Track A — Typographic",
       "x": 0,
       "y": 0,
       "w": 1080,
-      "h": 1350
+      "h": 1350,
+      "page": "archive-w12"
     },
     {
       "file": "Generative.dc.html",
@@ -14,7 +194,8 @@
       "x": 1240,
       "y": 0,
       "w": 1080,
-      "h": 1350
+      "h": 1350,
+      "page": "archive-w12"
     },
     {
       "file": "Material.dc.html",
@@ -22,7 +203,8 @@
       "x": 2480,
       "y": 0,
       "w": 1080,
-      "h": 1350
+      "h": 1350,
+      "page": "archive-w12"
     },
     {
       "file": "Photographic.dc.html",
@@ -30,114 +212,205 @@
       "x": 3720,
       "y": 0,
       "w": 1080,
-      "h": 1350
+      "h": 1350,
+      "page": "archive-w12"
     },
     {
-      "file": "MainWave2.dc.html",
-      "title": "Track A — Typographic (Wave 2)",
+      "file": "TrackAWave2.dc.html",
+      "title": "Track A — Wave 2",
       "x": 0,
       "y": 1780,
       "w": 1080,
-      "h": 1350
+      "h": 1350,
+      "page": "archive-w12"
     },
     {
       "file": "GenerativeWave2.dc.html",
-      "title": "Track B — Data-derived (Wave 2)",
+      "title": "Track B — Wave 2",
       "x": 1240,
       "y": 1780,
       "w": 1080,
-      "h": 1350
+      "h": 1350,
+      "page": "archive-w12"
     },
     {
       "file": "MaterialWave2.dc.html",
-      "title": "Track C — Material (Wave 2)",
+      "title": "Track C — Wave 2",
       "x": 2480,
       "y": 1780,
       "w": 1080,
-      "h": 1350
+      "h": 1350,
+      "page": "archive-w12"
     },
     {
       "file": "PhotographicWave2.dc.html",
-      "title": "Track D — Photographic (Wave 2)",
+      "title": "Track D — Wave 2",
       "x": 3720,
       "y": 1780,
       "w": 1080,
-      "h": 1350
+      "h": 1350,
+      "page": "archive-w12"
+    },
+    {
+      "file": "Captions.dc.html",
+      "title": "Caption copy · per channel",
+      "x": 0,
+      "y": 3060,
+      "w": 2160,
+      "h": 1140,
+      "page": "w3-stress"
+    },
+    {
+      "file": "WideStacked.dc.html",
+      "title": "Wide A · stacked band",
+      "x": 0,
+      "y": 0,
+      "w": 1200,
+      "h": 630,
+      "page": "w3-wide"
+    },
+    {
+      "file": "WideSplit.dc.html",
+      "title": "Wide B · square + column",
+      "x": 0,
+      "y": 820,
+      "w": 1200,
+      "h": 630,
+      "page": "w3-wide"
     }
   ],
   "annotations": [
     {
-      "id": "brief",
-      "x": -1020,
+      "id": "w3-brief",
+      "x": -1060,
       "y": 0,
-      "w": 900,
-      "text": "PHASE 0 — IMAGERY DIRECTION\nIssue #325 · Epic #323\n\nFour directions for social imagery, all showing the SAME post so the comparison isn't rigged: the full-circle note about \"Notorious\" — Duran Duran at Irvine Meadows in 1987, Nile Rodgers at the Pacific Amphitheatre in 2026.\n\nAll content is real archive data, not placeholder.\n\nSize is Instagram's 1080x1350 (4:5). That's deliberate: it's the most demanding format, because the image carries the whole post there and captions have no clickable links. A direction that survives 4:5 will survive a 1200x630 link card.\n\nPick a direction (or a hybrid) and the next canvas expands it across all four channels, plus the nine-up grid and the timeline scroll.\n\nType is Playfair Display + Source Sans 3, lifted from the existing design system. Cultural-category violet #7c3aed is the same token og-image.ts already uses."
+      "w": 940,
+      "text": "WAVE 3 - CLOSING PHASE 0\nIssue #325 - Epic #323\n\nWaves 1 and 2 ran four imagery tracks as rivals. The rubric decision later\nthat same day ended that contest: never bare type, personal > sourced >\nderived, Track A demoted to a text layer, B and C collapsed into one tier-3\nfloor. Wave 3 does not re-run the vote. It tests the SYSTEM the rubric\nimplies, and answers the exit criteria still open.\n\nTHE LAYOUT: A FULL-BLEED MEDIA BAND, TYPE ENTIRELY BELOW IT.\nThe image runs edge to edge and takes 820 of the card's 1350 - 61%, and 46%\nmore area than the inset square an earlier cut of this wave used.\n\nWhy type stays outside. This is the part of the square-well idea that was\nactually load-bearing: nothing sits on the photograph, so there is no scrim,\nno legibility risk, and no long artist name fighting a busy frame. Compare\nMain against 'The counter-case' at the end of this row - same photograph,\ntype laid over it.\n\nWhy one band height for every tier. An earlier cut scaled the well by tier,\non the theory that the layout should answer to the strength of the asset. The\nnine-up grid killed it: the small-well tiles read as broken, a stranded square\nover an empty field, not as hierarchy. Tier now decides WHICH image is\nfetched and nothing else. What carries the grid instead is the GROUND - dark\nagainst paper - which is the only variation still legible at 124px.\n\nWHAT EACH TIER COSTS AT THIS SIZE, measured rather than asserted:\n  Tier 1, personal      - 3000px+ originals. Free.\n  Tier 2, album cover   - Cover Art Archive serves front-1200. Free, once the\n                          pipeline stops asking for front-500.\n  Tier 2, artist shot   - 700x700 is the ceiling. 1.54x upscale, 19% cropped.\n                          The only real cost in the system.\n  Tier 3, derived       - authored AT the frame, so no scaling at all.\n\nNAMES ARE STRUCTURAL FURNITURE, not something a generated hook is trusted to\ncontain. Artist, song, venue and date come off the record, each on its own\nline, so they cannot be omitted by accident. This reversed a Wave 2 decision:\nthe withheld-name cards were unfindable by search, gave a scrolling fan no\nreason to stop, and on Instagram - where captions carry no clickable link -\nteased a reveal the reader had no way to reach. Withhold the interpretation;\nnever the identification.\n\nTHE MARK. \"MORPERHAUS\" in the corner was dead weight: invisible at feed scale,\nand on Bluesky the handle IS concerts.morperhaus.org, so it said nothing twice.\nIt is now the URL itself, broken across three staggered lines with the brand\npulled left as the anchor - a mark rather than a caption. It survives on the\n4:5 card, where the image travels without any surrounding context; the 1.91:1\nlink card already sits under the handle and does not need it.\n\nPROVENANCE IS ONE FIELD WITH TWO STATES, and it is what finally separates\ntier 1 from tier 2. \"My photograph · 31 July 2026\" on a personal frame;\n\"My photograph · 2026, not the 1987 night\" when the shot is from another\nnight, which the voice rules require. Tier 2 and tier 3 carry no chip at all -\nso the mark is earned, and a personal frame visibly outranks a press shot\ninstead of being indistinguishable from one.\n\nIt rides IN the image, bottom-left, because a card gets screenshotted without\nits caption and a claim about whose photograph this is has to travel with the\npicture.",
+      "page": "w3-ladder"
     },
     {
-      "id": "note-track-a",
+      "id": "w3-n-main",
       "x": 0,
-      "y": -330,
+      "y": -560,
       "w": 900,
-      "text": "TRACK A — TYPOGRAPHIC / EDITORIAL\n\nThe hook is the entire image. Design-system ground, Playfair at 82px, category rule, venues and years as a footer.\n\nWhy it might win: nothing to license, nothing to break, no dead-image risk (#252, #315 simply don't exist here). Reads at feed scale. Cheapest to build — it's the solid-colour fallback already in og-image.ts, promoted to a primary treatment.\n\nThe tradeoff: austerity. This is the direction most at risk of feeling corporate rather than personal — a feed of type-on-colour can look like a SaaS changelog. Judge it in the nine-up grid, not here."
+      "text": "TIER 1 - PERSONAL - FULL WELL\n\nThe top of the rubric, and now a real photograph: Mike's own frame of Nile\nRodgers at the Pacific Amphitheatre - the actual second night this post is\nabout.\n\nTHE CROP IS THE ARGUMENT. A centre-square crop of the landscape original\nkeeps Rodgers, the white Strat and the horn player.\n\nHEADS UP: this is the tighter frame that was already living in the canvas -\n1080x700, stage only. The wider version you pasted into the session, with the\nband of raised phones across the crowd, never reached disk and is the better\nfile: the phones are what say a person was standing there, and no generated\ntreatment can fake them. Drop that one in as nile-rodgers-2026.jpg and this\nboard gets stronger for free.\n\nNothing sits on the photograph. The hook has the lower quarter of the card to\nitself, so there is no scrim and no legibility risk. Compare against 'The\ncounter-case' at the end of this row, which is the same photograph with the\ntype laid over it.\n\nThe chip bottom-left is the provenance field - see the brief. It is the only\nthing distinguishing this card from the tier-2 one beside it, which is the\npoint: personal imagery should visibly outrank sourced.\n\nWatch for: whether 72px reads at feed scale once the band takes the top 61%\nof the card. If it does not, the hook budget shrinks - and that is a payload\nfield, not a design note.",
+      "page": "w3-ladder"
     },
     {
-      "id": "note-track-b",
+      "id": "w3-n-sourced",
       "x": 1240,
-      "y": -330,
+      "y": -560,
       "w": 900,
-      "text": "TRACK B — DATA-DERIVED GENERATIVE\n\nThe bars are the real archive: 184 shows per year, 1984-2026. 1987 and 2026 are lit; the dotted arc spans the 39 years between them.\n\nWhy it might win: wholly owned, unique to this archive, impossible to mistake for stock, and already on-brand — the site IS data visualisation. Every post generates a different shape from its own records, so the feed varies without anyone art-directing it. No licensing exposure at all.\n\nThe tradeoff: it needs a story with a shape. A one-off show with no span, no gap and no repeat has nothing to draw, so this can't be the only direction — it needs a fallback for thin posts."
+      "text": "TIER 2 - SOURCED, ARTIST - THE ONE REAL COST\n\nThe workhorse, and the mocks had never drawn it: 46 of the 57 published notes\nresolve here, to a 700x700 fan-uploaded press shot on one host. Exactly ONE\nresolves to Cover Art Archive.\n\n700px is a hard ceiling, so this is the only tier where a bigger image is not\nfree: filling the 1080-wide band means 1.54x and crops 19% off the square's\nheight. At feed scale, roughly 400px delivered, that is invisible. At 100%\nzoom it is soft. Judge it here at full size and decide whether the softness\ncosts more than one consistent layout does.\n\nThe album path has no such problem - see the tier-2 album board. Cover Art\nArchive serves front-1200 and the pipeline currently asks for front-500.\n\nWatch for: this card is now identical to tier 1 apart from the image itself,\nso a viewer cannot tell a personal photograph from a press shot. Given\n'personal beats sourced' is the rubric's core, that may want a mark.",
+      "page": "w3-ladder"
     },
     {
-      "id": "note-track-c",
+      "id": "w3-n-album",
       "x": 2480,
-      "y": -330,
+      "y": -560,
       "w": 900,
-      "text": "TRACK C — MATERIAL / METAPHOR\n\nDesigned ticket stubs as original artwork — evoking the object, never a scan of one. The project's own metaphor is album liner notes, and the prose here literally ends on \"it accumulated in my ticket stubs.\"\n\nWhy it might win: warmest of the four and the most obviously personal. Thematically exact. Owned outright. The light ground also breaks up a feed that would otherwise be uniformly dark.\n\nThe tradeoff: the most template-like. Two stubs works beautifully for a full-circle post and awkwardly for a post about one night — the furniture may not survive contact with the other 13 detectors."
+      "text": "TIER 2 - SOURCED, ALBUM - FULL WELL, PAPER GROUND\n\nWhen the post's subject IS the record, the cover earns the full well: square\nby nature, defensible, and about the thing being discussed.\n\nPaper ground on purpose. A feed of nothing but ink cards recedes. Giving the\nalbum treatment the light ground means roughly one card in five is bright,\nand the rhythm comes from the routing rather than from a decision.\n\nReal post: Social Distortion at The Belasco, December 2024 - four songs from\nBorn to Kill 519 days before the record existed.\n\nWatch for: whether light and dark cards still read as one account.",
+      "page": "w3-ladder"
     },
     {
-      "id": "note-track-d",
+      "id": "w3-n-derived",
       "x": 3720,
-      "y": -330,
+      "y": -560,
       "w": 900,
-      "text": "TRACK D — LICENSED PHOTOGRAPHY\n\nShown with a deliberately marked placeholder. No real photo is embedded here, because embedding one is the exact risk under review — see the provenance policy, #327.\n\nWhy it might win: photography outperforms graphics on Instagram, and it's the only direction that puts a human face in the feed.\n\nThe tradeoff, and it's the heavy one: every image source we have (Google Places, Spotify album art, Cover Art Archive) is licensed for display on our own site, not for republication under a brand account. Spotify's guidelines specifically prohibit the overlay treatment. The risk isn't a lawsuit, it's an automated strike on an account with no goodwill to absorb it.\n\nNote the caption line — CC-licensed sources need attribution, which costs a line of the design on every post forever."
+      "text": "TIER 3 - DERIVED - AUTHORED AT THE FRAME\n\nThe floor, not the default - and the tier that had been quietly wasting the\nmost. The previous cut drew this in a 936x936 viewBox and rendered it at 780,\ndiscarding 17% of the linework for nothing. Derived artwork has no source\nfile and therefore no ceiling: it is generated to whatever frame we ask for,\nso it should be authored AT the frame. The viewBox is now 1080x820, 1:1.\n\nSame for the material treatment on the Stress page: a designed stub has no\nresolution ceiling either.\n\nBars are real per-year show counts, 1984-2026.\n\nWatch for: this treatment needs a story with a SHAPE - a span, a gap, a\nrepeat. A one-off show has nothing to draw, which is what 'The true floor'\non the Stress page answers.",
+      "page": "w3-ladder"
     },
     {
-      "id": "brief-wave-2",
-      "x": -1020,
-      "y": 1780,
+      "id": "w3-n-fullbleed",
+      "x": 4960,
+      "y": -560,
       "w": 900,
-      "text": "WAVE 2 — ENGAGEMENT PASS\n\nSame four tracks, same post, reworked against an engagement critique of Wave 1. Five changes, applied to all four so the comparison stays about treatment:\n\n1. THE HOOK NO LONGER RESOLVES. Wave 1 told the whole story in the image — Duran Duran, Nile Rodgers, why it matters — so there was no reason to click. Wave 2 withholds WHO played it the second time. The names are gone from the cards; the permalink is the only place they resolve.\n\n2. TYPE IS MUCH BIGGER. Hook goes 82px -> 96-112px. At in-feed scale (~400px wide) Wave 1's 18-21px footers rendered around 7-8px — invisible, pure noise eating contrast.\n\n3. FOOTER CUT TO ONE LINE, URL DROPPED. Nobody types a URL off an image, and the handle is already on the post.\n\n4. A RESPONSE PROMPT. \"Were you at either one?\" — comments and saves drive distribution, and an archive audience has parallel memories. It is a real question from someone who was actually there, which is the line between prompting and clickbait.\n\n5. GROUNDS PULLED APART. Wave 1 was three dark cards out of four, and dark recedes in a feed. A now sits on saturated violet, C stays warm paper — so a nine-up grid has rhythm instead of monotony.\n\nJudge these at 400px, not at full size."
+      "text": "THE COUNTER-CASE - FULL BLEED, TYPE OVER IMAGE\n\nThe same photograph as Main, treated Wave 2's way, drawn fairly rather than\nstrawmanned so the tradeoff is visible instead of asserted.\n\nWHAT IT COSTS, and both costs are on screen:\n1. Filling 1080x1350 from a landscape frame needs a 1.93x upscale and throws\n   away 48 per cent of the width. Both crowd edges are gone.\n2. To make 90px type legible over a lit stage you need a scrim across the\n   bottom 55 per cent - and that scrim covers the phones, which were the\n   whole reason the photograph was worth having.\n\nWHAT IT BUYS: the image is bigger and more immediate, and it is the more\nconventional social format. That is a real argument.\n\nDecide this by looking, not by reasoning. And note that picking full bleed\nmakes the tier-2 supply problem worse, not better: those sources are 700px\nsquare, so full bleed upscales every one of them 1.54x.",
+      "page": "w3-ladder"
     },
     {
-      "id": "note-w2-a",
-      "x": 0,
-      "y": 1450,
-      "w": 900,
-      "text": "TRACK A — WAVE 2\n\nGround moved from near-black to saturated violet #4c1d95. Wave 1's dark card was handsome and receded in a feed; this one stops a thumb without leaving the palette.\n\nHook at 112px carrying only the setup. The turn sits below it in italic, and it names no one.\n\nWatch for: whether the two-part hook reads as one thought or two competing headlines. If it splits, the italic line is the one to cut."
+      "id": "w3-n-grids",
+      "x": -1060,
+      "y": 0,
+      "w": 940,
+      "text": "THE NINE-UP GRID - THE ROBOTIC TEST\n\nThe spec's own acceptance criterion, and the test no wave has run. Both grids\nhold the SAME nine real published posts, drawn from the first dozen and\nchosen to include the worst of the template repetition rather than to be a\nliteral consecutive run.\n\nTHE FINDING, AND IT IS BIGGER THAN LAYOUT: 28 of the 57 published headlines\nfollow one of five detector templates. 'Caught Once, Never Again' alone\naccounts for 9. Grid A shows three of them adjacent, verbatim.\n\nSo the account reads as a bot because of the COPY, not the cards. No amount\nof art direction fixes Grid A. This is the number behind the spec's\n'authored, never derived' rule - it was a principle, and now it is measured.\n\nGrid B changes two things: the hook is written per post, and the ARTIST IS\nNAMED on every card. At 124px the name is the only legible text on a tile -\nthe hook is noise at that size - which is the clearest argument for naming. Judge the 124px strip at the bottom, not the large tiles - that\nis a phone profile grid at true scale.\n\nAlso worth noting: five of these nine shows are at the Pacific Amphitheatre.\nVenue repetition is a second, smaller version of the same problem.",
+      "page": "w3-feed"
     },
     {
-      "id": "note-w2-b",
-      "x": 1240,
-      "y": 1450,
+      "id": "w3-n-scroll",
+      "x": 2592,
+      "y": -620,
       "w": 900,
-      "text": "TRACK B — WAVE 2\n\nThe chart was decoration in Wave 1 — nobody reads a 43-bar histogram at feed scale. The number is now the hero at 300px, the two lit years and the span between them carry the story, and the histogram drops to background texture where it still signals \"real data\" without asking to be read.\n\nThis is the most save-worthy of the four, which matters more than likes for an archive account: saves compound.\n\nWatch for: whether \"39\" alone is intriguing enough without the years beside it."
+      "text": "THE SCROLL - BLUESKY AT 600px, TRUE FEED SCALE\n\nNeighbouring posts are skeletons on purpose. The question is whether ours\nholds a scroll, and inventing other people's posts to answer it would be\nfabrication.\n\nNote what the link card is NOT: it is 1.91:1, not the 4:5 card. Bluesky,\nMastodon and X all take the wide card; only Instagram takes 4:5. That is two\nrender targets from day one, which the media ladder already calls L0.\n\nThe thumbnail has to be uploaded as a blob - Bluesky will not scrape our OG\ntag - and the facets need BYTE offsets, not character offsets.\n\nWatch for: the hook reads at 15px here. It is the same sentence that is 72px\non the Instagram card. If one length cannot serve both, the payload needs a\nper-channel budget rather than one hook.",
+      "page": "w3-feed"
     },
     {
-      "id": "note-w2-c",
-      "x": 2480,
-      "y": 1450,
-      "w": 900,
-      "text": "TRACK C — WAVE 2\n\nThe strongest structural idea in this wave: the 1987 stub sits ON TOP of the 2026 one, physically hiding the second artist's name. The open loop is expressed in the artwork rather than the copy — the answer is literally behind the other ticket.\n\nAlso pushed on artifact quality: asymmetric rather than two equal stubs, and a handwritten annotation standing in for the human presence a photograph would otherwise supply.\n\nWatch for: the handwriting. It either reads as genuinely personal or as a font choice. If it reads as a font, cut it — there's no middle ground."
+      "id": "w3-n-carousel",
+      "x": -1060,
+      "y": 0,
+      "w": 940,
+      "text": "THE CAROUSEL - THE SCHEMA DECIDER\n\nThis is the artboard that settles hook vs beats, which is the one Phase 0\noutput that breaks every adapter if it is guessed wrong.\n\nCounts under each pane are LIVE - computed from the strings above them, not\ntyped in. The longest beat is the budget - 109 characters, on beat 3.\n\nPane 1 carries imagery, per the rule. Panes 2-5 are text-only, which the rule\npermits. The loop closes on pane 4 rather than being held for the permalink,\nbecause Instagram captions have no clickable link: the carousel's job there\nis dwell and saves, not clicks.\n\nIf this arc holds, the payload is hook: string AND beats: string[] - hook\nalways, beats optional and consumed only by carousel-capable adapters.\n\nWatch for: whether beat 3 is doing too much work at 109 characters. If it\nneeds splitting, the answer is 6 panes, not a longer budget.",
+      "page": "w3-story"
     },
     {
-      "id": "note-w2-d",
-      "x": 3720,
-      "y": 1450,
-      "w": 900,
-      "text": "TRACK D — WAVE 2 — NOW WITH A REAL PHOTOGRAPH\n\nMike supplied this shot of Nile Rodgers at the Pacific Amphitheatre — the actual second night this post is about. That changes the track from hypothetical to testable.\n\nWhat the photo settles: it has faces, motion and depth, none of which any generated treatment can fake, and the stage lighting happens to sit in the same pink/violet family as the archive's own palette. It is the only direction that puts a human being in the feed.\n\nWhat it does NOT settle: provenance. If this is Mike's own photograph the licensing objection in #327 disappears entirely for it, and the credit line can go. If it came from somewhere else, every concern in #327 still applies. The credit line stays a marked placeholder until that is confirmed — do not ship this artboard with an unfilled [CREDIT].\n\nWatch for: whether the type still reads over a real image with its own focal points, and whether one photograph flatters the track more than a feed of them would. A photo this good is not the average case."
+      "id": "w3-n-otd",
+      "x": -1060,
+      "y": 1080,
+      "w": 940,
+      "text": "ON THIS DAY - DATE-FORWARD ARCHITECTURE\n\nThe exit criterion says date-forward, not headline-forward, and these three\ntake it literally: a masthead with the date and a rule under it. That is the\nsignature that separates the two streams at a glance in a feed - a liner note\nleads with a sentence, an On This Day leads with a date.\n\nTHE STRUCTURAL FINDING: a multi-show date has no single subject, so no tier-1\nor tier-2 image can be routed to it. Busy dates fall to tier 3 BY\nCONSTRUCTION. On the four-show card the year spine IS the tier-3 artwork\nrather than decoration laid over it. Only three dates in the archive carry\nfour shows.\n\nThe anniversary card gets the paper ground: 25 round anniversaries land in\n2026, they score highest, and the best post of the year should not look like\nthe other 144.\n\nWatch for: whether the masthead is enough separation, or whether the two\nstreams need different palettes.",
+      "page": "w3-story"
+    },
+    {
+      "id": "w3-n-stress",
+      "x": -1060,
+      "y": 0,
+      "w": 940,
+      "text": "THE WORST-CASE CORPUS\n\nEvery record here is real and comes from corpus.json.\n\nLONGEST ARTIST NAME - 'Richard Cheese & Lounge Against the Machine' (43ch)\nopening for 'The Brian Setzer Orchestra' (26ch), Universal Amphitheater,\n21 Dec 2002. 69 characters of proper noun in one hook. The square well is\nwhat saves it: the hook owns the lower half, so it wraps instead of\noverflowing.\n\nLONGEST VENUE NAME - 'National Museum of African American History and\nCulture' (55ch), longer than any artist name and in the position with the\nleast room. The Roots played it 24 Sep 2016. Both footers on that board are\nthe same string: the red one carries the white-space:nowrap that every Wave 2\nboard used and overflows; the green one wraps. Wave 2 shipped the red one.\n\nTHE TRUE FLOOR - no image resolves AND the post has no span, gap or repeat,\nso derived has nothing to draw either. The answer is the material stub: it\nneeds only a date, an artist and a venue, which every record in the archive\nhas by definition. That is what makes 'never bare type' a rule we can\nactually keep. Wave 2's Track C survives here - as the fallback, not as the\nhouse style.",
+      "page": "w3-stress"
+    },
+    {
+      "id": "w3-n-channel",
+      "x": -1060,
+      "y": 1620,
+      "w": 940,
+      "text": "CROSS-CHANNEL SHEET, AND THE DISCLOSURE\n\nWhether four channels read as one brand is invisible until they are adjacent.\n\nTEXT BUDGET, SETTLED: the authored hook plus its turn is 109 characters. That\nclears X at 280 and Bluesky at 300 with room to spare, so the tightest\nchannel does NOT force a shorter hook. The counters on each column are\ncomputed from the string, not typed.\n\nTHE DIFFERENT-NIGHT DISCLOSURE - a recommendation, not a decision. It is\ndrawn in-image here, in the well's bottom-left. The argument: a card gets\nscreenshotted and re-shared without its caption, and a claim about which\nnight a photograph is from has to travel with the picture. In-caption is\ncheaper and reads better; it also silently disappears the moment anyone\nscreenshots the card.\n\nX gets its link in the first self-reply, built in from the start. Instagram\ngets no clickable link at all, which is why its adapter is the one that\nconsumes beats[].",
+      "page": "w3-stress"
+    },
+    {
+      "id": "w3-n-profile",
+      "x": 2240,
+      "y": 2990,
+      "w": 940,
+      "text": "THE IDENTITY\n\nThe spec calls profile copy a Phase 0 output rather than an afterthought, and\nit is the surface every visitor sees before a single post.\n\nThe avatar has to survive 32px, so it is one letterform on the ink ground -\nshown at 168, 56 and 32 so the smallest size is judged rather than assumed.\nA wordmark would be mud at 32px.\n\nBio copy is the archive's own voice and its own numbers, and it ends on a\ncadence promise rather than a tagline. 'One person who kept the stubs' is\nthe line doing the work - it says this is not a brand account.\n\nThe bio link goes to /liner-notes, never the homepage: newest-first means the\ntop post is always the one the caption just referred to.\n\nOpen question for you: the handle. Bluesky can be concerts.morperhaus.org via\nDNS TXT, which is free and self-verifying. The other platforms cannot, so\nthey need a name - and it should be registered everywhere at once, including\nthe out-of-scope platforms, before someone else takes it.",
+      "page": "w3-stress"
+    },
+    {
+      "id": "w12-archive",
+      "x": -1060,
+      "y": 0,
+      "w": 940,
+      "text": "WAVES 1 AND 2 - KEPT AS THE RECORD\n\nThese are the four-track contest, preserved unchanged. They are not live\ncandidates: the imagery rubric decided later the same day that Track A is a\ntext layer rather than a card, and that B and C are one tier-3 floor.\n\nWhat survives from them and carried into Wave 3:\n- The open loop. Withholding who played it the second time is the best single\n  move in Wave 2 and it is in every Wave 3 hook.\n- Big type. Wave 1's 18-21px footers were invisible at feed scale.\n- Track C's stub, promoted from a house style to the tier-3 floor.\n- Track D landing on a real photograph, which the rubric then codified.\n\nWhat did NOT survive: the shared bottom furniture. All four Wave 2 cards end\nwith the same rule, the same prompt, the same venue line and the same\nwordmark in the same order at the same sizes - four aesthetics wearing one\nuniform. And 'Were you at either one?' cannot be a slot a generator fills\nweekly; it is a real question from someone who was there exactly once. It is\nabsent from every Wave 3 card so the grids can be judged without it.",
+      "page": "archive-w12"
+    },
+    {
+      "id": "w3-n-captions",
+      "x": -1060,
+      "y": 3060,
+      "w": 940,
+      "page": "w3-stress",
+      "text": "CAPTION COPY - AND THE TAG QUESTION\n\nYou asked what text should travel with the media, and whether it carries\nhashtags. The answer is not one answer: tags do opposite things on the four\nchannels, so a single house rule would be wrong on three of them.\n\nMASTODON needs them most. No recommendation algorithm at all, and full-text\nsearch is opt-in per user - so hashtags are close to the only way a post is\ndiscovered. 4-5, and CamelCase (#NileRodgers, not #nilerodgers), which is a\nfirm accessibility norm there: screen readers can parse the word boundaries.\n\nX gets NONE. The platform has discouraged them, and they eat the tightest\nbudget we have. The link is not in the post either - it goes in the first\nself-reply.\n\nBLUESKY takes 1-2, inline. They are real (clickable facets, followable feeds)\nbut stacking reads as spam. They ride as facets on byte offsets, which is the\nsame machinery the link already needs, so they cost nothing extra to build.\n\nINSTAGRAM takes 3-5, in the caption. The 30-tag block is obsolete and keyword\nsearch now carries a lot of discovery. Put them in the caption: the\n'hashtags in the first comment' trick is folklore.\n\nWHERE TAGS COME FROM: entities the record already knows - artist, venue,\ncity, decade. Generated, not authored, and they are what a stranger would\nactually type.\n\nWHAT MUST NEVER SHIP: the detector tags. liner-notes.json carries\n#full-circle and #cover on this very post. That is internal taxonomy - it\nmeans nothing to a reader and it is an instant tell that a machine wrote the\npost. The adapter has to suppress them.\n\nNote the structure: ONE core sentence pair, authored once, reused verbatim on\nall four. Only the link and the tags differ. That is the 'one payload, N dumb\nadapters' rule made visible - and it is why the counts stay comfortable even\non X."
+    },
+    {
+      "id": "w3-n-wide",
+      "x": -1060,
+      "y": 0,
+      "w": 940,
+      "page": "w3-wide",
+      "text": "THE WIDE CARD - 1200x630\n\nBluesky, Mastodon and X all render this format. Three of four channels, and\nuntil now it existed only as a 275px thumbnail on the timeline board. Every\nother post artboard in this canvas is the Instagram 4:5.\n\nA - STACKED. The 4:5 system scaled down. The band cannot hold 61% here; at\n340 (54%) the type fits, but the hook drops 72px -> 44px and the meta loses a\nline.\n\nThat much was arithmetic. What only the render shows is the disqualifying\npart: 1200x340 is a 3.5:1 letterbox, and it BEHEADS THE SUBJECT. Rodgers'\nface is above the crop. Now apply that to tier 2 - every sourced image we\nhave is square, so a 700x700 press shot becomes a 2:1 band across someone's\neyes. This option structurally cannot hold the imagery the archive has.\n\nB - SQUARE PLUS COLUMN. 630x630 image, 570 type column.\n\nThe 1.91:1 frame turns out to be the one place a square image is the natural\nfit rather than a compromise. A 700x700 press shot renders at 630 - the only\nformat in the whole system where tier 2 is DOWNSCALED. No upscale, no crop,\nno decapitation. The hook keeps a real column and holds 50px.\n\nRECOMMENDATION: B, and not on taste - A fails on the actual image supply.\n\nThe cost of B, stated plainly: it is a second composition, sharing only its\nparts with the 4:5 card. Two render targets, two layouts. That is the price\nof the wide format existing at all, and it is cheaper than the alternative,\nwhich is publishing beheaded press shots to three of four channels.\n\nWatch for: the hook is the same string in both formats and it holds. If a\nlonger hook ever needs a second, shorter budget, THIS is the format that\nforces it - which would be a payload change, not a layout tweak."
     }
   ],
   "launch": {
-    "view": "canvas"
+    "view": "canvas",
+    "page": "w3-wide"
   }
 }

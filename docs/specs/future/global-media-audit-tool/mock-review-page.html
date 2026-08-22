@@ -238,6 +238,8 @@
     transition: opacity .2s; pointer-events: none;
   }
   .toast.show { opacity: 1; }
+.tabrow{display:flex;gap:8px;margin:0 0 10px}
+.tabrow .btn{font-size:12px;padding:5px 12px}
 </style>
 </head>
 <body>
@@ -320,13 +322,19 @@
 <!-- Export -->
 <div class="overlay" id="exp">
   <div class="card">
-    <h2>Audit output</h2>
-    <p>Written to <b>docs/specs/future/mocks-social-syndication/audit.md</b>, plus
-    <b>selects.json</b> carrying the per-asset UUIDs for #339 ingest.</p>
+    <h2>Audit output — preview</h2>
+    <p><b>This page writes nothing.</b> Verdicts are saved to disk as you make them by
+    <code>concert-media review</code>; <code>concert-media finalize</code> is what writes
+    <b>audit.md</b> and <b>selects.json</b> into the repo. Below is a preview of what it
+    will write — there is no copy-and-paste step in the real workflow.</p>
+    <div class="tabrow">
+      <button class="btn primary" id="tab-md">audit.md</button>
+      <button class="btn" id="tab-json">selects.json</button>
+    </div>
     <pre id="exp-md"></pre>
     <div class="cardfoot">
       <button class="btn" id="exp-close">Close</button>
-      <button class="btn primary" id="exp-copy">Copy markdown</button>
+      <button class="btn primary" id="exp-copy">Copy preview</button>
     </div>
   </div>
 </div>
@@ -470,7 +478,10 @@ SHOWS.forEach((s, si) => {
       uid: 'A' + (++UID),
       show: s.id, si,
       kind, qual, media,
-      w: portrait ? 3024 : 4032, h: portrait ? 4032 : 3024,
+      // Stills are 12MP; video is video-shaped, which is what makes the 9:16 gate real.
+      ...(media === 'video'
+        ? (portrait ? { w: 1080, h: 1920 } : (r() > 0.5 ? { w: 3840, h: 2160 } : { w: 1920, h: 1080 }))
+        : { w: portrait ? 3024 : 4032, h: portrait ? 4032 : 3024 }),
       time: `2${Math.floor(r() * 2)}:${String(Math.floor(r() * 60)).padStart(2, '0')}`,
       burst: r() > 0.62 ? 2 + Math.floor(r() * 11) : 0,
       icloud: r() > 0.45,
@@ -651,29 +662,85 @@ function fillLB() {
 }
 
 /* ── export ── */
-function exportMD() {
+
+/* A 9:16 crop is limited by the capture's height: usable width = h * 9/16.
+   Portrait capture passes on its short side; landscape needs h >= 1920 (i.e. 4K-class).
+   This is why 1080p landscape video cannot feed Tier 3 and 4K landscape can. */
+function vertical916(it) {
+  return it.h >= it.w
+    ? Math.min(it.w, it.h) >= 1080
+    : Math.round(it.h * 9 / 16) >= 1080;
+}
+
+function buildOutputs() {
   let rows = '';
-  let hitCount = 0;
+  let stillShows = 0, vertShows = 0;
+  let totStills = 0, totClips = 0, totVert = 0, totLive = 0, totVenue = 0;
+  const selects = [];
+
   SHOWS.forEach(s => {
-    const items = ITEMS.filter(i => i.show === s.id && (i.verdict === 'usable' || i.verdict === 'hero'));
-    const stills = items.filter(i => i.media === 'photo').length;
-    const clips = items.filter(i => i.media === 'video').length;
-    const live = items.filter(i => i.media === 'live').length;
-    const subj = [...new Set(items.map(i => i.subject).filter(Boolean))];
-    if (stills || clips || live) hitCount++;
-    rows += `| ${s.id} | ${s.artist} | ${s.venue} | ${stills} | ${clips} | ${live} | ${subj.join(', ') || '—'} |\n`;
+    const keep = ITEMS.filter(i => i.show === s.id && (i.verdict === 'usable' || i.verdict === 'hero'));
+    const stills = keep.filter(i => i.media === 'photo').length;
+    const clips  = keep.filter(i => i.media === 'video').length;
+    const vert   = keep.filter(i => i.media === 'video' && vertical916(i)).length;
+    const live   = keep.filter(i => i.media === 'live').length;
+    const venue  = keep.filter(i => i.subject === 'venue').length;
+
+    if (stills) stillShows++;          // counts STILLS — not "any keeper"
+    if (vert) vertShows++;             // Tier 3 supply, tracked separately
+    totStills += stills; totClips += clips; totVert += vert;
+    totLive += live; totVenue += venue;
+
+    const subj = [...new Set(keep.map(i => i.subject).filter(Boolean))];
+    rows += `| ${s.id} | ${s.artist} | ${s.venue} | ${stills} | ${clips} | ${vert} | ${live} | ${subj.join(', ') || '—'} |\n`;
+
+    // selects.json — the committed field allowlist. No filename, no capture time, no GPS.
+    keep.forEach(i => selects.push({
+      uid: i.uid,
+      show: i.show,
+      verdict: i.verdict,
+      hero: i.verdict === 'hero',
+      subject: i.subject,
+      media: i.media,
+      orientation: i.w > i.h ? 'landscape' : 'portrait',
+      w: i.w, h: i.h,
+      ...(i.duration ? { duration: i.duration } : {}),
+      ...(i.media === 'video' ? { vertical916: vertical916(i) } : {}),
+      score: +i.scores.overall.toFixed(2)
+    }));
   });
-  const pct = Math.round(hitCount / SHOWS.length * 100);
-  $('#exp-md').textContent =
+
+  const n = SHOWS.length;
+  const pctStill = Math.round(stillShows / n * 100);
+  const pctVert  = Math.round(vertShows / n * 100);
+
+  const md =
 `## #338 — Usable personal media by show
 
-| Date | Artist | Venue | Stills | Clips | Live | Subjects |
-|---|---|---|---|---|---|---|
+| Date | Artist | Venue | Stills | Clips | 9:16 | Live | Subjects |
+|---|---|---|---|---|---|---|---|
 ${rows}
-**Shows with >=1 usable still: ${hitCount} / ${SHOWS.length} (${pct}%)**
-**Compound liner-note hit rate: 42% x ${pct}% ~ ${Math.round(0.42 * pct)}%**
+**Shows with >=1 usable still: ${stillShows} / ${n} (${pctStill}%)**
+**Shows with 9:16-capable video: ${vertShows} / ${n} (${pctVert}%)**   <- Tier 3 supply
+**Total usable assets: ${totStills} stills, ${totClips} clips (${totVert} vertical-capable), ${totLive} live**   <- storage sizing
+**Venue / marquee frames: ${totVenue}**   <- the scarce tier-2 substitute (#315)
+**Calibration bar: recorded by the calibration pass**
 
-_Mock figures — ${SHOWS.length} of 101 eligible shows shown._`;
+_Mock figures — ${n} of 101 eligible shows shown._`;
+
+  return { md, json: JSON.stringify(selects, null, 2) };
+}
+
+let EXP = { md: '', json: '' }, expTab = 'md';
+function showTab(t) {
+  expTab = t;
+  $('#exp-md').textContent = EXP[t];
+  $('#tab-md').classList.toggle('primary', t === 'md');
+  $('#tab-json').classList.toggle('primary', t === 'json');
+}
+function exportMD() {
+  EXP = buildOutputs();
+  showTab('md');
   $('#exp').classList.add('open');
 }
 
@@ -720,7 +787,12 @@ $('#cal-go').onclick = () => $('#cal').classList.remove('open');
 $('#btn-cal').onclick = () => $('#cal').classList.add('open');
 $('#btn-export').onclick = exportMD;
 $('#exp-close').onclick = () => $('#exp').classList.remove('open');
-$('#exp-copy').onclick = () => { navigator.clipboard?.writeText($('#exp-md').textContent); toast('Copied'); };
+$('#tab-md').onclick = () => showTab('md');
+$('#tab-json').onclick = () => showTab('json');
+$('#exp-copy').onclick = () => {
+  navigator.clipboard?.writeText($('#exp-md').textContent);
+  toast(`Preview copied — the real tool writes this via concert-media finalize`);
+};
 
 $('#c-total').textContent = ITEMS.length + ITEMS.reduce((a, i) => a + i.burst, 0);
 $('#c-shown').textContent = ITEMS.length;

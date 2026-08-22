@@ -14,7 +14,7 @@ The archive publishes liner notes to `/liner-notes`, an RSS feed, and per-post O
 
 The shape is **POSSE** (Publish on your Own Site, Syndicate Elsewhere): the site stays canonical, and every social post is a deliberately lossy pointer back to it. The goal is clicks to the archive, published under a dedicated `morperhaus concerts` identity, fully automatic once running.
 
-Two things make this larger than "call some REST endpoints." First, **the creative work gates the engineering work** — what a post looks like on each channel determines what fields the payload needs, so a mock phase runs before any schema is frozen. Second, **the archive owns none of its current imagery** — every image source in `image-refs.ts` is licensed for display on this site, not for republication under a brand account. Both are resolved in Phase 0 before a single post goes out.
+Two things make this larger than "call some REST endpoints." First, **the creative work gates the engineering work** — what a post looks like on each channel determines what fields the payload needs, so a mock phase runs before any schema is frozen. Second, **imagery is the hard constraint, not the text** — the governing rule is now decided (§"The imagery rubric"): never bare type, personal imagery over sourced, sourced over derived. Sizing tier 1 is what #338 counts, and it runs in parallel with the creative work rather than gating it.
 
 ---
 
@@ -50,9 +50,11 @@ beats). Building it first guarantees rework. Do not skip ahead.
 - Fully automatic on publish, with a retraction path across all channels
 - Site stays canonical; every post drives clicks back to a permalink
 - Media is a separate axis from channels: an L0-L3 ladder of imagery
-  sophistication, mocked and decided before anything publishes
-- All current image sources are third-party and licensed for on-site
-  display only; Phase 0 must land a provenance policy
+  sophistication. Tier 3 channels (Shorts, TikTok) are video-only and
+  therefore gated on L3
+- IMAGERY RULE (decided, not open): never bare type. Personal imagery
+  beats sourced imagery beats derived. Read the rubric before mocking
+  anything — an earlier revision of this spec argued the opposite
 
 **Key References:**
 - Full Design Spec: docs/specs/future/global-social-syndication.md
@@ -141,33 +143,55 @@ Mocks are built from actual archive records, chosen to include the ugly cases. D
 | A post whose image ref resolves to nothing | The `PLACEHOLDER_IMAGE_URL` branch, which #252 made reachable |
 | A 40-year anniversary record | The best-case On This Day post, for the high end |
 
-### Imagery tracks
+### The imagery rubric (DECIDED — 2026-08-21)
 
-Text-only is a hypothesis, not a conclusion, and it is not assumed here. There is no personal photo or ticket-stub archive to draw on, so the investigation mocks four tracks and picks — possibly a hybrid, possibly different answers per channel:
+This is no longer an open investigation. The owner's rule, in priority order:
 
-**Track A — Typographic / editorial.** Design-system ground, hook set large, date and venue as footer, wordmark. The existing solid-color fallback path in `og-image.ts`, promoted to a primary treatment. Risk to test: austerity. A feed of type-on-color can read as corporate rather than personal.
+1. **Never bare type.** Every post's first image carries imagery. Typography is a *layer* that sits on top of something — never the thing itself.
+2. **Imagery always trumps text-only.**
+3. **Personal imagery always trumps sourced imagery.**
+4. **Sourced imagery trumps derived imagery.** Derived visualization is a legitimate floor, not a house style.
 
-**Track B — Data-derived generative.** The site *is* data visualization — D3, a sunburst, a force graph, timelines, a genre palette. A post about 34 years of one artist can carry a generated constellation or timeline built from the archive's own records. This imagery is **wholly owned, unique to this archive, impossible to mistake for stock, and already on-brand.** Consult `.claude/skills/dataviz/` for palette and form discipline. This track is the most promising answer to "text-only isn't viable" and is available to almost no other project.
+| Tier | Source | Routing |
+|---|---|---|
+| **1** | Personal photography and video | Preferred wherever it exists. The library is large; how much of it clears the usable-quality threshold is being counted in #338. The old estimate is withdrawn — see §"The anti-correlation to design around". |
+| **2** | Sourced — album covers, Google Places venue photos, artist imagery already used in the Artist scene, Wikimedia CC concert photography | Routed by the **subject of the post**: an album post takes the cover, a venue post takes the venue, an artist post takes the artist. |
+| **3** | Derived — data-built generative visuals and material-metaphor artwork | The floor. Used when no tier 1 or tier 2 image fits the subject. |
 
-**Track C — Material / metaphor.** The project's own metaphor is album liner notes. Mock record-sleeve inserts, gatefold stock, vinyl, and *designed* ticket-stub pastiche — original artwork evoking the object, not a scan of one. Owned, distinctive, and thematically exact.
+**Carousels:** pane 1 obeys the rule above. Panes 2–N may be text-only.
 
-**Track D — Licensed third-party photography.** Cover Art Archive covers (most defensible: album art adjacent to commentary about that album), and Wikimedia CC-licensed concert photography (attribution required, which on Instagram means in-caption). Mocked so the option is evaluated on merit rather than eliminated by nervousness — but gated on the provenance policy below.
+The tracks below are retained as *treatments to be mocked*, not as competing candidates for a house style.
+
+**Track A — Typographic / editorial. NOT a standalone track.** Type on a plain ground is verboten as a finished card. The design work that survives here is the **text layer** that sits over tiers 1–3: legibility over photography, safe areas, scrim weight, how a long artist name behaves over a busy image. The existing `og-image.ts` dark-overlay-plus-SVG-headline path *is already this layer* and already conforms to the rule — which means the L0 render is closer to done than the rest of this spec implies.
+
+**Track B/C — Derived. One track, one tier (collapsed 2026-08-21).** Data-built visuals and material-metaphor artwork are a single tier-3 direction, not two competing candidates. Mocking them as rivals spends canvas effort on a distinction that only matters if the work shows one; split them back out only if it does.
+
+- *Data-derived:* the site **is** data visualization — D3, a sunburst, a force graph, timelines, a genre palette. A post about 34 years of one artist can carry a generated constellation or timeline built from the archive's own records. Consult `.claude/skills/dataviz/` for palette and form discipline.
+- *Material / metaphor:* the project's own metaphor is album liner notes. Record-sleeve inserts, gatefold stock, vinyl, and *designed* ticket-stub pastiche — original artwork evoking the object, not a scan of one.
+
+Both are wholly owned, unique to this archive, and impossible to mistake for stock. **Tier 3 — the floor when nothing sourced fits, never the default.**
+
+**Track D — Sourced photography. Promoted into tier 2.** Cover Art Archive covers, Google Places venue photos, TheAudioDB/Deezer artist imagery, Wikimedia CC-licensed concert photography. This is the **preferred fallback** when personal imagery is unavailable — evaluated on merit, not treated as a nervous last resort.
 
 ### Image provenance policy (Phase 0 deliverable)
 
-`image-refs.ts` resolves post imagery from three third-party sources. Every one of them is licensed for display **on this site**, not for republication as post imagery under a brand account:
+> **Scope narrowed by owner decision, 2026-08-21.** The concern below was raised and considered; the call is that **good imagery comes first**, and attribution/provenance is not a gate on it. This section is no longer a veto over the imagery rubric. It survives for two reasons that are not legal arguments: one source is *operationally* broken, and recording what shipped costs nothing now and cannot be reconstructed later.
 
-| Source | Used for | Problem when republished |
-|---|---|---|
-| Google Places photos | Venues | Places terms scope display to Google's service with attribution; caching is limited. Separately, #315 reports 65 of 67 currently dead (403). |
-| Spotify album art | Artists (top tracks) | Spotify's design guidelines prohibit modifying or overlaying their content — exactly what the dark overlay + headline does. |
-| Cover Art Archive | Albums | Most permissive of the three, but CAA does not warrant rights; underlying covers are label copyright. |
+`image-refs.ts` and the Artist scene resolve imagery from **five** third-party sources — two more than an earlier revision of this table listed:
 
-Compositing these into an OG card on our own domain, adjacent to the article discussing them, is a defensible contextual use. Publishing the same composite as native imagery on a branded account makes us the publisher rather than the linker.
+| Source | Used for | Coverage | Note |
+|---|---|---|---|
+| Google Places photos | Venues | **65 of 67 dead (403)** — #315 | Broken in practice regardless of terms. Do not design a tier-2 venue path that assumes this works until #315 closes. |
+| Cover Art Archive | Albums | Deterministic from MBID | The most defensible sourced imagery: album art adjacent to commentary about that album. |
+| TheAudioDB | Artists | 204 of 257 artists | Absent from every earlier version of this table. Fan-contributed press shots. |
+| Deezer CDN | Artists | 53 of 257 artists | Absent from every earlier version of this table. Label-supplied via CDN. |
+| Spotify album art | Artists (top tracks) | — | Guidelines prohibit modifying or overlaying — which the dark-overlay-plus-headline composite does. Prefer Cover Art Archive where both resolve. |
 
-The realistic risk is not litigation — it is an automated content-ID or DMCA strike, and a new account with no goodwill cannot absorb one. Losing a handle registered across five platforms to a strike in week three is the specific failure this policy prevents.
+**Artist imagery is the only fallback with 100% coverage** — all 257 artists resolve to an image. That is exactly why it will be reached for constantly, and why `MediaAsset.source` distinguishes `artist-audiodb` from `artist-deezer` instead of lumping them.
 
-**Deliverable:** a written policy stating, per source, whether it may be used for syndicated imagery, under what attribution, and on which channels. Enforced in code in Phase 1.
+The residual risk, stated once and then dropped: the realistic failure is not litigation but an automated content-ID or DMCA strike against a young account with no goodwill. The mitigation chosen is **not** to avoid sourced imagery — it is that the ledger records `tier` and `source` per post, so if a strike ever arrives the blast radius is greppable and a policy change is a filter rather than an archaeology project.
+
+**Deliverable (#327):** a written record, per source, of what shipped where — plus per-channel attribution where a channel requires it (Wikimedia CC on Instagram means in-caption). Recorded in code in Phase 1 via `MediaAsset.source`; **not enforced as a gate.**
 
 ### Rendering technology decision
 
@@ -207,7 +231,9 @@ Phase 0 is complete when all of the following are **decided and written down**:
 - [ ] Text budgets per format, expressed as concrete character counts
 - [ ] Which payload fields those budgets imply (`hook` vs. `beats`, and how many)
 - [ ] Visual language: inherits the site's design system, or gets its own
-- [ ] Imagery track(s) chosen per channel, from A/B/C/D or a hybrid
+- [x] ~~Imagery track(s) chosen per channel, from A/B/C/D or a hybrid~~ — **DECIDED 2026-08-21**, see §"The imagery rubric". Never bare type; personal > sourced > derived
+- [ ] #338 inventory count landed — sizes tier 1. Runs **in parallel** with the creative work, and does not gate it; only the withdrawn 8% figure is forbidden as a planning input
+- [ ] Where the different-night disclosure lives — in-image or in-caption — given Bluesky's 300 characters
 - [ ] Image provenance policy, written, per source, per channel
 - [ ] Rendering technology: hand-built SVG, satori, or Playwright screenshot
 - [ ] Which media ladder levels are worth building at all — "carousels win, video doesn't" is a legitimate and valuable finding
@@ -227,7 +253,7 @@ Channels and media are **independent axes**. Channel rollout must not block on m
 | **L0** | MVP renders per Phase 0 decision: 1200×630 (link cards) + 1080×1350 4:5 (Instagram) | Reuses the existing sharp/SVG path. Auto-generated alt text everywhere. |
 | **L1** | Per-platform tuning — safe areas, per-aspect hook lengths, the On This Day variant | Instagram needs shorter lines than the OG card |
 | **L2** | Instagram carousels — 3–5 panel narrative | Graph API supports up to 10 images; one extra call over single-image |
-| **L3** | Photography and video | Licensed imagery per the provenance policy; #89's video output |
+| **L3** | Photography and video — including **9:16 vertical**, which Tier 3 channels require | Personal media per #338–341; #89's video output. Gates the YouTube Shorts + TikTok adapters. |
 
 ### Channel ladder
 
@@ -237,8 +263,19 @@ Channels and media are **independent axes**. Channel rollout must not block on m
 | 1 | **Mastodon** | Single token, no expiry | Clean, no penalty |
 | 2 | **Instagram** | Professional account + Meta app, 60-day token refresh | No clickable captions — link-in-bio |
 | 2 | **X** | OAuth2 refresh, terms churn | Deranked; link goes in first self-reply |
+| 3 | **YouTube Shorts** | OAuth2, Data API v3 upload quota | Description links clickable; vertical 9:16 only |
+| 3 | **TikTok** | Content Posting API; **app audit required before public direct-post** | Link in bio/caption depending on account status |
+
+**Tier 3 is video-only, and that is the point.** Neither channel accepts a still card, so Tier 3 cannot ship until the media ladder reaches **L3** (9:16 vertical video). That makes Tier 3 a *dependency* of the video pilot rather than a parallel track: #89's render finally has a destination, and #100's open-ended "should we do video" becomes the answerable **"does video earn two channels that accept nothing else."**
+
+Note the naming: YouTube's short-form surface is **Shorts**. "Reels" is Meta's term, and Instagram Reels is a separate surface from an IG feed post — same Graph API, different media type.
+
+Two things to **verify before implementing**, not to trust from this document:
+- TikTok has historically required app audit before an app may direct-post publicly; unaudited apps are limited to private/draft posts. Confirm current status.
+- Both platforms fingerprint audio aggressively. §"Audio" assumes a melody match yields a publisher claim; on Shorts and TikTok it can instead mean a regional mute or a block. Confirm before attaching live venue audio.
 
 **Explicitly out of scope:** Reddit (the API is free and easy, which is the trap — automated self-promotion violates site-wide rules and subreddit norms; post by hand or not at all), LinkedIn (audience mismatch), Pinterest (wrong image shape, app review).
+
 
 ---
 
@@ -264,8 +301,16 @@ interface MediaAsset {
   aspect: "1.91:1" | "4:5" | "1:1" | "9:16"
   path: string
   alt: string               // required, never optional
+  tier: 1 | 2 | 3           // 1 personal, 2 sourced, 3 derived
+  source: "personal" | "cover-art" | "venue-places" | "artist-audiodb"
+        | "artist-deezer" | "wikimedia" | "generative" | "material"
 }
 ```
+
+**`tier` and `source` are not bookkeeping.** They are how "never bare type" becomes testable: an adapter asserts `media[0]` exists before it posts, and the ledger records which tier actually shipped. Without them, no adapter can tell a personal photograph from a Deezer press shot, and "personal trumps sourced" stays an unverifiable intention.
+
+**The rule pushes Instagram toward `beats`.** If pane 1 must carry imagery and panes 2–N may be text, the carousel is where narrative text lives — so IG wants `beats: string[]`. Bluesky, Mastodon and X keep their text in the post body and want `hook: string`. The likely resolution is **both** — `hook` always, `beats` optional and consumed only by carousel-capable adapters — but this stays PROVISIONAL until the mocks confirm 3–5 panes is the winning IG format.
+
 
 **Put the media contract in the payload, not the adapters.** Each adapter takes what it can use. Then L2 and L3 add new media kinds without touching a single adapter. If media lives in adapter code, every ladder step becomes an N-platform edit.
 
@@ -342,11 +387,11 @@ Own photography and video from the smartphone era. Tracked in #338–#341.
 
 ### The anti-correlation to design around
 
-The detectors reach backward — full-circle, drought-comeback, venue-ghost and artist-longevity are *by construction* stories about spans of decades. The camera only reaches forward. Across the 57 published notes, **147 year-mentions are pre-2012 against 43 from 2012+**, and only 42% of posts reference a 2012+ show at all.
+The detectors reach backward — full-circle, drought-comeback, venue-ghost and artist-longevity are *by construction* stories about spans of decades. The camera only reaches forward. Across the 57 published notes, **147 year-mentions are pre-2012 against 43 from 2012+**, and only 42% of posts reference a 2012+ show at all. That skew is real and worth designing around.
 
-If roughly 20 of the 101 eligible shows carry usable media, the compound hit rate for a liner note carrying a real photograph is about **42% × 20% ≈ 8%** — one post in twelve.
+> ⚠️ **The old supply estimate is WITHDRAWN (2026-08-21).** A previous revision of this section extrapolated a "~8%, one post in twelve" hit rate for a liner note carrying a personal photograph. That was a guess layered on a guess — nobody had counted the library. The owner's own skim indicates N is **substantially larger** than it assumed. **Do not build, sequence, or argue anything against that figure.** #338 replaces it with a real count. That work runs *in parallel* with the creative exploration — neither blocks the other. The library is known to be large; which images clear the usable-quality threshold is the open question #338 answers.
 
-**So personal media is the ceiling of the imagery ladder, never its floor.** Track B (generative) covers the volume because it is the only direction that is both always-available and wholly-owned. #338 exists to replace that estimate with a count before anything is built around it.
+What survives the withdrawal is the *shape*, not the magnitude: the pre-smartphone era is permanently uncoverable, so tiers 2 and 3 still carry the deep-catalogue posts no matter how large N turns out to be.
 
 ### The join is free
 
@@ -420,12 +465,14 @@ Secrets follow `docs/SECRETS.md`.
 **Tasks:**
 1. Assemble the real-data mock corpus, including all worst-case records
 2. Gather comparator accounts and set a quality bar
-3. Mock imagery tracks A–D per channel on the design canvas
+3. Mock the treatments per channel on the design canvas, under the decided rubric — Track A only ever as a text layer over tiers 1–3, never as a finished card
 4. Mock the nine-up grid, the timeline scroll, and the cross-channel sheet
 5. Render a contact sheet at true feed scale
-6. Write the provenance policy
-7. Decide rendering technology
-8. Record every exit criterion in `DECISIONS.md`
+6. Run #338 — the personal-media inventory count — **in parallel** with tasks 1–5, not ahead of them. It sizes tier 1; the creative exploration does not wait on it
+7. Record the provenance table (a record, not a gate)
+8. Decide rendering technology
+9. Decide where the different-night disclosure lives
+10. Record every exit criterion in `DECISIONS.md`
 
 **Acceptance Criteria:**
 - [ ] Every box in §"Phase 0 Exit Criteria" is checked and written down
@@ -452,6 +499,10 @@ Supply scoring, anniversary weighting, cross-linking to existing notes, card var
 ### Phase 3: Instagram + X (Window 4) — PROVISIONAL
 
 4:5 render target, IG Graph publishing, X with reply-threaded links, carousels if Phase 0 selected them.
+
+### Phase 4: YouTube Shorts + TikTok (Window 5) — PROVISIONAL, GATED
+
+9:16 vertical render target, Shorts upload via Data API v3, TikTok Content Posting API. **Blocked on L3 video and on #100's go/no-go** — these two channels accept nothing but video, which is what makes #100 answerable. Confirm TikTok's app-audit status and both platforms' audio fingerprinting behaviour before committing.
 
 ---
 
@@ -491,6 +542,8 @@ Per `test/README.md`, the root suite excludes `workers/**`.
 2. **Does On This Day get its own detector-style scoring module, or reuse `score.ts`?** Depends on how much anniversary weighting diverges from post scoring.
 3. **Does the backlog drip run at launch or after the new-post flow is proven?** Recommend after — one variable at a time.
 4. **Should syndication respect a detector allowlist?** Belt-and-braces on top of the voice-check, given the ratchet.
+5. **Storage flips if #338 comes back large.** §"Storage" says commit the stills at N≈20 and move to R2 at 100+. If the inventory lands well above the withdrawn estimate, R2 is the day-one answer rather than a later migration — and this repo is public, so committing a photo *is* publishing it.
+6. ~~**Does Track C survive as a distinct track?**~~ **RESOLVED 2026-08-21 — collapsed.** B and C are one derived track at tier 3. Split back out only if the canvas shows a real difference.
 
 ---
 
@@ -517,5 +570,6 @@ Per `test/README.md`, the root suite excludes `workers/**`.
 ## Revision History
 
 - **2026-08-20:** Initial specification created
-- **Version:** 1.0.0
-- **Status:** Planned — Phase 0 detailed, Phases 1+ provisional pending Phase 0 outputs
+- **2026-08-21:** Imagery rubric DECIDED by owner — never bare type; personal > sourced > derived. Track A demoted from a track to a text layer; Tracks B and C collapsed into one derived tier. YouTube Shorts + TikTok added as Tier 3 (video-only, gated on L3). Provenance narrowed from gate to record. Personal-media supply arithmetic withdrawn; #338 sizes tier 1 in parallel with the creative work, blocking nothing.
+- **Version:** 1.1.0
+- **Status:** Planned — imagery rubric decided; remaining Phase 0 open; Phases 1+ provisional

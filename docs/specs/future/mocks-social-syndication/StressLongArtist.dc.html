@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #6ee7b7; } a:hover { color: #ffffff; }
+  </style>
+</helmet>
+
+<!-- LANE 5 · STRESS — LONGEST ARTIST NAME IN HEADLINE POSITION.
+     "Richard Cheese & Lounge Against the Machine" (43ch) opening for "The
+     Brian Setzer Orchestra" (26ch), Universal Amphitheater, 21 Dec 2002. Both
+     names in one hook is 69 characters of proper noun. The square well is what
+     saves this: the hook has the whole lower half to itself, so 43 characters
+     wraps instead of overflowing. -->
+<div style="width: 1080px; height: 1350px; background: #14111f; position: relative; overflow: hidden; font-family: 'Source Sans 3', system-ui, sans-serif;">
+
+  <div style="position: absolute; inset: 0; display: flex; flex-direction: column;">
+
+    <div style="width: 1080px; height: 820px; position: relative; overflow: hidden; background: #241f38; flex-shrink: 0;">
+      <div style="position: absolute; inset: 0; background:
+        radial-gradient(46% 60% at 50% 42%, #4a6a55 0%, rgba(74,106,85,0) 74%),
+        linear-gradient(155deg, #26332c 0%, #171d19 100%);"></div>
+      <span style="position: absolute; left: 30px; top: 30px; font-size: 19px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.26); padding: 6px 10px;">Tier 2 · artist</span>
+    </div>
+
+    <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; padding: 36px 72px 72px 72px; box-sizing: border-box;">
+
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <span style="width: 56px; height: 5px; background: #059669;"></span>
+        <span style="font-size: 32px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #ffffff; text-wrap: pretty;">Richard Cheese &amp; Lounge Against the Machine</span>
+      </div>
+
+      <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 58px; line-height: 1.06; letter-spacing: -0.028em; color: #ffffff; text-wrap: pretty;">
+        A lounge act called Richard Cheese &amp; Lounge Against the Machine opened for a swing revival. In 2002.
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 32px;">
+        <span style="font-size: 29px; font-weight: 500; line-height: 1.42; color: #8a80ab;">with The Brian Setzer Orchestra<br>Universal Amphitheater · Los Angeles<br>21 December 2002</span>
+        <div style="display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0;">
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #5d5480;">concerts.</span>
+          <span style="font-size: 26px; font-weight: 700; line-height: 1.1; letter-spacing: 0.01em; color: #8a80ab;">morperhaus</span>
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #5d5480;">.org</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,5 +1,7 @@
-# Assembled canvas is a build output (~2MB of editor payload) — regenerate with /design
+# Assembled canvas is a build output (~2.3MB of editor payload) — regenerate
+# with /design's seeder from the .dc.html files + canvas.json, which are source.
 social-imagery-directions.html
+social-syndication-mocks.html
 
 # Photography held out of the repo until #327 records its provenance.
 #

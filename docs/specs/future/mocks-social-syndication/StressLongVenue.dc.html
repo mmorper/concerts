@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #c4b5fd; } a:hover { color: #ffffff; }
+  </style>
+</helmet>
+
+<!-- LANE 5 · STRESS — LONGEST VENUE NAME IN FOOTER POSITION.
+     "National Museum of African American History and Culture" is 55
+     characters, longer than any artist name, in the position with the least
+     room. The Roots played it on 24 Sep 2016. Both footers below are the SAME
+     string: the top one carries the white-space:nowrap that every Wave 2 board
+     used, the bottom one wraps and right-aligns the wordmark instead. -->
+<div style="width: 1080px; height: 1350px; background: #14111f; position: relative; overflow: hidden; font-family: 'Source Sans 3', system-ui, sans-serif;">
+
+  <div style="position: absolute; inset: 0; display: flex; flex-direction: column;">
+
+    <div style="width: 1080px; height: 640px; position: relative; overflow: hidden; background: #241f38; flex-shrink: 0;">
+      <div style="position: absolute; inset: 0; background:
+        radial-gradient(46% 60% at 50% 42%, #6b5340 0%, rgba(107,83,64,0) 74%),
+        linear-gradient(155deg, #33281f 0%, #191512 100%);"></div>
+      <span style="position: absolute; left: 30px; top: 30px; font-size: 19px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.26); padding: 6px 10px;">Tier 2 · artist</span>
+    </div>
+
+    <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 22px; padding: 36px 72px 72px 72px; box-sizing: border-box;">
+
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <span style="width: 56px; height: 5px; background: #7c3aed; flex-shrink: 0;"></span>
+        <span style="font-size: 34px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #ffffff;">The Roots</span>
+      </div>
+
+      <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 50px; line-height: 1.06; letter-spacing: -0.028em; color: #ffffff; text-wrap: pretty;">
+        The only show I've seen inside a Smithsonian.
+      </div>
+
+      <!-- BROKEN · nowrap, as every Wave 2 board had it -->
+      <div style="border-left: 4px solid #ef5f7a; padding-left: 22px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 18px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #ef5f7a;">nowrap · overflows</span>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 32px; overflow: hidden;">
+          <span style="font-size: 30px; font-weight: 500; color: #8a80ab; white-space: nowrap;">The Roots · National Museum of African American History and Culture · 2016</span>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0;">
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #5d5480;">concerts.</span>
+          <span style="font-size: 26px; font-weight: 700; line-height: 1.1; letter-spacing: 0.01em; color: #8a80ab;">morperhaus</span>
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #5d5480;">.org</span>
+        </div>
+        </div>
+      </div>
+
+      <!-- FIXED · wrap, wordmark drops to its own right-aligned line -->
+      <div style="border-left: 4px solid #34d399; padding-left: 22px; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 18px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #34d399;">wrap · holds</span>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 30px; font-weight: 500; line-height: 1.3; color: #8a80ab; text-wrap: pretty;">The Roots · National Museum of African American History and Culture · 2016</span>
+          <div style="align-self: flex-end;"><div style="display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0;">
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #5d5480;">concerts.</span>
+          <span style="font-size: 26px; font-weight: 700; line-height: 1.1; letter-spacing: 0.01em; color: #8a80ab;">morperhaus</span>
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #5d5480;">.org</span>
+        </div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

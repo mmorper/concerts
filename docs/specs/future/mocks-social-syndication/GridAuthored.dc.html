@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #c4b5fd; } a:hover { color: #ffffff; }
+  </style>
+</helmet>
+
+<!-- LANE 2 · GRID B — AUTHORED HOOKS, WELL SCALED TO THE ASSET.
+     Same nine posts. Two changes: the hook is written for the post rather than
+     lifted from the headline, and the well SIZE is set by the tier — full for
+     a personal frame or purpose-built derived art, half for a generic press
+     shot. The grid then varies because the pipeline responds to its material,
+     with nobody art-directing a single post. -->
+<div style="width: 1136px; height: 2060px; background: #0a0810; font-family: 'Source Sans 3', system-ui, sans-serif; box-sizing: border-box; padding: 60px 76px;">
+
+  <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px;">
+    <span style="font-size: 22px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #34d399;">Grid B · authored hooks</span>
+    <span style="font-size: 27px; font-weight: 400; line-height: 1.4; color: #7d7596;">Hook written per post, artist named on every card. One well size; the ground carries the variety.</span>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;">
+    <sc-for list="{{cards}}" as="c" hint-placeholder-count="9">
+      <div style="height: 405px; background: {{c.bg}}; box-sizing: border-box; padding: 22px; display: flex; flex-direction: column;">
+        <div style="width: {{c.well}}; height: {{c.well}}; background: {{c.wellBg}}; flex-shrink: 0;"></div>
+        <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 9px; padding-top: 14px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 14px; height: 2px; background: {{c.accent}}; flex-shrink: 0;"></span>
+            <span style="font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: {{c.fg}}; text-wrap: pretty;">{{c.artist}}</span>
+          </div>
+          <span style="font-family: 'Playfair Display', Georgia, serif; font-size: {{c.size}}; line-height: 1.08; letter-spacing: -0.02em; color: {{c.hookFg}}; text-wrap: pretty;">{{c.hook}}</span>
+          <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: {{c.dim}};">Morperhaus</span>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 44px;">
+    <span style="font-size: 20px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #4f4770;">At true phone scale · 124px tiles</span>
+    <div style="display: grid; grid-template-columns: repeat(3, 124px); gap: 3px;">
+      <sc-for list="{{cards}}" as="c" hint-placeholder-count="9">
+        <div style="height: 155px; background: {{c.bg}}; box-sizing: border-box; padding: 8px; display: flex; flex-direction: column;">
+          <div style="width: {{c.wellMini}}; height: {{c.wellMini}}; background: {{c.wellBg}}; flex-shrink: 0;"></div>
+          <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 3px; padding-top: 5px;">
+            <span style="width: 7px; height: 1px; background: {{c.accent}}; flex-shrink: 0;"></span>
+            <span style="font-size: 8px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; line-height: 1.14; color: {{c.fg}}; text-wrap: pretty;">{{c.artist}}</span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    // Same nine published posts as Grid A. Hooks written for the post; every
+    // venue, year and fact behind them is real archive data.
+    const INK = '#14111f', PAPER = '#f2ece1';
+    const raw = [
+      { hook: 'One night in a Phoenix suburb, and I never went back.',            cat: 'deep-cut', tier: 2 , artist: 'Ziggy Marley' },
+      { hook: 'I saw them inside a theme park, seven years before Tragic Kingdom.', cat: 'deep-cut', tier: 1 , artist: 'No Doubt' },
+      { hook: 'The Beastie Boys opened. I never caught either of them again.',    cat: 'deep-cut', tier: 3 , artist: 'Run DMC' },
+      { hook: 'Forty years ago tonight — and I would wait thirteen years for the second time.', cat: 'personal', tier: 2 , artist: 'The Art of Noise' },
+      { hook: 'Forty years ago tonight. Show number fifteen, and not my last of theirs.', cat: 'personal', tier: 3 , artist: 'Beach Boys' },
+      { hook: 'Thirty-five years ago tonight, the first of three at the same amphitheatre.', cat: 'personal', tier: 2 , artist: 'Jimmy Buffett' },
+      { hook: 'Thirty-four days before Late Registration, in an amphitheatre in Costa Mesa.', cat: 'cultural', tier: 2 , artist: 'Garbage' },
+      { hook: 'Ten days after Nevermind landed, I was watching the exact opposite.', cat: 'cultural', tier: 1 , artist: 'Sting' },
+      { hook: 'Four songs, five hundred and nineteen days before the record existed.', cat: 'cultural', tier: 3 , artist: 'Social Distortion' },
+    ];
+    const ACCENT = { cultural: '#7c3aed', personal: '#0ea5e9', 'deep-cut': '#059669' };
+    const cards = raw.map(function (r) {
+      // Tier 3 rides the paper ground: purpose-built artwork is the one tier
+      // that can carry a light card, and it keeps the grid off all-ink.
+      // Tier decides WHICH image, never how big the well is: the tier-scaled
+      // well was mocked and read as broken tiles rather than as rhythm.
+      const paper = r.tier === 3;
+      return {
+        hook: r.hook,
+        artist: r.artist,
+        hookFg: paper ? '#4a4454' : '#b3a9d0',
+        accent: ACCENT[r.cat],
+        bg: paper ? PAPER : INK,
+        fg: paper ? '#1c1a24' : '#ffffff',
+        dim: paper ? '#a39a8b' : '#4f4770',
+        wellBg: paper
+          ? 'linear-gradient(150deg, #e6dccb 0%, #cdbfaa 100%)'
+          : 'linear-gradient(155deg, #2e2745 0%, #1b1729 100%)',
+        well: '236px',
+        wellMini: '90px',
+        size: '21px'
+      };
+    });
+    return { cards: cards };
+  }
+}
+</script>
+</body>
+</html>
