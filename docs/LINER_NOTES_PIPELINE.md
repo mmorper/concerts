@@ -238,6 +238,34 @@ npm run syndicate -- --backlog 1      # opt-in drip of one archived note
 > published; an empty ledger means the first run fires all of them at once, on
 > a brand-new account, in one burst.
 
+### Backfilling the back catalogue
+
+The 57 notes published before this stage existed carry no `post.social`, so
+they are permanently ineligible to syndicate and `--backlog` has nothing to
+draw on. `npm run backfill:social` authors copy for them through the **same**
+path a new note gets — `generateSocial()` then `checkSocial()` — one API call
+each.
+
+```bash
+npm run backfill:social -- --dry-run     # list what would be authored
+npm run backfill:social -- --limit 5     # author five, then stop
+npm run backfill:social                  # author every remaining note
+npm run backfill:social -- --slug <slug> # one note
+npm run backfill:social -- --force       # re-author notes that already have copy
+```
+
+Resumable: a re-run skips whatever already has copy, so the batch can be done
+in chunks or picked up after a failure. `liner-notes.json` is written once at
+the end — a crash loses that run's API calls, never leaves the file half-written.
+
+**Do not shortcut this by deriving copy from the headline.** DECISIONS.md §11
+measured the cost: 28 of the 57 headlines follow one of five detector
+templates, and "Caught Once, Never Again" alone accounts for nine. Derived copy
+would fill the profile grid with visible duplicates — the exact failure the
+"authored, never derived" rule exists to prevent. `checkSocial()`'s
+`derived-copy` rule fails a hook that restates its headline, so the backfill
+cannot take that shortcut even by accident.
+
 ### Shape
 
 ```text
@@ -259,6 +287,7 @@ liner-notes.json ──► buildPayload() ──► SyndicationPayload ──►
 | `scripts/syndication/facets.ts` | Bluesky byte-offset rich text |
 | `scripts/syndication/ledger.ts` | Idempotency, seeding, the retraction index |
 | `scripts/syndication/run.ts` | Fan-out, jitter, partial-failure resume |
+| `scripts/liner-notes/backfill-social.ts` | Back-catalogue social copy: selection and application |
 
 **Adapters truncate and format only.** They never make content decisions — an
 adapter sees a finished payload, never a liner note or a detector. That is what
