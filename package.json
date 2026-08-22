@@ -66,6 +66,7 @@
     "generate:liner-notes": "tsx scripts/liner-notes/index.ts",
     "syndicate": "tsx scripts/syndication/index.ts",
     "backfill:social": "tsx scripts/backfill-social.ts",
+    "generate:on-this-day": "tsx scripts/on-this-day/index.ts",
     "refresh:liner-note-images": "tsx scripts/refresh-liner-note-images.ts",
     "generate:narrations": "tsx scripts/generate-narrations.ts",
     "deploy:worker": "cd workers/meta-injector && npx wrangler deploy",

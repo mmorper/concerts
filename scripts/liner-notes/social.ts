@@ -21,7 +21,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { HOOK_MAX, BEATS_MIN, BEATS_MAX, CAPTION_MAX } from "../syndication/budgets.ts";
 import { graphemeLength } from "../syndication/text.ts";
-import type { LinerNotesPost, PostSocial } from "../../src/types/liner-notes.ts";
+import type { PostSocial } from "../../src/types/liner-notes.ts";
 
 const MODEL = "claude-sonnet-4-6";
 const MAX_TOKENS = 700;
@@ -80,6 +80,21 @@ export interface SocialOptions {
   client?: Pick<Anthropic["messages"], "create">;
 }
 
+/**
+ * The minimum an authoring request needs.
+ *
+ * Structural rather than `LinerNotesPost`, because On This Day posts are not
+ * liner notes and should not have to pretend to be one to get copy written.
+ * A `LinerNotesPost` satisfies this shape already.
+ */
+export interface SocialSubject {
+  slug: string;
+  headline: string;
+  category: string;
+  /** The published prose. Absent for On This Day, which has none. */
+  prose?: string;
+}
+
 /** What the card's credit furniture will say, so the hook does not duplicate it. */
 export interface SocialContext {
   artists: string[];
@@ -95,7 +110,7 @@ export interface SocialContext {
  * right trade — a missing tweet is not a reason to lose a liner note.
  */
 export async function generateSocial(
-  posts: Array<{ post: LinerNotesPost; context: SocialContext }>,
+  posts: Array<{ post: SocialSubject; context: SocialContext }>,
   options: SocialOptions = {}
 ): Promise<Map<string, PostSocial>> {
   const out = new Map<string, PostSocial>();
@@ -129,7 +144,7 @@ export async function generateSocial(
 // ── Internals ────────────────────────────────────────────────────────────────
 
 async function authorOne(
-  post: LinerNotesPost,
+  post: SocialSubject,
   context: SocialContext,
   client: Pick<Anthropic["messages"], "create">
 ): Promise<Omit<PostSocial, "authoredAt">> {
@@ -165,17 +180,36 @@ async function authorOne(
   throw new Error(lastError || "social text failed validation");
 }
 
-function buildPrompt(post: LinerNotesPost, context: SocialContext): string {
-  const lines = [
-    "THE PUBLISHED NOTE",
-    `Headline: ${post.headline}`,
-    `Category: ${post.category}`,
-    "",
-    post.prose,
-    "",
+/**
+ * Two shapes, one voice.
+ *
+ * A liner note hands the model prose to draw a hook out of. An On This Day
+ * post has none — it is a date and a show — so it gets the facts and is told
+ * so, rather than being handed fabricated prose to summarise. The SYSTEM
+ * prompt is identical either way: the rules do not change with the stream,
+ * only the material does.
+ */
+function buildPrompt(post: SocialSubject, context: SocialContext): string {
+  const lines = post.prose
+    ? [
+        "THE PUBLISHED NOTE",
+        `Headline: ${post.headline}`,
+        `Category: ${post.category}`,
+        "",
+        post.prose,
+        "",
+      ]
+    : [
+        "AN ANNIVERSARY POST — there is no published note behind this one.",
+        "Write from the facts below. Do not invent a story around them, and do",
+        "not claim to remember anything the facts do not contain.",
+        `Framing: ${post.headline}`,
+        "",
+      ];
+  lines.push(
     "CREDIT ALREADY ON THE CARD (do not repeat these in the hook):",
-    `Artists: ${context.artists.join(", ")}`,
-  ];
+    `Artists: ${context.artists.join(", ")}`
+  );
   if (context.song) lines.push(`Song: ${context.song}`);
   lines.push(`Venue: ${context.venue}`);
   lines.push(`City: ${context.city}`);
