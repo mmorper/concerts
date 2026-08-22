@@ -23,13 +23,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..", "..");
 const OG_DIR = join(ROOT, "public", "og", "liner-notes");
 
-const WIDTH = 1200;
-const HEIGHT = 630;
+export const WIDTH = 1200;
+export const HEIGHT = 630;
 
 /** Cap on fetching a post's background image. See the call site for why. */
 const FETCH_TIMEOUT_MS = 15_000;
 
-const CATEGORY_COLORS: Record<string, string> = {
+export const CATEGORY_COLORS: Record<string, string> = {
   cultural: "#7c3aed",
   personal: "#0ea5e9",
   "deep-cut": "#059669",
@@ -48,53 +48,47 @@ export interface OgImageOptions {
   force?: Iterable<string>;
 }
 
+export interface OgImageResult {
+  /**
+   * Slugs whose card was composited on a solid ground because the image could
+   * not be fetched. Those cards are bare type and must not syndicate — the
+   * caller records it on the post so `buildPayload` can refuse them.
+   */
+  fellBack: string[];
+  /** Slugs rendered with their real imagery, so a stale flag can be cleared. */
+  rendered: string[];
+}
+
 export async function generateOgImages(
   posts: LinerNotesPost[],
   options: OgImageOptions = {}
-): Promise<void> {
+): Promise<OgImageResult> {
   mkdirSync(OG_DIR, { recursive: true });
   const force = new Set(options.force ?? []);
+  const result: OgImageResult = { fellBack: [], rendered: [] };
 
   for (const post of posts) {
     const outPath = join(OG_DIR, `${post.slug}.png`);
     if (existsSync(outPath) && !force.has(post.slug)) continue;
 
     try {
-      await generateOgImage(post, outPath);
+      const usedFallback = await generateOgImage(post, outPath);
+      if (usedFallback) result.fellBack.push(post.slug);
+      else result.rendered.push(post.slug);
     } catch (err) {
       console.warn(`   ⚠️  OG image failed for ${post.slug}: ${(err as Error).message}`);
     }
   }
+
+  return result;
 }
 
-async function generateOgImage(post: LinerNotesPost, outPath: string): Promise<void> {
+/** Returns true when the card is type on a solid ground rather than over imagery. */
+async function generateOgImage(post: LinerNotesPost, outPath: string): Promise<boolean> {
   const accentColor = CATEGORY_COLORS[post.category] ?? "#6366f1";
   const categoryLabel = post.category.toUpperCase().replace("-", " ");
 
-  // Try to fetch background image
-  let background: sharp.Sharp;
-  const imageUrl = post.image?.url;
-
-  if (imageUrl && (imageUrl.startsWith("http://") || imageUrl.startsWith("https://"))) {
-    try {
-      // Bounded: this runs unattended in the weekly workflow against
-      // third-party CDNs. An unbounded fetch here stalls the whole job until
-      // GitHub's 6-hour default timeout, and the try/catch below cannot help —
-      // a hang is not an exception.
-      const res = await fetch(imageUrl, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
-      if (res.ok) {
-        const buffer = Buffer.from(await res.arrayBuffer());
-        background = sharp(buffer)
-          .resize(WIDTH, HEIGHT, { fit: "cover", position: "center" });
-      } else {
-        background = solidBackground();
-      }
-    } catch {
-      background = solidBackground();
-    }
-  } else {
-    background = solidBackground();
-  }
+  const { background, usedFallback } = await loadBackground(post.image?.url);
 
   // Apply dark overlay
   const darkOverlay = Buffer.from(
@@ -115,9 +109,50 @@ async function generateOgImage(post: LinerNotesPost, outPath: string): Promise<v
     .toBuffer();
 
   writeFileSync(outPath, composed);
+  return usedFallback;
 }
 
-function solidBackground(): sharp.Sharp {
+export interface LoadedBackground {
+  background: sharp.Sharp;
+  /**
+   * True when the image could not be fetched and a solid ground was used.
+   *
+   * **This is not cosmetic.** A card composited on a solid ground is bare
+   * type, which the imagery rubric forbids outright — and a caller that does
+   * not know it happened will happily publish it while the payload still
+   * claims `tier: 2`. The fallback is the right behaviour for the site's own
+   * OG tags, where a plain card beats a broken image; it is the wrong thing
+   * to syndicate. Callers that publish must check this.
+   */
+  usedFallback: boolean;
+}
+
+/**
+ * The post's image as a cover-cropped background, or a solid fallback.
+ *
+ * Shared by both render targets. The timeout is the load-bearing part: this
+ * runs unattended in a weekly workflow against third-party CDNs, and an
+ * unbounded fetch stalls the whole job until GitHub's 6-hour default. A
+ * try/catch cannot help with that — a hang is not an exception.
+ */
+export async function loadBackground(imageUrl: string | undefined): Promise<LoadedBackground> {
+  if (!imageUrl || !/^https?:\/\//.test(imageUrl)) {
+    return { background: solidBackground(), usedFallback: true };
+  }
+  try {
+    const res = await fetch(imageUrl, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+    if (!res.ok) return { background: solidBackground(), usedFallback: true };
+    const buffer = Buffer.from(await res.arrayBuffer());
+    return {
+      background: sharp(buffer).resize(WIDTH, HEIGHT, { fit: "cover", position: "center" }),
+      usedFallback: false,
+    };
+  } catch {
+    return { background: solidBackground(), usedFallback: true };
+  }
+}
+
+export function solidBackground(): sharp.Sharp {
   return sharp({
     create: {
       width: WIDTH,
@@ -168,7 +203,7 @@ function buildTextSvg(
 }
 
 /** Naive word-wrap: split headline into lines of ~maxChars each. */
-function wrapText(text: string, maxChars: number): string[] {
+export function wrapText(text: string, maxChars: number): string[] {
   const words = text.split(" ");
   const lines: string[] = [];
   let current = "";
@@ -185,7 +220,7 @@ function wrapText(text: string, maxChars: number): string[] {
   return lines;
 }
 
-function escXml(str: string): string {
+export function escXml(str: string): string {
   return str
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")

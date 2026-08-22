@@ -212,6 +212,25 @@ describe("buildPayload", () => {
     expect(payload.ineligibleReasons.join()).toMatch(/below the tier-3 floor/);
   });
 
+  it("blocks a note whose card fell back to a solid ground", () => {
+    // The subtle case: the card exists, and the image URL still classifies as
+    // a perfectly good tier-2 source. Only the flag records that the fetch
+    // failed at render time and the card is actually type on a solid ground.
+    const payload = buildPayload(
+      post({
+        image: {
+          url: "https://r2.theaudiodb.com/images/media/artist/thumb/x.jpg",
+          alt: "The Art of Noise",
+          source: "artist",
+          cardFallback: true,
+        },
+      }),
+      sources
+    );
+    expect(payload.eligible).toBe(false);
+    expect(payload.ineligibleReasons.join()).toMatch(/fell back to a solid ground/);
+  });
+
   it("blocks a note whose card has not been rendered — never bare type", () => {
     const payload = buildPayload(post(), { ...sources, cardExists: () => false });
     expect(payload.eligible).toBe(false);

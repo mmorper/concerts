@@ -31,6 +31,20 @@ export interface PostImage {
   /** Album to match when `source` is "album"; `ref` holds the artist key. */
   albumName?: string;
   credit?: string;
+  /**
+   * True when the OG card was composited on a solid ground because `url`
+   * could not be fetched at render time.
+   *
+   * The card is still written, because for the site's own `og:image` a plain
+   * card beats a broken one. But it is **bare type**, which the imagery rubric
+   * forbids outright — so syndication must refuse it. Without this flag
+   * nothing downstream can tell: `buildPayload` classifies tier and source
+   * from `url`, which still looks perfectly good, and checks only that the
+   * card file exists.
+   *
+   * Set by Stage 8. Cleared on the next successful render.
+   */
+  cardFallback?: boolean;
 }
 
 /**

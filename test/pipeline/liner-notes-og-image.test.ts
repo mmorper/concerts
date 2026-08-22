@@ -1,3 +1,5 @@
+import { rmSync } from "fs";
+import { join } from "path";
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import fs from 'fs'
 import path from 'path'
@@ -115,3 +117,33 @@ describe('generateOgImages', () => {
     expect(fs.existsSync(path.join(OG_DIR, `${slug}.png`))).toBe(true)
   })
 })
+
+describe("card fallback reporting (#333)", () => {
+  it("separates cards rendered over imagery from cards on a solid ground", async () => {
+    // A card composited on a solid ground is bare type. The site still wants
+    // it — a plain og:image beats a broken one — but syndication must refuse
+    // it, and nothing downstream can tell from the image URL, which still
+    // looks fine. generateOgImages is the only place that knows.
+    const { generateOgImages } = await import("../../scripts/liner-notes/og-image.ts");
+
+    const post = (slug: string, url: string) =>
+      ({
+        slug,
+        headline: "A Headline",
+        category: "cultural",
+        years: [1986],
+        image: { url, alt: "x", source: "artist" },
+      }) as unknown as Parameters<typeof generateOgImages>[0][number];
+
+    // No URL at all cannot be fetched, so it is the deterministic fallback
+    // case — no network required to exercise it.
+    const result = await generateOgImages([post("__fallback-probe__", "")], {
+      force: ["__fallback-probe__"],
+    });
+
+    expect(result.fellBack).toContain("__fallback-probe__");
+    expect(result.rendered).not.toContain("__fallback-probe__");
+
+    rmSync(join(process.cwd(), "public/og/liner-notes/__fallback-probe__.png"), { force: true });
+  });
+});
