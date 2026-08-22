@@ -1,6 +1,6 @@
 # Social Syndication — Liner Notes & On This Day
 
-**Status:** Planned
+**Status:** Phase 0 complete — Phase 1 ready
 **Target Version:** v7.0.0
 **Priority:** High
 **Estimated Complexity:** Very High
@@ -24,7 +24,7 @@ Two things make this larger than "call some REST endpoints." First, **the creati
 
 ```
 I need to implement the Social Syndication feature for Morperhaus Concerts,
-starting with Phase 0 (creative investigation).
+starting with Phase 1 (foundation). Phase 0 is complete.
 
 **IMPORTANT CONTEXT WINDOW MANAGEMENT:**
 - This is a fresh session with NO prior context about the project
@@ -37,12 +37,12 @@ starting with Phase 0 (creative investigation).
 - Ask clarifying questions if anything is ambiguous or needs decision
 - Read files proactively to understand existing patterns before writing code
 
-**CRITICAL SEQUENCING CONSTRAINT:**
-Phase 0 is a creative investigation that produces DECISIONS, not shipped code.
-Phases 1+ in this spec are deliberately PROVISIONAL and must not be
-implemented until Phase 0 outputs are folded back into §"Canonical Payload".
-The payload schema depends on creative outcomes (single hook vs. carousel
-beats). Building it first guarantees rework. Do not skip ahead.
+**PHASE 0 IS CLOSED (2026-08-21).**
+The creative investigation is complete and §"Canonical Payload" is FROZEN.
+Read docs/specs/future/mocks-social-syndication/DECISIONS.md first — it holds
+the exit-criteria answers, the measured text budgets, the two render targets
+and the reasoning. Do not re-open the creative questions; build against them.
+Start at Phase 1.
 
 **Feature Overview:**
 - Syndicate liner notes + a new "On This Day" stream to Bluesky, Mastodon,
@@ -53,8 +53,8 @@ beats). Building it first guarantees rework. Do not skip ahead.
   sophistication. Tier 3 channels (Shorts, TikTok) are video-only and
   therefore gated on L3
 - IMAGERY RULE (decided, not open): never bare type. Personal imagery
-  beats sourced imagery beats derived. Read the rubric before mocking
-  anything — an earlier revision of this spec argued the opposite
+  beats sourced imagery beats derived. Tier 1 carries a byline; tiers 2
+  and 3 carry none, and that absence is what makes the rule visible
 
 **Key References:**
 - Full Design Spec: docs/specs/future/global-social-syndication.md
@@ -66,11 +66,9 @@ beats). Building it first guarantees rework. Do not skip ahead.
 - Deep link construction: src/utils/deepLinks.ts (never hand-build URLs)
 
 **Implementation Approach:**
-- Window 1 (Phase 0): Creative investigation. Mock every channel x every
-  media track with real data. Produce the decisions listed in §"Phase 0
-  Exit Criteria". NO production code.
-- Window 2 (Phase 1): Fold Phase 0 outputs into the canonical payload
-  schema. Build ledger, retraction, GitHub Actions stage, and the
+- Window 1 (Phase 0): COMPLETE. See mocks-social-syndication/DECISIONS.md.
+- Window 2 (Phase 1): Build against the FROZEN canonical payload. Ledger
+  with seeding, retraction path, GitHub Actions stage, and the
   Bluesky + Mastodon adapters.
 - Window 3 (Phase 2): On This Day stream — supply scoring, anniversary
   weighting, cross-linking to existing liner notes.
@@ -95,9 +93,8 @@ feed — which means authored payloads, never truncated prose.
 - ~55 liner notes already published. The ledger MUST be seeded or the first
   run will fire all of them at once.
 
-Let's start with Window 1, Phase 0. Should I begin by assembling the real-data
-mock corpus described in §"Phase 0 — Mock Corpus", including the worst-case
-records?
+Let's start with Window 2, Phase 1. Should I begin with the canonical payload
+and the voice-skill addition for the social hook, per #329?
 ```
 
 ---
@@ -281,7 +278,10 @@ Two things to **verify before implementing**, not to trust from this document:
 
 ## Canonical Payload
 
-> ⚠️ **PROVISIONAL — depends on Phase 0.** The shape below is the current best guess and exists to convey intent. Its text fields must be revised against Phase 0 outputs before implementation. See §"Why it must come first".
+> ✅ **FROZEN 2026-08-21.** Folded against Phase 0 outputs — see
+> `docs/specs/future/mocks-social-syndication/DECISIONS.md`. Every field below
+> was decided by rendering it with real archive data. Phase 1 may build against
+> this.
 
 One canonical payload, N dumb adapters. Adapters **truncate and format only** — they never make content decisions. That keeps voice consistent without auditing N prompt variants, makes a new channel a formatting function rather than a content pipeline, and means one voice-check failure blocks syndication everywhere by construction.
 
@@ -289,10 +289,25 @@ One canonical payload, N dumb adapters. Adapters **truncate and format only** �
 interface SyndicationPayload {
   slug: string
   kind: "liner-note" | "on-this-day"
-  hook: string              // PROVISIONAL — may become beats: string[]
+
+  // TEXT — authored by the generation step, never derived from the headline.
+  hook: string              // <= 120 chars. Always present.
+  beats?: string[]          // 3-5, each <= 120 chars. Carousel adapters only.
+  caption: string           // the core sentence pair; adapters append only.
+
+  // CREDIT — structured, off the record. Rendered as furniture on the card,
+  // one line each, so a generated hook is never trusted to contain them.
+  credit: {
+    artists: string[]       // display names, in billing order
+    song?: string           // absent on most posts; the meta stack goes 3 -> 2
+    venue: string
+    city: string
+    date: string            // ISO
+  }
+
   url: string               // permalink, per-channel UTM applied by adapter
   media: MediaAsset[]       // see media contract below
-  tags: string[]
+  tags: string[]            // ENTITY tags only. Detector tags never publish.
   eligible: boolean         // false blocks syndication entirely
 }
 
@@ -304,13 +319,70 @@ interface MediaAsset {
   tier: 1 | 2 | 3           // 1 personal, 2 sourced, 3 derived
   source: "personal" | "cover-art" | "venue-places" | "artist-audiodb"
         | "artist-deezer" | "wikimedia" | "generative" | "material"
+  byline?: string           // tier 1 ONLY. "Mike Morper · 31 July 2026", or
+                            // "... · July 2026, not the 1987 night".
+  focalPoint?: { x: number; y: number }   // 0-1. Computed at ingest (#352).
 }
 ```
 
-**`tier` and `source` are not bookkeeping.** They are how "never bare type" becomes testable: an adapter asserts `media[0]` exists before it posts, and the ledger records which tier actually shipped. Without them, no adapter can tell a personal photograph from a Deezer press shot, and "personal trumps sourced" stays an unverifiable intention.
+### What Phase 0 settled, and what each field costs
 
-**The rule pushes Instagram toward `beats`.** If pane 1 must carry imagery and panes 2–N may be text, the carousel is where narrative text lives — so IG wants `beats: string[]`. Bluesky, Mastodon and X keep their text in the post body and want `hook: string`. The likely resolution is **both** — `hook` always, `beats` optional and consumed only by carousel-capable adapters — but this stays PROVISIONAL until the mocks confirm 3–5 panes is the winning IG format.
+**`hook` AND `beats`, not one or the other.** `hook` always; `beats` optional,
+3–5, consumed only by carousel-capable adapters. Confirmed by the carousel
+board — the five-beat arc holds and the longest beat measured 109 characters.
 
+**`caption` is one core, four appendices.** The same sentence pair ships on every
+channel; adapters append only the link and the tags. Measured: 166 chars core,
+217 on Bluesky, 267 on Mastodon, 166 on X, 415 on Instagram. **The tightest
+channel does not force a shorter hook.**
+
+**`credit` is structured because names are not optional.** Withholding artist
+names for an open loop was mocked and rejected: it makes posts unfindable by
+search, gives a scrolling fan no reason to stop, and on Instagram — where
+captions carry no clickable link — teases a reveal the reader cannot reach.
+*Withhold the interpretation; never the identification.* At 124px, the artist
+name is the only legible text on a profile-grid tile.
+
+`credit.song` is optional and **most posts have no track**, so the meta stack
+renders three lines or two. The layout must not look short when it is absent.
+
+**`tags` carry entity tags only.** Artist, venue, city, decade — things the
+record already knows. Per-channel rules differ and are not one decision:
+Mastodon 4–5 CamelCase, Instagram 3–5 in caption, Bluesky 1–2 inline, X none.
+**`liner-notes.json`'s detector tags (`#full-circle`, `#cover`) must never
+publish** — internal taxonomy, and an instant tell that a machine wrote the post.
+
+**`tier` and `source` are not bookkeeping.** They are how "never bare type"
+becomes testable: an adapter asserts `media[0]` exists before it posts, and the
+ledger records which tier actually shipped.
+
+**`byline` is what makes the rubric visible.** Tier 1 carries it; tiers 2 and 3
+carry nothing. The absence is the point — a personal frame visibly outranks a
+press shot instead of being indistinguishable from it. It rides *in* the image,
+because a card gets screenshotted without its caption and a claim about which
+night this was must travel with the picture.
+
+**`focalPoint` exists because blind cropping beheads people.** Measured: at
+1200×340 all three sharp strategies — centre, attention and entropy — cut every
+head off, entropy worst. Computed once at ingest on the Mac, read at render.
+Full recommendation in #352.
+
+### Render targets — two, not one scaled
+
+| Format | Channels | Layout |
+|---|---|---|
+| **1080×1350 (4:5)** | Instagram | Media band 1080×820, type entirely below |
+| **1200×630 (1.91:1)** | Bluesky, Mastodon, X | 630×630 square image left, 570px type column |
+
+The 4:5 band **does not port** to 1.91:1: scaled proportionally it becomes a
+1200×340 letterbox that decapitates the subject, and every tier-2 source is
+square. The wide card is also the only format where tier 2 is *downscaled*
+(700 → 630) rather than upscaled.
+
+**Renderer: headless-browser screenshot, not hand-built SVG.** The layouts use
+flexbox, grid, `text-wrap: pretty`, Google Fonts, `object-fit` and layered
+gradients. `scripts/render-mocks.mjs` is the working prototype. Cost: a browser
+in the GitHub Actions stage.
 
 **Put the media contract in the payload, not the adapters.** Each adapter takes what it can use. Then L2 and L3 add new media kinds without touching a single adapter. If media lives in adapter code, every ladder step becomes an N-platform edit.
 
@@ -481,9 +553,9 @@ Secrets follow `docs/SECRETS.md`.
 - [ ] Provenance policy states a per-source, per-channel verdict
 - [ ] Payload field implications written into this spec
 
-### Phase 1: Foundation (Window 2) — PROVISIONAL
+### Phase 1: Foundation (Window 2)
 
-Canonical payload per Phase 0. Voice-skill addition for the social hook. Ledger with seeding. Retraction path. GitHub Actions stage. Bluesky + Mastodon adapters. Provenance policy enforced in code.
+Canonical payload per §"Canonical Payload", now frozen. Voice-skill addition for the social hook. Ledger with seeding. Retraction path. GitHub Actions stage. Bluesky + Mastodon adapters. Provenance policy enforced in code.
 
 **Acceptance Criteria:**
 - [ ] A post syndicates to both channels with correct link cards and alt text
@@ -492,11 +564,11 @@ Canonical payload per Phase 0. Voice-skill addition for the social hook. Ledger 
 - [ ] Ledger seeded; back catalogue does not fire
 - [ ] Byte-offset facets verified against a post containing a link and a tag
 
-### Phase 2: On This Day (Window 3) — PROVISIONAL
+### Phase 2: On This Day (Window 3)
 
 Supply scoring, anniversary weighting, cross-linking to existing notes, card variant.
 
-### Phase 3: Instagram + X (Window 4) — PROVISIONAL
+### Phase 3: Instagram + X (Window 4)
 
 4:5 render target, IG Graph publishing, X with reply-threaded links, carousels if Phase 0 selected them.
 
@@ -571,5 +643,6 @@ Per `test/README.md`, the root suite excludes `workers/**`.
 
 - **2026-08-20:** Initial specification created
 - **2026-08-21:** Imagery rubric DECIDED by owner — never bare type; personal > sourced > derived. Track A demoted from a track to a text layer; Tracks B and C collapsed into one derived tier. YouTube Shorts + TikTok added as Tier 3 (video-only, gated on L3). Provenance narrowed from gate to record. Personal-media supply arithmetic withdrawn; #338 sizes tier 1 in parallel with the creative work, blocking nothing.
-- **Version:** 1.1.0
-- **Status:** Planned — imagery rubric decided; remaining Phase 0 open; Phases 1+ provisional
+- **2026-08-21 (later):** Phase 0 CLOSED. Canonical payload frozen against the mocks; render targets, text budgets, credit fields, byline and focal point all decided by rendering with real data. Crop safety spun out to #352. See `mocks-social-syndication/DECISIONS.md` and `PROVENANCE.md`.
+- **Version:** 1.2.0
+- **Status:** Phase 0 complete; payload frozen; Phases 1–3 ready to build, Phase 4 gated on L3 video
