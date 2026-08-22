@@ -53,6 +53,14 @@
     <!-- JSON data endpoint discovery -->
     <link rel="alternate" type="application/json" title="Concert Data API" href="https://concerts.morperhaus.org/data/concerts.json" />
 
+    <!-- Mastodon profile verification (#336).
+         Mastodon fetches whatever URL the profile lists and looks for a link
+         back carrying rel="me". Without this the profile link shows unverified,
+         which on Mastodon is the main signal that an account is who it claims
+         to be. Bluesky and X use different mechanisms and need nothing here:
+         Bluesky verifies a handle via a DNS TXT record, X not at all. -->
+    <link rel="me" href="https://mastodon.social/@concertsmorperhaus" />
+
     <!-- Google Fonts: Playfair Display (titles) + Source Sans 3 (body) + JetBrains Mono (data) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -98,6 +106,12 @@
           "https://github.com/mmorper/concerts"
         ]
       },
+      "sameAs": [
+        "https://mastodon.social/@concertsmorperhaus",
+        "https://bsky.app/profile/concertsmorperhaus.bsky.social",
+        "https://x.com/concertsmorps",
+        "https://www.instagram.com/concertsmorperhaus/"
+      ],
       "datePublished": "2024-11-01",
       "dateModified": "2026-08-13",
       "inLanguage": "en-US",

@@ -92,13 +92,22 @@ Two homes each, no prod store: nothing in the Workers or the client bundle ever 
 
 | Secret | Store | Used by | Notes |
 |--------|-------|---------|-------|
-| `BLUESKY_IDENTIFIER` | local + CI | Bluesky adapter | The handle (`concerts.morperhaus.org`). Not secret on its own; kept alongside the password so both rotate together. |
+| `BLUESKY_IDENTIFIER` | local + CI | Bluesky adapter | The handle — currently `concertsmorperhaus.bsky.social`. Not secret on its own; kept alongside the password so both rotate together. Changing the handle to `concerts.morperhaus.org` via DNS TXT means updating this value too. |
 | `BLUESKY_APP_PASSWORD` | local + CI | Bluesky adapter | **An app password, never the account password.** Scoped, revocable, and — unusually — it does not expire. Generated at Settings → Privacy and Security → App Passwords. |
-| `MASTODON_BASE_URL` | local + CI | Mastodon adapter | The instance, e.g. `https://mastodon.social`. An identifier, not a secret, but the adapter is useless without it. |
+| `MASTODON_BASE_URL` | local + CI | Mastodon adapter | The instance — `https://mastodon.social`. An identifier, not a secret, but the adapter is useless without it. |
 | `MASTODON_ACCESS_TOKEN` | local + CI | Mastodon adapter | Settings → Development → your app. No expiry. Needs `write:statuses` and `write:media`. |
 
 `BLUESKY_SERVICE` overrides the PDS host (default `https://bsky.social`) and is
 configuration, not a secret — set it only when pointing at a different service.
+
+**The account handles, for reference** (public, not secrets):
+
+| Channel | Handle | Note |
+|---------|--------|------|
+| Mastodon | `@concertsmorperhaus@mastodon.social` | Verified from the site via `rel="me"` in `index.html`. |
+| Bluesky | `@concertsmorperhaus.bsky.social` | |
+| Instagram | `@concertsmorperhaus` | Phase 3 (#334). |
+| X | `@concertsmorps` | **Deliberately different.** X caps handles at 15 characters and `concertsmorperhaus` is 18. Not a typo — do not "correct" it. Phase 3 (#335). |
 
 **A missing credential is not an error.** `configured()` returns false, the run
 skips that channel with a notice, and the other channel still posts. Adding

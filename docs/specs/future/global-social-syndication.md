@@ -632,12 +632,30 @@ Per `test/README.md`, the root suite excludes `workers/**`.
 
 ## Account Setup (one-time, manual)
 
-- [ ] Register `morperhausconcerts` (or agreed handle) on **all** platforms, including out-of-scope ones — free, and prevents losing the name later
-- [ ] Bluesky: set handle to `concerts.morperhaus.org` via DNS TXT
-- [ ] Mastodon: add `rel="me"` link on the site, verify profile
-- [ ] Instagram: convert to professional account, link a Facebook Page, create Meta app
-- [ ] Instagram: bio link → `/liner-notes` with UTM
-- [ ] X: developer app, confirm current free-tier write limits
+**Registered 2026-08-22.** Handles, which are public and also recorded in
+`docs/SECRETS.md`:
+
+| Channel | Handle |
+|---|---|
+| Mastodon | `@concertsmorperhaus@mastodon.social` |
+| Bluesky | `@concertsmorperhaus.bsky.social` |
+| Instagram | `@concertsmorperhaus` |
+| X | `@concertsmorps` |
+
+The X handle is **deliberately shorter**: X caps handles at 15 characters and
+`concertsmorperhaus` is 18. It is not a typo and should not be "corrected".
+
+**Mastodon instance decided: `mastodon.social`.** This closes §"Questions for
+Review" #1 — joining an existing instance rather than self-hosting, as
+recommended. Nothing in the adapter depends on the choice; it reads
+`MASTODON_BASE_URL`.
+
+- [x] Register `concertsmorperhaus` on **all** platforms, including out-of-scope ones — free, and prevents losing the name later
+- [ ] Bluesky: set handle to `concerts.morperhaus.org` via DNS TXT — optional; changing it means updating `BLUESKY_IDENTIFIER`
+- [x] Mastodon: add `rel="me"` link on the site, verify profile — link shipped in `index.html`; the profile-side verification needs the site deployed first
+- [ ] Instagram: convert to professional account, link a Facebook Page, create Meta app — Phase 3 (#334)
+- [ ] Instagram: bio link → `/liner-notes` with UTM — Phase 3 (#334)
+- [ ] X: developer app, confirm current free-tier write limits — Phase 3 (#335)
 - [ ] Store all credentials per `docs/SECRETS.md`
 - [ ] Profile copy, avatar and header — a Phase 0 design output, not an afterthought
 
@@ -645,7 +663,7 @@ Per `test/README.md`, the root suite excludes `workers/**`.
 
 ## Questions for Review
 
-1. **Which Mastodon instance?** Joining an existing one is free and immediate; self-hosting is neither. Recommend joining. **Deferred, not blocking (Phase 1):** the instance is `MASTODON_BASE_URL`, configuration rather than a constant — nothing in the adapter cares which one it is, so the choice can be made when the account is registered (#336).
+1. ~~**Which Mastodon instance?**~~ **RESOLVED 2026-08-22 — `mastodon.social`.** Joined an existing instance rather than self-hosting, as recommended. It rides in `MASTODON_BASE_URL`, so nothing in the adapter depends on it.
 2. **Does On This Day get its own detector-style scoring module, or reuse `score.ts`?** Depends on how much anniversary weighting diverges from post scoring.
 3. **Does the backlog drip run at launch or after the new-post flow is proven?** Recommend after — one variable at a time.
 4. **Should syndication respect a detector allowlist?** Belt-and-braces on top of the voice-check, given the ratchet.
@@ -680,5 +698,6 @@ Per `test/README.md`, the root suite excludes `workers/**`.
 - **2026-08-21:** Imagery rubric DECIDED by owner — never bare type; personal > sourced > derived. Track A demoted from a track to a text layer; Tracks B and C collapsed into one derived tier. YouTube Shorts + TikTok added as Tier 3 (video-only, gated on L3). Provenance narrowed from gate to record. Personal-media supply arithmetic withdrawn; #338 sizes tier 1 in parallel with the creative work, blocking nothing.
 - **2026-08-21 (later):** Phase 0 CLOSED. Canonical payload frozen against the mocks; render targets, text budgets, credit fields, byline and focal point all decided by rendering with real data. Crop safety spun out to #352. See `mocks-social-syndication/DECISIONS.md` and `PROVENANCE.md`.
 - **2026-08-22:** Phase 1 SHIPPED. Canonical payload built, social copy authored by the pipeline and enforced by `checkSocial()`, ledger with seeding and a working retraction path, Bluesky and Mastodon adapters, and the Actions stage. `MediaSource` extended additively with `album-itunes` and `site-fallback`; the 1.91:1 render target stays the existing OG card until #342.
-- **Version:** 1.3.0
+- **2026-08-22 (later):** Accounts registered on all four channels (#336). Mastodon instance decided: `mastodon.social`, closing review question 1. `rel="me"` verification link and the archive's `sameAs` profile set added to `index.html`.
+- **Version:** 1.4.0
 - **Status:** Phases 0–1 complete; payload frozen and built against; Phases 2–3 ready to build, Phase 4 gated on L3 video
