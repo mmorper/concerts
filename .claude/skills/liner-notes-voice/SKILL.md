@@ -256,6 +256,68 @@ mis-agreement, and it is already published.
 
 ---
 
+## Social Copy ✨ v7.0
+
+Every published note also carries an authored social payload — a `hook`, a
+`caption` and an optional 3–5 `beats` carousel — written by
+`scripts/liner-notes/social.ts` in a **separate API call** from the prose, and
+checked by `checkSocial()` in `voice-check.ts`.
+
+**Authored, never derived.** The social copy is written on purpose, in this
+voice, by the run that writes the note. It is never chopped out of the first
+paragraph. Every RSS-to-social bridge in existence fails there, and Phase 0
+measured what it costs: 28 of the first 57 published headlines follow one of
+five detector templates, and "Caught Once, Never Again" alone accounts for
+nine. A nine-up profile grid of derived copy reads as robotic no matter how it
+is art-directed — the cause is copy, not layout.
+
+**The ratchet is tighter than for prose.** A note deleted from the site leaves
+its social copies standing on servers we do not control. Every perishable-claim
+rule above applies here at least as hard, which is why `checkSocial()` reuses
+the same tables rather than restating them.
+
+### The three surfaces
+
+| Field | Budget | Rule |
+|---|---|---|
+| `hook` | ≤ 120 chars | The line that earns the click, set large on the card. |
+| `caption` | ≤ 200 chars | The core sentence pair. Ships unchanged on every channel. |
+| `beats[]` | 3–5, ≤ 120 each | One narrative unit per carousel pane. Phase 3 consumes them. |
+
+Budgets are **graphemes**, not characters — a combining accent is one thing a
+reader sees. They live in `scripts/syndication/budgets.ts`, where the caption
+figure is derived from Bluesky's 300-grapheme limit rather than chosen.
+
+### Rules specific to social copy
+
+- **The hook must not repeat the credit stack.** Artist, song, venue, city and
+  date are rendered as separate furniture on the same card. The hook is the one
+  line that is not already on screen; spending it on a name wastes it.
+- **The hook must not restate the headline.** If it is the headline with
+  different punctuation, it inherits the detector template, and the template is
+  what makes the grid look automated. `checkSocial()` fails this as an error.
+- **Withhold the interpretation, never the identification.** Withholding artist
+  names for an open loop was mocked and rejected: it makes posts unfindable by
+  search, gives a scrolling fan no reason to stop, and on Instagram — where
+  captions carry no clickable link — teases a reveal the reader cannot reach.
+  At 124px, the true phone profile-grid scale, the artist name is the only
+  legible text on a tile.
+- **The caption stands alone.** It travels without the card, so it may name the
+  artist and it carries the first person. The hook sits above a credit stack
+  that supplies the subject, so forcing "I" into 120 characters of display type
+  produces worse copy — first person is a warning there, not an error.
+- **No furniture.** No hashtags, no URLs, no emoji, no "link in bio", no "read
+  more". Tags are generated per channel from entities the record already knows,
+  and the link is appended by the adapter. Authoring any of them is an error.
+- **Detector tags never publish.** `#full-circle` and `#road-tested` are
+  internal taxonomy: meaningless to a reader and an instant tell. The payload
+  builder never reads `post.tags` at all.
+
+A social failure costs a tweet, not a liner note: the post publishes either
+way, and is simply not eligible to syndicate.
+
+---
+
 ## Validation Checklist
 
 > ✅ **Automated since v5.4.** `scripts/liner-notes/voice-check.ts` runs these
@@ -283,6 +345,15 @@ Before accepting generated prose, verify:
 - [ ] 40–500 words total
 - [ ] **No claim that could become false without the post changing** ✨ v5.4
 - [ ] **Album facts cite the data, not a critical verdict** ✨ v5.4
+
+And for the social payload (`checkSocial`) ✨ v7.0:
+
+- [ ] Hook within 120 graphemes; caption within 200; beats 3–5 within 120 each
+- [ ] Hook does not restate the headline
+- [ ] Hook does not repeat the artist, venue, city or date
+- [ ] No hashtags, URLs, emoji or feed-tool boilerplate in authored copy
+- [ ] Caption reads in first person and stands alone without the card
+- [ ] Every perishable-claim, verdict and Tier 3 rule above still holds
 
 ---
 

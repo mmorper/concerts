@@ -1,6 +1,6 @@
 # Social Syndication — Liner Notes & On This Day
 
-**Status:** Phase 0 complete — Phase 1 ready
+**Status:** Phases 0–1 complete — Phase 2 ready
 **Target Version:** v7.0.0
 **Priority:** High
 **Estimated Complexity:** Very High
@@ -24,7 +24,7 @@ Two things make this larger than "call some REST endpoints." First, **the creati
 
 ```
 I need to implement the Social Syndication feature for Morperhaus Concerts,
-starting with Phase 1 (foundation). Phase 0 is complete.
+starting with Phase 2 (On This Day). Phases 0 and 1 are complete.
 
 **IMPORTANT CONTEXT WINDOW MANAGEMENT:**
 - This is a fresh session with NO prior context about the project
@@ -37,12 +37,20 @@ starting with Phase 1 (foundation). Phase 0 is complete.
 - Ask clarifying questions if anything is ambiguous or needs decision
 - Read files proactively to understand existing patterns before writing code
 
-**PHASE 0 IS CLOSED (2026-08-21).**
+**PHASE 0 IS CLOSED (2026-08-21). PHASE 1 IS SHIPPED (2026-08-22).**
 The creative investigation is complete and §"Canonical Payload" is FROZEN.
 Read docs/specs/future/mocks-social-syndication/DECISIONS.md first — it holds
 the exit-criteria answers, the measured text budgets, the two render targets
 and the reasoning. Do not re-open the creative questions; build against them.
-Start at Phase 1.
+
+Phase 1 built that payload. scripts/syndication/ now holds the payload builder,
+provenance mapping, entity tags, Bluesky byte-offset facets, the committed
+ledger with seeding and retraction, and the Bluesky + Mastodon adapters;
+scripts/liner-notes/social.ts authors the hook/caption/beats and
+checkSocial() in voice-check.ts enforces them. Read
+docs/LINER_NOTES_PIPELINE.md § "Syndication Stage" before adding a channel or
+a content stream — On This Day is a second `kind` on the SAME payload, not a
+second pipeline. Start at Phase 2.
 
 **Feature Overview:**
 - Syndicate liner notes + a new "On This Day" stream to Bluesky, Mastodon,
@@ -67,9 +75,8 @@ Start at Phase 1.
 
 **Implementation Approach:**
 - Window 1 (Phase 0): COMPLETE. See mocks-social-syndication/DECISIONS.md.
-- Window 2 (Phase 1): Build against the FROZEN canonical payload. Ledger
-  with seeding, retraction path, GitHub Actions stage, and the
-  Bluesky + Mastodon adapters.
+- Window 2 (Phase 1): COMPLETE. scripts/syndication/, npm run syndicate,
+  .github/workflows/syndicate.yml.
 - Window 3 (Phase 2): On This Day stream — supply scoring, anniversary
   weighting, cross-linking to existing liner notes.
 - Window 4 (Phase 3): Instagram + X adapters and the media renders their
@@ -93,8 +100,8 @@ feed — which means authored payloads, never truncated prose.
 - ~55 liner notes already published. The ledger MUST be seeded or the first
   run will fire all of them at once.
 
-Let's start with Window 2, Phase 1. Should I begin with the canonical payload
-and the voice-skill addition for the social hook, per #329?
+Let's start with Window 3, Phase 2. Should I begin with On This Day supply
+scoring, per #333?
 ```
 
 ---
@@ -558,11 +565,37 @@ Secrets follow `docs/SECRETS.md`.
 Canonical payload per §"Canonical Payload", now frozen. Voice-skill addition for the social hook. Ledger with seeding. Retraction path. GitHub Actions stage. Bluesky + Mastodon adapters. Provenance policy enforced in code.
 
 **Acceptance Criteria:**
-- [ ] A post syndicates to both channels with correct link cards and alt text
-- [ ] Re-running the pipeline does not double-post
-- [ ] `retract <slug>` removes the post from both channels
-- [ ] Ledger seeded; back catalogue does not fire
-- [ ] Byte-offset facets verified against a post containing a link and a tag
+- [x] A post syndicates to both channels with correct link cards and alt text
+- [x] Re-running the pipeline does not double-post
+- [x] `retract <slug>` removes the post from both channels
+- [x] Ledger seeded; back catalogue does not fire
+- [x] Byte-offset facets verified against a post containing a link and a tag
+
+**Shipped as:** `scripts/syndication/` (payload, provenance, tags, facets,
+ledger, run loop, two adapters), `scripts/liner-notes/social.ts` (authored
+copy), `checkSocial()` in `voice-check.ts`, `.github/workflows/syndicate.yml`,
+`npm run syndicate`. Ledger at `data/syndication-log.json`.
+
+Two things Phase 1 decided that the frozen contract did not cover, both
+recorded here because they are additive rather than reopenings:
+
+1. **`MediaSource` gained `album-itunes` and `site-fallback`.** The frozen
+   union had no member for Apple/mzstatic album art, which 10 of the 57
+   published notes actually carry — PROVENANCE.md's own table lists it as a
+   distinct tier-2 source, so folding it into `cover-art` would merge two hosts
+   under one name and defeat the greppable-blast-radius argument the field
+   exists for. `site-fallback` names the bundled generic venue photograph, and
+   is the one source that is **never published**: it clears "has an image" on a
+   technicality while being a picture of nowhere in particular attached to a
+   post about somewhere specific. Nothing switches on `source`, so no adapter
+   changed.
+2. **Phase 1 posts the existing 1200×630 OG card.** §"Track A" already
+   establishes that `og-image.ts`'s dark-overlay-plus-headline path *is* the
+   text layer the rubric calls for. The 630×630-plus-type-column composition
+   the canvas settled on is a different arrangement of the same inputs and
+   lands with the rendition work (#342), which is where the headless-browser
+   renderer belongs. Nothing in the payload changes when it does — `cardPath()`
+   returns a different path.
 
 ### Phase 2: On This Day (Window 3)
 
@@ -580,16 +613,18 @@ Supply scoring, anniversary weighting, cross-linking to existing notes, card var
 
 ## Testing Strategy
 
-- [ ] Byte-offset facets correct for links, tags, and non-ASCII artist names
-- [ ] Ledger prevents double-post across a re-run
-- [ ] Partial failure resumes only the failed channel
-- [ ] Retraction removes from every channel it posted to
-- [ ] Worst-case corpus renders without type overflow
-- [ ] Alt text present on every asset, every channel
-- [ ] Deep links assert against `test/fixtures/deep-link-urls.json`
-- [ ] On This Day returns nothing on an empty calendar day
-- [ ] A 4-show date renders correctly
-- [ ] Token expiry surfaces on the dashboard rather than failing silently
+- [x] Byte-offset facets correct for links, tags, and non-ASCII artist names
+- [x] Ledger prevents double-post across a re-run
+- [x] Partial failure resumes only the failed channel
+- [x] Retraction removes from every channel it posted to
+- [ ] Worst-case corpus renders without type overflow *(with the render target, #342)*
+- [x] Alt text present on every asset, every channel
+- [ ] Deep links assert against `test/fixtures/deep-link-urls.json` *(no syndication surface emits one yet — the permalink is not a deep link)*
+- [ ] On This Day returns nothing on an empty calendar day *(Phase 2)*
+- [ ] A 4-show date renders correctly *(Phase 2)*
+- [ ] Token expiry surfaces on the dashboard rather than failing silently *(#337; neither Phase 1 credential expires)*
+
+Phase 1 tests live in `test/pipeline/syndication-{facets,ledger,payload,voice,adapters}.test.ts`.
 
 Per `test/README.md`, the root suite excludes `workers/**`.
 
@@ -597,12 +632,30 @@ Per `test/README.md`, the root suite excludes `workers/**`.
 
 ## Account Setup (one-time, manual)
 
-- [ ] Register `morperhausconcerts` (or agreed handle) on **all** platforms, including out-of-scope ones — free, and prevents losing the name later
-- [ ] Bluesky: set handle to `concerts.morperhaus.org` via DNS TXT
-- [ ] Mastodon: add `rel="me"` link on the site, verify profile
-- [ ] Instagram: convert to professional account, link a Facebook Page, create Meta app
-- [ ] Instagram: bio link → `/liner-notes` with UTM
-- [ ] X: developer app, confirm current free-tier write limits
+**Registered 2026-08-22.** Handles, which are public and also recorded in
+`docs/SECRETS.md`:
+
+| Channel | Handle |
+|---|---|
+| Mastodon | `@concertsmorperhaus@mastodon.social` |
+| Bluesky | `@concertsmorperhaus.bsky.social` |
+| Instagram | `@concertsmorperhaus` |
+| X | `@concertsmorps` |
+
+The X handle is **deliberately shorter**: X caps handles at 15 characters and
+`concertsmorperhaus` is 18. It is not a typo and should not be "corrected".
+
+**Mastodon instance decided: `mastodon.social`.** This closes §"Questions for
+Review" #1 — joining an existing instance rather than self-hosting, as
+recommended. Nothing in the adapter depends on the choice; it reads
+`MASTODON_BASE_URL`.
+
+- [x] Register `concertsmorperhaus` on **all** platforms, including out-of-scope ones — free, and prevents losing the name later
+- [ ] Bluesky: set handle to `concerts.morperhaus.org` via DNS TXT — optional; changing it means updating `BLUESKY_IDENTIFIER`
+- [x] Mastodon: add `rel="me"` link on the site, verify profile — link shipped in `index.html`; the profile-side verification needs the site deployed first
+- [ ] Instagram: convert to professional account, link a Facebook Page, create Meta app — Phase 3 (#334)
+- [ ] Instagram: bio link → `/liner-notes` with UTM — Phase 3 (#334)
+- [ ] X: developer app, confirm current free-tier write limits — Phase 3 (#335)
 - [ ] Store all credentials per `docs/SECRETS.md`
 - [ ] Profile copy, avatar and header — a Phase 0 design output, not an afterthought
 
@@ -610,7 +663,7 @@ Per `test/README.md`, the root suite excludes `workers/**`.
 
 ## Questions for Review
 
-1. **Which Mastodon instance?** Joining an existing one is free and immediate; self-hosting is neither. Recommend joining.
+1. ~~**Which Mastodon instance?**~~ **RESOLVED 2026-08-22 — `mastodon.social`.** Joined an existing instance rather than self-hosting, as recommended. It rides in `MASTODON_BASE_URL`, so nothing in the adapter depends on it.
 2. **Does On This Day get its own detector-style scoring module, or reuse `score.ts`?** Depends on how much anniversary weighting diverges from post scoring.
 3. **Does the backlog drip run at launch or after the new-post flow is proven?** Recommend after — one variable at a time.
 4. **Should syndication respect a detector allowlist?** Belt-and-braces on top of the voice-check, given the ratchet.
@@ -644,5 +697,7 @@ Per `test/README.md`, the root suite excludes `workers/**`.
 - **2026-08-20:** Initial specification created
 - **2026-08-21:** Imagery rubric DECIDED by owner — never bare type; personal > sourced > derived. Track A demoted from a track to a text layer; Tracks B and C collapsed into one derived tier. YouTube Shorts + TikTok added as Tier 3 (video-only, gated on L3). Provenance narrowed from gate to record. Personal-media supply arithmetic withdrawn; #338 sizes tier 1 in parallel with the creative work, blocking nothing.
 - **2026-08-21 (later):** Phase 0 CLOSED. Canonical payload frozen against the mocks; render targets, text budgets, credit fields, byline and focal point all decided by rendering with real data. Crop safety spun out to #352. See `mocks-social-syndication/DECISIONS.md` and `PROVENANCE.md`.
-- **Version:** 1.2.0
-- **Status:** Phase 0 complete; payload frozen; Phases 1–3 ready to build, Phase 4 gated on L3 video
+- **2026-08-22:** Phase 1 SHIPPED. Canonical payload built, social copy authored by the pipeline and enforced by `checkSocial()`, ledger with seeding and a working retraction path, Bluesky and Mastodon adapters, and the Actions stage. `MediaSource` extended additively with `album-itunes` and `site-fallback`; the 1.91:1 render target stays the existing OG card until #342.
+- **2026-08-22 (later):** Accounts registered on all four channels (#336). Mastodon instance decided: `mastodon.social`, closing review question 1. `rel="me"` verification link and the archive's `sameAs` profile set added to `index.html`.
+- **Version:** 1.4.0
+- **Status:** Phases 0–1 complete; payload frozen and built against; Phases 2–3 ready to build, Phase 4 gated on L3 video

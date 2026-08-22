@@ -22,6 +22,9 @@ import { select, buildPosts, fetchSubjectTracks, POSTS_PER_RUN } from "./curate.
 import { iTunesClient } from "../utils/itunes-client.ts";
 import { refreshPostImages } from "./refresh-images.ts";
 import { generate } from "./generate.ts";
+import { generateSocial, type SocialContext } from "./social.ts";
+import { checkSocial, formatSocialIssues } from "./voice-check.ts";
+import { resolveAnchorConcert } from "../syndication/payload.ts";
 import { buildSetlistIndex, type SetlistIndex } from "./setlists.ts";
 import { buildAliasMap, EMPTY_ALIAS_MAP, type AliasMap } from "./artist-aliases.ts";
 import type { PipelineOptions, ScoredFinding } from "./types.ts";
@@ -239,6 +242,56 @@ export async function run(options: PipelineOptions): Promise<void> {
   // It was a depth-1 detector cooldown ("don't repeat the previous detector")
   // applied after the API calls had already been paid for. Rotation generalizes
   // it into the selection stage with a memory longer than a single post (#231).
+
+  // ── Stage 5b: Author the social payload ──────────────────────────────────
+  //
+  // Authored, never derived (#329). This is a separate API call from prose
+  // generation so that a social failure costs a tweet, not a liner note: the
+  // post is written, validated and published either way, and simply is not
+  // eligible to syndicate without it.
+  //
+  // It runs on the built posts rather than the findings because the credit
+  // stack the hook must NOT repeat is resolved off the post — the same
+  // resolution the payload builder uses, so the hook is written against
+  // exactly the furniture the card will render.
+  console.log("\n📣 Stage 5b: Authoring social payloads...");
+  try {
+    const requests = newPosts.map((post) => {
+      const concert = resolveAnchorConcert(post, concerts);
+      const context: SocialContext = {
+        artists: post.artists.map((slug) => artistsMetadata[slug]?.name ?? slug),
+        venue: concert ? (venuesMetadata[concert.venueNormalized]?.name ?? concert.venue) : "",
+        city: concert?.city ?? "",
+        date: concert?.date ?? "",
+        song: post.audio?.role === "subject" ? post.audio.trackName : undefined,
+      };
+      return { post, context };
+    });
+
+    const authored = await generateSocial(requests);
+    let socialErrors = 0;
+    for (const post of newPosts) {
+      const social = authored.get(post.slug);
+      if (!social) continue;
+      const issues = checkSocial({ ...social, headline: post.headline });
+      if (issues.length) console.log(formatSocialIssues(post.slug, issues));
+      // Errors drop the social text, never the post. The note publishes; the
+      // syndication payload is simply not eligible, which the run loop reports.
+      if (issues.some((i) => i.severity === "error")) {
+        socialErrors++;
+        continue;
+      }
+      post.social = social;
+    }
+    const attached = newPosts.filter((p) => p.social).length;
+    console.log(
+      `   ✓ ${attached}/${newPosts.length} post${newPosts.length !== 1 ? "s" : ""} carry social text` +
+        (socialErrors ? ` (${socialErrors} failed voice checks)` : "")
+    );
+  } catch (err) {
+    // Never fail the run over social text — same posture as image refresh.
+    console.warn("   ⚠️  Social authoring skipped:", (err as Error).message);
+  }
 
   // ── Stage 5c: Refresh images ─────────────────────────────────────────────
   // Deliberately ahead of the no-new-posts early return: published posts hold

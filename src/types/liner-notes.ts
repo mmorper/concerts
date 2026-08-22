@@ -33,6 +33,30 @@ export interface PostImage {
   credit?: string;
 }
 
+/**
+ * The authored social payload text (#329).
+ *
+ * Written on purpose by the generation step, in the archive's voice, alongside
+ * the prose — never chopped out of the first paragraph. Every RSS-to-social
+ * bridge in existence fails at exactly that, and it is the single most visible
+ * tell that an account is automated.
+ *
+ * Optional because the 57 notes published before syndication existed do not
+ * have it, and must never be back-filled by truncating their prose. A post
+ * without it is not eligible to syndicate, which is the correct outcome — the
+ * ledger seed suppresses the back catalogue anyway.
+ */
+export interface PostSocial {
+  /** <= 120 chars. The line that earns the click. */
+  hook: string;
+  /** 3-5, each <= 120 chars. Consumed only by carousel adapters (Phase 3). */
+  beats?: string[];
+  /** The core sentence pair. Adapters append the link and the tags, nothing else. */
+  caption: string;
+  /** ISO timestamp of the generation run that authored it. */
+  authoredAt: string;
+}
+
 export interface PostAudio {
   trackName: string;
   artistName: string;
@@ -91,6 +115,9 @@ export interface LinerNotesPost {
   // Media
   image: PostImage;
   audio?: PostAudio;
+
+  /** Authored social payload text. Absent on notes published before #329. */
+  social?: PostSocial;
 
   // Cross-references
   /** Normalized artist names */
