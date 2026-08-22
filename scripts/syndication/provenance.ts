@@ -41,9 +41,20 @@ const HOSTS: Array<[string, Provenance]> = [
  * so it is ours — but "ours" splits three ways and only two of them publish.
  */
 const LOCAL_PATHS: Array<[RegExp, Provenance]> = [
+  // `/images/shows/` is the path #340's media-index schema names —
+  // `/images/shows/2026-07-31-nile-rodgers-01.jpg`. It has to be here BEFORE
+  // that work lands, not after: an unrecognised local path used to fall
+  // through to `site-fallback`, which would have classified the archive's own
+  // photography as an unpublishable generic image and silently suppressed
+  // every post carrying one. That is the imagery rubric exactly inverted.
+  [/^\/images\/shows\//, { tier: 1, source: "personal" }],
   [/^\/images\/personal\//, { tier: 1, source: "personal" }],
   [/^\/images\/generative\//, { tier: 3, source: "generative" }],
   [/^\/images\/material\//, { tier: 3, source: "material" }],
+  // The one bundled image a post can actually reach today: the generic venue
+  // photograph `PLACEHOLDER_IMAGE_URL` resolves to. Named explicitly rather
+  // than matched as a catch-all — see below.
+  [/^\/images\/venues\/fallback/, { tier: 3, source: "site-fallback" }],
 ];
 
 /**
@@ -62,11 +73,15 @@ export function classifyImageUrl(url: string | undefined): Provenance | undefine
     for (const [pattern, provenance] of LOCAL_PATHS) {
       if (pattern.test(url)) return provenance;
     }
-    // Everything else under public/images that a post can reach is the generic
-    // venue fallback — ours, unquestioned, and never publishable. See
-    // isPublishableTier: a photograph of nowhere in particular attached to a
-    // post about somewhere specific is a lie by implication.
-    return { tier: 3, source: "site-fallback" };
+    // An unrecognised local path is UNCLASSIFIED, not a fallback.
+    //
+    // Treating it as `site-fallback` reads as the cautious choice and is the
+    // opposite: `site-fallback` never publishes, so a new directory of our own
+    // imagery would be silently suppressed with no reason an operator could
+    // see. Returning undefined puts the path in the run log as "unclassified"
+    // — the same treatment an unknown remote host gets, and for the same
+    // reason. Suppression is fine; silent suppression is not.
+    return undefined;
   }
 
   let host: string;

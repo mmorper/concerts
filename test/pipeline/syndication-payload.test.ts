@@ -77,8 +77,12 @@ describe("provenance", () => {
     ["https://e-cdns-images.dzcdn.net/images/artist/x.jpg", 2, "artist-deezer"],
     ["https://places.googleapis.com/v1/photo/x", 2, "venue-places"],
     ["https://upload.wikimedia.org/wikipedia/commons/x.jpg", 2, "wikimedia"],
+    // The path #340's media-index schema names. Classified before that work
+    // lands, so real photography is never mistaken for the generic fallback.
+    ["/images/shows/2026-07-31-nile-rodgers-01.jpg", 1, "personal"],
     ["/images/personal/nile-rodgers-2026.jpg", 1, "personal"],
     ["/images/generative/constellation.png", 3, "generative"],
+    ["/images/material/ticket-stub.png", 3, "material"],
     ["/images/venues/fallback-active.jpg", 3, "site-fallback"],
   ])("classifies %s as tier %i / %s", (url, tier, source) => {
     expect(classifyImageUrl(url)).toEqual({ tier, source });
@@ -87,6 +91,12 @@ describe("provenance", () => {
   it("returns undefined for an unknown host rather than guessing a label", () => {
     // An unclassified image must be visible in the run log, not promoted.
     expect(classifyImageUrl("https://some-new-cdn.example/x.jpg")).toBeUndefined();
+  });
+
+  it("leaves an unrecognised LOCAL path unclassified rather than suppressing it", () => {
+    // Classifying it as site-fallback would never publish it and would say
+    // nothing about why. Suppression is fine; silent suppression is not.
+    expect(classifyImageUrl("/images/somewhere-new/x.jpg")).toBeUndefined();
   });
 
   it("puts the generic site fallback below the tier-3 floor", () => {
@@ -214,6 +224,22 @@ describe("buildPayload", () => {
       sources
     );
     expect(payload.ineligibleReasons.join()).toMatch(/unclassified image host: new-cdn.example/);
+  });
+
+  it("publishes personal photography at the path #340 will write to", () => {
+    const payload = buildPayload(
+      post({
+        image: {
+          url: "/images/shows/1986-07-31-art-of-noise-01.jpg",
+          alt: "The stage",
+          source: "artist",
+          credit: "Mike Morper \u00b7 31 July 1986",
+        },
+      }),
+      sources
+    );
+    expect(payload.eligible).toBe(true);
+    expect(payload.media[0]).toMatchObject({ tier: 1, source: "personal" });
   });
 
   it("carries a byline on tier 1 only", () => {
