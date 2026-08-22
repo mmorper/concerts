@@ -109,6 +109,10 @@ configuration, not a secret — set it only when pointing at a different service
 | Instagram | `@concertsmorperhaus` | Phase 3 (#334). |
 | X | `@concertsmorps` | **Deliberately different.** X caps handles at 15 characters and `concertsmorperhaus` is 18. Not a typo — do not "correct" it. Phase 3 (#335). |
 
+The **bio copy and Mastodon metadata fields** for these accounts are recorded in
+`docs/specs/future/global-social-syndication.md` §"Account Setup" — the profiles
+live on servers we do not control, so the repo holds the source of truth.
+
 **A missing credential is not an error.** `configured()` returns false, the run
 skips that channel with a notice, and the other channel still posts. Adding
 Mastodon a week after Bluesky must not be a broken run.
