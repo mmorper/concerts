@@ -197,6 +197,34 @@ The scores map onto the #338 gates almost directly:
 | Framed enough | `well_framed_subject`, `well_chosen_subject`, `intrusive_object_presence` |
 | Overall keeper | `overall`, `curation`, `promotion` |
 
+> **Verified against source, 2026-08-22.** `osxphotos/scoreinfo.py` defines `ScoreInfo`
+> with 27 float fields, and every field named in the table above exists. The mapping is
+> accurate. Scores are Photos 5+ only (Photos 4 returns `None`). Reachable as `p.score.*`
+> on a `PhotoInfo`; the clean integration is
+> `osxphotos query --query-function file.py::func`, which hands over a `List[PhotoInfo]`
+> — no JSON parsing.
+>
+> **Three corrections that follow from reading it:**
+>
+> **1. Scores are signed, and negative is worse.** The project's own `examples/bad_photos.py`
+> uses thresholds like `pleasant_lighting < -0.7`, `well_framed_subject < -0.7`,
+> `intrusive_object_presence < -0.999`. Exact per-field ranges are undocumented, which is
+> itself a reason to print the distribution before assuming anything. **`mock-review-page.html`
+> models scores as `[0,1]`** (`width:${v*100}%`, `Math.round(v*4)`) and would render real
+> values as zero-width bars — a Phase 3 fix, and a caution that the mock has never been
+> viewed with realistic score data.
+>
+> **2. Unscored photos return `0.0` on every field, not `None`.** On `KeyError`,
+> `photoinfo.py` constructs a `ScoreInfo` with all fields zeroed. So "never scored" is
+> indistinguishable from "scored zero" — and on a signed scale **zero is mid-range**, so
+> unscored assets sort silently into the middle of any ranking. This is the silent-failure
+> mode of the whole approach.
+>
+> **3. Apple's model has documented bias on out-of-distribution content.** `bad_photos.py`
+> warns "don't include screenshots as Photos tends to give low scores to screenshots."
+> That does not prove the model misjudges concert photography, but it moves the concern
+> from speculation to a known failure mode on content outside its training set.
+
 **These are used to rank, never to gate.** Apple's model was trained on general
 photography, not dark rooms with coloured lights, and may score concert work harshly
 across the board. Stage 2 therefore emits the score *distribution* first; the cutoff is
@@ -353,6 +381,18 @@ commonly empty for movies. Dark rooms, coloured light, long lenses, high ISO —
 is the adversarial case for a general-purpose aesthetics model.
 
 So **validate before building around it**:
+
+**Step 0 — costs nothing and may end the gate before a single photo is viewed:**
+
+0a. **Count the all-zero `ScoreInfo`s.** Unscored photos return zeros silently (see the
+    corrections above). If a meaningful share of the library is unscored, the scores are
+    unusable regardless of how well they discriminate on the rest.
+0b. **Print per-field variance across concert photos.** If `sharply_focused_subject` has
+    near-zero variance over a few hundred concert shots, the model is not discriminating
+    on this material and the answer is already in.
+
+**Two of the three possible outcomes arrive here, with no human looking at anything.**
+Only if Step 0 is inconclusive do the rest:
 
 1. Grant FDA once, under the local build.
 2. Dump scores for ~200 assets across several shows.
@@ -644,6 +684,8 @@ behind it. `--sample 50` if the first read lands mid-range.
 - [ ] Permission prompt observed naming *osxphotos*, not *Terminal* — recorded in the README
 - [ ] Binary built locally from a pinned commit; commit hash and build date recorded
 - [ ] Build performed in a throwaway venv; no build dependencies persist on the machine
+- [ ] All-zero `ScoreInfo` fraction measured and reported — unscored must never be treated as scored-zero
+- [ ] Score scale handled as signed; no code assumes `[0,1]`
 - [ ] **Score-validation gate run before Stage 2 is built** — scores shown to discriminate on this library, or the design dropped to the no-FDA PhotoKit path
 
 ### Phase 2 — Export & page generation
@@ -716,6 +758,11 @@ behind it. `--sample 50` if the first read lands mid-range.
 ## Revision History
 
 - **2026-08-21 (a):** Initial specification created
+- **2026-08-22:** Verified the score API against source. `ScoreInfo` and every mapped field
+  are real; Photos 5+ only. Three corrections: scores are **signed** (negative is worse, and
+  the mock wrongly assumes `[0,1]`); unscored photos return **all-zero, not None**, which is
+  a silent-failure mode; Apple's model has documented bias on out-of-distribution content.
+  Gate gains a Step 0 that can resolve it without human review.
 - **2026-08-21 (e):** Added the score-validation gate — FDA is only justified if Apple's
   aesthetic scores actually discriminate on dark, coloured-light concert photography, which
   this spec elsewhere doubts. If they do not, the design drops to PhotoKit and needs no Full
