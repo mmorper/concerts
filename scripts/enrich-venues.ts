@@ -5,6 +5,7 @@ import { parse } from 'csv-parse/sync'
 import { normalizeVenueName } from '../src/utils/normalize.js'
 import {
   getVenuePlaceDetails,
+  fetchPhoto,
   fetchPhotoUri,
   loadCache as loadPlacesCache,
   saveCache as savePlacesCache,
@@ -194,8 +195,84 @@ function generateFallbackPhotoUrls(fallbackPath: string) {
   }
 }
 
+const FALLBACK_PATHS: readonly string[] = Object.values(FALLBACK_IMAGES)
+
+/**
+ * Whether a record's photos are placeholders rather than a real venue image.
+ *
+ * Used to decide if a throttled run has anything worth preserving — carrying a
+ * previous fallback forward is pointless, carrying a previous real photo
+ * forward is the whole point (#315).
+ */
+function isFallbackUrls(urls: { thumbnail: string; medium: string; large: string }): boolean {
+  return FALLBACK_PATHS.includes(urls.large)
+}
+
+/**
+ * The venues-metadata.json this run is about to replace.
+ *
+ * Enrichment rebuilds the file from scratch each run, which means a bad run can
+ * erase good data. Reading the previous state first lets a rate-limited venue
+ * keep the photo an earlier run already validated.
+ */
+function loadExistingMetadata(outputPath: string): Record<string, VenueMetadata> {
+  try {
+    if (fs.existsSync(outputPath)) {
+      return JSON.parse(fs.readFileSync(outputPath, 'utf-8'))
+    }
+  } catch (error) {
+    console.warn('Warning: Could not read existing venues-metadata.json:', error)
+  }
+  return {}
+}
+
 /** How many of a place's photos to try before giving up and falling back. */
 const MAX_PHOTO_CANDIDATES = 5
+
+/** The three sizes stored on every venue record, largest first. */
+const PHOTO_HEIGHTS = { large: 1200, medium: 800, thumbnail: 400 } as const
+
+type PhotoUrls = { thumbnail: string; medium: string; large: string }
+
+/**
+ * Outcome of trying to photograph one venue.
+ *
+ * The `throttled` case is the point. Before #315 this function returned
+ * `PhotoUrls | null` and the caller wrote a generic fallback on null — so a
+ * 429 storm was indistinguishable from "this place has no photos", and a
+ * 79-venue run on 2026-08-22 silently downgraded ten venues that demonstrably
+ * still had usable imagery. Rate limiting is not evidence about content.
+ */
+type PhotoResolution =
+  | { status: 'ok'; urls: PhotoUrls }
+  | { status: 'none' }
+  | { status: 'throttled' }
+
+/**
+ * Derive the other two sizes from one resolved URL.
+ *
+ * A Places photo URL ends in a size directive — `…=s4800-h1200` — and the CDN
+ * honours any smaller height on the same base. Verified on 2026-08-22 across
+ * every stored venue: rewriting the suffix yields byte-identical URLs to what
+ * three separate API calls return, including the clamped case where the source
+ * photo is shorter than the requested height (`knots-berry-farm`, `-h982`).
+ *
+ * This is the other half of the 429 fix. The old code spent three photo-media
+ * calls per candidate to fetch three sizes of the *same* photo — 15 calls per
+ * venue before it even walked to a second candidate. One call does it.
+ *
+ * Returns null if the URL is not in the expected shape, so the caller can fall
+ * back to asking the API per size rather than inventing a URL.
+ */
+function deriveSizes(largeUrl: string): PhotoUrls | null {
+  const base = largeUrl.match(/^(.*)-h\d+$/)?.[1]
+  if (!base) return null
+  return {
+    thumbnail: `${base}-h${PHOTO_HEIGHTS.thumbnail}`,
+    medium: `${base}-h${PHOTO_HEIGHTS.medium}`,
+    large: largeUrl,
+  }
+}
 
 /**
  * Resolve the first photo whose CDN URL actually loads.
@@ -210,29 +287,43 @@ const MAX_PHOTO_CANDIDATES = 5
  * reason to drop the venue to a generic fallback; we walk the list.
  *
  * Only a definitive 4xx rejects a candidate. A 5xx or timeout returns "unknown"
- * and is accepted — a transient blip must not cost a venue its photo.
+ * and is accepted — a transient blip must not cost a venue its photo. The same
+ * principle now covers the API side: a throttled candidate ends the walk and
+ * reports `throttled`, because continuing would burn four more candidates
+ * against a rate limit and then report a content verdict we never established.
  */
 async function resolveLivePhotoUrls(
   photos: Array<{ name: string }>
-): Promise<{ thumbnail: string; medium: string; large: string } | null> {
+): Promise<PhotoResolution> {
   for (const photo of photos.slice(0, MAX_PHOTO_CANDIDATES)) {
-    const [thumbnail, medium, large] = await Promise.all([
-      fetchPhotoUri(photo.name, 400),
-      fetchPhotoUri(photo.name, 800),
-      fetchPhotoUri(photo.name, 1200),
-    ])
-    if (!thumbnail || !medium || !large) continue
+    const resolved = await fetchPhoto(photo.name, PHOTO_HEIGHTS.large)
+
+    if (!resolved.ok) {
+      if (resolved.reason === 'throttled') return { status: 'throttled' }
+      continue // stale name or no key — try the next candidate
+    }
+
+    let urls = deriveSizes(resolved.uri)
+    if (!urls) {
+      // Unexpected URL shape: pay for the extra calls rather than guess.
+      const [thumbnail, medium] = await Promise.all([
+        fetchPhotoUri(photo.name, PHOTO_HEIGHTS.thumbnail),
+        fetchPhotoUri(photo.name, PHOTO_HEIGHTS.medium),
+      ])
+      if (!thumbnail || !medium) continue
+      urls = { thumbnail, medium, large: resolved.uri }
+    }
 
     // All three sizes are the same photo reference with a different size
     // suffix, so one check settles all three.
-    if ((await checkUrl(large)) === 'dead') {
+    if ((await checkUrl(urls.large)) === 'dead') {
       console.log(`  ⚠ Photo resolved but does not load — trying the next one`)
       continue
     }
 
-    return { thumbnail, medium, large }
+    return { status: 'ok', urls }
   }
-  return null
+  return { status: 'none' }
 }
 
 /**
@@ -298,10 +389,15 @@ async function enrichVenues() {
     loadPlacesCache()
 
     // Process each venue
+    const outputPath = path.join(__dirname, '../public/data/venues-metadata.json')
+    const existingMetadata = loadExistingMetadata(outputPath)
+
     const venuesMetadata: Record<string, VenueMetadata> = {}
     let activeCount = 0
     let legacyCount = 0
     let photosFoundCount = 0
+    let photosKeptCount = 0
+    let throttledNoPriorCount = 0
 
     for (const [normalizedName, venue] of venueMap) {
       const status = venueStatuses.get(normalizedName)
@@ -363,10 +459,12 @@ async function enrichVenues() {
 
           // Generate photo URLs if photos available
           if (placeDetails.photos && placeDetails.photos.length > 0) {
-            let photoUrls = await resolveLivePhotoUrls(placeDetails.photos)
+            let resolution = await resolveLivePhotoUrls(placeDetails.photos)
 
-            // Cached photo names may be stale — retry with a fresh API call
-            if (!photoUrls) {
+            // Cached photo names may be stale — retry with a fresh API call.
+            // Not worth doing when we were throttled: the retry would hit the
+            // same rate limit, and the cached names were never disproved.
+            if (resolution.status === 'none') {
               console.log(`  ↩ No live photo from cached names, re-fetching from API...`)
               const freshDetails = await getVenuePlaceDetails(
                 venue.name, venue.city, venue.state,
@@ -375,14 +473,41 @@ async function enrichVenues() {
               )
               if (freshDetails?.photos?.length) {
                 metadata.places = freshDetails
-                photoUrls = await resolveLivePhotoUrls(freshDetails.photos)
+                resolution = await resolveLivePhotoUrls(freshDetails.photos)
               }
             }
 
-            if (photoUrls) {
-              metadata.photoUrls = photoUrls
+            if (resolution.status === 'ok') {
+              metadata.photoUrls = resolution.urls
               photosFoundCount++
               console.log(`  ✓ Found ${placeDetails.photos.length} photo(s)`)
+            } else if (resolution.status === 'throttled') {
+              /**
+               * Rate limited, which says nothing about whether this venue has a
+               * photo. Keep whatever the last run stored rather than
+               * overwriting it with a generic fallback (#315) — a real venue
+               * photo beats a placeholder, and the next run will refresh it.
+               *
+               * But only if it still loads. The first cut of this kept the
+               * previous URL unconditionally and quietly carried three dead
+               * 403s forward, which is the #255 mistake wearing a different
+               * hat: a stored URL is never evidence of a live image. One HEAD
+               * settles it, and it costs no API quota.
+               */
+              const previous = existingMetadata[normalizedName]?.photoUrls
+              const worthKeeping =
+                previous && !isFallbackUrls(previous) && (await checkUrl(previous.large)) !== 'dead'
+
+              if (worthKeeping) {
+                metadata.photoUrls = previous
+                metadata.fetchedAt = existingMetadata[normalizedName].fetchedAt
+                photosKeptCount++
+                console.log(`  ⏸ Rate limited — keeping the previous photo (still loads)`)
+              } else {
+                metadata.photoUrls = generateFallbackPhotoUrls(FALLBACK_IMAGES.ACTIVE_NO_PHOTO)
+                throttledNoPriorCount++
+                console.log(`  ⏸ Rate limited, no usable previous photo (using fallback)`)
+              }
             } else {
               metadata.photoUrls = generateFallbackPhotoUrls(FALLBACK_IMAGES.ACTIVE_NO_PHOTO)
               console.log(`  ⚠ Could not resolve a live photo URI (using fallback)`)
@@ -436,7 +561,6 @@ async function enrichVenues() {
     savePlacesCache()
 
     // Write venues-metadata.json
-    const outputPath = path.join(__dirname, '../public/data/venues-metadata.json')
     const outputDir = path.dirname(outputPath)
 
     if (!fs.existsSync(outputDir)) {
@@ -469,6 +593,12 @@ async function enrichVenues() {
     console.log(`  - ${activeCount} active venues`)
     console.log(`  - ${legacyCount} legacy venues`)
     console.log(`  - ${photosFoundCount} venues with photos`)
+    if (photosKeptCount > 0) {
+      console.log(`  - ${photosKeptCount} kept a previous photo (rate limited this run)`)
+    }
+    if (throttledNoPriorCount > 0) {
+      console.log(`  - ${throttledNoPriorCount} rate limited with no usable previous photo`)
+    }
     console.log(`\nOutput: public/data/venues-metadata.json`)
     console.log(`Cache: public/data/venue-photos-cache.json`)
   } catch (error) {
