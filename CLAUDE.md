@@ -32,6 +32,11 @@ npm run build-data   # Refresh data pipeline
 **Before adding user interactions or features**, read:
 - `.claude/skills/analytics/SKILL.md` — Event tracking, GA4 patterns, naming conventions
 
+**Before working with personal photography or video**, read:
+- `.claude/skills/media-pipeline/SKILL.md` — safety invariants (the Photos library is
+  never modified), the imagery rubric, attribution rules, inbox contract, and the findings
+  that must not be re-derived
+
 **Before working on the liner notes pipeline or detectors**, read:
 - `docs/LINER_NOTES_PIPELINE.md` — Full pipeline architecture, detector reference, schema
 - `.claude/skills/liner-notes-voice/SKILL.md` — Voice & tone rules for prose generation
