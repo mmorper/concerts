@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-08-23T07:25:14.096Z",
+  "posts": [
+    {
+      "slug": "otd-2026-08-23",
+      "day": "08-23",
+      "showDate": "1985-08-23",
+      "age": 41,
+      "artist": "New Order",
+      "artistNormalized": "new-order",
+      "venue": "Irvine Meadows",
+      "venueNormalized": "irvine-meadows",
+      "city": "Irvine",
+      "score": 22,
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/new-order-4fd5f3e934e45.jpg",
+      "tier": 2,
+      "source": "artist-audiodb",
+      "url": "https://concerts.morperhaus.org/liner-notes/new-order-37-years-between-shows",
+      "linerNoteSlug": "new-order-37-years-between-shows",
+      "cardPath": "public/og/on-this-day/otd-2026-08-23.png",
+      "social": {
+        "hook": "Forty-one summers back, a Friday night in August that's still in the log.",
+        "caption": "August 23, 1985: New Order at Irvine Meadows, and it's been in the archive ever since. Forty-one years later, the entry still stands.",
+        "beats": [
+          "August 23, 1985 — a Friday night at an outdoor amphitheater in Irvine, California.",
+          "New Order were deep into the Low-life era, the album having arrived just three months before this show.",
+          "Irvine Meadows was the kind of open-air room that made a band sound both enormous and close at the same time.",
+          "Forty-one years in the log. The date holds."
+        ],
+        "authoredAt": "2026-08-23T07:25:09.029Z"
+      },
+      "publishedAt": "2026-08-23T07:25:14.096Z"
+    }
+  ]
+}
