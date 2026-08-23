@@ -74,7 +74,8 @@
     "deploy:mcp-server": "cd workers/mcp-server && npx wrangler deploy",
     "typecheck:scripts": "tsc --noEmit -p tsconfig.scripts.json",
     "typecheck:all": "npm run typecheck && npm run typecheck:scripts",
-    "sync:aliases": "tsx scripts/sync-artist-aliases.ts"
+    "sync:aliases": "tsx scripts/sync-artist-aliases.ts",
+    "media:prep": "tsx scripts/media/prep.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

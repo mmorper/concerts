@@ -23,6 +23,12 @@ carries the reasoning and evidence. This skill carries the rules in operative fo
   wrapper is a read-only guard: it allows `query`, `export`, `info` and refuses every
   subcommand that can write — `import`, `timewarp`, `add-locations`, `batch-edit`,
   `push-exif`, `sync`, `orphans`. Reaching past it means the guard is working.
+- **It refuses mutating OPTIONS too, not just subcommands.** Allowlisting subcommands
+  alone was not enough: `osxphotos query --add-to-album ALBUM` creates an album and adds
+  every matched photo to it — a library write reached through the very subcommand this
+  project uses most. `export --post-command` / `--post-function` run arbitrary code and
+  bypass the guard entirely. All four are refused, in both `--flag value` and
+  `--flag=value` form (closed 2026-08-23, while building #378).
 - The guard also closes stdin (so no run hangs on an interactive prompt) and sets
   `OSXPHOTOS_NO_VERSION_CHECK=1` (so no run touches the network).
 - **Personal media never reaches the repo un-stripped.** EXIF — GPS, capture time, device —
@@ -203,12 +209,16 @@ that migration costs no consumer changes.
 | `extract_frames.sh` / `frame_score.py` / `pick_frames.py` | frame sampling, Laplacian scoring, min-gap selection |
 | `review_server.py` + `uxtest/index.html` | localhost stills review — verdicts persist per keystroke |
 | `probes/*.py` | one-off investigation scripts |
+| **`npm run media:prep <date>`** | **scaffold inbox folders + per-show worksheet — #378, shipped** |
+| `scripts/media/show.ts` | date → concert, lineup, folder plan (pure, unit-tested) |
+| `scripts/media/rank.ts` | the two-factor model — concert-likelihood and quality (pure, unit-tested) |
+| `scripts/media/worksheet.ts` | WORKSHEET.md renderer (pure, unit-tested) |
+| `scripts/media/query_window.py` | the osxphotos query function `media:prep` runs |
 
 **Specified, NOT built** — do not instruct anyone to run these yet:
 
 | | |
 |---|---|
-| `media:prep <date>` | scaffold inbox folders + per-show worksheet — **#378** |
 | `media:ingest` | inbox → `public/images/shows/` + `media-index.json` — **#379** |
 | `media:gaps` | shows with no media, and the tier-2 fallback for each — **#380** |
 | `media:audit` | corpus scan across all 184 concerts — **#381** |
