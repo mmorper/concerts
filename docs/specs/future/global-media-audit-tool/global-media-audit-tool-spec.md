@@ -449,6 +449,27 @@ only 1–4 frames. Where a show has a clip but almost no photographs, extraction
 video supply into still supply — precisely the gap. It also reaches shows that have video
 and *no* stills at all, which the still-only count cannot see.
 
+**Measured clip inventory (149 clips in concert windows):**
+
+| Resolution | Count | Frame-grab verdict |
+|---|---|---|
+| **3840×2160 (4K)** | **91** | ✅ usable at any aspect — 4:5 crop yields ~1728×2160 |
+| 1920×1080 | 48 | ⚠️ **1.91:1 link cards only.** A 4:5 crop gives 864×1080 and fails 1080×1350 |
+| 1280×720 and below | 10 | ✗ too small |
+
+**Duration:** median **32.7s**, max 200.8s, and **147 of 149 clear the ≥5s gate.** Only two
+clips are pocket-recording fragments.
+
+**61% of clips are 4K**, which is the number that makes extraction worth building. The 48
+1080p clips are not wasted — they still feed the 1.91:1 link card that Bluesky, Mastodon and
+X use, just not Instagram's 4:5.
+
+**Sampling is mandatory, not an optimisation.** A 32.7s clip at 30fps is ~980 frames; 91 4K
+clips is on the order of **90,000 candidate frames**. Laplacian-scoring all of them is
+absurd. Sample ~1 frame/second (≈33 per clip), score those, then refine around the best
+scorer with a narrow second pass. That keeps extraction at a few thousand scored frames
+rather than ninety thousand.
+
 **Rules:**
 - An extracted frame is tier 1, `source: "personal"`, like any other own-capture.
 - It carries the same different-night disclosure obligation as any still.
