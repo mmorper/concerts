@@ -145,6 +145,10 @@ jobs:
             echo "No narration changes to commit."
           else
             git commit -m "content: refresh MCP narrations [automated]"
-            git pull --rebase origin "${GITHUB_REF_NAME}"
+            # --autostash: a job step can leave tracked files dirty that this
+            # step does not stage (npm install rewrites package-lock.json).
+            # Without it the rebase aborts and the commit above is never
+            # pushed — work is lost *after* it succeeded (#315).
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
