@@ -12,6 +12,18 @@ try/caught:
   (concert metadata, genres, artist photos, audio previews, venue photos, setlists, discography,
   liner notes). No credentials — runs every refresh.
 
+  **Image coverage is verified, not inferred (#369).** Venue photos and artist photos are
+  HEAD-fetched on every refresh; a stage counts an image only if it loads. Previously both were
+  existence tests — "is a URL written down, and does it avoid the words *fallback* and
+  *placeholder*" — which reported `Venue photos 67/79 · 85%` for the twelve days of #315 when the
+  real figure was about 3%. The note now reads `verified`, or `N dead` when images have rotted, or
+  `not verified` if the check was skipped. Only a definitive 4xx counts as dead: a 5xx or timeout
+  is "unknown" and must not fake a cliff.
+
+  These are CDN HEADs — no API key, no third-party quota, no billing — but they are ~324
+  subrequests against the 1000-per-invocation Workers limit, so a third per-entity sweep needs
+  sampling rather than another full fan-out. They run on the cron only, never on a page load.
+
 Reads: snapshot → `functions/dashboard/data.ts` (Pages Function) → React `/dashboard` route.
 
 > ⏰ **GA4 custom dimensions are not retroactive.** Register the 7 event-scoped dimensions
