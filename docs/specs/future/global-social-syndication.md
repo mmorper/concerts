@@ -462,7 +462,9 @@ Own photography and video from the smartphone era. Tracked in #338–#341.
 | 2012–2016 (usable stills) | 30 | 16% |
 | 2017+ (good cameras, 4K video) | 71 | 39% |
 
-**101 shows (55%) could plausibly have stills; 71 (39%) could have video.** Everything before 2012 is permanently out of reach.
+**Superseded 2026-08-23 by measurement across all 184 concerts.** Actual coverage: **81 shows (44%) carry media** — 619 stills, 150 clips. By era: pre-2007 **2%** (1 of 66), 2007–2011 **24%**, 2012–2016 63%, 2017+ **80%**.
+
+"Everything before 2012 is permanently out of reach" was half right. Pre-2007 is genuinely empty — one show, two photographs. **2007–2011 is not**: a quarter of those shows carry media, 66 stills in total, including a 26-still show (The Go-Go's, 2011) and a 22-still show (The Dollyrots, 2011). The cutoff is 2007.
 
 ### The anti-correlation to design around
 

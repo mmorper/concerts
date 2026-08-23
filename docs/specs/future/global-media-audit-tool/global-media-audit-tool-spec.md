@@ -408,6 +408,75 @@ Terminal — so `disclaim()` engaged from the locally-built binary exactly as th
 reading predicted. `libdisclaim_arm64.dylib` was also observed extracting to `_MEIPASS`
 at runtime.
 
+### FULL-ARCHIVE CORPUS — all 184 concerts, measured 2026-08-23
+
+**Owner directive: evaluate every concert date in the archive, not a year-capped subset and
+not the liner-note dates.** The earlier probes were concert-driven rather than
+liner-note-driven (correct) but capped at 2012+ on the spec's assumption that earlier shows
+are unreachable (wrong). Re-run across all 184:
+
+| Era | Shows | With media | % | Stills | Clips |
+|---|---|---|---|---|---|
+| pre-2007 | 66 | 1 | **2%** | 2 | 0 |
+| **2007–2011** | 17 | **4** | **24%** | **66** | 1 |
+| 2012–2016 | 30 | 19 | 63% | 93 | 2 |
+| 2017+ | 71 | 57 | 80% | 458 | 147 |
+| **TOTAL** | **184** | **81** | **44%** | **619** | **150** |
+
+**The "pre-2012 is permanently out of reach" claim splits in two.** It is right for
+pre-2007 — one show of sixty-six, two photographs. It is **wrong for 2007–2011**, where a
+quarter of shows carry media and 66 stills exist. The cutoff is **2007, not 2012.**
+
+What the old cap would have hidden:
+
+```
+2011-06-10   26 stills   The Go-Go's         Wolftrap
+2011-05-06   22 stills   The Dollyrots       The Ballroom
+2009-11-10   15 stills   Rob Thomas          EagleBank Arena
+2008-07-22    3 stills   Stray Cats          Pacific Amphitheatre
+2005-03-23    2 stills   Social Distortion   Hard Rock Las Vegas
+```
+
+**81 shows have media but only 76 have stills** — some carry video and no photographs at
+all, which a stills-only probe cannot see and which frame extraction exists to reach.
+
+**The corpus is built for reuse, not for the current liner notes.** 57 notes are published
+against 184 concerts; culling only the noted dates would build a corpus that expires. Every
+concert date is in scope so the result feeds future liner notes and On This Day equally.
+
+Raw: `concert-photos-audit/full-corpus.json`.
+
+### Day-forward capture — the inbox design is obsolete
+
+§ "Submission" specifies a designated shared album syncing to a local folder, read by
+`npm run media:ingest`. **That was designed before this tool read the Photos library
+directly, and it is now unnecessary.** There is no inbox, no shared album, and no upload
+step: photographs land in Photos by being taken, and the date-window join does the rest.
+
+The process for a future show:
+
+1. **Shoot.** Nothing else at the venue.
+2. **Add the concert to `concerts.json`** — an existing step in the data pipeline.
+3. **`concert-media query --since <date>`** — the new window is found automatically, because
+   it is simply a new row in `concerts.json`.
+4. Approve keepers; they land in `public/images/shows/`.
+
+The only manual action is one already performed. Two small additions make it comfortable:
+
+- **`--since <date>`** so a post-show run is one command rather than a full-library sweep.
+- **`concert-media gaps`** — list concerts with no media, so a hole is visible *before* the
+  next show rather than discovered afterwards. This turns culling from a backward-looking
+  chore into something that says where to point the camera.
+
+**The four-frame shoot list is the only lever that changes supply over time**: wide venue,
+marquee, one performer frame, the stub. It is the difference between a show landing in the
+1–4 frame coin-flip bucket and a guaranteed keeper — and it front-loads the **marquee**,
+which is the scarce frame, since a venue-subject post has no working tier-2 fallback while
+Places depends on a pipeline that has already rotted once (#315).
+
+A scheduled cron check was considered and rejected: culling needs human eyes regardless, so
+automation would only save remembering one command.
+
 ### Video supply — measured 2026-08-23
 
 The first probe used `--only-photos` and silently excluded video. Corrected:
@@ -961,6 +1030,11 @@ behind it. `--sample 50` if the first read lands mid-range.
 ## Revision History
 
 - **2026-08-21 (a):** Initial specification created
+- **2026-08-23 (f):** Full-archive corpus measured across all 184 concerts per owner
+  directive — 81 shows (44%) carry media, 619 stills and 150 clips. The 2012 cap was wrong:
+  2007–2011 has 24% coverage and 66 stills, including 26-still and 22-still shows that the
+  cap hid. Correct cutoff is 2007. Day-forward workflow rewritten — the shared-album inbox
+  in § "Submission" is obsolete now that the library is read directly.
 - **2026-08-23 (e):** Owner directives — video is in scope both as Tier 3 material and as
   a **source of extracted stills** (nearly free, since the local Laplacian sharpness pass the
   score gate forced also picks the best frame; ffmpeg 8.1.1 present), and **non-human subject
