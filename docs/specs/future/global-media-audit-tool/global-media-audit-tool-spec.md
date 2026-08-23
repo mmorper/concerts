@@ -408,6 +408,75 @@ Terminal — so `disclaim()` engaged from the locally-built binary exactly as th
 reading predicted. `libdisclaim_arm64.dylib` was also observed extracting to `_MEIPASS`
 at runtime.
 
+### ⚠️ UX TEST FINDINGS — the window is a DATE filter, not a concert filter
+
+**A 24-asset test with the owner invalidated several numbers in this spec and exposed four
+design gaps. Read this before trusting any supply figure above.**
+
+#### The window has a large false-positive rate
+
+The 17:00→04:00 window catches the whole evening, not the show. Of 66 Beck-window frames
+(2018-04-27), **none were of the concert — they were a wedding**:
+
+```
+17:00  Bow Tie, Formal Wear, Necktie, Suit      low_light 0.01
+17:05  Ceremony, Groom, Foliage                 low_light 0.01
+17:06  Bouquet, Flower Arrangement              low_light 0.00
+```
+
+Compare a real show the same way — Howard Jones, 2024-08-20:
+
+```
+19:12  Concert, Drum Kit, Entertainer, Guitar   low_light 0.70
+19:22  Audience, Concert, Crowd, Drum Kit       low_light 0.98
+```
+
+**Every supply figure in this spec counts evenings, not concerts.** 619 stills, 81 shows,
+the 40–55 projection — all inflated, Beck alone contributing 66 wedding photographs.
+They must be re-derived once discrimination is in place.
+
+#### Four signals, answering three different questions
+
+Measured across all 769 concert-window assets:
+
+| Signal | Answers | Coverage | Notes |
+|---|---|---|---|
+| **ML labels** | Is it a concert *scene*? | ~78% of library | Strongest. `Concert, Drum Kit, Entertainer` vs `Groom, Bouquet`. Already computed by Photos — free |
+| **`low_light`** | Is it *dark*? | ~90% | Clean split: 0.00–0.02 daylight, 0.64–1.00 at a show |
+| **GPS / `place`** | Was it *at the venue*? | **63% / 60%** | Only signal that answers this. `place` is reverse-geocoded ("SoFi Stadium") — more robust than a radius |
+| **`share_participants`** | *Whose* camera? | 73% | `{Mike Morper: 454, Dori Morper: 116}` |
+
+**These are not substitutes.** The wedding had no GPS and the correct contributor, so only
+labels and darkness caught it. Conversely, a dark indoor frame elsewhere on a show night is
+only excluded by location. Both are needed.
+
+**Score, do not filter.** A hard cut would drop the 18:00 daylight marquee shot — the
+scarce frame (#315). Rank within the window and let weak candidates sink.
+
+**Report what was excluded at every stage.** The window *looked* like it was finding
+concerts. Any stage that silently discards is a stage that can be wrong invisibly.
+
+#### Owner-visible gaps found by using the thing
+
+1. **Video cannot be judged from a poster frame.** Confirmed by the owner in ten minutes —
+   the spec's claim was right. All 7 test clips were iCloud-only, so **pass one for video
+   cannot be fully offline**; kill obvious fragments on duration/resolution first, then
+   download only survivors.
+2. **Attribution: the headliner is not necessarily who is in the frame.** **89 of 184 shows
+   (48%) have openers, 187 opener credits.** Howard Jones had two (ABC, Haircut 100); Oingo
+   Boingo 1987 had five. An unattributed frame silently defaulting to the headliner is
+   fabricated attribution on half the archive — the different-night rule, one axis over.
+   **Call it the different-artist rule, and treat it as equally non-negotiable.** Per-asset
+   artist must reach `selects.json`, `media-index.json` and the payload.
+3. **Verdict filtering** (usable / reject / unreviewed) is needed for review at any scale.
+4. **Scarcity cues must not look like state.** A permanent outline on the venue button read
+   as "selected" rather than "this one is rare."
+
+#### Method note
+
+Three of these were found only by putting real assets in front of the owner. None were
+visible in the mock. The mock's value was settling layout; it could not surface a wedding.
+
 ### FULL-ARCHIVE CORPUS — all 184 concerts, measured 2026-08-23
 
 **Owner directive: evaluate every concert date in the archive, not a year-capped subset and
@@ -1030,6 +1099,13 @@ behind it. `--sample 50` if the first read lands mid-range.
 ## Revision History
 
 - **2026-08-21 (a):** Initial specification created
+- **2026-08-23 (g):** 24-asset UX test with the owner. **The date window is a date filter,
+  not a concert filter** — 66 Beck-window frames were a wedding, so every supply figure here
+  counts evenings and must be re-derived. Four discriminating signals identified with real
+  coverage (labels, `low_light`, GPS/`place` at 63/60%, `share_participants` at 73% —
+  Mike 454 / Dori 116). Video confirmed unjudgeable from poster frames. Attribution gap
+  found: 48% of shows have openers, so defaulting to the headliner is fabricated
+  attribution — the different-artist rule. Two UI fixes (verdict filter, scarcity cue).
 - **2026-08-23 (f):** Full-archive corpus measured across all 184 concerts per owner
   directive — 81 shows (44%) carry media, 619 stills and 150 clips. The 2012 cap was wrong:
   2007–2011 has 24% coverage and 66 stills, including 26-still and 22-still shows that the
