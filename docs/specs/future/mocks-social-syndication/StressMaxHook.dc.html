@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+  </style>
+</helmet>
+
+<!-- LANE 5 · STRESS — BOTH CEILINGS AT ONCE: HOOK_MAX AND THE LONGEST VENUE.
+     Every Phase 0 board was drawn against a hook of 53-68 characters. HOOK_MAX
+     is 120. Nobody had rendered one. This board does, together with the 55-char
+     "National Museum of African American History and Culture" — the two worst
+     strings the system permits, on the same card.
+
+     MEASURED, 4:5 (1080x1350), 820px band, meta stack = song + venue + date:
+
+       hook size | lines | overflow
+       ----------|-------|-----------------------------------------------
+        72px     |   5   | 180px  <- Main.dc.html's size. The meta stack and
+                 |       |         the ENTIRE wordmark fall off the card.
+        60px     |   4   |  53px
+        52px     |   4   |  19px
+        48px     |   3   |   0    <- holds, and is what is drawn below
+        40px     |   3   |   0
+
+     The type column is `justify-content: flex-end`, so an overflowing card does
+     not spill upward onto the photograph where it would be obvious — flex falls
+     back to start-alignment and the excess leaves the BOTTOM edge. The credit
+     furniture and the wordmark are what get silently deleted, which is the one
+     failure mode that looks fine in a thumbnail.
+
+     So the 4:5 card is the binding format, NOT the 1.91:1 card as its narrower
+     570px type column suggests: the same 120-char hook holds on the wide board
+     at its drawn 50px (6 lines, dense, nothing clipped).
+
+     THE FINDING IS A RENDERER REQUIREMENT, NOT A BUDGET CUT. 120 characters are
+     renderable here — at 48px. Holding the hook at a fixed 72px would cap it
+     near 55 instead, which would also invalidate the beats budget (measured at
+     109 in DECISIONS.md §2, and beats share HOOK_MAX). The L0 renderer (#361)
+     must fit the hook to its box rather than set one size:
+
+       chars | largest size that keeps the card whole
+       ------|--------------------------------------
+         40  | 72px      86  | 60px
+         57  | 68px     100  | 60px
+         66  | 60px     108  | 56px
+         76  | 60px     120  | 48px
+
+     Ramp off MEASURED line count, not character count — the table above is one
+     string at one width, and Playfair's character widths vary enough that a
+     lookup table will be wrong on some other hook. -->
+<div style="width: 1080px; height: 1350px; background: #14111f; position: relative; overflow: hidden; font-family: 'Source Sans 3', system-ui, sans-serif;">
+
+  <div style="position: absolute; inset: 0; display: flex; flex-direction: column;">
+
+    <div style="width: 1080px; height: 820px; position: relative; overflow: hidden; background: #241f38; flex-shrink: 0;">
+      <div style="position: absolute; inset: 0; background:
+        radial-gradient(46% 60% at 50% 42%, #6b5340 0%, rgba(107,83,64,0) 74%),
+        linear-gradient(155deg, #33281f 0%, #191512 100%);"></div>
+      <span style="position: absolute; left: 30px; top: 30px; font-size: 19px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.26); padding: 6px 10px;">Tier 2 · artist</span>
+    </div>
+
+    <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; padding: 36px 72px 72px 72px; box-sizing: border-box;">
+
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <span style="width: 56px; height: 5px; background: #7c3aed; flex-shrink: 0;"></span>
+        <span style="font-size: 34px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #ffffff; text-wrap: pretty;">The Roots</span>
+      </div>
+
+      <!-- 120 characters exactly — the HOOK_MAX ceiling, set at the 48px the
+           measurement above says it needs. -->
+      <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 48px; line-height: 1.06; letter-spacing: -0.025em; color: #ffffff; text-wrap: pretty;">
+        The only show I have ever seen inside a Smithsonian, and the drum riser sat where the lunch counter exhibit now ends up.
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 32px;">
+        <span style="font-size: 29px; font-weight: 500; line-height: 1.42; color: #8a80ab;">&ldquo;Proceed&rdquo;<br>National Museum of African American History and Culture &middot; September 2016</span>
+        <div style="display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0;">
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #5d5480;">concerts.</span>
+          <span style="font-size: 26px; font-weight: 700; line-height: 1.1; letter-spacing: 0.01em; color: #8a80ab;">morperhaus</span>
+          <span style="font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: 0.01em; color: #5d5480;">.org</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

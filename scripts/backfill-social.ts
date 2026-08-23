@@ -16,8 +16,9 @@
  *   npm run backfill:social -- --slug <slug>    # one specific note
  *   npm run backfill:social -- --force          # re-author notes that already have copy
  *
- * Resumable: re-running skips whatever already has copy, so a batch can be
- * done in chunks or picked up after a failure.
+ * Resumable: liner-notes.json is checkpointed after every authored note, and
+ * re-running skips whatever already has copy — so a batch can be done in chunks
+ * or picked up after a failure without re-spending the calls it already made.
  *
  * Requires: ANTHROPIC_API_KEY.
  *
@@ -27,13 +28,14 @@
 import { config } from "dotenv";
 config({ override: true });
 
-import { readFileSync, writeFileSync } from "fs";
+import { readFileSync, renameSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 
 import { selectForBackfill, applyAuthored, type BackfillSources } from "./liner-notes/backfill-social.ts";
 import { generateSocial } from "./liner-notes/social.ts";
 import { checkSocial, formatSocialIssues } from "./liner-notes/voice-check.ts";
+import { graphemeLength } from "./syndication/text.ts";
 import type { Concert } from "../src/types/concert.ts";
 import type { LinerNotesData } from "../src/types/liner-notes.ts";
 
@@ -60,6 +62,22 @@ function value(name: string): string | undefined {
 
 function readJson<T>(file: string): T {
   return JSON.parse(readFileSync(join(DATA_DIR, file), "utf8")) as T;
+}
+
+/**
+ * Write through a temp file and rename.
+ *
+ * The batch checkpoints after every note, so this runs 57 times rather than
+ * once, and a crash lands in the middle of one of those writes rather than
+ * between them. `rename` is atomic within a filesystem: readers see the old
+ * file or the new one, never a truncated one. That is what makes checkpointing
+ * safe enough to do at all — the alternative was writing once at the end and
+ * losing the whole run's API calls to a crash at note 40.
+ */
+function writeAtomic(path: string, contents: string): void {
+  const tmp = `${path}.tmp`;
+  writeFileSync(tmp, contents);
+  renameSync(tmp, path);
 }
 
 async function main(): Promise<void> {
@@ -114,29 +132,57 @@ async function main(): Promise<void> {
     throw new Error("ANTHROPIC_API_KEY is required to author social copy.");
   }
 
-  const authored = await generateSocial(candidates);
-  const result = applyAuthored(data.posts, authored, checkSocial, (s, issues) =>
-    console.log(formatSocialIssues(s, issues as Parameters<typeof formatSocialIssues>[1]))
-  );
+  // One note per API call, checkpointed after each.
+  //
+  // The batch is 57 sequential Sonnet calls — long enough that a crash partway
+  // through is a real possibility rather than a theoretical one, and every note
+  // already authored is money already spent. Checkpointing makes a failure at
+  // note 40 cost note 40 rather than notes 1 through 40: the next run's
+  // selection skips whatever already carries copy and picks up exactly there.
+  //
+  // Per note rather than every N notes because the write is atomic and cheap
+  // beside the API call that precedes it, so batching it buys nothing.
+  let attached = 0;
+  const failed: Array<{ slug: string; reason: string }> = [];
+  const width = String(candidates.length).length;
+
+  for (const [index, candidate] of candidates.entries()) {
+    const position = `[${String(index + 1).padStart(width)}/${candidates.length}]`;
+    const authored = await generateSocial([candidate]);
+    const result = applyAuthored(data.posts, authored, checkSocial, (s, issues) =>
+      console.log(formatSocialIssues(s, issues as Parameters<typeof formatSocialIssues>[1]))
+    );
+
+    if (result.attached) {
+      attached += result.attached;
+      writeAtomic(LINER_NOTES_PATH, JSON.stringify(data, null, 2));
+      const hook = authored.get(candidate.post.slug)?.hook ?? "";
+      console.log(`   ${position} ✓ ${candidate.post.slug} — hook ${graphemeLength(hook)} chars`);
+      console.log(`        “${hook}”`);
+    } else {
+      // Two different failures land here: the API call itself failed, in which
+      // case generateSocial has already warned and returned nothing for it, or
+      // the copy came back and a voice check rejected it. Either way the note
+      // is left exactly as it was and the next run will try it again.
+      const reason = result.failed[0]?.reason ?? "no copy returned";
+      failed.push({ slug: candidate.post.slug, reason });
+      console.log(`   ${position} ✗ ${candidate.post.slug} — ${reason}`);
+    }
+  }
 
   console.log(
-    `\n   ✓ ${result.attached}/${candidates.length} authored and passed voice checks` +
-      (result.failed.length ? ` (${result.failed.length} failed)` : "")
+    `\n   ✓ ${attached}/${candidates.length} authored and passed voice checks` +
+      (failed.length ? ` (${failed.length} failed)` : "")
   );
-  for (const f of result.failed) console.log(`     ✗ ${f.slug}: ${f.reason}`);
+  for (const f of failed) console.log(`     ✗ ${f.slug}: ${f.reason}`);
 
-  if (result.attached === 0) {
-    console.log("\n⚠️  Nothing passed. Not writing.");
+  if (attached === 0) {
+    console.log("\n⚠️  Nothing passed. Nothing written.\n");
     return;
   }
 
-  // Written once at the end rather than per note. A crash mid-batch loses this
-  // run's API calls, which is cheap; a half-written liner-notes.json is not.
-  // Re-running is safe and resumes exactly where this stopped, because the
-  // selection skips any note that already has copy.
-  writeFileSync(LINER_NOTES_PATH, JSON.stringify(data, null, 2));
   const remaining = data.posts.filter((p) => !p.social).length;
-  console.log("   ✓ Written: public/data/liner-notes.json");
+  console.log("   ✓ Written: public/data/liner-notes.json (checkpointed after each note)");
   console.log(`\n✨ ${data.posts.length - remaining}/${data.posts.length} notes now carry social copy.`);
   if (remaining) console.log(`   ${remaining} still to go — re-run to continue.`);
   console.log();
