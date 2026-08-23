@@ -99,3 +99,4 @@ artist-pins-TODO.csv
 # (GPS, capture time, device). Only the FINAL selects reach the repo, EXIF-stripped,
 # under public/images/concerts/.
 concert-photos-audit/
+osxphotos_crash.log
