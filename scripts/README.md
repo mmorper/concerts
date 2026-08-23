@@ -46,6 +46,7 @@ This directory contains all data pipeline, build, and utility scripts for the Mo
 | Script | Command | Purpose | When to Run |
 |--------|---------|---------|-------------|
 | media/prep.ts | `npm run media:prep <YYYY-MM-DD>` | Scaffold one show's inbox folders and build its `WORKSHEET.md` of Photos candidates | After a show, before culling |
+| media/ingest.ts | `npm run media:ingest [date]` | Take the owner's selects out of the inbox into `public/images/shows/` + `media-index.json` | After filling the inbox folders |
 
 **Read `.claude/skills/media-pipeline/SKILL.md` before touching anything here.** The Photos
 library is the owner's irreplaceable source of record and is never modified: every read goes
@@ -55,6 +56,13 @@ through the read-only guard at `concert-photos-audit/bin/osxphotos`, never `.osx
 `concert-photos-audit/inbox/<date>/`. It ranks candidates and never filters them, and it
 asserts its own output before reporting success. Add `-- --scaffold-only` to create the
 folders without reading the library.
+
+`media:ingest` strips GPS, capture time and device id from every file, and **asserts** their
+absence on the written bytes by two independent checks before keeping it — a file that fails
+is deleted, not committed. It never guesses a credit: an unmatched folder or a file at the
+root of a date folder is an error that names the night's bill, because a headliner default
+would mis-credit photographs on the 48% of shows that have openers. Re-runs are idempotent,
+keyed on the source file's SHA-256. Add `-- --dry-run` to report without writing.
 
 The two-factor ranking model, and the reasoning behind every weight in it, lives in
 `scripts/media/rank.ts`. It is pure and unit-tested in `test/pipeline/media-prep.test.ts` —
