@@ -408,6 +408,91 @@ Terminal — so `disclaim()` engaged from the locally-built binary exactly as th
 reading predicted. `libdisclaim_arm64.dylib` was also observed extracting to `_MEIPASS`
 at runtime.
 
+### Video supply — measured 2026-08-23
+
+The first probe used `--only-photos` and silently excluded video. Corrected:
+
+| Metric | Value |
+|---|---|
+| Clips in concert windows | **149 across 35 shows** |
+| Portrait capture | 75 / 149 |
+| **9:16 capable** | **113 / 149 (76%)** |
+| **Shows with ≥1 9:16-capable clip** | **25** |
+| Live Photos among stills | 31 |
+
+**Tier 3 has real supply.** 25 shows carry vertical-capable video, which answers #100's
+"does video earn its slot" with material rather than argument. The orientation gate behaves
+exactly as predicted — recent shows are overwhelmingly compliant (Howard Jones 24/24,
+The Human League 16/16, Nile Rodgers 12/12, David Byrne 11/11, Kasabian 8/8) while older
+landscape captures fail outright (Heaven 17 0/7, Lee Rocker 0/3, Molchat Doma 0/3).
+
+### Frame extraction — video as a source of stills (owner directive, 2026-08-23)
+
+Video is in scope for the audit, and not only as Tier 3 material. **A good clip is also a
+source of stills**, and this costs far less to build than it first appears because it lands
+on infrastructure the score gate already forced us to build.
+
+**Why it is nearly free.** Apple's `sharply_focused_subject` proved useless (stdev 0.035),
+so sharpness moves to a locally computed **Laplacian variance**. Picking the best frame out
+of a clip is the *same operation* — score every Nth frame, keep the sharpest. Frame
+extraction therefore costs a decoder (`ffmpeg`, already installed: 8.1.1) rather than a new
+scoring system.
+
+**Why the resolution works.** A 4K frame is 3840×2160. Cropped to 4:5 it yields roughly
+1728×2160, comfortably past the 1080×1350 gate. 1080p is the marginal case: a 4:5 crop of
+1920×1080 gives 864×1080 and **fails**, the same arithmetic that governs the 9:16 gate.
+So frame-grab eligibility is a function of the short side, and must be recorded per clip
+alongside `vertical916`.
+
+**Why it matters most where the archive is thinnest.** 44 of the 75 shows with stills have
+only 1–4 frames. Where a show has a clip but almost no photographs, extraction converts
+video supply into still supply — precisely the gap. It also reaches shows that have video
+and *no* stills at all, which the still-only count cannot see.
+
+**Rules:**
+- An extracted frame is tier 1, `source: "personal"`, like any other own-capture.
+- It carries the same different-night disclosure obligation as any still.
+- Extraction runs on approved clips only, never speculatively across 149 clips.
+- Record the source clip and timestamp in `selects.json` so a frame is traceable to its
+  origin.
+
+### Non-human subject matter is explicitly in scope (owner directive, 2026-08-23)
+
+Frames without a person — marquees, venue exteriors, ticket stubs, the setlist on the floor
+— are viable candidates for final selection, not consolation prizes. The face-bias
+measurement below is what makes that instruction implementable rather than aspirational:
+ranking on a biased field would have quietly enforced the opposite policy.
+
+### Apple's scores carry a face bias — rank on `overall`, never `interesting_subject`
+
+Tested because the culling explicitly does **not** discriminate by subject matter, and a
+biased score would have done it for us. Median score, concert stills, by whether Photos
+detected a person (320 with, 173 without):
+
+| Field | w/ people | no people | delta | |
+|---|---|---|---|---|
+| `overall` | 0.398 | 0.394 | **+0.004** | clean |
+| `curation` | 0.500 | 0.500 | **0.000** | clean |
+| `interesting_subject` | 0.043 | −0.298 | **+0.341** | **strong pro-face bias** |
+| `well_framed_subject` | 0.200 | 0.018 | **+0.183** | **pro-face bias** |
+| `well_chosen_subject` | −0.184 | −0.034 | −0.151 | *reverse* bias |
+| `pleasant_composition` | −0.352 | −0.288 | −0.064 | mild |
+
+**`overall` and `curation` are effectively unbiased. `interesting_subject` and
+`well_framed_subject` are not.**
+
+**35% of scored concert stills (173 of 493) contain no detected person** — marquees, venue
+exteriors, ticket stubs, the setlist on the floor. Ranking on `interesting_subject` would
+have pushed that entire third toward the bottom on subject matter rather than quality, and
+it would have hit hardest exactly where the archive is most exposed: venue-subject posts
+have no working tier-2 fallback while Places is 65/67 dead (#315), so a personal marquee
+shot is often the only tier-1-or-2 image available.
+
+**Rule for Stage 2: rank on `overall` and `curation`.** Use `interesting_subject` and
+`well_framed_subject` as descriptive signals only, never as ranking weight. This is cheaper
+and better than the separate-pools workaround first proposed — two of the fields are simply
+clean.
+
 ### Tier-1 supply — first measurement (#338)
 
 | Metric | Value |
@@ -855,6 +940,17 @@ behind it. `--sample 50` if the first read lands mid-range.
 ## Revision History
 
 - **2026-08-21 (a):** Initial specification created
+- **2026-08-23 (e):** Owner directives — video is in scope both as Tier 3 material and as
+  a **source of extracted stills** (nearly free, since the local Laplacian sharpness pass the
+  score gate forced also picks the best frame; ffmpeg 8.1.1 present), and **non-human subject
+  matter is explicitly viable for final selection**, which the face-bias finding makes
+  implementable.
+- **2026-08-23 (d):** Video counted (the first probe excluded it via `--only-photos`):
+  149 clips across 35 shows, 113 of them 9:16-capable across 25 shows — Tier 3 has supply.
+  Face-bias test found `interesting_subject` (+0.341) and `well_framed_subject` (+0.183)
+  reward frames containing people, while `overall` (+0.004) and `curation` (0.000) are
+  clean. Ranking moves to `overall`/`curation` so the 35% of frames with no detected
+  person — marquees, venue exteriors, stubs — are not buried on subject matter.
 - **2026-08-23 (c):** Score gate RESOLVED against 551 real concert-window photos. Hybrid
   outcome — Apple's scores are usable for framing/composition/lighting/interest but weak on
   `sharply_focused_subject` (stdev 0.035) and dead on `promotion`, so sharpness is computed
