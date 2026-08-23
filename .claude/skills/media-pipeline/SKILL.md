@@ -208,10 +208,10 @@ that migration costs no consumer changes.
 
 | | |
 |---|---|
-| `/media-prep <date>` | scaffold inbox folders + per-show worksheet |
-| `/media-ingest` | inbox → `public/images/shows/` + `media-index.json` |
-| `/media-gaps` | shows with no media, and the tier-2 fallback for each |
-| `/media-audit` | corpus scan across all 184 concerts |
+| `media:prep <date>` | scaffold inbox folders + per-show worksheet — **#378** |
+| `media:ingest` | inbox → `public/images/shows/` + `media-index.json` — **#379** |
+| `media:gaps` | shows with no media, and the tier-2 fallback for each — **#380** |
+| `media:audit` | corpus scan across all 184 concerts — **#381** |
 
 When one ships, move it up and delete it from below.
 
