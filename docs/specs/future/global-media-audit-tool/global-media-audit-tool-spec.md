@@ -365,6 +365,69 @@ and the *absence of an opaque artifact* that improve.
 scoping**, because `_MEIPASS` is never set. Auditability and permission scope are
 independent properties and are easy to conflate.
 
+### GATE OUTCOME — RESOLVED 2026-08-23
+
+**Ran against 551 real concert-window photos, not a proxy. The answer is a hybrid that
+neither branch of the gate anticipated.**
+
+**Verdict: keep osxphotos and the Full Disk Access — the scores earn it — but compute
+sharpness ourselves.**
+
+| Field | stdev | Verdict |
+|---|---|---|
+| `low_light` | 0.417 | strong |
+| `interesting_subject` | 0.362 | strong |
+| `well_framed_subject` | 0.341 | strong |
+| `pleasant_composition` | 0.279 | strong |
+| `pleasant_lighting` | 0.258 | strong |
+| `curation`, `well_chosen_subject` | ~0.20 | usable |
+| `overall` | 0.176 | usable |
+| **`sharply_focused_subject`** | **0.035** | **WEAK — median 0.010, range 0.000–0.378** |
+| **`promotion`** | **0.000** | **DEAD — flat across every asset** |
+
+Apple's model discriminates better on dark, coloured-light concert photography than this
+spec feared — on framing, composition, lighting and subject interest. **It fails on exactly
+the axis that matters most.** `sharply_focused_subject` is what the #338 "sharp enough" gate
+maps to, and blur is the dominant failure mode of handheld concert photography. A field that
+barely moves cannot carry that gate.
+
+**Consequences for Stage 2:**
+
+1. **Sharpness is computed locally** — Laplacian variance over the exported preview. Never
+   ranked on `sharply_focused_subject`.
+2. **`promotion` is dropped** from the field set. It is flat and carries nothing.
+3. **All-zero `ScoreInfo` is filtered, not ranked.** 10.5% of concert-window photos (58 of
+   551) carry one. The predicted silent trap is real but bounded — on a signed scale zero is
+   mid-range, so unfiltered they would sort straight into the middle of the ranking and look
+   unremarkable.
+4. **Full Disk Access is justified** and stays. Had the scores been flat across the board,
+   the design would have dropped to PhotoKit and needed no grant at all.
+
+**Permission scoping confirmed working.** The macOS dialog named **osxphotos**, not
+Terminal — so `disclaim()` engaged from the locally-built binary exactly as the source
+reading predicted. `libdisclaim_arm64.dylib` was also observed extracting to `_MEIPASS`
+at runtime.
+
+### Tier-1 supply — first measurement (#338)
+
+| Metric | Value |
+|---|---|
+| Eligible shows (2012+) | 101 |
+| **Shows with photos in the 17:00→04:00 window** | **75 (74%)** |
+| Total window photos | 551 |
+
+Distribution across those 75 shows: **44 have 1–4 frames**, 16 have 5–9, 10 have 10–19,
+**5 have 20+** (Beck 66, Dr Sick 44, The Human League 42, Crowded House 24, David Byrne 21).
+
+**The withdrawn ~8% estimate was wrong by a wide margin, and wrong in the owner's favour.**
+Raw window coverage is 74%, not 20%.
+
+**Do not read 74% as usable coverage.** These are frames *in the window* — the bar, the
+parking lot, the setlist on the floor all count here. The 44 shows sitting at 1–4 frames are
+a coin flip once the quality gates apply. A defensible projection is **40–55 shows with at
+least one publishable still**, which is still roughly double what the spec was built around.
+The audit's job is now to turn 551 into that number, not to discover whether a pool exists.
+
 ### GATE: validate the scores before paying for the access
 
 **Added 2026-08-21, and it takes precedence over everything above.**
@@ -792,6 +855,12 @@ behind it. `--sample 50` if the first read lands mid-range.
 ## Revision History
 
 - **2026-08-21 (a):** Initial specification created
+- **2026-08-23 (c):** Score gate RESOLVED against 551 real concert-window photos. Hybrid
+  outcome — Apple's scores are usable for framing/composition/lighting/interest but weak on
+  `sharply_focused_subject` (stdev 0.035) and dead on `promotion`, so sharpness is computed
+  locally via Laplacian variance. FDA justified and retained; disclaim confirmed naming
+  osxphotos rather than Terminal. First tier-1 supply measurement: 75 of 101 eligible shows
+  carry window photos, 551 frames total.
 - **2026-08-23:** Storage settled. Candidate corpus moves *inside* the project at
   `concert-photos-audit/` (gitignored, agent-writable) per owner preference. Final selects
   and `media-index.json` are committed under `public/`; the R2 recommendation is withdrawn
