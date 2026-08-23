@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, afterEach, vi } from "vitest";
 import {
   normalizeQuery,
   topTopics,
@@ -17,6 +17,9 @@ import {
   normalizeName,
   pct,
   computeArchiveHealth,
+  checkVenuePhotos,
+  checkArtistImages,
+  deriveArtistUniverse,
   type GaReport,
 } from "./index.js";
 
@@ -413,7 +416,8 @@ describe("computeArchiveHealth", () => {
   it("venue photos exclude placeholders and note geocode share", () => {
     // the-forum has a real photo; the-roxy has none; the-greek has only the fallback placeholder.
     expect(byStage["Venue photos"]).toMatchObject({ covered: 1, total: 3 });
-    expect(byStage["Venue photos"].note).toBe("geocoded 67%"); // forum + greek geocoded, roxy not
+    // No health passed, so the count is the unverified one — and says so (#369).
+    expect(byStage["Venue photos"].note).toBe("not verified · geocoded 67%");
   });
 
   it("liner notes use published/analyzed and picks the newest build timestamp", () => {
@@ -510,5 +514,135 @@ describe("computeArchiveHealth — song → album attribution (#289)", () => {
 
     expect(stage).toMatchObject({ covered: 9, total: 10, pct: 90 });
     expect(stage.note).toBe("unique setlist pairs · top-tracks 0 · musicbrainz 0 · itunes 0");
+  });
+});
+
+/**
+ * #369 — venue-photo coverage was a string test. It asked whether a URL had been
+ * written down and whether it avoided the words "fallback" and "placeholder",
+ * then never fetched it. Through the #315 outage it reported 67/79 · 85% while
+ * the true figure was 2/67 — about 3%. Coverage was inversely correlated with
+ * reality: a venue counted as covered precisely for holding a Google URL, the
+ * thing that was broken.
+ */
+describe("image health checks (#369)", () => {
+  const stub = (byUrl: Record<string, number>) =>
+    vi.fn(async (input: RequestInfo | URL) => {
+      const status = byUrl[String(input)] ?? 200;
+      if (status === 0) throw new Error("network");
+      return { status, ok: status >= 200 && status < 300 } as Response;
+    });
+
+  const venues = {
+    forum: { photoUrls: { large: "https://cdn.test/forum.jpg" } },
+    greek: { photoUrls: { large: "https://cdn.test/greek.jpg" } },
+    roxy: { photoUrls: { large: "/images/venues/fallback.jpg" } },
+  };
+
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("counts a photo as live only when it actually loads", async () => {
+    vi.stubGlobal("fetch", stub({ "https://cdn.test/greek.jpg": 403 }));
+
+    await expect(checkVenuePhotos(venues as never, 2)).resolves.toEqual({
+      live: 1,
+      dead: 1,
+      missing: 1, // roxy holds only a placeholder
+    });
+  });
+
+  it("does not count a placeholder as coverage", async () => {
+    vi.stubGlobal("fetch", stub({}));
+
+    const h = await checkVenuePhotos(venues as never, 2);
+    expect(h.live).toBe(2);
+    expect(h.missing).toBe(1);
+  });
+
+  /**
+   * The rule that keeps a flaky minute from faking a cliff. Only a definitive
+   * 4xx decrements coverage — the same rule `enrich-venues` follows.
+   */
+  it("treats a 5xx as live, not dead", async () => {
+    vi.stubGlobal("fetch", stub({ "https://cdn.test/greek.jpg": 503 }));
+
+    await expect(checkVenuePhotos(venues as never, 2)).resolves.toMatchObject({ live: 2, dead: 0 });
+  });
+
+  it("treats a network error as live, not dead", async () => {
+    vi.stubGlobal("fetch", stub({ "https://cdn.test/greek.jpg": 0 }));
+
+    await expect(checkVenuePhotos(venues as never, 2)).resolves.toMatchObject({ live: 2, dead: 0 });
+  });
+
+  it("applies the same check to artist images", async () => {
+    vi.stubGlobal("fetch", stub({ "https://cdn.test/b.jpg": 404 }));
+    const am = {
+      a: { image: "https://cdn.test/a.jpg" },
+      b: { image: "https://cdn.test/b.jpg" },
+      c: {},
+    };
+
+    await expect(checkArtistImages(["a", "b", "c"], am as never, 2)).resolves.toEqual({
+      live: 1,
+      dead: 1,
+      missing: 1,
+    });
+  });
+
+  it("reports the dead count in the stage note so rot is legible", () => {
+    const data = {
+      concerts: { concerts: [{ id: "1", date: "2020-01-01", headliner: "A", venue: "V" }] },
+      "artists-metadata": {},
+      "artists-top-tracks": {},
+      "venues-metadata": { v: { photoUrls: { large: "https://cdn.test/v.jpg" } } },
+      "setlists-cache": {},
+      discography: {},
+      "liner-notes": {},
+    };
+    const health = { venuePhotos: { live: 12, dead: 55, missing: 12 } };
+
+    const h = computeArchiveHealth(data as never, health as never);
+    const stage = h.stages.find((s) => s.stage === "Venue photos")!;
+
+    expect(stage.covered).toBe(12);
+    expect(stage.note).toContain("55 dead");
+  });
+
+  it("says 'verified' when nothing is dead", () => {
+    const data = {
+      concerts: { concerts: [{ id: "1", date: "2020-01-01", headliner: "A", venue: "V" }] },
+      "artists-metadata": {},
+      "artists-top-tracks": {},
+      "venues-metadata": { v: { photoUrls: { large: "https://cdn.test/v.jpg" } } },
+      "setlists-cache": {},
+      discography: {},
+      "liner-notes": {},
+    };
+
+    const h = computeArchiveHealth(data as never, {
+      venuePhotos: { live: 1, dead: 0, missing: 0 },
+    } as never);
+
+    expect(h.stages.find((s) => s.stage === "Venue photos")!.note).toContain("verified");
+  });
+
+  /**
+   * The health check and the coverage denominator must count the same artists.
+   * Reading `Object.keys(artists-metadata)` gives the same 257 today; that is a
+   * coincidence, not a guarantee.
+   */
+  it("derives one artist universe for both the numerator and the denominator", () => {
+    const concerts = [
+      { id: "1", date: "2020-01-01", headliner: "Depeche Mode", venue: "V", openers: ["Nitzer Ebb"] },
+      { id: "2", date: "2021-01-01", headliner: "Nitzer Ebb", venue: "V" },
+    ];
+
+    const u = deriveArtistUniverse(concerts as never);
+
+    // Nitzer Ebb headlines show 2, so it is a headliner — not double-counted as an opener.
+    expect(u.headlinerList.sort()).toEqual(["depeche-mode", "nitzer-ebb"]);
+    expect(u.openerList).toEqual([]);
+    expect(u.artistList).toHaveLength(2);
   });
 });

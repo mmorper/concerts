@@ -903,8 +903,115 @@ const mkStage = (stage: string, covered: number, total: number, note?: string): 
 
 // A venue photo only counts if it's a real image — every venue carries a placeholder
 // (/images/venues/fallback.jpg) in photoUrls, so a non-empty object alone would read as 100%.
+//
+// This is a good *filter* and was a terrible *health check*. Excluding our own
+// placeholders is exactly right; concluding the survivors load is not. Coverage is
+// verified by fetching now — see `checkVenuePhotos` (#369).
 const isRealPhoto = (url: unknown): url is string =>
   typeof url === "string" && url.length > 0 && !/fallback|placeholder/i.test(url);
+
+/**
+ * Verified image coverage.
+ *
+ * `live` is the number to report. `dead` exists so a rot event is legible on
+ * sight rather than as a slow drift in one percentage.
+ */
+export interface ImageHealth {
+  /** Holds a real URL that did not return a definitive 4xx. */
+  live: number;
+  /** Holds a real URL that returned a definitive 4xx — a broken image on the site. */
+  dead: number;
+  /** Holds no real URL at all. Never had an image; not a failure. */
+  missing: number;
+}
+
+/**
+ * HEAD every URL, bounded, and count the definitively dead.
+ *
+ * A `5xx`/timeout counts as **live**, not dead. Only a definitive 4xx decrements
+ * coverage — otherwise one flaky network minute reports a cliff that did not
+ * happen. Same rule `enrich-venues` follows, for the same reason.
+ */
+async function countDead(urls: string[], concurrency: number): Promise<number> {
+  let next = 0;
+  let dead = 0;
+  await Promise.all(
+    Array.from({ length: Math.max(1, Math.min(concurrency, urls.length)) }, async () => {
+      while (next < urls.length) {
+        const url = urls[next++];
+        try {
+          const res = await fetch(url, {
+            method: "HEAD",
+            redirect: "follow",
+            signal: AbortSignal.timeout(10_000),
+          });
+          if (res.status >= 400 && res.status < 500) dead++;
+        } catch {
+          // Timeout or network error — "unknown", which must not read as dead.
+        }
+      }
+    }),
+  );
+  return dead;
+}
+
+/**
+ * Fetch every venue's photo and count what actually loads.
+ *
+ * The metric this replaces was a string test: it asked whether we had written
+ * down a URL that avoids the words "fallback" and "placeholder", and never
+ * fetched anything. Through the whole #315 outage it reported
+ * `Venue photos 67/79 · 85%` while the true figure was 2/67 — about 3%. Coverage
+ * was inversely correlated with reality, because a venue counted as covered
+ * precisely for holding a Google URL, the thing that was broken.
+ *
+ * A `5xx`/timeout counts as **live**, not dead. Only a definitive 4xx decrements
+ * coverage — otherwise one flaky network minute reports a cliff that did not
+ * happen. Same rule `enrich-venues` follows for the same reason.
+ *
+ * These are CDN HEADs: no API key, no Places quota, no billing. ~79 of them on a
+ * cron Worker is a rounding error next to the data files this section already
+ * fetches.
+ */
+export async function checkVenuePhotos(
+  venues: ArchiveData["venues-metadata"],
+  concurrency = 8,
+): Promise<ImageHealth> {
+  const urls: string[] = [];
+  let missing = 0;
+  for (const v of Object.values(venues)) {
+    const url = Object.values(v.photoUrls ?? {}).find(isRealPhoto);
+    if (url) urls.push(url);
+    else missing++;
+  }
+  const dead = await countDead(urls, concurrency);
+  return { live: urls.length - dead, dead, missing };
+}
+
+/**
+ * The same check for artist photos, which had the same defect.
+ *
+ * `artistList.filter((a) => am[a]?.image)` is an existence test — it reported
+ * 257/257 without ever fetching. Measured 2026-08-23 all 257 do load, so this is
+ * a latent blind spot rather than an active fault. That is precisely why it is
+ * worth instrumenting: the old metric could not have told us either way, and it
+ * would read 100% through an outage exactly as the venue metric read 85%.
+ */
+export async function checkArtistImages(
+  artists: string[],
+  am: ArchiveData["artists-metadata"],
+  concurrency = 8,
+): Promise<ImageHealth> {
+  const urls: string[] = [];
+  let missing = 0;
+  for (const a of artists) {
+    const url = am[a]?.image;
+    if (isRealPhoto(url)) urls.push(url);
+    else missing++;
+  }
+  const dead = await countDead(urls, concurrency);
+  return { live: urls.length - dead, dead, missing };
+}
 
 /** Newest ISO timestamp among the candidates (ISO 8601 sorts lexically); null if none. */
 function newestIso(candidates: Array<string | undefined>): string | null {
@@ -912,15 +1019,15 @@ function newestIso(candidates: Array<string | undefined>): string | null {
   return valid.length ? valid.reduce((a, b) => (a > b ? a : b)) : null;
 }
 
-export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
-  const concerts = d.concerts.concerts ?? [];
-  const total = concerts.length;
-  const am = d["artists-metadata"] ?? {};
-  const tt = d["artists-top-tracks"] ?? {};
-  const venues = d["venues-metadata"] ?? {};
-  const disco = d.discography ?? {};
-
-  // Artist universe: headliners ∪ openers (openers-only tracked separately for the genre split).
+/**
+ * The artists this section reports on, derived from the concert record.
+ *
+ * Exported so the image health check counts the *same* universe the coverage
+ * denominator uses. Reading `Object.keys(artists-metadata)` instead happens to
+ * give the same 257 today, and that coincidence is exactly the kind of
+ * accidental correctness this whole issue is about (#369).
+ */
+export function deriveArtistUniverse(concerts: ArchiveData["concerts"]["concerts"]) {
   const headliners = new Set<string>();
   for (const c of concerts) {
     const h = c.headlinerNormalized || (c.headliner ? normalizeName(c.headliner) : "");
@@ -933,10 +1040,36 @@ export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
       if (n && !headliners.has(n)) openersOnly.add(n);
     }
   }
+  return {
+    headliners,
+    openersOnly,
+    headlinerList: [...headliners],
+    openerList: [...openersOnly],
+    artistList: [...headliners, ...openersOnly],
+  };
+}
+
+/**
+ * @param health Verified image coverage from `checkVenuePhotos` / `checkArtistImages`.
+ *   When omitted, those stages fall back to the unverified existence count and the
+ *   stage note says "not verified" — an honest "not checked" rather than a
+ *   confident wrong number.
+ */
+export function computeArchiveHealth(
+  d: ArchiveData,
+  health?: { venuePhotos?: ImageHealth; artistImages?: ImageHealth },
+): ArchiveHealthSection {
+  const concerts = d.concerts.concerts ?? [];
+  const total = concerts.length;
+  const am = d["artists-metadata"] ?? {};
+  const tt = d["artists-top-tracks"] ?? {};
+  const venues = d["venues-metadata"] ?? {};
+  const disco = d.discography ?? {};
+
+  // Artist universe: headliners ∪ openers (openers-only tracked separately for the genre split).
   // Materialize the artist sets once — every per-artist stage below reads the same universe.
-  const headlinerList = [...headliners];
-  const openerList = [...openersOnly];
-  const artistList = [...headliners, ...openersOnly];
+  const { headliners, openersOnly, headlinerList, openerList, artistList } =
+    deriveArtistUniverse(concerts);
   const artistCount = artistList.length;
 
   // 1. Concert metadata — required fields present.
@@ -948,8 +1081,13 @@ export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
   const og = openerList.filter(hasGenre).length;
 
   // 3. Artist metadata — photo (bio is not currently populated by the pipeline; noted, not scored).
-  const withImage = artistList.filter((a) => am[a]?.image).length;
+  const withImage = health?.artistImages?.live ?? artistList.filter((a) => am[a]?.image).length;
   const withBio = artistList.filter((a) => am[a]?.bio).length;
+  const artistPhotoNote = !health?.artistImages
+    ? `not verified · bio sparse — ${withBio}/${artistCount} have one`
+    : health.artistImages.dead > 0
+      ? `${health.artistImages.dead} dead · bio sparse — ${withBio}/${artistCount} have one`
+      : `verified · bio sparse — ${withBio}/${artistCount} have one`;
 
   // 4. Audio previews — artists with ≥2 of 5 preview URLs.
   const previewCount = (a: string) => (tt[a]?.tracks ?? []).filter((t) => t.previewUrl).length;
@@ -957,8 +1095,16 @@ export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
 
   // 5. Venues — real photos (placeholders excluded) and geocode (a real lat).
   const venueVals = Object.values(venues);
-  const withPhoto = venueVals.filter((v) => Object.values(v.photoUrls ?? {}).some(isRealPhoto)).length;
+  const withPhoto =
+    health?.venuePhotos?.live ??
+    venueVals.filter((v) => Object.values(v.photoUrls ?? {}).some(isRealPhoto)).length;
   const withGeo = venueVals.filter((v) => typeof v.location?.lat === "number").length;
+  // Say plainly when the number is unverified, and name the dead when it is.
+  const photoNote = !health?.venuePhotos
+    ? `not verified · geocoded ${pct(withGeo, venueVals.length)}%`
+    : health.venuePhotos.dead > 0
+      ? `${health.venuePhotos.dead} dead · geocoded ${pct(withGeo, venueVals.length)}%`
+      : `verified · geocoded ${pct(withGeo, venueVals.length)}%`;
 
   // 6. Setlists — concerts whose cached setlist actually carries songs.
   const concertIds = new Set(concerts.map((c) => c.id));
@@ -1018,9 +1164,9 @@ export function computeArchiveHealth(d: ArchiveData): ArchiveHealthSection {
       artistCount,
       `headliners ${pct(hg, headliners.size)}% · openers ${pct(og, openersOnly.size)}%`,
     ),
-    mkStage("Artist photos", withImage, artistCount, `bio sparse — ${withBio}/${artistCount} have one`),
+    mkStage("Artist photos", withImage, artistCount, artistPhotoNote),
     mkStage("Audio previews", withPreviews, artistCount, "≥2 of 5 preview URLs"),
-    mkStage("Venue photos", withPhoto, venueVals.length, `geocoded ${pct(withGeo, venueVals.length)}%`),
+    mkStage("Venue photos", withPhoto, venueVals.length, photoNote),
     mkStage("Setlists", withSetlist.size, total, "concerts with ≥1 song"),
     mkStage("Discography", withAlbums, artistCount, `${pct(albumCover, albumTotal)}% of albums have cover art`),
     // Sits between the record it reads from and the posts that consume it.
@@ -1061,7 +1207,25 @@ async function fetchArchiveHealth(env: Env): Promise<ArchiveHealthSection> {
     }),
   );
   const data = Object.fromEntries(entries) as unknown as ArchiveData;
-  return computeArchiveHealth(data);
+  // Both checks are CDN HEADs — no API key, no third-party quota, no billing —
+  // and run concurrently with each other. ~6s wall clock, measured 2026-08-23.
+  //
+  // Subrequest budget: these add ~67 (venues) + ~257 (artists) on top of the ~9
+  // data files and the GA / GraphQL / Analytics-Engine calls elsewhere in the
+  // snapshot — roughly 340 of the 1000-per-invocation Workers limit. There is
+  // room, but not unlimited room: a third per-entity sweep needs sampling or its
+  // own pass, not another full fan-out.
+  //
+  // This runs on the daily cron (and the authenticated ?key= trigger), never on a
+  // dashboard page load — the page reads the KV snapshot.
+  const [venuePhotos, artistImages] = await Promise.all([
+    checkVenuePhotos(data["venues-metadata"]),
+    checkArtistImages(
+      deriveArtistUniverse(data.concerts.concerts).artistList,
+      data["artists-metadata"],
+    ),
+  ]);
+  return computeArchiveHealth(data, { venuePhotos, artistImages });
 }
 
 // ──────────────────────────── Topics & Gaps (Phase 6) ─────────────────────────────
