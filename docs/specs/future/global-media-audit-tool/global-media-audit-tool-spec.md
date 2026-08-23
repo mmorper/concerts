@@ -408,6 +408,43 @@ Terminal — so `disclaim()` engaged from the locally-built binary exactly as th
 reading predicted. `libdisclaim_arm64.dylib` was also observed extracting to `_MEIPASS`
 at runtime.
 
+### CULLING RESULTS — 53 assets judged, 2026-08-23
+
+The owner culled all 53. Three results, one of which changes the ranking design.
+
+**1. Ranking needs TWO factors, not one.** The likelihood model answers *"is this a
+concert?"*; the owner was answering *"is this usable?"* The Black Keys separates them
+cleanly — model scored **0.84** (correct: they *are* concert photos), owner rejected
+**all 8** (also correct: `overall` runs 0.14–0.50, the low end of Apple's range).
+
+    concert-likelihood   right subject?     labels, low_light, GPS/place, hour
+    quality              worth publishing?  Apple overall/curation + local Laplacian
+
+Both must clear. Where they agree, so does the owner — the two Cure keepers scored 0.995
+and 1.00 on likelihood *and* were that show's best quality.
+
+**2. Frame extraction won outright.**
+
+| keep rate | show | |
+|---|---|---|
+| **83%** (5/6) | Human League | **extracted video frames** |
+| 57% (4/7) | Howard Jones | video, poster frames only |
+| 33% (2/6) | The Go-Go's | |
+| 25% (2/8) | The Cure | |
+| 0% (0/10) | Beck | **wedding** |
+| 0% (0/8) | Dr Sick | **second bad evening** |
+| 0% (0/8) | Black Keys | real concert, poor quality |
+
+Extracted frames were judged **blind** — nothing marked their origin — and outperformed
+every category including native stills.
+
+**3. Both bad evenings correctly rejected**, and the model scored Dr Sick **0.37, the
+lowest of any show**, despite never having seen it when its negative-label list was fitted
+to the Beck wedding. The overfitting check passes.
+
+⚠️ **The 15 video verdicts are provisional** — all were made on poster frames, which the
+owner confirmed cannot be judged. They are not evidence.
+
 ### ⚠️ UX TEST FINDINGS — the window is a DATE filter, not a concert filter
 
 **A 24-asset test with the owner invalidated several numbers in this spec and exposed four
@@ -1099,6 +1136,11 @@ behind it. `--sample 50` if the first read lands mid-range.
 ## Revision History
 
 - **2026-08-21 (a):** Initial specification created
+- **2026-08-23 (h):** 53 assets culled. Ranking split into TWO factors after the Black
+  Keys showed subject and quality are independent. Frame extraction validated at an 83%
+  blind keep rate — best of any category. Both bad evenings rejected; Dr Sick scored lowest
+  without having been fitted. Video review moved out-of-process; workflow specified in
+  `global-media-workflow.md`; rules made operative in `.claude/skills/media-pipeline/`.
 - **2026-08-23 (g):** 24-asset UX test with the owner. **The date window is a date filter,
   not a concert filter** — 66 Beck-window frames were a wedding, so every supply figure here
   counts evenings and must be re-derived. Four discriminating signals identified with real
