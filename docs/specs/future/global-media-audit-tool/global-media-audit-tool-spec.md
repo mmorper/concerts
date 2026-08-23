@@ -91,7 +91,7 @@ it.
 #   clang … disclaim.cpp && pyinstaller osxphotos.spec  →  ./dist/osxphotos
 export OSXPHOTOS_NO_VERSION_CHECK=1     # the wrapper sets this; keeps the run offline
 concert-media query                     # → candidates.json   (metadata only, nothing moved)
-concert-media export                    # → ~/concert-audit/  (1200px previews + page)
+concert-media export                    # → concert-photos-audit/  (previews + page, gitignored)
 concert-media review                    # opens the review page; judge; saves as you go
                                         #     calibrate → pass one (usable) → pass two (hero)
 concert-media finalize                  # → audit.md + selects.json, written into the repo
@@ -142,7 +142,7 @@ venues coords  ─┘
 
 Photos catalog ─►  [2] query        ─►  candidates.json   (metadata only)
 
-                   [3] export       ─►  ~/concert-audit/  (1200px previews)
+                   [3] export       ─►  concert-photos-audit/  (1200px previews)
 
                    [4] review       ─►  audit.md + selects.json
 ```
@@ -234,7 +234,7 @@ Output: `candidates.json`. Metadata only — no images have moved.
 
 ### Stage 3 — Export previews
 
-Copies each surviving candidate out at **1200px wide** into `~/concert-audit/`, one
+Copies each surviving candidate out at **1200px wide** into `concert-photos-audit/`, one
 folder per show.
 
 1200px is deliberate: #338's sharpness gate is written as *"in focus at 1080px wide."*
@@ -607,6 +607,36 @@ Committed to `docs/specs/future/mocks-social-syndication/audit.md`, which is whe
 asks for it — alongside the Phase 0 creative work it sizes. The tooling lives here; its
 output lands there.
 
+### Where media lives (DECIDED 2026-08-23)
+
+| Pile | Location | Committed? |
+|---|---|---|
+| Source library | Photos.app on the owner's Mac | Never copied wholesale |
+| **Candidates** — the cull, thousands of frames with full EXIF | **`concert-photos-audit/`** at project root | **No — gitignored** |
+| **Final selects** — the images that actually appear in posts | **`public/images/concerts/`** | **Yes** |
+| **The mapping** | **`public/data/media-index.json`** | **Yes** |
+
+**Why selects go in the repo rather than R2.** An earlier revision recommended R2 on the
+grounds that "N is large." That conflated two different piles: the large number is
+*candidates*, not *selects* — selects are bounded by the number of posts, roughly one
+image each. For that size the repo wins outright:
+
+- The build composites the card from the image. In-repo it is simply present; in R2 the
+  build must authenticate and download, adding a failure mode to every build.
+- Cloudflare Pages already serves `public/` from the CDN at no additional cost or setup.
+- **Git is the backup.** Restoring every select is `git clone` — which is exactly the
+  "restore all selects" requirement.
+- The repo already ships venue imagery under `public/images/` on this pattern.
+
+R2 remains the right answer if selects ever pass a few hundred files. `media-index.json`
+addresses assets by a `url` field, so that migration costs no consumer changes.
+
+**Metadata is stripped before commit.** Every phone photo carries GPS, capture time and
+device identifiers *inside the file*, which would defeat the `selects.json` field
+allowlist by another route. Stripping is an automatic pipeline step, never a habit
+someone is trusted to remember. **A commit hook or a CI check should enforce it** — a
+step that only runs when remembered is a step that eventually does not.
+
 ### `selects.json` — machine-readable
 
 **Committed, with a fixed allowlist of fields** (decided 2026-08-21):
@@ -725,9 +755,13 @@ behind it. `--sample 50` if the first read lands mid-range.
 
 ## Open questions
 
-1. ~~**Where do exported previews live?**~~ **RESOLVED — outside the repo,
-   `~/concert-audit/`.** The repo is public and previews are personal photographs; a
-   gitignore is a promise, a different directory is a mechanism.
+1. ~~**Where do exported previews live?**~~ **RESOLVED (revised 2026-08-23) — inside
+   the project at `concert-photos-audit/`, gitignored.** An earlier revision put them
+   outside the repo on the reasoning that a gitignore is a promise and a different
+   directory is a mechanism. **Owner overrode this:** the corpus should stay within the
+   project boundary and be agent-readable/writable. Verified safe — `tsconfig.json`
+   includes only `src`, `tsconfig.scripts.json` only `scripts`/`test`, and Vite copies
+   only `public/`, so a root-level folder is never typechecked, built or deployed.
 2. ~~**Does `selects.json` get committed?**~~ **RESOLVED — yes, with a field
    allowlist.** See § "`selects.json` — machine-readable" for the committed/withheld
    table.
@@ -758,6 +792,12 @@ behind it. `--sample 50` if the first read lands mid-range.
 ## Revision History
 
 - **2026-08-21 (a):** Initial specification created
+- **2026-08-23:** Storage settled. Candidate corpus moves *inside* the project at
+  `concert-photos-audit/` (gitignored, agent-writable) per owner preference. Final selects
+  and `media-index.json` are committed under `public/`; the R2 recommendation is withdrawn
+  as over-engineering that confused the candidate count with the select count. EXIF
+  stripping before commit agreed and made an enforced step. Licence and third-party-faces
+  concerns explicitly dismissed by the owner.
 - **2026-08-22:** Verified the score API against source. `ScoreInfo` and every mapped field
   are real; Photos 5+ only. Three corrections: scores are **signed** (negative is worse, and
   the mock wrongly assumes `[0,1]`); unscored photos return **all-zero, not None**, which is
