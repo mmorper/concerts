@@ -102,14 +102,17 @@ jobs:
             echo "No data changes to commit."
           else
             git commit -m "data: refresh enrichment pipeline [automated]"
-            # --autostash because the run leaves tracked files dirty that this
-            # step deliberately does not commit — `npm install` above can rewrite
-            # package-lock.json, and the pipeline touches working files outside
-            # the pathspecs staged here. Without it, `git pull --rebase` aborts
-            # with "cannot pull with rebase: You have unstaged changes" and the
-            # refresh is lost *after* a successful enrichment: exactly what
-            # happened on 2026-08-17 (run 32007717580), which is why the dead
-            # venue photos went unrepaired for another five days (#315).
+            # --autostash because the pipeline rewrites tracked files this step
+            # does not stage. The known one is data/cache/musicbrainz-tracks.json,
+            # rewritten by the song->album resolver whenever it fetches a new
+            # release-group. Most weeks it fetches none and the tree stays clean —
+            # which is why this was intermittent rather than constant.
+            #
+            # On 2026-08-17 (run 32007717580) it fetched 9. `git pull --rebase`
+            # then aborted with "cannot pull with rebase: You have unstaged
+            # changes", and a *successful* enrichment was discarded at the push —
+            # which is why the dead venue photos went unrepaired for another five
+            # days (#315).
             git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
@@ -146,9 +149,10 @@ jobs:
           else
             git commit -m "content: refresh MCP narrations [automated]"
             # --autostash: a job step can leave tracked files dirty that this
-            # step does not stage (npm install rewrites package-lock.json).
-            # Without it the rebase aborts and the commit above is never
-            # pushed — work is lost *after* it succeeded (#315).
+            # step does not stage — e.g. data/cache/musicbrainz-tracks.json,
+            # rewritten by the song->album resolver on any run that fetches a new
+            # release-group. Without it the rebase aborts and the commit above is
+            # never pushed — work is lost *after* it succeeded (#315).
             git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi

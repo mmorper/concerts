@@ -81,9 +81,10 @@ jobs:
           else
             git commit -m "content: on this day [automated]"
             # --autostash: a job step can leave tracked files dirty that this
-            # step does not stage (npm install rewrites package-lock.json).
-            # Without it the rebase aborts and the commit above is never
-            # pushed — work is lost *after* it succeeded (#315).
+            # step does not stage — e.g. data/cache/musicbrainz-tracks.json,
+            # rewritten by the song->album resolver on any run that fetches a new
+            # release-group. Without it the rebase aborts and the commit above is
+            # never pushed — work is lost *after* it succeeded (#315).
             git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
