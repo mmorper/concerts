@@ -4,19 +4,26 @@
 
 **Symptom:** All venue images disappear from map popups after every data refresh.
 
-**Root cause:** Google Places API v1 photo resource names (`places/{placeId}/photos/{ref}`) expire within days of being fetched. The old pipeline stored these as direct image URLs (`places.googleapis.com/v1/.../media?key=...`), which became invalid returning `400 INVALID_ARGUMENT: The photo resource in the request is invalid`.
+**Root cause:** Google Places API v1 photo resource names (`places/{placeId}/photos/{ref}`) are perishable — Google rotates them, and when it does the name and every CDN URL previously minted from it die together. A rotated name returns `400 INVALID_ARGUMENT: The photo resource in the request is invalid`; the orphaned `lh3.googleusercontent.com` URL returns 403.
 
 **Fix applied (2026-03-07):**
 
-- `scripts/utils/google-places-client.ts`: Replaced `getPhotoUrl()` (sync, builds expiring URL) with `fetchPhotoUri()` (async, calls the media endpoint with `skipHttpRedirect=true` to resolve to a stable `lh3.googleusercontent.com` CDN URL at refresh time).
+- `scripts/utils/google-places-client.ts`: Replaced `getPhotoUrl()` (sync, builds expiring URL) with `fetchPhotoUri()` (async, calls the media endpoint with `skipHttpRedirect=true` to resolve to an `lh3.googleusercontent.com` CDN URL at refresh time).
 - `scripts/enrich-venues.ts`: Uses `fetchPhotoUri()` with auto-retry on 400 (force-refreshes place details from the API to get fresh photo names, then resolves again).
+
+**Fix applied (2026-08-22, #315) — the 2026-03-07 fix was not enough.** It resolved names to CDN URLs but left the *names* pinned in a 90-day cache. When Google rotated the `AWCwyd…` generation to `AVoNoX…` around 2026-08-10, 65 of 67 venue photos died and the cache kept serving the dead names until October.
+
+- **Split cache TTL:** identity 90 days (`expiresAt`), photo list 7 days (`photosExpireAt`). A photo-only refresh re-runs Place Details against the cached place ID and skips the Text Search.
+- **One photo call per candidate, not three.** The three stored sizes share one base URL; the 800px and 400px variants are derived by rewriting the `-h{px}` suffix. Verified byte-identical to what separate API calls return.
+- **Retry with backoff on 429/5xx**, honouring `Retry-After`. A throttled venue keeps its previous photo (re-HEAD-checked first) instead of being downgraded to a placeholder.
+- **`build-data.ts` streams subprocess output.** It used `promisify(exec)` and never printed the buffer, so the venue step was silent in CI — the reason this went twelve days unnoticed.
 
 **Key files:**
 
 - `scripts/utils/google-places-client.ts` — `fetchPhotoUri()` function
 - `scripts/enrich-venues.ts` — photo URL generation logic
 - `public/data/venues-metadata.json` — `photoUrls.thumbnail/medium/large` fields
-- `public/data/venue-photos-cache.json` — 90-day Places API cache (photo names inside expire faster)
+- `public/data/venue-photos-cache.json` — Places API cache: 90-day identity TTL, 7-day photo TTL (#315)
 
 **To fix manually when broken:** Run `npm run enrich-venues`
 

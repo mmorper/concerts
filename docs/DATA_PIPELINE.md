@@ -551,8 +551,9 @@ This script:
 2. For **active** venues:
    - Fetches Place ID from Google Places Text Search API
    - Fetches place details (photos, rating, website)
-   - Generates photo URLs (thumbnail: 400px, medium: 800px, large: 1200px)
-   - Sets 90-day cache expiry
+   - Resolves **one** photo URL at 1200px and derives the 800px and 400px
+     variants by rewriting the URL's `-h{px}` size suffix
+   - Sets a 90-day identity expiry and a 7-day photo expiry
 3. For **legacy** venues (closed/demolished):
    - Sets `places = null`
    - Checks for manual photos in `/public/images/venues/`
@@ -562,22 +563,62 @@ This script:
 
 **Cache file:** `public/data/venue-photos-cache.json`
 
-- **Active venues**: Place *details* cached for 90 days
+A cache entry ages out on **two separate clocks**, because a place's identity
+and its photos rot at very different rates (#315).
+
+| What | Field | TTL | Why |
+| --- | --- | --- | --- |
+| Place identity (ID, address, location) | `expiresAt` | 90 days | Place IDs are stable. Re-measured 2026-08-22: every venue re-searched from scratch returned the ID it was cached with in July. |
+| Photo list (`placeDetails.photos[].name`) | `photosExpireAt` | 7 days | Google rotates photo resource names. See below. |
+
 - **Legacy venues**: Cached indefinitely (no need to re-check Places API)
 - **Failed lookups**: Cached to avoid repeated failures
-- **Force refresh**: `npm run enrich-venues -- --force` (not yet implemented)
 
-**Photo URLs are not governed by a TTL.** They are validated instead. A Google
-Places photo URL is long-lived but revocable — it dies when the underlying photo
-is unpublished from the listing, which is a content event with no clock behind
-it. Measurement bore this out: a 215-day-old URL was healthy while a 30-day-old
-one returned 403 (#252).
+When only the photo clock has run out, the client re-runs **Place Details against
+the cached place ID** and skips the Text Search — one call instead of two, since
+the ID it would rediscover is already in hand.
 
-So every run HEAD-checks the URL it is about to store and walks the place's photo
-list if it does not load (#255). A `photoCacheExpiry` field used to record a
-90-day window; it was written on every run, never read, and could not have worked
-regardless. It was removed in #256 — `fetchedAt` is the meaningful timestamp,
-since a refresh now includes verification.
+##### Photo resource names are perishable, and so are the URLs made from them
+
+Two artifacts rot here, and it took three investigations to separate them.
+
+**The media URL.** A `lh3.googleusercontent.com` photo URL is long-lived but
+revocable. It is not governed by a TTL and is validated instead: every run
+HEAD-checks the URL it is about to store and walks the place's photo list if it
+does not load (#255). Age does not predict death — a 215-day-old URL was healthy
+while a 30-day-old one returned 403 (#252). A `photoCacheExpiry` field once
+recorded a 90-day window; it was written on every run, never read, and was
+removed in #256.
+
+**The resource name.** This is the one #315 uncovered, and it is what broke 65 of
+67 venue photos between 2026-08-10 and 2026-08-13. The opaque `photos[].name`
+token is *also* perishable — Google rotates it, and when it does, the name and
+every URL previously minted from it die together. Measured 2026-08-22: every name
+cached on 2026-07-13 (the `AWCwyd…` generation) returned
+`400 INVALID_ARGUMENT — "The photo resource in the request is invalid"`, while a
+fresh Place Details call for the same place ID returned working names in a new
+`AVoNoX…` generation.
+
+Under the old single 90-day TTL the cache went on serving the rotated names until
+2026-10-11. One 79-venue run burned **872 futile 400s** rediscovering that they
+were dead, and the resulting traffic drew **227 × HTTP 429**, which cost ten
+venues a photo they still had. Hence the 7-day photo TTL, one photo call per
+candidate instead of three, and retry-with-backoff on the photo endpoint.
+
+##### A 429 is not a verdict
+
+`fetchPhoto` distinguishes three outcomes, and the caller treats them differently:
+
+| Outcome | Meaning | What `enrich-venues` does |
+| --- | --- | --- |
+| `ok` | Resolved and HEAD-checked | Store it |
+| `stale` (400/403/404) | Google does not recognise this name, or the photo is gone | Walk to the next candidate; if all fail, re-fetch details, then fall back |
+| `throttled` (429/5xx, after retries) | Says nothing about the photo | **Keep the previous photo** if it still loads; only then fall back |
+
+Rate limiting used to be indistinguishable from "this place has no photos", so a
+throttled run quietly replaced real imagery with a placeholder. It no longer can.
+Note the preserved photo is re-HEAD-checked before it is kept — a stored URL is
+never on its own evidence of a live image.
 
 #### Manual Photo Curation
 

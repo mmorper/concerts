@@ -102,7 +102,15 @@ jobs:
             echo "No data changes to commit."
           else
             git commit -m "data: refresh enrichment pipeline [automated]"
-            git pull --rebase origin "${GITHUB_REF_NAME}"
+            # --autostash because the run leaves tracked files dirty that this
+            # step deliberately does not commit — `npm install` above can rewrite
+            # package-lock.json, and the pipeline touches working files outside
+            # the pathspecs staged here. Without it, `git pull --rebase` aborts
+            # with "cannot pull with rebase: You have unstaged changes" and the
+            # refresh is lost *after* a successful enrichment: exactly what
+            # happened on 2026-08-17 (run 32007717580), which is why the dead
+            # venue photos went unrepaired for another five days (#315).
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
 

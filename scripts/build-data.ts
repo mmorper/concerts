@@ -3,10 +3,30 @@ import { geocodeVenues } from './geocode-venues'
 import { enrichConcertGenres } from './enrich-concert-genres'
 import { enrichArtists } from './enrich-artists'
 import { validateConcerts } from './validate-concerts'
-import { exec as execCallback } from 'child_process'
-import { promisify } from 'util'
+import { spawn } from 'child_process'
 
-const exec = promisify(execCallback)
+/**
+ * Run a child step with its output streamed to this process's stdout.
+ *
+ * `promisify(exec)` buffers stdout and hands it back on resolve — and this
+ * orchestrator never printed it, so every subprocess step was silent in CI. The
+ * venue step in particular ran for 63 seconds in run 32007717580 and emitted
+ * not one line, which is why #315 went twelve days without anyone being able to
+ * see that the Places photo names had gone stale.
+ *
+ * Buffering also caps output at `maxBuffer`; a chatty step that exceeded it
+ * would fail the pipeline with ENOBUFS rather than the real error. Streaming
+ * has neither problem.
+ */
+function run(command: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, { shell: true, stdio: 'inherit' })
+    child.on('error', reject)
+    child.on('close', code =>
+      code === 0 ? resolve() : reject(new Error(`${command} exited with code ${code}`))
+    )
+  })
+}
 
 /**
  * Main data pipeline orchestrator
@@ -162,7 +182,7 @@ async function buildData() {
       console.log('-'.repeat(60))
 
       // Run as subprocess since enrich-venues.ts is a standalone script
-      await exec('npm run enrich-venues')
+      await run('npm run enrich-venues')
       console.log()
     } else {
       console.log('⏭️  Skipping venue enrichment (--skip-venues flag set)\n')
@@ -309,7 +329,7 @@ async function buildData() {
       console.log('=' .repeat(60))
       console.log(`Step ${currentStep}/${activeSteps}: Updating meta tags and SEO files`)
       console.log('-'.repeat(60))
-      await exec('npm run update:meta')
+      await run('npm run update:meta')
       console.log()
     }
 
@@ -319,7 +339,7 @@ async function buildData() {
       console.log('=' .repeat(60))
       console.log(`Step ${currentStep}/${activeSteps}: Generating sitemap`)
       console.log('-'.repeat(60))
-      await exec('npm run generate:sitemap')
+      await run('npm run generate:sitemap')
       console.log()
     }
 
@@ -329,7 +349,7 @@ async function buildData() {
       console.log('=' .repeat(60))
       console.log(`Step ${currentStep}/${activeSteps}: Generating RSS feed`)
       console.log('-'.repeat(60))
-      await exec('npm run generate:rss')
+      await run('npm run generate:rss')
       console.log()
     }
 

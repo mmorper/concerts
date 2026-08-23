@@ -19,7 +19,7 @@
 | Ticketmaster | Tour dates | API key | 5/sec, 5000/day | 24 hours |
 | setlist.fm | Concert setlists | API key | 1/sec | 24 hours |
 | Google Maps | Geocoding | API key | 50/sec | Permanent |
-| Google Places | Venue photos | API key | 50/sec | 90 days |
+| Google Places | Venue photos | API key | 50/sec | 90 days identity / 7 days photos |
 | iTunes Search | Audio previews | None | ~20/sec | 30 days |
 | Deezer | Audio previews (fallback) | None | ~50/sec | 30 days |
 | TheAudioDB | Artist bios/photos | None | 2/sec | 30 days |
@@ -234,13 +234,25 @@ Photos are sorted by popularity/quality. The service:
 1. Searches for venue by name + city
 2. Gets Place ID
 3. Fetches place details (photos, rating, website)
-4. Generates photo URLs at multiple sizes (400px, 800px, 1200px)
+4. Resolves **one** photo URL at 1200px and derives 800px and 400px by rewriting
+   the URL's `-h{px}` size suffix
 
 ### Cache Strategy
 
 - Cache file: `public/data/venue-photos-cache.json`
-- TTL: 90 days for active venues
+- TTL: **two clocks** — 90 days for place identity (`expiresAt`), 7 days for the
+  photo list (`photosExpireAt`). Photo resource names are perishable: Google
+  rotates them, killing the name and every URL minted from it (#315). A
+  photo-only refresh re-runs Place Details against the cached place ID and skips
+  the Text Search.
 - Legacy venues: No cache (use manual photos)
+
+### Rate limiting
+
+`fetchPhoto` retries 429 and 5xx with exponential backoff, honouring
+`Retry-After`, and reports `throttled` distinctly from `stale`. This matters:
+a 429 says nothing about whether a photo exists, so `enrich-venues` keeps the
+previous (re-validated) photo rather than writing a placeholder over it.
 
 ### Manual Photo Override
 
