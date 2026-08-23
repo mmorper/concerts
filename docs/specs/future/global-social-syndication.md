@@ -489,9 +489,30 @@ Going forward, a four-frame shoot list (wide venue, marquee, one performer frame
 
 ### Storage
 
-At N≈20, **commit the stills**; twenty optimised images is ~1MB and the project already ships venue imagery. R2 is correct at 100+ assets and over-engineering at 20. Storage lives behind a `url` field in `media-index.json` so the migration costs no consumer changes.
+**Settled 2026-08-23.** Three piles, three homes:
 
-Photography stays out of the repo until #327 records its provenance — this repo is public, so committing an image *is* the publishing act the policy governs.
+| Pile | Home | Committed? |
+|---|---|---|
+| Source library | Photos.app, the owner's Mac | never copied wholesale |
+| **Candidates** — the cull, thousands of frames carrying full EXIF | **`concert-photos-audit/`** at project root | **no — gitignored** |
+| **Final selects** — the images that actually appear in posts | **`public/images/concerts/`** | **yes** |
+| **The mapping** | **`public/data/media-index.json`** | **yes** |
+
+The N≈20-versus-100 threshold this section used to carry was the wrong frame: it confused
+the *candidate* count with the *select* count. Candidates are large; selects are bounded by
+the number of posts, roughly one image each. At that size the repo wins outright — the card
+renderer needs the file at build time, Cloudflare already serves `public/` from the CDN, and
+`git clone` restores every select. R2 stays the right answer only if selects pass a few
+hundred files; `media-index.json` addresses assets by `url`, so that migration costs no
+consumer changes.
+
+**EXIF is stripped before commit, as an enforced pipeline step.** Phone photos carry GPS,
+capture time and device identifiers inside the file, which would defeat the `selects.json`
+field allowlist by another route. Note the asymmetry that makes this workable: the audit
+*uses* GPS and capture time heavily — they are how a photo is matched to a concert — but
+that data stays in the gitignored candidate corpus and never reaches anything published.
+
+Provenance no longer gates this (see #327, narrowed from gate to record).
 
 ### Two rules that are not negotiable
 
@@ -792,6 +813,9 @@ https://concerts.morperhaus.org/liner-notes?utm_source=instagram&utm_medium=soci
 ## Revision History
 
 - **2026-08-20:** Initial specification created
+- **2026-08-23:** Personal-media storage settled — candidates gitignored inside the project,
+  final selects + `media-index.json` committed under `public/`, EXIF stripped as an enforced
+  step. The old N≈20/100 R2 threshold is withdrawn as a category error.
 - **2026-08-21:** Imagery rubric DECIDED by owner — never bare type; personal > sourced > derived. Track A demoted from a track to a text layer; Tracks B and C collapsed into one derived tier. YouTube Shorts + TikTok added as Tier 3 (video-only, gated on L3). Provenance narrowed from gate to record. Personal-media supply arithmetic withdrawn; #338 sizes tier 1 in parallel with the creative work, blocking nothing.
 - **2026-08-21 (later):** Phase 0 CLOSED. Canonical payload frozen against the mocks; render targets, text budgets, credit fields, byline and focal point all decided by rendering with real data. Crop safety spun out to #352. See `mocks-social-syndication/DECISIONS.md` and `PROVENANCE.md`.
 - **2026-08-22:** Phase 1 SHIPPED. Canonical payload built, social copy authored by the pipeline and enforced by `checkSocial()`, ledger with seeding and a working retraction path, Bluesky and Mastodon adapters, and the Actions stage. `MediaSource` extended additively with `album-itunes` and `site-fallback`; the 1.91:1 render target stays the existing OG card until #342.

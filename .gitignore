@@ -92,3 +92,10 @@ test/temp-output*/
 
 # Generated worksheet for #275 artist pinning — regenerate, never commit
 artist-pins-TODO.csv
+
+# Personal-media audit corpus (#348). Lives inside the project deliberately — the
+# owner wants it within the project boundary and agent-writable — but is NEVER
+# committed: it holds thousands of unculled personal photographs plus their EXIF
+# (GPS, capture time, device). Only the FINAL selects reach the repo, EXIF-stripped,
+# under public/images/concerts/.
+concert-photos-audit/
