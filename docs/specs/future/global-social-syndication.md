@@ -495,7 +495,7 @@ Going forward, a four-frame shoot list (wide venue, marquee, one performer frame
 |---|---|---|
 | Source library | Photos.app, the owner's Mac | never copied wholesale |
 | **Candidates** — the cull, thousands of frames carrying full EXIF | **`concert-photos-audit/`** at project root | **no — gitignored** |
-| **Final selects** — the images that actually appear in posts | **`public/images/concerts/`** | **yes** |
+| **Final selects** — the images that actually appear in posts | **`public/images/shows/`** | **yes** |
 | **The mapping** | **`public/data/media-index.json`** | **yes** |
 
 The N≈20-versus-100 threshold this section used to carry was the wrong frame: it confused
@@ -505,6 +505,14 @@ renderer needs the file at build time, Cloudflare already serves `public/` from 
 `git clone` restores every select. R2 stays the right answer only if selects pass a few
 hundred files; `media-index.json` addresses assets by `url`, so that migration costs no
 consumer changes.
+
+> **Path reconciled 2026-08-23.** An earlier revision of this table said
+> `public/images/concerts/`. **The shipped code already uses `/images/shows/`** —
+> `scripts/syndication/provenance.ts` classifies `/images/shows/` and `/images/personal/`
+> as tier 1, and does so deliberately, because an unrecognised local path would otherwise
+> fall through to `site-fallback` and silently suppress every post carrying the archive's
+> own photography. The code is merged and tested, so the spec moves to match it rather
+> than introducing a third path.
 
 **EXIF is stripped before commit, as an enforced pipeline step.** Phone photos carry GPS,
 capture time and device identifiers inside the file, which would defeat the `selects.json`
@@ -537,6 +545,30 @@ Audio is retained; muted by default wherever the player is under our control. In
 **X.** Post carries the story, first self-reply carries the link — sidesteps the derank. Build this into the adapter from the start; retrofitting it into an adapter shaped around single posts is more expensive. Free-tier terms have changed repeatedly; **verify current limits before implementing** rather than trusting this document.
 
 ---
+
+## Go-live gate (owner requirement, 2026-08-23)
+
+> **All three imagery tiers must be available and resolvable by the pipeline before the
+> kill switch is released.** Not "personal imagery is a nice-to-have that arrives later" —
+> Places photography, album art, and personal photographs all reachable, before anything
+> posts.
+
+This **moves the personal-media work onto the critical path.** An earlier assessment in
+session held that #348/#338 were parallel to go-live because a post can ship on tier 2
+alone. That is no longer the standard.
+
+| Tier | Source | State |
+|---|---|---|
+| 2 | Google Places venue photos | Rot fixed (#368); reporting fixed (#369/#372). **Verify live coverage before release.** |
+| 2 | Album art — Cover Art Archive, iTunes | Classified in `provenance.ts`. **Verify it resolves end-to-end.** |
+| 2 | Artist — TheAudioDB, Deezer | Classified; 100% artist coverage |
+| 1 | **Personal photographs** | **No supply yet.** #348 (tool) → #338 (count) → #339 (ingest) → #340 (index + ladder) |
+| 3 | Generative / material | Classified; floor only |
+
+`provenance.ts` already classifies every host and local path above, so the *plumbing* is
+done. What is missing is **supply** for tier 1 and **verification** that tier 2 actually
+returns working images rather than merely well-formed URLs — which is precisely the
+distinction #369 was opened about.
 
 ## Operations
 
@@ -813,6 +845,10 @@ https://concerts.morperhaus.org/liner-notes?utm_source=instagram&utm_medium=soci
 ## Revision History
 
 - **2026-08-20:** Initial specification created
+- **2026-08-23 (b):** Go-live gate raised by owner — all three imagery tiers must be
+  available and pipeline-resolvable before the kill switch is released, which puts the
+  personal-media work on the critical path. Select path reconciled from
+  `public/images/concerts/` to `public/images/shows/` to match shipped code.
 - **2026-08-23:** Personal-media storage settled — candidates gitignored inside the project,
   final selects + `media-index.json` committed under `public/`, EXIF stripped as an enforced
   step. The old N≈20/100 R2 threshold is withdrawn as a category error.

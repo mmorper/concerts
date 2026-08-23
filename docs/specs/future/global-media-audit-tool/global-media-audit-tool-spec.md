@@ -613,7 +613,7 @@ output lands there.
 |---|---|---|
 | Source library | Photos.app on the owner's Mac | Never copied wholesale |
 | **Candidates** — the cull, thousands of frames with full EXIF | **`concert-photos-audit/`** at project root | **No — gitignored** |
-| **Final selects** — the images that actually appear in posts | **`public/images/concerts/`** | **Yes** |
+| **Final selects** — the images that actually appear in posts | **`public/images/shows/`** | **Yes** |
 | **The mapping** | **`public/data/media-index.json`** | **Yes** |
 
 **Why selects go in the repo rather than R2.** An earlier revision recommended R2 on the
