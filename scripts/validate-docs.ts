@@ -84,14 +84,19 @@ function deriveStats() {
   // v6.0 data files. Optional: a fresh clone before enrichment has neither, and
   // a missing file must not fail the doc gate — but a PRESENT file whose counts
   // have drifted from the prose must.
-  const songAlbums = readOptionalJson<{ songs?: Record<string, { releaseDate?: string }> }>(
-    'public/data/song-albums.json'
-  )
+  const songAlbums = readOptionalJson<{
+    songs?: Record<string, { releaseDate?: string }>
+    stats?: { byTier?: Record<string, number> }
+  }>('public/data/song-albums.json')
   const albumEras = readOptionalJson<{ artists?: Record<string, unknown> }>(
     'public/data/album-eras.json'
   )
 
   const songEntries = Object.values(songAlbums?.songs ?? {})
+  // The tier split is quoted in llm.txt and was drifting unchecked: it read
+  // 253/1,428/35 against a real 265/1,414/35. A number nothing verifies is a number
+  // that goes quietly wrong.
+  const tiers = songAlbums?.stats?.byTier ?? {}
   const precision = { day: 0, month: 0, year: 0 }
   for (const entry of songEntries) {
     const parts = String(entry?.releaseDate ?? '').split('-').length
@@ -107,6 +112,7 @@ function deriveStats() {
     startYear: archive.firstYear ?? 0,
     endYear: archive.lastYear ?? 0,
     songAlbums: songAlbums ? songEntries.length : null,
+    tiers,
     albumErasArtists: albumEras ? Object.keys(albumEras.artists ?? {}).length : null,
     precision,
   }
@@ -346,6 +352,24 @@ function buildClaims(): Claim[] {
             label: 'song-albums year-precision count',
             pattern: /([\d,]+) are bare `YYYY`/,
             expected: withCommas(stats.precision.year),
+          },
+          {
+            file: 'public/llm.txt',
+            label: 'song-albums tier-0 count (artists-top-tracks)',
+            pattern: /three tiers — `artists-top-tracks\.json` \(([\d,]+)\)/,
+            expected: withCommas(Number(stats.tiers['0'] ?? 0)),
+          },
+          {
+            file: 'public/llm.txt',
+            label: 'song-albums tier-1 count (MusicBrainz)',
+            pattern: /MusicBrainz \(([\d,]+)\), iTunes Search/,
+            expected: withCommas(Number(stats.tiers['1'] ?? 0)),
+          },
+          {
+            file: 'public/llm.txt',
+            label: 'song-albums tier-2 count (iTunes Search)',
+            pattern: /iTunes Search \(([\d,]+)\)/,
+            expected: withCommas(Number(stats.tiers['2'] ?? 0)),
           },
         ]),
     ...(stats.albumErasArtists === null
