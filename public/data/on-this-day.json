@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-08-23T07:25:14.096Z",
+  "generatedAt": "2026-08-24T07:50:08.326Z",
   "posts": [
+    {
+      "slug": "otd-2026-08-24",
+      "day": "08-24",
+      "showDate": "2003-08-24",
+      "age": 23,
+      "artist": "The Human League",
+      "artistNormalized": "the-human-league",
+      "venue": "The Grove of Anaheim",
+      "venueNormalized": "the-grove-of-anaheim",
+      "city": "Anaheim",
+      "score": 30,
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wysuyt1345666474.jpg",
+      "tier": 2,
+      "source": "artist-audiodb",
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=the-human-league",
+      "cardPath": "public/og/on-this-day/otd-2026-08-24.png",
+      "social": {
+        "hook": "Twenty-three years later, I still have the ticket stub.",
+        "caption": "The Human League at The Grove of Anaheim, August 24, 2003 — it's in the archive now. Twenty-three years is a long time to keep a stub, but some nights earn the drawer space.",
+        "beats": [
+          "August 24, 2003: The Human League played The Grove of Anaheim on a summer Sunday night.",
+          "The Grove was a mid-size outdoor venue that suited a band built for big, clean sound.",
+          "By 2003, 'Don't You Want Me' was already more than twenty years old and still stopped the room.",
+          "The ticket stub went into the collection that night and stayed there — which is how a show makes it into the archive.",
+          "Twenty-three years on, the entry is live. The record is the point."
+        ],
+        "authoredAt": "2026-08-24T07:50:02.613Z"
+      },
+      "publishedAt": "2026-08-24T07:50:08.326Z"
+    },
     {
       "slug": "otd-2026-08-23",
       "day": "08-23",
