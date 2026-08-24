@@ -1,0 +1,443 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Media review</title>
+<style>
+  :root{
+    --bg:#0b0b0d; --panel:#141418; --line:#26262e; --ink:#e8e8ec; --dim:#8b8b96;
+    --keep:#3ddc84; --reject:#ff5c5c; --warn:#ffb020; --accent:#8b7ff5;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:14px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif}
+  header{position:sticky;top:0;z-index:10;background:rgba(11,11,13,.94);
+         backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 20px}
+  .hrow{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+  .brand{font-weight:640;letter-spacing:-.01em}
+  .brand span{color:var(--dim);font-weight:400}
+  #showsel{background:#1a1a20;color:var(--ink);border:1px solid var(--line);
+           border-radius:5px;padding:4px 8px;font-size:11px;max-width:230px}
+  .filters{display:flex;gap:5px}
+  .filters .f{padding:4px 11px;border-radius:5px;border:1px solid var(--line);
+              background:#1a1a20;color:var(--dim);cursor:pointer;font-size:11px}
+  .filters .f.on{background:var(--accent);border-color:var(--accent);color:#0a0616;font-weight:600}
+  .tally{margin-left:auto;display:flex;gap:18px;align-items:center}
+  .tally b{font-variant-numeric:tabular-nums;font-size:17px}
+  .tally .l{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-left:5px}
+  .prog{height:2px;background:var(--line);margin-top:10px;border-radius:2px;overflow:hidden}
+  .prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+  main{padding:20px}
+  section{margin-bottom:34px}
+  .shead{display:flex;gap:12px;align-items:baseline;margin-bottom:12px;
+         padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .shead .date{font-variant-numeric:tabular-nums;color:var(--dim)}
+  .shead .artist{font-weight:640;font-size:16px}
+  .shead .venue{color:var(--dim)}
+  .shead .cnt{margin-left:auto;color:var(--dim);font-size:12px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tile{position:relative;background:var(--panel);border:2px solid transparent;border-radius:8px;
+        overflow:hidden;cursor:pointer;aspect-ratio:4/3}
+  .tile img{width:100%;height:100%;object-fit:cover;display:block}
+  .tile.cursor{border-color:var(--accent)}
+  .tile.keep{border-color:var(--keep)}
+  .tile.reject{border-color:var(--reject);opacity:.4}
+  .mark{position:absolute;top:7px;left:7px;font-size:17px;text-shadow:0 1px 4px #000}
+  .badges{position:absolute;top:7px;right:7px;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+  .b{font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,0,0,.72);
+     backdrop-filter:blur(4px);font-weight:600;letter-spacing:.02em}
+  .b.vid{background:rgba(139,127,245,.9)}
+  .b.v916{background:rgba(61,220,132,.9);color:#04150b}
+  .b.grab{background:rgba(255,176,32,.9);color:#1a1000}
+  .b.cloud{background:rgba(255,255,255,.16)}
+  .lab{position:absolute;left:0;right:0;bottom:0;padding:6px 8px;font-size:11px;
+       background:linear-gradient(transparent,rgba(0,0,0,.86));display:flex;gap:8px;align-items:center}
+  .lab .sharp{margin-left:auto;font-variant-numeric:tabular-nums}
+  /* lightbox */
+  .lb{position:fixed;inset:0;background:rgba(6,6,8,.97);display:none;z-index:50}
+  .lb.open{display:grid;grid-template-columns:1fr 340px}
+  .stage{display:grid;place-items:center;padding:24px;min-width:0}
+  .stage img,.stage video{max-width:100%;max-height:calc(100vh - 48px);object-fit:contain;border-radius:6px}
+  .side{border-left:1px solid var(--line);padding:20px;overflow-y:auto;background:var(--panel)}
+  .side h3{margin:0 0 2px;font-size:17px}
+  .sub{color:var(--dim);font-size:12px;margin-bottom:16px}
+  .sect{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);
+        margin:18px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+  dl.meta{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0;font-size:12px}
+  dl.meta dt{color:var(--dim)}
+  dl.meta dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+  /* SIGNED score bars — real scores run roughly -1..+1, zero is mid-range */
+  .bar{display:grid;grid-template-columns:118px 1fr 46px;gap:8px;align-items:center;
+       margin-bottom:5px;font-size:11px}
+  .bar .k{color:var(--dim)}
+  .bar .t{position:relative;height:8px;background:#1e1e26;border-radius:2px}
+  .bar .t::before{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:#3a3a46}
+  .bar .t i{position:absolute;top:0;bottom:0;border-radius:2px}
+  .bar .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--dim)}
+  .biased{color:var(--warn)}
+  .verdict{display:flex;gap:8px;margin-top:6px}
+  .verdict button{flex:1;padding:9px;border-radius:6px;border:1px solid var(--line);
+                  background:#1a1a20;color:var(--ink);cursor:pointer;font-weight:600;font-size:12px}
+  .verdict button.k.on{background:var(--keep);color:#04150b;border-color:var(--keep)}
+  .verdict button.r.on{background:var(--reject);color:#180404;border-color:var(--reject)}
+  .subj{display:flex;gap:6px;flex-wrap:wrap}
+  .subj button{padding:6px 11px;border-radius:6px;border:1px solid var(--line);
+               background:#1a1a20;color:var(--ink);cursor:pointer;font-size:11px}
+  .subj button.on{background:var(--accent);border-color:var(--accent);color:#0a0616}
+  .subj button.scarce::after{content:" ★";color:var(--warn);font-size:10px;opacity:.75}
+  .subj button.scarce.on::after{color:#1a1000;opacity:1}
+  .keys{position:fixed;bottom:0;left:0;right:0;padding:7px 20px;background:rgba(11,11,13,.95);
+        border-top:1px solid var(--line);display:flex;gap:18px;font-size:11px;color:var(--dim);z-index:40}
+  .keys b{color:var(--ink);background:#22222a;padding:1px 6px;border-radius:3px;margin-right:5px}
+  main{padding-bottom:52px}
+  .note{background:#1a1a20;border-left:2px solid var(--warn);padding:8px 11px;
+        font-size:11px;color:var(--dim);margin-top:10px;border-radius:0 4px 4px 0}
+  .toast{position:fixed;bottom:52px;left:50%;transform:translateX(-50%) translateY(60px);
+         background:var(--accent);color:#0a0616;padding:8px 16px;border-radius:6px;font-weight:600;
+         font-size:12px;transition:transform .2s;z-index:60}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+
+<header>
+  <div class="hrow">
+    <div class="brand">Media review <span id="brand-show">· loading</span></div>
+    <select id="showsel" title="limit to one show"></select>
+    <div class="filters">
+      <button class="f on" data-f="all">All</button>
+      <button class="f" data-f="keep">Usable</button>
+      <button class="f" data-f="reject">Reject</button>
+      <button class="f" data-f="none">No selection</button>
+    </div>
+    <div class="tally">
+      <span><b id="t-keep" style="color:var(--keep)">0</b><span class="l">keep</span></span>
+      <span><b id="t-rej" style="color:var(--reject)">0</b><span class="l">reject</span></span>
+      <span><b id="t-left">0</b><span class="l">left</span></span>
+    </div>
+  </div>
+  <div class="prog"><i id="prog"></i></div>
+</header>
+
+<main id="main"></main>
+
+<div class="lb" id="lb">
+  <div class="stage" id="stage"></div>
+  <div class="side">
+    <h3 id="lb-artist"></h3>
+    <div class="sub" id="lb-sub"></div>
+    <dl class="meta" id="lb-meta"></dl>
+    <div class="sect">Scores — signed, zero is mid-range</div>
+    <div id="lb-bars"></div>
+    <div class="note" id="lb-note"></div>
+    <div class="sect">Verdict — is this technically usable?</div>
+    <div class="verdict">
+      <button class="k" id="v-keep">1 · Usable</button>
+      <button class="r" id="v-rej">0 · Reject</button>
+    </div>
+    <div class="sect">Who is in this frame? <span style="text-transform:none;letter-spacing:0">— keepers only</span></div>
+    <div class="subj" id="lb-artistpick"></div>
+    <div class="note" id="lb-artistnote"></div>
+    <div class="sect">Subject <span style="text-transform:none;letter-spacing:0">— keepers only</span></div>
+    <div class="subj" id="lb-subj">
+      <button data-s="performer">Performer</button>
+      <button data-s="venue" class="scarce">Venue / marquee</button>
+      <button data-s="crowd">Crowd</button>
+      <button data-s="stub">Stub</button>
+    </div>
+  </div>
+</div>
+
+<div class="keys">
+  <span><b>← →</b>move</span><span><b>1</b>usable</span><span><b>0</b>reject</span>
+  <span><b>space</b>full size</span><span><b>P V C S</b>subject</span>
+  <span><b>↑ ↓</b>which act</span><span><b>U</b>undo</span>
+  <span><b>esc</b>close</span>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+let ITEMS = [], V = {}, cursor = 0, hist = [];
+const SUBJ = {p:'performer', v:'venue', c:'crowd', s:'stub'};
+// overall + curation measured clean; these two reward frames containing people
+const BIASED = new Set(['interesting_subject','well_framed_subject']);
+const SHOW_FIELDS = ['overall','curation','sharply_focused_subject','well_framed_subject',
+                     'pleasant_lighting','low_light','interesting_subject','pleasant_composition'];
+
+const post = (path, body) =>
+  fetch(path, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)})
+    .catch(() => toast('save failed — is the server running?'));
+
+/* Apple's sharply_focused_subject is useless here (stdev 0.035), so measure sharpness
+   ourselves: variance of a Laplacian over a downscaled greyscale copy. Same technique the
+   real tool will use, run client-side so this test exercises it for real. */
+function sharpness(img){
+  const N = 220, c = document.createElement('canvas');
+  const r = Math.min(N/img.naturalWidth, N/img.naturalHeight, 1);
+  c.width = Math.max(8, img.naturalWidth*r|0); c.height = Math.max(8, img.naturalHeight*r|0);
+  const x = c.getContext('2d', {willReadFrequently:true});
+  x.drawImage(img, 0, 0, c.width, c.height);
+  const d = x.getImageData(0,0,c.width,c.height).data, w = c.width, h = c.height;
+  const g = new Float32Array(w*h);
+  for (let i=0;i<w*h;i++) g[i] = .299*d[i*4] + .587*d[i*4+1] + .114*d[i*4+2];
+  let sum=0, sum2=0, n=0;
+  for (let y=1;y<h-1;y++) for (let xx=1;xx<w-1;xx++){
+    const i=y*w+xx;
+    const l = -4*g[i] + g[i-1] + g[i+1] + g[i-w] + g[i+w];
+    sum+=l; sum2+=l*l; n++;
+  }
+  return n ? (sum2/n - (sum/n)**2) : 0;
+}
+
+function tile(it, i){
+  const b=[];
+  if (it.media==='video') b.push(`<span class="b vid">▶ VIDEO</span>`);
+  // 9:16 is the Tier 3 (Shorts/TikTok) gate and applies to VIDEO only. Stills go out at
+  // 4:5 or 1.91:1, so badging a photograph 9:16 is noise.
+  if (it.media==='video' && it.v916) b.push(`<span class="b v916">9:16</span>`);
+  if (it.media==='video' && it.grab) b.push(`<span class="b grab">GRAB</span>`);
+  if (it.ismissing) b.push(`<span class="b cloud">☁ iCloud</span>`);
+  if (it.likelihood != null) {
+    const L = it.likelihood;
+    const c = L >= .66 ? 'rgba(61,220,132,.9)' : L >= .33 ? 'rgba(255,176,32,.9)' : 'rgba(255,92,92,.9)';
+    b.push(`<span class="b" style="background:${c};color:#0b0b0d">${L.toFixed(2)}</span>`);
+  }
+  return `<div class="tile" data-i="${i}">
+    <img src="${it.dir}/${encodeURIComponent(it.file)}" loading="lazy">
+    <div class="badges">${b.join('')}</div><div class="mark"></div>
+    <div class="lab"><span>${it.time}</span><span>${it.w}×${it.h}</span>
+      <span class="sharp" data-sharp="${it.uuid}">·</span></div>
+  </div>`;
+}
+
+function render(){
+  const shows = [...new Set(ITEMS.map(i=>i.show))];
+  $('#main').innerHTML = shows.map(s=>{
+    const its = ITEMS.filter(i=>i.show===s), f = its[0];
+    return `<section><div class="shead">
+      <span class="date">${s}</span><span class="artist">${f.artist}</span>
+      <span class="venue">${f.venue}</span><span class="cnt" id="c-${s}"></span></div>
+      <div class="grid">${its.map(i=>tile(i, ITEMS.indexOf(i))).join('')}</div></section>`;
+  }).join('');
+  document.querySelectorAll('.tile').forEach(t=>{
+    t.onclick = () => { cursor = +t.dataset.i; paint(); openLB(); };
+    const img = t.querySelector('img');
+    const go = () => { try{
+      const s = sharpness(img);
+      const el = t.querySelector('.sharp');
+      el.textContent = s.toFixed(0);
+      el.style.color = s>140 ? 'var(--keep)' : s>55 ? 'var(--warn)' : 'var(--reject)';
+      ITEMS[+t.dataset.i].sharp = s;
+    }catch(e){} };
+    img.complete ? go() : img.addEventListener('load', go);
+  });
+  paint();
+}
+
+let FILTER = 'all', SHOW = 'all';
+function visible(it){
+  const v = (V[it.uuid]||{}).verdict || 'none';
+  return (FILTER==='all' || v===FILTER) && (SHOW==='all' || it.show===SHOW);
+}
+function applyVisibility(){
+  document.querySelectorAll('section').forEach(sec=>{
+    const any = [...sec.querySelectorAll('.tile')].some(t=>t.style.display!=='none');
+    sec.style.display = any ? '' : 'none';
+  });
+}
+function paint(){
+  document.querySelectorAll('.tile').forEach(t=>{
+    const it = ITEMS[+t.dataset.i], v = (V[it.uuid]||{}).verdict;
+    t.style.display = visible(it) ? '' : 'none';
+    t.classList.toggle('cursor', +t.dataset.i===cursor);
+    t.classList.toggle('keep', v==='keep');
+    t.classList.toggle('reject', v==='reject');
+    t.querySelector('.mark').textContent = v==='keep' ? '✓' : v==='reject' ? '✕' : '';
+  });
+  const keep = Object.values(V).filter(x=>x.verdict==='keep').length;
+  const rej  = Object.values(V).filter(x=>x.verdict==='reject').length;
+  $('#t-keep').textContent = keep; $('#t-rej').textContent = rej;
+  $('#t-left').textContent = ITEMS.length - keep - rej;
+  $('#prog').style.width = (100*(keep+rej)/ITEMS.length)+'%';
+  [...new Set(ITEMS.map(i=>i.show))].forEach(s=>{
+    const its = ITEMS.filter(i=>i.show===s);
+    const done = its.filter(i=>(V[i.uuid]||{}).verdict).length;
+    const k = its.filter(i=>(V[i.uuid]||{}).verdict==='keep').length;
+    const el = $('#c-'+s); if (el) el.textContent = `${done}/${its.length} judged · ${k} keep`;
+  });
+  if ($('#lb').classList.contains('open')) fillLB();
+}
+
+function openLB(){ $('#lb').classList.add('open'); fillLB(); }
+function closeLB(){ $('#lb').classList.remove('open'); $('#stage').innerHTML=''; }
+
+function fillLB(){
+  const it = ITEMS[cursor], v = V[it.uuid]||{};
+  if (it.media === 'video') {
+    // Probe first: a <video> pointed at a 404 spins indefinitely rather than erroring,
+    // which reads as "loading" forever. Check the file exists before offering a player.
+    $('#stage').innerHTML = `<div style="color:var(--dim);font-size:13px">checking clip…</div>`;
+    fetch(`vid/${it.uuid}.mov`, {method:'HEAD'}).then(r => {
+      if (!r.ok) throw new Error('missing');
+      $('#stage').innerHTML =
+        `<video src="vid/${it.uuid}.mov" controls autoplay muted playsinline></video>`;
+    }).catch(() => {
+      $('#stage').innerHTML =
+        `<div style="text-align:center">
+           <div style="color:var(--warn);font-size:13px;margin-bottom:10px">
+             clip not downloaded yet — poster frame only</div>
+           <img src="${it.dir}/${encodeURIComponent(it.file)}" style="max-height:60vh">
+         </div>`;
+    });
+  } else {
+    $('#stage').innerHTML = `<img src="${it.dir}/${encodeURIComponent(it.file)}">`;
+  }
+  const who = v.artist || null;
+  $('#lb-artist').textContent = who || it.headliner;
+  $('#lb-artist').style.color = who ? 'var(--ink)' : 'var(--warn)';
+  const lineupNote = it.openers.length
+    ? ` · ${it.openers.length} opener${it.openers.length>1?'s':''} played` : '';
+  $('#lb-sub').textContent = `${it.venue} · ${it.show} · ${it.time}${lineupNote}`;
+  $('#lb-artistpick').innerHTML = it.lineup.map((a,i)=>
+    `<button data-a="${a.replace(/"/g,'&quot;')}" class="${who===a?'on':''}">${a}${i===0?' <span style="opacity:.5">· headliner</span>':''}</button>`
+  ).join('') + `<button data-a="__unknown__" class="${who==='__unknown__'?'on':''}" style="opacity:.7">Can't tell</button>`;
+  $('#lb-artistpick').querySelectorAll('button').forEach(b=>b.onclick=()=>setArtist(b.dataset.a));
+  $('#lb-artistnote').textContent = it.openers.length
+    ? 'This show had more than one act. An unattributed frame defaults to the headliner, which may be wrong — pick who is actually in it.'
+    : 'Single-act show, so the headliner is the only candidate.';
+  const grab = it.media==='video' ? (it.grab ? 'yes' : 'NO — too small') : '—';
+  $('#lb-meta').innerHTML = `
+    <dt>Type</dt><dd>${it.media}</dd>
+    <dt>Dimensions</dt><dd>${it.w}×${it.h} ${it.orientation}</dd>
+    ${it.media==='video'
+      ? `<dt>9:16 (Tier 3)</dt><dd style="color:${it.v916?'var(--keep)':'var(--reject)'}">${it.v916?'passes':'fails'}</dd>`
+      : ''}
+    <dt>Frame-grab</dt><dd>${grab}</dd>
+    <dt>Sharpness (ours)</dt><dd>${it.sharp!=null?it.sharp.toFixed(0):'—'}</dd>
+    <dt>File</dt><dd>${it.original_filename||'—'}</dd>
+    <dt>People detected</dt><dd>${it.persons.length||'none'}</dd>
+    <dt>Original</dt><dd style="color:${it.ismissing?'var(--warn)':'var(--keep)'}">${it.ismissing?'in iCloud':'on disk'}</dd>`;
+  $('#lb-bars').innerHTML = !it.scores ? '<div style="color:var(--dim);font-size:12px">no scores (all-zero ScoreInfo)</div>'
+    : SHOW_FIELDS.map(f=>{
+      const val = it.scores[f]; if (val==null) return '';
+      const pct = Math.min(50, Math.abs(val)*50);
+      const left = val>=0 ? 50 : 50-pct;
+      const col = BIASED.has(f) ? 'var(--warn)' : val>=0 ? 'var(--keep)' : 'var(--reject)';
+      return `<div class="bar"><span class="k ${BIASED.has(f)?'biased':''}">${f.replace(/_/g,' ')}</span>
+        <span class="t"><i style="left:${left}%;width:${pct}%;background:${col}"></i></span>
+        <span class="v">${val.toFixed(2)}</span></div>`;
+    }).join('');
+  $('#lb-note').textContent = 'Amber fields reward frames containing people (+0.34 / +0.18 measured). '
+    + 'Rank on overall and curation only. sharply_focused_subject is inert here — trust the computed sharpness.';
+  $('#v-keep').classList.toggle('on', v.verdict==='keep');
+  $('#v-rej').classList.toggle('on', v.verdict==='reject');
+  document.querySelectorAll('#lb-subj button').forEach(b=>b.classList.toggle('on', b.dataset.s===v.subject));
+}
+
+function setVerdict(val){
+  const it = ITEMS[cursor];
+  hist.push({uuid:it.uuid, prev:{...(V[it.uuid]||{})}});
+  const cur = V[it.uuid]||{};
+  cur.verdict = cur.verdict===val ? null : val;
+  /* Clearing BOTH matters. Dropping only the subject left a rejected frame still carrying
+     an artist — a credit attached to something the owner had just said not to publish.
+     Worse, re-judging it then cycled from that stale value, so the first press of ↓ landed
+     on the SECOND act rather than the first, and silently mis-credited the frame. */
+  if (cur.verdict!=='keep'){ delete cur.subject; delete cur.artist; }
+  V[it.uuid] = cur;
+  post('/verdict', {uuid:it.uuid, ...cur});
+  paint();
+  /* Advance on REJECT only. A reject is finished — nothing else is ever recorded about
+     it. A keeper is not: it still needs a subject and, on 48% of shows, which act is in
+     the frame. Advancing here made attribution unreachable by keyboard, because
+     setSubject/setArtist then acted on the NEXT asset and refused, since that one has no
+     keep verdict yet. Staying on a keeper is what the different-artist rule needs. */
+  if (cur.verdict === 'reject') advance(1);
+}
+function setArtist(a){
+  const it = ITEMS[cursor], cur = V[it.uuid]||{};
+  if (cur.verdict!=='keep') return toast('attribution applies to keepers only');
+  hist.push({uuid:it.uuid, prev:{...cur}});
+  cur.artist = cur.artist===a ? null : a;
+  V[it.uuid] = cur; post('/verdict', {uuid:it.uuid, ...cur}); paint();
+}
+function setSubject(s){
+  const it = ITEMS[cursor], cur = V[it.uuid]||{};
+  if (cur.verdict!=='keep') return toast('subject applies to keepers only');
+  hist.push({uuid:it.uuid, prev:{...cur}});
+  cur.subject = cur.subject===s ? null : s;
+  V[it.uuid] = cur; post('/verdict', {uuid:it.uuid, ...cur}); paint();
+}
+function undo(){
+  const h = hist.pop(); if (!h) return toast('nothing to undo');
+  V[h.uuid] = h.prev; post('/verdict', {uuid:h.uuid, ...h.prev});
+  cursor = ITEMS.findIndex(i=>i.uuid===h.uuid); paint(); scrollTo_(); toast('undone');
+}
+function advance(d){
+  cursor = Math.max(0, Math.min(ITEMS.length-1, cursor+d)); paint(); scrollTo_();
+}
+function scrollTo_(){
+  const t = document.querySelector(`.tile[data-i="${cursor}"]`);
+  if (t) t.scrollIntoView({block:'center', behavior:'smooth'});
+}
+let tt; function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show');
+  clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),1600); }
+
+document.addEventListener('keydown', e=>{
+  const k = e.key.toLowerCase();
+  if (k==='escape') return closeLB();
+  if (k==='arrowright'||k==='j'){ advance(1); e.preventDefault(); }
+  else if (k==='arrowleft'||k==='k'){ advance(-1); e.preventDefault(); }
+  else if (k==='1') setVerdict('keep');
+  else if (k==='0') setVerdict('reject');
+  else if (k===' '){ $('#lb').classList.contains('open') ? closeLB() : openLB(); e.preventDefault(); }
+  else if (k==='u') undo();
+  else if (k==='arrowup'){ cycleArtist(-1); e.preventDefault(); }
+  else if (k==='arrowdown'){ cycleArtist(1); e.preventDefault(); }
+  else if (SUBJ[k]) setSubject(SUBJ[k]);
+});
+
+/* Which act is in the frame is the one judgement the pipeline will not make for you, so
+   it has to be reachable without leaving the keyboard. Cycling beats a key per act: the
+   archive has bills of up to six. */
+function cycleArtist(d){
+  const it = ITEMS[cursor], cur = V[it.uuid]||{};
+  if (cur.verdict!=='keep') return toast('attribution applies to keepers only');
+  const opts = [...it.lineup, '__unknown__'];
+  const i = opts.indexOf(cur.artist);
+  const next = i < 0 ? (d > 0 ? 0 : opts.length - 1) : (i + d + opts.length) % opts.length;
+  setArtist(opts[next]);
+}
+document.querySelectorAll('.filters .f').forEach(b=>b.onclick=()=>{
+  FILTER = b.dataset.f;
+  document.querySelectorAll('.filters .f').forEach(x=>x.classList.toggle('on', x===b));
+  paint(); applyVisibility();
+});
+$('#v-keep').onclick = ()=>setVerdict('keep');
+$('#v-rej').onclick  = ()=>setVerdict('reject');
+document.querySelectorAll('#lb-subj button').forEach(b=>b.onclick=()=>setSubject(b.dataset.s));
+$('#lb').onclick = e => { if (e.target.id==='lb'||e.target.id==='stage') closeLB(); };
+
+/* One show per run, so the header names it — a review page that does not say which
+   night it is showing is one mis-file away from crediting the wrong concert. */
+function nameShow(items){
+  if (!items.length) return;
+  const it = items[0];
+  $('#brand-show').textContent = `· ${it.show} · ${it.headliner} @ ${it.venue}`;
+  document.title = `${it.show} — ${it.headliner}`;
+}
+
+Promise.all([
+  fetch('all.json').then(r=>r.json()),
+  fetch('/verdicts').then(r=>r.json()).catch(()=>({})),
+]).then(([m, v]) => {
+  ITEMS = m; V = v||{}; delete V.__calibration__;
+  nameShow(ITEMS);
+  const shows = [...new Set(ITEMS.map(i=>i.show))].sort();
+  $('#showsel').innerHTML =
+    `<option value="all">All ${ITEMS.length} assets · ${shows.length} shows</option>` +
+    shows.map(sd=>{
+      const its = ITEMS.filter(i=>i.show===sd);
+      return `<option value="${sd}">${sd} · ${its[0].artist} (${its.length})</option>`;
+    }).join('');
+  $('#showsel').onchange = e => { SHOW = e.target.value; paint(); applyVisibility(); };
+  render(); applyVisibility();
+});
+</script>

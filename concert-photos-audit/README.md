@@ -66,10 +66,10 @@ iCloud on demand.
     bin/.osxphotos-raw    locally built osxphotos, ignored (see BUILD.txt)
     probes/               one-off investigation scripts and their logs
     evaluation/           dated evaluation runs — previews, clips, frames, verdicts
+    review/               per-show review runs — previews + verdicts + selects.json
     extract_frames.sh     ffmpeg frame sampling
     frame_score.py        Laplacian variance of one frame
     pick_frames.py        frame selection with an enforced minimum gap
-    review_server.py      localhost review server
 
 ## Safety
 

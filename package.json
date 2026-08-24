@@ -76,7 +76,8 @@
     "typecheck:all": "npm run typecheck && npm run typecheck:scripts",
     "sync:aliases": "tsx scripts/sync-artist-aliases.ts",
     "media:prep": "tsx scripts/media/prep.ts",
-    "media:ingest": "tsx scripts/media/ingest.ts"
+    "media:ingest": "tsx scripts/media/ingest.ts",
+    "media:review": "tsx scripts/media/review.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

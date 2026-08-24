@@ -33,6 +33,7 @@ import sharp from 'sharp'
 import { findShow, folderPlan, loadConcerts, VENUE_FOLDER, isValidDate, type Act, type Concert } from './show'
 import { explainMatchFailure, isHeroName, matchFolder, parseDerivedFrom } from './match'
 import { exifDateToIso, findMetadataLeaks, readExifSummary } from './exif'
+import { crossCheckSelects, loadSelects } from './selects'
 import {
   alreadyIngested,
   assetFilename,
@@ -45,6 +46,7 @@ import {
 } from './media-index'
 
 const INBOX = resolve('concert-photos-audit/inbox')
+const REVIEW_ROOT = resolve('concert-photos-audit/review')
 const SHOWS_DIR = resolve('public/images/shows')
 const URL_PREFIX = '/images/shows'
 
@@ -65,7 +67,10 @@ interface Report {
   errors: string[]
   warnings: string[]
   bytesWritten: number
+  /** Every source file seen, as `<folder>/<filename>`, for the selects cross-check. */
+  arrivals: Array<{ folder: string; filename: string }>
 }
+
 
 const sha256 = (buf: Buffer) => createHash('sha256').update(buf).digest('hex')
 
@@ -249,6 +254,11 @@ async function ingestDate(dateDir: string, concerts: Concert[], index: MediaInde
   const { acts } = folderPlan(concert)
   const showNotes = readNotes(dateDir)
 
+  // PASS ONE — see what arrived, without writing anything. The placement check has to
+  // happen before any file is committed: writing a wrongly-credited asset and reporting it
+  // afterwards leaves it in media-index.json, and the next run skips it as already done.
+  const folders: Array<{ entry: string; match: ReturnType<typeof matchFolder>; files: string[] }> = []
+
   for (const entry of entriesOf(dateDir)) {
     const path = join(dateDir, entry)
     if (!statSync(path).isDirectory()) {
@@ -277,12 +287,37 @@ async function ingestDate(dateDir: string, concerts: Concert[], index: MediaInde
       report.skipped.push({ path: `${date}/${entry}/`, reason: `empty — no personal media for ${who}, falls back to tier 2` })
       continue
     }
+    folders.push({ entry, match, files })
+  }
 
+  const arrivals = folders.flatMap((f) =>
+    f.files.map((filename) => ({
+      folder: f.match.kind === 'venue' ? VENUE_FOLDER : (f.match as { act: Act }).act.slug,
+      filename,
+    }))
+  )
+  for (const a of arrivals) report.arrivals.push(a)
+
+  // If this show was reviewed, hold the filing up against what was decided there BEFORE
+  // anything is written. `selects.json` is the only record of who is actually in a frame.
+  let refuse = new Set<string>()
+  const selects = loadSelects(join(REVIEW_ROOT, date))
+  if (selects) refuse = crossCheckSelects(selects, arrivals, report)
+
+  // PASS TWO — write what survived.
+  for (const { entry, match, files } of folders) {
+    if (match.kind !== 'act' && match.kind !== 'venue') continue
+    const path = join(dateDir, entry)
+    const folder = match.kind === 'venue' ? VENUE_FOLDER : match.act.slug
     // `hero.*` / `01.*` first so it claims the lowest ordinal; the rest keep filename order.
     const ordered = [...files].sort((a, b) => Number(isHeroName(b)) - Number(isHeroName(a)) || a.localeCompare(b))
     const folderNotes = readNotes(path) ?? showNotes
 
     for (const f of ordered) {
+      if (refuse.has(`${folder}/${f}`)) {
+        report.skipped.push({ path: `${date}/${entry}/${f}`, reason: 'refused — attributed to a different act in the review' })
+        continue
+      }
       await ingestFile({
         file: join(path, f),
         date,
@@ -309,7 +344,7 @@ async function main(): Promise<void> {
 
   const concerts = loadConcerts()
   const index = loadIndex()
-  const report: Report = { taken: [], skipped: [], errors: [], warnings: [], bytesWritten: 0 }
+  const report: Report = { taken: [], skipped: [], errors: [], warnings: [], bytesWritten: 0, arrivals: [] }
 
   const dates = entriesOf(INBOX).filter((d) => statSync(join(INBOX, d)).isDirectory())
   const targets = only ? dates.filter((d) => d === only) : dates

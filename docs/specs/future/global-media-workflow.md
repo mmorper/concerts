@@ -1,6 +1,6 @@
 # Media Workflow — prep, review, ingest
 
-**Status:** `media:prep` **BUILT** (#378) · `media:ingest` **BUILT** (#379) · `gaps` specified, not built
+**Status:** `media:prep` (#378) · `media:review` (#389) · `media:ingest` (#379) — **all BUILT** · `gaps` (#380) specified, not built
 **Priority:** High — this is how personal media actually reaches a post
 **Depends on:** #348 (audit tool, partially built) · Feeds #339, #340, #342
 **Rules:** `.claude/skills/media-pipeline/SKILL.md` — read that first; it is operative
@@ -24,15 +24,25 @@ editor it does not want.
 ## The loop
 
 ```
-1.  npm run media:prep 2026-06-04     scaffold folders + worksheet
-2.  review in Photos.app              human, out-of-process
-3.  export selects into the inbox     human, drag and drop
-4.  npm run media:ingest              strip, name, index, report
-5.  commit                            selects + media-index.json
+1.  npm run media:prep 2026-06-04              scaffold folders + worksheet
+2a. npm run media:review 2026-06-04            STILLS — judge + attribute, keyboard
+2b. Photos.app                                 VIDEO  — a poster frame cannot be judged
+3.  npm run media:review 2026-06-04 --finish   write selects.json
+4.  export the keepers into the inbox          human, drag and drop
+5.  npm run media:ingest 2026-06-04            strip, name, index, CHECK, report
+6.  commit                                     selects + media-index.json
 ```
 
-Only steps 1 and 4 are code. Steps 2 and 3 are deliberately manual — see
-§"Why video is out-of-process" in the skill.
+**⚠️ Corrected 2026-08-24.** An earlier revision of this file collapsed step 2 into
+"review in Photos.app, human, out-of-process", citing §"Why video is out-of-process". That
+generalised the VIDEO rationale to everything, and it is wrong. It sent the owner to
+Photos to triage 58 stills by hand on a show where the review page — listed as built and
+working in the skill the whole time — was the right tool.
+
+**Stills and video are different problems.** Video needs playback. Stills need a fast
+keyboard verdict with both ranking factors and the night's lineup on screen. And triaging
+stills in Photos makes the attribution call **twice** — once when judging, again when
+choosing a folder — which is precisely where a mis-credit enters.
 
 ---
 
@@ -113,9 +123,32 @@ run when the library is unavailable.
 
 ---
 
+## `media:review <date>` — judge the stills, and record who is in them
+
+Exports the previews Photos already holds (never originals — 42 of 58 assets for
+2026-06-04 are iCloud-only, and fetching those needs `--download-missing`, which drives
+Photos over AppleScript and wants an Automation permission this project has declined
+twice). Serves `review-page.html` from localhost; every verdict lands on disk as it is
+made, so an interrupted review resumes where it stopped.
+
+**Attribution is captured here**, at the moment of judgement, because that is when the
+owner is looking at the photograph and actually knows which act is in it. `--finish` writes
+`selects.json`: keepers only, each resolved against that night's lineup, grouped by the
+folder it belongs in, with iCloud originals flagged. A keeper with no act named is listed
+as unattributed and **never placed** — 89 of 184 shows have openers, so defaulting to the
+headliner is fabricated attribution on half the archive.
+
 ## `media:ingest` — accept results back
 
 Reads `concert-photos-audit/inbox/`, and for each date folder:
+
+**Two inputs, both real.** The inbox is how DERIVED files arrive — a frame extracted from a
+clip, a trimmed clip, a crop — because those have no UUID in the library and can only come
+back as files. `selects.json` is how the review's DECISIONS arrive. When a show has both,
+the selects are the answer key: **a file whose folder disagrees with the attribution it was
+given in the review is refused, not written.** Ingest sees only a folder, so this is the
+one stage that can catch a mis-credit.
+
 
 1. **Folder → concert.** All 184 dates are unique, so the mapping is exact. Not in
    `concerts.json` → error, never a guess.
@@ -236,6 +269,10 @@ marquee, one performer frame, the stub. It front-loads the marquee, the scarcest
 
 ## Revision History
 
+- **2026-08-24:** `media:review` built and shipped (#389), and the step-2 error above
+  corrected. Reconciles this file with `concert-photos-audit/README.md`, which said all
+  along that ingest "reads an approved `selects.json`" — both are now true, and which one
+  applies is stated rather than left to be discovered.
 - **2026-08-23 (later still):** `media:ingest` built and shipped (#379). Acceptance ticked
   above, open question 3 answered. Tier 1 now exists as a mechanism — but note that no
   personal photograph has been ingested yet, so the go-live gate on #323 is unchanged until
