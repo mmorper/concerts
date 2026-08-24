@@ -2720,6 +2720,12 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://concerts.morperhaus.org/liner-notes/3-concerts-in-12-days</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://concerts.morperhaus.org/liner-notes/social-distortion-1-4-years-before-born-to-kill</loc>
     <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>

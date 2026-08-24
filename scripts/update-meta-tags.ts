@@ -77,6 +77,60 @@ async function main() {
     console.warn('⚠️  Could not read discography.json, album count will be 0')
   }
 
+  // Read the enrichment outputs whose counts llm.txt quotes.
+  //
+  // These four numbers were prose that NOTHING maintained, while validate-docs checked
+  // them against the live data — so every automated enrichment run that moved a count
+  // left main red until somebody hand-edited the file. Derived here so the refresh that
+  // changes the data also updates the sentence describing it.
+  //
+  // The derivation matches scripts/validate-docs.ts exactly; that script is the checker,
+  // this is the writer, and they must agree.
+  const songAlbumsPath = path.join(__dirname, '..', 'public', 'data', 'song-albums.json')
+  let songAlbumStats: {
+    attributed: number
+    uniquePairs: number
+    day: number
+    month: number
+    year: number
+    tiers: [number, number, number]
+  } | null = null
+  try {
+    const songAlbums = JSON.parse(fs.readFileSync(songAlbumsPath, 'utf-8'))
+    const entries: Array<{ releaseDate?: string }> = Object.values(songAlbums.songs ?? {})
+    const precision = { day: 0, month: 0, year: 0 }
+    for (const entry of entries) {
+      const parts = String(entry?.releaseDate ?? '').split('-').length
+      if (parts === 3) precision.day++
+      else if (parts === 2) precision.month++
+      else precision.year++
+    }
+    songAlbumStats = {
+      attributed: entries.length,
+      // The denominator is the file's own figure: it counts pairs that were LOOKED FOR,
+      // which cannot be recovered from the attributed entries alone.
+      uniquePairs: Number(songAlbums.stats?.uniquePairs ?? 0),
+      // Tier 0 is artists-top-tracks, 1 is MusicBrainz, 2 is iTunes Search.
+      tiers: [
+        Number(songAlbums.stats?.byTier?.['0'] ?? 0),
+        Number(songAlbums.stats?.byTier?.['1'] ?? 0),
+        Number(songAlbums.stats?.byTier?.['2'] ?? 0),
+      ],
+      ...precision,
+    }
+  } catch {
+    console.warn('⚠️  Could not read song-albums.json, its llm.txt stats will be left alone')
+  }
+
+  const albumErasPath = path.join(__dirname, '..', 'public', 'data', 'album-eras.json')
+  let albumErasArtists: number | null = null
+  try {
+    const albumEras = JSON.parse(fs.readFileSync(albumErasPath, 'utf-8'))
+    albumErasArtists = Object.keys(albumEras.artists ?? {}).length
+  } catch {
+    console.warn('⚠️  Could not read album-eras.json, its llm.txt stat will be left alone')
+  }
+
   // Read facts data for llm.txt statistics section
   const factsPath = path.join(__dirname, '..', 'public', 'data', 'facts.json')
   let factsData: FactsData | null = null
@@ -286,7 +340,11 @@ async function main() {
   )
 
   sub('records: concerts', /\*\*Records:\*\* \d+ concerts/, `**Records:** ${concerts} concerts`)
-  sub('records: artists', /\*\*Records:\*\* \d+ artists/, `**Records:** ${artists} artists`)
+  // Anchored to end-of-line on purpose. Unanchored, `**Records:** \d+ artists` also matches
+  // `**Records:** 241 artists — the join ...` further down the file, and .replace() takes
+  // the FIRST match — so the two lines' order was all that kept this from writing the
+  // concert-artist count over the album-eras count.
+  sub('records: artists', /\*\*Records:\*\* \d+ artists$/m, `**Records:** ${artists} artists`)
   sub('records: venues', /\*\*Records:\*\* \d+ venues/, `**Records:** ${venues} venues`)
 
   // The "+" is optional in the pattern precisely because the replacement adds
@@ -311,6 +369,41 @@ async function main() {
     /\*\*Total Content:\*\* \d+ concerts \| \d+ artists \| \d+ venues \| [^|]+ \| \d+-\d+/,
     `**Total Content:** ${concerts} concerts | ${artists} artists | ${venues} venues | ${totalAlbums.toLocaleString()}+ albums | ${startYear}-${endYear}`
   )
+
+  if (songAlbumStats) {
+    const pct = songAlbumStats.uniquePairs
+      ? ((songAlbumStats.attributed / songAlbumStats.uniquePairs) * 100).toFixed(1)
+      : '0.0'
+    sub(
+      'records: song-albums',
+      /\*\*Records:\*\* [\d,]+ of [\d,]+ unique artist\+song pairs \([\d.]+%\)/,
+      `**Records:** ${songAlbumStats.attributed.toLocaleString()} of ` +
+        `${songAlbumStats.uniquePairs.toLocaleString()} unique artist+song pairs (${pct}%)`
+    )
+    sub(
+      'song-albums tier breakdown',
+      /three tiers — `artists-top-tracks\.json` \([\d,]+\), MusicBrainz \([\d,]+\), iTunes Search \([\d,]+\)/,
+      'three tiers — `artists-top-tracks.json` ' +
+        `(${songAlbumStats.tiers[0].toLocaleString()}), ` +
+        `MusicBrainz (${songAlbumStats.tiers[1].toLocaleString()}), ` +
+        `iTunes Search (${songAlbumStats.tiers[2].toLocaleString()})`
+    )
+    sub(
+      'song-albums date precision',
+      /[\d,]+ entries are full dates, [\d,]+ are `YYYY-MM`, [\d,]+ are bare `YYYY`/,
+      `${songAlbumStats.day.toLocaleString()} entries are full dates, ` +
+        `${songAlbumStats.month.toLocaleString()} are \`YYYY-MM\`, ` +
+        `${songAlbumStats.year.toLocaleString()} are bare \`YYYY\``
+    )
+  }
+
+  if (albumErasArtists !== null) {
+    sub(
+      'records: album-eras artists',
+      /\*\*Records:\*\* [\d,]+ artists — the join/,
+      `**Records:** ${albumErasArtists.toLocaleString()} artists — the join`
+    )
+  }
 
   if (llmMisses.length > 0) {
     console.warn(`⚠️  llm.txt: ${llmMisses.length} stat(s) NOT updated — pattern did not match:`)
