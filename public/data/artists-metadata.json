@@ -9,7 +9,7 @@
     "formed": "1980",
     "website": "www.abcmartinfry.com/ABC.html",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:21.282Z"
+    "fetchedAt": "2026-08-24T08:00:22.401Z"
   },
   "awolnation": {
     "name": "AWOLNATION",
@@ -20,14 +20,14 @@
     "formed": "2009",
     "website": "awolnationmusic.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:56.763Z"
+    "fetchedAt": "2026-08-24T07:59:57.870Z"
   },
   "aaron-lee-tasjan": {
     "name": "Aaron Lee Tasjan",
     "image": "https://cdn-images.dzcdn.net/images/artist/f677c8ee24435969d037a527bc9a0d53/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:07.433Z"
+    "fetchedAt": "2026-08-24T08:00:08.592Z"
   },
   "adam-ant": {
     "name": "Adam Ant",
@@ -36,10 +36,9 @@
       "Punk Rock",
       "Rock/Pop"
     ],
-    "formed": null,
     "website": "www.adam-ant.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:14.596Z"
+    "fetchedAt": "2026-08-24T07:58:16.606Z"
   },
   "against-me": {
     "name": "Against Me!",
@@ -51,7 +50,7 @@
     "formed": "1997",
     "website": "againstme.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:42.259Z"
+    "fetchedAt": "2026-08-24T07:59:43.863Z"
   },
   "alison-moyet": {
     "name": "Alison Moyet",
@@ -63,21 +62,21 @@
     "formed": "1984",
     "website": "alisonmoyet.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:54.572Z"
+    "fetchedAt": "2026-08-24T07:58:56.574Z"
   },
   "andrew-tosh": {
     "name": "Andrew Tosh",
     "image": "https://cdn-images.dzcdn.net/images/artist/c6b16bfe7010d7631b49e45323514af1/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:18.660Z"
+    "fetchedAt": "2026-08-24T07:59:20.673Z"
   },
   "andy-stavas": {
     "name": "Andy Stavas",
     "image": "https://cdn-images.dzcdn.net/images/artist/cd46025e21971b34803cedbea147ecb2/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:17.004Z"
+    "fetchedAt": "2026-08-24T08:00:18.181Z"
   },
   "animotion": {
     "name": "Animotion",
@@ -87,9 +86,8 @@
       "Rock/Pop"
     ],
     "formed": "1983",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:08.579Z"
+    "fetchedAt": "2026-08-24T07:59:10.623Z"
   },
   "aswad": {
     "name": "Aswad",
@@ -99,9 +97,8 @@
       "Reggae"
     ],
     "formed": "1975",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:21.253Z"
+    "fetchedAt": "2026-08-24T07:59:23.348Z"
   },
   "bad-religion": {
     "name": "Bad Religion",
@@ -113,7 +110,7 @@
     "formed": "1979",
     "website": "www.badreligion.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:43.566Z"
+    "fetchedAt": "2026-08-24T07:58:45.564Z"
   },
   "bat-fangs": {
     "name": "Bat Fangs",
@@ -122,9 +119,8 @@
       "Pop-Rock"
     ],
     "formed": "2016",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:55.078Z"
+    "fetchedAt": "2026-08-24T07:58:57.073Z"
   },
   "beach-boys": {
     "name": "The Beach Boys",
@@ -136,7 +132,7 @@
     "formed": "1961",
     "website": "thebeachboys.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:21.051Z"
+    "fetchedAt": "2026-08-24T07:58:23.053Z"
   },
   "bear-hands": {
     "name": "Bear Hands",
@@ -148,7 +144,7 @@
     "formed": "2006",
     "website": "bearhandsband.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:08.274Z"
+    "fetchedAt": "2026-08-24T08:00:09.507Z"
   },
   "beastie-boys": {
     "name": "Beastie Boys",
@@ -160,7 +156,7 @@
     "formed": "1979",
     "website": "beastieboys.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:12.079Z"
+    "fetchedAt": "2026-08-24T07:59:14.125Z"
   },
   "berlin": {
     "name": "Berlin",
@@ -170,9 +166,8 @@
       "Rock/Pop"
     ],
     "formed": "1982",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:39.064Z"
+    "fetchedAt": "2026-08-24T07:58:41.057Z"
   },
   "big-audio-dynamite": {
     "name": "Big Audio Dynamite",
@@ -182,9 +177,8 @@
       "Rock/Pop"
     ],
     "formed": "1984",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:32.560Z"
+    "fetchedAt": "2026-08-24T07:58:34.556Z"
   },
   "billy-joel": {
     "name": "Billy Joel",
@@ -196,7 +190,7 @@
     "formed": "1964",
     "website": "www.billyjoel.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:30.256Z"
+    "fetchedAt": "2026-08-24T07:59:32.360Z"
   },
   "black-rebel-motorcycle-club": {
     "name": "Black Rebel Motorcycle Club",
@@ -208,7 +202,7 @@
     "formed": "1998",
     "website": "www.blackrebelmotorcycleclub.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:05.274Z"
+    "fetchedAt": "2026-08-24T08:00:06.374Z"
   },
   "blancmange": {
     "name": "Blancmange",
@@ -218,9 +212,8 @@
       "Rock/Pop"
     ],
     "formed": "1979",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:20.549Z"
+    "fetchedAt": "2026-08-24T07:58:22.551Z"
   },
   "blondie": {
     "name": "Blondie",
@@ -232,14 +225,14 @@
     "formed": "1974",
     "website": "www.blondie.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:54.073Z"
+    "fetchedAt": "2026-08-24T07:58:56.073Z"
   },
   "blood-or-whiskey": {
     "name": "Blood or Whiskey",
     "image": "https://cdn-images.dzcdn.net/images/artist/c852e05f5116a503eb705ca8d52f2e5d/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:48.922Z"
+    "fetchedAt": "2026-08-24T07:59:50.577Z"
   },
   "book-of-love": {
     "name": "Book of Love",
@@ -248,9 +241,8 @@
       "Synthpop",
       "Rock/Pop"
     ],
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:09.077Z"
+    "fetchedAt": "2026-08-24T07:59:11.125Z"
   },
   "bow-wow-wow": {
     "name": "Bow Wow Wow",
@@ -262,7 +254,7 @@
     "formed": "1980",
     "website": "www.bowwowwow.org",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:31.753Z"
+    "fetchedAt": "2026-08-24T07:59:33.855Z"
   },
   "bowling-for-soup": {
     "name": "Bowling for Soup",
@@ -274,7 +266,7 @@
     "formed": "1994",
     "website": "www.bowlingforsoup.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:41.257Z"
+    "fetchedAt": "2026-08-24T07:59:42.863Z"
   },
   "boy-harsher": {
     "name": "Boy Harsher",
@@ -283,9 +275,8 @@
       "Pop-Punk"
     ],
     "formed": "2013",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:13.780Z"
+    "fetchedAt": "2026-08-24T08:00:14.897Z"
   },
   "brian-setzer": {
     "name": "Brian Setzer",
@@ -297,7 +288,7 @@
     "formed": "1979",
     "website": "www.briansetzer.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:04.577Z"
+    "fetchedAt": "2026-08-24T07:59:06.620Z"
   },
   "bruce-springsteen": {
     "name": "Bruce Springsteen",
@@ -309,14 +300,14 @@
     "formed": "1969",
     "website": "brucespringsteen.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:19.551Z"
+    "fetchedAt": "2026-08-24T07:58:21.553Z"
   },
   "bryan-mcpherson": {
     "name": "Bryan McPherson",
     "image": "https://cdn-images.dzcdn.net/images/artist/5d593f906eb8ef73de06f1d5e129828b/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:49.405Z"
+    "fetchedAt": "2026-08-24T07:59:51.074Z"
   },
   "buddy-guy": {
     "name": "Buddy Guy",
@@ -328,7 +319,7 @@
     "formed": "1953",
     "website": "www.buddyguy.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:50.264Z"
+    "fetchedAt": "2026-08-24T07:59:51.865Z"
   },
   "burning-spear": {
     "name": "Burning Spear",
@@ -337,25 +328,22 @@
       "Reggae",
       "Reggae"
     ],
-    "formed": null,
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:29.058Z"
+    "fetchedAt": "2026-08-24T07:58:31.051Z"
   },
   "carlene-davis": {
     "name": "Carlene Davis",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/s9ayfd1666446192.jpg",
     "genres": [],
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:18.752Z"
+    "fetchedAt": "2026-08-24T07:59:20.820Z"
   },
   "chaka-kahn": {
     "name": "Chaka Kahn",
     "image": "https://cdn-images.dzcdn.net/images/artist/8ecc6be8fca55d0d5cf7698e076f5993/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:10.740Z"
+    "fetchedAt": "2026-08-24T07:59:12.874Z"
   },
   "chris-isaak": {
     "name": "Chris Isaak",
@@ -367,21 +355,21 @@
     "formed": "1956",
     "website": "www.chrisisaak.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:13.580Z"
+    "fetchedAt": "2026-08-24T07:59:15.633Z"
   },
   "chris-murray": {
     "name": "Chris Murray",
     "image": "https://cdn-images.dzcdn.net/images/artist/bf175c78f095602c679c404a18f6e33e/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:47.460Z"
+    "fetchedAt": "2026-08-24T07:59:49.150Z"
   },
   "chris-shiflett": {
     "name": "Chris Shiflett",
     "image": "https://cdn-images.dzcdn.net/images/artist/57e8d3afe859ba4e0336a102252ce8c7/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:14.934Z"
+    "fetchedAt": "2026-08-24T08:00:16.085Z"
   },
   "cold-war-kids": {
     "name": "Cold War Kids",
@@ -391,9 +379,8 @@
       "Rock/Pop"
     ],
     "formed": "2004",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:05.078Z"
+    "fetchedAt": "2026-08-24T07:59:07.119Z"
   },
   "colin-hay": {
     "name": "Colin Hay",
@@ -405,14 +392,14 @@
     "formed": "1978",
     "website": "www.myspace.com/colinhay",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:55.572Z"
+    "fetchedAt": "2026-08-24T07:58:57.573Z"
   },
   "common-sense": {
-    "name": "Common Sense",
-    "image": "https://cdn-images.dzcdn.net/images/artist/a139ccc921d2bd7cee1eef7194b3dfa8/500x500-000000-80-0-0.jpg",
+    "name": "Common Sense (GR)",
+    "image": "https://cdn-images.dzcdn.net/images/artist/68b245f679370cbf24e5c242816b6fcb/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:19.998Z"
+    "fetchedAt": "2026-08-24T08:00:21.182Z"
   },
   "crowded-house": {
     "name": "Crowded House",
@@ -424,7 +411,7 @@
     "formed": "1985",
     "website": "www.crowdedhouse.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:03.074Z"
+    "fetchedAt": "2026-08-24T07:59:05.118Z"
   },
   "crown-of-thornz": {
     "name": "Crown of Thornz",
@@ -443,21 +430,21 @@
     "formed": "1981",
     "website": "boygeorgeandcultureclub.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:00.076Z"
+    "fetchedAt": "2026-08-24T07:59:02.076Z"
   },
   "dan-potthast": {
     "name": "Dan Potthast",
     "image": "https://cdn-images.dzcdn.net/images/artist/5b88d16d8472af06493e37379792ea9c/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:46.895Z"
+    "fetchedAt": "2026-08-24T07:59:48.589Z"
   },
   "danger-painters": {
     "name": "Danger Painters",
     "image": "https://cdn-images.dzcdn.net/images/artist/32062162d767c9622938e5621188f152/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:58.941Z"
+    "fetchedAt": "2026-08-24T08:00:00.155Z"
   },
   "danny-elfman": {
     "name": "Danny Elfman",
@@ -467,9 +454,8 @@
       "Rock/Pop"
     ],
     "formed": "1972",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:02.074Z"
+    "fetchedAt": "2026-08-24T07:59:04.074Z"
   },
   "dashboard-confessional": {
     "name": "Dashboard Confessional",
@@ -481,7 +467,7 @@
     "formed": "1999",
     "website": "www.dashboardconfessional.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:32.254Z"
+    "fetchedAt": "2026-08-24T07:59:34.362Z"
   },
   "david-byrne": {
     "name": "David Byrne",
@@ -493,7 +479,7 @@
     "formed": "1970",
     "website": "journal.davidbyrne.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:07.078Z"
+    "fetchedAt": "2026-08-24T07:59:09.137Z"
   },
   "dennis-brown": {
     "name": "Dennis Brown",
@@ -502,9 +488,8 @@
       "Reggae"
     ],
     "formed": "1957",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:19.252Z"
+    "fetchedAt": "2026-08-24T07:59:21.321Z"
   },
   "depeche-mode": {
     "name": "Depeche Mode",
@@ -516,7 +501,7 @@
     "formed": "1980",
     "website": "www.depechemode.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:16.551Z"
+    "fetchedAt": "2026-08-24T07:58:18.552Z"
   },
   "devo": {
     "name": "DEVO",
@@ -528,7 +513,7 @@
     "formed": "1972",
     "website": "www.clubdevo.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:38.064Z"
+    "fetchedAt": "2026-08-24T07:58:40.053Z"
   },
   "dirty-heads": {
     "name": "Dirty Heads",
@@ -538,9 +523,8 @@
       "Reggae"
     ],
     "formed": "2006",
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:51.570Z"
+    "fetchedAt": "2026-08-24T07:58:53.569Z"
   },
   "dirty-vegas": {
     "name": "Dirty Vegas",
@@ -550,34 +534,31 @@
       "Electronic"
     ],
     "formed": "2001",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:36.256Z"
+    "fetchedAt": "2026-08-24T07:59:38.360Z"
   },
   "dr-sick": {
     "name": "Dr. Sick",
     "image": "https://cdn-images.dzcdn.net/images/artist/5036ca7e4ea852df30ed09073086fd6f/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:02.851Z"
+    "fetchedAt": "2026-08-24T07:59:04.972Z"
   },
   "drag-the-river": {
     "name": "Drag the River",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xrqyvv1389849126.jpg",
     "genres": [],
     "formed": "1996",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:55.776Z"
+    "fetchedAt": "2026-08-24T07:59:56.868Z"
   },
   "dramarama": {
     "name": "Dramarama",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wwsypq1585324062.jpg",
     "genres": [],
     "formed": "1982",
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:32.756Z"
+    "fetchedAt": "2026-08-24T07:59:34.858Z"
   },
   "dropkick-murphys": {
     "name": "Dropkick Murphys",
@@ -589,7 +570,7 @@
     "formed": "1996",
     "website": "www.dropkickmurphys.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:46.568Z"
+    "fetchedAt": "2026-08-24T07:58:48.566Z"
   },
   "duran-duran": {
     "name": "Duran Duran",
@@ -601,7 +582,7 @@
     "formed": "1978",
     "website": "www.duranduran.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:23.054Z"
+    "fetchedAt": "2026-08-24T07:58:25.052Z"
   },
   "emf": {
     "name": "EMF",
@@ -613,7 +594,7 @@
     "formed": "1989",
     "website": "www.emf-theband.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:16.583Z"
+    "fetchedAt": "2026-08-24T07:59:18.632Z"
   },
   "earthgang": {
     "name": "EARTHGANG",
@@ -624,7 +605,7 @@
     "formed": "2008",
     "website": "www.earthgang.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:12.293Z"
+    "fetchedAt": "2026-08-24T08:00:13.394Z"
   },
   "echo-and-the-bunnymen": {
     "name": "Echo & The Bunnymen",
@@ -636,14 +617,14 @@
     "formed": "1978",
     "website": "www.bunnymen.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:16.047Z"
+    "fetchedAt": "2026-08-24T07:58:18.046Z"
   },
   "eek-a-mouse": {
     "name": "Eeka Mouse",
     "image": "https://cdn-images.dzcdn.net/images/artist/0c187a72c8d2770b654c5620ad24b813/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:21.908Z"
+    "fetchedAt": "2026-08-24T07:59:24.094Z"
   },
   "el-ten-eleven": {
     "name": "El Ten Eleven",
@@ -653,9 +634,8 @@
       "Rock/Pop"
     ],
     "formed": "2004",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:11.776Z"
+    "fetchedAt": "2026-08-24T08:00:12.894Z"
   },
   "elton-john": {
     "name": "Elton John",
@@ -667,7 +647,7 @@
     "formed": "1969",
     "website": "eltonjohn.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:35.062Z"
+    "fetchedAt": "2026-08-24T07:58:37.054Z"
   },
   "the-english-beat": {
     "name": "The Beat",
@@ -679,7 +659,7 @@
     "formed": "1979",
     "website": "www.thebeatofficial.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:41.063Z"
+    "fetchedAt": "2026-08-24T07:58:43.058Z"
   },
   "erasure": {
     "name": "Erasure",
@@ -691,16 +671,15 @@
     "formed": "1985",
     "website": "erasureinfo.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:26.056Z"
+    "fetchedAt": "2026-08-24T07:58:28.050Z"
   },
   "fear": {
     "name": "Fear",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vstwsr1389870115.jpg",
     "genres": [],
     "formed": "1977",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:06.274Z"
+    "fetchedAt": "2026-08-24T08:00:07.378Z"
   },
   "fishbone": {
     "name": "Fishbone",
@@ -709,16 +688,15 @@
       "Ska Punk"
     ],
     "formed": "1979",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:39.255Z"
+    "fetchedAt": "2026-08-24T07:59:40.861Z"
   },
   "flock-of-seagulls": {
     "name": "Flock Of Seagulls",
     "image": "https://cdn-images.dzcdn.net/images/artist/51ef6bce3ca57436d521fa61fab84136/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:37.409Z"
+    "fetchedAt": "2026-08-24T07:59:39.583Z"
   },
   "foals": {
     "name": "Foals",
@@ -730,7 +708,7 @@
     "formed": "2005",
     "website": "www.foals.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:56.574Z"
+    "fetchedAt": "2026-08-24T07:58:58.573Z"
   },
   "foo-fighters": {
     "name": "Foo Fighters",
@@ -740,9 +718,8 @@
       "Rock/Pop"
     ],
     "formed": "1994",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:51.073Z"
+    "fetchedAt": "2026-08-24T07:58:53.069Z"
   },
   "fountains-of-wayne": {
     "name": "Fountains of Wayne",
@@ -752,9 +729,8 @@
       "Rock/Pop"
     ],
     "formed": "1996",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:33.254Z"
+    "fetchedAt": "2026-08-24T07:59:35.359Z"
   },
   "future-islands": {
     "name": "Future Islands",
@@ -765,7 +741,7 @@
     "formed": "2006",
     "website": "www.future-islands.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:59.072Z"
+    "fetchedAt": "2026-08-24T07:59:01.074Z"
   },
   "garbage": {
     "name": "Garbage",
@@ -775,9 +751,8 @@
       "Rock/Pop"
     ],
     "formed": "1994",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:37.063Z"
+    "fetchedAt": "2026-08-24T07:58:39.055Z"
   },
   "gary-clark-jr": {
     "name": "Gary Clark, Jr.",
@@ -786,10 +761,8 @@
       "Rock",
       "Rock/Pop"
     ],
-    "formed": null,
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:50.766Z"
+    "fetchedAt": "2026-08-24T07:59:52.364Z"
   },
   "gary-numan": {
     "name": "Gary Numan",
@@ -801,7 +774,7 @@
     "formed": "1977",
     "website": "www.garynuman.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:47.569Z"
+    "fetchedAt": "2026-08-24T07:58:49.564Z"
   },
   "george-michael": {
     "name": "George Michael",
@@ -813,21 +786,21 @@
     "formed": "1977",
     "website": "georgemichael.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:25.056Z"
+    "fetchedAt": "2026-08-24T07:58:27.054Z"
   },
   "haircut-100": {
     "name": "Haircut 100",
     "image": "https://cdn-images.dzcdn.net/images/artist/9e3bb6c725d7da62cf50d71cb4d5dc8f/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:21.911Z"
+    "fetchedAt": "2026-08-24T08:00:23.150Z"
   },
   "hatcham-social": {
     "name": "Hatcham Social",
     "image": "https://cdn-images.dzcdn.net/images/artist/97a9a65ced29f730f6f27f46361d5fdd/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:39.886Z"
+    "fetchedAt": "2026-08-24T07:59:41.594Z"
   },
   "heart": {
     "name": "Heart",
@@ -839,7 +812,7 @@
     "formed": "1973",
     "website": "www.heart-music.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:51.266Z"
+    "fetchedAt": "2026-08-24T07:59:52.866Z"
   },
   "heaven-17": {
     "name": "Heaven 17",
@@ -851,7 +824,7 @@
     "formed": "1980",
     "website": "www.heaven17.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:01.575Z"
+    "fetchedAt": "2026-08-24T07:59:03.578Z"
   },
   "hoodoo-gurus": {
     "name": "Hoodoo Gurus",
@@ -861,9 +834,8 @@
       "Rock/Pop"
     ],
     "formed": "1982",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:12.580Z"
+    "fetchedAt": "2026-08-24T07:59:14.626Z"
   },
   "hot-hot-heat": {
     "name": "Hot Hot Heat",
@@ -874,14 +846,14 @@
     "formed": "1999",
     "website": "hothotheat.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:33.754Z"
+    "fetchedAt": "2026-08-24T07:59:35.857Z"
   },
   "hot-rod-lincoln": {
     "name": "Hot Rod Lincoln",
     "image": "https://cdn-images.dzcdn.net/images/artist/5bdcc36e176e03dfae88c536c734e968/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:38.397Z"
+    "fetchedAt": "2026-08-24T07:59:40.676Z"
   },
   "howard-jones": {
     "name": "Howard Jones",
@@ -891,9 +863,8 @@
       "Rock/Pop"
     ],
     "formed": "1955",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:17.549Z"
+    "fetchedAt": "2026-08-24T07:58:19.549Z"
   },
   "husbands": {
     "name": "Husbands",
@@ -902,9 +873,8 @@
       "Pop"
     ],
     "formed": "2013",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:22.282Z"
+    "fetchedAt": "2026-08-24T08:00:23.397Z"
   },
   "ian-mcculloch": {
     "name": "Ian McCulloch",
@@ -913,16 +883,15 @@
       "Pop-Punk"
     ],
     "formed": "1989",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:22.252Z"
+    "fetchedAt": "2026-08-24T07:59:24.347Z"
   },
   "inner-wave": {
     "name": "Inner Wave",
     "image": "https://cdn-images.dzcdn.net/images/artist/b2b06b4671ef99fe4c04125b27774f9c/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:14.467Z"
+    "fetchedAt": "2026-08-24T08:00:15.640Z"
   },
   "interpol": {
     "name": "Interpol",
@@ -934,7 +903,7 @@
     "formed": "1997",
     "website": "www.interpolnyc.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:34.254Z"
+    "fetchedAt": "2026-08-24T07:59:36.357Z"
   },
   "jesus-jones": {
     "name": "Jesus Jones",
@@ -946,7 +915,7 @@
     "formed": "1988",
     "website": "www.jesusjones.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:26.556Z"
+    "fetchedAt": "2026-08-24T07:58:28.551Z"
   },
   "jimmy-buffett": {
     "name": "Jimmy Buffett",
@@ -958,7 +927,7 @@
     "formed": "1965",
     "website": "www.margaritaville.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:28.558Z"
+    "fetchedAt": "2026-08-24T07:58:30.550Z"
   },
   "joe-jackson": {
     "name": "Joe Jackson",
@@ -970,25 +939,23 @@
     "formed": "1970",
     "website": "joejackson.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:36.062Z"
+    "fetchedAt": "2026-08-24T07:58:38.056Z"
   },
   "john-doe": {
     "name": "John Doe",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xvqwyq1390363385.jpg",
     "genres": [],
     "formed": "1954",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:28.257Z"
+    "fetchedAt": "2026-08-24T07:59:30.352Z"
   },
   "johnny-gill": {
     "name": "Johnny Gill",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rusyws1348092428.jpg",
     "genres": [],
     "formed": "1966",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:17.085Z"
+    "fetchedAt": "2026-08-24T07:59:19.135Z"
   },
   "kasabian": {
     "name": "Kasabian",
@@ -1000,7 +967,7 @@
     "formed": "1999",
     "website": "www.kasabian.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:03.575Z"
+    "fetchedAt": "2026-08-24T07:59:05.619Z"
   },
   "katrina-and-the-waves": {
     "name": "Katrina and the Waves",
@@ -1010,9 +977,8 @@
       "Rock/Pop"
     ],
     "formed": "1981",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:11.077Z"
+    "fetchedAt": "2026-08-24T07:59:13.126Z"
   },
   "keith-sweat": {
     "name": "Keith Sweat",
@@ -1024,16 +990,15 @@
     "formed": "1984",
     "website": "www.thesweathotel.com/main.html",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:17.585Z"
+    "fetchedAt": "2026-08-24T07:59:19.633Z"
   },
   "kelley-stoltz": {
     "name": "Kelley Stoltz",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/uurtyy1418893329.jpg",
     "genres": [],
     "formed": "1971",
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:40.256Z"
+    "fetchedAt": "2026-08-24T07:59:41.860Z"
   },
   "kelly-lee-owens": {
     "name": "Kelly Lee Owens",
@@ -1041,23 +1006,22 @@
     "genres": [
       "Electronic"
     ],
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:15.279Z"
+    "fetchedAt": "2026-08-24T08:00:16.395Z"
   },
   "kid-congo-powers": {
     "name": "Kid Congo Powers",
     "image": "https://cdn-images.dzcdn.net/images/artist/96f6e475c8559974aa5df210d8bb7c3f/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:59.383Z"
+    "fetchedAt": "2026-08-24T08:00:00.612Z"
   },
   "kiev": {
     "name": "KIEV",
     "image": "https://cdn-images.dzcdn.net/images/artist/9c05926af9e95375b0d6b46139e5d4ea/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:09.137Z"
+    "fetchedAt": "2026-08-24T08:00:10.244Z"
   },
   "kings-of-leon": {
     "name": "Kings of Leon",
@@ -1067,16 +1031,15 @@
       "Rock/Pop"
     ],
     "formed": "1999",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:34.757Z"
+    "fetchedAt": "2026-08-24T07:59:36.861Z"
   },
   "klangphonics": {
     "name": "Klangphonics",
     "image": "https://cdn-images.dzcdn.net/images/artist/7b03ca0cda5923080a791c54c3f86b9e/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:05.700Z"
+    "fetchedAt": "2026-08-24T07:59:07.808Z"
   },
   "kraftwerk": {
     "name": "Kraftwerk",
@@ -1088,7 +1051,7 @@
     "formed": "1970",
     "website": "www.kraftwerk.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:48.069Z"
+    "fetchedAt": "2026-08-24T07:58:50.066Z"
   },
   "ll-cool-j": {
     "name": "LL Cool J",
@@ -1100,7 +1063,7 @@
     "formed": "1968",
     "website": "llcoolj.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:52.267Z"
+    "fetchedAt": "2026-08-24T07:59:53.867Z"
   },
   "lee-rocker": {
     "name": "Lee Rocker",
@@ -1109,10 +1072,8 @@
       "Rockabilly",
       "Rock/Pop"
     ],
-    "formed": null,
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:39.564Z"
+    "fetchedAt": "2026-08-24T07:58:41.558Z"
   },
   "lenny-kravitz": {
     "name": "Lenny Kravitz",
@@ -1124,16 +1085,15 @@
     "formed": "1988",
     "website": "www.lennykravitz.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:58.075Z"
+    "fetchedAt": "2026-08-24T07:59:00.075Z"
   },
   "liam-finn": {
     "name": "Liam Finn",
-    "image": "https://www.theaudiodb.com/images/media/artist/thumb/xqfc3x1781695151.jpg",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xqfc3x1781695151.jpg",
     "genres": [],
     "formed": "1983",
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:15.780Z"
+    "fetchedAt": "2026-08-24T08:00:16.897Z"
   },
   "lindi-ortega": {
     "name": "Lindi Ortega",
@@ -1145,14 +1105,14 @@
     "formed": "2000",
     "website": "lindiortega.ca",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:42.759Z"
+    "fetchedAt": "2026-08-24T07:59:44.365Z"
   },
   "little-lenny": {
     "name": "Little Lenny",
     "image": "https://cdn-images.dzcdn.net/images/artist/1acd1fec0242d31efbc4709b6fbf7011/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:19.948Z"
+    "fetchedAt": "2026-08-24T07:59:22.033Z"
   },
   "living-colour": {
     "name": "Living Colour",
@@ -1164,7 +1124,7 @@
     "formed": "1984",
     "website": "www.livingcolour.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:57.265Z"
+    "fetchedAt": "2026-08-24T07:59:58.372Z"
   },
   "los-lobos": {
     "name": "Los Lobos",
@@ -1174,9 +1134,8 @@
       "Blues"
     ],
     "formed": "1973",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:11.278Z"
+    "fetchedAt": "2026-08-24T08:00:12.395Z"
   },
   "mad-caddies": {
     "name": "Mad Caddies",
@@ -1186,16 +1145,15 @@
       "Rock/Pop"
     ],
     "formed": "1995",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:06.777Z"
+    "fetchedAt": "2026-08-24T08:00:07.877Z"
   },
   "mahones": {
     "name": "Mahones",
     "image": "https://cdn-images.dzcdn.net/images/artist/656fcd723dbe579e7b6d568310633c2c/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:48.539Z"
+    "fetchedAt": "2026-08-24T07:59:50.169Z"
   },
   "marc-almond": {
     "name": "Marc Almond",
@@ -1207,19 +1165,18 @@
     "formed": "1956",
     "website": "www.marcalmond.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:31.256Z"
+    "fetchedAt": "2026-08-24T07:59:33.357Z"
   },
   "masked-intruder": {
     "name": "Masked Intruder",
-    "image": "https://www.theaudiodb.com/images/media/artist/thumb/jnn1qg1781684852.jpg",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/jnn1qg1781684852.jpg",
     "genres": [
       "Pop-Punk",
       "Punk"
     ],
     "formed": "2012",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:09.274Z"
+    "fetchedAt": "2026-08-24T08:00:10.391Z"
   },
   "maxi-priest": {
     "name": "Maxi Priest",
@@ -1231,14 +1188,14 @@
     "formed": "1961",
     "website": "www.maxipriest.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:28.058Z"
+    "fetchedAt": "2026-08-24T07:58:30.050Z"
   },
   "me-not-you": {
     "name": "Me Not You",
     "image": "https://cdn-images.dzcdn.net/images/artist/24e86541bc9f8be3cf5d976bdac7674b/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:03.459Z"
+    "fetchedAt": "2026-08-24T08:00:04.629Z"
   },
   "men-at-work": {
     "name": "Men at Work",
@@ -1248,9 +1205,8 @@
       "Rock/Pop"
     ],
     "formed": "1979",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:17.281Z"
+    "fetchedAt": "2026-08-24T08:00:18.397Z"
   },
   "midge-ure": {
     "name": "Midge Ure",
@@ -1262,7 +1218,7 @@
     "formed": "1953",
     "website": "www.midgeure.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:16.083Z"
+    "fetchedAt": "2026-08-24T07:59:18.130Z"
   },
   "midnight-oil": {
     "name": "Midnight Oil",
@@ -1274,7 +1230,7 @@
     "formed": "1975",
     "website": "www.midnightoil.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:53.071Z"
+    "fetchedAt": "2026-08-24T07:58:55.068Z"
   },
   "mike-ness": {
     "name": "Mike Ness",
@@ -1283,10 +1239,8 @@
       "Blues",
       "Country"
     ],
-    "formed": null,
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:41.563Z"
+    "fetchedAt": "2026-08-24T07:58:43.559Z"
   },
   "mini-mansions": {
     "name": "Mini Mansions",
@@ -1297,14 +1251,14 @@
     "formed": "2009",
     "website": "www.minimansionsmusic.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:49.762Z"
+    "fetchedAt": "2026-08-24T07:59:51.364Z"
   },
   "molchat-doma": {
     "name": "Molchat Doma",
     "image": "https://cdn-images.dzcdn.net/images/artist/1a2c0a157de5dcf5b675f12dc2047a13/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:06.197Z"
+    "fetchedAt": "2026-08-24T07:59:08.323Z"
   },
   "naked-eyes": {
     "name": "Naked Eyes",
@@ -1312,9 +1266,8 @@
     "genres": [
       "Rock/Pop"
     ],
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:00.769Z"
+    "fetchedAt": "2026-08-24T08:00:01.876Z"
   },
   "new-order": {
     "name": "New Order",
@@ -1326,7 +1279,7 @@
     "formed": "1980",
     "website": "www.neworderonline.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:18.553Z"
+    "fetchedAt": "2026-08-24T07:58:20.553Z"
   },
   "nikki-lane": {
     "name": "Nikki Lane",
@@ -1335,9 +1288,8 @@
       "Country",
       "Country"
     ],
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:55.263Z"
+    "fetchedAt": "2026-08-24T07:59:56.370Z"
   },
   "no-doubt": {
     "name": "No Doubt",
@@ -1349,14 +1301,14 @@
     "formed": "1986",
     "website": "www.nodoubt.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:23.555Z"
+    "fetchedAt": "2026-08-24T07:58:25.552Z"
   },
   "omd": {
     "name": "OMD",
     "image": "https://cdn-images.dzcdn.net/images/artist/5008f192a6e9fc1240848c5600555869/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:11.715Z"
+    "fetchedAt": "2026-08-24T07:59:13.896Z"
   },
   "oingo-boingo": {
     "name": "Oingo Boingo",
@@ -1368,14 +1320,14 @@
     "formed": "1995",
     "website": "www.oingoboingo.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:22.551Z"
+    "fetchedAt": "2026-08-24T07:58:24.549Z"
   },
   "pat-dinizio": {
     "name": "Pat Dinizio",
     "image": "https://cdn-images.dzcdn.net/images/artist/9f5c0dce079d83be9d9740e215d3dac6/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:11:33.320Z"
+    "fetchedAt": "2026-08-24T07:58:35.331Z"
   },
   "paul-oakenfold": {
     "name": "Paul Oakenfold",
@@ -1387,7 +1339,7 @@
     "formed": "1980",
     "website": "www.pauloakenfold.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:13.279Z"
+    "fetchedAt": "2026-08-24T08:00:14.398Z"
   },
   "pennywise": {
     "name": "Pennywise",
@@ -1399,7 +1351,7 @@
     "formed": "1988",
     "website": "www.pennywisdom.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:45.761Z"
+    "fetchedAt": "2026-08-24T07:59:47.364Z"
   },
   "pet-shop-boys": {
     "name": "Pet Shop Boys",
@@ -1411,7 +1363,7 @@
     "formed": "1981",
     "website": "petshopboys.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:12.780Z"
+    "fetchedAt": "2026-08-24T08:00:13.897Z"
   },
   "peter-gabriel": {
     "name": "Peter Gabriel",
@@ -1423,7 +1375,7 @@
     "formed": "1967",
     "website": "petergabriel.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:31.061Z"
+    "fetchedAt": "2026-08-24T07:58:33.058Z"
   },
   "peter-hook-and-the-light": {
     "name": "Peter Hook & The Light",
@@ -1433,16 +1385,15 @@
       "Rock/Pop"
     ],
     "formed": "2010",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:00.572Z"
+    "fetchedAt": "2026-08-24T07:59:02.576Z"
   },
   "phox": {
     "name": "Phox",
     "image": "https://cdn-images.dzcdn.net/images/artist/e67d84aaeb76a35a65f35ee1e3c93dea/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:47.986Z"
+    "fetchedAt": "2026-08-24T07:59:49.633Z"
   },
   "polar-bear-club": {
     "name": "Polar Bear Club",
@@ -1452,9 +1403,8 @@
       "Punk"
     ],
     "formed": "2005",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:44.760Z"
+    "fetchedAt": "2026-08-24T07:59:46.365Z"
   },
   "prophets-of-rage": {
     "name": "Prophets of Rage",
@@ -1465,7 +1415,7 @@
     "formed": "2016",
     "website": "prophetsofrage.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:52.071Z"
+    "fetchedAt": "2026-08-24T07:58:54.069Z"
   },
   "public-enemy": {
     "name": "Public Enemy",
@@ -1477,14 +1427,14 @@
     "formed": "1982",
     "website": "publicenemy.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:57.764Z"
+    "fetchedAt": "2026-08-24T07:59:58.871Z"
   },
   "rdgldgrn": {
     "name": "RDGLDGRN",
     "image": "https://cdn-images.dzcdn.net/images/artist/cc1412235a4fc4ca3a8ff0c1d57bfda6/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:54.923Z"
+    "fetchedAt": "2026-08-24T07:59:56.194Z"
   },
   "rancid": {
     "name": "Rancid",
@@ -1496,29 +1446,21 @@
     "formed": "1991",
     "website": "rancidrancid.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:47.067Z"
+    "fetchedAt": "2026-08-24T07:58:49.065Z"
   },
   "rat-boy": {
     "name": "Ratboy",
     "image": "https://cdn-images.dzcdn.net/images/artist/4eced46e84e8631509e9168ac735438a/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:09.963Z"
+    "fetchedAt": "2026-08-24T08:00:11.178Z"
   },
   "rebuilder": {
     "name": "Rebuilder",
     "image": "https://cdn-images.dzcdn.net/images/artist/289da594432bdbb853711b6f8187109a/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:18.952Z"
-  },
-  "richard-cheese-lounge-against-the-machine": {
-    "name": "Richard Cheese & Lounge Against The Machine",
-    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/astmqc1662087221.jpg",
-    "genres": [],
-    "website": null,
-    "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:30.753Z"
+    "fetchedAt": "2026-08-24T08:00:20.232Z"
   },
   "rise-against": {
     "name": "Rise Against",
@@ -1530,7 +1472,7 @@
     "formed": "1999",
     "website": "www.riseagainst.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:40.757Z"
+    "fetchedAt": "2026-08-24T07:59:42.361Z"
   },
   "rob-thomas": {
     "name": "Rob Thomas",
@@ -1542,7 +1484,7 @@
     "formed": "1995",
     "website": "www.robthomasmusic.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:43.063Z"
+    "fetchedAt": "2026-08-24T07:58:45.059Z"
   },
   "royal-blood": {
     "name": "Royal Blood",
@@ -1554,7 +1496,7 @@
     "formed": "2011",
     "website": "royalbloodband.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:50.569Z"
+    "fetchedAt": "2026-08-24T07:58:52.569Z"
   },
   "run-dmc": {
     "name": "Run-D.M.C.",
@@ -1564,9 +1506,8 @@
       "Urban/R&B"
     ],
     "formed": "1982",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:22.050Z"
+    "fetchedAt": "2026-08-24T07:58:24.051Z"
   },
   "save-ferris": {
     "name": "Save Ferris",
@@ -1577,7 +1518,7 @@
     "formed": "1995",
     "website": "www.saveferrisofficial.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:18.279Z"
+    "fetchedAt": "2026-08-24T08:00:19.402Z"
   },
   "school-of-fish": {
     "name": "School of Fish",
@@ -1587,9 +1528,8 @@
       "Rock/Pop"
     ],
     "formed": "1990",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:22.751Z"
+    "fetchedAt": "2026-08-24T07:59:24.846Z"
   },
   "sextile": {
     "name": "Sextile",
@@ -1599,18 +1539,16 @@
       "Punk"
     ],
     "formed": "2015",
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:22.783Z"
+    "fetchedAt": "2026-08-24T08:00:23.898Z"
   },
   "shinehead": {
     "name": "Shinehead",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/quxuxt1593729534.jpg",
     "genres": [],
     "formed": "1962",
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:20.251Z"
+    "fetchedAt": "2026-08-24T07:59:22.322Z"
   },
   "sleigh-bells": {
     "name": "Sleigh Bells",
@@ -1622,7 +1560,7 @@
     "formed": "2008",
     "website": "reignofterror.tv",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:41.757Z"
+    "fetchedAt": "2026-08-24T07:59:43.365Z"
   },
   "smash-mouth": {
     "name": "Smash Mouth",
@@ -1634,7 +1572,7 @@
     "formed": "1994",
     "website": "www.smashmouth.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:17.781Z"
+    "fetchedAt": "2026-08-24T08:00:18.896Z"
   },
   "snarky-puppy": {
     "name": "Snarky Puppy",
@@ -1642,9 +1580,8 @@
     "genres": [
       "Jazz"
     ],
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:48.571Z"
+    "fetchedAt": "2026-08-24T07:58:50.565Z"
   },
   "snuff": {
     "name": "Snuff",
@@ -1656,7 +1593,7 @@
     "formed": "1986",
     "website": "www.fatwreck.com/band/index/17",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:05.774Z"
+    "fetchedAt": "2026-08-24T08:00:06.874Z"
   },
   "social-distortion": {
     "name": "Social Distortion",
@@ -1668,14 +1605,14 @@
     "formed": "1979",
     "website": "www.socialdistortion.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:27.058Z"
+    "fetchedAt": "2026-08-24T07:58:29.052Z"
   },
   "solemn-sun": {
     "name": "Solemn Sun",
     "image": "https://cdn-images.dzcdn.net/images/artist/96252222fa434ccf0a74b60a8ca1946d/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:43.440Z"
+    "fetchedAt": "2026-08-24T07:59:45.126Z"
   },
   "squeeze": {
     "name": "Squeeze",
@@ -1685,9 +1622,8 @@
       "Rock/Pop"
     ],
     "formed": "1974",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:45.064Z"
+    "fetchedAt": "2026-08-24T07:58:47.061Z"
   },
   "sting": {
     "name": "Sting",
@@ -1699,7 +1635,7 @@
     "formed": "1985",
     "website": "sting.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:29.560Z"
+    "fetchedAt": "2026-08-24T07:58:31.554Z"
   },
   "stray-cats": {
     "name": "Stray Cats",
@@ -1711,7 +1647,7 @@
     "formed": "1980",
     "website": "straycats.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:40.064Z"
+    "fetchedAt": "2026-08-24T07:58:42.056Z"
   },
   "streetlight-manifesto": {
     "name": "Streetlight Manifesto",
@@ -1723,7 +1659,7 @@
     "formed": "2002",
     "website": "streetlightmanifesto.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:49.569Z"
+    "fetchedAt": "2026-08-24T07:58:51.566Z"
   },
   "stryper": {
     "name": "Stryper",
@@ -1735,7 +1671,7 @@
     "formed": "1983",
     "website": "www.stryper.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:17.049Z"
+    "fetchedAt": "2026-08-24T07:58:19.049Z"
   },
   "suicidal-tendencies": {
     "name": "Suicidal Tendencies",
@@ -1747,7 +1683,7 @@
     "formed": "1982",
     "website": "www.suicidaltendencies.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:03.774Z"
+    "fetchedAt": "2026-08-24T08:00:04.874Z"
   },
   "t-s-o-l": {
     "name": "T.S.O.L.",
@@ -1756,16 +1692,15 @@
       "Punk Rock"
     ],
     "formed": "1979",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:04.775Z"
+    "fetchedAt": "2026-08-24T08:00:05.874Z"
   },
   "team-band": {
     "name": "Team Band",
     "image": "https://cdn-images.dzcdn.net/images/artist/80334d3e0e21b8f076d5304714067fae/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:21.075Z"
+    "fetchedAt": "2026-08-24T07:59:23.200Z"
   },
   "tears-for-fears": {
     "name": "Tears for Fears",
@@ -1775,9 +1710,8 @@
       "Rock/Pop"
     ],
     "formed": "1981",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:18.050Z"
+    "fetchedAt": "2026-08-24T07:58:20.049Z"
   },
   "the-alarm": {
     "name": "The Alarm",
@@ -1789,7 +1723,7 @@
     "formed": "1981",
     "website": "www.thealarm.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:20.049Z"
+    "fetchedAt": "2026-08-24T07:58:22.050Z"
   },
   "the-art-of-noise": {
     "name": "Art of Noise",
@@ -1801,7 +1735,7 @@
     "formed": "1983",
     "website": "www.theartofnoiseonline.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:21.551Z"
+    "fetchedAt": "2026-08-24T07:58:23.550Z"
   },
   "the-black-keys": {
     "name": "The Black Keys",
@@ -1813,7 +1747,7 @@
     "formed": "2001",
     "website": "www.theblackkeys.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:06.578Z"
+    "fetchedAt": "2026-08-24T07:59:08.623Z"
   },
   "the-blasters": {
     "name": "The Blasters",
@@ -1822,9 +1756,8 @@
       "Rockabilly"
     ],
     "formed": "1978",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:10.776Z"
+    "fetchedAt": "2026-08-24T08:00:11.894Z"
   },
   "the-bronx": {
     "name": "The Bronx",
@@ -1836,7 +1769,7 @@
     "formed": "2002",
     "website": "thebronxxx.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:44.263Z"
+    "fetchedAt": "2026-08-24T07:59:45.864Z"
   },
   "the-cult": {
     "name": "The Cult",
@@ -1848,7 +1781,7 @@
     "formed": "1983",
     "website": "www.thecult.us",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:46.067Z"
+    "fetchedAt": "2026-08-24T07:58:48.064Z"
   },
   "the-cure": {
     "name": "The Cure",
@@ -1860,7 +1793,7 @@
     "formed": "1977",
     "website": "www.thecure.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:36.561Z"
+    "fetchedAt": "2026-08-24T07:58:38.555Z"
   },
   "the-dollyrots": {
     "name": "The Dollyrots",
@@ -1871,7 +1804,7 @@
     "formed": "2001",
     "website": "www.dollyrots.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:44.063Z"
+    "fetchedAt": "2026-08-24T07:58:46.061Z"
   },
   "the-fixx": {
     "name": "The Fixx",
@@ -1883,7 +1816,7 @@
     "formed": "1980",
     "website": "www.thefixx.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:14.079Z"
+    "fetchedAt": "2026-08-24T07:59:16.129Z"
   },
   "the-go-go-s": {
     "name": "The Go-Go's",
@@ -1895,7 +1828,7 @@
     "formed": "1978",
     "website": "www.gogos.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:44.564Z"
+    "fetchedAt": "2026-08-24T07:58:46.560Z"
   },
   "the-head-and-the-heart": {
     "name": "The Head and the Heart",
@@ -1907,7 +1840,7 @@
     "formed": "2009",
     "website": "www.theheadandtheheart.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:50.068Z"
+    "fetchedAt": "2026-08-24T07:58:52.068Z"
   },
   "the-human-league": {
     "name": "The Human League",
@@ -1917,9 +1850,8 @@
       "Rock/Pop"
     ],
     "formed": "1977",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:35.562Z"
+    "fetchedAt": "2026-08-24T07:58:37.556Z"
   },
   "the-interrupters": {
     "name": "The Interrupters",
@@ -1930,23 +1862,22 @@
     "formed": "2011",
     "website": "https://www.wearetheinterrupters.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:57.072Z"
+    "fetchedAt": "2026-08-24T07:58:59.073Z"
   },
   "the-messthetics": {
     "name": "The Messthetics",
     "image": "https://cdn-images.dzcdn.net/images/artist/15cc61c46491dc3a65ab386b2da08d02/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:58.412Z"
+    "fetchedAt": "2026-08-24T07:59:59.578Z"
   },
   "the-motels": {
     "name": "The Motels",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/uuxqpr1367898205.jpg",
     "genres": [],
     "formed": "1975",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:00.268Z"
+    "fetchedAt": "2026-08-24T08:00:01.375Z"
   },
   "the-nylons": {
     "name": "The Nylons",
@@ -1955,9 +1886,8 @@
       "Pop"
     ],
     "formed": "1978",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:14.581Z"
+    "fetchedAt": "2026-08-24T07:59:16.628Z"
   },
   "the-offspring": {
     "name": "The Offspring",
@@ -1969,21 +1899,21 @@
     "formed": "1984",
     "website": "www.offspring.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:49.071Z"
+    "fetchedAt": "2026-08-24T07:58:51.066Z"
   },
   "the-paladins": {
     "name": "The Paladins",
     "image": "https://cdn-images.dzcdn.net/images/artist/fcef284e1aa9cabe0fbf502b4f8f485b/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:03.053Z"
+    "fetchedAt": "2026-08-24T08:00:04.151Z"
   },
   "the-polecats": {
     "name": "The Polecats",
     "image": "https://cdn-images.dzcdn.net/images/artist/a9e43c09807942e386a812d421d8495d/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:02.499Z"
+    "fetchedAt": "2026-08-24T08:00:03.651Z"
   },
   "the-psychedelic-furs": {
     "name": "The Psychedelic Furs",
@@ -1995,14 +1925,7 @@
     "formed": "1978",
     "website": "www.thepsychedelicfurs.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:38.754Z"
-  },
-  "the-reflex": {
-    "name": "The Reflex",
-    "image": "https://cdn-images.dzcdn.net/images/artist/2696e0fa5d4ab132e709b842ad0fb74f/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:08.239Z"
+    "fetchedAt": "2026-08-24T07:59:37.360Z"
   },
   "the-roots": {
     "name": "The Roots",
@@ -2014,7 +1937,7 @@
     "formed": "1993",
     "website": "theroots.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:52.571Z"
+    "fetchedAt": "2026-08-24T07:58:54.570Z"
   },
   "the-skints": {
     "name": "The Skints",
@@ -2023,9 +1946,8 @@
       "Punk Rock"
     ],
     "formed": "2005",
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:53.570Z"
+    "fetchedAt": "2026-08-24T07:58:55.571Z"
   },
   "the-smithereens": {
     "name": "The Smithereens",
@@ -2036,7 +1958,7 @@
     "formed": "1980",
     "website": "officialsmithereens.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:30.558Z"
+    "fetchedAt": "2026-08-24T07:58:32.552Z"
   },
   "the-struts": {
     "name": "The Struts",
@@ -2048,7 +1970,7 @@
     "formed": "2012",
     "website": "www.thestruts.com/home",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:59.768Z"
+    "fetchedAt": "2026-08-24T08:00:00.875Z"
   },
   "the-tubes": {
     "name": "The Tubes",
@@ -2060,7 +1982,7 @@
     "formed": "1972",
     "website": "The Tubes are a San Francisco-based rock band, whose 1975 debut album included the hit single, \"White Punks on Dope\". During its first fifteen years or so, the ban",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:38.563Z"
+    "fetchedAt": "2026-08-24T07:58:40.554Z"
   },
   "the-twilight-sad": {
     "name": "The Twilight Sad",
@@ -2072,14 +1994,14 @@
     "formed": "2003",
     "website": "www.thetwilightsad.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:16.280Z"
+    "fetchedAt": "2026-08-24T08:00:17.398Z"
   },
   "the-untouchables": {
     "name": "The Untouchables",
     "image": "https://cdn-images.dzcdn.net/images/artist/609c7d71009c69a037fc52154b14a107/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:01.445Z"
+    "fetchedAt": "2026-08-24T08:00:02.682Z"
   },
   "thomas-dolby": {
     "name": "Thomas Dolby",
@@ -2088,10 +2010,9 @@
       "New Wave",
       "Rock/Pop"
     ],
-    "formed": null,
     "website": "www.thomasdolby.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:15.081Z"
+    "fetchedAt": "2026-08-24T07:59:17.129Z"
   },
   "thompson-twins": {
     "name": "Thompson Twins",
@@ -2101,9 +2022,8 @@
       "Rock/Pop"
     ],
     "formed": "1977",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:15.045Z"
+    "fetchedAt": "2026-08-24T07:58:17.048Z"
   },
   "tone-loc": {
     "name": "Tone-Lōc",
@@ -2113,9 +2033,8 @@
       "Urban/R&B"
     ],
     "formed": "1989",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:25.555Z"
+    "fetchedAt": "2026-08-24T07:58:27.551Z"
   },
   "torres": {
     "name": "TORRES",
@@ -2126,7 +2045,7 @@
     "formed": "2012",
     "website": "torrestorrestorres.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:56.264Z"
+    "fetchedAt": "2026-08-24T07:59:57.369Z"
   },
   "transplants": {
     "name": "Transplants",
@@ -2138,15 +2057,14 @@
     "formed": "1999",
     "website": "thetransplants.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:45.259Z"
+    "fetchedAt": "2026-08-24T07:59:46.865Z"
   },
   "trouble-funk": {
     "name": "Trouble Funk",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/sqqvuq1523791613.jpg",
     "genres": [],
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:53.264Z"
+    "fetchedAt": "2026-08-24T07:59:54.867Z"
   },
   "u2": {
     "name": "U2",
@@ -2156,9 +2074,8 @@
       "Rock/Pop"
     ],
     "formed": "1976",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:56.075Z"
+    "fetchedAt": "2026-08-24T07:58:58.077Z"
   },
   "ub40": {
     "name": "UB40",
@@ -2170,16 +2087,15 @@
     "formed": "1978",
     "website": "www.ub40.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:24.203Z"
+    "fetchedAt": "2026-08-24T07:58:26.052Z"
   },
   "umphrey-s-mcgee": {
     "name": "Umphrey's McGee",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/umphreys-mcgee-5102299737aa1.jpg",
     "genres": [],
     "formed": "1997",
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:04.075Z"
+    "fetchedAt": "2026-08-24T07:59:06.122Z"
   },
   "violent-femmes": {
     "name": "Violent Femmes",
@@ -2188,9 +2104,8 @@
       "Alternative Rock"
     ],
     "formed": "1980",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:31.559Z"
+    "fetchedAt": "2026-08-24T07:58:33.555Z"
   },
   "voodoo-glow-skulls": {
     "name": "Voodoo Glow Skulls",
@@ -2202,7 +2117,7 @@
     "formed": "1988",
     "website": "www.voodooglowskulls.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:04.274Z"
+    "fetchedAt": "2026-08-24T08:00:05.376Z"
   },
   "wham": {
     "name": "Wham!",
@@ -2212,9 +2127,8 @@
       "Rock/Pop"
     ],
     "formed": "1981",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:19.049Z"
+    "fetchedAt": "2026-08-24T07:58:21.049Z"
   },
   "when-in-rome": {
     "name": "When in Rome",
@@ -2222,9 +2136,8 @@
     "genres": [
       "Rock/Pop"
     ],
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:37.756Z"
+    "fetchedAt": "2026-08-24T07:59:39.859Z"
   },
   "wire": {
     "name": "Wire",
@@ -2236,7 +2149,7 @@
     "formed": "1976",
     "website": "pinkflag.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:15.581Z"
+    "fetchedAt": "2026-08-24T07:59:17.632Z"
   },
   "x": {
     "name": "X",
@@ -2246,16 +2159,15 @@
       "Rock/Pop"
     ],
     "formed": "1977",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:59.573Z"
+    "fetchedAt": "2026-08-24T07:59:01.573Z"
   },
   "yates-mckendree": {
     "name": "Yates McKendree",
     "image": "https://cdn-images.dzcdn.net/images/artist/024d782adc17439dff3620e9e3db350c/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:19.430Z"
+    "fetchedAt": "2026-08-24T08:00:20.617Z"
   },
   "yaz": {
     "name": "Yazoo",
@@ -2267,7 +2179,7 @@
     "formed": "1982",
     "website": "yazooinfo.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:40.565Z"
+    "fetchedAt": "2026-08-24T07:58:42.559Z"
   },
   "ziggy-marley": {
     "name": "Ziggy Marley",
@@ -2275,10 +2187,8 @@
     "genres": [
       "Reggae"
     ],
-    "formed": null,
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:24.554Z"
+    "fetchedAt": "2026-08-24T07:58:26.552Z"
   },
   "cleopatrick": {
     "name": "cleopatrick",
@@ -2287,9 +2197,8 @@
       "Unknown"
     ],
     "formed": "2015",
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:10.276Z"
+    "fetchedAt": "2026-08-24T08:00:11.393Z"
   },
   "siouxsie-and-the-banshees": {
     "name": "Siouxsie and the Banshees",
@@ -2301,7 +2210,7 @@
     "formed": "1976",
     "website": "www.siouxsieandthebanshees.co.uk",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:30.058Z"
+    "fetchedAt": "2026-08-24T07:58:32.052Z"
   },
   "the-brian-setzer-orchestra": {
     "name": "The Brian Setzer Orchestra",
@@ -2313,7 +2222,7 @@
     "formed": "1990",
     "website": "www.briansetzer.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:32.067Z"
+    "fetchedAt": "2026-08-24T07:58:34.054Z"
   },
   "red-hot-chili-peppers": {
     "name": "Red Hot Chili Peppers",
@@ -2323,17 +2232,15 @@
       "Rock/Pop"
     ],
     "formed": "1983",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:45.569Z"
+    "fetchedAt": "2026-08-24T07:58:47.567Z"
   },
   "bandits-of-the-acoustic-revolution": {
     "name": "Bandits of the Acoustic Revolution",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xxpqsy1507572945.jpg",
     "genres": [],
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:57.571Z"
+    "fetchedAt": "2026-08-24T07:58:59.573Z"
   },
   "the-aquabats": {
     "name": "The Aquabats!",
@@ -2345,7 +2252,7 @@
     "formed": "1994",
     "website": "theaquabats.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:58.573Z"
+    "fetchedAt": "2026-08-24T07:59:00.575Z"
   },
   "gorillaz": {
     "name": "Gorillaz",
@@ -2355,9 +2262,8 @@
       "Rock/Pop"
     ],
     "formed": "1999",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:01.075Z"
+    "fetchedAt": "2026-08-24T07:59:03.075Z"
   },
   "billy-idol": {
     "name": "Billy Idol",
@@ -2369,7 +2275,7 @@
     "formed": "1976",
     "website": "billyidol.net",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:15.548Z"
+    "fetchedAt": "2026-08-24T07:58:17.547Z"
   },
   "joe-satriani": {
     "name": "Joe Satriani",
@@ -2381,7 +2287,7 @@
     "formed": "1978",
     "website": "www.satriani.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:37.567Z"
+    "fetchedAt": "2026-08-24T07:58:39.555Z"
   },
   "bell-biv-devoe": {
     "name": "Bell Biv DeVoe",
@@ -2393,14 +2299,14 @@
     "formed": "1989",
     "website": "www.bellbivdevoe.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:27.559Z"
+    "fetchedAt": "2026-08-24T07:58:29.551Z"
   },
   "alien-fashion-show": {
     "name": "Alien Fashion Show",
     "image": "https://cdn-images.dzcdn.net/images/artist/e54862f5a83b43c28aea04e590c840e7/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:11:33.694Z"
+    "fetchedAt": "2026-08-24T07:58:35.758Z"
   },
   "a-certain-ratio": {
     "name": "A Certain Ratio",
@@ -2412,18 +2318,17 @@
     "formed": "1977",
     "website": "https://www.acrmcr.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:09.578Z"
+    "fetchedAt": "2026-08-24T07:59:11.623Z"
   },
   "abecedarians": {
     "name": "Abecedarians",
-    "image": "https://www.theaudiodb.com/images/media/artist/thumb/6pwxxo1781697300.jpg",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/6pwxxo1781697300.jpg",
     "genres": [
       "Post-Punk"
     ],
     "formed": "1983",
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:10.077Z"
+    "fetchedAt": "2026-08-24T07:59:12.125Z"
   },
   "inner-circle": {
     "name": "Inner Circle",
@@ -2435,15 +2340,14 @@
     "formed": "1968",
     "website": "www.badboysofreggae.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:23.751Z"
+    "fetchedAt": "2026-08-24T07:59:25.848Z"
   },
   "jah-wobble-s-invaders-of-the-heart": {
     "name": "Jah Wobble's Invaders of the Heart",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/sqywrv1366374270.jpg",
     "genres": [],
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:24.251Z"
+    "fetchedAt": "2026-08-24T07:59:26.348Z"
   },
   "james": {
     "name": "James",
@@ -2455,28 +2359,26 @@
     "formed": "1982",
     "website": "www.wearejames.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:24.753Z"
+    "fetchedAt": "2026-08-24T07:59:26.852Z"
   },
   "p-m-dawn": {
     "name": "P.M. Dawn",
-    "image": "https://www.theaudiodb.com/images/media/artist/thumb/g24pu41780534544.jpg",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/g24pu41780534544.jpg",
     "genres": [
       "R&B",
       "Urban/R&B"
     ],
     "formed": "1988",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:25.253Z"
+    "fetchedAt": "2026-08-24T07:59:27.352Z"
   },
   "sheila-chandra": {
     "name": "Sheila Chandra",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/upypwu1373144910.jpg",
     "genres": [],
     "formed": "1965",
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:25.753Z"
+    "fetchedAt": "2026-08-24T07:59:27.852Z"
   },
   "sin-ad-o-connor": {
     "name": "Sinéad O'Connor",
@@ -2488,21 +2390,21 @@
     "formed": "1987",
     "website": "www.sineadoconnor.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:26.255Z"
+    "fetchedAt": "2026-08-24T07:59:28.353Z"
   },
   "terem-quartet": {
     "name": "Terem Quartet",
     "image": "https://cdn-images.dzcdn.net/images/artist/91f25089985fe858f56166b4017abf0e/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:27.386Z"
+    "fetchedAt": "2026-08-24T07:59:29.663Z"
   },
   "the-drummers-of-burundi": {
     "name": "The Drummers Of Burundi",
     "image": "https://cdn-images.dzcdn.net/images/artist/0f840abdcf0a0cf4f22a58197085f876/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:27.885Z"
+    "fetchedAt": "2026-08-24T07:59:30.114Z"
   },
   "eric-johnson": {
     "name": "Eric Johnson",
@@ -2514,7 +2416,7 @@
     "formed": "1969",
     "website": "www.ericjohnson.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:36.756Z"
+    "fetchedAt": "2026-08-24T07:59:38.859Z"
   },
   "soft-cell": {
     "name": "Soft Cell",
@@ -2524,9 +2426,8 @@
       "Rock/Pop"
     ],
     "formed": "1980",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:23.284Z"
+    "fetchedAt": "2026-08-24T08:00:24.399Z"
   },
   "nile-rodgers": {
     "name": "Nile Rodgers",
@@ -2536,16 +2437,15 @@
       "Urban/R&B"
     ],
     "formed": "1977",
-    "website": "",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:07.578Z"
+    "fetchedAt": "2026-08-24T07:59:09.623Z"
   },
   "blue-plate-special": {
     "name": "Blue Plate Special",
     "image": "https://cdn-images.dzcdn.net/images/artist/a542bde1608bce33b0df3001418ca0d4/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:29.920Z"
+    "fetchedAt": "2026-08-24T07:59:32.086Z"
   },
   "brian-setzer-68-comeback-special": {
     "name": "Brian Setzer",
@@ -2557,7 +2457,7 @@
     "formed": "1979",
     "website": "www.briansetzer.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:34.561Z"
+    "fetchedAt": "2026-08-24T07:58:36.554Z"
   },
   "brian-setzer-and-the-nashvillians": {
     "name": "Brian Setzer",
@@ -2569,7 +2469,7 @@
     "formed": "1979",
     "website": "www.briansetzer.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:11:42.567Z"
+    "fetchedAt": "2026-08-24T07:58:44.561Z"
   },
   "bangles": {
     "name": "The Bangles",
@@ -2581,14 +2481,7 @@
     "formed": "1981",
     "website": "thebangles.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:13.080Z"
-  },
-  "the-wonderstuff": {
-    "name": "The Wonder Stuff",
-    "image": "https://cdn-images.dzcdn.net/images/artist/8ed56b9c8cb67577f09f992e85ea5d3e/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:23.373Z"
+    "fetchedAt": "2026-08-24T07:59:15.128Z"
   },
   "stereo-mc-s": {
     "name": "Stereo MCs",
@@ -2600,42 +2493,35 @@
     "formed": "1985",
     "website": "www.stereomcs.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:26.755Z"
+    "fetchedAt": "2026-08-24T07:59:28.852Z"
   },
   "jane-weidlin": {
     "name": "Jane Wiedlin",
     "image": "https://cdn-images.dzcdn.net/images/artist/9f66d3b720769fc71d42f952ba44d39a/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:28.933Z"
+    "fetchedAt": "2026-08-24T07:59:31.086Z"
   },
   "new-morty-show": {
     "name": "The New Morty Show",
     "image": "https://cdn-images.dzcdn.net/images/artist/8612d0d5f399c2645088e50ed7d94991/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:29.390Z"
+    "fetchedAt": "2026-08-24T07:59:31.541Z"
   },
   "raveonettes": {
     "name": "The Raveonettes",
     "image": "https://cdn-images.dzcdn.net/images/artist/cd110f2861161cdae6afc36cb20a2117/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:35.910Z"
+    "fetchedAt": "2026-08-24T07:59:38.092Z"
   },
   "barroom-heroes": {
     "name": "Bar Room Heroes",
     "image": "https://cdn-images.dzcdn.net/images/artist/d26000eec45e589887d0a37d723fd33c/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:43.915Z"
-  },
-  "vandals": {
-    "name": "The Vandals",
-    "image": "https://cdn-images.dzcdn.net/images/artist/285c6d88b0a7e5e1b387322915251ca6/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-07-20T10:12:46.533Z"
+    "fetchedAt": "2026-08-24T07:59:45.598Z"
   },
   "joan-jett-the-blackhearts": {
     "name": "Joan Jett and the Blackhearts",
@@ -2647,7 +2533,7 @@
     "formed": "1981",
     "website": "joanjett.com/index.html",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:51.763Z"
+    "fetchedAt": "2026-08-24T07:59:53.367Z"
   },
   "dj-z-trip": {
     "name": "Z-Trip",
@@ -2659,42 +2545,29 @@
     "formed": "1989",
     "website": "www.djztrip.com",
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:52.765Z"
-  },
-  "trombone-shorty-orleans-avenue": {
-    "name": "Trombone Shorty",
-    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/yyyywr1377834331.jpg",
-    "genres": [
-      "Funk",
-      "Jazz"
-    ],
-    "formed": "2009",
-    "website": "tromboneshorty.com",
-    "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:12:54.263Z"
+    "fetchedAt": "2026-08-24T07:59:54.365Z"
   },
   "gene-loves-jezabel": {
     "name": "Gene Loves Jezebel",
     "image": "https://cdn-images.dzcdn.net/images/artist/9cb7cbc1ac48b2c35c8d7fd06a7fddad/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:01.961Z"
+    "fetchedAt": "2026-08-24T08:00:03.132Z"
   },
   "wrecks": {
     "name": "Wrecks",
     "image": "https://cdn-images.dzcdn.net/images/artist/695af25fcff4c9d35c8f57601981bf75/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-07-20T10:13:08.025Z"
+    "fetchedAt": "2026-08-24T08:00:09.227Z"
   },
   "smoke-mirrors-sound-system": {
     "name": "smcke",
     "image": "https://r2.theaudiodb.com/images/media/artist/thumb/078so21714596352.jpg",
     "genres": [],
     "formed": "2018",
-    "website": null,
     "source": "theaudiodb",
-    "fetchedAt": "2026-07-20T10:13:20.781Z"
+    "fetchedAt": "2026-08-24T08:00:21.899Z"
   },
   "beck": {
     "name": "Beck",
@@ -2725,5 +2598,61 @@
     "genres": [],
     "source": "deezer",
     "fetchedAt": "2026-08-03T10:42:58.094Z"
+  },
+  "re-flex": {
+    "name": "Re-Flex",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/sxyyuv1455393569.jpg",
+    "genres": [],
+    "formed": "1981",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-08-24T07:59:10.123Z"
+  },
+  "the-wonder-stuff": {
+    "name": "The Wonder Stuff",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/tqqypq1340303749.jpg",
+    "genres": [
+      "Alternative Rock",
+      "Rock/Pop"
+    ],
+    "formed": "1987",
+    "website": "www.thewonderstuff.co.uk",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-08-24T07:59:25.349Z"
+  },
+  "richard-cheese": {
+    "name": "Richard Cheese",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/dj9gy81623569652.jpg",
+    "genres": [
+      "Lounge",
+      "Novelty"
+    ],
+    "formed": "2000",
+    "website": "richardcheese.com",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-08-24T07:59:32.855Z"
+  },
+  "the-vandals": {
+    "name": "The Vandals",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xxstpw1362248949.jpg",
+    "genres": [
+      "Punk Rock",
+      "Rock/Pop"
+    ],
+    "formed": "1980",
+    "website": "www.vandals.com",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-08-24T07:59:47.866Z"
+  },
+  "trombone-shorty": {
+    "name": "Trombone Shorty",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/yyyywr1377834331.jpg",
+    "genres": [
+      "Funk",
+      "Jazz"
+    ],
+    "formed": "2009",
+    "website": "tromboneshorty.com",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-08-24T07:59:55.368Z"
   }
 }

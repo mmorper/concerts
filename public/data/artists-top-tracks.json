@@ -6599,56 +6599,6 @@
       }
     ]
   },
-  "richard-cheese-lounge-against-the-machine": {
-    "name": "Richard Cheese & Lounge Against the Machine",
-    "source": "itunes",
-    "fetchedAt": "2026-08-10T19:23:06.307Z",
-    "resolvedVia": "artist-id",
-    "itunesArtistId": 3572356,
-    "itunesArtistName": "Richard Cheese",
-    "tracks": [
-      {
-        "name": "Viva Las Vegas (From \"Army of the Dead\" Soundtrack)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4b/5c/3f/4b5c3f53-9a3e-ac09-551f-773f52712ffd/mzaf_16703028349190778766.plus.aac.p.m4a",
-        "durationMs": 355819,
-        "albumName": "Army of the Dead (Music From the Netflix Film)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/da/26/2a/da262a0e-7576-1d5c-ad6a-84517f883995/886449237050.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/viva-las-vegas-from-army-of-the-dead-soundtrack/1564703576?i=1564703796&uo=4"
-      },
-      {
-        "name": "I Love Boobies (Extended Version)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/fc/df/f9/fcdff97f-0acb-e9ac-27fa-a3fb6ce92ce2/mzaf_14422669643507663131.plus.aac.p.m4a",
-        "durationMs": 100626,
-        "albumName": "Barb & Star Go to Vista Del Mar (Original Motion Picture Soundtrack)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/98/dd/84/98dd844b-8aca-8ef2-7d44-3afbf2e5a175/886449056699.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/i-love-boobies-extended-version/1552245554?i=1552246843&uo=4"
-      },
-      {
-        "name": "Everything Is Awesome",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/27/41/d6/2741d64e-fa04-b2d0-e5cb-439079e7c3a6/mzaf_11035382455465887632.plus.aac.p.m4a",
-        "durationMs": 122813,
-        "albumName": "The Lego Batman Movie (Original Motion Picture Soundtrack)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/23/28/ff/2328ff6e-333f-5ef3-a95e-a09ac1d92965/794043191916.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/everything-is-awesome/1455918216?i=1455918450&uo=4"
-      },
-      {
-        "name": "Christmas In las Vegas",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c3/62/77/c36277e7-9674-f891-8cd8-a326840b84a1/mzaf_10463989955090142699.plus.aac.p.m4a",
-        "durationMs": 130853,
-        "albumName": "Merry X-mas Dammit from the Double Down Saloon",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/0c/2e/bc/mzi.qzfaxzzz.tif/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/christmas-in-las-vegas/287284125?i=287284205&uo=4"
-      },
-      {
-        "name": "Man in the Mirror",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e1/72/71/e172716f-2aa8-a29a-7e11-9d4a45b54c63/mzaf_210092884356146168.plus.aac.p.m4a",
-        "durationMs": 109293,
-        "albumName": "The Lego Batman Movie (Original Motion Picture Soundtrack)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/23/28/ff/2328ff6e-333f-5ef3-a95e-a09ac1d92965/794043191916.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/man-in-the-mirror/1455918216?i=1455918448&uo=4"
-      }
-    ]
-  },
   "royal-blood": {
     "name": "Royal Blood",
     "source": "itunes",
@@ -8249,56 +8199,6 @@
       }
     ]
   },
-  "the-reflex": {
-    "name": "The Reflex",
-    "source": "itunes",
-    "fetchedAt": "2026-08-10T19:23:03.570Z",
-    "resolvedVia": "artist-id",
-    "itunesArtistId": 53055311,
-    "itunesArtistName": "Re-Flex",
-    "tracks": [
-      {
-        "name": "The Politics of Dancing",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/36/58/d6/3658d622-de57-1161-e260-7dba484b2444/mzaf_9651199554830571673.plus.aac.p.m4a",
-        "durationMs": 398307,
-        "albumName": "The Politics of Dancing (Expanded)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e5/84/bf/e584bf7d-a359-3b74-e86f-45ad8d8ba23a/842474139127.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-politics-of-dancing/1567872991?i=1567873259&uo=4"
-      },
-      {
-        "name": "The Politics of Dancing (12\" Mix)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c5/1a/0d/c51a0d94-1f64-8ab3-66ad-f2164a8150da/mzaf_14532000460328300109.plus.aac.p.m4a",
-        "durationMs": 401013,
-        "albumName": "Music Re - Action",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/71/76/a8/7176a83b-52b5-15db-2a49-b61d4af94668/5056321606754.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-politics-of-dancing-12-mix/1499073992?i=1499073993&uo=4"
-      },
-      {
-        "name": "The Politics of Dancing",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/4f/74/d7/4f74d717-d943-5c95-4d76-4b32039b1e39/mzaf_556404719667630542.plus.aac.p.m4a",
-        "durationMs": 237333,
-        "albumName": "The Machines Take Over: Pop Goes Electronic",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/3b/ac/db/3bacdbe3-95bf-900f-f6bc-8b7531d3aa18/842474174326.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-politics-of-dancing/1373477820?i=1373478325&uo=4"
-      },
-      {
-        "name": "The Politics of Dancing (12\" Extended Mix)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/cc/24/98/cc249894-2dc1-74fd-dcfe-1b93298288b9/mzaf_15766968459152296701.plus.aac.p.m4a",
-        "durationMs": 402000,
-        "albumName": "The Politics of Dancing (Expanded)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e5/84/bf/e584bf7d-a359-3b74-e86f-45ad8d8ba23a/842474139127.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-politics-of-dancing-12-extended-mix/1567872991?i=1567873315&uo=4"
-      },
-      {
-        "name": "The Politics of Dancing (US 7\" Version)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/9f/9b/8d/9f9b8d64-6884-9439-f0cd-9be5c23f1c4b/mzaf_8799440185803823846.plus.aac.p.m4a",
-        "durationMs": 269213,
-        "albumName": "The Politics of Dancing (Expanded)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e5/84/bf/e584bf7d-a359-3b74-e86f-45ad8d8ba23a/842474139127.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-politics-of-dancing-us-7-version/1567872991?i=1567873815&uo=4"
-      }
-    ]
-  },
   "the-skints": {
     "name": "The Skints",
     "source": "itunes",
@@ -8549,56 +8449,6 @@
       }
     ]
   },
-  "the-wonderstuff": {
-    "name": "The Wonderstuff",
-    "source": "itunes",
-    "fetchedAt": "2026-08-10T19:23:04.514Z",
-    "resolvedVia": "artist-id",
-    "itunesArtistId": 13129677,
-    "itunesArtistName": "The Wonder Stuff",
-    "tracks": [
-      {
-        "name": "A Wish Away",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/4c/62/4c/4c624c56-6d9e-76d4-8e85-1cd9cdd2c949/mzaf_1866750357893946018.plus.aac.p.m4a",
-        "durationMs": 150493,
-        "albumName": "The Eight Legged Groove Machine (Remastered)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3b/d0/b5/3bd0b576-94b4-ace8-3ade-0f2465f53597/00731454926324.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/a-wish-away/1444101451?i=1444101975&uo=4"
-      },
-      {
-        "name": "Don't Let Me Down, Gently",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/c6/5c/4d/c65c4d43-5b86-713b-646d-69eb15adc698/mzaf_3920557484732622906.plus.aac.p.m4a",
-        "durationMs": 181133,
-        "albumName": "Hup (Remastered)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1f/26/61/1f266138-1874-5f8d-5b71-896d97ad8197/00731454926423.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/dont-let-me-down-gently/1443772473?i=1443772646&uo=4"
-      },
-      {
-        "name": "The Size of a Cow",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d6/f5/35/d6f53528-6da4-5652-bea3-8b081bd29069/mzaf_17939817952648781720.plus.aac.p.m4a",
-        "durationMs": 192333,
-        "albumName": "Never Loved Elvis (Remastered)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/5d/17/f4/5d17f4f0-d4f9-937a-0ff4-366666aaf786/00731454926522.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/the-size-of-a-cow/1443938336?i=1443938794&uo=4"
-      },
-      {
-        "name": "Caught In My Shadow",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/24/cb/8f/24cb8fb6-8549-3324-cf16-97105eed29d3/mzaf_7833976740884496150.plus.aac.p.m4a",
-        "durationMs": 228827,
-        "albumName": "Never Loved Elvis (Remastered)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/5d/17/f4/5d17f4f0-d4f9-937a-0ff4-366666aaf786/00731454926522.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/caught-in-my-shadow/1443938336?i=1443939327&uo=4"
-      },
-      {
-        "name": "Give, Give, Give Me More, More, More",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/cc/c4/60/ccc460fe-c25e-a0dd-14b8-7fb2544daf87/mzaf_13577111540313662610.plus.aac.p.m4a",
-        "durationMs": 170880,
-        "albumName": "The Eight Legged Groove Machine (Remastered)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3b/d0/b5/3bd0b576-94b4-ace8-3ade-0f2465f53597/00731454926324.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/give-give-give-me-more-more-more/1444101451?i=1444101460&uo=4"
-      }
-    ]
-  },
   "thomas-dolby": {
     "name": "Thomas Dolby",
     "source": "itunes",
@@ -8799,56 +8649,6 @@
       }
     ]
   },
-  "trombone-shorty-orleans-avenue": {
-    "name": "Trombone Shorty & Orleans Avenue",
-    "source": "itunes",
-    "fetchedAt": "2026-08-10T19:23:05.409Z",
-    "resolvedVia": "artist-id",
-    "itunesArtistId": 258779315,
-    "itunesArtistName": "Trombone Shorty",
-    "tracks": [
-      {
-        "name": "Back In Black (Live At Jazz Fest 2007)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview62/v4/00/6d/35/006d3584-8bef-9bc4-a9e4-c5f5d3d561c0/mzaf_5038483417945165.plus.aac.p.m4a",
-        "durationMs": 278893,
-        "albumName": "Trombone Shorty - Live At Jazz Fest 2007",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/5b/2c/b6/mzi.eummrtcd.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/back-in-black-live-at-jazz-fest-2007/258779311?i=258779337&uo=4"
-      },
-      {
-        "name": "Hurricane Season",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/37/a5/0d/37a50dd7-3c76-3849-f583-5733a06e488c/mzaf_16529490778047780100.plus.aac.p.m4a",
-        "durationMs": 200000,
-        "albumName": "Backatown (Bonus Track Version)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/cc/aa/45/ccaa4547-d466-7a8e-c053-1ad28f3763bc/00602527419848.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/hurricane-season/1440755889?i=1440755890&uo=4"
-      },
-      {
-        "name": "St. James Infirmary (Live At Jazz Fest 2007)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview71/v4/2c/ce/d5/2cced5ca-22be-3c7a-f244-f2f7bb8b50f6/mzaf_1581135628137042307.plus.aac.p.m4a",
-        "durationMs": 514053,
-        "albumName": "Trombone Shorty - Live At Jazz Fest 2007",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/5b/2c/b6/mzi.eummrtcd.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/st-james-infirmary-live-at-jazz-fest-2007/258779311?i=258780741&uo=4"
-      },
-      {
-        "name": "When the Saints (Live At Jazz Fest 2007)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/6d/39/d1/6d39d116-831c-f880-495e-a600d446b662/mzaf_7003755404898527499.plus.aac.p.m4a",
-        "durationMs": 581053,
-        "albumName": "Trombone Shorty - Live At Jazz Fest 2007",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/5b/2c/b6/mzi.eummrtcd.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/when-the-saints-live-at-jazz-fest-2007/258779311?i=258780995&uo=4"
-      },
-      {
-        "name": "Something Beautiful",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/14/0a/e4/140ae46e-84e1-23c7-d78c-344e8828f3ec/mzaf_15360855021355912819.plus.aac.p.m4a",
-        "durationMs": 221360,
-        "albumName": "Backatown (Bonus Track Version)",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/cc/aa/45/ccaa4547-d466-7a8e-c053-1ad28f3763bc/00602527419848.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/something-beautiful/1440755889?i=1440756320&uo=4"
-      }
-    ]
-  },
   "trouble-funk": {
     "name": "Trouble Funk",
     "source": "itunes",
@@ -8996,56 +8796,6 @@
         "albumName": "Greatest Hits",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/8e/fc/d7/8efcd7fa-9922-ecbe-7024-d777d9b154d6/13UABIM50818.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/here-i-am-come-and-take-me/713072931?i=713072951&uo=4"
-      }
-    ]
-  },
-  "vandals": {
-    "name": "Vandals",
-    "source": "itunes",
-    "fetchedAt": "2026-08-10T15:42:28.977Z",
-    "resolvedVia": "artist-id",
-    "itunesArtistId": 3563419,
-    "itunesArtistName": "The Vandals",
-    "tracks": [
-      {
-        "name": "Oi to the World!",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/64/34/ed/6434ed40-efb6-a648-44b9-11124dcbe2c8/mzaf_14551144523293021689.plus.aac.p.m4a",
-        "durationMs": 166467,
-        "albumName": "Oi to the World",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/db/8d/8b/db8d8b42-f18c-3b32-dbbb-fa630656c238/mzi.ohgovyuc.tif/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/oi-to-the-world/259069504?i=259069821&uo=4"
-      },
-      {
-        "name": "Anarchy Burger (Hold the Government)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/d3/a3/d3/mzm.amcmrokj.aac.p.m4a",
-        "durationMs": 166093,
-        "albumName": "Sweatin' to the Oldies: The Vandals Live",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/a5/a1/35/a5a135ee-aaa3-114a-efb4-bbd8a28c410b/mzi.shscmapw.tif/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/anarchy-burger-hold-the-government/259071205?i=259071212&uo=4"
-      },
-      {
-        "name": "Don't Stop Me Now",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/bf/6f/b5/bf6fb530-875b-cce3-fa92-00154dc03466/mzaf_7723651158858031958.plus.aac.p.m4a",
-        "durationMs": 171625,
-        "albumName": "Hollywood Potato Chip",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features/65/17/2b/dj.fpnupklg.tif/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/dont-stop-me-now/259988623?i=259988655&uo=4"
-      },
-      {
-        "name": "Urban Struggle",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ef/0e/0d/ef0e0dc6-3ef5-74cf-7b0a-fffc639a71e5/mzaf_4467081179121256115.plus.aac.p.m4a",
-        "durationMs": 228693,
-        "albumName": "Peace Thru Vandalism",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/7a/91/08/7a910846-6e66-7e4f-6024-ab11c2d75699/889466083266.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/urban-struggle/1349612041?i=1349612047&uo=4"
-      },
-      {
-        "name": "Summer Lovin'",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f2/bd/ce/f2bdce72-1989-8cc5-60e2-383007a4b7aa/mzaf_3536878323082505190.plus.aac.p.m4a",
-        "durationMs": 165227,
-        "albumName": "Fear of a Punk Planet: Anniversary Edition",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/5c/26/92/mzi.eybppssi.tif/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/summer-lovin/259070253?i=259071232&uo=4"
       }
     ]
   },
@@ -12646,6 +12396,256 @@
         "albumName": "Live From 2021",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/e8/c4/b5/e8c4b54b-3cb5-cfba-a087-2cc16d3b7f81/artwork.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/roadrunner-live/1552863836?i=1552864222&uo=4"
+      }
+    ]
+  },
+  "re-flex": {
+    "name": "Re-Flex",
+    "source": "itunes",
+    "fetchedAt": "2026-08-24T08:00:33.013Z",
+    "resolvedVia": "artist-id",
+    "itunesArtistId": 53055311,
+    "itunesArtistName": "Re-Flex",
+    "tracks": [
+      {
+        "name": "The Politics of Dancing",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/36/58/d6/3658d622-de57-1161-e260-7dba484b2444/mzaf_9651199554830571673.plus.aac.p.m4a",
+        "durationMs": 398307,
+        "albumName": "The Politics of Dancing (Expanded)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e5/84/bf/e584bf7d-a359-3b74-e86f-45ad8d8ba23a/842474139127.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-politics-of-dancing/1567872991?i=1567873259&uo=4"
+      },
+      {
+        "name": "The Politics of Dancing (12\" Mix)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c5/1a/0d/c51a0d94-1f64-8ab3-66ad-f2164a8150da/mzaf_14532000460328300109.plus.aac.p.m4a",
+        "durationMs": 401013,
+        "albumName": "Music Re - Action",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/71/76/a8/7176a83b-52b5-15db-2a49-b61d4af94668/5056321606754.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-politics-of-dancing-12-mix/1499073992?i=1499073993&uo=4"
+      },
+      {
+        "name": "The Politics of Dancing",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/4f/74/d7/4f74d717-d943-5c95-4d76-4b32039b1e39/mzaf_556404719667630542.plus.aac.p.m4a",
+        "durationMs": 237333,
+        "albumName": "The Machines Take Over: Pop Goes Electronic",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/3b/ac/db/3bacdbe3-95bf-900f-f6bc-8b7531d3aa18/842474174326.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-politics-of-dancing/1373477820?i=1373478325&uo=4"
+      },
+      {
+        "name": "The Politics of Dancing (12\" Extended Mix)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/cc/24/98/cc249894-2dc1-74fd-dcfe-1b93298288b9/mzaf_15766968459152296701.plus.aac.p.m4a",
+        "durationMs": 402000,
+        "albumName": "The Politics of Dancing (Expanded)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e5/84/bf/e584bf7d-a359-3b74-e86f-45ad8d8ba23a/842474139127.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-politics-of-dancing-12-extended-mix/1567872991?i=1567873315&uo=4"
+      },
+      {
+        "name": "The Politics of Dancing (US 7\" Version)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/9f/9b/8d/9f9b8d64-6884-9439-f0cd-9be5c23f1c4b/mzaf_8799440185803823846.plus.aac.p.m4a",
+        "durationMs": 269213,
+        "albumName": "The Politics of Dancing (Expanded)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e5/84/bf/e584bf7d-a359-3b74-e86f-45ad8d8ba23a/842474139127.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-politics-of-dancing-us-7-version/1567872991?i=1567873815&uo=4"
+      }
+    ]
+  },
+  "richard-cheese": {
+    "name": "Richard Cheese",
+    "source": "itunes",
+    "fetchedAt": "2026-08-24T08:00:34.509Z",
+    "resolvedVia": "artist-id",
+    "itunesArtistId": 3572356,
+    "itunesArtistName": "Richard Cheese",
+    "tracks": [
+      {
+        "name": "Viva Las Vegas (From \"Army of the Dead\" Soundtrack)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4b/5c/3f/4b5c3f53-9a3e-ac09-551f-773f52712ffd/mzaf_16703028349190778766.plus.aac.p.m4a",
+        "durationMs": 355819,
+        "albumName": "Army of the Dead (Music From the Netflix Film)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/da/26/2a/da262a0e-7576-1d5c-ad6a-84517f883995/886449237050.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/viva-las-vegas-from-army-of-the-dead-soundtrack/1564703576?i=1564703796&uo=4"
+      },
+      {
+        "name": "I Love Boobies (Extended Version)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/fc/df/f9/fcdff97f-0acb-e9ac-27fa-a3fb6ce92ce2/mzaf_14422669643507663131.plus.aac.p.m4a",
+        "durationMs": 100626,
+        "albumName": "Barb & Star Go to Vista Del Mar (Original Motion Picture Soundtrack)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/98/dd/84/98dd844b-8aca-8ef2-7d44-3afbf2e5a175/886449056699.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/i-love-boobies-extended-version/1552245554?i=1552246843&uo=4"
+      },
+      {
+        "name": "Everything Is Awesome",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/27/41/d6/2741d64e-fa04-b2d0-e5cb-439079e7c3a6/mzaf_11035382455465887632.plus.aac.p.m4a",
+        "durationMs": 122813,
+        "albumName": "The Lego Batman Movie (Original Motion Picture Soundtrack)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/23/28/ff/2328ff6e-333f-5ef3-a95e-a09ac1d92965/794043191916.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/everything-is-awesome/1455918216?i=1455918450&uo=4"
+      },
+      {
+        "name": "Christmas In las Vegas",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c3/62/77/c36277e7-9674-f891-8cd8-a326840b84a1/mzaf_10463989955090142699.plus.aac.p.m4a",
+        "durationMs": 130853,
+        "albumName": "Merry X-mas Dammit from the Double Down Saloon",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/0c/2e/bc/mzi.qzfaxzzz.tif/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/christmas-in-las-vegas/287284125?i=287284205&uo=4"
+      },
+      {
+        "name": "I Love Boobies (From \"Barb & Star Go to Vista Del Mar\" Soundtrack)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/51/1e/98/511e981a-1ef0-8cae-201c-8f77c3fe2b0f/mzaf_12694183529249477170.plus.aac.p.m4a",
+        "durationMs": 38671,
+        "albumName": "Barb & Star Go to Vista Del Mar (Original Motion Picture Soundtrack)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/98/dd/84/98dd844b-8aca-8ef2-7d44-3afbf2e5a175/886449056699.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/i-love-boobies-from-barb-star-go-to-vista-del-mar-soundtrack/1552245554?i=1552246058&uo=4"
+      }
+    ]
+  },
+  "the-vandals": {
+    "name": "The Vandals",
+    "source": "itunes",
+    "fetchedAt": "2026-08-24T08:00:35.987Z",
+    "resolvedVia": "artist-id",
+    "itunesArtistId": 3563419,
+    "itunesArtistName": "The Vandals",
+    "tracks": [
+      {
+        "name": "Oi to the World!",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/64/34/ed/6434ed40-efb6-a648-44b9-11124dcbe2c8/mzaf_14551144523293021689.plus.aac.p.m4a",
+        "durationMs": 166467,
+        "albumName": "Oi to the World",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/db/8d/8b/db8d8b42-f18c-3b32-dbbb-fa630656c238/mzi.ohgovyuc.tif/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/oi-to-the-world/259069504?i=259069821&uo=4"
+      },
+      {
+        "name": "Anarchy Burger (Hold the Government)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/d3/a3/d3/mzm.amcmrokj.aac.p.m4a",
+        "durationMs": 166093,
+        "albumName": "Sweatin' to the Oldies: The Vandals Live",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/a5/a1/35/a5a135ee-aaa3-114a-efb4-bbd8a28c410b/mzi.shscmapw.tif/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/anarchy-burger-hold-the-government/259071205?i=259071212&uo=4"
+      },
+      {
+        "name": "Don't Stop Me Now",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/bf/6f/b5/bf6fb530-875b-cce3-fa92-00154dc03466/mzaf_7723651158858031958.plus.aac.p.m4a",
+        "durationMs": 171625,
+        "albumName": "Hollywood Potato Chip",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Features/65/17/2b/dj.fpnupklg.tif/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/dont-stop-me-now/259988623?i=259988655&uo=4"
+      },
+      {
+        "name": "Urban Struggle",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ef/0e/0d/ef0e0dc6-3ef5-74cf-7b0a-fffc639a71e5/mzaf_4467081179121256115.plus.aac.p.m4a",
+        "durationMs": 228693,
+        "albumName": "Peace Thru Vandalism",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/7a/91/08/7a910846-6e66-7e4f-6024-ab11c2d75699/889466083266.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/urban-struggle/1349612041?i=1349612047&uo=4"
+      },
+      {
+        "name": "Summer Lovin'",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f2/bd/ce/f2bdce72-1989-8cc5-60e2-383007a4b7aa/mzaf_3536878323082505190.plus.aac.p.m4a",
+        "durationMs": 165227,
+        "albumName": "Fear of a Punk Planet: Anniversary Edition",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/5c/26/92/mzi.eybppssi.tif/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/summer-lovin/259070253?i=259071232&uo=4"
+      }
+    ]
+  },
+  "the-wonder-stuff": {
+    "name": "The Wonder Stuff",
+    "source": "itunes",
+    "fetchedAt": "2026-08-24T08:00:37.055Z",
+    "resolvedVia": "artist-id",
+    "itunesArtistId": 13129677,
+    "itunesArtistName": "The Wonder Stuff",
+    "tracks": [
+      {
+        "name": "A Wish Away",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/4c/62/4c/4c624c56-6d9e-76d4-8e85-1cd9cdd2c949/mzaf_1866750357893946018.plus.aac.p.m4a",
+        "durationMs": 150493,
+        "albumName": "The Eight Legged Groove Machine (Remastered)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3b/d0/b5/3bd0b576-94b4-ace8-3ade-0f2465f53597/00731454926324.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/a-wish-away/1444101451?i=1444101975&uo=4"
+      },
+      {
+        "name": "Don't Let Me Down, Gently",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/c6/5c/4d/c65c4d43-5b86-713b-646d-69eb15adc698/mzaf_3920557484732622906.plus.aac.p.m4a",
+        "durationMs": 181133,
+        "albumName": "Hup (Remastered)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1f/26/61/1f266138-1874-5f8d-5b71-896d97ad8197/00731454926423.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/dont-let-me-down-gently/1443772473?i=1443772646&uo=4"
+      },
+      {
+        "name": "The Size of a Cow",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d6/f5/35/d6f53528-6da4-5652-bea3-8b081bd29069/mzaf_17939817952648781720.plus.aac.p.m4a",
+        "durationMs": 192333,
+        "albumName": "Never Loved Elvis (Remastered)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/5d/17/f4/5d17f4f0-d4f9-937a-0ff4-366666aaf786/00731454926522.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-size-of-a-cow/1443938336?i=1443938794&uo=4"
+      },
+      {
+        "name": "Caught In My Shadow",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/24/cb/8f/24cb8fb6-8549-3324-cf16-97105eed29d3/mzaf_7833976740884496150.plus.aac.p.m4a",
+        "durationMs": 228827,
+        "albumName": "Never Loved Elvis (Remastered)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/5d/17/f4/5d17f4f0-d4f9-937a-0ff4-366666aaf786/00731454926522.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/caught-in-my-shadow/1443938336?i=1443939327&uo=4"
+      },
+      {
+        "name": "Give, Give, Give Me More, More, More",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/cc/c4/60/ccc460fe-c25e-a0dd-14b8-7fb2544daf87/mzaf_13577111540313662610.plus.aac.p.m4a",
+        "durationMs": 170880,
+        "albumName": "The Eight Legged Groove Machine (Remastered)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3b/d0/b5/3bd0b576-94b4-ace8-3ade-0f2465f53597/00731454926324.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/give-give-give-me-more-more-more/1444101451?i=1444101460&uo=4"
+      }
+    ]
+  },
+  "trombone-shorty": {
+    "name": "Trombone Shorty",
+    "source": "itunes",
+    "fetchedAt": "2026-08-24T08:00:38.559Z",
+    "resolvedVia": "artist-id",
+    "itunesArtistId": 258779315,
+    "itunesArtistName": "Trombone Shorty",
+    "tracks": [
+      {
+        "name": "Back In Black (Live At Jazz Fest 2007)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview62/v4/00/6d/35/006d3584-8bef-9bc4-a9e4-c5f5d3d561c0/mzaf_5038483417945165.plus.aac.p.m4a",
+        "durationMs": 278893,
+        "albumName": "Trombone Shorty - Live At Jazz Fest 2007",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/5b/2c/b6/mzi.eummrtcd.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/back-in-black-live-at-jazz-fest-2007/258779311?i=258779337&uo=4"
+      },
+      {
+        "name": "Hurricane Season",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/37/a5/0d/37a50dd7-3c76-3849-f583-5733a06e488c/mzaf_16529490778047780100.plus.aac.p.m4a",
+        "durationMs": 200000,
+        "albumName": "Backatown (Bonus Track Version)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/cc/aa/45/ccaa4547-d466-7a8e-c053-1ad28f3763bc/00602527419848.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/hurricane-season/1440755889?i=1440755890&uo=4"
+      },
+      {
+        "name": "St. James Infirmary (Live At Jazz Fest 2007)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview71/v4/2c/ce/d5/2cced5ca-22be-3c7a-f244-f2f7bb8b50f6/mzaf_1581135628137042307.plus.aac.p.m4a",
+        "durationMs": 514053,
+        "albumName": "Trombone Shorty - Live At Jazz Fest 2007",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/5b/2c/b6/mzi.eummrtcd.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/st-james-infirmary-live-at-jazz-fest-2007/258779311?i=258780741&uo=4"
+      },
+      {
+        "name": "When the Saints (Live At Jazz Fest 2007)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/6d/39/d1/6d39d116-831c-f880-495e-a600d446b662/mzaf_7003755404898527499.plus.aac.p.m4a",
+        "durationMs": 581053,
+        "albumName": "Trombone Shorty - Live At Jazz Fest 2007",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/5b/2c/b6/mzi.eummrtcd.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/when-the-saints-live-at-jazz-fest-2007/258779311?i=258780995&uo=4"
+      },
+      {
+        "name": "Something Beautiful",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/14/0a/e4/140ae46e-84e1-23c7-d78c-344e8828f3ec/mzaf_15360855021355912819.plus.aac.p.m4a",
+        "durationMs": 221360,
+        "albumName": "Backatown (Bonus Track Version)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/cc/aa/45/ccaa4547-d466-7a8e-c053-1ad28f3763bc/00602527419848.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/something-beautiful/1440755889?i=1440756320&uo=4"
       }
     ]
   }

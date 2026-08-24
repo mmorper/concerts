@@ -5,7 +5,7 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>New features, updates, and statistics for the Morperhaus Concert Archives</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 10 Aug 2026 08:30:24 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 24 Aug 2026 08:09:05 GMT</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://concerts.morperhaus.org/og-image.jpg</url>
@@ -16,10 +16,19 @@
     <item>
       <title>By the Numbers - Archive Statistics</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
-      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#facts-2026-08-10</guid>
-      <pubDate>Mon, 10 Aug 2026 08:30:23 GMT</pubDate>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#facts-2026-08-24</guid>
+      <pubDate>Mon, 24 Aug 2026 08:09:04 GMT</pubDate>
       <category>Statistics</category>
       <description><![CDATA[<h3>Archive Statistics</h3><h4>Artists</h4><ul><li><strong>Social Distortion: 8 concerts</strong> — The most-seen live act, 1990–2024</li><li><strong>Howard Jones: 6 concerts</strong> — Another favorite who keeps drawing me back</li><li><strong>Depeche Mode: 5 concerts</strong> — Rounding out the top three most-seen</li></ul><h4>Venues</h4><ul><li><strong>Pacific Amphitheatre: 17 shows</strong> — A favorite spot, visited 1985–2026</li><li><strong>Irvine Meadows: 16 shows</strong> — Another venue with great memories</li><li><strong>79 unique venues</strong> — From clubs to arenas and amphitheaters</li></ul><h4>Timeline</h4><ul><li><strong>184 concerts since 1984</strong> — 43 years of live music memories</li><li><strong>First show: Adam Ant (1984)</strong> — Where it all began — Irvine Meadows</li><li><strong>Latest: Pinhead Gunpowder (2026)</strong> — The most recent addition — Garden Amp</li><li><strong>2022: 14 shows</strong> — The peak year for live music attendance</li><li><strong>2010s: 65 shows</strong> — The golden era of concert-going</li></ul><h4>Genres</h4><ul><li><strong>New Wave: 49 shows</strong> — The dominant sound in this collection</li><li><strong>Punk: 15 shows</strong> — Another genre that shaped the journey</li></ul><h4>Geography</h4><ul><li><strong>California: 122 concerts</strong> — Home base for most concert experiences</li><li><strong>36 cities visited</strong> — Live music across the map</li></ul><p><a href="https://concerts.morperhaus.org/liner-notes">View all statistics</a></p>]]></description>
+    </item>
+
+    <item>
+      <title>Five Songs That Didn&apos;t Exist Yet - v6.0.0</title>
+      <link>https://concerts.morperhaus.org/?scene=artists&artist=the-cure</link>
+      <guid isPermaLink="false">https://concerts.morperhaus.org/liner-notes#v6.0.0</guid>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 GMT</pubDate>
+      <category>Release</category>
+      <description><![CDATA[<p>The Cure played the Hollywood Bowl in May 2023 and put five songs from Songs of a Lost World into the set. That record was still seventeen months away. I stood there hearing an album nobody had heard, and I didn&apos;t know it — you can&apos;t know it, not in the room. The archive knows now. It has worked out which record almost every song I&apos;ve ever watched came off, so a setlist is no longer a list of titles: it&apos;s a shape. Which album the night leaned on, what was brand new, and what wouldn&apos;t arrive for another year and a half.</p><ul><li>Every setlist now reads by record — 1,716 of 1,912 songs matched to the album they came from</li><li>The archive can spot a night I heard songs before their album existed, and there are fourteen of them</li><li>It can also tell me the record I&apos;ve heard most of, live: seventeen songs from Garbage&apos;s debut, across the years</li><li>Liner notes finally play the song they&apos;re about — a post named for Notorious no longer plays Get Lucky</li><li>Twelve artists whose previews were quietly the wrong band are fixed or gone, including one playing a French remixer&apos;s catalogue</li></ul>]]></description>
     </item>
 
     <item>

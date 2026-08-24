@@ -32,7 +32,7 @@
       "genre": "New Wave",
       "genreNormalized": "new-wave",
       "openers": [
-        "The Reflex"
+        "Re-Flex"
       ],
       "venue": "Irvine Meadows",
       "venueNormalized": "irvine-meadows",
@@ -970,7 +970,7 @@
         "Ian McCulloch",
         "School of Fish",
         "The Smithereens",
-        "The Wonderstuff"
+        "The Wonder Stuff"
       ],
       "venue": "Universal Amphitheater",
       "venueNormalized": "universal-amphitheater",
@@ -1376,7 +1376,7 @@
       "genre": "Swing",
       "genreNormalized": "swing",
       "openers": [
-        "Richard Cheese & Lounge Against the Machine"
+        "Richard Cheese"
       ],
       "venue": "Universal Amphitheater",
       "venueNormalized": "universal-amphitheater",
@@ -2495,7 +2495,7 @@
       "genreNormalized": "pop-punk",
       "openers": [
         "Pennywise",
-        "Vandals",
+        "The Vandals",
         "Bad Religion"
       ],
       "venue": "Pier 6 Pavillion",
@@ -2660,7 +2660,7 @@
         "LL Cool J",
         "DJ Z-Trip",
         "Trouble Funk",
-        "Trombone Shorty & Orleans Avenue",
+        "Trombone Shorty",
         "RDGLDGRN"
       ],
       "venue": "RFK Stadium",
@@ -4694,7 +4694,7 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-08-10T08:26:53.367Z",
+    "lastUpdated": "2026-08-24T07:58:13.968Z",
     "totalConcerts": 184,
     "dateRange": {
       "earliest": "1984-04-27",
