@@ -29,6 +29,18 @@ carries the reasoning and evidence. This skill carries the rules in operative fo
   project uses most. `export --post-command` / `--post-function` run arbitrary code and
   bypass the guard entirely. All four are refused, in both `--flag value` and
   `--flag=value` form (closed 2026-08-23, while building #378).
+- **The guard is tracked in git and covered by CI**, by a named exception in two
+  `.gitignore` files — it and `bin/BUILD.txt` are the only things in
+  `concert-photos-audit/` that git can see. `test/pipeline/osxphotos-guard.test.ts` asserts
+  every refusal on every PR. Refusals happen before the binary is consulted, so the tests
+  run on a Linux runner with no osxphotos installed.
+- **🔴 The guard cannot be moved.** macOS grants Full Disk Access against the **wrapper's**
+  path, not only the binary's. Relocating it to `scripts/media/` — same binary, same
+  arguments, same resolved target — made every library read **hang**: no prompt, no error,
+  a process sitting at two seconds of CPU forever. Measured 2026-08-24, and the reason the
+  guard lives in an otherwise-gitignored directory instead of somewhere tidier. If it ever
+  must move, expect to re-grant Full Disk Access, and expect the failure to be a silent
+  stall rather than a permission error.
 - The guard also closes stdin (so no run hangs on an interactive prompt) and sets
   `OSXPHOTOS_NO_VERSION_CHECK=1` (so no run touches the network).
 - **Personal media never reaches the repo un-stripped.** EXIF — GPS, capture time, device —
@@ -188,7 +200,7 @@ written to `public/images/shows/`; `media-index.json` updated; **what was skippe
 |---|---|
 | Source library | Photos.app — never copied wholesale |
 | Candidate corpus, evaluation runs | `concert-photos-audit/` — **gitignored** |
-| Tooling | `concert-photos-audit/bin/`, `*.py`, `*.sh` |
+| Tooling | `scripts/media/` (tracked) · the guard + `BUILD.txt` (tracked by exception) · binary, `*.py`, `*.sh` (ignored) |
 | **Final selects** | **`public/images/shows/`** — committed, EXIF-stripped |
 | **The mapping** | **`public/data/media-index.json`** — committed |
 
@@ -205,7 +217,7 @@ that migration costs no consumer changes.
 
 | | |
 |---|---|
-| `concert-photos-audit/bin/osxphotos` | read-only guard over the locally built binary |
+| `concert-photos-audit/bin/osxphotos` | **read-only guard — tracked by exception, CI-tested.** The binary it wraps stays gitignored |
 | `extract_frames.sh` / `frame_score.py` / `pick_frames.py` | frame sampling, Laplacian scoring, min-gap selection |
 | `review_server.py` + `uxtest/index.html` | localhost stills review — verdicts persist per keystroke |
 | `probes/*.py` | one-off investigation scripts |

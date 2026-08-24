@@ -1,0 +1,32 @@
+osxphotos — locally built standalone binary (#348)
+
+Built:    2026-08-23
+Source:   https://github.com/RhetTbull/osxphotos
+Commit:   10de7d8b4ade57f206d09a123b5b5ea2c93a2d61
+Version:  0.76.1
+Host:     Apple clang 21, Python 3.14.5, arm64, macOS 26.5.2
+sha256:   f956c8dd66a0b84ef8d021494c194da9226c73f4ad6d428d0b9617bf846a1f17
+
+WHY LOCALLY BUILT (not pipx, not the published release):
+osxphotos/cli/cli.py calls disclaim() gated on hasattr(sys, "_MEIPASS") — a test of the
+runtime environment, not of who built it. Under pipx it never fires and Full Disk Access
+is granted to the TERMINAL and everything it ever launches. Any PyInstaller build scopes
+TCC to this binary. Building locally also avoids trusting a prebuilt artifact and leaves
+no quarantine attribute, so Gatekeeper never intervenes.
+
+BUILD PATCH REQUIRED (upstream spec is incomplete for this dependency set):
+osxphotos.spec ships hiddenimports=["pkg_resources.py2_warn"], which is not enough.
+bitstring >= 4.2 resolves its backing store through importlib at import time, so
+PyInstaller's static analysis misses bitstring.bitstore_bitarray and then
+bitstring.bitstore_bitarray_helpers, and the binary dies on startup with
+ModuleNotFoundError. Naming submodules one at a time is whack-a-mole. Fix applied:
+
+    from PyInstaller.utils.hooks import collect_data_files, collect_submodules
+    hiddenimports=["pkg_resources.py2_warn"] + collect_submodules("bitstring")
+                                             + collect_submodules("bitarray"),
+
+ALWAYS RUN WITH:  OSXPHOTOS_NO_VERSION_CHECK=1
+Otherwise check_version() GETs the PyPI JSON API on every invocation. It sends nothing
+about the library, but the workflow is specified as offline.
+
+Build dependencies were installed to a throwaway venv and deleted. Nothing persists.
