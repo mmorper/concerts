@@ -144,6 +144,22 @@ folder it belongs in, with iCloud originals flagged. A keeper with no act named 
 as unattributed and **never placed** — 89 of 184 shows have openers, so defaulting to the
 headliner is fabricated attribution on half the archive.
 
+## `media:ingest` — fetch what was approved, and accept derived files back
+
+**It fetches the originals itself.** The expensive work — judging the frames and saying who
+is in them — is recorded by UUID, so turning that into files is mechanical, and it must not
+send the owner back into Photos to hunt filenames. Most of the archive lives in iCloud, so a
+workflow that only handled local originals would be manual for the majority of the backlog.
+`--download-missing` materialises them: 1.22MB and six seconds each, measured.
+
+`--convert-to-jpeg` is required, not an optimisation — sharp cannot decode iPhone HEIC or
+ProRAW DNG, and 19 of 23 assets on the pilot show failed until osxphotos converted them
+with Apple's codecs.
+
+If an original cannot be fetched, the staged preview is used and recorded as
+`quality: 'preview'`. **Curation is decoupled from resolution:** an upgrade pass can replace
+the file in place later without any judgement being repeated.
+
 ## `media:ingest` — accept results back
 
 Reads `concert-photos-audit/inbox/`, and for each date folder:

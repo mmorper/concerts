@@ -123,6 +123,40 @@ Ranking on `interesting_subject` buries them on subject matter rather than quali
 hits hardest where the archive is most exposed (venue posts have no working tier-2
 fallback while Places is unreliable — #315).
 
+**`--download-missing` is the right path FOR STILLS, and it works.** Measured 2026-08-24:
+1.22MB and six seconds for a 3024×4032 HEIC, `ismissing` flips to false afterwards, and no
+Automation dialog blocked it. The earlier blanket objection to this flag bundled the
+AppleScript permission with **video's** 15–30GB; the whole still backlog is a few hundred
+MB, so the volume argument does not carry over. Video stays out-of-process for its own
+reasons.
+
+**Materialising an iCloud original is NOT a library mutation.** It writes no user data — no
+metadata, no albums, no edits — and is what Photos does when you open the photograph.
+Deliberate carve-out, owner-approved 2026-08-24. The rest of the invariant stands.
+
+**`--use-photokit` does not work here.** Stalls with zero output; upstream calls it alpha.
+Do not build on it.
+
+**sharp cannot decode what the library actually holds.** It reports `heif.input === true`,
+but the HEVC decoder is not compiled into its libvips: real iPhone HEICs fail with
+"Support for this compression format has not been built in", and ProRAW DNG is unreadable.
+**19 of 23 assets died this way on the pilot show.** Let osxphotos convert on export with
+`--convert-to-jpeg`, which uses Apple's own codecs and fixes HEIC and DNG together. Pair it
+with `--skip-original-if-edited`: if a photograph was edited in Photos, the EDIT is what
+was seen in the review page and chosen.
+
+**Photos' preview is a usable fallback.** The derivative is 1536×2048 and local even for
+iCloud-only assets — on the pilot show 22 of 23 cleared a 1080×1350 card and a 9:16 crop.
+Record it as `quality: 'preview'` so a later pass can upgrade the file in place.
+**Curation is decoupled from resolution**, so no human judgement is ever repeated.
+
+**SUBJECT decides placement, not the act.** The review page records subject and act
+independently, so a frame can be marked `venue` while an act is also selected. That
+produced `folder: '_venue'` beside `artistNormalized: 'the-human-league'` on the pilot show,
+and ingest placed it by the artist — **a marquee shot published as a photograph of the
+headliner.** A venue, crowd or stub frame belongs to the night; its act is dropped so the
+two can never disagree.
+
 **Sharpness is computed locally.** Apple's `sharply_focused_subject` has stdev 0.035 across
 551 concert stills — inert. Use Laplacian variance. `promotion` is entirely flat; drop it.
 

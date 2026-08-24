@@ -243,11 +243,13 @@ function finish(date: string): void {
     ismissing: boolean
   }>
   const verdicts = loadVerdicts(runDir)
-  const assets = items.map((i) => ({
+  // all.json is written in ranked order, so the index IS the rank.
+  const assets = items.map((i, n) => ({
     uuid: i.uuid,
     original_filename: i.original_filename,
     local_time: `${concert.date}T${i.time}:00`,
     is_missing: i.ismissing,
+    rank: n + 1,
   }))
 
   const file = buildSelects({
@@ -269,7 +271,7 @@ function finish(date: string): void {
   }
   for (const [folder, rows] of [...byFolder].sort()) {
     console.log(`  ${folder}/  (${rows.length})`)
-    for (const r of rows) console.log(`    ${r.time.slice(11, 16)}  ${r.originalFilename}${r.needsDownload ? '  [iCloud]' : ''}`)
+    for (const r of rows) console.log(`    #${String(r.rank).padStart(2)}  ${r.time.slice(11, 16)}  ${r.originalFilename}${r.needsDownload ? '  [iCloud]' : ''}`)
   }
   if (file.unattributed.length > 0) {
     console.log(`\n  ⚠ ${file.unattributed.length} keeper(s) with no act named — NOT in selects:`)
@@ -277,8 +279,10 @@ function finish(date: string): void {
     console.log(`    Re-open the page and pick an act. 48% of shows have openers, so this is never defaulted.`)
   }
   console.log(`\n  → ${join(runDir, SELECTS_FILE)}`)
-  console.log(`\nNext: export those originals from Photos into concert-photos-audit/inbox/${concert.date}/,`)
-  console.log(`then \`npm run media:ingest ${concert.date}\` — it checks what arrives against this file.\n`)
+  const cloud = file.selects.filter((s) => s.needsDownload).length
+  console.log(`\nNext: npm run media:ingest ${concert.date}`)
+  console.log(`  It fetches these originals itself${cloud ? ` (${cloud} from iCloud)` : ''}, strips them, and indexes them.`)
+  console.log(`  Nothing to export by hand.\n`)
 }
 
 function main(): void {
