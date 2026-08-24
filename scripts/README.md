@@ -41,6 +41,25 @@ This directory contains all data pipeline, build, and utility scripts for the Mo
 | generate-mock-spotify-metadata.ts | `npm run generate-mock-spotify` | Generate mock Spotify data (for testing) | Development only |
 | review-venue-photos.ts | `npm run review-venue-photos` | Review venue photo cache entries | Debugging venue enrichment |
 
+### Personal Media (`scripts/media/`)
+
+| Script | Command | Purpose | When to Run |
+|--------|---------|---------|-------------|
+| media/prep.ts | `npm run media:prep <YYYY-MM-DD>` | Scaffold one show's inbox folders and build its `WORKSHEET.md` of Photos candidates | After a show, before culling |
+
+**Read `.claude/skills/media-pipeline/SKILL.md` before touching anything here.** The Photos
+library is the owner's irreplaceable source of record and is never modified: every read goes
+through the read-only guard at `concert-photos-audit/bin/osxphotos`, never `.osxphotos-raw`.
+
+`media:prep` reads Photos and writes only into the gitignored
+`concert-photos-audit/inbox/<date>/`. It ranks candidates and never filters them, and it
+asserts its own output before reporting success. Add `-- --scaffold-only` to create the
+folders without reading the library.
+
+The two-factor ranking model, and the reasoning behind every weight in it, lives in
+`scripts/media/rank.ts`. It is pure and unit-tested in `test/pipeline/media-prep.test.ts` —
+each of the project's hard-won findings is pinned there as a test.
+
 ### Test/Diagnostic Scripts (Development Only)
 
 | Script | Purpose | When to Use |

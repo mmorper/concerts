@@ -1,6 +1,6 @@
 # Media Workflow — prep, review, ingest
 
-**Status:** Specified, not built
+**Status:** `media:prep` **BUILT** (#378, 2026-08-23) · `ingest` / `gaps` specified, not built
 **Priority:** High — this is how personal media actually reaches a post
 **Depends on:** #348 (audit tool, partially built) · Feeds #339, #340, #342
 **Rules:** `.claude/skills/media-pipeline/SKILL.md` — read that first; it is operative
@@ -74,13 +74,42 @@ what is pending.
 Sorted by likelihood × quality, but **everything in the window is listed** — the worksheet
 ranks, it does not filter. It also states what it *excluded* and why.
 
-**Acceptance:**
-- [ ] Fails loudly on a date not in `concerts.json`
-- [ ] Creates a folder per act using normalised slugs, plus `_venue/`
-- [ ] Never overwrites an existing folder's contents
-- [ ] Worksheet lists `original_filename` for every candidate
-- [ ] Reports counts excluded at each stage
-- [ ] Reads only — no library mutation (guard enforced)
+**Acceptance — all met 2026-08-23 (#378):**
+- [x] Fails loudly on a date not in `concerts.json` — and names the three nearest shows
+- [x] Creates a folder per act using normalised slugs, plus `_venue/`
+- [x] Never overwrites an existing folder's contents — verified by re-running on a filled
+      inbox; the assertion pass compares the folder listing before and after and fails if
+      a single file went missing
+- [x] Worksheet lists `original_filename` for every candidate
+- [x] Reports counts excluded at each stage
+- [x] Reads only — no library mutation (guard enforced)
+- [x] Asserts its own output before reporting success
+
+**Built as:**
+
+| | |
+|---|---|
+| `scripts/media/prep.ts` | the command — scaffold, query, rank, render, assert |
+| `scripts/media/show.ts` | date → concert, lineup, folder plan |
+| `scripts/media/rank.ts` | the two-factor model |
+| `scripts/media/worksheet.ts` | `WORKSHEET.md` renderer |
+| `scripts/media/query_window.py` | osxphotos query function — the only part that reads Photos |
+| `test/pipeline/media-prep.test.ts` | 35 tests; every finding above is pinned as one |
+
+The discriminating logic is pure TypeScript so it can be unit-tested without the library.
+The Python side reports facts and counts and decides nothing — it returns an empty list to
+osxphotos on purpose, so no osxphotos action can ever be handed a photo by that path.
+
+`--scaffold-only` creates the folders and the bill without reading Photos, which is what to
+run when the library is unavailable.
+
+**Two corrections found while building:**
+
+1. **The `--query-function` separator is `::`, not the single `:`** that `osxphotos query
+   --help` documents. The documented form is rejected outright.
+2. **Clip duration is on `exif_info`, not `PhotoInfo`.** `p.duration` does not exist and
+   reads back as nothing rather than raising, so a worksheet built on it would have shown
+   an empty duration column for every clip and looked merely unpopulated.
 
 ---
 
@@ -163,13 +192,20 @@ marquee, one performer frame, the stub. It front-loads the marquee, the scarcest
 3. **Where does an extracted frame's provenance live?** It is tier 1 `personal`, but
    knowing it came from a clip matters for the different-night disclosure. Likely a
    `derived_from` field in `media-index.json`.
-4. **Does the worksheet get committed?** It contains `original_filename` and timestamps —
-   personal, though not location. Leaning: keep it in the gitignored inbox.
+4. ~~**Does the worksheet get committed?**~~ **Answered 2026-08-23: no.** It is written to
+   `concert-photos-audit/inbox/<date>/WORKSHEET.md`, inside the gitignored tree, and it
+   carries `original_filename` plus capture times. A re-run replaces it and keeps one
+   `WORKSHEET.prev.md`, so regenerating can never destroy a hand-written annotation —
+   though `notes.txt` remains the place for anything meant to last.
 
 ---
 
 ## Revision History
 
+- **2026-08-23 (later):** `media:prep` built and shipped (#378). Acceptance ticked above.
+  Two osxphotos corrections recorded. A guard hole was found and closed while building it:
+  subcommand allowlisting alone let `query --add-to-album` through, which writes to the
+  library through the one subcommand this project uses most.
 - **2026-08-23:** Written after a 53-asset UX test. Replaces the shared-album inbox design
   in `global-social-syndication.md` §"Submission". Video review moved out-of-process at the
   owner's direction after poster-frame review was confirmed unworkable and
