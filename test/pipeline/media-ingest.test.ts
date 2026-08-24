@@ -240,6 +240,7 @@ describe('the media index', () => {
   const asset = (over: Partial<MediaAsset>): MediaAsset => ({
     url: '/images/shows/2024-08-20-howard-jones-01.jpg',
     date: '2024-08-20',
+    uuid: null,
     artist: 'Howard Jones',
     artistNormalized: 'howard-jones',
     subject: 'artist',
@@ -247,6 +248,7 @@ describe('the media index', () => {
     source: 'personal',
     hero: false,
     order: 1,
+    quality: 'original',
     width: 100,
     height: 100,
     bytes: 1000,

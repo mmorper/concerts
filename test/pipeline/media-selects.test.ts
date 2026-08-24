@@ -26,11 +26,13 @@ const SHOW: Concert = {
 }
 const ACTS = folderPlan(SHOW).acts
 
+let rankCounter = 0
 const asset = (uuid: string, name: string, time = '21:00', missing = false) => ({
   uuid,
   original_filename: name,
   local_time: `2026-06-04T${time}:00`,
   is_missing: missing,
+  rank: ++rankCounter,
 })
 
 const build = (verdicts: Record<string, Verdict>, assets = [
@@ -71,6 +73,28 @@ describe('turning verdicts into selects', () => {
     }
   })
 
+  it('drops the act when the subject says the frame belongs to the NIGHT', () => {
+    // The review page lets you set a subject and an act independently, so a marquee shot
+    // can carry both. On the pilot show that produced folder `_venue` beside
+    // artistNormalized `the-human-league`, and ingest placed it by the artist — a venue
+    // frame published as a photograph of the headliner. Subject decides.
+    const f = build({ u3: { verdict: 'keep', subject: 'venue', artist: 'The Human League' } })
+    expect(f.selects[0].folder).toBe('_venue')
+    expect(f.selects[0].artist).toBeNull()
+    expect(f.selects[0].artistNormalized).toBeNull()
+  })
+
+  it('keeps folder and artist in agreement for every subject', () => {
+    for (const subject of ['venue', 'crowd', 'stub'] as const) {
+      const f = build({ u3: { verdict: 'keep', subject, artist: 'Soft Cell' } })
+      expect(f.selects[0].folder, subject).toBe('_venue')
+      expect(f.selects[0].artistNormalized, subject).toBeNull()
+    }
+    const p = build({ u3: { verdict: 'keep', subject: 'performer', artist: 'Soft Cell' } })
+    expect(p.selects[0].folder).toBe('soft-cell')
+    expect(p.selects[0].artistNormalized).toBe('soft-cell')
+  })
+
   it('drops rejects entirely', () => {
     const f = build({ u1: { verdict: 'reject' }, u2: { verdict: 'keep', subject: 'performer', artist: 'Soft Cell' } })
     expect(f.selects.map((s) => s.uuid)).toEqual(['u2'])
@@ -84,6 +108,7 @@ describe('turning verdicts into selects', () => {
     expect(f.unattributed).toEqual([
       { uuid: 'u1', originalFilename: 'IMG_5696.DNG', time: '2026-06-04T21:00:00' },
     ])
+    expect(f.selects).toHaveLength(0)
   })
 
   it('treats the review page`s __unknown__ as unattributed, not as an act', () => {
@@ -139,6 +164,7 @@ describe('cross-checking what was filed against what was decided', () => {
       folder: 'alison-moyet',
       needsDownload: false,
       time: '2026-06-04T21:00:00',
+      rank: 1,
       ...r,
     })),
   })
@@ -173,12 +199,13 @@ describe('cross-checking what was filed against what was decided', () => {
     expect(refuse.size).toBe(0)
   })
 
-  it('warns about selects that have not arrived, without refusing anything', () => {
+  it('says nothing about a select that is not in the inbox — that is the normal case', () => {
+    // Ingest fetches approved originals itself, so absence from the inbox means the
+    // ordinary automated path, not a problem. Warning about it would fire on every run.
     const r = report()
     const refuse = crossCheckSelects(selects([{ needsDownload: true }]), [], r)
     expect(refuse.size).toBe(0)
-    expect(r.warnings.join(' ')).toContain('have not arrived')
-    expect(r.warnings.join(' ')).toContain('iCloud')
+    expect(r.warnings).toEqual([])
   })
 
   it('says when keepers are still unattributed', () => {

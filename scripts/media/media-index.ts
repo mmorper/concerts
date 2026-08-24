@@ -25,6 +25,16 @@ export interface MediaAsset {
   url: string
   date: string
   /**
+   * The Photos library asset this came from, when it came from one.
+   *
+   * Null for derived files that arrived through the inbox — an extracted frame has no
+   * library identity. Recorded because it is the key that makes an upgrade pass possible:
+   * a preview-quality asset can be replaced with its original later without any of the
+   * curation being redone. It is also the only way to trace a committed file back to what
+   * was reviewed.
+   */
+  uuid: string | null
+  /**
    * The act in the frame, or null for `_venue` material.
    * Null means "the night", never "the headliner".
    */
@@ -44,6 +54,15 @@ export interface MediaAsset {
    * the inbox filename, which the owner is free to change.
    */
   sourceSha256: string
+  /**
+   * Which copy of the asset this came from.
+   *
+   * `original` is the full-resolution file. `preview` is Photos' own 1536x2048 derivative,
+   * used when the original could not be fetched — it clears a 1080x1350 card and a 9:16
+   * crop, so a post is never blocked, but it is recorded so a later pass can upgrade it
+   * in place without re-curating anything.
+   */
+  quality: 'original' | 'preview'
   /** Set when the still was pulled from a clip — needed to write an honest disclosure. */
   derivedFrom: { original: string; frame: number } | null
   /** From `notes.txt`. Carries a different-night disclosure or a caption. */

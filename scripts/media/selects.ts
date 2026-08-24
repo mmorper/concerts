@@ -38,6 +38,14 @@ export interface Select {
   /** True when the original is iCloud-only, so exporting it needs a download. */
   needsDownload: boolean
   time: string
+  /**
+   * Position in the ranked review list, 1-based.
+   *
+   * Carried so ingest can give the best frame of each act `-01`, which is the one a
+   * single-image post uses. Sorting by time instead would hand that slot to whatever
+   * happened earliest.
+   */
+  rank: number
 }
 
 export interface SelectsFile {
@@ -93,6 +101,8 @@ export interface AssetFacts {
   original_filename: string
   local_time: string
   is_missing: boolean
+  /** 1-based position in the ranked list the review page displayed. */
+  rank: number
 }
 
 /**
@@ -124,9 +134,22 @@ export function buildSelects(args: {
     const asset = byUuid.get(uuid)
     if (!asset) continue // reviewed under a different run; not this show's business
 
-    const act = v.artist ? (acts.find((a) => fold(a.name) === fold(v.artist as string)) ?? null) : null
+    const named = v.artist ? (acts.find((a) => fold(a.name) === fold(v.artist as string)) ?? null) : null
     const subject = (v.subject ?? null) as Select['subject']
-    const folder = folderFor(subject, act)
+    const folder = folderFor(subject, named)
+
+    // SUBJECT DECIDES PLACEMENT, and the artist must agree with it.
+    //
+    // The review page treats subject and act as independent, so a frame can be marked
+    // `venue` while an act is also selected — which happened on the pilot show. That left
+    // `folder: '_venue'` next to `artistNormalized: 'the-human-league'`, and ingest placed
+    // it by the artist: a marquee shot published as a photograph of the headliner. Exactly
+    // the mis-credit this file exists to prevent, arriving through the contract rather
+    // than through a mis-filed folder.
+    //
+    // A venue, crowd or stub frame belongs to the NIGHT. Its act is dropped here so the
+    // two fields can never disagree downstream.
+    const act = folder === '_venue' ? null : named
 
     if (!folder) {
       // A keeper with no placement. The owner said it is worth publishing but not who is
@@ -144,10 +167,12 @@ export function buildSelects(args: {
       folder,
       needsDownload: asset.is_missing,
       time: asset.local_time,
+      rank: asset.rank,
     })
   }
 
-  selects.sort((a, b) => a.folder.localeCompare(b.folder) || a.time.localeCompare(b.time))
+  // Grouped by folder, best first — `-01` is the frame a single-image post reaches for.
+  selects.sort((a, b) => a.folder.localeCompare(b.folder) || a.rank - b.rank)
   unattributed.sort((a, b) => a.time.localeCompare(b.time))
 
   return {
@@ -196,13 +221,11 @@ function crossCheckSelects(
   const refuse = new Set<string>()
 
   const misfiled: string[] = []
-  const absent: string[] = []
   for (const sel of selects.selects) {
+    // A select that is NOT in the inbox is the normal case: ingest fetches those originals
+    // itself. Only a select that arrived in the WRONG folder is worth saying anything about.
     const folders = arrivedBy.get(stem(sel.originalFilename))
-    if (!folders || folders.length === 0) {
-      absent.push(`${sel.originalFilename} → ${sel.folder}/${sel.needsDownload ? '  [iCloud — needs downloading first]' : ''}`)
-      continue
-    }
+    if (!folders || folders.length === 0) continue
     if (!folders.includes(sel.folder)) {
       misfiled.push(
         `${sel.originalFilename} was filed under ${folders.join(', ')}/ but you attributed it to ` +
@@ -226,12 +249,6 @@ function crossCheckSelects(
       `Filed under a different act than you attributed it to — NOT ingested:\n` +
         misfiled.map((m) => `  ${m}`).join('\n') +
         `\n  Move the file, or change the attribution in the review page.`
-    )
-  }
-  if (absent.length > 0) {
-    report.warnings.push(
-      `${absent.length} select(s) from the review have not arrived in the inbox yet:\n` +
-        absent.map((a) => `    ${a}`).join('\n')
     )
   }
   if (selects.unattributed.length > 0) {

@@ -26,14 +26,16 @@
  *
  * @module scripts/media/ingest
  */
+import { execFileSync } from 'child_process'
 import { createHash } from 'crypto'
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, unlinkSync, writeFileSync } from 'fs'
 import { join, resolve, extname, basename } from 'path'
+import { tmpdir } from 'os'
 import sharp from 'sharp'
 import { findShow, folderPlan, loadConcerts, VENUE_FOLDER, isValidDate, type Act, type Concert } from './show'
 import { explainMatchFailure, isHeroName, matchFolder, parseDerivedFrom } from './match'
 import { exifDateToIso, findMetadataLeaks, readExifSummary } from './exif'
-import { crossCheckSelects, loadSelects } from './selects'
+import { crossCheckSelects, loadSelects, type SelectsFile } from './selects'
 import {
   alreadyIngested,
   assetFilename,
@@ -47,6 +49,7 @@ import {
 
 const INBOX = resolve('concert-photos-audit/inbox')
 const REVIEW_ROOT = resolve('concert-photos-audit/review')
+const GUARD = resolve('concert-photos-audit/bin/osxphotos')
 const SHOWS_DIR = resolve('public/images/shows')
 const URL_PREFIX = '/images/shows'
 
@@ -111,15 +114,22 @@ async function ingestFile(args: {
   file: string
   date: string
   act: Act | null
+  /** Which copy this file is. Inbox files are whatever the owner exported. */
+  quality?: 'original' | 'preview'
+  /** How to name this file in the report. Defaults to its path under the inbox. */
+  label?: string
+  /** The library asset this file came from, when it came from one. */
+  uuid?: string | null
   index: MediaIndex
   report: Report
   notes: string | null
   dryRun: boolean
 }): Promise<void> {
   const { file, date, act, index, report, notes, dryRun } = args
+  const quality = args.quality ?? 'original'
   const name = basename(file)
   const ext = extname(name).toLowerCase()
-  const rel = file.slice(INBOX.length + 1)
+  const rel = args.label ?? file.slice(INBOX.length + 1)
 
   if (VIDEO_EXT.has(ext)) {
     // Not silently dropped: video selects are a real thing the owner may have exported,
@@ -182,6 +192,7 @@ async function ingestFile(args: {
   const asset: MediaAsset = {
     url: `${URL_PREFIX}/${filename}`,
     date,
+    uuid: args.uuid ?? null,
     artist: act ? act.name : null,
     artistNormalized,
     subject: act ? 'artist' : 'venue',
@@ -189,6 +200,7 @@ async function ingestFile(args: {
     source: 'personal',
     hero,
     order,
+    quality,
     width: out.width,
     height: out.height,
     bytes: out.bytes.length,
@@ -233,8 +245,146 @@ async function ingestFile(args: {
   }
 }
 
+/**
+ * Fetch the originals the review already approved, and ingest them.
+ *
+ * THIS IS THE POINT OF THE WHOLE PIPELINE. The expensive work — looking at 58 frames and
+ * saying which are worth publishing and who is in them — is done and recorded by UUID.
+ * Turning that into files on disk is mechanical, and it must not send the owner back into
+ * Photos to hunt for filenames. Most of the archive lives in iCloud, so a workflow that
+ * only handles local originals would be manual for the majority of the backlog.
+ *
+ * `--download-missing` drives Photos to materialise an iCloud original. Measured: 1.22MB
+ * and six seconds for a 3024x4032 HEIC, and `ismissing` flips to false afterwards. The
+ * spec's objection to this flag bundled the AppleScript permission with video's 15-30GB;
+ * for stills the volume argument does not apply — the whole still backlog is a few
+ * hundred MB.
+ *
+ * Materialising an original is NOT a library mutation: it writes no user data, no
+ * metadata, no albums, no edits. It is what Photos does when you open the photograph.
+ *
+ * If an original cannot be fetched, the staged PREVIEW is used and recorded as such. 22 of
+ * 23 previews on the pilot show cleared a 1080x1350 card and a 9:16 crop, so a post is
+ * never blocked by a download — and `quality: 'preview'` means a later pass can upgrade
+ * the file in place without any of the curation being redone.
+ */
+async function ingestFromSelects(args: {
+  date: string
+  concert: Concert
+  acts: Act[]
+  selects: SelectsFile
+  index: MediaIndex
+  report: Report
+  dryRun: boolean
+}): Promise<void> {
+  const { date, acts, selects, index, report, dryRun } = args
+  if (selects.selects.length === 0) return
+
+  const stage = join(tmpdir(), `media-ingest-${date}-${process.pid}`)
+  mkdirSync(stage, { recursive: true })
+  const uuidFile = join(stage, 'uuids.txt')
+  writeFileSync(uuidFile, selects.selects.map((s) => s.uuid).join('\n') + '\n')
+
+  const cloud = selects.selects.filter((s) => s.needsDownload).length
+  console.log(
+    `  fetching ${selects.selects.length} originals${cloud ? ` (${cloud} from iCloud — this takes a few seconds each)` : ''}…`
+  )
+
+  let exported = new Map<string, string>()
+  if (!dryRun) {
+    try {
+      execFileSync(
+        GUARD,
+        [
+          'export', stage,
+          '--uuid-from-file', uuidFile,
+          // Materialise iCloud originals. Without this, every asset the owner did not
+          // happen to have on disk silently exports nothing.
+          '--download-missing',
+          // Convert with APPLE's codecs, not ours. sharp reports `heif.input === true`,
+          // but the HEVC decoder is not compiled into its libvips: real iPhone HEICs fail
+          // with "Support for this compression format has not been built in", and DNG is
+          // not readable at all. 19 of 23 assets on the pilot show died this way. Letting
+          // osxphotos convert on export fixes HEIC and ProRAW DNG in one flag.
+          '--convert-to-jpeg', '--jpeg-quality', '1.0',
+          // One file per asset, and the right one: if a photograph was edited in Photos,
+          // the EDIT is what the owner saw in the review page and chose. Without this,
+          // osxphotos writes both and the original silently wins the filename race.
+          '--skip-original-if-edited',
+          // Live Photos would otherwise drag in their motion clip as a second file.
+          '--skip-live',
+          // Name by UUID so the mapping back to the select is exact — original filenames
+          // are not unique inside one show window.
+          '--filename', '{uuid}',
+          '--no-progress',
+          '--update',
+        ],
+        { stdio: ['ignore', 'ignore', 'pipe'], maxBuffer: 64 * 1024 * 1024 }
+      )
+    } catch (err) {
+      const e = err as Error & { stderr?: Buffer }
+      report.warnings.push(
+        `Fetching originals failed; falling back to previews.\n    ${e.stderr?.toString().trim().split('\n').slice(-2).join(' ') ?? e.message}`
+      )
+    }
+    // Verify the files, not the exit code.
+    for (const name of readdirSync(stage)) {
+      const m = /^([0-9A-Fa-f-]{36})/.exec(name)
+      if (m && statSync(join(stage, name)).isFile()) exported.set(m[1].toUpperCase(), name)
+    }
+  }
+
+  const reviewImg = join(REVIEW_ROOT, date, 'img')
+  const staged = new Map<string, string>()
+  for (const sel of selects.selects) {
+    // Placement follows the FOLDER, which is derived from the subject. Trusting
+    // artistNormalized alone put a marquee shot under the headliner on the pilot show.
+    const act =
+      sel.folder === '_venue'
+        ? null
+        : sel.artistNormalized
+          ? (acts.find((a) => a.slug === sel.artistNormalized) ?? null)
+          : null
+    if (sel.folder !== '_venue' && sel.artistNormalized && !act) {
+      report.errors.push(`${sel.originalFilename}: selects names "${sel.artist}", which is not on this show's bill.`)
+      continue
+    }
+
+    const originalName = exported.get(sel.uuid.toUpperCase())
+    const previewPath = join(reviewImg, `${sel.uuid.toUpperCase()}_pv.jpeg`)
+    let file: string
+    let quality: 'original' | 'preview'
+
+    if (originalName) {
+      file = join(stage, originalName)
+      quality = 'original'
+      // ingestFile reports paths relative to the inbox; a staged fetch has no inbox path,
+      // so give it the name the owner recognises.
+      staged.set(join(stage, originalName), sel.originalFilename)
+    } else if (existsSync(previewPath)) {
+      file = previewPath
+      quality = 'preview'
+      staged.set(previewPath, `${sel.originalFilename} (preview)`)
+      if (!dryRun) report.warnings.push(
+        `${sel.originalFilename}: original not fetched — using Photos' preview. ` +
+          `Fine for a 1080x1350 card; re-run to upgrade it in place once it downloads.`
+      )
+    } else {
+      report.errors.push(`${sel.originalFilename}: neither an original nor a preview is available.`)
+      continue
+    }
+
+    if (dryRun) {
+      report.skipped.push({ path: sel.originalFilename, reason: `would fetch and ingest to ${sel.folder}/` })
+      continue
+    }
+    await ingestFile({ file, date, act, quality, index, report, notes: null, dryRun, label: staged.get(file), uuid: sel.uuid })
+  }
+}
+
 async function ingestDate(dateDir: string, concerts: Concert[], index: MediaIndex, report: Report, dryRun: boolean): Promise<void> {
   const date = basename(dateDir)
+  const hasInbox = existsSync(dateDir)
 
   if (!isValidDate(date)) {
     report.errors.push(`inbox/${date}/ is not a YYYY-MM-DD folder. A date folder IS the concert.`)
@@ -252,14 +402,14 @@ async function ingestDate(dateDir: string, concerts: Concert[], index: MediaInde
   }
 
   const { acts } = folderPlan(concert)
-  const showNotes = readNotes(dateDir)
+  const showNotes = hasInbox ? readNotes(dateDir) : null
 
   // PASS ONE — see what arrived, without writing anything. The placement check has to
   // happen before any file is committed: writing a wrongly-credited asset and reporting it
   // afterwards leaves it in media-index.json, and the next run skips it as already done.
   const folders: Array<{ entry: string; match: ReturnType<typeof matchFolder>; files: string[] }> = []
 
-  for (const entry of entriesOf(dateDir)) {
+  for (const entry of hasInbox ? entriesOf(dateDir) : []) {
     const path = join(dateDir, entry)
     if (!statSync(path).isDirectory()) {
       if (ROOT_ALLOWED.test(entry)) continue
@@ -302,7 +452,12 @@ async function ingestDate(dateDir: string, concerts: Concert[], index: MediaInde
   // anything is written. `selects.json` is the only record of who is actually in a frame.
   let refuse = new Set<string>()
   const selects = loadSelects(join(REVIEW_ROOT, date))
-  if (selects) refuse = crossCheckSelects(selects, arrivals, report)
+  if (selects) {
+    refuse = crossCheckSelects(selects, arrivals, report)
+    // Fetch what the review approved. The inbox below stays for DERIVED files — extracted
+    // frames, trimmed clips, crops — which have no UUID and can only arrive as files.
+    await ingestFromSelects({ date, concert, acts, selects, index, report, dryRun })
+  }
 
   // PASS TWO — write what survived.
   for (const { entry, match, files } of folders) {
@@ -336,9 +491,9 @@ async function main(): Promise<void> {
   const dryRun = args.includes('--dry-run')
   const only = args.find((a) => !a.startsWith('-'))
 
-  if (!existsSync(INBOX)) {
-    console.log(`\nNothing to ingest — ${INBOX} does not exist.`)
-    console.log(`Run \`npm run media:prep <date>\` first.\n`)
+  if (!existsSync(INBOX) && !existsSync(REVIEW_ROOT)) {
+    console.log(`\nNothing to ingest — no review runs and no inbox.`)
+    console.log(`Run \`npm run media:review <date>\` first.\n`)
     return
   }
 
@@ -346,7 +501,16 @@ async function main(): Promise<void> {
   const index = loadIndex()
   const report: Report = { taken: [], skipped: [], errors: [], warnings: [], bytesWritten: 0, arrivals: [] }
 
-  const dates = entriesOf(INBOX).filter((d) => statSync(join(INBOX, d)).isDirectory())
+  // Dates come from BOTH trees. A reviewed show usually has no inbox folder at all now —
+  // its originals are fetched from selects.json — and requiring one would mean the
+  // ordinary path could never run.
+  const inboxDates = existsSync(INBOX)
+    ? entriesOf(INBOX).filter((d) => statSync(join(INBOX, d)).isDirectory())
+    : []
+  const reviewDates = existsSync(REVIEW_ROOT)
+    ? entriesOf(REVIEW_ROOT).filter((d) => existsSync(join(REVIEW_ROOT, d, 'selects.json')))
+    : []
+  const dates = [...new Set([...inboxDates, ...reviewDates])].sort()
   const targets = only ? dates.filter((d) => d === only) : dates
 
   if (only && targets.length === 0) {
