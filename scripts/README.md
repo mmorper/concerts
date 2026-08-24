@@ -46,6 +46,7 @@ This directory contains all data pipeline, build, and utility scripts for the Mo
 | Script | Command | Purpose | When to Run |
 |--------|---------|---------|-------------|
 | media/prep.ts | `npm run media:prep <YYYY-MM-DD>` | Scaffold one show's inbox folders and build its `WORKSHEET.md` of Photos candidates | After a show, before culling |
+| media/review.ts | `npm run media:review <YYYY-MM-DD>` | Cull the STILLS on a localhost page and record who is in each frame | After prep, before ingest |
 | media/ingest.ts | `npm run media:ingest [date]` | Take the owner's selects out of the inbox into `public/images/shows/` + `media-index.json` | After filling the inbox folders |
 
 **Read `.claude/skills/media-pipeline/SKILL.md` before touching anything here.** The Photos
@@ -56,6 +57,11 @@ through the read-only guard at `concert-photos-audit/bin/osxphotos`, never `.osx
 `concert-photos-audit/inbox/<date>/`. It ranks candidates and never filters them, and it
 asserts its own output before reporting success. Add `-- --scaffold-only` to create the
 folders without reading the library.
+
+**Stills are reviewed in `media:review`; video is reviewed in Photos.app.** Different
+problems: video needs playback, stills need a fast keyboard verdict. Triaging stills in
+Photos also makes the attribution call twice — once when judging, again when picking a
+folder — and the second one is where a mis-credit enters.
 
 `media:ingest` strips GPS, capture time and device id from every file, and **asserts** their
 absence on the written bytes by two independent checks before keeping it — a file that fails

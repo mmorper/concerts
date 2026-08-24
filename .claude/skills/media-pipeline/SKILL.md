@@ -81,6 +81,11 @@ artist must reach `selects.json`, `media-index.json` and the payload.
 
 Low-confidence matches do not publish. An asset matched only by file mtime is a guess.
 
+**Attribution is captured in the review page, at the moment of judgement** — that is when
+the owner is looking at the photograph and actually knows. `selects.json` carries it
+forward, and `media:ingest` REFUSES a file whose folder disagrees with it. A keeper with no
+act named is never placed and never defaults to the headliner.
+
 ---
 
 ## Findings that must not be re-derived
@@ -129,7 +134,15 @@ filter on it.**
 **Burst collapsing is irrelevant.** The library has 10 bursts in 58,571 assets. Frame
 extraction, however, *manufactures* near-duplicates — see below.
 
-**Video is reviewed out-of-process.** See below.
+**Stills are reviewed IN the review page. Video is reviewed in Photos.app.** These are
+different answers to different problems and must not be collapsed into one — doing so once
+already sent the owner to Photos to triage 58 stills by hand. Video needs playback, which
+Photos does better than anything here. Stills need a fast keyboard verdict with both
+ranking factors and the night's lineup on screen, which is what `media:review` is.
+
+Triaging stills in Photos also makes the attribution call **twice** — once when judging,
+again when choosing a folder — and the second one is where a Soft Cell frame lands in
+`alison-moyet/`.
 
 ---
 
@@ -152,8 +165,13 @@ Do **not** build video review, playback or editing into this project.
 anything here. `--download-missing` drives Photos through AppleScript, requiring a separate
 Automation permission, and clips run 100–200MB each (~15–30GB for the archive).
 
-**The workflow:** the tool *points*, the owner reviews in Photos, exports stills or trimmed
-clips by hand, and drops them into the inbox.
+**The workflow for VIDEO:** the tool *points* (WORKSHEET.md lists clips with searchable
+`original_filename`), the owner reviews in Photos, exports stills or trimmed clips by hand,
+and drops them into the inbox.
+
+**The workflow for STILLS is different:** `media:review <date>` exports previews and serves
+the review page; verdicts and attribution are captured there; `--finish` writes
+`selects.json`; `media:ingest` then checks what was filed against it.
 
 What the tool still owes video: identification. Per-show worksheets listing candidates with
 `original_filename` (e.g. `IMG_5693.HEIC`) — directly searchable in Photos.
@@ -237,7 +255,10 @@ that migration costs no consumer changes.
 |---|---|
 | `concert-photos-audit/bin/osxphotos` | **read-only guard — tracked by exception, CI-tested.** The binary it wraps stays gitignored |
 | `extract_frames.sh` / `frame_score.py` / `pick_frames.py` | frame sampling, Laplacian scoring, min-gap selection |
-| `review_server.py` + `uxtest/index.html` | localhost stills review — verdicts persist per keystroke |
+| **`npm run media:review <date>`** | **stills review — previews, localhost page, verdicts per keystroke — #380, shipped** |
+| `scripts/media/review-page.html` | the review page — tracked, one show per run |
+| `scripts/media/review_server.py` | localhost server; writes only `verdicts.json` |
+| `scripts/media/selects.ts` | `selects.json` — the decision, and the cross-check on the filing |
 | `probes/*.py` | one-off investigation scripts |
 | **`npm run media:prep <date>`** | **scaffold inbox folders + per-show worksheet — #378, shipped** |
 | `scripts/media/show.ts` | date → concert, lineup, folder plan (pure, unit-tested) |
