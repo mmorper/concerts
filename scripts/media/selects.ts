@@ -39,6 +39,13 @@ export interface Select {
   needsDownload: boolean
   time: string
   /**
+   * A file already on disk, for selects that are not library assets.
+   *
+   * An extracted frame has no UUID — it did not come out of Photos, it was cut out of a
+   * clip afterwards. Ingest reads this path directly instead of exporting.
+   */
+  sourceFile?: string | null
+  /**
    * Position in the ranked review list, 1-based.
    *
    * Carried so ingest can give the best frame of each act `-01`, which is the one a
@@ -103,6 +110,8 @@ export interface AssetFacts {
   is_missing: boolean
   /** 1-based position in the ranked list the review page displayed. */
   rank: number
+  /** Set for extracted frames, which are files rather than library assets. */
+  source_file?: string | null
 }
 
 /**
@@ -165,8 +174,10 @@ export function buildSelects(args: {
       artistNormalized: act ? act.slug : null,
       subject,
       folder,
-      needsDownload: asset.is_missing,
+      // A frame already on disk never needs downloading, whatever its clip's state was.
+      needsDownload: asset.source_file ? false : asset.is_missing,
       time: asset.local_time,
+      sourceFile: asset.source_file ?? null,
       rank: asset.rank,
     })
   }

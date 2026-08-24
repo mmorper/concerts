@@ -14,8 +14,11 @@ already exported and writes only `verdicts.json` inside the run directory.
 import http.server
 import json
 import os
+import re
 import socketserver
+import subprocess
 import sys
+import urllib.parse
 from pathlib import Path
 
 RUN = Path(os.environ.get("REVIEW_DIR", "")).resolve()
@@ -39,6 +42,27 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         pass
 
     def do_GET(self):
+        if self.path.startswith("/open"):
+            # Deep-link into Photos.app for the asset under review.
+            #
+            # There is NO public URL for an iCloud asset — iCloud.com needs a session and
+            # hands out short-lived signed URLs, nothing bookmarkable. But macOS has a
+            # local scheme, `photos://asset/<UUID>`, which opens Photos on that exact item.
+            # For video that is worth more than a public link would be: full playback and
+            # scrubbing in the app that does it best, one click from the review page, with
+            # no download and no hunting for a filename.
+            #
+            # Opened server-side rather than as an <a href> so the browser never has to be
+            # asked whether it may hand a custom scheme to the OS.
+            q = urllib.parse.urlparse(self.path).query
+            uuid = urllib.parse.parse_qs(q).get("uuid", [""])[0]
+            # Strict: this string reaches `open`, so it must be a UUID and nothing else.
+            ok = bool(re.fullmatch(r"[0-9A-Fa-f-]{36}", uuid))
+            if ok:
+                subprocess.run(["open", f"photos://asset/{uuid}"], check=False)
+            self.send_response(204 if ok else 400)
+            self.end_headers()
+            return
         if self.path.startswith("/verdicts"):
             body = json.dumps(load()).encode()
             self.send_response(200)

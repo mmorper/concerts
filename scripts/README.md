@@ -47,6 +47,7 @@ This directory contains all data pipeline, build, and utility scripts for the Mo
 |--------|---------|---------|-------------|
 | media/prep.ts | `npm run media:prep <YYYY-MM-DD>` | Scaffold one show's inbox folders and build its `WORKSHEET.md` of Photos candidates | After a show, before culling |
 | media/review.ts | `npm run media:review <YYYY-MM-DD>` | Cull the STILLS on a localhost page and record who is in each frame | After prep, before ingest |
+| media/frames.ts | `npm run media:frames <YYYY-MM-DD>` | Download only the clips you kept, extract stills, stage them for a second review pass | After marking clips in the review |
 | media/ingest.ts | `npm run media:ingest [date]` | Take the owner's selects out of the inbox into `public/images/shows/` + `media-index.json` | After filling the inbox folders |
 
 **Read `.claude/skills/media-pipeline/SKILL.md` before touching anything here.** The Photos
