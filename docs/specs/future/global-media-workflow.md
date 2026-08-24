@@ -125,10 +125,16 @@ run when the library is unavailable.
 
 ## `media:review <date>` — judge the stills, and record who is in them
 
-Exports the previews Photos already holds (never originals — 42 of 58 assets for
-2026-06-04 are iCloud-only, and fetching those needs `--download-missing`, which drives
-Photos over AppleScript and wants an Automation permission this project has declined
-twice). Serves `review-page.html` from localhost; every verdict lands on disk as it is
+Copies the previews Photos already holds, straight from `PhotoInfo.path_derivatives` —
+never originals. 42 of 58 assets for 2026-06-04 are iCloud-only, and fetching those needs
+`--download-missing`, which drives Photos over AppleScript and wants an Automation
+permission this project has declined twice. **Derivatives are local even for those**, so
+nothing downloads.
+
+`osxphotos export --preview` was the obvious route and is the wrong one: it has no way to
+write the preview alone, and exports the original beside it — 550MB against 33MB on this
+one show. The copy runs inside `query_window.py`, under the osxphotos binary, because
+**Full Disk Access is scoped to that binary**: node reading a library path gets `EPERM`. Serves `review-page.html` from localhost; every verdict lands on disk as it is
 made, so an interrupted review resumes where it stopped.
 
 **Attribution is captured here**, at the moment of judgement, because that is when the

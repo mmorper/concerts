@@ -39,6 +39,12 @@ export interface Candidate {
   latitude: number | null
   longitude: number | null
   contributors: string[]
+  /**
+   * Filename of the preview staged by the query function, when one was requested.
+   * The copy happens inside the osxphotos process because Full Disk Access is scoped to
+   * that binary — node reading a path inside the library gets EPERM.
+   */
+  preview_file: string | null
   favorite: boolean
   in_cloud: boolean
   is_missing: boolean

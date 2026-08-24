@@ -86,6 +86,7 @@ function candidate(over: Partial<Candidate> = {}): Candidate {
     latitude: null,
     longitude: null,
     contributors: ['Mike Morper'],
+    preview_file: null,
     favorite: false,
     in_cloud: false,
     is_missing: false,

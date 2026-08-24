@@ -34,6 +34,12 @@ carries the reasoning and evidence. This skill carries the rules in operative fo
   `concert-photos-audit/` that git can see. `test/pipeline/osxphotos-guard.test.ts` asserts
   every refusal on every PR. Refusals happen before the binary is consulted, so the tests
   run on a Linux runner with no osxphotos installed.
+- **🔴 Full Disk Access is scoped to the BINARY, so anything touching the library must run
+  inside it.** Node reading a path under `Photos Library.photoslibrary` gets `EPERM`, even
+  a path that osxphotos itself just handed over. That is the point of building the binary
+  locally rather than via pipx — TCC is granted to it alone. Practical consequence: file
+  work on library contents belongs in `query_window.py`, which runs under the guarded binary,
+  never in the TypeScript that calls it. Measured 2026-08-24.
 - **🔴 The guard cannot be moved.** macOS grants Full Disk Access against the **wrapper's**
   path, not only the binary's. Relocating it to `scripts/media/` — same binary, same
   arguments, same resolved target — made every library read **hang**: no prompt, no error,
