@@ -14,6 +14,20 @@ import worker from './worker.js'
 
 const HTML = '<html><head><title>Morperhaus Concert Archives</title></head><body></body></html>'
 
+// The real `index.html` head, trimmed to the tags the injector rewrites. `HTML`
+// alone carries no <meta>, so the replace would no-op and a description
+// assertion against it would pass on an empty match rather than on content.
+const PAGE =
+  '<html><head><title>Morperhaus Concert Archives</title>' +
+  '<meta name="description" content="A visual love letter to 5+ decades of live music." />' +
+  '<meta property="og:title" content="Morperhaus Concert Archives" />' +
+  '<meta property="og:description" content="A visual love letter to 5+ decades of live music." />' +
+  '<meta property="og:url" content="https://concerts.morperhaus.org/" />' +
+  '<meta property="og:image" content="https://concerts.morperhaus.org/og-image.jpg" />' +
+  '<meta property="twitter:description" content="A visual love letter to 5+ decades of live music." />' +
+  '<meta property="twitter:image" content="https://concerts.morperhaus.org/og-image.jpg" />' +
+  '</head><body></body></html>'
+
 const GOOGLEBOT =
   'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
 const CHROME =
@@ -182,6 +196,162 @@ describe('meta-injector worker', () => {
 
       expect(body).toBe(HTML)
       expect(body).not.toContain('A Very Specific Headline')
+    })
+  })
+
+  // ── Artist counts ──────────────────────────────────────────────────────────
+
+  describe('artist meta counts billings, not headliners', () => {
+    // The one exception to the "content is deliberately under-tested" rule at the
+    // top of this file. A wrong count is not a card that degrades — it is a card
+    // that states a confident falsehood, and it stated one for 150 of the
+    // archive's 257 artists. Richard Cheese shared as "0 concerts from various
+    // years" under a photo of the night he played.
+    const OPENED_ONLY = {
+      id: 'concert-55',
+      date: '2002-12-21',
+      headliner: 'The Brian Setzer Orchestra',
+      headlinerNormalized: 'the-brian-setzer-orchestra',
+      openers: ['Richard Cheese'],
+      venue: 'Universal Amphitheater',
+      cityState: 'Los Angeles, California',
+      venueNormalized: 'universal-amphitheater',
+      year: 2002,
+    }
+
+    /** Route each /data/ file the artist injector asks for to its own fixture. */
+    function serveArchive({ concerts, artists = {}, aliases = { sameAct: [] } }) {
+      vi.mocked(fetch).mockImplementation(async (input) => {
+        const url = String(input?.url ?? input)
+        const json = (body) =>
+          new Response(JSON.stringify(body), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+          })
+        if (url.includes('/data/concerts.json')) return json({ concerts })
+        if (url.includes('/data/artists-metadata.json')) return json(artists)
+        if (url.includes('/data/artist-aliases.json')) return json(aliases)
+        return htmlResponse(PAGE)
+      })
+    }
+
+    const descriptionOf = (body) =>
+      body.match(/<meta name="description" content="([^"]*)" \/>/)?.[1]
+
+    it('counts a show the artist opened', async () => {
+      serveArchive({
+        concerts: [OPENED_ONLY],
+        artists: { 'richard-cheese': { name: 'Richard Cheese' } },
+      })
+
+      const res = await worker.fetch(req('/?scene=artists&artist=richard-cheese'), {}, ctx)
+      const body = await res.text()
+
+      expect(descriptionOf(body)).toBe(
+        '1 concert from 2002. Explore setlists, tour history, and venue details for Richard Cheese.'
+      )
+      expect(body).not.toContain('0 concerts')
+      expect(body).not.toContain('various years')
+    })
+
+    it('counts headlining and opening shows together', async () => {
+      // The English Beat headlines five nights and opens five more. Counting
+      // only the marquee halved it.
+      serveArchive({
+        concerts: [
+          { headlinerNormalized: 'the-english-beat', headliner: 'The English Beat', openers: [], year: 2003 },
+          { headlinerNormalized: 'squeeze', headliner: 'Squeeze', openers: ['The English Beat'], year: 2024 },
+        ],
+        artists: { 'the-english-beat': { name: 'The English Beat' } },
+      })
+
+      const res = await worker.fetch(req('/?scene=artists&artist=the-english-beat'), {}, ctx)
+
+      expect(descriptionOf(await res.text())).toContain('2 concerts from 2003-2024')
+    })
+
+    it('says the year once when every show is in the same year', async () => {
+      serveArchive({
+        concerts: [OPENED_ONLY],
+        artists: { 'richard-cheese': { name: 'Richard Cheese' } },
+      })
+
+      const body = await (
+        await worker.fetch(req('/?scene=artists&artist=richard-cheese'), {}, ctx)
+      ).text()
+
+      expect(body).toContain('from 2002.')
+      expect(body).not.toContain('2002-2002')
+    })
+
+    it('collapses same-act billings and names the merged act', async () => {
+      // `?artist=the-brian-setzer-orchestra` is in the sitemap and in published
+      // liner notes, so the card it unfurls has to be the merged one (#227).
+      serveArchive({
+        concerts: [
+          { headlinerNormalized: 'the-brian-setzer-orchestra', headliner: 'The Brian Setzer Orchestra', openers: [], year: 1995 },
+          { headlinerNormalized: 'brian-setzer', headliner: 'Brian Setzer', openers: [], year: 2024 },
+        ],
+        artists: { 'the-brian-setzer-orchestra': { name: 'The Brian Setzer Orchestra' } },
+        aliases: {
+          sameAct: [
+            {
+              canonical: 'brian-setzer',
+              name: 'Brian Setzer',
+              billings: ['brian-setzer', 'the-brian-setzer-orchestra'],
+            },
+          ],
+        },
+      })
+
+      const body = await (
+        await worker.fetch(req('/?scene=artists&artist=the-brian-setzer-orchestra'), {}, ctx)
+      ).text()
+
+      expect(descriptionOf(body)).toContain('2 concerts from 1995-2024')
+      expect(body).toContain('<title>Brian Setzer | Morperhaus Concert Archives</title>')
+    })
+
+    it('keeps a correct billing count when the aliases file is unavailable', async () => {
+      // Aliases only ever add knowledge. Losing them must not resurrect the zero.
+      vi.mocked(fetch).mockImplementation(async (input) => {
+        const url = String(input?.url ?? input)
+        if (url.includes('/data/artist-aliases.json')) return new Response('nope', { status: 500 })
+        if (url.includes('/data/concerts.json')) {
+          return new Response(JSON.stringify({ concerts: [OPENED_ONLY] }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+          })
+        }
+        if (url.includes('/data/artists-metadata.json')) {
+          return new Response(JSON.stringify({ 'richard-cheese': { name: 'Richard Cheese' } }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+          })
+        }
+        return htmlResponse(PAGE)
+      })
+
+      const body = await (
+        await worker.fetch(req('/?scene=artists&artist=richard-cheese'), {}, ctx)
+      ).text()
+
+      expect(descriptionOf(body)).toContain('1 concert from 2002')
+    })
+
+    it('counts the artists scene roster as everyone who played', async () => {
+      // 257 billings, not the 107 distinct headliners — the figure the README,
+      // llm.txt and the scene footer all publish (#295).
+      serveArchive({
+        concerts: [
+          { headlinerNormalized: 'squeeze', headliner: 'Squeeze', openers: ['The English Beat', 'Boy George'], venueNormalized: 'the-forum', year: 2024 },
+        ],
+      })
+
+      const body = await (await worker.fetch(req('/?scene=artists'), {}, ctx)).text()
+
+      expect(body).toContain('<title>3 Artists')
+      expect(descriptionOf(body)).toContain('Browse 3 artists')
     })
   })
 

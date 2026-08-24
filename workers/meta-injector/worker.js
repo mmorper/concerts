@@ -61,6 +61,72 @@ async function cachedJsonFetch(url, ctx) {
   return cacheable;
 }
 
+// ── An artist is a billing, not a headliner (#295) ───────────────────────────
+//
+// The archive stores openers as plain display names on the concert record, so
+// `headlinerNormalized` only ever sees the marquee act. Filtering on it made
+// 150 of the archive's 257 artists — every act that has only ever opened, 58%
+// of the roster — unfurl as "0 concerts from various years", and undercounted
+// 19 more that did both (The English Beat showed 5 of its 10 shows).
+//
+// `src/utils/archiveStats.ts` writes down the definition every other published
+// surface uses: an artist is anyone who played, headlining or opening. These
+// helpers restate it, because a Worker cannot import from the app bundle.
+
+function normalizeArtistName(name) {
+  return String(name ?? '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+/** Every artist slug billed on a concert — the headliner and each opener. */
+function billingsOnConcert(concert) {
+  const slugs = [concert.headlinerNormalized || normalizeArtistName(concert.headliner)];
+  for (const opener of concert.openers ?? []) {
+    if (opener && opener.trim()) slugs.push(normalizeArtistName(opener));
+  }
+  return slugs.filter(Boolean);
+}
+
+/**
+ * Same-act billing aliases (#227), mirroring the app's `src/utils/artistAliases.ts`:
+ * Brian Setzer is one act across four marquees. `sharesMember` is deliberately
+ * ignored, so Oingo Boingo and Danny Elfman stay two artists.
+ *
+ * Only the per-artist card collapses these, and the asymmetry is on purpose. A
+ * shared card has to agree with the page it opens, and that page is the
+ * alias-collapsed mosaic card. The archive-wide "N artists" figure stays
+ * uncollapsed billings (257, not 254) because that is what the README, `llm.txt`
+ * and every scene footer quote — a recorded product decision, not an oversight.
+ */
+async function fetchArtistAliases(origin, ctx) {
+  const canonical = new Map();
+  const displayName = new Map();
+  try {
+    const response = await cachedJsonFetch(`${origin}/data/artist-aliases.json`, ctx);
+    if (response.ok) {
+      const raw = await response.json();
+      for (const entry of raw?.sameAct ?? []) {
+        if (!entry?.canonical || !Array.isArray(entry.billings)) continue;
+        if (entry.name) displayName.set(entry.canonical, entry.name);
+        for (const billing of entry.billings) canonical.set(billing, entry.canonical);
+      }
+    }
+  } catch (error) {
+    // Aliases only ever add knowledge. Without them Setzer's four billings stay
+    // four artists — the pre-#227 card, not a broken one.
+    console.warn(`Artist aliases unavailable: ${error.message}`);
+  }
+  return { canonical, displayName };
+}
+
+/** A billing's canonical act. An artist with no entry resolves to itself. */
+function canonicalArtist(aliases, slug) {
+  return aliases.canonical.get(slug) || slug;
+}
+
 /**
  * Main request handler
  */
@@ -300,20 +366,34 @@ async function injectArtistMeta(html, artistNormalized, origin, ctx) {
       return html;
     }
     const concertsData = await concertsResponse.json();
-    const artistConcerts = concertsData.concerts.filter(
-      c => c.headlinerNormalized === artistNormalized
+    // Billings, not headliners — see `billingsOnConcert` above. Openers are 58%
+    // of the roster, and before this every one of them shared as "0 concerts".
+    const aliases = await fetchArtistAliases(origin, ctx);
+    const act = canonicalArtist(aliases, artistNormalized);
+    const artistConcerts = concertsData.concerts.filter(c =>
+      billingsOnConcert(c).some(slug => canonicalArtist(aliases, slug) === act)
     );
     const concertCount = artistConcerts.length;
 
-    // Calculate date range
-    const years = artistConcerts.map(c => c.year).sort();
-    const dateRange = years.length > 0
-      ? `${years[0]}-${years[years.length - 1]}`
-      : 'various years';
+    // Calculate date range. Numeric sort: a lexicographic one is right for
+    // four-digit years by luck, not by rule.
+    const years = artistConcerts
+      .map(c => c.year)
+      .filter(y => typeof y === 'number')
+      .sort((a, b) => a - b);
+    const dateRange =
+      years.length === 0
+        ? 'various years'
+        : years[0] === years[years.length - 1]
+          ? `${years[0]}`
+          : `${years[0]}-${years[years.length - 1]}`;
 
-    // Build dynamic meta tags
-    const title = `${metadata.name} | Morperhaus Concert Archives`;
-    const description = `${concertCount} ${concertCount === 1 ? 'concert' : 'concerts'} from ${dateRange}. Explore setlists, tour history, and venue details for ${metadata.name}.`;
+    // Build dynamic meta tags. The alias display name wins when there is one,
+    // so a link to `?artist=the-brian-setzer-orchestra` unfurls as the merged
+    // act the visitor actually lands on.
+    const artistName = aliases.displayName.get(act) || metadata.name;
+    const title = `${artistName} | Morperhaus Concert Archives`;
+    const description = `${concertCount} ${concertCount === 1 ? 'concert' : 'concerts'} from ${dateRange}. Explore setlists, tour history, and venue details for ${artistName}.`;
     const imageUrl = metadata.image || `${origin}/og-image.jpg`;
     const pageUrl = `${origin}/?scene=artists&artist=${artistNormalized}`;
 
@@ -365,7 +445,7 @@ async function injectArtistMeta(html, artistNormalized, origin, ctx) {
       `<meta property="twitter:image" content="${escapeHtml(imageUrl)}" />`
     );
 
-    console.log(`[Artist Meta Injected] ${metadata.name} (${concertCount} concerts)`);
+    console.log(`[Artist Meta Injected] ${artistName} (${concertCount} concerts)`);
     return html;
 
   } catch (error) {
@@ -660,7 +740,8 @@ async function injectSceneMeta(html, scene, origin, ctx) {
 
     const stats = {
       concerts: concertsData.concerts.length,
-      artists: new Set(concertsData.concerts.map(c => c.headlinerNormalized)).size,
+      // Billings, uncollapsed: 257, the figure every other surface publishes.
+      artists: new Set(concertsData.concerts.flatMap(billingsOnConcert)).size,
       venues: new Set(concertsData.concerts.map(c => c.venueNormalized)).size,
       firstYear: Math.min(...concertsData.concerts.map(c => c.year)),
       lastYear: Math.max(...concertsData.concerts.map(c => c.year)),
