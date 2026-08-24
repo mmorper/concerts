@@ -282,16 +282,20 @@ async function ingestFromSelects(args: {
 
   const stage = join(tmpdir(), `media-ingest-${date}-${process.pid}`)
   mkdirSync(stage, { recursive: true })
+  // Extracted frames are already files; only library assets need fetching.
+  const fromLibrary = selects.selects.filter((s) => !s.sourceFile)
   const uuidFile = join(stage, 'uuids.txt')
-  writeFileSync(uuidFile, selects.selects.map((s) => s.uuid).join('\n') + '\n')
+  writeFileSync(uuidFile, fromLibrary.map((s) => s.uuid).join('\n') + '\n')
 
   const cloud = selects.selects.filter((s) => s.needsDownload).length
-  console.log(
-    `  fetching ${selects.selects.length} originals${cloud ? ` (${cloud} from iCloud — this takes a few seconds each)` : ''}…`
-  )
+  if (fromLibrary.length > 0) {
+    console.log(
+      `  fetching ${fromLibrary.length} originals${cloud ? ` (${cloud} from iCloud — this takes a few seconds each)` : ''}…`
+    )
+  }
 
   let exported = new Map<string, string>()
-  if (!dryRun) {
+  if (!dryRun && fromLibrary.length > 0) {
     try {
       execFileSync(
         GUARD,
@@ -355,7 +359,17 @@ async function ingestFromSelects(args: {
     let file: string
     let quality: 'original' | 'preview'
 
-    if (originalName) {
+    if (sel.sourceFile) {
+      // An extracted frame. It never came from Photos, so there is nothing to export —
+      // and it is full quality: ffmpeg cut it out of the clip at capture resolution.
+      if (!existsSync(sel.sourceFile)) {
+        report.errors.push(`${sel.originalFilename}: extracted frame is missing at ${sel.sourceFile}`)
+        continue
+      }
+      file = sel.sourceFile
+      quality = 'original'
+      staged.set(file, sel.originalFilename)
+    } else if (originalName) {
       file = join(stage, originalName)
       quality = 'original'
       // ingestFile reports paths relative to the inbox; a staged fetch has no inbox path,
@@ -378,7 +392,12 @@ async function ingestFromSelects(args: {
       report.skipped.push({ path: sel.originalFilename, reason: `would fetch and ingest to ${sel.folder}/` })
       continue
     }
-    await ingestFile({ file, date, act, quality, index, report, notes: null, dryRun, label: staged.get(file), uuid: sel.uuid })
+    await ingestFile({
+      file, date, act, quality, index, report, notes: null, dryRun,
+      label: staged.get(file),
+      // A frame has no library identity of its own; record the CLIP it came from.
+      uuid: sel.sourceFile ? null : sel.uuid,
+    })
   }
 }
 

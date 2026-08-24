@@ -126,7 +126,12 @@
     <div class="sect">Scores — signed, zero is mid-range</div>
     <div id="lb-bars"></div>
     <div class="note" id="lb-note"></div>
-    <div class="sect">Verdict — is this technically usable?</div>
+    <div class="sect" id="lb-openrow" style="border:0;padding:0;margin-top:12px">
+      <button id="lb-open" style="width:100%;padding:9px;border-radius:6px;
+        border:1px solid var(--line);background:#1a1a20;color:var(--ink);cursor:pointer;
+        font-size:12px;font-weight:600">▶ Open in Photos</button>
+    </div>
+    <div class="sect" id="lb-verdictlabel">Verdict — is this technically usable?</div>
     <div class="verdict">
       <button class="k" id="v-keep">1 · Usable</button>
       <button class="r" id="v-rej">0 · Reject</button>
@@ -147,7 +152,7 @@
 <div class="keys">
   <span><b>← →</b>move</span><span><b>1</b>usable</span><span><b>0</b>reject</span>
   <span><b>space</b>full size</span><span><b>P V C S</b>subject</span>
-  <span><b>↑ ↓</b>which act</span><span><b>U</b>undo</span>
+  <span><b>↑ ↓</b>which act</span><span><b>O</b>open in Photos</span><span><b>U</b>undo</span>
   <span><b>esc</b>close</span>
 </div>
 <div class="toast" id="toast"></div>
@@ -326,6 +331,10 @@ function fillLB(){
     }).join('');
   $('#lb-note').textContent = 'Amber fields reward frames containing people (+0.34 / +0.18 measured). '
     + 'Rank on overall and curation only. sharply_focused_subject is inert here — trust the computed sharpness.';
+  $('#lb-verdictlabel').textContent = it.media === 'video'
+    ? 'Verdict — worth MINING for frames?'
+    : 'Verdict — is this technically usable?';
+  $('#lb-open').textContent = it.media === 'video' ? '▶ Watch in Photos' : '▶ Open in Photos';
   $('#v-keep').classList.toggle('on', v.verdict==='keep');
   $('#v-rej').classList.toggle('on', v.verdict==='reject');
   document.querySelectorAll('#lb-subj button').forEach(b=>b.classList.toggle('on', b.dataset.s===v.subject));
@@ -389,6 +398,7 @@ document.addEventListener('keydown', e=>{
   else if (k==='0') setVerdict('reject');
   else if (k===' '){ $('#lb').classList.contains('open') ? closeLB() : openLB(); e.preventDefault(); }
   else if (k==='u') undo();
+  else if (k==='o') $('#lb-open').click();
   else if (k==='arrowup'){ cycleArtist(-1); e.preventDefault(); }
   else if (k==='arrowdown'){ cycleArtist(1); e.preventDefault(); }
   else if (SUBJ[k]) setSubject(SUBJ[k]);
@@ -410,6 +420,16 @@ document.querySelectorAll('.filters .f').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.filters .f').forEach(x=>x.classList.toggle('on', x===b));
   paint(); applyVisibility();
 });
+/* Video cannot be judged from a poster frame, so the page does not pretend to: it hands
+   you to Photos, which does playback and scrubbing properly. The server opens the deep
+   link so the browser is never asked to hand a custom scheme to the OS. */
+$('#lb-open').onclick = ()=>{
+  const it = ITEMS[cursor];
+  if (String(it.uuid).startsWith('frame:')) return toast('extracted frame — not a library item');
+  fetch(`/open?uuid=${encodeURIComponent(it.uuid)}`)
+    .then(r => toast(r.ok ? 'opening in Photos…' : 'could not open'))
+    .catch(()=>toast('is the server running?'));
+};
 $('#v-keep').onclick = ()=>setVerdict('keep');
 $('#v-rej').onclick  = ()=>setVerdict('reject');
 document.querySelectorAll('#lb-subj button').forEach(b=>b.onclick=()=>setSubject(b.dataset.s));

@@ -131,6 +131,8 @@ function pageItems(ranked: Ranked[], show: { headliner: string; venue: string; o
       venue: show.venue,
       time: r.local_time.slice(11, 16),
       media: r.is_movie ? 'video' : r.live_photo ? 'live' : 'photo',
+      // Carried so `media:frames` can scale how many frames it keeps to the clip's length.
+      duration: r.duration,
       w: r.width,
       h: r.height,
       orientation: r.orientation,
@@ -191,7 +193,21 @@ function setup(date: string): void {
     lineup: acts.map((a) => a.name),
   }, imgFiles)
 
-  writeFileSync(join(runDir, 'all.json'), JSON.stringify(items, null, 2) + '\n')
+  // Frames extracted by `media:frames` live in this same file and are NOT re-derivable
+  // from the library — they were cut out of a clip afterwards. Re-running the review must
+  // refresh the library assets without throwing away work already done on the frames.
+  const allPath = join(runDir, 'all.json')
+  let frames: unknown[] = []
+  if (existsSync(allPath)) {
+    try {
+      const prior = JSON.parse(readFileSync(allPath, 'utf-8')) as Array<{ uuid: string; source_file?: string }>
+      frames = prior.filter((i) => i.uuid?.startsWith('frame:') && i.source_file && existsSync(i.source_file))
+    } catch {
+      /* an unreadable previous run is not a reason to fail this one */
+    }
+  }
+  writeFileSync(allPath, JSON.stringify([...items, ...frames], null, 2) + '\n')
+  if (frames.length > 0) console.log(`  ${frames.length} extracted frame(s) kept on the page`)
   copyFileSync(PAGE, join(runDir, 'index.html'))
 
   if (!existsSync(join(runDir, 'verdicts.json'))) writeFileSync(join(runDir, 'verdicts.json'), '{}\n')
@@ -241,6 +257,7 @@ function finish(date: string): void {
     original_filename: string
     time: string
     ismissing: boolean
+    source_file?: string
   }>
   const verdicts = loadVerdicts(runDir)
   // all.json is written in ranked order, so the index IS the rank.
@@ -249,6 +266,7 @@ function finish(date: string): void {
     original_filename: i.original_filename,
     local_time: `${concert.date}T${i.time}:00`,
     is_missing: i.ismissing,
+    source_file: i.source_file ?? null,
     rank: n + 1,
   }))
 

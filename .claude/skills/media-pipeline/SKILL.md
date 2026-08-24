@@ -218,6 +218,19 @@ What the tool still owes video: identification. Per-show worksheets listing cand
 
 **Confirmed:** a poster frame cannot be judged. Do not design a video flow around thumbnails.
 
+**There is NO public URL for an iCloud asset.** iCloud.com needs a session and issues
+short-lived signed URLs; nothing is bookmarkable. What exists instead is better for this
+purpose: **`photos://asset/<UUID>` opens Photos.app on that exact item.** The review server
+exposes it at `/open?uuid=…` and the page has a "Watch in Photos" button (`O`), so a clip
+is one click from full playback with no download and no hunting for a filename. The server
+opens it rather than the page, so the browser is never asked to hand a custom scheme to the
+OS, and the UUID is regex-validated before it reaches `open`.
+
+**Never download a clip you have not decided to mine.** 150 clips across 36 shows, ~150MB
+each — fetching them all is **22.5GB**. `media:frames` downloads only clips the owner kept
+in the review, extracts, and deletes the clips afterwards. For a clip, "usable" in the
+review page means *worth mining for frames*, not *worth publishing*; the page says so.
+
 **Frame extraction works and is validated** — extracted frames scored an **83% keep rate**,
 judged blind against real stills, the best of any category. When extracting: sample ~1
 frame/second, score by Laplacian, and **enforce a minimum gap between picks** — top-N by
