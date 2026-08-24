@@ -1,7 +1,97 @@
 {
-  "generatedAt": "2026-08-17T08:46:30.786Z",
-  "dataHash": "e85399be",
+  "generatedAt": "2026-08-24T08:52:21.247Z",
+  "dataHash": "a711c17e",
   "posts": [
+    {
+      "id": "streak-2023-07-18-3shows",
+      "slug": "3-concerts-in-12-days",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "3 Concerts in 12 Days",
+      "prose": "I don't know what got into me in July 2023, but I saw 3 shows across 3 different genres in 12 days without once feeling like I was overdoing it. Foals at The Belasco on the 18th, UB40 at Peacock Theater on the 21st, X at Pacific Amphitheatre in Costa Mesa on the 30th — indie rock, reggae, and punk, all inside a single Los Angeles summer. There's something about that stretch that still makes me smile: I went from the close, sweaty energy of The Belasco to an amphitheatre in Orange County without stopping to ask whether any of it made sense as a playlist. It didn't, and that was exactly the point.",
+      "image": {
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/hqj1961665173344.jpg",
+        "alt": "Foals",
+        "source": "artist",
+        "ref": "foals"
+      },
+      "audio": {
+        "trackName": "Mountain at My Gates",
+        "artistName": "Foals",
+        "albumName": "What Went Down",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/4d/9b/3a/4d9b3a0d-dd93-84d8-f7f5-e7819c922090/mzaf_1923896076955687643.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/97/28/81/9728810a-14b0-73be-1219-76706333f389/190295006358.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/mountain-at-my-gates/1552267195?i=1552267619&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "foals",
+        "ub40",
+        "x"
+      ],
+      "venues": [
+        "the-belasco",
+        "peacock-theater",
+        "pacific-amphitheatre"
+      ],
+      "years": [
+        2023
+      ],
+      "tags": [
+        "#hot-streak"
+      ],
+      "deepLinks": [
+        {
+          "label": "Foals",
+          "url": "/?scene=artists&artist=foals",
+          "type": "artist"
+        },
+        {
+          "label": "UB40",
+          "url": "/?scene=artists&artist=ub40",
+          "type": "artist"
+        },
+        {
+          "label": "X",
+          "url": "/?scene=artists&artist=x",
+          "type": "artist"
+        },
+        {
+          "label": "The Belasco",
+          "url": "/?scene=venues&venue=the-belasco",
+          "type": "venue"
+        },
+        {
+          "label": "Peacock Theater",
+          "url": "/?scene=venues&venue=peacock-theater",
+          "type": "venue"
+        },
+        {
+          "label": "2023",
+          "url": "/?scene=timeline&year=2023",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "pacific-amphitheatre-16-shows-over-5-decades-2",
+        "ub40-35-years-between-shows"
+      ],
+      "score": 30,
+      "detector": "concert-streak",
+      "publishedAt": "2026-08-24T08:52:21.247Z",
+      "social": {
+        "hook": "Three genres, three venues, twelve days — and not once did I question the logic.",
+        "caption": "July 2023: Foals, UB40, and X across twelve days without a coherent playlist in sight. That was entirely the point.",
+        "beats": [
+          "July 2023: three shows in twelve days, three genres, two counties — and it never felt like too much.",
+          "Foals at The Belasco on the 18th: close, sweaty, the room pressing in from every side.",
+          "UB40 at Peacock Theater on the 21st — reggae in the middle of an LA summer felt exactly right.",
+          "X at Pacific Amphitheatre in Costa Mesa on the 30th: punk under an open Orange County sky.",
+          "Indie rock, reggae, punk — no through line, no apology. The archive holds all three."
+        ],
+        "authoredAt": "2026-08-24T08:52:21.249Z"
+      }
+    },
     {
       "id": "road-tested-social-distortion-2024-12-05",
       "slug": "social-distortion-1-4-years-before-born-to-kill",
@@ -4769,10 +4859,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 57,
-    "totalGenerated": 89,
-    "averageScore": 38.1,
-    "lastPipelineRun": "2026-08-17T08:46:30.786Z",
+    "totalPosts": 58,
+    "totalGenerated": 90,
+    "averageScore": 38,
+    "lastPipelineRun": "2026-08-24T08:52:21.247Z",
     "concertsAnalyzed": 181,
     "feedUrl": "/liner-notes.xml"
   }
