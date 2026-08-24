@@ -1,6 +1,6 @@
 # Media Workflow — prep, review, ingest
 
-**Status:** `media:prep` **BUILT** (#378, 2026-08-23) · `ingest` / `gaps` specified, not built
+**Status:** `media:prep` **BUILT** (#378) · `media:ingest` **BUILT** (#379) · `gaps` specified, not built
 **Priority:** High — this is how personal media actually reaches a post
 **Depends on:** #348 (audit tool, partially built) · Feeds #339, #340, #342
 **Rules:** `.claude/skills/media-pipeline/SKILL.md` — read that first; it is operative
@@ -136,14 +136,48 @@ Reads `concert-photos-audit/inbox/`, and for each date folder:
 Optional `notes.txt` per folder carries post-facing context — a different-night disclosure,
 a caption.
 
-**Acceptance:**
-- [ ] Wrong-date folder fails loudly
-- [ ] Unknown artist folder fails with that show's lineup listed
-- [ ] Root-level file reported as an error, not silently credited
-- [ ] EXIF contradiction warns; folder wins
-- [ ] **No committed file retains GPS, capture time or device id** — assert, do not trust
-- [ ] `media-index.json` carries per-asset `artist`, `tier`, `source`
-- [ ] Re-running is idempotent
+**Acceptance — all met 2026-08-23 (#379):**
+- [x] Wrong-date folder fails loudly
+- [x] Unknown artist folder fails with that show's lineup listed
+- [x] Root-level file reported as an error, not silently credited
+- [x] EXIF contradiction warns; folder wins
+- [x] **No committed file retains GPS, capture time or device id** — asserted on the written
+      bytes by two independent checks, and a file that fails is deleted rather than committed
+- [x] `media-index.json` carries per-asset `artist`, `tier`, `source`
+- [x] Re-running is idempotent — keyed on the source SHA-256, not the filename
+- [x] Extracted frames record `derivedFrom`
+
+**Built as:**
+
+| | |
+|---|---|
+| `scripts/media/ingest.ts` | the command |
+| `scripts/media/match.ts` | folder → act, forgiving, against one night's bill only |
+| `scripts/media/exif.ts` | the EXIF cross-check and the leak assertion (no dependency) |
+| `scripts/media/media-index.ts` | index schema, ordering, idempotency |
+| `test/pipeline/media-ingest.test.ts` | 23 tests |
+
+**Decisions taken while building:**
+
+- **Stripping is asserted twice, by mechanisms that share no parser.** sharp drops
+  EXIF/XMP/IPTC/ICC on a plain re-encode, but "the encoder says it stripped it" is the
+  encoder marking its own homework. The second check scans the raw output bytes for the
+  APP1 marker, XMP namespaces, the Photoshop/IPTC block and GPS tag names.
+- **`.rotate()` is applied before the metadata is dropped.** Discarding the EXIF
+  orientation flag without first applying it would silently turn every portrait photograph
+  sideways — a leak fix that quietly corrupts the archive.
+- **Idempotency is keyed on the source SHA-256.** The inbox is the owner's working space
+  and filenames there are theirs to change.
+- **A later `hero.*` takes over and demotes the previous hero, with a warning.** The
+  alternative — keeping the first — ignores an explicit instruction the owner just gave.
+- **Errors never abort the run.** Every good file is ingested, the bad ones are listed, and
+  the command exits 1.
+- **Video is reported as skipped.** It is a real thing the owner may have exported, and
+  belongs to #342 / #349 — so it is named, not silently ignored.
+
+**Open question 3 is answered:** provenance lives in `derivedFrom: { original, frame }`,
+parsed from the name `extract_frames.sh` already gives its output
+(`IMG_3081__f0042__lap31.77.jpg`) rather than from a new convention.
 
 ---
 
@@ -189,9 +223,9 @@ marquee, one performer frame, the stub. It front-loads the marquee, the scarcest
    Probably, once more than one show is pending.
 2. **Should `notes.txt` be structured** (front-matter) or free text? Free text until there
    is a second consumer.
-3. **Where does an extracted frame's provenance live?** It is tier 1 `personal`, but
-   knowing it came from a clip matters for the different-night disclosure. Likely a
-   `derived_from` field in `media-index.json`.
+3. ~~**Where does an extracted frame's provenance live?**~~ **Answered 2026-08-23:**
+   `derivedFrom: { original, frame }` in `media-index.json`, recognised from the filename
+   `extract_frames.sh` already produces — no new convention for the owner to remember.
 4. ~~**Does the worksheet get committed?**~~ **Answered 2026-08-23: no.** It is written to
    `concert-photos-audit/inbox/<date>/WORKSHEET.md`, inside the gitignored tree, and it
    carries `original_filename` plus capture times. A re-run replaces it and keeps one
@@ -202,6 +236,10 @@ marquee, one performer frame, the stub. It front-loads the marquee, the scarcest
 
 ## Revision History
 
+- **2026-08-23 (later still):** `media:ingest` built and shipped (#379). Acceptance ticked
+  above, open question 3 answered. Tier 1 now exists as a mechanism — but note that no
+  personal photograph has been ingested yet, so the go-live gate on #323 is unchanged until
+  real selects are committed.
 - **2026-08-23 (later):** `media:prep` built and shipped (#378). Acceptance ticked above.
   Two osxphotos corrections recorded. A guard hole was found and closed while building it:
   subcommand allowlisting alone let `query --add-to-album` through, which writes to the

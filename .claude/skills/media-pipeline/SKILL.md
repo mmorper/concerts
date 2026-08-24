@@ -180,6 +180,24 @@ Ingest: folder → concert; subfolder → artist; EXIF read as a **cross-check o
 files often lose `DateTimeOriginal` entirely — ffmpeg strips it); metadata stripped;
 written to `public/images/shows/`; `media-index.json` updated; **what was skipped reported**.
 
+**As built (#379):**
+
+- **Stripping is asserted on the written bytes, twice.** Once via sharp's view of the
+  output, once by a raw byte scan that shares no parser with the encoder — the encoder
+  cannot be the only witness that it stripped something. A file that fails is **deleted,
+  not committed**, and the run exits non-zero.
+- **Idempotency is keyed on the SHA-256 of the source**, not on its filename. The owner is
+  free to rename anything in the inbox and a re-run still recognises it.
+- **Ordinals continue from the index**, so a second run adds `-04` rather than colliding.
+- **A later `hero.*` wins and demotes the previous hero, loudly.** The owner's most recent
+  explicit instruction is the answer, and it is never silent.
+- **Video is reported as skipped, never silently dropped** — stills are this command's job;
+  clips belong to #342 / #349.
+- **Errors do not stop the run.** Every good file is still ingested; the bad ones are listed
+  and the command exits 1, so a wrong credit cannot be mistaken for a clean run.
+- Frames named by `extract_frames.sh` (`IMG_3081__f0042__lap31.77.jpg`) record
+  `derivedFrom` — provenance a different-night disclosure depends on.
+
 ---
 
 ## Where things live
@@ -214,12 +232,15 @@ that migration costs no consumer changes.
 | `scripts/media/rank.ts` | the two-factor model — concert-likelihood and quality (pure, unit-tested) |
 | `scripts/media/worksheet.ts` | WORKSHEET.md renderer (pure, unit-tested) |
 | `scripts/media/query_window.py` | the osxphotos query function `media:prep` runs |
+| **`npm run media:ingest [date]`** | **inbox → `public/images/shows/` + `media-index.json` — #379, shipped** |
+| `scripts/media/match.ts` | forgiving folder → act matching, against one night's bill only |
+| `scripts/media/exif.ts` | EXIF cross-check, and the metadata-leak assertion |
+| `scripts/media/media-index.ts` | `media-index.json` schema and ordering |
 
 **Specified, NOT built** — do not instruct anyone to run these yet:
 
 | | |
 |---|---|
-| `media:ingest` | inbox → `public/images/shows/` + `media-index.json` — **#379** |
 | `media:gaps` | shows with no media, and the tier-2 fallback for each — **#380** |
 | `media:audit` | corpus scan across all 184 concerts — **#381** |
 
