@@ -95,12 +95,7 @@ function scaffold(dateDir: string, folders: string[]): { created: string[]; exis
  */
 function queryPhotos(date: string): QueryPayload {
   if (!existsSync(GUARD)) {
-    fail(
-      `The read-only osxphotos guard is missing at ${GUARD}.\n` +
-        `  Build it per concert-photos-audit/bin/BUILD.txt — a locally built binary is\n` +
-        `  required so Full Disk Access is scoped to osxphotos rather than to the terminal.\n` +
-        `  Or re-run with --scaffold-only to create the folders without reading the library.`
-    )
+    fail(`The read-only osxphotos guard is missing at ${GUARD}. It is tracked in git — restore it.`)
   }
 
   const window = showWindow(date)
@@ -134,8 +129,16 @@ function queryPhotos(date: string): QueryPayload {
       }
     )
   } catch (err) {
-    const e = err as Error & { stderr?: Buffer }
+    const e = err as Error & { stderr?: Buffer; status?: number }
     const detail = e.stderr?.toString().trim()
+    // 69 is the guard's own "binary not present", and its message already explains how to
+    // build one — repeating that here would only bury it.
+    if (e.status === 69) {
+      fail(
+        `${detail ?? 'The osxphotos binary is not installed.'}\n\n` +
+          `  Or re-run with --scaffold-only to create the folders without reading the library.`
+      )
+    }
     fail(
       `osxphotos failed. If macOS has not granted Full Disk Access to that binary, grant it\n` +
         `  and re-run; see concert-photos-audit/bin/BUILD.txt.\n  ${e.message}` +

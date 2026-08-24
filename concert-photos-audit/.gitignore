@@ -1,0 +1,17 @@
+# This directory is evaluation-only and is ignored by the repo root .gitignore.
+# This second ignore exists so that removing the outer rule cannot silently start
+# committing personal photographs, downloaded originals or test verdicts.
+*
+!.gitignore
+!README.md
+
+# The read-only guard is the ONE exception, and it is deliberately narrow: a named file,
+# not a pattern. The binary beside it (.osxphotos-raw) stays ignored, as does everything
+# else. The guard is the safety mechanism — it belongs under review and under test.
+!bin/
+bin/*
+!bin/osxphotos
+# Provenance for that binary — pinned commit, SHA-256, and the PyInstaller patch the build
+# needs. It is the recipe for reproducing a security-sensitive artifact, so it belongs
+# under review too. The binary itself (.osxphotos-raw, 28MB) stays out.
+!bin/BUILD.txt

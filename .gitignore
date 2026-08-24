@@ -98,5 +98,16 @@ artist-pins-TODO.csv
 # committed: it holds thousands of unculled personal photographs plus their EXIF
 # (GPS, capture time, device). Only the FINAL selects reach the repo, EXIF-stripped,
 # under public/images/concerts/.
-concert-photos-audit/
+# Evaluation workspace for the media audit (#348). Ignored in full — it holds personal
+# photographs, downloaded originals and test verdicts, none of which may ever be committed.
+#
+# ONE named exception: bin/osxphotos, the read-only guard. It is the mechanism that keeps
+# this project from writing to the Photos library, it is sixty lines of shell that can hold
+# no personal data, and it needs to be reviewable and testable. The binary it wraps
+# (.osxphotos-raw) stays ignored. See concert-photos-audit/README.md.
+concert-photos-audit/*
+!concert-photos-audit/bin/
+concert-photos-audit/bin/*
+!concert-photos-audit/bin/osxphotos
+!concert-photos-audit/bin/BUILD.txt
 osxphotos_crash.log

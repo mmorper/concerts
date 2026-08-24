@@ -1,0 +1,100 @@
+#!/bin/sh
+# READ-ONLY GUARD for osxphotos (#348).
+#
+# The Photos library is the owner's irreplaceable source of record. This project must
+# NEVER perform a destructive or mutating operation against it. That is a hard rule, so it
+# is enforced here as a mechanism rather than left as an intention.
+#
+# THIS FILE IS TRACKED IN GIT, by a named exception in two .gitignore files.
+# Everything else in concert-photos-audit/ is ignored, because it holds personal
+# photographs. This one file is not: it is the safety mechanism, and living only on one
+# machine meant it could not be reviewed, could not be tested, and would be lost with the
+# working tree. Its refusals are covered by test/pipeline/osxphotos-guard.test.ts.
+#
+# IT MUST STAY AT THIS PATH. macOS grants Full Disk Access against the WRAPPER's path, not
+# only the binary's. Moving this script to scripts/media/ — same binary, same arguments,
+# same resolved target — made every library read HANG rather than fail: no prompt, no
+# error, just a process sitting at 2 seconds of CPU forever. Measured 2026-08-24. If this
+# file has to move, expect to re-grant Full Disk Access, and expect the failure mode to be
+# a silent stall.
+#
+# TWO LAYERS, because subcommand allowlisting alone is not enough:
+#
+#   1. SUBCOMMANDS. Only query, export and info reach the real binary. Everything that can
+#      write is refused: import, timewarp, add-locations, batch-edit, push-exif, sync,
+#      orphans, repair.
+#
+#   2. OPTIONS. Some mutating options hang off the READ-ONLY subcommands.
+#      `osxphotos query --add-to-album ALBUM` creates an album in Photos and adds every
+#      matched photo to it — a library write reached through the one subcommand this
+#      project uses most. `export --post-command` / `--post-function` run arbitrary code,
+#      which defeats the guard entirely rather than merely writing.
+#
+# If you find yourself reaching for the raw binary directly, stop and reconsider — that is
+# the guard doing its job.
+set -e
+
+HERE=$(cd "$(dirname "$0")" && pwd)
+# The binary stays in the gitignored evaluation tree; only this guard is committed.
+# Override for an unusual layout, but never to get around a refusal.
+#
+# RESOLVED TO A CANONICAL PATH, and that matters more than it looks. macOS TCC keys Full
+# Disk Access ON THE BINARY'S PATH, and a path containing `..` segments does not match the
+# entry it was granted under. Handing the kernel
+# `scripts/media/../../concert-photos-audit/bin/.osxphotos-raw` makes it a different
+# binary as far as TCC is concerned: the run does not fail, it HANGS waiting on a
+# permission decision that never arrives. Cost twenty minutes of a silent stall the first
+# time. `cd` into the directory and take its physical path.
+RAW_DEFAULT_DIR="$HERE"
+if [ -z "${OSXPHOTOS_RAW:-}" ] && [ -d "$RAW_DEFAULT_DIR" ]; then
+  RAW="$(cd "$RAW_DEFAULT_DIR" && pwd -P)/.osxphotos-raw"
+else
+  RAW="${OSXPHOTOS_RAW:-$RAW_DEFAULT_DIR/.osxphotos-raw}"
+fi
+
+case "${1:-}" in
+  query|export|info|about|docs|tutorial|help|"" ) ;;
+  -*|--* ) ;;                       # --version, --help and friends
+  * )
+    echo "REFUSED: 'osxphotos $1' is not on the read-only allowlist." >&2
+    echo "" >&2
+    echo "This project never mutates the Photos library. Permitted: query, export, info." >&2
+    echo "Blocked because they can write: import, timewarp, add-locations, batch-edit," >&2
+    echo "push-exif, sync, orphans, repair." >&2
+    exit 64 ;;
+esac
+
+# Matched with a leading `--` and an optional `=VALUE` so that neither
+# `--add-to-album X` nor `--add-to-album=X` slips past.
+for arg in "$@"; do
+  case "$arg" in
+    --add-to-album|--add-to-album=*|--post-command|--post-command=*|--post-function|--post-function=*|--post-command-error|--post-command-error=* )
+      echo "REFUSED: '$arg' is not on the read-only allowlist." >&2
+      echo "" >&2
+      echo "--add-to-album WRITES to the Photos library (it creates the album)." >&2
+      echo "--post-command / --post-function execute arbitrary code and bypass this guard." >&2
+      echo "This project never mutates the Photos library." >&2
+      exit 64 ;;
+  esac
+done
+
+# Refusals above never touch the binary, so the guard is testable without it. Only a
+# permitted invocation needs it to exist.
+if [ ! -x "$RAW" ]; then
+  echo "osxphotos binary not found at: $RAW" >&2
+  echo "" >&2
+  echo "Build it locally per concert-photos-audit/bin/BUILD.txt. It must NOT come from" >&2
+  echo "pipx: osxphotos gates disclaim() on sys._MEIPASS, so under pipx Full Disk Access" >&2
+  echo "is granted to the terminal and everything it ever launches, instead of to the" >&2
+  echo "binary alone." >&2
+  exit 69 ;
+fi
+
+# keep the run offline: osxphotos otherwise GETs the PyPI JSON API on every invocation
+export OSXPHOTOS_NO_VERSION_CHECK=1
+
+# Never let a run block on an interactive prompt. `export` asks for confirmation when it
+# finds a previous export database without --update, and in a non-interactive shell that
+# hangs forever with no output - it cost two silent failures before anyone read the log.
+# stdin is closed so any prompt takes its default and fails loudly instead of waiting.
+exec "$RAW" "$@" < /dev/null
