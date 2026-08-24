@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, List
@@ -41,6 +42,13 @@ from osxphotos import PhotoInfo
 # Recorded for every asset. `overall` and `curation` are the only two ever ranked on — the
 # rest ride along so the worksheet can show them and so a future probe need not re-query.
 # See rank.ts for the measured face bias that rules the others out.
+# Where to stage previews, when the caller wants them. `media:prep` does not, and leaves
+# this unset — it produces a worksheet that points at Photos, not a page of images.
+_img = os.environ.get("MEDIA_REVIEW_IMG_DIR")
+IMG_DIR = Path(_img) if _img else None
+if IMG_DIR is not None:
+    IMG_DIR.mkdir(parents=True, exist_ok=True)
+
 SCORE_FIELDS = [
     "overall",
     "curation",
@@ -75,6 +83,33 @@ def _record(p: PhotoInfo, local: datetime) -> dict[str, Any]:
     if exif is not None:
         duration = getattr(exif, "duration", None)
 
+    # Photos' own preview JPEG, copied out of the library HERE rather than by the caller.
+    #
+    # THE COPY HAS TO HAPPEN IN THIS PROCESS. macOS grants Full Disk Access to the
+    # osxphotos binary, not to node — so node reading a path inside the library gets EPERM.
+    # That is the whole reason the binary is built locally and TCC-scoped to it.
+    #
+    # This replaces `osxphotos export --preview`, which has no way to write ONLY the
+    # preview: it exports the original alongside it. On one show that was 550MB of
+    # unwanted originals against 33MB of previews, and it leaves an export database that
+    # makes the next run stop and ask for confirmation.
+    #
+    # Derivatives are LOCAL even when the original is in iCloud — verified on iCloud-only
+    # assets — so nothing downloads. Largest wins: the list holds a full-size preview, a
+    # thumbnail, and a master thumbnail.
+    #
+    # Read-only. Files are copied OUT; nothing in the library is written.
+    preview_file = None
+    if IMG_DIR is not None:
+        try:
+            derivatives = [d for d in (getattr(p, "path_derivatives", None) or []) if os.path.exists(d)]
+            if derivatives:
+                src = max(derivatives, key=os.path.getsize)
+                preview_file = f"{p.uuid.upper()}_pv.jpeg"
+                shutil.copyfile(src, IMG_DIR / preview_file)
+        except Exception:
+            preview_file = None
+
     # A PlaceInfo, not a string. `.name` is the reverse-geocoded description.
     place = getattr(p, "place", None)
     place_name = getattr(place, "name", None) if place is not None else None
@@ -101,6 +136,7 @@ def _record(p: PhotoInfo, local: datetime) -> dict[str, Any]:
         "favorite": bool(p.favorite),
         "in_cloud": bool(p.incloud),
         "is_missing": bool(p.ismissing),
+        "preview_file": preview_file,
         "scores": {f: getattr(scores, f, None) for f in SCORE_FIELDS} if scores else None,
     }
 

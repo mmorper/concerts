@@ -30,7 +30,7 @@
  * @module scripts/media/review
  */
 import { execFileSync, spawn } from 'child_process'
-import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs'
+import { copyFileSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'fs'
 import { join, resolve } from 'path'
 import { tmpdir } from 'os'
 import { findShow, folderPlan, loadConcerts, showWindow, coarseRange, ShowNotFoundError } from './show'
@@ -42,7 +42,6 @@ const GUARD = resolve('concert-photos-audit/bin/osxphotos')
 const QUERY_FN = resolve('scripts/media/query_window.py')
 const PAGE = resolve('scripts/media/review-page.html')
 const SERVER = resolve('scripts/media/review_server.py')
-const PREVIEW_SUFFIX = '_pv'
 
 interface QueryPayload {
   window_from: string
@@ -57,7 +56,7 @@ function fail(message: string): never {
   process.exit(1)
 }
 
-function queryPhotos(date: string): QueryPayload {
+function queryPhotos(date: string, imgDir?: string): QueryPayload {
   if (!existsSync(GUARD)) fail(`The read-only osxphotos guard is missing at ${GUARD}.`)
   const window = showWindow(date)
   const coarse = coarseRange(date)
@@ -73,7 +72,12 @@ function queryPhotos(date: string): QueryPayload {
       ['query', '--from-date', coarse.from, '--to-date', coarse.to,
        '--query-function', `${QUERY_FN}::probe`, '--quiet'],
       {
-        env: { ...process.env, MEDIA_PREP_PARAMS: paramsFile, MEDIA_PREP_OUT: outFile },
+        env: {
+          ...process.env,
+          MEDIA_PREP_PARAMS: paramsFile,
+          MEDIA_PREP_OUT: outFile,
+          ...(imgDir ? { MEDIA_REVIEW_IMG_DIR: imgDir } : {}),
+        },
         stdio: ['ignore', 'ignore', 'pipe'],
         maxBuffer: 64 * 1024 * 1024,
       }
@@ -89,59 +93,26 @@ function queryPhotos(date: string): QueryPayload {
 }
 
 /**
- * Export the previews Photos already holds.
+ * Confirm the previews the query function staged, and say which assets have none.
  *
- * `--skip-original-if-edited` is NOT used and originals are not requested at all: with
- * `--preview` osxphotos writes only the preview JPEG. Nothing downloads, so this runs
- * offline and completes in seconds regardless of how much of the show lives in iCloud.
+ * The copy itself happens inside `query_window.py`, under the osxphotos binary: macOS
+ * scopes Full Disk Access to that binary, so node reading a path inside the Photos library
+ * gets EPERM. That is exactly why the binary is built locally and TCC-scoped.
+ *
+ * Verify the files, never a return code — a stage that reports success while writing
+ * nothing is the failure this project keeps meeting.
  */
-function exportPreviews(uuids: string[], imgDir: string): { exported: number; missing: string[] } {
-  mkdirSync(imgDir, { recursive: true })
-  const before = new Set(readdirSync(imgDir))
-
-  // --uuid-from-file rather than 58 repeated --uuid flags: a show with a few hundred
-  // window assets would otherwise build a command line long enough to hit ARG_MAX, and it
-  // would fail as a truncated export rather than an obvious error.
-  const uuidFile = join(tmpdir(), `media-review-uuids-${process.pid}.txt`)
-  writeFileSync(uuidFile, uuids.join('\n') + '\n')
-
-  const args = [
-    'export', imgDir,
-    '--preview', '--preview-suffix', PREVIEW_SUFFIX,
-    // Name by UUID: the review page addresses assets by UUID, and original filenames are
-    // not unique inside one show window.
-    '--filename', '{uuid}',
-    '--convert-to-jpeg', '--jpeg-quality', '0.85',
-    '--skip-live', '--skip-bursts',
-    // `export` has no --quiet (that is a `query` option); --no-progress is the closest,
-    // and stdout is discarded below anyway.
-    '--no-progress',
-    // REQUIRED, and not merely an optimisation. Without it, osxphotos finds the export
-    // database left by a previous run and asks for confirmation — which in a
-    // non-interactive shell is the twenty-minute silent hang this project has already
-    // paid for twice. The guard closes stdin so it aborts loudly instead, but the real
-    // fix is to mean what --update means: re-reviewing a show refreshes its previews.
-    '--update',
-    '--uuid-from-file', uuidFile,
-  ]
-
-  try {
-    execFileSync(GUARD, args, { stdio: ['ignore', 'ignore', 'pipe'], maxBuffer: 64 * 1024 * 1024 })
-  } catch (err) {
-    const e = err as Error & { stderr?: Buffer }
-    fail(`preview export failed.\n  ${e.message}\n${e.stderr?.toString().trim() ?? ''}`)
+function confirmPreviews(ranked: Ranked[], imgDir: string): { staged: Map<string, string>; missing: Ranked[] } {
+  const staged = new Map<string, string>()
+  const missing: Ranked[] = []
+  for (const r of ranked) {
+    const name = r.preview_file
+    if (!name) { missing.push(r); continue }
+    const path = join(imgDir, name)
+    if (!existsSync(path) || statSync(path).size === 0) { missing.push(r); continue }
+    staged.set(r.uuid.toUpperCase(), name)
   }
-
-  // Assert the files, not the exit code. An export that silently wrote nothing is the
-  // exact failure this project keeps meeting.
-  const after = readdirSync(imgDir)
-  const written = new Map<string, string>()
-  for (const name of after) {
-    const m = /^([0-9A-Fa-f-]{36})/.exec(name)
-    if (m) written.set(m[1].toUpperCase(), name)
-  }
-  const missing = uuids.filter((u) => !written.has(u.toUpperCase()))
-  return { exported: after.length - before.size, missing }
+  return { staged, missing }
 }
 
 /** The shape `review-page.html` fetches. Keys match what the page reads off each item. */
@@ -195,7 +166,8 @@ function setup(date: string): void {
   console.log(`\n${concert.date} — ${concert.headliner} @ ${concert.venue}`)
   console.log(`  ${acts.length} acts: ${acts.map((a) => a.name).join(', ')}`)
 
-  const payload = queryPhotos(concert.date)
+  console.log(`  reading Photos and staging previews (Photos' own; nothing downloads)…`)
+  const payload = queryPhotos(concert.date, imgDir)
   const { scored, unscored } = rankCandidates(payload.candidates, {
     venue: concert.venue,
     city: concert.city,
@@ -210,14 +182,7 @@ function setup(date: string): void {
     return
   }
 
-  console.log(`  exporting ${ranked.length} previews (no originals, nothing downloads)…`)
-  const { missing } = exportPreviews(ranked.map((r) => r.uuid), imgDir)
-
-  const imgFiles = new Map<string, string>()
-  for (const name of readdirSync(imgDir)) {
-    const m = /^([0-9A-Fa-f-]{36})/.exec(name)
-    if (m) imgFiles.set(m[1].toUpperCase(), name)
-  }
+  const { staged: imgFiles, missing } = confirmPreviews(ranked, imgDir)
 
   const items = pageItems(ranked, {
     headliner: concert.headliner,
@@ -235,11 +200,9 @@ function setup(date: string): void {
   if (missing.length > 0) {
     // Reported, never silent: an asset with no preview cannot be judged here, and the
     // owner needs to know it was left out rather than assume it was rejected.
-    console.log(`  ⚠ ${missing.length} had no preview and are NOT on the page — review these in Photos:`)
-    for (const uuid of missing.slice(0, 8)) {
-      const r = ranked.find((x) => x.uuid === uuid)
-      console.log(`      ${r?.original_filename ?? uuid}`)
-    }
+    console.log(`  ⚠ ${missing.length} have no preview in the library and are NOT on the page —`)
+    console.log(`    review these in Photos:`)
+    for (const r of missing.slice(0, 8)) console.log(`      ${r.original_filename}`)
     if (missing.length > 8) console.log(`      …and ${missing.length - 8} more`)
   }
 
