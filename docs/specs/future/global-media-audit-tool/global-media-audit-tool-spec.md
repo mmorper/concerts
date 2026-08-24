@@ -1137,7 +1137,7 @@ behind it. `--sample 50` if the first read lands mid-range.
 
 - **2026-08-21 (a):** Initial specification created
 - **2026-08-23 (h):** 53 assets culled. Ranking split into TWO factors after the Black
-  Keys showed subject and quality are independent. Frame extraction validated at an 83%
+  Keys showed subject and quality are independent. Frame extraction promising at 83% (5/6)
   blind keep rate — best of any category. Both bad evenings rejected; Dr Sick scored lowest
   without having been fitted. Video review moved out-of-process; workflow specified in
   `global-media-workflow.md`; rules made operative in `.claude/skills/media-pipeline/`.

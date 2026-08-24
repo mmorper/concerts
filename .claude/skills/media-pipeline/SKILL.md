@@ -231,8 +231,12 @@ each — fetching them all is **22.5GB**. `media:frames` downloads only clips th
 in the review, extracts, and deletes the clips afterwards. For a clip, "usable" in the
 review page means *worth mining for frames*, not *worth publishing*; the page says so.
 
-**Frame extraction works and is validated** — extracted frames scored an **83% keep rate**,
-judged blind against real stills, the best of any category. When extracting: sample ~1
+**Frame extraction is PROMISING, on a sample of six.** Extracted frames scored an 83% keep
+rate judged blind against real stills — but that is **5 of 6 frames, from 2 clips**, inside
+a 53-asset review. It is evidence that mining clips for stills is worth doing at all. It is
+**not** evidence that the picking algorithm chooses well, and it has been over-quoted as
+"the best keep rate of any category" without the denominator. Re-measure before leaning on
+it (#395). When extracting: sample ~1
 frame/second, score by Laplacian, and **enforce a minimum gap between picks** — top-N by
 sharpness returns adjacent frames of the same moment.
 
