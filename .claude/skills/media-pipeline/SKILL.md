@@ -168,10 +168,18 @@ it. A clip that did not download is an error pointing at `media:frames`, not a s
 
 **🔴 A hung Photos.app stalls `--download-missing` silently.** It drives Photos over
 AppleScript, so if Photos stops answering AppleEvents the export blocks forever with no
-output — observed at 15+ minutes and 0.85s of CPU. The fetch is now bounded (10 minutes)
-and falls back to previews. **Force-quitting Photos to clear a hang leaves `photolibraryd`
-degraded for a while afterwards** — even plain `osxphotos query` calls slow to a crawl.
-Prefer waiting or a reboot over a force-quit.
+output — observed at 15+ minutes and 0.85s of CPU. **Force-quitting Photos to clear that
+leaves `photolibraryd` degraded afterwards** — even plain `osxphotos query` calls slow to a
+crawl until a reboot. Prefer waiting over force-quitting.
+
+**🔴 Measure PROGRESS, never the wall clock.** A wall-clock timeout cannot tell a wedged
+Photos from a macOS permission dialog sitting on an empty desk, and those need opposite
+responses — killing a run because nobody was in the room to click Allow is worse than the
+hang it was meant to catch. `media:ingest` watches for files actually appearing: while they
+do, the fetch has as long as it needs; when they stop, it SAYS so and keeps waiting,
+because the likeliest cause is a prompt only a person can answer. A hard timeout exists
+only behind `--fetch-timeout <minutes>`, for an unattended run. **This applies to any stage
+that waits on Photos.**
 
 **Photos' preview is a usable fallback.** The derivative is 1536×2048 and local even for
 iCloud-only assets — on the pilot show 22 of 23 cleared a 1080×1350 card and a 9:16 crop.

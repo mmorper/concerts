@@ -26,7 +26,7 @@
  *
  * @module scripts/media/ingest
  */
-import { execFileSync } from 'child_process'
+import { spawn } from 'child_process'
 import { createHash } from 'crypto'
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, unlinkSync, writeFileSync } from 'fs'
 import { join, resolve, extname, basename } from 'path'
@@ -84,13 +84,75 @@ const JPEG_QUALITY = 90
 const MASTER_LONG_EDGE = 2048
 
 /**
- * How long to wait for the originals before giving up and using previews.
+ * How long the fetch may make NO PROGRESS before it says something.
  *
- * Generous, because a cold iCloud fetch of twenty-odd assets legitimately takes minutes —
- * but bounded, because the alternative is a run that never returns. A show that times out
- * still produces publishable assets; re-running upgrades them in place.
+ * Deliberately not a wall clock. A wall-clock timeout cannot tell a wedged Photos from a
+ * macOS permission dialog sitting on screen while nobody is at the desk — and those need
+ * opposite responses. Killing a run because the owner went to make coffee would be worse
+ * than the hang it was meant to catch.
+ *
+ * So: progress is measured by files actually appearing. While they keep appearing, the
+ * fetch has as long as it needs, however slow iCloud is. When they stop, it SAYS so and
+ * keeps waiting — because the most likely cause is a dialog that only a person can answer.
  */
-const FETCH_TIMEOUT_MS = 10 * 60 * 1000
+const STALL_WARN_MS = 3 * 60 * 1000
+
+/**
+ * Run a command, watching a directory for progress rather than watching the clock.
+ *
+ * Never kills on its own unless `timeoutMs` is set. An interactive run is expected to be
+ * interrupted by the owner if they decide it really is stuck; that is a better judgement
+ * than a timer can make, because only they can see whether a permission prompt is up.
+ */
+function runWatchingProgress(
+  cmd: string,
+  args: string[],
+  watchDir: string,
+  timeoutMs: number
+): Promise<{ ok: boolean; stalled: boolean; stderr: string }> {
+  return new Promise((resolve) => {
+    const child = spawn(cmd, args, { stdio: ['ignore', 'ignore', 'pipe'] })
+    let stderr = ''
+    child.stderr?.on('data', (d) => { stderr += d.toString() })
+
+    const started = Date.now()
+    let lastCount = -1
+    let lastProgress = Date.now()
+    let warned = false
+
+    const poll = setInterval(() => {
+      let count = 0
+      try { count = existsSync(watchDir) ? readdirSync(watchDir).length : 0 } catch { /* mid-write */ }
+      if (count !== lastCount) {
+        lastCount = count
+        lastProgress = Date.now()
+        warned = false
+      } else if (!warned && Date.now() - lastProgress > STALL_WARN_MS) {
+        warned = true
+        console.log('')
+        console.log(`  ⏸  No new files for ${Math.round(STALL_WARN_MS / 60000)} minutes. Still waiting — this is not a failure.`)
+        console.log(`     macOS may be showing a permission prompt. If one is on screen, answer it`)
+        console.log(`     and this continues on its own. Otherwise Photos may be busy with iCloud.`)
+        console.log(`     Ctrl-C is safe: your selects and attributions are already saved.`)
+        console.log('')
+      }
+      if (timeoutMs > 0 && Date.now() - started > timeoutMs) {
+        clearInterval(poll)
+        child.kill('SIGTERM')
+        resolve({ ok: false, stalled: true, stderr })
+      }
+    }, 10_000)
+
+    child.on('close', (code) => {
+      clearInterval(poll)
+      resolve({ ok: code === 0, stalled: false, stderr })
+    })
+    child.on('error', () => {
+      clearInterval(poll)
+      resolve({ ok: false, stalled: false, stderr })
+    })
+  })
+}
 
 /** The 4:5 card. A master that cannot fill it is not publishable, so it is not committed. */
 const CARD_MIN_SHORT = 1080
@@ -344,8 +406,9 @@ async function ingestFromSelects(args: {
   index: MediaIndex
   report: Report
   dryRun: boolean
+  fetchTimeoutMs: number
 }): Promise<void> {
-  const { date, acts, selects, index, report, dryRun } = args
+  const { date, acts, selects, index, report, dryRun, fetchTimeoutMs } = args
   if (selects.selects.length === 0) return
 
   const stage = join(tmpdir(), `media-ingest-${date}-${process.pid}`)
@@ -364,8 +427,8 @@ async function ingestFromSelects(args: {
 
   let exported = new Map<string, string>()
   if (!dryRun && fromLibrary.length > 0) {
-    try {
-      execFileSync(
+    {
+      const result = await runWatchingProgress(
         GUARD,
         [
           'export', stage,
@@ -391,28 +454,17 @@ async function ingestFromSelects(args: {
           '--no-progress',
           '--update',
         ],
-        {
-          stdio: ['ignore', 'ignore', 'pipe'],
-          maxBuffer: 64 * 1024 * 1024,
-          // A HUNG PHOTOS MUST NOT HANG THIS. `--download-missing` drives Photos over
-          // AppleScript, so if Photos stops answering AppleEvents the export blocks
-          // forever with no output — observed: 15+ minutes at 0.85s of CPU and nothing
-          // written. Silent indefinite stalls are the failure mode this project has paid
-          // for most often, so the wait is bounded and the fallback is the preview.
-          timeout: FETCH_TIMEOUT_MS,
-        }
+        stage,
+        fetchTimeoutMs
       )
-    } catch (err) {
-      const e = err as Error & { stderr?: Buffer; signal?: string }
-      const timedOut = e.signal === 'SIGTERM'
-      report.warnings.push(
-        timedOut
-          ? `Fetching originals timed out after ${Math.round(FETCH_TIMEOUT_MS / 60000)} minutes — falling back to previews.\n` +
-            `    osxphotos drives Photos.app over AppleScript to pull iCloud originals, so a\n` +
-            `    hung or unresponsive Photos stalls it. Quit Photos and re-run to upgrade these\n` +
-            `    in place; nothing you judged is lost.`
-          : `Fetching originals failed; falling back to previews.\n    ${e.stderr?.toString().trim().split('\n').slice(-2).join(' ') ?? e.message}`
-      )
+      if (!result.ok) {
+        report.warnings.push(
+          result.stalled
+            ? `Fetch stopped after the --fetch-timeout you set — falling back to previews.\n` +
+              `    Re-run to upgrade them in place; nothing you judged is lost.`
+            : `Fetching originals failed; falling back to previews.\n    ${result.stderr.trim().split('\n').slice(-2).join(' ')}`
+        )
+      }
     }
     // Verify the files, not the exit code.
     for (const name of readdirSync(stage)) {
@@ -495,7 +547,7 @@ async function ingestFromSelects(args: {
   }
 }
 
-async function ingestDate(dateDir: string, concerts: Concert[], index: MediaIndex, report: Report, dryRun: boolean): Promise<void> {
+async function ingestDate(dateDir: string, concerts: Concert[], index: MediaIndex, report: Report, dryRun: boolean, fetchTimeoutMs: number): Promise<void> {
   const date = basename(dateDir)
   const hasInbox = existsSync(dateDir)
 
@@ -569,7 +621,7 @@ async function ingestDate(dateDir: string, concerts: Concert[], index: MediaInde
     refuse = crossCheckSelects(selects, arrivals, report)
     // Fetch what the review approved. The inbox below stays for DERIVED files — extracted
     // frames, trimmed clips, crops — which have no UUID and can only arrive as files.
-    await ingestFromSelects({ date, concert, acts, selects, index, report, dryRun })
+    await ingestFromSelects({ date, concert, acts, selects, index, report, dryRun, fetchTimeoutMs })
   }
 
   // PASS TWO — write what survived.
@@ -602,7 +654,11 @@ async function ingestDate(dateDir: string, concerts: Concert[], index: MediaInde
 async function main(): Promise<void> {
   const args = process.argv.slice(2)
   const dryRun = args.includes('--dry-run')
-  const only = args.find((a) => !a.startsWith('-'))
+  // Opt-in only. By default the fetch waits as long as it needs: a permission prompt
+  // waiting on an empty desk is not a failure, and a timer cannot tell the difference.
+  const tIdx = args.indexOf('--fetch-timeout')
+  const fetchTimeoutMs = tIdx >= 0 ? Math.max(1, Number(args[tIdx + 1] || 0)) * 60_000 : 0
+  const only = args.find((a, i) => !a.startsWith('-') && args[i - 1] !== '--fetch-timeout')
 
   if (!existsSync(INBOX) && !existsSync(REVIEW_ROOT)) {
     console.log(`\nNothing to ingest — no review runs and no inbox.`)
@@ -634,7 +690,7 @@ async function main(): Promise<void> {
   console.log(`\nmedia:ingest — ${targets.length} date folder(s)${dryRun ? '  [DRY RUN, nothing is written]' : ''}\n`)
 
   for (const date of targets) {
-    await ingestDate(join(INBOX, date), concerts, index, report, dryRun)
+    await ingestDate(join(INBOX, date), concerts, index, report, dryRun, fetchTimeoutMs)
   }
 
   // Report what was TAKEN and what was SKIPPED — a stage that discards silently is a stage
