@@ -201,15 +201,22 @@ function main(): void {
       }
     }
 
-    // A marked trim narrows where automatic frames may come from.
+    // WHAT THE MARKS MEAN — the owner's definitions, not ours.
     //
-    // Without this, a trim was recorded and then ignored for extraction: on IMG_5707 the
-    // owner marked 1:49-2:10 of a 194-second clip and the sampler returned frames at 9,
-    // 55, 75, 99, 161 and 185 seconds — not one inside the window they had just chosen.
-    // A trim IS a judgement about which part of the clip is worth anything, so the
-    // rendered trim becomes the source and every frame necessarily lands inside it.
+    //   frame timecodes  -> stills at exactly those moments
+    //   in/out points    -> ONE DERIVED VIDEO. A clip is a video; in and out define its
+    //                       boundaries. That is the whole output.
+    //   both             -> those stills and that video
+    //   neither          -> the algorithm picks frames, the fallback for a clip kept but
+    //                       never marked
+    //
+    // This shipped wrong twice. First it ignored the trim and sampled the whole clip;
+    // then it "fixed" that by sampling INSIDE the trim — still extracting stills nobody
+    // asked for. A trim is a request for a video, and answering it with frames is
+    // inventing work.
     const extractFrom = trimFile ?? src
     const offset = trimFile ? (sel.marks?.trim?.in ?? 0) : 0
+    const wantsAutoFrames = marked.length === 0 && !sel.marks?.trim
 
     if (marked.length > 0) {
       // THE OWNER'S MARKS WIN. They watched the clip and read the time off the Photos
@@ -231,13 +238,12 @@ function main(): void {
           console.log(`    ⚠ ${fmt(t)}: ${(err as Error).message.split('\n')[0]}`)
         }
       })
+    } else if (!wantsAutoFrames) {
+      // Trim marked, no frames asked for. The video above IS the deliverable.
+      console.log(`    (trim only — no stills taken)`)
     } else {
-      const span = trimFile ? (sel.marks!.trim!.out - sel.marks!.trim!.in) : (item.duration ?? null)
-      const keep = framesToKeep(span)
-      console.log(
-        `  ${sel.originalFilename} → no frame marks; extracting ${keep} automatically` +
-          `${trimFile ? ` from your ${fmt(sel.marks!.trim!.in)}–${fmt(sel.marks!.trim!.out)} trim` : ''}…`
-      )
+      const keep = framesToKeep(item.duration ?? null)
+      console.log(`  ${sel.originalFilename} → no marks; extracting ${keep} frames automatically…`)
       try {
         execFileSync('sh', [EXTRACT, extractFrom, out, String(keep)], {
           stdio: ['ignore', 'pipe', 'pipe'],

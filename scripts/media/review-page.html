@@ -134,7 +134,7 @@
     <div class="sect" id="lb-marksect" style="display:none">Marks — read the time off Photos</div>
     <div id="lb-marks" style="display:none">
       <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
-        <span style="color:var(--dim);font-size:11px;width:52px">frame</span>
+        <span style="color:var(--dim);font-size:11px;width:52px" title="a single still at that moment">frame</span>
         <input id="mk-frame" placeholder="0:09" style="flex:1;min-width:0;background:#1a1a20;color:var(--ink);
           border:1px solid var(--line);border-radius:5px;padding:6px 8px;font-size:12px">
         <button id="mk-add" style="padding:6px 10px;border-radius:5px;border:1px solid var(--line);
@@ -142,14 +142,15 @@
       </div>
       <div id="mk-list" style="font-size:11px;color:var(--dim);margin-bottom:8px"></div>
       <div style="display:flex;gap:6px;align-items:center">
-        <span style="color:var(--dim);font-size:11px;width:52px">trim</span>
+        <span style="color:var(--dim);font-size:11px;width:52px" title="in and out points for a derived video">trim</span>
         <input id="mk-in" placeholder="in" style="flex:1;min-width:0;background:#1a1a20;color:var(--ink);
           border:1px solid var(--line);border-radius:5px;padding:6px 8px;font-size:12px">
         <input id="mk-out" placeholder="out" style="flex:1;min-width:0;background:#1a1a20;color:var(--ink);
           border:1px solid var(--line);border-radius:5px;padding:6px 8px;font-size:12px">
       </div>
-      <div class="note" style="margin-top:8px">Scrub in Photos (<b>O</b>), read the elapsed time, type it here.
-        Frames become stills. A trim renders a clip for manual use — nothing publishes it yet.</div>
+      <div class="note" style="margin-top:8px">Scrub in Photos (<b>O</b>), read the elapsed time, type it here.<br>
+        <b>frame</b> → one still at that moment. <b>trim</b> → one derived video, in to out.<br>
+        Mark neither and frames get picked automatically.</div>
     </div>
     <div class="sect" id="lb-verdictlabel">Verdict — is this technically usable?</div>
     <div class="verdict">
@@ -414,11 +415,17 @@ function renderMarks(){
   $('#lb-marks').style.display = isVideo ? '' : 'none';
   if (!isVideo) return;
   const frames = v.frames || [];
+  /* Say what will ACTUALLY happen. "media:frames will pick them" is false once a trim is
+     set — a trim asks for a video and gets only a video — and a label that promises stills
+     nobody is going to take is how the two ideas got conflated in the first place. */
+  const hint = frames.length ? ''
+    : v.trim ? 'trim only — one video will be produced, no stills'
+    : 'no frames marked — media:frames will pick some automatically';
   $('#mk-list').innerHTML = frames.length
     ? frames.map((f, i) => `<span style="display:inline-block;background:#1a1a20;border:1px solid var(--line);
         border-radius:4px;padding:2px 6px;margin:0 4px 4px 0">${fmtTimecode(f)}
         <b data-rm="${i}" style="cursor:pointer;color:var(--reject)">×</b></span>`).join('')
-    : '<span style="opacity:.6">no frames marked — media:frames will pick them automatically</span>';
+    : `<span style="opacity:.6">${hint}</span>`;
   $('#mk-list').querySelectorAll('[data-rm]').forEach(b => b.onclick = () => {
     const next = (V[it.uuid].frames || []).slice(); next.splice(+b.dataset.rm, 1);
     saveMarks({frames: next});
