@@ -271,7 +271,12 @@ What the tool still owes video: identification. Per-show worksheets listing cand
 
 **There is NO public URL for an iCloud asset.** iCloud.com needs a session and issues
 short-lived signed URLs; nothing is bookmarkable. What exists instead is better for this
-purpose: **`photos://asset/<UUID>` opens Photos.app on that exact item.** The review server
+purpose: **`photos://asset?identifier=<UUID>` opens Photos.app on that exact item.**
+The form is a QUERY PARAMETER. `photos://asset/<UUID>` — the path form — does nothing at
+all, and `open` exits 0 for both, because it only hands the URL to the registered app and
+never learns whether the app understood it. Shipped broken once for exactly that reason.
+The real forms are declared in the Photos binary: `photos://asset?identifier=`,
+`photos://album?name=`, `photos://devices?index=`, `photos://preferences/icloud`. The review server
 exposes it at `/open?uuid=…` and the page has a "Watch in Photos" button (`O`), so a clip
 is one click from full playback with no download and no hunting for a filename. The server
 opens it rather than the page, so the browser is never asked to hand a custom scheme to the
