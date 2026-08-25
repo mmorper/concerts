@@ -134,8 +134,23 @@ reasons.
 metadata, no albums, no edits — and is what Photos does when you open the photograph.
 Deliberate carve-out, owner-approved 2026-08-24. The rest of the invariant stands.
 
-**`--use-photokit` does not work here.** Stalls with zero output; upstream calls it alpha.
-Do not build on it.
+**🔴 ALWAYS pair `--download-missing` with `--use-photokit`.** Without it, osxphotos
+launches Photos.app and drives it one asset at a time over Apple Events — **and Photos
+wedges**. Measured: hung mid-batch around asset 20 of 23, stuck inside
+`dispatchRawAppleEvent` at 14.6MB, never finishing its launch. Three assets silently fell
+back to previews, and clearing it needed a force-quit that left `photolibraryd` degraded
+until a reboot.
+
+PhotoKit talks to the library directly. Verified: a genuinely missing asset downloaded from
+iCloud **in under a second with Photos.app not running at all**, and a full 22-asset ingest
+completed without ever launching it. Upstream labels the flag alpha and warns it fails
+under iTerm2 (use Terminal.app) — weighed against hanging an app the owner depends on,
+alpha is the better risk, and a failure degrades to previews rather than wedging anything.
+
+**An earlier note here said `--use-photokit` "does not work — stalls with zero output."
+That was wrong.** It stalled because Photos was *already* wedged from prior AppleScript
+traffic, and the stall was attributed to the wrong cause. Re-tested on a healthy library,
+it works every time.
 
 **sharp cannot decode what the library actually holds.** It reports `heif.input === true`,
 but the HEVC decoder is not compiled into its libvips: real iPhone HEICs fail with
@@ -166,9 +181,9 @@ stands; re-running once the original downloads produces a real master in its pla
 the finding the entire video workflow rests on — so publishing one as a photograph inverts
 it. A clip that did not download is an error pointing at `media:frames`, not a still.
 
-**🔴 A hung Photos.app stalls `--download-missing` silently.** It drives Photos over
-AppleScript, so if Photos stops answering AppleEvents the export blocks forever with no
-output — observed at 15+ minutes and 0.85s of CPU. **Force-quitting Photos to clear that
+**🔴 A hung Photos.app stalls `--download-missing` silently** — which is why the flag above
+is not optional. Driving Photos over AppleScript, a wedged Photos blocks the export forever
+with no output: observed at 15+ minutes and 0.85s of CPU. **Force-quitting Photos to clear that
 leaves `photolibraryd` degraded afterwards** — even plain `osxphotos query` calls slow to a
 crawl until a reboot. Prefer waiting over force-quitting.
 

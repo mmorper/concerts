@@ -436,6 +436,23 @@ async function ingestFromSelects(args: {
           // Materialise iCloud originals. Without this, every asset the owner did not
           // happen to have on disk silently exports nothing.
           '--download-missing',
+          // PHOTOKIT, NOT APPLESCRIPT. Without this, osxphotos launches Photos.app and
+          // drives it one asset at a time over Apple Events — and Photos wedges. Measured:
+          // it hung mid-batch around asset 20 of 23, stuck inside dispatchRawAppleEvent at
+          // 14.6MB, never finishing its launch. Three assets silently fell back to
+          // previews as a result, and clearing it needed a force-quit that left
+          // photolibraryd degraded until a reboot.
+          //
+          // PhotoKit talks to the photo library directly. Verified: a genuinely missing
+          // asset downloaded from iCloud in under a second with Photos.app NOT RUNNING at
+          // all, and a 25-asset batch reached 17 before the test was cut short — Photos
+          // never launched once.
+          //
+          // Upstream labels it alpha and warns it does not work under iTerm2 (use
+          // Terminal.app). Weighed against a failure mode that hangs an app the owner
+          // depends on, alpha is the better risk — and if it fails, the run degrades to
+          // previews rather than wedging anything.
+          '--use-photokit',
           // Convert with APPLE's codecs, not ours. sharp reports `heif.input === true`,
           // but the HEVC decoder is not compiled into its libvips: real iPhone HEICs fail
           // with "Support for this compression format has not been built in", and DNG is

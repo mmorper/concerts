@@ -136,6 +136,10 @@ function main(): void {
         'export', stage,
         '--uuid-from-file', uuidFile,
         '--download-missing',
+        // PhotoKit, not AppleScript — see the note in ingest.ts. Driving Photos.app over
+        // Apple Events to pull iCloud originals wedges it mid-batch; PhotoKit talks to the
+        // library directly and never launches the app.
+        '--use-photokit',
         // NOT --convert-to-jpeg: ffmpeg needs the actual video.
         '--skip-original-if-edited',
         '--filename', '{uuid}',
