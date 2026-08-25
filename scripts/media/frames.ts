@@ -166,6 +166,8 @@ function main(): void {
 
   const framesDir = join(runDir, 'img')
   const added: PageItem[] = []
+  /** Frames the owner marked by hand, which need no second judgement. */
+  const autoAccepted: Array<{ id: string; from: string }> = []
 
   for (const { sel, item } of clips) {
     const clipFile = downloaded.get(sel.uuid.toUpperCase())
@@ -276,9 +278,11 @@ function main(): void {
       // The frame is BOTH the review thumbnail and the thing that gets ingested — it is
       // already full capture resolution, so there is no lower-quality proxy to make.
       execFileSync('cp', [from, join(framesDir, staged)])
+      const fid = frameId(sel.uuid, n)
+      if (marked.length > 0) autoAccepted.push({ id: fid, from: sel.uuid })
       added.push({
         ...item,
-        uuid: frameId(sel.uuid, n),
+        uuid: fid,
         // extract_frames.sh names its output <clip>__f<idx>__lap<score>.jpg, which
         // `parseDerivedFrom` reads — so provenance survives into media-index.json.
         original_filename: name,
@@ -293,6 +297,33 @@ function main(): void {
       })
     })
     console.log(`    ${produced.length} frames staged`)
+  }
+
+  // A HAND-MARKED FRAME IS ALREADY A DECISION.
+  //
+  // The owner scrubbed to that exact moment in Photos and chose it. Making them open the
+  // review page again to say "yes, the frame I asked for is the frame I wanted" is asking
+  // the same question twice. It inherits the clip's verdict and attribution — which the
+  // owner also already gave — so a marked clip needs no second visit at all.
+  //
+  // Algorithmic picks are NOT auto-accepted. Nobody has looked at those, and a guess that
+  // marks itself as approved is exactly the fabricated decision this pipeline refuses
+  // everywhere else.
+  if (autoAccepted.length > 0) {
+    const vPath = join(runDir, 'verdicts.json')
+    const verdicts = existsSync(vPath) ? JSON.parse(readFileSync(vPath, 'utf-8')) : {}
+    let n = 0
+    for (const { id, from } of autoAccepted) {
+      if (verdicts[id]) continue // already judged; never overwrite a human answer
+      const clip = verdicts[from]
+      if (!clip || clip.verdict !== 'keep') continue
+      verdicts[id] = { verdict: 'keep', subject: clip.subject ?? 'performer', ...(clip.artist ? { artist: clip.artist } : {}) }
+      n++
+    }
+    if (n > 0) {
+      writeFileSync(vPath, JSON.stringify(verdicts, null, 2) + '\n')
+      console.log(`  ${n} hand-marked frame(s) accepted automatically — you already chose those moments.`)
+    }
   }
 
   if (added.length === 0) {

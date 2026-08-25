@@ -234,6 +234,14 @@ async function ingestFile(args: {
   label?: string
   /** The library asset this file came from, when it came from one. */
   uuid?: string | null
+  /**
+   * Name to read provenance from, when the file on disk is not named for its origin.
+   *
+   * A staged frame is called `<clip-uuid>_f0_pv.jpeg` so the review page can address it
+   * by UUID — which tells `parseDerivedFrom` nothing. The name that carries the
+   * provenance is the extractor's, `<clip>__f0113__lap0.jpg`, and it lives on the select.
+   */
+  provenanceName?: string | null
   index: MediaIndex
   report: Report
   notes: string | null
@@ -335,7 +343,7 @@ async function ingestFile(args: {
     sourceHeight: out.sourceHeight,
     bytes: out.bytes.length,
     sourceSha256: hash,
-    derivedFrom: parseDerivedFrom(name),
+    derivedFrom: parseDerivedFrom(args.provenanceName ?? name),
     notes,
   }
 
@@ -558,6 +566,7 @@ async function ingestFromSelects(args: {
     await ingestFile({
       file, date, act, quality, index, report, notes: null, dryRun,
       label: staged.get(file),
+      provenanceName: sel.sourceFile ? sel.originalFilename : null,
       // A frame has no library identity of its own; record the CLIP it came from.
       uuid: sel.sourceFile ? null : sel.uuid,
     })

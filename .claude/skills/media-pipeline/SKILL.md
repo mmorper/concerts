@@ -313,6 +313,19 @@ taken is how the two ideas got conflated.
 Frame filenames carry the ORIGINAL clip's timeline, never a trim-relative one, or
 provenance describes the wrong moment.
 
+**A hand-marked frame is already a decision, and is accepted automatically.** The owner
+scrubbed to that moment and chose it; asking them to re-open the review page and confirm
+the frame they asked for is the frame they wanted is asking the same question twice. It
+inherits the clip's verdict and attribution. **Algorithmic picks are never auto-accepted** —
+nobody has looked at those, and a guess that marks itself approved is the fabricated
+decision this pipeline refuses everywhere else.
+
+**Provenance is read from the EXTRACTOR's filename, not the staged one.** A staged frame is
+named `<clip-uuid>_f0_pv.jpeg` so the review page can address it by UUID, which says
+nothing about where it came from; the name carrying provenance is
+`<clip>__f0113__lap0.jpg`. Reading the wrong one silently produced `derivedFrom: null` and
+lost the link to the clip.
+
 **A trimmed clip renders to `video/renders/`, NOT to the repo or `media-index.json`.**
 Nothing in the publishing pipeline consumes a clip yet (#349/#350 gated on #100), so
 pretending one into the index would be inventing a consumer. `{uuid, in, out}` reproduces
