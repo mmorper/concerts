@@ -177,6 +177,40 @@ function main(): void {
     const marked = sel.marks?.frames ?? []
     const src = join(stage, clipFile)
 
+    // A trim renders to video/renders/ for MANUAL use. Nothing in the publishing pipeline
+    // consumes a clip yet — #349/#350 are gated on #100 — so it is deliberately not
+    // pretended into media-index.json. The marks are the durable record; the file is
+    // reproducible from {uuid, in, out} at any time.
+    let trimFile: string | null = null
+    if (sel.marks?.trim) {
+      const { in: a, out: b } = sel.marks.trim
+      mkdirSync(RENDERS, { recursive: true })
+      const target = join(RENDERS, `${date}-${sel.artistNormalized ?? 'venue'}-${basename(clipFile, extname(clipFile))}-trim.mp4`)
+      try {
+        // -c copy would be faster but cuts only on keyframes, which moves the in-point by
+        // up to a couple of seconds — the exact precision the owner just marked by hand.
+        execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-accurate_seek', '-ss', String(a),
+                                '-i', src, '-t', String(b - a), '-c:v', 'libx264', '-crf', '18',
+                                '-preset', 'medium', '-c:a', 'aac', target],
+                     { stdio: ['ignore', 'pipe', 'pipe'] })
+        const mb = statSync(target).size / 1e6
+        trimFile = target
+        console.log(`    trim ${fmt(a)}–${fmt(b)} → ${target.replace(process.cwd() + '/', '')} (${mb.toFixed(1)} MB)`)
+      } catch (err) {
+        console.log(`    ⚠ trim failed: ${(err as Error).message.split('\n')[0]}`)
+      }
+    }
+
+    // A marked trim narrows where automatic frames may come from.
+    //
+    // Without this, a trim was recorded and then ignored for extraction: on IMG_5707 the
+    // owner marked 1:49-2:10 of a 194-second clip and the sampler returned frames at 9,
+    // 55, 75, 99, 161 and 185 seconds — not one inside the window they had just chosen.
+    // A trim IS a judgement about which part of the clip is worth anything, so the
+    // rendered trim becomes the source and every frame necessarily lands inside it.
+    const extractFrom = trimFile ?? src
+    const offset = trimFile ? (sel.marks?.trim?.in ?? 0) : 0
+
     if (marked.length > 0) {
       // THE OWNER'S MARKS WIN. They watched the clip and read the time off the Photos
       // scrubber; the algorithm only knows which frame is sharpest. Judged against the
@@ -198,38 +232,20 @@ function main(): void {
         }
       })
     } else {
-      const keep = framesToKeep(item.duration ?? null)
-      console.log(`  ${sel.originalFilename} → no marks; extracting ${keep} frames automatically…`)
+      const span = trimFile ? (sel.marks!.trim!.out - sel.marks!.trim!.in) : (item.duration ?? null)
+      const keep = framesToKeep(span)
+      console.log(
+        `  ${sel.originalFilename} → no frame marks; extracting ${keep} automatically` +
+          `${trimFile ? ` from your ${fmt(sel.marks!.trim!.in)}–${fmt(sel.marks!.trim!.out)} trim` : ''}…`
+      )
       try {
-        execFileSync('sh', [EXTRACT, src, out, String(keep)], {
+        execFileSync('sh', [EXTRACT, extractFrom, out, String(keep)], {
           stdio: ['ignore', 'pipe', 'pipe'],
           maxBuffer: 32 * 1024 * 1024,
         })
       } catch (err) {
         console.log(`  ⚠ ${sel.originalFilename}: extraction failed — ${(err as Error).message.split('\n')[0]}`)
         continue
-      }
-    }
-
-    // A trim renders to video/renders/ for MANUAL use. Nothing in the publishing pipeline
-    // consumes a clip yet — #349/#350 are gated on #100 — so it is deliberately not
-    // pretended into media-index.json. The marks are the durable record; the file is
-    // reproducible from {uuid, in, out} at any time.
-    if (sel.marks?.trim) {
-      const { in: a, out: b } = sel.marks.trim
-      mkdirSync(RENDERS, { recursive: true })
-      const target = join(RENDERS, `${date}-${sel.artistNormalized ?? 'venue'}-${basename(clipFile, extname(clipFile))}-trim.mp4`)
-      try {
-        // -c copy would be faster but cuts only on keyframes, which moves the in-point by
-        // up to a couple of seconds — the exact precision the owner just marked by hand.
-        execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-accurate_seek', '-ss', String(a),
-                                '-i', src, '-t', String(b - a), '-c:v', 'libx264', '-crf', '18',
-                                '-preset', 'medium', '-c:a', 'aac', target],
-                     { stdio: ['ignore', 'pipe', 'pipe'] })
-        const mb = statSync(target).size / 1e6
-        console.log(`    trim ${fmt(a)}–${fmt(b)} → ${target.replace(process.cwd() + '/', '')} (${mb.toFixed(1)} MB)`)
-      } catch (err) {
-        console.log(`    ⚠ trim failed: ${(err as Error).message.split('\n')[0]}`)
       }
     }
 
@@ -241,12 +257,19 @@ function main(): void {
     }
 
     produced.sort()
-    produced.forEach((name, n) => {
-      const src = join(out, name)
+    produced.forEach((rawName, n) => {
+      // A frame cut from the trim is named by its position WITHIN the trim, but provenance
+      // has to describe the original clip — otherwise "frame 5" of a trim starting at 1:49
+      // reads as 5 seconds into a three-minute video, and a different-night disclosure
+      // written from it would be wrong about when it was taken.
+      const name = offset > 0
+        ? rawName.replace(/__f(\d+)__/, (_, d: string) => `__f${String(Number(d) + Math.round(offset)).padStart(4, '0')}__`)
+        : rawName
+      const from = join(out, rawName)
       const staged = `${sel.uuid.toUpperCase()}_f${n}_pv.jpeg`
       // The frame is BOTH the review thumbnail and the thing that gets ingested — it is
       // already full capture resolution, so there is no lower-quality proxy to make.
-      execFileSync('cp', [src, join(framesDir, staged)])
+      execFileSync('cp', [from, join(framesDir, staged)])
       added.push({
         ...item,
         uuid: frameId(sel.uuid, n),

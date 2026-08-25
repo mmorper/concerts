@@ -294,6 +294,13 @@ picked automatically, hand-marked moments were better — which is what settled 
 win when present; when a clip carries none, the automatic extraction still runs, so
 nothing regresses for clips nobody wants to mark.
 
+**A marked trim narrows where automatic frames come from.** A trim is a judgement about
+which part of a clip is worth anything, so the rendered trim becomes the extraction source
+and every frame necessarily lands inside it. Measured before the fix: on a 194-second clip
+marked 1:49–2:10, the sampler returned frames at 9, 55, 75, 99, 161 and 185 seconds — not
+one inside the window the owner had just chosen. Frame filenames carry the ORIGINAL clip's
+timeline, not the trim's, or provenance would describe the wrong moment.
+
 **A trimmed clip renders to `video/renders/`, NOT to the repo or `media-index.json`.**
 Nothing in the publishing pipeline consumes a clip yet (#349/#350 gated on #100), so
 pretending one into the index would be inventing a consumer. `{uuid, in, out}` reproduces
