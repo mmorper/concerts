@@ -47,7 +47,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             #
             # There is NO public URL for an iCloud asset — iCloud.com needs a session and
             # hands out short-lived signed URLs, nothing bookmarkable. But macOS has a
-            # local scheme, `photos://asset/<UUID>`, which opens Photos on that exact item.
+            # local scheme that opens Photos on that exact item.
+            #
+            # THE FORM IS `photos://asset?identifier=<uuid>`, a query parameter — NOT the
+            # path form `photos://asset/<uuid>`, which this shipped with and which does
+            # nothing at all. `open` returns 0 for both, because it only hands the URL to
+            # the registered app and never learns whether the app understood it, so the
+            # broken form looked like it worked. The real forms are declared in the Photos
+            # binary itself: photos://asset?identifier=, photos://album?name=,
+            # photos://devices?index=, photos://preferences/icloud.
             # For video that is worth more than a public link would be: full playback and
             # scrubbing in the app that does it best, one click from the review page, with
             # no download and no hunting for a filename.
@@ -59,7 +67,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # Strict: this string reaches `open`, so it must be a UUID and nothing else.
             ok = bool(re.fullmatch(r"[0-9A-Fa-f-]{36}", uuid))
             if ok:
-                subprocess.run(["open", f"photos://asset/{uuid}"], check=False)
+                subprocess.run(["open", f"photos://asset?identifier={uuid}"], check=False)
             self.send_response(204 if ok else 400)
             self.end_headers()
             return

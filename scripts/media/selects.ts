@@ -21,6 +21,10 @@ import type { Act } from './show'
 /** One asset as the review page left it. Keys are UUIDs. */
 export interface Verdict {
   verdict?: 'keep' | 'reject' | null
+  /** Seconds into the clip where the owner wants a still. Several per clip is normal. */
+  frames?: number[] | null
+  /** Seconds. The section of the clip worth keeping. */
+  trim?: { in: number; out: number } | null
   /** The act the owner said is in the frame, as displayed in the picker. */
   artist?: string | null
   subject?: 'performer' | 'venue' | 'crowd' | 'stub' | null
@@ -38,6 +42,8 @@ export interface Select {
   /** True when the original is iCloud-only, so exporting it needs a download. */
   needsDownload: boolean
   time: string
+  /** Timecodes the owner marked on the Photos scrubber. Empty when they marked none. */
+  marks?: ClipMarks | null
   /**
    * A file already on disk, for selects that are not library assets.
    *
@@ -115,6 +121,20 @@ export interface AssetFacts {
 }
 
 /**
+ * The owner's own marks on a clip, read off the Photos scrubber.
+ *
+ * These beat the algorithm and are meant to. `media:frames` samples at 1fps and keeps the
+ * sharpest with a minimum gap, which finds a technically good frame but not necessarily
+ * the RIGHT one — the owner judged the three it picked from IMG_5739.MOV and could pick
+ * better moments by hand. When marks exist they are used instead; when they do not, the
+ * algorithm still runs, so nothing regresses for clips nobody wants to mark.
+ */
+export interface ClipMarks {
+  frames: number[]
+  trim: { in: number; out: number } | null
+}
+
+/**
  * Turn raw verdicts into the approved list.
  *
  * Attribution is matched against THAT NIGHT'S lineup only — the picker was populated from
@@ -175,6 +195,11 @@ export function buildSelects(args: {
       subject,
       folder,
       // A frame already on disk never needs downloading, whatever its clip's state was.
+      // Marks only mean anything on a clip; a still has no timeline to mark.
+      marks:
+        v.frames?.length || v.trim
+          ? { frames: [...(v.frames ?? [])].sort((a, b) => a - b), trim: v.trim ?? null }
+          : null,
       needsDownload: asset.source_file ? false : asset.is_missing,
       time: asset.local_time,
       sourceFile: asset.source_file ?? null,

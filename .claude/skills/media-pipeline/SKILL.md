@@ -271,7 +271,12 @@ What the tool still owes video: identification. Per-show worksheets listing cand
 
 **There is NO public URL for an iCloud asset.** iCloud.com needs a session and issues
 short-lived signed URLs; nothing is bookmarkable. What exists instead is better for this
-purpose: **`photos://asset/<UUID>` opens Photos.app on that exact item.** The review server
+purpose: **`photos://asset?identifier=<UUID>` opens Photos.app on that exact item.**
+The form is a QUERY PARAMETER. `photos://asset/<UUID>` — the path form — does nothing at
+all, and `open` exits 0 for both, because it only hands the URL to the registered app and
+never learns whether the app understood it. Shipped broken once for exactly that reason.
+The real forms are declared in the Photos binary: `photos://asset?identifier=`,
+`photos://album?name=`, `photos://devices?index=`, `photos://preferences/icloud`. The review server
 exposes it at `/open?uuid=…` and the page has a "Watch in Photos" button (`O`), so a clip
 is one click from full playback with no download and no hunting for a filename. The server
 opens it rather than the page, so the browser is never asked to hand a custom scheme to the
@@ -281,6 +286,70 @@ OS, and the UUID is regex-validated before it reaches `open`.
 each — fetching them all is **22.5GB**. `media:frames` downloads only clips the owner kept
 in the review, extracts, and deletes the clips afterwards. For a clip, "usable" in the
 review page means *worth mining for frames*, not *worth publishing*; the page says so.
+
+**The owner marks the moment; the algorithm is the fallback.** Photos shows a readable
+elapsed time on the scrubber (`00:09` / `−00:31`), so marking is just: watch in Photos,
+read the number, type it into the review page. Judged against the frames `media:frames`
+picked automatically, hand-marked moments were better — which is what settled it. Marks
+win when present; when a clip carries none, the automatic extraction still runs, so
+nothing regresses for clips nobody wants to mark.
+
+**🔴 A CLIP IS A VIDEO. The owner's definitions, not ours:**
+
+| marked | produced |
+|---|---|
+| frame timecode(s) | a still at exactly that moment, one per mark |
+| in/out points | **one derived video — nothing else** |
+| both | those stills and that video |
+| neither | the algorithm picks frames; the fallback for a clip kept but unmarked |
+
+This shipped wrong twice. First the trim was recorded, rendered, then ignored — on a
+194-second clip marked 1:49–2:10 the sampler returned frames at 9, 55, 75, 99, 161 and 185
+seconds, not one inside the window. "Fixing" that by sampling *inside* the trim was still
+wrong: **a trim is a request for a video, and answering it with stills is inventing work.**
+Say what will actually happen in the UI, too — a label promising frames that will not be
+taken is how the two ideas got conflated.
+
+Frame filenames carry the ORIGINAL clip's timeline, never a trim-relative one, or
+provenance describes the wrong moment.
+
+**A hand-marked frame is already a decision, and is accepted automatically.** The owner
+scrubbed to that moment and chose it; asking them to re-open the review page and confirm
+the frame they asked for is the frame they wanted is asking the same question twice. It
+inherits the clip's verdict and attribution. **Algorithmic picks are never auto-accepted** —
+nobody has looked at those, and a guess that marks itself approved is the fabricated
+decision this pipeline refuses everywhere else.
+
+**Provenance is read from the EXTRACTOR's filename, not the staged one.** A staged frame is
+named `<clip-uuid>_f0_pv.jpeg` so the review page can address it by UUID, which says
+nothing about where it came from; the name carrying provenance is
+`<clip>__f0113__lap0.jpg`. Reading the wrong one silently produced `derivedFrom: null` and
+lost the link to the clip.
+
+**Video: one index, canonical names, never in `public/`.**
+
+- **The site never shows video.** It only goes outbound to Shorts and TikTok, so there is
+  nothing to serve from a CDN and no reason for `public/videos/` to exist.
+- **Nor could it.** Two trims from one show are 247MB at full resolution, against 13MB for
+  every image in the repo combined. `.git` is already 324MB and never forgets a byte.
+- **Rendered to the SHORT EDGE at 1080**, aspect preserved: 134MB → 18.6MB. Both channels
+  take 1080×1920 and re-encode on ingest, so uploading 4K just means they discard it.
+- **Landscape is never auto-cropped to 9:16.** It loses 68% of its width, and where the
+  crop sits decides whether the performer is in frame — an editorial decision the owner
+  makes by hand.
+- **Canonical filenames, same as stills:** `2026-06-04-alison-moyet-01.mp4`. Ordinals run
+  per act AND per kind. They previously carried the clip's UUID, which was a handle
+  grabbed for uniqueness rather than a name — a workflow reading both kinds should not
+  have to learn two conventions.
+- **Video IS in `media-index.json`**, with `kind`, `duration`, `path`, and a null `url`
+  until it is uploaded somewhere a CI job can fetch. One index describes all of a show's
+  media, or a workflow asking "what do I have for this night?" sees half of it.
+- **`render: {uuid, in, out}` is the durable artefact, not the file.** The full-resolution
+  trim is never kept: it is reproducible byte-for-byte from the recipe and the original
+  still in Photos. What is kept is the channel-sized render, which is both the deliverable
+  and the fallback if the library entry ever disappears.
+- Cut with `libx264`, never `-c copy`: stream-copy cuts only on keyframes and would move
+  the in-point by up to a couple of seconds, losing the precision just marked by hand.
 
 **Frame extraction is PROMISING, on a sample of six.** Extracted frames scored an 83% keep
 rate judged blind against real stills — but that is **5 of 6 frames, from 2 clips**, inside
@@ -344,14 +413,20 @@ written to `public/images/shows/`; `media-index.json` updated; **what was skippe
 |---|---|
 | Source library | Photos.app — never copied wholesale |
 | Candidate corpus, evaluation runs | `concert-photos-audit/` — **gitignored** |
+| **Rendered clips** | **`video/renders/`** — gitignored, canonical names, indexed |
 | Tooling | `scripts/media/` (tracked) · the guard + `BUILD.txt` (tracked by exception) · binary, `*.py`, `*.sh` (ignored) |
-| **Final selects** | **`public/images/shows/`** — committed, EXIF-stripped |
-| **The mapping** | **`public/data/media-index.json`** — committed |
+| **Final selects (stills)** | **`public/images/shows/`** — committed, EXIF-stripped, 2048px masters |
+| **The mapping** | **`public/data/media-index.json`** — committed, describes stills AND video |
 
-Selects live in the repo, not R2: the card renderer needs the file at build time,
+**Stills** live in the repo, not R2: the card renderer needs the file at build time,
 Cloudflare already serves `public/` from the CDN, and `git clone` restores every select.
 R2 only becomes correct past a few hundred files; `media-index.json` addresses by `url` so
 that migration costs no consumer changes.
+
+**Video is the opposite case and is never committed.** It is not served, it is 10–100×
+larger, and it is reproducible from its recipe. It sits in `video/renders/` with `url:
+null` until a channel needs it somewhere fetchable — at which point an upload step fills
+in `url` and, again, no consumer changes.
 
 ---
 

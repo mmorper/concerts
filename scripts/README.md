@@ -47,7 +47,7 @@ This directory contains all data pipeline, build, and utility scripts for the Mo
 |--------|---------|---------|-------------|
 | media/prep.ts | `npm run media:prep <YYYY-MM-DD>` | Scaffold one show's inbox folders and build its `WORKSHEET.md` of Photos candidates | After a show, before culling |
 | media/review.ts | `npm run media:review <YYYY-MM-DD>` | Cull the STILLS on a localhost page and record who is in each frame | After prep, before ingest |
-| media/frames.ts | `npm run media:frames <YYYY-MM-DD>` | Download only the clips you kept, extract stills, stage them for a second review pass | After marking clips in the review |
+| media/frames.ts | `npm run media:frames <YYYY-MM-DD>` | Download only the clips you kept; grab marked frames as stills, render marked trims as clips, record both | After marking clips in the review |
 | media/ingest.ts | `npm run media:ingest [date]` | Take the owner's selects out of the inbox into `public/images/shows/` + `media-index.json` | After filling the inbox folders |
 
 **Read `.claude/skills/media-pipeline/SKILL.md` before touching anything here.** The Photos
@@ -58,6 +58,14 @@ through the read-only guard at `concert-photos-audit/bin/osxphotos`, never `.osx
 `concert-photos-audit/inbox/<date>/`. It ranks candidates and never filters them, and it
 asserts its own output before reporting success. Add `-- --scaffold-only` to create the
 folders without reading the library.
+
+**Video never enters `public/`.** The site does not show it — it only goes outbound to
+Shorts and TikTok — and two full-resolution trims from one show are 247MB against 13MB for
+every image in the repo combined. Rendered clips land in `video/renders/` (gitignored) with
+the same canonical naming as stills (`2026-06-04-alison-moyet-01.mp4`), and are recorded in
+`media-index.json` with `kind: "video"`, a `path`, and a null `url` until something needs
+them somewhere fetchable. The `render: {uuid, in, out}` recipe reproduces the full-quality
+cut from the original still in Photos, so the recipe is durable and the file is a cache.
 
 **Stills are reviewed in `media:review`; video is reviewed in Photos.app.** Different
 problems: video needs playback, stills need a fast keyboard verdict. Triaging stills in

@@ -18,6 +18,7 @@
  */
 import { describe, it, expect } from 'vitest'
 import { spawnSync } from 'child_process'
+import { readFileSync } from 'fs'
 import { resolve } from 'path'
 
 const GUARD = resolve('concert-photos-audit/bin/osxphotos')
@@ -110,5 +111,26 @@ describe('refusal happens before the binary is needed', () => {
     // The pipx warning matters: under pipx, Full Disk Access is granted to the terminal
     // and everything it launches, rather than to the binary alone.
     expect(r.stderr).toContain('pipx')
+  })
+})
+
+describe('the Photos deep link uses a form Photos actually understands', () => {
+  const server = readFileSync(resolve('scripts/media/review_server.py'), 'utf-8')
+
+  it('addresses an asset by QUERY PARAMETER, not by path', () => {
+    // This shipped as `photos://asset/<uuid>`, which Photos ignores entirely — clicking
+    // "Watch in Photos" did nothing. `open` exits 0 either way, because it only hands the
+    // URL to the registered app and never learns whether the app understood it, so the
+    // broken form looked like it worked and the bug reached the owner.
+    //
+    // The real forms are declared inside the Photos binary:
+    //   photos://asset?identifier=   photos://album?name=
+    //   photos://devices?index=      photos://preferences/icloud
+    expect(server).toContain('photos://asset?identifier=')
+    expect(server).not.toMatch(/photos:\/\/asset\/\$?\{/)
+  })
+
+  it('still validates the uuid before it reaches `open`', () => {
+    expect(server).toContain('[0-9A-Fa-f-]{36}')
   })
 })
