@@ -1,0 +1,943 @@
+{
+  "generatedAt": "2026-04-19T20:53:29.314Z",
+  "shows": [
+    {
+      "show": {
+        "year": 1990,
+        "date": "1990-09-13",
+        "venue": "Cal State Fullerton",
+        "city": "Fullerton"
+      },
+      "setlist": null,
+      "songs": []
+    },
+    {
+      "show": {
+        "year": 2005,
+        "date": "2005-03-23",
+        "venue": "Hard Rock Hotel Las Vegas",
+        "city": "Las Vegas"
+      },
+      "setlist": null,
+      "songs": []
+    },
+    {
+      "show": {
+        "year": 2010,
+        "date": "2010-10-26",
+        "venue": "9:30 Club",
+        "city": "Washington"
+      },
+      "setlistId": "3bd57c80",
+      "venue": "9:30 Club",
+      "songs": [
+        {
+          "name": "The Creeps",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Another State of Mind",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Mommy's Little Monster",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Sick Boys",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Don't Drag Me Down",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "I Was Wrong",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Bye Bye Baby",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Still Alive",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Ball and Chain",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Through These Eyes",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Bakersfield",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "King of Fools",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "When She Begins",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Making Believe",
+          "cover": "Jimmy Work",
+          "encore": false
+        },
+        {
+          "name": "So Far Away",
+          "cover": null,
+          "encore": true
+        },
+        {
+          "name": "Prison Bound",
+          "cover": null,
+          "encore": true
+        },
+        {
+          "name": "Down Here (With the Rest of Us)",
+          "cover": null,
+          "encore": true
+        },
+        {
+          "name": "Cold Feelings",
+          "cover": null,
+          "encore": true
+        },
+        {
+          "name": "Ring of Fire",
+          "cover": "Merle Kilgore",
+          "encore": true
+        }
+      ]
+    },
+    {
+      "show": {
+        "year": 2012,
+        "date": "2012-11-06",
+        "venue": "9:30 Club",
+        "city": "Washington"
+      },
+      "setlistId": "bdaad92",
+      "venue": "9:30 Club",
+      "songs": [
+        {
+          "name": "I Was Wrong",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "So Far Away",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Bad Luck",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Far Behind",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Machine Gun Blues",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "1945",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Sick Boys",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Cold Feelings",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Bakersfield",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Gimme the Sweet and Lowdown",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Ball and Chain",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Dear Lover",
+          "cover": null,
+          "encore": true
+        },
+        {
+          "name": "Pleasure Seeker",
+          "cover": null,
+          "encore": true
+        },
+        {
+          "name": "Black Magic",
+          "cover": null,
+          "encore": true
+        },
+        {
+          "name": "Company C",
+          "cover": "Mike Ness",
+          "encore": true
+        },
+        {
+          "name": "Don't Drag Me Down",
+          "cover": null,
+          "encore": true
+        },
+        {
+          "name": "Ring of Fire",
+          "cover": "Merle Kilgore",
+          "encore": true
+        }
+      ]
+    },
+    {
+      "show": {
+        "year": 2015,
+        "date": "2015-08-25",
+        "venue": "The Fillmore Silver Spring",
+        "city": "Silver Spring"
+      },
+      "setlistId": "2bf7381a",
+      "venue": "The Fillmore Silver Spring",
+      "songs": [
+        {
+          "name": "[Unknown]",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "So Far Away",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Let It Be Me",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Story of My Life",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Sick Boys",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Ball and Chain",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "It Coulda Been Me",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "She's a Knockout",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "A Place in My Heart",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Drug Train",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Cold Feelings",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Wild Horses",
+          "cover": "The Rolling Stones",
+          "encore": false
+        },
+        {
+          "name": "Alone and Forsaken",
+          "cover": "Hank Williams",
+          "encore": false
+        },
+        {
+          "name": "This Time Darlin'",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Far Behind",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Don't Drag Me Down",
+          "cover": null,
+          "encore": true
+        },
+        {
+          "name": "Folsom Prison Blues",
+          "cover": "Johnny Cash",
+          "encore": true
+        },
+        {
+          "name": "Ring of Fire",
+          "cover": "Merle Kilgore",
+          "encore": true
+        }
+      ]
+    },
+    {
+      "show": {
+        "year": 2018,
+        "date": "2018-10-28",
+        "venue": "Huntington State Beach",
+        "city": "Huntington Beach"
+      },
+      "setlistId": "3396109d",
+      "venue": "Huntington State Beach",
+      "songs": [
+        {
+          "name": "Reach for the Sky",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Highway 101",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Don't Take Me for Granted",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Machine Gun Blues",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Story of My Life",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Mommy's Little Monster",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Another State of Mind",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Over You",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "California (Hustle and Flow)",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Bad Luck",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "She's a Knockout",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Don't Drag Me Down",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Born to Kill",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Ball and Chain",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Ring of Fire",
+          "cover": "Merle Kilgore",
+          "encore": false
+        }
+      ]
+    },
+    {
+      "show": {
+        "year": 2022,
+        "date": "2022-12-08",
+        "venue": "House of Blues Anaheim",
+        "city": "Anaheim"
+      },
+      "setlistId": "bbcadd6",
+      "venue": "House of Blues",
+      "songs": [
+        {
+          "name": "Bad Luck",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Reach for the Sky",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "I Wasn't Born to Follow",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Ghost Town Blues",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "She's a Knockout",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Wicked Game",
+          "cover": "Chris Isaak",
+          "encore": false
+        },
+        {
+          "name": "Over You",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Playpen",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "1945",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Prison Bound",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Through These Eyes",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "99 to Life",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Tonight",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "California (Hustle and Flow)",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Dear Lover",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Born to Kill",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Story of My Life",
+          "cover": null,
+          "encore": false
+        },
+        {
+          "name": "Ring of Fire",
+          "cover": "Merle Kilgore",
+          "encore": false
+        }
+      ]
+    },
+    {
+      "show": {
+        "year": 2024,
+        "date": "2024-12-05",
+        "venue": "The Belasco",
+        "city": "Los Angeles"
+      },
+      "setlist": null,
+      "songs": []
+    }
+  ],
+  "analysis": {
+    "totalShows": 5,
+    "totalUniqueSongs": 51,
+    "threadSongs": [],
+    "coreRepertoire": [
+      {
+        "name": "Ring of Fire",
+        "count": 5,
+        "shows": [
+          2010,
+          2012,
+          2015,
+          2018,
+          2022
+        ]
+      }
+    ],
+    "allSongs": [
+      {
+        "name": "Ring of Fire",
+        "count": 5,
+        "shows": [
+          2010,
+          2012,
+          2015,
+          2018,
+          2022
+        ]
+      },
+      {
+        "name": "Don't Drag Me Down",
+        "count": 4,
+        "shows": [
+          2010,
+          2012,
+          2015,
+          2018
+        ]
+      },
+      {
+        "name": "Ball and Chain",
+        "count": 4,
+        "shows": [
+          2010,
+          2012,
+          2015,
+          2018
+        ]
+      },
+      {
+        "name": "Sick Boys",
+        "count": 3,
+        "shows": [
+          2010,
+          2012,
+          2015
+        ]
+      },
+      {
+        "name": "So Far Away",
+        "count": 3,
+        "shows": [
+          2010,
+          2012,
+          2015
+        ]
+      },
+      {
+        "name": "Cold Feelings",
+        "count": 3,
+        "shows": [
+          2010,
+          2012,
+          2015
+        ]
+      },
+      {
+        "name": "Bad Luck",
+        "count": 3,
+        "shows": [
+          2012,
+          2018,
+          2022
+        ]
+      },
+      {
+        "name": "Story of My Life",
+        "count": 3,
+        "shows": [
+          2015,
+          2018,
+          2022
+        ]
+      },
+      {
+        "name": "She's a Knockout",
+        "count": 3,
+        "shows": [
+          2015,
+          2018,
+          2022
+        ]
+      },
+      {
+        "name": "Another State of Mind",
+        "count": 2,
+        "shows": [
+          2010,
+          2018
+        ]
+      },
+      {
+        "name": "Mommy's Little Monster",
+        "count": 2,
+        "shows": [
+          2010,
+          2018
+        ]
+      },
+      {
+        "name": "I Was Wrong",
+        "count": 2,
+        "shows": [
+          2010,
+          2012
+        ]
+      },
+      {
+        "name": "Through These Eyes",
+        "count": 2,
+        "shows": [
+          2010,
+          2022
+        ]
+      },
+      {
+        "name": "Bakersfield",
+        "count": 2,
+        "shows": [
+          2010,
+          2012
+        ]
+      },
+      {
+        "name": "Prison Bound",
+        "count": 2,
+        "shows": [
+          2010,
+          2022
+        ]
+      },
+      {
+        "name": "Far Behind",
+        "count": 2,
+        "shows": [
+          2012,
+          2015
+        ]
+      },
+      {
+        "name": "Machine Gun Blues",
+        "count": 2,
+        "shows": [
+          2012,
+          2018
+        ]
+      },
+      {
+        "name": "1945",
+        "count": 2,
+        "shows": [
+          2012,
+          2022
+        ]
+      },
+      {
+        "name": "Dear Lover",
+        "count": 2,
+        "shows": [
+          2012,
+          2022
+        ]
+      },
+      {
+        "name": "Reach for the Sky",
+        "count": 2,
+        "shows": [
+          2018,
+          2022
+        ]
+      },
+      {
+        "name": "Over You",
+        "count": 2,
+        "shows": [
+          2018,
+          2022
+        ]
+      },
+      {
+        "name": "California (Hustle and Flow)",
+        "count": 2,
+        "shows": [
+          2018,
+          2022
+        ]
+      },
+      {
+        "name": "Born to Kill",
+        "count": 2,
+        "shows": [
+          2018,
+          2022
+        ]
+      },
+      {
+        "name": "The Creeps",
+        "count": 1,
+        "shows": [
+          2010
+        ]
+      },
+      {
+        "name": "Bye Bye Baby",
+        "count": 1,
+        "shows": [
+          2010
+        ]
+      },
+      {
+        "name": "Still Alive",
+        "count": 1,
+        "shows": [
+          2010
+        ]
+      },
+      {
+        "name": "King of Fools",
+        "count": 1,
+        "shows": [
+          2010
+        ]
+      },
+      {
+        "name": "When She Begins",
+        "count": 1,
+        "shows": [
+          2010
+        ]
+      },
+      {
+        "name": "Making Believe",
+        "count": 1,
+        "shows": [
+          2010
+        ]
+      },
+      {
+        "name": "Down Here (With the Rest of Us)",
+        "count": 1,
+        "shows": [
+          2010
+        ]
+      },
+      {
+        "name": "Gimme the Sweet and Lowdown",
+        "count": 1,
+        "shows": [
+          2012
+        ]
+      },
+      {
+        "name": "Pleasure Seeker",
+        "count": 1,
+        "shows": [
+          2012
+        ]
+      },
+      {
+        "name": "Black Magic",
+        "count": 1,
+        "shows": [
+          2012
+        ]
+      },
+      {
+        "name": "Company C",
+        "count": 1,
+        "shows": [
+          2012
+        ]
+      },
+      {
+        "name": "[Unknown]",
+        "count": 1,
+        "shows": [
+          2015
+        ]
+      },
+      {
+        "name": "Let It Be Me",
+        "count": 1,
+        "shows": [
+          2015
+        ]
+      },
+      {
+        "name": "It Coulda Been Me",
+        "count": 1,
+        "shows": [
+          2015
+        ]
+      },
+      {
+        "name": "A Place in My Heart",
+        "count": 1,
+        "shows": [
+          2015
+        ]
+      },
+      {
+        "name": "Drug Train",
+        "count": 1,
+        "shows": [
+          2015
+        ]
+      },
+      {
+        "name": "Wild Horses",
+        "count": 1,
+        "shows": [
+          2015
+        ]
+      },
+      {
+        "name": "Alone and Forsaken",
+        "count": 1,
+        "shows": [
+          2015
+        ]
+      },
+      {
+        "name": "This Time Darlin'",
+        "count": 1,
+        "shows": [
+          2015
+        ]
+      },
+      {
+        "name": "Folsom Prison Blues",
+        "count": 1,
+        "shows": [
+          2015
+        ]
+      },
+      {
+        "name": "Highway 101",
+        "count": 1,
+        "shows": [
+          2018
+        ]
+      },
+      {
+        "name": "Don't Take Me for Granted",
+        "count": 1,
+        "shows": [
+          2018
+        ]
+      },
+      {
+        "name": "I Wasn't Born to Follow",
+        "count": 1,
+        "shows": [
+          2022
+        ]
+      },
+      {
+        "name": "Ghost Town Blues",
+        "count": 1,
+        "shows": [
+          2022
+        ]
+      },
+      {
+        "name": "Wicked Game",
+        "count": 1,
+        "shows": [
+          2022
+        ]
+      },
+      {
+        "name": "Playpen",
+        "count": 1,
+        "shows": [
+          2022
+        ]
+      },
+      {
+        "name": "99 to Life",
+        "count": 1,
+        "shows": [
+          2022
+        ]
+      },
+      {
+        "name": "Tonight",
+        "count": 1,
+        "shows": [
+          2022
+        ]
+      }
+    ]
+  }
+}

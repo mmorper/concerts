@@ -1,0 +1,227 @@
+{
+  "generatedAt": "2026-04-19T18:20:22.612Z",
+  "artists": [
+    {
+      "key": "social-distortion",
+      "name": "Social Distortion",
+      "image": "assets/artist-social-distortion.jpg",
+      "hasImage": true
+    },
+    {
+      "key": "bad-religion",
+      "name": "Bad Religion",
+      "image": "assets/artist-bad-religion.jpg",
+      "hasImage": true
+    },
+    {
+      "key": "the-offspring",
+      "name": "The Offspring",
+      "image": "assets/artist-the-offspring.jpg",
+      "hasImage": true
+    },
+    {
+      "key": "pennywise",
+      "name": "Pennywise",
+      "image": "assets/artist-pennywise.jpg",
+      "hasImage": true
+    },
+    {
+      "key": "suicidal-tendencies",
+      "name": "Suicidal Tendencies",
+      "image": "assets/artist-suicidal-tendencies.jpg",
+      "hasImage": true
+    },
+    {
+      "key": "voodoo-glow-skulls",
+      "name": "Voodoo Glow Skulls",
+      "image": "assets/artist-voodoo-glow-skulls.jpg",
+      "hasImage": true
+    },
+    {
+      "key": "t-s-o-l",
+      "name": "T.S.O.L.",
+      "image": "assets/artist-t-s-o-l.jpg",
+      "hasImage": true
+    },
+    {
+      "key": "black-rebel-motorcycle-club",
+      "name": "Black Rebel Motorcycle Club",
+      "image": "assets/artist-black-rebel-motorcycle-club.jpg",
+      "hasImage": true
+    },
+    {
+      "key": "snuff",
+      "name": "Snuff",
+      "image": "assets/artist-snuff.jpg",
+      "hasImage": true
+    },
+    {
+      "key": "fear",
+      "name": "Fear",
+      "image": "assets/artist-fear.jpg",
+      "hasImage": true
+    },
+    {
+      "key": "mad-caddies",
+      "name": "Mad Caddies",
+      "image": "assets/artist-mad-caddies.jpg",
+      "hasImage": true
+    },
+    {
+      "key": "rancid",
+      "name": "Rancid",
+      "image": "assets/artist-rancid.jpg",
+      "hasImage": true
+    },
+    {
+      "key": "aaron-lee-tasjan",
+      "name": "Aaron Lee Tasjan",
+      "image": "assets/artist-aaron-lee-tasjan.jpg",
+      "hasImage": true
+    },
+    {
+      "key": "the-interrupters",
+      "name": "The Interrupters",
+      "image": "assets/artist-the-interrupters.jpg",
+      "hasImage": true
+    }
+  ],
+  "albums": [
+    {
+      "key": "social-distortion",
+      "name": "Social Distortion",
+      "featuredTrack": "Ball and Chain",
+      "image": "assets/album-social-distortion.jpg",
+      "year": null
+    },
+    {
+      "key": "born-to-kill",
+      "name": "Born to Kill",
+      "featuredTrack": "Born to Kill",
+      "image": "assets/album-born-to-kill.jpg",
+      "year": null
+    },
+    {
+      "key": "white-light-white-heat-white-trash",
+      "name": "White Light White Heat White Trash",
+      "featuredTrack": "I Was Wrong",
+      "image": "assets/album-white-light-white-heat-white-trash.jpg",
+      "year": null
+    }
+  ],
+  "venues": [
+    {
+      "key": "cal-state-fullerton",
+      "name": "Cal State Fullerton",
+      "city": "Fullerton",
+      "state": "California",
+      "lat": 33.8823476,
+      "lng": -117.8851033,
+      "image": "assets/venue-cal-state-fullerton.jpg"
+    },
+    {
+      "key": "hard-rock-hotel-las-vegas",
+      "name": "Hard Rock Hotel Las Vegas",
+      "city": "Las Vegas",
+      "state": "Nevada",
+      "lat": 36.1102529,
+      "lng": -115.1554332,
+      "image": "assets/venue-hard-rock-hotel-las-vegas.jpg"
+    },
+    {
+      "key": "9-30-club",
+      "name": "9:30 Club",
+      "city": "Washington",
+      "state": "District of Columbia",
+      "lat": 38.917948,
+      "lng": -77.0237227,
+      "image": "assets/venue-9-30-club.jpg"
+    },
+    {
+      "key": "the-fillmore-silver-spring",
+      "name": "The Fillmore Silver Spring",
+      "city": "Silver Spring",
+      "state": "Maryland",
+      "lat": 38.997449,
+      "lng": -77.027579,
+      "image": "assets/venue-the-fillmore-silver-spring.jpg"
+    },
+    {
+      "key": "huntington-state-beach",
+      "name": "Huntington State Beach",
+      "city": "Huntington Beach",
+      "state": "California",
+      "lat": 33.6380444,
+      "lng": -117.9736122,
+      "image": "assets/venue-huntington-state-beach.jpg"
+    },
+    {
+      "key": "house-of-blues-anaheim",
+      "name": "House of Blues Anaheim",
+      "city": "Anaheim",
+      "state": "California",
+      "lat": 33.8066523,
+      "lng": -117.912121,
+      "image": "assets/venue-house-of-blues-anaheim.jpg"
+    },
+    {
+      "key": "the-belasco",
+      "name": "The Belasco",
+      "city": "Los Angeles",
+      "state": "California",
+      "lat": 34.0403336,
+      "lng": -118.2593883,
+      "image": "assets/venue-the-belasco.jpg"
+    }
+  ],
+  "shows": [
+    {
+      "year": 1990,
+      "date": "1990-09-13",
+      "dayOfWeek": "Thursday",
+      "venueKey": "cal-state-fullerton"
+    },
+    {
+      "year": 2005,
+      "date": "2005-03-23",
+      "dayOfWeek": "Wednesday",
+      "venueKey": "hard-rock-hotel-las-vegas"
+    },
+    {
+      "year": 2010,
+      "date": "2010-10-26",
+      "dayOfWeek": "Tuesday",
+      "venueKey": "9-30-club"
+    },
+    {
+      "year": 2012,
+      "date": "2012-11-06",
+      "dayOfWeek": "Tuesday",
+      "venueKey": "9-30-club"
+    },
+    {
+      "year": 2015,
+      "date": "2015-08-25",
+      "dayOfWeek": "Tuesday",
+      "venueKey": "the-fillmore-silver-spring"
+    },
+    {
+      "year": 2018,
+      "date": "2018-10-28",
+      "dayOfWeek": "Sunday",
+      "venueKey": "huntington-state-beach"
+    },
+    {
+      "year": 2022,
+      "date": "2022-12-08",
+      "dayOfWeek": "Thursday",
+      "venueKey": "house-of-blues-anaheim"
+    },
+    {
+      "year": 2024,
+      "date": "2024-12-05",
+      "dayOfWeek": "Thursday",
+      "venueKey": "the-belasco"
+    }
+  ]
+}

@@ -111,3 +111,10 @@ concert-photos-audit/bin/*
 !concert-photos-audit/bin/osxphotos
 !concert-photos-audit/bin/BUILD.txt
 osxphotos_crash.log
+
+# HyperFrames video workspace. Source HTML, payloads and asset references are
+# versioned; build output and caches are not. video/renders/ is ignored above.
+video/node_modules/
+video/compositions/*/output/
+video/output/
+video/.hyperframes-cache/

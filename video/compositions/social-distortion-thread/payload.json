@@ -1,0 +1,107 @@
+{
+  "template": "the-thread",
+  "sourceLinerNoteUrl": "https://concerts.morperhaus.org/liner-notes/social-distortion-34-years-of-shows",
+  "sourceLinerNoteStatus": "pilot-hypothetical",
+  "generatedAt": "2026-04-19T17:22:30.353Z",
+  "artist": {
+    "name": "Social Distortion",
+    "normalized": "social-distortion",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
+    "imageLocal": "assets/social-distortion-artist.jpg",
+    "formedYear": 1979,
+    "genres": [
+      "Punk Rock",
+      "Punk"
+    ]
+  },
+  "thread": {
+    "firstYear": 1990,
+    "lastYear": 2024,
+    "spanYears": 34,
+    "showCount": 8,
+    "firstShow": {
+      "date": "1990-09-13",
+      "venue": "Cal State Fullerton",
+      "city": "Fullerton, California"
+    },
+    "lastShow": {
+      "date": "2024-12-05",
+      "venue": "The Belasco",
+      "city": "Los Angeles, California"
+    },
+    "shows": [
+      {
+        "year": 1990,
+        "date": "1990-09-13",
+        "venue": "Cal State Fullerton",
+        "city": "Fullerton, California",
+        "dayOfWeek": "Thursday"
+      },
+      {
+        "year": 2005,
+        "date": "2005-03-23",
+        "venue": "Hard Rock Hotel Las Vegas",
+        "city": "Las Vegas, Nevada",
+        "dayOfWeek": "Wednesday"
+      },
+      {
+        "year": 2010,
+        "date": "2010-10-26",
+        "venue": "9:30 Club",
+        "city": "Washington, District of Columbia",
+        "dayOfWeek": "Tuesday"
+      },
+      {
+        "year": 2012,
+        "date": "2012-11-06",
+        "venue": "9:30 Club",
+        "city": "Washington, District of Columbia",
+        "dayOfWeek": "Tuesday"
+      },
+      {
+        "year": 2015,
+        "date": "2015-08-25",
+        "venue": "The Fillmore Silver Spring",
+        "city": "Silver Spring, Maryland",
+        "dayOfWeek": "Tuesday"
+      },
+      {
+        "year": 2018,
+        "date": "2018-10-28",
+        "venue": "Huntington State Beach",
+        "city": "Huntington Beach, California",
+        "dayOfWeek": "Sunday"
+      },
+      {
+        "year": 2022,
+        "date": "2022-12-08",
+        "venue": "House of Blues Anaheim",
+        "city": "Anaheim, California",
+        "dayOfWeek": "Thursday"
+      },
+      {
+        "year": 2024,
+        "date": "2024-12-05",
+        "venue": "The Belasco",
+        "city": "Los Angeles, California",
+        "dayOfWeek": "Thursday"
+      }
+    ]
+  },
+  "featuredTrack": {
+    "name": "Ball and Chain",
+    "album": "Social Distortion",
+    "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/d2/8f/e3/d28fe3a5-f99f-227c-263f-1485756de8eb/mzi.goczaxyx.jpg/1000x1000bb.jpg",
+    "albumArtLocal": "assets/social-distortion-album.jpg",
+    "year": 1990,
+    "streamingUrl": "https://music.apple.com/us/album/ball-and-chain/197984051?i=197986000&uo=4"
+  },
+  "pullQuote": {
+    "text": "Each one felt like checking in with an old friend who’d weathered the same storms.",
+    "splitPoint": "who’d"
+  },
+  "outro": {
+    "wordmark": "morperhaus concerts",
+    "ctaUrl": "concerts.morperhaus.org/liner-notes"
+  }
+}
