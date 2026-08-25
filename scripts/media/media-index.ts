@@ -45,8 +45,18 @@ export interface MediaAsset {
   source: 'personal'
   hero: boolean
   order: number
+  /** Dimensions of the committed master, after right-sizing. */
   width: number
   height: number
+  /**
+   * Dimensions of the ORIGINAL still in Photos.
+   *
+   * Recorded so crop-safety decisions (#352) can tell whether a bigger version exists
+   * without a round trip to the library. With `uuid`, it is also what makes re-deriving at
+   * another size a mechanical job rather than a re-curation.
+   */
+  sourceWidth: number
+  sourceHeight: number
   bytes: number
   /**
    * Hash of the SOURCE file as it sat in the inbox. This is the idempotency key: it is
