@@ -32,13 +32,43 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, wri
 import { basename, extname, join, resolve } from 'path'
 import { tmpdir } from 'os'
 import { findShow, loadConcerts, ShowNotFoundError } from './show'
-import { loadSelects } from './selects'
+import { loadSelects, type Select } from './selects'
+import {
+  assetFilename,
+  loadIndex,
+  nextOrderOfKind,
+  saveIndex,
+  type MediaAsset,
+} from './media-index'
 
 const REVIEW_ROOT = resolve('concert-photos-audit/review')
 const GUARD = resolve('concert-photos-audit/bin/osxphotos')
 const EXTRACT = resolve('concert-photos-audit/extract_frames.sh')
-/** Trimmed clips land here for manual use — not in the repo, and not in media-index.json. */
+/**
+ * Where a rendered clip lands.
+ *
+ * NOT `public/`. The site never shows video — it only ever goes outbound to Shorts and
+ * TikTok — so there is nothing to serve from a CDN. And the sizes forbid it anyway: two
+ * trims from one show are 247MB against 13MB for every image in the repo combined, and git
+ * never forgets a byte.
+ */
 const RENDERS = resolve('video/renders')
+
+/**
+ * Short edge of a rendered clip, in pixels.
+ *
+ * Shorts and TikTok both take 1080×1920 and re-encode on ingest, so uploading 4K just
+ * means they discard the extra: 134MB became 13.1MB at this size with no difference in
+ * what gets published. Aspect is PRESERVED rather than cropped — a landscape clip loses
+ * 68% of its width in a 9:16 crop, and where that crop sits is an editorial decision the
+ * owner makes by hand, not something to automate.
+ *
+ * The full-resolution trim is not kept. It is reproducible byte-for-byte from
+ * `{uuid, in, out}` and the original still in Photos, so the recipe is the durable
+ * artefact and this render is both the deliverable and the fallback if the library entry
+ * ever disappears.
+ */
+const RENDER_SHORT_EDGE = 1080
 
 /** mm:ss for log lines. */
 const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`
@@ -166,6 +196,11 @@ function main(): void {
 
   const framesDir = join(runDir, 'img')
   const added: PageItem[] = []
+  // Video goes straight into media-index.json. It is never written by media:ingest, which
+  // handles stills only — but one index has to describe all of a show's media, or a
+  // workflow asking "what do I have for this night?" sees half of it.
+  const index = loadIndex()
+  const rendered: Array<{ sel: Select; target: string; filename: string; order: number; in: number; out: number }> = []
   /** Frames the owner marked by hand, which need no second judgement. */
   const autoAccepted: Array<{ id: string; from: string }> = []
 
@@ -187,17 +222,32 @@ function main(): void {
     if (sel.marks?.trim) {
       const { in: a, out: b } = sel.marks.trim
       mkdirSync(RENDERS, { recursive: true })
-      const target = join(RENDERS, `${date}-${sel.artistNormalized ?? 'venue'}-${basename(clipFile, extname(clipFile))}-trim.mp4`)
+      // Canonical, matching the stills: <date>-<act>-NN.mp4. It used to carry the clip's
+      // UUID, which was a handle grabbed for uniqueness rather than a name — and a
+      // workflow reading both kinds should not have to learn two conventions.
+      // Count what THIS run has already rendered as well as what the index holds — the
+      // index is not written until the loop ends, so two clips for the same act both saw
+      // "no videos yet", both claimed -01, and the second silently overwrote the first.
+      const order =
+        nextOrderOfKind(index, date, sel.artistNormalized, 'video') +
+        rendered.filter((r) => r.sel.artistNormalized === sel.artistNormalized).length
+      const filename = assetFilename(date, sel.artistNormalized, order, 'mp4')
+      const target = join(RENDERS, filename)
       try {
-        // -c copy would be faster but cuts only on keyframes, which moves the in-point by
-        // up to a couple of seconds — the exact precision the owner just marked by hand.
+        // Scale the SHORT edge to 1080, preserving aspect: portrait becomes 1080x1920 and
+        // is channel-ready; landscape becomes 1920x1080 for the owner to crop by hand.
+        // -c copy would be faster but cuts only on keyframes, moving the in-point by up to
+        // a couple of seconds — the exact precision just marked by hand.
         execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-accurate_seek', '-ss', String(a),
-                                '-i', src, '-t', String(b - a), '-c:v', 'libx264', '-crf', '18',
-                                '-preset', 'medium', '-c:a', 'aac', target],
+                                '-i', src, '-t', String(b - a),
+                                '-vf', `scale='if(gt(iw,ih),-2,${RENDER_SHORT_EDGE})':'if(gt(iw,ih),${RENDER_SHORT_EDGE},-2)'`,
+                                '-c:v', 'libx264', '-crf', '21', '-preset', 'medium',
+                                '-c:a', 'aac', '-b:a', '128k', target],
                      { stdio: ['ignore', 'pipe', 'pipe'] })
         const mb = statSync(target).size / 1e6
         trimFile = target
-        console.log(`    trim ${fmt(a)}–${fmt(b)} → ${target.replace(process.cwd() + '/', '')} (${mb.toFixed(1)} MB)`)
+        rendered.push({ sel, target, filename, order, in: a, out: b })
+        console.log(`    trim ${fmt(a)}–${fmt(b)} → ${filename} (${mb.toFixed(1)} MB)`)
       } catch (err) {
         console.log(`    ⚠ trim failed: ${(err as Error).message.split('\n')[0]}`)
       }
@@ -324,6 +374,57 @@ function main(): void {
       writeFileSync(vPath, JSON.stringify(verdicts, null, 2) + '\n')
       console.log(`  ${n} hand-marked frame(s) accepted automatically — you already chose those moments.`)
     }
+  }
+
+  if (rendered.length > 0) {
+    for (const r of rendered) {
+      // Re-running replaces the entry rather than adding a second one for the same cut.
+      const i = index.assets.findIndex(
+        (a) => a.kind === 'video' && a.date === date && a.render?.uuid === r.sel.uuid &&
+               a.render?.in === r.in && a.render?.out === r.out
+      )
+      let width = 0, height = 0, duration = r.out - r.in
+      try {
+        const probe = execFileSync('ffprobe', ['-v', 'error', '-select_streams', 'v:0',
+          '-show_entries', 'stream=width,height', '-of', 'csv=p=0', r.target], { encoding: 'utf-8' })
+        const [w, h] = probe.trim().split(',').map(Number)
+        width = w || 0; height = h || 0
+      } catch { /* dimensions are descriptive, not load-bearing */ }
+
+      const asset: MediaAsset = {
+        kind: 'video',
+        // Not served: the site never shows video. A url appears only if it is ever
+        // uploaded somewhere a CI job can fetch, and consumers already address by url.
+        url: null,
+        path: r.target.replace(process.cwd() + '/', ''),
+        date,
+        uuid: null,
+        artist: r.sel.artist,
+        artistNormalized: r.sel.artistNormalized,
+        subject: r.sel.artistNormalized ? 'artist' : 'venue',
+        tier: 1,
+        source: 'personal',
+        hero: false,
+        order: r.order,
+        width,
+        height,
+        sourceWidth: width,
+        sourceHeight: height,
+        bytes: statSync(r.target).size,
+        quality: 'original',
+        sourceSha256: '',
+        derivedFrom: null,
+        // The durable artefact. The 134MB full-resolution trim is reproducible from this.
+        render: { uuid: r.sel.uuid, in: r.in, out: r.out },
+        duration,
+        notes: null,
+      }
+      if (i >= 0) index.assets[i] = asset
+      else index.assets.push(asset)
+    }
+    index.generated = new Date().toISOString()
+    saveIndex(index)
+    console.log(`  ${rendered.length} clip(s) recorded in media-index.json`)
   }
 
   if (added.length === 0) {

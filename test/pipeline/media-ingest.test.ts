@@ -26,11 +26,40 @@ import { readExifSummary, exifDateToIso, findMetadataLeaks, EMPTY_EXIF } from '.
 import {
   alreadyIngested,
   assetFilename,
+  nextOrderOfKind,
   nextOrder,
   sortAssets,
   type MediaAsset,
   type MediaIndex,
 } from '../../scripts/media/media-index'
+
+/** A rendered clip: not served, so no url — a path and a render recipe instead. */
+const vidAsset = (over: Partial<MediaAsset>): MediaAsset => ({
+  kind: 'video',
+  url: null,
+  path: 'video/renders/a.mp4',
+  date: '2026-06-04',
+  uuid: null,
+  artist: 'Alison Moyet',
+  artistNormalized: 'alison-moyet',
+  subject: 'artist',
+  tier: 1,
+  source: 'personal',
+  hero: false,
+  order: 1,
+  width: 1080,
+  height: 1920,
+  sourceWidth: 1080,
+  sourceHeight: 1920,
+  bytes: 18_600_000,
+  quality: 'original',
+  sourceSha256: '',
+  derivedFrom: null,
+  render: { uuid: 'clip-uuid', in: 2, out: 38 },
+  duration: 36,
+  notes: null,
+  ...over,
+})
 
 const HOWARD: Concert = {
   date: '2024-08-20',
@@ -278,8 +307,39 @@ describe('committed masters are right-sized', () => {
   })
 })
 
+describe('video in the media index', () => {
+  it('names video the same way as stills, with its own ordinal run', () => {
+    // Clips previously carried the source UUID —
+    // `2026-06-04-alison-moyet-7BF4D2F6-…-trim.mp4` — which was a handle grabbed for
+    // uniqueness, not a name. A workflow reading both kinds should not learn two
+    // conventions.
+    expect(assetFilename('2026-06-04', 'alison-moyet', 1, 'mp4')).toBe('2026-06-04-alison-moyet-01.mp4')
+    expect(assetFilename('2026-06-04', 'alison-moyet', 2, 'mp4')).toBe('2026-06-04-alison-moyet-02.mp4')
+    expect(assetFilename('2026-06-04', null, 1, 'mp4')).toBe('2026-06-04-venue-01.mp4')
+  })
+
+  it('numbers stills and video independently for the same act', () => {
+    // Two clips for one act both claimed -01 and the second overwrote the first, because
+    // the ordinal was read from an index not yet written.
+    const idx: MediaIndex = { version: 1, generated: '', assets: [
+      { ...vidAsset({ order: 1 }) },
+      { ...vidAsset({ order: 2, path: 'video/renders/b.mp4' }) },
+    ] }
+    expect(nextOrderOfKind(idx, '2026-06-04', 'alison-moyet', 'video')).toBe(3)
+    // Stills are a separate run — three videos do not push the first still to -04.
+    expect(nextOrderOfKind(idx, '2026-06-04', 'alison-moyet', 'image')).toBe(1)
+  })
+
+  it('sorts an unserved asset by its path, since it has no url', () => {
+    const v = vidAsset({})
+    expect(() => sortAssets([v])).not.toThrow()
+    expect(sortAssets([v])[0].path).toBe('video/renders/a.mp4')
+  })
+})
+
 describe('the media index', () => {
   const asset = (over: Partial<MediaAsset>): MediaAsset => ({
+    kind: 'image',
     url: '/images/shows/2024-08-20-howard-jones-01.jpg',
     date: '2024-08-20',
     uuid: null,

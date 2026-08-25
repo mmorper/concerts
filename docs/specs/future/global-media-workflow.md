@@ -236,6 +236,35 @@ parsed from the name `extract_frames.sh` already gives its output
 
 ---
 
+## Where video lives — DECIDED 2026-08-25
+
+**The site never shows video.** It exists only to be piped to Shorts and TikTok, so there
+is nothing to serve from a CDN and no reason for `public/videos/` to exist.
+
+Nor could it. Two full-resolution trims from one show are **247MB**, against **13MB** for
+every image in the repo combined, and `.git` is already 324MB. Git never forgets a byte.
+
+| | |
+|---|---|
+| Rendered clip | `video/renders/2026-06-04-alison-moyet-01.mp4` — gitignored |
+| Naming | identical to stills; ordinals run per act AND per kind |
+| Index entry | `media-index.json`, `kind: "video"`, `path` set, `url` null |
+| Durable artefact | `render: {uuid, in, out}` — reproduces the full-quality cut |
+| Render size | short edge 1080, aspect preserved: 134MB → 18.6MB |
+
+**Why keep the channel render at all, rather than pure render-on-demand?** Because it is
+doing double duty: it is what gets uploaded, *and* it is the fallback if the Photos entry
+ever disappears. The recipe alone is only as durable as the library.
+
+**Why not keep the full-resolution trim?** The master never left Photos — the choice was
+never "keep a master or lose one", only which cache to hold. Both channels take 1080×1920
+and re-encode on ingest, so 4K is discarded on arrival. If a future channel wants more,
+re-render from the recipe.
+
+**Landscape is never auto-cropped to 9:16.** It loses 68% of its width, and where the crop
+sits decides whether the performer is in frame. That is an editorial judgement the owner
+makes by hand; the render preserves aspect and leaves it to them.
+
 ## `media:gaps` — coverage as a map
 
 Lists concerts with no personal media, and **what the fallback would be** for each: album

@@ -326,6 +326,7 @@ async function ingestFile(args: {
   const hero = isHeroName(name)
 
   const asset: MediaAsset = {
+    kind: 'image',
     url: `${URL_PREFIX}/${filename}`,
     date,
     uuid: args.uuid ?? null,
@@ -779,6 +780,8 @@ function assertIndex(report: Report): void {
   const problems: string[] = []
   const saved = loadIndex()
   for (const asset of report.taken) {
+    // Only committed stills are asserted here; video is not written by this command.
+    if (asset.kind !== 'image' || !asset.url) continue
     const onDisk = join(SHOWS_DIR, basename(asset.url))
     if (!existsSync(onDisk)) {
       problems.push(`${asset.url} is in the index but not on disk`)

@@ -21,8 +21,22 @@ export const MEDIA_INDEX_PATH = 'public/data/media-index.json'
 export type Tier = 1 | 2 | 3
 
 export interface MediaAsset {
-  /** Site-absolute path. The stable address; everything else may be re-derived. */
-  url: string
+  /**
+   * What this is. One index describes all of a show's media, so a workflow asking "what do
+   * I have for this night?" sees stills and video together instead of only half of it.
+   */
+  kind: 'image' | 'video'
+  /**
+   * Site-absolute path for anything served, null for anything not.
+   *
+   * Video is never served: the site does not show it, and it only ever goes outbound to
+   * Shorts and TikTok. It gets a `path` instead, and a `url` if it is ever uploaded
+   * somewhere a CI job can fetch — at which point consumers need no change, because they
+   * already address by `url`.
+   */
+  url: string | null
+  /** Repo-relative path on disk. Set for anything not committed — currently all video. */
+  path?: string | null
   date: string
   /**
    * The Photos library asset this came from, when it came from one.
@@ -73,8 +87,19 @@ export interface MediaAsset {
    * in place without re-curating anything.
    */
   quality: 'original' | 'preview'
-  /** Set when the still was pulled from a clip — needed to write an honest disclosure. */
+  /** Set when a STILL was pulled from a clip — needed to write an honest disclosure. */
   derivedFrom: { original: string; frame: number } | null
+  /**
+   * How to reproduce a VIDEO asset exactly, from the clip still in Photos.
+   *
+   * This is the durable artefact, not the file. The full-resolution trim is 134MB and is
+   * reproducible from these three numbers, so it is never kept; what is kept is the
+   * channel-sized render (~13MB), which is both what gets uploaded and the fallback if the
+   * library entry ever disappears.
+   */
+  render?: { uuid: string; in: number; out: number } | null
+  /** Seconds. Video only. */
+  duration?: number | null
   /** From `notes.txt`. Carries a different-night disclosure or a caption. */
   notes: string | null
 }
@@ -100,7 +125,7 @@ export function loadIndex(file = resolve(MEDIA_INDEX_PATH)): MediaIndex {
 /** Sorted so a diff shows what changed rather than what moved. */
 export function sortAssets(assets: MediaAsset[]): MediaAsset[] {
   return [...assets].sort(
-    (a, b) => a.date.localeCompare(b.date) || a.url.localeCompare(b.url)
+    (a, b) => a.date.localeCompare(b.date) || (a.url ?? a.path ?? '').localeCompare(b.url ?? b.path ?? '')
   )
 }
 
@@ -137,7 +162,26 @@ export function nextOrder(index: MediaIndex, date: string, artistNormalized: str
   return existing.reduce((max, a) => Math.max(max, a.order), 0) + 1
 }
 
-/** `2024-08-20-howard-jones-03.jpg`, or `2024-08-20-venue-01.jpg` for the night itself. */
-export function assetFilename(date: string, slug: string | null, order: number): string {
-  return `${date}-${slug ?? 'venue'}-${String(order).padStart(2, '0')}.jpg`
+/**
+ * `2024-08-20-howard-jones-03.jpg`, or `2024-08-20-venue-01.jpg` for the night itself.
+ *
+ * Video uses the SAME convention with a different extension. It previously carried the
+ * clip's UUID — `2026-06-04-alison-moyet-7BF4D2F6-…-trim.mp4` — which was a handle grabbed
+ * for uniqueness, not a name. A workflow reading both kinds should not have to learn two
+ * conventions.
+ */
+export function assetFilename(date: string, slug: string | null, order: number, ext = 'jpg'): string {
+  return `${date}-${slug ?? 'venue'}-${String(order).padStart(2, '0')}.${ext}`
+}
+
+/** Ordinals run per act AND per kind, so stills and video number independently. */
+export function nextOrderOfKind(
+  index: MediaIndex,
+  date: string,
+  artistNormalized: string | null,
+  kind: MediaAsset['kind']
+): number {
+  return index.assets
+    .filter((a) => a.date === date && a.artistNormalized === artistNormalized && a.kind === kind)
+    .reduce((max, a) => Math.max(max, a.order), 0) + 1
 }
