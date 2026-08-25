@@ -14,7 +14,8 @@ runs. It is gitignored in full.
 | The osxphotos **binary** | ✅ `bin/.osxphotos-raw` | ❌ too large, and machine-specific |
 | The read-only **guard** | ✅ `bin/osxphotos` — **and tracked in git by a named exception**, CI-tested | — |
 | Probe and frame scripts | ✅ `*.py`, `*.sh` | promoted to `scripts/media/` when they stabilise |
-| **Final selects** | ❌ | ✅ `public/images/shows/` |
+| **Final selects (stills)** | ❌ | ✅ `public/images/shows/` |
+| **Rendered clips** | ❌ | ✅ `video/renders/` — gitignored, but canonically named and indexed |
 | **The mapping** | ❌ | ✅ `public/data/media-index.json` |
 
 A select reaches the repo by being **deliberately exported, EXIF-stripped, and written to

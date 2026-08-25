@@ -1,9 +1,10 @@
 {
   "version": 1,
-  "generated": "2026-08-25T15:26:06.450Z",
+  "generated": "2026-08-25T22:01:08.800Z",
   "assets": [
     {
-      "url": "/images/shows/2026-06-04-alison-moyet-01.jpg",
+      "kind": "image",
+      "url": "/images/shows/2026-06-04-alison-moyet-03.jpg",
       "date": "2026-06-04",
       "uuid": "E2EBAF04-3BE1-4865-A96B-65E9CBD6BE35",
       "artist": "Alison Moyet",
@@ -12,7 +13,7 @@
       "tier": 1,
       "source": "personal",
       "hero": false,
-      "order": 1,
+      "order": 3,
       "quality": "original",
       "width": 1536,
       "height": 2048,
@@ -24,6 +25,32 @@
       "notes": null
     },
     {
+      "kind": "image",
+      "url": "/images/shows/2026-06-04-alison-moyet-04.jpg",
+      "date": "2026-06-04",
+      "uuid": null,
+      "artist": "Alison Moyet",
+      "artistNormalized": "alison-moyet",
+      "subject": "artist",
+      "tier": 1,
+      "source": "personal",
+      "hero": false,
+      "order": 4,
+      "quality": "original",
+      "width": 1152,
+      "height": 2048,
+      "sourceWidth": 2160,
+      "sourceHeight": 3840,
+      "bytes": 208178,
+      "sourceSha256": "7c7497e9913772e03e16ac3d97e13934afbbb6e51bce8a1d3c4ed93c86123a55",
+      "derivedFrom": {
+        "original": "3FE98E35-6A87-459A-A7DA-59A0CA357B02",
+        "frame": 1
+      },
+      "notes": null
+    },
+    {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-soft-cell-01.jpg",
       "date": "2026-06-04",
       "uuid": "A2B71386-75D2-4A1B-8FD8-B56E7DA05D88",
@@ -45,6 +72,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-soft-cell-02.jpg",
       "date": "2026-06-04",
       "uuid": "F46A2F8D-07C8-47EE-9A94-B3A4CF102FF6",
@@ -66,6 +94,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-01.jpg",
       "date": "2026-06-04",
       "uuid": "D4C2AC64-4078-4952-8075-D73EAEA56469",
@@ -87,6 +116,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-02.jpg",
       "date": "2026-06-04",
       "uuid": "6D09A19B-5C85-4AD5-8CA1-35982F57EA2C",
@@ -108,6 +138,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-03.jpg",
       "date": "2026-06-04",
       "uuid": "A15D3E39-73EA-4E1D-A9E9-A3B27668E934",
@@ -129,6 +160,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-04.jpg",
       "date": "2026-06-04",
       "uuid": "48F0D3A3-FA93-4D74-9B34-EB321B0B1B31",
@@ -150,6 +182,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-05.jpg",
       "date": "2026-06-04",
       "uuid": "D6D93D9F-4876-4194-A67C-4226E10357A3",
@@ -171,6 +204,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-06.jpg",
       "date": "2026-06-04",
       "uuid": "4853308A-60A1-45A9-866F-E45FA791C597",
@@ -192,6 +226,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-07.jpg",
       "date": "2026-06-04",
       "uuid": "3CFE68DC-F89D-406E-81F0-C9E59D5CD6EE",
@@ -213,6 +248,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-08.jpg",
       "date": "2026-06-04",
       "uuid": "13A4B8EC-A119-4AF2-8594-74A2857A8B9D",
@@ -234,6 +270,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-09.jpg",
       "date": "2026-06-04",
       "uuid": "DA5D3FE3-3B69-4A26-8E33-7E0ED556C110",
@@ -255,6 +292,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-10.jpg",
       "date": "2026-06-04",
       "uuid": "D0B38282-F2C9-43F9-BE12-AD3A11FA3BB3",
@@ -276,6 +314,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-11.jpg",
       "date": "2026-06-04",
       "uuid": "69B77636-9916-4B92-AF3C-1B537F58411B",
@@ -297,6 +336,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-12.jpg",
       "date": "2026-06-04",
       "uuid": "517FCAF8-1E95-4498-BD39-1829EE07758A",
@@ -318,6 +358,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-13.jpg",
       "date": "2026-06-04",
       "uuid": "355E1C3E-CE43-429E-80B4-F6B84039A971",
@@ -339,6 +380,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-14.jpg",
       "date": "2026-06-04",
       "uuid": "947CF546-6826-4F62-8666-B9CE0DDF507C",
@@ -360,6 +402,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-15.jpg",
       "date": "2026-06-04",
       "uuid": "37B6ADC7-4D88-4A5F-8815-5957761F8A1A",
@@ -381,6 +424,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-16.jpg",
       "date": "2026-06-04",
       "uuid": "EA1EF8D6-E8B5-434E-A0FC-E8A8FCC130C7",
@@ -402,6 +446,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-the-human-league-17.jpg",
       "date": "2026-06-04",
       "uuid": "8596A63A-905D-4B2E-A90B-19A4FF435F09",
@@ -423,6 +468,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-venue-01.jpg",
       "date": "2026-06-04",
       "uuid": "AC810494-F607-41DA-8CD5-B29AD36CC56B",
@@ -444,6 +490,7 @@
       "notes": null
     },
     {
+      "kind": "image",
       "url": "/images/shows/2026-06-04-venue-02.jpg",
       "date": "2026-06-04",
       "uuid": "81A15C17-EA55-442D-AF28-B58F60F5C9B7",
@@ -462,6 +509,64 @@
       "bytes": 567618,
       "sourceSha256": "f082f7879be2dc6d1dc794b2fffa089dc41df54b5e2bf88614a64b67665d3872",
       "derivedFrom": null,
+      "notes": null
+    },
+    {
+      "kind": "video",
+      "url": null,
+      "path": "video/renders/2026-06-04-alison-moyet-01.mp4",
+      "date": "2026-06-04",
+      "uuid": null,
+      "artist": "Alison Moyet",
+      "artistNormalized": "alison-moyet",
+      "subject": "artist",
+      "tier": 1,
+      "source": "personal",
+      "hero": false,
+      "order": 1,
+      "width": 1080,
+      "height": 1920,
+      "sourceWidth": 1080,
+      "sourceHeight": 1920,
+      "bytes": 18613045,
+      "quality": "original",
+      "sourceSha256": "",
+      "derivedFrom": null,
+      "render": {
+        "uuid": "7BF4D2F6-0780-4B30-B5B4-94471B00B95A",
+        "in": 2,
+        "out": 38
+      },
+      "duration": 36,
+      "notes": null
+    },
+    {
+      "kind": "video",
+      "url": null,
+      "path": "video/renders/2026-06-04-alison-moyet-02.mp4",
+      "date": "2026-06-04",
+      "uuid": null,
+      "artist": "Alison Moyet",
+      "artistNormalized": "alison-moyet",
+      "subject": "artist",
+      "tier": 1,
+      "source": "personal",
+      "hero": false,
+      "order": 2,
+      "width": 1920,
+      "height": 1080,
+      "sourceWidth": 1920,
+      "sourceHeight": 1080,
+      "bytes": 26426541,
+      "quality": "original",
+      "sourceSha256": "",
+      "derivedFrom": null,
+      "render": {
+        "uuid": "F1348F2C-2340-431E-AF5C-A8DE436E49A8",
+        "in": 109,
+        "out": 130
+      },
+      "duration": 21,
       "notes": null
     }
   ]
