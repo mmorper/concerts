@@ -145,6 +145,42 @@ but the HEVC decoder is not compiled into its libvips: real iPhone HEICs fail wi
 with `--skip-original-if-edited`: if a photograph was edited in Photos, the EDIT is what
 was seen in the review page and chosen.
 
+**The repo holds a right-sized MASTER, not the original.** 2048px on the long edge clears a
+4:5 card at 1080×1350 and a 9:16 crop at 1080×1920, with headroom for crop safety (#352).
+On the pilot show that is **41.4MB of originals → 8.4MB of masters**; projected across a
+few hundred selects, ~150MB rather than ~760MB. Nothing is lost: the original never leaves
+Photos, and `uuid` + `sourceWidth`/`sourceHeight` in `media-index.json` make re-deriving at
+any size mechanical.
+
+**Why stills are committed at all, when clips are not.** `syndicate.yml` and
+`liner-notes.yml` run on `ubuntu-latest`, on a cron. There is no Photos library on a GitHub
+runner. A still must be reachable by an unattended Linux job; a trimmed clip need not be,
+because video publishing is gated and needs the owner's Mac anyway. That asymmetry is the
+whole reason the two are stored differently.
+
+**A master below the card floor is NOT committed.** 1080×1350 is the bar. A Photos preview
+can be 768×1024, and shipping that means an upscaled or letterboxed post. The select still
+stands; re-running once the original downloads produces a real master in its place.
+
+**A clip never falls back to its poster frame.** A poster frame cannot be judged — that is
+the finding the entire video workflow rests on — so publishing one as a photograph inverts
+it. A clip that did not download is an error pointing at `media:frames`, not a still.
+
+**🔴 A hung Photos.app stalls `--download-missing` silently.** It drives Photos over
+AppleScript, so if Photos stops answering AppleEvents the export blocks forever with no
+output — observed at 15+ minutes and 0.85s of CPU. **Force-quitting Photos to clear that
+leaves `photolibraryd` degraded afterwards** — even plain `osxphotos query` calls slow to a
+crawl until a reboot. Prefer waiting over force-quitting.
+
+**🔴 Measure PROGRESS, never the wall clock.** A wall-clock timeout cannot tell a wedged
+Photos from a macOS permission dialog sitting on an empty desk, and those need opposite
+responses — killing a run because nobody was in the room to click Allow is worse than the
+hang it was meant to catch. `media:ingest` watches for files actually appearing: while they
+do, the fetch has as long as it needs; when they stop, it SAYS so and keeps waiting,
+because the likeliest cause is a prompt only a person can answer. A hard timeout exists
+only behind `--fetch-timeout <minutes>`, for an unattended run. **This applies to any stage
+that waits on Photos.**
+
 **Photos' preview is a usable fallback.** The derivative is 1536×2048 and local even for
 iCloud-only assets — on the pilot show 22 of 23 cleared a 1080×1350 card and a 9:16 crop.
 Record it as `quality: 'preview'` so a later pass can upgrade the file in place.

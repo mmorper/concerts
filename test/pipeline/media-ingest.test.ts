@@ -236,6 +236,48 @@ describe('metadata stripping is asserted, not trusted', () => {
   })
 })
 
+describe('committed masters are right-sized', () => {
+  const MASTER_LONG_EDGE = 2048
+
+  /** Exactly the pipeline ingest runs. */
+  const master = (buf: Buffer) =>
+    sharp(buf, { failOn: 'none' })
+      .rotate()
+      .resize({ width: MASTER_LONG_EDGE, height: MASTER_LONG_EDGE, fit: 'inside', withoutEnlargement: true })
+      .jpeg({ quality: 90, mozjpeg: true })
+      .toBuffer()
+
+  it('downscales a large original to the master size', async () => {
+    // The repo held 5412x7216 files to render 1350px cards. 41.4MB became 8.4MB.
+    const big = await sharp({ create: { width: 4284, height: 5712, channels: 3, background: '#345' } }).jpeg().toBuffer()
+    const out = await sharp(await master(big)).metadata()
+    expect(Math.max(out.width!, out.height!)).toBe(MASTER_LONG_EDGE)
+    expect(out.width! / out.height!).toBeCloseTo(4284 / 5712, 2)
+  })
+
+  it('still clears a 1080x1350 card and a 9:16 crop afterwards', async () => {
+    for (const [w, h] of [[4284, 5712], [5712, 4284], [3024, 4032]]) {
+      const src = await sharp({ create: { width: w, height: h, channels: 3, background: '#345' } }).jpeg().toBuffer()
+      const m = await sharp(await master(src)).metadata()
+      const short = Math.min(m.width!, m.height!)
+      const long = Math.max(m.width!, m.height!)
+      // 4:5 card
+      expect(Math.min(short, Math.round(long * 4 / 5)), `${w}x${h} card`).toBeGreaterThanOrEqual(1080)
+      // 9:16 crop is limited by height
+      expect(Math.round(long * 9 / 16), `${w}x${h} 9:16`).toBeGreaterThanOrEqual(1080)
+    }
+  })
+
+  it('NEVER upscales a source that is already smaller', async () => {
+    // A Photos preview used as a fallback is 1536x2048. Upscaling would produce a file
+    // that only looks bigger, and would hide that the original was never fetched.
+    const preview = await sharp({ create: { width: 1536, height: 2048, channels: 3, background: '#345' } }).jpeg().toBuffer()
+    const out = await sharp(await master(preview)).metadata()
+    expect(out.width).toBe(1536)
+    expect(out.height).toBe(2048)
+  })
+})
+
 describe('the media index', () => {
   const asset = (over: Partial<MediaAsset>): MediaAsset => ({
     url: '/images/shows/2024-08-20-howard-jones-01.jpg',
@@ -251,6 +293,8 @@ describe('the media index', () => {
     quality: 'original',
     width: 100,
     height: 100,
+    sourceWidth: 100,
+    sourceHeight: 100,
     bytes: 1000,
     sourceSha256: 'aaa',
     derivedFrom: null,

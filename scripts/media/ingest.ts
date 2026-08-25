@@ -26,7 +26,7 @@
  *
  * @module scripts/media/ingest
  */
-import { execFileSync } from 'child_process'
+import { spawn } from 'child_process'
 import { createHash } from 'crypto'
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, unlinkSync, writeFileSync } from 'fs'
 import { join, resolve, extname, basename } from 'path'
@@ -61,8 +61,102 @@ const VIDEO_EXT = new Set(['.mov', '.mp4', '.m4v', '.avi', '.hevc'])
 /** Expected at the root of a date folder, and not a mis-filed photograph. */
 const ROOT_ALLOWED = /^(WORKSHEET(\.prev)?\.md|notes\.txt)$/i
 
-/** JPEG quality for committed selects. Renditions (#342) derive from these, so keep them good. */
+/** JPEG quality for committed masters. Renditions (#342) derive from these, so keep them good. */
 const JPEG_QUALITY = 90
+
+/**
+ * Long edge of a committed master, in pixels.
+ *
+ * The repo holds a right-sized MASTER, not the original. 2048px clears everything the
+ * channels actually ask for — a 4:5 card at 1080×1350, a 9:16 crop at 1080×1920 — with
+ * headroom left for crop safety (#352). Committing the original instead means shipping a
+ * 5412×7216 file to render a 1350px card.
+ *
+ * The size difference is what makes the archive viable in git: on the pilot show, 41.4MB
+ * of originals became 8.4MB of masters. Projected across a few hundred eventual selects
+ * that is ~150MB rather than ~760MB.
+ *
+ * NOTHING IS LOST. The original never leaves Photos, and `media-index.json` records the
+ * `uuid`, so any asset can be re-fetched and re-derived at any size. The metadata is the
+ * durable thing; this file is a cache of it that CI can actually reach — the syndication
+ * and liner-notes jobs run on ubuntu-latest, where the Photos library does not exist.
+ */
+const MASTER_LONG_EDGE = 2048
+
+/**
+ * How long the fetch may make NO PROGRESS before it says something.
+ *
+ * Deliberately not a wall clock. A wall-clock timeout cannot tell a wedged Photos from a
+ * macOS permission dialog sitting on screen while nobody is at the desk — and those need
+ * opposite responses. Killing a run because the owner went to make coffee would be worse
+ * than the hang it was meant to catch.
+ *
+ * So: progress is measured by files actually appearing. While they keep appearing, the
+ * fetch has as long as it needs, however slow iCloud is. When they stop, it SAYS so and
+ * keeps waiting — because the most likely cause is a dialog that only a person can answer.
+ */
+const STALL_WARN_MS = 3 * 60 * 1000
+
+/**
+ * Run a command, watching a directory for progress rather than watching the clock.
+ *
+ * Never kills on its own unless `timeoutMs` is set. An interactive run is expected to be
+ * interrupted by the owner if they decide it really is stuck; that is a better judgement
+ * than a timer can make, because only they can see whether a permission prompt is up.
+ */
+function runWatchingProgress(
+  cmd: string,
+  args: string[],
+  watchDir: string,
+  timeoutMs: number
+): Promise<{ ok: boolean; stalled: boolean; stderr: string }> {
+  return new Promise((resolve) => {
+    const child = spawn(cmd, args, { stdio: ['ignore', 'ignore', 'pipe'] })
+    let stderr = ''
+    child.stderr?.on('data', (d) => { stderr += d.toString() })
+
+    const started = Date.now()
+    let lastCount = -1
+    let lastProgress = Date.now()
+    let warned = false
+
+    const poll = setInterval(() => {
+      let count = 0
+      try { count = existsSync(watchDir) ? readdirSync(watchDir).length : 0 } catch { /* mid-write */ }
+      if (count !== lastCount) {
+        lastCount = count
+        lastProgress = Date.now()
+        warned = false
+      } else if (!warned && Date.now() - lastProgress > STALL_WARN_MS) {
+        warned = true
+        console.log('')
+        console.log(`  ⏸  No new files for ${Math.round(STALL_WARN_MS / 60000)} minutes. Still waiting — this is not a failure.`)
+        console.log(`     macOS may be showing a permission prompt. If one is on screen, answer it`)
+        console.log(`     and this continues on its own. Otherwise Photos may be busy with iCloud.`)
+        console.log(`     Ctrl-C is safe: your selects and attributions are already saved.`)
+        console.log('')
+      }
+      if (timeoutMs > 0 && Date.now() - started > timeoutMs) {
+        clearInterval(poll)
+        child.kill('SIGTERM')
+        resolve({ ok: false, stalled: true, stderr })
+      }
+    }, 10_000)
+
+    child.on('close', (code) => {
+      clearInterval(poll)
+      resolve({ ok: code === 0, stalled: false, stderr })
+    })
+    child.on('error', () => {
+      clearInterval(poll)
+      resolve({ ok: false, stalled: false, stderr })
+    })
+  })
+}
+
+/** The 4:5 card. A master that cannot fill it is not publishable, so it is not committed. */
+const CARD_MIN_SHORT = 1080
+const CARD_MIN_LONG = 1350
 
 interface Report {
   taken: MediaAsset[]
@@ -100,14 +194,34 @@ function readNotes(dir: string): string | null {
  * mechanisms — sharp's own view of the result, and a raw byte scan that shares no parser
  * with it.
  */
-async function transcodeAndStrip(source: Buffer): Promise<{ bytes: Buffer; width: number; height: number; leaks: string[] }> {
+async function transcodeAndStrip(
+  source: Buffer
+): Promise<{ bytes: Buffer; width: number; height: number; sourceWidth: number; sourceHeight: number; leaks: string[] }> {
+  // Read the source dimensions before touching it, so the index can record what the
+  // original offers. That answers "is there crop headroom here?" without a round trip to
+  // Photos — which matters for #352, where the answer decides whether a crop is safe.
+  const src = await sharp(source, { failOn: 'none' }).rotate().metadata()
+
   // No .keepMetadata() / .withMetadata(): the default is to drop everything, which is what
   // this pipeline wants. Rotation is applied from the EXIF orientation flag first, because
   // dropping the flag without applying it would silently sideways every portrait photo.
-  const pipeline = sharp(source, { failOn: 'none' }).rotate().jpeg({ quality: JPEG_QUALITY, mozjpeg: true })
+  const pipeline = sharp(source, { failOn: 'none' })
+    .rotate()
+    // `withoutEnlargement` so a source already smaller than the master size — a Photos
+    // preview used as a fallback is 1536×2048 — is committed as it is rather than upscaled
+    // into a file that only looks bigger.
+    .resize({ width: MASTER_LONG_EDGE, height: MASTER_LONG_EDGE, fit: 'inside', withoutEnlargement: true })
+    .jpeg({ quality: JPEG_QUALITY, mozjpeg: true })
   const { data, info } = await pipeline.toBuffer({ resolveWithObject: true })
   const meta = await sharp(data).metadata()
-  return { bytes: data, width: info.width, height: info.height, leaks: findMetadataLeaks(data, meta) }
+  return {
+    bytes: data,
+    width: info.width,
+    height: info.height,
+    sourceWidth: src.width ?? info.width,
+    sourceHeight: src.height ?? info.height,
+    leaks: findMetadataLeaks(data, meta),
+  }
 }
 
 async function ingestFile(args: {
@@ -178,6 +292,20 @@ async function ingestFile(args: {
     return
   }
 
+  const short = Math.min(out.width, out.height)
+  const long = Math.max(out.width, out.height)
+  if (short < CARD_MIN_SHORT || long < CARD_MIN_LONG) {
+    // Not committed. A 768x1024 Photos preview is below the 4:5 card floor, so publishing
+    // it means shipping an upscaled or letterboxed post. The judgement is not lost — the
+    // select still stands, and re-running once the original downloads produces a real
+    // master in its place.
+    report.errors.push(
+      `${rel}: ${out.width}×${out.height} is below the ${CARD_MIN_SHORT}×${CARD_MIN_LONG} card floor — NOT committed.` +
+        (quality === 'preview' ? `\n  This is Photos' preview; the original will clear it. Re-run once it downloads.` : '')
+    )
+    return
+  }
+
   if (out.leaks.length > 0) {
     // Assert, do not trust. A file that still carries metadata is not committed.
     report.errors.push(`${rel}: REFUSED — metadata survived stripping: ${out.leaks.join('; ')}`)
@@ -203,6 +331,8 @@ async function ingestFile(args: {
     quality,
     width: out.width,
     height: out.height,
+    sourceWidth: out.sourceWidth,
+    sourceHeight: out.sourceHeight,
     bytes: out.bytes.length,
     sourceSha256: hash,
     derivedFrom: parseDerivedFrom(name),
@@ -276,8 +406,9 @@ async function ingestFromSelects(args: {
   index: MediaIndex
   report: Report
   dryRun: boolean
+  fetchTimeoutMs: number
 }): Promise<void> {
-  const { date, acts, selects, index, report, dryRun } = args
+  const { date, acts, selects, index, report, dryRun, fetchTimeoutMs } = args
   if (selects.selects.length === 0) return
 
   const stage = join(tmpdir(), `media-ingest-${date}-${process.pid}`)
@@ -296,8 +427,8 @@ async function ingestFromSelects(args: {
 
   let exported = new Map<string, string>()
   if (!dryRun && fromLibrary.length > 0) {
-    try {
-      execFileSync(
+    {
+      const result = await runWatchingProgress(
         GUARD,
         [
           'export', stage,
@@ -323,13 +454,17 @@ async function ingestFromSelects(args: {
           '--no-progress',
           '--update',
         ],
-        { stdio: ['ignore', 'ignore', 'pipe'], maxBuffer: 64 * 1024 * 1024 }
+        stage,
+        fetchTimeoutMs
       )
-    } catch (err) {
-      const e = err as Error & { stderr?: Buffer }
-      report.warnings.push(
-        `Fetching originals failed; falling back to previews.\n    ${e.stderr?.toString().trim().split('\n').slice(-2).join(' ') ?? e.message}`
-      )
+      if (!result.ok) {
+        report.warnings.push(
+          result.stalled
+            ? `Fetch stopped after the --fetch-timeout you set — falling back to previews.\n` +
+              `    Re-run to upgrade them in place; nothing you judged is lost.`
+            : `Fetching originals failed; falling back to previews.\n    ${result.stderr.trim().split('\n').slice(-2).join(' ')}`
+        )
+      }
     }
     // Verify the files, not the exit code.
     for (const name of readdirSync(stage)) {
@@ -355,6 +490,7 @@ async function ingestFromSelects(args: {
     }
 
     const originalName = exported.get(sel.uuid.toUpperCase())
+    const isVideo = /\.(mov|mp4|m4v|avi|hevc)$/i.test(sel.originalFilename)
     const previewPath = join(reviewImg, `${sel.uuid.toUpperCase()}_pv.jpeg`)
     let file: string
     let quality: 'original' | 'preview'
@@ -375,6 +511,16 @@ async function ingestFromSelects(args: {
       // ingestFile reports paths relative to the inbox; a staged fetch has no inbox path,
       // so give it the name the owner recognises.
       staged.set(join(stage, originalName), sel.originalFilename)
+    } else if (isVideo) {
+      // A clip's "preview" is its POSTER FRAME, and a poster frame cannot be judged — that
+      // is the finding the whole video workflow is built around. Falling back to it would
+      // publish an unjudged frame as a photograph. The clip needs `media:frames`, which
+      // downloads it and extracts real frames.
+      report.errors.push(
+        `${sel.originalFilename}: clip not downloaded, and its preview is only a poster frame.\n` +
+          `Run \`npm run media:frames ${date}\` to mine it for stills instead.`
+      )
+      continue
     } else if (existsSync(previewPath)) {
       file = previewPath
       quality = 'preview'
@@ -401,7 +547,7 @@ async function ingestFromSelects(args: {
   }
 }
 
-async function ingestDate(dateDir: string, concerts: Concert[], index: MediaIndex, report: Report, dryRun: boolean): Promise<void> {
+async function ingestDate(dateDir: string, concerts: Concert[], index: MediaIndex, report: Report, dryRun: boolean, fetchTimeoutMs: number): Promise<void> {
   const date = basename(dateDir)
   const hasInbox = existsSync(dateDir)
 
@@ -475,7 +621,7 @@ async function ingestDate(dateDir: string, concerts: Concert[], index: MediaInde
     refuse = crossCheckSelects(selects, arrivals, report)
     // Fetch what the review approved. The inbox below stays for DERIVED files — extracted
     // frames, trimmed clips, crops — which have no UUID and can only arrive as files.
-    await ingestFromSelects({ date, concert, acts, selects, index, report, dryRun })
+    await ingestFromSelects({ date, concert, acts, selects, index, report, dryRun, fetchTimeoutMs })
   }
 
   // PASS TWO — write what survived.
@@ -508,7 +654,11 @@ async function ingestDate(dateDir: string, concerts: Concert[], index: MediaInde
 async function main(): Promise<void> {
   const args = process.argv.slice(2)
   const dryRun = args.includes('--dry-run')
-  const only = args.find((a) => !a.startsWith('-'))
+  // Opt-in only. By default the fetch waits as long as it needs: a permission prompt
+  // waiting on an empty desk is not a failure, and a timer cannot tell the difference.
+  const tIdx = args.indexOf('--fetch-timeout')
+  const fetchTimeoutMs = tIdx >= 0 ? Math.max(1, Number(args[tIdx + 1] || 0)) * 60_000 : 0
+  const only = args.find((a, i) => !a.startsWith('-') && args[i - 1] !== '--fetch-timeout')
 
   if (!existsSync(INBOX) && !existsSync(REVIEW_ROOT)) {
     console.log(`\nNothing to ingest — no review runs and no inbox.`)
@@ -540,7 +690,7 @@ async function main(): Promise<void> {
   console.log(`\nmedia:ingest — ${targets.length} date folder(s)${dryRun ? '  [DRY RUN, nothing is written]' : ''}\n`)
 
   for (const date of targets) {
-    await ingestDate(join(INBOX, date), concerts, index, report, dryRun)
+    await ingestDate(join(INBOX, date), concerts, index, report, dryRun, fetchTimeoutMs)
   }
 
   // Report what was TAKEN and what was SKIPPED — a stage that discards silently is a stage
