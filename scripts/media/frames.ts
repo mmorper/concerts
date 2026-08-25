@@ -28,8 +28,8 @@
  * @module scripts/media/frames
  */
 import { execFileSync } from 'child_process'
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
-import { join, resolve } from 'path'
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'fs'
+import { basename, extname, join, resolve } from 'path'
 import { tmpdir } from 'os'
 import { findShow, loadConcerts, ShowNotFoundError } from './show'
 import { loadSelects } from './selects'
@@ -37,6 +37,11 @@ import { loadSelects } from './selects'
 const REVIEW_ROOT = resolve('concert-photos-audit/review')
 const GUARD = resolve('concert-photos-audit/bin/osxphotos')
 const EXTRACT = resolve('concert-photos-audit/extract_frames.sh')
+/** Trimmed clips land here for manual use — not in the repo, and not in media-index.json. */
+const RENDERS = resolve('video/renders')
+
+/** mm:ss for log lines. */
+const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`
 
 /** Synthetic id for a frame, so the review page and selects need no special case. */
 export const frameId = (clipUuid: string, index: number) => `frame:${clipUuid}:${index}`
@@ -168,17 +173,64 @@ function main(): void {
       console.log(`  ⚠ ${sel.originalFilename}: did not download — skipped`)
       continue
     }
-    const keep = framesToKeep(item.duration ?? null)
     const out = join(stage, `frames-${sel.uuid}`)
-    console.log(`  ${sel.originalFilename} → extracting ${keep} frames…`)
-    try {
-      execFileSync('sh', [EXTRACT, join(stage, clipFile), out, String(keep)], {
-        stdio: ['ignore', 'pipe', 'pipe'],
-        maxBuffer: 32 * 1024 * 1024,
+    const marked = sel.marks?.frames ?? []
+    const src = join(stage, clipFile)
+
+    if (marked.length > 0) {
+      // THE OWNER'S MARKS WIN. They watched the clip and read the time off the Photos
+      // scrubber; the algorithm only knows which frame is sharpest. Judged against the
+      // three it picked from IMG_5739.MOV, the owner could pick better moments by hand,
+      // which is the whole reason this path exists.
+      mkdirSync(out, { recursive: true })
+      console.log(`  ${sel.originalFilename} → grabbing ${marked.length} marked frame(s)…`)
+      marked.forEach((t) => {
+        // -ss before -i seeks fast; -accurate_seek keeps it on the right frame anyway.
+        // Named the way extract_frames.sh names its output so `parseDerivedFrom` reads the
+        // provenance without a second convention to learn.
+        const name = `${basename(clipFile, extname(clipFile))}__f${String(Math.round(t)).padStart(4, '0')}__lap0.jpg`
+        try {
+          execFileSync('ffmpeg', ['-loglevel', 'error', '-accurate_seek', '-ss', String(t), '-i', src,
+                                  '-frames:v', '1', '-q:v', '2', join(out, name)],
+                       { stdio: ['ignore', 'pipe', 'pipe'] })
+        } catch (err) {
+          console.log(`    ⚠ ${fmt(t)}: ${(err as Error).message.split('\n')[0]}`)
+        }
       })
-    } catch (err) {
-      console.log(`  ⚠ ${sel.originalFilename}: extraction failed — ${(err as Error).message.split('\n')[0]}`)
-      continue
+    } else {
+      const keep = framesToKeep(item.duration ?? null)
+      console.log(`  ${sel.originalFilename} → no marks; extracting ${keep} frames automatically…`)
+      try {
+        execFileSync('sh', [EXTRACT, src, out, String(keep)], {
+          stdio: ['ignore', 'pipe', 'pipe'],
+          maxBuffer: 32 * 1024 * 1024,
+        })
+      } catch (err) {
+        console.log(`  ⚠ ${sel.originalFilename}: extraction failed — ${(err as Error).message.split('\n')[0]}`)
+        continue
+      }
+    }
+
+    // A trim renders to video/renders/ for MANUAL use. Nothing in the publishing pipeline
+    // consumes a clip yet — #349/#350 are gated on #100 — so it is deliberately not
+    // pretended into media-index.json. The marks are the durable record; the file is
+    // reproducible from {uuid, in, out} at any time.
+    if (sel.marks?.trim) {
+      const { in: a, out: b } = sel.marks.trim
+      mkdirSync(RENDERS, { recursive: true })
+      const target = join(RENDERS, `${date}-${sel.artistNormalized ?? 'venue'}-${basename(clipFile, extname(clipFile))}-trim.mp4`)
+      try {
+        // -c copy would be faster but cuts only on keyframes, which moves the in-point by
+        // up to a couple of seconds — the exact precision the owner just marked by hand.
+        execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-accurate_seek', '-ss', String(a),
+                                '-i', src, '-t', String(b - a), '-c:v', 'libx264', '-crf', '18',
+                                '-preset', 'medium', '-c:a', 'aac', target],
+                     { stdio: ['ignore', 'pipe', 'pipe'] })
+        const mb = statSync(target).size / 1e6
+        console.log(`    trim ${fmt(a)}–${fmt(b)} → ${target.replace(process.cwd() + '/', '')} (${mb.toFixed(1)} MB)`)
+      } catch (err) {
+        console.log(`    ⚠ trim failed: ${(err as Error).message.split('\n')[0]}`)
+      }
     }
 
     // Verify the files, not the exit code.

@@ -282,6 +282,21 @@ each — fetching them all is **22.5GB**. `media:frames` downloads only clips th
 in the review, extracts, and deletes the clips afterwards. For a clip, "usable" in the
 review page means *worth mining for frames*, not *worth publishing*; the page says so.
 
+**The owner marks the moment; the algorithm is the fallback.** Photos shows a readable
+elapsed time on the scrubber (`00:09` / `−00:31`), so marking is just: watch in Photos,
+read the number, type it into the review page. Judged against the frames `media:frames`
+picked automatically, hand-marked moments were better — which is what settled it. Marks
+win when present; when a clip carries none, the automatic extraction still runs, so
+nothing regresses for clips nobody wants to mark.
+
+**A trimmed clip renders to `video/renders/`, NOT to the repo or `media-index.json`.**
+Nothing in the publishing pipeline consumes a clip yet (#349/#350 gated on #100), so
+pretending one into the index would be inventing a consumer. `{uuid, in, out}` reproduces
+it exactly, so **the marks are the durable artefact and the file is a cache** — 13 seconds
+of 4K is 54MB, which belongs nowhere near git. Rendered with `libx264 -crf 18`, not
+`-c copy`: stream-copy cuts only on keyframes and would move the in-point by up to a
+couple of seconds, losing the precision the owner just marked by hand.
+
 **Frame extraction is PROMISING, on a sample of six.** Extracted frames scored an 83% keep
 rate judged blind against real stills — but that is **5 of 6 frames, from 2 clips**, inside
 a 53-asset review. It is evidence that mining clips for stills is worth doing at all. It is

@@ -95,6 +95,26 @@ describe('turning verdicts into selects', () => {
     expect(p.selects[0].artistNormalized).toBe('soft-cell')
   })
 
+  it('carries the owner`s timecode marks onto the select', () => {
+    // The owner reads the time off the Photos scrubber and types it in. These beat the
+    // algorithm deliberately: judged against the frames media:frames picked automatically,
+    // hand-marked moments were better.
+    const f = build({ u1: { verdict: 'keep', subject: 'performer', artist: 'Alison Moyet', frames: [23.5, 9], trim: { in: 8, out: 21 } } })
+    expect(f.selects[0].marks).toEqual({ frames: [9, 23.5], trim: { in: 8, out: 21 } })
+  })
+
+  it('leaves marks null when none were made, so the algorithm still runs', () => {
+    const f = build({ u1: { verdict: 'keep', subject: 'performer', artist: 'Alison Moyet' } })
+    expect(f.selects[0].marks).toBeNull()
+  })
+
+  it('keeps a trim even when no frames were marked, and vice versa', () => {
+    const t = build({ u1: { verdict: 'keep', subject: 'performer', artist: 'Alison Moyet', trim: { in: 8, out: 21 } } })
+    expect(t.selects[0].marks).toEqual({ frames: [], trim: { in: 8, out: 21 } })
+    const g = build({ u2: { verdict: 'keep', subject: 'performer', artist: 'Soft Cell', frames: [4] } })
+    expect(g.selects[0].marks).toEqual({ frames: [4], trim: null })
+  })
+
   it('drops rejects entirely', () => {
     const f = build({ u1: { verdict: 'reject' }, u2: { verdict: 'keep', subject: 'performer', artist: 'Soft Cell' } })
     expect(f.selects.map((s) => s.uuid)).toEqual(['u2'])

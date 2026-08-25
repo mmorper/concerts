@@ -131,6 +131,26 @@
         border:1px solid var(--line);background:#1a1a20;color:var(--ink);cursor:pointer;
         font-size:12px;font-weight:600">▶ Open in Photos</button>
     </div>
+    <div class="sect" id="lb-marksect" style="display:none">Marks — read the time off Photos</div>
+    <div id="lb-marks" style="display:none">
+      <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
+        <span style="color:var(--dim);font-size:11px;width:52px">frame</span>
+        <input id="mk-frame" placeholder="0:09" style="flex:1;min-width:0;background:#1a1a20;color:var(--ink);
+          border:1px solid var(--line);border-radius:5px;padding:6px 8px;font-size:12px">
+        <button id="mk-add" style="padding:6px 10px;border-radius:5px;border:1px solid var(--line);
+          background:#1a1a20;color:var(--ink);cursor:pointer;font-size:11px">add</button>
+      </div>
+      <div id="mk-list" style="font-size:11px;color:var(--dim);margin-bottom:8px"></div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span style="color:var(--dim);font-size:11px;width:52px">trim</span>
+        <input id="mk-in" placeholder="in" style="flex:1;min-width:0;background:#1a1a20;color:var(--ink);
+          border:1px solid var(--line);border-radius:5px;padding:6px 8px;font-size:12px">
+        <input id="mk-out" placeholder="out" style="flex:1;min-width:0;background:#1a1a20;color:var(--ink);
+          border:1px solid var(--line);border-radius:5px;padding:6px 8px;font-size:12px">
+      </div>
+      <div class="note" style="margin-top:8px">Scrub in Photos (<b>O</b>), read the elapsed time, type it here.
+        Frames become stills. A trim renders a clip for manual use — nothing publishes it yet.</div>
+    </div>
     <div class="sect" id="lb-verdictlabel">Verdict — is this technically usable?</div>
     <div class="verdict">
       <button class="k" id="v-keep">1 · Usable</button>
@@ -335,6 +355,7 @@ function fillLB(){
     ? 'Verdict — worth MINING for frames?'
     : 'Verdict — is this technically usable?';
   $('#lb-open').textContent = it.media === 'video' ? '▶ Watch in Photos' : '▶ Open in Photos';
+  renderMarks();
   $('#v-keep').classList.toggle('on', v.verdict==='keep');
   $('#v-rej').classList.toggle('on', v.verdict==='reject');
   document.querySelectorAll('#lb-subj button').forEach(b=>b.classList.toggle('on', b.dataset.s===v.subject));
@@ -374,6 +395,58 @@ function setSubject(s){
   cur.subject = cur.subject===s ? null : s;
   V[it.uuid] = cur; post('/verdict', {uuid:it.uuid, ...cur}); paint();
 }
+/* Marks live on the verdict record, so they persist per keystroke like everything else and
+   an interrupted session loses nothing. */
+function saveMarks(patch){
+  const it = ITEMS[cursor], cur = V[it.uuid] || {};
+  if (cur.verdict !== 'keep') return toast('mark keepers only');
+  hist.push({uuid: it.uuid, prev: JSON.parse(JSON.stringify(cur))});
+  Object.assign(cur, patch);
+  if (Array.isArray(cur.frames) && !cur.frames.length) delete cur.frames;
+  if (cur.trim && (cur.trim.in == null || cur.trim.out == null)) delete cur.trim;
+  V[it.uuid] = cur; post('/verdict', {uuid: it.uuid, ...cur}); paint(); renderMarks();
+}
+
+function renderMarks(){
+  const it = ITEMS[cursor], v = V[it.uuid] || {};
+  const isVideo = it.media === 'video';
+  $('#lb-marksect').style.display = isVideo ? '' : 'none';
+  $('#lb-marks').style.display = isVideo ? '' : 'none';
+  if (!isVideo) return;
+  const frames = v.frames || [];
+  $('#mk-list').innerHTML = frames.length
+    ? frames.map((f, i) => `<span style="display:inline-block;background:#1a1a20;border:1px solid var(--line);
+        border-radius:4px;padding:2px 6px;margin:0 4px 4px 0">${fmtTimecode(f)}
+        <b data-rm="${i}" style="cursor:pointer;color:var(--reject)">×</b></span>`).join('')
+    : '<span style="opacity:.6">no frames marked — media:frames will pick them automatically</span>';
+  $('#mk-list').querySelectorAll('[data-rm]').forEach(b => b.onclick = () => {
+    const next = (V[it.uuid].frames || []).slice(); next.splice(+b.dataset.rm, 1);
+    saveMarks({frames: next});
+  });
+  $('#mk-in').value = v.trim ? fmtTimecode(v.trim.in) : '';
+  $('#mk-out').value = v.trim ? fmtTimecode(v.trim.out) : '';
+}
+
+function addFrameMark(){
+  const secs = parseTimecode($('#mk-frame').value);
+  if (secs == null) return toast('could not read that time — try 0:09');
+  const it = ITEMS[cursor], cur = V[it.uuid] || {};
+  if (it.duration && secs > it.duration) return toast(`clip is only ${fmtTimecode(it.duration)} long`);
+  const frames = [...(cur.frames || []), secs].sort((a, b) => a - b);
+  $('#mk-frame').value = '';
+  saveMarks({frames});
+}
+
+function commitTrim(){
+  const a = parseTimecode($('#mk-in').value), b = parseTimecode($('#mk-out').value);
+  if ($('#mk-in').value.trim() === '' && $('#mk-out').value.trim() === '') return saveMarks({trim: null});
+  if (a == null || b == null) return toast('need both in and out — try 0:08 and 0:21');
+  if (b <= a) return toast('out must be after in');
+  const it = ITEMS[cursor];
+  if (it.duration && b > it.duration) return toast(`clip is only ${fmtTimecode(it.duration)} long`);
+  saveMarks({trim: {in: a, out: b}});
+}
+
 function undo(){
   const h = hist.pop(); if (!h) return toast('nothing to undo');
   V[h.uuid] = h.prev; post('/verdict', {uuid:h.uuid, ...h.prev});
@@ -420,9 +493,39 @@ document.querySelectorAll('.filters .f').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.filters .f').forEach(x=>x.classList.toggle('on', x===b));
   paint(); applyVisibility();
 });
+/* Parse a time the way Photos shows it on the scrubber: "0:09", "00:09", "1:23", "1:23.5".
+   Bare seconds ("9", "83.5") are accepted too, because that is what someone types when the
+   clip is short. Returns null for anything unparseable, so a typo shows as a rejected
+   field rather than silently becoming zero — which would grab the first frame of the clip
+   and look like it worked. */
+function parseTimecode(raw){
+  const t = String(raw || '').trim();
+  if (!t) return null;
+  let m = /^(\d+):([0-5]?\d(?:\.\d+)?)$/.exec(t);
+  if (m) return (+m[1]) * 60 + (+m[2]);
+  m = /^(\d+):([0-5]\d):([0-5]?\d(?:\.\d+)?)$/.exec(t);
+  if (m) return (+m[1]) * 3600 + (+m[2]) * 60 + (+m[3]);
+  m = /^\d+(\.\d+)?$/.exec(t);
+  if (m) return +t;
+  return null;
+}
+const fmtTimecode = s => `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}` +
+  (s % 1 ? String(s % 1).slice(1, 4) : '');
+
 /* Video cannot be judged from a poster frame, so the page does not pretend to: it hands
    you to Photos, which does playback and scrubbing properly. The server opens the deep
    link so the browser is never asked to hand a custom scheme to the OS. */
+$('#mk-add').onclick = addFrameMark;
+$('#mk-frame').onkeydown = e => { if (e.key === 'Enter') { e.stopPropagation(); addFrameMark(); } };
+for (const id of ['#mk-in', '#mk-out']) {
+  $(id).onchange = commitTrim;
+  $(id).onkeydown = e => { if (e.key === 'Enter') { e.stopPropagation(); commitTrim(); } };
+}
+/* The shortcut keys must not fire while a timecode is being typed — otherwise "1" sets a
+   verdict and "0" rejects the asset mid-entry. */
+for (const id of ['#mk-frame', '#mk-in', '#mk-out']) {
+  $(id).addEventListener('keydown', e => e.stopPropagation());
+}
 $('#lb-open').onclick = ()=>{
   const it = ITEMS[cursor];
   if (String(it.uuid).startsWith('frame:')) return toast('extracted frame — not a library item');
