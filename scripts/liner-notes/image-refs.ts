@@ -40,8 +40,24 @@ export function coverArtUrl(mbid: string): string {
   return `https://coverartarchive.org/release-group/${mbid}/front-500.jpg`;
 }
 
+/** One published asset, as `media-index.json` records it. */
+export interface MediaIndexAsset {
+  kind: "image" | "video";
+  url: string | null;
+  date: string;
+  artistNormalized: string | null;
+  hero?: boolean;
+  order: number;
+}
+
 export interface ImageSources {
   artistsMetadata: Record<string, { name?: string; image?: string }>;
+  /**
+   * The archive's own photography (#340). Optional: absent → `getShowImageUrl` returns
+   * undefined and every post falls back exactly as it did before, which is what keeps this
+   * safe to land before most shows have any media.
+   */
+  mediaIndex?: { assets: MediaIndexAsset[] };
   artistsTopTracks: Record<
     string,
     { tracks: Array<{ albumName?: string; albumArt?: string }> }
@@ -139,6 +155,39 @@ export function getAlbumArt(
 }
 
 /**
+ * The best published photograph of an act, or undefined when there is none.
+ *
+ * REF IS THE ARTIST, NOT THE FILE. Every other source here re-resolves a durable key on
+ * every run rather than trusting a stored URL, and this follows that: the post says "a
+ * photograph of Howard Jones" and the pipeline picks the best one currently published. Add
+ * a better frame later and the post improves without being touched.
+ *
+ * Preference order, and each step is a decision the owner already made:
+ *   1. the HERO — they pressed H on the frame that should lead this act
+ *   2. failing that, the lowest ordinal — `-01` is the best frame of the act by rank
+ *   3. failing that, the earliest date, so the choice is stable rather than incidental
+ *
+ * STILLS ONLY. A render has `url: null` — video is never served from this repo — and a post
+ * needs something fetchable.
+ */
+export function getShowImageUrl(
+  artistNormalized: string,
+  sources: ImageSources
+): string | undefined {
+  const assets = (sources.mediaIndex?.assets ?? []).filter(
+    (a) => a.kind === "image" && a.url && a.artistNormalized === artistNormalized
+  );
+  if (assets.length === 0) return undefined;
+  const best = assets.sort(
+    (a, b) =>
+      Number(Boolean(b.hero)) - Number(Boolean(a.hero)) ||
+      a.order - b.order ||
+      a.date.localeCompare(b.date)
+  )[0];
+  return best.url ?? undefined;
+}
+
+/**
  * Resolve a post image's current URL from its reference.
  *
  * Returns undefined when the reference cannot be resolved, which callers should
@@ -155,6 +204,8 @@ export function resolveImageUrl(
   switch (source) {
     case "venue":
       return getVenueImageUrl(ref, sources);
+    case "show":
+      return getShowImageUrl(ref, sources);
     case "artist":
       return sources.artistsMetadata[ref]?.image;
     case "album": {
@@ -182,6 +233,10 @@ export function inferRef(
       (v) => getVenueImageUrl(v, sources) === image.url
     );
     return match ?? post.venues[0];
+  }
+  if (image.source === "show") {
+    const match = post.artists.find((a) => getShowImageUrl(a, sources) === image.url);
+    return match ?? post.artists[0];
   }
   if (image.source === "artist") {
     const match = post.artists.find(

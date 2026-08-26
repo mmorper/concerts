@@ -15,8 +15,10 @@ import { MIN_SCORE } from "./score.ts";
 import {
   PLACEHOLDER_IMAGE_URL,
   getAlbumArt,
+  getShowImageUrl,
   getVenueImageUrl,
   upsizeAppleMusicUrl,
+  type ImageSources,
 } from "./image-refs.ts";
 import { foldSongTitle, songAlbumKey, songIndexKeys } from "../utils/song-title.ts";
 import { normalizeArtistName } from "../../src/utils/normalize.js";
@@ -33,6 +35,8 @@ import type {
 
 export interface CurateOptions {
   artistsMetadata: Record<string, { name?: string; image?: string; bio?: string; genres?: string[] }>;
+  /** The archive's own photography (#340). Absent → posts resolve exactly as before. */
+  mediaIndex?: ImageSources["mediaIndex"];
   artistsTopTracks: Record<string, {
     name?: string;
     tracks: Array<{ name: string; albumName?: string; albumArt?: string; previewUrl?: string; streamingUrl?: string; durationMs?: number }>;
@@ -399,6 +403,24 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
         source: "album",
         ref: primaryArtist,
         albumName: track.albumName,
+      };
+    }
+  }
+
+  /* OUR OWN PHOTOGRAPH BEATS A PRESS IMAGE, which is the imagery rubric applied rather
+     than restated: tier 1 is the archive's photography, tier 2 is a third-party artist or
+     venue image. A frame the owner took at the show is the more honest illustration of a
+     post about that show, and it is the only image here that cannot be revoked by someone
+     else. Falls through silently when there is no photograph of this act — which is most
+     acts, most of the time. */
+  if (primaryArtist) {
+    const url = getShowImageUrl(primaryArtist, options);
+    if (url) {
+      return {
+        url,
+        alt: displayName(primaryArtist, options.artistsMetadata),
+        source: "show",
+        ref: primaryArtist,
       };
     }
   }
