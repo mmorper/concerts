@@ -88,3 +88,29 @@ describe('resolveImageUrl for a show image', () => {
     expect(resolveImageUrl({ source: 'show', ref: 'howard-jones' }, after)).toBe('/images/shows/hj-03.jpg')
   })
 })
+
+describe('loadBackground with a repo-local path', () => {
+  it('reads a committed file instead of trying to fetch it', async () => {
+    // THE BUG A MOCK CAUGHT. Until #340 every post image was a third-party URL, so
+    // loadBackground only spoke http. A site-relative `/images/shows/…` fell to the
+    // not-a-URL branch and returned a SOLID GROUND — a blank card with usedFallback: true,
+    // which per that flag's contract means syndication must refuse the post. Wiring show
+    // photos in without this would have made exactly the posts that gained a real
+    // photograph publish worse, or not at all.
+    const { loadBackground } = await import('../../scripts/liner-notes/og-image')
+    const real = await loadBackground('/images/shows/2024-08-20-howard-jones-03.jpg')
+    expect(real.usedFallback).toBe(false)
+  })
+
+  it('still falls back when a local path does not exist', async () => {
+    const { loadBackground } = await import('../../scripts/liner-notes/og-image')
+    const missing = await loadBackground('/images/shows/does-not-exist.jpg')
+    expect(missing.usedFallback).toBe(true)
+  })
+
+  it('still refuses a bare string that is neither a url nor a path', async () => {
+    const { loadBackground } = await import('../../scripts/liner-notes/og-image')
+    expect((await loadBackground('images/shows/no-leading-slash.jpg')).usedFallback).toBe(true)
+    expect((await loadBackground(undefined)).usedFallback).toBe(true)
+  })
+})
