@@ -2,9 +2,16 @@
  * `npm run media:frames <YYYY-MM-DD>` — mine the clips you kept for stills.
  *
  * Video's place in this project is settled: at tier 1 a clip is not something you publish,
- * it is a SOURCE OF STILLS. Extracted frames scored an 83% keep rate judged blind — the
- * best of any category, better than native stills. Video as video is tier 3 (Shorts,
- * TikTok) and gated elsewhere.
+ * it is a SOURCE OF STILLS. Video as video is tier 3 (Shorts, TikTok) and gated elsewhere.
+ *
+ * WHICH stills is settled too, and not in this command's favour: hand-marking wins. Judged
+ * beside a frame the owner marked from the same show, 0 of 7 algorithmic picks survived
+ * (2026-06-04, the owner). The old "83% keep rate" was 5 of 6 judged BLIND, with nothing
+ * better on the page to lose to — do not quote it. The mechanism is not tunable: this
+ * command scores frames by Laplacian sharpness, motion blurs frames, so it prefers the
+ * stillest stretch of a clip while the frames worth keeping are the ones with motion in
+ * them. So marks are the path (#395/#399) and automatic extraction is the FALLBACK for a
+ * kept clip that carries none. Treat its output as rejected until judged.
  *
  * THE RULE THAT SHAPES THIS COMMAND: never download a clip you have not decided to mine.
  * The archive holds 150 clips across 36 shows; at ~150MB each, fetching them all is 22.5GB.
@@ -21,9 +28,12 @@
  *   5. media:review    judge the frames as stills, then --finish.
  *   6. media:ingest    they land as tier-1 stills carrying `derivedFrom`.
  *
- * Extraction itself is the validated tooling from #348: sample ~1 frame/second, score each
- * by Laplacian variance, and enforce a MINIMUM GAP between picks. Top-N by sharpness
- * returns adjacent frames of the same moment — the burst problem, manufactured.
+ * Extraction itself is the tooling from #348: sample ~1 frame/second, score each by
+ * Laplacian variance, and enforce a MINIMUM GAP between picks. Top-N by sharpness returns
+ * adjacent frames of the same moment — the burst problem, manufactured. The gap rule works
+ * and is not what failed: measured RMSE between picks from one clip is 0.18–0.34 against a
+ * 0.33 cross-clip control, so they are different instants. They are just interchangeable
+ * ones. Diversity was never the failure; subject was.
  *
  * @module scripts/media/frames
  */

@@ -219,10 +219,12 @@ export function renderWorksheet(input: WorksheetInput): string {
     )
     lines.push('')
     lines.push(
-      '**Frame extraction is validated** — extracted frames scored an 83% keep rate judged ' +
-        'blind, the best of any category including native stills. A clip that is dull to ' +
-        'watch can still hold the best still of the night. Export frames from Photos, or ' +
-        'trim in Photos and drop the result in.'
+      '**Watch these, and mark the moment by hand.** A clip that is dull to watch can ' +
+        'still hold the best still of the night — but only you can find it. Algorithmic ' +
+        'picking was retired 2026-08-25: it scores frames by sharpness, motion blurs ' +
+        'frames, so it reliably picks the stillest and dullest instant of a clip. Judged ' +
+        'beside a hand-marked frame, 0 of 7 auto picks survived. Scrub in Photos, read the ' +
+        'time off the scrubber, and enter it as a frame mark in the review page.'
     )
     lines.push('')
     lines.push(
