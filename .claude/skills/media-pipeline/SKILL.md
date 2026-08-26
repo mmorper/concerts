@@ -351,9 +351,10 @@ lost the link to the clip.
 - Cut with `libx264`, never `-c copy`: stream-copy cuts only on keyframes and would move
   the in-point by up to a couple of seconds, losing the precision just marked by hand.
 
-**🔴 ALGORITHMIC FRAME PICKING IS DEAD. Hand-marking is the pipeline.** Settled
-2026-08-25 by the owner, on the 2026-06-04 review. Do not re-open it, and do not quote the
-old 83%.
+**Hand-marking FIRST, automatic picking as a real fallback.** Revised 2026-08-26 after a
+second show. Do not quote the old 83%, and do not quote the 0-for-7 either — I wrote
+"algorithmic frame picking is dead" here on one show's evidence and the next show
+contradicted it.
 
 The tally, with denominators:
 
@@ -361,7 +362,12 @@ The tally, with denominators:
 |---|---|---|
 | 2026-08-23 uxtest | 6 auto frames, 2 clips, judged **blind** | 5 of 6 |
 | 2026-06-04 review | 7 auto frames, 3 clips, judged **beside a hand-marked frame** | **0 of 7** |
-| 2026-06-04 review | 1 hand-marked frame | **1 of 1** — shipped as `2026-06-04-alison-moyet-04.jpg` |
+| 2026-08-20 review | 7 auto frames, 3 clips, judged **beside hand-marked frames** | **4 of 7** |
+| — | hand-marked frames, both shows | **3 of 3** |
+
+**An automatic pick is the hero of 2024-08-20.** The owner marked
+`2024-08-20-howard-jones-03.jpg` — frame 8 of a clip nobody marked — as the lead frame for
+the headliner. Whatever else is true, the algorithm can reach a frame worth publishing.
 
 Two things this establishes:
 
@@ -370,23 +376,27 @@ frame reads as acceptable. Put it next to the moment the owner chose from the sa
 it does not survive. The 83% was never a keep rate for *good* frames — it was a keep rate
 for *unobjectionable* ones, and the review page had nothing better on it to lose to.
 
-**Laplacian sharpness is anti-correlated with the moment.** This is the mechanism, and it is
-why tuning will not rescue the approach. Motion blurs frames, so scoring by sharpness
-systematically prefers the stillest stretch of a clip — and the frames worth keeping are the
-ones with motion in them. The hand-marked keeper is Moyet mid-gesture, arm raised. The
-algorithm cannot reach that frame; it is scored down for the exact property that makes it
-worth having.
+**Sharpness is biased against motion, and that is a bias rather than a wall.** Motion blurs
+frames, so scoring by sharpness prefers the stillest stretch of a clip, and a hand mark can
+reach a moment the ranking pushes down — Moyet mid-gesture, arm raised, was exactly that.
+But "biased against" is not "cannot reach": on the very next show, four of seven automatic
+picks were kept and one became a hero. I originally wrote this as "cannot reach … tuning
+will not rescue the approach", which was a mechanism invented to explain a single 0-for-7
+and then over-claimed from it.
 
 The minimum-gap rule is *not* the problem and is working as designed — the picks are not
 duplicates. Measured RMSE within a clip is 0.18–0.34 against a 0.33 cross-clip control, so
 they are genuinely different instants. They are just *interchangeable*: different instants
 of the same uneventful stretch. Diversity was never the failure; subject was.
 
-Consequence for the 36 shows of clips still unmined: mining is still worth doing — the
-hand-marked frame is a tier-1 keeper that existed nowhere else. Mine by **watching the clip
-in Photos and marking the moment** (#395/#399), never by extracting and triaging. Auto
-extraction survives only as the fallback when a kept clip carries no marks, and its output
-should be assumed rejected until judged.
+**MINING IS THE POINT, whichever way the frames are chosen.** 2024-08-20 had ONE native
+photograph and 24 clips; five of its seven published stills came out of video. Without
+mining that night publishes a single frame.
+
+Marking still wins on EFFICIENCY, which is the honest case for it: 3 of 3 hand-marked frames
+were kept, with no triage pass at all, against 11 of 21 automatic picks that all had to be
+judged. Mark what you care about; let the fallback cover the clips you did not get to, and
+judge its output rather than trusting it.
 
 ---
 

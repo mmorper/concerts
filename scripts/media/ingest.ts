@@ -279,7 +279,32 @@ async function ingestFile(args: {
 
   const seen = alreadyIngested(index, date, artistNormalized, hash)
   if (seen) {
-    report.skipped.push({ path: rel, reason: `already ingested as ${seen.url}` })
+    /* SKIPPING THE FILE MUST NOT MEAN SKIPPING THE DECISION.
+       An asset already in the index does not need re-writing — same bytes, same hash — but
+       the owner's judgement about it can still have changed since. Hero is the case that
+       bit: Haircut 100's hero was ingested the day before hero marking existed, so the
+       re-run skipped it and the mark never landed. Two of three heroes were lost that way,
+       silently, on 2024-08-20.
+
+       So mutable judgements are reconciled here even when the bytes are not. Reported, not
+       quiet, because a hero moving is exactly the kind of change worth seeing. */
+    const wanted = args.hero ?? isHeroName(name)
+    if (wanted !== seen.hero) {
+      if (wanted) {
+        for (const prior of assetsFor(index, date, artistNormalized)) {
+          if (prior.hero && prior !== seen) {
+            prior.hero = false
+            report.warnings.push(`${rel}: takes over as hero for ${act?.name ?? 'the venue'} — ${prior.url} demoted.`)
+          }
+        }
+      }
+      seen.hero = wanted
+      report.warnings.push(
+        `${rel}: already ingested as ${seen.url}, ${wanted ? 'now marked hero' : 'no longer hero'}.`
+      )
+    } else {
+      report.skipped.push({ path: rel, reason: `already ingested as ${seen.url}` })
+    }
     return
   }
 

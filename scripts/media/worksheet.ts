@@ -220,11 +220,12 @@ export function renderWorksheet(input: WorksheetInput): string {
     lines.push('')
     lines.push(
       '**Watch these, and mark the moment by hand.** A clip that is dull to watch can ' +
-        'still hold the best still of the night — but only you can find it. Algorithmic ' +
-        'picking was retired 2026-08-25: it scores frames by sharpness, motion blurs ' +
-        'frames, so it reliably picks the stillest and dullest instant of a clip. Judged ' +
-        'beside a hand-marked frame, 0 of 7 auto picks survived. Scrub in Photos, read the ' +
-        'time off the scrubber, and enter it as a frame mark in the review page.'
+        'still hold the best still of the night. Marking is the efficient path — 3 of 3 ' +
+        'hand-marked frames were kept across two shows, with no triage. Automatic picking ' +
+        'covers what you do not mark and is worth judging rather than skipping: it went ' +
+        '0-for-7 on one show and 4-of-7 on the next, where one of its picks became the ' +
+        'hero. Scrub in Photos, read the time off the scrubber, and enter it as a frame ' +
+        'mark in the review page.'
     )
     lines.push('')
     lines.push(

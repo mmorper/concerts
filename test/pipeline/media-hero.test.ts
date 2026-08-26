@@ -92,3 +92,25 @@ describe('hero in the durable record', () => {
     expect(toDecision({ verdict: 'reject', hero: true })).toEqual({ verdict: 'reject' })
   })
 })
+
+describe('hero reaches media-index.json, not just selects.json', () => {
+  it('carries onto a render, because a trimmed clip can be the hero', async () => {
+    // ABC's hero on 2024-08-20 was a trimmed clip. Hero was wired through ingest, which
+    // handles stills, and never through the render path — so it never landed.
+    const { buildSelects } = await import('../../scripts/media/selects')
+    const f = buildSelects({
+      date: '2024-08-20',
+      headliner: 'Howard Jones',
+      venue: 'YouTube Theatre',
+      acts: ACTS,
+      assets: [asset('clip')],
+      verdicts: {
+        clip: { verdict: 'keep', artist: 'ABC', subject: 'performer', hero: true, trim: { in: 12, out: 27 } },
+      },
+      generated: '',
+    })
+    // The select is what frames.ts reads when it writes the render asset.
+    expect(f.selects[0].hero).toBe(true)
+    expect(f.selects[0].marks?.trim).toEqual({ in: 12, out: 27 })
+  })
+})
