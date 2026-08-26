@@ -300,10 +300,20 @@ function setup(date: string): void {
     if (code) fail(`The review server exited with code ${code}. Nothing is being served.`)
   })
 
+  /* Take the server down on EVERY exit path, not just Ctrl-C.
+     An orphaned server is not a tidy-up problem, it is the port-collision bug: the next
+     run cannot bind, and before #405 it printed a working URL that served the PREVIOUS
+     show's photographs. One survived 22 hours that way. SIGINT alone left it running
+     whenever the terminal was closed or the parent died some other way. */
+  const stop = () => { if (!server.killed) server.kill('SIGTERM') }
+  process.on('exit', stop)
+  for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP'] as const) {
+    process.on(sig, () => { stop(); process.exit(0) })
+  }
+
   console.log(`\n  → http://127.0.0.1:${REVIEW_PORT}/index.html`)
   console.log(`\n  1 usable · 0 reject · P V C S subject · then pick the act · U undo`)
   console.log(`  When you are done:  npm run media:review ${concert.date} -- --finish\n`)
-  process.on('SIGINT', () => { server.kill('SIGINT'); process.exit(0) })
 }
 
 /** Turn the raw verdicts into the approved list, and say what has to happen next. */

@@ -18,6 +18,8 @@ import re
 import socketserver
 import subprocess
 import sys
+import threading
+import time
 import urllib.parse
 from pathlib import Path
 
@@ -106,9 +108,35 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
 
 
+def _die_with_parent() -> None:
+    """Exit as soon as whoever started us is gone.
+
+    THIS SERVER MUST NOT OUTLIVE ITS PARENT. An orphan is not untidiness, it is the
+    port-collision bug: the next run cannot bind, and before #405 it printed a working URL
+    that served the PREVIOUS show's photographs. One orphan survived 22 hours that way and
+    the owner reviewed the wrong concert.
+
+    Killing the child from the parent was tried first and does not hold. `media:review` runs
+    under `tsx`, which executes the script in a child process, so a SIGTERM aimed at the
+    command lands on a wrapper that dies without forwarding it — verified 2026-08-26, the
+    server survived. Signal propagation through npm and tsx is not something this can
+    depend on.
+
+    So the check runs from THIS side, where it needs no cooperation from anyone: when the
+    parent exits, this process is reparented to init and getppid() changes. That happens no
+    matter how the parent died — Ctrl-C, a closed terminal, SIGKILL.
+    """
+    original = os.getppid()
+    while True:
+        time.sleep(1)
+        if os.getppid() != original:
+            os._exit(0)
+
+
 if __name__ == "__main__":
     if not RUN.is_dir():
         sys.exit(f"REVIEW_DIR is not a directory: {RUN}\nRun `npm run media:review <date>` first.")
+    threading.Thread(target=_die_with_parent, daemon=True).start()
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("127.0.0.1", PORT), Handler) as srv:
         print(f"review → http://127.0.0.1:{PORT}/index.html")

@@ -18,7 +18,7 @@
  *
  * @module scripts/media/index
  */
-import { spawnSync } from 'child_process'
+import { execFileSync, spawnSync } from 'child_process'
 import { existsSync, readFileSync, statSync } from 'fs'
 import { join, resolve } from 'path'
 import { createInterface, emitKeypressEvents } from 'readline'
@@ -28,6 +28,7 @@ import { phaseOf, minedAlready, unmarkedClipWarning, TOTAL_STEPS, type Phase, ty
 const REVIEW_ROOT = resolve('concert-photos-audit/review')
 const AUDIT = resolve('concert-photos-audit/audit/audit.json')
 const MEDIA_INDEX = resolve('public/data/media-index.json')
+const REVIEW_PORT = Number(process.env.REVIEW_PORT ?? 8787)
 
 const DIM = '\x1b[2m'
 const BOLD = '\x1b[1m'
@@ -218,6 +219,68 @@ async function pick(rows: Row[]): Promise<Row | null> {
   })
 }
 
+/**
+ * A review server left running from an earlier session.
+ *
+ * `media:review` refuses outright when the port is taken (#405), which is right for a bare
+ * command but wrong for the driver — the owner's answer to "port busy" is always going to be
+ * "then stop it". One stale server survived 22 hours and served the wrong show's
+ * photographs for a whole session, so the driver offers to clear it instead of handing back
+ * a `kill` command to paste.
+ */
+function staleServer(): { pid: string; servingDate: string | null } | null {
+  let pid: string
+  try {
+    pid = execFileSync('lsof', ['-nP', `-iTCP:${REVIEW_PORT}`, '-sTCP:LISTEN', '-t'], {
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).toString().trim().split('\n')[0]
+  } catch {
+    return null
+  }
+  if (!pid) return null
+  let servingDate: string | null = null
+  try {
+    const env = execFileSync('ps', ['eww', '-o', 'command=', '-p', pid], {
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).toString()
+    servingDate = /REVIEW_DIR=\S*?\/(\d{4}-\d{2}-\d{2})/.exec(env)?.[1] ?? null
+  } catch {
+    /* the PID alone is enough to offer */
+  }
+  return { pid, servingDate }
+}
+
+/** True when the step is clear to run. */
+async function clearPort(forDate: string): Promise<boolean> {
+  const held = staleServer()
+  if (!held) return true
+  const what = held.servingDate
+    ? held.servingDate === forDate
+      ? `still serving this show`
+      : `serving ${held.servingDate} — a DIFFERENT show`
+    : 'serving something else'
+  console.log(`\n  ${YELLOW}⚠${OFF} A review server is already running (pid ${held.pid}), ${what}.`)
+  if (!(await confirm(`  Stop it? [y/N] `))) {
+    console.log(`\n  Left running. Nothing else can use port ${REVIEW_PORT} until it stops.\n`)
+    return false
+  }
+  try {
+    process.kill(Number(held.pid), 'SIGTERM')
+  } catch {
+    /* already gone */
+  }
+  // Verify it actually released the port rather than trusting the signal.
+  for (let i = 0; i < 20; i++) {
+    if (!staleServer()) {
+      console.log(`  ${GREEN}✓${OFF} Stopped.`)
+      return true
+    }
+    execFileSync('sleep', ['0.25'])
+  }
+  console.log(`\n  ${YELLOW}⚠${OFF} pid ${held.pid} is still holding the port. Try: kill -9 ${held.pid}\n`)
+  return false
+}
+
 // ── The phase view ───────────────────────────────────────────────────────────────────────
 
 function showPhase(concert: Concert, s: Snapshot): Phase {
@@ -245,10 +308,20 @@ function showPhase(concert: Concert, s: Snapshot): Phase {
   return phase
 }
 
+/**
+ * Ask, and default to no.
+ *
+ * Reads stdin whether or not it is a terminal: a piped `y` is an explicit yes from whoever
+ * ran the command, and refusing to look made the stop-the-server path untestable. EOF, a
+ * blank line, and anything that is not yes all mean NO — every step behind this prompt
+ * either reaches the Photos library, costs a download, or writes to the repo.
+ */
 async function confirm(question: string): Promise<boolean> {
-  if (!process.stdin.isTTY) return false
   const rl = createInterface({ input: process.stdin, output: process.stdout })
-  const answer = await new Promise<string>((r) => rl.question(question, r))
+  const answer = await new Promise<string>((r) => {
+    rl.question(question, r)
+    rl.on('close', () => r(''))
+  })
   rl.close()
   return /^y(es)?$/i.test(answer.trim())
 }
@@ -282,12 +355,25 @@ async function main(): Promise<void> {
     console.log(`\n  Nothing left to run. Commit it.\n`)
     return
   }
+  // Only the page-opening steps need the port; --finish, mining and ingest do not.
+  const needsPort = phase.command.includes('media:review') && !phase.command.includes('--finish')
+
+  /* Cleared BEFORE the confirm, not after. Asking "run this step?" and only then
+     discovering the port is taken puts the owner a keystroke past a decision that was
+     never available. */
+  if (needsPort && !(await clearPort(concert.date))) return
+
   console.log(`\n  ${DIM}${phase.command}${OFF}`)
+  if (needsPort) {
+    console.log(`  ${DIM}Opens a page and holds this terminal. Ctrl-C when you are done judging —` +
+      ` that stops the server too.${OFF}`)
+  }
   const go = await confirm(`\n  Run this step? [y/N] `)
   if (!go) {
     console.log(`\n  Not run. The command above is the one to use when you are ready.\n`)
     return
   }
+
   console.log('')
   const [cmd, ...rest] = phase.command.split(' ')
   const result = spawnSync(cmd, rest, { stdio: 'inherit', shell: false })
