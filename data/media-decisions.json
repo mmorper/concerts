@@ -2,8 +2,8 @@
   "version": 1,
   "shows": {
     "2024-08-20": {
-      "reviewed": 29,
-      "decidedAt": "2026-08-26T16:02:17.590Z",
+      "reviewed": 38,
+      "decidedAt": "2026-08-26T21:13:06.691Z",
       "decisions": {
         "024F6E71-B1EF-4B20-91DD-58FD69E31674": {
           "verdict": "reject"
@@ -89,6 +89,7 @@
           "verdict": "keep",
           "artist": "ABC",
           "subject": "performer",
+          "hero": true,
           "trim": {
             "in": 12,
             "out": 27
@@ -117,9 +118,50 @@
         "F7CCD09B-DEB2-4522-91D0-54AB902F76DE": {
           "verdict": "keep",
           "artist": "Haircut 100",
-          "subject": "performer"
+          "subject": "performer",
+          "hero": true
         },
         "FCBF86E4-7973-43ED-A689-3404D40F8329": {
+          "verdict": "reject"
+        },
+        "frame:068E1C94-1B12-4082-BC68-86C61BFF43D0:0": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer"
+        },
+        "frame:3D0337AF-E0D4-42AD-A624-8C020BA9D9B1:0": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer",
+          "hero": true
+        },
+        "frame:3D0337AF-E0D4-42AD-A624-8C020BA9D9B1:1": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer"
+        },
+        "frame:B1D4891B-89C4-44E1-9399-1C10197E722D:0": {
+          "verdict": "keep",
+          "artist": "Haircut 100",
+          "subject": "performer"
+        },
+        "frame:B1D4891B-89C4-44E1-9399-1C10197E722D:1": {
+          "verdict": "reject"
+        },
+        "frame:B1D4891B-89C4-44E1-9399-1C10197E722D:2": {
+          "verdict": "reject"
+        },
+        "frame:BA31958A-4D55-4D3C-B76D-7135B99AFD07:0": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer"
+        },
+        "frame:F46636CF-A1D3-4871-A124-14CCCEC62808:0": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer"
+        },
+        "frame:F46636CF-A1D3-4871-A124-14CCCEC62808:1": {
           "verdict": "reject"
         }
       }
