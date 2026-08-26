@@ -98,17 +98,25 @@ jobs:
           # path makes `git add` exit 1 and kills this `bash -e` step.
           git add 'public/data/*.json' public/sitemap.xml public/rss.xml
           git add public/llm.txt public/og-stats.json index.html 2>/dev/null || true
+          # The song->album resolver rewrites this cache whenever it fetches a
+          # release-group it has not seen. Left unstaged it was set aside by the
+          # --autostash below and thrown away with the runner, so CI re-fetched the
+          # same release-groups at MusicBrainz's 1 req/sec limit every week (#383).
+          # Safe to commit: the writer neither sorts keys nor restamps existing
+          # entries, so the diff is append-only — 9 new entries measured at +135/-0.
+          # Explicit path, never `git add data/`: syndicate.yml stages
+          # data/syndication-log.json itself and the two must not contend for it.
+          git add data/cache/musicbrainz-tracks.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No data changes to commit."
           else
             git commit -m "data: refresh enrichment pipeline [automated]"
-            # --autostash because the pipeline rewrites tracked files this step
-            # does not stage. The known one is data/cache/musicbrainz-tracks.json,
-            # rewritten by the song->album resolver whenever it fetches a new
-            # release-group. Most weeks it fetches none and the tree stays clean —
-            # which is why this was intermittent rather than constant.
+            # --autostash because the pipeline may rewrite tracked files this step
+            # does not stage. It is now a backstop rather than the main line: the
+            # one known offender, data/cache/musicbrainz-tracks.json, is staged
+            # above as of #383. Keep the flag for the unknown ones.
             #
-            # On 2026-08-17 (run 32007717580) it fetched 9. `git pull --rebase`
+            # On 2026-08-17 (run 32007717580) the resolver fetched 9. `git pull --rebase`
             # then aborted with "cannot pull with rebase: You have unstaged
             # changes", and a *successful* enrichment was discarded at the push —
             # which is why the dead venue photos went unrepaired for another five

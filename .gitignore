@@ -55,9 +55,6 @@ data/*.backup
 data/*.backup.*
 data/venues-to-classify.csv*
 
-# Personal data files (keep examples in git)
-data/venue-status.csv
-
 # Claude Code - ignore personal settings, keep shared config
 .claude/settings.local.json
 .claude/todos/
