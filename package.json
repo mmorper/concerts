@@ -76,6 +76,7 @@
     "typecheck:all": "npm run typecheck && npm run typecheck:scripts",
     "sync:aliases": "tsx scripts/sync-artist-aliases.ts",
     "media:prep": "tsx scripts/media/prep.ts",
+    "media:audit": "tsx scripts/media/audit.ts",
     "media:ingest": "tsx scripts/media/ingest.ts",
     "media:review": "tsx scripts/media/review.ts",
     "media:frames": "tsx scripts/media/frames.ts"
