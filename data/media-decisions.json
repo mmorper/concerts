@@ -166,6 +166,138 @@
         }
       }
     },
+    "2025-11-20": {
+      "reviewed": 36,
+      "decidedAt": "2026-08-26T21:50:09.741Z",
+      "decisions": {
+        "147E463F-7299-42A7-A957-66BC85B2D070": {
+          "verdict": "reject"
+        },
+        "17634CBF-6238-44BC-8E4E-AC1967D8C132": {
+          "verdict": "reject"
+        },
+        "2ED3F7B5-099E-4AD3-BBD4-64ACD3974876": {
+          "verdict": "reject"
+        },
+        "3D9EF1E8-4E13-4068-B8EE-A41D6874510E": {
+          "verdict": "keep"
+        },
+        "3FCFF0FC-B9E9-41B5-9289-D88C0C4300CE": {
+          "verdict": "reject"
+        },
+        "470FFA38-94BB-49CB-84C7-B7D4BEA71E72": {
+          "verdict": "reject"
+        },
+        "482D4473-F8C2-4B20-A840-D5B0CC72EAC0": {
+          "verdict": "reject"
+        },
+        "4E86DCCA-DD4D-470B-84B8-735B4040AEA5": {
+          "verdict": "reject"
+        },
+        "52359965-7A76-45E7-95AA-9DFE6CAE4CF4": {
+          "verdict": "keep",
+          "artist": "David Byrne",
+          "subject": "performer"
+        },
+        "53215751-F620-4250-8587-429642579E09": {
+          "verdict": "reject"
+        },
+        "58E7AD0B-A583-40CD-B697-628D6E0C1EEE": {
+          "verdict": "reject"
+        },
+        "5F9537A6-A627-432D-AE18-2145AB661460": {
+          "verdict": "reject"
+        },
+        "66207CA3-61B8-48AF-B069-A497EC25E581": {
+          "verdict": "keep",
+          "artist": "David Byrne",
+          "subject": "performer"
+        },
+        "6C5F89F0-586A-4A99-99F2-6637F81D86BE": {
+          "verdict": "reject"
+        },
+        "71D066CC-B655-466A-A7D4-5DFDC573E6AC": {
+          "verdict": "keep"
+        },
+        "7F77754A-19F9-4B93-989E-5BB4776FF85C": {
+          "verdict": "reject"
+        },
+        "848D2A87-716D-4E59-A375-5EED7A458F8E": {
+          "verdict": "reject"
+        },
+        "84BCDC77-F57A-4A32-9148-BF5DCE5BF535": {
+          "verdict": "keep",
+          "artist": "David Byrne",
+          "subject": "performer"
+        },
+        "84F6E940-1660-46B9-A09A-7EEF3675FE86": {
+          "verdict": "reject"
+        },
+        "9227CCFC-F3F1-4855-B3AA-F429F21714D4": {
+          "verdict": "keep",
+          "artist": "David Byrne",
+          "subject": "performer",
+          "trim": {
+            "in": 27,
+            "out": 65
+          }
+        },
+        "93393A5B-419C-4694-A5F7-28C9FC164971": {
+          "verdict": "reject"
+        },
+        "9B143D44-FA7D-46BE-9093-103BB2BF4E44": {
+          "verdict": "reject"
+        },
+        "9C235075-B954-4801-9409-C64F9FC67366": {
+          "verdict": "reject"
+        },
+        "AFA6C7D9-483A-4A5B-BDA6-1132A53CDF1C": {
+          "verdict": "keep",
+          "artist": "David Byrne",
+          "subject": "performer"
+        },
+        "BC767536-D821-47B8-9523-AEA6A28A488C": {
+          "verdict": "reject"
+        },
+        "C58D78BB-18A8-4F25-9943-2BD90113C699": {
+          "verdict": "reject"
+        },
+        "CC2046D2-796D-4C4A-A3CA-D2799F732ADB": {
+          "verdict": "reject"
+        },
+        "CC9D1DFE-B218-46F7-835A-2702D94FCF62": {
+          "verdict": "reject"
+        },
+        "D30EA707-1469-4320-94BC-98E0E1705040": {
+          "verdict": "reject"
+        },
+        "E6EC7580-499E-427A-A2FF-BCC833FEB299": {
+          "verdict": "reject"
+        },
+        "F29F953C-23E2-46FA-ABBD-1F5B446A30D3": {
+          "verdict": "reject"
+        },
+        "F52C8C52-9F8D-4917-B04D-CC9F65AA319C": {
+          "verdict": "reject"
+        },
+        "frame:52359965-7A76-45E7-95AA-9DFE6CAE4CF4:0": {
+          "verdict": "reject"
+        },
+        "frame:52359965-7A76-45E7-95AA-9DFE6CAE4CF4:1": {
+          "verdict": "keep",
+          "artist": "David Byrne",
+          "subject": "performer"
+        },
+        "frame:84BCDC77-F57A-4A32-9148-BF5DCE5BF535:0": {
+          "verdict": "reject"
+        },
+        "frame:84BCDC77-F57A-4A32-9148-BF5DCE5BF535:1": {
+          "verdict": "keep",
+          "artist": "David Byrne",
+          "subject": "performer"
+        }
+      }
+    },
     "2026-06-04": {
       "reviewed": 66,
       "decidedAt": "2026-08-26T00:58:08.305Z",
