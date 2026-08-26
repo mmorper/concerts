@@ -1,6 +1,129 @@
 {
   "version": 1,
   "shows": {
+    "2024-08-20": {
+      "reviewed": 29,
+      "decidedAt": "2026-08-26T16:02:17.590Z",
+      "decisions": {
+        "024F6E71-B1EF-4B20-91DD-58FD69E31674": {
+          "verdict": "reject"
+        },
+        "068E1C94-1B12-4082-BC68-86C61BFF43D0": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer",
+          "frames": [
+            4
+          ]
+        },
+        "079C973B-98E8-4477-B719-1F41D1AB1491": {
+          "verdict": "reject"
+        },
+        "0E9B20AD-1C9B-4EC3-B36C-6997D47190E7": {
+          "verdict": "reject"
+        },
+        "0F373C5F-7CB3-416B-8FEF-FB8F0BFA62A9": {
+          "verdict": "reject"
+        },
+        "0FE86B5E-1697-4730-BBC2-E1DCDAA31E1C": {
+          "verdict": "keep",
+          "artist": "Haircut 100",
+          "subject": "performer",
+          "trim": {
+            "in": 27,
+            "out": 56
+          }
+        },
+        "1BDF9145-1843-40D6-B5FB-72F0E917AE73": {
+          "verdict": "reject"
+        },
+        "39A1A5DC-E331-4B80-A71E-FD2A74B1852B": {
+          "verdict": "reject"
+        },
+        "3D0337AF-E0D4-42AD-A624-8C020BA9D9B1": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer"
+        },
+        "42BEFFEB-2A3E-4C27-A28B-48C635D13B4E": {
+          "verdict": "reject"
+        },
+        "5D4D7524-AC68-4D05-99B8-FA1F3C55B0E8": {
+          "verdict": "reject"
+        },
+        "674D50FD-676C-4AE3-ACEE-C47B3BEF0241": {
+          "verdict": "reject"
+        },
+        "6F51030C-1ABA-4852-98B5-134A0EBF3A77": {
+          "verdict": "reject"
+        },
+        "87C95303-98AB-415C-8549-BDE7833752D0": {
+          "verdict": "reject"
+        },
+        "8DFE95A2-6146-4530-9AC2-EC37E40E1CBC": {
+          "verdict": "reject"
+        },
+        "A3EFDAEB-812E-4AFC-AFA3-ED39C3E92DE9": {
+          "verdict": "reject"
+        },
+        "B1D4891B-89C4-44E1-9399-1C10197E722D": {
+          "verdict": "keep",
+          "artist": "Haircut 100",
+          "subject": "performer"
+        },
+        "B81D878D-0EF1-48EC-9709-A3ED08419BCE": {
+          "verdict": "reject"
+        },
+        "BA31958A-4D55-4D3C-B76D-7135B99AFD07": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer",
+          "frames": [
+            2
+          ]
+        },
+        "C4820382-0B12-4756-A546-2EEAA198B84A": {
+          "verdict": "reject"
+        },
+        "CF96AB3D-55E0-45A7-A2D4-98A626FBB6BE": {
+          "verdict": "keep",
+          "artist": "ABC",
+          "subject": "performer",
+          "trim": {
+            "in": 12,
+            "out": 27
+          }
+        },
+        "D798A888-8E77-4048-8933-FAABAC484E3A": {
+          "verdict": "reject"
+        },
+        "DEA58182-FC8D-4B24-B9A8-EC711545705B": {
+          "verdict": "reject"
+        },
+        "E2CE06A1-9F1B-4017-983E-DA90691CDF24": {
+          "verdict": "reject"
+        },
+        "EE88B1D5-29E9-4E50-AF2E-9B4F50B1F3AB": {
+          "verdict": "reject"
+        },
+        "F02AD457-C72B-4F48-86C8-FB9371191E7B": {
+          "verdict": "reject"
+        },
+        "F46636CF-A1D3-4871-A124-14CCCEC62808": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer"
+        },
+        "F7CCD09B-DEB2-4522-91D0-54AB902F76DE": {
+          "verdict": "keep",
+          "artist": "Haircut 100",
+          "subject": "performer"
+        },
+        "FCBF86E4-7973-43ED-A689-3404D40F8329": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2026-06-04": {
       "reviewed": 66,
       "decidedAt": "2026-08-26T00:58:08.305Z",
