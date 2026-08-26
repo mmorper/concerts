@@ -423,12 +423,12 @@ cleanly — model scored **0.84** (correct: they *are* concert photos), owner re
 Both must clear. Where they agree, so does the owner — the two Cure keepers scored 0.995
 and 1.00 on likelihood *and* were that show's best quality.
 
-**2. Frame extraction won outright.** — 🔴 **SUPERSEDED 2026-08-25. Do not build on this
-row.** The 83% below is real but was measured BLIND, on 6 frames from 2 clips, with nothing
-better on the review page to lose to. Re-judged beside a frame the owner marked by hand from
-the same show, **0 of 7** algorithmic picks survived and the hand-marked one shipped.
-Sharpness scoring prefers the stillest instant of a clip; the frames worth keeping have
-motion in them. Hand-marking is the pipeline (#395/#399) — see
+**2. Frame extraction won outright.** — ⚠ **REVISED 2026-08-26. Do not build on this row as
+written.** The 83% below is real but was measured BLIND, on 6 frames from 2 clips, with
+nothing better on the review page to lose to. Judged beside hand-marked frames the numbers
+are **0 of 7** (2026-06-04) and **4 of 7** (2024-08-20), and on the second show an automatic
+pick became the hero for the headliner. Hand-marked frames are 3 of 3 across both, with no
+triage — marking wins on efficiency, not because automatic picking cannot work. See
 `.claude/skills/media-pipeline/SKILL.md`. The rest of this table stands.
 
 | keep rate | show | |
@@ -1149,6 +1149,12 @@ behind it. `--sample 50` if the first read lands mid-range.
   extraction is the unmarked-clip fallback and its output is rejected until judged. The
   minimum-gap rule was NOT at fault — picks measure RMSE 0.18–0.34 within a clip against a
   0.33 cross-clip control, so they differ; they are merely interchangeable.
+- **2026-08-26 (j):** Frame extraction revised AGAIN, in the other direction. Entry (i)
+  recorded 0 of 7 and called the technique dead on one show's evidence. The next show,
+  2024-08-20, kept 4 of 7 automatic picks and the owner made one of them the hero for the
+  headliner. The mechanism claimed in (i) — sharpness "cannot reach" a moment worth having —
+  was invented to explain a single result and over-claimed from it. Standing guidance: mark
+  first (3 of 3, no triage), let the fallback cover unmarked clips, judge its output.
 - **2026-08-21 (a):** Initial specification created
 - **2026-08-23 (h):** 53 assets culled. Ranking split into TWO factors after the Black
   Keys showed subject and quality are independent. Frame extraction promising at 83% (5/6)

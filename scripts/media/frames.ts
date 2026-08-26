@@ -4,14 +4,13 @@
  * Video's place in this project is settled: at tier 1 a clip is not something you publish,
  * it is a SOURCE OF STILLS. Video as video is tier 3 (Shorts, TikTok) and gated elsewhere.
  *
- * WHICH stills is settled too, and not in this command's favour: hand-marking wins. Judged
- * beside a frame the owner marked from the same show, 0 of 7 algorithmic picks survived
- * (2026-06-04, the owner). The old "83% keep rate" was 5 of 6 judged BLIND, with nothing
- * better on the page to lose to — do not quote it. The mechanism is not tunable: this
- * command scores frames by Laplacian sharpness, motion blurs frames, so it prefers the
- * stillest stretch of a clip while the frames worth keeping are the ones with motion in
- * them. So marks are the path (#395/#399) and automatic extraction is the FALLBACK for a
- * kept clip that carries none. Treat its output as rejected until judged.
+ * MARK FIRST, BUT THE FALLBACK IS REAL. Two shows judged beside hand-marked frames: 0 of 7
+ * automatic picks kept on 2026-06-04, then 4 of 7 on 2024-08-20 — where an automatic pick
+ * became the HERO for the headliner. Hand-marked frames are 3 of 3 across both, with no
+ * triage pass, which is the honest case for marking: efficiency, not exclusivity. The old
+ * "83% keep rate" was 5 of 6 judged BLIND with nothing better on the page to lose to; do not
+ * quote that either. Marks are the path (#395/#399); automatic extraction covers the clips
+ * you did not get to, and its output is judged rather than trusted.
  *
  * THE RULE THAT SHAPES THIS COMMAND: never download a clip you have not decided to mine.
  * The archive holds 150 clips across 36 shows; at ~150MB each, fetching them all is 22.5GB.
@@ -420,7 +419,11 @@ function main(): void {
         subject: r.sel.artistNormalized ? 'artist' : 'venue',
         tier: 1,
         source: 'personal',
-        hero: false,
+        /* A render can be a hero. The owner marked ABC's trimmed clip as ABC's hero on
+           2024-08-20 and it never reached the index, because hero was wired through
+           `ingest` — which handles stills — and never through the render path here. Three
+           heroes marked, one landed. */
+        hero: r.sel.hero,
         order: r.order,
         width,
         height,
