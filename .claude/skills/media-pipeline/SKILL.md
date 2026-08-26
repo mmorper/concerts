@@ -351,14 +351,42 @@ lost the link to the clip.
 - Cut with `libx264`, never `-c copy`: stream-copy cuts only on keyframes and would move
   the in-point by up to a couple of seconds, losing the precision just marked by hand.
 
-**Frame extraction is PROMISING, on a sample of six.** Extracted frames scored an 83% keep
-rate judged blind against real stills — but that is **5 of 6 frames, from 2 clips**, inside
-a 53-asset review. It is evidence that mining clips for stills is worth doing at all. It is
-**not** evidence that the picking algorithm chooses well, and it has been over-quoted as
-"the best keep rate of any category" without the denominator. Re-measure before leaning on
-it (#395). When extracting: sample ~1
-frame/second, score by Laplacian, and **enforce a minimum gap between picks** — top-N by
-sharpness returns adjacent frames of the same moment.
+**🔴 ALGORITHMIC FRAME PICKING IS DEAD. Hand-marking is the pipeline.** Settled
+2026-08-25 by the owner, on the 2026-06-04 review. Do not re-open it, and do not quote the
+old 83%.
+
+The tally, with denominators:
+
+| Run | Condition | Kept |
+|---|---|---|
+| 2026-08-23 uxtest | 6 auto frames, 2 clips, judged **blind** | 5 of 6 |
+| 2026-06-04 review | 7 auto frames, 3 clips, judged **beside a hand-marked frame** | **0 of 7** |
+| 2026-06-04 review | 1 hand-marked frame | **1 of 1** — shipped as `2026-06-04-alison-moyet-04.jpg` |
+
+Two things this establishes:
+
+**The comparison condition was doing the work, not the algorithm.** Judged blind, an auto
+frame reads as acceptable. Put it next to the moment the owner chose from the same show and
+it does not survive. The 83% was never a keep rate for *good* frames — it was a keep rate
+for *unobjectionable* ones, and the review page had nothing better on it to lose to.
+
+**Laplacian sharpness is anti-correlated with the moment.** This is the mechanism, and it is
+why tuning will not rescue the approach. Motion blurs frames, so scoring by sharpness
+systematically prefers the stillest stretch of a clip — and the frames worth keeping are the
+ones with motion in them. The hand-marked keeper is Moyet mid-gesture, arm raised. The
+algorithm cannot reach that frame; it is scored down for the exact property that makes it
+worth having.
+
+The minimum-gap rule is *not* the problem and is working as designed — the picks are not
+duplicates. Measured RMSE within a clip is 0.18–0.34 against a 0.33 cross-clip control, so
+they are genuinely different instants. They are just *interchangeable*: different instants
+of the same uneventful stretch. Diversity was never the failure; subject was.
+
+Consequence for the 36 shows of clips still unmined: mining is still worth doing — the
+hand-marked frame is a tier-1 keeper that existed nowhere else. Mine by **watching the clip
+in Photos and marking the moment** (#395/#399), never by extracting and triaging. Auto
+extraction survives only as the fallback when a kept clip carries no marks, and its output
+should be assumed rejected until judged.
 
 ---
 

@@ -423,11 +423,17 @@ cleanly — model scored **0.84** (correct: they *are* concert photos), owner re
 Both must clear. Where they agree, so does the owner — the two Cure keepers scored 0.995
 and 1.00 on likelihood *and* were that show's best quality.
 
-**2. Frame extraction won outright.**
+**2. Frame extraction won outright.** — 🔴 **SUPERSEDED 2026-08-25. Do not build on this
+row.** The 83% below is real but was measured BLIND, on 6 frames from 2 clips, with nothing
+better on the review page to lose to. Re-judged beside a frame the owner marked by hand from
+the same show, **0 of 7** algorithmic picks survived and the hand-marked one shipped.
+Sharpness scoring prefers the stillest instant of a clip; the frames worth keeping have
+motion in them. Hand-marking is the pipeline (#395/#399) — see
+`.claude/skills/media-pipeline/SKILL.md`. The rest of this table stands.
 
 | keep rate | show | |
 |---|---|---|
-| **83%** (5/6) | Human League | **extracted video frames** |
+| **83%** (5/6) | Human League | **extracted video frames** — superseded, see above |
 | 57% (4/7) | Howard Jones | video, poster frames only |
 | 33% (2/6) | The Go-Go's | |
 | 25% (2/8) | The Cure | |
@@ -1135,6 +1141,14 @@ behind it. `--sample 50` if the first read lands mid-range.
 
 ## Revision History
 
+- **2026-08-25 (i):** Frame extraction reversed. The 83% (5/6) blind keep rate in "Frame
+  extraction won outright" does not survive re-judging: shown beside a hand-marked frame
+  from the same show, 0 of 7 algorithmic picks were kept and the hand-marked one shipped as
+  `2026-06-04-alison-moyet-04.jpg`. Mechanism: Laplacian sharpness is anti-correlated with
+  the moment, so tuning will not rescue it. Hand-marking (#395/#399) is the pipeline; auto
+  extraction is the unmarked-clip fallback and its output is rejected until judged. The
+  minimum-gap rule was NOT at fault — picks measure RMSE 0.18–0.34 within a clip against a
+  0.33 cross-clip control, so they differ; they are merely interchangeable.
 - **2026-08-21 (a):** Initial specification created
 - **2026-08-23 (h):** 53 assets culled. Ranking split into TWO factors after the Black
   Keys showed subject and quality are independent. Frame extraction promising at 83% (5/6)
