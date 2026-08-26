@@ -26,6 +26,29 @@
  * holds filenames and capture times. Only the summary is printed. Nothing here is a
  * decision — re-running it costs a library pass and nothing else.
  *
+ * FIRST FULL PASS, 2026-08-26. 58,542 library assets scanned in 25 seconds of CPU. 769 fell
+ * in a show window — 1.3% of the library — and 639 of those are unjudged and rankable
+ * across 77 shows. This is the re-derivation #338 needed: its supply figures counted
+ * evenings, and an evening is not a concert.
+ *
+ * The shape of it is worth knowing before planning any of the work:
+ *
+ *   1980s   27 shows    0 in window    all 27 empty
+ *   1990s   25 shows    0 in window    all 25 empty
+ *   2000s   25 shows   20 in window    22 empty
+ *   2010s   65 shows  334 in window    21 empty
+ *   2020s   42 shows  415 in window     8 empty
+ *
+ * Every photograph in this archive is post-2007. The first 52 shows — half the archive by
+ * count, and the half with the best stories — have nothing to mine and never will. Any plan
+ * that assumes even coverage across 184 shows is planning for an archive that does not
+ * exist.
+ *
+ * RUN IT WITH THE OWNER AT THE KEYBOARD. macOS raises a permission prompt on the library
+ * read, and an unattended run blocks behind it indefinitely — 76 minutes, in the worst case
+ * measured, against 25 seconds when someone was there to dismiss it. See "Verify output,
+ * not exit codes" in the media-pipeline skill.
+ *
  * Usage:
  *   npm run media:audit                    scan every concert
  *   npm run media:audit -- --limit 20      first 20 shows, for a fast sanity pass
