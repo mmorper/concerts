@@ -141,7 +141,17 @@ def _record(p: PhotoInfo, local: datetime) -> dict[str, Any]:
     }
 
 
+def _write(payload: dict[str, Any]) -> List[PhotoInfo]:
+    out = os.environ.get("MEDIA_PREP_OUT")
+    if not out:
+        raise SystemExit("MEDIA_PREP_OUT is not set — the caller must provide it.")
+    Path(out).write_text(json.dumps(payload, indent=2))
+    # Return nothing. This is a reader; osxphotos must not act on these photos.
+    return []
+
+
 def probe(photos: List[PhotoInfo]) -> List[PhotoInfo]:
+    """One show. Called by `media:prep` and `media:review` with a single window."""
     params = _params()
     start = datetime.strptime(params["window_from"], "%Y-%m-%dT%H:%M:%S")
     end = datetime.strptime(params["window_to"], "%Y-%m-%dT%H:%M:%S")
@@ -161,18 +171,70 @@ def probe(photos: List[PhotoInfo]) -> List[PhotoInfo]:
 
     records.sort(key=lambda r: r["local_time"])
 
-    payload = {
+    return _write({
         "window_from": params["window_from"],
         "window_to": params["window_to"],
         "coarse_scanned": len(photos),
         "excluded": excluded,
         "candidates": records,
-    }
+    })
 
-    out = os.environ.get("MEDIA_PREP_OUT")
-    if not out:
-        raise SystemExit("MEDIA_PREP_OUT is not set — media:prep must provide it.")
-    Path(out).write_text(json.dumps(payload, indent=2))
 
-    # Return nothing. This is a reader; osxphotos must not act on these photos.
-    return []
+def corpus(photos: List[PhotoInfo]) -> List[PhotoInfo]:
+    """Every show, in ONE library pass. Called by `media:audit` (#381).
+
+    WHY NOT JUST LOOP `probe` 184 TIMES. osxphotos reads and materialises the library on
+    every invocation regardless of --from-date, so the coarse range narrows the RESULT, not
+    the work. Paying that 184 times is the difference between one slow command and an
+    afternoon. This walks the library once and buckets each asset into whichever show
+    window contains it.
+
+    NO PREVIEWS HERE. `_record` copies a preview only when MEDIA_REVIEW_IMG_DIR is set, and
+    the audit deliberately leaves it unset: this is a census, and staging thousands of
+    JPEGs to count them would be the expensive half of a step whose whole purpose is to say
+    where to look next. Previews are the review page's job, one show at a time.
+
+    Windows cannot overlap — they are 17:00->04:00 on distinct dates — but two shows on
+    consecutive nights share a boundary hour. First match wins and the count of any second
+    match is reported rather than silently dropped, because a silent drop here is exactly
+    the class of bug that made the date window look like a concert filter for a session.
+    """
+    params = _params()
+    windows = [
+        (
+            w["date"],
+            datetime.strptime(w["from"], "%Y-%m-%dT%H:%M:%S"),
+            datetime.strptime(w["to"], "%Y-%m-%dT%H:%M:%S"),
+        )
+        for w in params["windows"]
+    ]
+    # Sorted so the bucket search can stop early on a long library.
+    windows.sort(key=lambda w: w[1])
+
+    shows: dict[str, list[dict[str, Any]]] = {d: [] for d, _, _ in windows}
+    excluded = {"no_date": 0, "outside_all_windows": 0}
+    ambiguous = 0
+
+    for p in photos:
+        if not p.date:
+            excluded["no_date"] += 1
+            continue
+        local = _naive(p.date)
+        hits = [d for d, start, end in windows if start <= local <= end]
+        if not hits:
+            excluded["outside_all_windows"] += 1
+            continue
+        if len(hits) > 1:
+            ambiguous += 1
+        shows[hits[0]].append(_record(p, local))
+
+    for records in shows.values():
+        records.sort(key=lambda r: r["local_time"])
+
+    return _write({
+        "windows": len(windows),
+        "scanned": len(photos),
+        "excluded": excluded,
+        "ambiguous": ambiguous,
+        "shows": shows,
+    })

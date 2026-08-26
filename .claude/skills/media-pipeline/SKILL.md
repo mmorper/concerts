@@ -519,3 +519,69 @@ match; a filter that produced an empty venue lookup and a confidently wrong conc
 **Every stage asserts its own output before the next stage consumes it.** Count the files.
 Check the content. A two-line assertion on a pure function costs nothing and catches what
 reading an exit code never will.
+
+### 🔴 ELAPSED TIME IS NOT EVIDENCE OF WORK. Check CPU.
+
+The same discipline applies to diagnosing a slow command, and it is easy to forget because
+a hang and a long job look identical from the outside. **A stalled osxphotos read burns
+about two seconds of CPU and then sleeps forever at 0%.** Measured three times on
+2026-08-25:
+
+```
+t+5s   cpu 0.63s   4.0%
+t+10s  cpu 1.14s   8.5%
+t+15s  cpu 2.09s   0.0%   <- flatlines
+t+30s  cpu 2.09s   0.0%   <- never moves again
+```
+
+One run sat like that for **76 minutes**. It was read as "osxphotos materialises the whole
+library, so this is inherently slow" — an inference from wall-clock alone, stated
+confidently, and wrong. The command was never working.
+
+**The 60-second diagnosis**, before theorising about anything:
+
+```sh
+ps -o pid=,etime=,time=,%cpu=,stat= $(pgrep -f '.osxphotos-raw' | tr '\n' ' ')
+```
+
+CPU time climbing → it is working, wait. CPU time flat at ~2s while elapsed grows → it is
+blocked; kill it and fix the cause. Do not wait, and do not conclude anything about
+performance from the elapsed figure.
+
+**🔴 THE CAUSE IS A MODAL, AND SOMEONE HAS TO BE THERE TO DISMISS IT.** Confirmed by the
+owner 2026-08-26. macOS puts up a permission prompt on the library read; if nobody is at
+the machine it sits there and the process waits behind it forever. With the owner present
+to click it, the same command completes — a full 58,542-asset pass took **25 seconds of
+CPU**, against the 76 minutes it spent blocked.
+
+So the fix is not in System Settings. **It is scheduling: run library commands when the
+owner is at the keyboard, and say so before starting one.** Never kick off a library read
+and walk away, and never leave one running unattended expecting it to finish.
+
+**Do not trust a window-list poll to detect the prompt.** This was tested on 2026-08-25 by
+polling `System Events` for visible windows every five seconds through a live stall. It
+reported no dialog at any point, and that was recorded as "no prompt is the normal
+appearance of this failure" — which was WRONG, and wrong in the most expensive direction:
+it sent the diagnosis toward revoked Full Disk Access when the real answer was that nobody
+was in the room. TCC prompts are drawn by a system process and do not appear in the window
+list of the app being blocked. Absence of a dialog in that poll is absence of evidence, not
+evidence of absence.
+
+Two seconds of CPU is startup plus the first reach for the library, so the block does sit at
+the permission boundary — that part held. If the owner IS present and dismissing prompts and
+a read still stalls, then look at Full Disk Access on `.osxphotos-raw`: revoked, reset, or a
+duplicate entry. That is the second suspect, not the first.
+
+**Rule out the cheap things with evidence, not assumption.** All three of these were
+suspected on 2026-08-25 and all three were wrong:
+
+| Suspect | How it was ruled out |
+|---|---|
+| A bug in the new query function | A bare `query --count`, no query function, stalled identically |
+| The binary was rebuilt, voiding FDA | `shasum -a 256` still matches `BUILD.txt` |
+| Photos.app open and locking the library | Photos idle at 0% CPU for 11 hours; `photolibraryd` idle too |
+
+The fourth suspect was the right one and was ruled *in* only when the owner said so: **a
+permission modal waiting for a human.** It cannot be seen from here, which is why the first
+three were chased instead. When a library read stalls, ask whether anyone is at the machine
+before investigating anything else.
