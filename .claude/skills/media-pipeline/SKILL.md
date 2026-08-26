@@ -445,11 +445,28 @@ written to `public/images/shows/`; `media-index.json` updated; **what was skippe
 | Tooling | `scripts/media/` (tracked) · the guard + `BUILD.txt` (tracked by exception) · binary, `*.py`, `*.sh` (ignored) |
 | **Final selects (stills)** | **`public/images/shows/`** — committed, EXIF-stripped, 2048px masters |
 | **The mapping** | **`public/data/media-index.json`** — committed, describes stills AND video |
+| **The judgement** | **`data/media-decisions.json`** — committed, uuid → verdict, keeps AND rejects |
 
 **Stills** live in the repo, not R2: the card renderer needs the file at build time,
 Cloudflare already serves `public/` from the CDN, and `git clone` restores every select.
 R2 only becomes correct past a few hundred files; `media-index.json` addresses by `url` so
 that migration costs no consumer changes.
+
+**Rejections persist, and that is deliberate.** Culling is the expensive step and most of
+its cost is saying no — 37 of 66 decisions on 2026-06-04. `media-index.json` records the
+keepers well enough to rebuild them from git alone (`uuid`, `sourceSha256`, `derivedFrom`,
+`render: {uuid, in, out}`), but the rejections lived only in the ignored
+`concert-photos-audit/review/<date>/verdicts.json` — one machine, no backup. Losing it
+would make a later audit re-ask every question the owner has already answered, across 184
+shows. `media:review --finish` now also writes `data/media-decisions.json`.
+
+**It is an EXTRACT, not a widened rule.** The evaluation workspace stays ignored exactly as
+it was, by both `.gitignore`s. The way to get one fact out of an ignored directory is to
+copy the fact into a tracked one — never to loosen the rule that keeps photographs and
+originals out of the repo. The extract holds a Photos UUID, a verdict, and for keepers the
+attribution and clip marks. No filenames, no capture times, no GPS, no EXIF, no pixels.
+Owner-approved 2026-08-25: a UUID and a verdict disclose nothing the published archive does
+not already say. `test/pipeline/media-decisions.test.ts` asserts the absence of the rest.
 
 **Video is the opposite case and is never committed.** It is not served, it is 10–100×
 larger, and it is reproducible from its recipe. It sits in `video/renders/` with `url:

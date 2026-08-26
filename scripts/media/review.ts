@@ -36,6 +36,7 @@ import { tmpdir } from 'os'
 import { findShow, folderPlan, loadConcerts, showWindow, coarseRange, ShowNotFoundError } from './show'
 import { rankCandidates, type Candidate, type Ranked } from './rank'
 import { buildSelects, loadVerdicts, saveSelects, SELECTS_FILE } from './selects'
+import { loadDecisions, recordShow, saveDecisions, DECISIONS_PATH } from './decisions'
 
 const REVIEW_ROOT = resolve('concert-photos-audit/review')
 const GUARD = resolve('concert-photos-audit/bin/osxphotos')
@@ -281,6 +282,13 @@ function finish(date: string): void {
   })
   saveSelects(runDir, file)
 
+  /* The durable half. `selects.json` holds the keepers and lives in the ignored evaluation
+     workspace; this writes the whole judgement — rejections included — to tracked `data/`.
+     Rejections are the expensive part of culling and the part nothing else records, so
+     without this a later audit re-asks every question the owner has already answered. */
+  const rec = recordShow(loadDecisions(), concert.date, verdicts, new Date().toISOString())
+  saveDecisions(rec.file)
+
   console.log(`\n${concert.date} — ${file.selects.length} selects from ${file.reviewed} judged\n`)
   const byFolder = new Map<string, typeof file.selects>()
   for (const s of file.selects) {
@@ -297,6 +305,7 @@ function finish(date: string): void {
     console.log(`    Re-open the page and pick an act. 48% of shows have openers, so this is never defaulted.`)
   }
   console.log(`\n  → ${join(runDir, SELECTS_FILE)}`)
+  console.log(`  → ${DECISIONS_PATH}  (${rec.kept} keep, ${rec.rejected} reject${rec.skipped ? `, ${rec.skipped} unjudged, not recorded` : ''})`)
   const cloud = file.selects.filter((s) => s.needsDownload).length
   console.log(`\nNext: npm run media:ingest ${concert.date}`)
   console.log(`  It fetches these originals itself${cloud ? ` (${cloud} from iCloud)` : ''}, strips them, and indexes them.`)
