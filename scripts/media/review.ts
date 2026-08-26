@@ -373,9 +373,13 @@ function finish(date: string): void {
   console.log(`\n  → ${join(runDir, SELECTS_FILE)}`)
   console.log(`  → ${DECISIONS_PATH}  (${rec.kept} keep, ${rec.rejected} reject${rec.skipped ? `, ${rec.skipped} unjudged, not recorded` : ''})`)
   const cloud = file.selects.filter((s) => s.needsDownload).length
-  console.log(`\nNext: npm run media:ingest ${concert.date}`)
-  console.log(`  It fetches these originals itself${cloud ? ` (${cloud} from iCloud)` : ''}, strips them, and indexes them.`)
-  console.log(`  Nothing to export by hand.\n`)
+  /* This used to say "Next: npm run media:ingest" unconditionally, and on 2024-08-20 that
+     was wrong: seven clips were still unmined, so ingest published the show's single still
+     and left all its video behind. No command guesses at the next step any more — `media`
+     reads the disk and decides. */
+  if (cloud) console.log(`\n  ${cloud} of these are in iCloud; the next step fetches them itself.`)
+  console.log(`\nNext: npm run media ${concert.date}`)
+  console.log(`  It works out what comes next for this show and offers to run it.\n`)
 }
 
 function main(): void {
