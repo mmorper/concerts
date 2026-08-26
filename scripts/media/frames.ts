@@ -320,7 +320,13 @@ function main(): void {
     // Verify the files, not the exit code.
     const produced = existsSync(out) ? readdirSync(out).filter((f) => f.endsWith('.jpg')) : []
     if (produced.length === 0) {
-      console.log(`  ⚠ ${sel.originalFilename}: extraction produced no frames`)
+      /* A trim-only clip produces no stills BY DESIGN — the render above is the whole
+         deliverable — so warning about it is a false alarm. It printed one line after
+         saying "(trim only — no stills taken)", which reads as a failure immediately after
+         reporting a success. Only the paths that ASKED for frames can come up short. */
+      if (marked.length > 0 || wantsAutoFrames) {
+        console.log(`  ⚠ ${sel.originalFilename}: extraction produced no frames`)
+      }
       continue
     }
 
@@ -450,10 +456,12 @@ function main(): void {
   console.log(`\n  ${added.length} frames added to the review page.`)
   console.log(`  The clips themselves were deleted — they re-download on demand and are the`)
   console.log(`  bulkiest, least precious thing in the workspace.`)
-  console.log(`\n  Next:`)
-  console.log(`    npm run media:review ${concert.date}              judge the frames`)
-  console.log(`    npm run media:review ${concert.date} -- --finish`)
-  console.log(`    npm run media:ingest ${concert.date}\n`)
+  /* One thing decides what comes next, and it is not this file. Listing three commands
+     here invited the same mistake `--finish` already caused once: it printed "Next: npm
+     run media:ingest" while seven clips sat unmined, and following it published a show
+     with none of its video. */
+  console.log(`\nNext: npm run media ${concert.date}`)
+  console.log(`  It works out what comes next for this show and offers to run it.\n`)
 }
 
 main()

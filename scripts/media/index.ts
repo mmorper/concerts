@@ -18,7 +18,7 @@
  *
  * @module scripts/media/index
  */
-import { execFileSync, spawnSync } from 'child_process'
+import { execFileSync, spawn } from 'child_process'
 import { existsSync, readFileSync, statSync } from 'fs'
 import { join, resolve } from 'path'
 import { createInterface, emitKeypressEvents } from 'readline'
@@ -375,9 +375,95 @@ async function main(): Promise<void> {
   }
 
   console.log('')
-  const [cmd, ...rest] = phase.command.split(' ')
-  const result = spawnSync(cmd, rest, { stdio: 'inherit', shell: false })
-  if (result.status !== 0) fail(`That step exited with code ${result.status}.`)
+  const code = await runStep(phase.command)
+
+  /* An interrupted review is a NORMAL ending. Ctrl-C is how you finish judging — the page
+     holds the terminal until you stop it — so 130 and a SIGINT death are success here. A
+     real non-zero exit is not. */
+  if (code !== 0 && code !== 130) fail(`That step exited with code ${code}.`)
+
+  report(concert, snap, snapshotOf(concert.date))
+}
+
+/**
+ * Run one step, and outlive it.
+ *
+ * THE CHILD GETS ITS OWN PROCESS GROUP. Ctrl-C goes to the whole foreground group, so with
+ * an ordinary spawn the driver dies alongside the review server and the owner gets no
+ * report at the one moment they most want one — right after judging, when they need to know
+ * what changed and what is next. Measured: it printed nothing at all.
+ *
+ * Swallowing SIGINT was tried first and cannot work. `spawnSync` blocks the event loop, so
+ * a registered handler never runs; the signal is delivered to a process that has no
+ * opportunity to act on it. The fix is not to catch the signal later but to stop the child
+ * from being in the group that receives it: `detached` puts it in its own, the terminal
+ * signals only the driver, and the driver forwards it deliberately and then reports.
+ */
+function runStep(command: string): Promise<number> {
+  const [cmd, ...rest] = command.split(' ')
+  return new Promise((done) => {
+    const child = spawn(cmd, rest, { stdio: 'inherit', shell: false, detached: true })
+    const forward = () => {
+      // Signal the child's whole GROUP — negative pid — because the step is `npm run …`,
+      // which is itself a parent of the process doing the work.
+      try {
+        if (child.pid) process.kill(-child.pid, 'SIGINT')
+      } catch {
+        /* already gone */
+      }
+    }
+    process.on('SIGINT', forward)
+    child.on('exit', (status, signal) => {
+      process.off('SIGINT', forward)
+      done(signal ? 130 : (status ?? 1))
+    })
+  })
+}
+
+/**
+ * What the step actually changed, as plain lines.
+ *
+ * Separated from printing so it can be tested. The report is the last thing the owner reads
+ * before deciding what to do next, and "nothing changed" versus "9 frames extracted" is the
+ * difference between re-running a step and moving on — worth pinning down.
+ */
+export function changeLines(before: Snapshot, after: Snapshot): string[] {
+  const moved: string[] = []
+  const delta = (label: string, a: number, b: number) => {
+    if (a !== b) moved.push(`${label} ${a} → ${b}`)
+  }
+  delta('judged', before.judged, after.judged)
+  delta('frames extracted', before.framesOnPage, after.framesOnPage)
+  delta('frames judged', before.framesJudged, after.framesJudged)
+  delta('renders', before.indexedVideos, after.indexedVideos)
+  delta('in media-index', before.indexedCount, after.indexedCount)
+  if (!before.hasSelects && after.hasSelects) moved.push('selects.json written')
+  else if (before.selectsStale && !after.selectsStale) moved.push('selects.json brought up to date')
+  return moved
+}
+
+/** What the step changed, and where that leaves the show. */
+function report(concert: Concert, before: Snapshot, after: Snapshot): void {
+  console.log(`\n${DIM}${'─'.repeat(58)}${OFF}`)
+  console.log(`\n${BOLD}${concert.date} — ${concert.headliner}${OFF}`)
+
+  const moved = changeLines(before, after)
+  /* Say "nothing changed" out loud rather than printing an empty section. A step that ran
+     and moved nothing is worth noticing — it usually means the page was opened and closed
+     without judging anything. */
+  console.log(moved.length ? moved.map((m) => `  ${GREEN}✓${OFF} ${m}`).join('\n') : `  ${DIM}nothing changed${OFF}`)
+
+  const next = phaseOf(after, concert.date)
+  if (!next.command) {
+    console.log(`\n  ${GREEN}✓ DONE${OFF}  ${next.why}`)
+    console.log(`\n  Commit it, then ${BOLD}npm run media${OFF} for the next show.\n`)
+    return
+  }
+  console.log(`\n  ${CYAN}→ NEXT: ${next.title.toUpperCase()}${OFF}  ${DIM}[ step ${next.step} of ${TOTAL_STEPS} ]${OFF}`)
+  console.log(`  ${next.why}`)
+  const warn = unmarkedClipWarning(after)
+  if (warn && next.id === 'mine') console.log(`\n  ${YELLOW}⚠${OFF} ${warn}`)
+  console.log(`\n  ${BOLD}npm run media ${concert.date}${OFF}${DIM}   to run it${OFF}\n`)
 }
 
 main()
