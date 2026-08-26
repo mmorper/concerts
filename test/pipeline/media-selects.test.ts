@@ -183,6 +183,7 @@ describe('cross-checking what was filed against what was decided', () => {
       subject: 'performer',
       folder: 'alison-moyet',
       needsDownload: false,
+      hero: false,
       time: '2026-06-04T21:00:00',
       rank: 1,
       ...r,
