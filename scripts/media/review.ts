@@ -39,6 +39,50 @@ import { buildSelects, loadVerdicts, saveSelects, SELECTS_FILE } from './selects
 import { loadDecisions, recordShow, saveDecisions, DECISIONS_PATH } from './decisions'
 
 const REVIEW_ROOT = resolve('concert-photos-audit/review')
+
+/** Kept in step with `REVIEW_PORT` in review_server.py, which reads the same variable. */
+const REVIEW_PORT = Number(process.env.REVIEW_PORT ?? 8787)
+
+/**
+ * Who is already listening on the review port, and which show they are serving.
+ *
+ * THIS EXISTS BECAUSE THE COMMAND LIED. The server is spawned last, so a port collision
+ * surfaced as a Python traceback AFTER the success banner and the URL had already been
+ * printed. The link worked — it was served by the PREVIOUS run, still alive — so the owner
+ * spent a session looking at the wrong show's photographs with nothing on screen to say so.
+ * One stale server had been up for 22 hours.
+ *
+ * A wrong answer delivered confidently is the failure this pipeline keeps producing, so
+ * this refuses BEFORE the library read rather than reporting the collision afterwards:
+ * staging previews for thirty seconds and then failing would be honest but wasteful.
+ */
+function portHolder(port: number): { pid: string; servingDate: string | null } | null {
+  let pid: string
+  try {
+    // lsof exits 1 when nothing matches, which is the common case, not an error.
+    pid = execFileSync('lsof', ['-nP', `-iTCP:${port}`, '-sTCP:LISTEN', '-t'], {
+      stdio: ['ignore', 'pipe', 'ignore'],
+    })
+      .toString()
+      .trim()
+      .split('\n')[0]
+  } catch {
+    return null
+  }
+  if (!pid) return null
+  let servingDate: string | null = null
+  try {
+    // `ps eww` prints the process environment, which is where REVIEW_DIR lives — that is
+    // what turns "port busy" into "port busy WITH 2026-06-04", the part that matters.
+    const env = execFileSync('ps', ['eww', '-o', 'command=', '-p', pid], {
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).toString()
+    servingDate = /REVIEW_DIR=\S*?\/(\d{4}-\d{2}-\d{2})/.exec(env)?.[1] ?? null
+  } catch {
+    /* the PID is enough on its own */
+  }
+  return { pid, servingDate }
+}
 const GUARD = resolve('concert-photos-audit/bin/osxphotos')
 const QUERY_FN = resolve('scripts/media/query_window.py')
 const PAGE = resolve('scripts/media/review-page.html')
@@ -154,6 +198,22 @@ function pageItems(ranked: Ranked[], show: { headliner: string; venue: string; o
 }
 
 function setup(date: string): void {
+  const holder = portHolder(REVIEW_PORT)
+  if (holder) {
+    const serving = holder.servingDate
+      ? `It is serving ${holder.servingDate} — a DIFFERENT show.`
+      : 'It is serving something else.'
+    fail(
+      `Port ${REVIEW_PORT} is already in use by pid ${holder.pid}. ${serving}\n\n` +
+        `  Opening the review URL now would show you that run's photographs, not this\n` +
+        `  show's, and nothing on the page would say so.\n\n` +
+        `  Stop it, then re-run:\n` +
+        `      kill ${holder.pid}\n\n` +
+        `  Or serve this show elsewhere:\n` +
+        `      REVIEW_PORT=8788 npm run media:review ${date}`
+    )
+  }
+
   let concert
   try {
     concert = findShow(loadConcerts(), date)
@@ -229,14 +289,20 @@ function setup(date: string): void {
     console.log(`  Review those in Photos.app — WORKSHEET.md lists them with searchable filenames.`)
   }
 
-  console.log(`\n  → http://127.0.0.1:8787/index.html`)
-  console.log(`\n  1 usable · 0 reject · P V C S subject · then pick the act · U undo`)
-  console.log(`  When you are done:  npm run media:review ${concert.date} -- --finish\n`)
-
+  // Spawned BEFORE the URL is printed. The old order announced a working link and then
+  // let the server fail behind it; a link is only worth printing once something is
+  // listening on the other end.
   const server = spawn('python3', [SERVER], {
-    env: { ...process.env, REVIEW_DIR: runDir },
+    env: { ...process.env, REVIEW_DIR: runDir, REVIEW_PORT: String(REVIEW_PORT) },
     stdio: 'inherit',
   })
+  server.on('exit', (code) => {
+    if (code) fail(`The review server exited with code ${code}. Nothing is being served.`)
+  })
+
+  console.log(`\n  → http://127.0.0.1:${REVIEW_PORT}/index.html`)
+  console.log(`\n  1 usable · 0 reject · P V C S subject · then pick the act · U undo`)
+  console.log(`  When you are done:  npm run media:review ${concert.date} -- --finish\n`)
   process.on('SIGINT', () => { server.kill('SIGINT'); process.exit(0) })
 }
 
