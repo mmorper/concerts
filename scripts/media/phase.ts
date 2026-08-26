@@ -170,3 +170,26 @@ export function unmarkedClipWarning(s: Snapshot): string | null {
   return `${s.clipsUnmarked} kept clip(s) carry no marks and will fall back to automatic ` +
     `picking, which went 0-for-7 on 2026-06-04. Mark them in Photos first, or expect to reject the picks.`
 }
+
+/**
+ * What the step actually changed, as plain lines.
+ *
+ * Separated from printing so it can be tested. The report is the last thing the owner reads
+ * before deciding what to do next, and "nothing changed" versus "9 frames extracted" is the
+ * difference between re-running a step and moving on — worth pinning down.
+ */
+export function changeLines(before: Snapshot, after: Snapshot): string[] {
+  const moved: string[] = []
+  const delta = (label: string, a: number, b: number) => {
+    if (a !== b) moved.push(`${label} ${a} → ${b}`)
+  }
+  delta('judged', before.judged, after.judged)
+  delta('frames extracted', before.framesOnPage, after.framesOnPage)
+  delta('frames judged', before.framesJudged, after.framesJudged)
+  delta('renders', before.indexedVideos, after.indexedVideos)
+  delta('in media-index', before.indexedCount, after.indexedCount)
+  if (!before.hasSelects && after.hasSelects) moved.push('selects.json written')
+  else if (before.selectsStale && !after.selectsStale) moved.push('selects.json brought up to date')
+  return moved
+}
+

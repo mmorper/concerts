@@ -90,3 +90,47 @@ describe('unmarkedClipWarning', () => {
     expect(unmarkedClipWarning({ ...base, clipsKept: 7, clipsUnmarked: 0 })).toBeNull()
   })
 })
+
+describe('the report after a step', () => {
+  it('names what the step actually moved', async () => {
+    const { changeLines } = await import('../../scripts/media/phase')
+    const before: Snapshot = {
+      hasRun: true, onPage: 29, judged: 29, framesOnPage: 0, framesJudged: 0,
+      hasSelects: true, selectsStale: false, clipsKept: 7, clipsUnmarked: 3,
+      publishable: 3, indexedCount: 1, indexedVideos: 0,
+    }
+    // What mining 2024-08-20 actually did.
+    const after: Snapshot = { ...before, framesOnPage: 9, framesJudged: 2, indexedCount: 3, indexedVideos: 2 }
+    expect(changeLines(before, after)).toEqual([
+      'frames extracted 0 → 9',
+      'frames judged 0 → 2',
+      'renders 0 → 2',
+      'in media-index 1 → 3',
+    ])
+  })
+
+  it('is empty when a step moved nothing, so the caller can say so out loud', async () => {
+    const { changeLines } = await import('../../scripts/media/phase')
+    const s: Snapshot = {
+      hasRun: true, onPage: 29, judged: 29, framesOnPage: 0, framesJudged: 0,
+      hasSelects: true, selectsStale: false, clipsKept: 0, clipsUnmarked: 0,
+      publishable: 1, indexedCount: 1, indexedVideos: 0,
+    }
+    // Opening the page and closing it without judging is a real outcome, not an error —
+    // but it must not read as progress.
+    expect(changeLines(s, s)).toEqual([])
+  })
+
+  it('reports a first --finish as a write, and a later one as a refresh', async () => {
+    const { changeLines } = await import('../../scripts/media/phase')
+    const base: Snapshot = {
+      hasRun: true, onPage: 29, judged: 29, framesOnPage: 0, framesJudged: 0,
+      hasSelects: false, selectsStale: false, clipsKept: 0, clipsUnmarked: 0,
+      publishable: 0, indexedCount: 0, indexedVideos: 0,
+    }
+    expect(changeLines(base, { ...base, hasSelects: true })).toContain('selects.json written')
+    expect(
+      changeLines({ ...base, hasSelects: true, selectsStale: true }, { ...base, hasSelects: true })
+    ).toContain('selects.json brought up to date')
+  })
+})
