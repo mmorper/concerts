@@ -93,7 +93,7 @@ describe('unmarkedClipWarning', () => {
 
 describe('the report after a step', () => {
   it('names what the step actually moved', async () => {
-    const { changeLines } = await import('../../scripts/media/index')
+    const { changeLines } = await import('../../scripts/media/phase')
     const before: Snapshot = {
       hasRun: true, onPage: 29, judged: 29, framesOnPage: 0, framesJudged: 0,
       hasSelects: true, selectsStale: false, clipsKept: 7, clipsUnmarked: 3,
@@ -110,7 +110,7 @@ describe('the report after a step', () => {
   })
 
   it('is empty when a step moved nothing, so the caller can say so out loud', async () => {
-    const { changeLines } = await import('../../scripts/media/index')
+    const { changeLines } = await import('../../scripts/media/phase')
     const s: Snapshot = {
       hasRun: true, onPage: 29, judged: 29, framesOnPage: 0, framesJudged: 0,
       hasSelects: true, selectsStale: false, clipsKept: 0, clipsUnmarked: 0,
@@ -122,7 +122,7 @@ describe('the report after a step', () => {
   })
 
   it('reports a first --finish as a write, and a later one as a refresh', async () => {
-    const { changeLines } = await import('../../scripts/media/index')
+    const { changeLines } = await import('../../scripts/media/phase')
     const base: Snapshot = {
       hasRun: true, onPage: 29, judged: 29, framesOnPage: 0, framesJudged: 0,
       hasSelects: false, selectsStale: false, clipsKept: 0, clipsUnmarked: 0,

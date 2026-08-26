@@ -23,7 +23,7 @@ import { existsSync, readFileSync, statSync } from 'fs'
 import { join, resolve } from 'path'
 import { createInterface, emitKeypressEvents } from 'readline'
 import { loadConcerts, type Concert } from './show'
-import { phaseOf, minedAlready, unmarkedClipWarning, TOTAL_STEPS, type Phase, type Snapshot } from './phase'
+import { phaseOf, minedAlready, unmarkedClipWarning, changeLines, TOTAL_STEPS, type Phase, type Snapshot } from './phase'
 
 const REVIEW_ROOT = resolve('concert-photos-audit/review')
 const AUDIT = resolve('concert-photos-audit/audit/audit.json')
@@ -420,28 +420,6 @@ function runStep(command: string): Promise<number> {
   })
 }
 
-/**
- * What the step actually changed, as plain lines.
- *
- * Separated from printing so it can be tested. The report is the last thing the owner reads
- * before deciding what to do next, and "nothing changed" versus "9 frames extracted" is the
- * difference between re-running a step and moving on — worth pinning down.
- */
-export function changeLines(before: Snapshot, after: Snapshot): string[] {
-  const moved: string[] = []
-  const delta = (label: string, a: number, b: number) => {
-    if (a !== b) moved.push(`${label} ${a} → ${b}`)
-  }
-  delta('judged', before.judged, after.judged)
-  delta('frames extracted', before.framesOnPage, after.framesOnPage)
-  delta('frames judged', before.framesJudged, after.framesJudged)
-  delta('renders', before.indexedVideos, after.indexedVideos)
-  delta('in media-index', before.indexedCount, after.indexedCount)
-  if (!before.hasSelects && after.hasSelects) moved.push('selects.json written')
-  else if (before.selectsStale && !after.selectsStale) moved.push('selects.json brought up to date')
-  return moved
-}
-
 /** What the step changed, and where that leaves the show. */
 function report(concert: Concert, before: Snapshot, after: Snapshot): void {
   console.log(`\n${DIM}${'─'.repeat(58)}${OFF}`)
@@ -466,4 +444,9 @@ function report(concert: Concert, before: Snapshot, after: Snapshot): void {
   console.log(`\n  ${BOLD}npm run media ${concert.date}${OFF}${DIM}   to run it${OFF}\n`)
 }
 
-main()
+/* Only run when INVOKED, never when imported.
+   A bare `main()` meant `import('./index')` from a test started the driver — which in CI,
+   where the gitignored audit.json does not exist, reached `fail()` and exited 1. The suite
+   reported 1244 passing and the run still failed. audit.ts already guards this way; this
+   did not. */
+if (process.argv[1] && /media\/index\.ts$/.test(process.argv[1])) main()
