@@ -242,6 +242,15 @@ async function ingestFile(args: {
    * provenance is the extractor's, `<clip>__f0113__lap0.jpg`, and it lives on the select.
    */
   provenanceName?: string | null
+  /**
+   * Hero, as chosen by hand in the review page.
+   *
+   * Undefined for the hand-dropped inbox path, which still falls back to the `hero.*` /
+   * `01.*` filename convention. That convention silently stopped working the moment ingest
+   * began fetching originals itself — they arrive as `IMG_3077.HEIC`, so `isHeroName` never
+   * matched and every asset in the archive was `hero: false`.
+   */
+  hero?: boolean
   index: MediaIndex
   report: Report
   notes: string | null
@@ -323,7 +332,9 @@ async function ingestFile(args: {
   const order = nextOrder(index, date, artistNormalized)
   const filename = assetFilename(date, artistNormalized, order)
   const target = join(SHOWS_DIR, filename)
-  const hero = isHeroName(name)
+  // The owner's explicit mark wins; the filename convention is the fallback for files
+  // dropped into the inbox by hand, where there is no review record to consult.
+  const hero = args.hero ?? isHeroName(name)
 
   const asset: MediaAsset = {
     kind: 'image',
@@ -568,6 +579,7 @@ async function ingestFromSelects(args: {
       file, date, act, quality, index, report, notes: null, dryRun,
       label: staged.get(file),
       provenanceName: sel.sourceFile ? sel.originalFilename : null,
+      hero: sel.hero,
       // A frame has no library identity of its own; record the CLIP it came from.
       uuid: sel.sourceFile ? null : sel.uuid,
     })
