@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-08-24T07:50:08.326Z",
+  "generatedAt": "2026-08-26T07:37:31.489Z",
   "posts": [
+    {
+      "slug": "otd-2026-08-26",
+      "day": "08-26",
+      "showDate": "2016-08-26",
+      "age": 10,
+      "artist": "The Smithereens",
+      "artistNormalized": "the-smithereens",
+      "venue": "Birchmere",
+      "venueNormalized": "birchmere",
+      "city": "Alexandria",
+      "score": 38,
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/qswpwx1377465655.jpg",
+      "tier": 2,
+      "source": "artist-audiodb",
+      "url": "https://concerts.morperhaus.org/liner-notes/the-smithereens-21-years-between-shows",
+      "linerNoteSlug": "the-smithereens-21-years-between-shows",
+      "cardPath": "public/og/on-this-day/otd-2026-08-26.png",
+      "social": {
+        "hook": "Ten years of sitting with that night.",
+        "caption": "The Smithereens at the Birchmere ten years ago today — still in the archive, still worth the revisit. Some rooms and some bands are just right for each other.",
+        "beats": [
+          "Ten years ago tonight I was in a seat at the Birchmere in Alexandria.",
+          "The Smithereens played, and the Birchmere is exactly the kind of room built for a band like that.",
+          "August 26, 2016 is in the archive — the date, the place, the fact of being there.",
+          "A decade out, the entry still holds. That's what the archive is for."
+        ],
+        "authoredAt": "2026-08-26T07:37:25.879Z"
+      },
+      "publishedAt": "2026-08-26T07:37:31.489Z"
+    },
     {
       "slug": "otd-2026-08-24",
       "day": "08-24",
