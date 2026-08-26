@@ -28,6 +28,8 @@ export interface Verdict {
   /** The act the owner said is in the frame, as displayed in the picker. */
   artist?: string | null
   subject?: 'performer' | 'venue' | 'crowd' | 'stub' | null
+  /** The frame that leads anything built from this act. One per act per show. */
+  hero?: boolean | null
 }
 
 export interface Select {
@@ -42,6 +44,17 @@ export interface Select {
   /** True when the original is iCloud-only, so exporting it needs a download. */
   needsDownload: boolean
   time: string
+  /**
+   * The frame that leads anything built from this act.
+   *
+   * Chosen by hand in the review page. It used to be inferred from a FILENAME — `hero.*` or
+   * `01.*` — which worked while selects were dragged into an inbox by hand and stopped
+   * working the moment ingest began fetching originals itself, because those arrive as
+   * `IMG_3077.HEIC`. Every asset in the archive was `hero: false` as a result. A judgement
+   * this deliberate should be made where the photographs are on screen, not encoded in a
+   * file name.
+   */
+  hero: boolean
   /** Timecodes the owner marked on the Photos scrubber. Empty when they marked none. */
   marks?: ClipMarks | null
   /**
@@ -194,6 +207,10 @@ export function buildSelects(args: {
       artistNormalized: act ? act.slug : null,
       subject,
       folder,
+      /* A hero that lost its act loses its hero status with it. `act` is null here for a
+         venue, crowd or stub frame, and hero is scoped per act — a hero belonging to
+         nobody has nothing to lead. */
+      hero: Boolean(v.hero) && act !== null,
       // A frame already on disk never needs downloading, whatever its clip's state was.
       // Marks only mean anything on a clip; a still has no timeline to mark.
       marks:

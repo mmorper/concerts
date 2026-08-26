@@ -39,6 +39,8 @@ export interface Decision {
   /** Resolved act name, keepers only. */
   artist?: string
   subject?: 'performer' | 'venue' | 'crowd' | 'stub'
+  /** The frame that leads this act. One per act per show, chosen by hand. */
+  hero?: true
   /** Seconds into a clip the owner marked for a still. These beat the algorithm (#395). */
   frames?: number[]
   /** Seconds. The section of a clip worth keeping. */
@@ -83,6 +85,8 @@ export function toDecision(v: Verdict): Decision | null {
   if (v.verdict === 'reject') return d
   if (v.artist) d.artist = v.artist
   if (v.subject) d.subject = v.subject
+  // Recorded only when true — a durable record of a choice, not of its absence.
+  if (v.hero) d.hero = true
   if (v.frames?.length) d.frames = [...v.frames]
   if (v.trim) d.trim = { in: v.trim.in, out: v.trim.out }
   return d

@@ -312,7 +312,7 @@ function setup(date: string): void {
   }
 
   console.log(`\n  → http://127.0.0.1:${REVIEW_PORT}/index.html`)
-  console.log(`\n  1 usable · 0 reject · P V C S subject · then pick the act · U undo`)
+  console.log(`\n  1 usable · 0 reject · P V C S subject · then pick the act · H hero ★ · U undo`)
   console.log(`  When you are done:  npm run media:review ${concert.date} -- --finish\n`)
 }
 
@@ -375,6 +375,18 @@ function finish(date: string): void {
     console.log(`  ${folder}/  (${rows.length})`)
     for (const r of rows) console.log(`    #${String(r.rank).padStart(2)}  ${r.time.slice(11, 16)}  ${r.originalFilename}${r.needsDownload ? '  [iCloud]' : ''}`)
   }
+  /* Named explicitly, because a missing hero is invisible otherwise. `hero` sat unset on
+     all 26 assets in the archive for weeks without anything noticing. */
+  const heroes = file.selects.filter((s) => s.hero)
+  const actsWithSelects = [...new Set(file.selects.filter((s) => s.artist).map((s) => s.artist as string))]
+  const without = actsWithSelects.filter((a) => !heroes.some((h) => h.artist === a))
+  if (heroes.length > 0) {
+    console.log(`\n  ★ hero: ${heroes.map((h) => `${h.artist} — ${h.originalFilename}`).join(', ')}`)
+  }
+  if (without.length > 0) {
+    console.log(`\n  ${heroes.length ? '' : '★ '}no hero for ${without.join(', ')} — press H on the frame that should lead.`)
+  }
+
   if (file.unattributed.length > 0) {
     console.log(`\n  ⚠ ${file.unattributed.length} keeper(s) with no act named — NOT in selects:`)
     for (const u of file.unattributed) console.log(`      ${u.time.slice(11, 16)}  ${u.originalFilename}`)

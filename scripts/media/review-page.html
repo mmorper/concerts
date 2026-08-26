@@ -41,6 +41,8 @@
   .tile.keep{border-color:var(--keep)}
   .tile.reject{border-color:var(--reject);opacity:.4}
   .mark{position:absolute;top:7px;left:7px;font-size:17px;text-shadow:0 1px 4px #000}
+  .tile.hero{outline:2px solid #ffd23f;outline-offset:-2px}
+  .tile.hero .mark{color:#ffd23f;text-shadow:0 1px 4px #000}
   .badges{position:absolute;top:7px;right:7px;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
   .b{font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,0,0,.72);
      backdrop-filter:blur(4px);font-weight:600;letter-spacing:.02em}
@@ -275,7 +277,10 @@ function paint(){
     t.classList.toggle('cursor', +t.dataset.i===cursor);
     t.classList.toggle('keep', v==='keep');
     t.classList.toggle('reject', v==='reject');
-    t.querySelector('.mark').textContent = v==='keep' ? '✓' : v==='reject' ? '✕' : '';
+    const rec = V[it.uuid] || {};
+    t.querySelector('.mark').textContent =
+      rec.hero ? '★' : v==='keep' ? '✓' : v==='reject' ? '✕' : '';
+    t.classList.toggle('hero', !!rec.hero);
   });
   const keep = Object.values(V).filter(x=>x.verdict==='keep').length;
   const rej  = Object.values(V).filter(x=>x.verdict==='reject').length;
@@ -396,6 +401,32 @@ function setSubject(s){
   cur.subject = cur.subject===s ? null : s;
   V[it.uuid] = cur; post('/verdict', {uuid:it.uuid, ...cur}); paint();
 }
+/* ONE HERO PER ACT PER SHOW, and the newest instruction wins.
+   `hero` is the frame that leads anything built from this show — it has to be a deliberate
+   choice, not the accident of whichever asset sorted first. Exclusive within the act rather
+   than the whole night, because a three-act bill needs a lead frame for each act, and a
+   venue shot is its own subject. Setting one here demotes the previous one immediately and
+   visibly, so two heroes can never coexist and be discovered later by ingest. */
+function setHero(){
+  const it = ITEMS[cursor], cur = V[it.uuid] || {};
+  if (cur.verdict !== 'keep') return toast('hero applies to keepers only');
+  if (!cur.artist) return toast('name the act first — hero is per act');
+  hist.push({uuid: it.uuid, prev: JSON.parse(JSON.stringify(cur))});
+  const on = !cur.hero;
+  if (on) {
+    // Demote any sibling hero for the SAME act before promoting this one.
+    for (const [uuid, v] of Object.entries(V)) {
+      if (uuid !== it.uuid && v.hero && v.artist === cur.artist) {
+        hist.push({uuid, prev: JSON.parse(JSON.stringify(v))});
+        delete v.hero;
+        post('/verdict', {uuid, ...v});
+      }
+    }
+  }
+  if (on) cur.hero = true; else delete cur.hero;
+  V[it.uuid] = cur; post('/verdict', {uuid: it.uuid, ...cur}); paint(); renderMarks();
+  toast(on ? `★ hero for ${cur.artist}` : 'hero cleared');
+}
 /* Marks live on the verdict record, so they persist per keystroke like everything else and
    an interrupted session loses nothing. */
 function saveMarks(patch){
@@ -481,6 +512,7 @@ document.addEventListener('keydown', e=>{
   else if (k==='o') $('#lb-open').click();
   else if (k==='arrowup'){ cycleArtist(-1); e.preventDefault(); }
   else if (k==='arrowdown'){ cycleArtist(1); e.preventDefault(); }
+  else if (k==='h') setHero();
   else if (SUBJ[k]) setSubject(SUBJ[k]);
 });
 
