@@ -19,8 +19,46 @@ is noted — those are the load-bearing entries.
 
 | Format | Channels | Layout |
 |---|---|---|
-| **1080×1350 (4:5)** | Instagram | Full-bleed media band 1080×820 (61%), type entirely below it |
+| **1080×1350 (4:5)** | Instagram | **Full bleed — the photograph fills the card, type over its lower third** |
 | **1200×630 (1.91:1)** | Bluesky, Mastodon, X | 630×630 square image left, 570px type column right |
+
+> **REVISED 2026-08-27 by the owner.** The 4:5 layout was originally a media BAND of
+> 1080×820 with type entirely below it — the arrangement in `Main.dc.html`. That band is
+> **landscape, 1.32:1**, and it was chosen when an image was something to slot into a
+> reserved area.
+>
+> Crop boxes (#342, #411) changed what an image is. The owner now authors a **4:5 rectangle
+> per asset** saying *this is the photograph*. A portrait rectangle cannot fill a landscape
+> band: derived from the box's centre it slices horizontally through the middle, and on a
+> standing performer the middle is the torso. Rendered against the real corpus it decapitated
+> all four test acts — Human League, Moyet, Byrne, Howard Jones — while the full-bleed
+> layout, whose card IS 4:5, honoured every box exactly.
+>
+> `LadderFullBleed.dc.html` is therefore the Instagram layout. `Main.dc.html` is kept, as
+> `WideStacked.dc.html` is, because the failure is instructive: it is what a layout designed
+> before crops looks like once crops exist.
+>
+> **The tradeoff, named:** type now sits over the photograph rather than on a clean ground.
+> The scrim carries it on the four acts tested, but a bright or busy frame will fight it in a
+> way the band never did. If that becomes a real problem the answer is to redesign the band
+> as PORTRAIT, not to go back to slicing crops.
+>
+> **AND THE BAND'S FAILURE WAS DERIVATION, NOT GEOMETRY.** Re-tested 2026-08-27: the band
+> decapitated all four acts because a non-4:5 target was deriving from the CENTRE of the
+> crop, discarding its top fifth — which is where the head is. Deriving from the TOP fixes
+> all four, and fixes the 1.91:1 wide card too. The rule now lives in #342:
+>
+> **Top-derive the archive's own photography (`source: personal`). Centre-derive everything
+> else.** Concert frames are shot upward from a crowd, so the subject sits high with nothing
+> above worth keeping. A studio press shot is composed centred with deliberate headroom, and
+> top-aligning one shows you the backdrop — visibly worse, rendered side by side.
+>
+> So full bleed remains the choice for tier 1 on its own merit — 0% of the crop lost against
+> the band's 39% — rather than because the band was broken. It was not; it was derived
+> wrongly, by me, in the first version of #342.
+>
+> **Renders:** `.preview/band-centre-vs-top.jpg`, `.preview/wide-derivation.jpg`,
+> `.preview/tier2-derivation.jpg`.
 
 **Two render targets from day one, and two layouts — not one layout scaled.**
 

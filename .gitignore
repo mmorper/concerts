@@ -115,3 +115,6 @@ video/node_modules/
 video/compositions/*/output/
 video/output/
 video/.hyperframes-cache/
+
+# Render scratch for social-card comparisons. Regenerable; see .preview/README.md
+.preview/
