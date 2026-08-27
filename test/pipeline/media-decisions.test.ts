@@ -145,10 +145,32 @@ describe('the committed file', () => {
     const raw = readFileSync(path, 'utf-8')
     expect(raw).not.toMatch(/IMG_\d+/)
     expect(raw).not.toMatch(/\.(HEIC|DNG|MOV|JPG|JPEG)/i)
-    expect(raw).not.toMatch(/-?\d+\.\d{4,}/) // latitude/longitude precision
     // The only times present are `decidedAt` stamps, never a capture time.
     for (const m of raw.matchAll(/\d{2}:\d{2}:\d{2}[^"]*/g)) {
       expect(m[0]).toMatch(/^\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
+    }
+
+    /* STRUCTURAL, NOT TEXTUAL, for the numbers.
+       This used to assert the raw text contained no `\d+\.\d{4,}` — meaning GPS precision.
+       Crop boxes are stored to four decimal places, so `0.1181` tripped it the moment the
+       owner cropped a photograph: a true privacy rule firing on data that carries no
+       location at all. Checking the SHAPE says what was actually meant — these keys and no
+       others — and cannot be fooled by a coordinate that happens to be short, nor fooled
+       INTO failing by a legitimate number that happens to be long. */
+    const allowed = new Set(['verdict', 'artist', 'subject', 'frames', 'trim', 'hero', 'crop'])
+    const file = loadDecisions(path)
+    for (const show of Object.values(file.shows)) {
+      for (const [uuid, d] of Object.entries(show.decisions)) {
+        for (const key of Object.keys(d)) {
+          expect(allowed, `${uuid} carries an unexpected field "${key}"`).toContain(key)
+        }
+        // A crop is normalised, so every number in it is between 0 and 1 — which is what
+        // makes it distinguishable from a coordinate regardless of how it is printed.
+        for (const n of Object.values(d.crop ?? {})) {
+          expect(n).toBeGreaterThanOrEqual(0)
+          expect(n).toBeLessThanOrEqual(1)
+        }
+      }
     }
   })
 
