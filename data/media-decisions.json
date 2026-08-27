@@ -119,7 +119,13 @@
           "verdict": "keep",
           "artist": "Haircut 100",
           "subject": "performer",
-          "hero": true
+          "hero": true,
+          "crop": {
+            "x": 0.3995,
+            "y": 0,
+            "w": 0.6005,
+            "h": 1
+          }
         },
         "FCBF86E4-7973-43ED-A689-3404D40F8329": {
           "verdict": "reject"
@@ -211,7 +217,13 @@
         "66207CA3-61B8-48AF-B069-A497EC25E581": {
           "verdict": "keep",
           "artist": "David Byrne",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0.0625,
+            "y": 0,
+            "w": 0.6005,
+            "h": 1
+          }
         },
         "6C5F89F0-586A-4A99-99F2-6637F81D86BE": {
           "verdict": "reject"
@@ -254,7 +266,13 @@
         "AFA6C7D9-483A-4A5B-BDA6-1132A53CDF1C": {
           "verdict": "keep",
           "artist": "David Byrne",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "BC767536-D821-47B8-9523-AEA6A28A488C": {
           "verdict": "reject"
@@ -314,7 +332,13 @@
         "13A4B8EC-A119-4AF2-8594-74A2857A8B9D": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0625,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "1B1631AE-05A0-4991-9C65-F7C11F7732BA": {
           "verdict": "reject"
@@ -325,16 +349,34 @@
         "355E1C3E-CE43-429E-80B4-F6B84039A971": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0625,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "37B6ADC7-4D88-4A5F-8815-5957761F8A1A": {
           "verdict": "keep",
-          "artist": "The Human League"
+          "artist": "The Human League",
+          "crop": {
+            "x": 0.3497,
+            "y": 0,
+            "w": 0.6005,
+            "h": 1
+          }
         },
         "3CFE68DC-F89D-406E-81F0-C9E59D5CD6EE": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0.3995,
+            "y": 0,
+            "w": 0.6005,
+            "h": 1
+          }
         },
         "3E01D88E-D8EE-442C-B066-E65A1F38AB82": {
           "verdict": "keep",
@@ -363,17 +405,35 @@
         "4853308A-60A1-45A9-866F-E45FA791C597": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0538,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "48F0D3A3-FA93-4D74-9B34-EB321B0B1B31": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "517FCAF8-1E95-4498-BD39-1829EE07758A": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "577DABC9-8B59-4613-9B14-14B5EDA62C5A": {
           "verdict": "reject"
@@ -387,12 +447,24 @@
         "69B77636-9916-4B92-AF3C-1B537F58411B": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0625,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "6D09A19B-5C85-4AD5-8CA1-35982F57EA2C": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "7A0A3BB1-DAC3-48DA-9778-9AD68723CD6A": {
           "verdict": "reject"
@@ -411,12 +483,24 @@
         },
         "81A15C17-EA55-442D-AF28-B58F60F5C9B7": {
           "verdict": "keep",
-          "subject": "venue"
+          "subject": "venue",
+          "crop": {
+            "x": 0,
+            "y": 0.0313,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "8596A63A-905D-4B2E-A90B-19A4FF435F09": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "8AD90277-EE93-40F1-82C4-A8E41F03627B": {
           "verdict": "keep",
@@ -429,7 +513,13 @@
         "947CF546-6826-4F62-8666-B9CE0DDF507C": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "965967C6-B948-48BA-A258-17DBB9932991": {
           "verdict": "reject"
@@ -443,12 +533,24 @@
         "A15D3E39-73EA-4E1D-A9E9-A3B27668E934": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0625,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "A2B71386-75D2-4A1B-8FD8-B56E7DA05D88": {
           "verdict": "keep",
           "artist": "Soft Cell",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0625,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "A7468169-0E56-4DE6-9C79-3B1956873866": {
           "verdict": "reject"
@@ -456,7 +558,13 @@
         "AC810494-F607-41DA-8CD5-B29AD36CC56B": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "venue"
+          "subject": "venue",
+          "crop": {
+            "x": 0,
+            "y": 0.0625,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "B21A7511-3FE8-4690-BF5E-F6AEC9F51E5B": {
           "verdict": "reject"
@@ -488,22 +596,46 @@
         "D0B38282-F2C9-43F9-BE12-AD3A11FA3BB3": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "D4C2AC64-4078-4952-8075-D73EAEA56469": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "D6D93D9F-4876-4194-A67C-4226E10357A3": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0457,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "DA5D3FE3-3B69-4A26-8E33-7E0ED556C110": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0625,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "DCDFBDDE-2F38-4B28-B135-68BC93A6B974": {
           "verdict": "reject"
@@ -514,7 +646,13 @@
         "E2EBAF04-3BE1-4865-A96B-65E9CBD6BE35": {
           "verdict": "keep",
           "artist": "Alison Moyet",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "E4692B60-0054-40EC-B6D2-6280B475AFE6": {
           "verdict": "reject"
@@ -522,7 +660,13 @@
         "EA1EF8D6-E8B5-434E-A0FC-E8A8FCC130C7": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "F1348F2C-2340-431E-AF5C-A8DE436E49A8": {
           "verdict": "keep",
@@ -536,7 +680,13 @@
         "F46A2F8D-07C8-47EE-9A94-B3A4CF102FF6": {
           "verdict": "keep",
           "artist": "Soft Cell",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0571,
+            "w": 1,
+            "h": 0.9375
+          }
         },
         "FCD5BB45-6420-451D-947B-7B1B3ACD58C9": {
           "verdict": "reject"

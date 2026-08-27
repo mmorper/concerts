@@ -22,7 +22,13 @@
       "bytes": 616777,
       "sourceSha256": "020aa660b94c1ffa35f24ec95c14bdb798ff17e9b34171ac25f0a13a681cc6cf",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0.3995,
+        "y": 0,
+        "w": 0.6005,
+        "h": 1
+      }
     },
     {
       "kind": "image",
@@ -47,7 +53,13 @@
         "original": "B1D4891B-89C4-44E1-9399-1C10197E722D",
         "frame": 11
       },
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0641,
+        "w": 1,
+        "h": 0.7034
+      }
     },
     {
       "kind": "image",
@@ -72,7 +84,13 @@
         "original": "068E1C94-1B12-4082-BC68-86C61BFF43D0",
         "frame": 4
       },
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.1183,
+        "w": 1,
+        "h": 0.7034
+      }
     },
     {
       "kind": "image",
@@ -97,7 +115,13 @@
         "original": "BA31958A-4D55-4D3C-B76D-7135B99AFD07",
         "frame": 2
       },
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0955,
+        "w": 1,
+        "h": 0.7034
+      }
     },
     {
       "kind": "image",
@@ -122,7 +146,13 @@
         "original": "3D0337AF-E0D4-42AD-A624-8C020BA9D9B1",
         "frame": 8
       },
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0856,
+        "w": 1,
+        "h": 0.7034
+      }
     },
     {
       "kind": "image",
@@ -147,7 +177,13 @@
         "original": "3D0337AF-E0D4-42AD-A624-8C020BA9D9B1",
         "frame": 20
       },
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.7034
+      }
     },
     {
       "kind": "image",
@@ -172,7 +208,13 @@
         "original": "F46636CF-A1D3-4871-A124-14CCCEC62808",
         "frame": 2
       },
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0521,
+        "w": 1,
+        "h": 0.7034
+      }
     },
     {
       "kind": "video",
@@ -252,7 +294,13 @@
       "bytes": 489388,
       "sourceSha256": "4b7198365f1ac717a0476fd4b1fcc16d83918b1fcdac66398303c7f8380f0b0e",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0.0625,
+        "y": 0,
+        "w": 0.6005,
+        "h": 1
+      }
     },
     {
       "kind": "image",
@@ -274,7 +322,13 @@
       "bytes": 551800,
       "sourceSha256": "ff13b39a261182d6d52d2430a0f2ffa16ad7bf40141be925ee98f18cd7319df7",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -299,7 +353,13 @@
         "original": "84BCDC77-F57A-4A32-9148-BF5DCE5BF535",
         "frame": 25
       },
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0831,
+        "w": 1,
+        "h": 0.7034
+      }
     },
     {
       "kind": "image",
@@ -324,7 +384,13 @@
         "original": "52359965-7A76-45E7-95AA-9DFE6CAE4CF4",
         "frame": 16
       },
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0.3304,
+        "y": 0,
+        "w": 0.4499,
+        "h": 1
+      }
     },
     {
       "kind": "video",
@@ -375,7 +441,13 @@
       "bytes": 345923,
       "sourceSha256": "e39f485461e7251be6550acb3211dd810e4ec331f0ef16dded8bc77cb7bbee6d",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -400,7 +472,13 @@
         "original": "3FE98E35-6A87-459A-A7DA-59A0CA357B02",
         "frame": 1
       },
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.1128,
+        "w": 1,
+        "h": 0.7034
+      }
     },
     {
       "kind": "image",
@@ -422,7 +500,13 @@
       "bytes": 371619,
       "sourceSha256": "8ab89440d6c8739eabde5d2c1dd004455f2ce0bf4eca3b1767b6e681e354fafc",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0625,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -444,7 +528,13 @@
       "bytes": 355013,
       "sourceSha256": "12779d7fde36f24e9df908b986a9d320566612c6da6f33f8053e207fc96c09bf",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0571,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -466,7 +556,13 @@
       "bytes": 291346,
       "sourceSha256": "abb11266158b0495d4de3ffe2454bf6879588367deec9dff1f60a18ca1925a03",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -488,7 +584,13 @@
       "bytes": 410436,
       "sourceSha256": "fcf06a3c2a618be26e48f2054072e61887e82f3d217be93c038ff486f7af6bc9",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -510,7 +612,13 @@
       "bytes": 353739,
       "sourceSha256": "710ded5622092af8f4c93306bbc67c9566fadfdcb778445b1b09ddffe7154624",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0625,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -532,7 +640,13 @@
       "bytes": 211307,
       "sourceSha256": "1ac96041b9cd3fc50592c06df6799e06f8504810f568a003a99925b8151972d2",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -554,7 +668,13 @@
       "bytes": 254517,
       "sourceSha256": "24f08786b9b1226eaa3553a3680d738b57a013992c340de520e2188a2cba0328",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0457,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -576,7 +696,13 @@
       "bytes": 311679,
       "sourceSha256": "978c8e86de9150ce9409c6cf8b91905e2b8b4d98559097b7af42bd1be0882731",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0538,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -598,7 +724,13 @@
       "bytes": 1132910,
       "sourceSha256": "4405eef360f0a621b624d07f7cb6b31d9006b422aeddd736f96499b01b01450d",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0.3995,
+        "y": 0,
+        "w": 0.6005,
+        "h": 1
+      }
     },
     {
       "kind": "image",
@@ -620,7 +752,13 @@
       "bytes": 451979,
       "sourceSha256": "0c227ae36b0a1515985e2dacb5803f525b6cefa36527164e0df084252d3e27ec",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0625,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -642,7 +780,13 @@
       "bytes": 543142,
       "sourceSha256": "f2d343b121cce604c1eb8b4369d2fe91ffb4e13f2ec43786e8f24c643b3495e1",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0625,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -664,7 +808,13 @@
       "bytes": 368475,
       "sourceSha256": "78f893a2aeef33bc1d56068ce85acd6f443d7cf74b4247ee9b3f010e3e2c359e",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -686,7 +836,13 @@
       "bytes": 467887,
       "sourceSha256": "e576cc81b33ffcc06649531f3712491fb4899d0051d7a53623fc61a873813486",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0625,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -708,7 +864,13 @@
       "bytes": 706080,
       "sourceSha256": "cbd01698079e8d6f4af0cef47ef2962c8e1cc6611a55cc59af70e1cfb9e57a8a",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -730,7 +892,13 @@
       "bytes": 522427,
       "sourceSha256": "e0d4cce078ec8b9fe17cb7a3e3db4569f259a202e3af0f925a78447f44543e82",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0625,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -752,7 +920,13 @@
       "bytes": 599027,
       "sourceSha256": "ec1c4a0d8ddd6de1f89eed7e5c16386f0a50f8d36b9f84b7cf924cef3a771e0a",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -774,7 +948,13 @@
       "bytes": 458627,
       "sourceSha256": "44245c24da018a5ccbc6bf3714296e533bca4ec3a1680d8aebad61a3a0ccfaa9",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0.3497,
+        "y": 0,
+        "w": 0.6005,
+        "h": 1
+      }
     },
     {
       "kind": "image",
@@ -796,7 +976,13 @@
       "bytes": 443053,
       "sourceSha256": "67b6c300c18355052407a5236d3fc1f3832490e0ba41eab266f08054155a771e",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -818,7 +1004,13 @@
       "bytes": 396313,
       "sourceSha256": "9cc01aae34061e1809e0d96be70dfd32f0a6989f4dee8cabfbdd0c354700e800",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -840,7 +1032,13 @@
       "bytes": 106744,
       "sourceSha256": "419d86c068e0617217ad1d1e3829e4452d11c57d59b69432b6d91e5a6da981f6",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0625,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "image",
@@ -862,7 +1060,13 @@
       "bytes": 567618,
       "sourceSha256": "f082f7879be2dc6d1dc794b2fffa089dc41df54b5e2bf88614a64b67665d3872",
       "derivedFrom": null,
-      "notes": null
+      "notes": null,
+      "crop": {
+        "x": 0,
+        "y": 0.0313,
+        "w": 1,
+        "h": 0.9375
+      }
     },
     {
       "kind": "video",
