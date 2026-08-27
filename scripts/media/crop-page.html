@@ -44,7 +44,15 @@
     padding:8px 12px;font-size:12.5px;cursor:pointer;font-weight:600}
   button:hover{border-color:#3a3a48}
   .row{display:flex;gap:8px}
-  .row button{flex:1}
+  .row button{flex:1;transition:background .12s,border-color .12s,color .12s}
+  /* Feedback belongs ON the control that was pressed. The first version put it in a dim
+     line below the buttons and the owner did 34 saves without noticing any of them. */
+  button.ok{background:var(--ok);border-color:var(--ok);color:#062b16}
+  .strip img.flash{outline:3px solid var(--ok);outline-offset:1px}
+  .saved{position:fixed;left:50%;transform:translateX(-50%);bottom:96px;z-index:20;
+    background:var(--ok);color:#062b16;font-weight:700;font-size:13px;padding:9px 18px;
+    border-radius:20px;opacity:0;pointer-events:none;transition:opacity .15s}
+  .saved.on{opacity:1}
 </style>
 <header>
   <h1>Crop</h1>
@@ -65,11 +73,11 @@
         <button id="reset">Default</button>
         <button id="clear">Clear</button>
       </div>
-      <div id="where" style="margin-top:10px;font-size:11.5px;color:var(--dim)"></div>
     </div>
   </aside>
 </main>
 <div class="strip" id="strip"></div>
+<div class="saved" id="saved"></div>
 <script>
 const RATIO = 4 / 5;
 let A = [], i = 0, c = null;
@@ -98,7 +106,10 @@ function render() {
     `${a.w}×${a.h} · ${a.subject}<br>` +
     (a.hero ? `<span class="pill hero">★ HERO</span> ` : '') +
     (a.subject !== 'artist' ? `<span class="pill venue">${a.subject}</span>` : '');
-  $('#count').textContent = `${i + 1} of ${A.length} · ${A.filter(x => x.crop).length} cropped`;
+  const done = A.filter(x => x.crop).length;
+  $('#count').innerHTML = `${i + 1} of ${A.length} · ` +
+    `<b style="color:${done === A.length ? 'var(--ok)' : 'var(--ink)'}">${done} cropped</b>` +
+    (done === A.length ? ' · all done' : `, ${A.length - done} left`);
   document.querySelectorAll('.strip img').forEach((t, n) => {
     t.classList.toggle('on', n === i);
     t.classList.toggle('done', !!A[n].crop);
@@ -144,16 +155,44 @@ function bindDrag() {
 function resize(dw) { const cx = c.x + c.w / 2, cy = c.y + c.h / 2;
   c.w += dw; clamp(); c.x = cx - c.w / 2; c.y = cy - c.h / 2; clamp(); place(); }
 
+let flashT = null;
 async function post(crop) {
-  const a = A[i];
-  const r = await fetch('/crop', { method: 'POST', body: JSON.stringify({ url: a.url, crop }) });
-  const { saved } = await r.json().catch(() => ({ saved: '' }));
+  const a = A[i], n = i;
+  const btn = crop ? $('#save') : $('#clear');
+  let saved = '', failed = false;
+  try {
+    const r = await fetch('/crop', { method: 'POST', body: JSON.stringify({ url: a.url, crop }) });
+    if (!r.ok) throw new Error(String(r.status));
+    ({ saved } = await r.json().catch(() => ({ saved: '' })));
+  } catch (err) {
+    /* A save that fails must SAY SO. Silence previously looked identical to success, which
+       is how 34 saves went by without the owner knowing whether any had worked. */
+    failed = true;
+    $('#saved').textContent = `save FAILED — ${err.message}`;
+    $('#saved').style.background = '#ff4d4d';
+    $('#saved').classList.add('on');
+    return;
+  }
   a.crop = crop; render();
-  /* Say where it landed. A still cut from a clip has no decision key of its own, so it is
-     recorded in media-index.json only — durable, but outside the re-derivation path. That
-     distinction should be visible, not buried in a comment. */
-  $('#where').textContent = crop ? `saved — ${saved}` : 'cleared';
-  $('#where').style.color = saved.startsWith('index only') ? '#ffb020' : 'var(--ok)';
+
+  // Three signals, because one dim line was missed 34 times: the button confirms, a toast
+  // names where it landed, and the thumbnail flashes so progress is visible in the strip.
+  btn.textContent = crop ? '✓ Saved' : '✓ Cleared';
+  btn.classList.add('ok');
+  $('#saved').style.background = '';
+  $('#saved').textContent = crop
+    ? (saved.startsWith('index only') ? '✓ saved — index only (derived still)' : '✓ saved')
+    : '✓ cleared';
+  $('#saved').classList.add('on');
+  document.querySelectorAll('.strip img')[n]?.classList.add('flash');
+
+  clearTimeout(flashT);
+  flashT = setTimeout(() => {
+    btn.textContent = crop ? 'Save crop' : 'Clear';
+    btn.classList.remove('ok');
+    $('#saved').classList.remove('on');
+    document.querySelectorAll('.strip img').forEach((t) => t.classList.remove('flash'));
+  }, 1100);
 }
 const round = (o) => ({ x: +o.x.toFixed(4), y: +o.y.toFixed(4), w: +o.w.toFixed(4), h: +o.h.toFixed(4) });
 

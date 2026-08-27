@@ -151,8 +151,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         n = int(self.headers.get("Content-Length", 0))
         payload = json.loads(self.rfile.read(n) or b"{}")
         where = apply_crop(payload.get("url", ""), payload.get("crop"))
+        # A url that matched nothing wrote nothing, so it must NOT answer 200 — the page
+        # would flash "saved" over a save that never happened, which is the exact class of
+        # silent-success this tool already got wrong once.
+        ok = where != "unknown url"
         body = json.dumps({"saved": where}).encode()
-        self.send_response(200)
+        self.send_response(200 if ok else 404)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
