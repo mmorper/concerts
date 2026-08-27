@@ -30,6 +30,8 @@ export interface Verdict {
   subject?: 'performer' | 'venue' | 'crowd' | 'stub' | null
   /** The frame that leads anything built from this act. One per act per show. */
   hero?: boolean | null
+  /** Normalised crop box, authored at 4:5 in the review page. See #342. */
+  crop?: { x: number; y: number; w: number; h: number } | null
 }
 
 export interface Select {
@@ -55,6 +57,15 @@ export interface Select {
    * file name.
    */
   hero: boolean
+  /**
+   * The owner's crop, normalised 0–1, authored at 4:5.
+   *
+   * A SUPERSET OF A FOCAL POINT, which is why it replaced `focalX`/`focalY` in #342: a point
+   * says where the subject is, a box says where AND how tight. Other ratios derive from its
+   * centre. Null means no crop was set and the renderer applies the measured default —
+   * top-aligned for a performer, centred otherwise.
+   */
+  crop?: { x: number; y: number; w: number; h: number } | null
   /** Timecodes the owner marked on the Photos scrubber. Empty when they marked none. */
   marks?: ClipMarks | null
   /**
@@ -211,6 +222,7 @@ export function buildSelects(args: {
          venue, crowd or stub frame, and hero is scoped per act — a hero belonging to
          nobody has nothing to lead. */
       hero: Boolean(v.hero) && act !== null,
+      crop: v.crop ?? null,
       // A frame already on disk never needs downloading, whatever its clip's state was.
       // Marks only mean anything on a clip; a still has no timeline to mark.
       marks:

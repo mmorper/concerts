@@ -114,3 +114,46 @@ describe('hero reaches media-index.json, not just selects.json', () => {
     expect(f.selects[0].marks?.trim).toEqual({ in: 12, out: 27 })
   })
 })
+
+describe('the crop box (#342)', () => {
+  const CROP = { x: 0.1, y: 0, w: 0.8, h: 0.64 }
+
+  it('survives from the review page to selects.json', async () => {
+    const { buildSelects } = await import('../../scripts/media/selects')
+    const f = buildSelects({
+      date: '2024-08-20', headliner: 'Howard Jones', venue: 'YouTube Theatre',
+      acts: ACTS, assets: [asset('a')],
+      verdicts: { a: { verdict: 'keep', artist: 'Howard Jones', subject: 'performer', crop: CROP } },
+      generated: '',
+    })
+    expect(f.selects[0].crop).toEqual(CROP)
+  })
+
+  it('is null rather than undefined when none was set', async () => {
+    // The renderer branches on it to pick a default, so "absent" must be expressible.
+    const { buildSelects } = await import('../../scripts/media/selects')
+    const f = buildSelects({
+      date: '2024-08-20', headliner: 'Howard Jones', venue: 'YouTube Theatre',
+      acts: ACTS, assets: [asset('a')],
+      verdicts: { a: { verdict: 'keep', artist: 'Howard Jones', subject: 'performer' } },
+      generated: '',
+    })
+    expect(f.selects[0].crop).toBeNull()
+  })
+
+  it('persists durably, so re-deriving never re-asks', () => {
+    expect(toDecision({ verdict: 'keep', artist: 'ABC', subject: 'performer', crop: CROP }))
+      .toEqual({ verdict: 'keep', artist: 'ABC', subject: 'performer', crop: CROP })
+  })
+
+  it('is not carried on a rejection', () => {
+    expect(toDecision({ verdict: 'reject', crop: CROP })).toEqual({ verdict: 'reject' })
+  })
+
+  it('survives independently of the hero mark', () => {
+    // They answer different questions — hero says WHICH photograph leads, crop says what in
+    // it matters — so one must never imply or clobber the other.
+    const d = toDecision({ verdict: 'keep', artist: 'ABC', subject: 'performer', hero: true, crop: CROP })
+    expect(d).toMatchObject({ hero: true, crop: CROP })
+  })
+})

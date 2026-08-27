@@ -41,6 +41,8 @@ export interface Decision {
   subject?: 'performer' | 'venue' | 'crowd' | 'stub'
   /** The frame that leads this act. One per act per show, chosen by hand. */
   hero?: true
+  /** Normalised crop box authored at 4:5 (#342). Durable: re-deriving must not re-ask. */
+  crop?: { x: number; y: number; w: number; h: number }
   /** Seconds into a clip the owner marked for a still. These beat the algorithm (#395). */
   frames?: number[]
   /** Seconds. The section of a clip worth keeping. */
@@ -87,6 +89,7 @@ export function toDecision(v: Verdict): Decision | null {
   if (v.subject) d.subject = v.subject
   // Recorded only when true — a durable record of a choice, not of its absence.
   if (v.hero) d.hero = true
+  if (v.crop) d.crop = { x: v.crop.x, y: v.crop.y, w: v.crop.w, h: v.crop.h }
   if (v.frames?.length) d.frames = [...v.frames]
   if (v.trim) d.trim = { in: v.trim.in, out: v.trim.out }
   return d

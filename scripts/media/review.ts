@@ -312,7 +312,7 @@ function setup(date: string): void {
   }
 
   console.log(`\n  → http://127.0.0.1:${REVIEW_PORT}/index.html`)
-  console.log(`\n  1 usable · 0 reject · P V C S subject · then pick the act · H hero ★ · U undo`)
+  console.log(`\n  1 usable · 0 reject · P V C S subject · then pick the act · H hero ★ · R crop · U undo`)
   console.log(`  When you are done:  npm run media:review ${concert.date} -- --finish\n`)
 }
 
