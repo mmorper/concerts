@@ -42,6 +42,7 @@
   .tile.reject{border-color:var(--reject);opacity:.4}
   .mark{position:absolute;top:7px;left:7px;font-size:17px;text-shadow:0 1px 4px #000}
   .tile.hero{outline:2px solid #ffd23f;outline-offset:-2px}
+  .tile.cropped{box-shadow:inset 0 0 0 2px rgba(255,77,77,.75)}
   .tile.hero .mark{color:#ffd23f;text-shadow:0 1px 4px #000}
   .badges{position:absolute;top:7px;right:7px;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
   .b{font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(0,0,0,.72);
@@ -57,6 +58,19 @@
   .lb{position:fixed;inset:0;background:rgba(6,6,8,.97);display:none;z-index:50}
   .lb.open{display:grid;grid-template-columns:1fr 340px}
   .stage{display:grid;place-items:center;padding:24px;min-width:0}
+  /* The crop box sits in a wrapper sized to the RENDERED image, not the stage, so its
+     normalised coordinates mean the same thing at any window size. */
+  .cropwrap{position:relative;display:inline-block;line-height:0}
+  .cropbox{position:absolute;border:2px solid #ff4d4d;box-shadow:0 0 0 9999px rgba(0,0,0,.55);
+    cursor:move;touch-action:none}
+  .cropbox::after{content:'';position:absolute;inset:0;
+    background:linear-gradient(to right,transparent 33%,rgba(255,77,77,.25) 33%,rgba(255,77,77,.25) 33.4%,transparent 33.4%,
+      transparent 66.6%,rgba(255,77,77,.25) 66.6%,rgba(255,77,77,.25) 67%,transparent 67%),
+      linear-gradient(to bottom,transparent 33%,rgba(255,77,77,.25) 33%,rgba(255,77,77,.25) 33.4%,transparent 33.4%,
+      transparent 66.6%,rgba(255,77,77,.25) 66.6%,rgba(255,77,77,.25) 67%,transparent 67%);
+    pointer-events:none}
+  .crophint{position:absolute;left:0;right:0;bottom:-30px;text-align:center;color:#ff9d9d;
+    font-size:11px;letter-spacing:.04em}
   .stage img,.stage video{max-width:100%;max-height:calc(100vh - 48px);object-fit:contain;border-radius:6px}
   .side{border-left:1px solid var(--line);padding:20px;overflow-y:auto;background:var(--panel)}
   .side h3{margin:0 0 2px;font-size:17px}
@@ -281,6 +295,7 @@ function paint(){
     t.querySelector('.mark').textContent =
       rec.hero ? '★' : v==='keep' ? '✓' : v==='reject' ? '✕' : '';
     t.classList.toggle('hero', !!rec.hero);
+    t.classList.toggle('cropped', !!rec.crop);
   });
   const keep = Object.values(V).filter(x=>x.verdict==='keep').length;
   const rej  = Object.values(V).filter(x=>x.verdict==='reject').length;
@@ -296,6 +311,109 @@ function paint(){
   if ($('#lb').classList.contains('open')) fillLB();
 }
 
+/* ── CROP TOOL ──────────────────────────────────────────────────────────────────
+   A fixed-ratio box the owner positions by hand, stored as normalised {x,y,w,h}.
+
+   WHY A BOX AND NOT A POINT. A focal point says WHERE the subject is; a box says where and
+   HOW TIGHT. That second axis is the difference between pulling in on a face and pulling
+   back for a whole band, and it cannot be expressed as a point. Superset, so it replaces
+   focalX/focalY in #342 rather than sitting beside them.
+
+   AUTHORED AT 4:5 ONLY. Every social channel is 4:5; Open Graph and 9:16 derive from this
+   box's centre. Three boxes per asset would triple the work for the formats posted least.
+
+   THE DEFAULT IS USUALLY RIGHT, so this is for exceptions. Top-aligned for a performer —
+   measured across the corpus, that keeps the face in 18 of 20 assets, because these are shot
+   upward from the crowd. Centred for venue, crowd and stub: no head to protect, and
+   top-align turns a marquee shot into a rectangle of sky. */
+const CROP_RATIO = 4 / 5;
+
+let cropOn = false;
+
+function toggleCrop(){
+  const it = ITEMS[cursor], cur = V[it.uuid] || {};
+  if (it.media === 'video') return toast('crop applies to stills');
+  if (cur.verdict !== 'keep') return toast('crop keepers only');
+  if (!$('#lb').classList.contains('open')) openLB();
+  cropOn = !cropOn;
+  cropOn ? mountCrop() : unmountCrop();
+}
+
+function unmountCrop(){
+  cropOn = false;
+  const w = $('#stage').querySelector('.cropwrap');
+  if (w) w.replaceWith(w.querySelector('img'));
+}
+
+function mountCrop(){
+  const img = $('#stage').querySelector('img');
+  if (!img) return;
+  const it = ITEMS[cursor], cur = V[it.uuid] || {};
+
+  const wrap = document.createElement('div');
+  wrap.className = 'cropwrap';
+  img.replaceWith(wrap); wrap.appendChild(img);
+  const box = document.createElement('div');
+  box.className = 'cropbox';
+  wrap.appendChild(box);
+  const hint = document.createElement('div');
+  hint.className = 'crophint';
+  hint.textContent = 'drag to move · [ ] resize · enter save · esc cancel';
+  wrap.appendChild(hint);
+
+  const R = () => ({ w: img.clientWidth, h: img.clientHeight });
+
+  /* Seed from a saved crop, else from the default. The default is computed against the
+     IMAGE's aspect, so a 4:5 box over a tall portrait is a short band near the top rather
+     than a full-height strip. */
+  let c = cur.crop ? { ...cur.crop } : (() => {
+    const { w: iw, h: ih } = R();
+    const boxH = Math.min(1, (iw / CROP_RATIO) / ih);
+    const performer = !cur.subject || cur.subject === 'performer';
+    return { x: 0, y: performer ? 0 : (1 - boxH) / 2, w: 1, h: boxH };
+  })();
+
+  const place = () => {
+    const { w: iw, h: ih } = R();
+    box.style.left = (c.x * iw) + 'px';
+    box.style.top = (c.y * ih) + 'px';
+    box.style.width = (c.w * iw) + 'px';
+    box.style.height = (c.h * ih) + 'px';
+  };
+  const clamp = () => {
+    c.w = Math.max(0.12, Math.min(1, c.w));
+    const { w: iw, h: ih } = R();
+    c.h = (c.w * iw / CROP_RATIO) / ih;          // ratio is fixed, in RENDERED pixels
+    if (c.h > 1) { c.h = 1; c.w = (c.h * ih * CROP_RATIO) / iw; }
+    c.x = Math.max(0, Math.min(1 - c.w, c.x));
+    c.y = Math.max(0, Math.min(1 - c.h, c.y));
+  };
+  clamp(); place();
+
+  let drag = null;
+  box.onpointerdown = (e) => {
+    drag = { px: e.clientX, py: e.clientY, x: c.x, y: c.y };
+    box.setPointerCapture(e.pointerId); e.preventDefault();
+  };
+  box.onpointermove = (e) => {
+    if (!drag) return;
+    const { w: iw, h: ih } = R();
+    c.x = drag.x + (e.clientX - drag.px) / iw;
+    c.y = drag.y + (e.clientY - drag.py) / ih;
+    clamp(); place();
+  };
+  box.onpointerup = () => { drag = null; };
+
+  wrap._resize = (d) => { const cx = c.x + c.w/2, cy = c.y + c.h/2;
+    c.w += d; clamp(); c.x = cx - c.w/2; c.y = cy - c.h/2; clamp(); place(); };
+  wrap._commit = () => {
+    const it2 = ITEMS[cursor], v2 = V[it2.uuid] || {};
+    hist.push({uuid: it2.uuid, prev: JSON.parse(JSON.stringify(v2))});
+    v2.crop = { x: +c.x.toFixed(4), y: +c.y.toFixed(4), w: +c.w.toFixed(4), h: +c.h.toFixed(4) };
+    V[it2.uuid] = v2; post('/verdict', {uuid: it2.uuid, ...v2});
+    unmountCrop(); paint(); toast('crop saved');
+  };
+}
 function openLB(){ $('#lb').classList.add('open'); fillLB(); }
 function closeLB(){ $('#lb').classList.remove('open'); $('#stage').innerHTML=''; }
 
@@ -502,7 +620,7 @@ let tt; function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add
 
 document.addEventListener('keydown', e=>{
   const k = e.key.toLowerCase();
-  if (k==='escape') return closeLB();
+  if (k==='escape') return cropOn ? unmountCrop() : closeLB();
   if (k==='arrowright'||k==='j'){ advance(1); e.preventDefault(); }
   else if (k==='arrowleft'||k==='k'){ advance(-1); e.preventDefault(); }
   else if (k==='1') setVerdict('keep');
@@ -512,6 +630,12 @@ document.addEventListener('keydown', e=>{
   else if (k==='o') $('#lb-open').click();
   else if (k==='arrowup'){ cycleArtist(-1); e.preventDefault(); }
   else if (k==='arrowdown'){ cycleArtist(1); e.preventDefault(); }
+  else if (cropOn && k==='enter'){ $('#stage').querySelector('.cropwrap')?._commit(); e.preventDefault(); }
+  else if (cropOn && (k==='[' || k===']')){ $('#stage').querySelector('.cropwrap')?._resize(k===']' ? 0.05 : -0.05); e.preventDefault(); }
+  /* R, not C. `c` is already the CROWD subject (SUBJ above), and binding crop to it would
+     have shadowed that branch entirely — pressing c would silently stop setting crowd.
+     R is also the crop key in Lightroom, so it is the less surprising choice anyway. */
+  else if (k==='r' && !e.metaKey && !e.ctrlKey) toggleCrop();
   else if (k==='h') setHero();
   else if (SUBJ[k]) setSubject(SUBJ[k]);
 });

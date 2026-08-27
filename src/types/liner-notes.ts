@@ -21,7 +21,12 @@ export interface PostImage {
    */
   url: string;
   alt: string;
-  source: "artist" | "venue" | "album" | "placeholder";
+  /**
+   * `"show"` is the archive's OWN photography, from `media-index.json` — tier 1 in the
+   * imagery rubric, above an artist press image or a Google Places venue photo. It is the
+   * only source here that cannot be revoked by a third party.
+   */
+  source: "artist" | "venue" | "album" | "placeholder" | "show";
   /**
    * Source of truth for the image: the normalized venue or artist key this
    * image belongs to. Resolved against venues-metadata / artists-metadata,

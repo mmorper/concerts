@@ -136,7 +136,28 @@ export interface LoadedBackground {
  * try/catch cannot help with that — a hang is not an exception.
  */
 export async function loadBackground(imageUrl: string | undefined): Promise<LoadedBackground> {
-  if (!imageUrl || !/^https?:\/\//.test(imageUrl)) {
+  if (!imageUrl) return { background: solidBackground(), usedFallback: true };
+
+  /* A LEADING SLASH IS A FILE IN THIS REPO, NOT A URL TO FETCH.
+     Until #340 every post image was a third-party URL, so this function only ever spoke
+     http. The archive's own photography is site-relative — `/images/shows/…` — and without
+     this branch it took the not-a-URL path and returned a SOLID GROUND: a blank card, and
+     `usedFallback: true`, which per the contract above means syndication must refuse the
+     post outright. Wiring show photos in would have made exactly the posts that gained a
+     real photograph publish worse, or not at all.
+
+     Read from disk. The file is committed, so there is nothing to fetch and no timeout to
+     worry about. */
+  if (imageUrl.startsWith("/")) {
+    const local = join(ROOT, "public", imageUrl.slice(1));
+    if (!existsSync(local)) return { background: solidBackground(), usedFallback: true };
+    return {
+      background: sharp(local).resize(WIDTH, HEIGHT, { fit: "cover", position: "center" }),
+      usedFallback: false,
+    };
+  }
+
+  if (!/^https?:\/\//.test(imageUrl)) {
     return { background: solidBackground(), usedFallback: true };
   }
   try {

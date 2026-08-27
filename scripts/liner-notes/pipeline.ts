@@ -19,6 +19,7 @@ import { analyze, type AlbumErasSlim, type SongAlbumsSlim } from "./analyze.ts";
 import { checkVoice, formatVoiceIssues } from "./voice-check.ts";
 import { score } from "./score.ts";
 import { select, buildPosts, fetchSubjectTracks, POSTS_PER_RUN } from "./curate.ts";
+import type { ImageSources } from "./image-refs.ts";
 import { iTunesClient } from "../utils/itunes-client.ts";
 import { refreshPostImages } from "./refresh-images.ts";
 import { generate } from "./generate.ts";
@@ -101,6 +102,10 @@ export async function run(options: PipelineOptions): Promise<void> {
   // Optional (#270). Absent -> the discography detectors return [], album art
   // falls back to iTunes, and every other detector is byte-identical.
   const albumEras = loadAlbumEras();
+  /* The archive's own photography (#340). Optional by design: it covers 3 of 184 shows
+     today, so absent or sparse is the normal case and every post it cannot serve falls
+     back exactly as before. */
+  const mediaIndex = loadMediaIndex();
   const songAlbums = loadSongAlbums();
   const discographyKeys = loadDiscographyKeys();
   const albumTrackCounts = loadAlbumTrackCounts();
@@ -228,6 +233,7 @@ export async function run(options: PipelineOptions): Promise<void> {
   const publishedAt = new Date().toISOString();
   const newPosts = buildPosts(clean, {
     artistsMetadata,
+    mediaIndex,
     artistsTopTracks,
     venuesMetadata,
     albumEras,
@@ -308,7 +314,7 @@ export async function run(options: PipelineOptions): Promise<void> {
   try {
     const refresh = await refreshPostImages(
       allPosts,
-      { artistsMetadata, artistsTopTracks, venuesMetadata, albumEras },
+      { artistsMetadata, artistsTopTracks, venuesMetadata, albumEras, mediaIndex },
       { validate: true, verbose: true }
     );
     refreshedSlugs = refresh.changedSlugs;
@@ -451,6 +457,28 @@ export async function run(options: PipelineOptions): Promise<void> {
  * discography detectors return [] and album art falls back to iTunes, so the
  * pipeline produces exactly its pre-v5.4 output.
  */
+/**
+ * `media-index.json` — the archive's own photography.
+ *
+ * Degrades the same way loadAlbumEras does, and for a stronger reason: this covers 3 of 184
+ * shows today. Missing or unreadable must mean "no show photographs available", never a
+ * failed run — every post it cannot serve falls back to the artist or venue image exactly
+ * as it did before this existed.
+ */
+function loadMediaIndex(): ImageSources["mediaIndex"] {
+  const path = join(DATA_DIR, "media-index.json");
+  if (!existsSync(path)) return undefined;
+  try {
+    const parsed = JSON.parse(readFileSync(path, "utf8")) as ImageSources["mediaIndex"];
+    const n = parsed?.assets?.filter((a) => a.kind === "image" && a.url).length ?? 0;
+    console.log(`   📸 media-index: ${n} published still${n === 1 ? "" : "s"} available to posts`);
+    return parsed;
+  } catch (err) {
+    console.warn(`   ⚠️  Could not read media-index.json (${(err as Error).message})`);
+    return undefined;
+  }
+}
+
 function loadAlbumEras(): AlbumErasSlim | undefined {
   const path = join(DATA_DIR, "album-eras.json");
   if (!existsSync(path)) {

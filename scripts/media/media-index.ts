@@ -58,6 +58,14 @@ export interface MediaAsset {
   tier: Tier
   source: 'personal'
   hero: boolean
+  /**
+   * The owner's crop, normalised 0–1, authored at 4:5 (#342).
+   *
+   * Null means none was set, and the renderer applies the measured default rather than
+   * guessing: top-aligned for a performer — which keeps the face in 18 of 20 published
+   * assets — and centred for a venue, crowd or stub frame, which has no head to protect.
+   */
+  crop?: { x: number; y: number; w: number; h: number } | null
   order: number
   /** Dimensions of the committed master, after right-sizing. */
   width: number

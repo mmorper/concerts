@@ -251,6 +251,8 @@ async function ingestFile(args: {
    * matched and every asset in the archive was `hero: false`.
    */
   hero?: boolean
+  /** The owner's crop box, normalised, from the review page (#342). */
+  crop?: { x: number; y: number; w: number; h: number } | null
   index: MediaIndex
   report: Report
   notes: string | null
@@ -372,6 +374,7 @@ async function ingestFile(args: {
     tier: 1,
     source: 'personal',
     hero,
+    crop: args.crop ?? null,
     order,
     quality,
     width: out.width,
@@ -605,6 +608,7 @@ async function ingestFromSelects(args: {
       label: staged.get(file),
       provenanceName: sel.sourceFile ? sel.originalFilename : null,
       hero: sel.hero,
+      crop: sel.crop ?? null,
       // A frame has no library identity of its own; record the CLIP it came from.
       uuid: sel.sourceFile ? null : sel.uuid,
     })
