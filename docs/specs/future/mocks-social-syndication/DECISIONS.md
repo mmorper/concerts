@@ -42,6 +42,23 @@ is noted — those are the load-bearing entries.
 > The scrim carries it on the four acts tested, but a bright or busy frame will fight it in a
 > way the band never did. If that becomes a real problem the answer is to redesign the band
 > as PORTRAIT, not to go back to slicing crops.
+>
+> **AND THE BAND'S FAILURE WAS DERIVATION, NOT GEOMETRY.** Re-tested 2026-08-27: the band
+> decapitated all four acts because a non-4:5 target was deriving from the CENTRE of the
+> crop, discarding its top fifth — which is where the head is. Deriving from the TOP fixes
+> all four, and fixes the 1.91:1 wide card too. The rule now lives in #342:
+>
+> **Top-derive the archive's own photography (`source: personal`). Centre-derive everything
+> else.** Concert frames are shot upward from a crowd, so the subject sits high with nothing
+> above worth keeping. A studio press shot is composed centred with deliberate headroom, and
+> top-aligning one shows you the backdrop — visibly worse, rendered side by side.
+>
+> So full bleed remains the choice for tier 1 on its own merit — 0% of the crop lost against
+> the band's 39% — rather than because the band was broken. It was not; it was derived
+> wrongly, by me, in the first version of #342.
+>
+> **Renders:** `.preview/band-centre-vs-top.jpg`, `.preview/wide-derivation.jpg`,
+> `.preview/tier2-derivation.jpg`.
 
 **Two render targets from day one, and two layouts — not one layout scaled.**
 
