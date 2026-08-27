@@ -1,0 +1,184 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Crop — Morperhaus media</title>
+<style>
+  :root{--bg:#0c0c10;--panel:#141419;--ink:#e9e9f0;--dim:#8b8b9c;--line:#26262f;--red:#ff4d4d;--ok:#3ddc84}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,sans-serif}
+  header{position:sticky;top:0;z-index:5;background:var(--panel);border-bottom:1px solid var(--line);
+    padding:12px 18px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  h1{font-size:15px;margin:0;font-weight:600;letter-spacing:.01em}
+  .count{color:var(--dim);font-size:12px}
+  .keys{margin-left:auto;color:var(--dim);font-size:11.5px;letter-spacing:.02em}
+  main{display:grid;grid-template-columns:1fr 420px;gap:24px;padding:20px;align-items:start}
+  .work{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;
+    display:grid;place-items:center;min-height:60vh}
+  .wrap{position:relative;display:inline-block;line-height:0;max-width:100%}
+  .wrap img{max-width:100%;max-height:70vh;display:block;border-radius:4px}
+  .box{position:absolute;border:2px solid var(--red);box-shadow:0 0 0 9999px rgba(0,0,0,.6);
+    cursor:move;touch-action:none}
+  /* Rule of thirds, so the box is a composition tool rather than a rectangle. */
+  .box::after{content:'';position:absolute;inset:0;pointer-events:none;
+    background:
+      linear-gradient(to right,transparent 33.2%,rgba(255,77,77,.3) 33.2%,rgba(255,77,77,.3) 33.5%,transparent 33.5%,
+        transparent 66.5%,rgba(255,77,77,.3) 66.5%,rgba(255,77,77,.3) 66.8%,transparent 66.8%),
+      linear-gradient(to bottom,transparent 33.2%,rgba(255,77,77,.3) 33.2%,rgba(255,77,77,.3) 33.5%,transparent 33.5%,
+        transparent 66.5%,rgba(255,77,77,.3) 66.5%,rgba(255,77,77,.3) 66.8%,transparent 66.8%)}
+  aside{position:sticky;top:70px;display:flex;flex-direction:column;gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .card h2{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--dim);margin:0 0 10px}
+  /* The live 4:5 result. Judging the rectangle is not the same as judging the card. */
+  .prev{width:100%;aspect-ratio:4/5;background:#000;border-radius:6px;overflow:hidden;position:relative}
+  .prev img{position:absolute;transform-origin:0 0;max-width:none}
+  .meta{font-size:12.5px;color:var(--dim);line-height:1.7}
+  .meta b{color:var(--ink);font-weight:600}
+  .strip{display:flex;gap:6px;overflow-x:auto;padding:10px 18px;background:var(--panel);
+    border-top:1px solid var(--line);position:sticky;bottom:0}
+  .strip img{height:56px;border-radius:3px;cursor:pointer;opacity:.4;border:2px solid transparent}
+  .strip img.on{opacity:1;border-color:var(--red)}
+  .strip img.done{opacity:.85;border-color:var(--ok)}
+  .pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+  .pill.hero{background:#ffd23f;color:#1a1a00}
+  .pill.venue{background:#334;color:#cfd}
+  button{background:#1c1c24;color:var(--ink);border:1px solid var(--line);border-radius:6px;
+    padding:8px 12px;font-size:12.5px;cursor:pointer;font-weight:600}
+  button:hover{border-color:#3a3a48}
+  .row{display:flex;gap:8px}
+  .row button{flex:1}
+</style>
+<header>
+  <h1>Crop</h1>
+  <span class="count" id="count"></span>
+  <span class="keys">← → move · drag box · [ ] resize · <b>enter</b> save · <b>0</b> reset to default · <b>x</b> clear</span>
+</header>
+<main>
+  <div class="work"><div class="wrap" id="wrap"></div></div>
+  <aside>
+    <div class="card">
+      <h2>4:5 result</h2>
+      <div class="prev" id="prev"></div>
+    </div>
+    <div class="card"><h2>Asset</h2><div class="meta" id="meta"></div></div>
+    <div class="card">
+      <div class="row">
+        <button id="save">Save crop</button>
+        <button id="reset">Default</button>
+        <button id="clear">Clear</button>
+      </div>
+      <div id="where" style="margin-top:10px;font-size:11.5px;color:var(--dim)"></div>
+    </div>
+  </aside>
+</main>
+<div class="strip" id="strip"></div>
+<script>
+const RATIO = 4 / 5;
+let A = [], i = 0, c = null;
+const $ = (s) => document.querySelector(s);
+
+/* The measured default, same rule as the review page and #342: top-aligned for a performer
+   because these are shot upward from the crowd — it keeps the face in 18 of 20 published
+   stills — and centred for a venue or crowd frame, which has no head to protect and which
+   top-align turns into a rectangle of empty sky. */
+function defaultBox(a, iw, ih) {
+  const boxH = Math.min(1, (iw / RATIO) / ih);
+  const top = (a.subject || 'artist') === 'artist';
+  return { x: 0, y: top ? 0 : (1 - boxH) / 2, w: 1, h: boxH };
+}
+
+function render() {
+  const a = A[i];
+  $('#wrap').innerHTML = `<img id="img" src="${a.url}"><div class="box" id="box"></div>`;
+  const img = $('#img');
+  img.onload = () => {
+    c = a.crop ? { ...a.crop } : defaultBox(a, img.clientWidth, img.clientHeight);
+    clamp(); place(); bindDrag();
+  };
+  $('#meta').innerHTML =
+    `<b>${a.url.split('/').pop()}</b><br>${a.artist ?? '—'} · ${a.date}<br>` +
+    `${a.w}×${a.h} · ${a.subject}<br>` +
+    (a.hero ? `<span class="pill hero">★ HERO</span> ` : '') +
+    (a.subject !== 'artist' ? `<span class="pill venue">${a.subject}</span>` : '');
+  $('#count').textContent = `${i + 1} of ${A.length} · ${A.filter(x => x.crop).length} cropped`;
+  document.querySelectorAll('.strip img').forEach((t, n) => {
+    t.classList.toggle('on', n === i);
+    t.classList.toggle('done', !!A[n].crop);
+  });
+}
+
+const R = () => { const im = $('#img'); return { w: im.clientWidth, h: im.clientHeight }; };
+function clamp() {
+  const { w: iw, h: ih } = R();
+  c.w = Math.max(0.12, Math.min(1, c.w));
+  c.h = (c.w * iw / RATIO) / ih;
+  if (c.h > 1) { c.h = 1; c.w = (c.h * ih * RATIO) / iw; }
+  c.x = Math.max(0, Math.min(1 - c.w, c.x));
+  c.y = Math.max(0, Math.min(1 - c.h, c.y));
+}
+function place() {
+  const { w: iw, h: ih } = R(), b = $('#box');
+  b.style.left = c.x * iw + 'px'; b.style.top = c.y * ih + 'px';
+  b.style.width = c.w * iw + 'px'; b.style.height = c.h * ih + 'px';
+  preview();
+}
+/* Scale the SAME file inside a 4:5 window so the panel shows the real result rather than a
+   re-crop that might differ from what the renderer does. */
+function preview() {
+  const a = A[i], p = $('#prev');
+  p.innerHTML = `<img src="${a.url}">`;
+  const pi = p.querySelector('img');
+  pi.onload = () => {
+    const pw = p.clientWidth, ph = p.clientHeight;
+    const sx = pw / (c.w * a.w), sy = ph / (c.h * a.h);
+    pi.style.width = a.w + 'px'; pi.style.height = a.h + 'px';
+    pi.style.transform = `scale(${Math.min(sx, sy)}) translate(${-c.x * a.w}px, ${-c.y * a.h}px)`;
+  };
+}
+function bindDrag() {
+  const b = $('#box'); let d = null;
+  b.onpointerdown = (e) => { d = { px: e.clientX, py: e.clientY, x: c.x, y: c.y };
+    b.setPointerCapture(e.pointerId); e.preventDefault(); };
+  b.onpointermove = (e) => { if (!d) return; const { w: iw, h: ih } = R();
+    c.x = d.x + (e.clientX - d.px) / iw; c.y = d.y + (e.clientY - d.py) / ih; clamp(); place(); };
+  b.onpointerup = () => { d = null; };
+}
+function resize(dw) { const cx = c.x + c.w / 2, cy = c.y + c.h / 2;
+  c.w += dw; clamp(); c.x = cx - c.w / 2; c.y = cy - c.h / 2; clamp(); place(); }
+
+async function post(crop) {
+  const a = A[i];
+  const r = await fetch('/crop', { method: 'POST', body: JSON.stringify({ url: a.url, crop }) });
+  const { saved } = await r.json().catch(() => ({ saved: '' }));
+  a.crop = crop; render();
+  /* Say where it landed. A still cut from a clip has no decision key of its own, so it is
+     recorded in media-index.json only — durable, but outside the re-derivation path. That
+     distinction should be visible, not buried in a comment. */
+  $('#where').textContent = crop ? `saved — ${saved}` : 'cleared';
+  $('#where').style.color = saved.startsWith('index only') ? '#ffb020' : 'var(--ok)';
+}
+const round = (o) => ({ x: +o.x.toFixed(4), y: +o.y.toFixed(4), w: +o.w.toFixed(4), h: +o.h.toFixed(4) });
+
+$('#save').onclick = () => post(round(c));
+$('#clear').onclick = () => post(null);
+$('#reset').onclick = () => { const img = $('#img');
+  c = defaultBox(A[i], img.clientWidth, img.clientHeight); clamp(); place(); };
+
+function go(n) { i = Math.max(0, Math.min(A.length - 1, n)); render(); }
+document.addEventListener('keydown', (e) => {
+  const k = e.key.toLowerCase();
+  if (k === 'arrowright') { go(i + 1); e.preventDefault(); }
+  else if (k === 'arrowleft') { go(i - 1); e.preventDefault(); }
+  else if (k === '[') { resize(-0.04); e.preventDefault(); }
+  else if (k === ']') { resize(0.04); e.preventDefault(); }
+  else if (k === 'enter') { $('#save').click(); e.preventDefault(); }
+  else if (k === '0') { $('#reset').click(); }
+  else if (k === 'x') { $('#clear').click(); }
+});
+
+fetch('/assets').then(r => r.json()).then(d => {
+  A = d.assets;
+  $('#strip').innerHTML = A.map((a, n) => `<img src="${a.url}" data-n="${n}">`).join('');
+  document.querySelectorAll('.strip img').forEach(t => t.onclick = () => go(+t.dataset.n));
+  if (!A.length) { $('#count').textContent = 'nothing to crop'; return; }
+  render();
+});
+</script>
