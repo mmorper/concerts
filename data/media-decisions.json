@@ -57,6 +57,136 @@
         }
       }
     },
+    "2023-05-09": {
+      "reviewed": 25,
+      "decidedAt": "2026-08-28T21:53:33.676Z",
+      "decisions": {
+        "0342B873-6DF3-4CAC-9C03-2B51D3624372": {
+          "verdict": "keep",
+          "artist": "Crowded House",
+          "subject": "venue",
+          "crop": {
+            "x": 0.0505,
+            "y": 0.0306,
+            "w": 0.85,
+            "h": 0.7979
+          }
+        },
+        "0E1D380E-E635-468C-AA00-0BCB12B30A96": {
+          "verdict": "reject"
+        },
+        "0F311E3F-A86A-42D5-ABA2-2E6177B789B9": {
+          "verdict": "reject"
+        },
+        "33B30005-8D7A-4392-B362-792F7B7D2A74": {
+          "verdict": "reject"
+        },
+        "3F8209D6-0BF5-4B24-8367-C8916B86F79B": {
+          "verdict": "reject"
+        },
+        "3F878856-D001-42C0-B657-16D2322EF81A": {
+          "verdict": "reject"
+        },
+        "57CAA552-8553-4423-A604-7087B2E2E114": {
+          "verdict": "reject"
+        },
+        "5B943C90-501D-4777-AAC8-FAA54EB2AAD7": {
+          "verdict": "reject"
+        },
+        "889B8654-EF05-40BF-A767-4E29CEB527B3": {
+          "verdict": "keep",
+          "artist": "Crowded House",
+          "subject": "venue",
+          "crop": {
+            "x": 0.0877,
+            "y": 0.1415,
+            "w": 0.9,
+            "h": 0.8435
+          }
+        },
+        "8FE15844-C3AB-44C4-A3C2-80FBF974D5D6": {
+          "verdict": "reject"
+        },
+        "952A1C45-05DE-472D-B969-7774DA3B71DD": {
+          "verdict": "reject"
+        },
+        "9C0E4C4C-363D-4EF3-9AE9-E203036332CC": {
+          "verdict": "reject"
+        },
+        "A1A30420-4A42-4ABE-8FCB-54DF4DB371C6": {
+          "verdict": "reject"
+        },
+        "A2C16D39-BFDA-4DFC-B0FE-9E57F7D1AA0C": {
+          "verdict": "reject"
+        },
+        "A750C021-3074-403B-A38F-8DD9CCC1BC59": {
+          "verdict": "keep",
+          "artist": "Crowded House",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.1,
+            "y": 0.1252,
+            "w": 0.9,
+            "h": 0.8435
+          }
+        },
+        "B9E4B42B-5F96-4C24-989A-702F43AC6040": {
+          "verdict": "keep",
+          "artist": "Crowded House",
+          "subject": "performer",
+          "crop": {
+            "x": 0.1355,
+            "y": 0,
+            "w": 0.713,
+            "h": 0.9345
+          }
+        },
+        "BBCF38D5-58E4-46FE-9291-E3DC627D1CD7": {
+          "verdict": "reject"
+        },
+        "C3372B23-7A06-41C5-9964-326340BDB0C9": {
+          "verdict": "reject"
+        },
+        "C4EE4F59-1260-4A5A-ADBF-89C41F51CC16": {
+          "verdict": "reject"
+        },
+        "D7F44D81-C500-41B7-8112-20D02B928A18": {
+          "verdict": "keep",
+          "artist": "Crowded House",
+          "subject": "performer",
+          "crop": {
+            "x": 0.093,
+            "y": 0.0323,
+            "w": 0.8,
+            "h": 0.7498
+          }
+        },
+        "E2BBEB8A-A4D5-47EF-B25C-639281C8194A": {
+          "verdict": "reject"
+        },
+        "E9BCE181-A569-4EE3-8C30-DACEBC9CECF2": {
+          "verdict": "reject"
+        },
+        "FC46AA7B-009E-4E71-8DF7-8DC48DFC1EC3": {
+          "verdict": "reject"
+        },
+        "FF2C4C1D-97BE-47A4-A800-3CDF30E50630": {
+          "verdict": "keep",
+          "artist": "Crowded House",
+          "subject": "venue",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "FFB68C43-0390-4461-B470-DA54A58B714C": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2023-11-22": {
       "reviewed": 26,
       "decidedAt": "2026-08-28T19:06:01.353Z",
