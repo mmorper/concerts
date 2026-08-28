@@ -140,7 +140,18 @@ function fullBleed(v: TemplateVals): string {
   <div id="type" style="position:absolute;left:0;right:0;bottom:0;padding:0 72px 72px 72px;box-sizing:border-box;display:flex;flex-direction:column;gap:28px;">
     <div style="display:flex;align-items:center;gap:18px;">
       <span style="width:56px;height:5px;background:#7c3aed;flex-shrink:0;"></span>
-      <span style="font-size:34px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,0.6);">${escapeHtml(v.acts)}</span>
+      <!-- 🔴 THE ACT LINE NEEDS ITS OWN GROUND, AND ONLY THE ACT LINE DOES.
+           It sits at the very top of the scrim, where the gradient is still near zero
+           opacity, so on a bright frame it is white type on stage light. Measured across
+           ten cards: the hook is fine — by the time it starts the scrim has taken hold —
+           and Kasabian's green wash and Haircut 100's lit drum kit fail on this line alone.
+           A text-shadow was already here and is not enough against a bright, busy ground.
+
+           SAME LOZENGE AS THE BYLINE, which reads cleanly on all twenty cards, so this is
+           the card's existing vocabulary rather than a new device. box-decoration-break
+           gives each wrapped line its own block instead of one ragged rectangle behind the
+           lot — the act line wraps on any bill of three. -->
+      <span style="font-size:34px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#fff;background:rgba(8,10,16,0.58);padding:7px 14px;border-radius:4px;box-decoration-break:clone;-webkit-box-decoration-break:clone;line-height:1.42;">${escapeHtml(v.acts)}</span>
     </div>
     <div id="hook" style="font-family:'Playfair Display',Georgia,serif;font-size:${v.hookSize}px;line-height:1.05;letter-spacing:-0.028em;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,0.55);text-wrap:pretty;">${escapeHtml(v.hook)}</div>
     <div style="display:flex;justify-content:space-between;align-items:baseline;gap:32px;">
