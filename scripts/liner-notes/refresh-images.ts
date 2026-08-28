@@ -22,10 +22,14 @@
 import type { LinerNotesPost, PostImage } from "../../src/types/liner-notes.ts";
 import {
   PLACEHOLDER_IMAGE_URL,
+  VENUE_SUBJECT_DETECTORS,
   getAlbumArt,
+  getShowAsset,
   getVenueImageUrl,
   inferRef,
+  postNightOf,
   resolveImageUrl,
+  showByline,
   upsizeAppleMusicUrl,
   type ImageSources,
 } from "./image-refs.ts";
@@ -48,8 +52,63 @@ export interface RefreshResult {
   fellBack: number;
   /** Definitively-dead URLs found, as `slug: url` — surfaced in the run log. */
   deadUrls: string[];
+  /** Posts promoted from a sourced image to the archive's own photography. */
+  upgraded: number;
   /** Slugs whose image URL changed, so callers can regenerate derived assets. */
   changedSlugs: string[];
+}
+
+/**
+ * Promote a published post to the archive's own photography when one now exists.
+ *
+ * 🔴 WITHOUT THIS THE ORDERING FIX ONLY REACHES FUTURE POSTS. `resolveImage` decides tier
+ * at CURATE time, and nothing re-runs it: `refreshPostImages` re-resolves `url` from `ref`
+ * but never revisits `source`, and its repair path offers album, artist and venue only. So
+ * a post published before its show was culled keeps a press shot forever, however good the
+ * photograph that arrived later. The archive gains photography retroactively — that is the
+ * normal case, not the exception, with 6 of 184 shows covered so far.
+ *
+ * The rule is `resolveImage`'s, applied to a post rather than a finding:
+ *   - never over the archive's own tier-1 image (there is nothing to upgrade)
+ *   - never on a venue-subject post, where an artist photograph is the wrong subject
+ *   - never when the act has no published photograph, which is most acts
+ *
+ * `ref` stays the ARTIST, so the choice keeps improving: mark a better hero later and the
+ * post picks it up on the next run, exactly as every other source self-heals.
+ */
+export function upgradeToOwnPhotography(
+  posts: LinerNotesPost[],
+  sources: ImageSources,
+  verbose = false
+): string[] {
+  const upgraded: string[] = [];
+
+  for (const post of posts) {
+    if (post.image?.source === "show") continue;
+    if (VENUE_SUBJECT_DETECTORS.has(post.detector)) continue;
+
+    const lead = post.artists[0];
+    if (!lead) continue;
+
+    const asset = getShowAsset(lead, sources);
+    if (!asset?.url) continue;
+
+    post.image = {
+      url: asset.url,
+      // The stored alt describes the SOURCE image — "Album art", or an artist name for a
+      // press shot. It cannot survive a change of photograph.
+      alt: sources.artistsMetadata[lead]?.name ?? post.image.alt,
+      source: "show",
+      ref: lead,
+      credit: showByline(asset.date, postNightOf(post)),
+      shotOn: asset.date,
+      ...(asset.crop ? { crop: { ...asset.crop } } : {}),
+    };
+    upgraded.push(post.slug);
+    if (verbose) console.log(`   ⬆ ${post.slug}: upgraded to our own photograph of ${lead}`);
+  }
+
+  return upgraded;
 }
 
 /** Candidate images for a post, best first, used when its own ref goes dead. */
@@ -111,9 +170,18 @@ export async function refreshPostImages(
     reresolved: 0,
     repaired: 0,
     fellBack: 0,
+    upgraded: 0,
     deadUrls: [],
     changedSlugs: [],
   };
+
+  /* Upgrade BEFORE re-resolving. An upgraded post's URL is already current, and running it
+     through the re-resolve step afterwards would count it twice. Its slug still has to
+     reach `changedSlugs` — the OG card is skipped when a PNG already exists, so a post that
+     changed photographs would otherwise keep the card composited from the old one. */
+  const upgraded = upgradeToOwnPhotography(posts, sources, verbose);
+  result.upgraded = upgraded.length;
+  result.changedSlugs.push(...upgraded);
 
   // ── Steps 1 & 2: backfill refs, then re-resolve URLs (local, no network) ──
   for (const post of posts) {

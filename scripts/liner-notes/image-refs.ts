@@ -17,7 +17,7 @@
  */
 
 import { normalizeAlbumTitle } from "../utils/album-title.ts";
-import type { CropBox, PostImage } from "../../src/types/liner-notes.ts";
+import type { CropBox, LinerNotesPost, PostImage } from "../../src/types/liner-notes.ts";
 
 export const VENUE_PHOTO_PLACEHOLDER = "/images/venues/fallback.jpg";
 
@@ -257,6 +257,46 @@ export function showByline(shotOn: string, postNight?: string): string {
   }
   return `${OWNER_BYLINE} · ${fullDate(shotOn)}`;
 }
+
+/**
+ * The single night a post is about, or undefined when it is about a span.
+ *
+ * 🔴 NOT `resolveAnchorConcert`. That always returns a concert — for a span post it falls
+ * through to "earliest by the lead artist", which its own doc calls furniture identifying
+ * *a* show rather than a claim about the story. Passing that date to the different-night
+ * rule promotes a deliberate fallback into an assertion, and the byline then apologises for
+ * a night the post never claimed.
+ *
+ * The `?show=` deep link is the durable signal, and the only one: the pipeline emits it
+ * exclusively when a setlist backs that night. `concertDate` lives on the finding and does
+ * not survive onto the published post, so it cannot be read here.
+ */
+export function postNightOf(post: Pick<LinerNotesPost, "deepLinks">): string | undefined {
+  const link = post.deepLinks?.find((l) => l.type === "setlist");
+  const raw = link?.url.match(/[?&]show=([^&]+)/)?.[1];
+  return raw ? decodeURIComponent(raw) : undefined;
+}
+
+/**
+ * Detectors whose post is about a PLACE, not an act.
+ *
+ * `resolveImage` gates on the detector's own `suggestedImage.type === "venue"`, which is the
+ * richer signal and the right one to use where it exists. A published post does not carry
+ * its finding, so this is the equivalent gate for the back catalogue — derived by reading
+ * every `suggestedImage: { type: "venue" }` in analyze.ts, and 1:1 with them today.
+ *
+ * ⚠️ A NEW VENUE-SUBJECT DETECTOR MUST BE ADDED HERE TOO. The failure is quiet and it is
+ * the one this gate exists to stop: `venue-loyalty` and `venue-ghost` carry an `artists`
+ * array, so `artists[0]` is whoever sorts first — on both Universal Amphitheater posts that
+ * is Howard Jones, photographed in 2024 at a venue demolished years earlier.
+ */
+export const VENUE_SUBJECT_DETECTORS = new Set([
+  "venue-loyalty",
+  "venue-ghost",
+  "geographic-chapter",
+  "historical-moment",
+  "city-pulse",
+]);
 
 /**
  * Resolve a post image's current URL from its reference.

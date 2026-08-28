@@ -23,7 +23,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import puppeteer, { type Browser } from "puppeteer";
 import { deriveRect, derivationFor, retainedFraction } from "../media/derive.ts";
-import { getShowAsset, showByline, type ImageSources } from "../liner-notes/image-refs.ts";
+import { getShowAsset, postNightOf, showByline, type ImageSources } from "../liner-notes/image-refs.ts";
 import { buildCredit, resolveAnchorConcert, type PayloadSources } from "./payload.ts";
 import { classifyImageUrl } from "./provenance.ts";
 import type { CropBox, LinerNotesPost } from "../../src/types/liner-notes.ts";
@@ -153,25 +153,6 @@ const MONTHS = ["January","February","March","April","May","June","July","August
 function monthYear(iso: string): string {
   const [y, m] = iso.split("-").map(Number);
   return `${MONTHS[(m ?? 1) - 1]} ${y}`;
-}
-
-/**
- * The single night a post is about, or undefined when it is about a span.
- *
- * 🔴 NOT `resolveAnchorConcert`. That always returns a concert — for a span post it falls
- * through to "earliest by the lead artist", which its own doc calls furniture identifying
- * *a* show rather than a claim about the story. Passing that date to the different-night
- * rule promotes a deliberate fallback into an assertion, and the byline then apologises for
- * a night the post never claimed.
- *
- * The `?show=` deep link is the durable signal, and the only one: the pipeline emits it
- * exclusively when a setlist backs that night. `concertDate` lives on the finding and does
- * not survive onto the published post, so it cannot be read here.
- */
-export function postNightOf(post: Pick<LinerNotesPost, "deepLinks">): string | undefined {
-  const link = post.deepLinks?.find((l) => l.type === "setlist");
-  const raw = link?.url.match(/[?&]show=([^&]+)/)?.[1];
-  return raw ? decodeURIComponent(raw) : undefined;
 }
 
 /**

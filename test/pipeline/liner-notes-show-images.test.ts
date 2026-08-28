@@ -269,3 +269,54 @@ describe('resolveImage ordering', () => {
     expect(post.image.credit).toBeUndefined()
   })
 })
+
+// ── The OG card has to honour the box ───────────────────────────────────────
+
+describe('loadBackground with a crop box', () => {
+  const HERO = '/images/shows/2024-08-20-howard-jones-03.jpg'
+  const CROP = { x: 0, y: 0.0856, w: 1, h: 0.7034 }
+
+  it('takes different pixels with the box than without it', async () => {
+    // The 1.91:1 card shows 42% of an authored 4:5 box — the most aggressive slice in the
+    // system. Centre-cropping takes that 42% from the middle and discards the top fifth of
+    // the crop, which on a frame shot upward from a crowd is the head. Nothing about the
+    // failure is loud: the card renders, it is the right size, and the subject is
+    // decapitated. So this asserts the two paths do not agree.
+    const { loadBackground } = await import('../../scripts/liner-notes/og-image')
+    const cropped = await (await loadBackground(HERO, CROP)).background.png().toBuffer()
+    const centred = await (await loadBackground(HERO)).background.png().toBuffer()
+    expect(cropped.equals(centred)).toBe(false)
+  })
+
+  it('still produces a 1200x630 card', async () => {
+    const { loadBackground, WIDTH, HEIGHT } = await import('../../scripts/liner-notes/og-image')
+    const meta = await (await loadBackground(HERO, CROP)).background.png().toBuffer()
+      .then((b) => (import('sharp')).then((s) => s.default(b).metadata()))
+    expect(meta.width).toBe(WIDTH)
+    expect(meta.height).toBe(HEIGHT)
+  })
+
+  it('takes the crop from the TOP of the box, not its centre', async () => {
+    // The rule, asserted against the pixels rather than restated. Top-derivation starts at
+    // the box top (y=175); centre-derivation starts 418px lower and is a different image.
+    const sharp = (await import('sharp')).default
+    const { deriveRect } = await import('../../scripts/media/derive')
+    const { loadBackground, WIDTH, HEIGHT } = await import('../../scripts/liner-notes/og-image')
+    const file = 'public/images/shows/2024-08-20-howard-jones-03.jpg'
+    const src = { width: 1152, height: 2048 }
+
+    expect(deriveRect(CROP, src, WIDTH / HEIGHT, 'top').top).toBe(175)
+    expect(deriveRect(CROP, src, WIDTH / HEIGHT, 'centre').top).toBe(593)
+
+    const shipped = await (await loadBackground(HERO, CROP)).background.png().toBuffer()
+    const top = await sharp(file).extract(deriveRect(CROP, src, WIDTH / HEIGHT, 'top'))
+      .resize(WIDTH, HEIGHT, { fit: 'fill' }).png().toBuffer()
+    expect(shipped.equals(top)).toBe(true)
+  })
+
+  it('falls back to a centre crop when no box has been drawn', async () => {
+    // Unreviewed, not broken. A card is still owed for the site's own og:image.
+    const { loadBackground } = await import('../../scripts/liner-notes/og-image')
+    expect((await loadBackground(HERO)).usedFallback).toBe(false)
+  })
+})

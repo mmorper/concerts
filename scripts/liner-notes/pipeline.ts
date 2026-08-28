@@ -319,8 +319,10 @@ export async function run(options: PipelineOptions): Promise<void> {
     );
     refreshedSlugs = refresh.changedSlugs;
     refreshMutated = refresh.backfilled > 0 || refresh.changedSlugs.length > 0;
+    // `changedSlugs` already carries every upgrade, so `refreshMutated` covers them.
     console.log(
       `   ✓ ${refresh.posts} post${refresh.posts !== 1 ? "s" : ""} checked — ` +
+        `${refresh.upgraded} upgraded to our own photography, ` +
         `${refresh.backfilled} ref backfilled, ${refresh.reresolved} re-resolved, ` +
         `${refresh.repaired} repaired, ${refresh.fellBack} to placeholder`
     );
