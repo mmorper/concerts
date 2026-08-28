@@ -144,6 +144,19 @@ function normalizedOpener(opener: unknown): string | undefined {
   return undefined;
 }
 
+/**
+ * Which venue the post is *about*, which is not always the venue of the night
+ * it anchors to: a post can name a venue the resolved concert does not, and
+ * the credit stack has to follow the post. Shared by the credit stack and
+ * `refs` so a mention can never be addressed to a different venue than the one
+ * printed on the card.
+ */
+export function resolveVenueSlug(post: LinerNotesPost, concert: Concert): string {
+  return post.venues.includes(concert.venueNormalized)
+    ? concert.venueNormalized
+    : post.venues[0] ?? concert.venueNormalized;
+}
+
 export function buildCredit(
   post: LinerNotesPost,
   concert: Concert,
@@ -153,10 +166,7 @@ export function buildCredit(
     .map((slug) => sources.artistsMetadata[slug]?.name ?? displayFromSlug(slug))
     .filter(Boolean);
 
-  const venueSlug = post.venues.includes(concert.venueNormalized)
-    ? concert.venueNormalized
-    : post.venues[0] ?? concert.venueNormalized;
-  const venueMeta = sources.venuesMetadata[venueSlug];
+  const venueMeta = sources.venuesMetadata[resolveVenueSlug(post, concert)];
 
   return {
     artists: artists.length ? artists : [concert.headliner],
@@ -313,6 +323,13 @@ export function buildPayload(
     ...(social?.beats?.length ? { beats: social.beats } : {}),
     caption: social?.caption ?? "",
     credit,
+    // Slugs straight off the record, never re-derived from the display names
+    // in `credit` — see the note on `refs` in types.ts for the 23 artists that
+    // do not survive the round trip and the two that collide.
+    refs: {
+      artists: post.artists,
+      venue: concert ? resolveVenueSlug(post, concert) : undefined,
+    },
     url: `${SITE_URL}/liner-notes/${post.slug}`,
     media: publishable,
     tags,
@@ -390,6 +407,7 @@ export function buildOnThisDayPayload(post: OnThisDayPost): SyndicationPayload {
     ...(social?.beats?.length ? { beats: social.beats } : {}),
     caption: social?.caption ?? "",
     credit,
+    refs: { artists: [post.artistNormalized], venue: post.venueNormalized },
     url: post.url,
     media: publishable,
     tags: entityTags({

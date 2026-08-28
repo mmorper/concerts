@@ -145,6 +145,29 @@ export interface SyndicationPayload {
 
   credit: PayloadCredit;
 
+  /**
+   * Normalized slugs for the same entities `credit` names in display form.
+   *
+   * Additive, like `album-itunes` and `site-fallback` on `MediaSource`, and on
+   * the same terms: nothing renders it, no adapter branches on it, and it
+   * reopens none of the creative decisions the freeze protects. It exists
+   * because a display name cannot be turned back into a slug.
+   *
+   * That is measured, not assumed. `normalizeArtistName()` round-trips 234 of
+   * 257 artists; the 23 failures include `echo-and-the-bunnymen` (the record
+   * spells it `Echo & The Bunnymen`, which normalizes to `echo-the-bunnymen`),
+   * `yaz` (`Yazoo`), `the-english-beat` (`The Beat`) and `bangles` (`The
+   * Bangles`). Worse than the misses, **both Brian Setzer entries collapse
+   * onto one key** — `brian-setzer-68-comeback-special` and
+   * `brian-setzer-and-the-nashvillians` are distinct artists in the archive
+   * and normalize identically. A handle lookup keyed on the display name would
+   * miss 9% of artists and resolve two of them to one account.
+   *
+   * Venues round-trip cleanly, all 79 of them, but they ride here too rather
+   * than being derived by a rule that happens to hold today.
+   */
+  refs: { artists: string[]; venue?: string };
+
   /** Permalink. Per-channel UTM applied by the adapter. */
   url: string;
   media: MediaAsset[];
