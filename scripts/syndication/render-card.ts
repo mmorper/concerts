@@ -26,6 +26,7 @@ import { deriveRect, derivationFor, retainedFraction } from "../media/derive.ts"
 import { getShowAsset, postNightOf, showByline, type ImageSources } from "../liner-notes/image-refs.ts";
 import { buildCredit, resolveAnchorConcert, type PayloadSources } from "./payload.ts";
 import { classifyImageUrl } from "./provenance.ts";
+import { cityRegion } from "./region.ts";
 import type { CropBox, LinerNotesPost } from "../../src/types/liner-notes.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -34,6 +35,26 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 export const CARD_WIDTH = 1080;
 export const CARD_HEIGHT = 1350;
 export const CARD_ASPECT = CARD_WIDTH / CARD_HEIGHT;
+
+/** Bluesky, Mastodon and X — `DECISIONS.md` §1, and #342 as amended 2026-08-28. */
+export const WIDE_WIDTH = 1200;
+export const WIDE_HEIGHT = 630;
+/**
+ * 🔴 THE IMAGE SLOT IS SQUARE, AND THAT IS THE WHOLE POINT OF THIS LAYOUT.
+ *
+ * The obvious objection to a 1.91:1 card is that it slices a 4:5 box down to 42%. It would,
+ * if the photograph were the background. It is not: `WideSplit` puts it in a **630×630
+ * square** beside a 570px type column, so derivation runs at 1.0 and keeps **80%** of the
+ * authored box.
+ *
+ * Square is also the one place a tier-2 source is a natural fit rather than a compromise.
+ * Every tier-2 image is 700×700, so this DOWNSCALES to 630 instead of upscaling 1.54× —
+ * the only real quality cost in the system, avoided.
+ *
+ * 42% is what the Open Graph card pays, because that one genuinely is a full-bleed 1.91:1
+ * background. Different thing, same canvas size; `og-image.ts` owns it.
+ */
+export const WIDE_SLOT = 630;
 
 export const OUTPUT_DIR = join(ROOT, ".renditions");
 
@@ -51,24 +72,6 @@ export const OUTPUT_DIR = join(ROOT, ".renditions");
  */
 export const SCRIM_HEIGHT = 740;
 
-/**
- * The hook sizes to try, largest first.
- *
- * 🔴 RAMPED OFF A MEASUREMENT, NEVER OFF CHARACTER COUNT. `StressMaxHook.dc.html` measured
- * a 120-character hook running 180px off the 4:5 card at 72px, silently — and its character
- * table is one string at one width, which Playfair's varying character widths would make
- * wrong on some other hook. So this measures the real box and steps down.
- *
- * WHAT IT MEASURES DIFFERS FROM THAT BOARD, because the layout does. There, a fixed-height
- * flex column below an 820px band overflowed the BOTTOM edge and deleted the credit stack.
- * Here the type block is bottom-anchored and grows upward, so nothing can leave the bottom
- * — the collision is with the byline. See the loop for the measurement that proves it.
- *
- * Full bleed also has far more room: 117 characters hold at the top of this ramp, where the
- * band needed 48px. The cost is that they hold by covering the photograph, which is the
- * tradeoff DECISIONS.md §1 named when it chose this layout.
- */
-const HOOK_SIZES = [90, 80, 72, 68, 60, 56, 52, 48, 42];
 
 export interface RenderResult {
   slug: string;
@@ -115,7 +118,7 @@ function escapeHtml(s: string): string {
  * `object-fit: cover` has nothing left to do. That is the point of full bleed: at 4:5 the
  * authored box IS the card and the renderer discards nothing.
  */
-function template(v: {
+interface TemplateVals {
   imageDataUri: string;
   alt: string;
   byline: string;
@@ -123,18 +126,40 @@ function template(v: {
   hook: string;
   hookSize: number;
   meta: string;
-}): string {
-  return `<!doctype html><html><head><meta charset="utf-8">
+  pill: string;
+}
+
+const HEAD = `<!doctype html><html><head><meta charset="utf-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap">
-<style>html,body{margin:0;padding:0;background:#0a0810}</style></head><body>
+<style>html,body{margin:0;padding:0;background:#0a0810}</style></head><body>`;
+
+function fullBleed(v: TemplateVals): string {
+  return `${HEAD}
 <div id="card" style="width:${CARD_WIDTH}px;height:${CARD_HEIGHT}px;background:#0d1a24;position:relative;overflow:hidden;font-family:'Source Sans 3',system-ui,sans-serif;">
   <img src="${v.imageDataUri}" alt="${escapeHtml(v.alt)}" style="position:absolute;inset:0;width:${CARD_WIDTH}px;height:${CARD_HEIGHT}px;object-fit:cover;display:block;">
-  <span id="byline" style="position:absolute;left:30px;top:30px;font-size:21px;font-weight:600;letter-spacing:0.03em;color:rgba(255,255,255,0.82);background:rgba(8,10,16,0.58);padding:9px 15px;border-radius:4px;">${escapeHtml(v.byline)}</span>
+  <!-- MATCH THE SHAPE, NOT THE WEIGHT. Both chips are pills so they read as one family of
+       metadata. The FILL is where the hierarchy lives: the act pill is solid and carries the
+       category, this one stays screened-back and neutral.
+       It must never take the category colour. Colour on this card means identity; the byline
+       is a factual credit about provenance, and folding it into the identity system is the
+       confusion PROVENANCE.md avoids by giving tier 2 no byline at all. A second solid chip
+       would also compete with the act name and flatten a hierarchy that is deliberate — the
+       byline is what makes personal imagery outrank a press shot, but it is a credit, not a
+       headline. -->
+  <span id="byline" style="position:absolute;left:30px;top:30px;font-size:21px;font-weight:600;letter-spacing:0.03em;color:rgba(255,255,255,0.82);background:rgba(8,10,16,0.58);padding:9px 19px;border-radius:999px;">${escapeHtml(v.byline)}</span>
   <div style="position:absolute;left:0;right:0;bottom:0;height:${SCRIM_HEIGHT}px;background:linear-gradient(to bottom,rgba(9,11,18,0) 0%,rgba(9,11,18,0.78) 40%,rgba(9,11,18,0.95) 74%,#090b12 100%);"></div>
   <div id="type" style="position:absolute;left:0;right:0;bottom:0;padding:0 72px 72px 72px;box-sizing:border-box;display:flex;flex-direction:column;gap:28px;">
-    <div style="display:flex;align-items:center;gap:18px;">
-      <span style="width:56px;height:5px;background:#7c3aed;flex-shrink:0;"></span>
-      <span style="font-size:34px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,0.6);">${escapeHtml(v.acts)}</span>
+    <div style="display:flex;align-items:center;">
+      <!-- 🔴 A PILL, NOT A LOZENGE, AND IT CARRIES THE CATEGORY.
+           The screened-back rectangle read as a patch stuck over the photograph rather than
+           as part of the card. A pill is a chip of metadata, which is what this is, and it
+           lets the fill do two jobs at once: a ground the act name is legible on, and the
+           category signal that the 56x5px rule was carrying alone and illegibly.
+
+           THE RULE IS GONE. With a coloured pill immediately after it, the dash is a second
+           adjacent block of the same colour — redundant, and it reads as a tail on the pill.
+           The pill absorbs its job and states it in a form that can actually be read. -->
+      <span id="acts" style="font-size:34px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#fff;background:${v.pill};padding:10px 22px;border-radius:999px;white-space:nowrap;">${escapeHtml(v.acts)}</span>
     </div>
     <div id="hook" style="font-family:'Playfair Display',Georgia,serif;font-size:${v.hookSize}px;line-height:1.05;letter-spacing:-0.028em;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,0.55);text-wrap:pretty;">${escapeHtml(v.hook)}</div>
     <div style="display:flex;justify-content:space-between;align-items:baseline;gap:32px;">
@@ -149,11 +174,168 @@ function template(v: {
 </div></body></html>`;
 }
 
+/**
+ * The act line: who this card is about, in a form that fits.
+ *
+ * 🔴 `credit.artists` IS EVERY ACT ON THE POST, and a festival-bill post has nine. Rendered
+ * straight it gave `THE HUMAN LEAGUE · THE ALARM · DRAMARAMA · THE MOTELS · NAKED EYES ·
+ * THE UNTOUCHABLES · GENE LOVES JEZABEL · WHEN IN ROME · THE POLECATS` — five lines of
+ * uppercase display type on the wide card, crushing the hook to three. That is #361's
+ * worst-case criterion failing on a real published post, not a hypothetical.
+ *
+ * THE PHOTOGRAPHED ACT LEADS. It is the one the byline is about and the one in the frame,
+ * so a card that names it fourth is describing a different thing from the picture above it.
+ *
+ * Identification is not withheld — `DECISIONS.md` §3 is explicit that names are furniture
+ * and only the interpretation gets held back. "+6 more" keeps the count honest and the
+ * caption carries the full bill.
+ */
+export function actLine(artists: string[], photographed: string | undefined, show: number): string {
+  const ordered = photographed
+    ? [...artists].sort((a, b) => Number(b === photographed) - Number(a === photographed))
+    : artists;
+  const n = Math.max(1, Math.min(show, ordered.length));
+  if (n >= ordered.length) return ordered.join(" · ");
+  // A non-breaking space, so "+6 more" can never be the thing that splits.
+  return `${ordered.slice(0, n).join(" · ")} +${ordered.length - n}\u00a0more`;
+}
+
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 function monthYear(iso: string): string {
   const [y, m] = iso.split("-").map(Number);
   return `${MONTHS[(m ?? 1) - 1]} ${y}`;
 }
+
+/**
+ * The wide split, from `WideSplit.dc.html` — 630x630 photograph, 570px type column.
+ *
+ * WHY A SPLIT AND NOT A SCALED 4:5. `WideStacked.dc.html` is kept in the spec as evidence:
+ * scaling the 4:5 band proportionally gives a 1200x340 letterbox, a 3.5:1 slice that
+ * decapitates the subject, and every tier-2 source is square so a 700x700 press shot in it
+ * is a 2:1 strip across someone's eyes. Two layouts, not one scaled.
+ *
+ * The byline sits INSIDE the photograph here, bottom-left, rather than over the type column.
+ * It is a claim about the picture and it has to travel with the picture — a card gets
+ * screenshotted and re-shared without its caption, and cropped to the image often enough
+ * that a byline outside the frame is a byline that can be separated from what it describes.
+ */
+function wideSplit(v: TemplateVals): string {
+  return `${HEAD}
+<div id="card" style="width:${WIDE_WIDTH}px;height:${WIDE_HEIGHT}px;background:#14111f;position:relative;overflow:hidden;font-family:'Source Sans 3',system-ui,sans-serif;">
+  <div style="position:absolute;inset:0;display:flex;flex-direction:row;">
+    <div style="width:${WIDE_SLOT}px;height:${WIDE_SLOT}px;position:relative;overflow:hidden;flex-shrink:0;">
+      <img src="${v.imageDataUri}" alt="${escapeHtml(v.alt)}" style="width:${WIDE_SLOT}px;height:${WIDE_SLOT}px;object-fit:cover;display:block;">
+      <span id="byline" style="position:absolute;left:22px;bottom:20px;font-size:16px;font-weight:600;letter-spacing:0.03em;color:rgba(255,255,255,0.82);background:rgba(8,10,16,0.58);padding:7px 15px;border-radius:999px;">${escapeHtml(v.byline)}</span>
+    </div>
+    <!-- FIXED WIDTH, NOT flex-grow. A white-space:nowrap pill wider than the column made
+         the column itself grow, pushing the type off the right edge of the card AND taking
+         the hook with it — and because the fit check measured the pill against its parent,
+         the parent had already stretched to fit and every length "fitted". Pinning the
+         column is what makes the measurement mean anything. -->
+    <div id="type" style="width:${WIDE_WIDTH - WIDE_SLOT}px;flex-shrink:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:20px;padding:48px 48px 44px 44px;box-sizing:border-box;">
+      <div style="display:flex;align-items:flex-start;">
+        <span id="acts" style="font-size:24px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#fff;background:${v.pill};padding:8px 18px;border-radius:999px;white-space:nowrap;">${escapeHtml(v.acts)}</span>
+      </div>
+      <div id="hook" style="font-family:'Playfair Display',Georgia,serif;font-size:${v.hookSize}px;line-height:1.06;letter-spacing:-0.025em;color:#fff;text-wrap:pretty;">${escapeHtml(v.hook)}</div>
+      <span style="font-size:21px;font-weight:500;line-height:1.44;color:#8a80ab;">${v.meta}</span>
+      <div style="display:flex;justify-content:flex-end;">
+        <div style="display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0;">
+          <span style="font-size:18px;font-weight:600;line-height:1.1;color:#5d5480;">concerts.</span>
+          <span style="font-size:18px;font-weight:700;line-height:1.1;color:#8a80ab;">morperhaus</span>
+          <span style="font-size:18px;font-weight:600;line-height:1.1;color:#5d5480;">.org</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></body></html>`;
+}
+
+/**
+ * The act pill's fill, per category.
+ *
+ * 🔴 THE RULE WAS CARRYING THE CATEGORY, AND THIS RENDERER HARDCODED IT PURPLE. #361:
+ * "Category rule keeps its colour; the label is gone in favour of the artist name" — so
+ * that 56x5px dash is the ONLY surviving category signal on the card, and every card was
+ * printing `cultural` regardless of what it was. The pill absorbs the job and does it
+ * legibly, which a dash never did: nobody decodes a coloured line.
+ *
+ * 🔴 DARKENED, BECAUSE WHITE ON THE RAW COLOUR FAILS. Measured against the source values in
+ * `og-image.ts`:
+ *
+ *     cultural   #7c3aed   5.70:1   passes
+ *     personal   #0ea5e9   2.77:1   FAILS even large-text AA
+ *     deep-cut   #059669   3.77:1   large text only
+ *
+ * `personal` is 27 of 58 posts, so a solid pill at the raw value would be worst exactly
+ * where it is most common — the opposite of a contrast fix. At 0.7 all three clear 5:1 and
+ * the hue family survives. Black text on the bright values was the alternative and needs a
+ * different text colour per category, which is a worse rule to maintain.
+ */
+export const ACT_PILL: Record<string, string> = {
+  cultural: "#5628a5",
+  personal: "#0973a3",
+  "deep-cut": "#036949",
+};
+export const ACT_PILL_FALLBACK = "#463c7a";
+
+export interface Format {
+  id: "4x5" | "wide";
+  width: number;
+  height: number;
+  /** The image slot's aspect, which is what derivation runs against — NOT the card's. */
+  slotAspect: number;
+  /** Pixels the photograph is resized to before the layout sees it. */
+  slot: { width: number; height: number };
+  template: (v: TemplateVals) => string;
+  /**
+   * Hook sizes to try, largest first.
+   *
+   * 🔴 RAMPED OFF A MEASUREMENT, NEVER OFF CHARACTER COUNT. `StressMaxHook.dc.html` measured
+   * a 120-character hook running 180px off the 4:5 card at 72px, silently — and its
+   * character table is one string at one width, which Playfair's varying character widths
+   * would make wrong on some other hook. So the renderer measures the real box and steps
+   * down.
+   *
+   * WHAT IT MEASURES DIFFERS BY LAYOUT, because the layouts fail differently. Full bleed is
+   * bottom-anchored and grows upward over the photograph, so the limit is the scrim. The
+   * wide card has its own column and cannot reach the photograph at all, so the limit is
+   * simply the top of the card.
+   */
+  hookSizes: number[];
+  /**
+   * How far down the card the type block may start, in px from the top.
+   *
+   * Full bleed: the scrim, because type above it has no ground under it. The wide card has
+   * its own column and cannot collide with the photograph at all, so the only real limit is
+   * the top of that column.
+   */
+  typeCeiling: number;
+}
+
+export const FORMATS: Record<Format["id"], Format> = {
+  "4x5": {
+    id: "4x5",
+    width: CARD_WIDTH,
+    height: CARD_HEIGHT,
+    slotAspect: CARD_ASPECT,
+    slot: { width: CARD_WIDTH, height: CARD_HEIGHT },
+    template: fullBleed,
+    hookSizes: [90, 80, 72, 68, 60, 56, 52, 48, 42],
+    typeCeiling: CARD_HEIGHT - SCRIM_HEIGHT,
+  },
+  wide: {
+    id: "wide",
+    width: WIDE_WIDTH,
+    height: WIDE_HEIGHT,
+    // 1.0 — square, and the reason this format keeps 80% of the box rather than 42%.
+    slotAspect: 1,
+    slot: { width: WIDE_SLOT, height: WIDE_SLOT },
+    template: wideSplit,
+    // Smaller column, so the ramp starts lower. 50px is what the artboard was drawn at.
+    hookSizes: [50, 46, 42, 38, 34, 30, 27],
+    typeCeiling: 0,
+  },
+};
 
 /**
  * Render one post's 4:5 card.
@@ -164,7 +346,8 @@ function monthYear(iso: string): string {
 export async function renderCard(
   post: LinerNotesPost,
   sources: RenderSources,
-  browser: Browser
+  browser: Browser,
+  format: Format = FORMATS["4x5"]
 ): Promise<RenderResult> {
   const lead = post.artists[0];
   if (!lead) throw new Error(`${post.slug}: no lead artist`);
@@ -193,12 +376,15 @@ export async function renderCard(
   if (!meta.width || !meta.height) throw new Error(`${post.slug}: cannot read ${asset.url}`);
 
   const derivation = derivationFor(provenance.tier);
-  const rect = deriveRect(asset.crop, { width: meta.width, height: meta.height }, CARD_ASPECT, derivation);
-  const retained = retainedFraction(asset.crop, { width: meta.width, height: meta.height }, CARD_ASPECT);
+  /* DERIVE AGAINST THE SLOT, NOT THE CARD. The wide card is 1.91:1 and its photograph is
+     square; deriving at 1.905 would take a letterbox out of the box and throw away 58% of
+     it for a slot that wanted none of that. */
+  const rect = deriveRect(asset.crop, { width: meta.width, height: meta.height }, format.slotAspect, derivation);
+  const retained = retainedFraction(asset.crop, { width: meta.width, height: meta.height }, format.slotAspect);
 
   const cropped = await sharp(file)
     .extract(rect)
-    .resize(CARD_WIDTH, CARD_HEIGHT, { fit: "fill" })
+    .resize(format.slot.width, format.slot.height, { fit: "fill" })
     // Renditions are stripped: phone GPS in a published file is an unretractable privacy
     // leak the moment it is live. sharp drops metadata unless asked to keep it.
     .jpeg({ quality: 92, mozjpeg: true })
@@ -237,22 +423,31 @@ export async function renderCard(
   if (!anchor) throw new Error(`${post.slug}: no concert resolves for the credit stack`);
   const concert = anchor;
   const credit = buildCredit(post, concert, sources);
+  // The display name of the act actually in the frame, so it can lead the act line.
+  const leadName = sources.artistsMetadata[lead]?.name;
+  /* Off the venue record, not the concert: `venuesMetadata` is what carries `state`, and it
+     self-heals on the weekly refresh where a concert row does not. */
+  const venueSlug = post.venues.find((v) => sources.venuesMetadata[v]?.name === credit.venue)
+    ?? concert.venueNormalized;
+  const venueState = (sources.venuesMetadata[venueSlug] as { state?: string } | undefined)?.state;
 
   const hook = post.social?.hook;
   if (!hook) throw new Error(`${post.slug}: no authored hook — never chop one out of prose`);
 
-  const byline = showByline(asset.date, postNight);
+  const byline = showByline(asset.date);
   const metaLines = [
     credit.song ? `&ldquo;${escapeHtml(credit.song)}&rdquo;` : undefined,
-    `${escapeHtml(credit.venue)} &middot; ${escapeHtml(credit.city)}`,
+    `${escapeHtml(credit.venue)} &middot; ${escapeHtml(cityRegion(credit.city, venueState))}`,
     monthYear(concert.date),
   ].filter(Boolean).join("<br>");
 
   const page = await browser.newPage();
-  await page.setViewport({ width: CARD_WIDTH, height: CARD_HEIGHT, deviceScaleFactor: 1 });
+  await page.setViewport({ width: format.width, height: format.height, deviceScaleFactor: 1 });
 
-  let hookSize = HOOK_SIZES[0];
+  let hookSize = format.hookSizes[0];
   let typeTop = 0;
+  let acts = actLine(credit.artists, leadName, credit.artists.length);
+  const pill = ACT_PILL[post.category] ?? ACT_PILL_FALLBACK;
   try {
     /* Set the content ONCE and re-measure by restyling.
        Calling setContent per ramp step is both slow and unreliable: with `networkidle0` the
@@ -261,12 +456,40 @@ export async function renderCard(
        times, so that is a hang on a normal card, not an edge case. Fonts are awaited
        directly, which is the dependency that actually matters for a text measurement. */
     await page.setContent(
-      template({ imageDataUri, alt: post.image.alt, byline, acts: credit.artists.join(" · "), hook, hookSize: HOOK_SIZES[0], meta: metaLines }),
+      format.template({ imageDataUri, alt: post.image.alt, byline, acts, hook, hookSize: format.hookSizes[0], meta: metaLines, pill }),
       { waitUntil: "load" }
     );
     try { await page.evaluate(() => document.fonts.ready); } catch { /* fonts are a nicety */ }
 
-    for (const size of HOOK_SIZES) {
+    /* 🔴 THE ACT LINE IS ONE LINE, ALWAYS — drop a name before you wrap.
+       Two lines of uppercase display type pushes the hook down and reads as a paragraph
+       rather than a label, and on a nine-act bill it was five. Measured, not counted: the
+       pill is `white-space: nowrap`, so a too-long line overflows its container rather than
+       wrapping, and the test is whether it still fits the column.
+
+       Names are dropped from the END, so the photographed act — the one in the frame and
+       the one the byline is about — is the last thing to go. A single name that still
+       overflows is left alone: that is identification and there is nothing left to drop. */
+    for (let show = credit.artists.length; show >= 1; show--) {
+      const line = actLine(credit.artists, leadName, show);
+      const fits = await page.evaluate((text: string) => {
+        const el = document.getElementById("acts")!;
+        el.textContent = text;
+        /* 🔴 MEASURE AGAINST THE CARD, WHICH IS PINNED BY DEFINITION.
+           Against the parent this silently always passed: an over-wide nowrap pill stretched
+           its own container, so the thing being measured and the thing it was measured
+           against grew together. That is the third time in this renderer that a measurement
+           has been taken against a box the content could move — the bottom edge in #415, the
+           flex-grow column here, and this. The card cannot move. */
+        const card = document.getElementById("card")!.getBoundingClientRect();
+        const box = el.getBoundingClientRect();
+        return box.right <= card.right && box.left >= card.left;
+      }, line);
+      acts = line;
+      if (fits || show === 1) break;
+    }
+
+    for (const size of format.hookSizes) {
       await page.evaluate((px: number) => {
         (document.getElementById("hook") as HTMLElement).style.fontSize = `${px}px`;
       }, size);
@@ -280,24 +503,38 @@ export async function renderCard(
          never steps down and the ramp is dead code. Measured, not reasoned: at 90px a
          117-character hook reports bottom = 1350, exactly as an empty card does.
          The real collision is with the byline in the top-left corner. */
-      const measured = await page.evaluate((scrim: number) => {
-        const type = document.getElementById("type")!.getBoundingClientRect();
+      const measured = await page.evaluate((ceiling: number) => {
+        const block = document.getElementById("type")!;
+        /* 🔴 MEASURE THE CONTENT, NOT THE COLUMN.
+           `#type` on the wide card is `flex-grow: 1`, so its box is the full 630 height
+           whatever it contains — measuring it reports y=0 for an empty card and y=0 for one
+           three times over budget, and the ramp never engages. The full-bleed block is
+           bottom-anchored and shrink-wraps, so there the two agree; taking the first child
+           is correct for both and pinned by construction in neither. */
+        const first = block.firstElementChild ?? block;
+        const type = first.getBoundingClientRect();
         const byline = document.getElementById("byline")!.getBoundingClientRect();
+        const card = document.getElementById("card")!.getBoundingClientRect();
         // Two conditions, and the SCRIM is the load-bearing one. Collision with the byline
         // is a floor so low that a hook three times over budget cleared it while covering
         // the entire photograph — which is the one thing this layout exists to avoid.
+        /* The byline clause only applies when the byline shares the type block's box. On
+           the wide card it lives inside the photograph, in the other column, so it can never
+           collide however long the hook runs — testing against it there would ramp the type
+           down for a reason that does not exist. */
+        const shares = byline.right > type.left;
         return {
           top: Math.round(type.top),
-          fits: type.top >= scrim && type.top >= byline.bottom + 24,
+          fits: type.top >= ceiling && type.top >= card.top && (!shares || type.top >= byline.bottom + 24),
         };
-      }, CARD_HEIGHT - SCRIM_HEIGHT);
+      }, format.typeCeiling);
 
       hookSize = size;
       typeTop = measured.top;
       if (measured.fits) break;
     }
 
-    const path = join(OUTPUT_DIR, `${post.slug}-4x5.png`);
+    const path = join(OUTPUT_DIR, `${post.slug}-${format.id}.png`);
     mkdirSync(OUTPUT_DIR, { recursive: true });
     await page.screenshot({ path: path as `${string}.png` });
 
@@ -325,9 +562,14 @@ function load<T>(rel: string): T {
 }
 
 async function main() {
-  const slug = process.argv[2];
+  const args = process.argv.slice(2);
+  const slug = args.find((a) => !a.startsWith("-"));
+  const wanted = args.includes("--wide") ? ["wide"]
+    : args.includes("--4x5") ? ["4x5"]
+    : (["4x5", "wide"] as const);
   if (!slug) {
-    console.error("usage: npm run render:card -- <slug>");
+    console.error("usage: npm run render:card -- <slug> [--4x5 | --wide]");
+    console.error("       both formats render by default");
     process.exit(1);
   }
 
@@ -348,17 +590,22 @@ async function main() {
 
   const browser = await puppeteer.launch({ headless: true });
   try {
-    const r = await renderCard(post, sources, browser);
-    console.log(`\n  ${r.slug}`);
-    console.log(`  ${"─".repeat(60)}`);
-    console.log(`  photograph  ${r.asset}`);
-    console.log(`  crop        x=${r.crop.x} y=${r.crop.y} w=${r.crop.w} h=${r.crop.h}`);
-    console.log(`  source px   ${r.rect.width}x${r.rect.height} at (${r.rect.left}, ${r.rect.top})`);
-    console.log(`  retained    ${(r.retained * 100).toFixed(1)}% of the authored box`);
-    console.log(`  byline      ${r.byline}`);
-    console.log(`  hook        ${r.hookSize}px after fitting`);
-    console.log(`  type block  starts at y=${r.typeTop} of ${CARD_HEIGHT}  (scrim top is y=${CARD_HEIGHT - SCRIM_HEIGHT})`);
-    console.log(`  written     ${r.path}  (${(r.bytes / 1024).toFixed(0)} KB)\n`);
+    console.log(`\n  ${post.slug}`);
+    for (const id of wanted) {
+      const format = FORMATS[id as Format["id"]];
+      const r = await renderCard(post, sources, browser, format);
+      console.log(`  ${"─".repeat(62)}`);
+      console.log(`  ${format.id.padEnd(5)} ${format.width}x${format.height}` +
+        `   image slot ${format.slot.width}x${format.slot.height}`);
+      console.log(`  photograph  ${r.asset}`);
+      console.log(`  crop        x=${r.crop.x} y=${r.crop.y} w=${r.crop.w} h=${r.crop.h}`);
+      console.log(`  source px   ${r.rect.width}x${r.rect.height} at (${r.rect.left}, ${r.rect.top})`);
+      console.log(`  retained    ${(r.retained * 100).toFixed(1)}% of the authored box`);
+      console.log(`  byline      ${r.byline}`);
+      console.log(`  hook        ${r.hookSize}px after fitting, type starts at y=${r.typeTop}`);
+      console.log(`  written     ${r.path}  (${(r.bytes / 1024).toFixed(0)} KB)`);
+    }
+    console.log('');
   } finally {
     await browser.close();
   }

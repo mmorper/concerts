@@ -22,6 +22,7 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
 import { classifyImageUrl, hostOf } from "./provenance.ts";
+import { regionLabel } from "./region.ts";
 import { entityTags } from "./tags.ts";
 import { isPublishableTier, type MediaAsset, type PayloadCredit, type SyndicationPayload } from "./types.ts";
 import { HOOK_MAX, BEATS_MAX, BEATS_MIN, CAPTION_MAX } from "./budgets.ts";
@@ -57,7 +58,7 @@ export function cardPath(slug: string): string {
 export interface PayloadSources {
   concerts: Concert[];
   artistsMetadata: Record<string, { name?: string }>;
-  venuesMetadata: Record<string, { name?: string; city?: string }>;
+  venuesMetadata: Record<string, { name?: string; city?: string; state?: string }>;
   /** Injected so the builder is testable without a filesystem. */
   cardExists?: (path: string) => boolean;
 }
@@ -156,6 +157,7 @@ export function buildCredit(
     song: post.audio?.role === "subject" ? post.audio.trackName : undefined,
     venue: venueMeta?.name ?? concert.venue,
     city: venueMeta?.city ?? concert.city,
+    region: regionLabel(venueMeta?.state).label || undefined,
     date: concert.date,
   };
 }

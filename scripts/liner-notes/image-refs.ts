@@ -221,40 +221,29 @@ function fullDate(iso: string): string {
   return `${d} ${MONTHS[(m ?? 1) - 1]} ${y}`;
 }
 
-/** "2024-08-20" -> "August 2024". */
-function monthYear(iso: string): string {
-  const [y, m] = iso.split("-").map(Number);
-  return `${MONTHS[(m ?? 1) - 1]} ${y}`;
-}
 
 export const OWNER_BYLINE = "Mike Morper";
 
 /**
- * The on-image byline for a tier-1 photograph — `PROVENANCE.md`, two states.
+ * The on-image byline for a tier-1 photograph — `Mike Morper · 20 August 2024`.
  *
- *   same night      Mike Morper · 20 August 2024
- *   different night Mike Morper · August 2024, not the 1987 night
+ * ONE STATE, ALWAYS THE FULL DATE. `PROVENANCE.md` originally specified a second variant,
+ * `Mike Morper · July 2026, not the 1987 night`, for a photograph taken on a night other
+ * than the one the post is about. **Removed by the owner 2026-08-28**, and the reasoning is
+ * theirs: the byline already states the date the photograph was taken, so a reader given
+ * "June 2026" under a headline about 2018 can connect those without being told. The negation
+ * added nothing they could not see and made the card apologise for itself.
  *
- * **The disclosure is not decoration.** Implying a photograph is *the* night when it is not
- * is the fabricated-memory failure the voice rules exist to prevent, and it is a live risk
- * on this archive: 89 of 184 shows have openers, and most posts span years rather than
- * naming one night.
+ * Nothing is fabricated by dropping it. The risk `PROVENANCE.md` was guarding — implying a
+ * photograph is *the* night when it is not — is already closed by printing the capture date,
+ * and printing it in FULL rather than as a month is what closed the last of it: the old
+ * different-night variant was month-only, so `August 2024` under a post about another August
+ * night was the one genuinely ambiguous case. A full date has no such gap.
  *
- * `postNight` is the single night the post is about, when it is about one — detectors that
- * are concert-scoped set `concertDate` and the rest leave it undefined. A post with no
- * single night gets the plain dated byline, which is the honest output: there is no "the X
- * night" to disclaim against, and the date shown is the photograph's own. A post about a
- * SPAN that happens to include the photograph's night is the same case for the same reason.
+ * The different-night knowledge still matters elsewhere: `render-card.ts` uses it to decide
+ * whether the credit stack follows the post's night or the photograph's.
  */
-export function showByline(shotOn: string, postNight?: string): string {
-  if (postNight && postNight !== shotOn) {
-    const shotYear = shotOn.slice(0, 4);
-    const nightYear = postNight.slice(0, 4);
-    // Same year, different night: "August 2024, not the 2024 night" says nothing. Name the
-    // night being disclaimed in full so the two dates are actually distinguishable.
-    const night = shotYear === nightYear ? fullDate(postNight) : nightYear;
-    return `${OWNER_BYLINE} · ${monthYear(shotOn)}, not the ${night} night`;
-  }
+export function showByline(shotOn: string): string {
   return `${OWNER_BYLINE} · ${fullDate(shotOn)}`;
 }
 

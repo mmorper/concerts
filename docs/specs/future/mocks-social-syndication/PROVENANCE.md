@@ -46,8 +46,28 @@ Issue [#327](https://github.com/mmorper/concerts/issues/327), epic
 
 | Tier | On-image credit | Rationale |
 |---|---|---|
-| **1 · personal** | `Mike Morper · 31 July 2026` | A byline. It is what makes personal imagery visibly outrank sourced imagery instead of being indistinguishable from it. |
-| **1 · different night** | `Mike Morper · July 2026, not the 1987 night` | Non-negotiable. Implying a photo is *the* night when it is not is the fabricated-memory failure the voice rules exist to prevent. |
+| **1 · personal** | `Mike Morper · 20 August 2024` | A byline, always the FULL date. It is what makes personal imagery visibly outrank sourced imagery instead of being indistinguishable from it. |
+| ~~**1 · different night**~~ | ~~`Mike Morper · July 2026, not the 1987 night`~~ | **REMOVED 2026-08-28 by the owner.** See below. |
+
+> **The different-night disclaimer is gone, and one byline serves every case.**
+>
+> The owner's reasoning: the byline already states when the photograph was taken, so a
+> reader given `4 June 2026` under a headline about a 2018 festival can connect those
+> without being told. The negation added nothing they could not already see, and it made
+> the card apologise for being on-subject — it fired on
+> `howard-jones-39-years-of-shows`, a post about six shows across 39 years, over a
+> photograph that is legitimately one of the six.
+>
+> **Nothing is fabricated by dropping it, and the reason is a change made at the same
+> time.** The risk this section guarded — implying a photograph is *the* night when it is
+> not — is closed by printing the capture date, and printing it in FULL rather than as a
+> month is what closed the last of it. The old variant was month-only, so `August 2024`
+> under a post about another August night was the one genuinely ambiguous case. A full date
+> has no such gap.
+>
+> The different-night *knowledge* is still load-bearing elsewhere: `render-card.ts` uses it
+> to decide whether the credit stack follows the post's night or the photograph's. What was
+> removed is the sentence, not the distinction.
 | **2 · sourced** | none | Deliberate. The absence is what gives the tier-1 byline meaning. |
 | **2 · Wikimedia CC** | none on-image; **attribution in-caption** | CC terms require it. The only source that forces caption copy. |
 | **3 · derived / material** | none | Owned outright. |

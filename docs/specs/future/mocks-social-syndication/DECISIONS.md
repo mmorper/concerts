@@ -159,10 +159,21 @@ linework for nothing. Same for the material stub.
 
 ## 6. Provenance: where the different-night disclosure lives
 
-**In-image**, bottom-left of the media band, as one field with two states:
+**In-image**, as one field with ONE state — the full date the photograph was taken:
 
-- `Mike Morper · 31 July 2026`
-- `Mike Morper · July 2026, not the 1987 night`
+- `Mike Morper · 20 August 2024`
+
+> **REVISED 2026-08-28 by the owner.** This had a second state,
+> `Mike Morper · July 2026, not the 1987 night`, for a photograph from another night. Gone:
+> the byline already gives the capture date, so the reader connects it to the headline
+> without being told, and the negation made the card apologise for itself. Printing the FULL
+> date rather than a month is what makes that safe — the old variant was month-only, which
+> left `August 2024` ambiguous under a post about another August night. Full reasoning in
+> [`PROVENANCE.md`](./PROVENANCE.md).
+>
+> It also moved: bottom-left of the media band was the band layout's position. On the 4:5
+> full-bleed card it is top-left, and on the wide card it sits inside the photograph itself.
+> Both are pills now, matching the act-name chip in shape and deliberately not in weight.
 
 A card gets screenshotted and re-shared without its caption, so a claim about
 whose photograph this is — and which night — has to travel with the picture.

@@ -27,7 +27,6 @@ import {
   getShowAsset,
   getVenueImageUrl,
   inferRef,
-  postNightOf,
   resolveImageUrl,
   showByline,
   upsizeAppleMusicUrl,
@@ -100,7 +99,7 @@ export function upgradeToOwnPhotography(
       alt: sources.artistsMetadata[lead]?.name ?? post.image.alt,
       source: "show",
       ref: lead,
-      credit: showByline(asset.date, postNightOf(post)),
+      credit: showByline(asset.date),
       shotOn: asset.date,
       ...(asset.crop ? { crop: { ...asset.crop } } : {}),
     };
