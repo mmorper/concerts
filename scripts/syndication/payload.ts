@@ -60,7 +60,10 @@ export const SITE_URL = "https://concerts.morperhaus.org";
  * because it is fetched by strangers' link unfurlers rather than by us.
  */
 export function cardPath(slug: string): string {
-  return `.renditions/${slug}-wide.png`;
+  /* JPEG, not PNG. #342: "JPEG (mozjpeg, q82) as the universal primary". The cards were
+     written as PNG screenshots at ~875KB against Bluesky's 1MB ceiling — which read as a
+     quality-ladder problem and was a format one. The same card at q82 is 124KB. */
+  return `.renditions/${slug}-wide.jpg`;
 }
 
 export interface PayloadSources {

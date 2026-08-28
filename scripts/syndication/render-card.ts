@@ -18,7 +18,7 @@
  */
 
 import sharp from "sharp";
-import { existsSync, mkdirSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import puppeteer, { type Browser } from "puppeteer";
@@ -91,6 +91,8 @@ export interface RenderResult {
   hookSize: number;
   /** Where the type block starts. Below CARD_HEIGHT - SCRIM_HEIGHT it has no ground. */
   typeTop: number;
+  /** The JPEG quality the ladder settled on. 82 unless the ceiling forced it lower. */
+  quality: number;
   bytes: number;
 }
 
@@ -291,6 +293,15 @@ export interface Format {
   slot: { width: number; height: number };
   template: (v: TemplateVals) => string;
   /**
+   * The byte ceiling this format must fit under.
+   *
+   * Bluesky's is a HARD platform limit — 1,000,000 bytes — and a breach fails at the API in
+   * an unattended 10am job. Both formats carry it rather than only the wide card: Instagram
+   * has no such limit today, but a ceiling that exists on one path only is a ceiling nobody
+   * remembers when a third format arrives.
+   */
+  maxBytes: number;
+  /**
    * Hook sizes to try, largest first.
    *
    * 🔴 RAMPED OFF A MEASUREMENT, NEVER OFF CHARACTER COUNT. `StressMaxHook.dc.html` measured
@@ -323,6 +334,7 @@ export const FORMATS: Record<Format["id"], Format> = {
     slotAspect: CARD_ASPECT,
     slot: { width: CARD_WIDTH, height: CARD_HEIGHT },
     template: fullBleed,
+    maxBytes: 1_000_000,
     hookSizes: [90, 80, 72, 68, 60, 56, 52, 48, 42],
     typeCeiling: CARD_HEIGHT - SCRIM_HEIGHT,
   },
@@ -334,11 +346,53 @@ export const FORMATS: Record<Format["id"], Format> = {
     slotAspect: 1,
     slot: { width: WIDE_SLOT, height: WIDE_SLOT },
     template: wideSplit,
+    maxBytes: 1_000_000,
     // Smaller column, so the ramp starts lower. 50px is what the artboard was drawn at.
     hookSizes: [50, 46, 42, 38, 34, 30, 27],
     typeCeiling: 0,
   },
 };
+
+/**
+ * The quality ladder (#342) — encode down until the file fits, and say where it landed.
+ *
+ * 🔴 THE FORMAT WAS THE REAL PROBLEM. Cards were written as PNG screenshots at ~875KB
+ * against Bluesky's 1MB ceiling, which looked like a ladder problem and was a format one:
+ * the same card as JPEG q82 is 124KB. #342 specifies "JPEG (mozjpeg, q82) as the universal
+ * primary" and nothing was doing it.
+ *
+ *     png       875 KB
+ *     q92       189 KB
+ *     q82       124 KB   ← the spec's value, and where every card in the corpus lands
+ *     q74       101 KB
+ *     q66        84 KB
+ *
+ * So the ladder is a GUARD, not a routine mechanism. Measured across all 58 published posts
+ * at q82, the largest card is a fraction of the ceiling and nothing steps down. It stays
+ * because the ceiling is a hard platform limit — a post that breaches it fails at the API,
+ * at 10am, unattended — and because 9:16 and a busier photograph are both still ahead.
+ *
+ * Descending rather than a fixed setting is #342's own argument: one quality is either
+ * wasteful or over the limit, and which of the two depends on the photograph.
+ *
+ * The floor is real. If even q50 will not fit, the caller gets the q50 buffer and the size
+ * to complain about rather than an exception — a card slightly over a limit is a decision
+ * for the adapter, and throwing here would turn a large photograph into a dropped post.
+ */
+const QUALITY_LADDER = [82, 74, 66, 58, 50];
+
+export async function encodeUnder(
+  png: Buffer,
+  maxBytes: number
+): Promise<{ buffer: Buffer; quality: number }> {
+  let last = { buffer: png, quality: 0 };
+  for (const quality of QUALITY_LADDER) {
+    const buffer = await sharp(png).jpeg({ quality, mozjpeg: true }).toBuffer();
+    last = { buffer, quality };
+    if (buffer.length <= maxBytes) return last;
+  }
+  return last;
+}
 
 /** Cap on fetching a third-party image. Same reason as og-image.ts: a hang is not an
  *  exception, and this runs unattended in a daily workflow against CDNs we do not own. */
@@ -587,9 +641,14 @@ export async function renderCard(
       if (measured.fits) break;
     }
 
-    const path = join(OUTPUT_DIR, `${post.slug}-${format.id}.png`);
+    /* CAPTURE LOSSLESS, ENCODE ONCE. The screenshot is PNG so the ladder below re-encodes
+       from a clean original rather than compounding JPEG artefacts on every step. */
+    const shot = await page.screenshot({ type: "png" });
+
+    const path = join(OUTPUT_DIR, `${post.slug}-${format.id}.jpg`);
     mkdirSync(OUTPUT_DIR, { recursive: true });
-    await page.screenshot({ path: path as `${string}.png` });
+    const { buffer, quality } = await encodeUnder(Buffer.from(shot), format.maxBytes);
+    writeFileSync(path, buffer);
 
     return {
       slug: post.slug,
@@ -602,7 +661,8 @@ export async function renderCard(
       byline,
       hookSize,
       typeTop,
-      bytes: readFileSync(path).length,
+      bytes: buffer.length,
+      quality,
     };
   } finally {
     await page.close();
@@ -658,7 +718,7 @@ async function main() {
       console.log(`  retained    ${(r.retained * 100).toFixed(1)}% of the authored box`);
       console.log(`  byline      ${r.byline}`);
       console.log(`  hook        ${r.hookSize}px after fitting, type starts at y=${r.typeTop}`);
-      console.log(`  written     ${r.path}  (${(r.bytes / 1024).toFixed(0)} KB)`);
+      console.log(`  written     ${r.path}  (${(r.bytes / 1024).toFixed(0)} KB at q${r.quality}, ceiling ${(format.maxBytes / 1024).toFixed(0)} KB)`);
     }
     console.log('');
   } finally {

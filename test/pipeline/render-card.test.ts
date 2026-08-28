@@ -182,3 +182,59 @@ describe('the tier decision lives in ONE place', () => {
     expect(src).toContain('date: post.image.shotOn')
   })
 })
+
+// ── The quality ladder (#342) ───────────────────────────────────────────────
+
+describe('encodeUnder', () => {
+  const png = async (w: number, h: number) => {
+    const sharp = (await import('sharp')).default
+    // Noise, not flat colour — a flat image compresses to nothing and would pass any ceiling.
+    const px = Buffer.alloc(w * h * 3)
+    for (let i = 0; i < px.length; i++) px[i] = (i * 2654435761) % 256
+    return sharp(px, { raw: { width: w, height: h, channels: 3 } }).png().toBuffer()
+  }
+
+  it('lands on q82, the value #342 specifies, when there is room', async () => {
+    const { encodeUnder } = await import('../../scripts/syndication/render-card')
+    const { quality, buffer } = await encodeUnder(await png(600, 400), 1_000_000)
+    expect(quality).toBe(82)
+    expect(buffer.length).toBeLessThanOrEqual(1_000_000)
+  })
+
+  it('steps down until it fits rather than using one fixed setting', async () => {
+    // #342's own argument: one quality is either wasteful or over the limit, and which of
+    // the two depends on the photograph.
+    const { encodeUnder } = await import('../../scripts/syndication/render-card')
+    const big = await png(1200, 630)
+    const roomy = await encodeUnder(big, 1_000_000)
+    const tight = await encodeUnder(big, Math.floor(roomy.buffer.length * 0.7))
+    expect(tight.quality).toBeLessThan(roomy.quality)
+    expect(tight.buffer.length).toBeLessThan(roomy.buffer.length)
+  })
+
+  it('returns the smallest it managed rather than throwing at the floor', async () => {
+    // A card slightly over a limit is a decision for the adapter. Throwing here turns a
+    // large photograph into a dropped post at 10am, unattended.
+    const { encodeUnder } = await import('../../scripts/syndication/render-card')
+    const { quality, buffer } = await encodeUnder(await png(1200, 630), 1)
+    expect(quality).toBe(50)
+    expect(buffer.length).toBeGreaterThan(1)
+  })
+
+  it('never returns the PNG it was handed', async () => {
+    // quality: 0 would mean no ladder step ran at all, which is a silent PNG on a channel
+    // that asked for JPEG.
+    const { encodeUnder } = await import('../../scripts/syndication/render-card')
+    expect((await encodeUnder(await png(200, 200), 10)).quality).toBeGreaterThan(0)
+  })
+})
+
+describe('the byte ceiling', () => {
+  it('is Bluesky\'s hard limit, on BOTH formats', async () => {
+    // Instagram has no such limit today, but a ceiling that exists on one path only is a
+    // ceiling nobody remembers when a third format arrives.
+    const { FORMATS } = await import('../../scripts/syndication/render-card')
+    expect(FORMATS.wide.maxBytes).toBe(1_000_000)
+    expect(FORMATS['4x5'].maxBytes).toBe(1_000_000)
+  })
+})
