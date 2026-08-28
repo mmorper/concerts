@@ -1,6 +1,6 @@
-# Artist Handles in Social Posts
+# Artist and Venue Handles in Social Posts
 
-**Status:** Research complete, design decided — not implemented
+**Status:** Shipped on Bluesky (#423). X and Instagram sequenced behind #334/#335
 **Target Version:** Phase 3 of the syndication epic (#323)
 **Priority:** Medium
 **Estimated Complexity:** Low engineering, Medium data curation
@@ -33,11 +33,22 @@ saying "I don't know" — which is free, because the hashtag fallback already
 ships.
 
 **The measured payoff is lopsided and it decides the sequencing.** On the two
-channels that are live today, this feature is nearly worthless: 21 of 257
-artists have a findable Bluesky account, and exactly one has a Mastodon
-address. On the two channels Phase 3 adds, it is worth building: 170 of 257
-artists have an X account and 143 have an Instagram account, both already
-curated by MusicBrainz and Wikidata editors.
+channels live today, the reach is thin: 21 of 257 artists have a findable
+Bluesky account and exactly one has a Mastodon address. On the two channels
+Phase 3 adds, it is worth building: 170 of 257 artists have an X account and
+143 have an Instagram account, both already curated by MusicBrainz and Wikidata
+editors.
+
+Bluesky shipped first anyway, and not on reach. A bug in the swap rule
+mis-tags 11 posts there and would mis-tag over a hundred on X. It earned that
+immediately — see *Sequencing*.
+
+**Venues came second and are covered here too** (#423). They are a better
+prospect than artists on every axis but one: active accounts with a reason to
+engage, and no stable identifier. Coordinates supply the identifier.
+
+Nineteen entities are on file today — 17 artists and 2 venues — and 11 of the
+58 published notes carry a mention.
 
 ---
 
@@ -68,11 +79,14 @@ not joined.
 
 Against the 58 published liner notes, using the lead artist:
 
-- **9 of 58 (16%)** would carry a Bluesky mention.
+- **9 of 58 (16%)** would carry a Bluesky mention on the research inventory.
+  With the curated MusicBrainz and Wikidata rows accepted and venues in, the
+  shipped figure is **11 of 58**.
 - **0 of 3** current On This Day posts would.
 - **4 of the 21 Bluesky accounts have never posted** — `@colinhay.com`,
   `@depechemode.com`, `@loslobos.org`, `@publicenemyno1.bsky.social`. A mention
-  reaches a notification inbox nobody opens.
+  reaches a notification inbox nobody opens. They publish anyway; dormancy is
+  not permanent and a liveness threshold is one more number to defend.
 
 ### The verification problem, measured
 
@@ -97,27 +111,106 @@ League" is a fan. The top hit for "New Order" is a private individual whose
 display name is a stylised "New Order". Automated resolution at that tier means
 repeatedly @-mentioning strangers from an unattended cron job.
 
-### The one automatic rule that is safe
+### The one automatic rule that is safe — and the half of it that is not
 
 A Bluesky domain handle is proven by DNS TXT record or an HTTPS well-known
 file. If `depechemode.com` resolves as a handle, whoever controls DNS for the
 band's official website set it. That is stronger evidence than platform
 verification, and it needs no human judgement.
 
-126 of 257 artists have a `website` in `artists-metadata.json`. Nine of those
-domains resolve as Bluesky handles, with no false positives:
+126 of 257 artists have a `website` in `artists-metadata.json`. Eleven of those
+domains resolve as Bluesky handles and are the artist's own:
 
 ```
 Bruce Springsteen  @brucespringsteen.net    Depeche Mode   @depechemode.com
-Crowded House      @crowdedhouse.com        The Cure       @thecure.com
 Dropkick Murphys   @dropkickmurphys.com     Joe Satriani   @satriani.com
 Echo & The Bunnymen @bunnymen.com           Living Colour  @livingcolour.com
-EMF                @emf-theband.com
+EMF                @emf-theband.com         Los Lobos      @loslobos.org
+Squeeze            @squeezeofficial.com     Umphrey's McGee @umphreys.com
 ```
 
-This rule costs one HTTP call per artist and gets better on its own as artists
-adopt domain handles. It is the only resolution rule that should ever run
-unattended.
+**The DNS check answers a narrower question than it appears to.** It proves
+whoever set the record owns the domain, which is only an *identification* if
+the domain is the artist's own. The first real harvest proposed `@lojinx.com`
+for Fountains of Wayne: MusicBrainz lists it as their official homepage, the
+domain genuinely resolves as a Bluesky handle, and Lojinx is their record
+label. Every step was correct and the answer was wrong.
+
+So the rule carries a second half. The registrable name has to look like the
+entity's — one contains the other, and the shorter is at least 0.3 of the
+longer. That keeps `bunnymen` for Echo & The Bunnymen, `satriani` for Joe
+Satriani and `emftheband` for EMF, and drops `lojinx`. The 0.3 floor is what
+`emf` inside `emftheband` needs; below it, short common words start matching
+long names by coincidence.
+
+With both halves, the rule costs one HTTP call per entity and gets better on
+its own as artists adopt domain handles. It is the only resolution rule that
+should ever run unattended.
+
+---
+
+## Venues
+
+Venues were added after the artist work (#423). They are a better prospect than
+artists on every axis except one: they are businesses, they are active on
+social media, and they have a reason to engage with a post about a show in
+their room. What they lack is a stable identifier — there is no venue
+equivalent of a MusicBrainz artist ID in our data.
+
+### Coordinates are the identifier
+
+MusicBrainz has **Place** entities, and Places carry coordinates. We hold a
+geocode for all 79 venues. So the venue is identified by measurement rather
+than by name: search MusicBrainz by name, keep the nearest result inside 2 km,
+and read its URL relationships.
+
+That distance threshold is not a guess. Real matches cluster far below it:
+
+| Venue | Distance |
+|---|---|
+| Staples Center | 0.005 km |
+| Howard Theater | 0.003 km |
+| 9:30 Club | 0.010 km |
+| Kia Forum | 0.011 km |
+| Irvine Meadows | 1.683 km |
+
+The outlier is an amphitheatre whose geocode lands on its car park, which is
+what sets the ceiling. A different venue in the same city is kilometres away,
+so there is a wide gap between the loosest true match and the tightest possible
+false one.
+
+**Name scoring is deliberately not attempted.** MusicBrainz spells venues
+differently than we do, and the roster contains names generic enough — "The
+Forum", "UCLA" — that a name match would be actively misleading exactly where
+the coordinates are decisive.
+
+### What it found
+
+28 of 79 venues matched a Place and carried at least one usable link: 26 on X,
+24 on Instagram, 2 on Bluesky. The same lopsidedness as the artists, and for
+the same reason — the reference data reflects where these accounts actually
+are.
+
+### Which entity a post mentions
+
+One mention per post, following the tag priority already in `tags.ts`: the lead
+artist, and the venue **only when the lead artist has no account**. A venue
+mention displaces the venue tag, not the first tag — displacing by position
+would throw away the artist tag, which is the more valuable one, and still
+print `@theanthem #TheAnthem`.
+
+### "Official account" and "right account" are different questions
+
+`ucla` resolves to `@ucla.edu`. Both proofs hold — the domain resolves and the
+coordinates matched — and the account is the University of California rather
+than a concert hall. It was blocked on review for that reason and then
+unblocked, because the two posts it affects are campus shows: the university
+*is* the venue, and "UCLA" is not standing in for a room inside it.
+
+Worth recording as the worked example. The rules establish that an account
+belongs to an entity. Whether naming that entity is the right thing to do in a
+given post is a judgement the rules cannot make, and the `blocked` state is
+where that judgement gets written down.
 
 ---
 
@@ -131,10 +224,9 @@ that artist's hashtag on every channel that takes tags. **No fallback code is
 needed.** The feature is the mention half only, and "no handle on file" is the
 normal, correct, zero-work path.
 
-### Data: `data/artist-handles.json`
+### Data: `data/social-handles.json`
 
-Alongside the ledger and the pause switch, not in `public/data/` — the client
-never needs it and it must not enter the bundle.
+Alongside the ledger and the pause switch.
 
 ```jsonc
 {
@@ -150,11 +242,36 @@ never needs it and it must not enter the bundle.
       },
       "x": { "handle": "depechemode", "evidence": "musicbrainz", "verifiedAt": "2026-08-28" }
     }
+  },
+  "venues": {
+    "the-anthem": {
+      "bluesky": {
+        "handle": "theanthemdc.bsky.social",
+        "did": "did:plc:fv3ksu5ms3met4rn2n435u5e",
+        "evidence": "musicbrainz",
+        "verifiedAt": "2026-08-28"
+      }
+    }
   }
 }
 ```
 
-Four rules govern the shape.
+**Not in `public/data/`, and not merged into `artists-metadata.json`.** Three
+reasons, the first decisive. `enrich-artists.ts` replaces records wholesale
+(`metadata[normalized] = audioDbInfo`) rather than merging them, so a curated
+`blocked: true` — a promise to somebody who asked not to be tagged — would be
+silently destroyed by the next enrichment run. Human decisions must not live in
+a file a scraper rewrites. Beyond that, six client call sites fetch
+`/data/artists-metadata.json`, so it ships to every visitor for data only the
+build-time pipeline reads; and putting venues in `venues-metadata.json` would
+split one rule across two files with the same rewrite problem.
+
+If the *site* ever wants to show these on the artist page, the answer is a
+derived public projection — handles minus the `evidence`/`blocked`
+bookkeeping — emitted at build time. Curated source in `data/`, derived copy
+ships.
+
+Five rules govern the shape.
 
 **1. `evidence` is a required enum, and it is the publish gate.**
 
@@ -192,7 +309,7 @@ and the harvester skips anything holding it.
 1. Read MusicBrainz `url-rels` for each MBID (1 req/sec, ~4 minutes for 232
    artists) and Wikidata via one bulk SPARQL query on `P434`.
 2. Run the Bluesky domain rule against every known `website`.
-3. Write proposals to a worksheet, **not** to `artist-handles.json`.
+3. Write proposals to a worksheet, **not** to `social-handles.json`.
 4. A human promotes rows. Only `site-domain` rows may be promoted
    automatically, because they are self-proving.
 
@@ -254,26 +371,31 @@ falls back to the hashtag after 18 months.
 
 ## Sequencing
 
-**Do the harvest and the data file now. Wire Bluesky now. Ship the value with
-Phase 3.**
+**Harvest and curate now, wire Bluesky now, ship the value with Phase 3.**
 
-| Stage | Work | Reach |
-|---|---|---|
-| **A — now** | Harvester, `artist-handles.json`, `handles.ts`, Bluesky swap | 21 artists, ~16% of posts |
-| **B — with #334 / #335** | Instagram and X mentions | 143 and 170 artists, 56% and 66% |
-| **Never** | Mastodon | 1 artist |
+| Stage | Work | Reach | State |
+|---|---|---|---|
+| **A** | Harvester, `social-handles.json`, `handles.ts`, the Bluesky swap | 19 entities, 11 of 58 posts | **Done (#423)** |
+| **B — with #334 / #335** | Instagram and X mentions | 152 and 178 artists, 24 and 26 venues | Waiting on the adapters |
+| **Never** | Mastodon | 1 artist | — |
 
-Stage A does not pay for itself on its own. It is worth doing now because the
-harvest and the curation pass are the expensive part, they are the same work
-whichever channel ships first, and doing them now turns Stage B into a
-formatting change.
+Stage A does not pay for itself on reach alone. The reason to do it first is
+that a bug in the swap rule mis-tags 11 posts on Bluesky and would mis-tag over
+a hundred on X. Bluesky is the rehearsal, and it is the cheap one — it earned
+that description immediately, finding three defects before anything shipped:
+the label-domain false positive above, a tag displacement that dropped the
+wrong tag, and an expiry that floored to the month.
 
-The curation cost is also lopsided, and in our favour. Bluesky coverage would
-need roughly 250 hand-searches to gain about a dozen mentions — not worth it,
-so Bluesky takes only the free domain rule and the six MusicBrainz rows.
-X and Instagram need **review, not research**: MusicBrainz and Wikidata editors
-have already done the work, and 313 rows of confirming already-curated links is
-an afternoon.
+The curation cost is lopsided in our favour. Bluesky coverage would need
+roughly 250 hand-searches to gain about a dozen mentions — not worth it, so
+Bluesky took only the domain rule and the curated MusicBrainz and Wikidata
+rows. X and Instagram need **review, not research**: those editors have already
+done the work, and the 380 rows sitting in the worksheet are an afternoon of
+confirming already-curated links.
+
+**Do not review those rows until the adapters exist.** X and Instagram store a
+bare username with no stable identifier and both platforms recycle usernames,
+so a review done a year early is a review done twice.
 
 ---
 
@@ -349,4 +471,5 @@ behaviour rather than by analogy to this one.
 | Date | Change |
 |---|---|
 | 2026-08-28 | Research complete. Coverage, false-positive rate and budget arithmetic measured against live APIs. |
+| 2026-08-28 | Venues added. MusicBrainz Places matched by coordinates, 28 of 79 carry a link. The domain rule gains a name-affinity half after it proposed a record label for Fountains of Wayne. Stage A shipped (#423). |
 | 2026-08-28 | Owner decisions recorded: billing name only, label/estate accounts publish, dormant accounts publish, opt-out is a `blocked` state. Staleness reframed — the drift check is the mechanism, the date is the backstop, 18 months not 12. |
