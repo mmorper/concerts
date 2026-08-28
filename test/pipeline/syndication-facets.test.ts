@@ -24,6 +24,7 @@ function payload(overrides: Partial<SyndicationPayload> = {}): SyndicationPayloa
       city: "Los Angeles",
       date: "1997-08-09",
     },
+    refs: { artists: ["bjork"], venue: "greek-theatre" },
     url: "https://concerts.morperhaus.org/liner-notes/bjork-at-the-greek",
     media: [
       {
@@ -84,6 +85,8 @@ describe("FacetedText", () => {
       const feature = facet.features[0];
       if (feature.$type === "app.bsky.richtext.facet#tag") {
         expect(slice).toBe(`#${feature.tag}`);
+      } else if (feature.$type === "app.bsky.richtext.facet#mention") {
+        expect(slice).toBe(`@${slice.slice(1)}`);
       } else {
         // The display text is a truncation of the URL, never the URL itself.
         expect(composed.text).toContain(slice);

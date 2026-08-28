@@ -26,6 +26,7 @@ export interface Facet {
   features: Array<
     | { $type: "app.bsky.richtext.facet#link"; uri: string }
     | { $type: "app.bsky.richtext.facet#tag"; tag: string }
+    | { $type: "app.bsky.richtext.facet#mention"; did: string }
   >;
 }
 
@@ -56,6 +57,24 @@ export class FacetedText {
 
   appendLink(display: string, uri: string): void {
     this.appendFaceted(display, [{ $type: "app.bsky.richtext.facet#link", uri }]);
+  }
+
+  /**
+   * `@handle`. Like a tag, the `@` rides inside the facet span.
+   *
+   * The feature carries a **DID, never the handle**. Handles are mutable and
+   * re-assignable; a DID is permanent. Posting the handle would mean the
+   * mention follows the name rather than the account, so a rename — which is
+   * exactly what a transferred account looks like — would silently redirect
+   * every future post to whoever picked the name up.
+   *
+   * The handle is therefore display text and nothing more. It can go stale
+   * without the mention going wrong, which is the whole reason `handles.ts`
+   * treats drift as a warning rather than an error.
+   */
+  appendMention(handle: string, did: string): void {
+    const bare = handle.replace(/^@/, "");
+    this.appendFaceted(`@${bare}`, [{ $type: "app.bsky.richtext.facet#mention", did }]);
   }
 
   /**

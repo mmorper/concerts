@@ -262,7 +262,81 @@ diffable, reviewable and greppable.
 | `scripts/syndication/pause.ts` | The kill switch |
 | `scripts/syndication/run.ts` | Fan-out, jitter, partial-failure resume |
 | `scripts/liner-notes/backfill-social.ts` | Back-catalogue social copy: selection and application |
+| `scripts/syndication/handles.ts` | `@artist` / `@venue` lookup; built out of refusals |
+| `scripts/syndication/harvest-handles.ts` | Proposes handles for review. Never a publish path |
 | `scripts/on-this-day/` | The second stream — detection, scoring, card, CLI |
+
+---
+
+## Naming the account, not just the name
+
+A post about The Human League carries `#TheHumanLeague`. When we know the
+artist's — or the venue's — real account on the channel we are posting to, it
+carries `@thehumanleague` instead.
+
+```bash
+npm run harvest:handles              # propose candidates into a worksheet
+npm run harvest:handles -- --venues  # one entity kind
+npm run harvest:handles -- --promote # accept the self-proving rows
+npm run harvest:handles -- --verify  # re-resolve stored DIDs, report renames
+```
+
+### It is an allowlist, and that is not caution for its own sake
+
+Finding an artist's real account cannot be automated. Measured across all 257
+artists, Bluesky's strongest available signal — a verification badge plus an
+exact display-name match — returned `interpol.int` for the band Interpol. That
+is INTERPOL, the international police organisation. It returned an MP for
+Edinburgh East for the ska musician Chris Murray. Two wrong out of nineteen.
+
+Loosening is worse: **80 artists have an account whose display name is
+character-for-character theirs, and 41 of those have two or more.** The top hit
+for "New Order" is a private individual.
+
+So `handles.ts` never searches, guesses or touches the network. A mention is a
+row in `data/social-handles.json` or it does not happen, and every row records
+`evidence` from a closed union. **There is no member for "found by search"**, so
+a handle discovered that way has nowhere to be written and cannot reach a post
+even by accident — the same structural "never" that keeps detector tags out by
+never reading `post.tags`.
+
+### The two rules that prove themselves
+
+Only these promote without a human.
+
+- **A resolvable website domain** (Bluesky). If `depechemode.com` resolves as a
+  handle, whoever controls DNS for the band's official site set it — proven by
+  a TXT record or an HTTPS well-known file, which is stronger than a
+  verification badge.
+- **Coordinates, for venues.** We hold a geocode for all 79; MusicBrainz Places
+  carry their own; a place within 2 km is the same building. That is a
+  measurement rather than an opinion about names, which matters when the roster
+  contains "The Forum" and "UCLA". Real matches cluster under 0.5 km.
+
+### Rules the pipeline enforces
+
+- **The mention replaces the artist tag; it never joins it.** Appending
+  overflows Bluesky at 308 graphemes against a 300 limit; swapping fits at 291.
+  `@DepecheMode #DepecheMode` would also be the tell of an automated account.
+- **One mention per post — the lead artist, then the venue.** Same priority as
+  the tags. The 22-artist venue-loyalty note must never tag 22 accounts.
+- **The billing name only.** A post billed to Echo & The Bunnymen mentions the
+  Bunnymen, never Ian McCulloch, however much livelier his account is.
+- **The facet carries a DID, never a handle.** Handles are re-assignable; a DID
+  is not. `--verify` reports renames and **never acts on one** — a rename looks
+  identical whether the artist rebranded or the account changed hands.
+- **A row nobody has confirmed in 18 months stops publishing.** Not an error;
+  the archive declining to vouch for something it has not looked at.
+- **An opt-out is `"blocked": true`, never a deleted row.** A deleted row reads
+  as never-harvested, so the next harvest would re-propose it and silently undo
+  the request.
+
+Every one of those lands on the hashtag, which was shipping anyway. There is no
+error path and nothing logs a warning.
+
+**Mastodon is deliberately not implemented.** One artist of 257 has an address,
+and a status that *begins* with a mention is treated as a reply that reaches
+only people following both accounts.
 
 ---
 
@@ -325,7 +399,7 @@ checks for "no credentials configured" lines.
 | Multi-show On This Day days | Tier-3 artwork — 28 days a year deferred |
 | YouTube Shorts + TikTok | L3 video and #100 |
 | Syndication health on the dashboard | #337 |
-| `@artist` mentions instead of `#artist` tags | Nothing. Researched and deliberately sequenced behind #334/#335 — only 21 of 257 artists are on Bluesky and 1 is on Mastodon, against 170 on X and 143 on Instagram. See [`specs/future/social-artist-handles.md`](specs/future/social-artist-handles.md) |
+| `@artist` mentions on X and Instagram | #334/#335. Bluesky ships now; that is where the coverage is — 170 of 257 artists on X and 143 on Instagram, against 21 on Bluesky. See *Naming the account* below |
 
 ---
 

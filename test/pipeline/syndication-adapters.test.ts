@@ -32,6 +32,7 @@ function payload(): SyndicationPayload {
       city: "Los Angeles",
       date: "1997-08-09",
     },
+    refs: { artists: ["bjork"], venue: "greek-theatre" },
     url: "https://concerts.morperhaus.org/liner-notes/__adapter-test__",
     media: [
       {
