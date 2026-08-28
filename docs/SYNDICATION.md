@@ -410,6 +410,7 @@ checks for "no credentials configured" lines.
 | Design rationale and phase plan | [`specs/future/global-social-syndication.md`](specs/future/global-social-syndication.md) |
 | Phase 0 creative decisions | [`specs/future/mocks-social-syndication/DECISIONS.md`](specs/future/mocks-social-syndication/DECISIONS.md) |
 | Image provenance policy | [`specs/future/mocks-social-syndication/PROVENANCE.md`](specs/future/mocks-social-syndication/PROVENANCE.md) |
+| Handles: the coverage and false-positive measurements | [`specs/future/social-artist-handles.md`](specs/future/social-artist-handles.md) |
 | Credentials and rotation | [`SECRETS.md`](SECRETS.md) |
 | Where the posts come from | [`LINER_NOTES_PIPELINE.md`](LINER_NOTES_PIPELINE.md) |
 | Voice rules for social copy | `.claude/skills/liner-notes-voice/SKILL.md` |

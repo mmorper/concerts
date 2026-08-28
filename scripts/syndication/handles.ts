@@ -72,6 +72,47 @@ const EVIDENCE: readonly HandleEvidence[] = [
 ];
 
 /**
+ * Strip a name to comparable letters: no diacritics, no punctuation, no
+ * leading article. "Echo & The Bunnymen" → "echothebunnymen".
+ */
+function fold(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/^the\s+/, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+
+/**
+ * Is this domain plausibly the ENTITY's, and not merely a domain somebody
+ * proved they control?
+ *
+ * The DNS check answers a narrower question than it looks like it does. It
+ * proves whoever set the record owns the domain — which is only an
+ * identification if the domain is the artist's own. MusicBrainz lists
+ * `lojinx.com` as Fountains of Wayne's official homepage; Lojinx is their
+ * record label, and `lojinx.com` does resolve as a Bluesky handle. The proof
+ * held perfectly and identified the wrong party.
+ *
+ * So the registrable name has to look like the entity's: one contains the
+ * other, and the shorter is a substantial fraction of the longer. That keeps
+ * `bunnymen` for Echo & The Bunnymen, `satriani` for Joe Satriani and
+ * `emftheband` for EMF, and drops `lojinx` for Fountains of Wayne.
+ *
+ * The 0.3 floor is what `emf` inside `emftheband` needs. Below it, short
+ * common words start matching long names by coincidence.
+ */
+export function domainMatchesEntity(domain: string, name: string): boolean {
+  const left = fold(domain.replace(/^www\./, "").split(".").slice(0, -1).join("."));
+  const right = fold(name);
+  if (!left || !right) return false;
+  if (!left.includes(right) && !right.includes(left)) return false;
+  const [shorter, longer] = left.length <= right.length ? [left, right] : [right, left];
+  return shorter.length >= 3 && shorter.length / longer.length >= 0.3;
+}
+
+/**
  * How long an unconfirmed row keeps publishing.
  *
  * This is a backstop, not the mechanism. The real check is `--verify`, which
@@ -161,10 +202,6 @@ export function loadHandles(path: string = HANDLES_PATH): HandlesFile {
   } catch {
     return EMPTY;
   }
-}
-
-export function resetHandlesCache(): void {
-  cache = undefined;
 }
 
 function handles(): HandlesFile {

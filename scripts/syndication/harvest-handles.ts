@@ -50,6 +50,7 @@ import { join } from "path";
 import { ROOT } from "./payload.ts";
 import {
   HANDLES_PATH,
+  domainMatchesEntity,
   loadHandles,
   type HandleEvidence,
   type HandlesFile,
@@ -341,6 +342,8 @@ async function harvestOne(target: Target): Promise<Proposal[]> {
   // Last, because it needs the website MusicBrainz may just have supplied.
   if (website) {
     for (const candidate of domainCandidates(website)) {
+      // Affinity first: a failed name check is free, a resolve call is not.
+      if (!domainMatchesEntity(candidate, target.name)) continue;
       const did = await resolveHandle(candidate);
       if (!did) continue;
       push({
@@ -362,9 +365,16 @@ async function harvestOne(target: Target): Promise<Proposal[]> {
   // resolve now rather than leaving an unpublishable row for review.
   for (const proposal of out) {
     if (proposal.channel !== "bluesky" || proposal.did) continue;
-    const did = await resolveHandle(proposal.handle);
+    let did = await resolveHandle(proposal.handle);
+    if (!did) {
+      // The public appview rate-limits, and a run this long will hit it. One
+      // retry separates "throttled" from "gone" often enough to matter — the
+      // note below has to stay honest about not knowing which.
+      await sleep(1500);
+      did = await resolveHandle(proposal.handle);
+    }
     if (did) proposal.did = did;
-    else proposal.note += " — ⚠️ handle does not resolve; account may be gone";
+    else proposal.note += " — ⚠️ did not resolve (account gone, or we were throttled). No DID means this row cannot publish.";
   }
 
   return out;

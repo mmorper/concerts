@@ -15,6 +15,7 @@
 import { describe, it, expect } from "vitest";
 
 import {
+  domainMatchesEntity,
   mentionFor,
   mentionForPost,
   isStale,
@@ -132,6 +133,40 @@ describe("mentionFor — every gate returns nothing, and nothing means hashtag",
 
   it("declines a channel the entity has no row for", () => {
     expect(mentionFor("artist", "depeche-mode", "mastodon", { now: NOW, file: file() })).toBeUndefined();
+  });
+});
+
+describe("domainMatchesEntity — the DNS proof identifies a domain, not a band", () => {
+  it("drops a label's domain listed as the artist's official homepage", () => {
+    // The case that found this rule. MusicBrainz lists lojinx.com as Fountains
+    // of Wayne's official homepage, lojinx.com really does resolve as a
+    // Bluesky handle, and Lojinx is their record label. The proof held
+    // perfectly and identified the wrong party.
+    expect(domainMatchesEntity("lojinx.com", "Fountains of Wayne")).toBe(false);
+  });
+
+  it("keeps the domains that are the entity's own", () => {
+    expect(domainMatchesEntity("depechemode.com", "Depeche Mode")).toBe(true);
+    expect(domainMatchesEntity("thecure.com", "The Cure")).toBe(true);
+    expect(domainMatchesEntity("bunnymen.com", "Echo & The Bunnymen")).toBe(true);
+    expect(domainMatchesEntity("satriani.com", "Joe Satriani")).toBe(true);
+    expect(domainMatchesEntity("squeezeofficial.com", "Squeeze")).toBe(true);
+    expect(domainMatchesEntity("ucla.edu", "UCLA")).toBe(true);
+    expect(domainMatchesEntity("www.brucespringsteen.net", "Bruce Springsteen")).toBe(true);
+  });
+
+  it("keeps a three-letter name inside a longer domain — the 0.3 floor exists for EMF", () => {
+    expect(domainMatchesEntity("emf-theband.com", "EMF")).toBe(true);
+  });
+
+  it("rejects an unrelated domain, and a coincidental short overlap", () => {
+    expect(domainMatchesEntity("livenation.com", "Depeche Mode")).toBe(false);
+    expect(domainMatchesEntity("me.com", "Depeche Mode")).toBe(false);
+  });
+
+  it("folds diacritics and punctuation rather than failing on them", () => {
+    expect(domainMatchesEntity("bjork.com", "Björk")).toBe(true);
+    expect(domainMatchesEntity("umphreys.com", "Umphrey’s McGee")).toBe(true);
   });
 });
 
