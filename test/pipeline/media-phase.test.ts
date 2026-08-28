@@ -14,6 +14,7 @@ const base: Snapshot = {
   hasRun: true, onPage: 29, judged: 29, framesOnPage: 0, framesJudged: 0,
   hasSelects: true, selectsStale: false, clipsKept: 0, clipsUnmarked: 0,
   publishable: 1, indexedCount: 1, indexedVideos: 0,
+  actsMissingHero: 0, stillsUncropped: 0,
 }
 const at = (over: Partial<Snapshot>) => phaseOf({ ...base, ...over }, DATE)
 
@@ -98,6 +99,7 @@ describe('the report after a step', () => {
       hasRun: true, onPage: 29, judged: 29, framesOnPage: 0, framesJudged: 0,
       hasSelects: true, selectsStale: false, clipsKept: 7, clipsUnmarked: 3,
       publishable: 3, indexedCount: 1, indexedVideos: 0,
+      actsMissingHero: 0, stillsUncropped: 0,
     }
     // What mining 2024-08-20 actually did.
     const after: Snapshot = { ...before, framesOnPage: 9, framesJudged: 2, indexedCount: 3, indexedVideos: 2 }
@@ -115,6 +117,7 @@ describe('the report after a step', () => {
       hasRun: true, onPage: 29, judged: 29, framesOnPage: 0, framesJudged: 0,
       hasSelects: true, selectsStale: false, clipsKept: 0, clipsUnmarked: 0,
       publishable: 1, indexedCount: 1, indexedVideos: 0,
+      actsMissingHero: 0, stillsUncropped: 0,
     }
     // Opening the page and closing it without judging is a real outcome, not an error —
     // but it must not read as progress.
@@ -127,10 +130,54 @@ describe('the report after a step', () => {
       hasRun: true, onPage: 29, judged: 29, framesOnPage: 0, framesJudged: 0,
       hasSelects: false, selectsStale: false, clipsKept: 0, clipsUnmarked: 0,
       publishable: 0, indexedCount: 0, indexedVideos: 0,
+      actsMissingHero: 0, stillsUncropped: 0,
     }
     expect(changeLines(base, { ...base, hasSelects: true })).toContain('selects.json written')
     expect(
       changeLines({ ...base, hasSelects: true, selectsStale: true }, { ...base, hasSelects: true })
     ).toContain('selects.json brought up to date')
+  })
+})
+
+describe('a published show is not finished until it is framed', () => {
+  // THE BUG THE OWNER FOUND. `done` meant "every file reached media-index.json", which is a
+  // statement about ingest. The crop box and the hero are judgements made at or after
+  // publication and neither counted — so a show with four acts and no heroes read "Done",
+  // left the picker, and became unreachable from any entry point. Measured 2026-08-28:
+  // 4 acts across 2 shows in exactly that state, including the 17-still Human League set
+  // that three published posts resolve against.
+  const published = { clipsKept: 0, publishable: 25, indexedCount: 25 }
+
+  it('holds at frame while an act has no hero', () => {
+    const p = at({ ...published, actsMissingHero: 3 })
+    expect(p.id).toBe('frame')
+    expect(p.command).toBe('npm run media:crop 2024-08-20')
+  })
+
+  it('holds at frame while a still has no crop box', () => {
+    expect(at({ ...published, stillsUncropped: 4 }).id).toBe('frame')
+  })
+
+  it('names what is actually missing, so the row is actionable', () => {
+    expect(at({ ...published, actsMissingHero: 3 }).why).toContain('3 act(s) with no hero')
+    expect(at({ ...published, stillsUncropped: 4 }).why).toContain('4 still(s) with no crop box')
+    const both = at({ ...published, actsMissingHero: 1, stillsUncropped: 2 }).why
+    expect(both).toContain('1 act(s) with no hero')
+    expect(both).toContain('2 still(s) with no crop box')
+  })
+
+  it('reaches done once both are satisfied', () => {
+    expect(at({ ...published, actsMissingHero: 0, stillsUncropped: 0 }).id).toBe('done')
+  })
+
+  it('does NOT jump the queue — ingest still comes first', () => {
+    // A show mid-ingest has no published stills to frame. Reporting `frame` there would
+    // send the owner to a page with nothing on it.
+    expect(at({ clipsKept: 0, publishable: 25, indexedCount: 24, actsMissingHero: 3 }).id).toBe('ingest')
+  })
+
+  it('still emits no command for done, and one for frame', () => {
+    expect(at({ ...published }).command).toBeNull()
+    expect(at({ ...published, actsMissingHero: 1 }).command).not.toBeNull()
   })
 })

@@ -60,13 +60,17 @@ export function snapshotOf(date: string): Snapshot {
     hasRun: false, onPage: 0, judged: 0, framesOnPage: 0, framesJudged: 0,
     hasSelects: false, selectsStale: false, clipsKept: 0, clipsUnmarked: 0,
     publishable: 0, indexedCount: 0, indexedVideos: 0,
+    actsMissingHero: 0, stillsUncropped: 0,
   }
 
-  const index = readJson<{ assets: Array<{ date?: string; kind?: string }> }>(MEDIA_INDEX)
+  const index = readJson<{ assets: IndexedAsset[] }>(MEDIA_INDEX)
   const mine = (index?.assets ?? []).filter((a) => a.date === date)
   const indexedCount = mine.length
   const indexedVideos = mine.filter((a) => a.kind === 'video').length
-  if (!existsSync(runDir)) return { ...empty, indexedCount, indexedVideos }
+  const { actsMissingHero, stillsUncropped } = framingGaps(mine)
+  if (!existsSync(runDir)) {
+    return { ...empty, indexedCount, indexedVideos, actsMissingHero, stillsUncropped }
+  }
 
   const all = readJson<Array<{ uuid: string; media?: string }>>(join(runDir, 'all.json')) ?? []
   const verdicts = readJson<Record<string, { verdict?: string }>>(join(runDir, 'verdicts.json')) ?? {}
@@ -106,7 +110,44 @@ export function snapshotOf(date: string): Snapshot {
     publishable: stills.length + trims.length,
     indexedCount,
     indexedVideos,
+    actsMissingHero,
+    stillsUncropped,
   }
+}
+
+interface IndexedAsset {
+  date?: string
+  kind?: string
+  url?: string | null
+  artistNormalized?: string | null
+  subject?: string | null
+  hero?: boolean
+  crop?: unknown
+}
+
+/**
+ * The judgements that happen AFTER a show is published: a hero per act, a crop per still.
+ *
+ * Heroes are counted per ACT, not per show, because that is how the rule is written — one
+ * per act per show — and a bill can run to six acts. A venue or crowd frame is exempt: it
+ * has no act to lead, and demanding a hero for it would leave every show permanently
+ * unfinished.
+ *
+ * Stills only. A render carries `url: null` — video is never served from this repo — so it
+ * has no box to draw and no post will ever reach for it.
+ */
+export function framingGaps(assets: IndexedAsset[]): { actsMissingHero: number; stillsUncropped: number } {
+  const stills = assets.filter((a) => a.kind === 'image' && a.url)
+  const byAct = new Map<string, IndexedAsset[]>()
+  for (const a of stills) {
+    if (!a.artistNormalized) continue
+    const list = byAct.get(a.artistNormalized) ?? []
+    list.push(a)
+    byAct.set(a.artistNormalized, list)
+  }
+  let actsMissingHero = 0
+  for (const [, list] of byAct) if (!list.some((a) => a.hero)) actsMissingHero++
+  return { actsMissingHero, stillsUncropped: stills.filter((a) => !a.crop).length }
 }
 
 // ── The picker ───────────────────────────────────────────────────────────────────────────
@@ -127,62 +168,90 @@ interface Row {
  * Everything else falls back to the audit's depth ranking.
  */
 export function buildRows(concerts: Concert[], audit: Map<string, { unjudged: number; opportunity: number }>,
-  snap: (d: string) => Snapshot): Row[] {
+  snap: (d: string) => Snapshot, all = false): Row[] {
   const rows: Row[] = []
   for (const c of concerts) {
     const s = snap(c.date)
     const a = audit.get(c.date)
-    const done = phaseOf(s, c.date).id === 'done'
-    if (done) continue
-    // Neither started nor holding any supply — never worth offering.
-    if (!s.hasRun && !(a && a.unjudged > 0)) continue
-    rows.push({
-      concert: c,
-      phase: phaseOf(s, c.date),
-      snapshot: s,
-      unjudged: a?.unjudged ?? 0,
-      opportunity: a?.opportunity ?? 0,
-    })
+    const phase = phaseOf(s, c.date)
+
+    /* 🔴 `all` IS NOT A DEBUG FLAG. A finished show used to be dropped here, which made this
+       a worklist with no way back: the owner could not reach a published show to redo a crop
+       or mark a hero, from this command or any other. Browsing to a show you already
+       finished is a first-class need — "I want to change my mind about that frame" — and it
+       is served by the same picker rather than by a second tool with its own conventions. */
+    if (!all && phase.id === 'done') continue
+
+    // Nothing here at all — never worth offering, in either mode.
+    if (!s.hasRun && !(a && a.unjudged > 0) && s.indexedCount === 0) continue
+
+    rows.push({ concert: c, phase, snapshot: s, unjudged: a?.unjudged ?? 0, opportunity: a?.opportunity ?? 0 })
   }
   return rows.sort((x, y) => {
-    const xs = x.snapshot.hasRun ? 0 : 1
-    const ys = y.snapshot.hasRun ? 0 : 1
-    return xs - ys || y.opportunity - x.opportunity || x.concert.date.localeCompare(y.concert.date)
+    /* Work first, finished last. In browse mode a done show is a destination rather than a
+       task, so it sorts below anything still carrying an unmade decision — and `frame`
+       (published but unheroed or uncropped) is work, so it sorts up with the rest. */
+    const rank = (r: Row) => (r.phase.id === 'done' ? 2 : r.snapshot.hasRun ? 0 : 1)
+    return rank(x) - rank(y) || y.opportunity - x.opportunity || x.concert.date.localeCompare(y.concert.date)
   })
 }
 
 function renderRow(r: Row, selected: boolean, width: number): string {
   const mark = selected ? `${CYAN}❯${OFF}` : ' '
   const inFlight = r.snapshot.hasRun
-  const badge = inFlight
-    ? `${YELLOW}step ${r.phase.step}/${TOTAL_STEPS}${OFF}`
-    : `${DIM}not started${OFF}`
+  const badge = r.phase.id === 'done'
+    ? `${GREEN}done${OFF}`
+    : inFlight
+      ? `${YELLOW}step ${r.phase.step}/${TOTAL_STEPS}${OFF}`
+      : `${DIM}not started${OFF}`
   const name = `${r.concert.headliner} · ${r.concert.venue}`
   const trimmed = name.length > width ? name.slice(0, width - 1) + '…' : name.padEnd(width)
   const label = selected ? `${BOLD}${trimmed}${OFF}` : trimmed
   /* An in-flight show reports its OWN progress. The audit's `unjudged` is a snapshot from
      whenever it last ran, and showing "29 unjudged" for a show already fully judged is the
      same class of lie this whole command exists to stop. */
-  const supply = inFlight
-    ? `${DIM}${r.snapshot.judged}/${r.snapshot.onPage} judged${OFF}`.padEnd(23)
-    : `${String(r.unjudged).padStart(3)} unjudged`
+  /* A published show reports what is PUBLISHED, not what was judged. Once assets are in the
+     index, "29/29 judged" is history; what matters is how many stills there are and whether
+     they still need a decision — which is the whole reason a finished show is reachable. */
+  const published = r.snapshot.indexedCount > 0
+  const gaps = [
+    r.snapshot.actsMissingHero > 0 ? `${r.snapshot.actsMissingHero} no hero` : null,
+    r.snapshot.stillsUncropped > 0 ? `${r.snapshot.stillsUncropped} uncropped` : null,
+  ].filter(Boolean).join(' · ')
+  const supply = published
+    ? (gaps
+        ? `${YELLOW}${r.snapshot.indexedCount} assets · ${gaps}${OFF}`
+        : `${DIM}${r.snapshot.indexedCount} assets published${OFF}`).padEnd(gaps ? 32 : 33)
+    : inFlight
+      ? `${DIM}${r.snapshot.judged}/${r.snapshot.onPage} judged${OFF}`.padEnd(23)
+      : `${String(r.unjudged).padStart(3)} unjudged`
   return `${mark} ${r.concert.date}  ${label}  ${supply}  ${badge}`
 }
 
-/** Arrow keys, j/k, digits, enter, q. Falls back to a typed number when stdin is not a TTY. */
-async function pick(rows: Row[]): Promise<Row | null> {
+/**
+ * Arrow keys, j/k, digits, enter, a, q. Falls back to a typed number when stdin is not a TTY.
+ *
+ * Takes BOTH lists so `a` can swap between them without re-reading the disk. The work list
+ * is what you want nine times in ten; the full list is how you get back to a show you have
+ * already finished, which was unreachable from anywhere before.
+ */
+async function pick(work: Row[], all: Row[], startAll: boolean): Promise<Row | null> {
+  let showingAll = startAll
+  let rows = showingAll ? all : work
+
   if (!process.stdin.isTTY) {
     rows.forEach((r, i) => console.log(`${String(i + 1).padStart(3)}. ${renderRow(r, false, 42)}`))
-    console.log('\nNot a TTY — re-run with a date:  npm run media <YYYY-MM-DD>\n')
+    console.log(`\nNot a TTY — re-run with a date:  npm run media <YYYY-MM-DD>` +
+      `${showingAll ? '' : '\nOr list every show, finished ones included:  npm run media -- --all'}\n`)
     return null
   }
-  const PAGE = Math.min(rows.length, 15)
+  let PAGE = Math.min(rows.length, 15)
   let cursor = 0
   let top = 0
 
   const draw = (first: boolean) => {
     if (!first) process.stdout.write(`\x1b[${PAGE + 3}A`)
-    console.log(`\n${BOLD}Pick a show${OFF}  ${DIM}↑↓ move · enter choose · q quit${OFF}\x1b[K`)
+    console.log(`\n${BOLD}Pick a show${OFF}  ${DIM}↑↓ move · enter choose · ${showingAll ? 'a work only' : 'a show all'} · q quit${OFF}\x1b[K`)
     for (let i = top; i < top + PAGE; i++) {
       process.stdout.write(renderRow(rows[i], i === cursor, 42) + '\x1b[K\n')
     }
@@ -203,6 +272,22 @@ async function pick(rows: Row[]): Promise<Row | null> {
       else if (key.sequence && /^[1-9]$/.test(key.sequence)) {
         const n = Number(key.sequence) - 1
         if (n < rows.length) cursor = n
+      } else if (key.name === 'a') {
+        /* Keep the cursor on the SAME SHOW across the toggle where it exists. Jumping to the
+           top of a longer list every time loses your place, and the whole point of `a` is to
+           see more of what you are already looking at. */
+        const held = rows[cursor]?.concert.date
+        showingAll = !showingAll
+        rows = showingAll ? all : work
+        if (!rows.length) { showingAll = !showingAll; rows = showingAll ? all : work; return }
+        const found = rows.findIndex((r) => r.concert.date === held)
+        cursor = found >= 0 ? found : 0
+        const before = PAGE
+        PAGE = Math.min(rows.length, 15)
+        top = Math.max(0, Math.min(cursor, rows.length - PAGE))
+        // The frame is a different height now, so redraw from scratch rather than stepping
+        // the cursor up by the old count and leaving the tail of the longer list on screen.
+        if (PAGE !== before) { process.stdout.write(`\x1b[${before + 3}A\x1b[J`); draw(true); return }
       } else return
       if (cursor < top) top = cursor
       if (cursor >= top + PAGE) top = cursor - PAGE + 1
@@ -301,6 +386,18 @@ function showPhase(concert: Concert, s: Snapshot): Phase {
   }
   tick(s.publishable > 0 && s.indexedCount >= s.publishable, 'ingested',
     s.indexedCount ? `${s.indexedCount} of ${s.publishable || '?'} in media-index.json` : 'not yet')
+  /* Only once something is published: before that there is nothing to crop and no act to
+     lead, and a permanently-unticked row would read as a step being skipped. */
+  if (s.indexedCount > 0) {
+    const framed = s.actsMissingHero === 0 && s.stillsUncropped === 0
+    tick(framed, 'framed',
+      framed
+        ? 'every act has a hero, every still a crop box'
+        : [
+            s.actsMissingHero > 0 ? `${s.actsMissingHero} act(s) with no hero` : null,
+            s.stillsUncropped > 0 ? `${s.stillsUncropped} still(s) uncropped` : null,
+          ].filter(Boolean).join(', '))
+  }
 
   console.log(`\n  ${CYAN}→ ${phase.title.toUpperCase()}${OFF}  ${phase.why}`)
   const warn = unmarkedClipWarning(s)
@@ -317,18 +414,27 @@ function showPhase(concert: Concert, s: Snapshot): Phase {
  * either reaches the Photos library, costs a download, or writes to the repo.
  */
 async function confirm(question: string): Promise<boolean> {
+  return /^y(es)?$/i.test((await ask(question)).trim())
+}
+
+/** One line from stdin, terminal or not. EOF answers empty, never hangs. */
+async function ask(question: string): Promise<string> {
   const rl = createInterface({ input: process.stdin, output: process.stdout })
   const answer = await new Promise<string>((r) => {
     rl.question(question, r)
     rl.on('close', () => r(''))
   })
   rl.close()
-  return /^y(es)?$/i.test(answer.trim())
+  return answer
 }
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2)
   const date = args.find((a) => /^\d{4}-\d{2}-\d{2}$/.test(a))
+  /* `--all` lists every show that has media, finished ones included. The picker also toggles
+     it live with `a`, which is the discovery path — nobody reads a flag they do not know to
+     look for. */
+  const showAll = args.includes('--all') || args.includes('-a')
   const concerts = loadConcerts()
 
   let concert: Concert | undefined
@@ -341,9 +447,16 @@ async function main(): Promise<void> {
       console.log(`\n${DIM}No audit yet — run \`npm run media:audit\` to find where the supply is.${OFF}`)
     }
     const audit = new Map((auditFile?.shows ?? []).map((s) => [s.date, s]))
-    const rows = buildRows(concerts, audit, snapshotOf)
-    if (rows.length === 0) fail('Nothing to work on. Run `npm run media:audit` first.')
-    const chosen = await pick(rows)
+    const work = buildRows(concerts, audit, snapshotOf, false)
+    const everything = buildRows(concerts, audit, snapshotOf, true)
+    /* Only truly empty when there is nothing in EITHER list. "Nothing to work on" while a
+       published show sits there waiting for a hero is the same lie this command exists to
+       stop — and it is the state the owner hit. */
+    if (everything.length === 0) fail('Nothing to work on. Run `npm run media:audit` first.')
+    if (work.length === 0) {
+      console.log(`\n${DIM}Nothing outstanding. Showing every show with media — press ${OFF}a${DIM} for the work list.${OFF}`)
+    }
+    const chosen = await pick(work, everything, showAll || work.length === 0)
     if (!chosen) return
     concert = chosen.concert
   }
@@ -351,31 +464,44 @@ async function main(): Promise<void> {
   const snap = snapshotOf(concert.date)
   const phase = showPhase(concert, snap)
 
-  if (!phase.command) {
-    console.log(`\n  Nothing left to run. Commit it.\n`)
+  /* 🔴 A SHOW IS A DESTINATION, NOT A SINGLE NEXT STEP.
+     This used to run `phase.command` or, when there was none, print "Nothing left to run"
+     and exit. That made a finished show a dead end: you could navigate to it and then do
+     nothing, which is half of a browse mode. It was also too narrow even mid-pipeline —
+     the recommended step is the usual want, not the only one. Wanting to redo a crop on a
+     show that is otherwise finished is an ordinary thing to want. */
+  const actions = actionsFor(concert.date, snap, phase)
+  if (actions.length === 0) {
+    console.log(`\n  Nothing to run for this show yet.\n`)
     return
   }
+  const action = await pickAction(actions)
+  if (!action) {
+    console.log(`\n  Nothing run.\n`)
+    return
+  }
+
   // Only the page-opening steps need the port; --finish, mining and ingest do not.
-  const needsPort = phase.command.includes('media:review') && !phase.command.includes('--finish')
+  const needsPort = action.command.includes('media:review') && !action.command.includes('--finish')
 
   /* Cleared BEFORE the confirm, not after. Asking "run this step?" and only then
      discovering the port is taken puts the owner a keystroke past a decision that was
      never available. */
   if (needsPort && !(await clearPort(concert.date))) return
 
-  console.log(`\n  ${DIM}${phase.command}${OFF}`)
-  if (needsPort) {
-    console.log(`  ${DIM}Opens a page and holds this terminal. Ctrl-C when you are done judging —` +
+  console.log(`\n  ${DIM}${action.command}${OFF}`)
+  if (needsPort || action.command.includes('media:crop')) {
+    console.log(`  ${DIM}Opens a page and holds this terminal. Ctrl-C when you are done —` +
       ` that stops the server too.${OFF}`)
   }
-  const go = await confirm(`\n  Run this step? [y/N] `)
+  const go = await confirm(`\n  Run it? [y/N] `)
   if (!go) {
     console.log(`\n  Not run. The command above is the one to use when you are ready.\n`)
     return
   }
 
   console.log('')
-  const code = await runStep(phase.command)
+  const code = await runStep(action.command)
 
   /* An interrupted review is a NORMAL ending. Ctrl-C is how you finish judging — the page
      holds the terminal until you stop it — so 130 and a SIGINT death are success here. A
@@ -383,6 +509,82 @@ async function main(): Promise<void> {
   if (code !== 0 && code !== 130) fail(`That step exited with code ${code}.`)
 
   report(concert, snap, snapshotOf(concert.date))
+}
+
+export interface Action {
+  key: string
+  label: string
+  detail: string
+  command: string
+  /** The phase's own recommendation. Pre-selected, and the only one marked. */
+  recommended: boolean
+}
+
+/**
+ * Everything you can do to this show right now, recommended one first.
+ *
+ * DERIVED FROM STATE, NOT A FIXED MENU. Offering `media:frames` to a show with no clips, or
+ * `media:crop` to one with nothing published, teaches a command that will open an empty page
+ * — which is how the pipeline lost the owner's trust the first time.
+ *
+ * The phase's own command is always present and always marked. The rest are the things that
+ * remain legitimate afterwards: re-judging a show and re-framing published stills are both
+ * revisitable decisions, not one-time gates, and neither had a route once a show was done.
+ */
+export function actionsFor(date: string, s: Snapshot, phase: Phase): Action[] {
+  const out: Action[] = []
+  const push = (key: string, label: string, detail: string, command: string) => {
+    if (out.some((a) => a.command === command)) return
+    out.push({ key, label, detail, command, recommended: command === phase.command })
+  }
+
+  if (phase.command) push('→', phase.title, phase.why, phase.command)
+
+  if (s.indexedCount > 0) {
+    const gaps = [
+      s.actsMissingHero > 0 ? `${s.actsMissingHero} act(s) with no hero` : null,
+      s.stillsUncropped > 0 ? `${s.stillsUncropped} still(s) uncropped` : null,
+    ].filter(Boolean).join(', ')
+    push('c', 'Crop & hero',
+      gaps || 'Redraw a box or move the hero. No Photos access, no prompt.',
+      `npm run media:crop ${date}`)
+  }
+
+  if (s.hasRun) {
+    push('r', 'Re-judge',
+      'Re-opens the review page with every verdict as you left it. Costs a Photos read ' +
+        'and a permission prompt.',
+      `npm run media:review ${date}`)
+  }
+
+  return out.sort((a, b) => Number(b.recommended) - Number(a.recommended))
+}
+
+/**
+ * Choose one. Enter takes the recommendation, so the common path is still two keystrokes.
+ */
+async function pickAction(actions: Action[]): Promise<Action | null> {
+  if (actions.length === 1) return actions[0]
+
+  console.log(`\n  ${BOLD}What do you want to do?${OFF}`)
+  actions.forEach((a, i) => {
+    /* Enter always takes the FIRST action, so the first is always the one marked — even on
+       a finished show, where the phase has no recommendation of its own. A prompt that says
+       "enter for the first" while nothing on screen is marked first is a small lie about
+       what the key will do. */
+    const isDefault = i === 0
+    const mark = isDefault ? `${CYAN}❯${OFF}` : ' '
+    const num = `${DIM}${i + 1}${OFF}`
+    const rec = isDefault ? ` ${DIM}(enter)${OFF}` : ''
+    console.log(`  ${mark} ${num} ${BOLD}${a.label}${OFF}${rec}`)
+    console.log(`      ${DIM}${a.detail}${OFF}`)
+  })
+
+  const raw = (await ask(`\n  1-${actions.length}, or enter for the first, q to quit: `)).trim().toLowerCase()
+  if (raw === 'q') return null
+  if (raw === '') return actions[0]
+  const n = Number(raw)
+  return Number.isInteger(n) && n >= 1 && n <= actions.length ? actions[n - 1] : null
 }
 
 /**
