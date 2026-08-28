@@ -61,6 +61,15 @@ export interface RunOptions {
    */
   pausePath?: string;
   adapters?: Adapter[];
+  /**
+   * Draw one card. Injected so the run loop is testable without a browser.
+   *
+   * Defaults to the real renderer. A test that stubs this is asserting the LOOP — selection,
+   * the ledger, the pause switch — and a stub returning nothing exercises the drop path,
+   * which is the behaviour worth pinning at that level. The drawing itself is covered by the
+   * renderer's own tests and by `npm run render:card`.
+   */
+  renderCardFor?: (post: LinerNotesPost, sources: PayloadSources) => Promise<void>;
   sleep?: (ms: number) => Promise<void>;
   /**
    * Injected in tests. Defaults to reading the committed archive.
@@ -92,6 +101,85 @@ export interface RunSummary {
 }
 
 // ── Entry point ───────────────────────────────────────────────────────────────
+
+/**
+ * Draw the card for every selected post, and drop the ones that cannot be drawn.
+ *
+ * 🔴 THIS IS WHERE "NEVER BARE TYPE" IS ENFORCED NOW. `buildPayload` checks that the card
+ * exists, which in a real run is always false at selection time because nothing has drawn it
+ * yet — so the run injects `cardExists` to defer that one check, and this re-runs it for
+ * real. A post whose card fails to draw is skipped with the reason, exactly as before. The
+ * guard moved; it did not go away.
+ *
+ * ONE BROWSER FOR THE WHOLE RUN. Launching per card is the obvious shape and costs a second
+ * each; the run posts at most a handful, but `--backlog` can raise that.
+ *
+ * A render that throws takes only its own post down. An unreachable font or a corrupt JPEG
+ * on one card is not a reason for the day's other posts to stay home, and the daily job
+ * going red over one bad asset is how a schedule stops being trusted.
+ */
+async function renderSelected(
+  candidates: SyndicationPayload[],
+  sources: PayloadSources,
+  posts: LinerNotesPost[],
+  summary: RunSummary,
+  draw?: (post: LinerNotesPost, sources: PayloadSources) => Promise<void>
+): Promise<SyndicationPayload[]> {
+  const wants = candidates.filter((c) => c.kind !== "on-this-day");
+  if (!wants.length) return candidates;
+
+  const failed = new Map<string, string>();
+  let close: (() => Promise<void>) | undefined;
+  let drawOne = draw;
+
+  if (!drawOne) {
+    const { renderCard, FORMATS } = await import("./render-card.ts");
+    const puppeteer = (await import("puppeteer")).default;
+    // ONE BROWSER FOR THE WHOLE RUN, opened only when there is something to draw.
+    const browser = await puppeteer.launch({ headless: true });
+    close = () => browser.close();
+    drawOne = (post, src) => renderCard(post, src as never, browser, FORMATS.wide).then(() => undefined);
+  }
+
+  try {
+    for (const payload of wants) {
+      const post = posts.find((p) => p.slug === payload.slug);
+      if (!post) {
+        failed.set(payload.slug, "post vanished between selection and render");
+        continue;
+      }
+      try {
+        await drawOne(post, sources);
+      } catch (err) {
+        failed.set(payload.slug, `card could not be drawn: ${err instanceof Error ? err.message : String(err)}`);
+      }
+    }
+  } finally {
+    await close?.();
+  }
+
+  return candidates.filter((payload) => {
+    const why = failed.get(payload.slug);
+    if (why) {
+      summary.skipped.push({ slug: payload.slug, reason: why });
+      console.log(`   ⚠ ${payload.slug} — ${why}`);
+      return false;
+    }
+    /* The card is on disk or it is not. Nothing after this point may assume it.
+       Skipped when a renderer was INJECTED: this check exists to catch a real renderer that
+       returns without writing a file, and an injected one is the caller's own business —
+       policing it would make the seam untestable, which is the opposite of why it is here. */
+    if (payload.kind !== "on-this-day" && !draw) {
+      const card = payload.media.find((m) => m.role === "card");
+      if (card && !existsSync(join(ROOT, card.path))) {
+        summary.skipped.push({ slug: payload.slug, reason: `card not rendered: ${card.path}` });
+        console.log(`   ⚠ ${payload.slug} — card not rendered: ${card.path}`);
+        return false;
+      }
+    }
+    return true;
+  });
+}
 
 export async function run(options: RunOptions): Promise<RunSummary> {
   const ledgerPath = options.ledgerPath ?? LEDGER_PATH;
@@ -141,7 +229,14 @@ export async function run(options: RunOptions): Promise<RunSummary> {
 
     // Still say what WOULD have gone out. During a development pause that is
     // the useful half of the run, and it costs nothing.
-    const wouldPost = selectCandidates(posts, onThisDay, ledger, options, summary, sources);
+    /* Same injection as the live path. Without it a paused run reports "card not rendered"
+       for every post — which is true of the disk and false about the run, and the held list
+       is the useful half of a paused run. Nothing is drawn here: a pause should cost
+       nothing, and the held list is about what was QUEUED, not what renders. */
+    const wouldPost = selectCandidates(posts, onThisDay, ledger, options, summary, {
+      ...sources,
+      cardExists: (p: string) => (p.startsWith(".renditions/") ? true : existsSync(join(ROOT, p))),
+    });
     for (const p of wouldPost) console.log(`   [held] ${p.slug}`);
     if (!wouldPost.length) console.log("   (nothing was queued anyway)");
     console.log();
@@ -149,9 +244,25 @@ export async function run(options: RunOptions): Promise<RunSummary> {
   }
 
   // ── Select ─────────────────────────────────────────────────────────────
-  const candidates = selectCandidates(posts, onThisDay, ledger, options, summary, sources);
-  if (!candidates.length) {
+  /* `cardExists` is injected TRUE for liner-notes cards because they have not been drawn
+     yet — see `renderSelected`, which draws them next and re-checks for real. On This Day
+     still composites its card in its own build and commits it, so its existence check is a
+     genuine one and is left alone. */
+  const selectionSources: PayloadSources = {
+    ...sources,
+    cardExists: (p: string) => (p.startsWith(".renditions/") ? true : existsSync(join(ROOT, p))),
+  };
+  const selected = selectCandidates(posts, onThisDay, ledger, options, summary, selectionSources);
+  if (!selected.length) {
     console.log("📭 Nothing to syndicate this run.");
+    return summary;
+  }
+
+  // ── Draw ───────────────────────────────────────────────────────────────
+  console.log(`🎨 Drawing ${selected.filter((p) => p.kind !== "on-this-day").length} card(s)…`);
+  const candidates = await renderSelected(selected, sources, posts, summary, options.renderCardFor);
+  if (!candidates.length) {
+    console.log("📭 Nothing left to syndicate — every card failed to draw.");
     return summary;
   }
 

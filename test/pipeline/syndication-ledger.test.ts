@@ -107,6 +107,12 @@ function options(overrides: Partial<RunOptions> = {}): RunOptions {
   const { posts, concerts } = archive();
   return {
     ...DEFAULT_OPTIONS,
+    /* Draw nothing. These tests assert the LOOP — selection, the ledger, the pause switch —
+       and the cards are drawn at post time now, which would mean a headless browser and a
+       network fetch per test. The drawing itself is covered by the renderer's own tests and
+       by `npm run render:card`; what matters here is that the loop calls it and honours the
+       result, which the drop-path test below pins. */
+    renderCardFor: async () => {},
     jitterMinutes: 0,
     ledgerPath,
     // A missing file means "active". Pointed at the temp dir so these stay

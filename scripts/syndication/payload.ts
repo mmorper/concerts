@@ -38,21 +38,29 @@ export const ROOT = join(__dirname, "..", "..");
 export const SITE_URL = "https://concerts.morperhaus.org";
 
 /**
- * The card the wide channels post.
+ * The card the wide channels post — the frozen `WideSplit` design (#361), drawn at post time.
  *
- * Phase 1 ships the OG card the pipeline already composites — 1200×630,
- * imagery under a dark overlay with the headline as a text layer over it.
- * DECISIONS.md §"Track A" is explicit that this layer "is already this layer
- * and already conforms to the rule", which is why the L0 render is closer to
- * done than the rest of the spec implies.
+ * 🔴 NOT COMMITTED, AND DRAWN BY THE RUN THAT POSTS IT.
  *
- * The 630×630-plus-type-column layout the canvas settled on is a *different*
- * composition of the same inputs and lands with the rendition work (#342),
- * which is where the headless-browser renderer belongs. Nothing in the payload
- * changes when it does: this function returns a different path.
+ * A rendition is a pure function of (master, channel), so a committed one is stale the
+ * moment that function changes (#342). That is not a theoretical risk here: `public/og/`
+ * holds 67 cards composited by a renderer that has since been rewritten twice, and nothing
+ * regenerates them.
+ *
+ * Drawing it in the run that posts it removes the staleness by construction — a card cannot
+ * disagree with the design that made it. It has to be that run specifically: Liner Notes and
+ * Syndicate are separate scheduled jobs on separate machines, each starting from a fresh
+ * checkout, so anything Monday's job renders and does not commit is gone by Tuesday.
+ *
+ * The cost, named: a headless browser in a daily workflow. `DECISIONS.md` §8 accepted that
+ * when it chose browser rendering over hand-built SVG.
+ *
+ * THE LEGACY OG CARD IS UNAFFECTED. `public/og/liner-notes/` stays exactly where it is and
+ * keeps serving the site's own `<meta>` tags, where a committed file is the right answer
+ * because it is fetched by strangers' link unfurlers rather than by us.
  */
 export function cardPath(slug: string): string {
-  return `public/og/liner-notes/${slug}.png`;
+  return `.renditions/${slug}-wide.png`;
 }
 
 export interface PayloadSources {
@@ -246,6 +254,13 @@ export function buildPayload(
   if (!provenance) {
     reasons.push(`unclassified image host: ${hostOf(post.image?.url)}`);
   } else if (!exists(path)) {
+    /* Not a failure at THIS point in a real run — the card is drawn after selection, so it
+       cannot exist yet. `renderSelected` in run.ts re-checks and drops anything that failed
+       to draw, with its own reason. The guard moved; it did not go away, and a post with no
+       renderable card still never reaches a channel.
+
+       `cardExists` is injected by the run for exactly this, and defaults to a real
+       filesystem check so every other caller — tests, one-off scripts — behaves as before. */
     reasons.push(`card not rendered: ${path}`);
   } else if (post.image?.cardFallback) {
     // The card exists and the URL classifies fine, but the image could not be

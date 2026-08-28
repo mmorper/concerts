@@ -71,6 +71,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # The card is DRAWN BY THIS JOB, not fetched from the repo. A rendition is a pure
+      # function of (master, channel), so a committed one is stale the moment that function
+      # changes (#342) — and Liner Notes runs on a different machine on a different day, so
+      # anything it renders without committing is gone by the time this runs. Drawing here
+      # removes the staleness by construction.
+      #
+      # `npm install` fetches puppeteer's bundled Chromium, but not the shared libraries it
+      # links against; on ubuntu-latest that is what the `--with-deps` install provides.
+      # Without it the browser launches and dies with no useful message.
+      - name: Install the browser the card renderer needs
+        run: npx puppeteer browsers install chrome --install-deps
+
       # A second, independent layer. The run loop checks the same switch, but a
       # gate here means a paused repo cannot post even if the loop is changed,
       # broken, or bypassed — and the job goes green rather than red, because a
