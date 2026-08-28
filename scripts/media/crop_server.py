@@ -51,6 +51,10 @@ def stills() -> list[dict]:
             continue
         out.append({
             "url": a["url"], "date": a["date"], "artist": a.get("artist"),
+            # The NORMALIZED key too: the hero is one per act per show, and the page has to
+            # scope by the same field the server does or the two disagree about which
+            # sibling to unmark.
+            "artistNormalized": a.get("artistNormalized"),
             "subject": a.get("subject"), "hero": bool(a.get("hero")),
             "crop": a.get("crop"), "w": a.get("width"), "h": a.get("height"),
         })
@@ -112,6 +116,71 @@ def apply_crop(url: str, crop: dict | None) -> str:
     return "index + decisions"
 
 
+def apply_hero(url: str, hero: bool) -> str:
+    """Mark or unmark the hero for this asset's act, in the index and the decision record.
+
+    🔴 ONE PER ACT PER SHOW, ENFORCED HERE. The rule is not "this asset is a hero", it is
+    "this asset is THE hero for its act at this show" — so marking one must unmark whatever
+    held it before. Leaving that to the page would mean two heroes the moment anyone clicked
+    twice, and `getShowAsset` would silently pick whichever sorted first.
+
+    Scoped to the act AND the date. A bill runs to six acts and an artist can be photographed
+    at more than one show; neither may steal the other's hero.
+    """
+    idx = load(INDEX)
+    target = None
+    for a in idx.get("assets", []):
+        if a.get("url") == url:
+            target = a
+            break
+    if target is None:
+        return "unknown url"
+
+    date, act = target.get("date"), target.get("artistNormalized")
+    if not act:
+        # A venue or crowd frame has no act to lead. Refusing beats silently marking a hero
+        # nothing will ever reach for.
+        return "no act"
+
+    cleared = []
+    for a in idx.get("assets", []):
+        if a.get("date") == date and a.get("artistNormalized") == act and a.get("url") != url:
+            if a.pop("hero", None):
+                cleared.append(a.get("url"))
+    if hero:
+        target["hero"] = True
+    else:
+        # Absent, not `false` — same rule as a cleared crop.
+        target.pop("hero", None)
+    INDEX.write_text(json.dumps(idx, indent=2) + "\n")
+
+    # The decision record, on the same terms as a crop: only when the asset owns its key.
+    uuid = target.get("uuid")
+    note = "index + decisions"
+    if not uuid:
+        note = "index only (derived still — no decision key of its own)"
+    else:
+        dec = load(DECISIONS)
+        show = dec.get("shows", {}).get(date)
+        if not show or uuid not in show.get("decisions", {}):
+            note = "index only (no decision record)"
+        else:
+            decisions = show["decisions"]
+            for a in idx.get("assets", []):
+                other = a.get("uuid")
+                if other and other in decisions and a.get("url") in cleared:
+                    decisions[other].pop("hero", None)
+            if hero:
+                decisions[uuid]["hero"] = True
+            else:
+                decisions[uuid].pop("hero", None)
+            DECISIONS.write_text(json.dumps(dec, indent=2) + "\n")
+
+    if hero and cleared:
+        return f"{note} — moved from {cleared[0].rsplit('/', 1)[-1]}"
+    return note
+
+
 class Handler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *a, **kw):
         # Serve from `public/`, not the repo root: media-index urls are site-relative
@@ -144,17 +213,20 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def do_POST(self):
-        if self.path != "/crop":
+        if self.path not in ("/crop", "/hero"):
             self.send_response(404)
             self.end_headers()
             return
         n = int(self.headers.get("Content-Length", 0))
         payload = json.loads(self.rfile.read(n) or b"{}")
-        where = apply_crop(payload.get("url", ""), payload.get("crop"))
+        if self.path == "/hero":
+            where = apply_hero(payload.get("url", ""), bool(payload.get("hero")))
+        else:
+            where = apply_crop(payload.get("url", ""), payload.get("crop"))
         # A url that matched nothing wrote nothing, so it must NOT answer 200 — the page
         # would flash "saved" over a save that never happened, which is the exact class of
         # silent-success this tool already got wrong once.
-        ok = where != "unknown url"
+        ok = where not in ("unknown url", "no act")
         body = json.dumps({"saved": where}).encode()
         self.send_response(200 if ok else 404)
         self.send_header("Content-Type", "application/json")

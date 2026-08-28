@@ -103,6 +103,10 @@
   .keys{position:fixed;bottom:0;left:0;right:0;padding:7px 20px;background:rgba(11,11,13,.95);
         border-top:1px solid var(--line);display:flex;gap:18px;font-size:11px;color:var(--dim);z-index:40}
   .keys b{color:var(--ink);background:#22222a;padding:1px 6px;border-radius:3px;margin-right:5px}
+  /* Keeper-only keys. Dimmed until the frame is a keeper, so the gate is visible rather
+     than delivered as a toast after the fact. */
+  .keys .gated{opacity:.34;transition:opacity .12s}
+  .keys .gated.live{opacity:1}
   main{padding-bottom:52px}
   .note{background:#1a1a20;border-left:2px solid var(--warn);padding:8px 11px;
         font-size:11px;color:var(--dim);margin-top:10px;border-radius:0 4px 4px 0}
@@ -186,10 +190,19 @@
   </div>
 </div>
 
+<!-- R AND H WERE MISSING FROM HERE FOR THREE SHOWS. Crop (#411) and hero (#409) are the two
+     newest judgements in the tool and neither was ever advertised in it, so the owner culled
+     an entire show expecting crop UI and never found the key. Both are keeper-only, which is
+     right — but an unadvertised key that answers with "crop keepers only" reads as a refusal
+     rather than as a gate. `.gated` dims them until the current frame is a keeper, so the
+     rule is visible before you press anything. -->
 <div class="keys">
   <span><b>← →</b>move</span><span><b>1</b>usable</span><span><b>0</b>reject</span>
   <span><b>space</b>full size</span><span><b>P V C S</b>subject</span>
-  <span><b>↑ ↓</b>which act</span><span><b>O</b>open in Photos</span><span><b>U</b>undo</span>
+  <span class="gated" id="k-act"><b>↑ ↓</b>which act</span>
+  <span class="gated" id="k-crop"><b>R</b>crop 4:5</span>
+  <span class="gated" id="k-hero"><b>H</b>hero</span>
+  <span><b>O</b>open in Photos</span><span><b>U</b>undo</span>
   <span><b>esc</b>close</span>
 </div>
 <div class="toast" id="toast"></div>
@@ -297,6 +310,16 @@ function paint(){
     t.classList.toggle('hero', !!rec.hero);
     t.classList.toggle('cropped', !!rec.crop);
   });
+  /* Light the keeper-only keys for the frame under the cursor. Attribution, crop and hero
+     all refuse until the frame is a keeper; showing that in the legend is what turns a
+     surprise toast into a visible rule. */
+  const curRec = V[(ITEMS[cursor]||{}).uuid] || {};
+  const isKeeper = curRec.verdict === 'keep';
+  const isStill = (ITEMS[cursor]||{}).media !== 'video';
+  $('#k-act')?.classList.toggle('live', isKeeper);
+  $('#k-crop')?.classList.toggle('live', isKeeper && isStill);
+  $('#k-hero')?.classList.toggle('live', isKeeper);
+
   const keep = Object.values(V).filter(x=>x.verdict==='keep').length;
   const rej  = Object.values(V).filter(x=>x.verdict==='reject').length;
   $('#t-keep').textContent = keep; $('#t-rej').textContent = rej;

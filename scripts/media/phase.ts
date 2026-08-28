@@ -28,10 +28,22 @@ export type PhaseId =
   | 'judge-frames'
   | 'finish-again'
   | 'ingest'
+  | 'frame'
   | 'done'
 
 /** Everything phase detection is allowed to look at. */
 export interface Snapshot {
+  /**
+   * Published acts at this show with no hero marked.
+   *
+   * 🔴 A JUDGEMENT, NOT A NICETY. The hero is one per act per show, set by hand, and it is
+   * what a post reaches for first: `getShowAsset` falls back to the lowest ordinal without
+   * one, so an unmarked act publishes `-01` of seventeen by default rather than by choice.
+   * Counting it here is what stops a show going dark while the decision is still unmade.
+   */
+  actsMissingHero: number
+  /** Published stills with no crop box. Same class of unfinished judgement. */
+  stillsUncropped: number
   /** A review run exists for this date. */
   hasRun: boolean
   /** Assets on the review page, extracted frames included. */
@@ -77,7 +89,7 @@ export interface Phase {
   command: string | null
 }
 
-export const TOTAL_STEPS = 6
+export const TOTAL_STEPS = 7
 
 /**
  * The one place that decides what comes next.
@@ -142,8 +154,28 @@ export function phaseOf(s: Snapshot, date: string): Phase {
       `npm run media:ingest ${date}`)
   }
 
+  /* 🔴 INDEXED IS NOT FINISHED. `done` used to mean "every file reached media-index.json",
+     which is a statement about ingest, not about the show. Two judgements happen at or
+     after publication — the crop box and the hero — and neither counted, so a show with
+     four acts and no heroes anywhere read "Done", left the picker, and became unreachable
+     from any entry point. Measured 2026-08-28: 4 acts across 2 shows in exactly that state,
+     including the 17-still Human League set that three published posts resolve against.
+
+     Both are fixed from the same page and neither needs the Photos library, which is why
+     this is one step rather than two. */
+  if (s.actsMissingHero > 0 || s.stillsUncropped > 0) {
+    const missing = [
+      s.actsMissingHero > 0 ? `${s.actsMissingHero} act(s) with no hero` : null,
+      s.stillsUncropped > 0 ? `${s.stillsUncropped} still(s) with no crop box` : null,
+    ].filter(Boolean).join(' and ')
+    return at('frame', TOTAL_STEPS - 1, 'Frame',
+      `Published, but ${missing}. The hero is what a post reaches for first, and an ` +
+        'uncropped still gets centre-cropped. No Photos access, no prompt.',
+      `npm run media:crop ${date}`)
+  }
+
   return at('done', TOTAL_STEPS, 'Done',
-    `All ${s.indexedCount} publishable asset(s) are in media-index.json. Commit it.`, null)
+    `All ${s.indexedCount} publishable asset(s) are indexed, cropped and have a hero. Commit it.`, null)
 }
 
 /**

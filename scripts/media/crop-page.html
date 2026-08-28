@@ -57,7 +57,7 @@
 <header>
   <h1>Crop</h1>
   <span class="count" id="count"></span>
-  <span class="keys">← → move · drag box · [ ] resize · <b>enter</b> save · <b>0</b> reset to default · <b>x</b> clear</span>
+  <span class="keys">← → move · drag box · [ ] resize · <b>enter</b> save · <b>0</b> reset · <b>x</b> clear · <b>h</b> hero</span>
 </header>
 <main>
   <div class="work"><div class="wrap" id="wrap"></div></div>
@@ -72,6 +72,9 @@
         <button id="save">Save crop</button>
         <button id="reset">Default</button>
         <button id="clear">Clear</button>
+      </div>
+      <div class="row">
+        <button id="hero">★ Make hero</button>
       </div>
     </div>
   </aside>
@@ -106,10 +109,26 @@ function render() {
     `${a.w}×${a.h} · ${a.subject}<br>` +
     (a.hero ? `<span class="pill hero">★ HERO</span> ` : '') +
     (a.subject !== 'artist' ? `<span class="pill venue">${a.subject}</span>` : '');
+  // The button says what pressing it will DO, not what the asset is.
+  $('#hero').textContent = a.hero ? '★ Clear hero' : '★ Make hero';
+  $('#hero').disabled = a.subject !== 'artist';
+
   const done = A.filter(x => x.crop).length;
+  /* Acts with no hero, counted the way the rule is written — one per act per show. Shown
+     beside the crop count because it is the other half of the same job, and because a show
+     that looks "all done" while three acts have no hero is how four of them went unnoticed. */
+  const acts = new Map();
+  for (const x of A) {
+    if (!x.artistNormalized) continue;
+    const key = `${x.date}::${x.artistNormalized}`;
+    acts.set(key, (acts.get(key) || false) || !!x.hero);
+  }
+  const unheroed = [...acts.values()].filter(v => !v).length;
   $('#count').innerHTML = `${i + 1} of ${A.length} · ` +
     `<b style="color:${done === A.length ? 'var(--ok)' : 'var(--ink)'}">${done} cropped</b>` +
-    (done === A.length ? ' · all done' : `, ${A.length - done} left`);
+    (done === A.length ? '' : `, ${A.length - done} left`) +
+    ` · <b style="color:${unheroed ? '#ffd23f' : 'var(--ok)'}">` +
+    `${unheroed ? `${unheroed} act(s) with no hero` : 'every act has a hero'}</b>`;
   document.querySelectorAll('.strip img').forEach((t, n) => {
     t.classList.toggle('on', n === i);
     t.classList.toggle('done', !!A[n].crop);
@@ -194,6 +213,46 @@ async function post(crop) {
     document.querySelectorAll('.strip img').forEach((t) => t.classList.remove('flash'));
   }, 1100);
 }
+/* The hero, marked from the same page as the crop.
+   WHY HERE AND NOT ONLY IN media:review. The review page can set a hero, but reaching it for
+   an already-published show costs a full Photos read and a permission prompt, surfaces every
+   rejected frame beside the keepers, and needs the owner at the keyboard. This page already
+   reads media-index.json, serves the committed JPEGs and writes both files — a hero needs
+   exactly that and nothing more. Four acts across two shows sat unheroed because the only
+   tool that could fix it was the expensive one. */
+async function postHero(on) {
+  const a = A[i], n = i;
+  const btn = $('#hero');
+  try {
+    const r = await fetch('/hero', { method: 'POST', body: JSON.stringify({ url: a.url, hero: on }) });
+    if (!r.ok) {
+      const { saved } = await r.json().catch(() => ({ saved: String(r.status) }));
+      throw new Error(saved === 'no act' ? 'venue and crowd frames have no act to lead' : saved);
+    }
+    const { saved } = await r.json().catch(() => ({ saved: '' }));
+    // One per act per show: the server clears the previous holder, so the page has to as
+    // well or the strip keeps showing two stars until a reload.
+    if (on) for (const o of A) if (o !== a && o.date === a.date && o.artistNormalized === a.artistNormalized) o.hero = false;
+    a.hero = on;
+    render();
+    $('#saved').style.background = '';
+    $('#saved').textContent = on ? `★ hero — ${saved}` : '✓ hero cleared';
+  } catch (err) {
+    $('#saved').textContent = `hero FAILED — ${err.message}`;
+    $('#saved').style.background = '#ff4d4d';
+  }
+  $('#saved').classList.add('on');
+  document.querySelectorAll('.strip img')[n]?.classList.add('flash');
+  clearTimeout(flashT);
+  flashT = setTimeout(() => {
+    $('#saved').classList.remove('on');
+    document.querySelectorAll('.strip img').forEach((t) => t.classList.remove('flash'));
+  }, 1400);
+  void btn;
+}
+
+$('#hero').onclick = () => postHero(!A[i].hero);
+
 const round = (o) => ({ x: +o.x.toFixed(4), y: +o.y.toFixed(4), w: +o.w.toFixed(4), h: +o.h.toFixed(4) });
 
 $('#save').onclick = () => post(round(c));
@@ -211,6 +270,7 @@ document.addEventListener('keydown', (e) => {
   else if (k === 'enter') { $('#save').click(); e.preventDefault(); }
   else if (k === '0') { $('#reset').click(); }
   else if (k === 'x') { $('#clear').click(); }
+  else if (k === 'h') { $('#hero').click(); }
 });
 
 fetch('/assets').then(r => r.json()).then(d => {
