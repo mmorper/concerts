@@ -1,6 +1,189 @@
 {
   "version": 1,
   "shows": {
+    "2012-06-12": {
+      "reviewed": 8,
+      "decidedAt": "2026-08-28T17:23:02.874Z",
+      "decisions": {
+        "3364E52A-9189-42B9-8F8F-B548318CC3EA": {
+          "verdict": "keep",
+          "artist": "The Cult",
+          "subject": "performer"
+        },
+        "63FA895D-AB4C-4556-977E-C3D33A8C6B08": {
+          "verdict": "keep",
+          "artist": "Against Me!",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.033,
+            "y": 0.125,
+            "w": 0.7,
+            "h": 0.875
+          }
+        },
+        "9F713213-A733-4BB6-86B1-8E0C207A8429": {
+          "verdict": "keep",
+          "artist": "The Cult",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.1098,
+            "y": 0.0625,
+            "w": 0.75,
+            "h": 0.9375
+          }
+        },
+        "A184102C-3619-49B0-916B-2B0A6253525E": {
+          "verdict": "reject"
+        },
+        "B1A52E15-18E1-4B13-A96D-125DD3694F09": {
+          "verdict": "reject"
+        },
+        "DE4D3CEB-2800-4CD1-A72B-940AD836876C": {
+          "verdict": "reject"
+        },
+        "E9A701CA-CB61-46C3-AB90-28E3FF7CA1E8": {
+          "verdict": "reject"
+        },
+        "F192DDD7-F078-44F9-A05C-8A09D938F804": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2023-11-22": {
+      "reviewed": 26,
+      "decidedAt": "2026-08-28T19:06:01.353Z",
+      "decisions": {
+        "025DD750-858E-45F5-BD44-339D5B1B0500": {
+          "verdict": "keep",
+          "artist": "Kasabian",
+          "subject": "performer",
+          "frames": [
+            23
+          ],
+          "trim": {
+            "in": 3,
+            "out": 34
+          }
+        },
+        "15F1D54B-3C79-427A-B0B1-11E7DCE1CC42": {
+          "verdict": "keep",
+          "artist": "Kasabian",
+          "subject": "performer"
+        },
+        "176205BB-57C3-46F1-B19C-4423EC1C0B9F": {
+          "verdict": "keep",
+          "artist": "Kasabian",
+          "subject": "performer",
+          "crop": {
+            "x": 0.0371,
+            "y": 0.0676,
+            "w": 0.9,
+            "h": 0.8435
+          }
+        },
+        "31FD5D31-968D-4A37-B2E9-2A33581E921D": {
+          "verdict": "reject"
+        },
+        "35938226-DFAE-41C0-89CF-438225EAA726": {
+          "verdict": "reject"
+        },
+        "4EB3F0AC-7EAF-4785-B901-D3B649845E60": {
+          "verdict": "reject"
+        },
+        "5296A9D4-5996-491A-8C37-AC4B3EFE7B20": {
+          "verdict": "reject"
+        },
+        "57484E25-63B5-4203-934E-9F9CDC5F02C9": {
+          "verdict": "keep",
+          "artist": "Kasabian",
+          "subject": "performer",
+          "trim": {
+            "in": 19,
+            "out": 39
+          }
+        },
+        "5A542B5C-9DC9-469B-97B6-99023F39AFCA": {
+          "verdict": "keep",
+          "subject": "performer",
+          "trim": {
+            "in": 36,
+            "out": 80
+          }
+        },
+        "5F6D56D5-4AD0-4B66-A757-F4303E95571B": {
+          "verdict": "reject"
+        },
+        "620CED4B-BCDD-4693-B63A-D4438874161A": {
+          "verdict": "keep",
+          "artist": "Kasabian",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.3039,
+            "y": 0.107,
+            "w": 0.55,
+            "h": 0.5155
+          }
+        },
+        "7DAB2A03-6547-422E-A803-DAFC6A7AF6CB": {
+          "verdict": "reject"
+        },
+        "89560447-4C0B-4225-890F-9B0A01AE581E": {
+          "verdict": "keep",
+          "artist": "Kasabian",
+          "subject": "performer",
+          "crop": {
+            "x": 0.0246,
+            "y": 0.008,
+            "w": 0.9,
+            "h": 0.8435
+          }
+        },
+        "8CA2E75C-4697-4D6B-A2C5-9B1525251467": {
+          "verdict": "reject"
+        },
+        "8FC94831-384D-4CAA-8904-6D341CD74D0C": {
+          "verdict": "reject"
+        },
+        "9AD81A55-1F48-4A45-BAF8-3422E13A4D47": {
+          "verdict": "reject"
+        },
+        "A11E8D7A-E5F4-44EC-899D-23EAE3EC8F33": {
+          "verdict": "reject"
+        },
+        "AA4B1BA0-5CAF-4801-95EF-F98ABEE529BD": {
+          "verdict": "reject"
+        },
+        "D899706B-BBD4-417A-84C2-C7547790989A": {
+          "verdict": "reject"
+        },
+        "F3228CFD-CCC9-4089-98FA-EE1967801BEC": {
+          "verdict": "reject"
+        },
+        "FC63834A-D6C4-45C1-BDFD-4B291B151D37": {
+          "verdict": "reject"
+        },
+        "frame:025DD750-858E-45F5-BD44-339D5B1B0500:0": {
+          "verdict": "keep",
+          "artist": "Kasabian",
+          "subject": "performer"
+        },
+        "frame:15F1D54B-3C79-427A-B0B1-11E7DCE1CC42:0": {
+          "verdict": "reject"
+        },
+        "frame:15F1D54B-3C79-427A-B0B1-11E7DCE1CC42:1": {
+          "verdict": "reject"
+        },
+        "frame:15F1D54B-3C79-427A-B0B1-11E7DCE1CC42:2": {
+          "verdict": "reject"
+        },
+        "frame:15F1D54B-3C79-427A-B0B1-11E7DCE1CC42:3": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2024-08-20": {
       "reviewed": 38,
       "decidedAt": "2026-08-26T21:13:06.691Z",
@@ -223,7 +406,8 @@
             "y": 0,
             "w": 0.6005,
             "h": 1
-          }
+          },
+          "hero": true
         },
         "6C5F89F0-586A-4A99-99F2-6637F81D86BE": {
           "verdict": "reject"
@@ -271,7 +455,7 @@
             "x": 0,
             "y": 0,
             "w": 1,
-            "h": 0.9375
+            "h": 0.9372
           }
         },
         "BC767536-D821-47B8-9523-AEA6A28A488C": {
@@ -613,7 +797,8 @@
             "y": 0,
             "w": 1,
             "h": 0.9375
-          }
+          },
+          "hero": true
         },
         "D6D93D9F-4876-4194-A67C-4226E10357A3": {
           "verdict": "keep",
@@ -651,8 +836,9 @@
             "x": 0,
             "y": 0,
             "w": 1,
-            "h": 0.9375
-          }
+            "h": 0.9372
+          },
+          "hero": true
         },
         "E4692B60-0054-40EC-B6D2-6280B475AFE6": {
           "verdict": "reject"
@@ -686,7 +872,8 @@
             "y": 0.0571,
             "w": 1,
             "h": 0.9375
-          }
+          },
+          "hero": true
         },
         "FCD5BB45-6420-451D-947B-7B1B3ACD58C9": {
           "verdict": "reject"
