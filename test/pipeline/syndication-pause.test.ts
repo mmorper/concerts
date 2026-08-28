@@ -148,6 +148,12 @@ function options(overrides: Partial<RunOptions> = {}): RunOptions {
   const { concerts, posts } = archive();
   return {
     ...DEFAULT_OPTIONS,
+    /* Draw nothing. These tests assert the LOOP — selection, the ledger, the pause switch —
+       and the cards are drawn at post time now, which would mean a headless browser and a
+       network fetch per test. The drawing itself is covered by the renderer's own tests and
+       by `npm run render:card`; what matters here is that the loop calls it and honours the
+       result, which the drop-path test below pins. */
+    renderCardFor: async () => {},
     jitterMinutes: 0,
     ledgerPath: join(dir, "ledger.json"),
     pausePath: path,
@@ -222,3 +228,41 @@ describe("the run loop honours the switch", () => {
     expect(bluesky.posted).toEqual([]);
   });
 });
+
+describe('cards are drawn at post time', () => {
+  // A rendition is a pure function of (master, channel), so a committed one is stale the
+  // moment that function changes (#342). Liner Notes and Syndicate are separate scheduled
+  // jobs on separate machines, each from a fresh checkout — so anything Monday renders and
+  // does not commit is gone by Tuesday. Drawing in the run that posts removes the staleness
+  // by construction, and moves the "never bare type" guard along with it.
+  it('drops a post whose card cannot be drawn, and says why', async () => {
+    const bluesky = new SpyAdapter('bluesky')
+    const summary = await run(options({
+      adapters: [bluesky],
+      channels: ['bluesky'],
+      limit: 1,
+      renderCardFor: async () => { throw new Error('font server unreachable') },
+    }))
+
+    expect(bluesky.posted).toEqual([])
+    expect(summary.posted).toEqual([])
+    expect(summary.skipped.map((s) => s.reason).join(' ')).toContain('font server unreachable')
+  })
+
+  it('a failed card does not take the RUN down — it returns and reports', async () => {
+    // A daily job going red over one unreachable asset is how a schedule stops being
+    // trusted. The failure is recorded per-post and the run exits normally; this fixture
+    // holds a single note, so what it can pin is that the throw is contained and named
+    // rather than propagated.
+    const bluesky = new SpyAdapter('bluesky')
+    const summary = await run(options({
+      adapters: [bluesky],
+      channels: ['bluesky'],
+      limit: 5,
+      renderCardFor: async () => { throw new Error('one bad asset') },
+    }))
+
+    expect(summary.failed).toEqual([])
+    expect(summary.skipped.some((s) => s.reason.includes('one bad asset'))).toBe(true)
+  })
+})

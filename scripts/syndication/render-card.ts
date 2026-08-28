@@ -23,7 +23,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import puppeteer, { type Browser } from "puppeteer";
 import { deriveRect, derivationFor, retainedFraction } from "../media/derive.ts";
-import { getShowAsset, postNightOf, showByline, type ImageSources } from "../liner-notes/image-refs.ts";
+import { postNightOf, showByline, type ImageSources } from "../liner-notes/image-refs.ts";
 import { buildCredit, resolveAnchorConcert, type PayloadSources } from "./payload.ts";
 import { classifyImageUrl } from "./provenance.ts";
 import { cityRegion } from "./region.ts";
@@ -78,7 +78,10 @@ export interface RenderResult {
   path: string;
   /** The published still this came from. */
   asset: string;
-  crop: CropBox;
+  /** Absent on tier 2 — nobody drew a box for a press shot. */
+  crop?: CropBox;
+  /** 1 personal, 2 sourced, 3 derived. Which branch drew the image. */
+  tier: 1 | 2 | 3;
   /** Source pixels taken, after derivation. */
   rect: { left: number; top: number; width: number; height: number };
   /** How much of the authored box survived. 1 at 4:5. */
@@ -337,6 +340,27 @@ export const FORMATS: Record<Format["id"], Format> = {
   },
 };
 
+/** Cap on fetching a third-party image. Same reason as og-image.ts: a hang is not an
+ *  exception, and this runs unattended in a daily workflow against CDNs we do not own. */
+const FETCH_TIMEOUT_MS = 15_000;
+
+/**
+ * The image bytes, whether ours or someone else's.
+ *
+ * A leading slash is a file in this repo — the archive's own photography, and the local
+ * venue fallback. Everything else is a third-party URL and is fetched, bounded.
+ */
+async function loadImage(url: string): Promise<Buffer> {
+  if (url.startsWith("/")) {
+    const file = join(ROOT, "public", url.replace(/^\//, ""));
+    if (!existsSync(file)) throw new Error(`${url} is not on disk`);
+    return readFileSync(file);
+  }
+  const res = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+  if (!res.ok) throw new Error(`${url} returned ${res.status}`);
+  return Buffer.from(await res.arrayBuffer());
+}
+
 /**
  * Render one post's 4:5 card.
  *
@@ -352,39 +376,65 @@ export async function renderCard(
   const lead = post.artists[0];
   if (!lead) throw new Error(`${post.slug}: no lead artist`);
 
-  /* Re-resolve the asset rather than trusting the post's stored image.
-     `image.ref` is the durable half and `image.url` is derived on every run — the whole
-     reason image-refs.ts exists. Re-resolving also means this works against posts written
-     before the crop box existed, which today is all 58 of them. */
-  const asset = getShowAsset(lead, sources);
-  if (!asset?.url) throw new Error(`${post.slug}: no published photograph of ${lead}`);
+  /* 🔴 DRAW WHAT THE POST SAYS. ONE PLACE DECIDES TIER, AND IT IS NOT HERE.
+     This used to re-resolve the tier-1 asset itself with `getShowAsset(lead)`, which was
+     right when the renderer was the only path to tier 1 — before #416 taught the pipeline to
+     promote a published post. It is wrong now, and quietly: `resolveImage` and
+     `upgradeToOwnPhotography` both REFUSE to put an artist photograph on a venue-subject
+     post, and re-resolving walked straight past both gates.
 
-  const provenance = classifyImageUrl(asset.url);
-  if (!provenance) throw new Error(`${post.slug}: unclassified image path ${asset.url}`);
+     Measured on the live archive: `universal-amphitheater-5-shows-over-3-decades` is a
+     `venue-loyalty` post whose stored image is correctly an album cover, and this rendered
+     a Howard Jones frame shot at YouTube Theatre in 2024 — a different act at a different
+     venue, years after Universal was demolished. Two gates, both correct, both bypassed by
+     the thing that actually draws the card.
 
-  /* 🔴 REFUSE AN UNCROPPED ASSET. Falling back to a centre crop here would be the exact
-     failure #342 documents, and it would be invisible: the card renders, it just cuts the
-     subject's head off. An asset the owner has not judged is not ready to publish. */
-  if (!asset.crop) {
-    throw new Error(`${post.slug}: ${asset.url} has no crop box — run \`npm run media:crop\``);
+     `post.image` carries everything needed since #415: the url, the crop box, and the
+     capture date. There is nothing left to re-derive, and deriving it here means the tier
+     rule lives in two places that can disagree. A post whose stored image is stale renders
+     as whatever it currently says and self-corrects on the next pipeline run, which is the
+     honest behaviour rather than the renderer quietly overriding it. */
+  if (!post.image?.url) throw new Error(`${post.slug}: no image at all — never bare type`);
+  const source = {
+    url: post.image.url,
+    crop: post.image.crop,
+    date: post.image.shotOn,
+  };
+
+  const provenance = classifyImageUrl(source.url);
+  if (!provenance) throw new Error(`${post.slug}: unclassified image host ${source.url}`);
+
+  const image = await loadImage(source.url);
+  const meta = await sharp(image).metadata();
+  if (!meta.width || !meta.height) throw new Error(`${post.slug}: cannot read ${source.url}`);
+
+  let pipeline = sharp(image);
+  let retained = 1;
+  let rect = { left: 0, top: 0, width: meta.width, height: meta.height };
+
+  if (source.crop) {
+    const derivation = derivationFor(provenance.tier);
+    /* DERIVE AGAINST THE SLOT, NOT THE CARD. The wide card is 1.91:1 and its photograph is
+       square; deriving at 1.905 would take a letterbox out of the box and throw away 58% of
+       it for a slot that wanted none of that. */
+    rect = deriveRect(source.crop, { width: meta.width, height: meta.height }, format.slotAspect, derivation);
+    retained = retainedFraction(source.crop, { width: meta.width, height: meta.height }, format.slotAspect);
+    pipeline = pipeline.extract(rect).resize(format.slot.width, format.slot.height, { fit: "fill" });
+  } else if (provenance.tier === 1) {
+    /* 🔴 REFUSE AN UNCROPPED TIER-1 ASSET. Falling back to a centre crop is the exact
+       failure #342 documents, and it is invisible: the card renders, it just cuts the
+       subject's head off. An asset the owner has not judged is not ready to publish.
+       Tier 2 has no box because nobody drew one, which is a different thing entirely. */
+    throw new Error(`${post.slug}: ${source.url} has no crop box — run \`npm run media:crop\``);
+  } else {
+    /* No box, and none is owed. A press shot is composed centred with deliberate headroom —
+       the same reason #342 centre-derives tier 2 rather than top-aligning it. `cover` is
+       the right fit for a 700x700 source going into a 630x630 slot: it is a downscale, so
+       nothing is upscaled and nothing is cropped when the source is already square. */
+    pipeline = pipeline.resize(format.slot.width, format.slot.height, { fit: "cover", position: "centre" });
   }
 
-  const file = join(ROOT, "public", asset.url.replace(/^\//, ""));
-  if (!existsSync(file)) throw new Error(`${post.slug}: ${asset.url} is not on disk`);
-
-  const meta = await sharp(file).metadata();
-  if (!meta.width || !meta.height) throw new Error(`${post.slug}: cannot read ${asset.url}`);
-
-  const derivation = derivationFor(provenance.tier);
-  /* DERIVE AGAINST THE SLOT, NOT THE CARD. The wide card is 1.91:1 and its photograph is
-     square; deriving at 1.905 would take a letterbox out of the box and throw away 58% of
-     it for a slot that wanted none of that. */
-  const rect = deriveRect(asset.crop, { width: meta.width, height: meta.height }, format.slotAspect, derivation);
-  const retained = retainedFraction(asset.crop, { width: meta.width, height: meta.height }, format.slotAspect);
-
-  const cropped = await sharp(file)
-    .extract(rect)
-    .resize(format.slot.width, format.slot.height, { fit: "fill" })
+  const cropped = await pipeline
     // Renditions are stripped: phone GPS in a published file is an unretractable privacy
     // leak the moment it is live. sharp drops metadata unless asked to keep it.
     .jpeg({ quality: 92, mozjpeg: true })
@@ -416,7 +466,7 @@ export async function renderCard(
      "Irvine Meadows · June 1985" beneath a frame shot at YouTube Theatre in 2024. On a
      tier-1 card the photograph is the most concrete claim present; the furniture supports
      it rather than contradicting it. */
-  const shotThatNight = sources.concerts.find((c) => c.date === asset.date);
+  const shotThatNight = source.date ? sources.concerts.find((c) => c.date === source.date) : undefined;
   const anchor = postNight
     ? resolveAnchorConcert(post, sources.concerts)
     : shotThatNight ?? resolveAnchorConcert(post, sources.concerts);
@@ -434,7 +484,10 @@ export async function renderCard(
   const hook = post.social?.hook;
   if (!hook) throw new Error(`${post.slug}: no authored hook — never chop one out of prose`);
 
-  const byline = showByline(asset.date);
+  /* Tier 1 ONLY. The absence on tier 2 is the point — it is what makes the archive's own
+     photography visibly outrank a press shot instead of being indistinguishable from it
+     (PROVENANCE.md). A tier-2 image also has no capture date of ours to state. */
+  const byline = provenance.tier === 1 && source.date ? showByline(source.date) : "";
   const metaLines = [
     credit.song ? `&ldquo;${escapeHtml(credit.song)}&rdquo;` : undefined,
     `${escapeHtml(credit.venue)} &middot; ${escapeHtml(cityRegion(credit.city, venueState))}`,
@@ -541,8 +594,9 @@ export async function renderCard(
     return {
       slug: post.slug,
       path,
-      asset: asset.url,
-      crop: asset.crop,
+      asset: source.url,
+      tier: provenance.tier,
+      crop: source.crop ?? undefined,
       rect,
       retained,
       byline,
@@ -598,7 +652,8 @@ async function main() {
       console.log(`  ${format.id.padEnd(5)} ${format.width}x${format.height}` +
         `   image slot ${format.slot.width}x${format.slot.height}`);
       console.log(`  photograph  ${r.asset}`);
-      console.log(`  crop        x=${r.crop.x} y=${r.crop.y} w=${r.crop.w} h=${r.crop.h}`);
+      console.log(`  tier        ${r.tier}${r.tier === 1 ? " · the archive's own" : " · sourced"}`);
+      console.log(`  crop        ${r.crop ? `x=${r.crop.x} y=${r.crop.y} w=${r.crop.w} h=${r.crop.h}` : "none — tier 2, centred"}`);
       console.log(`  source px   ${r.rect.width}x${r.rect.height} at (${r.rect.left}, ${r.rect.top})`);
       console.log(`  retained    ${(r.retained * 100).toFixed(1)}% of the authored box`);
       console.log(`  byline      ${r.byline}`);

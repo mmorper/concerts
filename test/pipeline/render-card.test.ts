@@ -147,3 +147,38 @@ describe('ACT_PILL', () => {
     expect(Object.keys(ACT_PILL).sort()).toEqual(['cultural', 'deep-cut', 'personal'])
   })
 })
+
+// ── The renderer draws what the post says ───────────────────────────────────
+
+describe('the tier decision lives in ONE place', () => {
+  it('does not re-resolve archive photography behind the pipeline\'s back', async () => {
+    // THE BUG. renderCard used to call getShowAsset(lead) itself, which was right when it
+    // was the only path to tier 1 — and wrong the moment #416 taught the pipeline to promote
+    // a published post. `resolveImage` and `upgradeToOwnPhotography` both REFUSE to put an
+    // artist photograph on a venue-subject post, and re-resolving walked past both.
+    //
+    // Measured live: `universal-amphitheater-5-shows-over-3-decades` is a venue-loyalty post
+    // whose stored image is correctly an album cover, and the renderer drew a Howard Jones
+    // frame shot at YouTube Theatre in 2024 — different act, different venue, years after
+    // Universal was demolished.
+    //
+    // Asserted on the IMPORT, not on a substring of the body — the body still explains the
+    // bug in prose, and a test that greps for the function name matches its own comment.
+    // The module cannot call what it does not import.
+    const { readFileSync } = await import('fs')
+    const src = readFileSync('scripts/syndication/render-card.ts', 'utf8')
+    const imports = src.slice(0, src.indexOf('export const CARD_WIDTH'))
+    expect(imports).not.toContain('getShowAsset')
+  })
+
+  it('takes the url, the crop and the capture date from post.image', async () => {
+    // Everything the renderer needs has been on the post since #415, so there is nothing
+    // left to re-derive — and deriving it here means the tier rule lives in two places that
+    // can disagree.
+    const { readFileSync } = await import('fs')
+    const src = readFileSync('scripts/syndication/render-card.ts', 'utf8')
+    expect(src).toContain('url: post.image.url')
+    expect(src).toContain('crop: post.image.crop')
+    expect(src).toContain('date: post.image.shotOn')
+  })
+})
