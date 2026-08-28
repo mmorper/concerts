@@ -152,7 +152,7 @@ export function framingGaps(assets: IndexedAsset[]): { actsMissingHero: number; 
 
 // ── The picker ───────────────────────────────────────────────────────────────────────────
 
-interface Row {
+export interface Row {
   concert: Concert
   phase: Phase
   snapshot: Snapshot
@@ -196,7 +196,7 @@ export function buildRows(concerts: Concert[], audit: Map<string, { unjudged: nu
   })
 }
 
-function renderRow(r: Row, selected: boolean, width: number): string {
+export function renderRow(r: Row, selected: boolean, width: number): string {
   const mark = selected ? `${CYAN}❯${OFF}` : ' '
   const inFlight = r.snapshot.hasRun
   const badge = r.phase.id === 'done'
@@ -213,18 +213,26 @@ function renderRow(r: Row, selected: boolean, width: number): string {
   /* A published show reports what is PUBLISHED, not what was judged. Once assets are in the
      index, "29/29 judged" is history; what matters is how many stills there are and whether
      they still need a decision — which is the whole reason a finished show is reachable. */
-  const published = r.snapshot.indexedCount > 0
+  /* 🔴 REPORT WHAT IS OUTSTANDING, NOT WHAT IS DONE.
+     This read `2 assets published` for a Kasabian show with FOUR more waiting to ingest,
+     and the owner reasonably concluded the show was finished. Any count of what has landed
+     is a progress bar with the remainder cropped off — the same "the tool says done when it
+     is not" failure the `frame` phase was added to fix, reintroduced two commits later in
+     the row that renders it. What is left is the only number worth the space. */
+  const s = r.snapshot
+  const waiting = Math.max(0, s.publishable - s.indexedCount)
   const gaps = [
-    r.snapshot.actsMissingHero > 0 ? `${r.snapshot.actsMissingHero} no hero` : null,
-    r.snapshot.stillsUncropped > 0 ? `${r.snapshot.stillsUncropped} uncropped` : null,
+    waiting > 0 ? `${waiting} to ingest` : null,
+    s.actsMissingHero > 0 ? `${s.actsMissingHero} no hero` : null,
+    s.stillsUncropped > 0 ? `${s.stillsUncropped} uncropped` : null,
   ].filter(Boolean).join(' · ')
-  const supply = published
-    ? (gaps
-        ? `${YELLOW}${r.snapshot.indexedCount} assets · ${gaps}${OFF}`
-        : `${DIM}${r.snapshot.indexedCount} assets published${OFF}`).padEnd(gaps ? 32 : 33)
-    : inFlight
-      ? `${DIM}${r.snapshot.judged}/${r.snapshot.onPage} judged${OFF}`.padEnd(23)
-      : `${String(r.unjudged).padStart(3)} unjudged`
+  const supply = gaps
+    ? `${YELLOW}${gaps}${OFF}`.padEnd(32)
+    : s.indexedCount > 0
+      ? `${DIM}${s.indexedCount} assets published${OFF}`.padEnd(33)
+      : inFlight
+        ? `${DIM}${s.judged}/${s.onPage} judged${OFF}`.padEnd(23)
+        : `${String(r.unjudged).padStart(3)} unjudged`
   return `${mark} ${r.concert.date}  ${label}  ${supply}  ${badge}`
 }
 
@@ -386,9 +394,11 @@ function showPhase(concert: Concert, s: Snapshot): Phase {
   }
   tick(s.publishable > 0 && s.indexedCount >= s.publishable, 'ingested',
     s.indexedCount ? `${s.indexedCount} of ${s.publishable || '?'} in media-index.json` : 'not yet')
-  /* Only once something is published: before that there is nothing to crop and no act to
-     lead, and a permanently-unticked row would read as a step being skipped. */
-  if (s.indexedCount > 0) {
+  /* Only once EVERYTHING is published. Before ingest completes, `framingGaps` sees only the
+     assets that made it in — so a show with two of six indexed reported "every act has a
+     hero, every still a crop box" while four stills it had never seen sat waiting. True of
+     what was there, and a lie about the show. */
+  if (s.indexedCount > 0 && s.indexedCount >= s.publishable) {
     const framed = s.actsMissingHero === 0 && s.stillsUncropped === 0
     tick(framed, 'framed',
       framed

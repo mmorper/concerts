@@ -293,7 +293,11 @@ function setup(date: string): void {
   // let the server fail behind it; a link is only worth printing once something is
   // listening on the other end.
   const server = spawn('python3', [SERVER], {
-    env: { ...process.env, REVIEW_DIR: runDir, REVIEW_PORT: String(REVIEW_PORT) },
+    /* QUIET, so the instruction block below is genuinely the last thing on screen.
+       The server printed its own URL and verdicts path on its own schedule, which raced our
+       output and buried the "what to do when you're done" line under two lines nobody needs
+       twice — the URL is already printed here. The verdicts path moves into our block. */
+    env: { ...process.env, REVIEW_DIR: runDir, REVIEW_PORT: String(REVIEW_PORT), REVIEW_QUIET: '1' },
     stdio: 'inherit',
   })
   server.on('exit', (code) => {
@@ -313,7 +317,22 @@ function setup(date: string): void {
 
   console.log(`\n  → http://127.0.0.1:${REVIEW_PORT}/index.html`)
   console.log(`\n  1 usable · 0 reject · P V C S subject · then pick the act · H hero ★ · R crop · U undo`)
-  console.log(`  When you are done:  npm run media:review ${concert.date} -- --finish\n`)
+
+  /* 🔴 NAME THE DRIVER, NOT THE SUB-COMMAND.
+     This used to read `npm run media:review <date> -- --finish`, which is the one thing the
+     owner said they should not have to carry: "the idea that I'm going to commit to memory
+     every single one of these terminal commands and sequence them in the right order is
+     just not viable." `npm run media <date>` works at every step and picks the right one.
+
+     It also printed BEFORE the server started, so the server's own two lines and a tsx
+     deprecation warning landed underneath it — by the time judging was finished it had
+     scrolled away. The server prints last now, so this is the final thing on screen.
+
+     Ctrl-C is better still: the driver reports what changed and names the next step for
+     you. Said out loud here because nothing else does. */
+  console.log(`\n  Ctrl-C when you are done — that stops the server and reports what changed.`)
+  console.log(`  Or later:  npm run media ${concert.date}`)
+  console.log(`\n  verdicts → ${join(runDir, 'verdicts.json')}\n`)
 }
 
 /** Turn the raw verdicts into the approved list, and say what has to happen next. */

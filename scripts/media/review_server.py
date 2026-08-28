@@ -139,6 +139,10 @@ if __name__ == "__main__":
     threading.Thread(target=_die_with_parent, daemon=True).start()
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("127.0.0.1", PORT), Handler) as srv:
-        print(f"review → http://127.0.0.1:{PORT}/index.html")
-        print(f"verdicts → {VERDICTS}")
+        # Quiet when driven by review.ts, which prints both already and needs its own
+        # "what to do when you are done" line to be the LAST thing on screen. Standalone
+        # runs still say where they are serving from.
+        if not os.environ.get("REVIEW_QUIET"):
+            print(f"review → http://127.0.0.1:{PORT}/index.html")
+            print(f"verdicts → {VERDICTS}")
         srv.serve_forever()
