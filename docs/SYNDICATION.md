@@ -275,11 +275,36 @@ artist's — or the venue's — real account on the channel we are posting to, i
 carries `@thehumanleague` instead.
 
 ```bash
-npm run harvest:handles              # propose candidates into a worksheet
-npm run harvest:handles -- --venues  # one entity kind
-npm run harvest:handles -- --promote # accept the self-proving rows
-npm run harvest:handles -- --verify  # re-resolve stored DIDs, report renames
+npm run harvest:handles                # propose candidates into a worksheet
+npm run harvest:handles -- --new-only  # only what the archive has just gained
+npm run harvest:handles -- --venues    # one entity kind
+npm run harvest:handles -- --promote   # accept the self-proving rows
+npm run harvest:handles -- --accept artist:blondie:bluesky,venue:the-anthem:bluesky
+npm run harvest:handles -- --verify    # re-resolve stored DIDs, report renames
 ```
+
+### New artists and venues look after themselves
+
+The archive gains artists and venues whenever concerts are added, so
+`npm run build-data` harvests for them — `--new-only`, then `--promote`.
+
+It has to be incremental to survive. A full crawl is twenty minutes at
+MusicBrainz's one request per second; the incremental run for two new entities
+is seconds. A step that expensive is a step everybody learns to skip with
+`--skip-handles`.
+
+That works because the worksheet records `attempted` for **every** entity a
+harvest looked at, including the ones that produced nothing. Recording the
+misses is the load-bearing part: 129 of 336 entities have no account anywhere,
+and without a record of having asked they would be re-crawled forever. Pass
+`--recheck <days>` to re-ask about old attempts; it is off by default, because
+an artist with no account today probably has no account next Tuesday.
+
+**The step is never fatal.** MusicBrainz being down must not fail a data
+refresh — the pipeline's job is concert data, and a missing handle costs a
+hashtag we were going to print anyway. It publishes nothing on its own either:
+proposals land in the worksheet, and only the self-proving `site-domain` rows
+promote.
 
 ### It is an allowlist, and that is not caution for its own sake
 

@@ -61,6 +61,7 @@ async function buildData() {
   const skipSpotify = process.argv.includes('--skip-spotify')
   const skipDiscography = process.argv.includes('--skip-discography')
   const skipAlbumEras = process.argv.includes('--skip-album-eras')
+  const skipHandles = process.argv.includes('--skip-handles')
   const skipSongAlbums = process.argv.includes('--skip-song-albums')
   const skipTracks = process.argv.includes('--skip-tracks')
   const skipSetlists = process.argv.includes('--skip-setlists')
@@ -83,6 +84,7 @@ async function buildData() {
     { name: 'Aggregate genres timeline', active: true },
     { name: 'Aggregate most-played songs', active: true },
     { name: 'Generate facts for liner notes', active: true },
+    { name: 'Harvest social handles for new entities', active: !dryRun && !skipHandles },
     { name: 'Update meta tags and SEO files', active: !dryRun },
     { name: 'Generate sitemap', active: !dryRun },
     { name: 'Generate RSS feed', active: !dryRun },
@@ -321,6 +323,35 @@ async function buildData() {
     if (!dryRun) {
       const { syncArtistAliases } = await import('./sync-artist-aliases.ts')
       syncArtistAliases()
+    }
+
+    // Social handles for whatever the archive just gained.
+    //
+    // Runs here because it needs artists-metadata and venues-metadata to have
+    // been written above — the harvest reads names, websites and geocodes off
+    // them. `--new-only` means a refresh that added two concerts costs seconds
+    // rather than the twenty minutes a full crawl takes at MusicBrainz's one
+    // request per second, which is the difference between a step that runs and
+    // a step everyone learns to skip.
+    //
+    // NEVER FATAL. MusicBrainz being down, or slow, or rate-limiting us must
+    // not fail a data refresh — the pipeline's job is concert data, and a
+    // missing handle costs a hashtag we were already going to print. It also
+    // publishes nothing on its own: proposals land in the worksheet, and only
+    // the self-proving `site-domain` rows promote.
+    if (!dryRun && !skipHandles) {
+      currentStep++
+      console.log('=' .repeat(60))
+      console.log(`Step ${currentStep}/${activeSteps}: Harvesting social handles for new entities`)
+      console.log('-'.repeat(60))
+      try {
+        await run('npm run harvest:handles -- --new-only')
+        await run('npm run harvest:handles -- --promote')
+      } catch (error) {
+        console.warn(`⚠️  Handle harvest failed, continuing: ${(error as Error).message}`)
+        console.warn('   Posts fall back to hashtags. Re-run: npm run harvest:handles -- --new-only')
+      }
+      console.log()
     }
 
     // Step 11: Update meta tags and SEO files (always runs)

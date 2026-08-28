@@ -113,6 +113,50 @@ export function domainMatchesEntity(domain: string, name: string): boolean {
 }
 
 /**
+ * Does this entity still need looking at?
+ *
+ * The archive gains artists and venues whenever concerts are added, and a
+ * harvest that re-crawls all 336 entities to find the two new ones takes
+ * twenty minutes at MusicBrainz's one request per second. A step that
+ * expensive is a step that quietly stops being run, so the incremental path is
+ * the one the pipeline uses.
+ *
+ * `attempted` records **every** entity a harvest looked at, including the ones
+ * that produced nothing, and recording the misses is what makes this work: 129
+ * of 336 entities have no account anywhere, and without a record of having
+ * asked they would be re-crawled forever.
+ *
+ * `recheckDays` is off by default. An artist with no account today probably
+ * has no account next Tuesday, and asking weekly is how a courtesy crawl turns
+ * into hammering somebody's free API.
+ */
+export function needsHarvest(
+  kind: EntityKind,
+  slug: string,
+  file: HandlesFile,
+  attempted: Record<string, string>,
+  options: { now?: Date; recheckDays?: number } = {}
+): boolean {
+  // Already curated. A harvest must never overwrite a human decision, and
+  // that includes a `blocked` row — re-proposing an opt-out is exactly the
+  // failure the blocked state exists to prevent.
+  const bucket = kind === "artist" ? file.artists : file.venues;
+  if (bucket[slug]) return false;
+
+  const last = attempted[`${kind}:${slug}`];
+  if (!last) return true;
+
+  const { recheckDays } = options;
+  if (recheckDays === undefined || !Number.isFinite(recheckDays)) return false;
+
+  const then = new Date(`${last}T00:00:00Z`);
+  // A date we cannot read is not evidence of having asked.
+  if (Number.isNaN(then.getTime())) return true;
+  const now = options.now ?? new Date();
+  return (now.getTime() - then.getTime()) / 86_400_000 > recheckDays;
+}
+
+/**
  * How long an unconfirmed row keeps publishing.
  *
  * This is a backstop, not the mechanism. The real check is `--verify`, which

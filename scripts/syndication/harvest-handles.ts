@@ -4,6 +4,8 @@
  *
  * Usage:
  *   npm run harvest:handles                  # propose into the worksheet
+ *   npm run harvest:handles -- --new-only    # only entities the archive has gained
+ *   npm run harvest:handles -- --new-only --recheck 180
  *   npm run harvest:handles -- --artists     # one entity kind only
  *   npm run harvest:handles -- --venues
  *   npm run harvest:handles -- --promote     # accept the self-proving rows
@@ -53,6 +55,7 @@ import {
   HANDLES_PATH,
   domainMatchesEntity,
   loadHandles,
+  needsHarvest,
   type HandleEvidence,
   type HandlesFile,
   type EntityKind,
@@ -98,7 +101,20 @@ interface Worksheet {
   proposals: Proposal[];
   /** Entities with no candidate from any source. Normal, and the majority. */
   unresolved: Array<{ kind: EntityKind; slug: string; name: string }>;
+  /**
+   * `kind:slug` → the date we last looked, for **every** entity crawled,
+   * whether or not it produced anything.
+   *
+   * This is what makes `--new-only` possible, and it has to record the misses
+   * to work at all. 129 of 336 entities have no account anywhere; without a
+   * record of having asked, each incremental run would re-crawl all of them at
+   * MusicBrainz's one request per second and take twenty minutes to discover
+   * nothing, which is the same as not being incremental.
+   */
+  attempted: Record<string, string>;
 }
+
+const attemptKey = (kind: EntityKind, slug: string) => `${kind}:${slug}`;
 
 // ── Sources ──────────────────────────────────────────────────────────────────
 
@@ -642,22 +658,57 @@ async function main(): Promise<void> {
   const wantArtists = flag("artists") || !flag("venues");
   const wantVenues = flag("venues") || !flag("artists");
 
-  const targets = [
+  const previous = existsSync(WORKSHEET_PATH)
+    ? (JSON.parse(readFileSync(WORKSHEET_PATH, "utf8")) as Worksheet)
+    : undefined;
+
+  const everything = [
     ...(wantArtists ? artistTargets() : []),
     ...(wantVenues ? venueTargets() : []),
   ];
 
-  console.log(`🔎 Harvesting handles for ${targets.length} entities`);
+  // `--new-only` is the mode a scheduled run uses: entities the archive has
+  // gained since the last harvest, and nothing else. The predicate lives in
+  // handles.ts, next to the data model it reasons about.
+  const newOnly = flag("new-only");
+  const recheckDays = Number(value("recheck") ?? NaN);
+  const live = loadHandles();
+
+  const targets = newOnly
+    ? everything.filter((t) =>
+        needsHarvest(t.kind, t.slug, live, previous?.attempted ?? {}, { recheckDays })
+      )
+    : everything;
+
+  if (!targets.length) {
+    console.log("✅ Nothing new to harvest — every artist and venue has been looked at.");
+    return;
+  }
+
+  console.log(
+    newOnly
+      ? `🔎 Harvesting ${targets.length} new entit${targets.length === 1 ? "y" : "ies"} of ${everything.length}`
+      : `🔎 Harvesting handles for ${targets.length} entities`
+  );
   console.log("   MusicBrainz is rate-limited to 1 req/sec, so this takes a while.\n");
 
   const proposals: Proposal[] = [];
   for (let i = 0; i < targets.length; i++) {
     const target = targets[i];
     proposals.push(...(await harvestOne(target)));
-    if (i % 25 === 0) console.log(`   … ${i}/${targets.length}`);
+    if (i % 25 === 0 && targets.length > 25) console.log(`   … ${i}/${targets.length}`);
   }
 
   proposals.push(...(await harvestWikidata(targets)));
+
+  // An incremental run must not discard what earlier runs proposed. Rows for
+  // the entities crawled this time are replaced; every other row stands.
+  const crawled = new Set(targets.map((t) => attemptKey(t.kind, t.slug)));
+  if (previous) {
+    proposals.push(
+      ...previous.proposals.filter((p) => !crawled.has(attemptKey(p.kind, p.slug)))
+    );
+  }
 
   // MusicBrainz and Wikidata frequently carry the same account. Keep the
   // first, which is MusicBrainz — not because it is more trustworthy but
@@ -673,14 +724,22 @@ async function main(): Promise<void> {
   proposals.length = 0;
   proposals.push(...deduped);
 
-  const withProposals = new Set(proposals.map((p) => `${p.kind}:${p.slug}`));
+  const withProposals = new Set(proposals.map((p) => attemptKey(p.kind, p.slug)));
+
+  // Recorded for every entity crawled, including the ones that produced
+  // nothing. The misses are the whole point — see the note on `attempted`.
+  const attempted = { ...(previous?.attempted ?? {}) };
+  for (const t of targets) attempted[attemptKey(t.kind, t.slug)] = today();
+
   const worksheet: Worksheet = {
     version: 1,
     generatedAt: new Date().toISOString(),
     proposals,
-    unresolved: targets
-      .filter((t) => !withProposals.has(`${t.kind}:${t.slug}`))
+    unresolved: everything
+      .filter((t) => attempted[attemptKey(t.kind, t.slug)])
+      .filter((t) => !withProposals.has(attemptKey(t.kind, t.slug)))
       .map((t) => ({ kind: t.kind, slug: t.slug, name: t.name })),
+    attempted,
   };
 
   writeFileSync(WORKSHEET_PATH, `${JSON.stringify(worksheet, null, 2)}\n`);
