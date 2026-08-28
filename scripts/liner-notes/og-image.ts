@@ -14,10 +14,12 @@
  */
 
 import sharp from "sharp";
+import { deriveRect, derivationFor } from "../media/derive.ts";
+import { classifyImageUrl } from "../syndication/provenance.ts";
 import { writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
-import type { LinerNotesPost } from "../../src/types/liner-notes.ts";
+import type { CropBox, LinerNotesPost } from "../../src/types/liner-notes.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..", "..");
@@ -88,7 +90,7 @@ async function generateOgImage(post: LinerNotesPost, outPath: string): Promise<b
   const accentColor = CATEGORY_COLORS[post.category] ?? "#6366f1";
   const categoryLabel = post.category.toUpperCase().replace("-", " ");
 
-  const { background, usedFallback } = await loadBackground(post.image?.url);
+  const { background, usedFallback } = await loadBackground(post.image?.url, post.image?.crop);
 
   // Apply dark overlay
   const darkOverlay = Buffer.from(
@@ -135,7 +137,10 @@ export interface LoadedBackground {
  * unbounded fetch stalls the whole job until GitHub's 6-hour default. A
  * try/catch cannot help with that — a hang is not an exception.
  */
-export async function loadBackground(imageUrl: string | undefined): Promise<LoadedBackground> {
+export async function loadBackground(
+  imageUrl: string | undefined,
+  crop?: CropBox
+): Promise<LoadedBackground> {
   if (!imageUrl) return { background: solidBackground(), usedFallback: true };
 
   /* A LEADING SLASH IS A FILE IN THIS REPO, NOT A URL TO FETCH.
@@ -151,6 +156,36 @@ export async function loadBackground(imageUrl: string | undefined): Promise<Load
   if (imageUrl.startsWith("/")) {
     const local = join(ROOT, "public", imageUrl.slice(1));
     if (!existsSync(local)) return { background: solidBackground(), usedFallback: true };
+
+    /* 🔴 HONOUR THE OWNER'S CROP BOX. This card is 1.91:1 — the most aggressive target in
+       the system, showing 42% of an authored 4:5 box (#342). A plain `position: "center"`
+       takes that 42% from the MIDDLE, discarding the top fifth of the crop, and on this
+       archive the top fifth is where the head is: these frames are shot upward from a
+       crowd, so the subject sits high. Centre-derivation decapitated all four acts it was
+       tested against. Top-derivation fixed all four.
+
+       Nothing about the failure is loud. The card renders, it is the right size, and the
+       subject's head is gone. */
+    if (crop) {
+      const meta = await sharp(local).metadata();
+      if (meta.width && meta.height) {
+        const rect = deriveRect(
+          crop,
+          { width: meta.width, height: meta.height },
+          WIDTH / HEIGHT,
+          derivationFor(classifyImageUrl(imageUrl)?.tier ?? 1)
+        );
+        return {
+          background: sharp(local).extract(rect).resize(WIDTH, HEIGHT, { fit: "fill" }),
+          usedFallback: false,
+        };
+      }
+    }
+
+    /* No box drawn yet. Centre-cropping is wrong for the reason above, but a card is still
+       owed — this one serves the site's own og:image, where a plain card beats none. The
+       imagery is ours either way; the crop is simply unreviewed. `npm run media:crop` is
+       what closes the gap. */
     return {
       background: sharp(local).resize(WIDTH, HEIGHT, { fit: "cover", position: "center" }),
       usedFallback: false,
