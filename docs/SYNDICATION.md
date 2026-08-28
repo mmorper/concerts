@@ -325,6 +325,7 @@ checks for "no credentials configured" lines.
 | Multi-show On This Day days | Tier-3 artwork — 28 days a year deferred |
 | YouTube Shorts + TikTok | L3 video and #100 |
 | Syndication health on the dashboard | #337 |
+| `@artist` mentions instead of `#artist` tags | Nothing. Researched and deliberately sequenced behind #334/#335 — only 21 of 257 artists are on Bluesky and 1 is on Mastodon, against 170 on X and 143 on Instagram. See [`specs/future/social-artist-handles.md`](specs/future/social-artist-handles.md) |
 
 ---
 
