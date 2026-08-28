@@ -10,9 +10,11 @@
  * pin that: hero first, then the ranked ordinal, then date. Never arbitrary.
  */
 import { describe, it, expect } from 'vitest'
-import { getShowImageUrl, resolveImageUrl, type ImageSources } from '../../scripts/liner-notes/image-refs'
+import { getShowAsset, getShowImageUrl, resolveImageUrl, showByline, type ImageSources } from '../../scripts/liner-notes/image-refs'
+import { buildPosts, type CurateOptions } from '../../scripts/liner-notes/curate'
+import type { ScoredFinding } from '../../scripts/liner-notes/types'
 
-const sources = (assets: Array<Partial<{ kind: string; url: string | null; date: string; artistNormalized: string | null; hero: boolean; order: number }>>): ImageSources =>
+const sources = (assets: Array<Partial<{ kind: string; url: string | null; date: string; artistNormalized: string | null; hero: boolean; order: number; crop: { x: number; y: number; w: number; h: number } }>>): ImageSources =>
   ({
     artistsMetadata: {},
     artistsTopTracks: {},
@@ -112,5 +114,158 @@ describe('loadBackground with a repo-local path', () => {
     const { loadBackground } = await import('../../scripts/liner-notes/og-image')
     expect((await loadBackground('images/shows/no-leading-slash.jpg')).usedFallback).toBe(true)
     expect((await loadBackground(undefined)).usedFallback).toBe(true)
+  })
+})
+
+// ── The crop box has to survive the trip ────────────────────────────────────
+
+describe('getShowAsset', () => {
+  it('carries the crop box, which a URL cannot', () => {
+    // The box is the reason this function exists. Tier and source are recoverable from the
+    // URL path by syndication/provenance.ts; the crop is a per-frame judgement the owner
+    // made in the review page and nothing downstream can re-derive it. A renderer that does
+    // not receive it centre-crops — the exact failure #342 documents, which on the archive's
+    // own photography cuts the head off, because these frames are shot upward from a crowd.
+    const crop = { x: 0, y: 0.0856, w: 1, h: 0.7034 }
+    const s = sources([{ url: '/images/shows/hj-03.jpg', order: 3, hero: true, crop }])
+    expect(getShowAsset('howard-jones', s)?.crop).toEqual(crop)
+  })
+
+  it('carries the capture date, so a different night can be disclosed', () => {
+    const s = sources([{ url: '/images/shows/hj-03.jpg', order: 3, date: '2024-08-20' }])
+    expect(getShowAsset('howard-jones', s)?.date).toBe('2024-08-20')
+  })
+
+  it('picks the same asset getShowImageUrl names', () => {
+    // getShowImageUrl is now a projection of this. If they can ever disagree, a post's
+    // stored URL and its rendered crop are describing two different photographs.
+    const s = sources([
+      { url: '/images/shows/hj-01.jpg', order: 1 },
+      { url: '/images/shows/hj-03.jpg', order: 3, hero: true },
+    ])
+    expect(getShowAsset('howard-jones', s)?.url).toBe(getShowImageUrl('howard-jones', s))
+  })
+
+  it('leaves the crop undefined when the owner never drew one', () => {
+    // Not {0,0,1,1}. The renderer has to be able to tell "unreviewed" from "cropped to the
+    // full frame", or an untouched asset silently claims a judgement nobody made.
+    const s = sources([{ url: '/images/shows/hj-01.jpg', order: 1 }])
+    expect(getShowAsset('howard-jones', s)?.crop).toBeUndefined()
+  })
+})
+
+// ── The byline ──────────────────────────────────────────────────────────────
+
+describe('showByline', () => {
+  it('names the date of the photograph when the post is about that night', () => {
+    expect(showByline('2024-08-20', '2024-08-20')).toBe('Mike Morper · 20 August 2024')
+  })
+
+  it('discloses a different night rather than implying the photo is it', () => {
+    // Non-negotiable per PROVENANCE.md. Implying a photograph is *the* night when it is not
+    // is the fabricated-memory failure the voice rules exist to prevent.
+    expect(showByline('2026-07-31', '1987-07-24')).toBe(
+      'Mike Morper · July 2026, not the 1987 night'
+    )
+  })
+
+  it('names the disclaimed night in full when both fall in the same year', () => {
+    // "August 2024, not the 2024 night" discloses nothing. The two dates have to be
+    // distinguishable or the disclosure is decoration.
+    expect(showByline('2024-08-20', '2024-02-11')).toBe(
+      'Mike Morper · August 2024, not the 11 February 2024 night'
+    )
+  })
+
+  it('gives a plain dated byline when the post is about no single night', () => {
+    // Most posts. A span has no "the X night" to disclaim against, and the date shown is
+    // the photograph's own — so it is a statement of fact, not an implied claim.
+    expect(showByline('2024-08-20')).toBe('Mike Morper · 20 August 2024')
+  })
+})
+
+// ── The ordering, which is what made any of this reachable ──────────────────
+
+const finding = (o: Partial<ScoredFinding> = {}): ScoredFinding =>
+  ({
+    id: 'longevity-howard-jones', detector: 'artist-longevity', category: 'personal',
+    temporality: 'evergreen', headline: 'Howard Jones: 39 Years of Shows', dataPoints: {},
+    artists: ['howard-jones'], venues: ['pacific-amphitheatre'], years: [1985, 2024],
+    tags: [], score: 40, scoreBreakdown: {}, prose: 'Thirty-nine years.',
+    suggestedImage: { type: 'artist', artistNormalized: 'howard-jones' },
+    ...o,
+  }) as unknown as ScoredFinding
+
+const curateOptions = (o: Partial<CurateOptions> = {}): CurateOptions =>
+  ({
+    artistsMetadata: { 'howard-jones': { name: 'Howard Jones', image: 'https://theaudiodb.com/hj.jpg' } },
+    artistsTopTracks: { 'howard-jones': { name: 'Howard Jones', tracks: [{ name: 'Things Can Only Get Better', albumName: 'Dream Into Action', albumArt: 'https://mzstatic.com/dia.jpg' }] } },
+    venuesMetadata: { 'universal-amphitheater': { name: 'Universal Amphitheater', photoUrls: { large: 'https://googleapis.com/ua.jpg' } } },
+    mediaIndex: { assets: [{
+      kind: 'image', url: '/images/shows/2024-08-20-howard-jones-03.jpg', date: '2024-08-20',
+      artistNormalized: 'howard-jones', hero: true, order: 3,
+      crop: { x: 0, y: 0.0856, w: 1, h: 0.7034 },
+    }] },
+    existingPosts: [], publishedAt: '2026-08-27T00:00:00.000Z',
+    ...o,
+  }) as unknown as CurateOptions
+
+describe('resolveImage ordering', () => {
+  it('the archive\'s own photograph outranks the artist press shot the detector suggested', () => {
+    // THE REGRESSION THIS FILE EXISTS FOR. The show branch used to sit below both the
+    // detector's suggestedImage and the top-tracks album-art fallback, which did not
+    // deprioritise it — it made it unreachable. Every act with published photography also
+    // has album art AND an artist image, so an earlier branch always returned first. 58
+    // posts published, not one `source: "show"`.
+    const [post] = buildPosts([finding()], curateOptions())
+    expect(post.image.source).toBe('show')
+    expect(post.image.url).toBe('/images/shows/2024-08-20-howard-jones-03.jpg')
+  })
+
+  it('outranks album art too', () => {
+    const [post] = buildPosts(
+      [finding({ suggestedImage: { type: 'album', artistNormalized: 'howard-jones', albumName: 'Dream Into Action' } })],
+      curateOptions()
+    )
+    expect(post.image.source).toBe('show')
+  })
+
+  it('carries the crop box and the byline onto the post', () => {
+    const [post] = buildPosts([finding()], curateOptions())
+    expect(post.image.crop).toEqual({ x: 0, y: 0.0856, w: 1, h: 0.7034 })
+    expect(post.image.shotOn).toBe('2024-08-20')
+    expect(post.image.credit).toBe('Mike Morper · 20 August 2024')
+  })
+
+  it('discloses the different night when the post is about one specific night', () => {
+    const [post] = buildPosts([finding({ concertDate: '1985-08-16' })], curateOptions())
+    expect(post.image.credit).toBe('Mike Morper · August 2024, not the 1985 night')
+  })
+
+  it('does NOT put an artist photograph on a venue post', () => {
+    // venue-loyalty and venue-ghost are venue-scoped but still carry an artists array, so
+    // artists[0] is whoever sorts first — on both Universal Amphitheater posts that is
+    // Howard Jones, whose only frames were taken in 2024 at a different venue, years after
+    // Universal was demolished. Right tier, wrong subject.
+    const [post] = buildPosts(
+      [finding({
+        id: 'venue-ghost-universal-amphitheater', detector: 'venue-ghost',
+        venues: ['universal-amphitheater'],
+        suggestedImage: { type: 'venue', venueNormalized: 'universal-amphitheater' },
+      })],
+      curateOptions()
+    )
+    expect(post.image.source).toBe('venue')
+  })
+
+  it('still falls back to tier 2 for an act with no photographs', () => {
+    // 178 of 184 shows. The normal path, and it must not have changed.
+    const [post] = buildPosts(
+      [finding({ artists: ['the-cure'], suggestedImage: { type: 'artist', artistNormalized: 'the-cure' } })],
+      curateOptions({ artistsMetadata: { 'the-cure': { name: 'The Cure', image: 'https://theaudiodb.com/cure.jpg' } } })
+    )
+    expect(post.image.source).toBe('artist')
+    expect(post.image.crop).toBeUndefined()
+    expect(post.image.credit).toBeUndefined()
   })
 })

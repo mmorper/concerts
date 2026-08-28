@@ -13,6 +13,21 @@ export type PostTemporality = "evergreen" | "timely";
 
 // ── Media ───────────────────────────────────────────────────────────────────
 
+/**
+ * A normalised crop rectangle, authored at 4:5 (#342).
+ *
+ * A box, not a focal point: a point says *where* the subject is, a box says where **and
+ * how tight**. Non-4:5 targets derive from the TOP of the box for the archive's own
+ * photography and from the CENTRE for everything else — concert frames are shot upward
+ * from a crowd, so the subject sits high and centre-derivation decapitates it.
+ */
+export interface CropBox {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
 export interface PostImage {
   /**
    * Derived, not authoritative. Re-resolved from `ref` on every pipeline run —
@@ -35,7 +50,31 @@ export interface PostImage {
   ref?: string;
   /** Album to match when `source` is "album"; `ref` holds the artist key. */
   albumName?: string;
+  /**
+   * The on-image byline, tier 1 only — `Mike Morper · 20 August 2024`.
+   *
+   * Rendered into the card, not the caption: a card gets screenshotted and re-shared
+   * without its caption, so a claim about whose photograph this is has to travel with the
+   * picture. `buildPayload` promotes it to `asset.byline` for tier 1 and drops it
+   * otherwise; the absence on tier 2 is what gives the tier-1 byline meaning
+   * (`PROVENANCE.md`).
+   */
   credit?: string;
+  /**
+   * The owner's crop box, when `source` is "show". Absent for every other source — a
+   * third-party image has no box because nobody drew one.
+   *
+   * Carried on the post because the renderer cannot re-derive it: it is a per-frame
+   * judgement, and a renderer without it falls back to a centre crop.
+   */
+  crop?: CropBox;
+  /**
+   * The date the photograph was taken, when `source` is "show". ISO `YYYY-MM-DD`.
+   *
+   * Distinct from the night the post is about, and that gap is the point: it is what makes
+   * the different-night disclosure possible rather than a thing we hope is true.
+   */
+  shotOn?: string;
   /**
    * True when the OG card was composited on a solid ground because `url`
    * could not be fetched at render time.
