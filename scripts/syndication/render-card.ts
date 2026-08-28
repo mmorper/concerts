@@ -23,7 +23,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import puppeteer, { type Browser } from "puppeteer";
 import { deriveRect, derivationFor, retainedFraction } from "../media/derive.ts";
-import { getShowAsset, postNightOf, showByline, type ImageSources } from "../liner-notes/image-refs.ts";
+import { postNightOf, showByline, type ImageSources } from "../liner-notes/image-refs.ts";
 import { buildCredit, resolveAnchorConcert, type PayloadSources } from "./payload.ts";
 import { classifyImageUrl } from "./provenance.ts";
 import { cityRegion } from "./region.ts";
@@ -376,26 +376,30 @@ export async function renderCard(
   const lead = post.artists[0];
   if (!lead) throw new Error(`${post.slug}: no lead artist`);
 
-  /* Re-resolve the tier-1 asset rather than trusting the post's stored image.
-     `image.ref` is the durable half and `image.url` is derived on every run — the whole
-     reason image-refs.ts exists. Re-resolving also means this works against posts written
-     before the crop box existed. */
-  const asset = getShowAsset(lead, sources);
+  /* 🔴 DRAW WHAT THE POST SAYS. ONE PLACE DECIDES TIER, AND IT IS NOT HERE.
+     This used to re-resolve the tier-1 asset itself with `getShowAsset(lead)`, which was
+     right when the renderer was the only path to tier 1 — before #416 taught the pipeline to
+     promote a published post. It is wrong now, and quietly: `resolveImage` and
+     `upgradeToOwnPhotography` both REFUSE to put an artist photograph on a venue-subject
+     post, and re-resolving walked straight past both gates.
 
-  /* 🔴 TIER 2 RENDERS TOO, AND MOST POSTS ARE TIER 2. 53 of 58 published posts have no
-     archive photography — they carry an artist press shot or an album cover — and refusing
-     them would have dropped nearly the whole feed the moment this became the posting path.
+     Measured on the live archive: `universal-amphitheater-5-shows-over-3-decades` is a
+     `venue-loyalty` post whose stored image is correctly an album cover, and this rendered
+     a Howard Jones frame shot at YouTube Theatre in 2024 — a different act at a different
+     venue, years after Universal was demolished. Two gates, both correct, both bypassed by
+     the thing that actually draws the card.
 
-     `DECISIONS.md` §1 chose this layout partly FOR them: "The wide card is the one format
-     where a square image is the natural fit rather than a compromise, and the only place
-     tier 2 is downscaled (700 → 630) rather than upscaled." Every tier-2 source is 700x700.
-     A square slot is the reason there is no quality cost here. */
-  const source = asset?.url
-    ? { url: asset.url, crop: asset.crop, date: asset.date }
-    : post.image?.url
-      ? { url: post.image.url, crop: undefined, date: undefined }
-      : undefined;
-  if (!source) throw new Error(`${post.slug}: no image at all — never bare type`);
+     `post.image` carries everything needed since #415: the url, the crop box, and the
+     capture date. There is nothing left to re-derive, and deriving it here means the tier
+     rule lives in two places that can disagree. A post whose stored image is stale renders
+     as whatever it currently says and self-corrects on the next pipeline run, which is the
+     honest behaviour rather than the renderer quietly overriding it. */
+  if (!post.image?.url) throw new Error(`${post.slug}: no image at all — never bare type`);
+  const source = {
+    url: post.image.url,
+    crop: post.image.crop,
+    date: post.image.shotOn,
+  };
 
   const provenance = classifyImageUrl(source.url);
   if (!provenance) throw new Error(`${post.slug}: unclassified image host ${source.url}`);
