@@ -157,30 +157,28 @@ describe('getShowAsset', () => {
 // ── The byline ──────────────────────────────────────────────────────────────
 
 describe('showByline', () => {
-  it('names the date of the photograph when the post is about that night', () => {
-    expect(showByline('2024-08-20', '2024-08-20')).toBe('Mike Morper · 20 August 2024')
-  })
-
-  it('discloses a different night rather than implying the photo is it', () => {
-    // Non-negotiable per PROVENANCE.md. Implying a photograph is *the* night when it is not
-    // is the fabricated-memory failure the voice rules exist to prevent.
-    expect(showByline('2026-07-31', '1987-07-24')).toBe(
-      'Mike Morper · July 2026, not the 1987 night'
-    )
-  })
-
-  it('names the disclaimed night in full when both fall in the same year', () => {
-    // "August 2024, not the 2024 night" discloses nothing. The two dates have to be
-    // distinguishable or the disclosure is decoration.
-    expect(showByline('2024-08-20', '2024-02-11')).toBe(
-      'Mike Morper · August 2024, not the 11 February 2024 night'
-    )
-  })
-
-  it('gives a plain dated byline when the post is about no single night', () => {
-    // Most posts. A span has no "the X night" to disclaim against, and the date shown is
-    // the photograph's own — so it is a statement of fact, not an implied claim.
+  it('names the date of the photograph, and only that', () => {
     expect(showByline('2024-08-20')).toBe('Mike Morper · 20 August 2024')
+  })
+
+  it('NEVER renders a different-night disclaimer', () => {
+    // Removed by the owner 2026-08-28. PROVENANCE.md specified a second variant —
+    // "Mike Morper · July 2026, not the 1987 night" — and their reasoning for dropping it is
+    // that the byline already states when the photograph was taken, so a reader given
+    // "June 2026" under a headline about 2018 can connect those without being told. The
+    // negation added nothing visible and made the card apologise for itself.
+    for (const iso of ['2026-06-04', '1987-07-24', '2024-08-20']) {
+      const line = showByline(iso)
+      expect(line).not.toContain('not the')
+      expect(line).not.toContain('night')
+    }
+  })
+
+  it('is the FULL date, never month-only', () => {
+    // The old different-night variant was month-only, which left the one genuinely ambiguous
+    // case: "August 2024" under a post about a different August night. A full date closes it,
+    // and closing it is what makes dropping the disclaimer safe rather than merely tidier.
+    expect(showByline('2026-06-04')).toBe('Mike Morper · 4 June 2026')
   })
 })
 
@@ -237,9 +235,11 @@ describe('resolveImage ordering', () => {
     expect(post.image.credit).toBe('Mike Morper · 20 August 2024')
   })
 
-  it('discloses the different night when the post is about one specific night', () => {
+  it('states the photograph\'s own date even when the post is about another night', () => {
+    // The disclaimer variant was removed by the owner 2026-08-28. The date is the disclosure:
+    // a reader given 20 August 2024 under a post about 1985 can connect that unaided.
     const [post] = buildPosts([finding({ concertDate: '1985-08-16' })], curateOptions())
-    expect(post.image.credit).toBe('Mike Morper · August 2024, not the 1985 night')
+    expect(post.image.credit).toBe('Mike Morper · 20 August 2024')
   })
 
   it('does NOT put an artist photograph on a venue post', () => {

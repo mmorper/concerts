@@ -26,6 +26,7 @@ import { deriveRect, derivationFor, retainedFraction } from "../media/derive.ts"
 import { getShowAsset, postNightOf, showByline, type ImageSources } from "../liner-notes/image-refs.ts";
 import { buildCredit, resolveAnchorConcert, type PayloadSources } from "./payload.ts";
 import { classifyImageUrl } from "./provenance.ts";
+import { cityRegion } from "./region.ts";
 import type { CropBox, LinerNotesPost } from "../../src/types/liner-notes.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -125,6 +126,7 @@ interface TemplateVals {
   hook: string;
   hookSize: number;
   meta: string;
+  pill: string;
 }
 
 const HEAD = `<!doctype html><html><head><meta charset="utf-8">
@@ -135,23 +137,29 @@ function fullBleed(v: TemplateVals): string {
   return `${HEAD}
 <div id="card" style="width:${CARD_WIDTH}px;height:${CARD_HEIGHT}px;background:#0d1a24;position:relative;overflow:hidden;font-family:'Source Sans 3',system-ui,sans-serif;">
   <img src="${v.imageDataUri}" alt="${escapeHtml(v.alt)}" style="position:absolute;inset:0;width:${CARD_WIDTH}px;height:${CARD_HEIGHT}px;object-fit:cover;display:block;">
-  <span id="byline" style="position:absolute;left:30px;top:30px;font-size:21px;font-weight:600;letter-spacing:0.03em;color:rgba(255,255,255,0.82);background:rgba(8,10,16,0.58);padding:9px 15px;border-radius:4px;">${escapeHtml(v.byline)}</span>
+  <!-- MATCH THE SHAPE, NOT THE WEIGHT. Both chips are pills so they read as one family of
+       metadata. The FILL is where the hierarchy lives: the act pill is solid and carries the
+       category, this one stays screened-back and neutral.
+       It must never take the category colour. Colour on this card means identity; the byline
+       is a factual credit about provenance, and folding it into the identity system is the
+       confusion PROVENANCE.md avoids by giving tier 2 no byline at all. A second solid chip
+       would also compete with the act name and flatten a hierarchy that is deliberate — the
+       byline is what makes personal imagery outrank a press shot, but it is a credit, not a
+       headline. -->
+  <span id="byline" style="position:absolute;left:30px;top:30px;font-size:21px;font-weight:600;letter-spacing:0.03em;color:rgba(255,255,255,0.82);background:rgba(8,10,16,0.58);padding:9px 19px;border-radius:999px;">${escapeHtml(v.byline)}</span>
   <div style="position:absolute;left:0;right:0;bottom:0;height:${SCRIM_HEIGHT}px;background:linear-gradient(to bottom,rgba(9,11,18,0) 0%,rgba(9,11,18,0.78) 40%,rgba(9,11,18,0.95) 74%,#090b12 100%);"></div>
   <div id="type" style="position:absolute;left:0;right:0;bottom:0;padding:0 72px 72px 72px;box-sizing:border-box;display:flex;flex-direction:column;gap:28px;">
-    <div style="display:flex;align-items:center;gap:18px;">
-      <span style="width:56px;height:5px;background:#7c3aed;flex-shrink:0;"></span>
-      <!-- 🔴 THE ACT LINE NEEDS ITS OWN GROUND, AND ONLY THE ACT LINE DOES.
-           It sits at the very top of the scrim, where the gradient is still near zero
-           opacity, so on a bright frame it is white type on stage light. Measured across
-           ten cards: the hook is fine — by the time it starts the scrim has taken hold —
-           and Kasabian's green wash and Haircut 100's lit drum kit fail on this line alone.
-           A text-shadow was already here and is not enough against a bright, busy ground.
+    <div style="display:flex;align-items:center;">
+      <!-- 🔴 A PILL, NOT A LOZENGE, AND IT CARRIES THE CATEGORY.
+           The screened-back rectangle read as a patch stuck over the photograph rather than
+           as part of the card. A pill is a chip of metadata, which is what this is, and it
+           lets the fill do two jobs at once: a ground the act name is legible on, and the
+           category signal that the 56x5px rule was carrying alone and illegibly.
 
-           SAME LOZENGE AS THE BYLINE, which reads cleanly on all twenty cards, so this is
-           the card's existing vocabulary rather than a new device. box-decoration-break
-           gives each wrapped line its own block instead of one ragged rectangle behind the
-           lot — the act line wraps on any bill of three. -->
-      <span style="font-size:34px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#fff;background:rgba(8,10,16,0.58);padding:7px 14px;border-radius:4px;box-decoration-break:clone;-webkit-box-decoration-break:clone;line-height:1.42;">${escapeHtml(v.acts)}</span>
+           THE RULE IS GONE. With a coloured pill immediately after it, the dash is a second
+           adjacent block of the same colour — redundant, and it reads as a tail on the pill.
+           The pill absorbs its job and states it in a form that can actually be read. -->
+      <span id="acts" style="font-size:34px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#fff;background:${v.pill};padding:10px 22px;border-radius:999px;white-space:nowrap;">${escapeHtml(v.acts)}</span>
     </div>
     <div id="hook" style="font-family:'Playfair Display',Georgia,serif;font-size:${v.hookSize}px;line-height:1.05;letter-spacing:-0.028em;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,0.55);text-wrap:pretty;">${escapeHtml(v.hook)}</div>
     <div style="display:flex;justify-content:space-between;align-items:baseline;gap:32px;">
@@ -182,12 +190,14 @@ function fullBleed(v: TemplateVals): string {
  * and only the interpretation gets held back. "+6 more" keeps the count honest and the
  * caption carries the full bill.
  */
-export function actLine(artists: string[], photographed: string | undefined, max = 3): string {
+export function actLine(artists: string[], photographed: string | undefined, show: number): string {
   const ordered = photographed
     ? [...artists].sort((a, b) => Number(b === photographed) - Number(a === photographed))
     : artists;
-  if (ordered.length <= max) return ordered.join(" · ");
-  return `${ordered.slice(0, max).join(" · ")} +${ordered.length - max} more`;
+  const n = Math.max(1, Math.min(show, ordered.length));
+  if (n >= ordered.length) return ordered.join(" · ");
+  // A non-breaking space, so "+6 more" can never be the thing that splits.
+  return `${ordered.slice(0, n).join(" · ")} +${ordered.length - n}\u00a0more`;
 }
 
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -215,12 +225,16 @@ function wideSplit(v: TemplateVals): string {
   <div style="position:absolute;inset:0;display:flex;flex-direction:row;">
     <div style="width:${WIDE_SLOT}px;height:${WIDE_SLOT}px;position:relative;overflow:hidden;flex-shrink:0;">
       <img src="${v.imageDataUri}" alt="${escapeHtml(v.alt)}" style="width:${WIDE_SLOT}px;height:${WIDE_SLOT}px;object-fit:cover;display:block;">
-      <span id="byline" style="position:absolute;left:22px;bottom:20px;font-size:16px;font-weight:600;letter-spacing:0.03em;color:rgba(255,255,255,0.82);background:rgba(8,10,16,0.58);padding:7px 12px;border-radius:3px;">${escapeHtml(v.byline)}</span>
+      <span id="byline" style="position:absolute;left:22px;bottom:20px;font-size:16px;font-weight:600;letter-spacing:0.03em;color:rgba(255,255,255,0.82);background:rgba(8,10,16,0.58);padding:7px 15px;border-radius:999px;">${escapeHtml(v.byline)}</span>
     </div>
-    <div id="type" style="flex-grow:1;display:flex;flex-direction:column;justify-content:flex-end;gap:20px;padding:48px 48px 44px 44px;box-sizing:border-box;">
-      <div style="display:flex;align-items:flex-start;gap:14px;">
-        <span style="width:38px;height:4px;background:#7c3aed;flex-shrink:0;margin-top:11px;"></span>
-        <span style="font-size:24px;font-weight:700;letter-spacing:0.05em;line-height:1.25;text-transform:uppercase;color:#fff;text-wrap:pretty;">${escapeHtml(v.acts)}</span>
+    <!-- FIXED WIDTH, NOT flex-grow. A white-space:nowrap pill wider than the column made
+         the column itself grow, pushing the type off the right edge of the card AND taking
+         the hook with it — and because the fit check measured the pill against its parent,
+         the parent had already stretched to fit and every length "fitted". Pinning the
+         column is what makes the measurement mean anything. -->
+    <div id="type" style="width:${WIDE_WIDTH - WIDE_SLOT}px;flex-shrink:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:20px;padding:48px 48px 44px 44px;box-sizing:border-box;">
+      <div style="display:flex;align-items:flex-start;">
+        <span id="acts" style="font-size:24px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#fff;background:${v.pill};padding:8px 18px;border-radius:999px;white-space:nowrap;">${escapeHtml(v.acts)}</span>
       </div>
       <div id="hook" style="font-family:'Playfair Display',Georgia,serif;font-size:${v.hookSize}px;line-height:1.06;letter-spacing:-0.025em;color:#fff;text-wrap:pretty;">${escapeHtml(v.hook)}</div>
       <span style="font-size:21px;font-weight:500;line-height:1.44;color:#8a80ab;">${v.meta}</span>
@@ -235,6 +249,34 @@ function wideSplit(v: TemplateVals): string {
   </div>
 </div></body></html>`;
 }
+
+/**
+ * The act pill's fill, per category.
+ *
+ * 🔴 THE RULE WAS CARRYING THE CATEGORY, AND THIS RENDERER HARDCODED IT PURPLE. #361:
+ * "Category rule keeps its colour; the label is gone in favour of the artist name" — so
+ * that 56x5px dash is the ONLY surviving category signal on the card, and every card was
+ * printing `cultural` regardless of what it was. The pill absorbs the job and does it
+ * legibly, which a dash never did: nobody decodes a coloured line.
+ *
+ * 🔴 DARKENED, BECAUSE WHITE ON THE RAW COLOUR FAILS. Measured against the source values in
+ * `og-image.ts`:
+ *
+ *     cultural   #7c3aed   5.70:1   passes
+ *     personal   #0ea5e9   2.77:1   FAILS even large-text AA
+ *     deep-cut   #059669   3.77:1   large text only
+ *
+ * `personal` is 27 of 58 posts, so a solid pill at the raw value would be worst exactly
+ * where it is most common — the opposite of a contrast fix. At 0.7 all three clear 5:1 and
+ * the hue family survives. Black text on the bright values was the alternative and needs a
+ * different text colour per category, which is a worse rule to maintain.
+ */
+export const ACT_PILL: Record<string, string> = {
+  cultural: "#5628a5",
+  personal: "#0973a3",
+  "deep-cut": "#036949",
+};
+export const ACT_PILL_FALLBACK = "#463c7a";
 
 export interface Format {
   id: "4x5" | "wide";
@@ -383,14 +425,19 @@ export async function renderCard(
   const credit = buildCredit(post, concert, sources);
   // The display name of the act actually in the frame, so it can lead the act line.
   const leadName = sources.artistsMetadata[lead]?.name;
+  /* Off the venue record, not the concert: `venuesMetadata` is what carries `state`, and it
+     self-heals on the weekly refresh where a concert row does not. */
+  const venueSlug = post.venues.find((v) => sources.venuesMetadata[v]?.name === credit.venue)
+    ?? concert.venueNormalized;
+  const venueState = (sources.venuesMetadata[venueSlug] as { state?: string } | undefined)?.state;
 
   const hook = post.social?.hook;
   if (!hook) throw new Error(`${post.slug}: no authored hook — never chop one out of prose`);
 
-  const byline = showByline(asset.date, postNight);
+  const byline = showByline(asset.date);
   const metaLines = [
     credit.song ? `&ldquo;${escapeHtml(credit.song)}&rdquo;` : undefined,
-    `${escapeHtml(credit.venue)} &middot; ${escapeHtml(credit.city)}`,
+    `${escapeHtml(credit.venue)} &middot; ${escapeHtml(cityRegion(credit.city, venueState))}`,
     monthYear(concert.date),
   ].filter(Boolean).join("<br>");
 
@@ -399,6 +446,8 @@ export async function renderCard(
 
   let hookSize = format.hookSizes[0];
   let typeTop = 0;
+  let acts = actLine(credit.artists, leadName, credit.artists.length);
+  const pill = ACT_PILL[post.category] ?? ACT_PILL_FALLBACK;
   try {
     /* Set the content ONCE and re-measure by restyling.
        Calling setContent per ramp step is both slow and unreliable: with `networkidle0` the
@@ -407,10 +456,38 @@ export async function renderCard(
        times, so that is a hang on a normal card, not an edge case. Fonts are awaited
        directly, which is the dependency that actually matters for a text measurement. */
     await page.setContent(
-      format.template({ imageDataUri, alt: post.image.alt, byline, acts: actLine(credit.artists, leadName), hook, hookSize: format.hookSizes[0], meta: metaLines }),
+      format.template({ imageDataUri, alt: post.image.alt, byline, acts, hook, hookSize: format.hookSizes[0], meta: metaLines, pill }),
       { waitUntil: "load" }
     );
     try { await page.evaluate(() => document.fonts.ready); } catch { /* fonts are a nicety */ }
+
+    /* 🔴 THE ACT LINE IS ONE LINE, ALWAYS — drop a name before you wrap.
+       Two lines of uppercase display type pushes the hook down and reads as a paragraph
+       rather than a label, and on a nine-act bill it was five. Measured, not counted: the
+       pill is `white-space: nowrap`, so a too-long line overflows its container rather than
+       wrapping, and the test is whether it still fits the column.
+
+       Names are dropped from the END, so the photographed act — the one in the frame and
+       the one the byline is about — is the last thing to go. A single name that still
+       overflows is left alone: that is identification and there is nothing left to drop. */
+    for (let show = credit.artists.length; show >= 1; show--) {
+      const line = actLine(credit.artists, leadName, show);
+      const fits = await page.evaluate((text: string) => {
+        const el = document.getElementById("acts")!;
+        el.textContent = text;
+        /* 🔴 MEASURE AGAINST THE CARD, WHICH IS PINNED BY DEFINITION.
+           Against the parent this silently always passed: an over-wide nowrap pill stretched
+           its own container, so the thing being measured and the thing it was measured
+           against grew together. That is the third time in this renderer that a measurement
+           has been taken against a box the content could move — the bottom edge in #415, the
+           flex-grow column here, and this. The card cannot move. */
+        const card = document.getElementById("card")!.getBoundingClientRect();
+        const box = el.getBoundingClientRect();
+        return box.right <= card.right && box.left >= card.left;
+      }, line);
+      acts = line;
+      if (fits || show === 1) break;
+    }
 
     for (const size of format.hookSizes) {
       await page.evaluate((px: number) => {

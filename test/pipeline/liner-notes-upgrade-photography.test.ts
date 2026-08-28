@@ -53,12 +53,12 @@ describe('upgradeToOwnPhotography', () => {
     expect(posts[0].image.credit).toBe('Mike Morper · 20 August 2024')
   })
 
-  it('discloses a different night when the post is about one specific night', () => {
+  it('states the photograph\'s own date even when the post is about another night', () => {
     const posts = [post({
       deepLinks: [{ label: 'Setlist', url: '/?scene=artists&artist=howard-jones&show=1985-06-04', type: 'setlist' }],
     } as never)]
     upgradeToOwnPhotography(posts, sources())
-    expect(posts[0].image.credit).toBe('Mike Morper · August 2024, not the 1985 night')
+    expect(posts[0].image.credit).toBe('Mike Morper · 20 August 2024')
   })
 
   it('replaces the stored alt, which described the OLD image', () => {

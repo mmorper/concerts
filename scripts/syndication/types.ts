@@ -106,6 +106,15 @@ export interface PayloadCredit {
   song?: string;
   venue: string;
   city: string;
+  /**
+   * The state or country that follows the city — `MD`, `DC`, `UK`.
+   *
+   * `venuesMetadata.state` already holds both: eight US states plus `District of Columbia`,
+   * and `Mexico` and `UK` in the same field. `region.ts` abbreviates the states and leaves
+   * countries spelled, because a postal code reads as a place and an ISO code reads as a
+   * form field.
+   */
+  region?: string;
   /** ISO YYYY-MM-DD. */
   date: string;
 }

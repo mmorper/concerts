@@ -387,7 +387,7 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
         alt: displayName(primary, options.artistsMetadata),
         source: "show",
         ref: primary,
-        credit: showByline(asset.date, finding.concertDate),
+        credit: showByline(asset.date),
         shotOn: asset.date,
       };
       // Only when the owner actually drew one. An absent box is not `{0,0,1,1}`: the
