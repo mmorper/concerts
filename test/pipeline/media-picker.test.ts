@@ -8,7 +8,7 @@
  * judgements made after publication, and the picker can list everything.
  */
 import { describe, it, expect } from 'vitest'
-import { actionsFor, buildRows, framingGaps } from '../../scripts/media/index'
+import { actionsFor, buildRows, framingGaps, renderRow } from '../../scripts/media/index'
 import { phaseOf, type Snapshot } from '../../scripts/media/phase'
 import type { Concert } from '../../src/types/concert'
 
@@ -169,5 +169,37 @@ describe('actionsFor', () => {
   it('is empty only when there is genuinely nothing to do', () => {
     expect(actionsFor('2023-01-01', snap({ hasRun: false, indexedCount: 0, publishable: 0 }),
       phase('done', null))).toEqual([])
+  })
+})
+
+describe('renderRow says what is OUTSTANDING', () => {
+  // THE BUG THE OWNER HIT TWICE. The row read "2 assets published" for a Kasabian show with
+  // four more waiting to ingest, and they reasonably concluded it was finished. Any count of
+  // what has landed is a progress bar with the remainder cropped off.
+  const strip = (t: string) => t.replace(/\x1b\[[0-9;]*m/g, '')
+  const row = (over: Partial<Snapshot>, date = '2023-11-22') => strip(renderRow(
+    { concert: { date, headliner: 'Kasabian', venue: 'The Belasco' } as never,
+      phase: phaseOf(snap(over), date), snapshot: snap(over), unjudged: 0, opportunity: 0 },
+    false, 30))
+
+  it('names the assets still to ingest, not the ones already in', () => {
+    const t = row({ publishable: 6, indexedCount: 2 })
+    expect(t).toContain('4 to ingest')
+    expect(t).not.toContain('2 assets published')
+  })
+
+  it('names every outstanding thing at once', () => {
+    const t = row({ publishable: 6, indexedCount: 2, actsMissingHero: 1, stillsUncropped: 3 })
+    expect(t).toContain('4 to ingest')
+    expect(t).toContain('1 no hero')
+    expect(t).toContain('3 uncropped')
+  })
+
+  it('only says published when nothing at all is outstanding', () => {
+    expect(row({ publishable: 6, indexedCount: 6 })).toContain('6 assets published')
+  })
+
+  it('falls back to judged progress before anything is published', () => {
+    expect(row({ publishable: 0, indexedCount: 0, judged: 8, onPage: 8 })).toContain('8/8 judged')
   })
 })
