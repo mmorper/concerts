@@ -7,6 +7,7 @@
  *   npm run harvest:handles -- --artists     # one entity kind only
  *   npm run harvest:handles -- --venues
  *   npm run harvest:handles -- --promote     # accept the self-proving rows
+ *   npm run harvest:handles -- --accept artist:blondie:bluesky,venue:the-anthem:bluesky
  *   npm run harvest:handles -- --verify      # re-resolve stored DIDs, report drift
  *
  * ## The shape, and why
@@ -470,21 +471,80 @@ function promote(worksheet: Worksheet, file: HandlesFile): { added: number; skip
       skipped++;
       continue;
     }
-    const bucket = proposal.kind === "artist" ? file.artists : file.venues;
-    const entity = (bucket[proposal.slug] ??= {});
-    if (entity[proposal.channel]?.blocked) {
-      skipped++;
-      continue;
-    }
-    entity[proposal.channel] = {
-      handle: proposal.handle,
-      ...(proposal.did ? { did: proposal.did } : {}),
-      evidence: proposal.evidence,
-      verifiedAt: today(),
-    };
-    added++;
+    if (accept(proposal, file)) added++;
+    else skipped++;
   }
   return { added, skipped };
+}
+
+/**
+ * Write one reviewed proposal into the live file.
+ *
+ * Shared by `--promote` and `--accept` so a self-proving row and a
+ * hand-reviewed one land identically. The alternative — hand-editing
+ * `social-handles.json` — is the error-prone step this whole design exists to
+ * remove, and it would be a shame to leave it as the only way to say yes to
+ * the rows a human actually has to look at.
+ */
+function accept(proposal: Proposal, file: HandlesFile): boolean {
+  const bucket = proposal.kind === "artist" ? file.artists : file.venues;
+  const entity = (bucket[proposal.slug] ??= {});
+  // An opt-out outranks a reviewer. Somebody asked not to be tagged, and
+  // "accept this row" is not the same statement as "overturn that".
+  if (entity[proposal.channel]?.blocked) return false;
+  // A Bluesky row without a DID cannot be posted, so accepting one would write
+  // a row that silently never publishes. Better to refuse it here, loudly.
+  if (proposal.channel === "bluesky" && !proposal.did) return false;
+  entity[proposal.channel] = {
+    handle: proposal.handle,
+    ...(proposal.did ? { did: proposal.did } : {}),
+    evidence: proposal.evidence,
+    verifiedAt: today(),
+  };
+  return true;
+}
+
+/**
+ * Accept named rows: `--accept artist:blondie:bluesky,venue:the-anthem:bluesky`.
+ *
+ * A missing DID is resolved here rather than refused. Accepting is the moment
+ * the row is committed to, and the harvest run that proposed it may simply
+ * have been throttled — the first run recorded no DID for @garbage.com and
+ * @thecure.com, both of which exist. Re-asking one question at review time is
+ * cheaper than re-running a twenty-minute crawl.
+ */
+async function acceptNamed(
+  keys: string[],
+  worksheet: Worksheet,
+  file: HandlesFile
+): Promise<{ added: number; missing: string[]; unresolved: string[] }> {
+  const missing: string[] = [];
+  const unresolved: string[] = [];
+  let added = 0;
+
+  for (const key of keys) {
+    const [kind, slug, channel] = key.split(":");
+    const proposal = worksheet.proposals.find(
+      (p) => p.kind === kind && p.slug === slug && p.channel === channel
+    );
+    if (!proposal) {
+      missing.push(key);
+      continue;
+    }
+    if (proposal.channel === "bluesky" && !proposal.did) {
+      const did = await resolveHandle(proposal.handle);
+      await sleep(300);
+      if (!did) {
+        unresolved.push(`${key} (@${proposal.handle} does not resolve)`);
+        continue;
+      }
+      proposal.did = did;
+      console.log(`   resolved @${proposal.handle} → ${did}`);
+    }
+    if (accept(proposal, file)) added++;
+    else unresolved.push(`${key} (blocked, or no DID)`);
+  }
+  return { added, missing, unresolved };
 }
 
 /**
@@ -525,8 +585,44 @@ async function verify(file: HandlesFile): Promise<number> {
 const args = process.argv.slice(2);
 const flag = (name: string) => args.includes(`--${name}`);
 
+function value(name: string): string | undefined {
+  const index = args.indexOf(`--${name}`);
+  if (index === -1) return undefined;
+  const next = args[index + 1];
+  // A flag present with no value is an operator mistake, not an empty list —
+  // `--accept --dry-run` must not quietly accept nothing and report success.
+  if (next === undefined || next.startsWith("--")) {
+    throw new Error(`--${name} requires a value`);
+  }
+  return next;
+}
+
+function loadWorksheet(): Worksheet {
+  if (!existsSync(WORKSHEET_PATH)) {
+    console.error(`❌ No worksheet at ${WORKSHEET_PATH}. Run the harvest first.`);
+    process.exit(1);
+  }
+  return JSON.parse(readFileSync(WORKSHEET_PATH, "utf8")) as Worksheet;
+}
+
+function save(file: HandlesFile): void {
+  file.updatedAt = new Date().toISOString();
+  writeFileSync(HANDLES_PATH, `${JSON.stringify(file, null, 2)}\n`);
+}
+
 async function main(): Promise<void> {
   const file = loadHandles();
+
+  const accepting = value("accept");
+  if (accepting !== undefined) {
+    const keys = accepting.split(",").map((k) => k.trim()).filter(Boolean);
+    const { added, missing, unresolved } = await acceptNamed(keys, loadWorksheet(), file);
+    save(file);
+    console.log(`✅ Accepted ${added} reviewed row(s) into ${HANDLES_PATH}`);
+    for (const key of missing) console.log(`   ⚠️  no such proposal: ${key}`);
+    for (const key of unresolved) console.log(`   ⚠️  not written: ${key}`);
+    return;
+  }
 
   if (flag("verify")) {
     console.log("🔍 Re-resolving stored Bluesky DIDs\n");
@@ -536,14 +632,8 @@ async function main(): Promise<void> {
   }
 
   if (flag("promote")) {
-    if (!existsSync(WORKSHEET_PATH)) {
-      console.error(`❌ No worksheet at ${WORKSHEET_PATH}. Run the harvest first.`);
-      process.exit(1);
-    }
-    const worksheet = JSON.parse(readFileSync(WORKSHEET_PATH, "utf8")) as Worksheet;
-    const { added, skipped } = promote(worksheet, file);
-    file.updatedAt = new Date().toISOString();
-    writeFileSync(HANDLES_PATH, `${JSON.stringify(file, null, 2)}\n`);
+    const { added, skipped } = promote(loadWorksheet(), file);
+    save(file);
     console.log(`✅ Promoted ${added} self-proving row(s) into ${HANDLES_PATH}`);
     console.log(`   ${skipped} row(s) left in the worksheet for review — promotion is only ever automatic for site-domain.`);
     return;
@@ -608,6 +698,7 @@ async function main(): Promise<void> {
 }
 
 main().catch((err) => {
-  console.error("\n❌ Harvest failed:", err.message ?? err);
+  // A bad flag is an operator mistake, not a bug: one line, not a stack trace.
+  console.error(`\n❌ ${err.message ?? err}`);
   process.exit(1);
 });

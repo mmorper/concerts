@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-28T23:09:14.816Z",
+  "updatedAt": "2026-08-28T23:36:04.072Z",
   "artists": {
     "bruce-springsteen": {
       "bluesky": {
@@ -81,6 +81,62 @@
         "evidence": "site-domain",
         "verifiedAt": "2026-08-28"
       }
+    },
+    "blondie": {
+      "bluesky": {
+        "handle": "blondieband.bsky.social",
+        "did": "did:plc:k4oh2rdaa2idznsyhpgrkyfq",
+        "evidence": "musicbrainz",
+        "verifiedAt": "2026-08-28"
+      }
+    },
+    "crowded-house": {
+      "bluesky": {
+        "handle": "crowdedhouse.com",
+        "did": "did:plc:ykzv5yoohsvzrcam2owtj3zr",
+        "evidence": "musicbrainz",
+        "verifiedAt": "2026-08-28"
+      }
+    },
+    "duran-duran": {
+      "bluesky": {
+        "handle": "durandurancom.bsky.social",
+        "did": "did:plc:3jdqlmbkwhfgduaxbvh5wtcy",
+        "evidence": "musicbrainz",
+        "verifiedAt": "2026-08-28"
+      }
+    },
+    "garbage": {
+      "bluesky": {
+        "handle": "garbage.com",
+        "did": "did:plc:llleov6gowwl2dsrhwpp2xxn",
+        "evidence": "musicbrainz",
+        "verifiedAt": "2026-08-28"
+      }
+    },
+    "the-cure": {
+      "bluesky": {
+        "handle": "thecure.com",
+        "did": "did:plc:u2nnfhwfrul4lyw5dii2cris",
+        "evidence": "musicbrainz",
+        "verifiedAt": "2026-08-28"
+      }
+    },
+    "public-enemy": {
+      "bluesky": {
+        "handle": "publicenemyno1.bsky.social",
+        "did": "did:plc:xbygbfc3oiwqxnzop4cqhdf4",
+        "evidence": "wikidata",
+        "verifiedAt": "2026-08-28"
+      }
+    },
+    "the-go-go-s": {
+      "bluesky": {
+        "handle": "gogosofficial.bsky.social",
+        "did": "did:plc:kwyrwuink7fu2rahgwoety4p",
+        "evidence": "wikidata",
+        "verifiedAt": "2026-08-28"
+      }
     }
   },
   "venues": {
@@ -89,6 +145,14 @@
         "handle": "ucla.edu",
         "did": "did:plc:gy552md2n6dm4ga73tm6kvn4",
         "evidence": "site-domain",
+        "verifiedAt": "2026-08-28"
+      }
+    },
+    "the-anthem": {
+      "bluesky": {
+        "handle": "theanthemdc.bsky.social",
+        "did": "did:plc:fv3ksu5ms3met4rn2n435u5e",
+        "evidence": "musicbrainz",
         "verifiedAt": "2026-08-28"
       }
     }
