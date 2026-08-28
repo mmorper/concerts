@@ -118,3 +118,7 @@ video/.hyperframes-cache/
 
 # Render scratch for social-card comparisons. Regenerable; see .preview/README.md
 .preview/
+
+# Social card renditions. A rendition is a pure function of (master, channel), so a
+# committed one is stale the moment that function changes — same rule as public/data (#342).
+.renditions/

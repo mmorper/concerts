@@ -81,7 +81,8 @@
     "media:ingest": "tsx scripts/media/ingest.ts",
     "media:review": "tsx scripts/media/review.ts",
     "media:crop": "tsx scripts/media/crop.ts",
-    "media:frames": "tsx scripts/media/frames.ts"
+    "media:frames": "tsx scripts/media/frames.ts",
+    "render:card": "tsx scripts/syndication/render-card.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
