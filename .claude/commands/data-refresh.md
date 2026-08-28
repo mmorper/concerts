@@ -11,6 +11,7 @@ Refresh concert data from Google Sheets through the complete enrichment pipeline
 | `--full` | No | false | Force refresh all data (ignore cache) |
 | `--skip-setlists` | No | false | Skip setlist pre-fetch |
 | `--skip-venues` | No | false | Skip venue enrichment |
+| `--skip-handles` | No | false | Skip the social-handle harvest for new artists and venues |
 | `--skip-tracks` | No | false | Skip audio preview enrichment |
 
 **Examples:**
@@ -31,6 +32,7 @@ Refresh concert data from Google Sheets through the complete enrichment pipeline
 | 2. Validate | `npm run validate-data` | ~2s | - |
 | 3. Artists | `npm run enrich` | ~10-90s | - |
 | 4. Venues | `npm run enrich-venues` | ~5-50s | `--skip-venues` |
+| 4b. Social handles | `npm run harvest:handles -- --new-only` | ~2s/new entity | `--skip-handles` |
 | 5. Audio Previews | `npm run enrich:tracks` | ~20-180s | `--skip-tracks` |
 | 6. Setlists | `npm run prefetch:setlists` | ~30-260s | `--skip-setlists` |
 

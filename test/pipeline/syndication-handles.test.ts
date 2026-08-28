@@ -17,6 +17,7 @@ import { describe, it, expect } from "vitest";
 import {
   domainMatchesEntity,
   mentionFor,
+  needsHarvest,
   mentionForPost,
   isStale,
   loadHandles,
@@ -167,6 +168,51 @@ describe("domainMatchesEntity — the DNS proof identifies a domain, not a band"
   it("folds diacritics and punctuation rather than failing on them", () => {
     expect(domainMatchesEntity("bjork.com", "Björk")).toBe(true);
     expect(domainMatchesEntity("umphreys.com", "Umphrey’s McGee")).toBe(true);
+  });
+});
+
+describe("needsHarvest — new entities get crawled, everything else is left alone", () => {
+  const NEVER: Record<string, string> = {};
+
+  it("crawls an entity nobody has looked at", () => {
+    expect(needsHarvest("artist", "the-human-league", file(), NEVER)).toBe(true);
+    expect(needsHarvest("venue", "birchmere", file(), NEVER)).toBe(true);
+  });
+
+  it("leaves an entity that is already curated", () => {
+    expect(needsHarvest("artist", "depeche-mode", file(), NEVER)).toBe(false);
+  });
+
+  it("leaves a BLOCKED entity alone", () => {
+    // The whole reason opt-out is a state and not a deletion. Re-proposing a
+    // row somebody asked to remove is the failure this prevents.
+    const f = file();
+    f.artists["depeche-mode"].bluesky!.blocked = true;
+    expect(needsHarvest("artist", "depeche-mode", f, NEVER)).toBe(false);
+  });
+
+  it("does not re-crawl an entity we asked about and found nothing for", () => {
+    // 129 of 336 entities have no account anywhere. Without this the
+    // incremental run is a full run.
+    const attempted = { "artist:the-human-league": "2026-08-28" };
+    expect(needsHarvest("artist", "the-human-league", file(), attempted)).toBe(false);
+  });
+
+  it("re-asks past --recheck, and not before", () => {
+    const attempted = { "artist:the-human-league": "2026-01-01" };
+    const now = new Date("2026-08-28T00:00:00Z");
+    expect(needsHarvest("artist", "the-human-league", file(), attempted, { now, recheckDays: 180 })).toBe(true);
+    expect(needsHarvest("artist", "the-human-league", file(), attempted, { now, recheckDays: 365 })).toBe(false);
+  });
+
+  it("treats an unreadable attempt date as never having asked", () => {
+    const attempted = { "artist:the-human-league": "recently" };
+    expect(needsHarvest("artist", "the-human-league", file(), attempted, { recheckDays: 180 })).toBe(true);
+  });
+
+  it("keys artists and venues separately", () => {
+    const attempted = { "artist:the-anthem": "2026-08-28" };
+    expect(needsHarvest("venue", "the-anthem", file(), attempted)).toBe(true);
   });
 });
 
