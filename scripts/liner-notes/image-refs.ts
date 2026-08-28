@@ -17,7 +17,7 @@
  */
 
 import { normalizeAlbumTitle } from "../utils/album-title.ts";
-import type { PostImage } from "../../src/types/liner-notes.ts";
+import type { CropBox, PostImage } from "../../src/types/liner-notes.ts";
 
 export const VENUE_PHOTO_PLACEHOLDER = "/images/venues/fallback.jpg";
 
@@ -48,6 +48,15 @@ export interface MediaIndexAsset {
   artistNormalized: string | null;
   hero?: boolean;
   order: number;
+  /**
+   * The owner's crop, normalised 0-1, authored at 4:5 (#342).
+   *
+   * Carried here because it CANNOT be re-derived downstream. Tier and source are
+   * recoverable from the URL path by `syndication/provenance.ts`; the crop box is a
+   * judgement the owner made frame by frame in the review page, and a renderer that does
+   * not receive it centre-crops instead — which is the failure #342 documents.
+   */
+  crop?: CropBox | null;
 }
 
 export interface ImageSources {
@@ -170,21 +179,83 @@ export function getAlbumArt(
  * STILLS ONLY. A render has `url: null` — video is never served from this repo — and a post
  * needs something fetchable.
  */
-export function getShowImageUrl(
+export function getShowAsset(
   artistNormalized: string,
   sources: ImageSources
-): string | undefined {
+): MediaIndexAsset | undefined {
   const assets = (sources.mediaIndex?.assets ?? []).filter(
     (a) => a.kind === "image" && a.url && a.artistNormalized === artistNormalized
   );
   if (assets.length === 0) return undefined;
-  const best = assets.sort(
+  return assets.sort(
     (a, b) =>
       Number(Boolean(b.hero)) - Number(Boolean(a.hero)) ||
       a.order - b.order ||
       a.date.localeCompare(b.date)
   )[0];
-  return best.url ?? undefined;
+}
+
+/**
+ * The URL of that photograph.
+ *
+ * A URL is all `resolveImageUrl` and `inferRef` need — they re-resolve a stored reference
+ * and compare it against a stored URL. Anything COMPOSING a card wants `getShowAsset`
+ * instead: the crop box and the capture date do not survive the narrowing to a string, and
+ * both are load-bearing. Dropping them is what made the one committed renderer centre-crop.
+ */
+export function getShowImageUrl(
+  artistNormalized: string,
+  sources: ImageSources
+): string | undefined {
+  return getShowAsset(artistNormalized, sources)?.url ?? undefined;
+}
+
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+/** "2024-08-20" -> "20 August 2024". Split rather than parsed: no timezone can slip it. */
+function fullDate(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  return `${d} ${MONTHS[(m ?? 1) - 1]} ${y}`;
+}
+
+/** "2024-08-20" -> "August 2024". */
+function monthYear(iso: string): string {
+  const [y, m] = iso.split("-").map(Number);
+  return `${MONTHS[(m ?? 1) - 1]} ${y}`;
+}
+
+export const OWNER_BYLINE = "Mike Morper";
+
+/**
+ * The on-image byline for a tier-1 photograph — `PROVENANCE.md`, two states.
+ *
+ *   same night      Mike Morper · 20 August 2024
+ *   different night Mike Morper · August 2024, not the 1987 night
+ *
+ * **The disclosure is not decoration.** Implying a photograph is *the* night when it is not
+ * is the fabricated-memory failure the voice rules exist to prevent, and it is a live risk
+ * on this archive: 89 of 184 shows have openers, and most posts span years rather than
+ * naming one night.
+ *
+ * `postNight` is the single night the post is about, when it is about one — detectors that
+ * are concert-scoped set `concertDate` and the rest leave it undefined. A post with no
+ * single night gets the plain dated byline, which is the honest output: there is no "the X
+ * night" to disclaim against, and the date shown is the photograph's own. A post about a
+ * SPAN that happens to include the photograph's night is the same case for the same reason.
+ */
+export function showByline(shotOn: string, postNight?: string): string {
+  if (postNight && postNight !== shotOn) {
+    const shotYear = shotOn.slice(0, 4);
+    const nightYear = postNight.slice(0, 4);
+    // Same year, different night: "August 2024, not the 2024 night" says nothing. Name the
+    // night being disclaimed in full so the two dates are actually distinguishable.
+    const night = shotYear === nightYear ? fullDate(postNight) : nightYear;
+    return `${OWNER_BYLINE} · ${monthYear(shotOn)}, not the ${night} night`;
+  }
+  return `${OWNER_BYLINE} · ${fullDate(shotOn)}`;
 }
 
 /**

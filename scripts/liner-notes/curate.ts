@@ -15,8 +15,9 @@ import { MIN_SCORE } from "./score.ts";
 import {
   PLACEHOLDER_IMAGE_URL,
   getAlbumArt,
-  getShowImageUrl,
+  getShowAsset,
   getVenueImageUrl,
+  showByline,
   upsizeAppleMusicUrl,
   type ImageSources,
 } from "./image-refs.ts";
@@ -348,6 +349,55 @@ const PLACEHOLDER_IMAGE: PostImage = {
 function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage {
   const { suggestedImage } = finding;
 
+  /* OUR OWN PHOTOGRAPH BEATS A SOURCED ONE, which is the imagery rubric applied rather than
+     restated: tier 1 is the archive's photography, tier 2 is a third-party artist, album or
+     venue image. A frame the owner took at the show is the more honest illustration of a
+     post about that show, and it is the only image here that cannot be revoked by someone
+     else.
+
+     🔴 THIS RUNS FIRST, AND THAT PLACEMENT IS THE WHOLE POINT. It used to sit below the
+     detector's `suggestedImage` and below the top-tracks album-art fallback — both tier 2 —
+     which made it unreachable in practice rather than merely deprioritised: every act with
+     published photography also has album art AND an artist image, so one of the two earlier
+     branches always returned first. The rubric was stated in the comment and inverted by
+     the ordering, and the evidence was in the output — 58 published posts, not one of them
+     `source: "show"`, while `getShowImageUrl` sat correct and tested.
+
+     Falls through silently when there is no photograph of this act — which is most acts,
+     most of the time.
+
+     🔴 EXCEPT ON A VENUE POST, where a photograph of an ARTIST is the wrong subject however
+     good its provenance. `venue-loyalty` and `venue-ghost` are venue-scoped but still carry
+     an `artists` array, so `artists[0]` is whoever happens to sort first — on both Universal
+     Amphitheater posts that is Howard Jones, whose only published frames were taken in 2024
+     at a different venue, years after Universal was demolished. Publishing one there is the
+     different-venue twin of the fabricated-attribution failure the media skill names.
+
+     The archive DOES have its own venue photography — `2026-06-04-venue-01.jpg`, tier 1,
+     `subject: "venue"` — but `media-index.json` records no venue key for it, so nothing can
+     look it up. Until it does, a venue post's own photograph is unreachable and the sourced
+     venue image is the best available. That is a gap in the index, not a reason to publish
+     the wrong subject. */
+  const primary = finding.artists[0];
+  if (primary && finding.suggestedImage?.type !== "venue") {
+    const asset = getShowAsset(primary, options);
+    if (asset?.url) {
+      const image: PostImage = {
+        url: asset.url,
+        alt: displayName(primary, options.artistsMetadata),
+        source: "show",
+        ref: primary,
+        credit: showByline(asset.date, finding.concertDate),
+        shotOn: asset.date,
+      };
+      // Only when the owner actually drew one. An absent box is not `{0,0,1,1}`: the
+      // renderer has to be able to tell "uncropped" from "cropped to the full frame", or
+      // an unreviewed asset silently claims a judgement nobody made.
+      if (asset.crop) image.crop = { ...asset.crop };
+      return image;
+    }
+  }
+
   // Try suggested type first
   if (suggestedImage) {
     if (suggestedImage.type === "artist" && suggestedImage.artistNormalized) {
@@ -403,24 +453,6 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
         source: "album",
         ref: primaryArtist,
         albumName: track.albumName,
-      };
-    }
-  }
-
-  /* OUR OWN PHOTOGRAPH BEATS A PRESS IMAGE, which is the imagery rubric applied rather
-     than restated: tier 1 is the archive's photography, tier 2 is a third-party artist or
-     venue image. A frame the owner took at the show is the more honest illustration of a
-     post about that show, and it is the only image here that cannot be revoked by someone
-     else. Falls through silently when there is no photograph of this act — which is most
-     acts, most of the time. */
-  if (primaryArtist) {
-    const url = getShowImageUrl(primaryArtist, options);
-    if (url) {
-      return {
-        url,
-        alt: displayName(primaryArtist, options.artistsMetadata),
-        source: "show",
-        ref: primaryArtist,
       };
     }
   }
