@@ -89,8 +89,7 @@
         "handle": "ucla.edu",
         "did": "did:plc:gy552md2n6dm4ga73tm6kvn4",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-28",
-        "blocked": true
+        "verifiedAt": "2026-08-28"
       }
     }
   }
