@@ -8,7 +8,13 @@
         "3364E52A-9189-42B9-8F8F-B548318CC3EA": {
           "verdict": "keep",
           "artist": "The Cult",
-          "subject": "performer"
+          "subject": "performer",
+          "crop": {
+            "x": 0.1791,
+            "y": 0.05,
+            "w": 0.72,
+            "h": 0.9
+          }
         },
         "63FA895D-AB4C-4556-977E-C3D33A8C6B08": {
           "verdict": "keep",
@@ -119,13 +125,13 @@
           "verdict": "keep",
           "artist": "Kasabian",
           "subject": "performer",
-          "hero": true,
           "crop": {
             "x": 0.3039,
             "y": 0.107,
             "w": 0.55,
             "h": 0.5155
-          }
+          },
+          "hero": true
         },
         "7DAB2A03-6547-422E-A803-DAFC6A7AF6CB": {
           "verdict": "reject"
