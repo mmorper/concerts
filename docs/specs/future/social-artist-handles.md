@@ -1,6 +1,6 @@
 # Artist Handles in Social Posts
 
-**Status:** Research complete — not implemented
+**Status:** Research complete, design decided — not implemented
 **Target Version:** Phase 3 of the syndication epic (#323)
 **Priority:** Medium
 **Estimated Complexity:** Low engineering, Medium data curation
@@ -180,6 +180,11 @@ verification all mean the same thing: emit the hashtag. Nothing logs a warning.
 **4. `verifiedAt` is when a human or the domain rule last confirmed it**, not
 when the file was written.
 
+**5. An opt-out is `"blocked": true`, never a deleted row.** A deleted row is
+indistinguishable from one that was never harvested, so the next harvest would
+re-propose it and quietly undo the request. The row stays, carries the refusal,
+and the harvester skips anything holding it.
+
 ### Harvesting
 
 `npm run harvest:handles` — a review tool, never a publish path.
@@ -240,15 +245,10 @@ Two independent reasons.
 ### Staleness
 
 Handles rot. Accounts are renamed, abandoned, sold and hijacked, and this
-pipeline posts unattended.
-
-- `verifyHandles` re-resolves each stored DID to its current handle and reports
-  drift. **Drift is a warning, never an auto-update** — a changed handle can
-  mean a transferred account, which is precisely when we should stop mentioning
-  it.
-- A `verifiedAt` older than 12 months falls back to the hashtag until
-  re-confirmed. An expired entry is not an error; it is the system declining to
-  vouch for something it last checked a year ago.
+pipeline posts unattended. Decided policy, and the reasoning, are in
+*Staleness — the drift check is the mechanism, the date is the backstop* below:
+`verifyHandles` reports drift without acting on it, and an unconfirmed row
+falls back to the hashtag after 18 months.
 
 ---
 
@@ -289,21 +289,46 @@ attention is a different kind of account than this one.
 
 ---
 
-## Open questions
+## Decided (owner, 2026-08-28)
 
-1. **Solo members versus the band.** Ian McCulloch and Echo & The Bunnymen both
-   have accounts. A post about a Bunnymen show — which one? Proposal: the
-   billing name only, never a substitution.
-2. **Estates and label-run accounts.** Some official accounts are run by a
-   label or an estate rather than the artist. Publish them, or restrict to
-   artist-run? Proposal: publish — "official" is the claim, not "personally
-   typed".
-3. **Should a dormant account be mentioned at all?** Four of 21 have never
-   posted. Proposal: yes. It costs nothing and dormancy is not permanent.
-4. **12-month expiry — right number?**
-5. **Opt-out.** If an artist asks not to be tagged, the mechanism is a row in
-   the file. Worth an explicit `"blocked": true` state rather than deletion, so
-   a later harvest cannot re-propose it.
+1. **The billing name only, never a substitution.** Ian McCulloch and Echo &
+   The Bunnymen both have accounts. A post billed to the Bunnymen mentions the
+   Bunnymen. The pipeline never reaches past the name on the ticket to find a
+   member with a livelier account.
+2. **Label- and estate-run accounts publish.** "Official" is the claim being
+   made, not "personally typed". `evidence` records where the identification
+   came from; it does not claim who holds the phone.
+3. **Dormant accounts are mentioned.** Four of 21 have never posted. It costs
+   nothing, dormancy is not permanent, and a liveness threshold would be one
+   more number to defend.
+4. **Opt-out is a state, not a deletion.** `"blocked": true` on the row. A
+   deleted row is indistinguishable from one never harvested, so the next
+   harvest would re-propose it and the request would be silently undone.
+
+---
+
+## Staleness — the drift check is the mechanism, the date is the backstop
+
+A `verifiedAt` cutoff was proposed at 12 months and is **revised to 18**, with
+the real work moved to the check.
+
+The two live-channel risks are narrower than a calendar timer implies. A
+Bluesky DID is permanent and never reassigned, so the account we verified stays
+the account we mention; what can change is that it is renamed, abandoned, or
+transferred. `verifyHandles` re-resolves each stored DID and reports drift, and
+**drift is a warning, never an auto-update** — a changed handle can mean a
+transferred account, which is exactly when we should stop mentioning it.
+
+The timer is a genuinely different guarantee, and it is what catches the check
+itself falling over: a row nobody has confirmed in 18 months falls back to the
+hashtag until someone re-confirms it. That is not an error state. It is the
+system declining to vouch for something it has not looked at.
+
+**X and Instagram will need a shorter cutoff and a liveness probe**, because
+they store a bare username with no stable identifier behind it and both
+platforms recycle usernames. There, a stale row can genuinely point at a
+different person. Set that number when #334/#335 land, against those platforms'
+behaviour rather than by analogy to this one.
 
 ---
 
@@ -324,3 +349,4 @@ attention is a different kind of account than this one.
 | Date | Change |
 |---|---|
 | 2026-08-28 | Research complete. Coverage, false-positive rate and budget arithmetic measured against live APIs. |
+| 2026-08-28 | Owner decisions recorded: billing name only, label/estate accounts publish, dormant accounts publish, opt-out is a `blocked` state. Staleness reframed — the drift check is the mechanism, the date is the backstop, 18 months not 12. |
