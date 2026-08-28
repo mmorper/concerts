@@ -1,0 +1,4270 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-28T23:08:40.932Z",
+  "proposals": [
+    {
+      "kind": "artist",
+      "slug": "abc",
+      "name": "ABC",
+      "channel": "x",
+      "handle": "ABCFRY",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/ABCFRY"
+    },
+    {
+      "kind": "artist",
+      "slug": "awolnation",
+      "name": "AWOLNATION",
+      "channel": "x",
+      "handle": "awolnation",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/awolnation"
+    },
+    {
+      "kind": "artist",
+      "slug": "awolnation",
+      "name": "AWOLNATION",
+      "channel": "instagram",
+      "handle": "awolnation",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/awolnation/"
+    },
+    {
+      "kind": "artist",
+      "slug": "aaron-lee-tasjan",
+      "name": "Aaron Lee Tasjan",
+      "channel": "x",
+      "handle": "aaronleetasjan1",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/aaronleetasjan1"
+    },
+    {
+      "kind": "artist",
+      "slug": "aaron-lee-tasjan",
+      "name": "Aaron Lee Tasjan",
+      "channel": "instagram",
+      "handle": "aaronleetasjan",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/aaronleetasjan/"
+    },
+    {
+      "kind": "artist",
+      "slug": "adam-ant",
+      "name": "Adam Ant",
+      "channel": "x",
+      "handle": "AdamAOfficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/AdamAOfficial"
+    },
+    {
+      "kind": "artist",
+      "slug": "adam-ant",
+      "name": "Adam Ant",
+      "channel": "instagram",
+      "handle": "adamantofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/adamantofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "against-me",
+      "name": "Against Me!",
+      "channel": "x",
+      "handle": "againstme",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/againstme"
+    },
+    {
+      "kind": "artist",
+      "slug": "alison-moyet",
+      "name": "Alison Moyet",
+      "channel": "x",
+      "handle": "Alisonmoyetnews",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/Alisonmoyetnews"
+    },
+    {
+      "kind": "artist",
+      "slug": "alison-moyet",
+      "name": "Alison Moyet",
+      "channel": "instagram",
+      "handle": "alisonmoyetofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/alisonmoyetofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "andy-stavas",
+      "name": "Andy Stavas",
+      "channel": "x",
+      "handle": "andystavas",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/andystavas"
+    },
+    {
+      "kind": "artist",
+      "slug": "aswad",
+      "name": "Aswad",
+      "channel": "x",
+      "handle": "aswadband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/aswadband"
+    },
+    {
+      "kind": "artist",
+      "slug": "bad-religion",
+      "name": "Bad Religion",
+      "channel": "x",
+      "handle": "badreligion",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/badreligion"
+    },
+    {
+      "kind": "artist",
+      "slug": "bad-religion",
+      "name": "Bad Religion",
+      "channel": "instagram",
+      "handle": "badreligionband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/badreligionband/"
+    },
+    {
+      "kind": "artist",
+      "slug": "bear-hands",
+      "name": "Bear Hands",
+      "channel": "x",
+      "handle": "bearhandsband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/bearhandsband"
+    },
+    {
+      "kind": "artist",
+      "slug": "bear-hands",
+      "name": "Bear Hands",
+      "channel": "instagram",
+      "handle": "bearhandsband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/bearhandsband/"
+    },
+    {
+      "kind": "artist",
+      "slug": "beastie-boys",
+      "name": "Beastie Boys",
+      "channel": "x",
+      "handle": "beastieboys",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/beastieboys"
+    },
+    {
+      "kind": "artist",
+      "slug": "berlin",
+      "name": "Berlin",
+      "channel": "x",
+      "handle": "RealTerriNunn",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/RealTerriNunn"
+    },
+    {
+      "kind": "artist",
+      "slug": "billy-joel",
+      "name": "Billy Joel",
+      "channel": "x",
+      "handle": "billyjoel",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/billyjoel"
+    },
+    {
+      "kind": "artist",
+      "slug": "billy-joel",
+      "name": "Billy Joel",
+      "channel": "instagram",
+      "handle": "billyjoel",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/billyjoel/"
+    },
+    {
+      "kind": "artist",
+      "slug": "black-rebel-motorcycle-club",
+      "name": "Black Rebel Motorcycle Club",
+      "channel": "x",
+      "handle": "BRMCOfficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/BRMCOfficial"
+    },
+    {
+      "kind": "artist",
+      "slug": "black-rebel-motorcycle-club",
+      "name": "Black Rebel Motorcycle Club",
+      "channel": "instagram",
+      "handle": "brmcofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/brmcofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "blancmange",
+      "name": "Blancmange",
+      "channel": "x",
+      "handle": "_blancmange_",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/_blancmange_"
+    },
+    {
+      "kind": "artist",
+      "slug": "blondie",
+      "name": "Blondie",
+      "channel": "bluesky",
+      "handle": "blondieband.bsky.social",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://bsky.app/profile/blondieband.bsky.social",
+      "did": "did:plc:k4oh2rdaa2idznsyhpgrkyfq"
+    },
+    {
+      "kind": "artist",
+      "slug": "blondie",
+      "name": "Blondie",
+      "channel": "x",
+      "handle": "blondieofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/blondieofficial"
+    },
+    {
+      "kind": "artist",
+      "slug": "blondie",
+      "name": "Blondie",
+      "channel": "instagram",
+      "handle": "blondieofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/blondieofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "book-of-love",
+      "name": "Book of Love",
+      "channel": "x",
+      "handle": "bookoflovemusic",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/bookoflovemusic"
+    },
+    {
+      "kind": "artist",
+      "slug": "bow-wow-wow",
+      "name": "Bow Wow Wow",
+      "channel": "x",
+      "handle": "BowWowWowBand",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/BowWowWowBand"
+    },
+    {
+      "kind": "artist",
+      "slug": "bowling-for-soup",
+      "name": "Bowling for Soup",
+      "channel": "x",
+      "handle": "bfsrocks",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/bfsrocks"
+    },
+    {
+      "kind": "artist",
+      "slug": "bowling-for-soup",
+      "name": "Bowling for Soup",
+      "channel": "instagram",
+      "handle": "jaret2113",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/jaret2113/"
+    },
+    {
+      "kind": "artist",
+      "slug": "boy-harsher",
+      "name": "Boy Harsher",
+      "channel": "x",
+      "handle": "boyharsher",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/boyharsher"
+    },
+    {
+      "kind": "artist",
+      "slug": "boy-harsher",
+      "name": "Boy Harsher",
+      "channel": "instagram",
+      "handle": "boyharsher",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/boyharsher/"
+    },
+    {
+      "kind": "artist",
+      "slug": "bruce-springsteen",
+      "name": "Bruce Springsteen",
+      "channel": "x",
+      "handle": "springsteen",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/springsteen"
+    },
+    {
+      "kind": "artist",
+      "slug": "bruce-springsteen",
+      "name": "Bruce Springsteen",
+      "channel": "instagram",
+      "handle": "springsteen",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/springsteen/"
+    },
+    {
+      "kind": "artist",
+      "slug": "bruce-springsteen",
+      "name": "Bruce Springsteen",
+      "channel": "bluesky",
+      "handle": "brucespringsteen.net",
+      "did": "did:plc:l3deti4ljirzjaof5zbp3v32",
+      "evidence": "site-domain",
+      "note": "brucespringsteen.net resolves as a Bluesky handle — proven by DNS or /.well-known against the official site"
+    },
+    {
+      "kind": "artist",
+      "slug": "buddy-guy",
+      "name": "Buddy Guy",
+      "channel": "x",
+      "handle": "TheRealBuddyGuy",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/TheRealBuddyGuy"
+    },
+    {
+      "kind": "artist",
+      "slug": "chaka-kahn",
+      "name": "Chaka Kahn",
+      "channel": "x",
+      "handle": "ChakaKhan",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/ChakaKhan"
+    },
+    {
+      "kind": "artist",
+      "slug": "chaka-kahn",
+      "name": "Chaka Kahn",
+      "channel": "instagram",
+      "handle": "chakaikhan",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/chakaikhan/"
+    },
+    {
+      "kind": "artist",
+      "slug": "chris-isaak",
+      "name": "Chris Isaak",
+      "channel": "x",
+      "handle": "chrisisaak",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/chrisisaak"
+    },
+    {
+      "kind": "artist",
+      "slug": "chris-isaak",
+      "name": "Chris Isaak",
+      "channel": "instagram",
+      "handle": "chrisisaak",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/chrisisaak/"
+    },
+    {
+      "kind": "artist",
+      "slug": "chris-murray",
+      "name": "Chris Murray",
+      "channel": "x",
+      "handle": "wedotheska",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/wedotheska"
+    },
+    {
+      "kind": "artist",
+      "slug": "chris-shiflett",
+      "name": "Chris Shiflett",
+      "channel": "x",
+      "handle": "ChrisShiflett71",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/ChrisShiflett71"
+    },
+    {
+      "kind": "artist",
+      "slug": "cold-war-kids",
+      "name": "Cold War Kids",
+      "channel": "x",
+      "handle": "coldwarkids",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/coldwarkids"
+    },
+    {
+      "kind": "artist",
+      "slug": "colin-hay",
+      "name": "Colin Hay",
+      "channel": "x",
+      "handle": "ColinHay",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/ColinHay"
+    },
+    {
+      "kind": "artist",
+      "slug": "colin-hay",
+      "name": "Colin Hay",
+      "channel": "instagram",
+      "handle": "colinhay",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/colinhay/"
+    },
+    {
+      "kind": "artist",
+      "slug": "crowded-house",
+      "name": "Crowded House",
+      "channel": "bluesky",
+      "handle": "crowdedhouse.com",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://bsky.app/profile/crowdedhouse.com",
+      "did": "did:plc:ykzv5yoohsvzrcam2owtj3zr"
+    },
+    {
+      "kind": "artist",
+      "slug": "crowded-house",
+      "name": "Crowded House",
+      "channel": "x",
+      "handle": "crowdedhousehq",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/crowdedhousehq"
+    },
+    {
+      "kind": "artist",
+      "slug": "crowded-house",
+      "name": "Crowded House",
+      "channel": "instagram",
+      "handle": "crowdedhousehq",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/crowdedhousehq/"
+    },
+    {
+      "kind": "artist",
+      "slug": "crown-of-thornz",
+      "name": "Crown of Thornz",
+      "channel": "instagram",
+      "handle": "crownofthornz",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/crownofthornz/"
+    },
+    {
+      "kind": "artist",
+      "slug": "culture-club",
+      "name": "Culture Club",
+      "channel": "x",
+      "handle": "realcultureclub",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/realcultureclub"
+    },
+    {
+      "kind": "artist",
+      "slug": "danny-elfman",
+      "name": "Danny Elfman",
+      "channel": "x",
+      "handle": "dannyelfman",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/dannyelfman"
+    },
+    {
+      "kind": "artist",
+      "slug": "danny-elfman",
+      "name": "Danny Elfman",
+      "channel": "instagram",
+      "handle": "dannyelfman",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/dannyelfman/"
+    },
+    {
+      "kind": "artist",
+      "slug": "dashboard-confessional",
+      "name": "Dashboard Confessional",
+      "channel": "x",
+      "handle": "dashboardmusic",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/dashboardmusic"
+    },
+    {
+      "kind": "artist",
+      "slug": "dashboard-confessional",
+      "name": "Dashboard Confessional",
+      "channel": "instagram",
+      "handle": "dashboardconfessional",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/dashboardconfessional/"
+    },
+    {
+      "kind": "artist",
+      "slug": "david-byrne",
+      "name": "David Byrne",
+      "channel": "x",
+      "handle": "DBtodomundo",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/DBtodomundo"
+    },
+    {
+      "kind": "artist",
+      "slug": "david-byrne",
+      "name": "David Byrne",
+      "channel": "instagram",
+      "handle": "davidbyrneofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/davidbyrneofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "depeche-mode",
+      "name": "Depeche Mode",
+      "channel": "x",
+      "handle": "depechemode",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/depechemode"
+    },
+    {
+      "kind": "artist",
+      "slug": "depeche-mode",
+      "name": "Depeche Mode",
+      "channel": "instagram",
+      "handle": "depechemode",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/depechemode/"
+    },
+    {
+      "kind": "artist",
+      "slug": "depeche-mode",
+      "name": "Depeche Mode",
+      "channel": "bluesky",
+      "handle": "depechemode.com",
+      "did": "did:plc:ueppiwulfqikh4zl2qre3evh",
+      "evidence": "site-domain",
+      "note": "depechemode.com resolves as a Bluesky handle — proven by DNS or /.well-known against the official site"
+    },
+    {
+      "kind": "artist",
+      "slug": "devo",
+      "name": "DEVO",
+      "channel": "x",
+      "handle": "DEVO",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/DEVO"
+    },
+    {
+      "kind": "artist",
+      "slug": "devo",
+      "name": "DEVO",
+      "channel": "instagram",
+      "handle": "clubdevo",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/clubdevo/"
+    },
+    {
+      "kind": "artist",
+      "slug": "dirty-heads",
+      "name": "Dirty Heads",
+      "channel": "x",
+      "handle": "dirtyheads",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/dirtyheads"
+    },
+    {
+      "kind": "artist",
+      "slug": "dirty-heads",
+      "name": "Dirty Heads",
+      "channel": "instagram",
+      "handle": "dirtyheads",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/dirtyheads/"
+    },
+    {
+      "kind": "artist",
+      "slug": "dirty-vegas",
+      "name": "Dirty Vegas",
+      "channel": "x",
+      "handle": "WeAreDirtyVegas",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/WeAreDirtyVegas"
+    },
+    {
+      "kind": "artist",
+      "slug": "dirty-vegas",
+      "name": "Dirty Vegas",
+      "channel": "instagram",
+      "handle": "dirtyvegasmusic",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/dirtyvegasmusic/"
+    },
+    {
+      "kind": "artist",
+      "slug": "drag-the-river",
+      "name": "Drag the River",
+      "channel": "x",
+      "handle": "Drag_The_River",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/Drag_The_River"
+    },
+    {
+      "kind": "artist",
+      "slug": "dropkick-murphys",
+      "name": "Dropkick Murphys",
+      "channel": "instagram",
+      "handle": "dropkickmurphys",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/dropkickmurphys/"
+    },
+    {
+      "kind": "artist",
+      "slug": "dropkick-murphys",
+      "name": "Dropkick Murphys",
+      "channel": "bluesky",
+      "handle": "dropkickmurphys.com",
+      "did": "did:plc:hlm3kwjeca33oy4cwren6qmt",
+      "evidence": "site-domain",
+      "note": "dropkickmurphys.com resolves as a Bluesky handle — proven by DNS or /.well-known against the official site"
+    },
+    {
+      "kind": "artist",
+      "slug": "duran-duran",
+      "name": "Duran Duran",
+      "channel": "bluesky",
+      "handle": "durandurancom.bsky.social",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://bsky.app/profile/durandurancom.bsky.social",
+      "did": "did:plc:3jdqlmbkwhfgduaxbvh5wtcy"
+    },
+    {
+      "kind": "artist",
+      "slug": "duran-duran",
+      "name": "Duran Duran",
+      "channel": "x",
+      "handle": "duranduran",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/duranduran"
+    },
+    {
+      "kind": "artist",
+      "slug": "duran-duran",
+      "name": "Duran Duran",
+      "channel": "instagram",
+      "handle": "duranduran",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/duranduran/"
+    },
+    {
+      "kind": "artist",
+      "slug": "emf",
+      "name": "EMF",
+      "channel": "x",
+      "handle": "emftheband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/emftheband"
+    },
+    {
+      "kind": "artist",
+      "slug": "emf",
+      "name": "EMF",
+      "channel": "instagram",
+      "handle": "emftheband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/emftheband/"
+    },
+    {
+      "kind": "artist",
+      "slug": "emf",
+      "name": "EMF",
+      "channel": "bluesky",
+      "handle": "emf-theband.com",
+      "did": "did:plc:medyymknz4arrlbfx7biw43n",
+      "evidence": "site-domain",
+      "note": "emf-theband.com resolves as a Bluesky handle — proven by DNS or /.well-known against the official site"
+    },
+    {
+      "kind": "artist",
+      "slug": "earthgang",
+      "name": "EARTHGANG",
+      "channel": "x",
+      "handle": "EarthGang",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/EarthGang"
+    },
+    {
+      "kind": "artist",
+      "slug": "echo-and-the-bunnymen",
+      "name": "Echo & The Bunnymen",
+      "channel": "bluesky",
+      "handle": "bunnymen.com",
+      "did": "did:plc:2kg343fegcf2rob5nhukdlbj",
+      "evidence": "site-domain",
+      "note": "bunnymen.com resolves as a Bluesky handle — proven by DNS or /.well-known against the official site"
+    },
+    {
+      "kind": "artist",
+      "slug": "eek-a-mouse",
+      "name": "Eeka Mouse",
+      "channel": "instagram",
+      "handle": "iameekamouse",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/iameekamouse/"
+    },
+    {
+      "kind": "artist",
+      "slug": "el-ten-eleven",
+      "name": "El Ten Eleven",
+      "channel": "x",
+      "handle": "elteneleven",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/elteneleven"
+    },
+    {
+      "kind": "artist",
+      "slug": "el-ten-eleven",
+      "name": "El Ten Eleven",
+      "channel": "instagram",
+      "handle": "elteneleven",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/elteneleven/"
+    },
+    {
+      "kind": "artist",
+      "slug": "elton-john",
+      "name": "Elton John",
+      "channel": "x",
+      "handle": "eltonofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/eltonofficial"
+    },
+    {
+      "kind": "artist",
+      "slug": "elton-john",
+      "name": "Elton John",
+      "channel": "instagram",
+      "handle": "eltonjohn",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/eltonjohn/"
+    },
+    {
+      "kind": "artist",
+      "slug": "erasure",
+      "name": "Erasure",
+      "channel": "x",
+      "handle": "erasureinfo",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/erasureinfo"
+    },
+    {
+      "kind": "artist",
+      "slug": "erasure",
+      "name": "Erasure",
+      "channel": "instagram",
+      "handle": "erasureinfo",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/erasureinfo/"
+    },
+    {
+      "kind": "artist",
+      "slug": "fishbone",
+      "name": "Fishbone",
+      "channel": "x",
+      "handle": "fishbonesoldier",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/fishbonesoldier"
+    },
+    {
+      "kind": "artist",
+      "slug": "foals",
+      "name": "Foals",
+      "channel": "x",
+      "handle": "foals",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/foals"
+    },
+    {
+      "kind": "artist",
+      "slug": "foals",
+      "name": "Foals",
+      "channel": "instagram",
+      "handle": "foals",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/foals/"
+    },
+    {
+      "kind": "artist",
+      "slug": "foo-fighters",
+      "name": "Foo Fighters",
+      "channel": "x",
+      "handle": "foofighters",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/foofighters"
+    },
+    {
+      "kind": "artist",
+      "slug": "foo-fighters",
+      "name": "Foo Fighters",
+      "channel": "instagram",
+      "handle": "foofighters",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/foofighters/"
+    },
+    {
+      "kind": "artist",
+      "slug": "fountains-of-wayne",
+      "name": "Fountains of Wayne",
+      "channel": "x",
+      "handle": "fountainsofwayn",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/fountainsofwayn"
+    },
+    {
+      "kind": "artist",
+      "slug": "future-islands",
+      "name": "Future Islands",
+      "channel": "x",
+      "handle": "futureislands",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/futureislands"
+    },
+    {
+      "kind": "artist",
+      "slug": "future-islands",
+      "name": "Future Islands",
+      "channel": "instagram",
+      "handle": "futureislands",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/futureislands/"
+    },
+    {
+      "kind": "artist",
+      "slug": "garbage",
+      "name": "Garbage",
+      "channel": "bluesky",
+      "handle": "garbage.com",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://bsky.app/profile/garbage.com",
+      "did": "did:plc:llleov6gowwl2dsrhwpp2xxn"
+    },
+    {
+      "kind": "artist",
+      "slug": "garbage",
+      "name": "Garbage",
+      "channel": "x",
+      "handle": "garbage",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/garbage"
+    },
+    {
+      "kind": "artist",
+      "slug": "garbage",
+      "name": "Garbage",
+      "channel": "instagram",
+      "handle": "garbage",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/garbage/"
+    },
+    {
+      "kind": "artist",
+      "slug": "gary-clark-jr",
+      "name": "Gary Clark, Jr.",
+      "channel": "x",
+      "handle": "garyclarkjr",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/garyclarkjr"
+    },
+    {
+      "kind": "artist",
+      "slug": "gary-clark-jr",
+      "name": "Gary Clark, Jr.",
+      "channel": "instagram",
+      "handle": "garyclarkjr",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/garyclarkjr/"
+    },
+    {
+      "kind": "artist",
+      "slug": "gary-numan",
+      "name": "Gary Numan",
+      "channel": "x",
+      "handle": "numanofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/numanofficial"
+    },
+    {
+      "kind": "artist",
+      "slug": "gary-numan",
+      "name": "Gary Numan",
+      "channel": "instagram",
+      "handle": "garynuman",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/garynuman/"
+    },
+    {
+      "kind": "artist",
+      "slug": "george-michael",
+      "name": "George Michael",
+      "channel": "x",
+      "handle": "GeorgeMichael",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/GeorgeMichael"
+    },
+    {
+      "kind": "artist",
+      "slug": "george-michael",
+      "name": "George Michael",
+      "channel": "x",
+      "handle": "GeorgeMOfficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/GeorgeMOfficial"
+    },
+    {
+      "kind": "artist",
+      "slug": "george-michael",
+      "name": "George Michael",
+      "channel": "instagram",
+      "handle": "georgemofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/georgemofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "hatcham-social",
+      "name": "Hatcham Social",
+      "channel": "x",
+      "handle": "HatchamSocial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/HatchamSocial"
+    },
+    {
+      "kind": "artist",
+      "slug": "heart",
+      "name": "Heart",
+      "channel": "x",
+      "handle": "officialheart",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/officialheart"
+    },
+    {
+      "kind": "artist",
+      "slug": "heart",
+      "name": "Heart",
+      "channel": "instagram",
+      "handle": "heartofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/heartofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "heaven-17",
+      "name": "Heaven 17",
+      "channel": "x",
+      "handle": "heaven17bef",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/heaven17bef"
+    },
+    {
+      "kind": "artist",
+      "slug": "hoodoo-gurus",
+      "name": "Hoodoo Gurus",
+      "channel": "instagram",
+      "handle": "hoodoogurus_official",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/hoodoogurus_official/"
+    },
+    {
+      "kind": "artist",
+      "slug": "hot-hot-heat",
+      "name": "Hot Hot Heat",
+      "channel": "x",
+      "handle": "HotHotHeat",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/HotHotHeat"
+    },
+    {
+      "kind": "artist",
+      "slug": "hot-hot-heat",
+      "name": "Hot Hot Heat",
+      "channel": "instagram",
+      "handle": "hothotheat",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/hothotheat/"
+    },
+    {
+      "kind": "artist",
+      "slug": "howard-jones",
+      "name": "Howard Jones",
+      "channel": "x",
+      "handle": "howardjones",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/howardjones"
+    },
+    {
+      "kind": "artist",
+      "slug": "husbands",
+      "name": "Husbands",
+      "channel": "x",
+      "handle": "husbandsokc",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/husbandsokc"
+    },
+    {
+      "kind": "artist",
+      "slug": "husbands",
+      "name": "Husbands",
+      "channel": "instagram",
+      "handle": "husbandsokc",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/husbandsokc/"
+    },
+    {
+      "kind": "artist",
+      "slug": "inner-wave",
+      "name": "Inner Wave",
+      "channel": "x",
+      "handle": "innerwav",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/innerwav"
+    },
+    {
+      "kind": "artist",
+      "slug": "inner-wave",
+      "name": "Inner Wave",
+      "channel": "instagram",
+      "handle": "innrwve",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/innrwve/"
+    },
+    {
+      "kind": "artist",
+      "slug": "interpol",
+      "name": "Interpol",
+      "channel": "x",
+      "handle": "Interpol",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/Interpol"
+    },
+    {
+      "kind": "artist",
+      "slug": "interpol",
+      "name": "Interpol",
+      "channel": "instagram",
+      "handle": "interpol",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/interpol/"
+    },
+    {
+      "kind": "artist",
+      "slug": "jimmy-buffett",
+      "name": "Jimmy Buffett",
+      "channel": "x",
+      "handle": "jimmybuffett",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/jimmybuffett"
+    },
+    {
+      "kind": "artist",
+      "slug": "jimmy-buffett",
+      "name": "Jimmy Buffett",
+      "channel": "instagram",
+      "handle": "jimmybuffett",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/jimmybuffett/"
+    },
+    {
+      "kind": "artist",
+      "slug": "kasabian",
+      "name": "Kasabian",
+      "channel": "x",
+      "handle": "kasabianhq",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/kasabianhq"
+    },
+    {
+      "kind": "artist",
+      "slug": "kasabian",
+      "name": "Kasabian",
+      "channel": "instagram",
+      "handle": "kasabianofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/kasabianofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "keith-sweat",
+      "name": "Keith Sweat",
+      "channel": "x",
+      "handle": "OGKeithSweat",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/OGKeithSweat"
+    },
+    {
+      "kind": "artist",
+      "slug": "kelly-lee-owens",
+      "name": "Kelly Lee Owens",
+      "channel": "x",
+      "handle": "kellyleeowens",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/kellyleeowens"
+    },
+    {
+      "kind": "artist",
+      "slug": "kelly-lee-owens",
+      "name": "Kelly Lee Owens",
+      "channel": "instagram",
+      "handle": "kellyleeowens",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/kellyleeowens/"
+    },
+    {
+      "kind": "artist",
+      "slug": "kid-congo-powers",
+      "name": "Kid Congo Powers",
+      "channel": "instagram",
+      "handle": "kidcongopowers",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/kidcongopowers/"
+    },
+    {
+      "kind": "artist",
+      "slug": "kings-of-leon",
+      "name": "Kings of Leon",
+      "channel": "x",
+      "handle": "KingsOfLeon",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/KingsOfLeon"
+    },
+    {
+      "kind": "artist",
+      "slug": "kings-of-leon",
+      "name": "Kings of Leon",
+      "channel": "instagram",
+      "handle": "kingsofleon",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/kingsofleon/"
+    },
+    {
+      "kind": "artist",
+      "slug": "klangphonics",
+      "name": "Klangphonics",
+      "channel": "instagram",
+      "handle": "klangphonics_",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/klangphonics_/"
+    },
+    {
+      "kind": "artist",
+      "slug": "kraftwerk",
+      "name": "Kraftwerk",
+      "channel": "x",
+      "handle": "kraftwerk",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/kraftwerk"
+    },
+    {
+      "kind": "artist",
+      "slug": "kraftwerk",
+      "name": "Kraftwerk",
+      "channel": "instagram",
+      "handle": "kraftwerkofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/kraftwerkofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "ll-cool-j",
+      "name": "LL Cool J",
+      "channel": "x",
+      "handle": "llcoolj",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/llcoolj"
+    },
+    {
+      "kind": "artist",
+      "slug": "ll-cool-j",
+      "name": "LL Cool J",
+      "channel": "instagram",
+      "handle": "llcoolj",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/llcoolj/"
+    },
+    {
+      "kind": "artist",
+      "slug": "lenny-kravitz",
+      "name": "Lenny Kravitz",
+      "channel": "x",
+      "handle": "LennyKravitz",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/LennyKravitz"
+    },
+    {
+      "kind": "artist",
+      "slug": "lenny-kravitz",
+      "name": "Lenny Kravitz",
+      "channel": "instagram",
+      "handle": "lennykravitz",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/lennykravitz/"
+    },
+    {
+      "kind": "artist",
+      "slug": "liam-finn",
+      "name": "Liam Finn",
+      "channel": "x",
+      "handle": "liamfinn",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/liamfinn"
+    },
+    {
+      "kind": "artist",
+      "slug": "liam-finn",
+      "name": "Liam Finn",
+      "channel": "instagram",
+      "handle": "liamfinn",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/liamfinn/"
+    },
+    {
+      "kind": "artist",
+      "slug": "lindi-ortega",
+      "name": "Lindi Ortega",
+      "channel": "x",
+      "handle": "lindiortega",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/lindiortega"
+    },
+    {
+      "kind": "artist",
+      "slug": "lindi-ortega",
+      "name": "Lindi Ortega",
+      "channel": "instagram",
+      "handle": "lindi_ortega",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/lindi_ortega/"
+    },
+    {
+      "kind": "artist",
+      "slug": "living-colour",
+      "name": "Living Colour",
+      "channel": "x",
+      "handle": "LivingColour",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/LivingColour"
+    },
+    {
+      "kind": "artist",
+      "slug": "living-colour",
+      "name": "Living Colour",
+      "channel": "instagram",
+      "handle": "LivingColourOfficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/LivingColourOfficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "living-colour",
+      "name": "Living Colour",
+      "channel": "bluesky",
+      "handle": "livingcolour.com",
+      "did": "did:plc:323zwrdcxyog36ewpu37iuag",
+      "evidence": "site-domain",
+      "note": "livingcolour.com resolves as a Bluesky handle — proven by DNS or /.well-known against the official site"
+    },
+    {
+      "kind": "artist",
+      "slug": "los-lobos",
+      "name": "Los Lobos",
+      "channel": "x",
+      "handle": "loslobosband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/loslobosband"
+    },
+    {
+      "kind": "artist",
+      "slug": "los-lobos",
+      "name": "Los Lobos",
+      "channel": "bluesky",
+      "handle": "loslobos.org",
+      "did": "did:plc:laff5qrh36d2meffdktnqgby",
+      "evidence": "site-domain",
+      "note": "loslobos.org resolves as a Bluesky handle — proven by DNS or /.well-known against the official site"
+    },
+    {
+      "kind": "artist",
+      "slug": "mad-caddies",
+      "name": "Mad Caddies",
+      "channel": "x",
+      "handle": "MAD_CADDIES",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/MAD_CADDIES"
+    },
+    {
+      "kind": "artist",
+      "slug": "mad-caddies",
+      "name": "Mad Caddies",
+      "channel": "instagram",
+      "handle": "madcaddiesofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/madcaddiesofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "marc-almond",
+      "name": "Marc Almond",
+      "channel": "x",
+      "handle": "MarcAlmond",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/MarcAlmond"
+    },
+    {
+      "kind": "artist",
+      "slug": "marc-almond",
+      "name": "Marc Almond",
+      "channel": "instagram",
+      "handle": "marcalmondofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/marcalmondofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "masked-intruder",
+      "name": "Masked Intruder",
+      "channel": "x",
+      "handle": "maskedintruder1",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/maskedintruder1"
+    },
+    {
+      "kind": "artist",
+      "slug": "masked-intruder",
+      "name": "Masked Intruder",
+      "channel": "instagram",
+      "handle": "maskedintruder",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/maskedintruder/"
+    },
+    {
+      "kind": "artist",
+      "slug": "maxi-priest",
+      "name": "Maxi Priest",
+      "channel": "x",
+      "handle": "MaxiPriest",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/MaxiPriest"
+    },
+    {
+      "kind": "artist",
+      "slug": "me-not-you",
+      "name": "Me Not You",
+      "channel": "x",
+      "handle": "menotyouband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/menotyouband"
+    },
+    {
+      "kind": "artist",
+      "slug": "midge-ure",
+      "name": "Midge Ure",
+      "channel": "x",
+      "handle": "midgeure1",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/midgeure1"
+    },
+    {
+      "kind": "artist",
+      "slug": "midnight-oil",
+      "name": "Midnight Oil",
+      "channel": "x",
+      "handle": "midnightoilband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/midnightoilband"
+    },
+    {
+      "kind": "artist",
+      "slug": "midnight-oil",
+      "name": "Midnight Oil",
+      "channel": "instagram",
+      "handle": "midnightoilband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/midnightoilband/"
+    },
+    {
+      "kind": "artist",
+      "slug": "mini-mansions",
+      "name": "Mini Mansions",
+      "channel": "x",
+      "handle": "minimansions",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/minimansions"
+    },
+    {
+      "kind": "artist",
+      "slug": "mini-mansions",
+      "name": "Mini Mansions",
+      "channel": "instagram",
+      "handle": "minimansions",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/minimansions/"
+    },
+    {
+      "kind": "artist",
+      "slug": "molchat-doma",
+      "name": "Molchat Doma",
+      "channel": "x",
+      "handle": "molchatdomaband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/molchatdomaband"
+    },
+    {
+      "kind": "artist",
+      "slug": "molchat-doma",
+      "name": "Molchat Doma",
+      "channel": "instagram",
+      "handle": "molchatdomaband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/molchatdomaband/"
+    },
+    {
+      "kind": "artist",
+      "slug": "new-order",
+      "name": "New Order",
+      "channel": "x",
+      "handle": "neworder",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/neworder"
+    },
+    {
+      "kind": "artist",
+      "slug": "new-order",
+      "name": "New Order",
+      "channel": "instagram",
+      "handle": "neworderofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/neworderofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "nikki-lane",
+      "name": "Nikki Lane",
+      "channel": "x",
+      "handle": "nikkilanemusic",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/nikkilanemusic"
+    },
+    {
+      "kind": "artist",
+      "slug": "nikki-lane",
+      "name": "Nikki Lane",
+      "channel": "instagram",
+      "handle": "nikkilane77",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/nikkilane77/"
+    },
+    {
+      "kind": "artist",
+      "slug": "no-doubt",
+      "name": "No Doubt",
+      "channel": "x",
+      "handle": "nodoubt",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/nodoubt"
+    },
+    {
+      "kind": "artist",
+      "slug": "no-doubt",
+      "name": "No Doubt",
+      "channel": "instagram",
+      "handle": "nodoubt",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/nodoubt/"
+    },
+    {
+      "kind": "artist",
+      "slug": "paul-oakenfold",
+      "name": "Paul Oakenfold",
+      "channel": "x",
+      "handle": "pauloakenfold",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/pauloakenfold"
+    },
+    {
+      "kind": "artist",
+      "slug": "paul-oakenfold",
+      "name": "Paul Oakenfold",
+      "channel": "instagram",
+      "handle": "pauloakenfold",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/pauloakenfold/"
+    },
+    {
+      "kind": "artist",
+      "slug": "pennywise",
+      "name": "Pennywise",
+      "channel": "x",
+      "handle": "Pennywise",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/Pennywise"
+    },
+    {
+      "kind": "artist",
+      "slug": "pennywise",
+      "name": "Pennywise",
+      "channel": "instagram",
+      "handle": "_pennywise",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/_pennywise/"
+    },
+    {
+      "kind": "artist",
+      "slug": "pet-shop-boys",
+      "name": "Pet Shop Boys",
+      "channel": "bluesky",
+      "handle": "petshopboys.co.uk",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://bsky.app/profile/petshopboys.co.uk — ⚠️ did not resolve (account gone, or we were throttled). No DID means this row cannot publish."
+    },
+    {
+      "kind": "artist",
+      "slug": "pet-shop-boys",
+      "name": "Pet Shop Boys",
+      "channel": "x",
+      "handle": "petshopboys",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/petshopboys"
+    },
+    {
+      "kind": "artist",
+      "slug": "pet-shop-boys",
+      "name": "Pet Shop Boys",
+      "channel": "instagram",
+      "handle": "petshopboys",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/petshopboys/"
+    },
+    {
+      "kind": "artist",
+      "slug": "peter-gabriel",
+      "name": "Peter Gabriel",
+      "channel": "x",
+      "handle": "itspetergabriel",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/itspetergabriel"
+    },
+    {
+      "kind": "artist",
+      "slug": "peter-gabriel",
+      "name": "Peter Gabriel",
+      "channel": "instagram",
+      "handle": "itspetergabriel",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/itspetergabriel/"
+    },
+    {
+      "kind": "artist",
+      "slug": "phox",
+      "name": "Phox",
+      "channel": "x",
+      "handle": "PhoxBand",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/PhoxBand"
+    },
+    {
+      "kind": "artist",
+      "slug": "polar-bear-club",
+      "name": "Polar Bear Club",
+      "channel": "x",
+      "handle": "polarbearclub",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/polarbearclub"
+    },
+    {
+      "kind": "artist",
+      "slug": "prophets-of-rage",
+      "name": "Prophets of Rage",
+      "channel": "x",
+      "handle": "prophetsofrage",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/prophetsofrage"
+    },
+    {
+      "kind": "artist",
+      "slug": "prophets-of-rage",
+      "name": "Prophets of Rage",
+      "channel": "instagram",
+      "handle": "prophetsofrage",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/prophetsofrage/"
+    },
+    {
+      "kind": "artist",
+      "slug": "rdgldgrn",
+      "name": "RDGLDGRN",
+      "channel": "x",
+      "handle": "rdgldgrn",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/rdgldgrn"
+    },
+    {
+      "kind": "artist",
+      "slug": "rancid",
+      "name": "Rancid",
+      "channel": "x",
+      "handle": "Rancid",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/Rancid"
+    },
+    {
+      "kind": "artist",
+      "slug": "rancid",
+      "name": "Rancid",
+      "channel": "instagram",
+      "handle": "rancid",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/rancid/"
+    },
+    {
+      "kind": "artist",
+      "slug": "rat-boy",
+      "name": "Ratboy",
+      "channel": "x",
+      "handle": "RATBOY",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/RATBOY"
+    },
+    {
+      "kind": "artist",
+      "slug": "rat-boy",
+      "name": "Ratboy",
+      "channel": "instagram",
+      "handle": "ratboyratboy",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/ratboyratboy/"
+    },
+    {
+      "kind": "artist",
+      "slug": "rebuilder",
+      "name": "Rebuilder",
+      "channel": "x",
+      "handle": "rebuilderboston",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/rebuilderboston"
+    },
+    {
+      "kind": "artist",
+      "slug": "rise-against",
+      "name": "Rise Against",
+      "channel": "x",
+      "handle": "riseagainst",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/riseagainst"
+    },
+    {
+      "kind": "artist",
+      "slug": "rise-against",
+      "name": "Rise Against",
+      "channel": "instagram",
+      "handle": "riseagainst",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/riseagainst/"
+    },
+    {
+      "kind": "artist",
+      "slug": "rob-thomas",
+      "name": "Rob Thomas",
+      "channel": "x",
+      "handle": "thisisrobthomas",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/thisisrobthomas"
+    },
+    {
+      "kind": "artist",
+      "slug": "royal-blood",
+      "name": "Royal Blood",
+      "channel": "x",
+      "handle": "royalblooduk",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/royalblooduk"
+    },
+    {
+      "kind": "artist",
+      "slug": "royal-blood",
+      "name": "Royal Blood",
+      "channel": "instagram",
+      "handle": "royalblooduk",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/royalblooduk/"
+    },
+    {
+      "kind": "artist",
+      "slug": "sextile",
+      "name": "Sextile",
+      "channel": "x",
+      "handle": "sextileband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/sextileband"
+    },
+    {
+      "kind": "artist",
+      "slug": "sextile",
+      "name": "Sextile",
+      "channel": "instagram",
+      "handle": "sextileband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/sextileband/"
+    },
+    {
+      "kind": "artist",
+      "slug": "sleigh-bells",
+      "name": "Sleigh Bells",
+      "channel": "x",
+      "handle": "sleighbells",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/sleighbells"
+    },
+    {
+      "kind": "artist",
+      "slug": "sleigh-bells",
+      "name": "Sleigh Bells",
+      "channel": "instagram",
+      "handle": "sleighbells",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/sleighbells/"
+    },
+    {
+      "kind": "artist",
+      "slug": "smash-mouth",
+      "name": "Smash Mouth",
+      "channel": "x",
+      "handle": "smashmouth",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/smashmouth"
+    },
+    {
+      "kind": "artist",
+      "slug": "smash-mouth",
+      "name": "Smash Mouth",
+      "channel": "instagram",
+      "handle": "smashmouthsmash",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/smashmouthsmash/"
+    },
+    {
+      "kind": "artist",
+      "slug": "snarky-puppy",
+      "name": "Snarky Puppy",
+      "channel": "x",
+      "handle": "realsnarkypuppy",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/realsnarkypuppy"
+    },
+    {
+      "kind": "artist",
+      "slug": "social-distortion",
+      "name": "Social Distortion",
+      "channel": "x",
+      "handle": "SocialD1",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/SocialD1"
+    },
+    {
+      "kind": "artist",
+      "slug": "social-distortion",
+      "name": "Social Distortion",
+      "channel": "instagram",
+      "handle": "socialdistortion",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/socialdistortion/"
+    },
+    {
+      "kind": "artist",
+      "slug": "squeeze",
+      "name": "Squeeze",
+      "channel": "x",
+      "handle": "squeezeofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/squeezeofficial"
+    },
+    {
+      "kind": "artist",
+      "slug": "squeeze",
+      "name": "Squeeze",
+      "channel": "instagram",
+      "handle": "squeezeogram",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/squeezeogram/"
+    },
+    {
+      "kind": "artist",
+      "slug": "squeeze",
+      "name": "Squeeze",
+      "channel": "bluesky",
+      "handle": "squeezeofficial.com",
+      "did": "did:plc:uvpag52jf6gb7orguavqu7fh",
+      "evidence": "site-domain",
+      "note": "squeezeofficial.com resolves as a Bluesky handle — proven by DNS or /.well-known against the official site"
+    },
+    {
+      "kind": "artist",
+      "slug": "sting",
+      "name": "Sting",
+      "channel": "x",
+      "handle": "OfficialSting",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/OfficialSting"
+    },
+    {
+      "kind": "artist",
+      "slug": "sting",
+      "name": "Sting",
+      "channel": "instagram",
+      "handle": "theofficialsting",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/theofficialsting/"
+    },
+    {
+      "kind": "artist",
+      "slug": "streetlight-manifesto",
+      "name": "Streetlight Manifesto",
+      "channel": "x",
+      "handle": "smanifesto",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/smanifesto"
+    },
+    {
+      "kind": "artist",
+      "slug": "streetlight-manifesto",
+      "name": "Streetlight Manifesto",
+      "channel": "instagram",
+      "handle": "smanifesto",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/smanifesto/"
+    },
+    {
+      "kind": "artist",
+      "slug": "stryper",
+      "name": "Stryper",
+      "channel": "x",
+      "handle": "Stryper",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/Stryper"
+    },
+    {
+      "kind": "artist",
+      "slug": "stryper",
+      "name": "Stryper",
+      "channel": "instagram",
+      "handle": "stryper",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/stryper/"
+    },
+    {
+      "kind": "artist",
+      "slug": "suicidal-tendencies",
+      "name": "Suicidal Tendencies",
+      "channel": "x",
+      "handle": "officialstig",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/officialstig"
+    },
+    {
+      "kind": "artist",
+      "slug": "suicidal-tendencies",
+      "name": "Suicidal Tendencies",
+      "channel": "instagram",
+      "handle": "suicidaltendencies",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/suicidaltendencies/"
+    },
+    {
+      "kind": "artist",
+      "slug": "t-s-o-l",
+      "name": "T.S.O.L.",
+      "channel": "instagram",
+      "handle": "tsol_official",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/tsol_official/"
+    },
+    {
+      "kind": "artist",
+      "slug": "tears-for-fears",
+      "name": "Tears for Fears",
+      "channel": "x",
+      "handle": "tearsforfears",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/tearsforfears"
+    },
+    {
+      "kind": "artist",
+      "slug": "tears-for-fears",
+      "name": "Tears for Fears",
+      "channel": "instagram",
+      "handle": "tearsforfearsmusic",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/tearsforfearsmusic/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-alarm",
+      "name": "The Alarm",
+      "channel": "x",
+      "handle": "thealarm",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/thealarm"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-black-keys",
+      "name": "The Black Keys",
+      "channel": "x",
+      "handle": "theblackkeys",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/theblackkeys"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-black-keys",
+      "name": "The Black Keys",
+      "channel": "instagram",
+      "handle": "theblackkeys",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/theblackkeys/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-bronx",
+      "name": "The Bronx",
+      "channel": "x",
+      "handle": "the_bronx",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/the_bronx"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-cult",
+      "name": "The Cult",
+      "channel": "x",
+      "handle": "officialcult",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/officialcult"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-cure",
+      "name": "The Cure",
+      "channel": "bluesky",
+      "handle": "thecure.com",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://bsky.app/profile/thecure.com",
+      "did": "did:plc:u2nnfhwfrul4lyw5dii2cris"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-cure",
+      "name": "The Cure",
+      "channel": "x",
+      "handle": "thecure",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/thecure"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-cure",
+      "name": "The Cure",
+      "channel": "instagram",
+      "handle": "thecure",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/thecure/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-dollyrots",
+      "name": "The Dollyrots",
+      "channel": "x",
+      "handle": "TheDollyrots",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/TheDollyrots"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-dollyrots",
+      "name": "The Dollyrots",
+      "channel": "instagram",
+      "handle": "thedollyrots",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/thedollyrots/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-fixx",
+      "name": "The Fixx",
+      "channel": "x",
+      "handle": "fixxonline",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/fixxonline"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-go-go-s",
+      "name": "The Go-Go's",
+      "channel": "x",
+      "handle": "officialgogos",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/officialgogos"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-go-go-s",
+      "name": "The Go-Go's",
+      "channel": "instagram",
+      "handle": "officialgogos",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/officialgogos/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-head-and-the-heart",
+      "name": "The Head and the Heart",
+      "channel": "x",
+      "handle": "headandtheheart",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/headandtheheart"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-head-and-the-heart",
+      "name": "The Head and the Heart",
+      "channel": "instagram",
+      "handle": "theheadandtheheart",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/theheadandtheheart/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-human-league",
+      "name": "The Human League",
+      "channel": "x",
+      "handle": "humanleaguehq",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/humanleaguehq"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-offspring",
+      "name": "The Offspring",
+      "channel": "x",
+      "handle": "offspring",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/offspring"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-offspring",
+      "name": "The Offspring",
+      "channel": "instagram",
+      "handle": "offspring",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/offspring/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-psychedelic-furs",
+      "name": "The Psychedelic Furs",
+      "channel": "x",
+      "handle": "pfurs",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/pfurs"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-psychedelic-furs",
+      "name": "The Psychedelic Furs",
+      "channel": "instagram",
+      "handle": "pfurs",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/pfurs/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-roots",
+      "name": "The Roots",
+      "channel": "x",
+      "handle": "theroots",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/theroots"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-roots",
+      "name": "The Roots",
+      "channel": "instagram",
+      "handle": "theroots",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/theroots/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-skints",
+      "name": "The Skints",
+      "channel": "x",
+      "handle": "theskints",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/theskints"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-skints",
+      "name": "The Skints",
+      "channel": "instagram",
+      "handle": "theskints",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/theskints/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-smithereens",
+      "name": "The Smithereens",
+      "channel": "x",
+      "handle": "thesmithereens",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/thesmithereens"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-smithereens",
+      "name": "The Smithereens",
+      "channel": "instagram",
+      "handle": "the_smithereens_official",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/the_smithereens_official/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-struts",
+      "name": "The Struts",
+      "channel": "x",
+      "handle": "TheStruts",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/TheStruts"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-struts",
+      "name": "The Struts",
+      "channel": "instagram",
+      "handle": "thestruts",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/thestruts/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-tubes",
+      "name": "The Tubes",
+      "channel": "x",
+      "handle": "TheTubesGroup",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/TheTubesGroup"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-twilight-sad",
+      "name": "The Twilight Sad",
+      "channel": "x",
+      "handle": "thetwilightsad",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/thetwilightsad"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-twilight-sad",
+      "name": "The Twilight Sad",
+      "channel": "instagram",
+      "handle": "thetwilightsad",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/thetwilightsad/"
+    },
+    {
+      "kind": "artist",
+      "slug": "thomas-dolby",
+      "name": "Thomas Dolby",
+      "channel": "x",
+      "handle": "thomasdolby",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/thomasdolby"
+    },
+    {
+      "kind": "artist",
+      "slug": "torres",
+      "name": "TORRES",
+      "channel": "x",
+      "handle": "torreslovesyou",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/torreslovesyou"
+    },
+    {
+      "kind": "artist",
+      "slug": "torres",
+      "name": "TORRES",
+      "channel": "instagram",
+      "handle": "torreslovesyou",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/torreslovesyou/"
+    },
+    {
+      "kind": "artist",
+      "slug": "transplants",
+      "name": "Transplants",
+      "channel": "x",
+      "handle": "TransplantsBand",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/TransplantsBand"
+    },
+    {
+      "kind": "artist",
+      "slug": "u2",
+      "name": "U2",
+      "channel": "x",
+      "handle": "u2",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/u2"
+    },
+    {
+      "kind": "artist",
+      "slug": "u2",
+      "name": "U2",
+      "channel": "instagram",
+      "handle": "u2",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/u2/"
+    },
+    {
+      "kind": "artist",
+      "slug": "ub40",
+      "name": "UB40",
+      "channel": "x",
+      "handle": "UB40OFFICIAL",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/UB40OFFICIAL"
+    },
+    {
+      "kind": "artist",
+      "slug": "ub40",
+      "name": "UB40",
+      "channel": "instagram",
+      "handle": "ub40official",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/ub40official/"
+    },
+    {
+      "kind": "artist",
+      "slug": "umphrey-s-mcgee",
+      "name": "Umphrey's McGee",
+      "channel": "x",
+      "handle": "umphreysmcgee",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/umphreysmcgee"
+    },
+    {
+      "kind": "artist",
+      "slug": "umphrey-s-mcgee",
+      "name": "Umphrey's McGee",
+      "channel": "instagram",
+      "handle": "umphreysmcgee",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/umphreysmcgee/"
+    },
+    {
+      "kind": "artist",
+      "slug": "umphrey-s-mcgee",
+      "name": "Umphrey's McGee",
+      "channel": "bluesky",
+      "handle": "umphreys.com",
+      "did": "did:plc:ag6lnvdz2vthcqxzybbalt5t",
+      "evidence": "site-domain",
+      "note": "umphreys.com resolves as a Bluesky handle — proven by DNS or /.well-known against the official site"
+    },
+    {
+      "kind": "artist",
+      "slug": "violent-femmes",
+      "name": "Violent Femmes",
+      "channel": "x",
+      "handle": "violentfemmes",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/violentfemmes"
+    },
+    {
+      "kind": "artist",
+      "slug": "violent-femmes",
+      "name": "Violent Femmes",
+      "channel": "instagram",
+      "handle": "officialviolentfemmes",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/officialviolentfemmes/"
+    },
+    {
+      "kind": "artist",
+      "slug": "voodoo-glow-skulls",
+      "name": "Voodoo Glow Skulls",
+      "channel": "x",
+      "handle": "glowskulls",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/glowskulls"
+    },
+    {
+      "kind": "artist",
+      "slug": "wham",
+      "name": "Wham!",
+      "channel": "instagram",
+      "handle": "georgemichael_andrewridgeley",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/georgemichael_andrewridgeley/"
+    },
+    {
+      "kind": "artist",
+      "slug": "wire",
+      "name": "Wire",
+      "channel": "x",
+      "handle": "wirehq",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/wirehq"
+    },
+    {
+      "kind": "artist",
+      "slug": "x",
+      "name": "X",
+      "channel": "x",
+      "handle": "Xtheband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/Xtheband"
+    },
+    {
+      "kind": "artist",
+      "slug": "x",
+      "name": "X",
+      "channel": "instagram",
+      "handle": "xthebandofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/xthebandofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "ziggy-marley",
+      "name": "Ziggy Marley",
+      "channel": "x",
+      "handle": "ziggymarley",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/ziggymarley"
+    },
+    {
+      "kind": "artist",
+      "slug": "cleopatrick",
+      "name": "cleopatrick",
+      "channel": "x",
+      "handle": "cleopatrickband",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/cleopatrickband"
+    },
+    {
+      "kind": "artist",
+      "slug": "siouxsie-and-the-banshees",
+      "name": "Siouxsie and the Banshees",
+      "channel": "x",
+      "handle": "siouxsieandtheb",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/siouxsieandtheb"
+    },
+    {
+      "kind": "artist",
+      "slug": "siouxsie-and-the-banshees",
+      "name": "Siouxsie and the Banshees",
+      "channel": "instagram",
+      "handle": "siouxsieandthebanshees",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/siouxsieandthebanshees/"
+    },
+    {
+      "kind": "artist",
+      "slug": "red-hot-chili-peppers",
+      "name": "Red Hot Chili Peppers",
+      "channel": "x",
+      "handle": "chilipeppers",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/chilipeppers"
+    },
+    {
+      "kind": "artist",
+      "slug": "red-hot-chili-peppers",
+      "name": "Red Hot Chili Peppers",
+      "channel": "instagram",
+      "handle": "chilipeppers",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/chilipeppers/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-aquabats",
+      "name": "The Aquabats!",
+      "channel": "x",
+      "handle": "theaquabats",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/theaquabats"
+    },
+    {
+      "kind": "artist",
+      "slug": "gorillaz",
+      "name": "Gorillaz",
+      "channel": "x",
+      "handle": "gorillaz",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/gorillaz"
+    },
+    {
+      "kind": "artist",
+      "slug": "gorillaz",
+      "name": "Gorillaz",
+      "channel": "instagram",
+      "handle": "gorillaz",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/gorillaz/"
+    },
+    {
+      "kind": "artist",
+      "slug": "billy-idol",
+      "name": "Billy Idol",
+      "channel": "x",
+      "handle": "BillyIdol",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/BillyIdol"
+    },
+    {
+      "kind": "artist",
+      "slug": "billy-idol",
+      "name": "Billy Idol",
+      "channel": "instagram",
+      "handle": "billyidol",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/billyidol/"
+    },
+    {
+      "kind": "artist",
+      "slug": "joe-satriani",
+      "name": "Joe Satriani",
+      "channel": "x",
+      "handle": "chickenfootjoe",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/chickenfootjoe"
+    },
+    {
+      "kind": "artist",
+      "slug": "joe-satriani",
+      "name": "Joe Satriani",
+      "channel": "instagram",
+      "handle": "joesatriani",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/joesatriani/"
+    },
+    {
+      "kind": "artist",
+      "slug": "joe-satriani",
+      "name": "Joe Satriani",
+      "channel": "bluesky",
+      "handle": "satriani.com",
+      "did": "did:plc:wyevu54nl24gdc4n6cidfg6l",
+      "evidence": "site-domain",
+      "note": "satriani.com resolves as a Bluesky handle — proven by DNS or /.well-known against the official site"
+    },
+    {
+      "kind": "artist",
+      "slug": "a-certain-ratio",
+      "name": "A Certain Ratio",
+      "channel": "x",
+      "handle": "acertainratio",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/acertainratio"
+    },
+    {
+      "kind": "artist",
+      "slug": "inner-circle",
+      "name": "Inner Circle",
+      "channel": "instagram",
+      "handle": "badboysofreggae",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/badboysofreggae/"
+    },
+    {
+      "kind": "artist",
+      "slug": "james",
+      "name": "James",
+      "channel": "x",
+      "handle": "wearejames",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/wearejames"
+    },
+    {
+      "kind": "artist",
+      "slug": "p-m-dawn",
+      "name": "P.M. Dawn",
+      "channel": "x",
+      "handle": "OfficialPMDawn",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/OfficialPMDawn"
+    },
+    {
+      "kind": "artist",
+      "slug": "sin-ad-o-connor",
+      "name": "Sinéad O'Connor",
+      "channel": "x",
+      "handle": "SineadOConnor",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/SineadOConnor"
+    },
+    {
+      "kind": "artist",
+      "slug": "sin-ad-o-connor",
+      "name": "Sinéad O'Connor",
+      "channel": "x",
+      "handle": "sineadoconnorhq",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/sineadoconnorhq"
+    },
+    {
+      "kind": "artist",
+      "slug": "sin-ad-o-connor",
+      "name": "Sinéad O'Connor",
+      "channel": "instagram",
+      "handle": "sineadoconnorofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/sineadoconnorofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "nile-rodgers",
+      "name": "Nile Rodgers",
+      "channel": "x",
+      "handle": "nilerodgers",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/nilerodgers"
+    },
+    {
+      "kind": "artist",
+      "slug": "nile-rodgers",
+      "name": "Nile Rodgers",
+      "channel": "instagram",
+      "handle": "nilerodgers",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/nilerodgers/"
+    },
+    {
+      "kind": "artist",
+      "slug": "beck",
+      "name": "Beck",
+      "channel": "x",
+      "handle": "beck",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/beck"
+    },
+    {
+      "kind": "artist",
+      "slug": "beck",
+      "name": "Beck",
+      "channel": "instagram",
+      "handle": "beck",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/beck/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-wonder-stuff",
+      "name": "The Wonder Stuff",
+      "channel": "x",
+      "handle": "thewonder_stuff",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/thewonder_stuff"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-wonder-stuff",
+      "name": "The Wonder Stuff",
+      "channel": "instagram",
+      "handle": "thewonderstuffofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/thewonderstuffofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "richard-cheese",
+      "name": "Richard Cheese",
+      "channel": "x",
+      "handle": "richardcheese",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/richardcheese"
+    },
+    {
+      "kind": "artist",
+      "slug": "trombone-shorty",
+      "name": "Trombone Shorty",
+      "channel": "x",
+      "handle": "tromboneshorty",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/tromboneshorty"
+    },
+    {
+      "kind": "artist",
+      "slug": "trombone-shorty",
+      "name": "Trombone Shorty",
+      "channel": "instagram",
+      "handle": "tromboneshorty",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/tromboneshorty/"
+    },
+    {
+      "kind": "venue",
+      "slug": "pacific-amphitheatre",
+      "name": "Pacific Amphitheatre",
+      "channel": "x",
+      "handle": "pacamp",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/pacamp"
+    },
+    {
+      "kind": "venue",
+      "slug": "pacific-amphitheatre",
+      "name": "Pacific Amphitheatre",
+      "channel": "instagram",
+      "handle": "pacificamphitheatre",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/pacificamphitheatre/"
+    },
+    {
+      "kind": "venue",
+      "slug": "ucla",
+      "name": "UCLA",
+      "channel": "x",
+      "handle": "UCLA",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/UCLA"
+    },
+    {
+      "kind": "venue",
+      "slug": "ucla",
+      "name": "UCLA",
+      "channel": "instagram",
+      "handle": "ucla",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/ucla/"
+    },
+    {
+      "kind": "venue",
+      "slug": "ucla",
+      "name": "UCLA",
+      "channel": "bluesky",
+      "handle": "ucla.edu",
+      "did": "did:plc:gy552md2n6dm4ga73tm6kvn4",
+      "evidence": "site-domain",
+      "note": "ucla.edu resolves as a Bluesky handle — proven by DNS or /.well-known against the official site"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-rose-bowl",
+      "name": "The Rose Bowl",
+      "channel": "x",
+      "handle": "RoseBowlStadium",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/RoseBowlStadium"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-rose-bowl",
+      "name": "The Rose Bowl",
+      "channel": "instagram",
+      "handle": "rosebowlstadium",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/rosebowlstadium/"
+    },
+    {
+      "kind": "venue",
+      "slug": "mesa-amphitheatre",
+      "name": "Mesa Amphitheatre",
+      "channel": "instagram",
+      "handle": "mesaamphitheatre",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/mesaamphitheatre/"
+    },
+    {
+      "kind": "venue",
+      "slug": "kia-forum",
+      "name": "Kia Forum",
+      "channel": "x",
+      "handle": "TheKiaForum",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/TheKiaForum"
+    },
+    {
+      "kind": "venue",
+      "slug": "kia-forum",
+      "name": "Kia Forum",
+      "channel": "instagram",
+      "handle": "thekiaforum",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/thekiaforum/"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-coach-house",
+      "name": "The Coach House",
+      "channel": "x",
+      "handle": "coach_house",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/coach_house"
+    },
+    {
+      "kind": "venue",
+      "slug": "greek-theatre",
+      "name": "Greek Theatre",
+      "channel": "x",
+      "handle": "Greek_Theatre",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/Greek_Theatre"
+    },
+    {
+      "kind": "venue",
+      "slug": "greek-theatre",
+      "name": "Greek Theatre",
+      "channel": "instagram",
+      "handle": "Greek_Theatre",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/Greek_Theatre/"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-grove-of-anaheim",
+      "name": "The Grove of Anaheim",
+      "channel": "x",
+      "handle": "groveofanaheim",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/groveofanaheim"
+    },
+    {
+      "kind": "venue",
+      "slug": "house-of-blues-anaheim",
+      "name": "House of Blues Anaheim",
+      "channel": "x",
+      "handle": "HOBAnaheim",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/HOBAnaheim"
+    },
+    {
+      "kind": "venue",
+      "slug": "house-of-blues-anaheim",
+      "name": "House of Blues Anaheim",
+      "channel": "instagram",
+      "handle": "hobanaheim",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/hobanaheim/"
+    },
+    {
+      "kind": "venue",
+      "slug": "hard-rock-hotel-las-vegas",
+      "name": "Hard Rock Hotel Las Vegas",
+      "channel": "x",
+      "handle": "virginhotelsLV",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/virginhotelsLV"
+    },
+    {
+      "kind": "venue",
+      "slug": "hard-rock-hotel-las-vegas",
+      "name": "Hard Rock Hotel Las Vegas",
+      "channel": "instagram",
+      "handle": "virginhotelsLV",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/virginhotelsLV/"
+    },
+    {
+      "kind": "venue",
+      "slug": "staples-center",
+      "name": "Staples Center",
+      "channel": "x",
+      "handle": "cryptocomarena",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/cryptocomarena"
+    },
+    {
+      "kind": "venue",
+      "slug": "staples-center",
+      "name": "Staples Center",
+      "channel": "instagram",
+      "handle": "cryptocomarena",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/cryptocomarena/"
+    },
+    {
+      "kind": "venue",
+      "slug": "nokia-center",
+      "name": "Nokia Center",
+      "channel": "x",
+      "handle": "TheNovoDTLA",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/TheNovoDTLA"
+    },
+    {
+      "kind": "venue",
+      "slug": "eaglebank-arena",
+      "name": "EagleBank Arena",
+      "channel": "x",
+      "handle": "eaglebankarena",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/eaglebankarena"
+    },
+    {
+      "kind": "venue",
+      "slug": "eaglebank-arena",
+      "name": "EagleBank Arena",
+      "channel": "instagram",
+      "handle": "eaglebankarena",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/eaglebankarena/"
+    },
+    {
+      "kind": "venue",
+      "slug": "9-30-club",
+      "name": "9:30 Club",
+      "channel": "x",
+      "handle": "930Club",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/930Club"
+    },
+    {
+      "kind": "venue",
+      "slug": "9-30-club",
+      "name": "9:30 Club",
+      "channel": "instagram",
+      "handle": "930club",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/930club/"
+    },
+    {
+      "kind": "venue",
+      "slug": "rams-head-live-baltimore",
+      "name": "Rams Head Live! Baltimore",
+      "channel": "x",
+      "handle": "RamsHeadLive",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/RamsHeadLive"
+    },
+    {
+      "kind": "venue",
+      "slug": "rams-head-live-baltimore",
+      "name": "Rams Head Live! Baltimore",
+      "channel": "instagram",
+      "handle": "ramsheadlive",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/ramsheadlive/"
+    },
+    {
+      "kind": "venue",
+      "slug": "capitol-one-arena",
+      "name": "Capitol One Arena",
+      "channel": "x",
+      "handle": "CapitalOneArena",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/CapitalOneArena"
+    },
+    {
+      "kind": "venue",
+      "slug": "capitol-one-arena",
+      "name": "Capitol One Arena",
+      "channel": "instagram",
+      "handle": "CapitalOneArena",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/CapitalOneArena/"
+    },
+    {
+      "kind": "venue",
+      "slug": "howard-theater",
+      "name": "Howard Theater",
+      "channel": "x",
+      "handle": "HowardTheatre",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/HowardTheatre"
+    },
+    {
+      "kind": "venue",
+      "slug": "howard-theater",
+      "name": "Howard Theater",
+      "channel": "instagram",
+      "handle": "howardtheatre",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/howardtheatre/"
+    },
+    {
+      "kind": "venue",
+      "slug": "birchmere",
+      "name": "Birchmere",
+      "channel": "x",
+      "handle": "thebirchmere",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/thebirchmere"
+    },
+    {
+      "kind": "venue",
+      "slug": "birchmere",
+      "name": "Birchmere",
+      "channel": "instagram",
+      "handle": "thebirchmere",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/thebirchmere/"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-anthem",
+      "name": "The Anthem",
+      "channel": "bluesky",
+      "handle": "theanthemdc.bsky.social",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://bsky.app/profile/theanthemdc.bsky.social",
+      "did": "did:plc:fv3ksu5ms3met4rn2n435u5e"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-anthem",
+      "name": "The Anthem",
+      "channel": "x",
+      "handle": "theanthemdc",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/theanthemdc"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-anthem",
+      "name": "The Anthem",
+      "channel": "instagram",
+      "handle": "theanthemdc",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/theanthemdc/"
+    },
+    {
+      "kind": "venue",
+      "slug": "lincoln-theatre",
+      "name": "Lincoln Theatre",
+      "channel": "x",
+      "handle": "TheLincolnDC",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/TheLincolnDC"
+    },
+    {
+      "kind": "venue",
+      "slug": "warner-theatre",
+      "name": "Warner Theatre",
+      "channel": "x",
+      "handle": "DCWarnerTheatre",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/DCWarnerTheatre"
+    },
+    {
+      "kind": "venue",
+      "slug": "warner-theatre",
+      "name": "Warner Theatre",
+      "channel": "instagram",
+      "handle": "warnertheatre",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/warnertheatre/"
+    },
+    {
+      "kind": "venue",
+      "slug": "capital-one-center",
+      "name": "Capital One Center",
+      "channel": "x",
+      "handle": "CapitalOneArena",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/CapitalOneArena"
+    },
+    {
+      "kind": "venue",
+      "slug": "capital-one-center",
+      "name": "Capital One Center",
+      "channel": "instagram",
+      "handle": "CapitalOneArena",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/CapitalOneArena/"
+    },
+    {
+      "kind": "venue",
+      "slug": "orpheum-theatre",
+      "name": "Orpheum Theatre",
+      "channel": "x",
+      "handle": "LAOrpheum",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/LAOrpheum"
+    },
+    {
+      "kind": "venue",
+      "slug": "orpheum-theatre",
+      "name": "Orpheum Theatre",
+      "channel": "instagram",
+      "handle": "orpheumtheatrela",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/orpheumtheatrela/"
+    },
+    {
+      "kind": "venue",
+      "slug": "theatre-at-the-ace-hotel",
+      "name": "Theatre at the Ace Hotel",
+      "channel": "x",
+      "handle": "theatre_acedtla",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/theatre_acedtla"
+    },
+    {
+      "kind": "venue",
+      "slug": "theatre-at-the-ace-hotel",
+      "name": "Theatre at the Ace Hotel",
+      "channel": "instagram",
+      "handle": "theatre_acedtla",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/theatre_acedtla/"
+    },
+    {
+      "kind": "venue",
+      "slug": "youtube-theatre",
+      "name": "YouTube Theatre",
+      "channel": "instagram",
+      "handle": "youtubetheater",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/youtubetheater/"
+    },
+    {
+      "kind": "venue",
+      "slug": "hollywood-bowl",
+      "name": "Hollywood Bowl",
+      "channel": "x",
+      "handle": "HollywoodBowl",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/HollywoodBowl"
+    },
+    {
+      "kind": "venue",
+      "slug": "hollywood-bowl",
+      "name": "Hollywood Bowl",
+      "channel": "instagram",
+      "handle": "HollywoodBowl",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/HollywoodBowl/"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-belly-up-tavern",
+      "name": "The Belly Up Tavern",
+      "channel": "x",
+      "handle": "BellyUpMusic",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/BellyUpMusic"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-belly-up-tavern",
+      "name": "The Belly Up Tavern",
+      "channel": "instagram",
+      "handle": "bellyuptavern",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/bellyuptavern/"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-wiltern",
+      "name": "The Wiltern",
+      "channel": "x",
+      "handle": "wiltern",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/wiltern"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-wiltern",
+      "name": "The Wiltern",
+      "channel": "instagram",
+      "handle": "thewiltern",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/thewiltern/"
+    },
+    {
+      "kind": "artist",
+      "slug": "snarky-puppy",
+      "name": "Snarky Puppy",
+      "channel": "instagram",
+      "handle": "snarkypuppy",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID fe85367e-4036-43c1-874b-b91af81cb4f3"
+    },
+    {
+      "kind": "artist",
+      "slug": "cleopatrick",
+      "name": "cleopatrick",
+      "channel": "instagram",
+      "handle": "cleopatrickband",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 69c8cacb-12a6-4cee-9221-02eb3c396c04"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-smithereens",
+      "name": "The Smithereens",
+      "channel": "instagram",
+      "handle": "official_smithereens",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID fae2cd4c-f847-4cb3-b311-60c8906cdb0b"
+    },
+    {
+      "kind": "artist",
+      "slug": "sin-ad-o-connor",
+      "name": "Sinéad O'Connor",
+      "channel": "x",
+      "handle": "786OmShahid",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID c78a77fa-507c-4c07-947a-0355029453bd"
+    },
+    {
+      "kind": "artist",
+      "slug": "sin-ad-o-connor",
+      "name": "Sinéad O'Connor",
+      "channel": "x",
+      "handle": "magdadavitt77",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID c78a77fa-507c-4c07-947a-0355029453bd"
+    },
+    {
+      "kind": "artist",
+      "slug": "public-enemy",
+      "name": "Public Enemy",
+      "channel": "bluesky",
+      "handle": "publicenemyno1.bsky.social",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID bf2e15d0-4b77-469e-bfb4-f8414415baca"
+    },
+    {
+      "kind": "artist",
+      "slug": "public-enemy",
+      "name": "Public Enemy",
+      "channel": "x",
+      "handle": "PublicEnemyFTP",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID bf2e15d0-4b77-469e-bfb4-f8414415baca"
+    },
+    {
+      "kind": "artist",
+      "slug": "public-enemy",
+      "name": "Public Enemy",
+      "channel": "instagram",
+      "handle": "publicenemyftp",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID bf2e15d0-4b77-469e-bfb4-f8414415baca"
+    },
+    {
+      "kind": "artist",
+      "slug": "trouble-funk",
+      "name": "Trouble Funk",
+      "channel": "x",
+      "handle": "TroubleFunkBand",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 138aaf2c-77b6-451e-ade2-ce18894eeaa7"
+    },
+    {
+      "kind": "artist",
+      "slug": "a-certain-ratio",
+      "name": "A Certain Ratio",
+      "channel": "x",
+      "handle": "acrmcr",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 73577e86-4da8-4d76-949d-34c757e053be"
+    },
+    {
+      "kind": "artist",
+      "slug": "flock-of-seagulls",
+      "name": "Flock Of Seagulls",
+      "channel": "x",
+      "handle": "seagullsrunning",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID aaa436da-b331-4e58-a0fd-3d64d090c120"
+    },
+    {
+      "kind": "artist",
+      "slug": "flock-of-seagulls",
+      "name": "Flock Of Seagulls",
+      "channel": "instagram",
+      "handle": "seagullsrunning",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID aaa436da-b331-4e58-a0fd-3d64d090c120"
+    },
+    {
+      "kind": "artist",
+      "slug": "david-byrne",
+      "name": "David Byrne",
+      "channel": "x",
+      "handle": "lovethisgiant",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID d4659efb-b8eb-4f03-95e9-f69ce35967a9"
+    },
+    {
+      "kind": "artist",
+      "slug": "los-lobos",
+      "name": "Los Lobos",
+      "channel": "instagram",
+      "handle": "loslobos",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 2b9967c7-3246-4658-a561-ded5408dd9af"
+    },
+    {
+      "kind": "artist",
+      "slug": "animotion",
+      "name": "Animotion",
+      "channel": "x",
+      "handle": "animotionlive",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 80f0eccf-a8c4-4de7-bdab-1606777e223b"
+    },
+    {
+      "kind": "artist",
+      "slug": "animotion",
+      "name": "Animotion",
+      "channel": "instagram",
+      "handle": "animotion_band",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 80f0eccf-a8c4-4de7-bdab-1606777e223b"
+    },
+    {
+      "kind": "artist",
+      "slug": "wham",
+      "name": "Wham!",
+      "channel": "instagram",
+      "handle": "theedge__ofheaven",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID d570bb31-b9ca-45a4-a2d9-11b186d9c159"
+    },
+    {
+      "kind": "artist",
+      "slug": "rob-thomas",
+      "name": "Rob Thomas",
+      "channel": "instagram",
+      "handle": "robthomas",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID e42680f7-e439-4666-9c2c-536c2b3c6db3"
+    },
+    {
+      "kind": "artist",
+      "slug": "bowling-for-soup",
+      "name": "Bowling for Soup",
+      "channel": "instagram",
+      "handle": "bfs_official",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID bcb95908-5c6e-453a-97fc-d69003d250ff"
+    },
+    {
+      "kind": "artist",
+      "slug": "p-m-dawn",
+      "name": "P.M. Dawn",
+      "channel": "x",
+      "handle": "nevesslu47krok",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 93c66937-ac49-4068-b378-a1d2a4d093a1"
+    },
+    {
+      "kind": "artist",
+      "slug": "p-m-dawn",
+      "name": "P.M. Dawn",
+      "channel": "instagram",
+      "handle": "nevesslu47krok",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 93c66937-ac49-4068-b378-a1d2a4d093a1"
+    },
+    {
+      "kind": "artist",
+      "slug": "p-m-dawn",
+      "name": "P.M. Dawn",
+      "channel": "instagram",
+      "handle": "pmdawn",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 93c66937-ac49-4068-b378-a1d2a4d093a1"
+    },
+    {
+      "kind": "artist",
+      "slug": "dropkick-murphys",
+      "name": "Dropkick Murphys",
+      "channel": "x",
+      "handle": "DropkickMurphys",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID e8374874-4178-4869-b92e-fef6bf30dc04"
+    },
+    {
+      "kind": "artist",
+      "slug": "save-ferris",
+      "name": "Save Ferris",
+      "channel": "x",
+      "handle": "saveferris_1",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 9d98662f-48d3-4243-9bf8-36b697458ffc"
+    },
+    {
+      "kind": "artist",
+      "slug": "save-ferris",
+      "name": "Save Ferris",
+      "channel": "instagram",
+      "handle": "saveferrisofficialband",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 9d98662f-48d3-4243-9bf8-36b697458ffc"
+    },
+    {
+      "kind": "artist",
+      "slug": "fear",
+      "name": "Fear",
+      "channel": "x",
+      "handle": "fearleeving",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 5e6512dd-160b-4512-a4b4-2c30fa894a08"
+    },
+    {
+      "kind": "artist",
+      "slug": "fear",
+      "name": "Fear",
+      "channel": "instagram",
+      "handle": "fearleevingofficial",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 5e6512dd-160b-4512-a4b4-2c30fa894a08"
+    },
+    {
+      "kind": "artist",
+      "slug": "james",
+      "name": "James",
+      "channel": "instagram",
+      "handle": "wearejames",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID a2accb58-6099-4cb5-a3c8-f6332f364db5"
+    },
+    {
+      "kind": "artist",
+      "slug": "soft-cell",
+      "name": "Soft Cell",
+      "channel": "x",
+      "handle": "softcellhq",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 7fb50287-029d-47cc-825a-235ca28024b2"
+    },
+    {
+      "kind": "artist",
+      "slug": "soft-cell",
+      "name": "Soft Cell",
+      "channel": "instagram",
+      "handle": "softcellhq",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 7fb50287-029d-47cc-825a-235ca28024b2"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-aquabats",
+      "name": "The Aquabats!",
+      "channel": "instagram",
+      "handle": "theaquabats",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 0396220e-d266-4980-b5f2-b0926d905bec"
+    },
+    {
+      "kind": "artist",
+      "slug": "t-s-o-l",
+      "name": "T.S.O.L.",
+      "channel": "x",
+      "handle": "officialtsol",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID e3207b63-ab05-42bc-924e-b1299b89c406"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-struts",
+      "name": "The Struts",
+      "channel": "instagram",
+      "handle": "addostruts",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID f0be891f-6114-448a-ac55-a11bb2961f78"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-struts",
+      "name": "The Struts",
+      "channel": "instagram",
+      "handle": "gethstruts",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID f0be891f-6114-448a-ac55-a11bb2961f78"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-struts",
+      "name": "The Struts",
+      "channel": "instagram",
+      "handle": "jedstruts",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID f0be891f-6114-448a-ac55-a11bb2961f78"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-struts",
+      "name": "The Struts",
+      "channel": "instagram",
+      "handle": "lukespiller",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID f0be891f-6114-448a-ac55-a11bb2961f78"
+    },
+    {
+      "kind": "artist",
+      "slug": "red-hot-chili-peppers",
+      "name": "Red Hot Chili Peppers",
+      "channel": "x",
+      "handle": "rhcpchad",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 8bfac288-ccc5-448d-9573-c33ea2aa5c30"
+    },
+    {
+      "kind": "artist",
+      "slug": "culture-club",
+      "name": "Culture Club",
+      "channel": "instagram",
+      "handle": "cultureclubofficial",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 81435053-e1a2-48a4-adfd-e89f310c7b38"
+    },
+    {
+      "kind": "artist",
+      "slug": "billy-idol",
+      "name": "Billy Idol",
+      "channel": "instagram",
+      "handle": "billyidolhq",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 47c8f88b-987a-4b64-9175-2b1b57809727"
+    },
+    {
+      "kind": "artist",
+      "slug": "against-me",
+      "name": "Against Me!",
+      "channel": "instagram",
+      "handle": "againstme",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID a66ebddc-ff04-46b8-820a-15c63e80dba1"
+    },
+    {
+      "kind": "artist",
+      "slug": "ziggy-marley",
+      "name": "Ziggy Marley",
+      "channel": "instagram",
+      "handle": "ziggymarley",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 7c09d8af-895a-4337-bb46-b4b6dcabff10"
+    },
+    {
+      "kind": "artist",
+      "slug": "dan-potthast",
+      "name": "Dan Potthast",
+      "channel": "x",
+      "handle": "DanPotthast",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 71b240a3-0879-4317-b017-a8869344aee4"
+    },
+    {
+      "kind": "artist",
+      "slug": "dan-potthast",
+      "name": "Dan Potthast",
+      "channel": "instagram",
+      "handle": "danpotthastmusic",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 71b240a3-0879-4317-b017-a8869344aee4"
+    },
+    {
+      "kind": "artist",
+      "slug": "big-audio-dynamite",
+      "name": "Big Audio Dynamite",
+      "channel": "x",
+      "handle": "bigaudiodyn",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 694b1fd8-0ba6-45bb-a359-d8a8fecaee46"
+    },
+    {
+      "kind": "artist",
+      "slug": "abc",
+      "name": "ABC",
+      "channel": "instagram",
+      "handle": "abcmartinfry",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 87199477-b0df-4ead-84ee-9b54b4abfc3d"
+    },
+    {
+      "kind": "artist",
+      "slug": "eric-johnson",
+      "name": "Eric Johnson",
+      "channel": "x",
+      "handle": "ejupclose",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID b53868c8-3654-41d3-91db-3c5a1237f0c3"
+    },
+    {
+      "kind": "artist",
+      "slug": "eric-johnson",
+      "name": "Eric Johnson",
+      "channel": "instagram",
+      "handle": "officialericjohnson",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID b53868c8-3654-41d3-91db-3c5a1237f0c3"
+    },
+    {
+      "kind": "artist",
+      "slug": "buddy-guy",
+      "name": "Buddy Guy",
+      "channel": "instagram",
+      "handle": "therealbuddyguy",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 4336a134-d091-4e54-9967-c7c433db6d4e"
+    },
+    {
+      "kind": "artist",
+      "slug": "brian-setzer",
+      "name": "Brian Setzer",
+      "channel": "x",
+      "handle": "briansetzer59",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 7878a1ce-1f6d-4e44-8a2c-39e7bc547dde"
+    },
+    {
+      "kind": "artist",
+      "slug": "brian-setzer",
+      "name": "Brian Setzer",
+      "channel": "instagram",
+      "handle": "briansetzer59",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 7878a1ce-1f6d-4e44-8a2c-39e7bc547dde"
+    },
+    {
+      "kind": "artist",
+      "slug": "berlin",
+      "name": "Berlin",
+      "channel": "instagram",
+      "handle": "berlinofficialband",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID c7cb9a2e-ff57-4bb8-bd2c-83524e18e369"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-cult",
+      "name": "The Cult",
+      "channel": "instagram",
+      "handle": "officialcult",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 8846e4ff-0c19-4af2-872b-7a8dc7497f68"
+    },
+    {
+      "kind": "artist",
+      "slug": "cold-war-kids",
+      "name": "Cold War Kids",
+      "channel": "instagram",
+      "handle": "coldwarkids",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 0741b30d-e15b-4a8c-b2e5-8834a03d6116"
+    },
+    {
+      "kind": "artist",
+      "slug": "stray-cats",
+      "name": "Stray Cats",
+      "channel": "x",
+      "handle": "thestraycats",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 0e763b87-f3cd-4a63-986f-bebc4189f1f0"
+    },
+    {
+      "kind": "artist",
+      "slug": "stray-cats",
+      "name": "Stray Cats",
+      "channel": "instagram",
+      "handle": "straycatsmusic",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 0e763b87-f3cd-4a63-986f-bebc4189f1f0"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-fixx",
+      "name": "The Fixx",
+      "channel": "instagram",
+      "handle": "fixxonline",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 0d32d0c9-69aa-407c-93e3-92b72e471d37"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-go-go-s",
+      "name": "The Go-Go's",
+      "channel": "bluesky",
+      "handle": "gogosofficial.bsky.social",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID eec163e4-a013-4af0-9641-c5b2df41fff7"
+    },
+    {
+      "kind": "artist",
+      "slug": "bell-biv-devoe",
+      "name": "Bell Biv DeVoe",
+      "channel": "instagram",
+      "handle": "officialbellbivdevoe",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 9b16908a-a78c-45a7-8366-d2a41967f745"
+    },
+    {
+      "kind": "artist",
+      "slug": "jesus-jones",
+      "name": "Jesus Jones",
+      "channel": "x",
+      "handle": "jesusjonesband",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID f9776598-2689-41db-98d3-829f5510021c"
+    },
+    {
+      "kind": "artist",
+      "slug": "jesus-jones",
+      "name": "Jesus Jones",
+      "channel": "instagram",
+      "handle": "jesusjonesband",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID f9776598-2689-41db-98d3-829f5510021c"
+    }
+  ],
+  "unresolved": [
+    {
+      "kind": "artist",
+      "slug": "andrew-tosh",
+      "name": "Andrew Tosh"
+    },
+    {
+      "kind": "artist",
+      "slug": "bat-fangs",
+      "name": "Bat Fangs"
+    },
+    {
+      "kind": "artist",
+      "slug": "beach-boys",
+      "name": "The Beach Boys"
+    },
+    {
+      "kind": "artist",
+      "slug": "blood-or-whiskey",
+      "name": "Blood or Whiskey"
+    },
+    {
+      "kind": "artist",
+      "slug": "bryan-mcpherson",
+      "name": "Bryan McPherson"
+    },
+    {
+      "kind": "artist",
+      "slug": "burning-spear",
+      "name": "Burning Spear"
+    },
+    {
+      "kind": "artist",
+      "slug": "carlene-davis",
+      "name": "Carlene Davis"
+    },
+    {
+      "kind": "artist",
+      "slug": "common-sense",
+      "name": "Common Sense (GR)"
+    },
+    {
+      "kind": "artist",
+      "slug": "danger-painters",
+      "name": "Danger Painters"
+    },
+    {
+      "kind": "artist",
+      "slug": "dennis-brown",
+      "name": "Dennis Brown"
+    },
+    {
+      "kind": "artist",
+      "slug": "dr-sick",
+      "name": "Dr. Sick"
+    },
+    {
+      "kind": "artist",
+      "slug": "dramarama",
+      "name": "Dramarama"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-english-beat",
+      "name": "The Beat"
+    },
+    {
+      "kind": "artist",
+      "slug": "haircut-100",
+      "name": "Haircut 100"
+    },
+    {
+      "kind": "artist",
+      "slug": "hot-rod-lincoln",
+      "name": "Hot Rod Lincoln"
+    },
+    {
+      "kind": "artist",
+      "slug": "ian-mcculloch",
+      "name": "Ian McCulloch"
+    },
+    {
+      "kind": "artist",
+      "slug": "joe-jackson",
+      "name": "Joe Jackson"
+    },
+    {
+      "kind": "artist",
+      "slug": "john-doe",
+      "name": "John Doe"
+    },
+    {
+      "kind": "artist",
+      "slug": "johnny-gill",
+      "name": "Johnny Gill"
+    },
+    {
+      "kind": "artist",
+      "slug": "katrina-and-the-waves",
+      "name": "Katrina and the Waves"
+    },
+    {
+      "kind": "artist",
+      "slug": "kelley-stoltz",
+      "name": "Kelley Stoltz"
+    },
+    {
+      "kind": "artist",
+      "slug": "kiev",
+      "name": "KIEV"
+    },
+    {
+      "kind": "artist",
+      "slug": "lee-rocker",
+      "name": "Lee Rocker"
+    },
+    {
+      "kind": "artist",
+      "slug": "little-lenny",
+      "name": "Little Lenny"
+    },
+    {
+      "kind": "artist",
+      "slug": "mahones",
+      "name": "Mahones"
+    },
+    {
+      "kind": "artist",
+      "slug": "men-at-work",
+      "name": "Men at Work"
+    },
+    {
+      "kind": "artist",
+      "slug": "mike-ness",
+      "name": "Mike Ness"
+    },
+    {
+      "kind": "artist",
+      "slug": "naked-eyes",
+      "name": "Naked Eyes"
+    },
+    {
+      "kind": "artist",
+      "slug": "omd",
+      "name": "OMD"
+    },
+    {
+      "kind": "artist",
+      "slug": "oingo-boingo",
+      "name": "Oingo Boingo"
+    },
+    {
+      "kind": "artist",
+      "slug": "pat-dinizio",
+      "name": "Pat Dinizio"
+    },
+    {
+      "kind": "artist",
+      "slug": "peter-hook-and-the-light",
+      "name": "Peter Hook & The Light"
+    },
+    {
+      "kind": "artist",
+      "slug": "run-dmc",
+      "name": "Run-D.M.C."
+    },
+    {
+      "kind": "artist",
+      "slug": "school-of-fish",
+      "name": "School of Fish"
+    },
+    {
+      "kind": "artist",
+      "slug": "shinehead",
+      "name": "Shinehead"
+    },
+    {
+      "kind": "artist",
+      "slug": "snuff",
+      "name": "Snuff"
+    },
+    {
+      "kind": "artist",
+      "slug": "solemn-sun",
+      "name": "Solemn Sun"
+    },
+    {
+      "kind": "artist",
+      "slug": "team-band",
+      "name": "Team Band"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-art-of-noise",
+      "name": "Art of Noise"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-blasters",
+      "name": "The Blasters"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-interrupters",
+      "name": "The Interrupters"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-messthetics",
+      "name": "The Messthetics"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-motels",
+      "name": "The Motels"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-nylons",
+      "name": "The Nylons"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-paladins",
+      "name": "The Paladins"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-polecats",
+      "name": "The Polecats"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-untouchables",
+      "name": "The Untouchables"
+    },
+    {
+      "kind": "artist",
+      "slug": "thompson-twins",
+      "name": "Thompson Twins"
+    },
+    {
+      "kind": "artist",
+      "slug": "tone-loc",
+      "name": "Tone-Lōc"
+    },
+    {
+      "kind": "artist",
+      "slug": "when-in-rome",
+      "name": "When in Rome"
+    },
+    {
+      "kind": "artist",
+      "slug": "yates-mckendree",
+      "name": "Yates McKendree"
+    },
+    {
+      "kind": "artist",
+      "slug": "yaz",
+      "name": "Yazoo"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-brian-setzer-orchestra",
+      "name": "The Brian Setzer Orchestra"
+    },
+    {
+      "kind": "artist",
+      "slug": "bandits-of-the-acoustic-revolution",
+      "name": "Bandits of the Acoustic Revolution"
+    },
+    {
+      "kind": "artist",
+      "slug": "alien-fashion-show",
+      "name": "Alien Fashion Show"
+    },
+    {
+      "kind": "artist",
+      "slug": "abecedarians",
+      "name": "Abecedarians"
+    },
+    {
+      "kind": "artist",
+      "slug": "jah-wobble-s-invaders-of-the-heart",
+      "name": "Jah Wobble's Invaders of the Heart"
+    },
+    {
+      "kind": "artist",
+      "slug": "sheila-chandra",
+      "name": "Sheila Chandra"
+    },
+    {
+      "kind": "artist",
+      "slug": "terem-quartet",
+      "name": "Terem Quartet"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-drummers-of-burundi",
+      "name": "The Drummers Of Burundi"
+    },
+    {
+      "kind": "artist",
+      "slug": "blue-plate-special",
+      "name": "Blue Plate Special"
+    },
+    {
+      "kind": "artist",
+      "slug": "brian-setzer-68-comeback-special",
+      "name": "Brian Setzer"
+    },
+    {
+      "kind": "artist",
+      "slug": "brian-setzer-and-the-nashvillians",
+      "name": "Brian Setzer"
+    },
+    {
+      "kind": "artist",
+      "slug": "bangles",
+      "name": "The Bangles"
+    },
+    {
+      "kind": "artist",
+      "slug": "stereo-mc-s",
+      "name": "Stereo MCs"
+    },
+    {
+      "kind": "artist",
+      "slug": "jane-weidlin",
+      "name": "Jane Wiedlin"
+    },
+    {
+      "kind": "artist",
+      "slug": "new-morty-show",
+      "name": "The New Morty Show"
+    },
+    {
+      "kind": "artist",
+      "slug": "raveonettes",
+      "name": "The Raveonettes"
+    },
+    {
+      "kind": "artist",
+      "slug": "barroom-heroes",
+      "name": "Bar Room Heroes"
+    },
+    {
+      "kind": "artist",
+      "slug": "joan-jett-the-blackhearts",
+      "name": "Joan Jett and the Blackhearts"
+    },
+    {
+      "kind": "artist",
+      "slug": "dj-z-trip",
+      "name": "Z-Trip"
+    },
+    {
+      "kind": "artist",
+      "slug": "gene-loves-jezabel",
+      "name": "Gene Loves Jezebel"
+    },
+    {
+      "kind": "artist",
+      "slug": "wrecks",
+      "name": "Wrecks"
+    },
+    {
+      "kind": "artist",
+      "slug": "smoke-mirrors-sound-system",
+      "name": "smcke"
+    },
+    {
+      "kind": "artist",
+      "slug": "pinhead-gunpowder",
+      "name": "Pinhead Gunpowder"
+    },
+    {
+      "kind": "artist",
+      "slug": "karl-denson-s-tiny-universe",
+      "name": "Karl Denson's Tiny Universe"
+    },
+    {
+      "kind": "artist",
+      "slug": "re-flex",
+      "name": "Re-Flex"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-vandals",
+      "name": "The Vandals"
+    },
+    {
+      "kind": "venue",
+      "slug": "irvine-meadows",
+      "name": "Irvine Meadows"
+    },
+    {
+      "kind": "venue",
+      "slug": "knots-berry-farm",
+      "name": "Knots Berry Farm"
+    },
+    {
+      "kind": "venue",
+      "slug": "hollywood-park-racetrack",
+      "name": "Hollywood Park Racetrack"
+    },
+    {
+      "kind": "venue",
+      "slug": "los-angeles-memorial-coliseum",
+      "name": "Los Angeles Memorial Coliseum"
+    },
+    {
+      "kind": "venue",
+      "slug": "crawford-hall",
+      "name": "Crawford Hall"
+    },
+    {
+      "kind": "venue",
+      "slug": "caliente-racetrack",
+      "name": "Caliente Racetrack"
+    },
+    {
+      "kind": "venue",
+      "slug": "disneyland",
+      "name": "Disneyland"
+    },
+    {
+      "kind": "venue",
+      "slug": "arizona-veterans-memorial-coliseum",
+      "name": "Arizona Veterans Memorial Coliseum"
+    },
+    {
+      "kind": "venue",
+      "slug": "universal-amphitheater",
+      "name": "Universal Amphitheater"
+    },
+    {
+      "kind": "venue",
+      "slug": "jets",
+      "name": "Jets"
+    },
+    {
+      "kind": "venue",
+      "slug": "dodger-stadium",
+      "name": "Dodger Stadium"
+    },
+    {
+      "kind": "venue",
+      "slug": "hollywood-palladium",
+      "name": "Hollywood Palladium"
+    },
+    {
+      "kind": "venue",
+      "slug": "cal-state-fullerton",
+      "name": "Cal State Fullerton"
+    },
+    {
+      "kind": "venue",
+      "slug": "long-beach-arena",
+      "name": "Long Beach Arena"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-celebrity-theatre",
+      "name": "The Celebrity Theatre"
+    },
+    {
+      "kind": "venue",
+      "slug": "olympic-velodrome",
+      "name": "Olympic Velodrome"
+    },
+    {
+      "kind": "venue",
+      "slug": "hard-rock-cafe",
+      "name": "Hard Rock Cafe"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-galaxy-theatre",
+      "name": "The Galaxy Theatre"
+    },
+    {
+      "kind": "venue",
+      "slug": "club-caprice",
+      "name": "Club Caprice"
+    },
+    {
+      "kind": "venue",
+      "slug": "paradise-rock-club",
+      "name": "Paradise Rock Club"
+    },
+    {
+      "kind": "venue",
+      "slug": "hyundai-pavilion",
+      "name": "Hyundai Pavilion"
+    },
+    {
+      "kind": "venue",
+      "slug": "doheny",
+      "name": "Doheny"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-black-cat",
+      "name": "The Black Cat"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-ballroom",
+      "name": "The Ballroom"
+    },
+    {
+      "kind": "venue",
+      "slug": "wolftrap",
+      "name": "Wolftrap"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-fillmore-silver-spring",
+      "name": "The Fillmore Silver Spring"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-strathmore",
+      "name": "The Strathmore"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-hamilton-live",
+      "name": "The Hamilton Live"
+    },
+    {
+      "kind": "venue",
+      "slug": "rams-head-center-stage",
+      "name": "Rams Head Center Stage"
+    },
+    {
+      "kind": "venue",
+      "slug": "pier-6-pavillion",
+      "name": "Pier 6 Pavillion"
+    },
+    {
+      "kind": "venue",
+      "slug": "dar-constitution-hall",
+      "name": "DAR Constitution Hall"
+    },
+    {
+      "kind": "venue",
+      "slug": "rfk-stadium",
+      "name": "RFK Stadium"
+    },
+    {
+      "kind": "venue",
+      "slug": "bethesda-jazz-and-blues-club",
+      "name": "Bethesda Jazz and Blues Club"
+    },
+    {
+      "kind": "venue",
+      "slug": "national-museum-of-african-american-history-and-culture",
+      "name": "National Museum of African American History and Culture"
+    },
+    {
+      "kind": "venue",
+      "slug": "mgm-national-harbor",
+      "name": "MGM National Harbor"
+    },
+    {
+      "kind": "venue",
+      "slug": "dc9-nightclub",
+      "name": "DC9 Nightclub"
+    },
+    {
+      "kind": "venue",
+      "slug": "sixth-i-synagogue",
+      "name": "Sixth & I Synagogue"
+    },
+    {
+      "kind": "venue",
+      "slug": "huntington-state-beach",
+      "name": "Huntington State Beach"
+    },
+    {
+      "kind": "venue",
+      "slug": "carpenter-performing-arts-center",
+      "name": "Carpenter Performing Arts Center"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-observatory",
+      "name": "The Observatory"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-shrine-auditorium",
+      "name": "The Shrine Auditorium"
+    },
+    {
+      "kind": "venue",
+      "slug": "dolby-theatre",
+      "name": "Dolby Theatre"
+    },
+    {
+      "kind": "venue",
+      "slug": "mozambique",
+      "name": "Mozambique"
+    },
+    {
+      "kind": "venue",
+      "slug": "oc-fair-event-center",
+      "name": "OC Fair & Event Center"
+    },
+    {
+      "kind": "venue",
+      "slug": "21st-amendment",
+      "name": "21st Amendment"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-belasco",
+      "name": "The Belasco"
+    },
+    {
+      "kind": "venue",
+      "slug": "peacock-theater",
+      "name": "Peacock Theater"
+    },
+    {
+      "kind": "venue",
+      "slug": "the-roxy",
+      "name": "The Roxy"
+    },
+    {
+      "kind": "venue",
+      "slug": "mgm-music-hall-at-fenway",
+      "name": "MGM Music Hall at Fenway"
+    },
+    {
+      "kind": "venue",
+      "slug": "pavilion-theatre",
+      "name": "Pavilion Theatre"
+    },
+    {
+      "kind": "venue",
+      "slug": "garden-amp",
+      "name": "Garden Amp"
+    }
+  ]
+}
