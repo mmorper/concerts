@@ -414,13 +414,18 @@ function showPhase(concert: Concert, s: Snapshot): Phase {
  * either reaches the Photos library, costs a download, or writes to the repo.
  */
 async function confirm(question: string): Promise<boolean> {
+  return /^y(es)?$/i.test((await ask(question)).trim())
+}
+
+/** One line from stdin, terminal or not. EOF answers empty, never hangs. */
+async function ask(question: string): Promise<string> {
   const rl = createInterface({ input: process.stdin, output: process.stdout })
   const answer = await new Promise<string>((r) => {
     rl.question(question, r)
     rl.on('close', () => r(''))
   })
   rl.close()
-  return /^y(es)?$/i.test(answer.trim())
+  return answer
 }
 
 async function main(): Promise<void> {
@@ -459,31 +464,44 @@ async function main(): Promise<void> {
   const snap = snapshotOf(concert.date)
   const phase = showPhase(concert, snap)
 
-  if (!phase.command) {
-    console.log(`\n  Nothing left to run. Commit it.\n`)
+  /* 🔴 A SHOW IS A DESTINATION, NOT A SINGLE NEXT STEP.
+     This used to run `phase.command` or, when there was none, print "Nothing left to run"
+     and exit. That made a finished show a dead end: you could navigate to it and then do
+     nothing, which is half of a browse mode. It was also too narrow even mid-pipeline —
+     the recommended step is the usual want, not the only one. Wanting to redo a crop on a
+     show that is otherwise finished is an ordinary thing to want. */
+  const actions = actionsFor(concert.date, snap, phase)
+  if (actions.length === 0) {
+    console.log(`\n  Nothing to run for this show yet.\n`)
     return
   }
+  const action = await pickAction(actions)
+  if (!action) {
+    console.log(`\n  Nothing run.\n`)
+    return
+  }
+
   // Only the page-opening steps need the port; --finish, mining and ingest do not.
-  const needsPort = phase.command.includes('media:review') && !phase.command.includes('--finish')
+  const needsPort = action.command.includes('media:review') && !action.command.includes('--finish')
 
   /* Cleared BEFORE the confirm, not after. Asking "run this step?" and only then
      discovering the port is taken puts the owner a keystroke past a decision that was
      never available. */
   if (needsPort && !(await clearPort(concert.date))) return
 
-  console.log(`\n  ${DIM}${phase.command}${OFF}`)
-  if (needsPort) {
-    console.log(`  ${DIM}Opens a page and holds this terminal. Ctrl-C when you are done judging —` +
+  console.log(`\n  ${DIM}${action.command}${OFF}`)
+  if (needsPort || action.command.includes('media:crop')) {
+    console.log(`  ${DIM}Opens a page and holds this terminal. Ctrl-C when you are done —` +
       ` that stops the server too.${OFF}`)
   }
-  const go = await confirm(`\n  Run this step? [y/N] `)
+  const go = await confirm(`\n  Run it? [y/N] `)
   if (!go) {
     console.log(`\n  Not run. The command above is the one to use when you are ready.\n`)
     return
   }
 
   console.log('')
-  const code = await runStep(phase.command)
+  const code = await runStep(action.command)
 
   /* An interrupted review is a NORMAL ending. Ctrl-C is how you finish judging — the page
      holds the terminal until you stop it — so 130 and a SIGINT death are success here. A
@@ -491,6 +509,82 @@ async function main(): Promise<void> {
   if (code !== 0 && code !== 130) fail(`That step exited with code ${code}.`)
 
   report(concert, snap, snapshotOf(concert.date))
+}
+
+export interface Action {
+  key: string
+  label: string
+  detail: string
+  command: string
+  /** The phase's own recommendation. Pre-selected, and the only one marked. */
+  recommended: boolean
+}
+
+/**
+ * Everything you can do to this show right now, recommended one first.
+ *
+ * DERIVED FROM STATE, NOT A FIXED MENU. Offering `media:frames` to a show with no clips, or
+ * `media:crop` to one with nothing published, teaches a command that will open an empty page
+ * — which is how the pipeline lost the owner's trust the first time.
+ *
+ * The phase's own command is always present and always marked. The rest are the things that
+ * remain legitimate afterwards: re-judging a show and re-framing published stills are both
+ * revisitable decisions, not one-time gates, and neither had a route once a show was done.
+ */
+export function actionsFor(date: string, s: Snapshot, phase: Phase): Action[] {
+  const out: Action[] = []
+  const push = (key: string, label: string, detail: string, command: string) => {
+    if (out.some((a) => a.command === command)) return
+    out.push({ key, label, detail, command, recommended: command === phase.command })
+  }
+
+  if (phase.command) push('→', phase.title, phase.why, phase.command)
+
+  if (s.indexedCount > 0) {
+    const gaps = [
+      s.actsMissingHero > 0 ? `${s.actsMissingHero} act(s) with no hero` : null,
+      s.stillsUncropped > 0 ? `${s.stillsUncropped} still(s) uncropped` : null,
+    ].filter(Boolean).join(', ')
+    push('c', 'Crop & hero',
+      gaps || 'Redraw a box or move the hero. No Photos access, no prompt.',
+      `npm run media:crop ${date}`)
+  }
+
+  if (s.hasRun) {
+    push('r', 'Re-judge',
+      'Re-opens the review page with every verdict as you left it. Costs a Photos read ' +
+        'and a permission prompt.',
+      `npm run media:review ${date}`)
+  }
+
+  return out.sort((a, b) => Number(b.recommended) - Number(a.recommended))
+}
+
+/**
+ * Choose one. Enter takes the recommendation, so the common path is still two keystrokes.
+ */
+async function pickAction(actions: Action[]): Promise<Action | null> {
+  if (actions.length === 1) return actions[0]
+
+  console.log(`\n  ${BOLD}What do you want to do?${OFF}`)
+  actions.forEach((a, i) => {
+    /* Enter always takes the FIRST action, so the first is always the one marked — even on
+       a finished show, where the phase has no recommendation of its own. A prompt that says
+       "enter for the first" while nothing on screen is marked first is a small lie about
+       what the key will do. */
+    const isDefault = i === 0
+    const mark = isDefault ? `${CYAN}❯${OFF}` : ' '
+    const num = `${DIM}${i + 1}${OFF}`
+    const rec = isDefault ? ` ${DIM}(enter)${OFF}` : ''
+    console.log(`  ${mark} ${num} ${BOLD}${a.label}${OFF}${rec}`)
+    console.log(`      ${DIM}${a.detail}${OFF}`)
+  })
+
+  const raw = (await ask(`\n  1-${actions.length}, or enter for the first, q to quit: `)).trim().toLowerCase()
+  if (raw === 'q') return null
+  if (raw === '') return actions[0]
+  const n = Number(raw)
+  return Number.isInteger(n) && n >= 1 && n <= actions.length ? actions[n - 1] : null
 }
 
 /**

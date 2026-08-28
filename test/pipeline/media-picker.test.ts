@@ -8,7 +8,7 @@
  * judgements made after publication, and the picker can list everything.
  */
 import { describe, it, expect } from 'vitest'
-import { buildRows, framingGaps } from '../../scripts/media/index'
+import { actionsFor, buildRows, framingGaps } from '../../scripts/media/index'
 import { phaseOf, type Snapshot } from '../../scripts/media/phase'
 import type { Concert } from '../../src/types/concert'
 
@@ -115,5 +115,59 @@ describe('buildRows', () => {
     const s = snap({ actsMissingHero: 2 })
     expect(phaseOf(s, '2026-06-04').id).toBe('frame')
     expect(buildRows(concerts, new Map(), () => s, false)).toHaveLength(3)
+  })
+})
+
+describe('actionsFor', () => {
+  // Navigating to a show was only half of what the owner asked for. Selecting a finished one
+  // used to print "Nothing left to run. Commit it." and exit — a destination you could reach
+  // and then do nothing with. A show is a place you act on, not a single next step.
+  const phase = (id: string, command: string | null) =>
+    ({ id, step: 7, title: 'Done', why: 'why', command }) as never
+
+  it('gives a FINISHED show somewhere to go', () => {
+    const a = actionsFor('2024-08-20', snap(), phase('done', null))
+    expect(a.map((x) => x.command)).toEqual([
+      'npm run media:crop 2024-08-20',
+      'npm run media:review 2024-08-20',
+    ])
+  })
+
+  it('puts the phase recommendation first and marks it', () => {
+    const a = actionsFor('2026-06-04', snap({ actsMissingHero: 3 }),
+      phase('frame', 'npm run media:crop 2026-06-04'))
+    expect(a[0].recommended).toBe(true)
+    expect(a[0].command).toBe('npm run media:crop 2026-06-04')
+  })
+
+  it('never offers the same command twice', () => {
+    // The frame step IS media:crop. Listing it again as "Crop & hero" would put the same
+    // command on two lines and make the menu read as two different things.
+    const a = actionsFor('2026-06-04', snap({ actsMissingHero: 3 }),
+      phase('frame', 'npm run media:crop 2026-06-04'))
+    expect(new Set(a.map((x) => x.command)).size).toBe(a.length)
+  })
+
+  it('does not offer crop for a show with nothing published', () => {
+    // It would open an empty page, which is how the pipeline lost trust the first time.
+    const a = actionsFor('2023-11-16', snap({ indexedCount: 0, publishable: 0 }),
+      phase('judging', 'npm run media:review 2023-11-16'))
+    expect(a.some((x) => x.command.includes('media:crop'))).toBe(false)
+  })
+
+  it('does not offer re-judge for a show that was never opened', () => {
+    const a = actionsFor('2023-11-16', snap({ hasRun: false, indexedCount: 0 }),
+      phase('not-started', 'npm run media:review 2023-11-16'))
+    expect(a.map((x) => x.command)).toEqual(['npm run media:review 2023-11-16'])
+  })
+
+  it('names the outstanding gap on the crop action, so the menu is informative', () => {
+    const a = actionsFor('2025-11-20', snap({ actsMissingHero: 1 }), phase('done', null))
+    expect(a[0].detail).toContain('1 act(s) with no hero')
+  })
+
+  it('is empty only when there is genuinely nothing to do', () => {
+    expect(actionsFor('2023-01-01', snap({ hasRun: false, indexedCount: 0, publishable: 0 }),
+      phase('done', null))).toEqual([])
   })
 })
