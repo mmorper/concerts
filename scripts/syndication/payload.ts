@@ -324,10 +324,14 @@ export function buildPayload(
       role: "card",
       aspect: "1.91:1",
       path,
+      sourceUrl: post.image!.url,
       alt: cardAlt(post, credit),
       tier: provenance.tier,
       source: provenance.source,
     };
+    // Tier 1 only, and only when the owner drew one. An absent box is not {0,0,1,1} — the
+    // renderer must be able to tell "unreviewed" from "cropped to the full frame".
+    if (post.image?.crop) asset.crop = { ...post.image.crop };
     // Tier 1 ONLY. The absence on tiers 2 and 3 is what makes the rubric
     // visible, so this is never filled in "for consistency".
     if (provenance.tier === 1 && post.image?.credit) asset.byline = post.image.credit;
@@ -361,6 +365,7 @@ export function buildPayload(
   return {
     slug: post.slug,
     kind: "liner-note",
+    category: post.category,
     hook: social?.hook ?? "",
     ...(social?.beats?.length ? { beats: social.beats } : {}),
     caption: social?.caption ?? "",
@@ -421,13 +426,27 @@ export function buildOnThisDayPayload(post: OnThisDayPost): SyndicationPayload {
   }
 
   const media: MediaAsset[] = [];
-  if (!existsSync(join(ROOT, post.cardPath))) {
-    reasons.push(`card not rendered: ${post.cardPath}`);
+  /* 🔴 ON THIS DAY DRAWS THE SAME CARD NOW.
+     It used to attach `post.cardPath` — a 1200x630 composited by the legacy sharp + SVG
+     path and committed to the repo. That meant two visual identities in one feed: a
+     follower would see the frozen `WideSplit` design on a liner note and the old card on an
+     On This Day post, an hour apart, from the same account.
+     
+     Nothing here had to be rebuilt for it. Once the renderer takes a payload instead of a
+     post, and once `sourceUrl` says where the photograph comes from, both streams are just
+     payloads and the card is drawn the same way for each. That is the refactor paying for
+     itself rather than a second implementation.
+
+     `existsSync` is gone for the same reason it went on the liner-notes path: the card is
+     drawn after selection, and `renderSelected` re-checks for real. */
+  if (!post.imageUrl) {
+    reasons.push("no image — never bare type");
   } else {
     media.push({
       role: "card",
       aspect: "1.91:1",
-      path: post.cardPath,
+      path: cardPath(post.slug),
+      sourceUrl: post.imageUrl,
       alt: onThisDayAlt(post),
       tier: post.tier,
       source: post.source,

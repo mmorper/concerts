@@ -265,6 +265,7 @@ function payload(overrides: Partial<SyndicationPayload> = {}): SyndicationPayloa
     media: [
       {
         role: "card",
+        sourceUrl: 'https://r2.theaudiodb.com/x.jpg',
         aspect: "1.91:1",
         path: "public/og/liner-notes/depeche-mode-at-the-forum.png",
         alt: "Depeche Mode at the Kia Forum.",

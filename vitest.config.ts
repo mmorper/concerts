@@ -15,7 +15,12 @@ export default defineConfig({
     // which was worse than useless: 118 worker tests that pass under their own
     // configs looked broken, and the noise buried the three root suites that
     // are genuinely failing. Run them with `npm run test:workers`.
-    exclude: [...configDefaults.exclude, 'workers/**'],
+    /* `.claude/worktrees/**` holds full checkouts of other branches, so vitest collected a
+       SECOND copy of every test file — an older copy, against older source. It reported real
+       failures for code that was already fixed on this branch, which is worse than noise:
+       it makes a green run look red and a red run ambiguous. CI checks out clean and never
+       saw it, so this only ever misled locally. */
+    exclude: [...configDefaults.exclude, 'workers/**', '.claude/worktrees/**'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

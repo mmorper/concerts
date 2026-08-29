@@ -29,6 +29,7 @@ function payload(overrides: Partial<SyndicationPayload> = {}): SyndicationPayloa
     media: [
       {
         role: "card",
+        sourceUrl: 'https://r2.theaudiodb.com/x.jpg',
         aspect: "1.91:1",
         path: "public/og/liner-notes/bjork-at-the-greek.png",
         alt: "Björk at the Greek Theatre.",

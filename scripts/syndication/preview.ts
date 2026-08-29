@@ -87,13 +87,16 @@ async function main() {
     );
     const bySlug = new Map(notes.posts.map((p) => [p.slug, p]));
     chosen = queued.map((q) => bySlug.get(q.slug)).filter(Boolean) as LinerNotesPost[];
-
+    /* On This Day posts are in `queued` too and draw the SAME card now, but they are not in
+       liner-notes.json so they cannot be rebuilt here from a slug. Named rather than
+       silently dropped: a preview that omits half the run misrepresents it. */
     const otd = queued.filter((q) => q.kind === "on-this-day");
     if (otd.length) {
-      console.log(`\n${DIM}  ${otd.length} On This Day post(s) are also queued and are NOT shown:`);
+      console.log(`\n${DIM}  ${otd.length} On This Day post(s) also queued, drawing the same card:`);
       for (const o of otd) console.log(`    · ${o.slug}`);
-      console.log(`  They still composite their card the old way — this previews liner notes only.${OFF}`);
+      console.log(`${OFF}`);
     }
+
     if (!chosen.length) {
       console.log(`\n  Nothing queued. The ledger has already handled every eligible post.`);
       console.log(`  ${DIM}Preview one anyway:  npm run syndicate:preview -- <slug>${OFF}\n`);
@@ -114,7 +117,7 @@ async function main() {
         continue;
       }
 
-      const card = await renderCard(post, sources, browser, FORMATS.wide);
+      const card = await renderCard(payload, browser, FORMATS.wide);
       console.log(`  ${CYAN}THE PICTURE${OFF}`);
       console.log(`    ${card.path}`);
       console.log(`    ${DIM}1200×630 · ${(card.bytes / 1024).toFixed(0)} KB at q${card.quality} · ` +

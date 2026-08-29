@@ -94,10 +94,25 @@ describe("buildOnThisDayPayload", () => {
     ).toMatch(/caption 201 chars/);
   });
 
-  it("blocks a post whose card was never rendered — never bare type", () => {
-    const payload = buildOnThisDayPayload(post({ cardPath: "public/og/on-this-day/nope.png" }));
+  it("blocks a post with no image at all — never bare type", () => {
+    // The guard MOVED, it did not go away. On This Day used to attach a committed card and
+    // this checked the file existed; it now draws the same card as a liner note, at post
+    // time, so at build time there is nothing on disk to check. `renderSelected` re-checks
+    // for real and drops anything that failed to draw.
+    //
+    // What is still answerable here is whether there is an image to draw FROM.
+    const payload = buildOnThisDayPayload(post({ imageUrl: undefined }));
     expect(payload.eligible).toBe(false);
-    expect(payload.ineligibleReasons.join()).toMatch(/card not rendered/);
+    expect(payload.ineligibleReasons.join()).toMatch(/never bare type/);
+  });
+
+  it("points at the drawn card, not the committed one", () => {
+    // Two visual identities in one feed was the thing to fix: a follower would see the
+    // frozen WideSplit design on a liner note and the legacy card on an On This Day post,
+    // an hour apart, from the same account.
+    const payload = buildOnThisDayPayload(post());
+    expect(payload.media[0].path).toMatch(/^\.renditions\/.*-wide\.jpg$/);
+    expect(payload.media[0].sourceUrl).toBeTruthy();
   });
 
   it("writes alt text that leads with the date, as the card does", () => {
