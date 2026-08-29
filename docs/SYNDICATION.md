@@ -14,8 +14,27 @@ this doc is how to operate it.
 
 ## 🛑 Stop everything
 
+### From a phone
+
+**Actions → Syndicate → Run workflow → mode: `pause`.** Leave `channels` blank
+to stop everything, or name one to stop only that. Add a `reason` — it goes
+into the commit.
+
+That is the whole procedure. The workflow writes the switch, commits it and
+pushes, so it takes effect exactly the way a pause from a laptop does. `resume`
+is the same dialog with a different mode.
+
+It runs before the workflow's own kill-switch gate on purpose: that gate skips
+every later step when the switch is engaged, which would otherwise make
+`resume` the one mode that could never run.
+
+### From a machine
+
 ```bash
 npm run syndicate -- --pause "why"
+npm run syndicate -- --pause "why" --channels mastodon   # one channel only
+npm run syndicate -- --resume
+npm run syndicate -- --resume --channels mastodon
 git add data/syndication-pause.json && git commit -m "chore: pause syndication" && git push
 ```
 
@@ -23,7 +42,8 @@ Or `/social-pause` in Claude Code, which does all of that including the push.
 
 **It only takes effect once pushed.** The scheduled workflow reads the switch
 from the repository, not from your machine. A pause sitting in a working copy
-stops nothing.
+stops nothing. The workflow path above pushes for you, which is most of why it
+exists.
 
 Check state at any time:
 
@@ -31,10 +51,40 @@ Check state at any time:
 npm run syndicate -- --status
 ```
 
+`--status` lists the global switch *and* every channel stopped on its own, even
+while the global one is engaged — so "what is actually off" is one question
+with one answer, rather than something you discover after resuming.
+
 For an immediate stop that does not wait on CI, also disable the **Syndicate**
 workflow in the GitHub Actions UI. Useful, but not the mechanism — a workflow
 disabled in a web UI is invisible in the code, and six months later nobody
 knows why it happened or that it did.
+
+### One channel, not all of them
+
+Mastodon misbehaving should not cost Bluesky its posts. A `channels` map in the
+same file stops one and leaves the rest running:
+
+```jsonc
+{
+  "paused": false,
+  "channels": {
+    "mastodon": { "paused": true, "reason": "instance is down", "pausedAt": "..." }
+  }
+}
+```
+
+Every rule below applies again, scoped: a malformed channel entry pauses **that
+channel**, `SYNDICATION_PAUSED_CHANNELS=mastodon` pauses it whatever the file
+says, and no environment variable can resume one.
+
+**The global switch outranks the map.** `paused: true` stops every channel
+regardless of what the map says, because "stop everything" has to mean it. For
+the same reason, resuming one channel does not lift a global pause — the CLI
+says so rather than letting you think it worked.
+
+**Retraction still works on a paused channel.** You pause a channel precisely
+when you may need to pull something off it.
 
 ### How the switch behaves
 
@@ -50,6 +100,9 @@ The defaults are deliberately asymmetric — **ambiguity means stop**:
 | `paused: true` | Paused. |
 | Malformed or unreadable | **Paused**, and says why. |
 | `SYNDICATION_PAUSED=1` | Paused, whatever the file says. |
+| `channels.<name>.paused: true` | That channel paused; the rest keep posting. |
+| A malformed channel entry | **That channel** paused. Same asymmetry, scoped. |
+| `SYNDICATION_PAUSED_CHANNELS=mastodon` | Those channels paused, whatever the file says. |
 
 The malformed case is inverted from the ledger, which *throws* on corruption
 because silently starting fresh there would re-post everything. Here, "I cannot

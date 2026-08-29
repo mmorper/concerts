@@ -23,7 +23,7 @@ config({ override: true });
 
 import { run, DEFAULT_OPTIONS, type RunOptions } from "./run.ts";
 import { CHANNELS, type Channel } from "./types.ts";
-import { pause, resume, readPause, PAUSE_PATH } from "./pause.ts";
+import { pause, pauseChannel, resume, resumeChannel, readPause, PAUSE_PATH } from "./pause.ts";
 
 const args = process.argv.slice(2);
 
@@ -105,8 +105,36 @@ if (flag("status")) {
       ? `⛔ Syndication is PAUSED\n   ${verdict.detail}\n   Resume with: npm run syndicate -- --resume`
       : "✅ Syndication is ACTIVE — posts will go out."
   );
+  // Shown even when the global switch is on, so "what is engaged" is one
+  // question with one answer rather than a thing you discover after resuming.
+  const stopped = Object.entries(verdict.channels);
+  if (stopped.length) {
+    console.log(verdict.paused ? "\n   Also stopped individually:" : "\n   Stopped channels:");
+    for (const [channel, why] of stopped) console.log(`     ⛔ ${channel} — ${why}`);
+    console.log(`   Resume one with: npm run syndicate -- --resume --channels <name>`);
+  } else if (!verdict.paused) {
+    console.log("   Every channel is live.");
+  }
   console.log(`   Switch: ${PAUSE_PATH}`);
   process.exit(0);
+}
+
+/**
+ * `--channels` on a pause or resume scopes it. Parsed leniently on purpose: an
+ * unknown channel name must not stop somebody stopping a channel.
+ */
+function pauseTargets(): Channel[] {
+  let raw: string | undefined;
+  try {
+    raw = value("channels");
+  } catch {
+    raw = undefined;
+  }
+  if (!raw) return [];
+  return raw
+    .split(",")
+    .map((c) => c.trim())
+    .filter((c): c is Channel => CHANNELS.includes(c as Channel));
 }
 
 if (args.includes("--pause")) {
@@ -117,9 +145,17 @@ if (args.includes("--pause")) {
     // A pause must never fail for want of a reason — take it, then complain.
     reason = "";
   }
-  const state = pause(reason || "paused from the CLI, no reason given");
-  console.log("⛔ Syndication PAUSED. Nothing will post until it is resumed.");
-  console.log(`   Reason: ${state.reason}`);
+  reason = reason || "paused from the CLI, no reason given";
+  const targets = pauseTargets();
+
+  if (targets.length) {
+    for (const channel of targets) pauseChannel(channel, reason);
+    console.log(`⛔ PAUSED: ${targets.join(", ")}. Every other channel keeps posting.`);
+  } else {
+    const state = pause(reason);
+    console.log("⛔ Syndication PAUSED. Nothing will post until it is resumed.");
+    console.log(`   Reason: ${state.reason}`);
+  }
   console.log(`   Written: ${PAUSE_PATH}`);
   console.log("\n   ⚠️  COMMIT AND PUSH THIS FILE — the scheduled workflow reads it");
   console.log("       from the repository, not from your machine.\n");
@@ -127,8 +163,24 @@ if (args.includes("--pause")) {
 }
 
 if (flag("resume")) {
-  resume();
-  console.log("✅ Syndication RESUMED. Posts will go out on the next run.");
+  const targets = pauseTargets();
+  if (targets.length) {
+    for (const channel of targets) resumeChannel(channel);
+    console.log(`✅ RESUMED: ${targets.join(", ")}.`);
+    // Said plainly, because resuming a channel while everything is stopped
+    // looks like it worked and posts nothing.
+    if (readPause().paused) {
+      console.log("   ⚠️  The GLOBAL switch is still engaged, so this posts nothing yet.");
+      console.log("       Lift it with: npm run syndicate -- --resume");
+    }
+  } else {
+    resume();
+    console.log("✅ Syndication RESUMED. Posts will go out on the next run.");
+    const stopped = Object.keys(readPause().channels);
+    if (stopped.length) {
+      console.log(`   Still stopped individually: ${stopped.join(", ")}`);
+    }
+  }
   console.log(`   Written: ${PAUSE_PATH}`);
   console.log("\n   Remember to commit and push.\n");
   process.exit(0);
