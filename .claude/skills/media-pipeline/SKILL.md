@@ -417,6 +417,29 @@ concert-photos-audit/inbox/<YYYY-MM-DD>/
   are ignored. `"human league"`, `"Human League"`, `"the-human-league"` all resolve.
   Ambiguous or unknown fails loudly with the lineup listed.
 - **`hero.*` or `01.*`** marks a hero. Otherwise naming is free and ingest assigns order.
+
+**TWO MARKS, TWO SCOPES — do not conflate them.**
+
+| Mark | Scope | What it answers |
+|---|---|---|
+| `hero` | one per act **per show** | which frame leads this act on this night |
+| `signature` | one per act **across every show** | which frame a post reaches for when it is not about one night |
+
+Most posts are not about one night — a longevity or drought post spans years — so the
+signature is what they actually get. Before it existed the last tie-break was `date`
+ascending, so between two heroes from two nights the OLDER one won: not chosen, just what a
+stable sort does.
+
+Set from `media:crop` with `S`, beside `H` for the hero. Marked by hand for the same reason
+those are: every automatic attempt this pipeline has made at judging a photograph has failed,
+and #342 records three of them.
+
+Written to `media-index.json` ONLY, not to `media-decisions.json` — decisions are keyed per
+show, and a signature is a statement about the artist across shows with no per-show record to
+live in. The index is tracked and committed, so it is durable regardless.
+
+⚠️ No act is photographed at more than one show yet (2026-08-29), so nothing uses this today.
+It exists so the second show does not silently inherit the first.
 - **An empty artist folder is a signal**, not an absence: no personal media for that act,
   fall back to tier 2.
 - Optional `notes.txt` carries anything for the post — a different-night disclosure, a caption.

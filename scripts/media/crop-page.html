@@ -39,6 +39,7 @@
   .strip img.done{opacity:.85;border-color:var(--ok)}
   .pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
   .pill.hero{background:#ffd23f;color:#1a1a00}
+  .pill.sig{background:#8b5cf6;color:#fff}
   .pill.venue{background:#334;color:#cfd}
   button{background:#1c1c24;color:var(--ink);border:1px solid var(--line);border-radius:6px;
     padding:8px 12px;font-size:12.5px;cursor:pointer;font-weight:600}
@@ -57,7 +58,7 @@
 <header>
   <h1>Crop</h1>
   <span class="count" id="count"></span>
-  <span class="keys">← → move · drag box · [ ] resize · <b>enter</b> save · <b>0</b> reset · <b>x</b> clear · <b>h</b> hero</span>
+  <span class="keys">← → move · drag box · [ ] resize · <b>enter</b> save · <b>0</b> reset · <b>x</b> clear · <b>h</b> hero · <b>s</b> signature</span>
 </header>
 <main>
   <div class="work"><div class="wrap" id="wrap"></div></div>
@@ -75,6 +76,7 @@
       </div>
       <div class="row">
         <button id="hero">★ Make hero</button>
+        <button id="signature">✦ Signature</button>
       </div>
     </div>
   </aside>
@@ -108,10 +110,13 @@ function render() {
     `<b>${a.url.split('/').pop()}</b><br>${a.artist ?? '—'} · ${a.date}<br>` +
     `${a.w}×${a.h} · ${a.subject}<br>` +
     (a.hero ? `<span class="pill hero">★ HERO</span> ` : '') +
+    (a.signature ? `<span class="pill sig">✦ SIGNATURE</span> ` : '') +
     (a.subject !== 'artist' ? `<span class="pill venue">${a.subject}</span>` : '');
   // The button says what pressing it will DO, not what the asset is.
   $('#hero').textContent = a.hero ? '★ Clear hero' : '★ Make hero';
   $('#hero').disabled = a.subject !== 'artist';
+  $('#signature').textContent = a.signature ? '✦ Clear signature' : '✦ Signature';
+  $('#signature').disabled = a.subject !== 'artist';
 
   const done = A.filter(x => x.crop).length;
   /* Acts with no hero, counted the way the rule is written — one per act per show. Shown
@@ -253,6 +258,36 @@ async function postHero(on) {
 
 $('#hero').onclick = () => postHero(!A[i].hero);
 
+/* The best frame of this act across EVERY show — one per artist, where the hero is one per
+   night. Most posts are not about a particular night, so this is what they reach for. */
+async function postSignature(on) {
+  const a = A[i], n = i;
+  try {
+    const r = await fetch('/signature', { method: 'POST', body: JSON.stringify({ url: a.url, signature: on }) });
+    const { saved } = await r.json().catch(() => ({ saved: String(r.status) }));
+    if (!r.ok) throw new Error(saved === 'no act' ? 'venue and crowd frames have no act' : saved);
+    // Scoped to the ACT at any date, unlike the hero. Clear siblings here too or the strip
+    // shows two signatures until a reload.
+    if (on) for (const o of A) if (o !== a && o.artistNormalized === a.artistNormalized) o.signature = false;
+    a.signature = on;
+    render();
+    $('#saved').style.background = '';
+    $('#saved').textContent = on ? `✦ signature — ${saved}` : '✓ signature cleared';
+  } catch (err) {
+    $('#saved').textContent = `signature FAILED — ${err.message}`;
+    $('#saved').style.background = '#ff4d4d';
+  }
+  $('#saved').classList.add('on');
+  document.querySelectorAll('.strip img')[n]?.classList.add('flash');
+  clearTimeout(flashT);
+  flashT = setTimeout(() => {
+    $('#saved').classList.remove('on');
+    document.querySelectorAll('.strip img').forEach((t) => t.classList.remove('flash'));
+  }, 1400);
+}
+
+$('#signature').onclick = () => postSignature(!A[i].signature);
+
 const round = (o) => ({ x: +o.x.toFixed(4), y: +o.y.toFixed(4), w: +o.w.toFixed(4), h: +o.h.toFixed(4) });
 
 $('#save').onclick = () => post(round(c));
@@ -271,6 +306,7 @@ document.addEventListener('keydown', (e) => {
   else if (k === '0') { $('#reset').click(); }
   else if (k === 'x') { $('#clear').click(); }
   else if (k === 'h') { $('#hero').click(); }
+  else if (k === 's') { $('#signature').click(); }
 });
 
 fetch('/assets').then(r => r.json()).then(d => {

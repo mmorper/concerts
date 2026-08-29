@@ -47,6 +47,19 @@ export interface MediaIndexAsset {
   date: string;
   artistNormalized: string | null;
   hero?: boolean;
+  /**
+   * The best frame of this act ACROSS EVERY SHOW — one per artist, not one per night.
+   *
+   * 🔴 `hero` IS PER SHOW, AND THAT IS NOT THE SAME QUESTION. An act photographed at three
+   * nights has three heroes: the best frame of each. When a post reaches for "a photograph
+   * of Howard Jones" without being about one particular night — most posts — something has
+   * to choose between them, and until this existed the tie-break was `date` ascending. The
+   * EARLIEST show won, which nobody decided; it was just what a stable sort did.
+   *
+   * Marked by hand, like `hero` and `crop`, and for the same reason: every automatic guess
+   * this pipeline has tried at judging a photograph has failed (#342 records three).
+   */
+  signature?: boolean;
   order: number;
   /**
    * The owner's crop, normalised 0-1, authored at 4:5 (#342).
@@ -172,9 +185,10 @@ export function getAlbumArt(
  * a better frame later and the post improves without being touched.
  *
  * Preference order, and each step is a decision the owner already made:
- *   1. the HERO — they pressed H on the frame that should lead this act
- *   2. failing that, the lowest ordinal — `-01` is the best frame of the act by rank
- *   3. failing that, the earliest date, so the choice is stable rather than incidental
+ *   1. the SIGNATURE — the best frame of this act across every show they were photographed at
+ *   2. failing that, the HERO — the frame that leads this act at one particular night
+ *   3. failing that, the lowest ordinal — `-01` is the best frame of the act by rank
+ *   4. failing that, the earliest date, so the choice is stable rather than incidental
  *
  * STILLS ONLY. A render has `url: null` — video is never served from this repo — and a post
  * needs something fetchable.
@@ -189,6 +203,11 @@ export function getShowAsset(
   if (assets.length === 0) return undefined;
   return assets.sort(
     (a, b) =>
+      /* SIGNATURE FIRST — the owner's pick across every show. Then the per-show hero, then
+         the ranked ordinal, then the date. The date tie-break is LAST and now only decides
+         between two frames nobody has distinguished; it used to decide between three heroes
+         from three different nights, silently and in favour of the oldest. */
+      Number(Boolean(b.signature)) - Number(Boolean(a.signature)) ||
       Number(Boolean(b.hero)) - Number(Boolean(a.hero)) ||
       a.order - b.order ||
       a.date.localeCompare(b.date)
