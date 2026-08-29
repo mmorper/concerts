@@ -30,6 +30,14 @@
  * and disagrees with production, which is worse than no proof sheet — the
  * reviewer would sign off on something that was never going to ship.
  *
+ * ## Relationship to `syndicate:preview`
+ *
+ * `preview.ts` answers "what would the next run post", one post at a time, in a
+ * terminal. This answers "what is queued behind it", all of it, as a page you
+ * can scroll. They share the archive loader and both call the adapters' own
+ * composers, so the two cannot disagree about what a post says — only about how
+ * many they show and where.
+ *
  * ## Output
  *
  * `.renditions/contact-sheet.html`, alongside the cards it references.
@@ -45,11 +53,10 @@ import { composeBlueskyText } from "./adapters/bluesky.ts";
 import { composeMastodonStatus, mastodonWeight } from "./adapters/mastodon.ts";
 import { CHANNEL_LIMITS } from "./budgets.ts";
 import { graphemeLength, type Facet } from "./facets.ts";
-import { buildOnThisDayPayload, buildPayload, ROOT, type PayloadSources } from "./payload.ts";
+import { buildOnThisDayPayload, buildPayload, ROOT } from "./payload.ts";
+import { loadArchive } from "./run.ts";
 import { withUtm } from "./utm.ts";
 import type { SyndicationPayload } from "./types.ts";
-import type { LinerNotesPost } from "../../src/types/liner-notes.ts";
-import type { OnThisDayPost } from "../on-this-day/types.ts";
 
 const OUT_DIR = join(ROOT, ".renditions");
 const OUT_PATH = join(OUT_DIR, "contact-sheet.html");
@@ -298,31 +305,35 @@ ${cards.map(section).join("\n")}
 // ── Selection and render ─────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
-  const notes = load<{ posts: LinerNotesPost[] }>("public/data/liner-notes.json");
-  const otd = load<{ posts: OnThisDayPost[] }>("public/data/on-this-day.json");
+  // The same loader the run uses. Re-reading the four JSON files here would
+  // give the sheet its own idea of what the archive contains, which is the
+  // failure this file's header warns about one level up.
+  const { posts, onThisDay, sources: archiveSources } = loadArchive();
   const ledger = load<{ entries: Array<{ slug: string; status: string }> }>("data/syndication-log.json");
 
   // Pending means never published. A `seeded` row is the back catalogue waiting
   // its turn, which is exactly what wants proofing — so seeded posts are IN.
+  //
+  // Deliberately NOT `selectCandidates`: that answers "what would the next run
+  // post", honouring the limit and the backlog opt-in, and the point here is to
+  // see everything queued behind it.
   const published = new Set(
     ledger.entries.filter((e) => e.status !== "seeded").map((e) => e.slug)
   );
 
   const only = value("slug");
   const sources = {
-    concerts: load<{ concerts: unknown[] }>("public/data/concerts.json").concerts,
-    artistsMetadata: load("public/data/artists-metadata.json"),
-    venuesMetadata: load("public/data/venues-metadata.json"),
+    ...archiveSources,
     // Assume the card renders; this tool is about to render it.
     cardExists: () => true,
-  } as unknown as PayloadSources;
+  };
 
   const payloads: SyndicationPayload[] = [];
-  for (const post of notes.posts) {
+  for (const post of posts) {
     if (only ? post.slug !== only : published.has(post.slug)) continue;
     payloads.push(buildPayload(post, sources));
   }
-  for (const post of otd.posts) {
+  for (const post of onThisDay) {
     if (only ? post.slug !== only : published.has(post.slug)) continue;
     payloads.push(buildOnThisDayPayload(post));
   }
@@ -338,12 +349,6 @@ async function main(): Promise<void> {
   mkdirSync(OUT_DIR, { recursive: true });
 
   const cards: Card[] = [];
-  const renderSources = {
-    ...sources,
-    artistsTopTracks: load("public/data/artists-top-tracks.json"),
-    mediaIndex: load("public/data/media-index.json"),
-  };
-
   const shouldRender = !flag("no-render");
   const browser = shouldRender ? await puppeteer.launch({ headless: true }) : undefined;
 
@@ -362,14 +367,11 @@ async function main(): Promise<void> {
           card.image = relativeToOut(asset.path);
         } else if (browser) {
           try {
+            // The payload is everything the card needs, so this cannot draw
+            // something other than what the adapters will post.
             const { renderCard, FORMATS } = await import("./render-card.ts");
-            const post = notes.posts.find((p) => p.slug === payload.slug);
-            if (post) {
-              const r = await renderCard(post, renderSources as never, browser, FORMATS.wide);
-              card.image = relativeToOut(r.path.replace(`${ROOT}/`, ""));
-            } else {
-              card.renderError = "no liner note behind this payload";
-            }
+            const r = await renderCard(payload, browser, FORMATS.wide);
+            card.image = relativeToOut(r.path.replace(`${ROOT}/`, ""));
           } catch (err) {
             // A render that throws takes only its own card down. A contact
             // sheet missing one image is still worth reading; a crashed run is
