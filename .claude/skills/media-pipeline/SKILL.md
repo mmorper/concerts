@@ -431,7 +431,9 @@ ascending, so between two heroes from two nights the OLDER one won: not chosen, 
 stable sort does.
 
 Set with **`B`** — in the review page while culling, or in `media:crop` later. Same key in
-both, because it is the same mark.
+both, because it is the same mark. Marked by hand for the same reason those are: every
+automatic attempt this pipeline has made at judging a photograph has failed, and #342
+records three of them.
 
 **`B`, not `S`.** `s` is already the STUB subject in the review page, and binding the
 signature to it would silently stop `s` setting stub — the same shadowing that made crop use
@@ -455,9 +457,7 @@ show by construction. Prefer the act view when actually choosing.
 **Cross-show demotion happens at INGEST, not in `selects.json`.** That file knows about one
 night by construction, so it cannot see a holder at another date. `assetsForAct` spans every
 date and the warning names the demoted frame's date — "demoted" alone is uninterpretable when
-the two are years apart. Marked by hand for the same reason
-those are: every automatic attempt this pipeline has made at judging a photograph has failed,
-and #342 records three of them.
+the two are years apart.
 
 Written to `media-index.json` ONLY, not to `media-decisions.json` — decisions are keyed per
 show, and a signature is a statement about the artist across shows with no per-show record to

@@ -329,6 +329,9 @@ export async function run(options: PipelineOptions): Promise<void> {
     for (const dead of refresh.deadUrls) {
       console.warn(`   ⚠️  Dead image URL — ${dead}`);
     }
+    for (const slug of refresh.mismatched) {
+      console.error(`   ❌ ${slug}: byline does not match the photograph — see #441`);
+    }
   } catch (err) {
     // Never fail the run over image refresh; posts are still publishable.
     console.warn("   ⚠️  Image refresh skipped:", (err as Error).message);
