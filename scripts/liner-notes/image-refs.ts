@@ -62,6 +62,13 @@ export interface MediaIndexAsset {
   signature?: boolean;
   order: number;
   /**
+   * Set when this still was pulled from a video clip rather than shot as a photograph.
+   *
+   * A stronger quality signal than the date, and the reason the default tie-break is not
+   * date alone — see `getShowAsset`.
+   */
+  derivedFrom?: { original: string; frame?: number } | null;
+  /**
    * The owner's crop, normalised 0-1, authored at 4:5 (#342).
    *
    * Carried here because it CANNOT be re-derived downstream. Tier and source are
@@ -188,7 +195,8 @@ export function getAlbumArt(
  *   1. the SIGNATURE — the best frame of this act across every show they were photographed at
  *   2. failing that, the HERO — the frame that leads this act at one particular night
  *   3. failing that, the lowest ordinal — `-01` is the best frame of the act by rank
- *   4. failing that, the earliest date, so the choice is stable rather than incidental
+ *   4. failing that, a native still before a frame pulled from video
+ *   5. failing that, the NEWEST show — resolution climbed until 2018 and plateaued after
  *
  * STILLS ONLY. A render has `url: null` — video is never served from this repo — and a post
  * needs something fetchable.
@@ -210,7 +218,25 @@ export function getShowAsset(
       Number(Boolean(b.signature)) - Number(Boolean(a.signature)) ||
       Number(Boolean(b.hero)) - Number(Boolean(a.hero)) ||
       a.order - b.order ||
-      a.date.localeCompare(b.date)
+      /* 🔴 A NATIVE STILL BEFORE A FRAME PULLED FROM VIDEO, then the NEWEST show.
+         Both are facts in the index, neither is a guess about what is in the picture.
+
+         The date used to sort ASCENDING, so the oldest show won — not chosen, just what a
+         stable sort does. Newest is the better default and the archive says why: source
+         resolution climbs 4.2 MP (2012) → 8.0 (2015) → 12.2 (2018) and then PLATEAUS. So
+         "a newer phone takes a better photo" is true at the old end and stops being true
+         after 2018.
+
+         Which is why `derivedFrom` sorts above it. Howard Jones 2024-08-20 — on two
+         published posts right now — is six of seven frames pulled from video, median
+         8.3 MP against 12.2 for every native set since 2018. It is the weakest modern
+         imagery in the archive and no date rule would ever have caught it.
+
+         Neither replaces `signature`. Whether a photograph is GOOD is about the light and
+         how close you were, which no metadata records — that is a judgement, and it is
+         marked by hand. */
+      Number(Boolean(a.derivedFrom)) - Number(Boolean(b.derivedFrom)) ||
+      b.date.localeCompare(a.date)
   )[0];
 }
 
