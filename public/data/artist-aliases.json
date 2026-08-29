@@ -93,22 +93,5 @@
       "who": "Brian Baker",
       "note": "Setlist guest only; Bad Religion seen four times."
     }
-  ],
-  "discographyKeys": [
-    {
-      "act": "yaz",
-      "discographyKey": "yazoo",
-      "note": "Yaz in America, Yazoo everywhere else — the US label renamed them to avoid a clash. MusicBrainz files them as Yazoo."
-    },
-    {
-      "act": "the-english-beat",
-      "discographyKey": "the-beat",
-      "note": "The Beat at home, The English Beat in the States. MusicBrainz files them as The Beat."
-    },
-    {
-      "act": "omd",
-      "discographyKey": "orchestral-manoeuvres-in-the-dark",
-      "note": "The marquee said OMD; MusicBrainz files the discography under the full name. An `omd` record exists but is empty."
-    }
   ]
 }

@@ -1,7 +1,278 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-28T23:45:27.626Z",
+  "generatedAt": "2026-08-29T16:58:50.474Z",
   "proposals": [
+    {
+      "kind": "artist",
+      "slug": "beach-boys",
+      "name": "The Beach Boys",
+      "channel": "x",
+      "handle": "thebeachboys",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/thebeachboys"
+    },
+    {
+      "kind": "artist",
+      "slug": "beach-boys",
+      "name": "The Beach Boys",
+      "channel": "instagram",
+      "handle": "thebeachboys",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/thebeachboys/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-english-beat",
+      "name": "The Beat",
+      "channel": "x",
+      "handle": "theenglishbeat",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/theenglishbeat"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-english-beat",
+      "name": "The Beat",
+      "channel": "x",
+      "handle": "theofficialbeat",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/theofficialbeat"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-english-beat",
+      "name": "The Beat",
+      "channel": "instagram",
+      "handle": "theenglishbeat",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/theenglishbeat/"
+    },
+    {
+      "kind": "artist",
+      "slug": "haircut-100",
+      "name": "Haircut 100",
+      "channel": "instagram",
+      "handle": "haircutonehundred",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/haircutonehundred/"
+    },
+    {
+      "kind": "artist",
+      "slug": "omd",
+      "name": "OMD",
+      "channel": "x",
+      "handle": "OfficialOMD",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/OfficialOMD"
+    },
+    {
+      "kind": "artist",
+      "slug": "run-dmc",
+      "name": "Run-D.M.C.",
+      "channel": "x",
+      "handle": "OfficialRunDMC",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/OfficialRunDMC"
+    },
+    {
+      "kind": "artist",
+      "slug": "run-dmc",
+      "name": "Run-D.M.C.",
+      "channel": "instagram",
+      "handle": "rundmc",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/rundmc/"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-art-of-noise",
+      "name": "Art of Noise",
+      "channel": "x",
+      "handle": "artofnoiseoffic",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/artofnoiseoffic"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-art-of-noise",
+      "name": "Art of Noise",
+      "channel": "instagram",
+      "handle": "artofnoiseofficial",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/artofnoiseofficial/"
+    },
+    {
+      "kind": "artist",
+      "slug": "tone-loc",
+      "name": "Tone-Lōc",
+      "channel": "instagram",
+      "handle": "rappertoneloc",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/rappertoneloc/"
+    },
+    {
+      "kind": "artist",
+      "slug": "yaz",
+      "name": "Yazoo",
+      "channel": "x",
+      "handle": "yazooinfo",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/yazooinfo"
+    },
+    {
+      "kind": "artist",
+      "slug": "bangles",
+      "name": "The Bangles",
+      "channel": "x",
+      "handle": "OfficialBangles",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/OfficialBangles"
+    },
+    {
+      "kind": "artist",
+      "slug": "bangles",
+      "name": "The Bangles",
+      "channel": "instagram",
+      "handle": "officialthebangles",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/officialthebangles/"
+    },
+    {
+      "kind": "artist",
+      "slug": "stereo-mc-s",
+      "name": "Stereo MCs",
+      "channel": "x",
+      "handle": "StereoMcs_Rob_b",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/StereoMcs_Rob_b"
+    },
+    {
+      "kind": "artist",
+      "slug": "jane-weidlin",
+      "name": "Jane Wiedlin",
+      "channel": "bluesky",
+      "handle": "janewiedlin.bsky.social",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://bsky.app/profile/janewiedlin.bsky.social",
+      "did": "did:plc:ifd5skj5ft4r7gi6d6rzv6vi"
+    },
+    {
+      "kind": "artist",
+      "slug": "jane-weidlin",
+      "name": "Jane Wiedlin",
+      "channel": "instagram",
+      "handle": "janewiedlin",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/janewiedlin/"
+    },
+    {
+      "kind": "artist",
+      "slug": "raveonettes",
+      "name": "The Raveonettes",
+      "channel": "x",
+      "handle": "theraveonettes",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/theraveonettes"
+    },
+    {
+      "kind": "artist",
+      "slug": "raveonettes",
+      "name": "The Raveonettes",
+      "channel": "instagram",
+      "handle": "theraveonettes",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/theraveonettes/"
+    },
+    {
+      "kind": "artist",
+      "slug": "dj-z-trip",
+      "name": "Z-Trip",
+      "channel": "x",
+      "handle": "ztrip",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/ztrip"
+    },
+    {
+      "kind": "artist",
+      "slug": "run-dmc",
+      "name": "Run-D.M.C.",
+      "channel": "instagram",
+      "handle": "officialrundmc",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 5ecc3f72-20a6-47a0-8dc5-fb0b3dadeea0"
+    },
+    {
+      "kind": "artist",
+      "slug": "jane-weidlin",
+      "name": "Jane Wiedlin",
+      "channel": "x",
+      "handle": "janewiedlin",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 24575690-019f-4b77-9395-eaf6bcc3d5a7"
+    },
+    {
+      "kind": "artist",
+      "slug": "brian-setzer-and-the-nashvillians",
+      "name": "Brian Setzer",
+      "channel": "x",
+      "handle": "briansetzer59",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 7878a1ce-1f6d-4e44-8a2c-39e7bc547dde"
+    },
+    {
+      "kind": "artist",
+      "slug": "brian-setzer-and-the-nashvillians",
+      "name": "Brian Setzer",
+      "channel": "instagram",
+      "handle": "briansetzer59",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 7878a1ce-1f6d-4e44-8a2c-39e7bc547dde"
+    },
+    {
+      "kind": "artist",
+      "slug": "the-art-of-noise",
+      "name": "Art of Noise",
+      "channel": "x",
+      "handle": "taononline",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID be899560-1570-402e-9f95-3182898a8b70"
+    },
+    {
+      "kind": "artist",
+      "slug": "omd",
+      "name": "OMD",
+      "channel": "instagram",
+      "handle": "omdhq",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 6d072aa8-c851-49c5-92f9-cbca05f4bed9"
+    },
+    {
+      "kind": "artist",
+      "slug": "terem-quartet",
+      "name": "Terem Quartet",
+      "channel": "x",
+      "handle": "TeremQuartet",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID a6b3b7c2-4b5b-4047-a206-8850a4f449b5"
+    },
+    {
+      "kind": "artist",
+      "slug": "dj-z-trip",
+      "name": "Z-Trip",
+      "channel": "instagram",
+      "handle": "ztrip",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 03f93de6-6d62-4710-bcc7-9b3d7c3d95f5"
+    },
+    {
+      "kind": "artist",
+      "slug": "joan-jett-the-blackhearts",
+      "name": "Joan Jett and the Blackhearts",
+      "channel": "x",
+      "handle": "joanjett",
+      "evidence": "wikidata",
+      "note": "Wikidata property for MusicBrainz ID 46e63d3b-d91b-4791-bb73-e9f638a45ea0"
+    },
     {
       "kind": "artist",
       "slug": "the-human-league",
@@ -3633,11 +3904,6 @@
     },
     {
       "kind": "artist",
-      "slug": "beach-boys",
-      "name": "The Beach Boys"
-    },
-    {
-      "kind": "artist",
       "slug": "blood-or-whiskey",
       "name": "Blood or Whiskey"
     },
@@ -3680,16 +3946,6 @@
       "kind": "artist",
       "slug": "dramarama",
       "name": "Dramarama"
-    },
-    {
-      "kind": "artist",
-      "slug": "the-english-beat",
-      "name": "The Beat"
-    },
-    {
-      "kind": "artist",
-      "slug": "haircut-100",
-      "name": "Haircut 100"
     },
     {
       "kind": "artist",
@@ -3763,11 +4019,6 @@
     },
     {
       "kind": "artist",
-      "slug": "omd",
-      "name": "OMD"
-    },
-    {
-      "kind": "artist",
       "slug": "oingo-boingo",
       "name": "Oingo Boingo"
     },
@@ -3780,11 +4031,6 @@
       "kind": "artist",
       "slug": "peter-hook-and-the-light",
       "name": "Peter Hook & The Light"
-    },
-    {
-      "kind": "artist",
-      "slug": "run-dmc",
-      "name": "Run-D.M.C."
     },
     {
       "kind": "artist",
@@ -3810,11 +4056,6 @@
       "kind": "artist",
       "slug": "team-band",
       "name": "Team Band"
-    },
-    {
-      "kind": "artist",
-      "slug": "the-art-of-noise",
-      "name": "Art of Noise"
     },
     {
       "kind": "artist",
@@ -3863,11 +4104,6 @@
     },
     {
       "kind": "artist",
-      "slug": "tone-loc",
-      "name": "Tone-Lōc"
-    },
-    {
-      "kind": "artist",
       "slug": "when-in-rome",
       "name": "When in Rome"
     },
@@ -3875,11 +4111,6 @@
       "kind": "artist",
       "slug": "yates-mckendree",
       "name": "Yates McKendree"
-    },
-    {
-      "kind": "artist",
-      "slug": "yaz",
-      "name": "Yazoo"
     },
     {
       "kind": "artist",
@@ -3913,11 +4144,6 @@
     },
     {
       "kind": "artist",
-      "slug": "terem-quartet",
-      "name": "Terem Quartet"
-    },
-    {
-      "kind": "artist",
       "slug": "the-drummers-of-burundi",
       "name": "The Drummers Of Burundi"
     },
@@ -3933,48 +4159,13 @@
     },
     {
       "kind": "artist",
-      "slug": "brian-setzer-and-the-nashvillians",
-      "name": "Brian Setzer"
-    },
-    {
-      "kind": "artist",
-      "slug": "bangles",
-      "name": "The Bangles"
-    },
-    {
-      "kind": "artist",
-      "slug": "stereo-mc-s",
-      "name": "Stereo MCs"
-    },
-    {
-      "kind": "artist",
-      "slug": "jane-weidlin",
-      "name": "Jane Wiedlin"
-    },
-    {
-      "kind": "artist",
       "slug": "new-morty-show",
       "name": "The New Morty Show"
     },
     {
       "kind": "artist",
-      "slug": "raveonettes",
-      "name": "The Raveonettes"
-    },
-    {
-      "kind": "artist",
       "slug": "barroom-heroes",
       "name": "Bar Room Heroes"
-    },
-    {
-      "kind": "artist",
-      "slug": "joan-jett-the-blackhearts",
-      "name": "Joan Jett and the Blackhearts"
-    },
-    {
-      "kind": "artist",
-      "slug": "dj-z-trip",
-      "name": "Z-Trip"
     },
     {
       "kind": "artist",
@@ -4311,7 +4502,6 @@
     "artist:duran-duran": "2026-08-28",
     "artist:emf": "2026-08-28",
     "artist:earthgang": "2026-08-28",
-    "artist:echo-and-the-bunnymen": "2026-08-28",
     "artist:eek-a-mouse": "2026-08-28",
     "artist:el-ten-eleven": "2026-08-28",
     "artist:elton-john": "2026-08-28",
@@ -4476,7 +4666,6 @@
     "artist:jesus-jones": "2026-08-28",
     "artist:andrew-tosh": "2026-08-28",
     "artist:bat-fangs": "2026-08-28",
-    "artist:beach-boys": "2026-08-28",
     "artist:blood-or-whiskey": "2026-08-28",
     "artist:bryan-mcpherson": "2026-08-28",
     "artist:burning-spear": "2026-08-28",
@@ -4486,8 +4675,6 @@
     "artist:dennis-brown": "2026-08-28",
     "artist:dr-sick": "2026-08-28",
     "artist:dramarama": "2026-08-28",
-    "artist:the-english-beat": "2026-08-28",
-    "artist:haircut-100": "2026-08-28",
     "artist:hot-rod-lincoln": "2026-08-28",
     "artist:ian-mcculloch": "2026-08-28",
     "artist:joe-jackson": "2026-08-28",
@@ -4502,52 +4689,32 @@
     "artist:men-at-work": "2026-08-28",
     "artist:mike-ness": "2026-08-28",
     "artist:naked-eyes": "2026-08-28",
-    "artist:omd": "2026-08-28",
     "artist:oingo-boingo": "2026-08-28",
     "artist:pat-dinizio": "2026-08-28",
-    "artist:peter-hook-and-the-light": "2026-08-28",
-    "artist:run-dmc": "2026-08-28",
     "artist:school-of-fish": "2026-08-28",
     "artist:shinehead": "2026-08-28",
     "artist:snuff": "2026-08-28",
     "artist:solemn-sun": "2026-08-28",
     "artist:team-band": "2026-08-28",
-    "artist:the-art-of-noise": "2026-08-28",
     "artist:the-blasters": "2026-08-28",
     "artist:the-interrupters": "2026-08-28",
     "artist:the-messthetics": "2026-08-28",
     "artist:the-motels": "2026-08-28",
     "artist:the-nylons": "2026-08-28",
     "artist:the-paladins": "2026-08-28",
-    "artist:the-polecats": "2026-08-28",
     "artist:the-untouchables": "2026-08-28",
     "artist:thompson-twins": "2026-08-28",
-    "artist:tone-loc": "2026-08-28",
     "artist:when-in-rome": "2026-08-28",
     "artist:yates-mckendree": "2026-08-28",
-    "artist:yaz": "2026-08-28",
     "artist:the-brian-setzer-orchestra": "2026-08-28",
     "artist:bandits-of-the-acoustic-revolution": "2026-08-28",
     "artist:alien-fashion-show": "2026-08-28",
     "artist:abecedarians": "2026-08-28",
     "artist:jah-wobble-s-invaders-of-the-heart": "2026-08-28",
     "artist:sheila-chandra": "2026-08-28",
-    "artist:terem-quartet": "2026-08-28",
     "artist:the-drummers-of-burundi": "2026-08-28",
     "artist:blue-plate-special": "2026-08-28",
-    "artist:brian-setzer-68-comeback-special": "2026-08-28",
-    "artist:brian-setzer-and-the-nashvillians": "2026-08-28",
-    "artist:bangles": "2026-08-28",
-    "artist:stereo-mc-s": "2026-08-28",
-    "artist:jane-weidlin": "2026-08-28",
-    "artist:new-morty-show": "2026-08-28",
-    "artist:raveonettes": "2026-08-28",
-    "artist:barroom-heroes": "2026-08-28",
-    "artist:joan-jett-the-blackhearts": "2026-08-28",
-    "artist:dj-z-trip": "2026-08-28",
-    "artist:gene-loves-jezabel": "2026-08-28",
     "artist:wrecks": "2026-08-28",
-    "artist:smoke-mirrors-sound-system": "2026-08-28",
     "artist:pinhead-gunpowder": "2026-08-28",
     "artist:karl-denson-s-tiny-universe": "2026-08-28",
     "artist:re-flex": "2026-08-28",
@@ -4603,6 +4770,29 @@
     "venue:mgm-music-hall-at-fenway": "2026-08-28",
     "venue:pavilion-theatre": "2026-08-28",
     "venue:garden-amp": "2026-08-28",
-    "artist:the-human-league": "2026-08-28"
+    "artist:the-human-league": "2026-08-28",
+    "artist:beach-boys": "2026-08-29",
+    "artist:the-english-beat": "2026-08-29",
+    "artist:haircut-100": "2026-08-29",
+    "artist:omd": "2026-08-29",
+    "artist:peter-hook-and-the-light": "2026-08-29",
+    "artist:run-dmc": "2026-08-29",
+    "artist:the-art-of-noise": "2026-08-29",
+    "artist:the-polecats": "2026-08-29",
+    "artist:tone-loc": "2026-08-29",
+    "artist:yaz": "2026-08-29",
+    "artist:terem-quartet": "2026-08-29",
+    "artist:brian-setzer-68-comeback-special": "2026-08-29",
+    "artist:brian-setzer-and-the-nashvillians": "2026-08-29",
+    "artist:bangles": "2026-08-29",
+    "artist:stereo-mc-s": "2026-08-29",
+    "artist:jane-weidlin": "2026-08-29",
+    "artist:new-morty-show": "2026-08-29",
+    "artist:raveonettes": "2026-08-29",
+    "artist:barroom-heroes": "2026-08-29",
+    "artist:joan-jett-the-blackhearts": "2026-08-29",
+    "artist:dj-z-trip": "2026-08-29",
+    "artist:gene-loves-jezabel": "2026-08-29",
+    "artist:smoke-mirrors-sound-system": "2026-08-29"
   }
 }

@@ -49,16 +49,25 @@ describe('resolveOriginalArtistKey', () => {
     expect(key).toBe('depeche-mode')
   })
 
-  it('survives HOP 2 — an act whose discography lives under a different key', () => {
-    // THE TRAP. canonicalOf alone returns the concert-side slug, which is
-    // deliberately not the discography key for exactly these cases. Without
-    // the discographyKeys relation these drop to null, and a null here is
-    // indistinguishable from the common, correct "we don't hold this artist".
+  it('resolves the acts that used to need a second hop', () => {
+    // These three carried a `discographyKeys` relation — `omd` →
+    // `orchestral-manoeuvres-in-the-dark`, `yaz` → `yazoo`, `the-english-beat`
+    // → `the-beat` — and the relation has been REMOVED because the thing it
+    // bridged was a bug, not a fact about these bands.
+    //
+    // enrich-discography.ts keyed its output by `normalizeArtistName(name)`
+    // rather than by the artist's slug, so a record whose display name did not
+    // round-trip landed under a name-shaped key nothing looked up. 20 artists
+    // were affected. The relation was three of them, patched by hand.
+    //
+    // The discography is now keyed by slug, so the concert-side slug IS the
+    // discography key and hop 2 is a no-op here. Asserted rather than deleted,
+    // because a regression in the keying would land exactly here.
     const deps = realDeps()
 
-    expect(resolveOriginalArtistKey('OMD', deps)).toBe('orchestral-manoeuvres-in-the-dark')
-    expect(resolveOriginalArtistKey('Yaz', deps)).toBe('yazoo')
-    expect(resolveOriginalArtistKey('The English Beat', deps)).toBe('the-beat')
+    expect(resolveOriginalArtistKey('OMD', deps)).toBe('omd')
+    expect(resolveOriginalArtistKey('Yaz', deps)).toBe('yaz')
+    expect(resolveOriginalArtistKey('The English Beat', deps)).toBe('the-english-beat')
   })
 
   it('returns null for an artist we hold no discography for', () => {
@@ -75,11 +84,24 @@ describe('resolveOriginalArtistKey', () => {
   })
 
   it('does not accept a record that exists but holds no albums', () => {
-    // `omd` exists in discography.json with zero albums. Returning it would be
-    // worse than returning nothing: the caller would stop looking and the real
-    // 100-album catalogue under the full name would never be reached.
-    const key = resolveOriginalArtistKey('OMD', realDeps())
-    expect(key).not.toBe('omd')
+    // A record with zero albums is a worse answer than no record: the caller
+    // stops looking, and a real catalogue elsewhere is never reached.
+    //
+    // `omd` used to be the live example of this — an empty record under the
+    // slug while 100 albums sat under the full name. The keying fix means
+    // there is no longer a real empty record to point at, so the rule is
+    // asserted against a synthetic one. That is the better test anyway: it
+    // survives the data being correct.
+    const deps = realDeps()
+    const emptied = {
+      ...deps,
+      discography: { ...deps.discography, 'depeche-mode': { albums: [] } },
+    }
+
+    expect(resolveOriginalArtistKey('Depeche Mode', emptied)).not.toBe('depeche-mode')
+    // And the real record still resolves, so the guard is not just rejecting
+    // everything.
+    expect(resolveOriginalArtistKey('Depeche Mode', deps)).toBe('depeche-mode')
   })
 })
 

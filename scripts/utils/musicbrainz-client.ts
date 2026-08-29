@@ -88,62 +88,103 @@ export class MusicBrainzClient {
   }
 
   /**
-   * Search for artist by name, return MBID
-   * Uses fuzzy matching with Levenshtein distance
+   * Search for artist by name, return MBID.
+   *
+   * 🔴 `null` means MusicBrainz ANSWERED AND HAD NOTHING. It never means "we
+   * could not ask." That distinction is load-bearing, because the caller caches
+   * a null for ninety days as "this artist is not in MusicBrainz" — so a
+   * two-second outage used to become a three-month lie.
+   *
+   * It is not hypothetical. 25 of 257 artists carried `mbid: null`, including
+   * The Beach Boys, The Bangles, Jane Wiedlin and Gene Loves Jezebel. Every one
+   * of them resolves at **score 100** when the server actually replies; they
+   * were cached during a batch run that tripped MusicBrainz's throttle. The old
+   * code had two ways to reach that outcome and neither left a trace:
+   *
+   * 1. The 503 branch recursed with no bound — the same defect this file's
+   *    header already records for the older methods.
+   * 2. A blanket `catch { return null }` swallowed every network error, parse
+   *    failure and non-503 status into the same "not found" the caller trusts.
+   *
+   * Anything that is not a real answer now THROWS. The caller already has a
+   * try/catch that logs and skips without writing a cache entry, so a failure
+   * costs one artist on one run and is retried on the next.
    */
   async searchArtist(artistName: string): Promise<string | null> {
-    await this.rateLimiter.wait()
+    const data = await this.searchArtistRaw(artistName)
 
-    try {
-      const encodedName = encodeURIComponent(artistName)
-      const url = `${this.baseUrl}artist?query=${encodedName}&fmt=json`
-
-      const response = await fetch(url, {
-        headers: {
-          'User-Agent': USER_AGENT,
-          'Accept': 'application/json'
-        }
-      })
-
-      if (!response.ok) {
-        if (response.status === 503) {
-          console.warn('  ⚠️  Rate limit hit, waiting 2 seconds...')
-          await new Promise(resolve => setTimeout(resolve, 2000))
-          return this.searchArtist(artistName) // Retry
-        }
-        throw new Error(`MusicBrainz API error: ${response.status}`)
-      }
-
-      const data: MusicBrainzArtistSearchResponse = await response.json()
-
-      if (!data.artists || data.artists.length === 0) {
-        return null
-      }
-
-      // Find best match using fuzzy matching
-      let bestMatch = data.artists[0]
-      let bestSimilarity = this.stringSimilarity(artistName, bestMatch.name)
-
-      // Check other results for better matches
-      for (const artist of data.artists.slice(1)) {
-        const similarity = this.stringSimilarity(artistName, artist.name)
-        if (similarity > bestSimilarity) {
-          bestSimilarity = similarity
-          bestMatch = artist
-        }
-      }
-
-      // Require at least 80% similarity
-      if (bestSimilarity < 0.8) {
-        console.warn(`  ⚠️  Low confidence match: "${artistName}" → "${bestMatch.name}" (${(bestSimilarity * 100).toFixed(0)}%)`)
-        return null
-      }
-
-      return bestMatch.id
-    } catch (error) {
-      console.error(`  ❌ Failed to search artist: ${artistName}`, error)
+    if (!data.artists || data.artists.length === 0) {
       return null
     }
+
+    // Find best match using fuzzy matching
+    let bestMatch = data.artists[0]
+    let bestSimilarity = this.stringSimilarity(artistName, bestMatch.name)
+
+    // Check other results for better matches
+    for (const artist of data.artists.slice(1)) {
+      const similarity = this.stringSimilarity(artistName, artist.name)
+      if (similarity > bestSimilarity) {
+        bestSimilarity = similarity
+        bestMatch = artist
+      }
+    }
+
+    // Require at least 80% similarity. This one IS a real answer — MusicBrainz
+    // replied and the best it had was not close enough — so it caches, and the
+    // fix for a genuine mis-resolution is an MBID_CORRECTIONS entry.
+    if (bestSimilarity < 0.8) {
+      console.warn(`  ⚠️  Low confidence match: "${artistName}" → "${bestMatch.name}" (${(bestSimilarity * 100).toFixed(0)}%)`)
+      return null
+    }
+
+    return bestMatch.id
+  }
+
+  /**
+   * One search, retried on 503, throwing if it never gets an answer.
+   *
+   * The attempt count is a loop rather than a recursive default parameter, for
+   * the reason this file's header gives: a helper that defaults its own depth
+   * resets to zero on every recursion, so the bound never fires and a sustained
+   * outage becomes a silent infinite loop.
+   */
+  private async searchArtistRaw(artistName: string): Promise<MusicBrainzArtistSearchResponse> {
+    const url = `${this.baseUrl}artist?query=${encodeURIComponent(artistName)}&fmt=json`
+    let lastError = ''
+
+    for (let attempt = 0; attempt <= MAX_503_RETRIES; attempt++) {
+      await this.rateLimiter.wait()
+
+      try {
+        const response = await fetch(url, {
+          headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' }
+        })
+
+        if (response.status === 503 || response.status === 429) {
+          lastError = `HTTP ${response.status} — MusicBrainz busy`
+          console.warn(`  ⚠️  ${lastError}, retrying (${attempt + 1}/${MAX_503_RETRIES + 1})`)
+          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS))
+          continue
+        }
+
+        if (!response.ok) {
+          throw new Error(`MusicBrainz API error: ${response.status}`)
+        }
+
+        return await response.json() as MusicBrainzArtistSearchResponse
+      } catch (error) {
+        // A thrown non-503 is not retried — it is not a busy server, and
+        // hammering it would not help.
+        if (lastError === '') throw error
+        lastError = error instanceof Error ? error.message : String(error)
+      }
+    }
+
+    throw new Error(
+      `MusicBrainz never answered for "${artistName}" after ${MAX_503_RETRIES + 1} attempts (${lastError}). ` +
+      `Not caching a null — see the note on searchArtist.`
+    )
   }
 
   /**

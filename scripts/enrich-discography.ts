@@ -1,5 +1,4 @@
 import { MusicBrainzClient, Album } from './utils/musicbrainz-client'
-import { normalizeArtistName } from '../src/utils/normalize.js'
 import { createBackup } from './utils/backup'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { join } from 'path'
@@ -94,6 +93,66 @@ const MBID_CORRECTIONS: Record<string, { mbid: string; note: string }> = {
     mbid: 'd4bdc7e1-d287-4f88-b9c3-ad9f74964629',
     note: 'post-rename key for the same band (#300)',
   },
+
+  // ── The five that genuinely mis-resolve ────────────────────────────────────
+  //
+  // Found while auditing 25 artists that appeared to have no MusicBrainz ID.
+  // TWENTY of those were not resolution failures at all — their records were
+  // fetched correctly and filed under a normalised DISPLAY NAME instead of the
+  // artist's slug, so nothing in the project could find them. That is fixed at
+  // the loop above. Pinning them here would have hard-coded twenty MBIDs to
+  // work around a one-line keying bug, which is precisely what the note at the
+  // top of this table warns against.
+  //
+  // These five are the real thing: MusicBrainz answers, and answers wrong.
+
+  // Search returns "O.M.D", a Ragga Dancehall act, at 60% similarity — below
+  // the 0.8 bar, so it resolves to nothing rather than to the wrong band. The
+  // archive's "OMD" is the Wirral synthpop group, whose record is filed under
+  // the name spelled out in full and is unreachable from the initialism.
+  'omd': {
+    mbid: '6d072aa8-c851-49c5-92f9-cbca05f4bed9',
+    note: 'initialism does not reach "Orchestral Manoeuvres in the Dark"; search finds a Ragga Dancehall act',
+  },
+
+  // "Haircut 100" scores 64% against "Haircut", a US punk band from Northport.
+  // The correct record spells the number out — "Haircut One Hundred" — and a
+  // digit never matches a word by edit distance.
+  'haircut-100': {
+    mbid: 'bbb94ad0-3bb7-42af-99cd-e92f5a42c4c5',
+    note: 'MusicBrainz spells the number out as "Haircut One Hundred"',
+  },
+
+  // The best Latin-script match is "Worm Quartet" at 77%. The correct record is
+  // filed under its Cyrillic name, Терем-квартет, which cannot be reached by
+  // edit distance from a transliteration at any threshold.
+  'terem-quartet': {
+    mbid: 'a6b3b7c2-4b5b-4047-a206-8850a4f449b5',
+    note: 'record is filed under the Cyrillic "Терем-квартет"; transliteration matches "Worm Quartet"',
+  },
+
+  // "The Polecats" scores 67% against "Polecats" — the definite article alone
+  // is enough to miss the 0.8 bar on a nine-letter name. Same 1977 rockabilly
+  // band, and the only Polecats MusicBrainz has.
+  'the-polecats': {
+    mbid: '663d6cd0-b275-41a4-a581-4bb3cb878eb9',
+    note: 'leading "The" drops similarity to 67% against the correct record, "Polecats"',
+  },
+
+  // 🔴 This one was resolved to the WRONG ARTIST and cached, rather than left
+  // empty. `artists-metadata.json` carries the display name "smcke" for this
+  // act, which is itself upstream corruption — the archive's booking is Smoke
+  // and Mirrors Sound System. Searching "smcke" finds an Australian solo artist
+  // of that exact name at 100%, so every confidence check passed on a record
+  // for a different person.
+  //
+  // Pinned rather than waiting on the upstream name fix, because the wrong
+  // answer is live and scores perfectly. Fix the display name too and this
+  // entry becomes redundant rather than wrong.
+  'smoke-mirrors-sound-system': {
+    mbid: '3074c329-4e06-41a4-9ce9-a1792449f0fa',
+    note: 'display name is corrupted to "smcke", which matches an unrelated Australian artist at 100%',
+  },
 }
 
 /**
@@ -124,8 +183,24 @@ async function enrichDiscography(
     readFileSync(artistsMetadataPath, 'utf-8')
   )
 
-  // Get unique artists
-  const uniqueArtists = Object.values(artistsMetadata)
+  // Get unique artists, KEEPING THE KEY.
+  //
+  // `Object.values()` threw away the slug and the loop below re-derived it with
+  // `normalizeArtistName(artist.name)`, which is not the same string. A display
+  // name does not round-trip: 23 of 257 artists normalise to something other
+  // than their own key — "The Beach Boys" to `the-beach-boys` rather than
+  // `beach-boys`, "Yazoo" to `yazoo` rather than `yaz`, "Run-D.M.C." to
+  // `run-d-m-c` rather than `run-dmc`.
+  //
+  // The effect was invisible and total: the record was fetched correctly, the
+  // albums were correct, and the whole thing was filed under a key nothing else
+  // in the project ever looks up. 20 artists appeared to have no MusicBrainz ID
+  // while their discography sat in the same file under a name-shaped key.
+  //
+  // Worse, it collided. `brian-setzer-68-comeback-special` and
+  // `brian-setzer-and-the-nashvillians` are two distinct acts in the archive
+  // and both normalise to `brian-setzer`, so one silently overwrote the other.
+  const uniqueArtists = Object.entries(artistsMetadata)
   console.log(`Found ${uniqueArtists.length} unique artists\n`)
 
   // Load existing discography cache if available
@@ -151,9 +226,7 @@ async function enrichDiscography(
     console.log(`🎯 Restricted to a single artist: ${artistFilter}\n`)
   }
 
-  for (const artistRecord of uniqueArtists) {
-    const artist = artistRecord
-    const normalized = normalizeArtistName(artist.name)
+  for (const [normalized, artist] of uniqueArtists) {
 
     // --artist restricts the run to one slug (see the flag comment above)
     if (artistFilter && normalized !== artistFilter) {
