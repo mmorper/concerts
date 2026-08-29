@@ -148,16 +148,28 @@ function normalizedOpener(opener: unknown): string | undefined {
 }
 
 /**
- * Which venue the post is *about*, which is not always the venue of the night
- * it anchors to: a post can name a venue the resolved concert does not, and
- * the credit stack has to follow the post. Shared by the credit stack and
- * `refs` so a mention can never be addressed to a different venue than the one
- * printed on the card.
+ * The venue of the night the card is about.
+ *
+ * Shared by the credit stack and `refs`, so a venue mention can never be addressed to a
+ * different venue than the one printed on the card.
  */
-export function resolveVenueSlug(post: LinerNotesPost, concert: Concert): string {
-  return post.venues.includes(concert.venueNormalized)
-    ? concert.venueNormalized
-    : post.venues[0] ?? concert.venueNormalized;
+export function resolveVenueSlug(_post: LinerNotesPost, concert: Concert): string {
+  /* 🔴 THE VENUE AND THE DATE COME FROM THE SAME SHOW, ALWAYS.
+
+     This used to prefer `post.venues[0]` when the concert's venue was not one the post
+     named, on the reasoning that the credit stack should follow the post. The date never
+     followed with it — `buildCredit` takes that straight off the concert — so the two
+     could describe different nights, and did: "Hard Rock Cafe · November 2017", a venue
+     from a 1995 show and a date from a 2017 one.
+
+     Naming a night is `cardConcert`'s job and it makes that call once. By the time a
+     concert reaches here it IS the answer, and the credit's only remaining job is to
+     describe it consistently.
+
+     Measured before removing: the override branch fires on 0 of 58 posts through the
+     anchor path, so this changes nothing that is currently correct. It only closes the
+     path that produced a show which never happened. */
+  return concert.venueNormalized;
 }
 
 /**
@@ -192,7 +204,22 @@ export function cardConcert(
 ): Concert | undefined {
   const showLink = post.deepLinks?.find((l) => l.type === "setlist");
   const postNight = showLink?.url.match(/[?&]show=([^&]+)/)?.[1];
-  if (!postNight && shotOn) {
+
+  /* 🔴 A `?show=` LINK IS NOT THE TEST FOR "IS THIS ABOUT ONE NIGHT". It is the test for
+     "does setlist.fm have this night", which is a different question with a different
+     answer on 12 of 58 posts.
+
+     `the-brian-setzer-orchestra-days-after-the-bends-dropped` names one year and one venue
+     — Hard Rock Cafe, 1995, days after The Bends dropped. It is as single-night as a post
+     gets. It carries no `?show=` link only because no setlist exists for a 1995 club show,
+     and that absence read as "span", so the card followed a 2017 photograph and announced
+     a Hard Rock Cafe show in November 2017. That show never happened.
+
+     The post's own data answers the question directly: one year and one venue is one night.
+     Ask that, and the setlist's existence stops deciding what the card is about. */
+  const singleNight = post.years?.length === 1 && post.venues?.length === 1;
+
+  if (!postNight && !singleNight && shotOn) {
     const thatNight = concerts.find((c) => c.date === shotOn);
     if (thatNight) return thatNight;
   }
