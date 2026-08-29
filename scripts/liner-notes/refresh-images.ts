@@ -56,6 +56,13 @@ export interface RefreshResult {
   upgraded: number;
   /** Slugs whose image URL changed, so callers can regenerate derived assets. */
   changedSlugs: string[];
+  /**
+   * Posts whose photograph and byline disagree about the capture date.
+   *
+   * Should always be empty. Non-empty means a card would print a false claim about when a
+   * photograph was taken, which the different-night rule depends on being true.
+   */
+  mismatched: string[];
 }
 
 /**
@@ -221,6 +228,7 @@ export async function refreshPostImages(
     upgraded: 0,
     deadUrls: [],
     changedSlugs: [],
+    mismatched: [],
   };
 
   /* Upgrade BEFORE re-resolving. An upgraded post's URL is already current, and running it
@@ -252,8 +260,59 @@ export async function refreshPostImages(
     if (fresh && fresh !== image.url) {
       if (verbose) console.log(`   ↻ ${post.slug}: re-resolved ${image.source} image`);
       image.url = fresh;
+      /* 🔴 A NEW URL ON A SHOW IMAGE IS A NEW PHOTOGRAPH, AND THE FIELDS BESIDE IT DESCRIBE
+         THE OLD ONE.
+
+         `credit`, `shotOn` and `crop` are all statements about a specific frame. Moving the
+         URL and leaving them is how `social-distortion-14-more-2018-festival-bill` — a post
+         about the 2018 festival — came to carry the 2024-12-06 photograph with
+         "Mike Morper · 28 October 2018" burned into the card. The byline then asserts the
+         photograph was taken on the night the post is about, which is the fabricated-memory
+         failure the different-night rule exists to prevent, produced by the machinery meant
+         to prevent it. The capture date IS the disclosure; a stale one inverts it.
+
+         The crop is the other half and the more dangerous one: coordinates measured on one
+         frame, applied to another, point somewhere arbitrary. That is the beheaded subject
+         #352 is about.
+
+         Only `show` needs this. For `venue` a changed URL is the SAME photograph at a new
+         address — Google rotates the resource name — so its byline and crop must survive,
+         and re-deriving them there would be the opposite bug. */
+      if (image.source === "show" && image.ref) {
+        const asset = getShowAsset(image.ref, sources);
+        // Guard on identity, not existence: if the resolver and the index disagree about
+        // which frame this is, the safe answer is to leave the old fields alone rather than
+        // describe the new photograph with a third frame's metadata.
+        if (asset?.url === fresh) {
+          image.credit = showByline(asset.date);
+          image.shotOn = asset.date;
+          if (asset.crop) image.crop = { ...asset.crop };
+          else delete image.crop;
+        }
+      }
       result.reresolved++;
       result.changedSlugs.push(post.slug);
+    }
+  }
+
+  /* ── The assertion, because a stage that cannot be wrong invisibly is worth the two lines
+     ────────────────────────────────────────────────────────────────────────────────────
+     Every published still is named `<date>-<act>-NN.jpg`, so a show image carries its own
+     capture date twice: once in the filename and once in `shotOn`. They must agree, and
+     when they do not the byline on the card is a false claim about a photograph.
+
+     This is what caught the bug above, after it had already written six posts. It costs one
+     pass over 58 posts. */
+  for (const post of posts) {
+    const image = post.image;
+    if (image?.source !== "show" || !image.url || !image.shotOn) continue;
+    const named = image.url.match(/\/images\/shows\/(\d{4}-\d{2}-\d{2})-/)?.[1];
+    if (named && named !== image.shotOn) {
+      result.mismatched.push(post.slug);
+      console.warn(
+        `   ⚠️  ${post.slug}: image is from ${named} but the byline says ${image.shotOn} — ` +
+          `the card would claim the wrong capture date`
+      );
     }
   }
 
