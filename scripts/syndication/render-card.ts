@@ -23,8 +23,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import puppeteer, { type Browser } from "puppeteer";
 import { deriveRect, derivationFor, retainedFraction } from "../media/derive.ts";
-import { postNightOf, showByline, type ImageSources } from "../liner-notes/image-refs.ts";
-import { buildCredit, resolveAnchorConcert, type PayloadSources } from "./payload.ts";
+import { showByline, type ImageSources } from "../liner-notes/image-refs.ts";
+import { buildCredit, cardConcert, type PayloadSources } from "./payload.ts";
 import { classifyImageUrl } from "./provenance.ts";
 import { cityRegion } from "./region.ts";
 import type { CropBox, LinerNotesPost } from "../../src/types/liner-notes.ts";
@@ -495,37 +495,12 @@ export async function renderCard(
     .toBuffer();
   const imageDataUri = `data:image/jpeg;base64,${cropped.toString("base64")}`;
 
-  /* 🔴 IS THIS POST ABOUT ONE NIGHT, OR ABOUT A SPAN? The card says different things.
-
-     `resolveAnchorConcert` ALWAYS returns a concert — for a span post it falls through to
-     "earliest by the lead artist", which is furniture identifying *a* show, explicitly not
-     a claim that the post is about that night. Feeding that date to the different-night
-     rule turns a deliberate fallback into an assertion, and the byline then disclaims
-     against a night the post never claimed: `howard-jones-39-years-of-shows` is about six
-     shows across 39 years, and rendered "not the 1985 night" over a photograph that is
-     legitimately one of the six.
-
-     The only durable signal that a post is about ONE night is the `?show=` deep link — the
-     pipeline emits it only when a setlist backs that night, and `resolveAnchorConcert`
-     treats it as rule 1 for the same reason. Absent it, the post is about a span. */
-  const postNight = postNightOf(post);
-
-  /* The furniture follows the SUBJECT when there is one, and the PHOTOGRAPH otherwise.
-
-     A post about one night: that night is the subject, the credit stack names it, and the
-     byline discloses if the photograph came from elsewhere.
-
-     A post about a span has no subject night, so naming an arbitrary one under a photograph
-     taken somewhere else puts the picture and its caption in disagreement — this card read
-     "Irvine Meadows · June 1985" beneath a frame shot at YouTube Theatre in 2024. On a
-     tier-1 card the photograph is the most concrete claim present; the furniture supports
-     it rather than contradicting it. */
-  const shotThatNight = source.date ? sources.concerts.find((c) => c.date === source.date) : undefined;
-  const anchor = postNight
-    ? resolveAnchorConcert(post, sources.concerts)
-    : shotThatNight ?? resolveAnchorConcert(post, sources.concerts);
-  if (!anchor) throw new Error(`${post.slug}: no concert resolves for the credit stack`);
-  const concert = anchor;
+  /* ONE RULE, SHARED WITH THE PAYLOAD. `cardConcert` decides which night this card is about,
+     and `buildPayload` calls the same function for the alt text — because when the two chose
+     separately, the card said "The Wiltern · May 2023" while its own alt said "Olympic
+     Velodrome, 1993", and a screen-reader user got a different show from a sighted one. */
+  const concert = cardConcert(post, sources.concerts, source.date);
+  if (!concert) throw new Error(`${post.slug}: no concert resolves for the credit stack`);
   const credit = buildCredit(post, concert, sources);
   // The display name of the act actually in the frame, so it can lead the act line.
   const leadName = sources.artistsMetadata[lead]?.name;
