@@ -23,10 +23,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import puppeteer, { type Browser } from "puppeteer";
 import { deriveRect, derivationFor, retainedFraction } from "../media/derive.ts";
-import { showByline, type ImageSources } from "../liner-notes/image-refs.ts";
-import { buildCredit, cardConcert, type PayloadSources } from "./payload.ts";
-import { classifyImageUrl } from "./provenance.ts";
-import { cityRegion } from "./region.ts";
+import type { SyndicationPayload } from "./types.ts";
 import type { CropBox, LinerNotesPost } from "../../src/types/liner-notes.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -105,7 +102,8 @@ export interface RenderResult {
  * is the honest type. Reconciling the two declarations is a tidy-up for #340's schema work,
  * not something to do from here.
  */
-export type RenderSources = PayloadSources & ImageSources;
+/** @deprecated The renderer takes a `SyndicationPayload` now and needs no sources at all. */
+export type RenderSources = never;
 
 function escapeHtml(s: string): string {
   return s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
@@ -422,69 +420,52 @@ async function loadImage(url: string): Promise<Buffer> {
  * half-right card is worse than none, because it publishes.
  */
 export async function renderCard(
-  post: LinerNotesPost,
-  sources: RenderSources,
+  payload: SyndicationPayload,
   browser: Browser,
   format: Format = FORMATS["4x5"]
 ): Promise<RenderResult> {
-  const lead = post.artists[0];
-  if (!lead) throw new Error(`${post.slug}: no lead artist`);
+  /* 🔴 THE PAYLOAD IS THE ONLY INPUT, AND THAT IS THE POINT.
+     This used to take `(post, sources)` and re-derive its own tier, its own night, its own
+     image and its own credit — while `buildPayload` derived the same things for the
+     adapters. Five bugs on 2026-08-28 came from exactly that: two places answering one
+     question, disagreeing, and each fix catching one symptom.
 
-  /* 🔴 DRAW WHAT THE POST SAYS. ONE PLACE DECIDES TIER, AND IT IS NOT HERE.
-     This used to re-resolve the tier-1 asset itself with `getShowAsset(lead)`, which was
-     right when the renderer was the only path to tier 1 — before #416 taught the pipeline to
-     promote a published post. It is wrong now, and quietly: `resolveImage` and
-     `upgradeToOwnPhotography` both REFUSE to put an artist photograph on a venue-subject
-     post, and re-resolving walked straight past both gates.
+       · tier 2 refused outright, which would have dropped 53 of 58 posts
+       · the renderer re-resolved tier and bypassed both venue gates
+       · the card said "The Wiltern · May 2023", its alt said "Olympic Velodrome, 1993"
 
-     Measured on the live archive: `universal-amphitheater-5-shows-over-3-decades` is a
-     `venue-loyalty` post whose stored image is correctly an album cover, and this rendered
-     a Howard Jones frame shot at YouTube Theatre in 2024 — a different act at a different
-     venue, years after Universal was demolished. Two gates, both correct, both bypassed by
-     the thing that actually draws the card.
+     Handing it the payload does not catch the sixth — it makes the sixth impossible. There
+     is nothing left here to decide. `buildPayload` decides; this draws. */
+  const card = payload.media.find((m) => m.role === "card");
+  if (!card) throw new Error(`${payload.slug}: no card asset — never bare type`);
 
-     `post.image` carries everything needed since #415: the url, the crop box, and the
-     capture date. There is nothing left to re-derive, and deriving it here means the tier
-     rule lives in two places that can disagree. A post whose stored image is stale renders
-     as whatever it currently says and self-corrects on the next pipeline run, which is the
-     honest behaviour rather than the renderer quietly overriding it. */
-  if (!post.image?.url) throw new Error(`${post.slug}: no image at all — never bare type`);
-  const source = {
-    url: post.image.url,
-    crop: post.image.crop,
-    date: post.image.shotOn,
-  };
-
-  const provenance = classifyImageUrl(source.url);
-  if (!provenance) throw new Error(`${post.slug}: unclassified image host ${source.url}`);
-
-  const image = await loadImage(source.url);
+  const image = await loadImage(card.sourceUrl);
   const meta = await sharp(image).metadata();
-  if (!meta.width || !meta.height) throw new Error(`${post.slug}: cannot read ${source.url}`);
+  if (!meta.width || !meta.height) throw new Error(`${payload.slug}: cannot read ${card.sourceUrl}`);
 
   let pipeline = sharp(image);
   let retained = 1;
   let rect = { left: 0, top: 0, width: meta.width, height: meta.height };
 
-  if (source.crop) {
-    const derivation = derivationFor(provenance.tier);
+  if (card.crop) {
+    const derivation = derivationFor(card.tier);
     /* DERIVE AGAINST THE SLOT, NOT THE CARD. The wide card is 1.91:1 and its photograph is
        square; deriving at 1.905 would take a letterbox out of the box and throw away 58% of
        it for a slot that wanted none of that. */
-    rect = deriveRect(source.crop, { width: meta.width, height: meta.height }, format.slotAspect, derivation);
-    retained = retainedFraction(source.crop, { width: meta.width, height: meta.height }, format.slotAspect);
+    rect = deriveRect(card.crop, { width: meta.width, height: meta.height }, format.slotAspect, derivation);
+    retained = retainedFraction(card.crop, { width: meta.width, height: meta.height }, format.slotAspect);
     pipeline = pipeline.extract(rect).resize(format.slot.width, format.slot.height, { fit: "fill" });
-  } else if (provenance.tier === 1) {
+  } else if (card.tier === 1) {
     /* 🔴 REFUSE AN UNCROPPED TIER-1 ASSET. Falling back to a centre crop is the exact
        failure #342 documents, and it is invisible: the card renders, it just cuts the
        subject's head off. An asset the owner has not judged is not ready to publish.
        Tier 2 has no box because nobody drew one, which is a different thing entirely. */
-    throw new Error(`${post.slug}: ${source.url} has no crop box — run \`npm run media:crop\``);
+    throw new Error(`${payload.slug}: ${card.sourceUrl} has no crop box — run \`npm run media:crop\``);
   } else {
     /* No box, and none is owed. A press shot is composed centred with deliberate headroom —
-       the same reason #342 centre-derives tier 2 rather than top-aligning it. `cover` is
-       the right fit for a 700x700 source going into a 630x630 slot: it is a downscale, so
-       nothing is upscaled and nothing is cropped when the source is already square. */
+       the same reason #342 centre-derives tier 2 rather than top-aligning it. `cover` suits
+       a 700x700 source going into a 630x630 slot: a downscale, nothing upscaled, and nothing
+       cropped when the source is already square. */
     pipeline = pipeline.resize(format.slot.width, format.slot.height, { fit: "cover", position: "centre" });
   }
 
@@ -495,41 +476,29 @@ export async function renderCard(
     .toBuffer();
   const imageDataUri = `data:image/jpeg;base64,${cropped.toString("base64")}`;
 
-  /* ONE RULE, SHARED WITH THE PAYLOAD. `cardConcert` decides which night this card is about,
-     and `buildPayload` calls the same function for the alt text — because when the two chose
-     separately, the card said "The Wiltern · May 2023" while its own alt said "Olympic
-     Velodrome, 1993", and a screen-reader user got a different show from a sighted one. */
-  const concert = cardConcert(post, sources.concerts, source.date);
-  if (!concert) throw new Error(`${post.slug}: no concert resolves for the credit stack`);
-  const credit = buildCredit(post, concert, sources);
-  // The display name of the act actually in the frame, so it can lead the act line.
-  const leadName = sources.artistsMetadata[lead]?.name;
-  /* Off the venue record, not the concert: `venuesMetadata` is what carries `state`, and it
-     self-heals on the weekly refresh where a concert row does not. */
-  const venueSlug = post.venues.find((v) => sources.venuesMetadata[v]?.name === credit.venue)
-    ?? concert.venueNormalized;
-  const venueState = (sources.venuesMetadata[venueSlug] as { state?: string } | undefined)?.state;
+  const credit = payload.credit;
+  const hook = payload.hook;
+  if (!hook) throw new Error(`${payload.slug}: no authored hook — never chop one out of prose`);
 
-  const hook = post.social?.hook;
-  if (!hook) throw new Error(`${post.slug}: no authored hook — never chop one out of prose`);
-
-  /* Tier 1 ONLY. The absence on tier 2 is the point — it is what makes the archive's own
-     photography visibly outrank a press shot instead of being indistinguishable from it
-     (PROVENANCE.md). A tier-2 image also has no capture date of ours to state. */
-  const byline = provenance.tier === 1 && source.date ? showByline(source.date) : "";
+  /* Tier 1 ONLY, and the payload already decided. The absence on tier 2 is what makes the
+     archive's own photography visibly outrank a press shot (PROVENANCE.md). */
+  const byline = card.byline ?? "";
   const metaLines = [
     credit.song ? `&ldquo;${escapeHtml(credit.song)}&rdquo;` : undefined,
-    `${escapeHtml(credit.venue)} &middot; ${escapeHtml(cityRegion(credit.city, venueState))}`,
-    monthYear(concert.date),
+    `${escapeHtml(credit.venue)} &middot; ${escapeHtml(credit.region ? `${credit.city}, ${credit.region}` : credit.city)}`,
+    monthYear(credit.date),
   ].filter(Boolean).join("<br>");
+
+  /* The act in the frame leads the act line. `credit.artists` is billing order, and the
+     payload's first entry is the post's lead — the one the byline is about. */
+  let acts = actLine(credit.artists, credit.artists[0], credit.artists.length);
+  const pill = ACT_PILL[payload.category ?? ""] ?? ACT_PILL_FALLBACK;
+  let hookSize = format.hookSizes[0];
+  let typeTop = 0;
 
   const page = await browser.newPage();
   await page.setViewport({ width: format.width, height: format.height, deviceScaleFactor: 1 });
 
-  let hookSize = format.hookSizes[0];
-  let typeTop = 0;
-  let acts = actLine(credit.artists, leadName, credit.artists.length);
-  const pill = ACT_PILL[post.category] ?? ACT_PILL_FALLBACK;
   try {
     /* Set the content ONCE and re-measure by restyling.
        Calling setContent per ramp step is both slow and unreliable: with `networkidle0` the
@@ -538,7 +507,7 @@ export async function renderCard(
        times, so that is a hang on a normal card, not an edge case. Fonts are awaited
        directly, which is the dependency that actually matters for a text measurement. */
     await page.setContent(
-      format.template({ imageDataUri, alt: post.image.alt, byline, acts, hook, hookSize: format.hookSizes[0], meta: metaLines, pill }),
+      format.template({ imageDataUri, alt: card.alt, byline, acts, hook, hookSize: format.hookSizes[0], meta: metaLines, pill }),
       { waitUntil: "load" }
     );
     try { await page.evaluate(() => document.fonts.ready); } catch { /* fonts are a nicety */ }
@@ -553,7 +522,7 @@ export async function renderCard(
        the one the byline is about — is the last thing to go. A single name that still
        overflows is left alone: that is identification and there is nothing left to drop. */
     for (let show = credit.artists.length; show >= 1; show--) {
-      const line = actLine(credit.artists, leadName, show);
+      const line = actLine(credit.artists, credit.artists[0], show);
       const fits = await page.evaluate((text: string) => {
         const el = document.getElementById("acts")!;
         el.textContent = text;
@@ -620,17 +589,17 @@ export async function renderCard(
        from a clean original rather than compounding JPEG artefacts on every step. */
     const shot = await page.screenshot({ type: "png" });
 
-    const path = join(OUTPUT_DIR, `${post.slug}-${format.id}.jpg`);
+    const path = join(OUTPUT_DIR, `${payload.slug}-${format.id}.jpg`);
     mkdirSync(OUTPUT_DIR, { recursive: true });
     const { buffer, quality } = await encodeUnder(Buffer.from(shot), format.maxBytes);
     writeFileSync(path, buffer);
 
     return {
-      slug: post.slug,
+      slug: payload.slug,
       path,
-      asset: source.url,
-      tier: provenance.tier,
-      crop: source.crop ?? undefined,
+      asset: card.sourceUrl,
+      tier: card.tier,
+      crop: card.crop,
       rect,
       retained,
       byline,
@@ -677,12 +646,22 @@ async function main() {
     mediaIndex: load("public/data/media-index.json"),
   } as unknown as RenderSources;
 
+  /* Build the payload, then draw it — the same two steps the run takes, in the same order.
+     A CLI that assembled the card its own way would be previewing itself. */
+  const { buildPayload } = await import("./payload.ts");
+  const payload = buildPayload(post, Object.assign({}, sources, { cardExists: () => true }) as never);
+  if (!payload.eligible) {
+    console.error(`\n  ${post.slug} would not post:`);
+    for (const r of payload.ineligibleReasons) console.error(`    · ${r}`);
+    process.exit(1);
+  }
+
   const browser = await puppeteer.launch({ headless: true });
   try {
     console.log(`\n  ${post.slug}`);
     for (const id of wanted) {
       const format = FORMATS[id as Format["id"]];
-      const r = await renderCard(post, sources, browser, format);
+      const r = await renderCard(payload, browser, format);
       console.log(`  ${"─".repeat(62)}`);
       console.log(`  ${format.id.padEnd(5)} ${format.width}x${format.height}` +
         `   image slot ${format.slot.width}x${format.slot.height}`);

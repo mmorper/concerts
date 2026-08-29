@@ -69,7 +69,7 @@ export interface RunOptions {
    * which is the behaviour worth pinning at that level. The drawing itself is covered by the
    * renderer's own tests and by `npm run render:card`.
    */
-  renderCardFor?: (post: LinerNotesPost, sources: PayloadSources) => Promise<void>;
+  renderCardFor?: (payload: SyndicationPayload) => Promise<void>;
   sleep?: (ms: number) => Promise<void>;
   /**
    * Injected in tests. Defaults to reading the committed archive.
@@ -120,12 +120,12 @@ export interface RunSummary {
  */
 async function renderSelected(
   candidates: SyndicationPayload[],
-  sources: PayloadSources,
-  posts: LinerNotesPost[],
   summary: RunSummary,
-  draw?: (post: LinerNotesPost, sources: PayloadSources) => Promise<void>
+  draw?: (payload: SyndicationPayload) => Promise<void>
 ): Promise<SyndicationPayload[]> {
-  const wants = candidates.filter((c) => c.kind !== "on-this-day");
+  // BOTH STREAMS. On This Day used to composite and commit its own card, which put two
+  // visual identities in one feed. It is a payload like any other now.
+  const wants = candidates;
   if (!wants.length) return candidates;
 
   const failed = new Map<string, string>();
@@ -138,18 +138,15 @@ async function renderSelected(
     // ONE BROWSER FOR THE WHOLE RUN, opened only when there is something to draw.
     const browser = await puppeteer.launch({ headless: true });
     close = () => browser.close();
-    drawOne = (post, src) => renderCard(post, src as never, browser, FORMATS.wide).then(() => undefined);
+    drawOne = (payload) => renderCard(payload, browser, FORMATS.wide).then(() => undefined);
   }
 
   try {
     for (const payload of wants) {
-      const post = posts.find((p) => p.slug === payload.slug);
-      if (!post) {
-        failed.set(payload.slug, "post vanished between selection and render");
-        continue;
-      }
       try {
-        await drawOne(post, sources);
+        /* The payload is everything the card needs, so there is nothing to look up here and
+           no way for this to draw something other than what the adapters will post. */
+        await drawOne(payload);
       } catch (err) {
         failed.set(payload.slug, `card could not be drawn: ${err instanceof Error ? err.message : String(err)}`);
       }
@@ -169,7 +166,7 @@ async function renderSelected(
        Skipped when a renderer was INJECTED: this check exists to catch a real renderer that
        returns without writing a file, and an injected one is the caller's own business —
        policing it would make the seam untestable, which is the opposite of why it is here. */
-    if (payload.kind !== "on-this-day" && !draw) {
+    if (!draw) {
       const card = payload.media.find((m) => m.role === "card");
       if (card && !existsSync(join(ROOT, card.path))) {
         summary.skipped.push({ slug: payload.slug, reason: `card not rendered: ${card.path}` });
@@ -259,8 +256,8 @@ export async function run(options: RunOptions): Promise<RunSummary> {
   }
 
   // ── Draw ───────────────────────────────────────────────────────────────
-  console.log(`🎨 Drawing ${selected.filter((p) => p.kind !== "on-this-day").length} card(s)…`);
-  const candidates = await renderSelected(selected, sources, posts, summary, options.renderCardFor);
+  console.log(`🎨 Drawing ${selected.length} card(s)…`);
+  const candidates = await renderSelected(selected, summary, options.renderCardFor);
   if (!candidates.length) {
     console.log("📭 Nothing left to syndicate — every card failed to draw.");
     return summary;

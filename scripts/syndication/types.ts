@@ -84,7 +84,26 @@ export interface MediaAsset {
    * card gets screenshotted without its caption.
    */
   byline?: string;
-  /** 0–1. Computed at ingest (#352). */
+  /**
+   * Where the photograph comes FROM — a repo path or a third-party URL.
+   *
+   * 🔴 `path` IS THE OUTPUT, THIS IS THE INPUT, AND THE RENDERER NEEDS BOTH.
+   * Without it the renderer had to re-derive its own image from the post, which is how it
+   * came to disagree with the payload about tier, about which night the card was for, and
+   * about what the alt text described. The payload decides; the renderer draws.
+   */
+  sourceUrl: string;
+  /**
+   * The owner's crop box, tier 1 only. Normalised, authored at 4:5 (#342).
+   *
+   * The one thing on a card that cannot be re-derived from anything else — a per-frame
+   * judgement made by hand — so it has to travel with the asset rather than be looked up.
+   */
+  crop?: { x: number; y: number; w: number; h: number };
+  /**
+   * ~~0–1. Computed at ingest (#352).~~ Superseded by `crop`: a point says *where* the
+   * subject is, a box says where **and how tight**. Nothing sets or reads this.
+   */
   focalPoint?: { x: number; y: number };
 }
 
@@ -137,6 +156,14 @@ export interface SocialText {
 export interface SyndicationPayload {
   slug: string;
   kind: "liner-note" | "on-this-day";
+  /**
+   * `cultural` | `personal` | `deep-cut`, and the card's act pill takes its colour from it.
+   *
+   * #361 removed the category LABEL in favour of the artist name and kept its colour — so
+   * this is the only thing carrying that signal. On the payload rather than looked up by the
+   * renderer, for the same reason as everything else here: one place decides.
+   */
+  category?: string;
 
   // TEXT — authored by the generation step, never derived from the headline.
   hook: string;

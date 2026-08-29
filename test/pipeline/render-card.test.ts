@@ -171,15 +171,27 @@ describe('the tier decision lives in ONE place', () => {
     expect(imports).not.toContain('getShowAsset')
   })
 
-  it('takes the url, the crop and the capture date from post.image', async () => {
-    // Everything the renderer needs has been on the post since #415, so there is nothing
-    // left to re-derive — and deriving it here means the tier rule lives in two places that
-    // can disagree.
+  it('takes a PAYLOAD and nothing else — no post, no sources', async () => {
+    // The structural fix for the whole bug class. The renderer used to take (post, sources)
+    // and re-derive its own tier, night, image and credit while `buildPayload` derived the
+    // same things for the adapters. Five bugs on 2026-08-28 came from that, and each fix
+    // caught one symptom.
+    //
+    // Handing it the payload does not catch the sixth — it makes the sixth impossible.
+    // Asserted on the signature and the imports, because those are what would have to change
+    // for a lookup to come back.
     const { readFileSync } = await import('fs')
     const src = readFileSync('scripts/syndication/render-card.ts', 'utf8')
-    expect(src).toContain('url: post.image.url')
-    expect(src).toContain('crop: post.image.crop')
-    expect(src).toContain('date: post.image.shotOn')
+    const sig = src.slice(src.indexOf('export async function renderCard('), src.indexOf('): Promise<RenderResult>'))
+    expect(sig).toContain('payload: SyndicationPayload')
+    expect(sig).not.toContain('post:')
+    expect(sig).not.toContain('sources')
+
+    // The derivation helpers it no longer needs. If any comes back, so does the bug class.
+    const imports = src.slice(0, src.indexOf('export const CARD_WIDTH'))
+    for (const gone of ['getShowAsset', 'buildCredit', 'cardConcert', 'classifyImageUrl', 'showByline']) {
+      expect(imports, `renderer re-imported ${gone}`).not.toContain(gone)
+    }
   })
 })
 

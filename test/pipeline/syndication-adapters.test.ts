@@ -37,6 +37,7 @@ function payload(): SyndicationPayload {
     media: [
       {
         role: "card",
+        sourceUrl: 'https://r2.theaudiodb.com/x.jpg',
         aspect: "1.91:1",
         path: CARD,
         alt: "Björk at the Greek Theatre, Los Angeles, 9 August 1997.",
