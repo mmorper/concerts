@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-28T23:36:04.072Z",
+  "updatedAt": "2026-08-29T16:59:14.113Z",
   "artists": {
     "bruce-springsteen": {
       "bluesky": {
@@ -136,6 +136,14 @@
         "did": "did:plc:kwyrwuink7fu2rahgwoety4p",
         "evidence": "wikidata",
         "verifiedAt": "2026-08-28"
+      }
+    },
+    "jane-weidlin": {
+      "bluesky": {
+        "handle": "janewiedlin.bsky.social",
+        "did": "did:plc:ifd5skj5ft4r7gi6d6rzv6vi",
+        "evidence": "musicbrainz",
+        "verifiedAt": "2026-08-29"
       }
     }
   },
