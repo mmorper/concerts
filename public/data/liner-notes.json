@@ -2648,10 +2648,18 @@
       "headline": "Howard Jones: 17 Years Between Shows",
       "prose": "I remember standing in the Universal Amphitheater in 1989, watching Howard Jones perform what I didn't know would be his last show in my collection for nearly two decades. When I finally saw him again in 2006 at the intimate Coach House in San Juan Capistrano, it felt like reconnecting with an old friend after years of silence. That 17-year gap represents the longest drought between any artist's appearances in my concert history. The shift from arena to club venue somehow made his synth-pop anthems feel more personal, like he was playing just for the handful of us who had waited all those years.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/jones-howard-50fbc0fcc99a1.jpg",
+        "url": "/images/shows/2024-08-20-howard-jones-03.jpg",
         "alt": "Howard Jones",
-        "source": "artist",
-        "ref": "howard-jones"
+        "source": "show",
+        "ref": "howard-jones",
+        "credit": "Mike Morper · 20 August 2024",
+        "shotOn": "2024-08-20",
+        "crop": {
+          "x": 0,
+          "y": 0.0856,
+          "w": 1,
+          "h": 0.7034
+        }
       },
       "audio": {
         "trackName": "No One Is To Blame",
@@ -3339,10 +3347,18 @@
       "headline": "The Human League + 8 More: 2018 Festival Bill",
       "prose": "The 2018 nostalgia festival circuit became a time machine for those of us who lived through the new wave explosion of the early '80s. I caught this 9-band bill at Huntington State Beach, headlined by The Human League with 8 supporting acts including The Alarm, Dramarama, and Naked Eyes — essentially a greatest hits compilation of synth-pop and alternative rock from 1977 to 1987. What struck me wasn't just the concentrated dose of my teenage soundtrack, but how these songs that once felt so futuristic now carried the warm patina of shared memory. Standing on that beach, surrounded by fellow Gen-Xers singing along to \"Don't You (Forget About Me)\" vibes, I realized we'd become our parents at the oldies show.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wysuyt1345666474.jpg",
+        "url": "/images/shows/2026-06-04-the-human-league-01.jpg",
         "alt": "The Human League",
-        "source": "artist",
-        "ref": "the-human-league"
+        "source": "show",
+        "ref": "the-human-league",
+        "credit": "Mike Morper · 4 June 2026",
+        "shotOn": "2026-06-04",
+        "crop": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.9375
+        }
       },
       "audio": {
         "trackName": "Human",
@@ -3842,10 +3858,18 @@
       "headline": "Howard Jones: 39 Years of Shows",
       "prose": "I first caught Howard Jones at Irvine Meadows in 1985, right in the thick of his \"Dream Into Action\" era when those synthesizer hooks were everywhere. What strikes me now is how I kept coming back — six shows across 39 years, from that outdoor amphitheater in Orange County to the YouTube Theatre in Inglewood just this past August. There's something about his earnest optimism and those unmistakable keyboard melodies that pulls me back decade after decade. I suppose some artists just become part of your personal soundtrack, whether you plan it or not.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/jones-howard-50fbc0fcc99a1.jpg",
+        "url": "/images/shows/2024-08-20-howard-jones-03.jpg",
         "alt": "Howard Jones",
-        "source": "artist",
-        "ref": "howard-jones"
+        "source": "show",
+        "ref": "howard-jones",
+        "credit": "Mike Morper · 20 August 2024",
+        "shotOn": "2024-08-20",
+        "crop": {
+          "x": 0,
+          "y": 0.0856,
+          "w": 1,
+          "h": 0.7034
+        }
       },
       "audio": {
         "trackName": "No One Is To Blame",
@@ -4197,10 +4221,18 @@
       "headline": "Crowded House: From Opener to Headliner",
       "prose": "Crowded House's trajectory from Melbourne alt-rock darlings to enduring pop craftsmen spans exactly the 30 years between when I saw them open for Peter Gabriel at the Olympic Velodrome in 1993 and headline The Wiltern in 2023. That first show came around the time *Woodface* had established them as more than just Neil Finn's post-Split Enz project, but they were still very much the supporting act in a massive arena. Three decades later, watching them command their own stage at the Wiltern felt like witnessing the full arc of a band that never chased trends but simply outlasted them. Some artists earn their headliner status through persistence and craft rather than flash.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/ywuyqr1348102507.jpg",
+        "url": "/images/shows/2023-05-09-crowded-house-02.jpg",
         "alt": "Crowded House",
-        "source": "artist",
-        "ref": "crowded-house"
+        "source": "show",
+        "ref": "crowded-house",
+        "credit": "Mike Morper · 9 May 2023",
+        "shotOn": "2023-05-09",
+        "crop": {
+          "h": 0.8435,
+          "w": 0.9,
+          "x": 0.1,
+          "y": 0.1252
+        }
       },
       "audio": {
         "trackName": "Don't Dream It's Over",

@@ -39,16 +39,29 @@ async function main() {
   if (!validate) console.log("   Mode: no-validate (skipping HEAD checks)");
 
   const data = readData<LinerNotesData>("liner-notes.json");
+  /* 🔴 THE SAME SOURCES THE PIPELINE PASSES, OR THIS SILENTLY DOES LESS THAN IT SAYS.
+     `media-index.json` was missing, so `upgradeToOwnPhotography` — the step that promotes a
+     published post to the archive's own photography — found no assets and promoted nothing,
+     while the run still reported success. `album-eras.json` was missing too, which quietly
+     downgrades album art to the iTunes fallback (#273).
+
+     Both are optional by design so this stays safe before either file exists, and that is
+     exactly what made the omission invisible. */
   const sources = {
     artistsMetadata: readData("artists-metadata.json"),
     artistsTopTracks: readData("artists-top-tracks.json"),
     venuesMetadata: readData("venues-metadata.json"),
+    albumEras: readData("album-eras.json"),
+    mediaIndex: readData("media-index.json"),
   } as Parameters<typeof refreshPostImages>[1];
 
   const result = await refreshPostImages(data.posts, sources, { validate, verbose: true });
 
   console.log(
     `\n   ${result.posts} post${result.posts !== 1 ? "s" : ""} checked — ` +
+      // Upgrades led the per-post log and were absent from the summary, so a run that
+      // promoted four posts still totalled "0 re-resolved, 0 repaired".
+      `${result.upgraded} upgraded to our own photography, ` +
       `${result.backfilled} ref backfilled, ${result.reresolved} re-resolved, ` +
       `${result.repaired} repaired, ${result.fellBack} to placeholder`
   );
