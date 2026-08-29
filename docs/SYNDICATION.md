@@ -145,6 +145,33 @@ npm run backfill:social                  # author social copy for old notes
 The first real proof is the first live run, which fails loudly with a `401`
 naming the channel.
 
+### Proof the queue before it posts
+
+```bash
+npm run contact-sheet                  # every pending post, both channels
+npm run contact-sheet -- --limit 10
+npm run contact-sheet -- --slug <slug>
+npm run contact-sheet -- --no-render   # reuse what is already in .renditions/
+```
+
+Writes `.renditions/contact-sheet.html` — the card, the caption, the shortened
+link, the mention and the tags, per channel, for everything still queued.
+
+A dry run proves the pipeline runs. It proves nothing about whether the post is
+any good. What goes wrong is visual and textual at once: a hook overflowing its
+box, a press shot of the wrong band, a caption that reads fine alone and badly
+under the image, a mention pointing at a stranger. None of that is legible in a
+JSON dump and all of it is obvious on a page.
+
+Every string on the sheet comes from `composeBlueskyText` and
+`composeMastodonStatus` — the same functions the adapters call. Re-implementing
+the formatting for display would produce a proof sheet that agrees with itself
+and disagrees with production, and the reviewer would sign off on something that
+was never going to ship.
+
+Mentions render as links to the account's **DID**, so "is this really the right
+account" is one click away from the sheet.
+
 ---
 
 ## First run, once
@@ -264,6 +291,7 @@ diffable, reviewable and greppable.
 | `scripts/liner-notes/backfill-social.ts` | Back-catalogue social copy: selection and application |
 | `scripts/syndication/handles.ts` | `@artist` / `@venue` lookup; built out of refusals |
 | `scripts/syndication/harvest-handles.ts` | Proposes handles for review. Never a publish path |
+| `scripts/syndication/contact-sheet.ts` | Proofs the queue as a page. Reads only |
 | `scripts/on-this-day/` | The second stream — detection, scoring, card, CLI |
 
 ---
