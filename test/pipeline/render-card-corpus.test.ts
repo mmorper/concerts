@@ -153,10 +153,15 @@ describe('the card and its alt text describe the SAME show', () => {
   it('the credit names ONE show — venue and date never come from different nights', async () => {
     const { cardConcert, buildCredit } = await import('../../scripts/syndication/payload')
     const concerts = JSON.parse(readFileSync('public/data/concerts.json', 'utf8')).concerts
+    // Held separately from `sources` so it stays readable — `sources` is cast to `never`
+    // to satisfy the builder's shape, which makes reading a property back off it a
+    // typecheck error rather than a lookup.
+    const venuesMetadata: Record<string, { name?: string }> =
+      JSON.parse(readFileSync('public/data/venues-metadata.json', 'utf8'))
     const sources = {
       concerts,
       artistsMetadata: JSON.parse(readFileSync('public/data/artists-metadata.json', 'utf8')),
-      venuesMetadata: JSON.parse(readFileSync('public/data/venues-metadata.json', 'utf8')),
+      venuesMetadata,
     } as never
 
     const mixed: string[] = []
@@ -167,7 +172,7 @@ describe('the card and its alt text describe the SAME show', () => {
       // The date is taken straight off the concert, so the venue has to be too. When they
       // disagreed the card announced "Hard Rock Cafe · November 2017" — a venue from a 1995
       // show and a date from a 2017 one, a night that never happened.
-      const named = sources.venuesMetadata[concert.venueNormalized]?.name ?? concert.venue
+      const named = venuesMetadata[concert.venueNormalized]?.name ?? concert.venue
       if (credit.venue !== named || credit.date !== concert.date) {
         mixed.push(`${post.slug}: credit says ${credit.venue} · ${credit.date}, concert is ${named} · ${concert.date}`)
       }
