@@ -1,6 +1,35 @@
 {
-  "generatedAt": "2026-08-26T07:37:31.489Z",
+  "generatedAt": "2026-08-29T12:52:51.110Z",
   "posts": [
+    {
+      "slug": "otd-2026-08-29",
+      "day": "08-29",
+      "showDate": "2003-08-29",
+      "age": 23,
+      "artist": "Joe Jackson",
+      "artistNormalized": "joe-jackson",
+      "venue": "House of Blues Anaheim",
+      "venueNormalized": "house-of-blues-anaheim",
+      "city": "Anaheim",
+      "score": 34,
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wqxvvw1362151298.jpg",
+      "tier": 2,
+      "source": "artist-audiodb",
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=joe-jackson",
+      "cardPath": "public/og/on-this-day/otd-2026-08-29.png",
+      "social": {
+        "hook": "A Friday night in Anaheim, 23 years back in the books.",
+        "caption": "Joe Jackson at House of Blues Anaheim on August 29, 2003 — now 23 years in the archive. The full entry is on the site.",
+        "beats": [
+          "August 29, 2003: a Friday night at House of Blues Anaheim.",
+          "Joe Jackson, a room built for exactly this kind of show.",
+          "Twenty-three years later, it still holds a place in the archive.",
+          "The record is on the site. That night is not going anywhere."
+        ],
+        "authoredAt": "2026-08-29T12:52:42.084Z"
+      },
+      "publishedAt": "2026-08-29T12:52:51.110Z"
+    },
     {
       "slug": "otd-2026-08-26",
       "day": "08-26",
