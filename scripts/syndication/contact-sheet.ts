@@ -99,10 +99,35 @@ function markUpBluesky(text: string, facets: Facet[]): string {
   return html.replace(/\n/g, "<br>");
 }
 
-/** Mastodon has no facets — the server linkifies. Mark the same shapes for the eye. */
+/**
+ * Mastodon has no facets — the server linkifies, and it hides most of the URL.
+ *
+ * A Mastodon client renders a long link in three spans: the scheme `invisible`,
+ * a middle portion shown, and the tail `invisible` behind an ellipsis. Every
+ * UTM parameter we append lands in that hidden tail, so a status carrying a
+ * 121-character permalink reads as `concerts.morperhaus.org/liner-notes/…`.
+ *
+ * Printing the raw URL here would make the post look far worse on the proof
+ * sheet than it does in a client, and a reviewer would go rewrite a caption
+ * that was never the problem. That is the same failure as re-implementing the
+ * formatting: a sheet that disagrees with production.
+ *
+ * The 30-character split is where Mastodon's own front end truncates.
+ */
+const MASTODON_VISIBLE = 30;
+
 function markUpMastodon(status: string): string {
   return escape(status)
-    .replace(/(https?:\/\/\S+)/g, '<a class="f link" href="$1">$1</a>')
+    .replace(/(https?:\/\/\S+)/g, (url) => {
+      const bare = url.replace(/^https?:\/\//, "");
+      const shown = bare.length <= MASTODON_VISIBLE ? bare : bare.slice(0, MASTODON_VISIBLE);
+      const hidden = bare.slice(shown.length);
+      return (
+        `<a class="f link" href="${url}" title="${url}">${shown}` +
+        (hidden ? `<span class="invisible">…</span>` : "") +
+        `</a>`
+      );
+    })
     .replace(/(^|\s)(#[A-Za-z0-9_]+)/g, '$1<span class="f tag">$2</span>')
     .replace(/(^|\s)(@[A-Za-z0-9_.-]+)/g, '$1<span class="f mention">$2</span>')
     .replace(/\n/g, "<br>");
@@ -168,14 +193,14 @@ function section(card: Card): string {
         <h3>Bluesky</h3>
         <div class="post-text">${markUpBluesky(bsky.text, bsky.facets)}</div>
         <div class="budget">${meter(bskyLen, CHANNEL_LIMITS.bluesky)}<span class="unit">graphemes</span></div>
-        <p class="target">→ ${escape(withUtm(payload.url, "bluesky", payload.kind))}</p>
+        <p class="target">click target → ${escape(withUtm(payload.url, "bluesky", payload.kind))}</p>
       </section>
 
       <section class="channel">
         <h3>Mastodon</h3>
         <div class="post-text">${markUpMastodon(mastodon)}</div>
         <div class="budget">${meter(mastLen, CHANNEL_LIMITS.mastodon)}<span class="unit">weighted chars</span></div>
-        <p class="target">→ ${escape(withUtm(payload.url, "mastodon", payload.kind))}</p>
+        <p class="target">click target → ${escape(withUtm(payload.url, "mastodon", payload.kind))}</p>
       </section>
     </div>
   </div>
@@ -245,6 +270,7 @@ function page(cards: Card[], generatedAt: string): string {
   .f.link { color: var(--link); text-decoration: none; }
   .f.tag { color: var(--tag); }
   .f.mention { color: var(--accent); font-weight: 600; text-decoration: none; }
+  .invisible { color: var(--dim); }
   .budget { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
   .meter { flex: 1; height: 5px; background: var(--line); border-radius: 999px; overflow: hidden; }
   .meter i { display: block; height: 100%; background: var(--tag); }
