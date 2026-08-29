@@ -54,8 +54,15 @@ Nineteen entities are on file today — 17 artists and 2 venues — and 11 of th
 
 ## What the data actually says
 
-Measured 2026-08-28 against the live archive: 257 artists, 232 of which carry a
-MusicBrainz ID via `discography.json`.
+Measured 2026-08-28 against the live archive: 257 artists, 232 of which carried a
+MusicBrainz ID via `discography.json` at the time.
+
+> ⚠️ **The 232 denominator below is historical.** Coverage is now **256 of 257**
+> — the 25 that appeared to be missing were mostly a keying bug, not absent
+> records (#433). The 24 artists that gained an ID were re-harvested and the
+> results are in the worksheet; the per-source columns are left at their
+> original denominator because that is what was actually measured, and
+> restating them without re-running the sweep would be inventing numbers.
 
 ### Handle coverage by channel
 
