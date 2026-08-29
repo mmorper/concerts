@@ -66,6 +66,15 @@ async function main() {
       `${result.repaired} repaired, ${result.fellBack} to placeholder`
   );
   for (const dead of result.deadUrls) console.warn(`   ⚠️  Dead image URL — ${dead}`);
+  // A byline that disagrees with its photograph is a false claim on the card, so it is
+  // never folded into the counts above — it gets its own line and its own exit code.
+  if (result.mismatched.length) {
+    console.error(
+      `\n   ❌ ${result.mismatched.length} post(s) whose byline does not match the photograph.` +
+        `\n      The card would print the wrong capture date. See #441.`
+    );
+    process.exitCode = 1;
+  }
 
   if (result.changedSlugs.length === 0 && result.backfilled === 0) {
     console.log("\n✨ No changes.");
