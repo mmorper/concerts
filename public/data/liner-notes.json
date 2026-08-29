@@ -10,10 +10,18 @@
       "headline": "3 Concerts in 12 Days",
       "prose": "I don't know what got into me in July 2023, but I saw 3 shows across 3 different genres in 12 days without once feeling like I was overdoing it. Foals at The Belasco on the 18th, UB40 at Peacock Theater on the 21st, X at Pacific Amphitheatre in Costa Mesa on the 30th — indie rock, reggae, and punk, all inside a single Los Angeles summer. There's something about that stretch that still makes me smile: I went from the close, sweaty energy of The Belasco to an amphitheatre in Orange County without stopping to ask whether any of it made sense as a playlist. It didn't, and that was exactly the point.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/hqj1961665173344.jpg",
+        "url": "/images/shows/2023-07-18-foals-06.jpg",
         "alt": "Foals",
-        "source": "artist",
-        "ref": "foals"
+        "source": "show",
+        "ref": "foals",
+        "credit": "Mike Morper · 18 July 2023",
+        "shotOn": "2023-07-18",
+        "crop": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.7026
+        }
       },
       "audio": {
         "trackName": "Mountain at My Gates",
@@ -99,11 +107,18 @@
       "headline": "Social Distortion — 1.4 Years Before Born to Kill",
       "prose": "Punk rock has always been about the song before the studio catches up, and at The Belasco in Los Angeles on December 5, 2024, I heard four tracks from *Born to Kill* a full 519 days before the record existed in anyone's hands. Four songs — \"Tonight,\" \"Over You,\" \"The Way Things Were,\" and the title track itself — dropped into an 18-song set like they'd always belonged there, which, knowing Social Distortion, they probably had for years already. That's the thing about a band formed in 1979: they don't audition new material, they road-test it, and the crowd at The Belasco had no idea they were the test.",
       "image": {
-        "url": "https://coverartarchive.org/release-group/453a2bca-8133-40bf-982a-d8c6a2faf48c/front-500.jpg",
-        "alt": "Born to Kill",
-        "source": "album",
+        "url": "/images/shows/2018-10-28-social-distortion-01.jpg",
+        "alt": "Social Distortion",
+        "source": "show",
         "ref": "social-distortion",
-        "albumName": "Born to Kill"
+        "credit": "Mike Morper · 28 October 2018",
+        "shotOn": "2018-10-28",
+        "crop": {
+          "h": 0.75,
+          "w": 0.45,
+          "x": 0.2582,
+          "y": 0.1171
+        }
       },
       "audio": {
         "trackName": "Born to Kill",
@@ -1359,10 +1374,18 @@
       "headline": "March 22: 13 Years Since Bad Religion",
       "prose": "I remember walking into the 9:30 Club that March night in 2013, thirteen years ago now, and feeling like I was stepping into punk rock church. Bad Religion delivered their signature blend of melody and fury to a packed room, with Against Me!, The Bronx, and Polar Bear Club warming up the crowd beforehand. The whole evening felt like a masterclass in how punk has evolved since Bad Religion formed back in 1979, yet Greg Graffin's voice cut through the years like nothing had changed. Sometimes the best shows are the ones that remind you why you fell in love with live music in the first place.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/yuswct1767893982.jpg",
+        "url": "/images/shows/2018-10-28-bad-religion-02.jpg",
         "alt": "Bad Religion",
-        "source": "artist",
-        "ref": "bad-religion"
+        "source": "show",
+        "ref": "bad-religion",
+        "credit": "Mike Morper · 28 October 2018",
+        "shotOn": "2018-10-28",
+        "crop": {
+          "h": 1,
+          "w": 0.6,
+          "x": 0,
+          "y": 0
+        }
       },
       "audio": {
         "trackName": "Bad Religion",
@@ -1506,10 +1529,18 @@
       "headline": "March 23: 21 Years Since Social Distortion",
       "prose": "I caught Social Distortion at the Hard Rock Hotel in Las Vegas on March 23, 2005, and I still remember how surreal it felt seeing Mike Ness's tattooed storytelling in that glitzy casino setting. Twenty-one years later, that show stands out as one of those perfect mismatches — punk rock grit against Vegas excess, like hearing \"White Light White Heat White Trash\" while slot machines chimed in the distance. There's something beautifully defiant about Social Distortion that made even more sense in that artificial paradise.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
+        "url": "/images/shows/2018-10-28-social-distortion-01.jpg",
         "alt": "Social Distortion",
-        "source": "artist",
-        "ref": "social-distortion"
+        "source": "show",
+        "ref": "social-distortion",
+        "credit": "Mike Morper · 28 October 2018",
+        "shotOn": "2018-10-28",
+        "crop": {
+          "h": 0.75,
+          "w": 0.45,
+          "x": 0.2582,
+          "y": 0.1171
+        }
       },
       "audio": {
         "trackName": "Ball and Chain",
@@ -2271,10 +2302,18 @@
       "headline": "Social Distortion + 14 More: 2018 Festival Bill",
       "prose": "California punk's founding fathers assembled for what felt like a family reunion at Huntington State Beach in 2018, with Social Distortion, Bad Religion, and 13 other acts spanning four decades of West Coast rebellion. I witnessed bands that had been shaping punk since 1979 sharing the same sand with newer torchbearers like The Interrupters, creating this perfect cross-generational snapshot of the scene's evolution. Seeing Fear and Suicidal Tendencies on the same bill as Black Rebel Motorcycle Club reminded me how punk's DNA keeps mutating while staying fundamentally defiant. Standing on that beach with 15 bands cycling through, I felt like I was getting a master class in how Southern California invented its own brand of sunny nihilism.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
+        "url": "/images/shows/2018-10-28-social-distortion-01.jpg",
         "alt": "Social Distortion",
-        "source": "artist",
-        "ref": "social-distortion"
+        "source": "show",
+        "ref": "social-distortion",
+        "credit": "Mike Morper · 28 October 2018",
+        "shotOn": "2018-10-28",
+        "crop": {
+          "h": 0.75,
+          "w": 0.45,
+          "x": 0.2582,
+          "y": 0.1171
+        }
       },
       "audio": {
         "trackName": "Ball and Chain",
@@ -2543,10 +2582,10 @@
       "headline": "The Cure + 14 More: 2003 Festival Bill",
       "prose": "This 2003 festival captured new wave's full evolution — from The Cure's goth-pop mastery to Duran Duran's synth glamour, with Dashboard Confessional and Interpol representing where alternative rock was heading next. I witnessed 15 acts spanning three decades of post-punk DNA, from the original wave (Echo and the Bunnymen, Psychedelic Furs) through the '90s survivors (Violent Femmes) to the emerging indie darlings (Kings of Leon, Hot Hot Heat). The Hyundai Pavilion became a living museum of how Robert Smith's melancholy had spawned an entire musical ecosystem. Standing there in San Bernardino, I realized I wasn't just watching a festival — I was seeing the alternative rock family tree in full bloom.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wwwwtv1455324256.jpg",
-        "alt": "The Cure",
-        "source": "artist",
-        "ref": "the-cure"
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjB6OeDl_wnIgme2uX0xrgsYXV0GUatTkn9qKridqlvVeTeq27fQkRECwJXBh3A7mA9G6uAimMD5Qp3jvEMabW7LN72S_UqoA91py0QwUv6q8ZiPojECv1VvabfuakaILt2mwaHZHL8rXrKKVQ=s4800-h1200",
+        "alt": "Hyundai Pavilion",
+        "source": "venue",
+        "ref": "hyundai-pavilion"
       },
       "audio": {
         "trackName": "Just Like Heaven",
@@ -3597,10 +3636,18 @@
       "headline": "Foo Fighters + 9 More: 2015 Festival Bill",
       "prose": "The 4th of July 2015 at RFK Stadium was one of those rare festival bills that read like a cross-section of American music itself — blues legend Buddy Guy sharing the stage with Foo Fighters, Heart bridging classic and alternative rock, LL Cool J representing hip-hop's golden age, all anchored by the go-go sounds of Trouble Funk. I caught this 10-artist extravaganza during Foo Fighters' peak touring years, just as they were cementing their status as arena headliners more than two decades after Dave Grohl formed the band in 1994. The sheer breadth of genres — from Buddy Guy's six decades of blues mastery to DJ Z-Trip's turntable wizardry — felt like watching the soundtrack to America unfold in real time on Independence Day.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/vuvqxr1352453964.jpg",
+        "url": "/images/shows/2015-07-04-foo-fighters-01.jpg",
         "alt": "Foo Fighters",
-        "source": "artist",
-        "ref": "foo-fighters"
+        "source": "show",
+        "ref": "foo-fighters",
+        "credit": "Mike Morper · 4 July 2015",
+        "shotOn": "2015-07-04",
+        "crop": {
+          "x": 0.033,
+          "y": 0.1776,
+          "w": 0.8,
+          "h": 0.7498
+        }
       },
       "audio": {
         "trackName": "Everlong",
@@ -3941,10 +3988,10 @@
       "headline": "Maxi Priest + 6 More: 1991 Festival Bill",
       "prose": "This was reggae's moment in American mainstream consciousness, and I caught a perfect snapshot of it at Pacific Amphitheatre in June 1991. Maxi Priest was riding high with crossover hits, headlining over a seven-artist bill that included Dennis Brown and Andrew Tosh — Peter Tosh's son, carrying forward his father's legacy. I remember the crowd being surprisingly diverse for Orange County, drawn by reggae's growing radio presence around that time. What struck me most was how the music unified this massive outdoor crowd, from the opening act through Priest's closing set under the California stars.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/xtvyvp1364378396.jpg",
-        "alt": "Maxi Priest",
-        "source": "artist",
-        "ref": "maxi-priest"
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjCHsbPlf7FW3C3d5GbICm_VpGqdPXw94dtZRtBcytXiSQaXpWfzaWCeInHKmT3m4h7elqruVKDd6vKP9-2ZdGeFer2GfbkOstJ96V__3V9GDSgHwZcX345A5RBzdVW8_m9Q-3FpeGELQO-3Cw=s4800-h1200",
+        "alt": "Pacific Amphitheatre",
+        "source": "venue",
+        "ref": "pacific-amphitheatre"
       },
       "audio": {
         "trackName": "Close To You",
@@ -4028,10 +4075,18 @@
       "headline": "Social Distortion: 34 Years of Shows",
       "prose": "I first caught Social Distortion at Cal State Fullerton in 1990, back when Mike Ness was still carving out that distinctive sound that would define them through White Light White Heat White Trash and beyond. Eight shows across 34 years might not sound like devotion, but with Social D, each one felt like checking in with an old friend who'd weathered the same storms. My most recent show was just this past December at The Belasco, and hearing those same punk rock anthems that shaped my college years still hit with the same raw honesty. There's something comforting about a band that refuses to reinvent itself—they just keep getting better at being exactly who they've always been.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
+        "url": "/images/shows/2018-10-28-social-distortion-01.jpg",
         "alt": "Social Distortion",
-        "source": "artist",
-        "ref": "social-distortion"
+        "source": "show",
+        "ref": "social-distortion",
+        "credit": "Mike Morper · 28 October 2018",
+        "shotOn": "2018-10-28",
+        "crop": {
+          "h": 0.75,
+          "w": 0.45,
+          "x": 0.2582,
+          "y": 0.1171
+        }
       },
       "audio": {
         "trackName": "Ball and Chain",
@@ -4118,10 +4173,10 @@
       "headline": "Oingo Boingo + 5 More: 1987 Festival Bill",
       "prose": "This was the era when alternative rock was still finding its footing alongside new wave's final flourishes — and somehow I caught all of it on one stage in Tijuana. Six acts that would define different corners of the late-80s landscape: Oingo Boingo riding high on \"Dead Man's Party,\" The Bangles at their commercial peak, Squeeze's sophisticated pop craft, and Australia's Hoodoo Gurus bringing their garage rock energy just five years after forming. I remember the surreal border-crossing pilgrimage to Caliente Racetrack, where Chris Isaak's crooning and The Fixx's synth-rock completed this unlikely but perfect snapshot of 1987's musical diversity. Looking back, it feels like witnessing a changing of the guard I didn't even know was happening.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/oingo-boingo-4ff3036de887f.jpg",
-        "alt": "Oingo Boingo",
-        "source": "artist",
-        "ref": "oingo-boingo"
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjBxLLnxpWRpni8patQipSt7gs2FdWYLGgaUGeNipnLqX1Ris63CwHUL8YwmjpFk2PrBJCG92wGfWzROMaZn6PXPW5xrBPIBB4r3X5cEY976y_903NJFHpcu4XXNhO__AUpvTbzE_DcXPx-YSg=s4800-h1200",
+        "alt": "Caliente Racetrack",
+        "source": "venue",
+        "ref": "caliente-racetrack"
       },
       "audio": {
         "trackName": "Dead Man's Party",

@@ -288,6 +288,28 @@ export const VENUE_SUBJECT_DETECTORS = new Set([
 ]);
 
 /**
+ * Posts where the VENUE outranks an artist press shot — but never outranks our own
+ * photography.
+ *
+ * 🔴 TWO DIFFERENT QUESTIONS, AND ONE SET CANNOT ANSWER BOTH.
+ * `VENUE_SUBJECT_DETECTORS` answers "is `artists[0]` arbitrary here?" — on a venue-loyalty
+ * post it is whoever sorts first, so no artist photograph belongs. This answers "is the
+ * PLACE the better sourced image?", which is a different question with a wider answer.
+ *
+ * A festival bill names six to fifteen acts and a streak post names three venues in twelve
+ * days; one artist's promo shot standing for either is arbitrary, and the place is what they
+ * have in common. But `artists[0]` on those posts IS a real subject — the headliner, or an
+ * act genuinely on the bill — so the archive's own photograph of them still wins.
+ *
+ * Collapsing the two sets sent `3-concerts-in-12-days` to a photo of The Belasco while we
+ * hold five frames of Foals taken AT that show. Photography first, always.
+ */
+export const PLACE_FORWARD_DETECTORS = new Set([
+  ...VENUE_SUBJECT_DETECTORS,
+  "festival-mega-bill",
+  "concert-streak",
+]);
+/**
  * Resolve a post image's current URL from its reference.
  *
  * Returns undefined when the reference cannot be resolved, which callers should

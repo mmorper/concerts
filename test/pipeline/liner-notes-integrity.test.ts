@@ -181,12 +181,19 @@ describe('venue placeholder is not a photo (#235)', () => {
     'real-venue': { name: 'Real Venue', photoUrls: { large: 'https://img/venue.jpg' } },
   }
 
-  it('falls through to album art rather than stopping on the placeholder', () => {
+  it('falls past the placeholder to the next real image', () => {
+    // The point of this test is that the bundled fallback never wins — a venue whose only
+    // "photo" is our own grey placeholder must not stop the chain.
+    //
+    // WHICH image it lands on changed on 2026-08-29: the fallback order was album → artist
+    // → venue and is now venue → artist → album, the owner's rubric. A press shot outranks
+    // cover artwork because it is a photograph of someone who was there; the venue outranks
+    // both because it is a photograph of the room on the ticket.
     const [built] = buildPosts(
       [finding({ suggestedImage: { type: 'venue', venueNormalized: 'irvine-meadows' } } as Partial<ScoredFinding>)],
       options({ venuesMetadata } as Partial<CurateOptions>)
     )
-    expect(built.image.source).toBe('album')
+    expect(built.image.source).toBe('artist')
     expect(built.image.url).not.toContain('fallback.jpg')
   })
 

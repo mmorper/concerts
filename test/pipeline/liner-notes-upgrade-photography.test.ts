@@ -168,3 +168,61 @@ describe('upgradeVenuePosts', () => {
     expect(upgradeVenuePosts(posts, venueSources())).toEqual([])
   })
 })
+
+describe('the imagery precedence — photography, then venue, then artist', () => {
+  // The owner's rubric, 2026-08-29. Two sets answer two different questions and collapsing
+  // them broke the first rule: `3-concerts-in-12-days` was sent to a photo of The Belasco
+  // while the archive holds five frames of Foals taken AT that show.
+  const both = (): ImageSources =>
+    ({
+      artistsMetadata: { foals: { name: 'Foals' } },
+      artistsTopTracks: {},
+      venuesMetadata: {
+        'the-belasco': { name: 'The Belasco', photoUrls: { large: 'https://googleapis.com/b.jpg' } },
+      },
+      mediaIndex: { assets: [{
+        kind: 'image', url: '/images/shows/2023-07-18-foals-01.jpg', date: '2023-07-18',
+        artistNormalized: 'foals', hero: true, order: 1, crop: { x: 0, y: 0, w: 1, h: 0.8 },
+      }] },
+    }) as unknown as ImageSources
+
+  const streak = (o: Partial<LinerNotesPost> = {}): LinerNotesPost =>
+    ({
+      slug: '3-concerts-in-12-days', detector: 'concert-streak',
+      artists: ['foals'], venues: ['the-belasco'], deepLinks: [], tags: [],
+      image: { url: 'https://theaudiodb.com/f.jpg', alt: 'Foals', source: 'artist', ref: 'foals' },
+      ...o,
+    }) as unknown as LinerNotesPost
+
+  it('gives an EVENT post our own photography, not the venue', () => {
+    // A festival or streak post is place-forward against a PRESS SHOT, never against our
+    // own photograph. `artists[0]` there is a real subject — the headliner, or an act
+    // genuinely on the bill — unlike a venue-loyalty post where it is whoever sorts first.
+    const posts = [streak()]
+    upgradeToOwnPhotography(posts, both())
+    expect(posts[0].image.source).toBe('show')
+    expect(posts[0].image.url).toContain('foals')
+  })
+
+  it('falls to the venue only when there is no photography', () => {
+    const posts = [streak({ artists: ['the-cure'] } as never)]
+    upgradeToOwnPhotography(posts, both())
+    upgradeVenuePosts(posts, both())
+    expect(posts[0].image.source).toBe('venue')
+  })
+
+  it('still keeps an artist photograph off a true venue-subject post', () => {
+    // The narrow set, unchanged. On venue-loyalty `artists[0]` is arbitrary.
+    const posts = [streak({ detector: 'venue-loyalty' } as never)]
+    upgradeToOwnPhotography(posts, both())
+    expect(posts[0].image.source).not.toBe('show')
+  })
+
+  it('keeps the two sets distinct, because they answer different questions', async () => {
+    const { VENUE_SUBJECT_DETECTORS, PLACE_FORWARD_DETECTORS } =
+      await import('../../scripts/liner-notes/image-refs')
+    expect(PLACE_FORWARD_DETECTORS.has('festival-mega-bill')).toBe(true)
+    expect(VENUE_SUBJECT_DETECTORS.has('festival-mega-bill')).toBe(false)
+    for (const d of VENUE_SUBJECT_DETECTORS) expect(PLACE_FORWARD_DETECTORS.has(d)).toBe(true)
+  })
+})

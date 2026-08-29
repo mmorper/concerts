@@ -22,6 +22,7 @@
 import type { LinerNotesPost, PostImage } from "../../src/types/liner-notes.ts";
 import {
   PLACEHOLDER_IMAGE_URL,
+  PLACE_FORWARD_DETECTORS,
   VENUE_SUBJECT_DETECTORS,
   getAlbumArt,
   getShowAsset,
@@ -100,7 +101,7 @@ export function upgradeVenuePosts(
   for (const post of posts) {
     // Only where the SUBJECT is a place. An artist post with a venue photo is the wrong
     // subject, which is the mirror of the gate in `upgradeToOwnPhotography`.
-    if (!VENUE_SUBJECT_DETECTORS.has(post.detector)) continue;
+    if (!PLACE_FORWARD_DETECTORS.has(post.detector)) continue;
     if (post.image?.source === "venue") continue;
     /* Never over the archive's own photography. Personal beats sourced, and a venue post
        that somehow reached tier 1 has earned it. */
