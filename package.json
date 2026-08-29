@@ -83,7 +83,8 @@
     "media:review": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/review.ts",
     "media:crop": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/crop.ts",
     "media:frames": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/frames.ts",
-    "render:card": "tsx scripts/syndication/render-card.ts"
+    "render:card": "tsx scripts/syndication/render-card.ts",
+    "syndicate:preview": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/syndication/preview.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

@@ -160,6 +160,45 @@ export function resolveVenueSlug(post: LinerNotesPost, concert: Concert): string
     : post.venues[0] ?? concert.venueNormalized;
 }
 
+/**
+ * The night the CARD is about — one rule, used by the payload and the renderer alike.
+ *
+ * 🔴 THEY CHOSE DIFFERENTLY, AND THE ALT TEXT PAID FOR IT.
+ * `resolveAnchorConcert` always returns a concert; for a span post it falls through to
+ * "earliest by the lead artist", which its own doc calls furniture rather than a claim. The
+ * renderer overrode that for a tier-1 card so the credit stack would follow the photograph,
+ * and `cardAlt` kept using the payload's answer. Measured on
+ * `crowded-house-from-opener-to-headliner`:
+ *
+ *     the card says   The Wiltern · Los Angeles, CA · May 2023   ← the photograph's night
+ *     the alt says    Olympic Velodrome, Carson, 18 September 1993
+ *
+ * A sighted reader and a screen-reader user were given different shows. That is an
+ * accessibility failure before it is a factual one, and it is the same class of bug as the
+ * renderer re-deciding tier: two places answering one question.
+ *
+ * The rule, in one place now:
+ *   - a post ABOUT ONE NIGHT (it has a `?show=` link) → that night, always. It is the
+ *     subject, and the byline discloses the photograph's own date separately.
+ *   - a post about a SPAN carrying a tier-1 photograph → the night it was taken. There is no
+ *     subject night to name, and naming an arbitrary one puts the picture and its caption
+ *     in disagreement.
+ *   - anything else → `resolveAnchorConcert`.
+ */
+export function cardConcert(
+  post: LinerNotesPost,
+  concerts: Concert[],
+  shotOn?: string
+): Concert | undefined {
+  const showLink = post.deepLinks?.find((l) => l.type === "setlist");
+  const postNight = showLink?.url.match(/[?&]show=([^&]+)/)?.[1];
+  if (!postNight && shotOn) {
+    const thatNight = concerts.find((c) => c.date === shotOn);
+    if (thatNight) return thatNight;
+  }
+  return resolveAnchorConcert(post, concerts);
+}
+
 export function buildCredit(
   post: LinerNotesPost,
   concert: Concert,
@@ -235,7 +274,7 @@ export function buildPayload(
   const reasons: string[] = [];
   const exists = sources.cardExists ?? ((p: string) => existsSync(join(ROOT, p)));
 
-  const concert = resolveAnchorConcert(post, sources.concerts);
+  const concert = cardConcert(post, sources.concerts, post.image?.shotOn);
   const credit: PayloadCredit = concert
     ? buildCredit(post, concert, sources)
     : { artists: [], venue: "", city: "", date: "" };

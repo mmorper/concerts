@@ -109,3 +109,39 @@ describe('a tier-1 post carries what the tier-1 path needs', () => {
     expect(wrong).toEqual([])
   })
 })
+
+describe('the card and its alt text describe the SAME show', () => {
+  it('agrees on every published post', async () => {
+    // THE BUG. `cardAlt` used the payload's `resolveAnchorConcert`; the renderer overrode it
+    // for a tier-1 card so the credit stack would follow the photograph. On
+    // `crowded-house-from-opener-to-headliner` the card said "The Wiltern · May 2023" and its
+    // own alt said "Olympic Velodrome, Carson, 18 September 1993" — a screen-reader user got
+    // a different show from a sighted one. Accessibility failure first, factual second.
+    //
+    // `cardConcert` is the one rule now. This asserts the two callers cannot drift again.
+    const { cardConcert, buildCredit, cardAlt } = await import('../../scripts/syndication/payload')
+    const concerts = JSON.parse(readFileSync('public/data/concerts.json', 'utf8')).concerts
+    const sources = {
+      concerts,
+      artistsMetadata: JSON.parse(readFileSync('public/data/artists-metadata.json', 'utf8')),
+      venuesMetadata: JSON.parse(readFileSync('public/data/venues-metadata.json', 'utf8')),
+    } as never
+
+    const mismatched: string[] = []
+    for (const post of posts) {
+      const concert = cardConcert(post, concerts, post.image?.shotOn)
+      if (!concert) continue
+      const alt = cardAlt(post, buildCredit(post, concert, sources))
+      /* The invariant is that the alt names the concert `cardConcert` chose — NOT that it
+         names the photograph's venue. Those differ on purpose: a post about ONE night names
+         that night in both card and alt, and the byline separately states when the picture
+         was taken. `the-human-league-8-more-2018-festival-bill` is exactly that case — a
+         2026 photograph on a post about the 2018 festival — and asserting the venue would
+         have failed a correct card. */
+      if (!alt.includes(concert.venue)) {
+        mismatched.push(`${post.slug}: card night is ${concert.venue} ${concert.date}, alt says "${alt.slice(0, 60)}…"`)
+      }
+    }
+    expect(mismatched).toEqual([])
+  })
+})
