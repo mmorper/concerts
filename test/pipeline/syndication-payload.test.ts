@@ -65,7 +65,10 @@ function post(overrides: Partial<LinerNotesPost> = {}): LinerNotesPost {
 const sources = {
   concerts: [CONCERT],
   artistsMetadata: { "the-art-of-noise": { name: "The Art of Noise" } },
-  venuesMetadata: { "pacific-amphitheatre": { name: "Pacific Amphitheatre", city: "Costa Mesa" } },
+  // `state` carries the region the card prints after the city — "Costa Mesa, CA".
+  venuesMetadata: {
+    "pacific-amphitheatre": { name: "Pacific Amphitheatre", city: "Costa Mesa", state: "California" },
+  },
   cardExists: () => true,
 };
 
@@ -124,7 +127,7 @@ describe("tags", () => {
   it("orders artists first, so a tight budget keeps the tag a fan follows", () => {
     const tags = entityTags({
       artists: ["Nile Rodgers", "Duran Duran"],
-      venue: "Pacific Amphitheatre",
+      venues: ["Pacific Amphitheatre"],
       city: "Costa Mesa",
       date: "2026-07-31",
     });
@@ -156,10 +159,13 @@ describe("buildPayload", () => {
     expect(payload.eligible).toBe(true);
     expect(payload.ineligibleReasons).toEqual([]);
     expect(payload.url).toBe(`${SITE_URL}/liner-notes/forty-years-since-the-art-of-noise`);
+    // `credit` stays SINGULAR — it is furniture naming one show on the card. Only the tag
+    // list went plural, because tags are discovery and a post can span venues.
     expect(payload.credit).toEqual({
       artists: ["The Art of Noise"],
       song: undefined,
       venue: "Pacific Amphitheatre",
+      region: "CA",
       city: "Costa Mesa",
       date: "1986-07-31",
     });

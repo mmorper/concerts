@@ -67,14 +67,26 @@ export function toHashtag(entity: string): string {
 export interface EntitySources {
   /** Display names in billing order. */
   artists: string[];
-  venue: string;
+  /**
+   * EVERY venue the post covers, not just the one the credit stack names.
+   *
+   * 🔴 THIS WAS SINGULAR, AND IT SILENTLY LOST TWO THIRDS OF SOME POSTS.
+   * It took `credit.venue` — the anchor show — which is right for the card, where the
+   * credit stack is furniture identifying ONE night. It is wrong for tags, which are
+   * discovery: `3-concerts-in-12-days` covers The Belasco, Peacock Theater and Pacific
+   * Amphitheatre, and someone following Pacific Amphitheatre could never find it.
+   *
+   * The anchor stays FIRST, so the venue on the card is the venue most likely to survive a
+   * channel's limit.
+   */
+  venues: string[];
   city: string;
   /** ISO date of the night the post is anchored to. */
   date: string;
 }
 
 /**
- * Entity tags in priority order: artists first, then venue, city, decade.
+ * Entity tags in priority order: artists first, then venues, city, decade.
  *
  * Order is the whole selection mechanism — Bluesky takes the first 1–2 and X
  * takes none, so "which tags survive a tight budget" is decided here once
@@ -95,8 +107,11 @@ export function entityTags(sources: EntitySources): string[] {
     out.push(tag);
   };
 
+  /* Artists first — the owner's rule, 2026-08-29: "artists should trump venues". Someone
+     follows a band; a venue is the second thing they would look for. On a channel taking
+     only one or two tags this is the whole of the decision. */
   for (const artist of sources.artists) push(artist);
-  push(sources.venue);
+  for (const venue of sources.venues) push(venue);
   push(sources.city);
 
   const year = Number(sources.date.slice(0, 4));

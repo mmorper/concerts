@@ -32,6 +32,13 @@ const HOSTS: Array<[string, Provenance]> = [
   ["deezer.com", { tier: 2, source: "artist-deezer" }],
   ["googleapis.com", { tier: 2, source: "venue-places" }],
   ["ggpht.com", { tier: 2, source: "venue-places" }],
+  /* 🔴 THE HOST PLACES ACTUALLY SERVES FROM TODAY. `venues-metadata.json` stores
+     `lh3.googleusercontent.com/place-photos/…`, and only `googleapis.com` and `ggpht.com`
+     were listed — so every real venue photograph classified as UNKNOWN and its post became
+     ineligible with "unclassified image host". Invisible until now because no published post
+     had ever carried one: the venue branch always fell through to album art, which is the
+     bug `upgradeVenuePosts` fixes. The two land together or neither works. */
+  ["googleusercontent.com", { tier: 2, source: "venue-places" }],
   ["wikimedia.org", { tier: 2, source: "wikimedia" }],
   ["wikipedia.org", { tier: 2, source: "wikimedia" }],
 ];
