@@ -40,6 +40,7 @@ import {
   alreadyIngested,
   assetFilename,
   assetsFor,
+  assetsForAct,
   loadIndex,
   nextOrder,
   saveIndex,
@@ -251,6 +252,12 @@ async function ingestFile(args: {
    * matched and every asset in the archive was `hero: false`.
    */
   hero?: boolean
+  /**
+   * The best frame of this act across every show. One per ARTIST, not per night — so unlike
+   * `hero`, promoting one here must clear a holder at a DIFFERENT date. This file is the
+   * only place that can: `selects.json` knows about one night.
+   */
+  signature?: boolean
   /** The owner's crop box, normalised, from the review page (#342). */
   crop?: { x: number; y: number; w: number; h: number } | null
   index: MediaIndex
@@ -304,7 +311,32 @@ async function ingestFile(args: {
       report.warnings.push(
         `${rel}: already ingested as ${seen.url}, ${wanted ? 'now marked hero' : 'no longer hero'}.`
       )
-    } else {
+    }
+
+    /* The signature, reconciled the same way and in a WIDER scope. `assetsForAct` spans
+       every date because a signature is one per artist, not one per night — so taking it
+       over demotes a holder at another show, which `selects.json` could never see. */
+    const wantsSignature = Boolean(args.signature)
+    if (wantsSignature !== Boolean(seen.signature)) {
+      if (wantsSignature) {
+        for (const prior of assetsForAct(index, artistNormalized)) {
+          if (prior.signature && prior !== seen) {
+            prior.signature = false
+            report.warnings.push(
+              `${rel}: takes over as signature for ${act?.name ?? 'the act'} — ${prior.url} (${prior.date}) demoted.`
+            )
+          }
+        }
+        seen.signature = true
+      } else {
+        delete seen.signature
+      }
+      report.warnings.push(
+        `${rel}: ${wantsSignature ? 'now marked signature' : 'no longer signature'}.`
+      )
+    }
+
+    if (wanted === seen.hero && wantsSignature === Boolean(seen.signature)) {
       report.skipped.push({ path: rel, reason: `already ingested as ${seen.url}` })
     }
     return
@@ -374,6 +406,7 @@ async function ingestFile(args: {
     tier: 1,
     source: 'personal',
     hero,
+    ...(args.signature ? { signature: true } : {}),
     crop: args.crop ?? null,
     order,
     quality,
@@ -394,6 +427,20 @@ async function ingestFile(args: {
       if (prior.hero) {
         prior.hero = false
         report.warnings.push(`${rel}: takes over as hero for ${act?.name ?? 'the venue'} — ${prior.url} demoted.`)
+      }
+    }
+  }
+
+  /* Same rule, WIDER SCOPE. A signature is one per act across every show, so the holder it
+     demotes is usually at a different date — and the report says which, because "demoted"
+     without a date is uninterpretable when the two frames are years apart. */
+  if (args.signature) {
+    for (const prior of assetsForAct(index, artistNormalized)) {
+      if (prior.signature) {
+        prior.signature = false
+        report.warnings.push(
+          `${rel}: takes over as signature for ${act?.name ?? 'the act'} — ${prior.url} (${prior.date}) demoted.`
+        )
       }
     }
   }
@@ -608,6 +655,7 @@ async function ingestFromSelects(args: {
       label: staged.get(file),
       provenanceName: sel.sourceFile ? sel.originalFilename : null,
       hero: sel.hero,
+      signature: sel.signature,
       crop: sel.crop ?? null,
       // A frame has no library identity of its own; record the CLIP it came from.
       uuid: sel.sourceFile ? null : sel.uuid,

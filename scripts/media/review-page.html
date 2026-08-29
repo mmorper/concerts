@@ -202,6 +202,7 @@
   <span class="gated" id="k-act"><b>↑ ↓</b>which act</span>
   <span class="gated" id="k-crop"><b>R</b>crop 4:5</span>
   <span class="gated" id="k-hero"><b>H</b>hero</span>
+  <span class="gated" id="k-sig"><b>B</b>signature</span>
   <span><b>O</b>open in Photos</span><span><b>U</b>undo</span>
   <span><b>esc</b>close</span>
 </div>
@@ -306,7 +307,7 @@ function paint(){
     t.classList.toggle('reject', v==='reject');
     const rec = V[it.uuid] || {};
     t.querySelector('.mark').textContent =
-      rec.hero ? '★' : v==='keep' ? '✓' : v==='reject' ? '✕' : '';
+      rec.signature ? '✦' : rec.hero ? '★' : v==='keep' ? '✓' : v==='reject' ? '✕' : '';
     t.classList.toggle('hero', !!rec.hero);
     t.classList.toggle('cropped', !!rec.crop);
   });
@@ -319,6 +320,7 @@ function paint(){
   $('#k-act')?.classList.toggle('live', isKeeper);
   $('#k-crop')?.classList.toggle('live', isKeeper && isStill);
   $('#k-hero')?.classList.toggle('live', isKeeper);
+  $('#k-sig')?.classList.toggle('live', isKeeper && isStill);
 
   const keep = Object.values(V).filter(x=>x.verdict==='keep').length;
   const rej  = Object.values(V).filter(x=>x.verdict==='reject').length;
@@ -568,6 +570,40 @@ function setHero(){
   V[it.uuid] = cur; post('/verdict', {uuid: it.uuid, ...cur}); paint(); renderMarks();
   toast(on ? `★ hero for ${cur.artist}` : 'hero cleared');
 }
+/* The SIGNATURE — the best frame of this act across every show, not just this night.
+   `hero` is one per act per show, so an act photographed three times has three heroes and
+   a post that is not about one particular night has nothing to choose between them.
+
+   MARKED HERE AS WELL AS IN media:crop, because this is when the judgement is easiest —
+   you are looking at every frame of the act at once. The tradeoff, named: a signature
+   compares ACROSS shows and you can only see one show from here, so it means "better than
+   whatever I picked last time", which you have to carry in your head. `media:crop` shows
+   every show's frames side by side and is the better place to change your mind. Both write
+   the same field.
+
+   Scoped to the ACT AT ANY DATE. Demoting siblings within this page only covers this
+   show — ingest carries the mark through and the index is where cross-show demotion
+   happens, exactly as it does for the crop server's `apply_signature`. */
+function setSignature(){
+  const it = ITEMS[cursor], cur = V[it.uuid] || {};
+  if (cur.verdict !== 'keep') return toast('signature applies to keepers only');
+  if (!cur.artist) return toast('name the act first — signature is per act');
+  hist.push({uuid: it.uuid, prev: JSON.parse(JSON.stringify(cur))});
+  const on = !cur.signature;
+  if (on) {
+    for (const [uuid, v] of Object.entries(V)) {
+      if (uuid !== it.uuid && v.signature && v.artist === cur.artist) {
+        hist.push({uuid, prev: JSON.parse(JSON.stringify(v))});
+        delete v.signature;
+        post('/verdict', {uuid, ...v});
+      }
+    }
+  }
+  if (on) cur.signature = true; else delete cur.signature;
+  V[it.uuid] = cur; post('/verdict', {uuid: it.uuid, ...cur}); paint(); renderMarks();
+  toast(on ? `✦ signature for ${cur.artist}` : 'signature cleared');
+}
+
 /* Marks live on the verdict record, so they persist per keystroke like everything else and
    an interrupted session loses nothing. */
 function saveMarks(patch){
@@ -660,6 +696,10 @@ document.addEventListener('keydown', e=>{
      R is also the crop key in Lightroom, so it is the less surprising choice anyway. */
   else if (k==='r' && !e.metaKey && !e.ctrlKey) toggleCrop();
   else if (k==='h') setHero();
+  /* B, NOT S. `s` is already the STUB subject (SUBJ above) and binding signature to it would
+     silently stop `s` setting stub — the same shadowing that made crop use R rather than C.
+     B for "best across shows", and `media:crop` uses the same key for the same action. */
+  else if (k==='b') setSignature();
   else if (SUBJ[k]) setSubject(SUBJ[k]);
 });
 

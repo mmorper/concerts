@@ -57,6 +57,21 @@
         }
       }
     },
+    "2013-06-02": {
+      "reviewed": 3,
+      "decidedAt": "2026-08-29T20:47:02.712Z",
+      "decisions": {
+        "362D4B61-584D-4571-B377-2CF6EB9A83FD": {
+          "verdict": "reject"
+        },
+        "465C7704-EF5B-4FA0-B6C8-4EAD72DE47F8": {
+          "verdict": "reject"
+        },
+        "6AD15BF3-41A2-4C0E-AAF9-ECB84192D036": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2015-07-04": {
       "reviewed": 12,
       "decidedAt": "2026-08-29T19:09:58.708Z",
@@ -183,7 +198,8 @@
             "y": 0.0679,
             "w": 0.95,
             "h": 0.8906
-          }
+          },
+          "hero": true
         }
       }
     },
@@ -242,6 +258,46 @@
             "w": 0.6,
             "h": 1
           }
+        }
+      }
+    },
+    "2019-05-16": {
+      "reviewed": 8,
+      "decidedAt": "2026-08-29T20:49:28.985Z",
+      "decisions": {
+        "09E63BCD-B2F5-4AE6-B92A-E76397777873": {
+          "verdict": "keep",
+          "artist": "Garbage",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.02,
+            "y": 0.0187,
+            "w": 0.96,
+            "h": 0.8997
+          }
+        },
+        "24A9A8F2-2856-4B2F-91CC-50426E5A99D6": {
+          "verdict": "reject"
+        },
+        "52909B82-C68E-4D54-858C-C86476964127": {
+          "verdict": "reject"
+        },
+        "571C7A7F-E3C7-4DF3-82FB-02706003906F": {
+          "verdict": "reject"
+        },
+        "7F93332B-02B2-4CCC-9BDF-ECDD4C81A672": {
+          "verdict": "reject"
+        },
+        "93E27794-06EA-4786-8C26-2219A6F4B7DD": {
+          "verdict": "reject"
+        },
+        "B96F7A75-8EDD-4F1C-98B0-63BE90150BD5": {
+          "verdict": "keep",
+          "artist": "Garbage"
+        },
+        "C2D7AB91-9D20-421F-984E-0150B9A2A809": {
+          "verdict": "reject"
         }
       }
     },

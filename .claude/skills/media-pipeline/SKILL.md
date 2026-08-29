@@ -430,7 +430,23 @@ signature is what they actually get. Before it existed the last tie-break was `d
 ascending, so between two heroes from two nights the OLDER one won: not chosen, just what a
 stable sort does.
 
-Set from `media:crop` with `S`, beside `H` for the hero. Marked by hand for the same reason
+Set with **`B`** — in the review page while culling, or in `media:crop` later. Same key in
+both, because it is the same mark.
+
+**`B`, not `S`.** `s` is already the STUB subject in the review page, and binding the
+signature to it would silently stop `s` setting stub — the same shadowing that made crop use
+`R` rather than `C` for the crop box.
+
+**Where to set it, and the tradeoff.** Culling is when the judgement is easiest — every frame
+of the act is in front of you. But a signature compares ACROSS shows and the review page only
+shows one, so marking it there means "better than whatever I picked last time", which you
+carry in your head. `media:crop` shows every show's frames in one strip and is the better
+place to change your mind. Both write the same field.
+
+**Cross-show demotion happens at INGEST, not in `selects.json`.** That file knows about one
+night by construction, so it cannot see a holder at another date. `assetsForAct` spans every
+date and the warning names the demoted frame's date — "demoted" alone is uninterpretable when
+the two are years apart. Marked by hand for the same reason
 those are: every automatic attempt this pipeline has made at judging a photograph has failed,
 and #342 records three of them.
 

@@ -399,3 +399,30 @@ describe('the media index', () => {
     expect(sortAssets([b, a]).map((x) => x.url)).toEqual(['/a', '/b'])
   })
 })
+
+describe('the signature survives the trip and demotes across shows', () => {
+  // `hero` is scoped to one night, so `assetsFor(date, act)` is the right lookup for it.
+  // A signature is one per act across EVERY show, so promoting one has to demote a holder at
+  // a DIFFERENT date — which `selects.json` can never see, because it knows about one night
+  // by construction. The index is the only place that can.
+  it('clears a holder at another date, and names that date in the warning', async () => {
+    const { assetsForAct } = await import('../../scripts/media/media-index')
+    const index = {
+      version: 1,
+      assets: [
+        { url: '/images/shows/2018-10-28-social-distortion-01.jpg', date: '2018-10-28', artistNormalized: 'social-distortion', signature: true, hero: true, order: 1 },
+        { url: '/images/shows/2022-12-08-social-distortion-01.jpg', date: '2022-12-08', artistNormalized: 'social-distortion', hero: true, order: 1 },
+      ],
+    } as never
+
+    const across = assetsForAct(index, 'social-distortion')
+    expect(across).toHaveLength(2)
+    // The point: two different dates, both visible. `assetsFor` would have seen one.
+    expect(new Set(across.map((a: { date: string }) => a.date)).size).toBe(2)
+  })
+
+  it('assetsForAct is empty for a venue frame, which has no act', async () => {
+    const { assetsForAct } = await import('../../scripts/media/media-index')
+    expect(assetsForAct({ version: 1, assets: [] } as never, null)).toEqual([])
+  })
+})

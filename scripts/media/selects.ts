@@ -30,6 +30,7 @@ export interface Verdict {
   subject?: 'performer' | 'venue' | 'crowd' | 'stub' | null
   /** The frame that leads anything built from this act. One per act per show. */
   hero?: boolean | null
+  signature?: boolean | null
   /** Normalised crop box, authored at 4:5 in the review page. See #342. */
   crop?: { x: number; y: number; w: number; h: number } | null
 }
@@ -57,6 +58,15 @@ export interface Select {
    * file name.
    */
   hero: boolean
+  /**
+   * The best frame of this act ACROSS EVERY SHOW — one per artist, where `hero` is one per
+   * artist per night. Marked with `B` in the review page or in `media:crop`.
+   *
+   * Cross-show demotion cannot happen here: this file only knows about one night. `ingest`
+   * carries the mark to `media-index.json`, which is where every show is visible at once and
+   * where a previous holder is cleared.
+   */
+  signature: boolean
   /**
    * The owner's crop, normalised 0–1, authored at 4:5.
    *
@@ -222,6 +232,8 @@ export function buildSelects(args: {
          venue, crowd or stub frame, and hero is scoped per act — a hero belonging to
          nobody has nothing to lead. */
       hero: Boolean(v.hero) && act !== null,
+      // Same rule: a signature belonging to no act is not a signature.
+      signature: Boolean(v.signature) && act !== null,
       crop: v.crop ?? null,
       // A frame already on disk never needs downloading, whatever its clip's state was.
       // Marks only mean anything on a clip; a still has no timeline to mark.

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-08-29T20:43:06.769Z",
+  "generated": "2026-08-29T20:50:22.634Z",
   "assets": [
     {
       "kind": "image",
@@ -208,7 +208,7 @@
       "subject": "artist",
       "tier": 1,
       "source": "personal",
-      "hero": false,
+      "hero": true,
       "crop": {
         "h": 0.8906,
         "w": 0.95,
@@ -337,6 +337,58 @@
       "sourceSha256": "90a86e3961ba7dc073d847e62ed666a718c8d05f45d65527c8fcba50ff37a7c7",
       "derivedFrom": null,
       "notes": null
+    },
+    {
+      "kind": "image",
+      "url": "/images/shows/2019-05-16-garbage-01.jpg",
+      "date": "2019-05-16",
+      "uuid": "B96F7A75-8EDD-4F1C-98B0-63BE90150BD5",
+      "artist": "Garbage",
+      "artistNormalized": "garbage",
+      "subject": "artist",
+      "tier": 1,
+      "source": "personal",
+      "hero": false,
+      "crop": null,
+      "order": 1,
+      "quality": "original",
+      "width": 1536,
+      "height": 2048,
+      "sourceWidth": 4032,
+      "sourceHeight": 3024,
+      "bytes": 230921,
+      "sourceSha256": "734d12d1b3daba86216b97b24b16d199b455715d3ed3a74987e094755732f771",
+      "derivedFrom": null,
+      "notes": null
+    },
+    {
+      "kind": "image",
+      "url": "/images/shows/2019-05-16-garbage-02.jpg",
+      "date": "2019-05-16",
+      "uuid": "09E63BCD-B2F5-4AE6-B92A-E76397777873",
+      "artist": "Garbage",
+      "artistNormalized": "garbage",
+      "subject": "artist",
+      "tier": 1,
+      "source": "personal",
+      "hero": true,
+      "crop": {
+        "x": 0.02,
+        "y": 0.0187,
+        "w": 0.96,
+        "h": 0.8997
+      },
+      "order": 2,
+      "quality": "original",
+      "width": 1536,
+      "height": 2048,
+      "sourceWidth": 4032,
+      "sourceHeight": 3024,
+      "bytes": 253019,
+      "sourceSha256": "ecce381f9dca9bdf7c90c1ec90537447414568ff017d91fb191b739742ce3aab",
+      "derivedFrom": null,
+      "notes": null,
+      "signature": true
     },
     {
       "kind": "image",
