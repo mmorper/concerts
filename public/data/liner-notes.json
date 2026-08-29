@@ -10,10 +10,18 @@
       "headline": "3 Concerts in 12 Days",
       "prose": "I don't know what got into me in July 2023, but I saw 3 shows across 3 different genres in 12 days without once feeling like I was overdoing it. Foals at The Belasco on the 18th, UB40 at Peacock Theater on the 21st, X at Pacific Amphitheatre in Costa Mesa on the 30th — indie rock, reggae, and punk, all inside a single Los Angeles summer. There's something about that stretch that still makes me smile: I went from the close, sweaty energy of The Belasco to an amphitheatre in Orange County without stopping to ask whether any of it made sense as a playlist. It didn't, and that was exactly the point.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/hqj1961665173344.jpg",
+        "url": "/images/shows/2023-07-18-foals-06.jpg",
         "alt": "Foals",
-        "source": "artist",
-        "ref": "foals"
+        "source": "show",
+        "ref": "foals",
+        "credit": "Mike Morper · 18 July 2023",
+        "shotOn": "2023-07-18",
+        "crop": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.7026
+        }
       },
       "audio": {
         "trackName": "Mountain at My Gates",
@@ -80,16 +88,15 @@
       "detector": "concert-streak",
       "publishedAt": "2026-08-24T08:52:21.247Z",
       "social": {
-        "hook": "Three genres, three venues, twelve days — and not once did I question the logic.",
-        "caption": "July 2023: Foals, UB40, and X across twelve days without a coherent playlist in sight. That was entirely the point.",
+        "hook": "Indie rock, reggae, and punk — 3 shows, 3 genres, 12 days.",
+        "caption": "Foals at The Belasco on the 18th, UB40 at Peacock Theater on the 21st, X at Pacific Amphitheatre on the 30th. One Los Angeles summer, no attempt to make it a coherent playlist.",
         "beats": [
-          "July 2023: three shows in twelve days, three genres, two counties — and it never felt like too much.",
-          "Foals at The Belasco on the 18th: close, sweaty, the room pressing in from every side.",
-          "UB40 at Peacock Theater on the 21st — reggae in the middle of an LA summer felt exactly right.",
-          "X at Pacific Amphitheatre in Costa Mesa on the 30th: punk under an open Orange County sky.",
-          "Indie rock, reggae, punk — no through line, no apology. The archive holds all three."
+          "July 2023: three shows in twelve days across three genres I would never put on the same playlist.",
+          "Foals at The Belasco on the 18th — close, sweaty, the room doing exactly what a room that size should do.",
+          "UB40 at Peacock Theater on the 21st, then X at Pacific Amphitheatre in Costa Mesa nine days after the first show.",
+          "Indie rock to reggae to punk without stopping to ask whether any of it made sense. It didn't, and that was the point."
         ],
-        "authoredAt": "2026-08-24T08:52:21.249Z"
+        "authoredAt": "2026-08-29T19:11:50.474Z"
       }
     },
     {
@@ -100,11 +107,18 @@
       "headline": "Social Distortion — 1.4 Years Before Born to Kill",
       "prose": "Punk rock has always been about the song before the studio catches up, and at The Belasco in Los Angeles on December 5, 2024, I heard four tracks from *Born to Kill* a full 519 days before the record existed in anyone's hands. Four songs — \"Tonight,\" \"Over You,\" \"The Way Things Were,\" and the title track itself — dropped into an 18-song set like they'd always belonged there, which, knowing Social Distortion, they probably had for years already. That's the thing about a band formed in 1979: they don't audition new material, they road-test it, and the crowd at The Belasco had no idea they were the test.",
       "image": {
-        "url": "https://coverartarchive.org/release-group/453a2bca-8133-40bf-982a-d8c6a2faf48c/front-500.jpg",
-        "alt": "Born to Kill",
-        "source": "album",
+        "url": "/images/shows/2018-10-28-social-distortion-01.jpg",
+        "alt": "Social Distortion",
+        "source": "show",
         "ref": "social-distortion",
-        "albumName": "Born to Kill"
+        "credit": "Mike Morper · 28 October 2018",
+        "shotOn": "2018-10-28",
+        "crop": {
+          "h": 0.75,
+          "w": 0.45,
+          "x": 0.2582,
+          "y": 0.1171
+        }
       },
       "audio": {
         "trackName": "Born to Kill",
@@ -159,16 +173,15 @@
       "detector": "road-tested",
       "publishedAt": "2026-08-17T08:46:30.786Z",
       "social": {
-        "hook": "Four songs from an album that wouldn't exist for another 519 days.",
-        "caption": "Four tracks from Born to Kill landed in an 18-song set before the record existed. The Belasco crowd had no idea they were the test.",
+        "hook": "Four songs from an album that wouldn't exist for 519 more days.",
+        "caption": "Social Distortion road-tested 'Tonight,' 'Over You,' 'The Way Things Were,' and 'Born to Kill' at The Belasco on December 5, 2024. The crowd had no idea they were the test.",
         "beats": [
-          "The Belasco, December 5, 2024 — Social Distortion playing an 18-song set in their own backyard.",
-          "Four of those songs had no release date, no album, no existence outside the live room.",
-          "'Tonight,' 'Over You,' 'The Way Things Were,' and the title track — dropped in like they'd always been there.",
-          "A band formed in 1979 doesn't audition new material. They road-test it. The crowd didn't know.",
-          "Born to Kill was still 519 days away. The people in that room heard it first."
+          "An 18-song set at The Belasco — and four of them hadn't been recorded yet.",
+          "'Tonight,' 'Over You,' 'The Way Things Were,' and 'Born to Kill' dropped in like they'd always been there.",
+          "They had, probably. A band formed in 1979 doesn't audition new material — it road-tests it.",
+          "519 days before Born to Kill existed in anyone's hands, Los Angeles heard it first."
         ],
-        "authoredAt": "2026-08-22T21:45:49.428Z"
+        "authoredAt": "2026-08-29T19:11:45.896Z"
       }
     },
     {
@@ -259,15 +272,15 @@
       "publishedAt": "2026-08-10T09:25:37.420Z",
       "social": {
         "hook": "39 years between ticket stubs, same song, same authority",
-        "caption": "Nile Rodgers played 'Notorious' at the Pacific Amphitheatre as if he'd always owned it — and in every way that matters, he had. That bassline was his fingerprint long before I connected the two stubs.",
+        "caption": "Duran Duran wrote 'Notorious'; Nile Rodgers produced it. I heard them play it at Irvine Meadows in 1987, then watched him take it back thirty-nine years later.",
         "beats": [
-          "Duran Duran played 'Notorious' at Irvine Meadows in July 1987. I was there.",
-          "Nile Rodgers produced that record — his fingerprints are all over the bassline.",
-          "39 years later he played it at the Pacific Amphitheatre, claiming it fully and without apology.",
-          "Two Southern California venues, two different summers, the same song landing with the same authority both times.",
-          "I didn't plan the symmetry. It just accumulated in my ticket stubs, waiting for me to notice."
+          "Duran Duran wrote 'Notorious.' Nile Rodgers produced it — and his fingerprints are all over that bassline.",
+          "I heard Duran Duran play it at Irvine Meadows, July 1987. Southern California, summer, the song brand new.",
+          "Thirty-nine years later, Rodgers played it at Pacific Amphitheatre as his own — with complete justification.",
+          "Two venues, two summers, the same song landing with the same authority both times.",
+          "I didn't plan that symmetry. It just accumulated in my ticket stubs, waiting for me to notice."
         ],
-        "authoredAt": "2026-08-22T21:45:44.786Z"
+        "authoredAt": "2026-08-29T19:11:37.941Z"
       }
     },
     {
@@ -335,16 +348,16 @@
       "detector": "calendar-anniversary",
       "publishedAt": "2026-07-27T11:27:39.231Z",
       "social": {
-        "hook": "A studio project built from samples — and suddenly it was filling outdoor air.",
-        "caption": "Art of Noise in 1986 was a science experiment more than a concert. Forty years later I still can't explain exactly what I witnessed that night.",
+        "hook": "A studio project made of samples — and somehow it filled the open air.",
+        "caption": "Art of Noise were built in a studio from samples and synthesizers, not designed for a stage. I drove to the Pacific Amphitheatre in 1986 and watched them prove that wrong.",
         "beats": [
-          "I drove to Costa Mesa with no idea what a live Art of Noise show could possibly be.",
-          "They were a studio project — samples, synthesizers, no conventional band to stand behind.",
-          "The stage setup looked like a science experiment. Then the fractured rhythms hit open California air.",
-          "*(Who's Afraid of) The Art of Noise?* was already out. Hearing it outdoors felt genuinely strange.",
+          "July 31, 1986. I drove to Costa Mesa genuinely unsure what I was about to see.",
+          "Art of Noise were a studio project — samples, synthesizers, no obvious band to watch.",
+          "The stage setup looked like a science experiment. Then the fractured rhythms hit the open California air.",
+          "(Who's Afraid of) The Art of Noise? was already out. Hearing it live felt strange in the best way.",
           "Some shows you attend. That one attended me."
         ],
-        "authoredAt": "2026-08-22T21:45:35.890Z"
+        "authoredAt": "2026-08-29T19:11:27.050Z"
       }
     },
     {
@@ -444,16 +457,15 @@
       "detector": "venue-loyalty",
       "publishedAt": "2026-07-20T10:55:39.484Z",
       "social": {
-        "hook": "16 shows. 5 decades. One bowl in Costa Mesa I never planned to love this much.",
-        "caption": "I was 16 the first time I walked into the Pacific Amphitheatre for Tears For Fears in 1985. Thirty-nine years later, The English Beat closed the loop — with 14 more nights in between.",
+        "hook": "16 nights at the same bowl, none of them planned.",
+        "caption": "I walked in for Tears For Fears at 16 and didn't stop until The English Beat in 2024. Thirty-nine years, same Costa Mesa venue, fourteen acts in between.",
         "beats": [
-          "Summer 1985: I was 16, Songs from the Big Chair was everywhere, and the Pacific Amphitheatre was brand new to me.",
-          "Fourteen more nights followed — the Beach Boys, Run-DMC, UB40, Sting, Garbage, and others filling the decades between.",
-          "The same Costa Mesa bowl held all of it: ska, punk, pop, hip-hop, and a Stray Cats set I still think about.",
-          "July 2024, The English Beat closed the loop. Thirty-nine years between first show and sixteenth.",
-          "I never planned to make this place a through-line. That's probably why it became one."
+          "Summer 1985. I was 16, Songs from the Big Chair was everywhere, and the Pacific Amphitheatre was the room.",
+          "Fourteen more nights followed — Beach Boys, Run-DMC, Sting, UB40, Garbage, Stray Cats. No plan. Just the next show.",
+          "Five decades at one venue. The roster spans genres I couldn't have predicted at 16.",
+          "July 2024: The English Beat closed the loop. Thirty-nine years between the first ticket and the sixteenth."
         ],
-        "authoredAt": "2026-08-22T21:45:24.953Z"
+        "authoredAt": "2026-08-29T19:11:15.456Z"
       }
     },
     {
@@ -515,15 +527,15 @@
       "detector": "calendar-anniversary",
       "publishedAt": "2026-07-13T11:15:21.276Z",
       "social": {
-        "hook": "I had no idea I was starting something that would last 40 years.",
-        "caption": "The Beach Boys at the Pacific Amphitheatre in 1986 is entry one in a record that now spans four decades. I didn't know that night what I was beginning — I just knew the harmonies sounded freshly made.",
+        "hook": "I had no idea I was starting something.",
+        "caption": "The Beach Boys were 25 years into those harmonies when I heard them at Pacific Amphitheatre in 1986. One of my earliest entries in what became four decades of concert-going.",
         "beats": [
-          "July 16, 1986: summer air, an open-air amphitheatre, and a band already 25 years deep into those harmonies.",
-          "It was one of my earliest concert entries — I had no idea I was opening an archive that would run for decades.",
-          "Something about hearing those voices live made the songs feel invented on the spot, not performed from memory.",
-          "Forty years on, that night still reads like the right place to have started."
+          "July 16, 1986: one of my earliest concert entries, though I didn't know it yet.",
+          "The Beach Boys were already 25 years together — and the harmonies sounded like they were being invented on the spot.",
+          "Pacific Amphitheatre, summer air, opening notes. The right place to have begun, as it turned out.",
+          "Forty years on, that night still sits near the top of the archive — not for what it was, but for what it started."
         ],
-        "authoredAt": "2026-08-22T21:45:19.882Z"
+        "authoredAt": "2026-08-29T19:11:11.396Z"
       }
     },
     {
@@ -675,15 +687,15 @@
       "detector": "rare-sighting",
       "publishedAt": "2026-06-29T12:38:25.105Z",
       "social": {
-        "hook": "One show in 36 years, and I still haven't figured out how that happened.",
-        "caption": "Ziggy Marley crossed my path exactly once in 36 years of concert-going. That 1988 night sits in the archive like a polaroid found in a jacket pocket — vivid and a little mysterious.",
+        "hook": "One show in 36 years — and I genuinely love his records.",
+        "caption": "I caught Ziggy Marley at Mesa Amphitheatre in September 1988 and never made it back for a second show — despite loving albums like Rebellion Rises and Love Is My Religion.",
         "beats": [
-          "One show. One date in 36 years of concert-going — and somehow I never corrected that.",
-          "September 1988, Mesa Amphitheatre. A single polaroid in the archive, vivid and unexplained.",
-          "Records I genuinely love — Rebellion Rises, Love Is My Religion — and still no second show.",
-          "Some artists fill whole chapters here. Ziggy Marley gets one night and an open question."
+          "One date in 36 years of concert-going. Just Mesa Amphitheatre, September 1988, and then nothing.",
+          "It's not indifference. Rebellion Rises and Love Is My Religion are records I genuinely love.",
+          "Somehow the second show never happened — tours missed, dates that didn't align, the usual excuses.",
+          "That 1988 ticket sits in the archive like a polaroid found in a jacket pocket: vivid and a little mysterious."
         ],
-        "authoredAt": "2026-08-22T21:44:58.602Z"
+        "authoredAt": "2026-08-29T19:10:50.747Z"
       }
     },
     {
@@ -751,16 +763,15 @@
       "detector": "calendar-anniversary",
       "publishedAt": "2026-06-22T13:38:37.273Z",
       "social": {
-        "hook": "15,000 strangers sharing a backyard — and I didn't own a single piece of Parrothead gear.",
-        "caption": "Some shows teach you why a fanbase exists. I walked in skeptical and walked out understanding every bit of it.",
+        "hook": "15,000 strangers at a backyard party I didn't know I'd been invited to",
+        "caption": "I arrived at Irvine Meadows without a single piece of Parrothead gear. I left understanding exactly why 15,000 people had made this their religion.",
         "beats": [
-          "June 21, 1991. The sun went down over Irvine Meadows like the sky was in on the joke.",
-          "Buffett worked that Southern California crowd like a warm ocean current all night long.",
-          "Somewhere between Changes In Latitudes and Songs You Know By Heart, the concert became a backyard party.",
-          "15,000 strangers. No Parrothead gear on me. Complete understanding by the final song.",
-          "Thirty-five years on, I still think of it as the show that explained a fanbase."
+          "June 21, 1991. The sun went down over Irvine Meadows like the sky had been hired for the occasion.",
+          "Buffett moved through 'Changes In Latitudes' and 'Songs You Know By Heart' and the crowd stopped being an audience.",
+          "I owned nothing with a parrot on it. That didn't matter by the second song.",
+          "Some shows explain a fanbase from the inside. This was one of them."
         ],
-        "authoredAt": "2026-08-22T21:44:48.837Z"
+        "authoredAt": "2026-08-29T19:10:40.292Z"
       }
     },
     {
@@ -823,15 +834,15 @@
       "detector": "rare-sighting",
       "publishedAt": "2026-06-16T20:31:24.271Z",
       "social": {
-        "hook": "One sighting. A theme park. Two years after they formed.",
-        "caption": "My only No Doubt entry in the entire archive is from 1988 — before anyone outside Southern California knew their name. Everything that followed, I missed.",
+        "hook": "One sighting in 36 years — and it happened at a theme park.",
+        "caption": "I saw No Doubt in March 1988, two years after they formed, opening a Disneyland bill before anyone outside Southern California knew their name. That's the only entry I have.",
         "beats": [
-          "Flipping through my oldest entries, I found exactly one No Doubt show on the books.",
-          "March 1988: they were two years old as a band, opening alongside The Nylons at a theme park in Anaheim.",
-          "Virtually no one outside Southern California knew who they were yet — Tragic Kingdom was still years away.",
-          "I never crossed paths with them again. One accidental early sighting, then nothing — that's the whole file."
+          "March 1988: No Doubt were two years old and opening a Disneyland bill alongside The Nylons.",
+          "Virtually no one outside Southern California knew their name yet. I was there by accident.",
+          "Tragic Kingdom was still seven years away. Rock Steady, further still.",
+          "One entry. One night. A theme park in Anaheim. That's the whole file."
         ],
-        "authoredAt": "2026-08-22T21:44:44.221Z"
+        "authoredAt": "2026-08-29T19:10:31.785Z"
       }
     },
     {
@@ -898,15 +909,15 @@
       "detector": "album-context",
       "publishedAt": "2026-06-02T15:15:21.680Z",
       "social": {
-        "hook": "34 days before Late Registration, the zeitgeist was already in the air.",
-        "caption": "I saw Garbage on July 27, 2005, not yet knowing Kanye was finishing Late Registration across town. The genre-blending instinct was everywhere that summer, if you knew where to listen.",
+        "hook": "34 days before hip-hop got its most orchestral moment, Shirley Manson was already there.",
+        "caption": "I saw Garbage at Pacific Amphitheatre on July 27, 2005 — 34 days before Late Registration dropped and Kanye proved genre-blending was everywhere that summer.",
         "beats": [
-          "July 27, 2005: Shirley Manson brings moody synthesizers and guitar distortion to Pacific Amphitheatre.",
-          "Thirty-four days later, Kanye West's Late Registration would arrive and reframe what genre-blending could mean.",
-          "Garbage had been doing their own version of that instinct since the '90s — electronics, rock, tension held together.",
-          "The connection only became visible in hindsight. That's what the archive is for."
+          "July 27, 2005: moody synthesizers, guitar distortion, and Shirley Manson commanding the Pacific Amphitheatre.",
+          "34 days later, Kanye West's Late Registration would arrive — hip-hop threaded through with string arrangements.",
+          "Garbage had been bending genres since the '90s. That summer, someone across town was doing the same thing.",
+          "The musical zeitgeist doesn't announce itself. Sometimes you only see the pattern after both tickets are in a drawer."
         ],
-        "authoredAt": "2026-08-22T21:44:33.846Z"
+        "authoredAt": "2026-08-29T19:10:26.826Z"
       }
     },
     {
@@ -968,16 +979,15 @@
       "detector": "rare-sighting",
       "publishedAt": "2026-05-25T16:04:48.152Z",
       "social": {
-        "hook": "One night, two acts, 37 years of no second chance.",
-        "caption": "I saw Run-D.M.C. exactly once in 37 years of concertgoing, and the Beastie Boys were opening. That single night has never stopped feeling like the one I couldn't afford to miss twice.",
+        "hook": "One show in 37 years — and the Beastie Boys were the opening act.",
+        "caption": "I saw Run DMC once, June 1987, with the Beastie Boys opening. Raising Hell was still new, both acts were ascending, and somehow I never got back for a second show.",
         "beats": [
-          "June 20, 1987: both acts were ascending fast, and somehow I only had one ticket to spend on either of them.",
-          "Raising Hell was the record in the air that night — hip-hop pushing hard at the edge of the mainstream.",
-          "The Beastie Boys opened. Two pioneering acts on the same bill, and I was there for all of it.",
-          "I never saw Run-D.M.C. again. Not once in the 37 years that followed.",
-          "The full account is in the archive. One show. No second chance."
+          "June 20, 1987: Run DMC headlining, Beastie Boys opening. I did not fully appreciate what I was standing in front of.",
+          "Raising Hell had just dropped. Hip-hop was forcing its way into the mainstream, and this bill was the proof of it.",
+          "Two acts I never managed to see again — either of them — despite decades of concertgoing after that night.",
+          "37 years later, one ticket stub. Sometimes you catch lightning once and that's the whole story."
         ],
-        "authoredAt": "2026-08-22T21:44:28.258Z"
+        "authoredAt": "2026-08-29T19:10:21.666Z"
       }
     },
     {
@@ -1039,15 +1049,15 @@
       "detector": "album-context",
       "publishedAt": "2026-05-18T16:04:55.091Z",
       "social": {
-        "hook": "Ten days after Nevermind dropped, the old guard hadn't heard the news yet.",
-        "caption": "Sting played Pacific Amphitheatre ten days after Nevermind changed everything. The ground had already moved; nobody on stage knew it yet.",
+        "hook": "Ten days after Nevermind dropped, the old guard had no idea the ground had already moved.",
+        "caption": "Sting played Pacific Amphitheatre on October 4th, 1991 — ten days after Nevermind hit shelves. The radio was still figuring out what to do with 'Smells Like Teen Spirit.'",
         "beats": [
-          "Nevermind hit shelves September 24th, 1991. I was at this show ten days later.",
-          "Radio was still figuring out what to do with 'Smells Like Teen Spirit' that night.",
-          "Meanwhile, polished pop-rock filled the amphitheatre, unhurried and unaware.",
-          "That gap — ten days, two worlds — is exactly what this archive exists to hold."
+          "Nevermind came out September 24th, 1991. Ten days later I was at a Sting show.",
+          "The radio was still mid-panic over 'Smells Like Teen Spirit' while Sting played 'Fields of Gold.'",
+          "The old guard was still touring their greatest hits, completely unaware the ground had moved.",
+          "October 4th, 1991: the last clean week before everything sounded different."
         ],
-        "authoredAt": "2026-08-22T21:44:18.507Z"
+        "authoredAt": "2026-08-29T19:10:16.527Z"
       }
     },
     {
@@ -1115,15 +1125,15 @@
       "detector": "album-context",
       "publishedAt": "2026-05-13T19:56:15.253Z",
       "social": {
-        "hook": "Achtung Baby was 33 days old. Someone had been doing this since 1976.",
-        "caption": "Siouxsie and the Banshees took the Universal Amphitheater stage 33 days after Achtung Baby reframed what rock reinvention could mean. She'd been working that dark, electronic-tinged ground since 1976.",
+        "hook": "U2 broke the internet 33 days earlier. Siouxsie had been doing it since 1976.",
+        "caption": "Achtung Baby dropped November 18th and everyone called it a reinvention. I saw Siouxsie at the Universal Amphitheater 33 days later, watching someone who'd been there first.",
         "beats": [
-          "December 21, 1991: Achtung Baby was five weeks old and everywhere you looked.",
-          "U2's pivot to industrial textures felt seismic — unless you'd been paying attention to Siouxsie since 1976.",
-          "She didn't acknowledge the comparison. She didn't have to. The stage said it.",
-          "Watching her that night reordered the story of who pioneered what, and when."
+          "Achtung Baby landed November 18, 1991 — industrial textures, irony, a supposed reinvention of rock.",
+          "Thirty-three days later I was at the Universal Amphitheater watching Siouxsie Sioux command a stage.",
+          "She'd been mining that dark, electronic territory since 1976 — while U2 were still finding their footing.",
+          "The 'breakthrough' framing felt different from the floor that night. Someone had been here the whole time."
         ],
-        "authoredAt": "2026-08-22T21:44:07.606Z"
+        "authoredAt": "2026-08-29T19:10:06.483Z"
       }
     },
     {
@@ -1186,16 +1196,15 @@
       "detector": "calendar-anniversary",
       "publishedAt": "2026-04-14T14:41:46.749Z",
       "social": {
-        "hook": "Neil Arthur's gestures made a synth-pop show feel like theater.",
-        "caption": "Blancmange packed Crawford Hall while Happy Families was on college radio. Forty years on, I still see Neil Arthur conducting the room.",
+        "hook": "A synth-pop band getting radio play, in a hall that held maybe a few hundred people.",
+        "caption": "Blancmange were all over college radio in 1986, but Crawford Hall seated a fraction of that audience. I watched Neil Arthur work through Happy Families like it was a theatre piece.",
         "beats": [
-          "April 1986: Blancmange were getting real radio play, yet Crawford Hall kept it close enough to feel personal.",
-          "They played through Happy Families — electronic beats and Arthur's voice cutting through a room that size.",
-          "Arthur's theatrical gestures turned a synth-pop set into something closer to performance art.",
-          "British new wave was reshaping American college radio that spring, and this night was the proof.",
-          "Forty years later, the detail that stays is how small the room was for a band that big."
+          "April 1986: Blancmange had real radio traction, and somehow I was seeing them in a small campus hall.",
+          "Neil Arthur's stage presence was theatrical — gestures that belonged in a bigger room, delivered ten feet away.",
+          "Happy Families was the set's spine. That record still sounds like a specific moment in British synth-pop.",
+          "Crawford Hall made it feel like a secret. British new wave was rewriting American college radio, and this was the proof."
         ],
-        "authoredAt": "2026-08-22T21:43:56.414Z"
+        "authoredAt": "2026-08-29T19:09:54.627Z"
       }
     },
     {
@@ -1346,15 +1355,15 @@
       "detector": "artist-longevity",
       "publishedAt": "2026-03-31T22:51:47.305Z",
       "social": {
-        "hook": "Four shows. Three decades. One hollow-body Gretsch.",
-        "caption": "I caught The Brian Setzer Orchestra 4 times across 22 years, from a club in Newport Beach to the Warner Theatre in DC. There's something to be said for aging into the music alongside an artist.",
+        "hook": "Four shows, three decades, one hollow-body Gretsch that never lost its nerve.",
+        "caption": "I first caught the Brian Setzer Orchestra in 1995, before swing revival had a name. The last time was Washington DC in 2017 — still a 17-piece orchestra, still the same charge.",
         "beats": [
-          "Spring 1995: swing revival was still underground when I walked into the Hard Rock Cafe in Newport Beach.",
-          "One night with a 17-piece orchestra and a hollow-body Gretsch, and I was hooked for the next two decades.",
-          "Four venues, three decades — the last stop was the Warner Theatre in Washington DC in 2017.",
-          "Some artists you see once. Others you follow long enough that the music starts to feel like shared history."
+          "Hard Rock Cafe, Newport Beach, 1995. Swing revival was underground. I had no idea I was starting a 22-year habit.",
+          "Four venues across three decades — from an intimate club gig to the Warner Theatre in DC.",
+          "Every time: Brian straps on the Gretsch, the 17-piece orchestra kicks in, and the room changes.",
+          "There's something earned about following an artist long enough to age into the music alongside him."
         ],
-        "authoredAt": "2026-08-22T21:43:40.668Z"
+        "authoredAt": "2026-08-29T19:09:32.361Z"
       }
     },
     {
@@ -1365,10 +1374,18 @@
       "headline": "March 22: 13 Years Since Bad Religion",
       "prose": "I remember walking into the 9:30 Club that March night in 2013, thirteen years ago now, and feeling like I was stepping into punk rock church. Bad Religion delivered their signature blend of melody and fury to a packed room, with Against Me!, The Bronx, and Polar Bear Club warming up the crowd beforehand. The whole evening felt like a masterclass in how punk has evolved since Bad Religion formed back in 1979, yet Greg Graffin's voice cut through the years like nothing had changed. Sometimes the best shows are the ones that remind you why you fell in love with live music in the first place.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/yuswct1767893982.jpg",
+        "url": "/images/shows/2018-10-28-bad-religion-02.jpg",
         "alt": "Bad Religion",
-        "source": "artist",
-        "ref": "bad-religion"
+        "source": "show",
+        "ref": "bad-religion",
+        "credit": "Mike Morper · 28 October 2018",
+        "shotOn": "2018-10-28",
+        "crop": {
+          "h": 1,
+          "w": 0.6,
+          "x": 0,
+          "y": 0
+        }
       },
       "audio": {
         "trackName": "Bad Religion",
@@ -1422,16 +1439,15 @@
       "detector": "calendar-anniversary",
       "publishedAt": "2026-03-24T00:47:49.925Z",
       "social": {
-        "hook": "Three openers, one headliner, and Greg Graffin's voice unchanged across three decades.",
-        "caption": "Bad Religion turned the 9:30 Club into punk rock church that night, with Against Me!, The Bronx, and Polar Bear Club setting the table. Some shows remind you exactly why you started going to shows.",
+        "hook": "Greg Graffin's voice cut through 34 years like nothing had changed.",
+        "caption": "Bad Religion formed in 1979, and by 2013 Graffin still sounded like the clock had never moved. Against Me!, The Bronx, and Polar Bear Club opened — four bands deep, one packed room.",
         "beats": [
-          "Four bands on one bill: Polar Bear Club, The Bronx, Against Me!, and Bad Religion closing it out.",
-          "Each opener raised the temperature in the room before Graffin ever stepped to the mic.",
-          "Bad Religion formed in 1979 — by 2013 that was thirty-four years of melody and fury refined to a point.",
-          "Graffin's voice carried the whole room without a hint of distance from the records.",
-          "The 9:30 Club packed, the set a reminder of what drew me to live music in the first place."
+          "Walking into the 9:30 Club that night felt like stepping into punk rock church.",
+          "Against Me!, The Bronx, and Polar Bear Club each took the stage before the headliners arrived.",
+          "Bad Religion had been a band for 34 years by that March night — and it showed in the best way.",
+          "Greg Graffin's voice carried the same authority it always had. Some things don't erode."
         ],
-        "authoredAt": "2026-08-22T21:43:35.086Z"
+        "authoredAt": "2026-08-29T19:09:27.833Z"
       }
     },
     {
@@ -1494,16 +1510,15 @@
       "detector": "rare-sighting",
       "publishedAt": "2026-03-16T16:04:48.880Z",
       "social": {
-        "hook": "38 years of shows. One night with Blancmange. That's all there was.",
-        "caption": "Blancmange crossed my path exactly once in nearly four decades of concertgoing. One night, one snapshot, never repeated.",
+        "hook": "One show in 38 years of concertgoing — and it never happened again.",
+        "caption": "I saw Blancmange at Crawford Hall in April 1986, when 'Happy Families' and 'Mange Tout' were both still fresh. In 38 years since, our paths never crossed a second time.",
         "beats": [
-          "In 38 years of concertgoing, only one night ever belonged to Blancmange.",
-          "They'd already released 'Happy Families' and 'Mange Tout' by the time I caught them at Crawford Hall.",
-          "The English synth-pop duo formed in 1979 — a whole history packed into a single April evening for me.",
-          "Every other artist I loved, I found again. Blancmange I found once and never recovered.",
-          "The archive holds thousands of nights. This is the one that never got a sequel."
+          "April 15, 1986: Crawford Hall, Irvine. My one and only Blancmange show.",
+          "The English synth-pop duo had two albums out — 'Happy Families' and 'Mange Tout' — and felt like a band I'd see again.",
+          "38 years of concertgoing later, that night is still the only entry in the column.",
+          "Some artists pass through once and leave a single, unrepeated frame. Blancmange is mine."
         ],
-        "authoredAt": "2026-08-22T21:43:30.165Z"
+        "authoredAt": "2026-08-29T19:09:22.241Z"
       }
     },
     {
@@ -1514,10 +1529,18 @@
       "headline": "March 23: 21 Years Since Social Distortion",
       "prose": "I caught Social Distortion at the Hard Rock Hotel in Las Vegas on March 23, 2005, and I still remember how surreal it felt seeing Mike Ness's tattooed storytelling in that glitzy casino setting. Twenty-one years later, that show stands out as one of those perfect mismatches — punk rock grit against Vegas excess, like hearing \"White Light White Heat White Trash\" while slot machines chimed in the distance. There's something beautifully defiant about Social Distortion that made even more sense in that artificial paradise.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
+        "url": "/images/shows/2018-10-28-social-distortion-01.jpg",
         "alt": "Social Distortion",
-        "source": "artist",
-        "ref": "social-distortion"
+        "source": "show",
+        "ref": "social-distortion",
+        "credit": "Mike Morper · 28 October 2018",
+        "shotOn": "2018-10-28",
+        "crop": {
+          "h": 0.75,
+          "w": 0.45,
+          "x": 0.2582,
+          "y": 0.1171
+        }
       },
       "audio": {
         "trackName": "Ball and Chain",
@@ -1571,15 +1594,15 @@
       "detector": "calendar-anniversary",
       "publishedAt": "2026-03-16T14:42:18.807Z",
       "social": {
-        "hook": "Slot machines chiming somewhere behind 'White Light White Heat White Trash.'",
-        "caption": "Social Distortion in a casino ballroom is a mismatch that somehow made perfect sense. Mike Ness's tattooed defiance hit different against all that manufactured glamour.",
+        "hook": "Punk rock grit inside a casino, slot machines chiming in the distance.",
+        "caption": "I saw Social Distortion at the Hard Rock Hotel in Las Vegas in 2005. Mike Ness playing 'White Light White Heat White Trash' while the slots rang — the mismatch made them sound even more defiant.",
         "beats": [
-          "The Hard Rock Hotel Las Vegas, 2005 — not the obvious room for punk rock grit.",
-          "Mike Ness played 'White Light White Heat White Trash' while slot machines chimed somewhere in the distance.",
-          "That tension between the song and the setting wasn't ironic — it made the defiance feel louder.",
-          "Twenty-one years on, it's still the show I reach for when someone asks what 'perfect mismatch' means."
+          "March 23, 2005: Social Distortion at the Hard Rock Hotel, deep inside the Vegas casino floor.",
+          "Mike Ness's tattooed storytelling against mirrored walls and slot machine chimes — punk rock in an artificial paradise.",
+          "'White Light White Heat White Trash' in that room felt like a small, deliberate act of defiance.",
+          "Twenty-one years on, the mismatch is exactly what I remember — and why the show still holds."
         ],
-        "authoredAt": "2026-08-22T21:43:25.088Z"
+        "authoredAt": "2026-08-29T19:09:17.452Z"
       }
     },
     {
@@ -1652,16 +1675,16 @@
       "detector": "drought-comeback",
       "publishedAt": "2026-03-08T23:19:11.199Z",
       "social": {
-        "hook": "Four shows. Nearly four decades. Each one a different chapter.",
-        "caption": "I've seen Tears for Fears four times across nearly forty years, and every show marked a different chapter of growing up with their music. This is where it started.",
+        "hook": "I walked out in 2005 thinking it might be the last time.",
+        "caption": "That 1985 show was the first of four across my life. Seventeen years passed between the third and fourth — and 'Mad World' landed exactly the same way it always had.",
         "beats": [
-          "Pacific Amphitheatre, Costa Mesa, July 10, 1985 — show one of four.",
-          "Twenty years later I walked out of the Universal Amphitheater thinking it might be the last time.",
-          "It wasn't. Seventeen years after that, they were back — and so was I.",
-          "Hearing 'Mad World' again felt like stepping into a younger version of myself.",
-          "Four shows. The full story is in the archive."
+          "July 1985: the first of what would become four shows across four decades of my life.",
+          "After the 2005 Universal Amphitheater show, I genuinely thought I might not see them together again.",
+          "Seventeen years later, Kia Forum in Inglewood — Roland and Curt on stage like the gap had never happened.",
+          "Each of the four shows marked a different chapter: different city, different version of me.",
+          "Hearing 'Mad World' live again felt like finding a younger version of myself still standing there."
         ],
-        "authoredAt": "2026-08-22T21:43:03.852Z"
+        "authoredAt": "2026-08-29T19:08:46.652Z"
       }
     },
     {
@@ -1729,16 +1752,15 @@
       "detector": "album-context",
       "publishedAt": "2026-03-08T23:19:11.199Z",
       "social": {
-        "hook": "Eight days before Violator landed, synth-pop still belonged to the dancefloor.",
-        "caption": "I saw Erasure at the Forum on March 11, 1990 — eight days before the world changed. Andy Bell's voice carried 'A Little Respect' through a room that had no idea what was coming.",
+        "hook": "8 days before Violator dropped, I was watching the other future.",
+        "caption": "Erasure played 'A Little Respect' on March 11, 1990. Depeche Mode's Violator arrived eight days later and changed which direction synth-pop went.",
         "beats": [
-          "March 1990: synth-pop was splitting in two, and most of us hadn't noticed yet.",
-          "Andy Bell filled the Forum with 'A Little Respect' — pure pop, no shadows, no pretense.",
-          "Eight days later, Violator dropped and Depeche Mode claimed the stadiums.",
-          "That night in Inglewood now reads like the last frame before the cut.",
-          "The archive exists for exactly this: concerts that only made sense in hindsight."
+          "March 1990: synth-pop was about to split into two very different futures.",
+          "I was at the Forum for Erasure — pure pop, Andy Bell's voice at full altitude.",
+          "Eight days later, Violator arrived and Depeche Mode claimed the stadiums.",
+          "I didn't know it at the time. That's what makes the ticket stub matter."
         ],
-        "authoredAt": "2026-08-22T21:43:14.141Z"
+        "authoredAt": "2026-08-29T19:08:56.921Z"
       }
     },
     {
@@ -1807,15 +1829,14 @@
       "publishedAt": "2026-03-08T23:19:11.199Z",
       "social": {
         "hook": "One show in 38 years of concert-going, and I still can't explain why.",
-        "caption": "The Alarm made enough of an impression to get me through the door at UCLA in 1986 — then disappeared from my radar for nearly four decades. One show, zero returns, no good explanation.",
+        "caption": "The Alarm were touring behind Strength when I caught them at UCLA in April 1986. They released Eye of the Hurricane the following year, and I never saw them again.",
         "beats": [
-          "The Alarm were a Welsh alternative rock band formed in 1981, and by April 1986 they had real momentum behind them.",
-          "Their album Strength was the reason I was in that room — it was the current record, and it was working on me.",
-          "The show landed. I remember going. What I can't reconstruct is why I never went back.",
-          "Eye of the Hurricane came out the following year. I didn't show up for that tour, or any tour after.",
-          "38 years of shows since that night, and this is the only entry The Alarm gets in the archive."
+          "April 1986: The Alarm were touring behind Strength, and I bought a ticket.",
+          "That night at UCLA is the only entry they have in nearly four decades of my archive.",
+          "Eye of the Hurricane came out the following year. I didn't go back.",
+          "Some bands you see once, file away, and never quite return to. The Alarm is my clearest example."
         ],
-        "authoredAt": "2026-08-22T21:43:19.170Z"
+        "authoredAt": "2026-08-29T19:09:07.258Z"
       }
     },
     {
@@ -1885,16 +1906,15 @@
       "detector": "drought-comeback",
       "publishedAt": "2026-03-08T23:15:48.360Z",
       "social": {
-        "hook": "Twenty-six years between shows, and Porcupine still hit the same nerve.",
-        "caption": "I saw Echo & the Bunnymen at Irvine Meadows in 1984, then not again until a cramped D.C. club in 2010. A quarter-century gap taught me how certain songs live in you whether you tend to them or not.",
+        "hook": "A quarter-century gap, then a cramped D.C. club instead of a California amphitheater.",
+        "caption": "I saw Echo and the Bunnymen at Irvine Meadows in 1984, then not again until The Black Cat in Washington D.C. in 2010 — 26 years and a very different room.",
         "beats": [
-          "September 1984: Echo & the Bunnymen at Irvine Meadows, post-punk atmospherics that felt urgent and genuinely new.",
-          "Then nothing — twenty-six years of the songs living somewhere in the background of everything else.",
-          "The Black Cat in Washington D.C., 2010: a cramped club, a world away from a California amphitheater.",
-          "Ian McCulloch's voice had weathered. The songs from Porcupine still carried exactly the same moody weight.",
-          "The full note is in the archive — one show in 1984, one in 2010, and what the distance between them means."
+          "Irvine Meadows, 1984: post-punk atmospherics that still felt urgent and genuinely new.",
+          "Then nothing for 26 years — a quarter-century of those songs living only in my head.",
+          "The return was The Black Cat in D.C., 2010: a cramped club, a world away from a California amphitheater.",
+          "Ian McCulloch's voice had weathered, but the songs from Porcupine still carried the same moody weight."
         ],
-        "authoredAt": "2026-08-22T21:47:17.234Z"
+        "authoredAt": "2026-08-29T19:08:28.067Z"
       }
     },
     {
@@ -1957,16 +1977,16 @@
       "detector": "album-context",
       "publishedAt": "2026-03-08T23:15:48.360Z",
       "social": {
-        "hook": "37 days before hip-hop got its political manifesto, ska got a Disney crowd.",
-        "caption": "No Doubt played Disneyland while Chuck D was finishing what would become hip-hop's first true political landmark. Two revolutions, 37 days apart — I only saw one of them coming.",
+        "hook": "37 days before hip-hop's political manifesto dropped, I was watching ska at Disneyland.",
+        "caption": "No Doubt played Disneyland on March 4, 1988, 37 days before Public Enemy released It Takes a Nation of Millions to Hold Us Back. Two revolutions, same five weeks.",
         "beats": [
-          "March 4, 1988: No Doubt is playing Disneyland for families in mouse ears.",
-          "Thirty-seven days away, Chuck D is finishing a record that will change what rap can say.",
-          "Neither crowd knew what the other revolution looked like yet.",
-          "I watched one unfold live. The other hit like a manifesto five weeks later.",
-          "The archive holds the show. The timing is what I keep thinking about."
+          "March 4, 1988: No Doubt playing Disneyland, families in mouse ears watching a ska band find its sound.",
+          "Thirty-seven days away, Chuck D was finishing hip-hop's first true political landmark.",
+          "Public Enemy's It Takes a Nation of Millions dropped April 10, 1988 — and changed what rap could say.",
+          "I witnessed one revolution live. The other hit like a manifesto five weeks later.",
+          "Two completely different upheavals, brewing in the same narrow window of five weeks."
         ],
-        "authoredAt": "2026-08-22T21:42:43.974Z"
+        "authoredAt": "2026-08-29T19:08:32.406Z"
       }
     },
     {
@@ -2034,15 +2054,15 @@
       "detector": "rare-sighting",
       "publishedAt": "2026-03-08T23:15:48.360Z",
       "social": {
-        "hook": "Hundreds of shows across four decades. He only showed up once.",
-        "caption": "One night at the Coliseum in 1985, and that was it — Bruce never crossed my path again. The biggest footprint in my archive belongs to a single show.",
+        "hook": "Hundreds of shows across four decades. He played three-hour sets. We never crossed paths again.",
+        "caption": "I saw Bruce Springsteen once — Born in the U.S.A. tour, 1985 — and in hundreds of shows since, he never crossed my path again. One ticket stub in forty years.",
         "beats": [
-          "September 29, 1985: one night at the Los Angeles Memorial Coliseum, and that was my only shot.",
-          "Across four decades and hundreds of shows, the overlap never happened again.",
-          "He built his reputation on marathon sets and relentless touring — and still became my ultimate one-and-done.",
-          "Sometimes the biggest names leave the smallest footprints. The archive doesn't lie."
+          "September 29, 1985: the Born in the U.S.A. tour at its peak, one of the biggest acts in the world.",
+          "He was already famous for marathon sets — three hours, no intermission, no concessions made.",
+          "I kept going to shows. Hundreds of them, across four decades. He never came up again.",
+          "One ticket stub. That's the whole Springsteen section of my archive."
         ],
-        "authoredAt": "2026-08-22T21:42:53.951Z"
+        "authoredAt": "2026-08-29T19:08:41.563Z"
       }
     },
     {
@@ -2111,15 +2131,15 @@
       "detector": "drought-comeback",
       "publishedAt": "2026-03-08T23:08:41.464Z",
       "social": {
-        "hook": "35 years between shows — the longest gap in my entire concert history.",
-        "caption": "UB40 in 1988, then nothing until 2023: the longest gap between any artist I have ever seen live. The Birmingham-meets-Jamaica energy held across all that distance.",
+        "hook": "35 years between ticket stubs — the longest gap in my entire concert history.",
+        "caption": "I saw UB40 at Pacific Amphitheatre in 1988, when 'Red Red Wine' was still on the radio. Peacock Theater in 2023, and it landed exactly the same way.",
         "beats": [
-          "September 1988: 'Red Red Wine' was fresh, reggae-pop was everywhere, and Pacific Amphitheatre was the place to be.",
-          "Then 35 years passed — the longest I have ever waited between shows for any single artist in this archive.",
-          "Walking into Peacock Theater in 2023, I genuinely did not know if that Labour of Love warmth would still be there.",
-          "It was. The music landed exactly the way it did in Costa Mesa all those decades ago."
+          "Pacific Amphitheatre, 1988. 'Red Red Wine' was everywhere, and UB40's reggae-pop felt like it owned the summer.",
+          "Then nothing — thirty-five years, the longest stretch between any artist I've ever seen twice.",
+          "Walking into Peacock Theater in 2023, I wasn't sure the Birmingham-meets-Jamaica energy would survive the gap.",
+          "It did. The Labour of Love covers hit exactly the same way they had in Costa Mesa all those decades before."
         ],
-        "authoredAt": "2026-08-22T21:42:14.106Z"
+        "authoredAt": "2026-08-29T19:08:08.770Z"
       }
     },
     {
@@ -2191,16 +2211,15 @@
       "detector": "genre-outlier",
       "publishedAt": "2026-03-08T23:08:41.464Z",
       "social": {
-        "hook": "My only swing show in 22 years of rock, electronic, and reggae.",
-        "caption": "The Brian Setzer Orchestra is the lone swing entry in a catalog that runs 86% rock, electronic, and reggae. Three shows, three decades, one complete outlier.",
+        "hook": "Three decades of swing in an archive that's 86% rock, electronic, and reggae.",
+        "caption": "The Brian Setzer Orchestra is my only swing and blues act across 40 years of shows. Three nights, three decades — Newport Beach, Los Angeles, DC — all genre outliers.",
         "beats": [
-          "My archive runs 86% rock, electronic, and reggae. Then there's this.",
-          "Three BSO shows across 22 years: Newport Beach, Universal Amphitheater, the Warner Theatre.",
-          "1995 was the 'Dirty Boogie' era. By 2017 they were deep into Christmas tour territory.",
-          "Swing and blues don't appear anywhere else in my concert history — before or after.",
-          "Sometimes what doesn't fit the pattern tells you the most about your taste."
+          "My archive runs 86% rock, electronic, and reggae. BSO is the lone swing and blues entry.",
+          "Newport Beach in 1995 was the 'Dirty Boogie' era — before the Christmas tours made them a seasonal institution.",
+          "Universal Amphitheater in 2002, then Warner Theatre in DC in 2017. Three decades, one thread.",
+          "Sometimes what doesn't fit the pattern tells you more about your taste than everything that does."
         ],
-        "authoredAt": "2026-08-22T21:42:18.450Z"
+        "authoredAt": "2026-08-29T19:08:13.180Z"
       }
     },
     {
@@ -2263,16 +2282,16 @@
       "detector": "album-context",
       "publishedAt": "2026-03-08T23:08:41.464Z",
       "social": {
-        "hook": "Thirteen days after The Bends dropped, rockabilly was the counter-argument.",
-        "caption": "The Brian Setzer Orchestra at the Hard Rock Cafe, thirteen days after Radiohead released The Bends. Both acts were answering the same post-grunge question from opposite ends of the century.",
+        "hook": "Thirteen days after The Bends dropped, I went to watch someone drag rock back to 1955.",
+        "caption": "Radiohead released The Bends on March 13, 1995. Thirteen days later I was at the Hard Rock Cafe watching Brian Setzer's pompadour and upright bass pull rock the other direction entirely.",
         "beats": [
-          "March 1995: Radiohead had just released The Bends, and rock music was pulling in two directions at once.",
-          "Thirteen days after that record landed, I was in Newport Beach watching Brian Setzer's pompadour and an upright bass.",
-          "Thom Yorke was pushing guitar music into new emotional territory. Setzer was pulling it back to the 1950s.",
+          "March 13, 1995: Radiohead releases The Bends and points guitar music somewhere no one had been.",
+          "Thirteen days later I'm at the Hard Rock Cafe, and Brian Setzer is doing the opposite — every note aimed at 1955.",
+          "Pompadour, upright bass, full orchestra. The rockabilly revival as a serious proposition.",
           "Two weeks, two completely different answers to the same question: what does rock do after grunge?",
-          "The archive holds both nights. This is the one that made the contrast impossible to ignore."
+          "I didn't plan the timing. But that March made the contrast impossible to miss."
         ],
-        "authoredAt": "2026-08-22T21:42:28.379Z"
+        "authoredAt": "2026-08-29T19:08:22.488Z"
       }
     },
     {
@@ -2283,10 +2302,18 @@
       "headline": "Social Distortion + 14 More: 2018 Festival Bill",
       "prose": "California punk's founding fathers assembled for what felt like a family reunion at Huntington State Beach in 2018, with Social Distortion, Bad Religion, and 13 other acts spanning four decades of West Coast rebellion. I witnessed bands that had been shaping punk since 1979 sharing the same sand with newer torchbearers like The Interrupters, creating this perfect cross-generational snapshot of the scene's evolution. Seeing Fear and Suicidal Tendencies on the same bill as Black Rebel Motorcycle Club reminded me how punk's DNA keeps mutating while staying fundamentally defiant. Standing on that beach with 15 bands cycling through, I felt like I was getting a master class in how Southern California invented its own brand of sunny nihilism.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
+        "url": "/images/shows/2018-10-28-social-distortion-01.jpg",
         "alt": "Social Distortion",
-        "source": "artist",
-        "ref": "social-distortion"
+        "source": "show",
+        "ref": "social-distortion",
+        "credit": "Mike Morper · 28 October 2018",
+        "shotOn": "2018-10-28",
+        "crop": {
+          "h": 0.75,
+          "w": 0.45,
+          "x": 0.2582,
+          "y": 0.1171
+        }
       },
       "audio": {
         "trackName": "Ball and Chain",
@@ -2448,16 +2475,15 @@
       "detector": "drought-comeback",
       "publishedAt": "2026-03-05T08:48:00.000Z",
       "social": {
-        "hook": "Eighteen years between shows, same neighborhood, same voice.",
-        "caption": "I saw Depeche Mode in 2005 and didn't see them again for 18 years. Dave Gahan's voice closed that gap in about four bars.",
+        "hook": "18 years apart, practically the same neighborhood, exactly the same voice.",
+        "caption": "I saw Depeche Mode at Staples Center in November 2005, then drove to the Kia Forum in Inglewood in 2023 — nearly the same corner of LA, nearly two decades later. Dave Gahan's voice didn't move.",
         "beats": [
-          "March 1985 at Irvine Meadows — this is where it started for me and Depeche Mode.",
-          "The 2005 Staples Center show felt like a natural continuation. I walked out assuming the next one wouldn't be far off.",
-          "Moves, kids, shifting priorities — eighteen years passed before I drove back to Inglewood and the Kia Forum.",
-          "Practically the same neighborhood as that 2005 show, which made the gap feel even stranger to sit with.",
-          "Gahan's voice didn't ask for any of that time back. It just picked up exactly where it left off."
+          "Walking out of Staples Center in 2005, I had no idea I'd just started an 18-year wait.",
+          "Life filled the gap — moves, kids, priorities — and then it was 2023 and I was back in Inglewood.",
+          "The Kia Forum sits in practically the same neighborhood as Staples Center. The geography barely changed.",
+          "Eighteen years is long enough to raise a child. Dave Gahan's voice landed exactly the same way it always had."
         ],
-        "authoredAt": "2026-08-22T21:41:56.570Z"
+        "authoredAt": "2026-08-29T19:07:51.858Z"
       }
     },
     {
@@ -2537,15 +2563,15 @@
       "detector": "venue-ghost",
       "publishedAt": "2026-03-03T05:36:00.000Z",
       "social": {
-        "hook": "Four artists, two different buildings, one address that fooled me for decades.",
-        "caption": "I logged 5 shows at Universal Amphitheater across 16 years — then discovered the venue was demolished in 1999 and rebuilt. Two buildings, one address, one very embarrassed archive.",
+        "hook": "Five shows, one address, two completely different buildings.",
+        "caption": "Universal Amphitheater was demolished in 1999 and rebuilt as Gibson Amphitheatre. My last show there was in 2005 — six years after the original was gone.",
         "beats": [
-          "From Howard Jones in 1989 to Tears For Fears in 2005, I thought I had one venue's story.",
-          "The original Universal Amphitheater was demolished in 1999 and replaced by Gibson Amphitheatre.",
-          "My last two credited shows happened in a completely different building on the same site.",
-          "Four artists, 16 years, two venues — and one address that fooled my tracking for decades."
+          "Five shows across 16 years, from Howard Jones in 1989 to Tears For Fears in 2005.",
+          "What I didn't know: Universal Amphitheater was torn down in 1999 and rebuilt as Gibson Amphitheatre.",
+          "My last four shows were at a different building. Same address. Different venue entirely.",
+          "One address fooled my concert tracking for decades. The archive finally has it straight."
         ],
-        "authoredAt": "2026-08-22T21:41:46.548Z"
+        "authoredAt": "2026-08-29T19:07:41.618Z"
       }
     },
     {
@@ -2556,10 +2582,10 @@
       "headline": "The Cure + 14 More: 2003 Festival Bill",
       "prose": "This 2003 festival captured new wave's full evolution — from The Cure's goth-pop mastery to Duran Duran's synth glamour, with Dashboard Confessional and Interpol representing where alternative rock was heading next. I witnessed 15 acts spanning three decades of post-punk DNA, from the original wave (Echo and the Bunnymen, Psychedelic Furs) through the '90s survivors (Violent Femmes) to the emerging indie darlings (Kings of Leon, Hot Hot Heat). The Hyundai Pavilion became a living museum of how Robert Smith's melancholy had spawned an entire musical ecosystem. Standing there in San Bernardino, I realized I wasn't just watching a festival — I was seeing the alternative rock family tree in full bloom.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wwwwtv1455324256.jpg",
-        "alt": "The Cure",
-        "source": "artist",
-        "ref": "the-cure"
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjB6OeDl_wnIgme2uX0xrgsYXV0GUatTkn9qKridqlvVeTeq27fQkRECwJXBh3A7mA9G6uAimMD5Qp3jvEMabW7LN72S_UqoA91py0QwUv6q8ZiPojECv1VvabfuakaILt2mwaHZHL8rXrKKVQ=s4800-h1200",
+        "alt": "Hyundai Pavilion",
+        "source": "venue",
+        "ref": "hyundai-pavilion"
       },
       "audio": {
         "trackName": "Just Like Heaven",
@@ -2938,16 +2964,15 @@
       "detector": "festival-mega-bill",
       "publishedAt": "2026-02-22T16:48:00.000Z",
       "social": {
-        "hook": "Twelve artists, one stage, and a night that felt like it meant something",
-        "caption": "Twelve artists shared the Olympic Velodrome stage on a September night in 1993. From The Drummers of Burundi to P.M. Dawn, the bill read like a genuine argument for something.",
+        "hook": "Twelve artists, one stage, the brief window when world music crossed over.",
+        "caption": "I was at the Olympic Velodrome in September 1993 for a 12-artist bill that put The Drummers of Burundi and P.M. Dawn on the same afternoon. It felt like the industry meaning it.",
         "beats": [
-          "September 1993: the Olympic Velodrome in Carson held twelve artists on a single bill.",
-          "Peter Gabriel headlined. Sinéad O'Connor, Ziggy Marley, and Jah Wobble were also on that stage.",
-          "P.M. Dawn, Crowded House, Sheila Chandra, The Drummers of Burundi — same night, same place.",
-          "That range wasn't accidental. For a moment, the festival circuit genuinely believed in it.",
-          "I was there. The full account is in the archive."
+          "September 1993: twelve artists, one stage in Carson — a lineup that shouldn't have worked and completely did.",
+          "Peter Gabriel headlined, deep into the 'So' era. Sinéad O'Connor and Ziggy Marley were on the same bill.",
+          "P.M. Dawn. Jah Wobble. The Drummers of Burundi. Crowded House. All in one afternoon.",
+          "It was a brief window when major festivals genuinely tried to bring the world together. I was there for it."
         ],
-        "authoredAt": "2026-08-22T21:40:50.597Z"
+        "authoredAt": "2026-08-29T19:06:53.318Z"
       }
     },
     {
@@ -3093,16 +3118,15 @@
       "detector": "rare-sighting",
       "publishedAt": "2026-02-18T10:24:00.000Z",
       "social": {
-        "hook": "One night in forty years, and the schedules never crossed again.",
-        "caption": "Billy Idol at Irvine Meadows is the only entry in my archive, a single summer night that never got a follow-up. Four decades of concertgoing, one show — and I still can't explain how that happened.",
+        "hook": "One show in forty years — and it was three months after Rebel Yell dropped.",
+        "caption": "I saw Billy Idol at Irvine Meadows in August 1984 and never caught him again. Rebel Yell had been out since November 1983, and he was everywhere after that — just never where I was.",
         "beats": [
-          "August 1984: Rebel Yell had just broken wide open, and Irvine Meadows was the one time I was in the right place.",
-          "After that night, Billy Idol's touring and mine never intersected again — not once in the years that followed.",
-          "The archive covers forty-plus years of shows. A single entry for an artist this active is almost statistically strange.",
-          "I've tried to account for it — crowds, routing, bad timing — and I still don't have a clean answer.",
-          "One summer night in Orange County. The whole Billy Idol file closes there."
+          "August 1984: Rebel Yell was nine months old and Billy Idol was becoming inescapable.",
+          "One night at Irvine Meadows and then nothing — not once in the four decades since.",
+          "That's a complete drought across the peak of his career, the MTV years, every tour.",
+          "One summer night in Orange County is the whole of my Billy Idol archive."
         ],
-        "authoredAt": "2026-08-22T21:40:39.835Z"
+        "authoredAt": "2026-08-29T19:06:39.134Z"
       }
     },
     {
@@ -3263,16 +3287,15 @@
       "detector": "drought-comeback",
       "publishedAt": "2026-02-14T04:00:00.000Z",
       "social": {
-        "hook": "21 years between the first show and the second.",
-        "caption": "Three Duran Duran shows across my history, but the 21-year gap between the first and second says more than any setlist could. Life drifts you away from the bands that once defined your weekends.",
+        "hook": "21 years of silence, then Simon Le Bon's voice cut straight through it.",
+        "caption": "I saw Duran Duran at Irvine Meadows in 1987, then not again until the Nokia Center in 2008. Three shows total in my archive, and that 21-year gap sits in the middle of all of them.",
         "beats": [
-          "Irvine Meadows, 1987. New wave summers, MTV afternoons, and no idea it would be my last look at them for two decades.",
-          "Life moves. The gap between show one and show two stretched to 21 years without me planning it that way.",
-          "The Nokia Center in 2008 felt like a time machine. Simon Le Bon's voice carrying across all that silence.",
-          "Three shows total in my archive. The longest wait sits right in the middle of them.",
-          "Some reunions only mean what they mean because of how long you had to wait for them."
+          "Irvine Meadows, 1987 — new wave was still the center of everything, and Duran Duran were proof.",
+          "I didn't know walking out that night that 21 years would pass before I'd see them again.",
+          "The Nokia Center show in 2008 felt like a time machine: Simon Le Bon's voice, unchanged.",
+          "Three shows across my whole archive. That middle gap is the loudest entry of the three."
         ],
-        "authoredAt": "2026-08-22T21:40:17.446Z"
+        "authoredAt": "2026-08-29T19:06:22.260Z"
       }
     },
     {
@@ -3335,16 +3358,15 @@
       "detector": "rare-sighting",
       "publishedAt": "2026-02-12T00:48:00.000Z",
       "social": {
-        "hook": "Headbanging to hymns between roller coasters — some things you only need to see once.",
-        "caption": "I caught Stryper two years after they formed, before 'To Hell with the Devil' changed everything. An amusement park felt like exactly the right venue for that particular experiment.",
+        "hook": "Two years in, before the album that changed everything — and I never went back.",
+        "caption": "I saw them in 1985, two years after they formed and still a year before 'To Hell with the Devil.' One show in an amusement park was exactly enough.",
         "beats": [
-          "May 1985: Stryper was only two years old and still building toward the record that would define them.",
-          "'To Hell with the Devil' hadn't been recorded yet — this was the version of the band before the breakthrough.",
-          "The setting was Knots Berry Farm, which meant the crowd was somewhere between a mosh pit and a family outing.",
-          "Christian metal in an amusement park is either perfect or absurd, and I'm still not sure which — probably both.",
-          "I never went back. One show was enough to understand exactly what they were doing and respect them for doing it."
+          "May 17, 1985: Stryper at an amusement park in Buena Park, two years after they formed.",
+          "'To Hell with the Devil' was still a year away — this was before the breakthrough.",
+          "Headbanging to hymns on a theme park stage is a specific experience I can't quite explain.",
+          "One show. Never went back. Somehow that feels like exactly the right call."
         ],
-        "authoredAt": "2026-08-22T21:40:11.889Z"
+        "authoredAt": "2026-08-29T19:06:11.948Z"
       }
     },
     {
@@ -3519,16 +3541,15 @@
       "detector": "drought-comeback",
       "publishedAt": "2026-02-07T18:24:00.000Z",
       "social": {
-        "hook": "A 21-year gap that swallowed my entire twenties and thirties.",
-        "caption": "I saw The Smithereens in 1992, then not again until 2013. Some bands don't leave your radar — they wait in a jacket pocket until you're ready.",
+        "hook": "21 years — my entire twenties and thirties — between two shows.",
+        "caption": "I saw The Smithereens in Anaheim in 1992, then not again until Washington in 2013. Two decades of their records playing without me in a room watching them make it.",
         "beats": [
-          "June 1992, Celebrity Theatre. Power-pop hooks I wouldn't hear live again for two full decades.",
-          "Twenty-one years is not a drift. It's a whole adult life — my twenties and thirties, gone between shows.",
-          "They kept making music. I just wasn't in the room for any of it.",
-          "Washington, 2013: The Hamilton Live, and those same hooks, like finding a number I forgot I'd saved.",
-          "The longest gaps make the reunion feel like something recovered, not something resumed."
+          "Celebrity Theatre, Anaheim, June 1992. Power-pop hooks loud enough to rearrange something in my chest.",
+          "Then nothing. Not because they stopped — they kept making music. I just lost the thread somewhere in my twenties.",
+          "21 years later: The Hamilton Live in Washington. A different city, a different version of me.",
+          "Some reunions feel like finding an old friend's number in a jacket you hadn't worn in a decade. This was that."
         ],
-        "authoredAt": "2026-08-22T21:39:50.045Z"
+        "authoredAt": "2026-08-29T19:05:55.934Z"
       }
     },
     {
@@ -3596,15 +3617,15 @@
       "detector": "rare-sighting",
       "publishedAt": "2026-02-05T15:12:00.000Z",
       "social": {
-        "hook": "Two openers, one racetrack, and a duo I never caught again in forty years of shows.",
-        "caption": "Wham! played Hollywood Park Racetrack with Chaka Khan and Katrina and the Waves opening — and somehow that was the only time our paths ever crossed. The full note is in the archive.",
+        "hook": "Chaka Khan and Katrina and the Waves opened. I never saw them again.",
+        "caption": "One show, August 1985, and that was it — Wham! played Hollywood Park Racetrack during the Make It Big era and somehow never appeared in my concert life again across decades of shows.",
         "beats": [
-          "August 30, 1985: Wham! at a racetrack in Inglewood, deep in their Make It Big era.",
-          "Chaka Khan and Katrina and the Waves opened — a support bill that could headline on its own.",
-          "I was there for all of it, and somehow never saw them again across decades of concert-going.",
-          "One entry. One night. The archive doesn't lie about how rarely that happens with a duo this big."
+          "August 30, 1985: Hollywood Park Racetrack, Inglewood. Chaka Khan and Katrina and the Waves opened the night.",
+          "This was the Make It Big era — Wham! at full commercial height, one of the biggest pop acts on the planet.",
+          "I was there for all of it. And then, across every show I attended after that, they simply never came back around.",
+          "One entry in forty years of records. The most massive one-and-done in my entire archive."
         ],
-        "authoredAt": "2026-08-22T21:39:39.000Z"
+        "authoredAt": "2026-08-29T19:05:50.642Z"
       }
     },
     {
@@ -3615,10 +3636,18 @@
       "headline": "Foo Fighters + 9 More: 2015 Festival Bill",
       "prose": "The 4th of July 2015 at RFK Stadium was one of those rare festival bills that read like a cross-section of American music itself — blues legend Buddy Guy sharing the stage with Foo Fighters, Heart bridging classic and alternative rock, LL Cool J representing hip-hop's golden age, all anchored by the go-go sounds of Trouble Funk. I caught this 10-artist extravaganza during Foo Fighters' peak touring years, just as they were cementing their status as arena headliners more than two decades after Dave Grohl formed the band in 1994. The sheer breadth of genres — from Buddy Guy's six decades of blues mastery to DJ Z-Trip's turntable wizardry — felt like watching the soundtrack to America unfold in real time on Independence Day.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/vuvqxr1352453964.jpg",
+        "url": "/images/shows/2015-07-04-foo-fighters-01.jpg",
         "alt": "Foo Fighters",
-        "source": "artist",
-        "ref": "foo-fighters"
+        "source": "show",
+        "ref": "foo-fighters",
+        "credit": "Mike Morper · 4 July 2015",
+        "shotOn": "2015-07-04",
+        "crop": {
+          "x": 0.033,
+          "y": 0.1776,
+          "w": 0.8,
+          "h": 0.7498
+        }
       },
       "audio": {
         "trackName": "Everlong",
@@ -3690,16 +3719,16 @@
       "detector": "festival-mega-bill",
       "publishedAt": "2026-02-03T12:00:00.000Z",
       "social": {
-        "hook": "Ten artists, one Independence Day, one stage where blues met go-go met grunge.",
-        "caption": "Ten acts spanning six decades of American music shared one stage at RFK on the Fourth of July. Buddy Guy to Foo Fighters, Trouble Funk to Z-Trip — the bill did the arguing for itself.",
+        "hook": "Ten acts, six decades of blues, and a go-go band that never left D.C.",
+        "caption": "Trouble Funk anchored the local end of a bill that also ran from Buddy Guy's blues to LL Cool J's hip-hop. I saw all ten acts at RFK on the Fourth of July.",
         "beats": [
-          "RFK Stadium, July 4, 2015: ten artists, one afternoon, every corner of American music represented.",
-          "Buddy Guy brought sixty-plus years of blues. Trouble Funk brought go-go back home to D.C.",
-          "Heart, Joan Jett, Foo Fighters — three generations of rock guitar on the same bill.",
-          "LL Cool J and Z-Trip held the hip-hop flank while Trombone Shorty bridged every gap.",
-          "On Independence Day, the genre list read like a argument about what American music even is — and nobody lost."
+          "RFK Stadium on July 4th, 2015: ten artists, every corner of American music on one bill.",
+          "Buddy Guy brought six decades of blues. Trouble Funk brought the sound that belongs to that city.",
+          "Heart and Joan Jett held the rock middle. LL Cool J represented hip-hop's golden age. DJ Z-Trip held it all together.",
+          "Foo Fighters were deep into their arena-headliner years by then — more than two decades after Grohl formed the band.",
+          "Independence Day, Washington D.C., the whole American soundtrack playing live. Some bills just make sense."
         ],
-        "authoredAt": "2026-08-22T21:39:26.665Z"
+        "authoredAt": "2026-08-29T19:05:36.065Z"
       }
     },
     {
@@ -3774,16 +3803,16 @@
       "detector": "artist-longevity",
       "publishedAt": "2026-02-01T08:48:00.000Z",
       "social": {
-        "hook": "Some bands you see once. Others become 38 years of your life.",
-        "caption": "My first Depeche Mode show was Irvine Meadows in 1985. Five shows across California later, they are still the clearest parallel soundtrack to my adult life.",
+        "hook": "Five shows. Thirty-eight years. Still counting.",
+        "caption": "I walked into Irvine Meadows in 1985 not knowing I was starting a 38-year run. The most recent was last year at the Kia Forum in Inglewood — five shows, four decades.",
         "beats": [
-          "March 31, 1985: I walked into Irvine Meadows not knowing I was starting a 38-year relationship with one band.",
-          "Five shows. Four decades. California venues from the early synthpop years through the Violator era and well beyond.",
-          "Each show marked a different chapter — in their evolution and in mine.",
+          "March 31, 1985: my first Depeche Mode show, Irvine Meadows. I was 18 and had no idea what I was starting.",
+          "Five shows across California venues — each one a different chapter of their evolution and mine.",
+          "The Violator era landed somewhere in the middle, and the band that showed up was not the same band I'd first seen.",
           "Last year at the Kia Forum in Inglewood, I kept thinking about that 18-year-old at Irvine Meadows.",
-          "Some artists become part of your DNA. The full account of all five nights is on the archive."
+          "Some artists you see once. Others become a parallel soundtrack to your entire adult life. This is the latter."
         ],
-        "authoredAt": "2026-08-22T21:39:16.097Z"
+        "authoredAt": "2026-08-29T19:05:25.734Z"
       }
     },
     {
@@ -3846,16 +3875,15 @@
       "detector": "city-pulse",
       "publishedAt": "2026-01-30T05:36:00.000Z",
       "social": {
-        "hook": "Orange County, weeks after the verdict, and the drive down felt different.",
-        "caption": "The Smithereens at Celebrity Theatre was the right soundtrack for a region still processing the acquittal. Power pop and earnest melodies cutting through something unresolved in the California air.",
+        "hook": "Orange County, six weeks after the verdict — going out felt charged",
+        "caption": "The Smithereens at Celebrity Theatre, June 4, 1992. The acquittal was still weeks old, and the drive down from LA felt like the whole region was mid-sentence.",
         "beats": [
-          "The Rodney King verdict had come down weeks earlier, and the whole region was still fractured and raw.",
-          "Going out that summer felt charged — even the drive from LA into Orange County carried a different weight.",
-          "The Smithereens were in the middle of their most successful run, and the room held that tension.",
-          "Their blend of power pop and heartland rock met the moment in a way I didn't expect going in.",
-          "Some shows are documents of a night. This one was a document of a city still trying to breathe."
+          "April 29, 1992: the acquittal. By June 4, the city was still mid-sentence.",
+          "The drive to Anaheim that night felt different — Orange County, but the same unsettled air.",
+          "Power pop and heartland rock turned out to be the right soundtrack for unresolved things.",
+          "The Smithereens were at their commercial peak that year. The room knew it."
         ],
-        "authoredAt": "2026-08-22T21:39:10.906Z"
+        "authoredAt": "2026-08-29T19:05:15.774Z"
       }
     },
     {
@@ -3960,10 +3988,10 @@
       "headline": "Maxi Priest + 6 More: 1991 Festival Bill",
       "prose": "This was reggae's moment in American mainstream consciousness, and I caught a perfect snapshot of it at Pacific Amphitheatre in June 1991. Maxi Priest was riding high with crossover hits, headlining over a seven-artist bill that included Dennis Brown and Andrew Tosh — Peter Tosh's son, carrying forward his father's legacy. I remember the crowd being surprisingly diverse for Orange County, drawn by reggae's growing radio presence around that time. What struck me most was how the music unified this massive outdoor crowd, from the opening act through Priest's closing set under the California stars.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/xtvyvp1364378396.jpg",
-        "alt": "Maxi Priest",
-        "source": "artist",
-        "ref": "maxi-priest"
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjCHsbPlf7FW3C3d5GbICm_VpGqdPXw94dtZRtBcytXiSQaXpWfzaWCeInHKmT3m4h7elqruVKDd6vKP9-2ZdGeFer2GfbkOstJ96V__3V9GDSgHwZcX345A5RBzdVW8_m9Q-3FpeGELQO-3Cw=s4800-h1200",
+        "alt": "Pacific Amphitheatre",
+        "source": "venue",
+        "ref": "pacific-amphitheatre"
       },
       "audio": {
         "trackName": "Close To You",
@@ -4027,16 +4055,16 @@
       "detector": "festival-mega-bill",
       "publishedAt": "2026-01-25T23:12:00.000Z",
       "social": {
-        "hook": "Seven artists, one California night, and reggae had never felt more mainstream",
-        "caption": "Dennis Brown and Andrew Tosh were on the same bill the night Maxi Priest headlined Pacific Amphitheatre. Orange County crowds were not supposed to look like that, but this one did.",
+        "hook": "Seven artists, one night, and reggae briefly owned Orange County",
+        "caption": "Dennis Brown and Peter Tosh's son Andrew were on the same bill — a snapshot of the moment reggae was cracking American radio. Pacific Amphitheatre held the whole thing together.",
         "beats": [
-          "June 1991: reggae was crossing over, and a seven-artist festival bill in Costa Mesa was proof.",
-          "Dennis Brown shared the lineup with Andrew Tosh — Peter Tosh's son, carrying his father's work forward.",
-          "The crowd surprised me. Orange County, but drawn wide by reggae's growing radio presence.",
-          "From the opening act through Maxi Priest's closing set, the amphitheatre held together as one.",
-          "I was there for the snapshot. The archive has the full picture."
+          "June 1991: reggae was crossing over, and this seven-artist bill caught that moment at its peak.",
+          "Andrew Tosh was on that stage — Peter's son, carrying the name and the weight of it.",
+          "Dennis Brown sharing a bill with Maxi Priest felt like the roots and the crossover in the same breath.",
+          "The crowd at Pacific Amphitheatre was more diverse than Orange County usually delivered. The music did that.",
+          "Priest closed it under open California sky. Seven acts, one through-line, and I was there for all of it."
         ],
-        "authoredAt": "2026-08-22T21:38:48.640Z"
+        "authoredAt": "2026-08-29T19:04:51.256Z"
       }
     },
     {
@@ -4047,10 +4075,18 @@
       "headline": "Social Distortion: 34 Years of Shows",
       "prose": "I first caught Social Distortion at Cal State Fullerton in 1990, back when Mike Ness was still carving out that distinctive sound that would define them through White Light White Heat White Trash and beyond. Eight shows across 34 years might not sound like devotion, but with Social D, each one felt like checking in with an old friend who'd weathered the same storms. My most recent show was just this past December at The Belasco, and hearing those same punk rock anthems that shaped my college years still hit with the same raw honesty. There's something comforting about a band that refuses to reinvent itself—they just keep getting better at being exactly who they've always been.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
+        "url": "/images/shows/2018-10-28-social-distortion-01.jpg",
         "alt": "Social Distortion",
-        "source": "artist",
-        "ref": "social-distortion"
+        "source": "show",
+        "ref": "social-distortion",
+        "credit": "Mike Morper · 28 October 2018",
+        "shotOn": "2018-10-28",
+        "crop": {
+          "h": 0.75,
+          "w": 0.45,
+          "x": 0.2582,
+          "y": 0.1171
+        }
       },
       "audio": {
         "trackName": "Ball and Chain",
@@ -4137,10 +4173,10 @@
       "headline": "Oingo Boingo + 5 More: 1987 Festival Bill",
       "prose": "This was the era when alternative rock was still finding its footing alongside new wave's final flourishes — and somehow I caught all of it on one stage in Tijuana. Six acts that would define different corners of the late-80s landscape: Oingo Boingo riding high on \"Dead Man's Party,\" The Bangles at their commercial peak, Squeeze's sophisticated pop craft, and Australia's Hoodoo Gurus bringing their garage rock energy just five years after forming. I remember the surreal border-crossing pilgrimage to Caliente Racetrack, where Chris Isaak's crooning and The Fixx's synth-rock completed this unlikely but perfect snapshot of 1987's musical diversity. Looking back, it feels like witnessing a changing of the guard I didn't even know was happening.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/oingo-boingo-4ff3036de887f.jpg",
-        "alt": "Oingo Boingo",
-        "source": "artist",
-        "ref": "oingo-boingo"
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjBxLLnxpWRpni8patQipSt7gs2FdWYLGgaUGeNipnLqX1Ris63CwHUL8YwmjpFk2PrBJCG92wGfWzROMaZn6PXPW5xrBPIBB4r3X5cEY976y_903NJFHpcu4XXNhO__AUpvTbzE_DcXPx-YSg=s4800-h1200",
+        "alt": "Caliente Racetrack",
+        "source": "venue",
+        "ref": "caliente-racetrack"
       },
       "audio": {
         "trackName": "Dead Man's Party",
@@ -4296,16 +4332,15 @@
       "detector": "opener-to-headliner",
       "publishedAt": "2026-01-17T10:24:00.000Z",
       "social": {
-        "hook": "Thirty years from opening act to headliner — the long way around.",
-        "caption": "Crowded House opened for Peter Gabriel in 1993; thirty years later they headlined the Wiltern. Some bands earn it through persistence and craft rather than flash.",
+        "hook": "Opener in 1993, headliner in 2023 — thirty years, no shortcuts.",
+        "caption": "I first saw Crowded House supporting Peter Gabriel at the Olympic Velodrome, when Woodface was still fresh. Thirty years later they headlined the Wiltern, and every minute of it felt earned.",
         "beats": [
-          "September 1993: Crowded House were still the opening act, warming up an arena for Peter Gabriel.",
-          "Woodface had already landed, but Neil Finn's band was proving itself beyond the Split Enz shadow.",
-          "They never chased the trend that was coming or the one after that — they just kept making the songs.",
-          "The Wiltern, 2023: same band, their own stage, thirty years of proof behind every note.",
-          "The full arc of it only makes sense if you were at both ends."
+          "September 1993: Crowded House were the support act for Peter Gabriel at the Olympic Velodrome in Carson.",
+          "Woodface had given them a foothold, but the night still belonged to Gabriel — they were there to warm up his crowd.",
+          "Thirty years later, the Wiltern was entirely theirs. Same band, same craft, no reinvention required.",
+          "Some acts chase the moment. Crowded House just kept making the music until the moment caught up with them."
         ],
-        "authoredAt": "2026-08-22T21:38:19.147Z"
+        "authoredAt": "2026-08-29T19:04:25.333Z"
       }
     },
     {
@@ -4520,15 +4555,16 @@
       "detector": "opener-to-headliner",
       "publishedAt": "2026-01-13T04:00:00.000Z",
       "social": {
-        "hook": "They were opening for Oingo Boingo at a racetrack in Tijuana.",
-        "caption": "My first Squeeze show was a support slot at a racetrack in Tijuana in 1987. Twenty-five years later I watched them headline — same wit, different footing.",
+        "hook": "My first Squeeze show was their opening slot — at a racetrack in Tijuana.",
+        "caption": "In 1987 they opened for Oingo Boingo at Caliente Racetrack. Twenty-five years later I watched them headline Rams Head Live in Baltimore — the full arc, in my own diary.",
         "beats": [
-          "1987: Squeeze are the opening act at Caliente Racetrack, warming up a crowd that came for Oingo Boingo.",
-          "The clever wordplay and pub rock energy were already there — they just weren't the reason anyone bought a ticket yet.",
-          "Twenty-five years on, I watched them headline Rams Head Live in Baltimore, the same band with a different gravity.",
-          "It's rare to hold both ends of an arc in your own concert diary — the promising opener and the rightful headliner."
+          "June 1987: Squeeze opened for Oingo Boingo at a racetrack in Tijuana. Not the most obvious venue for pub rock wordplay.",
+          "They were sharp and scrappy — the kind of opener that made you pay attention even before the headliner arrived.",
+          "Twenty-five years passed. Then I saw them headline Rams Head Live in Baltimore.",
+          "Same wit, deeper confidence. The room was theirs from the first song.",
+          "It's rare to hold both ends of an arc like that in your own concert diary — opener to headliner, one band."
         ],
-        "authoredAt": "2026-08-22T21:38:03.092Z"
+        "authoredAt": "2026-08-29T19:04:02.225Z"
       }
     },
     {
@@ -4797,16 +4833,16 @@
       "detector": "venue-loyalty",
       "publishedAt": "2026-01-04T15:12:00.000Z",
       "social": {
-        "hook": "Sixteen shows at one amphitheater, starting the day I figured out it was mine.",
-        "caption": "From Adam Ant in 1984 to Peter Gabriel in 2003, Irvine Meadows quietly became the spine of my concert life. Nineteen years, thirteen artists, one stage framed by the San Gabriel Mountains.",
+        "hook": "16 shows at one outdoor room, 19 years apart, and none of it was planned.",
+        "caption": "I first walked into Irvine Meadows on April 27, 1984 for Adam Ant, and kept coming back for another 18 years. Peter Gabriel closed it out for me in 2003 — thirteen artists, one venue.",
         "beats": [
-          "April 27, 1984: Adam Ant on that big outdoor stage was my first look at what Irvine Meadows could do.",
-          "The concrete terraces carried sound in a way I didn't find anywhere else in Southern California.",
-          "Thompson Twins, Depeche Mode, New Order, Duran Duran — the 80s ran through this one venue like a thread.",
-          "George Michael, Oingo Boingo, Erasure, Jimmy Buffett: the 90s stretched the room without changing what made it work.",
-          "Peter Gabriel closed it out for me in 2003. Sixteen shows. It was never accidental."
+          "April 27, 1984: Adam Ant on a massive outdoor stage under the California sun. That was the first one.",
+          "The San Gabriel Mountains framed every show. The concrete terraces carried sound in a way most rooms never do.",
+          "Thompson Twins, Billy Idol, Depeche Mode, New Order, Duran Duran, George Michael — the list built itself over 19 years.",
+          "Sixteen concerts. Thirteen artists. One amphitheater that quietly became part of how I measure live music.",
+          "Peter Gabriel in 2003 was the last of them. I didn't know it at the time. That's usually how it works."
         ],
-        "authoredAt": "2026-08-22T21:36:35.471Z"
+        "authoredAt": "2026-08-29T19:03:34.888Z"
       }
     },
     {
@@ -4886,15 +4922,14 @@
       "publishedAt": "2026-01-02T12:00:00.000Z",
       "social": {
         "hook": "Five shows, 33 years, and the synthesizers still sound like the future.",
-        "caption": "I first walked into that massive bowl of a venue at 19, and five shows across 33 years have made it one of the most constant places in my life. Depeche Mode in 2023 closed the loop — for now.",
+        "caption": "I first walked into the Forum at 19 for Erasure in 1990. Five shows and 33 years later, I've been loyal to that room longer than some of my friendships.",
         "beats": [
-          "March 1990: I was 19, walking into the Forum for the first time to see Erasure. The scale of it hit me hard.",
-          "Bell Biv DeVoe brought New Jack Swing energy. Elton John brought piano grandeur. The venue held both without flinching.",
-          "Tears for Fears made the room feel nostalgic for something I couldn't quite name.",
-          "Depeche Mode in 2023 was my fifth visit. I realized I've been loyal to this place longer than some of my friendships.",
-          "Something about the Forum's acoustics makes every synthesizer sound like it's coming from the future."
+          "March 1990: I was 19, seeing Erasure in that massive bowl for the first time.",
+          "Bell Biv DeVoe, Elton John, Tears for Fears — the Forum collected a decade of my taste.",
+          "Depeche Mode closed the streak in 2023. Thirty-three years between first and last ticket.",
+          "Five venues could have held those five nights. I kept coming back to the same one."
         ],
-        "authoredAt": "2026-08-22T21:36:21.236Z"
+        "authoredAt": "2026-08-29T19:03:25.121Z"
       }
     }
   ],

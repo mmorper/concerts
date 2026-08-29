@@ -440,19 +440,28 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
     }
   }
 
-  // Fallback chain: album → artist → venue → placeholder
+  /* 🔴 THE FALLBACK ORDER IS THE OWNER'S RUBRIC, 2026-08-29: photography, then the venue,
+     then the artist. It ran album → artist → venue, so a real photograph of a real room the
+     owner stood in lost to a promo shot AND to a piece of cover artwork.
+
+     The ranking is about what the image IS. Our own photograph is irreplaceable. A Places
+     photo is a real photograph of a real place on the ticket. An artist press shot is a
+     promo image from a third party, often from the wrong decade. Album art is not a
+     photograph of anything that happened.
+
+     Tier 1 is handled above, before `suggestedImage`, so this chain starts at the venue. */
   const primaryArtist = finding.artists[0];
 
-  // Album art from primary artist's first track
-  if (primaryArtist) {
-    const track = options.artistsTopTracks[primaryArtist]?.tracks.find((t) => t.albumArt);
-    if (track?.albumArt) {
+  // Venue photo
+  const primaryVenue = finding.venues[0];
+  if (primaryVenue) {
+    const url = getVenueImageUrl(primaryVenue, options);
+    if (url) {
       return {
-        url: upsizeAppleMusicUrl(track.albumArt),
-        alt: track.albumName ?? "Album art",
-        source: "album",
-        ref: primaryArtist,
-        albumName: track.albumName,
+        url,
+        alt: displayVenueName(primaryVenue, options),
+        source: "venue",
+        ref: primaryVenue,
       };
     }
   }
@@ -470,16 +479,16 @@ function resolveImage(finding: ScoredFinding, options: CurateOptions): PostImage
     }
   }
 
-  // Venue photo
-  const primaryVenue = finding.venues[0];
-  if (primaryVenue) {
-    const url = getVenueImageUrl(primaryVenue, options);
-    if (url) {
+  // Album art from primary artist's first track
+  if (primaryArtist) {
+    const track = options.artistsTopTracks[primaryArtist]?.tracks.find((t) => t.albumArt);
+    if (track?.albumArt) {
       return {
-        url,
-        alt: displayVenueName(primaryVenue, options),
-        source: "venue",
-        ref: primaryVenue,
+        url: upsizeAppleMusicUrl(track.albumArt),
+        alt: track.albumName ?? "Album art",
+        source: "album",
+        ref: primaryArtist,
+        albumName: track.albumName,
       };
     }
   }

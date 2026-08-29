@@ -57,6 +57,74 @@
         }
       }
     },
+    "2015-07-04": {
+      "reviewed": 12,
+      "decidedAt": "2026-08-29T19:09:58.708Z",
+      "decisions": {
+        "1758454E-B005-47F3-8B9D-D0B109585A7D": {
+          "verdict": "reject"
+        },
+        "1A176857-F797-49D1-99F0-CFB7EA92B4F1": {
+          "verdict": "reject"
+        },
+        "35016F95-B866-48BB-AF59-160BFC3C181A": {
+          "verdict": "reject"
+        },
+        "71F38B09-3CFE-404D-93DC-5A371602DB63": {
+          "verdict": "keep",
+          "artist": "Trouble Funk",
+          "subject": "performer",
+          "crop": {
+            "x": 0.1505,
+            "y": 0.2337,
+            "w": 0.45,
+            "h": 0.75
+          },
+          "hero": true
+        },
+        "83416797-9F91-4D53-B9B7-07ECDD823602": {
+          "verdict": "reject"
+        },
+        "88D0C093-3830-4749-A12D-1FBAE7BE6E2C": {
+          "verdict": "keep",
+          "artist": "Foo Fighters",
+          "subject": "venue",
+          "crop": {
+            "x": 0.1492,
+            "y": 0,
+            "w": 0.6,
+            "h": 1
+          }
+        },
+        "96247F46-E713-4162-8926-5D5CBFB73974": {
+          "verdict": "reject"
+        },
+        "9A7F28F6-C56A-47A5-B4D4-C523A0185BDE": {
+          "verdict": "reject"
+        },
+        "C35E6237-E142-4AD3-BB7D-0500099C999F": {
+          "verdict": "reject"
+        },
+        "C4D16001-B31C-4F0C-978A-3EA23C645738": {
+          "verdict": "keep",
+          "artist": "Foo Fighters",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.033,
+            "y": 0.1776,
+            "w": 0.8,
+            "h": 0.75
+          }
+        },
+        "E94FD698-EE46-42AD-A21B-E65022342B36": {
+          "verdict": "reject"
+        },
+        "FA2CA7B2-2B8E-4D40-A7A0-27203F8F5E41": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2023-05-09": {
       "reviewed": 25,
       "decidedAt": "2026-08-28T21:53:33.676Z",
@@ -184,6 +252,108 @@
         },
         "FFB68C43-0390-4461-B470-DA54A58B714C": {
           "verdict": "reject"
+        }
+      }
+    },
+    "2023-07-18": {
+      "reviewed": 12,
+      "decidedAt": "2026-08-29T18:52:30.713Z",
+      "decisions": {
+        "17F2A0C0-1B44-4E53-BDBC-88B1C8FA398E": {
+          "verdict": "keep",
+          "artist": "Foals",
+          "subject": "performer",
+          "crop": {
+            "x": 0.0797,
+            "y": 0.097,
+            "w": 0.85,
+            "h": 0.7971
+          }
+        },
+        "189C22DE-9F90-4813-8BA8-6509611DFCCD": {
+          "verdict": "keep",
+          "artist": "Foals",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.0512,
+            "y": 0,
+            "w": 0.85,
+            "h": 0.7971
+          }
+        },
+        "4CF24296-BB0C-42B2-A6D6-CBB299CC58D6": {
+          "verdict": "keep",
+          "artist": "__unknown__",
+          "subject": "venue",
+          "crop": {
+            "x": 0.221,
+            "y": 0,
+            "w": 0.6008,
+            "h": 1
+          }
+        },
+        "6F6349D1-A9D1-4806-9958-8C867F12BABD": {
+          "verdict": "keep",
+          "artist": "Foals",
+          "subject": "performer",
+          "crop": {
+            "x": 0.0655,
+            "y": 0.1458,
+            "w": 0.9,
+            "h": 0.8439
+          }
+        },
+        "78BB6E58-6708-4F40-8208-CF49CE65F187": {
+          "verdict": "reject"
+        },
+        "93D5D09A-F943-48EF-86C6-128D6C445A4C": {
+          "verdict": "keep",
+          "artist": "Foals",
+          "subject": "performer",
+          "frames": [
+            38
+          ],
+          "trim": {
+            "in": 35,
+            "out": 84
+          }
+        },
+        "9B8BDE5B-7D56-43A8-91A6-018D4AEB57D5": {
+          "verdict": "reject"
+        },
+        "A0283531-2963-4D31-931D-0C866ECED048": {
+          "verdict": "reject"
+        },
+        "DEFCA927-381E-4878-AB9E-B06A4182BA60": {
+          "verdict": "keep",
+          "artist": "Foals",
+          "subject": "stub",
+          "crop": {
+            "x": 0.025,
+            "y": 0.0541,
+            "w": 0.95,
+            "h": 0.8918
+          }
+        },
+        "FDCEEE32-8FC7-4CEC-8140-0DFF6D97B4BC": {
+          "verdict": "reject"
+        },
+        "FEBB5A9F-8A07-4526-94B9-37AD4EAE87C0": {
+          "verdict": "keep",
+          "artist": "Foals",
+          "subject": "performer",
+          "crop": {
+            "x": 0.0249,
+            "y": 0,
+            "w": 0.9,
+            "h": 0.8439
+          }
+        },
+        "frame:93D5D09A-F943-48EF-86C6-128D6C445A4C:0": {
+          "verdict": "keep",
+          "artist": "Foals",
+          "subject": "performer"
         }
       }
     },

@@ -14,7 +14,7 @@ import { getShowAsset, getShowImageUrl, resolveImageUrl, showByline, type ImageS
 import { buildPosts, type CurateOptions } from '../../scripts/liner-notes/curate'
 import type { ScoredFinding } from '../../scripts/liner-notes/types'
 
-const sources = (assets: Array<Partial<{ kind: string; url: string | null; date: string; artistNormalized: string | null; hero: boolean; order: number; crop: { x: number; y: number; w: number; h: number } }>>): ImageSources =>
+const sources = (assets: Array<Partial<{ kind: string; url: string | null; date: string; artistNormalized: string | null; hero: boolean; signature: boolean; order: number; derivedFrom: { original: string; frame?: number } | null; crop: { x: number; y: number; w: number; h: number } }>>): ImageSources =>
   ({
     artistsMetadata: {},
     artistsTopTracks: {},
@@ -49,12 +49,27 @@ describe('getShowImageUrl', () => {
       .toBe('/images/shows/db-02.jpg')
   })
 
-  it('breaks a tie on date, so the choice is stable rather than incidental', () => {
+  it('breaks a tie on the NEWEST show, not the oldest', () => {
+    // Reversed 2026-08-29. It sorted ascending, so the oldest show won — not chosen, just
+    // what a stable sort does. Source resolution across the archive climbs 4.2 MP (2012) →
+    // 8.0 (2015) → 12.2 (2018) and then plateaus, so newer is the better default at the old
+    // end and merely harmless after.
     const s = sources([
       { url: '/images/shows/late.jpg', order: 1, date: '2026-06-04' },
       { url: '/images/shows/early.jpg', order: 1, date: '2024-08-20' },
     ])
-    expect(getShowImageUrl('howard-jones', s)).toBe('/images/shows/early.jpg')
+    expect(getShowImageUrl('howard-jones', s)).toBe('/images/shows/late.jpg')
+  })
+
+  it('prefers a native still over a frame pulled from video', () => {
+    // A STRONGER SIGNAL THAN THE DATE, and it outranks it. Howard Jones 2024-08-20 is six of
+    // seven frames pulled from video at a median 8.3 MP, against 12.2 for every native set
+    // since 2018 — the weakest modern imagery in the archive, and no date rule catches it.
+    const s = sources([
+      { url: '/images/shows/newer-from-video.jpg', order: 1, date: '2026-06-04', derivedFrom: { original: 'x', frame: 4 } },
+      { url: '/images/shows/older-native.jpg', order: 1, date: '2024-08-20' },
+    ])
+    expect(getShowImageUrl('howard-jones', s)).toBe('/images/shows/older-native.jpg')
   })
 
   it('never returns a video', () => {
@@ -318,5 +333,49 @@ describe('loadBackground with a crop box', () => {
     // Unreviewed, not broken. A card is still owed for the site's own og:image.
     const { loadBackground } = await import('../../scripts/liner-notes/og-image')
     expect((await loadBackground(HERO)).usedFallback).toBe(false)
+  })
+})
+
+// ── Choosing between shows ──────────────────────────────────────────────────
+
+describe('the signature — the best frame of an act across every show', () => {
+  it('outranks a per-show hero', () => {
+    // `hero` is one per act PER NIGHT, so an act photographed at three shows has three of
+    // them. A post reaching for "a photograph of Howard Jones" without being about one
+    // particular night — most posts — had nothing to choose between them.
+    const s = sources([
+      { url: '/images/shows/2024-hj-01.jpg', order: 1, hero: true, date: '2024-08-20' },
+      { url: '/images/shows/2026-hj-03.jpg', order: 3, hero: true, date: '2026-06-04', signature: true },
+    ])
+    expect(getShowImageUrl('howard-jones', s)).toBe('/images/shows/2026-hj-03.jpg')
+  })
+
+  it('is what stops the EARLIEST show winning by accident', () => {
+    // Before this the last tie-break was `date` ascending, so between two heroes from two
+    // nights the older one won — not because anyone chose it, but because that is what a
+    // stable sort does. The signature makes the choice explicit.
+    // The default now takes the newest, which is right more often than not — but "more often
+    // than not" is exactly what a hand mark is for. Here the OLDER show is the better one.
+    const unmarked = sources([
+      { url: '/images/shows/2026-hj-01.jpg', order: 1, hero: true, date: '2026-06-04' },
+      { url: '/images/shows/2012-hj-01.jpg', order: 1, hero: true, date: '2012-06-12' },
+    ])
+    expect(getShowImageUrl('howard-jones', unmarked)).toBe('/images/shows/2026-hj-01.jpg')
+
+    const marked = sources([
+      { url: '/images/shows/2026-hj-01.jpg', order: 1, hero: true, date: '2026-06-04' },
+      { url: '/images/shows/2012-hj-01.jpg', order: 1, hero: true, date: '2012-06-12', signature: true },
+    ])
+    expect(getShowImageUrl('howard-jones', marked)).toBe('/images/shows/2012-hj-01.jpg')
+  })
+
+  it('changes nothing when no signature is marked', () => {
+    // Which is every act today — none has been photographed at two shows yet. The mark is
+    // additive and the existing order is untouched without it.
+    const s = sources([
+      { url: '/images/shows/hj-01.jpg', order: 1 },
+      { url: '/images/shows/hj-03.jpg', order: 3, hero: true },
+    ])
+    expect(getShowImageUrl('howard-jones', s)).toBe('/images/shows/hj-03.jpg')
   })
 })

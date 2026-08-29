@@ -56,6 +56,7 @@ def stills() -> list[dict]:
             # sibling to unmark.
             "artistNormalized": a.get("artistNormalized"),
             "subject": a.get("subject"), "hero": bool(a.get("hero")),
+            "signature": bool(a.get("signature")),
             "crop": a.get("crop"), "w": a.get("width"), "h": a.get("height"),
         })
     out.sort(key=lambda x: (x["date"], x["url"]), reverse=True)
@@ -181,6 +182,48 @@ def apply_hero(url: str, hero: bool) -> str:
     return note
 
 
+def apply_signature(url: str, on: bool) -> str:
+    """Mark the best frame of an act ACROSS EVERY SHOW — one per artist, not one per night.
+
+    🔴 SCOPED TO THE ACT, NOT THE DATE, which is the whole difference from `hero`.
+    `apply_hero` clears siblings sharing the same act AND date, because an act has one hero
+    per night. This clears siblings sharing the act at ANY date, because an act has one
+    signature full stop. Getting that scope wrong would leave two signatures across two shows
+    and `getShowAsset` would silently pick whichever sorted first — the exact ambiguity this
+    exists to remove.
+    """
+    idx = load(INDEX)
+    target = None
+    for a in idx.get("assets", []):
+        if a.get("url") == url:
+            target = a
+            break
+    if target is None:
+        return "unknown url"
+
+    act = target.get("artistNormalized")
+    if not act:
+        return "no act"
+
+    cleared = []
+    for a in idx.get("assets", []):
+        if a.get("artistNormalized") == act and a.get("url") != url:
+            if a.pop("signature", None):
+                cleared.append(a.get("url"))
+    if on:
+        target["signature"] = True
+    else:
+        target.pop("signature", None)
+    INDEX.write_text(json.dumps(idx, indent=2) + "\n")
+
+    # Deliberately INDEX ONLY. `media-decisions.json` is keyed per show, and a signature is
+    # a statement about the artist across shows — it has no per-show decision to live in.
+    # The index is tracked and committed, so it is durable regardless.
+    if on and cleared:
+        return f"index — moved from {cleared[0].rsplit('/', 1)[-1]}"
+    return "index"
+
+
 class Handler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *a, **kw):
         # Serve from `public/`, not the repo root: media-index urls are site-relative
@@ -213,7 +256,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def do_POST(self):
-        if self.path not in ("/crop", "/hero"):
+        if self.path not in ("/crop", "/hero", "/signature"):
             self.send_response(404)
             self.end_headers()
             return
@@ -221,6 +264,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         payload = json.loads(self.rfile.read(n) or b"{}")
         if self.path == "/hero":
             where = apply_hero(payload.get("url", ""), bool(payload.get("hero")))
+        elif self.path == "/signature":
+            where = apply_signature(payload.get("url", ""), bool(payload.get("signature")))
         else:
             where = apply_crop(payload.get("url", ""), payload.get("crop"))
         # A url that matched nothing wrote nothing, so it must NOT answer 200 — the page

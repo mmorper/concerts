@@ -23,11 +23,13 @@ import { existsSync, readFileSync, statSync } from 'fs'
 import { join, resolve } from 'path'
 import { createInterface, emitKeypressEvents } from 'readline'
 import { loadConcerts, type Concert } from './show'
+import { normalizeArtistName } from '../../src/utils/normalize.js'
 import { phaseOf, minedAlready, unmarkedClipWarning, changeLines, TOTAL_STEPS, type Phase, type Snapshot } from './phase'
 
 const REVIEW_ROOT = resolve('concert-photos-audit/review')
 const AUDIT = resolve('concert-photos-audit/audit/audit.json')
 const MEDIA_INDEX = resolve('public/data/media-index.json')
+const LINER_NOTES = resolve('public/data/liner-notes.json')
 const REVIEW_PORT = Number(process.env.REVIEW_PORT ?? 8787)
 
 const DIM = '\x1b[2m'
@@ -152,12 +154,84 @@ export function framingGaps(assets: IndexedAsset[]): { actsMissingHero: number; 
 
 // ── The picker ───────────────────────────────────────────────────────────────────────────
 
+/**
+ * How many pending posts a show would upgrade from sourced imagery to the archive's own.
+ *
+ * 🔴 THE PICKER RANKED BY PHOTOGRAPHY AND KNEW NOTHING ABOUT THE QUEUE. `opportunity` is
+ * depth — the sum of likelihood x quality across a show's unjudged frames — which answers
+ * "where is the material?" and never "where are the posts?". Measured 2026-08-29: the top
+ * EIGHT shows by opportunity upgraded zero posts between them. Devo led the list with 13.69
+ * and no post has ever named Devo.
+ *
+ * A post is upgraded by a show when the post's lead act played it and the post is still on
+ * tier 2. Openers count: 89 of 184 shows have them and a post can be led by one.
+ */
+export function postsWaitingByDate(concerts: Concert[]): Map<string, number> {
+  const notes = readJson<{ posts: Array<{ image?: { source?: string }; artists?: string[] }> }>(LINER_NOTES)
+  const index = readJson<{ assets: IndexedAsset[] }>(MEDIA_INDEX)
+  const photographed = new Set(
+    (index?.assets ?? [])
+      .filter((a) => a.kind === 'image' && a.url && a.artistNormalized)
+      .map((a) => a.artistNormalized as string)
+  )
+
+  // Lead acts that still want photography, and how many posts each is carrying.
+  const wanting = new Map<string, number>()
+  for (const post of notes?.posts ?? []) {
+    if (post.image?.source === 'show') continue
+    const lead = post.artists?.[0]
+    if (!lead || photographed.has(lead)) continue
+    wanting.set(lead, (wanting.get(lead) ?? 0) + 1)
+  }
+
+  const out = new Map<string, number>()
+  for (const c of concerts) {
+    /* This `Concert` carries DISPLAY names only — `show.ts` reads a leaner shape than the
+       site's. Normalize both sides rather than assuming a slug is there to compare. */
+    const acts = [c.headliner, ...(c.openers ?? [])]
+      .map(normalizedOpener)
+      .filter(Boolean) as string[]
+    const n = acts.reduce((sum, a) => sum + (wanting.get(a) ?? 0), 0)
+    if (n > 0) out.set(c.date, n)
+  }
+  return out
+}
+
+/** `concert.openers` holds display names; posts hold slugs. They only compare normalized. */
+function normalizedOpener(opener: unknown): string | undefined {
+  if (typeof opener === 'string') return normalizeArtistName(opener)
+  if (opener && typeof opener === 'object') {
+    const v = opener as { normalizedName?: string; nameNormalized?: string; name?: string }
+    return v.normalizedName ?? v.nameNormalized ?? (v.name ? normalizeArtistName(v.name) : undefined)
+  }
+  return undefined
+}
+
 export interface Row {
   concert: Concert
   phase: Phase
   snapshot: Snapshot
   unjudged: number
   opportunity: number
+  /** Pending posts this show would move from sourced imagery to the archive's own. */
+  postsWaiting: number
+}
+
+/**
+ * What the picker ranks by.
+ *
+ * `posts` is the default because it answers the question the owner is actually asking when
+ * they open this — "what should I cull next so my posts stop using press shots?"
+ * `opportunity` answers "where is the most material?", which is a different and usually less
+ * useful question; it stays as the tie-break and as an explicit choice.
+ */
+export type SortKey = 'posts' | 'opportunity' | 'unjudged' | 'date'
+export const SORT_KEYS: SortKey[] = ['posts', 'opportunity', 'unjudged', 'date']
+export const SORT_LABEL: Record<SortKey, string> = {
+  posts: 'posts waiting',
+  opportunity: 'depth of material',
+  unjudged: 'frames to judge',
+  date: 'show date, newest',
 }
 
 /**
@@ -168,7 +242,8 @@ export interface Row {
  * Everything else falls back to the audit's depth ranking.
  */
 export function buildRows(concerts: Concert[], audit: Map<string, { unjudged: number; opportunity: number }>,
-  snap: (d: string) => Snapshot, all = false): Row[] {
+  snap: (d: string) => Snapshot, all = false, waiting: Map<string, number> = new Map(),
+  sort: SortKey = 'posts'): Row[] {
   const rows: Row[] = []
   for (const c of concerts) {
     const s = snap(c.date)
@@ -185,14 +260,34 @@ export function buildRows(concerts: Concert[], audit: Map<string, { unjudged: nu
     // Nothing here at all — never worth offering, in either mode.
     if (!s.hasRun && !(a && a.unjudged > 0) && s.indexedCount === 0) continue
 
-    rows.push({ concert: c, phase, snapshot: s, unjudged: a?.unjudged ?? 0, opportunity: a?.opportunity ?? 0 })
+    rows.push({
+      concert: c, phase, snapshot: s,
+      unjudged: a?.unjudged ?? 0,
+      opportunity: a?.opportunity ?? 0,
+      postsWaiting: waiting.get(c.date) ?? 0,
+    })
   }
   return rows.sort((x, y) => {
     /* Work first, finished last. In browse mode a done show is a destination rather than a
        task, so it sorts below anything still carrying an unmade decision — and `frame`
        (published but unheroed or uncropped) is work, so it sorts up with the rest. */
     const rank = (r: Row) => (r.phase.id === 'done' ? 2 : r.snapshot.hasRun ? 0 : 1)
-    return rank(x) - rank(y) || y.opportunity - x.opportunity || x.concert.date.localeCompare(y.concert.date)
+    /* Phase always leads: a show already part-way through is the cheapest thing to finish
+       and the easiest to forget. The chosen key decides everything after that, and the
+       others fall in behind it as tie-breaks so the order is never arbitrary. */
+    const by: Record<SortKey, number> = {
+      posts: y.postsWaiting - x.postsWaiting,
+      opportunity: y.opportunity - x.opportunity,
+      unjudged: y.unjudged - x.unjudged,
+      date: y.concert.date.localeCompare(x.concert.date),
+    }
+    return (
+      rank(x) - rank(y) ||
+      by[sort] ||
+      y.postsWaiting - x.postsWaiting ||
+      y.opportunity - x.opportunity ||
+      x.concert.date.localeCompare(y.concert.date)
+    )
   })
 }
 
@@ -233,7 +328,13 @@ export function renderRow(r: Row, selected: boolean, width: number): string {
       : inFlight
         ? `${DIM}${s.judged}/${s.onPage} judged${OFF}`.padEnd(23)
         : `${String(r.unjudged).padStart(3)} unjudged`
-  return `${mark} ${r.concert.date}  ${label}  ${supply}  ${badge}`
+  /* Posts waiting leads the numbers, because it is the reason to open a show at all. Blank
+     rather than "0" when none: a column of zeros is noise, and the eye should find the
+     shows that matter without reading every row. */
+  const posts = r.postsWaiting > 0
+    ? `${CYAN}${String(r.postsWaiting).padStart(2)} post${r.postsWaiting === 1 ? ' ' : 's'}${OFF}`
+    : `${DIM}       ${OFF}`
+  return `${mark} ${r.concert.date}  ${label}  ${posts}  ${supply}  ${badge}`
 }
 
 /**
@@ -243,8 +344,15 @@ export function renderRow(r: Row, selected: boolean, width: number): string {
  * is what you want nine times in ten; the full list is how you get back to a show you have
  * already finished, which was unreachable from anywhere before.
  */
-async function pick(work: Row[], all: Row[], startAll: boolean): Promise<Row | null> {
+async function pick(
+  work: Row[],
+  all: Row[],
+  startAll: boolean,
+  startSort: SortKey,
+  resort: (rows: Row[], key: SortKey) => Row[]
+): Promise<Row | null> {
   let showingAll = startAll
+  let sortKey = startSort
   let rows = showingAll ? all : work
 
   if (!process.stdin.isTTY) {
@@ -259,7 +367,8 @@ async function pick(work: Row[], all: Row[], startAll: boolean): Promise<Row | n
 
   const draw = (first: boolean) => {
     if (!first) process.stdout.write(`\x1b[${PAGE + 3}A`)
-    console.log(`\n${BOLD}Pick a show${OFF}  ${DIM}↑↓ move · enter choose · ${showingAll ? 'a work only' : 'a show all'} · q quit${OFF}\x1b[K`)
+    console.log(`\n${BOLD}Pick a show${OFF}  ${DIM}↑↓ move · enter choose · ` +
+      `${showingAll ? 'a work only' : 'a show all'} · s sort: ${SORT_LABEL[sortKey]} · q quit${OFF}\x1b[K`)
     for (let i = top; i < top + PAGE; i++) {
       process.stdout.write(renderRow(rows[i], i === cursor, 42) + '\x1b[K\n')
     }
@@ -280,6 +389,18 @@ async function pick(work: Row[], all: Row[], startAll: boolean): Promise<Row | n
       else if (key.sequence && /^[1-9]$/.test(key.sequence)) {
         const n = Number(key.sequence) - 1
         if (n < rows.length) cursor = n
+      } else if (key.name === 's') {
+        /* Cycle the sort in place, holding the cursor on the SAME SHOW. Re-sorting under
+           someone's cursor and leaving them on a different row is how a list stops being
+           trusted. */
+        const held = rows[cursor]?.concert.date
+        sortKey = SORT_KEYS[(SORT_KEYS.indexOf(sortKey) + 1) % SORT_KEYS.length]
+        work = resort(work, sortKey)
+        all = resort(all, sortKey)
+        rows = showingAll ? all : work
+        const found = rows.findIndex((r) => r.concert.date === held)
+        cursor = found >= 0 ? found : 0
+        top = Math.max(0, Math.min(cursor, rows.length - PAGE))
       } else if (key.name === 'a') {
         /* Keep the cursor on the SAME SHOW across the toggle where it exists. Jumping to the
            top of a longer list every time loses your place, and the whole point of `a` is to
@@ -445,6 +566,13 @@ async function main(): Promise<void> {
      it live with `a`, which is the discovery path — nobody reads a flag they do not know to
      look for. */
   const showAll = args.includes('--all') || args.includes('-a')
+  /* `--sort=<key>`, and `s` cycles it live in the picker. The flag exists so a habit can be
+     scripted; the key exists because nobody reads a flag they do not know to look for. */
+  const sortArg = args.find((a) => a.startsWith('--sort='))?.split('=')[1] as SortKey | undefined
+  if (sortArg && !SORT_KEYS.includes(sortArg)) {
+    fail(`Unknown --sort=${sortArg}. One of: ${SORT_KEYS.join(', ')}`)
+  }
+  const sortKey: SortKey = sortArg ?? 'posts'
   const concerts = loadConcerts()
 
   let concert: Concert | undefined
@@ -457,8 +585,10 @@ async function main(): Promise<void> {
       console.log(`\n${DIM}No audit yet — run \`npm run media:audit\` to find where the supply is.${OFF}`)
     }
     const audit = new Map((auditFile?.shows ?? []).map((s) => [s.date, s]))
-    const work = buildRows(concerts, audit, snapshotOf, false)
-    const everything = buildRows(concerts, audit, snapshotOf, true)
+    const waiting = postsWaitingByDate(concerts)
+    const build = (all: boolean, key: SortKey) => buildRows(concerts, audit, snapshotOf, all, waiting, key)
+    const work = build(false, sortKey)
+    const everything = build(true, sortKey)
     /* Only truly empty when there is nothing in EITHER list. "Nothing to work on" while a
        published show sits there waiting for a hero is the same lie this command exists to
        stop — and it is the state the owner hit. */
@@ -466,7 +596,15 @@ async function main(): Promise<void> {
     if (work.length === 0) {
       console.log(`\n${DIM}Nothing outstanding. Showing every show with media — press ${OFF}a${DIM} for the work list.${OFF}`)
     }
-    const chosen = await pick(work, everything, showAll || work.length === 0)
+    const chosen = await pick(
+      work,
+      everything,
+      showAll || work.length === 0,
+      sortKey,
+      // Rebuild rather than re-sort the array in place: `buildRows` owns the phase-first
+      // rule and the tie-break chain, and duplicating either here is how they drift.
+      (rows, key) => build(rows === everything || rows.length === everything.length, key)
+    )
     if (!chosen) return
     concert = chosen.concert
   }
