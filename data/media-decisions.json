@@ -1041,6 +1041,153 @@
           "verdict": "reject"
         }
       }
+    },
+    "2026-07-31": {
+      "reviewed": 23,
+      "decidedAt": "2026-08-29T18:00:39.664Z",
+      "decisions": {
+        "037AE542-5EFA-4FE5-9C2D-0C8D0F066233": {
+          "verdict": "keep",
+          "artist": "Nile Rodgers",
+          "subject": "performer",
+          "trim": {
+            "in": 38,
+            "out": 64
+          }
+        },
+        "2362B7BD-D817-46F0-ADB5-2305E67E23B4": {
+          "verdict": "reject"
+        },
+        "291498D1-2EC9-4845-8886-1AE4040136E6": {
+          "verdict": "keep",
+          "artist": "Nile Rodgers",
+          "subject": "performer",
+          "crop": {
+            "x": 0.0486,
+            "y": 0,
+            "w": 0.75,
+            "h": 0.7029
+          }
+        },
+        "298F3F13-9C0F-40E5-A884-AF5701D3CCFC": {
+          "verdict": "keep",
+          "artist": "Nile Rodgers",
+          "subject": "performer",
+          "crop": {
+            "x": 0.1551,
+            "y": 0,
+            "w": 0.6,
+            "h": 0.9992
+          }
+        },
+        "30702A7D-B010-4336-B114-E6A2E5803389": {
+          "verdict": "reject"
+        },
+        "44B87180-9EE4-4D30-883B-493309B7FE03": {
+          "verdict": "reject"
+        },
+        "61205B7B-4C62-4E40-9B1B-F94CCDFF7DEC": {
+          "verdict": "reject"
+        },
+        "629CF2B1-F301-4E4B-8A7F-2AFBFA4683E3": {
+          "verdict": "keep",
+          "artist": "Nile Rodgers",
+          "subject": "performer",
+          "crop": {
+            "x": 0.1847,
+            "y": 0.1484,
+            "w": 0.45,
+            "h": 0.7494
+          }
+        },
+        "6F6557F2-7B67-403B-BFFD-ACA35EF0ED15": {
+          "verdict": "keep",
+          "artist": "Nile Rodgers",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.2397,
+            "y": 0,
+            "w": 0.4996,
+            "h": 0.832
+          }
+        },
+        "76BB025B-2A49-4D82-8612-1F5C445E393C": {
+          "verdict": "keep",
+          "artist": "Nile Rodgers",
+          "subject": "performer",
+          "frames": [
+            0
+          ]
+        },
+        "AA2FDFB1-FEB3-40C1-9603-23E65A356D79": {
+          "verdict": "reject"
+        },
+        "AA992AF3-960E-4938-913F-DFF20F377A77": {
+          "verdict": "reject"
+        },
+        "AB263138-3D52-48AE-A406-63CBE25521CB": {
+          "verdict": "keep",
+          "artist": "Nile Rodgers",
+          "subject": "performer",
+          "frames": [
+            59
+          ]
+        },
+        "BC159A4B-B74C-47AD-9569-51F298C072D9": {
+          "verdict": "keep",
+          "artist": "Nile Rodgers",
+          "subject": "performer",
+          "frames": [
+            0
+          ]
+        },
+        "BDC95D50-2100-4773-98DF-C33699204A6C": {
+          "verdict": "reject"
+        },
+        "C329DA19-053B-4060-AA1D-C6D942110837": {
+          "verdict": "keep",
+          "artist": "Nile Rodgers",
+          "subject": "performer",
+          "trim": {
+            "in": 17,
+            "out": 33
+          }
+        },
+        "C51CA696-A3FD-4A74-99EB-A52DBF3C2244": {
+          "verdict": "keep",
+          "artist": "Nile Rodgers",
+          "subject": "performer",
+          "trim": {
+            "in": 4,
+            "out": 21
+          }
+        },
+        "E301DCFD-6BCC-4F25-98E3-03FB8A487EB4": {
+          "verdict": "reject"
+        },
+        "EA263148-7E30-49C0-8B62-23B3AA1B4035": {
+          "verdict": "reject"
+        },
+        "EAC2EEA7-09B1-482E-8B64-BD4FA1DE8016": {
+          "verdict": "reject"
+        },
+        "frame:76BB025B-2A49-4D82-8612-1F5C445E393C:0": {
+          "verdict": "keep",
+          "artist": "Nile Rodgers",
+          "subject": "performer"
+        },
+        "frame:AB263138-3D52-48AE-A406-63CBE25521CB:0": {
+          "verdict": "keep",
+          "artist": "Nile Rodgers",
+          "subject": "performer"
+        },
+        "frame:BC159A4B-B74C-47AD-9569-51F298C072D9:0": {
+          "verdict": "keep",
+          "artist": "Nile Rodgers",
+          "subject": "performer"
+        }
+      }
     }
   }
 }

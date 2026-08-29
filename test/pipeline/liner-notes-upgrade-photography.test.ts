@@ -8,7 +8,7 @@
  * the normal case, not the exception.
  */
 import { describe, it, expect } from 'vitest'
-import { upgradeToOwnPhotography } from '../../scripts/liner-notes/refresh-images'
+import { upgradeToOwnPhotography, upgradeVenuePosts } from '../../scripts/liner-notes/refresh-images'
 import type { ImageSources } from '../../scripts/liner-notes/image-refs'
 import type { LinerNotesPost } from '../../src/types/liner-notes'
 
@@ -94,5 +94,77 @@ describe('upgradeToOwnPhotography', () => {
   it('is safe with no media index at all', () => {
     const posts = [post()]
     expect(upgradeToOwnPhotography(posts, { artistsMetadata: {}, artistsTopTracks: {}, venuesMetadata: {} } as unknown as ImageSources)).toEqual([])
+  })
+})
+
+describe('upgradeVenuePosts', () => {
+  // TEN OF TEN venue posts carried an album cover while Places had a photo for all of them.
+  // `resolveImage` asks for the venue image first on these, but when Places had nothing yet
+  // it fell through to album art — and nothing revisits `source`. Venue photos arrive on the
+  // weekly metadata refresh, months after a post is written, so the fall-through was
+  // permanent by default.
+  //
+  // The tell was in the data: `kia-forum-5-shows-over-3-decades` carried alt "Kia Forum"
+  // over an Erasure album cover. The alt already described an image that was not there.
+  const venueSources = (): ImageSources =>
+    ({
+      artistsMetadata: {},
+      artistsTopTracks: {},
+      venuesMetadata: {
+        'kia-forum': { name: 'Kia Forum', photoUrls: { large: 'https://googleapis.com/kia.jpg' } },
+        'irvine-meadows': { name: 'Irvine Meadows', photoUrls: { large: '/images/venues/fallback.jpg' } },
+      },
+      mediaIndex: { assets: [] },
+    }) as unknown as ImageSources
+
+  const venuePost = (o: Partial<LinerNotesPost> = {}): LinerNotesPost =>
+    ({
+      slug: 'kia-forum-5-shows-over-3-decades', detector: 'venue-loyalty',
+      artists: ['erasure'], venues: ['kia-forum'], deepLinks: [], tags: [],
+      image: { url: 'https://mzstatic.com/x.jpg', alt: 'Kia Forum', source: 'album', ref: 'erasure' },
+      ...o,
+    }) as unknown as LinerNotesPost
+
+  it('gives a venue post its venue photograph once one exists', () => {
+    const posts = [venuePost()]
+    expect(upgradeVenuePosts(posts, venueSources())).toEqual(['kia-forum-5-shows-over-3-decades'])
+    expect(posts[0].image.source).toBe('venue')
+    expect(posts[0].image.ref).toBe('kia-forum')
+  })
+
+  it('replaces the alt, which already named the venue over an album cover', () => {
+    const posts = [venuePost()]
+    upgradeVenuePosts(posts, venueSources())
+    expect(posts[0].image.alt).toBe('Kia Forum')
+    expect(posts[0].image.url).toBe('https://googleapis.com/kia.jpg')
+  })
+
+  it('leaves an ARTIST post alone — that is the wrong subject', () => {
+    // The mirror of the gate in upgradeToOwnPhotography. A venue photograph on an artist
+    // post is the same error as an artist photograph on a venue post.
+    const posts = [venuePost({ detector: 'artist-longevity' } as never)]
+    expect(upgradeVenuePosts(posts, venueSources())).toEqual([])
+    expect(posts[0].image.source).toBe('album')
+  })
+
+  it('never overwrites the archive\'s own photography', () => {
+    // Personal beats sourced. A venue post that reached tier 1 has earned it.
+    const posts = [venuePost({
+      image: { url: '/images/shows/x.jpg', alt: 'x', source: 'show', ref: 'a' },
+    } as never)]
+    expect(upgradeVenuePosts(posts, venueSources())).toEqual([])
+  })
+
+  it('is not fooled by the bundled fallback standing in for a real photo', () => {
+    // Irvine Meadows is demolished and Places has nothing, so `photoUrls` holds our own
+    // generic image. Promoting to that would swap an album cover for a grey placeholder.
+    const posts = [venuePost({ slug: 'irvine', venues: ['irvine-meadows'] } as never)]
+    expect(upgradeVenuePosts(posts, venueSources())).toEqual([])
+  })
+
+  it('is idempotent', () => {
+    const posts = [venuePost()]
+    upgradeVenuePosts(posts, venueSources())
+    expect(upgradeVenuePosts(posts, venueSources())).toEqual([])
   })
 })

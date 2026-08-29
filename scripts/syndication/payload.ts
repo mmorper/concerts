@@ -356,7 +356,15 @@ export function buildPayload(
   const tags = concert
     ? entityTags({
         artists: credit.artists,
-        venue: credit.venue,
+        /* EVERY venue the post covers, anchor first. `credit.venue` alone meant a post about
+           three venues could only ever surface under one of them. Display names, resolved
+           through venuesMetadata the same way the credit stack resolves its own. */
+        venues: [
+          credit.venue,
+          ...post.venues
+            .map((slug) => sources.venuesMetadata[slug]?.name)
+            .filter((name): name is string => Boolean(name) && name !== credit.venue),
+        ],
         city: credit.city,
         date: credit.date,
       })
@@ -473,7 +481,8 @@ export function buildOnThisDayPayload(post: OnThisDayPost): SyndicationPayload {
     media: publishable,
     tags: entityTags({
       artists: [post.artist],
-      venue: post.venue,
+      // An On This Day post is one night at one venue by construction.
+      venues: [post.venue],
       city: post.city,
       // Tagged by the DECADE OF THE SHOW, not of the anniversary. A 1987 show
       // posted in 2027 belongs in #1980s; tagging it #2020s would file the

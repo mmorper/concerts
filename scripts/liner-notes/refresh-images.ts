@@ -75,6 +75,54 @@ export interface RefreshResult {
  * `ref` stays the ARTIST, so the choice keeps improving: mark a better hero later and the
  * post picks it up on the next run, exactly as every other source self-heals.
  */
+/**
+ * Give a venue-subject post its venue photograph, once one exists.
+ *
+ * 🔴 TEN OF TEN VENUE POSTS CARRIED AN ALBUM COVER. `resolveImage` asks for the venue image
+ * first on these — the detector sets `suggestedImage: { type: "venue" }` — but when Places
+ * had no photo for that venue yet it fell through to album art, and NOTHING revisits
+ * `source` afterwards. Venue photos arrive on the weekly metadata refresh, months after a
+ * post is written, so the fall-through is permanent by default.
+ *
+ * The tell was in the data: `kia-forum-5-shows-over-3-decades` carries `alt: "Kia Forum"`
+ * over an Erasure album cover. The alt already described an image that was not there.
+ *
+ * Same shape of bug as [[upgradeToOwnPhotography]] and the same fix — the pipeline decides
+ * once at curate time and needs a step that re-asks the question when the answer changes.
+ */
+export function upgradeVenuePosts(
+  posts: LinerNotesPost[],
+  sources: ImageSources,
+  verbose = false
+): string[] {
+  const upgraded: string[] = [];
+
+  for (const post of posts) {
+    // Only where the SUBJECT is a place. An artist post with a venue photo is the wrong
+    // subject, which is the mirror of the gate in `upgradeToOwnPhotography`.
+    if (!VENUE_SUBJECT_DETECTORS.has(post.detector)) continue;
+    if (post.image?.source === "venue") continue;
+    /* Never over the archive's own photography. Personal beats sourced, and a venue post
+       that somehow reached tier 1 has earned it. */
+    if (post.image?.source === "show") continue;
+
+    const slug = post.venues.find((v) => getVenueImageUrl(v, sources));
+    if (!slug) continue;
+
+    const url = getVenueImageUrl(slug, sources)!;
+    post.image = {
+      url,
+      alt: sources.venuesMetadata[slug]?.name ?? post.image.alt,
+      source: "venue",
+      ref: slug,
+    };
+    upgraded.push(post.slug);
+    if (verbose) console.log(`   ⬆ ${post.slug}: upgraded to the venue photograph of ${slug}`);
+  }
+
+  return upgraded;
+}
+
 export function upgradeToOwnPhotography(
   posts: LinerNotesPost[],
   sources: ImageSources,
@@ -178,7 +226,11 @@ export async function refreshPostImages(
      through the re-resolve step afterwards would count it twice. Its slug still has to
      reach `changedSlugs` — the OG card is skipped when a PNG already exists, so a post that
      changed photographs would otherwise keep the card composited from the old one. */
-  const upgraded = upgradeToOwnPhotography(posts, sources, verbose);
+  const upgraded = [
+    ...upgradeToOwnPhotography(posts, sources, verbose),
+    // AFTER the tier-1 pass, which skips venue posts entirely — so these cannot collide.
+    ...upgradeVenuePosts(posts, sources, verbose),
+  ];
   result.upgraded = upgraded.length;
   result.changedSlugs.push(...upgraded);
 

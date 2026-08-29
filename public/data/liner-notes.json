@@ -179,10 +179,18 @@
       "headline": "\"Notorious\": Nile Rodgers and Duran Duran, 39 Years Apart",
       "prose": "\"Notorious\" is a song with two authors in a sense — Duran Duran wrote it, but Nile Rodgers produced it, and his fingerprints are all over that bassline. I heard Duran Duran play it at Irvine Meadows in July 1987, and then 39 years later I watched Rodgers claim it fully at the Pacific Amphitheatre, playing it as his own with complete justification. Two different Southern California venues, two different summers, the same song landing with the same authority both times. I didn't plan that symmetry — it just accumulated in my ticket stubs, waiting for me to notice.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qsqsqq1394998284.jpg",
+        "url": "/images/shows/2026-07-31-nile-rodgers-06.jpg",
         "alt": "Nile Rodgers",
-        "source": "artist",
-        "ref": "nile-rodgers"
+        "source": "show",
+        "ref": "nile-rodgers",
+        "credit": "Mike Morper · 31 July 2026",
+        "shotOn": "2026-07-31",
+        "crop": {
+          "x": 0.2397,
+          "y": 0,
+          "w": 0.4996,
+          "h": 0.832
+        }
       },
       "audio": {
         "trackName": "Notorious",
@@ -347,10 +355,10 @@
       "headline": "Pacific Amphitheatre: 16 Shows Over 5 Decades",
       "prose": "I was 16 years old the first time I walked into the Pacific Amphitheatre, catching Tears For Fears in the summer of 1985 — right in the thick of the *Songs from the Big Chair* era. Thirty-nine years later, I closed the loop with The English Beat in July 2024, and somewhere in between I fit in 14 more nights at that Costa Mesa bowl, from the Beach Boys to Run-DMC to UB40. Sixteen shows across 5 decades at the same venue feels less like a habit and more like a relationship. I didn't plan any of this, which somehow makes it better.",
       "image": {
-        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/600x600bb.jpg",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjCHsbPlf7FW3C3d5GbICm_VpGqdPXw94dtZRtBcytXiSQaXpWfzaWCeInHKmT3m4h7elqruVKDd6vKP9-2ZdGeFer2GfbkOstJ96V__3V9GDSgHwZcX345A5RBzdVW8_m9Q-3FpeGELQO-3Cw=s4800-h1200",
         "alt": "Pacific Amphitheatre",
-        "source": "album",
-        "ref": "tears-for-fears"
+        "source": "venue",
+        "ref": "pacific-amphitheatre"
       },
       "audio": {
         "trackName": "Everybody Wants to Rule the World",
@@ -526,10 +534,10 @@
       "headline": "House of Blues Anaheim: 6 Shows Over 3 Decades",
       "prose": "I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who'd been making records since before I probably knew what a record was. Six shows across three decades at that same room, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.",
       "image": {
-        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/23/74/62/23746272-49a1-fd05-d64f-9c5235b024b3/00075021333420.rgb.jpg/600x600bb.jpg",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjBlSFe32iPYCQk2hIkTc0dUugy4J8S4izqrF1_4OhmngUDm1sJssjdS5s1zDXVOWp6ATCGoMrM73_io3teIT1v6wQ_-pAmcZDtQ01YazEGTq6ISS3aSF_vTxpt2Y0KdQBzKa4s4KYHFsQp1jHU=s4800-h1200",
         "alt": "House of Blues Anaheim",
-        "source": "album",
-        "ref": "joe-jackson"
+        "source": "venue",
+        "ref": "house-of-blues-anaheim"
       },
       "audio": {
         "trackName": "Steppin' Out",
@@ -4308,10 +4316,10 @@
       "headline": "My West Coast Chapter: 26 Concerts Over 11 Years",
       "prose": "I still remember standing at Irvine Meadows in October 1988, watching Oingo Boingo tear through the night air, thinking I had no idea what the next 11 years of California shows would look like. That first West Coast concert cracked something open — 26 shows across 16 venues, from Irvine to Redondo Beach, two full decades bleeding into each other. I caught 22 different artists during that chapter, ending quietly at Club Caprice in 1999 with Alien Fashion Show, which is honestly a perfect last entry for a run that started with Oingo Boingo. Some chapters close before you realize they've closed.",
       "image": {
-        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/be/5b/14/be5b14fc-5480-81cc-53a1-59f98f185f2b/06UMGIM03141.rgb.jpg/600x600bb.jpg",
-        "alt": "Dead Man's Party",
-        "source": "album",
-        "ref": "oingo-boingo"
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjAMXolDer7n1zsJ1nGX9wBYi9UEESjwD4tDCkxJ-vR7fAvConJJoxaa_XuqTWKgnIdEieMskq9Hf-YolmzRAEy54WTR0EPNmX5q2ucU4w4_VZJudfek7RtrXbV0yAmDn0b5yQnxvv-CAYqvNUk=s4800-h1200",
+        "alt": "Kia Forum",
+        "source": "venue",
+        "ref": "kia-forum"
       },
       "audio": {
         "trackName": "Dead Man's Party",
@@ -4809,10 +4817,10 @@
       "headline": "Kia Forum: 5 Shows Over 3 Decades",
       "prose": "I remember walking into the Forum for the first time in 1990 to see Erasure, that massive bowl of a venue feeling both intimate and overwhelming at 19 years old. Five shows across 33 years have brought me back to Inglewood — from Bell Biv DeVoe's New Jack Swing energy to Elton John's piano grandeur to Tears for Fears' nostalgic pull. My most recent visit was Depeche Mode in 2023, and I realized I've been loyal to this place longer than some of my friendships. There's something about the Forum's acoustics that makes every synthesizer sound like it's coming from the future.",
       "image": {
-        "url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/bc/5a/a0/bc5aa061-1010-6d23-9ff5-bae2f97720ce/mzi.ouqqcxnp.jpg/600x600bb.jpg",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjAMXolDer7n1zsJ1nGX9wBYi9UEESjwD4tDCkxJ-vR7fAvConJJoxaa_XuqTWKgnIdEieMskq9Hf-YolmzRAEy54WTR0EPNmX5q2ucU4w4_VZJudfek7RtrXbV0yAmDn0b5yQnxvv-CAYqvNUk=s4800-h1200",
         "alt": "Kia Forum",
-        "source": "album",
-        "ref": "erasure"
+        "source": "venue",
+        "ref": "kia-forum"
       },
       "audio": {
         "trackName": "A Little Respect",
