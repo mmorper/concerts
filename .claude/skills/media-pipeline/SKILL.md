@@ -443,6 +443,15 @@ shows one, so marking it there means "better than whatever I picked last time", 
 carry in your head. `media:crop` shows every show's frames in one strip and is the better
 place to change your mind. Both write the same field.
 
+**🔴 JUDGE IT IN THE ACT'S OWN VIEW.** `npm run media:crop <artist-slug>` opens every
+published still of that act across every show, newest first — which is the only view where
+"best across shows" is a comparison rather than a memory test. `npm run media:crop --artists`
+lists the acts and flags the ones photographed more than once, because those are the only
+ones with a choice to make.
+
+Marking `B` in the review page still works and is convenient during a cull, but it shows one
+show by construction. Prefer the act view when actually choosing.
+
 **Cross-show demotion happens at INGEST, not in `selects.json`.** That file knows about one
 night by construction, so it cannot see a holder at another date. `assetsForAct` spans every
 date and the warning names the demoted frame's date — "demoted" alone is uninterpretable when

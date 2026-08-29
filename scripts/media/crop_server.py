@@ -34,6 +34,11 @@ SHOWS = ROOT / "public" / "images" / "shows"
 PAGE = Path(__file__).resolve().parent / "crop-page.html"
 PORT = int(os.environ.get("MEDIA_CROP_PORT", "8788"))
 ONLY = os.environ.get("MEDIA_CROP_DATE") or None
+# 🔴 THE SCOPE A SIGNATURE IS JUDGED IN. A signature is the best frame of an act across
+# EVERY show, so it cannot be chosen from one night's strip — the comparison needs every
+# frame of that act in one view, which is what this filter provides. `hero` never needed it:
+# it is one per night and the night is already the scope.
+ACT = os.environ.get("MEDIA_CROP_ARTIST") or None
 
 
 def load(p: Path) -> dict:
@@ -49,6 +54,8 @@ def stills() -> list[dict]:
             continue
         if ONLY and a.get("date") != ONLY:
             continue
+        if ACT and a.get("artistNormalized") != ACT:
+            continue
         out.append({
             "url": a["url"], "date": a["date"], "artist": a.get("artist"),
             # The NORMALIZED key too: the hero is one per act per show, and the page has to
@@ -59,6 +66,8 @@ def stills() -> list[dict]:
             "signature": bool(a.get("signature")),
             "crop": a.get("crop"), "w": a.get("width"), "h": a.get("height"),
         })
+    # Newest first, as before — but when scoped to ONE ACT the date leads for a reason:
+    # comparing across shows is the whole job, so the strip should read as a timeline.
     out.sort(key=lambda x: (x["date"], x["url"]), reverse=True)
     return out
 
@@ -245,7 +254,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(body)
             return
         if self.path == "/assets":
-            body = json.dumps({"assets": stills(), "date": ONLY}).encode()
+            body = json.dumps({"assets": stills(), "date": ONLY, "artist": ACT}).encode()
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Content-Length", str(len(body)))

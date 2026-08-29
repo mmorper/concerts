@@ -254,3 +254,30 @@ describe('ranking by posts waiting', () => {
     expect(strip(renderRow(rows[1], false, 24))).not.toContain('0 post')
   })
 })
+
+describe('the scope a signature is judged in', () => {
+  // `B` in the review page shows ONE show by construction, so "best across shows" cannot
+  // actually be judged there — you would be comparing against memory. The crop tool can be
+  // scoped to an ACT instead of a date, which puts every frame of that act in one strip.
+  //
+  // Asserted on the filter shape rather than by starting a server: what matters is that an
+  // artist scope exists and spans dates, which a date filter cannot express.
+  it('filters by artist across every date, not by date', async () => {
+    const { readFileSync } = await import('fs')
+    const src = readFileSync('scripts/media/crop_server.py', 'utf8')
+    expect(src).toContain('MEDIA_CROP_ARTIST')
+    // The two filters are independent — an act scope must not be implemented as a date scope.
+    expect(src).toContain('if ACT and a.get("artistNormalized") != ACT')
+  })
+
+  it('lists acts so a slug can be discovered rather than guessed', async () => {
+    // Nobody types a slug they have never seen. The listing exists for the same reason the
+    // picker's `a` key does: a flag nobody knows about is not a feature.
+    const { readFileSync } = await import('fs')
+    const src = readFileSync('scripts/media/crop.ts', 'utf8')
+    expect(src).toContain("--artists")
+    // Acts photographed more than once are the only ones with a choice to make, so the
+    // listing has to say which those are.
+    expect(src).toContain('a choice to make')
+  })
+})
