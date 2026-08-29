@@ -104,6 +104,15 @@ interface SetlistCacheEntry {
   venue: string
   city: string
   setlist: Setlist | null
+  /**
+   * Whole days between the setlist's own date and the concert's, when they disagree.
+   *
+   * Absent means they matched exactly, which is 82% of the corpus. Present means the gate
+   * allowed a one-day gap — a show crossing midnight, a timezone, or our own date being
+   * off by one. It is written down so the disagreement is visible rather than inferred by
+   * whoever next compares the two files.
+   */
+  dateGap?: number
   fetchedAt: string
   error?: string
 }
@@ -205,19 +214,80 @@ function calculateMatchScore(
   return score
 }
 
+/**
+ * How far a setlist's own date may sit from the concert's before it is a different show.
+ *
+ * 🔴 THE DATE WAS NOT SCORED AT ALL, AND THAT IS THE WHOLE BUG. `calculateMatchScore`
+ * weighs venue, city and artist. Three nights of one residency score identically on all
+ * three, so whichever sorted first won — and Social Distortion's 6 December Belasco show
+ * got the 8 December setlist, from a run where the archive holds nights 6, 7 and 8.
+ *
+ * Measured across 293 cached setlists before choosing this number:
+ *
+ *     exact   241   82.3%
+ *     1 day    29    9.9%
+ *     2-7d      7    2.4%
+ *     8-30d     4    1.4%
+ *     31d+     12    4.1%     ← Depeche Mode 259 days, Bear Hands 241, Maxi Priest 196
+ *
+ * One day is kept because it is genuinely ambiguous: a show crossing midnight, a timezone,
+ * or our own date being off by one — which it was for Social Distortion, where the
+ * photographs settled it. Everything past that is a different concert. All 23 the gate
+ * drops were inspected and every one is wrong.
+ *
+ * The asymmetry is deliberate and it is the archive's: losing a setlist costs song data,
+ * and keeping a wrong one puts songs in a post that were never played. A note that says
+ * less is recoverable. A note that says something false is the fabricated memory this
+ * project refuses everywhere else.
+ */
+const MAX_DATE_GAP_DAYS = 1
+
+/** setlist.fm returns `DD-MM-YYYY`; the archive stores `YYYY-MM-DD`. */
+function eventDateToIso(eventDate: string): string | null {
+  const parts = eventDate.split('-')
+  if (parts.length !== 3) return null
+  const [d, m, y] = parts
+  return `${y}-${m}-${d}`
+}
+
+/** Whole days between a setlist's date and the concert's, or null if unreadable. */
+export function setlistDateGap(eventDate: string, concertDate: string): number | null {
+  const iso = eventDateToIso(eventDate)
+  if (!iso) return null
+  const a = Date.parse(`${iso}T00:00:00Z`)
+  const b = Date.parse(`${concertDate}T00:00:00Z`)
+  if (Number.isNaN(a) || Number.isNaN(b)) return null
+  return Math.round(Math.abs(a - b) / 86_400_000)
+}
+
 // Find best matching setlist from search results
-function findBestSetlistMatch(
+export function findBestSetlistMatch(
   results: Setlist[],
-  params: { artistName: string; venueName: string; city: string }
+  params: { artistName: string; venueName: string; city: string; concertDate: string }
 ): Setlist | null {
   if (results.length === 0) return null
 
-  const scored = results.map(result => ({
+  /* The gate runs BEFORE scoring, not as another weight. A weight can be outvoted by a
+     venue name matching perfectly — which is exactly what happens on a residency, where
+     every candidate has the same venue. A different night is not a worse match; it is a
+     different show, and no amount of venue similarity makes it the right one. */
+  const sameNight = results.filter(result => {
+    const gap = setlistDateGap(result.eventDate, params.concertDate)
+    return gap !== null && gap <= MAX_DATE_GAP_DAYS
+  })
+
+  if (sameNight.length === 0) return null
+
+  const scored = sameNight.map(result => ({
     result,
-    score: calculateMatchScore(result, params)
+    score: calculateMatchScore(result, params),
+    /* Exact beats near, before venue or city get a say. Two candidates a day apart with
+       identical venues would otherwise be settled by sort order, which is how this went
+       wrong in the first place. */
+    gap: setlistDateGap(result.eventDate, params.concertDate) ?? Number.MAX_SAFE_INTEGER
   }))
 
-  scored.sort((a, b) => b.score - a.score)
+  scored.sort((a, b) => a.gap - b.gap || b.score - a.score)
 
   const best = scored[0]
   const MATCH_THRESHOLD = 0.5
@@ -270,7 +340,8 @@ async function fetchSetlistFromAPI(
     const bestMatch = findBestSetlistMatch(data.setlist, {
       artistName,
       venueName: concert.venue,
-      city: mappedCity
+      city: mappedCity,
+      concertDate: concert.date
     })
 
     return bestMatch
@@ -404,6 +475,13 @@ async function main(options: { forceRefresh?: boolean } = {}) {
     try {
       const setlist = await fetchSetlistFromAPI(concert, artistName, apiKey)
 
+      /* A near match is recorded, never assumed. The gate lets a one-day gap through
+         because it is genuinely ambiguous, but "ambiguous" is not "the same" — and the one
+         time this mattered, the archive's date was the wrong one and the photographs said
+         so. Writing the gap down means a later reader can tell which of the two dates to
+         doubt, instead of finding two files that quietly disagree. */
+      const dateGap = setlist ? setlistDateGap(setlist.eventDate, concert.date) : null
+
       const entry: SetlistCacheEntry = {
         concertId: concert.id,
         artistName: artistName,
@@ -411,7 +489,12 @@ async function main(options: { forceRefresh?: boolean } = {}) {
         venue: concert.venue,
         city: concert.city,
         setlist,
+        ...(dateGap ? { dateGap } : {}),
         fetchedAt: new Date().toISOString()
+      }
+
+      if (dateGap) {
+        console.log(`${progress}    ⚠️  setlist is ${dateGap} day off — ${setlist!.eventDate} vs ${concert.date}`)
       }
 
       cacheEntries.push(entry)

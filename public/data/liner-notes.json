@@ -1592,11 +1592,6 @@
           "type": "venue"
         },
         {
-          "label": "March 23, 2005",
-          "url": "/?scene=artists&artist=social-distortion&show=2005-03-23",
-          "type": "setlist"
-        },
-        {
           "label": "2005",
           "url": "/?scene=timeline&year=2005",
           "type": "timeline"
