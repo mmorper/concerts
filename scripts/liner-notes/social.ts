@@ -49,7 +49,19 @@ The core sentence pair that ships on every channel unchanged. Adapters append th
 
 THE HOOK MAKES A CLAIM. THE CAPTION SUPPLIES THE ONE FACT THAT MAKES THE CLAIM TRUE.
 That fact is already in the note. Find it and put it here. This is the caption's whole job, and everything below is a constraint on how you do it.
+
+🔴 THE FACT MUST FIT INSIDE ${CAPTION_MAX} CHARACTERS, NOT BE ADDED ON TOP OF THEM.
+Carrying a fact costs words, so it has to be paid for by cutting elsewhere — and what gets cut is the atmosphere, never the fact. Drop the adjectives, the scene-setting and the second clause that only rephrases the first. A caption of ${CAPTION_MAX} characters that names the fact beats a beautiful one that does not, and an over-length caption is rejected outright and publishes nothing at all.
+COUNT THE CHARACTERS BEFORE YOU RETURN. Same for every beat against its own limit.
 - Test your caption before you return it: could a reader who saw ONLY the caption explain why the hook is interesting? If not, you have written the hook twice.
+- SOMETIMES THE HOOK IS ALREADY THE WHOLE OBSERVATION, and there is no second fact to supply — a note about the longest gap in the archive has said its piece in one line. Do not restate it in a longer form. Supply the TEXTURE instead: the specific thing from the note the hook had no room for. What was on the radio, what the room was like, which city, what you expected walking in. Concrete detail from the note, never mood.
+  hook     35 years between shows — the longest gap in my entire concert history.
+  BAD      UB40 in 1988, then nothing until 2023: the longest gap between any artist
+           I have ever seen live.        ↳ the hook, reworded. Adds nothing.
+  GOOD     I saw them at Pacific Amphitheatre in 1988, when 'Red Red Wine' was still
+           on the radio. Peacock Theater in 2023, and it landed exactly the same way.
+           ↳ the hook owns the gap; the caption owns its two ends. Still FIRST PERSON:
+             texture is not a licence to drop the "I".
 - "Stand alone" means COMPREHENSIBLE alone, not merely grammatical alone. A caption that reads well and assumes a fact the reader does not have has failed.
 - Two sentences. First-person, same voice as the note.
 - It MAY name the artist — unlike the hook, the caption travels without the card.
@@ -63,10 +75,11 @@ WORKED EXAMPLE — the failure this section exists to stop.
            ↳ Why did he own it? The caption never says. "Always owned it" has nothing
              behind it, so the reader is told a thing is remarkable and not why.
   GOOD     Duran Duran wrote 'Notorious'; Nile Rodgers produced it. I heard them play
-           it at Irvine Meadows in 1987, then watched him take it back at the Pacific
-           Amphitheatre thirty-nine years later.
+           it at Irvine Meadows in 1987, then watched him take it back thirty-nine
+           years later.
            ↳ Supplies the fact the hook rests on — he produced the song the band wrote.
-             Now "same authority" means something.
+             Now "same authority" means something. 166 characters: the venue is on the
+             card already, so it is the first thing cut to make room for the fact.
 
 BEATS (3-5 entries, each <= ${HOOK_MAX} characters)
 A carousel: one narrative unit per pane, in order, each readable on its own.
