@@ -107,17 +107,17 @@
       "headline": "Social Distortion — 1.4 Years Before Born to Kill",
       "prose": "Punk rock has always been about the song before the studio catches up, and at The Belasco in Los Angeles on December 6, 2024, I heard four tracks from *Born to Kill* a full 518 days before the record existed in anyone's hands. Four songs — \"Tonight,\" \"Over You,\" \"The Way Things Were,\" and the title track itself — dropped into an 18-song set like they'd always belonged there, which, knowing Social Distortion, they probably had for years already. That's the thing about a band formed in 1979: they don't audition new material, they road-test it, and the crowd at The Belasco had no idea they were the test.",
       "image": {
-        "url": "/images/shows/2018-10-28-social-distortion-01.jpg",
+        "url": "/images/shows/2024-12-06-social-distortion-02.jpg",
         "alt": "Social Distortion",
         "source": "show",
         "ref": "social-distortion",
-        "credit": "Mike Morper · 28 October 2018",
-        "shotOn": "2018-10-28",
+        "credit": "Mike Morper · 6 December 2024",
+        "shotOn": "2024-12-06",
         "crop": {
-          "h": 0.75,
-          "w": 0.45,
-          "x": 0.2582,
-          "y": 0.1171
+          "h": 1,
+          "w": 0.5039,
+          "x": 0.3058,
+          "y": 0
         }
       },
       "audio": {
@@ -853,10 +853,18 @@
       "headline": "Garbage — Days Before Late Registration Dropped",
       "prose": "In July 2005, hip-hop was about to get its most orchestral moment yet — Kanye West's Late Registration would drop just 34 days after I saw Garbage at Pacific Amphitheatre. I remember thinking how perfectly Shirley Manson's electronic-rock theatrics felt that summer, all moody synthesizers and guitar distortion. What I didn't know was that across town, Kanye was putting finishing touches on an album that would blend hip-hop with string arrangements in ways that echoed Garbage's own genre-blending DNA from the '90s. Sometimes the musical zeitgeist reveals itself in hindsight.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wwswpy1366731211.jpg",
+        "url": "/images/shows/2019-05-16-garbage-02.jpg",
         "alt": "Garbage",
-        "source": "artist",
-        "ref": "garbage"
+        "source": "show",
+        "ref": "garbage",
+        "credit": "Mike Morper · 16 May 2019",
+        "shotOn": "2019-05-16",
+        "crop": {
+          "x": 0.02,
+          "y": 0.0187,
+          "w": 0.96,
+          "h": 0.8997
+        }
       },
       "audio": {
         "trackName": "Only Happy When It Rains",
@@ -1292,10 +1300,18 @@
       "headline": "The Brian Setzer Orchestra: 22 Years of Shows",
       "prose": "I remember discovering The Brian Setzer Orchestra at the Hard Rock Cafe in Newport Beach back in 1995, when swing revival was just starting to bubble up from the underground. That first show hooked me on Brian's rockabilly-meets-big-band sound, and I ended up catching them 4 times across 22 years, from that intimate club gig all the way to the Warner Theatre in DC in 2017. Four different venues, three different decades, but always that same electric energy when Brian strapped on his hollow-body Gretsch and the 17-piece orchestra kicked into high gear. There's something deeply satisfying about following an artist long enough to watch both of you age into the music.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg",
+        "url": "/images/shows/2017-11-25-the-brian-setzer-orchestra-01.jpg",
         "alt": "The Brian Setzer Orchestra",
-        "source": "artist",
-        "ref": "the-brian-setzer-orchestra"
+        "source": "show",
+        "ref": "the-brian-setzer-orchestra",
+        "credit": "Mike Morper · 25 November 2017",
+        "shotOn": "2017-11-25",
+        "crop": {
+          "h": 0.9168,
+          "w": 0.5512,
+          "x": 0.0855,
+          "y": 0
+        }
       },
       "audio": {
         "trackName": "Jump, Jive an' Wail",
@@ -1374,17 +1390,17 @@
       "headline": "March 22: 13 Years Since Bad Religion",
       "prose": "I remember walking into the 9:30 Club that March night in 2013, thirteen years ago now, and feeling like I was stepping into punk rock church. Bad Religion delivered their signature blend of melody and fury to a packed room, with Against Me!, The Bronx, and Polar Bear Club warming up the crowd beforehand. The whole evening felt like a masterclass in how punk has evolved since Bad Religion formed back in 1979, yet Greg Graffin's voice cut through the years like nothing had changed. Sometimes the best shows are the ones that remind you why you fell in love with live music in the first place.",
       "image": {
-        "url": "/images/shows/2018-10-28-bad-religion-02.jpg",
+        "url": "/images/shows/2014-07-30-bad-religion-01.jpg",
         "alt": "Bad Religion",
         "source": "show",
         "ref": "bad-religion",
-        "credit": "Mike Morper · 28 October 2018",
-        "shotOn": "2018-10-28",
+        "credit": "Mike Morper · 30 July 2014",
+        "shotOn": "2014-07-30",
         "crop": {
-          "h": 1,
-          "w": 0.6,
-          "x": 0,
-          "y": 0
+          "h": 0.8439,
+          "w": 0.9,
+          "x": 0.05,
+          "y": 0.0737
         }
       },
       "audio": {
@@ -1529,17 +1545,17 @@
       "headline": "March 23: 21 Years Since Social Distortion",
       "prose": "I caught Social Distortion at the Hard Rock Hotel in Las Vegas on March 23, 2005, and I still remember how surreal it felt seeing Mike Ness's tattooed storytelling in that glitzy casino setting. Twenty-one years later, that show stands out as one of those perfect mismatches — punk rock grit against Vegas excess, like hearing \"White Light White Heat White Trash\" while slot machines chimed in the distance. There's something beautifully defiant about Social Distortion that made even more sense in that artificial paradise.",
       "image": {
-        "url": "/images/shows/2018-10-28-social-distortion-01.jpg",
+        "url": "/images/shows/2024-12-06-social-distortion-02.jpg",
         "alt": "Social Distortion",
         "source": "show",
         "ref": "social-distortion",
-        "credit": "Mike Morper · 28 October 2018",
-        "shotOn": "2018-10-28",
+        "credit": "Mike Morper · 6 December 2024",
+        "shotOn": "2024-12-06",
         "crop": {
-          "h": 0.75,
-          "w": 0.45,
-          "x": 0.2582,
-          "y": 0.1171
+          "h": 1,
+          "w": 0.5039,
+          "x": 0.3058,
+          "y": 0
         }
       },
       "audio": {
@@ -2073,10 +2089,18 @@
       "headline": "UB40: 35 Years Between Shows",
       "prose": "I saw UB40 at Pacific Amphitheatre in 1988, back when \"Red Red Wine\" was still fresh and their reggae-pop was everywhere on the radio. Thirty-five years passed before I caught them again at the Peacock Theater in 2023 — the longest gap between any artist in my concert history. Walking into that LA venue, I wondered if they'd still have that Birmingham-meets-Jamaica energy that made their Labour of Love covers so infectious. Time had changed us both, but the music hit exactly the same way it did in Costa Mesa all those decades ago.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/tsysvw1341332686.jpg",
+        "url": "/images/shows/2023-07-21-ub40-01.jpg",
         "alt": "UB40",
-        "source": "artist",
-        "ref": "ub40"
+        "source": "show",
+        "ref": "ub40",
+        "credit": "Mike Morper · 21 July 2023",
+        "shotOn": "2023-07-21",
+        "crop": {
+          "x": 0.2011,
+          "y": 0,
+          "w": 0.5728,
+          "h": 0.9989
+        }
       },
       "audio": {
         "trackName": "Red Red Wine (12'' Version)",
@@ -2150,10 +2174,18 @@
       "headline": "The Brian Setzer Orchestra: A Jazz/Blues Outlier in a Rock / Electronic / Reggae Archive",
       "prose": "I just discovered that The Brian Setzer Orchestra represents my only swing and blues shows in an archive that's 86% rock, electronic, and reggae. Three shows across 22 years — Hard Rock Cafe in Newport Beach in 1995, Universal Amphitheater in 2002, and the Warner Theatre in DC in 2017 — stand as complete genre outliers in my concert history. It's fascinating that my musical wandering led me to catch them during three different decades, from the \"Dirty Boogie\" era through their Christmas tours. Sometimes the most revealing thing about your taste is what doesn't fit the pattern.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg",
+        "url": "/images/shows/2017-11-25-the-brian-setzer-orchestra-01.jpg",
         "alt": "The Brian Setzer Orchestra",
-        "source": "artist",
-        "ref": "the-brian-setzer-orchestra"
+        "source": "show",
+        "ref": "the-brian-setzer-orchestra",
+        "credit": "Mike Morper · 25 November 2017",
+        "shotOn": "2017-11-25",
+        "crop": {
+          "h": 0.9168,
+          "w": 0.5512,
+          "x": 0.0855,
+          "y": 0
+        }
       },
       "audio": {
         "trackName": "Jump, Jive an' Wail",
@@ -2230,10 +2262,18 @@
       "headline": "The Brian Setzer Orchestra — Days After The Bends Dropped",
       "prose": "March 1995 was a pivotal moment in rock history — Radiohead had just released The Bends, the album that signaled they were doing something different from everyone else, and I found myself at the Hard Rock Cafe in Newport Beach just 13 days later watching The Brian Setzer Orchestra swing through their rockabilly revival. While Thom Yorke was pushing guitar music into uncharted emotional territory, I was experiencing the opposite impulse: Brian Setzer's calculated nostalgia, all pompadour and upright bass, pulling rock back to its 1950s roots. The timing feels like a perfect snapshot of mid-'90s music culture — innovation and retro-fetishism existing in the same two-week span, both trying to solve the problem of what rock could be after grunge.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qvrtry1363049825.jpg",
+        "url": "/images/shows/2017-11-25-the-brian-setzer-orchestra-01.jpg",
         "alt": "The Brian Setzer Orchestra",
-        "source": "artist",
-        "ref": "the-brian-setzer-orchestra"
+        "source": "show",
+        "ref": "the-brian-setzer-orchestra",
+        "credit": "Mike Morper · 25 November 2017",
+        "shotOn": "2017-11-25",
+        "crop": {
+          "h": 0.9168,
+          "w": 0.5512,
+          "x": 0.0855,
+          "y": 0
+        }
       },
       "audio": {
         "trackName": "Jump, Jive an' Wail",
@@ -2302,17 +2342,17 @@
       "headline": "Social Distortion + 14 More: 2018 Festival Bill",
       "prose": "California punk's founding fathers assembled for what felt like a family reunion at Huntington State Beach in 2018, with Social Distortion, Bad Religion, and 13 other acts spanning four decades of West Coast rebellion. I witnessed bands that had been shaping punk since 1979 sharing the same sand with newer torchbearers like The Interrupters, creating this perfect cross-generational snapshot of the scene's evolution. Seeing Fear and Suicidal Tendencies on the same bill as Black Rebel Motorcycle Club reminded me how punk's DNA keeps mutating while staying fundamentally defiant. Standing on that beach with 15 bands cycling through, I felt like I was getting a master class in how Southern California invented its own brand of sunny nihilism.",
       "image": {
-        "url": "/images/shows/2018-10-28-social-distortion-01.jpg",
+        "url": "/images/shows/2024-12-06-social-distortion-02.jpg",
         "alt": "Social Distortion",
         "source": "show",
         "ref": "social-distortion",
-        "credit": "Mike Morper · 28 October 2018",
-        "shotOn": "2018-10-28",
+        "credit": "Mike Morper · 6 December 2024",
+        "shotOn": "2024-12-06",
         "crop": {
-          "h": 0.75,
-          "w": 0.45,
-          "x": 0.2582,
-          "y": 0.1171
+          "h": 1,
+          "w": 0.5039,
+          "x": 0.3058,
+          "y": 0
         }
       },
       "audio": {
@@ -2410,10 +2450,18 @@
       "headline": "Depeche Mode: 18 Years Between Shows",
       "prose": "I remember walking out of Staples Center in November 2005 after seeing Depeche Mode, never imagining it would be 18 years before I'd see them again. Life happened — moves, kids, priorities shifted — and suddenly it was 2023 and I was driving to the Kia Forum in Inglewood, practically the same neighborhood where I'd last seen them. The gap felt surreal, like I was reconnecting with a version of myself I'd almost forgotten. Eighteen years is long enough to raise a child, but Dave Gahan's voice still hit exactly the same way it did when I was younger.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg",
+        "url": "/images/shows/2023-03-28-depeche-mode-01.jpg",
         "alt": "Depeche Mode",
-        "source": "artist",
-        "ref": "depeche-mode"
+        "source": "show",
+        "ref": "depeche-mode",
+        "credit": "Mike Morper · 28 March 2023",
+        "shotOn": "2023-03-28",
+        "crop": {
+          "h": 0.9377,
+          "w": 1,
+          "x": 0,
+          "y": 0
+        }
       },
       "audio": {
         "trackName": "Universal Soldier",
@@ -2582,10 +2630,18 @@
       "headline": "The Cure + 14 More: 2003 Festival Bill",
       "prose": "This 2003 festival captured new wave's full evolution — from The Cure's goth-pop mastery to Duran Duran's synth glamour, with Dashboard Confessional and Interpol representing where alternative rock was heading next. I witnessed 15 acts spanning three decades of post-punk DNA, from the original wave (Echo and the Bunnymen, Psychedelic Furs) through the '90s survivors (Violent Femmes) to the emerging indie darlings (Kings of Leon, Hot Hot Heat). The Hyundai Pavilion became a living museum of how Robert Smith's melancholy had spawned an entire musical ecosystem. Standing there in San Bernardino, I realized I wasn't just watching a festival — I was seeing the alternative rock family tree in full bloom.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjB6OeDl_wnIgme2uX0xrgsYXV0GUatTkn9qKridqlvVeTeq27fQkRECwJXBh3A7mA9G6uAimMD5Qp3jvEMabW7LN72S_UqoA91py0QwUv6q8ZiPojECv1VvabfuakaILt2mwaHZHL8rXrKKVQ=s4800-h1200",
-        "alt": "Hyundai Pavilion",
-        "source": "venue",
-        "ref": "hyundai-pavilion"
+        "url": "/images/shows/2023-05-24-the-cure-02.jpg",
+        "alt": "The Cure",
+        "source": "show",
+        "ref": "the-cure",
+        "credit": "Mike Morper · 24 May 2023",
+        "shotOn": "2023-05-24",
+        "crop": {
+          "h": 0.8334,
+          "w": 0.5003,
+          "x": 0.385,
+          "y": 0.129
+        }
       },
       "audio": {
         "trackName": "Just Like Heaven",
@@ -2682,17 +2738,17 @@
       "headline": "Howard Jones: 17 Years Between Shows",
       "prose": "I remember standing in the Universal Amphitheater in 1989, watching Howard Jones perform what I didn't know would be his last show in my collection for nearly two decades. When I finally saw him again in 2006 at the intimate Coach House in San Juan Capistrano, it felt like reconnecting with an old friend after years of silence. That 17-year gap represents the longest drought between any artist's appearances in my concert history. The shift from arena to club venue somehow made his synth-pop anthems feel more personal, like he was playing just for the handful of us who had waited all those years.",
       "image": {
-        "url": "/images/shows/2024-08-20-howard-jones-03.jpg",
+        "url": "/images/shows/2016-09-03-howard-jones-03.jpg",
         "alt": "Howard Jones",
         "source": "show",
         "ref": "howard-jones",
-        "credit": "Mike Morper · 20 August 2024",
-        "shotOn": "2024-08-20",
+        "credit": "Mike Morper · 3 September 2016",
+        "shotOn": "2016-09-03",
         "crop": {
-          "x": 0,
-          "y": 0.0856,
+          "h": 0.9375,
           "w": 1,
-          "h": 0.7034
+          "x": 0,
+          "y": 0
         }
       },
       "audio": {
@@ -3377,7 +3433,7 @@
       "headline": "The Human League + 8 More: 2018 Festival Bill",
       "prose": "The 2018 nostalgia festival circuit became a time machine for those of us who lived through the new wave explosion of the early '80s. I caught this 9-band bill at Huntington State Beach, headlined by The Human League with 8 supporting acts including The Alarm, Dramarama, and Naked Eyes — essentially a greatest hits compilation of synth-pop and alternative rock from 1977 to 1987. What struck me wasn't just the concentrated dose of my teenage soundtrack, but how these songs that once felt so futuristic now carried the warm patina of shared memory. Standing on that beach, surrounded by fellow Gen-Xers singing along to \"Don't You (Forget About Me)\" vibes, I realized we'd become our parents at the oldies show.",
       "image": {
-        "url": "/images/shows/2026-06-04-the-human-league-01.jpg",
+        "url": "/images/shows/2026-06-04-the-human-league-10.jpg",
         "alt": "The Human League",
         "source": "show",
         "ref": "the-human-league",
@@ -3636,17 +3692,17 @@
       "headline": "Foo Fighters + 9 More: 2015 Festival Bill",
       "prose": "The 4th of July 2015 at RFK Stadium was one of those rare festival bills that read like a cross-section of American music itself — blues legend Buddy Guy sharing the stage with Foo Fighters, Heart bridging classic and alternative rock, LL Cool J representing hip-hop's golden age, all anchored by the go-go sounds of Trouble Funk. I caught this 10-artist extravaganza during Foo Fighters' peak touring years, just as they were cementing their status as arena headliners more than two decades after Dave Grohl formed the band in 1994. The sheer breadth of genres — from Buddy Guy's six decades of blues mastery to DJ Z-Trip's turntable wizardry — felt like watching the soundtrack to America unfold in real time on Independence Day.",
       "image": {
-        "url": "/images/shows/2015-07-04-foo-fighters-01.jpg",
+        "url": "/images/shows/2017-10-12-foo-fighters-01.jpg",
         "alt": "Foo Fighters",
         "source": "show",
         "ref": "foo-fighters",
-        "credit": "Mike Morper · 4 July 2015",
-        "shotOn": "2015-07-04",
+        "credit": "Mike Morper · 12 October 2017",
+        "shotOn": "2017-10-12",
         "crop": {
-          "x": 0.033,
-          "y": 0.1776,
-          "w": 0.8,
-          "h": 0.7498
+          "x": 0,
+          "y": 0.0808,
+          "w": 1,
+          "h": 0.903
         }
       },
       "audio": {
@@ -3739,10 +3795,18 @@
       "headline": "Depeche Mode: 38 Years of Shows",
       "prose": "I still remember walking into Irvine Meadows in 1985 for my first Depeche Mode show, not knowing I was starting something that would span 38 years and four decades of my concert-going life. Five shows across California venues, from that early synthpop energy through their Violator era and beyond, each one marking a different chapter of both their evolution and mine. The most recent was just last year at the Kia Forum in Inglewood, and I found myself thinking about that 18-year-old kid at Irvine Meadows, how certain bands just become part of your DNA. Some artists you see once; others become a parallel soundtrack to your entire adult life.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/n3hsun1687933880.jpg",
+        "url": "/images/shows/2023-03-28-depeche-mode-01.jpg",
         "alt": "Depeche Mode",
-        "source": "artist",
-        "ref": "depeche-mode"
+        "source": "show",
+        "ref": "depeche-mode",
+        "credit": "Mike Morper · 28 March 2023",
+        "shotOn": "2023-03-28",
+        "crop": {
+          "h": 0.9377,
+          "w": 1,
+          "x": 0,
+          "y": 0
+        }
       },
       "audio": {
         "trackName": "Universal Soldier",
@@ -3894,17 +3958,17 @@
       "headline": "Howard Jones: 39 Years of Shows",
       "prose": "I first caught Howard Jones at Irvine Meadows in 1985, right in the thick of his \"Dream Into Action\" era when those synthesizer hooks were everywhere. What strikes me now is how I kept coming back — six shows across 39 years, from that outdoor amphitheater in Orange County to the YouTube Theatre in Inglewood just this past August. There's something about his earnest optimism and those unmistakable keyboard melodies that pulls me back decade after decade. I suppose some artists just become part of your personal soundtrack, whether you plan it or not.",
       "image": {
-        "url": "/images/shows/2024-08-20-howard-jones-03.jpg",
+        "url": "/images/shows/2016-09-03-howard-jones-03.jpg",
         "alt": "Howard Jones",
         "source": "show",
         "ref": "howard-jones",
-        "credit": "Mike Morper · 20 August 2024",
-        "shotOn": "2024-08-20",
+        "credit": "Mike Morper · 3 September 2016",
+        "shotOn": "2016-09-03",
         "crop": {
-          "x": 0,
-          "y": 0.0856,
+          "h": 0.9375,
           "w": 1,
-          "h": 0.7034
+          "x": 0,
+          "y": 0
         }
       },
       "audio": {
@@ -4075,17 +4139,17 @@
       "headline": "Social Distortion: 34 Years of Shows",
       "prose": "I first caught Social Distortion at Cal State Fullerton in 1990, back when Mike Ness was still carving out that distinctive sound that would define them through White Light White Heat White Trash and beyond. Eight shows across 34 years might not sound like devotion, but with Social D, each one felt like checking in with an old friend who'd weathered the same storms. My most recent show was just this past December at The Belasco, and hearing those same punk rock anthems that shaped my college years still hit with the same raw honesty. There's something comforting about a band that refuses to reinvent itself—they just keep getting better at being exactly who they've always been.",
       "image": {
-        "url": "/images/shows/2018-10-28-social-distortion-01.jpg",
+        "url": "/images/shows/2024-12-06-social-distortion-02.jpg",
         "alt": "Social Distortion",
         "source": "show",
         "ref": "social-distortion",
-        "credit": "Mike Morper · 28 October 2018",
-        "shotOn": "2018-10-28",
+        "credit": "Mike Morper · 6 December 2024",
+        "shotOn": "2024-12-06",
         "crop": {
-          "h": 0.75,
-          "w": 0.45,
-          "x": 0.2582,
-          "y": 0.1171
+          "h": 1,
+          "w": 0.5039,
+          "x": 0.3058,
+          "y": 0
         }
       },
       "audio": {

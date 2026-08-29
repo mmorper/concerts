@@ -144,4 +144,56 @@ describe('the card and its alt text describe the SAME show', () => {
     }
     expect(mismatched).toEqual([])
   })
+
+  /**
+   * #443. Two separate faults, both reachable only once a post gains a tier-1 photograph
+   * from a night other than its own — which is why neither appeared until culling reached
+   * a second show for the same act.
+   */
+  it('the credit names ONE show — venue and date never come from different nights', async () => {
+    const { cardConcert, buildCredit } = await import('../../scripts/syndication/payload')
+    const concerts = JSON.parse(readFileSync('public/data/concerts.json', 'utf8')).concerts
+    const sources = {
+      concerts,
+      artistsMetadata: JSON.parse(readFileSync('public/data/artists-metadata.json', 'utf8')),
+      venuesMetadata: JSON.parse(readFileSync('public/data/venues-metadata.json', 'utf8')),
+    } as never
+
+    const mixed: string[] = []
+    for (const post of posts) {
+      const concert = cardConcert(post, concerts, post.image?.shotOn)
+      if (!concert) continue
+      const credit = buildCredit(post, concert, sources)
+      // The date is taken straight off the concert, so the venue has to be too. When they
+      // disagreed the card announced "Hard Rock Cafe · November 2017" — a venue from a 1995
+      // show and a date from a 2017 one, a night that never happened.
+      const named = sources.venuesMetadata[concert.venueNormalized]?.name ?? concert.venue
+      if (credit.venue !== named || credit.date !== concert.date) {
+        mixed.push(`${post.slug}: credit says ${credit.venue} · ${credit.date}, concert is ${named} · ${concert.date}`)
+      }
+    }
+    expect(mixed).toEqual([])
+  })
+
+  it('a post naming one year and one venue is about THAT night, setlist or not', async () => {
+    // A `?show=` link means "setlist.fm has this night", not "this post is about one
+    // night". 12 of 58 posts name a single year and a single venue while carrying no link,
+    // and reading that absence as "span" let the card follow a photograph from another
+    // decade. `the-brian-setzer-orchestra-days-after-the-bends-dropped` is the case: Hard
+    // Rock Cafe, 1995, days after The Bends — no setlist exists for it.
+    const { cardConcert } = await import('../../scripts/syndication/payload')
+    const concerts = JSON.parse(readFileSync('public/data/concerts.json', 'utf8')).concerts
+
+    const wrong: string[] = []
+    for (const post of posts) {
+      if (post.years?.length !== 1 || post.venues?.length !== 1) continue
+      // Ask as if a photograph from an unrelated night were attached.
+      const concert = cardConcert(post, concerts, '2024-08-20')
+      if (!concert) continue
+      if (concert.year !== post.years[0]) {
+        wrong.push(`${post.slug}: post names ${post.years[0]}, card would name ${concert.date}`)
+      }
+    }
+    expect(wrong).toEqual([])
+  })
 })
