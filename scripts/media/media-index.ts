@@ -66,6 +66,8 @@ export interface MediaAsset {
    * assets — and centred for a venue, crowd or stub frame, which has no head to protect.
    */
   crop?: { x: number; y: number; w: number; h: number } | null
+  /** The best frame of this act across every show. One per artist — see `assetsForAct`. */
+  signature?: boolean
   order: number
   /** Dimensions of the committed master, after right-sizing. */
   width: number
@@ -145,6 +147,19 @@ export function saveIndex(index: MediaIndex, file = resolve(MEDIA_INDEX_PATH)): 
 /** Assets already recorded for one act (or the venue) on one night. */
 export function assetsFor(index: MediaIndex, date: string, artistNormalized: string | null): MediaAsset[] {
   return index.assets.filter((a) => a.date === date && a.artistNormalized === artistNormalized)
+}
+
+/**
+ * Every asset of an act, at ANY date — the scope a signature works in.
+ *
+ * `assetsFor` is scoped to one night because that is the scope of a hero. A signature is one
+ * per act across every show, so promoting one has to demote a holder at a DIFFERENT date,
+ * and this is the only lookup that can see it. `selects.json` never can: it knows about one
+ * night by construction.
+ */
+export function assetsForAct(index: MediaIndex, artistNormalized: string | null): MediaAsset[] {
+  if (!artistNormalized) return []
+  return index.assets.filter((a) => a.artistNormalized === artistNormalized)
 }
 
 /** True when this exact source file has already been ingested for this act. */

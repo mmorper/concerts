@@ -12648,5 +12648,55 @@
         "streamingUrl": "https://music.apple.com/us/album/something-beautiful/1440755889?i=1440756320&uo=4"
       }
     ]
+  },
+  "earthgang": {
+    "name": "EarthGang",
+    "source": "itunes",
+    "fetchedAt": "2026-08-29T21:09:50.359Z",
+    "resolvedVia": "search",
+    "itunesArtistId": 1210840772,
+    "itunesArtistName": "Tiana Major9 & EARTHGANG",
+    "tracks": [
+      {
+        "name": "Collide (From \"Queen & Slim: The Soundtrack\")",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/4c/e7/ee/4ce7eecf-fa34-6fd9-5608-39979dc39e1d/mzaf_11178604468412050589.plus.aac.p.m4a",
+        "durationMs": 205453,
+        "albumName": "Collide (From \"Queen & Slim: The Soundtrack\") - Single",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/c9/5c/39/c95c39cb-0092-941c-83ec-da8d34985686/19UMGIM90034.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/collide-from-queen-slim-the-soundtrack/1482335428?i=1482335442&uo=4"
+      },
+      {
+        "name": "Collide",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/7a/59/9a/7a599aa0-5cc9-7bb7-0c83-212f596b5eca/mzaf_831286389584886679.plus.aac.p.m4a",
+        "durationMs": 205453,
+        "albumName": "Queen & Slim: The Soundtrack",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/82/a1/23/82a123b4-8d58-e16e-3b8f-4d22b094a49e/19UMGIM93695.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/collide/1484416236?i=1484416259&uo=4"
+      },
+      {
+        "name": "Big Love",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/58/3d/48/583d4858-3d94-1b06-babf-49546a12c325/mzaf_13441737123312145267.plus.aac.p.m4a",
+        "durationMs": 167480,
+        "albumName": "Here for Now",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/22/45/46/22454629-c597-f817-c4b6-6aa5a4372b73/20UMGIM38710.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/big-love/1513489473?i=1513489879&uo=4"
+      },
+      {
+        "name": "Act Up",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ff/7d/72/ff7d72b5-dd1f-fae6-ce15-61eb837935df/mzaf_8609879679412824577.plus.aac.p.m4a",
+        "durationMs": 198653,
+        "albumName": "Shang-Chi and The Legend of The Ten Rings: The Album",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/29/27/e8/2927e862-c4cd-98d2-df33-49e44b2598ab/21UMGIM79976.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/act-up/1580491222?i=1580491304&uo=4"
+      },
+      {
+        "name": "LORD FORGIVE ME (feat. Fat Nwigwe)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/8e/29/f7/8e29f7de-167a-a4aa-86fd-1c416e961951/mzaf_17255017808177652973.plus.aac.p.m4a",
+        "durationMs": 204000,
+        "albumName": "moMINTs",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/05/9d/d2/059dd2b9-4ee9-ed82-ebec-e5a20c59f2a0/196815368371.png/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/lord-forgive-me-feat-fat-nwigwe/1637487477?i=1637487481&uo=4"
+      }
+    ]
   }
 }

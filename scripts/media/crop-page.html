@@ -58,7 +58,7 @@
 <header>
   <h1>Crop</h1>
   <span class="count" id="count"></span>
-  <span class="keys">← → move · drag box · [ ] resize · <b>enter</b> save · <b>0</b> reset · <b>x</b> clear · <b>h</b> hero · <b>s</b> signature</span>
+  <span class="keys">← → move · drag box · [ ] resize · <b>enter</b> save · <b>0</b> reset · <b>x</b> clear · <b>h</b> hero · <b>b</b> signature</span>
 </header>
 <main>
   <div class="work"><div class="wrap" id="wrap"></div></div>
@@ -306,7 +306,9 @@ document.addEventListener('keydown', (e) => {
   else if (k === '0') { $('#reset').click(); }
   else if (k === 'x') { $('#clear').click(); }
   else if (k === 'h') { $('#hero').click(); }
-  else if (k === 's') { $('#signature').click(); }
+  // B, not S — one key for one action across both tools, and `s` is the stub subject in the
+  // review page where this same mark is also set.
+  else if (k === 'b') { $('#signature').click(); }
 });
 
 fetch('/assets').then(r => r.json()).then(d => {

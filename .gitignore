@@ -122,3 +122,6 @@ video/.hyperframes-cache/
 # Social card renditions. A rendition is a pure function of (master, channel), so a
 # committed one is stale the moment that function changes — same rule as public/data (#342).
 .renditions/
+
+# Python bytecode from the media servers
+__pycache__/

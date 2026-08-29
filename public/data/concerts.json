@@ -4443,7 +4443,7 @@
     },
     {
       "id": "concert-176",
-      "date": "2024-12-05",
+      "date": "2024-12-06",
       "headliner": "Social Distortion",
       "headlinerNormalized": "social-distortion",
       "genre": "Punk",
@@ -4457,8 +4457,8 @@
       "reference": "",
       "year": 2024,
       "month": 12,
-      "day": 5,
-      "dayOfWeek": "Thursday",
+      "day": 6,
+      "dayOfWeek": "Friday",
       "decade": "2020s",
       "location": {
         "lat": 34.0403336,
@@ -4694,7 +4694,7 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-08-24T07:58:13.968Z",
+    "lastUpdated": "2026-08-29T21:09:41.249Z",
     "totalConcerts": 184,
     "dateRange": {
       "earliest": "1984-04-27",
