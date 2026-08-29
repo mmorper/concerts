@@ -34,12 +34,18 @@ on:
           - dry-run      # build payloads and print; post nothing
           - seed-ledger  # suppress the back catalogue (run this FIRST, once)
           - retract      # delete one slug from every channel it posted to
+          - pause        # STOP posting. Blank channels = everything
+          - resume       # allow posting again
       slug:
         description: 'Slug to retract (mode "retract" only)'
         type: string
         default: ''
       channels:
         description: 'Comma-separated channels; blank = all implemented'
+        type: string
+        default: ''
+      reason:
+        description: 'Why (mode "pause" only)'
         type: string
         default: ''
       backlog:
@@ -71,6 +77,58 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # ── The phone path ──────────────────────────────────────────────────────
+      #
+      # Stopping this has to be possible from a phone, in seconds, without
+      # finding a runbook. The GitHub app can dispatch a workflow, so "pause" is
+      # a mode here rather than a thing you can only do from a laptop with the
+      # repo checked out.
+      #
+      # It runs BEFORE the kill-switch gate below on purpose: that gate skips
+      # every later step when the switch is engaged, which would make `resume`
+      # the one mode that could never run.
+      #
+      # Inputs go through `env` rather than `${{ }}` interpolation inside the
+      # script. A reason string is free text typed on a phone, and interpolating
+      # free text into a shell is how a workflow runs something it was not asked
+      # to. (The Syndicate step below still interpolates `slug` and `channels`
+      # directly — same hazard, pre-existing, worth fixing separately.)
+      - name: Pause or resume
+        if: inputs.mode == 'pause' || inputs.mode == 'resume'
+        env:
+          MODE: ${{ inputs.mode }}
+          CHANNELS: ${{ inputs.channels }}
+          REASON: ${{ inputs.reason }}
+        run: |
+          set -euo pipefail
+
+          ARGS=""
+          if [ "$MODE" = "pause" ]; then
+            ARGS="--pause"
+            printf -v QUOTED '%q' "${REASON:-paused from the GitHub app}"
+            ARGS="$ARGS $QUOTED"
+          else
+            ARGS="--resume"
+          fi
+          if [ -n "${CHANNELS:-}" ]; then
+            printf -v QUOTED_CH '%q' "$CHANNELS"
+            ARGS="$ARGS --channels $QUOTED_CH"
+          fi
+
+          eval "npm run syndicate -- $ARGS"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/syndication-pause.json
+          if git diff --staged --quiet; then
+            echo "::notice::Switch already in that state — nothing to commit."
+          else
+            git commit -m "chore: ${MODE} syndication${CHANNELS:+ (${CHANNELS})} [from workflow]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+            echo "::notice::Syndication ${MODE}d${CHANNELS:+ for ${CHANNELS}} and pushed."
+          fi
+
       # The card is DRAWN BY THIS JOB, not fetched from the repo. A rendition is a pure
       # function of (master, channel), so a committed one is stale the moment that function
       # changes (#342) — and Liner Notes runs on a different machine on a different day, so
@@ -81,6 +139,7 @@ jobs:
       # links against; on ubuntu-latest that is what the `--with-deps` install provides.
       # Without it the browser launches and dies with no useful message.
       - name: Install the browser the card renderer needs
+        if: inputs.mode != 'pause' && inputs.mode != 'resume'
         run: npx puppeteer browsers install chrome --install-deps
 
       # A second, independent layer. The run loop checks the same switch, but a
@@ -89,6 +148,7 @@ jobs:
       # deliberate pause is not a failure to be chased.
       - name: Check the kill switch
         id: killswitch
+        if: inputs.mode != 'pause' && inputs.mode != 'resume'
         run: |
           set -euo pipefail
           if [ "${SYNDICATION_PAUSED:-}" = "1" ]; then
@@ -106,7 +166,7 @@ jobs:
           echo "paused=false" >> "$GITHUB_OUTPUT"
 
       - name: Syndicate
-        if: steps.killswitch.outputs.paused != 'true'
+        if: steps.killswitch.outputs.paused != 'true' && inputs.mode != 'pause' && inputs.mode != 'resume'
         env:
           SYNDICATION_PAUSED: ${{ vars.SYNDICATION_PAUSED }}
           BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
@@ -143,7 +203,7 @@ jobs:
         # already written rows for the channels that succeeded, and losing
         # those is exactly how the retry double-posts. The job still reports
         # failure — a later always() step does not mask an earlier one.
-        if: always() && inputs.mode != 'dry-run' && steps.killswitch.outputs.paused != 'true'
+        if: always() && inputs.mode != 'dry-run' && inputs.mode != 'pause' && inputs.mode != 'resume' && steps.killswitch.outputs.paused != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

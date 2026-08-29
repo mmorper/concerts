@@ -184,7 +184,7 @@ export async function run(options: RunOptions): Promise<RunSummary> {
   const summary: RunSummary = { posted: [], failed: [], skipped: [], seeded: 0, retracted: [] };
 
   const { posts, sources, onThisDay = [] } = options.archive ?? loadArchive();
-  const adapters = (options.adapters ?? [new BlueskyAdapter(), new MastodonAdapter()]).filter((a) =>
+  const requested = (options.adapters ?? [new BlueskyAdapter(), new MastodonAdapter()]).filter((a) =>
     options.channels.includes(a.channel)
   );
 
@@ -213,8 +213,31 @@ export async function run(options: RunOptions): Promise<RunSummary> {
   }
 
   // ── Retract ────────────────────────────────────────────────────────────
+  //
+  // `requested`, deliberately, not the pause-filtered list below. Retraction is
+  // the safety valve, and a pause that also disabled the undo would be the
+  // wrong shape — you pause a channel precisely when you may need to pull
+  // something off it.
   if (options.retract) {
-    return retract(options.retract, ledger, adapters, options, ledgerPath, summary);
+    return retract(options.retract, ledger, requested, options, ledgerPath, summary);
+  }
+
+  // ── Paused, one channel at a time? ─────────────────────────────────────
+  //
+  // Dropped here rather than inside the post loop so a stopped channel never
+  // reaches an adapter at all — same reasoning as the global switch, which is
+  // checked before anything is constructed. A channel silently absent from the
+  // fan-out would be indistinguishable from one that had nothing to post, so
+  // each one says why.
+  const adapters = requested.filter((a) => {
+    const why = pauseState.channels[a.channel];
+    if (!why) return true;
+    console.log(`⛔ ${a.channel} is PAUSED — ${why}`);
+    console.log(`   Resume with: npm run syndicate -- --resume --channels ${a.channel}`);
+    return false;
+  });
+  if (requested.length && !adapters.length && !pauseState.paused) {
+    console.log("   every requested channel is paused; nothing will be posted.\n");
   }
 
   // ── Paused? ────────────────────────────────────────────────────────────

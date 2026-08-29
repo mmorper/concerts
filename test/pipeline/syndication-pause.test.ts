@@ -10,7 +10,15 @@ import { mkdtempSync, rmSync, writeFileSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 
-import { readPause, pause, resume, writePause } from "../../scripts/syndication/pause.ts";
+import {
+  readPause,
+  pause,
+  pauseChannel,
+  resume,
+  resumeChannel,
+  isChannelPaused,
+  writePause,
+} from "../../scripts/syndication/pause.ts";
 import { run, DEFAULT_OPTIONS, type RunOptions } from "../../scripts/syndication/run.ts";
 import type { Adapter, PostResult } from "../../scripts/syndication/adapters/types.ts";
 import type { Channel, SyndicationPayload } from "../../scripts/syndication/types.ts";
@@ -33,7 +41,7 @@ afterEach(() => {
 
 describe("readPause", () => {
   it("treats a missing file as active — the normal state needs no ceremony", () => {
-    expect(readPause(path)).toEqual({ paused: false, detail: "" });
+    expect(readPause(path)).toEqual({ paused: false, detail: "", channels: {} });
   });
 
   it("pauses when the file says so, and explains why in one line", () => {
@@ -70,6 +78,97 @@ describe("readPause", () => {
     pause("do not post", path);
     process.env.SYNDICATION_PAUSED = "0";
     expect(readPause(path).paused).toBe(true);
+  });
+});
+
+describe("per-channel pause", () => {
+  it("stops one channel and leaves the rest posting", () => {
+    pauseChannel("mastodon", "instance is down", path);
+    const verdict = readPause(path);
+
+    expect(verdict.paused).toBe(false);
+    expect(isChannelPaused("mastodon", verdict)).toBe(true);
+    expect(isChannelPaused("bluesky", verdict)).toBe(false);
+    expect(verdict.channels.mastodon).toContain("instance is down");
+  });
+
+  it("never resumes another channel while pausing one", () => {
+    pauseChannel("bluesky", "first", path);
+    pauseChannel("mastodon", "second", path);
+    const verdict = readPause(path);
+
+    expect(isChannelPaused("bluesky", verdict)).toBe(true);
+    expect(isChannelPaused("mastodon", verdict)).toBe(true);
+  });
+
+  it("does not disturb the global switch", () => {
+    pause("everything off", path);
+    pauseChannel("mastodon", "and this too", path);
+    const verdict = readPause(path);
+
+    expect(verdict.paused).toBe(true);
+    expect(verdict.detail).toContain("everything off");
+  });
+
+  it("reports channel pauses even while the global switch is on", () => {
+    // So --status answers "what is engaged" once, rather than revealing the
+    // rest only after the global switch is lifted.
+    pause("everything off", path);
+    pauseChannel("mastodon", "and this too", path);
+    expect(readPause(path).channels.mastodon).toContain("and this too");
+  });
+
+  it("keeps the row on resume, like the global switch does", () => {
+    pauseChannel("mastodon", "temporary", path);
+    resumeChannel("mastodon", path);
+    const verdict = readPause(path);
+
+    expect(isChannelPaused("mastodon", verdict)).toBe(false);
+    expect(JSON.parse(require("fs").readFileSync(path, "utf8")).channels.mastodon.resumedAt)
+      .toBeTruthy();
+  });
+
+  it("does NOT let a channel resume lift the global switch", () => {
+    pause("everything off", path);
+    pauseChannel("mastodon", "and this", path);
+    resumeChannel("mastodon", path);
+
+    expect(readPause(path).paused).toBe(true);
+  });
+
+  it("the GLOBAL switch outranks the map — stop everything means everything", () => {
+    pause("everything off", path);
+    const verdict = readPause(path);
+    expect(isChannelPaused("bluesky", verdict)).toBe(true);
+  });
+
+  it("PAUSES a channel whose entry is malformed, same asymmetry, scoped", () => {
+    writePause(
+      { paused: false, channels: { mastodon: { paused: "yes" } } } as never,
+      path
+    );
+    expect(isChannelPaused("mastodon", readPause(path))).toBe(true);
+    expect(isChannelPaused("bluesky", readPause(path))).toBe(false);
+  });
+
+  it("lets the environment stop a channel, and gives it no way to start one", () => {
+    pauseChannel("mastodon", "x", path);
+    resumeChannel("mastodon", path);
+    process.env.SYNDICATION_PAUSED_CHANNELS = "mastodon";
+    expect(isChannelPaused("mastodon", readPause(path))).toBe(true);
+
+    // And nothing in the environment can UN-pause one.
+    delete process.env.SYNDICATION_PAUSED_CHANNELS;
+    pauseChannel("bluesky", "y", path);
+    process.env.SYNDICATION_PAUSED_CHANNELS = "";
+    expect(isChannelPaused("bluesky", readPause(path))).toBe(true);
+  });
+
+  it("ignores a channel name it does not recognise rather than throwing", () => {
+    process.env.SYNDICATION_PAUSED_CHANNELS = "myspace,mastodon";
+    const verdict = readPause(path);
+    expect(isChannelPaused("mastodon", verdict)).toBe(true);
+    expect(Object.keys(verdict.channels)).toEqual(["mastodon"]);
   });
 });
 
@@ -191,6 +290,59 @@ describe("the run loop honours the switch", () => {
     const summary = await run(options({ adapters: [bluesky], channels: ["bluesky"] }));
     expect(bluesky.posted).toEqual(["note-one"]);
     expect(summary.paused).toBeUndefined();
+  });
+
+  it("posts on the live channel while the other is paused", async () => {
+    // The whole point of per-channel. Before this the only honest response to
+    // one misbehaving channel was to stop both.
+    pauseChannel("mastodon", "instance is down", path);
+    const bluesky = new SpyAdapter("bluesky");
+    const mastodon = new SpyAdapter("mastodon");
+
+    const summary = await run(
+      options({ adapters: [bluesky, mastodon], channels: ["bluesky", "mastodon"] })
+    );
+
+    expect(bluesky.posted).toEqual(["note-one"]);
+    expect(mastodon.posted).toEqual([]);
+    // Not a global pause — the run went ahead.
+    expect(summary.paused).toBeUndefined();
+  });
+
+  it("posts nothing when every requested channel is paused", async () => {
+    pauseChannel("bluesky", "down", path);
+    const bluesky = new SpyAdapter("bluesky");
+    const summary = await run(options({ adapters: [bluesky], channels: ["bluesky"] }));
+
+    expect(bluesky.posted).toEqual([]);
+    // Still not a GLOBAL pause: the distinction matters for the operator, who
+    // should not go looking for a kill switch that was never engaged.
+    expect(summary.paused).toBeUndefined();
+  });
+
+  it("still retracts from a PAUSED channel — the undo is the safety valve", async () => {
+    pauseChannel("bluesky", "down", path);
+    const bluesky = new SpyAdapter("bluesky");
+    const ledgerPath = join(dir, "ledger.json");
+    writeFileSync(
+      ledgerPath,
+      JSON.stringify({
+        version: 1,
+        updatedAt: new Date().toISOString(),
+        entries: [
+          {
+            slug: "note-one",
+            platform: "bluesky",
+            status: "posted",
+            uri: "at://x/app.bsky.feed.post/abc",
+            rkey: "abc",
+          },
+        ],
+      })
+    );
+
+    await run(options({ adapters: [bluesky], channels: ["bluesky"], retract: "note-one", ledgerPath }));
+    expect(bluesky.retracted).toEqual(["note-one"]);
   });
 
   it("still retracts while paused — the switch must not disable the undo", async () => {
