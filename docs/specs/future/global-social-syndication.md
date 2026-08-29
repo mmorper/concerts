@@ -564,8 +564,15 @@ alone. That is no longer the standard.
 | 2 | Google Places venue photos | Rot fixed (#368); reporting fixed (#369/#372). **Verify live coverage before release.** |
 | 2 | Album art — Cover Art Archive, iTunes | Classified in `provenance.ts`. **Verify it resolves end-to-end.** |
 | 2 | Artist — TheAudioDB, Deezer | Classified; 100% artist coverage |
-| 1 | **Personal photographs** | **No supply yet.** #348 (tool) → #338 (count) → #339 (ingest) → #340 (index + ladder) |
+| 1 | **Personal photographs** | **Supply exists and resolves end-to-end** (re-measured 2026-08-29): 64 assets across 7 shows in `media-index.json`, 4 of them reaching published payloads. The 2026-08-23 reading of "no supply yet" is superseded. #432 lists the remaining culls that would change this figure |
 | 3 | Generative / material | Classified; floor only |
+
+**Re-measured against the corpus, 2026-08-29.** Building the payload for all 58 published
+liner notes resolves imagery on every one: 4 tier-1 personal, 10 album/iTunes, 43 artist
+press shots, 1 cover art. All 3 On This Day posts resolve too, and 67 of 68 venues hold an
+unexpired Google Places photo. **The gate's data condition is met.** What is unproven is not
+supply but delivery — nothing has ever actually posted, and a dry run never calls a
+platform. `npm run contact-sheet` renders the whole queue as a page for a last read.
 
 `provenance.ts` already classifies every host and local path above, so the *plumbing* is
 done. What is missing is **supply** for tier 1 and **verification** that tier 2 actually

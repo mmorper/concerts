@@ -496,6 +496,56 @@ checks for "no credentials configured" lines.
 
 ---
 
+## Decided, not yet done
+
+### Back-catalogue drip: daily at first, then taper
+
+57 archived notes can be dripped with `--backlog N`. The mechanism works; the
+schedule is the decision, and it is this:
+
+**Daily except Mondays for the first ~3 weeks, then drop to 2 a week.**
+
+Turn it on only once the new-post flow has run clean on live channels for a
+couple of weeks — one variable at a time.
+
+The reasoning is worth keeping, because the obvious read is wrong in both
+directions. Six a week clears the archive in 10 weeks; one a week takes 57. The
+argument for going slow is **not** volume — 8 posts a week is unremarkable, and
+repetition is a non-issue (at 6/week only 2 weeks in 10 contain a repeated
+artist). The argument is that neither Bluesky nor Mastodon amplifies anything:
+reach is followers × time, so spending a finite, non-renewable archive into a
+brand-new account with no followers is spending it at the worst exchange rate
+available.
+
+The argument for going fast is real too: a profile with five posts on it does
+not convert a visitor into a follower. Hence front-load, then taper — buy the
+depth, then stop spending.
+
+Automate it rather than dispatching by hand. A drip that needs someone to
+remember runs twice and stops. One line in the workflow, on a fixed weekday
+that is not Monday, so it does not land on top of the fresh liner note.
+
+### Dashboard control: deliberately deferred
+
+The kill switch is reachable from a phone via the workflow's `pause` mode, and
+that closed the actual gap. A dashboard button is a convenience on top.
+
+**When it is built, spec the WRITE PATH, not "social controls."** Today the
+dashboard mirrors state — traffic, MCP usage, spend. A control that stops the
+publishing pipeline would be the first time it becomes a lever, and levers need
+answers to: who can pull it, where the state lives, what the audit trail is,
+what happens when the write fails, and how it is not pulled by accident.
+
+Pausing syndication is the first *user* of that write path, not the reason for
+it. It belongs with #172.
+
+If it is built: **commit to the repo via the GitHub API, not KV.** One source
+of truth, git history records who and why, and it writes the same file the CLI
+and the workflow already write. A second store gives you a second place to look
+when posting stops and nobody remembers why.
+
+---
+
 ## Not built yet
 
 | | Blocked on |
@@ -504,7 +554,8 @@ checks for "no credentials configured" lines.
 | The 630×630 wide-card composition | #342 — Phase 1 posts the existing OG card |
 | Multi-show On This Day days | Tier-3 artwork — 28 days a year deferred |
 | YouTube Shorts + TikTok | L3 video and #100 |
-| Syndication health on the dashboard | #337 |
+| Syndication health on the dashboard | #337. The control surface it would sit beside is #172 — see *Decided, not yet done* above |
+| The back-catalogue drip, switched on | Nothing. The schedule is decided; see *Decided, not yet done* above |
 | `@artist` mentions on X and Instagram | #334/#335. Bluesky ships now; that is where the coverage is — 170 of 257 artists on X and 143 on Instagram, against 21 on Bluesky. See *Naming the account* below |
 
 ---
