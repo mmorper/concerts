@@ -57,6 +57,30 @@
         }
       }
     },
+    "2012-09-15": {
+      "reviewed": 6,
+      "decidedAt": "2026-08-29T21:08:50.596Z",
+      "decisions": {
+        "0A32466A-3AF1-4C55-8D2E-B08BAF557B88": {
+          "verdict": "reject"
+        },
+        "168A7B34-E567-4258-B8C4-7B7A9D730156": {
+          "verdict": "reject"
+        },
+        "30C54F89-9458-447D-AC6A-7293D29D62F1": {
+          "verdict": "reject"
+        },
+        "669A78AF-6C4A-49C6-AD6B-87B3D9A8FC53": {
+          "verdict": "reject"
+        },
+        "74EB2EDE-950A-45C5-8D64-7096109AA9A1": {
+          "verdict": "reject"
+        },
+        "EDA07473-E0F3-4D7D-B939-AC79B7550597": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2013-06-02": {
       "reviewed": 3,
       "decidedAt": "2026-08-29T20:47:02.712Z",
@@ -68,6 +92,92 @@
           "verdict": "reject"
         },
         "6AD15BF3-41A2-4C0E-AAF9-ECB84192D036": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2014-07-30": {
+      "reviewed": 15,
+      "decidedAt": "2026-08-29T21:32:42.676Z",
+      "decisions": {
+        "094BCC1B-F00A-4419-8D77-A048E4E8D34F": {
+          "verdict": "keep",
+          "artist": "Bad Religion",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.05,
+            "y": 0.0737,
+            "w": 0.9,
+            "h": 0.8439
+          }
+        },
+        "0F0445CC-9255-4B3A-B224-C3122F53AA48": {
+          "verdict": "reject"
+        },
+        "218AC546-042E-46A5-9285-82F6BAA0789D": {
+          "verdict": "reject"
+        },
+        "2E932E65-AE3D-49A9-A3EC-9DF53A2691BE": {
+          "verdict": "reject"
+        },
+        "3ADD0A5A-D995-4B8A-AE98-5055524D06C3": {
+          "verdict": "reject"
+        },
+        "4AD05CBE-FDEC-4CE9-AAE3-526CDB6CC5B6": {
+          "verdict": "reject"
+        },
+        "710164CF-C014-4A9F-9515-CD275BFE2068": {
+          "verdict": "keep",
+          "artist": "The Vandals",
+          "subject": "performer",
+          "crop": {
+            "x": 0.0479,
+            "y": 0.0432,
+            "w": 0.95,
+            "h": 0.8908
+          }
+        },
+        "723FFC3E-2962-4E97-B3A0-EF921F26F69C": {
+          "verdict": "reject"
+        },
+        "8FC95A35-D9A1-468B-B40F-0FFBA2DDF98F": {
+          "verdict": "keep",
+          "artist": "The Vandals",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9377
+          }
+        },
+        "B813DD71-01E2-4752-87A6-5BFDA8E1CAAE": {
+          "verdict": "reject"
+        },
+        "BCDDFC69-BA8E-48EE-91E6-B7B019AE2F8A": {
+          "verdict": "reject"
+        },
+        "C62C64FC-5F1A-49C0-A366-8BC9BD354279": {
+          "verdict": "reject"
+        },
+        "D61D092B-29D3-4C9D-8406-39CACEBE241D": {
+          "verdict": "reject"
+        },
+        "EA3A1B6F-D4D1-496F-B716-E4FB61FE20F5": {
+          "verdict": "keep",
+          "artist": "Pennywise",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0,
+            "y": 0.0494,
+            "w": 1,
+            "h": 0.9377
+          }
+        },
+        "F9133829-6DC7-40A7-93D8-B9FE9DE67351": {
           "verdict": "reject"
         }
       }
@@ -136,6 +246,167 @@
           "verdict": "reject"
         },
         "FA2CA7B2-2B8E-4D40-A7A0-27203F8F5E41": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2016-09-03": {
+      "reviewed": 6,
+      "decidedAt": "2026-08-29T22:15:34.946Z",
+      "decisions": {
+        "28DE51FE-2E10-4FB9-B6C8-C3EAA02D7B0E": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer",
+          "trim": {
+            "in": 3,
+            "out": 18
+          }
+        },
+        "48F7F70E-44A2-4371-8B8D-D7BEC379D3A7": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.8453
+          }
+        },
+        "6E642734-64C4-47F1-A351-42C9E5F93444": {
+          "verdict": "reject"
+        },
+        "8DB0B80D-D39C-4AF7-A0CB-4EBFE2047BF1": {
+          "verdict": "reject"
+        },
+        "B5B428E7-5C66-461E-89F7-6B2D7C78CFF9": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "CA4B6D47-1BE5-4381-877D-8AA7E336CC68": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "venue",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9372
+          }
+        }
+      }
+    },
+    "2017-01-01": {
+      "reviewed": 1,
+      "decidedAt": "2026-08-29T21:11:29.522Z",
+      "decisions": {
+        "3A05A8B8-C443-4F96-971E-FF5171C0FD6C": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2017-09-11": {
+      "reviewed": 6,
+      "decidedAt": "2026-08-29T22:10:24.186Z",
+      "decisions": {
+        "52495D00-59B8-42C5-BC8D-93868E88A142": {
+          "verdict": "reject"
+        },
+        "643D74A2-E4DD-49D3-929B-B13EEA8318E0": {
+          "verdict": "reject"
+        },
+        "7276BA01-75FA-4726-B780-BDE4487CF814": {
+          "verdict": "reject"
+        },
+        "B7378499-BBB8-4170-9359-1654515CC68D": {
+          "verdict": "reject"
+        },
+        "BA938BB2-9B5B-495F-B2F5-F831C3C9A4B3": {
+          "verdict": "keep",
+          "artist": "Alison Moyet",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0,
+            "y": 0.0386,
+            "w": 0.9,
+            "h": 0.8437
+          }
+        },
+        "FCD76E11-E5EC-4B59-B310-B5EDF6B7E843": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2017-10-12": {
+      "reviewed": 14,
+      "decidedAt": "2026-08-29T21:40:28.925Z",
+      "decisions": {
+        "1686FE4E-F9C7-433C-BAD2-E2085290C124": {
+          "verdict": "keep",
+          "artist": "Foo Fighters",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0,
+            "y": 0.0808,
+            "w": 1,
+            "h": 0.903
+          }
+        },
+        "23ACA81B-AECB-47AC-9E08-816297A5AA0C": {
+          "verdict": "reject"
+        },
+        "2A92928A-4621-4244-ADEF-1ABDA7ACF268": {
+          "verdict": "reject"
+        },
+        "3FA8919B-0E78-496D-8E45-C29791337C1E": {
+          "verdict": "reject"
+        },
+        "5AA94378-6477-4FD3-9AF9-F36B04F46C51": {
+          "verdict": "reject"
+        },
+        "687F39B8-276B-4B38-9837-AC5C928D5E16": {
+          "verdict": "reject"
+        },
+        "84542462-8436-4CE9-A8F3-1D76805B11DE": {
+          "verdict": "reject"
+        },
+        "93C9EA97-677D-4FC8-8D99-385B6A5EB484": {
+          "verdict": "keep",
+          "artist": "Foo Fighters",
+          "subject": "performer",
+          "crop": {
+            "x": 0.0526,
+            "y": 0.1867,
+            "w": 0.9,
+            "h": 0.8127
+          }
+        },
+        "9C3E3935-5184-4E07-A36A-A60033A56BA0": {
+          "verdict": "reject"
+        },
+        "9E73B0E8-37E5-47DE-9FD9-B16965FA93CA": {
+          "verdict": "reject"
+        },
+        "ACB62E3D-78CF-46EA-BE7C-71A344E22734": {
+          "verdict": "reject"
+        },
+        "B3CF3B35-C0EC-42CA-BF32-F02B39F28533": {
+          "verdict": "reject"
+        },
+        "B420352C-8DCF-4195-9DA3-02ADD1C5C29C": {
+          "verdict": "reject"
+        },
+        "E0B00374-0004-40B3-8526-8EC205052641": {
           "verdict": "reject"
         }
       }
@@ -263,13 +534,12 @@
     },
     "2019-05-16": {
       "reviewed": 8,
-      "decidedAt": "2026-08-29T20:49:28.985Z",
+      "decidedAt": "2026-08-29T20:53:50.167Z",
       "decisions": {
         "09E63BCD-B2F5-4AE6-B92A-E76397777873": {
           "verdict": "keep",
           "artist": "Garbage",
           "subject": "performer",
-          "hero": true,
           "crop": {
             "x": 0.02,
             "y": 0.0187,
@@ -294,9 +564,76 @@
         },
         "B96F7A75-8EDD-4F1C-98B0-63BE90150BD5": {
           "verdict": "keep",
-          "artist": "Garbage"
+          "artist": "Garbage",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9372
+          },
+          "hero": true
         },
         "C2D7AB91-9D20-421F-984E-0150B9A2A809": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2019-05-18": {
+      "reviewed": 9,
+      "decidedAt": "2026-08-29T22:05:02.176Z",
+      "decisions": {
+        "10E99FB1-4C5F-497C-BE76-4F2D3B7D1BAE": {
+          "verdict": "reject"
+        },
+        "4C9D4390-0D4C-4885-9C27-00EA32DCD463": {
+          "verdict": "reject"
+        },
+        "6274C026-D088-45F2-A5F2-B14323B4273E": {
+          "verdict": "reject"
+        },
+        "70805498-73C0-4CA6-A96E-B488BBD3E64D": {
+          "verdict": "reject"
+        },
+        "790D2E5F-6956-47C7-98EA-1E40EB47F4C0": {
+          "verdict": "reject"
+        },
+        "C48C55B3-2ED6-4488-9AB3-C5D2E86EE53F": {
+          "verdict": "reject"
+        },
+        "CAEEB4A7-4890-4691-BC8E-56783D71B7B9": {
+          "verdict": "reject"
+        },
+        "FDB0979B-A152-4C2B-B11A-CD5AF74EE801": {
+          "verdict": "reject"
+        },
+        "FF2AB60A-E847-4404-A3CA-4166B95F4001": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2019-09-21": {
+      "reviewed": 7,
+      "decidedAt": "2026-08-29T21:55:32.181Z",
+      "decisions": {
+        "081E2549-BEF1-4676-B827-03105FB9695A": {
+          "verdict": "reject"
+        },
+        "463C32FE-D702-45B9-B9E4-3758945D6AAD": {
+          "verdict": "reject"
+        },
+        "5C270D9A-F26A-4412-B540-E3232B36BD58": {
+          "verdict": "reject"
+        },
+        "5C511C18-C0A7-4D47-A7F5-DCD3C7FBF982": {
+          "verdict": "reject"
+        },
+        "73BBDAFF-EA9E-477D-919D-302DA8F3A2D5": {
+          "verdict": "reject"
+        },
+        "D753C05D-38BE-4F8A-B718-F1B003A04BEF": {
+          "verdict": "reject"
+        },
+        "F7FA1310-E757-41FE-9DF7-BDEF85AF374E": {
           "verdict": "reject"
         }
       }
@@ -337,6 +674,42 @@
           "verdict": "reject"
         },
         "DD956290-A89B-4FA9-A956-F84F543C7DDC": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2022-10-07": {
+      "reviewed": 7,
+      "decidedAt": "2026-08-29T20:59:17.324Z",
+      "decisions": {
+        "1605C2FF-1AFB-426B-B253-26598907FDA0": {
+          "verdict": "reject"
+        },
+        "22D48719-1478-4340-AD6E-33452A2B1B66": {
+          "verdict": "reject"
+        },
+        "24283B84-E843-4D63-B4FA-F9D527A347D3": {
+          "verdict": "reject"
+        },
+        "4D5768C3-9170-4A78-84BA-3D69DC5C4706": {
+          "verdict": "keep",
+          "artist": "Pet Shop Boys",
+          "subject": "performer",
+          "crop": {
+            "x": 0.05,
+            "y": 0.0977,
+            "w": 0.9,
+            "h": 0.8439
+          },
+          "hero": true
+        },
+        "5FB6C2CB-9296-469E-8350-F3EE76F23AA6": {
+          "verdict": "reject"
+        },
+        "C6AD3BE2-E2F9-47D2-B23D-601629198E11": {
+          "verdict": "reject"
+        },
+        "D6B9C23C-609C-4F33-8899-B2039C6BFF07": {
           "verdict": "reject"
         }
       }
@@ -783,6 +1156,69 @@
         }
       }
     },
+    "2023-07-30": {
+      "reviewed": 13,
+      "decidedAt": "2026-08-29T21:59:26.878Z",
+      "decisions": {
+        "24A9353E-D0AA-4F34-83C0-2CF38767DFB0": {
+          "verdict": "reject"
+        },
+        "25679829-1884-4559-A229-98B3358087A4": {
+          "verdict": "reject"
+        },
+        "2C50ABFE-1F9A-4105-BAB0-BA77A2FE5FA6": {
+          "verdict": "reject"
+        },
+        "6049EE60-8FC0-4997-AC99-69074835614F": {
+          "verdict": "reject"
+        },
+        "97565229-A2D7-48BD-9F48-34C318A4629D": {
+          "verdict": "reject"
+        },
+        "9D3270F3-2350-471A-9F9F-57DAAF478612": {
+          "verdict": "reject"
+        },
+        "A35FAC92-A3F4-413C-B522-3DC7206DB98A": {
+          "verdict": "reject"
+        },
+        "B53B36A6-7207-4852-AA1D-5AF09BB26903": {
+          "verdict": "reject"
+        },
+        "C31BBDF7-9358-4215-AAF3-10312DBA4501": {
+          "verdict": "reject"
+        },
+        "CB240C95-A0FE-4296-8B53-8F334499C71C": {
+          "verdict": "reject"
+        },
+        "D130A432-9439-4FC5-B997-535CA2EFB01F": {
+          "verdict": "keep",
+          "artist": "The English Beat",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.1292,
+            "y": 0.0637,
+            "w": 0.8,
+            "h": 0.7502
+          }
+        },
+        "DB359436-F460-423A-BFE8-7B4C2125E5FB": {
+          "verdict": "keep",
+          "artist": "X",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.1286,
+            "y": 0,
+            "w": 0.6003,
+            "h": 1
+          }
+        },
+        "E1EF3E89-C73F-4194-85B4-2F1FD793DD0D": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2023-11-16": {
       "reviewed": 21,
       "decidedAt": "2026-08-29T20:21:49.310Z",
@@ -1185,6 +1621,196 @@
           "subject": "performer"
         },
         "frame:F46636CF-A1D3-4871-A124-14CCCEC62808:1": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2024-12-06": {
+      "reviewed": 15,
+      "decidedAt": "2026-08-29T21:25:06.948Z",
+      "decisions": {
+        "083330D8-A8D6-47E8-B43F-D8D190BEDA95": {
+          "verdict": "keep",
+          "artist": "Social Distortion",
+          "subject": "performer",
+          "crop": {
+            "x": 0.3366,
+            "y": 0,
+            "w": 0.4374,
+            "h": 1
+          }
+        },
+        "2FAB2EB6-88B5-4747-B5BC-A27C9969986C": {
+          "verdict": "keep",
+          "artist": "Social Distortion",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.3058,
+            "y": 0,
+            "w": 0.5039,
+            "h": 1
+          }
+        },
+        "3387A3FA-F847-4CC5-9F42-76A692369946": {
+          "verdict": "reject"
+        },
+        "358B8F5E-63EF-4296-9A54-774B4D11231E": {
+          "verdict": "reject"
+        },
+        "66B1DC82-62AB-48CA-8342-941D2B08F0F1": {
+          "verdict": "reject"
+        },
+        "9992FE22-32DB-4A83-8F02-429649007FA6": {
+          "verdict": "keep",
+          "artist": "Social Distortion",
+          "subject": "performer",
+          "crop": {
+            "x": 0.3192,
+            "y": 0,
+            "w": 0.4236,
+            "h": 1
+          }
+        },
+        "9C3833CF-8185-46EC-8987-46A485F36504": {
+          "verdict": "reject"
+        },
+        "B069AA56-81D4-47EE-A28B-66B4C04C3036": {
+          "verdict": "reject"
+        },
+        "B157DB01-1EFC-4A58-A634-330B93FA4BCF": {
+          "verdict": "reject"
+        },
+        "B2B35936-2A56-4DBC-BBD3-9320DFCBA7BC": {
+          "verdict": "keep",
+          "artist": "Social Distortion",
+          "subject": "performer",
+          "crop": {
+            "x": 0.3188,
+            "y": 0,
+            "w": 0.4236,
+            "h": 1
+          }
+        },
+        "BF7EA8E8-BC1D-4657-B2FA-76897F84D7E2": {
+          "verdict": "reject"
+        },
+        "BF942F86-ED89-4B37-81B0-A788F6781754": {
+          "verdict": "reject"
+        },
+        "BFD6CD42-3C0D-4D92-9558-F8A9116E7EA9": {
+          "verdict": "reject"
+        },
+        "C1B7FEDB-2B6F-4A25-A584-D191E1808A69": {
+          "verdict": "reject"
+        },
+        "C4E3BDA7-1281-430B-9ADA-8DA579D59C39": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2025-08-16": {
+      "reviewed": 25,
+      "decidedAt": "2026-08-29T21:17:34.218Z",
+      "decisions": {
+        "0559E521-F4F9-428B-883F-3A2B353428C4": {
+          "verdict": "reject"
+        },
+        "0E497F29-BB85-40D3-87A4-79CDA7EE3956": {
+          "verdict": "reject"
+        },
+        "12135C3C-3946-46CD-BF93-0352F70DDC2B": {
+          "verdict": "reject"
+        },
+        "13171BB2-E33D-4B8C-84F9-A19758024448": {
+          "verdict": "keep",
+          "artist": "The Black Keys",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.2358,
+            "y": 0,
+            "w": 0.6,
+            "h": 1
+          }
+        },
+        "1BFD4D5F-584C-474F-9E89-D3793233E8D6": {
+          "verdict": "reject"
+        },
+        "20E383FA-4E02-452D-8CAE-F3514EA1C141": {
+          "verdict": "reject"
+        },
+        "26DC24E6-D41A-49FB-92A6-C85E2CF9DECC": {
+          "verdict": "reject"
+        },
+        "2F5DC092-C40B-47BB-A32E-9A4C429883E8": {
+          "verdict": "reject"
+        },
+        "374A2429-6D61-4E5E-A5A0-A290C3B8DF4E": {
+          "verdict": "reject"
+        },
+        "42B8E7C1-9E32-4EDF-A847-89C70937F593": {
+          "verdict": "reject"
+        },
+        "4F1D4503-185B-47D3-84EC-6B566B587109": {
+          "verdict": "reject"
+        },
+        "5ACEB1D6-D91B-4295-BA06-C0FD93B31493": {
+          "verdict": "reject"
+        },
+        "5E675BDF-7E6F-4041-A506-E9DEBC5E2C58": {
+          "verdict": "reject"
+        },
+        "6AB0AB52-A0E3-4324-BA5C-2269F50CC559": {
+          "verdict": "reject"
+        },
+        "72338C57-7E2D-4022-AEDA-55A4519A1878": {
+          "verdict": "reject"
+        },
+        "9132EAD0-2950-4CE9-AC0E-881555E8873F": {
+          "verdict": "reject"
+        },
+        "92DBCA9B-6C72-4247-9D4A-EC6B49429F3D": {
+          "verdict": "reject"
+        },
+        "9BE4C514-54D0-454A-BF48-10A694183D16": {
+          "verdict": "reject"
+        },
+        "A992D28D-EEC9-421E-B136-26ABA417B8BF": {
+          "verdict": "reject"
+        },
+        "AA1049A4-93A4-4C87-9499-63E461B9CD83": {
+          "verdict": "reject"
+        },
+        "B06AF82A-E36C-4136-9F68-6216CF3599BD": {
+          "verdict": "keep",
+          "artist": "Gary Clark Jr.",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.3879,
+            "y": 0.0833,
+            "w": 0.55,
+            "h": 0.9167
+          }
+        },
+        "B3BFAECF-71AD-425E-A1DB-6DF3FEEB6920": {
+          "verdict": "reject"
+        },
+        "BFF4C511-C4B2-4E1D-BF2B-CEAF79744C46": {
+          "verdict": "reject"
+        },
+        "D9930AAD-29D8-4A24-B57D-FAA9A43060C2": {
+          "verdict": "keep",
+          "subject": "venue",
+          "crop": {
+            "x": 0.2426,
+            "y": 0.0331,
+            "w": 0.55,
+            "h": 0.9167
+          }
+        },
+        "EBFE3BEB-32A7-4E4B-BBDE-DDFE919A9923": {
           "verdict": "reject"
         }
       }
