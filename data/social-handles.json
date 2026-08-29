@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T16:59:14.113Z",
+  "updatedAt": "2026-08-29T21:15:01.336Z",
   "artists": {
     "bruce-springsteen": {
       "bluesky": {
         "handle": "brucespringsteen.net",
         "did": "did:plc:l3deti4ljirzjaof5zbp3v32",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-28"
+        "verifiedAt": "2026-08-29"
       }
     },
     "depeche-mode": {
@@ -15,7 +15,7 @@
         "handle": "depechemode.com",
         "did": "did:plc:ueppiwulfqikh4zl2qre3evh",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-28"
+        "verifiedAt": "2026-08-29"
       }
     },
     "dropkick-murphys": {
@@ -23,7 +23,7 @@
         "handle": "dropkickmurphys.com",
         "did": "did:plc:hlm3kwjeca33oy4cwren6qmt",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-28"
+        "verifiedAt": "2026-08-29"
       }
     },
     "emf": {
@@ -31,7 +31,7 @@
         "handle": "emf-theband.com",
         "did": "did:plc:medyymknz4arrlbfx7biw43n",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-28"
+        "verifiedAt": "2026-08-29"
       }
     },
     "echo-and-the-bunnymen": {
@@ -39,7 +39,7 @@
         "handle": "bunnymen.com",
         "did": "did:plc:2kg343fegcf2rob5nhukdlbj",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-28"
+        "verifiedAt": "2026-08-29"
       }
     },
     "living-colour": {
@@ -47,7 +47,7 @@
         "handle": "livingcolour.com",
         "did": "did:plc:323zwrdcxyog36ewpu37iuag",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-28"
+        "verifiedAt": "2026-08-29"
       }
     },
     "los-lobos": {
@@ -55,7 +55,7 @@
         "handle": "loslobos.org",
         "did": "did:plc:laff5qrh36d2meffdktnqgby",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-28"
+        "verifiedAt": "2026-08-29"
       }
     },
     "squeeze": {
@@ -63,7 +63,7 @@
         "handle": "squeezeofficial.com",
         "did": "did:plc:uvpag52jf6gb7orguavqu7fh",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-28"
+        "verifiedAt": "2026-08-29"
       }
     },
     "umphrey-s-mcgee": {
@@ -71,7 +71,7 @@
         "handle": "umphreys.com",
         "did": "did:plc:ag6lnvdz2vthcqxzybbalt5t",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-28"
+        "verifiedAt": "2026-08-29"
       }
     },
     "joe-satriani": {
@@ -79,7 +79,7 @@
         "handle": "satriani.com",
         "did": "did:plc:wyevu54nl24gdc4n6cidfg6l",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-28"
+        "verifiedAt": "2026-08-29"
       }
     },
     "blondie": {
@@ -153,7 +153,7 @@
         "handle": "ucla.edu",
         "did": "did:plc:gy552md2n6dm4ga73tm6kvn4",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-28"
+        "verifiedAt": "2026-08-29"
       }
     },
     "the-anthem": {
