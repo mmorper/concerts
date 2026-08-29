@@ -46,10 +46,27 @@ The line that earns the click, set in large type on a card.
 
 CAPTION (<= ${CAPTION_MAX} characters)
 The core sentence pair that ships on every channel unchanged. Adapters append the link and the tags and nothing else, so write it to stand alone in a feed where the card may not have loaded.
+
+THE HOOK MAKES A CLAIM. THE CAPTION SUPPLIES THE ONE FACT THAT MAKES THE CLAIM TRUE.
+That fact is already in the note. Find it and put it here. This is the caption's whole job, and everything below is a constraint on how you do it.
+- Test your caption before you return it: could a reader who saw ONLY the caption explain why the hook is interesting? If not, you have written the hook twice.
+- "Stand alone" means COMPREHENSIBLE alone, not merely grammatical alone. A caption that reads well and assumes a fact the reader does not have has failed.
 - Two sentences. First-person, same voice as the note.
 - It MAY name the artist — unlike the hook, the caption travels without the card.
-- It must not restate the hook.
+- It must not restate the hook. Restating is not just repeating words: "35 years between shows" and "the longest gap between any artist I have ever seen" are the same sentence.
 - No hashtags, no emoji, no URL, no "link in bio", no "read more".
+
+WORKED EXAMPLE — the failure this section exists to stop.
+  hook     39 years between ticket stubs, same song, same authority
+  BAD      Nile Rodgers played 'Notorious' as if he'd always owned it — and in every
+           way that matters, he had.
+           ↳ Why did he own it? The caption never says. "Always owned it" has nothing
+             behind it, so the reader is told a thing is remarkable and not why.
+  GOOD     Duran Duran wrote 'Notorious'; Nile Rodgers produced it. I heard them play
+           it at Irvine Meadows in 1987, then watched him take it back at the Pacific
+           Amphitheatre thirty-nine years later.
+           ↳ Supplies the fact the hook rests on — he produced the song the band wrote.
+             Now "same authority" means something.
 
 BEATS (3-5 entries, each <= ${HOOK_MAX} characters)
 A carousel: one narrative unit per pane, in order, each readable on its own.
