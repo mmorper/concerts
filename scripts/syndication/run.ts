@@ -332,7 +332,14 @@ export async function run(options: RunOptions): Promise<RunSummary> {
 
 // ── Selection ─────────────────────────────────────────────────────────────────
 
-function selectCandidates(
+/**
+ * The posts the next run would actually take, in the order it would take them.
+ *
+ * Exported so `syndicate:preview` can ask the real question — "what goes out next?" — rather
+ * than making the operator guess a slug. A preview that runs different selection from the
+ * run it previews is a preview of nothing.
+ */
+export function selectCandidates(
   posts: LinerNotesPost[],
   onThisDay: OnThisDayPost[],
   ledger: SyndicationLedger,

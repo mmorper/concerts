@@ -18,6 +18,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import puppeteer from "puppeteer";
 import { buildPayload, ROOT, type PayloadSources } from "./payload.ts";
+import { DEFAULT_OPTIONS, loadArchive, selectCandidates } from "./run.ts";
+import { loadLedger, LEDGER_PATH } from "./ledger.ts";
 import { FORMATS, renderCard, type RenderSources } from "./render-card.ts";
 import { composeBlueskyText } from "./adapters/bluesky.ts";
 import { composeMastodonStatus, mastodonWeight } from "./adapters/mastodon.ts";
@@ -43,7 +45,10 @@ function block(text: string): string {
 }
 
 async function main() {
-  const slug = process.argv.slice(2).find((a) => !a.startsWith("-"));
+  const args = process.argv.slice(2);
+  const slug = args.find((a) => !a.startsWith("-"));
+  const limitArg = args.find((a) => a.startsWith("--limit="))?.split("=")[1];
+  const limit = Number(limitArg ?? 3);
   const notes = load<LinerNotesData>("public/data/liner-notes.json");
 
   const sources = {
@@ -56,12 +61,44 @@ async function main() {
     cardExists: () => true,
   } as unknown as PayloadSources & RenderSources;
 
-  const chosen: LinerNotesPost[] = slug
-    ? notes.posts.filter((p) => p.slug === slug)
-    : notes.posts.slice(0, 1);
-  if (!chosen.length) {
-    console.error(`\n  no post with slug "${slug}"\n`);
-    process.exit(1);
+  /* 🔴 NO SLUG MEANS "WHAT GOES OUT NEXT", NOT "THE FIRST POST IN THE FILE".
+     The first version defaulted to `posts[0]`, which is whatever the generator happened to
+     write last — arbitrary, and it made the tool useless without already knowing a slug the
+     operator has no way to look up. This asks the run its own question, through the run's
+     own `selectCandidates`, honouring the ledger: a preview that selects differently from
+     the run it previews is a preview of nothing. */
+  let chosen: LinerNotesPost[];
+  if (slug) {
+    chosen = notes.posts.filter((p) => p.slug === slug);
+    if (!chosen.length) {
+      console.error(`\n  no post with slug "${slug}"`);
+      console.error(`  run without a slug to see what would go out next\n`);
+      process.exit(1);
+    }
+  } else {
+    const archive = loadArchive();
+    const queued = selectCandidates(
+      archive.posts,
+      archive.onThisDay ?? [],
+      loadLedger(LEDGER_PATH),
+      { ...DEFAULT_OPTIONS, limit, channels: ["bluesky", "mastodon"] },
+      { posted: [], skipped: [], failed: [] } as never,
+      { ...archive.sources, cardExists: () => true } as never
+    );
+    const bySlug = new Map(notes.posts.map((p) => [p.slug, p]));
+    chosen = queued.map((q) => bySlug.get(q.slug)).filter(Boolean) as LinerNotesPost[];
+
+    const otd = queued.filter((q) => q.kind === "on-this-day");
+    if (otd.length) {
+      console.log(`\n${DIM}  ${otd.length} On This Day post(s) are also queued and are NOT shown:`);
+      for (const o of otd) console.log(`    · ${o.slug}`);
+      console.log(`  They still composite their card the old way — this previews liner notes only.${OFF}`);
+    }
+    if (!chosen.length) {
+      console.log(`\n  Nothing queued. The ledger has already handled every eligible post.`);
+      console.log(`  ${DIM}Preview one anyway:  npm run syndicate:preview -- <slug>${OFF}\n`);
+      return;
+    }
   }
 
   const browser = await puppeteer.launch({ headless: true });
