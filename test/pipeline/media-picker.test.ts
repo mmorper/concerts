@@ -179,7 +179,8 @@ describe('renderRow says what is OUTSTANDING', () => {
   const strip = (t: string) => t.replace(/\x1b\[[0-9;]*m/g, '')
   const row = (over: Partial<Snapshot>, date = '2023-11-22') => strip(renderRow(
     { concert: { date, headliner: 'Kasabian', venue: 'The Belasco' } as never,
-      phase: phaseOf(snap(over), date), snapshot: snap(over), unjudged: 0, opportunity: 0 },
+      phase: phaseOf(snap(over), date), snapshot: snap(over), unjudged: 0, opportunity: 0,
+      postsWaiting: 0 },
     false, 30))
 
   it('names the assets still to ingest, not the ones already in', () => {
@@ -201,5 +202,55 @@ describe('renderRow says what is OUTSTANDING', () => {
 
   it('falls back to judged progress before anything is published', () => {
     expect(row({ publishable: 0, indexedCount: 0, judged: 8, onPage: 8 })).toContain('8/8 judged')
+  })
+})
+
+describe('ranking by posts waiting', () => {
+  // THE GAP THE OWNER FOUND BY ASKING WHY THE LIST WAS ORDERED THAT WAY. `opportunity` is
+  // depth — the sum of likelihood × quality across a show's unjudged frames — which answers
+  // "where is the material?" and never "where are the posts?". Measured 2026-08-29: the top
+  // EIGHT shows by opportunity upgraded zero posts between them. Devo led at 13.69 and no
+  // post has ever named Devo.
+  const rowsFor = (sort: 'posts' | 'opportunity' | 'unjudged' | 'date') => {
+    const audit = new Map([
+      ['2026-06-04', { unjudged: 30, opportunity: 20 }],  // deep, serves nothing
+      ['2024-08-20', { unjudged: 2, opportunity: 1 }],    // shallow, serves three posts
+    ])
+    const waiting = new Map([['2024-08-20', 3]])
+    const two = [
+      { date: '2026-06-04', headliner: 'Deep Show', venue: 'V' },
+      { date: '2024-08-20', headliner: 'Useful Show', venue: 'V' },
+    ] as unknown as Concert[]
+    return buildRows(two, audit, () => snap({ hasRun: false, judged: 0, onPage: 0, hasSelects: false, publishable: 0, indexedCount: 0 }), true, waiting, sort)
+  }
+
+  it('puts the show that upgrades posts first, by default', () => {
+    expect(rowsFor('posts')[0].concert.date).toBe('2024-08-20')
+  })
+
+  it('still ranks by depth when asked to', () => {
+    // The old behaviour is not wrong, it answers a different question — so it stays
+    // reachable rather than being replaced.
+    expect(rowsFor('opportunity')[0].concert.date).toBe('2026-06-04')
+  })
+
+  it('falls back to posts, then depth, then date — never arbitrary', () => {
+    const rows = rowsFor('date')
+    expect(rows.map((r) => r.concert.date)).toEqual(['2026-06-04', '2024-08-20'])
+  })
+
+  it('carries the count onto the row', () => {
+    const rows = rowsFor('posts')
+    expect(rows.find((r) => r.concert.date === '2024-08-20')!.postsWaiting).toBe(3)
+    expect(rows.find((r) => r.concert.date === '2026-06-04')!.postsWaiting).toBe(0)
+  })
+
+  it('renders the count, and stays blank at zero', () => {
+    // A column of zeros is noise. The eye should find the shows that matter without reading
+    // every row.
+    const strip = (t: string) => t.replace(/\x1b\[[0-9;]*m/g, '')
+    const rows = rowsFor('posts')
+    expect(strip(renderRow(rows[0], false, 24))).toContain('3 posts')
+    expect(strip(renderRow(rows[1], false, 24))).not.toContain('0 post')
   })
 })
