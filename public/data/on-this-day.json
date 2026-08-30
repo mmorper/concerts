@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-08-29T12:52:51.110Z",
+  "generatedAt": "2026-08-30T12:25:23.627Z",
   "posts": [
+    {
+      "slug": "otd-2026-08-30",
+      "day": "08-30",
+      "showDate": "1985-08-30",
+      "age": 41,
+      "artist": "Wham!",
+      "artistNormalized": "wham",
+      "venue": "Hollywood Park Racetrack",
+      "venueNormalized": "hollywood-park-racetrack",
+      "city": "Inglewood",
+      "score": 14,
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/xuwupw1439139539.jpg",
+      "tier": 2,
+      "source": "artist-audiodb",
+      "url": "https://concerts.morperhaus.org/liner-notes/wham-caught-once-never-again",
+      "linerNoteSlug": "wham-caught-once-never-again",
+      "cardPath": "public/og/on-this-day/otd-2026-08-30.png",
+      "social": {
+        "hook": "The only time I ever saw George Michael perform before he was George Michael solo.",
+        "caption": "Wham! at Hollywood Park Racetrack, August 1985 — a concert venue built inside a working racetrack, and a band still a year away from splitting.",
+        "beats": [
+          "Hollywood Park was a functioning horse-racing track in Inglewood. In the summer of 1985, it was also a concert venue.",
+          "Wham! played there on August 30, 1985. I was in the crowd. The band was at the peak of what they were as a duo.",
+          "George Michael would go solo within the year. This was still before that — still Wham!, still the two of them.",
+          "41 years ago today. One show, one ticket stub, and no way to know then what it was the last of."
+        ],
+        "authoredAt": "2026-08-30T12:25:17.410Z"
+      },
+      "publishedAt": "2026-08-30T12:25:23.627Z"
+    },
     {
       "slug": "otd-2026-08-29",
       "day": "08-29",
