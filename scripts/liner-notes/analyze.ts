@@ -843,8 +843,31 @@ function detectVenueGhost(
     const sorted = [...shows].sort((a, b) => a.date.localeCompare(b.date));
     const first = sorted[0];
     const last = sorted[sorted.length - 1];
-    const closedYear = meta.closedDate
-      ? new Date(meta.closedDate + "T12:00:00Z").getFullYear()
+    // 🔴 A CLOSING DATE THE ARCHIVE ITSELF CONTRADICTS IS NOT A FACT TO WRITE FROM.
+    //
+    // `closedDate` is hand-maintained in data/venue-status.csv, and Universal
+    // Amphitheater carried 1999-12-31 beside shows this archive records in 2002
+    // and 2005. The detector handed that contradiction to the generator as a
+    // data point, and the generator did the reasonable thing with it — it wrote
+    // a story: "my last show technically happened at a completely different
+    // building on the same site, six years after the original was torn down."
+    // That note is published. Nothing in it is true, and every number in it came
+    // from the data.
+    //
+    // Dropped rather than corrected: the right closing date is not derivable
+    // from anything here, and guessing one is the same failure wearing a
+    // different hat. Without it the post is still written — as a room that is
+    // gone, which IS supported — just never with a year attached.
+    const closedAfterLastShow = meta.closedDate ? meta.closedDate >= last.date : true;
+    if (meta.closedDate && !closedAfterLastShow) {
+      console.warn(
+        `   ⚠️  ${first.venue}: closedDate ${meta.closedDate} precedes its own last show ` +
+          `(${last.date}). Dropping the date — fix data/venue-status.csv.`
+      );
+    }
+    const closedDate = closedAfterLastShow ? meta.closedDate : undefined;
+    const closedYear = closedDate
+      ? new Date(closedDate + "T12:00:00Z").getFullYear()
       : null;
     const artists = [...new Set(sorted.map((s) => s.headlinerNormalized))];
     const years = sorted.map((s) => s.year);
@@ -879,7 +902,7 @@ function detectVenueGhost(
         city: first.cityState,
         showCount: shows.length,
         status: meta.status,
-        closedDate: meta.closedDate,
+        closedDate,
         closedYear,
         notes: meta.notes,
         firstShow: { date: first.date, artist: first.headliner },

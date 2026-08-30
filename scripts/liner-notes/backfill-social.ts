@@ -22,6 +22,7 @@
  */
 
 import { resolveAnchorConcert } from "../syndication/payload.ts";
+import { VENUE_NAMED_DETECTORS } from "./image-refs.ts";
 import type { SocialContext } from "./social.ts";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesPost, PostSocial } from "../../src/types/liner-notes.ts";
@@ -30,6 +31,15 @@ export interface BackfillSources {
   concerts: Concert[];
   artistsMetadata: Record<string, { name?: string }>;
   venuesMetadata: Record<string, { name?: string; city?: string }>;
+  /**
+   * Optional: release dates the copy is allowed to cite. The voice skill makes
+   * an album's release date Tier 1 when this file carries it, so a caption
+   * saying "Rebel Yell had been out since November 1983" is sourced — but only
+   * if the year gate can see the same file the rule refers to.
+   */
+  albumEras?: {
+    artists?: Record<string, { studioAlbums?: Array<{ releaseDate?: string }> }>;
+  };
 }
 
 export interface BackfillOptions {
@@ -73,7 +83,34 @@ export function contextFor(
     city: venue?.city ?? concert.city,
     date: concert.date,
     song: post.audio?.role === "subject" ? post.audio.trackName : undefined,
+    knownYears: knownYears(post, sources),
+    // Narrower than VENUE_SUBJECT_DETECTORS on purpose — see the comment there.
+    // The second half of the test is the load-bearing one: a post naming sixteen
+    // venues has no single room to be about, whatever its detector says.
+    subject:
+      VENUE_NAMED_DETECTORS.has(post.detector) && post.venues.length === 1
+        ? "venue"
+        : "artist",
   };
+}
+
+/**
+ * The years this post may state, over and above the ones in its own prose.
+ *
+ * `post.years` is the detector's own answer to "which years is this about", so a
+ * drought-comeback post carries both ends of the gap even though only one of
+ * them is the anchor concert. Album release years come from `album-eras.json`,
+ * which the voice skill already treats as Tier 1 evidence.
+ */
+export function knownYears(post: LinerNotesPost, sources: BackfillSources): number[] {
+  const out = new Set<number>(post.years ?? []);
+  for (const slug of post.artists) {
+    for (const album of sources.albumEras?.artists?.[slug]?.studioAlbums ?? []) {
+      const year = Number(album.releaseDate?.slice(0, 4));
+      if (Number.isFinite(year)) out.add(year);
+    }
+  }
+  return [...out];
 }
 
 /**
@@ -109,10 +146,31 @@ export function selectForBackfill(
       skipped.push({ slug: post.slug, reason: "no concert resolves for the credit stack" });
       continue;
     }
-    candidates.push({ post, context });
+    candidates.push({ post, context: { ...context, avoid: siblingHooks(post, posts) } });
   }
 
   return { candidates, skipped };
+}
+
+/**
+ * What the other posts of this detector already say.
+ *
+ * Same detector only — that is where the material rhymes and therefore where the
+ * copy converges. Widening it to the whole corpus would spend tokens listing
+ * fifty-eight hooks that share nothing with this one, and dilute the handful
+ * that actually threaten to repeat.
+ *
+ * Capped, and taken from the END of publication order: the most recent siblings
+ * are the ones a reader scrolling the profile will still have in view.
+ */
+const AVOID_LIMIT = 8;
+
+export function siblingHooks(post: LinerNotesPost, all: LinerNotesPost[]): string[] {
+  return all
+    .filter((p) => p.slug !== post.slug && p.detector === post.detector && p.social?.hook)
+    .sort((a, b) => a.publishedAt.localeCompare(b.publishedAt))
+    .slice(-AVOID_LIMIT)
+    .map((p) => p.social!.hook);
 }
 
 export interface ApplyResult {
@@ -132,8 +190,20 @@ export interface ApplyResult {
 export function applyAuthored(
   posts: LinerNotesPost[],
   authored: Map<string, PostSocial>,
-  check: (input: { hook: string; caption: string; beats?: string[]; headline?: string }) =>
-    Array<{ severity: "error" | "warning"; rule: string; detail: string }>,
+  /**
+   * Looked up per post so the venue rule can be applied, and `undefined` for an
+   * artist-subject post — where requiring the venue name would break the rule
+   * that keeps those hooks clean.
+   */
+  contexts: Map<string, SocialContext>,
+  check: (input: {
+    hook: string;
+    caption: string;
+    beats?: string[];
+    headline?: string;
+    venue?: { name: string; city?: string };
+    sourceText?: string;
+  }) => Array<{ severity: "error" | "warning"; rule: string; detail: string }>,
   onIssues?: (slug: string, issues: Array<{ severity: string; rule: string; detail: string }>) => void
 ): ApplyResult {
   const bySlug = new Map(posts.map((p) => [p.slug, p]));
@@ -146,7 +216,23 @@ export function applyAuthored(
       continue;
     }
 
-    const issues = check({ ...social, headline: post.headline });
+    const context = contexts.get(slug);
+    const issues = check({
+      ...social,
+      headline: post.headline,
+      // Everything the copy is allowed to have taken a number from.
+      sourceText: [
+        post.prose ?? "",
+        post.headline,
+        context?.date ?? "",
+        ...(context?.artists ?? []),
+        context?.venue ?? "",
+        ...(context?.knownYears ?? []).map(String),
+      ].join(" "),
+      ...(context?.subject === "venue"
+        ? { venue: { name: context.venue, city: context.city } }
+        : {}),
+    });
     if (issues.length) onIssues?.(slug, issues);
 
     const errors = issues.filter((i) => i.severity === "error");

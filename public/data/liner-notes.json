@@ -457,15 +457,16 @@
       "detector": "venue-loyalty",
       "publishedAt": "2026-07-20T10:55:39.484Z",
       "social": {
-        "hook": "16 nights at the same bowl, none of them planned.",
-        "caption": "I walked in for Tears For Fears at 16 and didn't stop until The English Beat in 2024. Thirty-nine years, same Costa Mesa venue, fourteen acts in between.",
+        "hook": "I was 16 the first time Pacific Amphitheatre let me in. I kept going back for 39 years.",
+        "caption": "Tears for Fears opened it in 1985; The English Beat closed it in 2024. Pacific Amphitheatre held 16 shows across five decades, and I never once made a plan to return.",
         "beats": [
-          "Summer 1985. I was 16, Songs from the Big Chair was everywhere, and the Pacific Amphitheatre was the room.",
-          "Fourteen more nights followed — Beach Boys, Run-DMC, Sting, UB40, Garbage, Stray Cats. No plan. Just the next show.",
-          "Five decades at one venue. The roster spans genres I couldn't have predicted at 16.",
-          "July 2024: The English Beat closed the loop. Thirty-nine years between the first ticket and the sixteenth."
+          "Summer 1985. I was 16, Songs from the Big Chair was everywhere, and Pacific Amphitheatre was new to me.",
+          "Fourteen more nights followed — Beach Boys, Run-DMC, Sting, Garbage, UB40, Yazoo, Culture Club.",
+          "Five decades of shows at one Costa Mesa bowl, none of them planned in sequence.",
+          "The English Beat in July 2024 closed the loop I didn't know I'd started.",
+          "Sixteen shows. Thirty-nine years. The archive is on the site — link in the bio."
         ],
-        "authoredAt": "2026-08-29T19:11:15.456Z"
+        "authoredAt": "2026-08-30T17:22:31.179Z"
       }
     },
     {
@@ -615,16 +616,15 @@
       "detector": "venue-loyalty",
       "publishedAt": "2026-07-06T12:07:53.758Z",
       "social": {
-        "hook": "Five artists, almost nothing in common, one room that kept pulling me back.",
-        "caption": "Six shows at the same Anaheim club across three decades, starting in August 2003. I never planned it as a series — the room just kept earning the return.",
+        "hook": "House of Blues Anaheim kept showing up in my life. I never once booked it on purpose.",
+        "caption": "Six shows at House of Blues Anaheim, five artists with nothing in common sonically. Joe Jackson opened it in 2003; Social Distortion closed it in 2022. The room did the choosing.",
         "beats": [
-          "August 2003: I walked into House of Blues Anaheim for the first time to see Joe Jackson.",
-          "Six shows followed over three decades — Streetlight Manifesto, Future Islands, Royal Blood, Social Distortion.",
-          "Five artists who share almost nothing sonically. That range tells me the venue was doing something right.",
-          "The last of the six came in December 2022. Nearly twenty years between the first night and the last.",
-          "I never set out to make it a series. Somehow a club in Anaheim became a quiet constant anyway."
+          "August 2003: Joe Jackson at House of Blues Anaheim. That was the night the room got its hooks in me.",
+          "Streetlight Manifesto, Future Islands, Royal Blood, Social Distortion — five artists who share almost no sonic DNA.",
+          "A club in Anaheim, six shows across three decades, and I never once sat down and planned any of it.",
+          "The through-line wasn't genre or era. It was the room itself, quietly doing something right."
         ],
-        "authoredAt": "2026-08-22T21:45:08.182Z"
+        "authoredAt": "2026-08-30T17:22:56.179Z"
       }
     },
     {
@@ -2317,16 +2317,15 @@
       "detector": "album-context",
       "publishedAt": "2026-03-08T23:08:41.464Z",
       "social": {
-        "hook": "Thirteen days after The Bends dropped, I went to watch someone drag rock back to 1955.",
-        "caption": "Radiohead released The Bends on March 13, 1995. Thirteen days later I was at the Hard Rock Cafe watching Brian Setzer's pompadour and upright bass pull rock the other direction entirely.",
+        "hook": "Radiohead released The Bends 13 days before this show. Both were solving the same problem.",
+        "caption": "The Bends landed on March 13, 1995. Thirteen days later I was watching Brian Setzer pull rock in the opposite direction — pompadour, upright bass, pure 1950s revival.",
         "beats": [
-          "March 13, 1995: Radiohead releases The Bends and points guitar music somewhere no one had been.",
-          "Thirteen days later I'm at the Hard Rock Cafe, and Brian Setzer is doing the opposite — every note aimed at 1955.",
-          "Pompadour, upright bass, full orchestra. The rockabilly revival as a serious proposition.",
-          "Two weeks, two completely different answers to the same question: what does rock do after grunge?",
-          "I didn't plan the timing. But that March made the contrast impossible to miss."
+          "March 13, 1995: Radiohead releases The Bends and points guitar music somewhere new.",
+          "Thirteen days later I'm at the Hard Rock Cafe in Newport Beach watching Brian Setzer do the opposite.",
+          "Pompadour, upright bass, rockabilly swing — a deliberate argument for where rock began.",
+          "Two answers to the same post-grunge question, two weeks apart. Neither one wrong."
         ],
-        "authoredAt": "2026-08-29T19:08:22.488Z"
+        "authoredAt": "2026-08-30T17:32:12.132Z"
       }
     },
     {
@@ -2535,7 +2534,7 @@
       "category": "deep-cut",
       "temporality": "evergreen",
       "headline": "Universal Amphitheater: 5 Shows Before It Was Demolished",
-      "prose": "I somehow caught 5 shows at Universal Amphitheater across 16 years, from Howard Jones in 1989 to Tears For Fears in 2005 — but here's the twist: the venue was actually demolished in 1999 and rebuilt as Gibson Amphitheatre. That means my last show there technically happened at a completely different building on the same site, six years after the original was torn down. Four different artists, two different venues, one address that fooled my concert tracking for decades.",
+      "prose": "Five shows at the Universal Amphitheater across 16 years, and I had no idea I was watching a clock run down. I opened my history there with Howard Jones in July 1989 and closed it with Tears For Fears in November 2005 — and then the place was gone, demolished after that last night. Four different artists, one venue that quietly threaded through a big slice of my concert life, and I never once thought of it as a place I should be paying closer attention to. Turns out Tears For Fears gave me the farewell show I didn't know I needed.",
       "image": {
         "url": "/images/venues/universalamphitheater-1.jpg",
         "alt": "Universal Amphitheater",
@@ -2606,15 +2605,16 @@
       "detector": "venue-ghost",
       "publishedAt": "2026-03-03T05:36:00.000Z",
       "social": {
-        "hook": "Five shows, one address, two completely different buildings.",
-        "caption": "Universal Amphitheater was demolished in 1999 and rebuilt as Gibson Amphitheatre. My last show there was in 2005 — six years after the original was gone.",
+        "hook": "Universal Amphitheater was demolished. My last night there was Tears For Fears in 2005.",
+        "caption": "I opened my history at Universal Amphitheater with Howard Jones in 1989 and closed it with Tears For Fears in 2005 — the farewell show I didn't know I was having.",
         "beats": [
-          "Five shows across 16 years, from Howard Jones in 1989 to Tears For Fears in 2005.",
-          "What I didn't know: Universal Amphitheater was torn down in 1999 and rebuilt as Gibson Amphitheatre.",
-          "My last four shows were at a different building. Same address. Different venue entirely.",
-          "One address fooled my concert tracking for decades. The archive finally has it straight."
+          "Five shows at Universal Amphitheater across 16 years, four different artists, zero awareness I was running out of time.",
+          "It started with Howard Jones in July 1989. I was just going to a show. I had no idea the room would matter.",
+          "Siouxsie and the Banshees. The Brian Setzer Orchestra. Each one felt like its own night, not part of a pattern.",
+          "Tears For Fears in November 2005 turned out to be the last. The venue was demolished after that.",
+          "I never thought of Universal Amphitheater as a place I should pay closer attention to. Turns out I should have."
         ],
-        "authoredAt": "2026-08-29T19:07:41.618Z"
+        "authoredAt": "2026-08-30T17:38:56.324Z"
       }
     },
     {
@@ -2917,16 +2917,16 @@
       "detector": "venue-ghost",
       "publishedAt": "2026-02-24T20:00:00.000Z",
       "social": {
-        "hook": "Tract housing stands where 16 summer nights used to echo.",
-        "caption": "Sixteen shows at Irvine Meadows across nearly two decades — thirteen artists, one demolished amphitheater. The synthesizers and guitar feedback are gone; the records aren't.",
+        "hook": "Irvine Meadows held 16 of my shows — then became tract housing in 2016.",
+        "caption": "Thirteen artists, nearly two decades, one amphitheater: Adam Ant in April '84 to Peter Gabriel in June 2003. Irvine Meadows is gone, but my stubs are a New Wave time capsule.",
         "beats": [
-          "April 1984: Adam Ant opens my Irvine Meadows account. The venue has nineteen years left.",
-          "Thompson Twins, Billy Idol, Echo & The Bunnymen, Depeche Mode — my history there reads like a New Wave time capsule.",
-          "Thirteen different artists over sixteen nights. Howard Jones, New Order, Erasure, Oingo Boingo all made the list.",
-          "Peter Gabriel in June 2003 turns out to be the closing chapter — though none of us knew it then.",
-          "Irvine Meadows was demolished in 2016. Tract housing now. The archive is what's left."
+          "Adam Ant opened my Irvine Meadows account in April 1984. I had no idea I'd be back 15 more times.",
+          "Thompson Twins, Billy Idol, Echo & The Bunnymen, Depeche Mode — the setlist of a synthesizer summer.",
+          "16 shows, 13 artists, 19 years. The place shaped a whole chapter of how I heard music.",
+          "Peter Gabriel closed it out for me in June 2003. The venue itself lasted until 2016.",
+          "Now it's tract housing. Irvine Meadows held those summer nights — and my records are what's left."
         ],
-        "authoredAt": "2026-08-22T21:46:40.374Z"
+        "authoredAt": "2026-08-30T17:21:28.062Z"
       }
     },
     {
@@ -4784,15 +4784,16 @@
       "detector": "venue-loyalty",
       "publishedAt": "2026-01-08T21:36:00.000Z",
       "social": {
-        "hook": "Five shows. Sixteen years. I didn't know it was a pattern until I found the stubs.",
-        "caption": "Five shows at the same venue across three decades — Howard Jones to Tears for Fears — and I never planned any of it. The ticket stubs told me the story before I did.",
+        "hook": "Universal Amphitheater is gone now. I didn't notice until I counted the stubs.",
+        "caption": "Five shows at Universal Amphitheater across 16 years, starting with Howard Jones in 1989 and ending with Tears for Fears in 2005. I didn't know I had a home base until the venue no longer existed.",
         "beats": [
-          "Howard Jones brought me there first in 1989, and the Hollywood Hills setting made it feel personal and grand at once.",
-          "Over 16 years I kept returning: Siouxsie's dark glamour, Brian Setzer's rockabilly swagger, and others in between.",
-          "I didn't think of it as a home base until I laid the stubs out and counted five shows across three decades.",
-          "Tears for Fears closed it out in 2005 — sixteen years after it started, still the same accidental pull."
+          "Howard Jones in 1989 was my introduction to Universal Amphitheater — synthesizers and Hollywood Hills.",
+          "Five shows across 16 years: Howard Jones, Siouxsie and the Banshees, Brian Setzer, Tears for Fears.",
+          "Intimate enough to feel personal. Grand enough for spectacle. I kept coming back without planning to.",
+          "Tears for Fears in 2005 was the last one. I didn't know that at the time.",
+          "Universal Amphitheater is gone. The pattern only became visible once there was nothing left to add to it."
         ],
-        "authoredAt": "2026-08-22T21:36:41.610Z"
+        "authoredAt": "2026-08-30T17:29:23.769Z"
       }
     },
     {
@@ -4892,16 +4893,16 @@
       "detector": "venue-loyalty",
       "publishedAt": "2026-01-04T15:12:00.000Z",
       "social": {
-        "hook": "16 shows at one outdoor room, 19 years apart, and none of it was planned.",
-        "caption": "I first walked into Irvine Meadows on April 27, 1984 for Adam Ant, and kept coming back for another 18 years. Peter Gabriel closed it out for me in 2003 — thirteen artists, one venue.",
+        "hook": "Irvine Meadows kept pulling me back for 19 years — and Adam Ant started it.",
+        "caption": "I found Irvine Meadows on April 27, 1984, watching Adam Ant on that massive outdoor stage. Thirteen artists and 19 years later, Peter Gabriel closed it out.",
         "beats": [
-          "April 27, 1984: Adam Ant on a massive outdoor stage under the California sun. That was the first one.",
-          "The San Gabriel Mountains framed every show. The concrete terraces carried sound in a way most rooms never do.",
-          "Thompson Twins, Billy Idol, Depeche Mode, New Order, Duran Duran, George Michael — the list built itself over 19 years.",
-          "Sixteen concerts. Thirteen artists. One amphitheater that quietly became part of how I measure live music.",
-          "Peter Gabriel in 2003 was the last of them. I didn't know it at the time. That's usually how it works."
+          "April 27, 1984: Adam Ant, California sun, and a venue I'd never been to before.",
+          "Irvine Meadows had a sound that carried differently — the concrete terraces, the San Gabriels behind every stage.",
+          "Thompson Twins. Billy Idol. Depeche Mode. New Order. George Michael. The venue became a pattern I didn't plan.",
+          "Peter Gabriel in 2003 was my 16th show there. I didn't know it would be the last.",
+          "Some venues end up in your concert DNA. Irvine Meadows got into mine on the very first visit."
         ],
-        "authoredAt": "2026-08-29T19:03:34.888Z"
+        "authoredAt": "2026-08-30T17:22:43.230Z"
       }
     },
     {
@@ -4980,15 +4981,16 @@
       "detector": "venue-loyalty",
       "publishedAt": "2026-01-02T12:00:00.000Z",
       "social": {
-        "hook": "Five shows, 33 years, and the synthesizers still sound like the future.",
-        "caption": "I first walked into the Forum at 19 for Erasure in 1990. Five shows and 33 years later, I've been loyal to that room longer than some of my friendships.",
+        "hook": "The Forum has held five different versions of me, 33 years apart.",
+        "caption": "I was 19 the first time I walked into Kia Forum — Erasure, 1990. Five shows and 33 years later, Depeche Mode closed the loop.",
         "beats": [
-          "March 1990: I was 19, seeing Erasure in that massive bowl for the first time.",
-          "Bell Biv DeVoe, Elton John, Tears for Fears — the Forum collected a decade of my taste.",
-          "Depeche Mode closed the streak in 2023. Thirty-three years between first and last ticket.",
-          "Five venues could have held those five nights. I kept coming back to the same one."
+          "March 1990: 19 years old, Erasure, and the Forum felt like the largest room I'd ever been inside.",
+          "Bell Biv DeVoe brought New Jack Swing energy. Elton John filled it with piano grandeur. Different worlds, same bowl.",
+          "Tears for Fears made it nostalgic. Depeche Mode in 2023 made it feel like the future.",
+          "Five shows. Five artists. I've been coming back to Kia Forum longer than I've known some of my closest friends.",
+          "Something in those acoustics makes every synthesizer sound like it hasn't been invented yet."
         ],
-        "authoredAt": "2026-08-29T19:03:25.121Z"
+        "authoredAt": "2026-08-30T17:20:57.600Z"
       }
     }
   ],

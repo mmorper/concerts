@@ -265,12 +265,20 @@ function displayFromSlug(slug: string): string {
  * The stored alt describes the *source photograph* ("Born to Kill"), which is
  * accurate for the artist scene and useless as the alt for a social card that
  * also carries a headline. What ships describes the card.
+ *
+ * 🔴 "Card reads:" MUST QUOTE THE HOOK. The card sets `payload.hook` in display
+ * type (render-card.ts) and the headline appears on it nowhere at all — so this
+ * spent every post to date telling a screen-reader user the card said something
+ * it did not. Sighted readers got "Tract housing stands where 16 summer nights
+ * used to echo"; everyone else was read the headline instead. The headline is
+ * the fallback only because a post with no authored copy renders no card either,
+ * which makes the branch unreachable rather than merely unlikely.
  */
 export function cardAlt(post: LinerNotesPost, credit: PayloadCredit): string {
   const subject = post.image?.alt?.trim();
   const names = credit.artists.join(", ");
   const base = `${names} at ${credit.venue}, ${credit.city}, ${formatDate(credit.date)}.`;
-  const overlay = ` Card reads: ${post.headline}.`;
+  const overlay = ` Card reads: ${post.social?.hook?.trim() || post.headline}.`;
 
   // The stored alt is usually an album title, which adds real information. It
   // is sometimes just the artist's name, which would read "Nile Rodgers. Nile

@@ -2111,8 +2111,8 @@
       "uniqueArtists": 4
     },
     "status": "demolished",
-    "closedDate": "1999-12-31",
-    "notes": "Demolished and rebuilt as Gibson Amphitheatre",
+    "closedDate": null,
+    "notes": "Demolished after our last show there in 2005; exact date unverified",
     "places": null,
     "fetchedAt": "2026-08-29T21:09:54.890Z",
     "manualPhotos": [
@@ -2152,7 +2152,7 @@
       "uniqueArtists": 1
     },
     "status": "closed",
-    "closedDate": "1990-01-01",
+    "closedDate": "1990-12-31",
     "notes": "Club closed in 1990",
     "places": null,
     "fetchedAt": "2026-08-29T21:09:54.890Z",

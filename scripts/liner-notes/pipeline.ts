@@ -270,6 +270,8 @@ export async function run(options: PipelineOptions): Promise<void> {
         city: concert?.city ?? "",
         date: concert?.date ?? "",
         song: post.audio?.role === "subject" ? post.audio.trackName : undefined,
+        // The years the detector says this post is about — see knownYears().
+        knownYears: post.years ?? [],
       };
       return { post, context };
     });
@@ -279,7 +281,24 @@ export async function run(options: PipelineOptions): Promise<void> {
     for (const post of newPosts) {
       const social = authored.get(post.slug);
       if (!social) continue;
-      const issues = checkSocial({ ...social, headline: post.headline });
+      // A venue-subject post is held to the venue rule here too — the weekly run
+      // and the backfill must not be able to publish to different standards.
+      const context = requests.find((r) => r.post.slug === post.slug)?.context;
+      const issues = checkSocial({
+        ...social,
+        headline: post.headline,
+        sourceText: [
+          post.prose ?? "",
+          post.headline,
+          context?.date ?? "",
+          ...(context?.artists ?? []),
+          context?.venue ?? "",
+          ...(context?.knownYears ?? []).map(String),
+        ].join(" "),
+        ...(context?.subject === "venue"
+          ? { venue: { name: context.venue, city: context.city } }
+          : {}),
+      });
       if (issues.length) console.log(formatSocialIssues(post.slug, issues));
       // Errors drop the social text, never the post. The note publishes; the
       // syndication payload is simply not eligible, which the run loop reports.

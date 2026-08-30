@@ -286,17 +286,36 @@ describe("buildPayload", () => {
     expect(tierOne.media[0].byline).toBe("Mike Morper · July 2026, not the 1986 night");
   });
 
+  // 🔴 "Card reads:" QUOTES THE HOOK, because the hook is what the card sets in
+  // display type. This asserted the headline for the whole life of the feature,
+  // which is how every published card told a screen-reader user it said something
+  // it did not — the one reader who cannot check.
   it("writes alt text describing the card, not the source photograph", () => {
-    const alt = cardAlt(post(), {
+    const credit = {
+      artists: ["The Art of Noise"],
+      venue: "Pacific Amphitheatre",
+      city: "Costa Mesa",
+      date: "1986-07-31",
+    };
+    const subject = post();
+    const alt = cardAlt(subject, credit);
+
+    expect(alt).toBe(
+      "The Art of Noise at Pacific Amphitheatre, Costa Mesa, 31 July 1986. " +
+        `Card reads: ${subject.social!.hook}.`
+    );
+    // The headline is NOT on the card, so it must not be in the alt.
+    expect(alt).not.toContain(subject.headline);
+  });
+
+  it("falls back to the headline only when there is no authored hook", () => {
+    const alt = cardAlt({ ...post(), social: undefined }, {
       artists: ["The Art of Noise"],
       venue: "Pacific Amphitheatre",
       city: "Costa Mesa",
       date: "1986-07-31",
     });
-    expect(alt).toBe(
-      "The Art of Noise at Pacific Amphitheatre, Costa Mesa, 31 July 1986. " +
-        "Card reads: July 31: 40 Years Since The Art of Noise."
-    );
+    expect(alt).toContain("Card reads: July 31: 40 Years Since The Art of Noise.");
   });
 });
 

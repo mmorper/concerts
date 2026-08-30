@@ -102,6 +102,7 @@ async function main(): Promise<void> {
     concerts: readJson<{ concerts: Concert[] }>("concerts.json").concerts,
     artistsMetadata: readJson("artists-metadata.json"),
     venuesMetadata: readJson("venues-metadata.json"),
+    albumEras: readJson("album-eras.json"),
   };
 
   const { candidates, skipped } = selectForBackfill(data.posts, sources, { force, limit, slug });
@@ -149,7 +150,7 @@ async function main(): Promise<void> {
   for (const [index, candidate] of candidates.entries()) {
     const position = `[${String(index + 1).padStart(width)}/${candidates.length}]`;
     const authored = await generateSocial([candidate]);
-    const result = applyAuthored(data.posts, authored, checkSocial, (s, issues) =>
+    const result = applyAuthored(data.posts, authored, new Map([[candidate.post.slug, candidate.context]]), checkSocial, (s, issues) =>
       console.log(formatSocialIssues(s, issues as Parameters<typeof formatSocialIssues>[1]))
     );
 

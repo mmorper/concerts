@@ -16,6 +16,7 @@ import {
   type BackfillSources,
 } from "../../scripts/liner-notes/backfill-social.ts";
 import { checkSocial } from "../../scripts/liner-notes/voice-check.ts";
+import type { SocialContext } from "../../scripts/liner-notes/social.ts";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesPost, PostSocial } from "../../src/types/liner-notes.ts";
 
@@ -92,7 +93,30 @@ describe("contextFor", () => {
       city: "Costa Mesa",
       date: "1986-07-31",
       song: undefined,
+      subject: "artist",
+      knownYears: [1986],
     });
+  });
+
+  it("marks a single-venue loyalty post as venue-subject", () => {
+    const loyalty = contextFor(
+      post({ detector: "venue-loyalty", venues: ["pacific-amphitheatre"] }),
+      SOURCES
+    );
+    expect(loyalty?.subject).toBe("venue");
+  });
+
+  it("does NOT mark a post spanning several venues as venue-subject", () => {
+    // `my-west-coast-chapter` covers sixteen rooms. Requiring it to name
+    // venues[0] would force one arbitrary venue into a hook about a region.
+    const chapter = contextFor(
+      post({
+        detector: "geographic-chapter",
+        venues: ["pacific-amphitheatre", "irvine-meadows"],
+      }),
+      SOURCES
+    );
+    expect(chapter?.subject).toBe("artist");
   });
 
   it("carries the subject song when the post has one, and only then", () => {
@@ -180,12 +204,16 @@ describe("selectForBackfill", () => {
   });
 });
 
+/** These posts are artist-subject, so no venue name is required of them. */
+const NO_VENUE_RULE = new Map<string, SocialContext>();
+
 describe("applyAuthored", () => {
   it("attaches copy that passes the voice checks", () => {
     const posts = [post()];
     const result = applyAuthored(
       posts,
       new Map([[posts[0].slug, SOCIAL]]),
+      NO_VENUE_RULE,
       checkSocial
     );
     expect(result).toEqual({ attached: 1, failed: [] });
@@ -200,7 +228,7 @@ describe("applyAuthored", () => {
       ...SOCIAL,
       hook: "July 31 — 40 years since The Art of Noise!",
     };
-    const result = applyAuthored(posts, new Map([[posts[0].slug, derived]]), checkSocial);
+    const result = applyAuthored(posts, new Map([[posts[0].slug, derived]]), NO_VENUE_RULE, checkSocial);
 
     expect(result.attached).toBe(0);
     expect(result.failed[0].reason).toContain("derived-copy");
@@ -210,7 +238,7 @@ describe("applyAuthored", () => {
 
   it("reports an unknown slug instead of silently dropping it", () => {
     const posts = [post()];
-    const result = applyAuthored(posts, new Map([["ghost", SOCIAL]]), checkSocial);
+    const result = applyAuthored(posts, new Map([["ghost", SOCIAL]]), NO_VENUE_RULE, checkSocial);
     expect(result.failed).toEqual([{ slug: "ghost", reason: "no such post" }]);
   });
 
@@ -221,7 +249,7 @@ describe("applyAuthored", () => {
       ...SOCIAL,
       caption: "The band played for two hours in the rain.",
     };
-    const result = applyAuthored(posts, new Map([[posts[0].slug, thirdPerson]]), checkSocial, onIssues);
+    const result = applyAuthored(posts, new Map([[posts[0].slug, thirdPerson]]), NO_VENUE_RULE, checkSocial, onIssues);
 
     expect(result.attached).toBe(1);
     expect(onIssues).toHaveBeenCalledWith(
