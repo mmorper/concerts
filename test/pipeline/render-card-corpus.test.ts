@@ -180,6 +180,29 @@ describe('the card and its alt text describe the SAME show', () => {
     expect(mixed).toEqual([])
   })
 
+  it('a venue photograph is of the venue the card NAMES', async () => {
+    /* The Kia Forum on a post about Irvine Meadows. `upgradeVenuePosts` took the first
+       venue in the list that happened to have a photo — a different question from which
+       venue the card names — and a 16-venue post walked past Irvine Meadows, which is
+       tract housing now, to find one that did.
+
+       A photograph of the wrong building under the right name is the same fabrication as a
+       byline naming the wrong night, in the element a reader takes in first. */
+    const { cardConcert } = await import('../../scripts/syndication/payload')
+    const concerts = JSON.parse(readFileSync('public/data/concerts.json', 'utf8')).concerts
+
+    const wrong: string[] = []
+    for (const post of posts) {
+      if (post.image?.source !== 'venue' || !post.image.ref) continue
+      const concert = cardConcert(post, concerts, post.image?.shotOn)
+      if (!concert) continue
+      if (post.image.ref !== concert.venueNormalized) {
+        wrong.push(`${post.slug}: card names ${concert.venueNormalized}, photograph is of ${post.image.ref}`)
+      }
+    }
+    expect(wrong).toEqual([])
+  })
+
   it('a post naming one year and one venue is about THAT night, setlist or not', async () => {
     // A `?show=` link means "setlist.fm has this night", not "this post is about one
     // night". 12 of 58 posts name a single year and a single venue while carrying no link,
