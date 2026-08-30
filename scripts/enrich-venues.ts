@@ -159,10 +159,27 @@ function checkManualPhotos(normalizedName: string): ManualPhoto[] | null {
   }
 
   try {
+    /* 🔴 THE SLUG IS HYPHENATED AND THE FILENAMES ARE NOT.
+       `file.startsWith('universal-amphitheater')` never matched
+       `universalamphitheater-1.jpg`, so EIGHT archival photographs sat unused in the
+       repo — and they are photographs of exactly the venues that can never have a Places
+       photo: Irvine Meadows, Universal Amphitheater, RFK Stadium, Hollywood Park
+       Racetrack, and the renamed rooms.
+       Those posts fell through to the generic closed-door fallback, or to an album cover
+       by whichever band sorted first.
+       Both sides are now reduced to letters and digits, so the naming convention of the
+       files and the shape of the slug stop having to agree. */
+    const key = normalizedName.replace(/[^a-z0-9]/gi, '').toLowerCase()
     const files = fs.readdirSync(imagesDir)
-    const venuePhotos = files.filter(file =>
-      file.startsWith(normalizedName) && (file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png'))
-    )
+    const venuePhotos = files.filter(file => {
+      if (!/\.(jpg|jpeg|png)$/i.test(file)) return false
+      const base = file
+        .replace(/\.\w+$/, '')     // extension
+        .replace(/-\d+$/, '')       // the -1, -2 ordinal
+        .replace(/[^a-z0-9]/gi, '')
+        .toLowerCase()
+      return base === key
+    })
 
     if (venuePhotos.length === 0) {
       return null

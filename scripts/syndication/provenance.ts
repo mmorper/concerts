@@ -62,6 +62,17 @@ const LOCAL_PATHS: Array<[RegExp, Provenance]> = [
   // photograph `PLACEHOLDER_IMAGE_URL` resolves to. Named explicitly rather
   // than matched as a catch-all — see below.
   [/^\/images\/venues\/fallback/, { tier: 3, source: "site-fallback" }],
+  /* Hand-placed archival photographs of venues that can never have a Places photo —
+     demolished (Irvine Meadows, Universal Amphitheater, RFK Stadium, Hollywood Park) or
+     renamed (Staples Center, Nokia Center, The Galaxy Theatre).
+
+     🔴 THE `fallback` RULE ABOVE MUST STAY FIRST. It is a prefix of this one, and matching
+     in the other order would classify the generic closed-door image as a real photograph of
+     a venue — which publishes, where `site-fallback` deliberately does not.
+
+     Tier 2, and its own source rather than `venue-places`: the point of the union is a
+     greppable blast radius per host, and these did not come from Google. */
+  [/^\/images\/venues\//, { tier: 2, source: "venue-archival" }],
 ];
 
 /**

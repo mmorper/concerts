@@ -289,7 +289,8 @@
             "y": 0,
             "w": 1,
             "h": 0.9375
-          }
+          },
+          "hero": true
         },
         "CA4B6D47-1BE5-4381-877D-8AA7E336CC68": {
           "verdict": "keep",
@@ -1626,31 +1627,17 @@
       }
     },
     "2024-12-06": {
-      "reviewed": 15,
-      "decidedAt": "2026-08-29T21:25:06.948Z",
+      "reviewed": 16,
+      "decidedAt": "2026-08-29T23:05:45.204Z",
       "decisions": {
         "083330D8-A8D6-47E8-B43F-D8D190BEDA95": {
-          "verdict": "keep",
-          "artist": "Social Distortion",
-          "subject": "performer",
-          "crop": {
-            "x": 0.3366,
-            "y": 0,
-            "w": 0.4374,
-            "h": 1
-          }
+          "verdict": "reject"
+        },
+        "1DD76B03-EE57-47B6-BA76-35F074E08CB2": {
+          "verdict": "reject"
         },
         "2FAB2EB6-88B5-4747-B5BC-A27C9969986C": {
-          "verdict": "keep",
-          "artist": "Social Distortion",
-          "subject": "performer",
-          "hero": true,
-          "crop": {
-            "x": 0.3058,
-            "y": 0,
-            "w": 0.5039,
-            "h": 1
-          }
+          "verdict": "reject"
         },
         "3387A3FA-F847-4CC5-9F42-76A692369946": {
           "verdict": "reject"
@@ -1659,18 +1646,19 @@
           "verdict": "reject"
         },
         "66B1DC82-62AB-48CA-8342-941D2B08F0F1": {
-          "verdict": "reject"
-        },
-        "9992FE22-32DB-4A83-8F02-429649007FA6": {
           "verdict": "keep",
           "artist": "Social Distortion",
           "subject": "performer",
+          "hero": true,
           "crop": {
-            "x": 0.3192,
-            "y": 0,
-            "w": 0.4236,
-            "h": 1
+            "x": 0.2296,
+            "y": 0.1667,
+            "w": 0.5,
+            "h": 0.8333
           }
+        },
+        "9992FE22-32DB-4A83-8F02-429649007FA6": {
+          "verdict": "reject"
         },
         "9C3833CF-8185-46EC-8987-46A485F36504": {
           "verdict": "reject"
@@ -1682,15 +1670,7 @@
           "verdict": "reject"
         },
         "B2B35936-2A56-4DBC-BBD3-9320DFCBA7BC": {
-          "verdict": "keep",
-          "artist": "Social Distortion",
-          "subject": "performer",
-          "crop": {
-            "x": 0.3188,
-            "y": 0,
-            "w": 0.4236,
-            "h": 1
-          }
+          "verdict": "reject"
         },
         "BF7EA8E8-BC1D-4657-B2FA-76897F84D7E2": {
           "verdict": "reject"
@@ -1705,6 +1685,27 @@
           "verdict": "reject"
         },
         "C4E3BDA7-1281-430B-9ADA-8DA579D59C39": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2025-03-07": {
+      "reviewed": 5,
+      "decidedAt": "2026-08-29T22:59:12.920Z",
+      "decisions": {
+        "14A9B37A-C27E-4036-B103-6A85A7F7FD50": {
+          "verdict": "reject"
+        },
+        "17D33EA2-4CEC-4427-A0D6-3AA66D420ED7": {
+          "verdict": "reject"
+        },
+        "68E68CDD-1BA8-4291-BECB-F38020260332": {
+          "verdict": "reject"
+        },
+        "ECE65687-1B3B-4EE8-8ACF-31DC47F073F9": {
+          "verdict": "reject"
+        },
+        "F49A65FE-B1E5-4E65-8BF9-34B8DA39ECE3": {
           "verdict": "reject"
         }
       }

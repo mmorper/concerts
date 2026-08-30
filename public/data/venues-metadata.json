@@ -102,11 +102,17 @@
     "notes": "Demolished for residential development",
     "places": null,
     "fetchedAt": "2026-08-29T21:09:52.244Z",
-    "manualPhotos": null,
+    "manualPhotos": [
+      {
+        "url": "/images/venues/irvinemeadows-1.jpg",
+        "width": 1200,
+        "height": 800
+      }
+    ],
     "photoUrls": {
-      "thumbnail": "/images/venues/fallback.jpg",
-      "medium": "/images/venues/fallback.jpg",
-      "large": "/images/venues/fallback.jpg"
+      "thumbnail": "/images/venues/irvinemeadows-1.jpg?w=400",
+      "medium": "/images/venues/irvinemeadows-1.jpg?w=800",
+      "large": "/images/venues/irvinemeadows-1.jpg"
     }
   },
   "knots-berry-farm": {
@@ -611,11 +617,17 @@
     "notes": "Demolished for SoFi Stadium development",
     "places": null,
     "fetchedAt": "2026-08-29T21:09:52.950Z",
-    "manualPhotos": null,
+    "manualPhotos": [
+      {
+        "url": "/images/venues/hollywoodparkracetrack-1.jpg",
+        "width": 1200,
+        "height": 800
+      }
+    ],
     "photoUrls": {
-      "thumbnail": "/images/venues/fallback.jpg",
-      "medium": "/images/venues/fallback.jpg",
-      "large": "/images/venues/fallback.jpg"
+      "thumbnail": "/images/venues/hollywoodparkracetrack-1.jpg?w=400",
+      "medium": "/images/venues/hollywoodparkracetrack-1.jpg?w=800",
+      "large": "/images/venues/hollywoodparkracetrack-1.jpg"
     }
   },
   "los-angeles-memorial-coliseum": {
@@ -1056,10 +1068,17 @@
     },
     "fetchedAt": "2026-08-29T21:09:53.464Z",
     "photoUrls": {
-      "thumbnail": "/images/venues/fallback-active.jpg",
-      "medium": "/images/venues/fallback-active.jpg",
-      "large": "/images/venues/fallback-active.jpg"
-    }
+      "thumbnail": "/images/venues/crawfordhall-1.jpg?w=400",
+      "medium": "/images/venues/crawfordhall-1.jpg?w=800",
+      "large": "/images/venues/crawfordhall-1.jpg"
+    },
+    "manualPhotos": [
+      {
+        "url": "/images/venues/crawfordhall-1.jpg",
+        "width": 1200,
+        "height": 800
+      }
+    ]
   },
   "caliente-racetrack": {
     "name": "Caliente Racetrack",
@@ -2096,11 +2115,17 @@
     "notes": "Demolished and rebuilt as Gibson Amphitheatre",
     "places": null,
     "fetchedAt": "2026-08-29T21:09:54.890Z",
-    "manualPhotos": null,
+    "manualPhotos": [
+      {
+        "url": "/images/venues/universalamphitheater-1.jpg",
+        "width": 1200,
+        "height": 800
+      }
+    ],
     "photoUrls": {
-      "thumbnail": "/images/venues/fallback.jpg",
-      "medium": "/images/venues/fallback.jpg",
-      "large": "/images/venues/fallback.jpg"
+      "thumbnail": "/images/venues/universalamphitheater-1.jpg?w=400",
+      "medium": "/images/venues/universalamphitheater-1.jpg?w=800",
+      "large": "/images/venues/universalamphitheater-1.jpg"
     }
   },
   "jets": {
@@ -3584,11 +3609,17 @@
     "notes": "Renamed The Observatory",
     "places": null,
     "fetchedAt": "2026-08-29T21:09:57.653Z",
-    "manualPhotos": null,
+    "manualPhotos": [
+      {
+        "url": "/images/venues/thegalaxytheatre-1.jpg",
+        "width": 1200,
+        "height": 800
+      }
+    ],
     "photoUrls": {
-      "thumbnail": "/images/venues/fallback.jpg",
-      "medium": "/images/venues/fallback.jpg",
-      "large": "/images/venues/fallback.jpg"
+      "thumbnail": "/images/venues/thegalaxytheatre-1.jpg?w=400",
+      "medium": "/images/venues/thegalaxytheatre-1.jpg?w=800",
+      "large": "/images/venues/thegalaxytheatre-1.jpg"
     }
   },
   "greek-theatre": {
@@ -4889,11 +4920,17 @@
     "notes": "Renamed Crypto.com Arena",
     "places": null,
     "fetchedAt": "2026-08-29T21:09:59.131Z",
-    "manualPhotos": null,
+    "manualPhotos": [
+      {
+        "url": "/images/venues/staplescenter-1.jpg",
+        "width": 1200,
+        "height": 800
+      }
+    ],
     "photoUrls": {
-      "thumbnail": "/images/venues/fallback.jpg",
-      "medium": "/images/venues/fallback.jpg",
-      "large": "/images/venues/fallback.jpg"
+      "thumbnail": "/images/venues/staplescenter-1.jpg?w=400",
+      "medium": "/images/venues/staplescenter-1.jpg?w=800",
+      "large": "/images/venues/staplescenter-1.jpg"
     }
   },
   "nokia-center": {
@@ -4924,11 +4961,17 @@
     "notes": "Renamed Microsoft Theater (now Peacock Theater)",
     "places": null,
     "fetchedAt": "2026-08-29T21:09:59.131Z",
-    "manualPhotos": null,
+    "manualPhotos": [
+      {
+        "url": "/images/venues/nokiacenter-1.jpg",
+        "width": 1200,
+        "height": 800
+      }
+    ],
     "photoUrls": {
-      "thumbnail": "/images/venues/fallback.jpg",
-      "medium": "/images/venues/fallback.jpg",
-      "large": "/images/venues/fallback.jpg"
+      "thumbnail": "/images/venues/nokiacenter-1.jpg?w=400",
+      "medium": "/images/venues/nokiacenter-1.jpg?w=800",
+      "large": "/images/venues/nokiacenter-1.jpg"
     }
   },
   "doheny": {
@@ -8061,11 +8104,17 @@
     "notes": "Demolished",
     "places": null,
     "fetchedAt": "2026-08-29T21:10:03.321Z",
-    "manualPhotos": null,
+    "manualPhotos": [
+      {
+        "url": "/images/venues/rfkstadium-1.jpg",
+        "width": 1200,
+        "height": 800
+      }
+    ],
     "photoUrls": {
-      "thumbnail": "/images/venues/fallback.jpg",
-      "medium": "/images/venues/fallback.jpg",
-      "large": "/images/venues/fallback.jpg"
+      "thumbnail": "/images/venues/rfkstadium-1.jpg?w=400",
+      "medium": "/images/venues/rfkstadium-1.jpg?w=800",
+      "large": "/images/venues/rfkstadium-1.jpg"
     }
   },
   "bethesda-jazz-and-blues-club": {
