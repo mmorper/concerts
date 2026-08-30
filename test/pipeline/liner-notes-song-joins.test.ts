@@ -152,9 +152,14 @@ describe('the joins themselves', () => {
   })
 
   it('rare-sighting finds the shape of the only night', () => {
+    // "Glory Days" until #440. That closer came from the 2 October 1985 setlist — a
+    // different night of the same Coliseum run — because the matcher scored venue, city
+    // and artist and never looked at the date. The night actually attended, 29 September,
+    // closed on a Creedence cover.
     const bruce = dp('rare-sighting-bruce-springsteen')
     expect(bruce?.openedWith).toBe('Born in the U.S.A.')
-    expect(bruce?.closedWith).toBe('Glory Days')
+    // The detector renders a cover with its original artist, as it does everywhere.
+    expect(bruce?.closedWith).toBe("Travelin' Band (Creedence Clearwater Revival cover)")
   })
 })
 

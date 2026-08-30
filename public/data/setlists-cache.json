@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-08-29T22:35:04.949Z",
+  "generatedAt": "2026-08-29T23:16:34.934Z",
   "entries": [
     {
       "concertId": "concert-1",
@@ -114,7 +114,7 @@
       "venue": "Irvine Meadows",
       "city": "Irvine",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:16.293Z",
+      "fetchedAt": "2026-08-29T23:13:08.508Z",
       "error": "API error: 404 "
     },
     {
@@ -195,7 +195,7 @@
       "venue": "Irvine Meadows",
       "city": "Irvine",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:18.547Z"
+      "fetchedAt": "2026-08-29T23:13:10.754Z"
     },
     {
       "concertId": "concert-5",
@@ -657,7 +657,7 @@
       "venue": "Irvine Meadows",
       "city": "Irvine",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:20.272Z",
+      "fetchedAt": "2026-08-29T23:13:12.476Z",
       "error": "API error: 404 "
     },
     {
@@ -895,10 +895,10 @@
       "venue": "Los Angeles Memorial Coliseum",
       "city": "Los Angeles",
       "setlist": {
-        "id": "53d7b355",
-        "versionId": "gb79b5e2",
-        "eventDate": "02-10-1985",
-        "lastUpdated": "2025-10-06T01:50:48.882+0000",
+        "id": "5bd7b350",
+        "versionId": "gb79b5de",
+        "eventDate": "29-09-1985",
+        "lastUpdated": "2025-10-06T01:52:29.909+0000",
         "artist": {
           "mbid": "70248960-cb53-4ea4-943a-edb18f7d336f",
           "name": "Bruce Springsteen",
@@ -949,7 +949,7 @@
                   "name": "Seeds"
                 },
                 {
-                  "name": "Darkness on the Edge of Town"
+                  "name": "Atlantic City"
                 },
                 {
                   "name": "The River"
@@ -973,7 +973,7 @@
                     "mbid": "2caa54a7-b08c-41da-b892-3a41abe778be",
                     "name": "Jimmy Cliff",
                     "sortName": "Cliff, Jimmy",
-                    "disambiguation": "",
+                    "disambiguation": "Jamaican ska, rocksteady, reggae and soul musician",
                     "url": "https://www.setlist.fm/setlists/jimmy-cliff-7bd6cec4.html"
                   }
                 },
@@ -981,7 +981,7 @@
                   "name": "I'm Goin' Down"
                 },
                 {
-                  "name": "Prove It All Night"
+                  "name": "Glory Days"
                 },
                 {
                   "name": "The Promised Land"
@@ -1010,17 +1010,16 @@
                   "name": "Cadillac Ranch"
                 },
                 {
-                  "name": "No Surrender",
-                  "info": "acoustic"
+                  "name": "Downbound Train"
                 },
                 {
                   "name": "I'm on Fire"
                 },
                 {
-                  "name": "Growin' Up"
+                  "name": "Pink Cadillac"
                 },
                 {
-                  "name": "Rosalita (Come Out Tonight)"
+                  "name": "Bobby Jean"
                 }
               ]
             },
@@ -1028,21 +1027,17 @@
               "encore": 1,
               "song": [
                 {
-                  "name": "This Land Is Your Land",
+                  "name": "Can't Help Falling in Love",
                   "cover": {
-                    "mbid": "cbd827e1-4e38-427e-a436-642683433732",
-                    "name": "Woody Guthrie",
-                    "sortName": "Guthrie, Woody",
-                    "disambiguation": "American singer-songwriter",
-                    "url": "https://www.setlist.fm/setlists/woody-guthrie-7bd6264c.html"
-                  },
-                  "info": "Bruce solo"
+                    "mbid": "01809552-4f87-45b0-afff-2c6f0730a3be",
+                    "name": "Elvis Presley",
+                    "sortName": "Presley, Elvis",
+                    "disambiguation": "“The King of Rock and Roll”",
+                    "url": "https://www.setlist.fm/setlists/elvis-presley-73d6a2b1.html"
+                  }
                 },
                 {
                   "name": "Born to Run"
-                },
-                {
-                  "name": "Bobby Jean"
                 },
                 {
                   "name": "Ramrod"
@@ -1068,7 +1063,8 @@
                   }
                 },
                 {
-                  "name": "Stand on It"
+                  "name": "Stand on It",
+                  "info": "with Jon Landau"
                 },
                 {
                   "name": "Travelin' Band",
@@ -1078,43 +1074,16 @@
                     "sortName": "Creedence Clearwater Revival",
                     "disambiguation": "",
                     "url": "https://www.setlist.fm/setlists/creedence-clearwater-revival-5bd69794.html"
-                  }
-                },
-                {
-                  "name": "Rockin' All Over the World",
-                  "cover": {
-                    "mbid": "c3649208-0ebe-449b-b1d7-4bd6c560f109",
-                    "name": "John Fogerty",
-                    "sortName": "Fogerty, John",
-                    "disambiguation": "",
-                    "url": "https://www.setlist.fm/setlists/john-fogerty-53d63fc1.html"
                   },
-                  "with": {
-                    "mbid": "4530bdd0-9707-442e-b37e-578def6a0926",
-                    "name": "Jon Landau",
-                    "sortName": "Landau, Jon",
-                    "disambiguation": "",
-                    "url": "https://www.setlist.fm/setlists/jon-landau-33d5d0e1.html"
-                  }
-                },
-                {
-                  "name": "Glory Days",
-                  "with": {
-                    "mbid": "4530bdd0-9707-442e-b37e-578def6a0926",
-                    "name": "Jon Landau",
-                    "sortName": "Landau, Jon",
-                    "disambiguation": "",
-                    "url": "https://www.setlist.fm/setlists/jon-landau-33d5d0e1.html"
-                  }
+                  "info": "with Jon Landau"
                 }
               ]
             }
           ]
         },
-        "info": "The final show of the Born In The U.S.A. Tour. Soundcheck included: \"I Don't Want to Go Home\" and \"Blinded by the Light\".",
-        "url": "https://www.setlist.fm/setlist/bruce-springsteen/1985/los-angeles-memorial-coliseum-los-angeles-ca-53d7b355.html"
+        "url": "https://www.setlist.fm/setlist/bruce-springsteen/1985/los-angeles-memorial-coliseum-los-angeles-ca-5bd7b350.html"
       },
-      "fetchedAt": "2026-01-05T05:40:39.122Z"
+      "fetchedAt": "2026-08-29T23:13:14.744Z"
     },
     {
       "concertId": "concert-12",
@@ -1170,7 +1139,7 @@
       "venue": "Irvine Meadows",
       "city": "Irvine",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:22.513Z"
+      "fetchedAt": "2026-08-29T23:13:16.471Z"
     },
     {
       "concertId": "concert-13",
@@ -1279,43 +1248,8 @@
       "date": "1986-04-15",
       "venue": "Crawford Hall",
       "city": "Irvine",
-      "setlist": {
-        "id": "bfc0dfa",
-        "versionId": "53aa7f05",
-        "eventDate": "15-02-1986",
-        "lastUpdated": "2016-08-28T08:46:14.000+0000",
-        "artist": {
-          "mbid": "115930ad-f040-4689-b9ef-0da94dcb63e8",
-          "name": "Blancmange",
-          "sortName": "Blancmange",
-          "disambiguation": "",
-          "url": "https://www.setlist.fm/setlists/blancmange-7bd6baac.html"
-        },
-        "venue": {
-          "id": "4bd4635a",
-          "name": "Crawford Hall",
-          "city": {
-            "id": "5359777",
-            "name": "Irvine",
-            "state": "California",
-            "stateCode": "CA",
-            "coords": {
-              "lat": 33.6694649,
-              "long": -117.8231107
-            },
-            "country": {
-              "code": "US",
-              "name": "United States"
-            }
-          },
-          "url": "https://www.setlist.fm/venue/crawford-hall-irvine-ca-usa-4bd4635a.html"
-        },
-        "sets": {
-          "set": []
-        },
-        "url": "https://www.setlist.fm/setlist/blancmange/1986/crawford-hall-irvine-ca-bfc0dfa.html"
-      },
-      "fetchedAt": "2026-01-05T05:40:46.392Z"
+      "setlist": null,
+      "fetchedAt": "2026-08-29T23:13:18.211Z"
     },
     {
       "concertId": "concert-15",
@@ -1934,7 +1868,7 @@
       "venue": "Disneyland",
       "city": "Anaheim",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:24.235Z",
+      "fetchedAt": "2026-08-29T23:13:19.959Z",
       "error": "API error: 404 "
     },
     {
@@ -2363,10 +2297,10 @@
       "venue": "Irvine Meadows",
       "city": "Irvine",
       "setlist": {
-        "id": "53dd9ff1",
-        "versionId": "g239bf01b",
-        "eventDate": "09-10-1988",
-        "lastUpdated": "2023-08-20T03:01:11.962+0000",
+        "id": "1bc70d94",
+        "versionId": "g339bf019",
+        "eventDate": "07-10-1988",
+        "lastUpdated": "2023-08-20T03:01:12.010+0000",
         "artist": {
           "mbid": "ccb8f30e-4d71-40c4-8b1d-846dafe73e2c",
           "name": "George Michael",
@@ -2407,7 +2341,20 @@
                   "name": "Hard Day"
                 },
                 {
-                  "name": "Too Shy to Say",
+                  "name": "Father Figure"
+                },
+                {
+                  "name": "I'm Your Man",
+                  "cover": {
+                    "mbid": "d570bb31-b9ca-45a4-a2d9-11b186d9c159",
+                    "name": "Wham!",
+                    "sortName": "Wham!",
+                    "disambiguation": "British pop-duo",
+                    "url": "https://www.setlist.fm/setlists/wham-1bd6bd4c.html"
+                  }
+                },
+                {
+                  "name": "Love's in Need of Love Today",
                   "cover": {
                     "mbid": "1ee18fb3-18a6-4c7f-8ba0-bc41cdd0462e",
                     "name": "Stevie Wonder",
@@ -2427,20 +2374,16 @@
                   }
                 },
                 {
-                  "name": "I'm Your Man",
-                  "cover": {
-                    "mbid": "d570bb31-b9ca-45a4-a2d9-11b186d9c159",
-                    "name": "Wham!",
-                    "sortName": "Wham!",
-                    "disambiguation": "British pop-duo",
-                    "url": "https://www.setlist.fm/setlists/wham-1bd6bd4c.html"
-                  }
-                },
-                {
-                  "name": "Father Figure"
+                  "name": "A Different Corner"
                 },
                 {
                   "name": "Faith"
+                },
+                {
+                  "name": "Monkey"
+                },
+                {
+                  "name": "Hand to Mouth"
                 },
                 {
                   "name": "Play That Funky Music",
@@ -2453,13 +2396,7 @@
                   }
                 },
                 {
-                  "name": "Monkey"
-                },
-                {
                   "name": "One More Try"
-                },
-                {
-                  "name": "Hand to Mouth"
                 },
                 {
                   "name": "I Knew You Were Waiting (For Me)",
@@ -2472,7 +2409,7 @@
                   }
                 },
                 {
-                  "name": "A Different Corner"
+                  "name": "Look at Your Hands"
                 },
                 {
                   "name": "Careless Whisper"
@@ -2486,22 +2423,17 @@
                     "disambiguation": "70s US disco group produced by Bob Crewe",
                     "url": "https://www.setlist.fm/setlists/the-eleventh-hour-7bd7b648.html"
                   }
-                }
-              ]
-            },
-            {
-              "encore": 1,
-              "song": [
+                },
                 {
-                  "name": "I Want Your Sex, Parts I & II"
+                  "name": "A Last Request (I Want Your Sex, Part III)"
                 }
               ]
             }
           ]
         },
-        "url": "https://www.setlist.fm/setlist/george-michael/1988/irvine-meadows-amphitheatre-irvine-ca-53dd9ff1.html"
+        "url": "https://www.setlist.fm/setlist/george-michael/1988/irvine-meadows-amphitheatre-irvine-ca-1bc70d94.html"
       },
-      "fetchedAt": "2026-01-05T05:41:23.614Z"
+      "fetchedAt": "2026-08-29T23:13:22.192Z"
     },
     {
       "concertId": "concert-25",
@@ -2509,43 +2441,8 @@
       "date": "1988-10-15",
       "venue": "Arizona Veterans Memorial Coliseum",
       "city": "Phoenix",
-      "setlist": {
-        "id": "53d9dff1",
-        "versionId": "2b93f882",
-        "eventDate": "06-11-1988",
-        "lastUpdated": "2014-05-27T03:33:52.000+0000",
-        "artist": {
-          "mbid": "ebfc1398-8d96-47e3-82c3-f782abcdb13d",
-          "name": "The Beach Boys",
-          "sortName": "Beach Boys, The",
-          "disambiguation": "American rock band",
-          "url": "https://www.setlist.fm/setlists/the-beach-boys-3d6c17b.html"
-        },
-        "venue": {
-          "id": "73d62655",
-          "name": "Arizona Veterans Memorial Coliseum",
-          "city": {
-            "id": "5308655",
-            "name": "Phoenix",
-            "state": "Arizona",
-            "stateCode": "AZ",
-            "coords": {
-              "lat": 33.4483771,
-              "long": -112.0740373
-            },
-            "country": {
-              "code": "US",
-              "name": "United States"
-            }
-          },
-          "url": "https://www.setlist.fm/venue/arizona-veterans-memorial-coliseum-phoenix-az-usa-73d62655.html"
-        },
-        "sets": {
-          "set": []
-        },
-        "url": "https://www.setlist.fm/setlist/the-beach-boys/1988/arizona-veterans-memorial-coliseum-phoenix-az-53d9dff1.html"
-      },
-      "fetchedAt": "2026-01-05T05:41:25.463Z"
+      "setlist": null,
+      "fetchedAt": "2026-08-29T23:13:23.925Z"
     },
     {
       "concertId": "concert-26",
@@ -2554,10 +2451,10 @@
       "venue": "Irvine Meadows",
       "city": "Irvine",
       "setlist": {
-        "id": "5bbe8fcc",
-        "versionId": "g2be3c436",
-        "eventDate": "31-10-1988",
-        "lastUpdated": "2022-12-20T17:27:52.242+0000",
+        "id": "6bfdd67e",
+        "versionId": "g6be44eee",
+        "eventDate": "29-10-1988",
+        "lastUpdated": "2022-11-22T04:41:57.198+0000",
         "artist": {
           "mbid": "166bc1cb-a2b7-412d-bcd5-5f439d2cf5f1",
           "name": "Oingo Boingo",
@@ -2585,88 +2482,11 @@
           "url": "https://www.setlist.fm/venue/irvine-meadows-amphitheatre-irvine-ca-usa-3d28187.html"
         },
         "sets": {
-          "set": [
-            {
-              "song": [
-                {
-                  "name": "Dead Man's Party"
-                },
-                {
-                  "name": "Home Again"
-                },
-                {
-                  "name": "Gratitude",
-                  "cover": {
-                    "mbid": "5b24fbab-c58f-4c37-a59d-ab232e2d98c4",
-                    "name": "Danny Elfman",
-                    "sortName": "Elfman, Danny",
-                    "disambiguation": "American singer and score composer",
-                    "url": "https://www.setlist.fm/setlists/danny-elfman-2bd6f076.html"
-                  }
-                },
-                {
-                  "name": "Dead or Alive"
-                },
-                {
-                  "name": "Private Life"
-                },
-                {
-                  "name": "Help Me"
-                },
-                {
-                  "name": "My Life"
-                },
-                {
-                  "name": "Cinderella Undercover"
-                },
-                {
-                  "name": "Winning Side"
-                },
-                {
-                  "name": "Sweat"
-                },
-                {
-                  "name": "We Close Our Eyes"
-                },
-                {
-                  "name": "Grey Matter"
-                },
-                {
-                  "name": "Pain"
-                },
-                {
-                  "name": "No One Lives Forever"
-                },
-                {
-                  "name": "It Only Makes Me Laugh",
-                  "cover": {
-                    "mbid": "5b24fbab-c58f-4c37-a59d-ab232e2d98c4",
-                    "name": "Danny Elfman",
-                    "sortName": "Elfman, Danny",
-                    "disambiguation": "American singer and score composer",
-                    "url": "https://www.setlist.fm/setlists/danny-elfman-2bd6f076.html"
-                  }
-                },
-                {
-                  "name": "Just Another Day"
-                },
-                {
-                  "name": "Not My Slave"
-                },
-                {
-                  "name": "Stay"
-                },
-                {
-                  "name": "Elevator Man"
-                }
-              ]
-            }
-          ]
+          "set": []
         },
-        "info": "Setlist incomplete",
-        "url": "https://www.setlist.fm/setlist/oingo-boingo/1988/irvine-meadows-amphitheatre-irvine-ca-5bbe8fcc.html"
+        "url": "https://www.setlist.fm/setlist/oingo-boingo/1988/irvine-meadows-amphitheatre-irvine-ca-6bfdd67e.html"
       },
-      "fetchedAt": "2026-01-05T05:41:27.290Z"
+      "fetchedAt": "2026-08-29T23:13:25.665Z"
     },
     {
       "concertId": "concert-27",
@@ -2831,7 +2651,7 @@
       "venue": "Jets",
       "city": "Long Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:26.471Z",
+      "fetchedAt": "2026-08-29T23:13:27.388Z",
       "error": "API error: 404 "
     },
     {
@@ -2990,7 +2810,8 @@
         },
         "url": "https://www.setlist.fm/setlist/erasure/1990/great-western-forum-inglewood-ca-13c21d6d.html"
       },
-      "fetchedAt": "2026-01-05T05:41:35.147Z"
+      "fetchedAt": "2026-01-05T05:41:35.147Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-31",
@@ -3178,43 +2999,8 @@
       "date": "1990-08-09",
       "venue": "Hollywood Palladium",
       "city": "Hollywood",
-      "setlist": {
-        "id": "2b86c0f6",
-        "versionId": "433e6737",
-        "eventDate": "19-09-1990",
-        "lastUpdated": "2020-04-19T11:38:53.713+0000",
-        "artist": {
-          "mbid": "f9776598-2689-41db-98d3-829f5510021c",
-          "name": "Jesus Jones",
-          "sortName": "Jesus Jones",
-          "disambiguation": "",
-          "url": "https://www.setlist.fm/setlists/jesus-jones-43d67373.html"
-        },
-        "venue": {
-          "id": "6bd75676",
-          "name": "Hollywood Live",
-          "city": {
-            "id": "5368361",
-            "name": "Los Angeles",
-            "state": "California",
-            "stateCode": "CA",
-            "coords": {
-              "lat": 34.052,
-              "long": -118.244
-            },
-            "country": {
-              "code": "US",
-              "name": "United States"
-            }
-          },
-          "url": "https://www.setlist.fm/venue/hollywood-live-los-angeles-ca-usa-6bd75676.html"
-        },
-        "sets": {
-          "set": []
-        },
-        "url": "https://www.setlist.fm/setlist/jesus-jones/1990/hollywood-live-los-angeles-ca-2b86c0f6.html"
-      },
-      "fetchedAt": "2026-01-05T05:41:40.663Z"
+      "setlist": null,
+      "fetchedAt": "2026-08-29T23:13:29.631Z"
     },
     {
       "concertId": "concert-33",
@@ -3223,7 +3009,7 @@
       "venue": "Hollywood Palladium",
       "city": "Hollywood",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:28.703Z",
+      "fetchedAt": "2026-08-29T23:13:31.359Z",
       "error": "API error: 404 "
     },
     {
@@ -3233,7 +3019,7 @@
       "venue": "Cal State Fullerton",
       "city": "Fullerton",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:30.928Z",
+      "fetchedAt": "2026-08-29T23:13:33.590Z",
       "error": "API error: 404 "
     },
     {
@@ -3281,7 +3067,8 @@
         },
         "url": "https://www.setlist.fm/setlist/bell-biv-devoe/1991/great-western-forum-inglewood-ca-43f1e7a3.html"
       },
-      "fetchedAt": "2026-01-05T06:14:17.736Z"
+      "fetchedAt": "2026-01-05T06:14:17.736Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-36",
@@ -3325,7 +3112,8 @@
         },
         "url": "https://www.setlist.fm/setlist/johnny-gill/1991/great-western-forum-inglewood-ca-b9fb1c6.html"
       },
-      "fetchedAt": "2026-01-05T05:41:49.043Z"
+      "fetchedAt": "2026-01-05T05:41:49.043Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-36",
@@ -3369,7 +3157,8 @@
         },
         "url": "https://www.setlist.fm/setlist/keith-sweat/1991/great-western-forum-inglewood-ca-139fb1c1.html"
       },
-      "fetchedAt": "2026-01-05T05:41:50.877Z"
+      "fetchedAt": "2026-01-05T05:41:50.877Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-34",
@@ -3823,7 +3612,7 @@
       "venue": "Long Beach Arena",
       "city": "Long Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:33.163Z",
+      "fetchedAt": "2026-08-29T23:13:35.825Z",
       "error": "API error: 404 "
     },
     {
@@ -3832,43 +3621,8 @@
       "date": "1991-09-08",
       "venue": "Long Beach Arena",
       "city": "Long Beach",
-      "setlist": {
-        "id": "1b84a1d8",
-        "versionId": "6339a25f",
-        "eventDate": "24-02-1991",
-        "lastUpdated": "2020-06-27T05:25:19.085+0000",
-        "artist": {
-          "mbid": "fc6548d9-cc7e-4311-bd6c-6eba9c0cd06f",
-          "name": "Maxi Priest",
-          "sortName": "Priest, Maxi",
-          "disambiguation": "British reggae vocalist of Jamaican descent",
-          "url": "https://www.setlist.fm/setlists/maxi-priest-1bd6d900.html"
-        },
-        "venue": {
-          "id": "bd63982",
-          "name": "Long Beach Arena",
-          "city": {
-            "id": "5367929",
-            "name": "Long Beach",
-            "state": "California",
-            "stateCode": "CA",
-            "coords": {
-              "lat": 33.7669623,
-              "long": -118.1892348
-            },
-            "country": {
-              "code": "US",
-              "name": "United States"
-            }
-          },
-          "url": "https://www.setlist.fm/venue/long-beach-arena-long-beach-ca-usa-bd63982.html"
-        },
-        "sets": {
-          "set": []
-        },
-        "url": "https://www.setlist.fm/setlist/maxi-priest/1991/long-beach-arena-long-beach-ca-1b84a1d8.html"
-      },
-      "fetchedAt": "2026-01-05T06:14:21.796Z"
+      "setlist": null,
+      "fetchedAt": "2026-08-29T23:13:38.066Z"
     },
     {
       "concertId": "concert-37",
@@ -3876,43 +3630,8 @@
       "date": "1991-09-08",
       "venue": "Long Beach Arena",
       "city": "Long Beach",
-      "setlist": {
-        "id": "384a1db",
-        "versionId": "7b39a264",
-        "eventDate": "24-02-1991",
-        "lastUpdated": "2020-06-27T05:24:12.246+0000",
-        "artist": {
-          "mbid": "617f2574-c2bd-4e39-9627-34fc9742a024",
-          "name": "Aswad",
-          "sortName": "Aswad",
-          "disambiguation": "British reggae group",
-          "url": "https://www.setlist.fm/setlists/aswad-43d6cf5b.html"
-        },
-        "venue": {
-          "id": "bd63982",
-          "name": "Long Beach Arena",
-          "city": {
-            "id": "5367929",
-            "name": "Long Beach",
-            "state": "California",
-            "stateCode": "CA",
-            "coords": {
-              "lat": 33.7669623,
-              "long": -118.1892348
-            },
-            "country": {
-              "code": "US",
-              "name": "United States"
-            }
-          },
-          "url": "https://www.setlist.fm/venue/long-beach-arena-long-beach-ca-usa-bd63982.html"
-        },
-        "sets": {
-          "set": []
-        },
-        "url": "https://www.setlist.fm/setlist/aswad/1991/long-beach-arena-long-beach-ca-384a1db.html"
-      },
-      "fetchedAt": "2026-01-05T05:42:09.656Z"
+      "setlist": null,
+      "fetchedAt": "2026-08-29T23:13:39.797Z"
     },
     {
       "concertId": "concert-37",
@@ -3921,7 +3640,7 @@
       "venue": "Long Beach Arena",
       "city": "Long Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:35.385Z",
+      "fetchedAt": "2026-08-29T23:13:41.525Z",
       "error": "API error: 404 "
     },
     {
@@ -4635,7 +4354,7 @@
       "venue": "Olympic Velodrome",
       "city": "Carson",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:37.625Z"
+      "fetchedAt": "2026-08-29T23:13:43.752Z"
     },
     {
       "concertId": "concert-42",
@@ -4855,7 +4574,7 @@
       "venue": "Olympic Velodrome",
       "city": "Carson",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:39.355Z"
+      "fetchedAt": "2026-08-29T23:13:45.476Z"
     },
     {
       "concertId": "concert-42",
@@ -4864,7 +4583,7 @@
       "venue": "Olympic Velodrome",
       "city": "Carson",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:41.101Z"
+      "fetchedAt": "2026-08-29T23:13:47.198Z"
     },
     {
       "concertId": "concert-42",
@@ -4999,7 +4718,8 @@
         },
         "url": "https://www.setlist.fm/setlist/tears-for-fears/1993/universal-amphitheatre-universal-city-ca-2beb0cee.html"
       },
-      "fetchedAt": "2026-01-05T05:42:50.384Z"
+      "fetchedAt": "2026-01-05T05:42:50.384Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-44",
@@ -5187,7 +4907,7 @@
       "venue": "The Galaxy Theatre",
       "city": "Santa Ana",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:42.832Z",
+      "fetchedAt": "2026-08-29T23:13:48.919Z",
       "error": "API error: 404 "
     },
     {
@@ -5197,7 +4917,7 @@
       "venue": "The Galaxy Theatre",
       "city": "Santa Ana",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:45.078Z",
+      "fetchedAt": "2026-08-29T23:13:51.138Z",
       "error": "API error: 404 "
     },
     {
@@ -5383,7 +5103,8 @@
         },
         "url": "https://www.setlist.fm/setlist/jimmy-buffett/1997/irvine-meadows-amphitheatre-irvine-ca-7bd24e54.html"
       },
-      "fetchedAt": "2026-01-05T05:43:04.276Z"
+      "fetchedAt": "2026-01-05T05:43:04.276Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-48",
@@ -5535,7 +5256,7 @@
       "venue": "Club Caprice",
       "city": "Redondo Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:47.300Z",
+      "fetchedAt": "2026-08-29T23:13:53.376Z",
       "error": "API error: 404 "
     },
     {
@@ -5545,7 +5266,7 @@
       "venue": "Club Caprice",
       "city": "Redondo Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:49.520Z",
+      "fetchedAt": "2026-08-29T23:13:55.602Z",
       "error": "API error: 404 "
     },
     {
@@ -5555,7 +5276,7 @@
       "venue": "Club Caprice",
       "city": "Redondo Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:51.755Z",
+      "fetchedAt": "2026-08-29T23:13:57.825Z",
       "error": "API error: 404 "
     },
     {
@@ -5898,7 +5619,7 @@
       "venue": "Kia Forum",
       "city": "Inglewood",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:54.004Z"
+      "fetchedAt": "2026-08-29T23:14:00.085Z"
     },
     {
       "concertId": "concert-54",
@@ -5907,7 +5628,7 @@
       "venue": "Kia Forum",
       "city": "Inglewood",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:55.751Z"
+      "fetchedAt": "2026-08-29T23:14:01.910Z"
     },
     {
       "concertId": "concert-55",
@@ -6219,7 +5940,7 @@
       "venue": "The Grove of Anaheim",
       "city": "Anaheim",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:57.481Z",
+      "fetchedAt": "2026-08-29T23:14:03.636Z",
       "error": "API error: 404 "
     },
     {
@@ -7116,7 +6837,7 @@
       "venue": "Hyundai Pavilion",
       "city": "San Bernardino",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:32:59.744Z",
+      "fetchedAt": "2026-08-29T23:14:05.856Z",
       "error": "API error: 404 "
     },
     {
@@ -7441,10 +7162,10 @@
       "venue": "Hard Rock Hotel Las Vegas",
       "city": "Las Vegas",
       "setlist": {
-        "id": "13db3d4d",
-        "versionId": "g134d65f9",
-        "eventDate": "04-07-2005",
-        "lastUpdated": "2025-05-12T15:26:14.140+0000",
+        "id": "53cb9771",
+        "versionId": "3381cc41",
+        "eventDate": "23-03-2005",
+        "lastUpdated": "2015-03-01T17:31:30.000+0000",
         "artist": {
           "mbid": "e1e05cce-3922-44e1-8f20-015abe5e309d",
           "name": "Social Distortion",
@@ -7453,8 +7174,8 @@
           "url": "https://www.setlist.fm/setlists/social-distortion-6bd68aa6.html"
         },
         "venue": {
-          "id": "73d64e2d",
-          "name": "Desert Breeze Skate Park",
+          "id": "3d61dbb",
+          "name": "The Joint at Hard Rock Hotel",
           "city": {
             "id": "5506956",
             "name": "Las Vegas",
@@ -7469,100 +7190,14 @@
               "name": "United States"
             }
           },
-          "url": "https://www.setlist.fm/venue/desert-breeze-skate-park-las-vegas-nv-usa-73d64e2d.html"
+          "url": "https://www.setlist.fm/venue/the-joint-at-hard-rock-hotel-las-vegas-nv-usa-3d61dbb.html"
         },
         "sets": {
-          "set": [
-            {
-              "song": [
-                {
-                  "name": "Reach for the Sky"
-                },
-                {
-                  "name": "Highway 101"
-                },
-                {
-                  "name": "Under My Thumb",
-                  "cover": {
-                    "mbid": "b071f9fa-14b0-4217-8e97-eb41da73f598",
-                    "name": "The Rolling Stones",
-                    "sortName": "Rolling Stones, The",
-                    "disambiguation": "",
-                    "url": "https://www.setlist.fm/setlists/the-rolling-stones-bd6ad22.html"
-                  }
-                },
-                {
-                  "name": "Mommy's Little Monster"
-                },
-                {
-                  "name": "Lude Boy"
-                },
-                {
-                  "name": "When She Begins"
-                },
-                {
-                  "name": "1945"
-                },
-                {
-                  "name": "Sick Boys"
-                },
-                {
-                  "name": "Six More Miles (to the Graveyard)",
-                  "cover": {
-                    "mbid": "6aad1485-862b-42d4-ac7e-cfab197214d0",
-                    "name": "Hank Williams With His Drifting Cowboys",
-                    "sortName": "Williams, Hank, With His Drifting Cowboys",
-                    "disambiguation": "",
-                    "url": "https://www.setlist.fm/setlists/hank-williams-with-his-drifting-cowboys-3d66973.html"
-                  }
-                },
-                {
-                  "name": "Don't Take Me for Granted"
-                },
-                {
-                  "name": "Prison Bound"
-                },
-                {
-                  "name": "Sometimes I Do"
-                },
-                {
-                  "name": "Nickels and Dimes"
-                }
-              ]
-            },
-            {
-              "encore": 1,
-              "song": [
-                {
-                  "name": "Send Her Back",
-                  "cover": {
-                    "mbid": "48be7fe0-be60-447a-925f-fd3bb45f9b10",
-                    "name": "Al Ferrier",
-                    "sortName": "Ferrier, Al",
-                    "disambiguation": "",
-                    "url": "https://www.setlist.fm/setlists/al-ferrier-33d73075.html"
-                  }
-                },
-                {
-                  "name": "Ring of Fire",
-                  "cover": {
-                    "mbid": "ffd239cd-82c0-4a09-a949-8d664c34d581",
-                    "name": "Merle Kilgore",
-                    "sortName": "Kilgore, Merle",
-                    "disambiguation": "",
-                    "url": "https://www.setlist.fm/setlists/merle-kilgore-6bd7ca46.html"
-                  }
-                },
-                {
-                  "name": "Story of My Life"
-                }
-              ]
-            }
-          ]
+          "set": []
         },
-        "url": "https://www.setlist.fm/setlist/social-distortion/2005/desert-breeze-skate-park-las-vegas-nv-13db3d4d.html"
+        "url": "https://www.setlist.fm/setlist/social-distortion/2005/the-joint-at-hard-rock-hotel-las-vegas-nv-53cb9771.html"
       },
-      "fetchedAt": "2026-03-31T14:36:42.518Z"
+      "fetchedAt": "2026-08-29T23:14:08.091Z"
     },
     {
       "concertId": "concert-61",
@@ -7861,7 +7496,7 @@
       "venue": "Universal Amphitheater",
       "city": "Los Angeles",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:02.017Z",
+      "fetchedAt": "2026-08-29T23:14:09.820Z",
       "error": "API error: 404 "
     },
     {
@@ -7871,7 +7506,7 @@
       "venue": "Universal Amphitheater",
       "city": "Los Angeles",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:04.257Z",
+      "fetchedAt": "2026-08-29T23:14:12.053Z",
       "error": "API error: 404 "
     },
     {
@@ -7881,7 +7516,7 @@
       "venue": "The Coach House",
       "city": "San Juan Capistrano",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:06.484Z",
+      "fetchedAt": "2026-08-29T23:14:14.289Z",
       "error": "API error: 404 "
     },
     {
@@ -7992,7 +7627,8 @@
         "info": "filmed and relased on 2CD and DVD as \"Satriani Live!\"",
         "url": "https://www.setlist.fm/setlist/joe-satriani/2006/the-grove-of-anaheim-anaheim-ca-63d8e25f.html"
       },
-      "fetchedAt": "2026-03-31T14:36:55.973Z"
+      "fetchedAt": "2026-03-31T14:36:55.973Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-65",
@@ -8434,10 +8070,10 @@
       "venue": "The Coach House",
       "city": "San Juan Capistrano",
       "setlist": {
-        "id": "4b992b6e",
-        "versionId": "7b30bac8",
-        "eventDate": "06-10-2007",
-        "lastUpdated": "2020-03-15T22:35:06.393+0000",
+        "id": "7b9d4640",
+        "versionId": "530d9b11",
+        "eventDate": "02-06-2007",
+        "lastUpdated": "2019-11-09T11:12:30.808+0000",
         "artist": {
           "mbid": "c7cb9a2e-ff57-4bb8-bd2c-83524e18e369",
           "name": "Berlin",
@@ -8467,9 +8103,9 @@
         "sets": {
           "set": []
         },
-        "url": "https://www.setlist.fm/setlist/berlin/2007/the-coach-house-san-juan-capistrano-ca-4b992b6e.html"
+        "url": "https://www.setlist.fm/setlist/berlin/2007/the-coach-house-san-juan-capistrano-ca-7b9d4640.html"
       },
-      "fetchedAt": "2026-03-31T14:37:07.993Z"
+      "fetchedAt": "2026-08-29T23:14:16.525Z"
     },
     {
       "concertId": "concert-69",
@@ -8478,7 +8114,7 @@
       "venue": "The Galaxy Theatre",
       "city": "Santa Ana",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:08.714Z",
+      "fetchedAt": "2026-08-29T23:14:18.249Z",
       "error": "API error: 404 "
     },
     {
@@ -8773,7 +8409,7 @@
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:10.945Z",
+      "fetchedAt": "2026-08-29T23:14:20.495Z",
       "error": "API error: 404 "
     },
     {
@@ -8948,7 +8584,7 @@
       "venue": "The Coach House",
       "city": "San Juan Capistrano",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:13.169Z",
+      "fetchedAt": "2026-08-29T23:14:22.727Z",
       "error": "API error: 404 "
     },
     {
@@ -9038,7 +8674,8 @@
         },
         "url": "https://www.setlist.fm/setlist/mike-ness/2008/the-coach-house-san-juan-capistrano-ca-3384ac29.html"
       },
-      "fetchedAt": "2026-03-31T14:37:25.101Z"
+      "fetchedAt": "2026-03-31T14:37:25.101Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-76",
@@ -9047,7 +8684,7 @@
       "venue": "Doheny",
       "city": "Dana Point",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:15.391Z",
+      "fetchedAt": "2026-08-29T23:14:24.836Z",
       "error": "API error: 404 "
     },
     {
@@ -9215,7 +8852,7 @@
       "venue": "9:30 Club",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:17.649Z",
+      "fetchedAt": "2026-08-29T23:14:27.068Z",
       "error": "API error: 404 "
     },
     {
@@ -9332,7 +8969,7 @@
       "venue": "The Black Cat",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:19.894Z"
+      "fetchedAt": "2026-08-29T23:14:29.312Z"
     },
     {
       "concertId": "concert-79",
@@ -9341,7 +8978,7 @@
       "venue": "The Black Cat",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:21.641Z",
+      "fetchedAt": "2026-08-29T23:14:31.033Z",
       "error": "API error: 404 "
     },
     {
@@ -9351,10 +8988,10 @@
       "venue": "The Black Cat",
       "city": "Washington",
       "setlist": {
-        "id": "4380678b",
-        "versionId": "g53d56719",
-        "eventDate": "03-10-2010",
-        "lastUpdated": "2021-03-07T06:01:55.005+0000",
+        "id": "5b806784",
+        "versionId": "g4bd56702",
+        "eventDate": "30-04-2010",
+        "lastUpdated": "2021-03-07T06:10:12.968+0000",
         "artist": {
           "mbid": "c4c8675e-f8dc-4313-b430-8fbc83d8aafc",
           "name": "Kelley Stoltz",
@@ -9363,8 +9000,8 @@
           "url": "https://www.setlist.fm/setlists/kelley-stoltz-6bd54266.html"
         },
         "venue": {
-          "id": "23d6d063",
-          "name": "DC9",
+          "id": "1bd635f4",
+          "name": "Black Cat",
           "city": {
             "id": "4140963",
             "name": "Washington",
@@ -9379,7 +9016,7 @@
               "name": "United States"
             }
           },
-          "url": "https://www.setlist.fm/venue/dc9-washington-dc-usa-23d6d063.html"
+          "url": "https://www.setlist.fm/venue/black-cat-washington-dc-usa-1bd635f4.html"
         },
         "tour": {
           "name": "To Dreamers Tour 2010"
@@ -9387,9 +9024,10 @@
         "sets": {
           "set": []
         },
-        "url": "https://www.setlist.fm/setlist/kelley-stoltz/2010/dc9-washington-dc-4380678b.html"
+        "info": "Opened for Echo & The Bunnymen",
+        "url": "https://www.setlist.fm/setlist/kelley-stoltz/2010/black-cat-washington-dc-5b806784.html"
       },
-      "fetchedAt": "2026-03-31T14:37:38.675Z"
+      "fetchedAt": "2026-08-29T23:14:33.264Z"
     },
     {
       "concertId": "concert-80",
@@ -9826,7 +9464,7 @@
       "venue": "Wolftrap",
       "city": "Vienna",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:23.877Z"
+      "fetchedAt": "2026-08-29T23:14:34.998Z"
     },
     {
       "concertId": "concert-83",
@@ -9882,119 +9520,8 @@
       "date": "2012-04-24",
       "venue": "Rams Head Live! Baltimore",
       "city": "Baltimore",
-      "setlist": {
-        "id": "23de48ff",
-        "versionId": "g4bf18342",
-        "eventDate": "27-04-2012",
-        "lastUpdated": "2022-08-05T02:06:06.814+0000",
-        "artist": {
-          "mbid": "0509a681-a362-4800-9075-656041dccdbd",
-          "name": "Squeeze",
-          "sortName": "Squeeze",
-          "disambiguation": "UK new wave band",
-          "url": "https://www.setlist.fm/setlists/squeeze-63d6ba3f.html"
-        },
-        "venue": {
-          "id": "23d61c8f",
-          "name": "Rams Head Live!",
-          "city": {
-            "id": "4347778",
-            "name": "Baltimore",
-            "state": "Maryland",
-            "stateCode": "MD",
-            "coords": {
-              "lat": 39.2903848,
-              "long": -76.6121893
-            },
-            "country": {
-              "code": "US",
-              "name": "United States"
-            }
-          },
-          "url": "https://www.setlist.fm/venue/rams-head-live-baltimore-md-usa-23d61c8f.html"
-        },
-        "sets": {
-          "set": [
-            {
-              "song": [
-                {
-                  "name": "Take Me I'm Yours"
-                },
-                {
-                  "name": "If I Didn't Love You"
-                },
-                {
-                  "name": "In Quintessence"
-                },
-                {
-                  "name": "Revue"
-                },
-                {
-                  "name": "Points of View"
-                },
-                {
-                  "name": "The Knack"
-                },
-                {
-                  "name": "Who's That"
-                },
-                {
-                  "name": "Is That Love"
-                },
-                {
-                  "name": "Daphne"
-                },
-                {
-                  "name": "Melody Motel"
-                },
-                {
-                  "name": "Heaven"
-                },
-                {
-                  "name": "Bang Bang"
-                },
-                {
-                  "name": "Cool for Cats"
-                },
-                {
-                  "name": "Up the Junction"
-                },
-                {
-                  "name": "Another Nail in My Heart"
-                },
-                {
-                  "name": "Goodbye Girl"
-                },
-                {
-                  "name": "Annie Get Your Gun"
-                },
-                {
-                  "name": "Hourglass"
-                },
-                {
-                  "name": "Pulling Mussels (From the Shell)"
-                }
-              ]
-            },
-            {
-              "encore": 1,
-              "song": [
-                {
-                  "name": "Slap & Tickle"
-                },
-                {
-                  "name": "Tempted"
-                },
-                {
-                  "name": "Black Coffee in Bed"
-                }
-              ]
-            }
-          ]
-        },
-        "url": "https://www.setlist.fm/setlist/squeeze/2012/rams-head-live-baltimore-md-23de48ff.html"
-      },
-      "fetchedAt": "2026-03-31T14:37:50.896Z"
+      "setlist": null,
+      "fetchedAt": "2026-08-29T23:14:36.720Z"
     },
     {
       "concertId": "concert-84",
@@ -10003,7 +9530,7 @@
       "venue": "Rams Head Live! Baltimore",
       "city": "Baltimore",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:25.593Z",
+      "fetchedAt": "2026-08-29T23:14:38.438Z",
       "error": "API error: 404 "
     },
     {
@@ -10373,7 +9900,7 @@
       "venue": "The Strathmore",
       "city": "Bethesda",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:27.822Z"
+      "fetchedAt": "2026-08-29T23:14:40.679Z"
     },
     {
       "concertId": "concert-89",
@@ -10504,7 +10031,8 @@
         },
         "url": "https://www.setlist.fm/setlist/social-distortion/2012/930-club-washington-dc-23daa4e3.html"
       },
-      "fetchedAt": "2026-03-31T14:38:05.211Z"
+      "fetchedAt": "2026-03-31T14:38:05.211Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-89",
@@ -10513,7 +10041,7 @@
       "venue": "9:30 Club",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:29.549Z",
+      "fetchedAt": "2026-08-29T23:14:42.404Z",
       "error": "API error: 404 "
     },
     {
@@ -10523,10 +10051,10 @@
       "venue": "9:30 Club",
       "city": "Washington",
       "setlist": {
-        "id": "73d8ae9d",
-        "versionId": "2396d01b",
-        "eventDate": "15-03-2013",
-        "lastUpdated": "2014-03-14T14:07:34.000+0000",
+        "id": "23db4c5f",
+        "versionId": "5b39b758",
+        "eventDate": "10-03-2013",
+        "lastUpdated": "2020-06-26T02:32:22.672+0000",
         "artist": {
           "mbid": "e8374874-4178-4869-b92e-fef6bf30dc04",
           "name": "Dropkick Murphys",
@@ -10554,15 +10082,46 @@
           "url": "https://www.setlist.fm/venue/930-club-washington-dc-usa-3d635a7.html"
         },
         "tour": {
-          "name": "Kegs & Eggs 14"
+          "name": "Saint Patrick's Day 2013"
         },
         "sets": {
           "set": [
             {
               "song": [
                 {
-                  "name": "Jimmy Collins' Wake",
-                  "info": "Acoustic"
+                  "name": "The Foggy Dew",
+                  "tape": true,
+                  "info": "The Chieftains with Sinead O'Connor"
+                },
+                {
+                  "name": "For Boston"
+                },
+                {
+                  "name": "The Boys Are Back"
+                },
+                {
+                  "name": "Burn"
+                },
+                {
+                  "name": "Johnny, I Hardly Knew Ya"
+                },
+                {
+                  "name": "Going Out in Style"
+                },
+                {
+                  "name": "The Gang's All Here"
+                },
+                {
+                  "name": "Out on the Town"
+                },
+                {
+                  "name": "A Few Good Men"
+                },
+                {
+                  "name": "Your Spirit's Alive"
+                },
+                {
+                  "name": "Prisoner's Song"
                 },
                 {
                   "name": "The Wild Rover",
@@ -10572,39 +10131,92 @@
                     "sortName": "[traditional]",
                     "disambiguation": "special purpose artist",
                     "url": "https://www.setlist.fm/setlists/traditional-5bd2f7e4.html"
-                  },
+                  }
+                },
+                {
+                  "name": "Jimmy Collins' Wake"
+                },
+                {
+                  "name": "Worker's Song",
                   "info": "Acoustic"
                 },
                 {
-                  "name": "No Surrender",
+                  "name": "The Battle Rages On"
+                },
+                {
+                  "name": "Broken Hymns"
+                },
+                {
+                  "name": "The Irish Rover",
                   "cover": {
-                    "mbid": "70248960-cb53-4ea4-943a-edb18f7d336f",
-                    "name": "Bruce Springsteen",
-                    "sortName": "Springsteen, Bruce",
-                    "disambiguation": "",
-                    "url": "https://www.setlist.fm/setlists/bruce-springsteen-2bd6dcce.html"
-                  },
-                  "info": "Acoustic"
+                    "mbid": "d7608629-d27e-4a28-b594-037fc2d3f5e0",
+                    "name": "Joseph M. Crofts",
+                    "sortName": "Crofts, Joseph M.",
+                    "disambiguation": "Irish sogwriter/arranger",
+                    "url": "https://www.setlist.fm/setlists/joseph-m-crofts-1bd25de4.html"
+                  }
                 },
                 {
-                  "name": "Rose Tattoo",
-                  "info": "Acoustic"
+                  "name": "Out of Our Heads"
                 },
                 {
-                  "name": "End of the Night",
-                  "info": "Acoustic"
+                  "name": "The Warrior's Code"
+                },
+                {
+                  "name": "Rose Tattoo"
+                },
+                {
+                  "name": "Captain Kelly's Kitchen"
                 },
                 {
                   "name": "I'm Shipping Up to Boston",
-                  "info": "Acoustic; Instrumental with the crowd singing the vocals"
+                  "info": "played instrumental with crowd vocals"
+                }
+              ]
+            },
+            {
+              "encore": 1,
+              "song": [
+                {
+                  "name": "Barroom Hero"
+                },
+                {
+                  "name": "End of the Night"
+                },
+                {
+                  "name": "Skinhead on the MBTA"
+                },
+                {
+                  "name": "T.N.T.",
+                  "cover": {
+                    "mbid": "66c662b6-6e2f-4930-8610-912e24c63ed1",
+                    "name": "AC/DC",
+                    "sortName": "AC/DC",
+                    "disambiguation": "Australian hard rock band",
+                    "url": "https://www.setlist.fm/setlists/acdc-23d6807b.html"
+                  }
+                },
+                {
+                  "name": "Citizen C.I.A."
+                },
+                {
+                  "name": "My Way",
+                  "tape": true,
+                  "cover": {
+                    "mbid": "197450cd-0124-4164-b723-3c22dd16494d",
+                    "name": "Frank Sinatra",
+                    "sortName": "Sinatra, Frank",
+                    "disambiguation": "American singer and actor, “Ol’ Blue Eyes”",
+                    "url": "https://www.setlist.fm/setlists/frank-sinatra-73d69af5.html"
+                  }
                 }
               ]
             }
           ]
         },
-        "url": "https://www.setlist.fm/setlist/dropkick-murphys/2013/930-club-washington-dc-73d8ae9d.html"
+        "url": "https://www.setlist.fm/setlist/dropkick-murphys/2013/930-club-washington-dc-23db4c5f.html"
       },
-      "fetchedAt": "2026-03-31T14:38:09.152Z"
+      "fetchedAt": "2026-08-29T23:14:44.637Z"
     },
     {
       "concertId": "concert-90",
@@ -10613,7 +10225,7 @@
       "venue": "9:30 Club",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:31.769Z",
+      "fetchedAt": "2026-08-29T23:14:46.353Z",
       "error": "API error: 404 "
     },
     {
@@ -10780,7 +10392,7 @@
       "venue": "9:30 Club",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:33.990Z",
+      "fetchedAt": "2026-08-29T23:14:48.576Z",
       "error": "API error: 404 "
     },
     {
@@ -11001,143 +10613,8 @@
       "date": "2013-06-01",
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
-      "setlist": {
-        "id": "13d93951",
-        "versionId": "23f9cc13",
-        "eventDate": "19-06-2013",
-        "lastUpdated": "2013-06-22T11:06:45.000+0000",
-        "artist": {
-          "mbid": "24f8d8a5-269b-475c-a1cb-792990b0b2ee",
-          "name": "Rancid",
-          "sortName": "Rancid",
-          "disambiguation": "Berkeley, California punk band",
-          "url": "https://www.setlist.fm/setlists/rancid-13d6898d.html"
-        },
-        "venue": {
-          "id": "43d74f6f",
-          "name": "The Fillmore Silver Spring",
-          "city": {
-            "id": "4369596",
-            "name": "Silver Spring",
-            "state": "Maryland",
-            "stateCode": "MD",
-            "coords": {
-              "lat": 38.9906657,
-              "long": -77.026088
-            },
-            "country": {
-              "code": "US",
-              "name": "United States"
-            }
-          },
-          "url": "https://www.setlist.fm/venue/the-fillmore-silver-spring-silver-spring-md-usa-43d74f6f.html"
-        },
-        "tour": {
-          "name": "Rancid & Transplants"
-        },
-        "sets": {
-          "set": [
-            {
-              "song": [
-                {
-                  "name": "Radio"
-                },
-                {
-                  "name": "Roots Radicals"
-                },
-                {
-                  "name": "Journey to the End of the East Bay"
-                },
-                {
-                  "name": "Maxwell Murder"
-                },
-                {
-                  "name": "The 11th Hour"
-                },
-                {
-                  "name": "Last One to Die"
-                },
-                {
-                  "name": "East Bay Night"
-                },
-                {
-                  "name": "Dead Bodies"
-                },
-                {
-                  "name": "Old Friend"
-                },
-                {
-                  "name": "I Wanna Riot"
-                },
-                {
-                  "name": "Red Hot Moon"
-                },
-                {
-                  "name": "Nihilism"
-                },
-                {
-                  "name": "Black & Blue"
-                },
-                {
-                  "name": "Fuck You"
-                },
-                {
-                  "name": "Gunshot"
-                },
-                {
-                  "name": "Listed M.I.A."
-                },
-                {
-                  "name": "Salvation"
-                },
-                {
-                  "name": "Bloodclot"
-                },
-                {
-                  "name": "Rejected"
-                },
-                {
-                  "name": "It's Quite Alright"
-                },
-                {
-                  "name": "The Wars End"
-                },
-                {
-                  "name": "Black Derby Jacket"
-                },
-                {
-                  "name": "St. Mary"
-                },
-                {
-                  "name": "Olympia WA."
-                },
-                {
-                  "name": "Something in the World Today"
-                },
-                {
-                  "name": "Fall Back Down"
-                }
-              ]
-            },
-            {
-              "encore": 1,
-              "song": [
-                {
-                  "name": "Time Bomb"
-                },
-                {
-                  "name": "Tenderloin"
-                },
-                {
-                  "name": "Ruby Soho"
-                }
-              ]
-            }
-          ]
-        },
-        "url": "https://www.setlist.fm/setlist/rancid/2013/the-fillmore-silver-spring-silver-spring-md-13d93951.html"
-      },
-      "fetchedAt": "2026-03-31T14:38:23.859Z"
+      "setlist": null,
+      "fetchedAt": "2026-08-29T23:14:50.803Z"
     },
     {
       "concertId": "concert-93",
@@ -11145,120 +10622,8 @@
       "date": "2013-06-01",
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
-      "setlist": {
-        "id": "63d93a6f",
-        "versionId": "g63a68283",
-        "eventDate": "19-06-2013",
-        "lastUpdated": "2024-06-12T02:14:58.211+0000",
-        "artist": {
-          "mbid": "29f3e1bf-aec1-4d0a-9ef3-0cb95e8a3699",
-          "name": "Transplants",
-          "sortName": "Transplants",
-          "disambiguation": "",
-          "url": "https://www.setlist.fm/setlists/transplants-73d68ab5.html"
-        },
-        "venue": {
-          "id": "43d74f6f",
-          "name": "The Fillmore Silver Spring",
-          "city": {
-            "id": "4369596",
-            "name": "Silver Spring",
-            "state": "Maryland",
-            "stateCode": "MD",
-            "coords": {
-              "lat": 38.9906657,
-              "long": -77.026088
-            },
-            "country": {
-              "code": "US",
-              "name": "United States"
-            }
-          },
-          "url": "https://www.setlist.fm/venue/the-fillmore-silver-spring-silver-spring-md-usa-43d74f6f.html"
-        },
-        "tour": {
-          "name": "In A Warzone"
-        },
-        "sets": {
-          "set": [
-            {
-              "song": [
-                {
-                  "name": "In a Warzone"
-                },
-                {
-                  "name": "D.J. D.J."
-                },
-                {
-                  "name": "Not Today"
-                },
-                {
-                  "name": "Gangsters and Thugs"
-                },
-                {
-                  "name": "See it to Believe It"
-                },
-                {
-                  "name": "Romper Stomper"
-                },
-                {
-                  "name": "Silence"
-                },
-                {
-                  "name": "Do They Owe Us a Living?",
-                  "cover": {
-                    "mbid": "c7437df4-6fac-4c89-99ae-f8640f268222",
-                    "name": "Crass",
-                    "sortName": "Crass",
-                    "disambiguation": "",
-                    "url": "https://www.setlist.fm/setlists/crass-63d68e1b.html"
-                  }
-                },
-                {
-                  "name": "Sad But True"
-                },
-                {
-                  "name": "Apocalypse Now"
-                },
-                {
-                  "name": "Back to You"
-                },
-                {
-                  "name": "American Guns"
-                },
-                {
-                  "name": "Razors in the Night",
-                  "cover": {
-                    "mbid": "1ee6658f-9375-45b2-ab7a-54c145b513d9",
-                    "name": "Blitz",
-                    "sortName": "Blitz",
-                    "disambiguation": "UK punk band",
-                    "url": "https://www.setlist.fm/setlists/blitz-2bd6b052.html"
-                  }
-                },
-                {
-                  "name": "Come Around"
-                },
-                {
-                  "name": "Diamonds and Guns",
-                  "info": "with Matt Freeman on Bass"
-                },
-                {
-                  "name": "Completely Detach"
-                },
-                {
-                  "name": "Come Around"
-                },
-                {
-                  "name": "Tall Cans in the Air"
-                }
-              ]
-            }
-          ]
-        },
-        "url": "https://www.setlist.fm/setlist/transplants/2013/the-fillmore-silver-spring-silver-spring-md-63d93a6f.html"
-      },
-      "fetchedAt": "2026-03-31T14:38:25.582Z"
+      "setlist": null,
+      "fetchedAt": "2026-08-29T23:14:52.550Z"
     },
     {
       "concertId": "concert-93",
@@ -11267,7 +10632,7 @@
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:36.216Z",
+      "fetchedAt": "2026-08-29T23:14:54.271Z",
       "error": "API error: 404 "
     },
     {
@@ -11277,7 +10642,7 @@
       "venue": "The Hamilton Live",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:38.447Z"
+      "fetchedAt": "2026-08-29T23:14:56.503Z"
     },
     {
       "concertId": "concert-95",
@@ -12201,7 +11566,8 @@
         },
         "url": "https://www.setlist.fm/setlist/streetlight-manifesto/2014/the-fillmore-silver-spring-silver-spring-md-63cc364f.html"
       },
-      "fetchedAt": "2026-03-31T14:38:45.084Z"
+      "fetchedAt": "2026-03-31T14:38:45.084Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-100",
@@ -12210,7 +11576,7 @@
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:40.167Z",
+      "fetchedAt": "2026-08-29T23:14:58.220Z",
       "error": "API error: 404 "
     },
     {
@@ -12220,7 +11586,7 @@
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:42.398Z",
+      "fetchedAt": "2026-08-29T23:15:00.453Z",
       "error": "API error: 404 "
     },
     {
@@ -12340,7 +11706,7 @@
       "venue": "DAR Constitution Hall",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:44.618Z",
+      "fetchedAt": "2026-08-29T23:15:02.727Z",
       "error": "API error: 404 "
     },
     {
@@ -13024,7 +12390,8 @@
         },
         "url": "https://www.setlist.fm/setlist/snarky-puppy/2015/the-hamilton-live-washington-dc-6bc912fa.html"
       },
-      "fetchedAt": "2026-03-31T14:39:05.570Z"
+      "fetchedAt": "2026-03-31T14:39:05.570Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-105",
@@ -13753,7 +13120,7 @@
       "venue": "RFK Stadium",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:46.844Z"
+      "fetchedAt": "2026-08-29T23:15:04.844Z"
     },
     {
       "concertId": "concert-105",
@@ -13762,10 +13129,10 @@
       "venue": "RFK Stadium",
       "city": "Washington",
       "setlist": {
-        "id": "2b427c36",
-        "versionId": "g6370ae5b",
-        "eventDate": "31-12-2015",
-        "lastUpdated": "2025-07-28T01:30:11.481+0000",
+        "id": "bf6a5ae",
+        "versionId": "g33719c3d",
+        "eventDate": "04-07-2015",
+        "lastUpdated": "2025-08-05T03:19:54.614+0000",
         "artist": {
           "mbid": "138aaf2c-77b6-451e-ade2-ce18894eeaa7",
           "name": "Trouble Funk",
@@ -13774,8 +13141,8 @@
           "url": "https://www.setlist.fm/setlists/trouble-funk-43d74fd3.html"
         },
         "venue": {
-          "id": "3d635a7",
-          "name": "9:30 Club",
+          "id": "5bd2fbd4",
+          "name": "Robert F. Kennedy Memorial Stadium",
           "city": {
             "id": "4140963",
             "name": "Washington",
@@ -13790,14 +13157,52 @@
               "name": "United States"
             }
           },
-          "url": "https://www.setlist.fm/venue/930-club-washington-dc-usa-3d635a7.html"
+          "url": "https://www.setlist.fm/venue/robert-f-kennedy-memorial-stadium-washington-dc-usa-5bd2fbd4.html"
         },
         "sets": {
-          "set": []
+          "set": [
+            {
+              "song": [
+                {
+                  "name": "Trouble Funk Express"
+                },
+                {
+                  "name": "Start This Thing off Right"
+                },
+                {
+                  "name": "Pump Me Up",
+                  "info": "with a snippet of \"It's Time for The Percolator\" by Cajmere"
+                },
+                {
+                  "name": "E Flat Boogie"
+                },
+                {
+                  "name": "Hey Fellas"
+                },
+                {
+                  "name": "Play That Funky Music",
+                  "cover": {
+                    "mbid": "da5ff827-174b-48d1-9a39-9fa290bb2925",
+                    "name": "Wild Cherry",
+                    "sortName": "Wild Cherry",
+                    "disambiguation": "1970s US funk rock band, known for “Play That Funky Music”",
+                    "url": "https://www.setlist.fm/setlists/wild-cherry-6bd6b2a2.html"
+                  },
+                  "info": "Performed with 9:30 Club owner Seth Hurwitz on drums"
+                },
+                {
+                  "name": "Drop the Bomb"
+                },
+                {
+                  "name": "Don't Touch That Stereo"
+                }
+              ]
+            }
+          ]
         },
-        "url": "https://www.setlist.fm/setlist/trouble-funk/2015/930-club-washington-dc-2b427c36.html"
+        "url": "https://www.setlist.fm/setlist/trouble-funk/2015/robert-f-kennedy-memorial-stadium-washington-dc-bf6a5ae.html"
       },
-      "fetchedAt": "2026-03-31T14:39:19.267Z"
+      "fetchedAt": "2026-08-29T23:15:06.573Z"
     },
     {
       "concertId": "concert-105",
@@ -13806,7 +13211,7 @@
       "venue": "RFK Stadium",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:48.588Z"
+      "fetchedAt": "2026-08-29T23:15:08.300Z"
     },
     {
       "concertId": "concert-105",
@@ -13815,10 +13220,10 @@
       "venue": "RFK Stadium",
       "city": "Washington",
       "setlist": {
-        "id": "2bf224b6",
-        "versionId": "6b19befa",
-        "eventDate": "18-12-2015",
-        "lastUpdated": "2019-07-02T20:30:31.494+0000",
+        "id": "73f6a665",
+        "versionId": "g23719c13",
+        "eventDate": "04-07-2015",
+        "lastUpdated": "2025-08-05T03:25:27.852+0000",
         "artist": {
           "mbid": "0c176f27-f599-4b98-b3cc-bb5e84694d7e",
           "name": "RDGLDGRN",
@@ -13827,8 +13232,8 @@
           "url": "https://www.setlist.fm/setlists/rdgldgrn-13ddb515.html"
         },
         "venue": {
-          "id": "bd7e916",
-          "name": "U Street Music Hall",
+          "id": "5bd2fbd4",
+          "name": "Robert F. Kennedy Memorial Stadium",
           "city": {
             "id": "4140963",
             "name": "Washington",
@@ -13843,10 +13248,7 @@
               "name": "United States"
             }
           },
-          "url": "https://www.setlist.fm/venue/u-street-music-hall-washington-dc-usa-bd7e916.html"
-        },
-        "tour": {
-          "name": "The Robots Tour"
+          "url": "https://www.setlist.fm/venue/robert-f-kennedy-memorial-stadium-washington-dc-usa-5bd2fbd4.html"
         },
         "sets": {
           "set": [
@@ -13859,89 +13261,27 @@
                   "name": "Chop U Down"
                 },
                 {
+                  "name": "Doing the Most"
+                },
+                {
+                  "name": "I Love Lamp",
+                  "info": "opened with chant of \"Seven Nation Army\" by The White Stripes"
+                },
+                {
                   "name": "Power Ups",
                   "info": "with a snippet of \"Three Little Birds\" by Bob Marley in the middle"
                 },
                 {
-                  "name": "Bang Bang",
-                  "info": "opened and closed with \"Olé, Olé, Olé\" chant, and in the middle sang a snippet in Haitian Creole"
-                },
-                {
-                  "name": "All I Got Is Now"
-                },
-                {
-                  "name": "Won't Last"
-                },
-                {
-                  "name": "No Pixar"
-                },
-                {
-                  "name": "Doing the Most",
-                  "info": "Green jumped into the crowd to start dancing in the middle of the song"
-                },
-                {
-                  "name": "The Lion Sleeps Tonight",
-                  "cover": {
-                    "mbid": "4192986f-8012-4362-88ec-873638cab1e7",
-                    "name": "Solomon Linda’s Original Evening Birds",
-                    "sortName": "Linda, Solomon’s Original Evening Birds",
-                    "disambiguation": "",
-                    "url": "https://www.setlist.fm/setlists/solomon-lindas-original-evening-birds-3bd448a0.html"
-                  },
-                  "info": "opened with by \"Day-O\" by Harry Belafonte and closed with a drum solo by Snaxx"
-                },
-                {
-                  "name": "I Love Lamp"
-                },
-                {
-                  "name": "Elevators"
-                },
-                {
-                  "name": "Hey O"
-                },
-                {
-                  "name": "Green and Blue (of The Five One) Freestyle",
-                  "info": "freestyled over the instrumentals to \"Sucka Nigga\" by A Tribe Called Quest"
-                },
-                {
-                  "name": "When I'm Alone"
-                },
-                {
-                  "name": "Lootin In London",
-                  "info": "opened with a snippet of \"{RDGLDGRN} Ain't Nuthing ta Fuck Wit\""
-                }
-              ]
-            },
-            {
-              "encore": 1,
-              "song": [
-                {
-                  "name": "\"Hypnotize\" by The Notorious B.I.G. / \"California Love\" by Tupac Shakur",
-                  "info": "Green split the crowd into East and West sides, singing snippets of Biggie and Tupac respectively"
-                },
-                {
                   "name": "Million Fans",
-                  "info": "Green once again jumped into the crowd, singing from the divide between the East and West sides"
-                },
-                {
-                  "name": "Bullet in the Head",
-                  "cover": {
-                    "mbid": "3798b104-01cb-484c-a3b0-56adc6399b80",
-                    "name": "Rage Against the Machine",
-                    "sortName": "Rage Against the Machine",
-                    "disambiguation": "",
-                    "url": "https://www.setlist.fm/setlists/rage-against-the-machine-bd68946.html"
-                  },
-                  "info": "The band closed the show referencing RATM's \"Wake Up\" then played the ending to \"Bullet in the Head\""
+                  "info": "opened with a snippet of \"Big Poppa\" by The Notorious B.I.G. | Ended with \"Olé, Olé, Olé\" chant"
                 }
               ]
             }
           ]
         },
-        "info": "To celebrate the end of RDGLDGRN's first headlining tour and the release of Star Wars: The Force Awakens, a fan from Ohio bought over 300 red, gold, and green \"lightsaber\" glow sticks to distribute throughout the crowd at the sold-out hometown show",
-        "url": "https://www.setlist.fm/setlist/rdgldgrn/2015/u-street-music-hall-washington-dc-2bf224b6.html"
+        "url": "https://www.setlist.fm/setlist/rdgldgrn/2015/robert-f-kennedy-memorial-stadium-washington-dc-73f6a665.html"
       },
-      "fetchedAt": "2026-03-31T14:39:22.594Z"
+      "fetchedAt": "2026-08-29T23:15:10.045Z"
     },
     {
       "concertId": "concert-106",
@@ -14317,7 +13657,8 @@
         },
         "url": "https://www.setlist.fm/setlist/garbage/2015/930-club-washington-dc-4bf5eb46.html"
       },
-      "fetchedAt": "2026-03-31T14:39:29.491Z"
+      "fetchedAt": "2026-03-31T14:39:29.491Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-107",
@@ -14370,7 +13711,7 @@
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:50.311Z",
+      "fetchedAt": "2026-08-29T23:15:11.777Z",
       "error": "API error: 404 "
     },
     {
@@ -14380,7 +13721,7 @@
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:52.538Z",
+      "fetchedAt": "2026-08-29T23:15:14.000Z",
       "error": "API error: 404 "
     },
     {
@@ -14390,7 +13731,7 @@
       "venue": "Bethesda Jazz and Blues Club",
       "city": "Bethesda",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:54.757Z",
+      "fetchedAt": "2026-08-29T23:15:16.232Z",
       "error": "API error: 404 "
     },
     {
@@ -15153,7 +14494,7 @@
       "venue": "MGM National Harbor",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:56.991Z"
+      "fetchedAt": "2026-08-29T23:15:18.456Z"
     },
     {
       "concertId": "concert-115",
@@ -16071,7 +15412,7 @@
       "venue": "The Anthem",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:33:58.711Z",
+      "fetchedAt": "2026-08-29T23:15:20.198Z",
       "error": "API error: 404 "
     },
     {
@@ -16081,7 +15422,7 @@
       "venue": "The Anthem",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:00.947Z",
+      "fetchedAt": "2026-08-29T23:15:22.428Z",
       "error": "API error: 404 "
     },
     {
@@ -17301,7 +16642,7 @@
       "venue": "Huntington State Beach",
       "city": "Huntington Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:03.195Z",
+      "fetchedAt": "2026-08-29T23:15:24.659Z",
       "error": "API error: 404 "
     },
     {
@@ -17311,7 +16652,7 @@
       "venue": "Huntington State Beach",
       "city": "Huntington Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:05.432Z",
+      "fetchedAt": "2026-08-29T23:15:26.911Z",
       "error": "API error: 404 "
     },
     {
@@ -17321,7 +16662,7 @@
       "venue": "Huntington State Beach",
       "city": "Huntington Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:07.654Z",
+      "fetchedAt": "2026-08-29T23:15:29.136Z",
       "error": "API error: 404 "
     },
     {
@@ -17331,7 +16672,7 @@
       "venue": "Carpenter Performing Arts Center",
       "city": "Long Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:09.880Z",
+      "fetchedAt": "2026-08-29T23:15:31.352Z",
       "error": "API error: 404 "
     },
     {
@@ -17547,7 +16888,8 @@
         },
         "url": "https://www.setlist.fm/setlist/u2/2018/capital-one-arena-washington-dc-43eaeb8b.html"
       },
-      "fetchedAt": "2026-03-31T14:40:45.055Z"
+      "fetchedAt": "2026-03-31T14:40:45.055Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-130",
@@ -17887,7 +17229,7 @@
       "venue": "9:30 Club",
       "city": "Washington",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:12.108Z",
+      "fetchedAt": "2026-08-29T23:15:33.570Z",
       "error": "API error: 404 "
     },
     {
@@ -18213,7 +17555,8 @@
         "info": "last peformance with bassist and founding member Greg K.",
         "url": "https://www.setlist.fm/setlist/the-offspring/2018/huntington-state-beach-huntington-beach-ca-b962946.html"
       },
-      "fetchedAt": "2026-03-31T14:40:57.657Z"
+      "fetchedAt": "2026-03-31T14:40:57.657Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-132",
@@ -18326,7 +17669,8 @@
         },
         "url": "https://www.setlist.fm/setlist/pennywise/2018/huntington-state-beach-huntington-beach-ca-1b962938.html"
       },
-      "fetchedAt": "2026-03-31T14:40:59.380Z"
+      "fetchedAt": "2026-03-31T14:40:59.380Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-132",
@@ -18408,7 +17752,8 @@
         },
         "url": "https://www.setlist.fm/setlist/suicidal-tendencies/2018/huntington-state-beach-huntington-beach-ca-1b96293c.html"
       },
-      "fetchedAt": "2026-03-31T14:41:01.106Z"
+      "fetchedAt": "2026-03-31T14:41:01.106Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-132",
@@ -18452,7 +17797,8 @@
         },
         "url": "https://www.setlist.fm/setlist/voodoo-glow-skulls/2018/huntington-state-beach-huntington-beach-ca-13962929.html"
       },
-      "fetchedAt": "2026-03-31T14:41:02.851Z"
+      "fetchedAt": "2026-03-31T14:41:02.851Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-132",
@@ -18528,7 +17874,8 @@
         },
         "url": "https://www.setlist.fm/setlist/tsol/2018/huntington-state-beach-huntington-beach-ca-1b962930.html"
       },
-      "fetchedAt": "2026-03-31T14:41:04.570Z"
+      "fetchedAt": "2026-03-31T14:41:04.570Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-132",
@@ -18610,7 +17957,7 @@
       "venue": "Huntington State Beach",
       "city": "Huntington Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:14.332Z",
+      "fetchedAt": "2026-08-29T23:15:35.796Z",
       "error": "API error: 404 "
     },
     {
@@ -18712,7 +18059,8 @@
         },
         "url": "https://www.setlist.fm/setlist/fear/2018/huntington-state-beach-huntington-beach-ca-13962931.html"
       },
-      "fetchedAt": "2026-03-31T14:41:10.247Z"
+      "fetchedAt": "2026-03-31T14:41:10.247Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-132",
@@ -18756,7 +18104,8 @@
         },
         "url": "https://www.setlist.fm/setlist/mad-caddies/2018/huntington-state-beach-huntington-beach-ca-13962935.html"
       },
-      "fetchedAt": "2026-03-31T14:41:11.984Z"
+      "fetchedAt": "2026-03-31T14:41:11.984Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-132",
@@ -18877,7 +18226,7 @@
       "venue": "Huntington State Beach",
       "city": "Huntington Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:16.554Z",
+      "fetchedAt": "2026-08-29T23:15:38.015Z",
       "error": "API error: 404 "
     },
     {
@@ -18887,7 +18236,7 @@
       "venue": "Huntington State Beach",
       "city": "Huntington Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:18.780Z",
+      "fetchedAt": "2026-08-29T23:15:40.244Z",
       "error": "API error: 404 "
     },
     {
@@ -19176,10 +18525,10 @@
       "venue": "The Shrine Auditorium",
       "city": "Los Angeles",
       "setlist": {
-        "id": "5b9ae7c4",
-        "versionId": "630aea43",
-        "eventDate": "20-11-2019",
-        "lastUpdated": "2019-11-21T04:54:45.347+0000",
+        "id": "139241ad",
+        "versionId": "23130c1f",
+        "eventDate": "24-03-2019",
+        "lastUpdated": "2019-04-03T01:27:14.472+0000",
         "artist": {
           "mbid": "6e73e900-c27f-4893-a6db-32f23306a841",
           "name": "Bear Hands",
@@ -19188,8 +18537,8 @@
           "url": "https://www.setlist.fm/setlists/bear-hands-5bd5f764.html"
         },
         "venue": {
-          "id": "73d63a75",
-          "name": "Hollywood Palladium",
+          "id": "73d2f271",
+          "name": "Shrine Exposition Hall",
           "city": {
             "id": "5368361",
             "name": "Los Angeles",
@@ -19204,7 +18553,7 @@
               "name": "United States"
             }
           },
-          "url": "https://www.setlist.fm/venue/hollywood-palladium-los-angeles-ca-usa-73d63a75.html"
+          "url": "https://www.setlist.fm/venue/shrine-exposition-hall-los-angeles-ca-usa-73d2f271.html"
         },
         "sets": {
           "set": [
@@ -19220,25 +18569,17 @@
                   "name": "What a Drag"
                 },
                 {
-                  "name": "Mr. Radioactive"
-                },
-                {
-                  "name": "Friends in High Places"
-                },
-                {
-                  "name": "Agora"
-                },
-                {
-                  "name": "2AM"
-                },
-                {
-                  "name": "Blame"
+                  "name": "Ignoring the Truth"
                 },
                 {
                   "name": "I Won't Pay"
                 },
                 {
-                  "name": "Blue Lips"
+                  "name": "2AM"
+                },
+                {
+                  "name": "Blue Lips",
+                  "info": "with Ursula Rose"
                 },
                 {
                   "name": "Giants"
@@ -19247,9 +18588,9 @@
             }
           ]
         },
-        "url": "https://www.setlist.fm/setlist/bear-hands/2019/hollywood-palladium-los-angeles-ca-5b9ae7c4.html"
+        "url": "https://www.setlist.fm/setlist/bear-hands/2019/shrine-exposition-hall-los-angeles-ca-139241ad.html"
       },
-      "fetchedAt": "2026-03-31T14:41:25.041Z"
+      "fetchedAt": "2026-08-29T23:15:42.478Z"
     },
     {
       "concertId": "concert-134",
@@ -19426,10 +18767,10 @@
       "venue": "The Observatory",
       "city": "Santa Ana",
       "setlist": {
-        "id": "33af94e9",
-        "versionId": "g538a7749",
-        "eventDate": "07-12-2019",
-        "lastUpdated": "2023-12-25T04:56:33.225+0000",
+        "id": "1b9db528",
+        "versionId": "330ef019",
+        "eventDate": "14-04-2019",
+        "lastUpdated": "2019-10-08T22:37:01.844+0000",
         "artist": {
           "mbid": "88943a8f-dfea-4ba3-9adf-4f8e895a417a",
           "name": "Masked Intruder",
@@ -19461,37 +18802,31 @@
             {
               "song": [
                 {
-                  "name": "I'm Free (At Last)"
-                },
-                {
-                  "name": "How Do I Get to You"
-                },
-                {
                   "name": "The Most Beautiful Girl"
                 },
                 {
-                  "name": "I Don't Wanna Be Alone Tonight"
-                },
-                {
-                  "name": "Beyond a Shadow of a Doubt"
-                },
-                {
-                  "name": "I Fought the Law"
+                  "name": "25 to Life"
                 },
                 {
                   "name": "Crime Spree"
                 },
                 {
-                  "name": "Please Come Back to Me"
+                  "name": "Unrequited Love"
+                },
+                {
+                  "name": "I Fought the Law"
+                },
+                {
+                  "name": "I Don't Wanna Be Alone Tonight"
+                },
+                {
+                  "name": "No Case"
                 },
                 {
                   "name": "Saturday Night Alone"
                 },
                 {
-                  "name": "Just So You Know"
-                },
-                {
-                  "name": "25 to Life"
+                  "name": "First Star Tonight"
                 },
                 {
                   "name": "Hey Girl"
@@ -19500,24 +18835,18 @@
                   "name": "Heart Shaped Guitar"
                 },
                 {
-                  "name": "No Case"
-                },
-                {
-                  "name": "First Star Tonight"
+                  "name": "Beyond a Shadow of a Doubt"
                 },
                 {
                   "name": "Stick 'em Up"
-                },
-                {
-                  "name": "I Don't Wanna Say Goodbye to You Tonight"
                 }
               ]
             }
           ]
         },
-        "url": "https://www.setlist.fm/setlist/masked-intruder/2019/the-observatory-santa-ana-ca-33af94e9.html"
+        "url": "https://www.setlist.fm/setlist/masked-intruder/2019/the-observatory-santa-ana-ca-1b9db528.html"
       },
-      "fetchedAt": "2026-03-31T14:41:30.204Z"
+      "fetchedAt": "2026-08-29T23:15:44.218Z"
     },
     {
       "concertId": "concert-135",
@@ -19526,7 +18855,7 @@
       "venue": "The Observatory",
       "city": "Santa Ana",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:20.997Z",
+      "fetchedAt": "2026-08-29T23:15:45.937Z",
       "error": "API error: 404 "
     },
     {
@@ -19667,7 +18996,7 @@
       "venue": "Dolby Theatre",
       "city": "Hollywood",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:23.224Z",
+      "fetchedAt": "2026-08-29T23:15:48.163Z",
       "error": "API error: 404 "
     },
     {
@@ -19677,7 +19006,7 @@
       "venue": "Mozambique",
       "city": "Laguna Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:25.448Z",
+      "fetchedAt": "2026-08-29T23:15:50.429Z",
       "error": "API error: 404 "
     },
     {
@@ -19687,7 +19016,7 @@
       "venue": "OC Fair & Event Center",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:27.670Z",
+      "fetchedAt": "2026-08-29T23:15:52.654Z",
       "error": "API error: 404 "
     },
     {
@@ -19958,7 +19287,7 @@
       "venue": "The Coach House",
       "city": "San Juan Capistrano",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:29.893Z",
+      "fetchedAt": "2026-08-29T23:15:54.877Z",
       "error": "API error: 404 "
     },
     {
@@ -20062,7 +19391,7 @@
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:32.122Z",
+      "fetchedAt": "2026-08-29T23:15:57.101Z",
       "error": "API error: 404 "
     },
     {
@@ -21024,128 +20353,8 @@
       "date": "2022-08-01",
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
-      "setlist": {
-        "id": "1bb3f1cc",
-        "versionId": "g1312a531",
-        "eventDate": "14-08-2022",
-        "lastUpdated": "2026-03-28T03:47:42.665+0000",
-        "artist": {
-          "mbid": "ddd553d4-977e-416c-8f57-e4b72c0fc746",
-          "name": "X",
-          "sortName": "X",
-          "disambiguation": "Los Angeles punk rock band",
-          "url": "https://www.setlist.fm/setlists/x-53d68fcd.html"
-        },
-        "venue": {
-          "id": "4bd3a73e",
-          "name": "Pacific Amphitheatre",
-          "city": {
-            "id": "5339840",
-            "name": "Costa Mesa",
-            "state": "California",
-            "stateCode": "CA",
-            "coords": {
-              "lat": 33.6411316,
-              "long": -117.9186689
-            },
-            "country": {
-              "code": "US",
-              "name": "United States"
-            }
-          },
-          "url": "https://www.setlist.fm/venue/pacific-amphitheatre-costa-mesa-ca-usa-4bd3a73e.html"
-        },
-        "sets": {
-          "set": [
-            {
-              "song": [
-                {
-                  "name": "Peter Gunn",
-                  "tape": true,
-                  "cover": {
-                    "mbid": "83e71a21-caf7-4e48-8ff7-6512d51e88a3",
-                    "name": "Henry Mancini",
-                    "sortName": "Mancini, Henry",
-                    "disambiguation": "US composer, conductor & arranger",
-                    "url": "https://www.setlist.fm/setlists/henry-mancini-5bd6df6c.html"
-                  }
-                },
-                {
-                  "name": "Your Phone's Off the Hook, But You're Not"
-                },
-                {
-                  "name": "Free"
-                },
-                {
-                  "name": "We're Desperate"
-                },
-                {
-                  "name": "The Hungry Wolf"
-                },
-                {
-                  "name": "Alphabetland"
-                },
-                {
-                  "name": "White Girl"
-                },
-                {
-                  "name": "True Love"
-                },
-                {
-                  "name": "Dancing With Tears in My Eyes",
-                  "cover": {
-                    "mbid": "19748c3e-6452-498a-b88d-33a180277519",
-                    "name": "Johnny Marvin",
-                    "sortName": "Marvin, Johnny",
-                    "disambiguation": "",
-                    "url": "https://www.setlist.fm/setlists/johnny-marvin-3d45dd7.html"
-                  }
-                },
-                {
-                  "name": "Come Back to Me"
-                },
-                {
-                  "name": "I Must Not Think Bad Thoughts"
-                },
-                {
-                  "name": "Some Other Time"
-                },
-                {
-                  "name": "Water & Wine"
-                },
-                {
-                  "name": "Goodbye Year, Goodbye"
-                },
-                {
-                  "name": "Los Angeles"
-                },
-                {
-                  "name": "Nausea"
-                },
-                {
-                  "name": "Johny Hit and Run Paulene"
-                },
-                {
-                  "name": "Motel Room in My Bed"
-                },
-                {
-                  "name": "Soul Kitchen",
-                  "cover": {
-                    "mbid": "9efff43b-3b29-4082-824e-bc82f646f93d",
-                    "name": "The Doors",
-                    "sortName": "Doors, The",
-                    "disambiguation": "",
-                    "url": "https://www.setlist.fm/setlists/the-doors-bd6adba.html"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        "info": "Opened for The Psychedelic Furs",
-        "url": "https://www.setlist.fm/setlist/x/2022/pacific-amphitheatre-costa-mesa-ca-1bb3f1cc.html"
-      },
-      "fetchedAt": "2026-03-31T14:42:06.069Z"
+      "setlist": null,
+      "fetchedAt": "2026-08-29T23:15:59.338Z"
     },
     {
       "concertId": "concert-150",
@@ -21154,7 +20363,7 @@
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:34.339Z",
+      "fetchedAt": "2026-08-29T23:16:01.072Z",
       "error": "API error: 404 "
     },
     {
@@ -21164,7 +20373,7 @@
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:36.564Z",
+      "fetchedAt": "2026-08-29T23:16:03.309Z",
       "error": "API error: 404 "
     },
     {
@@ -21266,7 +20475,7 @@
       "venue": "Theatre at the Ace Hotel",
       "city": "Los Angeles",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:38.792Z",
+      "fetchedAt": "2026-08-29T23:16:05.538Z",
       "error": "API error: 404 "
     },
     {
@@ -21329,7 +20538,8 @@
         "info": "Setlist incomplete",
         "url": "https://www.setlist.fm/setlist/el-ten-eleven/2022/the-theatre-at-ace-hotel-los-angeles-ca-13b0e915.html"
       },
-      "fetchedAt": "2026-03-31T14:42:17.936Z"
+      "fetchedAt": "2026-03-31T14:42:17.936Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-153",
@@ -21852,7 +21062,8 @@
         },
         "url": "https://www.setlist.fm/setlist/new-order/2022/hollywood-bowl-los-angeles-ca-63b1c6ff.html"
       },
-      "fetchedAt": "2026-03-31T14:42:24.838Z"
+      "fetchedAt": "2026-03-31T14:42:24.838Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-155",
@@ -21982,7 +21193,8 @@
         },
         "url": "https://www.setlist.fm/setlist/pet-shop-boys/2022/hollywood-bowl-los-angeles-ca-73b1c6f5.html"
       },
-      "fetchedAt": "2026-03-31T14:42:26.563Z"
+      "fetchedAt": "2026-03-31T14:42:26.563Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-155",
@@ -22142,7 +21354,8 @@
         },
         "url": "https://www.setlist.fm/setlist/paul-oakenfold/2022/hollywood-bowl-los-angeles-ca-73b1c6e9.html"
       },
-      "fetchedAt": "2026-03-31T14:42:28.287Z"
+      "fetchedAt": "2026-03-31T14:42:28.287Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-156",
@@ -22363,7 +21576,8 @@
         },
         "url": "https://www.setlist.fm/setlist/danny-elfman/2022/hollywood-bowl-los-angeles-ca-13bedd59.html"
       },
-      "fetchedAt": "2026-03-31T14:42:30.013Z"
+      "fetchedAt": "2026-03-31T14:42:30.013Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-156",
@@ -22437,7 +21651,8 @@
         "info": "Opening for Danny Elfman",
         "url": "https://www.setlist.fm/setlist/boy-harsher/2022/hollywood-bowl-los-angeles-ca-3bedd5f.html"
       },
-      "fetchedAt": "2026-03-31T14:42:31.736Z"
+      "fetchedAt": "2026-03-31T14:42:31.736Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-157",
@@ -22631,10 +21846,10 @@
       "venue": "House of Blues Anaheim",
       "city": "Anaheim",
       "setlist": {
-        "id": "53bc8be1",
-        "versionId": "g63be7a8f",
-        "eventDate": "12-12-2022",
-        "lastUpdated": "2024-04-12T01:59:35.239+0000",
+        "id": "bbcadd6",
+        "versionId": "g63be7a83",
+        "eventDate": "08-12-2022",
+        "lastUpdated": "2024-04-12T01:59:35.259+0000",
         "artist": {
           "mbid": "e1e05cce-3922-44e1-8f20-015abe5e309d",
           "name": "Social Distortion",
@@ -22666,22 +21881,19 @@
             {
               "song": [
                 {
-                  "name": "So Far Away"
+                  "name": "Bad Luck"
                 },
                 {
                   "name": "Reach for the Sky"
                 },
                 {
-                  "name": "Bye Bye Baby"
-                },
-                {
                   "name": "I Wasn't Born to Follow"
                 },
                 {
-                  "name": "Playpen"
+                  "name": "Ghost Town Blues"
                 },
                 {
-                  "name": "Mommy's Little Monster"
+                  "name": "She's a Knockout"
                 },
                 {
                   "name": "Wicked Game",
@@ -22697,33 +21909,34 @@
                   "name": "Over You"
                 },
                 {
-                  "name": "Machine Gun Blues"
+                  "name": "Playpen"
                 },
                 {
-                  "name": "When the Angels Sing"
+                  "name": "1945"
                 },
                 {
-                  "name": "Gotta Know the Rules"
+                  "name": "Prison Bound"
+                },
+                {
+                  "name": "Through These Eyes"
+                },
+                {
+                  "name": "99 to Life"
                 },
                 {
                   "name": "Tonight"
                 },
                 {
-                  "name": "Ghost Town Blues"
+                  "name": "California (Hustle and Flow)"
                 },
                 {
-                  "name": "Don't Drag Me Down"
-                }
-              ]
-            },
-            {
-              "encore": 1,
-              "song": [
+                  "name": "Dear Lover"
+                },
                 {
                   "name": "Born to Kill"
                 },
                 {
-                  "name": "Ball and Chain"
+                  "name": "Story of My Life"
                 },
                 {
                   "name": "Ring of Fire",
@@ -22739,9 +21952,9 @@
             }
           ]
         },
-        "url": "https://www.setlist.fm/setlist/social-distortion/2022/house-of-blues-anaheim-ca-53bc8be1.html"
+        "url": "https://www.setlist.fm/setlist/social-distortion/2022/house-of-blues-anaheim-ca-bbcadd6.html"
       },
-      "fetchedAt": "2026-03-31T14:42:36.921Z"
+      "fetchedAt": "2026-08-29T23:16:07.774Z"
     },
     {
       "concertId": "concert-158",
@@ -22750,7 +21963,7 @@
       "venue": "House of Blues Anaheim",
       "city": "Anaheim",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:41.017Z",
+      "fetchedAt": "2026-08-29T23:16:09.500Z",
       "error": "API error: 404 "
     },
     {
@@ -22760,7 +21973,7 @@
       "venue": "The Belly Up Tavern",
       "city": "Solana Beach",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:43.242Z",
+      "fetchedAt": "2026-08-29T23:16:11.606Z",
       "error": "API error: 404 "
     },
     {
@@ -22770,10 +21983,10 @@
       "venue": "Kia Forum",
       "city": "Inglewood",
       "setlist": {
-        "id": "43ae179b",
-        "versionId": "g538a8f21",
-        "eventDate": "12-12-2023",
-        "lastUpdated": "2023-12-17T05:17:55.167+0000",
+        "id": "6bbbc242",
+        "versionId": "g339a6881",
+        "eventDate": "28-03-2023",
+        "lastUpdated": "2023-08-16T21:13:41.962+0000",
         "artist": {
           "mbid": "8538e728-ca0b-4321-b7e5-cff6565dd4c0",
           "name": "Depeche Mode",
@@ -22825,7 +22038,7 @@
                   "name": "It's No Good"
                 },
                 {
-                  "name": "Policy of Truth"
+                  "name": "Sister of Night"
                 },
                 {
                   "name": "In Your Room",
@@ -22838,14 +22051,14 @@
                   "name": "Precious"
                 },
                 {
-                  "name": "My Favourite Stranger"
+                  "name": "Speak to Me"
                 },
                 {
-                  "name": "Home"
+                  "name": "A Question of Lust"
                 },
                 {
-                  "name": "Dressed in Black",
-                  "info": "Acoustic, sung by Martin"
+                  "name": "Soul With Me",
+                  "info": "Acoustic"
                 },
                 {
                   "name": "Ghosts Again"
@@ -22855,14 +22068,14 @@
                 },
                 {
                   "name": "A Pain That I'm Used To",
-                  "info": "Jacques Lu Cont Remix"
+                  "info": "Jacques Lu Cont's Remix"
                 },
                 {
                   "name": "World in My Eyes",
                   "info": "Dedicated to Andrew Fletcher"
                 },
                 {
-                  "name": "Black Celebration"
+                  "name": "Wrong"
                 },
                 {
                   "name": "Stripped"
@@ -22880,7 +22093,7 @@
               "song": [
                 {
                   "name": "Condemnation",
-                  "info": "Acoustic"
+                  "info": "Acoustic - first time since 2013 - first time sung by Dave since 2001"
                 },
                 {
                   "name": "Just Can't Get Enough"
@@ -22895,9 +22108,9 @@
             }
           ]
         },
-        "url": "https://www.setlist.fm/setlist/depeche-mode/2023/kia-forum-inglewood-ca-43ae179b.html"
+        "url": "https://www.setlist.fm/setlist/depeche-mode/2023/kia-forum-inglewood-ca-6bbbc242.html"
       },
-      "fetchedAt": "2026-03-31T14:42:43.071Z"
+      "fetchedAt": "2026-08-29T23:16:13.840Z"
     },
     {
       "concertId": "concert-160",
@@ -22983,7 +22196,7 @@
       "venue": "21st Amendment",
       "city": "New Orleans",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:45.477Z",
+      "fetchedAt": "2026-08-29T23:16:15.577Z",
       "error": "API error: 404 "
     },
     {
@@ -23395,7 +22608,8 @@
         },
         "url": "https://www.setlist.fm/setlist/the-cure/2023/hollywood-bowl-los-angeles-ca-bb9153a.html"
       },
-      "fetchedAt": "2026-03-31T14:42:52.235Z"
+      "fetchedAt": "2026-03-31T14:42:52.235Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-163",
@@ -23469,7 +22683,8 @@
         "info": "Opening act for The Cure",
         "url": "https://www.setlist.fm/setlist/the-twilight-sad/2023/hollywood-bowl-los-angeles-ca-13b91535.html"
       },
-      "fetchedAt": "2026-03-31T14:42:53.961Z"
+      "fetchedAt": "2026-03-31T14:42:53.961Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-164",
@@ -23592,7 +22807,7 @@
       "venue": "The Belasco",
       "city": "Los Angeles",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:47.836Z",
+      "fetchedAt": "2026-08-29T23:16:17.820Z",
       "error": "API error: 404 "
     },
     {
@@ -24130,7 +23345,7 @@
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:50.059Z",
+      "fetchedAt": "2026-08-29T23:16:20.053Z",
       "error": "API error: 404 "
     },
     {
@@ -25022,7 +24237,7 @@
       "venue": "Pacific Amphitheatre",
       "city": "Costa Mesa",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:52.283Z",
+      "fetchedAt": "2026-08-29T23:16:22.274Z",
       "error": "API error: 404 "
     },
     {
@@ -25584,10 +24799,10 @@
       "venue": "The Belasco",
       "city": "Los Angeles",
       "setlist": {
-        "id": "635e46e3",
-        "versionId": "g535e7b3d",
-        "eventDate": "08-12-2024",
-        "lastUpdated": "2024-12-09T06:56:58.893+0000",
+        "id": "535ef369",
+        "versionId": "g6b5ff6de",
+        "eventDate": "06-12-2024",
+        "lastUpdated": "2024-12-13T15:35:04.795+0000",
         "artist": {
           "mbid": "e1e05cce-3922-44e1-8f20-015abe5e309d",
           "name": "Social Distortion",
@@ -25625,7 +24840,7 @@
                   "name": "So Far Away"
                 },
                 {
-                  "name": "Untitled"
+                  "name": "I Was Wrong"
                 },
                 {
                   "name": "I Wasn't Born to Follow"
@@ -25640,19 +24855,19 @@
                   "name": "The Creeps"
                 },
                 {
-                  "name": "Another State of Mind"
+                  "name": "Lude Boy"
                 },
                 {
                   "name": "Machine Gun Blues"
-                },
-                {
-                  "name": "Over You"
                 },
                 {
                   "name": "Far Side of Nowhere"
                 },
                 {
                   "name": "The Way Things Were"
+                },
+                {
+                  "name": "Over You"
                 },
                 {
                   "name": "Dear Lover"
@@ -25691,9 +24906,9 @@
             }
           ]
         },
-        "url": "https://www.setlist.fm/setlist/social-distortion/2024/the-belasco-los-angeles-ca-635e46e3.html"
+        "url": "https://www.setlist.fm/setlist/social-distortion/2024/the-belasco-los-angeles-ca-535ef369.html"
       },
-      "fetchedAt": "2026-08-29T22:34:54.530Z"
+      "fetchedAt": "2026-08-29T23:16:24.526Z"
     },
     {
       "concertId": "concert-175",
@@ -26336,7 +25551,8 @@
         },
         "url": "https://www.setlist.fm/setlist/david-byrne/2025/dolby-theatre-los-angeles-ca-6b44d64a.html"
       },
-      "fetchedAt": "2026-03-31T14:43:47.024Z"
+      "fetchedAt": "2026-03-31T14:43:47.024Z",
+      "dateGap": 1
     },
     {
       "concertId": "concert-181",
@@ -26837,7 +26053,7 @@
       "venue": "The Fillmore Silver Spring",
       "city": "Silver Spring",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:56.248Z",
+      "fetchedAt": "2026-08-29T23:16:26.248Z",
       "error": "API error: 404 "
     },
     {
@@ -26847,7 +26063,7 @@
       "venue": "Pavilion Theatre",
       "city": "Glasgow",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:34:58.473Z",
+      "fetchedAt": "2026-08-29T23:16:28.477Z",
       "error": "API error: 404 "
     },
     {
@@ -26857,7 +26073,7 @@
       "venue": "Pavilion Theatre",
       "city": "Glasgow",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:35:00.709Z",
+      "fetchedAt": "2026-08-29T23:16:30.697Z",
       "error": "API error: 404 "
     },
     {
@@ -26867,7 +26083,7 @@
       "venue": "Garden Amp",
       "city": "Garden Grove",
       "setlist": null,
-      "fetchedAt": "2026-08-29T22:35:02.946Z",
+      "fetchedAt": "2026-08-29T23:16:32.933Z",
       "error": "API error: 404 "
     }
   ]
