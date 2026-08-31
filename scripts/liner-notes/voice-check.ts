@@ -345,6 +345,17 @@ export interface SocialCheckInput {
    */
   bill?: { headliner: string; support: string[] };
   /**
+   * Set only on an anniversary post: how many years ago the show was.
+   *
+   * The third time the anti-furniture rule has been right for the post it was
+   * written for and wrong for a different one. "N years ago today" IS the reason
+   * an On This Day post exists, and the prompt was telling the model not to
+   * repeat it because the card carries it. So nothing in the shipped text said
+   * today — and on Bluesky the text sits ABOVE the image, so the first thing
+   * read gave no reason the post was appearing at all.
+   */
+  anniversary?: { age: number };
+  /**
    * Everything this post is allowed to have got a number from — its prose, its
    * headline, and the credit stack. Numbers in the copy that appear nowhere here
    * were not drawn from the archive.
@@ -517,6 +528,20 @@ function yearsIn(text: string): number[] {
   ];
 }
 
+/** Spelled-out forms, so "forty-one years ago" counts as much as "41 years ago". */
+const NUMBER_WORD_FOR: Record<number, string> = (() => {
+  const ones = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+  const teens = ["ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+  const tens = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+  const out: Record<number, string> = {};
+  for (let n = 1; n <= 99; n++) {
+    if (n < 10) out[n] = ones[n];
+    else if (n < 20) out[n] = teens[n - 10];
+    else out[n] = n % 10 === 0 ? tens[Math.floor(n / 10)] : `${tens[Math.floor(n / 10)]}-${ones[n % 10]}`;
+  }
+  return out;
+})();
+
 export function checkSocial(input: SocialCheckInput): VoiceIssue[] {
   const issues: VoiceIssue[] = [];
   const push = (severity: VoiceIssueSeverity, rule: string, detail: string) =>
@@ -591,6 +616,30 @@ export function checkSocial(input: SocialCheckInput): VoiceIssue[] {
     // reach it with the venue nowhere on screen at all.
     if (caption && !namesVenue(caption, input.venue)) {
       push("error", "venue-unnamed", `caption never names ${input.venue.name} — it ships without the card`);
+    }
+  }
+
+  // ── An anniversary post that never says when ───────────────────────────────
+  //
+  // Required of the CAPTION, not the hook. The card is date-forward and sets
+  // "N years ago" in large type, so the hook repeating it is the duplication the
+  // furniture rule correctly prevents. The caption is the half that travels
+  // without the card on every channel, and it is the half that was silent.
+  if (input.anniversary && caption) {
+    const age = input.anniversary.age;
+    const marks = [
+      /\btoday\b/i,
+      /\bon this day\b/i,
+      /\bthis (?:date|day)\b/i,
+      new RegExp(`\\b${age}\\s+years?\\s+ago\\b`, "i"),
+      new RegExp(`\\b${NUMBER_WORD_FOR[age] ?? "\\u0000"}\\s+years?\\s+ago\\b`, "i"),
+    ];
+    if (!marks.some((re) => re.test(caption))) {
+      push(
+        "error",
+        "anniversary-unmarked",
+        `caption never says this is an anniversary — it ships without the card, and nothing in it explains why the post is appearing today`
+      );
     }
   }
 

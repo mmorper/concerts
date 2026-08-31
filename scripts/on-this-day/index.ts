@@ -252,7 +252,7 @@ async function main(): Promise<void> {
   if (!process.env.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY is required.");
 
   const otdHeadline = `${built.post.age} years ago today: ${built.post.artist} at ${built.post.venue}`;
-  const facts = narrativeFacts(candidate, src);
+  let facts = narrativeFacts(candidate, src);
 
   // 🔴 ANNIVERSARY POSTS CONVERGE HARDER THAN LINER NOTES, because every one of
   // them draws from the same short menu of fact shapes. Two consecutive posts
@@ -267,6 +267,25 @@ async function main(): Promise<void> {
     .slice(-8)
     .filter((p) => p.slug !== built.post.slug && p.social?.hook)
     .flatMap((p) => [p.social!.hook, p.social!.caption].filter(Boolean));
+
+  // 🔴 REMOVE THE TEMPTATION RATHER THAN FORBID IT.
+  //
+  // The setlist's two ends are the most concrete line on offer, so the model
+  // takes them every time. Told in the prompt not to reuse the move, it reused
+  // it anyway — three of four posts quoted a song two regenerations running.
+  //
+  // A fact that is not in the list cannot be reached for. When the post before
+  // this one quoted a song, the setlist facts are simply withheld and the copy
+  // is written from the gap, the bill, or the room instead. They come back as
+  // soon as the previous post did something else.
+  const previousQuotedASong = avoid.some((line) => /['"\u2018\u201C][^'"\u2019\u201D]{2,60}['"\u2019\u201D]/.test(line));
+  if (previousQuotedASong) {
+    const before = facts.length;
+    facts = facts.filter((f) => !/opened with "|closed with "|songs on the setlist/.test(f));
+    if (facts.length !== before) {
+      console.log(`\n   ↩︎  withholding the setlist — the previous post already quoted a song`);
+    }
+  }
   if (facts.length) {
     console.log(`\n📇 ${facts.length} facts from the archive for this night:`);
     for (const f of facts) console.log(`   • ${f}`);
@@ -306,6 +325,9 @@ async function main(): Promise<void> {
     // The same year gate the liner-notes paths use. An anniversary post has no
     // prose, so its facts ARE its source text.
     sourceText: [otdHeadline, built.post.showDate, ...facts].join(" "),
+    // The anniversary is this post's whole reason to exist; the caption travels
+    // without the card that carries it.
+    anniversary: { age: built.post.age },
   });
   if (issues.length) console.log(formatSocialIssues(built.post.slug, issues));
   if (issues.some((i) => i.severity === "error")) {

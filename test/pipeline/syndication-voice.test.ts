@@ -288,3 +288,59 @@ describe("checkSocial — never writes about the archive", () => {
     expect(errors(issues)).not.toContain("social-furniture");
   });
 });
+
+// ── An anniversary post that never says when ─────────────────────────────────
+//
+// The third time the anti-furniture rule was right for the post it was written
+// for and wrong for a different one. "N years ago today" IS why an On This Day
+// post exists, and the prompt was suppressing it because the card carries it.
+// All four pending posts shipped with nothing in the text saying today — and on
+// Bluesky the text sits ABOVE the image, so that is what a reader meets first.
+describe("checkSocial — anniversary posts", () => {
+  const hook = "They closed on 'Love Will Tear Us Apart'.";
+
+  it("rejects a caption that never says this is an anniversary", () => {
+    const issues = checkSocial({
+      hook,
+      caption: "New Order in 1985, with A Certain Ratio opening. I didn't see them again until 2022.",
+      anniversary: { age: 41 },
+    });
+    expect(errors(issues)).toContain("anniversary-unmarked");
+  });
+
+  it("accepts 'today' anywhere in the caption, not only at the front", () => {
+    const issues = checkSocial({
+      hook,
+      caption: "A Certain Ratio opened for New Order at Irvine Meadows — forty-one years ago today.",
+      anniversary: { age: 41 },
+    });
+    expect(errors(issues)).not.toContain("anniversary-unmarked");
+  });
+
+  it("accepts the age spelled out as well as in digits", () => {
+    for (const said of ["23 years ago", "twenty-three years ago", "on this day"]) {
+      const issues = checkSocial({
+        hook,
+        caption: `The Human League played Anaheim, ${said}. I didn't go back for 15 years.`,
+        anniversary: { age: 23 },
+      });
+      expect(errors(issues), said).not.toContain("anniversary-unmarked");
+    }
+  });
+
+  // The hook sits ON a date-forward card that already sets "N years ago" in
+  // large type, so requiring it there is the duplication the furniture rule
+  // correctly prevents. Only the caption travels alone.
+  it("asks nothing of the hook", () => {
+    const issues = checkSocial({
+      hook: "Four times in 25 years, and only once did they open for someone else.",
+      caption: "Ten years ago today I caught them at Birchmere.",
+      anniversary: { age: 10 },
+    });
+    expect(errors(issues)).not.toContain("anniversary-unmarked");
+  });
+
+  it("says nothing on an ordinary liner note", () => {
+    expect(errors(checkSocial(clean))).not.toContain("anniversary-unmarked");
+  });
+});

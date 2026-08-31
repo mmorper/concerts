@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31T22:42:34.906Z",
+  "generatedAt": "2026-08-31T22:54:40.080Z",
   "posts": [
     {
       "slug": "otd-2026-08-29",
@@ -18,17 +18,18 @@
       "url": "https://concerts.morperhaus.org/?scene=artists&artist=joe-jackson&show=2003-08-29",
       "cardPath": "public/og/on-this-day/otd-2026-08-29.png",
       "social": {
-        "hook": "First of four — and I wouldn't be back for nine years.",
-        "caption": "Joe Jackson played 20 songs that night in Anaheim. I filed it away and didn't return until 2012, which tells you something about how I make plans.",
+        "hook": "My first Joe Jackson show, and I didn't go back for nine years.",
+        "caption": "Twenty songs that night, opening with 'Steppin' Out' — and that was twenty-three years ago today. I didn't see him again until 2012.",
         "beats": [
-          "August 2003. The year I also saw Peter Gabriel, The Human League, and The Cure.",
-          "Joe Jackson played 20 songs. A full set, nothing held back.",
-          "I didn't know it was the first of four. You never do, the first time.",
-          "Nine years before I saw him again. Some gaps you don't notice until you count them."
+          "August 29, 2003. House of Blues Anaheim. My first time seeing Joe Jackson.",
+          "Twenty songs. He opened with 'Steppin' Out' and closed with 'I'm the Man'.",
+          "2003 was a full year — Peter Gabriel, The Human League, The Cure all in the same stretch.",
+          "But I didn't go back for Joe Jackson until 2012. Nine years between show one and show two.",
+          "I've seen him four times total. That first night in Anaheim started all of it."
         ],
-        "authoredAt": "2026-08-31T22:42:24.301Z"
+        "authoredAt": "2026-08-31T22:54:28.105Z"
       },
-      "publishedAt": "2026-08-31T22:42:34.906Z"
+      "publishedAt": "2026-08-31T22:54:40.080Z"
     },
     {
       "slug": "otd-2026-08-26",
@@ -48,17 +49,17 @@
       "linerNoteSlug": "the-smithereens-21-years-between-shows",
       "cardPath": "public/og/on-this-day/otd-2026-08-26.png",
       "social": {
-        "hook": "Four times in 25 years — and only once did they not have top billing.",
-        "caption": "That one exception was 1991, opening for Siouxsie and the Banshees. August 2016 at Birchmere was the headlining version, and it's the last time I've seen them.",
+        "hook": "Four times in 25 years, and only once did they open for someone else.",
+        "caption": "Ten years ago today I caught The Smithereens at Birchmere — my fourth time seeing them, and the only show I've ever attended there. Still the last time, so far.",
         "beats": [
-          "I saw The Smithereens four times across 25 years. Three were headline sets.",
-          "The odd one out was December 1991 — they opened for Siouxsie and the Banshees.",
-          "August 2016 at Birchmere was the headliner version. Also my only show there ever.",
-          "It's the most recent time I've seen them. Ten years ago today."
+          "The Smithereens headlined Birchmere on August 26, 2016 — my fourth time seeing them across 25 years.",
+          "Three of those four were headline sets. The exception: opening for Siouxsie and the Banshees in December 1991.",
+          "Birchmere in Alexandria was new territory — the only time I've ever been inside that room.",
+          "Ten years on, it's still the last time I've seen them. That's not a complaint. It's just where the count sits."
         ],
-        "authoredAt": "2026-08-31T22:42:12.379Z"
+        "authoredAt": "2026-08-31T22:54:16.049Z"
       },
-      "publishedAt": "2026-08-31T22:42:23.592Z"
+      "publishedAt": "2026-08-31T22:54:27.247Z"
     },
     {
       "slug": "otd-2026-08-24",
@@ -77,17 +78,18 @@
       "url": "https://concerts.morperhaus.org/?scene=artists&artist=the-human-league&show=2003-08-24",
       "cardPath": "public/og/on-this-day/otd-2026-08-24.png",
       "social": {
-        "hook": "The English Beat opened — and I'd end up seeing them 9 more times after that night.",
-        "caption": "The Human League were the headliner, but The English Beat were the surprise that stuck. I was back to see them again less than a month later.",
+        "hook": "The English Beat opened. I had no idea I'd see them nine more times after that.",
+        "caption": "The Human League were headlining, but The English Beat are the reason I keep thinking about this night — twenty-three years ago today. I didn't see The Human League again until 2018.",
         "beats": [
-          "The English Beat opened. I'd seen them before, but this night started a run — 9 more shows after this one.",
-          "The Human League played 17 songs. I wouldn't see them again for 15 years.",
-          "2003 was a dense year: Peter Gabriel, Joe Jackson, The Cure. This night was in the middle of all of it.",
-          "The English Beat were back at another venue on September 20th — 27 days later. I was there for that one too."
+          "The English Beat opened for The Human League at The Grove of Anaheim on August 24, 2003.",
+          "It was my first Human League show. Fifteen years would pass before I saw them again.",
+          "The English Beat were a different story — that night was number one of ten.",
+          "2003 was a dense year: Peter Gabriel, Joe Jackson, The Cure. The Human League fit right in.",
+          "The opener became the habit. The headliner took another fifteen years to return."
         ],
-        "authoredAt": "2026-08-31T22:41:50.394Z"
+        "authoredAt": "2026-08-31T22:54:10.228Z"
       },
-      "publishedAt": "2026-08-31T22:42:11.667Z"
+      "publishedAt": "2026-08-31T22:54:15.324Z"
     },
     {
       "slug": "otd-2026-08-23",
@@ -107,17 +109,18 @@
       "linerNoteSlug": "new-order-37-years-between-shows",
       "cardPath": "public/og/on-this-day/otd-2026-08-23.png",
       "social": {
-        "hook": "They closed on 'Love Will Tear Us Apart' — and I didn't find my way back for 37 years.",
-        "caption": "New Order in 1985, with A Certain Ratio opening — two acts I'd never see together again, and one I'd never see at all after that night. The second New Order show didn't happen until 2022.",
+        "hook": "37 years between the first show and the second — and A Certain Ratio opened the first one.",
+        "caption": "Forty-one years ago today, A Certain Ratio and the Abecedarians opened for New Order at Irvine Meadows. I didn't see New Order again until 2022.",
         "beats": [
-          "A Certain Ratio opened. I haven't seen them since — that night is the only one.",
-          "New Order closed a 14-song set with 'Love Will Tear Us Apart'. Joy Division's song, their encore.",
-          "1985 was a crowded year: Springsteen, Depeche Mode, Tears For Fears. This was the show I didn't follow up.",
-          "37 years passed before I bought another New Order ticket. The 1985 version of me had no idea."
+          "August 23, 1985. New Order at Irvine Meadows — my first time seeing them.",
+          "A Certain Ratio opened. I have never seen them since — that night is the only time.",
+          "The Abecedarians opened too. Same story: once, and only that once.",
+          "1985 was a full year — Depeche Mode, Springsteen, Tears For Fears. New Order fit right in.",
+          "I didn't see New Order again until 2022. Thirty-seven years between the first show and the second."
         ],
-        "authoredAt": "2026-08-31T22:41:43.725Z"
+        "authoredAt": "2026-08-31T22:54:03.717Z"
       },
-      "publishedAt": "2026-08-31T22:41:49.708Z"
+      "publishedAt": "2026-08-31T22:54:09.532Z"
     }
   ]
 }
