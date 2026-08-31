@@ -146,6 +146,25 @@ export function knownDates(post: LinerNotesPost, sources: BackfillSources): stri
       }
     }
   }
+  // 🔴 A "DAYS BEFORE/AFTER" POST MAKES ONE MORE DATE COMPUTABLE, and the gate's
+  // premise — that a full date is always a quotation, never a calculation — is
+  // false for exactly this shape. The Brian Setzer note says The Bends dropped
+  // "13 days" before a show on 1995-03-26, so 1995-03-13 is derived from the
+  // post's own prose. It is not in album-eras because Radiohead has never been
+  // seen live, so no amount of widening that file would have reached it, and the
+  // gate rejected the post's entire premise as a fabrication.
+  for (const match of String(post.prose ?? "").matchAll(/\b(\d{1,4})\s+days?\b/gi)) {
+    const days = Number(match[1]);
+    if (!Number.isFinite(days) || days > 3650) continue;
+    for (const anchor of post.years?.length ? [...out] : []) {
+      const t = Date.parse(`${anchor}T00:00:00Z`);
+      if (Number.isNaN(t)) continue;
+      for (const sign of [-1, 1]) {
+        out.add(new Date(t + sign * days * 86400000).toISOString().slice(0, 10));
+      }
+    }
+  }
+
   return [...out];
 }
 
