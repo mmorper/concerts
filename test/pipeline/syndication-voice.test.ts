@@ -246,3 +246,45 @@ describe("checkSocial — unsourced years", () => {
       .not.toContain("unsourced-year");
   });
 });
+
+// ── Writing about the filing instead of the night ────────────────────────────
+//
+// "read more" and "link in bio" were banned from the start; this is the same
+// move in the archive's own vocabulary and it walked straight past them. Nine
+// pending posts carried it, including a beat reading "The archive is on the
+// site — link in the bio", which the original rule missed on one word.
+describe("checkSocial — never writes about the archive", () => {
+  const filler = [
+    "Joe Jackson at House of Blues Anaheim — now 23 years in the archive.",
+    "The full story of that gap is in the archive.",
+    "The Smithereens ten years ago today — still in the log.",
+    "Forty-one years later, the entry still stands.",
+    "Sixteen shows. The archive is on the site.",
+  ];
+
+  for (const caption of filler) {
+    it(`rejects "${caption.slice(0, 40)}…"`, () => {
+      expect(errors(checkSocial({ hook: "A Friday night in Anaheim.", caption }))).toContain(
+        "social-furniture"
+      );
+    });
+  }
+
+  it("catches 'link in the bio', which the original rule missed on one word", () => {
+    const issues = checkSocial({
+      hook: "Sixteen shows.",
+      caption: "I kept going back.",
+      beats: ["Sixteen shows.", "Thirty-nine years.", "The archive is there — link in the bio."],
+    });
+    expect(errors(issues)).toContain("social-furniture");
+  });
+
+  // "records" means vinyl at least as often as it means filing, in this corpus.
+  it("does not fire on records meaning music", () => {
+    const issues = checkSocial({
+      hook: "Tract housing stands where 16 summer nights used to echo.",
+      caption: "The synthesizers and the guitar feedback are gone. I still go back to my records.",
+    });
+    expect(errors(issues)).not.toContain("social-furniture");
+  });
+});

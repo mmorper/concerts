@@ -280,11 +280,44 @@ export function formatVoiceIssues(finding: ScoredFinding, issues: VoiceIssue[]):
 const SOCIAL_FURNITURE: Array<[RegExp, string]> = [
   [/#\w/, "hashtag in authored copy — tags are generated per channel, not written"],
   [/https?:\/\//i, "URL in authored copy — the adapter appends the link"],
-  [/\blink in bio\b/i, '"link in bio" — feed-tool boilerplate'],
+  // "the" is optional, because it was not, and a beat reading "The archive is on
+  // the site — link in the bio" sat in the publish queue passing this rule.
+  [/\blink in (?:the )?bio\b/i, '"link in bio" — feed-tool boilerplate'],
   [/\b(?:read|see) more\b/i, '"read more" — feed-tool boilerplate'],
   [
     /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/u,
     "emoji — not the archive's register",
+  ],
+  // ── Writing about the filing instead of the night ──────────────────────────
+  //
+  // "read more" and "link in bio" were banned above from the start; this is the
+  // same move in the archive's own vocabulary, and it walked straight past them.
+  // All four pending On This Day posts did it — "now 23 years in the archive",
+  // "the full entry is on the site", "it's been in the archive ever since", "the
+  // entry still stands" — because an anniversary post had no material and filled
+  // the space with the fact that a record exists. A reader did not come for that.
+  //
+  // The cure is the facts now passed to the prompt; this is the ratchet that
+  // stops it coming back.
+  [
+    /\b(?:in|into|to) (?:the|my|our) (?:archive|log|books)\b/i,
+    "\"in the archive\" — the post is about the night, not about it being filed",
+  ],
+  [
+    /\b(?:full|complete) (?:entry|story|write-?up)\b/i,
+    "\"the full entry\" — feed-tool boilerplate wearing the archive's vocabulary",
+  ],
+  [
+    /\bthe (?:entry|record|post|log) (?:still )?(?:stands|remains|lives)\b/i,
+    "\"the entry still stands\" — writing about the filing, not the night",
+  ],
+  [
+    /\bstill (?:in|on) (?:the|my) (?:archive|log|site|books)\b/i,
+    "\"still in the log\" — same filler, different wording",
+  ],
+  [
+    /\bon the site\b/i,
+    "\"on the site\" — the adapter appends the link; the copy never points at it",
   ],
 ];
 

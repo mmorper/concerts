@@ -13,12 +13,21 @@ import { SITE_URL } from "../syndication/payload.ts";
 import { otdSlug, type OnThisDayPost } from "./types.ts";
 import type { OnThisDayCandidate } from "./detect.ts";
 import type { LinerNotesPost } from "../../src/types/liner-notes.ts";
+import type { Concert } from "../../src/types/concert.ts";
 
 export interface BuildSources {
   artistsMetadata: Record<string, { name?: string; image?: string }>;
   venuesMetadata: Record<string, { name?: string; city?: string }>;
   /** Published liner notes, for cross-linking. */
   linerNotes: LinerNotesPost[];
+  /**
+   * Every concert, for `narrativeFacts`. Optional so the existing tests and any
+   * caller that only wants a URL keep working — absent means the copy is
+   * authored from the credit stack alone, which is what it did before.
+   */
+  concerts?: Concert[];
+  /** The night's setlist, if one was cached. */
+  setlists?: Map<string, { songs: string[] }>;
   /**
    * Dates a setlist actually exists for. A `?show=` link to a night with no
    * setlist opens an empty panel, so the liner-notes pipeline gates on this
@@ -117,6 +126,123 @@ export function resolveImage(
 ): string | undefined {
   const show = candidate.shows[0];
   return sources.artistsMetadata[show.headlinerNormalized]?.image;
+}
+
+
+/**
+ * What the archive knows about this night, in sentences the model may use.
+ *
+ * 🔴 THE FIX FOR PADDING IS MATERIAL, NOT A RULE FORBIDDING IT.
+ * An On This Day post has no prose behind it. Before this, the prompt received
+ * five fields — artist, venue, city, date, age — and an instruction not to
+ * invent anything, which is the correct instruction and leaves nothing to say.
+ * So the copy talked about the filing instead of the night: "now 23 years in the
+ * archive", "the full entry is on the site", "still in the log". All four
+ * pending posts did it, and two of four hooks landed on the same move.
+ *
+ * Every line here is computed from concerts.json or the setlist cache, so the
+ * model is choosing among true sentences rather than reaching for filler. It is
+ * still told to use at most a couple — a list of facts recited in order is its
+ * own kind of robotic.
+ */
+export function narrativeFacts(
+  candidate: OnThisDayCandidate,
+  sources: BuildSources
+): string[] {
+  const show = candidate.shows[0];
+  if (!show) return [];
+  const concerts = sources.concerts;
+  if (!concerts?.length) return [];
+
+  const facts: string[] = [];
+  const year = Number(show.date.slice(0, 4));
+
+  // ── Where this night sits in the artist's run ──────────────────────────────
+  const byArtist = concerts
+    .filter((c) => c.headlinerNormalized === show.headlinerNormalized)
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  if (byArtist.length === 1) {
+    facts.push(`This is the ONLY time I have seen ${show.headliner}. Once, and never again.`);
+  } else {
+    const index = byArtist.findIndex((c) => c.date === show.date);
+    facts.push(
+      `I have seen ${show.headliner} ${byArtist.length} times; this was number ${index + 1}.`
+    );
+    if (index === 0) {
+      const next = byArtist[1];
+      const gap = Number(next.date.slice(0, 4)) - year;
+      facts.push(
+        `It was the FIRST time. I did not see them again until ${next.date.slice(0, 4)}` +
+          (gap >= 5 ? ` — ${gap} years later.` : ".")
+      );
+    } else if (index === byArtist.length - 1) {
+      facts.push(`It is the most recent time I have seen them, and the last so far.`);
+    }
+    // A long silence on either side is the most reliably interesting shape here.
+    // The forward gap is skipped on a first show because the branch above has
+    // already said it — stated twice, it reads as two facts and is one.
+    const prev = byArtist[index - 1];
+    const next = index === 0 ? undefined : byArtist[index + 1];
+    for (const [label, other] of [["before", prev], ["after", next]] as const) {
+      if (!other) continue;
+      const gap = Math.abs(Number(other.date.slice(0, 4)) - year);
+      if (gap >= 8) {
+        facts.push(
+          label === "before"
+            ? `The previous time I saw them was ${gap} years earlier, in ${other.date.slice(0, 4)}.`
+            : `I did not see them again for ${gap} years, until ${other.date.slice(0, 4)}.`
+        );
+      }
+    }
+  }
+
+  // ── Who else was on the bill ───────────────────────────────────────────────
+  const thisShow = concerts.find((c) => c.date === show.date && c.headlinerNormalized === show.headlinerNormalized);
+  if (thisShow?.openers?.length) {
+    facts.push(`${thisShow.openers.join(" and ")} opened.`);
+  }
+  if (thisShow?.genre) facts.push(`Filed under ${thisShow.genre}.`);
+
+  // ── The room ───────────────────────────────────────────────────────────────
+  const atVenue = concerts.filter((c) => c.venueNormalized === show.venueNormalized);
+  if (atVenue.length > 1) {
+    facts.push(`I have been to ${show.venue} ${atVenue.length} times in all.`);
+  } else {
+    facts.push(`This is the only show I have ever seen at ${show.venue}.`);
+  }
+
+  // ── The year around it ─────────────────────────────────────────────────────
+  const sameYear = concerts.filter((c) => c.year === year && c.date !== show.date);
+  if (sameYear.length) {
+    const names = [...new Set(sameYear.map((c) => c.headliner))];
+    facts.push(
+      `Other acts I saw in ${year}: ${names.slice(0, 6).join(", ")}` +
+        (names.length > 6 ? `, and ${names.length - 6} more.` : ".")
+    );
+  } else {
+    facts.push(`This was the only concert I went to in all of ${year}.`);
+  }
+
+  // ── What was actually played ───────────────────────────────────────────────
+  //
+  // 🔴 A SHORT SETLIST IS MISSING DATA, NOT A SHORT NIGHT. setlist.fm entries are
+  // crowd-sourced and frequently partial: The Smithereens at the Birchmere has
+  // exactly one song on file, which produced "They opened with 'Behind the Wall
+  // of Sleep' and closed with 'Behind the Wall of Sleep'" and "1 songs on the
+  // setlist". Neither is true of the night — both are true of the record of it.
+  // Three is the floor at which an opener and a closer are different songs and
+  // the count is worth stating.
+  const MIN_SETLIST = 3;
+  const songs =
+    sources.setlists?.get(`${show.date}::${show.headlinerNormalized}`)?.songs ??
+    sources.setlists?.get(show.date)?.songs;
+  if (songs && songs.length >= MIN_SETLIST) {
+    facts.push(`They opened with "${songs[0]}" and closed with "${songs[songs.length - 1]}".`);
+    facts.push(`${songs.length} songs on the setlist that night.`);
+  }
+
+  return facts;
 }
 
 export interface BuiltPost {

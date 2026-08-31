@@ -535,9 +535,19 @@ export function buildOnThisDayPayload(post: OnThisDayPost): SyndicationPayload {
  * The date leads, because the card leads with it — a screen-reader user should
  * meet the post the same way a sighted one does.
  */
+/**
+ * Alt text for an anniversary card.
+ *
+ * Carries the HOOK for the same reason the liner-notes alt does: the card sets
+ * it in display type, so a description omitting it hands a screen-reader user
+ * the credit while a sighted reader gets the sentence. Milder than the bug on
+ * the other path — this said nothing false, it just said less — and the same
+ * fix.
+ */
 export function onThisDayAlt(post: OnThisDayPost): string {
-  return (
+  const base =
     `${post.age} years ago today: ${post.artist} at ${post.venue}, ${post.city}, ` +
-    `${formatDate(post.showDate)}.`
-  );
+    `${formatDate(post.showDate)}.`;
+  const hook = post.social?.hook?.trim();
+  return hook ? `${base} Card reads: ${hook}.` : base;
 }

@@ -106,6 +106,14 @@ COUNT THE CHARACTERS BEFORE YOU RETURN. Same for every beat against its own limi
   You may of course repeat a NAME. Naming the artist or venue the hook could not is the caption's job.
 - No hashtags, no emoji, no URL, no "link in bio", no "read more".
 
+🔴 NEVER WRITE ABOUT THE ARCHIVE. Applies to the hook, the caption and every beat.
+The reader came for the night. That a record of it exists is the least interesting true thing you could tell them, and it is what copy reaches for when it has run out of night to describe.
+  BANNED  "now 23 years in the archive"        "the full entry is on the site"
+          "still in the log"                    "the entry still stands"
+          "it's in the archive now"             "all eight nights are in the archive"
+          "The archive is on the site — link in the bio."
+If you find yourself writing one of these, the fix is not a better phrasing of it. Go back to the material and find something that happened.
+
 WORKED EXAMPLE — the failure this section exists to stop.
   hook     39 years between ticket stubs, same song, same authority
   BAD      Nile Rodgers played 'Notorious' as if he'd always owned it — and in every
@@ -213,6 +221,15 @@ export interface SocialContext {
    * feed tool.
    */
   avoid?: string[];
+  /**
+   * True sentences about this night, computed from the archive.
+   *
+   * For an anniversary post this is the whole material — it has no prose behind
+   * it, and a prompt given five credit fields and told not to invent writes
+   * about the filing instead of the night ("now 23 years in the archive", "the
+   * full entry is on the site"). Four of four did exactly that.
+   */
+  facts?: string[];
 }
 
 /**
@@ -317,7 +334,11 @@ function unsourcedYears(parsed: unknown, post: SocialSubject, context: SocialCon
   // from four artists' discographies is noise, and worse, it reads as permission
   // to attach any of them to any claim.
   const stated = new Set(
-    years([post.prose ?? "", post.headline, context.date].join(" "))
+    // `facts` belongs here, not merely in `known`: for an anniversary post they
+    // ARE the note, and a year the pipeline itself supplied being rejected as a
+    // fabrication is the gate calling its own evidence a lie. It did exactly
+    // that to "I did not see them again until 2018".
+    years([post.prose ?? "", post.headline, context.date, ...(context.facts ?? [])].join(" "))
   );
   const known = new Set([...stated, ...(context.knownYears ?? [])]);
 
@@ -370,6 +391,23 @@ function buildPrompt(post: SocialSubject, context: SocialContext): string {
         "not claim to remember anything the facts do not contain.",
         `Framing: ${post.headline}`,
         "",
+        ...(context.facts?.length
+          ? [
+              "WHAT THE ARCHIVE KNOWS ABOUT THIS NIGHT — every line below is true:",
+              ...context.facts.map((f) => `  \u2022 ${f}`),
+              "",
+              "\u{1F534} PICK ONE OR TWO. Reciting the list in order is its own kind of",
+              "robotic. The strongest is usually the one that is slightly strange — the",
+              "only time, the long silence, the opener nobody remembers, the song they",
+              "closed on. A count is context; the odd fact is the post.",
+              "",
+              "\u{1F534} NEVER WRITE ABOUT THE ARCHIVE ITSELF. Not \"now in the archive\", not",
+              "\"the entry still stands\", not \"still in the log\", not \"the full entry is on",
+              "the site\". A reader does not care that a thing was filed; they came for the",
+              "night. That filler is exactly what the facts above exist to replace.",
+              "",
+            ]
+          : []),
       ];
   const venueIsSubject = context.subject === "venue";
 

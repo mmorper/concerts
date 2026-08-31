@@ -116,9 +116,22 @@ describe("buildOnThisDayPayload", () => {
   });
 
   it("writes alt text that leads with the date, as the card does", () => {
-    expect(onThisDayAlt(post())).toBe(
-      "40 years ago today: Oingo Boingo at Caliente Racetrack, Tijuana, 30 June 1987."
+    const subject = post();
+    expect(onThisDayAlt(subject)).toBe(
+      "40 years ago today: Oingo Boingo at Caliente Racetrack, Tijuana, 30 June 1987. " +
+        `Card reads: ${subject.social!.hook}.`
     );
+  });
+
+  // The card sets the hook in display type. Alt that stops at the credit hands a
+  // screen-reader user strictly less than a sighted reader gets.
+  it("carries the hook, because that is what the card says", () => {
+    expect(onThisDayAlt(post())).toContain(post().social!.hook);
+  });
+
+  it("falls back to the credit alone when there is no authored hook", () => {
+    const alt = onThisDayAlt({ ...post(), social: undefined });
+    expect(alt).toBe("40 years ago today: Oingo Boingo at Caliente Racetrack, Tijuana, 30 June 1987.");
   });
 });
 
