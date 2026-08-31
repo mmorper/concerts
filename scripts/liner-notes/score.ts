@@ -387,11 +387,38 @@ function computeTimelinessBonus(f: AnalysisFinding, today: Date): number {
 /**
  * Category Balance (0–5)
  * Rewards findings whose category is underrepresented in the current batch.
+ *
+ * 🔴 THIS USED TO BE A CLIFF, AND THE CLIFF WAS THE BUG.
+ * `count < average ? 5 : 0` means a category sitting one finding either side of
+ * the mean differs by five points — a quarter of MIN_SCORE — so any change to
+ * the corpus can silently promote or demote an entire category.
+ *
+ * It did. Fixing `rare-sighting` to count opener credits removed 13 false
+ * findings, which moved the average from 66.67 to 65.67 with `personal` sitting
+ * at 66. Every personal finding lost five points at once and three
+ * `milestone-marker` findings dropped under the floor — the same class of
+ * failure #233 fixed once already, arriving by a different route. A correctness
+ * fix in an unrelated detector should not decide whether "My 50th Show"
+ * publishes.
+ *
+ * So the reward is now proportional to how far below the MOST crowded category
+ * a finding's own category sits: the fullest category earns nothing, the
+ * emptiest earns the full five, everything between scales. Same intent — push
+ * the under-represented up — with no discontinuity for the corpus to trip over.
+ *
+ * `avgPerCategory` is no longer read. It stays in the signature because the
+ * breakdown is recorded on every scored finding and callers pass it positionally.
  */
 function computeCategoryBalance(
   f: AnalysisFinding,
   categoryCounts: Record<ContentCategory, number>,
-  avgPerCategory: number
+  _avgPerCategory: number
 ): number {
-  return (categoryCounts[f.category] ?? 0) < avgPerCategory ? 5 : 0;
+  const counts = Object.values(categoryCounts);
+  const most = Math.max(...counts);
+  const fewest = Math.min(...counts);
+  // Every category equally full: nobody is under-represented, so nobody is owed.
+  if (most === fewest) return 0;
+  const own = categoryCounts[f.category] ?? 0;
+  return Math.round((5 * (most - own)) / (most - fewest));
 }

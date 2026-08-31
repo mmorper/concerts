@@ -290,6 +290,21 @@ describe("buildPayload", () => {
   // display type. This asserted the headline for the whole life of the feature,
   // which is how every published card told a screen-reader user it said something
   // it did not — the one reader who cannot check.
+  // 🔴 THE SITE IS EDITABLE AND SOCIAL IS NOT. A note deleted here leaves its
+  // copies standing on servers we do not control, so a claim that is true today
+  // and false later belongs in one place and not the other. Blancmange is the
+  // case: "Caught Once, Never Again" is accurate as written, and they open for
+  // Thompson Twins on 2026-09-16, after which it is not.
+  it("holds a post marked doNotSyndicate, whatever else is right about it", () => {
+    const held = buildPayload({ ...post(), doNotSyndicate: "perishable — see 2026-09-16" }, sources);
+    expect(held.eligible).toBe(false);
+    expect(held.ineligibleReasons.join()).toMatch(/held: perishable/);
+
+    // And the same post without the mark is eligible, so this is the hold doing
+    // the work rather than something else already wrong with the fixture.
+    expect(buildPayload(post(), sources).eligible).toBe(true);
+  });
+
   it("writes alt text describing the card, not the source photograph", () => {
     const credit = {
       artists: ["The Art of Noise"],

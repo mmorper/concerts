@@ -628,77 +628,6 @@
       }
     },
     {
-      "id": "rare-sighting-ziggy-marley",
-      "slug": "ziggy-marley-caught-once-never-again",
-      "category": "deep-cut",
-      "temporality": "evergreen",
-      "headline": "Ziggy Marley: Caught Once, Never Again",
-      "prose": "One show in 36 years of concert-going — just Ziggy Marley, Mesa Amphitheatre, September 1988, and then nothing. I've seen artists dozens of times, built whole chapters of this archive around them, but somehow Ziggy never crossed my path again despite releasing records like *Rebellion Rises* and *Love Is My Religion* that I genuinely love. That single 1988 date sits in the archive like a polaroid found in a jacket pocket — vivid, a little mysterious, and making me wonder how I let 36 years slip by without a second show.",
-      "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/marley-ziggy-508440fb16be3.jpg",
-        "alt": "Ziggy Marley",
-        "source": "artist",
-        "ref": "ziggy-marley"
-      },
-      "audio": {
-        "trackName": "Beach In Hawaii",
-        "artistName": "Ziggy Marley",
-        "albumName": "Love Is My Religion",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/25/1f/cf/251fcf7e-a64b-7160-f62a-07f898d63ea1/mzaf_17005283280564312957.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/88/ef/73/88ef73f9-9778-09fe-d9e8-eb5cd7b6f6dd/LIMR_Cover_Art.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/beach-in-hawaii/588804390?i=588804477&uo=4",
-        "source": "itunes"
-      },
-      "artists": [
-        "ziggy-marley"
-      ],
-      "venues": [
-        "mesa-amphitheatre"
-      ],
-      "years": [
-        1988
-      ],
-      "tags": [
-        "#rare-sighting",
-        "#one-time-only"
-      ],
-      "deepLinks": [
-        {
-          "label": "Ziggy Marley",
-          "url": "/?scene=artists&artist=ziggy-marley",
-          "type": "artist"
-        },
-        {
-          "label": "Mesa Amphitheatre",
-          "url": "/?scene=venues&venue=mesa-amphitheatre",
-          "type": "venue"
-        },
-        {
-          "label": "1988",
-          "url": "/?scene=timeline&year=1988",
-          "type": "timeline"
-        }
-      ],
-      "relatedSlugs": [
-        "peter-gabriel-11-more-1993-festival-bill",
-        "billy-idol-caught-once-never-again"
-      ],
-      "score": 28,
-      "detector": "rare-sighting",
-      "publishedAt": "2026-06-29T12:38:25.105Z",
-      "social": {
-        "hook": "Rebellion Rises came out 30 years after I saw him. I still haven't gone back.",
-        "caption": "Ziggy Marley at Mesa Amphitheatre in September 1988 is the only entry I have. Albums I genuinely love — Rebellion Rises, Love Is My Religion — and somehow a second show never happened.",
-        "beats": [
-          "September 1988, Mesa Amphitheatre. One ticket, one night, and then 36 years of nothing.",
-          "It's not indifference — I know the records. Love Is My Religion, Rebellion Rises. I played both.",
-          "Some artists accumulate entries. Ziggy Marley has exactly one, and it's from the year I turned 22.",
-          "The 1988 show sits there in isolation. Not a starting point. Just a single data point with nothing after it."
-        ],
-        "authoredAt": "2026-08-31T20:55:40.313Z"
-      }
-    },
-    {
       "id": "anniversary-jimmy-buffett-1991-06-21",
       "slug": "june-21-35-years-since-jimmy-buffett",
       "category": "personal",
@@ -827,7 +756,6 @@
         }
       ],
       "relatedSlugs": [
-        "no-doubt-days-before-it-takes-a-nation-of-millions-to-hold-us-back-dropped",
         "billy-idol-caught-once-never-again"
       ],
       "score": 28,
@@ -843,90 +771,6 @@
           "The theme park setting is the detail that makes it real. I couldn't have constructed that from memory."
         ],
         "authoredAt": "2026-08-31T20:55:28.368Z"
-      }
-    },
-    {
-      "id": "album-context-late-registration-garbage",
-      "slug": "garbage-days-before-late-registration-dropped",
-      "category": "cultural",
-      "temporality": "evergreen",
-      "headline": "Garbage — Days Before Late Registration Dropped",
-      "prose": "In July 2005, hip-hop was about to get its most orchestral moment yet — Kanye West's Late Registration would drop just 34 days after I saw Garbage at Pacific Amphitheatre. I remember thinking how perfectly Shirley Manson's electronic-rock theatrics felt that summer, all moody synthesizers and guitar distortion. What I didn't know was that across town, Kanye was putting finishing touches on an album that would blend hip-hop with string arrangements in ways that echoed Garbage's own genre-blending DNA from the '90s. Sometimes the musical zeitgeist reveals itself in hindsight.",
-      "image": {
-        "url": "/images/shows/2019-05-16-garbage-02.jpg",
-        "alt": "Garbage",
-        "source": "show",
-        "ref": "garbage",
-        "credit": "Mike Morper · 16 May 2019",
-        "shotOn": "2019-05-16",
-        "crop": {
-          "x": 0.02,
-          "y": 0.0187,
-          "w": 0.96,
-          "h": 0.8997
-        }
-      },
-      "audio": {
-        "trackName": "Only Happy When It Rains",
-        "artistName": "Garbage",
-        "albumName": "Garbage (20th Anniversary Edition) [2015 Remaster]",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/75/ad/d5/75add5f0-b359-6686-0a28-19da67e689b3/mzaf_9626845392030467520.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/81/8e/64/818e6487-df77-bb60-7245-7f87c40d6f2d/00602547364890.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/only-happy-when-it-rains/1440827138?i=1440827326&uo=4",
-        "source": "itunes"
-      },
-      "artists": [
-        "garbage"
-      ],
-      "venues": [
-        "pacific-amphitheatre"
-      ],
-      "years": [
-        2005
-      ],
-      "tags": [
-        "#album-context",
-        "#cultural-moment"
-      ],
-      "deepLinks": [
-        {
-          "label": "Garbage",
-          "url": "/?scene=artists&artist=garbage",
-          "type": "artist"
-        },
-        {
-          "label": "Pacific Amphitheatre",
-          "url": "/?scene=venues&venue=pacific-amphitheatre",
-          "type": "venue"
-        },
-        {
-          "label": "July 27, 2005",
-          "url": "/?scene=artists&artist=garbage&show=2005-07-27",
-          "type": "setlist"
-        },
-        {
-          "label": "2005",
-          "url": "/?scene=timeline&year=2005",
-          "type": "timeline"
-        }
-      ],
-      "relatedSlugs": [
-        "pacific-amphitheatre-16-shows-over-5-decades-2"
-      ],
-      "score": 29,
-      "detector": "album-context",
-      "publishedAt": "2026-06-02T15:15:21.680Z",
-      "social": {
-        "hook": "Late Registration was 34 days away. Shirley Manson was already there.",
-        "caption": "Garbage played Pacific Amphitheatre on July 27, 2005 — moody synths, guitar distortion, the whole electronic-rock architecture. Kanye was finishing the strings.",
-        "beats": [
-          "July 27, 2005. Shirley Manson walked out into a Costa Mesa summer with a decade of genre-blending already behind her.",
-          "The set was full of synthesizers pressed against guitar distortion — Garbage had been building that hybrid since 1995.",
-          "34 days later, Late Registration arrived and everyone called the hip-hop-meets-orchestra thing new.",
-          "Kanye was adding string arrangements across town while Garbage was playing them to an amphitheatre crowd.",
-          "The zeitgeist rarely announces itself. Sometimes you only know you were in it afterward."
-        ],
-        "authoredAt": "2026-08-31T20:55:21.812Z"
       }
     },
     {
@@ -1070,83 +914,6 @@
       }
     },
     {
-      "id": "album-context-achtung-baby-siouxsie-and-the-banshees",
-      "slug": "siouxsie-and-the-banshees-days-after-achtung-baby-dropped",
-      "category": "cultural",
-      "temporality": "evergreen",
-      "headline": "Siouxsie and the Banshees — Days After Achtung Baby Dropped",
-      "prose": "December 1991 was the month U2 shattered expectations with Achtung Baby, trading earnest anthems for industrial textures and irony — and just 33 days after that seismic shift dropped, I caught Siouxsie and the Banshees at the Universal Amphitheater. Here were two bands who'd spent the '80s proving that reinvention was survival, but Siouxsie had been mining that dark, electronic-tinged territory since 1976 while Bono was still figuring out how to be mysterious. Watching her command that stage in the shadow of U2's supposed \"breakthrough\" felt like a reminder of who'd been doing the real pioneering work all along.",
-      "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/rvqpuy1348109917.jpg",
-        "alt": "Siouxsie and the Banshees",
-        "source": "artist",
-        "ref": "siouxsie-and-the-banshees"
-      },
-      "audio": {
-        "trackName": "Cities In Dust",
-        "artistName": "Siouxsie and the Banshees",
-        "albumName": "Tinderbox (Remastered & Expanded)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/61/c3/3c/61c33c60-b1b1-e807-669b-b5e55ea50865/mzaf_14744696204040940587.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/2d/f4/91/2df491a6-a3bd-35df-2447-d1765cf1ba72/00600753148938.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/cities-in-dust/1443841582?i=1443842139&uo=4",
-        "source": "itunes"
-      },
-      "artists": [
-        "siouxsie-and-the-banshees"
-      ],
-      "venues": [
-        "universal-amphitheater"
-      ],
-      "years": [
-        1991
-      ],
-      "tags": [
-        "#album-context",
-        "#cultural-moment"
-      ],
-      "deepLinks": [
-        {
-          "label": "Siouxsie and the Banshees",
-          "url": "/?scene=artists&artist=siouxsie-and-the-banshees",
-          "type": "artist"
-        },
-        {
-          "label": "Universal Amphitheater",
-          "url": "/?scene=venues&venue=universal-amphitheater",
-          "type": "venue"
-        },
-        {
-          "label": "December 21, 1991",
-          "url": "/?scene=artists&artist=siouxsie-and-the-banshees&show=1991-12-21",
-          "type": "setlist"
-        },
-        {
-          "label": "1991",
-          "url": "/?scene=timeline&year=1991",
-          "type": "timeline"
-        }
-      ],
-      "relatedSlugs": [
-        "universal-amphitheater-5-shows-before-it-was-demolished",
-        "my-west-coast-chapter-26-concerts-over-11-years"
-      ],
-      "score": 30,
-      "detector": "album-context",
-      "publishedAt": "2026-05-13T19:56:15.253Z",
-      "social": {
-        "hook": "Achtung Baby was 33 days old. Siouxsie had been reinventing dark electronics since 1976.",
-        "caption": "U2 were being celebrated for discovering industrial textures and irony in November 1991. I watched Siouxsie and the Banshees play those same territories at Universal Amphitheater 33 days later.",
-        "beats": [
-          "Achtung Baby dropped November 18, 1991. The press called it U2's reinvention.",
-          "Thirty-three days later, Siouxsie and the Banshees took the Universal Amphitheater stage.",
-          "She'd been working dark, electronic-tinged music since 1976 — before Bono had a persona to shed.",
-          "Watching her that night reframed what 'breakthrough' actually meant.",
-          "The pioneering had already happened. U2 just got the headlines."
-        ],
-        "authoredAt": "2026-08-31T20:54:44.723Z"
-      }
-    },
-    {
       "id": "anniversary-blancmange-1986-04-15",
       "slug": "april-15-40-years-since-blancmange",
       "category": "personal",
@@ -1276,7 +1043,6 @@
         }
       ],
       "relatedSlugs": [
-        "the-alarm-caught-once-never-again",
         "the-human-league-8-more-2018-festival-bill"
       ],
       "score": 42,
@@ -1522,7 +1288,6 @@
         }
       ],
       "relatedSlugs": [
-        "the-alarm-caught-once-never-again",
         "april-15-40-years-since-blancmange"
       ],
       "score": 33,
@@ -1538,7 +1303,8 @@
           "Not a gap. Not a near-miss. Just the one night, and then nothing."
         ],
         "authoredAt": "2026-08-31T20:53:39.252Z"
-      }
+      },
+      "doNotSyndicate": "perishable — they open for Thompson Twins on 2026-09-16, after which \"Caught Once, Never Again\" is false. True on the site, which can be edited; never on a channel that cannot."
     },
     {
       "id": "anniversary-social-distortion-2005-03-23",
@@ -1777,82 +1543,6 @@
       }
     },
     {
-      "id": "rare-sighting-the-alarm",
-      "slug": "the-alarm-caught-once-never-again",
-      "category": "deep-cut",
-      "temporality": "evergreen",
-      "headline": "The Alarm: Caught Once, Never Again",
-      "prose": "I caught The Alarm exactly once in my entire concert-going life — April 12, 1986 at UCLA — and somehow never circled back to them again across nearly four decades of shows. This Welsh alternative rock band, formed in 1981, was riding high on their Strength album when I saw them, yet they became a complete one-and-done in my archive despite releasing Eye of the Hurricane the following year. It's genuinely puzzling how a band can make enough of an impression to get me to a show, then vanish entirely from my radar for the next 38 years.",
-      "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wswstt1388681264.jpg",
-        "alt": "The Alarm",
-        "source": "artist",
-        "ref": "the-alarm"
-      },
-      "audio": {
-        "trackName": "Strength",
-        "artistName": "The Alarm",
-        "albumName": "Strength 1985-1986 (Deluxe 2000 Remaster)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/3d/87/80/3d8780de-6ab2-1d63-bc56-8a085dd9d3fd/mzaf_11114072592712370582.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b7/c6/80/b7c6806f-dd02-3942-1bc4-632fc66ef8d9/801963843624_Cover.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/strength/1324886851?i=1324887143&uo=4",
-        "source": "itunes"
-      },
-      "artists": [
-        "the-alarm"
-      ],
-      "venues": [
-        "ucla"
-      ],
-      "years": [
-        1986
-      ],
-      "tags": [
-        "#rare-sighting",
-        "#one-time-only"
-      ],
-      "deepLinks": [
-        {
-          "label": "The Alarm",
-          "url": "/?scene=artists&artist=the-alarm",
-          "type": "artist"
-        },
-        {
-          "label": "UCLA",
-          "url": "/?scene=venues&venue=ucla",
-          "type": "venue"
-        },
-        {
-          "label": "April 12, 1986",
-          "url": "/?scene=artists&artist=the-alarm&show=1986-04-12",
-          "type": "setlist"
-        },
-        {
-          "label": "1986",
-          "url": "/?scene=timeline&year=1986",
-          "type": "timeline"
-        }
-      ],
-      "relatedSlugs": [
-        "the-human-league-8-more-2018-festival-bill",
-        "april-12-40-years-since-the-alarm"
-      ],
-      "score": 33,
-      "detector": "rare-sighting",
-      "publishedAt": "2026-03-08T23:19:11.199Z",
-      "social": {
-        "hook": "Strength was their peak year. I was there for it. Then 38 years of nothing.",
-        "caption": "The Alarm were touring behind Strength when I caught them at UCLA in April 1986. Eye of the Hurricane came out the following year, and somehow I never made it back.",
-        "beats": [
-          "The Alarm formed in Wales in 1981 and by 1986 were one of the sharper alternative acts coming out of the UK.",
-          "April 12, 1986 at UCLA — they were mid-cycle on Strength, which was the record that had my attention.",
-          "Eye of the Hurricane followed in 1987. I bought it. I didn't buy a ticket.",
-          "38 years on, one show is still the entire count. I don't have a good explanation for how that happened."
-        ],
-        "authoredAt": "2026-08-31T20:53:27.513Z"
-      }
-    },
-    {
       "id": "drought-comeback-echo-and-the-bunnymen",
       "slug": "echo-and-the-bunnymen-26-years-between-shows",
       "category": "personal",
@@ -1929,77 +1619,6 @@
           "Some bands stay on your internal soundtrack whether you show up or not."
         ],
         "authoredAt": "2026-08-31T20:52:06.985Z"
-      }
-    },
-    {
-      "id": "album-context-it-takes-a-nation-of-millions-to-hold-us-back-no-doubt",
-      "slug": "no-doubt-days-before-it-takes-a-nation-of-millions-to-hold-us-back-dropped",
-      "category": "cultural",
-      "temporality": "evergreen",
-      "headline": "No Doubt — Days Before It Takes a Nation of Millions to Hold Us Back Dropped",
-      "prose": "Hip-hop was about to get its political manifesto, but I was watching a ska band from Orange County play at the happiest place on earth. I caught No Doubt at Disneyland on March 4, 1988, just 37 days before Public Enemy would drop It Takes a Nation of Millions to Hold Us Back and change everything about what rap could say and do. While Chuck D was putting the finishing touches on hip-hop's first true political landmark, I was experiencing the early stirrings of what would become the ska revival, watching Gwen Stefani and company work through their sound in front of families with mouse ears. Two completely different revolutions brewing at the same time — one I witnessed firsthand, the other I'd discover when it hit like a manifesto five weeks later.",
-      "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/vxvvtr1348513703.jpg",
-        "alt": "No Doubt",
-        "source": "artist",
-        "ref": "no-doubt"
-      },
-      "audio": {
-        "trackName": "Don't Speak",
-        "artistName": "No Doubt",
-        "albumName": "Tragic Kingdom",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/eb/d3/dd/ebd3dd7b-ef82-0855-54b0-3c978e7f1594/mzaf_13350123702531292562.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/fe/0a/68/fe0a687a-537e-e902-0778-90465c118f77/00602547870575.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/dont-speak/1440845400?i=1440845557&uo=4",
-        "source": "itunes"
-      },
-      "artists": [
-        "no-doubt"
-      ],
-      "venues": [
-        "disneyland"
-      ],
-      "years": [
-        1988
-      ],
-      "tags": [
-        "#album-context",
-        "#cultural-moment"
-      ],
-      "deepLinks": [
-        {
-          "label": "No Doubt",
-          "url": "/?scene=artists&artist=no-doubt",
-          "type": "artist"
-        },
-        {
-          "label": "Disneyland",
-          "url": "/?scene=venues&venue=disneyland",
-          "type": "venue"
-        },
-        {
-          "label": "1988",
-          "url": "/?scene=timeline&year=1988",
-          "type": "timeline"
-        }
-      ],
-      "relatedSlugs": [
-        "the-brian-setzer-orchestra-days-after-the-bends-dropped",
-        "no-doubt-caught-once-never-again"
-      ],
-      "score": 35,
-      "detector": "album-context",
-      "publishedAt": "2026-03-08T23:15:48.360Z",
-      "social": {
-        "hook": "37 days before hip-hop got its political manifesto, I was at Disneyland.",
-        "caption": "No Doubt were still working out their sound in front of families with mouse ears. It Takes a Nation of Millions to Hold Us Back dropped April 10th and changed what music could say.",
-        "beats": [
-          "March 4, 1988: No Doubt at Disneyland, early ska, mouse ears on every third person in the crowd.",
-          "Chuck D was finishing the record that would become hip-hop's first true political landmark — 37 days out.",
-          "Two completely different revolutions in progress at the same moment, and I only knew about one of them.",
-          "It Takes a Nation dropped April 10th. I heard it and understood immediately what I'd missed while I was watching."
-        ],
-        "authoredAt": "2026-08-31T20:59:40.577Z"
       }
     },
     {

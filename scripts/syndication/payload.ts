@@ -313,6 +313,9 @@ export function buildPayload(
   const credit: PayloadCredit = concert
     ? buildCredit(post, concert, sources)
     : { artists: [], venue: "", city: "", date: "" };
+  // An explicit hold, checked before anything else can make it eligible. The
+  // kill switch stops a run; this stops one post, forever, for a stated reason.
+  if (post.doNotSyndicate) reasons.push(`held: ${post.doNotSyndicate}`);
   if (!concert) reasons.push("no concert resolves for the credit stack");
 
   // ── Text: authored, never derived ──────────────────────────────────────
