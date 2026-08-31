@@ -23475,6 +23475,45 @@
         "A Wonderful Life"
       ],
       "cachedAt": "2026-08-29T21:13:27.225Z"
+    },
+    "1b7162d2-617a-3c5d-92ae-4a91a18739bf": {
+      "tracks": [
+        "Hey Fellas",
+        "Get On Up",
+        "Let’s Get Hot",
+        "Drop the Bomb",
+        "Pump Me Up",
+        "Don’t Try to Use Me"
+      ],
+      "cachedAt": "2026-08-31T14:56:34.317Z"
+    },
+    "a7bbc33c-2a29-4eb1-9a8d-a03857f43cbb": {
+      "tracks": [
+        "Spintime",
+        "In Times of Trouble",
+        "Share Your Love",
+        "Good Times",
+        "Say What",
+        "Freaky Situation",
+        "Funk n Roll",
+        "Funk n Roll (instrumental)",
+        "Trouble Funk Saturday Night Live From Washington D.C., Part 1",
+        "Trouble Funk Saturday Night Live From Washington D.C., Part 2"
+      ],
+      "cachedAt": "2026-08-31T14:56:36.409Z"
+    },
+    "fd0f44dd-0b75-3c94-8ce6-4fc68ab5590f": {
+      "tracks": [
+        "Trouble",
+        "Woman Of Principle",
+        "Hey Tee Bone",
+        "All Over The World",
+        "Stroke",
+        "New Money",
+        "Sexy",
+        "Break It Up"
+      ],
+      "cachedAt": "2026-08-31T14:56:38.365Z"
     }
   },
   "itunes": {
@@ -24517,6 +24556,30 @@
     "haircut-100::baked-beans-kingsize": {
       "albumName": null,
       "cachedAt": "2026-08-29T21:15:00.475Z"
+    },
+    "bruce-springsteen::downbound-train": {
+      "albumName": "Born In the U.S.A.",
+      "cachedAt": "2026-08-31T14:56:38.708Z"
+    },
+    "bruce-springsteen::pink-cadillac": {
+      "albumName": "The Born in the U.S.A. Tour '84 - '85",
+      "cachedAt": "2026-08-31T14:56:41.642Z"
+    },
+    "trouble-funk::trouble-funk-express": {
+      "albumName": "The Best of Trouble Funk",
+      "cachedAt": "2026-08-31T14:56:44.681Z"
+    },
+    "trouble-funk::start-this-thing-off-right": {
+      "albumName": "Halloween Night at the Blue Dolphin",
+      "cachedAt": "2026-08-31T14:56:47.672Z"
+    },
+    "trouble-funk::e-flat-boogie": {
+      "albumName": "E-Flat Boogie",
+      "cachedAt": "2026-08-31T14:56:50.586Z"
+    },
+    "trouble-funk::dont-touch-that-stereo": {
+      "albumName": "Live at DC Snallygaster (Live)",
+      "cachedAt": "2026-08-31T14:56:53.644Z"
     }
   }
 }

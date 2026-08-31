@@ -4688,13 +4688,13 @@
       "dayOfWeek": "Wednesday",
       "decade": "2020s",
       "location": {
-        "lat": 33.7769884,
-        "lng": -117.94059820000001
+        "lat": 33.776932599999995,
+        "lng": -117.9405975
       }
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-08-29T21:09:41.249Z",
+    "lastUpdated": "2026-08-31T14:53:02.733Z",
     "totalConcerts": 184,
     "dateRange": {
       "earliest": "1984-04-27",

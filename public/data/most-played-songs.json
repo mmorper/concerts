@@ -1,21 +1,14 @@
 {
   "version": "1",
-  "generatedAt": "2026-08-29T21:15:00.519Z",
+  "generatedAt": "2026-08-31T14:56:53.690Z",
   "coverage": {
-    "concertsWithSetlist": 118,
+    "concertsWithSetlist": 113,
     "totalConcerts": 184,
-    "distinctSongs": 1630
+    "distinctSongs": 1570
   },
   "songs": [
     {
       "name": "Ring of Fire",
-      "count": 7,
-      "artists": [
-        "Social Distortion"
-      ]
-    },
-    {
-      "name": "Ball and Chain",
       "count": 6,
       "artists": [
         "Social Distortion"
@@ -36,7 +29,7 @@
       ]
     },
     {
-      "name": "Don't Drag Me Down",
+      "name": "Ball and Chain",
       "count": 5,
       "artists": [
         "Social Distortion"
@@ -57,13 +50,6 @@
       ]
     },
     {
-      "name": "Mommy's Little Monster",
-      "count": 5,
-      "artists": [
-        "Social Distortion"
-      ]
-    },
-    {
       "name": "Rock This Town",
       "count": 5,
       "artists": [
@@ -71,13 +57,6 @@
         "Brian Setzer ’68 Comeback Special",
         "Stray Cats",
         "The Brian Setzer Orchestra"
-      ]
-    },
-    {
-      "name": "So Far Away",
-      "count": 5,
-      "artists": [
-        "Social Distortion"
       ]
     },
     {
@@ -116,10 +95,24 @@
       ]
     },
     {
+      "name": "Bad Luck",
+      "count": 4,
+      "artists": [
+        "Social Distortion"
+      ]
+    },
+    {
       "name": "Cherry Lips (Go Baby Go!)",
       "count": 4,
       "artists": [
         "Garbage"
+      ]
+    },
+    {
+      "name": "Don't Drag Me Down",
+      "count": 4,
+      "artists": [
+        "Social Distortion"
       ]
     },
     {
@@ -148,13 +141,6 @@
       ]
     },
     {
-      "name": "Machine Gun Blues",
-      "count": 4,
-      "artists": [
-        "Social Distortion"
-      ]
-    },
-    {
       "name": "Never Let Me Down Again",
       "count": 4,
       "artists": [
@@ -176,14 +162,7 @@
       ]
     },
     {
-      "name": "Reach for the Sky",
-      "count": 4,
-      "artists": [
-        "Social Distortion"
-      ]
-    },
-    {
-      "name": "Sick Boys",
+      "name": "So Far Away",
       "count": 4,
       "artists": [
         "Social Distortion"
@@ -241,24 +220,10 @@
       ]
     },
     {
-      "name": "Another State of Mind",
-      "count": 3,
-      "artists": [
-        "Social Distortion"
-      ]
-    },
-    {
       "name": "Are 'Friends' Electric?",
       "count": 3,
       "artists": [
         "Gary Numan"
-      ]
-    },
-    {
-      "name": "Bad Luck",
-      "count": 3,
-      "artists": [
-        "Social Distortion"
       ]
     },
     {
@@ -271,13 +236,6 @@
     },
     {
       "name": "Behind the Wheel",
-      "count": 3,
-      "artists": [
-        "Depeche Mode"
-      ]
-    },
-    {
-      "name": "Black Celebration",
       "count": 3,
       "artists": [
         "Depeche Mode"
@@ -323,21 +281,6 @@
       "count": 3,
       "artists": [
         "Royal Blood"
-      ]
-    },
-    {
-      "name": "Dead Man's Party",
-      "count": 3,
-      "artists": [
-        "Danny Elfman",
-        "Oingo Boingo"
-      ]
-    },
-    {
-      "name": "Don't Take Me for Granted",
-      "count": 3,
-      "artists": [
-        "Social Distortion"
       ]
     },
     {
@@ -398,17 +341,17 @@
       ]
     },
     {
-      "name": "Highway 101",
-      "count": 3,
-      "artists": [
-        "Social Distortion"
-      ]
-    },
-    {
       "name": "I Think I'm Paranoid",
       "count": 3,
       "artists": [
         "Garbage"
+      ]
+    },
+    {
+      "name": "I Was Wrong",
+      "count": 3,
+      "artists": [
+        "Social Distortion"
       ]
     },
     {
@@ -454,6 +397,13 @@
       ]
     },
     {
+      "name": "Machine Gun Blues",
+      "count": 3,
+      "artists": [
+        "Social Distortion"
+      ]
+    },
+    {
       "name": "Master and Servant",
       "count": 3,
       "artists": [
@@ -465,6 +415,13 @@
       "count": 3,
       "artists": [
         "Gary Numan"
+      ]
+    },
+    {
+      "name": "Mommy's Little Monster",
+      "count": 3,
+      "artists": [
+        "Social Distortion"
       ]
     },
     {
@@ -525,17 +482,17 @@
       ]
     },
     {
-      "name": "Policy of Truth",
-      "count": 3,
-      "artists": [
-        "Depeche Mode"
-      ]
-    },
-    {
       "name": "Providence",
       "count": 3,
       "artists": [
         "Foals"
+      ]
+    },
+    {
+      "name": "Reach for the Sky",
+      "count": 3,
+      "artists": [
+        "Social Distortion"
       ]
     },
     {
@@ -574,6 +531,20 @@
       "artists": [
         "Peter Gabriel",
         "Tears For Fears"
+      ]
+    },
+    {
+      "name": "She's a Knockout",
+      "count": 3,
+      "artists": [
+        "Social Distortion"
+      ]
+    },
+    {
+      "name": "Sick Boys",
+      "count": 3,
+      "artists": [
+        "Social Distortion"
       ]
     },
     {
@@ -739,6 +710,13 @@
       ]
     },
     {
+      "name": "A Question of Lust",
+      "count": 2,
+      "artists": [
+        "Depeche Mode"
+      ]
+    },
+    {
       "name": "A Slow Song",
       "count": 2,
       "artists": [
@@ -788,10 +766,10 @@
       ]
     },
     {
-      "name": "Alphabetland",
+      "name": "Another State of Mind",
       "count": 2,
       "artists": [
-        "X"
+        "Social Distortion"
       ]
     },
     {
@@ -813,6 +791,13 @@
       "count": 2,
       "artists": [
         "Social Distortion"
+      ]
+    },
+    {
+      "name": "Barroom Hero",
+      "count": 2,
+      "artists": [
+        "Dropkick Murphys"
       ]
     },
     {
@@ -856,6 +841,13 @@
       "count": 2,
       "artists": [
         "Snarky Puppy"
+      ]
+    },
+    {
+      "name": "Black Celebration",
+      "count": 2,
+      "artists": [
+        "Depeche Mode"
       ]
     },
     {
@@ -939,10 +931,26 @@
       ]
     },
     {
-      "name": "Bye Bye Baby",
+      "name": "Burn",
+      "count": 2,
+      "artists": [
+        "Dropkick Murphys",
+        "The Cure"
+      ]
+    },
+    {
+      "name": "California (Hustle and Flow)",
       "count": 2,
       "artists": [
         "Social Distortion"
+      ]
+    },
+    {
+      "name": "Can't Help Falling in Love",
+      "count": 2,
+      "artists": [
+        "Bruce Springsteen",
+        "UB40"
       ]
     },
     {
@@ -975,10 +983,10 @@
       ]
     },
     {
-      "name": "Come Back to Me",
+      "name": "Citizen C.I.A.",
       "count": 2,
       "artists": [
-        "X"
+        "Dropkick Murphys"
       ]
     },
     {
@@ -1039,10 +1047,18 @@
       ]
     },
     {
-      "name": "Dancing With Tears in My Eyes",
+      "name": "Dead Man's Party",
       "count": 2,
       "artists": [
-        "X"
+        "Danny Elfman",
+        "Oingo Boingo"
+      ]
+    },
+    {
+      "name": "Dear Lover",
+      "count": 2,
+      "artists": [
+        "Social Distortion"
       ]
     },
     {
@@ -1094,6 +1110,13 @@
       "artists": [
         "Alison Moyet",
         "Yaz"
+      ]
+    },
+    {
+      "name": "Don't Take Me for Granted",
+      "count": 2,
+      "artists": [
+        "Social Distortion"
       ]
     },
     {
@@ -1161,13 +1184,6 @@
       ]
     },
     {
-      "name": "Free",
-      "count": 2,
-      "artists": [
-        "X"
-      ]
-    },
-    {
       "name": "Freedom of Choice",
       "count": 2,
       "artists": [
@@ -1186,14 +1202,6 @@
       "count": 2,
       "artists": [
         "Bad Religion"
-      ]
-    },
-    {
-      "name": "Fuck You",
-      "count": 2,
-      "artists": [
-        "Bad Religion",
-        "Rancid"
       ]
     },
     {
@@ -1226,6 +1234,13 @@
       ]
     },
     {
+      "name": "Going Out in Style",
+      "count": 2,
+      "artists": [
+        "Dropkick Murphys"
+      ]
+    },
+    {
       "name": "Going Under",
       "count": 2,
       "artists": [
@@ -1238,14 +1253,6 @@
       "artists": [
         "Wham!",
         "Yaz"
-      ]
-    },
-    {
-      "name": "Grey Matter",
-      "count": 2,
-      "artists": [
-        "Danny Elfman",
-        "Oingo Boingo"
       ]
     },
     {
@@ -1272,18 +1279,10 @@
       ]
     },
     {
-      "name": "Heaven",
+      "name": "Highway 101",
       "count": 2,
       "artists": [
-        "David Byrne",
-        "Squeeze"
-      ]
-    },
-    {
-      "name": "Home",
-      "count": 2,
-      "artists": [
-        "Depeche Mode"
+        "Social Distortion"
       ]
     },
     {
@@ -1312,20 +1311,6 @@
       "count": 2,
       "artists": [
         "Depeche Mode"
-      ]
-    },
-    {
-      "name": "I Must Not Think Bad Thoughts",
-      "count": 2,
-      "artists": [
-        "X"
-      ]
-    },
-    {
-      "name": "I Was Wrong",
-      "count": 2,
-      "artists": [
-        "Social Distortion"
       ]
     },
     {
@@ -1406,10 +1391,10 @@
       ]
     },
     {
-      "name": "Johny Hit and Run Paulene",
+      "name": "Johnny, I Hardly Knew Ya",
       "count": 2,
       "artists": [
-        "X"
+        "Dropkick Murphys"
       ]
     },
     {
@@ -1418,14 +1403,6 @@
       "artists": [
         "Brian Setzer ’68 Comeback Special",
         "The Brian Setzer Orchestra"
-      ]
-    },
-    {
-      "name": "Just Another Day",
-      "count": 2,
-      "artists": [
-        "Danny Elfman",
-        "Oingo Boingo"
       ]
     },
     {
@@ -1469,13 +1446,6 @@
       "count": 2,
       "artists": [
         "Joe Jackson"
-      ]
-    },
-    {
-      "name": "Los Angeles",
-      "count": 2,
-      "artists": [
-        "X"
       ]
     },
     {
@@ -1543,13 +1513,6 @@
       ]
     },
     {
-      "name": "Motel Room in My Bed",
-      "count": 2,
-      "artists": [
-        "X"
-      ]
-    },
-    {
       "name": "Musique Non Stop",
       "count": 2,
       "artists": [
@@ -1571,10 +1534,10 @@
       ]
     },
     {
-      "name": "Nausea",
+      "name": "My Way",
       "count": 2,
       "artists": [
-        "X"
+        "Dropkick Murphys"
       ]
     },
     {
@@ -1596,22 +1559,6 @@
       "count": 2,
       "artists": [
         "Howard Jones"
-      ]
-    },
-    {
-      "name": "No One Lives Forever",
-      "count": 2,
-      "artists": [
-        "Danny Elfman",
-        "Oingo Boingo"
-      ]
-    },
-    {
-      "name": "No Surrender",
-      "count": 2,
-      "artists": [
-        "Bruce Springsteen",
-        "Dropkick Murphys"
       ]
     },
     {
@@ -1652,6 +1599,13 @@
       ]
     },
     {
+      "name": "Out of Our Heads",
+      "count": 2,
+      "artists": [
+        "Dropkick Murphys"
+      ]
+    },
+    {
       "name": "Peek-A-Boo!",
       "count": 2,
       "artists": [
@@ -1685,6 +1639,13 @@
       "artists": [
         "Devo",
         "Duran Duran"
+      ]
+    },
+    {
+      "name": "Policy of Truth",
+      "count": 2,
+      "artists": [
+        "Depeche Mode"
       ]
     },
     {
@@ -1766,13 +1727,6 @@
       ]
     },
     {
-      "name": "She's a Knockout",
-      "count": 2,
-      "artists": [
-        "Social Distortion"
-      ]
-    },
-    {
       "name": "Shout",
       "count": 2,
       "artists": [
@@ -1801,6 +1755,13 @@
       "count": 2,
       "artists": [
         "Duran Duran"
+      ]
+    },
+    {
+      "name": "Skinhead on the MBTA",
+      "count": 2,
+      "artists": [
+        "Dropkick Murphys"
       ]
     },
     {
@@ -1840,13 +1801,6 @@
       ]
     },
     {
-      "name": "Some Other Time",
-      "count": 2,
-      "artists": [
-        "X"
-      ]
-    },
-    {
       "name": "Something to Do",
       "count": 2,
       "artists": [
@@ -1858,20 +1812,6 @@
       "count": 2,
       "artists": [
         "Stray Cats"
-      ]
-    },
-    {
-      "name": "Sometimes I Do",
-      "count": 2,
-      "artists": [
-        "Social Distortion"
-      ]
-    },
-    {
-      "name": "Soul Kitchen",
-      "count": 2,
-      "artists": [
-        "X"
       ]
     },
     {
@@ -1894,14 +1834,6 @@
       "artists": [
         "The Offspring",
         "U2"
-      ]
-    },
-    {
-      "name": "Stay",
-      "count": 2,
-      "artists": [
-        "Oingo Boingo",
-        "Tears For Fears"
       ]
     },
     {
@@ -1942,14 +1874,6 @@
       ]
     },
     {
-      "name": "Tempted",
-      "count": 2,
-      "artists": [
-        "Duran Duran",
-        "Squeeze"
-      ]
-    },
-    {
       "name": "That'll Be the Day",
       "count": 2,
       "artists": [
@@ -1964,6 +1888,13 @@
       ]
     },
     {
+      "name": "The Boys Are Back",
+      "count": 2,
+      "artists": [
+        "Dropkick Murphys"
+      ]
+    },
+    {
       "name": "The Creeps",
       "count": 2,
       "artists": [
@@ -1971,17 +1902,24 @@
       ]
     },
     {
+      "name": "The Foggy Dew",
+      "count": 2,
+      "artists": [
+        "Dropkick Murphys"
+      ]
+    },
+    {
+      "name": "The Gang's All Here",
+      "count": 2,
+      "artists": [
+        "Dropkick Murphys"
+      ]
+    },
+    {
       "name": "The Hands That Thieve",
       "count": 2,
       "artists": [
         "Streetlight Manifesto"
-      ]
-    },
-    {
-      "name": "The Hungry Wolf",
-      "count": 2,
-      "artists": [
-        "X"
       ]
     },
     {
@@ -2021,6 +1959,13 @@
       ]
     },
     {
+      "name": "The Warrior's Code",
+      "count": 2,
+      "artists": [
+        "Dropkick Murphys"
+      ]
+    },
+    {
       "name": "The Wild Boys",
       "count": 2,
       "artists": [
@@ -2057,11 +2002,10 @@
       ]
     },
     {
-      "name": "Time Bomb",
+      "name": "Through These Eyes",
       "count": 2,
       "artists": [
-        "Rancid",
-        "The Interrupters"
+        "Social Distortion"
       ]
     },
     {
@@ -2135,24 +2079,10 @@
       ]
     },
     {
-      "name": "Water & Wine",
-      "count": 2,
-      "artists": [
-        "X"
-      ]
-    },
-    {
       "name": "We Are the Few",
       "count": 2,
       "artists": [
         "Streetlight Manifesto"
-      ]
-    },
-    {
-      "name": "We're Desperate",
-      "count": 2,
-      "artists": [
-        "X"
       ]
     },
     {
@@ -2177,13 +2107,6 @@
       ]
     },
     {
-      "name": "When She Begins",
-      "count": 2,
-      "artists": [
-        "Social Distortion"
-      ]
-    },
-    {
       "name": "When the World Comes Apart",
       "count": 2,
       "artists": [
@@ -2203,13 +2126,6 @@
       "count": 2,
       "artists": [
         "Devo"
-      ]
-    },
-    {
-      "name": "White Girl",
-      "count": 2,
-      "artists": [
-        "X"
       ]
     },
     {
@@ -2238,13 +2154,6 @@
       "count": 2,
       "artists": [
         "Howard Jones"
-      ]
-    },
-    {
-      "name": "Your Phone's Off the Hook, But You're Not",
-      "count": 2,
-      "artists": [
-        "X"
       ]
     }
   ]
