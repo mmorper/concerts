@@ -477,6 +477,19 @@ function detectGeographicChapter(concerts: Concert[]): AnalysisFinding[] {
     const { region, shows } = chapter;
     const sortedShows = [...shows].sort((a, b) => a.date.localeCompare(b.date));
     const first = sortedShows[0];
+    // 🔴 A CHAPTER IS AN UNBROKEN RUN, NOT A BEGINNING, and the copy read it as
+    // one: "Oingo Boingo opened a chapter I didn't know I was starting."
+    //
+    // The run starting 1988-10-29 is the longest CONSECUTIVE stretch of West
+    // Coast shows — it starts there because two Arizona nights (Mountain West)
+    // fall just before it, not because West Coast concert-going began. The first
+    // was Adam Ant at Irvine Meadows in 1984, four years earlier.
+    //
+    // `earlierInRegion` is what stops the prose claiming a first. When it is
+    // non-zero the run is a stretch, not an origin, and the copy has to say so.
+    const earlierInRegion = withRegion.filter(
+      (w) => w.region === region && w.concert.date < first.date
+    ).length;
     const last = sortedShows[sortedShows.length - 1];
     const span = spanYears(first.date, last.date);
     const venues = [...new Set(sortedShows.map((s) => s.venueNormalized))];
@@ -500,6 +513,9 @@ function detectGeographicChapter(concerts: Concert[]): AnalysisFinding[] {
       dataPoints: {
         region,
         showCount: shows.length,
+        // How many shows in this region came BEFORE the run. Non-zero means the
+        // run is a stretch, not an origin, and the prose may not call it a start.
+        earlierInRegion,
         firstShow: { date: first.date, artist: first.headliner, venue: first.venue, city: first.cityState },
         lastShow: { date: last.date, artist: last.headliner, venue: last.venue, city: last.cityState },
         spanYears: span,

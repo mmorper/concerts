@@ -548,6 +548,15 @@ function buildPrompt(post: SocialSubject, context: SocialContext): string {
       "with a name and a colon, yours does not. If one of them is a list of counts,",
       "yours is a sentence. If one of them ends on a wry aside after a dash, yours",
       "lands some other way.",
+      "\u{1F534} A SHAPE YOU DID NOT INVENT IS STILL A COPY. \"37 years between the",
+      "first show and the second\" followed by \"Nine years between the first show and",
+      "the second\" is one sentence published twice with a different number in it.",
+      "Read the opening clause of every line above and do not write that clause.",
+      "\u{1F534} THE SETLIST IS THE EASIEST MOVE AND THAT IS THE PROBLEM. If any post",
+      "above quotes what a band opened or closed with, yours may not — three",
+      "consecutive anniversary posts landed on \"They opened with X and closed with",
+      "Y\" because it is the most concrete line on offer. Take a different fact: the",
+      "gap, the opener, the year around it, the room.",
       "Find the thing THIS night has that none of the others do, and start there."
     );
   }

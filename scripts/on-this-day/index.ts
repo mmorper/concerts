@@ -253,6 +253,20 @@ async function main(): Promise<void> {
 
   const otdHeadline = `${built.post.age} years ago today: ${built.post.artist} at ${built.post.venue}`;
   const facts = narrativeFacts(candidate, src);
+
+  // 🔴 ANNIVERSARY POSTS CONVERGE HARDER THAN LINER NOTES, because every one of
+  // them draws from the same short menu of fact shapes. Two consecutive posts
+  // both opened "They opened with X and closed with Y" — the most concrete line
+  // available, so the model took it twice. Liner notes have carried an avoid-list
+  // since the venue posts did the same thing; this stream never got one.
+  //
+  // Every previous post, not same-detector siblings: there is only one detector
+  // here, and the whole stream lands on one profile.
+  const avoid = [...store.posts]
+    .sort((a, b) => a.publishedAt.localeCompare(b.publishedAt))
+    .slice(-8)
+    .filter((p) => p.slug !== built.post.slug && p.social?.hook)
+    .flatMap((p) => [p.social!.hook, p.social!.caption].filter(Boolean));
   if (facts.length) {
     console.log(`\n📇 ${facts.length} facts from the archive for this night:`);
     for (const f of facts) console.log(`   • ${f}`);
@@ -276,6 +290,7 @@ async function main(): Promise<void> {
         // What the archive knows about this night. Without it the model has five
         // fields and an instruction not to invent, so it writes about the filing.
         facts,
+        avoid,
       },
     },
   ]);

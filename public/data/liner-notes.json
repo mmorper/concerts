@@ -4033,7 +4033,7 @@
       "category": "personal",
       "temporality": "evergreen",
       "headline": "My West Coast Chapter: 26 Concerts Over 11 Years",
-      "prose": "I still remember standing at Irvine Meadows in October 1988, watching Oingo Boingo tear through the night air, thinking I had no idea what the next 11 years of California shows would look like. That first West Coast concert cracked something open — 26 shows across 16 venues, from Irvine to Redondo Beach, two full decades bleeding into each other. I caught 22 different artists during that chapter, ending quietly at Club Caprice in 1999 with Alien Fashion Show, which is honestly a perfect last entry for a run that started with Oingo Boingo. Some chapters close before you realize they've closed.",
+      "prose": "I spent 11 years and 26 shows anchored to the West Coast, moving through 16 different venues across California without a single detour to another region long enough to break the streak. It held through two decades, from an Oingo Boingo night at Irvine Meadows in October 1988 to a late-night set by Alien Fashion Show at Club Caprice in Redondo Beach in April 1999 — 22 artists in between, each one another reason to stay close to the coast. That run passed through so much: the turn of a decade, new venues, artists I'd follow for years and others I'd never catch again. When it finally ended in that Redondo Beach club, I doubt I knew it was ending — that's always how the good stretches go.",
       "image": {
         "url": "/images/venues/irvinemeadows-1.jpg",
         "alt": "Irvine Meadows",
@@ -4163,15 +4163,16 @@
       "detector": "geographic-chapter",
       "publishedAt": "2026-01-15T07:12:00.000Z",
       "social": {
-        "hook": "Oingo Boingo opened a chapter I didn't know I was starting. It took 11 years to close.",
-        "caption": "26 shows, 22 artists, 16 venues — and it ended as quietly as it started, with Alien Fashion Show at Club Caprice in 1999.",
+        "hook": "26 shows, 16 venues, 11 years — and I never left California once.",
+        "caption": "It started with Oingo Boingo at Irvine Meadows in October 1988 and ran through 22 more artists before a late-night club set in Redondo Beach closed it out in April 1999.",
         "beats": [
-          "Irvine Meadows, October 1988. Oingo Boingo. I had no idea what I was beginning.",
-          "Over 11 years: Depeche Mode, Peter Gabriel, Sting, Siouxsie, Tears for Fears — 22 artists across 16 venues.",
-          "The run stretched from Irvine to Redondo Beach, 1988 to 1999, two decades bleeding into each other.",
-          "It ended at Club Caprice with Alien Fashion Show. No fanfare. Some chapters close before you notice."
+          "October 1988: Oingo Boingo at Irvine Meadows. That night opened an 11-year run I didn't know had started.",
+          "26 shows. 16 venues. Every one of them in California — not one detour east.",
+          "The list ran from Depeche Mode to Burning Spear to Jimmy Buffett. No single thread, just the coast.",
+          "It ended in April 1999 at a late-night club in Redondo Beach. I doubt I knew it was ending.",
+          "The good stretches never announce themselves. You find the shape of them after."
         ],
-        "authoredAt": "2026-08-31T20:46:11.713Z"
+        "authoredAt": "2026-08-31T22:37:49.239Z"
       }
     },
     {

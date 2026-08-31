@@ -197,9 +197,23 @@ export function narrativeFacts(
       `I have seen ${show.headliner} ${byArtist.length} times; this was number ${index + 1}.`
     );
     if (asOpener.length) {
+      // 🔴 COUNT IT, DO NOT QUALIFY IT.
+      //
+      // Two failures, one cause. "One of those was an opening slot" became "the
+      // opener slot barely counts" — a verdict the archive cannot make, about a
+      // night that is not even this post's subject. Rewritten to "Not all of
+      // those were headline sets", it became "Three of my four times seeing
+      // them, someone else's name was bigger on the bill" — exactly inverted,
+      // because "not all" carries no number and the model supplied one.
+      //
+      // A fact with a count in it cannot be turned into the wrong count.
+      const bills = byArtist
+        .filter((c) => openedOn.has(c.date))
+        .map((c) => `${c.date} supporting ${c.headliner}`);
       facts.push(
-        `${asOpener.length === 1 ? "One of those" : `${asOpener.length} of those`} was an opening slot, not a headline set` +
-          ` (${asOpener.join(", ")}).`
+        `${byArtist.length - asOpener.length} of those ${byArtist.length} were headline sets. ` +
+          `Exactly ${asOpener.length} was not: ${bills.join(", ")}. ` +
+          `THIS post is about ${show.date}, where ${show.headliner} headlined.`
       );
     }
     if (index === 0) {
@@ -234,6 +248,30 @@ export function narrativeFacts(
   const thisShow = concerts.find((c) => c.date === show.date && c.headlinerNormalized === show.headlinerNormalized);
   if (thisShow?.openers?.length) {
     facts.push(`${thisShow.openers.join(" and ")} opened.`);
+
+    // 🔴 AN OPENER NAMED WITHOUT ITS OWN HISTORY GETS ONE INVENTED. The copy
+    // wrote "The English Beat opened, and I didn't see either act together again
+    // for 15 years" — true only on the narrowest reading of "together", and flatly
+    // false as anyone reads it: The English Beat has been seen ten times, once a
+    // month after that night. The model had a name and no record for it, so it
+    // borrowed the headliner's gap.
+    for (const opener of thisShow.openers) {
+      const slug = slugify(opener);
+      const nights = concerts
+        .filter(
+          (c) => c.headlinerNormalized === slug || (c.openers ?? []).some((o) => slugify(o) === slug)
+        )
+        .sort((a, b) => a.date.localeCompare(b.date));
+      if (nights.length <= 1) {
+        facts.push(`${opener} is an act I have seen only this once.`);
+        continue;
+      }
+      const next = nights.find((c) => c.date > show.date);
+      facts.push(
+        `${opener} I have seen ${nights.length} times in all` +
+          (next ? `, next on ${next.date}.` : `, and this was the last of them.`)
+      );
+    }
   }
   if (thisShow?.genre) facts.push(`Filed under ${thisShow.genre}.`);
 
