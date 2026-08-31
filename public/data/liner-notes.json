@@ -1,7 +1,102 @@
 {
-  "generatedAt": "2026-08-24T08:52:21.247Z",
-  "dataHash": "a711c17e",
+  "generatedAt": "2026-08-31T15:58:11.645Z",
+  "dataHash": "1d86cf7a",
   "posts": [
+    {
+      "id": "most-witnessed-album-garbage-garbage",
+      "slug": "garbage-17-songs-from-the-album-that-shares-their-name-live",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Garbage — 17 Songs From The Album That Shares Their Name, Live",
+      "prose": "I have seen Garbage perform 17 different songs from their debut album across 4 shows, stretching from 2005 all the way to 2019, and I still find that number a little staggering. That self-titled record clearly never left their setlist — \"Vow,\" \"Supervixen,\" \"Only Happy When It Rains,\" \"Stupid Girl,\" all of it, turning up decade after decade like they knew it was worth defending. The 9:30 Club show in October 2015 sits at the center of that run for me, right around the time of the album's 20th anniversary remaster, and there was something almost defiant about hearing those songs played that loud in that room. Some bands make peace with their past; Garbage just keeps performing it like it's still an argument they intend to win.",
+      "image": {
+        "url": "/images/shows/2019-05-16-garbage-02.jpg",
+        "alt": "Garbage",
+        "source": "show",
+        "ref": "garbage",
+        "credit": "Mike Morper · 16 May 2019",
+        "shotOn": "2019-05-16",
+        "crop": {
+          "x": 0.02,
+          "y": 0.0187,
+          "w": 0.96,
+          "h": 0.8997
+        }
+      },
+      "audio": {
+        "trackName": "Only Happy When It Rains",
+        "artistName": "Garbage",
+        "albumName": "Garbage (20th Anniversary Edition) [2015 Remaster]",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/75/ad/d5/75add5f0-b359-6686-0a28-19da67e689b3/mzaf_9626845392030467520.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/81/8e/64/818e6487-df77-bb60-7245-7f87c40d6f2d/00602547364890.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/only-happy-when-it-rains/1440827138?i=1440827326&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "garbage"
+      ],
+      "venues": [
+        "pacific-amphitheatre",
+        "the-fillmore-silver-spring",
+        "9-30-club",
+        "the-shrine-auditorium"
+      ],
+      "years": [
+        2005,
+        2013,
+        2015,
+        2019
+      ],
+      "tags": [
+        "#most-witnessed",
+        "#album-eras"
+      ],
+      "deepLinks": [
+        {
+          "label": "Garbage",
+          "url": "/?scene=artists&artist=garbage",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=venues&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "The Fillmore Silver Spring",
+          "url": "/?scene=venues&venue=the-fillmore-silver-spring",
+          "type": "venue"
+        },
+        {
+          "label": "October 28, 2015",
+          "url": "/?scene=artists&artist=garbage&show=2015-10-28",
+          "type": "setlist"
+        },
+        {
+          "label": "2005",
+          "url": "/?scene=timeline&year=2005",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "pacific-amphitheatre-16-shows-over-5-decades-2",
+        "garbage-days-before-late-registration-dropped"
+      ],
+      "score": 42,
+      "detector": "most-witnessed-album",
+      "publishedAt": "2026-08-31T15:58:11.645Z",
+      "social": {
+        "hook": "17 songs from one album, across 4 shows, across 14 years",
+        "caption": "I've seen Garbage play 17 different tracks from their debut across 4 shows since 2005. The 9:30 Club night landed right at the album's 20th anniversary remaster.",
+        "beats": [
+          "17 songs from a single debut album, spread across 4 shows between 2005 and 2019.",
+          "\"Vow,\" \"Supervixen,\" \"Only Happy When It Rains\" — turning up decade after decade like they had a point to prove.",
+          "The 9:30 Club show in October 2015 fell right at the album's 20th anniversary remaster. The timing was not accidental.",
+          "Some bands make peace with their past. Garbage keeps performing it like it's still an argument they intend to win."
+        ],
+        "authoredAt": "2026-08-31T15:58:11.647Z"
+      }
+    },
     {
       "id": "streak-2023-07-18-3shows",
       "slug": "3-concerts-in-12-days",
@@ -368,7 +463,7 @@
       "headline": "Pacific Amphitheatre: 16 Shows Over 5 Decades",
       "prose": "I was 16 years old the first time I walked into the Pacific Amphitheatre, catching Tears For Fears in the summer of 1985 — right in the thick of the *Songs from the Big Chair* era. Thirty-nine years later, I closed the loop with The English Beat in July 2024, and somewhere in between I fit in 14 more nights at that Costa Mesa bowl, from the Beach Boys to Run-DMC to UB40. Sixteen shows across 5 decades at the same venue feels less like a habit and more like a relationship. I didn't plan any of this, which somehow makes it better.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjCHsbPlf7FW3C3d5GbICm_VpGqdPXw94dtZRtBcytXiSQaXpWfzaWCeInHKmT3m4h7elqruVKDd6vKP9-2ZdGeFer2GfbkOstJ96V__3V9GDSgHwZcX345A5RBzdVW8_m9Q-3FpeGELQO-3Cw=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjC1yU31TuhE-IwblGs9vf9mmvnBNoZnHWazXlNNbshBwjrUyrVaWx6iQy5KIFE8-YOy65hJ9aPhmLJ5RiIOfUd_77YvPukeWmcd3Rh_M1-WJFL677QRBjVC-0aUPNNSq7l0jGkNH15sTyKX4w=s4800-h1200",
         "alt": "Pacific Amphitheatre",
         "source": "venue",
         "ref": "pacific-amphitheatre"
@@ -546,7 +641,7 @@
       "headline": "House of Blues Anaheim: 6 Shows Over 3 Decades",
       "prose": "I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who'd been making records since before I probably knew what a record was. Six shows across three decades at that same room, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjBlSFe32iPYCQk2hIkTc0dUugy4J8S4izqrF1_4OhmngUDm1sJssjdS5s1zDXVOWp6ATCGoMrM73_io3teIT1v6wQ_-pAmcZDtQ01YazEGTq6ISS3aSF_vTxpt2Y0KdQBzKa4s4KYHFsQp1jHU=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjCn8bagQg6Ws-NumpuOqevd4ynwsz-6Ngt78X1Ls2MyMOZzGCerawNRGnK0sZq5UuDc-PWBMLdD16WVSMjXdOpxKwmYsqbEevxIiCwpum5zFGx-RL4Gyajt3xyNfTdLL8A5oQv8luUWkqy5SeQ=s4800-h1200",
         "alt": "House of Blues Anaheim",
         "source": "venue",
         "ref": "house-of-blues-anaheim"
@@ -2733,17 +2828,17 @@
       "headline": "Howard Jones: 17 Years Between Shows",
       "prose": "I remember standing in the Universal Amphitheater in 1989, watching Howard Jones perform what I didn't know would be his last show in my collection for nearly two decades. When I finally saw him again in 2006 at the intimate Coach House in San Juan Capistrano, it felt like reconnecting with an old friend after years of silence. That 17-year gap represents the longest drought between any artist's appearances in my concert history. The shift from arena to club venue somehow made his synth-pop anthems feel more personal, like he was playing just for the handful of us who had waited all those years.",
       "image": {
-        "url": "/images/shows/2016-09-03-howard-jones-03.jpg",
+        "url": "/images/shows/2024-08-20-howard-jones-03.jpg",
         "alt": "Howard Jones",
         "source": "show",
         "ref": "howard-jones",
-        "credit": "Mike Morper · 3 September 2016",
-        "shotOn": "2016-09-03",
+        "credit": "Mike Morper · 20 August 2024",
+        "shotOn": "2024-08-20",
         "crop": {
-          "h": 0.9375,
-          "w": 1,
           "x": 0,
-          "y": 0
+          "y": 0.0856,
+          "w": 1,
+          "h": 0.7034
         }
       },
       "audio": {
@@ -3953,17 +4048,17 @@
       "headline": "Howard Jones: 39 Years of Shows",
       "prose": "I first caught Howard Jones at Irvine Meadows in 1985, right in the thick of his \"Dream Into Action\" era when those synthesizer hooks were everywhere. What strikes me now is how I kept coming back — six shows across 39 years, from that outdoor amphitheater in Orange County to the YouTube Theatre in Inglewood just this past August. There's something about his earnest optimism and those unmistakable keyboard melodies that pulls me back decade after decade. I suppose some artists just become part of your personal soundtrack, whether you plan it or not.",
       "image": {
-        "url": "/images/shows/2016-09-03-howard-jones-03.jpg",
+        "url": "/images/shows/2024-08-20-howard-jones-03.jpg",
         "alt": "Howard Jones",
         "source": "show",
         "ref": "howard-jones",
-        "credit": "Mike Morper · 3 September 2016",
-        "shotOn": "2016-09-03",
+        "credit": "Mike Morper · 20 August 2024",
+        "shotOn": "2024-08-20",
         "crop": {
-          "h": 0.9375,
-          "w": 1,
           "x": 0,
-          "y": 0
+          "y": 0.0856,
+          "w": 1,
+          "h": 0.7034
         }
       },
       "audio": {
@@ -4047,7 +4142,7 @@
       "headline": "Maxi Priest + 6 More: 1991 Festival Bill",
       "prose": "This was reggae's moment in American mainstream consciousness, and I caught a perfect snapshot of it at Pacific Amphitheatre in June 1991. Maxi Priest was riding high with crossover hits, headlining over a seven-artist bill that included Dennis Brown and Andrew Tosh — Peter Tosh's son, carrying forward his father's legacy. I remember the crowd being surprisingly diverse for Orange County, drawn by reggae's growing radio presence around that time. What struck me most was how the music unified this massive outdoor crowd, from the opening act through Priest's closing set under the California stars.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjCHsbPlf7FW3C3d5GbICm_VpGqdPXw94dtZRtBcytXiSQaXpWfzaWCeInHKmT3m4h7elqruVKDd6vKP9-2ZdGeFer2GfbkOstJ96V__3V9GDSgHwZcX345A5RBzdVW8_m9Q-3FpeGELQO-3Cw=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjC1yU31TuhE-IwblGs9vf9mmvnBNoZnHWazXlNNbshBwjrUyrVaWx6iQy5KIFE8-YOy65hJ9aPhmLJ5RiIOfUd_77YvPukeWmcd3Rh_M1-WJFL677QRBjVC-0aUPNNSq7l0jGkNH15sTyKX4w=s4800-h1200",
         "alt": "Pacific Amphitheatre",
         "source": "venue",
         "ref": "pacific-amphitheatre"
@@ -4232,7 +4327,7 @@
       "headline": "Oingo Boingo + 5 More: 1987 Festival Bill",
       "prose": "This was the era when alternative rock was still finding its footing alongside new wave's final flourishes — and somehow I caught all of it on one stage in Tijuana. Six acts that would define different corners of the late-80s landscape: Oingo Boingo riding high on \"Dead Man's Party,\" The Bangles at their commercial peak, Squeeze's sophisticated pop craft, and Australia's Hoodoo Gurus bringing their garage rock energy just five years after forming. I remember the surreal border-crossing pilgrimage to Caliente Racetrack, where Chris Isaak's crooning and The Fixx's synth-rock completed this unlikely but perfect snapshot of 1987's musical diversity. Looking back, it feels like witnessing a changing of the guard I didn't even know was happening.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjBxLLnxpWRpni8patQipSt7gs2FdWYLGgaUGeNipnLqX1Ris63CwHUL8YwmjpFk2PrBJCG92wGfWzROMaZn6PXPW5xrBPIBB4r3X5cEY976y_903NJFHpcu4XXNhO__AUpvTbzE_DcXPx-YSg=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjC3SliIM_YggtrvBPda3NHooLzUdDUjuW3mf8I3PglOGztU0jwLpLoHWIdbABC0FKQH1gGcfS8DCNxR8Tqy2bDMFJQGomPCvht9CD3fd9lXxJlHxp1F43GIuGe2ZByu0zBQVx3iOohlSAXTlg=s4800-h1200",
         "alt": "Caliente Racetrack",
         "source": "venue",
         "ref": "caliente-racetrack"
@@ -4410,7 +4505,7 @@
       "headline": "My West Coast Chapter: 26 Concerts Over 11 Years",
       "prose": "I still remember standing at Irvine Meadows in October 1988, watching Oingo Boingo tear through the night air, thinking I had no idea what the next 11 years of California shows would look like. That first West Coast concert cracked something open — 26 shows across 16 venues, from Irvine to Redondo Beach, two full decades bleeding into each other. I caught 22 different artists during that chapter, ending quietly at Club Caprice in 1999 with Alien Fashion Show, which is honestly a perfect last entry for a run that started with Oingo Boingo. Some chapters close before you realize they've closed.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjAMXolDer7n1zsJ1nGX9wBYi9UEESjwD4tDCkxJ-vR7fAvConJJoxaa_XuqTWKgnIdEieMskq9Hf-YolmzRAEy54WTR0EPNmX5q2ucU4w4_VZJudfek7RtrXbV0yAmDn0b5yQnxvv-CAYqvNUk=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjAh-JLo4pYgLzA0NpQ3V9fe2V-fdpviXx4kMlNtungiI4PV9-LuimacPlSnv4F73bxP0PPsc4JNyn7UNrEJnupzU1pdOQodLWvlYsfBkbO2xVsZptWX-P5DvA297dlTJ6e8z5tIGA66IcYOCBo=s4800-h1200",
         "alt": "Kia Forum",
         "source": "venue",
         "ref": "kia-forum"
@@ -4912,7 +5007,7 @@
       "headline": "Kia Forum: 5 Shows Over 3 Decades",
       "prose": "I remember walking into the Forum for the first time in 1990 to see Erasure, that massive bowl of a venue feeling both intimate and overwhelming at 19 years old. Five shows across 33 years have brought me back to Inglewood — from Bell Biv DeVoe's New Jack Swing energy to Elton John's piano grandeur to Tears for Fears' nostalgic pull. My most recent visit was Depeche Mode in 2023, and I realized I've been loyal to this place longer than some of my friendships. There's something about the Forum's acoustics that makes every synthesizer sound like it's coming from the future.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjAMXolDer7n1zsJ1nGX9wBYi9UEESjwD4tDCkxJ-vR7fAvConJJoxaa_XuqTWKgnIdEieMskq9Hf-YolmzRAEy54WTR0EPNmX5q2ucU4w4_VZJudfek7RtrXbV0yAmDn0b5yQnxvv-CAYqvNUk=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjAh-JLo4pYgLzA0NpQ3V9fe2V-fdpviXx4kMlNtungiI4PV9-LuimacPlSnv4F73bxP0PPsc4JNyn7UNrEJnupzU1pdOQodLWvlYsfBkbO2xVsZptWX-P5DvA297dlTJ6e8z5tIGA66IcYOCBo=s4800-h1200",
         "alt": "Kia Forum",
         "source": "venue",
         "ref": "kia-forum"
@@ -4993,10 +5088,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 58,
-    "totalGenerated": 90,
-    "averageScore": 38,
-    "lastPipelineRun": "2026-08-24T08:52:21.247Z",
+    "totalPosts": 59,
+    "totalGenerated": 91,
+    "averageScore": 38.1,
+    "lastPipelineRun": "2026-08-31T15:58:11.645Z",
     "concertsAnalyzed": 181,
     "feedUrl": "/liner-notes.xml"
   }
