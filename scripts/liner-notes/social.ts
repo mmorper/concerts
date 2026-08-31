@@ -35,7 +35,7 @@ const TEMPERATURE = 0.8;
  * a carousel-length overrun that a third pass fixes. A beat budget is the easiest
  * thing in this prompt to comply with once it is pointed at.
  */
-const MAX_ATTEMPTS = 3;
+const MAX_ATTEMPTS = 4;
 
 const SYSTEM_PROMPT = `You write the social copy for a personal concert archive spanning 1984 to present. You are the archive owner. The archive is the record; social is the doorway.
 
@@ -63,6 +63,8 @@ The line that earns the click, set in large type on a card.
 - No hashtags, no emoji, no URL, no quotation marks around the whole line.
 - Not the headline restated. If your hook is the headline with different punctuation, write a different hook.
 - A specific number, object or detail beats a summary every time.
+- 🔴 A TEN-ACT BILL DOES NOT FIT IN 200 CHARACTERS, SO DO NOT TRY. Name the headliner and ONE other act — the one that makes the bill strange. Every further name is a name you are paying for with the reason anyone should care. Listing acts is what the card's credit line is for, and it is already doing it.
+- 🔴 ON A MULTI-ACT BILL, THE HEADLINER IS NOT OPTIONAL. Naming the eighth act and not the one on the marquee reads as an error, however good the detail is. A ten-act post that says "a go-go band that never left D.C." and never says Foo Fighters has buried its own subject. Name the headliner first, THEN go find the interesting act.
 
 🔴 NEVER WRITE AROUND A NAME YOU HAVE BEEN TOLD NOT TO USE.
 The rule above says leave the name out, not gesture at the thing. A sentence bending itself around a word is the single loudest tell that nobody wrote it.
@@ -138,6 +140,48 @@ The headline, the hook and the caption are read together, in that order, in abou
 - A "N Decades" headline counts CALENDAR decades — shows in 1988, 1997 and 2004 span three of them and sixteen elapsed years. Both numbers are true. Using one in the hook and the other in the caption is still wrong, because a reader gets "Sixteen years" and "three decades" about one thing and concludes nobody read it back.
 - Pick the framing the headline already set, and hold it across all three. If you would rather count elapsed years than calendar decades, do that in BOTH the hook and the caption.
 - The same applies to any count: shows, artists, venues. One number for one thing, everywhere it appears.
+
+🔴 THE TRAILING FLOURISH — the single loudest tell that a machine wrote this.
+A concrete first clause, then a second one after a dash or a full stop that SOUNDS like it means something and does not. It is the shape copy reaches for when it has run out of fact and wants the sentence to feel finished.
+
+  BAD   Opener in 1993, headliner in 2023 — thirty years, no shortcuts.
+        ↳ No shortcuts to WHAT? Nothing was skipped, nothing was taken. The words
+          have a shape where a meaning should be.
+  BAD   ... and every minute of it felt earned.
+        ↳ Earned by whom, against what? This is a verdict with no evidence, and
+          the reader can feel that nothing is behind it.
+  BAD   26 shows, 16 venues, 22 artists — and I didn't know it had started yet.
+        ↳ "it" has no antecedent. The hook never says what started.
+  BAD   One show in 38 years of concert-going, and I still can't explain why.
+        ↳ Why WHAT? Why once? Why you went? The line poses a mystery it invented.
+  BAD   U2 broke the internet 33 days earlier. Siouxsie had been doing it since 1976.
+        ↳ Doing WHAT since 1976 — breaking the internet? And in 1991 there was no
+          internet to break. See anachronism below.
+  BAD   ... watching someone who'd been there first.
+        ↳ Been WHERE first?
+
+  BAD   Achtung Baby was 33 days old. Siouxsie had been doing this since 1976.
+        ↳ Doing WHAT? "this" points at nothing. The sentence needs a noun — the
+          dark electronics, the reinvention, the mascara — and it has a pronoun.
+
+THE TEST, and it is not optional: point at every "it", "that", "this", "there" and "why" in your copy and name what it refers to, using a word that actually appears earlier in the same copy. If you cannot, the sentence is decoration. Cut it and put a fact in its place — the room, the song, the year, the person standing next to you.
+
+A hook may absolutely end quietly. It may not end vaguely. "I didn't see them again for 37 years" is quiet and lands. "Thirty years, no shortcuts" is loud and lands nothing.
+
+🔴 THE ROOM DID NOT DO ANYTHING. A venue is a building. It does not choose, pull, call, decide, keep showing up, or earn a return.
+  BAD   House of Blues Anaheim kept showing up in my life. I never once booked it on purpose.
+        ↳ Twice wrong. A building does not show up anywhere, and I do not BOOK
+          venues — I buy a ticket to a show and go. Use the verbs of someone who
+          was in the audience.
+  BAD   The room did the choosing.
+  BAD   one room that kept pulling me back
+        ↳ The same move three times. I went back. Say why, or say what happened
+          when I did.
+  GOOD  I bought tickets to six different acts and ended up in the same room every time.
+
+🔴 AND THE "I NEVER PLANNED IT" LINE IS USED UP. Across the venue posts it has already appeared as "none of it was planned", "I never planned any of it", "I never once made a plan" and "never once booked it on purpose". It is true of every one of these posts, which is exactly why it cannot be the point of any of them. Find what makes THIS room's run different: who opened, which year, what you drove past, what the run started and ended with.
+
+🔴 NO ANACHRONISM. Every image has to be available to the year you are writing about. "Broke the internet" is a 2014 idiom and the show was in 1991. No "went viral", "algorithm", "content", "the feed", "main character" about a night that predates them. The archive starts in 1984 and most of it is analogue.
 
 VOICE — identical to the note itself
 - First person. Warm, specific, slightly reverent about live music.
@@ -230,6 +274,12 @@ export interface SocialContext {
    * full entry is on the site"). Four of four did exactly that.
    */
   facts?: string[];
+  /**
+   * Exact ISO dates the copy may state — the show, and any album release the
+   * note draws on. A full date is never arithmetic, so it either matches one of
+   * these or it was remembered wrong.
+   */
+  knownDates?: string[];
 }
 
 /**
@@ -321,6 +371,34 @@ async function authorOne(
  * Years only. "39 years" from 1985 to 2024 is arithmetic the model is supposed
  * to do and it appears in no source text; a YEAR is never arithmetic.
  */
+
+const MONTHS = [
+  "january", "february", "march", "april", "may", "june",
+  "july", "august", "september", "october", "november", "december",
+];
+
+/** Full calendar dates stated in the copy, as ISO plus what was written. */
+function writtenDates(texts: unknown[]): Array<{ iso: string; raw: string }> {
+  const out: Array<{ iso: string; raw: string }> = [];
+  const month = MONTHS.join("|");
+  const patterns = [
+    new RegExp(`\\b(${month})\\s+(\\d{1,2})(?:st|nd|rd|th)?,?\\s+((?:19|20)\\d{2})\\b`, "gi"),
+    new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+(${month})\\s+((?:19|20)\\d{2})\\b`, "gi"),
+  ];
+  for (const text of texts) {
+    if (typeof text !== "string") continue;
+    for (const [i, re] of patterns.entries()) {
+      for (const m of text.matchAll(re)) {
+        const name = (i === 0 ? m[1] : m[2]).toLowerCase();
+        const day = Number(i === 0 ? m[2] : m[1]);
+        const mm = String(MONTHS.indexOf(name) + 1).padStart(2, "0");
+        out.push({ iso: `${m[3]}-${mm}-${String(day).padStart(2, "0")}`, raw: m[0] });
+      }
+    }
+  }
+  return out;
+}
+
 function unsourcedYears(parsed: unknown, post: SocialSubject, context: SocialContext): string[] {
   const obj = parsed as Record<string, unknown> | null;
   if (!obj || typeof obj !== "object") return [];
@@ -348,6 +426,29 @@ function unsourcedYears(parsed: unknown, post: SocialSubject, context: SocialCon
     ...(Array.isArray(obj.beats) ? obj.beats.flatMap(years) : []),
   ];
   const invented = [...new Set(written.filter((y) => !known.has(y)))];
+
+  // ── A full calendar date must match one the archive holds ──────────────────
+  //
+  // 🔴 THE YEAR CHECK IS NOT ENOUGH, because the year is usually right. Achtung
+  // Baby was released 1991-11-18 and the show was 1991-12-21; the copy wrote
+  // "Achtung Baby dropped December 18, 1991", which is the album's DAY on the
+  // show's MONTH. Every digit of that is present in the data and the sentence is
+  // still false, so a year-level gate waves it through.
+  //
+  // Full dates are rare in this copy and are never arithmetic, so requiring an
+  // exact match costs nothing and catches a whole class the year gate cannot.
+  const stamped = writtenDates([obj.hook, obj.caption, ...(Array.isArray(obj.beats) ? obj.beats : [])]);
+  const held = new Set(context.knownDates ?? []);
+  const wrongDates = stamped.filter((d) => !held.has(d.iso));
+  if (wrongDates.length && held.size) {
+    // Advertise the show's own date only. `held` legitimately runs to thousands
+    // of release dates, and a feedback message listing them is not feedback.
+    return [
+      `${wrongDates.map((d) => d.raw).join("; ")} — this archive holds no such date. ` +
+        `This show was ${context.date}. ` +
+        `A date that is nearly right is wrong, and a release date borrowed onto the show's month is the likeliest way to get one nearly right — check the day and the month separately.`,
+    ];
+  }
   if (!invented.length) return [];
 
   // Telling the model only what is banned is what made it repeat 2013 three

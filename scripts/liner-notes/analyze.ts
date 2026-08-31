@@ -693,7 +693,63 @@ function detectMilestoneMarker(concerts: Concert[]): AnalysisFinding[] {
 
 // ── 8. Rare Sighting Detector ─────────────────────────────────────────────────
 
-function detectRareSighting(concerts: Concert[], setlists?: SetlistIndex): AnalysisFinding[] {
+
+/**
+ * Every night an act was on stage, headlining OR opening, past and future.
+ *
+ * 🔴 COUNTING HEADLINERS ONLY CALLS A TWICE-SEEN ACT A ONE-TIMER.
+ * 89 of 184 shows in this archive have openers — 187 opener credits — so an act
+ * can appear twice and be counted once. It shipped three published headlines
+ * that are false as written:
+ *
+ *   The Alarm: Caught Once, Never Again    headlined UCLA 1986,
+ *                                          opened for The Human League in 2018
+ *   Ziggy Marley: Caught Once, Never Again headlined 1988,
+ *                                          opened for Peter Gabriel in 1993
+ *
+ * This is the media pipeline's different-artist rule arriving in the detectors:
+ * an opener credit is a real sighting, and treating it as absent is how the
+ * archive contradicts itself.
+ *
+ * 🔴 FUTURE SHOWS COUNT TOO, for "never again" specifically. Every other
+ * detector reasons about the past and takes `pastConcerts`. A claim that
+ * something will NEVER happen is falsified by a ticket already bought —
+ * Blancmange opens for Thompson Twins on 2026-09-16, sixteen days after this
+ * was written, and the headline would have gone on being wrong afterwards. The
+ * voice rules call that a perishable claim and ban it outright.
+ */
+export function appearancesByArtist(concerts: Concert[]): Map<string, Concert[]> {
+  const out = new Map<string, Concert[]>();
+  const add = (slug: string, concert: Concert) => {
+    if (!out.has(slug)) out.set(slug, []);
+    out.get(slug)!.push(concert);
+  };
+  for (const concert of concerts) {
+    add(concert.headlinerNormalized, concert);
+    for (const opener of concert.openers ?? []) add(normalizeArtistSlug(opener), concert);
+  }
+  return out;
+}
+
+/** The project's normalization, matching `src/utils/normalize.ts`. */
+function normalizeArtistSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function detectRareSighting(
+  concerts: Concert[],
+  setlists?: SetlistIndex,
+  /**
+   * Every appearance by every act across the WHOLE archive — openers included,
+   * future shows included. Absent falls back to the headliner-only count this
+   * used to do, which is wrong in the ways `appearancesByArtist` documents.
+   */
+  appearances?: Map<string, Concert[]>
+): AnalysisFinding[] {
   const countByArtist = new Map<string, Concert[]>();
 
   for (const c of concerts) {
@@ -706,6 +762,10 @@ function detectRareSighting(concerts: Concert[], setlists?: SetlistIndex): Analy
 
   for (const [normalized, shows] of countByArtist) {
     if (shows.length !== 1) continue;
+    // Headlining once is necessary and not sufficient: an opener credit on any
+    // other night, or a show already booked, means "never again" is not true.
+    const everyNight = appearances?.get(normalized);
+    if (everyNight && everyNight.length > 1) continue;
 
     const concert = shows[0];
     // The only time you saw them — so what they opened and closed with is the
@@ -2205,6 +2265,8 @@ export function analyze(
   options: AnalyzeOptions = {}
 ): AnalysisResult {
   const past = pastConcerts(concerts, today);
+  // Built from the FULL list, not `past` — see appearancesByArtist.
+  const appearances = appearancesByArtist(concerts);
 
   const allFindings: AnalysisFinding[] = [
     ...detectArtistLongevity(past, options.setlists),
@@ -2214,7 +2276,7 @@ export function analyze(
     ...detectGeographicChapter(past),
     ...detectConcertStreak(past),
     ...detectMilestoneMarker(past),
-    ...detectRareSighting(past, options.setlists),
+    ...detectRareSighting(past, options.setlists, appearances),
     ...detectHistoricalMoment(past),
     ...detectVenueGhost(past, options.venuesMetadata ?? {}, options.setlists),
     ...detectFestivalMegaBill(past),

@@ -337,6 +337,14 @@ export interface SocialCheckInput {
    */
   venue?: { name: string; city?: string };
   /**
+   * On a bill with several acts: the headliner, and the supporting acts.
+   *
+   * Set only when there is more than one act, because on a single-act post the
+   * artist is furniture the hook is told NOT to repeat — the same inversion the
+   * `venue` field carries.
+   */
+  bill?: { headliner: string; support: string[] };
+  /**
    * Everything this post is allowed to have got a number from — its prose, its
    * headline, and the credit stack. Numbers in the copy that appear nowhere here
    * were not drawn from the archive.
@@ -583,6 +591,31 @@ export function checkSocial(input: SocialCheckInput): VoiceIssue[] {
     // reach it with the venue nowhere on screen at all.
     if (caption && !namesVenue(caption, input.venue)) {
       push("error", "venue-unnamed", `caption never names ${input.venue.name} — it ships without the card`);
+    }
+  }
+
+  // ── Naming the eighth act and not the marquee ──────────────────────────────
+  //
+  // Measured: a ten-act RFK bill whose hook read "Ten acts, six decades of blues,
+  // and a go-go band that never left D.C." and whose caption led with Trouble
+  // Funk. Both are true and the detail is good — and Foo Fighters, the act the
+  // card names first, appears in neither. To a reader who was there, that reads
+  // as an error rather than a choice.
+  //
+  // Only fires when the copy names a supporting act. Copy that names nobody is
+  // obeying the anti-furniture rule and is not the failure this describes.
+  if (input.bill && input.bill.support.length) {
+    const text = `${hook} ${caption} ${(beats ?? []).join(" ")}`;
+    const names = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ");
+    const body = names(text);
+    const mentioned = (name: string) => body.includes(names(name).trim());
+    const namedSupport = input.bill.support.filter(mentioned);
+    if (namedSupport.length && !mentioned(input.bill.headliner)) {
+      push(
+        "error",
+        "headliner-unnamed",
+        `names ${namedSupport.slice(0, 2).join(", ")} but never ${input.bill.headliner}, who headlined`
+      );
     }
   }
 

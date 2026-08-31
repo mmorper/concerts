@@ -145,6 +145,15 @@ export function resolveImage(
  * still told to use at most a couple — a list of facts recited in order is its
  * own kind of robotic.
  */
+/** The project's normalization, matching `src/utils/normalize.ts`. */
+function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export function narrativeFacts(
   candidate: OnThisDayCandidate,
   sources: BuildSources
@@ -158,17 +167,41 @@ export function narrativeFacts(
   const year = Number(show.date.slice(0, 4));
 
   // ── Where this night sits in the artist's run ──────────────────────────────
+  //
+  // 🔴 OPENER CREDITS ARE SIGHTINGS. 89 of 184 shows carry openers, so counting
+  // headliner rows alone reports "the ONLY time I have seen them" about an act
+  // seen twice. The same blind spot put "Caught Once, Never Again" on three
+  // published headlines — The Alarm headlined UCLA in 1986 and opened for The
+  // Human League in 2018.
   const byArtist = concerts
-    .filter((c) => c.headlinerNormalized === show.headlinerNormalized)
+    .filter(
+      (c) =>
+        c.headlinerNormalized === show.headlinerNormalized ||
+        (c.openers ?? []).some((o) => slugify(o) === show.headlinerNormalized)
+    )
     .sort((a, b) => a.date.localeCompare(b.date));
+
+  /** Which of those nights they OPENED, so the copy never calls one a headline slot. */
+  const openedOn = new Set(
+    byArtist
+      .filter((c) => c.headlinerNormalized !== show.headlinerNormalized)
+      .map((c) => c.date)
+  );
 
   if (byArtist.length === 1) {
     facts.push(`This is the ONLY time I have seen ${show.headliner}. Once, and never again.`);
   } else {
     const index = byArtist.findIndex((c) => c.date === show.date);
+    const asOpener = [...openedOn];
     facts.push(
       `I have seen ${show.headliner} ${byArtist.length} times; this was number ${index + 1}.`
     );
+    if (asOpener.length) {
+      facts.push(
+        `${asOpener.length === 1 ? "One of those" : `${asOpener.length} of those`} was an opening slot, not a headline set` +
+          ` (${asOpener.join(", ")}).`
+      );
+    }
     if (index === 0) {
       const next = byArtist[1];
       const gap = Number(next.date.slice(0, 4)) - year;

@@ -298,6 +298,9 @@ export async function run(options: PipelineOptions): Promise<void> {
         ...(context?.subject === "venue"
           ? { venue: { name: context.venue, city: context.city } }
           : {}),
+        ...(context && context.artists.length > 1
+          ? { bill: { headliner: context.artists[0], support: context.artists.slice(1) } }
+          : {}),
       });
       if (issues.length) console.log(formatSocialIssues(post.slug, issues));
       // Errors drop the social text, never the post. The note publishes; the

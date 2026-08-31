@@ -1,35 +1,6 @@
 {
-  "generatedAt": "2026-08-31T15:42:23.494Z",
+  "generatedAt": "2026-08-31T21:03:40.645Z",
   "posts": [
-    {
-      "slug": "otd-2026-08-24",
-      "day": "08-24",
-      "showDate": "2003-08-24",
-      "age": 23,
-      "artist": "The Human League",
-      "artistNormalized": "the-human-league",
-      "venue": "The Grove of Anaheim",
-      "venueNormalized": "the-grove-of-anaheim",
-      "city": "Anaheim",
-      "score": 30,
-      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wysuyt1345666474.jpg",
-      "tier": 2,
-      "source": "artist-audiodb",
-      "url": "https://concerts.morperhaus.org/?scene=artists&artist=the-human-league&show=2003-08-24",
-      "cardPath": "public/og/on-this-day/otd-2026-08-24.png",
-      "social": {
-        "hook": "They opened with 'Being Boiled' and closed with 'Together in Electric Dreams' — 17 songs between two perfect bookends.",
-        "caption": "My first Human League show, and The English Beat opened. I didn't see them again for 15 years.",
-        "beats": [
-          "First time seeing The Human League — August 2003, with The English Beat opening the night.",
-          "'Being Boiled' to start. 'Together in Electric Dreams' to close. Seventeen songs in between.",
-          "2003 was that kind of year: Peter Gabriel, Joe Jackson, The Cure — and now this.",
-          "It would be 15 years before I saw them again. I had no idea that night was going to have to last that long."
-        ],
-        "authoredAt": "2026-08-31T15:42:18.696Z"
-      },
-      "publishedAt": "2026-08-31T15:42:23.494Z"
-    },
     {
       "slug": "otd-2026-08-29",
       "day": "08-29",
@@ -47,17 +18,17 @@
       "url": "https://concerts.morperhaus.org/?scene=artists&artist=joe-jackson&show=2003-08-29",
       "cardPath": "public/og/on-this-day/otd-2026-08-29.png",
       "social": {
-        "hook": "He opened with 'Steppin' Out' and closed with 'I'm the Man' — 20 songs in between.",
-        "caption": "First time I saw Joe Jackson, and he played the whole room like he had something to prove. 'Steppin' Out' first, 'I'm the Man' last — nothing soft about that setlist.",
+        "hook": "He opened with 'Steppin' Out' and closed with 'I'm the Man' — twenty songs between them.",
+        "caption": "First time seeing Joe Jackson, August 2003. I didn't get back to another of his shows until 2012.",
         "beats": [
-          "23 years ago tonight, I saw Joe Jackson for the first time — House of Blues Anaheim, August 2003.",
-          "He opened with 'Steppin' Out'. Not buried mid-set, not saved for the encore. First song.",
-          "Twenty songs across the night, and he closed with 'I'm the Man' — which is a statement.",
-          "2003 was a good year for this. Peter Gabriel, The Human League, The Cure — and now this show in the count too."
+          "'Steppin' Out' as the opener: he led with the thing everyone came for and still had nineteen songs left to play.",
+          "Twenty songs in a single set. By the time he closed with 'I'm the Man', nothing felt rushed.",
+          "This was 2003 — the same year I saw Peter Gabriel, The Human League and The Cure. Joe Jackson fit right in that company.",
+          "Nine years passed before I saw him again. I didn't know that night it would be that long."
         ],
-        "authoredAt": "2026-08-31T15:41:47.227Z"
+        "authoredAt": "2026-08-31T21:03:30.481Z"
       },
-      "publishedAt": "2026-08-31T15:41:57.800Z"
+      "publishedAt": "2026-08-31T21:03:40.645Z"
     },
     {
       "slug": "otd-2026-08-26",
@@ -77,17 +48,47 @@
       "linerNoteSlug": "the-smithereens-21-years-between-shows",
       "cardPath": "public/og/on-this-day/otd-2026-08-26.png",
       "social": {
-        "hook": "Third time seeing them, first and only time at this room.",
-        "caption": "I've seen The Smithereens three times, and Birchmere was the last of them — still the only night I've spent in that room. Ten years today.",
+        "hook": "Four times in 25 years, and the opener slot barely counts.",
+        "caption": "I saw The Smithereens four times across 25 years — but one of those was an opening set, not a headline. Birchmere in 2016 was the real fourth.",
         "beats": [
-          "August 26, 2016. The Smithereens at Birchmere — my first and only night in that room.",
-          "It was the third time I'd seen them. Some bands you keep finding reasons to go back for.",
-          "2016 also gave me Snarky Puppy and Prophets of Rage. The Smithereens fit that year in ways I didn't expect.",
-          "Ten years out, this one still sits at the end of the list. No fourth show yet."
+          "The Smithereens opened for someone else in 1991. I filed it, but it didn't fully count.",
+          "Three headline sets across 25 years is a thin thread for a band this good.",
+          "Birchmere in 2016 was my only time in that room — and my most recent Smithereens show.",
+          "The opener slot from 1991 still bothers me a little. Four visits, but one of them was borrowed."
         ],
-        "authoredAt": "2026-08-31T15:41:32.762Z"
+        "authoredAt": "2026-08-31T21:03:18.606Z"
       },
-      "publishedAt": "2026-08-31T15:41:46.381Z"
+      "publishedAt": "2026-08-31T21:03:29.761Z"
+    },
+    {
+      "slug": "otd-2026-08-24",
+      "day": "08-24",
+      "showDate": "2003-08-24",
+      "age": 23,
+      "artist": "The Human League",
+      "artistNormalized": "the-human-league",
+      "venue": "The Grove of Anaheim",
+      "venueNormalized": "the-grove-of-anaheim",
+      "city": "Anaheim",
+      "score": 30,
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wysuyt1345666474.jpg",
+      "tier": 2,
+      "source": "artist-audiodb",
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=the-human-league&show=2003-08-24",
+      "cardPath": "public/og/on-this-day/otd-2026-08-24.png",
+      "social": {
+        "hook": "They opened with 'Being Boiled' and closed with 'Together in Electric Dreams' — 17 songs between.",
+        "caption": "The Human League's first of three times I'd see them, with The English Beat opening. I didn't go back for 15 years.",
+        "beats": [
+          "The English Beat opened. That alone made it a strange and excellent night before The Human League played a note.",
+          "'Being Boiled' first — one of their earliest songs, cold and mechanical, as a way to say hello.",
+          "17 songs later they closed on 'Together in Electric Dreams', which is about as perfect an exit as a setlist can have.",
+          "I saw Peter Gabriel, Joe Jackson and The Cure that same year. This night still stands out for how it started and ended.",
+          "It would be 15 years before I saw them again. I didn't know that walking out."
+        ],
+        "authoredAt": "2026-08-31T21:03:03.566Z"
+      },
+      "publishedAt": "2026-08-31T21:03:17.854Z"
     },
     {
       "slug": "otd-2026-08-23",
@@ -107,17 +108,17 @@
       "linerNoteSlug": "new-order-37-years-between-shows",
       "cardPath": "public/og/on-this-day/otd-2026-08-23.png",
       "social": {
-        "hook": "They closed with 'Love Will Tear Us Apart' — a Joy Division song, played by the band that survived it.",
-        "caption": "New Order opened that night with 'State of the Nation' and closed with the song that defined what came before them. I didn't see them again for 37 years.",
+        "hook": "They closed with 'Love Will Tear Us Apart.' I didn't see them again for 37 years.",
+        "caption": "New Order opened with 'State of the Nation' and closed with a Joy Division song — 14 songs deep into a night that took 37 years to repeat.",
         "beats": [
-          "August 23, 1985. A Certain Ratio and the Abecedarians opened. New Order headlined.",
-          "They opened with 'State of the Nation' — a song that felt like a statement about where they were going.",
-          "Fourteen songs later, they closed with 'Love Will Tear Us Apart.' Ian Curtis wrote it. They carried it.",
-          "I wouldn't see them again for 37 years. Some first shows take a long time to follow up."
+          "August 23, 1985. New Order, first time — A Certain Ratio and Abecedarians opened.",
+          "They opened with 'State of the Nation' and played 14 songs before the last one.",
+          "The last one was 'Love Will Tear Us Apart.' It wasn't a New Order song. It landed anyway.",
+          "I didn't see them again until 2022. Thirty-seven years is a long time to sit with a setlist."
         ],
-        "authoredAt": "2026-08-31T15:40:52.725Z"
+        "authoredAt": "2026-08-31T21:02:56.758Z"
       },
-      "publishedAt": "2026-08-31T15:41:02.864Z"
+      "publishedAt": "2026-08-31T21:03:02.682Z"
     }
   ]
 }

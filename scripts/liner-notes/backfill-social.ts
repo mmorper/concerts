@@ -84,6 +84,7 @@ export function contextFor(
     date: concert.date,
     song: post.audio?.role === "subject" ? post.audio.trackName : undefined,
     knownYears: knownYears(post, sources),
+    knownDates: knownDates(post, sources),
     // Narrower than VENUE_SUBJECT_DETECTORS on purpose — see the comment there.
     // The second half of the test is the load-bearing one: a post naming sixteen
     // venues has no single room to be about, whatever its detector says.
@@ -108,6 +109,41 @@ export function knownYears(post: LinerNotesPost, sources: BackfillSources): numb
     for (const album of sources.albumEras?.artists?.[slug]?.studioAlbums ?? []) {
       const year = Number(album.releaseDate?.slice(0, 4));
       if (Number.isFinite(year)) out.add(year);
+    }
+  }
+  return [...out];
+}
+
+/**
+ * Exact dates this post may state: the nights themselves, and the release dates
+ * of albums by the acts involved.
+ *
+ * Narrower than `knownYears` on purpose. A full calendar date in the copy is
+ * always a quotation, never a calculation, so it either appears here or it was
+ * remembered from somewhere that is not this archive.
+ */
+export function knownDates(post: LinerNotesPost, sources: BackfillSources): string[] {
+  const out = new Set<string>();
+  for (const concert of sources.concerts) {
+    if (post.artists.includes(concert.headlinerNormalized) || post.years?.includes(concert.year)) {
+      out.add(concert.date);
+    }
+  }
+
+  // 🔴 EVERY ARTIST'S RELEASES, NOT JUST THIS POST'S. An album-context note is
+  // frequently ABOUT a record by someone else — the Siouxsie post turns on U2's
+  // Achtung Baby — so scoping this to `post.artists` rejected the one date in it
+  // that was right. The question this gate asks is "did you invent this", not
+  // "is this the correct album", and a release date anywhere in album-eras is a
+  // date the archive holds.
+  for (const artist of Object.values(sources.albumEras?.artists ?? {})) {
+    for (const album of artist.studioAlbums ?? []) {
+      // Partial values like "1995-01" and "2003" appear in the file; a date that
+      // is not a full date cannot be matched against one and would only ever
+      // create false rejections.
+      if (album.releaseDate && /^\d{4}-\d{2}-\d{2}$/.test(album.releaseDate)) {
+        out.add(album.releaseDate);
+      }
     }
   }
   return [...out];
@@ -170,7 +206,10 @@ export function siblingHooks(post: LinerNotesPost, all: LinerNotesPost[]): strin
     .filter((p) => p.slug !== post.slug && p.detector === post.detector && p.social?.hook)
     .sort((a, b) => a.publishedAt.localeCompare(b.publishedAt))
     .slice(-AVOID_LIMIT)
-    .map((p) => p.social!.hook);
+    // 🔴 HOOK AND CAPTION BOTH. Showing hooks alone suppressed the repeated
+    // opening and let the same idea reappear one line lower: "I never planned
+    // it" moved out of four hooks and straight into four captions.
+    .flatMap((p) => [p.social!.hook, p.social!.caption].filter(Boolean));
 }
 
 export interface ApplyResult {
@@ -202,6 +241,7 @@ export function applyAuthored(
     beats?: string[];
     headline?: string;
     venue?: { name: string; city?: string };
+    bill?: { headliner: string; support: string[] };
     sourceText?: string;
   }) => Array<{ severity: "error" | "warning"; rule: string; detail: string }>,
   onIssues?: (slug: string, issues: Array<{ severity: string; rule: string; detail: string }>) => void
@@ -231,6 +271,11 @@ export function applyAuthored(
       ].join(" "),
       ...(context?.subject === "venue"
         ? { venue: { name: context.venue, city: context.city } }
+        : {}),
+      // Only on a real multi-act bill: on a single-act post the artist is
+      // furniture the hook is told not to repeat.
+      ...(context && context.artists.length > 1
+        ? { bill: { headliner: context.artists[0], support: context.artists.slice(1) } }
         : {}),
     });
     if (issues.length) onIssues?.(slug, issues);

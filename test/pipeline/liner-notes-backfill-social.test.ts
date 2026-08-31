@@ -95,6 +95,7 @@ describe("contextFor", () => {
       song: undefined,
       subject: "artist",
       knownYears: [1986],
+      knownDates: ["1986-07-31"],
     });
   });
 
