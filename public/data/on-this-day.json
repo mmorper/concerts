@@ -1,6 +1,35 @@
 {
-  "generatedAt": "2026-08-30T12:25:23.627Z",
+  "generatedAt": "2026-08-31T14:34:12.788Z",
   "posts": [
+    {
+      "slug": "otd-2026-08-31",
+      "day": "08-31",
+      "showDate": "2021-08-31",
+      "age": 5,
+      "artist": "Future Islands",
+      "artistNormalized": "future-islands",
+      "venue": "House of Blues Anaheim",
+      "venueNormalized": "house-of-blues-anaheim",
+      "city": "Anaheim",
+      "score": 38,
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/rsrvuy1489438204.jpg",
+      "tier": 2,
+      "source": "artist-audiodb",
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=future-islands",
+      "cardPath": "public/og/on-this-day/otd-2026-08-31.png",
+      "social": {
+        "hook": "The first indoor show after 18 months of nothing.",
+        "caption": "Future Islands at House of Blues Anaheim on August 31, 2021 — my first time back inside a venue since early 2020. Five years on, I still feel what that room felt like.",
+        "beats": [
+          "August 31, 2021: the first indoor concert I attended after eighteen months away from live music.",
+          "Future Islands were the band I walked back in for — a choice that made sense the moment the set started.",
+          "House of Blues Anaheim held that night differently than any room had held a show before.",
+          "Five years later, this date sits in the archive as a before-and-after line."
+        ],
+        "authoredAt": "2026-08-31T14:34:07.322Z"
+      },
+      "publishedAt": "2026-08-31T14:34:12.788Z"
+    },
     {
       "slug": "otd-2026-08-30",
       "day": "08-30",
