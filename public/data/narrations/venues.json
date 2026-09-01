@@ -658,11 +658,11 @@
   },
   "the-belasco": {
     "narration": {
-      "context": "I've been to The Belasco in Los Angeles three times between July 2023 and December 2024, catching Foals, Kasabian, and Social Distortion.",
-      "closingArc": "Three shows across eighteen months isn't much of a pattern yet, but it's a room I'm keeping my eye on."
+      "context": "I caught three shows at the Belasco in Los Angeles between July 2023 and December 2024: Foals, Kasabian, and Social Distortion.",
+      "closingArc": "A short run at a room that kept me coming back for something different each time."
     },
-    "inputHash": "sha256:5e0c909eac67a2927b973497273db6753087ed49d78f54d42b98b48381eca0ae",
-    "generatedAt": "2026-06-16T22:49:05.642Z",
+    "inputHash": "sha256:fbc8defab79c067a932c419f1b5aad4f88a31c93abbc28c00472295fcc3a0a49",
+    "generatedAt": "2026-08-31T14:57:04.717Z",
     "promptVersion": 1
   },
   "peacock-theater": {
