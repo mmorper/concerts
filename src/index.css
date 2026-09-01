@@ -66,6 +66,17 @@ body {
   animation: artist-card-highlight 600ms ease-out;
 }
 
+/* Esri Dark Gray Canvas fallback basemap (see src/utils/basemap.ts). Esri's canvas is a
+   mid-grey; these filters pull it down to the near-black that CARTO dark_all rendered, so the
+   map still reads as a dark surface when no CARTO key is configured. */
+.basemap-esri-base {
+  filter: brightness(0.5) contrast(1.15) saturate(0);
+}
+
+.basemap-esri-labels {
+  filter: brightness(0.7) saturate(0);
+}
+
 /* Leaflet popup z-index - high value within map container stacking context */
 .leaflet-popup-pane {
   z-index: 9999 !important;

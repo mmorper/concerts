@@ -7,6 +7,7 @@ import { deriveArchiveStats } from '../../utils/archiveStats'
 import { normalizeVenueName } from '../../utils/normalize'
 import { haptics } from '../../utils/haptics'
 import { analytics } from '../../services/analytics'
+import { addDarkBasemap } from '../../utils/basemap'
 
 interface VenueMetadata {
   name: string
@@ -247,9 +248,7 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
       })
 
       // Monochromatic tile layer with dark grayscale styling
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 19,
-      }).addTo(map)
+      addDarkBasemap(map, ZOOM_BOUNDS.max)
 
       // Create a custom pane for popups with high z-index
       map.createPane('popupPane')
