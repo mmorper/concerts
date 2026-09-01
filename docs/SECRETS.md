@@ -86,22 +86,41 @@ Build-time / public (compiled into the client bundle — **not secret**, but set
 build): `VITE_SETLISTFM_API_KEY` · `VITE_GA_MEASUREMENT_ID` · `VITE_TURNSTILE_SITE_KEY` ·
 `VITE_CARTO_API_KEY`.
 
-### CARTO basemap key — **3 homes** (#448)
+### Client build-time vars — **3 homes each** (#448)
 
-`VITE_CARTO_API_KEY` is public and ships in the client bundle. It is listed here not because
-it is secret but because it has to be set in three separate places, and missing any one of
-them degrades the map silently rather than failing.
+Every `VITE_*` the client reads is public and ships in the bundle. They are listed here not
+because they are secret but because **three different machines can build this site, and each
+reads from a different store.** Miss one and the feature turns itself off silently.
 
 | Home | Store | Used by |
 |------|-------|---------|
-| root `.env` | local | `npm run dev` and local builds |
-| GitHub Actions | **CI** repo secret | `deploy.yml` — the `v*` tag build runs on a runner |
+| root `.env` | local | `npm run dev` and local builds — gitignored, so it never reaches either CI |
+| GitHub Actions | **CI** repo secret | `deploy.yml` — the `v*` tag build runs on a runner that only has a `git clone` |
 | Cloudflare Pages | **prod** dashboard env var (Production + Preview) | the push-to-`main` git-integration build |
 
-Two homes exist because **two deploy paths are live** (see the header of `deploy.yml`). Vite
-inlines `VITE_*` at build time on whichever machine builds, so the Pages dashboard value is
-invisible to a GitHub Actions build, and the repo secret is invisible to a Pages build. Each
-path needs its own copy.
+Three homes exist because **two deploy paths are live** (see the header of `deploy.yml`) plus
+local. Vite inlines `VITE_*` at build time on whichever machine builds, so the Pages dashboard
+value is invisible to a GitHub Actions build and the repo secret is invisible to a Pages build.
+Each path needs its own copy. `.env` being complete proves nothing about the other two.
+
+Current coverage:
+
+| Var | `.env` | GH secret | Pages | Missing-value behaviour |
+|-----|:--:|:--:|:--:|---|
+| `VITE_CARTO_API_KEY` | ✅ | ✅ | ✅ | map falls back to Esri basemap |
+| `VITE_GA_MEASUREMENT_ID` | ✅ | ✅ | ✅ | analytics silently disabled |
+| `VITE_TURNSTILE_SITE_KEY` | ✅ | ✅ | ✅ | Ask session gate bypassed |
+| `VITE_SETLISTFM_API_KEY` | ✅ | ✅ | — | setlist lookups fail |
+| `VITE_TICKETMASTER_API_KEY` | ✅ | ✅ | ✅ | upcoming-tour lookups return null |
+| `VITE_ASK_BASE_URL` | ✅ | n/a | n/a | empty is correct in prod (same-origin) |
+
+All three stores now agree. When adding a new `VITE_*`, set it in all three or the feature
+will work locally, work on `main`, and quietly not work on the next tagged release.
+
+Note that nothing here has ever bitten production: `deploy.yml` was added 2026-08-12, after the
+newest tag (`v6.0.0`, 2026-08-10), and every run of it so far has been a `workflow_dispatch`
+preview. Production has only ever been built by the Pages path. The exposure is on the *next*
+release, since `/release` pushes a `v*` tag.
 
 Failure mode: no watermark and no error. The map falls back to Esri's keyless dark canvas
 (`src/utils/basemap.ts`) and simply looks slightly different. Verify with a byte-size check
