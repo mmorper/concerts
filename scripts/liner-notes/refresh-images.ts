@@ -109,15 +109,59 @@ export function upgradeVenuePosts(
     // Only where the SUBJECT is a place. An artist post with a venue photo is the wrong
     // subject, which is the mirror of the gate in `upgradeToOwnPhotography`.
     if (!PLACE_FORWARD_DETECTORS.has(post.detector)) continue;
-    if (post.image?.source === "venue") continue;
+    /* Skip only a venue image that is already of the RIGHT venue. Skipping every venue
+       image meant a post that had once been given the WRONG one was never re-asked — the
+       same decided-once-never-revisited shape this whole function exists to correct. The
+       Kia Forum photograph on a post about Irvine Meadows survived a refresh because of
+       this line. */
+    if (post.image?.source === "venue" && post.image.ref === post.venues[0]) continue;
     /* Never over the archive's own photography. Personal beats sourced, and a venue post
        that somehow reached tier 1 has earned it. */
     if (post.image?.source === "show") continue;
 
-    const slug = post.venues.find((v) => getVenueImageUrl(v, sources));
+    /* 🔴 THE PHOTOGRAPH MUST BE OF THE VENUE THE CARD NAMES.
+
+       This used to take the first venue in the list that HAPPENED to have a photo, which
+       is a different question. `my-west-coast-chapter-26-concerts-over-11-years` lists
+       sixteen venues; the card names Irvine Meadows, which is tract housing now and has no
+       Places photo, so the loop walked on and found the Kia Forum. The card then printed
+       "Irvine Meadows · Irvine, CA · October 1988" over an unmistakable photograph of the
+       Forum Club entrance.
+
+       That is not a weak image. It is a photograph of a building the post is not about,
+       captioned with the name of one it is — the same fabrication as a byline naming the
+       wrong night, in the one element a reader takes in first.
+
+       `post.venues[0]` IS the card's venue on all 10 venue-subject posts, measured. When it
+       has no photograph the post keeps its sourced image rather than borrowing another
+       venue's: a weaker picture is recoverable, a wrong one is not. */
+    const slug = post.venues[0];
     if (!slug) continue;
 
-    const url = getVenueImageUrl(slug, sources)!;
+    const url = getVenueImageUrl(slug, sources);
+    if (!url) {
+      /* The card's venue has no photograph — Irvine Meadows is tract housing, Universal
+         Amphitheater was demolished. Declining to UPGRADE is not the same as leaving a
+         wrong image in place: a post already showing a DIFFERENT venue's photograph keeps
+         showing it, and that is the state this whole change exists to end.
+
+         So drop to a sourced image instead. An album cover on a venue post is a weak
+         picture; a photograph of the wrong building under the right name is a false one. */
+      const showing = post.image;
+      if (showing?.source !== "venue" || showing.ref === slug) continue;
+
+      const fallback = candidates(post, sources).find((c) => c.source !== "venue");
+      if (!fallback) continue;
+
+      post.image = { ...fallback, alt: sources.artistsMetadata[fallback.ref!]?.name ?? fallback.alt };
+      upgraded.push(post.slug);
+      if (verbose) {
+        console.log(
+          `   ↧ ${post.slug}: dropped the ${showing.ref} photograph — the card names ${slug}, which has none`
+        );
+      }
+      continue;
+    }
     post.image = {
       url,
       alt: sources.venuesMetadata[slug]?.name ?? post.image.alt,

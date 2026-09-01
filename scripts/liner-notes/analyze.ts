@@ -477,6 +477,19 @@ function detectGeographicChapter(concerts: Concert[]): AnalysisFinding[] {
     const { region, shows } = chapter;
     const sortedShows = [...shows].sort((a, b) => a.date.localeCompare(b.date));
     const first = sortedShows[0];
+    // 🔴 A CHAPTER IS AN UNBROKEN RUN, NOT A BEGINNING, and the copy read it as
+    // one: "Oingo Boingo opened a chapter I didn't know I was starting."
+    //
+    // The run starting 1988-10-29 is the longest CONSECUTIVE stretch of West
+    // Coast shows — it starts there because two Arizona nights (Mountain West)
+    // fall just before it, not because West Coast concert-going began. The first
+    // was Adam Ant at Irvine Meadows in 1984, four years earlier.
+    //
+    // `earlierInRegion` is what stops the prose claiming a first. When it is
+    // non-zero the run is a stretch, not an origin, and the copy has to say so.
+    const earlierInRegion = withRegion.filter(
+      (w) => w.region === region && w.concert.date < first.date
+    ).length;
     const last = sortedShows[sortedShows.length - 1];
     const span = spanYears(first.date, last.date);
     const venues = [...new Set(sortedShows.map((s) => s.venueNormalized))];
@@ -500,6 +513,9 @@ function detectGeographicChapter(concerts: Concert[]): AnalysisFinding[] {
       dataPoints: {
         region,
         showCount: shows.length,
+        // How many shows in this region came BEFORE the run. Non-zero means the
+        // run is a stretch, not an origin, and the prose may not call it a start.
+        earlierInRegion,
         firstShow: { date: first.date, artist: first.headliner, venue: first.venue, city: first.cityState },
         lastShow: { date: last.date, artist: last.headliner, venue: last.venue, city: last.cityState },
         spanYears: span,
@@ -693,7 +709,63 @@ function detectMilestoneMarker(concerts: Concert[]): AnalysisFinding[] {
 
 // ── 8. Rare Sighting Detector ─────────────────────────────────────────────────
 
-function detectRareSighting(concerts: Concert[], setlists?: SetlistIndex): AnalysisFinding[] {
+
+/**
+ * Every night an act was on stage, headlining OR opening, past and future.
+ *
+ * 🔴 COUNTING HEADLINERS ONLY CALLS A TWICE-SEEN ACT A ONE-TIMER.
+ * 89 of 184 shows in this archive have openers — 187 opener credits — so an act
+ * can appear twice and be counted once. It shipped three published headlines
+ * that are false as written:
+ *
+ *   The Alarm: Caught Once, Never Again    headlined UCLA 1986,
+ *                                          opened for The Human League in 2018
+ *   Ziggy Marley: Caught Once, Never Again headlined 1988,
+ *                                          opened for Peter Gabriel in 1993
+ *
+ * This is the media pipeline's different-artist rule arriving in the detectors:
+ * an opener credit is a real sighting, and treating it as absent is how the
+ * archive contradicts itself.
+ *
+ * 🔴 FUTURE SHOWS COUNT TOO, for "never again" specifically. Every other
+ * detector reasons about the past and takes `pastConcerts`. A claim that
+ * something will NEVER happen is falsified by a ticket already bought —
+ * Blancmange opens for Thompson Twins on 2026-09-16, sixteen days after this
+ * was written, and the headline would have gone on being wrong afterwards. The
+ * voice rules call that a perishable claim and ban it outright.
+ */
+export function appearancesByArtist(concerts: Concert[]): Map<string, Concert[]> {
+  const out = new Map<string, Concert[]>();
+  const add = (slug: string, concert: Concert) => {
+    if (!out.has(slug)) out.set(slug, []);
+    out.get(slug)!.push(concert);
+  };
+  for (const concert of concerts) {
+    add(concert.headlinerNormalized, concert);
+    for (const opener of concert.openers ?? []) add(normalizeArtistSlug(opener), concert);
+  }
+  return out;
+}
+
+/** The project's normalization, matching `src/utils/normalize.ts`. */
+function normalizeArtistSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function detectRareSighting(
+  concerts: Concert[],
+  setlists?: SetlistIndex,
+  /**
+   * Every appearance by every act across the WHOLE archive — openers included,
+   * future shows included. Absent falls back to the headliner-only count this
+   * used to do, which is wrong in the ways `appearancesByArtist` documents.
+   */
+  appearances?: Map<string, Concert[]>
+): AnalysisFinding[] {
   const countByArtist = new Map<string, Concert[]>();
 
   for (const c of concerts) {
@@ -706,6 +778,10 @@ function detectRareSighting(concerts: Concert[], setlists?: SetlistIndex): Analy
 
   for (const [normalized, shows] of countByArtist) {
     if (shows.length !== 1) continue;
+    // Headlining once is necessary and not sufficient: an opener credit on any
+    // other night, or a show already booked, means "never again" is not true.
+    const everyNight = appearances?.get(normalized);
+    if (everyNight && everyNight.length > 1) continue;
 
     const concert = shows[0];
     // The only time you saw them — so what they opened and closed with is the
@@ -843,8 +919,31 @@ function detectVenueGhost(
     const sorted = [...shows].sort((a, b) => a.date.localeCompare(b.date));
     const first = sorted[0];
     const last = sorted[sorted.length - 1];
-    const closedYear = meta.closedDate
-      ? new Date(meta.closedDate + "T12:00:00Z").getFullYear()
+    // 🔴 A CLOSING DATE THE ARCHIVE ITSELF CONTRADICTS IS NOT A FACT TO WRITE FROM.
+    //
+    // `closedDate` is hand-maintained in data/venue-status.csv, and Universal
+    // Amphitheater carried 1999-12-31 beside shows this archive records in 2002
+    // and 2005. The detector handed that contradiction to the generator as a
+    // data point, and the generator did the reasonable thing with it — it wrote
+    // a story: "my last show technically happened at a completely different
+    // building on the same site, six years after the original was torn down."
+    // That note is published. Nothing in it is true, and every number in it came
+    // from the data.
+    //
+    // Dropped rather than corrected: the right closing date is not derivable
+    // from anything here, and guessing one is the same failure wearing a
+    // different hat. Without it the post is still written — as a room that is
+    // gone, which IS supported — just never with a year attached.
+    const closedAfterLastShow = meta.closedDate ? meta.closedDate >= last.date : true;
+    if (meta.closedDate && !closedAfterLastShow) {
+      console.warn(
+        `   ⚠️  ${first.venue}: closedDate ${meta.closedDate} precedes its own last show ` +
+          `(${last.date}). Dropping the date — fix data/venue-status.csv.`
+      );
+    }
+    const closedDate = closedAfterLastShow ? meta.closedDate : undefined;
+    const closedYear = closedDate
+      ? new Date(closedDate + "T12:00:00Z").getFullYear()
       : null;
     const artists = [...new Set(sorted.map((s) => s.headlinerNormalized))];
     const years = sorted.map((s) => s.year);
@@ -879,7 +978,7 @@ function detectVenueGhost(
         city: first.cityState,
         showCount: shows.length,
         status: meta.status,
-        closedDate: meta.closedDate,
+        closedDate,
         closedYear,
         notes: meta.notes,
         firstShow: { date: first.date, artist: first.headliner },
@@ -2182,6 +2281,8 @@ export function analyze(
   options: AnalyzeOptions = {}
 ): AnalysisResult {
   const past = pastConcerts(concerts, today);
+  // Built from the FULL list, not `past` — see appearancesByArtist.
+  const appearances = appearancesByArtist(concerts);
 
   const allFindings: AnalysisFinding[] = [
     ...detectArtistLongevity(past, options.setlists),
@@ -2191,7 +2292,7 @@ export function analyze(
     ...detectGeographicChapter(past),
     ...detectConcertStreak(past),
     ...detectMilestoneMarker(past),
-    ...detectRareSighting(past, options.setlists),
+    ...detectRareSighting(past, options.setlists, appearances),
     ...detectHistoricalMoment(past),
     ...detectVenueGhost(past, options.venuesMetadata ?? {}, options.setlists),
     ...detectFestivalMegaBill(past),

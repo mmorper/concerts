@@ -293,7 +293,6 @@
       "subject": "artist",
       "tier": 1,
       "source": "personal",
-      "hero": false,
       "crop": {
         "h": 0.8453,
         "w": 1,
@@ -321,7 +320,7 @@
       "subject": "artist",
       "tier": 1,
       "source": "personal",
-      "hero": false,
+      "hero": true,
       "crop": {
         "h": 0.9375,
         "w": 1,
@@ -378,7 +377,6 @@
       "subject": "artist",
       "tier": 1,
       "source": "personal",
-      "hero": false,
       "order": 1,
       "width": 1080,
       "height": 1920,

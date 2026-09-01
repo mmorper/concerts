@@ -22,6 +22,7 @@
  */
 
 import { resolveAnchorConcert } from "../syndication/payload.ts";
+import { VENUE_NAMED_DETECTORS } from "./image-refs.ts";
 import type { SocialContext } from "./social.ts";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesPost, PostSocial } from "../../src/types/liner-notes.ts";
@@ -30,6 +31,15 @@ export interface BackfillSources {
   concerts: Concert[];
   artistsMetadata: Record<string, { name?: string }>;
   venuesMetadata: Record<string, { name?: string; city?: string }>;
+  /**
+   * Optional: release dates the copy is allowed to cite. The voice skill makes
+   * an album's release date Tier 1 when this file carries it, so a caption
+   * saying "Rebel Yell had been out since November 1983" is sourced — but only
+   * if the year gate can see the same file the rule refers to.
+   */
+  albumEras?: {
+    artists?: Record<string, { studioAlbums?: Array<{ releaseDate?: string }> }>;
+  };
 }
 
 export interface BackfillOptions {
@@ -73,7 +83,89 @@ export function contextFor(
     city: venue?.city ?? concert.city,
     date: concert.date,
     song: post.audio?.role === "subject" ? post.audio.trackName : undefined,
+    knownYears: knownYears(post, sources),
+    knownDates: knownDates(post, sources),
+    // Narrower than VENUE_SUBJECT_DETECTORS on purpose — see the comment there.
+    // The second half of the test is the load-bearing one: a post naming sixteen
+    // venues has no single room to be about, whatever its detector says.
+    subject:
+      VENUE_NAMED_DETECTORS.has(post.detector) && post.venues.length === 1
+        ? "venue"
+        : "artist",
   };
+}
+
+/**
+ * The years this post may state, over and above the ones in its own prose.
+ *
+ * `post.years` is the detector's own answer to "which years is this about", so a
+ * drought-comeback post carries both ends of the gap even though only one of
+ * them is the anchor concert. Album release years come from `album-eras.json`,
+ * which the voice skill already treats as Tier 1 evidence.
+ */
+export function knownYears(post: LinerNotesPost, sources: BackfillSources): number[] {
+  const out = new Set<number>(post.years ?? []);
+  for (const slug of post.artists) {
+    for (const album of sources.albumEras?.artists?.[slug]?.studioAlbums ?? []) {
+      const year = Number(album.releaseDate?.slice(0, 4));
+      if (Number.isFinite(year)) out.add(year);
+    }
+  }
+  return [...out];
+}
+
+/**
+ * Exact dates this post may state: the nights themselves, and the release dates
+ * of albums by the acts involved.
+ *
+ * Narrower than `knownYears` on purpose. A full calendar date in the copy is
+ * always a quotation, never a calculation, so it either appears here or it was
+ * remembered from somewhere that is not this archive.
+ */
+export function knownDates(post: LinerNotesPost, sources: BackfillSources): string[] {
+  const out = new Set<string>();
+  for (const concert of sources.concerts) {
+    if (post.artists.includes(concert.headlinerNormalized) || post.years?.includes(concert.year)) {
+      out.add(concert.date);
+    }
+  }
+
+  // 🔴 EVERY ARTIST'S RELEASES, NOT JUST THIS POST'S. An album-context note is
+  // frequently ABOUT a record by someone else — the Siouxsie post turns on U2's
+  // Achtung Baby — so scoping this to `post.artists` rejected the one date in it
+  // that was right. The question this gate asks is "did you invent this", not
+  // "is this the correct album", and a release date anywhere in album-eras is a
+  // date the archive holds.
+  for (const artist of Object.values(sources.albumEras?.artists ?? {})) {
+    for (const album of artist.studioAlbums ?? []) {
+      // Partial values like "1995-01" and "2003" appear in the file; a date that
+      // is not a full date cannot be matched against one and would only ever
+      // create false rejections.
+      if (album.releaseDate && /^\d{4}-\d{2}-\d{2}$/.test(album.releaseDate)) {
+        out.add(album.releaseDate);
+      }
+    }
+  }
+  // 🔴 A "DAYS BEFORE/AFTER" POST MAKES ONE MORE DATE COMPUTABLE, and the gate's
+  // premise — that a full date is always a quotation, never a calculation — is
+  // false for exactly this shape. The Brian Setzer note says The Bends dropped
+  // "13 days" before a show on 1995-03-26, so 1995-03-13 is derived from the
+  // post's own prose. It is not in album-eras because Radiohead has never been
+  // seen live, so no amount of widening that file would have reached it, and the
+  // gate rejected the post's entire premise as a fabrication.
+  for (const match of String(post.prose ?? "").matchAll(/\b(\d{1,4})\s+days?\b/gi)) {
+    const days = Number(match[1]);
+    if (!Number.isFinite(days) || days > 3650) continue;
+    for (const anchor of post.years?.length ? [...out] : []) {
+      const t = Date.parse(`${anchor}T00:00:00Z`);
+      if (Number.isNaN(t)) continue;
+      for (const sign of [-1, 1]) {
+        out.add(new Date(t + sign * days * 86400000).toISOString().slice(0, 10));
+      }
+    }
+  }
+
+  return [...out];
 }
 
 /**
@@ -109,10 +201,34 @@ export function selectForBackfill(
       skipped.push({ slug: post.slug, reason: "no concert resolves for the credit stack" });
       continue;
     }
-    candidates.push({ post, context });
+    candidates.push({ post, context: { ...context, avoid: siblingHooks(post, posts) } });
   }
 
   return { candidates, skipped };
+}
+
+/**
+ * What the other posts of this detector already say.
+ *
+ * Same detector only — that is where the material rhymes and therefore where the
+ * copy converges. Widening it to the whole corpus would spend tokens listing
+ * fifty-eight hooks that share nothing with this one, and dilute the handful
+ * that actually threaten to repeat.
+ *
+ * Capped, and taken from the END of publication order: the most recent siblings
+ * are the ones a reader scrolling the profile will still have in view.
+ */
+const AVOID_LIMIT = 8;
+
+export function siblingHooks(post: LinerNotesPost, all: LinerNotesPost[]): string[] {
+  return all
+    .filter((p) => p.slug !== post.slug && p.detector === post.detector && p.social?.hook)
+    .sort((a, b) => a.publishedAt.localeCompare(b.publishedAt))
+    .slice(-AVOID_LIMIT)
+    // 🔴 HOOK AND CAPTION BOTH. Showing hooks alone suppressed the repeated
+    // opening and let the same idea reappear one line lower: "I never planned
+    // it" moved out of four hooks and straight into four captions.
+    .flatMap((p) => [p.social!.hook, p.social!.caption].filter(Boolean));
 }
 
 export interface ApplyResult {
@@ -132,8 +248,23 @@ export interface ApplyResult {
 export function applyAuthored(
   posts: LinerNotesPost[],
   authored: Map<string, PostSocial>,
-  check: (input: { hook: string; caption: string; beats?: string[]; headline?: string }) =>
-    Array<{ severity: "error" | "warning"; rule: string; detail: string }>,
+  /**
+   * Looked up per post so the venue rule can be applied, and `undefined` for an
+   * artist-subject post — where requiring the venue name would break the rule
+   * that keeps those hooks clean.
+   */
+  contexts: Map<string, SocialContext>,
+  check: (input: {
+    hook: string;
+    caption: string;
+    beats?: string[];
+    headline?: string;
+    venue?: { name: string; city?: string };
+    bill?: { headliner: string; support: string[] };
+    derivedFrom?: { prose: string; names: string[] };
+    span?: { years: number[]; timely: boolean; today: number };
+    sourceText?: string;
+  }) => Array<{ severity: "error" | "warning"; rule: string; detail: string }>,
   onIssues?: (slug: string, issues: Array<{ severity: string; rule: string; detail: string }>) => void
 ): ApplyResult {
   const bySlug = new Map(posts.map((p) => [p.slug, p]));
@@ -146,7 +277,38 @@ export function applyAuthored(
       continue;
     }
 
-    const issues = check({ ...social, headline: post.headline });
+    const context = contexts.get(slug);
+    const issues = check({
+      ...social,
+      headline: post.headline,
+      // Everything the copy is allowed to have taken a number from.
+      sourceText: [
+        post.prose ?? "",
+        post.headline,
+        context?.date ?? "",
+        ...(context?.artists ?? []),
+        context?.venue ?? "",
+        ...(context?.knownYears ?? []).map(String),
+      ].join(" "),
+      ...(context?.subject === "venue"
+        ? { venue: { name: context.venue, city: context.city } }
+        : {}),
+      // Only on a real multi-act bill: on a single-act post the artist is
+      // furniture the hook is told not to repeat.
+      ...(context && context.artists.length > 1
+        ? { bill: { headliner: context.artists[0], support: context.artists.slice(1) } }
+        : {}),
+      // Names stripped from both sides, so the caption is not punished for doing
+      // its job — see longestSharedRun.
+      ...(post.prose && context
+        ? { derivedFrom: { prose: post.prose, names: [...context.artists, context.venue, context.city] } }
+        : {}),
+      span: {
+        years: [...new Set(post.years ?? [])],
+        timely: post.temporality === "timely",
+        today: new Date().getUTCFullYear(),
+      },
+    });
     if (issues.length) onIssues?.(slug, issues);
 
     const errors = issues.filter((i) => i.severity === "error");

@@ -280,11 +280,44 @@ export function formatVoiceIssues(finding: ScoredFinding, issues: VoiceIssue[]):
 const SOCIAL_FURNITURE: Array<[RegExp, string]> = [
   [/#\w/, "hashtag in authored copy — tags are generated per channel, not written"],
   [/https?:\/\//i, "URL in authored copy — the adapter appends the link"],
-  [/\blink in bio\b/i, '"link in bio" — feed-tool boilerplate'],
+  // "the" is optional, because it was not, and a beat reading "The archive is on
+  // the site — link in the bio" sat in the publish queue passing this rule.
+  [/\blink in (?:the )?bio\b/i, '"link in bio" — feed-tool boilerplate'],
   [/\b(?:read|see) more\b/i, '"read more" — feed-tool boilerplate'],
   [
     /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/u,
     "emoji — not the archive's register",
+  ],
+  // ── Writing about the filing instead of the night ──────────────────────────
+  //
+  // "read more" and "link in bio" were banned above from the start; this is the
+  // same move in the archive's own vocabulary, and it walked straight past them.
+  // All four pending On This Day posts did it — "now 23 years in the archive",
+  // "the full entry is on the site", "it's been in the archive ever since", "the
+  // entry still stands" — because an anniversary post had no material and filled
+  // the space with the fact that a record exists. A reader did not come for that.
+  //
+  // The cure is the facts now passed to the prompt; this is the ratchet that
+  // stops it coming back.
+  [
+    /\b(?:in|into|to) (?:the|my|our) (?:archive|log|books)\b/i,
+    "\"in the archive\" — the post is about the night, not about it being filed",
+  ],
+  [
+    /\b(?:full|complete) (?:entry|story|write-?up)\b/i,
+    "\"the full entry\" — feed-tool boilerplate wearing the archive's vocabulary",
+  ],
+  [
+    /\bthe (?:entry|record|post|log) (?:still )?(?:stands|remains|lives)\b/i,
+    "\"the entry still stands\" — writing about the filing, not the night",
+  ],
+  [
+    /\bstill (?:in|on) (?:the|my) (?:archive|log|site|books)\b/i,
+    "\"still in the log\" — same filler, different wording",
+  ],
+  [
+    /\bon the site\b/i,
+    "\"on the site\" — the adapter appends the link; the copy never points at it",
   ],
 ];
 
@@ -294,6 +327,59 @@ export interface SocialCheckInput {
   beats?: string[];
   /** The published note's headline. A hook that restates it is not authored copy. */
   headline?: string;
+  /**
+   * Set ONLY when the venue is the post's subject (`VENUE_SUBJECT_DETECTORS`).
+   *
+   * Absent means "the venue is furniture on the card" — the ordinary case, where
+   * the hook is explicitly told NOT to repeat it. Present means the opposite is
+   * true and the name is required. Two different posts, two different rules, and
+   * the caller is the only thing that knows which is which.
+   */
+  venue?: { name: string; city?: string };
+  /**
+   * On a bill with several acts: the headliner, and the supporting acts.
+   *
+   * Set only when there is more than one act, because on a single-act post the
+   * artist is furniture the hook is told NOT to repeat — the same inversion the
+   * `venue` field carries.
+   */
+  bill?: { headliner: string; support: string[] };
+  /**
+   * Set only on an anniversary post: how many years ago the show was.
+   *
+   * The third time the anti-furniture rule has been right for the post it was
+   * written for and wrong for a different one. "N years ago today" IS the reason
+   * an On This Day post exists, and the prompt was telling the model not to
+   * repeat it because the card carries it. So nothing in the shipped text said
+   * today — and on Bluesky the text sits ABOVE the image, so the first thing
+   * read gave no reason the post was appearing at all.
+   */
+  anniversary?: { age: number };
+  /**
+   * The published prose, plus the names the copy is entitled to repeat.
+   *
+   * Found by a parallel session working the same problem, and it is the one
+   * check this file most needed: `derived-copy` compared the hook to the
+   * HEADLINE and nothing compared it to the paragraph. So the sin the whole
+   * module exists to prevent — "It is not chopped out of the first paragraph" —
+   * was structurally invisible.
+   */
+  derivedFrom?: { prose: string; names: string[] };
+  /**
+   * The years this post covers, and whether it is pegged to a date.
+   *
+   * An evergreen post may not state a year-count measured to NOW: "forty years
+   * ago" about a 1985 show is 41 today and 42 next year, standing on a channel
+   * that cannot be corrected. A `timely` post is exempt — a calendar anniversary
+   * IS the count, and it publishes on the day it is true.
+   */
+  span?: { years: number[]; timely: boolean; today: number };
+  /**
+   * Everything this post is allowed to have got a number from — its prose, its
+   * headline, and the credit stack. Numbers in the copy that appear nowhere here
+   * were not drawn from the archive.
+   */
+  sourceText?: string;
 }
 
 /**
@@ -309,6 +395,264 @@ function isRestatement(hook: string, headline: string): boolean {
     s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
   return flatten(hook) === flatten(headline);
 }
+
+/**
+ * Does this text name the venue?
+ *
+ * Not a string match on the full name, because the copy that does this BEST does
+ * not use it. "I first walked into the Forum at 19 for Erasure in 1990" is right
+ * about a room that was not called the Kia Forum for another thirty years, and a
+ * check demanding the current legal name would reject the most human sentence in
+ * the corpus to accept a worse one.
+ *
+ * So: any distinctive word of the venue's name counts, where distinctive excludes
+ * the city. That exclusion is the whole load-bearing part — "the same Anaheim
+ * club" contains a word from "House of Blues Anaheim" and still does not name it,
+ * and Anaheim is exactly the word a model reaches for when it has been told not
+ * to say the venue.
+ */
+export function namesVenue(text: string, venue: { name: string; city?: string }): boolean {
+  // theatre/theater and centre/center are the same room spelled two ways.
+  const fold = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/\btheatre\b/g, "theater")
+      .replace(/\bamphitheatre\b/g, "amphitheater")
+      .replace(/\bcentre\b/g, "center")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+
+  const stop = new Set(["the", "of", "and", "at", "a", "an"]);
+  const cityWords = new Set(fold(venue.city ?? "").split(" ").filter(Boolean));
+  const distinctive = fold(venue.name)
+    .split(" ")
+    .filter((w) => w.length >= 3 && !stop.has(w) && !cityWords.has(w));
+
+  // A venue whose every word is its city ("Anaheim") leaves nothing to require;
+  // demanding the full string there would be worse than not checking.
+  if (!distinctive.length) return true;
+
+  const words = new Set(fold(text).split(" ").filter(Boolean));
+  return distinctive.some((w) => words.has(w));
+}
+
+/**
+ * Words common enough in this corpus that sharing one proves nothing.
+ *
+ * The hook and caption of the SAME post are about the same night, so they share
+ * vocabulary by necessity — "years", "show", "saw" appear in both halves of copy
+ * the prompt holds up as its own worked GOOD example. Only a word outside this
+ * set is evidence the caption reached for the hook's device instead of its own.
+ */
+const COMMON_TO_THE_CORPUS = new Set([
+  "years", "year", "show", "shows", "night", "nights", "band", "album", "albums",
+  "song", "songs", "record", "records", "time", "times", "first", "last", "again",
+  "saw", "seen", "played", "play", "stage", "live", "room", "venue", "same",
+  "still", "back", "into", "over", "between", "before", "after", "since", "later",
+  "never", "every", "when", "then", "with", "that", "this", "they", "them", "their",
+  "from", "have", "been", "were", "what", "would", "could", "about", "here", "there",
+  "decade", "decades", "months", "month", "days", "week", "weeks", "tour", "set",
+]);
+
+/**
+ * The caption reaching for the hook's device rather than supplying its own fact.
+ *
+ * Measured failure: a hook ending "until I found the stubs" beside a caption
+ * ending "The ticket stubs told me the story before I did." The prompt already
+ * forbids it in as many words; nothing checked, so it shipped.
+ *
+ * A WARNING, never an error. The signal is a shared distinctive word, and a post
+ * whose actual subject is a ticket stub will say "stub" twice for good reason —
+ * failing it would cost the archive a true sentence to catch a stylistic one.
+ */
+function echoedWords(hook: string, caption: string): string[] {
+  const words = (s: string) =>
+    s.toLowerCase().replace(/[^a-z0-9' ]+/g, " ").split(/\s+/).filter(Boolean);
+  const capitalised = new Set(
+    // Proper nouns are the caption's JOB — it may name what the hook could not.
+    [...caption.matchAll(/\b[A-Z][a-z]+/g)].map((m) => m[0].toLowerCase())
+  );
+  const inCaption = new Set(words(caption));
+  return [
+    ...new Set(
+      words(hook).filter(
+        (w) =>
+          w.length >= 5 &&
+          !COMMON_TO_THE_CORPUS.has(w) &&
+          !capitalised.has(w) &&
+          inCaption.has(w)
+      )
+    ),
+  ];
+}
+
+const NUMBER_WORDS: Record<string, number> = {
+  one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9,
+  ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15,
+  sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19, twenty: 20, thirty: 30,
+  forty: 40, fifty: 50, sixty: 60,
+};
+
+/**
+ * Spans of time stated in the copy, normalised to years.
+ *
+ * `(?<![\w-])` matters more than it looks: without it "thirty-nine years" also
+ * reports a nine-year span, and a check built on that reports a contradiction in
+ * copy that has none. Half the first run's findings were that artefact.
+ */
+function timeSpans(text: string): Array<{ years: number; raw: string }> {
+  const out: Array<{ years: number; raw: string }> = [];
+  for (const m of String(text).matchAll(
+    /(?<![\w-])(\d{1,3}|[a-z]+(?:-[a-z]+)?)[\s-]+(year|decade)s?\b/gi
+  )) {
+    const token = m[1].toLowerCase();
+    const n = /^\d+$/.test(token)
+      ? Number(token)
+      : token.split("-").reduce((a, w) => a + (NUMBER_WORDS[w] ?? NaN), 0);
+    if (!Number.isFinite(n) || n <= 0) continue;
+    out.push({ years: m[2].toLowerCase() === "decade" ? n * 10 : n, raw: m[0].trim() });
+  }
+  return out;
+}
+
+/**
+ * How far two stated spans may drift before they read as a contradiction.
+ *
+ * Both numbers are usually TRUE — a detector headline counts calendar decades
+ * (1988, the 90s, the 2000s = "3 Decades") while the model counts elapsed years
+ * (16). Nothing is wrong and the post still reads as though three people wrote
+ * it, which is why this is a warning about framing rather than an error about
+ * facts.
+ */
+const SPAN_DRIFT_YEARS = 8;
+
+/**
+ * Years stated in the copy.
+ *
+ * Separate from every other number on purpose: a year is never the result of
+ * arithmetic, so unlike "39 years" (1985 to 2024, correctly derived and nowhere
+ * in the prose) a year either came from the data or was remembered from
+ * somewhere else. Universal Amphitheater is the measured case — the model twice
+ * wrote "demolished in 2013" for a post whose prose, headline and credit contain
+ * no such year, because it knew when Gibson Amphitheatre came down. It happens
+ * to be right about the world and wrong about this archive, which is the harder
+ * failure to catch and the exact one the prompt calls the worst thing this
+ * pipeline can produce.
+ */
+function yearsIn(text: string): number[] {
+  return [
+    ...new Set(
+      (String(text).match(/\b(?:19|20)\d{2}\b/g) ?? []).map(Number)
+    ),
+  ];
+}
+
+/** Spelled-out forms, so "forty-one years ago" counts as much as "41 years ago". */
+const NUMBER_WORD_FOR: Record<number, string> = (() => {
+  const ones = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+  const teens = ["ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+  const tens = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+  const out: Record<number, string> = {};
+  for (let n = 1; n <= 99; n++) {
+    if (n < 10) out[n] = ones[n];
+    else if (n < 20) out[n] = teens[n - 10];
+    else out[n] = n % 10 === 0 ? tens[Math.floor(n / 10)] : `${tens[Math.floor(n / 10)]}-${ones[n % 10]}`;
+  }
+  return out;
+})();
+
+/**
+ * The longest run of words a field shares with the prose it was written from.
+ *
+ * 🔴 THE ONE FAILURE THIS MODULE NAMES IN ITS OWN HEADER AND NEVER CHECKED.
+ * `social.ts` opens by saying the copy "is not chopped out of the first
+ * paragraph. Every RSS-to-social bridge in existence fails at exactly that."
+ * `derived-copy` then compares the hook to the headline — a different question
+ * — so a hook lifted verbatim from the paragraph passed every rule here.
+ *
+ * It shipped. "Roland Orzabal's voice felt like it could crack open the world"
+ * is the Tears For Fears hook and also, word for word, the prose. Authored
+ * under every rule on this branch, because nothing was looking.
+ *
+ * NAMES ARE STRIPPED FROM BOTH SIDES FIRST. The caption's job is to name the
+ * artist and venue the hook could not, so counting those words would punish it
+ * for working correctly — "Tears For Fears at Pacific Amphitheatre in 1985" is
+ * six words of overlap and zero words of copying. What is left is authored
+ * language, where a shared run means one of them was written from the other.
+ *
+ * Eight words, measured: 309 of 350 fields share five or fewer, and everything
+ * at eight or above reads as lifted on inspection.
+ */
+const DERIVED_RUN_MAX = 8;
+
+function longestSharedRun(field: string[], prose: string[]): { length: number; text: string } {
+  let best = 0;
+  let end = 0;
+  let prev = new Array(prose.length + 1).fill(0);
+  for (let i = 1; i <= field.length; i++) {
+    const cur = new Array(prose.length + 1).fill(0);
+    for (let j = 1; j <= prose.length; j++) {
+      if (field[i - 1] === prose[j - 1]) {
+        cur[j] = prev[j - 1] + 1;
+        if (cur[j] > best) {
+          best = cur[j];
+          end = i;
+        }
+      }
+    }
+    prev = cur;
+  }
+  return { length: best, text: field.slice(end - best, end).join(" ") };
+}
+
+/**
+ * Year-counts measured to now rather than between two shows.
+ *
+ * The other half of the perishable-claim rule, and the half the table cannot
+ * express: PERISHABLE bans phrases, and a bare number needs arithmetic instead.
+ * "35 years between shows" across 1988 and 2023 measures two events and is
+ * permanent. "Forty years ago" about a 1985 show measures the gap to today — it
+ * was already wrong by one when it was written, and it is wrong by more every
+ * year, under the owner's name, on servers we do not control.
+ *
+ * `(?<![\w-])` again: without it "thirty-nine years" also reports a nine-year
+ * count, which is how the first measurement of this produced more artefacts than
+ * findings.
+ *
+ * Ages are exempt — "twenty-three years old", "Woodface was barely two years
+ * old" — because those measure a person or a record, not the distance to now.
+ */
+function countsToNow(text: string, span: { years: number[]; timely: boolean; today: number }): string[] {
+  if (span.timely || !span.years.length) return [];
+  const gaps = new Set(span.years.flatMap((a) => span.years.map((b) => Math.abs(a - b))));
+  const AGE = /\b(?:i was|was|turned|aged|barely)\s+[\w-]+\s+years?\b|\b[\w-]+\s+years?\s+old\b/i;
+
+  const spelled = text.replace(/(?<![\w-])([a-z]+(?:-[a-z]+)?)\s+(years?)\b/gi, (m, w: string, y: string) => {
+    const n = w.toLowerCase().split("-").reduce((a, x) => a + (NUMBER_VALUE[x] ?? NaN), 0);
+    return Number.isFinite(n) && n > 0 ? `${n} ${y}` : m;
+  });
+
+  const out: string[] = [];
+  for (const m of spelled.matchAll(/(?<![\w-])(\d{1,3})\s+years?\b/g)) {
+    const around = spelled.slice(Math.max(0, (m.index ?? 0) - 16), (m.index ?? 0) + m[0].length + 10);
+    if (AGE.test(around)) continue;
+    const n = Number(m[1]);
+    if (gaps.has(n)) continue;
+    if (span.years.some((y) => Math.abs(span.today - y - n) <= 1)) out.push(m[0]);
+  }
+  return out;
+}
+
+const NUMBER_VALUE: Record<string, number> = (() => {
+  const ones = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+  const teens = ["ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+  const tens = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+  const out: Record<string, number> = {};
+  ones.forEach((w, i) => w && (out[w] = i));
+  teens.forEach((w, i) => (out[w] = i + 10));
+  tens.forEach((w, i) => w && (out[w] = i * 10));
+  return out;
+})();
 
 export function checkSocial(input: SocialCheckInput): VoiceIssue[] {
   const issues: VoiceIssue[] = [];
@@ -361,6 +705,152 @@ export function checkSocial(input: SocialCheckInput): VoiceIssue[] {
 
   if (input.headline && hook && isRestatement(hook, input.headline)) {
     push("error", "derived-copy", "hook restates the headline — authored, never derived");
+  }
+
+  // ── The venue is the subject, not furniture ────────────────────────────────
+  //
+  // The hook rule says "do not repeat the credit stack" and it is right for the
+  // post it was written for, where the artist is the subject and the venue is a
+  // line of small type underneath. On a venue-loyalty or venue-ghost post that
+  // reverses: the venue IS the post, and a hook forbidden from naming it writes
+  // around it instead — "the same bowl", "one room", "one outdoor room", "the
+  // same venue". Measured across the queue: 0 of 10 venue-subject hooks named
+  // their venue, and every one of them had reached for a periphrasis.
+  //
+  // An error, not a warning. A post about a room that cannot say which room is
+  // not a post, and the failure mode is safe — the note keeps whatever copy it
+  // already had and the run reports it.
+  if (input.venue) {
+    if (hook && !namesVenue(hook, input.venue)) {
+      push("error", "venue-unnamed", `hook never names ${input.venue.name} — the venue is this post's subject, not its furniture`);
+    }
+    // The caption travels without the card on every channel, so a reader can
+    // reach it with the venue nowhere on screen at all.
+    if (caption && !namesVenue(caption, input.venue)) {
+      push("error", "venue-unnamed", `caption never names ${input.venue.name} — it ships without the card`);
+    }
+  }
+
+  // ── A count measured to today, on a channel that cannot be corrected ───────
+  if (input.span) {
+    for (const [label, text] of surfaces) {
+      if (!text) continue;
+      const stale = countsToNow(text, input.span);
+      if (stale.length) {
+        push(
+          "error",
+          "perishable-claim",
+          `${label}: "${stale.join('", "')}" counts to today, not between two shows — it ages every year on a channel we cannot edit`
+        );
+      }
+    }
+  }
+
+  // ── Copy chopped out of the paragraph ──────────────────────────────────────
+  if (input.derivedFrom?.prose) {
+    const words = (t: string) =>
+      t.toLowerCase().replace(/[^a-z0-9' ]+/g, " ").split(/\s+/).filter(Boolean);
+    // Years too — see the note on masking in social.ts's liftedFromTheNote.
+    const names = new Set(input.derivedFrom.names.flatMap(words));
+    const strip = (t: string) => words(t).filter((w) => !names.has(w));
+    const prose = strip(input.derivedFrom.prose);
+    for (const [label, text] of surfaces) {
+      if (!text) continue;
+      const run = longestSharedRun(strip(text), prose);
+      if (run.length >= DERIVED_RUN_MAX) {
+        push(
+          "error",
+          "derived-copy",
+          `${label}: ${run.length} words lifted from the note — "${run.text}". Authored, never derived.`
+        );
+      }
+    }
+  }
+
+  // ── An anniversary post that never says when ───────────────────────────────
+  //
+  // Required of the CAPTION, not the hook. The card is date-forward and sets
+  // "N years ago" in large type, so the hook repeating it is the duplication the
+  // furniture rule correctly prevents. The caption is the half that travels
+  // without the card on every channel, and it is the half that was silent.
+  if (input.anniversary && caption) {
+    const age = input.anniversary.age;
+    const marks = [
+      /\btoday\b/i,
+      /\bon this day\b/i,
+      /\bthis (?:date|day)\b/i,
+      new RegExp(`\\b${age}\\s+years?\\s+ago\\b`, "i"),
+      new RegExp(`\\b${NUMBER_WORD_FOR[age] ?? "\\u0000"}\\s+years?\\s+ago\\b`, "i"),
+    ];
+    if (!marks.some((re) => re.test(caption))) {
+      push(
+        "error",
+        "anniversary-unmarked",
+        `caption never says this is an anniversary — it ships without the card, and nothing in it explains why the post is appearing today`
+      );
+    }
+  }
+
+  // ── Naming the eighth act and not the marquee ──────────────────────────────
+  //
+  // Measured: a ten-act RFK bill whose hook read "Ten acts, six decades of blues,
+  // and a go-go band that never left D.C." and whose caption led with Trouble
+  // Funk. Both are true and the detail is good — and Foo Fighters, the act the
+  // card names first, appears in neither. To a reader who was there, that reads
+  // as an error rather than a choice.
+  //
+  // Only fires when the copy names a supporting act. Copy that names nobody is
+  // obeying the anti-furniture rule and is not the failure this describes.
+  if (input.bill && input.bill.support.length) {
+    const text = `${hook} ${caption} ${(beats ?? []).join(" ")}`;
+    const names = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ");
+    const body = names(text);
+    const mentioned = (name: string) => body.includes(names(name).trim());
+    const namedSupport = input.bill.support.filter(mentioned);
+    if (namedSupport.length && !mentioned(input.bill.headliner)) {
+      push(
+        "error",
+        "headliner-unnamed",
+        `names ${namedSupport.slice(0, 2).join(", ")} but never ${input.bill.headliner}, who headlined`
+      );
+    }
+  }
+
+  // ── The caption borrowing the hook's device ────────────────────────────────
+  if (hook && caption) {
+    const echoed = echoedWords(hook, caption);
+    if (echoed.length) {
+      push("warning", "hook-echo", `caption reuses the hook's "${echoed.join('", "')}" — supply the fact instead of the phrase`);
+    }
+  }
+
+  // ── A year that is not in the archive ──────────────────────────────────────
+  if (input.sourceText) {
+    const known = new Set(yearsIn(input.sourceText));
+    for (const [label, text] of surfaces) {
+      const invented = yearsIn(text).filter((y) => !known.has(y));
+      if (invented.length) {
+        push(
+          "error",
+          "unsourced-year",
+          `${label}: ${invented.join(", ")} appears nowhere in this post's data — never write a year from memory`
+        );
+      }
+    }
+  }
+
+  // ── One framing per post ───────────────────────────────────────────────────
+  const spans = [
+    ...timeSpans(input.headline ?? "").map((s) => ({ ...s, where: "headline" })),
+    ...timeSpans(hook).map((s) => ({ ...s, where: "hook" })),
+    ...timeSpans(caption).map((s) => ({ ...s, where: "caption" })),
+  ];
+  if (spans.length >= 2) {
+    const lo = spans.reduce((a, b) => (a.years <= b.years ? a : b));
+    const hi = spans.reduce((a, b) => (a.years >= b.years ? a : b));
+    if (hi.years - lo.years >= SPAN_DRIFT_YEARS) {
+      push("warning", "mixed-framing", `${lo.where} says "${lo.raw}", ${hi.where} says "${hi.raw}" — pick one framing and hold it`);
+    }
   }
 
   // The caption travels without the card, so it carries the voice on its own.

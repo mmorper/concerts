@@ -235,6 +235,41 @@ async function generateProseWithWebSearch(
   return prose;
 }
 
+/**
+ * Corrections a detector's own data implies, which the data alone does not say
+ * loudly enough.
+ *
+ * Shared by BOTH prompt builders on purpose. The first version of this lived in
+ * `buildUserPromptHistorical` only — the branch this finding does not take — so
+ * the warning was written, shipped, and had no effect at all. The prose came
+ * back claiming a beginning for the second time.
+ */
+function detectorCaveats(finding: ScoredFinding): string[] {
+  const dp = finding.dataPoints as Record<string, unknown>;
+  const lines: string[] = [];
+
+  // 🔴 A CHAPTER IS AN UNBROKEN RUN, NOT A BEGINNING. The prose read it as one:
+  // "standing at Irvine Meadows in October 1988 ... the beginning of an 11-year
+  // chapter". Twenty-two West Coast shows came first, from Adam Ant in 1984. The
+  // run starts where it does because two Arizona nights — Mountain West, not West
+  // Coast — fall just before it.
+  if (finding.detector === "geographic-chapter" && Number(dp.earlierInRegion) > 0) {
+    const first = dp.firstShow as { date: string } | undefined;
+    lines.push(
+      `\u26A0\uFE0F  THIS IS NOT WHERE ${String(dp.region).toUpperCase()} CONCERT-GOING BEGAN.`,
+      `${dp.earlierInRegion} shows in this region came before ${first?.date ?? "this night"}.`,
+      "This is the longest UNBROKEN run of shows in one region. It starts where it does",
+      "because a show in a DIFFERENT region falls just before it — not because anything",
+      "started. Do NOT write that this night opened a chapter, began anything, or was",
+      "the first of anything. Write about the RUN: how long it held, what it passed",
+      "through, and what ended it.",
+      ""
+    );
+  }
+
+  return lines;
+}
+
 function buildUserPromptHistorical(finding: ScoredFinding, options: GenerateOptions): string {
   const lines: string[] = [];
   const dp = finding.dataPoints as Record<string, unknown>;
@@ -247,6 +282,7 @@ function buildUserPromptHistorical(finding: ScoredFinding, options: GenerateOpti
   lines.push("DATA POINTS:");
   lines.push(JSON.stringify(finding.dataPoints, null, 2));
   lines.push("");
+  lines.push(...detectorCaveats(finding));
 
   const culturalData = buildCulturalContextData(finding, options);
   if (culturalData) {
@@ -277,6 +313,7 @@ function buildUserPrompt(finding: ScoredFinding, options: GenerateOptions): stri
   lines.push("DATA POINTS:");
   lines.push(JSON.stringify(finding.dataPoints, null, 2));
   lines.push("");
+  lines.push(...detectorCaveats(finding));
 
   // Cultural context data (Tier 1 — grounded in our data)
   const culturalData = buildCulturalContextData(finding, options);

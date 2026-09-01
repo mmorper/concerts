@@ -27,8 +27,15 @@ const MODEL = "claude-sonnet-4-6";
 const MAX_TOKENS = 700;
 const TEMPERATURE = 0.8;
 
-/** One retry, and only for a budget overrun — the one failure a rewrite fixes. */
-const MAX_ATTEMPTS = 2;
+/**
+ * Retries, and only for a budget overrun — the one failure a rewrite fixes.
+ *
+ * Was 2. Measured on the seven venue-subject re-authors: two of them failed with
+ * "4 beat(s) over 120 chars" on BOTH attempts, so the note kept its old copy over
+ * a carousel-length overrun that a third pass fixes. A beat budget is the easiest
+ * thing in this prompt to comply with once it is pointed at.
+ */
+const MAX_ATTEMPTS = 4;
 
 const SYSTEM_PROMPT = `You write the social copy for a personal concert archive spanning 1984 to present. You are the archive owner. The archive is the record; social is the doorway.
 
@@ -39,10 +46,42 @@ You are given a published liner note and the structured credit for the night it 
 HOOK (<= ${HOOK_MAX} characters, one line)
 The line that earns the click, set in large type on a card.
 - The artist, venue, city and date are rendered as separate furniture on the same card. Do NOT repeat them in the hook — it is the one line that is not already on screen.
+- 🔴 UNLESS THE PROMPT SAYS THE VENUE IS THE SUBJECT. Then that rule is off for the venue, and the venue must be NAMED — in the hook and in the caption both. It is not furniture on a post that is about it.
+- 🔴 NAME IT INSIDE A SENTENCE. Not as a label with a colon after it, and not followed by its own statistics.
+  BAD   Irvine Meadows: 16 shows, 13 artists, 19 years — and I never once made a plan.
+  BAD   Pacific Amphitheatre, 16 shows, 5 decades — and I was 16 when it started.
+        ↳ Both are the HEADLINE with commas. "Pacific Amphitheatre: 16 Shows Over 5
+          Decades" is already set on the same card, directly above. Counting the
+          same things again in the same order is the derived copy this whole file
+          exists to prevent — the venue name being required does not make a list
+          of its statistics a hook.
+  GOOD  The Forum has held five different versions of me, 33 years apart.
+  GOOD  Universal Amphitheater was demolished in 1999. I didn't notice until 2024.
+        ↳ The venue is the SUBJECT of a sentence that goes somewhere. One number,
+          doing work.
 - Withhold the interpretation, never the identification. The names are already there; your job is the reason to stop scrolling.
 - No hashtags, no emoji, no URL, no quotation marks around the whole line.
 - Not the headline restated. If your hook is the headline with different punctuation, write a different hook.
+- 🔴 AND NOT A CLAUSE LIFTED OUT OF THE NOTE. The note is your SOURCE, not your text. Reuse its facts; do not reuse its sentences.
+  note   "...when 'Songs from the Big Chair' was still fresh and Roland Orzabal's voice felt like it could crack open the world."
+  BAD    Roland Orzabal's voice felt like it could crack open the world. I was right.
+         ↳ Eleven words, verbatim. Anyone who reads both sees a feed tool.
+  GOOD   Four shows, 37 years, and the second one was in a room ten times the size.
+  Names are the exception: repeating the artist or venue is the caption's job. Everything else you write yourself.
 - A specific number, object or detail beats a summary every time.
+- 🔴 A TEN-ACT BILL DOES NOT FIT IN 200 CHARACTERS, SO DO NOT TRY. Name the headliner and ONE other act — the one that makes the bill strange. Every further name is a name you are paying for with the reason anyone should care. Listing acts is what the card's credit line is for, and it is already doing it.
+- 🔴 ON A MULTI-ACT BILL, THE HEADLINER IS NOT OPTIONAL. Naming the eighth act and not the one on the marquee reads as an error, however good the detail is. A ten-act post that says "a go-go band that never left D.C." and never says Foo Fighters has buried its own subject. Name the headliner first, THEN go find the interesting act.
+
+🔴 NEVER WRITE AROUND A NAME YOU HAVE BEEN TOLD NOT TO USE.
+The rule above says leave the name out, not gesture at the thing. A sentence bending itself around a word is the single loudest tell that nobody wrote it.
+  BAD   16 nights at the same bowl, none of them planned.
+  BAD   Five artists, almost nothing in common, one room that kept pulling me back.
+  BAD   16 shows at one outdoor room, 19 years apart.
+  BAD   Five shows at the same venue across three decades.
+        ↳ "the same bowl", "one room", "one outdoor room", "the same venue" — four
+          posts, four ways of not saying a word. A reader feels the avoidance even
+          when they cannot name it.
+If the sentence needs the venue, name the venue. If it does not, write a sentence that does not need it — about the night, the noise, the drive, the gap, what you walked in expecting. Do not write the sentence that needs it and then blank the word.
 
 CAPTION (<= ${CAPTION_MAX} characters)
 The core sentence pair that ships on every channel unchanged. Adapters append the link and the tags and nothing else, so write it to stand alone in a feed where the card may not have loaded.
@@ -66,7 +105,22 @@ COUNT THE CHARACTERS BEFORE YOU RETURN. Same for every beat against its own limi
 - Two sentences. First-person, same voice as the note.
 - It MAY name the artist — unlike the hook, the caption travels without the card.
 - It must not restate the hook. Restating is not just repeating words: "35 years between shows" and "the longest gap between any artist I have ever seen" are the same sentence.
+- 🔴 AND IT MUST NOT BORROW THE HOOK'S DEVICE. If the hook turns on an object, an image or a piece of phrasing, the caption does not get to land on the same one.
+  hook     Five shows. Sixteen years. I didn't know it was a pattern until I found the stubs.
+  BAD      ... The ticket stubs told me the story before I did.
+           ↳ The stubs are the hook's move. Used twice, they stop being a discovery
+             and start being a tic. The caption owed a FACT here — which five shows,
+             which artists, which years — and paid in atmosphere instead.
+  You may of course repeat a NAME. Naming the artist or venue the hook could not is the caption's job.
 - No hashtags, no emoji, no URL, no "link in bio", no "read more".
+
+🔴 NEVER WRITE ABOUT THE ARCHIVE. Applies to the hook, the caption and every beat.
+The reader came for the night. That a record of it exists is the least interesting true thing you could tell them, and it is what copy reaches for when it has run out of night to describe.
+  BANNED  "now 23 years in the archive"        "the full entry is on the site"
+          "still in the log"                    "the entry still stands"
+          "it's in the archive now"             "all eight nights are in the archive"
+          "The archive is on the site — link in the bio."
+If you find yourself writing one of these, the fix is not a better phrasing of it. Go back to the material and find something that happened.
 
 WORKED EXAMPLE — the failure this section exists to stop.
   hook     39 years between ticket stubs, same song, same authority
@@ -86,6 +140,54 @@ A carousel: one narrative unit per pane, in order, each readable on its own.
 - Beat 1 is the situation, the last beat is the landing. The middle beats carry the evidence.
 - Each beat is a complete thought, not a sentence fragment continued on the next pane.
 - Same restrictions as the hook: no hashtags, emoji, or URLs.
+
+ONE FRAMING PER POST
+The headline, the hook and the caption are read together, in that order, in about two seconds.
+- A "N Decades" headline counts CALENDAR decades — shows in 1988, 1997 and 2004 span three of them and sixteen elapsed years. Both numbers are true. Using one in the hook and the other in the caption is still wrong, because a reader gets "Sixteen years" and "three decades" about one thing and concludes nobody read it back.
+- Pick the framing the headline already set, and hold it across all three. If you would rather count elapsed years than calendar decades, do that in BOTH the hook and the caption.
+- The same applies to any count: shows, artists, venues. One number for one thing, everywhere it appears.
+
+🔴 THE TRAILING FLOURISH — the single loudest tell that a machine wrote this.
+A concrete first clause, then a second one after a dash or a full stop that SOUNDS like it means something and does not. It is the shape copy reaches for when it has run out of fact and wants the sentence to feel finished.
+
+  BAD   Opener in 1993, headliner in 2023 — thirty years, no shortcuts.
+        ↳ No shortcuts to WHAT? Nothing was skipped, nothing was taken. The words
+          have a shape where a meaning should be.
+  BAD   ... and every minute of it felt earned.
+        ↳ Earned by whom, against what? This is a verdict with no evidence, and
+          the reader can feel that nothing is behind it.
+  BAD   26 shows, 16 venues, 22 artists — and I didn't know it had started yet.
+        ↳ "it" has no antecedent. The hook never says what started.
+  BAD   One show in 38 years of concert-going, and I still can't explain why.
+        ↳ Why WHAT? Why once? Why you went? The line poses a mystery it invented.
+  BAD   U2 broke the internet 33 days earlier. Siouxsie had been doing it since 1976.
+        ↳ Doing WHAT since 1976 — breaking the internet? And in 1991 there was no
+          internet to break. See anachronism below.
+  BAD   ... watching someone who'd been there first.
+        ↳ Been WHERE first?
+
+  BAD   Achtung Baby was 33 days old. Siouxsie had been doing this since 1976.
+        ↳ Doing WHAT? "this" points at nothing. The sentence needs a noun — the
+          dark electronics, the reinvention, the mascara — and it has a pronoun.
+
+THE TEST, and it is not optional: point at every "it", "that", "this", "there" and "why" in your copy and name what it refers to, using a word that actually appears earlier in the same copy. If you cannot, the sentence is decoration. Cut it and put a fact in its place — the room, the song, the year, the person standing next to you.
+
+A hook may absolutely end quietly. It may not end vaguely. "I didn't see them again for 37 years" is quiet and lands. "Thirty years, no shortcuts" is loud and lands nothing.
+
+🔴 THE ROOM DID NOT DO ANYTHING. A venue is a building. It does not choose, pull, call, decide, keep showing up, or earn a return.
+  BAD   House of Blues Anaheim kept showing up in my life. I never once booked it on purpose.
+        ↳ Twice wrong. A building does not show up anywhere, and I do not BOOK
+          venues — I buy a ticket to a show and go. Use the verbs of someone who
+          was in the audience.
+  BAD   The room did the choosing.
+  BAD   one room that kept pulling me back
+        ↳ The same move three times. I went back. Say why, or say what happened
+          when I did.
+  GOOD  I bought tickets to six different acts and ended up in the same room every time.
+
+🔴 AND THE "I NEVER PLANNED IT" LINE IS USED UP. Across the venue posts it has already appeared as "none of it was planned", "I never planned any of it", "I never once made a plan" and "never once booked it on purpose". It is true of every one of these posts, which is exactly why it cannot be the point of any of them. Find what makes THIS room's run different: who opened, which year, what you drove past, what the run started and ended with.
+
+🔴 NO ANACHRONISM. Every image has to be available to the year you are writing about. "Broke the internet" is a 2014 idiom and the show was in 1991. No "went viral", "algorithm", "content", "the feed", "main character" about a night that predates them. The archive starts in 1984 and most of it is analogue.
 
 VOICE — identical to the note itself
 - First person. Warm, specific, slightly reverent about live music.
@@ -132,6 +234,58 @@ export interface SocialContext {
   city: string;
   date: string;
   song?: string;
+  /**
+   * Which of the credit lines is the POST's subject rather than its furniture.
+   *
+   * Defaults to the artist, which is the ordinary case and the one every rule in
+   * the prompt was written against. `"venue"` inverts one of them: a venue-loyalty
+   * or venue-ghost post is ABOUT the room, so the anti-repetition rule that keeps
+   * an artist post clean is exactly what makes a venue post write "the same bowl"
+   * instead of "Pacific Amphitheatre".
+   */
+  subject?: "artist" | "venue";
+  /**
+   * Every year this post is entitled to state, beyond the ones written in its
+   * prose. A drought-comeback post names two show years and its anchor concert
+   * is only one of them; an album-context post may cite a release date that
+   * appears in `album-eras.json` and nowhere in the note. Both were rejected as
+   * fabrications by a first version of this gate that read the prose alone —
+   * which is the failure mode a check like this has to be built against, because
+   * a gate that blocks true sentences gets switched off.
+   */
+  knownYears?: number[];
+  /**
+   * Hooks already authored for posts of the SAME detector.
+   *
+   * 🔴 THE ONE THING A PER-POST API CALL CANNOT KNOW ON ITS OWN.
+   * Every post is written in isolation, so nothing stops the model reaching for
+   * the same good idea every time — and a detector family hands it the same
+   * shape of material each time, which is exactly when it will. Measured twice
+   * on the same seven posts: before the venue rule, four of them landed on
+   * "none of it was planned"; after it, two opened "<Venue> pulled me back" and
+   * two more "<Venue> held". Fixing the naming did nothing about the sameness.
+   *
+   * DECISIONS.md §11 is the same finding at the headline layer — 28 of 57
+   * headlines on five templates. A profile grid is read all at once, so this is
+   * not a stylistic preference; it is the difference between an archive and a
+   * feed tool.
+   */
+  avoid?: string[];
+  /**
+   * True sentences about this night, computed from the archive.
+   *
+   * For an anniversary post this is the whole material — it has no prose behind
+   * it, and a prompt given five credit fields and told not to invent writes
+   * about the filing instead of the night ("now 23 years in the archive", "the
+   * full entry is on the site"). Four of four did exactly that.
+   */
+  facts?: string[];
+  /**
+   * Exact ISO dates the copy may state — the show, and any album release the
+   * note draws on. A full date is never arithmetic, so it either matches one of
+   * these or it was remembered wrong.
+   */
+  knownDates?: string[];
 }
 
 /**
@@ -200,7 +354,11 @@ async function authorOne(
       continue;
     }
 
-    const issues = validate(parsed);
+    const issues = [
+      ...validate(parsed),
+      ...unsourcedYears(parsed, post, context),
+      ...liftedFromTheNote(parsed, post, context),
+    ];
     if (!issues.length) return normalize(parsed as Record<string, unknown>);
 
     lastError = issues.join("; ");
@@ -208,6 +366,180 @@ async function authorOne(
   }
 
   throw new Error(lastError || "social text failed validation");
+}
+
+/**
+ * Years in the copy that are in none of the material this post was given.
+ *
+ * Checked INSIDE the retry loop, unlike the rest of the voice rules, because it
+ * is the one failure the model will otherwise repeat verbatim. Measured: asked
+ * three times for copy about Universal Amphitheater, it wrote "demolished in
+ * 2013" every time — correct about the world, absent from this archive, and
+ * never corrected because the gate that caught it sat outside the loop and fed
+ * nothing back. One sentence of feedback fixes it; three silent retries did not.
+ *
+ * Years only. "39 years" from 1985 to 2024 is arithmetic the model is supposed
+ * to do and it appears in no source text; a YEAR is never arithmetic.
+ */
+
+const MONTHS = [
+  "january", "february", "march", "april", "may", "june",
+  "july", "august", "september", "october", "november", "december",
+];
+
+/** Full calendar dates stated in the copy, as ISO plus what was written. */
+function writtenDates(texts: unknown[]): Array<{ iso: string; raw: string }> {
+  const out: Array<{ iso: string; raw: string }> = [];
+  const month = MONTHS.join("|");
+  const patterns = [
+    new RegExp(`\\b(${month})\\s+(\\d{1,2})(?:st|nd|rd|th)?,?\\s+((?:19|20)\\d{2})\\b`, "gi"),
+    new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+(${month})\\s+((?:19|20)\\d{2})\\b`, "gi"),
+  ];
+  for (const text of texts) {
+    if (typeof text !== "string") continue;
+    for (const [i, re] of patterns.entries()) {
+      for (const m of text.matchAll(re)) {
+        const name = (i === 0 ? m[1] : m[2]).toLowerCase();
+        const day = Number(i === 0 ? m[2] : m[1]);
+        const mm = String(MONTHS.indexOf(name) + 1).padStart(2, "0");
+        out.push({ iso: `${m[3]}-${mm}-${String(day).padStart(2, "0")}`, raw: m[0] });
+      }
+    }
+  }
+  return out;
+}
+
+function unsourcedYears(parsed: unknown, post: SocialSubject, context: SocialContext): string[] {
+  const obj = parsed as Record<string, unknown> | null;
+  if (!obj || typeof obj !== "object") return [];
+
+  const years = (t: unknown): number[] =>
+    typeof t === "string" ? (t.match(/\b(?:19|20)\d{2}\b/g) ?? []).map(Number) : [];
+
+  // Two sets, on purpose. `known` is what the gate ACCEPTS — wide, because an
+  // album release year is legitimate evidence the note never prints. `stated` is
+  // what the feedback ADVERTISES — narrow, because listing thirty-two years drawn
+  // from four artists' discographies is noise, and worse, it reads as permission
+  // to attach any of them to any claim.
+  const stated = new Set(
+    // `facts` belongs here, not merely in `known`: for an anniversary post they
+    // ARE the note, and a year the pipeline itself supplied being rejected as a
+    // fabrication is the gate calling its own evidence a lie. It did exactly
+    // that to "I did not see them again until 2018".
+    years([post.prose ?? "", post.headline, context.date, ...(context.facts ?? [])].join(" "))
+  );
+  const known = new Set([...stated, ...(context.knownYears ?? [])]);
+
+  const written = [
+    ...years(obj.hook),
+    ...years(obj.caption),
+    ...(Array.isArray(obj.beats) ? obj.beats.flatMap(years) : []),
+  ];
+  const invented = [...new Set(written.filter((y) => !known.has(y)))];
+
+  // ── A full calendar date must match one the archive holds ──────────────────
+  //
+  // 🔴 THE YEAR CHECK IS NOT ENOUGH, because the year is usually right. Achtung
+  // Baby was released 1991-11-18 and the show was 1991-12-21; the copy wrote
+  // "Achtung Baby dropped December 18, 1991", which is the album's DAY on the
+  // show's MONTH. Every digit of that is present in the data and the sentence is
+  // still false, so a year-level gate waves it through.
+  //
+  // Full dates are rare in this copy and are never arithmetic, so requiring an
+  // exact match costs nothing and catches a whole class the year gate cannot.
+  const stamped = writtenDates([obj.hook, obj.caption, ...(Array.isArray(obj.beats) ? obj.beats : [])]);
+  const held = new Set(context.knownDates ?? []);
+  const wrongDates = stamped.filter((d) => !held.has(d.iso));
+  if (wrongDates.length && held.size) {
+    // Advertise the show's own date only. `held` legitimately runs to thousands
+    // of release dates, and a feedback message listing them is not feedback.
+    return [
+      `${wrongDates.map((d) => d.raw).join("; ")} — this archive holds no such date. ` +
+        `This show was ${context.date}. ` +
+        `A date that is nearly right is wrong, and a release date borrowed onto the show's month is the likeliest way to get one nearly right — check the day and the month separately.`,
+    ];
+  }
+  if (!invented.length) return [];
+
+  // Telling the model only what is banned is what made it repeat 2013 three
+  // times: it had one interesting fact about that room and no permitted way to
+  // say it. The years it MAY use, and the untimed form of the same claim, are
+  // both offered here — a refusal with an exit is a different instruction from
+  // a refusal without one.
+  const permitted = [...stated].sort((a, b) => a - b);
+  return [
+    `${invented.join(", ")} appears nowhere in this post's note, headline or credit. ` +
+      `You may not state a year this archive does not record, however sure of it you are — ` +
+      `that is the fabricated-memory failure, and being right about the world does not excuse it. ` +
+      (permitted.length ? `This note states ${permitted.join(", ")} and no others. ` : "") +
+      `If the fact you want is that the venue is gone, say it WITHOUT a date, or write about ` +
+      `something the note actually contains.`,
+  ];
+}
+
+/**
+ * Clauses taken straight out of the note.
+ *
+ * INSIDE the retry loop, for the reason the year gate had to move here too: a
+ * rule the model never hears about is a rule it repeats. `checkSocial` rejects
+ * this after the fact, which drops the copy and leaves the post with whatever it
+ * had — four of the first six re-authors failed that way, silently, having never
+ * been told what was wrong.
+ *
+ * Names are stripped from both sides. Repeating the artist or the venue is the
+ * caption's job; repeating a sentence is not.
+ */
+function liftedFromTheNote(parsed: unknown, post: SocialSubject, context: SocialContext): string[] {
+  const obj = parsed as Record<string, unknown> | null;
+  if (!obj || typeof obj !== "object" || !post.prose) return [];
+
+  const words = (t: string) => t.toLowerCase().replace(/[^a-z0-9' ]+/g, " ").split(/\s+/).filter(Boolean);
+  // Years and the bill are masked alongside the names, on the same reasoning:
+  // you cannot paraphrase a band or a date, so their appearing on both sides is
+  // not evidence of anything. A beat that lists a festival line-up otherwise
+  // shares a long run with the prose for reasons that have nothing to do with
+  // derivation.
+  const names = new Set([
+    ...[...context.artists, context.venue, context.city].flatMap(words),
+    ...(context.knownYears ?? []).map(String),
+  ]);
+  const strip = (t: string) => words(t).filter((w) => !names.has(w));
+  const prose = strip(post.prose);
+
+  const run = (field: string[]): { length: number; text: string } => {
+    let best = 0, end = 0;
+    let prev = new Array(prose.length + 1).fill(0);
+    for (let i = 1; i <= field.length; i++) {
+      const cur = new Array(prose.length + 1).fill(0);
+      for (let j = 1; j <= prose.length; j++) {
+        if (field[i - 1] === prose[j - 1]) {
+          cur[j] = prev[j - 1] + 1;
+          if (cur[j] > best) { best = cur[j]; end = i; }
+        }
+      }
+      prev = cur;
+    }
+    return { length: best, text: field.slice(end - best, end).join(" ") };
+  };
+
+  const out: string[] = [];
+  const fields: Array<[string, unknown]> = [
+    ["hook", obj.hook],
+    ["caption", obj.caption],
+    ...(Array.isArray(obj.beats) ? obj.beats.map((b, i) => [`beat ${i + 1}`, b] as [string, unknown]) : []),
+  ];
+  for (const [label, text] of fields) {
+    if (typeof text !== "string") continue;
+    const r = run(strip(text));
+    if (r.length >= 8) {
+      out.push(
+        `${label} lifts ${r.length} words straight out of the note — "${r.text}". ` +
+          `The note is your source, not your text: use its FACTS and write your own sentences. ` +
+          `Naming the artist or venue is fine; reusing a clause is not.`
+      );
+    }
+  }
+  return out;
 }
 
 /**
@@ -235,15 +567,96 @@ function buildPrompt(post: SocialSubject, context: SocialContext): string {
         "not claim to remember anything the facts do not contain.",
         `Framing: ${post.headline}`,
         "",
+        "\u{1F534} THE ANNIVERSARY IS WHY THIS POST EXISTS, AND THE CAPTION MUST SAY SO.",
+        "The general rule says do not repeat what the card carries. The card does say",
+        "\"N years ago\" in large type, so the HOOK may leave it alone — but the caption",
+        "ships on its own, and on Bluesky it sits ABOVE the image. A reader meets those",
+        "words first. Without \"today\", or \"on this day\", or \"N years ago today\", the",
+        "caption is a fact about an old show with no reason to be appearing now.",
+        "Not a headline restated: put the anniversary INTO a sentence that also carries",
+        "one of the facts below.",
+        "  BAD   New Order in 1985, with A Certain Ratio opening.",
+        "  GOOD  Forty-one years ago today I saw New Order for the first time, with A",
+        "        Certain Ratio opening. I did not see them again until 2022.",
+        "\u{1F534} IT DOES NOT HAVE TO OPEN THE CAPTION, and it should not always. Three",
+        "captions in a row beginning \"N years ago today\" is a template, and the whole",
+        "point of this stream is that it does not read like one. It can sit in the",
+        "middle, or land at the end: \"...and that was twenty-three years ago today.\"",
+        "",
+        "\u{1F534} MIND WHAT OPENED AND WHAT FOLLOWED. \"My first Joe Jackson show opened",
+        "with 'Steppin' Out' and closed nine years of silence\" says the show ENDED a",
+        "silence. The silence came after it. A gap that follows a night was started by",
+        "it, never closed by it — check the direction of every before/after you write.",
+        "",
+        ...(context.facts?.length
+          ? [
+              "WHAT THE ARCHIVE KNOWS ABOUT THIS NIGHT — every line below is true:",
+              ...context.facts.map((f) => `  \u2022 ${f}`),
+              "",
+              "\u{1F534} PICK ONE OR TWO. Reciting the list in order is its own kind of",
+              "robotic. The strongest is usually the one that is slightly strange — the",
+              "only time, the long silence, the opener nobody remembers, the song they",
+              "closed on. A count is context; the odd fact is the post.",
+              "",
+              "\u{1F534} NEVER WRITE ABOUT THE ARCHIVE ITSELF. Not \"now in the archive\", not",
+              "\"the entry still stands\", not \"still in the log\", not \"the full entry is on",
+              "the site\". A reader does not care that a thing was filed; they came for the",
+              "night. That filler is exactly what the facts above exist to replace.",
+              "",
+            ]
+          : []),
       ];
+  const venueIsSubject = context.subject === "venue";
+
   lines.push(
-    "CREDIT ALREADY ON THE CARD (do not repeat these in the hook):",
+    venueIsSubject
+      ? "CREDIT ALREADY ON THE CARD (do not repeat these in the hook — except the venue, see below):"
+      : "CREDIT ALREADY ON THE CARD (do not repeat these in the hook):",
     `Artists: ${context.artists.join(", ")}`
   );
   if (context.song) lines.push(`Song: ${context.song}`);
   lines.push(`Venue: ${context.venue}`);
   lines.push(`City: ${context.city}`);
   lines.push(`Date: ${context.date}`);
+
+  if (venueIsSubject) {
+    lines.push(
+      "",
+      `\u{1F534} THE VENUE IS THIS POST'S SUBJECT. It is not furniture here.`,
+      `Write "${context.venue}" into the hook AND the caption, by name. Do not substitute`,
+      `"the same venue", "one room", "that bowl" or any other way of pointing at it`,
+      `without saying it — a post about a room that will not say which room is not a post.`,
+      `An older name the room actually had on the night is welcome and often better.`
+    );
+  }
+
+  if (context.avoid?.length) {
+    lines.push(
+      "",
+      "\u{1F534} ALREADY PUBLISHED FOR POSTS OF THIS EXACT SHAPE — DO NOT LAND NEAR ANY OF THEM:",
+      ...context.avoid.map((h) => `  \u2022 ${h}`),
+      "These go out to one profile and get read as a grid, so a reader meets them",
+      "together. Repeating a verb, an opening move or a closing beat from this list",
+      "is what makes the account look automated, however true the sentence is.",
+      "",
+      "\u{1F534} AND THE SHAPE COUNTS, NOT ONLY THE WORDS. Swapping the nouns out of a",
+      "sentence above and keeping its structure is repeating it. If one of them opens",
+      "with a name and a colon, yours does not. If one of them is a list of counts,",
+      "yours is a sentence. If one of them ends on a wry aside after a dash, yours",
+      "lands some other way.",
+      "\u{1F534} A SHAPE YOU DID NOT INVENT IS STILL A COPY. \"37 years between the",
+      "first show and the second\" followed by \"Nine years between the first show and",
+      "the second\" is one sentence published twice with a different number in it.",
+      "Read the opening clause of every line above and do not write that clause.",
+      "\u{1F534} THE SETLIST IS THE EASIEST MOVE AND THAT IS THE PROBLEM. If any post",
+      "above quotes what a band opened or closed with, yours may not — three",
+      "consecutive anniversary posts landed on \"They opened with X and closed with",
+      "Y\" because it is the most concrete line on offer. Take a different fact: the",
+      "gap, the opener, the year around it, the room.",
+      "Find the thing THIS night has that none of the others do, and start there."
+    );
+  }
+
   lines.push("");
   lines.push("Write the hook, caption and beats now. JSON only.");
   return lines.join("\n");

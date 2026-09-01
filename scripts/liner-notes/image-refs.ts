@@ -333,6 +333,28 @@ export const VENUE_SUBJECT_DETECTORS = new Set([
 ]);
 
 /**
+ * Posts whose copy MUST NAME the venue — a third question, and a narrower answer
+ * than either set below.
+ *
+ * 🔴 THREE QUESTIONS NOW, AND STILL ONE SET CANNOT ANSWER TWO OF THEM.
+ * `VENUE_SUBJECT_DETECTORS` asks "is `artists[0]` arbitrary here?".
+ * `PLACE_FORWARD_DETECTORS` asks "is the PLACE the better sourced image?".
+ * This asks "is there ONE room this post is about?" — and the honest answer is
+ * narrower than both, because a post can have no arbitrary artist and no single
+ * venue at the same time.
+ *
+ * `geographic-chapter` proves it: `my-west-coast-chapter` covers SIXTEEN venues,
+ * so requiring it to name `venues[0]` would force "Irvine Meadows" into a hook
+ * about a region and make good copy worse to satisfy a rule aimed at a different
+ * failure. `city-pulse` is about a year in a city, which is the same shape.
+ *
+ * What is left is the two detectors whose headline is literally the venue's name:
+ * a loyalty streak and a room that no longer exists. Those cannot be written
+ * without saying which room, and every one of them had been.
+ */
+export const VENUE_NAMED_DETECTORS = new Set(["venue-loyalty", "venue-ghost"]);
+
+/**
  * Posts where the VENUE outranks an artist press shot — but never outranks our own
  * photography.
  *

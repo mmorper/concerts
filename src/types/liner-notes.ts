@@ -176,6 +176,22 @@ export interface LinerNotesPost {
 
   /** Authored social payload text. Absent on notes published before #329. */
   social?: PostSocial;
+  /**
+   * Why this note may live on the site but must never be syndicated.
+   *
+   * The site is editable and social is not: a note deleted here leaves its
+   * copies standing on servers we do not control. So a claim that is true today
+   * and false later belongs in one place and not the other.
+   *
+   * Blancmange is the case this exists for. "Caught Once, Never Again" is
+   * accurate as written — and they open for Thompson Twins on 2026-09-16, after
+   * which it is not. The note is fine where it can be corrected. A permanent
+   * copy of it is not.
+   *
+   * Free text rather than a boolean, because the reason is the point: anyone
+   * reading the queue later needs to know whether it still applies.
+   */
+  doNotSyndicate?: string;
 
   // Cross-references
   /** Normalized artist names */

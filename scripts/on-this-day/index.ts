@@ -26,10 +26,10 @@ import { fileURLToPath } from "url";
 
 import { generateSocial } from "../liner-notes/social.ts";
 import { checkSocial, formatSocialIssues } from "../liner-notes/voice-check.ts";
-import { buildPost, type BuildSources } from "./build.ts";
+import { buildPost, narrativeFacts, type BuildSources } from "./build.ts";
 import { renderCard } from "./card.ts";
-import { candidateForDay, isPublishable, PUBLISH_THRESHOLD } from "./detect.ts";
-import type { OnThisDayData, OnThisDayPost } from "./types.ts";
+import { calendarDay, candidateForDay, isPublishable, PUBLISH_THRESHOLD } from "./detect.ts";
+import { otdSlug, type OnThisDayData, type OnThisDayPost } from "./types.ts";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesData } from "../../src/types/liner-notes.ts";
 
@@ -61,27 +61,75 @@ function loadStore(): OnThisDayData {
 }
 
 /**
- * Dates a setlist exists for, so a `?show=` link never opens an empty panel.
- * Missing cache degrades to "no setlists", which costs specificity and never
- * correctness — the same trade the liner-notes pipeline makes.
+ * The setlist cache, by date and by date::artist.
+ *
+ * 🔴 THIS READ THE WRONG SHAPE AND NOBODY NOTICED, because its only consumer
+ * degrades silently. The file is `{version, generatedAt, entries[]}`, so
+ * `Object.keys(raw)` returned exactly three strings — "version", "generatedAt",
+ * "entries" — and `datesWithSetlists` has therefore never contained a date. Every
+ * On This Day post ever published fell through to the artist deep link, and the
+ * `?show=` branch below is dead code that looks alive.
+ *
+ * 🔴 ONLY EXACT-DATE ENTRIES. #440 established that the matcher used to accept a
+ * setlist from a nearby night, and `dateGap` records how far off the survivors
+ * are. A post quoting the opening song of a show five days away is a fabricated
+ * memory with a citation, so a gap of any size is excluded here rather than
+ * rounded away.
  */
-function loadSetlistDates(): Set<string> {
-  const path = join(DATA_DIR, "setlists-cache.json");
-  if (!existsSync(path)) return new Set();
-  try {
-    const raw = JSON.parse(readFileSync(path, "utf8")) as Record<string, unknown>;
-    return new Set(Object.keys(raw).map((k) => k.split("::")[0]));
-  } catch {
-    return new Set();
-  }
+interface SetlistCache {
+  entries?: Array<{
+    date?: string;
+    artistName?: string;
+    dateGap?: number;
+    setlist?: { sets?: { set?: Array<{ song?: Array<{ name?: string }> }> } };
+  }>;
 }
 
-function sources(): BuildSources {
+function loadSetlists(): { dates: Set<string>; byKey: Map<string, { songs: string[] }> } {
+  const path = join(DATA_DIR, "setlists-cache.json");
+  const dates = new Set<string>();
+  const byKey = new Map<string, { songs: string[] }>();
+  if (!existsSync(path)) return { dates, byKey };
+
+  try {
+    const raw = JSON.parse(readFileSync(path, "utf8")) as SetlistCache;
+    for (const entry of raw.entries ?? []) {
+      if (!entry.date || entry.dateGap) continue;
+      const songs = (entry.setlist?.sets?.set ?? [])
+        .flatMap((s) => s.song ?? [])
+        .map((s) => s.name)
+        .filter((n): n is string => Boolean(n?.trim()));
+      if (!songs.length) continue;
+      dates.add(entry.date);
+      byKey.set(entry.date, { songs });
+      if (entry.artistName) {
+        byKey.set(`${entry.date}::${normalizeName(entry.artistName)}`, { songs });
+      }
+    }
+  } catch {
+    // A malformed cache costs specificity, never correctness.
+  }
+  return { dates, byKey };
+}
+
+/** The project's normalization, kept local so this module stays dependency-light. */
+function normalizeName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function sources(concerts: Concert[]): BuildSources {
+  const setlists = loadSetlists();
   return {
     artistsMetadata: readJson("artists-metadata.json"),
     venuesMetadata: readJson("venues-metadata.json"),
     linerNotes: readJson<LinerNotesData>("liner-notes.json").posts,
-    datesWithSetlists: loadSetlistDates(),
+    concerts,
+    setlists: setlists.byKey,
+    datesWithSetlists: setlists.dates,
   };
 }
 
@@ -124,8 +172,16 @@ async function main(): Promise<void> {
   const slugsAlready = new Set(store.posts.map((p) => p.slug));
 
   // The last N posts decide whether an artist is too fresh to repeat.
+  //
+  // 🔴 A POST IS NOT TOO SOON AFTER ITSELF. The day being generated is excluded
+  // from its own recency window — without it, `--force` on an existing day defers
+  // with "New Order was posted recently", meaning the post already there. The
+  // rule exists to stop the same act appearing twice in twenty posts; rewriting
+  // one in place adds nothing to that count.
+  const regeneratingSlug = otdSlug(today.getUTCFullYear(), calendarDay(today));
   const recentArtists = new Set(
     [...store.posts]
+      .filter((p) => p.slug !== regeneratingSlug)
       .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
       .slice(0, REPEAT_WINDOW)
       .map((p) => p.artistNormalized)
@@ -151,7 +207,8 @@ async function main(): Promise<void> {
     return;
   }
 
-  const built = buildPost(candidate, sources());
+  const src = sources(concerts);
+  const built = buildPost(candidate, src);
   if (built.ineligible) {
     console.log(`\n⏭  ${built.ineligible}\n`);
     return;
@@ -194,6 +251,46 @@ async function main(): Promise<void> {
   // ── Social copy ────────────────────────────────────────────────────────
   if (!process.env.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY is required.");
 
+  const otdHeadline = `${built.post.age} years ago today: ${built.post.artist} at ${built.post.venue}`;
+  let facts = narrativeFacts(candidate, src);
+
+  // 🔴 ANNIVERSARY POSTS CONVERGE HARDER THAN LINER NOTES, because every one of
+  // them draws from the same short menu of fact shapes. Two consecutive posts
+  // both opened "They opened with X and closed with Y" — the most concrete line
+  // available, so the model took it twice. Liner notes have carried an avoid-list
+  // since the venue posts did the same thing; this stream never got one.
+  //
+  // Every previous post, not same-detector siblings: there is only one detector
+  // here, and the whole stream lands on one profile.
+  const avoid = [...store.posts]
+    .sort((a, b) => a.publishedAt.localeCompare(b.publishedAt))
+    .slice(-8)
+    .filter((p) => p.slug !== built.post.slug && p.social?.hook)
+    .flatMap((p) => [p.social!.hook, p.social!.caption].filter(Boolean));
+
+  // 🔴 REMOVE THE TEMPTATION RATHER THAN FORBID IT.
+  //
+  // The setlist's two ends are the most concrete line on offer, so the model
+  // takes them every time. Told in the prompt not to reuse the move, it reused
+  // it anyway — three of four posts quoted a song two regenerations running.
+  //
+  // A fact that is not in the list cannot be reached for. When the post before
+  // this one quoted a song, the setlist facts are simply withheld and the copy
+  // is written from the gap, the bill, or the room instead. They come back as
+  // soon as the previous post did something else.
+  const previousQuotedASong = avoid.some((line) => /['"\u2018\u201C][^'"\u2019\u201D]{2,60}['"\u2019\u201D]/.test(line));
+  if (previousQuotedASong) {
+    const before = facts.length;
+    facts = facts.filter((f) => !/opened with "|closed with "|songs on the setlist/.test(f));
+    if (facts.length !== before) {
+      console.log(`\n   ↩︎  withholding the setlist — the previous post already quoted a song`);
+    }
+  }
+  if (facts.length) {
+    console.log(`\n📇 ${facts.length} facts from the archive for this night:`);
+    for (const f of facts) console.log(`   • ${f}`);
+  }
+
   const authored = await generateSocial([
     {
       // No `prose` — On This Day has none, and buildPrompt takes the
@@ -201,7 +298,7 @@ async function main(): Promise<void> {
       // summarise. The voice rules are identical either way.
       post: {
         slug: built.post.slug,
-        headline: `${built.post.age} years ago today: ${built.post.artist} at ${built.post.venue}`,
+        headline: otdHeadline,
         category: "personal",
       },
       context: {
@@ -209,6 +306,10 @@ async function main(): Promise<void> {
         venue: built.post.venue,
         city: built.post.city,
         date: built.post.showDate,
+        // What the archive knows about this night. Without it the model has five
+        // fields and an instruction not to invent, so it writes about the filing.
+        facts,
+        avoid,
       },
     },
   ]);
@@ -218,7 +319,16 @@ async function main(): Promise<void> {
     console.log("\n⚠️  Social copy failed. Not publishing.\n");
     return;
   }
-  const issues = checkSocial({ ...social, headline: `${built.post.age} years ago today: ${built.post.artist} at ${built.post.venue}` });
+  const issues = checkSocial({
+    ...social,
+    headline: otdHeadline,
+    // The same year gate the liner-notes paths use. An anniversary post has no
+    // prose, so its facts ARE its source text.
+    sourceText: [otdHeadline, built.post.showDate, ...facts].join(" "),
+    // The anniversary is this post's whole reason to exist; the caption travels
+    // without the card that carries it.
+    anniversary: { age: built.post.age },
+  });
   if (issues.length) console.log(formatSocialIssues(built.post.slug, issues));
   if (issues.some((i) => i.severity === "error")) {
     console.log("\n⚠️  Social copy failed voice checks. Not publishing.\n");

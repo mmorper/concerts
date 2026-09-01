@@ -8,6 +8,9 @@
  *   npm run contact-sheet -- --slug <slug> one post
  *   npm run contact-sheet -- --no-render   reuse whatever is in .renditions/
  *
+ * A filtered run writes its own file — `contact-sheet-<slug>.html` or
+ * `contact-sheet-first-<n>.html` — so checking one post can never replace the full sheet.
+ *
  * ## Why this exists
  *
  * `--dry-run` prints payloads to a terminal, which proves the pipeline runs and
@@ -59,7 +62,23 @@ import { withUtm } from "./utm.ts";
 import type { SyndicationPayload } from "./types.ts";
 
 const OUT_DIR = join(ROOT, ".renditions");
-const OUT_PATH = join(OUT_DIR, "contact-sheet.html");
+
+/**
+ * Where this run writes — and a FILTERED run never writes where the full one does.
+ *
+ * 🔴 `--slug` used to overwrite `contact-sheet.html`, so re-rendering one post to check a
+ * fix silently replaced a 62-post sheet with a 1-post file. Nothing said so; the path in
+ * the success line was the same one, and the sheet was simply gone. The next person to
+ * open it found one post and no reason.
+ *
+ * A partial sheet is a different artefact, so it gets a different name. The full sheet is
+ * then only ever replaced by another full sheet.
+ */
+function outPath(slug?: string, limit?: number): string {
+  if (slug) return join(OUT_DIR, `contact-sheet-${slug}.html`);
+  if (Number.isFinite(limit)) return join(OUT_DIR, `contact-sheet-first-${limit}.html`);
+  return join(OUT_DIR, "contact-sheet.html");
+}
 
 const load = <T>(rel: string): T => JSON.parse(readFileSync(join(ROOT, rel), "utf8")) as T;
 
@@ -393,9 +412,13 @@ async function main(): Promise<void> {
     await browser?.close();
   }
 
-  writeFileSync(OUT_PATH, page(cards, new Date().toISOString()));
-  console.log(`\n📄 ${OUT_PATH}`);
-  console.log(`   open .renditions/contact-sheet.html`);
+  const target = outPath(only, Number.isFinite(limit) ? limit : undefined);
+  writeFileSync(target, page(cards, new Date().toISOString()));
+  console.log(`\n📄 ${target}`);
+  if (target !== join(OUT_DIR, "contact-sheet.html")) {
+    console.log(`   (a filtered run — the full sheet at contact-sheet.html is untouched)`);
+  }
+  console.log(`   open ${target.replace(`${ROOT}/`, "")}`);
 }
 
 /** Images live beside the HTML, so paths are relative to `.renditions/`. */

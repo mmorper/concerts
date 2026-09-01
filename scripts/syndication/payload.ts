@@ -265,12 +265,20 @@ function displayFromSlug(slug: string): string {
  * The stored alt describes the *source photograph* ("Born to Kill"), which is
  * accurate for the artist scene and useless as the alt for a social card that
  * also carries a headline. What ships describes the card.
+ *
+ * 🔴 "Card reads:" MUST QUOTE THE HOOK. The card sets `payload.hook` in display
+ * type (render-card.ts) and the headline appears on it nowhere at all — so this
+ * spent every post to date telling a screen-reader user the card said something
+ * it did not. Sighted readers got "Tract housing stands where 16 summer nights
+ * used to echo"; everyone else was read the headline instead. The headline is
+ * the fallback only because a post with no authored copy renders no card either,
+ * which makes the branch unreachable rather than merely unlikely.
  */
 export function cardAlt(post: LinerNotesPost, credit: PayloadCredit): string {
   const subject = post.image?.alt?.trim();
   const names = credit.artists.join(", ");
   const base = `${names} at ${credit.venue}, ${credit.city}, ${formatDate(credit.date)}.`;
-  const overlay = ` Card reads: ${post.headline}.`;
+  const overlay = ` Card reads: ${post.social?.hook?.trim() || post.headline}.`;
 
   // The stored alt is usually an album title, which adds real information. It
   // is sometimes just the artist's name, which would read "Nile Rodgers. Nile
@@ -305,6 +313,9 @@ export function buildPayload(
   const credit: PayloadCredit = concert
     ? buildCredit(post, concert, sources)
     : { artists: [], venue: "", city: "", date: "" };
+  // An explicit hold, checked before anything else can make it eligible. The
+  // kill switch stops a run; this stops one post, forever, for a stated reason.
+  if (post.doNotSyndicate) reasons.push(`held: ${post.doNotSyndicate}`);
   if (!concert) reasons.push("no concert resolves for the credit stack");
 
   // ── Text: authored, never derived ──────────────────────────────────────
@@ -527,9 +538,19 @@ export function buildOnThisDayPayload(post: OnThisDayPost): SyndicationPayload {
  * The date leads, because the card leads with it — a screen-reader user should
  * meet the post the same way a sighted one does.
  */
+/**
+ * Alt text for an anniversary card.
+ *
+ * Carries the HOOK for the same reason the liner-notes alt does: the card sets
+ * it in display type, so a description omitting it hands a screen-reader user
+ * the credit while a sighted reader gets the sentence. Milder than the bug on
+ * the other path — this said nothing false, it just said less — and the same
+ * fix.
+ */
 export function onThisDayAlt(post: OnThisDayPost): string {
-  return (
+  const base =
     `${post.age} years ago today: ${post.artist} at ${post.venue}, ${post.city}, ` +
-    `${formatDate(post.showDate)}.`
-  );
+    `${formatDate(post.showDate)}.`;
+  const hook = post.social?.hook?.trim();
+  return hook ? `${base} Card reads: ${hook}.` : base;
 }

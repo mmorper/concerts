@@ -58,6 +58,13 @@ export type MediaSource =
   | "cover-art"
   | "album-itunes"
   | "venue-places"
+  /**
+   * Hand-placed archival photographs in `/images/venues/`, for rooms Places cannot
+   * photograph because they no longer exist under that name. Distinct from `venue-places`
+   * for the reason the union exists at all: these did not come from Google, and a takedown
+   * against one source must not read as a takedown against the other.
+   */
+  | "venue-archival"
   | "artist-audiodb"
   | "artist-deezer"
   | "wikimedia"
