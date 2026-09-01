@@ -203,12 +203,17 @@ async function main(): Promise<void> {
         slug: built.post.slug,
         headline: `${built.post.age} years ago today: ${built.post.artist} at ${built.post.venue}`,
         category: "personal",
+        // The whole stream IS a count to today — "37 years ago today" is the
+        // premise, and it is published on the one day it is true. Evergreen
+        // copy gets the opposite rule; see `perishableCounts`.
+        temporality: "timely",
       },
       context: {
         artists: [built.post.artist],
         venue: built.post.venue,
         city: built.post.city,
         date: built.post.showDate,
+        years: [Number(built.post.showDate.slice(0, 4))],
       },
     },
   ]);
@@ -218,7 +223,15 @@ async function main(): Promise<void> {
     console.log("\n⚠️  Social copy failed. Not publishing.\n");
     return;
   }
-  const issues = checkSocial({ ...social, headline: `${built.post.age} years ago today: ${built.post.artist} at ${built.post.venue}` });
+  const issues = checkSocial({
+    ...social,
+    headline: `${built.post.age} years ago today: ${built.post.artist} at ${built.post.venue}`,
+    // No prose behind an On This Day post, so `derived-copy` has nothing to
+    // compare against and correctly never fires.
+    temporality: "timely",
+    years: [Number(built.post.showDate.slice(0, 4))],
+    entities: [built.post.artist, built.post.venue, built.post.city],
+  });
   if (issues.length) console.log(formatSocialIssues(built.post.slug, issues));
   if (issues.some((i) => i.severity === "error")) {
     console.log("\n⚠️  Social copy failed voice checks. Not publishing.\n");

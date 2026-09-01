@@ -149,8 +149,12 @@ async function main(): Promise<void> {
   for (const [index, candidate] of candidates.entries()) {
     const position = `[${String(index + 1).padStart(width)}/${candidates.length}]`;
     const authored = await generateSocial([candidate]);
-    const result = applyAuthored(data.posts, authored, checkSocial, (s, issues) =>
-      console.log(formatSocialIssues(s, issues as Parameters<typeof formatSocialIssues>[1]))
+    const result = applyAuthored(
+      data.posts,
+      authored,
+      checkSocial,
+      (s, issues) => console.log(formatSocialIssues(s, issues as Parameters<typeof formatSocialIssues>[1])),
+      new Map([[candidate.post.slug, candidate.context]])
     );
 
     if (result.attached) {

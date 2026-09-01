@@ -21,14 +21,23 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { HOOK_MAX, BEATS_MIN, BEATS_MAX, CAPTION_MAX } from "../syndication/budgets.ts";
 import { graphemeLength } from "../syndication/text.ts";
+import { checkSocial } from "./voice-check.ts";
 import type { PostSocial } from "../../src/types/liner-notes.ts";
 
 const MODEL = "claude-sonnet-4-6";
 const MAX_TOKENS = 700;
 const TEMPERATURE = 0.8;
 
-/** One retry, and only for a budget overrun — the one failure a rewrite fixes. */
-const MAX_ATTEMPTS = 2;
+/**
+ * Two retries. Budget overruns need one — truncation is a mechanical fix.
+ *
+ * The voice failures added in this change are harder: "you paraphrased the
+ * note" asks for a different idea, not a shorter sentence. Measured on the
+ * published corpus, 21 of 58 notes would fail that check on the first attempt,
+ * and a post that exhausts its attempts is dropped from syndication entirely.
+ * At POSTS_PER_RUN = 1 the third call costs a fraction of a cent a week.
+ */
+const MAX_ATTEMPTS = 3;
 
 const SYSTEM_PROMPT = `You write the social copy for a personal concert archive spanning 1984 to present. You are the archive owner. The archive is the record; social is the doorway.
 
@@ -93,6 +102,13 @@ export interface SocialSubject {
   category: string;
   /** The published prose. Absent for On This Day, which has none. */
   prose?: string;
+  /**
+   * `timely` or `evergreen`.
+   *
+   * An evergreen post promises to stay true, so it may not count years to
+   * today. A timely one IS that count and is exempt. See `perishableCounts`.
+   */
+  temporality?: string;
 }
 
 /** What the card's credit furniture will say, so the hook does not duplicate it. */
@@ -102,6 +118,36 @@ export interface SocialContext {
   city: string;
   date: string;
   song?: string;
+  /**
+   * Every other act on the bill.
+   *
+   * Not furniture — the card never prints them. They are here so the voice
+   * check knows they are NAMES: a beat listing the bill shares a long run with
+   * the prose for reasons that have nothing to do with derivation, and without
+   * these two of the corpus's flagged fields are false positives.
+   */
+  openers?: string[];
+  /** Every show year the note covers, for the perishable-count arithmetic. */
+  years?: number[];
+}
+
+/**
+ * The fields `checkSocial` needs beyond the copy itself, derived in ONE place.
+ *
+ * The retry loop and the pipeline's final gate must judge by identical inputs.
+ * They diverged once already — the pipeline passed a `headline` the retry loop
+ * never saw, so a hook could restate its headline, pass every check the loop
+ * ran, and be thrown away after the call was paid for. Deriving both from this
+ * function is what stops that recurring for `prose`, `entities` and `years`.
+ */
+export function socialCheckExtras(post: SocialSubject, context: SocialContext) {
+  return {
+    headline: post.headline,
+    prose: post.prose,
+    temporality: post.temporality,
+    years: context.years,
+    entities: [...context.artists, ...(context.openers ?? []), context.venue, context.city],
+  };
 }
 
 /**
@@ -171,10 +217,30 @@ async function authorOne(
     }
 
     const issues = validate(parsed);
-    if (!issues.length) return normalize(parsed as Record<string, unknown>);
+    if (issues.length) {
+      lastError = issues.join("; ");
+      feedback = `\n\nYour last reply had these problems: ${lastError}. Rewrite to fix them — do not simply truncate, a cut-off sentence is worse than a shorter one.`;
+      continue;
+    }
 
-    lastError = issues.join("; ");
-    feedback = `\n\nYour last reply had these problems: ${lastError}. Rewrite to fix them — do not simply truncate, a cut-off sentence is worse than a shorter one.`;
+    // The SAME guard the pipeline gates on, run where a rewrite is still
+    // possible. Before this it ran only afterwards: a lift was caught after the
+    // call was paid for, the copy was dropped, and the note published silently
+    // ineligible to syndicate. On the published corpus that path would have
+    // taken 21 of 58 notes out of the queue without ever asking for a rewrite.
+    const social = normalize(parsed as Record<string, unknown>);
+    const voice = checkSocial({ ...social, ...socialCheckExtras(post, context) }).filter(
+      (i) => i.severity === "error"
+    );
+    if (!voice.length) return social;
+
+    lastError = voice.map((i) => i.detail).join("; ");
+    feedback =
+      `\n\nYour last reply failed the voice check: ${lastError}\n\n` +
+      `Write it again from the FACTS, not from the note's sentences. If a line reuses the ` +
+      `note's phrasing, say the same thing a different way or say something else the facts ` +
+      `support. Never state a number of years counted from the show to today — it is true ` +
+      `the day you write it and wrong every year after.`;
   }
 
   throw new Error(lastError || "social text failed validation");

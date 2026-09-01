@@ -92,6 +92,10 @@ describe("contextFor", () => {
       city: "Costa Mesa",
       date: "1986-07-31",
       song: undefined,
+      // Not furniture — the card prints neither. They ride along so the voice
+      // check can tell a name from a lifted phrase.
+      openers: [],
+      years: [1986],
     });
   });
 

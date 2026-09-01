@@ -23,7 +23,7 @@ import type { ImageSources } from "./image-refs.ts";
 import { iTunesClient } from "../utils/itunes-client.ts";
 import { refreshPostImages } from "./refresh-images.ts";
 import { generate } from "./generate.ts";
-import { generateSocial, type SocialContext } from "./social.ts";
+import { generateSocial, socialCheckExtras, type SocialContext } from "./social.ts";
 import { checkSocial, formatSocialIssues } from "./voice-check.ts";
 import { resolveAnchorConcert } from "../syndication/payload.ts";
 import { buildSetlistIndex, type SetlistIndex } from "./setlists.ts";
@@ -270,6 +270,11 @@ export async function run(options: PipelineOptions): Promise<void> {
         city: concert?.city ?? "",
         date: concert?.date ?? "",
         song: post.audio?.role === "subject" ? post.audio.trackName : undefined,
+        // Openers are not furniture — the card never prints them. The voice
+        // check needs them as NAMES, so a beat that lists the bill is not read
+        // as phrasing lifted from the prose.
+        openers: concert?.openers ?? [],
+        years: post.years ?? [],
       };
       return { post, context };
     });
@@ -279,7 +284,11 @@ export async function run(options: PipelineOptions): Promise<void> {
     for (const post of newPosts) {
       const social = authored.get(post.slug);
       if (!social) continue;
-      const issues = checkSocial({ ...social, headline: post.headline });
+      const request = requests.find((r) => r.post.slug === post.slug);
+      const issues = checkSocial({
+        ...social,
+        ...(request ? socialCheckExtras(request.post, request.context) : { headline: post.headline }),
+      });
       if (issues.length) console.log(formatSocialIssues(post.slug, issues));
       // Errors drop the social text, never the post. The note publishes; the
       // syndication payload is simply not eligible, which the run loop reports.

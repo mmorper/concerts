@@ -247,7 +247,45 @@ single most visible tell that an account is automated.
 Phase 0 measured the cost: 28 of the first 57 published headlines follow one of
 five detector templates, and "Caught Once, Never Again" alone accounts for
 nine. A profile grid of derived copy reads as robotic no matter how it is art
-directed. `checkSocial()` fails a hook that merely restates its headline.
+directed.
+
+`checkSocial()` enforces this with three rules.
+
+| Rule | Fails when |
+|---|---|
+| `derived-copy` (headline) | The hook is the headline with different punctuation. |
+| `derived-copy` (prose) | Any field shares **8+ words of phrasing** with the note's prose. |
+| `perishable-claim` (count) | An evergreen post states a year count that matches no real gap between its own shows. |
+
+**The prose rule exists because the headline rule was not enough.** It compared
+the hook to the headline and nothing else — the prose was never passed in — so
+copy chopped out of the paragraph was structurally invisible to the one check
+built to prevent it. Measured across the 58 published notes, 21 fail the rules
+above: 24 lifted fields spread over **nine different detectors**, so this was
+never a quirk of one template.
+
+Names are masked before comparing — artists, openers, venues, cities, years.
+You cannot paraphrase a band, and a beat that lists the bill shares a long run
+with the prose for reasons that have nothing to do with derivation. Eight words
+is measured, not chosen: at 8 every flagged field is a genuine lift, and at 7
+the rule starts catching facts like "welsh alternative rock band formed in
+1981".
+
+**The year rule is arithmetic, not a phrase list.** Every "N years" in the
+`rare-sighting` notes was frozen at 2024 — Ziggy Marley (1988) claimed 36,
+Run-D.M.C. (1987) 37, Blancmange and The Alarm (1986) 38. All four land on 2024.
+A count is permanent when it measures between two shows the note actually holds
+("35 years between shows" across 1988–2023) and perishable when the only way to
+reach it is to count to today. `timely` posts are exempt: a calendar anniversary
+*is* that count and publishes on the one day it is true, so On This Day would
+otherwise fail on every post. Ages are exempt too — "I was 15 years old" is a
+fact about 1986.
+
+**The rules run inside the retry loop, not only after it.** A failure used to
+drop the copy and publish the note anyway, leaving it silently ineligible to
+syndicate. Now the model is told what it lifted and gets another attempt
+(`MAX_ATTEMPTS = 3`). Gating without retrying would have taken a third of the
+queue out of circulation and reported nothing.
 
 ### Never bare type
 

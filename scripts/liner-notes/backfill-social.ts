@@ -22,7 +22,10 @@
  */
 
 import { resolveAnchorConcert } from "../syndication/payload.ts";
-import type { SocialContext } from "./social.ts";
+import { socialCheckExtras, type SocialContext } from "./social.ts";
+
+/** What `socialCheckExtras` supplies — named so the injected gate stays explicit. */
+type SocialCheckExtras = ReturnType<typeof socialCheckExtras>;
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesPost, PostSocial } from "../../src/types/liner-notes.ts";
 
@@ -73,6 +76,12 @@ export function contextFor(
     city: venue?.city ?? concert.city,
     date: concert.date,
     song: post.audio?.role === "subject" ? post.audio.trackName : undefined,
+    // Same two fields the live pipeline supplies. A backfilled note is
+    // indistinguishable from a fresh one downstream, and that has to include
+    // what the voice check sees — otherwise the back catalogue is authored
+    // against a weaker guard than the notes written next week.
+    openers: concert.openers ?? [],
+    years: post.years ?? [],
   };
 }
 
@@ -132,9 +141,17 @@ export interface ApplyResult {
 export function applyAuthored(
   posts: LinerNotesPost[],
   authored: Map<string, PostSocial>,
-  check: (input: { hook: string; caption: string; beats?: string[]; headline?: string }) =>
+  check: (input: Partial<SocialCheckExtras> & { hook: string; caption: string; beats?: string[] }) =>
     Array<{ severity: "error" | "warning"; rule: string; detail: string }>,
-  onIssues?: (slug: string, issues: Array<{ severity: string; rule: string; detail: string }>) => void
+  onIssues?: (slug: string, issues: Array<{ severity: string; rule: string; detail: string }>) => void,
+  /**
+   * The credit stacks from `contextFor`, by slug.
+   *
+   * Optional only so the existing callers keep compiling. Pass it: without a
+   * context there are no display names or openers to mask, and `derived-copy`
+   * then reads a beat that lists the bill as lifted phrasing.
+   */
+  contexts?: Map<string, SocialContext>
 ): ApplyResult {
   const bySlug = new Map(posts.map((p) => [p.slug, p]));
   const result: ApplyResult = { attached: 0, failed: [] };
@@ -146,7 +163,13 @@ export function applyAuthored(
       continue;
     }
 
-    const issues = check({ ...social, headline: post.headline });
+    const context = contexts?.get(slug);
+    const issues = check({
+      ...social,
+      ...(context
+        ? socialCheckExtras(post, context)
+        : { headline: post.headline, prose: post.prose, temporality: post.temporality, years: post.years }),
+    });
     if (issues.length) onIssues?.(slug, issues);
 
     const errors = issues.filter((i) => i.severity === "error");

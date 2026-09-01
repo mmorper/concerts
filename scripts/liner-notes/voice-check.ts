@@ -294,6 +294,25 @@ export interface SocialCheckInput {
   beats?: string[];
   /** The published note's headline. A hook that restates it is not authored copy. */
   headline?: string;
+  /**
+   * The published prose the copy is written ALONGSIDE, never out of.
+   *
+   * Absent for On This Day, which has no note behind it — and correctly so: with
+   * nothing to paraphrase there is nothing for `derived-copy` to catch.
+   */
+  prose?: string;
+  /**
+   * Names the copy may reuse freely — artists, openers, venues, cities.
+   *
+   * You cannot paraphrase a band. Without these masked out, a beat listing the
+   * bill shares a long run with the prose for reasons that have nothing to do
+   * with derivation. See `sharedRun`.
+   */
+  entities?: string[];
+  /** Show years the note covers. A year count must match a real gap between two. */
+  years?: number[];
+  /** `timely` counts to today by design; `evergreen` must not. See `perishableCounts`. */
+  temporality?: string;
 }
 
 /**
@@ -308,6 +327,98 @@ function isRestatement(hook: string, headline: string): boolean {
   const flatten = (s: string) =>
     s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
   return flatten(hook) === flatten(headline);
+}
+
+/**
+ * Eight words of shared PHRASING — measured against the corpus, not chosen.
+ *
+ * At 8, every one of the 24 flagged fields across the 58 published notes is a
+ * genuine lift. At 7 the rule starts catching factual descriptors — "welsh
+ * alternative rock band formed in 1981" — which are facts the copy is entitled
+ * to restate. The boundary is that sharp precisely because names are masked
+ * out first; without masking, 7 and 8 are both full of false positives.
+ */
+const LIFTED_RUN_MAX = 8;
+
+const wordsOf = (s: string | undefined): string[] => (s ?? "").toLowerCase().match(/[a-z0-9']+/g) ?? [];
+
+/** Entity words can never open or extend a run. `null` matches nothing, including itself. */
+const maskEntities = (words: string[], vocab: Set<string>): Array<string | null> =>
+  words.map((w) => (vocab.has(w) ? null : w));
+
+/**
+ * The longest run of words a field shares with the prose, names excluded.
+ *
+ * 🔴 `isRestatement` COMPARES THE HOOK TO THE HEADLINE AND NOTHING ELSE. The
+ * prose was never passed to this module, so the one failure it exists to
+ * prevent — copy chopped out of the paragraph — was structurally invisible.
+ * Measured on the corpus: 24 of 388 fields carry a run of 8+ words, and the
+ * Ziggy Marley caption carries 13 ("sits in the archive like a polaroid found
+ * in a jacket pocket vivid") against a 90-word single-paragraph note.
+ *
+ * The derivation also CORRUPTS as it copies, which is why this is an error and
+ * not a style note. That note's prose says the night sits there "like a
+ * polaroid" — a simile. Beat 2 dropped the "like" and asserted a polaroid in an
+ * archive whose image for that post is a TheAudioDB press shot.
+ */
+function sharedRun(field: Array<string | null>, prose: Array<string | null>): { length: number; text: string } {
+  let best = 0;
+  let end = 0;
+  let prev: number[] = new Array(prose.length + 1).fill(0);
+  for (let i = 1; i <= field.length; i++) {
+    const cur: number[] = new Array(prose.length + 1).fill(0);
+    for (let j = 1; j <= prose.length; j++) {
+      if (field[i - 1] !== null && field[i - 1] === prose[j - 1]) {
+        cur[j] = prev[j - 1] + 1;
+        if (cur[j] > best) {
+          best = cur[j];
+          end = i;
+        }
+      }
+    }
+    prev = cur;
+  }
+  return { length: best, text: field.slice(end - best, end).join(" ") };
+}
+
+/** An age never changes. "I was 15 years old" is a fact about 1986, not a countdown. */
+const AGE_COUNT = /\b(?:i was|was|turned|aged)\s+\d{1,3}\s+years?\b|\b\d{1,3}\s+years?\s+old\b/i;
+
+const YEAR_COUNT = /\b(\d{1,3})\s+years?\b/g;
+
+/**
+ * Year counts that can only have been reached by counting to TODAY.
+ *
+ * 🔴 EVERY "N YEARS" IN THE rare-sighting NOTES WAS FROZEN AT 2024. Ziggy
+ * Marley (1988) claimed 36, Run-D.M.C. (1987) claimed 37, Blancmange and The
+ * Alarm (1986) both claimed 38 — all four land on 2024, and it is 2026. Each
+ * was true the day it was authored and has been wrong every day since, under
+ * the owner's name, on servers we do not control. That is exactly what the
+ * PERISHABLE table exists to stop; the table bans phrases, and a bare number
+ * needs arithmetic instead.
+ *
+ * The test is whether the number matches a real gap between two shows the note
+ * covers. "35 years between shows" across 1988-2023 measures two events and is
+ * permanent. "36 years" on a note holding one 1988 show cannot be anything but
+ * a count to now.
+ *
+ * Run-D.M.C. shows why the mislabelling matters as much as the staleness: the
+ * prose said "I let 37 years pass" (show to now, at least the right kind of
+ * number) and the caption mutated it into "37 years of concertgoing". The
+ * archive spans 1984-2026. Concert-going is 42 years. Same digits, different
+ * claim, false either way.
+ *
+ * `timely` posts are exempt. A calendar anniversary IS the count, it publishes
+ * on the day it is true, and On This Day would fail on every post otherwise.
+ */
+function perishableCounts(text: string, gaps: Set<number>): string[] {
+  const out: string[] = [];
+  for (const m of text.matchAll(YEAR_COUNT)) {
+    const around = text.slice(Math.max(0, m.index - 12), m.index + m[0].length + 6);
+    if (AGE_COUNT.test(around)) continue;
+    if (!gaps.has(Number(m[1]))) out.push(m[0]);
+  }
+  return out;
 }
 
 export function checkSocial(input: SocialCheckInput): VoiceIssue[] {
@@ -361,6 +472,44 @@ export function checkSocial(input: SocialCheckInput): VoiceIssue[] {
 
   if (input.headline && hook && isRestatement(hook, input.headline)) {
     push("error", "derived-copy", "hook restates the headline — authored, never derived");
+  }
+
+  // Names, venues, openers, cities and every year the note touches. Reusing a
+  // fact is not derivation; reusing the sentence around it is.
+  const vocab = new Set([
+    ...(input.entities ?? []).flatMap(wordsOf),
+    ...wordsOf(input.headline),
+    ...(input.years ?? []).map(String),
+  ]);
+  const prose = maskEntities(wordsOf(input.prose), vocab);
+  if (prose.length) {
+    for (const [label, text] of surfaces) {
+      if (!text) continue;
+      const run = sharedRun(maskEntities(wordsOf(text), vocab), prose);
+      if (run.length >= LIFTED_RUN_MAX) {
+        push(
+          "error",
+          "derived-copy",
+          `${label}: ${run.length} words lifted from the prose — "${run.text}"`
+        );
+      }
+    }
+  }
+
+  // An evergreen post promises to stay true. A count to today cannot.
+  if (input.temporality !== "timely") {
+    const years = input.years ?? [];
+    const gaps = new Set(years.flatMap((a) => years.map((b) => Math.abs(a - b))));
+    for (const [label, text] of surfaces) {
+      if (!text) continue;
+      for (const claim of perishableCounts(text, gaps)) {
+        push(
+          "error",
+          "perishable-claim",
+          `${label}: "${claim}" matches no gap between shows — it counts to today and ages`
+        );
+      }
+    }
   }
 
   // The caption travels without the card, so it carries the voice on its own.
