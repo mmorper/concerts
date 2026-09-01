@@ -75,8 +75,22 @@ jobs:
             exit 1
           fi
 
+      # Vite inlines VITE_* values at build time, on whichever machine runs the
+      # build. That machine is this runner — NOT Cloudflare — so a variable set in
+      # the Pages dashboard is invisible here. Anything the client bundle needs has
+      # to be passed in explicitly, or it compiles to undefined and the feature
+      # silently degrades.
+      #
+      # NOTE: only the CARTO key is wired up (#448). VITE_GA_MEASUREMENT_ID and
+      # VITE_TURNSTILE_SITE_KEY are also build-time client vars, are set in the
+      # Pages dashboard, and are NOT available here — a tag deploy therefore ships
+      # without analytics and without the Ask session gate. That predates this
+      # change and needs its own issue plus two new repo secrets; it was left alone
+      # rather than fixed silently here.
       - name: Build production bundle
         run: npm run build
+        env:
+          VITE_CARTO_API_KEY: ${{ secrets.VITE_CARTO_API_KEY }}
 
       # A tag deploys production; a manual run deploys a preview under its own
       # URL. `--branch` is what Cloudflare uses to decide which of the two it is.

@@ -83,7 +83,40 @@ Google OAuth + Maps/Places + music APIs, consumed by `scripts/` locally and by t
 `THEAUDIODB_API_KEY` · `LASTFM_API_KEY`
 
 Build-time / public (compiled into the client bundle — **not secret**, but set in CI for the
-build): `VITE_SETLISTFM_API_KEY` · `VITE_GA_MEASUREMENT_ID`.
+build): `VITE_SETLISTFM_API_KEY` · `VITE_GA_MEASUREMENT_ID` · `VITE_TURNSTILE_SITE_KEY` ·
+`VITE_CARTO_API_KEY`.
+
+### CARTO basemap key — **3 homes** (#448)
+
+`VITE_CARTO_API_KEY` is public and ships in the client bundle. It is listed here not because
+it is secret but because it has to be set in three separate places, and missing any one of
+them degrades the map silently rather than failing.
+
+| Home | Store | Used by |
+|------|-------|---------|
+| root `.env` | local | `npm run dev` and local builds |
+| GitHub Actions | **CI** repo secret | `deploy.yml` — the `v*` tag build runs on a runner |
+| Cloudflare Pages | **prod** dashboard env var (Production + Preview) | the push-to-`main` git-integration build |
+
+Two homes exist because **two deploy paths are live** (see the header of `deploy.yml`). Vite
+inlines `VITE_*` at build time on whichever machine builds, so the Pages dashboard value is
+invisible to a GitHub Actions build, and the repo secret is invisible to a Pages build. Each
+path needs its own copy.
+
+Failure mode: no watermark and no error. The map falls back to Esri's keyless dark canvas
+(`src/utils/basemap.ts`) and simply looks slightly different. Verify with a byte-size check
+rather than by eye — a watermarked tile is larger than a clean one:
+
+```bash
+# clean ≈ 4980 bytes · watermarked ≈ 6977 bytes
+curl -s -o /dev/null -w '%{size_download}\n' \
+  "https://basemaps.cartocdn.com/rastertiles/dark_all/4/2/5.png?key=$KEY"
+```
+
+CARTO does **not** enforce the domain registered when requesting the key — verified by
+serving the clean tile against a junk `Referer`. The registered domain is capacity-planning
+metadata, not access control, so the key does gate quota (5M tile requests/month) and is
+worth keeping out of the public repo even though it is readable in the deployed bundle.
 
 ### Syndication credentials — root `.env` (local) + GitHub Actions (CI)
 
