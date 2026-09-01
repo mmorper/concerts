@@ -111,11 +111,11 @@ Current coverage:
 | `VITE_GA_MEASUREMENT_ID` | ✅ | ✅ | ✅ | analytics silently disabled |
 | `VITE_TURNSTILE_SITE_KEY` | ✅ | ✅ | ✅ | Ask session gate bypassed |
 | `VITE_SETLISTFM_API_KEY` | ✅ | ✅ | — | setlist lookups fail |
-| `VITE_TICKETMASTER_API_KEY` | ✅ | ❌ | ✅ | upcoming-tour lookups return null |
+| `VITE_TICKETMASTER_API_KEY` | ✅ | ✅ | ✅ | upcoming-tour lookups return null |
 | `VITE_ASK_BASE_URL` | ✅ | n/a | n/a | empty is correct in prod (same-origin) |
 
-`VITE_TICKETMASTER_API_KEY` has no GitHub Actions secret, so a `v*` tag deploy ships without
-tour lookups. Adding it is the one remaining gap.
+All three stores now agree. When adding a new `VITE_*`, set it in all three or the feature
+will work locally, work on `main`, and quietly not work on the next tagged release.
 
 Note that nothing here has ever bitten production: `deploy.yml` was added 2026-08-12, after the
 newest tag (`v6.0.0`, 2026-08-10), and every run of it so far has been a `workflow_dispatch`
