@@ -496,6 +496,33 @@ checks for "no credentials configured" lines.
 
 ---
 
+## Authored, never derived
+
+The one sentence this whole stage exists for: the social copy is written on
+purpose, not chopped out of the note. `checkSocial()` enforces it with two rules.
+
+| Rule | Fails when |
+|---|---|
+| `derived-copy` (headline) | The hook is the headline with different punctuation. |
+| `derived-copy` (prose) | Any field shares **8+ words of phrasing** with the note's prose. |
+
+**The prose rule exists because the headline rule was not enough.** It compared
+the hook to the headline and nothing else — the prose was never passed in — so
+copy chopped out of the paragraph was structurally invisible to the one check
+built to prevent it. It shipped: the Tears For Fears hook read "Roland Orzabal's
+voice felt like it could crack open the world", eleven words verbatim from its
+own note, authored under every other rule on this branch.
+
+Names are masked before comparing — artists, venues, cities and years. You
+cannot paraphrase a band or a date, and a caption that names the artist the hook
+could not is doing its job, not copying. Eight words is measured, not chosen: at
+8 every flagged field is a genuine lift, and at 7 the rule starts catching facts
+like "welsh alternative rock band formed in 1981".
+
+Found by a parallel working session, not by this one. It is recorded here
+because the check is easy to weaken by accident and the reasoning is not
+obvious from the code.
+
 ## Decided, not yet done
 
 ### Back-catalogue drip: daily at first, then taper

@@ -62,6 +62,12 @@ The line that earns the click, set in large type on a card.
 - Withhold the interpretation, never the identification. The names are already there; your job is the reason to stop scrolling.
 - No hashtags, no emoji, no URL, no quotation marks around the whole line.
 - Not the headline restated. If your hook is the headline with different punctuation, write a different hook.
+- 🔴 AND NOT A CLAUSE LIFTED OUT OF THE NOTE. The note is your SOURCE, not your text. Reuse its facts; do not reuse its sentences.
+  note   "...when 'Songs from the Big Chair' was still fresh and Roland Orzabal's voice felt like it could crack open the world."
+  BAD    Roland Orzabal's voice felt like it could crack open the world. I was right.
+         ↳ Eleven words, verbatim. Anyone who reads both sees a feed tool.
+  GOOD   Four shows, 37 years, and the second one was in a room ten times the size.
+  Names are the exception: repeating the artist or venue is the caption's job. Everything else you write yourself.
 - A specific number, object or detail beats a summary every time.
 - 🔴 A TEN-ACT BILL DOES NOT FIT IN 200 CHARACTERS, SO DO NOT TRY. Name the headliner and ONE other act — the one that makes the bill strange. Every further name is a name you are paying for with the reason anyone should care. Listing acts is what the card's credit line is for, and it is already doing it.
 - 🔴 ON A MULTI-ACT BILL, THE HEADLINER IS NOT OPTIONAL. Naming the eighth act and not the one on the marquee reads as an error, however good the detail is. A ten-act post that says "a go-go band that never left D.C." and never says Foo Fighters has buried its own subject. Name the headliner first, THEN go find the interesting act.
@@ -348,7 +354,11 @@ async function authorOne(
       continue;
     }
 
-    const issues = [...validate(parsed), ...unsourcedYears(parsed, post, context)];
+    const issues = [
+      ...validate(parsed),
+      ...unsourcedYears(parsed, post, context),
+      ...liftedFromTheNote(parsed, post, context),
+    ];
     if (!issues.length) return normalize(parsed as Record<string, unknown>);
 
     lastError = issues.join("; ");
@@ -465,6 +475,71 @@ function unsourcedYears(parsed: unknown, post: SocialSubject, context: SocialCon
       `If the fact you want is that the venue is gone, say it WITHOUT a date, or write about ` +
       `something the note actually contains.`,
   ];
+}
+
+/**
+ * Clauses taken straight out of the note.
+ *
+ * INSIDE the retry loop, for the reason the year gate had to move here too: a
+ * rule the model never hears about is a rule it repeats. `checkSocial` rejects
+ * this after the fact, which drops the copy and leaves the post with whatever it
+ * had — four of the first six re-authors failed that way, silently, having never
+ * been told what was wrong.
+ *
+ * Names are stripped from both sides. Repeating the artist or the venue is the
+ * caption's job; repeating a sentence is not.
+ */
+function liftedFromTheNote(parsed: unknown, post: SocialSubject, context: SocialContext): string[] {
+  const obj = parsed as Record<string, unknown> | null;
+  if (!obj || typeof obj !== "object" || !post.prose) return [];
+
+  const words = (t: string) => t.toLowerCase().replace(/[^a-z0-9' ]+/g, " ").split(/\s+/).filter(Boolean);
+  // Years and the bill are masked alongside the names, on the same reasoning:
+  // you cannot paraphrase a band or a date, so their appearing on both sides is
+  // not evidence of anything. A beat that lists a festival line-up otherwise
+  // shares a long run with the prose for reasons that have nothing to do with
+  // derivation.
+  const names = new Set([
+    ...[...context.artists, context.venue, context.city].flatMap(words),
+    ...(context.knownYears ?? []).map(String),
+  ]);
+  const strip = (t: string) => words(t).filter((w) => !names.has(w));
+  const prose = strip(post.prose);
+
+  const run = (field: string[]): { length: number; text: string } => {
+    let best = 0, end = 0;
+    let prev = new Array(prose.length + 1).fill(0);
+    for (let i = 1; i <= field.length; i++) {
+      const cur = new Array(prose.length + 1).fill(0);
+      for (let j = 1; j <= prose.length; j++) {
+        if (field[i - 1] === prose[j - 1]) {
+          cur[j] = prev[j - 1] + 1;
+          if (cur[j] > best) { best = cur[j]; end = i; }
+        }
+      }
+      prev = cur;
+    }
+    return { length: best, text: field.slice(end - best, end).join(" ") };
+  };
+
+  const out: string[] = [];
+  const fields: Array<[string, unknown]> = [
+    ["hook", obj.hook],
+    ["caption", obj.caption],
+    ...(Array.isArray(obj.beats) ? obj.beats.map((b, i) => [`beat ${i + 1}`, b] as [string, unknown]) : []),
+  ];
+  for (const [label, text] of fields) {
+    if (typeof text !== "string") continue;
+    const r = run(strip(text));
+    if (r.length >= 8) {
+      out.push(
+        `${label} lifts ${r.length} words straight out of the note — "${r.text}". ` +
+          `The note is your source, not your text: use its FACTS and write your own sentences. ` +
+          `Naming the artist or venue is fine; reusing a clause is not.`
+      );
+    }
+  }
+  return out;
 }
 
 /**

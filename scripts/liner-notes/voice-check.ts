@@ -356,6 +356,25 @@ export interface SocialCheckInput {
    */
   anniversary?: { age: number };
   /**
+   * The published prose, plus the names the copy is entitled to repeat.
+   *
+   * Found by a parallel session working the same problem, and it is the one
+   * check this file most needed: `derived-copy` compared the hook to the
+   * HEADLINE and nothing compared it to the paragraph. So the sin the whole
+   * module exists to prevent — "It is not chopped out of the first paragraph" —
+   * was structurally invisible.
+   */
+  derivedFrom?: { prose: string; names: string[] };
+  /**
+   * The years this post covers, and whether it is pegged to a date.
+   *
+   * An evergreen post may not state a year-count measured to NOW: "forty years
+   * ago" about a 1985 show is 41 today and 42 next year, standing on a channel
+   * that cannot be corrected. A `timely` post is exempt — a calendar anniversary
+   * IS the count, and it publishes on the day it is true.
+   */
+  span?: { years: number[]; timely: boolean; today: number };
+  /**
    * Everything this post is allowed to have got a number from — its prose, its
    * headline, and the credit stack. Numbers in the copy that appear nowhere here
    * were not drawn from the archive.
@@ -542,6 +561,99 @@ const NUMBER_WORD_FOR: Record<number, string> = (() => {
   return out;
 })();
 
+/**
+ * The longest run of words a field shares with the prose it was written from.
+ *
+ * 🔴 THE ONE FAILURE THIS MODULE NAMES IN ITS OWN HEADER AND NEVER CHECKED.
+ * `social.ts` opens by saying the copy "is not chopped out of the first
+ * paragraph. Every RSS-to-social bridge in existence fails at exactly that."
+ * `derived-copy` then compares the hook to the headline — a different question
+ * — so a hook lifted verbatim from the paragraph passed every rule here.
+ *
+ * It shipped. "Roland Orzabal's voice felt like it could crack open the world"
+ * is the Tears For Fears hook and also, word for word, the prose. Authored
+ * under every rule on this branch, because nothing was looking.
+ *
+ * NAMES ARE STRIPPED FROM BOTH SIDES FIRST. The caption's job is to name the
+ * artist and venue the hook could not, so counting those words would punish it
+ * for working correctly — "Tears For Fears at Pacific Amphitheatre in 1985" is
+ * six words of overlap and zero words of copying. What is left is authored
+ * language, where a shared run means one of them was written from the other.
+ *
+ * Eight words, measured: 309 of 350 fields share five or fewer, and everything
+ * at eight or above reads as lifted on inspection.
+ */
+const DERIVED_RUN_MAX = 8;
+
+function longestSharedRun(field: string[], prose: string[]): { length: number; text: string } {
+  let best = 0;
+  let end = 0;
+  let prev = new Array(prose.length + 1).fill(0);
+  for (let i = 1; i <= field.length; i++) {
+    const cur = new Array(prose.length + 1).fill(0);
+    for (let j = 1; j <= prose.length; j++) {
+      if (field[i - 1] === prose[j - 1]) {
+        cur[j] = prev[j - 1] + 1;
+        if (cur[j] > best) {
+          best = cur[j];
+          end = i;
+        }
+      }
+    }
+    prev = cur;
+  }
+  return { length: best, text: field.slice(end - best, end).join(" ") };
+}
+
+/**
+ * Year-counts measured to now rather than between two shows.
+ *
+ * The other half of the perishable-claim rule, and the half the table cannot
+ * express: PERISHABLE bans phrases, and a bare number needs arithmetic instead.
+ * "35 years between shows" across 1988 and 2023 measures two events and is
+ * permanent. "Forty years ago" about a 1985 show measures the gap to today — it
+ * was already wrong by one when it was written, and it is wrong by more every
+ * year, under the owner's name, on servers we do not control.
+ *
+ * `(?<![\w-])` again: without it "thirty-nine years" also reports a nine-year
+ * count, which is how the first measurement of this produced more artefacts than
+ * findings.
+ *
+ * Ages are exempt — "twenty-three years old", "Woodface was barely two years
+ * old" — because those measure a person or a record, not the distance to now.
+ */
+function countsToNow(text: string, span: { years: number[]; timely: boolean; today: number }): string[] {
+  if (span.timely || !span.years.length) return [];
+  const gaps = new Set(span.years.flatMap((a) => span.years.map((b) => Math.abs(a - b))));
+  const AGE = /\b(?:i was|was|turned|aged|barely)\s+[\w-]+\s+years?\b|\b[\w-]+\s+years?\s+old\b/i;
+
+  const spelled = text.replace(/(?<![\w-])([a-z]+(?:-[a-z]+)?)\s+(years?)\b/gi, (m, w: string, y: string) => {
+    const n = w.toLowerCase().split("-").reduce((a, x) => a + (NUMBER_VALUE[x] ?? NaN), 0);
+    return Number.isFinite(n) && n > 0 ? `${n} ${y}` : m;
+  });
+
+  const out: string[] = [];
+  for (const m of spelled.matchAll(/(?<![\w-])(\d{1,3})\s+years?\b/g)) {
+    const around = spelled.slice(Math.max(0, (m.index ?? 0) - 16), (m.index ?? 0) + m[0].length + 10);
+    if (AGE.test(around)) continue;
+    const n = Number(m[1]);
+    if (gaps.has(n)) continue;
+    if (span.years.some((y) => Math.abs(span.today - y - n) <= 1)) out.push(m[0]);
+  }
+  return out;
+}
+
+const NUMBER_VALUE: Record<string, number> = (() => {
+  const ones = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+  const teens = ["ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+  const tens = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+  const out: Record<string, number> = {};
+  ones.forEach((w, i) => w && (out[w] = i));
+  teens.forEach((w, i) => (out[w] = i + 10));
+  tens.forEach((w, i) => w && (out[w] = i * 10));
+  return out;
+})();
+
 export function checkSocial(input: SocialCheckInput): VoiceIssue[] {
   const issues: VoiceIssue[] = [];
   const push = (severity: VoiceIssueSeverity, rule: string, detail: string) =>
@@ -616,6 +728,42 @@ export function checkSocial(input: SocialCheckInput): VoiceIssue[] {
     // reach it with the venue nowhere on screen at all.
     if (caption && !namesVenue(caption, input.venue)) {
       push("error", "venue-unnamed", `caption never names ${input.venue.name} — it ships without the card`);
+    }
+  }
+
+  // ── A count measured to today, on a channel that cannot be corrected ───────
+  if (input.span) {
+    for (const [label, text] of surfaces) {
+      if (!text) continue;
+      const stale = countsToNow(text, input.span);
+      if (stale.length) {
+        push(
+          "error",
+          "perishable-claim",
+          `${label}: "${stale.join('", "')}" counts to today, not between two shows — it ages every year on a channel we cannot edit`
+        );
+      }
+    }
+  }
+
+  // ── Copy chopped out of the paragraph ──────────────────────────────────────
+  if (input.derivedFrom?.prose) {
+    const words = (t: string) =>
+      t.toLowerCase().replace(/[^a-z0-9' ]+/g, " ").split(/\s+/).filter(Boolean);
+    // Years too — see the note on masking in social.ts's liftedFromTheNote.
+    const names = new Set(input.derivedFrom.names.flatMap(words));
+    const strip = (t: string) => words(t).filter((w) => !names.has(w));
+    const prose = strip(input.derivedFrom.prose);
+    for (const [label, text] of surfaces) {
+      if (!text) continue;
+      const run = longestSharedRun(strip(text), prose);
+      if (run.length >= DERIVED_RUN_MAX) {
+        push(
+          "error",
+          "derived-copy",
+          `${label}: ${run.length} words lifted from the note — "${run.text}". Authored, never derived.`
+        );
+      }
     }
   }
 

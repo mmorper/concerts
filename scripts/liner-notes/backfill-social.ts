@@ -261,6 +261,8 @@ export function applyAuthored(
     headline?: string;
     venue?: { name: string; city?: string };
     bill?: { headliner: string; support: string[] };
+    derivedFrom?: { prose: string; names: string[] };
+    span?: { years: number[]; timely: boolean; today: number };
     sourceText?: string;
   }) => Array<{ severity: "error" | "warning"; rule: string; detail: string }>,
   onIssues?: (slug: string, issues: Array<{ severity: string; rule: string; detail: string }>) => void
@@ -296,6 +298,16 @@ export function applyAuthored(
       ...(context && context.artists.length > 1
         ? { bill: { headliner: context.artists[0], support: context.artists.slice(1) } }
         : {}),
+      // Names stripped from both sides, so the caption is not punished for doing
+      // its job — see longestSharedRun.
+      ...(post.prose && context
+        ? { derivedFrom: { prose: post.prose, names: [...context.artists, context.venue, context.city] } }
+        : {}),
+      span: {
+        years: [...new Set(post.years ?? [])],
+        timely: post.temporality === "timely",
+        today: new Date().getUTCFullYear(),
+      },
     });
     if (issues.length) onIssues?.(slug, issues);
 

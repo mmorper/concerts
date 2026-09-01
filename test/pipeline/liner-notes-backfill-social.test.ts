@@ -62,7 +62,10 @@ function post(overrides: Partial<LinerNotesPost> = {}): LinerNotesPost {
     id: "n",
     slug: "forty-years-since-the-art-of-noise",
     category: "cultural",
-    temporality: "evergreen",
+    // A calendar anniversary IS the count, and it publishes on the day it is
+    // true — so this fixture's "Forty years to the day" is not the perishable
+    // kind. `perishable-claim` reads temporality, so it has to be honest here.
+    temporality: "timely",
     headline: "July 31: 40 Years Since The Art of Noise",
     prose: "Prose.",
     image: { url: "https://r2.theaudiodb.com/x.jpg", alt: "x", source: "artist" },

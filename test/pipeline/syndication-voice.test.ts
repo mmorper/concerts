@@ -344,3 +344,94 @@ describe("checkSocial — anniversary posts", () => {
     expect(errors(checkSocial(clean))).not.toContain("anniversary-unmarked");
   });
 });
+
+// ── Copy chopped out of the paragraph ────────────────────────────────────────
+//
+// The one failure social.ts names in its own header — "It is not chopped out of
+// the first paragraph. Every RSS-to-social bridge in existence fails at exactly
+// that" — and the one nothing checked. `derived-copy` compared the hook to the
+// HEADLINE; the prose was never passed in. So it shipped: the Tears For Fears
+// hook was "Roland Orzabal's voice felt like it could crack open the world",
+// eleven words verbatim from its own note.
+//
+// Found by a parallel working session, ported here with its threshold intact.
+describe("checkSocial — authored, never derived", () => {
+  const prose =
+    "I remember discovering Tears For Fears at Pacific Amphitheatre in 1985, when " +
+    "Songs from the Big Chair was still fresh and Roland Orzabal's voice felt like " +
+    "it could crack open the world.";
+  const names = ["Tears For Fears", "Pacific Amphitheatre", "Costa Mesa"];
+
+  it("rejects a hook lifted out of the note", () => {
+    const issues = checkSocial({
+      hook: "Roland Orzabal's voice felt like it could crack open the world. I was right.",
+      caption: "Four shows across 37 years, and the second was ten times the size.",
+      derivedFrom: { prose, names },
+    });
+    expect(errors(issues)).toContain("derived-copy");
+  });
+
+  it("accepts copy that reuses the facts and none of the sentences", () => {
+    const issues = checkSocial({
+      hook: "Four shows, 37 years, and the second one was in a room ten times the size.",
+      caption: "I first heard them in 1985. The most recent was 2022, and it landed the same.",
+      derivedFrom: { prose, names },
+    });
+    expect(errors(issues)).not.toContain("derived-copy");
+  });
+
+  // Naming the artist and venue is the caption's JOB. Counting those words would
+  // punish it for working — "Tears For Fears at Pacific Amphitheatre in 1985" is
+  // six words of overlap and zero words of copying.
+  it("does not count the names against the caption", () => {
+    const issues = checkSocial({
+      hook: "Four shows, 37 years.",
+      caption: "Tears For Fears at Pacific Amphitheatre in 1985, and again at the Kia Forum in 2022.",
+      derivedFrom: { prose, names },
+    });
+    expect(errors(issues)).not.toContain("derived-copy");
+  });
+});
+
+// ── A count measured to today ────────────────────────────────────────────────
+describe("checkSocial — perishable counts", () => {
+  it("rejects a year-count measured to now on an evergreen post", () => {
+    // 1985 to 2026 is 41, so this was wrong when written and is wronger yearly.
+    const issues = checkSocial({
+      hook: "The Shout era, live, forty years ago — before the world caught up with them.",
+      caption: "I saw them again in 2022 and it landed the same way.",
+      span: { years: [1985, 1993, 2005, 2022], timely: false, today: 2026 },
+    });
+    expect(errors(issues)).toContain("perishable-claim");
+  });
+
+  it("accepts a gap measured between two of the post's own shows", () => {
+    // 1985 to 2022 is 37 — two events, permanent.
+    const issues = checkSocial({
+      hook: "37 years between the first show and the most recent.",
+      caption: "I saw them in 1985 and again in 2022.",
+      span: { years: [1985, 1993, 2005, 2022], timely: false, today: 2026 },
+    });
+    expect(errors(issues)).not.toContain("perishable-claim");
+  });
+
+  it("exempts a timely post, where the count IS the occasion", () => {
+    const issues = checkSocial({
+      hook: "Forty years to the day, in the same amphitheatre.",
+      caption: "I was seventeen the first time and I have kept coming back.",
+      span: { years: [1986], timely: true, today: 2026 },
+    });
+    expect(errors(issues)).not.toContain("perishable-claim");
+  });
+
+  it("does not read an age as a count to now", () => {
+    // "thirty-nine years" must not also report a nine-year count, and a record's
+    // age is not a distance to today.
+    const issues = checkSocial({
+      hook: "Thirty-nine years between ticket stubs.",
+      caption: "Woodface was barely two years old, and I was twenty-three years old.",
+      span: { years: [1985, 2024], timely: false, today: 2026 },
+    });
+    expect(errors(issues)).not.toContain("perishable-claim");
+  });
+});
