@@ -185,12 +185,12 @@ To resume: decide the visual framing first — that is the whole blocker. #5's o
 - **Status:** First pilot video built, rendered, and delivered with audio. Paused awaiting pilot review decision [#100](https://github.com/mmorper/concerts/issues/100). Templates A/B/D ([#99](https://github.com/mmorper/concerts/issues/99)) not started.
 - **Branch:** `pilot/hyperframes-poc` (pushed to origin, not merged)
 - **Tag:** `pilot/social-distortion-thread-v1` at commit `09f065d` (permanent reference even if branch is ever deleted)
-- **Handoff doc:** [docs/specs/future/hyperframes-poc/HANDOFF.md](../docs/specs/future/hyperframes-poc/HANDOFF.md) — read this first if resuming
+- **Start here if resuming:** [docs/specs/future/hyperframes-poc/README.md](../docs/specs/future/hyperframes-poc/README.md) — the folder's front door (#447). Supersedes the old `HANDOFF.md`, which was deleted as stale.
 - **Pattern library (reusable for future videos):** [video/PATTERNS.md](../video/PATTERNS.md)
 - **Postmortem:** [video/compositions/social-distortion-thread/POSTMORTEM.md](../video/compositions/social-distortion-thread/POSTMORTEM.md)
 - **Final MP4** is gitignored (regenerable in ~37s via `cd video && node scripts/render.mjs --slug social-distortion-thread`)
 
-To resume: read HANDOFF.md, make the [#100](https://github.com/mmorper/concerts/issues/100) green/yellow/red call, then either merge or iterate.
+To resume: read the folder README, make the [#100](https://github.com/mmorper/concerts/issues/100) green/yellow/red call, then either merge or iterate.
 
 ---
 

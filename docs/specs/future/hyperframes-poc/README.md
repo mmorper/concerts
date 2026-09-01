@@ -75,10 +75,8 @@ Supporting material, read as needed:
   extended into motion. First draft, never finalized.
 - **[signature-element-candidates.md](signature-element-candidates.md)** — three proposals for
   a cross-video signature element. None was ever picked.
-- **[MORNING-HANDOFF.md](MORNING-HANDOFF.md)** — end of Phase 1. What got done, what surprised us.
 - **[PHASE-2-KICKOFF.md](PHASE-2-KICKOFF.md)** — the pivot document. Read it right after the spec
   if you want to see the moment the project changed direction.
-- **[HANDOFF.md](HANDOFF.md)** — state at the pause. Partly stale; this page supersedes it.
 
 ---
 
@@ -186,8 +184,12 @@ documents the collision. Don't assume everything in that directory came from thi
   ~320 MB of local-only images and video on Mike's machine. Anyone else reads a spec pointing
   at a folder they cannot see.
 - `p3-v2-storyboard.html`, referenced by `P3-V2-TREATMENT.md`, was never committed.
-- `HANDOFF.md` says `session-recovery/` is gitignored. It isn't — the 11,000-line raw debugging
-  transcript is committed. It is noise, not reference material. Skip it.
+- `HANDOFF.md`, `MORNING-HANDOFF.md` and `session-recovery/` were **deleted** on 2026-09-01.
+  The first was stale and superseded by this page; the last was an 11,000-line raw debugging
+  transcript that was never reference material. `PHASE-2-KICKOFF.md` and
+  `morperhaus-video-pilot.md` still name them in their read-this-first lists — those are
+  historical records and were left as written, so a `cat` from either will fail. Nothing of
+  substance was lost; anything you need is on this page or recoverable from git history.
 
 ---
 
