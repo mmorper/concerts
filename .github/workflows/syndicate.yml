@@ -135,12 +135,22 @@ jobs:
       # anything it renders without committing is gone by the time this runs. Drawing here
       # removes the staleness by construction.
       #
-      # `npm install` fetches puppeteer's bundled Chromium, but not the shared libraries it
-      # links against; on ubuntu-latest that is what the `--with-deps` install provides.
-      # Without it the browser launches and dies with no useful message.
+      # 🔴 NO `--install-deps`. It is documented as "requires root privileges", and a
+      # GitHub runner is not root — so the step exited 1 on every scheduled run from the
+      # day it was added (#420, 28 Aug) and the workflow has not completed since. It
+      # never succeeded once.
+      #
+      # The comment it replaced claimed npm install fetches Chromium but not the shared
+      # libraries it links against, and that without them the browser dies silently.
+      # That is not true of ubuntu-latest: scene-ci.yml boots a real Chrome after nothing
+      # but `npm install` and has passed on every PR throughout, browser console output
+      # and all. The libraries are already on the image.
+      #
+      # The install itself is kept — idempotent, and it states out loud that this job
+      # needs a browser, which `npm install` alone does not.
       - name: Install the browser the card renderer needs
         if: inputs.mode != 'pause' && inputs.mode != 'resume'
-        run: npx puppeteer browsers install chrome --install-deps
+        run: npx puppeteer browsers install chrome
 
       # A second, independent layer. The run loop checks the same switch, but a
       # gate here means a paused repo cannot post even if the loop is changed,
