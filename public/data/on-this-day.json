@@ -1,6 +1,37 @@
 {
-  "generatedAt": "2026-09-01T00:27:18.291Z",
+  "generatedAt": "2026-09-03T11:50:21.389Z",
   "posts": [
+    {
+      "slug": "otd-2026-09-03",
+      "day": "09-03",
+      "showDate": "2016-09-03",
+      "age": 10,
+      "artist": "Howard Jones",
+      "artistNormalized": "howard-jones",
+      "venue": "The Hamilton Live",
+      "venueNormalized": "the-hamilton-live",
+      "city": "Washington",
+      "score": 38,
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/jones-howard-50fbc0fcc99a1.jpg",
+      "tier": 2,
+      "source": "artist-audiodb",
+      "url": "https://concerts.morperhaus.org/liner-notes/howard-jones-17-years-between-shows",
+      "linerNoteSlug": "howard-jones-17-years-between-shows",
+      "cardPath": "public/og/on-this-day/otd-2026-09-03.png",
+      "social": {
+        "hook": "Fifth time seeing him, and then eight years of nothing.",
+        "caption": "Howard Jones at The Hamilton Live — ten years ago today. Show number five, and I didn't catch him again until 2024.",
+        "beats": [
+          "Five Howard Jones shows across a career, and this was the one that started the longest gap.",
+          "The Hamilton Live, Washington, September 2016 — new wave in a room built for exactly that kind of night.",
+          "2016 was the year I also saw Snarky Puppy and Prophets of Rage. Howard Jones fit that list better than it sounds.",
+          "Eight years between this show and the next. I didn't plan the gap — I just didn't find my way back until 2024.",
+          "Ten years ago today. Six shows total now, and I'm still counting."
+        ],
+        "authoredAt": "2026-09-03T11:50:15.684Z"
+      },
+      "publishedAt": "2026-09-03T11:50:21.389Z"
+    },
     {
       "slug": "otd-2026-08-31",
       "day": "08-31",
