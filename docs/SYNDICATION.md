@@ -523,6 +523,29 @@ Found by a parallel working session, not by this one. It is recorded here
 because the check is easy to weaken by accident and the reasoning is not
 obvious from the code.
 
+## How much a run posts
+
+**The ceiling is `3 + backlog`, per channel.** Not `backlog`.
+
+`run.ts` caps the normal queue at 3 and liner notes and On This Day *share* that
+cap; the drip is added on top. So the scheduled `DEFAULT_BACKLOG: "1"` means up
+to four posts per channel in a run, not one. The first live drip made this
+concrete: `--backlog 2` posted five — two archived notes and three anniversaries
+that were already due.
+
+That arithmetic is why the scheduled default is 1 and not 3. Raising it raises
+the ceiling by the same amount on every run, including days that already have a
+full normal queue.
+
+**Mondays do not drip.** The weekly liner note publishes then, and the drip
+landing on top of it buries the thing it exists to support.
+
+**A dispatch always wins.** `-f backlog=N` is honoured exactly, including 0. The
+default applies only to cron, and the workflow branches on `github.event_name`
+rather than on whether the input looks empty — `backlog` carries a dispatch
+default of `'0'`, and relying on how Actions fills the inputs context under cron
+is the kind of assumption whose failure is a drip that silently never drips.
+
 ## Decided, not yet done
 
 ### Back-catalogue drip: daily at first, then taper

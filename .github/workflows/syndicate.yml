@@ -178,6 +178,11 @@ jobs:
       - name: Syndicate
         if: steps.killswitch.outputs.paused != 'true' && inputs.mode != 'pause' && inputs.mode != 'resume'
         env:
+          # How many archived notes a SCHEDULED run drips. A dispatch overrides it
+          # with the `backlog` input; this is what the cron uses when nobody asked.
+          # See the ceiling note below before changing it — the real per-run volume
+          # is `3 + this`.
+          DEFAULT_BACKLOG: "1"
           SYNDICATION_PAUSED: ${{ vars.SYNDICATION_PAUSED }}
           BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
@@ -202,8 +207,35 @@ jobs:
           if [ -n "${{ inputs.channels }}" ]; then
             ARGS="$ARGS --channels ${{ inputs.channels }}"
           fi
-          BACKLOG="${{ inputs.backlog }}"
-          if [ -n "${BACKLOG:-}" ] && [ "${BACKLOG}" != "0" ]; then
+          # ── The back-catalogue drip ────────────────────────────────────────
+          #
+          # A dispatch says what it wants. A scheduled run gets DEFAULT_BACKLOG,
+          # because `inputs.backlog` is empty on a cron trigger and a drip that
+          # needs someone to remember to type a number runs twice and stops.
+          #
+          # 🔴 THE CEILING IS `3 + backlog`, NOT `backlog`. `run.ts` caps the
+          # normal queue at 3 — liner notes and On This Day share it — and the
+          # drip is added on top. So 1 here means up to 4 posts per channel in a
+          # run, not one. That arithmetic is the reason this is 1 and not 3.
+          #
+          # Not Mondays: the weekly liner note publishes then, and the drip
+          # landing on top of it buries the thing it is meant to support.
+          # Branch on the EVENT, not on whether the input looks empty. `backlog`
+          # carries a dispatch default of '0', and relying on that rendering as
+          # an empty string under cron is an assumption about how Actions fills
+          # the inputs context — true today, invisible when it stops being true,
+          # and the failure is a drip that silently never drips.
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            BACKLOG="${{ inputs.backlog }}"
+            BACKLOG="${BACKLOG:-0}"
+          elif [ "$(date -u +%u)" = "1" ]; then
+            BACKLOG=0
+            echo "Monday — no drip today, the fresh note has the floor."
+          else
+            BACKLOG="${DEFAULT_BACKLOG}"
+          fi
+          echo "Backlog drip: ${BACKLOG} (ceiling this run: $((3 + BACKLOG)) per channel)"
+          if [ "${BACKLOG}" != "0" ]; then
             ARGS="$ARGS --backlog ${BACKLOG}"
           fi
           npm run syndicate -- $ARGS
