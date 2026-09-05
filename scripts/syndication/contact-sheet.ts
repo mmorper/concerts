@@ -50,7 +50,7 @@
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "fs";
 import { join } from "path";
-import puppeteer from "puppeteer";
+import { launchBrowser } from "../utils/launch-browser.ts";
 
 import { composeBlueskyText } from "./adapters/bluesky.ts";
 import { composeMastodonStatus, mastodonWeight } from "./adapters/mastodon.ts";
@@ -369,7 +369,7 @@ async function main(): Promise<void> {
 
   const cards: Card[] = [];
   const shouldRender = !flag("no-render");
-  const browser = shouldRender ? await puppeteer.launch({ headless: true }) : undefined;
+  const browser = shouldRender ? await launchBrowser() : undefined;
 
   try {
     console.log(`📄 Proofing ${selected.length} pending post(s)\n`);

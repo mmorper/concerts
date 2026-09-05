@@ -16,7 +16,7 @@
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import puppeteer from "puppeteer";
+import { launchBrowser } from "../utils/launch-browser.ts";
 import { buildPayload, ROOT, type PayloadSources } from "./payload.ts";
 import { DEFAULT_OPTIONS, loadArchive, selectCandidates } from "./run.ts";
 import { loadLedger, LEDGER_PATH } from "./ledger.ts";
@@ -104,7 +104,7 @@ async function main() {
     }
   }
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await launchBrowser();
   try {
     for (const post of chosen) {
       const payload = buildPayload(post, sources);
