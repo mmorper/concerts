@@ -1,5 +1,6 @@
 {
-  "paused": true,
+  "paused": false,
   "reason": "Development in progress — Phases 2-3 and the brand assets are still landing. Resume only when Mike says so.",
-  "pausedAt": "2026-08-22T16:41:49.288Z"
+  "pausedAt": "2026-08-22T16:41:49.288Z",
+  "resumedAt": "2026-09-05T19:13:59.276Z"
 }
