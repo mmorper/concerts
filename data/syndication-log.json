@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-05T19:33:26.707Z",
+  "updatedAt": "2026-09-05T19:43:31.279Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -451,26 +451,21 @@
     {
       "slug": "irvine-meadows-16-shows-over-3-decades",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3musadxtm4n2c",
+      "rkey": "3musadxtm4n2c",
+      "postedAt": "2026-09-05T19:41:56.667Z",
+      "tier": 2,
+      "source": "venue-archival"
     },
     {
       "slug": "irvine-meadows-16-shows-over-3-decades",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "irvine-meadows-16-shows-over-3-decades",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "irvine-meadows-16-shows-over-3-decades",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117220141339575547",
+      "postedAt": "2026-09-05T19:43:31.279Z",
+      "tier": 2,
+      "source": "venue-archival"
     },
     {
       "slug": "july-16-40-years-since-beach-boys",
@@ -547,26 +542,21 @@
     {
       "slug": "kia-forum-5-shows-over-3-decades",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "kia-forum-5-shows-over-3-decades",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3musadwkink2r",
+      "rkey": "3musadwkink2r",
+      "postedAt": "2026-09-05T19:41:55.380Z",
+      "tier": 2,
+      "source": "venue-places"
     },
     {
       "slug": "kia-forum-5-shows-over-3-decades",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "kia-forum-5-shows-over-3-decades",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117220141090773061",
+      "postedAt": "2026-09-05T19:43:28.483Z",
+      "tier": 2,
+      "source": "venue-places"
     },
     {
       "slug": "march-22-13-years-since-bad-religion",
@@ -783,6 +773,63 @@
       "platform": "x",
       "status": "seeded",
       "seededAt": "2026-08-22T04:22:15.524Z"
+    },
+    {
+      "slug": "otd-2026-08-29",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3musadvkcek2g",
+      "rkey": "3musadvkcek2g",
+      "postedAt": "2026-09-05T19:41:54.317Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-08-29",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117220140936831791",
+      "postedAt": "2026-09-05T19:43:24.718Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-08-30",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3musaduhfcu2c",
+      "rkey": "3musaduhfcu2c",
+      "postedAt": "2026-09-05T19:41:53.132Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-08-30",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117220140803263545",
+      "postedAt": "2026-09-05T19:43:22.696Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-08-31",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3musadqs2ct2e",
+      "rkey": "3musadqs2ct2e",
+      "postedAt": "2026-09-05T19:41:49.317Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-08-31",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117220140707706082",
+      "postedAt": "2026-09-05T19:43:21.134Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "otd-2026-09-03",
