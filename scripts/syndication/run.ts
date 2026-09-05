@@ -6,6 +6,7 @@
  */
 
 import { readFileSync, existsSync } from "fs";
+import { launchBrowser } from "../utils/launch-browser.ts";
 import { join } from "path";
 
 import { BlueskyAdapter } from "./adapters/bluesky.ts";
@@ -134,9 +135,8 @@ async function renderSelected(
 
   if (!drawOne) {
     const { renderCard, FORMATS } = await import("./render-card.ts");
-    const puppeteer = (await import("puppeteer")).default;
     // ONE BROWSER FOR THE WHOLE RUN, opened only when there is something to draw.
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await launchBrowser();
     close = () => browser.close();
     drawOne = (payload) => renderCard(payload, browser, FORMATS.wide).then(() => undefined);
   }

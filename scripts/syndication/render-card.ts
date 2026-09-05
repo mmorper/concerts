@@ -21,7 +21,8 @@ import sharp from "sharp";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import puppeteer, { type Browser } from "puppeteer";
+import type {Browser} from "puppeteer";
+import { launchBrowser } from "../utils/launch-browser.ts";
 import { deriveRect, derivationFor, retainedFraction } from "../media/derive.ts";
 import type { SyndicationPayload } from "./types.ts";
 import type { CropBox, LinerNotesPost } from "../../src/types/liner-notes.ts";
@@ -656,7 +657,7 @@ async function main() {
     process.exit(1);
   }
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await launchBrowser();
   try {
     console.log(`\n  ${post.slug}`);
     for (const id of wanted) {
