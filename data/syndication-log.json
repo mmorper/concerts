@@ -1,8 +1,27 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-22T04:22:26.045Z",
+  "updatedAt": "2026-09-05T19:33:26.707Z",
   "entries": [
     {
+      "slug": "3-concerts-in-12-days",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mus7og5d6p2b",
+      "rkey": "3mus7og5d6p2b",
+      "postedAt": "2026-09-05T19:29:53.508Z",
+      "tier": 1,
+      "source": "personal"
+    },
+    {
+      "slug": "3-concerts-in-12-days",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117220101617314130",
+      "postedAt": "2026-09-05T19:33:24.995Z",
+      "tier": 1,
+      "source": "personal"
+    },
+    {
       "slug": "april-12-40-years-since-the-alarm",
       "platform": "bluesky",
       "status": "seeded",
@@ -289,6 +308,25 @@
       "platform": "x",
       "status": "seeded",
       "seededAt": "2026-08-22T04:22:15.524Z"
+    },
+    {
+      "slug": "garbage-17-songs-from-the-album-that-shares-their-name-live",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mus7oexrtn23",
+      "rkey": "3mus7oexrtn23",
+      "postedAt": "2026-09-05T19:29:52.196Z",
+      "tier": 1,
+      "source": "personal"
+    },
+    {
+      "slug": "garbage-17-songs-from-the-album-that-shares-their-name-live",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117220101460691282",
+      "postedAt": "2026-09-05T19:33:22.836Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "garbage-days-before-late-registration-dropped",
@@ -745,6 +783,25 @@
       "platform": "x",
       "status": "seeded",
       "seededAt": "2026-08-22T04:22:15.524Z"
+    },
+    {
+      "slug": "otd-2026-09-03",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mus7ohatsm2c",
+      "rkey": "3mus7ohatsm2c",
+      "postedAt": "2026-09-05T19:29:54.739Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-09-03",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117220101724689793",
+      "postedAt": "2026-09-05T19:33:26.707Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "pacific-amphitheatre-16-shows-over-5-decades-2",
