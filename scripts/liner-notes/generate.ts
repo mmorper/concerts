@@ -28,9 +28,13 @@ export interface GenerateOptions {
   dryRun?: boolean;
 }
 
-const MODEL = "claude-sonnet-4-6";
+/* Sonnet 5 removed the sampling parameters — `temperature`, `top_p` and
+   `top_k` all return a 400. There is no replacement knob for creative
+   variation; the model handles it internally. The value this carried before
+   the migration is recorded here so the change is legible, not silent. */
+// Was: temperature 0.7, on claude-sonnet-4-6.
+const MODEL = "claude-sonnet-5";
 const MAX_TOKENS = 400;
-const TEMPERATURE = 0.7;
 
 /** Minimum and maximum acceptable prose word counts. */
 const MIN_WORDS = 40;
@@ -165,7 +169,13 @@ async function generateProse(
   const message = await client.messages.create({
     model: MODEL,
     max_tokens: MAX_TOKENS,
-    temperature: TEMPERATURE,
+    /* Thinking OFF. Sonnet 5 runs adaptive thinking by default and its tokens
+       come out of `max_tokens` — measured at 699 of 700 on this prompt, which
+       left no room for the answer and returned a lone thinking block. Sonnet
+       4.6 never thought here either, so this is the pre-migration behaviour,
+       and it is what keeps the tier's 33% price cut instead of spending it on
+       reasoning this task does not need. */
+    thinking: { type: "disabled" },
     system: SYSTEM_PROMPT,
     messages: [{ role: "user", content: userPrompt }],
   });
@@ -197,7 +207,7 @@ async function generateProseWithWebSearch(
   let response = await client.messages.create({
     model: MODEL,
     max_tokens: 800, // More tokens needed for tool use turns
-    temperature: TEMPERATURE,
+    thinking: { type: "disabled" },
     system: SYSTEM_PROMPT,
     tools: [webSearchTool],
     messages,
@@ -223,7 +233,7 @@ async function generateProseWithWebSearch(
     response = await client.messages.create({
       model: MODEL,
       max_tokens: 800,
-      temperature: TEMPERATURE,
+      thinking: { type: "disabled" },
       system: SYSTEM_PROMPT,
       tools: [webSearchTool],
       messages,
