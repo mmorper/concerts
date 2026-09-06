@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-08-29T22:18:15.612Z",
+  "generated": "2026-09-06T14:51:31.269Z",
   "assets": [
     {
       "kind": "image",
@@ -2042,6 +2042,34 @@
       "derivedFrom": null,
       "notes": null,
       "signature": true
+    },
+    {
+      "kind": "image",
+      "url": "/images/shows/2024-12-06-social-distortion-03.jpg",
+      "date": "2024-12-06",
+      "uuid": "66B1DC82-62AB-48CA-8342-941D2B08F0F1",
+      "artist": "Social Distortion",
+      "artistNormalized": "social-distortion",
+      "subject": "artist",
+      "tier": 1,
+      "source": "personal",
+      "hero": false,
+      "crop": {
+        "h": 0.8333,
+        "w": 0.5,
+        "x": 0.2296,
+        "y": 0.1667
+      },
+      "order": 3,
+      "quality": "original",
+      "width": 2048,
+      "height": 1536,
+      "sourceWidth": 4032,
+      "sourceHeight": 3024,
+      "bytes": 293534,
+      "sourceSha256": "ef6b152106d54c2bd27b88da959f3d306efd3b7ca810f6f5c8d9221c1c6f21c6",
+      "derivedFrom": null,
+      "notes": null
     },
     {
       "kind": "image",
