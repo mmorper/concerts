@@ -1628,16 +1628,33 @@
     },
     "2024-12-06": {
       "reviewed": 16,
-      "decidedAt": "2026-08-29T23:05:45.204Z",
+      "decidedAt": "2026-09-06T14:50:42.134Z",
       "decisions": {
         "083330D8-A8D6-47E8-B43F-D8D190BEDA95": {
-          "verdict": "reject"
+          "verdict": "keep",
+          "artist": "Social Distortion",
+          "subject": "performer",
+          "crop": {
+            "x": 0.3366,
+            "y": 0,
+            "w": 0.4374,
+            "h": 1
+          }
         },
         "1DD76B03-EE57-47B6-BA76-35F074E08CB2": {
           "verdict": "reject"
         },
         "2FAB2EB6-88B5-4747-B5BC-A27C9969986C": {
-          "verdict": "reject"
+          "verdict": "keep",
+          "artist": "Social Distortion",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.3058,
+            "y": 0,
+            "w": 0.5039,
+            "h": 1
+          }
         },
         "3387A3FA-F847-4CC5-9F42-76A692369946": {
           "verdict": "reject"
@@ -1649,7 +1666,6 @@
           "verdict": "keep",
           "artist": "Social Distortion",
           "subject": "performer",
-          "hero": true,
           "crop": {
             "x": 0.2296,
             "y": 0.1667,
