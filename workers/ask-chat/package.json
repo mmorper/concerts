@@ -14,7 +14,7 @@
     "tail": "npx wrangler tail"
   },
   "dependencies": {
-    "zod": "^3.25.0"
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260903.1",
