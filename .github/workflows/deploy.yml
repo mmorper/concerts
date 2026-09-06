@@ -49,14 +49,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version-file: .node-version
+          cache: npm
 
-      # package-lock.json is gitignored repo-wide (.gitignore:3), which rules out
-      # both `npm ci` and setup-node's `cache: npm` — they key off the lock file.
-      # Same constraint and workaround as every other workflow here. (The spec for
-      # this issue says `npm ci`; that would fail on a clean runner.)
+      # package-lock.json is committed (#457), so this is the `npm ci` the spec for
+      # #13 asked for: the deployed bundle is built from exactly the tree the lock
+      # file pins, not whatever the registry resolves on release day (#456).
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # `scripts/generate-version.ts` takes the version from package.json when CI
       # is set — NOT from the tag. So a tag that disagrees with package.json would

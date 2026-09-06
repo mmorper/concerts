@@ -31,16 +31,16 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version-file: .node-version
+          cache: npm
 
-      # package-lock.json is gitignored repo-wide (.gitignore:3), so there is no
-      # lock file to restore from — which rules out both `npm ci` and
-      # setup-node's `cache: npm`, since that keys off the lock file. Same
-      # constraint and same workaround as mcp-ci.yml and ask-chat-ci.yml.
-      # Committing the lock file would buy reproducible installs and caching;
-      # that's a deliberate repo decision to revisit separately, not here.
+      # package-lock.json is committed (#457). `npm ci` installs exactly what the
+      # lock file says, from the setup-node cache when it has it. It used to be
+      # gitignored, and every install floated against the live registry — which is
+      # how a vitest dist-tag move took every Cloudflare Pages build red on
+      # 2026-09-05 with no commit in this repo (#456).
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Typecheck (app)
         run: npm run typecheck

@@ -1,11 +1,14 @@
 # Dependencies
 node_modules/
-package-lock.json
+# package-lock.json is COMMITTED (#457) — a floating install let a registry-side
+# dist-tag move take every Cloudflare Pages build red with no commit here (#456).
 yarn.lock
 pnpm-lock.yaml
 
 # Build output
 dist/
+# vitest 5 writes reporter output, blobs and attachments here by default
+.vitest/
 build/
 *.local
 

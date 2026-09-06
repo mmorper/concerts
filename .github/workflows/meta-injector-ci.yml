@@ -55,10 +55,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: workers/meta-injector/package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run tests
         run: npm test
@@ -89,10 +91,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: workers/meta-injector/package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # Uses the wrangler pinned in this package's devDependencies — the same
       # binary that runs locally — rather than a third-party action resolving its

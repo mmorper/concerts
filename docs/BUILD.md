@@ -335,15 +335,22 @@ The site is automatically deployed via Cloudflare Pages:
 - **Output Directory**: `dist/`
 - **URL**: https://concerts.morperhaus.org
 
-**Installs float.** `package-lock.json` is gitignored, so every Pages build,
-every Actions job and the tag deploy re-resolve the dependency tree from the
-live registry. A registry-side change can therefore break the install with no
-commit in this repo — it did on 2026-09-05, when vitest moved its `latest`
-dist-tag to 5.0.0 and npm's peer resolver began crashing on the resulting tree.
-The root `.npmrc` sets `legacy-peer-deps=true` as the unblock; the comment in
-that file has the full chain. If a Pages check goes red about 30 seconds after
-a push while Actions stays green, suspect the install step before anything
+**Installs are pinned.** `package-lock.json` is committed (#457), so Pages runs
+`npm clean-install` against it, every Actions job runs `npm ci`, and the tag
+deploy builds exactly the tree the lock file says. It used to be gitignored, and
+every install floated against the live registry — on 2026-09-05 vitest moved its
+`latest` dist-tag to 5.0.0, npm's peer resolver began crashing on the resulting
+tree, and every Pages build went red with no commit in this repo (#456, fixed
+first by #455, properly by #457). If a Pages check goes red about 30 seconds
+after a push while Actions stays green, suspect the install step before anything
 else: the Pages build log is in the dashboard, not in GitHub.
+
+**Node is pinned by `.node-version`** (#458). Pages reads it for the build
+image, and every workflow, the four Worker workflows included, points
+`setup-node` at it, so there is one place to bump. The Workers need it too:
+wrangler has refused to start on anything below Node 22 since 4.95. A `NODE_VERSION` variable in the Pages dashboard would override
+the file; there should not be one. vitest 5 requires Node 22.12+, which is why
+the pin moved from 20 to 22.
 
 ### Deployment Workflow
 
