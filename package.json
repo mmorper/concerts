@@ -88,7 +88,7 @@
     "syndicate:preview": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/syndication/preview.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.78.0",
+    "@anthropic-ai/sdk": "^0.123.0",
     "@types/d3": "^7.4.3",
     "csv-parse": "^6.1.0",
     "d3": "^7.9.0",
@@ -123,7 +123,7 @@
     "png-to-ico": "^3.0.1",
     "postcss": "^8.4.49",
     "puppeteer": "^24.34.0",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.4",
     "tailwindcss": "^4.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
