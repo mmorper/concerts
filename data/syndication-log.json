@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-05T19:43:31.279Z",
+  "updatedAt": "2026-09-06T13:26:27.103Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -775,6 +775,63 @@
       "seededAt": "2026-08-22T04:22:15.524Z"
     },
     {
+      "slug": "otd-2026-08-23",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3muu3mt4k7j2i",
+      "rkey": "3muu3mt4k7j2i",
+      "postedAt": "2026-09-06T13:22:44.455Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-08-23",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117224320727515253",
+      "postedAt": "2026-09-06T13:26:23.301Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-08-24",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3muu3mrx2wu2l",
+      "rkey": "3muu3mrx2wu2l",
+      "postedAt": "2026-09-06T13:22:43.241Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-08-24",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117224320640088876",
+      "postedAt": "2026-09-06T13:26:21.875Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-08-26",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3muu3mqxlgw23",
+      "rkey": "3muu3mqxlgw23",
+      "postedAt": "2026-09-06T13:22:42.175Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-08-26",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117224320508389077",
+      "postedAt": "2026-09-06T13:26:19.929Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
       "slug": "otd-2026-08-29",
       "platform": "bluesky",
       "status": "posted",
@@ -1405,26 +1462,21 @@
     {
       "slug": "universal-amphitheater-5-shows-over-3-decades",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "universal-amphitheater-5-shows-over-3-decades",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3muu3mucncc2e",
+      "rkey": "3muu3mucncc2e",
+      "postedAt": "2026-09-06T13:22:45.877Z",
+      "tier": 2,
+      "source": "venue-archival"
     },
     {
       "slug": "universal-amphitheater-5-shows-over-3-decades",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "universal-amphitheater-5-shows-over-3-decades",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117224320936084113",
+      "postedAt": "2026-09-06T13:26:27.103Z",
+      "tier": 2,
+      "source": "venue-archival"
     },
     {
       "slug": "wham-caught-once-never-again",
