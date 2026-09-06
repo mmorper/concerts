@@ -1,6 +1,285 @@
 {
   "version": 1,
   "shows": {
+    "2005-03-23": {
+      "reviewed": 2,
+      "decidedAt": "2026-09-06T17:24:56.185Z",
+      "decisions": {
+        "1C5AC35E-78FD-4A13-8C9D-44B941F9C449": {
+          "verdict": "reject"
+        },
+        "4C6AEA7C-D27C-4DC0-BFE9-8C1C12BE8C51": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2009-11-10": {
+      "reviewed": 15,
+      "decidedAt": "2026-09-06T17:28:15.539Z",
+      "decisions": {
+        "04DD8C24-8EDE-4AE8-9253-F77FC6309DF9": {
+          "verdict": "reject"
+        },
+        "11FC1E23-3C90-48A5-A8A8-E928F900EB8F": {
+          "verdict": "reject"
+        },
+        "271A2067-7F5D-4F32-AA34-DCBED446815F": {
+          "verdict": "reject"
+        },
+        "3716AEC5-BCB4-4CD6-8D73-12A0BD6C105D": {
+          "verdict": "reject"
+        },
+        "45FE7428-9668-4259-99E4-0CDED0E0CF4A": {
+          "verdict": "reject"
+        },
+        "47BFD038-0066-4ADF-8DA6-3E0D0F7855DE": {
+          "verdict": "reject"
+        },
+        "53D88345-1B53-4563-A569-07AF12CAD64D": {
+          "verdict": "reject"
+        },
+        "7173E450-1C9F-4944-AE8A-872E1FD42E21": {
+          "verdict": "reject"
+        },
+        "7F0CDA5C-533B-4B8C-8D9D-8390A42B4832": {
+          "verdict": "reject"
+        },
+        "846813F4-1D34-477D-B8F3-DB09A34A3A15": {
+          "verdict": "reject"
+        },
+        "898C161E-2F3E-4558-AA55-F780D49A3266": {
+          "verdict": "reject"
+        },
+        "95050970-3514-42F5-A476-CFC64A2F34FA": {
+          "verdict": "reject"
+        },
+        "B20809A8-A2E1-4731-B191-24010ECC1643": {
+          "verdict": "reject"
+        },
+        "B79463F3-DA98-4E6F-BDEC-5E2D13B444B1": {
+          "verdict": "reject"
+        },
+        "C96218B8-5C9E-4B39-BFC3-9DE3C91A3887": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2011-05-06": {
+      "reviewed": 23,
+      "decidedAt": "2026-09-06T15:17:59.794Z",
+      "decisions": {
+        "0246688C-7FFD-4B91-85E7-B609D4866F94": {
+          "verdict": "reject"
+        },
+        "0303AE2B-368F-439A-AC7A-BD7D6A4EB0BC": {
+          "verdict": "reject"
+        },
+        "0658F838-52A8-454B-920B-BA357DA7B9C0": {
+          "verdict": "reject"
+        },
+        "0A1D6C75-78E8-458A-B1A5-47CE274FCDFD": {
+          "verdict": "reject"
+        },
+        "0F54FCED-E395-4C18-B614-F34C84B906CE": {
+          "verdict": "reject"
+        },
+        "151D68EA-CFA5-44B1-8204-68B7287CDE67": {
+          "verdict": "reject"
+        },
+        "1C1FF4B2-B97D-49BC-A4EC-FD7BA057740A": {
+          "verdict": "reject"
+        },
+        "1D1AB694-4162-4BC8-9220-5A3F4F84506E": {
+          "verdict": "reject"
+        },
+        "21488EF1-EB6B-4E82-9B20-FF594017379A": {
+          "verdict": "reject"
+        },
+        "2166E9C8-BB99-41AA-A803-3C4BE4129058": {
+          "verdict": "keep",
+          "artist": "The Dollyrots",
+          "subject": "performer",
+          "crop": {
+            "x": 0.2383,
+            "y": 0,
+            "w": 0.5997,
+            "h": 1
+          }
+        },
+        "3B07C1A4-6685-4B49-818B-C70D80E2E3AA": {
+          "verdict": "reject"
+        },
+        "41DA4DFF-C036-4171-B4E8-CA41C9950091": {
+          "verdict": "keep",
+          "artist": "The Dollyrots",
+          "subject": "performer",
+          "crop": {
+            "x": 0.1155,
+            "y": 0,
+            "w": 0.5997,
+            "h": 1
+          },
+          "hero": true
+        },
+        "44B99798-373C-4BE3-95D4-DB398617A087": {
+          "verdict": "reject"
+        },
+        "4F8EFF13-15DE-499A-BC5A-390540315284": {
+          "verdict": "reject"
+        },
+        "55C5E1AC-AEA9-4996-A0CF-6D4498B67D22": {
+          "verdict": "keep",
+          "artist": "The Dollyrots",
+          "subject": "performer",
+          "crop": {
+            "x": 0.208,
+            "y": 0,
+            "w": 0.5997,
+            "h": 1
+          }
+        },
+        "589EBA7F-CB85-4A05-9B9F-8074B03340C0": {
+          "verdict": "keep",
+          "artist": "The Dollyrots",
+          "subject": "performer",
+          "crop": {
+            "x": 0.1026,
+            "y": 0,
+            "w": 0.5997,
+            "h": 1
+          }
+        },
+        "70D852CF-DEC9-4F6A-853F-CB8E3FD20F8E": {
+          "verdict": "reject"
+        },
+        "86FB24B0-14DC-4944-9F2E-14DA8DC3F73B": {
+          "verdict": "reject"
+        },
+        "91AEA1BD-B9DC-4FF0-B998-8117A716DA6B": {
+          "verdict": "reject"
+        },
+        "9FC6923A-8D25-4AF2-B705-FE06CAC0CD92": {
+          "verdict": "reject"
+        },
+        "ADC9798B-AA0F-4DE0-81EE-1D0C8DBB1102": {
+          "verdict": "reject"
+        },
+        "CA55CEDC-6FBA-4B84-BD5A-30342DE26940": {
+          "verdict": "reject"
+        },
+        "FB417B63-CC64-43A2-BCD2-2607F3FDE157": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2011-06-10": {
+      "reviewed": 26,
+      "decidedAt": "2026-09-06T15:22:26.635Z",
+      "decisions": {
+        "064A6032-0FB4-4431-910E-2122E4B4074A": {
+          "verdict": "reject"
+        },
+        "0ED07085-B1C8-40B1-B525-E7E36987C94D": {
+          "verdict": "reject"
+        },
+        "1CCB1C97-8E16-4ECC-A5E0-8CFF2A32F3D6": {
+          "verdict": "reject"
+        },
+        "2021BA21-6E5E-4A70-9FE6-70945FBE3674": {
+          "verdict": "reject"
+        },
+        "30819F49-8F5C-4E8A-8E79-06C0322D6A51": {
+          "verdict": "reject"
+        },
+        "37D1931C-6DB3-460D-A20C-1CF17FA7DE21": {
+          "verdict": "reject"
+        },
+        "3DD1E2B7-6E40-4A5B-9B5E-D6AD6E9510A5": {
+          "verdict": "reject"
+        },
+        "418CB32B-CE04-4CD1-928A-5F51312BB9D2": {
+          "verdict": "reject"
+        },
+        "42AE2DB4-0DAC-422B-A0B6-4A3BFB47973B": {
+          "verdict": "reject"
+        },
+        "4CF9C133-A038-407C-87F2-30F4D12BB17D": {
+          "verdict": "reject"
+        },
+        "53F71382-C6CB-4E76-BC46-27F27BAEF1C7": {
+          "verdict": "reject"
+        },
+        "5FC8DDA0-C3D5-4763-AB7C-DFABD607C8B7": {
+          "verdict": "reject"
+        },
+        "60BA4B00-2EC1-42CE-9BB9-A78CEE837A0E": {
+          "verdict": "reject"
+        },
+        "73C4D05B-3F67-4581-87B6-C028BA68444D": {
+          "verdict": "keep",
+          "artist": "The Dollyrots",
+          "subject": "performer",
+          "crop": {
+            "x": 0.203,
+            "y": 0,
+            "w": 0.5997,
+            "h": 1
+          },
+          "hero": true
+        },
+        "742FB9A6-3406-4FF1-BF6C-342127324649": {
+          "verdict": "reject"
+        },
+        "865CEF2E-459D-4DCF-8104-72E16A426E6F": {
+          "verdict": "reject"
+        },
+        "8FD2DD29-A942-4E68-A177-3D16DA01BFF2": {
+          "verdict": "reject"
+        },
+        "9E2DBB6E-A55E-4528-93AD-E2F08940A759": {
+          "verdict": "reject"
+        },
+        "AB3C08AE-CBAC-4781-9A76-D92A9CED51FF": {
+          "verdict": "reject"
+        },
+        "C0C0D650-27D6-493F-A692-9FF63F66D88B": {
+          "verdict": "reject"
+        },
+        "C7DFD6BE-EEAD-4FF4-856E-B2AE7E2E872E": {
+          "verdict": "reject"
+        },
+        "D2A6DBA3-2043-4CB6-8B58-07AD5E9F592B": {
+          "verdict": "reject"
+        },
+        "D496BC34-3B03-46EE-8FC2-E74D1EB61743": {
+          "verdict": "reject"
+        },
+        "DF7288A7-E302-4005-9418-B9FFA76AAD20": {
+          "verdict": "reject"
+        },
+        "F37FA6A2-CF22-4303-AF6D-F4777B05968F": {
+          "verdict": "reject"
+        },
+        "FFDFEC0C-D580-4BCE-8D4C-9FD7DAD38762": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2012-05-10": {
+      "reviewed": 3,
+      "decidedAt": "2026-09-06T16:40:54.160Z",
+      "decisions": {
+        "478A4738-8178-4F82-8392-A44A94F8922C": {
+          "verdict": "reject"
+        },
+        "5D182832-E1E9-427C-AA85-AF3B9FC0135D": {
+          "verdict": "reject"
+        },
+        "C6BD973A-313D-4A12-9444-FB16DBB43884": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2012-06-12": {
       "reviewed": 8,
       "decidedAt": "2026-08-28T17:23:02.874Z",
@@ -57,6 +336,60 @@
         }
       }
     },
+    "2012-07-05": {
+      "reviewed": 8,
+      "decidedAt": "2026-09-06T15:36:34.559Z",
+      "decisions": {
+        "0EEDD02D-9DF9-4882-8990-5B1899541E85": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer",
+          "crop": {
+            "x": 0.24,
+            "y": 0.05,
+            "w": 0.76,
+            "h": 0.95
+          }
+        },
+        "1AF577B9-BB34-4DD6-8D16-18018F0B8DC4": {
+          "verdict": "keep",
+          "artist": "Howard Jones",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 0.8,
+            "h": 1
+          },
+          "hero": true
+        },
+        "1BBBE57A-B1C0-4372-BEA8-9BF6B039AF88": {
+          "verdict": "reject"
+        },
+        "38026C41-DB13-4320-80EC-674F89A2BB61": {
+          "verdict": "reject"
+        },
+        "C7322AC0-0CAF-42A6-B684-5D4A1E62EF31": {
+          "verdict": "reject"
+        },
+        "CC90905E-DA23-4B34-8D31-A12B43BE8229": {
+          "verdict": "keep",
+          "subject": "venue",
+          "crop": {
+            "x": 0.0323,
+            "y": 0,
+            "w": 0.8,
+            "h": 1
+          }
+        },
+        "D8A3F014-228D-43F6-A856-C178FFF47E6E": {
+          "verdict": "reject"
+        },
+        "FC446B4B-298F-4AA1-93C3-178338725181": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2012-09-15": {
       "reviewed": 6,
       "decidedAt": "2026-08-29T21:08:50.596Z",
@@ -81,6 +414,39 @@
         }
       }
     },
+    "2013-03-10": {
+      "reviewed": 5,
+      "decidedAt": "2026-09-06T16:35:22.970Z",
+      "decisions": {
+        "0E9A306A-3BA7-4233-8F9F-0519192F0B30": {
+          "verdict": "reject"
+        },
+        "2AB20334-1300-4B11-8425-DACF4F4A1C1C": {
+          "verdict": "reject"
+        },
+        "D82D0BB3-2DF8-4842-91C6-E45C39CDC5CC": {
+          "verdict": "reject"
+        },
+        "D915D2ED-3D53-474F-AF3F-40A9408471A6": {
+          "verdict": "reject"
+        },
+        "DCF4C364-FED4-4B17-A4CC-0704F7981196": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2013-03-22": {
+      "reviewed": 2,
+      "decidedAt": "2026-09-06T17:07:03.267Z",
+      "decisions": {
+        "12F26294-D2BE-4A06-80B6-AC7673EEC7DE": {
+          "verdict": "reject"
+        },
+        "4AC40618-EEF4-41ED-8021-6E7CD695E775": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2013-06-02": {
       "reviewed": 3,
       "decidedAt": "2026-08-29T20:47:02.712Z",
@@ -92,6 +458,104 @@
           "verdict": "reject"
         },
         "6AD15BF3-41A2-4C0E-AAF9-ECB84192D036": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2013-10-27": {
+      "reviewed": 2,
+      "decidedAt": "2026-09-06T15:52:16.663Z",
+      "decisions": {
+        "7782B37C-5C62-4E6C-96E8-079901ABB370": {
+          "verdict": "keep",
+          "artist": "Gary Numan",
+          "subject": "performer",
+          "crop": {
+            "x": 0.1829,
+            "y": 0,
+            "w": 0.6008,
+            "h": 1
+          },
+          "hero": true
+        },
+        "8C4A9599-4855-4529-A86F-91E2556B0F16": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2014-04-04": {
+      "reviewed": 5,
+      "decidedAt": "2026-09-06T16:49:21.606Z",
+      "decisions": {
+        "02C90BE3-285A-407A-A462-473B7DE2779B": {
+          "verdict": "reject"
+        },
+        "6B3D5E3A-747A-48B9-8F16-69CD77AF1A99": {
+          "verdict": "keep",
+          "artist": "Kraftwerk",
+          "subject": "performer",
+          "crop": {
+            "x": 0.1684,
+            "y": 0,
+            "w": 0.5997,
+            "h": 1
+          },
+          "hero": true
+        },
+        "7E1D9590-34F0-4371-BEE7-069646FD1B2F": {
+          "verdict": "reject"
+        },
+        "A8A3D0ED-4F65-4E71-8894-D48FAD9ABCC5": {
+          "verdict": "reject"
+        },
+        "F3474F72-2E27-4160-A8BD-C1A49592E327": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2014-05-02": {
+      "reviewed": 4,
+      "decidedAt": "2026-09-06T17:02:05.293Z",
+      "decisions": {
+        "19F5DFE7-87DC-40E2-9ED4-9F98AD6794DA": {
+          "verdict": "reject"
+        },
+        "49D0A993-61B4-477B-B934-50127FBB8376": {
+          "verdict": "reject"
+        },
+        "62423AC5-9703-4FE4-A46E-0C57EA319176": {
+          "verdict": "keep",
+          "artist": "Berlin",
+          "subject": "venue",
+          "crop": {
+            "x": 0,
+            "y": 0.0313,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "B66DA389-C33A-4E53-BD09-C05B7D518C4A": {
+          "verdict": "keep",
+          "artist": "Berlin",
+          "subject": "performer",
+          "crop": {
+            "x": 0.04,
+            "y": 0,
+            "w": 0.96,
+            "h": 0.9
+          },
+          "hero": true
+        }
+      }
+    },
+    "2014-06-25": {
+      "reviewed": 2,
+      "decidedAt": "2026-09-06T17:27:30.727Z",
+      "decisions": {
+        "A956C4E4-81B0-4674-B450-82E9FFCD8797": {
+          "verdict": "reject"
+        },
+        "AE7F7051-1AA8-4B4F-ADA6-F5CACBDE77CC": {
           "verdict": "reject"
         }
       }
@@ -178,6 +642,66 @@
           }
         },
         "F9133829-6DC7-40A7-93D8-B9FE9DE67351": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2014-10-26": {
+      "reviewed": 2,
+      "decidedAt": "2026-09-06T15:48:19.884Z",
+      "decisions": {
+        "1F835DCD-A31F-43B6-AEB1-FB43179DAB94": {
+          "verdict": "reject"
+        },
+        "4BBC31F2-B470-4E5F-89BF-86705F7FDC03": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2014-12-09": {
+      "reviewed": 1,
+      "decidedAt": "2026-09-06T17:25:53.118Z",
+      "decisions": {
+        "EEBC6143-D4E6-4B57-9890-8A51F5C0C639": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2015-03-06": {
+      "reviewed": 7,
+      "decidedAt": "2026-09-06T16:46:25.979Z",
+      "decisions": {
+        "0DB34216-6BD4-455F-B8EC-C9CBA98E3224": {
+          "verdict": "reject"
+        },
+        "70B13944-23DF-41AC-B48B-F02693414ED6": {
+          "verdict": "reject"
+        },
+        "73B09E6A-2CC5-48E5-B00B-4F92421F9763": {
+          "verdict": "reject"
+        },
+        "7FAB1C09-58FB-46DB-AB92-C0C5E2117263": {
+          "verdict": "reject"
+        },
+        "838C75C6-0445-4E8D-A5E3-73EF8D3A3BA4": {
+          "verdict": "reject"
+        },
+        "B1FBB066-E65E-4054-821A-A5348F182AB8": {
+          "verdict": "reject"
+        },
+        "F2A06FB6-35E3-4BF5-9BA5-15DCC44800BA": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2015-06-10": {
+      "reviewed": 2,
+      "decidedAt": "2026-09-06T17:10:33.965Z",
+      "decisions": {
+        "B50C6E01-860C-4B25-A373-E1D08D5D2A56": {
+          "verdict": "reject"
+        },
+        "E749F410-42FA-4FC9-96FE-E59AFA7FD530": {
           "verdict": "reject"
         }
       }
@@ -305,11 +829,62 @@
         }
       }
     },
+    "2016-09-24": {
+      "reviewed": 2,
+      "decidedAt": "2026-09-06T15:54:38.237Z",
+      "decisions": {
+        "3359FFBA-99C5-4B04-A595-8AAD344C4903": {
+          "verdict": "reject"
+        },
+        "987C18F6-451F-4013-9F3D-CA38EECF79DF": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2017-01-01": {
       "reviewed": 1,
       "decidedAt": "2026-08-29T21:11:29.522Z",
       "decisions": {
         "3A05A8B8-C443-4F96-971E-FF5171C0FD6C": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2017-05-09": {
+      "reviewed": 2,
+      "decidedAt": "2026-09-06T17:24:12.368Z",
+      "decisions": {
+        "4DE78B38-5450-4C93-B1DF-1D1F82B27D7F": {
+          "verdict": "reject"
+        },
+        "AE2CF63D-E7C7-420E-AF0D-FD00C29A0406": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2017-06-06": {
+      "reviewed": 1,
+      "decidedAt": "2026-09-06T17:04:44.349Z",
+      "decisions": {
+        "130F75C2-8CAD-4DB3-9350-8B1FB65A64E1": {
+          "verdict": "keep",
+          "artist": "Royal Blood",
+          "subject": "performer",
+          "crop": {
+            "x": 0.3534,
+            "y": 0.0584,
+            "w": 0.5597,
+            "h": 0.9333
+          },
+          "hero": true
+        }
+      }
+    },
+    "2017-07-13": {
+      "reviewed": 1,
+      "decidedAt": "2026-09-06T17:17:58.914Z",
+      "decisions": {
+        "C7958714-5CCD-4448-B99F-B54109750CD5": {
           "verdict": "reject"
         }
       }
@@ -344,6 +919,89 @@
         },
         "FCD76E11-E5EC-4B59-B310-B5EDF6B7E843": {
           "verdict": "reject"
+        }
+      }
+    },
+    "2017-10-08": {
+      "reviewed": 18,
+      "decidedAt": "2026-09-06T15:01:35.510Z",
+      "decisions": {
+        "04B2EC98-E0BA-497D-90E2-15A2BB6CA273": {
+          "verdict": "reject"
+        },
+        "2C7C43A1-A801-4D98-A183-2A73D411907A": {
+          "verdict": "reject"
+        },
+        "391A2F40-8C7E-4A65-982F-27053A85A650": {
+          "verdict": "reject"
+        },
+        "396F5955-148E-4AE4-A81D-8367725BDC29": {
+          "verdict": "reject"
+        },
+        "39705BB6-7583-446B-A943-552D05237313": {
+          "verdict": "reject"
+        },
+        "3E3FABED-6AE4-41E4-BBAE-4EF58502F90E": {
+          "verdict": "reject"
+        },
+        "403206F0-E412-4429-87AB-26640E8B9C7D": {
+          "verdict": "reject"
+        },
+        "4EA56F84-0EE8-41A8-98D0-8A2B8974A623": {
+          "verdict": "keep",
+          "subject": "venue",
+          "crop": {
+            "x": 0,
+            "y": 0.0313,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "5782EE6F-8F82-4C1A-90F8-787C7DB5087B": {
+          "verdict": "keep",
+          "artist": "__unknown__",
+          "subject": "performer"
+        },
+        "58EE704F-E52A-4BA0-A1BF-F8F4444189F6": {
+          "verdict": "reject"
+        },
+        "6C3FF52C-F00A-4AD8-B773-B7C7E0C2DFA7": {
+          "verdict": "reject"
+        },
+        "98390668-F81A-47FA-A8AE-A442E14D35DF": {
+          "verdict": "reject"
+        },
+        "A68C0AA4-5505-4A8C-92F4-EC23993463D3": {
+          "verdict": "reject"
+        },
+        "C112A9F5-0DF2-4BA0-9C43-60D2DC47FE2F": {
+          "verdict": "reject"
+        },
+        "DAB0A5EC-306B-4CD8-88F2-3D68A82A64B4": {
+          "verdict": "keep",
+          "subject": "venue",
+          "crop": {
+            "x": 0,
+            "y": 0.0317,
+            "w": 1,
+            "h": 0.9365
+          }
+        },
+        "ED7DFFF5-D821-4A41-A20B-A89773DD0AFA": {
+          "verdict": "reject"
+        },
+        "F49B127F-9A38-46A2-A169-927845B87BFC": {
+          "verdict": "reject"
+        },
+        "FE5AB9BF-6E95-4883-8F1F-C47C488D0EE2": {
+          "verdict": "keep",
+          "subject": "venue",
+          "crop": {
+            "x": 0.1822,
+            "y": 0,
+            "w": 0.5997,
+            "h": 1
+          }
         }
       }
     },
@@ -448,6 +1106,266 @@
         }
       }
     },
+    "2017-12-09": {
+      "reviewed": 11,
+      "decidedAt": "2026-09-06T15:31:50.755Z",
+      "decisions": {
+        "0062E85A-E0B1-4D3A-80F9-38C5F9BFA77A": {
+          "verdict": "keep",
+          "artist": "Gary Numan",
+          "subject": "performer",
+          "trim": {
+            "in": 0,
+            "out": 30
+          }
+        },
+        "5FCC35A5-7149-44BE-BFF7-077185DE36C8": {
+          "verdict": "keep",
+          "artist": "Gary Numan",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.2767,
+            "w": 0.68,
+            "h": 0.6375
+          },
+          "hero": true
+        },
+        "8AC3116C-6A85-4363-B711-A9F1D84B80C3": {
+          "verdict": "keep",
+          "artist": "Gary Numan",
+          "subject": "performer"
+        },
+        "987F740B-C496-450A-B114-E25D73F992C7": {
+          "verdict": "reject"
+        },
+        "C7A2753D-C7A4-43ED-92E2-9C2D991E84B8": {
+          "verdict": "reject"
+        },
+        "frame:8AC3116C-6A85-4363-B711-A9F1D84B80C3:0": {
+          "verdict": "reject"
+        },
+        "frame:8AC3116C-6A85-4363-B711-A9F1D84B80C3:1": {
+          "verdict": "reject"
+        },
+        "frame:8AC3116C-6A85-4363-B711-A9F1D84B80C3:2": {
+          "verdict": "reject"
+        },
+        "frame:8AC3116C-6A85-4363-B711-A9F1D84B80C3:3": {
+          "verdict": "reject"
+        },
+        "frame:8AC3116C-6A85-4363-B711-A9F1D84B80C3:4": {
+          "verdict": "reject"
+        },
+        "frame:8AC3116C-6A85-4363-B711-A9F1D84B80C3:5": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2018-04-27": {
+      "reviewed": 66,
+      "decidedAt": "2026-09-06T16:39:20.636Z",
+      "decisions": {
+        "001B6C2D-33B1-490B-85F9-80FB7B235826": {
+          "verdict": "reject"
+        },
+        "01E995D4-EB69-49F2-A73C-A5C238DAB7F2": {
+          "verdict": "reject"
+        },
+        "07991C3F-9419-4382-94F7-C2C75D75CFF0": {
+          "verdict": "reject"
+        },
+        "08B6C1F4-26E0-4AA5-98FB-9F8535859FA9": {
+          "verdict": "reject"
+        },
+        "0F96C0C8-6954-4655-B1B6-233B54CCC681": {
+          "verdict": "reject"
+        },
+        "0FDD508E-D41A-42A0-9767-4FE54BA4C5F1": {
+          "verdict": "reject"
+        },
+        "10ACCF1F-46AC-4C06-AB34-D4A99C724FBA": {
+          "verdict": "reject"
+        },
+        "112AD9F6-A4C4-4D91-A1AC-64A3342D93CF": {
+          "verdict": "reject"
+        },
+        "13F61EB9-304D-4155-9016-3BC2FA584CAC": {
+          "verdict": "reject"
+        },
+        "15CAE96F-0061-4921-AC22-CE2B81641D7E": {
+          "verdict": "reject"
+        },
+        "1DAF6FA9-A0EF-4312-89A8-A266366123FD": {
+          "verdict": "reject"
+        },
+        "2287CAC1-E201-4D7E-BC3D-1C1B028AC116": {
+          "verdict": "reject"
+        },
+        "25EC87F3-4B25-446A-98B2-ABC73E68F475": {
+          "verdict": "reject"
+        },
+        "2C63ADF7-99BB-4539-9B52-FEE2EDA0A895": {
+          "verdict": "reject"
+        },
+        "2E7ED9A3-3275-4251-832A-C7D623095779": {
+          "verdict": "reject"
+        },
+        "2EB2F69F-C5F4-4724-9840-01E2D33F4206": {
+          "verdict": "reject"
+        },
+        "35300024-B934-4F83-A87A-A229202B0C1F": {
+          "verdict": "reject"
+        },
+        "3648DCF0-1421-44A4-A210-F9ACF95D28A4": {
+          "verdict": "reject"
+        },
+        "393EED8D-E74E-4B05-8164-8A81C3308714": {
+          "verdict": "reject"
+        },
+        "3BE42EC3-0C5A-41DE-B56A-4420C54369B4": {
+          "verdict": "reject"
+        },
+        "43F2F041-644E-4872-9D9D-26F4BF4B5CEF": {
+          "verdict": "reject"
+        },
+        "4E942557-7DEA-4D43-837D-E49CDA0AD519": {
+          "verdict": "reject"
+        },
+        "4FFE8AD3-703C-4E48-8E69-B45FBE0CFA56": {
+          "verdict": "reject"
+        },
+        "502115B4-C7FA-4E85-9A14-410C753B5D6C": {
+          "verdict": "reject"
+        },
+        "51143D27-889A-43AA-853A-5381F5E37852": {
+          "verdict": "reject"
+        },
+        "5BC81A0E-662D-46B5-AF32-672E0AE31CBE": {
+          "verdict": "reject"
+        },
+        "625058D7-DD41-41F4-A22F-9D77B808B85C": {
+          "verdict": "reject"
+        },
+        "63A9E426-5C1B-4AC8-AC68-9061617FBA94": {
+          "verdict": "reject"
+        },
+        "64FF12F7-52D5-4153-9477-34B5EE1D22E2": {
+          "verdict": "reject"
+        },
+        "68B9CDB9-A068-4A05-BEB5-01992527A631": {
+          "verdict": "reject"
+        },
+        "6D1EF1F7-83E3-42AB-9D07-85C183376F72": {
+          "verdict": "reject"
+        },
+        "6F97B018-6F01-4667-97D4-4C62AF2B5BCE": {
+          "verdict": "reject"
+        },
+        "73D918A9-154B-4EA3-BF7C-0938EC4543B5": {
+          "verdict": "reject"
+        },
+        "79D7033C-C144-4EE4-9FE9-43491BFEB04D": {
+          "verdict": "reject"
+        },
+        "7D648EF6-757A-4019-B9A1-FA2C03647128": {
+          "verdict": "reject"
+        },
+        "7FC49097-B2E1-4A58-B626-D7F90FCA8E6B": {
+          "verdict": "reject"
+        },
+        "82C18C0C-124D-4F86-8D38-FBB2F2311DFD": {
+          "verdict": "reject"
+        },
+        "84E7E7B6-3B21-44F3-A0DF-6E23B7CE4688": {
+          "verdict": "reject"
+        },
+        "890FBFF7-F7AC-43D9-AF30-7E108B421FD8": {
+          "verdict": "reject"
+        },
+        "908AFF3C-480C-4BC3-AB0C-FC64DEB59A35": {
+          "verdict": "reject"
+        },
+        "940675B1-C37F-4481-AC60-0685C37E38B8": {
+          "verdict": "reject"
+        },
+        "9A949CB3-8D48-4901-854E-BD3853045F66": {
+          "verdict": "reject"
+        },
+        "9FBB66A7-CF9B-465F-AC33-761FEFB9C14F": {
+          "verdict": "reject"
+        },
+        "A69C59DC-6F29-4C7E-9E97-652D10917DBB": {
+          "verdict": "reject"
+        },
+        "A6D8FDBE-72A8-47EB-A2EB-700A65E8B768": {
+          "verdict": "reject"
+        },
+        "A85EDCC6-BD26-4320-BE17-0032C7A6043C": {
+          "verdict": "reject"
+        },
+        "AA0A6F60-B10C-4D9B-9B48-487B95A8952C": {
+          "verdict": "reject"
+        },
+        "B972B09A-C153-43F4-BA65-6786A0104A7B": {
+          "verdict": "reject"
+        },
+        "BF3FB1F5-F337-4178-B332-3A2F18024D01": {
+          "verdict": "reject"
+        },
+        "C427928A-8291-4DF2-9846-D8FB56469E25": {
+          "verdict": "reject"
+        },
+        "C76AEB8B-0269-4E63-9922-AC7A924ABAFD": {
+          "verdict": "reject"
+        },
+        "C9CEAE82-A16E-48D5-BFBD-65D5F66270F4": {
+          "verdict": "reject"
+        },
+        "CDA26741-AC4E-4AD8-8C0B-241BD14FEAE9": {
+          "verdict": "reject"
+        },
+        "CFFBABE9-1360-4987-916C-530F0F74FD96": {
+          "verdict": "reject"
+        },
+        "D4C298BD-8C47-4EC7-9040-F456FD36EEFB": {
+          "verdict": "reject"
+        },
+        "DA191DC6-43CE-4190-AC9D-E9585B982ECD": {
+          "verdict": "reject"
+        },
+        "DBAC1E4E-22B1-4414-B6AF-F7A7676D261F": {
+          "verdict": "reject"
+        },
+        "E25695C8-76D1-4B85-894D-4E6634DEBF02": {
+          "verdict": "reject"
+        },
+        "E2D82E93-854C-4DE8-A6E9-26071C3D8EA3": {
+          "verdict": "reject"
+        },
+        "E32C9E5C-4014-476D-B8BF-A3A779D12B1E": {
+          "verdict": "reject"
+        },
+        "E6251037-ECAD-4735-8762-40C158AEAFEC": {
+          "verdict": "reject"
+        },
+        "EA4D4338-D2E4-47EE-B399-F7BB06F23DE6": {
+          "verdict": "reject"
+        },
+        "F05F9923-FDD5-4422-A896-FE6E95B30833": {
+          "verdict": "reject"
+        },
+        "FAD3731E-FC4F-419D-AA06-9B8AAEB3D6A7": {
+          "verdict": "reject"
+        },
+        "FB6EEF08-D016-40EF-942C-BDEAB46E7B2E": {
+          "verdict": "reject"
+        },
+        "FF577F5B-20C7-4D6F-A7ED-A091DCAF46DD": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2018-05-12": {
       "reviewed": 4,
       "decidedAt": "2026-08-29T20:41:58.201Z",
@@ -470,6 +1388,24 @@
             "y": 0.0679,
             "w": 0.95,
             "h": 0.8906
+          },
+          "hero": true
+        }
+      }
+    },
+    "2018-08-17": {
+      "reviewed": 1,
+      "decidedAt": "2026-09-06T16:59:03.776Z",
+      "decisions": {
+        "2C2E565C-A657-4759-8CD7-807B26A78B90": {
+          "verdict": "keep",
+          "artist": "Stray Cats",
+          "subject": "performer",
+          "crop": {
+            "x": 0.1696,
+            "y": 0,
+            "w": 0.5997,
+            "h": 1
           },
           "hero": true
         }
@@ -530,6 +1466,57 @@
             "w": 0.6,
             "h": 1
           }
+        }
+      }
+    },
+    "2018-11-03": {
+      "reviewed": 3,
+      "decidedAt": "2026-09-06T16:29:25.486Z",
+      "decisions": {
+        "74D18DBC-46E0-43A3-975B-0BC583998CD2": {
+          "verdict": "keep",
+          "artist": "Streetlight Manifesto",
+          "subject": "performer",
+          "crop": {
+            "x": 0.2453,
+            "y": 0.0667,
+            "w": 0.5597,
+            "h": 0.9333
+          },
+          "hero": true
+        },
+        "7E6E1BBA-BB28-4B45-BD90-54C2A39D6BA0": {
+          "verdict": "reject"
+        },
+        "C70CB967-AFE4-4271-9E72-98F5D80A588E": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2019-03-24": {
+      "reviewed": 2,
+      "decidedAt": "2026-09-06T16:56:51.626Z",
+      "decisions": {
+        "5D85FD93-EB08-4D5E-B880-5254C5E0DDCC": {
+          "verdict": "reject"
+        },
+        "CC15805B-291E-4137-96B0-10F21BAC2F1E": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2019-04-14": {
+      "reviewed": 3,
+      "decidedAt": "2026-09-06T16:27:48.404Z",
+      "decisions": {
+        "2AB40E05-7452-417B-B101-58137F25D476": {
+          "verdict": "reject"
+        },
+        "4C531A82-801B-43A0-A140-E4EAECD19D10": {
+          "verdict": "reject"
+        },
+        "5C2D1943-77B9-46A2-8EC2-AC7F0CC72CC9": {
+          "verdict": "reject"
         }
       }
     },
@@ -612,6 +1599,27 @@
         }
       }
     },
+    "2019-05-26": {
+      "reviewed": 1,
+      "decidedAt": "2026-09-06T17:09:29.293Z",
+      "decisions": {
+        "71CB5DBA-9D7D-4167-9B41-897FC69DC1A3": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2019-07-19": {
+      "reviewed": 2,
+      "decidedAt": "2026-09-06T16:57:54.357Z",
+      "decisions": {
+        "055EBCFD-7155-4E0C-BA74-AB04919B959B": {
+          "verdict": "reject"
+        },
+        "F8163632-69F0-41A4-BE20-5F09EC3D5B86": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2019-09-21": {
       "reviewed": 7,
       "decidedAt": "2026-08-29T21:55:32.181Z",
@@ -635,6 +1643,18 @@
           "verdict": "reject"
         },
         "F7FA1310-E757-41FE-9DF7-BDEF85AF374E": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2021-08-31": {
+      "reviewed": 2,
+      "decidedAt": "2026-09-06T17:26:46.935Z",
+      "decisions": {
+        "317AC4D7-7E74-455D-80CD-ECCDEA941195": {
+          "verdict": "reject"
+        },
+        "788664D0-5E6F-4F45-8B1F-AC38CF50BB33": {
           "verdict": "reject"
         }
       }
@@ -679,6 +1699,96 @@
         }
       }
     },
+    "2022-07-05": {
+      "reviewed": 1,
+      "decidedAt": "2026-09-06T17:08:24.376Z",
+      "decisions": {
+        "7216A1F5-04DC-443A-A744-8539D08F3FB4": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2022-07-12": {
+      "reviewed": 1,
+      "decidedAt": "2026-09-06T16:33:00.195Z",
+      "decisions": {
+        "F8469EB2-0AC3-497C-943B-543518CE1AD2": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2022-08-18": {
+      "reviewed": 3,
+      "decidedAt": "2026-09-06T16:47:31.517Z",
+      "decisions": {
+        "30CBFD5E-E830-4257-89DD-E77769594CFF": {
+          "verdict": "reject"
+        },
+        "6BAAF3C9-1EED-4A65-A1C3-9A456D8CA7BE": {
+          "verdict": "reject"
+        },
+        "7999F679-6DAE-4EB6-85A4-D4E817390D70": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2022-09-09": {
+      "reviewed": 4,
+      "decidedAt": "2026-09-06T15:39:38.627Z",
+      "decisions": {
+        "0438717A-8343-450E-A6A5-9DC57138D6F3": {
+          "verdict": "reject"
+        },
+        "9D685143-A4BF-48A4-8AE5-A5BA1EE4E094": {
+          "verdict": "reject"
+        },
+        "D0D7DF33-CF35-403B-92C0-E19FF824D6EE": {
+          "verdict": "reject"
+        },
+        "F4978781-6350-4250-B459-B8635E0C0A61": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2022-09-25": {
+      "reviewed": 2,
+      "decidedAt": "2026-09-06T15:40:46.469Z",
+      "decisions": {
+        "1AA9E3EF-02F1-48AC-8444-EF1FE271ECF5": {
+          "verdict": "reject"
+        },
+        "D371E60C-080D-4F7E-82D3-744C1B55903B": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2022-10-01": {
+      "reviewed": 7,
+      "decidedAt": "2026-09-06T15:13:16.335Z",
+      "decisions": {
+        "03F05A2C-0A2E-4761-B2EC-E0C92A146890": {
+          "verdict": "reject"
+        },
+        "34305F3B-7185-444D-8C67-72213E5E885D": {
+          "verdict": "reject"
+        },
+        "45A477F3-6D21-47A1-B0D1-A6D653F2CD6B": {
+          "verdict": "reject"
+        },
+        "AE23F645-C4B0-4D56-AD2D-E75FCAA96EFD": {
+          "verdict": "reject"
+        },
+        "D3EC1570-ED87-49D1-B988-6617C7390268": {
+          "verdict": "reject"
+        },
+        "DAE43C66-3D97-4749-8419-CE429E5C27BA": {
+          "verdict": "reject"
+        },
+        "F4C405B2-A094-429D-A63D-E4093664F428": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2022-10-07": {
       "reviewed": 7,
       "decidedAt": "2026-08-29T20:59:17.324Z",
@@ -711,6 +1821,53 @@
           "verdict": "reject"
         },
         "D6B9C23C-609C-4F33-8899-B2039C6BFF07": {
+          "verdict": "reject"
+        }
+      }
+    },
+    "2022-10-28": {
+      "reviewed": 3,
+      "decidedAt": "2026-09-06T15:45:20.912Z",
+      "decisions": {
+        "5691A98C-79B2-42C1-9554-319E4AA83CF5": {
+          "verdict": "reject"
+        },
+        "B02CDF45-E440-4B0E-9B3D-3C9376C1A437": {
+          "verdict": "reject"
+        },
+        "B6FB8717-D6C1-4CFE-BDDD-091DE2E1FFB5": {
+          "verdict": "keep",
+          "artist": "Danny Elfman",
+          "subject": "performer",
+          "crop": {
+            "x": 0.3087,
+            "y": 0.1987,
+            "w": 0.3997,
+            "h": 0.6665
+          },
+          "hero": true
+        }
+      }
+    },
+    "2022-11-16": {
+      "reviewed": 3,
+      "decidedAt": "2026-09-06T16:54:00.037Z",
+      "decisions": {
+        "57B97F88-0602-4E59-A609-54F946D135A4": {
+          "verdict": "keep",
+          "artist": "Foals",
+          "subject": "venue",
+          "crop": {
+            "x": 0,
+            "y": 0.0313,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "5F2DEB33-86E2-47D7-AFFF-EBC70202959F": {
+          "verdict": "reject"
+        },
+        "7A554714-BEFA-4C65-91B1-4B41BE3F795D": {
           "verdict": "reject"
         }
       }
@@ -748,6 +1905,21 @@
         }
       }
     },
+    "2023-03-03": {
+      "reviewed": 3,
+      "decidedAt": "2026-09-06T16:45:07.627Z",
+      "decisions": {
+        "83659EBF-4CAA-43D2-B41A-4955FBA90A60": {
+          "verdict": "reject"
+        },
+        "97BB926E-C1E8-4096-948A-F31ACD12985D": {
+          "verdict": "reject"
+        },
+        "C8A00B86-7543-4DA8-BB96-E0F99D328134": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2023-03-28": {
       "reviewed": 4,
       "decidedAt": "2026-08-29T20:29:38.506Z",
@@ -772,6 +1944,159 @@
             "w": 1,
             "h": 0.9377
           }
+        }
+      }
+    },
+    "2023-04-12": {
+      "reviewed": 49,
+      "decidedAt": "2026-09-06T15:34:42.474Z",
+      "decisions": {
+        "266E87BB-933E-4F60-93DA-19157C5EE7F7": {
+          "verdict": "reject"
+        },
+        "26C2EE01-0D6B-475C-84E9-C9FB5BDA2620": {
+          "verdict": "reject"
+        },
+        "27842861-3185-46A5-8F20-E9BCAF9BD0FD": {
+          "verdict": "reject"
+        },
+        "280CEC09-AFA3-4A66-AD47-DC30030EEC26": {
+          "verdict": "reject"
+        },
+        "2E1CB00C-93E1-4C92-A215-AC7C08275B72": {
+          "verdict": "reject"
+        },
+        "3445580F-A6B8-4889-9052-E738D5DE27A7": {
+          "verdict": "reject"
+        },
+        "40B36ACE-5340-45A9-BB78-201E74ECF72F": {
+          "verdict": "reject"
+        },
+        "4193F958-EAF3-43C6-8712-CB1F3ADD00C6": {
+          "verdict": "reject"
+        },
+        "421F3B41-4392-448B-B2E2-158D0F529F33": {
+          "verdict": "reject"
+        },
+        "4319B782-47B7-4BCA-BEEF-CC23DE5C5039": {
+          "verdict": "reject"
+        },
+        "4402E67A-B604-450D-A5FD-CA44F103D7A1": {
+          "verdict": "reject"
+        },
+        "4877BC88-8008-4746-B1EB-4FA2CA3D4E11": {
+          "verdict": "reject"
+        },
+        "4FF66E60-AC55-4AE2-BD64-3E6FE86F8476": {
+          "verdict": "reject"
+        },
+        "52A14B88-203C-4F94-AEFE-FC4E90540FB5": {
+          "verdict": "reject"
+        },
+        "5B78C49A-FE94-4039-B323-AC3E05EAC40A": {
+          "verdict": "reject"
+        },
+        "5E315EE2-CDB1-42E5-8CB5-5072226FDEAC": {
+          "verdict": "reject"
+        },
+        "6094B2D4-0DB5-4218-95A8-E3F92350E206": {
+          "verdict": "reject"
+        },
+        "6614CD5A-8582-47D4-A1FD-8ABC386BB914": {
+          "verdict": "reject"
+        },
+        "6DCC410D-B7C4-43FE-8B12-71B7850B3201": {
+          "verdict": "reject"
+        },
+        "71375123-FBC5-431D-A616-FBD082F2B582": {
+          "verdict": "reject"
+        },
+        "742AAD23-6295-4F81-BB99-B80E998703B2": {
+          "verdict": "reject"
+        },
+        "754A4F90-ECDC-495C-B9C1-5FE9CEB622DE": {
+          "verdict": "reject"
+        },
+        "840F190A-14B2-480C-8553-8BBF04E49F05": {
+          "verdict": "reject"
+        },
+        "843EF4CC-217C-4C48-B238-8BF657FA5701": {
+          "verdict": "reject"
+        },
+        "8AEC5EB2-CFA5-4C40-A43B-34F862D2D03E": {
+          "verdict": "reject"
+        },
+        "8CB1F752-68B5-4EDF-9345-AA6FE25FD7E9": {
+          "verdict": "reject"
+        },
+        "993B9C46-6EDB-4103-A881-CFB016E7E490": {
+          "verdict": "reject"
+        },
+        "9A84A26C-3F71-41C1-96FF-58B332BC206E": {
+          "verdict": "reject"
+        },
+        "A0EB20A2-BA9D-4432-A24E-BCAA0C82F5AC": {
+          "verdict": "reject"
+        },
+        "A989D96A-3D92-4F7B-85C2-2095830B4793": {
+          "verdict": "reject"
+        },
+        "B4C13271-2520-470B-BB14-7909DB9C0044": {
+          "verdict": "reject"
+        },
+        "C370C1AC-7FD8-4490-BF90-A3A3B69AA472": {
+          "verdict": "reject"
+        },
+        "C792CA52-53FB-470A-9D42-01195BFFC815": {
+          "verdict": "reject"
+        },
+        "CB4A6294-68C8-4D16-8FEE-4B7ADD869C8F": {
+          "verdict": "reject"
+        },
+        "CB5CE571-01AB-4719-A9D8-667EBC58B97A": {
+          "verdict": "reject"
+        },
+        "D67A94FC-0668-49CE-AFAF-7E98A7BF0650": {
+          "verdict": "reject"
+        },
+        "D70CC540-EC36-42FF-B76D-533529DB7C06": {
+          "verdict": "reject"
+        },
+        "D91199C1-67BD-4E94-9361-32BB949BA1A5": {
+          "verdict": "reject"
+        },
+        "DA92BCF0-58F3-4BEB-AEDA-870C379FB835": {
+          "verdict": "reject"
+        },
+        "DBC46779-3CC9-436A-A7E8-7F79B5C67007": {
+          "verdict": "reject"
+        },
+        "E0B8DA9A-4DDD-43BF-BA69-0EEAE1435BA5": {
+          "verdict": "reject"
+        },
+        "E5F1124A-8D6B-487D-A09C-4AA57E2CADD7": {
+          "verdict": "reject"
+        },
+        "EAEA43F3-B740-4BB3-8696-C408A1495E84": {
+          "verdict": "reject"
+        },
+        "ED9D3314-3B71-4B55-8457-9A4FCEC70695": {
+          "verdict": "reject"
+        },
+        "F4891EC2-3735-42BC-9558-3E66CFEC0B6B": {
+          "verdict": "reject"
+        },
+        "F4EBCDBC-301A-49E1-BEFB-9E7A1E181B7E": {
+          "verdict": "reject"
+        },
+        "F52EA8FB-9FC5-4658-BDF1-7A6D495C25BC": {
+          "verdict": "reject"
+        },
+        "FAE37C42-7E81-412B-BA71-5B48806B8526": {
+          "verdict": "reject"
+        },
+        "FC5ACC46-CEA8-44A9-B5B0-1CFD99543489": {
+          "verdict": "reject"
         }
       }
     },
@@ -1220,6 +2545,29 @@
         }
       }
     },
+    "2023-09-23": {
+      "reviewed": 3,
+      "decidedAt": "2026-09-06T15:58:35.482Z",
+      "decisions": {
+        "8954929D-5FC4-4AE2-80E6-76E5645A0E7E": {
+          "verdict": "reject"
+        },
+        "E5A8707C-499B-4EB4-9E27-2958E18CFBF9": {
+          "verdict": "keep",
+          "artist": "Streetlight Manifesto",
+          "subject": "venue",
+          "crop": {
+            "x": 0,
+            "y": 0.0635,
+            "w": 0.72,
+            "h": 0.675
+          }
+        },
+        "F065EF1F-3530-4E40-B7FC-BC5F6E1F0072": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2023-11-16": {
       "reviewed": 21,
       "decidedAt": "2026-08-29T20:21:49.310Z",
@@ -1455,6 +2803,45 @@
         }
       }
     },
+    "2024-02-27": {
+      "reviewed": 2,
+      "decidedAt": "2026-09-06T16:42:09.819Z",
+      "decisions": {
+        "AD9EC332-D0B3-4479-A824-02CC30B490D1": {
+          "verdict": "reject"
+        },
+        "B1FDC7F3-4699-4789-9C22-0358210B398B": {
+          "verdict": "keep",
+          "artist": "Brian Setzer",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0361,
+            "w": 0.92,
+            "h": 0.8625
+          },
+          "hero": true
+        }
+      }
+    },
+    "2024-07-26": {
+      "reviewed": 4,
+      "decidedAt": "2026-09-06T17:11:56.550Z",
+      "decisions": {
+        "2713DC98-047E-460C-A262-B33CA695014D": {
+          "verdict": "reject"
+        },
+        "5E84802D-26DE-4E76-B084-807F05930B4D": {
+          "verdict": "reject"
+        },
+        "8719FDF4-8893-4AC2-A823-D08203EFC422": {
+          "verdict": "reject"
+        },
+        "E94D7297-369D-450A-8CB3-ED499E8290C1": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2024-08-20": {
       "reviewed": 38,
       "decidedAt": "2026-08-26T21:13:06.691Z",
@@ -1626,6 +3013,30 @@
         }
       }
     },
+    "2024-11-16": {
+      "reviewed": 6,
+      "decidedAt": "2026-09-06T16:18:02.227Z",
+      "decisions": {
+        "48D40347-5C68-40F6-A157-D4CEEC3096A6": {
+          "verdict": "reject"
+        },
+        "53E6FF85-AE2E-4F5F-88B8-91ABB3C9B85F": {
+          "verdict": "reject"
+        },
+        "7B56B61A-2EA5-40FD-94B5-8B880AF8D910": {
+          "verdict": "reject"
+        },
+        "857940A6-10B5-4BB0-A200-9456C135A119": {
+          "verdict": "reject"
+        },
+        "B31B58AF-BA27-46D5-A9F3-52BB17D26743": {
+          "verdict": "reject"
+        },
+        "E77FD970-9084-439B-B0D2-8A3A4F491315": {
+          "verdict": "reject"
+        }
+      }
+    },
     "2024-12-06": {
       "reviewed": 16,
       "decidedAt": "2026-09-06T14:50:42.134Z",
@@ -1702,6 +3113,49 @@
         },
         "C4E3BDA7-1281-430B-9ADA-8DA579D59C39": {
           "verdict": "reject"
+        }
+      }
+    },
+    "2025-03-01": {
+      "reviewed": 8,
+      "decidedAt": "2026-09-06T16:07:41.518Z",
+      "decisions": {
+        "394D11CA-051B-494A-955E-1FA849572599": {
+          "verdict": "reject"
+        },
+        "3F4AD9AE-A7E0-4558-9143-AF1D7E4ED1DA": {
+          "verdict": "reject"
+        },
+        "96CDC614-ABD8-448D-BDD8-79D62C1C898E": {
+          "verdict": "reject"
+        },
+        "B7B3F88A-72F2-46C4-BEB3-9F5226260303": {
+          "verdict": "reject"
+        },
+        "C84ACB43-9393-45D7-B66D-A5BA2E9226F1": {
+          "verdict": "keep",
+          "artist": "Klangphonics",
+          "subject": "performer",
+          "frames": [
+            1
+          ]
+        },
+        "D8A61772-93D0-4FDE-95FF-0F4DDBB3B25E": {
+          "verdict": "keep",
+          "artist": "Klangphonics",
+          "subject": "performer",
+          "trim": {
+            "in": 0,
+            "out": 14
+          }
+        },
+        "F38F8BF8-C68D-4218-83B4-D49874EE3221": {
+          "verdict": "reject"
+        },
+        "frame:C84ACB43-9393-45D7-B66D-A5BA2E9226F1:0": {
+          "verdict": "keep",
+          "artist": "Klangphonics",
+          "subject": "performer"
         }
       }
     },
