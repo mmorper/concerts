@@ -61,12 +61,12 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '20'
+          cache: npm
 
-      # package-lock.json is gitignored repo-wide (.gitignore:3), so there is no
-      # lock file to restore from — same constraint and workaround as ci.yml.
+      # `npm ci` against the committed lock file (#457), same as ci.yml.
       # This also installs the Chrome build Puppeteer drives.
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build, serve and render every scene
         run: npm run test:scenes:puppeteer

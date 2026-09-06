@@ -36,10 +36,12 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '20'
+          cache: npm
+          cache-dependency-path: workers/mcp-server/package-lock.json
 
-      # package-lock.json is gitignored for this package, so use `npm install`.
+      # `npm ci` against this package's committed lock file (#457).
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Typecheck
         run: npm run typecheck
@@ -78,9 +80,11 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '20'
+          cache: npm
+          cache-dependency-path: workers/mcp-server/package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # Uses the wrangler pinned in this package's devDependencies — the same binary that runs
       # locally — rather than a third-party action resolving its own version.

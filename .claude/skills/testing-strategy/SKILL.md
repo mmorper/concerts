@@ -19,9 +19,12 @@ Three layers run automatically, each covering what the one below it cannot.
 **Always `typecheck:all`, never plain `typecheck`.** `tsconfig.json` is scoped to
 `src`, so the plain command covers none of the pipeline, the scripts or the tests.
 
-**`npm ci` does not work here.** `package-lock.json` is gitignored by design
-(`.gitignore:3`), so every workflow uses `npm install`. This also rules out
-`setup-node`'s `cache: npm`, which keys off the lock file.
+**`npm ci`, not `npm install`.** `package-lock.json` is committed for the root
+and for each Worker (#457), and every workflow installs with `npm ci` from the
+`setup-node` cache. Change a dependency → run `npm install` locally and commit
+the lock file with it. The lock file used to be gitignored, and a floating
+install let a registry-side dist-tag move take every Cloudflare Pages build red
+with no commit in this repo (#456).
 
 ---
 

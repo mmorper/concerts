@@ -556,10 +556,11 @@ Then **STOP**.
 ### Step 7: Write & Validate
 
 **These checks are for fast feedback, not the gate.** CI on the release PR
-(Step 8b) is the gate. Locally-green is not evidence CI will be green:
-`package-lock.json` is gitignored, so CI runs `npm install` and can resolve
-different dependencies than a laptop that installed weeks ago. Catching problems
-here is still worth it — it is quicker than a round trip through a PR.
+(Step 8b) is the gate. Locally-green is not evidence CI will be green: a laptop
+that installed weeks ago may be behind the committed `package-lock.json`, and CI
+runs `npm ci` against exactly what the lock file says (#457). Run `npm ci` first
+if in doubt. Catching problems here is still worth it — it is quicker than a
+round trip through a PR.
 
 Note `validate:version` can only pass locally, before the tag exists on the
 remote. It is deliberately in no workflow: on a release branch there is no tag
