@@ -7,6 +7,8 @@ pnpm-lock.yaml
 
 # Build output
 dist/
+# vitest 5 writes reporter output, blobs and attachments here by default
+.vitest/
 build/
 *.local
 

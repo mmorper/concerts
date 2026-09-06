@@ -60,7 +60,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version-file: .node-version
           cache: npm
 
       # `npm ci` against the committed lock file (#457), same as ci.yml.

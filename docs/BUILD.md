@@ -345,6 +345,12 @@ first by #455, properly by #457). If a Pages check goes red about 30 seconds
 after a push while Actions stays green, suspect the install step before anything
 else: the Pages build log is in the dashboard, not in GitHub.
 
+**Node is pinned by `.node-version`** (#458). Pages reads it for the build
+image, and every root workflow points `setup-node` at it, so there is one
+place to bump. A `NODE_VERSION` variable in the Pages dashboard would override
+the file; there should not be one. vitest 5 requires Node 22.12+, which is why
+the pin moved from 20 to 22.
+
 ### Deployment Workflow
 
 1. Commit and push changes to `main` branch
