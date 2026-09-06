@@ -28,7 +28,7 @@ jobs:
         working-directory: workers/dashboard-refresh
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -65,7 +65,7 @@ jobs:
         working-directory: workers/dashboard-refresh
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
