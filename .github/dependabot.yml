@@ -1,0 +1,61 @@
+# Keeps the five lock files moving (#461). The lock files stopped the registry
+# from breaking a build behind the repo's back (#456, #457); this stops them
+# fossilising. Minor and patch updates arrive as one grouped PR per package per
+# week, and each PR runs the full CI — root, scene renderer, the Worker
+# workflows and Cloudflare Pages — before anyone looks at it. Majors arrive as
+# their own PRs, which is the right signal for something like vitest 4 → 5.
+#
+# Auto-merge is deliberately NOT configured. It is a policy call; see #461.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: npm
+    directory: /workers/ask-chat
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: npm
+    directory: /workers/dashboard-refresh
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: npm
+    directory: /workers/mcp-server
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: npm
+    directory: /workers/meta-injector
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  # deploy.yml already worries, in a comment, that `cloudflare/wrangler-action@v3`
+  # is a floating major. This is what would have flagged it.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
