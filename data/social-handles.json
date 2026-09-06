@@ -1,13 +1,37 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T21:15:01.336Z",
+  "updatedAt": "2026-09-06T20:20:00.000Z",
   "artists": {
+    "a-certain-ratio": {
+      "bluesky": {
+        "handle": "acertainratio.bsky.social",
+        "did": "did:plc:pmsehuijjpyvqtu4busdj7w5",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "blondie": {
+      "bluesky": {
+        "handle": "blondieband.bsky.social",
+        "did": "did:plc:k4oh2rdaa2idznsyhpgrkyfq",
+        "evidence": "musicbrainz",
+        "verifiedAt": "2026-08-28"
+      }
+    },
     "bruce-springsteen": {
       "bluesky": {
         "handle": "brucespringsteen.net",
         "did": "did:plc:l3deti4ljirzjaof5zbp3v32",
         "evidence": "site-domain",
         "verifiedAt": "2026-08-29"
+      }
+    },
+    "crowded-house": {
+      "bluesky": {
+        "handle": "crowdedhouse.com",
+        "did": "did:plc:ykzv5yoohsvzrcam2owtj3zr",
+        "evidence": "musicbrainz",
+        "verifiedAt": "2026-08-28"
       }
     },
     "depeche-mode": {
@@ -26,12 +50,12 @@
         "verifiedAt": "2026-08-29"
       }
     },
-    "emf": {
+    "duran-duran": {
       "bluesky": {
-        "handle": "emf-theband.com",
-        "did": "did:plc:medyymknz4arrlbfx7biw43n",
-        "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
+        "handle": "durandurancom.bsky.social",
+        "did": "did:plc:3jdqlmbkwhfgduaxbvh5wtcy",
+        "evidence": "musicbrainz",
+        "verifiedAt": "2026-08-28"
       }
     },
     "echo-and-the-bunnymen": {
@@ -40,6 +64,80 @@
         "did": "did:plc:2kg343fegcf2rob5nhukdlbj",
         "evidence": "site-domain",
         "verifiedAt": "2026-08-29"
+      }
+    },
+    "elton-john": {
+      "bluesky": {
+        "handle": "eltonjohn.bsky.social",
+        "did": "did:plc:jxdsaovgozg6tdwauyn3zihn",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06",
+        "blocked": true
+      }
+    },
+    "emf": {
+      "bluesky": {
+        "handle": "emf-theband.com",
+        "did": "did:plc:medyymknz4arrlbfx7biw43n",
+        "evidence": "site-domain",
+        "verifiedAt": "2026-08-29"
+      }
+    },
+    "garbage": {
+      "bluesky": {
+        "handle": "garbage.com",
+        "did": "did:plc:llleov6gowwl2dsrhwpp2xxn",
+        "evidence": "musicbrainz",
+        "verifiedAt": "2026-08-28"
+      }
+    },
+    "james": {
+      "bluesky": {
+        "handle": "wearejames.bsky.social",
+        "did": "did:plc:gs3k5wf6z6qwppc3xn4hhimn",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "jane-weidlin": {
+      "bluesky": {
+        "handle": "janewiedlin.bsky.social",
+        "did": "did:plc:ifd5skj5ft4r7gi6d6rzv6vi",
+        "evidence": "musicbrainz",
+        "verifiedAt": "2026-08-29"
+      }
+    },
+    "jesus-jones": {
+      "bluesky": {
+        "handle": "jesusjonesband.bsky.social",
+        "did": "did:plc:hwuhzq66lpkgip56xshhfp2v",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "joe-satriani": {
+      "bluesky": {
+        "handle": "satriani.com",
+        "did": "did:plc:wyevu54nl24gdc4n6cidfg6l",
+        "evidence": "site-domain",
+        "verifiedAt": "2026-08-29"
+      }
+    },
+    "kid-congo-powers": {
+      "bluesky": {
+        "handle": "kidcongopowers.bsky.social",
+        "did": "did:plc:yjiov5vic4kxzgjmolw6qv5b",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "kraftwerk": {
+      "bluesky": {
+        "handle": "kraftwerk.bsky.social",
+        "did": "did:plc:wmg7diguvj2v42hndevr4x72",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06",
+        "blocked": true
       }
     },
     "living-colour": {
@@ -58,6 +156,63 @@
         "verifiedAt": "2026-08-29"
       }
     },
+    "new-order": {
+      "bluesky": {
+        "handle": "neworder.bsky.social",
+        "did": "did:plc:znizpbrvrzmtdgh4aerm43ij",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06",
+        "blocked": true
+      }
+    },
+    "nile-rodgers": {
+      "bluesky": {
+        "handle": "nilerodgers.bsky.social",
+        "did": "did:plc:r63fhpt7576gxaxtnihfud3k",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "peter-gabriel": {
+      "bluesky": {
+        "handle": "itspetergabriel.bsky.social",
+        "did": "did:plc:mzmfsdx467gd6237vhi32rt3",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "public-enemy": {
+      "bluesky": {
+        "handle": "publicenemyno1.bsky.social",
+        "did": "did:plc:xbygbfc3oiwqxnzop4cqhdf4",
+        "evidence": "wikidata",
+        "verifiedAt": "2026-08-28"
+      }
+    },
+    "red-hot-chili-peppers": {
+      "bluesky": {
+        "handle": "chilipeppers.bsky.social",
+        "did": "did:plc:eydwncrdcy2c3n3cgrt2vyqh",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "richard-cheese": {
+      "bluesky": {
+        "handle": "richardcheese.bsky.social",
+        "did": "did:plc:qza4jwnvzs4nzcc6uivrjcbi",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "snarky-puppy": {
+      "bluesky": {
+        "handle": "realsnarkypuppy.bsky.social",
+        "did": "did:plc:ehjkt4w7x4fx7ze253hrm2un",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
     "squeeze": {
       "bluesky": {
         "handle": "squeezeofficial.com",
@@ -66,52 +221,12 @@
         "verifiedAt": "2026-08-29"
       }
     },
-    "umphrey-s-mcgee": {
+    "the-black-keys": {
       "bluesky": {
-        "handle": "umphreys.com",
-        "did": "did:plc:ag6lnvdz2vthcqxzybbalt5t",
-        "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
-      }
-    },
-    "joe-satriani": {
-      "bluesky": {
-        "handle": "satriani.com",
-        "did": "did:plc:wyevu54nl24gdc4n6cidfg6l",
-        "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
-      }
-    },
-    "blondie": {
-      "bluesky": {
-        "handle": "blondieband.bsky.social",
-        "did": "did:plc:k4oh2rdaa2idznsyhpgrkyfq",
-        "evidence": "musicbrainz",
-        "verifiedAt": "2026-08-28"
-      }
-    },
-    "crowded-house": {
-      "bluesky": {
-        "handle": "crowdedhouse.com",
-        "did": "did:plc:ykzv5yoohsvzrcam2owtj3zr",
-        "evidence": "musicbrainz",
-        "verifiedAt": "2026-08-28"
-      }
-    },
-    "duran-duran": {
-      "bluesky": {
-        "handle": "durandurancom.bsky.social",
-        "did": "did:plc:3jdqlmbkwhfgduaxbvh5wtcy",
-        "evidence": "musicbrainz",
-        "verifiedAt": "2026-08-28"
-      }
-    },
-    "garbage": {
-      "bluesky": {
-        "handle": "garbage.com",
-        "did": "did:plc:llleov6gowwl2dsrhwpp2xxn",
-        "evidence": "musicbrainz",
-        "verifiedAt": "2026-08-28"
+        "handle": "theblackkeys.bsky.social",
+        "did": "did:plc:u5m76gpn73uwnub55lju7liv",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
       }
     },
     "the-cure": {
@@ -119,14 +234,6 @@
         "handle": "thecure.com",
         "did": "did:plc:u2nnfhwfrul4lyw5dii2cris",
         "evidence": "musicbrainz",
-        "verifiedAt": "2026-08-28"
-      }
-    },
-    "public-enemy": {
-      "bluesky": {
-        "handle": "publicenemyno1.bsky.social",
-        "did": "did:plc:xbygbfc3oiwqxnzop4cqhdf4",
-        "evidence": "wikidata",
         "verifiedAt": "2026-08-28"
       }
     },
@@ -138,22 +245,88 @@
         "verifiedAt": "2026-08-28"
       }
     },
-    "jane-weidlin": {
+    "the-head-and-the-heart": {
       "bluesky": {
-        "handle": "janewiedlin.bsky.social",
-        "did": "did:plc:ifd5skj5ft4r7gi6d6rzv6vi",
-        "evidence": "musicbrainz",
+        "handle": "headandtheheart.bsky.social",
+        "did": "did:plc:wqtt3li5idtlvfr2d5vtzwk3",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "the-smithereens": {
+      "bluesky": {
+        "handle": "thesmithereens.bsky.social",
+        "did": "did:plc:cieqcy5fict7p4u4pqfnkstd",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06",
+        "blocked": true
+      }
+    },
+    "thomas-dolby": {
+      "bluesky": {
+        "handle": "thomasdolby.bsky.social",
+        "did": "did:plc:anyajoc5dmkdht4l6c734gre",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "ub40": {
+      "bluesky": {
+        "handle": "ub40official.bsky.social",
+        "did": "did:plc:4trthbygycjprt63v7gbcno4",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "umphrey-s-mcgee": {
+      "bluesky": {
+        "handle": "umphreys.com",
+        "did": "did:plc:ag6lnvdz2vthcqxzybbalt5t",
+        "evidence": "site-domain",
         "verifiedAt": "2026-08-29"
+      }
+    },
+    "wire": {
+      "bluesky": {
+        "handle": "wirehq.bsky.social",
+        "did": "did:plc:rct2nrbos36tftm7u3iuv7v7",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
       }
     }
   },
   "venues": {
-    "ucla": {
+    "9-30-club": {
       "bluesky": {
-        "handle": "ucla.edu",
-        "did": "did:plc:gy552md2n6dm4ga73tm6kvn4",
-        "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
+        "handle": "930club.bsky.social",
+        "did": "did:plc:lavua33kp7iuapo42ldshfjl",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "dc9-nightclub": {
+      "bluesky": {
+        "handle": "dc9club.bsky.social",
+        "did": "did:plc:yor6uoslb3toakrczz2ayvpp",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "lincoln-theatre": {
+      "bluesky": {
+        "handle": "thelincolndc.bsky.social",
+        "did": "did:plc:rncx2uhnowb6mbne6mwdcwti",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "pacific-amphitheatre": {
+      "bluesky": {
+        "handle": "pacamp.bsky.social",
+        "did": "did:plc:cj73ef5unkqqtaity5vpqeja",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06",
+        "blocked": true
       }
     },
     "the-anthem": {
@@ -162,6 +335,22 @@
         "did": "did:plc:fv3ksu5ms3met4rn2n435u5e",
         "evidence": "musicbrainz",
         "verifiedAt": "2026-08-28"
+      }
+    },
+    "the-black-cat": {
+      "bluesky": {
+        "handle": "blackcatdc.bsky.social",
+        "did": "did:plc:547ugeekzxlnijjgi5ifjaum",
+        "evidence": "owner-checked",
+        "verifiedAt": "2026-09-06"
+      }
+    },
+    "ucla": {
+      "bluesky": {
+        "handle": "ucla.edu",
+        "did": "did:plc:gy552md2n6dm4ga73tm6kvn4",
+        "evidence": "site-domain",
+        "verifiedAt": "2026-08-29"
       }
     }
   }
