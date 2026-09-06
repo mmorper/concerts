@@ -124,7 +124,7 @@ jobs:
       # someone made on purpose and re-verified, not something that arrives on its
       # own between one release and the next.
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 6db8591bbcba4588ae4ef9c3839cd209
