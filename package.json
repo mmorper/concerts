@@ -114,7 +114,7 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@types/react-window": "^1.8.8",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^6.1.1",
     "@vitest/coverage-v8": "^5.0.0",
     "@vitest/ui": "^5.0.0",
     "autoprefixer": "^10.4.20",
