@@ -346,8 +346,9 @@ after a push while Actions stays green, suspect the install step before anything
 else: the Pages build log is in the dashboard, not in GitHub.
 
 **Node is pinned by `.node-version`** (#458). Pages reads it for the build
-image, and every root workflow points `setup-node` at it, so there is one
-place to bump. A `NODE_VERSION` variable in the Pages dashboard would override
+image, and every workflow, the four Worker workflows included, points
+`setup-node` at it, so there is one place to bump. The Workers need it too:
+wrangler has refused to start on anything below Node 22 since 4.95. A `NODE_VERSION` variable in the Pages dashboard would override
 the file; there should not be one. vitest 5 requires Node 22.12+, which is why
 the pin moved from 20 to 22.
 

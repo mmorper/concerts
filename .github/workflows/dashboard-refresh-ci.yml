@@ -33,7 +33,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version-file: .node-version
           cache: npm
           cache-dependency-path: workers/dashboard-refresh/package-lock.json
 
@@ -70,7 +70,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version-file: .node-version
           cache: npm
           cache-dependency-path: workers/dashboard-refresh/package-lock.json
 
