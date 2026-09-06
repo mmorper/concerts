@@ -13,7 +13,8 @@
  * Falls back to a solid-color background if the image can't be fetched.
  */
 
-import sharp from "sharp";
+// sharp 0.35 stopped exporting a `sharp` namespace; `Sharp` is a named type now.
+import sharp, { type Sharp } from "sharp";
 import { deriveRect, derivationFor } from "../media/derive.ts";
 import { classifyImageUrl } from "../syndication/provenance.ts";
 import { writeFileSync, mkdirSync, existsSync } from "fs";
@@ -115,7 +116,7 @@ async function generateOgImage(post: LinerNotesPost, outPath: string): Promise<b
 }
 
 export interface LoadedBackground {
-  background: sharp.Sharp;
+  background: Sharp;
   /**
    * True when the image could not be fetched and a solid ground was used.
    *
@@ -208,7 +209,7 @@ export async function loadBackground(
   }
 }
 
-export function solidBackground(): sharp.Sharp {
+export function solidBackground(): Sharp {
   return sharp({
     create: {
       width: WIDTH,
