@@ -6,6 +6,14 @@
 # their own PRs, which is the right signal for something like vitest 4 → 5.
 #
 # Auto-merge is deliberately NOT configured. It is a policy call; see #461.
+#
+# DEV-DEPENDENCY MAJORS ARE GROUPED, runtime majors are not (added 2026-09-06).
+# The first run opened 18 PRs, and four of them were the same vitest 3 -> 4 bump
+# in four Workers. Reviewing that four times is not four decisions, it is one
+# decision and three copies. Runtime majors keep their own PRs for exactly the
+# reason given above: a lone PR is the right signal for zod 3 -> 4, which lands
+# in the MCP tool schemas, and it was that isolation which made the ordering
+# problem legible when `agents@0.22` could not resolve against zod 3.
 version: 2
 updates:
   - package-ecosystem: npm
@@ -16,6 +24,9 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+      dev-majors:
+        dependency-type: development
+        update-types: [major]
 
   - package-ecosystem: npm
     directory: /workers/ask-chat
@@ -25,6 +36,9 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+      dev-majors:
+        dependency-type: development
+        update-types: [major]
 
   - package-ecosystem: npm
     directory: /workers/dashboard-refresh
@@ -34,6 +48,9 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+      dev-majors:
+        dependency-type: development
+        update-types: [major]
 
   - package-ecosystem: npm
     directory: /workers/mcp-server
@@ -43,6 +60,9 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+      dev-majors:
+        dependency-type: development
+        update-types: [major]
 
   - package-ecosystem: npm
     directory: /workers/meta-injector
@@ -52,6 +72,9 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+      dev-majors:
+        dependency-type: development
+        update-types: [major]
 
   # deploy.yml already worries, in a comment, that `cloudflare/wrangler-action@v3`
   # is a floating major. This is what would have flagged it.
