@@ -153,7 +153,7 @@ into a content mill.
 
 | Channel | Handle | Status |
 |---|---|---|
-| Bluesky | `@concertsmorperhaus.bsky.social` | **Live** |
+| Bluesky | `@concerts.morperhaus.org` | **Live** |
 | Mastodon | `@concertsmorperhaus@mastodon.social` | **Live** |
 | Instagram | `@concertsmorperhaus` | Phase 3 (#334) |
 | X | `@concertsmorps` | Phase 3 (#335) |
@@ -467,7 +467,7 @@ Actions**. Full instructions with the exact menu paths are in
 
 | Secret | Value |
 |---|---|
-| `BLUESKY_IDENTIFIER` | `concertsmorperhaus.bsky.social` |
+| `BLUESKY_IDENTIFIER` | `concerts.morperhaus.org` |
 | `BLUESKY_APP_PASSWORD` | An **app password**, never the account password |
 | `MASTODON_BASE_URL` | `https://mastodon.social` |
 | `MASTODON_ACCESS_TOKEN` | Scopes: `write:statuses` + `write:media` only |

@@ -144,7 +144,7 @@ Two homes each, no prod store: nothing in the Workers or the client bundle ever 
 
 | Secret | Store | Used by | Notes |
 |--------|-------|---------|-------|
-| `BLUESKY_IDENTIFIER` | local + CI | Bluesky adapter | The handle — currently `concertsmorperhaus.bsky.social`. Not secret on its own; kept alongside the password so both rotate together. Changing the handle to `concerts.morperhaus.org` via DNS TXT means updating this value too. |
+| `BLUESKY_IDENTIFIER` | local + CI | Bluesky adapter | The handle — `concerts.morperhaus.org`, the custom domain, since 2026-08-22. Not secret on its own; kept alongside the password so both rotate together. The account moved off `concertsmorperhaus.bsky.social` and that handle no longer resolves; the DID `did:plc:zmrewnmc4lh2vytxmsa5flyd` is what actually persists across any future rename. |
 | `BLUESKY_APP_PASSWORD` | local + CI | Bluesky adapter | **An app password, never the account password.** Scoped, revocable, and — unusually — it does not expire. Generated at Settings → Privacy and Security → App Passwords. |
 | `MASTODON_BASE_URL` | local + CI | Mastodon adapter | The instance — `https://mastodon.social`. An identifier, not a secret, but the adapter is useless without it. |
 | `MASTODON_ACCESS_TOKEN` | local + CI | Mastodon adapter | Settings → Development → your app. No expiry. Needs `write:statuses` and `write:media`. |
@@ -157,7 +157,7 @@ configuration, not a secret — set it only when pointing at a different service
 | Channel | Handle | Note |
 |---------|--------|------|
 | Mastodon | `@concertsmorperhaus@mastodon.social` | Verified from the site via `rel="me"` in `index.html`. |
-| Bluesky | `@concertsmorperhaus.bsky.social` | |
+| Bluesky | `@concerts.morperhaus.org` | Custom domain, verified by DNS TXT. The old `concertsmorperhaus.bsky.social` no longer resolves. |
 | Instagram | `@concertsmorperhaus` | Phase 3 (#334). |
 | X | `@concertsmorps` | **Deliberately different.** X caps handles at 15 characters and `concertsmorperhaus` is 18. Not a typo — do not "correct" it. Phase 3 (#335). |
 
