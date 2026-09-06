@@ -90,7 +90,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
     "@types/d3": "^7.4.3",
-    "csv-parse": "^6.1.0",
+    "csv-parse": "^7.0.2",
     "d3": "^7.9.0",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
