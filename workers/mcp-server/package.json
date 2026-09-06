@@ -14,9 +14,9 @@
     "tail": "npx wrangler tail"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.78.0",
-    "@modelcontextprotocol/sdk": "1.23.0",
-    "agents": "^0.2.35",
+    "@anthropic-ai/sdk": "^0.123.0",
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "agents": "^0.22.0",
     "zod": "^4.5.4"
   },
   "devDependencies": {
