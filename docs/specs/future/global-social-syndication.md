@@ -735,7 +735,7 @@ Per `test/README.md`, the root suite excludes `workers/**`.
 | Channel | Handle |
 |---|---|
 | Mastodon | `@concertsmorperhaus@mastodon.social` |
-| Bluesky | `@concertsmorperhaus.bsky.social` |
+| Bluesky | `@concertsmorperhaus.bsky.social` — moved to `@concerts.morperhaus.org` on 2026-08-22; see `docs/SYNDICATION.md` |
 | Instagram | `@concertsmorperhaus` |
 | X | `@concertsmorps` |
 
