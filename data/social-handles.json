@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-06T20:20:00.000Z",
+  "updatedAt": "2026-09-07T02:14:12.386Z",
   "artists": {
     "a-certain-ratio": {
       "bluesky": {
@@ -23,7 +23,7 @@
         "handle": "brucespringsteen.net",
         "did": "did:plc:l3deti4ljirzjaof5zbp3v32",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
+        "verifiedAt": "2026-09-07"
       }
     },
     "crowded-house": {
@@ -39,7 +39,7 @@
         "handle": "depechemode.com",
         "did": "did:plc:ueppiwulfqikh4zl2qre3evh",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
+        "verifiedAt": "2026-09-07"
       }
     },
     "dropkick-murphys": {
@@ -47,7 +47,7 @@
         "handle": "dropkickmurphys.com",
         "did": "did:plc:hlm3kwjeca33oy4cwren6qmt",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
+        "verifiedAt": "2026-09-07"
       }
     },
     "duran-duran": {
@@ -63,7 +63,7 @@
         "handle": "bunnymen.com",
         "did": "did:plc:2kg343fegcf2rob5nhukdlbj",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
+        "verifiedAt": "2026-09-07"
       }
     },
     "elton-john": {
@@ -80,7 +80,7 @@
         "handle": "emf-theband.com",
         "did": "did:plc:medyymknz4arrlbfx7biw43n",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
+        "verifiedAt": "2026-09-07"
       }
     },
     "garbage": {
@@ -120,7 +120,7 @@
         "handle": "satriani.com",
         "did": "did:plc:wyevu54nl24gdc4n6cidfg6l",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
+        "verifiedAt": "2026-09-07"
       }
     },
     "kid-congo-powers": {
@@ -145,7 +145,7 @@
         "handle": "livingcolour.com",
         "did": "did:plc:323zwrdcxyog36ewpu37iuag",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
+        "verifiedAt": "2026-09-07"
       }
     },
     "los-lobos": {
@@ -153,7 +153,7 @@
         "handle": "loslobos.org",
         "did": "did:plc:laff5qrh36d2meffdktnqgby",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
+        "verifiedAt": "2026-09-07"
       }
     },
     "new-order": {
@@ -218,7 +218,7 @@
         "handle": "squeezeofficial.com",
         "did": "did:plc:uvpag52jf6gb7orguavqu7fh",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
+        "verifiedAt": "2026-09-07"
       }
     },
     "the-black-keys": {
@@ -283,7 +283,7 @@
         "handle": "umphreys.com",
         "did": "did:plc:ag6lnvdz2vthcqxzybbalt5t",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
+        "verifiedAt": "2026-09-07"
       }
     },
     "wire": {
@@ -350,7 +350,7 @@
         "handle": "ucla.edu",
         "did": "did:plc:gy552md2n6dm4ga73tm6kvn4",
         "evidence": "site-domain",
-        "verifiedAt": "2026-08-29"
+        "verifiedAt": "2026-09-07"
       }
     }
   }

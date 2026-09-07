@@ -101,7 +101,7 @@
     "closedDate": "2016-10-30",
     "notes": "Demolished for residential development",
     "places": null,
-    "fetchedAt": "2026-08-31T14:53:16.696Z",
+    "fetchedAt": "2026-09-07T02:10:46.234Z",
     "manualPhotos": [
       {
         "url": "/images/venues/irvinemeadows-1.jpg",
@@ -305,7 +305,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:16.696Z",
+    "fetchedAt": "2026-09-07T02:10:46.235Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjCY-JG8fIdWnhHyetuoRwy5QQLxOqPQPj7A4sGEqsTHtrt2lMtzUZp36MQDXArNcpsuW68fP8gwj9u-0woJ7x5KizX4FCswyypQtW7WU3xtg6sYTEs3ZwcpXUpqVi6EkMKF4b5nUa-TBlrOEg=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjCY-JG8fIdWnhHyetuoRwy5QQLxOqPQPj7A4sGEqsTHtrt2lMtzUZp36MQDXArNcpsuW68fP8gwj9u-0woJ7x5KizX4FCswyypQtW7WU3xtg6sYTEs3ZwcpXUpqVi6EkMKF4b5nUa-TBlrOEg=s4800-h800",
@@ -582,7 +582,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:17.174Z",
+    "fetchedAt": "2026-09-07T02:10:46.641Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjC1yU31TuhE-IwblGs9vf9mmvnBNoZnHWazXlNNbshBwjrUyrVaWx6iQy5KIFE8-YOy65hJ9aPhmLJ5RiIOfUd_77YvPukeWmcd3Rh_M1-WJFL677QRBjVC-0aUPNNSq7l0jGkNH15sTyKX4w=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjC1yU31TuhE-IwblGs9vf9mmvnBNoZnHWazXlNNbshBwjrUyrVaWx6iQy5KIFE8-YOy65hJ9aPhmLJ5RiIOfUd_77YvPukeWmcd3Rh_M1-WJFL677QRBjVC-0aUPNNSq7l0jGkNH15sTyKX4w=s4800-h800",
@@ -616,7 +616,7 @@
     "closedDate": "2013-12-22",
     "notes": "Demolished for SoFi Stadium development",
     "places": null,
-    "fetchedAt": "2026-08-31T14:53:17.758Z",
+    "fetchedAt": "2026-09-07T02:10:46.856Z",
     "manualPhotos": [
       {
         "url": "/images/venues/hollywoodparkracetrack-1.jpg",
@@ -821,11 +821,60 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:17.759Z",
+    "fetchedAt": "2026-09-07T02:10:46.856Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjC8dTPI5fToTtBP2SBCg04S1hhg86i5eiBaJH6ZRh14HBmuIUlcvedev2mkJc8duNOqeRxy0Q-EJZbSGu9egpI_Qz9I95QKuz6fTQACwApXotNzJSWHSURx1A2qt-lWMsB2Y7q8X_n5JaQFr1w=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjC8dTPI5fToTtBP2SBCg04S1hhg86i5eiBaJH6ZRh14HBmuIUlcvedev2mkJc8duNOqeRxy0Q-EJZbSGu9egpI_Qz9I95QKuz6fTQACwApXotNzJSWHSURx1A2qt-lWMsB2Y7q8X_n5JaQFr1w=s4800-h800",
       "large": "https://lh3.googleusercontent.com/place-photos/AG9NLjC8dTPI5fToTtBP2SBCg04S1hhg86i5eiBaJH6ZRh14HBmuIUlcvedev2mkJc8duNOqeRxy0Q-EJZbSGu9egpI_Qz9I95QKuz6fTQACwApXotNzJSWHSURx1A2qt-lWMsB2Y7q8X_n5JaQFr1w=s4800-h1200"
+    }
+  },
+  "crawford-hall": {
+    "name": "Crawford Hall",
+    "normalizedName": "crawford-hall",
+    "city": "Irvine",
+    "state": "California",
+    "cityState": "Irvine, California",
+    "location": {
+      "lat": 33.6480389,
+      "lng": -117.8480685
+    },
+    "concerts": [
+      {
+        "id": "concert-14",
+        "date": "1986-02-15",
+        "headliner": "Blancmange"
+      }
+    ],
+    "stats": {
+      "totalConcerts": 1,
+      "firstEvent": "1986-02-15",
+      "lastEvent": "1986-02-15",
+      "uniqueArtists": 1
+    },
+    "status": "active",
+    "closedDate": null,
+    "notes": null,
+    "places": {
+      "id": "ChIJ2TvajRPe3IARHeZZ2JdgS8I",
+      "types": [
+        "premise",
+        "street_address"
+      ],
+      "formattedAddress": "Crawford Hall, 903 W Peltason Dr, Irvine, CA 92617, USA",
+      "location": {
+        "latitude": 33.647959,
+        "longitude": -117.8478346
+      },
+      "displayName": {
+        "text": "Crawford Hall",
+        "languageCode": "en"
+      }
+    },
+    "fetchedAt": "2026-09-07T02:10:47.128Z",
+    "photoUrls": {
+      "thumbnail": "/images/venues/fallback-active.jpg",
+      "medium": "/images/venues/fallback-active.jpg",
+      "large": "/images/venues/fallback-active.jpg"
     }
   },
   "ucla": {
@@ -1017,68 +1066,12 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:18.146Z",
+    "fetchedAt": "2026-09-07T02:10:47.229Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBkkmJvq9ZMmaLAX85yQLb1KJcs_JcOmZuRKb8dEnnB-V2ZSeur5qoqV20cus0BCRtWrapSXJgVxhqUwM3u-42co6Tl9P96Ed0b6EvQcuLs6sciamMi5rLn4E1v_acbAwHL6ACyD9s_lS0fAg=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBkkmJvq9ZMmaLAX85yQLb1KJcs_JcOmZuRKb8dEnnB-V2ZSeur5qoqV20cus0BCRtWrapSXJgVxhqUwM3u-42co6Tl9P96Ed0b6EvQcuLs6sciamMi5rLn4E1v_acbAwHL6ACyD9s_lS0fAg=s4800-h800",
       "large": "https://lh3.googleusercontent.com/place-photos/AG9NLjBkkmJvq9ZMmaLAX85yQLb1KJcs_JcOmZuRKb8dEnnB-V2ZSeur5qoqV20cus0BCRtWrapSXJgVxhqUwM3u-42co6Tl9P96Ed0b6EvQcuLs6sciamMi5rLn4E1v_acbAwHL6ACyD9s_lS0fAg=s4800-h1200"
     }
-  },
-  "crawford-hall": {
-    "name": "Crawford Hall",
-    "normalizedName": "crawford-hall",
-    "city": "Irvine",
-    "state": "California",
-    "cityState": "Irvine, California",
-    "location": {
-      "lat": 33.6480389,
-      "lng": -117.8480685
-    },
-    "concerts": [
-      {
-        "id": "concert-14",
-        "date": "1986-04-15",
-        "headliner": "Blancmange"
-      }
-    ],
-    "stats": {
-      "totalConcerts": 1,
-      "firstEvent": "1986-04-15",
-      "lastEvent": "1986-04-15",
-      "uniqueArtists": 1
-    },
-    "status": "active",
-    "closedDate": null,
-    "notes": null,
-    "places": {
-      "id": "ChIJ2TvajRPe3IARHeZZ2JdgS8I",
-      "types": [
-        "premise",
-        "street_address"
-      ],
-      "formattedAddress": "Crawford Hall, 903 W Peltason Dr, Irvine, CA 92617, USA",
-      "location": {
-        "latitude": 33.647959,
-        "longitude": -117.8478346
-      },
-      "displayName": {
-        "text": "Crawford Hall",
-        "languageCode": "en"
-      }
-    },
-    "fetchedAt": "2026-08-31T14:53:18.505Z",
-    "photoUrls": {
-      "thumbnail": "/images/venues/crawfordhall-1.jpg?w=400",
-      "medium": "/images/venues/crawfordhall-1.jpg?w=800",
-      "large": "/images/venues/crawfordhall-1.jpg"
-    },
-    "manualPhotos": [
-      {
-        "url": "/images/venues/crawfordhall-1.jpg",
-        "width": 1200,
-        "height": 800
-      }
-    ]
   },
   "caliente-racetrack": {
     "name": "Caliente Racetrack",
@@ -1269,7 +1262,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:18.707Z",
+    "fetchedAt": "2026-09-07T02:10:47.508Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjC3SliIM_YggtrvBPda3NHooLzUdDUjuW3mf8I3PglOGztU0jwLpLoHWIdbABC0FKQH1gGcfS8DCNxR8Tqy2bDMFJQGomPCvht9CD3fd9lXxJlHxp1F43GIuGe2ZByu0zBQVx3iOohlSAXTlg=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjC3SliIM_YggtrvBPda3NHooLzUdDUjuW3mf8I3PglOGztU0jwLpLoHWIdbABC0FKQH1gGcfS8DCNxR8Tqy2bDMFJQGomPCvht9CD3fd9lXxJlHxp1F43GIuGe2ZByu0zBQVx3iOohlSAXTlg=s4800-h800",
@@ -1466,7 +1459,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:19.499Z",
+    "fetchedAt": "2026-09-07T02:10:47.729Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjC0yLaS2cJbsfzLoRnA7jfrf-EK3qznlStmGP_YY-Mo3loal7kU_q3crfVeLI9PyiRQf80wZs3u-xujMRXXDXBS57IXpOVmgn0o9u-4TbGigdjSfKbag_WuzGgSXkQk89g4M1dmQXrebkeJ0A=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjC0yLaS2cJbsfzLoRnA7jfrf-EK3qznlStmGP_YY-Mo3loal7kU_q3crfVeLI9PyiRQf80wZs3u-xujMRXXDXBS57IXpOVmgn0o9u-4TbGigdjSfKbag_WuzGgSXkQk89g4M1dmQXrebkeJ0A=s4800-h800",
@@ -1665,7 +1658,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:19.881Z",
+    "fetchedAt": "2026-09-07T02:10:47.957Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBY9rkTjfyHx1h11PGqaf-PndlITA8_3Dqv4a_Y4LuG5fjT3RxXOUC8exJQo7RHaGvKkfFEGYT4IK2gDwfF00dZFMDW0hr3_TT_1qekytw8fdUE5OQJNUBzWZKnsvazn8sYsTboXd5p-1BB4g=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBY9rkTjfyHx1h11PGqaf-PndlITA8_3Dqv4a_Y4LuG5fjT3RxXOUC8exJQo7RHaGvKkfFEGYT4IK2gDwfF00dZFMDW0hr3_TT_1qekytw8fdUE5OQJNUBzWZKnsvazn8sYsTboXd5p-1BB4g=s4800-h800",
@@ -1864,7 +1857,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:20.245Z",
+    "fetchedAt": "2026-09-07T02:10:48.221Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjA8FvJC30epamb0NQHZAKlII_ZwDee0Yp-BN98sIdOZSM0uDBtwWM8tdBr0P91cb_fmeKLo8a6X5ywxIoTXWPkW4kZ1xj9C5Deq96aC_f03dG1uoF_A_fbRwYn1R51oS2VVNCy-JnbHLqaSwQ=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjA8FvJC30epamb0NQHZAKlII_ZwDee0Yp-BN98sIdOZSM0uDBtwWM8tdBr0P91cb_fmeKLo8a6X5ywxIoTXWPkW4kZ1xj9C5Deq96aC_f03dG1uoF_A_fbRwYn1R51oS2VVNCy-JnbHLqaSwQ=s4800-h800",
@@ -1884,14 +1877,14 @@
     "concerts": [
       {
         "id": "concert-25",
-        "date": "1988-10-15",
+        "date": "1988-11-06",
         "headliner": "Beach Boys"
       }
     ],
     "stats": {
       "totalConcerts": 1,
-      "firstEvent": "1988-10-15",
-      "lastEvent": "1988-10-15",
+      "firstEvent": "1988-11-06",
+      "lastEvent": "1988-11-06",
       "uniqueArtists": 1
     },
     "status": "active",
@@ -2060,7 +2053,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:20.575Z",
+    "fetchedAt": "2026-09-07T02:10:48.487Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBfaFhaKVX-zJrfuKSBbdirZxEisw59-0dgI9Arx7EarVcmTvkC9H_zVUZXrgigOamc1rxA460u7yrZmjsYC3fMS2fNjDlvnqHMceEJwanNqcdfQeQCn7xnYpq-0d0lh08WlYhjHjMOJxRZig=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBfaFhaKVX-zJrfuKSBbdirZxEisw59-0dgI9Arx7EarVcmTvkC9H_zVUZXrgigOamc1rxA460u7yrZmjsYC3fMS2fNjDlvnqHMceEJwanNqcdfQeQCn7xnYpq-0d0lh08WlYhjHjMOJxRZig=s4800-h800",
@@ -2114,7 +2107,7 @@
     "closedDate": null,
     "notes": "Demolished after our last show there in 2005; exact date unverified",
     "places": null,
-    "fetchedAt": "2026-08-31T14:53:21.274Z",
+    "fetchedAt": "2026-09-07T02:10:48.989Z",
     "manualPhotos": [
       {
         "url": "/images/venues/universalamphitheater-1.jpg",
@@ -2155,7 +2148,7 @@
     "closedDate": "1990-12-31",
     "notes": "Club closed in 1990",
     "places": null,
-    "fetchedAt": "2026-08-31T14:53:21.274Z",
+    "fetchedAt": "2026-09-07T02:10:48.990Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -2376,7 +2369,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:21.274Z",
+    "fetchedAt": "2026-09-07T02:10:48.990Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAh-JLo4pYgLzA0NpQ3V9fe2V-fdpviXx4kMlNtungiI4PV9-LuimacPlSnv4F73bxP0PPsc4JNyn7UNrEJnupzU1pdOQodLWvlYsfBkbO2xVsZptWX-P5DvA297dlTJ6e8z5tIGA66IcYOCBo=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAh-JLo4pYgLzA0NpQ3V9fe2V-fdpviXx4kMlNtungiI4PV9-LuimacPlSnv4F73bxP0PPsc4JNyn7UNrEJnupzU1pdOQodLWvlYsfBkbO2xVsZptWX-P5DvA297dlTJ6e8z5tIGA66IcYOCBo=s4800-h800",
@@ -2576,7 +2569,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:22.694Z",
+    "fetchedAt": "2026-09-07T02:10:49.209Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBZSgKkauTbbWRBbWsEPwm9XKn_6sJsv1gNrbMWzCP7h0JxyivRAO_Z_Cy6RAE0KECgyTdTT3UV9NATKejWthfAxEH_1NxafqgzTdPUN_ycwh5Y4V9yEWUkv4cenjwPXsrHej023QQmu7HwPQ=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBZSgKkauTbbWRBbWsEPwm9XKn_6sJsv1gNrbMWzCP7h0JxyivRAO_Z_Cy6RAE0KECgyTdTT3UV9NATKejWthfAxEH_1NxafqgzTdPUN_ycwh5Y4V9yEWUkv4cenjwPXsrHej023QQmu7HwPQ=s4800-h800",
@@ -2794,7 +2787,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:23.031Z",
+    "fetchedAt": "2026-09-07T02:10:49.492Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjC8HsGGOSG7RWym25PSMsGMT83uI3Q5AtJvB_uQsPx4IDguUKD8TL2Q8HsPNnl0rAyB_xxLtIcegz0ilq9s_ZHdJa0i_OUfXF3BYlN9GzfXgTtaYnCMeEHzFU4dQ9fSWxBvVaKNihz5GV5DHA=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjC8HsGGOSG7RWym25PSMsGMT83uI3Q5AtJvB_uQsPx4IDguUKD8TL2Q8HsPNnl0rAyB_xxLtIcegz0ilq9s_ZHdJa0i_OUfXF3BYlN9GzfXgTtaYnCMeEHzFU4dQ9fSWxBvVaKNihz5GV5DHA=s4800-h800",
@@ -2990,7 +2983,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:23.486Z",
+    "fetchedAt": "2026-09-07T02:10:49.859Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBHRki1Ww61L4oRwgckFf1Bg2BGcZ1xZztLR_GDH5kvoPCccNwFUZaJK7H2u6nKV2kVMA2wZngXMZnmCXcUKRzFGqwO1HatcV8wsvT-N9bY6k-A7W-jyMhhbO6XZoiq9FlQG5x_n3OyOBBfUrE=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBHRki1Ww61L4oRwgckFf1Bg2BGcZ1xZztLR_GDH5kvoPCccNwFUZaJK7H2u6nKV2kVMA2wZngXMZnmCXcUKRzFGqwO1HatcV8wsvT-N9bY6k-A7W-jyMhhbO6XZoiq9FlQG5x_n3OyOBBfUrE=s4800-h800",
@@ -3188,7 +3181,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:23.891Z",
+    "fetchedAt": "2026-09-07T02:10:50.202Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjCjZ4yzgIxM2DXNU1sJ-fiF64aOTVJkT7TEH8loR9ZJWilHcvrlKMFyCyHkEe5rrL8QpLqj48R4N_hfLuINrVlDKcvsGRsEMBRqU6oWFQ7fhApZ0clWL1RQqojod05fPKHn2KojSacC9irnkBoWHphkXQ=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjCjZ4yzgIxM2DXNU1sJ-fiF64aOTVJkT7TEH8loR9ZJWilHcvrlKMFyCyHkEe5rrL8QpLqj48R4N_hfLuINrVlDKcvsGRsEMBRqU6oWFQ7fhApZ0clWL1RQqojod05fPKHn2KojSacC9irnkBoWHphkXQ=s4800-h800",
@@ -3222,7 +3215,7 @@
     "closedDate": "2008-01-01",
     "notes": "Renamed City National Grove of Anaheim",
     "places": null,
-    "fetchedAt": "2026-08-31T14:53:24.914Z",
+    "fetchedAt": "2026-09-07T02:10:50.988Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -3466,7 +3459,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:24.915Z",
+    "fetchedAt": "2026-09-07T02:10:50.989Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjD19UUNATnRKDm2i8aat4OTflcBDHNZI2xBTiO9zXNhBeJaKdWz3-TMJRRkLyCLduJoZZygRGp2a5fyaaP2K9WAg85Xk2II5NnNFXkatnK8w5JjDYeSBY77BfeFk9yD-EZmJJARM7NcuMibmA=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjD19UUNATnRKDm2i8aat4OTflcBDHNZI2xBTiO9zXNhBeJaKdWz3-TMJRRkLyCLduJoZZygRGp2a5fyaaP2K9WAg85Xk2II5NnNFXkatnK8w5JjDYeSBY77BfeFk9yD-EZmJJARM7NcuMibmA=s4800-h800",
@@ -3500,7 +3493,7 @@
     "closedDate": "2003-01-01",
     "notes": "Demolished for Dignity Health Sports Park (Home Depot Center)",
     "places": null,
-    "fetchedAt": "2026-08-31T14:53:25.225Z",
+    "fetchedAt": "2026-09-07T02:10:51.283Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -3569,7 +3562,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:25.225Z",
+    "fetchedAt": "2026-09-07T02:10:51.284Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAX3LDJGunn1ZXwZpaaBwr9W1osyCbnW_zazvwAZPkhPdlYbgclpO-NYtyjYlHZ1FZ04zLYFG3HAti4RbyAhysOnEgjhRqbU38HusYPdnnLRHP8v3S2rS6EULKIvct1M038Qi57DWxcgtrsNM0=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAX3LDJGunn1ZXwZpaaBwr9W1osyCbnW_zazvwAZPkhPdlYbgclpO-NYtyjYlHZ1FZ04zLYFG3HAti4RbyAhysOnEgjhRqbU38HusYPdnnLRHP8v3S2rS6EULKIvct1M038Qi57DWxcgtrsNM0=s4800-h800",
@@ -3608,7 +3601,7 @@
     "closedDate": "2011-01-01",
     "notes": "Renamed The Observatory",
     "places": null,
-    "fetchedAt": "2026-08-31T14:53:25.732Z",
+    "fetchedAt": "2026-09-07T02:10:51.590Z",
     "manualPhotos": [
       {
         "url": "/images/venues/thegalaxytheatre-1.jpg",
@@ -3816,7 +3809,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:25.732Z",
+    "fetchedAt": "2026-09-07T02:10:51.591Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDxXDW-o8i_BshQiep-P_NYrGNpoO8U2MGnvhViHp3qd2nuTly674vTdw0_MQ16fhFWS4hi5MwGYf2bPnyADW-j-iZWRiOcLQXXqP8Kz-_zH6MQ2iQQS7FsWE4Pn2QPIRuZhR1RgizcvCI2ng=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDxXDW-o8i_BshQiep-P_NYrGNpoO8U2MGnvhViHp3qd2nuTly674vTdw0_MQ16fhFWS4hi5MwGYf2bPnyADW-j-iZWRiOcLQXXqP8Kz-_zH6MQ2iQQS7FsWE4Pn2QPIRuZhR1RgizcvCI2ng=s4800-h800",
@@ -3850,7 +3843,7 @@
     "closedDate": null,
     "notes": "Former address: 1700 S. Pacific Coast Hwy, Redondo Beach, CA 90277",
     "places": null,
-    "fetchedAt": "2026-08-31T14:53:26.122Z",
+    "fetchedAt": "2026-09-07T02:10:51.932Z",
     "manualPhotos": null,
     "photoUrls": {
       "thumbnail": "/images/venues/fallback.jpg",
@@ -4049,7 +4042,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:26.123Z",
+    "fetchedAt": "2026-09-07T02:10:51.933Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDyEinVFPsrzviVNa4Tc9hbT7Rqa-clFe2LIPisXblnG_huQBZxthSYO2nR0ITDuYzJ8hhfsHljq0zfMeInr4w8cb00StMPVVjO9-LhfLKq6BG9V2bi6DE5E25Zolp50Xb4X2bJ2ZocAObn=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDyEinVFPsrzviVNa4Tc9hbT7Rqa-clFe2LIPisXblnG_huQBZxthSYO2nR0ITDuYzJ8hhfsHljq0zfMeInr4w8cb00StMPVVjO9-LhfLKq6BG9V2bi6DE5E25Zolp50Xb4X2bJ2ZocAObn=s4800-h800",
@@ -4259,7 +4252,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:26.514Z",
+    "fetchedAt": "2026-09-07T02:10:52.231Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjCnsfUTrWCkZHefU8z88IQdI4oa2Izk65vU1rzuaad4yji6Q-rJvGOf9MzcJ1RpkEk722QM80jxNYAdEizVn2RNfhM6JoBeK6zxV9IIo2rK6iKzAAh9QsvtbEQckOJ8Cr9HmyLVDkJ9RuEvOOI=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjCnsfUTrWCkZHefU8z88IQdI4oa2Izk65vU1rzuaad4yji6Q-rJvGOf9MzcJ1RpkEk722QM80jxNYAdEizVn2RNfhM6JoBeK6zxV9IIo2rK6iKzAAh9QsvtbEQckOJ8Cr9HmyLVDkJ9RuEvOOI=s4800-h800",
@@ -4490,7 +4483,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:26.831Z",
+    "fetchedAt": "2026-09-07T02:10:52.495Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjCn8bagQg6Ws-NumpuOqevd4ynwsz-6Ngt78X1Ls2MyMOZzGCerawNRGnK0sZq5UuDc-PWBMLdD16WVSMjXdOpxKwmYsqbEevxIiCwpum5zFGx-RL4Gyajt3xyNfTdLL8A5oQv8luUWkqy5SeQ=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjCn8bagQg6Ws-NumpuOqevd4ynwsz-6Ngt78X1Ls2MyMOZzGCerawNRGnK0sZq5UuDc-PWBMLdD16WVSMjXdOpxKwmYsqbEevxIiCwpum5zFGx-RL4Gyajt3xyNfTdLL8A5oQv8luUWkqy5SeQ=s4800-h800",
@@ -4688,7 +4681,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:27.275Z",
+    "fetchedAt": "2026-09-07T02:10:52.692Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAa3nAc6_-Ts9SEIsEXq78g9yIdfjg2O7_hX5nbCs6xXDYIM89SzGEPiyeCP0oxKoqn_e6oO0Rpy0FEjvrNxW2YMTgVw04-sccAZBzA8bJpaPNCfi2Z4oitrJn3FNsIvuwgFPzPxsGt0_rxiw=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAa3nAc6_-Ts9SEIsEXq78g9yIdfjg2O7_hX5nbCs6xXDYIM89SzGEPiyeCP0oxKoqn_e6oO0Rpy0FEjvrNxW2YMTgVw04-sccAZBzA8bJpaPNCfi2Z4oitrJn3FNsIvuwgFPzPxsGt0_rxiw=s4800-h800",
@@ -4885,7 +4878,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:27.631Z",
+    "fetchedAt": "2026-09-07T02:10:52.929Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDaQpbcx2rxiQ26k2YNi0wuNBVzDHXMmJqYZPi-f58SDB8CELjI1RUgSvzdyw-x5Uvu81Pk8-8X9cKGpbyj8sQwFLd7zuvq_QBoysUwj_fR_5LYmjLR209aMdodi1yaF-f3G0D_0nX71OgVvtuQvxmcTA=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDaQpbcx2rxiQ26k2YNi0wuNBVzDHXMmJqYZPi-f58SDB8CELjI1RUgSvzdyw-x5Uvu81Pk8-8X9cKGpbyj8sQwFLd7zuvq_QBoysUwj_fR_5LYmjLR209aMdodi1yaF-f3G0D_0nX71OgVvtuQvxmcTA=s4800-h800",
@@ -4919,7 +4912,7 @@
     "closedDate": "2021-12-25",
     "notes": "Renamed Crypto.com Arena",
     "places": null,
-    "fetchedAt": "2026-08-31T14:53:27.943Z",
+    "fetchedAt": "2026-09-07T02:10:53.188Z",
     "manualPhotos": [
       {
         "url": "/images/venues/staplescenter-1.jpg",
@@ -4960,7 +4953,7 @@
     "closedDate": "2015-01-01",
     "notes": "Renamed Microsoft Theater (now Peacock Theater)",
     "places": null,
-    "fetchedAt": "2026-08-31T14:53:27.943Z",
+    "fetchedAt": "2026-09-07T02:10:53.189Z",
     "manualPhotos": [
       {
         "url": "/images/venues/nokiacenter-1.jpg",
@@ -5164,7 +5157,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:27.943Z",
+    "fetchedAt": "2026-09-07T02:10:53.189Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAq05ovHlJ9WjIANmlzflmfP220kgQXabh8h-Qz1bOieGfp-rzDKadjUa7UqMXT5-gv7PXBB8-_LN4uVMk84dUcUqBkid9iH4CBrhFjQUAYd7bINqIpiFBAT7WpXS-0BThDlWcDl3sGAQcdPA=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAq05ovHlJ9WjIANmlzflmfP220kgQXabh8h-Qz1bOieGfp-rzDKadjUa7UqMXT5-gv7PXBB8-_LN4uVMk84dUcUqBkid9iH4CBrhFjQUAYd7bINqIpiFBAT7WpXS-0BThDlWcDl3sGAQcdPA=s4800-h800",
@@ -5365,7 +5358,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:28.277Z",
+    "fetchedAt": "2026-09-07T02:10:53.446Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjA2Hwnfv9AU1LYMFAT_dqnmK6FORw3UTHPfLcx99nv5MnQr0Cdp6d5LmeJiWClfWYprb4RiE50IO4LfOCRuloMctGdM8KU76BOAfZFw0rRzPcVPalarEpOwgpZx2RDzY2SfymXbKygXpndlZw=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjA2Hwnfv9AU1LYMFAT_dqnmK6FORw3UTHPfLcx99nv5MnQr0Cdp6d5LmeJiWClfWYprb4RiE50IO4LfOCRuloMctGdM8KU76BOAfZFw0rRzPcVPalarEpOwgpZx2RDzY2SfymXbKygXpndlZw=s4800-h800",
@@ -5623,7 +5616,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:28.641Z",
+    "fetchedAt": "2026-09-07T02:10:53.747Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjC2aG-U4Ba4g9-9u-wHpIXTKYA8onRH-r-PHyWzTM8Z7zeB1_EItYIxe4prNKmQSArYl_bCCzZc2v_gUvucqBlt8hF9ft9z17VwlOpVwHGekJBsM1TywrvYnW5O3UeR0qk5NjfHG0QetTyKqyVZt-I_Ag=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjC2aG-U4Ba4g9-9u-wHpIXTKYA8onRH-r-PHyWzTM8Z7zeB1_EItYIxe4prNKmQSArYl_bCCzZc2v_gUvucqBlt8hF9ft9z17VwlOpVwHGekJBsM1TywrvYnW5O3UeR0qk5NjfHG0QetTyKqyVZt-I_Ag=s4800-h800",
@@ -5826,7 +5819,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:29.049Z",
+    "fetchedAt": "2026-09-07T02:10:54.048Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjANorOMUBohitb5HUsw7hpi0uftCo8XYLVs8IKnvs-VSRTINcJ99E7kh2_NJUFrt5Z9ptIo4fKLHrcMFec7Bl79FrRAWaOwIO1LVok6oYY0QY093cCd8Tq8u3fS9xbdrgaY6f4nDhnZJ4jiVg=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjANorOMUBohitb5HUsw7hpi0uftCo8XYLVs8IKnvs-VSRTINcJ99E7kh2_NJUFrt5Z9ptIo4fKLHrcMFec7Bl79FrRAWaOwIO1LVok6oYY0QY093cCd8Tq8u3fS9xbdrgaY6f4nDhnZJ4jiVg=s4800-h800",
@@ -6027,7 +6020,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:29.469Z",
+    "fetchedAt": "2026-09-07T02:10:54.322Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjA7g2HWXLgpDWwhG47WmgOJh12GJxBrS_HrNaWkx9R_MfocMf_-X7yRqSPdzRMDiCyJqB1L7Ha7HRVL__a7FhLM95YpJnNnebwmP8jAqQrTUnX1VuFFw1nRqGEi09E42BhMJ7LZvX9mE9xN=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjA7g2HWXLgpDWwhG47WmgOJh12GJxBrS_HrNaWkx9R_MfocMf_-X7yRqSPdzRMDiCyJqB1L7Ha7HRVL__a7FhLM95YpJnNnebwmP8jAqQrTUnX1VuFFw1nRqGEi09E42BhMJ7LZvX9mE9xN=s4800-h800",
@@ -6235,7 +6228,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:29.786Z",
+    "fetchedAt": "2026-09-07T02:10:54.882Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjC_11XB2PKFuWtRL1xhuV7B2CFlUfsObJoJQk-5i3mUm4XkKMT8p8i1rqtKywMbf-Qwqp5wpbeXisLSz2Yocu40q1sfsaZ7mOSk5aJLJUmtDdyCEAFKOiOG61eyzP6mZc3_yJcUlvXrNuGaWuM=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjC_11XB2PKFuWtRL1xhuV7B2CFlUfsObJoJQk-5i3mUm4XkKMT8p8i1rqtKywMbf-Qwqp5wpbeXisLSz2Yocu40q1sfsaZ7mOSk5aJLJUmtDdyCEAFKOiOG61eyzP6mZc3_yJcUlvXrNuGaWuM=s4800-h800",
@@ -6255,14 +6248,14 @@
     "concerts": [
       {
         "id": "concert-84",
-        "date": "2012-04-24",
+        "date": "2012-04-27",
         "headliner": "Squeeze"
       }
     ],
     "stats": {
       "totalConcerts": 1,
-      "firstEvent": "2012-04-24",
-      "lastEvent": "2012-04-24",
+      "firstEvent": "2012-04-27",
+      "lastEvent": "2012-04-27",
       "uniqueArtists": 1
     },
     "status": "active",
@@ -6433,7 +6426,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:30.126Z",
+    "fetchedAt": "2026-09-07T02:10:55.139Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAFn-LBcHThxD0fo_5-vZAh-0bvXHoCXRD7OWtSont3nc9x5nQz-vNgr_FRj0I1uCFsxPW30V1joBeo0j76GsqHXHmhALcUV03fKcXvKmI6uHzHTpxzZBHqO250V9yd2OEqtYVrQsNhtnoQ=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAFn-LBcHThxD0fo_5-vZAh-0bvXHoCXRD7OWtSont3nc9x5nQz-vNgr_FRj0I1uCFsxPW30V1joBeo0j76GsqHXHmhALcUV03fKcXvKmI6uHzHTpxzZBHqO250V9yd2OEqtYVrQsNhtnoQ=s4800-h800",
@@ -6629,7 +6622,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:30.429Z",
+    "fetchedAt": "2026-09-07T02:10:55.726Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBx2-_hZYbKP7SMVK5gBMOpU1Bur0_5JUXleVZj28IPM5RVfypwKnmd2tjyatxtQv2SmxUFlHHceGBPQPUZ88Ah-7OewFE8-dquQTmwRWsBTJEyI3Gi1li2fB1Wwvf_rjDci3wjVtaOVzt7h-c_53qazg=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBx2-_hZYbKP7SMVK5gBMOpU1Bur0_5JUXleVZj28IPM5RVfypwKnmd2tjyatxtQv2SmxUFlHHceGBPQPUZ88Ah-7OewFE8-dquQTmwRWsBTJEyI3Gi1li2fB1Wwvf_rjDci3wjVtaOVzt7h-c_53qazg=s4800-h800",
@@ -6659,7 +6652,7 @@
       },
       {
         "id": "concert-93",
-        "date": "2013-06-01",
+        "date": "2013-06-19",
         "headliner": "Rancid"
       },
       {
@@ -6873,7 +6866,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:30.859Z",
+    "fetchedAt": "2026-09-07T02:10:56.321Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjA7TiBF3Cz_FiHApOQ-0G6f2A44CdmHvC7aJZRH9k1hYBAKQ9pDHVOg0uarHPgg6Tmz7l3_Q4P6bocAt_yrtSkrtDNVukeImUFh06hjFYY2KFmcWfsi5lvYkgcNJDd9RTRq6OvfaUeOAD8GWFCnaWaCdA=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjA7TiBF3Cz_FiHApOQ-0G6f2A44CdmHvC7aJZRH9k1hYBAKQ9pDHVOg0uarHPgg6Tmz7l3_Q4P6bocAt_yrtSkrtDNVukeImUFh06hjFYY2KFmcWfsi5lvYkgcNJDd9RTRq6OvfaUeOAD8GWFCnaWaCdA=s4800-h800",
@@ -7070,7 +7063,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:31.220Z",
+    "fetchedAt": "2026-09-07T02:10:56.959Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBE2OA9U5Cl-wdNFv9IpvaY9W5MHJqpSHDbn4lFyh3gXOWCgNB_HPKpy7seiwD-1Dr6Krk0ZF7qnNBid-X_3H-bvhVIQwED_vk8_DKfAVaZcW5TmWeYr-MTCH7P-F6S8T0ALawHLu29gSSpu9_7tL5N5Q=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBE2OA9U5Cl-wdNFv9IpvaY9W5MHJqpSHDbn4lFyh3gXOWCgNB_HPKpy7seiwD-1Dr6Krk0ZF7qnNBid-X_3H-bvhVIQwED_vk8_DKfAVaZcW5TmWeYr-MTCH7P-F6S8T0ALawHLu29gSSpu9_7tL5N5Q=s4800-h800",
@@ -7269,7 +7262,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:31.591Z",
+    "fetchedAt": "2026-09-07T02:10:57.271Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjCwDOdqd8WqP9B5kykxO0e_MiCLSkeeltWVC2Q69a_CzYGqTO-aGleEg6fsJx784unUVqCd5H9G4nbmdinCGkPfQ-3AmOM21_vwCKFJCOznFvKbuJf2E7rMwu1vdrsUw8Z0NV9HZkukt6u5f64=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjCwDOdqd8WqP9B5kykxO0e_MiCLSkeeltWVC2Q69a_CzYGqTO-aGleEg6fsJx784unUVqCd5H9G4nbmdinCGkPfQ-3AmOM21_vwCKFJCOznFvKbuJf2E7rMwu1vdrsUw8Z0NV9HZkukt6u5f64=s4800-h800",
@@ -7479,7 +7472,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:31.913Z",
+    "fetchedAt": "2026-09-07T02:10:57.503Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAsl-n89g3_K1sgGBHHMWCTN9FXTwqoIfkoEs9hLWaBeMzQ5H-1UPq1BKvcz5LSCuIyBuKe6uBk2tzvHDeEuaK64IQyD3lfXgMu-7pKdBIcmJ4E-G5bW7ksEAfOGFn4USAYBxXT7duSaAmDow=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAsl-n89g3_K1sgGBHHMWCTN9FXTwqoIfkoEs9hLWaBeMzQ5H-1UPq1BKvcz5LSCuIyBuKe6uBk2tzvHDeEuaK64IQyD3lfXgMu-7pKdBIcmJ4E-G5bW7ksEAfOGFn4USAYBxXT7duSaAmDow=s4800-h800",
@@ -7675,7 +7668,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:32.463Z",
+    "fetchedAt": "2026-09-07T02:10:57.999Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAoAwvUCVebz5D7aV-dneKIpGSUEHSLg4qym3ApPtYI08fwQfQ_up7t8_Vr3O8zI0GHnYFdwH8n256VwPViqF1iBeVEO19j3zxZlHMa_2qEv5Ezlz9UbGrxES-QjyqLlUGwNX-mHbQswAUwb-L3V3D4lg=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAoAwvUCVebz5D7aV-dneKIpGSUEHSLg4qym3ApPtYI08fwQfQ_up7t8_Vr3O8zI0GHnYFdwH8n256VwPViqF1iBeVEO19j3zxZlHMa_2qEv5Ezlz9UbGrxES-QjyqLlUGwNX-mHbQswAUwb-L3V3D4lg=s4800-h800",
@@ -7871,7 +7864,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:32.807Z",
+    "fetchedAt": "2026-09-07T02:10:58.268Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBd7lu5gF00UO7r5oBQV3rkduHImdd8sJWU59DP_maivnQiClTTYMKnE78Y7XB3IEqKBEup679bfwj39wAzWI9PPwLo3FLcRY3SUYjkW_OOusfAtJDkudPeH8uiU0ybfUiNjFM4j2OT77VzHw=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBd7lu5gF00UO7r5oBQV3rkduHImdd8sJWU59DP_maivnQiClTTYMKnE78Y7XB3IEqKBEup679bfwj39wAzWI9PPwLo3FLcRY3SUYjkW_OOusfAtJDkudPeH8uiU0ybfUiNjFM4j2OT77VzHw=s4800-h800",
@@ -8069,7 +8062,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:33.182Z",
+    "fetchedAt": "2026-09-07T02:10:58.618Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDNrBdnrIReNK3Uzt0otBKwzVhaWj4GN-G03UMX3cxzP2BW9TL1d0Q9QpmrPVpH3Br3A6aZRFUfy4NtWL42eshJ0yUNukqLMVlgDdCWSMvSeT85nW3cv4QpttafoHONb9MPuZJf0MVyfrPlQ2E=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDNrBdnrIReNK3Uzt0otBKwzVhaWj4GN-G03UMX3cxzP2BW9TL1d0Q9QpmrPVpH3Br3A6aZRFUfy4NtWL42eshJ0yUNukqLMVlgDdCWSMvSeT85nW3cv4QpttafoHONb9MPuZJf0MVyfrPlQ2E=s4800-h800",
@@ -8103,7 +8096,7 @@
     "closedDate": "2019-09-15",
     "notes": "Demolished",
     "places": null,
-    "fetchedAt": "2026-08-31T14:53:33.515Z",
+    "fetchedAt": "2026-09-07T02:10:58.853Z",
     "manualPhotos": [
       {
         "url": "/images/venues/rfkstadium-1.jpg",
@@ -8308,7 +8301,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:33.515Z",
+    "fetchedAt": "2026-09-07T02:10:58.853Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBXEu2tWXX0AErUIHBVLZRjKc3KfXD4QZDNdHLVjbOCujJJoaNiD9qA8d4utfkbUkvvCLAmbFbcUgzs7IKrWDr4j4S6JjTo4G-YAojT_bgjANk9T7CEnGc4swLTKVuxoQ-PJcpwGf6chdPR7QE=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBXEu2tWXX0AErUIHBVLZRjKc3KfXD4QZDNdHLVjbOCujJJoaNiD9qA8d4utfkbUkvvCLAmbFbcUgzs7IKrWDr4j4S6JjTo4G-YAojT_bgjANk9T7CEnGc4swLTKVuxoQ-PJcpwGf6chdPR7QE=s4800-h800",
@@ -8508,7 +8501,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:33.878Z",
+    "fetchedAt": "2026-09-07T02:10:59.199Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAZqUC7WQqeZ0ZPVbXsBgB1VfQby0xFIilocZ7pLv0UjyUffKri34Gel-5DVwD9RAcmBENJaRH_2B_qaUIqp_dGmNz5_3FMkp-3hz_jR2fnQt56UaRxRCLjc-eXFvS_f1vHiM5osdAseMZuvw=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAZqUC7WQqeZ0ZPVbXsBgB1VfQby0xFIilocZ7pLv0UjyUffKri34Gel-5DVwD9RAcmBENJaRH_2B_qaUIqp_dGmNz5_3FMkp-3hz_jR2fnQt56UaRxRCLjc-eXFvS_f1vHiM5osdAseMZuvw=s4800-h800",
@@ -8705,7 +8698,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:34.230Z",
+    "fetchedAt": "2026-09-07T02:10:59.470Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDY0V4tftDjBqsRAMh0_lBeuXKcpz6JYYmYN68zOkBr3xXuThHGbevFuAwxeYiUs62sWQeeWh_u5XUs0zPLbooEf2mxNDL4eB0GU8TQKOB6LsEunf7i1h1SlaA6dkB8foaWUpk3Y1jSIOG9hQ=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDY0V4tftDjBqsRAMh0_lBeuXKcpz6JYYmYN68zOkBr3xXuThHGbevFuAwxeYiUs62sWQeeWh_u5XUs0zPLbooEf2mxNDL4eB0GU8TQKOB6LsEunf7i1h1SlaA6dkB8foaWUpk3Y1jSIOG9hQ=s4800-h800",
@@ -8903,7 +8896,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:34.529Z",
+    "fetchedAt": "2026-09-07T02:10:59.724Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBj8u_jZKZwXmWLZoWWk324uCXC2CDINTkbHG0vTa4cqTtBMBLoncbUmF7n8zaqHRP2RbqVSdXRRolyWm6C27__FZGDWkG9z1HdcWYdXsJmDStO3HbibP-5fshSsYRS19UD0E-xqFgMKevu=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBj8u_jZKZwXmWLZoWWk324uCXC2CDINTkbHG0vTa4cqTtBMBLoncbUmF7n8zaqHRP2RbqVSdXRRolyWm6C27__FZGDWkG9z1HdcWYdXsJmDStO3HbibP-5fshSsYRS19UD0E-xqFgMKevu=s4800-h800",
@@ -9105,7 +9098,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:35.126Z",
+    "fetchedAt": "2026-09-07T02:11:00.123Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDrIfhydT5_YbdiTNgRwZUHdZtXfFZGXF_3sNm5TZQxMUccg48lNW962tt1q-UwF3V_HEPIzV7DsnCDqXU1JZJKfRS7qh5YxHOaRsVtzUuMTFmA94oyW9Lt84immEJardP0PfrqYr7modXKDQ=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDrIfhydT5_YbdiTNgRwZUHdZtXfFZGXF_3sNm5TZQxMUccg48lNW962tt1q-UwF3V_HEPIzV7DsnCDqXU1JZJKfRS7qh5YxHOaRsVtzUuMTFmA94oyW9Lt84immEJardP0PfrqYr7modXKDQ=s4800-h800",
@@ -9308,7 +9301,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:35.464Z",
+    "fetchedAt": "2026-09-07T02:11:00.413Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjCNl0GQWpqHsxgJXPF6vIX-9UmDjtSS3hLeQnGii2PD_56SwtHY1lTJvFvcOcNcXG-V6pPAEwgdEY1N-bOjuPUJFClnrj41Oiotim9QW-qCdlwKEQVH5DUsVyoP-Rl1Tu39seqEEOns-VhS=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjCNl0GQWpqHsxgJXPF6vIX-9UmDjtSS3hLeQnGii2PD_56SwtHY1lTJvFvcOcNcXG-V6pPAEwgdEY1N-bOjuPUJFClnrj41Oiotim9QW-qCdlwKEQVH5DUsVyoP-Rl1Tu39seqEEOns-VhS=s4800-h800",
@@ -9516,7 +9509,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:35.787Z",
+    "fetchedAt": "2026-09-07T02:11:00.653Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAVdpMaLpdxeNLxWKjNI9utl-75Bhtes_ihhM9v060PFUfWKkGDdWM-LC3aOEPVTBYeAiNFn3scIW2HKtXR4BmLeBb9wpODfi3Q2D3bUeD4dAUB1Hfu3yU2ivCiy7Y7KSLq_icpqr4raQ1zwQ=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAVdpMaLpdxeNLxWKjNI9utl-75Bhtes_ihhM9v060PFUfWKkGDdWM-LC3aOEPVTBYeAiNFn3scIW2HKtXR4BmLeBb9wpODfi3Q2D3bUeD4dAUB1Hfu3yU2ivCiy7Y7KSLq_icpqr4raQ1zwQ=s4800-h800",
@@ -9712,7 +9705,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:36.097Z",
+    "fetchedAt": "2026-09-07T02:11:00.915Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAoQdrS3noDRh2j8_MwV5BkkeRGwBNzulyxXWeStjbrd8Lp2seQZ17VyRTwPq4irLfftDf_aY9cnyafY-Jd4h-x6yHGDGAlQCX4cXos27Gwk8g1HMneZw8IYXyRWKaK75tQJRlZ101Ec1cUow=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAoQdrS3noDRh2j8_MwV5BkkeRGwBNzulyxXWeStjbrd8Lp2seQZ17VyRTwPq4irLfftDf_aY9cnyafY-Jd4h-x6yHGDGAlQCX4cXos27Gwk8g1HMneZw8IYXyRWKaK75tQJRlZ101Ec1cUow=s4800-h800",
@@ -9913,7 +9906,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:36.426Z",
+    "fetchedAt": "2026-09-07T02:11:01.174Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAS7iHj7YsUm9Wq6Ff-snpxP7XyOsMmcw0yv2iMz4p5Lwh-DlnGlK1lbShI6A2bcHHNOdWyPkNdXydtU4ibhN9IdP85gkHzizYN3Zj5lXVRolPoGV5sfj5D27FBNFcJr1NhFc91VTqoyKqZdg=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAS7iHj7YsUm9Wq6Ff-snpxP7XyOsMmcw0yv2iMz4p5Lwh-DlnGlK1lbShI6A2bcHHNOdWyPkNdXydtU4ibhN9IdP85gkHzizYN3Zj5lXVRolPoGV5sfj5D27FBNFcJr1NhFc91VTqoyKqZdg=s4800-h800",
@@ -10115,7 +10108,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:36.806Z",
+    "fetchedAt": "2026-09-07T02:11:01.842Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDka7teGTX3Di6-MiRMbJ4PCUdGp_VjS-NgBttQwM9vQetIvrZ3tY93RwX7ktOCJvNQu-XA5yMwwLFiwpGugq7yXl-X7hM2w7K-J-pT6i0Sn6xZekIrNl2zxnXagrNXFXkf-o_H381UfLJPVg=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDka7teGTX3Di6-MiRMbJ4PCUdGp_VjS-NgBttQwM9vQetIvrZ3tY93RwX7ktOCJvNQu-XA5yMwwLFiwpGugq7yXl-X7hM2w7K-J-pT6i0Sn6xZekIrNl2zxnXagrNXFXkf-o_H381UfLJPVg=s4800-h800",
@@ -10315,7 +10308,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:37.191Z",
+    "fetchedAt": "2026-09-07T02:11:02.166Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDwkBQ90qFDYQkuYDd1UoFMAlRUG9SPIbIK4Cb5VcSCzVGzgIUfSg4X_9ua3ujACajQ9b9ELADC3bvaZC-hzb6lGhRo0xANXEikWChRO1SFwuVeRxb2612N3scJrd2vqdpForRxhuhU9VZRVCU=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDwkBQ90qFDYQkuYDd1UoFMAlRUG9SPIbIK4Cb5VcSCzVGzgIUfSg4X_9ua3ujACajQ9b9ELADC3bvaZC-hzb6lGhRo0xANXEikWChRO1SFwuVeRxb2612N3scJrd2vqdpForRxhuhU9VZRVCU=s4800-h800",
@@ -10511,7 +10504,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:37.591Z",
+    "fetchedAt": "2026-09-07T02:11:02.476Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBx2-_hZYbKP7SMVK5gBMOpU1Bur0_5JUXleVZj28IPM5RVfypwKnmd2tjyatxtQv2SmxUFlHHceGBPQPUZ88Ah-7OewFE8-dquQTmwRWsBTJEyI3Gi1li2fB1Wwvf_rjDci3wjVtaOVzt7h-c_53qazg=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBx2-_hZYbKP7SMVK5gBMOpU1Bur0_5JUXleVZj28IPM5RVfypwKnmd2tjyatxtQv2SmxUFlHHceGBPQPUZ88Ah-7OewFE8-dquQTmwRWsBTJEyI3Gi1li2fB1Wwvf_rjDci3wjVtaOVzt7h-c_53qazg=s4800-h800",
@@ -10729,7 +10722,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:37.869Z",
+    "fetchedAt": "2026-09-07T02:11:02.674Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDqGLy3eTXe3B4_aWXu5IQojAFin6ZVCGW-hfUFEYbOTvHGyngtfsZgb5MAY0AfxwgOYy0bK2JuCl0EKl6ZCYLKIQHsskU59j5rOu4zvMCuQIw9sTmQAvdSgucrkEAEPMkqEvkc9nm_FhfCZA=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDqGLy3eTXe3B4_aWXu5IQojAFin6ZVCGW-hfUFEYbOTvHGyngtfsZgb5MAY0AfxwgOYy0bK2JuCl0EKl6ZCYLKIQHsskU59j5rOu4zvMCuQIw9sTmQAvdSgucrkEAEPMkqEvkc9nm_FhfCZA=s4800-h800",
@@ -10942,7 +10935,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:38.192Z",
+    "fetchedAt": "2026-09-07T02:11:02.914Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAhctfab_OmdUIyJzrWT4ji8SkDShtiYwpCdwG6MXY6aSfcH5B9Ya3gufhHYOsvO6OEPfo-Xpzle6-AwbWKAYoNYZ1E-NN-cRM1PJtJogVsqmwnWz2uIT4c9k4_w99L3NFTVZfaiR0-y4ZQ3g=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAhctfab_OmdUIyJzrWT4ji8SkDShtiYwpCdwG6MXY6aSfcH5B9Ya3gufhHYOsvO6OEPfo-Xpzle6-AwbWKAYoNYZ1E-NN-cRM1PJtJogVsqmwnWz2uIT4c9k4_w99L3NFTVZfaiR0-y4ZQ3g=s4800-h800",
@@ -11146,7 +11139,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:38.577Z",
+    "fetchedAt": "2026-09-07T02:11:03.229Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBuoqN1hO3BHz2ashsVDOiRzGLNQGlUFFWoiqyJF9Pd1ricUsGSQUQn2SomRhKDqD-v6nT1lJqj8KS5scEZ4ZXWXBnic9R-QSONqbp9zxgn1sypNQTnCos0R1UL0S7-LMxSwZzFUC9ZeoCrgg=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBuoqN1hO3BHz2ashsVDOiRzGLNQGlUFFWoiqyJF9Pd1ricUsGSQUQn2SomRhKDqD-v6nT1lJqj8KS5scEZ4ZXWXBnic9R-QSONqbp9zxgn1sypNQTnCos0R1UL0S7-LMxSwZzFUC9ZeoCrgg=s4800-h800",
@@ -11349,7 +11342,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:38.892Z",
+    "fetchedAt": "2026-09-07T02:11:03.471Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjCLqTc6jVkSSNdeZ7PmhLoHpVawU9AgtajRA3DlNuv4vuOaYg-kFSTtsPRyzNdhYvN5q8wep14v2xifX838SVilvLVP8tk86LNgkUDXUMdPiC40CMGbRP94Ai8R7CsH1hWhCNArtTpoP69wvQ=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjCLqTc6jVkSSNdeZ7PmhLoHpVawU9AgtajRA3DlNuv4vuOaYg-kFSTtsPRyzNdhYvN5q8wep14v2xifX838SVilvLVP8tk86LNgkUDXUMdPiC40CMGbRP94Ai8R7CsH1hWhCNArtTpoP69wvQ=s4800-h800",
@@ -11544,7 +11537,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:39.208Z",
+    "fetchedAt": "2026-09-07T02:11:03.717Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBuScwEVtfHxraNsYwNyQMDvBfxIXvnAx6whZcIMZggaNzdgsFNHIaQj0aqyQ7SRtdUvbiDpWdIANDv0aqxeiX8gNpBtn2msR_Q8rwNvqozKj6wcNgqnTtNLk_IUEF-1EAsSLpv-9VvB4UwhDo=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBuScwEVtfHxraNsYwNyQMDvBfxIXvnAx6whZcIMZggaNzdgsFNHIaQj0aqyQ7SRtdUvbiDpWdIANDv0aqxeiX8gNpBtn2msR_Q8rwNvqozKj6wcNgqnTtNLk_IUEF-1EAsSLpv-9VvB4UwhDo=s4800-h800",
@@ -11741,7 +11734,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:39.588Z",
+    "fetchedAt": "2026-09-07T02:11:04.100Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjBH8k6hKGoStBW55UP1_EFHB5tGoZR3ALTWkmgVn7BlZ9bfczXyB-ZfOLZccWNMLtoIVCU71GLb6btHxxQpkEIY3MGsEUcNXmcQficJzh2N07FBtZW33vxbOnhcdfnyahGjWvN-NjYY75CbrIo=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjBH8k6hKGoStBW55UP1_EFHB5tGoZR3ALTWkmgVn7BlZ9bfczXyB-ZfOLZccWNMLtoIVCU71GLb6btHxxQpkEIY3MGsEUcNXmcQficJzh2N07FBtZW33vxbOnhcdfnyahGjWvN-NjYY75CbrIo=s4800-h800",
@@ -11941,7 +11934,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:39.903Z",
+    "fetchedAt": "2026-09-07T02:11:04.367Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAcQ7wxZ23iDr1_PC6ICfqvw87w-p20sYcHTmVTAVWHEOpDhUaQ3WRlJwmdZ3N5EVYdrvdEXZVVzOAr8z2TlR7Kugo9F5c1quydPmdoXEfjpNLd1qsQtueqvyvJTpk0ndUpdBZrg-0M8OLcj9o=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAcQ7wxZ23iDr1_PC6ICfqvw87w-p20sYcHTmVTAVWHEOpDhUaQ3WRlJwmdZ3N5EVYdrvdEXZVVzOAr8z2TlR7Kugo9F5c1quydPmdoXEfjpNLd1qsQtueqvyvJTpk0ndUpdBZrg-0M8OLcj9o=s4800-h800",
@@ -12151,7 +12144,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:40.239Z",
+    "fetchedAt": "2026-09-07T02:11:04.619Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDzeWSeG5KvVKs8J3RqEekqOTM8OFSvzrXHLOezvf4dfn3qbX6fypV3PGrVmYU6XhHT_AV-R7DfaWAfoPf2s1tch2FSv4uaCP58fvGfE8-goyhJ7G4-Mfy2dHPKjVH_TZkV_Q3i9zo9OFVjcA=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDzeWSeG5KvVKs8J3RqEekqOTM8OFSvzrXHLOezvf4dfn3qbX6fypV3PGrVmYU6XhHT_AV-R7DfaWAfoPf2s1tch2FSv4uaCP58fvGfE8-goyhJ7G4-Mfy2dHPKjVH_TZkV_Q3i9zo9OFVjcA=s4800-h800",
@@ -12369,7 +12362,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:40.566Z",
+    "fetchedAt": "2026-09-07T02:11:04.857Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAMho0J8FZhmdX5_bdy1B-9qPWXzOHqzUC4W4WE_JeqAbMmXNpBNgubHbooQbAmlJFkaJ6wAW6m9OfEIwFm-zVWIaJrRR7BkB9-11idkzoDSVhAoghaYs_eMemLPJKx-f45hshuYFdt0J4w6A=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAMho0J8FZhmdX5_bdy1B-9qPWXzOHqzUC4W4WE_JeqAbMmXNpBNgubHbooQbAmlJFkaJ6wAW6m9OfEIwFm-zVWIaJrRR7BkB9-11idkzoDSVhAoghaYs_eMemLPJKx-f45hshuYFdt0J4w6A=s4800-h800",
@@ -12570,7 +12563,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:40.878Z",
+    "fetchedAt": "2026-09-07T02:11:05.096Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDIbCxACH7Gd5Ed6B_zs5Af53nTfIEcqnuJyZujggRN4UMYnkqgcbFvj7R1R5ryAdtpjJuTlxLDC-Q5GLsY1XfeZC06HiSoSFp2geuOjLc7zz5nGQBwcBkWaZP3hPHZY6W4SHIv6Ok0iuQsZQ=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDIbCxACH7Gd5Ed6B_zs5Af53nTfIEcqnuJyZujggRN4UMYnkqgcbFvj7R1R5ryAdtpjJuTlxLDC-Q5GLsY1XfeZC06HiSoSFp2geuOjLc7zz5nGQBwcBkWaZP3hPHZY6W4SHIv6Ok0iuQsZQ=s4800-h800",
@@ -12766,7 +12759,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:42.155Z",
+    "fetchedAt": "2026-09-07T02:11:06.127Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAEMm_gxiOiGYP2J70F0iTaVyv99g91kEj0hrrMHFDYYhwRqrem9TEaLWqRyrLedTRn82lY0VT3ewYFJOwscct9wAt61-0NpKcm-W3OZb8Xj4HHa5Bnt684LCgj4dopDUuN3L8HBwcWM8yxhuE=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAEMm_gxiOiGYP2J70F0iTaVyv99g91kEj0hrrMHFDYYhwRqrem9TEaLWqRyrLedTRn82lY0VT3ewYFJOwscct9wAt61-0NpKcm-W3OZb8Xj4HHa5Bnt684LCgj4dopDUuN3L8HBwcWM8yxhuE=s4800-h800",
@@ -12979,7 +12972,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:42.479Z",
+    "fetchedAt": "2026-09-07T02:11:06.710Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjARTS15l4VWdn_BBOnprbzYGN279X_ZwT_eQ8jdkpua0FkOc0NFk6dWXqH6SCvQmKTRW6bTp57CUDjMNhsxDSXdmPmZLcW0heZb-8HRd51NO5poD772BAxcw_tCUVf0UKE-pJwL2PzbYEHVczuW7dTU3A=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjARTS15l4VWdn_BBOnprbzYGN279X_ZwT_eQ8jdkpua0FkOc0NFk6dWXqH6SCvQmKTRW6bTp57CUDjMNhsxDSXdmPmZLcW0heZb-8HRd51NO5poD772BAxcw_tCUVf0UKE-pJwL2PzbYEHVczuW7dTU3A=s4800-h800",
@@ -13192,7 +13185,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:42.868Z",
+    "fetchedAt": "2026-09-07T02:11:07.003Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDyXlsphxAaGHgcv3xTFPbJ4qYs_EugA_Pn8IbXENMmrKl0nnAEm-1p6DXD86W7hjKkL2Vzizn0fvr2tp7lY3JGfwgGNyFRWuHbLpDgSoiiJrUVgRd2plnVtcJLp5ceZLyWUp7Q6SODxiATew=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDyXlsphxAaGHgcv3xTFPbJ4qYs_EugA_Pn8IbXENMmrKl0nnAEm-1p6DXD86W7hjKkL2Vzizn0fvr2tp7lY3JGfwgGNyFRWuHbLpDgSoiiJrUVgRd2plnVtcJLp5ceZLyWUp7Q6SODxiATew=s4800-h800",
@@ -13388,7 +13381,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:43.193Z",
+    "fetchedAt": "2026-09-07T02:11:07.273Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjC55i2yciNH0XYUKpQLzHJwt5eZwPdq6xvIxR6Kj9v4w1HWh2lWF5buPB88MHhkD6Y3TMSDuwoKvkzt7d7UZ2Xy-pHFq6JG0nzVsNovxay5ESmv0Alrmto1GhCP6dMPvyniWt9HBV0ksdZla8g=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjC55i2yciNH0XYUKpQLzHJwt5eZwPdq6xvIxR6Kj9v4w1HWh2lWF5buPB88MHhkD6Y3TMSDuwoKvkzt7d7UZ2Xy-pHFq6JG0nzVsNovxay5ESmv0Alrmto1GhCP6dMPvyniWt9HBV0ksdZla8g=s4800-h800",
@@ -13584,7 +13577,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:44.136Z",
+    "fetchedAt": "2026-09-07T02:11:08.087Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDY7RbN89IyfFEtrl3Dq_5DF7qxh0CicmDF2E9di96pE4rrktu9qspFCWPRW6xNH76jKxG8D6bq6EMmN7hLiMfctPbBO9JAGw1bDW49gS-Qoiyh5WQ77rprRN1z5YfZoyPbsU0_LDULqLP6TA=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDY7RbN89IyfFEtrl3Dq_5DF7qxh0CicmDF2E9di96pE4rrktu9qspFCWPRW6xNH76jKxG8D6bq6EMmN7hLiMfctPbBO9JAGw1bDW49gS-Qoiyh5WQ77rprRN1z5YfZoyPbsU0_LDULqLP6TA=s4800-h800",
@@ -13780,7 +13773,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:44.584Z",
+    "fetchedAt": "2026-09-07T02:11:08.375Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDBgEbvV9HKJ1nS31AD-VMeHEx6QqNgRaz4iuAnZG5lGV-J1WqdeYeiT1_NpTONPWMtLIei-m817XOlEJarEPzoM7kDC5loTXRiNNnaE81uRUKGhtdIyehPLkMzT1ZptM43LIB4z3SrMODTuKo=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDBgEbvV9HKJ1nS31AD-VMeHEx6QqNgRaz4iuAnZG5lGV-J1WqdeYeiT1_NpTONPWMtLIei-m817XOlEJarEPzoM7kDC5loTXRiNNnaE81uRUKGhtdIyehPLkMzT1ZptM43LIB4z3SrMODTuKo=s4800-h800",
@@ -13978,7 +13971,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:44.880Z",
+    "fetchedAt": "2026-09-07T02:11:08.608Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjDYabnQ8iBf4a_Rs_GpHOnAVD5imeE0D4ozlV8N0kekF9UirpDKiKQ7svVDa34gBHu8fIXSdFRxIU1PAbdC3mWTMcphBtW4dXhVvnORaXCNLNvM4ihBLBPoYr0yVxWsj9Dac7fNG-ZC3iYq4Q=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjDYabnQ8iBf4a_Rs_GpHOnAVD5imeE0D4ozlV8N0kekF9UirpDKiKQ7svVDa34gBHu8fIXSdFRxIU1PAbdC3mWTMcphBtW4dXhVvnORaXCNLNvM4ihBLBPoYr0yVxWsj9Dac7fNG-ZC3iYq4Q=s4800-h800",
@@ -14177,7 +14170,7 @@
         }
       ]
     },
-    "fetchedAt": "2026-08-31T14:53:45.185Z",
+    "fetchedAt": "2026-09-07T02:11:08.896Z",
     "photoUrls": {
       "thumbnail": "https://lh3.googleusercontent.com/place-photos/AG9NLjAssHJ1x7x3vJI0oaLX1Z5PUPka_Ypqwvr9IfUcwh1VRmg6OKw_S4M2cVAC2kVCSvcsul-Q5JdDwtWXl85LjVPlbv8yY3T8baD0wCVUUWhDfncxmmk-pfMEJ0GvDbawAspznY5xZZEopcqldC8=s4800-h400",
       "medium": "https://lh3.googleusercontent.com/place-photos/AG9NLjAssHJ1x7x3vJI0oaLX1Z5PUPka_Ypqwvr9IfUcwh1VRmg6OKw_S4M2cVAC2kVCSvcsul-Q5JdDwtWXl85LjVPlbv8yY3T8baD0wCVUUWhDfncxmmk-pfMEJ0GvDbawAspznY5xZZEopcqldC8=s4800-h800",
