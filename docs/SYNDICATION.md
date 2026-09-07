@@ -546,17 +546,18 @@ rather than on whether the input looks empty — `backlog` carries a dispatch
 default of `'0'`, and relying on how Actions fills the inputs context under cron
 is the kind of assumption whose failure is a drip that silently never drips.
 
-## Decided, not yet done
+## The back-catalogue drip — live since #453
 
-### Back-catalogue drip: daily at first, then taper
+**It is switched on.** `DEFAULT_BACKLOG: "1"` in `syndicate.yml`, every scheduled
+run except Mondays. This section said "decided, not yet done" for two weeks after
+it shipped; it is a record of a live mechanism now.
 
-57 archived notes can be dripped with `--backlog N`. The mechanism works; the
-schedule is the decision, and it is this:
-
-**Daily except Mondays for the first ~3 weeks, then drop to 2 a week.**
-
-Turn it on only once the new-post flow has run clean on live channels for a
-couple of weeks — one variable at a time.
+**The taper was decided and deliberately not built.** The plan below was daily for
+~3 weeks then 2 a week. The code is a flat `1` with no taper, and that is the
+decision rather than an omission: at one a day the queue empties in about eight
+weeks, which is the front-load-then-stop shape the reasoning below argues for.
+A taper would add a second schedule to maintain in order to arrive at the same
+place. **If you change `DEFAULT_BACKLOG`, change this paragraph.**
 
 The reasoning is worth keeping, because the obvious read is wrong in both
 directions. Six a week clears the archive in 10 weeks; one a week takes 57. The
@@ -572,10 +573,11 @@ not convert a visitor into a follower. Hence front-load, then taper — buy the
 depth, then stop spending.
 
 Automate it rather than dispatching by hand. A drip that needs someone to
-remember runs twice and stops. One line in the workflow, on a fixed weekday
-that is not Monday, so it does not land on top of the fresh liner note.
+remember runs twice and stops. That is why it is one line in the workflow rather
+than a habit, and why Mondays are excluded in code — the fresh liner note
+publishes then and the drip must not land on top of it.
 
-### Dashboard control: deliberately deferred
+## Dashboard control: deliberately deferred
 
 The kill switch is reachable from a phone via the workflow's `pause` mode, and
 that closed the actual gap. A dashboard button is a convenience on top.
@@ -604,8 +606,7 @@ when posting stops and nobody remembers why.
 | The 630×630 wide-card composition | #342 — Phase 1 posts the existing OG card |
 | Multi-show On This Day days | Tier-3 artwork — 28 days a year deferred |
 | YouTube Shorts + TikTok | L3 video and #100 |
-| Syndication health on the dashboard | #337. The control surface it would sit beside is #172 — see *Decided, not yet done* above |
-| The back-catalogue drip, switched on | Nothing. The schedule is decided; see *Decided, not yet done* above |
+| Syndication health on the dashboard | #337. The control surface it would sit beside is #172 — see *Dashboard control* below |
 | `@artist` mentions on X and Instagram | #334/#335. Bluesky ships now; that is where the coverage is — 170 of 257 artists on X and 143 on Instagram, against 21 on Bluesky. See *Naming the account* below |
 
 ---
