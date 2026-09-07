@@ -192,8 +192,8 @@
           "lastYear": 2023
         },
         {
-          "name": "The Alarm",
-          "normalizedName": "the-alarm",
+          "name": "Blancmange",
+          "normalizedName": "blancmange",
           "showCount": 1,
           "years": [
             1986
@@ -202,8 +202,8 @@
           "lastYear": 1986
         },
         {
-          "name": "Blancmange",
-          "normalizedName": "blancmange",
+          "name": "The Alarm",
+          "normalizedName": "the-alarm",
           "showCount": 1,
           "years": [
             1986
@@ -1557,5 +1557,5 @@
     "start": 1984,
     "end": 2026
   },
-  "generatedAt": "2026-08-31T14:56:53.668Z"
+  "generatedAt": "2026-09-07T13:22:02.874Z"
 }

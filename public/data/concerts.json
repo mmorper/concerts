@@ -302,6 +302,30 @@
       }
     },
     {
+      "id": "concert-14",
+      "date": "1986-02-15",
+      "headliner": "Blancmange",
+      "headlinerNormalized": "blancmange",
+      "genre": "New Wave",
+      "genreNormalized": "new-wave",
+      "openers": [],
+      "venue": "Crawford Hall",
+      "venueNormalized": "crawford-hall",
+      "city": "Irvine",
+      "state": "California",
+      "cityState": "Irvine, California",
+      "reference": "https://www.setlist.fm/setlist/blancmange/1986/crawford-hall-irvine-ca-bfc0dfa.html",
+      "year": 1986,
+      "month": 2,
+      "day": 15,
+      "dayOfWeek": "Saturday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.6480389,
+        "lng": -117.8480685
+      }
+    },
+    {
       "id": "concert-13",
       "date": "1986-04-12",
       "headliner": "The Alarm",
@@ -323,30 +347,6 @@
       "location": {
         "lat": 34.0699182,
         "lng": -118.4438495
-      }
-    },
-    {
-      "id": "concert-14",
-      "date": "1986-04-15",
-      "headliner": "Blancmange",
-      "headlinerNormalized": "blancmange",
-      "genre": "New Wave",
-      "genreNormalized": "new-wave",
-      "openers": [],
-      "venue": "Crawford Hall",
-      "venueNormalized": "crawford-hall",
-      "city": "Irvine",
-      "state": "California",
-      "cityState": "Irvine, California",
-      "reference": "https://www.setlist.fm/setlist/blancmange/1986/crawford-hall-irvine-ca-bfc0dfa.html",
-      "year": 1986,
-      "month": 4,
-      "day": 15,
-      "dayOfWeek": "Tuesday",
-      "decade": "1980s",
-      "location": {
-        "lat": 33.6480389,
-        "lng": -117.8480685
       }
     },
     {
@@ -604,30 +604,6 @@
       }
     },
     {
-      "id": "concert-25",
-      "date": "1988-10-15",
-      "headliner": "Beach Boys",
-      "headlinerNormalized": "beach-boys",
-      "genre": "Classic Rock",
-      "genreNormalized": "classic-rock",
-      "openers": [],
-      "venue": "Arizona Veterans Memorial Coliseum",
-      "venueNormalized": "arizona-veterans-memorial-coliseum",
-      "city": "Phoenix",
-      "state": "Arizona",
-      "cityState": "Phoenix, Arizona",
-      "reference": "",
-      "year": 1988,
-      "month": 10,
-      "day": 15,
-      "dayOfWeek": "Saturday",
-      "decade": "1980s",
-      "location": {
-        "lat": 33.469444,
-        "lng": -112.096667
-      }
-    },
-    {
       "id": "concert-26",
       "date": "1988-10-29",
       "headliner": "Oingo Boingo",
@@ -649,6 +625,30 @@
       "location": {
         "lat": 33.6577553,
         "lng": -117.7293939
+      }
+    },
+    {
+      "id": "concert-25",
+      "date": "1988-11-06",
+      "headliner": "Beach Boys",
+      "headlinerNormalized": "beach-boys",
+      "genre": "Classic Rock",
+      "genreNormalized": "classic-rock",
+      "openers": [],
+      "venue": "Arizona Veterans Memorial Coliseum",
+      "venueNormalized": "arizona-veterans-memorial-coliseum",
+      "city": "Phoenix",
+      "state": "Arizona",
+      "cityState": "Phoenix, Arizona",
+      "reference": "",
+      "year": 1988,
+      "month": 11,
+      "day": 6,
+      "dayOfWeek": "Sunday",
+      "decade": "1980s",
+      "location": {
+        "lat": 33.469444,
+        "lng": -112.096667
       }
     },
     {
@@ -2110,7 +2110,7 @@
     },
     {
       "id": "concert-84",
-      "date": "2012-04-24",
+      "date": "2012-04-27",
       "headliner": "Squeeze",
       "headlinerNormalized": "squeeze",
       "genre": "New Wave Pop",
@@ -2126,8 +2126,8 @@
       "reference": "",
       "year": 2012,
       "month": 4,
-      "day": 24,
-      "dayOfWeek": "Tuesday",
+      "day": 27,
+      "dayOfWeek": "Friday",
       "decade": "2010s",
       "location": {
         "lat": 39.2894444,
@@ -2340,33 +2340,6 @@
       }
     },
     {
-      "id": "concert-93",
-      "date": "2013-06-01",
-      "headliner": "Rancid",
-      "headlinerNormalized": "rancid",
-      "genre": "Punk",
-      "genreNormalized": "punk",
-      "openers": [
-        "Transplants",
-        "Crown of Thornz"
-      ],
-      "venue": "The Fillmore Silver Spring",
-      "venueNormalized": "the-fillmore-silver-spring",
-      "city": "Silver Spring",
-      "state": "Maryland",
-      "cityState": "Silver Spring, Maryland",
-      "reference": "",
-      "year": 2013,
-      "month": 6,
-      "day": 1,
-      "dayOfWeek": "Saturday",
-      "decade": "2010s",
-      "location": {
-        "lat": 38.997449,
-        "lng": -77.027579
-      }
-    },
-    {
       "id": "concert-94",
       "date": "2013-06-02",
       "headliner": "The Smithereens",
@@ -2388,6 +2361,33 @@
       "location": {
         "lat": 38.8976548,
         "lng": -77.0322736
+      }
+    },
+    {
+      "id": "concert-93",
+      "date": "2013-06-19",
+      "headliner": "Rancid",
+      "headlinerNormalized": "rancid",
+      "genre": "Punk",
+      "genreNormalized": "punk",
+      "openers": [
+        "Transplants",
+        "Crown of Thornz"
+      ],
+      "venue": "The Fillmore Silver Spring",
+      "venueNormalized": "the-fillmore-silver-spring",
+      "city": "Silver Spring",
+      "state": "Maryland",
+      "cityState": "Silver Spring, Maryland",
+      "reference": "",
+      "year": 2013,
+      "month": 6,
+      "day": 19,
+      "dayOfWeek": "Wednesday",
+      "decade": "2010s",
+      "location": {
+        "lat": 38.997449,
+        "lng": -77.027579
       }
     },
     {
@@ -4694,7 +4694,7 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-08-31T14:53:02.733Z",
+    "lastUpdated": "2026-09-07T13:18:40.682Z",
     "totalConcerts": 184,
     "dateRange": {
       "earliest": "1984-04-27",

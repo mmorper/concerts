@@ -1,10 +1,10 @@
 {
   "version": "1",
-  "generatedAt": "2026-08-31T14:56:53.690Z",
+  "generatedAt": "2026-09-07T13:22:02.891Z",
   "coverage": {
-    "concertsWithSetlist": 113,
+    "concertsWithSetlist": 115,
     "totalConcerts": 184,
-    "distinctSongs": 1570
+    "distinctSongs": 1617
   },
   "songs": [
     {
@@ -1205,6 +1205,14 @@
       ]
     },
     {
+      "name": "Fuck You",
+      "count": 2,
+      "artists": [
+        "Bad Religion",
+        "Rancid"
+      ]
+    },
+    {
       "name": "Gates of Steel",
       "count": 2,
       "artists": [
@@ -1276,6 +1284,14 @@
       "artists": [
         "Bat Fangs",
         "Wham!"
+      ]
+    },
+    {
+      "name": "Heaven",
+      "count": 2,
+      "artists": [
+        "David Byrne",
+        "Squeeze"
       ]
     },
     {
@@ -1874,6 +1890,14 @@
       ]
     },
     {
+      "name": "Tempted",
+      "count": 2,
+      "artists": [
+        "Duran Duran",
+        "Squeeze"
+      ]
+    },
+    {
       "name": "That'll Be the Day",
       "count": 2,
       "artists": [
@@ -2006,6 +2030,14 @@
       "count": 2,
       "artists": [
         "Social Distortion"
+      ]
+    },
+    {
+      "name": "Time Bomb",
+      "count": 2,
+      "artists": [
+        "Rancid",
+        "The Interrupters"
       ]
     },
     {
