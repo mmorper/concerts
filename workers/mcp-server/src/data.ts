@@ -259,7 +259,11 @@ export function recordQueryUsage(
 
 // ---------- `query` daily-cap tripwire ----------
 // The `query` escape hatch has its own small daily budget (tokens + calls). Warn once/day when it
-// crosses 80% of EITHER ceiling, so a quiet $10/mo line item never silently maxes out unnoticed.
+// crosses 80% of EITHER ceiling, so a quiet line item never silently maxes out unnoticed.
+// The cap is denominated in TOKENS, not dollars, so it survived the move to Sonnet 5 intact —
+// but the same 250K tokens/day now costs about twice what it did on Haiku 4.5: roughly $15/mo
+// rather than the $10 this comment used to name. Halve QUERY_DAILY_TOKEN_CAP to restore the
+// original spend, or leave it and accept the higher line item deliberately.
 // Same push shape as the ask-chat worker; latched in the same KV namespace the usage lives in.
 
 function queryUsageFraction(u: QueryUsageRecord): number {

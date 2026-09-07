@@ -28,9 +28,12 @@ import Anthropic from "@anthropic-ai/sdk";
 // (matches the other scripts). In CI the key comes from the workflow's env block.
 config();
 
-const MODEL = "claude-haiku-4-5";
+// Thinking OFF. Sonnet 5 runs adaptive thinking by default and its tokens come out
+// of `max_tokens`; on a 400-token budget that leaves nothing for the answer. Measured
+// on the sibling social-copy prompt: 699 of 700 tokens spent thinking, no answer.
+const MODEL = "claude-sonnet-5";
 const MAX_TOKENS = 400;
-const PROMPT_VERSION = 1; // bump to force a full regen after a prompt rewrite
+const PROMPT_VERSION = 2; // bump to force a full regen after a prompt rewrite
 
 const DATA_DIR = join(process.cwd(), "public", "data");
 const NARRATIONS_DIR = join(DATA_DIR, "narrations");
@@ -191,6 +194,7 @@ async function generate(kind: Kind, entity: Entity): Promise<Narration> {
   const resp = await client.messages.create({
     model: MODEL,
     max_tokens: MAX_TOKENS,
+    thinking: { type: "disabled" },
     system: PROMPT,
     tools: [
       {
@@ -282,8 +286,8 @@ async function main(): Promise<void> {
   }
 
   if (!DRY_RUN && tokensIn + tokensOut > 0) {
-    // Haiku 4.5: $1/MTok in, $5/MTok out (verified 2026-06-16).
-    const cost = (tokensIn / 1e6) * 1 + (tokensOut / 1e6) * 5;
+    // Sonnet 5: $2/MTok in, $10/MTok out.
+    const cost = (tokensIn / 1e6) * 2 + (tokensOut / 1e6) * 10;
     console.log(
       `\nTokens: ${tokensIn} in / ${tokensOut} out — ~$${cost.toFixed(4)}`,
     );

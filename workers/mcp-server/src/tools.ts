@@ -1417,12 +1417,13 @@ const DESC = {
 };
 
 // ---------- query: runtime LLM escape hatch ----------
-// Addendum 2026-05-17 §"Decision: runtime `query` escape hatch". Build-time Haiku pricing
-// verified $1/$5 per MTok (2026-06-16). Raw fetch — the Anthropic SDK is overkill in a
+// Addendum 2026-05-17 §"Decision: runtime `query` escape hatch". Sonnet 5 at $2/$10 per MTok;
+// was Haiku 4.5 at $1/$5 (verified 2026-06-16). Raw fetch — the Anthropic SDK is overkill in a
 // Worker for a single Messages call. concerts.json only (~50K tokens); the other files
 // bloat context without helping freeform questions.
 
-const ANTHROPIC_MODEL = "claude-haiku-4-5";
+// Thinking OFF — Sonnet 5 thinks by default and would spend the 1024-token budget on it.
+const ANTHROPIC_MODEL = "claude-sonnet-5";
 
 interface QueryResult {
   text: string;
@@ -1492,6 +1493,7 @@ async function runQuery(
     body: JSON.stringify({
       model: ANTHROPIC_MODEL,
       max_tokens: 1024,
+      thinking: { type: "disabled" },
       system: QUERY_PROMPT,
       messages: [
         {

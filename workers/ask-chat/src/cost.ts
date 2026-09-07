@@ -1,6 +1,8 @@
 // Cost math + the client seam to the SpendCounter Durable Object.
 //
-// Pricing: Haiku 4.5 — $1 / MTok input, $5 / MTok output (verified 2026-06-16, same source
+// Pricing: Sonnet 5 — $2 / MTok input, $10 / MTok output. These rates are what the $25/month
+// cap is enforced against, so they move with ANTHROPIC_MODEL or the counter under-reports and
+// the cap silently allows twice the spend it names. Previously Haiku 4.5 at $1/$5 (same source
 // as the MCP query tool). $1/MTok == exactly 1 microUSD per token, which makes the per-token
 // rates whole-ish numbers and the counter integer-friendly.
 
@@ -9,10 +11,13 @@ import type { Env, SpendStatus } from "./types.js";
 // microUSD per token, by token class. Anthropic reports cached input separately from fresh
 // input, and cache writes/reads are priced off the base input rate (1.25× write, 0.1× read).
 const RATE = {
-  input: 1, // $1 / MTok
-  output: 5, // $5 / MTok
-  cacheWrite: 1.25, // 5-minute cache write = 1.25× input
-  cacheRead: 0.1, // cache read = 0.1× input
+  input: 2, // $2 / MTok
+  output: 10, // $10 / MTok
+  // Absolute microUSD/token, NOT multipliers — they are derived from `input` but stored
+  // flat, so they have to be recomputed whenever `input` moves. Missing that under-reports
+  // the dominant class on this surface: the system prompt is cached on every turn.
+  cacheWrite: 2.5, // 5-minute cache write = 1.25 × input
+  cacheRead: 0.2, // cache read = 0.1 × input
 } as const;
 
 export interface AnthropicUsage {
