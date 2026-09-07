@@ -310,6 +310,36 @@ export function checkVoice(finding: ScoredFinding): VoiceIssue[] {
     push("warning", "specificity", "no number in the post");
   }
 
+  // "🔴 THE ROOM DID NOT DO ANYTHING" — the same rule `checkSocial` enforces, at
+  // the severity this path can afford.
+  //
+  // WARNING, NOT ERROR, and that is not timidity. A `checkVoice` error DROPS the
+  // candidate (pipeline Stage 4b: "Drop it rather than publish it. Reserve
+  // candidates remain"), and a targeted `--pick` repair run has no reserve — an
+  // error here would publish nothing at all rather than publish something
+  // imperfect. Same trap already recorded for `unsourced-number`.
+  //
+  // #507 said this was wired and it was not: the rule existed only in
+  // `checkSocial`, so social copy saying "the venue kept pulling me back" was
+  // rewritten while prose saying it shipped. The live Pacific Amphitheatre note
+  // is the case — "it's the venue itself that kept pulling me back".
+  //
+  // The venue's display name comes from `dataPoints.venue`, which venue-subject
+  // detectors set. Absent it, the generic stand-ins ("the venue", "the room")
+  // still apply, so an artist post is covered too.
+  const venueName = (finding.dataPoints as Record<string, unknown>)?.venue;
+  const personified = venuePersonification(
+    prose,
+    typeof venueName === "string" ? venueName : undefined
+  );
+  if (personified) {
+    push(
+      "warning",
+      "venue-personification",
+      `"${personified}" — a venue is a building; it does not act. Give the verb to a person.`
+    );
+  }
+
   // Distinctive numbers with no visible source. Warning, not error: prose
   // legitimately converts units, and a false positive should not fail a run.
   const known = numbersInData(finding);
