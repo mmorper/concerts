@@ -235,7 +235,7 @@ npm run generate:on-this-day -- --force         # regenerate a day already store
 ```
 
 Runs **daily** (`.github/workflows/on-this-day.yml`). **Most days produce
-nothing, and that is correct** — 145 of 366 calendar days carry a show, and only
+nothing, and that is correct** — 142 of 366 calendar days carry a show, and only
 those scoring above the threshold publish. The spec is explicit that widening
 the window to "this week in" to manufacture a daily cadence makes every post
 weaker and turns the account into a content mill.
@@ -244,7 +244,7 @@ weaker and turns the account into a content mill.
 
 | | |
 |---|---|
-| Calendar days with a show | 145 of 366 (39.6%) |
+| Calendar days with a show | 142 of 366 (38.8%) |
 | Single-show days | 117 |
 | Multi-show days | 28 — **deferred**, see below |
 | Publishable in a rolling year | ~73 (≈1.4/week) |

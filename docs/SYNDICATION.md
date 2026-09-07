@@ -144,7 +144,7 @@ and the reason full automation was acceptable at all.
 
 On This Day exists because liner notes publish once a week (`POSTS_PER_RUN = 1`)
 and that is thin. It posts about what happened on today's calendar day in a
-previous year — **only on days that actually hit**. 145 of 366 calendar days
+previous year — **only on days that actually hit**. 142 of 366 calendar days
 carry a show. Widening the window to "this week in" to manufacture a daily
 rhythm is explicitly rejected: it makes every post weaker and turns the account
 into a content mill.
@@ -608,7 +608,7 @@ outlives its fault sends you hunting for a problem that is already fixed.
 **Alerts go to `NOTIFY_WEBHOOK_URL`**, the same ntfy/Pushover-style slot the Ask
 spend tripwire uses. Absent → alerts are printed in the run log and the run still
 passes. Two triggers: any channel failing, or a channel silent for 10+ days.
-Ten, not three — On This Day publishes on ~145 days a year, so a few quiet days
+Ten, not three — On This Day publishes on ~142 days a year, so a few quiet days
 are normal.
 
 **A channel that has never posted is never alerted on.** Instagram and X are in

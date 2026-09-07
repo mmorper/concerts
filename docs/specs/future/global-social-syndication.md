@@ -422,7 +422,7 @@ Computed from `public/data/concerts.json`:
 | Metric | Value |
 |---|---|
 | Total concerts | 184 |
-| Distinct calendar days covered | **145 of 366 (39.6%)** |
+| Distinct calendar days covered | **142 of 366 (38.8%)** |
 | Days with exactly 1 show | 117 |
 | Days with 2+ shows | 28 |
 | Busiest days | `06-04`, `11-16`, `06-10` (4 each) |
@@ -430,7 +430,7 @@ Computed from `public/data/concerts.json`:
 
 ### Cadence
 
-**Post only on days that hit.** ~145 posts/year, averaging 2.8/week, irregular but always genuine. Do **not** widen the window to "this week in" to manufacture a daily cadence — the moment the window stretches to fill empty days, every post weakens and the account becomes a content mill. Irregular-but-real is the correct trade for an archive.
+**Post only on days that hit.** ~142 posts/year, averaging 2.8/week, irregular but always genuine. Do **not** widen the window to "this week in" to manufacture a daily cadence — the moment the window stretches to fill empty days, every post weakens and the account becomes a content mill. Irregular-but-real is the correct trade for an archive.
 
 ### Anniversary weighting
 

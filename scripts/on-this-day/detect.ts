@@ -7,7 +7,7 @@
  *
  * ── THE RULE THAT SHAPES EVERYTHING ────────────────────────────────────────
  *
- * **Post only on days that hit.** 145 of 366 calendar days carry a show, so
+ * **Post only on days that hit.** 142 of 366 calendar days carry a show, so
  * the cadence is irregular — roughly 2.8 posts a week, clustered. The spec is
  * blunt about the alternative: widening the window to "this week in" to
  * manufacture a daily rhythm makes every post weaker and turns the account

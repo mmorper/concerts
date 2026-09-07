@@ -1,7 +1,7 @@
 name: On This Day
 
 # The second content stream (#333). Runs DAILY, and most days produce nothing —
-# 145 of 366 calendar days carry a show, and only those scoring above the
+# 142 of 366 calendar days carry a show, and only those scoring above the
 # threshold publish. That is the intended behaviour, not a misconfiguration:
 # the spec is explicit that widening the window to manufacture a daily cadence
 # makes every post weaker and turns the account into a content mill.
