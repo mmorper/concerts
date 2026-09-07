@@ -1,7 +1,80 @@
 {
-  "generatedAt": "2026-09-07T02:16:36.400Z",
-  "dataHash": "1d86cf7a",
+  "generatedAt": "2026-09-07T14:04:42.036Z",
+  "dataHash": "23bb595e",
   "posts": [
+    {
+      "id": "album-trajectory-ziggy-marley-1988-09-19",
+      "slug": "ziggy-marley-17-4-years-before-love-is-my-religion",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Ziggy Marley — 17.4 Years Before Love Is My Religion",
+      "prose": "There's something almost funny about catching a reggae artist 14.6 years before their own debut existed, but that's what happened when I saw Ziggy Marley at Mesa Amphitheatre in 1988. *Love Is My Religion* wouldn't arrive until 2006, a full 209 months after that Arizona night, and nine albums would follow it that I also couldn't have imagined. Two of the five songs I still reach for from that record trace back to a show where none of it existed yet. I like sitting with that gap — proof that the artist I watched as a kid was still becoming someone, and I just happened to be in the room years before he knew who that was either.",
+      "image": {
+        "url": "https://coverartarchive.org/release-group/2506a7bd-f768-3e3f-a85d-6657ec9e3d73/front-500.jpg",
+        "alt": "Love Is My Religion",
+        "source": "album",
+        "ref": "ziggy-marley",
+        "albumName": "Love Is My Religion"
+      },
+      "audio": {
+        "trackName": "Beach In Hawaii",
+        "artistName": "Ziggy Marley",
+        "albumName": "Love Is My Religion",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/25/1f/cf/251fcf7e-a64b-7160-f62a-07f898d63ea1/mzaf_17005283280564312957.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/88/ef/73/88ef73f9-9778-09fe-d9e8-eb5cd7b6f6dd/LIMR_Cover_Art.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/beach-in-hawaii/588804390?i=588804477&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "ziggy-marley"
+      ],
+      "venues": [
+        "mesa-amphitheatre"
+      ],
+      "years": [
+        1988
+      ],
+      "tags": [
+        "#album-trajectory",
+        "#before-the-breakthrough"
+      ],
+      "deepLinks": [
+        {
+          "label": "Ziggy Marley",
+          "url": "/?scene=artists&artist=ziggy-marley",
+          "type": "artist"
+        },
+        {
+          "label": "Mesa Amphitheatre",
+          "url": "/?scene=venues&venue=mesa-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "1988",
+          "url": "/?scene=timeline&year=1988",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "peter-gabriel-11-more-1993-festival-bill",
+        "notorious-nile-rodgers-and-duran-duran-39-years-apart"
+      ],
+      "score": 31,
+      "detector": "album-trajectory",
+      "publishedAt": "2026-09-07T14:04:42.036Z",
+      "factsAsOf": "2026-09-07T14:04:42.037Z",
+      "social": {
+        "hook": "Eighteen years before he made a record I'd love, I was already watching him.",
+        "caption": "Ziggy Marley took the Mesa Amphitheatre stage in 1988, nine albums before Love Is My Religion existed. Two songs I still play from that record started as nothing that night.",
+        "beats": [
+          "Mesa Amphitheatre, September 1988: Ziggy Marley on stage, no Love Is My Religion in sight.",
+          "That album was 209 months away, along with eight others I couldn't have named.",
+          "I still play two songs from it today, and neither existed yet that night.",
+          "I watched an artist who was still becoming someone he hadn't met yet either."
+        ],
+        "authoredAt": "2026-09-07T14:04:42.038Z"
+      }
+    },
     {
       "id": "most-witnessed-album-garbage-garbage",
       "slug": "garbage-17-songs-from-the-album-that-shares-their-name-live",
@@ -4718,10 +4791,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 54,
-    "totalGenerated": 93,
-    "averageScore": 38.7,
-    "lastPipelineRun": "2026-09-07T02:16:36.400Z",
+    "totalPosts": 55,
+    "totalGenerated": 94,
+    "averageScore": 38.6,
+    "lastPipelineRun": "2026-09-07T14:04:42.036Z",
     "concertsAnalyzed": 181,
     "feedUrl": "/liner-notes.xml"
   }

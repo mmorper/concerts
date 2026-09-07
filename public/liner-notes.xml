@@ -5,7 +5,7 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 07 Sep 2026 02:16:36 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 07 Sep 2026 14:04:42 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
@@ -13,14 +13,14 @@
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
   <item>
-    <title>Pacific Amphitheatre: 17 Shows Over 5 Decades</title>
-    <link>https://concerts.morperhaus.org/liner-notes/pacific-amphitheatre-16-shows-over-5-decades-2</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/pacific-amphitheatre-16-shows-over-5-decades-2</guid>
-    <pubDate>Mon, 07 Sep 2026 02:16:36 +0000</pubDate>
-    <description>I keep coming back to Pacific Amphitheatre, seventeen times now, and the span still gets me: Tears For Fears on July 10, 1985, and Nile Rodgers on July 31, 2026. That&apos;s five decades under the same Costa Mesa sky, from the Songs from the Big Chair era straight through to a stage I still can&apos;t quite believe I was standing in front of last summer. In between, Run-DMC, UB40, the Art of Noise, the Beach Boys — fifteen artists total, and somehow this one amphitheater kept pulling me back for all of them. I don&apos;t have a tidy reason why. I just know I never once regretted the drive.</description>
-    <category>#venue-loyalty</category>
-    <category>#home-venue</category>
-    <media:content url="https://lh3.googleusercontent.com/place-photos/AG9NLjC1yU31TuhE-IwblGs9vf9mmvnBNoZnHWazXlNNbshBwjrUyrVaWx6iQy5KIFE8-YOy65hJ9aPhmLJ5RiIOfUd_77YvPukeWmcd3Rh_M1-WJFL677QRBjVC-0aUPNNSq7l0jGkNH15sTyKX4w=s4800-h1200" medium="image" />
+    <title>Ziggy Marley — 17.4 Years Before Love Is My Religion</title>
+    <link>https://concerts.morperhaus.org/liner-notes/ziggy-marley-17-4-years-before-love-is-my-religion</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/ziggy-marley-17-4-years-before-love-is-my-religion</guid>
+    <pubDate>Mon, 07 Sep 2026 14:04:42 +0000</pubDate>
+    <description>There&apos;s something almost funny about catching a reggae artist 14.6 years before their own debut existed, but that&apos;s what happened when I saw Ziggy Marley at Mesa Amphitheatre in 1988. Love Is My Religion wouldn&apos;t arrive until 2006, a full 209 months after that Arizona night, and nine albums would follow it that I also couldn&apos;t have imagined. Two of the five songs I still reach for from that record trace back to a show where none of it existed yet. I like sitting with that gap — proof that the artist I watched as a kid was still becoming someone, and I just happened to be in the room years before he knew who that was either.</description>
+    <category>#album-trajectory</category>
+    <category>#before-the-breakthrough</category>
+    <media:content url="https://coverartarchive.org/release-group/2506a7bd-f768-3e3f-a85d-6657ec9e3d73/front-500.jpg" medium="image" />
   </item>
   <item>
     <title>Garbage — 17 Songs From The Album That Shares Their Name, Live</title>
@@ -70,6 +70,16 @@
     <category>#anniversary</category>
     <category>#on-this-day</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/art-of-noise-50dfd27c82328.jpg" medium="image" />
+  </item>
+  <item>
+    <title>Pacific Amphitheatre: 17 Shows Over 5 Decades</title>
+    <link>https://concerts.morperhaus.org/liner-notes/pacific-amphitheatre-16-shows-over-5-decades-2</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/pacific-amphitheatre-16-shows-over-5-decades-2</guid>
+    <pubDate>Mon, 20 Jul 2026 10:55:39 +0000</pubDate>
+    <description>I keep coming back to Pacific Amphitheatre, seventeen times now, and the span still gets me: Tears For Fears on July 10, 1985, and Nile Rodgers on July 31, 2026. That&apos;s five decades under the same Costa Mesa sky, from the Songs from the Big Chair era straight through to a stage I still can&apos;t quite believe I was standing in front of last summer. In between, Run-DMC, UB40, the Art of Noise, the Beach Boys — fifteen artists total, and somehow this one amphitheater kept pulling me back for all of them. I don&apos;t have a tidy reason why. I just know I never once regretted the drive.</description>
+    <category>#venue-loyalty</category>
+    <category>#home-venue</category>
+    <media:content url="https://lh3.googleusercontent.com/place-photos/AG9NLjC1yU31TuhE-IwblGs9vf9mmvnBNoZnHWazXlNNbshBwjrUyrVaWx6iQy5KIFE8-YOy65hJ9aPhmLJ5RiIOfUd_77YvPukeWmcd3Rh_M1-WJFL677QRBjVC-0aUPNNSq7l0jGkNH15sTyKX4w=s4800-h1200" medium="image" />
   </item>
   <item>
     <title>July 16: 40 Years Since Beach Boys</title>
@@ -199,16 +209,6 @@
     <category>#drought</category>
     <category>#comeback</category>
     <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/yusuxr1341941676.jpg" medium="image" />
-  </item>
-  <item>
-    <title>Erasure — Days Before Violator Dropped</title>
-    <link>https://concerts.morperhaus.org/liner-notes/erasure-days-before-violator-dropped</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/erasure-days-before-violator-dropped</guid>
-    <pubDate>Sun, 08 Mar 2026 23:19:11 +0000</pubDate>
-    <description>March 1990 was the moment synth-pop split into two futures — one heading for the dancefloor, the other for the stadium. I caught Erasure at the Forum just 8 days before Depeche Mode&apos;s Violator dropped, unknowingly witnessing the last gasps of pure pop innocence before their darker cousins conquered the world. Andy Bell&apos;s voice soared through &quot;A Little Respect&quot; while somewhere across town, Dave Gahan was probably rehearsing &quot;Personal Jesus&quot; for arenas that would dwarf this moment. Sometimes the most significant concerts are the ones that capture a scene right before it changes forever.</description>
-    <category>#album-context</category>
-    <category>#cultural-moment</category>
-    <media:content url="https://r2.theaudiodb.com/images/media/artist/thumb/xpytqt1342444014.jpg" medium="image" />
   </item>
   </channel>
 </rss>
