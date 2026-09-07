@@ -23,9 +23,13 @@ import { HOOK_MAX, BEATS_MIN, BEATS_MAX, CAPTION_MAX } from "../syndication/budg
 import { graphemeLength } from "../syndication/text.ts";
 import type { PostSocial } from "../../src/types/liner-notes.ts";
 
-const MODEL = "claude-sonnet-4-6";
+/* Sonnet 5 removed the sampling parameters — `temperature`, `top_p` and
+   `top_k` all return a 400. There is no replacement knob for creative
+   variation; the model handles it internally. The value this carried before
+   the migration is recorded here so the change is legible, not silent. */
+// Was: temperature 0.8, on claude-sonnet-4-6.
+const MODEL = "claude-sonnet-5";
 const MAX_TOKENS = 700;
-const TEMPERATURE = 0.8;
 
 /**
  * Retries, and only for a budget overrun — the one failure a rewrite fixes.
@@ -339,7 +343,13 @@ async function authorOne(
     const message = await client.create({
       model: MODEL,
       max_tokens: MAX_TOKENS,
-      temperature: TEMPERATURE,
+      /* Thinking OFF. Sonnet 5 runs adaptive thinking by default and its tokens
+         come out of `max_tokens` — measured at 699 of 700 on this prompt, which
+         left no room for the answer and returned a lone thinking block. Sonnet
+         4.6 never thought here either, so this is the pre-migration behaviour,
+         and it is what keeps the tier's 33% price cut instead of spending it on
+         reasoning this task does not need. */
+      thinking: { type: "disabled" },
       system: SYSTEM_PROMPT,
       messages: [{ role: "user", content: buildPrompt(post, context) + feedback }],
     });
