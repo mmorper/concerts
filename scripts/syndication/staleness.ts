@@ -127,7 +127,10 @@ export function staleFacts(
 ): StaleFact[] {
   if (!CUMULATIVE_DETECTORS.has(post.detector)) return [];
 
-  const publishedDay = (post.publishedAt ?? "").slice(0, 10);
+  // `factsAsOf` when the post has been repaired, `publishedAt` otherwise. A
+  // regenerated post keeps its original publication date by design (#232), so
+  // publication is not when its numbers were counted.
+  const publishedDay = (post.factsAsOf ?? post.publishedAt ?? "").slice(0, 10);
   if (!publishedDay) return [];
 
   const out: StaleFact[] = [];

@@ -296,6 +296,9 @@ export function buildPosts(
       score: finding.score,
       detector: finding.detector,
       publishedAt,
+      // Stamped at build time so a repaired post can keep its original
+      // publishedAt without the staleness gate reading it as months old.
+      factsAsOf: new Date().toISOString(),
     };
 
     newPosts.push(post);

@@ -16,7 +16,7 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
 import { analyze, type AlbumErasSlim, type SongAlbumsSlim } from "./analyze.ts";
-import { checkVoice, formatVoiceIssues } from "./voice-check.ts";
+import { checkVoice, formatVoiceIssues, numbersInData } from "./voice-check.ts";
 import { score } from "./score.ts";
 import { select, buildPosts, fetchSubjectTracks, POSTS_PER_RUN } from "./curate.ts";
 import type { ImageSources } from "./image-refs.ts";
@@ -215,7 +215,13 @@ export async function run(options: PipelineOptions): Promise<void> {
     throw new Error("ANTHROPIC_API_KEY environment variable is required for prose generation.");
   }
   const { withProse, attempted } = await generateUpTo(selected, target, async (candidate) => {
-    const [result] = await generate([candidate], { artistsMetadata, artistsTopTracks });
+    const [result] = await generate([candidate], {
+      artistsMetadata,
+      artistsTopTracks,
+      // Threaded through so `--date` and forward simulations frame tense the way
+      // they frame cooldowns, instead of silently reading the wall clock.
+      today: today.toISOString().slice(0, 10),
+    });
     return result;
   });
   console.log(`   Prose generated for ${withProse.length}/${target} (${attempted} API call${attempted !== 1 ? "s" : ""})`);
@@ -286,8 +292,15 @@ export async function run(options: PipelineOptions): Promise<void> {
   // exactly the furniture the card will render.
   console.log("\n📣 Stage 5b: Authoring social payloads...");
   try {
+    // `buildPosts` sets `id: finding.id`, so the finding a post came from is
+    // recoverable — and it is the only place the detector's own measurements
+    // survive. Social copy is checked against them, not just against whatever
+    // numbers the prose happened to print.
+    const findingById = new Map(clean.map((f) => [f.id, f]));
+
     const requests = newPosts.map((post) => {
       const concert = resolveAnchorConcert(post, concerts);
+      const finding = findingById.get(post.id);
       const context: SocialContext = {
         artists: post.artists.map((slug) => artistsMetadata[slug]?.name ?? slug),
         venue: concert ? (venuesMetadata[concert.venueNormalized]?.name ?? concert.venue) : "",
@@ -296,6 +309,9 @@ export async function run(options: PipelineOptions): Promise<void> {
         song: post.audio?.role === "subject" ? post.audio.trackName : undefined,
         // The years the detector says this post is about — see knownYears().
         knownYears: post.years ?? [],
+        // And the counts it measured, so a caption naming the artist count the
+        // prose never printed is evidence rather than a fabrication.
+        knownNumbers: finding ? [...numbersInData(finding)] : [],
       };
       return { post, context };
     });

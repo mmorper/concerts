@@ -26,6 +26,20 @@ export interface GenerateOptions {
    * Used for pipeline dry-runs and testing.
    */
   dryRun?: boolean;
+  /**
+   * Today, as YYYY-MM-DD.
+   *
+   * The prompt hands the model `dataPoints` as raw JSON and used to say nothing
+   * about when "now" is, so a date in the CURRENT year was unreadable: shown
+   * `lastShow: { date: "2026-07-31" }` on 2026-09-07, the model wrote "my most
+   * recent night there is booked for Nile Rodgers in July 2026" and "already on
+   * the calendar" about a show five weeks past. It had no way to know. Three
+   * separate regenerations made the same mistake.
+   *
+   * This is a missing FACT, not another rule — the distinction matters, because
+   * adding rules to this prompt has been measured to make output worse.
+   */
+  today?: string;
 }
 
 /* Sonnet 5 removed the sampling parameters — `temperature`, `top_p` and
@@ -254,6 +268,28 @@ async function generateProseWithWebSearch(
  * the warning was written, shipped, and had no effect at all. The prose came
  * back claiming a beginning for the second time.
  */
+/**
+ * Where "now" sits relative to the dates in the data.
+ *
+ * Stated explicitly rather than left implicit: every show in `dataPoints` has
+ * already happened — the detectors run on `pastConcerts` — but a date in the
+ * current year reads as upcoming to a model with no clock.
+ */
+function temporalFraming(finding: ScoredFinding, today: string): string[] {
+  const lines = [`TODAY IS ${today}.`];
+  const dp = finding.dataPoints as Record<string, unknown>;
+  const last = dp?.lastShow as { date?: string; artist?: string } | undefined;
+  if (last?.date && last.date <= today) {
+    lines.push(
+      `Every date in DATA POINTS is in the PAST, including ${last.date}` +
+        (last.artist ? ` (${last.artist})` : "") +
+        ". Write about it in the past tense. It is not upcoming, booked, or on the calendar."
+    );
+  }
+  lines.push("");
+  return lines;
+}
+
 function detectorCaveats(finding: ScoredFinding): string[] {
   const dp = finding.dataPoints as Record<string, unknown>;
   const lines: string[] = [];
@@ -292,6 +328,7 @@ function buildUserPromptHistorical(finding: ScoredFinding, options: GenerateOpti
   lines.push("DATA POINTS:");
   lines.push(JSON.stringify(finding.dataPoints, null, 2));
   lines.push("");
+  lines.push(...temporalFraming(finding, options.today ?? new Date().toISOString().slice(0, 10)));
   lines.push(...detectorCaveats(finding));
 
   const culturalData = buildCulturalContextData(finding, options);
@@ -323,6 +360,7 @@ function buildUserPrompt(finding: ScoredFinding, options: GenerateOptions): stri
   lines.push("DATA POINTS:");
   lines.push(JSON.stringify(finding.dataPoints, null, 2));
   lines.push("");
+  lines.push(...temporalFraming(finding, options.today ?? new Date().toISOString().slice(0, 10)));
   lines.push(...detectorCaveats(finding));
 
   // Cultural context data (Tier 1 — grounded in our data)

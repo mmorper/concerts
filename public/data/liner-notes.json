@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-31T15:58:11.645Z",
-  "dataHash": "a711c17e",
+  "generatedAt": "2026-09-07T02:16:36.400Z",
+  "dataHash": "1d86cf7a",
   "posts": [
     {
       "id": "most-witnessed-album-garbage-garbage",
@@ -460,8 +460,8 @@
       "slug": "pacific-amphitheatre-16-shows-over-5-decades-2",
       "category": "personal",
       "temporality": "evergreen",
-      "headline": "Pacific Amphitheatre: 16 Shows Over 5 Decades",
-      "prose": "I was 16 years old the first time I walked into the Pacific Amphitheatre, catching Tears For Fears in the summer of 1985 — right in the thick of the *Songs from the Big Chair* era. Thirty-nine years later, I closed the loop with The English Beat in July 2024, and somewhere in between I fit in 14 more nights at that Costa Mesa bowl, from the Beach Boys to Run-DMC to UB40. Sixteen shows across 5 decades at the same venue feels less like a habit and more like a relationship. I didn't plan any of this, which somehow makes it better.",
+      "headline": "Pacific Amphitheatre: 17 Shows Over 5 Decades",
+      "prose": "I keep coming back to Pacific Amphitheatre, seventeen times now, and the span still gets me: Tears For Fears on July 10, 1985, and Nile Rodgers on July 31, 2026. That's five decades under the same Costa Mesa sky, from the *Songs from the Big Chair* era straight through to a stage I still can't quite believe I was standing in front of last summer. In between, Run-DMC, UB40, the Art of Noise, the Beach Boys — fifteen artists total, and somehow this one amphitheater kept pulling me back for all of them. I don't have a tidy reason why. I just know I never once regretted the drive.",
       "image": {
         "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjC1yU31TuhE-IwblGs9vf9mmvnBNoZnHWazXlNNbshBwjrUyrVaWx6iQy5KIFE8-YOy65hJ9aPhmLJ5RiIOfUd_77YvPukeWmcd3Rh_M1-WJFL677QRBjVC-0aUPNNSq7l0jGkNH15sTyKX4w=s4800-h1200",
         "alt": "Pacific Amphitheatre",
@@ -491,7 +491,8 @@
         "the-aquabats",
         "x",
         "culture-club",
-        "the-english-beat"
+        "the-english-beat",
+        "nile-rodgers"
       ],
       "venues": [
         "pacific-amphitheatre"
@@ -512,7 +513,8 @@
         2022,
         2022,
         2023,
-        2024
+        2024,
+        2026
       ],
       "tags": [
         "#venue-loyalty",
@@ -546,24 +548,25 @@
         }
       ],
       "relatedSlugs": [
-        "july-16-40-years-since-beach-boys"
+        "garbage-17-songs-from-the-album-that-shares-their-name-live",
+        "3-concerts-in-12-days"
       ],
       "score": 39,
       "detector": "venue-loyalty",
       "publishedAt": "2026-07-20T10:55:39.484Z",
       "social": {
-        "hook": "I was 16 when Pacific Amphitheatre started teaching me something I still can't name.",
-        "caption": "Tears for Fears opened it in 1985 when I was 16. The English Beat closed it in 2024. Pacific Amphitheatre held 14 more shows in between — Run-DMC, UB40, Yazoo, Stray Cats.",
+        "hook": "Pacific Amphitheatre is the reason Tears For Fears and Nile Rodgers are the same story to me.",
+        "caption": "I saw Tears For Fears there in 1985 and Nile Rodgers in 2026, forty-one years apart on the same Costa Mesa stage. Fifteen artists in between, and I bought a ticket every time.",
         "beats": [
-          "July 1985. I was 16, Songs from the Big Chair was everywhere, and Pacific Amphitheatre was new to me.",
-          "Fourteen more shows followed — Beach Boys, Run-DMC, UB40, Sting, Garbage, Stray Cats, Yazoo.",
-          "Five decades. The acts had almost nothing in common. The bowl in Costa Mesa was the constant.",
-          "July 2024: The English Beat. Thirty-nine years after Tears for Fears, the loop finally closed.",
-          "Sixteen shows, none of them planned. That might be the only thing they all share."
+          "Costa Mesa, July 10, 1985: Tears For Fears, Songs from the Big Chair still new.",
+          "Run-D.M.C., UB40, Art of Noise, the Beach Boys — the eighties alone gave me four.",
+          "Sting, Garbage, Culture Club, X: no two of these acts belong on the same bill anywhere else.",
+          "Nile Rodgers took the same stage on July 31, 2026, forty-one years after the first.",
+          "Seventeen shows, five decades, one sky over Costa Mesa the whole time."
         ],
-        "authoredAt": "2026-08-31T20:56:07.371Z"
+        "authoredAt": "2026-09-07T02:16:36.401Z"
       },
-      "doNotSyndicate": "Stale, and a regeneration on 2026-09-07 did not produce shippable copy. The note says 16 shows ending with The English Beat in 2024; the archive holds 17, the last being Nile Rodgers on 2026-07-31 — a show that was future-dated when this note was generated on 2026-07-20 and has since happened. Two regeneration attempts both failed: the first personified the venue (now caught by the venue-personification rule in checkSocial), the second invented a future tense and an eighteenth show that does not exist. Lift this once the numeral check in the unsourced-number work lands and the note regenerates clean: npm run generate:liner-notes -- --pick \"Pacific Amphitheatre\" --force"
+      "factsAsOf": "2026-09-07T02:16:36.400Z"
     },
     {
       "id": "anniversary-beach-boys-1986-07-16",
@@ -2454,17 +2457,17 @@
       "headline": "Howard Jones: 17 Years Between Shows",
       "prose": "I remember standing in the Universal Amphitheater in 1989, watching Howard Jones perform what I didn't know would be his last show in my collection for nearly two decades. When I finally saw him again in 2006 at the intimate Coach House in San Juan Capistrano, it felt like reconnecting with an old friend after years of silence. That 17-year gap represents the longest drought between any artist's appearances in my concert history. The shift from arena to club venue somehow made his synth-pop anthems feel more personal, like he was playing just for the handful of us who had waited all those years.",
       "image": {
-        "url": "/images/shows/2024-08-20-howard-jones-03.jpg",
+        "url": "/images/shows/2012-07-05-howard-jones-01.jpg",
         "alt": "Howard Jones",
         "source": "show",
         "ref": "howard-jones",
-        "credit": "Mike Morper · 20 August 2024",
-        "shotOn": "2024-08-20",
+        "credit": "Mike Morper · 5 July 2012",
+        "shotOn": "2012-07-05",
         "crop": {
           "x": 0,
-          "y": 0.0856,
-          "w": 1,
-          "h": 0.7034
+          "y": 0,
+          "w": 0.8,
+          "h": 1
         }
       },
       "audio": {
@@ -3676,17 +3679,17 @@
       "headline": "Howard Jones: 39 Years of Shows",
       "prose": "I first caught Howard Jones at Irvine Meadows in 1985, right in the thick of his \"Dream Into Action\" era when those synthesizer hooks were everywhere. What strikes me now is how I kept coming back — six shows across 39 years, from that outdoor amphitheater in Orange County to the YouTube Theatre in Inglewood just this past August. There's something about his earnest optimism and those unmistakable keyboard melodies that pulls me back decade after decade. I suppose some artists just become part of your personal soundtrack, whether you plan it or not.",
       "image": {
-        "url": "/images/shows/2024-08-20-howard-jones-03.jpg",
+        "url": "/images/shows/2012-07-05-howard-jones-01.jpg",
         "alt": "Howard Jones",
         "source": "show",
         "ref": "howard-jones",
-        "credit": "Mike Morper · 20 August 2024",
-        "shotOn": "2024-08-20",
+        "credit": "Mike Morper · 5 July 2012",
+        "shotOn": "2012-07-05",
         "crop": {
           "x": 0,
-          "y": 0.0856,
-          "w": 1,
-          "h": 0.7034
+          "y": 0,
+          "w": 0.8,
+          "h": 1
         }
       },
       "audio": {
@@ -4715,10 +4718,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 58,
-    "totalGenerated": 90,
-    "averageScore": 38,
-    "lastPipelineRun": "2026-08-24T08:52:21.247Z",
+    "totalPosts": 54,
+    "totalGenerated": 93,
+    "averageScore": 38.7,
+    "lastPipelineRun": "2026-09-07T02:16:36.400Z",
     "concertsAnalyzed": 181,
     "feedUrl": "/liner-notes.xml"
   }
