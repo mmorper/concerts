@@ -13,7 +13,9 @@ import { OWNER_IDENTITY_RULE } from "../../mcp-server/src/owner.js";
 import type { Exhibit } from "./exhibits.js";
 import type { AnthropicUsage } from "./cost.js";
 
-const ANTHROPIC_MODEL = "claude-haiku-4-5";
+// Thinking OFF. Sonnet 5 thinks by default and those tokens come out of
+// MAX_OUTPUT_TOKENS, which would leave a 1024-token turn with no answer in it.
+const ANTHROPIC_MODEL = "claude-sonnet-5";
 const MAX_TOOL_ITERATIONS = 8; // backstop against a runaway tool loop within one turn
 const MAX_OUTPUT_TOKENS = 1024;
 
