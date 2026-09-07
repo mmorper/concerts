@@ -21,7 +21,13 @@
 import { config } from "dotenv";
 config({ override: true });
 
-import { run, DEFAULT_OPTIONS, type RunOptions } from "./run.ts";
+import { existsSync, readFileSync, writeFileSync } from "fs";
+import { join } from "path";
+
+import { run, DEFAULT_OPTIONS, type RunOptions, type RunSummary } from "./run.ts";
+import { deriveHealth, alertsFor, type SyndicationHealth } from "./health.ts";
+import { loadLedger } from "./ledger.ts";
+import { ROOT } from "./payload.ts";
 import { CHANNELS, type Channel } from "./types.ts";
 import { pause, pauseChannel, resume, resumeChannel, readPause, PAUSE_PATH } from "./pause.ts";
 
@@ -193,8 +199,84 @@ if (options.retract) console.log(`   Mode: retract ${options.retract}`);
 console.log(`   Channels: ${options.channels.join(", ")}`);
 console.log();
 
+/**
+ * Write `public/data/syndication-health.json` and push anything alarming.
+ *
+ * Published under `public/` rather than kept in `data/` so the operator
+ * dashboard can read it the same way it reads every other archive file — over
+ * HTTPS, with no token and no GitHub API call. It holds timestamps and counts
+ * that are already public in a public repo.
+ *
+ * The file going STALE is itself the signal. If the workflow stops being
+ * scheduled — which has happened twice — nothing here updates, and the
+ * dashboard's freshness check is what notices.
+ */
+async function writeHealth(options: RunOptions, summary: RunSummary): Promise<void> {
+  const healthPath = join(ROOT, "public/data/syndication-health.json");
+  const ledger = loadLedger();
+  const pause = readPause();
+
+  let previous: SyndicationHealth | undefined;
+  try {
+    if (existsSync(healthPath)) previous = JSON.parse(readFileSync(healthPath, "utf8"));
+  } catch {
+    // A corrupt health file must not stop a run or poison the new one. Unlike
+    // the ledger — where corruption throws, because starting fresh there would
+    // re-post the archive — starting fresh here costs one failure's history.
+    previous = undefined;
+  }
+
+  const now = new Date().toISOString();
+  const health = deriveHealth(ledger, {
+    channels: options.channels,
+    previous,
+    run: { posted: summary.posted, failed: summary.failed },
+    paused: { paused: Boolean(pause.paused), reason: pause.detail || undefined },
+    now,
+  });
+
+  writeFileSync(healthPath, JSON.stringify(health, null, 2) + "\n");
+  console.log(`   ✓ health written: ${healthPath.replace(ROOT + "/", "")}`);
+
+  const alerts = alertsFor(health, { now });
+  if (!alerts.length) return;
+  for (const a of alerts) console.warn(`   🔔 ${a}`);
+
+  const url = process.env.NOTIFY_WEBHOOK_URL;
+  if (!url) {
+    // Same posture as the ask-chat tripwire: absent webhook means log-only, not
+    // an error. An alert nobody configured a destination for is still worth
+    // printing into the run log.
+    console.warn("   (NOTIFY_WEBHOOK_URL unset — alert logged, not pushed)");
+    return;
+  }
+  try {
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: `Syndication: ${alerts.join(" · ")}`,
+    });
+  } catch (e) {
+    console.warn("   ⚠️  alert push failed:", (e as Error).message);
+  }
+}
+
 run(options)
-  .then((summary) => {
+  .then(async (summary) => {
+    // Health is written on EVERY completed run, including a dry run's sibling
+    // cases and a paused one — "the job ran and did nothing" and "the job did
+    // not run" are different facts, and only one of them is a fault. A dry run
+    // is excluded because it must touch no state at all.
+    if (!options.dryRun) {
+      try {
+        await writeHealth(options, summary);
+      } catch (e) {
+        // Never fail a run over its own telemetry. A posted note is the point;
+        // the health file is how we find out later.
+        console.warn("   ⚠️  health file not written:", (e as Error).message);
+      }
+    }
+
     console.log();
     if (summary.posted.length) console.log(`✅ Posted ${summary.posted.length}`);
     if (summary.retracted.length) console.log(`🗑  Retracted ${summary.retracted.length}`);

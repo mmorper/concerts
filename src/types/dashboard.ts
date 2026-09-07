@@ -149,6 +149,36 @@ export interface MonitoringSection {
   mcpErrors30d: number
 }
 
+/**
+ * Is the archive still posting, and if not, since when? (#337)
+ *
+ * Read from `public/data/syndication-health.json`, which the syndicate workflow
+ * rewrites on every completed run. Two independent staleness signals:
+ * `generatedAt` going quiet means the WORKFLOW stopped; a channel's
+ * `lastSuccessAt` going quiet while the file keeps updating means that CHANNEL
+ * stopped — a dead token, usually. The job has gone silent twice, and both times
+ * it was found by someone happening to look.
+ */
+export interface SyndicationChannelHealth {
+  channel: string
+  lastSuccessAt?: string
+  postedCount: number
+  consecutiveFailures: number
+  lastError?: string
+  lastErrorAt?: string
+}
+
+export interface SyndicationSection {
+  /** When the syndicate job last completed. Stale here = the workflow stopped. */
+  generatedAt: string
+  paused: boolean
+  pausedReason?: string
+  ledger: { total: number; posted: number; seeded: number; retracted: number }
+  channels: SyndicationChannelHealth[]
+  /** Days since each channel last posted, computed at snapshot time. */
+  daysSinceLastPost: Record<string, number | null>
+}
+
 export interface DashboardSnapshot {
   refreshedAt: string
   dataAge: 'fresh' | 'stale'
@@ -162,8 +192,10 @@ export interface DashboardSnapshot {
   trends: TrendsSection | null
   github: GitHubSection | null
   monitoring: MonitoringSection | null
+  syndication: SyndicationSection | null
   sourceStatus: Record<
-    'cloudflare' | 'spend' | 'ask' | 'ga' | 'mcp' | 'archiveHealth' | 'topics' | 'trends' | 'github' | 'monitoring',
+    | 'cloudflare' | 'spend' | 'ask' | 'ga' | 'mcp' | 'archiveHealth' | 'topics' | 'trends' | 'github'
+    | 'monitoring' | 'syndication',
     SourceStatus
   >
   fetchErrors: string[]

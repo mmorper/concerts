@@ -32,11 +32,32 @@ export interface DashboardSnapshot {
   trends: TrendsSection | null; // Phase 6 (#176) — per-day series from dashboard:history:*
   github: GitHubSection | null; // Phase 6 (#176) — Development tab (optional GH_TOKEN)
   monitoring: MonitoringSection | null; // Phase 6 (#176) — 5xx + ask/mcp error outcomes
+  syndication: SyndicationSection | null; // #337 — is the archive still posting?
   sourceStatus: Record<
-    "cloudflare" | "spend" | "ask" | "ga" | "mcp" | "archiveHealth" | "topics" | "trends" | "github" | "monitoring",
+    | "cloudflare" | "spend" | "ask" | "ga" | "mcp" | "archiveHealth" | "topics" | "trends" | "github"
+    | "monitoring" | "syndication",
     SourceStatus
   >;
   fetchErrors: string[];
+}
+
+export interface SyndicationChannelHealth {
+  channel: string;
+  lastSuccessAt?: string;
+  postedCount: number;
+  consecutiveFailures: number;
+  lastError?: string;
+  lastErrorAt?: string;
+}
+
+/** Mirrors `SyndicationSection` in src/types/dashboard.ts — the page reads that one. */
+export interface SyndicationSection {
+  generatedAt: string;
+  paused: boolean;
+  pausedReason?: string;
+  ledger: { total: number; posted: number; seeded: number; retracted: number };
+  channels: SyndicationChannelHealth[];
+  daysSinceLastPost: Record<string, number | null>;
 }
 
 export interface CloudflareSection {
@@ -1438,6 +1459,36 @@ async function fetchGitHub(env: Env, nowMs: number): Promise<GitHubSection> {
 // (→ 0) so a single dead dataset never blanks the section. NOTE: the CF 5xx dataset/field names
 // should be re-verified against current CF GraphQL on first hydration (spec Data sources #2).
 
+/**
+ * Is the archive still posting? (#337)
+ *
+ * `public/data/syndication-health.json` is written by the syndicate job itself
+ * on every completed run, so this fetch is a plain CDN GET — no token, no API.
+ *
+ * A MISSING FILE IS NOT AN ERROR. It simply means no run has written one yet,
+ * and reporting that as a failure would put a red source on the dashboard for a
+ * feature that is working. It becomes `not_configured`, like GA without creds.
+ *
+ * The freshness judgement is deliberately left to the page rather than baked in
+ * here: `generatedAt` is carried through raw so the reader sees the timestamp,
+ * not a boolean somebody has to trust.
+ */
+async function fetchSyndication(env: Env, nowMs: number): Promise<SyndicationSection | null> {
+  const base = (env.DATA_BASE_URL ?? "https://concerts.morperhaus.org/data").replace(/\/$/, "");
+  const r = await fetch(`${base}/syndication-health.json`);
+  if (r.status === 404) return null;
+  if (!r.ok) throw new Error(`syndication-health.json ${r.status}`);
+  const h = (await r.json()) as SyndicationSection & { channels: SyndicationChannelHealth[] };
+
+  const daysSinceLastPost: Record<string, number | null> = {};
+  for (const c of h.channels ?? []) {
+    daysSinceLastPost[c.channel] = c.lastSuccessAt
+      ? Math.floor((nowMs - Date.parse(c.lastSuccessAt)) / 86_400_000)
+      : null;
+  }
+  return { ...h, daysSinceLastPost };
+}
+
 async function fetchMonitoring(env: Env, nowMs: number): Promise<MonitoringSection> {
   const dt30 = `${isoDay(nowMs - 29 * DAY_MS)}T00:00:00Z`;
   const cfQuery = `{
@@ -1505,6 +1556,7 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
   let topics: TopicsSection | null = null;
   let github: GitHubSection | null = null;
   let monitoring: MonitoringSection | null = null;
+  let syndication: SyndicationSection | null = null;
   const sourceStatus: DashboardSnapshot["sourceStatus"] = {
     cloudflare: "error",
     spend: "error",
@@ -1516,6 +1568,8 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
     trends: "ok", // derived locally from other sections — never a fetch of its own
     github: "not_configured", // GH_TOKEN is optional — stays not_configured until it lands
     monitoring: "error",
+    // No health file yet is not a fault — it means no run has written one.
+    syndication: "not_configured",
   };
   const msg = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
@@ -1547,6 +1601,9 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
     fetchMonitoring(env, nowMs)
       .then((m) => { monitoring = m; sourceStatus.monitoring = "ok"; })
       .catch((e) => { fetchErrors.push(`Monitoring unavailable — ${msg(e)}`); }),
+    fetchSyndication(env, nowMs)
+      .then((sy) => { syndication = sy; if (sy) sourceStatus.syndication = "ok"; })
+      .catch((e) => { sourceStatus.syndication = "error"; fetchErrors.push(`Syndication health unavailable — ${msg(e)}`); }),
     // GitHub is optional like GA: no token → not_configured; a live failure → error.
     env.GH_TOKEN
       ? fetchGitHub(env, nowMs)
@@ -1582,6 +1639,7 @@ export async function buildSnapshot(env: Env, nowMs: number = Date.now()): Promi
     trends,
     github,
     monitoring,
+    syndication,
     sourceStatus,
     fetchErrors,
   };

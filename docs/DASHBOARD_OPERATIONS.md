@@ -41,6 +41,29 @@ curl "https://concerts-dashboard-refresh.morps.workers.dev/?key=<REFRESH_KEY>"
 
 (The `*.workers.dev` URL is harmless without the key; the key is the gate.)
 
+## Reading the Syndication panel (Overview)
+
+One row per live channel, and the dot is the judgement:
+
+| Dot | Means |
+|---|---|
+| green | posted within the last 4 days |
+| amber | 4–9 days quiet — plausible, since On This Day skips most days |
+| red | 10+ days quiet, **or** the last run failed on that channel |
+
+Source is `public/data/syndication-health.json`, written by the syndicate job
+itself — so `syndication: not_configured` means no run has written one yet, not
+that anything is broken. A file that stops updating is the signal that the
+**workflow** stopped; a channel whose timestamp stops while the file keeps
+updating is a dead **token**.
+
+Note the snapshot lag: `dashboard-refresh` runs at 06:00 UTC and syndicate at
+10:00, so the panel shows yesterday's run. For live state read the file directly
+or check the workflow.
+
+Full detail, including the alerting rules, is in
+[`SYNDICATION.md`](./SYNDICATION.md) under *Is it still posting?*.
+
 ## Reading "Source status" (bottom of Overview)
 
 | Status | Meaning | Action |

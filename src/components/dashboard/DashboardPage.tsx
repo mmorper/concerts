@@ -104,7 +104,7 @@ function MiniBar({ data }: { data: Array<[string, number]> }) {
 }
 
 function OverviewView({ snapshot }: { snapshot: DashboardSnapshot }) {
-  const { spend, cloudflare, ask, ga, monitoring, sourceStatus, fetchErrors, dataAge, refreshedAt } = snapshot
+  const { spend, cloudflare, ask, ga, monitoring, syndication, sourceStatus, fetchErrors, dataAge, refreshedAt } = snapshot
   const [win, setWin] = useState<Window>(30)
   const topN = (rec: Record<string, number>, n: number): Array<[string, number]> =>
     Object.entries(rec)
@@ -290,6 +290,57 @@ function OverviewView({ snapshot }: { snapshot: DashboardSnapshot }) {
           <Card>
             <Label>Referring traffic · 30d</Label>
             <MiniBar data={ga.website.topReferrers.slice(0, 6).map((r) => [r.source, r.sessions] as [string, number])} />
+          </Card>
+        </div>
+      )}
+
+      {/* Syndication health (#337). The whole point is the timestamp: a channel
+          whose last success stops moving has a dead token, and nothing else in
+          the system says so. Two silences went unnoticed before this existed. */}
+      {syndication && (
+        <div className="mt-4">
+          <Card>
+            <Label>Syndication</Label>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              {syndication.channels.map((c) => {
+                const days = syndication.daysSinceLastPost[c.channel]
+                // Quiet is judged, not merely displayed: On This Day skips most
+                // days, so a few days of silence is normal and ten is not.
+                const bad = c.consecutiveFailures > 0 || (days !== null && days >= 10)
+                const warn = !bad && days !== null && days >= 4
+                return (
+                  <div key={c.channel} className="flex items-start gap-2">
+                    <span
+                      className={`mt-1.5 inline-block h-2 w-2 shrink-0 rounded-full ${
+                        bad ? 'bg-red-500' : warn ? 'bg-amber-400' : 'bg-green-500'
+                      }`}
+                    />
+                    <div className="text-sm">
+                      <div className="font-medium text-stone-800">{c.channel}</div>
+                      <div className="text-stone-600">
+                        {c.lastSuccessAt
+                          ? `last posted ${days === 0 ? 'today' : `${days}d ago`} · ${c.postedCount} total`
+                          : 'never posted'}
+                      </div>
+                      {c.consecutiveFailures > 0 && (
+                        <div className="text-red-600">
+                          {c.consecutiveFailures} failed run(s) · {c.lastError ?? 'no error recorded'}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+            <div className="mt-3 text-xs text-stone-500">
+              {syndication.paused && (
+                <span className="mr-2 rounded bg-amber-100 px-1.5 py-0.5 text-amber-800">
+                  PAUSED{syndication.pausedReason ? ` — ${syndication.pausedReason}` : ''}
+                </span>
+              )}
+              {syndication.ledger.posted} posted · {syndication.ledger.seeded} queued · last run{' '}
+              {syndication.generatedAt.slice(0, 16).replace('T', ' ')}Z
+            </div>
           </Card>
         </div>
       )}

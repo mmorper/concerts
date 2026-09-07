@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-07T15:11:19.044Z",
+  "lastRunAt": "2026-09-07T15:11:19.044Z",
+  "paused": false,
+  "ledger": {
+    "total": 240,
+    "posted": 24,
+    "seeded": 216,
+    "retracted": 0
+  },
+  "channels": [
+    {
+      "channel": "bluesky",
+      "lastSuccessAt": "2026-09-06T13:22:45.877Z",
+      "postedCount": 12,
+      "consecutiveFailures": 0
+    },
+    {
+      "channel": "mastodon",
+      "lastSuccessAt": "2026-09-06T13:26:27.103Z",
+      "postedCount": 12,
+      "consecutiveFailures": 0
+    }
+  ]
+}
