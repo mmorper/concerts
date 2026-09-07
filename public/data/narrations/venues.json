@@ -55,11 +55,11 @@
   },
   "crawford-hall": {
     "narration": {
-      "context": "Crawford Hall in Irvine only shows up once in my history — April 15, 1986, when Blancmange came through.",
-      "closingArc": "One night, one band, and I never went back — but that single show is still on the books."
+      "context": "Crawford Hall in Irvine only shows up once in my history — February 15, 1986, when I caught Blancmange there.",
+      "closingArc": "Some venues become habits; this one is just a single, clear memory of one night and one band."
     },
-    "inputHash": "sha256:716650f190d25c15c869e2929c9dcf005ef68b5fce1ab5346b007b6fa131c6c2",
-    "generatedAt": "2026-09-07T01:02:02.933Z",
+    "inputHash": "sha256:4c5664fbd8536ed3946ff0126ed6c9d3deaa2f9f144a53eccdb85e5f7401508d",
+    "generatedAt": "2026-09-07T13:22:12.368Z",
     "promptVersion": 2
   },
   "caliente-racetrack": {
@@ -100,11 +100,11 @@
   },
   "arizona-veterans-memorial-coliseum": {
     "narration": {
-      "context": "I only made it to the Arizona Veterans Memorial Coliseum in Phoenix once, on October 15, 1988, for the Beach Boys.",
-      "closingArc": "One night, one band, no repeats — just a single stamp in the book from that Phoenix coliseum."
+      "context": "I only made it to the Arizona Veterans Memorial Coliseum in Phoenix once, for the Beach Boys on November 6, 1988.",
+      "closingArc": "One night, one band, and I never made it back."
     },
-    "inputHash": "sha256:1e3fb408ce124363e79ccc488b52be8e02d0ce24fd1d489b7ec54f16b1cec654",
-    "generatedAt": "2026-09-07T01:02:14.024Z",
+    "inputHash": "sha256:6c2e114ba5b4b3e3102772769510fd422e9014da113cadf68464ea22a2b6e219",
+    "generatedAt": "2026-09-07T13:22:14.157Z",
     "promptVersion": 2
   },
   "universal-amphitheater": {
@@ -352,11 +352,11 @@
   },
   "rams-head-live-baltimore": {
     "narration": {
-      "context": "Rams Head Live! in Baltimore was a one-night stand for me — just Squeeze, on April 24, 2012, and nothing before or since.",
-      "closingArc": "Sometimes a venue stays a single memory, and this one is Squeeze on a Baltimore night in 2012, full stop."
+      "context": "Rams Head Live! in Baltimore was a one-night stop for me — April 27, 2012, catching Squeeze and nothing else.",
+      "closingArc": "Just the one show, one band, one night in Baltimore — no return visit yet, just that single evening on the books."
     },
-    "inputHash": "sha256:d4ced1d4f9349acd2a2cce9abd65f81aa5e038fba3425251381e5f82563ccf47",
-    "generatedAt": "2026-09-07T01:03:22.432Z",
+    "inputHash": "sha256:729ff5875c573c8c2b88d8d7db3a64d8b6fa40ed19db73791d0b862b00c414c8",
+    "generatedAt": "2026-09-07T13:22:16.253Z",
     "promptVersion": 2
   },
   "capitol-one-arena": {
