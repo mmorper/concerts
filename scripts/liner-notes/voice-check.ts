@@ -321,6 +321,63 @@ const SOCIAL_FURNITURE: Array<[RegExp, string]> = [
   ],
 ];
 
+/**
+ * "🔴 THE ROOM DID NOT DO ANYTHING." — the prompt has said so since the venue
+ * subject shipped, and nothing has ever verified it.
+ *
+ * Measured twice on the same note. `venue-loyalty-pacific-amphitheatre` was
+ * authored on Sonnet 4.6 as "Pacific Amphitheatre started teaching me something
+ * I still can't name", and regenerated on Sonnet 5 as "Pacific Amphitheatre has
+ * watched me go from a teenager to whatever I am now". Two models, two runs, the
+ * same rule broken the same way — because a rule that is only in the prompt is a
+ * request, and this one is load-bearing: it is the difference between an archive
+ * that sounds like a person and one that sounds like a brand account.
+ *
+ * The verbs are ones of AGENCY, INTENT or PERCEPTION. Verbs of containment are
+ * deliberately absent: "Pacific Amphitheatre held 14 more shows" is correct
+ * English about a building, and flagging it would push the copy into
+ * circumlocution to satisfy a checker.
+ */
+const ANIMATE_VERBS = [
+  "watch", "watched", "watches", "watching",
+  "choose", "chose", "chooses", "choosing",
+  "pull", "pulled", "pulls", "pulling",
+  "call", "called", "calls", "calling",
+  "decide", "decided", "decides", "deciding",
+  "teach", "taught", "teaches", "teaching",
+  "earn", "earned", "earns", "earning",
+  "remember", "remembered", "remembers", "remembering",
+  "know", "knew", "knows", "knowing",
+  "wait", "waited", "waits", "waiting",
+  "want", "wanted", "wants", "wanting",
+  "welcome", "welcomed", "welcomes", "welcoming",
+  "greet", "greeted", "greets", "greeting",
+  "invite", "invited", "invites", "inviting",
+  "keep", "kept", "keeps", "keeping",
+  "let", "lets", "letting",
+  "give", "gave", "gives", "giving",
+];
+
+/**
+ * Venue-as-actor, if the subject venue's name (or a bare stand-in for it) is the
+ * subject of one of those verbs. Allows up to two words in between so
+ * "the venue itself kept pulling" and "Pacific Amphitheatre has watched" are both
+ * caught.
+ */
+export function venuePersonification(text: string, venueName?: string): string | undefined {
+  if (!text) return undefined;
+  const names = ["the venue", "the room", "the place", "the building"];
+  if (venueName) names.push(venueName);
+  const verbs = ANIMATE_VERBS.join("|");
+  for (const name of names) {
+    const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const re = new RegExp(`\\b${escaped}\\b(?:\\s+\\w+){0,2}\\s+(${verbs})\\b`, "i");
+    const hit = text.match(re);
+    if (hit) return hit[0];
+  }
+  return undefined;
+}
+
 export interface SocialCheckInput {
   hook: string;
   caption: string;
@@ -665,6 +722,18 @@ export function checkSocial(input: SocialCheckInput): VoiceIssue[] {
 
   if (!hook) push("error", "empty", "no hook");
   if (!caption) push("error", "empty", "no caption");
+
+  // An error rather than a warning, and safe to make one: `generateSocial`
+  // retries up to MAX_ATTEMPTS and feeds the issue back, so this buys a rewrite.
+  // The identical rule is only a WARNING on prose (`checkVoice`), because that
+  // path does not retry — an error there drops the candidate and, on a targeted
+  // repair run with no reserve, publishes nothing at all.
+  for (const [field, text] of [["hook", hook], ["caption", caption], ...(beats ?? []).map((b, i) => [`beat ${i + 1}`, b] as [string, string])] as [string, string][]) {
+    const hit = venuePersonification(text, input.venue?.name);
+    if (hit) {
+      push("error", "venue-personification", `${field}: "${hit}" — a venue is a building; it does not act. Give the verb to a person.`);
+    }
+  }
 
   // Graphemes, not code units. A combining acute is two code units and one
   // character to anyone reading it, and the budgets are stated in what a

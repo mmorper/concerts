@@ -153,4 +153,20 @@ export interface PipelineOptions {
   force: boolean;
   /** Override today's date for testing (YYYY-MM-DD) */
   date?: string;
+  /**
+   * Regenerate one specific finding: keep only scored findings whose headline
+   * or detector contains this substring (case-insensitive), then select as
+   * normal.
+   *
+   * Exists because a published note can go stale after it is written — a show
+   * that was future-dated when the note was generated becomes a past show, and
+   * the note's counts and its "last time" framing quietly stop being true.
+   * Selection is score-ranked at one post per run, so the stale subject is
+   * usually nowhere near the top and no ordinary run will ever revisit it.
+   *
+   * This is a repair tool, not a content lever. It changes WHICH finding is
+   * selected and nothing else: prose, voice checks, social authoring and the
+   * card all run exactly as they do in a scheduled run.
+   */
+  pick?: string;
 }

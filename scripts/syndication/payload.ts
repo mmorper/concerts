@@ -23,6 +23,7 @@ import { fileURLToPath } from "url";
 
 import { classifyImageUrl, hostOf } from "./provenance.ts";
 import { regionLabel } from "./region.ts";
+import { staleFacts, describeStaleFacts } from "./staleness.ts";
 import { entityTags } from "./tags.ts";
 import { isPublishableTier, type MediaAsset, type PayloadCredit, type SyndicationPayload } from "./types.ts";
 import { HOOK_MAX, BEATS_MAX, BEATS_MIN, CAPTION_MAX } from "./budgets.ts";
@@ -72,6 +73,11 @@ export interface PayloadSources {
   venuesMetadata: Record<string, { name?: string; city?: string; state?: string }>;
   /** Injected so the builder is testable without a filesystem. */
   cardExists?: (path: string) => boolean;
+  /**
+   * "Today" for the staleness check, as YYYY-MM-DD. Injected so a run is
+   * reproducible and the tests do not move with the wall clock.
+   */
+  today?: string;
 }
 
 // ── Credit ───────────────────────────────────────────────────────────────────
@@ -316,6 +322,15 @@ export function buildPayload(
   // An explicit hold, checked before anything else can make it eligible. The
   // kill switch stops a run; this stops one post, forever, for a stated reason.
   if (post.doNotSyndicate) reasons.push(`held: ${post.doNotSyndicate}`);
+
+  // The same judgement, made mechanically. `doNotSyndicate` catches the cases
+  // someone thought of in advance; this catches the ones nobody did — a note
+  // whose subject has played again since it was written, so its counts and its
+  // "last time" framing have quietly stopped being true. Blocking rather than
+  // correcting is deliberate and matches the kill switch: a post that cannot be
+  // verified does not go out, and the note is repaired at the source with
+  // `generate:liner-notes -- --pick`.
+  reasons.push(...describeStaleFacts(staleFacts(post, sources.concerts, sources.today)));
   if (!concert) reasons.push("no concert resolves for the credit stack");
 
   // ── Text: authored, never derived ──────────────────────────────────────

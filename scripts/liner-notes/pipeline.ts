@@ -159,12 +159,36 @@ export async function run(options: PipelineOptions): Promise<void> {
     return;
   }
 
+  // `--pick` narrows the field to one subject before rotation runs. Applied
+  // here rather than inside `select` so rotation, cooldowns and the reserve all
+  // behave normally on whatever survives — a repair run is an ordinary run with
+  // a smaller field, not a different code path.
+  let candidateFindings = scoredFindings;
+  if (options.pick) {
+    const needle = options.pick.toLowerCase();
+    candidateFindings = scoredFindings.filter(
+      (f) =>
+        f.headline.toLowerCase().includes(needle) ||
+        f.detector.toLowerCase().includes(needle)
+    );
+    console.log(
+      `   --pick "${options.pick}": ${candidateFindings.length}/${scoredFindings.length} findings match`
+    );
+    for (const f of candidateFindings.slice(0, 5)) {
+      console.log(`      [${f.score}/60] [${f.detector}] ${f.headline}`);
+    }
+    if (candidateFindings.length === 0) {
+      console.log("\n⚠️  --pick matched nothing. Nothing to publish this run.\n");
+      return;
+    }
+  }
+
   // ── Stage 3: Select candidates ───────────────────────────────────────────
   console.log("\n🎯 Stage 3: Selecting candidates (detector rotation)...");
   // `--force` skips the rerun cooldown but must NOT hide publication history:
   // rotation reads it to decide which detector is stalest (#231).
   const target = options.seed ? SEED_POST_COUNT : POSTS_PER_RUN;
-  const selected = select(scoredFindings, existingPosts, {
+  const selected = select(candidateFindings, existingPosts, {
     maxPosts: target,
     force: options.force,
     today,
