@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-09-06T17:05:32.751Z",
+  "generated": "2026-09-07T14:55:09.148Z",
   "assets": [
     {
       "kind": "image",
@@ -303,6 +303,62 @@
       "sourceHeight": 2048,
       "bytes": 700222,
       "sourceSha256": "79b4e9ac403de54cce43c92643b818a1a9155b153cbfdb501e8519d054d2c997",
+      "derivedFrom": null,
+      "notes": null
+    },
+    {
+      "kind": "image",
+      "url": "/images/shows/2013-06-19-rancid-01.jpg",
+      "date": "2013-06-19",
+      "uuid": "FD41AC79-9C10-493B-AAED-8B181B5B731B",
+      "artist": "Rancid",
+      "artistNormalized": "rancid",
+      "subject": "artist",
+      "tier": 1,
+      "source": "personal",
+      "hero": true,
+      "crop": {
+        "x": 0.2402,
+        "y": 0,
+        "w": 0.5997,
+        "h": 1
+      },
+      "order": 1,
+      "quality": "original",
+      "width": 2048,
+      "height": 1536,
+      "sourceWidth": 3264,
+      "sourceHeight": 2448,
+      "bytes": 385653,
+      "sourceSha256": "05037a98f91bf9838559a03eefd15ea20fcc792f82292d40596ceecd54f793a4",
+      "derivedFrom": null,
+      "notes": null
+    },
+    {
+      "kind": "image",
+      "url": "/images/shows/2013-06-19-transplants-01.jpg",
+      "date": "2013-06-19",
+      "uuid": "54A3F9A7-2F21-4ADE-AD5C-CE2C142EEDF9",
+      "artist": "Transplants",
+      "artistNormalized": "transplants",
+      "subject": "artist",
+      "tier": 1,
+      "source": "personal",
+      "hero": true,
+      "crop": {
+        "x": 0,
+        "y": 0.0667,
+        "w": 0.5597,
+        "h": 0.9333
+      },
+      "order": 1,
+      "quality": "original",
+      "width": 2048,
+      "height": 1536,
+      "sourceWidth": 3264,
+      "sourceHeight": 2448,
+      "bytes": 642909,
+      "sourceSha256": "317b84dfa096beb0a28185262c2f7915de8f311b9cd6753d647a60ab1c97162d",
       "derivedFrom": null,
       "notes": null
     },

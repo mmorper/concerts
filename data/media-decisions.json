@@ -462,6 +462,84 @@
         }
       }
     },
+    "2013-06-19": {
+      "reviewed": 18,
+      "decidedAt": "2026-09-07T14:54:01.429Z",
+      "decisions": {
+        "2C7B63E9-C76C-4508-B81F-3949D99A96E9": {
+          "verdict": "reject"
+        },
+        "304B2E27-2F1E-4194-B19B-92012D5E3E8A": {
+          "verdict": "reject"
+        },
+        "4C63856C-4160-44A2-8A96-2A3C8862272D": {
+          "verdict": "reject"
+        },
+        "4ECB0BD6-44FD-4A79-B7B2-6142F0641F81": {
+          "verdict": "reject"
+        },
+        "54A3F9A7-2F21-4ADE-AD5C-CE2C142EEDF9": {
+          "verdict": "keep",
+          "artist": "Transplants",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0,
+            "y": 0.0667,
+            "w": 0.5597,
+            "h": 0.9333
+          }
+        },
+        "589DEC1F-BD48-467B-A94D-D80304844329": {
+          "verdict": "reject"
+        },
+        "6C540237-B2DC-4CE0-8392-6915061B3884": {
+          "verdict": "reject"
+        },
+        "766E4137-655C-4C51-A177-E9BA25E8D082": {
+          "verdict": "reject"
+        },
+        "7CF27FC3-FC3D-49F9-9193-94BB6FE09F04": {
+          "verdict": "reject"
+        },
+        "85F680B7-F789-4BB5-9AA2-1A8B1F8C9174": {
+          "verdict": "reject"
+        },
+        "9C8A314C-D444-4C33-96E4-460EECD500EA": {
+          "verdict": "reject"
+        },
+        "A679A89A-332E-4BA4-8311-8DE7FAF3B4DA": {
+          "verdict": "reject"
+        },
+        "A9ACA415-63A7-4AE1-9448-73B6E8D842FC": {
+          "verdict": "reject"
+        },
+        "B6D16C1E-6BD7-420F-933B-51DC4B245454": {
+          "verdict": "reject"
+        },
+        "BB65F6F7-4F2C-4087-8343-DB9AC3B2F3A5": {
+          "verdict": "reject"
+        },
+        "BE710A74-73EC-4C06-B903-E93268CF5711": {
+          "verdict": "reject"
+        },
+        "DB4BE179-A477-4270-829A-D36AC6448B64": {
+          "verdict": "reject"
+        },
+        "FD41AC79-9C10-493B-AAED-8B181B5B731B": {
+          "verdict": "keep",
+          "artist": "Rancid",
+          "subject": "performer",
+          "hero": true,
+          "crop": {
+            "x": 0.2402,
+            "y": 0,
+            "w": 0.5997,
+            "h": 1
+          }
+        }
+      }
+    },
     "2013-10-27": {
       "reviewed": 2,
       "decidedAt": "2026-09-06T15:52:16.663Z",
