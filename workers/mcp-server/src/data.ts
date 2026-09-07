@@ -262,8 +262,9 @@ export function recordQueryUsage(
 // crosses 80% of EITHER ceiling, so a quiet line item never silently maxes out unnoticed.
 // The cap is denominated in TOKENS, not dollars, so it survived the move to Sonnet 5 intact —
 // but the same 250K tokens/day now costs about twice what it did on Haiku 4.5: roughly $15/mo
-// rather than the $10 this comment used to name. Halve QUERY_DAILY_TOKEN_CAP to restore the
-// original spend, or leave it and accept the higher line item deliberately.
+// against the $10 this comment used to name. **The owner took that trade on 2026-09-06**: keep
+// the call volume, accept the higher line item. So the ceiling below is a deliberate ~$15/mo,
+// not a leftover from Haiku pricing — halve it only if that decision is revisited.
 // Same push shape as the ask-chat worker; latched in the same KV namespace the usage lives in.
 
 function queryUsageFraction(u: QueryUsageRecord): number {
