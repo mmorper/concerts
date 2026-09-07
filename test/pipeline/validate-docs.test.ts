@@ -29,7 +29,10 @@ const CONCERTS_FIXTURE = JSON.stringify({
   ],
 })
 
-const EXPECTED = { concerts: 2, artists: 3, venues: 2, span: '1990-2000' }
+// `calendarDays: 1` — both fixture concerts fall on 01-01. It is 1 where
+// `concerts` is 2 on purpose: this stat moves independently of the concert
+// count, which is exactly how it drifted unnoticed on 2026-09-07.
+const EXPECTED = { concerts: 2, artists: 3, venues: 2, span: '1990-2000', calendarDays: 1 }
 
 const ROSTER = SCENE_NAMES.map((n) => SCENE_LABELS[n]).join(', ')
 const SCENE_COUNT = SCENE_NAMES.length
@@ -49,6 +52,11 @@ function goodReadme() {
 
 function goodRoadmap() {
   return [
+    // Both fixture concerts fall on 01-01, so the archive covers exactly ONE
+    // calendar day. Deliberately not `${EXPECTED.concerts}` — the point of this
+    // stat is that it moves independently of the concert count, which is how it
+    // drifted unnoticed in the first place.
+    `On This Day posts on ${EXPECTED.calendarDays} of 366 calendar days`,
     `- **${EXPECTED.concerts} concerts** spanning ${EXPECTED.span}`,
     `- **${EXPECTED.artists} artists** (including openers) with 100% imagery coverage`,
     `- **${EXPECTED.venues} unique venues** across 35 cities`,
@@ -147,6 +155,32 @@ describe('validate-docs', () => {
         'header — venues',
       ])
       expect(failures.every((f) => f.reason === 'mismatch')).toBe(true)
+    })
+
+    /**
+     * The regression this claim exists for. On 2026-09-07 four corrected concert
+     * dates collapsed three previously-unique calendar days, moving the archive
+     * from 145 to 142 — while the concert count stayed at 184. Every stat the
+     * validator already guarded stayed true, so nothing went red, and the stale
+     * figure sat in nine places across code comments, docs and two workflows.
+     */
+    it('flags a stale On This Day calendar-day count', async () => {
+      mockFiles({
+        'ROADMAP.md': goodRoadmap().replace(
+          `${EXPECTED.calendarDays} of 366 calendar days`,
+          '145 of 366 calendar days'
+        ),
+      })
+      const failures = await runValidator()
+
+      expect(failures).toHaveLength(1)
+      expect(failures[0]).toMatchObject({
+        file: 'docs/ROADMAP.md',
+        label: 'On This Day calendar-day supply',
+        reason: 'mismatch',
+        actual: '145',
+        expected: String(EXPECTED.calendarDays),
+      })
     })
 
     it('flags a surface that stopped using the shared derivation (#295)', async () => {

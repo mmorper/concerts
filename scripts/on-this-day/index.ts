@@ -9,7 +9,7 @@
  *   npm run generate:on-this-day -- --survey        # a year of supply, no writes
  *   npm run generate:on-this-day -- --force         # regenerate an existing day
  *
- * Runs daily. Most days produce nothing, and that is correct — 145 of 366
+ * Runs daily. Most days produce nothing, and that is correct — 142 of 366
  * calendar days carry a show, and only the ones scoring above the threshold
  * publish. The spec is explicit that widening the window to manufacture a
  * daily cadence turns the account into a content mill.

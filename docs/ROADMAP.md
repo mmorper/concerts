@@ -160,7 +160,7 @@ Click-to-filter year cards, animated genre treemap with timeline slider, mobile-
 **Status**: Planned
 **Spec**: [global-social-syndication.md](specs/future/global-social-syndication.md)
 
-Carries liner notes off the site and onto Bluesky, Mastodon, Instagram and X under a dedicated archive identity, and adds **On This Day** as a second stream — 145 of 366 calendar days have a show, so ~2.8 posts a week that are always genuine rather than a manufactured daily cadence. Opens with a creative investigation phase: the payload schema depends on what a post turns out to look like per channel, so nothing is frozen until the mocks decide it.
+Carries liner notes off the site and onto Bluesky, Mastodon, Instagram and X under a dedicated archive identity, and adds **On This Day** as a second stream — 142 of 366 calendar days have a show, so ~2.8 posts a week that are always genuine rather than a manufactured daily cadence. Opens with a creative investigation phase: the payload schema depends on what a post turns out to look like per channel, so nothing is frozen until the mocks decide it.
 
 **Depends on**: Nothing blocking. Gives #89's video pilot a destination at media level L3.
 

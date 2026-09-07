@@ -109,6 +109,7 @@ function deriveStats() {
     concerts: archive.concerts,
     artists: archive.artists,
     venues: archive.venues,
+    calendarDays: calendarDaysWithAShow(),
     startYear: archive.firstYear ?? 0,
     endYear: archive.lastYear ?? 0,
     songAlbums: songAlbums ? songEntries.length : null,
@@ -116,6 +117,27 @@ function deriveStats() {
     albumErasArtists: albumEras ? Object.keys(albumEras.artists ?? {}).length : null,
     precision,
   }
+}
+
+/**
+ * Distinct MM-DD dates the archive covers — what On This Day can ever post on.
+ *
+ * Checked because it drifted and nothing noticed. It sat at "145 of 366" in nine
+ * places until 2026-09-07, when four corrected concert dates collapsed three
+ * previously-unique calendar days onto dates that already had shows. The concert
+ * count did not move — 184 before and after — so every stat this file already
+ * guarded stayed true while this one quietly went stale.
+ *
+ * That is the whole argument for guarding it: it is derived from the same data,
+ * it is quoted as a reason for the posting cadence, and it can change without
+ * any of the headline numbers changing.
+ */
+function calendarDaysWithAShow(): number {
+  const concerts = JSON.parse(readRepoFile('public/data/concerts.json')) as
+    | { concerts?: Array<{ date: string }> }
+    | Array<{ date: string }>
+  const list = Array.isArray(concerts) ? concerts : (concerts.concerts ?? [])
+  return new Set(list.map((c) => c.date.slice(5))).size
 }
 
 /** Null when absent — an un-enriched clone documents nothing, and that is fine. */
@@ -218,6 +240,12 @@ function buildClaims(): Claim[] {
       label: 'intro scene roster',
       pattern: /\w+ scenes—(.+?)—each offering/,
       expected: roster,
+    },
+    {
+      file: 'docs/ROADMAP.md',
+      label: 'On This Day calendar-day supply',
+      pattern: /(\d+) of 366 calendar days/,
+      expected: String(stats.calendarDays),
     },
     {
       file: 'README.md',
@@ -457,6 +485,7 @@ function main() {
   console.log(`  Concerts: ${stats.concerts}`)
   console.log(`  Artists:  ${stats.artists}`)
   console.log(`  Venues:   ${stats.venues}`)
+  console.log(`  OTD days: ${stats.calendarDays} of 366`)
   console.log(`  Span:     ${stats.startYear}-${stats.endYear}\n`)
 
   const failures = validateDocs()
