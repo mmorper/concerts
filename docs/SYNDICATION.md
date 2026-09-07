@@ -577,6 +577,48 @@ remember runs twice and stops. That is why it is one line in the workflow rather
 than a habit, and why Mondays are excluded in code — the fresh liner note
 publishes then and the drip must not land on top of it.
 
+## Is it still posting?
+
+`public/data/syndication-health.json`, rewritten by every completed run and shown
+on the Overview of `/dashboard`.
+
+**The number that matters is the last success per channel.** A timestamp that
+stops moving is a dead credential, a dead workflow or a dead channel, and which
+one it is matters less than knowing it happened. This job has gone silent twice —
+five consecutive nights from 28 August (#451) and again on 5 September — and both
+times it was found by somebody happening to look.
+
+| Signal | Means |
+|---|---|
+| `generatedAt` stops moving | the **workflow** stopped running |
+| a channel's `lastSuccessAt` stops while the file keeps updating | that **channel** stopped — usually a token |
+| `consecutiveFailures > 0` | the run is reaching the platform and being refused; `lastError` says how |
+
+The two are independent on purpose, because the two real outages had different
+shapes: one channel refusing while the other posted, and everything going quiet
+at once.
+
+**Failures are carried forward in this file, not derived from the ledger.** The
+ledger records `posted`, `seeded` and `retracted` and deliberately records nothing
+for a failure, so a failed pair stays retryable. Correct for idempotency, useless
+for detection: the ledger can say when a channel last succeeded and can never say
+it has been failing since. A success clears the record outright — an error that
+outlives its fault sends you hunting for a problem that is already fixed.
+
+**Alerts go to `NOTIFY_WEBHOOK_URL`**, the same ntfy/Pushover-style slot the Ask
+spend tripwire uses. Absent → alerts are printed in the run log and the run still
+passes. Two triggers: any channel failing, or a channel silent for 10+ days.
+Ten, not three — On This Day publishes on ~145 days a year, so a few quiet days
+are normal.
+
+**A channel that has never posted is never alerted on.** Instagram and X are in
+the ledger and not yet live; absence is not a fault.
+
+```bash
+npm run syndicate -- --status     # the switch
+# and the health file for the rest — it is committed, so `git log` shows the history
+```
+
 ## Dashboard control: deliberately deferred
 
 The kill switch is reachable from a phone via the workflow's `pause` mode, and
@@ -606,7 +648,6 @@ when posting stops and nobody remembers why.
 | The 630×630 wide-card composition | #342 — Phase 1 posts the existing OG card |
 | Multi-show On This Day days | Tier-3 artwork — 28 days a year deferred |
 | YouTube Shorts + TikTok | L3 video and #100 |
-| Syndication health on the dashboard | #337. The control surface it would sit beside is #172 — see *Dashboard control* below |
 | `@artist` mentions on X and Instagram | #334/#335. Bluesky ships now; that is where the coverage is — 170 of 257 artists on X and 143 on Instagram, against 21 on Bluesky. See *Naming the account* below |
 
 ---

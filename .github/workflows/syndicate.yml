@@ -185,6 +185,9 @@ jobs:
           # is `3 + this`.
           DEFAULT_BACKLOG: "1"
           SYNDICATION_PAUSED: ${{ vars.SYNDICATION_PAUSED }}
+          # Absent → alerts are logged, never pushed, and the run still passes.
+          # Same posture as the ask-chat spend tripwire.
+          NOTIFY_WEBHOOK_URL: ${{ secrets.NOTIFY_WEBHOOK_URL }}
           BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
           MASTODON_BASE_URL: ${{ secrets.MASTODON_BASE_URL }}
@@ -246,15 +249,21 @@ jobs:
         # already written rows for the channels that succeeded, and losing
         # those is exactly how the retry double-posts. The job still reports
         # failure — a later always() step does not mask an earlier one.
+        #
+        # The health file is staged HERE, in the same always() step, for exactly
+        # the same reason: the run that fails is the one whose health matters,
+        # and a health file that only survives successful runs would record every
+        # state except the one worth alerting on (#337).
         if: always() && inputs.mode != 'dry-run' && inputs.mode != 'pause' && inputs.mode != 'resume' && steps.killswitch.outputs.paused != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/syndication-log.json 2>/dev/null || true
+          git add public/data/syndication-health.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "Ledger unchanged."
           else
-            git commit -m "content: update syndication ledger [automated]"
+            git commit -m "content: update syndication ledger + health [automated]"
             # --autostash: a job step can leave tracked files dirty that this
             # step does not stage — e.g. data/cache/musicbrainz-tracks.json,
             # rewritten by the song->album resolver on any run that fetches a new
