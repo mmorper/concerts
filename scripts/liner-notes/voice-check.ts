@@ -152,8 +152,14 @@ const WORD_NUMBERS: Record<string, number> = {
   twenty: 20, thirty: 30, forty: 40, fifty: 50,
 };
 
-/** Every number reachable in a finding's data points, plus its dates' parts. */
-function numbersInData(finding: ScoredFinding): Set<number> {
+/**
+ * Every number reachable in a finding's data points, plus its dates' parts.
+ *
+ * Exported so the social gate can be told what the detector actually measured.
+ * Without it, copy that names a count the prose never printed reads as invented
+ * — the same false positive `knownYears` exists to prevent for years.
+ */
+export function numbersInData(finding: ScoredFinding): Set<number> {
   const found = new Set<number>();
 
   const walk = (value: unknown): void => {
@@ -184,6 +190,66 @@ function numbersInData(finding: ScoredFinding): Set<number> {
   }
 
   return found;
+}
+
+/**
+ * Ordinals, which cardinals do not cover and which the social gate needs.
+ *
+ * "already the eighteenth" is a COUNT CLAIM wearing different clothes, and it is
+ * how an invented number got past every check in the pipeline: `WORD_NUMBERS`
+ * holds `eighteen` and has never held `eighteenth`, so the sentence contained no
+ * number as far as the code was concerned. Measured on
+ * `venue-loyalty-pacific-amphitheatre`, whose data says seventeen shows.
+ */
+const ORDINAL_NUMBERS: Record<string, number> = {
+  tenth: 10, eleventh: 11, twelfth: 12, thirteenth: 13, fourteenth: 14,
+  fifteenth: 15, sixteenth: 16, seventeenth: 17, eighteenth: 18,
+  nineteenth: 19, twentieth: 20, thirtieth: 30, fortieth: 40, fiftieth: 50,
+};
+
+/**
+ * Ordinals a piece of copy asserts, in words or digits.
+ *
+ * ORDINALS ONLY, and that narrowness is the whole design. An ordinal is always a
+ * positional claim about a sequence the archive owns — "the eighteenth" can only
+ * mean the eighteenth show, and the archive knows how many there are. A cardinal
+ * usually is not: run over the 54 published notes, gating on every distinctive
+ * number flags 17 of them, and the flags are things like "maybe 300 people" at
+ * The Black Cat, a "6,000-seat amphitheater", and "ten times the size". Those
+ * are hedged descriptions of the world, allowed under the voice skill's Tier 2
+ * framing, and blocking them would be a gate that gets switched off.
+ *
+ * The same rule on ordinals alone flags **zero** of the 54 and still catches the
+ * defect it was built for. Two notes use an ordinal and both are backed by their
+ * own data.
+ *
+ * Cardinals remain a WARNING on prose (`unsourced-number`), which is the right
+ * severity for a signal that noisy.
+ */
+export function assertedOrdinals(text: string): number[] {
+  const out: number[] = [];
+  for (const [word, n] of Object.entries(ORDINAL_NUMBERS)) {
+    if (new RegExp(`\\b${word}\\b`, "i").test(text)) out.push(n);
+  }
+  // Digit ordinals: 18th, 21st, 33rd. Same claim, different keyboard.
+  for (const m of text.match(/\b\d+(?:st|nd|rd|th)\b/gi) ?? []) {
+    const n = Number(m.replace(/(?:st|nd|rd|th)$/i, ""));
+    if (Number.isFinite(n) && n >= 10) out.push(n);
+  }
+  return [...new Set(out)];
+}
+
+/** Every plain number a text states — what an ordinal may be measured against. */
+export function statedNumbers(text: string): number[] {
+  const out: number[] = [];
+  for (const m of text.match(/\b\d[\d,]*\b/g) ?? []) {
+    const n = Number(m.replace(/,/g, ""));
+    if (Number.isFinite(n)) out.push(n);
+  }
+  for (const [word, n] of Object.entries(WORD_NUMBERS)) {
+    if (new RegExp(`\\b${word}\\b`, "i").test(text)) out.push(n);
+  }
+  return [...new Set([...out, ...assertedOrdinals(text)])];
 }
 
 /** Distinctive numbers only: small integers are ambient in this corpus. */
@@ -354,6 +420,11 @@ const ANIMATE_VERBS = [
   "greet", "greeted", "greets", "greeting",
   "invite", "invited", "invites", "inviting",
   "keep", "kept", "keeps", "keeping",
+  "hear", "heard", "hears", "hearing",
+  "see", "saw", "sees", "seeing",
+  "feel", "felt", "feels",
+  "soundtrack", "soundtracked", "soundtracks",
+  "got", "gets",
   "let", "lets", "letting",
   "give", "gave", "gives", "giving",
 ];
@@ -369,11 +440,29 @@ export function venuePersonification(text: string, venueName?: string): string |
   const names = ["the venue", "the room", "the place", "the building"];
   if (venueName) names.push(venueName);
   const verbs = ANIMATE_VERBS.join("|");
+
   for (const name of names) {
     const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const re = new RegExp(`\\b${escaped}\\b(?:\\s+\\w+){0,2}\\s+(${verbs})\\b`, "i");
-    const hit = text.match(re);
-    if (hit) return hit[0];
+
+    // 1. A named verb of agency, intent or perception.
+    const byVerb = text.match(new RegExp(`\\b${escaped}\\b(?:\\s+\\w+){0,2}\\s+(${verbs})\\b`, "i"));
+    if (byVerb) return byVerb[0];
+
+    // 2. Verb-INDEPENDENT: the venue as subject with the narrator as object.
+    //
+    // The list above is an arms race and it was losing one. Four regenerations of
+    // the same note personified the venue four different ways — "started teaching
+    // me", "has watched me", "has already got a ticket waiting for me", "has heard
+    // me arrive" — each with a verb the previous list did not hold. What they share
+    // is the SHAPE: the building is the subject and I am the object.
+    //
+    // A linking verb or preposition in the gap means the venue is being described
+    // rather than acting, which is ordinary and correct: "Pacific Amphitheatre was
+    // my first amphitheater" and "Pacific Amphitheatre in my memory" both stay.
+    const byShape = text.match(new RegExp(`\\b${escaped}\\b((?:\\s+\\w+){1,4}?)\\s+\\b(?:me|my)\\b`, "i"));
+    if (byShape && !/\b(was|is|were|are|in|on|of|for|at|and|from)\b/i.test(byShape[1])) {
+      return byShape[0];
+    }
   }
   return undefined;
 }

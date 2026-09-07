@@ -21,6 +21,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { HOOK_MAX, BEATS_MIN, BEATS_MAX, CAPTION_MAX } from "../syndication/budgets.ts";
 import { graphemeLength } from "../syndication/text.ts";
+import { assertedOrdinals, statedNumbers } from "./voice-check.ts";
 import type { PostSocial } from "../../src/types/liner-notes.ts";
 
 /* Sonnet 5 removed the sampling parameters — `temperature`, `top_p` and
@@ -259,6 +260,17 @@ export interface SocialContext {
    */
   knownYears?: number[];
   /**
+   * Every COUNT this post is entitled to state, beyond the ones its prose
+   * happens to print — the numeric values reachable in the finding's
+   * `dataPoints`.
+   *
+   * Same shape and same reason as `knownYears` above. A caption may legitimately
+   * name the artist count when the prose only named the show count, and a gate
+   * that reads the prose alone would call that a fabrication. A gate that blocks
+   * true sentences gets switched off.
+   */
+  knownNumbers?: number[];
+  /**
    * Hooks already authored for posts of the SAME detector.
    *
    * 🔴 THE ONE THING A PER-POST API CALL CANNOT KNOW ON ITS OWN.
@@ -367,6 +379,7 @@ async function authorOne(
     const issues = [
       ...validate(parsed),
       ...unsourcedYears(parsed, post, context),
+      ...unsourcedOrdinals(parsed, post, context),
       ...liftedFromTheNote(parsed, post, context),
     ];
     if (!issues.length) return normalize(parsed as Record<string, unknown>);
@@ -417,6 +430,51 @@ function writtenDates(texts: unknown[]): Array<{ iso: string; raw: string }> {
     }
   }
   return out;
+}
+
+/**
+ * Counts the copy asserts that the archive cannot account for.
+ *
+ * The year gate has been here since #329 and is not enough: a year is usually
+ * right, and the numbers that go wrong are the ones the model derives. Measured
+ * on a real repair run — asked to rewrite the Pacific Amphitheatre note from data
+ * saying `showCount: 17`, Sonnet 5 returned "2026: Nile Rodgers, already on the
+ * books, already the eighteenth" in the same payload as a beat reading "the first
+ * of seventeen nights". It contradicted itself inside one post, and every
+ * existing check passed it: `unsourcedYears` matches `(19|20)\d{2}` and saw no
+ * year, and `WORD_NUMBERS` has never held an ordinal.
+ *
+ * Runs INSIDE the retry loop for the same reason the year check does — it is a
+ * failure the model fixes immediately when told, and ships silently when not.
+ */
+function unsourcedOrdinals(parsed: unknown, post: SocialSubject, context: SocialContext): string[] {
+  const obj = parsed as Record<string, unknown> | null;
+  if (!obj || typeof obj !== "object") return [];
+
+  // What the post itself already asserts, plus what the detector measured.
+  // Deliberately the same two-set shape as `unsourcedYears`: the note's own prose
+  // and headline are evidence, and so is the finding's data.
+  // ANY number the note or its detector supplies can back an ordinal — the
+  // seventeenth of seventeen shows is fine, the eighteenth is not.
+  const known = new Set<number>([
+    ...statedNumbers([post.prose ?? "", post.headline].join(" ")),
+    ...(context.knownNumbers ?? []),
+    ...(context.knownYears ?? []),
+  ]);
+
+  const written = [
+    ...assertedOrdinals(typeof obj.hook === "string" ? obj.hook : ""),
+    ...assertedOrdinals(typeof obj.caption === "string" ? obj.caption : ""),
+    ...(Array.isArray(obj.beats)
+      ? obj.beats.flatMap((b) => assertedOrdinals(typeof b === "string" ? b : ""))
+      : []),
+  ];
+
+  const invented = [...new Set(written.filter((n) => !known.has(n)))];
+  if (!invented.length) return [];
+  return [
+    `the copy counts to ${invented.join(", ")} and the archive does not — an ordinal must land on a number this post's own data gives`,
+  ];
 }
 
 function unsourcedYears(parsed: unknown, post: SocialSubject, context: SocialContext): string[] {

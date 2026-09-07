@@ -210,6 +210,21 @@ export interface LinerNotesPost {
   score: number;
   detector: string;
   publishedAt: string;      // ISO timestamp
+  /**
+   * When this post's FACTS were derived from the archive, if that differs from
+   * when it was first published.
+   *
+   * The staleness gate asks "has this post's subject played since these numbers
+   * were counted", and used `publishedAt` as the proxy. That proxy breaks on a
+   * repair: #232 established that a regenerated post keeps its original
+   * `publishedAt` so it holds its feed position rather than resurfacing as new —
+   * which would leave a freshly-correct post looking months out of date and
+   * permanently blocked by its own guard.
+   *
+   * Absent on every post written before repairs existed, and the gate falls back
+   * to `publishedAt`, so nothing already published changes behaviour.
+   */
+  factsAsOf?: string;
   /** When true, post covers the full archive and is excluded from artist/venue URL filters */
   aggregate?: boolean;
 
