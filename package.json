@@ -88,7 +88,7 @@
     "syndicate:preview": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/syndication/preview.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.123.0",
+    "@anthropic-ai/sdk": "^0.124.0",
     "@types/d3": "^7.4.3",
     "csv-parse": "^7.0.2",
     "d3": "^7.9.0",
