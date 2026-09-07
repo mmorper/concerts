@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-06T13:26:27.103Z",
+  "updatedAt": "2026-09-07T15:31:42.194Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -1501,6 +1501,25 @@
       "platform": "x",
       "status": "seeded",
       "seededAt": "2026-08-22T04:22:15.524Z"
+    },
+    {
+      "slug": "ziggy-marley-17-4-years-before-love-is-my-religion",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3muwt5m2xpm2c",
+      "rkey": "3muwt5m2xpm2c",
+      "postedAt": "2026-09-07T15:29:03.024Z",
+      "tier": 2,
+      "source": "cover-art"
+    },
+    {
+      "slug": "ziggy-marley-17-4-years-before-love-is-my-religion",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117230475797853245",
+      "postedAt": "2026-09-07T15:31:42.194Z",
+      "tier": 2,
+      "source": "cover-art"
     },
     {
       "slug": "ziggy-marley-caught-once-never-again",
