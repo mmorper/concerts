@@ -14,6 +14,23 @@
 # reason given above: a lone PR is the right signal for zod 3 -> 4, which lands
 # in the MCP tool schemas, and it was that isolation which made the ordering
 # problem legible when `agents@0.22` could not resolve against zod 3.
+#
+# TYPESCRIPT IS EXCLUDED FROM THAT GROUP (added 2026-09-07). Grouping is right
+# when the same bump lands in four packages and the answer is the same in all
+# four. TypeScript is the opposite case: the compiler version is a property of
+# the REPOSITORY, not of a package, and 5 -> 7 crosses two majors. Grouped with
+# vitest it produced #494, #496 and #498 — three green, mergeable PRs that would
+# have put three Workers on TypeScript 7 while the root stayed on 5.7. A split
+# across two compiler majors, arrived at by accident, and CI could not object
+# because each Worker typechecks in isolation. That isolation is exactly why it
+# would not have announced itself.
+#
+# It also held the vitest bumps hostage: root is already on vitest 5 and the
+# Workers were not, and the only thing stopping that landing was being bundled
+# with a decision nobody had made.
+#
+# So TypeScript keeps its own PR per package, and the upgrade is done ONCE as a
+# single branch across the root and all four Workers.
 version: 2
 updates:
   - package-ecosystem: npm
@@ -27,6 +44,11 @@ updates:
       dev-majors:
         dependency-type: development
         update-types: [major]
+        # TypeScript is excluded so it keeps its OWN PR per package. See the
+        # header note — a grouped TS major is a per-package drive-by wearing a
+        # batch's clothes.
+        exclude-patterns:
+          - typescript
 
   - package-ecosystem: npm
     directory: /workers/ask-chat
@@ -39,6 +61,11 @@ updates:
       dev-majors:
         dependency-type: development
         update-types: [major]
+        # TypeScript is excluded so it keeps its OWN PR per package. See the
+        # header note — a grouped TS major is a per-package drive-by wearing a
+        # batch's clothes.
+        exclude-patterns:
+          - typescript
 
   - package-ecosystem: npm
     directory: /workers/dashboard-refresh
@@ -51,6 +78,11 @@ updates:
       dev-majors:
         dependency-type: development
         update-types: [major]
+        # TypeScript is excluded so it keeps its OWN PR per package. See the
+        # header note — a grouped TS major is a per-package drive-by wearing a
+        # batch's clothes.
+        exclude-patterns:
+          - typescript
 
   - package-ecosystem: npm
     directory: /workers/mcp-server
@@ -63,6 +95,11 @@ updates:
       dev-majors:
         dependency-type: development
         update-types: [major]
+        # TypeScript is excluded so it keeps its OWN PR per package. See the
+        # header note — a grouped TS major is a per-package drive-by wearing a
+        # batch's clothes.
+        exclude-patterns:
+          - typescript
 
   - package-ecosystem: npm
     directory: /workers/meta-injector
@@ -75,6 +112,11 @@ updates:
       dev-majors:
         dependency-type: development
         update-types: [major]
+        # TypeScript is excluded so it keeps its OWN PR per package. See the
+        # header note — a grouped TS major is a per-package drive-by wearing a
+        # batch's clothes.
+        exclude-patterns:
+          - typescript
 
   # deploy.yml already worries, in a comment, that `cloudflare/wrangler-action@v3`
   # is a floating major. This is what would have flagged it.
