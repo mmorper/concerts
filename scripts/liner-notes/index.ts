@@ -9,6 +9,8 @@
  *   npm run generate:liner-notes -- --seed         # First-run seeding (~10 posts)
  *   npm run generate:liner-notes -- --force        # Ignore deduplication
  *   npm run generate:liner-notes -- --date 2026-06-04  # Override today's date
+ *   npm run generate:liner-notes -- --pick "Pacific Amphitheatre" --force
+ *                                                  # Regenerate one stale note
  */
 
 import { config } from "dotenv";
@@ -33,6 +35,7 @@ const options: PipelineOptions = {
   seed: flag("seed"),
   force: flag("force"),
   date: argValue("date"),
+  pick: argValue("pick"),
 };
 
 console.log("🎵 Agentic Liner Notes Pipeline\n");
@@ -41,6 +44,7 @@ else if (options.dryRun)  console.log("   Mode: dry-run (no files written)");
 else if (options.seed)    console.log("   Mode: seed (generating ~10 posts)");
 else if (options.force)   console.log("   Mode: force (ignoring deduplication)");
 if (options.date)         console.log(`   Date override: ${options.date}`);
+if (options.pick)         console.log(`   Pick: only findings matching "${options.pick}"`);
 console.log();
 
 run(options).catch((err) => {

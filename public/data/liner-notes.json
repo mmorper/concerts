@@ -562,7 +562,8 @@
           "Sixteen shows, none of them planned. That might be the only thing they all share."
         ],
         "authoredAt": "2026-08-31T20:56:07.371Z"
-      }
+      },
+      "doNotSyndicate": "Stale, and a regeneration on 2026-09-07 did not produce shippable copy. The note says 16 shows ending with The English Beat in 2024; the archive holds 17, the last being Nile Rodgers on 2026-07-31 — a show that was future-dated when this note was generated on 2026-07-20 and has since happened. Two regeneration attempts both failed: the first personified the venue (now caught by the venue-personification rule in checkSocial), the second invented a future tense and an eighteenth show that does not exist. Lift this once the numeral check in the unsourced-number work lands and the note regenerates clean: npm run generate:liner-notes -- --pick \"Pacific Amphitheatre\" --force"
     },
     {
       "id": "anniversary-beach-boys-1986-07-16",
