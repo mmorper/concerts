@@ -18,7 +18,18 @@ import { SCENE_NAMES, SCENE_LABELS } from '../../src/components/changelog/consta
 vi.mock('fs', async () => {
   const actual = await vi.importActual<typeof import('fs')>('fs')
   const readFileSync = vi.fn()
-  return { ...actual, default: { ...actual, readFileSync }, readFileSync }
+  // deriveTopology() counts Workers and PR gates off the filesystem, so the
+  // directory reads are mocked too — the alternative is a test whose fixture
+  // silently depends on the real repo having exactly four Workers.
+  const readdirSync = vi.fn()
+  const existsSync = vi.fn()
+  return {
+    ...actual,
+    default: { ...actual, readFileSync, readdirSync, existsSync },
+    readFileSync,
+    readdirSync,
+    existsSync,
+  }
 })
 
 /** Two concerts, three artists, two venues, 1990-2000. */
@@ -69,6 +80,45 @@ function goodClaudeMd() {
 }
 
 /**
+ * A synthetic topology for docs/architecture.svg's two counts. Deliberately
+ * NOT the real repo's: the point is that the validator counts what it finds,
+ * so the fixture supplies its own four Workers and six gates and the diagram
+ * fixture is derived from them.
+ */
+const TOPOLOGY = {
+  workers: ['ask-chat', 'dashboard-refresh', 'mcp-server', 'meta-injector'],
+  gates: [
+    'ci.yml',
+    'ask-chat-ci.yml',
+    'dashboard-refresh-ci.yml',
+    'mcp-ci.yml',
+    'meta-injector-ci.yml',
+    'scene-ci.yml',
+  ],
+  // Tag- and cron-triggered. These gate nothing and must not be counted.
+  crons: ['data-refresh.yml', 'deploy.yml', 'liner-notes.yml', 'on-this-day.yml', 'syndicate.yml'],
+}
+
+const WORKER_WORD = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven'][
+  TOPOLOGY.workers.length
+].toUpperCase()
+
+/** Only the two lines the validator reads — not the whole drawing. */
+function goodArchitectureSvg() {
+  return [
+    `<text x="684" y="248">${WORKER_WORD} WORKERS</text>`,
+    `<text x="224" y="134">${TOPOLOGY.gates.length} CI gates</text>`,
+  ].join('\n')
+}
+
+function workflowFixtures(): Record<string, string> {
+  const out: Record<string, string> = {}
+  for (const f of TOPOLOGY.gates) out[`.github/workflows/${f}`] = 'on:\n  push:\n  pull_request:\n'
+  for (const f of TOPOLOGY.crons) out[`.github/workflows/${f}`] = 'on:\n  schedule:\n'
+  return out
+}
+
+/**
  * The five surfaces the validator checks for #295 compliance. Content only has
  * to satisfy the guard: mention `deriveArchiveStats`, and build no Set over the
  * archive roster.
@@ -92,6 +142,8 @@ function mockFiles(overrides: Partial<Record<string, string>> = {}) {
     'README.md': goodReadme(),
     'ROADMAP.md': goodRoadmap(),
     'CLAUDE.md': goodClaudeMd(),
+    'docs/architecture.svg': goodArchitectureSvg(),
+    ...workflowFixtures(),
     ...compliantSurfaces(),
     ...overrides,
   }
@@ -101,6 +153,19 @@ function mockFiles(overrides: Partial<Record<string, string>> = {}) {
     if (!key) throw new Error(`Unexpected read: ${filePath}`)
     return files[key]
   })
+
+  mockFs.readdirSync.mockImplementation((dir: string) => {
+    const d = String(dir)
+    if (d.endsWith('workers')) {
+      return TOPOLOGY.workers.map((name) => ({ name, isDirectory: () => true }))
+    }
+    if (d.endsWith('.github/workflows')) {
+      return [...TOPOLOGY.gates, ...TOPOLOGY.crons]
+    }
+    throw new Error(`Unexpected readdir: ${dir}`)
+  })
+
+  mockFs.existsSync.mockImplementation(() => true)
 }
 
 async function runValidator() {
@@ -270,6 +335,53 @@ describe('validate-docs', () => {
       expect(failures.length).toBeGreaterThanOrEqual(5)
       expect(failures.every((f) => f.file === 'docs/ROADMAP.md')).toBe(true)
       expect(failures.every((f) => f.reason === 'no-match')).toBe(true)
+    })
+  })
+
+  describe('catches an architecture diagram that has gone stale', () => {
+    it('flags a Worker count the drawing has outgrown', async () => {
+      mockFiles({
+        'docs/architecture.svg': goodArchitectureSvg().replace(
+          `${WORKER_WORD} WORKERS`,
+          'THREE WORKERS'
+        ),
+      })
+      const failures = await runValidator()
+
+      expect(failures).toHaveLength(1)
+      expect(failures[0]).toMatchObject({
+        file: 'docs/architecture.svg',
+        label: 'architecture diagram — Worker count',
+        reason: 'mismatch',
+        expected: WORKER_WORD,
+        actual: 'THREE',
+      })
+    })
+
+    it('flags a CI gate count the drawing has outgrown', async () => {
+      mockFiles({
+        'docs/architecture.svg': goodArchitectureSvg().replace(
+          `${TOPOLOGY.gates.length} CI gates`,
+          '4 CI gates'
+        ),
+      })
+      const failures = await runValidator()
+
+      expect(failures).toHaveLength(1)
+      expect(failures[0]).toMatchObject({
+        file: 'docs/architecture.svg',
+        label: 'architecture diagram — CI gate count',
+        reason: 'mismatch',
+        actual: '4',
+      })
+    })
+
+    it('does not count the cron- and tag-triggered workflows as gates', async () => {
+      // The guard that matters: syndicate.yml and deploy.yml sit in the same
+      // directory and gate nothing. If they were counted, the honest diagram
+      // would be the one reported as wrong.
+      mockFiles()
+      expect(await runValidator()).toEqual([])
     })
   })
 
