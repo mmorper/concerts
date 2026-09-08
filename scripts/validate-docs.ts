@@ -33,7 +33,7 @@
  *   npm run validate:docs
  */
 
-import { readFileSync } from 'fs'
+import { readFileSync, readdirSync, existsSync } from 'fs'
 import { resolve } from 'path'
 import { SCENE_NAMES, SCENE_LABELS } from '../src/components/changelog/constants'
 import { deriveArchiveStats } from '../src/utils/archiveStats.js'
@@ -221,12 +221,56 @@ function checkDerivationUse(): Failure[] {
   return failures
 }
 
+/**
+ * The two counts docs/architecture.svg draws.
+ *
+ * A diagram is the worst place for a stale number: nobody re-reads a picture
+ * they have already understood. These two are the ones that change silently —
+ * a fifth Worker, or a seventh PR gate — so they are counted off the
+ * filesystem rather than typed here, the same rule the rest of this file
+ * follows. The cron-driven workflows are deliberately not counted: they are
+ * not gates, and #284's lesson is that a check nobody trusts gets deleted.
+ */
+function deriveTopology() {
+  const workersDir = resolve(process.cwd(), 'workers')
+  const workers = readdirSync(workersDir, { withFileTypes: true }).filter(
+    (entry) =>
+      entry.isDirectory() &&
+      existsSync(resolve(workersDir, entry.name, 'wrangler.toml'))
+  )
+
+  // A "gate" is a workflow that runs on pull_request. deploy.yml, the data
+  // pipeline and the content jobs are triggered by tags and crons, and gate
+  // nothing.
+  const gates = readdirSync(resolve(process.cwd(), '.github/workflows'))
+    .filter((f) => f.endsWith('.yml'))
+    .filter((f) => /^\s{2}pull_request:/m.test(readRepoFile(`.github/workflows/${f}`)))
+
+  return { workers: workers.length, gates: gates.length }
+}
+
 function buildClaims(): Claim[] {
   const stats = deriveStats()
+  const topology = deriveTopology()
   const sceneCount = SCENE_NAMES.length
   const roster = SCENE_NAMES.map((n) => SCENE_LABELS[n]).join(', ')
 
   return [
+    // ---- docs/architecture.svg: the two counts the diagram draws. See
+    // deriveTopology() above for why only these two.
+    {
+      file: 'docs/architecture.svg',
+      label: 'architecture diagram — Worker count',
+      pattern: />(\w+) WORKERS</,
+      expected: numberWord(topology.workers).toUpperCase(),
+    },
+    {
+      file: 'docs/architecture.svg',
+      label: 'architecture diagram — CI gate count',
+      pattern: />(\d+) CI gates</,
+      expected: String(topology.gates),
+    },
+
     // ---- README: the intro paragraph. Unowned by /release until #284; this
     // is the exact line that sat at "Five scenes" and "178 shows".
     {

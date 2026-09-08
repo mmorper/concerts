@@ -54,6 +54,26 @@ flowchart LR
 | Version Control | VS Code terminal | Git + GitHub |
 | Deploy | GitHub → Cloudflare | GitHub Actions + Wrangler |
 
+### What the machine does
+
+The flow above is the human half. Once a change is committed, a second
+pipeline takes over that nobody drives:
+
+![Architecture of the Morperhaus Concert Archives: GitHub builds and proves every change, Cloudflare runs it](architecture.svg)
+
+Everything — a hand-written pull request, a Dependabot bump, the weekly data
+refresh, the prose jobs — becomes a commit on `main`. Six CI gates stand in
+front of it. Past them, Cloudflare Pages publishes the site and each of the
+four Workers redeploys itself, each gated on its own tests.
+
+Two things deliberately sit outside that pipeline: the Ask chat's kill switch
+and its spend cap live in Cloudflare KV, so they can be flipped from a phone
+without a build. Brakes should not need a deploy.
+
+The two counts in the picture — six gates, four Workers — are checked by
+`npm run validate:docs` on every PR. A fifth Worker turns the diagram red
+rather than quietly wrong.
+
 ---
 
 ## Phase 1: Ideation & Spec (Claude Projects)
