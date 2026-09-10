@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-10T23:08:48.173Z",
-  "lastRunAt": "2026-09-10T23:08:48.173Z",
+  "generatedAt": "2026-09-10T23:09:42.231Z",
+  "lastRunAt": "2026-09-10T23:09:42.231Z",
   "paused": false,
   "ledger": {
     "total": 236,
@@ -14,11 +14,13 @@
       "channel": "bluesky",
       "lastSuccessAt": "2026-09-10T23:08:45.763Z",
       "postedCount": 16,
-      "consecutiveFailures": 0
+      "consecutiveFailures": 1,
+      "lastError": "Bluesky com.atproto.repo.deleteRecord failed: 502 {\"error\":\"UpstreamFailure\",\"message\":\"UpstreamFailure\"}",
+      "lastErrorAt": "2026-09-10T23:09:42.231Z"
     },
     {
       "channel": "mastodon",
-      "lastSuccessAt": "2026-09-10T23:08:48.169Z",
+      "lastSuccessAt": "2026-09-10T23:09:42.230Z",
       "postedCount": 16,
       "consecutiveFailures": 0
     }
