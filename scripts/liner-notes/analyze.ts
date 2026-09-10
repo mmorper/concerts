@@ -432,106 +432,115 @@ function detectCalendarAnniversary(
 
 // ── 5. Geographic Chapter Detector ───────────────────────────────────────────
 
+/**
+ * Where a run of shows happened, for `geographic-chapter`.
+ *
+ * 🔴 D.C., MARYLAND AND VIRGINIA ARE ONE PLACE HERE. `STATE_REGION` files D.C.
+ * and Maryland under "Northeast" and Virginia under "South" — right for a map,
+ * wrong for a run of nights out. A Fairfax show between two 9:30 Club shows is
+ * not a trip. Split that way, the archive's longest run in one place — 50 shows
+ * around D.C. from November 2009 to April 2018, not one of them in California —
+ * broke into fragments, and the detector published a West Coast run bounded by
+ * a single Phoenix night instead.
+ *
+ * State-level rather than city-level because every Maryland and Virginia venue
+ * in the archive is in the Washington–Baltimore area. A Richmond show would need
+ * a city rule.
+ */
+const METRO_OF_STATE: Record<string, string> = {
+  "district of columbia": "D.C. area",
+  maryland: "D.C. area",
+  virginia: "D.C. area",
+};
+
+export function placeOf(state: string): string {
+  return METRO_OF_STATE[state?.trim().toLowerCase()] ?? regionOf(state);
+}
+
+/** "on the West Coast", "in the D.C. Area" — the place as a headline says it. */
+function inPlace(place: string): string {
+  if (place === "International") return "Outside the U.S.";
+  const title = place.replace(/\b[a-z]/g, (ch) => ch.toUpperCase());
+  return place === "West Coast" ? `on the ${title}` : `in the ${title}`;
+}
+
 function detectGeographicChapter(concerts: Concert[]): AnalysisFinding[] {
   if (concerts.length < 6) return [];
 
   const sorted = [...concerts].sort((a, b) => a.date.localeCompare(b.date));
+  const withPlace = sorted.map((c) => ({ concert: c, place: placeOf(c.state) }));
 
-  // Assign region to each concert
-  const withRegion = sorted.map((c) => ({
-    concert: c,
-    region: regionOf(c.state),
-  }));
-
-  // Identify chapters: runs of 3+ consecutive concerts in the same region
-  const chapters: Array<{
-    region: string;
-    shows: Concert[];
-  }> = [];
-
+  // Runs of 3+ consecutive concerts in the same place, kept as index ranges so
+  // each one knows the shows on either side of it.
+  const runs: Array<{ place: string; start: number; end: number }> = [];
   let i = 0;
-  while (i < withRegion.length) {
-    const region = withRegion[i].region;
-    const run: Concert[] = [];
-
-    while (i < withRegion.length && withRegion[i].region === region) {
-      run.push(withRegion[i].concert);
-      i++;
-    }
-
-    if (run.length >= 3) {
-      chapters.push({ region, shows: run });
-    }
+  while (i < withPlace.length) {
+    const start = i;
+    const place = withPlace[i].place;
+    while (i < withPlace.length && withPlace[i].place === place) i++;
+    if (i - start >= 3) runs.push({ place, start, end: i - 1 });
   }
+  if (runs.length === 0) return [];
 
-  if (chapters.length === 0) return [];
+  const show = (c: Concert) => ({ date: c.date, artist: c.headliner, venue: c.venue, city: c.cityState });
+  const places = new Set(withPlace.map((w) => w.place));
+  const twoCoasts = places.has("West Coast") && (places.has("Northeast") || places.has("D.C. area"));
 
-  const findings: AnalysisFinding[] = [];
-
-  // Return up to 3 most significant chapters (most shows)
-  const topChapters = [...chapters]
-    .sort((a, b) => b.shows.length - a.shows.length)
+  // Up to 3 longest runs. Ties go to the earlier run, so the order never falls
+  // through to whatever the sort does with equal keys.
+  const top = [...runs]
+    .sort((a, b) => b.end - b.start - (a.end - a.start) || a.start - b.start)
     .slice(0, 3);
 
-  for (const chapter of topChapters) {
-    const { region, shows } = chapter;
-    const sortedShows = [...shows].sort((a, b) => a.date.localeCompare(b.date));
-    const first = sortedShows[0];
-    // 🔴 A CHAPTER IS AN UNBROKEN RUN, NOT A BEGINNING, and the copy read it as
-    // one: "Oingo Boingo opened a chapter I didn't know I was starting."
-    //
-    // The run starting 1988-10-29 is the longest CONSECUTIVE stretch of West
-    // Coast shows — it starts there because two Arizona nights (Mountain West)
-    // fall just before it, not because West Coast concert-going began. The first
-    // was Adam Ant at Irvine Meadows in 1984, four years earlier.
-    //
-    // `earlierInRegion` is what stops the prose claiming a first. When it is
-    // non-zero the run is a stretch, not an origin, and the copy has to say so.
-    const earlierInRegion = withRegion.filter(
-      (w) => w.region === region && w.concert.date < first.date
-    ).length;
-    const last = sortedShows[sortedShows.length - 1];
-    const span = spanYears(first.date, last.date);
-    const venues = [...new Set(sortedShows.map((s) => s.venueNormalized))];
-    const artists = [...new Set(sortedShows.map((s) => s.headlinerNormalized))];
-    const years = sortedShows.map((s) => s.year);
-    const decades = uniqueDecades(years);
+  return top.map(({ place, start, end }): AnalysisFinding => {
+    const shows = sorted.slice(start, end + 1);
+    const first = shows[0];
+    const last = shows[shows.length - 1];
+    const before = withPlace[start - 1];
+    const after = withPlace[end + 1];
+    const venues = [...new Set(shows.map((s) => s.venueNormalized))];
+    const artists = [...new Set(shows.map((s) => s.headlinerNormalized))];
+    const years = shows.map((s) => s.year);
 
-    const tags = ["#geographic"];
-    // Check if the full dataset has shows on multiple coasts
-    const allRegions = new Set(concerts.map((c) => regionOf(c.state)));
-    if (allRegions.has("West Coast") && allRegions.has("Northeast")) {
-      tags.push("#two-coasts");
-    }
-
-    findings.push({
-      id: `geographic-${slugify(region)}-${first.year}`,
+    return {
+      id: `geographic-${slugify(place)}-${first.year}`,
       detector: "geographic-chapter",
       category: "personal",
       temporality: "evergreen",
-      headline: `My ${region} Chapter: ${shows.length} Concerts${span > 0 ? ` Over ${span} Year${span !== 1 ? "s" : ""}` : ""}`,
+      // Not "My West Coast Chapter". A run of consecutive shows is a streak, and
+      // calling it a chapter is what taught the copy to give it a beginning and an
+      // end: "It started with Oingo Boingo… and I never left California once."
+      headline: `${shows.length} Shows in a Row ${inPlace(place)}${last.year > first.year ? `, ${first.year}–${last.year}` : ""}`,
       dataPoints: {
-        region,
+        region: place,
         showCount: shows.length,
-        // How many shows in this region came BEFORE the run. Non-zero means the
-        // run is a stretch, not an origin, and the prose may not call it a start.
-        earlierInRegion,
-        firstShow: { date: first.date, artist: first.headliner, venue: first.venue, city: first.cityState },
-        lastShow: { date: last.date, artist: last.headliner, venue: last.venue, city: last.cityState },
-        spanYears: span,
+        firstShow: show(first),
+        lastShow: show(last),
+        spanYears: spanYears(first.date, last.date),
         venueCount: venues.length,
         artistCount: artists.length,
-        decades,
+        decades: uniqueDecades(years),
+        // 🔴 WHERE THE RUN SITS IN THE ARCHIVE. Without these the copy has nothing
+        // to measure a run against, and it wrote one as a whole life: "It started
+        // with Oingo Boingo at Irvine Meadows in October 1988 … and I never left
+        // California once", in an archive that starts in 1984 with shows on both
+        // coasts before and after that run. The prose and social prompts both get
+        // these as facts — see `detectorFacts` in generate.ts.
+        earlierInRegion: withPlace.slice(0, start).filter((w) => w.place === place).length,
+        laterInRegion: withPlace.slice(end + 1).filter((w) => w.place === place).length,
+        archiveShowCount: sorted.length,
+        archiveFirstShow: show(sorted[0]),
+        // The shows that bound the run — the only reason it starts and stops where it does.
+        showBefore: before ? { ...show(before.concert), place: before.place } : null,
+        showAfter: after ? { ...show(after.concert), place: after.place } : null,
       },
       artists,
       venues,
       years,
       suggestedImage: { type: "venue", venueNormalized: first.venueNormalized },
-      tags,
-    });
-  }
-
-  return findings;
+      tags: twoCoasts ? ["#geographic", "#two-coasts"] : ["#geographic"],
+    };
+  });
 }
 
 // ── 6. Concert Streak Detector ────────────────────────────────────────────────

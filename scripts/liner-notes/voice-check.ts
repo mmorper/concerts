@@ -59,6 +59,41 @@ const PERISHABLE: Array<[RegExp, string]> = [
   [/\bnothing since\b/i, '"nothing since" — perishable'],
   [/that was the end of them/i, '"that was the end of them" — perishable'],
   [/\bfinal album\b/i, '"final album" — perishable'],
+  // ── Time counted from the day it was written ─────────────────────────────
+  // "The Belasco, just this past December", "the Kia Forum last year" — both
+  // published, both true the week they were written, both about shows in 2023 and
+  // 2024, and both wrong by the time the drip posted them in 2026. A permalinked
+  // note cannot know what "last year" meant. Name the month and year instead.
+  [/(?<!\bthe\s)\blast (?:year|summer|spring|fall|autumn|winter|month|week)\b/i, '"last year" and the like — relative to a day the reader cannot see; name the date'],
+  [/\bthis past (?:year|summer|spring|fall|autumn|winter|month|week|january|february|march|april|may|june|july|august|september|october|november|december)\b/i, '"this past …" — relative to a day the reader cannot see; name the date'],
+  [/\bthis (?:year|summer|spring|fall|autumn|winter)\b(?!['’]s)/i, '"this year" and the like — relative to a day the reader cannot see; name the date'],
+];
+
+/**
+ * A stated age: "I was 18 at Irvine Meadows", "at 19 years old".
+ *
+ * The archive has no birth year anywhere, so every age in the copy is invented —
+ * and the published ones did not even agree: one note had me 18 in March 1985,
+ * two others 15 in April 1986 and 19 in March 1990. A number stated about the
+ * narrator's own life is the most personal fabrication this pipeline can make,
+ * and the first one a reader who knows me would catch.
+ *
+ * An error on both paths. On social it buys a retry; on prose it drops the
+ * candidate to the reserve, which is the right trade for a sentence that is false
+ * about the person whose name is on the post.
+ */
+const AGE_WORD =
+  "(?:ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|" +
+  "(?:twenty|thirty|forty|fifty|sixty)(?:-(?:one|two|three|four|five|six|seven|eight|nine))?)";
+const AGE = `(?:[1-6]\\d|${AGE_WORD})`;
+// "I was 30 rows back", "I was one of 15,000" and "I was 25 years into it" are counts, not ages.
+const NOT_A_COUNT =
+  "(?!\\s*(?:%|shows?|times?|songs?|nights?|concerts?|acts?|bands?|rows?|minutes?|hours?|days?|weeks?|months?|miles?|feet|people|of\\b|years?\\s+(?:in|into|after|before|since|later|on)\\b))";
+const AGE_DETAIL = "a stated age — the archive has no birth year, so it is invented";
+export const STATED_AGE: Array<[RegExp, string]> = [
+  [new RegExp(`\\bI\\s+was\\s+(?:only\\s+|just\\s+|barely\\s+|still\\s+)?${AGE}\\b${NOT_A_COUNT}`, "i"), AGE_DETAIL],
+  [new RegExp(`\\bat\\s+(?:age\\s+${AGE}\\b|${AGE}\\s+years?\\s+old\\b|${AGE}\\s+for\\b)`, "i"), AGE_DETAIL],
+  [new RegExp(`\\b${AGE}-year-old\\s+(?:me|kid|self|version|fan|teenager)\\b`, "i"), AGE_DETAIL],
 ];
 
 /**
@@ -71,6 +106,14 @@ const VERDICTS: Array<[RegExp, string]> = [
   [/\b(?:their|the) (?:greatest|finest|best) (?:album|record|work)\b/i, "critical verdict — unsupported"],
   [/\bmost important (?:album|record)\b/i, "critical verdict — unsupported"],
   [/one of the greatest/i, '"one of the greatest" — unsupported comparison'],
+  // Popularity asserted, never evidenced. "The Smithereens were at their commercial
+  // peak in June 1992", "'Dead Man's Party' was everywhere that summer", "Maxi Priest
+  // was riding high" — all published, none measurable from anything in the archive,
+  // and the album data put several of those nights nowhere near the record claimed.
+  [/\b(?:commercial|creative|critical) peak\b/i, '"commercial peak" — popularity the archive cannot measure'],
+  [/\bat (?:the|their|his|her|its) peak\b/i, '"at their peak" — popularity the archive cannot measure'],
+  [/\bwas everywhere\b/i, '"was everywhere" — popularity the archive cannot measure'],
+  [/\briding high\b/i, '"riding high" — popularity the archive cannot measure'],
 ];
 
 /**
@@ -279,6 +322,7 @@ export function checkVoice(finding: ScoredFinding): VoiceIssue[] {
   for (const [re, detail] of TIER_THREE) if (re.test(prose)) push("error", "tier-3", detail);
   for (const [re, detail] of SONG_EXISTENCE) if (re.test(prose)) push("error", "song-existence", detail);
   for (const [re, detail] of VERB_OBJECT) if (re.test(prose)) push("error", "verb-object", detail);
+  for (const [re, detail] of STATED_AGE) if (re.test(prose)) push("error", "stated-age", detail);
 
   // Foresight is only wrong where the narrator is positioned before a release.
   // Elsewhere "I knew they would be back" is ordinary retrospective writing.
@@ -889,6 +933,7 @@ export function checkSocial(input: SocialCheckInput): VoiceIssue[] {
     for (const [re, detail] of VERDICTS) if (re.test(text)) push("error", "critical-verdict", `${label}: ${detail}`);
     for (const [re, detail] of TIER_THREE) if (re.test(text)) push("error", "tier-3", `${label}: ${detail}`);
     for (const [re, detail] of SOCIAL_FURNITURE) if (re.test(text)) push("error", "social-furniture", `${label}: ${detail}`);
+    for (const [re, detail] of STATED_AGE) if (re.test(text)) push("error", "stated-age", `${label}: ${detail}`);
   }
 
   if (input.headline && hook && isRestatement(hook, input.headline)) {

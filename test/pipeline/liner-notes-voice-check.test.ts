@@ -38,6 +38,14 @@ describe('errors — never publish', () => {
     expect(rules(base('I saw them in 1988. It sold 15 million copies worldwide.'))).toContain('tier-3')
   })
 
+  it('catches a stated age — there is no birth year to check it against', () => {
+    // Published notes put me at 18 in 1985, 15 in 1986 and 19 in 1990.
+    expect(rules(base('I remember that 18-year-old kid at Irvine Meadows in 1985, certain of everything.')))
+      .toContain('stated-age')
+    expect(rules(base('I saw Erasure at the Forum in 1990, overwhelmed at 19 years old.')))
+      .toContain('stated-age')
+  })
+
   it('catches banned phrases', () => {
     expect(rules(base('I saw them in 1988. It was a legendary night at the Bowl.')))
       .toContain('banned-phrase')

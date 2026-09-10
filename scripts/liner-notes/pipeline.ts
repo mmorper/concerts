@@ -22,7 +22,7 @@ import { select, buildPosts, fetchSubjectTracks, POSTS_PER_RUN } from "./curate.
 import type { ImageSources } from "./image-refs.ts";
 import { iTunesClient } from "../utils/itunes-client.ts";
 import { refreshPostImages } from "./refresh-images.ts";
-import { generate } from "./generate.ts";
+import { generate, detectorFacts } from "./generate.ts";
 import { generateSocial, type SocialContext } from "./social.ts";
 import { checkSocial, formatSocialIssues } from "./voice-check.ts";
 import { resolveAnchorConcert } from "../syndication/payload.ts";
@@ -312,6 +312,9 @@ export async function run(options: PipelineOptions): Promise<void> {
         // And the counts it measured, so a caption naming the artist count the
         // prose never printed is evidence rather than a fabrication.
         knownNumbers: finding ? [...numbersInData(finding)] : [],
+        // Where the finding sits in the archive — the same lines the prose prompt
+        // gets as a caveat, so the two calls cannot be told different things.
+        facts: finding ? detectorFacts(finding) : [],
       };
       return { post, context };
     });

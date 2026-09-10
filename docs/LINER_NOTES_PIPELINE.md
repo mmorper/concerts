@@ -415,13 +415,15 @@ Each detector produces one or more `AnalysisFinding` objects with a `category`, 
 
 > **`STATE_REGION` is keyed on full state names** (`"California"`), matching what `concerts.json` stores and the convention `CITY_PULSE_EVENTS` uses. It was originally keyed on postal codes (`"CA"`), which never matched a single row — every concert resolved to `"International"`, the detector collapsed the whole archive into one "chapter", and it published a post describing a California/DC archive as *"177 international concerts"* (#232). `regionOf()` now warns on an unmapped state rather than falling through silently, and a test asserts every state in `concerts.json` resolves. Non-US states are expected to reach `"International"` and are listed in `KNOWN_NON_US`.
 
-**Data points:** Region name, show count, first/last show, span in years, distinct venues and artists, decades covered.
+**A run is a streak, not a chapter of a life.** This detector published *"My West Coast Chapter: 26 Concerts Over 11 Years"*, and its social copy told strangers *"It started with Oingo Boingo… and I never left California once"* — about a 1988–1999 run in an archive that starts in 1984, with shows on both coasts before and after it (caught 2026-09-10). Three things changed. The headline no longer says "chapter". D.C., Maryland and Virginia count as one place (`placeOf()`), because `STATE_REGION` splits them across Northeast and South, which broke the archive's longest single-place run — 50 shows around D.C., 2009–2018 — into fragments. And every finding carries where the run sits in the archive, which `detectorFacts()` in `generate.ts` turns into sentences for **both** the prose prompt and the social prompt. #446 had taught the prose prompt alone, and the social copy re-authored in the same PR repeated the error.
 
-**Returns:** Top 3 regions by show count.
+**Data points:** Place (`region`), show count, first/last show, span in years, distinct venues and artists, decades covered — plus `earlierInRegion`, `laterInRegion`, `archiveShowCount`, `archiveFirstShow`, and `showBefore` / `showAfter`: the shows that bound the run, with their place.
 
-**Auto-tag:** `#two-coasts` if the archive contains both West Coast and Northeast shows.
+**Returns:** Top 3 runs by show count; ties go to the earlier run.
 
-**Example headline:** *"My West Coast Chapter: 12 Concerts Over 8 Years"*
+**Auto-tag:** `#two-coasts` if the archive contains West Coast shows and Northeast or D.C.-area shows.
+
+**Example headline:** *"50 Shows in a Row in the D.C. Area, 2009–2018"*
 
 ---
 
