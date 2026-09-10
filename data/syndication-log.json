@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-10T23:03:22.021Z",
+  "updatedAt": "2026-09-10T23:04:22.203Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -543,20 +543,35 @@
       "slug": "kia-forum-5-shows-over-3-decades",
       "platform": "bluesky",
       "status": "posted",
-      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3musadwkink2r",
-      "rkey": "3musadwkink2r",
-      "postedAt": "2026-09-05T19:41:55.380Z",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv75yi6qxv2o",
+      "rkey": "3mv75yi6qxv2o",
+      "postedAt": "2026-09-10T23:04:20.584Z",
       "tier": 2,
-      "source": "venue-places"
+      "source": "venue-places",
+      "corrections": [
+        {
+          "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3musadwkink2r",
+          "rkey": "3musadwkink2r",
+          "postedAt": "2026-09-05T19:41:55.380Z",
+          "replacedAt": "2026-09-10T23:04:18.733Z"
+        }
+      ]
     },
     {
       "slug": "kia-forum-5-shows-over-3-decades",
       "platform": "mastodon",
       "status": "posted",
-      "uri": "117220141090773061",
-      "postedAt": "2026-09-05T19:43:28.483Z",
+      "uri": "117249242691705353",
+      "postedAt": "2026-09-10T23:04:22.203Z",
       "tier": 2,
-      "source": "venue-places"
+      "source": "venue-places",
+      "corrections": [
+        {
+          "uri": "117220141090773061",
+          "postedAt": "2026-09-05T19:43:28.483Z",
+          "replacedAt": "2026-09-10T23:04:21.014Z"
+        }
+      ]
     },
     {
       "slug": "march-22-13-years-since-bad-religion",
