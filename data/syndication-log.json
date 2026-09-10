@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-10T23:09:42.230Z",
+  "updatedAt": "2026-09-10T23:11:31.342Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -1596,11 +1596,19 @@
       "slug": "ziggy-marley-17-4-years-before-love-is-my-religion",
       "platform": "bluesky",
       "status": "posted",
-      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3muwt5m2xpm2c",
-      "rkey": "3muwt5m2xpm2c",
-      "postedAt": "2026-09-07T15:29:03.024Z",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv76fcxlu22c",
+      "rkey": "3mv76fcxlu22c",
+      "postedAt": "2026-09-10T23:11:31.341Z",
       "tier": 2,
-      "source": "cover-art"
+      "source": "cover-art",
+      "corrections": [
+        {
+          "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3muwt5m2xpm2c",
+          "rkey": "3muwt5m2xpm2c",
+          "postedAt": "2026-09-07T15:29:03.024Z",
+          "replacedAt": "2026-09-10T23:11:29.384Z"
+        }
+      ]
     },
     {
       "slug": "ziggy-marley-17-4-years-before-love-is-my-religion",
