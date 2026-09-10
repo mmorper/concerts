@@ -1,25 +1,40 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-10T23:07:04.969Z",
+  "updatedAt": "2026-09-10T23:07:59.769Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
       "platform": "bluesky",
       "status": "posted",
-      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mus7og5d6p2b",
-      "rkey": "3mus7og5d6p2b",
-      "postedAt": "2026-09-05T19:29:53.508Z",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv766x6dc62l",
+      "rkey": "3mv766x6dc62l",
+      "postedAt": "2026-09-10T23:07:57.619Z",
       "tier": 1,
-      "source": "personal"
+      "source": "personal",
+      "corrections": [
+        {
+          "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mus7og5d6p2b",
+          "rkey": "3mus7og5d6p2b",
+          "postedAt": "2026-09-05T19:29:53.508Z",
+          "replacedAt": "2026-09-10T23:07:55.517Z"
+        }
+      ]
     },
     {
       "slug": "3-concerts-in-12-days",
       "platform": "mastodon",
       "status": "posted",
-      "uri": "117220101617314130",
-      "postedAt": "2026-09-05T19:33:24.995Z",
+      "uri": "117249256948443636",
+      "postedAt": "2026-09-10T23:07:59.769Z",
       "tier": 1,
-      "source": "personal"
+      "source": "personal",
+      "corrections": [
+        {
+          "uri": "117220101617314130",
+          "postedAt": "2026-09-05T19:33:24.995Z",
+          "replacedAt": "2026-09-10T23:07:58.169Z"
+        }
+      ]
     },
     {
       "slug": "april-12-40-years-since-the-alarm",
