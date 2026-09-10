@@ -151,6 +151,56 @@ export function recordRetraction(
 }
 
 /**
+ * The live post has been deleted so a corrected one can take its place.
+ *
+ * Recorded BEFORE the replacement posts, and still a blocking row: if the new post
+ * fails, no normal run may re-post the old copy, and `--correct` finds the row by
+ * `pendingCorrection` and posts without deleting a second time. The deleted post's
+ * identifiers move into `corrections` rather than disappearing.
+ */
+export function recordPendingCorrection(
+  ledger: SyndicationLedger,
+  slug: string,
+  platform: Channel
+): void {
+  const existing = findEntry(ledger, slug, platform);
+  const now = new Date().toISOString();
+  upsert(ledger, {
+    ...(existing ?? { slug, platform }),
+    slug,
+    platform,
+    status: "retracted",
+    retractedAt: now,
+    pendingCorrection: true,
+    corrections: [
+      ...(existing?.corrections ?? []),
+      ...(existing?.uri
+        ? [{
+            uri: existing.uri,
+            ...(existing.rkey ? { rkey: existing.rkey } : {}),
+            ...(existing.postedAt ? { postedAt: existing.postedAt } : {}),
+            replacedAt: now,
+          }]
+        : []),
+    ],
+  });
+}
+
+/** The corrected post is live. The history in `corrections` is left as it was. */
+export function recordCorrection(
+  ledger: SyndicationLedger,
+  args: Parameters<typeof recordPost>[1]
+): void {
+  recordPost(ledger, args);
+  const entry = findEntry(ledger, args.slug, args.platform);
+  if (!entry) return;
+  delete entry.pendingCorrection;
+  delete entry.retractedAt;
+  // A Mastodon replacement has no record key; an old Bluesky one must not linger.
+  if (!args.rkey) delete entry.rkey;
+}
+
+/**
  * Suppress the back catalogue.
  *
  * 57 liner notes are already published. An empty ledger means the first run

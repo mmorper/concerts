@@ -204,6 +204,9 @@ These phrases are banned. If you see them in generated prose, regenerate:
 | "they never made another record" | **Perishable** — see below |
 | "their last album" | Perishable, unless pinned to a stated year |
 | "the peak of their career" | Unfalsifiable, and unsupported by the data |
+| "at their commercial peak", "was everywhere that summer", "riding high" | Popularity the archive cannot measure. `critical-verdict` error |
+| "I was 18", "at 19 years old", "that 18-year-old kid" | **Invented.** The data has no birth year, and the published ages contradicted each other. `stated-age` error. "My teenage years" and "Gen-Xers" are the same claim in costume |
+| "I never left California", "it started with…", "closed it out" | A claim about a whole life made from a slice of the archive. Say where the *shows* were, never where I was |
 
 ### Perishable claims ✨ v5.4
 
@@ -222,6 +225,14 @@ The Roots and Blondie are both active bands sitting in our data with no
 album after their last show. Writing "nothing since" about either is a
 liability, not an observation. If a claim of that shape is unavoidable, pin it:
 *"the last album they'd released as of 2026."*
+
+**Time counted from the day of writing is perishable too.** *"The Belasco, just
+this past December"* was true the week it was written about a December 2024
+show, and false by the time the back-catalogue drip posted it in 2026. So was
+*"the Kia Forum last year"* about 2023. Name the month and year. Counts that
+grow with the archive go the same way: *"170 shows since"* is wrong the next
+time a show is added, and *"more than 160 shows since"* never is. Enforced as
+`perishable-claim`.
 
 ### Verbs must agree with their object ✨ v6.1
 
@@ -309,6 +320,10 @@ figure is derived from Bluesky's 300-grapheme limit rather than chosen.
 - **No furniture.** No hashtags, no URLs, no emoji, no "link in bio", no "read
   more". Tags are generated per channel from entities the record already knows,
   and the link is appended by the adapter. Authoring any of them is an error.
+- **Facts outrank the note.** When the prompt carries *WHERE THIS SITS IN THE
+  ARCHIVE* lines, claim nothing they do not support. A run of shows is not a
+  period of my life: no "it started with", no "closed it out", no "I never left
+  California". Say where the shows were, never where I lived.
 - **Detector tags never publish.** `#full-circle` and `#road-tested` are
   internal taxonomy: meaningless to a reader and an instant tell. The payload
   builder never reads `post.tags` at all.

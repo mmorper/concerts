@@ -83,6 +83,7 @@ function parseArgs(): RunOptions {
     dryRun: flag("dry-run"),
     seedLedger: flag("seed-ledger"),
     retract: value("retract"),
+    correct: value("correct"),
     channels: parseChannels(value("channels")),
     limit: parsePositive("limit", DEFAULT_OPTIONS.limit),
     backlog: parsePositive("backlog", 0),
@@ -196,6 +197,7 @@ console.log("📡 Social Syndication\n");
 if (options.dryRun) console.log("   Mode: dry-run (nothing posted, ledger untouched)");
 if (options.seedLedger) console.log("   Mode: seed-ledger");
 if (options.retract) console.log(`   Mode: retract ${options.retract}`);
+if (options.correct) console.log(`   Mode: correct ${options.correct}`);
 console.log(`   Channels: ${options.channels.join(", ")}`);
 console.log();
 

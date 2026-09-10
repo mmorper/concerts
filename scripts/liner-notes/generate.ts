@@ -290,30 +290,62 @@ function temporalFraming(finding: ScoredFinding, today: string): string[] {
   return lines;
 }
 
-function detectorCaveats(finding: ScoredFinding): string[] {
+/**
+ * True sentences about where a finding sits in the archive.
+ *
+ * 🔴 ONE SOURCE FOR BOTH PROMPTS. #446 taught the prose prompt that a run is not
+ * a beginning and never told the social prompt, which is a separate API call. The
+ * same PR re-authored that note's social copy, and it shipped "That night opened
+ * an 11-year run" and "I never left California once" — about a run in an archive
+ * that starts in 1984 with shows on both coasts either side of it. The prose
+ * prompt gets these lines as a caveat below; pipeline.ts hands the same lines to
+ * the social prompt as facts.
+ */
+export function detectorFacts(finding: Pick<ScoredFinding, "detector" | "dataPoints">): string[] {
+  if (finding.detector !== "geographic-chapter") return [];
+  type Show = { date: string; artist: string; venue: string; city: string; place?: string };
   const dp = finding.dataPoints as Record<string, unknown>;
-  const lines: string[] = [];
+  const first = dp.firstShow as Show | undefined;
+  const last = dp.lastShow as Show | undefined;
+  const origin = dp.archiveFirstShow as Show | undefined;
+  const before = dp.showBefore as Show | null | undefined;
+  const after = dp.showAfter as Show | null | undefined;
+  const place = `"${dp.region}"`;
 
-  // 🔴 A CHAPTER IS AN UNBROKEN RUN, NOT A BEGINNING. The prose read it as one:
-  // "standing at Irvine Meadows in October 1988 ... the beginning of an 11-year
-  // chapter". Twenty-two West Coast shows came first, from Adam Ant in 1984. The
-  // run starts where it does because two Arizona nights — Mountain West, not West
-  // Coast — fall just before it.
-  if (finding.detector === "geographic-chapter" && Number(dp.earlierInRegion) > 0) {
-    const first = dp.firstShow as { date: string } | undefined;
-    lines.push(
-      `\u26A0\uFE0F  THIS IS NOT WHERE ${String(dp.region).toUpperCase()} CONCERT-GOING BEGAN.`,
-      `${dp.earlierInRegion} shows in this region came before ${first?.date ?? "this night"}.`,
-      "This is the longest UNBROKEN run of shows in one region. It starts where it does",
-      "because a show in a DIFFERENT region falls just before it — not because anything",
-      "started. Do NOT write that this night opened a chapter, began anything, or was",
-      "the first of anything. Write about the RUN: how long it held, what it passed",
-      "through, and what ended it.",
-      ""
-    );
+  const facts: string[] = [];
+  if (first && last) {
+    facts.push(`${dp.showCount} shows in a row in ${place}, from ${first.artist} on ${first.date} to ${last.artist} on ${last.date}.`);
   }
+  if (origin) {
+    facts.push(`The archive begins on ${origin.date} with ${origin.artist} at ${origin.venue}, and holds ${dp.archiveShowCount} shows in all.`);
+  }
+  if (dp.earlierInRegion !== undefined) {
+    facts.push(`${dp.earlierInRegion} shows in ${place} came before this run, and ${dp.laterInRegion} came after it.`);
+  }
+  facts.push(
+    before
+      ? `The show just before the run was ${before.artist} in ${before.city} on ${before.date}, in "${before.place}".`
+      : "The run begins with the first show in the archive."
+  );
+  facts.push(
+    after
+      ? `The show just after the run was ${after.artist} in ${after.city} on ${after.date}, in "${after.place}".`
+      : "The run continues through the most recent show in the archive."
+  );
+  return facts;
+}
 
-  return lines;
+function detectorCaveats(finding: ScoredFinding): string[] {
+  const facts = detectorFacts(finding);
+  if (!facts.length) return [];
+  return [
+    `⚠️  THIS IS A RUN OF CONSECUTIVE SHOWS IN ONE PLACE — NOT A PERIOD OF MY LIFE.`,
+    ...facts,
+    "It starts and stops only because of the shows either side of it. Do NOT write that",
+    "anything began or ended beyond this run, that I lived anywhere, or that I \"never",
+    "left\" a place. Say where the shows were, never where I was.",
+    "",
+  ];
 }
 
 function buildUserPromptHistorical(finding: ScoredFinding, options: GenerateOptions): string {

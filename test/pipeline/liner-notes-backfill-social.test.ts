@@ -84,7 +84,8 @@ function post(overrides: Partial<LinerNotesPost> = {}): LinerNotesPost {
 
 const SOCIAL: PostSocial = {
   hook: "Forty years to the day, in the same amphitheatre.",
-  caption: "I was seventeen the first time. I keep coming back to this room.",
+  // No stated age: the archive has no birth year, so checkSocial rejects one.
+  caption: "The first time, I did not know the words. I keep coming back to this room.",
   authoredAt: "2026-08-22T00:00:00.000Z",
 };
 

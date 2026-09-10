@@ -628,6 +628,21 @@ function buildPrompt(post: SocialSubject, context: SocialContext): string {
         "",
         post.prose,
         "",
+        // 🔴 THE NOTE IS NOT ENOUGH TO WRITE FROM. Given only the prose, this call
+        // turned a run of shows into a whole life — "It started with Oingo Boingo",
+        // "I never left California once" — because nothing in front of it said
+        // where the run sat in the archive. These lines are what it was missing.
+        ...(context.facts?.length
+          ? [
+              "WHERE THIS SITS IN THE ARCHIVE — every line below is true, and it outranks the note:",
+              ...context.facts.map((f) => `  • ${f}`),
+              "",
+              "\u{1F534} CLAIM NOTHING THESE LINES DO NOT SUPPORT. Nothing \"started\" or \"ended\"",
+              "unless a line says so. \"Never left\", \"every one\" and \"not once\" hold only inside",
+              "the dates above. Say where the shows were, never where I lived.",
+              "",
+            ]
+          : []),
       ]
     : [
         "AN ANNIVERSARY POST — there is no published note behind this one.",

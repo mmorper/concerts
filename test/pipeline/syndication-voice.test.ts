@@ -16,7 +16,9 @@ import { CAPTION_MAX, HOOK_MAX } from "../../scripts/syndication/budgets.ts";
 
 const clean = {
   hook: "Forty years to the day, in the same amphitheatre.",
-  caption: "I was seventeen the first time. I have been coming back to this room ever since.",
+  // Was "I was seventeen the first time." A stated age is now an error: the
+  // archive has no birth year, so the fixture cannot be clean and carry one.
+  caption: "The first time, I did not know the words. I have been coming back to this room ever since.",
   headline: "July 31: 40 Years Since The Art of Noise",
 };
 
@@ -47,6 +49,29 @@ describe("checkSocial", () => {
     expect(errors(checkSocial({ ...clean, caption: "It peaked at #3 and I was there." }))).toContain(
       "tier-3"
     );
+  });
+
+  it("rejects a stated age — the archive has no birth year", () => {
+    // All published, and they disagree: 18 in March 1985, 15 in April 1986, 19 in March 1990.
+    for (const caption of [
+      "I was 18 at Irvine Meadows in 1985 when synthpop still felt like a dare.",
+      "I was 19 the first time I walked into the Kia Forum, there for Erasure.",
+      "I first walked into the Forum at 19 for Erasure in 1990.",
+      "I was fifteen and completely convinced a band could change the world.",
+    ]) {
+      expect(errors(checkSocial({ ...clean, caption })), caption).toContain("stated-age");
+    }
+  });
+
+  it("does not mistake a count for an age", () => {
+    for (const caption of [
+      "I was 30 rows back and could still feel the bass in my chest.",
+      "I was one of 15,000 people in that field.",
+      "I was 25 years into going to shows before I finally saw them.",
+      "Woodface was barely two years old when I saw them open.",
+    ]) {
+      expect(errors(checkSocial({ ...clean, caption })), caption).not.toContain("stated-age");
+    }
   });
 
   it("rejects furniture the adapter is supposed to add", () => {

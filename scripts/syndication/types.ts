@@ -240,6 +240,14 @@ export interface LedgerEntry {
   /** Which tier actually shipped. This is the greppable blast radius. */
   tier?: MediaTier;
   source?: MediaSource;
+  /**
+   * Posts this row replaced through `--correct`, oldest first. Kept, never
+   * overwritten: a deleted post still went out under this slug, and "what did we
+   * publish here" should stay one grep.
+   */
+  corrections?: Array<{ uri: string; rkey?: string; postedAt?: string; replacedAt: string }>;
+  /** Deleted for a correction whose replacement has not posted yet. `--correct` finishes it. */
+  pendingCorrection?: boolean;
 }
 
 export interface SyndicationLedger {
