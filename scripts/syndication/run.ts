@@ -17,6 +17,8 @@ import {
   livePlatforms,
   loadLedger,
   recordPost,
+  recordCorrection,
+  recordPendingCorrection,
   recordRetraction,
   saveLedger,
   seed,
@@ -39,6 +41,8 @@ export interface RunOptions {
   seedLedger: boolean;
   /** Delete this slug from every channel it posted to, then stop. */
   retract?: string;
+  /** Replace this slug's live posts with its current copy, then stop. */
+  correct?: string;
   /** Restrict the fan-out. Defaults to every implemented channel. */
   channels: Channel[];
   /** Most posts to syndicate this run. */
@@ -263,6 +267,14 @@ export async function run(options: RunOptions): Promise<RunSummary> {
     return summary;
   }
 
+  // ── Correct ────────────────────────────────────────────────────────────
+  //
+  // Here, after both pause checks, and not beside retraction: a correction
+  // PUBLISHES, so a paused channel must not gain a post by calling it a fix.
+  if (options.correct) {
+    return correct(options.correct, ledger, adapters, { posts, sources, onThisDay }, options, ledgerPath, summary);
+  }
+
   // ── Select ─────────────────────────────────────────────────────────────
   /* `cardExists` is injected TRUE for liner-notes cards because they have not been drawn
      yet — see `renderSelected`, which draws them next and re-checks for real. On This Day
@@ -472,6 +484,112 @@ async function retract(
       const message = (err as Error).message;
       summary.failed.push({ slug, channel: entry.platform, error: message });
       console.error(`   ✗ ${entry.platform}: ${message}`);
+    }
+  }
+
+  return summary;
+}
+
+// ── Correction ────────────────────────────────────────────────────────────────
+
+/**
+ * Replace a slug's live posts with its current, corrected copy.
+ *
+ * 🔴 RETRACTION WAS THE ONLY UNDO, AND IT IS THE WRONG SHAPE FOR A POST THAT IS
+ * WRONG RATHER THAN UNWANTED. "My West Coast Chapter" went out telling strangers "I
+ * never left California once". The note behind it was fixable from the data, and the
+ * ledger — any row blocks, by design — would never have let the fixed version post.
+ * Neither channel can edit a post's card, so a correction is a delete and a fresh post.
+ *
+ * ORDER IS THE SAFETY. The payload is built and its card drawn BEFORE anything is
+ * deleted: an ineligible or undrawable correction leaves the old post standing rather
+ * than leaving nothing. If the delete lands and the repost fails, the row is marked
+ * `pendingCorrection` — still blocking every normal run — and running `--correct`
+ * again posts without deleting a second time.
+ *
+ * Dispatched after the pause checks, unlike retraction: a correction publishes.
+ */
+async function correct(
+  slug: string,
+  ledger: SyndicationLedger,
+  adapters: Adapter[],
+  archive: { posts: LinerNotesPost[]; sources: PayloadSources; onThisDay: OnThisDayPost[] },
+  options: RunOptions,
+  ledgerPath: string,
+  summary: RunSummary
+): Promise<RunSummary> {
+  const rows = ledger.entries.filter(
+    (e) =>
+      e.slug === slug &&
+      adapters.some((a) => a.channel === e.platform) &&
+      ((e.status === "posted" && e.uri) || (e.status === "retracted" && e.pendingCorrection))
+  );
+  if (!rows.length) {
+    console.log(`🔍 ${slug} is not live on any requested channel — nothing to correct.`);
+    return summary;
+  }
+
+  const note = archive.posts.find((p) => p.slug === slug);
+  const anniversary = note ? undefined : archive.onThisDay.find((p) => p.slug === slug);
+  if (!note && !anniversary) {
+    summary.skipped.push({ slug, reason: "correct: no post with this slug in the archive" });
+    console.error(`✗ ${slug} is in neither liner-notes.json nor on-this-day.json — nothing to post in its place.`);
+    return summary;
+  }
+
+  // Same injection as a normal run: the card is drawn below, not assumed.
+  const sources: PayloadSources = {
+    ...archive.sources,
+    cardExists: (p: string) => (p.startsWith(".renditions/") ? true : existsSync(join(ROOT, p))),
+  };
+  const payload = note ? buildPayload(note, sources) : buildOnThisDayPayload(anniversary!);
+  if (!payload.eligible) {
+    const why = payload.ineligibleReasons.join("; ");
+    summary.skipped.push({ slug, reason: `correct: ${why}` });
+    console.error(`✗ ${slug}: the corrected post is not eligible, so the live one stays up — ${why}`);
+    return summary;
+  }
+
+  const [drawn] = await renderSelected([payload], summary, options.renderCardFor);
+  if (!drawn) {
+    console.error(`✗ ${slug}: the corrected card could not be drawn, so the live post stays up.`);
+    return summary;
+  }
+
+  console.log(`✏️  Correcting ${slug} on ${rows.map((r) => r.platform).join(", ")}`);
+  for (const row of rows) {
+    const adapter = adapters.find((a) => a.channel === row.platform)!;
+    if (!adapter.configured()) {
+      console.log(`   ⏭  ${adapter.channel}: no credentials configured — left as it is`);
+      continue;
+    }
+    if (options.dryRun) {
+      console.log(`   [dry-run] would replace ${row.uri} on ${row.platform}`);
+      continue;
+    }
+    try {
+      if (row.status === "posted") {
+        await adapter.retract(row);
+        recordPendingCorrection(ledger, slug, row.platform);
+        saveLedger(ledger, ledgerPath);
+      }
+      const result = await adapter.post(drawn);
+      const card = drawn.media.find((m) => m.role === "card");
+      recordCorrection(ledger, {
+        slug,
+        platform: row.platform,
+        uri: result.uri,
+        rkey: result.rkey,
+        tier: card?.tier,
+        source: card?.source,
+      });
+      saveLedger(ledger, ledgerPath);
+      summary.posted.push({ slug, channel: row.platform, permalink: result.permalink });
+      console.log(`   ✓ ${row.platform} ← ${slug}${result.permalink ? ` (${result.permalink})` : ""}`);
+    } catch (err) {
+      const message = (err as Error).message;
+      summary.failed.push({ slug, channel: row.platform, error: message });
+      console.error(`   ✗ ${row.platform}: ${message}`);
     }
   }
 

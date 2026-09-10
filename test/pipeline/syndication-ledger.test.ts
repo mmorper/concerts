@@ -295,6 +295,99 @@ describe("run loop", () => {
     expect(bluesky.posted).toEqual(["note-one", "note-two", "note-three"]);
   });
 
+  // ── Correction ────────────────────────────────────────────────────────────
+  //
+  // Retraction was the only undo, and a post that is wrong rather than unwanted
+  // needs a different one: any ledger row blocks, so a fixed note could never
+  // replace the false post it came from.
+
+  it("corrects a live post on every channel, keeping the replaced post on record", async () => {
+    const ledger = emptyLedger();
+    recordPost(ledger, { slug: "note-one", platform: "bluesky", uri: "uri://bluesky/old", rkey: "old" });
+    recordPost(ledger, { slug: "note-one", platform: "mastodon", uri: "111" });
+    saveLedger(ledger, ledgerPath);
+
+    const bluesky = new FakeAdapter("bluesky");
+    const mastodon = new FakeAdapter("mastodon");
+    const summary = await run(
+      options({ correct: "note-one", adapters: [bluesky, mastodon], channels: ["bluesky", "mastodon"] })
+    );
+
+    expect(bluesky.retracted).toEqual(["note-one"]);
+    expect(mastodon.retracted).toEqual(["note-one"]);
+    // Only the corrected note goes out — a correction is not a normal run.
+    expect(bluesky.posted).toEqual(["note-one"]);
+    expect(mastodon.posted).toEqual(["note-one"]);
+    expect(summary.posted).toHaveLength(2);
+
+    const row = loadLedger(ledgerPath).entries.find((e) => e.slug === "note-one" && e.platform === "bluesky");
+    expect(row).toMatchObject({ status: "posted", uri: "uri://bluesky/note-one", rkey: "note-one" });
+    expect(row?.corrections).toEqual([expect.objectContaining({ uri: "uri://bluesky/old", rkey: "old" })]);
+    expect(row?.pendingCorrection).toBeUndefined();
+  });
+
+  it("leaves the live post standing when the corrected card cannot be drawn", async () => {
+    const ledger = emptyLedger();
+    recordPost(ledger, { slug: "note-one", platform: "bluesky", uri: "uri://bluesky/old", rkey: "old" });
+    saveLedger(ledger, ledgerPath);
+
+    const bluesky = new FakeAdapter("bluesky");
+    await run(
+      options({
+        correct: "note-one",
+        adapters: [bluesky],
+        channels: ["bluesky"],
+        renderCardFor: async () => {
+          throw new Error("font missing");
+        },
+      })
+    );
+
+    // Deleting first would have left nothing where a wrong post used to be.
+    expect(bluesky.retracted).toEqual([]);
+    expect(loadLedger(ledgerPath).entries[0]).toMatchObject({ status: "posted", uri: "uri://bluesky/old" });
+  });
+
+  it("finishes a correction whose repost failed, without deleting twice", async () => {
+    const ledger = emptyLedger();
+    recordPost(ledger, { slug: "note-one", platform: "mastodon", uri: "111" });
+    saveLedger(ledger, ledgerPath);
+
+    const broken = new FakeAdapter("mastodon", "fail");
+    const first = await run(options({ correct: "note-one", adapters: [broken], channels: ["mastodon"] }));
+    expect(first.failed).toHaveLength(1);
+    expect(broken.retracted).toEqual(["note-one"]);
+    expect(loadLedger(ledgerPath).entries[0]).toMatchObject({ status: "retracted", pendingCorrection: true });
+
+    // Still a blocking row: a normal run must not quietly re-post the old copy.
+    const normal = new FakeAdapter("mastodon");
+    await run(options({ adapters: [normal], channels: ["mastodon"], limit: 1 }));
+    expect(normal.posted).not.toContain("note-one");
+
+    const fixed = new FakeAdapter("mastodon");
+    await run(options({ correct: "note-one", adapters: [fixed], channels: ["mastodon"] }));
+    expect(fixed.retracted).toEqual([]);
+    expect(fixed.posted).toEqual(["note-one"]);
+    expect(loadLedger(ledgerPath).entries.find((e) => e.slug === "note-one")).toMatchObject({
+      status: "posted",
+      uri: "uri://mastodon/note-one",
+    });
+  });
+
+  it("does not correct while syndication is paused — a correction publishes", async () => {
+    const ledger = emptyLedger();
+    recordPost(ledger, { slug: "note-one", platform: "bluesky", uri: "uri://bluesky/old", rkey: "old" });
+    saveLedger(ledger, ledgerPath);
+    writeFileSync(join(dir, "syndication-pause.json"), JSON.stringify({ paused: true, reason: "test" }));
+
+    const bluesky = new FakeAdapter("bluesky");
+    const summary = await run(options({ correct: "note-one", adapters: [bluesky], channels: ["bluesky"] }));
+
+    expect(summary.paused).toBeDefined();
+    expect(bluesky.retracted).toEqual([]);
+    expect(bluesky.posted).toEqual([]);
+  });
+
   it("persists the ledger after each post, not once at the end", async () => {
     const bluesky = new FakeAdapter("bluesky");
     const mastodon = new FakeAdapter("mastodon", "fail");

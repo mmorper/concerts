@@ -133,6 +133,34 @@ and the reason full automation was acceptable at all.
 
 ---
 
+## ✏️ Correct something
+
+```bash
+npm run syndicate -- --correct <slug>
+```
+
+Or **Actions → Syndicate → Run workflow → mode: `correct`**, with the slug. The
+channel credentials live only in GitHub Actions, so the workflow is the usual way.
+
+Replaces a live post with the note's current copy, on every channel it is live
+on. Fix the note first — `liner-notes.json` is the source — merge, then run this.
+
+**Retraction is the wrong tool for a post that is wrong rather than unwanted.**
+Any ledger row blocks a slug forever, so a retracted post never comes back,
+corrected or not. That is how "My West Coast Chapter" — "I never left California
+once" — would have stayed down after its note was fixed (2026-09-10).
+
+**Order is the safety.** The corrected payload is built and its card drawn
+*before* anything is deleted, so an ineligible or undrawable correction leaves
+the old post standing. If the delete lands and the repost fails, the row is
+marked `pendingCorrection` — still blocking every normal run — and running
+`--correct` again posts without deleting a second time. The replaced post's
+identifiers move into the row's `corrections` history rather than disappearing.
+
+**It honours the pause switch**, unlike retraction: a correction publishes.
+
+---
+
 ## What posts, where, when
 
 ### Two content streams
@@ -184,6 +212,7 @@ npm run syndicate -- --status            # is posting on or off?
 npm run syndicate -- --pause "reason"    # stop everything
 npm run syndicate -- --resume            # allow posting again
 npm run syndicate -- --retract <slug>    # unpublish from every channel
+npm run syndicate -- --correct <slug>    # replace live posts with the corrected copy
 npm run syndicate -- --seed-ledger       # suppress the back catalogue (once)
 npm run syndicate -- --channels bluesky  # restrict the fan-out
 npm run syndicate -- --backlog 1         # opt-in drip of one archived note

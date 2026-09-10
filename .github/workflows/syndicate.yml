@@ -34,10 +34,11 @@ on:
           - dry-run      # build payloads and print; post nothing
           - seed-ledger  # suppress the back catalogue (run this FIRST, once)
           - retract      # delete one slug from every channel it posted to
+          - correct      # replace one slug's live posts with its corrected copy
           - pause        # STOP posting. Blank channels = everything
           - resume       # allow posting again
       slug:
-        description: 'Slug to retract (mode "retract" only)'
+        description: 'Slug to retract or correct (modes "retract" and "correct" only)'
         type: string
         default: ''
       channels:
@@ -206,6 +207,13 @@ jobs:
                 exit 1
               fi
               ARGS="--retract ${{ inputs.slug }}"
+              ;;
+            correct)
+              if [ -z "${{ inputs.slug }}" ]; then
+                echo "::error::mode=correct requires a slug"
+                exit 1
+              fi
+              ARGS="--correct ${{ inputs.slug }}"
               ;;
           esac
           if [ -n "${{ inputs.channels }}" ]; then
