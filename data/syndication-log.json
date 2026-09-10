@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-10T23:05:10.272Z",
+  "updatedAt": "2026-09-10T23:06:03.794Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -1210,20 +1210,35 @@
       "slug": "tears-for-fears-37-years-of-shows",
       "platform": "bluesky",
       "status": "posted",
-      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3muz6xtysyd2e",
-      "rkey": "3muz6xtysyd2e",
-      "postedAt": "2026-09-08T14:05:54.620Z",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv763hw3w62b",
+      "rkey": "3mv763hw3w62b",
+      "postedAt": "2026-09-10T23:06:01.152Z",
       "tier": 2,
-      "source": "artist-audiodb"
+      "source": "artist-audiodb",
+      "corrections": [
+        {
+          "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3muz6xtysyd2e",
+          "rkey": "3muz6xtysyd2e",
+          "postedAt": "2026-09-08T14:05:54.620Z",
+          "replacedAt": "2026-09-10T23:05:59.066Z"
+        }
+      ]
     },
     {
       "slug": "tears-for-fears-37-years-of-shows",
       "platform": "mastodon",
       "status": "posted",
-      "uri": "117235814862691066",
-      "postedAt": "2026-09-08T14:09:29.810Z",
+      "uri": "117249249342757928",
+      "postedAt": "2026-09-10T23:06:03.794Z",
       "tier": 2,
-      "source": "artist-audiodb"
+      "source": "artist-audiodb",
+      "corrections": [
+        {
+          "uri": "117235814862691066",
+          "postedAt": "2026-09-08T14:09:29.810Z",
+          "replacedAt": "2026-09-10T23:06:01.968Z"
+        }
+      ]
     },
     {
       "slug": "the-alarm-caught-once-never-again",
