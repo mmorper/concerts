@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-10T23:06:03.794Z",
+  "updatedAt": "2026-09-10T23:07:04.969Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -1119,20 +1119,35 @@
       "slug": "squeeze-from-opener-to-headliner",
       "platform": "bluesky",
       "status": "posted",
-      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv3pkr3r2s2t",
-      "rkey": "3mv3pkr3r2s2t",
-      "postedAt": "2026-09-09T14:08:08.751Z",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv765cdcre2c",
+      "rkey": "3mv765cdcre2c",
+      "postedAt": "2026-09-10T23:07:02.918Z",
       "tier": 2,
-      "source": "artist-audiodb"
+      "source": "artist-audiodb",
+      "corrections": [
+        {
+          "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv3pkr3r2s2t",
+          "rkey": "3mv3pkr3r2s2t",
+          "postedAt": "2026-09-09T14:08:08.751Z",
+          "replacedAt": "2026-09-10T23:07:00.242Z"
+        }
+      ]
     },
     {
       "slug": "squeeze-from-opener-to-headliner",
       "platform": "mastodon",
       "status": "posted",
-      "uri": "117241484311541593",
-      "postedAt": "2026-09-09T14:11:18.710Z",
+      "uri": "117249253356817537",
+      "postedAt": "2026-09-10T23:07:04.969Z",
       "tier": 2,
-      "source": "artist-audiodb"
+      "source": "artist-audiodb",
+      "corrections": [
+        {
+          "uri": "117241484311541593",
+          "postedAt": "2026-09-09T14:11:18.710Z",
+          "replacedAt": "2026-09-10T23:07:03.214Z"
+        }
+      ]
     },
     {
       "slug": "sting-days-after-nevermind-dropped",
