@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-10T14:04:19.185Z",
+  "updatedAt": "2026-09-10T23:03:22.021Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -634,20 +634,35 @@
       "slug": "my-west-coast-chapter-26-concerts-over-11-years",
       "platform": "bluesky",
       "status": "posted",
-      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv67pepotw2b",
-      "rkey": "3mv67pepotw2b",
-      "postedAt": "2026-09-10T14:02:22.543Z",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv75wnym442c",
+      "rkey": "3mv75wnym442c",
+      "postedAt": "2026-09-10T23:03:19.577Z",
       "tier": 2,
-      "source": "venue-archival"
+      "source": "venue-places",
+      "corrections": [
+        {
+          "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv67pepotw2b",
+          "rkey": "3mv67pepotw2b",
+          "postedAt": "2026-09-10T14:02:22.543Z",
+          "replacedAt": "2026-09-10T23:03:17.282Z"
+        }
+      ]
     },
     {
       "slug": "my-west-coast-chapter-26-concerts-over-11-years",
       "platform": "mastodon",
       "status": "posted",
-      "uri": "117247119108083576",
-      "postedAt": "2026-09-10T14:04:19.184Z",
+      "uri": "117249238746515206",
+      "postedAt": "2026-09-10T23:03:22.021Z",
       "tier": 2,
-      "source": "venue-archival"
+      "source": "venue-places",
+      "corrections": [
+        {
+          "uri": "117247119108083576",
+          "postedAt": "2026-09-10T14:04:19.184Z",
+          "replacedAt": "2026-09-10T23:03:20.345Z"
+        }
+      ]
     },
     {
       "slug": "new-order-37-years-between-shows",
