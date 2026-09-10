@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-10T23:07:59.769Z",
+  "updatedAt": "2026-09-10T23:08:48.169Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -328,20 +328,35 @@
       "slug": "garbage-17-songs-from-the-album-that-shares-their-name-live",
       "platform": "bluesky",
       "status": "posted",
-      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mus7oexrtn23",
-      "rkey": "3mus7oexrtn23",
-      "postedAt": "2026-09-05T19:29:52.196Z",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv76aewnvj2b",
+      "rkey": "3mv76aewnvj2b",
+      "postedAt": "2026-09-10T23:08:45.763Z",
       "tier": 1,
-      "source": "personal"
+      "source": "personal",
+      "corrections": [
+        {
+          "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mus7oexrtn23",
+          "rkey": "3mus7oexrtn23",
+          "postedAt": "2026-09-05T19:29:52.196Z",
+          "replacedAt": "2026-09-10T23:08:44.003Z"
+        }
+      ]
     },
     {
       "slug": "garbage-17-songs-from-the-album-that-shares-their-name-live",
       "platform": "mastodon",
       "status": "posted",
-      "uri": "117220101460691282",
-      "postedAt": "2026-09-05T19:33:22.836Z",
+      "uri": "117249260123730410",
+      "postedAt": "2026-09-10T23:08:48.169Z",
       "tier": 1,
-      "source": "personal"
+      "source": "personal",
+      "corrections": [
+        {
+          "uri": "117220101460691282",
+          "postedAt": "2026-09-05T19:33:22.836Z",
+          "replacedAt": "2026-09-10T23:08:46.423Z"
+        }
+      ]
     },
     {
       "slug": "garbage-days-before-late-registration-dropped",
