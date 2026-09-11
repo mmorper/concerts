@@ -14,7 +14,7 @@ import { normalizeAlbumName, normalizeArtistName } from '../src/utils/normalize.
  * the archive can answer — WHAT HAD NOT HAPPENED YET.
  *
  * Depeche Mode, The Rose Bowl, June 1988: 264 days into the Music for the
- * Masses cycle, with Violator still 20 months away and ten albums to come.
+ * Masses cycle, with Violator still 21 months away and ten albums to come.
  *
  * ── WHY THIS IS A VECTOR, NOT A SCALAR ───────────────────────────────────────
  * An earlier design was backward-looking only (nearest preceding album, days

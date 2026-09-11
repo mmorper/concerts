@@ -156,6 +156,70 @@ const MBID_CORRECTIONS: Record<string, { mbid: string; note: string }> = {
 }
 
 /**
+ * Release dates MusicBrainz has wrong, keyed by release-group MBID.
+ *
+ * Separate from MBID_CORRECTIONS for the reason that table gives: that one picks
+ * which artist to fetch, this one fixes a single field of a record fetched
+ * correctly. Applied to the whole file on every write — cached entries included —
+ * so the 90-day re-fetch cannot quietly put a wrong date back.
+ *
+ * A wrong release date is not cosmetic. `album-eras.json`, `song-albums.json` and
+ * every detector that compares a show date with a record inherit it, and the note
+ * built on it is permalinked. Add an entry only with a stated source.
+ */
+export const RELEASE_DATE_CORRECTIONS: Record<
+  string,
+  { artist: string; title: string; releaseDate: string; musicbrainz: string; note: string }
+> = {
+  // Found by the 2026-09-10 fact-check. The Erasure note says the Forum show on
+  // 1990-03-11 came eight days before Violator — which is true — while this file
+  // had Violator out 34 days earlier. MusicBrainz's first-release-date is the
+  // "Enjoy the Silence" single.
+  '71f1482e-e63f-3b2c-811b-939f62708f2a': {
+    artist: 'depeche-mode',
+    title: 'Violator',
+    releaseDate: '1990-03-19',
+    musicbrainz: '1990-02-05',
+    note: 'first-release-date is the "Enjoy the Silence" single; the album came out 19 March 1990 (UK)',
+  },
+
+  // Same sweep. 1986-11-25 made Raising Hell seven months old at the June 1987
+  // show; it had been out for more than a year.
+  'a209c0a5-e9b2-37ff-a76d-df5bc405a0e8': {
+    artist: 'run-dmc',
+    title: 'Raising Hell',
+    releaseDate: '1986-05-15',
+    musicbrainz: '1986-11-25',
+    note: 'the album came out 15 May 1986',
+  },
+}
+
+/**
+ * Apply RELEASE_DATE_CORRECTIONS in place. Returns what changed, and any MBID in
+ * the table that matched no album — a typo there would otherwise never match.
+ */
+export function applyReleaseDateCorrections(
+  discography: Record<string, { albums?: Array<{ id: string; releaseDate: string; year?: number }> }>,
+  corrections: typeof RELEASE_DATE_CORRECTIONS = RELEASE_DATE_CORRECTIONS
+): { applied: string[]; missing: string[] } {
+  const applied: string[] = []
+  const seen = new Set<string>()
+  for (const entry of Object.values(discography)) {
+    for (const album of entry.albums ?? []) {
+      const fix = corrections[album.id]
+      if (!fix) continue
+      seen.add(album.id)
+      if (album.releaseDate !== fix.releaseDate) {
+        album.releaseDate = fix.releaseDate
+        album.year = Number(fix.releaseDate.slice(0, 4))
+        applied.push(`${fix.artist}: ${fix.title} → ${fix.releaseDate}`)
+      }
+    }
+  }
+  return { applied, missing: Object.keys(corrections).filter((mbid) => !seen.has(mbid)) }
+}
+
+/**
  * Enrich artist discographies from MusicBrainz
  */
 async function enrichDiscography(
@@ -308,6 +372,14 @@ async function enrichDiscography(
     }
 
     console.log() // Blank line between artists
+  }
+
+  // Every entry, fetched or cached, so a 90-day re-fetch cannot put a wrong date
+  // back. See RELEASE_DATE_CORRECTIONS.
+  const corrected = applyReleaseDateCorrections(discography)
+  for (const line of corrected.applied) console.log(`📌 Release date corrected — ${line}`)
+  for (const mbid of corrected.missing) {
+    console.warn(`⚠️  RELEASE_DATE_CORRECTIONS entry ${mbid} matches no album in discography.json`)
   }
 
   // Save discography

@@ -46,7 +46,9 @@ describe('album-trajectory', () => {
     expect(rb).toBeDefined()
     const dp = rb!.dataPoints as Record<string, unknown>
     expect(dp.definingAlbumTitle).toBe('Violator')
-    expect(dp.monthsAway).toBe(20)
+    // 21, not 20: MusicBrainz dated Violator to the "Enjoy the Silence" single
+    // (1990-02-05) until RELEASE_DATE_CORRECTIONS pinned 1990-03-19.
+    expect(dp.monthsAway).toBe(21)
     // The evidence prose must cite instead of asserting a critical judgment.
     expect(dp.topTrackCount).toBe(3)
     expect(dp.topTrackTotal).toBe(5)
