@@ -207,6 +207,7 @@ These phrases are banned. If you see them in generated prose, regenerate:
 | "at their commercial peak", "was everywhere that summer", "riding high" | Popularity the archive cannot measure. `critical-verdict` error |
 | "I was 18", "at 19 years old", "that 18-year-old kid" | **Invented.** The data has no birth year, and the published ages contradicted each other. `stated-age` error. "My teenage years" and "Gen-Xers" are the same claim in costume |
 | "I never left California", "it started with…", "closed it out" | A claim about a whole life made from a slice of the archive. Say where the *shows* were, never where I was |
+| "ticket stubs", "I didn't know it was a pattern until…", "waiting for me to notice" | A device for a feeling, not a memory. The owner flagged these as the lines that read machine-written, and the archive holds no stubs. "Ticket stub" is a `banned-phrase` error |
 
 ### Perishable claims ✨ v5.4
 
@@ -218,7 +219,7 @@ The line is about **which direction time runs**:
 
 | | |
 |---|---|
-| ✅ Facts about the future *relative to the show* | *"Violator was 20 months away."* True about June 1988 forever. |
+| ✅ Facts about the future *relative to the show* | *"Violator was 21 months away."* True about June 1988 forever. |
 | ❌ Facts about the present | *"They never made another record."* True until the day it isn't. |
 
 The Roots and Blondie are both active bands sitting in our data with no
