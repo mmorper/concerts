@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-11T01:26:14.961Z",
+  "updatedAt": "2026-09-11T01:27:11.313Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -482,9 +482,9 @@
       "slug": "irvine-meadows-16-shows-over-3-decades",
       "platform": "bluesky",
       "status": "posted",
-      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv75zuslkg2i",
-      "rkey": "3mv75zuslkg2i",
-      "postedAt": "2026-09-10T23:05:07.420Z",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv7fxsk6js2r",
+      "rkey": "3mv7fxsk6js2r",
+      "postedAt": "2026-09-11T01:27:07.958Z",
       "tier": 2,
       "source": "venue-archival",
       "corrections": [
@@ -493,6 +493,12 @@
           "rkey": "3musadxtm4n2c",
           "postedAt": "2026-09-05T19:41:56.667Z",
           "replacedAt": "2026-09-10T23:05:05.613Z"
+        },
+        {
+          "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv75zuslkg2i",
+          "rkey": "3mv75zuslkg2i",
+          "postedAt": "2026-09-10T23:05:07.420Z",
+          "replacedAt": "2026-09-11T01:27:05.813Z"
         }
       ]
     },
@@ -500,8 +506,8 @@
       "slug": "irvine-meadows-16-shows-over-3-decades",
       "platform": "mastodon",
       "status": "posted",
-      "uri": "117249245834154684",
-      "postedAt": "2026-09-10T23:05:10.272Z",
+      "uri": "117249804264482091",
+      "postedAt": "2026-09-11T01:27:11.313Z",
       "tier": 2,
       "source": "venue-archival",
       "corrections": [
@@ -509,6 +515,11 @@
           "uri": "117220141339575547",
           "postedAt": "2026-09-05T19:43:31.279Z",
           "replacedAt": "2026-09-10T23:05:08.155Z"
+        },
+        {
+          "uri": "117249245834154684",
+          "postedAt": "2026-09-10T23:05:10.272Z",
+          "replacedAt": "2026-09-11T01:27:09.210Z"
         }
       ]
     },
