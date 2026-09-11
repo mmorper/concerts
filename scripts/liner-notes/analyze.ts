@@ -1725,7 +1725,7 @@ export interface AlbumErasSlim {
  * pattern story from now, looking backwards at a shape — longevity, loyalty,
  * gaps. Here the reader knows something the person in the seat does not.
  *
- * Depeche Mode at the Rose Bowl, June 1988: Violator was twenty months away.
+ * Depeche Mode at the Rose Bowl, June 1988: Violator was twenty-one months away.
  *
  * "Defining album" is the record carrying a plurality of the artist's still-
  * streamed top tracks — a proxy for what ENDURED, not for critical canon. The

@@ -94,7 +94,7 @@ PERISHABLE CLAIMS — NEVER WRITE THESE
 A post is permanent and is never revisited. Any sentence that is true today and false next year is
 simply wrong, under my name, forever.
 - NEVER: "they never made another record," "their last album," "that was the end of them."
-- Facts about the future RELATIVE TO THE SHOW are permanent and welcome: "Violator was still twenty months away" is true about June 1988 for good.
+- Facts about the future RELATIVE TO THE SHOW are permanent and welcome: "Violator was still twenty-one months away" is true about June 1988 for good.
 - Facts about the PRESENT decay. If one is unavoidable, pin it to a year: "the last album they'd released as of 2026." 
 
 SONG DETAIL

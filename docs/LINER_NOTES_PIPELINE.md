@@ -675,7 +675,7 @@ Each detector produces one or more `AnalysisFinding` objects with a `category`, 
 
 **Example headlines:**
 - *No Doubt — 7.6 Years Before Tragic Kingdom*
-- *Depeche Mode — 20 Months Before Violator*
+- *Depeche Mode — 21 Months Before Violator*
 - *Stryper — 8 Months Before To Hell With the Devil*
 
 ---
@@ -686,7 +686,7 @@ Each detector produces one or more `AnalysisFinding` objects with a `category`, 
 
 **Category:** Cultural | **Temporality:** Evergreen
 
-**The exact inverse of `album-trajectory`.** There the *record* was ahead; here the *song* was. Depeche Mode at the Rose Bowl were four years from *Violator*; Royal Blood at the 9:30 Club were ten days from a record nobody could buy yet.
+**The exact inverse of `album-trajectory`.** There the *record* was ahead; here the *song* was. Depeche Mode at the Rose Bowl were twenty-one months from *Violator*; Royal Blood at the 9:30 Club were ten days from a record nobody could buy yet.
 
 **Trigger:** an attributed song whose album release date post-dates the concert, bounded on **both** sides. Both bounds were settled by counting, not intuition.
 

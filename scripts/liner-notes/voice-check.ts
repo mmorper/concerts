@@ -44,6 +44,11 @@ const BANNED_PHRASES: Array<[RegExp, string]> = [
   [/it goes without saying/i, '"it goes without saying" — filler'],
   [/a diverse range of/i, '"a diverse range of" — filler'],
   [/^over the years/i, '"over the years" as an opener — weak opening'],
+  // "I didn't plan that symmetry — it just accumulated in my ticket stubs, waiting
+  // for me to notice." The owner picked that line out as the one that most sounds
+  // machine-written, and the archive holds no stubs to have noticed anything in.
+  // The social prompt used to teach it: two of its worked examples leaned on stubs.
+  [/\b(?:ticket )?stubs?\b/i, '"ticket stubs" — a device for a feeling, not a memory; the archive holds no stubs'],
 ];
 
 /**

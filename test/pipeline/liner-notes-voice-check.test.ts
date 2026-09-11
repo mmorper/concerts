@@ -46,6 +46,13 @@ describe('errors — never publish', () => {
       .toContain('stated-age')
   })
 
+  it('catches the ticket-stub device — the archive holds no stubs', () => {
+    expect(rules(base('I saw them in 1987 and 2026. It just accumulated in my ticket stubs, waiting for me to notice.')))
+      .toContain('banned-phrase')
+    expect(rules(base('I saw Billy Idol once, in 1984, and I only have one stub.')))
+      .toContain('banned-phrase')
+  })
+
   it('catches banned phrases', () => {
     expect(rules(base('I saw them in 1988. It was a legendary night at the Bowl.')))
       .toContain('banned-phrase')
@@ -89,7 +96,7 @@ describe('warnings — flag, do not block', () => {
 describe('clean prose passes', () => {
   it('accepts a real generated post', () => {
     const prose =
-      'I saw them at the Rose Bowl in June 1988, twenty months before Violator would arrive. ' +
+      'I saw them at the Rose Bowl in June 1988, twenty-one months before Violator would arrive. ' +
       'Three of the five songs I still reach for from that record did not exist yet. ' +
       'Nine more albums were still to come, and I had no idea.'
     expect(

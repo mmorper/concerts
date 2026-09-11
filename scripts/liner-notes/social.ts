@@ -111,10 +111,10 @@ COUNT THE CHARACTERS BEFORE YOU RETURN. Same for every beat against its own limi
 - It MAY name the artist — unlike the hook, the caption travels without the card.
 - It must not restate the hook. Restating is not just repeating words: "35 years between shows" and "the longest gap between any artist I have ever seen" are the same sentence.
 - 🔴 AND IT MUST NOT BORROW THE HOOK'S DEVICE. If the hook turns on an object, an image or a piece of phrasing, the caption does not get to land on the same one.
-  hook     Five shows. Sixteen years. I didn't know it was a pattern until I found the stubs.
-  BAD      ... The ticket stubs told me the story before I did.
-           ↳ The stubs are the hook's move. Used twice, they stop being a discovery
-             and start being a tic. The caption owed a FACT here — which five shows,
+  hook     Five shows, sixteen years, and the same closing song every night.
+  BAD      ... And every night, that closing song got me.
+           ↳ The song is the hook's move. Used twice, it stops being a discovery
+             and starts being a tic. The caption owed a FACT here — which five shows,
              which artists, which years — and paid in atmosphere instead.
   You may of course repeat a NAME. Naming the artist or venue the hook could not is the caption's job.
 - No hashtags, no emoji, no URL, no "link in bio", no "read more".
@@ -127,8 +127,11 @@ The reader came for the night. That a record of it exists is the least interesti
           "The archive is on the site — link in the bio."
 If you find yourself writing one of these, the fix is not a better phrasing of it. Go back to the material and find something that happened.
 
+🔴 NO TICKET STUBS, AND NO "I DIDN'T KNOW IT WAS A PATTERN". Applies to the hook, the caption and every beat.
+The archive holds no stubs. "I didn't plan that symmetry — it just accumulated in my ticket stubs, waiting for me to notice" is the line the owner picked out as sounding machine-written, and "I only have one stub", "the stubs lined up that way" and "I didn't realize I was building a pattern" are the same move in different clothes. Say what happened instead.
+
 WORKED EXAMPLE — the failure this section exists to stop.
-  hook     39 years between ticket stubs, same song, same authority
+  hook     39 years apart, same song, same authority
   BAD      Nile Rodgers played 'Notorious' as if he'd always owned it — and in every
            way that matters, he had.
            ↳ Why did he own it? The caption never says. "Always owned it" has nothing
@@ -204,7 +207,7 @@ VOICE — identical to the note itself
 PERISHABLE CLAIMS — harder here than in the note
 A note deleted from the site leaves its social copies standing on servers we do not control. Anything true today and false next year is simply wrong, under my name, forever.
 - NEVER "they never made another record", "their last album", "nothing since", "that was the end of them".
-- Facts about the future RELATIVE TO THE SHOW are permanent and welcome: "Violator was still twenty months away" is true about June 1988 for good.
+- Facts about the future RELATIVE TO THE SHOW are permanent and welcome: "Violator was still twenty-one months away" is true about June 1988 for good.
 
 OUTPUT
 Return ONLY a JSON object, no prose around it, no code fence:

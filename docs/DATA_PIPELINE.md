@@ -955,6 +955,8 @@ npm run enrich:discography -- --force
 - Keyed by normalized artist name
 - Stores empty entries for artists not found (avoids re-fetching)
 
+**Release-date corrections**: MusicBrainz is occasionally wrong about when an album came out. `RELEASE_DATE_CORRECTIONS` in `enrich-discography.ts` pins the right date by release-group MBID, with a stated source, and is applied to every entry — fetched or cached — each time `discography.json` is written. A plain edit to the JSON would last only until the next 90-day re-fetch. The dates flow on into `album-eras.json` and `song-albums.json`, so re-run `derive:album-eras` after adding one; `test/pipeline/release-date-corrections.test.ts` fails if any of the three files still carries the old date. First entries (2026-09-10): Violator, which MusicBrainz dated to the "Enjoy the Silence" single, and Raising Hell.
+
 **Features**:
 - **Fuzzy matching**: Uses Levenshtein distance (80% threshold) for artist search
 - **Rate limiting**: Strict 1 req/sec enforcement with automatic retry on 503 errors
