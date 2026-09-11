@@ -49,6 +49,15 @@ const BANNED_PHRASES: Array<[RegExp, string]> = [
   // machine-written, and the archive holds no stubs to have noticed anything in.
   // The social prompt used to teach it: two of its worked examples leaned on stubs.
   [/\b(?:ticket )?stubs?\b/i, '"ticket stubs" — a device for a feeling, not a memory; the archive holds no stubs'],
+  // The hindsight device: "I had no idea I was starting something", "I didn't know
+  // I was saying goodbye", "I never planned the run". It ran to 21 lines across the
+  // corpus before it was taken out on 2026-09-11, and the owner reads it as
+  // machine-written. Deliberately narrow — "I did not know the words" is a memory,
+  // not the device, and must pass.
+  [
+    /\bI (?:had no idea|didn['’]t (?:even )?know|did not know|never knew) (?:I was|I'd|it was|it would|that yet|it yet)\b|\bnot knowing I was\b|\b(?:never|didn['’]t) plan(?:ned)? (?:the|a|that) (?:run|pattern|symmetry|second)\b|\b(?:before|until) you realize\b|\bwhether you plan it or not\b|\byou never do\b/i,
+    'the hindsight device ("I had no idea I was starting something") — say what happened instead',
+  ],
 ];
 
 /**
@@ -116,8 +125,10 @@ const VERDICTS: Array<[RegExp, string]> = [
   // was riding high" — all published, none measurable from anything in the archive,
   // and the album data put several of those nights nowhere near the record claimed.
   [/\b(?:commercial|creative|critical) peak\b/i, '"commercial peak" — popularity the archive cannot measure'],
-  [/\bat (?:the|their|his|her|its) peak\b/i, '"at their peak" — popularity the archive cannot measure'],
-  [/\bwas everywhere\b/i, '"was everywhere" — popularity the archive cannot measure'],
+  // One adjective allowed in between: "at their absolute peak" slipped past the
+  // two-word form and shipped in a carousel beat.
+  [/\bat (?:the|their|his|her|its) (?:\w+ )?peak\b/i, '"at their peak" — popularity the archive cannot measure'],
+  [/\b(?:was|were) everywhere\b/i, '"was everywhere" — popularity the archive cannot measure'],
   [/\briding high\b/i, '"riding high" — popularity the archive cannot measure'],
 ];
 

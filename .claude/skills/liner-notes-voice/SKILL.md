@@ -207,7 +207,8 @@ These phrases are banned. If you see them in generated prose, regenerate:
 | "at their commercial peak", "was everywhere that summer", "riding high" | Popularity the archive cannot measure. `critical-verdict` error |
 | "I was 18", "at 19 years old", "that 18-year-old kid" | **Invented.** The data has no birth year, and the published ages contradicted each other. `stated-age` error. "My teenage years" and "Gen-Xers" are the same claim in costume |
 | "I never left California", "it started with…", "closed it out" | A claim about a whole life made from a slice of the archive. Say where the *shows* were, never where I was |
-| "ticket stubs", "I didn't know it was a pattern until…", "waiting for me to notice" | A device for a feeling, not a memory. The owner flagged these as the lines that read machine-written, and the archive holds no stubs. "Ticket stub" is a `banned-phrase` error |
+| "ticket stubs", "waiting for me to notice" | A device for a feeling, not a memory. The owner flagged these as lines that read machine-written, and the archive holds no stubs. `banned-phrase` error |
+| "I had no idea I was starting something", "I didn't know I was saying goodbye", "I never planned the run" | The hindsight device. The owner reads it as machine-written; it ran to 21 lines before it was taken out. Say what happened instead. `banned-phrase` error |
 
 ### Perishable claims ✨ v5.4
 

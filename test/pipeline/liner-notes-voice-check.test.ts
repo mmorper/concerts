@@ -53,6 +53,18 @@ describe('errors — never publish', () => {
       .toContain('banned-phrase')
   })
 
+  it('catches the hindsight device, and leaves a plain memory alone', () => {
+    for (const prose of [
+      'Irvine Meadows, 1985. I had no idea I was starting a 38-year relationship with one band.',
+      'Peter Gabriel played in 2003, and I didn\'t know I was saying goodbye.',
+      'Five shows, four headliners, 16 years from 1989. I never planned the run.',
+    ]) {
+      expect(rules(base(prose)), prose).toContain('banned-phrase')
+    }
+    expect(rules(base('I saw them in 1988. I did not know the words to a single song, and I sang anyway.')))
+      .not.toContain('banned-phrase')
+  })
+
   it('catches banned phrases', () => {
     expect(rules(base('I saw them in 1988. It was a legendary night at the Bowl.')))
       .toContain('banned-phrase')
