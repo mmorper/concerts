@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-10T23:11:31.342Z",
+  "updatedAt": "2026-09-11T01:26:14.961Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -1553,20 +1553,35 @@
       "slug": "universal-amphitheater-5-shows-over-3-decades",
       "platform": "bluesky",
       "status": "posted",
-      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3muu3mucncc2e",
-      "rkey": "3muu3mucncc2e",
-      "postedAt": "2026-09-06T13:22:45.877Z",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mv7fw5y6kx2b",
+      "rkey": "3mv7fw5y6kx2b",
+      "postedAt": "2026-09-11T01:26:12.766Z",
       "tier": 2,
-      "source": "venue-archival"
+      "source": "venue-archival",
+      "corrections": [
+        {
+          "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3muu3mucncc2e",
+          "rkey": "3muu3mucncc2e",
+          "postedAt": "2026-09-06T13:22:45.877Z",
+          "replacedAt": "2026-09-11T01:26:10.614Z"
+        }
+      ]
     },
     {
       "slug": "universal-amphitheater-5-shows-over-3-decades",
       "platform": "mastodon",
       "status": "posted",
-      "uri": "117224320936084113",
-      "postedAt": "2026-09-06T13:26:27.103Z",
+      "uri": "117249800587081286",
+      "postedAt": "2026-09-11T01:26:14.961Z",
       "tier": 2,
-      "source": "venue-archival"
+      "source": "venue-archival",
+      "corrections": [
+        {
+          "uri": "117224320936084113",
+          "postedAt": "2026-09-06T13:26:27.103Z",
+          "replacedAt": "2026-09-11T01:26:13.449Z"
+        }
+      ]
     },
     {
       "slug": "wham-caught-once-never-again",
