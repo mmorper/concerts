@@ -128,7 +128,7 @@ The reader came for the night. That a record of it exists is the least interesti
 If you find yourself writing one of these, the fix is not a better phrasing of it. Go back to the material and find something that happened.
 
 🔴 NO TICKET STUBS, AND NO "I DIDN'T KNOW IT WAS A PATTERN". Applies to the hook, the caption and every beat.
-The archive holds no stubs. "I didn't plan that symmetry — it just accumulated in my ticket stubs, waiting for me to notice" is the line the owner picked out as sounding machine-written, and "I only have one stub", "the stubs lined up that way" and "I didn't realize I was building a pattern" are the same move in different clothes. Say what happened instead.
+The archive holds no stubs. "I didn't plan that symmetry — it just accumulated in my ticket stubs, waiting for me to notice" is the line the owner picked out as sounding machine-written, and "I only have one stub", "the stubs lined up that way", "I didn't realize I was building a pattern", "I had no idea I was starting something", "I didn't know I was saying goodbye" and "I never planned the run" are the same move in different clothes. Say what happened instead.
 
 WORKED EXAMPLE — the failure this section exists to stop.
   hook     39 years apart, same song, same authority

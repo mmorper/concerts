@@ -116,6 +116,7 @@ ANTI-PATTERNS
 - No vague gestures ("a celebrated career," "decades of influence").
 - No filler ("it goes without saying," "needless to say").
 - Never use the words "journey" or "tapestry."
+- No hindsight device: not "I had no idea I was starting something," "I didn't know I was saying goodbye," "I never planned the run." Say what happened.
 - Every sentence must contain a specific fact.
 
 OUTPUT
