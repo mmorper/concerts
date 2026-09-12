@@ -157,12 +157,18 @@ Click-to-filter year cards, animated genre treemap with timeline slider, mobile-
 
 ### Social Syndication — Liner Notes & On This Day (v7.0.0)
 
-**Status**: Planned
+**Status**: In Progress — Phase 0 closed, Bluesky and Mastodon live
 **Spec**: [global-social-syndication.md](specs/future/global-social-syndication.md)
+**Decisions**: [Phase 0 — Decisions](specs/future/mocks-social-syndication/DECISIONS.md)
 
 Carries liner notes off the site and onto Bluesky, Mastodon, Instagram and X under a dedicated archive identity, and adds **On This Day** as a second stream — 142 of 366 calendar days have a show, so ~2.8 posts a week that are always genuine rather than a manufactured daily cadence. Opens with a creative investigation phase: the payload schema depends on what a post turns out to look like per channel, so nothing is frozen until the mocks decide it.
 
 **Depends on**: Nothing blocking. Gives #89's video pilot a destination at media level L3.
+
+**Shipped so far**: Bluesky and Mastodon streams (see [SYNDICATION.md](SYNDICATION.md)).
+Phase 0 creative investigation is closed — eleven decisions recorded, including the
+per-channel media matrix, measured text budgets, the imagery rubric and the provenance
+disclosure rule. Instagram (L2 carousel) and X remain unbuilt; L3 video is gated on #89.
 
 ---
 
