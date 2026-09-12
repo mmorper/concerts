@@ -21,7 +21,9 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Path aliases */
-    "baseUrl": ".",
+    /* TypeScript 7 removed `baseUrl` (TS5102). `paths` alone resolves relative
+       to this file's own directory when baseUrl is absent, which is the same
+       root `baseUrl: "."` pointed at — so this is a no-op for resolution. */
     "paths": {
       "@/*": ["./src/*"]
     }
