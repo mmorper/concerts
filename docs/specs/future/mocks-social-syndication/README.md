@@ -17,7 +17,7 @@ The payload schema depends on creative outcomes. Whether a post is one `hook` or
 | `corpus.json` | Real-data mock corpus ([#324](https://github.com/mmorper/concerts/issues/324)) — the records every mock is built from, chosen to include the ugly cases |
 | `DECISIONS.md` | Phase 0 exit-criteria answers ([#328](https://github.com/mmorper/concerts/issues/328)) — the durable record |
 | `PROVENANCE.md` | Per-source, per-channel image provenance ([#327](https://github.com/mmorper/concerts/issues/327)) — a record, not a gate |
-| `Main.dc.html` + `Ladder*` | Wave 3 — the media-band system across tiers 1–3, plus the full-bleed counter-case |
+| `Main.dc.html` + `Ladder*` | Wave 3 — the media-band system across tiers 1–3, plus the full-bleed layout chosen for Instagram (DECISIONS.md §1) |
 | `Wide*.dc.html` | Wave 3 — the 1200×630 card, two options |
 | `Grid*` / `Carousel` / `Otd*` / `Stress*` / `Captions` / `ChannelSheet` / `Profile` | Wave 3 — feed scale, schema, On This Day, worst cases, copy, channels, identity |
 | `TrackA` / `Generative` / `Material` / `Photographic` (+ `*Wave2`) | Waves 1–2, preserved unchanged as the record |

@@ -1,16 +1,26 @@
 # UI Component Patterns & Design System
 
-**Version:** 1.0
-**Last Updated:** January 2025
+**Version:** 1.1
+**Last Updated:** 2026-09-03
 **Related:** [Scene Design Guide](./scene-design-guide.md) · [Color Specification](./color-specification.md)
 
 ---
 
 ## Overview
 
-This document codifies the UI component patterns discovered through comprehensive cross-scene analysis. These patterns create visual hierarchy and consistent affordance across all interactive elements.
+This document codifies the UI component patterns discovered through comprehensive
+cross-scene analysis. These patterns create visual hierarchy and consistent affordance
+across all interactive elements.
 
-**Key Principle:** Different component types use different visual treatments to communicate their purpose at a glance.
+**Key Principle:** Different component types use different visual treatments to
+communicate their purpose at a glance.
+
+**Scene numbering:** this document previously numbered the scenes from their component
+filenames, which do not match their render positions — it listed both "Venues" and
+"Bands" as separate scenes and put Artists at 6. The canonical roster is
+`SCENE_LABELS` in `src/components/changelog/constants.ts`; see the
+[Scene Design Guide](./scene-design-guide.md#canonical-scene-roster) for the mapping and
+the filename trap.
 
 ---
 
@@ -31,6 +41,16 @@ This document codifies the UI component patterns discovered through comprehensiv
 **Visual Treatment:** **Glassmorphism (semi-transparent with backdrop blur)**
 **Examples:** Reset view buttons, navigation overlays, close buttons
 
+### Conversational surfaces
+**Purpose:** The Ask scene and Spotlight overlay
+**Visual Treatment:** **The Ask register** — a separate, finer glass scale
+**Examples:** Exhibit cards, chips, input dock, Spotlight panel
+
+The Ask register is **not** the `white/10` glassmorphism below. It is documented in
+[Scene Design Guide → The Ask register](./scene-design-guide.md#the-ask-register).
+Do not use `white/10` inside the Ask surfaces, and do not use the Ask glass scale for
+scene controls.
+
 ---
 
 ## Pattern Specifications
@@ -43,7 +63,7 @@ This document codifies the UI component patterns discovered through comprehensiv
 - Anchor visual hierarchy
 - Draw attention as primary interactions
 
-#### Dark Scenes (Scenes 2, 3, 4 - Network, Map, Bands)
+#### Dark Scenes (2 Venues, 3 Geography, 6 Ask)
 
 **Inactive State:**
 ```css
@@ -77,7 +97,9 @@ color: white;
 </button>
 ```
 
-#### Light Scenes (Scenes 1, 5, 6 - Timeline, Genres, Artists)
+Scene 6 carries no primary toggles — it has exactly one control, the composer.
+
+#### Light Scenes (1 Timeline, 4 Genres, 5 Artists)
 
 **Inactive State:**
 ```css
@@ -126,10 +148,7 @@ border: none;
 - Subtle, elegant treatment
 - Blends with scene backgrounds
 - Creates visual hierarchy (softer than solid buttons)
-- Modern, premium feel
 - Differentiates inputs from toggles
-
-#### Dark Scenes
 
 ```css
 background: rgba(255, 255, 255, 0.1);  /* bg-white/10 */
@@ -157,61 +176,29 @@ box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.3);  /* ring-purple-500/30 */
 />
 ```
 
-#### Light Scenes
+**Note:** The treatment is identical on light and dark scenes — light scenes still use
+white text on glass inputs because they appear over gradient overlays (darker
+backgrounds), not directly on the light scene background.
 
-```css
-background: rgba(255, 255, 255, 0.1);  /* bg-white/10 */
-backdrop-filter: blur(8px);            /* backdrop-blur-sm */
-border: 1px solid rgba(255, 255, 255, 0.2);
-color: white;
-placeholder: rgba(255, 255, 255, 0.6);
-```
-
-**Focus State:**
-```css
-border-color: rgb(192, 132, 252);      /* border-purple-400 */
-box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.3);
-```
-
-**Implementation:**
-```tsx
-<input
-  type="text"
-  className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20
-    rounded-lg text-white placeholder-white/60
-    focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/30
-    transition-all duration-200"
-  placeholder="Search artists..."
-/>
-```
-
-**Note:** Light scenes still use white text on glassmorphism inputs because they appear over gradient overlays (darker backgrounds), not directly on the light scene background.
+**Note:** the Ask input dock is not this component. It uses `white/0.08` with a
+`rgba(167,139,250,0.6)` focus border, 14px radius, and a 40px send button (44px on
+phones, where `font-size: 16px` is mandatory to defeat iOS focus-zoom).
 
 ---
 
 ### Secondary Actions (Glassmorphism)
 
-**Why Glassmorphism?**
-- Less prominent than primary controls
-- Doesn't compete with main interactions
-- Feels like an "overlay" or "utility"
-- Consistent with input fields (both are secondary UI)
-
 #### Dark Scenes
 
 ```css
 background: rgba(255, 255, 255, 0.1);  /* bg-white/10 */
-backdrop-filter: blur(8px);            /* backdrop-blur-sm */
+backdrop-filter: blur(8px);
 border: 1px solid rgba(255, 255, 255, 0.2);
 color: white;
 ```
 
-**Hover State:**
-```css
-background: rgba(255, 255, 255, 0.2);  /* bg-white/20 */
-```
+**Hover:** `background: rgba(255, 255, 255, 0.2);`
 
-**Implementation:**
 ```tsx
 <button
   className="px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20
@@ -226,17 +213,13 @@ background: rgba(255, 255, 255, 0.2);  /* bg-white/20 */
 
 ```css
 background: rgba(255, 255, 255, 0.8);  /* bg-white/80 */
-backdrop-filter: blur(8px);            /* backdrop-blur-sm */
+backdrop-filter: blur(8px);
 border: 1px solid rgb(209, 213, 219); /* border-gray-300 */
 color: rgb(17, 24, 39);               /* text-gray-900 */
 ```
 
-**Hover State:**
-```css
-background: white;                     /* bg-white */
-```
+**Hover:** `background: white;`
 
-**Implementation:**
 ```tsx
 <button
   className="px-6 py-3 bg-white/80 backdrop-blur-sm border border-gray-300
@@ -251,45 +234,115 @@ background: white;                     /* bg-white */
 
 ## Cross-Scene Pattern Matrix
 
-| Scene | Background | Primary Toggles | Input Fields | Secondary Actions |
-|-------|------------|-----------------|--------------|-------------------|
-| **1. Timeline** | Light (white) | N/A | N/A | N/A |
-| **2. Venues** | Dark (gradient) | N/A | N/A | N/A |
-| **3. Map** | Dark (gray-900) | Solid gray-800/indigo-600 | N/A | Glass white/10 |
-| **4. Bands** | Dark (gradient) | Solid gray-800/indigo-600 | N/A | Glass white/10 |
-| **5. Genres** | Light (violet-100) | N/A | N/A | Glass white/80 |
-| **6. Artists** | Light (stone-50) | Solid white/violet-600 | Glass white/10 | N/A (future) |
+| Scene | Component | Background | Primary Toggles | Input Fields | Secondary Actions |
+|-------|-----------|------------|-----------------|--------------|-------------------|
+| **1. Timeline** | `Scene1Hero` | Light (white) | N/A | N/A | N/A |
+| **2. Venues** | `Scene4Bands` | Dark (gradient) | Solid gray-800/indigo-600 | N/A | Glass white/10 |
+| **3. Geography** | `Scene3Map` | Dark (gray-900) | Solid gray-800/indigo-600 | N/A | Glass white/10 |
+| **4. Genres** | `Scene5Genres` | Light (violet-100) | N/A | N/A | Glass white/80 |
+| **5. Artists** | `ArtistScene` | Light (stone-50) | Solid white/violet-600 | Glass white/10 | N/A |
+| **6. Ask the Archive** | `AskScene` | Dark (layered violet) | N/A | **Ask register** | **Ask register** |
 
 ---
 
-## Design Rationale
+## Motion
 
-### Why This System Works
+Previously undocumented. `src/components/ask/ask.css` handles
+`prefers-reduced-motion` throughout; nothing else in the repo did, and any new
+animation is expected to.
 
-1. **Visual Hierarchy**
-   - Solid buttons = Primary actions (highest priority)
-   - Glassmorphism = Secondary UI (inputs, utilities)
-   - Creates instant recognition of component purpose
+### Standard easing
 
-2. **Contextual Adaptation**
-   - Dark scenes use darker solids (gray-800) + brighter glass (white/10)
-   - Light scenes use lighter solids (white) + subtle glass (white/10 or white/80)
-   - Both maintain the solid vs glass distinction
+| Use | Curve | Duration |
+|-----|-------|----------|
+| General | `cubic-bezier(0.4, 0, 0.2, 1)` | 200ms |
+| Slide panels | `cubic-bezier(0.4, 0, 0.2, 1)` | 400ms |
+| Spotlight bloom | `cubic-bezier(0.2, 0.7, 0.3, 1)` | 220ms |
 
-3. **Consistency Across Complexity**
-   - Pattern holds true whether scene has 3 controls or 30
-   - Scales to new scenes without modification
-   - Future-proof for additional component types
+### Ask-register keyframes
 
-4. **Accessibility**
-   - Solid buttons have strong contrast (WCAG AAA)
-   - Min-height 44px for all interactive elements (touch-friendly)
-   - Focus states clearly visible (purple ring)
+| Name | Spec | Applies to |
+|------|------|------------|
+| `ask-rise` | `0.4s ease both` — fade + 8px rise | Exhibit card entry |
+| `ask-bloom` | `0.22s` bloom curve — fade + 8px rise + `scale(0.985→1)` | Spotlight panel |
+| `ask-scrim-in` | `0.18s ease both` — opacity | Spotlight scrim |
+| `ask-fade-in` | `0.18s ease both` — opacity | Mobile sheet, reduced-motion fallback |
+| `ask-pulse` | `1.2s ease-in-out infinite`, 0.15s stagger | Loading dots |
+| `ask-blink` | `1s steps(2) infinite` | Streaming cursor |
 
-5. **Brand Coherence**
-   - Purple accent family (purple-400, purple-500, violet-600)
-   - Matches gradient overlays and scene transitions
-   - Creates unified feel across disparate scenes
+### The reduced-motion contract
+
+| Element | Reduced-motion behaviour |
+|---------|--------------------------|
+| Exhibit card | `animation: none` |
+| Loading dots | `animation: none; opacity: 0.5` — still legible as a state |
+| Spotlight panel | Cross-fade (`ask-fade-in`), **not** scale. Spec #142: keep the scrim's opacity fade; drop the palette's scale/translate bloom |
+| Scene composer | `transition: none` |
+
+Two rules to follow when adding motion:
+
+1. **Degrade to a cross-fade, not to nothing**, where the animation carries meaning.
+   A loading indicator that stops animating must still read as loading — hence the
+   `opacity: 0.5` floor rather than `animation: none` alone.
+2. **Never let a reduced-motion override clobber a functional transform.** The mobile
+   sheet uses `translateY(var(--ask-vvtop))` to ride above the keyboard;
+   `ask-bloom` runs `fill: both`, so applying it there would overwrite that offset.
+   This is why the phone sheet uses an opacity-only intro.
+
+---
+
+## Z-Index Layers
+
+The scale below runs to **2100**. The 0–50 range documented in v1.0 described only
+scene-local chrome and was never the whole story; map scene chrome alone sits at
+1000–1001.
+
+| Layer | Z-Index | Usage |
+|-------|---------|-------|
+| Base content | 0 | Scene backgrounds |
+| Floating UI | 10 | Filter panels, tooltips |
+| Overlays | 20 | Modals, gatefold |
+| Popups | 30 | Map popups, dropdowns |
+| Toast (scene-local) | 40 | Notifications |
+| Navigation | 50 | Fixed headers, scene rail |
+| Leaflet controls | 500 | Map caption over tiles (`.ask-map-wrap .cap`) |
+| Map scene chrome | 1000–1001 | Scene 3 title and region tabs |
+| Ask Spotlight scrim | 2000 | Must clear map chrome, or the modal is pierced by it |
+| Turnstile challenge | 2100 | `.ts-gate` — above everything, including the Spotlight |
+| Changelog toast | 9999 | `TOAST.Z_INDEX` in `changelog/constants.ts` |
+
+Two known inconsistencies, left as-is here because they are code comments rather than
+design decisions:
+
+- `ask.css` describes `.ts-gate` as "above the overlay (z 60)" while setting `2100`.
+- The changelog toast at 9999 is not part of the scale; it is an absolute ceiling.
+
+When adding a layer, place it against this table rather than picking a round number.
+
+---
+
+## Spacing Standards
+
+| Context | Value |
+|---------|-------|
+| Scene padding | `py-20 px-8` |
+| Title → Visualization | 48px (`mb-12`) |
+| Visualization → Footer | 32px (`mt-8`) |
+| Between cards | 12px (`gap-3`) |
+| Button padding | 24px × 12px (`px-6 py-3`) |
+
+---
+
+## Accessibility Requirements
+
+- **Min touch target:** 44×44px (`min-h-[44px]`)
+- **Focus visible:** Purple ring (`focus:ring-2 focus:ring-purple-500/30`); Ask surfaces
+  use `:focus-within` on the dock with a `rgba(167,139,250,0.6)` border
+- **Color contrast:** WCAG AA minimum
+- **Keyboard nav:** All interactive elements focusable; Spotlight opens on ⌘K and
+  closes on Escape
+- **Reduced motion:** see [Motion](#motion) — required, not optional
+- **iOS inputs:** 16px minimum font-size on any focusable input, or Safari zooms
 
 ---
 
@@ -297,33 +350,18 @@ background: white;                     /* bg-white */
 
 ### When to Use Solid Backgrounds
 
-✅ **Use for:**
-- Sort controls (A-Z, Genre, Most Seen)
-- View mode toggles (Top 10 / All Venues)
-- Filter toggles (checkboxes in MultiSelectFilter trigger button)
-- Region tabs (All Regions, East Coast, etc.)
-- Any control that changes scene-level state
+✅ Sort controls, view mode toggles, filter toggles, region tabs — any control that
+changes scene-level state.
 
-❌ **Don't use for:**
-- Search/text inputs
-- Reset buttons
-- Navigation aids (back, close)
-- Temporary overlays
+❌ Search/text inputs, reset buttons, navigation aids, temporary overlays.
 
 ### When to Use Glassmorphism
 
-✅ **Use for:**
-- Search inputs
-- Text input fields
-- Reset/clear buttons
-- Navigation overlays
-- Close buttons (X)
-- Utility controls (zoom, pan indicators)
+✅ Search and text inputs, reset/clear buttons, navigation overlays, close buttons,
+utility controls (zoom, pan indicators).
 
-❌ **Don't use for:**
-- Primary sort/filter/view controls
-- Important state toggles
-- Anything requiring strong affordance
+❌ Primary sort/filter/view controls, important state toggles, anything requiring
+strong affordance — and anything inside the Ask surfaces, which have their own scale.
 
 ### Color Selection Rules
 
@@ -331,92 +369,67 @@ background: white;                     /* bg-white */
 - Dark scenes → **indigo-600** (`#4f46e5`)
 - Light scenes → **violet-600** (`#7c3aed`)
 
-**Focus/Accent Colors (all scenes):**
+**Focus/Accent Colors (scene controls):**
 - Border: **purple-400** (`#c084fc`)
 - Ring: **purple-500/30** (`rgba(168, 85, 247, 0.3)`)
 
-**Why purple family?**
-- Ties to venue scene gradient (indigo → purple)
-- Warm enough for light scenes, cool enough for dark
-- Distinct from genre colors (avoids confusion)
-- Modern, premium feel
+**Ask register accents:**
+- Kicker and links: `#818cf8`
+- Live dot and hover borders: `#a5b4fc` / `rgba(165, 180, 252, 0.55)`
+- Dock focus: `rgba(167, 139, 250, 0.6)`
+
+**Why purple family?** Ties to the venue scene gradient (indigo → purple). Warm enough
+for light scenes, cool enough for dark. Distinct from genre colors, which are reserved
+for data.
 
 ---
 
 ## Anti-Patterns to Avoid
 
-### ❌ Don't: Mix treatments for same component type
+❌ **Don't mix treatments for the same component type** across scenes.
 
-**Bad:**
-```tsx
-// Scene 3 uses solid buttons, Scene 6 uses glass buttons for sort controls
-<button className="bg-white/10 backdrop-blur-sm">Sort A-Z</button>
-```
+❌ **Don't use glassmorphism for primary toggles.**
 
-**Good:**
-```tsx
-// All scenes use solid buttons for sort controls
-<button className="bg-white border border-gray-300">Sort A-Z</button>
-```
+❌ **Don't use solid backgrounds for search inputs.**
 
-### ❌ Don't: Use glassmorphism for primary toggles
+❌ **Don't use `white/10` inside the Ask surfaces**, or the Ask glass scale outside them.
 
-**Bad:**
-```tsx
-// Primary sort control with glassmorphism
-<button className="bg-white/10 backdrop-blur-sm">A-Z</button>
-```
+❌ **Don't add icons to buttons without approval.** The design team has explicitly
+requested text-only buttons.
 
-**Good:**
-```tsx
-// Primary sort control with solid background
-<button className="bg-white border border-gray-300">A-Z</button>
-```
+❌ **Don't use genre colors for UI elements** — reserved for data visualization.
 
-### ❌ Don't: Use solid backgrounds for search inputs
+❌ **Don't ship an animation without a `prefers-reduced-motion` branch.**
 
-**Bad:**
-```tsx
-// Search input with solid white background
-<input className="bg-white border border-gray-300" />
-```
-
-**Good:**
-```tsx
-// Search input with glassmorphism
-<input className="bg-white/10 backdrop-blur-sm border border-white/20" />
-```
-
-### ❌ Don't: Add icons to buttons without user approval
-
-**Important:** The design team has explicitly requested **text-only buttons**. Do not add icons (🔤, 🎵, 📊, etc.) unless specifically approved.
+❌ **Don't infer scene numbers from component filenames.** They do not match.
 
 ---
 
 ## Evolution & Future Considerations
 
-### Potential New Component Types
-
-**If we add these, use this pattern:**
-
 | Component Type | Treatment | Rationale |
 |----------------|-----------|-----------|
 | **Tabs** | Solid backgrounds | Primary navigation = strong affordance |
 | **Radio buttons** | Solid backgrounds | State selection = primary control |
-| **Checkboxes** | Depends on context | In MultiSelectFilter = solid trigger, glass dropdown |
+| **Checkboxes** | Depends on context | Solid trigger, glass dropdown |
 | **Dropdown selects** | Glassmorphism | Similar to input fields |
-| **Sliders** | Custom (track + thumb) | Unique control, needs custom treatment |
+| **Sliders** | Custom (track + thumb) | Unique control |
 | **Pagination** | Solid backgrounds | Primary navigation control |
 | **Toast notifications** | Glassmorphism | Temporary overlay |
-| **Modal backgrounds** | Solid dark overlay | Needs strong contrast with content |
+| **Modal backgrounds** | Solid dark overlay | Needs strong contrast |
 
 ### Version History
 
-**v1.0 (January 2025)** - Initial documentation
-- Codified solid vs glassmorphism pattern
-- Documented all 6 scenes
-- Established color rules (indigo-600 dark, violet-600 light)
-- Added implementation examples and anti-patterns
+**v1.1 (2026-09-03)**
+- Corrected the scene matrix: six scenes on their real render positions, with
+  component filenames named explicitly because they don't match
+- Added Ask the Archive and the Ask register as a distinct treatment
+- Z-index scale extended from 50 to 2100 with the layers actually in use
+- Added the Motion section and the `prefers-reduced-motion` contract
+- Recorded the two known z-index comment inconsistencies
+
+**v1.0 (January 2025)** — Initial documentation. Codified solid vs glassmorphism,
+established color rules, added implementation examples and anti-patterns.
 
 ---
 
@@ -425,19 +438,19 @@ background: white;                     /* bg-white */
 ### Decision Tree
 
 ```
-Is this a PRIMARY scene control (sort, filter, view mode)?
-├─ YES → Use SOLID background
-│   ├─ Dark scene → gray-800 inactive, indigo-600 active
-│   └─ Light scene → white inactive, violet-600 active
+Is this inside the Ask scene or Spotlight?
+├─ YES → Use the ASK REGISTER (see Scene Design Guide)
 │
-└─ NO → Is it an input field or secondary action?
-    ├─ Input field → Use GLASSMORPHISM
-    │   ├─ Dark scene → white/10 with white text
-    │   └─ Light scene → white/10 with white text (over overlays)
+└─ NO → Is this a PRIMARY scene control (sort, filter, view mode)?
+    ├─ YES → Use SOLID background
+    │   ├─ Dark scene (2, 3) → gray-800 inactive, indigo-600 active
+    │   └─ Light scene (1, 4, 5) → white inactive, violet-600 active
     │
-    └─ Secondary action → Use GLASSMORPHISM
-        ├─ Dark scene → white/10 with white text
-        └─ Light scene → white/80 with dark text
+    └─ NO → Input field or secondary action?
+        ├─ Input field → GLASSMORPHISM white/10, white text
+        └─ Secondary action → GLASSMORPHISM
+            ├─ Dark scene → white/10, white text
+            └─ Light scene → white/80, dark text
 ```
 
 ### Code Snippets Library
@@ -471,23 +484,23 @@ className="px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20
   hover:bg-white/20 transition-all duration-200 min-h-[44px]"
 ```
 
-**Secondary Button (Light Scene):**
-```tsx
-className="px-6 py-3 bg-white/80 backdrop-blur-sm border border-gray-300
-  rounded-lg text-gray-900 font-sans text-sm font-medium
-  hover:bg-white transition-all duration-200 shadow-sm min-h-[44px]"
+**Reduced-motion guard:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  .my-element { animation: fade-in 0.18s ease both; }  /* cross-fade, not none */
+}
 ```
 
 ---
 
 ## Related Documentation
 
-- [Scene Design Guide](./scene-design-guide.md) - Scene backgrounds, typography, spacing
-- [Color Specification](./color-specification.md) - Genre colors, background tokens
-- [Artist Search Spec](../specs/future/artist-search-typeahead.md) - Implementation example using these patterns
+- [Scene Design Guide](./scene-design-guide.md) — roster, backgrounds, typography, Ask register
+- [Color Specification](./color-specification.md) — genre colors, background tokens
+- `src/components/changelog/constants.ts` — canonical scene roster, toast tokens
+- `src/components/ask/ask.css` — the Ask register in source
 
 ---
 
-**Last Updated:** January 2025
+**Last Updated:** 2026-09-03
 **Maintained By:** Design Team
-**Questions?** Review existing scene implementations for reference examples.
