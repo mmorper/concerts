@@ -32,6 +32,10 @@ import { normalizeArtistName } from "../../src/utils/normalize.js";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesPost } from "../../src/types/liner-notes.ts";
 import type { OnThisDayPost } from "../on-this-day/types.ts";
+import type { AliasMap } from "../liner-notes/artist-aliases.ts";
+import type { SetlistIndex } from "../liner-notes/setlists.ts";
+import type { AlbumErasSlim } from "../liner-notes/analyze.ts";
+import type { OwnerFactsMap } from "../liner-notes/fact-sheet.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const ROOT = join(__dirname, "..", "..");
@@ -70,7 +74,7 @@ export function cardPath(slug: string): string {
 export interface PayloadSources {
   concerts: Concert[];
   artistsMetadata: Record<string, { name?: string }>;
-  venuesMetadata: Record<string, { name?: string; city?: string; state?: string }>;
+  venuesMetadata: Record<string, { name?: string; city?: string; state?: string; status?: string; closedDate?: string; notes?: string }>;
   /** Injected so the builder is testable without a filesystem. */
   cardExists?: (path: string) => boolean;
   /**
@@ -78,6 +82,16 @@ export interface PayloadSources {
    * reproducible and the tests do not move with the wall clock.
    */
   today?: string;
+  /**
+   * Optional richer sources for the claim-check gate (#529). Absent is a
+   * supported state — `buildFactSheet` degrades gracefully section by section —
+   * and nothing here changes payload eligibility directly; `run.ts` reads these
+   * off the same `PayloadSources` to build a fact sheet before posting.
+   */
+  aliases?: AliasMap;
+  setlists?: SetlistIndex;
+  albumEras?: AlbumErasSlim;
+  ownerFacts?: OwnerFactsMap;
 }
 
 // ── Credit ───────────────────────────────────────────────────────────────────

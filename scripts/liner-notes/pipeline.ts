@@ -14,6 +14,7 @@ import { readFileSync, writeFileSync, existsSync } from "fs";
 import { createHash } from "crypto";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+import Anthropic from "@anthropic-ai/sdk";
 
 import { analyze, type AlbumErasSlim, type SongAlbumsSlim } from "./analyze.ts";
 import { checkVoice, formatVoiceIssues, numbersInData } from "./voice-check.ts";
@@ -28,6 +29,8 @@ import { checkSocial, formatSocialIssues } from "./voice-check.ts";
 import { resolveAnchorConcert } from "../syndication/payload.ts";
 import { buildSetlistIndex, type SetlistIndex } from "./setlists.ts";
 import { buildAliasMap, EMPTY_ALIAS_MAP, type AliasMap } from "./artist-aliases.ts";
+import { buildFactSheet, loadOwnerFacts as parseOwnerFacts, type FactSheetSources, type OwnerFactsMap } from "./fact-sheet.ts";
+import { verifyClaims, formatClaimIssues, type ClaimIssue, type CopyFields } from "./verify-claims.ts";
 import type { PipelineOptions, ScoredFinding } from "./types.ts";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesData, LinerNotesPost } from "../../src/types/liner-notes.ts";
@@ -99,6 +102,7 @@ export async function run(options: PipelineOptions): Promise<void> {
   );
   const setlists = loadSetlistIndex();
   const aliases = loadAliasMap();
+  const ownerFacts = loadOwnerFactsFile();
   // Optional (#270). Absent -> the discography detectors return [], album art
   // falls back to iTunes, and every other detector is byte-identical.
   const albumEras = loadAlbumEras();
@@ -117,6 +121,22 @@ export async function run(options: PipelineOptions): Promise<void> {
     .update(concertsRaw)
     .digest("hex")
     .slice(0, 8);
+
+  // The claim check (#529). One set of sources for both prose and social
+  // authoring, since a fact sheet is only as trustworthy as being built from
+  // exactly what the payload builder and the rest of the pipeline already see.
+  const factSheetSources: FactSheetSources = {
+    concerts,
+    venuesMetadata,
+    artistsMetadata,
+    aliases,
+    setlists,
+    albumEras,
+    ownerFacts,
+    today: today.toISOString().slice(0, 10),
+  };
+  const verifyClaimsFn = (factSheet: string, copy: CopyFields): Promise<ClaimIssue[]> =>
+    verifyClaims(factSheet, copy, new Anthropic().messages);
 
   // ── Load existing posts ──────────────────────────────────────────────────
   const existingData = loadExistingData();
@@ -221,19 +241,28 @@ export async function run(options: PipelineOptions): Promise<void> {
       // Threaded through so `--date` and forward simulations frame tense the way
       // they frame cooldowns, instead of silently reading the wall clock.
       today: today.toISOString().slice(0, 10),
+      getFactSheet: (finding) => buildFactSheet({ artists: finding.artists, venues: finding.venues }, factSheetSources),
+      verifyClaims: verifyClaimsFn,
     });
     return result;
   });
   console.log(`   Prose generated for ${withProse.length}/${target} (${attempted} API call${attempted !== 1 ? "s" : ""})`);
 
-  // ── Stage 4b: Voice checks ───────────────────────────────────────────────
+  // ── Stage 4b: Voice and claim checks ─────────────────────────────────────
   //
   // The voice skill has carried a validation checklist since v4.4 and nothing
   // ever ran it. Two defects reached generated prose during v5.4 — an invented
   // distance, and a negative field rendered as its absolute value — both of
   // which a human had already read past. Errors block the run; warnings print.
+  //
+  // The claim check (#529) runs here too, as a backstop: `generate()` already
+  // retries once on a must-fix issue for the ordinary path, but this is the one
+  // place that also covers `historical-moment`'s web-search path, and it is
+  // cheap insurance against a `getFactSheet`/`verifyClaims` wiring bug silently
+  // skipping the inline check.
   const clean: typeof withProse = [];
   let voiceErrors = 0;
+  let claimErrors = 0;
   for (const candidate of withProse) {
     const issues = checkVoice(candidate);
     if (issues.length) console.log(formatVoiceIssues(candidate, issues));
@@ -241,13 +270,33 @@ export async function run(options: PipelineOptions): Promise<void> {
       voiceErrors++;
       continue; // Drop it rather than publish it. Reserve candidates remain.
     }
+
+    try {
+      const factSheet = buildFactSheet({ artists: candidate.artists, venues: candidate.venues }, factSheetSources);
+      const claimIssues = await verifyClaimsFn(factSheet, { headline: candidate.headline, prose: candidate.prose });
+      if (claimIssues.length) console.log(formatClaimIssues(candidate.headline, claimIssues));
+      if (claimIssues.some((i) => i.severity === "must-fix")) {
+        claimErrors++;
+        continue; // Drop it rather than publish it. Reserve candidates remain.
+      }
+    } catch (err) {
+      // Ambiguity means stop, the same posture as the kill switch: a verifier
+      // failure holds this candidate rather than publishing it unchecked.
+      console.warn(`   ⚠️  Claim check failed for "${candidate.headline}" (${(err as Error).message}) — held`);
+      claimErrors++;
+      continue;
+    }
+
     clean.push(candidate);
   }
   if (voiceErrors > 0) {
     console.log(`   ⚠️  ${voiceErrors} post(s) failed voice checks and were dropped`);
   }
+  if (claimErrors > 0) {
+    console.log(`   ⚠️  ${claimErrors} post(s) failed the claim check and were dropped`);
+  }
   if (clean.length === 0) {
-    console.log("\n⚠️  Nothing passed voice checks — nothing to publish this run.");
+    console.log("\n⚠️  Nothing passed voice/claim checks — nothing to publish this run.");
     return;
   }
 
@@ -315,11 +364,14 @@ export async function run(options: PipelineOptions): Promise<void> {
         // Where the finding sits in the archive — the same lines the prose prompt
         // gets as a caveat, so the two calls cannot be told different things.
         facts: finding ? detectorFacts(finding) : [],
+        // The claim check (#529), against the same subjects the payload builder
+        // will eventually resolve this post's credit stack against.
+        factSheet: buildFactSheet({ artists: post.artists, venues: post.venues }, factSheetSources),
       };
       return { post, context };
     });
 
-    const authored = await generateSocial(requests);
+    const authored = await generateSocial(requests, { verifyClaims: verifyClaimsFn });
     let socialErrors = 0;
     for (const post of newPosts) {
       const social = authored.get(post.slug);
@@ -622,6 +674,17 @@ function loadAlbumTrackCounts(): Record<string, number> | undefined {
     }
     return counts;
   } catch {
+    return undefined;
+  }
+}
+
+function loadOwnerFactsFile(): OwnerFactsMap | undefined {
+  const path = join(ROOT, "data", "owner-facts.json");
+  if (!existsSync(path)) return undefined;
+  try {
+    return parseOwnerFacts(JSON.parse(readFileSync(path, "utf8")));
+  } catch (err) {
+    console.warn(`   ⚠️  Could not read owner-facts.json (${(err as Error).message})`);
     return undefined;
   }
 }

@@ -70,6 +70,7 @@
     "contact-sheet": "tsx scripts/syndication/contact-sheet.ts",
     "backfill:social": "tsx scripts/backfill-social.ts",
     "generate:on-this-day": "tsx scripts/on-this-day/index.ts",
+    "verify-claims": "tsx scripts/liner-notes/verify-claims-cli.ts",
     "refresh:liner-note-images": "tsx scripts/refresh-liner-note-images.ts",
     "generate:narrations": "tsx scripts/generate-narrations.ts",
     "deploy:worker": "cd workers/meta-injector && npx wrangler deploy",

@@ -22,6 +22,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { HOOK_MAX, BEATS_MIN, BEATS_MAX, CAPTION_MAX } from "../syndication/budgets.ts";
 import { graphemeLength } from "../syndication/text.ts";
 import { assertedOrdinals, statedNumbers } from "./voice-check.ts";
+import type { ClaimIssue, CopyFields } from "./verify-claims.ts";
 import type { PostSocial } from "../../src/types/liner-notes.ts";
 
 /* Sonnet 5 removed the sampling parameters — `temperature`, `top_p` and
@@ -218,6 +219,13 @@ export interface SocialOptions {
   dryRun?: boolean;
   /** Injected in tests so the loop runs without an API key. */
   client?: Pick<Anthropic["messages"], "create">;
+  /**
+   * The claim check (#529). Absent skips it entirely — every existing caller
+   * and test keeps behaving exactly as before. Given, it runs INSIDE the retry
+   * loop, the same as `unsourcedYears`: a must-fix issue is a failure the model
+   * fixes immediately when told and ships silently when not.
+   */
+  verifyClaims?: (factSheet: string, copy: CopyFields) => Promise<ClaimIssue[]>;
 }
 
 /**
@@ -305,6 +313,13 @@ export interface SocialContext {
    * these or it was remembered wrong.
    */
   knownDates?: string[];
+  /**
+   * The claim-check fact sheet for this post's subjects (#529), from
+   * `fact-sheet.ts`. Paired with `SocialOptions.verifyClaims` — either both are
+   * present or the check is skipped entirely, since a fact sheet with no
+   * verifier (or a verifier with no fact sheet) has nothing to do.
+   */
+  factSheet?: string;
 }
 
 /**
@@ -334,7 +349,7 @@ export async function generateSocial(
 
   for (const { post, context } of posts) {
     try {
-      const social = await authorOne(post, context, client);
+      const social = await authorOne(post, context, client, options.verifyClaims);
       out.set(post.slug, { ...social, authoredAt });
     } catch (err) {
       console.warn(`   ⚠️  Social text failed for ${post.slug}: ${(err as Error).message}`);
@@ -349,7 +364,8 @@ export async function generateSocial(
 async function authorOne(
   post: SocialSubject,
   context: SocialContext,
-  client: Pick<Anthropic["messages"], "create">
+  client: Pick<Anthropic["messages"], "create">,
+  verify?: (factSheet: string, copy: CopyFields) => Promise<ClaimIssue[]>
 ): Promise<Omit<PostSocial, "authoredAt">> {
   let feedback = "";
   let lastError = "";
@@ -384,6 +400,7 @@ async function authorOne(
       ...unsourcedYears(parsed, post, context),
       ...unsourcedOrdinals(parsed, post, context),
       ...liftedFromTheNote(parsed, post, context),
+      ...(await claimCheckIssues(parsed, post, context, verify)),
     ];
     if (!issues.length) return normalize(parsed as Record<string, unknown>);
 
@@ -392,6 +409,44 @@ async function authorOne(
   }
 
   throw new Error(lastError || "social text failed validation");
+}
+
+/**
+ * The claim check (#529), run inside the retry loop for the same reason
+ * `unsourcedYears` is: a failure the model fixes immediately when told and
+ * ships silently when not. Skipped entirely when the caller supplied no fact
+ * sheet or no verifier — every existing call site keeps its current behaviour.
+ *
+ * Only MUST-FIX issues buy a retry. A `review` issue (an unconfirmable
+ * external claim, a personal fact the fact sheet cannot vouch for) is worth a
+ * human glance, not a rewrite — `checkSocial`/the run log can still surface it,
+ * but forcing a retry over it would burn the retry budget on a false positive.
+ */
+async function claimCheckIssues(
+  parsed: unknown,
+  post: SocialSubject,
+  context: SocialContext,
+  verify?: (factSheet: string, copy: CopyFields) => Promise<ClaimIssue[]>
+): Promise<string[]> {
+  if (!verify || !context.factSheet) return [];
+  const obj = parsed as Record<string, unknown> | null;
+  if (!obj || typeof obj !== "object") return [];
+
+  const copy: CopyFields = {
+    headline: post.headline,
+    prose: post.prose,
+    hook: typeof obj.hook === "string" ? obj.hook : undefined,
+    caption: typeof obj.caption === "string" ? obj.caption : undefined,
+    beats: Array.isArray(obj.beats) ? obj.beats.filter((b): b is string => typeof b === "string") : undefined,
+  };
+  const issues = await verify(context.factSheet, copy);
+  const mustFix = issues.filter((i) => i.severity === "must-fix");
+  if (!mustFix.length) return [];
+  return [
+    `the fact-checker found: ${mustFix
+      .map((i) => `"${i.sentence}" (${i.kind}) — ${i.evidence}`)
+      .join("; ")}`,
+  ];
 }
 
 /**

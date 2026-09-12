@@ -12,6 +12,7 @@
  */
 
 import Anthropic from "@anthropic-ai/sdk";
+import type { ClaimIssue, CopyFields } from "./verify-claims.ts";
 import type { ScoredFinding } from "./types.ts";
 
 // ── Public interface ──────────────────────────────────────────────────────────
@@ -40,6 +41,16 @@ export interface GenerateOptions {
    * adding rules to this prompt has been measured to make output worse.
    */
   today?: string;
+  /**
+   * The claim check (#529). Absent skips it — every existing caller and test
+   * keeps its current behaviour. `getFactSheet` builds the fact sheet for one
+   * finding's subjects (a function rather than a precomputed map, since
+   * `generate()` processes a batch and each finding has different subjects).
+   */
+  getFactSheet?: (finding: ScoredFinding) => string;
+  verifyClaims?: (factSheet: string, copy: CopyFields) => Promise<ClaimIssue[]>;
+  /** Injected in tests so the loop runs without an API key. */
+  client?: Pick<Anthropic, "messages">;
 }
 
 /* Sonnet 5 removed the sampling parameters — `temperature`, `top_p` and
@@ -152,7 +163,7 @@ export async function generate(
     }));
   }
 
-  const client = new Anthropic();
+  const client = options.client ?? new Anthropic();
   const results: ScoredFinding[] = [];
 
   for (const finding of findings) {
@@ -170,40 +181,71 @@ export async function generate(
 
 // ── Internal helpers ──────────────────────────────────────────────────────────
 
+/**
+ * A must-fix claim gets ONE rewrite, not `social.ts`'s four. Prose generation
+ * is a tuned, validated path already retried nowhere else — every other
+ * `validateProse` failure drops the finding on the first miss — so this adds
+ * a single bounded chance rather than a full retry loop, keeping the API
+ * spend this feature costs (#529's decided ~80 calls/month) in the range that
+ * was actually measured.
+ */
+const CLAIM_CHECK_ATTEMPTS = 2;
+
 async function generateProse(
   finding: ScoredFinding,
   options: GenerateOptions,
-  client: Anthropic
+  client: Pick<Anthropic, "messages">
 ): Promise<string> {
   if (finding.detector === "historical-moment") {
     return generateProseWithWebSearch(finding, options, client);
   }
 
-  const userPrompt = buildUserPrompt(finding, options);
+  const factSheet = options.getFactSheet?.(finding);
+  const verify = options.verifyClaims;
+  const attempts = factSheet && verify ? CLAIM_CHECK_ATTEMPTS : 1;
+  let feedback = "";
 
-  const message = await client.messages.create({
-    model: MODEL,
-    max_tokens: MAX_TOKENS,
-    /* Thinking OFF. Sonnet 5 runs adaptive thinking by default and its tokens
-       come out of `max_tokens` — measured at 699 of 700 on this prompt, which
-       left no room for the answer and returned a lone thinking block. Sonnet
-       4.6 never thought here either, so this is the pre-migration behaviour,
-       and it is what keeps the tier's 33% price cut instead of spending it on
-       reasoning this task does not need. */
-    thinking: { type: "disabled" },
-    system: SYSTEM_PROMPT,
-    messages: [{ role: "user", content: userPrompt }],
-  });
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    const message = await client.messages.create({
+      model: MODEL,
+      max_tokens: MAX_TOKENS,
+      /* Thinking OFF. Sonnet 5 runs adaptive thinking by default and its tokens
+         come out of `max_tokens` — measured at 699 of 700 on this prompt, which
+         left no room for the answer and returned a lone thinking block. Sonnet
+         4.6 never thought here either, so this is the pre-migration behaviour,
+         and it is what keeps the tier's 33% price cut instead of spending it on
+         reasoning this task does not need. */
+      thinking: { type: "disabled" },
+      system: SYSTEM_PROMPT,
+      messages: [{ role: "user", content: buildUserPrompt(finding, options) + feedback }],
+    });
 
-  const prose = extractText(message);
-  validateProse(prose, finding);
-  return prose;
+    const prose = extractText(message);
+    validateProse(prose, finding);
+
+    if (!factSheet || !verify) return prose;
+
+    const issues = await verify(factSheet, { headline: finding.headline, prose });
+    const mustFix = issues.filter((i) => i.severity === "must-fix");
+    if (!mustFix.length) return prose;
+
+    if (attempt === attempts) {
+      throw new Error(
+        `fact-checker: ${mustFix.map((i) => `"${i.sentence}" (${i.kind}) — ${i.evidence}`).join("; ")}`
+      );
+    }
+    feedback = `\n\nYour last reply had these problems: ${mustFix
+      .map((i) => `"${i.sentence}" — ${i.evidence}`)
+      .join("; ")}. Rewrite to fix them — do not simply repeat the same claim in different words.`;
+  }
+
+  throw new Error("unreachable");
 }
 
 async function generateProseWithWebSearch(
   finding: ScoredFinding,
   options: GenerateOptions,
-  client: Anthropic
+  client: Pick<Anthropic, "messages">
 ): Promise<string> {
   const userPrompt = buildUserPromptHistorical(finding, options);
 

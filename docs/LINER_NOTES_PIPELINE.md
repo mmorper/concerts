@@ -537,6 +537,11 @@ Each detector produces one or more `AnalysisFinding` objects with a `category`, 
 
 **Data points:** Artist, last show before the gap, first show after the gap, gap in years, total show count.
 
+**Opener appearances count too (#529).** Grouped through `appearancesByArtist()`, not
+headliner-only: an act opening for someone else is a real sighting that can shrink or close a
+gap. Echo & the Bunnymen and Duran Duran opening for The Cure in 2003 both moved their
+"years between shows" — headliner-only counting had called that a longer drought than it was.
+
 **Scoring note:** Surprise factor scales with gap size (≥20 years = 9, ≥15 = 7, ≥10 = 5, else 3).
 
 **Auto-tags:** `#drought`, `#comeback`.
@@ -738,6 +743,10 @@ The interesting part is that it is usually **not** the album you played most at 
 **`albumTrackCount` is null more often than you would expect, and that is deliberate.** The MusicBrainz cache's track list describes **one release** while the resolver indexes the whole release-group, so B-sides and expanded editions push the witnessed count above it — Garbage's debut counts 17 witnessed against a cached 12. The count is reported only when self-consistent. **Prose must not claim a fraction when it is null:** "seventeen songs", never "seventeen of twelve".
 
 **Covers are excluded**, as in `road-tested`.
+
+**Every act on the bill counts, not only the headliner (#529).** A set played opening for
+someone else is still a set played from the album — Garbage's "four shows" was six once
+their opening slots were included.
 
 **Scoring note:** `surpriseFactor` = 6. Span from distinct songs (4 pts ≥ 4, 7 pts ≥ 6, 10 pts ≥ 8).
 
@@ -1064,6 +1073,67 @@ After generation, prose is checked against three rules before being accepted. Fa
 | Word count | 40–500 words |
 | First person | Must contain `" I "`, `"I "` at start, `" my "`, or `"my "` at start |
 | Year mention | Must include at least one year from the finding's `years` array |
+
+---
+
+### Claim check (#529)
+
+`checkVoice`/`checkSocial` catch *wording* — banned phrases, budgets, a handful of specific
+fabrication shapes. Neither reads what a sentence **claims**, so a wrong count, a wrong
+"first/last/only", or a claim the setlists contradict shipped straight past both. The
+2026-09-10 sweep found 180 false claims in 47 of 55 published notes this way — see #526,
+#527, #528 for the fixes and #529 for this mechanism.
+
+Two modules, one Claude call per post:
+
+- **`scripts/liner-notes/fact-sheet.ts`** — deterministic, no API call. `buildFactSheet()`
+  assembles everything the archive's own data can support about a post's subjects: every
+  show by each artist (headliner **and** opener, through `artist-aliases.json`), every show
+  at each venue plus its closure status, album timing and setlists for those nights, an
+  archive-wide summary, a fixed "not in the data" disclaimer (birth year, residence, crowd
+  size, set times, ticket stubs), and any rows from **`data/owner-facts.json`** — a small
+  hand-kept file of personal facts the owner has confirmed, so a true fact outside the
+  concert data (e.g. "I lived in Orange County around 1992") does not get flagged forever.
+- **`scripts/liner-notes/verify-claims.ts`** — one Sonnet 5 call (adaptive thinking, effort
+  `"medium"`) per post: the fact sheet plus every copy field (headline, prose, hook, caption,
+  beats). Returns a JSON array of issues — `{ field, sentence, kind, severity, evidence,
+  replacement? }`. `kind` is one of `contradicted` / `invented-number` / `stale-relative-time`
+  / `external` / `personal-invented` / `internal`. Severity is decided per issue, not per
+  kind: `must-fix` (contradicted, invented-number, stale-relative-time, internal, any chart
+  or sales claim, or an external claim the model is confident is false) blocks; `review`
+  (an unconfirmable external claim, or a personal fact the fact sheet cannot vouch for) is
+  logged but never blocks.
+
+**Wired in twice, matching the two places a false claim can ship:**
+
+- **Authoring.** `generate.ts`'s prose retry and `social.ts`'s `authorOne` both accept an
+  optional `verifyClaims`/`getFactSheet` (absent skips the check entirely — every existing
+  caller and test is unaffected). A must-fix issue becomes retry feedback, the same way
+  `unsourcedYears` already works in `social.ts`: named, and fed back for a rewrite. Prose gets
+  one extra attempt (`CLAIM_CHECK_ATTEMPTS = 2`, cheaper than social's four); pipeline Stage
+  4b also runs a backstop check on the final prose so the `historical-moment` web-search path
+  is covered too, and drops the candidate on a must-fix issue exactly like a `checkVoice` error.
+- **Post time.** `scripts/syndication/run.ts`'s `verifyPayloads()` checks every candidate
+  payload — liner notes and On This Day alike — against **today's** data, before drawing or
+  posting. A must-fix issue makes the payload ineligible; the run log names the sentence and
+  the evidence. **Block and report, never rewrite at post time.**
+
+**Cached, not re-spent.** `scripts/syndication/claim-cache.ts` keys a verdict on a hash of
+(fact sheet + copy) — not the slug alone — in `data/claim-checks.json`, mirroring the
+syndication ledger's shape (committed, `version`-checked, throws on corruption rather than
+silently re-checking everything). A data refresh that moves a show under a post changes the
+fact sheet text, which changes the hash, which forces a fresh check automatically — no
+separate invalidation logic to keep in sync.
+
+**Ambiguity means stop**, the kill switch's own posture: if the verifier itself fails (a bad
+API response, malformed JSON), the post is held — skipped this run, not published unchecked.
+
+**Calibration, not a fixed pass bar picked in advance.** `npm run verify-claims --
+--dump-prompts <dir>` writes the exact system/user prompt per post with **no network call**,
+so the model can be evaluated by a Claude Code subagent on the plan's own usage rather than
+the API — see the "Testing without API spend" comment on #529 for the full method (dump the
+pre-sweep and corrected corpora, fan out subagents, score locally against
+`git diff 27bb24f c44cdc9 -- public/data/liner-notes.json`).
 
 ---
 

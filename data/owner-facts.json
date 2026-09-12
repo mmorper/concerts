@@ -1,0 +1,36 @@
+{
+  "$schema": "See docs/LINER_NOTES_PIPELINE.md → Owner-Confirmed Facts",
+  "$comment": [
+    "HAND-MAINTAINED. There is no parser and no derivation — nothing in the concert",
+    "data can know where the archive owner lived, or any other personal fact that",
+    "predates or sits outside the concert record. Add rows by hand, and only for a",
+    "fact the owner has actually confirmed.",
+    "",
+    "Built for #529: the claim verifier flags a concrete personal fact stated as",
+    "fact ('personal-invented') because the archive data cannot know it. Most of",
+    "those really are invented. A few are true and the owner is willing to stand",
+    "behind them — those go here, so the verifier stops flagging them instead of",
+    "the copy having to avoid ever stating a fact that happens to be true.",
+    "",
+    "Each entry is `fact` (a short first-person-ready statement, present to the",
+    "verifier as something the archive owner has confirmed) plus `note` (why it",
+    "is here / where it came from). Scope it in the fact itself when it is not",
+    "true for the whole archive's date range — 'around 1992' rather than a bare",
+    "claim that reads as always-true.",
+    "",
+    "Consumed only by the liner notes / syndication claim-check pipeline",
+    "(scripts/liner-notes/fact-sheet.ts). The site, the Artist scene and the MCP",
+    "server do not read this file.",
+    "",
+    "A fact absent from this file is not thereby false — it is simply unconfirmed,",
+    "and copy stating it as fact gets flagged 'personal-invented' until it is",
+    "either added here or rewritten to not need it."
+  ],
+  "facts": [
+    {
+      "id": "orange-county-1992",
+      "fact": "I lived in Orange County, California, around 1992.",
+      "note": "Confirmed by the owner during the #527 review of the back catalogue."
+    }
+  ]
+}
