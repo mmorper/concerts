@@ -120,6 +120,10 @@ function options(overrides: Partial<RunOptions> = {}): RunOptions {
     // paused repository makes every "it posts" test fail.
     pausePath: join(dir, "syndication-pause.json"),
     sleep: async () => {},
+    // These tests assert the LOOP, not the claim check (#529) — that has its own
+    // test file. A no-op keeps them hermetic and free of a real API key.
+    verifyClaims: async () => [],
+    claimCachePath: join(dir, "claim-checks.json"),
     archive: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       posts: posts as any,

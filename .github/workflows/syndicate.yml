@@ -189,6 +189,11 @@ jobs:
           # Absent → alerts are logged, never pushed, and the run still passes.
           # Same posture as the ask-chat spend tripwire.
           NOTIFY_WEBHOOK_URL: ${{ secrets.NOTIFY_WEBHOOK_URL }}
+          # The claim check (#529) — verifies every candidate payload before it is
+          # drawn or posted. "Ambiguity means stop": absent or invalid, every post
+          # is held rather than published unchecked, so this is not optional here
+          # the way it is for a script run locally with --dump-prompts.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
           MASTODON_BASE_URL: ${{ secrets.MASTODON_BASE_URL }}
@@ -267,6 +272,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/syndication-log.json 2>/dev/null || true
+          git add data/claim-checks.json 2>/dev/null || true
           git add public/data/syndication-health.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "Ledger unchanged."

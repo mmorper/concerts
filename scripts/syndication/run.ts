@@ -8,6 +8,7 @@
 import { readFileSync, existsSync } from "fs";
 import { launchBrowser } from "../utils/launch-browser.ts";
 import { join } from "path";
+import Anthropic from "@anthropic-ai/sdk";
 
 import { BlueskyAdapter } from "./adapters/bluesky.ts";
 import { MastodonAdapter } from "./adapters/mastodon.ts";
@@ -27,10 +28,23 @@ import {
 } from "./ledger.ts";
 import { buildOnThisDayPayload, buildPayload, ROOT, type PayloadSources } from "./payload.ts";
 import { readPause } from "./pause.ts";
+import {
+  CLAIM_CACHE_PATH,
+  findCached,
+  hashClaimInput,
+  loadClaimCache,
+  recordCheck,
+  saveClaimCache,
+} from "./claim-cache.ts";
 import { IMPLEMENTED_CHANNELS, type Channel, type SyndicationLedger, type SyndicationPayload } from "./types.ts";
+import { buildFactSheet, loadOwnerFacts } from "../liner-notes/fact-sheet.ts";
+import { buildAliasMap, EMPTY_ALIAS_MAP } from "../liner-notes/artist-aliases.ts";
+import { buildSetlistIndex } from "../liner-notes/setlists.ts";
+import { verifyClaims, hasMustFix, formatClaimIssues, type ClaimIssue, type CopyFields } from "../liner-notes/verify-claims.ts";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesData, LinerNotesPost } from "../../src/types/liner-notes.ts";
 import type { OnThisDayData, OnThisDayPost } from "../on-this-day/types.ts";
+import type { AlbumErasSlim } from "../liner-notes/analyze.ts";
 
 const DATA_DIR = join(ROOT, "public", "data");
 
@@ -76,6 +90,14 @@ export interface RunOptions {
    */
   renderCardFor?: (payload: SyndicationPayload) => Promise<void>;
   sleep?: (ms: number) => Promise<void>;
+  /**
+   * The claim check (#529). Injected in tests; defaults to a real Sonnet 5
+   * call. Returning a rejected promise is how a test exercises "ambiguity
+   * means stop" — the run holds that one post rather than guessing.
+   */
+  verifyClaims?: (factSheet: string, copy: CopyFields) => Promise<ClaimIssue[]>;
+  /** Injected in tests. Defaults to the committed verdict cache. */
+  claimCachePath?: string;
   /**
    * Injected in tests. Defaults to reading the committed archive.
    *
@@ -180,6 +202,69 @@ async function renderSelected(
     }
     return true;
   });
+}
+
+/**
+ * Verify every candidate's claims against today's data before anything is drawn
+ * or posted (#529). Block and report; never rewrite at post time — a payload
+ * carrying a must-fix issue is dropped, with the run log naming the sentence and
+ * the evidence, exactly the way `renderSelected` reports a card that failed to draw.
+ *
+ * Cached on a hash of (fact sheet + copy), so an unchanged post on unchanged
+ * data costs no API call — see `claim-cache.ts`. "Ambiguity means stop": a
+ * verifier failure (bad API response, malformed JSON) holds that one post
+ * rather than publishing it unchecked, the same posture as the kill switch.
+ */
+export async function verifyPayloads(
+  payloads: SyndicationPayload[],
+  sources: PayloadSources,
+  summary: RunSummary,
+  options: Pick<RunOptions, "verifyClaims" | "claimCachePath">
+): Promise<SyndicationPayload[]> {
+  if (!payloads.length) return payloads;
+
+  const verify = options.verifyClaims ?? defaultVerifyClaims;
+  const cachePath = options.claimCachePath ?? CLAIM_CACHE_PATH;
+  const cache = loadClaimCache(cachePath);
+  const kept: SyndicationPayload[] = [];
+
+  for (const payload of payloads) {
+    const factSheet = buildFactSheet(
+      { artists: payload.refs.artists, venues: payload.refs.venue ? [payload.refs.venue] : [] },
+      sources
+    );
+    const copy: CopyFields = { hook: payload.hook, caption: payload.caption, beats: payload.beats };
+    const hash = hashClaimInput(factSheet, copy);
+
+    let issues = findCached(cache, payload.slug, hash)?.issues;
+    if (!issues) {
+      try {
+        issues = await verify(factSheet, copy);
+      } catch (err) {
+        const why = `claim check failed: ${(err as Error).message} — held rather than published unchecked`;
+        summary.skipped.push({ slug: payload.slug, reason: why });
+        console.log(`   ⚠ ${payload.slug} — ${why}`);
+        continue;
+      }
+      recordCheck(cache, payload.slug, hash, issues);
+    }
+
+    if (issues.length) console.log(formatClaimIssues(payload.slug, issues));
+    if (hasMustFix(issues)) {
+      const mustFix = issues.filter((i) => i.severity === "must-fix");
+      const why = `claim check: ${mustFix.map((i) => `"${i.sentence}" — ${i.evidence}`).join("; ")}`;
+      summary.skipped.push({ slug: payload.slug, reason: why });
+      continue;
+    }
+    kept.push(payload);
+  }
+
+  saveClaimCache(cache, cachePath);
+  return kept;
+}
+
+function defaultVerifyClaims(factSheet: string, copy: CopyFields): Promise<ClaimIssue[]> {
+  return verifyClaims(factSheet, copy, new Anthropic().messages);
 }
 
 export async function run(options: RunOptions): Promise<RunSummary> {
@@ -290,9 +375,17 @@ export async function run(options: RunOptions): Promise<RunSummary> {
     return summary;
   }
 
+  // ── Verify ─────────────────────────────────────────────────────────────
+  // Before drawing or posting, and covering both streams (#529).
+  const verified = await verifyPayloads(selected, selectionSources, summary, options);
+  if (!verified.length) {
+    console.log("📭 Nothing left to syndicate — every candidate failed its claim check.");
+    return summary;
+  }
+
   // ── Draw ───────────────────────────────────────────────────────────────
-  console.log(`🎨 Drawing ${selected.length} card(s)…`);
-  const candidates = await renderSelected(selected, summary, options.renderCardFor);
+  console.log(`🎨 Drawing ${verified.length} card(s)…`);
+  const candidates = await renderSelected(verified, summary, options.renderCardFor);
   if (!candidates.length) {
     console.log("📭 Nothing left to syndicate — every card failed to draw.");
     return summary;
@@ -550,6 +643,14 @@ async function correct(
     return summary;
   }
 
+  // The corrected copy is exactly what a fresh post would be checked against —
+  // a correction that trades one false claim for another must not publish either (#529).
+  const [checked] = await verifyPayloads([payload], sources, summary, options);
+  if (!checked) {
+    console.error(`✗ ${slug}: the corrected copy failed its claim check, so the live post stays up.`);
+    return summary;
+  }
+
   const [drawn] = await renderSelected([payload], summary, options.renderCardFor);
   if (!drawn) {
     console.error(`✗ ${slug}: the corrected card could not be drawn, so the live post stays up.`);
@@ -617,6 +718,21 @@ export function loadArchive(): {
     ? (JSON.parse(readFileSync(otdPath, "utf8")) as OnThisDayData).posts
     : [];
 
+  // Optional richer sources for the claim-check gate (#529). Absent is a
+  // supported state, same as everywhere else these are read.
+  const aliasesPath = join(ROOT, "data", "artist-aliases.json");
+  const aliases = existsSync(aliasesPath) ? buildAliasMap(JSON.parse(readFileSync(aliasesPath, "utf8"))) : EMPTY_ALIAS_MAP;
+  const ownerFactsPath = join(ROOT, "data", "owner-facts.json");
+  const ownerFacts = existsSync(ownerFactsPath) ? loadOwnerFacts(JSON.parse(readFileSync(ownerFactsPath, "utf8"))) : undefined;
+  const albumErasPath = join(DATA_DIR, "album-eras.json");
+  const albumEras: AlbumErasSlim | undefined = existsSync(albumErasPath)
+    ? JSON.parse(readFileSync(albumErasPath, "utf8"))
+    : undefined;
+  const setlistsPath = join(DATA_DIR, "setlists-cache.json");
+  const setlists = existsSync(setlistsPath)
+    ? buildSetlistIndex(JSON.parse(readFileSync(setlistsPath, "utf8")))
+    : undefined;
+
   return {
     posts: data.posts,
     onThisDay,
@@ -624,6 +740,10 @@ export function loadArchive(): {
       concerts,
       artistsMetadata: JSON.parse(readFileSync(join(DATA_DIR, "artists-metadata.json"), "utf8")),
       venuesMetadata: JSON.parse(readFileSync(join(DATA_DIR, "venues-metadata.json"), "utf8")),
+      aliases,
+      ownerFacts,
+      albumEras,
+      setlists,
     },
   };
 }

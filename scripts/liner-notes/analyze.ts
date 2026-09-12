@@ -1068,18 +1068,33 @@ function detectFestivalMegaBill(concerts: Concert[]): AnalysisFinding[] {
 
 const DROUGHT_MIN_GAP_YEARS = 5;
 
-function detectDroughtComeback(concerts: Concert[], setlists?: SetlistIndex): AnalysisFinding[] {
-  const byArtist = new Map<string, Concert[]>();
-  for (const c of concerts) {
-    if (!byArtist.has(c.headlinerNormalized)) byArtist.set(c.headlinerNormalized, []);
-    byArtist.get(c.headlinerNormalized)!.push(c);
+/** The display name for an artist who may only appear on the bill as an opener. */
+function displayNameForArtist(normalized: string, shows: Concert[]): string {
+  const own = shows.find((c) => c.headlinerNormalized === normalized);
+  if (own) return own.headliner;
+  for (const c of shows) {
+    const opener = (c.openers ?? []).find((o) => normalizeArtistSlug(o) === normalized);
+    if (opener) return opener;
   }
+  return normalized;
+}
+
+export function detectDroughtComeback(concerts: Concert[], setlists?: SetlistIndex): AnalysisFinding[] {
+  /* 🔴 OPENER APPEARANCES COUNT TOO (#529). Headliner-only grouping shrank
+     Echo & the Bunnymen's and Duran Duran's "years between shows" to a false
+     gap that ignored their slots on The Cure's 2003 bill — a real sighting the
+     archive's own data records. Same fix as `detectRareSighting`, and the
+     shows are already the past-only list this function was called with, so
+     computing it fresh here (rather than requiring an injected map) keeps the
+     window identical to what `sorted` used to search alone. */
+  const byArtist = appearancesByArtist(concerts);
 
   const findings: AnalysisFinding[] = [];
 
   for (const [normalized, shows] of byArtist) {
     if (shows.length < 2) continue;
     const sorted = [...shows].sort((a, b) => a.date.localeCompare(b.date));
+    const displayName = displayNameForArtist(normalized, sorted);
 
     // Find the largest gap between consecutive shows
     let maxGap = 0;
@@ -1108,9 +1123,9 @@ function detectDroughtComeback(concerts: Concert[], setlists?: SetlistIndex): An
       detector: "drought-comeback",
       category: "personal",
       temporality: "evergreen",
-      headline: `${gapStart.headliner}: ${maxGap} Years Between Shows`,
+      headline: `${displayName}: ${maxGap} Years Between Shows`,
       dataPoints: {
-        artist: gapStart.headliner,
+        artist: displayName,
         artistNormalized: normalized,
         lastShowBefore: {
           date: gapStart.date,
@@ -2088,44 +2103,56 @@ export function detectMostWitnessedAlbum(
   const byAlbum = new Map<string, Agg>();
 
   for (const concert of concerts) {
-    const songs = songsFor(setlists, concert.date, concert.headlinerNormalized);
-    if (!songs.length) continue;
+    /* 🔴 OPENER APPEARANCES COUNT TOO (#529). Headliner-only lookup undercounted
+       both the songs and the shows: Garbage's "four shows" was six once their
+       opening slots were included, because a set they played opening for
+       someone else is still a set played from this album. Every act on the
+       bill is checked, not only the one on the marquee. */
+    const acts: Array<{ name: string; normalized: string }> = [
+      { name: concert.headliner, normalized: concert.headlinerNormalized },
+      ...(concert.openers ?? []).map((o) => ({ name: o, normalized: normalizeArtistSlug(o) })),
+    ];
 
-    for (const song of songs) {
-      const rec = lookupSongAlbum(songAlbums.songs, concert.headliner, song.name, {
-        artistsMetadata: ctx.artistsMetadata,
-        discographyKeys: ctx.discographyKeys,
-      });
-      if (!rec || rec.isCover) continue;
+    for (const act of acts) {
+      const songs = songsFor(setlists, concert.date, act.normalized);
+      if (!songs.length) continue;
 
-      // Keyed by mbid: two artists can title a record the same thing.
-      const key = rec.mbid || `${concert.headlinerNormalized}::${rec.albumTitle}`;
-      let agg = byAlbum.get(key);
-      if (!agg) {
-        agg = {
-          albumTitle: rec.albumTitle,
-          artist: concert.headliner,
-          artistNormalized: concert.headlinerNormalized,
-          mbid: rec.mbid,
-          songs: new Set(),
-          performances: 0,
-          dates: [],
-          perShow: new Map(),
-          venueByDate: new Map(),
-        };
-        byAlbum.set(key, agg);
-      }
-      agg.songs.add(rec.songTitle);
-      agg.performances++;
-      if (!agg.perShow.has(concert.date)) {
-        agg.dates.push(concert.date);
-        agg.venueByDate.set(concert.date, {
-          venue: concert.venue,
-          venueNormalized: concert.venueNormalized,
-          year: concert.year,
+      for (const song of songs) {
+        const rec = lookupSongAlbum(songAlbums.songs, act.name, song.name, {
+          artistsMetadata: ctx.artistsMetadata,
+          discographyKeys: ctx.discographyKeys,
         });
+        if (!rec || rec.isCover) continue;
+
+        // Keyed by mbid: two artists can title a record the same thing.
+        const key = rec.mbid || `${act.normalized}::${rec.albumTitle}`;
+        let agg = byAlbum.get(key);
+        if (!agg) {
+          agg = {
+            albumTitle: rec.albumTitle,
+            artist: act.name,
+            artistNormalized: act.normalized,
+            mbid: rec.mbid,
+            songs: new Set(),
+            performances: 0,
+            dates: [],
+            perShow: new Map(),
+            venueByDate: new Map(),
+          };
+          byAlbum.set(key, agg);
+        }
+        agg.songs.add(rec.songTitle);
+        agg.performances++;
+        if (!agg.perShow.has(concert.date)) {
+          agg.dates.push(concert.date);
+          agg.venueByDate.set(concert.date, {
+            venue: concert.venue,
+            venueNormalized: concert.venueNormalized,
+            year: concert.year,
+          });
+        }
+        agg.perShow.set(concert.date, (agg.perShow.get(concert.date) ?? 0) + 1);
       }
-      agg.perShow.set(concert.date, (agg.perShow.get(concert.date) ?? 0) + 1);
     }
   }
 

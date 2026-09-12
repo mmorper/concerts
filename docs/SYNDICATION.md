@@ -301,13 +301,21 @@ cannot take that shortcut even by accident.
 
 ```text
 liner-notes.json ──► buildPayload() ──────┐
-                                          ├──► SyndicationPayload ──► N dumb adapters
-on-this-day.json ──► buildOnThisDayPayload()      (frozen)            bluesky, mastodon
-                                                                       │
-                                                                       ▼
-                                                          data/syndication-log.json
-                                                            (slug × platform)
+                                          ├──► SyndicationPayload ──► verifyPayloads() ──► N dumb adapters
+on-this-day.json ──► buildOnThisDayPayload()      (frozen)          (claim check, #529)     bluesky, mastodon
+                                                                       │                       │
+                                                                       ▼                       ▼
+                                                          data/claim-checks.json    data/syndication-log.json
+                                                            (hash of fact sheet          (slug × platform)
+                                                             + copy → verdict)
 ```
+
+**`verifyPayloads()` runs in `run.ts`, after the payload is built and before a card is
+drawn.** It is not part of `buildPayload`/`buildOnThisDayPayload` themselves — those stay
+synchronous and `SyndicationPayload` stays frozen (see below) — so a must-fix claim-check
+issue is reported the same way a failed card render is: dropped from the run, with the
+reason in the log, never a change to the payload shape. See "Claim check (#529)" in
+[`LINER_NOTES_PIPELINE.md`](LINER_NOTES_PIPELINE.md) for the full mechanism.
 
 **One canonical payload, N dumb adapters.** Adapters truncate and format only —
 they never make content decisions. That keeps the voice consistent without
@@ -368,6 +376,7 @@ diffable, reviewable and greppable.
 | `scripts/syndication/facets.ts` | Bluesky byte-offset rich text |
 | `scripts/syndication/text.ts` | Bytes vs graphemes vs code units |
 | `scripts/syndication/ledger.ts` | Idempotency, seeding, the retraction index |
+| `scripts/syndication/claim-cache.ts` | The claim-check verdict cache — keyed on a hash of (fact sheet + copy), not the slug alone |
 | `scripts/syndication/pause.ts` | The kill switch |
 | `scripts/syndication/run.ts` | Fan-out, jitter, partial-failure resume |
 | `scripts/liner-notes/backfill-social.ts` | Back-catalogue social copy: selection and application |
@@ -375,6 +384,8 @@ diffable, reviewable and greppable.
 | `scripts/syndication/harvest-handles.ts` | Proposes handles for review. Never a publish path |
 | `scripts/syndication/contact-sheet.ts` | Proofs the queue as a page. Reads only |
 | `scripts/on-this-day/` | The second stream — detection, scoring, card, CLI |
+| `scripts/liner-notes/fact-sheet.ts` | The claim check's deterministic evidence — every show a post's subjects played |
+| `scripts/liner-notes/verify-claims.ts` | The claim check's judgment — one Sonnet 5 call per post, block-and-report only |
 
 ---
 
@@ -521,6 +532,8 @@ checks for "no credentials configured" lines.
 | `⏭ bluesky: no credentials configured` | Secret missing or misnamed — most often all four pasted into one secret. |
 | `401` from a channel | Wrong or revoked credential. The ledger records nothing; a retry resumes only that channel. |
 | A post is `eligible: false` | The run log gives the reason. Usually no authored social copy, or no publishable media. |
+| `⏭ some-slug: claim check: "..." — ...` | A must-fix claim-check issue (#529) blocked the payload. The run log names the sentence and the evidence; fix the note at the source and re-run. |
+| `⚠ some-slug: claim check failed: ...` | The verifier itself failed (bad API response, malformed JSON) — the post is held, not published unchecked. Usually transient; re-run. |
 | On This Day published nothing | Expected on most days. `--survey` shows the year's supply. |
 
 ---
