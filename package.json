@@ -125,7 +125,7 @@
     "sharp": "^0.35.4",
     "tailwindcss": "^4.0.0",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2",
+    "typescript": "^7.0.2",
     "vite": "^8.2.2",
     "vitest": "^5.0.0"
   }
