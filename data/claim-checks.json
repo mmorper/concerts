@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-12T13:19:52.610Z",
+  "entries": [
+    {
+      "slug": "oingo-boingo-5-more-1987-festival-bill",
+      "hash": "8b212dab9dd6c190",
+      "checkedAt": "2026-09-12T13:19:52.610Z",
+      "issues": [
+        {
+          "field": "Caption",
+          "sentence": "I crossed the border for it.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Owner-confirmed personal facts only include living in Orange County around 1992; crossing the border for this show is not confirmed."
+        },
+        {
+          "field": "Beat 1",
+          "sentence": "I drove to Tijuana for a concert in 1987.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No owner-confirmed fact about driving to this show; mode of travel is not in the fact sheet."
+        },
+        {
+          "field": "Beat 4",
+          "sentence": "Hoodoo Gurus had been a band for five years.",
+          "kind": "invented-number",
+          "severity": "must-fix",
+          "evidence": "Fact sheet gives no formation date for Hoodoo Gurus, so 'five years' is unsupported."
+        },
+        {
+          "field": "Beat 4",
+          "sentence": "Chris Isaak was just starting.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "No career-stage or formation data for Chris Isaak in the fact sheet to confirm or deny this claim."
+        }
+      ]
+    }
+  ]
+}
