@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-09-03T11:50:21.389Z",
+  "generatedAt": "2026-09-13T12:26:00.051Z",
   "posts": [
+    {
+      "slug": "otd-2026-09-13",
+      "day": "09-13",
+      "showDate": "1990-09-13",
+      "age": 36,
+      "artist": "Social Distortion",
+      "artistNormalized": "social-distortion",
+      "venue": "Cal State Fullerton",
+      "venueNormalized": "cal-state-fullerton",
+      "city": "Fullerton",
+      "score": 27,
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/dwc0c91666512343.jpg",
+      "tier": 2,
+      "source": "artist-audiodb",
+      "url": "https://concerts.morperhaus.org/liner-notes/social-distortion-34-years-of-shows",
+      "linerNoteSlug": "social-distortion-34-years-of-shows",
+      "cardPath": "public/og/on-this-day/otd-2026-09-13.png",
+      "social": {
+        "hook": "Only show I've ever caught at Cal State Fullerton, and it took Social Distortion fifteen years to earn a second.",
+        "caption": "Thirty-six years ago today, this was my first of eight times seeing Social Distortion — but I didn't see them again until 2005.",
+        "beats": [
+          "September 1990: Social Distortion at Cal State Fullerton, filed under Punk.",
+          "The only time I've ever seen a show on that campus.",
+          "Fifteen years passed before Social Distortion number two.",
+          "Six more followed after that — eight shows total, and it started here."
+        ],
+        "authoredAt": "2026-09-13T12:25:56.722Z"
+      },
+      "publishedAt": "2026-09-13T12:26:00.051Z"
+    },
     {
       "slug": "otd-2026-09-03",
       "day": "09-03",
