@@ -1,39 +1,69 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-12T13:19:52.610Z",
+  "updatedAt": "2026-09-13T14:02:49.306Z",
   "entries": [
     {
       "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "hash": "8b212dab9dd6c190",
-      "checkedAt": "2026-09-12T13:19:52.610Z",
+      "hash": "a14b688478d26068",
+      "checkedAt": "2026-09-13T14:02:49.306Z",
       "issues": [
         {
-          "field": "Caption",
-          "sentence": "I crossed the border for it.",
+          "field": "hook",
+          "sentence": "Six acts, one racetrack, and a border crossing I made for Oingo Boingo.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "Owner-confirmed personal facts only include living in Orange County around 1992; crossing the border for this show is not confirmed."
+          "evidence": "The fact sheet only confirms residence in Orange County around 1992; it does not confirm any border crossing or travel act."
         },
         {
-          "field": "Beat 1",
+          "field": "caption",
+          "sentence": "The show was at Caliente Racetrack in Tijuana — I crossed the border for it.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No owner-confirmed personal fact supports a border crossing claim."
+        },
+        {
+          "field": "beat",
           "sentence": "I drove to Tijuana for a concert in 1987.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "No owner-confirmed fact about driving to this show; mode of travel is not in the fact sheet."
+          "evidence": "No owner-confirmed personal fact supports driving or mode of travel to the show."
         },
         {
-          "field": "Beat 4",
+          "field": "beat",
+          "sentence": "Oingo Boingo headlined, four months after BOI-NGO came out.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "BOI-NGO released 1987-03-02; show was 1987-06-30, which is just under four months (about 3 months, 28 days), not a clean four months.",
+          "replacement": "Oingo Boingo headlined, about four months after BOI-NGO came out."
+        },
+        {
+          "field": "beat",
           "sentence": "Hoodoo Gurus had been a band for five years.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "Fact sheet gives no formation date for Hoodoo Gurus, so 'five years' is unsupported."
+          "evidence": "The fact sheet gives no formation year for Hoodoo Gurus, so any stated band age is invented."
         },
         {
-          "field": "Beat 4",
+          "field": "beat",
           "sentence": "Chris Isaak was just starting.",
           "kind": "external",
           "severity": "review",
-          "evidence": "No career-stage or formation data for Chris Isaak in the fact sheet to confirm or deny this claim."
+          "evidence": "The fact sheet lists no career-stage information for Chris Isaak; his debut album 'Silvertone' (1985) predates this 1987 show by two years, so 'just starting' is unconfirmed."
+        }
+      ]
+    },
+    {
+      "slug": "otd-2026-09-13",
+      "hash": "0976703ed8cad35f",
+      "checkedAt": "2026-09-13T14:02:37.522Z",
+      "issues": [
+        {
+          "field": "Beat 4",
+          "sentence": "Six more followed after that — eight shows total, and it started here.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "The archive lists 8 total shows (1990, 2005, 2010, 2012, 2015, 2018, 2022, 2024); after the 1990 show, seven more followed, not six.",
+          "replacement": "Seven more followed after that — eight shows total, and it started here."
         }
       ]
     }
