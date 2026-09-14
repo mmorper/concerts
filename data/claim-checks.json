@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-13T14:02:49.306Z",
+  "updatedAt": "2026-09-14T16:08:25.917Z",
   "entries": [
     {
       "slug": "oingo-boingo-5-more-1987-festival-bill",
@@ -54,16 +54,16 @@
     },
     {
       "slug": "otd-2026-09-13",
-      "hash": "0976703ed8cad35f",
-      "checkedAt": "2026-09-13T14:02:37.522Z",
+      "hash": "9686846bdd76614b",
+      "checkedAt": "2026-09-14T16:08:25.917Z",
       "issues": [
         {
-          "field": "Beat 4",
-          "sentence": "Six more followed after that — eight shows total, and it started here.",
-          "kind": "contradicted",
+          "field": "caption",
+          "sentence": "Thirty-six years ago today, this was my first of eight times seeing Social Distortion — but I didn't see them again until 2005.",
+          "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "The archive lists 8 total shows (1990, 2005, 2010, 2012, 2015, 2018, 2022, 2024); after the 1990 show, seven more followed, not six.",
-          "replacement": "Seven more followed after that — eight shows total, and it started here."
+          "evidence": "The show was on 1990-09-13, and today is 2026-09-14 per the fact sheet — the 36-year anniversary was yesterday, not today.",
+          "replacement": "Thirty-six years ago yesterday, this was my first of eight times seeing Social Distortion — but I didn't see them again until 2005."
         }
       ]
     }
