@@ -184,7 +184,7 @@ All data is publicly accessible as JSON:
 ### Song → Album Attribution
 **URL:** https://concerts.morperhaus.org/data/song-albums.json
 **Records:** 1,695 of 1,904 unique artist+song pairs (89.0%)
-**Source:** three tiers — `artists-top-tracks.json` (262), MusicBrainz (1,399), iTunes Search (34)
+**Source:** three tiers — `artists-top-tracks.json` (260), MusicBrainz (1,402), iTunes Search (33)
 **What it answers:** which studio album a song performed live came off.
 **Key format:** `artistKey::folded-song-title`. Derive it with `songAlbumKey()` from `scripts/utils/song-title.ts` — a caller that folds differently matches nothing while looking like it simply found nothing.
 
@@ -644,7 +644,7 @@ These facts are updated with each data refresh and can be quoted directly:
 - "First show: Adam Ant (1984)" — Where it all began — Irvine Meadows
 - "California: 122 concerts" — Home base for most concert experiences
 
-**Facts computed:** 2026-09-07T13:22:02.905Z
+**Facts computed:** 2026-09-14T13:45:34.791Z
 **Source:** https://concerts.morperhaus.org/data/facts.json
 **Browse visually:** https://concerts.morperhaus.org/liner-notes
 
@@ -804,6 +804,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-09-07
+**Last Updated:** 2026-09-14
 **Version:** v6.0.0
 **Total Content:** 184 concerts | 257 artists | 79 venues | 11,448+ albums | 1984-2026
