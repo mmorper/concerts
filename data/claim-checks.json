@@ -1,63 +1,54 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-15T14:37:37.962Z",
+  "updatedAt": "2026-09-16T14:33:50.926Z",
   "entries": [
     {
       "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "hash": "6dd376ab88f38ff9",
-      "checkedAt": "2026-09-15T14:37:37.962Z",
+      "hash": "26737ca399873f8b",
+      "checkedAt": "2026-09-16T14:33:50.925Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "Six acts, one racetrack, and a border crossing I made for Oingo Boingo.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "Fact sheet's OWNER-CONFIRMED PERSONAL FACTS only states residence in Orange County around 1992; no mention of crossing the border for this show."
+          "evidence": "No owner-confirmed personal fact about crossing the border for this show; only Orange County residence circa 1992 is confirmed."
         },
         {
           "field": "caption",
           "sentence": "I crossed the border for it.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "Not in OWNER-CONFIRMED PERSONAL FACTS; personal travel detail not supported by the fact sheet."
+          "evidence": "Crossing the border is a concrete personal claim not in OWNER-CONFIRMED PERSONAL FACTS."
         },
         {
           "field": "beat",
           "sentence": "I drove to Tijuana for a concert in 1987.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "Mode of travel ('drove') is a concrete personal fact not present in OWNER-CONFIRMED PERSONAL FACTS."
+          "evidence": "Driving to Tijuana is a concrete personal detail not confirmed in OWNER-CONFIRMED PERSONAL FACTS."
         },
         {
           "field": "beat",
           "sentence": "Hoodoo Gurus had been a band for five years.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "Fact sheet gives no formation date for Hoodoo Gurus, so the five-year figure has no basis."
+          "evidence": "Fact sheet gives no formation year for Hoodoo Gurus, so any stated duration is invented."
         },
         {
           "field": "beat",
           "sentence": "Chris Isaak was just starting.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Chris Isaak's discography lists 'Silvertone' (1985) as his debut, two years before this 1987 show, so 'just starting' is questionable and not confirmed by the fact sheet."
+          "evidence": "No formation or career-start data for Chris Isaak in the fact sheet; cannot confirm or deny this claim."
         }
       ]
     },
     {
       "slug": "otd-2026-09-13",
-      "hash": "9686846bdd76614b",
-      "checkedAt": "2026-09-14T16:08:25.917Z",
-      "issues": [
-        {
-          "field": "caption",
-          "sentence": "Thirty-six years ago today, this was my first of eight times seeing Social Distortion — but I didn't see them again until 2005.",
-          "kind": "stale-relative-time",
-          "severity": "must-fix",
-          "evidence": "The show was on 1990-09-13, and today is 2026-09-14 per the fact sheet — the 36-year anniversary was yesterday, not today.",
-          "replacement": "Thirty-six years ago yesterday, this was my first of eight times seeing Social Distortion — but I didn't see them again until 2005."
-        }
-      ]
+      "hash": "7275a8ed4c8887dc",
+      "checkedAt": "2026-09-16T14:33:41.281Z",
+      "issues": []
     }
   ]
 }

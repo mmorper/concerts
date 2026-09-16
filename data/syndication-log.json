@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-11T14:03:46.181Z",
+  "updatedAt": "2026-09-16T14:37:42.206Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -827,30 +827,6 @@
       "seededAt": "2026-08-22T04:22:15.524Z"
     },
     {
-      "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
       "slug": "otd-2026-08-23",
       "platform": "bluesky",
       "status": "posted",
@@ -980,6 +956,25 @@
       "status": "posted",
       "uri": "117220101724689793",
       "postedAt": "2026-09-05T19:33:26.707Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-09-13",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mvnebc5uhf2b",
+      "rkey": "3mvnebc5uhf2b",
+      "postedAt": "2026-09-16T14:33:55.568Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-09-13",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117281224238775893",
+      "postedAt": "2026-09-16T14:37:42.206Z",
       "tier": 2,
       "source": "artist-audiodb"
     },
