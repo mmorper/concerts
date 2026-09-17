@@ -1,46 +1,32 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-16T14:33:50.926Z",
+  "updatedAt": "2026-09-17T14:38:40.210Z",
   "entries": [
     {
       "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "hash": "26737ca399873f8b",
-      "checkedAt": "2026-09-16T14:33:50.925Z",
+      "hash": "0ea97119eba0fa96",
+      "checkedAt": "2026-09-17T14:38:27.336Z",
       "issues": [
         {
-          "field": "hook",
-          "sentence": "Six acts, one racetrack, and a border crossing I made for Oingo Boingo.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "No owner-confirmed personal fact about crossing the border for this show; only Orange County residence circa 1992 is confirmed."
-        },
-        {
-          "field": "caption",
-          "sentence": "I crossed the border for it.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "Crossing the border is a concrete personal claim not in OWNER-CONFIRMED PERSONAL FACTS."
-        },
-        {
-          "field": "beat",
+          "field": "beat 1",
           "sentence": "I drove to Tijuana for a concert in 1987.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "Driving to Tijuana is a concrete personal detail not confirmed in OWNER-CONFIRMED PERSONAL FACTS."
+          "evidence": "Fact sheet has no owner-confirmed detail about driving to Tijuana; only confirmed personal fact is living in Orange County around 1992."
         },
         {
-          "field": "beat",
+          "field": "beat 4",
           "sentence": "Hoodoo Gurus had been a band for five years.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "Fact sheet gives no formation year for Hoodoo Gurus, so any stated duration is invented."
+          "evidence": "No formation year for Hoodoo Gurus is given in the fact sheet, so a five-year span cannot be derived."
         },
         {
-          "field": "beat",
+          "field": "beat 4",
           "sentence": "Chris Isaak was just starting.",
           "kind": "external",
           "severity": "review",
-          "evidence": "No formation or career-start data for Chris Isaak in the fact sheet; cannot confirm or deny this claim."
+          "evidence": "Fact sheet lists Chris Isaak's self-titled 1986 album already released before the 1987-06-30 show, so 'just starting' is an unconfirmed external characterization."
         }
       ]
     },
@@ -48,6 +34,12 @@
       "slug": "otd-2026-09-13",
       "hash": "7275a8ed4c8887dc",
       "checkedAt": "2026-09-16T14:33:41.281Z",
+      "issues": []
+    },
+    {
+      "slug": "social-distortion-34-years-of-shows",
+      "hash": "9a3b2545d337de3e",
+      "checkedAt": "2026-09-17T14:38:40.210Z",
       "issues": []
     }
   ]
