@@ -1,6 +1,37 @@
 {
-  "generatedAt": "2026-09-13T12:26:00.051Z",
+  "generatedAt": "2026-09-18T11:58:27.467Z",
   "posts": [
+    {
+      "slug": "otd-2026-09-18",
+      "day": "09-18",
+      "showDate": "1993-09-18",
+      "age": 33,
+      "artist": "Peter Gabriel",
+      "artistNormalized": "peter-gabriel",
+      "venue": "Olympic Velodrome",
+      "venueNormalized": "olympic-velodrome",
+      "city": "Carson",
+      "score": 20,
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/xwtsqv1386887602.jpg",
+      "tier": 2,
+      "source": "artist-audiodb",
+      "url": "https://concerts.morperhaus.org/liner-notes/peter-gabriel-11-more-1993-festival-bill",
+      "linerNoteSlug": "peter-gabriel-11-more-1993-festival-bill",
+      "cardPath": "public/og/on-this-day/otd-2026-09-18.png",
+      "social": {
+        "hook": "Ten opening acts, and the closest I ever got to a racetrack in Carson was that night.",
+        "caption": "Thirty-three years ago today, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it. I didn't see Gabriel again until 2003.",
+        "beats": [
+          "September 18, 1993: my first time seeing Peter Gabriel, filed under Art Rock.",
+          "Ten acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet.",
+          "Ziggy Marley played that bill too — the second and last time I'd ever see him.",
+          "Olympic Velodrome, the only show I've ever caught there.",
+          "I didn't see Peter Gabriel again for ten years."
+        ],
+        "authoredAt": "2026-09-18T11:58:22.806Z"
+      },
+      "publishedAt": "2026-09-18T11:58:27.467Z"
+    },
     {
       "slug": "otd-2026-09-13",
       "day": "09-13",
