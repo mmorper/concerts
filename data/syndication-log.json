@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-17T14:41:57.290Z",
+  "updatedAt": "2026-09-18T14:06:16.117Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -675,26 +675,21 @@
     {
       "slug": "maxi-priest-6-more-1991-festival-bill",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "maxi-priest-6-more-1991-festival-bill",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mvsdlauoz42x",
+      "rkey": "3mvsdlauoz42x",
+      "postedAt": "2026-09-18T14:04:54.011Z",
+      "tier": 2,
+      "source": "venue-places"
     },
     {
       "slug": "maxi-priest-6-more-1991-festival-bill",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "maxi-priest-6-more-1991-festival-bill",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117292425145328861",
+      "postedAt": "2026-09-18T14:06:16.117Z",
+      "tier": 2,
+      "source": "venue-places"
     },
     {
       "slug": "my-west-coast-chapter-26-concerts-over-11-years",

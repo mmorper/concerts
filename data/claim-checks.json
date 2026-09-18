@@ -1,32 +1,75 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-17T14:38:40.210Z",
+  "updatedAt": "2026-09-18T14:04:51.169Z",
   "entries": [
     {
-      "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "hash": "0ea97119eba0fa96",
-      "checkedAt": "2026-09-17T14:38:27.336Z",
+      "slug": "maxi-priest-6-more-1991-festival-bill",
+      "hash": "493798d1605d3a54",
+      "checkedAt": "2026-09-18T14:04:51.169Z",
       "issues": [
         {
-          "field": "beat 1",
+          "field": "caption",
+          "sentence": "Andrew Tosh was there carrying his father's name, and the crowd was the most diverse I'd seen in that zip code.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Crowd composition/diversity is not in the fact sheet and not covered by OWNER-CONFIRMED PERSONAL FACTS."
+        },
+        {
+          "field": "beat",
+          "sentence": "June 1991: reggae had genuine American radio presence, and Pacific Amphitheatre booked seven artists to prove it.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Claim about reggae's American radio presence in 1991 is not supported by the fact sheet; cannot confirm or deny."
+        },
+        {
+          "field": "beat",
+          "sentence": "Maxi Priest closed it under open California sky, and the crowd stayed for all of it.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Crowd retention/attendance behavior is not in the fact sheet and not an OWNER-CONFIRMED PERSONAL FACT."
+        }
+      ]
+    },
+    {
+      "slug": "oingo-boingo-5-more-1987-festival-bill",
+      "hash": "c7e88f1e8a40796a",
+      "checkedAt": "2026-09-18T14:04:28.565Z",
+      "issues": [
+        {
+          "field": "hook",
+          "sentence": "Six acts, one racetrack, and a border crossing I made for Oingo Boingo.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "The fact sheet's OWNER-CONFIRMED PERSONAL FACTS section does not mention crossing the border for this show; only a 1992 Orange County residence is confirmed."
+        },
+        {
+          "field": "caption",
+          "sentence": "The show was at Caliente Racetrack in Tijuana — I crossed the border for it.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No owner-confirmed fact states the border crossing detail."
+        },
+        {
+          "field": "beat",
           "sentence": "I drove to Tijuana for a concert in 1987.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "Fact sheet has no owner-confirmed detail about driving to Tijuana; only confirmed personal fact is living in Orange County around 1992."
+          "evidence": "No owner-confirmed fact states driving to Tijuana; only the 1992 Orange County residence is confirmed."
         },
         {
-          "field": "beat 4",
+          "field": "beat",
           "sentence": "Hoodoo Gurus had been a band for five years.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No formation year for Hoodoo Gurus is given in the fact sheet, so a five-year span cannot be derived."
+          "evidence": "Fact sheet gives no formation year for Hoodoo Gurus, so a five-year band age is unsupported.",
+          "replacement": "Hoodoo Gurus were already touring hard by 1987."
         },
         {
-          "field": "beat 4",
+          "field": "beat",
           "sentence": "Chris Isaak was just starting.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet lists Chris Isaak's self-titled 1986 album already released before the 1987-06-30 show, so 'just starting' is an unconfirmed external characterization."
+          "evidence": "Fact sheet has no career-stage information for Chris Isaak beyond his discography starting with Silvertone (1985); cannot confirm 'just starting' claim."
         }
       ]
     },
@@ -35,6 +78,36 @@
       "hash": "7275a8ed4c8887dc",
       "checkedAt": "2026-09-16T14:33:41.281Z",
       "issues": []
+    },
+    {
+      "slug": "otd-2026-09-18",
+      "hash": "74995015f3495dd3",
+      "checkedAt": "2026-09-18T14:04:40.392Z",
+      "issues": [
+        {
+          "field": "hook",
+          "sentence": "Ten opening acts, and the closest I ever got to a racetrack in Carson was that night.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "The fact sheet lists 11 openers for the 1993-09-18 show (Crowded House, Inner Circle, Jah Wobble's Invaders of the Heart, James, P.M. Dawn, Sheila Chandra, Sinéad O'Connor, Stereo MC's, Ziggy Marley, Terem Quartet, The Drummers of Burundi), not ten.",
+          "replacement": "Eleven opening acts, and the closest I ever got to a racetrack in Carson was that night."
+        },
+        {
+          "field": "beat 2",
+          "sentence": "Ten acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "The fact sheet lists 11 openers for this show, not ten.",
+          "replacement": "Eleven acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet."
+        },
+        {
+          "field": "beat 3",
+          "sentence": "Ziggy Marley played that bill too — the second and last time I'd ever see him.",
+          "kind": "contradicted",
+          "severity": "review",
+          "evidence": "The fact sheet has no record of any other Ziggy Marley appearance, so there is no basis for calling this the 'second and last' time seeing him."
+        }
+      ]
     },
     {
       "slug": "social-distortion-34-years-of-shows",
