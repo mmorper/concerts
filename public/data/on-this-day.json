@@ -1,6 +1,37 @@
 {
-  "generatedAt": "2026-09-18T11:58:27.467Z",
+  "generatedAt": "2026-09-19T11:42:17.070Z",
   "posts": [
+    {
+      "slug": "otd-2026-09-19",
+      "day": "09-19",
+      "showDate": "1988-09-19",
+      "age": 38,
+      "artist": "Ziggy Marley",
+      "artistNormalized": "ziggy-marley",
+      "venue": "Mesa Amphitheatre",
+      "venueNormalized": "mesa-amphitheatre",
+      "city": "Mesa",
+      "score": 14,
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/marley-ziggy-508440fb16be3.jpg",
+      "tier": 2,
+      "source": "artist-audiodb",
+      "url": "https://concerts.morperhaus.org/liner-notes/ziggy-marley-17-4-years-before-love-is-my-religion",
+      "linerNoteSlug": "ziggy-marley-17-4-years-before-love-is-my-religion",
+      "cardPath": "public/og/on-this-day/otd-2026-09-19.png",
+      "social": {
+        "hook": "I saw Ziggy Marley headline in 1988, then again in 1993 — under someone else's name on the marquee.",
+        "caption": "Thirty-eight years ago today, this was my first time seeing Ziggy Marley. Five years later I saw him again, opening for Peter Gabriel.",
+        "beats": [
+          "1988: Ziggy Marley headlines at Mesa Amphitheatre.",
+          "My only visit to this venue.",
+          "That year I also caught No Doubt, Depeche Mode, UB40, George Michael and the Beach Boys.",
+          "1993: Ziggy Marley again, this time opening for Peter Gabriel.",
+          "Two shows, five years apart, and the marquee never said the same thing twice."
+        ],
+        "authoredAt": "2026-09-19T11:42:13.075Z"
+      },
+      "publishedAt": "2026-09-19T11:42:17.070Z"
+    },
     {
       "slug": "otd-2026-09-18",
       "day": "09-18",
