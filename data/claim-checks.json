@@ -1,7 +1,22 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-18T14:04:51.169Z",
+  "updatedAt": "2026-09-19T13:40:56.379Z",
   "entries": [
+    {
+      "slug": "howard-jones-39-years-of-shows",
+      "hash": "ed05b174583c22df",
+      "checkedAt": "2026-09-19T13:40:56.379Z",
+      "issues": [
+        {
+          "field": "Caption",
+          "sentence": "Six shows and 39 years later, I was still buying tickets.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "The fact sheet lists show attendance but does not confirm personal ticket-buying actions; not in OWNER-CONFIRMED PERSONAL FACTS.",
+          "replacement": "Six shows and 39 years later, I was still in the crowd."
+        }
+      ]
+    },
     {
       "slug": "maxi-priest-6-more-1991-festival-bill",
       "hash": "493798d1605d3a54",
@@ -32,44 +47,43 @@
     },
     {
       "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "hash": "c7e88f1e8a40796a",
-      "checkedAt": "2026-09-18T14:04:28.565Z",
+      "hash": "017a081e59d65f1d",
+      "checkedAt": "2026-09-19T13:40:24.572Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "Six acts, one racetrack, and a border crossing I made for Oingo Boingo.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "The fact sheet's OWNER-CONFIRMED PERSONAL FACTS section does not mention crossing the border for this show; only a 1992 Orange County residence is confirmed."
+          "evidence": "The fact sheet's OWNER-CONFIRMED PERSONAL FACTS section only confirms living in Orange County around 1992; it does not confirm the act of personally crossing the border."
         },
         {
           "field": "caption",
           "sentence": "The show was at Caliente Racetrack in Tijuana — I crossed the border for it.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "No owner-confirmed fact states the border crossing detail."
+          "evidence": "No owner-confirmed fact states the owner personally crossed the border for this show."
         },
         {
           "field": "beat",
           "sentence": "I drove to Tijuana for a concert in 1987.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "No owner-confirmed fact states driving to Tijuana; only the 1992 Orange County residence is confirmed."
+          "evidence": "The mode of travel (driving) is not among the OWNER-CONFIRMED PERSONAL FACTS."
         },
         {
           "field": "beat",
           "sentence": "Hoodoo Gurus had been a band for five years.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "Fact sheet gives no formation year for Hoodoo Gurus, so a five-year band age is unsupported.",
-          "replacement": "Hoodoo Gurus were already touring hard by 1987."
+          "evidence": "The fact sheet gives no formation year for Hoodoo Gurus, so a five-year figure has no basis."
         },
         {
           "field": "beat",
           "sentence": "Chris Isaak was just starting.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet has no career-stage information for Chris Isaak beyond his discography starting with Silvertone (1985); cannot confirm 'just starting' claim."
+          "evidence": "The fact sheet does not state Chris Isaak's career stage at the 1987 show; his discography lists 'Silvertone' (1985) predating the show, so this claim is unconfirmed."
         }
       ]
     },
@@ -81,31 +95,54 @@
     },
     {
       "slug": "otd-2026-09-18",
-      "hash": "74995015f3495dd3",
-      "checkedAt": "2026-09-18T14:04:40.392Z",
+      "hash": "0b3b690bf10a3d9a",
+      "checkedAt": "2026-09-19T13:40:47.552Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "Ten opening acts, and the closest I ever got to a racetrack in Carson was that night.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "The fact sheet lists 11 openers for the 1993-09-18 show (Crowded House, Inner Circle, Jah Wobble's Invaders of the Heart, James, P.M. Dawn, Sheila Chandra, Sinéad O'Connor, Stereo MC's, Ziggy Marley, Terem Quartet, The Drummers of Burundi), not ten.",
+          "evidence": "Fact sheet lists 11 openers for the 1993-09-18 show (Crowded House, Inner Circle, Jah Wobble's Invaders of the Heart, James, P.M. Dawn, Sheila Chandra, Sinéad O'Connor, Stereo MC's, Ziggy Marley, Terem Quartet, The Drummers of Burundi).",
           "replacement": "Eleven opening acts, and the closest I ever got to a racetrack in Carson was that night."
+        },
+        {
+          "field": "caption",
+          "sentence": "Thirty-three years ago today, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it.",
+          "kind": "stale-relative-time",
+          "severity": "must-fix",
+          "evidence": "Today is 2026-09-19 per fact sheet, but the show date is 1993-09-18 — the anniversary was yesterday, not today.",
+          "replacement": "Thirty-three years ago yesterday, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it."
         },
         {
           "field": "beat 2",
           "sentence": "Ten acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "The fact sheet lists 11 openers for this show, not ten.",
+          "evidence": "Fact sheet lists 11 openers for the 1993-09-18 show.",
           "replacement": "Eleven acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet."
         },
         {
           "field": "beat 3",
           "sentence": "Ziggy Marley played that bill too — the second and last time I'd ever see him.",
-          "kind": "contradicted",
+          "kind": "personal-invented",
           "severity": "review",
-          "evidence": "The fact sheet has no record of any other Ziggy Marley appearance, so there is no basis for calling this the 'second and last' time seeing him."
+          "evidence": "The fact sheet contains no record of any other Ziggy Marley shows, so a claim of 'second and last' cannot be confirmed or denied from the archive data."
+        }
+      ]
+    },
+    {
+      "slug": "otd-2026-09-19",
+      "hash": "d50b0ed80b6cd53e",
+      "checkedAt": "2026-09-19T13:40:29.488Z",
+      "issues": [
+        {
+          "field": "Beat 3",
+          "sentence": "That year I also caught No Doubt, Depeche Mode, UB40, George Michael and the Beach Boys.",
+          "kind": "invented-number",
+          "severity": "must-fix",
+          "evidence": "Fact sheet shows only 2 Ziggy Marley shows and 1 show at Mesa Amphitheatre in 1988; no record of these other artists/shows exists in the archive.",
+          "replacement": "That year, Ziggy Marley was the only act I caught at Mesa Amphitheatre."
         }
       ]
     },

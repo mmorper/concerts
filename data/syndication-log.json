@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-18T14:06:16.117Z",
+  "updatedAt": "2026-09-19T13:41:43.385Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -428,26 +428,21 @@
     {
       "slug": "howard-jones-39-years-of-shows",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "howard-jones-39-years-of-shows",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mvuspg6a7i2t",
+      "rkey": "3mvuspg6a7i2t",
+      "postedAt": "2026-09-19T13:40:59.630Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "howard-jones-39-years-of-shows",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "howard-jones-39-years-of-shows",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117297991072244980",
+      "postedAt": "2026-09-19T13:41:43.385Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "irvine-meadows-16-shows-before-it-was-demolished",
