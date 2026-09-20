@@ -1,6 +1,37 @@
 {
-  "generatedAt": "2026-09-19T11:42:17.070Z",
+  "generatedAt": "2026-09-20T11:54:34.474Z",
   "posts": [
+    {
+      "slug": "otd-2026-09-20",
+      "day": "09-20",
+      "showDate": "2003-09-20",
+      "age": 23,
+      "artist": "The Cure",
+      "artistNormalized": "the-cure",
+      "venue": "Hyundai Pavilion",
+      "venueNormalized": "hyundai-pavilion",
+      "city": "San Bernardino",
+      "score": 18,
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/wwwwtv1455324256.jpg",
+      "tier": 2,
+      "source": "artist-audiodb",
+      "url": "https://concerts.morperhaus.org/liner-notes/the-cure-14-more-2003-festival-bill",
+      "linerNoteSlug": "the-cure-14-more-2003-festival-bill",
+      "cardPath": "public/og/on-this-day/otd-2026-09-20.png",
+      "social": {
+        "hook": "Fourteen acts opened that day, and Violent Femmes closed out their run with me for good.",
+        "caption": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts. It was also the last time I ever saw Violent Femmes.",
+        "beats": [
+          "Fourteen acts on one bill, filed under New Wave, at a venue I've never been back to since.",
+          "The Cure headlined. I didn't see them again until 2023.",
+          "Violent Femmes played that day too — the second and last time I'd ever see them.",
+          "Marc Almond, Dashboard Confessional, Hot Hot Heat, Interpol, Kings of Leon: all one-time sightings for me.",
+          "Twenty years between my first Cure show and my second. Everything else that day was a single afternoon."
+        ],
+        "authoredAt": "2026-09-20T11:54:29.760Z"
+      },
+      "publishedAt": "2026-09-20T11:54:34.474Z"
+    },
     {
       "slug": "otd-2026-09-19",
       "day": "09-19",
