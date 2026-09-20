@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-19T13:40:56.379Z",
+  "updatedAt": "2026-09-20T13:55:40.836Z",
   "entries": [
     {
       "slug": "howard-jones-39-years-of-shows",
@@ -47,43 +47,36 @@
     },
     {
       "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "hash": "017a081e59d65f1d",
-      "checkedAt": "2026-09-19T13:40:24.572Z",
+      "hash": "f6cef9ac2b602ed0",
+      "checkedAt": "2026-09-20T13:54:43.336Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "Six acts, one racetrack, and a border crossing I made for Oingo Boingo.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "The fact sheet's OWNER-CONFIRMED PERSONAL FACTS section only confirms living in Orange County around 1992; it does not confirm the act of personally crossing the border."
-        },
-        {
-          "field": "caption",
-          "sentence": "The show was at Caliente Racetrack in Tijuana — I crossed the border for it.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "No owner-confirmed fact states the owner personally crossed the border for this show."
+          "evidence": "Fact sheet does not confirm any personal border-crossing detail beyond owner-confirmed facts (which only mention living in Orange County around 1992)."
         },
         {
           "field": "beat",
           "sentence": "I drove to Tijuana for a concert in 1987.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "The mode of travel (driving) is not among the OWNER-CONFIRMED PERSONAL FACTS."
+          "evidence": "No owner-confirmed fact states mode of travel or that the owner drove to Tijuana."
         },
         {
           "field": "beat",
           "sentence": "Hoodoo Gurus had been a band for five years.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "The fact sheet gives no formation year for Hoodoo Gurus, so a five-year figure has no basis."
+          "evidence": "Fact sheet gives no formation date for Hoodoo Gurus, so a five-year figure is unsupported."
         },
         {
           "field": "beat",
           "sentence": "Chris Isaak was just starting.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The fact sheet does not state Chris Isaak's career stage at the 1987 show; his discography lists 'Silvertone' (1985) predating the show, so this claim is unconfirmed."
+          "evidence": "Fact sheet lists Chris Isaak's self-titled album released 1986-12, prior to the 1987-06-30 show, but does not characterize his career stage as 'just starting'; cannot confirm this claim."
         }
       ]
     },
@@ -133,16 +126,82 @@
     },
     {
       "slug": "otd-2026-09-19",
-      "hash": "d50b0ed80b6cd53e",
-      "checkedAt": "2026-09-19T13:40:29.488Z",
+      "hash": "6d7a9d13c56fc992",
+      "checkedAt": "2026-09-20T13:55:25.623Z",
       "issues": [
+        {
+          "field": "Caption",
+          "sentence": "Thirty-eight years ago today, this was my first time seeing Ziggy Marley.",
+          "kind": "stale-relative-time",
+          "severity": "must-fix",
+          "evidence": "Show was 1988-09-19; TODAY IS 2026-09-20, one day after the actual anniversary, so 'today' is incorrect.",
+          "replacement": "Thirty-eight years ago yesterday, this was my first time seeing Ziggy Marley."
+        },
         {
           "field": "Beat 3",
           "sentence": "That year I also caught No Doubt, Depeche Mode, UB40, George Michael and the Beach Boys.",
-          "kind": "invented-number",
+          "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Fact sheet shows only 2 Ziggy Marley shows and 1 show at Mesa Amphitheatre in 1988; no record of these other artists/shows exists in the archive.",
-          "replacement": "That year, Ziggy Marley was the only act I caught at Mesa Amphitheatre."
+          "evidence": "The archive lists only 2 Ziggy Marley shows and no other artists tied to 1988; this is a comprehensive personal show log with no record of these additional shows.",
+          "replacement": "That year, this was the only show I caught."
+        }
+      ]
+    },
+    {
+      "slug": "otd-2026-09-20",
+      "hash": "4f6730cdac3b146c",
+      "checkedAt": "2026-09-20T13:55:13.091Z",
+      "issues": [
+        {
+          "field": "caption",
+          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "Hyundai Pavilion show lists 14 openers (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes), not thirteen.",
+          "replacement": "Twenty years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
+        },
+        {
+          "field": "caption",
+          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
+          "kind": "stale-relative-time",
+          "severity": "must-fix",
+          "evidence": "Today is 2026-09-20; the show was 2003-09-20, which is 23 years ago, not 20.",
+          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
+        },
+        {
+          "field": "hook",
+          "sentence": "Fourteen acts opened that day, and Violent Femmes closed out their run with me for good.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "The fact sheet has no full show history for Violent Femmes, so whether this was the last time they were seen cannot be confirmed."
+        },
+        {
+          "field": "caption",
+          "sentence": "It was also the last time I ever saw Violent Femmes.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No Violent Femmes show history is present in the fact sheet to confirm this was the last sighting."
+        },
+        {
+          "field": "beat",
+          "sentence": "Violent Femmes played that day too — the second and last time I'd ever see them.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "The fact sheet contains no record of a prior Violent Femmes sighting to support the number 'second'."
+        },
+        {
+          "field": "beat",
+          "sentence": "Marc Almond, Dashboard Confessional, Hot Hot Heat, Interpol, Kings of Leon: all one-time sightings for me.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "The fact sheet tracks only The Cure and Hyundai Pavilion shows; it cannot confirm these artists were seen only once."
+        },
+        {
+          "field": "beat",
+          "sentence": "Everything else that day was a single afternoon.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Set times/timing of day are explicitly listed as NOT IN THE DATA, so this timing claim is unconfirmed."
         }
       ]
     },
@@ -151,6 +210,43 @@
       "hash": "9a3b2545d337de3e",
       "checkedAt": "2026-09-17T14:38:40.210Z",
       "issues": []
+    },
+    {
+      "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
+      "hash": "c62eee7994fa3577",
+      "checkedAt": "2026-09-20T13:55:40.835Z",
+      "issues": [
+        {
+          "field": "hook",
+          "sentence": "Five weeks after the verdict, I was in Anaheim to hear power pop.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet contains no information about the Rodney King verdict or its date; this is a real-world historical claim not present in the archive data.",
+          "replacement": "In June 1992, I was in Anaheim to hear power pop."
+        },
+        {
+          "field": "caption",
+          "sentence": "The Smithereens played Anaheim in June 1992, five weeks after the Rodney King acquittal.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet does not mention the Rodney King verdict or its timing relative to the show; this is an external historical claim."
+        },
+        {
+          "field": "beat",
+          "sentence": "The acquittal had come down in late April.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet has no data on the Rodney King verdict date; this is an external historical claim not supported by the archive."
+        },
+        {
+          "field": "beat",
+          "sentence": "Heartland rock at The Celebrity Theatre, five weeks after everything broke open.",
+          "kind": "internal",
+          "severity": "must-fix",
+          "evidence": "Beat 3 and the caption describe the band's sound as 'power pop,' contradicting this beat's 'Heartland rock' label.",
+          "replacement": "Power pop at The Celebrity Theatre, five weeks after everything broke open."
+        }
+      ]
     }
   ]
 }
