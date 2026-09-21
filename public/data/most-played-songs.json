@@ -1,10 +1,10 @@
 {
   "version": "1",
-  "generatedAt": "2026-09-14T13:45:34.779Z",
+  "generatedAt": "2026-09-21T13:49:40.172Z",
   "coverage": {
-    "concertsWithSetlist": 115,
+    "concertsWithSetlist": 116,
     "totalConcerts": 184,
-    "distinctSongs": 1617
+    "distinctSongs": 1626
   },
   "songs": [
     {
@@ -47,6 +47,14 @@
       "count": 5,
       "artists": [
         "Streetlight Manifesto"
+      ]
+    },
+    {
+      "name": "Just Can't Get Enough",
+      "count": 5,
+      "artists": [
+        "Depeche Mode",
+        "Thompson Twins"
       ]
     },
     {
@@ -131,13 +139,6 @@
         "Brian Setzer",
         "Stray Cats",
         "The Brian Setzer Orchestra"
-      ]
-    },
-    {
-      "name": "Just Can't Get Enough",
-      "count": 4,
-      "artists": [
-        "Depeche Mode"
       ]
     },
     {
