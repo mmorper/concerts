@@ -79,6 +79,68 @@ function goodClaudeMd() {
   return `**Version:** v5.4.0 | ${EXPECTED.concerts} concerts, ${EXPECTED.artists} artists, ${EXPECTED.venues} venues`
 }
 
+const SCENE_WORD_LOWER = SCENE_WORD.toLowerCase()
+
+function goodSceneDesignGuide() {
+  return [
+    `## Canonical scene roster`,
+    ``,
+    `The archive has **${SCENE_WORD_LOWER}** scenes.`,
+    ``,
+    `| # | Slug | Name | Component file |`,
+    `|---|------|------|----------------|`,
+    ...SCENE_NAMES.map(
+      (n, i) => `| ${i + 1} | \`${n}\` | ${SCENE_LABELS[n]} | \`scenes/Whatever.tsx\` |`
+    ),
+    ``,
+    `---`,
+    ``,
+    `## Unrelated section`,
+  ].join('\n')
+}
+
+/** SKILL.md carries two independent roster tables — the bug this guards against. */
+function goodSkillMd() {
+  return [
+    `### Scene roster — read this first`,
+    ``,
+    `There are **${SCENE_WORD_LOWER}** scenes.`,
+    ``,
+    `| # | Slug | Name | Component | Path |`,
+    `|---|------|------|-----------|------|`,
+    ...SCENE_NAMES.map(
+      (n, i) => `| ${i + 1} | \`${n}\` | ${SCENE_LABELS[n]} | \`Whatever\` | \`src/whatever.tsx\` |`
+    ),
+    ``,
+    `---`,
+    ``,
+    `### Scene Backgrounds`,
+    ``,
+    `| # | Name | Background | Text |`,
+    ...SCENE_NAMES.map((n, i) => `| ${i + 1} | ${SCENE_LABELS[n]} | \`#ffffff\` | Dark |`),
+    ``,
+    `---`,
+    ``,
+    `## Unrelated section`,
+  ].join('\n')
+}
+
+function goodUiComponentPatterns() {
+  return [
+    `## Cross-Scene Pattern Matrix`,
+    ``,
+    `| Scene | Component | Background |`,
+    `|-------|-----------|------------|`,
+    ...SCENE_NAMES.map(
+      (n, i) => `| **${i + 1}. ${SCENE_LABELS[n]}** | \`Whatever\` | Light |`
+    ),
+    ``,
+    `---`,
+    ``,
+    `## Unrelated section`,
+  ].join('\n')
+}
+
 /**
  * A synthetic topology for docs/architecture.svg's two counts. Deliberately
  * NOT the real repo's: the point is that the validator counts what it finds,
@@ -143,6 +205,9 @@ function mockFiles(overrides: Partial<Record<string, string>> = {}) {
     'ROADMAP.md': goodRoadmap(),
     'CLAUDE.md': goodClaudeMd(),
     'docs/architecture.svg': goodArchitectureSvg(),
+    'docs/design/scene-design-guide.md': goodSceneDesignGuide(),
+    'docs/design/ui-component-patterns.md': goodUiComponentPatterns(),
+    '.claude/skills/design-system/SKILL.md': goodSkillMd(),
     ...workflowFixtures(),
     ...compliantSurfaces(),
     ...overrides,
@@ -382,6 +447,84 @@ describe('validate-docs', () => {
       // would be the one reported as wrong.
       mockFiles()
       expect(await runValidator()).toEqual([])
+    })
+  })
+
+  describe('catches design-doc roster drift (#284 follow-up)', () => {
+    it('flags a wrong scene count sentence in the scene design guide', async () => {
+      mockFiles({
+        'docs/design/scene-design-guide.md': goodSceneDesignGuide().replace(
+          `**${SCENE_WORD_LOWER}** scenes`,
+          '**five** scenes'
+        ),
+      })
+      const failures = await runValidator()
+
+      expect(failures).toHaveLength(1)
+      expect(failures[0]).toMatchObject({
+        file: 'docs/design/scene-design-guide.md',
+        label: 'scene design guide — scene count',
+        reason: 'mismatch',
+        actual: 'five',
+        expected: SCENE_WORD_LOWER,
+      })
+    })
+
+    it('flags a canonical roster table row that names the wrong scene', async () => {
+      mockFiles({
+        'docs/design/scene-design-guide.md': goodSceneDesignGuide().replace(
+          `| 2 | \`${SCENE_NAMES[1]}\` | ${SCENE_LABELS[SCENE_NAMES[1]]} | \`scenes/Whatever.tsx\` |`,
+          `| 2 | \`${SCENE_NAMES[1]}\` | Bands | \`scenes/Whatever.tsx\` |`
+        ),
+      })
+      const failures = await runValidator()
+
+      expect(failures.map((f) => f.label)).toContain('canonical scene roster table')
+      const f = failures.find((f) => f.label === 'canonical scene roster table')
+      expect(f?.reason).toBe('mismatch')
+      expect(f?.actual).toContain('Bands')
+    })
+
+    /**
+     * The regression this whole follow-up exists for: SKILL.md's roster table
+     * and its backgrounds table, a few rows apart, disagreeing about which
+     * scene is which. A bare count claim can't catch this — both tables still
+     * have six rows. Only checking each table's own Name column against
+     * SCENE_LABELS does.
+     */
+    it('flags SKILL.md when its two roster tables disagree with each other', async () => {
+      mockFiles({
+        '.claude/skills/design-system/SKILL.md': goodSkillMd().replace(
+          `| 4 | ${SCENE_LABELS['genres']} | \`#ffffff\` | Dark |`,
+          `| 4 | ${SCENE_LABELS['artists']} | \`#ffffff\` | Dark |`
+        ),
+      })
+      const failures = await runValidator()
+
+      expect(failures.map((f) => f.label)).toEqual(['scene backgrounds table'])
+      expect(failures[0].reason).toBe('mismatch')
+    })
+
+    it('flags a Cross-Scene Pattern Matrix row out of order', async () => {
+      mockFiles({
+        'docs/design/ui-component-patterns.md': goodUiComponentPatterns().replace(
+          `**2. ${SCENE_LABELS[SCENE_NAMES[1]]}**`,
+          `**2. Bands**`
+        ),
+      })
+      const failures = await runValidator()
+
+      expect(failures.map((f) => f.label)).toContain('cross-scene pattern matrix')
+    })
+
+    it('treats a missing roster table as a failure, not a skip', async () => {
+      mockFiles({ 'docs/design/scene-design-guide.md': '## Canonical scene roster\n\nNothing here.\n' })
+      const failures = await runValidator()
+
+      const labels = failures.map((f) => f.label)
+      expect(labels).toContain('scene design guide — scene count')
+      expect(labels).toContain('canonical scene roster table')
+      expect(failures.find((f) => f.label === 'canonical scene roster table')?.reason).toBe('no-match')
     })
   })
 
