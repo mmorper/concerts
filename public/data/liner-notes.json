@@ -1,7 +1,85 @@
 {
-  "generatedAt": "2026-09-07T14:04:42.036Z",
-  "dataHash": "23bb595e",
+  "generatedAt": "2026-09-21T14:57:15.119Z",
+  "dataHash": "7eb54038",
   "posts": [
+    {
+      "id": "historical-moment-1984-thompson-twins",
+      "slug": "thompson-twins-in-1984-what-was-in-the-air",
+      "category": "deep-cut",
+      "temporality": "evergreen",
+      "headline": "Thompson Twins in 1984: What Was in the Air",
+      "prose": "Four shows on my calendar in 1984, and one of them was Thompson Twins at Irvine Meadows on May 12, part of an amphitheater that had only opened three years earlier, in 1981. I keep coming back to how much of new wave that year got built on the strength of MTV, which by 1984 had turned bands like the Thompson Twins into faces as much as sounds, and standing on that lawn in Irvine put me right in the middle of it. Four shows that whole year, and I chose to spend one of them on a band whose entire aesthetic depended on a channel that was barely three years old. I didn't think about any of that in the moment, I just remember the synths carrying across an amphitheater still new enough to smell like fresh concrete.",
+      "image": {
+        "url": "/images/venues/irvinemeadows-1.jpg",
+        "alt": "Irvine Meadows",
+        "source": "venue",
+        "ref": "irvine-meadows"
+      },
+      "audio": {
+        "trackName": "Hold Me Now",
+        "artistName": "Thompson Twins",
+        "albumName": "Into the Gap (Deluxe Edition)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/69/e2/44/69e244e9-8956-5811-9973-f65fd95aff3a/mzaf_9754010820934214863.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/51/f5/d2/51f5d297-e277-2592-17af-bd89156103e0/0884977845730.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/hold-me-now/1675310461?i=1675310468&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "thompson-twins"
+      ],
+      "venues": [
+        "irvine-meadows"
+      ],
+      "years": [
+        1984
+      ],
+      "tags": [
+        "historical-context",
+        "era-1980s"
+      ],
+      "deepLinks": [
+        {
+          "label": "Thompson Twins",
+          "url": "/?scene=artists&artist=thompson-twins",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=venues&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "May 12, 1984",
+          "url": "/?scene=artists&artist=thompson-twins&show=1984-05-12",
+          "type": "setlist"
+        },
+        {
+          "label": "1984",
+          "url": "/?scene=timeline&year=1984",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "irvine-meadows-16-shows-before-it-was-demolished",
+        "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics"
+      ],
+      "score": 28,
+      "detector": "historical-moment",
+      "publishedAt": "2026-09-21T14:57:15.119Z",
+      "factsAsOf": "2026-09-21T14:57:15.121Z",
+      "social": {
+        "hook": "MTV had only existed three years, and it had already decided who I'd go see.",
+        "caption": "Thompson Twins built their whole appeal on the channel, and I stood on the lawn at a three-year-old amphitheater to prove it worked. The synths carried across concrete that still smelled fresh.",
+        "beats": [
+          "May 1984: Thompson Twins headline a new-wave bill riding entirely on television.",
+          "Irvine Meadows had opened just three years earlier, in 1981.",
+          "MTV had turned the band into faces first, sounds second, and I bought in.",
+          "I didn't think about any of that on the lawn. I just remember the synths carrying.",
+          "The concrete still smelled fresh. That's the whole memory."
+        ],
+        "authoredAt": "2026-09-21T14:57:15.122Z"
+      }
+    },
     {
       "id": "album-trajectory-ziggy-marley-1988-09-19",
       "slug": "ziggy-marley-17-4-years-before-love-is-my-religion",
@@ -535,7 +613,7 @@
       "headline": "Pacific Amphitheatre: 17 Shows Over 5 Decades",
       "prose": "I keep coming back to Pacific Amphitheatre, seventeen times now, and the span still gets me: Tears For Fears on July 10, 1985, and Nile Rodgers on July 31, 2026. That's five decades under the same Costa Mesa sky, from the *Songs from the Big Chair* era straight through to a stage I still can't quite believe I was standing in front of in July 2026. In between, Run-DMC, UB40, the Art of Noise, the Beach Boys — fifteen artists total, and somehow this one amphitheater kept pulling me back for all of them. I don't have a tidy reason why. I just know I never once regretted the drive.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjC1yU31TuhE-IwblGs9vf9mmvnBNoZnHWazXlNNbshBwjrUyrVaWx6iQy5KIFE8-YOy65hJ9aPhmLJ5RiIOfUd_77YvPukeWmcd3Rh_M1-WJFL677QRBjVC-0aUPNNSq7l0jGkNH15sTyKX4w=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjDMquPcZsfRRmMiysFE0rfRkr7vEYs8yOplAo-Ce9xt6NQy8CckO1OkujDswHo0lOJ1ZIt3F49c3Xte4uFvz-xgZygr5Z0mD5RlLmc1rW_Lr8yTee98eNGDzy5jLlCmsDr9Y-Q6rY1G8tFSbg=s4800-h1200",
         "alt": "Pacific Amphitheatre",
         "source": "venue",
         "ref": "pacific-amphitheatre"
@@ -717,7 +795,7 @@
       "headline": "House of Blues Anaheim: 6 Shows Over 3 Decades",
       "prose": "I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who'd been making records since before I probably knew what a record was. Six shows across three decades under that name, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjCn8bagQg6Ws-NumpuOqevd4ynwsz-6Ngt78X1Ls2MyMOZzGCerawNRGnK0sZq5UuDc-PWBMLdD16WVSMjXdOpxKwmYsqbEevxIiCwpum5zFGx-RL4Gyajt3xyNfTdLL8A5oQv8luUWkqy5SeQ=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjDOALEuhWY2nnLgKImIDzlM3UIyWYr0NypuHHycHF-61_venMjHo4QxBGIMoLZGJq9fvI0feBia5HgWPeeb-Yyc9kQyCT4YNatRYLGtYnqvvYw9YFMVtOHNK3UiFwaZlS0ILZpaU3qsyHb4vFM=s4800-h1200",
         "alt": "House of Blues Anaheim",
         "source": "venue",
         "ref": "house-of-blues-anaheim"
@@ -3841,7 +3919,7 @@
       "headline": "Maxi Priest + 6 More: 1991 Festival Bill",
       "prose": "This was reggae's moment in American mainstream consciousness, and I caught a perfect snapshot of it at Pacific Amphitheatre in June 1991. Bonafide was Maxi Priest's latest album, and he headlined a seven-artist bill that included Dennis Brown and Andrew Tosh — Peter Tosh's son, carrying forward his father's legacy. I remember the crowd being surprisingly diverse for Orange County, drawn by reggae's growing radio presence around that time. What struck me most was how the music unified this massive outdoor crowd, from the opening act through Priest's closing set under the California stars.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjC1yU31TuhE-IwblGs9vf9mmvnBNoZnHWazXlNNbshBwjrUyrVaWx6iQy5KIFE8-YOy65hJ9aPhmLJ5RiIOfUd_77YvPukeWmcd3Rh_M1-WJFL677QRBjVC-0aUPNNSq7l0jGkNH15sTyKX4w=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjDMquPcZsfRRmMiysFE0rfRkr7vEYs8yOplAo-Ce9xt6NQy8CckO1OkujDswHo0lOJ1ZIt3F49c3Xte4uFvz-xgZygr5Z0mD5RlLmc1rW_Lr8yTee98eNGDzy5jLlCmsDr9Y-Q6rY1G8tFSbg=s4800-h1200",
         "alt": "Pacific Amphitheatre",
         "source": "venue",
         "ref": "pacific-amphitheatre"
@@ -4025,7 +4103,7 @@
       "headline": "Oingo Boingo + 5 More: 1987 Festival Bill",
       "prose": "This was the era when alternative rock was still finding its footing alongside new wave's final flourishes — and somehow I caught all of it on one stage in Tijuana. Six acts that would define different corners of the late-80s landscape: Oingo Boingo four months out from BOI-NGO, The Bangles, Squeeze's sophisticated pop craft, and Australia's Hoodoo Gurus bringing their garage rock energy just five years after forming. I remember the surreal border-crossing pilgrimage to Caliente Racetrack, where Chris Isaak's crooning and The Fixx's synth-rock completed this unlikely but perfect snapshot of 1987's musical diversity.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjC3SliIM_YggtrvBPda3NHooLzUdDUjuW3mf8I3PglOGztU0jwLpLoHWIdbABC0FKQH1gGcfS8DCNxR8Tqy2bDMFJQGomPCvht9CD3fd9lXxJlHxp1F43GIuGe2ZByu0zBQVx3iOohlSAXTlg=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/ACvplmOX6SHzm8m9pZBO_aGuG1WfwzJY4lVbFzfX1nmPg_UwEB4MkMLTBysnhEp5QnuLtMBTfjb_fm8OqVxNDbHAv1wmq1hnMaw8VNDwxak4muLhaOYfuhJQ0W63CINM-O9xvuWB8eky=s4800-h1200",
         "alt": "Caliente Racetrack",
         "source": "venue",
         "ref": "caliente-racetrack"
@@ -4202,7 +4280,7 @@
       "headline": "50 Shows in a Row in the D.C. Area, 2009–2018",
       "prose": "For my first 25 years of shows, California was nearly the whole map: 71 of the first 76, starting with Adam Ant at Irvine Meadows in 1984. Then, from Rob Thomas at EagleBank Arena in November 2009 to Beck at The Anthem in April 2018, I saw 50 shows in a row in D.C., Maryland and Virginia, 11 of them at the 9:30 Club. Between Brian Setzer at Doheny in May 2009 and The Human League at Huntington State Beach in May 2018, I didn't see a single show in California. After that, 50 of the next 55 shows were back in California. Echo and the Bunnymen were one of the bands I saw on both coasts, Irvine Meadows in 1984 and The Black Cat in 2010 — the same band, a whole country apart.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjA2Hwnfv9AU1LYMFAT_dqnmK6FORw3UTHPfLcx99nv5MnQr0Cdp6d5LmeJiWClfWYprb4RiE50IO4LfOCRuloMctGdM8KU76BOAfZFw0rRzPcVPalarEpOwgpZx2RDzY2SfymXbKygXpndlZw=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/ACvplmOJ9rECBIO-ARPNUmvXCbJRY687aHiYnsuxISUBiaVqG5Cxk9D9DcHf-j-15tEU-u8oMrD7Q3nsMvDV6NNimR6rIwidRdWy1uCaE4um1jrRDYLrxo5HE1hc0Uw1wfGpqna25uj6=s4800-h1200",
         "alt": "EagleBank Arena",
         "source": "venue",
         "ref": "eaglebank-arena"
@@ -4749,7 +4827,7 @@
       "headline": "Kia Forum: 5 Shows Over 3 Decades",
       "prose": "I remember walking into the Forum for the first time in March 1990 to see Erasure, that massive bowl of a venue feeling both intimate and overwhelming. Five shows across 33 years have brought me back to Inglewood — from Bell Biv DeVoe's New Jack Swing energy to Elton John's piano grandeur to Tears for Fears' nostalgic pull. My most recent visit was Depeche Mode in 2023, and I realized I've been loyal to this place longer than some of my friendships. There's something about the Forum's acoustics that makes every synthesizer sound like it's coming from the future.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjAh-JLo4pYgLzA0NpQ3V9fe2V-fdpviXx4kMlNtungiI4PV9-LuimacPlSnv4F73bxP0PPsc4JNyn7UNrEJnupzU1pdOQodLWvlYsfBkbO2xVsZptWX-P5DvA297dlTJ6e8z5tIGA66IcYOCBo=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjCpP75Ljx-cwBhiky-CJ3Dkw-LrT4kZn3EIVYiFReQcz59BH5-xm2UlWJw6CXrKe3E8-wxT4Ikc1r0H54n5Wi2R6-8GisdNjXNJ270lYPQFpT6RIVgVVNP50my5HMRCxWJHD00xQcMXDtXX2Aw=s4800-h1200",
         "alt": "Kia Forum",
         "source": "venue",
         "ref": "kia-forum"
@@ -4831,11 +4909,11 @@
     }
   ],
   "metadata": {
-    "totalPosts": 55,
-    "totalGenerated": 94,
-    "averageScore": 38.6,
-    "lastPipelineRun": "2026-09-07T14:04:42.036Z",
-    "concertsAnalyzed": 181,
+    "totalPosts": 56,
+    "totalGenerated": 96,
+    "averageScore": 38.4,
+    "lastPipelineRun": "2026-09-21T14:57:15.119Z",
+    "concertsAnalyzed": 183,
     "feedUrl": "/liner-notes.xml"
   }
 }
