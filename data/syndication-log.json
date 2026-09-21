@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-19T13:41:43.385Z",
+  "updatedAt": "2026-09-21T16:12:30.867Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -1486,6 +1486,25 @@
       "platform": "x",
       "status": "seeded",
       "seededAt": "2026-08-22T04:22:15.524Z"
+    },
+    {
+      "slug": "thompson-twins-in-1984-what-was-in-the-air",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mw242nhftk2c",
+      "rkey": "3mw242nhftk2c",
+      "postedAt": "2026-09-21T16:11:38.781Z",
+      "tier": 2,
+      "source": "venue-archival"
+    },
+    {
+      "slug": "thompson-twins-in-1984-what-was-in-the-air",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117309908576323908",
+      "postedAt": "2026-09-21T16:12:30.867Z",
+      "tier": 2,
+      "source": "venue-archival"
     },
     {
       "slug": "ub40-35-years-between-shows",

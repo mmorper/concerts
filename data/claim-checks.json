@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-20T13:55:40.836Z",
+  "updatedAt": "2026-09-21T16:11:34.765Z",
   "entries": [
     {
       "slug": "howard-jones-39-years-of-shows",
@@ -47,36 +47,43 @@
     },
     {
       "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "hash": "f6cef9ac2b602ed0",
-      "checkedAt": "2026-09-20T13:54:43.336Z",
+      "hash": "003b677b5660c428",
+      "checkedAt": "2026-09-21T16:11:08.995Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "Six acts, one racetrack, and a border crossing I made for Oingo Boingo.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "Fact sheet does not confirm any personal border-crossing detail beyond owner-confirmed facts (which only mention living in Orange County around 1992)."
+          "evidence": "Fact sheet does not confirm any border-crossing detail; only owner-confirmed fact is living in Orange County around 1992."
         },
         {
-          "field": "beat",
+          "field": "caption",
+          "sentence": "The show was at Caliente Racetrack in Tijuana — I crossed the border for it.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No owner-confirmed fact about crossing the border for this show."
+        },
+        {
+          "field": "beat1",
           "sentence": "I drove to Tijuana for a concert in 1987.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "No owner-confirmed fact states mode of travel or that the owner drove to Tijuana."
+          "evidence": "Specific mode of travel (drove) not in owner-confirmed personal facts."
         },
         {
-          "field": "beat",
+          "field": "beat4",
           "sentence": "Hoodoo Gurus had been a band for five years.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "Fact sheet gives no formation date for Hoodoo Gurus, so a five-year figure is unsupported."
+          "evidence": "Fact sheet contains no formation date or history for Hoodoo Gurus."
         },
         {
-          "field": "beat",
+          "field": "beat4",
           "sentence": "Chris Isaak was just starting.",
-          "kind": "external",
-          "severity": "review",
-          "evidence": "Fact sheet lists Chris Isaak's self-titled album released 1986-12, prior to the 1987-06-30 show, but does not characterize his career stage as 'just starting'; cannot confirm this claim."
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "Chris Isaak discography shows 'Silvertone' (1985) and 'Chris Isaak' (1986-12) already released before the 1987-06-30 show, so he was not 'just starting'."
         }
       ]
     },
@@ -149,59 +156,53 @@
     },
     {
       "slug": "otd-2026-09-20",
-      "hash": "4f6730cdac3b146c",
-      "checkedAt": "2026-09-20T13:55:13.091Z",
+      "hash": "a5d1cb1d487a6955",
+      "checkedAt": "2026-09-21T16:11:34.765Z",
       "issues": [
         {
           "field": "caption",
-          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
+          "sentence": "on a bill with thirteen other acts",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Hyundai Pavilion show lists 14 openers (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes), not thirteen.",
-          "replacement": "Twenty years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
+          "evidence": "Fact sheet lists 14 openers for the 2003-09-20 show (Marc Almond through Violent Femmes), and the hook itself says 'Fourteen acts opened that day.'",
+          "replacement": "on a bill with fourteen other acts"
         },
         {
           "field": "caption",
-          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
+          "sentence": "Twenty years ago today I saw The Cure for the first time",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "Today is 2026-09-20; the show was 2003-09-20, which is 23 years ago, not 20.",
-          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
+          "evidence": "The show was 2003-09-20 and today is 2026-09-21, so the anniversary is 23 years, not 20.",
+          "replacement": "Twenty-three years ago today I saw The Cure for the first time"
         },
         {
-          "field": "hook",
-          "sentence": "Fourteen acts opened that day, and Violent Femmes closed out their run with me for good.",
-          "kind": "personal-invented",
+          "field": "beat 5",
+          "sentence": "Twenty years between my first Cure show and my second.",
+          "kind": "stale-relative-time",
           "severity": "review",
-          "evidence": "The fact sheet has no full show history for Violent Femmes, so whether this was the last time they were seen cannot be confirmed."
+          "evidence": "This statement is actually correct (2003 to 2023 is 20 years), but flagged for review since the caption's use of 'twenty years ago today' elsewhere is wrong and could indicate confusion between the anniversary gap and the elapsed time to today."
         },
         {
-          "field": "caption",
-          "sentence": "It was also the last time I ever saw Violent Femmes.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "No Violent Femmes show history is present in the fact sheet to confirm this was the last sighting."
-        },
-        {
-          "field": "beat",
+          "field": "beat 3",
           "sentence": "Violent Femmes played that day too — the second and last time I'd ever see them.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "The fact sheet contains no record of a prior Violent Femmes sighting to support the number 'second'."
+          "kind": "invented-number",
+          "severity": "must-fix",
+          "evidence": "Fact sheet only records one Violent Femmes appearance (as opener on 2003-09-20); there is no basis for calling this a 'second' sighting, and it conflicts with the hook/caption implying this was the definitive last/only known encounter.",
+          "replacement": "Violent Femmes played that day too — the last time I'd ever see them."
         },
         {
-          "field": "beat",
+          "field": "beat 4",
           "sentence": "Marc Almond, Dashboard Confessional, Hot Hot Heat, Interpol, Kings of Leon: all one-time sightings for me.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "The fact sheet tracks only The Cure and Hyundai Pavilion shows; it cannot confirm these artists were seen only once."
+          "evidence": "The fact sheet only tracks Cure shows and their bills; it has no data confirming whether these acts were seen elsewhere by the archive owner, so 'one-time sightings' is unconfirmable."
         },
         {
-          "field": "beat",
-          "sentence": "Everything else that day was a single afternoon.",
-          "kind": "personal-invented",
+          "field": "beat 1",
+          "sentence": "Fourteen acts on one bill, filed under New Wave, at a venue I've never been back to since.",
+          "kind": "external",
           "severity": "review",
-          "evidence": "Set times/timing of day are explicitly listed as NOT IN THE DATA, so this timing claim is unconfirmed."
+          "evidence": "The 'filed under New Wave' genre classification is not present anywhere in the fact sheet and cannot be confirmed or denied from it."
         }
       ]
     },
@@ -245,6 +246,34 @@
           "severity": "must-fix",
           "evidence": "Beat 3 and the caption describe the band's sound as 'power pop,' contradicting this beat's 'Heartland rock' label.",
           "replacement": "Power pop at The Celebrity Theatre, five weeks after everything broke open."
+        }
+      ]
+    },
+    {
+      "slug": "thompson-twins-in-1984-what-was-in-the-air",
+      "hash": "d989f79a2934979f",
+      "checkedAt": "2026-09-21T16:10:58.269Z",
+      "issues": [
+        {
+          "field": "hook",
+          "sentence": "MTV had only existed three years, and it had already decided who I'd go see.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet contains no information about MTV's launch date or age; cannot be confirmed from archive data, though it may be historically accurate."
+        },
+        {
+          "field": "caption",
+          "sentence": "Thompson Twins built their whole appeal on the channel, and I stood on the lawn at a three-year-old amphitheater to prove it worked.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet has no venue opening date for Irvine Meadows; the '3-year-old' claim is not supported by archive data."
+        },
+        {
+          "field": "beat",
+          "sentence": "Irvine Meadows had opened just three years earlier, in 1981.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet lists shows at Irvine Meadows starting 1984 but gives no opening date for the venue; this specific year is not in the archive data."
         }
       ]
     }
