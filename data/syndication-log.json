@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-21T16:12:30.867Z",
+  "updatedAt": "2026-09-22T14:23:40.297Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -969,6 +969,25 @@
       "source": "artist-audiodb"
     },
     {
+      "slug": "otd-2026-09-19",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mw4gc3vnxr2i",
+      "rkey": "3mw4gc3vnxr2i",
+      "postedAt": "2026-09-22T14:20:05.660Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-09-19",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117315142951981047",
+      "postedAt": "2026-09-22T14:23:40.297Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
       "slug": "pacific-amphitheatre-16-shows-over-5-decades-2",
       "platform": "bluesky",
       "status": "seeded",
@@ -1435,30 +1454,6 @@
     },
     {
       "slug": "the-smithereens-21-years-between-shows",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
-      "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
-      "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
       "platform": "x",
       "status": "seeded",
       "seededAt": "2026-08-22T04:22:15.524Z"
