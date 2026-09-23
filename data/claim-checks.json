@@ -1,7 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-22T14:20:01.026Z",
+  "updatedAt": "2026-09-23T14:39:57.142Z",
   "entries": [
+    {
+      "slug": "depeche-mode-38-years-of-shows-2",
+      "hash": "ff7dc37ed91e0bb2",
+      "checkedAt": "2026-09-23T14:39:57.142Z",
+      "issues": []
+    },
     {
       "slug": "howard-jones-39-years-of-shows",
       "hash": "ed05b174583c22df",
@@ -47,30 +53,22 @@
     },
     {
       "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "hash": "abae50221b3f22ce",
-      "checkedAt": "2026-09-22T14:19:11.511Z",
+      "hash": "34a08ee9a3cb672f",
+      "checkedAt": "2026-09-23T14:39:27.208Z",
       "issues": [
         {
-          "field": "Beat 1",
+          "field": "beat_1",
           "sentence": "I drove to Tijuana for a concert in 1987.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "The fact sheet's OWNER-CONFIRMED PERSONAL FACTS only states 'I lived in Orange County, California, around 1992' — nothing about driving to Tijuana or how travel was made."
+          "evidence": "Only owner-confirmed personal fact is living in Orange County around 1992; driving to Tijuana is not confirmed."
         },
         {
-          "field": "Beat 4",
+          "field": "beat_4",
           "sentence": "Hoodoo Gurus had been a band for five years.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No formation year for Hoodoo Gurus appears anywhere in the fact sheet, so 'five years' has no basis.",
-          "replacement": "Hoodoo Gurus were already a known act by the time they opened."
-        },
-        {
-          "field": "Beat 4",
-          "sentence": "Chris Isaak was just starting.",
-          "kind": "external",
-          "severity": "review",
-          "evidence": "Fact sheet lists Chris Isaak's discography starting with 'Chris Isaak' (1986-12), so by June 1987 he already had a self-titled album out; the fact sheet does not support or clearly refute the 'just starting' framing."
+          "evidence": "Fact sheet gives no formation year for Hoodoo Gurus, so a five-year tenure figure has no basis."
         }
       ]
     },
@@ -134,45 +132,47 @@
     },
     {
       "slug": "otd-2026-09-20",
-      "hash": "a0d92d1f46e983d8",
-      "checkedAt": "2026-09-22T14:19:37.677Z",
+      "hash": "0475a08a768214b2",
+      "checkedAt": "2026-09-23T14:39:51.484Z",
       "issues": [
         {
-          "field": "caption",
+          "field": "Caption",
           "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Hyundai Pavilion listing shows 14 openers (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes), matching the Hook's 'Fourteen acts opened that day,' not thirteen.",
-          "replacement": "Twenty years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
+          "evidence": "The opener list for the 2003-09-20 show contains 14 acts (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes), matching the Hook's 'Fourteen acts,' not thirteen.",
+          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
         },
         {
-          "field": "caption",
+          "field": "Caption",
           "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "The show was 2003-09-20 and TODAY IS 2026-09-22, so this is roughly 23 years ago, not twenty.",
-          "replacement": "It's been over two decades since I first saw The Cure, on a bill with fourteen other acts."
+          "evidence": "Today is 2026-09-23 and the show was 2003-09-20, which is 23 years ago, not 20.",
+          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
         },
         {
-          "field": "caption",
-          "sentence": "It was also the last time I ever saw Violent Femmes.",
+          "field": "Beat 3",
+          "sentence": "Violent Femmes played that day too — the second and last time I'd ever see them.",
+          "kind": "invented-number",
+          "severity": "must-fix",
+          "evidence": "The fact sheet has no record of a prior Violent Femmes show, so calling this the 'second' sighting is unsupported.",
+          "replacement": "Violent Femmes played that day too — the last time I'd ever see them."
+        },
+        {
+          "field": "Beat 3",
+          "sentence": "Violent Femmes played that day too — the second and last time I'd ever see them.",
           "kind": "internal",
           "severity": "must-fix",
-          "evidence": "Beat 3 says this was 'the second and last time I'd ever see them,' contradicting the caption's implication this was a singular occurrence."
+          "evidence": "Caption states this was 'the last time I ever saw Violent Femmes' and Hook says they 'closed out their run with me for good,' implying no prior sighting, contradicting Beat 3's claim of a 'second' time.",
+          "replacement": "Violent Femmes played that day too — the only time I'd ever see them."
         },
         {
-          "field": "beat3",
-          "sentence": "Violent Femmes played that day too — the second and last time I'd ever see them.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "No prior Violent Femmes sighting is documented anywhere in the fact sheet or OWNER-CONFIRMED PERSONAL FACTS, so calling this the 'second' time is unsupported."
-        },
-        {
-          "field": "beat4",
+          "field": "Beat 4",
           "sentence": "Marc Almond, Dashboard Confessional, Hot Hot Heat, Interpol, Kings of Leon: all one-time sightings for me.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "The fact sheet only tracks The Cure and Hyundai Pavilion shows in detail; it cannot confirm these acts were never seen elsewhere in the full 184-show archive."
+          "evidence": "The fact sheet does not track full show histories for these individual acts, so it cannot confirm these were one-time sightings."
         }
       ]
     },
@@ -184,29 +184,36 @@
     },
     {
       "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
-      "hash": "aaf0b9e8cb2fd148",
-      "checkedAt": "2026-09-22T14:20:01.026Z",
+      "hash": "35f7b6a397a224de",
+      "checkedAt": "2026-09-23T14:39:16.968Z",
       "issues": [
+        {
+          "field": "hook",
+          "sentence": "Five weeks after the verdict, I was in Anaheim to hear power pop.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The Rodney King verdict/acquittal is a real-world historical event not present in the fact sheet; date (April 29, 1992) is widely documented and appears consistent with the June 4, 1992 show date (~5 weeks), but the archive cannot confirm this external historical claim."
+        },
         {
           "field": "caption",
           "sentence": "The Smithereens played Anaheim in June 1992, five weeks after the Rodney King acquittal.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The Rodney King verdict date (April 29, 1992) is not in the fact sheet; it is a real historical event and the ~5-week gap to June 4, 1992 checks out, but this is an external fact not sourced from the archive."
+          "evidence": "The Rodney King acquittal is an external historical fact not in the fact sheet; publicly documented as April 29, 1992, which is consistent with the ~5-week gap, but not verifiable from archive data."
         },
         {
-          "field": "beat",
+          "field": "beat1",
           "sentence": "The acquittal had come down in late April.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Same external historical claim as above (Rodney King acquittal, April 29, 1992) — not in the fact sheet, though believed accurate."
+          "evidence": "External historical claim (Rodney King verdict, April 29, 1992) not present in the fact sheet; publicly documented as true but unverifiable via archive data."
         },
         {
-          "field": "beat",
+          "field": "beat4",
           "sentence": "Heartland rock at The Celebrity Theatre, five weeks after everything broke open.",
           "kind": "internal",
           "severity": "must-fix",
-          "evidence": "Beat 3 and the caption describe the band's music as power pop, but this beat calls it 'Heartland rock,' contradicting the genre used elsewhere in the same post.",
+          "evidence": "Hook and caption describe The Smithereens' music as 'power pop,' but this beat calls it 'Heartland rock,' contradicting the genre description elsewhere in the same post.",
           "replacement": "Power pop at The Celebrity Theatre, five weeks after everything broke open."
         }
       ]

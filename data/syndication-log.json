@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-22T14:23:40.297Z",
+  "updatedAt": "2026-09-23T14:41:52.018Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -202,26 +202,21 @@
     {
       "slug": "depeche-mode-38-years-of-shows-2",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "depeche-mode-38-years-of-shows-2",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mw6xunt6cg2v",
+      "rkey": "3mw6xunt6cg2v",
+      "postedAt": "2026-09-23T14:40:02.466Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "depeche-mode-38-years-of-shows-2",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "depeche-mode-38-years-of-shows-2",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117320876802257954",
+      "postedAt": "2026-09-23T14:41:52.017Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "duran-duran-21-years-between-shows",
