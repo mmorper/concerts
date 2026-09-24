@@ -1,6 +1,35 @@
 {
-  "generatedAt": "2026-09-20T11:54:34.474Z",
+  "generatedAt": "2026-09-24T12:24:39.516Z",
   "posts": [
+    {
+      "slug": "otd-2026-09-24",
+      "day": "09-24",
+      "showDate": "2016-09-24",
+      "age": 10,
+      "artist": "The Roots",
+      "artistNormalized": "the-roots",
+      "venue": "National Museum of African American History and Culture",
+      "venueNormalized": "national-museum-of-african-american-history-and-culture",
+      "city": "Washington",
+      "score": 42,
+      "imageUrl": "https://r2.theaudiodb.com/images/media/artist/thumb/roots-the-509d890e21e4d.jpg",
+      "tier": 2,
+      "source": "artist-audiodb",
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=the-roots&show=2016-09-24",
+      "cardPath": "public/og/on-this-day/otd-2026-09-24.png",
+      "social": {
+        "hook": "Living Colour and Public Enemy opened, and I've never gone back to see either one.",
+        "caption": "Ten years ago today, The Roots played inside a museum on the National Mall. I've never seen them again, and Living Colour and Public Enemy went with them.",
+        "beats": [
+          "Washington, September 24, 2016 — a bill with The Roots, Living Colour, and Public Enemy.",
+          "Filed under Alternative Hip Hop, in a building I've never gone back to for another show.",
+          "Three acts on stage that night. I have seen every one of them exactly once.",
+          "That same year I caught Snarky Puppy, Howard Jones, Prophets of Rage — this is the one that never repeated."
+        ],
+        "authoredAt": "2026-09-24T12:24:34.514Z"
+      },
+      "publishedAt": "2026-09-24T12:24:39.516Z"
+    },
     {
       "slug": "otd-2026-09-20",
       "day": "09-20",
