@@ -1,12 +1,48 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-23T14:39:57.142Z",
+  "updatedAt": "2026-09-24T14:37:24.096Z",
   "entries": [
     {
       "slug": "depeche-mode-38-years-of-shows-2",
       "hash": "ff7dc37ed91e0bb2",
       "checkedAt": "2026-09-23T14:39:57.142Z",
       "issues": []
+    },
+    {
+      "slug": "foo-fighters-9-more-2015-festival-bill",
+      "hash": "622b29924cfcce0e",
+      "checkedAt": "2026-09-24T14:37:24.095Z",
+      "issues": [
+        {
+          "field": "beat1",
+          "sentence": "Foo Fighters in 2015, two decades after Dave Grohl started the band in 1994.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The fact sheet lists Foo Fighters' discography starting with the 1995-06-26 self-titled album but gives no formation year for the band; 1994 is not confirmed by the archive data."
+        },
+        {
+          "field": "beat2",
+          "sentence": "Buddy Guy brought sixty years of blues.",
+          "kind": "invented-number",
+          "severity": "must-fix",
+          "evidence": "Buddy Guy's earliest recorded album is 'Hoodoo Man Blues' (1965-09-22); by the 2015-07-04 show that's about fifty years, not sixty.",
+          "replacement": "Buddy Guy brought fifty years of blues."
+        },
+        {
+          "field": "beat4",
+          "sentence": "DJ Z-Trip, Trombone Shorty, Joan Jett, Gary Clark Jr.",
+          "kind": "contradicted",
+          "severity": "review",
+          "evidence": "EVERY SHOW BY trombone-shorty-orleans-avenue lists '(0 total) — (none on record)', conflicting with the RFK Stadium opener list that includes Trombone Shorty."
+        },
+        {
+          "field": "beat4",
+          "sentence": "Ten acts. One afternoon that read like a syllabus.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Set times and time-of-day details are explicitly excluded from the archive data ('set times or door times' listed under NOT IN THE DATA), so calling it an 'afternoon' is unconfirmed."
+        }
+      ]
     },
     {
       "slug": "howard-jones-39-years-of-shows",
@@ -53,22 +89,43 @@
     },
     {
       "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "hash": "34a08ee9a3cb672f",
-      "checkedAt": "2026-09-23T14:39:27.208Z",
+      "hash": "8e71795f99e8c675",
+      "checkedAt": "2026-09-24T14:36:54.838Z",
       "issues": [
         {
-          "field": "beat_1",
+          "field": "hook",
+          "sentence": "Six acts, one racetrack, and a border crossing I made for Oingo Boingo.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Fact sheet has no owner-confirmed fact about crossing the border; only confirmed personal fact is living in Orange County around 1992."
+        },
+        {
+          "field": "caption",
+          "sentence": "The show was at Caliente Racetrack in Tijuana — I crossed the border for it.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No owner-confirmed personal fact about crossing the border for this show."
+        },
+        {
+          "field": "beat",
           "sentence": "I drove to Tijuana for a concert in 1987.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "Only owner-confirmed personal fact is living in Orange County around 1992; driving to Tijuana is not confirmed."
+          "evidence": "No owner-confirmed personal fact about driving; only confirmed fact is residence in Orange County around 1992."
         },
         {
-          "field": "beat_4",
+          "field": "beat",
           "sentence": "Hoodoo Gurus had been a band for five years.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "Fact sheet gives no formation year for Hoodoo Gurus, so a five-year tenure figure has no basis."
+          "evidence": "Fact sheet gives no formation year for Hoodoo Gurus, so 'five years' is unsupported."
+        },
+        {
+          "field": "beat",
+          "sentence": "Chris Isaak was just starting.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet lists no release dates for Chris Isaak prior to the show to confirm career stage; his earliest listed album 'Silvertone' (1985) predates the 1987 show by two years, suggesting he wasn't brand new."
         }
       ]
     },
@@ -177,6 +234,27 @@
       ]
     },
     {
+      "slug": "otd-2026-09-24",
+      "hash": "b3096e442f687634",
+      "checkedAt": "2026-09-24T14:37:05.142Z",
+      "issues": [
+        {
+          "field": "beat_4",
+          "sentence": "That same year I caught Snarky Puppy, Howard Jones, Prophets of Rage — this is the one that never repeated.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Fact sheet contains no record of shows by Snarky Puppy, Howard Jones, or Prophets of Rage; these concrete attendance claims are not supported by the archive data."
+        },
+        {
+          "field": "beat_2",
+          "sentence": "Filed under Alternative Hip Hop, in a building I've never gone back to for another show.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Genre classification 'Alternative Hip Hop' is not present anywhere in the fact sheet and cannot be verified against archive data."
+        }
+      ]
+    },
+    {
       "slug": "social-distortion-34-years-of-shows",
       "hash": "9a3b2545d337de3e",
       "checkedAt": "2026-09-17T14:38:40.210Z",
@@ -184,36 +262,36 @@
     },
     {
       "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
-      "hash": "35f7b6a397a224de",
-      "checkedAt": "2026-09-23T14:39:16.968Z",
+      "hash": "3e131dbcd9856238",
+      "checkedAt": "2026-09-24T14:36:44.738Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "Five weeks after the verdict, I was in Anaheim to hear power pop.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The Rodney King verdict/acquittal is a real-world historical event not present in the fact sheet; date (April 29, 1992) is widely documented and appears consistent with the June 4, 1992 show date (~5 weeks), but the archive cannot confirm this external historical claim."
+          "evidence": "The Rodney King verdict/acquittal and its date are not in the fact sheet; this is an external historical claim not documented in the archive data. It is plausibly true (acquittal April 29, 1992; show June 4, 1992 is ~5 weeks later) but cannot be confirmed from the fact sheet."
         },
         {
           "field": "caption",
           "sentence": "The Smithereens played Anaheim in June 1992, five weeks after the Rodney King acquittal.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The Rodney King acquittal is an external historical fact not in the fact sheet; publicly documented as April 29, 1992, which is consistent with the ~5-week gap, but not verifiable from archive data."
+          "evidence": "The Rodney King acquittal date is not part of the fact sheet; external historical claim, plausible but unconfirmed by archive data."
         },
         {
-          "field": "beat1",
+          "field": "beat 1",
           "sentence": "The acquittal had come down in late April.",
           "kind": "external",
           "severity": "review",
-          "evidence": "External historical claim (Rodney King verdict, April 29, 1992) not present in the fact sheet; publicly documented as true but unverifiable via archive data."
+          "evidence": "Not in fact sheet; external historical claim, plausible but unconfirmed by archive data."
         },
         {
-          "field": "beat4",
+          "field": "beat 4",
           "sentence": "Heartland rock at The Celebrity Theatre, five weeks after everything broke open.",
           "kind": "internal",
           "severity": "must-fix",
-          "evidence": "Hook and caption describe The Smithereens' music as 'power pop,' but this beat calls it 'Heartland rock,' contradicting the genre description elsewhere in the same post.",
+          "evidence": "Caption and Beat 3 describe the band's sound as 'power pop,' consistent with fact sheet genre framing, while this beat calls it 'Heartland rock,' contradicting the other fields.",
           "replacement": "Power pop at The Celebrity Theatre, five weeks after everything broke open."
         }
       ]

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-23T14:41:52.018Z",
+  "updatedAt": "2026-09-24T14:39:10.176Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -286,30 +286,6 @@
     },
     {
       "slug": "erasure-days-before-violator-dropped",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "foo-fighters-9-more-2015-festival-bill",
-      "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "foo-fighters-9-more-2015-festival-bill",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "foo-fighters-9-more-2015-festival-bill",
-      "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "foo-fighters-9-more-2015-festival-bill",
       "platform": "x",
       "status": "seeded",
       "seededAt": "2026-08-22T04:22:15.524Z"
@@ -979,6 +955,25 @@
       "status": "posted",
       "uri": "117315142951981047",
       "postedAt": "2026-09-22T14:23:40.297Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-09-24",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mwbi6y4ffg2h",
+      "rkey": "3mwbi6y4ffg2h",
+      "postedAt": "2026-09-24T14:37:27.320Z",
+      "tier": 2,
+      "source": "artist-audiodb"
+    },
+    {
+      "slug": "otd-2026-09-24",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117326528513237025",
+      "postedAt": "2026-09-24T14:39:10.176Z",
       "tier": 2,
       "source": "artist-audiodb"
     },
