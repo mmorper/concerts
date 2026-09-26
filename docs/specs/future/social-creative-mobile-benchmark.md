@@ -1,6 +1,6 @@
 # Social Creative — Mobile Benchmark
 
-**Status:** Review, no code changes yet. Recommendations for discussion.
+**Status:** Reviewed 2026-09-26. The owner chose the portrait format (Option B); the build is specced in [`social-portrait-posts.md`](social-portrait-posts.md).
 **Specimen:** Bluesky, On This Day, The Roots · NMAAHC · 2016-09-24 (posted 2026-09-24).
 **Renderer under review:** `scripts/syndication/render-card.ts` → `wideSplit()` (1200×630),
 posted by `scripts/syndication/adapters/bluesky.ts` as an `app.bsky.embed.external` link card.
