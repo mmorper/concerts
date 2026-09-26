@@ -195,6 +195,9 @@ Since 2026-09-26 both live channels post the **4:5 card as a native image**, not
 a link card. On a phone that is about 2.4× the screen area of the old 1.91:1
 card. On Bluesky the link is a line of text under the caption ("Setlist and the
 full night →", or "Read the note →"), then one line of mentions and tags.
+Mastodon prints the same words followed by the URL, since it cannot hide a URL
+behind text, then its 4–5 tags. It carries no mentions: no act has a Mastodon
+handle on file.
 
 - **On This Day cards lead with the artist.** The eyebrow says how long ago, the
   display line is the artist, and the meta line is the rest of the bill and the
