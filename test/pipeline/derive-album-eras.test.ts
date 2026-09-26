@@ -150,6 +150,36 @@ describe('defining album', () => {
     expect(out.concerts.c1.definingAlbum).toBeNull()
     expect(out.concerts.c1.definingAlbumAhead).toBe(false)
   })
+
+  // A new record's singles crowd the top tracks for months after release. It
+  // sits out the tally until it is a year old, so the older plurality wins.
+  const newRecordTracks = {
+    'depeche-mode': {
+      tracks: [
+        { albumName: 'Memento Mori' },
+        { albumName: 'Memento Mori' },
+        { albumName: 'Memento Mori' },
+        { albumName: 'Violator' },
+        { albumName: 'Violator' },
+      ],
+    },
+  }
+  const definingOn = (today: string) =>
+    deriveAlbumEras({
+      concerts: [concert('c1', '1988-06-18')],
+      discography,
+      topTracks: newRecordTracks,
+      aliases: {},
+      today,
+    } as never).concerts.c1.definingAlbum?.title
+
+  it('ignores an album released within the last year', () => {
+    expect(definingOn('2023-10-01')).toBe('Violator')
+  })
+
+  it('counts it once it is a year old', () => {
+    expect(definingOn('2024-04-01')).toBe('Memento Mori')
+  })
 })
 
 describe('eras seen', () => {

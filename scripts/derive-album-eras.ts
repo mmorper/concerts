@@ -78,6 +78,20 @@ const SIZE_BUDGET_KB = 700
 const MIN_DEFINING_TOP_TRACKS = 2
 
 /**
+ * An album younger than this cannot be the defining album.
+ *
+ * Top tracks measure what is popular NOW, and a record released last week is
+ * popular now by construction — its singles crowd the chart for a few months,
+ * then settle. Without this guard, Echo & the Bunnymen's "Apples for Isaac"
+ * (2026-09-18) became their defining album eight days after release, and every
+ * show they ever played — Ocean Rain era included — read as "before the record
+ * that defined them" (album-trajectory 10 -> 12). A year is enough for the
+ * release spike to decay; the album simply sits out the tally until then, so an
+ * older plurality can still win.
+ */
+const DEFINING_MIN_AGE_DAYS = 365
+
+/**
  * Release-groups MusicBrainz classifies as studio albums but which are not.
  *
  * A MANUAL, evidence-based list — deliberately not a heuristic. Title-pattern
@@ -299,9 +313,11 @@ function bucketFor(days: number): CycleBucket {
  */
 function findDefiningAlbum(
   tracks: Array<{ albumName?: string }>,
-  albums: RawAlbum[]
+  albums: RawAlbum[],
+  today: string
 ): DefiningAlbum | null {
   if (!tracks.length || !albums.length) return null
+  const settledBy = parseReleaseDate(today) - DEFINING_MIN_AGE_DAYS * DAY_MS
 
   const tally = new Map<string, { album: RawAlbum; count: number; tier: string }>()
 
@@ -309,6 +325,7 @@ function findDefiningAlbum(
     if (!track.albumName || isSingleOrEp(track.albumName)) continue
     const hit = matchAlbumTitle(track.albumName, albums)
     if (!hit) continue
+    if (parseReleaseDate(hit.album.releaseDate) > settledBy) continue
     const existing = tally.get(hit.album.id)
     if (existing) existing.count++
     else tally.set(hit.album.id, { album: hit.album, count: 1, tier: hit.tier })
@@ -385,7 +402,7 @@ export function deriveAlbumEras(input: {
     // Top tracks are keyed by the CONCERT slug; discography by its own key. Try
     // both, since the two disagree for exactly the drift cases artist-key fixes.
     const tracks = topTracks[concertSlug]?.tracks ?? topTracks[artistKey]?.tracks ?? []
-    const defining = findDefiningAlbum(tracks, albums)
+    const defining = findDefiningAlbum(tracks, albums, today)
     definingCache.set(artistKey, defining)
     return defining
   }
