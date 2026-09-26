@@ -189,6 +189,25 @@ into a content mill.
 The X handle is deliberately different — X caps handles at 15 characters and
 `concertsmorperhaus` is 18. Not a typo.
 
+### What a post looks like
+
+Since 2026-09-26 both live channels post the **4:5 card as a native image**, not
+a link card. On a phone that is about 2.4× the screen area of the old 1.91:1
+card. On Bluesky the link is a line of text under the caption ("Setlist and the
+full night →", or "Read the note →"), then one line of mentions and tags.
+
+- **On This Day cards lead with the artist.** The eyebrow says how long ago, the
+  display line is the artist, and the meta line is the rest of the bill and the
+  room. The hook is the post text, so it is not repeated on the card.
+- **Liner-note cards keep the hook.** Their caption and hook are different
+  sentences.
+- **Tags:** the lead artist, then one genre tag from the reviewed map in
+  `tags.ts` (`GENRE_TAGS`), then other artists, venues, city, decade. Venue and
+  city tags over 20 characters are dropped.
+
+Design record: [`specs/future/social-creative-mobile-benchmark.md`](specs/future/social-creative-mobile-benchmark.md)
+and [`specs/future/social-portrait-posts.md`](specs/future/social-portrait-posts.md).
+
 ### Schedule (UTC)
 
 | Time | Workflow | What it does |
@@ -461,11 +480,15 @@ Only these promote without a human.
 
 ### Rules the pipeline enforces
 
-- **The mention replaces the artist tag; it never joins it.** Appending
-  overflows Bluesky at 308 graphemes against a 300 limit; swapping fits at 291.
-  `@DepecheMode #DepecheMode` would also be the tell of an automated account.
-- **One mention per post — the lead artist, then the venue.** Same priority as
-  the tags. The 22-artist venue-loyalty note must never tag 22 accounts.
+- **A mention replaces its own entity's tag; it never joins it.**
+  `@DepecheMode #DepecheMode` is the tell of an automated account.
+- **At most two mentions per post, in a fixed order:** the lead artist, the
+  venue, then any other act on the bill **that the post's text names**. The
+  22-artist venue-loyalty note must never tag 22 accounts, and an act the post
+  says nothing about is never tagged. (One mention until 2026-09-26; see
+  `specs/future/social-portrait-posts.md`.)
+- **Over 300 graphemes, the extras go first.** The second tag, then the second
+  mention, then the last tag. The caption and the link are never trimmed.
 - **The billing name only.** A post billed to Echo & The Bunnymen mentions the
   Bunnymen, never Ian McCulloch, however much livelier his account is.
 - **The facet carries a DID, never a handle.** Handles are re-assignable; a DID

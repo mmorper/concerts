@@ -140,6 +140,35 @@ describe("tags", () => {
     ]);
   });
 
+  it("puts the genre second, so Bluesky's two tags are the artist and the genre", () => {
+    const tags = entityTags({
+      artists: ["The Roots", "Living Colour", "Public Enemy"],
+      venues: ["Greek Theatre"],
+      city: "Washington",
+      date: "2016-09-24",
+      genre: "Alternative Hip Hop",
+    });
+    expect(tags.slice(0, 2)).toEqual(["TheRoots", "HipHop"]);
+    expect(tags).toContain("LivingColour");
+  });
+
+  it("adds no genre tag for a genre nobody curated", () => {
+    // Guessing `#GulfAndWesternCountryRock` would be authoring a tag.
+    const tags = entityTags({ artists: ["X"], venues: [], city: "LA", date: "1990-01-01", genre: "Gulf and Western Country Rock" });
+    expect(tags).toEqual(["X", "LA", "1990s"]);
+  });
+
+  it("drops venue and city tags over 20 characters, never an artist's", () => {
+    const tags = entityTags({
+      artists: ["The Brian Setzer Orchestra"],
+      venues: ["National Museum of African American History and Culture"],
+      city: "Washington",
+      date: "2016-09-24",
+    });
+    expect(tags).toContain("TheBrianSetzerOrchestra");
+    expect(tags.some((t) => t.startsWith("NationalMuseum"))).toBe(false);
+  });
+
   it("applies each channel's own answer", () => {
     const tags = ["A", "B", "C", "D", "E", "F"];
     expect(tagsForChannel(tags, "bluesky")).toEqual(["#A", "#B"]);

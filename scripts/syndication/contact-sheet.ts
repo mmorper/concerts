@@ -284,7 +284,7 @@ function page(cards: Card[], generatedAt: string): string {
   @media (max-width: 860px) { .body { grid-template-columns: 1fr; } }
   figure { margin: 0; }
   figure img { width: 100%; border-radius: 10px; display: block; background: #000; }
-  .missing { aspect-ratio: 1.91; display: grid; place-items: center; border-radius: 10px;
+  .missing { aspect-ratio: 0.8; display: grid; place-items: center; border-radius: 10px;
              border: 1px dashed var(--bad); color: var(--bad); font-size: 13px; text-align: center; padding: 12px; }
   figcaption { color: var(--dim); font-size: 12px; margin-top: 8px; }
 
@@ -354,7 +354,7 @@ async function main(): Promise<void> {
   }
   for (const post of onThisDay) {
     if (only ? post.slug !== only : published.has(post.slug)) continue;
-    payloads.push(buildOnThisDayPayload(post));
+    payloads.push(buildOnThisDayPayload(post, sources.concerts));
   }
 
   const limit = Number(value("limit") ?? NaN);
@@ -389,7 +389,7 @@ async function main(): Promise<void> {
             // The payload is everything the card needs, so this cannot draw
             // something other than what the adapters will post.
             const { renderCard, FORMATS } = await import("./render-card.ts");
-            const r = await renderCard(payload, browser, FORMATS.wide);
+            const r = await renderCard(payload, browser, FORMATS["4x5"]);
             card.image = relativeToOut(r.path.replace(`${ROOT}/`, ""));
           } catch (err) {
             // A render that throws takes only its own card down. A contact

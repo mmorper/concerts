@@ -54,7 +54,32 @@ describe("buildOnThisDayPayload", () => {
       venue: "Caliente Racetrack",
       city: "Tijuana",
       date: "1987-06-30",
+      age: 40,
     });
+  });
+
+  it("carries the full bill when the show is known, headliner first", () => {
+    // The openers are often what the post is about, and who a mention can reach when the
+    // headliner has no account. `on-this-day.json` only records the headliner.
+    const concerts = [
+      {
+        date: "1987-06-30",
+        headlinerNormalized: "oingo-boingo",
+        openers: ["Fishbone", "The Untouchables"],
+        genre: "New Wave",
+      },
+    ] as never;
+    const payload = buildOnThisDayPayload(post(), concerts);
+    expect(payload.credit.artists).toEqual(["Oingo Boingo", "Fishbone", "The Untouchables"]);
+    expect(payload.refs.artists).toEqual(["oingo-boingo", "fishbone", "the-untouchables"]);
+    expect(payload.tags.slice(0, 2)).toEqual(["OingoBoingo", "NewWave"]);
+    expect(payload.media[0].alt).toBe(
+      "40 years ago today: Oingo Boingo, with Fishbone and The Untouchables, at Caliente Racetrack, Tijuana, 30 June 1987."
+    );
+  });
+
+  it("names what a tap gets, not a URL", () => {
+    expect(buildOnThisDayPayload(post()).linkText).toBe("Setlist and the full night →");
   });
 
   it("tags the decade of the SHOW, not of the anniversary", () => {
@@ -106,27 +131,26 @@ describe("buildOnThisDayPayload", () => {
     expect(payload.ineligibleReasons.join()).toMatch(/never bare type/);
   });
 
-  it("points at the drawn card, not the committed one", () => {
+  it("points at the drawn 4:5 card, not the committed one", () => {
     // Two visual identities in one feed was the thing to fix: a follower would see the
     // frozen WideSplit design on a liner note and the legacy card on an On This Day post,
     // an hour apart, from the same account.
     const payload = buildOnThisDayPayload(post());
-    expect(payload.media[0].path).toMatch(/^\.renditions\/.*-wide\.jpg$/);
+    expect(payload.media[0].path).toMatch(/^\.renditions\/.*-4x5\.jpg$/);
+    expect(payload.media[0].aspect).toBe("4:5");
     expect(payload.media[0].sourceUrl).toBeTruthy();
   });
 
   it("writes alt text that leads with the date, as the card does", () => {
-    const subject = post();
-    expect(onThisDayAlt(subject)).toBe(
-      "40 years ago today: Oingo Boingo at Caliente Racetrack, Tijuana, 30 June 1987. " +
-        `Card reads: ${subject.social!.hook}.`
+    expect(onThisDayAlt(post())).toBe(
+      "40 years ago today: Oingo Boingo at Caliente Racetrack, Tijuana, 30 June 1987."
     );
   });
 
-  // The card sets the hook in display type. Alt that stops at the credit hands a
-  // screen-reader user strictly less than a sighted reader gets.
-  it("carries the hook, because that is what the card says", () => {
-    expect(onThisDayAlt(post())).toContain(post().social!.hook);
+  // Since 2026-09-26 the anniversary card sets the artist, not the hook — the hook is the
+  // post text directly above it. Alt says what the card says, so it no longer quotes it.
+  it("does not quote the hook, because the card no longer sets it", () => {
+    expect(onThisDayAlt(post())).not.toContain(post().social!.hook);
   });
 
   it("falls back to the credit alone when there is no authored hook", () => {

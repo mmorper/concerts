@@ -18,7 +18,8 @@ import {
   domainMatchesEntity,
   mentionFor,
   needsHarvest,
-  mentionForPost,
+  mentionsForPost,
+  MENTIONS_MAX,
   isStale,
   loadHandles,
   VERIFIED_MAX_AGE_MONTHS,
@@ -26,7 +27,7 @@ import {
 } from "../../scripts/syndication/handles.ts";
 import { composeBlueskyText } from "../../scripts/syndication/adapters/bluesky.ts";
 import { graphemeLength } from "../../scripts/syndication/facets.ts";
-import { CAPTION_MAX, CHANNEL_LIMITS, LINK_DISPLAY_MAX } from "../../scripts/syndication/budgets.ts";
+import { CAPTION_MAX, CHANNEL_LIMITS } from "../../scripts/syndication/budgets.ts";
 import type { SyndicationPayload } from "../../scripts/syndication/types.ts";
 
 const NOW = new Date("2026-08-28T00:00:00Z");
@@ -226,28 +227,60 @@ describe("loadHandles", () => {
   });
 });
 
-describe("mentionForPost — one mention, following the tag priority", () => {
-  it("takes the lead artist", () => {
-    const m = mentionForPost({ artists: ["depeche-mode"], venue: "9-30-club" }, "bluesky", { now: NOW, file: file() });
-    expect(m?.handle).toBe("depechemode.com");
-    expect(m?.kind).toBe("artist");
+const opener = (handle: string, did: string) => ({
+  bluesky: { handle, did, evidence: "site-domain" as const, verifiedAt: "2026-08-01" },
+});
+
+describe("mentionsForPost — at most two, in a fixed order", () => {
+  const withOpeners = () =>
+    file({
+      artists: {
+        ...file().artists,
+        "living-colour": opener("livingcolour.com", "did:plc:lc"),
+        "public-enemy": opener("publicenemyno1.bsky.social", "did:plc:pe"),
+        "fishbone": opener("fishbone.bsky.social", "did:plc:fb"),
+      },
+    });
+  const opts = (text = "") => ({ now: NOW, file: withOpeners(), text });
+
+  it("takes the lead artist, then the venue", () => {
+    const m = mentionsForPost({ artists: ["depeche-mode"], venue: "9-30-club" }, "bluesky", opts());
+    expect(m.map((x) => x.handle)).toEqual(["depechemode.com", "930.com"]);
+    expect(m.map((x) => x.kind)).toEqual(["artist", "venue"]);
   });
 
-  it("falls back to the venue only when the lead artist has no account", () => {
-    const m = mentionForPost({ artists: ["the-human-league"], venue: "9-30-club" }, "bluesky", { now: NOW, file: file() });
-    expect(m?.handle).toBe("930.com");
-    expect(m?.kind).toBe("venue");
+  it("reaches an opener only when the post's text names them", () => {
+    // The Roots at the museum: neither has an account, both openers do.
+    const refs = { artists: ["the-roots", "living-colour", "public-enemy"], venue: "nmaahc" };
+    const named = "The Roots played, with Living Colour and Public Enemy opening.";
+    expect(mentionsForPost(refs, "bluesky", opts(named)).map((x) => x.handle)).toEqual([
+      "livingcolour.com",
+      "publicenemyno1.bsky.social",
+    ]);
+    expect(mentionsForPost(refs, "bluesky", opts("The Roots played a museum."))).toEqual([]);
   });
 
-  it("never reaches past the lead artist to a supporting act", () => {
-    // The billing name is the subject. A post billed to the openers' headliner
-    // does not get retargeted at whoever happens to have a livelier account.
-    const m = mentionForPost({ artists: ["the-human-league", "depeche-mode"] }, "bluesky", { now: NOW, file: file() });
-    expect(m).toBeUndefined();
+  it("marks an opener's mention with its slug, so the adapter drops that act's tag", () => {
+    const [m] = mentionsForPost({ artists: ["the-roots", "living-colour"] }, "bluesky", opts("Living Colour opened."));
+    expect(m.slug).toBe("living-colour");
+  });
+
+  it("never tags more than two accounts, however many acts the post names", () => {
+    // One venue-loyalty note names twenty-two acts. It must never tag twenty-two accounts.
+    const refs = { artists: ["depeche-mode", "living-colour", "public-enemy", "fishbone"], venue: "9-30-club" };
+    const m = mentionsForPost(refs, "bluesky", opts("Living Colour, Public Enemy and Fishbone all played."));
+    expect(m).toHaveLength(MENTIONS_MAX);
+    expect(m.map((x) => x.handle)).toEqual(["depechemode.com", "930.com"]);
+  });
+
+  it("matches whole names only", () => {
+    // "Enemy" in the text is not Public Enemy.
+    const refs = { artists: ["the-roots", "public-enemy"] };
+    expect(mentionsForPost(refs, "bluesky", opts("They played Enemy of the State."))).toEqual([]);
   });
 
   it("returns nothing for a post whose entities are all unknown", () => {
-    expect(mentionForPost({ artists: ["new-order"], venue: "irvine-meadows" }, "bluesky", { now: NOW, file: file() })).toBeUndefined();
+    expect(mentionsForPost({ artists: ["new-order"], venue: "irvine-meadows" }, "bluesky", opts())).toEqual([]);
   });
 });
 
@@ -311,12 +344,14 @@ describe("composeBlueskyText — the mention displaces its own tag, never joins 
     expect(composed.text).not.toContain("#930Club");
   });
 
-  it("prints one tag beside a mention, not two — the mention occupies a slot", () => {
+  it("keeps two tags beside a mention when they fit", () => {
     const composed = composeBlueskyText(payload(), file());
     const tags = composed.facets.filter((f) =>
       f.features.some((x) => x.$type === "app.bsky.richtext.facet#tag")
     );
-    expect(tags).toHaveLength(1);
+    // The artist tag went to the mention; the next two survive.
+    expect(tags).toHaveLength(2);
+    expect(composed.text).toContain("#KiaForum");
   });
 
   it("addresses the mention facet by DID, never by handle", () => {
@@ -350,16 +385,27 @@ describe("composeBlueskyText — the mention displaces its own tag, never joins 
     expect(graphemeLength(composed.text)).toBeLessThanOrEqual(CHANNEL_LIMITS.bluesky);
   });
 
-  it("documents why the swap is a swap: appending would overflow", () => {
-    // The arithmetic from budgets.ts, with the longest handle on file (29).
-    // Kept as an assertion rather than a comment so that raising CAPTION_MAX
-    // or the tag limit fails here instead of in production.
-    const SEPARATORS = 4;
-    const WORST_TAGS = 35;
-    const LONGEST_MENTION = 29;
-    const appended = CAPTION_MAX + LINK_DISPLAY_MAX + WORST_TAGS + SEPARATORS + LONGEST_MENTION;
-    const swapped = CAPTION_MAX + LINK_DISPLAY_MAX + Math.ceil(WORST_TAGS / 2) + SEPARATORS + LONGEST_MENTION;
-    expect(appended).toBeGreaterThan(CHANNEL_LIMITS.bluesky);
-    expect(swapped).toBeLessThanOrEqual(CHANNEL_LIMITS.bluesky);
+  it("trims the second tag, then the second mention, never the caption or the link", () => {
+    const composed = composeBlueskyText(
+      payload({
+        caption: "x".repeat(CAPTION_MAX),
+        refs: { artists: ["depeche-mode"], venue: "9-30-club" },
+        credit: { ...payload().credit, venue: "9:30 Club" },
+        tags: ["DepecheMode", "Synthpop", "AVeryLongArtistNameIndeedYes", "AnotherQuiteLongTagHere"],
+      }),
+      file()
+    );
+    expect(graphemeLength(composed.text)).toBeLessThanOrEqual(CHANNEL_LIMITS.bluesky);
+    expect(composed.text.startsWith("x".repeat(CAPTION_MAX))).toBe(true);
+    expect(composed.facets.some((f) => f.features[0].$type === "app.bsky.richtext.facet#link")).toBe(true);
+    // Both mentions fit once the tags are trimmed: 200 + link + two handles.
+    expect(composed.text).toContain("@depechemode.com");
+    expect(composed.text).toContain("@930.com");
+  });
+
+  it("puts the link on its own line, in words rather than a URL", () => {
+    const composed = composeBlueskyText(payload({ linkText: "Read the note →" }), file());
+    expect(composed.text).toContain("\nRead the note →");
+    expect(composed.text).not.toContain("concerts.morperhaus.org");
   });
 });

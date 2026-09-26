@@ -64,11 +64,22 @@ export const SITE_URL = "https://concerts.morperhaus.org";
  * keeps serving the site's own `<meta>` tags, where a committed file is the right answer
  * because it is fetched by strangers' link unfurlers rather than by us.
  */
+/**
+ * The link's words on Bluesky, per stream. The longer one sets the budget in `budgets.ts`
+ * (28 graphemes), so a longer phrasing here has to be re-measured there.
+ */
+export const LINK_TEXT = {
+  onThisDay: "Setlist and the full night →",
+  linerNote: "Read the note →",
+} as const;
+
 export function cardPath(slug: string): string {
   /* JPEG, not PNG. #342: "JPEG (mozjpeg, q82) as the universal primary". The cards were
      written as PNG screenshots at ~875KB against Bluesky's 1MB ceiling — which read as a
      quality-ladder problem and was a format one. The same card at q82 is 124KB. */
-  return `.renditions/${slug}-wide.jpg`;
+  /* 4:5 on every channel since 2026-09-26 (`social-portrait-posts.md`). The file name
+     matches `render-card.ts`, which writes `${slug}-${format.id}.jpg`. */
+  return `.renditions/${slug}-4x5.jpg`;
 }
 
 export interface PayloadSources {
@@ -389,7 +400,7 @@ export function buildPayload(
   } else {
     const asset: MediaAsset = {
       role: "card",
-      aspect: "1.91:1",
+      aspect: "4:5",
       path,
       sourceUrl: post.image!.url,
       alt: cardAlt(post, credit),
@@ -434,6 +445,7 @@ export function buildPayload(
         ],
         city: credit.city,
         date: credit.date,
+        genre: concert.genre,
       })
     : [];
 
@@ -453,6 +465,7 @@ export function buildPayload(
       venue: concert ? resolveVenueSlug(post, concert) : undefined,
     },
     url: `${SITE_URL}/liner-notes/${post.slug}`,
+    linkText: LINK_TEXT.linerNote,
     media: publishable,
     tags,
     eligible: reasons.length === 0,
@@ -476,14 +489,28 @@ export function buildPayload(
  * only implies one, On This Day already carries its show. Almost everything
  * here is a read rather than a resolution, which is why it is short.
  */
-export function buildOnThisDayPayload(post: OnThisDayPost): SyndicationPayload {
+export function buildOnThisDayPayload(
+  post: OnThisDayPost,
+  concerts: Concert[] = []
+): SyndicationPayload {
   const reasons: string[] = [];
 
+  /* THE FULL BILL, NOT JUST THE HEADLINER. `on-this-day.json` records the headliner only,
+     so the openers come from the show itself. They are what the post is often about —
+     "Living Colour and Public Enemy opened" — and they are who a mention can reach when the
+     headliner has no account (`mentionsForPost`). Absent `concerts`, the payload is exactly
+     what it was before: headliner only. */
+  const show = concerts.find(
+    (c) => c.date === post.showDate && c.headlinerNormalized === post.artistNormalized
+  );
+  const openers = show?.openers ?? [];
+
   const credit: PayloadCredit = {
-    artists: [post.artist],
+    artists: [post.artist, ...openers],
     venue: post.venue,
     city: post.city,
     date: post.showDate,
+    age: post.age,
   };
 
   const social = post.social;
@@ -519,10 +546,10 @@ export function buildOnThisDayPayload(post: OnThisDayPost): SyndicationPayload {
   } else {
     media.push({
       role: "card",
-      aspect: "1.91:1",
+      aspect: "4:5",
       path: cardPath(post.slug),
       sourceUrl: post.imageUrl,
-      alt: onThisDayAlt(post),
+      alt: onThisDayAlt(post, openers),
       tier: post.tier,
       source: post.source,
     });
@@ -543,11 +570,15 @@ export function buildOnThisDayPayload(post: OnThisDayPost): SyndicationPayload {
     ...(social?.beats?.length ? { beats: social.beats } : {}),
     caption: social?.caption ?? "",
     credit,
-    refs: { artists: [post.artistNormalized], venue: post.venueNormalized },
+    refs: {
+      artists: [post.artistNormalized, ...openers.map(normalizeArtistName)],
+      venue: post.venueNormalized,
+    },
     url: post.url,
+    linkText: LINK_TEXT.onThisDay,
     media: publishable,
     tags: entityTags({
-      artists: [post.artist],
+      artists: credit.artists,
       // An On This Day post is one night at one venue by construction.
       venues: [post.venue],
       city: post.city,
@@ -555,6 +586,7 @@ export function buildOnThisDayPayload(post: OnThisDayPost): SyndicationPayload {
       // posted in 2027 belongs in #1980s; tagging it #2020s would file the
       // archive's own history under the year someone happened to read it.
       date: post.showDate,
+      genre: show?.genre,
     }),
     eligible: reasons.length === 0,
     ineligibleReasons: reasons,
@@ -562,24 +594,23 @@ export function buildOnThisDayPayload(post: OnThisDayPost): SyndicationPayload {
 }
 
 /**
- * Alt text describing the card, not the source photograph.
+ * Alt text for an anniversary card, describing the card rather than the photograph.
  *
- * The date leads, because the card leads with it — a screen-reader user should
- * meet the post the same way a sighted one does.
+ * It reads in the card's own order: how long ago, the artist, the bill, then where. Since
+ * 2026-09-26 the card no longer sets the hook (it is already the post text, and printing it
+ * twice was the loudest thing about the old post), so the alt no longer quotes it. The rule
+ * the liner-notes alt follows is unchanged: say what the card says, nothing more or less.
  */
-/**
- * Alt text for an anniversary card.
- *
- * Carries the HOOK for the same reason the liner-notes alt does: the card sets
- * it in display type, so a description omitting it hands a screen-reader user
- * the credit while a sighted reader gets the sentence. Milder than the bug on
- * the other path — this said nothing false, it just said less — and the same
- * fix.
- */
-export function onThisDayAlt(post: OnThisDayPost): string {
-  const base =
-    `${post.age} years ago today: ${post.artist} at ${post.venue}, ${post.city}, ` +
-    `${formatDate(post.showDate)}.`;
-  const hook = post.social?.hook?.trim();
-  return hook ? `${base} Card reads: ${hook}.` : base;
+export function onThisDayAlt(post: OnThisDayPost, openers: string[] = []): string {
+  const bill = openers.length ? `, with ${joinNames(openers)},` : "";
+  return (
+    `${post.age} years ago today: ${post.artist}${bill} at ${post.venue}, ${post.city}, ` +
+    `${formatDate(post.showDate)}.`
+  );
+}
+
+/** "A", "A and B", "A, B and C". */
+export function joinNames(names: string[]): string {
+  if (names.length <= 1) return names.join("");
+  return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
 }

@@ -38,7 +38,7 @@ function payload(): SyndicationPayload {
       {
         role: "card",
         sourceUrl: 'https://r2.theaudiodb.com/x.jpg',
-        aspect: "1.91:1",
+        aspect: "4:5",
         path: CARD,
         alt: "Björk at the Greek Theatre, Los Angeles, 9 August 1997.",
         tier: 2,
@@ -91,7 +91,7 @@ describe("BlueskyAdapter", () => {
     process.env.BLUESKY_APP_PASSWORD = "app-password";
   });
 
-  it("uploads the thumbnail as a blob before creating the record", async () => {
+  it("uploads the card as a blob and posts it as a 4:5 image", async () => {
     stubFetch((url) => {
       if (url.includes("createSession")) return { accessJwt: "jwt", did: "did:plc:x" };
       if (url.includes("uploadBlob")) {
@@ -109,13 +109,18 @@ describe("BlueskyAdapter", () => {
       "com.atproto.repo.createRecord",
     ]);
 
-    // Bluesky will not scrape our OG tag: the embed carries the blob we just
-    // uploaded, or the card renders with no image at all.
+    // An image post, not a link card: Bluesky allows one embed, and the 4:5 image is more
+    // than twice the screen area. The link rides in the text as a facet instead.
     const record = JSON.parse(calls[2].init.body as string).record;
-    expect(record.embed.$type).toBe("app.bsky.embed.external");
-    expect(record.embed.external.thumb.ref.$link).toBe("bafy");
-    expect(record.embed.external.uri).toContain("utm_source=bluesky");
-    expect(record.embed.external.title).toBe(payload().hook);
+    expect(record.embed.$type).toBe("app.bsky.embed.images");
+    expect(record.embed.images[0].image.ref.$link).toBe("bafy");
+    expect(record.embed.images[0].alt).toBe(payload().media[0].alt);
+    // Without it the app reserves a square and jumps when the image loads.
+    expect(record.embed.images[0].aspectRatio).toEqual({ width: 1080, height: 1350 });
+    const link = record.facets.find(
+      (f: { features: Array<{ $type: string }> }) => f.features[0].$type === "app.bsky.richtext.facet#link"
+    );
+    expect(link.features[0].uri).toContain("utm_source=bluesky");
 
     expect(result).toMatchObject({
       uri: "at://did:plc:x/app.bsky.feed.post/abc123",
