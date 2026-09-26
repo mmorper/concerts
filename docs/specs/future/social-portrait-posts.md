@@ -1,6 +1,6 @@
 # Portrait Posts, Opener Mentions and Genre Tags
 
-**Status:** Spec, approved direction (owner, 2026-09-26). Not started.
+**Status:** Spec, approved direction (owner, 2026-09-26). Built on `claude/social-portrait-posts`.
 **Priority:** High. Every post ships with the current creative until this lands.
 **Complexity:** Medium. Bluesky and Mastodon adapters, handles, tags, and the On This Day payload.
 **Depends on:** #543 (main's CI), the existing 4:5 `fullBleed` renderer.
@@ -31,6 +31,8 @@ and genre tags are there for engagement and discovery. Clicks get watched after 
   the card's `alt`. The `app.bsky.embed.external` link card goes away.
 - The link becomes a facet in the text, with the display text **"Setlist and the full night →"**
   (liner notes: **"Read the note →"**). The facet carries the full UTM'd URL as it does today.
+  The words ride on the payload (`linkText`), set by the builder, so no adapter branches on
+  the stream.
 - The byline pill only renders when there is a byline. Today tier-2 cards draw an empty pill.
 - **Card type for On This Day:** the eyebrow is the date line ("Ten years ago today"). Below
   it, the artist name is the display type, then the bill ("with Living Colour & Public
@@ -58,9 +60,9 @@ Take the first two, in that order.
 - **On This Day refs gain openers.** `buildOnThisDayPayload` sets
   `refs: { artists: [post.artistNormalized], ... }`. It should carry the full bill from
   `concerts.json`, with the headliner first, so openers can be found.
-- On Bluesky, mentions go on the tag line and are addressed by DID, as now. On Mastodon, a
-  mention needs a Mastodon handle. Where there isn't one, skip the mention and let hashtags
-  carry the post.
+- On Bluesky, mentions go on the tag line and are addressed by DID, as now. Mastodon stays
+  without mentions (see `SYNDICATION.md`: one artist of 257 has an address there), so its
+  hashtags carry the post.
 
 **Example (the mocked post):** The Roots and the museum have no handles. Living Colour
 (`livingcolour.com`) and Public Enemy (`publicenemyno1.bsky.social`) are both verified and
@@ -78,8 +80,9 @@ decade.
   never made up at post time.
 - **Order on Bluesky:** artist, then genre. On Mastodon (4–5 tags): artist, genre, city,
   decade, venue.
-- **Drop any tag longer than 20 characters** (after `#`). That is what removes
-  `#NationalMuseumOfAfricanAmericanHistoryAndCulture`.
+- **Drop venue and city tags longer than 20 characters** (after `#`). That is what removes
+  `#NationalMuseumOfAfricanAmericanHistoryAndCulture`. Artist tags are exempt: a fan follows
+  `#TheBrianSetzerOrchestra` however long it is.
 - The rule that detector tags never ship stays as it is.
 
 ### 4. Bluesky text budget
@@ -97,9 +100,9 @@ decade.
 The worst case goes over 300. When a post is too long, the adapter trims in this order until
 it fits:
 
-1. The genre tag
+1. The second tag (usually the genre)
 2. The second mention
-3. The artist tag
+3. The remaining tag
 
 The caption and the link are never trimmed. `budgets.ts` gets the new arithmetic and a
 comment explaining it, and the adapter still asserts the 300-grapheme limit before posting.
