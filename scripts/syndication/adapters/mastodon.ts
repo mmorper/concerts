@@ -43,7 +43,12 @@ export function composeMastodonStatus(payload: SyndicationPayload): string {
   // recommendation algorithm and full-text search is opt-in per user, so a tag
   // is the only way a stranger finds this.
   const tags = tagsForChannel(payload.tags, "mastodon");
-  return [payload.caption, url, tags.join(" ")].filter(Boolean).join("\n\n");
+  // The same words as Bluesky ("Setlist and the full night →"), then the URL itself:
+  // Mastodon linkifies URLs server-side and cannot hide one behind text, so the words
+  // say what a tap gets and the URL is the tap. With an image attached Mastodon shows
+  // no link preview, which makes this line the only pointer back to the archive.
+  const link = payload.linkText ? `${payload.linkText} ${url}` : url;
+  return [payload.caption, link, tags.join(" ")].filter(Boolean).join("\n\n");
 }
 
 /** The platform's own accounting, not `String.length`. */

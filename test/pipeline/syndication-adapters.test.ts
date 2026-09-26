@@ -217,6 +217,11 @@ describe("MastodonAdapter", () => {
     expect(status).toContain("#Bjork #GreekTheatre #LosAngeles #1990s");
   });
 
+  it("says what the link is before the URL, the same words as Bluesky", () => {
+    const status = composeMastodonStatus({ ...payload(), linkText: "Read the note →" });
+    expect(status).toMatch(/\n\nRead the note → https:\/\/concerts\.morperhaus\.org\/liner-notes\/__adapter-test__\?/);
+  });
+
   it("counts a URL as 23 however long it is", () => {
     const short = mastodonWeight("word https://a.co");
     const long = mastodonWeight(`word https://concerts.morperhaus.org/liner-notes/${"x".repeat(80)}`);
