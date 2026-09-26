@@ -505,10 +505,15 @@ export function buildOnThisDayPayload(
   );
   const openers = show?.openers ?? [];
 
+  /* "Washington, DC", not "Washington" — the same abbreviation the liner-note credit uses.
+     The show carries the state; `on-this-day.json` does not. */
+  const region = regionLabel(show?.state).label || undefined;
+
   const credit: PayloadCredit = {
     artists: [post.artist, ...openers],
     venue: post.venue,
     city: post.city,
+    ...(region ? { region } : {}),
     date: post.showDate,
     age: post.age,
   };
@@ -549,7 +554,7 @@ export function buildOnThisDayPayload(
       aspect: "4:5",
       path: cardPath(post.slug),
       sourceUrl: post.imageUrl,
-      alt: onThisDayAlt(post, openers),
+      alt: onThisDayAlt(post, openers, region),
       tier: post.tier,
       source: post.source,
     });
@@ -601,10 +606,11 @@ export function buildOnThisDayPayload(
  * twice was the loudest thing about the old post), so the alt no longer quotes it. The rule
  * the liner-notes alt follows is unchanged: say what the card says, nothing more or less.
  */
-export function onThisDayAlt(post: OnThisDayPost, openers: string[] = []): string {
+export function onThisDayAlt(post: OnThisDayPost, openers: string[] = [], region?: string): string {
   const bill = openers.length ? `, with ${joinNames(openers)},` : "";
+  const place = region ? `${post.city}, ${region}` : post.city;
   return (
-    `${post.age} years ago today: ${post.artist}${bill} at ${post.venue}, ${post.city}, ` +
+    `${post.age} years ago today: ${post.artist}${bill} at ${post.venue}, ${place}, ` +
     `${formatDate(post.showDate)}.`
   );
 }

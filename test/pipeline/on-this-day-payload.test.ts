@@ -67,6 +67,7 @@ describe("buildOnThisDayPayload", () => {
         headlinerNormalized: "oingo-boingo",
         openers: ["Fishbone", "The Untouchables"],
         genre: "New Wave",
+        state: "Mexico",
       },
     ] as never;
     const payload = buildOnThisDayPayload(post(), concerts);
@@ -74,8 +75,15 @@ describe("buildOnThisDayPayload", () => {
     expect(payload.refs.artists).toEqual(["oingo-boingo", "fishbone", "the-untouchables"]);
     expect(payload.tags.slice(0, 2)).toEqual(["OingoBoingo", "NewWave"]);
     expect(payload.media[0].alt).toBe(
-      "40 years ago today: Oingo Boingo, with Fishbone and The Untouchables, at Caliente Racetrack, Tijuana, 30 June 1987."
+      "40 years ago today: Oingo Boingo, with Fishbone and The Untouchables, at Caliente Racetrack, Tijuana, Mexico, 30 June 1987."
     );
+  });
+
+  it("adds the state the way the liner-note credit does", () => {
+    const concerts = [
+      { date: "1987-06-30", headlinerNormalized: "oingo-boingo", openers: [], state: "District of Columbia" },
+    ] as never;
+    expect(buildOnThisDayPayload(post(), concerts).credit.region).toBe("DC");
   });
 
   it("names what a tap gets, not a URL", () => {
