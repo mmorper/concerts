@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-26T14:03:36.572Z",
+  "updatedAt": "2026-09-26T16:17:28.954Z",
   "entries": [
     {
       "slug": "depeche-mode-38-years-of-shows-2",
@@ -10,24 +10,24 @@
     },
     {
       "slug": "foo-fighters-9-more-2015-festival-bill",
-      "hash": "2fcccf35f9066363",
-      "checkedAt": "2026-09-26T14:03:06.776Z",
+      "hash": "aa10cdbfe4cfc97a",
+      "checkedAt": "2026-09-26T16:16:51.397Z",
       "issues": [
         {
-          "field": "Beat 1",
-          "sentence": "Foo Fighters in 2015, two decades after Dave Grohl started the band in 1994.",
+          "field": "Caption",
+          "sentence": "Foo Fighters headlined, but Trouble Funk — Washington's own — made it feel like a homecoming.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet provides no formation year for Foo Fighters; only album release dates are given, earliest being 'Foo Fighters' (1995-06-26).",
-          "replacement": "Foo Fighters in 2015, touring behind Sonic Highways, the ninth of fourteen studio albums."
+          "evidence": "Fact sheet lists Trouble Funk's show location as RFK Stadium, Washington DC, but does not state Trouble Funk is based in or originates from Washington; this is an external claim not confirmed by the archive.",
+          "replacement": "Foo Fighters headlined, but Trouble Funk brought the go-go sound that made it feel like a homecoming."
         },
         {
-          "field": "Beat 2",
-          "sentence": "Buddy Guy brought sixty years of blues.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "Buddy Guy's discography begins with 'Hoodoo Man Blues' (1965-09-22); by the 2015-07-04 show that's 50 years, not sixty.",
-          "replacement": "Buddy Guy brought fifty years of blues."
+          "field": "Beat 4",
+          "sentence": "Ten acts. One afternoon that read like a syllabus.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet explicitly lists set times/door times as NOT IN THE DATA; there is no basis for claiming the show occurred in the afternoon.",
+          "replacement": "Ten acts. One day that read like a syllabus."
         }
       ]
     },
@@ -76,37 +76,29 @@
     },
     {
       "slug": "oingo-boingo-5-more-1987-festival-bill",
-      "hash": "1bb426d80d5b48e8",
-      "checkedAt": "2026-09-26T14:03:32.507Z",
+      "hash": "4d1e5997d55f95b1",
+      "checkedAt": "2026-09-26T16:17:24.062Z",
       "issues": [
         {
-          "field": "beat1",
-          "sentence": "I drove to Tijuana for a concert in 1987.",
+          "field": "hook",
+          "sentence": "Six acts, one racetrack, and a border crossing I made for Oingo Boingo.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "Fact sheet does not confirm mode of travel; only owner-confirmed fact is residence in Orange County c.1992."
+          "evidence": "Fact sheet lists only 'I lived in Orange County, California, around 1992' as an owner-confirmed personal fact; crossing the border into Mexico is not confirmed."
         },
         {
-          "field": "beat2",
-          "sentence": "Oingo Boingo headlined, four months after BOI-NGO came out.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "BOI-NGO released 1987-03-02, show was 1987-06-30 — just under four months (about 3 months, 28 days).",
-          "replacement": "Oingo Boingo headlined, about four months after BOI-NGO came out."
-        },
-        {
-          "field": "beat4",
-          "sentence": "Hoodoo Gurus had been a band for five years.",
-          "kind": "invented-number",
-          "severity": "must-fix",
-          "evidence": "No formation year for Hoodoo Gurus appears anywhere in the fact sheet."
-        },
-        {
-          "field": "beat4",
-          "sentence": "Chris Isaak was just starting.",
-          "kind": "external",
+          "field": "caption",
+          "sentence": "The show was at Caliente Racetrack in Tijuana — I crossed the border for it.",
+          "kind": "personal-invented",
           "severity": "review",
-          "evidence": "No career-stage information for Chris Isaak is given in the fact sheet; cannot confirm or deny."
+          "evidence": "No owner-confirmed fact states a border crossing occurred."
+        },
+        {
+          "field": "beat",
+          "sentence": "I crossed the border for a concert in 1987.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No owner-confirmed fact states a border crossing occurred."
         }
       ]
     },
@@ -243,30 +235,36 @@
     },
     {
       "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
-      "hash": "a471868e84f4d5ea",
-      "checkedAt": "2026-09-26T14:03:25.281Z",
+      "hash": "82f41f939ca716ba",
+      "checkedAt": "2026-09-26T16:17:16.805Z",
       "issues": [
         {
-          "field": "caption",
+          "field": "Hook",
+          "sentence": "Five weeks after the verdict, I was in Anaheim to hear power pop.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The Rodney King verdict (acquittal) is dated April 29, 1992, and the show was 1992-06-04 per the fact sheet — that's roughly 5 weeks, which checks out, but this historical detail is not in the fact sheet and cannot be verified against archive data."
+        },
+        {
+          "field": "Caption",
           "sentence": "The Smithereens played Anaheim in June 1992, five weeks after the Rodney King acquittal.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The fact sheet contains no record of the Rodney King acquittal date; the show date (1992-06-04) is confirmed, but the five-week gap to an external historical event cannot be verified against archive data. The commonly cited acquittal date (April 29, 1992) would make this roughly 5 weeks and 1 day, so 'five weeks' is plausible but unconfirmed by the fact sheet."
+          "evidence": "Same as above — the Rodney King acquittal date is not in the fact sheet; the roughly five-week gap between April 29, 1992 and 1992-06-04 appears plausible but is unverifiable from archive data."
         },
         {
-          "field": "beat 1",
+          "field": "Beat 1",
           "sentence": "The acquittal had come down in late April.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The fact sheet does not include any information about the Rodney King verdict or its date; this is an external historical claim not supported by archive data, though it is widely reported as true (April 29, 1992)."
+          "evidence": "The Rodney King acquittal date (late April 1992) is a historical fact not present in the fact sheet; likely true but not verifiable from archive data alone."
         },
         {
-          "field": "beat 4",
-          "sentence": "Heartland rock at The Celebrity Theatre, five weeks after everything broke open.",
-          "kind": "internal",
-          "severity": "must-fix",
-          "evidence": "The caption and beat 3 both describe the Smithereens as 'power pop,' consistent with the fact sheet's album/genre framing; calling the same show 'Heartland rock' contradicts this within the same copy.",
-          "replacement": "Power pop at The Celebrity Theatre, five weeks after everything broke open."
+          "field": "Beat 4",
+          "sentence": "Pop rock at The Celebrity Theatre, five weeks after everything broke open.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Repeats the same unverified five-week gap claim tied to the Rodney King acquittal, not sourced from the fact sheet."
         }
       ]
     },
@@ -300,17 +298,9 @@
     },
     {
       "slug": "wham-caught-once-never-again",
-      "hash": "3835156d2712fdba",
-      "checkedAt": "2026-09-26T14:03:36.572Z",
-      "issues": [
-        {
-          "field": "Beat 2",
-          "sentence": "'Careless Whisper' was still everywhere.",
-          "kind": "external",
-          "severity": "must-fix",
-          "evidence": "Chart/popularity claims like 'everywhere' are banned regardless of truth; fact sheet contains no popularity data."
-        }
-      ]
+      "hash": "a413e0337e61c603",
+      "checkedAt": "2026-09-26T16:17:28.953Z",
+      "issues": []
     }
   ]
 }

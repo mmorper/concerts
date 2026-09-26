@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-24T14:39:10.176Z",
+  "updatedAt": "2026-09-26T16:18:35.143Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -289,6 +289,25 @@
       "platform": "x",
       "status": "seeded",
       "seededAt": "2026-08-22T04:22:15.524Z"
+    },
+    {
+      "slug": "foo-fighters-9-more-2015-festival-bill",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mwgopvkcxg2y",
+      "rkey": "3mwgopvkcxg2y",
+      "postedAt": "2026-09-26T16:17:35.728Z",
+      "tier": 1,
+      "source": "personal"
+    },
+    {
+      "slug": "foo-fighters-9-more-2015-festival-bill",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117338243818263049",
+      "postedAt": "2026-09-26T16:18:31.564Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "garbage-17-songs-from-the-album-that-shares-their-name-live",
@@ -786,6 +805,25 @@
       "platform": "x",
       "status": "seeded",
       "seededAt": "2026-08-22T04:22:15.524Z"
+    },
+    {
+      "slug": "oingo-boingo-5-more-1987-festival-bill",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mwgopxmyz72t",
+      "rkey": "3mwgopxmyz72t",
+      "postedAt": "2026-09-26T16:17:37.936Z",
+      "tier": 2,
+      "source": "venue-places"
+    },
+    {
+      "slug": "oingo-boingo-5-more-1987-festival-bill",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117338243974492478",
+      "postedAt": "2026-09-26T16:18:33.947Z",
+      "tier": 2,
+      "source": "venue-places"
     },
     {
       "slug": "otd-2026-08-23",
@@ -1449,6 +1487,25 @@
       "seededAt": "2026-08-22T04:22:15.524Z"
     },
     {
+      "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mwgopwlhdh2s",
+      "rkey": "3mwgopwlhdh2s",
+      "postedAt": "2026-09-26T16:17:36.759Z",
+      "tier": 2,
+      "source": "album-itunes"
+    },
+    {
+      "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117338243899237504",
+      "postedAt": "2026-09-26T16:18:32.782Z",
+      "tier": 2,
+      "source": "album-itunes"
+    },
+    {
       "slug": "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics",
       "platform": "bluesky",
       "status": "seeded",
@@ -1576,26 +1633,21 @@
     {
       "slug": "wham-caught-once-never-again",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "wham-caught-once-never-again",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mwgopyte4h2s",
+      "rkey": "3mwgopyte4h2s",
+      "postedAt": "2026-09-26T16:17:39.217Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "wham-caught-once-never-again",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "wham-caught-once-never-again",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117338244055718660",
+      "postedAt": "2026-09-26T16:18:35.142Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "ziggy-marley-17-4-years-before-love-is-my-religion",
