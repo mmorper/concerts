@@ -10,9 +10,12 @@
  *
  * - **Facets are byte offsets.** See facets.ts; this module never computes an
  *   offset itself.
- * - **The link card will not scrape our OG tag.** Bluesky renders an external
- *   embed from what we hand it, so the thumbnail has to be uploaded as a blob
- *   first and referenced by its returned `blob` object.
+ * - **The card is an image post, not a link card** (2026-09-26,
+ *   `docs/specs/future/social-portrait-posts.md`). A 1.91:1 link card is the
+ *   shortest thing the app draws full-width — about a fifth of a phone screen.
+ *   The 4:5 card is uploaded as a blob and posted as `app.bsky.embed.images`,
+ *   and the link rides in the text as a facet. Bluesky allows one or the
+ *   other, never both.
  * - **The limit is 300 graphemes**, a third unit again from bytes or code units.
  *
  * Credentials: `BLUESKY_IDENTIFIER` (the handle) and `BLUESKY_APP_PASSWORD`.
@@ -22,13 +25,14 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 
-import { CHANNEL_LIMITS, LINK_DISPLAY_MAX } from "../budgets.ts";
-import { FacetedText, displayUrl, graphemeLength } from "../facets.ts";
-import { mentionForPost, type HandlesFile } from "../handles.ts";
+import { CHANNEL_LIMITS } from "../budgets.ts";
+import { FacetedText, graphemeLength } from "../facets.ts";
+import { mentionsForPost, type HandlesFile, type Mention } from "../handles.ts";
 import { ROOT } from "../payload.ts";
 import { TAG_LIMITS, tagsForChannel, toHashtag } from "../tags.ts";
 import { withUtm } from "../utm.ts";
-import type { LedgerEntry, SyndicationPayload } from "../types.ts";
+import type { LedgerEntry, MediaAsset, SyndicationPayload } from "../types.ts";
+import { normalizeArtistName } from "../../../src/utils/normalize.js";
 import type { Adapter, PostResult } from "./types.ts";
 
 const SERVICE = process.env.BLUESKY_SERVICE ?? "https://bsky.social";
@@ -46,9 +50,14 @@ interface BlobRef {
   size: number;
 }
 
+/** For a payload built before `linkText` existed. */
+const DEFAULT_LINK_TEXT = "See it in the archive →";
+
 /**
  * The `record.text` and its facets, split out so it is testable without a
  * network.
+ *
+ * Layout: the caption, the link on its own line, then one line of mentions and tags.
  *
  * `handles` is an injection seam for the tests and nothing else. Left out, the
  * lookup reads the committed `data/social-handles.json`, which is what every
@@ -60,58 +69,80 @@ export function composeBlueskyText(
   payload: SyndicationPayload,
   handles?: HandlesFile
 ): FacetedText {
-  const text = new FacetedText();
   const url = withUtm(payload.url, "bluesky", payload.kind);
 
-  text.append(payload.caption);
-  text.append("\n\n");
-  text.appendLink(displayUrl(payload.url, LINK_DISPLAY_MAX), url);
-
-  // A mention REPLACES the leading tag rather than joining it. Two reasons,
-  // one arithmetic and one editorial.
-  //
-  // The arithmetic is in budgets.ts and it does not balance otherwise. Worst
-  // case, appending: 200 caption + 40 link + 35 tags + 4 separators + 29 for
-  // the longest handle on file = 308 against a 300-grapheme limit. Replacing
-  // the tag it stands in for: 291. The 21 characters of headroom CAPTION_MAX
-  // was chosen to leave are already spent — across the 58 published captions
-  // the median is 175 and the maximum is exactly 200.
-  //
-  // The editorial reason outlives the arithmetic: `@DepecheMode #DepecheMode`
-  // in one line is the tell of an automated account, which is the thing the
-  // authored-copy rule exists to avoid. Even given room, we would not.
-  //
-  // Which tag it displaces is decided by WHICH ENTITY was mentioned, not by
-  // position. A venue mention drops the venue tag; dropping the first tag
-  // instead would throw away the artist — the more valuable one — and still
-  // print `@theanthem #TheAnthem`. The comparison is against `toHashtag` of
-  // the same display name `entityTags` used, so it cannot drift out of step
-  // with however that function decides to spell things.
-  const mention = mentionForPost(payload.refs, "bluesky", { file: handles });
-  const displaced = mention
-    ? toHashtag(mention.kind === "artist" ? payload.credit.artists[0] : payload.credit.venue)
-    : undefined;
-
-  if (mention?.did) {
-    text.append(" ");
-    text.appendMention(mention.handle, mention.did);
-  }
+  // A mention REPLACES its own entity's tag rather than joining it:
+  // `@depechemode.com #DepecheMode` in one line is the tell of an automated
+  // account. Which tag goes is decided by WHICH ENTITY was mentioned, never by
+  // position — a venue mention that dropped tags[0] would throw away the artist.
+  const allMentions = mentionsForPost(payload.refs, "bluesky", {
+    file: handles,
+    text: payload.caption,
+  }).filter((m) => m.did);
+  const displaced = new Set(allMentions.map((m) => displacedTag(m, payload)));
 
   // 1–2 inline, per DECISIONS.md §7: real here (clickable facets, followable
-  // feeds), but stacking them reads as spam.
-  //
-  // The mention OCCUPIES one of those slots rather than sitting beside them.
-  // That is the arithmetic budgets.ts balances: two tags plus a mention is 308
-  // graphemes against a 300 limit, and one tag plus a mention is 291.
-  const slots = TAG_LIMITS.bluesky.max - (mention ? 1 : 0);
-  const remaining = displaced ? payload.tags.filter((t) => t !== displaced) : payload.tags;
-  for (const tag of tagsForChannel(remaining, "bluesky").slice(0, slots)) {
-    text.append(" ");
-    text.appendTag(tag);
-  }
+  // feeds), but stacking them reads as spam. `entityTags` already put the lead
+  // artist and the genre first.
+  let tags = tagsForChannel(
+    payload.tags.filter((t) => !displaced.has(t)),
+    "bluesky"
+  ).slice(0, TAG_LIMITS.bluesky.max);
+  let mentions = allMentions;
 
+  const build = (): FacetedText => {
+    const text = new FacetedText();
+    text.append(payload.caption);
+    text.append("\n");
+    text.appendLink(payload.linkText ?? DEFAULT_LINK_TEXT, url);
+    if (mentions.length || tags.length) text.append("\n\n");
+    let first = true;
+    for (const m of mentions) {
+      if (!first) text.append(" ");
+      text.appendMention(m.handle, m.did!);
+      first = false;
+    }
+    for (const tag of tags) {
+      if (!first) text.append(" ");
+      text.appendTag(tag);
+      first = false;
+    }
+    return text;
+  };
+
+  /* THE TRIM ORDER, when two mentions and two tags do not fit in 300 graphemes. The caption
+     and the link are never cut — they are the post. Then, cheapest first: the second tag
+     (usually the genre), the second mention, the remaining tag. `budgets.ts` has the
+     arithmetic for why this can happen at all. */
+  let text = build();
+  while (graphemeLength(text.text) > CHANNEL_LIMITS.bluesky) {
+    if (tags.length > 1) tags = tags.slice(0, -1);
+    else if (mentions.length > 1) mentions = mentions.slice(0, -1);
+    else if (tags.length) tags = [];
+    else break;
+    text = build();
+  }
   return text;
 }
+
+/** The bare tag (no `#`) this mention stands in for. */
+function displacedTag(mention: Mention, payload: SyndicationPayload): string {
+  if (mention.kind === "venue") return toHashtag(payload.credit.venue);
+  if (!mention.slug) return toHashtag(payload.credit.artists[0] ?? "");
+  const name = payload.credit.artists.find((n) => normalizeArtistName(n) === mention.slug);
+  return name ? toHashtag(name) : "";
+}
+
+/**
+ * Bluesky's `aspectRatio` is two integers, used only for layout before the image loads.
+ * Without it the app reserves a square and jumps when the 4:5 image arrives.
+ */
+const ASPECT_RATIO: Record<MediaAsset["aspect"], { width: number; height: number }> = {
+  "4:5": { width: 1080, height: 1350 },
+  "1:1": { width: 1080, height: 1080 },
+  "9:16": { width: 1080, height: 1920 },
+  "1.91:1": { width: 1200, height: 630 },
+};
 
 export class BlueskyAdapter implements Adapter {
   readonly channel = "bluesky" as const;
@@ -135,12 +166,11 @@ export class BlueskyAdapter implements Adapter {
     if (length > CHANNEL_LIMITS.bluesky) {
       throw new Error(
         `Bluesky post is ${length} graphemes (max ${CHANNEL_LIMITS.bluesky}) — ` +
-          `caption budget is CAPTION_MAX in budgets.ts, not something to trim here`
+          `the caption and link alone are over — CAPTION_MAX in budgets.ts`
       );
     }
 
-    const thumb = await this.uploadBlob(session, card.path);
-    const url = withUtm(payload.url, "bluesky", payload.kind);
+    const image = await this.uploadBlob(session, card.path);
 
     const record = {
       $type: COLLECTION,
@@ -148,16 +178,8 @@ export class BlueskyAdapter implements Adapter {
       createdAt: new Date().toISOString(),
       facets: composed.facets,
       embed: {
-        $type: "app.bsky.embed.external",
-        external: {
-          uri: url,
-          title: payload.hook,
-          // The credit stack in one line: the card carries it visually, and
-          // the embed description is where it survives for anyone whose client
-          // does not render the image.
-          description: describe(payload),
-          thumb,
-        },
+        $type: "app.bsky.embed.images",
+        images: [{ image, alt: card.alt, aspectRatio: ASPECT_RATIO[card.aspect] }],
       },
       langs: ["en"],
     };
@@ -236,19 +258,6 @@ export class BlueskyAdapter implements Adapter {
     if (!res.ok) throw new Error(`Bluesky ${method} failed: ${res.status} ${await res.text()}`);
     return (await res.json()) as T;
   }
-}
-
-/**
- * The credit stack as one line, for the embed description.
- *
- * Deliberately the structured fields and not the hook: the description sits
- * under the title in a link card, and repeating the hook there wastes the one
- * place the names can appear for a reader whose client shows no image.
- */
-export function describe(payload: SyndicationPayload): string {
-  const { artists, venue, city, date } = payload.credit;
-  const parts = [artists.join(", "), venue, city, date].filter(Boolean);
-  return parts.join(" · ");
 }
 
 function mimeFor(path: string): string {

@@ -164,7 +164,7 @@ async function renderSelected(
     // ONE BROWSER FOR THE WHOLE RUN, opened only when there is something to draw.
     const browser = await launchBrowser();
     close = () => browser.close();
-    drawOne = (payload) => renderCard(payload, browser, FORMATS.wide).then(() => undefined);
+    drawOne = (payload) => renderCard(payload, browser, FORMATS["4x5"]).then(() => undefined);
   }
 
   try {
@@ -499,7 +499,7 @@ export function selectCandidates(
 
   for (const post of freshOtd) {
     if (payloads.length >= options.limit) break;
-    const payload = buildOnThisDayPayload(post);
+    const payload = buildOnThisDayPayload(post, sources.concerts);
     if (!payload.eligible) {
       summary.skipped.push({ slug: post.slug, reason: payload.ineligibleReasons.join("; ") });
       continue;
@@ -635,7 +635,7 @@ async function correct(
     ...archive.sources,
     cardExists: (p: string) => (p.startsWith(".renditions/") ? true : existsSync(join(ROOT, p))),
   };
-  const payload = note ? buildPayload(note, sources) : buildOnThisDayPayload(anniversary!);
+  const payload = note ? buildPayload(note, sources) : buildOnThisDayPayload(anniversary!, sources.concerts);
   if (!payload.eligible) {
     const why = payload.ineligibleReasons.join("; ");
     summary.skipped.push({ slug, reason: `correct: ${why}` });

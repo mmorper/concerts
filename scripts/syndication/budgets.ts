@@ -42,22 +42,20 @@ export const BEATS_MAX = 5;
 /**
  * Derived from the tightest channel, not chosen.
  *
- * Bluesky allows 300 graphemes and is the binding constraint. An adapter
- * appends only the link and the tags:
+ * Bluesky allows 300 graphemes and is the binding constraint. Since the move to image
+ * posts (2026-09-26) the adapter appends a link line and one line of mentions and tags:
  *
  *   300 total
- *   −40  shortened link display text (the facet carries the full UTM'd URL;
- *        the longest published slug is 80 chars, so the raw permalink would
- *        be 121 and could not ride in the text at all)
- *   −35  two tags at Bluesky's 1–2 limit, worst case
- *   − 4  separators
+ *   − 1  line break
+ *   −28  link text, the longer `LINK_TEXT` in payload.ts ("Setlist and the full night →")
+ *   − 2  line breaks
  *   ───
- *   221  available
+ *   269  for the caption plus mentions and tags
  *
- * 200 takes the round number below that and keeps 21 characters of headroom
- * for a long artist name in a tag. The measured core was 166, so this is not a
- * tight fit — it is the point past which a caption stops being a pointer and
- * starts trying to be the post.
+ * A 200 caption leaves 69, which one mention and one tag always fit. Two mentions and two
+ * tags can reach ~95 and do not always fit — that is what the adapter's trim order is for
+ * (second tag, second mention, last tag). The caption and the link are never trimmed, and
+ * the measured median caption is 175, so most posts keep everything.
  *
  * Every other channel clears it comfortably: X is 280 and counts any URL as
  * 23, Mastodon 500, Instagram 2200.
@@ -73,6 +71,3 @@ export const CHANNEL_LIMITS = {
   x: 280,
   instagram: 2200,
 } as const;
-
-/** Bluesky link facets: display this much, link the whole thing. */
-export const LINK_DISPLAY_MAX = 40;

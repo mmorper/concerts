@@ -250,3 +250,28 @@ describe('the byte ceiling', () => {
     expect(FORMATS['4x5'].maxBytes).toBe(1_000_000)
   })
 })
+
+describe('the byline pill', () => {
+  const vals = (byline: string) => ({
+    imageDataUri: 'data:,', alt: 'a', byline, acts: 'A', hook: 'H', hookSize: 50, meta: 'm', pill: '#000',
+  })
+
+  it('is not drawn at all when there is no byline', async () => {
+    // Tier 2 has no byline by design. It used to render an empty pill — a grey dash in the
+    // corner of every press shot.
+    const { FORMATS } = await import('../../scripts/syndication/render-card')
+    for (const format of Object.values(FORMATS)) {
+      expect(format.template(vals(''))).not.toContain('id="byline"')
+      expect(format.template(vals('Photo: Mike Morper'))).toContain('id="byline"')
+    }
+  })
+})
+
+describe('yearsAgo', () => {
+  it('is the anniversary eyebrow', async () => {
+    const { yearsAgo } = await import('../../scripts/syndication/render-card')
+    expect(yearsAgo(10)).toBe('10 years ago today')
+    expect(yearsAgo(1)).toBe('1 year ago today')
+    expect(yearsAgo(undefined)).toBe('On this day')
+  })
+})

@@ -38,6 +38,7 @@ import { join } from "path";
 
 import { ROOT } from "./payload.ts";
 import type { Channel } from "./types.ts";
+import { normalizeArtistName } from "../../src/utils/normalize.js";
 
 export const HANDLES_PATH = join(ROOT, "data/social-handles.json");
 
@@ -221,6 +222,11 @@ export interface Mention {
    * still print `@theanthem #TheAnthem`.
    */
   kind: EntityKind;
+  /**
+   * Set on an opener's mention only: which act on the bill it names, so the adapter can
+   * drop that act's tag rather than the lead's.
+   */
+  slug?: string;
 }
 
 const EMPTY: HandlesFile = { version: 1, updatedAt: "", artists: {}, venues: {} };
@@ -328,31 +334,53 @@ export function mentionFor(
   return { handle: record.handle, did: record.did, evidence: record.evidence, kind };
 }
 
+/** The most mentions one post may carry. */
+export const MENTIONS_MAX = 2;
+
 /**
- * The one mention a post may carry, following the tag priority in `tags.ts`
- * rather than inventing a second order: the lead artist, and the venue only
- * when the lead artist has no account.
+ * The accounts a post names, at most two, in a fixed order: the lead artist, then the
+ * venue, then any other act on the bill that the post's own text names.
  *
- * One, not several, for two reasons. The budget arithmetic in `budgets.ts`
- * only balances if a mention *replaces* the artist tag, and a post can only
- * replace the tag it has room for. And the blast radius has to stay bounded:
- * 40 of 58 liner notes name a single artist, but one venue-loyalty note names
- * twenty-two, and that post must never tag twenty-two accounts.
+ * TWO, NOT ONE, SINCE 2026-09-26 (`docs/specs/future/social-portrait-posts.md`). One was
+ * the right answer while the link card took the space and the only candidates were the
+ * headliner and the room. It left the most engaging post of the month — "Living Colour
+ * and Public Enemy opened" — tagging nobody, because The Roots and the museum have no
+ * account on file while both openers do.
  *
- * The lead artist is the billing name and nothing reaches past it. A post
- * billed to Echo & The Bunnymen mentions the Bunnymen, never Ian McCulloch,
- * however much livelier his account is.
+ * AN OPENER MUST BE NAMED IN THE TEXT. The blast radius still has to stay bounded: one
+ * venue-loyalty note names twenty-two acts, and that post must never tag twenty-two
+ * accounts. Naming is also the editorial test — tagging an act the post says nothing about
+ * is the move a stranger reports as spam. The check matches the act's slug against the
+ * normalized text, so it can only under-match (`echo-and-the-bunnymen` against "Echo & The
+ * Bunnymen"), and an under-match costs a mention, never a wrong one.
+ *
+ * The lead artist is still the billing name and nothing reaches past it. A post billed to
+ * Echo & The Bunnymen mentions the Bunnymen, never Ian McCulloch.
  */
-export function mentionForPost(
+export function mentionsForPost(
   refs: { artists: string[]; venue?: string },
   channel: Channel,
-  options: { now?: Date; file?: HandlesFile } = {}
-): Mention | undefined {
-  const lead = refs.artists[0];
-  if (lead) {
-    const artist = mentionFor("artist", lead, channel, options);
-    if (artist) return artist;
+  options: { now?: Date; file?: HandlesFile; text?: string } = {}
+): Mention[] {
+  const [lead, ...others] = refs.artists;
+  const named = `-${normalizeArtistName(options.text ?? "")}-`;
+
+  const candidates: Array<Mention | undefined> = [
+    lead ? mentionFor("artist", lead, channel, options) : undefined,
+    refs.venue ? mentionFor("venue", refs.venue, channel, options) : undefined,
+    ...others
+      .filter((slug) => named.includes(`-${slug}-`))
+      .map((slug) => {
+        const mention = mentionFor("artist", slug, channel, options);
+        return mention && { ...mention, slug };
+      }),
+  ];
+
+  const out: Mention[] = [];
+  for (const mention of candidates) {
+    if (!mention || out.some((m) => m.handle === mention.handle)) continue;
+    out.push(mention);
+    if (out.length === MENTIONS_MAX) break;
   }
-  if (refs.venue) return mentionFor("venue", refs.venue, channel, options);
-  return undefined;
+  return out;
 }

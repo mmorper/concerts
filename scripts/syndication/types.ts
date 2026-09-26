@@ -143,6 +143,13 @@ export interface PayloadCredit {
   region?: string;
   /** ISO YYYY-MM-DD. */
   date: string;
+  /**
+   * Whole years since the show — On This Day only.
+   *
+   * The anniversary card leads with it ("10 years ago today"), and the renderer draws from
+   * the payload alone, so it rides here rather than being re-derived from the slug.
+   */
+  age?: number;
 }
 
 /**
@@ -204,6 +211,12 @@ export interface SyndicationPayload {
 
   /** Permalink. Per-channel UTM applied by the adapter. */
   url: string;
+  /**
+   * What the link says where a channel sets it as text (Bluesky). Names what a tap gets —
+   * "Setlist and the full night →" — rather than printing a URL. Set by the builder, which
+   * knows the stream, so no adapter has to branch on `kind`.
+   */
+  linkText?: string;
   media: MediaAsset[];
   /** ENTITY tags only. Detector tags never publish. */
   tags: string[];

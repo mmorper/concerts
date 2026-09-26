@@ -25,6 +25,7 @@ import type {Browser} from "puppeteer";
 import { launchBrowser } from "../utils/launch-browser.ts";
 import { deriveRect, derivationFor, retainedFraction } from "../media/derive.ts";
 import type { SyndicationPayload } from "./types.ts";
+import { joinNames } from "./payload.ts";
 import type { CropBox, LinerNotesPost } from "../../src/types/liner-notes.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -150,7 +151,7 @@ function fullBleed(v: TemplateVals): string {
        would also compete with the act name and flatten a hierarchy that is deliberate — the
        byline is what makes personal imagery outrank a press shot, but it is a credit, not a
        headline. -->
-  <span id="byline" style="position:absolute;left:30px;top:30px;font-size:21px;font-weight:600;letter-spacing:0.03em;color:rgba(255,255,255,0.82);background:rgba(8,10,16,0.58);padding:9px 19px;border-radius:999px;">${escapeHtml(v.byline)}</span>
+  ${v.byline ? `<span id="byline" style="position:absolute;left:30px;top:30px;font-size:21px;font-weight:600;letter-spacing:0.03em;color:rgba(255,255,255,0.82);background:rgba(8,10,16,0.58);padding:9px 19px;border-radius:999px;">${escapeHtml(v.byline)}</span>` : ""}
   <div style="position:absolute;left:0;right:0;bottom:0;height:${SCRIM_HEIGHT}px;background:linear-gradient(to bottom,rgba(9,11,18,0) 0%,rgba(9,11,18,0.78) 40%,rgba(9,11,18,0.95) 74%,#090b12 100%);"></div>
   <div id="type" style="position:absolute;left:0;right:0;bottom:0;padding:0 72px 72px 72px;box-sizing:border-box;display:flex;flex-direction:column;gap:28px;">
     <div style="display:flex;align-items:center;">
@@ -205,6 +206,12 @@ export function actLine(artists: string[], photographed: string | undefined, sho
 }
 
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+/** "10 years ago today". The eyebrow of an anniversary card. */
+export function yearsAgo(age: number | undefined): string {
+  if (!age) return "On this day";
+  return `${age} year${age === 1 ? "" : "s"} ago today`;
+}
+
 function monthYear(iso: string): string {
   const [y, m] = iso.split("-").map(Number);
   return `${MONTHS[(m ?? 1) - 1]} ${y}`;
@@ -229,7 +236,7 @@ function wideSplit(v: TemplateVals): string {
   <div style="position:absolute;inset:0;display:flex;flex-direction:row;">
     <div style="width:${WIDE_SLOT}px;height:${WIDE_SLOT}px;position:relative;overflow:hidden;flex-shrink:0;">
       <img src="${v.imageDataUri}" alt="${escapeHtml(v.alt)}" style="width:${WIDE_SLOT}px;height:${WIDE_SLOT}px;object-fit:cover;display:block;">
-      <span id="byline" style="position:absolute;left:22px;bottom:20px;font-size:16px;font-weight:600;letter-spacing:0.03em;color:rgba(255,255,255,0.82);background:rgba(8,10,16,0.58);padding:7px 15px;border-radius:999px;">${escapeHtml(v.byline)}</span>
+      ${v.byline ? `<span id="byline" style="position:absolute;left:22px;bottom:20px;font-size:16px;font-weight:600;letter-spacing:0.03em;color:rgba(255,255,255,0.82);background:rgba(8,10,16,0.58);padding:7px 15px;border-radius:999px;">${escapeHtml(v.byline)}</span>` : ""}
     </div>
     <!-- FIXED WIDTH, NOT flex-grow. A white-space:nowrap pill wider than the column made
          the column itself grow, pushing the type off the right edge of the card AND taking
@@ -478,13 +485,23 @@ export async function renderCard(
   const imageDataUri = `data:image/jpeg;base64,${cropped.toString("base64")}`;
 
   const credit = payload.credit;
-  const hook = payload.hook;
-  if (!hook) throw new Error(`${payload.slug}: no authored hook — never chop one out of prose`);
+  if (!payload.hook) throw new Error(`${payload.slug}: no authored hook — never chop one out of prose`);
+
+  /* 🔴 AN ANNIVERSARY CARD LEADS WITH THE ARTIST, NOT THE HOOK (2026-09-26).
+     The hook is already the post text directly above the image; setting it on the card too
+     printed the same sentence twice in one thumb-length, and the band's name — the one thing
+     a scrolling reader recognises — was a 7pt pill. Here the eyebrow says when, the display
+     line says who, and the meta says who else and where. Liner notes keep the hook: their
+     caption and hook are two different sentences. */
+  const anniversary = payload.kind === "on-this-day";
+  const hook = anniversary ? credit.artists[0] ?? payload.hook : payload.hook;
 
   /* Tier 1 ONLY, and the payload already decided. The absence on tier 2 is what makes the
      archive's own photography visibly outrank a press shot (PROVENANCE.md). */
   const byline = card.byline ?? "";
+  const openers = credit.artists.slice(1);
   const metaLines = [
+    anniversary && openers.length ? `with ${escapeHtml(joinNames(openers))}` : undefined,
     credit.song ? `&ldquo;${escapeHtml(credit.song)}&rdquo;` : undefined,
     `${escapeHtml(credit.venue)} &middot; ${escapeHtml(credit.region ? `${credit.city}, ${credit.region}` : credit.city)}`,
     monthYear(credit.date),
@@ -492,7 +509,9 @@ export async function renderCard(
 
   /* The act in the frame leads the act line. `credit.artists` is billing order, and the
      payload's first entry is the post's lead — the one the byline is about. */
-  let acts = actLine(credit.artists, credit.artists[0], credit.artists.length);
+  let acts = anniversary
+    ? yearsAgo(credit.age)
+    : actLine(credit.artists, credit.artists[0], credit.artists.length);
   const pill = ACT_PILL[payload.category ?? ""] ?? ACT_PILL_FALLBACK;
   let hookSize = format.hookSizes[0];
   let typeTop = 0;
@@ -522,7 +541,7 @@ export async function renderCard(
        Names are dropped from the END, so the photographed act — the one in the frame and
        the one the byline is about — is the last thing to go. A single name that still
        overflows is left alone: that is identification and there is nothing left to drop. */
-    for (let show = credit.artists.length; show >= 1; show--) {
+    for (let show = credit.artists.length; show >= 1 && !anniversary; show--) {
       const line = actLine(credit.artists, credit.artists[0], show);
       const fits = await page.evaluate((text: string) => {
         const el = document.getElementById("acts")!;
@@ -565,7 +584,9 @@ export async function renderCard(
            is correct for both and pinned by construction in neither. */
         const first = block.firstElementChild ?? block;
         const type = first.getBoundingClientRect();
-        const byline = document.getElementById("byline")!.getBoundingClientRect();
+        /* No byline on tier 2 and 3: the pill is not drawn at all (it used to render empty,
+           a grey dash in the corner of every press shot), so there is nothing to collide with. */
+        const byline = document.getElementById("byline")?.getBoundingClientRect();
         const card = document.getElementById("card")!.getBoundingClientRect();
         // Two conditions, and the SCRIM is the load-bearing one. Collision with the byline
         // is a floor so low that a hook three times over budget cleared it while covering
@@ -574,10 +595,10 @@ export async function renderCard(
            the wide card it lives inside the photograph, in the other column, so it can never
            collide however long the hook runs — testing against it there would ramp the type
            down for a reason that does not exist. */
-        const shares = byline.right > type.left;
+        const shares = Boolean(byline && byline.right > type.left);
         return {
           top: Math.round(type.top),
-          fits: type.top >= ceiling && type.top >= card.top && (!shares || type.top >= byline.bottom + 24),
+          fits: type.top >= ceiling && type.top >= card.top && (!shares || type.top >= byline!.bottom + 24),
         };
       }, format.typeCeiling);
 

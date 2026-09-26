@@ -83,24 +83,76 @@ export interface EntitySources {
   city: string;
   /** ISO date of the night the post is anchored to. */
   date: string;
+  /** The anchor show's genre as `concerts.json` spells it. Mapped through GENRE_TAGS. */
+  genre?: string;
 }
 
 /**
- * Entity tags in priority order: artists first, then venues, city, decade.
+ * Show genre → the broad tag people actually follow.
+ *
+ * A REVIEWED LIST, like `social-handles.json`, and on the same terms: a genre that is not
+ * here gets no tag. `#AlternativeHipHop` is an accurate description with nobody behind it;
+ * `#HipHop` is where the readers are. Guessing a tag for an unmapped genre would be
+ * authoring one, which rule 1 above forbids.
+ */
+export const GENRE_TAGS: Record<string, string> = {
+  "Alternative Hip Hop": "HipHop",
+  "Hip Hop": "HipHop",
+  "Political Hip Hop": "HipHop",
+  Rap: "HipHop",
+  "New Wave": "NewWave",
+  "New Wave Pop": "NewWave",
+  Synthpop: "Synthpop",
+  "Post Punk": "PostPunk",
+  Punk: "Punk",
+  "Punk Rock": "Punk",
+  "Pop Punk": "PopPunk",
+  Alternative: "AltRock",
+  "Alternative Rock": "AltRock",
+  "Indie Rock": "IndieRock",
+  "Classic Rock": "ClassicRock",
+  "Heavy Metal": "Metal",
+  Britpop: "Britpop",
+  Reggae: "Reggae",
+  "Reggae Fusion": "Reggae",
+  "Reggae Rock": "Reggae",
+  Ska: "Ska",
+  Jazz: "Jazz",
+  Funk: "Funk",
+  "R&B": "RnB",
+  Electronic: "ElectronicMusic",
+  "Dance/Electronic": "ElectronicMusic",
+  Rockabilly: "Rockabilly",
+  Swing: "Swing",
+};
+
+/**
+ * Venue and city tags longer than this are dropped.
+ *
+ * `#NationalMuseumOfAfricanAmericanHistoryAndCulture` is 47 characters, wraps mid-word on a
+ * phone, and nobody follows it. Artist tags are exempt: the artist is the tag a fan does
+ * follow, however long the name.
+ */
+export const PLACE_TAG_MAX = 20;
+
+/**
+ * Entity tags in priority order: lead artist, genre, other artists, venues, city, decade.
  *
  * Order is the whole selection mechanism — Bluesky takes the first 1–2 and X
  * takes none, so "which tags survive a tight budget" is decided here once
- * rather than in four adapters. Artists lead because an artist tag is the only
- * one a fan is plausibly following.
+ * rather than in four adapters. The lead artist comes first because an artist
+ * tag is the one a fan is plausibly following; the genre is second because it
+ * is the one a stranger is (2026-09-26, `social-portrait-posts.md`). Other
+ * artists follow, so a festival bill cannot push the genre off Bluesky.
  */
 export function entityTags(sources: EntitySources): string[] {
   const out: string[] = [];
   const seen = new Set<string>();
 
-  const push = (value: string | undefined) => {
+  const push = (value: string | undefined, max = Infinity) => {
     if (!value) return;
     const tag = toHashtag(value);
-    if (!tag) return;
+    if (!tag || tag.length > max) return;
     const key = tag.toLowerCase();
     if (seen.has(key)) return;
     seen.add(key);
@@ -110,9 +162,12 @@ export function entityTags(sources: EntitySources): string[] {
   /* Artists first — the owner's rule, 2026-08-29: "artists should trump venues". Someone
      follows a band; a venue is the second thing they would look for. On a channel taking
      only one or two tags this is the whole of the decision. */
-  for (const artist of sources.artists) push(artist);
-  for (const venue of sources.venues) push(venue);
-  push(sources.city);
+  const [lead, ...others] = sources.artists;
+  push(lead);
+  push(sources.genre ? GENRE_TAGS[sources.genre] : undefined);
+  for (const artist of others) push(artist);
+  for (const venue of sources.venues) push(venue, PLACE_TAG_MAX);
+  push(sources.city, PLACE_TAG_MAX);
 
   const year = Number(sources.date.slice(0, 4));
   if (Number.isFinite(year)) push(`${Math.floor(year / 10) * 10}s`);

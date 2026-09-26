@@ -9,7 +9,7 @@
 
 import { describe, it, expect } from "vitest";
 import { FacetedText, utf8Length, graphemeLength, displayUrl } from "../../scripts/syndication/facets.ts";
-import { composeBlueskyText, describe as describeCredit } from "../../scripts/syndication/adapters/bluesky.ts";
+import { composeBlueskyText } from "../../scripts/syndication/adapters/bluesky.ts";
 import type { SyndicationPayload } from "../../scripts/syndication/types.ts";
 
 function payload(overrides: Partial<SyndicationPayload> = {}): SyndicationPayload {
@@ -136,13 +136,5 @@ describe("displayUrl", () => {
 
   it("leaves a short URL alone", () => {
     expect(displayUrl("https://concerts.morperhaus.org/x", 40)).toBe("concerts.morperhaus.org/x");
-  });
-});
-
-describe("embed description", () => {
-  it("is the credit stack, not the hook", () => {
-    const text = describeCredit(payload());
-    expect(text).toBe("Björk · Greek Theatre · Los Angeles · 1997-08-09");
-    expect(text).not.toContain("The hook");
   });
 });

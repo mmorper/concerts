@@ -117,7 +117,7 @@ async function main() {
         continue;
       }
 
-      const card = await renderCard(payload, browser, FORMATS.wide);
+      const card = await renderCard(payload, browser, FORMATS["4x5"]);
       console.log(`  ${CYAN}THE PICTURE${OFF}`);
       console.log(`    ${card.path}`);
       console.log(`    ${DIM}1200×630 · ${(card.bytes / 1024).toFixed(0)} KB at q${card.quality} · ` +
