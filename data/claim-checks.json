@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-26T16:17:28.954Z",
+  "updatedAt": "2026-09-27T14:59:49.442Z",
   "entries": [
     {
       "slug": "depeche-mode-38-years-of-shows-2",
@@ -110,15 +110,15 @@
     },
     {
       "slug": "otd-2026-09-18",
-      "hash": "0b3b690bf10a3d9a",
-      "checkedAt": "2026-09-19T13:40:47.552Z",
+      "hash": "8d7d3f27b0d1055f",
+      "checkedAt": "2026-09-27T14:59:41.520Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "Ten opening acts, and the closest I ever got to a racetrack in Carson was that night.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Fact sheet lists 11 openers for the 1993-09-18 show (Crowded House, Inner Circle, Jah Wobble's Invaders of the Heart, James, P.M. Dawn, Sheila Chandra, Sinéad O'Connor, Stereo MC's, Ziggy Marley, Terem Quartet, The Drummers of Burundi).",
+          "evidence": "The 1993-09-18 show lists 11 openers (Crowded House, Inner Circle, Jah Wobble's Invaders of the Heart, James, P.M. Dawn, Sheila Chandra, Sinéad O'Connor, Stereo MC's, Ziggy Marley, Terem Quartet, The Drummers of Burundi), not ten.",
           "replacement": "Eleven opening acts, and the closest I ever got to a racetrack in Carson was that night."
         },
         {
@@ -126,23 +126,24 @@
           "sentence": "Thirty-three years ago today, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "Today is 2026-09-19 per fact sheet, but the show date is 1993-09-18 — the anniversary was yesterday, not today.",
-          "replacement": "Thirty-three years ago yesterday, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it."
+          "evidence": "Today is 2026-09-27, but the show was on 1993-09-18; the anniversary date does not fall on today, so 'today' is inaccurate for an anniversary post.",
+          "replacement": "Thirty-three years ago, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it."
+        },
+        {
+          "field": "beat 1",
+          "sentence": "September 18, 1993: my first time seeing Peter Gabriel, filed under Art Rock.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "No genre classification ('Art Rock') appears in the fact sheet for Peter Gabriel; cannot confirm this tag against archive data.",
+          "replacement": "September 18, 1993: my first time seeing Peter Gabriel."
         },
         {
           "field": "beat 2",
           "sentence": "Ten acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Fact sheet lists 11 openers for the 1993-09-18 show.",
+          "evidence": "The fact sheet lists 11 openers for the 1993-09-18 show, not ten.",
           "replacement": "Eleven acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet."
-        },
-        {
-          "field": "beat 3",
-          "sentence": "Ziggy Marley played that bill too — the second and last time I'd ever see him.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "The fact sheet contains no record of any other Ziggy Marley shows, so a claim of 'second and last' cannot be confirmed or denied from the archive data."
         }
       ]
     },
@@ -162,47 +163,24 @@
     },
     {
       "slug": "otd-2026-09-20",
-      "hash": "0475a08a768214b2",
-      "checkedAt": "2026-09-23T14:39:51.484Z",
+      "hash": "f7cc3d7b5f463a08",
+      "checkedAt": "2026-09-27T14:59:23.861Z",
       "issues": [
         {
-          "field": "Caption",
-          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "The opener list for the 2003-09-20 show contains 14 acts (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes), matching the Hook's 'Fourteen acts,' not thirteen.",
-          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
-        },
-        {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "Today is 2026-09-23 and the show was 2003-09-20, which is 23 years ago, not 20.",
-          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
+          "evidence": "TODAY is 2026-09-27; the show was 2003-09-20, so it is 23 years ago, not 20, and today's date does not match the show's anniversary.",
+          "replacement": "Twenty-three years ago, I saw The Cure for the first time, on a bill with fourteen other acts."
         },
         {
-          "field": "Beat 3",
-          "sentence": "Violent Femmes played that day too — the second and last time I'd ever see them.",
-          "kind": "invented-number",
-          "severity": "must-fix",
-          "evidence": "The fact sheet has no record of a prior Violent Femmes show, so calling this the 'second' sighting is unsupported.",
-          "replacement": "Violent Femmes played that day too — the last time I'd ever see them."
-        },
-        {
-          "field": "Beat 3",
-          "sentence": "Violent Femmes played that day too — the second and last time I'd ever see them.",
+          "field": "caption",
+          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
           "kind": "internal",
           "severity": "must-fix",
-          "evidence": "Caption states this was 'the last time I ever saw Violent Femmes' and Hook says they 'closed out their run with me for good,' implying no prior sighting, contradicting Beat 3's claim of a 'second' time.",
-          "replacement": "Violent Femmes played that day too — the only time I'd ever see them."
-        },
-        {
-          "field": "Beat 4",
-          "sentence": "Marc Almond, Dashboard Confessional, Hot Hot Heat, Interpol, Kings of Leon: all one-time sightings for me.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "The fact sheet does not track full show histories for these individual acts, so it cannot confirm these were one-time sightings."
+          "evidence": "Hook states 'Fourteen acts opened that day' and Beat 1 says 'Fourteen acts on one bill', contradicting the caption's 'thirteen other acts.'",
+          "replacement": "Twenty-three years ago, I saw The Cure for the first time, on a bill with fourteen other acts."
         }
       ]
     },
@@ -228,10 +206,67 @@
       ]
     },
     {
+      "slug": "otd-2026-09-25",
+      "hash": "f8de902e95b9b646",
+      "checkedAt": "2026-09-27T14:58:51.201Z",
+      "issues": [
+        {
+          "field": "Caption",
+          "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
+          "kind": "stale-relative-time",
+          "severity": "must-fix",
+          "evidence": "Today is 2026-09-27; the show was 2022-09-25, so today is not the anniversary date, and it is actually 4 years and 2 days, not exactly 'today'."
+        },
+        {
+          "field": "Caption",
+          "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
+          "kind": "invented-number",
+          "severity": "review",
+          "evidence": "The fact sheet has no genre tag 'Alternative Hip Hop' associated with this show; this appears to be an invented classification."
+        },
+        {
+          "field": "Beat 3",
+          "sentence": "Filed under Alternative Hip Hop, a rare tag in my collection.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "No genre tags appear anywhere in the fact sheet, so this classification and its rarity cannot be confirmed."
+        },
+        {
+          "field": "Beat 4",
+          "sentence": "One of three visits I've made to YouTube Theatre total.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "The fact sheet lists 3 total shows at YouTube Theatre (Gorillaz, Devo, Howard Jones), but does not confirm the owner personally attended all three; this conflates venue history with personal attendance."
+        },
+        {
+          "field": "Beat 5",
+          "sentence": "Also that year: Royal Blood, Tears For Fears, Kraftwerk, and more — but this was the only Gorillaz night.",
+          "kind": "invented-number",
+          "severity": "must-fix",
+          "evidence": "None of Royal Blood, Tears For Fears, or Kraftwerk appear anywhere in the fact sheet's show records for 2022 or any year."
+        }
+      ]
+    },
+    {
       "slug": "social-distortion-34-years-of-shows",
       "hash": "9a3b2545d337de3e",
       "checkedAt": "2026-09-17T14:38:40.210Z",
       "issues": []
+    },
+    {
+      "slug": "the-smithereens-21-years-between-shows",
+      "hash": "a55ff6a20e1e9907",
+      "checkedAt": "2026-09-27T14:59:49.442Z",
+      "issues": [
+        {
+          "field": "Beat 4",
+          "sentence": "I was the variable — they'd put out eight more albums in that gap.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "Blow Up is album 5 of 15 (1991) and 2011 is album 13 of 15 (2011); the albums released between them are A Date With The Smithereens, God Save The Smithereens, Meet The Smithereens!, Christmas With The Smithereens, B-Sides The Beatles, The Smithereens Play Tommy, and Greatest Hits...Revisited — seven albums, not eight.",
+          "replacement": "I was the variable — they'd put out seven more albums in that gap."
+        }
+      ]
     },
     {
       "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
