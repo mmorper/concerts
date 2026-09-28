@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-27T14:59:49.442Z",
+  "updatedAt": "2026-09-28T17:57:12.244Z",
   "entries": [
     {
       "slug": "depeche-mode-38-years-of-shows-2",
@@ -110,39 +110,23 @@
     },
     {
       "slug": "otd-2026-09-18",
-      "hash": "8d7d3f27b0d1055f",
-      "checkedAt": "2026-09-27T14:59:41.520Z",
+      "hash": "6c9022fe4375e283",
+      "checkedAt": "2026-09-28T17:57:12.244Z",
       "issues": [
         {
-          "field": "hook",
+          "field": "Hook",
           "sentence": "Ten opening acts, and the closest I ever got to a racetrack in Carson was that night.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "The 1993-09-18 show lists 11 openers (Crowded House, Inner Circle, Jah Wobble's Invaders of the Heart, James, P.M. Dawn, Sheila Chandra, Sinéad O'Connor, Stereo MC's, Ziggy Marley, Terem Quartet, The Drummers of Burundi), not ten.",
+          "evidence": "The 1993-09-18 show lists 11 openers: Crowded House, Inner Circle, Jah Wobble's Invaders of the Heart, James, P.M. Dawn, Sheila Chandra, Sinéad O'Connor, Stereo MC's, Ziggy Marley, Terem Quartet, The Drummers of Burundi.",
           "replacement": "Eleven opening acts, and the closest I ever got to a racetrack in Carson was that night."
         },
         {
-          "field": "caption",
-          "sentence": "Thirty-three years ago today, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it.",
-          "kind": "stale-relative-time",
-          "severity": "must-fix",
-          "evidence": "Today is 2026-09-27, but the show was on 1993-09-18; the anniversary date does not fall on today, so 'today' is inaccurate for an anniversary post.",
-          "replacement": "Thirty-three years ago, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it."
-        },
-        {
-          "field": "beat 1",
-          "sentence": "September 18, 1993: my first time seeing Peter Gabriel, filed under Art Rock.",
-          "kind": "external",
-          "severity": "review",
-          "evidence": "No genre classification ('Art Rock') appears in the fact sheet for Peter Gabriel; cannot confirm this tag against archive data.",
-          "replacement": "September 18, 1993: my first time seeing Peter Gabriel."
-        },
-        {
-          "field": "beat 2",
+          "field": "Beat 2",
           "sentence": "Ten acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "The fact sheet lists 11 openers for the 1993-09-18 show, not ten.",
+          "evidence": "The 1993-09-18 show lists 11 openers per the fact sheet.",
           "replacement": "Eleven acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet."
         }
       ]
@@ -163,24 +147,24 @@
     },
     {
       "slug": "otd-2026-09-20",
-      "hash": "f7cc3d7b5f463a08",
-      "checkedAt": "2026-09-27T14:59:23.861Z",
+      "hash": "7b7dc36c590ba640",
+      "checkedAt": "2026-09-28T17:57:01.928Z",
       "issues": [
         {
           "field": "caption",
           "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
-          "kind": "stale-relative-time",
+          "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "TODAY is 2026-09-27; the show was 2003-09-20, so it is 23 years ago, not 20, and today's date does not match the show's anniversary.",
-          "replacement": "Twenty-three years ago, I saw The Cure for the first time, on a bill with fourteen other acts."
+          "evidence": "Show was 2003-09-20; TODAY is 2026-09-28, which is 23 years later, not twenty.",
+          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
         },
         {
           "field": "caption",
-          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
+          "sentence": "on a bill with thirteen other acts",
           "kind": "internal",
           "severity": "must-fix",
-          "evidence": "Hook states 'Fourteen acts opened that day' and Beat 1 says 'Fourteen acts on one bill', contradicting the caption's 'thirteen other acts.'",
-          "replacement": "Twenty-three years ago, I saw The Cure for the first time, on a bill with fourteen other acts."
+          "evidence": "Hook states 'Fourteen acts opened that day,' but the fact sheet lists 14 openers (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes), contradicting 'thirteen other acts.'",
+          "replacement": "on a bill with fourteen other acts"
         }
       ]
     },
@@ -207,43 +191,39 @@
     },
     {
       "slug": "otd-2026-09-25",
-      "hash": "f8de902e95b9b646",
-      "checkedAt": "2026-09-27T14:58:51.201Z",
+      "hash": "d7ded22b98bec93b",
+      "checkedAt": "2026-09-28T17:56:44.220Z",
       "issues": [
         {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "Today is 2026-09-27; the show was 2022-09-25, so today is not the anniversary date, and it is actually 4 years and 2 days, not exactly 'today'."
+          "evidence": "Show date was 2022-09-25; today is 2026-09-28, which is not the four-year anniversary (that would be 2026-09-25).",
+          "replacement": "Four years ago this week at YouTube Theatre, EarthGang opened for Gorillaz."
         },
         {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
-          "kind": "invented-number",
+          "kind": "external",
           "severity": "review",
-          "evidence": "The fact sheet has no genre tag 'Alternative Hip Hop' associated with this show; this appears to be an invented classification."
+          "evidence": "The fact sheet contains no genre tags or 'Alternative Hip Hop' classification for this show.",
+          "replacement": "Four years ago this week at YouTube Theatre, EarthGang opened for Gorillaz."
         },
         {
-          "field": "Beat 3",
+          "field": "beat",
           "sentence": "Filed under Alternative Hip Hop, a rare tag in my collection.",
           "kind": "external",
           "severity": "review",
-          "evidence": "No genre tags appear anywhere in the fact sheet, so this classification and its rarity cannot be confirmed."
+          "evidence": "No genre tagging or classification appears anywhere in the fact sheet for this or any show."
         },
         {
-          "field": "Beat 4",
-          "sentence": "One of three visits I've made to YouTube Theatre total.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "The fact sheet lists 3 total shows at YouTube Theatre (Gorillaz, Devo, Howard Jones), but does not confirm the owner personally attended all three; this conflates venue history with personal attendance."
-        },
-        {
-          "field": "Beat 5",
+          "field": "beat",
           "sentence": "Also that year: Royal Blood, Tears For Fears, Kraftwerk, and more — but this was the only Gorillaz night.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "None of Royal Blood, Tears For Fears, or Kraftwerk appear anywhere in the fact sheet's show records for 2022 or any year."
+          "evidence": "The fact sheet contains no shows by Royal Blood, Tears For Fears, or Kraftwerk in 2022 or any year — these artists don't appear anywhere in the archive data provided.",
+          "replacement": "This was the only Gorillaz night on record — my one show with them."
         }
       ]
     },
