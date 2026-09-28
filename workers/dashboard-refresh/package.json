@@ -13,9 +13,9 @@
     "tail": "npx wrangler tail"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20260903.1",
+    "@cloudflare/workers-types": "^5.20260925.2",
     "typescript": "^5.7.0",
-    "vitest": "^5.0.0",
-    "wrangler": "^4.0.0"
+    "vitest": "^5.0.2",
+    "wrangler": "^4.140.0"
   }
 }
