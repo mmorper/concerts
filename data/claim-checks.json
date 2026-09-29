@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-28T17:57:12.244Z",
+  "updatedAt": "2026-09-29T16:19:53.654Z",
   "entries": [
     {
       "slug": "depeche-mode-38-years-of-shows-2",
@@ -110,11 +110,11 @@
     },
     {
       "slug": "otd-2026-09-18",
-      "hash": "6c9022fe4375e283",
-      "checkedAt": "2026-09-28T17:57:12.244Z",
+      "hash": "ab4d64713894df7a",
+      "checkedAt": "2026-09-29T16:19:37.408Z",
       "issues": [
         {
-          "field": "Hook",
+          "field": "hook",
           "sentence": "Ten opening acts, and the closest I ever got to a racetrack in Carson was that night.",
           "kind": "contradicted",
           "severity": "must-fix",
@@ -122,11 +122,19 @@
           "replacement": "Eleven opening acts, and the closest I ever got to a racetrack in Carson was that night."
         },
         {
-          "field": "Beat 2",
+          "field": "caption",
+          "sentence": "Thirty-three years ago today, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it.",
+          "kind": "stale-relative-time",
+          "severity": "must-fix",
+          "evidence": "TODAY IS 2026-09-29, but the show was on 1993-09-18 — the anniversary date has already passed by eleven days, so 'today' is inaccurate.",
+          "replacement": "Thirty-three years ago this month, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it."
+        },
+        {
+          "field": "beat_2",
           "sentence": "Ten acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "The 1993-09-18 show lists 11 openers per the fact sheet.",
+          "evidence": "The 1993-09-18 show lists 11 openers total, not ten.",
           "replacement": "Eleven acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet."
         }
       ]
@@ -147,24 +155,24 @@
     },
     {
       "slug": "otd-2026-09-20",
-      "hash": "7b7dc36c590ba640",
-      "checkedAt": "2026-09-28T17:57:01.928Z",
+      "hash": "d7078d7d4b6fe8af",
+      "checkedAt": "2026-09-29T16:19:24.377Z",
       "issues": [
         {
           "field": "caption",
-          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "Show was 2003-09-20; TODAY is 2026-09-28, which is 23 years later, not twenty.",
-          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
-        },
-        {
-          "field": "caption",
-          "sentence": "on a bill with thirteen other acts",
+          "sentence": "It was also the last time I ever saw Violent Femmes, on a bill with thirteen other acts.",
           "kind": "internal",
           "severity": "must-fix",
-          "evidence": "Hook states 'Fourteen acts opened that day,' but the fact sheet lists 14 openers (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes), contradicting 'thirteen other acts.'",
+          "evidence": "The Hyundai Pavilion 2003-09-20 show lists 14 opening acts (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes), matching the Hook's 'Fourteen acts opened,' not thirteen.",
           "replacement": "on a bill with fourteen other acts"
+        },
+        {
+          "field": "beat",
+          "sentence": "Twenty years between my first Cure show and my second. Everything else that day was a single afternoon.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "The Cure shows are 2003-09-20 and 2023-05-24, a gap of about 19 years and 8 months, not a full twenty years.",
+          "replacement": "Almost twenty years between my first Cure show and my second. Everything else that day was a single afternoon."
         }
       ]
     },
@@ -191,39 +199,30 @@
     },
     {
       "slug": "otd-2026-09-25",
-      "hash": "d7ded22b98bec93b",
-      "checkedAt": "2026-09-28T17:56:44.220Z",
+      "hash": "5a89da7f4eb6ead0",
+      "checkedAt": "2026-09-29T16:19:05.178Z",
       "issues": [
         {
           "field": "caption",
           "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
-          "kind": "stale-relative-time",
-          "severity": "must-fix",
-          "evidence": "Show date was 2022-09-25; today is 2026-09-28, which is not the four-year anniversary (that would be 2026-09-25).",
-          "replacement": "Four years ago this week at YouTube Theatre, EarthGang opened for Gorillaz."
-        },
-        {
-          "field": "caption",
-          "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The fact sheet contains no genre tags or 'Alternative Hip Hop' classification for this show.",
-          "replacement": "Four years ago this week at YouTube Theatre, EarthGang opened for Gorillaz."
+          "evidence": "The fact sheet contains no genre tag or classification ('Alternative Hip Hop') for this show or either artist."
         },
         {
-          "field": "beat",
+          "field": "beat3",
           "sentence": "Filed under Alternative Hip Hop, a rare tag in my collection.",
           "kind": "external",
           "severity": "review",
-          "evidence": "No genre tagging or classification appears anywhere in the fact sheet for this or any show."
+          "evidence": "No genre tagging data ('Alternative Hip Hop') exists in the fact sheet to confirm this classification or its rarity."
         },
         {
-          "field": "beat",
+          "field": "beat5",
           "sentence": "Also that year: Royal Blood, Tears For Fears, Kraftwerk, and more — but this was the only Gorillaz night.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "The fact sheet contains no shows by Royal Blood, Tears For Fears, or Kraftwerk in 2022 or any year — these artists don't appear anywhere in the archive data provided.",
-          "replacement": "This was the only Gorillaz night on record — my one show with them."
+          "evidence": "The fact sheet lists only 3 total shows at YouTube Theatre (Gorillaz 2022-09-25, Devo 2023-11-16, Howard Jones 2024-08-20); Royal Blood, Tears For Fears, and Kraftwerk do not appear anywhere in the archive data.",
+          "replacement": "This was the only Gorillaz night I've caught, at this venue or any other."
         }
       ]
     },
@@ -235,16 +234,32 @@
     },
     {
       "slug": "the-smithereens-21-years-between-shows",
-      "hash": "a55ff6a20e1e9907",
-      "checkedAt": "2026-09-27T14:59:49.442Z",
+      "hash": "be602215c7ef8210",
+      "checkedAt": "2026-09-29T16:19:53.653Z",
       "issues": [
         {
-          "field": "Beat 4",
-          "sentence": "I was the variable — they'd put out eight more albums in that gap.",
+          "field": "hook",
+          "sentence": "21 years is long enough to forget a band exists — and long enough to feel the whole gap at once.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Blow Up is album 5 of 15 (1991) and 2011 is album 13 of 15 (2011); the albums released between them are A Date With The Smithereens, God Save The Smithereens, Meet The Smithereens!, Christmas With The Smithereens, B-Sides The Beatles, The Smithereens Play Tommy, and Greatest Hits...Revisited — seven albums, not eight.",
-          "replacement": "I was the variable — they'd put out seven more albums in that gap."
+          "evidence": "The gap between 1992-06-04 and 2013-06-02 is 20 years and 363 days — just short of 21 years.",
+          "replacement": "20 years is long enough to forget a band exists — and long enough to feel the whole gap at once."
+        },
+        {
+          "field": "caption",
+          "sentence": "The power-pop hooks hit exactly as hard 21 years on.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "1992-06-04 to 2013-06-02 spans 20 years and 363 days, not a full 21 years.",
+          "replacement": "The power-pop hooks hit exactly as hard 20 years on."
+        },
+        {
+          "field": "beat",
+          "sentence": "21 years later: The Hamilton Live in Washington D.C. Different city, different decade, same band.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "The interval between the two shows (1992-06-04 to 2013-06-02) is 20 years and 363 days, not 21 years.",
+          "replacement": "20 years later: The Hamilton Live in Washington D.C. Different city, different decade, same band."
         }
       ]
     },
