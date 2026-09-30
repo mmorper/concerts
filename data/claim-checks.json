@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-29T16:19:53.654Z",
+  "updatedAt": "2026-09-30T16:15:04.068Z",
   "entries": [
     {
       "slug": "depeche-mode-38-years-of-shows-2",
@@ -110,15 +110,15 @@
     },
     {
       "slug": "otd-2026-09-18",
-      "hash": "ab4d64713894df7a",
-      "checkedAt": "2026-09-29T16:19:37.408Z",
+      "hash": "0b0824106a162795",
+      "checkedAt": "2026-09-30T16:14:57.856Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "Ten opening acts, and the closest I ever got to a racetrack in Carson was that night.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "The 1993-09-18 show lists 11 openers: Crowded House, Inner Circle, Jah Wobble's Invaders of the Heart, James, P.M. Dawn, Sheila Chandra, Sinéad O'Connor, Stereo MC's, Ziggy Marley, Terem Quartet, The Drummers of Burundi.",
+          "evidence": "The 1993-09-18 Olympic Velodrome show lists eleven openers (Crowded House, Inner Circle, Jah Wobble's Invaders of the Heart, James, P.M. Dawn, Sheila Chandra, Sinéad O'Connor, Stereo MC's, Ziggy Marley, Terem Quartet, The Drummers of Burundi), not ten.",
           "replacement": "Eleven opening acts, and the closest I ever got to a racetrack in Carson was that night."
         },
         {
@@ -126,15 +126,15 @@
           "sentence": "Thirty-three years ago today, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "TODAY IS 2026-09-29, but the show was on 1993-09-18 — the anniversary date has already passed by eleven days, so 'today' is inaccurate.",
+          "evidence": "The show was on 1993-09-18, but TODAY is given as 2026-09-30 — 'today' does not fall on the anniversary date, so the anniversary phrasing is inaccurate.",
           "replacement": "Thirty-three years ago this month, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it."
         },
         {
-          "field": "beat_2",
+          "field": "beat",
           "sentence": "Ten acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "The 1993-09-18 show lists 11 openers total, not ten.",
+          "evidence": "The fact sheet lists eleven openers for the 1993-09-18 show, not ten; also internally inconsistent with itself needing correction alongside the hook.",
           "replacement": "Eleven acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet."
         }
       ]
@@ -155,24 +155,24 @@
     },
     {
       "slug": "otd-2026-09-20",
-      "hash": "d7078d7d4b6fe8af",
-      "checkedAt": "2026-09-29T16:19:24.377Z",
+      "hash": "ef660663b27649df",
+      "checkedAt": "2026-09-30T16:14:36.614Z",
       "issues": [
         {
           "field": "caption",
-          "sentence": "It was also the last time I ever saw Violent Femmes, on a bill with thirteen other acts.",
-          "kind": "internal",
+          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
+          "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "The Hyundai Pavilion 2003-09-20 show lists 14 opening acts (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes), matching the Hook's 'Fourteen acts opened,' not thirteen.",
-          "replacement": "on a bill with fourteen other acts"
+          "evidence": "TODAY IS 2026-09-30; the show was on 2003-09-20, which is 23 years prior, not twenty.",
+          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
         },
         {
-          "field": "beat",
-          "sentence": "Twenty years between my first Cure show and my second. Everything else that day was a single afternoon.",
-          "kind": "contradicted",
+          "field": "caption",
+          "sentence": "on a bill with thirteen other acts",
+          "kind": "internal",
           "severity": "must-fix",
-          "evidence": "The Cure shows are 2003-09-20 and 2023-05-24, a gap of about 19 years and 8 months, not a full twenty years.",
-          "replacement": "Almost twenty years between my first Cure show and my second. Everything else that day was a single afternoon."
+          "evidence": "Hook states 'Fourteen acts opened that day' and 14 openers are listed for the 2003-09-20 show (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes), contradicting 'thirteen other acts'.",
+          "replacement": "on a bill with fourteen other acts"
         }
       ]
     },
@@ -199,30 +199,38 @@
     },
     {
       "slug": "otd-2026-09-25",
-      "hash": "5a89da7f4eb6ead0",
-      "checkedAt": "2026-09-29T16:19:05.178Z",
+      "hash": "57c27f37d13e8023",
+      "checkedAt": "2026-09-30T16:14:23.462Z",
       "issues": [
         {
-          "field": "caption",
+          "field": "Caption",
+          "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
+          "kind": "stale-relative-time",
+          "severity": "must-fix",
+          "evidence": "Today is 2026-09-30, but the show was 2022-09-25; the anniversary date does not match today's date, so 'four years ago today' is inaccurate.",
+          "replacement": "Four years ago, at YouTube Theatre, EarthGang opened for Gorillaz."
+        },
+        {
+          "field": "Caption",
           "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The fact sheet contains no genre tag or classification ('Alternative Hip Hop') for this show or either artist."
+          "evidence": "No genre tag data ('Alternative Hip Hop') appears anywhere in the fact sheet for this show or artist.",
+          "replacement": "Four years ago, at YouTube Theatre, EarthGang opened for Gorillaz."
         },
         {
-          "field": "beat3",
+          "field": "Beat 3",
           "sentence": "Filed under Alternative Hip Hop, a rare tag in my collection.",
           "kind": "external",
           "severity": "review",
-          "evidence": "No genre tagging data ('Alternative Hip Hop') exists in the fact sheet to confirm this classification or its rarity."
+          "evidence": "The fact sheet contains no genre tagging system or 'Alternative Hip Hop' label for any show."
         },
         {
-          "field": "beat5",
+          "field": "Beat 5",
           "sentence": "Also that year: Royal Blood, Tears For Fears, Kraftwerk, and more — but this was the only Gorillaz night.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "The fact sheet lists only 3 total shows at YouTube Theatre (Gorillaz 2022-09-25, Devo 2023-11-16, Howard Jones 2024-08-20); Royal Blood, Tears For Fears, and Kraftwerk do not appear anywhere in the archive data.",
-          "replacement": "This was the only Gorillaz night I've caught, at this venue or any other."
+          "evidence": "None of Royal Blood, Tears For Fears, or Kraftwerk appear anywhere in the fact sheet's show lists, venue lists, or archive summary for 2022."
         }
       ]
     },
@@ -234,34 +242,9 @@
     },
     {
       "slug": "the-smithereens-21-years-between-shows",
-      "hash": "be602215c7ef8210",
-      "checkedAt": "2026-09-29T16:19:53.653Z",
-      "issues": [
-        {
-          "field": "hook",
-          "sentence": "21 years is long enough to forget a band exists — and long enough to feel the whole gap at once.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "The gap between 1992-06-04 and 2013-06-02 is 20 years and 363 days — just short of 21 years.",
-          "replacement": "20 years is long enough to forget a band exists — and long enough to feel the whole gap at once."
-        },
-        {
-          "field": "caption",
-          "sentence": "The power-pop hooks hit exactly as hard 21 years on.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "1992-06-04 to 2013-06-02 spans 20 years and 363 days, not a full 21 years.",
-          "replacement": "The power-pop hooks hit exactly as hard 20 years on."
-        },
-        {
-          "field": "beat",
-          "sentence": "21 years later: The Hamilton Live in Washington D.C. Different city, different decade, same band.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "The interval between the two shows (1992-06-04 to 2013-06-02) is 20 years and 363 days, not 21 years.",
-          "replacement": "20 years later: The Hamilton Live in Washington D.C. Different city, different decade, same band."
-        }
-      ]
+      "hash": "3fba71f1fba6d53d",
+      "checkedAt": "2026-09-30T16:15:04.068Z",
+      "issues": []
     },
     {
       "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
