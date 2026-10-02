@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-01T16:55:51.571Z",
+  "updatedAt": "2026-10-02T16:09:16.689Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -1239,26 +1239,21 @@
     {
       "slug": "stryper-caught-once-never-again",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "stryper-caught-once-never-again",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mwvqu66ctf22",
+      "rkey": "3mwvqu66ctf22",
+      "postedAt": "2026-10-02T16:05:42.598Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "stryper-caught-once-never-again",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "stryper-caught-once-never-again",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117372181303881054",
+      "postedAt": "2026-10-02T16:09:16.689Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "tears-for-fears-17-years-between-shows",
