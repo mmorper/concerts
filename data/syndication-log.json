@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-02T16:09:16.689Z",
+  "updatedAt": "2026-10-03T14:34:51.576Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -221,26 +221,21 @@
     {
       "slug": "duran-duran-21-years-between-shows",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "duran-duran-21-years-between-shows",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mwy45vmgxm2u",
+      "rkey": "3mwy45vmgxm2u",
+      "postedAt": "2026-10-03T14:33:19.686Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "duran-duran-21-years-between-shows",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "duran-duran-21-years-between-shows",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117377472357171550",
+      "postedAt": "2026-10-03T14:34:51.576Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "echo-and-the-bunnymen-26-years-between-shows",

@@ -1,11 +1,17 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-02T16:05:37.983Z",
+  "updatedAt": "2026-10-03T14:33:16.181Z",
   "entries": [
     {
       "slug": "depeche-mode-38-years-of-shows-2",
       "hash": "ff7dc37ed91e0bb2",
       "checkedAt": "2026-09-23T14:39:57.142Z",
+      "issues": []
+    },
+    {
+      "slug": "duran-duran-21-years-between-shows",
+      "hash": "343278579e3286bb",
+      "checkedAt": "2026-10-03T14:33:16.181Z",
       "issues": []
     },
     {
@@ -110,15 +116,15 @@
     },
     {
       "slug": "otd-2026-09-18",
-      "hash": "29b03e3ef4b6d457",
-      "checkedAt": "2026-10-02T16:05:27.833Z",
+      "hash": "1d9b37d3bf40b7ad",
+      "checkedAt": "2026-10-03T14:33:12.423Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "Ten opening acts, and the closest I ever got to a racetrack in Carson was that night.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "The Olympic Velodrome 1993-09-18 show lists 11 openers: Crowded House, Inner Circle, Jah Wobble's Invaders of the Heart, James, P.M. Dawn, Sheila Chandra, Sinéad O'Connor, Stereo MC's, Ziggy Marley, Terem Quartet, and The Drummers of Burundi.",
+          "evidence": "The fact sheet lists 11 opening acts for 1993-09-18: Crowded House, Inner Circle, Jah Wobble's Invaders of the Heart, James, P.M. Dawn, Sheila Chandra, Sinéad O'Connor, Stereo MC's, Ziggy Marley, Terem Quartet, The Drummers of Burundi.",
           "replacement": "Eleven opening acts, and the closest I ever got to a racetrack in Carson was that night."
         },
         {
@@ -126,15 +132,15 @@
           "sentence": "Thirty-three years ago today, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "TODAY IS 2026-10-02, but the show was 1993-09-18; 'today' does not align with the anniversary date, making the 'ago today' framing incorrect as of the actual publish date.",
+          "evidence": "TODAY IS 2026-10-03, but the show was on 1993-09-18 — 'today' does not align with the anniversary date, so this phrasing is inaccurate as posted.",
           "replacement": "Thirty-three years ago this month, Peter Gabriel headlined a bill that also had Sinéad O'Connor, James, and the Drummers of Burundi on it."
         },
         {
-          "field": "beat2",
+          "field": "beat 2",
           "sentence": "Ten acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "The Olympic Velodrome 1993-09-18 show lists 11 openers, not ten.",
+          "evidence": "The fact sheet lists 11 opening acts for the 1993-09-18 show, not ten.",
           "replacement": "Eleven acts opened, including Crowded House, Ziggy Marley, and the Terem Quartet."
         }
       ]
@@ -155,24 +161,24 @@
     },
     {
       "slug": "otd-2026-09-20",
-      "hash": "d0203488ddd8e3a8",
-      "checkedAt": "2026-10-02T16:05:13.716Z",
+      "hash": "354501180bbd2b01",
+      "checkedAt": "2026-10-03T14:33:00.434Z",
       "issues": [
         {
-          "field": "caption",
-          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "The Hyundai Pavilion show lists 14 openers (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes), matching the hook's 'fourteen acts,' not thirteen.",
-          "replacement": "Twenty years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
-        },
-        {
-          "field": "caption",
+          "field": "Caption",
           "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "TODAY is given as 2026-10-02; the show was 2003-09-20, which is roughly 23 years ago, not twenty.",
-          "replacement": "On this date in 2003 I saw The Cure for the first time, on a bill with fourteen other acts."
+          "evidence": "Show date is 2003-09-20; TODAY IS 2026-10-03, making this 23 years ago, not twenty.",
+          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
+        },
+        {
+          "field": "Caption",
+          "sentence": "on a bill with thirteen other acts",
+          "kind": "internal",
+          "severity": "must-fix",
+          "evidence": "Hook states 'Fourteen acts opened that day' and the show had 14 openers besides The Cure, not thirteen.",
+          "replacement": "on a bill with fourteen other acts"
         }
       ]
     },
@@ -199,39 +205,39 @@
     },
     {
       "slug": "otd-2026-09-25",
-      "hash": "754ccda707d1d08d",
-      "checkedAt": "2026-10-02T16:04:46.496Z",
+      "hash": "fcc1b8c7bcdf8992",
+      "checkedAt": "2026-10-03T14:32:44.033Z",
       "issues": [
         {
           "field": "Caption",
           "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "Show was 2022-09-25; today is 2026-10-02, not 2026-09-25, so 'four years ago today' is off by about a week.",
-          "replacement": "Four years ago this month at YouTube Theatre, EarthGang opened for Gorillaz."
+          "evidence": "Show was 2022-09-25; TODAY IS 2026-10-03, not the anniversary date (2026-09-25), so 'today' is incorrect.",
+          "replacement": "Four years ago, at YouTube Theatre, EarthGang opened for Gorillaz."
         },
         {
           "field": "Caption",
           "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet has no genre/banner data for this show.",
-          "replacement": "Four years ago this month at YouTube Theatre, EarthGang opened for Gorillaz."
+          "evidence": "No genre tag 'Alternative Hip Hop' appears anywhere in the fact sheet for this show.",
+          "replacement": "Four years ago, at YouTube Theatre, EarthGang opened for Gorillaz."
         },
         {
           "field": "Beat 3",
           "sentence": "Filed under Alternative Hip Hop, a rare tag in my collection.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet contains no genre tag data or tag-rarity statistics for the archive."
+          "evidence": "The fact sheet contains no genre classification data for any show."
         },
         {
           "field": "Beat 5",
           "sentence": "Also that year: Royal Blood, Tears For Fears, Kraftwerk, and more — but this was the only Gorillaz night.",
-          "kind": "contradicted",
+          "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "The full YouTube Theatre show list (3 total) only includes Gorillaz/EarthGang, Devo, and Howard Jones — no Royal Blood, Tears For Fears, or Kraftwerk appear anywhere in the fact sheet.",
-          "replacement": "Also that year, at other venues across the archive — but this was the only Gorillaz night."
+          "evidence": "None of Royal Blood, Tears For Fears, or Kraftwerk appear in the fact sheet's show records for 2022 or any year; archive shows no listings for these artists at all.",
+          "replacement": "This was the only Gorillaz night I've logged."
         }
       ]
     },
