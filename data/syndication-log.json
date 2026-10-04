@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-03T14:34:51.576Z",
+  "updatedAt": "2026-10-04T15:11:18.501Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -1488,26 +1488,21 @@
     {
       "slug": "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mx2okhuego2s",
+      "rkey": "3mx2okhuego2s",
+      "postedAt": "2026-10-04T15:07:48.389Z",
+      "tier": 2,
+      "source": "venue-archival"
     },
     {
       "slug": "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117383277988344547",
+      "postedAt": "2026-10-04T15:11:18.501Z",
+      "tier": 2,
+      "source": "venue-archival"
     },
     {
       "slug": "thompson-twins-in-1984-what-was-in-the-air",

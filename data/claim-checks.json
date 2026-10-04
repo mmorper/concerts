@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-03T14:33:16.181Z",
+  "updatedAt": "2026-10-04T15:07:44.061Z",
   "entries": [
     {
       "slug": "depeche-mode-38-years-of-shows-2",
@@ -161,24 +161,16 @@
     },
     {
       "slug": "otd-2026-09-20",
-      "hash": "354501180bbd2b01",
-      "checkedAt": "2026-10-03T14:33:00.434Z",
+      "hash": "6a449caf70e69d1f",
+      "checkedAt": "2026-10-04T15:07:31.342Z",
       "issues": [
         {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
-          "kind": "stale-relative-time",
+          "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Show date is 2003-09-20; TODAY IS 2026-10-03, making this 23 years ago, not twenty.",
-          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
-        },
-        {
-          "field": "Caption",
-          "sentence": "on a bill with thirteen other acts",
-          "kind": "internal",
-          "severity": "must-fix",
-          "evidence": "Hook states 'Fourteen acts opened that day' and the show had 14 openers besides The Cure, not thirteen.",
-          "replacement": "on a bill with fourteen other acts"
+          "evidence": "Fact sheet lists 14 opening acts for the 2003-09-20 Hyundai Pavilion show (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes) — matching the Hook's 'Fourteen acts opened', not thirteen.",
+          "replacement": "Twenty years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
         }
       ]
     },
@@ -205,39 +197,68 @@
     },
     {
       "slug": "otd-2026-09-25",
-      "hash": "fcc1b8c7bcdf8992",
-      "checkedAt": "2026-10-03T14:32:44.033Z",
+      "hash": "e9c4fc3cbf532063",
+      "checkedAt": "2026-10-04T15:07:10.647Z",
       "issues": [
         {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "Show was 2022-09-25; TODAY IS 2026-10-03, not the anniversary date (2026-09-25), so 'today' is incorrect.",
-          "replacement": "Four years ago, at YouTube Theatre, EarthGang opened for Gorillaz."
+          "evidence": "The show was on 2022-09-25, but TODAY is 2026-10-04 (not 2026-09-25), so 'today' does not align with the anniversary date.",
+          "replacement": "Back on September 25, 2022 at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner."
         },
         {
-          "field": "Caption",
-          "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
+          "field": "caption",
+          "sentence": "...under the Alternative Hip Hop banner.",
           "kind": "external",
           "severity": "review",
-          "evidence": "No genre tag 'Alternative Hip Hop' appears anywhere in the fact sheet for this show.",
-          "replacement": "Four years ago, at YouTube Theatre, EarthGang opened for Gorillaz."
+          "evidence": "No genre tag or 'Alternative Hip Hop' classification appears anywhere in the fact sheet for this show."
         },
         {
-          "field": "Beat 3",
+          "field": "beat 3",
           "sentence": "Filed under Alternative Hip Hop, a rare tag in my collection.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The fact sheet contains no genre classification data for any show."
+          "evidence": "The fact sheet contains no genre classifications or tag frequency data for the archive."
         },
         {
-          "field": "Beat 5",
+          "field": "beat 5",
           "sentence": "Also that year: Royal Blood, Tears For Fears, Kraftwerk, and more — but this was the only Gorillaz night.",
-          "kind": "invented-number",
+          "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "None of Royal Blood, Tears For Fears, or Kraftwerk appear in the fact sheet's show records for 2022 or any year; archive shows no listings for these artists at all.",
-          "replacement": "This was the only Gorillaz night I've logged."
+          "evidence": "The fact sheet lists only one Gorillaz show (2022-09-25) and no shows by Royal Blood, Tears For Fears, or Kraftwerk anywhere in the archive data provided.",
+          "replacement": "This remains the only Gorillaz night on record."
+        }
+      ]
+    },
+    {
+      "slug": "otd-2026-10-04",
+      "hash": "9dfc1d8876d90dce",
+      "checkedAt": "2026-10-04T15:07:00.587Z",
+      "issues": [
+        {
+          "field": "caption",
+          "sentence": "Squeeze opened; I'd go on to see them two more times on their own.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "Squeeze's only other shows on record are 1987-06-30 (opening for Oingo Boingo) and 2012-04-27 (headlining) — only one time seeing them 'on their own,' not two.",
+          "replacement": "Squeeze opened; I'd go on to see them headline on their own once more, in 2012."
+        },
+        {
+          "field": "Beat 2",
+          "sentence": "Squeeze opened the show — a band I'd see headlining twice more by 2012.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "Fact sheet shows only one Squeeze headlining show (2012-04-27); the 1987 show had Squeeze opening for Oingo Boingo, not headlining.",
+          "replacement": "Squeeze opened the show — a band I'd see headlining on their own once more, in 2012."
+        },
+        {
+          "field": "Beat 4",
+          "sentence": "1991 also had me at Siouxsie and the Banshees, Jimmy Buffett, Bell Biv DeVoe.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "None of these shows appear anywhere in the fact sheet's archive; cannot confirm or deny they occurred."
         }
       ]
     },
@@ -327,6 +348,20 @@
           "kind": "external",
           "severity": "review",
           "evidence": "Repeats the same unverified five-week gap claim tied to the Rodney King acquittal, not sourced from the fact sheet."
+        }
+      ]
+    },
+    {
+      "slug": "thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics",
+      "hash": "affb16bde4ac47d5",
+      "checkedAt": "2026-10-04T15:07:44.061Z",
+      "issues": [
+        {
+          "field": "beat1",
+          "sentence": "Los Angeles in May 1984 was already running hot — the Olympics were still eleven weeks out.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The 1984 LA Olympics opening date is not in the fact sheet; while the 'eleven weeks' figure appears roughly accurate against the known historical opening date (July 28, 1984), this is an external fact the archive cannot confirm."
         }
       ]
     },
