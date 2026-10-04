@@ -1,6 +1,37 @@
 {
-  "generatedAt": "2026-09-25T12:24:28.431Z",
+  "generatedAt": "2026-10-04T12:56:21.046Z",
   "posts": [
+    {
+      "slug": "otd-2026-10-04",
+      "day": "10-04",
+      "showDate": "1991-10-04",
+      "age": 35,
+      "artist": "Sting",
+      "artistNormalized": "sting",
+      "venue": "Pacific Amphitheatre",
+      "venueNormalized": "pacific-amphitheatre",
+      "city": "Costa Mesa",
+      "score": 60,
+      "imageUrl": "https://cdn-images.dzcdn.net/images/artist/5b8043688300104410c5c61e8b378d6a/500x500-000000-80-0-0.jpg",
+      "tier": 2,
+      "source": "artist-deezer",
+      "url": "https://concerts.morperhaus.org/liner-notes/sting-days-after-nevermind-dropped",
+      "linerNoteSlug": "sting-days-after-nevermind-dropped",
+      "cardPath": "public/og/on-this-day/otd-2026-10-04.png",
+      "social": {
+        "hook": "Sting, solo, at Pacific Amphitheatre — and Squeeze opened for him instead of the other way around.",
+        "caption": "Thirty-five years ago today was the only time I've seen Sting live. Squeeze opened; I'd go on to see them two more times on their own.",
+        "beats": [
+          "One night at Pacific Amphitheatre, October 4, 1991.",
+          "Squeeze opened the show — a band I'd see headlining twice more by 2012.",
+          "Sting took the stage solo, years clear of The Police.",
+          "1991 also had me at Siouxsie and the Banshees, Jimmy Buffett, Bell Biv DeVoe.",
+          "I never saw Sting again. Once was the whole account."
+        ],
+        "authoredAt": "2026-10-04T12:56:17.904Z"
+      },
+      "publishedAt": "2026-10-04T12:56:21.046Z"
+    },
     {
       "slug": "otd-2026-09-25",
       "day": "09-25",
