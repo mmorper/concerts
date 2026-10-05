@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-04T15:07:44.061Z",
+  "updatedAt": "2026-10-05T19:02:39.322Z",
   "entries": [
     {
       "slug": "depeche-mode-38-years-of-shows-2",
@@ -161,16 +161,24 @@
     },
     {
       "slug": "otd-2026-09-20",
-      "hash": "6a449caf70e69d1f",
-      "checkedAt": "2026-10-04T15:07:31.342Z",
+      "hash": "12e19cd049b97f6d",
+      "checkedAt": "2026-10-05T19:02:39.321Z",
       "issues": [
         {
-          "field": "caption",
+          "field": "Caption",
           "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Fact sheet lists 14 opening acts for the 2003-09-20 Hyundai Pavilion show (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes) — matching the Hook's 'Fourteen acts opened', not thirteen.",
-          "replacement": "Twenty years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
+          "evidence": "2003-09-20 show had 14 opening acts (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes), not thirteen; this also contradicts the Hook's 'Fourteen acts opened that day.'",
+          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
+        },
+        {
+          "field": "Caption",
+          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
+          "kind": "stale-relative-time",
+          "severity": "must-fix",
+          "evidence": "Today is 2026-10-05; the show was 2003-09-20, which is 23 years ago, not 20.",
+          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
         }
       ]
     },
@@ -197,68 +205,81 @@
     },
     {
       "slug": "otd-2026-09-25",
-      "hash": "e9c4fc3cbf532063",
-      "checkedAt": "2026-10-04T15:07:10.647Z",
+      "hash": "755739e0e6c84a1a",
+      "checkedAt": "2026-10-05T19:02:27.659Z",
       "issues": [
         {
-          "field": "caption",
+          "field": "Caption",
           "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "The show was on 2022-09-25, but TODAY is 2026-10-04 (not 2026-09-25), so 'today' does not align with the anniversary date.",
-          "replacement": "Back on September 25, 2022 at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner."
+          "evidence": "Show was 2022-09-25; today is 2026-10-05, so it is not exactly four years ago today (it's just past four years, and the anniversary date is Sept 25, not Oct 5).",
+          "replacement": "Four years back at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner."
         },
         {
-          "field": "caption",
-          "sentence": "...under the Alternative Hip Hop banner.",
+          "field": "Caption",
+          "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
           "kind": "external",
           "severity": "review",
-          "evidence": "No genre tag or 'Alternative Hip Hop' classification appears anywhere in the fact sheet for this show."
+          "evidence": "Fact sheet contains no genre tag information for this show; 'Alternative Hip Hop' is not sourced from the fact sheet."
         },
         {
-          "field": "beat 3",
+          "field": "Beat 3",
           "sentence": "Filed under Alternative Hip Hop, a rare tag in my collection.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The fact sheet contains no genre classifications or tag frequency data for the archive."
+          "evidence": "Fact sheet does not include genre tags or tag frequency data, so the 'rare tag' claim and genre label cannot be confirmed."
         },
         {
-          "field": "beat 5",
+          "field": "Beat 5",
           "sentence": "Also that year: Royal Blood, Tears For Fears, Kraftwerk, and more — but this was the only Gorillaz night.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "The fact sheet lists only one Gorillaz show (2022-09-25) and no shows by Royal Blood, Tears For Fears, or Kraftwerk anywhere in the archive data provided.",
-          "replacement": "This remains the only Gorillaz night on record."
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet provides no list of other 2022 shows beyond Gorillaz/EarthGang and YouTube Theatre entries; these artists and their 2022 appearances are not supported anywhere in the fact sheet."
         }
       ]
     },
     {
       "slug": "otd-2026-10-04",
-      "hash": "9dfc1d8876d90dce",
-      "checkedAt": "2026-10-04T15:07:00.587Z",
+      "hash": "7942b969d4dcc14c",
+      "checkedAt": "2026-10-05T19:02:16.679Z",
       "issues": [
         {
-          "field": "caption",
+          "field": "Caption",
+          "sentence": "Thirty-five years ago today was the only time I've seen Sting live.",
+          "kind": "stale-relative-time",
+          "severity": "must-fix",
+          "evidence": "The show was on 1991-10-04; today is 2026-10-05, so the 35th anniversary was yesterday, not today."
+        },
+        {
+          "field": "Caption",
           "sentence": "Squeeze opened; I'd go on to see them two more times on their own.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Squeeze's only other shows on record are 1987-06-30 (opening for Oingo Boingo) and 2012-04-27 (headlining) — only one time seeing them 'on their own,' not two.",
-          "replacement": "Squeeze opened; I'd go on to see them headline on their own once more, in 2012."
+          "evidence": "Squeeze's only other shows on record are 1987-06-30 (opening for Oingo Boingo) and 2012-04-27 (headlining) — only one headlining show after 1991, not two.",
+          "replacement": "Squeeze opened; I'd go on to see them headline once more, in 2012."
         },
         {
           "field": "Beat 2",
           "sentence": "Squeeze opened the show — a band I'd see headlining twice more by 2012.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Fact sheet shows only one Squeeze headlining show (2012-04-27); the 1987 show had Squeeze opening for Oingo Boingo, not headlining.",
-          "replacement": "Squeeze opened the show — a band I'd see headlining on their own once more, in 2012."
+          "evidence": "Fact sheet lists only one other Squeeze show, 2012-04-27 at Rams Head Live!, as a headliner; the 1987 show was an opening slot for Oingo Boingo.",
+          "replacement": "Squeeze opened the show — a band I'd see headlining once more, by 2012."
+        },
+        {
+          "field": "Beat 3",
+          "sentence": "Sting took the stage solo, years clear of The Police.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The Police's breakup timing isn't in the fact sheet; this is a commonly known external fact but unconfirmed by the archive data."
         },
         {
           "field": "Beat 4",
           "sentence": "1991 also had me at Siouxsie and the Banshees, Jimmy Buffett, Bell Biv DeVoe.",
-          "kind": "external",
-          "severity": "review",
-          "evidence": "None of these shows appear anywhere in the fact sheet's archive; cannot confirm or deny they occurred."
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "No shows by Siouxsie and the Banshees, Jimmy Buffett, or Bell Biv DeVoe appear anywhere in the archive, let alone in 1991."
         }
       ]
     },
