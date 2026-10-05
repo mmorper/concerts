@@ -644,7 +644,7 @@ These facts are updated with each data refresh and can be quoted directly:
 - "First show: Adam Ant (1984)" — Where it all began — Irvine Meadows
 - "California: 122 concerts" — Home base for most concert experiences
 
-**Facts computed:** 2026-09-28T15:08:01.658Z
+**Facts computed:** 2026-10-05T15:38:58.268Z
 **Source:** https://concerts.morperhaus.org/data/facts.json
 **Browse visually:** https://concerts.morperhaus.org/liner-notes
 
@@ -804,6 +804,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-09-28
+**Last Updated:** 2026-10-05
 **Version:** v6.0.0
 **Total Content:** 184 concerts | 257 artists | 79 venues | 11,500+ albums | 1984-2026
