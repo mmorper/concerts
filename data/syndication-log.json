@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-04T15:11:18.501Z",
+  "updatedAt": "2026-10-06T16:30:32.295Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -87,26 +87,21 @@
     {
       "slug": "billy-idol-caught-once-never-again",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "billy-idol-caught-once-never-again",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mx7u2bgd2t2u",
+      "rkey": "3mx7u2bgd2t2u",
+      "postedAt": "2026-10-06T16:29:25.889Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "billy-idol-caught-once-never-again",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "billy-idol-caught-once-never-again",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117394914156423404",
+      "postedAt": "2026-10-06T16:30:32.295Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "blancmange-caught-once-never-again",

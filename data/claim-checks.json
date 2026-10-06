@@ -1,7 +1,21 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-05T19:02:39.322Z",
+  "updatedAt": "2026-10-06T16:29:22.819Z",
   "entries": [
+    {
+      "slug": "billy-idol-caught-once-never-again",
+      "hash": "920b33f86b56f7b6",
+      "checkedAt": "2026-10-06T16:29:22.819Z",
+      "issues": [
+        {
+          "field": "Beat 2",
+          "sentence": "Whatever came next — the MTV saturation, the tours, the ubiquity — I missed all of it.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet contains no data on MTV presence, touring history, or general popularity/ubiquity of Billy Idol after 1984; this is an external claim about career trajectory not supported by the archive."
+        }
+      ]
+    },
     {
       "slug": "depeche-mode-38-years-of-shows-2",
       "hash": "ff7dc37ed91e0bb2",
@@ -161,24 +175,32 @@
     },
     {
       "slug": "otd-2026-09-20",
-      "hash": "12e19cd049b97f6d",
-      "checkedAt": "2026-10-05T19:02:39.321Z",
+      "hash": "1ab39b886ee94aa6",
+      "checkedAt": "2026-10-06T16:29:14.022Z",
       "issues": [
         {
-          "field": "Caption",
-          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "2003-09-20 show had 14 opening acts (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes), not thirteen; this also contradicts the Hook's 'Fourteen acts opened that day.'",
-          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
-        },
-        {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "Today is 2026-10-05; the show was 2003-09-20, which is 23 years ago, not 20.",
-          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
+          "evidence": "The show was on 2003-09-20; today is 2026-10-06, so it's been 23 years, and the anniversary date (Sept 20) doesn't match 'today' (Oct 6).",
+          "replacement": "Twenty-three years ago this September I saw The Cure for the first time, on a bill with fourteen other acts."
+        },
+        {
+          "field": "caption",
+          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
+          "kind": "internal",
+          "severity": "must-fix",
+          "evidence": "Hook states 'Fourteen acts opened that day,' and the Hyundai Pavilion show listing shows 14 openers plus The Cure, so the bill had fourteen other acts, not thirteen.",
+          "replacement": "Twenty-three years ago this September I saw The Cure for the first time, on a bill with fourteen other acts."
+        },
+        {
+          "field": "Beat 1",
+          "sentence": "Fourteen acts on one bill, filed under New Wave, at a venue I've never been back to since.",
+          "kind": "internal",
+          "severity": "review",
+          "evidence": "Hook counts fourteen as the number of opening acts (not including The Cure), so the full bill totals fifteen acts; this sentence is ambiguous/inconsistent with that count.",
+          "replacement": "Fifteen acts on one bill, filed under New Wave, at a venue I've never been back to since."
         }
       ]
     },
@@ -205,81 +227,68 @@
     },
     {
       "slug": "otd-2026-09-25",
-      "hash": "755739e0e6c84a1a",
-      "checkedAt": "2026-10-05T19:02:27.659Z",
+      "hash": "2e2cb87e1f356e5d",
+      "checkedAt": "2026-10-06T16:28:47.223Z",
       "issues": [
         {
           "field": "Caption",
           "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "Show was 2022-09-25; today is 2026-10-05, so it is not exactly four years ago today (it's just past four years, and the anniversary date is Sept 25, not Oct 5).",
-          "replacement": "Four years back at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner."
+          "evidence": "Show was 2022-09-25; today is 2026-10-06, which is not the anniversary date (Sept 25), so 'four years ago today' is inaccurate.",
+          "replacement": "Four years back at YouTube Theatre, EarthGang opened for Gorillaz."
         },
         {
           "field": "Caption",
           "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet contains no genre tag information for this show; 'Alternative Hip Hop' is not sourced from the fact sheet."
+          "evidence": "Fact sheet gives no genre tags or banners for any show; 'Alternative Hip Hop' is not supported.",
+          "replacement": "Four years back at YouTube Theatre, EarthGang opened for Gorillaz."
         },
         {
           "field": "Beat 3",
           "sentence": "Filed under Alternative Hip Hop, a rare tag in my collection.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet does not include genre tags or tag frequency data, so the 'rare tag' claim and genre label cannot be confirmed."
+          "evidence": "No genre/tag data appears anywhere in the fact sheet for this or other shows."
         },
         {
           "field": "Beat 5",
           "sentence": "Also that year: Royal Blood, Tears For Fears, Kraftwerk, and more — but this was the only Gorillaz night.",
-          "kind": "external",
+          "kind": "invented-number",
           "severity": "review",
-          "evidence": "Fact sheet provides no list of other 2022 shows beyond Gorillaz/EarthGang and YouTube Theatre entries; these artists and their 2022 appearances are not supported anywhere in the fact sheet."
+          "evidence": "None of Royal Blood, Tears For Fears, or Kraftwerk appear anywhere in the fact sheet's show records for 2022 or any year."
         }
       ]
     },
     {
       "slug": "otd-2026-10-04",
-      "hash": "7942b969d4dcc14c",
-      "checkedAt": "2026-10-05T19:02:16.679Z",
+      "hash": "6e17518395605fca",
+      "checkedAt": "2026-10-06T16:28:37.780Z",
       "issues": [
         {
-          "field": "Caption",
-          "sentence": "Thirty-five years ago today was the only time I've seen Sting live.",
-          "kind": "stale-relative-time",
-          "severity": "must-fix",
-          "evidence": "The show was on 1991-10-04; today is 2026-10-05, so the 35th anniversary was yesterday, not today."
-        },
-        {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "Squeeze opened; I'd go on to see them two more times on their own.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Squeeze's only other shows on record are 1987-06-30 (opening for Oingo Boingo) and 2012-04-27 (headlining) — only one headlining show after 1991, not two.",
+          "evidence": "Squeeze's only other show on record is 2012-04-27 at Rams Head Live (their 1987 show was opening for Oingo Boingo); that's one headlining show, not two.",
           "replacement": "Squeeze opened; I'd go on to see them headline once more, in 2012."
         },
         {
-          "field": "Beat 2",
+          "field": "beat",
           "sentence": "Squeeze opened the show — a band I'd see headlining twice more by 2012.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Fact sheet lists only one other Squeeze show, 2012-04-27 at Rams Head Live!, as a headliner; the 1987 show was an opening slot for Oingo Boingo.",
-          "replacement": "Squeeze opened the show — a band I'd see headlining once more, by 2012."
+          "evidence": "Squeeze's shows list only one additional appearance after 1991, on 2012-04-27 at Rams Head Live, headlining.",
+          "replacement": "Squeeze opened the show — a band I'd see headlining once more, in 2012."
         },
         {
-          "field": "Beat 3",
-          "sentence": "Sting took the stage solo, years clear of The Police.",
-          "kind": "external",
-          "severity": "review",
-          "evidence": "The Police's breakup timing isn't in the fact sheet; this is a commonly known external fact but unconfirmed by the archive data."
-        },
-        {
-          "field": "Beat 4",
+          "field": "beat",
           "sentence": "1991 also had me at Siouxsie and the Banshees, Jimmy Buffett, Bell Biv DeVoe.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "No shows by Siouxsie and the Banshees, Jimmy Buffett, or Bell Biv DeVoe appear anywhere in the archive, let alone in 1991."
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No shows by Siouxsie and the Banshees, Jimmy Buffett, or Bell Biv DeVoe appear anywhere in the archive data for 1991 or any year."
         }
       ]
     },
