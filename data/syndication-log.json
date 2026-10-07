@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T16:30:32.295Z",
+  "updatedAt": "2026-10-07T17:14:56.087Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -703,26 +703,21 @@
     {
       "slug": "new-order-37-years-between-shows",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "new-order-37-years-between-shows",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mxcgxidm7j2x",
+      "rkey": "3mxcgxidm7j2x",
+      "postedAt": "2026-10-07T17:13:13.038Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "new-order-37-years-between-shows",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "new-order-37-years-between-shows",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117400751034002068",
+      "postedAt": "2026-10-07T17:14:56.087Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "no-doubt-caught-once-never-again",
