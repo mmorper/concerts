@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-07T17:14:56.087Z",
+  "updatedAt": "2026-10-08T17:10:48.031Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -1001,6 +1001,25 @@
       "source": "artist-audiodb"
     },
     {
+      "slug": "otd-2026-10-08",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mxexbsfi4e2d",
+      "rkey": "3mxexbsfi4e2d",
+      "postedAt": "2026-10-08T17:10:38.496Z",
+      "tier": 2,
+      "source": "artist-deezer"
+    },
+    {
+      "slug": "otd-2026-10-08",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117406396987037337",
+      "postedAt": "2026-10-08T17:10:46.431Z",
+      "tier": 2,
+      "source": "artist-deezer"
+    },
+    {
       "slug": "pacific-amphitheatre-16-shows-over-5-decades-2",
       "platform": "bluesky",
       "status": "seeded",
@@ -1027,26 +1046,21 @@
     {
       "slug": "peter-gabriel-11-more-1993-festival-bill",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "peter-gabriel-11-more-1993-festival-bill",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mxexbtlzhy2x",
+      "rkey": "3mxexbtlzhy2x",
+      "postedAt": "2026-10-08T17:10:39.765Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "peter-gabriel-11-more-1993-festival-bill",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "peter-gabriel-11-more-1993-festival-bill",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117406397091579668",
+      "postedAt": "2026-10-08T17:10:48.031Z",
+      "tier": 2,
+      "source": "artist-audiodb"
     },
     {
       "slug": "run-dmc-caught-once-never-again",

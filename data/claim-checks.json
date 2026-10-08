@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-07T17:13:08.241Z",
+  "updatedAt": "2026-10-08T17:10:34.297Z",
   "entries": [
     {
       "slug": "billy-idol-caught-once-never-again",
@@ -225,77 +225,117 @@
     },
     {
       "slug": "otd-2026-09-25",
-      "hash": "f135d1c8a889660c",
-      "checkedAt": "2026-10-07T17:12:43.541Z",
+      "hash": "79077291c861d07b",
+      "checkedAt": "2026-10-08T17:10:21.094Z",
       "issues": [
         {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "Show was 2022-09-25; today is 2026-10-07, not the anniversary date (2026-09-25), so 'today' is inaccurate.",
-          "replacement": "Four years ago this September at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner."
+          "evidence": "TODAY IS 2026-10-08, but the show was on 2022-09-25. 'Four years ago today' is only accurate if today is September 25; the anniversary date does not match today's date.",
+          "replacement": "Four years ago this September, at YouTube Theatre, EarthGang opened for Gorillaz."
         },
         {
-          "field": "Beat 5",
+          "field": "caption",
+          "sentence": "under the Alternative Hip Hop banner",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "No genre tag or billing category for this show appears in the fact sheet; cannot confirm this classification."
+        },
+        {
+          "field": "beat",
+          "sentence": "Filed under Alternative Hip Hop, a rare tag in my collection.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "No genre tag 'Alternative Hip Hop' appears anywhere in the fact sheet, so its application here cannot be confirmed."
+        },
+        {
+          "field": "beat",
+          "sentence": "Filed under Alternative Hip Hop, a rare tag in my collection.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Claim about rarity of a tag 'in my collection' is a concrete personal fact not found in OWNER-CONFIRMED PERSONAL FACTS."
+        },
+        {
+          "field": "beat",
           "sentence": "Also that year: Royal Blood, Tears For Fears, Kraftwerk, and more — but this was the only Gorillaz night.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet's archive summary and venue/artist records contain no mention of Royal Blood, Tears For Fears, or Kraftwerk shows; cannot confirm these occurred.",
-          "replacement": "This was the only Gorillaz night I've logged — alongside plenty of other 2022 shows in the archive."
+          "evidence": "None of Royal Blood, Tears For Fears, or Kraftwerk appear in the fact sheet's show records, so this list cannot be verified against the archive."
         }
       ]
     },
     {
       "slug": "otd-2026-10-04",
-      "hash": "f8d5d68ec68cbb82",
-      "checkedAt": "2026-10-07T17:12:30.983Z",
+      "hash": "18ed2a445b0c71e0",
+      "checkedAt": "2026-10-08T17:10:07.074Z",
       "issues": [
         {
           "field": "caption",
           "sentence": "Thirty-five years ago today was the only time I've seen Sting live.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "Today is 2026-10-07, but the Sting show was 1991-10-04 — the 35th anniversary falls on 2026-10-04, not today.",
-          "replacement": "Thirty-five years ago this week was the only time I've seen Sting live."
+          "evidence": "Today is 2026-10-08, but the show was on 1991-10-04 — the anniversary date doesn't match 'today', so the phrase is inaccurate as a same-day anniversary claim."
         },
         {
           "field": "caption",
           "sentence": "Squeeze opened; I'd go on to see them two more times on their own.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Squeeze's full show list has only 3 entries: 1987 (opening for Oingo Boingo), 1991 (opening for Sting), and 2012 (Rams Head Live!, no opener listed) — only one more show after 1991, not two.",
-          "replacement": "Squeeze opened; I'd go on to see them once more on their own."
+          "evidence": "Squeeze shows on record: 1987-06-30 (opening for Oingo Boingo), 1991-10-04 (opening for Sting), 2012-04-27 (Rams Head Live, headlining). After 1991, there is only one more Squeeze show (2012), not two, and it was not headlining twice.",
+          "replacement": "Squeeze opened; I'd go on to see them headline once more, in 2012."
         },
         {
-          "field": "Beat 2",
+          "field": "beat2",
           "sentence": "Squeeze opened the show — a band I'd see headlining twice more by 2012.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "The fact sheet lists only one Squeeze show after 1991: 2012-04-27 at Rams Head Live!, so only one more headlining appearance, not twice.",
-          "replacement": "Squeeze opened the show — a band I'd see headlining once more by 2012."
+          "evidence": "Squeeze's only other show is 2012-04-27 at Rams Head Live, Baltimore — a single headline date, not twice.",
+          "replacement": "Squeeze opened the show — a band I'd see headlining once more, in 2012."
         },
         {
-          "field": "Beat 2",
-          "sentence": "Squeeze opened the show — a band I'd see headlining twice more by 2012.",
-          "kind": "internal",
-          "severity": "must-fix",
-          "evidence": "Caption says 'two more times on their own' and Beat 2 says 'twice more' — both conflict with the fact sheet's single 2012 show, and the repetition itself is an internal consistency issue against the actual data."
-        },
-        {
-          "field": "Beat 3",
+          "field": "beat3",
           "sentence": "Sting took the stage solo, years clear of The Police.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The Police's breakup/history is not in the fact sheet; this is a band-history claim not sourced from archive data, though generally understood to be true."
+          "evidence": "The Police's breakup timeline is not in the fact sheet; the claim is plausible but unverifiable against the archive data."
         },
         {
-          "field": "Beat 4",
+          "field": "beat4",
           "sentence": "1991 also had me at Siouxsie and the Banshees, Jimmy Buffett, Bell Biv DeVoe.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "None of these shows appear anywhere in the archive's show listings for Sting, Squeeze, or Pacific Amphitheatre, nor in the 184-show archive summary; no basis for these claims.",
-          "replacement": "1991 also had me chasing other nights out at Pacific Amphitheatre and beyond."
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No shows by Siouxsie and the Banshees, Jimmy Buffett, or Bell Biv DeVoe appear anywhere in the archive data, and this is not an owner-confirmed personal fact."
+        }
+      ]
+    },
+    {
+      "slug": "otd-2026-10-08",
+      "hash": "b7b3909c547a1d40",
+      "checkedAt": "2026-10-08T17:09:49.915Z",
+      "issues": [
+        {
+          "field": "Beat 4",
+          "sentence": "2017 also had me at Duran Duran, Blondie, Midnight Oil, and more.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No shows by Duran Duran, Blondie, or Midnight Oil appear anywhere in the fact sheet's archive data, which otherwise lists complete show histories for relevant artists/venues."
+        }
+      ]
+    },
+    {
+      "slug": "peter-gabriel-11-more-1993-festival-bill",
+      "hash": "d79e9b2bba6ac621",
+      "checkedAt": "2026-10-08T17:10:34.296Z",
+      "issues": [
+        {
+          "field": "Beat 4",
+          "sentence": "Twelve artists in one afternoon at the Olympic Velodrome.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Set/door times are explicitly listed as NOT IN THE DATA; the fact sheet gives no time of day for the 1993-09-18 show.",
+          "replacement": "Twelve artists on one bill at the Olympic Velodrome."
         }
       ]
     },
