@@ -51,7 +51,12 @@
       "mcp__claude_ai_Cloudflare_Developer_Platform__workers_get_worker_code",
       "Bash(env -u CLOUDFLARE_API_TOKEN npx wrangler deploy)",
       "Bash(git stash *)",
-      "mcp__chrome-devtools__emulate"
+      "mcp__chrome-devtools__emulate",
+      "Bash(claude --version)",
+      "Bash(ps -eo pid,lstart,command)",
+      "Read(//opt/homebrew/lib/node_modules/@anthropic-ai/claude-code/bin/**)",
+      "Bash(npm ls *)",
+      "Bash(brew list *)"
     ],
     "additionalDirectories": [
       "/Users/mmorper/projects/concerts/docs/tasks",
