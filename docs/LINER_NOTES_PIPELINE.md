@@ -666,7 +666,7 @@ gap. Echo & the Bunnymen and Duran Duran opening for The Cure in 2003 both moved
 
 **This is the only detector where the narrator is wrong about the future**, and that is the entire point. Every other detector tells a pattern story from now, looking back at a shape — longevity, loyalty, gaps. Here the reader knows something the person in the seat does not.
 
-**Trigger:** the artist's defining album post-dates the show by ≥3 months. "Defining album" is the record carrying a plurality of their still-streamed top tracks — a proxy for what **endured**, not for critical canon.
+**Trigger:** the artist's defining album post-dates the show by ≥3 months. "Defining album" is the record carrying a plurality of their still-streamed top tracks — a proxy for what **endured**, not for critical canon. A refresh whose tally falls below two tracks keeps the previous run's defining album rather than erasing it (`carryForward()` in `derive-album-eras.ts`), because iTunes reshuffles top tracks between refreshes. On 2026-09-28 that reshuffle wiped four defining albums at once.
 
 **Data points:** artist, venue, city, date; `definingAlbumTitle`, `definingAlbumReleaseDate`, `monthsAway`, `topTrackCount`/`topTrackTotal`, `albumsBefore`/`albumsAfter`, `currentAlbumTitle`, `careerYear`, `yearsBeforeDebut`, plus inert album identity for a future deep link (spec §Part 7).
 
