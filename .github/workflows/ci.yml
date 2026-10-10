@@ -15,9 +15,19 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Daily, because the automated data commits (refresh, ledger, On This Day)
+  # are pushed with GITHUB_TOKEN and so never trigger the push run above. A
+  # refresh that breaks a data-coupled test otherwise leaves main red
+  # unseen: on 2026-09-28 one did, and it surfaced 12 days later as
+  # unrelated PRs failing. 11:23 UTC is after the 07:00-10:00 bot commits.
+  schedule:
+    - cron: '23 11 * * *'
+  workflow_dispatch:
 
 concurrency:
-  group: ci-${{ github.ref }}
+  # event_name keeps the daily run from cancelling (or being cancelled by) a
+  # push run on main.
+  group: ci-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
