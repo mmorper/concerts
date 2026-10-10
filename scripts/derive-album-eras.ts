@@ -343,6 +343,34 @@ function findDefiningAlbum(
   }
 }
 
+/**
+ * Last run's defining album, when this run's tally cannot name one.
+ *
+ * The tally reads five iTunes top tracks, and iTunes reshuffles them between
+ * refreshes. On 2026-09-28 Sting's two "Ten Summoner's Tales" tracks became one
+ * plus a compilation track, and Sting, Public Enemy, Soft Cell and The
+ * Interrupters all fell below MIN_DEFINING_TOP_TRACKS at once — erasing four
+ * defining albums, a liner-notes finding, and two CI assertions, with no change
+ * in what the records are. A tally that cannot decide is not evidence the old
+ * answer was wrong, so it keeps it.
+ *
+ * Only on null. A tally that names a DIFFERENT album still replaces the old one,
+ * and the carried album must still be a studio album in the discography and
+ * still past DEFINING_MIN_AGE_DAYS, so nothing #543 excludes can come back.
+ */
+function carryForward(
+  previous: DefiningAlbum | null | undefined,
+  albums: RawAlbum[],
+  today: string
+): DefiningAlbum | null {
+  if (!previous) return null
+  const album = albums.find((a) => a.id === previous.mbid)
+  if (!album) return null
+  const settledBy = parseReleaseDate(today) - DEFINING_MIN_AGE_DAYS * DAY_MS
+  if (parseReleaseDate(album.releaseDate) > settledBy) return null
+  return { ...previous, ...toRef(album) }
+}
+
 // ── Derivation ───────────────────────────────────────────────────────────────
 
 export function deriveAlbumEras(input: {
@@ -354,8 +382,10 @@ export function deriveAlbumEras(input: {
     discographyKeys?: Array<{ act?: string; discographyKey?: string }>
   }
   today: string
+  /** Last run's defining album per artistKey — see carryForward(). */
+  previousDefining?: Record<string, DefiningAlbum | null | undefined>
 }) {
-  const { concerts, discography, topTracks, aliases, today } = input
+  const { concerts, discography, topTracks, aliases, today, previousDefining } = input
 
   // Two distinct relations, deliberately not merged:
   //   sameAct         — marquees this act played under (yields billings)
@@ -402,7 +432,9 @@ export function deriveAlbumEras(input: {
     // Top tracks are keyed by the CONCERT slug; discography by its own key. Try
     // both, since the two disagree for exactly the drift cases artist-key fixes.
     const tracks = topTracks[concertSlug]?.tracks ?? topTracks[artistKey]?.tracks ?? []
-    const defining = findDefiningAlbum(tracks, albums, today)
+    const defining =
+      findDefiningAlbum(tracks, albums, today) ??
+      carryForward(previousDefining?.[artistKey], albums, today)
     definingCache.set(artistKey, defining)
     return defining
   }
@@ -592,6 +624,17 @@ export function deriveAlbumEras(input: {
 
 // ── CLI ──────────────────────────────────────────────────────────────────────
 
+/** artistKey → definingAlbum from the file this run is about to replace. Absent or unreadable → none. */
+function previousDefiningAlbums(path: string): Record<string, DefiningAlbum | null> {
+  if (!existsSync(path)) return {}
+  try {
+    const artists = (JSON.parse(readFileSync(path, 'utf-8')).artists ?? {}) as Record<string, ArtistEra>
+    return Object.fromEntries(Object.entries(artists).map(([key, era]) => [key, era.definingAlbum ?? null]))
+  } catch {
+    return {}
+  }
+}
+
 export async function deriveAlbumErasFile() {
   const dryRun = process.argv.includes('--dry-run')
   console.log(`🎸 Deriving album eras...${dryRun ? ' (DRY RUN)' : ''}\n`)
@@ -615,6 +658,7 @@ export async function deriveAlbumErasFile() {
       : {},
     aliases: existsSync(join(dataDir, 'artist-aliases.json')) ? read('artist-aliases.json') : {},
     today: new Date().toISOString().slice(0, 10),
+    previousDefining: previousDefiningAlbums(join(dataDir, 'album-eras.json')),
   })
 
   // Minified deliberately: this file is machine-read (MCP over the network on

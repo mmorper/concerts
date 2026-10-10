@@ -182,6 +182,52 @@ describe('defining album', () => {
   })
 })
 
+describe('defining album carried forward', () => {
+  // Last run's answer, as album-eras.json stored it.
+  const previous = (mbid: string, title: string, releaseDate: string) => ({
+    'depeche-mode': {
+      mbid,
+      title,
+      releaseDate,
+      coverAvailable: true,
+      topTrackCount: 2,
+      topTrackTotal: 5,
+      matchTier: 'exact',
+    },
+  })
+  const oneViolatorTrack = { 'depeche-mode': { tracks: [{ albumName: 'Violator' }] } }
+  const run = (tracks: unknown, previousDefining: unknown, today = '2026-08-07') =>
+    deriveAlbumEras({
+      concerts: [concert('c1', '1988-06-18')],
+      discography,
+      topTracks: tracks,
+      aliases: {},
+      today,
+      previousDefining,
+    } as never)
+
+  it('keeps last run\'s album when a reshuffle leaves the tally undecided', () => {
+    const out = run(oneViolatorTrack, previous('a3', 'Violator', '1990-02-05'))
+    expect(out.concerts.c1.definingAlbum?.title).toBe('Violator')
+    expect(out.artists['depeche-mode'].definingAlbum?.title).toBe('Violator')
+    expect(out.concerts.c1.definingAlbumAhead).toBe(true)
+  })
+
+  it('still lets a decided tally replace it', () => {
+    const out = run(topTracks, previous('a2', 'Music for the Masses', '1987-09-28'))
+    expect(out.concerts.c1.definingAlbum?.title).toBe('Violator')
+  })
+
+  it('drops an album that is no longer in the discography', () => {
+    expect(run(oneViolatorTrack, previous('gone', 'Gone', '1990-01-01')).concerts.c1.definingAlbum).toBeNull()
+  })
+
+  it('does not carry an album younger than a year', () => {
+    const out = run(oneViolatorTrack, previous('a4', 'Memento Mori', '2023-03-24'), '2023-10-01')
+    expect(out.concerts.c1.definingAlbum).toBeNull()
+  })
+})
+
 describe('eras seen', () => {
   it('groups repeat shows by the cycle they fell in', () => {
     const out = derive([
