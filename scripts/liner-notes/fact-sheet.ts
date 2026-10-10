@@ -14,7 +14,7 @@
  */
 
 import { normalizeArtistName } from "../../src/utils/normalize.ts";
-import { songsFor, describeSong, type SetlistIndex } from "./setlists.ts";
+import { songsFor, guestAppearances, type GuestAppearance, type SetlistIndex, type SetlistSong } from "./setlists.ts";
 import type { AliasMap } from "./artist-aliases.ts";
 import type { AlbumErasSlim } from "./analyze.ts";
 import type { Concert } from "../../src/types/concert.ts";
@@ -97,6 +97,35 @@ function appearancesFor(normalized: string, sources: FactSheetSources): ArtistAp
   return out.sort((a, b) => a.concert.date.localeCompare(b.concert.date));
 }
 
+/**
+ * Each show's place in the archive, 1-based, in date order — the same count the
+ * milestone-marker detector uses, so "my 150th show" can be checked rather than
+ * flagged as an invented number.
+ */
+function showNumbers(sources: FactSheetSources): Map<string, number> {
+  const sorted = [...sources.concerts].sort((a, b) => a.date.localeCompare(b.date));
+  return new Map(sorted.map((c, i) => [c.id, i + 1]));
+}
+
+function numberOf(c: Concert, numbers: Map<string, number>): string {
+  const n = numbers.get(c.id);
+  return n ? `, show #${n}` : "";
+}
+
+/** Guest spots by this artist on someone else's set, from the setlist `with` field. */
+function guestSpotsBy(normalized: string, sources: FactSheetSources): GuestAppearance[] {
+  const slugs = new Set(billingsFor(normalized, sources.aliases));
+  return guestAppearances(sources.setlists)
+    .filter((g) => slugs.has(g.guest) && !slugs.has(g.host))
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+/** "Song (X cover, with Guest)" — the guest is what lets the verifier confirm a walk-on. */
+function describeSongWithGuest(song: SetlistSong): string {
+  const notes = [song.cover && `${song.cover.name} cover`, song.with && `with ${song.with.name}`].filter(Boolean);
+  return notes.length ? `${song.name} (${notes.join(", ")})` : song.name;
+}
+
 function showsAtVenue(normalized: string, sources: FactSheetSources): Concert[] {
   return sources.concerts
     .filter((c) => c.venueNormalized === normalized)
@@ -118,15 +147,30 @@ function artistDisplayName(normalized: string, appearances: ArtistAppearance[], 
 
 function artistSection(normalized: string, sources: FactSheetSources): string[] {
   const appearances = appearancesFor(normalized, sources);
-  const name = artistDisplayName(normalized, appearances, sources);
+  const guestSpots = guestSpotsBy(normalized, sources);
+  const name =
+    !appearances.length && guestSpots.length
+      ? guestSpots[0].guestName
+      : artistDisplayName(normalized, appearances, sources);
+  const numbers = showNumbers(sources);
   const lines = [`EVERY SHOW BY ${name} (${appearances.length} total):`];
-  if (!appearances.length) {
-    lines.push("  (none on record)");
-    return lines;
-  }
+  if (!appearances.length) lines.push("  (none on record)");
   for (const { concert: c, role } of appearances) {
     const roleNote = role === "opener" ? `, opening for ${c.headliner}` : "";
-    lines.push(`  • ${c.date} (${c.dayOfWeek}) — ${c.venue}, ${c.cityState}${roleNote}`);
+    lines.push(`  • ${c.date} (${c.dayOfWeek}${numberOf(c, numbers)}) — ${c.venue}, ${c.cityState}${roleNote}`);
+  }
+  // A guest spot is not a billed show, so it is listed apart from the count
+  // above — but it is on record, and without it every guest-bridge note reads
+  // as a claim about someone with "0 shows".
+  if (guestSpots.length) {
+    const byDate = new Map(sources.concerts.map((c) => [c.date, c]));
+    lines.push(`GUEST APPEARANCES BY ${name} — joined another act on stage (${guestSpots.length}, from setlists):`);
+    for (const g of guestSpots) {
+      const night = byDate.get(g.date);
+      const where = night ? ` — ${night.venue}, ${night.cityState}` : "";
+      const host = night?.headlinerNormalized === g.host ? night.headliner : g.host;
+      lines.push(`  • ${g.date}${where}: joined ${host} on "${g.song}"`);
+    }
   }
   return lines;
 }
@@ -145,8 +189,9 @@ function venueSection(normalized: string, sources: FactSheetSources): string[] {
     lines.push("  (none on record)");
     return lines;
   }
+  const numbers = showNumbers(sources);
   for (const c of shows) {
-    lines.push(`  • ${c.date} (${c.dayOfWeek}) — ${c.headliner}${c.openers?.length ? ` (opener(s): ${c.openers.join(", ")})` : ""}`);
+    lines.push(`  • ${c.date} (${c.dayOfWeek}${numberOf(c, numbers)}) — ${c.headliner}${c.openers?.length ? ` (opener(s): ${c.openers.join(", ")})` : ""}`);
   }
   return lines;
 }
@@ -189,7 +234,7 @@ function setlistSection(artists: string[], sources: FactSheetSources): string[] 
       if (!songs.length) continue;
       const roleNote = role === "opener" ? ` (opening for ${concert.headliner})` : "";
       lines.push(
-        `  • ${concert.date}${roleNote}: ${songs.map((s) => describeSong(s)).join(", ")}`
+        `  • ${concert.date}${roleNote}: ${songs.map((s) => describeSongWithGuest(s)).join(", ")}`
       );
     }
   }
@@ -210,6 +255,7 @@ function archiveSummary(sources: FactSheetSources): string[] {
     "ARCHIVE SUMMARY:",
     `  • First show on record: ${concerts[0].date} (${concerts[0].headliner}, ${concerts[0].venue})`,
     `  • ${concerts.length} shows total, spanning ${concerts[0].year}–${concerts[concerts.length - 1].year}`,
+    `  • "show #N" above is that show's place in the archive in date order: #1 is the first show on record, #${concerts.length} the latest`,
     `  • Shows by state: ${[...byState.entries()].sort((a, b) => b[1] - a[1]).map(([s, n]) => `${s} (${n})`).join(", ")}`,
   ];
 }
