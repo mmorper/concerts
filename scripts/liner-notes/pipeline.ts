@@ -221,6 +221,7 @@ export async function run(options: PipelineOptions): Promise<void> {
 
   if (selected.length === 0) {
     console.log("\n⚠️  No candidates selected — nothing to publish this run.");
+    if (!options.dryRun) await alertNothingPublished("no candidates were selected");
     return;
   }
 
@@ -297,6 +298,9 @@ export async function run(options: PipelineOptions): Promise<void> {
   }
   if (clean.length === 0) {
     console.log("\n⚠️  Nothing passed voice/claim checks — nothing to publish this run.");
+    await alertNothingPublished(
+      `every candidate failed voice/claim checks (${selected.map((f) => f.headline).join("; ")})`
+    );
     return;
   }
 
@@ -686,6 +690,27 @@ function loadOwnerFactsFile(): OwnerFactsMap | undefined {
   } catch (err) {
     console.warn(`   ⚠️  Could not read owner-facts.json (${(err as Error).message})`);
     return undefined;
+  }
+}
+
+/**
+ * A run that publishes nothing still exits 0, so on its own it is invisible —
+ * three weekly runs in a row went this way before anyone noticed (Sep–Oct 2026).
+ * Annotate the Actions run and push to NOTIFY_WEBHOOK_URL, the same slot the
+ * syndication health alerts use. Absent webhook → logged only, never an error.
+ */
+async function alertNothingPublished(reason: string): Promise<void> {
+  const message = `Liner notes: nothing published this run — ${reason}`;
+  if (process.env.GITHUB_ACTIONS) console.log(`::warning title=No liner note published::${message}`);
+  const url = process.env.NOTIFY_WEBHOOK_URL;
+  if (!url) {
+    console.warn("   (NOTIFY_WEBHOOK_URL unset — alert logged, not pushed)");
+    return;
+  }
+  try {
+    await fetch(url, { method: "POST", headers: { "Content-Type": "text/plain" }, body: message });
+  } catch (e) {
+    console.warn("   ⚠️  alert push failed:", (e as Error).message);
   }
 }
 

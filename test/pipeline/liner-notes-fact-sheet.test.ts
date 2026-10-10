@@ -117,6 +117,49 @@ describe("buildFactSheet", () => {
   });
 });
 
+describe("buildFactSheet — show numbers and walk-ons", () => {
+  const sources: FactSheetSources = {
+    concerts: [
+      concert({ date: "1998-08-08", headliner: "Host Band" }),
+      concert({ date: "1984-01-01", headliner: "First Band" }),
+      concert({ date: "2022-08-01", headliner: "Late Band" }),
+    ],
+    venuesMetadata: {},
+    setlists: new Map([
+      ["1998-08-08::host-band", [{ name: "Big Song" }, { name: "Duet", with: { name: "Guest Singer" } }]],
+    ]),
+  };
+
+  it("numbers each show by its place in the archive, so a milestone claim is checkable", () => {
+    const sheet = buildFactSheet({ artists: ["late-band"], venues: ["the-venue"] }, sources);
+    expect(sheet).toContain("2022-08-01 (Friday, show #3)");
+    expect(sheet).toContain("1984-01-01 (Friday, show #1)");
+    expect(sheet).toContain('"show #N" above is that show\'s place in the archive');
+  });
+
+  it("lists a guest's walk-on even when they have no billed shows", () => {
+    const sheet = buildFactSheet({ artists: ["host-band", "guest-singer"], venues: [] }, sources);
+    expect(sheet).toContain("EVERY SHOW BY Guest Singer (0 total):");
+    expect(sheet).toContain("GUEST APPEARANCES BY Guest Singer");
+    expect(sheet).toContain('1998-08-08 — The Venue, Los Angeles, California: joined Host Band on "Duet"');
+  });
+
+  it("names the guest on the host's setlist line, alongside any cover credit", () => {
+    const sheet = buildFactSheet({ artists: ["host-band"], venues: [] }, sources);
+    expect(sheet).toContain("1998-08-08: Big Song, Duet (with Guest Singer)");
+
+    const withCover: FactSheetSources = {
+      ...sources,
+      setlists: new Map([
+        ["1998-08-08::host-band", [{ name: "Duet", cover: { name: "Old Act" }, with: { name: "Guest Singer" } }]],
+      ]),
+    };
+    expect(buildFactSheet({ artists: ["host-band"], venues: [] }, withCover)).toContain(
+      "1998-08-08: Duet (Old Act cover, with Guest Singer)"
+    );
+  });
+});
+
 describe("loadOwnerFacts", () => {
   it("parses a well-formed file", () => {
     const parsed = loadOwnerFacts({ facts: [{ id: "a", fact: "True thing." }] });
