@@ -217,3 +217,37 @@ describe("health: every candidate blocked", () => {
     expect(derive(blocked, { posted: 1, blocked: 1 }).consecutiveBlockedRuns).toBe(0);
   });
 });
+
+describe("a channel without credentials", () => {
+  class Unconfigured extends SpyAdapter {
+    configured(): boolean {
+      return false;
+    }
+  }
+
+  it("does not make already-posted notes look fresh again", async () => {
+    const bluesky = new SpyAdapter("bluesky");
+    // Post everything on Bluesky first.
+    await run(options({ limit: 10, verifyClaims: async () => [], adapters: [bluesky], channels: ["bluesky"] }));
+    expect(bluesky.posted).toHaveLength(3);
+
+    // Instagram is listed but has no credentials: nothing should be re-selected.
+    // Counted by cards drawn: a selected post is always drawn, and the claim-check verdicts
+    // from the first run are cached, so counting checks would see nothing either way.
+    let drawn = 0;
+    const summary = await run(
+      options({
+        limit: 10,
+        adapters: [bluesky, new Unconfigured("instagram")],
+        channels: ["bluesky", "instagram"],
+        verifyClaims: async () => [],
+        renderCardFor: async () => {
+          drawn++;
+        },
+      })
+    );
+    expect(bluesky.posted).toHaveLength(3);
+    expect(summary.posted).toEqual([]);
+    expect(drawn).toBe(0);
+  });
+});
