@@ -23,7 +23,8 @@ import {
   recordRetraction,
   saveLedger,
   seed,
-  takeFromBacklog,
+  backlogSlugs,
+  unseed,
   LEDGER_PATH,
 } from "./ledger.ts";
 import { buildOnThisDayPayload, buildPayload, ROOT, type PayloadSources } from "./payload.ts";
@@ -106,7 +107,16 @@ export interface RunOptions {
    * to exercise "do not double-post" tests the wrong thing.
    */
   archive?: { posts: LinerNotesPost[]; sources: PayloadSources; onThisDay?: OnThisDayPost[] };
+  /** YYYY-MM-DD, UTC. Injected in tests; defaults to the wall clock. */
+  today?: string;
 }
+
+/**
+ * How far past the first `backlog` notes the live run will look for one that
+ * passes its claim check. Bounded because an unchecked note costs one Sonnet
+ * call; a note already checked costs nothing (the verdict is cached).
+ */
+export const BACKLOG_SPARES = 3;
 
 export const DEFAULT_OPTIONS: RunOptions = {
   dryRun: false,
@@ -369,8 +379,12 @@ export async function run(options: RunOptions): Promise<RunSummary> {
     ...sources,
     cardExists: (p: string) => (p.startsWith(".renditions/") ? true : existsSync(join(ROOT, p))),
   };
-  const selected = selectCandidates(posts, onThisDay, ledger, options, summary, selectionSources);
-  if (!selected.length) {
+  // The drip is selected apart from the rest, with spares, and only committed to
+  // after its claim check: a blocked note at the front of the backlog must not
+  // stop the drip (October 2026: irvine-meadows, every day for days).
+  const selected = selectCandidates(posts, onThisDay, ledger, { ...options, backlog: 0 }, summary, selectionSources);
+  const drip = selectBacklog(posts, ledger, options.backlog + (options.backlog > 0 ? BACKLOG_SPARES : 0), summary, selectionSources);
+  if (!selected.length && !drip.length) {
     console.log("📭 Nothing to syndicate this run.");
     return summary;
   }
@@ -378,6 +392,16 @@ export async function run(options: RunOptions): Promise<RunSummary> {
   // ── Verify ─────────────────────────────────────────────────────────────
   // Before drawing or posting, and covering both streams (#529).
   const verified = await verifyPayloads(selected, selectionSources, summary, options);
+  let dripped = 0;
+  for (const payload of drip) {
+    if (dripped >= options.backlog) break;
+    const [ok] = await verifyPayloads([payload], selectionSources, summary, options);
+    if (!ok) continue;
+    unseed(ledger, ok.slug);
+    console.log(`   ↩ backlog drip: ${ok.slug}`);
+    verified.push(ok);
+    dripped++;
+  }
   if (!verified.length) {
     console.log("📭 Nothing left to syndicate — every candidate failed its claim check.");
     return summary;
@@ -497,8 +521,17 @@ export function selectCandidates(
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
     .filter((p) => options.channels.some((c) => !alreadyHandled(ledger, p.slug, c)));
 
+  // An On This Day post says "today". Once its day has passed it can only be
+  // wrong, so it expires rather than waiting in the queue — three of them sat
+  // there for weeks in October 2026, re-checked and re-blocked every run.
+  const today = options.today ?? new Date().toISOString().slice(0, 10);
   for (const post of freshOtd) {
     if (payloads.length >= options.limit) break;
+    const day = post.slug.replace(/^otd-/, "");
+    if (/^\d{4}-\d{2}-\d{2}$/.test(day) && day < today) {
+      summary.skipped.push({ slug: post.slug, reason: `expired — its day was ${day}` });
+      continue;
+    }
     const payload = buildOnThisDayPayload(post, sources.concerts);
     if (!payload.eligible) {
       summary.skipped.push({ slug: post.slug, reason: payload.ineligibleReasons.join("; ") });
@@ -510,20 +543,9 @@ export function selectCandidates(
   // Opt-in, rate-limited backfill. Doubles content volume for a year at zero
   // marginal cost and means a new account is not empty on day three — but only
   // ever when asked for, and only ever `backlog` at a time.
-  if (options.backlog > 0) {
-    const oldestFirst = [...posts].sort((a, b) => a.publishedAt.localeCompare(b.publishedAt));
-    const taken = takeFromBacklog(ledger, oldestFirst.map((p) => p.slug), options.backlog);
-    for (const slug of taken) {
-      const post = posts.find((p) => p.slug === slug);
-      if (!post) continue;
-      const payload = buildPayload(post, sources);
-      if (!payload.eligible) {
-        summary.skipped.push({ slug, reason: `backlog: ${payload.ineligibleReasons.join("; ")}` });
-        continue;
-      }
-      console.log(`   ↩ backlog drip: ${slug}`);
-      payloads.push(payload);
-    }
+  for (const payload of selectBacklog(posts, ledger, options.backlog, summary, sources)) {
+    console.log(`   ↩ backlog drip: ${payload.slug}`);
+    payloads.push(payload);
   }
 
   for (const entry of summary.skipped) {
@@ -531,6 +553,34 @@ export function selectCandidates(
   }
 
   return payloads;
+}
+
+/**
+ * Up to `max` eligible archived notes, oldest first. Does not touch the ledger:
+ * the caller un-seeds only the notes it actually commits to posting.
+ */
+export function selectBacklog(
+  posts: LinerNotesPost[],
+  ledger: SyndicationLedger,
+  max: number,
+  summary: RunSummary,
+  sources: PayloadSources
+): SyndicationPayload[] {
+  if (max <= 0) return [];
+  const oldestFirst = [...posts].sort((a, b) => a.publishedAt.localeCompare(b.publishedAt));
+  const out: SyndicationPayload[] = [];
+  for (const slug of backlogSlugs(ledger, oldestFirst.map((p) => p.slug))) {
+    if (out.length >= max) break;
+    const post = posts.find((p) => p.slug === slug);
+    if (!post) continue;
+    const payload = buildPayload(post, sources);
+    if (!payload.eligible) {
+      summary.skipped.push({ slug, reason: `backlog: ${payload.ineligibleReasons.join("; ")}` });
+      continue;
+    }
+    out.push(payload);
+  }
+  return out;
 }
 
 // ── Retraction ────────────────────────────────────────────────────────────────

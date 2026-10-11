@@ -605,6 +605,16 @@ That arithmetic is why the scheduled default is 1 and not 3. Raising it raises
 the ceiling by the same amount on every run, including days that already have a
 full normal queue.
 
+**A blocked note does not stop the drip.** The live run takes the drip apart
+from the rest: it lines up `backlog` + 3 spares, oldest first, and claim-checks
+them in order until `backlog` pass. Only a note that passes is un-seeded. Before
+this, the drip took exactly one note before the check, and a note the check
+blocked (Irvine Meadows, "nine years" for nineteen) stopped it dead for days in
+October 2026.
+
+**On This Day expires.** Its copy says "today", so a post whose day has passed
+(`otd-YYYY-MM-DD` before today, UTC) is skipped as expired rather than retried.
+
 **Mondays do not drip.** The weekly liner note publishes then, and the drip
 landing on top of it buries the thing it exists to support.
 
@@ -661,6 +671,7 @@ times it was found by somebody happening to look.
 | `generatedAt` stops moving | the **workflow** stopped running |
 | a channel's `lastSuccessAt` stops while the file keeps updating | that **channel** stopped — usually a token |
 | `consecutiveFailures > 0` | the run is reaching the platform and being refused; `lastError` says how |
+| `consecutiveBlockedRuns >= 2` | runs are finding candidates and the **claim check** is blocking all of them. Every channel looks healthy, because nothing reached a platform to fail |
 
 The two are independent on purpose, because the two real outages had different
 shapes: one channel refusing while the other posted, and everything going quiet
@@ -675,8 +686,9 @@ outlives its fault sends you hunting for a problem that is already fixed.
 
 **Alerts go to `NOTIFY_WEBHOOK_URL`**, the same ntfy/Pushover-style slot the Ask
 spend tripwire uses. Absent → alerts are printed in the run log and the run still
-passes. Two triggers: any channel failing, or a channel silent for 10+ days.
-Ten, not three — On This Day publishes on ~142 days a year, so a few quiet days
+passes. Three triggers: any channel failing, a channel silent for 10+ days, or every
+candidate blocked by the claim check for two runs in a row.
+The silence threshold is ten days, not three — On This Day publishes on ~142 days a year, so a few quiet days
 are normal.
 
 **A channel that has never posted is never alerted on.** Instagram and X are in
