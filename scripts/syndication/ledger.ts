@@ -251,17 +251,32 @@ export function takeFromBacklog(
   orderedSlugs: string[],
   count: number
 ): string[] {
-  const taken: string[] = [];
-  for (const slug of orderedSlugs) {
-    if (taken.length >= count) break;
+  const taken = backlogSlugs(ledger, orderedSlugs).slice(0, count);
+  for (const slug of taken) unseed(ledger, slug);
+  return taken;
+}
+
+/**
+ * The backlog in drip order, WITHOUT touching the ledger.
+ *
+ * The live run needs to look further down the queue than it will post: a note
+ * at the front that fails its claim check must not stop the drip. Taking it
+ * (and un-seeding it) before the check is how the drip stalled on
+ * irvine-meadows for days in October 2026 — and an un-seeded row that never
+ * posts is lost from the backlog the next time the ledger is saved.
+ */
+export function backlogSlugs(ledger: SyndicationLedger, orderedSlugs: string[]): string[] {
+  return orderedSlugs.filter((slug) => {
     const rows = ledger.entries.filter((e) => e.slug === slug);
     // Only a wholly-seeded post is eligible: one that is partly posted is
     // mid-retry, not backlog, and must not be re-picked by the drip.
-    if (!rows.length || rows.some((r) => r.status !== "seeded")) continue;
-    ledger.entries = ledger.entries.filter((e) => e.slug !== slug);
-    taken.push(slug);
-  }
-  return taken;
+    return rows.length > 0 && rows.every((r) => r.status === "seeded");
+  });
+}
+
+/** Drop a slug's seeded rows, once the drip has committed to posting it. */
+export function unseed(ledger: SyndicationLedger, slug: string): void {
+  ledger.entries = ledger.entries.filter((e) => e.slug !== slug);
 }
 
 /** Every channel a slug is currently live on, for retraction. */
