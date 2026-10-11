@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-08T17:10:48.031Z",
+  "updatedAt": "2026-10-11T16:10:05.311Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -427,26 +427,21 @@
     {
       "slug": "irvine-meadows-16-shows-before-it-was-demolished",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "irvine-meadows-16-shows-before-it-was-demolished",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mxmf5vxymf2d",
+      "rkey": "3mxmf5vxymf2d",
+      "postedAt": "2026-10-11T16:07:38.474Z",
+      "tier": 2,
+      "source": "venue-archival"
     },
     {
       "slug": "irvine-meadows-16-shows-before-it-was-demolished",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "irvine-meadows-16-shows-before-it-was-demolished",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117423145293226883",
+      "postedAt": "2026-10-11T16:10:05.311Z",
+      "tier": 2,
+      "source": "venue-archival"
     },
     {
       "slug": "irvine-meadows-16-shows-over-3-decades",

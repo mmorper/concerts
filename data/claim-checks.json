@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T15:41:28.207Z",
+  "updatedAt": "2026-10-11T16:07:35.619Z",
   "entries": [
     {
       "slug": "billy-idol-caught-once-never-again",
@@ -68,18 +68,9 @@
     },
     {
       "slug": "irvine-meadows-16-shows-before-it-was-demolished",
-      "hash": "88dd711995b8b3b8",
-      "checkedAt": "2026-10-10T15:41:28.206Z",
-      "issues": [
-        {
-          "field": "beat5",
-          "sentence": "Sixteen nights across nine years under the same Orange County sky.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "First show at Irvine Meadows was 1984-04-27 and last was 2003-06-08, a span of 19 years, not nine.",
-          "replacement": "Sixteen nights across nineteen years under the same Orange County sky."
-        }
-      ]
+      "hash": "520fb64357c626b7",
+      "checkedAt": "2026-10-11T16:07:35.619Z",
+      "issues": []
     },
     {
       "slug": "maxi-priest-6-more-1991-festival-bill",
