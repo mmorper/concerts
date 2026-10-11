@@ -183,7 +183,7 @@ into a content mill.
 |---|---|---|
 | Bluesky | `@concerts.morperhaus.org` | **Live** |
 | Mastodon | `@concertsmorperhaus@mastodon.social` | **Live** |
-| Instagram | `@concertsmorperhaus` | Phase 3 (#334) |
+| Instagram | `@concertsmorperhaus` | **Built, awaiting credentials** (#334) — inert until its secrets exist |
 | X | `@concertsmorps` | Phase 3 (#335) |
 
 The X handle is deliberately different — X caps handles at 15 characters and
@@ -690,6 +690,12 @@ passes. Three triggers: any channel failing, a channel silent for 10+ days, or e
 candidate blocked by the claim check for two runs in a row.
 The silence threshold is ten days, not three — On This Day publishes on ~142 days a year, so a few quiet days
 are normal.
+
+**A channel without credentials is left out of selection.** Instagram is implemented
+but has no secrets until its account is set up. Counting it would make every note already
+on Bluesky and Mastodon look unposted, re-picked every run. Before its first live run,
+seed it: `npm run syndicate -- --seed-ledger --channels instagram`, unless the back
+catalogue should reach Instagram (see `docs/specs/future/global-instagram-syndication.md`).
 
 **A channel that has never posted is never alerted on.** Instagram and X are in
 the ledger and not yet live; absence is not a fault.

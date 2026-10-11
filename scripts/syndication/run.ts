@@ -12,6 +12,7 @@ import Anthropic from "@anthropic-ai/sdk";
 
 import { BlueskyAdapter } from "./adapters/bluesky.ts";
 import { MastodonAdapter } from "./adapters/mastodon.ts";
+import { InstagramAdapter } from "./adapters/instagram.ts";
 import type { Adapter } from "./adapters/types.ts";
 import {
   alreadyHandled,
@@ -283,7 +284,7 @@ export async function run(options: RunOptions): Promise<RunSummary> {
   const summary: RunSummary = { posted: [], failed: [], skipped: [], seeded: 0, retracted: [] };
 
   const { posts, sources, onThisDay = [] } = options.archive ?? loadArchive();
-  const requested = (options.adapters ?? [new BlueskyAdapter(), new MastodonAdapter()]).filter((a) =>
+  const requested = (options.adapters ?? [new BlueskyAdapter(), new MastodonAdapter(), new InstagramAdapter()]).filter((a) =>
     options.channels.includes(a.channel)
   );
 
@@ -382,7 +383,14 @@ export async function run(options: RunOptions): Promise<RunSummary> {
   // The drip is selected apart from the rest, with spares, and only committed to
   // after its claim check: a blocked note at the front of the backlog must not
   // stop the drip (October 2026: irvine-meadows, every day for days).
-  const selected = selectCandidates(posts, onThisDay, ledger, { ...options, backlog: 0 }, summary, selectionSources);
+  // Select only for channels that can actually post. A channel with no credentials yet
+  // (Instagram, until its account is set up) has no ledger rows for anything already posted
+  // elsewhere, so counting it would make every old post look "fresh": re-picked, re-checked
+  // and re-drawn every run, and crowding real candidates out of the limit. With nothing
+  // configured at all (a local dry run), fall back to every requested channel.
+  const live = adapters.filter((a) => a.configured()).map((a) => a.channel);
+  const selectOptions = { ...options, backlog: 0, channels: live.length ? live : options.channels };
+  const selected = selectCandidates(posts, onThisDay, ledger, selectOptions, summary, selectionSources);
   const drip = selectBacklog(posts, ledger, options.backlog + (options.backlog > 0 ? BACKLOG_SPARES : 0), summary, selectionSources);
   if (!selected.length && !drip.length) {
     console.log("📭 Nothing to syndicate this run.");
