@@ -48,12 +48,21 @@ export interface SyndicationHealth {
   pausedReason?: string;
   ledger: { total: number; posted: number; seeded: number; retracted: number };
   channels: ChannelHealth[];
+  /**
+   * Runs in a row that had candidates, posted nothing, and lost at least one to
+   * the claim check. Every channel is healthy in that state — nothing reached a
+   * platform to fail — which is how 9–10 October 2026 read as a clean bill of
+   * health while nothing posted. Reset by any post.
+   */
+  consecutiveBlockedRuns?: number;
 }
 
 /** What `deriveHealth` needs from a run. A subset of `RunSummary`, so tests need no run. */
 export interface HealthRunInput {
   posted: Array<{ slug: string; channel: Channel }>;
   failed: Array<{ slug: string; channel: Channel; error: string }>;
+  /** Candidates this run dropped at the claim check. */
+  blocked?: number;
 }
 
 /**
@@ -123,6 +132,14 @@ export function deriveHealth(
     };
   });
 
+  // Posted → clear. Blocked and posted nothing → one more. Nothing due at all →
+  // carry it: a quiet day does not unblock anything.
+  const consecutiveBlockedRuns = (run?.posted.length ?? 0) > 0
+    ? 0
+    : (run?.blocked ?? 0) > 0
+      ? (previous?.consecutiveBlockedRuns ?? 0) + 1
+      : (previous?.consecutiveBlockedRuns ?? 0);
+
   return {
     version: 1,
     generatedAt: now,
@@ -131,6 +148,7 @@ export function deriveHealth(
     pausedReason: paused?.reason,
     ledger: counts,
     channels: health,
+    consecutiveBlockedRuns,
   };
 }
 
@@ -146,6 +164,12 @@ export function alertsFor(
 ): string[] {
   const quietDays = options.quietDays ?? 10;
   const out: string[] = [];
+
+  // Two, not one: a single blocked run is the claim check doing its job.
+  const blocked = health.consecutiveBlockedRuns ?? 0;
+  if (blocked >= 2) {
+    out.push(`every candidate blocked by the claim check for ${blocked} runs in a row — nothing posted`);
+  }
 
   for (const c of health.channels) {
     if (c.consecutiveFailures > 0) {
