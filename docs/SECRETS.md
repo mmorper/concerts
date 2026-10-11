@@ -148,6 +148,10 @@ Two homes each, no prod store: nothing in the Workers or the client bundle ever 
 | `BLUESKY_APP_PASSWORD` | local + CI | Bluesky adapter | **An app password, never the account password.** Scoped, revocable, and — unusually — it does not expire. Generated at Settings → Privacy and Security → App Passwords. |
 | `MASTODON_BASE_URL` | local + CI | Mastodon adapter | The instance — `https://mastodon.social`. An identifier, not a secret, but the adapter is useless without it. |
 | `MASTODON_ACCESS_TOKEN` | local + CI | Mastodon adapter | Settings → Development → your app. No expiry. Needs `write:statuses` and `write:media`. |
+| `INSTAGRAM_USER_ID` | CI | Instagram adapter | The professional account's id: Graph API Explorer → `me/accounts?fields=instagram_business_account`. Not secret, kept with its token. |
+| `INSTAGRAM_ACCESS_TOKEN` | CI | Instagram adapter | Meta Business **system-user** token, expiration *Never*. Business settings → Users → System users → Generate new token. Steps: `docs/specs/future/global-instagram-syndication.md` §"Account setup". |
+| `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | CI | `scripts/syndication/host.ts` | Cloudflare R2 API token, **Object Read & Write scoped to the one bucket**. Instagram fetches cards by URL, so they are hosted here briefly. |
+| `R2_BUCKET`, `R2_PUBLIC_URL` | CI | `scripts/syndication/host.ts` | `concerts-syndication` and its public r2.dev URL. Configuration rather than secrets; kept together. |
 
 `BLUESKY_SERVICE` overrides the PDS host (default `https://bsky.social`) and is
 configuration, not a secret — set it only when pointing at a different service.
@@ -158,7 +162,7 @@ configuration, not a secret — set it only when pointing at a different service
 |---------|--------|------|
 | Mastodon | `@concertsmorperhaus@mastodon.social` | Verified from the site via `rel="me"` in `index.html`. |
 | Bluesky | `@concerts.morperhaus.org` | Custom domain, verified by DNS TXT. The old `concertsmorperhaus.bsky.social` no longer resolves. |
-| Instagram | `@concertsmorperhaus` | Phase 3 (#334). |
+| Instagram | `@concertsmorperhaus` | Adapter built (#334); posts once its secrets are set. |
 | X | `@concertsmorps` | **Deliberately different.** X caps handles at 15 characters and `concertsmorperhaus` is 18. Not a typo — do not "correct" it. Phase 3 (#335). |
 
 The **bio copy and Mastodon metadata fields** for these accounts are recorded in
