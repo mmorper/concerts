@@ -58,7 +58,7 @@ I need to implement the Instagram syndication channel for Morperhaus Concerts (#
 - New `InstagramAdapter` alongside Bluesky and Mastodon; same `Adapter` contract
 - Posts the existing 4:5 card as a single image, two-step: create container, then publish
 - The card is uploaded to public hosting first, because the Graph API fetches by URL
-- Caption: hook + caption + "link in bio" + 3–5 tags; no URLs
+- Caption: post text + "<link text>: link in bio." + 3–5 tags; no URLs
 - Expiry of the credential is surfaced in syndication health, never silent
 
 **Key References:**
@@ -112,7 +112,7 @@ Not applicable: no site UI. The "interaction" is the reader's path:
 
 ```
 Instagram post (4:5 card)
-  caption: hook · caption · "Full story: link in bio" · 3–5 tags
+  caption: post text · "Read the note: link in bio." · 3–5 tags
     → profile bio link → /liner-notes?utm_source=instagram&utm_medium=social&utm_campaign=bio
       → newest-first list; the top note is the one the post refers to
 ```
@@ -166,14 +166,15 @@ only way to be sure on a platform with no idempotency key.
 ### Caption
 
 ```
-{hook}
-
 {caption}
 
-Full story: link in bio.
+Read the note: link in bio.          (the payload's linkText, pointed at the bio)
 
 #TheBand #NewWave #IrvineMeadows …   (3–5, from tags.ts, instagram budget)
 ```
+
+The same shape as Mastodon's status (`composeMastodonStatus`): the post text, then the
+pointer, then tags. The hook is already on the card, so it is not repeated.
 
 - **No URLs.** They are not clickable and read as spam.
 - Mentions: none in v1. The handles on file (`handles.ts`) are Bluesky's, not
