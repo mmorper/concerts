@@ -52,6 +52,8 @@ jobs:
       - name: Generate liner notes
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Alerted when a run publishes nothing; absent → logged only.
+          NOTIFY_WEBHOOK_URL: ${{ secrets.NOTIFY_WEBHOOK_URL }}
         run: |
           MODE="${{ inputs.mode }}"
           MODE="${MODE:-normal}"

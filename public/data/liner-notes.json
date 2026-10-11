@@ -350,7 +350,7 @@
       "category": "cultural",
       "temporality": "evergreen",
       "headline": "Social Distortion — 1.4 Years Before Born to Kill",
-      "prose": "Punk rock has always been about the song before the studio catches up, and at The Belasco in Los Angeles on December 6, 2024, I heard four tracks from *Born to Kill* a full 518 days before the record existed in anyone's hands. Four songs — \"Tonight,\" \"Over You,\" \"The Way Things Were,\" and the title track itself — dropped into an 18-song set like they'd always belonged there, which, knowing Social Distortion, they probably had for years already. That's the thing about a band formed in 1979: they don't audition new material, they road-test it, and the crowd at The Belasco had no idea they were the test.",
+      "prose": "Punk rock has always been about the song before the studio catches up, and at The Belasco in Los Angeles on December 6, 2024, I heard four tracks from *Born to Kill* a full 518 days before the record existed in anyone's hands. Four songs — \"Tonight,\" \"Over You,\" \"The Way Things Were,\" and the title track itself — dropped into an 18-song set like they'd always belonged there, which, knowing Social Distortion, they probably had for years already. That's the thing about a band formed in 1978: they don't audition new material, they road-test it, and the crowd at The Belasco had no idea they were the test.",
       "image": {
         "url": "/images/shows/2024-12-06-social-distortion-02.jpg",
         "alt": "Social Distortion",
@@ -425,7 +425,7 @@
           "Four of those songs had no release date, no label announcement, no album behind them.",
           "'Tonight,' 'Over You,' 'The Way Things Were,' and 'Born to Kill' — played like they'd been in the set for years.",
           "Born to Kill wouldn't be in anyone's hands for another 518 days.",
-          "A band formed in 1979 doesn't audition new material. They road-test it. We were the test."
+          "A band formed in 1978 doesn't audition new material. They road-test it. We were the test."
         ],
         "authoredAt": "2026-09-01T00:34:08.425Z"
       }
@@ -1397,7 +1397,8 @@
           "By the fourth show, I'd been listening long enough that the music had grown into me rather than the other way around."
         ],
         "authoredAt": "2026-09-01T00:35:22.977Z"
-      }
+      },
+      "doNotSyndicate": "Show counts are out of date: the archive now holds 7 Brian Setzer Orchestra shows (1995–2024); this note says 4, ending in 2017. Rewrite on the site before it can syndicate (backlog claim sweep, 2026-10-11)."
     },
     {
       "id": "anniversary-bad-religion-2013-03-22",
@@ -1405,7 +1406,7 @@
       "category": "personal",
       "temporality": "timely",
       "headline": "March 22: 13 Years Since Bad Religion",
-      "prose": "I remember walking into the 9:30 Club that March night in 2013, thirteen years ago now, and feeling like I was stepping into punk rock church. Bad Religion delivered their signature blend of melody and fury to a packed room, with Against Me!, The Bronx, and Polar Bear Club warming up the crowd beforehand. The whole evening felt like a masterclass in how punk has evolved since Bad Religion formed back in 1979, yet Greg Graffin's voice cut through the years like nothing had changed. Sometimes the best shows are the ones that remind you why you fell in love with live music in the first place.",
+      "prose": "I remember walking into the 9:30 Club that March night in 2013, thirteen years ago now, and feeling like I was stepping into punk rock church. Bad Religion delivered their signature blend of melody and fury to a packed room, with Against Me!, The Bronx, and Polar Bear Club warming up the crowd beforehand. The whole evening felt like a masterclass in how punk has evolved since Bad Religion formed back in 1980, yet Greg Graffin's voice cut through the years like nothing had changed. Sometimes the best shows are the ones that remind you why you fell in love with live music in the first place.",
       "image": {
         "url": "/images/shows/2014-07-30-bad-religion-01.jpg",
         "alt": "Bad Religion",
@@ -1472,12 +1473,12 @@
       "detector": "calendar-anniversary",
       "publishedAt": "2026-03-24T00:47:49.925Z",
       "social": {
-        "hook": "Three openers, one headliner, and Greg Graffin sounded like 1979 had never ended.",
-        "caption": "Bad Religion brought Against Me!, The Bronx, and Polar Bear Club to the 9:30 Club in March 2013. Four bands, one night, and the headliner had been doing this for 34 years by then.",
+        "hook": "Three openers, one headliner, and Greg Graffin sounded like 1980 had never ended.",
+        "caption": "Bad Religion brought Against Me!, The Bronx, and Polar Bear Club to the 9:30 Club in March 2013. Four bands, one night, and the headliner had been doing this for 33 years by then.",
         "beats": [
           "Against Me!, The Bronx, and Polar Bear Club opened — three acts that each had their own reason to be there.",
           "By the time Bad Religion hit the stage, three opening bands had already worked the room over.",
-          "Greg Graffin formed Bad Religion in 1979. In 2013 his voice carried the same weight it always had.",
+          "Bad Religion formed in 1980. In 2013 his voice carried the same weight it always had.",
           "The 9:30 Club packed tight, the set loud, and nothing about it felt like a legacy act coasting.",
           "Thirteen years later I still think of it as the night punk proved it does not require nostalgia to work."
         ],
@@ -1561,7 +1562,7 @@
       "category": "personal",
       "temporality": "timely",
       "headline": "March 23: 21 Years Since Social Distortion",
-      "prose": "I caught Social Distortion at the Hard Rock Hotel in Las Vegas on March 23, 2005, and I still remember how surreal it felt seeing Mike Ness's tattooed storytelling in that glitzy casino setting. Twenty-one years later, that show stands out as one of those perfect mismatches — punk rock grit against Vegas excess, like hearing \"White Light White Heat White Trash\" while slot machines chimed in the distance. There's something beautifully defiant about Social Distortion that made even more sense in that artificial paradise.",
+      "prose": "I caught Social Distortion at the Hard Rock Hotel in Las Vegas on March 23, 2005, and I still remember how surreal it felt seeing Mike Ness's tattooed storytelling in that glitzy casino setting. Twenty-one years later, that show stands out as one of those perfect mismatches — punk rock grit against Vegas excess, like hearing Mike Ness sing while slot machines chimed in the distance. There's something beautifully defiant about Social Distortion that made even more sense in that artificial paradise.",
       "image": {
         "url": "/images/shows/2024-12-06-social-distortion-02.jpg",
         "alt": "Social Distortion",
@@ -1623,11 +1624,11 @@
       "detector": "calendar-anniversary",
       "publishedAt": "2026-03-16T14:42:18.807Z",
       "social": {
-        "hook": "Slot machines chiming through 'White Light White Heat White Trash' — that was the room.",
+        "hook": "Slot machines chiming through a Social Distortion set — that was the room.",
         "caption": "Social Distortion at the Hard Rock Hotel in Las Vegas, March 2005. Mike Ness's tattooed punk gospel, delivered inside a casino, and somehow it made more sense for the contrast.",
         "beats": [
           "Las Vegas in 2005: slot machines, neon, and Mike Ness walking onstage covered in tattoos.",
-          "'White Light White Heat White Trash' hit differently when the chips were literally stacking somewhere behind the wall.",
+          "Punk rock hit differently when the chips were literally stacking somewhere behind the wall.",
           "Social Distortion's whole thing is defiance — and a casino is one of the more honest places to test that.",
           "Twenty-one years later, the mismatch is what I remember most. The grit won."
         ],
@@ -1858,11 +1859,11 @@
       "detector": "drought-comeback",
       "publishedAt": "2026-03-08T23:15:48.360Z",
       "social": {
-        "hook": "Echo and the Bunnymen headlined for me in 1984 and 2010. In 2003 they were one of 14 openers for The Cure.",
+        "hook": "Echo and the Bunnymen headlined for me in 1984 and 2010. In 2003 they opened for The Cure.",
         "caption": "The 1984 show was an amphitheater in California, 2003 a slot on The Cure's bill, 2010 The Black Cat in D.C. The voice had weathered; the songs hadn't moved.",
         "beats": [
           "Irvine Meadows, 1984. Post-punk that still felt like it was inventing itself.",
-          "Then 19 years until I saw them again — one of 14 acts opening for The Cure in 2003.",
+          "Then 19 years until I saw them again, opening for The Cure in 2003.",
           "The Black Cat, Washington D.C., 2010. A club, not an amphitheater.",
           "McCulloch's voice had aged. The songs from Porcupine had not.",
           "Some bands stay on your internal soundtrack whether you show up or not."
@@ -2118,7 +2119,8 @@
           "Sometimes what doesn't fit the pattern is the most honest thing in the record."
         ],
         "authoredAt": "2026-09-01T00:39:14.396Z"
-      }
+      },
+      "doNotSyndicate": "Show counts are out of date: the archive now holds 7 Brian Setzer Orchestra shows (1995–2024); this note says 4, ending in 2017. Rewrite on the site before it can syndicate (backlog claim sweep, 2026-10-11)."
     },
     {
       "id": "album-context-the-bends-the-brian-setzer-orchestra",
@@ -2205,7 +2207,7 @@
       "category": "cultural",
       "temporality": "evergreen",
       "headline": "Social Distortion + 14 More: 2018 Festival Bill",
-      "prose": "California punk's founding fathers assembled for what felt like a family reunion at Huntington State Beach in 2018, with Social Distortion, Bad Religion, and 13 other acts spanning four decades of West Coast rebellion. I witnessed bands that had been shaping punk since 1979 sharing the same sand with newer torchbearers like The Interrupters, creating this perfect cross-generational snapshot of the scene's evolution. Seeing Fear and Suicidal Tendencies on the same bill as Black Rebel Motorcycle Club reminded me how punk's DNA keeps mutating while staying fundamentally defiant. Standing on that beach with 15 bands cycling through, I felt like I was getting a master class in how Southern California invented its own brand of sunny nihilism.",
+      "prose": "California punk's founding fathers assembled for what felt like a family reunion at Huntington State Beach in 2018, with Social Distortion, Bad Religion, and 13 other acts spanning four decades of West Coast rebellion. I witnessed bands that had been shaping punk since the late seventies sharing the same sand with newer torchbearers like The Interrupters, creating this perfect cross-generational snapshot of the scene's evolution. Seeing Fear and Suicidal Tendencies on the same bill as Black Rebel Motorcycle Club reminded me how punk's DNA keeps mutating while staying fundamentally defiant. Standing on that beach with 15 bands cycling through, I felt like I was getting a master class in how Southern California invented its own brand of sunny nihilism.",
       "image": {
         "url": "/images/shows/2024-12-06-social-distortion-02.jpg",
         "alt": "Social Distortion",
@@ -2297,7 +2299,7 @@
       "publishedAt": "2026-03-07T12:00:00.000Z",
       "social": {
         "hook": "Fear and Rancid on the same sand as Black Rebel Motorcycle Club — punk's whole family tree, one afternoon.",
-        "caption": "Social Distortion headlined a 15-act bill at Huntington State Beach in 2018. Bands that had been doing this since 1979 shared a stage with acts that grew up on their records.",
+        "caption": "Social Distortion headlined a 15-act bill at Huntington State Beach in 2018. Bands that had been doing this since the late seventies shared a stage with acts that grew up on their records.",
         "beats": [
           "Social Distortion and Bad Religion on a beach in October — California punk's founding class, still running the room.",
           "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
@@ -2680,11 +2682,11 @@
       "publishedAt": "2026-02-26T23:12:00.000Z",
       "social": {
         "hook": "From arena to club, 17 years later — he played like the room held everyone who'd stayed.",
-        "caption": "I saw Howard Jones at the Universal Amphitheater in 1989, then waited 17 years. The Coach House in San Juan Capistrano seats maybe 500. The songs filled both.",
+        "caption": "I saw Howard Jones at the Universal Amphitheater in 1989, then waited 17 years for The Coach House in San Juan Capistrano. The songs filled both rooms.",
         "beats": [
           "Universal Amphitheater, July 1989: Howard Jones with Midge Ure opening, synths filling the room.",
           "Then nothing — 17 years of his records playing without me in a room watching him make them.",
-          "The Coach House in San Juan Capistrano holds maybe 500 people. I was one of them in 2006.",
+          "The Coach House in San Juan Capistrano is a club-sized room. I was in it in 2006.",
           "In an arena you are in the crowd. In a club you are in the conversation.",
           "17 years is a long wait. That room made it feel like the right one."
         ],
@@ -2795,7 +2797,7 @@
           "Thompson Twins, Billy Idol, Echo & The Bunnymen, Depeche Mode — the setlist reads like a post-punk syllabus.",
           "New Order, Duran Duran, Erasure — then three Jimmy Buffett nights. Thirteen headliners in all.",
           "Peter Gabriel in June 2003 was my last night there.",
-          "Demolished in 2016. Housing now. Sixteen nights across nine years under the same Orange County sky."
+          "Demolished in 2016. Housing now. Sixteen nights across nineteen years under the same Orange County sky."
         ],
         "authoredAt": "2026-08-31T21:00:47.246Z"
       }

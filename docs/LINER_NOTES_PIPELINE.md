@@ -666,7 +666,7 @@ gap. Echo & the Bunnymen and Duran Duran opening for The Cure in 2003 both moved
 
 **This is the only detector where the narrator is wrong about the future**, and that is the entire point. Every other detector tells a pattern story from now, looking back at a shape — longevity, loyalty, gaps. Here the reader knows something the person in the seat does not.
 
-**Trigger:** the artist's defining album post-dates the show by ≥3 months. "Defining album" is the record carrying a plurality of their still-streamed top tracks — a proxy for what **endured**, not for critical canon.
+**Trigger:** the artist's defining album post-dates the show by ≥3 months. "Defining album" is the record carrying a plurality of their still-streamed top tracks — a proxy for what **endured**, not for critical canon. A refresh whose tally falls below two tracks keeps the previous run's defining album rather than erasing it (`carryForward()` in `derive-album-eras.ts`), because iTunes reshuffles top tracks between refreshes. On 2026-09-28 that reshuffle wiped four defining albums at once.
 
 **Data points:** artist, venue, city, date; `definingAlbumTitle`, `definingAlbumReleaseDate`, `monthsAway`, `topTrackCount`/`topTrackTotal`, `albumsBefore`/`albumsAfter`, `currentAlbumTitle`, `careerYear`, `yearsBeforeDebut`, plus inert album identity for a future deep link (spec §Part 7).
 
@@ -1094,6 +1094,13 @@ Two modules, one Claude call per post:
   size, set times, ticket stubs), and any rows from **`data/owner-facts.json`** — a small
   hand-kept file of personal facts the owner has confirmed, so a true fact outside the
   concert data (e.g. "I lived in Orange County around 1992") does not get flagged forever.
+  Every listed show carries its place in the archive (`show #150`, date order — the same
+  count `milestone-marker` uses), and an artist's guest spots on another act's set are
+  listed from the setlist `with` field, with the guest named on the host's setlist line.
+  Without those two, every milestone and every `guest-bridge` note was rejected as an
+  invented number or as a claim about someone with "0 shows" — which stalled the weekly
+  run for three Mondays in Sep–Oct 2026, since selection is deterministic and the same
+  doomed candidates came up each week.
 - **`scripts/liner-notes/verify-claims.ts`** — one Sonnet 5 call (adaptive thinking, effort
   `"medium"`) per post: the fact sheet plus every copy field (headline, prose, hook, caption,
   beats). Returns a JSON array of issues — `{ field, sentence, kind, severity, evidence,
@@ -1117,6 +1124,11 @@ Two modules, one Claude call per post:
   payload — liner notes and On This Day alike — against **today's** data, before drawing or
   posting. A must-fix issue makes the payload ineligible; the run log names the sentence and
   the evidence. **Block and report, never rewrite at post time.**
+- **On This Day authoring** (`scripts/on-this-day/index.ts`) passes the same check into
+  `generateSocial`, with a fact sheet dated to the post's own day and built from the same
+  sources as the post-time check (`loadArchive()`). It was missing until October 2026: On This
+  Day errors were only found at post time, after the copy was committed for its one day, and
+  three posts in a row never went out.
 
 **Cached, not re-spent.** `scripts/syndication/claim-cache.ts` keys a verdict on a hash of
 (fact sheet + copy) — not the slug alone — in `data/claim-checks.json`, mirroring the
@@ -1124,6 +1136,10 @@ syndication ledger's shape (committed, `version`-checked, throws on corruption r
 silently re-checking everything). A data refresh that moves a show under a post changes the
 fact sheet text, which changes the hash, which forces a fresh check automatically — no
 separate invalidation logic to keep in sync.
+
+**An empty run is alerted, not silent.** When every candidate fails (or none is selected),
+the pipeline still exits 0 but emits an Actions `::warning::` and pushes to
+`NOTIFY_WEBHOOK_URL` (the syndication health alerts' slot; absent → logged only).
 
 **Ambiguity means stop**, the kill switch's own posture: if the verifier itself fails (a bad
 API response, malformed JSON), the post is held — skipped this run, not published unchecked.

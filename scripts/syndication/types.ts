@@ -24,8 +24,12 @@
 export const CHANNELS = ["bluesky", "mastodon", "instagram", "x"] as const;
 export type Channel = (typeof CHANNELS)[number];
 
-/** The channels with adapters today. Phase 3 adds instagram and x (#334/#335). */
-export const IMPLEMENTED_CHANNELS: readonly Channel[] = ["bluesky", "mastodon"];
+/**
+ * The channels with adapters today. Instagram (#334) is implemented but inert until its
+ * credentials exist — an adapter without them is left out of selection, see `run.ts`.
+ * X is #335.
+ */
+export const IMPLEMENTED_CHANNELS: readonly Channel[] = ["bluesky", "mastodon", "instagram"];
 
 // ── Media ───────────────────────────────────────────────────────────────────
 
