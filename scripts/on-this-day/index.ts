@@ -24,7 +24,12 @@ import { existsSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 
+import Anthropic from "@anthropic-ai/sdk";
 import { generateSocial } from "../liner-notes/social.ts";
+import { buildFactSheet } from "../liner-notes/fact-sheet.ts";
+import { verifyClaims } from "../liner-notes/verify-claims.ts";
+import { loadArchive } from "../syndication/run.ts";
+import { normalizeArtistName } from "../../src/utils/normalize.ts";
 import { checkSocial, formatSocialIssues } from "../liner-notes/voice-check.ts";
 import { buildPost, narrativeFacts, type BuildSources } from "./build.ts";
 import { renderCard } from "./card.ts";
@@ -291,6 +296,29 @@ async function main(): Promise<void> {
     for (const f of facts) console.log(`   • ${f}`);
   }
 
+  // 🔴 CHECK THE CLAIMS WHILE THE MODEL CAN STILL FIX THEM.
+  //
+  // Liner notes have run the claim check (#529) inside authoring since it
+  // landed; On This Day did not, so its errors were only found at post time,
+  // after the copy was committed for its one day. Three in a row were blocked
+  // that way in Sep–Oct 2026 ("Twenty years ago today" for a 2003 show, a
+  // Squeeze count, three acts never seen). Inside the retry loop a must-fix
+  // issue is fed back for a rewrite; four failures and the day does not publish.
+  //
+  // Same subjects and same sources as the post-time check (`verifyPayloads`),
+  // so a post that passes here is judged against the same evidence there.
+  // `today` is this post's own day, which is what its "today" means.
+  const show = concerts.find(
+    (c) => c.date === built.post.showDate && c.headlinerNormalized === built.post.artistNormalized
+  );
+  const factSheet = buildFactSheet(
+    {
+      artists: [built.post.artistNormalized, ...(show?.openers ?? []).map(normalizeArtistName)],
+      venues: [built.post.venueNormalized],
+    },
+    { ...loadArchive().sources, today: built.post.slug.replace(/^otd-/, "") }
+  );
+
   const authored = await generateSocial([
     {
       // No `prose` — On This Day has none, and buildPrompt takes the
@@ -310,9 +338,12 @@ async function main(): Promise<void> {
         // fields and an instruction not to invent, so it writes about the filing.
         facts,
         avoid,
+        factSheet,
       },
     },
-  ]);
+  ], {
+    verifyClaims: (sheet, copy) => verifyClaims(sheet, copy, new Anthropic().messages),
+  });
 
   const social = authored.get(built.post.slug);
   if (!social) {

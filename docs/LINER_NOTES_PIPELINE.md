@@ -1124,6 +1124,11 @@ Two modules, one Claude call per post:
   payload — liner notes and On This Day alike — against **today's** data, before drawing or
   posting. A must-fix issue makes the payload ineligible; the run log names the sentence and
   the evidence. **Block and report, never rewrite at post time.**
+- **On This Day authoring** (`scripts/on-this-day/index.ts`) passes the same check into
+  `generateSocial`, with a fact sheet dated to the post's own day and built from the same
+  sources as the post-time check (`loadArchive()`). It was missing until October 2026: On This
+  Day errors were only found at post time, after the copy was committed for its one day, and
+  three posts in a row never went out.
 
 **Cached, not re-spent.** `scripts/syndication/claim-cache.ts` keys a verdict on a hash of
 (fact sheet + copy) — not the slug alone — in `data/claim-checks.json`, mirroring the
