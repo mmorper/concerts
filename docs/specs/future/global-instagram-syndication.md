@@ -261,11 +261,66 @@ present but invalid, health records a failure and alerts.
 
 ### Account setup (owner, one-time)
 
-- [ ] Convert `@concertsmorperhaus` to a professional (Creator or Business) account
-- [ ] Create the Meta app and grant `instagram_content_publish` (+ basic read)
-- [ ] If Q2 = A: link a Facebook Page and create a system user in Business settings
-- [ ] Set the bio link: `https://concerts.morperhaus.org/liner-notes?utm_source=instagram&utm_medium=social&utm_campaign=bio`
-- [ ] Profile copy is already written (#358); avatar (#355) and header (#356) are outstanding
+Meta and Cloudflare move their menus around; where a label below no longer matches, look
+for the nearest equivalent. **Never paste a token or key into chat, an issue or a PR** —
+only into GitHub's secret form (repo → Settings → Secrets and variables → Actions → New
+repository secret).
+
+**A. Instagram account**
+1. In the Instagram app: profile → ☰ → *Settings and activity* → *Account type and tools*
+   → *Switch to professional account* → choose **Business** (a Business portfolio needs it).
+
+**B. Facebook Page** (the system-user path requires one; it can stay empty)
+2. facebook.com → *Pages* → *Create new Page*. Name it e.g. "Morperhaus Concerts".
+3. Link it: Page → *Settings* → *Linked accounts* → *Instagram* → *Connect account* → log in
+   as `@concertsmorperhaus`.
+
+**C. Business portfolio**
+4. business.facebook.com → create a Business portfolio (if you have none).
+5. *Settings* → *Accounts* → *Pages* → *Add* the Page; *Accounts* → *Instagram accounts* →
+   *Add* `@concertsmorperhaus`.
+
+**D. Meta app**
+6. developers.facebook.com → *My Apps* → *Create app* → use case **Other** → type
+   **Business** → connect it to the Business portfolio from step 4.
+7. In the app dashboard, add the **Instagram** product, choosing the
+   *API setup with Facebook login* option.
+8. *App settings → Basic*: set the Privacy Policy URL to the site's
+   (`https://concerts.morperhaus.org/`) — needed if the app has to be switched to Live.
+
+**E. System user and token**
+9. business.facebook.com → *Settings* → *Users* → *System users* → *Add* → name
+   "concerts-syndication", role **Admin**.
+10. On that system user → *Assign assets*: the **app** (full control), the **Page** and the
+    **Instagram account** (full control / content publishing).
+11. *Generate new token* → pick the app → **Token expiration: Never** → permissions:
+    `instagram_basic`, `instagram_content_publish`, `pages_show_list`,
+    `pages_read_engagement`, `business_management`. Copy the token.
+12. Find the Instagram user id: developers.facebook.com/tools/explorer → paste the token →
+    query `me/accounts?fields=instagram_business_account` → copy
+    `instagram_business_account.id`.
+13. GitHub secrets: `INSTAGRAM_ACCESS_TOKEN` (step 11), `INSTAGRAM_USER_ID` (step 12).
+
+**F. Cloudflare R2** (free tier: 10 GB-month, 1M writes and 10M reads a month, no egress
+fees; this uses a few hundred KB and a handful of operations a day)
+14. Cloudflare dashboard → **R2** → enable it. Cloudflare asks for a payment method even
+    on the free tier; nothing is charged within it.
+15. *Create bucket* → `concerts-syndication`.
+16. Bucket → *Settings* → *Public access* → enable the **r2.dev** URL → copy it.
+17. Bucket → *Settings* → *Object lifecycle rules* → delete objects after **1 day** (the
+    adapter deletes after publishing; this is the backstop).
+18. R2 → *Manage R2 API tokens* → *Create API token* → **Object Read & Write**, scoped to
+    `concerts-syndication` only → copy the Access Key ID, Secret Access Key, and your
+    account id.
+19. GitHub secrets: `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`,
+    `R2_BUCKET` (`concerts-syndication`), `R2_PUBLIC_URL` (step 16).
+
+**G. Profile**
+20. Bio link: `https://concerts.morperhaus.org/liner-notes?utm_source=instagram&utm_medium=social&utm_campaign=bio`
+21. Profile copy is already written (#358); avatar (#355) and header (#356) are outstanding.
+
+If the first real post fails with a permissions error, switch the app to **Live** (app
+dashboard, top bar). Using an app for your own business's assets needs no App Review.
 
 ---
 
@@ -279,7 +334,15 @@ present but invalid, health records a failure and alerts.
 
 ---
 
-## Questions for Review
+## Decisions (owner, 2026-10-11)
+
+- **Q1 Hosting: Cloudflare R2**, on the condition it stays free. Free tier covers this
+  many times over; a 1-day lifecycle rule backstops the delete-after-publish.
+- **Q2 Token: Meta Business system-user token**, non-expiring. Setup steps above.
+- **Q3 Retraction: delete by hand is acceptable** if the API cannot delete.
+- **Q4 On This Day: yes**, posts to Instagram too.
+
+## Questions for Review (as originally posed)
 
 **Q1. Where does the card live long enough for Instagram to fetch it?**
 - **A. Cloudflare R2 public bucket (recommended).** Upload at post time, delete after
@@ -310,7 +373,7 @@ visual posts and already carry the card. The alternative is liner notes only.
 
 ## Revision History
 
-- **2026-10-11:** Initial specification created
+- **2026-10-11:** Initial specification created; owner decisions recorded, setup steps added
 - **Version:** 1.0.0
 - **Author:** Claude Code (for Mike Morper)
 - **Status:** Planned
