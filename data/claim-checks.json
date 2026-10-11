@@ -1,7 +1,21 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-04T15:07:44.061Z",
+  "updatedAt": "2026-10-11T16:07:35.619Z",
   "entries": [
+    {
+      "slug": "billy-idol-caught-once-never-again",
+      "hash": "920b33f86b56f7b6",
+      "checkedAt": "2026-10-06T16:29:22.819Z",
+      "issues": [
+        {
+          "field": "Beat 2",
+          "sentence": "Whatever came next — the MTV saturation, the tours, the ubiquity — I missed all of it.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet contains no data on MTV presence, touring history, or general popularity/ubiquity of Billy Idol after 1984; this is an external claim about career trajectory not supported by the archive."
+        }
+      ]
+    },
     {
       "slug": "depeche-mode-38-years-of-shows-2",
       "hash": "ff7dc37ed91e0bb2",
@@ -53,6 +67,12 @@
       ]
     },
     {
+      "slug": "irvine-meadows-16-shows-before-it-was-demolished",
+      "hash": "520fb64357c626b7",
+      "checkedAt": "2026-10-11T16:07:35.619Z",
+      "issues": []
+    },
+    {
       "slug": "maxi-priest-6-more-1991-festival-bill",
       "hash": "493798d1605d3a54",
       "checkedAt": "2026-09-18T14:04:51.169Z",
@@ -79,6 +99,12 @@
           "evidence": "Crowd retention/attendance behavior is not in the fact sheet and not an OWNER-CONFIRMED PERSONAL FACT."
         }
       ]
+    },
+    {
+      "slug": "new-order-37-years-between-shows",
+      "hash": "9cdc4585daab40f3",
+      "checkedAt": "2026-10-07T17:13:08.241Z",
+      "issues": []
     },
     {
       "slug": "oingo-boingo-5-more-1987-festival-bill",
@@ -161,16 +187,24 @@
     },
     {
       "slug": "otd-2026-09-20",
-      "hash": "6a449caf70e69d1f",
-      "checkedAt": "2026-10-04T15:07:31.342Z",
+      "hash": "bc6b0f8ebec87b4e",
+      "checkedAt": "2026-10-10T15:41:12.660Z",
       "issues": [
         {
           "field": "caption",
           "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
-          "kind": "contradicted",
+          "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "Fact sheet lists 14 opening acts for the 2003-09-20 Hyundai Pavilion show (Marc Almond, Berlin, Bow Wow Wow, Dashboard Confessional, Dramarama, Duran Duran, Echo and the Bunnymen, Fountains of Wayne, The English Beat, Hot Hot Heat, Interpol, Kings of Leon, The Psychedelic Furs, Violent Femmes) — matching the Hook's 'Fourteen acts opened', not thirteen.",
-          "replacement": "Twenty years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
+          "evidence": "TODAY IS 2026-10-10; the show was 2003-09-20, which is twenty-three years ago, not twenty.",
+          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
+        },
+        {
+          "field": "caption",
+          "sentence": "Twenty years ago today I saw The Cure for the first time, on a bill with thirteen other acts.",
+          "kind": "internal",
+          "severity": "must-fix",
+          "evidence": "Hook says 'Fourteen acts opened that day' and Beat 1 says 'Fourteen acts on one bill,' but caption says thirteen other acts — the fact sheet lists 14 openers at the 2003-09-20 show.",
+          "replacement": "Twenty-three years ago today I saw The Cure for the first time, on a bill with fourteen other acts."
         }
       ]
     },
@@ -197,68 +231,111 @@
     },
     {
       "slug": "otd-2026-09-25",
-      "hash": "e9c4fc3cbf532063",
-      "checkedAt": "2026-10-04T15:07:10.647Z",
+      "hash": "0ba2eee530b56de5",
+      "checkedAt": "2026-10-10T15:40:57.580Z",
       "issues": [
         {
           "field": "caption",
           "sentence": "Four years ago today at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner.",
           "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "The show was on 2022-09-25, but TODAY is 2026-10-04 (not 2026-09-25), so 'today' does not align with the anniversary date.",
-          "replacement": "Back on September 25, 2022 at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner."
+          "evidence": "Show was 2022-09-25; TODAY IS 2026-10-10, which is not the anniversary date (2022-09-25 to 2026-09-25 would be four years ago, but today is Oct 10, past that anniversary).",
+          "replacement": "Back at YouTube Theatre, EarthGang opened for Gorillaz under the Alternative Hip Hop banner."
         },
         {
           "field": "caption",
-          "sentence": "...under the Alternative Hip Hop banner.",
+          "sentence": "under the Alternative Hip Hop banner",
           "kind": "external",
           "severity": "review",
-          "evidence": "No genre tag or 'Alternative Hip Hop' classification appears anywhere in the fact sheet for this show."
+          "evidence": "Fact sheet contains no genre tag/banner information for this show; cannot confirm or deny."
         },
         {
-          "field": "beat 3",
+          "field": "beat",
           "sentence": "Filed under Alternative Hip Hop, a rare tag in my collection.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The fact sheet contains no genre classifications or tag frequency data for the archive."
+          "evidence": "Fact sheet contains no genre tagging data or frequency-of-tag information."
         },
         {
-          "field": "beat 5",
+          "field": "beat",
           "sentence": "Also that year: Royal Blood, Tears For Fears, Kraftwerk, and more — but this was the only Gorillaz night.",
-          "kind": "contradicted",
+          "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "The fact sheet lists only one Gorillaz show (2022-09-25) and no shows by Royal Blood, Tears For Fears, or Kraftwerk anywhere in the archive data provided.",
-          "replacement": "This remains the only Gorillaz night on record."
+          "evidence": "None of these artists (Royal Blood, Tears For Fears, Kraftwerk) appear anywhere in the archive data provided; fact sheet lists only Gorillaz, EarthGang, Devo, Howard Jones, ABC, Haircut 100 for YouTube Theatre, and does not enumerate any other 2022 shows."
         }
       ]
     },
     {
       "slug": "otd-2026-10-04",
-      "hash": "9dfc1d8876d90dce",
-      "checkedAt": "2026-10-04T15:07:00.587Z",
+      "hash": "bba0f41530a9e5f1",
+      "checkedAt": "2026-10-10T15:40:45.948Z",
       "issues": [
         {
           "field": "caption",
-          "sentence": "Squeeze opened; I'd go on to see them two more times on their own.",
-          "kind": "contradicted",
+          "sentence": "Thirty-five years ago today was the only time I've seen Sting live.",
+          "kind": "stale-relative-time",
           "severity": "must-fix",
-          "evidence": "Squeeze's only other shows on record are 1987-06-30 (opening for Oingo Boingo) and 2012-04-27 (headlining) — only one time seeing them 'on their own,' not two.",
-          "replacement": "Squeeze opened; I'd go on to see them headline on their own once more, in 2012."
+          "evidence": "TODAY IS 2026-10-10, but the Sting show was on 1991-10-04 — the anniversary date doesn't match today's date, so 'today' is inaccurate.",
+          "replacement": "Thirty-five years ago this week was the only time I've seen Sting live."
         },
         {
-          "field": "Beat 2",
+          "field": "caption",
+          "sentence": "I'd go on to see them two more times on their own.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "Squeeze shows on record: 1987 (opening for Oingo Boingo), 1991 (opening for Sting), 2012 (on their own) — only one headlining show after 1991, not two.",
+          "replacement": "I'd go on to see them headline once more, in 2012."
+        },
+        {
+          "field": "beat 2",
           "sentence": "Squeeze opened the show — a band I'd see headlining twice more by 2012.",
-          "kind": "contradicted",
+          "kind": "internal",
           "severity": "must-fix",
-          "evidence": "Fact sheet shows only one Squeeze headlining show (2012-04-27); the 1987 show had Squeeze opening for Oingo Boingo, not headlining.",
-          "replacement": "Squeeze opened the show — a band I'd see headlining on their own once more, in 2012."
+          "evidence": "Fact sheet lists only one Squeeze headlining show (2012-04-27) after the 1991 Sting date; this also conflicts with caption's claim of 'two more times.'",
+          "replacement": "Squeeze opened the show — a band I'd see headlining once more, in 2012."
         },
         {
-          "field": "Beat 4",
+          "field": "beat 4",
           "sentence": "1991 also had me at Siouxsie and the Banshees, Jimmy Buffett, Bell Biv DeVoe.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No shows by Siouxsie and the Banshees, Jimmy Buffett, or Bell Biv DeVoe appear anywhere in the fact sheet's archive."
+        },
+        {
+          "field": "beat 3",
+          "sentence": "Sting took the stage solo, years clear of The Police.",
           "kind": "external",
           "severity": "review",
-          "evidence": "None of these shows appear anywhere in the fact sheet's archive; cannot confirm or deny they occurred."
+          "evidence": "The Police's breakup timeline is not in the fact sheet; while plausible, it cannot be confirmed from the archive data provided."
+        }
+      ]
+    },
+    {
+      "slug": "otd-2026-10-08",
+      "hash": "b7b3909c547a1d40",
+      "checkedAt": "2026-10-08T17:09:49.915Z",
+      "issues": [
+        {
+          "field": "Beat 4",
+          "sentence": "2017 also had me at Duran Duran, Blondie, Midnight Oil, and more.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No shows by Duran Duran, Blondie, or Midnight Oil appear anywhere in the fact sheet's archive data, which otherwise lists complete show histories for relevant artists/venues."
+        }
+      ]
+    },
+    {
+      "slug": "peter-gabriel-11-more-1993-festival-bill",
+      "hash": "d79e9b2bba6ac621",
+      "checkedAt": "2026-10-08T17:10:34.296Z",
+      "issues": [
+        {
+          "field": "Beat 4",
+          "sentence": "Twelve artists in one afternoon at the Olympic Velodrome.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Set/door times are explicitly listed as NOT IN THE DATA; the fact sheet gives no time of day for the 1993-09-18 show.",
+          "replacement": "Twelve artists on one bill at the Olympic Velodrome."
         }
       ]
     },

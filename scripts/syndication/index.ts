@@ -232,7 +232,11 @@ async function writeHealth(options: RunOptions, summary: RunSummary): Promise<vo
   const health = deriveHealth(ledger, {
     channels: options.channels,
     previous,
-    run: { posted: summary.posted, failed: summary.failed },
+    run: {
+      posted: summary.posted,
+      failed: summary.failed,
+      blocked: summary.skipped.filter((s) => s.reason.startsWith("claim check")).length,
+    },
     paused: { paused: Boolean(pause.paused), reason: pause.detail || undefined },
     now,
   });

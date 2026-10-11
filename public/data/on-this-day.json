@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-10-04T12:56:21.046Z",
+  "generatedAt": "2026-10-08T14:10:26.137Z",
   "posts": [
+    {
+      "slug": "otd-2026-10-08",
+      "day": "10-08",
+      "showDate": "2017-10-08",
+      "age": 9,
+      "artist": "Bat Fangs",
+      "artistNormalized": "bat-fangs",
+      "venue": "The Anthem",
+      "venueNormalized": "the-anthem",
+      "city": "Washington",
+      "score": 17,
+      "imageUrl": "https://cdn-images.dzcdn.net/images/artist/a06956da343095026ece06bb7a6d835b/500x500-000000-80-0-0.jpg",
+      "tier": 2,
+      "source": "artist-deezer",
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=bat-fangs&show=2017-10-08",
+      "cardPath": "public/og/on-this-day/otd-2026-10-08.png",
+      "social": {
+        "hook": "Four acts on that bill, and I have seen every single one of them exactly once.",
+        "caption": "Nine years ago today, Bat Fangs played The Anthem with The Messthetics, Danger Painters, and Kid Congo Powers opening. I never caught any of the four again.",
+        "beats": [
+          "October 8, 2017: four acts on one Washington stage.",
+          "Bat Fangs, The Messthetics, Danger Painters, Kid Congo Powers — all openers but the headliner.",
+          "I have seen each of them exactly once, and this was the once.",
+          "2017 also had me at Duran Duran, Blondie, Midnight Oil, and more.",
+          "Nine years later, this bill is still the only time for all four."
+        ],
+        "authoredAt": "2026-10-08T14:10:22.704Z"
+      },
+      "publishedAt": "2026-10-08T14:10:26.137Z"
+    },
     {
       "slug": "otd-2026-10-04",
       "day": "10-04",
