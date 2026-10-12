@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-11T16:07:35.619Z",
+  "updatedAt": "2026-10-12T19:35:57.376Z",
   "entries": [
     {
       "slug": "billy-idol-caught-once-never-again",
@@ -48,6 +48,61 @@
           "severity": "review",
           "evidence": "Fact sheet explicitly lists set times/door times as NOT IN THE DATA; there is no basis for claiming the show occurred in the afternoon.",
           "replacement": "Ten acts. One day that read like a syllabus."
+        }
+      ]
+    },
+    {
+      "slug": "gwen-stefani-walked-on-for-the-brian-setzer-orchestra",
+      "hash": "f8b72fb4a83b2b79",
+      "checkedAt": "2026-10-12T19:35:57.376Z",
+      "issues": [
+        {
+          "field": "hook",
+          "sentence": "The only two times I ever saw Gwen Stefani, she wasn't the one I bought a ticket for.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "Archive shows Gwen Stefani with 0 shows and only 1 guest appearance (1998-08-08). There is no second appearance on record, so 'two times' is unsupported.",
+          "replacement": "The one time I ever saw Gwen Stefani, she wasn't the one I bought a ticket for."
+        },
+        {
+          "field": "caption",
+          "sentence": "First was No Doubt at Disneyland in 1988.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "Gwen Stefani has 0 shows on record, and no No Doubt show appears anywhere in the archive; the only Gwen Stefani appearance is the 1998-08-08 guest spot.",
+          "replacement": "The only one on record is from 1998, when she walked on with The Brian Setzer Orchestra for one song, 'You're the Boss.'"
+        },
+        {
+          "field": "caption",
+          "sentence": "Ten years later she walked on with The Brian Setzer Orchestra for one song, 'You're the Boss.'",
+          "kind": "internal",
+          "severity": "must-fix",
+          "evidence": "This depends on the invented 1988 No Doubt/Disneyland show; with no such show on record there is no 'ten years later' to reference.",
+          "replacement": "She walked on with The Brian Setzer Orchestra for one song, 'You're the Boss,' at the Greek Theatre in 1998."
+        },
+        {
+          "field": "beat 2",
+          "sentence": "I'd seen Gwen Stefani exactly once before this night, with No Doubt in 1988.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "No No Doubt show exists anywhere in the archive; Gwen Stefani has 0 shows total on record.",
+          "replacement": "I'd never seen Gwen Stefani on a bill of her own, not once."
+        },
+        {
+          "field": "beat 3",
+          "sentence": "That was Disneyland, a full decade earlier, nothing like a swing orchestra.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "Built on the invented 1988 Disneyland/No Doubt show, which has no basis in the fact sheet.",
+          "replacement": "Ska-punk and a swing orchestra had nothing obvious in common."
+        },
+        {
+          "field": "beat 5",
+          "sentence": "One show, ten years apart, one duet — that's the entire file, and it's enough.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "The 'ten years apart' framing relies on the invented 1988 show; the archive only documents the single 1998-08-08 guest appearance.",
+          "replacement": "One song, one guest appearance — that's the entire file, and it's enough."
         }
       ]
     },

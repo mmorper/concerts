@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-11T16:10:05.313Z",
-  "lastRunAt": "2026-10-11T16:10:05.313Z",
+  "generatedAt": "2026-10-12T19:35:57.377Z",
+  "lastRunAt": "2026-10-12T19:35:57.377Z",
   "paused": false,
   "ledger": {
     "total": 210,
@@ -21,7 +21,12 @@
       "lastSuccessAt": "2026-10-11T16:10:05.311Z",
       "postedCount": 39,
       "consecutiveFailures": 0
+    },
+    {
+      "channel": "instagram",
+      "postedCount": 0,
+      "consecutiveFailures": 0
     }
   ],
-  "consecutiveBlockedRuns": 0
+  "consecutiveBlockedRuns": 1
 }
