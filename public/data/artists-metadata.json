@@ -284,7 +284,7 @@
     "image": "https://cdn-images.dzcdn.net/images/artist/1b2ca964de4c4f693dada3fe1dc25a39/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-09-07T13:18:49.770Z"
+    "fetchedAt": "2026-10-12T16:31:57.410Z"
   },
   "culture-club": {
     "name": "Culture Club",
@@ -1743,34 +1743,25 @@
     "fetchedAt": "2026-09-28T15:02:05.927Z"
   },
   "beck": {
-    "name": "Beck",
-    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vtuvvs1424793068.jpg",
-    "genres": [
-      "Alternative Rock",
-      "Rock/Pop"
-    ],
-    "formed": "1988",
-    "website": "www.beck.com",
-    "source": "theaudiodb",
-    "fetchedAt": "2026-09-07T13:18:48.467Z"
+    "name": "beck & call",
+    "image": "https://cdn-images.dzcdn.net/images/artist/85d126e3003bce011acc488a0d4bc6f6/500x500-000000-80-0-0.jpg",
+    "genres": [],
+    "source": "deezer",
+    "fetchedAt": "2026-10-12T16:31:56.456Z"
   },
   "pinhead-gunpowder": {
     "name": "Pinhead Gunpowder",
-    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/7za54g1717752096.jpg",
-    "genres": [
-      "Punk Rock",
-      "Punk"
-    ],
-    "formed": "1990",
-    "source": "theaudiodb",
-    "fetchedAt": "2026-09-07T13:18:48.941Z"
+    "image": "https://cdn-images.dzcdn.net/images/artist/cab48debe1758d7f68aa0e9598c2778a/500x500-000000-80-0-0.jpg",
+    "genres": [],
+    "source": "deezer",
+    "fetchedAt": "2026-10-12T16:31:56.940Z"
   },
   "karl-denson-s-tiny-universe": {
     "name": "Karl Denson's Tiny Universe",
     "image": "https://cdn-images.dzcdn.net/images/artist/7b3cd032209f1bd16cf41f79149e4d83/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-09-07T13:18:50.141Z"
+    "fetchedAt": "2026-10-12T16:31:57.914Z"
   },
   "re-flex": {
     "name": "Re-Flex",
