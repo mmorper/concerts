@@ -15,7 +15,7 @@
 
 import { normalizeArtistName } from "../../src/utils/normalize.ts";
 import { songsFor, guestAppearances, type GuestAppearance, type SetlistIndex, type SetlistSong } from "./setlists.ts";
-import type { AliasMap } from "./artist-aliases.ts";
+import { EMPTY_ALIAS_MAP, relatedActs, sharedMemberOf, type AliasMap } from "./artist-aliases.ts";
 import type { AlbumErasSlim } from "./analyze.ts";
 import type { Concert } from "../../src/types/concert.ts";
 
@@ -170,6 +170,21 @@ function artistSection(normalized: string, sources: FactSheetSources): string[] 
       const where = night ? ` — ${night.venue}, ${night.cityState}` : "";
       const host = night?.headlinerNormalized === g.host ? night.headliner : g.host;
       lines.push(`  • ${g.date}${where}: joined ${host} on "${g.song}"`);
+    }
+  }
+  // A person seen under another act's name (Gwen Stefani as No Doubt) — without
+  // this, the verifier reads "I saw her with No Doubt in 1988" as invented.
+  for (const other of relatedActs(sources.aliases ?? EMPTY_ALIAS_MAP, normalized)) {
+    const who = sharedMemberOf(sources.aliases!, normalized, other);
+    const theirs = appearancesFor(other, sources);
+    const otherName = artistDisplayName(other, theirs, sources);
+    lines.push(
+      `SHARES A MEMBER WITH ${otherName}${who ? ` (${who})` : ""} — a different act, shows by ${otherName} (${theirs.length} total):`
+    );
+    if (!theirs.length) lines.push("  (none on record)");
+    for (const { concert: c, role } of theirs) {
+      const roleNote = role === "opener" ? `, opening for ${c.headliner}` : "";
+      lines.push(`  • ${c.date} (${c.dayOfWeek}${numberOf(c, numbers)}) — ${c.venue}, ${c.cityState}${roleNote}`);
     }
   }
   return lines;
