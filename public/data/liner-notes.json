@@ -1,7 +1,108 @@
 {
-  "generatedAt": "2026-09-21T14:57:15.119Z",
-  "dataHash": "7eb54038",
+  "generatedAt": "2026-10-12T17:31:25.657Z",
+  "dataHash": "4e57eb95",
   "posts": [
+    {
+      "id": "guest-bridge-gwen-stefani-brian-setzer-you-re-the-boss",
+      "slug": "gwen-stefani-walked-on-for-the-brian-setzer-orchestra",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Gwen Stefani Walked On for The Brian Setzer Orchestra",
+      "prose": "Swing revival acts didn't usually share stages with ska-punk singers, which is what made August 8, 1998 at the Greek Theatre stand out in my notebook: Gwen Stefani walked on with The Brian Setzer Orchestra for \"You're the Boss.\" I'd only seen her once before, with No Doubt, a full ten years earlier at Disneyland back in 1988. One show, one decade apart, one unexpected duet — that's the whole file I have on Gwen Stefani, and I wouldn't trade it for a longer one.",
+      "image": {
+        "url": "/images/shows/2017-11-25-the-brian-setzer-orchestra-01.jpg",
+        "alt": "The Brian Setzer Orchestra",
+        "source": "show",
+        "ref": "the-brian-setzer-orchestra",
+        "credit": "Mike Morper · 25 November 2017",
+        "shotOn": "2017-11-25",
+        "crop": {
+          "h": 0.9168,
+          "w": 0.5512,
+          "x": 0.0855,
+          "y": 0
+        }
+      },
+      "audio": {
+        "trackName": "You're the Boss",
+        "artistName": "The Brian Setzer Orchestra",
+        "albumName": "The Dirty Boogie",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/59/69/ae/5969aeb9-2864-cb34-b144-b844ca65a71d/mzaf_271781668496872672.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/1c/32/96/1c32968d-aadc-3eeb-552c-5604f7ccb3ea/00606949018320.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/youre-the-boss/1440903312?i=1440903442&uo=4",
+        "source": "itunes",
+        "role": "subject"
+      },
+      "artists": [
+        "the-brian-setzer-orchestra",
+        "gwen-stefani"
+      ],
+      "venues": [
+        "greek-theatre",
+        "disneyland"
+      ],
+      "years": [
+        1998,
+        1988
+      ],
+      "tags": [
+        "#guest-bridge",
+        "#walk-on",
+        "#shares-member"
+      ],
+      "deepLinks": [
+        {
+          "label": "The Brian Setzer Orchestra",
+          "url": "/?scene=artists&artist=the-brian-setzer-orchestra",
+          "type": "artist"
+        },
+        {
+          "label": "Gwen Stefani",
+          "url": "/?scene=artists&artist=gwen-stefani",
+          "type": "artist"
+        },
+        {
+          "label": "Greek Theatre",
+          "url": "/?scene=venues&venue=greek-theatre",
+          "type": "venue"
+        },
+        {
+          "label": "Disneyland",
+          "url": "/?scene=venues&venue=disneyland",
+          "type": "venue"
+        },
+        {
+          "label": "August 8, 1998",
+          "url": "/?scene=artists&artist=the-brian-setzer-orchestra&show=1998-08-08",
+          "type": "setlist"
+        },
+        {
+          "label": "1998",
+          "url": "/?scene=timeline&year=1998",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "the-brian-setzer-orchestra-22-years-of-shows",
+        "the-brian-setzer-orchestra-a-jazz-blues-outlier-in-a-rock-electronic-reggae-arch"
+      ],
+      "score": 29,
+      "detector": "guest-bridge",
+      "publishedAt": "2026-10-12T17:31:25.657Z",
+      "factsAsOf": "2026-10-12T17:31:25.659Z",
+      "social": {
+        "hook": "The only two times I ever saw Gwen Stefani, she wasn't the one I bought a ticket for.",
+        "caption": "First was No Doubt at Disneyland in 1988. Ten years later she walked on with The Brian Setzer Orchestra for one song, 'You're the Boss.'",
+        "beats": [
+          "Swing revival and ska-punk didn't usually share a bill, let alone a stage.",
+          "I'd seen Gwen Stefani exactly once before this night, with No Doubt in 1988.",
+          "That was Disneyland, a full decade earlier, nothing like a swing orchestra.",
+          "Then she walked out with The Brian Setzer Orchestra for 'You're the Boss.'",
+          "One show, ten years apart, one duet — that's the entire file, and it's enough."
+        ],
+        "authoredAt": "2026-10-12T17:31:25.663Z"
+      }
+    },
     {
       "id": "historical-moment-1984-thompson-twins",
       "slug": "thompson-twins-in-1984-what-was-in-the-air",
@@ -536,7 +637,7 @@
       "headline": "July 31: 40 Years Since The Art of Noise",
       "prose": "I drove down to the Pacific Amphitheatre in Costa Mesa on July 31, 1986, genuinely unsure what a live Art of Noise show would even look like — they were a studio project, built from samples and synthesizers, and the stage setup felt more like a science experiment than a concert. It's been 40 years since that night, and I still remember the disorientation of watching music that seemed to exist only on record suddenly fill an outdoor amphitheatre with actual air and heat and crowd noise. They had already released *(Who's Afraid of) The Art of Noise?* by then, and hearing those fractured rhythms in the open California summer felt genuinely strange in the best way. Some shows you attend; that one attended me.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/art-of-noise-50dfd27c82328.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/3828cec2328056a62275ab2dc633aa80/500x500-000000-80-0-0.jpg",
         "alt": "Art of Noise",
         "source": "artist",
         "ref": "the-art-of-noise"
@@ -613,7 +714,7 @@
       "headline": "Pacific Amphitheatre: 17 Shows Over 5 Decades",
       "prose": "I keep coming back to Pacific Amphitheatre, seventeen times now, and the span still gets me: Tears For Fears on July 10, 1985, and Nile Rodgers on July 31, 2026. That's five decades under the same Costa Mesa sky, from the *Songs from the Big Chair* era straight through to a stage I still can't quite believe I was standing in front of in July 2026. In between, Run-DMC, UB40, the Art of Noise, the Beach Boys — fifteen artists total, and somehow this one amphitheater kept pulling me back for all of them. I don't have a tidy reason why. I just know I never once regretted the drive.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjDMquPcZsfRRmMiysFE0rfRkr7vEYs8yOplAo-Ce9xt6NQy8CckO1OkujDswHo0lOJ1ZIt3F49c3Xte4uFvz-xgZygr5Z0mD5RlLmc1rW_Lr8yTee98eNGDzy5jLlCmsDr9Y-Q6rY1G8tFSbg=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeO_w4VLuoyt276VK1c6bx8Y9_EVKJC-CNb5qxP0vx23RB4-UO5hNxn-wIqU1BJVKojkQFP62QIQyUL4ATzwL5ZDxQTrC-EouOm7mxpz-miM8faRb4KeW_l2nMllw-aYi-fTZ9y=s4800-h1200",
         "alt": "Pacific Amphitheatre",
         "source": "venue",
         "ref": "pacific-amphitheatre"
@@ -726,7 +827,7 @@
       "headline": "July 16: 40 Years Since Beach Boys",
       "prose": "I was at the Pacific Amphitheatre in Costa Mesa on July 16, 1986 — 40 years ago today — and I still remember the way the summer air felt when the opening notes hit. The Beach Boys had been together 25 years by then, and somehow they made those harmonies sound like they were being invented right there in front of me. It was the 15th show in my archive, a little over two years after the first. Forty years later, that night still feels like part of the foundation.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/rvqysx1385325837.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/d728129020af9a9f9b2f1127d3cfd751/500x500-000000-80-0-0.jpg",
         "alt": "The Beach Boys",
         "source": "artist",
         "ref": "beach-boys"
@@ -795,7 +896,7 @@
       "headline": "House of Blues Anaheim: 6 Shows Over 3 Decades",
       "prose": "I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who'd been making records since before I probably knew what a record was. Six shows across three decades under that name, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjDOALEuhWY2nnLgKImIDzlM3UIyWYr0NypuHHycHF-61_venMjHo4QxBGIMoLZGJq9fvI0feBia5HgWPeeb-Yyc9kQyCT4YNatRYLGtYnqvvYw9YFMVtOHNK3UiFwaZlS0ILZpaU3qsyHb4vFM=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLccd6EfAnRS0vpLC01Os-MtY6wXMPD1GxJJ0vS1M5QUYf-cL9pr9yDNndlShqvhJdU3GgvS2NxmvmA3naWHY_FJb0vCRY2mquHhd3ippLptN89pRqJo3bl7T8900WsMmrjPy8wbXw=s4800-h1200",
         "alt": "House of Blues Anaheim",
         "source": "venue",
         "ref": "house-of-blues-anaheim"
@@ -884,7 +985,7 @@
       "headline": "June 21: 35 Years Since Jimmy Buffett",
       "prose": "I was at Irvine Meadows on June 21, 1991 — 35 years ago today — and I remember the sun going down over the amphitheater in a way that felt almost staged, like the sky was in on the joke. Jimmy Buffett had been playing that Southern California crowd like a warm ocean current, and somewhere between opening with \"Changes in Latitudes, Changes in Attitudes\" and closing with \"Margaritaville,\" the whole place stopped being a concert and started being a backyard party full of strangers. I didn't own a single piece of Parrothead gear, but I understood it completely by the end of the night. Some shows teach you why a fanbase exists — this was one of them.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/tspqvv1366946673.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/76b68c142f93163991baee5bf51815ef/500x500-000000-80-0-0.jpg",
         "alt": "Jimmy Buffett",
         "source": "artist",
         "ref": "jimmy-buffett"
@@ -960,7 +1061,7 @@
       "headline": "No Doubt: Caught Once, Never Again",
       "prose": "Here's something that stopped me cold in my own archive: I saw No Doubt at Disneyland in March 1988 — just two years after they formed — on a bill with The Nylons in Anaheim, before virtually anyone outside Southern California knew their name. That's the only No Doubt entry in my entire archive, which means I caught them exactly once, at what had to be one of their earliest public performances, and never crossed paths with them again through *Tragic Kingdom*, *Rock Steady*, or any of the singles years. The fact that my sole sighting happened at a theme park in 1988 is the kind of detail I couldn't have invented.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/vxvvtr1348513703.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/48ec84474b37a0677d7375f7bf10d78a/500x500-000000-80-0-0.jpg",
         "alt": "No Doubt",
         "source": "artist",
         "ref": "no-doubt"
@@ -1030,7 +1131,7 @@
       "headline": "Run DMC: Caught Once, Never Again",
       "prose": "I caught Run DMC exactly once in my entire concert history — June 20, 1987 at Pacific Amphitheatre with the Beastie Boys opening. This was right in their Raising Hell era, when both acts were ascending rapidly, and somehow I never managed to see either of them again despite decades of concertgoing. Looking back, that single show captured lightning in a bottle: two pioneering hip-hop acts sharing a stage just as the genre was breaking into the mainstream. I can't believe I never got another Run DMC sighting after that night.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wvrqqx1341250863.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/0a27ad88911f5e66b47a40d983303b03/500x500-000000-80-0-0.jpg",
         "alt": "Run-D.M.C.",
         "source": "artist",
         "ref": "run-dmc"
@@ -1099,7 +1200,7 @@
       "headline": "Sting — Days After Nevermind Dropped",
       "prose": "Nevermind hit shelves on September 24th, 1991, and within days the entire rock landscape had shifted — yet there I was on October 4th, just 10 days later, watching Sting perform his polished pop-rock at Pacific Amphitheatre in Costa Mesa. I remember thinking how surreal it felt to be watching Sting, with The Soul Cages still his newest album, while the radio was still figuring out what to do with \"Smells Like Teen Spirit.\" The timing captures this perfect moment when the old guard was still touring their greatest hits, completely unaware that the ground had already moved beneath them.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wuprus1340023845.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/5b8043688300104410c5c61e8b378d6a/500x500-000000-80-0-0.jpg",
         "alt": "Sting",
         "source": "artist",
         "ref": "sting"
@@ -1169,7 +1270,7 @@
       "headline": "Blancmange at Crawford Hall: 40 Years On",
       "prose": "I saw Blancmange at Crawford Hall in Irvine on February 15, 1986, and I can still picture Neil Arthur's theatrical gestures up on that stage. They already had three albums out, the newest, Believe You Me, from 1985, and their blend of electronic beats and Arthur's distinctive vocals still felt like the future of pop music. Crawford Hall was an intimate venue for a band that was getting significant radio play, making it feel like catching lightning in a bottle. Looking back, that Saturday in February 1986 captured a specific moment when British new wave was reshaping American college radio.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/blancmange-51c457e3276c1.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/d3c1f45911a1913ed5d6e8f18cbefb4f/500x500-000000-80-0-0.jpg",
         "alt": "Blancmange",
         "source": "artist",
         "ref": "blancmange"
@@ -1242,7 +1343,7 @@
       "headline": "April 12: 40 Years Since The Alarm",
       "prose": "I remember standing in that UCLA crowd 40 years ago today, watching The Alarm tear through their set with an intensity that felt almost desperate. Mike Peters had this way of leaning into the microphone like he was trying to pull every person in the venue into whatever urgent message he was delivering, and I was completely susceptible to that kind of raw conviction. Strength was their newest record, and you could feel the band's belief that rock music could still change the world—a notion that seemed both naive and absolutely necessary in 1986. Forty years later, I still get that same surge of adrenaline when \"68 Guns\" comes on shuffle.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/wswstt1388681264.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/6999c912b02ffbace7bd5377a3be8eda/500x500-000000-80-0-0.jpg",
         "alt": "The Alarm",
         "source": "artist",
         "ref": "the-alarm"
@@ -1493,7 +1594,7 @@
       "headline": "Blancmange: One Night at Crawford Hall, 1986",
       "prose": "I saw Blancmange at Crawford Hall in Irvine on February 15, 1986, and for four decades that one night was the only Blancmange show in my archive. This English synth-pop duo formed in 1979 and already had three albums out by the time I saw them, from \"Happy Families\" to \"Believe You Me,\" yet they stayed a one-night entry in my concert history. It's fascinating how an artist can pass through your life once and then stay a single snapshot for decades.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/blancmange-51c457e3276c1.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/d3c1f45911a1913ed5d6e8f18cbefb4f/500x500-000000-80-0-0.jpg",
         "alt": "Blancmange",
         "source": "artist",
         "ref": "blancmange"
@@ -1643,7 +1744,7 @@
       "headline": "Tears For Fears: 17 Years Between Shows",
       "prose": "I remember walking out of the Universal Amphitheater in 2005 after Tears For Fears, thinking it might be the last time I'd see Roland Orzabal and Curt Smith together on stage. Seventeen years later, I found myself at the Kia Forum in Inglewood, watching them perform like no time had passed at all. The gap between those shows spans nearly two decades of my life — jobs, moves, relationships — but hearing \"Mad World\" again felt like stepping back into that younger version of myself. Four shows total across all these years, and somehow each one marked a different chapter of growing up with their music.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/yusuxr1341941676.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/4c802732227999ca78fdb5c8d76eae50/500x500-000000-80-0-0.jpg",
         "alt": "Tears for Fears",
         "source": "artist",
         "ref": "tears-for-fears"
@@ -1725,7 +1826,7 @@
       "headline": "Erasure — Days Before Violator Dropped",
       "prose": "March 1990 was the moment synth-pop split into two futures — one heading for the dancefloor, the other for the stadium. I caught Erasure at the Forum just 8 days before Depeche Mode's Violator dropped, witnessing the last gasps of pure pop innocence before their darker cousins conquered the world. Andy Bell's voice soared through \"A Little Respect\" while somewhere across town, Dave Gahan was probably rehearsing \"Personal Jesus\" for arenas that would dwarf this moment. Sometimes the most significant concerts are the ones that capture a scene right before it changes forever.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/xpytqt1342444014.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/9437fd22d1c4547e65708cbf21f08587/500x500-000000-80-0-0.jpg",
         "alt": "Erasure",
         "source": "artist",
         "ref": "erasure"
@@ -1800,7 +1901,7 @@
       "headline": "Echo and the Bunnymen: 26 Years Between Headline Shows",
       "prose": "I caught Echo and the Bunnymen at Irvine Meadows in 1984, when their post-punk atmospherics still felt urgent and new. I saw them again 19 years later as one of The Cure's openers in 2003, but it took 26 years to see them headline again, at a club in D.C. called The Black Cat in 2010. By then, Ian McCulloch's voice had weathered but the songs from *Porcupine* and those early albums still carried that same moody weight. Sometimes the longest waits between shows make you appreciate how certain bands become part of your internal soundtrack, whether you're actively listening or not.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/22zdag1638977527.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/484b109058cfd0d50c69add180cd8250/500x500-000000-80-0-0.jpg",
         "alt": "Echo & The Bunnymen",
         "source": "artist",
         "ref": "echo-and-the-bunnymen"
@@ -1879,7 +1980,7 @@
       "headline": "Bruce Springsteen: Caught Once, Never Again",
       "prose": "I saw Bruce Springsteen exactly once in my entire concert-going life — September 29, 1985 at the Los Angeles Memorial Coliseum during the Born in the U.S.A. tour. Despite more than 160 shows over the next four decades, The Boss never crossed my path again, making him one of the most glaring single-sighting artists in my archive. It's almost impossible to believe that someone who built a career on marathon three-hour shows and relentless touring somehow became my ultimate one-and-done experience. Sometimes the biggest names leave the smallest footprints.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/pj57t31658769167.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/7003fc8e2a26471a8bf000b10eff8698/500x500-000000-80-0-0.jpg",
         "alt": "Bruce Springsteen",
         "source": "artist",
         "ref": "bruce-springsteen"
@@ -2810,7 +2911,7 @@
       "headline": "Peter Gabriel + 11 More: 1993 Festival Bill",
       "prose": "The early '90s were the golden age of world music crossover, when MTV and major festivals finally opened their doors to artists like Ziggy Marley, The Drummers of Burundi, and Sinéad O'Connor sharing the same bill. I caught this spectacular 12-artist lineup at the Olympic Velodrome in Carson in September 1993, headlined by Peter Gabriel a year after \"Us\" came out. The sheer diversity was staggering — from Crowded House's jangly pop-rock to Jah Wobble's experimental dub, from P.M. Dawn's hip-hop soul to the traditional rhythms of Burundi. Looking back, it feels like witnessing a brief moment when the music industry genuinely believed in bringing the world together on one stage.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/xwtsqv1386887602.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/2ed7ee8fde056cba5788efcab21fef2e/500x500-000000-80-0-0.jpg",
         "alt": "Peter Gabriel",
         "source": "artist",
         "ref": "peter-gabriel"
@@ -2908,7 +3009,7 @@
       "headline": "New Order: 37 Years Between Shows",
       "prose": "I saw New Order at Irvine Meadows in 1985 when I was just getting into their sound — that perfect blend of post-punk edge and dance floor pulse that made Brotherhood feel so essential. Then nothing. Thirty-seven years passed before I caught them again at the Hollywood Bowl in 2022, and walking into that venue, I couldn't help but think about how much had changed in both our lives since that summer night in Orange County. The music hit just as hard, but I was definitely standing in a very different place to receive it.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/new-order-4fd5f3e934e45.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/d41d8cd98f00b204e9800998ecf8427e/500x500-000000-80-0-0.jpg",
         "alt": "New Order",
         "source": "artist",
         "ref": "new-order"
@@ -2987,7 +3088,7 @@
       "headline": "Billy Idol: Caught Once, Never Again",
       "prose": "I saw Billy Idol exactly once in four decades of concertgoing — August 13, 1984 at Irvine Meadows — and somehow never crossed paths with him again. This strikes me as nearly impossible given how ubiquitous he became after *Rebel Yell*, yet my archive shows a complete Billy Idol drought from 1985 to present. Maybe I was unconsciously avoiding the crowds, or maybe our touring schedules just never aligned, but it's wild that a single summer night in Orange County represents my entire Billy Idol experience.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qprtqv1342815862.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/dd4a56da5e3a5e74812ffded839ab883/500x500-000000-80-0-0.jpg",
         "alt": "Billy Idol",
         "source": "artist",
         "ref": "billy-idol"
@@ -3151,7 +3252,7 @@
       "headline": "Duran Duran: 16 Years Between Shows",
       "prose": "I remember standing at Irvine Meadows in 1987 watching Duran Duran, not knowing it would be 16 years before I'd see them again. Their 2003 festival set in San Bernardino felt like stepping into a time machine — Simon Le Bon's voice cutting through 16 years of silence, bringing back memories of new wave summers and MTV afternoons. Four shows total across my concert history, but that first gap speaks volumes about how life can drift you away from the bands that once defined your weekends. Sometimes the longest waits make for the sweetest reunions.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/73oxf41638977308.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/86f76b67c1ac24310182281b4f1a419b/500x500-000000-80-0-0.jpg",
         "alt": "Duran Duran",
         "source": "artist",
         "ref": "duran-duran"
@@ -3231,7 +3332,7 @@
       "headline": "Stryper: Caught Once, Never Again",
       "prose": "I saw Stryper exactly once in my entire concert-going life — May 17, 1985 at Knots Berry Farm in Buena Park. This was just two years after they formed, two days after \"Soldiers Under Command\" came out, and before \"To Hell with the Devil.\" Something about that single sighting feels perfectly calibrated: I caught them at exactly the right moment, then never felt compelled to return. Maybe once was enough to appreciate the novelty of headbanging to hymns in an amusement park.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/8nyeap1666438385.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/da9c0f20bd53627770b067a739b70e02/500x500-000000-80-0-0.jpg",
         "alt": "Stryper",
         "source": "artist",
         "ref": "stryper"
@@ -3404,7 +3505,7 @@
       "headline": "The Smithereens: 21 Years Between Shows",
       "prose": "I saw The Smithereens at The Celebrity Theatre in Anaheim in 1992, then didn't catch them again until 21 years later at The Hamilton Live in Washington. That gap ran from June 1992 to June 2013 — I was a different person entirely by the time I heard those power-pop hooks again. It's strange how some bands just vanish from your radar, even when they keep making music. Sometimes the longest breaks make the reunion feel like discovering an old friend's phone number in a jacket pocket.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/qswpwx1377465655.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/4eb56de04a29d74833768127eb8ad724/500x500-000000-80-0-0.jpg",
         "alt": "The Smithereens",
         "source": "artist",
         "ref": "the-smithereens"
@@ -3485,7 +3586,7 @@
       "headline": "Wham!: Caught Once, Never Again",
       "prose": "I saw Wham! exactly once in my entire concert-going history — August 30, 1985 at Hollywood Park Racetrack in Inglewood — and somehow never crossed paths with them again despite decades of shows. This was right in their \"Make It Big\" era, with Chaka Khan and Katrina and the Waves opening, yet they became the ultimate one-and-done in my archive. Looking back, it's wild that a duo this massive during the mid-80s pop explosion left such a singular footprint in my concert memory.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/xuwupw1439139539.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/bce24f7465694d29781e0d99f1918d79/500x500-000000-80-0-0.jpg",
         "alt": "Wham!",
         "source": "artist",
         "ref": "wham"
@@ -3921,7 +4022,7 @@
       "headline": "Maxi Priest + 6 More: 1991 Festival Bill",
       "prose": "This was reggae's moment in American mainstream consciousness, and I caught a perfect snapshot of it at Pacific Amphitheatre in June 1991. Bonafide was Maxi Priest's latest album, and he headlined a seven-artist bill that included Dennis Brown and Andrew Tosh — Peter Tosh's son, carrying forward his father's legacy. I remember the crowd being surprisingly diverse for Orange County, drawn by reggae's growing radio presence around that time. What struck me most was how the music unified this massive outdoor crowd, from the opening act through Priest's closing set under the California stars.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjDMquPcZsfRRmMiysFE0rfRkr7vEYs8yOplAo-Ce9xt6NQy8CckO1OkujDswHo0lOJ1ZIt3F49c3Xte4uFvz-xgZygr5Z0mD5RlLmc1rW_Lr8yTee98eNGDzy5jLlCmsDr9Y-Q6rY1G8tFSbg=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeO_w4VLuoyt276VK1c6bx8Y9_EVKJC-CNb5qxP0vx23RB4-UO5hNxn-wIqU1BJVKojkQFP62QIQyUL4ATzwL5ZDxQTrC-EouOm7mxpz-miM8faRb4KeW_l2nMllw-aYi-fTZ9y=s4800-h1200",
         "alt": "Pacific Amphitheatre",
         "source": "venue",
         "ref": "pacific-amphitheatre"
@@ -4105,7 +4206,7 @@
       "headline": "Oingo Boingo + 5 More: 1987 Festival Bill",
       "prose": "This was the era when alternative rock was still finding its footing alongside new wave's final flourishes — and somehow I caught all of it on one stage in Tijuana. Six acts that would define different corners of the late-80s landscape: Oingo Boingo four months out from BOI-NGO, The Bangles, Squeeze's sophisticated pop craft, and Australia's Hoodoo Gurus bringing their garage rock energy just five years after forming. I remember the surreal border-crossing pilgrimage to Caliente Racetrack, where Chris Isaak's crooning and The Fixx's synth-rock completed this unlikely but perfect snapshot of 1987's musical diversity.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/ACvplmOX6SHzm8m9pZBO_aGuG1WfwzJY4lVbFzfX1nmPg_UwEB4MkMLTBysnhEp5QnuLtMBTfjb_fm8OqVxNDbHAv1wmq1hnMaw8VNDwxak4muLhaOYfuhJQ0W63CINM-O9xvuWB8eky=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLcwUJi0pq_EN1lQsyOJfMhWgseiCoYE0cWAW_2PI-Qy9P8-Bd9McEO2sQsZQBh13KVkmuONY1GSEn_4Q7ypWGPduNKoz6kSPbw6JVH3arLnrlcEAmUKg6fGg7TtLRGJRUQFXu5B=s4800-h1200",
         "alt": "Caliente Racetrack",
         "source": "venue",
         "ref": "caliente-racetrack"
@@ -4282,7 +4383,7 @@
       "headline": "50 Shows in a Row in the D.C. Area, 2009–2018",
       "prose": "For my first 25 years of shows, California was nearly the whole map: 71 of the first 76, starting with Adam Ant at Irvine Meadows in 1984. Then, from Rob Thomas at EagleBank Arena in November 2009 to Beck at The Anthem in April 2018, I saw 50 shows in a row in D.C., Maryland and Virginia, 11 of them at the 9:30 Club. Between Brian Setzer at Doheny in May 2009 and The Human League at Huntington State Beach in May 2018, I didn't see a single show in California. After that, 50 of the next 55 shows were back in California. Echo and the Bunnymen were one of the bands I saw on both coasts, Irvine Meadows in 1984 and The Black Cat in 2010 — the same band, a whole country apart.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/ACvplmOJ9rECBIO-ARPNUmvXCbJRY687aHiYnsuxISUBiaVqG5Cxk9D9DcHf-j-15tEU-u8oMrD7Q3nsMvDV6NNimR6rIwidRdWy1uCaE4um1jrRDYLrxo5HE1hc0Uw1wfGpqna25uj6=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfWi1yFh5LwgE4f9F8390i6bnVzskTVDPDyjWgjAo3vtPJBTboKMlPzjDBnQpHj-8cw2ZLsBMKbzJa4v-MkHLhasUV2Wuph3aNSa4-3uY4i1OzSPZxfRGsVyH42H4Mra-Hzmlia=s4800-h1200",
         "alt": "EagleBank Arena",
         "source": "venue",
         "ref": "eaglebank-arena"
@@ -4478,7 +4579,7 @@
       "headline": "Squeeze: From Opener to Headliner",
       "prose": "Few bands embodied the scrappy spirit of new wave quite like Squeeze, and my concert history happened to catch them on both sides of the bill: twice as an opener, once as the headliner. I first saw them opening for Oingo Boingo at a racetrack in Tijuana in 1987, when their clever wordplay and pub rock energy felt perfectly suited to warming up a crowd. Twenty-five years later, I watched them headline Rams Head Live in Baltimore, now seasoned veterans commanding the stage with the same wit but deeper confidence. It's rare to see one band from both sides of the bill in your own concert diary — a support slot in 1987, top billing in 2012.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/stywtv1376542198.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/c9759ca151843776ba2b0d3924679d97/500x500-000000-80-0-0.jpg",
         "alt": "Squeeze",
         "source": "artist",
         "ref": "squeeze"
@@ -4553,7 +4654,7 @@
       "headline": "Tears For Fears: 37 Years of Shows",
       "prose": "I remember discovering Tears For Fears at Pacific Amphitheatre in 1985, when \"Songs from the Big Chair\" was still fresh and Roland Orzabal's voice felt like it could crack open the world. Four shows across 37 years might not seem like much, but each one marked a different chapter of my life — from that first encounter in Costa Mesa to their triumphant return at the Kia Forum in 2022. What strikes me most is how their pop-rock has aged: the synthesizers that once felt futuristic now carry the weight of memory, and those soaring choruses hit differently when you've lived through four decades of hearing them. Some artists you grow out of; others grow with you.",
       "image": {
-        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/yusuxr1341941676.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/4c802732227999ca78fdb5c8d76eae50/500x500-000000-80-0-0.jpg",
         "alt": "Tears for Fears",
         "source": "artist",
         "ref": "tears-for-fears"
@@ -4829,7 +4930,7 @@
       "headline": "Kia Forum: 5 Shows Over 3 Decades",
       "prose": "I remember walking into the Forum for the first time in March 1990 to see Erasure, that massive bowl of a venue feeling both intimate and overwhelming. Five shows across 33 years have brought me back to Inglewood — from Bell Biv DeVoe's New Jack Swing energy to Elton John's piano grandeur to Tears for Fears' nostalgic pull. My most recent visit was Depeche Mode in 2023, and I realized I've been loyal to this place longer than some of my friendships. There's something about the Forum's acoustics that makes every synthesizer sound like it's coming from the future.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/place-photos/AG9NLjCpP75Ljx-cwBhiky-CJ3Dkw-LrT4kZn3EIVYiFReQcz59BH5-xm2UlWJw6CXrKe3E8-wxT4Ikc1r0H54n5Wi2R6-8GisdNjXNJ270lYPQFpT6RIVgVVNP50my5HMRCxWJHD00xQcMXDtXX2Aw=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeBuTZMgMpD4sFZN4bqzUezeQqvJXjkrUtCZFrdDN-b5pqx4xHh8oFe1kXk6UC0B18fQfq8OFfJpTpH2v9OZN0HfbsFS7fgyKDwEQV44mVeMLEW2hnQZB8Zdq-WPRee1AlUwmIRxA=s4800-h1200",
         "alt": "Kia Forum",
         "source": "venue",
         "ref": "kia-forum"
@@ -4911,10 +5012,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 56,
-    "totalGenerated": 96,
-    "averageScore": 38.4,
-    "lastPipelineRun": "2026-09-21T14:57:15.119Z",
+    "totalPosts": 57,
+    "totalGenerated": 97,
+    "averageScore": 38.2,
+    "lastPipelineRun": "2026-10-12T17:31:25.657Z",
     "concertsAnalyzed": 183,
     "feedUrl": "/liner-notes.xml"
   }
