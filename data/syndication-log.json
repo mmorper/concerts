@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-11T16:10:05.311Z",
+  "updatedAt": "2026-10-13T17:20:13.002Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -384,26 +384,21 @@
     {
       "slug": "howard-jones-17-years-between-shows",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "howard-jones-17-years-between-shows",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mxrk5354qr2x",
+      "rkey": "3mxrk5354qr2x",
+      "postedAt": "2026-10-13T17:19:57.822Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "howard-jones-17-years-between-shows",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "howard-jones-17-years-between-shows",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117434745651673978",
+      "postedAt": "2026-10-13T17:20:13.002Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "howard-jones-39-years-of-shows",
@@ -1011,6 +1006,25 @@
       "status": "posted",
       "uri": "117406396987037337",
       "postedAt": "2026-10-08T17:10:46.431Z",
+      "tier": 2,
+      "source": "artist-deezer"
+    },
+    {
+      "slug": "otd-2026-10-13",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mxrk523grp2r",
+      "rkey": "3mxrk523grp2r",
+      "postedAt": "2026-10-13T17:19:56.686Z",
+      "tier": 2,
+      "source": "artist-deezer"
+    },
+    {
+      "slug": "otd-2026-10-13",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117434745529428966",
+      "postedAt": "2026-10-13T17:20:10.820Z",
       "tier": 2,
       "source": "artist-deezer"
     },
