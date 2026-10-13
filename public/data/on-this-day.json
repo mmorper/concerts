@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-10-08T14:10:26.137Z",
+  "generatedAt": "2026-10-13T14:40:44.802Z",
   "posts": [
+    {
+      "slug": "otd-2026-10-13",
+      "day": "10-13",
+      "showDate": "1999-10-13",
+      "age": 27,
+      "artist": "Art of Noise",
+      "artistNormalized": "the-art-of-noise",
+      "venue": "Paradise Rock Club",
+      "venueNormalized": "paradise-rock-club",
+      "city": "Boston",
+      "score": 7,
+      "imageUrl": "https://cdn-images.dzcdn.net/images/artist/3828cec2328056a62275ab2dc633aa80/500x500-000000-80-0-0.jpg",
+      "tier": 2,
+      "source": "artist-deezer",
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=the-art-of-noise",
+      "cardPath": "public/og/on-this-day/otd-2026-10-13.png",
+      "social": {
+        "hook": "Thirteen years between the first time and the second — and the second time was also the last.",
+        "caption": "Twenty-seven years ago today I saw Art of Noise at Paradise Rock Club, thirteen years after I'd first seen them in 1986. I haven't seen them since.",
+        "beats": [
+          "Art of Noise, Paradise Rock Club, Boston, October 13, 1999.",
+          "I'd first seen them thirteen years earlier, in 1986.",
+          "This was only the second time, and the only time at this room.",
+          "That same year I also caught Alien Fashion Show live.",
+          "No third time yet, twenty-seven years on."
+        ],
+        "authoredAt": "2026-10-13T14:40:26.994Z"
+      },
+      "publishedAt": "2026-10-13T14:40:44.802Z"
+    },
     {
       "slug": "otd-2026-10-08",
       "day": "10-08",
