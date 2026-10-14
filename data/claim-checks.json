@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-13T17:19:53.167Z",
+  "updatedAt": "2026-10-14T14:52:24.428Z",
   "entries": [
     {
       "slug": "billy-idol-caught-once-never-again",
@@ -53,15 +53,15 @@
     },
     {
       "slug": "gwen-stefani-walked-on-for-the-brian-setzer-orchestra",
-      "hash": "d45375b12eaa5481",
-      "checkedAt": "2026-10-13T17:19:44.624Z",
+      "hash": "3b80ca9119efad73",
+      "checkedAt": "2026-10-14T14:51:54.708Z",
       "issues": [
         {
           "field": "hook",
-          "sentence": "The only two times I ever saw Gwen Stefani, she wasn't the one I bought a ticket for.",
+          "sentence": "The only two times I ever saw Gwen Stefina, she wasn't the one I bought a ticket for.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Archive shows only 1 Gwen Stefani appearance on record (1998-08-08 guest spot); 'EVERY SHOW BY Gwen Stefani (0 total)' and only 1 guest appearance listed, not two.",
+          "evidence": "Archive shows only 1 Gwen Stefani guest appearance on record (1998-08-08); no No Doubt show exists in the archive.",
           "replacement": "The only time I ever saw Gwen Stefani, she wasn't the one I bought a ticket for."
         },
         {
@@ -69,32 +69,32 @@
           "sentence": "First was No Doubt at Disneyland in 1988.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No such show exists anywhere in the archive; EVERY SHOW BY Gwen Stefani lists 0 total and no No Doubt or Disneyland show is on record at all.",
-          "replacement": "The only one on record was her walking on with The Brian Setzer Orchestra for one song, 'You're the Boss.'"
+          "evidence": "No show by No Doubt or any 1988 Disneyland date appears anywhere in the archive; Gwen Stefani has 0 shows and only 1 guest appearance on record (1998-08-08 with The Brian Setzer Orchestra).",
+          "replacement": "The only time was with The Brian Setzer Orchestra."
         },
         {
           "field": "beat 2",
           "sentence": "I'd seen Gwen Stefani exactly once before this night, with No Doubt in 1988.",
-          "kind": "personal-invented",
+          "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "No No Doubt or 1988 Disneyland show appears anywhere in the archive; fact sheet's EVERY SHOW BY Gwen Stefani lists 0 total shows.",
+          "evidence": "No No Doubt show or 1988 date exists in the archive; Gwen Stefani's only recorded appearance is the 1998-08-08 guest spot.",
           "replacement": "I'd never seen Gwen Stefani before this night."
         },
         {
           "field": "beat 3",
           "sentence": "That was Disneyland, a full decade earlier, nothing like a swing orchestra.",
-          "kind": "invented-number",
+          "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "There is no Disneyland show or any prior Gwen Stefani appearance in the archive to be a decade earlier than 1998-08-08.",
-          "replacement": "There was no prior sighting on record, nothing like a swing orchestra."
+          "evidence": "No Disneyland show or any earlier Gwen Stefani appearance exists in the archive; her only recorded appearance is 1998-08-08.",
+          "replacement": "There was no earlier sighting on record — this was the only one."
         },
         {
           "field": "beat 5",
           "sentence": "One show, ten years apart, one duet — that's the entire file, and it's enough.",
           "kind": "internal",
           "severity": "must-fix",
-          "evidence": "Contradicts the hook's claim of 'two times' and the caption's claim of a 1988 first sighting; the fact sheet's actual file shows exactly one Gwen Stefani appearance, not two separated by ten years.",
-          "replacement": "One show, one song, one duet — that's the entire file, and it's enough."
+          "evidence": "Contradicts the archive data showing only a single Gwen Stefani appearance (1998-08-08), not two shows ten years apart.",
+          "replacement": "One show, one duet — that's the entire file, and it's enough."
         }
       ]
     },
@@ -401,6 +401,34 @@
       ]
     },
     {
+      "slug": "otd-2026-10-14",
+      "hash": "0c9a4684e40f04f1",
+      "checkedAt": "2026-10-14T14:52:07.288Z",
+      "issues": [
+        {
+          "field": "caption",
+          "sentence": "Same year, I also caught Violent Femmes, the Brian Setzer Orchestra, and Big Audio Dynamite.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet contains no record of shows by Violent Femmes, Brian Setzer Orchestra, or Big Audio Dynamite in 1995 or any year; cannot be confirmed from the archive."
+        },
+        {
+          "field": "beat",
+          "sentence": "That same year I also saw Violent Femmes, Brian Setzer Orchestra, and Big Audio Dynamite.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet contains no record of shows by Violent Femmes, Brian Setzer Orchestra, or Big Audio Dynamite in 1995 or any year; cannot be confirmed from the archive."
+        },
+        {
+          "field": "beat",
+          "sentence": "Filed under Gulf and Western Country Rock, which is a genre of one.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Genre classification is not present anywhere in the fact sheet and cannot be verified as true or false."
+        }
+      ]
+    },
+    {
       "slug": "peter-gabriel-11-more-1993-festival-bill",
       "hash": "d79e9b2bba6ac621",
       "checkedAt": "2026-10-08T17:10:34.296Z",
@@ -454,6 +482,29 @@
           "kind": "personal-invented",
           "severity": "review",
           "evidence": "Ticket stub/count details are explicitly listed as NOT IN THE DATA unless owner-confirmed, and no ticket detail is confirmed."
+        }
+      ]
+    },
+    {
+      "slug": "the-cure-14-more-2003-festival-bill",
+      "hash": "e668d9b5efe25cb2",
+      "checkedAt": "2026-10-14T14:52:24.428Z",
+      "issues": [
+        {
+          "field": "caption",
+          "sentence": "Post-punk's entire family tree, one afternoon.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The fact sheet explicitly excludes set/door times from its data, so the time of day ('afternoon') for the 2003-09-20 show cannot be confirmed.",
+          "replacement": "Post-punk's entire family tree, one bill."
+        },
+        {
+          "field": "beat",
+          "sentence": "15 acts, one afternoon — goth, synth-pop, post-punk, indie rock, all tracing back to the same root.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Set/door times are explicitly NOT IN THE DATA; the time of day for the 2003-09-20 show is unconfirmed.",
+          "replacement": "15 acts, one bill — goth, synth-pop, post-punk, indie rock, all tracing back to the same root."
         }
       ]
     },

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-13T17:20:13.002Z",
+  "updatedAt": "2026-10-14T14:56:11.866Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -1029,6 +1029,25 @@
       "source": "artist-deezer"
     },
     {
+      "slug": "otd-2026-10-14",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mxtsecgdpm26",
+      "rkey": "3mxtsecgdpm26",
+      "postedAt": "2026-10-14T14:52:29.844Z",
+      "tier": 2,
+      "source": "artist-deezer"
+    },
+    {
+      "slug": "otd-2026-10-14",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117439841529200570",
+      "postedAt": "2026-10-14T14:56:09.795Z",
+      "tier": 2,
+      "source": "artist-deezer"
+    },
+    {
       "slug": "pacific-amphitheatre-16-shows-over-5-decades-2",
       "platform": "bluesky",
       "status": "seeded",
@@ -1420,26 +1439,21 @@
     {
       "slug": "the-cure-14-more-2003-festival-bill",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "the-cure-14-more-2003-festival-bill",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mxtseduaxo2a",
+      "rkey": "3mxtseduaxo2a",
+      "postedAt": "2026-10-14T14:52:31.344Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "the-cure-14-more-2003-festival-bill",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "the-cure-14-more-2003-festival-bill",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117439841662943796",
+      "postedAt": "2026-10-14T14:56:11.866Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "the-human-league-8-more-2018-festival-bill",
