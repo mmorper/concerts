@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-10-13T14:40:44.802Z",
+  "generatedAt": "2026-10-14T12:33:13.623Z",
   "posts": [
+    {
+      "slug": "otd-2026-10-14",
+      "day": "10-14",
+      "showDate": "1995-10-14",
+      "age": 31,
+      "artist": "Jimmy Buffett",
+      "artistNormalized": "jimmy-buffett",
+      "venue": "Irvine Meadows",
+      "venueNormalized": "irvine-meadows",
+      "city": "Irvine",
+      "score": 8,
+      "imageUrl": "https://cdn-images.dzcdn.net/images/artist/76b68c142f93163991baee5bf51815ef/500x500-000000-80-0-0.jpg",
+      "tier": 2,
+      "source": "artist-deezer",
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=jimmy-buffett",
+      "cardPath": "public/og/on-this-day/otd-2026-10-14.png",
+      "social": {
+        "hook": "I saw Jimmy Buffett three times total, and this was the middle one.",
+        "caption": "Thirty-one years ago today was my second Jimmy Buffett show. Same year, I also caught Violent Femmes, the Brian Setzer Orchestra, and Big Audio Dynamite.",
+        "beats": [
+          "October 14, 1995: my second time seeing Jimmy Buffett.",
+          "Filed under Gulf and Western Country Rock, which is a genre of one.",
+          "That same year I also saw Violent Femmes, Brian Setzer Orchestra, and Big Audio Dynamite.",
+          "One of sixteen nights I spent at Irvine Meadows over the years.",
+          "A middle show, between a first and a third, on an ordinary October night."
+        ],
+        "authoredAt": "2026-10-14T12:33:01.501Z"
+      },
+      "publishedAt": "2026-10-14T12:33:13.623Z"
+    },
     {
       "slug": "otd-2026-10-13",
       "day": "10-13",
