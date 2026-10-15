@@ -4,6 +4,7 @@
 
 import { describe, it, expect } from "vitest";
 import { buildFactSheet, loadOwnerFacts, type FactSheetSources } from "../../scripts/liner-notes/fact-sheet.ts";
+import { buildAliasMap } from "../../scripts/liner-notes/artist-aliases.ts";
 import type { Concert } from "../../src/types/concert.ts";
 
 function slug(s: string): string {
@@ -142,6 +143,19 @@ describe("buildFactSheet — show numbers and walk-ons", () => {
     expect(sheet).toContain("EVERY SHOW BY Guest Singer (0 total):");
     expect(sheet).toContain("GUEST APPEARANCES BY Guest Singer");
     expect(sheet).toContain('1998-08-08 — The Venue, Los Angeles, California: joined Host Band on "Duet"');
+  });
+
+  it("lists shows by an act the guest also fronts, so 'I saw her with that band' is checkable", () => {
+    const withBand: FactSheetSources = {
+      ...sources,
+      concerts: [...sources.concerts, concert({ date: "1988-03-04", headliner: "Her Band", venue: "Disneyland" })],
+      aliases: buildAliasMap({ sharesMember: [{ acts: ["her-band", "guest-singer"], who: "Guest Singer" }] }),
+    };
+    const sheet = buildFactSheet({ artists: ["host-band", "guest-singer"], venues: [] }, withBand);
+    expect(sheet).toContain("SHARES A MEMBER WITH Her Band (Guest Singer) — a different act, shows by Her Band (1 total):");
+    expect(sheet).toContain("1988-03-04 (Friday, show #2) — Disneyland, Los Angeles, California");
+    // Still a different act: the guest's own billed count stays at zero.
+    expect(sheet).toContain("EVERY SHOW BY Guest Singer (0 total):");
   });
 
   it("names the guest on the host's setlist line, alongside any cover credit", () => {
