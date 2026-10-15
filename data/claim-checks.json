@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-14T14:52:24.428Z",
+  "updatedAt": "2026-10-15T14:38:55.031Z",
   "entries": [
     {
       "slug": "billy-idol-caught-once-never-again",
@@ -53,48 +53,48 @@
     },
     {
       "slug": "gwen-stefani-walked-on-for-the-brian-setzer-orchestra",
-      "hash": "3b80ca9119efad73",
-      "checkedAt": "2026-10-14T14:51:54.708Z",
+      "hash": "27f640e22204c951",
+      "checkedAt": "2026-10-15T14:38:50.298Z",
       "issues": [
         {
-          "field": "hook",
+          "field": "Hook",
           "sentence": "The only two times I ever saw Gwen Stefina, she wasn't the one I bought a ticket for.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Archive shows only 1 Gwen Stefani guest appearance on record (1998-08-08); no No Doubt show exists in the archive.",
-          "replacement": "The only time I ever saw Gwen Stefani, she wasn't the one I bought a ticket for."
+          "evidence": "Fact sheet lists only one Gwen Stefani appearance on record (1998-08-08 guest spot); there is no No Doubt/Disneyland show in the archive at all.",
+          "replacement": "The one time I ever saw Gwen Stefani, she wasn't the one I bought a ticket for."
         },
         {
-          "field": "caption",
+          "field": "Caption",
           "sentence": "First was No Doubt at Disneyland in 1988.",
-          "kind": "invented-number",
+          "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "No show by No Doubt or any 1988 Disneyland date appears anywhere in the archive; Gwen Stefani has 0 shows and only 1 guest appearance on record (1998-08-08 with The Brian Setzer Orchestra).",
-          "replacement": "The only time was with The Brian Setzer Orchestra."
+          "evidence": "No show by No Doubt, and no 1988 Disneyland show, appears anywhere in the archive; Gwen Stefani has 0 shows and only 1 guest appearance on record.",
+          "replacement": "The only time on record is from 1998, when she walked on with The Brian Setzer Orchestra for one song, 'You're the Boss.'"
         },
         {
-          "field": "beat 2",
+          "field": "Beat 2",
           "sentence": "I'd seen Gwen Stefani exactly once before this night, with No Doubt in 1988.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "No No Doubt show or 1988 date exists in the archive; Gwen Stefani's only recorded appearance is the 1998-08-08 guest spot.",
-          "replacement": "I'd never seen Gwen Stefani before this night."
+          "evidence": "No No Doubt show or 1988 Disneyland show exists in the archive; Gwen Stefani's only recorded appearance is the 1998-08-08 guest spot.",
+          "replacement": "Gwen Stefani's only appearance on record before this was... there isn't one."
         },
         {
-          "field": "beat 3",
+          "field": "Beat 3",
           "sentence": "That was Disneyland, a full decade earlier, nothing like a swing orchestra.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "No Disneyland show or any earlier Gwen Stefani appearance exists in the archive; her only recorded appearance is 1998-08-08.",
-          "replacement": "There was no earlier sighting on record — this was the only one."
+          "evidence": "No Disneyland or No Doubt show exists in the archive to support this claim.",
+          "replacement": "There's no earlier sighting on record, nothing to compare to a swing orchestra."
         },
         {
-          "field": "beat 5",
+          "field": "Beat 5",
           "sentence": "One show, ten years apart, one duet — that's the entire file, and it's enough.",
           "kind": "internal",
           "severity": "must-fix",
-          "evidence": "Contradicts the archive data showing only a single Gwen Stefani appearance (1998-08-08), not two shows ten years apart.",
-          "replacement": "One show, one duet — that's the entire file, and it's enough."
+          "evidence": "Depends on the invented 1988 No Doubt/Disneyland show referenced in the Caption and Beats 2-3, which has no basis in the fact sheet.",
+          "replacement": "One show, one song, one guest spot — that's the entire file, and it's enough."
         }
       ]
     },
@@ -594,6 +594,20 @@
           "kind": "external",
           "severity": "review",
           "evidence": "Fact sheet lists shows at Irvine Meadows starting 1984 but gives no opening date for the venue; this specific year is not in the archive data."
+        }
+      ]
+    },
+    {
+      "slug": "universal-amphitheater-5-shows-before-it-was-demolished",
+      "hash": "6f652156ef9c2699",
+      "checkedAt": "2026-10-15T14:38:55.031Z",
+      "issues": [
+        {
+          "field": "Beat 3",
+          "sentence": "I left without a second thought.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "This is a concrete personal action/fact not present in OWNER-CONFIRMED PERSONAL FACTS, which only confirms residence in Orange County around 1992."
         }
       ]
     },

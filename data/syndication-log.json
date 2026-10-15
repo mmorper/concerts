@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-14T14:56:11.866Z",
+  "updatedAt": "2026-10-15T14:42:35.206Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -1577,26 +1577,21 @@
     {
       "slug": "universal-amphitheater-5-shows-before-it-was-demolished",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "universal-amphitheater-5-shows-before-it-was-demolished",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mxwc34hsi62x",
+      "rkey": "3mxwc34hsi62x",
+      "postedAt": "2026-10-15T14:39:01.042Z",
+      "tier": 2,
+      "source": "venue-archival"
     },
     {
       "slug": "universal-amphitheater-5-shows-before-it-was-demolished",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "universal-amphitheater-5-shows-before-it-was-demolished",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117445450466300079",
+      "postedAt": "2026-10-15T14:42:35.206Z",
+      "tier": 2,
+      "source": "venue-archival"
     },
     {
       "slug": "universal-amphitheater-5-shows-over-3-decades",
