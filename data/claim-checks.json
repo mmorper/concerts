@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-15T14:38:55.031Z",
+  "updatedAt": "2026-10-16T14:30:35.119Z",
   "entries": [
     {
       "slug": "billy-idol-caught-once-never-again",
@@ -15,6 +15,12 @@
           "evidence": "Fact sheet contains no data on MTV presence, touring history, or general popularity/ubiquity of Billy Idol after 1984; this is an external claim about career trajectory not supported by the archive."
         }
       ]
+    },
+    {
+      "slug": "depeche-mode-18-years-between-shows",
+      "hash": "2bfb283396388612",
+      "checkedAt": "2026-10-16T14:30:35.119Z",
+      "issues": []
     },
     {
       "slug": "depeche-mode-38-years-of-shows-2",
@@ -53,48 +59,57 @@
     },
     {
       "slug": "gwen-stefani-walked-on-for-the-brian-setzer-orchestra",
-      "hash": "27f640e22204c951",
-      "checkedAt": "2026-10-15T14:38:50.298Z",
+      "hash": "a9b0aefa16ec2d28",
+      "checkedAt": "2026-10-16T14:30:15.634Z",
       "issues": [
         {
-          "field": "Hook",
-          "sentence": "The only two times I ever saw Gwen Stefina, she wasn't the one I bought a ticket for.",
+          "field": "hook",
+          "sentence": "The only two times I ever saw Gwen Stefani, she wasn't the one I bought a ticket for.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Fact sheet lists only one Gwen Stefani appearance on record (1998-08-08 guest spot); there is no No Doubt/Disneyland show in the archive at all.",
-          "replacement": "The one time I ever saw Gwen Stefani, she wasn't the one I bought a ticket for."
+          "evidence": "Archive shows 0 shows BY Gwen Stefani and only 1 guest appearance (1998-08-08); there is no second sighting on record."
         },
         {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "First was No Doubt at Disneyland in 1988.",
-          "kind": "contradicted",
+          "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No show by No Doubt, and no 1988 Disneyland show, appears anywhere in the archive; Gwen Stefani has 0 shows and only 1 guest appearance on record.",
-          "replacement": "The only time on record is from 1998, when she walked on with The Brian Setzer Orchestra for one song, 'You're the Boss.'"
+          "evidence": "No show by No Doubt, nor any show at Disneyland in 1988, appears anywhere in the archive; the only Gwen Stefani appearance on record is 1998-08-08 at Greek Theatre."
         },
         {
-          "field": "Beat 2",
+          "field": "caption",
+          "sentence": "Ten years later she walked on with The Brian Setzer Orchestra for one song, 'You're the Boss.'",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "This depends on the invented 1988 Disneyland date; the only confirmed appearance is 1998-08-08 at Greek Theatre."
+        },
+        {
+          "field": "beat1",
+          "sentence": "Swing revival and ska-punk didn't usually share a bill, let alone a stage.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Genre characterization not sourced from fact sheet; cannot confirm or deny."
+        },
+        {
+          "field": "beat2",
           "sentence": "I'd seen Gwen Stefani exactly once before this night, with No Doubt in 1988.",
-          "kind": "contradicted",
+          "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No No Doubt show or 1988 Disneyland show exists in the archive; Gwen Stefani's only recorded appearance is the 1998-08-08 guest spot.",
-          "replacement": "Gwen Stefani's only appearance on record before this was... there isn't one."
+          "evidence": "No No Doubt show or 1988 date exists in the archive; Gwen Stefani has 0 shows and 1 guest appearance on record."
         },
         {
-          "field": "Beat 3",
+          "field": "beat3",
           "sentence": "That was Disneyland, a full decade earlier, nothing like a swing orchestra.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "No Disneyland or No Doubt show exists in the archive to support this claim.",
-          "replacement": "There's no earlier sighting on record, nothing to compare to a swing orchestra."
+          "evidence": "Depends on the unsupported 1988 Disneyland/No Doubt claim, which is not in the archive."
         },
         {
-          "field": "Beat 5",
+          "field": "beat5",
           "sentence": "One show, ten years apart, one duet — that's the entire file, and it's enough.",
           "kind": "internal",
           "severity": "must-fix",
-          "evidence": "Depends on the invented 1988 No Doubt/Disneyland show referenced in the Caption and Beats 2-3, which has no basis in the fact sheet.",
-          "replacement": "One show, one song, one guest spot — that's the entire file, and it's enough."
+          "evidence": "Contradicts the fact sheet's single guest appearance (1998-08-08) with no prior No Doubt show on record; also inconsistent with the hook's 'only two times' framing built on the invented 1988 show."
         }
       ]
     },
