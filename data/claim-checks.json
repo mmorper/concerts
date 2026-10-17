@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-16T14:30:35.119Z",
+  "updatedAt": "2026-10-17T13:27:11.637Z",
   "entries": [
     {
       "slug": "billy-idol-caught-once-never-again",
@@ -35,6 +35,21 @@
       "issues": []
     },
     {
+      "slug": "echo-and-the-bunnymen-26-years-between-shows",
+      "hash": "7a0b3e579d81d900",
+      "checkedAt": "2026-10-17T13:27:11.637Z",
+      "issues": [
+        {
+          "field": "beat_4",
+          "sentence": "The songs from Porcupine had not.",
+          "kind": "contradicted",
+          "severity": "review",
+          "evidence": "No setlist is on record for the 2010-04-30 Black Cat show (only the 2003-09-20 setlist is documented), so claiming specific Porcupine songs were played that night is unsupported.",
+          "replacement": "The songs still sounded urgent."
+        }
+      ]
+    },
+    {
       "slug": "foo-fighters-9-more-2015-festival-bill",
       "hash": "aa10cdbfe4cfc97a",
       "checkedAt": "2026-09-26T16:16:51.397Z",
@@ -59,57 +74,50 @@
     },
     {
       "slug": "gwen-stefani-walked-on-for-the-brian-setzer-orchestra",
-      "hash": "a9b0aefa16ec2d28",
-      "checkedAt": "2026-10-16T14:30:15.634Z",
+      "hash": "8910113b0d7f33cf",
+      "checkedAt": "2026-10-17T13:26:21.419Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "The only two times I ever saw Gwen Stefani, she wasn't the one I bought a ticket for.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Archive shows 0 shows BY Gwen Stefani and only 1 guest appearance (1998-08-08); there is no second sighting on record."
+          "evidence": "Fact sheet lists only 1 guest appearance by Gwen Stefani (1998-08-08) and 0 shows by her; there is no second time on record."
         },
         {
           "field": "caption",
           "sentence": "First was No Doubt at Disneyland in 1988.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No show by No Doubt, nor any show at Disneyland in 1988, appears anywhere in the archive; the only Gwen Stefani appearance on record is 1998-08-08 at Greek Theatre."
+          "evidence": "No Doubt does not appear anywhere in the fact sheet; Gwen Stefani has 0 shows and only 1 guest appearance on record, dated 1998-08-08."
         },
         {
           "field": "caption",
           "sentence": "Ten years later she walked on with The Brian Setzer Orchestra for one song, 'You're the Boss.'",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "This depends on the invented 1988 Disneyland date; the only confirmed appearance is 1998-08-08 at Greek Theatre."
-        },
-        {
-          "field": "beat1",
-          "sentence": "Swing revival and ska-punk didn't usually share a bill, let alone a stage.",
-          "kind": "external",
-          "severity": "review",
-          "evidence": "Genre characterization not sourced from fact sheet; cannot confirm or deny."
+          "evidence": "No 1988 No Doubt show exists in the fact sheet to measure 'ten years later' from; the only recorded appearance is 1998-08-08."
         },
         {
           "field": "beat2",
           "sentence": "I'd seen Gwen Stefani exactly once before this night, with No Doubt in 1988.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No No Doubt show or 1988 date exists in the archive; Gwen Stefani has 0 shows and 1 guest appearance on record."
+          "evidence": "No No Doubt show or 1988 Gwen Stefani appearance exists in the fact sheet; her only recorded appearance is the 1998-08-08 guest spot."
         },
         {
           "field": "beat3",
           "sentence": "That was Disneyland, a full decade earlier, nothing like a swing orchestra.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Depends on the unsupported 1988 Disneyland/No Doubt claim, which is not in the archive."
+          "evidence": "No Disneyland show or 1988 date for Gwen Stefani/No Doubt appears in the fact sheet."
         },
         {
           "field": "beat5",
           "sentence": "One show, ten years apart, one duet — that's the entire file, and it's enough.",
           "kind": "internal",
           "severity": "must-fix",
-          "evidence": "Contradicts the fact sheet's single guest appearance (1998-08-08) with no prior No Doubt show on record; also inconsistent with the hook's 'only two times' framing built on the invented 1988 show."
+          "evidence": "Contradicts the fact sheet which records only a single Gwen Stefani appearance (1998-08-08), not two shows ten years apart."
         }
       ]
     },
@@ -459,6 +467,35 @@
       ]
     },
     {
+      "slug": "social-distortion-14-more-2018-festival-bill",
+      "hash": "317f61b091219440",
+      "checkedAt": "2026-10-17T13:26:35.102Z",
+      "issues": [
+        {
+          "field": "Beat 2",
+          "sentence": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
+          "kind": "invented-number",
+          "severity": "must-fix",
+          "evidence": "The fact sheet gives no formation years or band history lengths for Fear, Suicidal Tendencies, T.S.O.L., or Pennywise, so 'forty years' is not supported.",
+          "replacement": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had been at this since punk's earliest days."
+        },
+        {
+          "field": "Beat 4",
+          "sentence": "Four decades of West Coast punk in a single set list.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The fact sheet does not state band formation dates or the span of 'West Coast punk' history represented on the bill, so this duration claim cannot be confirmed from the data."
+        },
+        {
+          "field": "Beat 5",
+          "sentence": "Sunny nihilism is a Southern California invention.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "This is a claim about the origin/history of a musical/cultural style not supported by the fact sheet, which only records show and album data."
+        }
+      ]
+    },
+    {
       "slug": "social-distortion-34-years-of-shows",
       "hash": "9a3b2545d337de3e",
       "checkedAt": "2026-09-17T14:38:40.210Z",
@@ -497,6 +534,37 @@
           "kind": "personal-invented",
           "severity": "review",
           "evidence": "Ticket stub/count details are explicitly listed as NOT IN THE DATA unless owner-confirmed, and no ticket detail is confirmed."
+        }
+      ]
+    },
+    {
+      "slug": "the-brian-setzer-orchestra-days-after-the-bends-dropped",
+      "hash": "717cb820def33ccb",
+      "checkedAt": "2026-10-17T13:27:02.477Z",
+      "issues": [
+        {
+          "field": "caption",
+          "sentence": "Radiohead released The Bends on March 13, 1995.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The fact sheet contains no data about Radiohead or any album release outside the Brian Setzer Orchestra discography; this is an external claim not supported by the archive, though it is likely true.",
+          "replacement": "Thirteen days earlier, a very different guitar record had just come out."
+        },
+        {
+          "field": "beat1",
+          "sentence": "The Bends landed March 13, 1995 — Radiohead signaling that guitar music could go somewhere new.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Radiohead's album and its release date are not in the fact sheet; this is external information the archive cannot confirm, though it is likely true.",
+          "replacement": "A very different guitar record had landed two weeks earlier, pointing music somewhere else entirely."
+        },
+        {
+          "field": "beat3",
+          "sentence": "Setzer's was 40 years older.",
+          "kind": "invented-number",
+          "severity": "must-fix",
+          "evidence": "The fact sheet gives no birth year or age for Brian Setzer, so any stated age or age comparison is invented.",
+          "replacement": "Setzer's was decades older in its bones."
         }
       ]
     },
@@ -609,6 +677,52 @@
           "kind": "external",
           "severity": "review",
           "evidence": "Fact sheet lists shows at Irvine Meadows starting 1984 but gives no opening date for the venue; this specific year is not in the archive data."
+        }
+      ]
+    },
+    {
+      "slug": "ub40-35-years-between-shows",
+      "hash": "de353fb5fa477060",
+      "checkedAt": "2026-10-17T13:26:51.783Z",
+      "issues": [
+        {
+          "field": "hook",
+          "sentence": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 35 years after the first time.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "First show 1988-09-09, second show 2023-07-21 — that's 34 years, 10 months apart, not a full 35 years.",
+          "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, nearly 35 years after the first time."
+        },
+        {
+          "field": "caption",
+          "sentence": "Thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "1988-09-09 to 2023-07-21 is 34 years, 10 months, not a full 35 years.",
+          "replacement": "Nearly thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
+        },
+        {
+          "field": "beat3",
+          "sentence": "Thirty-five years went by before I bought another ticket.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "1988-09-09 to 2023-07-21 is 34 years, 10 months, not a full 35 years.",
+          "replacement": "Nearly thirty-five years went by before I saw them again."
+        },
+        {
+          "field": "beat3",
+          "sentence": "Thirty-five years went by before I bought another ticket.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Ticket purchase detail is not in the fact sheet and ticket stubs/physical ticket details are explicitly NOT IN THE DATA.",
+          "replacement": "Nearly thirty-five years went by before I saw them again."
+        },
+        {
+          "field": "beat4",
+          "sentence": "That Birmingham-meets-Jamaica energy — the thing I'd wondered about in the parking lot — was exactly where I'd left it.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "A specific personal recollection (wondering in the parking lot) is not supported by the fact sheet or OWNER-CONFIRMED PERSONAL FACTS."
         }
       ]
     },

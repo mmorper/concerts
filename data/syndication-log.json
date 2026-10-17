@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-16T14:32:37.121Z",
+  "updatedAt": "2026-10-17T13:31:03.980Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -230,26 +230,21 @@
     {
       "slug": "echo-and-the-bunnymen-26-years-between-shows",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "echo-and-the-bunnymen-26-years-between-shows",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3my36ymxkdo2x",
+      "rkey": "3my36ymxkdo2x",
+      "postedAt": "2026-10-17T13:27:14.908Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "echo-and-the-bunnymen-26-years-between-shows",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "echo-and-the-bunnymen-26-years-between-shows",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117456493855506009",
+      "postedAt": "2026-10-17T13:31:03.980Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "erasure-days-before-violator-dropped",
