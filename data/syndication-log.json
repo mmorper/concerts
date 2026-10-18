@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-17T13:31:03.980Z",
+  "updatedAt": "2026-10-18T13:48:41.448Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -130,26 +130,21 @@
     {
       "slug": "bruce-springsteen-caught-once-never-again",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "bruce-springsteen-caught-once-never-again",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3my5qj2mxa62x",
+      "rkey": "3my5qj2mxa62x",
+      "postedAt": "2026-10-18T13:45:59.280Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "bruce-springsteen-caught-once-never-again",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "bruce-springsteen-caught-once-never-again",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117462225471342239",
+      "postedAt": "2026-10-18T13:48:41.448Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "crowded-house-from-opener-to-headliner",
