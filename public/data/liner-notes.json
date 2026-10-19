@@ -1,7 +1,87 @@
 {
-  "generatedAt": "2026-10-12T17:31:25.657Z",
-  "dataHash": "4e57eb95",
+  "generatedAt": "2026-10-19T15:21:53.940Z",
+  "dataHash": "90e010df",
   "posts": [
+    {
+      "id": "milestone-150-x",
+      "slug": "concert-150-my-150th-show",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Concert #150: My 150th Show",
+      "prose": "I didn't plan for my 150th show to land on X at Pacific Amphitheatre, but I couldn't have picked a better bill if I'd tried: The Blasters and Los Lobos opening in Costa Mesa on August 1, 2022. My first show was Adam Ant at Irvine Meadows back in 1984, which puts 38 years between that night and this one. Funny how the number snuck up on me somewhere around the second opener, and I only did the math afterward. Thirty-eight years, 150 shows, and I still got the same jolt when the band walked out.",
+      "image": {
+        "url": "/images/shows/2023-07-30-x-01.jpg",
+        "alt": "X & Ivy",
+        "source": "show",
+        "ref": "x",
+        "credit": "Mike Morper · 30 July 2023",
+        "shotOn": "2023-07-30",
+        "crop": {
+          "h": 1,
+          "w": 0.6003,
+          "x": 0.1286,
+          "y": 0
+        }
+      },
+      "audio": {
+        "trackName": "Wild Thing",
+        "artistName": "X",
+        "albumName": "Wild Thing / Devil Doll - Single",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e5/20/5a/e5205a4d-e921-bb18-0672-c9aa33ee0400/mzaf_5334201464420593360.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/c8/2f/0b/c82f0bdb-3b07-b041-3edd-ebabfff51aed/196006268381.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/wild-thing/1557561798?i=1557561800&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "x"
+      ],
+      "venues": [
+        "pacific-amphitheatre"
+      ],
+      "years": [
+        2022
+      ],
+      "tags": [
+        "#milestone"
+      ],
+      "deepLinks": [
+        {
+          "label": "X & Ivy",
+          "url": "/?scene=artists&artist=x",
+          "type": "artist"
+        },
+        {
+          "label": "Pacific Amphitheatre",
+          "url": "/?scene=venues&venue=pacific-amphitheatre",
+          "type": "venue"
+        },
+        {
+          "label": "2022",
+          "url": "/?scene=timeline&year=2022",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "3-concerts-in-12-days",
+        "pacific-amphitheatre-16-shows-over-5-decades-2"
+      ],
+      "score": 27,
+      "detector": "milestone-marker",
+      "publishedAt": "2026-10-19T15:21:53.940Z",
+      "factsAsOf": "2026-10-19T15:21:53.941Z",
+      "social": {
+        "hook": "I only noticed this was number 150 somewhere during the second opener.",
+        "caption": "My first concert ever was Adam Ant in 1984. Thirty-eight years and 150 shows later, the band still walked out and I still felt that same jolt.",
+        "beats": [
+          "The bill was The Blasters and Los Lobos opening, no small way to round out a number.",
+          "I'd been counting shows for decades without ever aiming for a milestone.",
+          "The math only caught up with me partway through the second opener's set.",
+          "Adam Ant started this at Irvine Meadows in 1984, thirty-eight years before this night.",
+          "Same walk-out, same jolt, a hundred and fifty times now."
+        ],
+        "authoredAt": "2026-10-19T15:21:53.943Z"
+      }
+    },
     {
       "id": "guest-bridge-gwen-stefani-brian-setzer-you-re-the-boss",
       "slug": "gwen-stefani-walked-on-for-the-brian-setzer-orchestra",
@@ -5012,10 +5092,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 57,
-    "totalGenerated": 97,
-    "averageScore": 38.2,
-    "lastPipelineRun": "2026-10-12T17:31:25.657Z",
+    "totalPosts": 58,
+    "totalGenerated": 98,
+    "averageScore": 38,
+    "lastPipelineRun": "2026-10-19T15:21:53.940Z",
     "concertsAnalyzed": 183,
     "feedUrl": "/liner-notes.xml"
   }

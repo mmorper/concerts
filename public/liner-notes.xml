@@ -5,13 +5,22 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 12 Oct 2026 17:31:25 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 19 Oct 2026 15:21:53 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>Concert #150: My 150th Show</title>
+    <link>https://concerts.morperhaus.org/liner-notes/concert-150-my-150th-show</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/concert-150-my-150th-show</guid>
+    <pubDate>Mon, 19 Oct 2026 15:21:53 +0000</pubDate>
+    <description>I didn&apos;t plan for my 150th show to land on X at Pacific Amphitheatre, but I couldn&apos;t have picked a better bill if I&apos;d tried: The Blasters and Los Lobos opening in Costa Mesa on August 1, 2022. My first show was Adam Ant at Irvine Meadows back in 1984, which puts 38 years between that night and this one. Funny how the number snuck up on me somewhere around the second opener, and I only did the math afterward. Thirty-eight years, 150 shows, and I still got the same jolt when the band walked out.</description>
+    <category>#milestone</category>
+    <media:content url="/images/shows/2023-07-30-x-01.jpg" medium="image" />
+  </item>
   <item>
     <title>Gwen Stefani Walked On for The Brian Setzer Orchestra</title>
     <link>https://concerts.morperhaus.org/liner-notes/gwen-stefani-walked-on-for-the-brian-setzer-orchestra</link>
@@ -200,16 +209,6 @@
     <category>#anniversary</category>
     <category>#on-this-day</category>
     <media:content url="/images/shows/2014-07-30-bad-religion-01.jpg" medium="image" />
-  </item>
-  <item>
-    <title>Blancmange: One Night at Crawford Hall, 1986</title>
-    <link>https://concerts.morperhaus.org/liner-notes/blancmange-caught-once-never-again</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/blancmange-caught-once-never-again</guid>
-    <pubDate>Mon, 16 Mar 2026 16:04:48 +0000</pubDate>
-    <description>I saw Blancmange at Crawford Hall in Irvine on February 15, 1986, and for four decades that one night was the only Blancmange show in my archive. This English synth-pop duo formed in 1979 and already had three albums out by the time I saw them, from &quot;Happy Families&quot; to &quot;Believe You Me,&quot; yet they stayed a one-night entry in my concert history. It&apos;s fascinating how an artist can pass through your life once and then stay a single snapshot for decades.</description>
-    <category>#rare-sighting</category>
-    <category>#one-time-only</category>
-    <media:content url="https://cdn-images.dzcdn.net/images/artist/d3c1f45911a1913ed5d6e8f18cbefb4f/500x500-000000-80-0-0.jpg" medium="image" />
   </item>
   </channel>
 </rss>
