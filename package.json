@@ -89,7 +89,7 @@
     "syndicate:preview": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/syndication/preview.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.131.0",
+    "@anthropic-ai/sdk": "^0.135.0",
     "@types/d3": "^7.4.3",
     "csv-parse": "^7.0.3",
     "d3": "^7.9.0",
@@ -97,7 +97,7 @@
     "dotenv": "^17.2.3",
     "framer-motion": "^11.15.0",
     "leaflet": "^1.9.4",
-    "lucide-react": "^1.50.0",
+    "lucide-react": "^1.58.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
@@ -108,25 +108,25 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
-    "@axe-core/puppeteer": "^4.11.0",
+    "@axe-core/puppeteer": "^4.14.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/leaflet": "^1.9.14",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^6.1.1",
-    "@vitest/coverage-v8": "^5.0.3",
+    "@vitejs/plugin-react": "^6.1.2",
+    "@vitest/coverage-v8": "^5.0.5",
     "@vitest/ui": "^5.0.0",
     "autoprefixer": "^10.6.1",
     "googleapis": "^144.0.0",
     "open": "^11.0.4",
     "png-to-ico": "^3.0.1",
-    "postcss": "^8.4.49",
+    "postcss": "^8.5.30",
     "puppeteer": "^24.34.0",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.0.0",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
-    "vite": "^8.3.2",
+    "vite": "^8.3.4",
     "vitest": "^5.0.0"
   }
 }
