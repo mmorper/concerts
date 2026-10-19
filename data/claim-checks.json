@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-18T13:45:56.035Z",
+  "updatedAt": "2026-10-19T16:46:41.849Z",
   "entries": [
     {
       "slug": "billy-idol-caught-once-never-again",
@@ -28,6 +28,21 @@
           "severity": "review",
           "evidence": "The fact sheet contains no set times or show-duration data for this show, so the specific 'three-hour' claim cannot be confirmed from the archive.",
           "replacement": "Legendary marathon shows, relentless touring — and he crossed my path exactly once."
+        }
+      ]
+    },
+    {
+      "slug": "concert-150-my-150th-show",
+      "hash": "409c506d763c8b7c",
+      "checkedAt": "2026-10-19T16:46:30.899Z",
+      "issues": [
+        {
+          "field": "Caption",
+          "sentence": "My first concert ever was Adam Ant in 1984.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Fact sheet shows '1984-04-27 (Adam Ant, Irvine Meadows)' as the first show ON RECORD in the archive, but 'my first concert ever' is a personal claim not listed in OWNER-CONFIRMED PERSONAL FACTS.",
+          "replacement": "The first show on record was Adam Ant in 1984."
         }
       ]
     },
@@ -89,48 +104,56 @@
     },
     {
       "slug": "gwen-stefani-walked-on-for-the-brian-setzer-orchestra",
-      "hash": "a8c15c3939d741ba",
-      "checkedAt": "2026-10-18T13:45:05.368Z",
+      "hash": "02cc589cb089edc4",
+      "checkedAt": "2026-10-19T16:46:41.848Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "The only two times I ever saw Gwen Stefani, she wasn't the one I bought a ticket for.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "GUEST APPEARANCES BY Gwen Stefani lists only 1 appearance total (1998-08-08), and she has 0 shows of her own on record; there is no second Gwen Stefani sighting in the archive.",
+          "evidence": "Fact sheet lists only 1 Gwen Stefani guest appearance (1998-08-08) and 0 shows by Gwen Stefani; there is no record of a second sighting.",
           "replacement": "The only time I ever saw Gwen Stefani, she wasn't the one I bought a ticket for."
         },
         {
           "field": "caption",
           "sentence": "First was No Doubt at Disneyland in 1988.",
+          "kind": "invented-number",
+          "severity": "must-fix",
+          "evidence": "No Doubt does not appear anywhere in the fact sheet; Gwen Stefani has 0 shows on record and only 1 guest appearance, on 1998-08-08.",
+          "replacement": "The only sighting on record was with The Brian Setzer Orchestra."
+        },
+        {
+          "field": "caption",
+          "sentence": "Ten years later she walked on with The Brian Setzer Orchestra for one song, 'You're the Boss.'",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "EVERY SHOW BY Gwen Stefani lists 0 shows, and no No Doubt show or Disneyland venue appears anywhere in the fact sheet.",
-          "replacement": "She walked on with The Brian Setzer Orchestra for one song, 'You're the Boss,' at the Greek Theatre in 1998."
+          "evidence": "There is no prior 1988 sighting in the fact sheet to measure 'ten years later' from; the only recorded appearance is 1998-08-08.",
+          "replacement": "She walked on with The Brian Setzer Orchestra for one song, 'You're the Boss.'"
         },
         {
           "field": "beat 2",
           "sentence": "I'd seen Gwen Stefani exactly once before this night, with No Doubt in 1988.",
-          "kind": "contradicted",
+          "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No No Doubt show in 1988 or otherwise exists in the archive; Gwen Stefani's only recorded appearance is the 1998-08-08 guest spot.",
-          "replacement": "I'd never actually seen Gwen Stefani headline a show of her own."
+          "evidence": "No Doubt and any 1988 sighting are not in the fact sheet; Gwen Stefani has 0 shows on record.",
+          "replacement": "I'd never seen Gwen Stefani before this night."
         },
         {
           "field": "beat 3",
           "sentence": "That was Disneyland, a full decade earlier, nothing like a swing orchestra.",
-          "kind": "contradicted",
+          "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No Disneyland show or 1988 date appears anywhere in the fact sheet.",
-          "replacement": "This was a swing orchestra stage, nothing like the ska-punk scene she came from."
+          "evidence": "No Disneyland show or 1988 date exists in the fact sheet; it cannot be referenced as a decade earlier than 1998.",
+          "replacement": "This was the first and only time her name showed up in the file."
         },
         {
           "field": "beat 5",
           "sentence": "One show, ten years apart, one duet — that's the entire file, and it's enough.",
           "kind": "internal",
           "severity": "must-fix",
-          "evidence": "Contradicts the hook's claim of 'two times' and relies on the fabricated 1988 No Doubt sighting from the caption/beats.",
-          "replacement": "One song, one night — that's the entire file, and it's enough."
+          "evidence": "Contradicts the fact sheet's single guest appearance and conflicts with the hook's claim of two sightings; there is no second show to measure 'ten years apart' against.",
+          "replacement": "One show, one song — that's the entire file, and it's enough."
         }
       ]
     },

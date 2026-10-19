@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-18T13:48:41.448Z",
+  "updatedAt": "2026-10-19T16:50:05.243Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -145,6 +145,25 @@
       "postedAt": "2026-10-18T13:48:41.448Z",
       "tier": 2,
       "source": "artist-deezer"
+    },
+    {
+      "slug": "concert-150-my-150th-show",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3myal37nwoj2k",
+      "rkey": "3myal37nwoj2k",
+      "postedAt": "2026-10-19T16:46:45.304Z",
+      "tier": 1,
+      "source": "personal"
+    },
+    {
+      "slug": "concert-150-my-150th-show",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117468601038851185",
+      "postedAt": "2026-10-19T16:50:05.243Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "crowded-house-from-opener-to-headliner",
