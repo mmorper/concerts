@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-19T16:50:05.243Z",
+  "updatedAt": "2026-10-20T14:43:55.744Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -1289,26 +1289,21 @@
     {
       "slug": "tears-for-fears-17-years-between-shows",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "tears-for-fears-17-years-between-shows",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mycuhy4zry2d",
+      "rkey": "3mycuhy4zry2d",
+      "postedAt": "2026-10-20T14:40:16.829Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "tears-for-fears-17-years-between-shows",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "tears-for-fears-17-years-between-shows",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117473767296216799",
+      "postedAt": "2026-10-20T14:43:55.744Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "tears-for-fears-37-years-of-shows",
