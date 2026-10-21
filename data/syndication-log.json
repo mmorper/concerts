@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-20T14:43:55.744Z",
+  "updatedAt": "2026-10-21T14:53:24.374Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -263,26 +263,21 @@
     {
       "slug": "erasure-days-before-violator-dropped",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "erasure-days-before-violator-dropped",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3myffjzvakt2t",
+      "rkey": "3myffjzvakt2t",
+      "postedAt": "2026-10-21T14:50:58.769Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "erasure-days-before-violator-dropped",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "erasure-days-before-violator-dropped",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117479466854244817",
+      "postedAt": "2026-10-21T14:53:24.373Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "foo-fighters-9-more-2015-festival-bill",
