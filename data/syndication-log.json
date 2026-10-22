@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-21T14:53:24.374Z",
+  "updatedAt": "2026-10-22T14:53:24.006Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -615,26 +615,21 @@
     {
       "slug": "march-23-21-years-since-social-distortion",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "march-23-21-years-since-social-distortion",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3myhw36kthx25",
+      "rkey": "3myhw36kthx25",
+      "postedAt": "2026-10-22T14:52:13.467Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "march-23-21-years-since-social-distortion",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "march-23-21-years-since-social-distortion",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117485129159938427",
+      "postedAt": "2026-10-22T14:53:24.006Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "maxi-priest-6-more-1991-festival-bill",
