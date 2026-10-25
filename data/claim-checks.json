@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-24T13:50:26.518Z",
+  "updatedAt": "2026-10-25T14:05:42.071Z",
   "entries": [
     {
       "slug": "billy-idol-caught-once-never-again",
@@ -132,56 +132,52 @@
     },
     {
       "slug": "gwen-stefani-walked-on-for-the-brian-setzer-orchestra",
-      "hash": "3cb620c122984420",
-      "checkedAt": "2026-10-24T13:49:19.769Z",
+      "hash": "7d93d1d24d701d55",
+      "checkedAt": "2026-10-25T14:04:49.346Z",
       "issues": [
         {
-          "field": "hook",
-          "sentence": "The only two times I ever saw Gwen Stefina, she wasn't the one I bought a ticket for.",
+          "field": "Hook",
+          "sentence": "The only two times I ever saw Gwen Stefani, she wasn't the one I bought a ticket for.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Archive shows only one Gwen Stefani appearance on record (1998-08-08 guest spot with The Brian Setzer Orchestra); there is no No Doubt/Disneyland show in the archive.",
+          "evidence": "Gwen Stefani has only 1 recorded appearance on the archive (guest spot 1998-08-08); no No Doubt show exists on record.",
           "replacement": "The only time I ever saw Gwen Stefani, she wasn't the one I bought a ticket for."
         },
         {
-          "field": "caption",
+          "field": "Caption",
           "sentence": "First was No Doubt at Disneyland in 1988.",
-          "kind": "contradicted",
+          "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No No Doubt show, no Disneyland venue, and no 1988 show appear anywhere in the archive; the only Gwen Stefani appearance on record is 1998-08-08 at the Greek Theatre.",
-          "replacement": "She walked on with The Brian Setzer Orchestra for one song, 'You're the Boss.'"
+          "evidence": "No show by No Doubt or at Disneyland appears anywhere in the archive; EVERY SHOW BY Gwen Stefani lists 0 total shows."
         },
         {
-          "field": "caption",
+          "field": "Caption",
           "sentence": "Ten years later she walked on with The Brian Setzer Orchestra for one song, 'You're the Boss.'",
           "kind": "internal",
           "severity": "must-fix",
-          "evidence": "Depends on the unsupported 1988 Disneyland claim; the archive records only one Gwen Stefani appearance (1998-08-08), so there is no 'ten years later' to measure from.",
-          "replacement": "That year, she walked on with The Brian Setzer Orchestra for one song, 'You're the Boss.'"
+          "evidence": "The 'ten years later' depends on the unverified 1988 Disneyland show, which is not in the archive."
         },
         {
-          "field": "beat",
+          "field": "Beat 2",
           "sentence": "I'd seen Gwen Stefani exactly once before this night, with No Doubt in 1988.",
-          "kind": "contradicted",
+          "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No No Doubt or 1988 show exists in the archive; only one Gwen Stefani appearance is on record, the 1998-08-08 guest spot.",
-          "replacement": "I'd never seen Gwen Stefani before this night."
+          "evidence": "No No Doubt show or 1988 date appears in the fact sheet; Gwen Stefani has 0 shows and only 1 guest appearance total."
         },
         {
-          "field": "beat",
+          "field": "Beat 3",
           "sentence": "That was Disneyland, a full decade earlier, nothing like a swing orchestra.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "No Disneyland show or any show a decade earlier appears in the archive; this depends on the unsupported 1988 No Doubt claim.",
-          "replacement": "Nothing about that night suggested a swing orchestra was coming."
+          "evidence": "No Disneyland show or No Doubt appearance is listed in the archive data."
         },
         {
-          "field": "beat",
+          "field": "Beat 5",
           "sentence": "One show, ten years apart, one duet — that's the entire file, and it's enough.",
-          "kind": "internal",
+          "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Contradicts the hook's claim of 'two times' seeing Gwen Stefani and relies on the unsupported 1988 Disneyland show; the archive lists only one Gwen Stefani appearance total.",
-          "replacement": "One show, one song — that's the entire file, and it's enough."
+          "evidence": "GUEST APPEARANCES BY Gwen Stefani lists only 1 appearance total (1998-08-08); there is no second show 'ten years apart' on record.",
+          "replacement": "One night, one duet — that's the entire file, and it's enough."
         }
       ]
     },
@@ -223,32 +219,23 @@
     },
     {
       "slug": "march-22-13-years-since-bad-religion",
-      "hash": "116c69089cdaa7b9",
-      "checkedAt": "2026-10-24T13:50:26.518Z",
+      "hash": "c5e3c4f3e33acaa7",
+      "checkedAt": "2026-10-25T14:05:42.071Z",
       "issues": [
-        {
-          "field": "hook",
-          "sentence": "Three openers, one headliner, and Greg Graffin sounded like 1980 had never ended.",
-          "kind": "external",
-          "severity": "review",
-          "evidence": "The fact sheet contains no formation year for Bad Religion; 1980 is not listed anywhere in the archive data.",
-          "replacement": "Three openers, one headliner, and Greg Graffin sounded like no time had passed at all."
-        },
         {
           "field": "caption",
           "sentence": "Four bands, one night, and the headliner had been doing this for 33 years by then.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "The fact sheet gives no band formation year, so '33 years' cannot be derived from any archive data.",
-          "replacement": "Four bands, one night, and the headliner had been doing this longer than most bands on the bill had existed."
+          "evidence": "The fact sheet contains no formation date for Bad Religion, so the 33-year figure has no basis in the archive data.",
+          "replacement": "Four bands, one night, and a headliner deep into album seventeen of eighteen."
         },
         {
-          "field": "beat_3",
+          "field": "beat",
           "sentence": "Bad Religion formed in 1980.",
           "kind": "external",
           "severity": "review",
-          "evidence": "No formation year appears in the fact sheet; this is an external claim about band history not present in the archive data.",
-          "replacement": "Bad Religion had been at this for decades already."
+          "evidence": "Formation year is not listed anywhere in the fact sheet; this is an external claim the archive cannot confirm, though it is likely true."
         }
       ]
     },
@@ -569,32 +556,22 @@
     },
     {
       "slug": "social-distortion-14-more-2018-festival-bill",
-      "hash": "7efaee2243d06e13",
-      "checkedAt": "2026-10-24T13:49:37.800Z",
+      "hash": "a6c37c099092785d",
+      "checkedAt": "2026-10-25T14:05:00.973Z",
       "issues": [
         {
           "field": "caption",
           "sentence": "Bands that had been doing this since the late seventies shared a stage with acts that grew up on their records.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Band formation years are not given in the fact sheet (only album release dates are listed), so a specific decade claim like 'late seventies' cannot be verified against the archive data.",
-          "replacement": "Bands with decades of mileage shared a stage with acts that grew up on their records."
+          "evidence": "The fact sheet's earliest album for any band on this bill is T.S.O.L.'s 'Dance With Me' (1981-06); no formation years are given, so a 'late seventies' start cannot be confirmed and may be false."
         },
         {
-          "field": "beat 2",
+          "field": "beat",
           "sentence": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No formation years or band ages are in the fact sheet; 'forty years' is an invented figure with no supporting data.",
-          "replacement": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had been at this a long time."
-        },
-        {
-          "field": "beat 4",
-          "sentence": "Four decades of West Coast punk in a single set list.",
-          "kind": "invented-number",
-          "severity": "review",
-          "evidence": "The fact sheet gives no formation dates for the bands on the bill, so a specific span like 'four decades' is unsupported.",
-          "replacement": "Generations of West Coast punk in a single set list."
+          "evidence": "The fact sheet gives no founding/formation dates for these bands, so a cumulative '40 years' figure has no basis."
         }
       ]
     },
@@ -648,45 +625,36 @@
     },
     {
       "slug": "the-brian-setzer-orchestra-days-after-the-bends-dropped",
-      "hash": "047203f9ac5a6c90",
-      "checkedAt": "2026-10-24T13:50:17.050Z",
+      "hash": "5c90c8cd4cb0560c",
+      "checkedAt": "2026-10-25T14:05:28.279Z",
       "issues": [
         {
-          "field": "Hook",
+          "field": "hook",
           "sentence": "Thirteen days after The Bends, rockabilly had a different answer to the same question.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The release date of The Bends (March 13, 1995) is not in the fact sheet; it is likely true but unverifiable against archive data.",
-          "replacement": "Thirteen days after a new wave of guitar rock, rockabilly offered its own answer."
+          "evidence": "The Bends release date is not in the fact sheet; it is an external claim about another artist. The date (March 13, 1995) is true to general knowledge with high confidence, but it falls outside what the archive data can confirm."
         },
         {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "Radiohead released The Bends on March 13, 1995.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Album release date not present in fact sheet; appears accurate but cannot be confirmed from archive data."
+          "evidence": "Not present in the fact sheet, which only covers Brian Setzer Orchestra and Hard Rock Cafe shows; likely true but unconfirmable from archive data."
         },
         {
-          "field": "Caption",
-          "sentence": "Thirteen days later I was watching Brian Setzer's pompadour and upright bass pull rock back to the 1950s instead.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "Fact sheet only confirms residence in Orange County circa 1992; no owner-confirmed attendance memory for this show exists."
-        },
-        {
-          "field": "Beat 1",
+          "field": "beat1",
           "sentence": "The Bends landed March 13, 1995 — Radiohead signaling that guitar music could go somewhere new.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Release date and artistic claim about Radiohead are not in the fact sheet; appears factually accurate but unverifiable from archive data."
+          "evidence": "Radiohead release info is not part of the fact sheet; the factual claim is plausible but external to the archive and includes editorializing ('signaling that guitar music could go somewhere new') that is unverifiable commentary."
         },
         {
-          "field": "Beat 3",
+          "field": "beat3",
           "sentence": "Setzer's was 40 years older.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No birth year or age data exists in the fact sheet for Brian Setzer; this age figure is fabricated.",
-          "replacement": "Setzer's was decades older in style, if not in years."
+          "evidence": "The fact sheet contains no birth year or age data for Brian Setzer; this numeric age-difference claim is fabricated."
         }
       ]
     },
@@ -804,8 +772,8 @@
     },
     {
       "slug": "ub40-35-years-between-shows",
-      "hash": "c6f9c0b1e804538e",
-      "checkedAt": "2026-10-24T13:49:57.593Z",
+      "hash": "6bea455819de6e14",
+      "checkedAt": "2026-10-25T14:05:18.414Z",
       "issues": [
         {
           "field": "hook",
@@ -820,7 +788,7 @@
           "sentence": "Thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "First show 1988-09-09, second show 2023-07-21 — less than 35 full years had elapsed.",
+          "evidence": "1988-09-09 to 2023-07-21 is just under 35 years (about 34 years, 10 months), not a full 35 years.",
           "replacement": "Nearly thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
         },
         {
@@ -828,23 +796,29 @@
           "sentence": "Thirty-five years went by before I bought another ticket.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "First show 1988-09-09, second show 2023-07-21 — only about 34 years and 10 months had passed.",
-          "replacement": "Almost thirty-five years went by before I saw them again."
+          "evidence": "The gap between 1988-09-09 and 2023-07-21 is about 34 years and 10 months, not a full 35 years.",
+          "replacement": "Nearly thirty-five years went by before I saw them again."
         },
         {
           "field": "beat 3",
           "sentence": "Thirty-five years went by before I bought another ticket.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "Ticket purchase details are not in the fact sheet's owner-confirmed personal facts, and ticket details are explicitly excluded data.",
-          "replacement": "Almost thirty-five years went by before I saw them again."
+          "evidence": "Fact sheet does not confirm the act of buying a ticket; only show attendance dates are on record."
+        },
+        {
+          "field": "beat 2",
+          "sentence": "The Labour of Love covers felt like they'd always existed.",
+          "kind": "contradicted",
+          "severity": "review",
+          "evidence": "No setlist is on record for the 1988-09-09 show; the fact sheet only lists a setlist for 2023-07-21, so specific song content for the 1988 show is unsupported."
         },
         {
           "field": "beat 4",
-          "sentence": "That Birmingham-meets-Jamaica energy — the thing I'd wondered about in the parking lot — was exactly where I'd left it.",
+          "sentence": "the thing I'd wondered about in the parking lot",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "No owner-confirmed personal fact mentions being in a parking lot or wondering anything there."
+          "evidence": "The fact sheet contains no detail about a parking lot or what the owner wondered about there; this is not in OWNER-CONFIRMED PERSONAL FACTS."
         }
       ]
     },
