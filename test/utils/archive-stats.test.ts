@@ -8,7 +8,7 @@
  *
  * The live example, and the reason the definitions are asserted here rather
  * than merely written down: `concerts.json` carries its own `metadata` block
- * saying **107** artists, while every visible surface says **257**. The block
+ * saying **108** artists, while every visible surface says **258**. The block
  * counts distinct headliners; the surfaces count everyone who played. Reading
  * that block as the source of truth is the obvious-looking fix and would have
  * silently rewritten the site's most quoted figure.
@@ -97,9 +97,9 @@ describe('deriveArchiveStats — against the real archive', () => {
   const stats = deriveArchiveStats(data.concerts)
 
   it('agrees with every published surface', () => {
-    expect(stats.concerts).toBe(184)
-    expect(stats.artists).toBe(257)
-    expect(stats.venues).toBe(79)
+    expect(stats.concerts).toBe(185)
+    expect(stats.artists).toBe(258)
+    expect(stats.venues).toBe(80)
   })
 
   it('does NOT agree with concerts.json metadata, and that is the point', () => {
@@ -107,7 +107,7 @@ describe('deriveArchiveStats — against the real archive', () => {
     // defensible; only one is what this archive means by "artists". If this
     // ever starts passing, someone has changed a definition — decide which one
     // is right before making them agree.
-    expect(data.metadata.uniqueArtists).toBe(107)
+    expect(data.metadata.uniqueArtists).toBe(108)
     expect(stats.artists).not.toBe(data.metadata.uniqueArtists)
 
     // Venues and concerts DO agree, so the disagreement above is a real
@@ -118,7 +118,7 @@ describe('deriveArchiveStats — against the real archive', () => {
 
   it('counts BILLINGS, while the Artists scene counts ACTS — both live (#295)', () => {
     // The Artists scene alias-collapses (#227), so Brian Setzer is one card
-    // rather than four billings: 254 there against 257 everywhere else. Pinned
+    // rather than four billings: 255 there against 258 everywhere else. Pinned
     // so the gap stays a recorded decision rather than a surprise, and so that
     // closing it is a deliberate edit to this test.
     const billings = new Set<string>()
@@ -128,10 +128,10 @@ describe('deriveArchiveStats — against the real archive', () => {
     }
 
     expect(stats.artists).toBe(billings.size)
-    expect(stats.artists).toBe(257)
+    expect(stats.artists).toBe(258)
 
     const setzer = [...billings].filter((b) => /setzer/i.test(b))
-    expect(setzer.length).toBe(4) // 257 - 3 = the 254 the mosaic shows
+    expect(setzer.length).toBe(4) // 258 - 3 = the 255 the mosaic shows
   })
 
   it('includes dated-but-unplayed shows', () => {
