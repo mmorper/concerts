@@ -1,5 +1,5 @@
 {
-  "computedAt": "2026-10-19T14:27:26.023Z",
+  "computedAt": "2026-10-25T16:16:37.632Z",
   "facts": [
     {
       "id": "top-artist",
@@ -22,8 +22,8 @@
     {
       "id": "total-concerts",
       "category": "timeline",
-      "headline": "184 concerts since 1984",
-      "detail": "43 years of live music memories",
+      "headline": "185 concerts since 1984",
+      "detail": "44 years of live music memories",
       "route": "/?scene=timeline",
       "cta": "Explore the timeline",
       "priority": 3
@@ -85,9 +85,9 @@
     {
       "id": "latest-concert",
       "category": "timeline",
-      "headline": "Latest: Pinhead Gunpowder (2026)",
-      "detail": "The most recent addition — Garden Amp",
-      "route": "/?scene=artists&artist=pinhead-gunpowder",
+      "headline": "Latest: Nick Heyward (2027)",
+      "detail": "The most recent addition — Union Stage",
+      "route": "/?scene=artists&artist=nick-heyward",
       "cta": "View artist details",
       "priority": 10
     },
@@ -112,7 +112,7 @@
     {
       "id": "unique-venues",
       "category": "venue",
-      "headline": "79 unique venues",
+      "headline": "80 unique venues",
       "detail": "From clubs to arenas and amphitheaters",
       "route": "/?scene=venues",
       "cta": "Explore venues",

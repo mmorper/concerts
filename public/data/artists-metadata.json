@@ -1797,5 +1797,12 @@
     "genres": [],
     "source": "deezer",
     "fetchedAt": "2026-09-28T15:01:39.285Z"
+  },
+  "nick-heyward": {
+    "name": "Nick Heyward",
+    "image": "https://cdn-images.dzcdn.net/images/artist/ba6f49b5fd98f05bb44f52d76ca027ed/500x500-000000-80-0-0.jpg",
+    "genres": [],
+    "source": "deezer",
+    "fetchedAt": "2026-10-25T16:12:31.106Z"
   }
 }

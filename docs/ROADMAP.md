@@ -2,9 +2,9 @@
 
 ## Current State (v6.0.0)
 
-- **184 concerts** spanning 1984-2026
-- **257 artists** (including openers) with 100% imagery coverage
-- **79 unique venues** across 35 cities
+- **185 concerts** spanning 1984-2027
+- **258 artists** (including openers) with 100% imagery coverage
+- **80 unique venues** across 36 cities
 - **11,366 releases** joined against attendance — 178 shows carry album-cycle data
 - **1,716 of 1,912 setlist songs** matched to the studio album they came from (89.7%)
 - **6 interactive scenes**: Timeline, Venues, Geography, Genres, Artists, Ask the Archive

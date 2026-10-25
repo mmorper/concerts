@@ -316,11 +316,12 @@
         "2022": 3,
         "2024": 1,
         "2025": 1,
-        "2026": 3
+        "2026": 3,
+        "2027": 1
       },
-      "totalShows": 32,
+      "totalShows": 33,
       "firstYear": 1985,
-      "lastYear": 2026,
+      "lastYear": 2027,
       "artists": [
         {
           "name": "Peter Gabriel",
@@ -575,6 +576,16 @@
           ],
           "firstYear": 2024,
           "lastYear": 2024
+        },
+        {
+          "name": "Nick Heyward",
+          "normalizedName": "nick-heyward",
+          "showCount": 1,
+          "years": [
+            2027
+          ],
+          "firstYear": 2027,
+          "lastYear": 2027
         },
         {
           "name": "Klangphonics",
@@ -1521,7 +1532,8 @@
     "2023": 11,
     "2024": 6,
     "2025": 4,
-    "2026": 5
+    "2026": 5,
+    "2027": 1
   },
   "milestones": [
     {
@@ -1555,7 +1567,7 @@
   ],
   "yearRange": {
     "start": 1984,
-    "end": 2026
+    "end": 2027
   },
-  "generatedAt": "2026-10-19T14:27:25.995Z"
+  "generatedAt": "2026-10-25T16:16:37.623Z"
 }

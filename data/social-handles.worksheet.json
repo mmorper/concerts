@@ -1,7 +1,35 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-29T16:58:50.474Z",
+  "generatedAt": "2026-10-25T16:16:53.026Z",
   "proposals": [
+    {
+      "kind": "artist",
+      "slug": "nick-heyward",
+      "name": "Nick Heyward",
+      "channel": "x",
+      "handle": "nickheyward",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://twitter.com/nickheyward"
+    },
+    {
+      "kind": "artist",
+      "slug": "nick-heyward",
+      "name": "Nick Heyward",
+      "channel": "instagram",
+      "handle": "nickheyward",
+      "evidence": "musicbrainz",
+      "note": "MusicBrainz \"social network\" relationship → https://www.instagram.com/nickheyward/"
+    },
+    {
+      "kind": "artist",
+      "slug": "nick-heyward",
+      "name": "Nick Heyward",
+      "channel": "bluesky",
+      "handle": "nickheyward.com",
+      "did": "did:plc:oar2ux7aozrtcorpergy6yyo",
+      "evidence": "site-domain",
+      "note": "nickheyward.com resolves as a Bluesky handle — proven by DNS or /.well-known against the official site"
+    },
     {
       "kind": "artist",
       "slug": "beach-boys",
@@ -3965,7 +3993,7 @@
     {
       "kind": "artist",
       "slug": "john-doe",
-      "name": "John Doe"
+      "name": "Johndoe"
     },
     {
       "kind": "artist",
@@ -3985,7 +4013,7 @@
     {
       "kind": "artist",
       "slug": "kiev",
-      "name": "KIEV"
+      "name": "Kiev"
     },
     {
       "kind": "artist",
@@ -4030,17 +4058,17 @@
     {
       "kind": "artist",
       "slug": "peter-hook-and-the-light",
-      "name": "Peter Hook & The Light"
+      "name": "Peter Hook and The Light"
     },
     {
       "kind": "artist",
       "slug": "school-of-fish",
-      "name": "School of Fish"
+      "name": "School Of Fish"
     },
     {
       "kind": "artist",
       "slug": "shinehead",
-      "name": "Shinehead"
+      "name": "Shine Head"
     },
     {
       "kind": "artist",
@@ -4135,7 +4163,7 @@
     {
       "kind": "artist",
       "slug": "jah-wobble-s-invaders-of-the-heart",
-      "name": "Jah Wobble's Invaders of the Heart"
+      "name": "Jah Wobble's Invaders Of The Heart"
     },
     {
       "kind": "artist",
@@ -4165,7 +4193,7 @@
     {
       "kind": "artist",
       "slug": "barroom-heroes",
-      "name": "Bar Room Heroes"
+      "name": "Barroom Heroes"
     },
     {
       "kind": "artist",
@@ -4180,7 +4208,7 @@
     {
       "kind": "artist",
       "slug": "smoke-mirrors-sound-system",
-      "name": "smcke"
+      "name": "Smoke and Mirrors Sound System"
     },
     {
       "kind": "artist",
@@ -4456,6 +4484,11 @@
       "kind": "venue",
       "slug": "garden-amp",
       "name": "Garden Amp"
+    },
+    {
+      "kind": "venue",
+      "slug": "union-stage",
+      "name": "Union Stage"
     }
   ],
   "attempted": {
@@ -4793,6 +4826,8 @@
     "artist:joan-jett-the-blackhearts": "2026-08-29",
     "artist:dj-z-trip": "2026-08-29",
     "artist:gene-loves-jezabel": "2026-08-29",
-    "artist:smoke-mirrors-sound-system": "2026-08-29"
+    "artist:smoke-mirrors-sound-system": "2026-08-29",
+    "artist:nick-heyward": "2026-10-25",
+    "venue:union-stage": "2026-10-25"
   }
 }

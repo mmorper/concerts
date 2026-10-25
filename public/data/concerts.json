@@ -4691,17 +4691,41 @@
         "lat": 33.776932599999995,
         "lng": -117.9405975
       }
+    },
+    {
+      "id": "concert-185",
+      "date": "2027-03-10",
+      "headliner": "Nick Heyward",
+      "headlinerNormalized": "nick-heyward",
+      "genre": "Other",
+      "genreNormalized": "other",
+      "openers": [],
+      "venue": "Union Stage",
+      "venueNormalized": "union-stage",
+      "city": "Washington",
+      "state": "District of Columbia",
+      "cityState": "Washington, District of Columbia",
+      "reference": "",
+      "year": 2027,
+      "month": 3,
+      "day": 10,
+      "dayOfWeek": "Wednesday",
+      "decade": "2020s",
+      "location": {
+        "lat": 38.8790382,
+        "lng": -77.0243684
+      }
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-10-19T14:23:05.041Z",
-    "totalConcerts": 184,
+    "lastUpdated": "2026-10-25T16:12:49.607Z",
+    "totalConcerts": 185,
     "dateRange": {
       "earliest": "1984-04-27",
-      "latest": "2026-11-11"
+      "latest": "2027-03-10"
     },
-    "uniqueArtists": 107,
-    "uniqueVenues": 79,
+    "uniqueArtists": 108,
+    "uniqueVenues": 80,
     "uniqueCities": 36
   }
 }

@@ -1,9 +1,9 @@
 {
   "version": "1",
-  "generatedAt": "2026-10-19T14:27:26.011Z",
+  "generatedAt": "2026-10-25T16:16:37.628Z",
   "coverage": {
     "concertsWithSetlist": 116,
-    "totalConcerts": 184,
+    "totalConcerts": 185,
     "distinctSongs": 1626
   },
   "songs": [

@@ -138227,5 +138227,289 @@
     ],
     "fetchedAt": "2026-08-29T16:57:16.161Z",
     "cachedAt": "2026-08-29T16:57:16.161Z"
+  },
+  "nick-heyward": {
+    "artistName": "Nick Heyward",
+    "normalizedName": "nick-heyward",
+    "mbid": "2ff2543e-d8f9-42da-8734-e78532ac8147",
+    "albumCount": 24,
+    "albums": [
+      {
+        "id": "3a0c961f-41e4-4d6a-b05b-ee298173ed9e",
+        "title": "The Essential Nick Heyward",
+        "releaseDate": "2026-11-27",
+        "year": 2026,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/3a0c961f-41e4-4d6a-b05b-ee298173ed9e/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "8eaf39a9-74f4-41b1-b97a-3e1388e805dc",
+        "title": "The Epic and Creation Years 1993-1998",
+        "releaseDate": "2025-11-28",
+        "year": 2025,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/8eaf39a9-74f4-41b1-b97a-3e1388e805dc/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "b5b0b40d-36ae-42d7-82bc-349b1ab6fcff",
+        "title": "Woodland Echoes",
+        "releaseDate": "2017-08-04",
+        "year": 2017,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/b5b0b40d-36ae-42d7-82bc-349b1ab6fcff/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "7449d5c6-799b-4b95-8625-f7eb97356122",
+        "title": "Favourite Songs",
+        "releaseDate": "2009",
+        "year": 2009,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/7449d5c6-799b-4b95-8625-f7eb97356122/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a9e37c83-fcd9-33a3-a4ba-49961c1e193a",
+        "title": "The Apple Bed",
+        "releaseDate": "1998-02-09",
+        "year": 1998,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a9e37c83-fcd9-33a3-a4ba-49961c1e193a/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "7a066e08-788a-3131-b4a9-bbe87382d805",
+        "title": "Today",
+        "releaseDate": "1997",
+        "year": 1997,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/7a066e08-788a-3131-b4a9-bbe87382d805/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "8afd9478-4364-375d-9097-dcabbf141cb6",
+        "title": "The Man You Used to Be",
+        "releaseDate": "1997",
+        "year": 1997,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/8afd9478-4364-375d-9097-dcabbf141cb6/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "112dc026-1576-3839-add2-f4c76920589d",
+        "title": "Rollerblade",
+        "releaseDate": "1996",
+        "year": 1996,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/112dc026-1576-3839-add2-f4c76920589d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "314e4fc4-84c8-4bea-a882-af75b1b2ded1",
+        "title": "A Hard Days Nick",
+        "releaseDate": "1996",
+        "year": 1996,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/314e4fc4-84c8-4bea-a882-af75b1b2ded1/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "ae2d5a8c-5539-3243-885f-51de79bbe06d",
+        "title": "Tangled",
+        "releaseDate": "1995-10-09",
+        "year": 1995,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/ae2d5a8c-5539-3243-885f-51de79bbe06d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "6cdbb116-3859-3b64-8651-38ee2e6bb22d",
+        "title": "The Very Best Of Haircut 100 & Nick Heyward",
+        "releaseDate": "1994",
+        "year": 1994,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6cdbb116-3859-3b64-8651-38ee2e6bb22d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "28c0ec64-0f9d-3293-948e-73ecfa05ab75",
+        "title": "From Monday to Sunday",
+        "releaseDate": "1993-09-06",
+        "year": 1993,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/28c0ec64-0f9d-3293-948e-73ecfa05ab75/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "6d1fba27-94ee-416e-8d90-1a3e26fa18d8",
+        "title": "Tell Me Why",
+        "releaseDate": "1989",
+        "year": 1989,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6d1fba27-94ee-416e-8d90-1a3e26fa18d8/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "c32f3be1-f4c7-3994-b3cc-afb3c3bed1be",
+        "title": "The Best of Nick Heyward & Haircut One Hundred",
+        "releaseDate": "1989",
+        "year": 1989,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/c32f3be1-f4c7-3994-b3cc-afb3c3bed1be/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "05ee5502-8945-3fbe-90fc-b71d8b7f8c39",
+        "title": "You’re My World",
+        "releaseDate": "1988",
+        "year": 1988,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/05ee5502-8945-3fbe-90fc-b71d8b7f8c39/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "48fc4173-b36e-35b5-bcae-a43fc1845b5d",
+        "title": "I Love You Avenue",
+        "releaseDate": "1988",
+        "year": 1988,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/48fc4173-b36e-35b5-bcae-a43fc1845b5d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a7bee242-a54d-31ef-9e3f-7726040c15b7",
+        "title": "Postcards From Home",
+        "releaseDate": "1986-12-05",
+        "year": 1986,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a7bee242-a54d-31ef-9e3f-7726040c15b7/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "d965466d-bf64-4301-ac2b-ee855b1005bc",
+        "title": "Goodbye Yesterday",
+        "releaseDate": "1986",
+        "year": 1986,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/d965466d-bf64-4301-ac2b-ee855b1005bc/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "51d15d3c-5534-41b8-99c8-ae74ee3a742e",
+        "title": "Warning Sign (Bullet To Your Head) (U.S. Remix)",
+        "releaseDate": "1984",
+        "year": 1984,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/51d15d3c-5534-41b8-99c8-ae74ee3a742e/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "cd78df50-a9b2-4b9f-b65f-3e1d56f5c9e1",
+        "title": "Warning Sign",
+        "releaseDate": "1984",
+        "year": 1984,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/cd78df50-a9b2-4b9f-b65f-3e1d56f5c9e1/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "eb866f72-2bb1-472f-b8d7-32a6b7ac49f7",
+        "title": "Whistle Down The Wind",
+        "releaseDate": "1983-03",
+        "year": 1983,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/eb866f72-2bb1-472f-b8d7-32a6b7ac49f7/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "82e3f270-1f32-3290-84fa-a574f41dc180",
+        "title": "Blue Hat for a Blue Day",
+        "releaseDate": "1983",
+        "year": 1983,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/82e3f270-1f32-3290-84fa-a574f41dc180/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "962f9b1a-b127-38be-b989-63f4e4acbfed",
+        "title": "North of a Miracle",
+        "releaseDate": "1983",
+        "year": 1983,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/962f9b1a-b127-38be-b989-63f4e4acbfed/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "c98d3908-839c-30bd-8bb5-de4c5f7e67fd",
+        "title": "Take That Situation",
+        "releaseDate": "1983",
+        "year": 1983,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/c98d3908-839c-30bd-8bb5-de4c5f7e67fd/front-500.jpg",
+        "coverAvailable": true
+      }
+    ],
+    "fetchedAt": "2026-10-25T16:12:39.298Z",
+    "cachedAt": "2026-10-25T16:12:39.299Z"
   }
 }

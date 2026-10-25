@@ -5,9 +5,9 @@ _A visual love letter to four decades of live music._
 
 ## What is this?
 
-An interactive web app for exploring personal concert history. Six scenes—Timeline, Venues, Geography, Genres, Artists, Ask the Archive—each offering a different lens on 184 shows spanning 1984 to today. Click through decades, trace connections between venues and artists, see where the music happened on a map. All enriched with artist photos, venue imagery, and setlist data.
+An interactive web app for exploring personal concert history. Six scenes—Timeline, Venues, Geography, Genres, Artists, Ask the Archive—each offering a different lens on 185 shows spanning 1984 to today. Click through decades, trace connections between venues and artists, see where the music happened on a map. All enriched with artist photos, venue imagery, and setlist data.
 
-**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 184 shows • 257 artists • 79 venues • 5+ decades
+**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 185 shows • 258 artists • 80 venues • 5+ decades
 
 ## What's new
 
@@ -96,7 +96,7 @@ npm install
 npm run dev
 ```
 
-The app includes my concert data as static JSON—no setup required. Browse 184 shows to see how it works.
+The app includes my concert data as static JSON—no setup required. Browse 185 shows to see how it works.
 
 ### Using Your Own Concert Data
 
