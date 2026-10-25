@@ -55,9 +55,23 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: framer-motion
         update-types: ["version-update:semver-major"]
+      # THE LEAFLET STACK IS THE SAME KIND OF DECISION (added 2026-10-25).
+      # react-leaflet 5 and react-leaflet-cluster 4 require React 19, so their
+      # majors belong to the React upgrade above, checked against the Map scene,
+      # not merged one at a time. #565 offered cluster 4 on its own.
+      - dependency-name: leaflet
+        update-types: ["version-update:semver-major"]
+      - dependency-name: react-leaflet
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@react-leaflet/core"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: react-leaflet-cluster
+        update-types: ["version-update:semver-major"]
     groups:
       react:
         patterns: [react, react-dom, "@types/react", "@types/react-dom"]
+      leaflet:
+        patterns: [leaflet, react-leaflet, "@react-leaflet/core", react-leaflet-cluster]
       minor-and-patch:
         update-types: [minor, patch]
       dev-majors:
