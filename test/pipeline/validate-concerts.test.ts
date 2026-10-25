@@ -122,6 +122,40 @@ describe('validate-concerts.ts', () => {
     ;(fs.readFileSync as any).mockReturnValue(JSON.stringify(mockData))
   }
 
+  // Helper that wires up concerts.json + discography.json + artists-metadata.json
+  // so the headliner-reachability check (Check 5) actually runs. artist-aliases.json
+  // is reported absent so no billings/discographyKeys participate.
+  function mockWithDiscography(opts: {
+    concerts: any[]
+    discography: Record<string, any>
+    artistsMetadata: Record<string, any>
+  }) {
+    const concertsData = {
+      concerts: opts.concerts,
+      metadata: { totalConcerts: opts.concerts.length, dateRange: {} },
+    }
+
+    ;(fs.existsSync as any).mockImplementation(
+      (path: string) => !path.includes('artist-aliases.json')
+    )
+    ;(fs.readFileSync as any).mockImplementation((path: string) => {
+      if (path.includes('discography.json')) return JSON.stringify(opts.discography)
+      if (path.includes('artists-metadata.json')) return JSON.stringify(opts.artistsMetadata)
+      return JSON.stringify(concertsData) // concerts.json
+    })
+  }
+
+  const cleanConcert = (overrides: Record<string, any>) => ({
+    id: 'concert-1',
+    date: '2024-01-15',
+    venue: 'Test Venue',
+    city: 'Los Angeles',
+    state: 'California',
+    location: { lat: 34.05, lng: -118.24 },
+    openers: [],
+    ...overrides,
+  })
+
   describe('Required Field Validation', () => {
     it('should error if date is missing', async () => {
       mockConcertsOnly([
@@ -558,6 +592,80 @@ describe('validate-concerts.ts', () => {
             msg.includes('Validation passed with warnings'))
       )
       expect(hasSuccessMessage).toBe(true)
+    })
+  })
+
+  // Regression for #330: adding a brand-new headliner to the sheet and running
+  // `npm run build-data` hard-failed on the first pass, because validation runs
+  // before enrichment and the new artist has no discography record yet. A new,
+  // not-yet-enriched headliner must WARN; a genuine key mismatch for an already-
+  // enriched artist must still ERROR.
+  describe('Headliner Discography Reachability', () => {
+    it('warns (does not block) for a brand-new headliner not yet enriched', async () => {
+      mockWithDiscography({
+        concerts: [
+          cleanConcert({
+            headliner: 'Brand New Band',
+            headlinerNormalized: 'brand-new-band',
+          }),
+        ],
+        // Enrichment hasn't run yet this pass: the new artist is in neither file.
+        artistsMetadata: {},
+        discography: {},
+      })
+
+      await validateConcerts()
+
+      expect(process.exit).not.toHaveBeenCalled()
+      const logged = (console.log as any).mock.calls
+        .map((call: any[]) => call[0])
+        .filter((m: any) => typeof m === 'string')
+      expect(logged.some((m: string) => m.includes('not yet enriched'))).toBe(true)
+      // And it must NOT be reported as a blocking "reaches no discography record".
+      expect(
+        logged.some((m: string) => m.includes('reaches no discography record'))
+      ).toBe(false)
+      expect(
+        logged.some((m: string) => m.includes('Validation passed with warnings'))
+      ).toBe(true)
+    })
+
+    it('still errors for an enriched headliner that reaches no discography record', async () => {
+      mockWithDiscography({
+        concerts: [
+          cleanConcert({
+            headliner: 'Drifted Act',
+            headlinerNormalized: 'drifted-act',
+          }),
+        ],
+        // The artist WAS enriched (present in artists-metadata) ...
+        artistsMetadata: {
+          'drifted-act': { name: 'Drifted Act', normalizedName: 'drifted-act' },
+        },
+        // ... but its discography record is filed under a key no fold/alias can
+        // bridge — genuine #269 drift, which must stay a hard error.
+        discography: {
+          'completely-unrelated-key': {
+            artistName: 'Completely Unrelated',
+            normalizedName: 'completely-unrelated-key',
+            mbid: 'abc',
+            albumCount: 4,
+            albums: [{ id: 'a1' }, { id: 'a2' }, { id: 'a3' }, { id: 'a4' }],
+            cachedAt: new Date().toISOString(),
+          },
+        },
+      })
+
+      try {
+        await validateConcerts()
+      } catch (e: any) {
+        expect(e.message).toContain('process.exit: 1')
+      }
+
+      expect(process.exit).toHaveBeenCalledWith(1)
+      expect(console.log).toHaveBeenCalledWith(
+        expect.stringContaining('reaches no discography record')
+      )
     })
   })
 })

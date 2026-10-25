@@ -270,9 +270,22 @@ async function validateConcerts() {
     // headlinerNormalized. This makes that class of drift self-reporting rather
     // than something rediscovered in a year.
     //
-    //   ERROR — no record reachable at all: key drift, or enrichment never ran
+    //   ERROR — no record reachable for an ENRICHED artist: genuine key drift.
+    //   WARN  — no record yet for a brand-new artist: enrichment simply hasn't
+    //           run. In build-data.ts this validation runs BEFORE enrich-artists
+    //           and enrich:discography, so a headliner added to the sheet this
+    //           pass reaches neither file. Blocking here forced the manual
+    //           fetch→enrich→enrich:discography→build-data workaround (#330).
     //   WARN  — record reachable but thin (<3 releases): probable mis-resolution,
     //           or a genuinely obscure act. Both are worth a human glance.
+    //
+    // The enriched/new split is reliable: enrich:discography writes an entry for
+    // EVERY artist it processes — even an empty `mbid:null` one when MusicBrainz
+    // finds nothing — keyed by the artists-metadata slug. So an enriched artist
+    // always resolves directly; reaching no record can only mean the slug drifted
+    // from the discography key (real #269 drift) or the artist was never enriched.
+    // A never-enriched artist is also absent from artists-metadata.json, since
+    // enrich-artists hasn't run yet either. That absence is the discriminator.
     const aliasPath = join(process.cwd(), 'public', 'data', 'artist-aliases.json')
     const billingsOf = new Map<string, string[]>()
     if (existsSync(aliasPath)) {
@@ -298,12 +311,29 @@ async function validateConcerts() {
 
     let unreachable = 0
     let thin = 0
+    let unenriched = 0
     for (const [slug, displayName] of headliners) {
       const resolution = resolveArtistKey(slug, displayName, keyIndex, discography as any, {
         aliasesOf: (s: string) => billingsOf.get(s) ?? [],
       })
 
       if (!resolution.key) {
+        const enriched = Object.prototype.hasOwnProperty.call(artistsMetadata, slug)
+        if (!enriched) {
+          // Brand-new headliner: enrichment hasn't run yet this pass. Warn, don't
+          // block — enrich-artists + enrich:discography downstream will create the
+          // record. (See the ERROR/WARN note above.)
+          unenriched++
+          warnings.push({
+            row: 0,
+            field: 'discography',
+            message:
+              `Headliner "${displayName}" (${slug}) has no discography record yet — ` +
+              `not yet enriched. Enrichment runs later in build-data and will create it.`,
+            severity: 'warning',
+          })
+          continue
+        }
         unreachable++
         errors.push({
           row: 0,
@@ -331,8 +361,9 @@ async function validateConcerts() {
     }
 
     console.log(
-      `   Headliner reachability: ${headliners.size - unreachable}/${headliners.size} resolved` +
-        (thin > 0 ? `, ${thin} thin` : '')
+      `   Headliner reachability: ${headliners.size - unreachable - unenriched}/${headliners.size} resolved` +
+        (thin > 0 ? `, ${thin} thin` : '') +
+        (unenriched > 0 ? `, ${unenriched} awaiting enrichment` : '')
     )
 
     console.log(`   Checked ${Object.keys(discography).length} discography records`)
