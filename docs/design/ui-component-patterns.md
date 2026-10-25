@@ -63,7 +63,7 @@ scene controls.
 - Anchor visual hierarchy
 - Draw attention as primary interactions
 
-#### Dark Scenes (2 Venues, 3 Geography, 6 Ask)
+#### Dark Scenes (2 Venues, 3 Geography, 4 Genres, 6 Ask)
 
 **Inactive State:**
 ```css
@@ -99,7 +99,7 @@ color: white;
 
 Scene 6 carries no primary toggles — it has exactly one control, the composer.
 
-#### Light Scenes (1 Timeline, 4 Genres, 5 Artists)
+#### Light Scenes (1 Timeline, 5 Artists)
 
 **Inactive State:**
 ```css
@@ -239,7 +239,7 @@ color: rgb(17, 24, 39);               /* text-gray-900 */
 | **1. Timeline** | `Scene1Hero` | Light (white) | N/A | N/A | N/A |
 | **2. Venues** | `Scene4Bands` | Dark (gradient) | Solid gray-800/indigo-600 | N/A | Glass white/10 |
 | **3. Geography** | `Scene3Map` | Dark (gray-900) | Solid gray-800/indigo-600 | N/A | Glass white/10 |
-| **4. Genres** | `Scene5Genres` | Light (violet-100) | N/A | N/A | Glass white/80 |
+| **4. Genres** | `Scene5Genres` | Dark (slate + genre glow) | N/A | N/A | Glass white/10 |
 | **5. Artists** | `ArtistScene` | Light (stone-50) | Solid white/violet-600 | Glass white/10 | N/A |
 | **6. Ask the Archive** | `AskScene` | Dark (layered violet) | N/A | **Ask register** | **Ask register** |
 
@@ -447,8 +447,8 @@ Is this inside the Ask scene or Spotlight?
 │
 └─ NO → Is this a PRIMARY scene control (sort, filter, view mode)?
     ├─ YES → Use SOLID background
-    │   ├─ Dark scene (2, 3) → gray-800 inactive, indigo-600 active
-    │   └─ Light scene (1, 4, 5) → white inactive, violet-600 active
+    │   ├─ Dark scene (2, 3, 4) → gray-800 inactive, indigo-600 active
+    │   └─ Light scene (1, 5) → white inactive, violet-600 active
     │
     └─ NO → Input field or secondary action?
         ├─ Input field → GLASSMORPHISM white/10, white text

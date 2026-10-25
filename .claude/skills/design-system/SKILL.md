@@ -43,9 +43,9 @@ and `CLAUDE.md` matches `SCENE_LABELS`.
 | # | Name | Background | Text |
 |---|------|------------|------|
 | 1 | Timeline | `#ffffff` (white) | Dark |
-| 2 | Venues | Gradient `#1e1b4b → #581c87` | White |
+| 2 | Venues | Gradient `from-indigo-950 to-purple-950` (≈ `#1e1a4d → #3c0366`) | White |
 | 3 | Geography | `#111827` (charcoal) | White |
-| 4 | Genres | `#ede9fe` (soft violet) | Dark |
+| 4 | Genres | Slate gradient `#0f172a → #1e293b` + leading-genre glow | White |
 | 5 | Artists | `#fafaf9` (warm stone) | Dark |
 | 6 | Ask the Archive | Layered violet (see below) | White |
 
@@ -56,7 +56,7 @@ background:
   linear-gradient(180deg, #181334 0%, #1e1b4b 40%, #241253 78%, #2c1660 100%);
 ```
 
-Rhythm: `LIGHT → DARK → DARK → LIGHT → LIGHT → DARK`.
+Rhythm: `LIGHT → DARK → DARK → DARK → LIGHT → DARK`.
 
 ### Typography
 
@@ -373,8 +373,8 @@ Is this inside the Ask scene or Spotlight?
 │
 └─ NO → Is this a PRIMARY scene control (sort, filter, view)?
     ├─ YES → Use SOLID background
-    │   ├─ Dark scene (2, 3) → gray-800/indigo-600
-    │   └─ Light scene (1, 4, 5) → white/violet-600
+    │   ├─ Dark scene (2, 3, 4) → gray-800/indigo-600
+    │   └─ Light scene (1, 5) → white/violet-600
     │
     └─ NO → Is it an input or secondary action?
         ├─ Input → GLASSMORPHISM (white/10)

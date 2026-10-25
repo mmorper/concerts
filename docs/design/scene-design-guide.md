@@ -45,21 +45,21 @@ list the same roster as `SCENE_LABELS`. Adding a scene means adding it there fir
 | 1 | Timeline | "Let me tell you a story" | Light |
 | 2 | Venues | "These are the places" | **Dark** |
 | 3 | Geography | "Look how far we've traveled" | **Dark** |
-| 4 | Genres | "This is the sound of my life" | Light |
+| 4 | Genres | "This is the sound of my life" | **Dark** |
 | 5 | Artists | "These are my people" | Light |
 | 6 | Ask the Archive | "Now ask it anything" | **Dark** |
 
 ### Visual Rhythm
 
 ```
-LIGHT → DARK → DARK → LIGHT → LIGHT → DARK
+LIGHT → DARK → DARK → DARK → LIGHT → DARK
 
-  1        2       3       4        5       6
-  ○        ●       ●       ○        ○       ●
+  1        2       3       4       5        6
+  ○        ●       ●       ●       ○        ●
 ```
 
-The arc opens light, sinks into the two dark data scenes, returns to light for the
-personal scenes, and closes dark. Scene 6 is the coda: after five scenes of being
+The arc opens light, sinks into three dark data scenes, returns to light for
+Artists, and closes dark. Scene 6 is the coda: after five scenes of being
 shown the archive, you are invited to interrogate it.
 
 ---
@@ -82,7 +82,7 @@ shown the archive, you are invited to interrogate it.
 
 | Property | Value |
 |----------|-------|
-| **Background** | `bg-dark-2` / gradient `#1e1b4b → #581c87` |
+| **Background** | Gradient `from-indigo-950 to-purple-950` (≈ `#1e1a4d → #3c0366`) |
 | **Text** | `#ffffff` (white) / `#9ca3af` (muted) |
 | **Node Colors** | `#6366f1` (venue) / `#8b5cf6` (headliner) / `#ec4899` (opener) |
 | **Dominant Element** | Radial network graph |
@@ -109,14 +109,14 @@ Spotlight sits at 2000. See [Z-Index Layers](./ui-component-patterns.md#z-index-
 
 | Property | Value |
 |----------|-------|
-| **Background** | `bg-light-5` / `#ede9fe` (Soft Violet) |
-| **Text** | `#1f2937` (dark) / `#6b7280` (muted) |
+| **Background** | Slate gradient `#0f172a → #1e293b → #0f172a`, plus a radial glow in the leading genre's color |
+| **Text** | `#ffffff` (white) / `#94a3b8` (slate-400, muted) |
 | **Visualization** | Full Concert Poster palette (20 genre colors) |
 | **Dominant Element** | Genre treemap |
 | **Mood** | Musical, vibrant, "this is who I am" |
 
-**Why violet?** Ties back to Venues gradient. Makes warm genre colors pop through
-simultaneous contrast. Says "this is about music."
+**The glow follows the data.** The radial glow takes the color of the leading genre
+for the year on screen, and cross-fades (`background 0.7s`) as the timeline plays.
 
 ---
 
@@ -359,7 +359,7 @@ SCENE                BACKGROUND       TEXT
 1. Timeline          #ffffff          dark
 2. Venues            gradient         white
 3. Geography         #111827          white
-4. Genres            #ede9fe          dark
+4. Genres            slate + glow     white
 5. Artists           #fafaf9          dark
 6. Ask the Archive   layered violet   white
 
