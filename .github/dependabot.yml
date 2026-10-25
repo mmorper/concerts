@@ -38,7 +38,40 @@ updates:
     schedule:
       interval: weekly
       day: monday
+    # REACT MOVES AS ONE, AND ITS MAJORS ARE A DECISION (added 2026-10-11).
+    # #521 bumped react-dom to 19 while react stayed on 18 — a pair that cannot
+    # work, offered as a green-looking PR. React 19 and framer-motion 13 are one
+    # planned upgrade, checked against the rendered scenes, not a drip of
+    # Dependabot majors. Until then their majors are not proposed at all, and
+    # their minors and patches arrive together.
+    ignore:
+      - dependency-name: react
+        update-types: ["version-update:semver-major"]
+      - dependency-name: react-dom
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: framer-motion
+        update-types: ["version-update:semver-major"]
+      # THE LEAFLET STACK IS THE SAME KIND OF DECISION (added 2026-10-25).
+      # react-leaflet 5 and react-leaflet-cluster 4 require React 19, so their
+      # majors belong to the React upgrade above, checked against the Map scene,
+      # not merged one at a time. #565 offered cluster 4 on its own.
+      - dependency-name: leaflet
+        update-types: ["version-update:semver-major"]
+      - dependency-name: react-leaflet
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@react-leaflet/core"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: react-leaflet-cluster
+        update-types: ["version-update:semver-major"]
     groups:
+      react:
+        patterns: [react, react-dom, "@types/react", "@types/react-dom"]
+      leaflet:
+        patterns: [leaflet, react-leaflet, "@react-leaflet/core", react-leaflet-cluster]
       minor-and-patch:
         update-types: [minor, patch]
       dev-majors:
@@ -90,6 +123,14 @@ updates:
       interval: weekly
       day: monday
     groups:
+      # AGENTS AND THE MCP SDK MOVE TOGETHER (added 2026-10-11). `agents` is 0.x,
+      # so a "minor" bump can change anything, and it pins an exact peer of
+      # @modelcontextprotocol/sdk. Grouped separately they broke twice: zod 3 vs
+      # agents@0.22 (header note above), then #547, where agents@0.25 wanted SDK
+      # 1.30.0 and the minor group bumped the SDK to 1.32.0 — npm ci failed with
+      # ERESOLVE. Listed first so it wins over minor-and-patch.
+      mcp-agents:
+        patterns: [agents, "@modelcontextprotocol/sdk"]
       minor-and-patch:
         update-types: [minor, patch]
       dev-majors:
