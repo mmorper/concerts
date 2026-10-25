@@ -1,7 +1,7 @@
 # UI Component Patterns & Design System
 
 **Version:** 1.1
-**Last Updated:** 2026-09-03
+**Last Updated:** 2026-10-25
 **Related:** [Scene Design Guide](./scene-design-guide.md) · [Color Specification](./color-specification.md)
 
 ---
@@ -247,8 +247,9 @@ color: rgb(17, 24, 39);               /* text-gray-900 */
 
 ## Motion
 
-Previously undocumented. `src/components/ask/ask.css` handles
-`prefers-reduced-motion` throughout; nothing else in the repo did, and any new
+Previously undocumented. `src/components/ask/ask.css` is the most complete
+`prefers-reduced-motion` implementation. `ArtistScene`, `AnimatedConnector` and
+`LinerNoteCard` also handle it. Most framer-motion components do not yet. Any new
 animation is expected to.
 
 ### Standard easing
@@ -293,15 +294,15 @@ Two rules to follow when adding motion:
 
 ## Z-Index Layers
 
-The scale below runs to **2100**. The 0–50 range documented in v1.0 described only
+The shared scale runs to **2100**. The 0–50 range documented in v1.0 described only
 scene-local chrome and was never the whole story; map scene chrome alone sits at
-1000–1001.
+1000–1001. The Artists overlays sit far above the scale (see the last rows).
 
 | Layer | Z-Index | Usage |
 |-------|---------|-------|
 | Base content | 0 | Scene backgrounds |
 | Floating UI | 10 | Filter panels, tooltips |
-| Overlays | 20 | Modals, gatefold |
+| Overlays | 20 | Scene-local modals |
 | Popups | 30 | Map popups, dropdowns |
 | Toast (scene-local) | 40 | Notifications |
 | Navigation | 50 | Fixed headers, scene rail |
@@ -310,12 +311,15 @@ scene-local chrome and was never the whole story; map scene chrome alone sits at
 | Ask Spotlight scrim | 2000 | Must clear map chrome, or the modal is pierced by it |
 | Turnstile challenge | 2100 | `.ts-gate` — above everything, including the Spotlight |
 | Changelog toast | 9999 | `TOAST.Z_INDEX` in `changelog/constants.ts` |
+| Artist gatefold | 99998–100000 | `ArtistGatefold.tsx` — overlay 99998, flying tile 99999, close hint 100000 |
+| Phone artist modal | 99998 | `PhoneArtistModal.tsx` (`z-[99998]`) |
 
 Two known inconsistencies, left as-is here because they are code comments rather than
 design decisions:
 
 - `ask.css` describes `.ts-gate` as "above the overlay (z 60)" while setting `2100`.
-- The changelog toast at 9999 is not part of the scale; it is an absolute ceiling.
+- The changelog toast (9999) and the Artists overlays (99998–100000) are not part of
+  the scale. They were set to clear everything, not placed against it.
 
 When adding a layer, place it against this table rather than picking a round number.
 
@@ -502,5 +506,5 @@ className="px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20
 
 ---
 
-**Last Updated:** 2026-09-03
+**Last Updated:** 2026-10-25
 **Maintained By:** Design Team

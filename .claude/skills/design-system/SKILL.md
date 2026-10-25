@@ -211,8 +211,8 @@ transition={{ duration: 0.8 }}
 
 ### Reduced motion — required
 
-Every animation needs a `prefers-reduced-motion: reduce` branch. `ask.css` is the
-reference implementation.
+Every new animation needs a `prefers-reduced-motion: reduce` branch. `ask.css` is the
+reference implementation. Most existing framer-motion components do not have one yet.
 
 | Element | Behaviour |
 |---------|-----------|
@@ -316,13 +316,13 @@ Scene 6: `padding: 80px 20px`, centring a `min(620px, 94vw)` column.
 
 ## Z-Index Layers
 
-Runs to **2100**. The 0–50 range describes scene-local chrome only.
+The shared scale runs to **2100**. The 0–50 range describes scene-local chrome only.
 
 | Layer | Z-Index | Usage |
 |-------|---------|-------|
 | Base content | 0 | Scene backgrounds |
 | Floating UI | 10 | Filter panels, tooltips |
-| Overlays | 20 | Modals, gatefold |
+| Overlays | 20 | Scene-local modals |
 | Popups | 30 | Map popups, dropdowns |
 | Toast (scene-local) | 40 | Notifications |
 | Navigation | 50 | Fixed headers, scene rail |
@@ -330,7 +330,9 @@ Runs to **2100**. The 0–50 range describes scene-local chrome only.
 | Map scene chrome | 1000–1001 | Scene 3 title and region tabs |
 | Ask Spotlight scrim | 2000 | Must clear map chrome or the modal is pierced |
 | Turnstile challenge | 2100 | `.ts-gate`, above the Spotlight |
-| Changelog toast | 9999 | `TOAST.Z_INDEX`; an absolute ceiling, not part of the scale |
+| Changelog toast | 9999 | `TOAST.Z_INDEX`; outside the scale |
+| Artist gatefold | 99998–100000 | `ArtistGatefold.tsx`; outside the scale |
+| Phone artist modal | 99998 | `PhoneArtistModal.tsx`; outside the scale |
 
 Place new layers against this table rather than picking a round number.
 
@@ -408,4 +410,4 @@ For complete specifications, see:
 
 ---
 
-**Last Updated:** 2026-09-03
+**Last Updated:** 2026-10-25

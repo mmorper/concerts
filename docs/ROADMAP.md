@@ -168,7 +168,8 @@ Carries liner notes off the site and onto Bluesky, Mastodon, Instagram and X und
 **Shipped so far**: Bluesky and Mastodon streams (see [SYNDICATION.md](SYNDICATION.md)).
 Phase 0 creative investigation is closed — eleven decisions recorded, including the
 per-channel media matrix, measured text budgets, the imagery rubric and the provenance
-disclosure rule. Instagram (L2 carousel) and X remain unbuilt; L3 video is gated on #89.
+disclosure rule. Instagram (L2 carousel) is built and awaits credentials (#334); X is unbuilt; L3 video
+is gated on #89.
 
 ---
 

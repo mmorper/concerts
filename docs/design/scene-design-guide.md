@@ -1,7 +1,7 @@
 # Morperhaus Concerts — Scene Design Guide
 
 **Version:** 1.1
-**Last Updated:** 2026-09-03
+**Last Updated:** 2026-10-25
 **Related:** [Color Specification Guide](./color-specification.md) · [UI Component Patterns](./ui-component-patterns.md)
 
 ---
@@ -112,7 +112,7 @@ Spotlight sits at 2000. See [Z-Index Layers](./ui-component-patterns.md#z-index-
 | **Background** | `bg-light-5` / `#ede9fe` (Soft Violet) |
 | **Text** | `#1f2937` (dark) / `#6b7280` (muted) |
 | **Visualization** | Full Concert Poster palette (20 genre colors) |
-| **Dominant Element** | Genre sunburst |
+| **Dominant Element** | Genre treemap |
 | **Mood** | Musical, vibrant, "this is who I am" |
 
 **Why violet?** Ties back to Venues gradient. Makes warm genre colors pop through
@@ -284,7 +284,7 @@ transition={{ duration: 0.8 }}
 ### Hover
 - Duration: `200ms`
 - Cards: `scale(1.02)` + shadow
-- Sunburst segments: expand outward 10-15%
+- Treemap tiles: a tile whose label is clipped scales to 1.5× and draws on top
 
 Ask-register motion and the project's `prefers-reduced-motion` contract are
 documented in [UI Component Patterns → Motion](./ui-component-patterns.md#motion).
@@ -316,12 +316,12 @@ Each scene has ONE dominant visual. If it doesn't dominate, simplify.
 | Timeline | Year dots | 70% |
 | Venues | Network graph | 80% |
 | Geography | The map | 90% |
-| Genres | The sunburst | 75% |
+| Genres | The treemap | 75% |
 | Artists | The mosaic | 70% |
 | Ask the Archive | The composer | 85% |
 
-On scene 6 the suggested prompts are deliberately demoted to plain text hints rather
-than buttons, so nothing competes with the composer.
+On scene 6 the suggested prompts are deliberately demoted: they are buttons styled as
+plain text (transparent, no border), so nothing competes with the composer.
 
 ---
 
