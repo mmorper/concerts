@@ -2,14 +2,24 @@
 /**
  * Validate Docs
  *
- * Fails when prose in README.md, docs/ROADMAP.md or CLAUDE.md contradicts the
- * code and data it describes.
+ * Fails when prose in README.md, docs/ROADMAP.md, CLAUDE.md, docs/design/* or
+ * the design-system skill file contradicts the code and data it describes.
  *
  * Why this exists (#284): README claimed "Five scenes" for the seven months
  * after Ask the Archive shipped as scene 6, across roughly forty releases.
  * Nothing could fail on it. `validate:version` compares git tag, changelog and
  * package.json and stops there — the entire enforcement surface of the release
  * gate was version strings.
+ *
+ * docs/design/* and .claude/skills/design-system/SKILL.md joined the gate
+ * later, after a truth pass found the same class of drift there — worse, in
+ * one place: SKILL.md's component table said scene 4 was Artists while its
+ * own backgrounds table, two rows below, said scene 4 was Genres. Both tables
+ * were in the same file and had been for months. A bare scene COUNT claim
+ * would never catch that — both tables agreed there were five scenes, they
+ * just disagreed about which scene was which. So the design-doc checks below
+ * compare each table's Name column, in row order, against SCENE_LABELS —
+ * not just how many rows it has.
  *
  * Truth comes from two places and is never typed here:
  *   - the scene roster: src/components/changelog/constants.ts
@@ -222,6 +232,113 @@ function checkDerivationUse(): Failure[] {
 }
 
 /**
+ * Roster tables in docs/design/* and the skill file — checked row by row, not
+ * just by count. See the module docstring for why a count check isn't enough.
+ *
+ * Each `rowPattern` is scoped to run only within the named section (from
+ * `sectionMarker` to the next `---`), so a table elsewhere in the same file
+ * with a similarly-shaped first column can't be picked up by accident.
+ */
+interface TableRosterCheck {
+  file: string
+  label: string
+  sectionMarker: string
+  /** Matches one row; capture group 1 must be the scene's display name. */
+  rowPattern: RegExp
+}
+
+const TABLE_ROSTER_CHECKS: TableRosterCheck[] = [
+  {
+    file: 'docs/design/scene-design-guide.md',
+    label: 'canonical scene roster table',
+    sectionMarker: '## Canonical scene roster',
+    rowPattern: /^\|\s*\d+\s*\|\s*`[a-z-]+`\s*\|\s*([^|]+?)\s*\|/gm,
+  },
+  {
+    file: '.claude/skills/design-system/SKILL.md',
+    label: 'scene roster table',
+    sectionMarker: '### Scene roster — read this first',
+    rowPattern: /^\|\s*\d+\s*\|\s*`[a-z-]+`\s*\|\s*([^|]+?)\s*\|/gm,
+  },
+  {
+    file: '.claude/skills/design-system/SKILL.md',
+    label: 'scene backgrounds table',
+    sectionMarker: '### Scene Backgrounds',
+    rowPattern: /^\|\s*\d+\s*\|\s*([^|]+?)\s*\|/gm,
+  },
+  {
+    file: 'docs/design/ui-component-patterns.md',
+    label: 'cross-scene pattern matrix',
+    sectionMarker: '## Cross-Scene Pattern Matrix',
+    rowPattern: /^\|\s*\*\*\d+\.\s*([^*]+?)\*\*\s*\|/gm,
+  },
+]
+
+/** The text between `startMarker` and the next `---` line, or to EOF. */
+function extractSection(content: string, startMarker: string): string | null {
+  const start = content.indexOf(startMarker)
+  if (start === -1) return null
+  const rest = content.slice(start + startMarker.length)
+  const end = rest.search(/\n---/)
+  return end === -1 ? rest : rest.slice(0, end)
+}
+
+function checkTableRosters(): Failure[] {
+  const failures: Failure[] = []
+  const expected = SCENE_NAMES.map((n) => SCENE_LABELS[n]).join(', ')
+
+  for (const check of TABLE_ROSTER_CHECKS) {
+    const content = readRepoFile(check.file)
+    const section = extractSection(content, check.sectionMarker)
+
+    if (section === null) {
+      failures.push({
+        file: check.file,
+        label: check.label,
+        reason: 'no-match',
+        expected,
+        pattern: check.rowPattern,
+      })
+      continue
+    }
+
+    const names: string[] = []
+    // Fresh RegExp so a prior exec() on the same literal can't leave lastIndex
+    // stuck between checks that share a rowPattern object.
+    const pattern = new RegExp(check.rowPattern)
+    let match: RegExpExecArray | null
+    while ((match = pattern.exec(section))) {
+      names.push(match[1].trim())
+    }
+
+    if (names.length === 0) {
+      failures.push({
+        file: check.file,
+        label: check.label,
+        reason: 'no-match',
+        expected,
+        pattern: check.rowPattern,
+      })
+      continue
+    }
+
+    const actual = names.join(', ')
+    if (actual !== expected) {
+      failures.push({
+        file: check.file,
+        label: check.label,
+        reason: 'mismatch',
+        expected,
+        actual,
+        pattern: check.rowPattern,
+      })
+    }
+  }
+
+  return failures
+}
+
+/**
  * The two counts docs/architecture.svg draws.
  *
  * A diagram is the worst place for a stale number: nobody re-reads a picture
@@ -254,6 +371,9 @@ function buildClaims(): Claim[] {
   const topology = deriveTopology()
   const sceneCount = SCENE_NAMES.length
   const roster = SCENE_NAMES.map((n) => SCENE_LABELS[n]).join(', ')
+  // Design docs phrase the count mid-sentence in lowercase ("has **six**
+  // scenes"), not sentence-initial like README's "Six scenes—".
+  const sceneWordLower = numberWord(sceneCount).toLowerCase()
 
   return [
     // ---- docs/architecture.svg: the two counts the diagram draws. See
@@ -284,6 +404,21 @@ function buildClaims(): Claim[] {
       label: 'intro scene roster',
       pattern: /\w+ scenes—(.+?)—each offering/,
       expected: roster,
+    },
+    // ---- docs/design/* and the skill file: bare scene-count claims. The
+    // table checks in checkTableRosters() are the ones that catch a mismapped
+    // scene; these just catch a stale count sentence.
+    {
+      file: 'docs/design/scene-design-guide.md',
+      label: 'scene design guide — scene count',
+      pattern: /The archive has \*\*(\w+)\*\* scenes\./,
+      expected: sceneWordLower,
+    },
+    {
+      file: '.claude/skills/design-system/SKILL.md',
+      label: 'design skill — scene count',
+      pattern: /There are \*\*(\w+)\*\* scenes\./,
+      expected: sceneWordLower,
     },
     {
       file: 'docs/ROADMAP.md',
@@ -481,6 +616,7 @@ export function validateDocs(): Failure[] {
   }
 
   failures.push(...checkDerivationUse())
+  failures.push(...checkTableRosters())
 
   const fileCache = new Map<string, string>()
 
