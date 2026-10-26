@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-25T14:05:42.071Z",
+  "updatedAt": "2026-10-26T16:26:20.635Z",
   "entries": [
     {
       "slug": "billy-idol-caught-once-never-again",
@@ -132,54 +132,9 @@
     },
     {
       "slug": "gwen-stefani-walked-on-for-the-brian-setzer-orchestra",
-      "hash": "7d93d1d24d701d55",
-      "checkedAt": "2026-10-25T14:04:49.346Z",
-      "issues": [
-        {
-          "field": "Hook",
-          "sentence": "The only two times I ever saw Gwen Stefani, she wasn't the one I bought a ticket for.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "Gwen Stefani has only 1 recorded appearance on the archive (guest spot 1998-08-08); no No Doubt show exists on record.",
-          "replacement": "The only time I ever saw Gwen Stefani, she wasn't the one I bought a ticket for."
-        },
-        {
-          "field": "Caption",
-          "sentence": "First was No Doubt at Disneyland in 1988.",
-          "kind": "invented-number",
-          "severity": "must-fix",
-          "evidence": "No show by No Doubt or at Disneyland appears anywhere in the archive; EVERY SHOW BY Gwen Stefani lists 0 total shows."
-        },
-        {
-          "field": "Caption",
-          "sentence": "Ten years later she walked on with The Brian Setzer Orchestra for one song, 'You're the Boss.'",
-          "kind": "internal",
-          "severity": "must-fix",
-          "evidence": "The 'ten years later' depends on the unverified 1988 Disneyland show, which is not in the archive."
-        },
-        {
-          "field": "Beat 2",
-          "sentence": "I'd seen Gwen Stefani exactly once before this night, with No Doubt in 1988.",
-          "kind": "invented-number",
-          "severity": "must-fix",
-          "evidence": "No No Doubt show or 1988 date appears in the fact sheet; Gwen Stefani has 0 shows and only 1 guest appearance total."
-        },
-        {
-          "field": "Beat 3",
-          "sentence": "That was Disneyland, a full decade earlier, nothing like a swing orchestra.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "No Disneyland show or No Doubt appearance is listed in the archive data."
-        },
-        {
-          "field": "Beat 5",
-          "sentence": "One show, ten years apart, one duet — that's the entire file, and it's enough.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "GUEST APPEARANCES BY Gwen Stefani lists only 1 appearance total (1998-08-08); there is no second show 'ten years apart' on record.",
-          "replacement": "One night, one duet — that's the entire file, and it's enough."
-        }
-      ]
+      "hash": "ffd5d710508b1ae6",
+      "checkedAt": "2026-10-26T16:26:20.634Z",
+      "issues": []
     },
     {
       "slug": "howard-jones-17-years-between-shows",
