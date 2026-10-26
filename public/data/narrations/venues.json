@@ -709,5 +709,14 @@
     "inputHash": "sha256:61e713bdffba66cf668ad48cfd11f90c479447b6754037ed3ada64a224a16869",
     "generatedAt": "2026-09-07T01:04:54.857Z",
     "promptVersion": 2
+  },
+  "union-stage": {
+    "narration": {
+      "context": "Union Stage in Washington, D.C. is a single entry in my notebook so far: Nick Heyward, March 10, 2027.",
+      "closingArc": "Just one night on the books, but the room's still active — plenty of room left for this story to grow."
+    },
+    "inputHash": "sha256:0bb08a956db7f588a69a23569c704510432e4296efb67993124f665f9f6f7f40",
+    "generatedAt": "2026-10-26T13:59:37.505Z",
+    "promptVersion": 2
   }
 }

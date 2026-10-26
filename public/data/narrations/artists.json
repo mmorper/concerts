@@ -961,5 +961,14 @@
     "inputHash": "sha256:4659999f55947cb7c6aff86f41ef317cc68cd25d539421c00bc3b499b1aa5038",
     "generatedAt": "2026-09-07T01:08:52.187Z",
     "promptVersion": 2
+  },
+  "nick-heyward": {
+    "narration": {
+      "context": "I only caught Nick Heyward once, at Union Stage in 2027.",
+      "closingArc": "Just the one night, but Union Stage is where it happened, and that's enough to hold onto."
+    },
+    "inputHash": "sha256:ff579db83bb03b7ac26f53eac69b553f8e8d34a537528c7e905808348cd1b720",
+    "generatedAt": "2026-10-26T13:59:38.960Z",
+    "promptVersion": 2
   }
 }
