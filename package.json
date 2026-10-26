@@ -117,7 +117,7 @@
     "@vitest/coverage-v8": "^5.0.5",
     "@vitest/ui": "^5.0.0",
     "autoprefixer": "^10.6.1",
-    "googleapis": "^187.0.0",
+    "googleapis": "^188.0.0",
     "open": "^11.0.4",
     "png-to-ico": "^3.0.1",
     "postcss": "^8.5.31",
