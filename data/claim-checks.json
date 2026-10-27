@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-26T16:26:20.635Z",
+  "updatedAt": "2026-10-27T15:42:52.844Z",
   "entries": [
     {
       "slug": "billy-idol-caught-once-never-again",
@@ -174,23 +174,30 @@
     },
     {
       "slug": "march-22-13-years-since-bad-religion",
-      "hash": "c5e3c4f3e33acaa7",
-      "checkedAt": "2026-10-25T14:05:42.071Z",
+      "hash": "e57a6f2dd36a85d9",
+      "checkedAt": "2026-10-27T15:42:52.844Z",
       "issues": [
         {
           "field": "caption",
           "sentence": "Four bands, one night, and the headliner had been doing this for 33 years by then.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "The fact sheet contains no formation date for Bad Religion, so the 33-year figure has no basis in the archive data.",
-          "replacement": "Four bands, one night, and a headliner deep into album seventeen of eighteen."
+          "evidence": "The fact sheet contains no formation date for Bad Religion, so a '33 years' tenure claim as of 2013 cannot be verified or supported.",
+          "replacement": "Four bands, one night, and a headliner that had already outlasted most of the openers' record labels."
         },
         {
           "field": "beat",
           "sentence": "Bad Religion formed in 1980.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Formation year is not listed anywhere in the fact sheet; this is an external claim the archive cannot confirm, though it is likely true."
+          "evidence": "The fact sheet does not include a formation year for Bad Religion; this is likely true in reality but unconfirmed by the archive data."
+        },
+        {
+          "field": "hook",
+          "sentence": "Three openers, one headliner, and Greg Graffin sounded like 1980 had never ended.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The '1980' reference implies a band formation year not present in the fact sheet, so it cannot be confirmed from archive data alone."
         }
       ]
     },
@@ -511,22 +518,37 @@
     },
     {
       "slug": "social-distortion-14-more-2018-festival-bill",
-      "hash": "a6c37c099092785d",
-      "checkedAt": "2026-10-25T14:05:00.973Z",
+      "hash": "52433aab4301d851",
+      "checkedAt": "2026-10-27T15:42:09.222Z",
       "issues": [
+        {
+          "field": "beat_2",
+          "sentence": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
+          "kind": "invented-number",
+          "severity": "must-fix",
+          "evidence": "No formation years or ages are given in the fact sheet for any of these bands, so 'forty years of damage' has no basis in the archive data.",
+          "replacement": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had been at this since punk's early days."
+        },
+        {
+          "field": "beat_1",
+          "sentence": "Social Distortion and Bad Religion on a beach in October — California punk's founding class, still running the room.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The fact sheet contains no formation dates for either band, so calling them 'California punk's founding class' is an external historical claim not confirmed by the archive."
+        },
         {
           "field": "caption",
           "sentence": "Bands that had been doing this since the late seventies shared a stage with acts that grew up on their records.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The fact sheet's earliest album for any band on this bill is T.S.O.L.'s 'Dance With Me' (1981-06); no formation years are given, so a 'late seventies' start cannot be confirmed and may be false."
+          "evidence": "The fact sheet gives no band-formation dates, so the claim that some acts date to 'the late seventies' cannot be verified from the archive."
         },
         {
-          "field": "beat",
-          "sentence": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
-          "kind": "invented-number",
-          "severity": "must-fix",
-          "evidence": "The fact sheet gives no founding/formation dates for these bands, so a cumulative '40 years' figure has no basis."
+          "field": "beat_4",
+          "sentence": "Four decades of West Coast punk in a single set list.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "No formation years are listed in the fact sheet for the bands on this bill, so spanning exactly 'four decades' cannot be confirmed from the archive data."
         }
       ]
     },
@@ -580,36 +602,37 @@
     },
     {
       "slug": "the-brian-setzer-orchestra-days-after-the-bends-dropped",
-      "hash": "5c90c8cd4cb0560c",
-      "checkedAt": "2026-10-25T14:05:28.279Z",
+      "hash": "367e4720f44b09c2",
+      "checkedAt": "2026-10-27T15:42:36.799Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "Thirteen days after The Bends, rockabilly had a different answer to the same question.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The Bends release date is not in the fact sheet; it is an external claim about another artist. The date (March 13, 1995) is true to general knowledge with high confidence, but it falls outside what the archive data can confirm."
+          "evidence": "The Bends' release date (March 13, 1995) is not in the fact sheet; it is an external music-history fact. As far as can be verified, this date is accurate, but it falls outside the archive's data."
         },
         {
           "field": "caption",
           "sentence": "Radiohead released The Bends on March 13, 1995.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Not present in the fact sheet, which only covers Brian Setzer Orchestra and Hard Rock Cafe shows; likely true but unconfirmable from archive data."
+          "evidence": "This album release date is not part of the fact sheet (which covers Setzer's discography only); it appears accurate but cannot be confirmed from archive data."
         },
         {
-          "field": "beat1",
+          "field": "beat",
           "sentence": "The Bends landed March 13, 1995 — Radiohead signaling that guitar music could go somewhere new.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Radiohead release info is not part of the fact sheet; the factual claim is plausible but external to the archive and includes editorializing ('signaling that guitar music could go somewhere new') that is unverifiable commentary."
+          "evidence": "Same external release-date claim as in the hook/caption; not sourced from the fact sheet."
         },
         {
-          "field": "beat3",
+          "field": "beat",
           "sentence": "Setzer's was 40 years older.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "The fact sheet contains no birth year or age data for Brian Setzer; this numeric age-difference claim is fabricated."
+          "evidence": "No birth years or ages for Setzer or Radiohead members appear in the fact sheet; this age-gap figure is fabricated.",
+          "replacement": "Setzer's was decades older."
         }
       ]
     },
@@ -727,53 +750,23 @@
     },
     {
       "slug": "ub40-35-years-between-shows",
-      "hash": "6bea455819de6e14",
-      "checkedAt": "2026-10-25T14:05:18.414Z",
+      "hash": "f54d863e3f7bfa6b",
+      "checkedAt": "2026-10-27T15:42:19.940Z",
       "issues": [
         {
-          "field": "hook",
-          "sentence": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 35 years after the first time.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "First show 1988-09-09, second show 2023-07-21 — that's about 34 years and 10 months, not a full 35 years.",
-          "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, nearly 35 years after the first time."
-        },
-        {
-          "field": "caption",
-          "sentence": "Thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is just under 35 years (about 34 years, 10 months), not a full 35 years.",
-          "replacement": "Nearly thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
-        },
-        {
-          "field": "beat 3",
-          "sentence": "Thirty-five years went by before I bought another ticket.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "The gap between 1988-09-09 and 2023-07-21 is about 34 years and 10 months, not a full 35 years.",
-          "replacement": "Nearly thirty-five years went by before I saw them again."
-        },
-        {
-          "field": "beat 3",
-          "sentence": "Thirty-five years went by before I bought another ticket.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "Fact sheet does not confirm the act of buying a ticket; only show attendance dates are on record."
-        },
-        {
-          "field": "beat 2",
+          "field": "Beat 2",
           "sentence": "The Labour of Love covers felt like they'd always existed.",
           "kind": "contradicted",
-          "severity": "review",
-          "evidence": "No setlist is on record for the 1988-09-09 show; the fact sheet only lists a setlist for 2023-07-21, so specific song content for the 1988 show is unsupported."
+          "severity": "must-fix",
+          "evidence": "No setlist is on record for the 1988-09-09 show; the only setlist on record is for 2023-07-21, where the Labour of Love-era covers were played. Attributing this to the 1988 Costa Mesa show is unsupported.",
+          "replacement": "The album tracks felt like they'd always existed."
         },
         {
-          "field": "beat 4",
+          "field": "Beat 4",
           "sentence": "the thing I'd wondered about in the parking lot",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "The fact sheet contains no detail about a parking lot or what the owner wondered about there; this is not in OWNER-CONFIRMED PERSONAL FACTS."
+          "evidence": "Being in a parking lot wondering about the band is a concrete personal detail not present in OWNER-CONFIRMED PERSONAL FACTS."
         }
       ]
     },
