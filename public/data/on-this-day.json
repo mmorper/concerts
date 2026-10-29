@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-10-14T12:33:13.623Z",
+  "generatedAt": "2026-10-29T13:51:07.246Z",
   "posts": [
+    {
+      "slug": "otd-2026-10-29",
+      "day": "10-29",
+      "showDate": "1988-10-29",
+      "age": 38,
+      "artist": "Oingo Boingo",
+      "artistNormalized": "oingo-boingo",
+      "venue": "Irvine Meadows",
+      "venueNormalized": "irvine-meadows",
+      "city": "Irvine",
+      "score": 10,
+      "imageUrl": "https://cdn-images.dzcdn.net/images/artist/64733d4acef59858ec2d0e6d834ae5cd/500x500-000000-80-0-0.jpg",
+      "tier": 2,
+      "source": "artist-deezer",
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=oingo-boingo",
+      "cardPath": "public/og/on-this-day/otd-2026-10-29.png",
+      "social": {
+        "hook": "Second time seeing Oingo Boingo turned out to be the last, and it's stayed that way for 38 years.",
+        "caption": "Thirty-eight years ago today I saw Oingo Boingo at Irvine Meadows for the second time. I haven't seen them since, and that same year I also caught George Michael.",
+        "beats": [
+          "October 29, 1988: my second Oingo Boingo show, filed under New Wave.",
+          "It's also the most recent one — I haven't seen them a third time.",
+          "1988 was a busy year for me at Irvine Meadows, including George Michael.",
+          "This was one of sixteen visits I've made to that venue in all.",
+          "Thirty-eight years on, Oingo Boingo still sits at exactly two."
+        ],
+        "authoredAt": "2026-10-29T13:50:36.753Z"
+      },
+      "publishedAt": "2026-10-29T13:51:07.245Z"
+    },
     {
       "slug": "otd-2026-10-14",
       "day": "10-14",
