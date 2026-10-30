@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-26T16:26:52.126Z",
+  "updatedAt": "2026-10-30T16:34:00.521Z",
   "entries": [
     {
       "slug": "3-concerts-in-12-days",
@@ -1057,6 +1057,25 @@
       "status": "posted",
       "uri": "117439841529200570",
       "postedAt": "2026-10-14T14:56:09.795Z",
+      "tier": 2,
+      "source": "artist-deezer"
+    },
+    {
+      "slug": "otd-2026-10-30",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mz47ecwiq222",
+      "rkey": "3mz47ecwiq222",
+      "postedAt": "2026-10-30T16:31:38.710Z",
+      "tier": 2,
+      "source": "artist-deezer"
+    },
+    {
+      "slug": "otd-2026-10-30",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117530823249239534",
+      "postedAt": "2026-10-30T16:34:00.521Z",
       "tier": 2,
       "source": "artist-deezer"
     },
