@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-10-29T13:51:07.246Z",
+  "generatedAt": "2026-10-30T13:42:10.629Z",
   "posts": [
+    {
+      "slug": "otd-2026-10-30",
+      "day": "10-30",
+      "showDate": "1995-10-30",
+      "age": 31,
+      "artist": "Big Audio Dynamite",
+      "artistNormalized": "big-audio-dynamite",
+      "venue": "The Galaxy Theatre",
+      "venueNormalized": "the-galaxy-theatre",
+      "city": "Santa Ana",
+      "score": 12,
+      "imageUrl": "https://cdn-images.dzcdn.net/images/artist/be78b096e562b32fcbb3239b34cc0aa1/500x500-000000-80-0-0.jpg",
+      "tier": 2,
+      "source": "artist-deezer",
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=big-audio-dynamite",
+      "cardPath": "public/og/on-this-day/otd-2026-10-30.png",
+      "social": {
+        "hook": "John Doe and Jane Weidlin opened for Big Audio Dynamite, and I only ever saw any of the three once.",
+        "caption": "Thirty-one years ago today at The Galaxy Theatre, John Doe and Jane Weidlin opened for Big Audio Dynamite. I never saw any of the three again.",
+        "beats": [
+          "October 30, 1995: Big Audio Dynamite at The Galaxy Theatre in Santa Ana.",
+          "John Doe opened. I never saw him again.",
+          "Jane Weidlin opened too. Also a one-time-only for me.",
+          "The same year I caught Violent Femmes, The Brian Setzer Orchestra, and Jimmy Buffett.",
+          "One night, three acts, zero repeats in thirty-one years."
+        ],
+        "authoredAt": "2026-10-30T13:41:52.861Z"
+      },
+      "publishedAt": "2026-10-30T13:42:10.629Z"
+    },
     {
       "slug": "otd-2026-10-29",
       "day": "10-29",
