@@ -14,13 +14,13 @@
     "tail": "npx wrangler tail"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.135.0",
+    "@anthropic-ai/sdk": "^1.3.0",
     "@modelcontextprotocol/sdk": "1.32.1",
-    "agents": "^0.30.0",
+    "agents": "^0.30.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20261022.1",
+    "@cloudflare/workers-types": "^5.20261023.1",
     "typescript": "^5.7.0",
     "vitest": "^5.0.5",
     "wrangler": "^4.152.0"
