@@ -6,7 +6,7 @@
 // (Turnstile is #141). Backend base: set VITE_ASK_BASE_URL=http://localhost:8799 for local dev.
 
 import { useEffect, useRef, useState } from 'react'
-import { useAskArchive } from '@/hooks/useAskArchive'
+import { useAskArchive, type Exchange } from '@/hooks/useAskArchive'
 import { useArchiveData } from '@/hooks/useArchiveData'
 import { getSessionToken, setSessionToken, getStatus } from '@/services/askArchive'
 import { AskExhibit } from './AskExhibit'
@@ -27,8 +27,20 @@ const BATTERY: { label: string; q: string }[] = [
   { label: 'Off-topic', q: 'Write me a python function' },
 ]
 
+// `?fixtures` — every exhibit kind from canned envelopes, no backend or session needed (#593).
+// Loaded on demand so the fixtures never ship in the production bundle.
+function useFixtures(): Exchange[] | null {
+  const wanted = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('fixtures')
+  const [fixtures, setFixtures] = useState<Exchange[] | null>(null)
+  useEffect(() => {
+    if (wanted) import('./devFixtures').then((m) => setFixtures(m.DEV_FIXTURES))
+  }, [wanted])
+  return wanted ? (fixtures ?? []) : null
+}
+
 export function AskDevHarness() {
   const archive = useArchiveData()
+  const fixtures = useFixtures()
   const { exchanges, busy, ask, reset } = useAskArchive()
   const [input, setInput] = useState('')
   const [hasSession, setHasSession] = useState(!!getSessionToken())
@@ -74,7 +86,22 @@ export function AskDevHarness() {
           Exhibit-rendering only. Containers &amp; Turnstile are #141.
         </p>
 
-        {!hasSession && <SessionGate onSet={() => setHasSession(true)} />}
+        {fixtures && (
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,.6)', marginBottom: 24 }}>
+            Fixtures mode: {fixtures.length} canned exhibits, hydrated from the live archive data. Drop <code>?fixtures</code> to talk to the worker.
+          </p>
+        )}
+        {fixtures?.map((ex) => (
+          <div key={ex.id}>
+            <div className="ask-q">
+              <span className="you">You</span>
+              <span className="q">&ldquo;{ex.question}&rdquo;</span>
+            </div>
+            {archive.loading ? <div style={{ opacity: 0.5, marginBottom: 24 }}>loading archive…</div> : <AskExhibit exchange={ex} archive={archive} />}
+          </div>
+        ))}
+
+        {!fixtures && !hasSession && <SessionGate onSet={() => setHasSession(true)} />}
 
         {hasSession && (
           <div style={{ marginBottom: 24 }}>

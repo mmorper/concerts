@@ -8,6 +8,18 @@ const serendipity: Exhibit = { kind: "serendipity", concertId: "c1", artist: { e
 const disambig: Exhibit = { kind: "disambiguation", entity: "artist", candidates: [] };
 
 describe("pickPrimaryExhibit", () => {
+  // #593: "what album was X on" often runs get_artist_history too; the card is the record.
+  it("lets a record or a night outrank the act's card, but not a disambiguation", () => {
+    const album: Exhibit = {
+      kind: "album",
+      album: { mbid: "m", title: "Mange Tout", releaseDate: "1984", coverAvailable: true },
+      artist: null,
+      artistName: "Blancmange",
+    };
+    expect(pickPrimaryExhibit([artist, album])).toBe(album);
+    expect(pickPrimaryExhibit([album, disambig])).toBe(disambig);
+  });
+
   it("returns a plain exhibit when no descriptors were produced", () => {
     expect(pickPrimaryExhibit([])).toEqual({ kind: "plain" });
   });

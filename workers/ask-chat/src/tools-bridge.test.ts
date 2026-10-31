@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { readerProse, pickDeterministicTool, TOOL_DEFS, TOOL_NAMES } from "./tools-bridge.js";
+import { readerProse, pickDeterministicTool, showExhibit, TOOL_DEFS, TOOL_NAMES } from "./tools-bridge.js";
 import type { Env } from "./types.js";
 
 // A dummy env is fine for the explicit-intent routes — they return before any data fetch.
@@ -81,5 +81,35 @@ describe("tool parity with the MCP server — album-cycle join", () => {
     // on the description alone, so the one-artist vs whole-archive split has to be in there.
     expect(byName("get_career_position")!.description).toMatch(/night I saw them/i);
     expect(byName("get_career_shape")!.description).toMatch(/whole archive/i);
+  });
+});
+
+describe("showExhibit (#593) — a resolved night becomes the night card", () => {
+  const sel = {
+    concert: { id: "concert-173", date: "2024-08-20", headliner: "Howard Jones", headlinerNormalized: "howard-jones", venue: "YouTube Theatre", venueNormalized: "youtube-theatre" },
+    performer: "Howard Jones",
+    isOpener: false,
+    songs: [
+      { title: "New Song", album: { songTitle: "New Song", albumTitle: "Human's Lib", mbid: "hl", releaseDate: "1984-03-17", coverAvailable: true, matchTier: 0 } },
+      { title: "Too Shy", coverOf: "Kajagoogoo", album: null },
+    ],
+    touring: { mbid: "dl", title: "Dialogue", releaseDate: "2022-07-02", coverAvailable: false },
+  } as unknown as Parameters<typeof showExhibit>[0];
+
+  it("maps both album shapes to one identity and keeps deep links on the shared builders", () => {
+    expect(showExhibit(sel)).toEqual({
+      kind: "show",
+      concertId: "concert-173",
+      date: "2024-08-20",
+      headliner: { entity: "artist", slug: "howard-jones", name: "Howard Jones", deepLink: "/?scene=artists&artist=howard-jones" },
+      venue: { entity: "venue", slug: "youtube-theatre", name: "YouTube Theatre", deepLink: "/?scene=venues&venue=youtube-theatre" },
+      performer: "Howard Jones",
+      isOpener: false,
+      songs: [
+        { title: "New Song", album: { mbid: "hl", title: "Human's Lib", releaseDate: "1984-03-17", coverAvailable: true } },
+        { title: "Too Shy", coverOf: "Kajagoogoo", album: null },
+      ],
+      touring: { mbid: "dl", title: "Dialogue", releaseDate: "2022-07-02", coverAvailable: false },
+    });
   });
 });

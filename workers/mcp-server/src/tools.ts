@@ -23,6 +23,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
   AlbumEras,
+  AlbumRef,
   ArtistEra,
   ArtistsMetadata,
   ArtistsTopTracks,
@@ -1110,6 +1111,70 @@ export function concertSetlist(
 
   const out = lines.join("\n");
   return out + linkFooter(out);
+}
+
+/** One performed song on a night, with the record it came off when known. */
+export interface SelectedSong {
+  title: string;
+  /** setlist.fm's cover credit — "Kajagoogoo" for a Kajagoogoo song. */
+  coverOf?: string;
+  /** Null for covers (the record is another act's) and for songs nothing matched. */
+  album: SongAlbum | null;
+}
+
+/** The night `concertSetlist` narrates, as data rather than prose. */
+export interface SetlistSelection {
+  concert: Concert;
+  /** Whose set `songs` is: the headliner, or an opener when only theirs is on record. */
+  performer: string;
+  isOpener: boolean;
+  /** Empty when no setlist is on record. Tape intros are left out. */
+  songs: SelectedSong[];
+  /** The record the headliner was touring; null for an opener's set or no era data. */
+  touring: AlbumRef | null;
+}
+
+/**
+ * The same night `concertSetlist` resolves, as structure — for Ask the Archive's night card.
+ *
+ * Shares `resolveConcert`, `resolveSetlistEntry` and `songAlbumOf` with the prose, so the
+ * card cannot name a different night, a different set or a different album than the text
+ * beside it. Covers carry no album for the same reason the prose prints none: the record
+ * belongs to the original act. Returns null wherever `concertSetlist` answers with a
+ * question instead of a night (ambiguous artist, several shows and no date).
+ */
+export function setlistSelection(
+  concerts: Concert[],
+  setlists: SetlistsCache | null,
+  args: { artist?: string; date?: string; concertId?: string },
+  eras: AlbumEras | null = null,
+  songAlbums: SongAlbums | null = null,
+  artistsMeta: ArtistsMetadata = {},
+  aliases: ArtistAliasData | null = null,
+): SetlistSelection | null {
+  const r = resolveConcert(concerts, args);
+  if (r.kind === "message") return null;
+  const c = r.concert;
+  const sl = resolveSetlistEntry(setlists, c.id, c.headlinerNormalized);
+  const billing = sl.artistName ?? c.headliner;
+  const songs = sl.songs
+    .filter((song) => !song.tape)
+    .map((song) => {
+      const a = songAlbumOf(song, billing, songAlbums, artistsMeta, aliases);
+      return {
+        title: song.name,
+        ...(song.cover?.name ? { coverOf: song.cover.name } : {}),
+        // Exactly the prose's rule (`albumOf` above), so card and text agree on every row.
+        album: a && !a.isCover ? a : null,
+      };
+    });
+  return {
+    concert: c,
+    performer: billing,
+    isOpener: sl.isOpener,
+    songs,
+    touring: sl.isOpener ? null : (eras?.concerts[c.id]?.currentAlbum ?? null),
+  };
 }
 
 

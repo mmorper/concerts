@@ -5,6 +5,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import type { Concert } from '@/types/concert'
+import { buildMediaIndex, EMPTY_MEDIA, type MediaAsset, type MediaIndex, type VenuePhotoMeta } from '@/components/ask/media'
 
 export interface ArtistMeta {
   name: string
@@ -13,7 +14,7 @@ export interface ArtistMeta {
   formed?: string
 }
 
-export interface VenueMeta {
+export interface VenueMeta extends VenuePhotoMeta {
   name: string
   normalizedName: string
   cityState?: string
@@ -43,6 +44,11 @@ export interface VenueFacts {
 interface ArchiveData {
   loading: boolean
   concertById: (id: string) => Concert | null
+  /** Every date in the archive is a single show (DATA_PIPELINE.md), so a date names a night. */
+  concertByDate: (date: string) => Concert | null
+  /** My photographs (#593). Empty until loaded, and empty for good if the file fails — the cards
+   *  then fall to their sourced tier, never to a broken image. */
+  media: MediaIndex
   artistFacts: (slug: string) => ArtistFacts
   venueFacts: (slug: string) => VenueFacts
 }
@@ -62,6 +68,7 @@ export function useArchiveData(enabled = true): ArchiveData {
   const [concerts, setConcerts] = useState<Concert[] | null>(null)
   const [artists, setArtists] = useState<Record<string, ArtistMeta> | null>(null)
   const [venues, setVenues] = useState<Record<string, VenueMeta> | null>(null)
+  const [mediaAssets, setMediaAssets] = useState<MediaAsset[] | null>(null)
 
   useEffect(() => {
     if (!enabled) return
@@ -77,6 +84,16 @@ export function useArchiveData(enabled = true): ArchiveData {
       setArtists(a as Record<string, ArtistMeta>)
       setVenues(v as Record<string, VenueMeta>)
     }
+    // Photos load beside the rest but never hold them up, and a failure is just "no photos":
+    // the card is still complete on its sourced tier.
+    fetch('/data/media-index.json')
+      .then((r) => (r.ok ? r.json() : { assets: [] }))
+      .then((m: { assets?: MediaAsset[] }) => {
+        if (!cancelled) setMediaAssets(m.assets ?? [])
+      })
+      .catch(() => {
+        if (!cancelled) setMediaAssets([])
+      })
     load().catch(() => {
       if (!cancelled) {
         setConcerts([])
@@ -92,23 +109,29 @@ export function useArchiveData(enabled = true): ArchiveData {
   // Index concerts by id and by artist/venue slug once loaded.
   const indexes = useMemo(() => {
     const byId = new Map<string, Concert>()
+    const onDate = new Map<string, Concert>()
     const byArtist = new Map<string, Concert[]>()
     const byVenue = new Map<string, Concert[]>()
     for (const c of concerts ?? []) {
       byId.set(c.id, c)
+      onDate.set(c.date, c)
       ;(byArtist.get(c.headlinerNormalized) ?? byArtist.set(c.headlinerNormalized, []).get(c.headlinerNormalized)!).push(c)
       ;(byVenue.get(c.venueNormalized) ?? byVenue.set(c.venueNormalized, []).get(c.venueNormalized)!).push(c)
     }
     for (const list of byArtist.values()) list.sort(byDate)
     for (const list of byVenue.values()) list.sort(byDate)
-    return { byId, byArtist, byVenue }
+    return { byId, onDate, byArtist, byVenue }
   }, [concerts])
+
+  const media = useMemo(() => (mediaAssets ? buildMediaIndex(mediaAssets) : EMPTY_MEDIA), [mediaAssets])
 
   const loading = concerts === null || artists === null || venues === null
 
   return {
     loading,
     concertById: (id) => indexes.byId.get(id) ?? null,
+    concertByDate: (date) => indexes.onDate.get(date) ?? null,
+    media,
 
     artistFacts: (slug) => {
       const shows = indexes.byArtist.get(slug) ?? []

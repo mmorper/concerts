@@ -129,6 +129,7 @@ artist when both are present, then fall back to first-match.
 | GA4 virtual pageviews | `src/utils/pageTracking.ts` |
 | MCP tool responses | `workers/mcp-server/src/tools.ts` |
 | Ask exhibits | `workers/ask-chat/src/exhibits.ts` |
+| Ask album & night cards | `src/components/ask/AskRecordCards.tsx` (built with `src/utils/deepLinks.ts`) |
 | Sitemap | `scripts/generate-sitemap.ts` |
 | Bot meta / OG cards | `workers/meta-injector/worker.js` (`injectShowMeta`) |
 | Liner notes deep links | `scripts/liner-notes/curate.ts` |

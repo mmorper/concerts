@@ -28,6 +28,9 @@ export type ExhibitKind =
   | "venue"
   | "list"
   | "serendipity"
+  | "album"
+  | "discography"
+  | "show"
   | "plain"
   | "disambiguation"
   | "refusal";
@@ -90,6 +93,88 @@ export interface DisambiguationExhibit {
   candidates: EntityRef[];
 }
 
+// ---------------------------------------------------------------------------------------------
+// Record-shaped cards (#593). These break the thin-envelope rule in one deliberate place: album
+// IDENTITY rides in the envelope. The SPA does not load song-albums.json or album-eras.json
+// (~900 KB together) and should not start to just to draw a cover, while a release-group id,
+// title and date are identity, not presentation. Everything visual — the cover image, photos,
+// genre colour, fallbacks — is still resolved client-side.
+// ---------------------------------------------------------------------------------------------
+
+/** A studio album, as MusicBrainz knows it. `mbid` is the release-group id Cover Art Archive keys on. */
+export interface AlbumIdentity {
+  mbid: string;
+  title: string;
+  /** "1984", "1984-03" or "1984-03-17": MusicBrainz precision varies, so render the year. */
+  releaseDate: string;
+  /** False means Cover Art Archive has no front image: skip the request, draw the derived sleeve. */
+  coverAvailable: boolean;
+}
+
+/** One song in a set, with the record it came off when the attribution data knows. */
+export interface SetSong {
+  title: string;
+  /** setlist.fm's cover credit ("Kajagoogoo"). A cover never carries an album. */
+  coverOf?: string;
+  album: AlbumIdentity | null;
+}
+
+/**
+ * get_album_info resolved to one record — "what album was Blind Vision on?". `heardLive` is
+ * the most recent night a song from it is in one of my setlists, with that whole set so the
+ * card can mark the songs that came off this record.
+ */
+export interface AlbumExhibit {
+  kind: "album";
+  album: AlbumIdentity;
+  /** The act whose record it is. Null when that act isn't in the archive (a cover's original). */
+  artist: EntityRef | null;
+  artistName: string;
+  /** The song asked about, when the question was about a song. */
+  song?: string;
+  /** 1-based place in the act's studio albums, when the record is one of them. */
+  position?: { index: number; total: number };
+  /** The record carrying most of the act's best-known tracks (album-eras `definingAlbum`). */
+  defining?: boolean;
+  heardLive?: {
+    concertId: string;
+    date: string;
+    headliner: EntityRef;
+    venue: EntityRef;
+    /** Whose set this is — an opener's when the song came from their set. */
+    performer: string;
+    songs: SetSong[];
+  };
+}
+
+/** get_album_info for an act — every studio album, with the cycles I saw them in. */
+export interface DiscographyExhibit {
+  kind: "discography";
+  artist: EntityRef;
+  albums: Array<AlbumIdentity & { seen: string[]; defining: boolean }>;
+  /** The act's release list hit the fetch cap: first/last may not be the true first/last. */
+  truncated: boolean;
+}
+
+/**
+ * get_concert_setlist resolved to one night. The lineup, photos and venue are hydrated from
+ * concerts.json + media-index.json by `concertId`; the set and its records ride here.
+ */
+export interface ShowExhibit {
+  kind: "show";
+  concertId: string;
+  date: string;
+  headliner: EntityRef;
+  venue: EntityRef;
+  /** Whose set `songs` is. */
+  performer: string;
+  isOpener: boolean;
+  /** Empty when no setlist is on record — the card still shows the night. */
+  songs: SetSong[];
+  /** The record the headliner was touring, even if nothing from it was played. */
+  touring: AlbumIdentity | null;
+}
+
 /** Prose-only answer (archive_info, top_songs, on_this_day, or any non-entity reply). */
 export interface PlainExhibit {
   kind: "plain";
@@ -106,6 +191,9 @@ export type Exhibit =
   | VenueExhibit
   | ListExhibit
   | SerendipityExhibit
+  | AlbumExhibit
+  | DiscographyExhibit
+  | ShowExhibit
   | DisambiguationExhibit
   | PlainExhibit
   | RefusalExhibit;
@@ -119,6 +207,11 @@ export type Exhibit =
 /** Higher wins. Disambiguation outranks all — if the archive needs a pick, that IS the answer. */
 const KIND_PRIORITY: Record<Exhibit["kind"], number> = {
   disambiguation: 60,
+  // A record or a night is narrower than the act: "what album was X on" often also runs
+  // get_artist_history, and the card should be the record, not the act.
+  album: 55,
+  discography: 55,
+  show: 55,
   artist: 50,
   venue: 50,
   serendipity: 40,

@@ -10,6 +10,7 @@ import {
   onThisDay,
   surpriseMe,
   concertSetlist,
+  setlistSelection,
   archiveTopSongs,
 } from "./tools.js";
 import type {
@@ -990,6 +991,45 @@ describe("get_concert_setlist — album annotations (v6.0 §6a)", () => {
   it("excludes tape from the identified count — walk-on music is not a performance", () => {
     // 3 rows print, but only 2 are performances and only 1 is attributed.
     expect(mixed()).toContain("1 of 2 songs identified.");
+  });
+
+  // Ask's night card (#593) reads the same night as data. These pin it to the prose above,
+  // row for row: a card that disagreed with the text beside it would be worse than none.
+  describe("setlistSelection — the same night, as data", () => {
+    const select = (setlists: SetlistsCache, albums: SongAlbums | null, args: { concertId?: string; artist?: string } = { concertId: "concert-5" }, eras: any = null) =>
+      setlistSelection(archive(), setlists, args, eras, albums, ARTISTS_META, ALIASES);
+
+    it("carries each song's album exactly where the prose prints one", () => {
+      const sel = select(MIXED, MIXED_ALBUMS)!;
+      expect(sel.concert.id).toBe("concert-5");
+      expect(sel.performer).toBe("Social Distortion");
+      expect(sel.isOpener).toBe(false);
+      // Tape dropped; the cover keeps its credit and carries no album, like its prose line.
+      expect(sel.songs.map((s) => [s.title, s.album?.albumTitle ?? null, s.coverOf ?? null])).toEqual([
+        ["Story of My Life", "Somewhere Between Heaven and Hell", null],
+        ["Ring of Fire", null, "Johnny Cash"],
+      ]);
+    });
+
+    it("reports an opener's set as the opener's, with no touring record", () => {
+      const sel = select(OMD_ONLY, ALBUMS, { concertId: "concert-3" })!;
+      expect(sel.isOpener).toBe(true);
+      expect(sel.performer).toBe("OMD");
+      expect(sel.songs[0].album?.albumTitle).toBe("Organisation"); // hop 2, same as the prose
+      expect(sel.touring).toBeNull();
+    });
+
+    it("names the touring record for the headliner's set", () => {
+      const eras = { concerts: { "concert-5": { currentAlbum: { mbid: "x", title: "Prison Bound", releaseDate: "1988", coverAvailable: true } } } };
+      expect(select(MIXED, MIXED_ALBUMS, { concertId: "concert-5" }, eras)!.touring?.title).toBe("Prison Bound");
+    });
+
+    it("still returns the night when there is no setlist, and null when the prose asks which night", () => {
+      const sel = select(SETLISTS, ALBUMS, { concertId: "concert-6" })!;
+      expect(sel.concert.id).toBe("concert-6");
+      expect(sel.songs).toEqual([]);
+      expect(select(SETLISTS, ALBUMS, { artist: "Social Distortion" })).toBeNull();
+    });
   });
 });
 

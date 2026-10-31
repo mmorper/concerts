@@ -1,6 +1,6 @@
 # Ask the Archive — Media in Answers
 
-**Status:** Proposal: mocks out for review, no code yet
+**Status:** Built on PR #593, not yet released. Decisions below; the open questions are answered.
 **Builds on:** the exhibit system (#140), its containers (#141), the album tool (#317), the media index (#340)
 **Visual references:** the design canvas at https://claude.ai/artifact/Wdq4QzHxyGqzqG9iR9EUAE
 (nine artboards, A–I below). Stage, crowd and marquee frames on it are real photos from
@@ -69,29 +69,92 @@ no artist, nothing to click. There are three reasons:
 - **H/I · Phone.** The hero becomes a swipeable strip; a tap opens a lightbox carrying the full
   caption.
 
-## What would change in the envelope
+## Decisions (owner review of the mocks)
 
-The exhibit envelope stays thin: identity and selection only, hydrated client-side. Two
-additions:
+| Question | Decision |
+|---|---|
+| Do my photos lead? | Yes, whenever they exist, framed on the subject (see Framing). |
+| Night card as its own kind? | Yes: `show`. |
+| Discography wall in the first cut? | Yes. |
+| Covers: hotlink or proxy? | Hotlink from the browser, lazy, with a fallback on error (see Covers). |
+| Fallbacks | Every image has a full ladder, at selection time and at load time. |
 
-- `AlbumExhibit { kind: "album", mbid, title, releaseDate, coverAvailable, artist: EntityRef,
-  heardLive?: { date, venue: EntityRef, songsFromAlbum: string[] } }`. The album fields ride
-  in the envelope because the SPA doesn't load `song-albums.json` or `album-eras.json` (900 KB
-  together), and they are identity, not presentation.
-- `ShowExhibit { kind: "show", concertId, date, headliner: EntityRef, venue: EntityRef }`, with
-  per-song album identity for the record strip.
+## How it's built
 
-Personal photos are hydrated client-side from `media-index.json` (107 KB), fetched lazily the
-first time Ask opens rather than at app load.
+**Envelope.** Still thin: identity and selection, hydrated client-side. The exception is
+album identity (`mbid`, `title`, `releaseDate`, `coverAvailable`), which rides in the envelope
+because the SPA doesn't load `song-albums.json` or `album-eras.json` (~900 KB together).
 
-## Open questions for review
+| Kind | Fired by | Carries |
+|---|---|---|
+| `album` | `get_album_info` with a song or an album that resolves to one record | album, owning act (null for a cover's original act if I never saw them), studio position, defining flag, the most recent night a song from it is in a setlist, and that whole set |
+| `discography` | `get_album_info` with only an artist | every studio album (deduplicated), the nights I saw them in each cycle, the defining record |
+| `show` | `get_concert_setlist` resolved to one night | the set with each song's album, whose set it is, the record being toured |
 
-1. Should my photos lead the artist card whenever they exist (B), or only when the question
-   is about a night I photographed?
-2. Is the night card (C) worth a new kind, or should setlist answers stay on the artist card
-   with the record strip added?
-3. Does the discography wall (F) earn a place in the first cut, or is it a follow-up?
-4. Cover Art Archive and Deezer are third-party hosts. Hotlink them from the browser, or proxy
-   and cache them through the Worker?
-5. Out of scope for this proposal: images in the public MCP connector's responses
-   (Claude.ai). That is a separate change to the MCP server.
+The worker builds these from the same resolvers as the prose (`albumExhibit` beside
+`albumInfo`; `setlistSelection` beside `concertSetlist`), so the card always names the record or
+night the text names. Where the prose hedges (several records, several nights, an unknown act),
+there is no card. A record or night outranks the act's card when a turn produces both.
+
+**Photos.** `media-index.json` loads beside the other three files the first time Ask opens.
+A failed fetch means "no personal photos": every card falls to its sourced tier.
+
+**Framing.** Every published still has a crop box the owner drew by hand (`media:crop`), almost
+always 4:5. That box is the subject, and cards position the image on it (`focalPosition`), never
+on the frame's centre.
+
+- A box at the crop's own aspect shows exactly the crop. Verified across all 129 published stills.
+- A wide hero is a 3:2 banner, used only when it keeps at least 80% of the crop; otherwise the
+  photo sits beside the title at the crop's own aspect. 16:9 was rejected: over the published
+  crops it kept as little as 60%, and over a portrait crop under half.
+- A box smaller than the crop (square thumbnails) sits inside it, toward the top, where faces are.
+- Night-card tiles are 4:5, so every tile shows exactly the owner's framing.
+
+**Fallback ladder, per image.** Selection follows the rubric (personal > sourced > derived), and
+`LadderImage` repeats it at load time, so a 404 drops a rung instead of showing a broken image.
+
+| Card | 1 · personal | 2 · sourced | 3 · derived |
+|---|---|---|---|
+| Artist hero | signature, else latest hero, of this act | Deezer portrait | genre tile with initials |
+| Venue hero | my venue shot, newest night | hand-placed photo, then Google Places (the generic `fallback*.jpg` placeholder doesn't count) | the map, as before |
+| List row | that night: headliner, else an opener (labelled), else the venue (labelled) | Deezer portrait (round) | genre tile |
+| Night card | one 4:5 tile per act photographed, plus the venue | my photo of the headliner from another night (captioned "not this night"), then Deezer | genre tile |
+| Covers | — | Cover Art Archive, only when `coverAvailable` | a sleeve in the genre colour, tinted per title, with title and year |
+
+**Captions.** `photoCaption` enforces both attribution rules: a frame from another night says
+"not this night"; a frame of another act names them and whose bill it was; a venue frame names
+the venue. Every caption names the night.
+
+**Covers.** Loaded straight from Cover Art Archive (`front-250`, `front-500` for the album card),
+lazily. The site already loads Deezer portraits and Google venue photos this way; covers are
+immutable and cached by the Internet Archive's CDN. CAA is sometimes slow or down, and that is
+what the derived sleeve is for. Revisit a Worker proxy only if failures show up in practice.
+
+**Lightbox.** Tapping any of my photos opens it with the full caption. Arrow keys or swipe page
+through; Escape closes the photo without closing the Spotlight underneath (keys are caught on
+`window` in the capture phase); Tab stays inside it; focus returns to the photo.
+
+**Where the build departs from the mocks.**
+
+- C's "I filmed ABC, video only" tile is gone: the site never shows video, so a night card only
+  tiles acts I have stills of.
+- H's swipeable hero strip became swipe inside the lightbox; the card keeps one framed hero.
+- D's venue hero, when my venue shot is a portrait frame, sits beside the map instead of over it.
+
+**Analytics.** `ask_photo_opened` `{ kind, subject, date }` when a photo is opened. New links use
+the existing `ask_deeplink_clicked`.
+
+**Code.** `src/components/ask/media.ts` (selection, framing, captions; tested in
+`media.test.ts`), `AskMedia.tsx` (ladder image, derived art, covers, lightbox), `AskRecordCards.tsx`
+(album, discography, night), `AskExhibit.tsx` (artist, venue, list, surprise). Worker:
+`album-info.ts` (`albumExhibit`), `tools-bridge.ts` (`showExhibit`), and `setlistSelection` in
+`workers/mcp-server/src/tools.ts`.
+
+**Seeing every card without a backend:** `npm run dev`, then `/ask-dev?fixtures`. The
+fixtures in `src/components/ask/devFixtures.ts` were generated by the worker's own functions
+from the real archive, and load on demand so they never ship.
+
+## Out of scope
+
+Images in the public MCP connector's responses (Claude.ai). That is a separate change to the
+MCP server.

@@ -12,6 +12,9 @@ export type ExhibitKind =
   | 'venue'
   | 'list'
   | 'serendipity'
+  | 'album'
+  | 'discography'
+  | 'show'
   | 'plain'
   | 'disambiguation'
   | 'refusal'
@@ -58,6 +61,61 @@ export interface DisambiguationExhibit {
   candidates: EntityRef[]
 }
 
+// Record-shaped cards (#593). Album IDENTITY rides in the envelope (the SPA doesn't load the
+// ~900 KB of album data); every image, photo and fallback is still resolved client-side.
+
+export interface AlbumIdentity {
+  mbid: string
+  title: string
+  /** "1984", "1984-03" or "1984-03-17" — render the year. */
+  releaseDate: string
+  /** False: Cover Art Archive has no front image — don't request one, draw the derived sleeve. */
+  coverAvailable: boolean
+}
+
+export interface SetSong {
+  title: string
+  coverOf?: string
+  album: AlbumIdentity | null
+}
+
+export interface AlbumExhibit {
+  kind: 'album'
+  album: AlbumIdentity
+  artist: EntityRef | null
+  artistName: string
+  song?: string
+  position?: { index: number; total: number }
+  defining?: boolean
+  heardLive?: {
+    concertId: string
+    date: string
+    headliner: EntityRef
+    venue: EntityRef
+    performer: string
+    songs: SetSong[]
+  }
+}
+
+export interface DiscographyExhibit {
+  kind: 'discography'
+  artist: EntityRef
+  albums: Array<AlbumIdentity & { seen: string[]; defining: boolean }>
+  truncated: boolean
+}
+
+export interface ShowExhibit {
+  kind: 'show'
+  concertId: string
+  date: string
+  headliner: EntityRef
+  venue: EntityRef
+  performer: string
+  isOpener: boolean
+  songs: SetSong[]
+  touring: AlbumIdentity | null
+}
+
 export interface PlainExhibit {
   kind: 'plain'
 }
@@ -71,6 +129,9 @@ export type Exhibit =
   | VenueExhibit
   | ListExhibit
   | SerendipityExhibit
+  | AlbumExhibit
+  | DiscographyExhibit
+  | ShowExhibit
   | DisambiguationExhibit
   | PlainExhibit
   | RefusalExhibit

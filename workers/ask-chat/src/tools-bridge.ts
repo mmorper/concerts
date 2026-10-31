@@ -20,6 +20,8 @@ import {
   archiveTopSongs,
   careerPosition,
   careerShape,
+  setlistSelection,
+  type SetlistSelection,
 } from "../../mcp-server/src/tools.js";
 import { buildAliasIndex } from "../../mcp-server/src/aliases.js";
 import {
@@ -35,10 +37,10 @@ import {
   getArtistAliases,
   getSongAlbums,
 } from "../../mcp-server/src/data.js";
-import { albumInfo } from "./album-info.js";
+import { albumInfo, albumExhibit } from "./album-info.js";
 import { OWNER_FIRST_NAME } from "../../mcp-server/src/owner.js";
 import type { Env } from "./types.js";
-import type { Exhibit, EntityRef } from "./exhibits.js";
+import type { AlbumIdentity, Exhibit, EntityRef } from "./exhibits.js";
 import { artistDeepLink, venueDeepLink } from "./exhibits.js";
 
 // The reused data fns are typed against the MCP worker's Env; they only ever read
@@ -289,6 +291,29 @@ function concertRow(c: ConcertLike) {
   };
 }
 
+// Song attributions name the record `albumTitle`; studio-spine refs name it `title`.
+type AlbumLike = { mbid: string; releaseDate: string; coverAvailable: boolean } & ({ title: string } | { albumTitle: string });
+const albumId = (a: AlbumLike | null): AlbumIdentity | null =>
+  a
+    ? { mbid: a.mbid, title: "albumTitle" in a ? a.albumTitle : a.title, releaseDate: a.releaseDate, coverAvailable: a.coverAvailable }
+    : null;
+
+/** A resolved night → the night card. Lineup and photos hydrate client-side from concertId. */
+export function showExhibit(sel: SetlistSelection): Exhibit {
+  const c = sel.concert;
+  return {
+    kind: "show",
+    concertId: c.id,
+    date: c.date,
+    headliner: { entity: "artist", slug: c.headlinerNormalized, name: c.headliner, deepLink: artistDeepLink(c.headlinerNormalized) },
+    venue: { entity: "venue", slug: c.venueNormalized, name: c.venue, deepLink: venueDeepLink(c.venueNormalized) },
+    performer: sel.performer,
+    isOpener: sel.isOpener,
+    songs: sel.songs.map((s) => ({ title: s.title, ...(s.coverOf ? { coverOf: s.coverOf } : {}), album: albumId(s.album) })),
+    touring: albumId(sel.touring),
+  };
+}
+
 // Dispatch a single tool_use to the reused pure fn. Returns the markdown for the model plus, when
 // the tool resolved to something entity-shaped, a structured exhibit descriptor. Throwing is fine
 // — the loop catches and feeds an error tool_result back to the model.
@@ -415,21 +440,16 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
         getArtistsMetadata(e, bgCtx),
         getArtistAliases(e, bgCtx),
       ]);
-      const text = concertSetlist(
-        data.concerts,
-        setlists,
-        {
-          artist: input.artist ? str(input.artist) : undefined,
-          date: input.date ? str(input.date) : undefined,
-          concertId: input.concertId ? str(input.concertId) : undefined,
-        },
-        tracks ?? {},
-        eras,
-        songAlbums,
-        meta ?? {},
-        aliasData,
-      );
-      return { text }; // plain (songs, not an entity card) in v1
+      const args = {
+        artist: input.artist ? str(input.artist) : undefined,
+        date: input.date ? str(input.date) : undefined,
+        concertId: input.concertId ? str(input.concertId) : undefined,
+      };
+      const text = concertSetlist(data.concerts, setlists, args, tracks ?? {}, eras, songAlbums, meta ?? {}, aliasData);
+      // The night card (#593): same resolver as the prose, so it is the same night and set.
+      const sel = setlistSelection(data.concerts, setlists, args, eras, songAlbums, meta ?? {}, aliasData);
+      if (!sel) return { text }; // the prose is asking which night — no card yet
+      return { text, exhibit: showExhibit(sel) };
     }
 
     case "get_archive_top_songs": {
@@ -474,26 +494,32 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
     case "get_album_info": {
       const data = await getConcerts(e, bgCtx);
       if (!data) return { text: DATA_UNAVAILABLE };
-      const [eras, songAlbums, meta, aliasData] = await Promise.all([
+      const [eras, songAlbums, meta, aliasData, setlists] = await Promise.all([
         getAlbumEras(e, bgCtx),
         getSongAlbums(e, bgCtx),
         getArtistsMetadata(e, bgCtx),
         getArtistAliases(e, bgCtx),
+        getSetlistsCache(e, bgCtx), // "the night I heard it" on the album card
       ]);
       const args = {
         song: input.song ? str(input.song) : undefined,
         artist: input.artist ? str(input.artist) : undefined,
         album: input.album ? str(input.album) : undefined,
       };
-      const text = albumInfo(args, {
+      const albumData = {
         concerts: data.concerts,
         eras,
         songAlbums,
         meta: meta ?? {},
         aliasData,
         aliasIndex: buildAliasIndex(aliasData),
-      });
-      const exhibit = args.artist ? artistExhibit(data.concerts, args.artist) : undefined;
+        setlists,
+      };
+      const text = albumInfo(args, albumData);
+      // The record (or the act's whole shelf) when the answer is about one; else the act's card
+      // as before; else plain. Before #593 a song-only question always fell through to plain.
+      const exhibit =
+        albumExhibit(args, albumData) ?? (args.artist ? artistExhibit(data.concerts, args.artist) : undefined);
       return exhibit ? { text, exhibit } : { text };
     }
 
