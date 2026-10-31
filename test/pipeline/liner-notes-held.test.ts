@@ -93,7 +93,7 @@ describe('every gate falls through to the reserve', () => {
     const { withProse, attempted } = await generateUpTo(candidates, 1, async (c) => {
       tried.push(c.id)
       // a: prose written, then rejected by a later gate → undefined
-      return c.detector === 'a' ? undefined : { ...c, prose: 'ok' }
+      return c.id === 'a-40' ? undefined : { ...c, prose: 'ok' }
     })
     expect(tried).toEqual(['a-40', 'b-39'])
     expect(attempted).toBe(2)
