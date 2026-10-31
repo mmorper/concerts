@@ -119,12 +119,15 @@ interface TrackCache {
  * wrote the song.
  */
 interface Pair {
-  artistKey: string
+  /** Whose discography Tiers 0–2 search. Null for a cover whose original act we hold nothing for. */
+  artistKey: string | null
   artistSlug: string
   songTitle: string
   key: string
   isCover: boolean
   originalArtistKey: string | null
+  /** The performing act's discography key — for a cover, checked first: did THEY record it? */
+  performerKey: string | null
 }
 
 // ── Core derivation (pure, exported for tests) ───────────────────────────────
@@ -318,8 +321,10 @@ export async function resolveSongAlbums(
         originalArtistKey = song.cover?.name ? originalArtistKeyFor(song.cover.name) : null
         lookupKey = originalArtistKey
         // Most covered artists were never seen live, so we hold no discography
-        // for them. That is the expected outcome, not a failure.
-        if (!lookupKey) { coversUnroutable++; continue }
+        // for them. Such a cover can still be attributed if the performer put it
+        // on a studio album of their own (the "own record" pass below); with
+        // neither, it is the expected, unroutable outcome rather than a failure.
+        if (!lookupKey && !performer.key) { coversUnroutable++; continue }
       } else {
         lookupKey = performer.key
         if (!lookupKey) { unresolvedArtists.add(slug); continue }
@@ -338,13 +343,14 @@ export async function resolveSongAlbums(
           key: entryKey,
           isCover,
           originalArtistKey,
+          performerKey: performer.key ?? null,
         })
       }
     }
   }
 
-  const allPairs = [...pairs.values()].filter(p => !artist || p.artistKey === artist)
-  const artistKeys = [...new Set(allPairs.map(p => p.artistKey))]
+  let allPairs = [...pairs.values()].filter(p => !artist || p.artistKey === artist || p.performerKey === artist)
+  const artistKeys = [...new Set(allPairs.map(p => p.artistKey).filter((k): k is string => !!k))]
 
   const coverPairs = allPairs.filter(p => p.isCover).length
   console.log(`   ${performances} performances · ${tapeSkipped} tape (incl. tape+cover)`)
@@ -387,7 +393,13 @@ export async function resolveSongAlbums(
   }
 
   const results: Record<string, SongAlbum> = {}
-  const attribute = (pair: Pair, album: StudioAlbum, tier: 0 | 1 | 2) => {
+  /**
+   * `ownRecord`: a cover the performer recorded on a studio album of their own.
+   * The album is THEIRS, so it is written without the cover fields — consumers
+   * then print it beside the song like any other attribution, while setlist.fm's
+   * cover credit ("Merle Kilgore cover") still names the writer.
+   */
+  const attribute = (pair: Pair, album: StudioAlbum, tier: 0 | 1 | 2, ownRecord = false) => {
     results[pair.key] = {
       songTitle: pair.songTitle,
       albumTitle: album.title,
@@ -395,11 +407,57 @@ export async function resolveSongAlbums(
       releaseDate: album.releaseDate,
       coverAvailable: album.coverAvailable,
       matchTier: tier,
-      ...(pair.isCover
+      ...(pair.isCover && !ownRecord
         ? { isCover: true as const, originalArtistKey: pair.originalArtistKey ?? undefined }
         : {}),
     }
   }
+
+  const cache = loadCache()
+  const client = new MusicBrainzClient()
+
+  /** Fetch any of these release-groups' track listings that are missing or past the TTL. */
+  const fetchTracks = async (mbids: string[]) => {
+    const toFetch = [...new Set(mbids)].filter(mbid => {
+      if (force) return true
+      const cached = cache.entries[mbid]
+      if (!cached) return true
+      return Date.now() - new Date(cached.cachedAt).getTime() > NINETY_DAYS
+    })
+    if (toFetch.length) {
+      console.log(`   ${toFetch.length} release-groups to fetch (${Object.keys(cache.entries).length} cached)`)
+      console.log(`   ~${Math.ceil(toFetch.length / 60)} minute(s) at MusicBrainz's 1 req/sec limit\n`)
+    }
+    let fetched = 0
+    let empty = 0
+    for (const mbid of toFetch) {
+      const tracks = await client.getReleaseGroupTracks(mbid)
+      // The client returns [] both for a release-group with no releases and for a
+      // failed request (network down, 503 retries exhausted) — it cannot tell
+      // them apart. Caching that for 90 days hides a real album from every run
+      // until the TTL lapses, which is what a sandboxed run with no network did
+      // to 17 albums on 2026-10-31. An empty listing is never written; the album
+      // is simply asked for again next run.
+      if (!tracks.length) { empty++; continue }
+      cache.entries[mbid] = { tracks, cachedAt: new Date().toISOString() }
+      fetched++
+      if (fetched % 25 === 0) {
+        console.log(`   ${fetched}/${toFetch.length} fetched`)
+        saveCache(cache) // checkpoint — a 15-minute run must survive a crash
+      }
+    }
+    // The cache is saved even under --dry-run, deliberately. It holds upstream
+    // MusicBrainz data, not a deliverable: --dry-run means "do not change
+    // song-albums.json", not "throw away 15 minutes of rate-limited fetching and
+    // make someone do it twice."
+    if (fetched) {
+      saveCache(cache)
+      console.log(`   ${fetched} fetched\n`)
+    }
+    if (empty) console.log(`   ⚠️  ${empty} came back empty (no releases, or the request failed) — not cached, retried next run\n`)
+    return fetched
+  }
+
 
   // ── Tier 0 — reuse what is already on disk ────────────────────────────────
 
@@ -407,6 +465,7 @@ export async function resolveSongAlbums(
   let tier0 = 0
 
   for (const pair of allPairs) {
+    if (results[pair.key] || !pair.artistKey) continue
     const albums = studioAlbumsFor(pair.artistKey)
     if (!albums.length) continue
 
@@ -431,51 +490,14 @@ export async function resolveSongAlbums(
 
   // ── Tier 1 — MusicBrainz track-listing index ──────────────────────────────
 
-  const remaining = allPairs.filter(p => !results[p.key])
-  const artistsNeedingTier1 = [...new Set(remaining.map(p => p.artistKey))]
+  const remaining = allPairs.filter(p => !results[p.key] && p.artistKey)
+  const artistsNeedingTier1 = [...new Set(remaining.map(p => p.artistKey!))]
     .filter(k => studioAlbumsFor(k).length > 0)
-
-  const cache = loadCache()
-  const client = new MusicBrainzClient()
-
-  const toFetch = artistsNeedingTier1.flatMap(k =>
-    studioAlbumsFor(k)
-      .filter(a => {
-        if (force) return true
-        const cached = cache.entries[a.mbid]
-        if (!cached) return true
-        return Date.now() - new Date(cached.cachedAt).getTime() > NINETY_DAYS
-      })
-      .map(a => a.mbid)
-  )
-  const uniqueToFetch = [...new Set(toFetch)]
 
   console.log(`📡 Tier 1 — MusicBrainz track listings`)
   console.log(`   ${artistsNeedingTier1.length} artists with residual misses`)
-  console.log(`   ${uniqueToFetch.length} release-groups to fetch (${Object.keys(cache.entries).length} cached)`)
-  if (uniqueToFetch.length) {
-    const mins = Math.ceil(uniqueToFetch.length / 60)
-    console.log(`   ~${mins} minute(s) at MusicBrainz's 1 req/sec limit\n`)
-  } else {
-    console.log()
-  }
-
-  let fetched = 0
-  for (const mbid of uniqueToFetch) {
-    const tracks = await client.getReleaseGroupTracks(mbid)
-    cache.entries[mbid] = { tracks, cachedAt: new Date().toISOString() }
-    fetched++
-    if (fetched % 25 === 0) {
-      console.log(`   ${fetched}/${uniqueToFetch.length} fetched`)
-      saveCache(cache) // checkpoint — a 15-minute run must survive a crash
-    }
-  }
-  // The cache is saved even under --dry-run, deliberately. It holds upstream
-  // MusicBrainz data, not a deliverable: --dry-run means "do not change
-  // song-albums.json", not "throw away 15 minutes of rate-limited fetching and
-  // make someone do it twice."
-  if (fetched) saveCache(cache)
-  if (fetched) console.log(`   ${fetched} fetched\n`)
+  const fetched = await fetchTracks(artistsNeedingTier1.flatMap(k => studioAlbumsFor(k).map(a => a.mbid)))
+  if (!fetched) console.log()
 
   let tier1 = 0
   for (const artistKey of artistsNeedingTier1) {
@@ -518,6 +540,7 @@ export async function resolveSongAlbums(
   let itunesRejected = 0
 
   for (const pair of stillMissing) {
+    if (!pair.artistKey) continue
     const albums = studioAlbumsFor(pair.artistKey)
     if (!albums.length) continue
 
@@ -557,6 +580,51 @@ export async function resolveSongAlbums(
   if (itunesCalls) saveCache(cache)
   console.log(`   ${itunesCalls} queried · ${itunesRejected} rejected (album not in our discography) · ${tier2} attributed\n`)
 
+  // ── Covers on the performer's own record ──────────────────────────────────
+  //
+  // Social Distortion's "Ring of Fire" is a cover, and it is also track five of
+  // Social Distortion (1990). Routing every cover to the ORIGINAL act's
+  // catalogue missed that whole class: the original (here Merle Kilgore, per
+  // setlist.fm) is usually someone we never saw, so the song went unattributed,
+  // and when we did hold the original's catalogue it named their record, not
+  // the one the band on stage actually made.
+  //
+  // So a cover nothing else could place is looked for in the performer's OWN
+  // studio albums, by track listing. That is evidence, not inference: the song
+  // is on their record. The rule the cover routing exists for still holds — a
+  // cover is never credited to the performer without it (Dropkick Murphys did
+  // not put "No Surrender" on a Dropkick Murphys album, and no track listing
+  // says so).
+  //
+  // LAST, not first. Run first, it re-pointed 12 covers the original act's
+  // catalogue already placed correctly onto later re-recordings — Colin Hay's
+  // "Down Under" onto his 2003 acoustic Man @ Work instead of Business As Usual,
+  // Marc Almond's "Bedsitter" onto Things We Lost instead of Non-Stop Erotic
+  // Cabaret. That is wrong, and it moves the release date road-tested compares
+  // against by decades. As a last resort it only fills gaps.
+
+  console.log('🎙️  Covers on the performer\'s own record — track listings')
+  const coverCandidates = allPairs.filter(
+    p => p.isCover && !results[p.key] && p.performerKey && studioAlbumsFor(p.performerKey).length
+  )
+  await fetchTracks(coverCandidates.flatMap(p => studioAlbumsFor(p.performerKey!).map(a => a.mbid)))
+  let coversOnOwnRecord = 0
+  const ownIndex = new Map<string, Map<string, StudioAlbum>>()
+  for (const pair of coverCandidates) {
+    const key = pair.performerKey!
+    if (!ownIndex.has(key)) ownIndex.set(key, buildSongIndex(studioAlbumsFor(key), mbid => cache.entries[mbid]?.tracks ?? []))
+    const album = ownIndex.get(key)!.get(foldSongTitle(pair.songTitle))
+    if (!album) continue
+    attribute(pair, album, 1, true)
+    coversOnOwnRecord++
+  }
+  // A cover with no original catalogue was only here for this pass. If it is not
+  // on the performer's own record either, it is unroutable, exactly as before.
+  const routedOnlyHere = allPairs.filter(p => p.isCover && !p.artistKey && !results[p.key])
+  coversUnroutable += routedOnlyHere.length
+  allPairs = allPairs.filter(p => !routedOnlyHere.includes(p))
+  console.log(`   ${coversOnOwnRecord} attributed to the performer's own studio album\n`)
+
   // ── Output ────────────────────────────────────────────────────────────────
 
   const attributed = Object.keys(results).length
@@ -571,7 +639,10 @@ export async function resolveSongAlbums(
       attributed,
       byTier: { '0': tier0, '1': tier1, '2': tier2 },
       unattributed: allPairs.length - attributed,
-      coverPairs,
+      // Counted after the own-record pass drops the covers it could not place, so
+      // it means what it meant before that pass existed: covers that had a route.
+      coverPairs: allPairs.filter(p => p.isCover).length,
+      coversOnOwnRecord,
       coversUnroutable,
       artistsWithoutDiscography: unresolvedArtists.size,
     },
@@ -588,6 +659,7 @@ export async function resolveSongAlbums(
   // pretty-printed file understated this by 157 KB on the first run.
   const bytes = Buffer.byteLength(serialized)
   console.log('📊 Attribution Summary')
+  console.log(`   Own-record covers:    ${coversOnOwnRecord}`)
   console.log(`   Tier 0 (top-tracks):  ${tier0}`)
   console.log(`   Tier 1 (musicbrainz): ${tier1}`)
   console.log(`   Tier 2 (itunes):      ${tier2}`)

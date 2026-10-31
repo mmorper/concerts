@@ -995,7 +995,7 @@ See [docs/specs/future/artists-discography.md](specs/future/artists-discography.
 7. **Enrich discography** → MusicBrainz albums (optional)
 7.5. **Derive album eras** → `album-eras.json`, the discography × attendance join (local, no API calls)
 8. **Pre-fetch setlists** → setlist.fm cache (optional)
-8.5. **Resolve songs → albums** → `song-albums.json`, three tiers over the setlist cache. Backed by `data/cache/musicbrainz-tracks.json` on a **90-day TTL** (track listings only change when MusicBrainz is edited; same TTL as discography). A warm re-run makes **0 network calls** — if it starts fetching, something invalidated the cache. `npm run resolve:song-albums -- --force` ignores the TTL.
+8.5. **Resolve songs → albums** → `song-albums.json`, three tiers over the setlist cache. Backed by `data/cache/musicbrainz-tracks.json` on a **90-day TTL** (track listings only change when MusicBrainz is edited; same TTL as discography). A warm re-run makes **0 network calls** — if it starts fetching, something invalidated the cache. `npm run resolve:song-albums -- --force` ignores the TTL. Covers route to the *original* act's catalogue; a cover none of the three tiers can place then gets a last-resort pass over the *performer's* own studio albums (Social Distortion's "Ring of Fire" → *Social Distortion*, 1990), written without cover fields because the record is theirs. It runs last on purpose: run first, it re-pointed originals onto later re-recordings. An empty track listing (the client cannot tell "no releases" from a failed request) is never cached.
 9. **Aggregate genres timeline** → Genre statistics (always runs)
 10. **Generate facts** → Liner notes facts (always runs)
 11. **Update meta tags** → SEO and meta tags (always runs)
