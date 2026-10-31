@@ -278,3 +278,17 @@ export function venueSourcedPhoto(meta: VenuePhotoMeta | null | undefined): stri
 
 /** "1984", from "1984-03-17", "1984-03" or "1984". */
 export const yearOf = (releaseDate: string): string => releaseDate.slice(0, 4)
+
+/** "9 months", "2.1 years", "14 days" — how old a record was on the night. Mirrors the worker's agePhrase. */
+export function agePhrase(days: number): string {
+  if (days < 45) return `${days} days`
+  if (days < 365) return `${Math.round(days / 30.44)} months`
+  const years = days / 365.25
+  return `${years < 10 ? years.toFixed(1) : Math.round(years)} years`
+}
+
+/** "21 months", "7.6 years" — small gaps in months, long ones in years. Mirrors monthsAwayPhrase. */
+export function monthsPhrase(months: number): string {
+  if (months < 24) return `${months} ${months === 1 ? 'month' : 'months'}`
+  return `${Math.round((months / 12) * 10) / 10} years`
+}

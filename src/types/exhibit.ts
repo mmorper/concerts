@@ -15,6 +15,9 @@ export type ExhibitKind =
   | 'album'
   | 'discography'
   | 'show'
+  | 'era'
+  | 'shape'
+  | 'songs'
   | 'plain'
   | 'disambiguation'
   | 'refusal'
@@ -116,6 +119,57 @@ export interface ShowExhibit {
   touring: AlbumIdentity | null
 }
 
+/** get_career_position: one night's place in the act's catalogue. */
+export interface EraExhibit {
+  kind: 'era'
+  concertId: string
+  date: string
+  artist: EntityRef
+  venue: EntityRef
+  touring: AlbumIdentity | null
+  daysSinceRelease: number | null
+  albumsAfter: number
+  defining: (AlbumIdentity & { ahead: boolean; monthsAway: number | null }) | null
+  shelf: Array<AlbumIdentity & { before: boolean }>
+  truncated: boolean
+}
+
+export interface AheadNight {
+  concertId: string
+  date: string
+  artist: EntityRef
+  album: AlbumIdentity
+  monthsAway: number
+}
+
+/** get_career_shape: where my nights fall in albums' lives, and the "before the record" nights. */
+export interface ShapeExhibit {
+  kind: 'shape'
+  placed: number
+  total: number
+  medianMonths: number
+  buckets: Record<'fresh' | 'current' | 'mature' | 'deep' | 'catalog', number>
+  aheadCount: number
+  ahead: AheadNight[]
+}
+
+export interface TopSong {
+  title: string
+  count: number
+  artist: EntityRef | null
+  artistNames: string[]
+  album: AlbumIdentity | null
+  coverOf?: string
+}
+
+/** get_archive_top_songs: the most-heard songs with their records. */
+export interface SongsExhibit {
+  kind: 'songs'
+  withSetlist: number
+  totalConcerts: number
+  songs: TopSong[]
+}
+
 export interface PlainExhibit {
   kind: 'plain'
 }
@@ -132,6 +186,9 @@ export type Exhibit =
   | AlbumExhibit
   | DiscographyExhibit
   | ShowExhibit
+  | EraExhibit
+  | ShapeExhibit
+  | SongsExhibit
   | DisambiguationExhibit
   | PlainExhibit
   | RefusalExhibit

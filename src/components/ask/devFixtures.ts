@@ -807,5 +807,587 @@ export const DEV_FIXTURES: Exchange[] = [
       "deepLink": "/?scene=artists&artist=adam-ant"
     },
     "status": "done"
+  },
+  {
+    "id": "fx-10",
+    "question": "Where was Howard Jones in his career when I saw him in 2024?",
+    "prose": "Forty years in, touring *Dialogue* — his fifteenth studio album, two years old by then. One more would follow.",
+    "exhibit": {
+      "kind": "era",
+      "concertId": "concert-173",
+      "date": "2024-08-20",
+      "artist": {
+        "entity": "artist",
+        "slug": "howard-jones",
+        "name": "Howard Jones",
+        "deepLink": "/?scene=artists&artist=howard-jones"
+      },
+      "venue": {
+        "entity": "venue",
+        "slug": "youtube-theatre",
+        "name": "YouTube Theatre",
+        "deepLink": "/?scene=venues&venue=youtube-theatre"
+      },
+      "touring": {
+        "mbid": "f47c9aa7-fea3-45f4-aea3-6193a231bd88",
+        "title": "Dialogue",
+        "releaseDate": "2022-07-02",
+        "coverAvailable": true
+      },
+      "daysSinceRelease": 780,
+      "albumsAfter": 1,
+      "defining": null,
+      "shelf": [
+        {
+          "mbid": "1b14a428-9018-392f-a0ec-9ecab7c78dfd",
+          "title": "Human’s Lib",
+          "releaseDate": "1984-03-17",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "c00eb33f-cdbc-3fe5-a4fe-a52e212cfb46",
+          "title": "Dream Into Action",
+          "releaseDate": "1985",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "a06664b1-ed1e-3aa1-8fda-292b782f0665",
+          "title": "One to One",
+          "releaseDate": "1986",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "bb4408a6-9faa-3335-8466-d5bfa6df0bbb",
+          "title": "Cross That Line",
+          "releaseDate": "1989-04-01",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "9cfee95c-1ae9-35f7-a3ae-b11176ea8dce",
+          "title": "In the Running",
+          "releaseDate": "1992-03-30",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "98bcbc16-4a8a-328b-a21c-852d7a6072e6",
+          "title": "Working in the Backroom",
+          "releaseDate": "1993-08-26",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "7ee94674-209d-3ff7-962e-36dce8fe5986",
+          "title": "People",
+          "releaseDate": "1997-08-20",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "daa897d5-5b04-3d88-9429-c2adc6a90cf2",
+          "title": "Perform.00",
+          "releaseDate": "2000-07-10",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "05c3e8a3-5810-4283-b073-a5fb1cfcbf10",
+          "title": "Piano Solos (For Friends and Loved Ones)",
+          "releaseDate": "2003-04-28",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "2ae78cc2-2874-3952-bb08-f90ba84fea1c",
+          "title": "Revolution of the Heart",
+          "releaseDate": "2005-09-19",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "1d6b3573-facd-4bc8-bea7-930f85d0eb2d",
+          "title": "Piano Solos 2 (For Friends and Loved Ones)",
+          "releaseDate": "2007-01-10",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "93b3a9b4-8dbf-4cae-8a78-e1f95b66a9fc",
+          "title": "Ordinary Heroes",
+          "releaseDate": "2009-11-09",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "5722d394-44f4-405c-8872-98d3efd19444",
+          "title": "Engage",
+          "releaseDate": "2015-03-08",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "5c65dc7d-d51b-4cea-b7d9-df33d01e2e3d",
+          "title": "Transform",
+          "releaseDate": "2019-05-10",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "f47c9aa7-fea3-45f4-aea3-6193a231bd88",
+          "title": "Dialogue",
+          "releaseDate": "2022-07-02",
+          "coverAvailable": true,
+          "before": true
+        },
+        {
+          "mbid": "51fb34df-0155-4e02-855e-296f1a3166a8",
+          "title": "Piano Composed Spirio",
+          "releaseDate": "2025-06-20",
+          "coverAvailable": true,
+          "before": false
+        }
+      ],
+      "truncated": false
+    },
+    "status": "done"
+  },
+  {
+    "id": "fx-11",
+    "question": "Where were No Doubt when I saw them in 1988?",
+    "prose": "Before their first record. *Tragic Kingdom* — the one they'd be remembered for — was more than seven years away.",
+    "exhibit": {
+      "kind": "era",
+      "concertId": "concert-20",
+      "date": "1988-03-04",
+      "artist": {
+        "entity": "artist",
+        "slug": "no-doubt",
+        "name": "No Doubt",
+        "deepLink": "/?scene=artists&artist=no-doubt"
+      },
+      "venue": {
+        "entity": "venue",
+        "slug": "disneyland",
+        "name": "Disneyland",
+        "deepLink": "/?scene=venues&venue=disneyland"
+      },
+      "touring": null,
+      "daysSinceRelease": null,
+      "albumsAfter": 7,
+      "defining": {
+        "mbid": "04b0b075-bed7-388b-b44b-cf34077ad96c",
+        "title": "Tragic Kingdom",
+        "releaseDate": "1995-10-10",
+        "coverAvailable": true,
+        "ahead": true,
+        "monthsAway": 91
+      },
+      "shelf": [
+        {
+          "mbid": "44920790-1478-3368-bc98-8cb53f7b3e0f",
+          "title": "No Doubt",
+          "releaseDate": "1992-03-17",
+          "coverAvailable": true,
+          "before": false
+        },
+        {
+          "mbid": "99b56fb0-2f53-3a88-94f9-e2a950dab3b5",
+          "title": "The Beacon Street Collection",
+          "releaseDate": "1995-03",
+          "coverAvailable": true,
+          "before": false
+        },
+        {
+          "mbid": "04b0b075-bed7-388b-b44b-cf34077ad96c",
+          "title": "Tragic Kingdom",
+          "releaseDate": "1995-10-10",
+          "coverAvailable": true,
+          "before": false
+        },
+        {
+          "mbid": "c78cdf1e-4674-37fd-a02e-04c4033adffc",
+          "title": "Return of Saturn",
+          "releaseDate": "2000-04-05",
+          "coverAvailable": true,
+          "before": false
+        },
+        {
+          "mbid": "578bcf09-58af-3eb0-baf6-0f7e836efbd7",
+          "title": "Rock Steady",
+          "releaseDate": "2001-12-11",
+          "coverAvailable": true,
+          "before": false
+        },
+        {
+          "mbid": "c290da69-c125-4679-847d-ed1206d0df2b",
+          "title": "Baby I’m Going to Leave You / It’s My Life",
+          "releaseDate": "2007-06",
+          "coverAvailable": true,
+          "before": false
+        },
+        {
+          "mbid": "66f2c3bc-d92b-420a-9168-0551617fa505",
+          "title": "Push and Shove",
+          "releaseDate": "2012-01-01",
+          "coverAvailable": true,
+          "before": false
+        }
+      ],
+      "truncated": false
+    },
+    "status": "done"
+  },
+  {
+    "id": "fx-12",
+    "question": "Do I catch bands early or late?",
+    "prose": "Mostly in an album's first three years — the median night lands about 13 months after the record.",
+    "exhibit": {
+      "kind": "shape",
+      "placed": 176,
+      "total": 185,
+      "medianMonths": 13,
+      "buckets": {
+        "fresh": 24,
+        "current": 57,
+        "mature": 54,
+        "deep": 26,
+        "catalog": 15
+      },
+      "aheadCount": 10,
+      "ahead": [
+        {
+          "concertId": "concert-20",
+          "date": "1988-03-04",
+          "artist": {
+            "entity": "artist",
+            "slug": "no-doubt",
+            "name": "No Doubt",
+            "deepLink": "/?scene=artists&artist=no-doubt"
+          },
+          "album": {
+            "mbid": "04b0b075-bed7-388b-b44b-cf34077ad96c",
+            "title": "Tragic Kingdom",
+            "releaseDate": "1995-10-10",
+            "coverAvailable": true
+          },
+          "monthsAway": 91
+        },
+        {
+          "concertId": "concert-5",
+          "date": "1985-03-31",
+          "artist": {
+            "entity": "artist",
+            "slug": "depeche-mode",
+            "name": "Depeche Mode",
+            "deepLink": "/?scene=artists&artist=depeche-mode"
+          },
+          "album": {
+            "mbid": "71f1482e-e63f-3b2c-811b-939f62708f2a",
+            "title": "Violator",
+            "releaseDate": "1990-03-19",
+            "coverAvailable": true
+          },
+          "monthsAway": 60
+        },
+        {
+          "concertId": "concert-121",
+          "date": "2017-10-08",
+          "artist": {
+            "entity": "artist",
+            "slug": "bat-fangs",
+            "name": "Bat Fangs",
+            "deepLink": "/?scene=artists&artist=bat-fangs"
+          },
+          "album": {
+            "mbid": "ab79f9cf-3336-4f89-bf71-64edd0388053",
+            "title": "Queen of My World",
+            "releaseDate": "2021-10-29",
+            "coverAvailable": true
+          },
+          "monthsAway": 49
+        },
+        {
+          "concertId": "concert-45",
+          "date": "1995-03-26",
+          "artist": {
+            "entity": "artist",
+            "slug": "the-brian-setzer-orchestra",
+            "name": "The Brian Setzer Orchestra",
+            "deepLink": "/?scene=artists&artist=the-brian-setzer-orchestra"
+          },
+          "album": {
+            "mbid": "6db6b23a-0c71-35f4-9810-5893279186f4",
+            "title": "The Dirty Boogie",
+            "releaseDate": "1998-01-01",
+            "coverAvailable": true
+          },
+          "monthsAway": 33
+        },
+        {
+          "concertId": "concert-21",
+          "date": "1988-06-18",
+          "artist": {
+            "entity": "artist",
+            "slug": "depeche-mode",
+            "name": "Depeche Mode",
+            "deepLink": "/?scene=artists&artist=depeche-mode"
+          },
+          "album": {
+            "mbid": "71f1482e-e63f-3b2c-811b-939f62708f2a",
+            "title": "Violator",
+            "releaseDate": "1990-03-19",
+            "coverAvailable": true
+          },
+          "monthsAway": 21
+        },
+        {
+          "concertId": "concert-33",
+          "date": "1990-08-09",
+          "artist": {
+            "entity": "artist",
+            "slug": "jesus-jones",
+            "name": "Jesus Jones",
+            "deepLink": "/?scene=artists&artist=jesus-jones"
+          },
+          "album": {
+            "mbid": "d87a6405-ab32-3f1c-8683-dff34a23e56a",
+            "title": "Doubt",
+            "releaseDate": "1991-01-18",
+            "coverAvailable": true
+          },
+          "monthsAway": 5
+        }
+      ]
+    },
+    "status": "done"
+  },
+  {
+    "id": "fx-13",
+    "question": "What songs have I heard most?",
+    "prose": "Across the shows I have setlists for, Social Distortion's take on “Ring of Fire” leads with six.",
+    "exhibit": {
+      "kind": "songs",
+      "withSetlist": 116,
+      "totalConcerts": 185,
+      "songs": [
+        {
+          "title": "Ring of Fire",
+          "count": 6,
+          "artist": {
+            "entity": "artist",
+            "slug": "social-distortion",
+            "name": "Social Distortion",
+            "deepLink": "/?scene=artists&artist=social-distortion"
+          },
+          "artistNames": [
+            "Social Distortion"
+          ],
+          "album": null,
+          "coverOf": "Merle Kilgore"
+        },
+        {
+          "title": "A Moment of Silence",
+          "count": 5,
+          "artist": {
+            "entity": "artist",
+            "slug": "streetlight-manifesto",
+            "name": "Streetlight Manifesto",
+            "deepLink": "/?scene=artists&artist=streetlight-manifesto"
+          },
+          "artistNames": [
+            "Streetlight Manifesto"
+          ],
+          "album": {
+            "mbid": "24deab6d-9374-34df-b413-3a14eadad293",
+            "title": "Everything Goes Numb",
+            "releaseDate": "2003-08-26",
+            "coverAvailable": true
+          }
+        },
+        {
+          "title": "A Moment of Violence",
+          "count": 5,
+          "artist": {
+            "entity": "artist",
+            "slug": "streetlight-manifesto",
+            "name": "Streetlight Manifesto",
+            "deepLink": "/?scene=artists&artist=streetlight-manifesto"
+          },
+          "artistNames": [
+            "Streetlight Manifesto"
+          ],
+          "album": {
+            "mbid": "24deab6d-9374-34df-b413-3a14eadad293",
+            "title": "Everything Goes Numb",
+            "releaseDate": "2003-08-26",
+            "coverAvailable": true
+          }
+        },
+        {
+          "title": "Ball and Chain",
+          "count": 5,
+          "artist": {
+            "entity": "artist",
+            "slug": "social-distortion",
+            "name": "Social Distortion",
+            "deepLink": "/?scene=artists&artist=social-distortion"
+          },
+          "artistNames": [
+            "Social Distortion"
+          ],
+          "album": {
+            "mbid": "c4a2af67-1561-3b1b-ba7f-85515f1f9ef7",
+            "title": "Social Distortion",
+            "releaseDate": "1990-03-27",
+            "coverAvailable": true
+          }
+        },
+        {
+          "title": "Everything Counts",
+          "count": 5,
+          "artist": {
+            "entity": "artist",
+            "slug": "depeche-mode",
+            "name": "Depeche Mode",
+            "deepLink": "/?scene=artists&artist=depeche-mode"
+          },
+          "artistNames": [
+            "Depeche Mode"
+          ],
+          "album": {
+            "mbid": "f8d0b912-ac57-3365-a2bb-89de094bb3db",
+            "title": "Construction Time Again",
+            "releaseDate": "1983-08-22",
+            "coverAvailable": true
+          }
+        },
+        {
+          "title": "Here's to Life",
+          "count": 5,
+          "artist": {
+            "entity": "artist",
+            "slug": "streetlight-manifesto",
+            "name": "Streetlight Manifesto",
+            "deepLink": "/?scene=artists&artist=streetlight-manifesto"
+          },
+          "artistNames": [
+            "Streetlight Manifesto"
+          ],
+          "album": null,
+          "coverOf": "Bandits of the Acoustic Revolution"
+        },
+        {
+          "title": "Just Can't Get Enough",
+          "count": 5,
+          "artist": null,
+          "artistNames": [
+            "Depeche Mode",
+            "Thompson Twins"
+          ],
+          "album": {
+            "mbid": "7a0e0366-91f4-3444-b45a-83b158004165",
+            "title": "Speak & Spell",
+            "releaseDate": "1981-10-05",
+            "coverAvailable": true
+          }
+        },
+        {
+          "title": "Rock This Town",
+          "count": 5,
+          "artist": null,
+          "artistNames": [
+            "Brian Setzer",
+            "Brian Setzer ’68 Comeback Special",
+            "Stray Cats",
+            "The Brian Setzer Orchestra"
+          ],
+          "album": {
+            "mbid": "05ced530-5077-3a59-9c27-e2d9fe497598",
+            "title": "Built for Speed",
+            "releaseDate": "1982",
+            "coverAvailable": true
+          }
+        },
+        {
+          "title": "Somewhere in the Between",
+          "count": 5,
+          "artist": {
+            "entity": "artist",
+            "slug": "streetlight-manifesto",
+            "name": "Streetlight Manifesto",
+            "deepLink": "/?scene=artists&artist=streetlight-manifesto"
+          },
+          "artistNames": [
+            "Streetlight Manifesto"
+          ],
+          "album": {
+            "mbid": "3bff4816-357f-3a3b-bc94-54cde69156ed",
+            "title": "Somewhere in the Between",
+            "releaseDate": "2007-11-13",
+            "coverAvailable": true
+          }
+        },
+        {
+          "title": "Story of My Life",
+          "count": 5,
+          "artist": {
+            "entity": "artist",
+            "slug": "social-distortion",
+            "name": "Social Distortion",
+            "deepLink": "/?scene=artists&artist=social-distortion"
+          },
+          "artistNames": [
+            "Social Distortion"
+          ],
+          "album": {
+            "mbid": "c4a2af67-1561-3b1b-ba7f-85515f1f9ef7",
+            "title": "Social Distortion",
+            "releaseDate": "1990-03-27",
+            "coverAvailable": true
+          }
+        }
+      ]
+    },
+    "status": "done"
+  },
+  {
+    "id": "fx-14",
+    "question": "Tell me about Brian Setzer",
+    "prose": "I have a few acts matching “Brian Setzer” — which one?",
+    "exhibit": {
+      "kind": "disambiguation",
+      "entity": "artist",
+      "candidates": [
+        {
+          "entity": "artist",
+          "slug": "brian-setzer",
+          "name": "Brian Setzer",
+          "deepLink": "/?scene=artists&artist=brian-setzer"
+        },
+        {
+          "entity": "artist",
+          "slug": "the-brian-setzer-orchestra",
+          "name": "The Brian Setzer Orchestra",
+          "deepLink": "/?scene=artists&artist=the-brian-setzer-orchestra"
+        },
+        {
+          "entity": "artist",
+          "slug": "brian-setzer-and-the-nashvillians",
+          "name": "Brian Setzer and the Nashvillians",
+          "deepLink": "/?scene=artists&artist=brian-setzer-and-the-nashvillians"
+        },
+        {
+          "entity": "artist",
+          "slug": "brian-setzer-68-comeback-special",
+          "name": "Brian Setzer ’68 Comeback Special",
+          "deepLink": "/?scene=artists&artist=brian-setzer-68-comeback-special"
+        }
+      ]
+    },
+    "status": "done"
   }
 ]

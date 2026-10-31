@@ -42,10 +42,11 @@ export function Prose({ ex }: { ex: Exchange }) {
   )
 }
 
-export function ChipLink({ entity, kind, color }: { entity: EntityRef; kind: Exhibit['kind']; color?: string }) {
+export function ChipLink({ entity, kind, color, avatar }: { entity: EntityRef; kind: Exhibit['kind']; color?: string; avatar?: ReactNode }) {
   return (
-    <a className="chip" href={entity.deepLink} onClick={() => trackDeepLink(kind, entity.deepLink)}>
-      {color && <span className="d" style={{ background: color }} />}
+    <a className={`chip ${avatar ? 'with-av' : ''}`} href={entity.deepLink} onClick={() => trackDeepLink(kind, entity.deepLink)}>
+      {avatar}
+      {!avatar && color && <span className="d" style={{ background: color }} />}
       {entity.name}
     </a>
   )

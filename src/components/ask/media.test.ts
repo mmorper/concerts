@@ -12,6 +12,8 @@ import {
   venueSourcedPhoto,
   coverUrl,
   fmtDate,
+  agePhrase,
+  monthsPhrase,
   type MediaAsset,
   type Photo,
 } from './media'
@@ -144,5 +146,17 @@ describe('sourced images', () => {
 
   it('formats a calendar date without a timezone shift', () => {
     expect(fmtDate('2026-06-04')).toBe('Jun 4, 2026')
+  })
+})
+
+describe('duration phrases', () => {
+  it('reads like the worker’s prose', () => {
+    expect(agePhrase(30)).toBe('30 days')
+    expect(agePhrase(270)).toBe('9 months')
+    expect(agePhrase(780)).toBe('2.1 years')
+    expect(agePhrase(5554)).toBe('15 years')
+    expect(monthsPhrase(21)).toBe('21 months')
+    expect(monthsPhrase(91)).toBe('7.6 years')
+    expect(monthsPhrase(1)).toBe('1 month')
   })
 })

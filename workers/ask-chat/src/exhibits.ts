@@ -31,6 +31,9 @@ export type ExhibitKind =
   | "album"
   | "discography"
   | "show"
+  | "era"
+  | "shape"
+  | "songs"
   | "plain"
   | "disambiguation"
   | "refusal";
@@ -175,7 +178,68 @@ export interface ShowExhibit {
   touring: AlbumIdentity | null;
 }
 
-/** Prose-only answer (archive_info, top_songs, on_this_day, or any non-entity reply). */
+/**
+ * get_career_position resolved to one night: where the act stood in their own catalogue.
+ * `shelf` is every studio album in order, each flagged `before` when it was already out that
+ * night (album-eras `albumsBefore` is the authority, not a date comparison).
+ */
+export interface EraExhibit {
+  kind: "era";
+  concertId: string;
+  date: string;
+  artist: EntityRef;
+  venue: EntityRef;
+  /** The record they were touring; null for a night before their first studio album. */
+  touring: AlbumIdentity | null;
+  daysSinceRelease: number | null;
+  albumsAfter: number;
+  /** The record they'd be remembered for, and whether it was still ahead that night. */
+  defining: (AlbumIdentity & { ahead: boolean; monthsAway: number | null }) | null;
+  shelf: Array<AlbumIdentity & { before: boolean }>;
+  truncated: boolean;
+}
+
+/** One night where the defining record didn't exist yet. */
+export interface AheadNight {
+  concertId: string;
+  date: string;
+  artist: EntityRef;
+  album: AlbumIdentity;
+  monthsAway: number;
+}
+
+/** get_career_shape — the archive-wide read. `ahead` is in the order the prose quotes them. */
+export interface ShapeExhibit {
+  kind: "shape";
+  placed: number;
+  total: number;
+  medianMonths: number;
+  buckets: Record<"fresh" | "current" | "mature" | "deep" | "catalog", number>;
+  aheadCount: number;
+  ahead: AheadNight[];
+}
+
+/** One song in the most-heard list, with the record it came off when known. */
+export interface TopSong {
+  title: string;
+  count: number;
+  /** The act, when one act accounts for it. Null link when the name isn't an archive act. */
+  artist: EntityRef | null;
+  artistNames: string[];
+  album: AlbumIdentity | null;
+  /** The original act when every attribution is a cover ("Ring of Fire" → Johnny Cash). */
+  coverOf?: string;
+}
+
+/** get_archive_top_songs — the most-heard songs, each with its cover. */
+export interface SongsExhibit {
+  kind: "songs";
+  withSetlist: number;
+  totalConcerts: number;
+  songs: TopSong[];
+}
+
+/** Prose-only answer (archive_info, on_this_day with no matches, or any non-entity reply). */
 export interface PlainExhibit {
   kind: "plain";
 }
@@ -194,6 +258,9 @@ export type Exhibit =
   | AlbumExhibit
   | DiscographyExhibit
   | ShowExhibit
+  | EraExhibit
+  | ShapeExhibit
+  | SongsExhibit
   | DisambiguationExhibit
   | PlainExhibit
   | RefusalExhibit;
@@ -212,10 +279,14 @@ const KIND_PRIORITY: Record<Exhibit["kind"], number> = {
   album: 55,
   discography: 55,
   show: 55,
+  era: 55,
   artist: 50,
   venue: 50,
   serendipity: 40,
   list: 30,
+  // Archive-wide reads: any entity card in the same turn is the more specific answer.
+  shape: 30,
+  songs: 30,
   plain: 10,
   refusal: 0,
 };

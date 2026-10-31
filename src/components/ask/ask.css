@@ -150,6 +150,8 @@
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; overflow: hidden;
 }
 .ask-derived-sleeve .s { font-family: 'Source Sans 3', system-ui, sans-serif; font-size: clamp(6px, 8cqw, 13px); opacity: 0.75; }
+/* A sleeve too small to read (song rows, the shelf) keeps its tint and drops the type. */
+@container (max-width: 60px) { .ask-derived-sleeve .t { display: none; } }
 
 /* The tinted ground shows while a lazy image is still on its way. */
 .ask-framed, .ask-cover { display: block; width: 100%; object-fit: cover; background: rgba(255, 255, 255, 0.06); }
@@ -304,6 +306,69 @@ img.ex-photo, img.ex-avatar { display: block; object-fit: cover; }
 .ask-rec .y { color: rgba(255, 255, 255, 0.5); }
 .ask-rec.none .ask-cover, .ask-rec.none .ask-derived { opacity: 0.5; outline: 1px dashed rgba(255, 255, 255, 0.5); outline-offset: 2px; box-shadow: none; }
 .ask-setlist { margin-bottom: 12px; }
+
+/* ---- Era, shape, songs (#593) — the cards for tools that used to answer in text only ---- */
+.ask-era-now { display: flex; gap: 16px; align-items: center; margin-bottom: 14px; padding: 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.04); }
+.ask-era-cover { flex: none; width: 96px; box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45); font-size: 15px; }
+.ask-era-now-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ask-era-now-text .ask-kick { margin-bottom: 0; }
+.ask-era-now-text .t { font-family: 'Playfair Display', Georgia, serif; font-size: 18px; line-height: 1.25; color: #fff; }
+.ask-era-ahead { font-size: 13.5px; color: #fde68a; line-height: 1.4; }
+
+/* The shelf: every studio album; the amber line is the night. Records not out yet are faded. */
+.ask-shelf { margin-bottom: 14px; }
+.ask-shelf-row { display: flex; gap: 10px; overflow-x: auto; padding: 6px 2px 6px 4px; scrollbar-width: thin; }
+.ask-shelf-item { position: relative; flex: 0 0 46px; display: flex; flex-direction: column; gap: 3px; }
+.ask-shelf-item .ask-cover, .ask-shelf-item .ask-derived { width: 46px; height: 46px; font-size: 8px; }
+.ask-shelf-item .y { font-size: 10.5px; color: rgba(255, 255, 255, 0.55); text-align: center; }
+.ask-shelf-item.after > .ask-cover, .ask-shelf-item.after > .ask-derived { opacity: 0.4; }
+.ask-shelf-item.defining > .ask-cover, .ask-shelf-item.defining > .ask-derived { opacity: 1; outline: 2px solid #fde68a; outline-offset: 2px; }
+.ask-shelf-item .ask-pill.on-cover { top: -6px; left: 50%; transform: translateX(-50%); font-size: 8px; padding: 0 4px; white-space: nowrap; }
+.ask-shelf-item.first-after::before, .ask-shelf-end {
+  content: ''; position: absolute; left: -6px; top: -4px; bottom: 14px; width: 2px; border-radius: 1px;
+  background: #fde68a; box-shadow: 0 0 8px rgba(253, 230, 138, 0.6);
+}
+.ask-shelf-end { position: relative; left: 0; flex: 0 0 2px; height: 46px; top: 0; }
+
+/* Shape: one stacked bar, five album-age buckets, then the "before the record" covers. */
+.ask-shape-bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; gap: 2px; margin-bottom: 10px; }
+.ask-shape-bar .seg { flex-basis: 0; min-width: 4px; }
+.s0 { background: #c7d2fe; } .s1 { background: #a5b4fc; } .s2 { background: #818cf8; } .s3 { background: #6366f1; } .s4 { background: #4338ca; }
+.ask-shape-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: rgba(255, 255, 255, 0.7); margin-bottom: 4px; }
+.ask-shape-legend .lg { display: inline-flex; align-items: center; gap: 6px; }
+.ask-shape-legend .lg b { color: #fff; font-weight: 600; }
+.ask-shape-legend .sw { width: 10px; height: 10px; border-radius: 3px; }
+.ask-ahead { margin-bottom: 8px; }
+.ask-ahead-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 12px; }
+.ask-ahead-item { display: flex; flex-direction: column; gap: 4px; text-decoration: none; min-width: 0; }
+.ask-ahead-item .ask-cover, .ask-ahead-item .ask-derived { box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45); font-size: 13px; }
+.ask-ahead-item .t { font-size: 13px; color: #fff; line-height: 1.25; }
+.ask-ahead-item .y { font-size: 11.5px; color: rgba(255, 255, 255, 0.6); line-height: 1.3; }
+.ask-ahead-item:hover .t { text-decoration: underline; }
+
+/* Songs: rank, cover, title / act · record, count. */
+.ask-songs { list-style: none; margin: 0 0 6px; padding: 0; }
+.ask-songs li { display: grid; grid-template-columns: 22px 36px minmax(0, 1fr) auto; align-items: center; column-gap: 12px; padding: 7px 0; border-top: 1px solid rgba(255, 255, 255, 0.07); }
+.ask-songs li:first-child { border-top: none; }
+.ask-songs .n { font-size: 12.5px; color: rgba(255, 255, 255, 0.45); text-align: right; font-variant-numeric: tabular-nums; }
+.ask-songs .c, .ask-songs .c .ask-cover, .ask-songs .c .ask-derived { width: 36px; height: 36px; border-radius: 4px; font-size: 11px; }
+.ask-songs .body { display: flex; flex-direction: column; min-width: 0; }
+.ask-songs .t { font-size: 14.5px; color: #fff; overflow-wrap: anywhere; }
+.ask-songs .w { font-size: 12.5px; color: rgba(255, 255, 255, 0.62); }
+.ask-songs .w a { color: rgba(255, 255, 255, 0.85); text-decoration: none; }
+.ask-songs .w a:hover { text-decoration: underline; }
+.ask-songs .al { font-style: italic; }
+.ask-songs .x { font-size: 13.5px; font-weight: 600; color: #fff; font-variant-numeric: tabular-nums; }
+
+/* Choice chips with a face. */
+.chip.with-av { display: inline-flex; align-items: center; gap: 8px; padding-left: 5px; }
+.chip-av { width: 24px; height: 24px; border-radius: 50%; flex: none; overflow: hidden; font-size: 9px; }
+img.chip-av { object-fit: cover; display: block; }
+
+@media (max-width: 767px) {
+  .ask-ahead-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ask-era-cover { width: 80px; }
+}
 
 /* Lightbox — above the Spotlight (2000) and its scrim. */
 .ask-lightbox {

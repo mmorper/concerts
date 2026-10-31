@@ -17,6 +17,7 @@ import type { ArtistExhibit, VenueExhibit, ListExhibit, SerendipityExhibit, Disa
 import { CameraMark, DerivedArt, FramedPhoto, LadderImage, usePhotoViewer } from './AskMedia'
 import { ChipLink, DeepLink, Filmstrip, Frame, PhotoButton, PhotoHero, Portrait, Prose, captionLookups, trackPhotoOpened, yearSpan } from './AskCardParts'
 import { AlbumCard, DiscographyCard, ShowCard } from './AskRecordCards'
+import { EraCard, ShapeCard, SongsCard } from './AskCareerCards'
 import {
   BANNER_ASPECT,
   actPhotosOnNight,
@@ -334,14 +335,22 @@ function SerendipityCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Sere
   )
 }
 
-function DisambiguationCard({ ex, exhibit }: { ex: Exchange; exhibit: DisambiguationExhibit }) {
+function DisambiguationCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: DisambiguationExhibit; archive: ArchiveLookups }) {
   return (
     <Frame color={DEFAULT_GENRE_COLOR}>
       <Prose ex={ex} />
       <div className="chips">
-        {exhibit.candidates.map((c) => (
-          <ChipLink key={c.slug} entity={c} kind="disambiguation" />
-        ))}
+        {exhibit.candidates.map((c) => {
+          if (c.entity !== 'artist') return <ChipLink key={c.slug} entity={c} kind="disambiguation" />
+          // A face to choose by (#593): my photo of them, else the portrait, else the genre tile.
+          const f = archive.artistFacts(c.slug)
+          const genre = f.primaryGenre ?? f.meta?.genres?.[0]
+          const color = genre ? getGenreColor(genre) : DEFAULT_GENRE_COLOR
+          const mine = leadPhoto(archive.media, c.slug)
+          const portrait = <Portrait name={c.name} image={f.meta?.image} color={color} className="chip-av" round />
+          const avatar = mine ? <FramedPhoto photo={mine} aspect={1} alt="" className="chip-av" fallback={portrait} /> : portrait
+          return <ChipLink key={c.slug} entity={c} kind="disambiguation" avatar={avatar} />
+        })}
       </div>
     </Frame>
   )
@@ -399,8 +408,14 @@ export function AskExhibit({ exchange, archive }: { exchange: Exchange; archive:
       return <DiscographyCard ex={exchange} exhibit={exhibit} archive={archive} />
     case 'show':
       return <ShowCard ex={exchange} exhibit={exhibit} archive={archive} />
+    case 'era':
+      return <EraCard ex={exchange} exhibit={exhibit} archive={archive} />
+    case 'shape':
+      return <ShapeCard ex={exchange} exhibit={exhibit} archive={archive} />
+    case 'songs':
+      return <SongsCard ex={exchange} exhibit={exhibit} archive={archive} />
     case 'disambiguation':
-      return <DisambiguationCard ex={exchange} exhibit={exhibit} />
+      return <DisambiguationCard ex={exchange} exhibit={exhibit} archive={archive} />
     case 'refusal':
       return <RefusalCard ex={exchange} />
     case 'plain':
