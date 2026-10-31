@@ -138,16 +138,18 @@
 }
 .ask-derived .m { position: relative; font-size: 1.05em; letter-spacing: 0.02em; }
 .ask-derived-round { border-radius: 50%; }
-.ask-derived-sleeve { align-items: flex-end; justify-content: flex-start; aspect-ratio: 1; padding: 0.6em; box-sizing: border-box; }
+/* Container units size the title to the sleeve itself, so a 64px sleeve on a phone and the 140px
+   album-card sleeve both fit "Reproduction" on one line instead of breaking it mid-word. */
+.ask-derived-sleeve { align-items: flex-end; justify-content: flex-start; aspect-ratio: 1; padding: 0.6em; box-sizing: border-box; container-type: inline-size; }
 /* Each record's stand-in gets its own tint (hue from the title, see DerivedArt) so a strip of
    fallback sleeves still reads as different records. */
 .ask-derived-sleeve { filter: hue-rotate(var(--tint, 0deg)); }
 .ask-derived-sleeve .t { position: relative; display: flex; flex-direction: column; gap: 2px; width: 100%; min-width: 0; }
 .ask-derived-sleeve .n {
-  font-size: 1.05em; line-height: 1.05; overflow-wrap: break-word;
+  font-size: clamp(7px, 12.5cqw, 22px); line-height: 1.05; overflow-wrap: break-word;
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; overflow: hidden;
 }
-.ask-derived-sleeve .s { font-family: 'Source Sans 3', system-ui, sans-serif; font-size: 0.7em; opacity: 0.75; }
+.ask-derived-sleeve .s { font-family: 'Source Sans 3', system-ui, sans-serif; font-size: clamp(6px, 8cqw, 13px); opacity: 0.75; }
 
 /* The tinted ground shows while a lazy image is still on its way. */
 .ask-framed, .ask-cover { display: block; width: 100%; object-fit: cover; background: rgba(255, 255, 255, 0.06); }
@@ -306,7 +308,7 @@ img.ex-photo, img.ex-avatar { display: block; object-fit: cover; }
 /* Lightbox — above the Spotlight (2000) and its scrim. */
 .ask-lightbox {
   position: fixed; inset: 0; z-index: 2100; display: flex; flex-direction: column;
-  background: rgba(6, 5, 15, 0.97); color: #fff; font-family: 'Source Sans 3', system-ui, sans-serif;
+  background: #07060f; color: #fff; font-family: 'Source Sans 3', system-ui, sans-serif;
   padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom); animation: ask-fade-in 0.15s ease both;
 }
 .ask-lightbox-bar { display: flex; align-items: center; padding: 8px 8px 8px 18px; }
