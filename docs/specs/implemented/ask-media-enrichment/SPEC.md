@@ -133,10 +133,13 @@ the venue. Every caption names the night.
 
 **Covers.** The failures did show up: after 6.2.0, Cover Art Archive returned 500s for Dare,
 Hysteria, Secrets and Credo (originals and thumbnails alike). So each sleeve now tries, in order:
-`GET /api/ask/cover/<mbid>` on the ask-chat Worker (`workers/ask-chat/src/cover.ts`), which looks
-the release group up on MusicBrainz, finds the iTunes album whose artist and title both match
-(edition suffixes stripped), and 302s to Apple's artwork CDN — the answer kept in the
-`ASK_CONTROL` KV for 90 days, a miss for 7, an upstream error not at all; then Cover Art Archive
+`GET /api/ask/cover/<mbid>` on the ask-chat Worker (`workers/ask-chat/src/cover.ts`), which names
+the record from the archive's own `album-eras.json` / `song-albums.json` (MusicBrainz only for an
+id they don't hold — the first version asked MusicBrainz every time and returned no covers in
+production), finds the iTunes album whose artist and title both match (edition suffixes stripped;
+"artist title" first, then the title alone), and 302s to Apple's artwork CDN — the answer kept in
+the `ASK_CONTROL` KV for 90 days, a miss for 7, an upstream error not at all. Every response
+carries an `X-Cover` header saying why; `?fresh` skips the stored answer. Then Cover Art Archive
 `front-250` → `front-500` → the original; then the derived sleeve. Strict matching on purpose: a
 wrong sleeve is worse than the derived one.
 

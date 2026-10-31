@@ -277,7 +277,8 @@ export function coverUrls(mbid: string, size: 250 | 500 = 250, apiBase: string =
   const id = encodeURIComponent(mbid)
   const base = `https://coverartarchive.org/release-group/${id}/front`
   const caa = size === 250 ? [`${base}-250`, `${base}-500`, base] : [`${base}-500`, base]
-  return [`${apiBase}/api/ask/cover/${id}?size=${size}`, ...caa]
+  // `v` changes when the route's answers change, so a browser's cached 404 from the old one is skipped.
+  return [`${apiBase}/api/ask/cover/${id}?size=${size}&v=2`, ...caa]
 }
 
 export interface VenuePhotoMeta {

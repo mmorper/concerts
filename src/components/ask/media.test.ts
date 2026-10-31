@@ -147,11 +147,11 @@ describe('sourced images', () => {
 
   it('tries the next size, then the original, when a CAA thumbnail is missing', () => {
     const base = 'https://coverartarchive.org/release-group/24deab6d-9374-34df-b413-3a14eadad293/front'
-    const apple = (n: number) => `https://concerts.morperhaus.org/api/ask/cover/24deab6d-9374-34df-b413-3a14eadad293?size=${n}`
+    const apple = (n: number) => `https://concerts.morperhaus.org/api/ask/cover/24deab6d-9374-34df-b413-3a14eadad293?size=${n}&v=2`
     // iTunes (via the ask-chat Worker) first, then every Cover Art Archive size.
     expect(coverUrls('24deab6d-9374-34df-b413-3a14eadad293', 250, 'https://concerts.morperhaus.org')).toEqual([apple(250), `${base}-250`, `${base}-500`, base])
     expect(coverUrls('24deab6d-9374-34df-b413-3a14eadad293', 500, 'https://concerts.morperhaus.org')).toEqual([apple(500), `${base}-500`, base])
-    expect(coverUrls('24deab6d-9374-34df-b413-3a14eadad293', 250, '')[0]).toBe('/api/ask/cover/24deab6d-9374-34df-b413-3a14eadad293?size=250')
+    expect(coverUrls('24deab6d-9374-34df-b413-3a14eadad293', 250, '')[0]).toBe('/api/ask/cover/24deab6d-9374-34df-b413-3a14eadad293?size=250&v=2')
   })
 
   it('formats a calendar date without a timezone shift', () => {
