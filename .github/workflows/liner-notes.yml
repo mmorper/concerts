@@ -50,6 +50,7 @@ jobs:
         run: npm ci
 
       - name: Generate liner notes
+        id: generate
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           # Alerted when a run publishes nothing; absent → logged only.
@@ -73,7 +74,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/data/liner-notes.json public/liner-notes.xml public/og/liner-notes 2>/dev/null || true
+          # data/liner-notes-held.json is the run's memory of failed candidates —
+          # committed even on a run that published nothing, so next week's run
+          # doesn't pick the same findings again.
+          git add public/data/liner-notes.json public/liner-notes.xml public/og/liner-notes data/liner-notes-held.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No new liner notes to commit."
           else
@@ -86,3 +90,13 @@ jobs:
             git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
+
+      # A run that publishes nothing goes red, AFTER the commit above has saved
+      # the held list. Red is what makes GitHub email the owner — it needs no
+      # NOTIFY_WEBHOOK_URL. Four Mondays published nothing between 2026-09-14
+      # and 2026-10-26 as green runs with a warning nobody saw.
+      - name: Fail if nothing was published
+        if: steps.generate.outputs.published == '0'
+        run: |
+          echo "::error title=No liner note published::Every candidate failed a check this run. See the Generate step log; the failures are held in data/liner-notes-held.json and skipped next run."
+          exit 1

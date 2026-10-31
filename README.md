@@ -11,6 +11,8 @@ An interactive web app for exploring personal concert history. Six scenes—Time
 
 ## What's new
 
+**v6.1.0** 📣 The archive posts itself. One liner note a day, and on the anniversary of a night I was there, a post about that night — on Bluesky at [@concerts.morperhaus.org](https://bsky.app/profile/concerts.morperhaus.org) and on Mastodon at [@concertsmorperhaus@mastodon.social](https://mastodon.social/@concertsmorperhaus). Every line is fact-checked against the archive before it leaves, more of them carry my own photographs from the night, and Ask the Archive can now tell you which record a song came off. [Read the liner notes](https://concerts.morperhaus.org/liner-notes).
+
 **v6.0.0** 🎸 The Cure played the Hollywood Bowl in May 2023 and put five songs from *Songs of a Lost World* into the set — a record that was still seventeen months away. The archive has now worked out which album almost every song I've watched came off, so a setlist reads as a shape rather than a list: what the night leaned on, what was brand new, and what hadn't arrived yet. [Hear the arc](https://concerts.morperhaus.org/?scene=artists&artist=the-cure).
 
 **v5.3.0** 🎭 One man, four marquees. Brian Setzer has played here seven times since 1995 — as himself, as the Orchestra, as the Nashvillians, once as a '68 Comeback Special — and the archive had him down as four different artists. It knows better now. It also learned to read setlists properly, so it can spot a song coming back years later or a guest who was never on the ticket, and a few photographs that had quietly stopped loading are back where they belong. [See the mosaic](https://concerts.morperhaus.org/?scene=artists&artist=brian-setzer).

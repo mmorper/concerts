@@ -50,6 +50,13 @@ export interface FactSheetSubjects {
   artists: string[];
   /** Normalized venue slugs the post is about. */
   venues: string[];
+  /**
+   * Artists and venues the post mentions without being about them — the shows
+   * that bound a run, the night an opener first appeared. Listed show-by-show
+   * like the subjects, but without album timing or setlists.
+   */
+  contextArtists?: string[];
+  contextVenues?: string[];
 }
 
 export interface FactSheetSources {
@@ -309,11 +316,13 @@ export function buildFactSheet(subjects: FactSheetSubjects, sources: FactSheetSo
   const today = sources.today ?? todayISO();
   const artists = [...new Set(subjects.artists)];
   const venues = [...new Set(subjects.venues)];
+  const contextArtists = [...new Set(subjects.contextArtists ?? [])].filter((a) => !artists.includes(a));
+  const contextVenues = [...new Set(subjects.contextVenues ?? [])].filter((v) => !venues.includes(v));
 
   const sections: string[] = [`TODAY IS ${today}.`, ""];
 
-  for (const a of artists) sections.push(...artistSection(a, sources), "");
-  for (const v of venues) sections.push(...venueSection(v, sources), "");
+  for (const a of [...artists, ...contextArtists]) sections.push(...artistSection(a, sources), "");
+  for (const v of [...venues, ...contextVenues]) sections.push(...venueSection(v, sources), "");
 
   const timing = albumTimingSection(artists, sources);
   if (timing.length) sections.push(...timing, "");
@@ -326,4 +335,59 @@ export function buildFactSheet(subjects: FactSheetSubjects, sources: FactSheetSo
   sections.push(...NOT_IN_THE_DATA);
 
   return sections.join("\n").trim();
+}
+
+// ── Subjects for a finding ───────────────────────────────────────────────────
+
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * Every show a finding's data points name, resolved to concerts.
+ *
+ * 🔴 WHY THIS EXISTS. A fact sheet built only from `finding.artists` and
+ * `finding.venues` cannot see the shows a post is allowed to mention but is not
+ * about. geographic-chapter hands the writer the nights that bound a run — Beach
+ * Boys in Phoenix, 1988; The Art of Noise in Boston, 1999 — and the verifier,
+ * finding only the 1986 Costa Mesa listings under Pacific Amphitheatre, called
+ * both true sentences "contradicted". It held that post out of three Monday runs.
+ *
+ * Walks the data points for any object carrying an ISO `date`, and matches it to
+ * the concert on that date — by headliner or venue name when two share a day.
+ */
+export function referencedConcerts(dataPoints: unknown, concerts: Concert[]): Concert[] {
+  const found = new Map<string, Concert>();
+  const visit = (node: unknown, depth: number): void => {
+    if (!node || typeof node !== "object" || depth > 4) return;
+    if (Array.isArray(node)) {
+      for (const item of node) visit(item, depth + 1);
+      return;
+    }
+    const rec = node as Record<string, unknown>;
+    if (typeof rec.date === "string" && ISO_DATE.test(rec.date)) {
+      const sameDay = concerts.filter((c) => c.date === rec.date);
+      const names = [rec.artist, rec.headliner, rec.venue].filter((n): n is string => typeof n === "string");
+      const match =
+        sameDay.length === 1
+          ? sameDay[0]
+          : sameDay.find((c) => names.some((n) => n === c.headliner || n === c.venue));
+      if (match) found.set(match.id, match);
+    }
+    for (const value of Object.values(rec)) visit(value, depth + 1);
+  };
+  visit(dataPoints, 0);
+  return [...found.values()];
+}
+
+/** The fact-sheet subjects for a finding: who it is about, plus every show it names. */
+export function factSheetSubjectsFor(
+  finding: { artists: string[]; venues: string[]; dataPoints?: unknown },
+  concerts: Concert[]
+): FactSheetSubjects {
+  const referenced = referencedConcerts(finding.dataPoints, concerts);
+  return {
+    artists: finding.artists,
+    venues: finding.venues,
+    contextArtists: referenced.map((c) => c.headlinerNormalized),
+    contextVenues: referenced.map((c) => c.venueNormalized),
+  };
 }

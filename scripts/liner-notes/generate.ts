@@ -172,7 +172,9 @@ export async function generate(
       results.push({ ...finding, prose });
     } catch (err) {
       console.error(`[generate] Failed for "${finding.headline}":`, err);
-      results.push(finding); // Return without prose — curator will skip prose-less findings
+      // Return without prose — curator will skip prose-less findings. The reason
+      // rides along so the pipeline can hold the finding out of the next run.
+      results.push({ ...finding, generationError: (err as Error)?.message ?? String(err) });
     }
   }
 
@@ -329,8 +331,64 @@ function temporalFraming(finding: ScoredFinding, today: string): string[] {
         ". Write about it in the past tense. It is not upcoming, booked, or on the calendar."
     );
   }
+  lines.push(...exactSpanLines(dp));
   lines.push("");
   return lines;
+}
+
+/** "29 years, 7 months" — completed years and months between two ISO dates (a <= b). */
+export function exactSpan(a: string, b: string): string {
+  const [ya, ma, da] = a.split("-").map(Number);
+  const [yb, mb, db] = b.split("-").map(Number);
+  let months = (yb - ya) * 12 + (mb - ma) - (db < da ? 1 : 0);
+  if (months < 0) months = 0;
+  const years = Math.floor(months / 12);
+  const rem = months % 12;
+  if (years === 0 && rem === 0) {
+    const days = Math.round((Date.UTC(yb, mb - 1, db) - Date.UTC(ya, ma - 1, da)) / 86_400_000);
+    return `${days} day${days === 1 ? "" : "s"}`;
+  }
+  const parts: string[] = [];
+  if (years) parts.push(`${years} year${years === 1 ? "" : "s"}`);
+  if (rem) parts.push(`${rem} month${rem === 1 ? "" : "s"}`);
+  return parts.join(", ");
+}
+
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * Exact spans between the dated shows in DATA POINTS.
+ *
+ * 🔴 `spanYears` and `gapYears` subtract calendar years, so 1993-09 → 2023-05
+ * reads as 30 and 1989-07 → 1999-04 as 10. The writer repeated them as "thirty
+ * years" and "a decade", the fact-checker — correctly — called both
+ * contradicted, and the posts were dropped (2026-09-28, 2026-10-26). Those
+ * fields stay as they are because scoring reads them; the writer gets the true
+ * figure next to them.
+ */
+export function exactSpanLines(dataPoints: Record<string, unknown> | undefined): string[] {
+  if (!dataPoints) return [];
+  const dated: Array<{ key: string; date: string }> = [];
+  for (const [key, value] of Object.entries(dataPoints)) {
+    const date =
+      typeof value === "string" ? value : (value as { date?: unknown } | null)?.date;
+    if (typeof date === "string" && ISO_DATE.test(date)) dated.push({ key, date });
+  }
+  if (dated.length < 2) return [];
+  dated.sort((x, y) => x.date.localeCompare(y.date));
+  const pairs: string[] = [];
+  for (let i = 0; i < dated.length && pairs.length < 15; i++) {
+    for (let j = i + 1; j < dated.length && pairs.length < 15; j++) {
+      if (dated[i].date === dated[j].date) continue;
+      pairs.push(`  • ${dated[i].key} (${dated[i].date}) → ${dated[j].key} (${dated[j].date}): ${exactSpan(dated[i].date, dated[j].date)}`);
+    }
+  }
+  if (!pairs.length) return [];
+  return [
+    "EXACT TIME BETWEEN THESE DATES (use these, not spanYears/gapYears, which subtract calendar years and can overstate by one):",
+    ...pairs,
+    "When you state a duration, use the exact figure. If it falls short of a round number, say \"nearly\" or \"almost\" — never round up.",
+  ];
 }
 
 /**

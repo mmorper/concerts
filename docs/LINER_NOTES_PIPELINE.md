@@ -169,7 +169,7 @@ concerts.json (source of truth)
         ▼
 ┌─────────────────────────────────────┐
 │  Stage 3: SELECT                    │  scripts/liner-notes/curate.ts
-│  Detector rotation over per-        │  → 1 post (+2 reserve)
+│  Detector rotation over per-        │  → 1 post (+4 reserve)
 │  detector champions + cooldowns     │
 └─────────────────────────────────────┘
         │
@@ -943,11 +943,24 @@ So ranking ~200 findings by score largely re-ranked the *detectors*, in near-ide
 
 ### The algorithm
 
-1. **Filter** — drop findings failing the rerun cooldown (same detector + artist within 6 months) or the primary-artist cooldown (last 10 posts).
+1. **Filter** — drop findings failing the rerun cooldown (same detector + artist within 6 months), the primary-artist cooldown (last 10 posts), or **held** after a recent failure (see below).
 2. **Champion** — each detector nominates its single best remaining finding. Fifteen candidates, not two hundred. This is where the score does its real work, comparing findings that are actually comparable.
 3. **Pass** — a detector whose champion sits at `MIN_SCORE` sits the round out rather than publishing its weakest finding just because its turn arrived. It stays stale and returns when it has something better. This is *not* a global threshold: it never excludes a category the way the old `STANDARD_THRESHOLD = 30` did.
 4. **Rank** — `staleness desc → score desc → id asc`. Staleness is the number of posts published since that detector last appeared; a detector that has never published sorts first. **The comparator is total** — it can never fall through to array order, which is what previously let a stable sort and two adjacent lines in `analyze.ts` decide publication between detectors tied at 28.
-5. **Fill** — take `POSTS_PER_RUN` (1; `--seed` uses 10) plus `CANDIDATE_RESERVE` (2). The reserve is only consumed if an earlier candidate's prose fails validation, so a normal run costs **one** API call.
+5. **Fill** — take `POSTS_PER_RUN` (1; `--seed` uses 10) plus `CANDIDATE_RESERVE` (4; was 2). The reserve is only consumed if an earlier candidate fails a gate, so a normal run still costs **one** generation.
+
+### Held findings — the run's memory of failures
+
+Selection is deterministic, so before November 2026 a finding that failed the fact-checker was picked again the next Monday. Four of the eight Mondays from 2026-09-07 to 2026-10-26 published nothing, and three of those four were the same three findings failing again.
+
+- **Every gate runs per candidate**, inside `generateUpTo`: generation and its inline fact-check, the voice check, and the backstop claim check. A failure at any of them falls through to the next reserve. (The voice and claim checks used to run after the loop had already stopped, so a late rejection ended the run with reserves untried.)
+- **Failures are held** in `data/liner-notes-held.json` (`scripts/liner-notes/held.ts`) for `HOLD_WEEKS` (8), with the gate and its reason. A held finding sits out selection and its detector nominates its next-best finding. It returns on its own when the hold expires — the usual cause (a detector bug, a fact-sheet gap) is something that gets fixed. The workflow commits the file even on an empty run.
+- `--force` ignores holds, so `--pick "…" --force` retries one deliberately. Deleting an entry releases it early.
+
+Two of those failures were the pipeline's own bugs, fixed at the same time:
+
+- **The fact sheet now lists every show a post names**, not just its subjects (`factSheetSubjectsFor` / `referencedConcerts` in `fact-sheet.ts`). geographic-chapter names the shows that bound a run; the verifier could not see Beach Boys in Phoenix (1988) or The Art of Noise in Boston (1999) and called both true sentences contradicted.
+- **The writer gets exact spans** (`exactSpanLines` in `generate.ts`). `spanYears`/`gapYears` subtract calendar years — 1993-09 → 2023-05 reads as 30 — and the prose repeated them. The fields stay for scoring; the prompt carries "29 years, 7 months" beside them and a never-round-up rule.
 
 `STANDARD_THRESHOLD` is retired; `MIN_SCORE = 20` in `score.ts` is the single floor.
 
@@ -1138,8 +1151,11 @@ fact sheet text, which changes the hash, which forces a fresh check automaticall
 separate invalidation logic to keep in sync.
 
 **An empty run is alerted, not silent.** When every candidate fails (or none is selected),
-the pipeline still exits 0 but emits an Actions `::warning::` and pushes to
-`NOTIFY_WEBHOOK_URL` (the syndication health alerts' slot; absent → logged only).
+the pipeline writes `published=0` to `$GITHUB_OUTPUT`, emits a `::warning::`, and pushes to
+`NOTIFY_WEBHOOK_URL` (the syndication health alerts' slot; absent → logged only). The
+workflow commits the held list first, then **fails the run** — a red run is what makes GitHub
+email the owner, with no webhook needed. Until November 2026 it was a green run with a
+warning, and four empty Mondays went unnoticed.
 
 **Ambiguity means stop**, the kill switch's own posture: if the verifier itself fails (a bad
 API response, malformed JSON), the post is held — skipped this run, not published unchecked.

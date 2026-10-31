@@ -1,6 +1,20 @@
 {
   "releases": [
     {
+      "version": "6.1.0",
+      "date": "2026-10-31",
+      "title": "The Archive Posts Itself",
+      "description": "For forty years these shows lived in one place. Now they go out on their own: one liner note a day, and on the anniversary of a night I was there, a post about that night. Bluesky at @concerts.morperhaus.org, Mastodon at @concertsmorperhaus@mastodon.social — fifty-three posts on each so far. Every line is checked against the archive before it leaves, and more of them now carry my own photographs from the night.",
+      "route": "/liner-notes",
+      "highlights": [
+        "Follow along on Bluesky (@concerts.morperhaus.org) or Mastodon (@concertsmorperhaus@mastodon.social) — a liner note a day, plus On This Day",
+        "On Bluesky, posts tag the bands and the rooms by their own accounts",
+        "Every note and post is fact-checked against the archive before it goes out, and a wrong one can be corrected after the fact",
+        "129 of my own photographs and 15 clips from 44 nights, culled and cropped by hand, now illustrate the notes and posts",
+        "Ask the Archive answers album questions — which record a song came off, or whether they played anything off Nebraska"
+      ]
+    },
+    {
       "version": "6.0.0",
       "date": "2026-08-10",
       "title": "Five Songs That Didn't Exist Yet",
