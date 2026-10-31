@@ -192,15 +192,15 @@ export function SongsCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Son
           const color = genreColor(archive, s.artist?.slug)
           const who = s.artistNames.length === 1 ? s.artistNames[0] : `${s.artistNames.length} acts`
           const from = s.album ? s.album.title : s.coverOf ? `${s.coverOf} cover` : ''
+          // Always a record (owner's call): the song's own sleeve; if it has none or it fails, the
+          // album of the act I last heard play it; only then the derived tile.
+          const derived = <DerivedArt name={s.coverOf ?? s.title} color={color} />
+          const actAlbum = s.lastActAlbum ? <CoverArt album={s.lastActAlbum} color={color} fallback={derived} /> : derived
           return (
             <li key={`${i}-${s.title}`}>
               <span className="n">{i + 1}</span>
               <span className="c">
-                {s.album ? (
-                  <CoverArt album={s.album} color={color} />
-                ) : (
-                  <DerivedArt name={s.coverOf ?? s.title} color={color} />
-                )}
+                {s.album ? <CoverArt album={s.album} color={color} fallback={actAlbum} /> : actAlbum}
               </span>
               <span className="body">
                 <span className="t">{s.title}</span>

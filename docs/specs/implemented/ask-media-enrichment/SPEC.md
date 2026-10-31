@@ -123,7 +123,7 @@ on the frame's centre.
 | Venue hero | my venue shot, newest night | hand-placed photo, then Google Places (the generic `fallback*.jpg` placeholder doesn't count) | the map, as before |
 | List row | that night: headliner, else an opener (labelled), else the venue (labelled) | Deezer portrait (round) | genre tile |
 | Night card | one 4:5 tile per act photographed, plus the venue | my photo of the headliner from another night (captioned "not this night"), then Deezer | genre tile |
-| Covers | — | Cover Art Archive, only when `coverAvailable` | a sleeve in the genre colour, tinted per title, with title and year (type dropped below 60px) |
+| Covers | — | iTunes via the ask-chat Worker, then Cover Art Archive (only when `coverAvailable`) | a sleeve in the genre colour, tinted per title, with title and year (type dropped below 60px) |
 | Era card | that night's frame | Deezer portrait | genre tile |
 | Choice chips (artists) | my lead photo of them | Deezer portrait | genre tile with initials |
 
@@ -131,10 +131,14 @@ on the frame's centre.
 "not this night"; a frame of another act names them and whose bill it was; a venue frame names
 the venue. Every caption names the night.
 
-**Covers.** Loaded straight from Cover Art Archive (`front-250`, `front-500` for the album card),
-lazily. The site already loads Deezer portraits and Google venue photos this way; covers are
-immutable and cached by the Internet Archive's CDN. CAA is sometimes slow or down, and that is
-what the derived sleeve is for. Revisit a Worker proxy only if failures show up in practice.
+**Covers.** The failures did show up: after 6.2.0, Cover Art Archive returned 500s for Dare,
+Hysteria, Secrets and Credo (originals and thumbnails alike). So each sleeve now tries, in order:
+`GET /api/ask/cover/<mbid>` on the ask-chat Worker (`workers/ask-chat/src/cover.ts`), which looks
+the release group up on MusicBrainz, finds the iTunes album whose artist and title both match
+(edition suffixes stripped), and 302s to Apple's artwork CDN — the answer kept in the
+`ASK_CONTROL` KV for 90 days, a miss for 7, an upstream error not at all; then Cover Art Archive
+`front-250` → `front-500` → the original; then the derived sleeve. Strict matching on purpose: a
+wrong sleeve is worse than the derived one.
 
 **Lightbox.** Tapping any of my photos opens it with the full caption. Arrow keys or swipe page
 through; Escape closes the photo without closing the Spotlight underneath (keys are caught on

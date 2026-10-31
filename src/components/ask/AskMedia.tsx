@@ -5,7 +5,7 @@
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
-import { coverUrl, cropAspect, focalPosition, yearOf, type Photo } from './media'
+import { coverUrls, cropAspect, focalPosition, yearOf, type Photo } from './media'
 import type { AlbumIdentity } from '@/types/exhibit'
 
 /**
@@ -131,16 +131,19 @@ export function CoverArt({
   size = 250,
   color,
   className = '',
+  fallback,
 }: {
   album: AlbumIdentity
   size?: 250 | 500
   color: string
   className?: string
+  /** What to show when no sleeve loads. Default: the derived sleeve with the title. */
+  fallback?: ReactNode
 }) {
-  const sleeve = <DerivedArt name={album.title} sub={yearOf(album.releaseDate)} color={color} shape="sleeve" className={className} />
+  const sleeve = fallback ?? <DerivedArt name={album.title} sub={yearOf(album.releaseDate)} color={color} shape="sleeve" className={className} />
   return (
     <LadderImage
-      sources={[album.coverAvailable ? coverUrl(album.mbid, size) : null]}
+      sources={album.coverAvailable ? coverUrls(album.mbid, size) : []}
       alt={`${album.title} cover`}
       className={`ask-cover ${className}`}
       fallback={sleeve}

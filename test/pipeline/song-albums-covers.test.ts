@@ -126,3 +126,24 @@ describe('cover routing invariants in the shipped data', () => {
     }
   })
 })
+
+// A cover the performer recorded on a studio album of their own is attributed to
+// THAT album — but only as a last resort, after the original act's catalogue.
+describe('covers on the performer\'s own record', () => {
+  const songs = read('song-albums.json').songs as Record<string, { albumTitle: string; releaseDate: string; isCover?: true }>
+
+  it('places a cover nothing else could on the band\'s own album, as theirs', () => {
+    // setlist.fm credits Merle Kilgore, whose catalogue we do not hold; it is
+    // track five of Social Distortion (1990), beside "Ball and Chain".
+    expect(songs['social-distortion::ring-of-fire']).toMatchObject({ albumTitle: 'Social Distortion', releaseDate: '1990-03-27' })
+    expect(songs['social-distortion::ring-of-fire'].isCover).toBeUndefined()
+    expect(songs['social-distortion::ring-of-fire'].albumTitle).toBe(songs['social-distortion::ball-and-chain'].albumTitle)
+  })
+
+  it('never re-points a cover the original act\'s catalogue already placed onto a later re-recording', () => {
+    // Run first, the pass moved these onto Man @ Work (2003) and Things We Lost.
+    expect(songs['colin-hay::down-under']).toMatchObject({ albumTitle: 'Business As Usual', isCover: true })
+    expect(songs['marc-almond::bedsitter']).toMatchObject({ isCover: true })
+    expect(songs['marc-almond::bedsitter'].albumTitle).not.toBe('Things We Lost')
+  })
+})

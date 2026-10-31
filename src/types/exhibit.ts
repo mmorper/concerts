@@ -160,6 +160,10 @@ export interface TopSong {
   artistNames: string[]
   album: AlbumIdentity | null
   coverOf?: string
+  /** The act I most recently heard play it: the thumbnail when there is no sleeve or it fails. */
+  lastAct?: EntityRef | null
+  /** That act's album artwork: the thumbnail when the song has no sleeve or it fails to load. */
+  lastActAlbum?: AlbumIdentity | null
 }
 
 /** get_archive_top_songs: the most-heard songs with their records. */

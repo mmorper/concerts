@@ -187,6 +187,46 @@ describe("songsExhibit (#593) — the most-heard songs with their records", () =
     expect(s.songs[0]).toMatchObject({ title: "Ring of Fire", album: null, coverOf: "Merle Kilgore" });
   });
 
+  it("names the act I most recently heard play it, as the thumbnail's fallback", () => {
+    const entry = (date: string, artistName: string, name: string) =>
+      ({ concertId: date, artistName, date, venue: "x", setlist: { sets: { set: [{ song: [{ name }] }] } } });
+    const setlists = {
+      version: "1",
+      generatedAt: "",
+      entries: [
+        entry("2011-06-01", "Thompson Twins", "Just Can't Get Enough"),
+        entry("1988-06-18", "Depeche Mode", "Just Can't Get Enough"),
+        entry("2012-01-01", "Somebody I Never Saw", "Mystery"),
+      ],
+    } as unknown as SetlistsCache;
+    const s = songsExhibit(most, undefined, { ...data, setlists })!;
+    const byTitle = new Map(s.songs.map((x) => [x.title, x.lastAct?.slug ?? null]));
+    expect(byTitle.get("Just Can't Get Enough")).toBe("thompson-twins"); // 2011 beats 1988
+    expect(byTitle.get("Story of My Life")).toBe("social-distortion"); // one act, no setlist row needed
+    expect(byTitle.get("Mystery")).toBeNull(); // not an archive act: nothing to show a picture of
+  });
+
+  it("falls back to album artwork of the act I last heard play it — never a photo", () => {
+    const setlists = {
+      version: "1",
+      generatedAt: "",
+      entries: [{ concertId: "c1", artistName: "Social Distortion", date: "2011-06-01", venue: "x", setlist: { sets: { set: [{ song: [{ name: "Ring of Fire", cover: { name: "Merle Kilgore" } }] }] } } }],
+    } as unknown as SetlistsCache;
+    const eras = {
+      version: "1",
+      generatedAt: "",
+      stats: {},
+      artists: { "social-distortion": { artistKey: "social-distortion", displayName: "Social Distortion", studioAlbums: [], definingAlbum: null, latestAlbum: { mbid: "hh", title: "Hard Times and Nursery Rhymes", releaseDate: "2011", coverAvailable: true } } },
+      concerts: { c1: { concertId: "c1", artistKey: "social-distortion", currentAlbum: { mbid: "hh", title: "Hard Times and Nursery Rhymes", releaseDate: "2011", coverAvailable: true } } },
+    } as unknown as AlbumEras;
+    const { "social-distortion::ring-of-fire": _, ...rest } = songAlbums.songs;
+    const s = songsExhibit(most, undefined, { ...data, eras, setlists, songAlbums: { ...songAlbums, songs: rest } })!;
+    // A headliner's night: the record they were touring then.
+    expect(s.songs[0]).toMatchObject({ title: "Ring of Fire", album: null, lastActAlbum: { title: "Hard Times and Nursery Rhymes" } });
+    // An act with no album data at all: nothing — the card draws the derived tile.
+    expect(s.songs.find((x) => x.title === "Mystery")!.lastActAlbum).toBeNull();
+  });
+
   it("uses the prose's clamp on how many songs, and has no card without data", () => {
     expect(songsExhibit(most, 2, data)!.songs).toHaveLength(2);
     expect(songsExhibit(most, 0, data)!.songs).toHaveLength(1);

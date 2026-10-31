@@ -10,6 +10,7 @@ import { useAskArchive, type Exchange } from '@/hooks/useAskArchive'
 import { useArchiveData } from '@/hooks/useArchiveData'
 import { getSessionToken, setSessionToken, getStatus } from '@/services/askArchive'
 import { AskExhibit } from './AskExhibit'
+import { AskConversation } from './AskConversation'
 
 // One prompt per category — covers every exhibit kind plus the two grounding cases the
 // pressure test flagged (Irvine Meadows = tool-skip; Peter = disambiguation never fired).
@@ -38,9 +39,32 @@ function useFixtures(): Exchange[] | null {
   return wanted ? (fixtures ?? []) : null
 }
 
+// `?fixtures&convo` — the fixtures replayed through the real AskConversation inside a
+// Spotlight-sized panel, one question per "Ask next", so scroll behaviour can be checked
+// without a backend: each new question should land at the top of the transcript.
+function ConvoReplay({ fixtures, archive }: { fixtures: Exchange[]; archive: ReturnType<typeof useArchiveData> }) {
+  const [shown, setShown] = useState(1)
+  return (
+    <div>
+      <button
+        type="button"
+        data-testid="ask-next"
+        onClick={() => setShown((n) => Math.min(n + 1, fixtures.length))}
+        style={{ marginBottom: 12, background: 'rgba(255,255,255,.1)', border: '1px solid rgba(255,255,255,.25)', color: '#fff', borderRadius: 8, padding: '6px 12px', cursor: 'pointer' }}
+      >
+        Ask next ({shown}/{fixtures.length})
+      </button>
+      <div className="ask-spotlight" style={{ height: '70vh', animation: 'none' }}>
+        <AskConversation exchanges={fixtures.slice(0, shown)} busy={false} archive={archive} onAsk={() => setShown((n) => Math.min(n + 1, fixtures.length))} />
+      </div>
+    </div>
+  )
+}
+
 export function AskDevHarness() {
   const archive = useArchiveData()
   const fixtures = useFixtures()
+  const convo = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('convo')
   const { exchanges, busy, ask, reset } = useAskArchive()
   const [input, setInput] = useState('')
   const [hasSession, setHasSession] = useState(!!getSessionToken())
@@ -91,7 +115,8 @@ export function AskDevHarness() {
             Fixtures mode: {fixtures.length} canned exhibits, hydrated from the live archive data. Drop <code>?fixtures</code> to talk to the worker.
           </p>
         )}
-        {fixtures?.map((ex) => (
+        {fixtures && convo && fixtures.length > 0 && !archive.loading && <ConvoReplay fixtures={fixtures} archive={archive} />}
+        {!convo && fixtures?.map((ex) => (
           <div key={ex.id}>
             <div className="ask-q">
               <span className="you">You</span>
