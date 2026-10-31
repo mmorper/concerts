@@ -39,7 +39,7 @@ interface Concert {
   state: string
 }
 
-interface Setlist {
+export interface Setlist {
   id: string
   eventDate: string
   artist: {
@@ -97,7 +97,7 @@ interface SetlistSearchResponse {
   setlist: Setlist[]
 }
 
-interface SetlistCacheEntry {
+export interface SetlistCacheEntry {
   concertId: string
   artistName: string
   date: string
@@ -355,6 +355,39 @@ async function fetchSetlistFromAPI(
 }
 
 // Delay helper to respect rate limits
+/**
+ * How long after a show an empty setlist.fm page is still worth asking about again.
+ *
+ * setlist.fm creates the event page before the show, with no songs, and fans fill it in
+ * over the following days. The Hollywood Bowl bill (Human League, Alison Moyet, Soft Cell,
+ * 2026-06-04) was fetched on 06-02 — two days early — and the empty pages were reused on
+ * every run after, so the site never showed any of the three sets. Past this window an
+ * empty page is almost always empty for good (most of the ~100 empty entries are 1980s
+ * shows), so they are not re-asked every week.
+ */
+const EMPTY_SETLIST_RETRY_DAYS = 30
+
+/** Songs across all sets; 0 for an event page with nothing filled in. */
+export function setlistSongCount(setlist: Pick<Setlist, 'sets'> | null): number {
+  return (setlist?.sets?.set ?? []).reduce((n, s) => n + (s.song?.length ?? 0), 0)
+}
+
+/**
+ * Whether a cached entry can be reused as-is. A found setlist with songs is final. A
+ * missing or empty one is reused only if it was fetched well after the show — one fetched
+ * before or soon after the night is asked about again until the window closes.
+ */
+export function canReuseCachedSetlist(
+  entry: Pick<SetlistCacheEntry, 'setlist' | 'fetchedAt' | 'date'>,
+): boolean {
+  if (entry.setlist === null) return false // unchanged: a miss is always retried
+  if (setlistSongCount(entry.setlist) > 0) return true
+  const fetched = Date.parse(entry.fetchedAt)
+  const show = Date.parse(`${entry.date}T00:00:00Z`)
+  if (Number.isNaN(fetched) || Number.isNaN(show)) return false
+  return fetched - show > EMPTY_SETLIST_RETRY_DAYS * 24 * 60 * 60 * 1000
+}
+
 function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -461,8 +494,8 @@ async function main(options: { forceRefresh?: boolean } = {}) {
 
     // Check if we already have this in cache
     const existing = existingEntries.get(cacheKey)
-    if (existing && existing.setlist !== null) {
-      // We have a valid cached setlist - reuse it
+    if (existing && canReuseCachedSetlist(existing)) {
+      // A setlist with songs, or an empty page fetched long enough after the show to trust
       cacheEntries.push(existing)
       cacheHitCount++
       console.log(`${progress} ${artistType} ✓ ${artistName} at ${concert.venue} (cached)`)

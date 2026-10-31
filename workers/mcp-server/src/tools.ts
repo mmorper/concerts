@@ -795,10 +795,14 @@ export interface ResolvedSetlist {
 // their own setlist.fm lookup (34 of 183 concerts, verified). Prefer the headliner's set;
 // fall back to the richest opener set (flagged isOpener) so a covered night never reads as
 // empty just because the headliner lookup missed. Empty/null setlists are skipped entirely.
+//
+// `asked` (the slugs of the act the question named) wins over both: asking for Blancmange's
+// set at Thompson Twins' Glasgow show means Blancmange's set, not the headliner's.
 function resolveSetlistEntry(
   setlists: SetlistsCache | null,
   concertId: string,
   headlinerNormalized: string,
+  asked: ReadonlySet<string> | null = null,
 ): ResolvedSetlist {
   const withSongs = (setlists?.entries ?? [])
     .filter((e) => e.concertId === concertId)
@@ -806,15 +810,16 @@ function resolveSetlistEntry(
     .filter((x) => x.songs.length > 0);
   if (withSongs.length === 0) return { songs: [], isOpener: false };
 
+  const theirs = asked ? withSongs.find((x) => asked.has(normalizeName(x.e.artistName))) : undefined;
   const headliner = withSongs.find(
     (x) => normalizeName(x.e.artistName) === headlinerNormalized,
   );
   const chosen =
-    headliner ?? [...withSongs].sort((a, b) => b.songs.length - a.songs.length)[0];
+    theirs ?? headliner ?? [...withSongs].sort((a, b) => b.songs.length - a.songs.length)[0];
   return {
     songs: chosen.songs,
     tour: chosen.e.setlist?.tour?.name,
-    isOpener: !headliner,
+    isOpener: normalizeName(chosen.e.artistName) !== headlinerNormalized,
     artistName: chosen.e.artistName,
   };
 }
@@ -908,7 +913,8 @@ export function surpriseMe(
 // disambiguation/whiff message to return as-is, or null context the caller turns into a
 // "tell me which show" prompt.
 type ConcertResolution =
-  | { kind: "match"; concert: Concert }
+  /** `asked`: the slugs of the act the question named, when it named one. */
+  | { kind: "match"; concert: Concert; asked?: ReadonlySet<string> }
   | { kind: "message"; text: string };
 
 function resolveConcert(
@@ -943,7 +949,14 @@ function resolveConcert(
     };
   }
 
-  let shows = concerts.filter((c) => c.headliner === r.name).sort(byDate);
+  // Every night they played, headlining or opening (#219), matched on any of the act's
+  // billings (#227) — the same rule get_artist_history counts by. Headliner-only made an
+  // opener's night unreachable: "Blancmange, Glasgow 2026" answered "I've seen them 1 time"
+  // with their setlist sitting in the cache.
+  const isThem = new Set(r.slugs);
+  let shows = concerts
+    .filter((c) => isThem.has(c.headlinerNormalized) || c.openers.some((o) => isThem.has(normalizeName(o))))
+    .sort(byDate);
   if (args.date) {
     const d = args.date.trim();
     const matched = shows.filter(
@@ -958,14 +971,14 @@ function resolveConcert(
     shows = matched;
   }
 
-  if (shows.length === 1) return { kind: "match", concert: shows[0] };
+  if (shows.length === 1) return { kind: "match", concert: shows[0], asked: isThem };
 
   // Multiple candidates and no date narrowed it to one — ask which night.
   return {
     kind: "message",
     text: [
       `I've seen ${r.name} ${shows.length} times — which night?`,
-      ...shows.map((c) => `- ${fullDate(c.date)} — ${c.venue}, ${c.city} [${c.id}]`),
+      ...shows.map((c) => `- ${fullDate(c.date)} — ${c.venue}, ${c.city}${isThem.has(c.headlinerNormalized) ? "" : ` (opening for ${c.headliner})`} [${c.id}]`),
     ].join("\n"),
   };
 }
@@ -1012,21 +1025,29 @@ export function concertSetlist(
   if (r.kind === "message") return r.text;
 
   const c = r.concert;
-  const sl = resolveSetlistEntry(setlists, c.id, c.headlinerNormalized);
+  const sl = resolveSetlistEntry(setlists, c.id, c.headlinerNormalized, r.asked ?? null);
+  // The question named an act that opened this night (not the headliner).
+  const askedOpener = !!r.asked && !r.asked.has(c.headlinerNormalized);
+  const openerAsked = askedOpener ? c.openers.find((o) => r.asked!.has(normalizeName(o))) ?? null : null;
 
   // The date becomes the link to the night itself — but only below, on the
   // path where songs exist. The no-setlist fallback keeps artist/venue links
   // only, so we never hand back a "here's the setlist" link to an empty panel.
+  // The date opens the set printed below, so it links to the act whose set that is: an
+  // opener's night under the headliner's slug opens the headliner's (possibly empty) panel.
+  const setSlug = sl.artistName ? normalizeName(sl.artistName) : c.headlinerNormalized;
   const head = [
     `${artistLink(c.headliner, c.headlinerNormalized)} at ${venueLink(c.venue, c.venueNormalized)}, ${c.city}`,
-    `${showLink(fullDate(c.date), c.headlinerNormalized, c.date)} [${c.id}]`,
+    `${showLink(fullDate(c.date), setSlug, c.date)} [${c.id}]`,
   ];
 
   // Graceful fallback — covers no-entry, setlist === null, and empty song lists alike.
   // State the gap plainly, then offer something that works (openers, best-known tracks).
   if (sl.songs.length === 0) {
     const lines = [
-      `I don't have a setlist on record for ${artistLink(c.headliner, c.headlinerNormalized)} at ${venueLink(c.venue, c.venueNormalized)} on ${fullDate(c.date)} [${c.id}].`,
+      openerAsked
+        ? `I don't have a setlist on record for ${artistLink(openerAsked, normalizeName(openerAsked))} opening for ${artistLink(c.headliner, c.headlinerNormalized)} at ${venueLink(c.venue, c.venueNormalized)} on ${fullDate(c.date)} [${c.id}].`
+        : `I don't have a setlist on record for ${artistLink(c.headliner, c.headlinerNormalized)} at ${venueLink(c.venue, c.venueNormalized)} on ${fullDate(c.date)} [${c.id}].`,
     ];
     const extras: string[] = [];
     if (c.openers.length) extras.push(`That night ${joinList(c.openers)} opened.`);
@@ -1045,8 +1066,17 @@ export function concertSetlist(
   const era = eraLine(eras, c.id);
   if (era && !sl.isOpener) lines.push(era);
 
-  // Opener-only coverage: be explicit that this is the opener's set, not the headliner's.
-  if (sl.isOpener) {
+  // Say whose set this is whenever it isn't simply the headliner's, as asked for.
+  const chosenSlug = normalizeName(sl.artistName ?? c.headliner);
+  if (askedOpener && r.asked!.has(chosenSlug)) {
+    lines.push("", `${sl.artistName} opened for ${c.headliner} that night${sl.tour ? ` (${sl.tour} tour)` : ""}:`);
+  } else if (askedOpener) {
+    lines.push(
+      "",
+      `I don't have ${openerAsked}'s set from that night, but I do have ${sl.artistName}'s${sl.isOpener ? "" : " headline"} set:`,
+    );
+  } else if (sl.isOpener) {
+    // Opener-only coverage: be explicit that this is the opener's set, not the headliner's.
     lines.push(
       "",
       `I don't have ${c.headliner}'s own setlist from that night, but I do have ${sl.artistName}'s opening set${sl.tour ? ` (${sl.tour} tour)` : ""}:`,
@@ -1155,7 +1185,7 @@ export function setlistSelection(
   const r = resolveConcert(concerts, args);
   if (r.kind === "message") return null;
   const c = r.concert;
-  const sl = resolveSetlistEntry(setlists, c.id, c.headlinerNormalized);
+  const sl = resolveSetlistEntry(setlists, c.id, c.headlinerNormalized, r.asked ?? null);
   const billing = sl.artistName ?? c.headliner;
   const songs = sl.songs
     .filter((song) => !song.tape)

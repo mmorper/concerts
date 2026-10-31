@@ -5,6 +5,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import type { Concert } from '@/types/concert'
+import { normalizeArtistName } from '@/utils/normalize'
 import { loadAlbumCovers } from '@/components/ask/albumCovers'
 import { buildMediaIndex, EMPTY_MEDIA, type MediaAsset, type MediaIndex, type VenuePhotoMeta } from '@/components/ask/media'
 
@@ -24,7 +25,8 @@ export interface VenueMeta extends VenuePhotoMeta {
 
 export interface ArtistFacts {
   meta: ArtistMeta | null
-  shows: Concert[] // chronological
+  /** Every night I saw them, chronological — headlining AND opening (#219), as the Artists scene counts. */
+  shows: Concert[]
   count: number
   firstYear?: number
   lastYear?: number
@@ -61,6 +63,36 @@ function topGenre(shows: Concert[]): string | undefined {
   const counts = new Map<string, number>()
   for (const c of shows) counts.set(c.genre, (counts.get(c.genre) ?? 0) + 1)
   return [...counts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0]
+}
+
+/**
+ * Concerts indexed by id, date, artist and venue. An artist's list holds every night I saw them,
+ * headlining or opening (#219); `headlined` keeps the nights they headlined.
+ */
+export function indexConcerts(concerts: Concert[]) {
+  const byId = new Map<string, Concert>()
+  const onDate = new Map<string, Concert>()
+  const byArtist = new Map<string, Concert[]>()
+  const headlined = new Map<string, Concert[]>()
+  const byVenue = new Map<string, Concert[]>()
+  for (const c of concerts) {
+    byId.set(c.id, c)
+    onDate.set(c.date, c)
+    ;(byArtist.get(c.headlinerNormalized) ?? byArtist.set(c.headlinerNormalized, []).get(c.headlinerNormalized)!).push(c)
+    ;(headlined.get(c.headlinerNormalized) ?? headlined.set(c.headlinerNormalized, []).get(c.headlinerNormalized)!).push(c)
+    // Openers are artists too (#219): Blancmange's Glasgow night was on Thompson Twins' bill.
+    // No *Normalized field ships for openers, so the slug is derived the way the site derives it.
+    for (const name of c.openers ?? []) {
+      const slug = normalizeArtistName(name.trim())
+      if (!slug || slug === c.headlinerNormalized) continue
+      const list = byArtist.get(slug) ?? byArtist.set(slug, []).get(slug)!
+      if (!list.includes(c)) list.push(c)
+    }
+    ;(byVenue.get(c.venueNormalized) ?? byVenue.set(c.venueNormalized, []).get(c.venueNormalized)!).push(c)
+  }
+  for (const list of byArtist.values()) list.sort(byDate)
+  for (const list of byVenue.values()) list.sort(byDate)
+  return { byId, onDate, byArtist, headlined, byVenue }
 }
 
 // `enabled` lets a caller defer the three fetches until Ask is actually used (the provider passes
@@ -110,21 +142,7 @@ export function useArchiveData(enabled = true): ArchiveData {
   }, [enabled])
 
   // Index concerts by id and by artist/venue slug once loaded.
-  const indexes = useMemo(() => {
-    const byId = new Map<string, Concert>()
-    const onDate = new Map<string, Concert>()
-    const byArtist = new Map<string, Concert[]>()
-    const byVenue = new Map<string, Concert[]>()
-    for (const c of concerts ?? []) {
-      byId.set(c.id, c)
-      onDate.set(c.date, c)
-      ;(byArtist.get(c.headlinerNormalized) ?? byArtist.set(c.headlinerNormalized, []).get(c.headlinerNormalized)!).push(c)
-      ;(byVenue.get(c.venueNormalized) ?? byVenue.set(c.venueNormalized, []).get(c.venueNormalized)!).push(c)
-    }
-    for (const list of byArtist.values()) list.sort(byDate)
-    for (const list of byVenue.values()) list.sort(byDate)
-    return { byId, onDate, byArtist, byVenue }
-  }, [concerts])
+  const indexes = useMemo(() => indexConcerts(concerts ?? []), [concerts])
 
   const media = useMemo(() => (mediaAssets ? buildMediaIndex(mediaAssets) : EMPTY_MEDIA), [mediaAssets])
 
@@ -138,13 +156,15 @@ export function useArchiveData(enabled = true): ArchiveData {
 
     artistFacts: (slug) => {
       const shows = indexes.byArtist.get(slug) ?? []
+      // A night's genre is the headliner's, so an act's own genre comes from the nights it headlined.
+      const own = indexes.headlined.get(slug) ?? []
       return {
         meta: artists?.[slug] ?? null,
         shows,
         count: shows.length,
         firstYear: shows[0]?.year,
         lastYear: shows[shows.length - 1]?.year,
-        primaryGenre: topGenre(shows),
+        primaryGenre: topGenre(own.length ? own : shows),
       }
     },
 
