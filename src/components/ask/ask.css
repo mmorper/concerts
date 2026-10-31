@@ -120,6 +120,297 @@
 .ask-row:hover .who { text-decoration: underline; }
 
 /* =====================================================================================
+   Media in answers (#593) — my photos, covers, portraits, venue photos, and their fallbacks.
+   Every image box has a fixed aspect, so nothing reflows when a lazy image lands or falls back.
+   ===================================================================================== */
+
+/* The derived floor: genre colour, a quiet ring, the name or initials set over it. */
+.ask-derived {
+  position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+  background: var(--genre, #4b5563); color: rgba(255, 255, 255, 0.92);
+  font-family: 'Playfair Display', Georgia, serif; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+/* The ring is texture for the larger shapes only; on an avatar it would sit on the initials. */
+.ask-derived .ring { display: none; }
+.ask-derived-sleeve .ring, .ask-hero-derived .ring, .ask-tile .ask-derived .ring {
+  display: block; position: absolute; right: -30%; top: -30%; width: 90%; aspect-ratio: 1; border-radius: 50%;
+  border: 0.9em solid rgba(255, 255, 255, 0.08); pointer-events: none;
+}
+.ask-derived .m { position: relative; font-size: 1.05em; letter-spacing: 0.02em; }
+.ask-derived-round { border-radius: 50%; }
+/* Container units size the title to the sleeve itself, so a 64px sleeve on a phone and the 140px
+   album-card sleeve both fit "Reproduction" on one line instead of breaking it mid-word. */
+.ask-derived-sleeve { align-items: flex-end; justify-content: flex-start; aspect-ratio: 1; padding: 0.6em; box-sizing: border-box; container-type: inline-size; }
+/* Each record's stand-in gets its own tint (hue from the title, see DerivedArt) so a strip of
+   fallback sleeves still reads as different records. */
+.ask-derived-sleeve { filter: hue-rotate(var(--tint, 0deg)); }
+.ask-derived-sleeve .t { position: relative; display: flex; flex-direction: column; gap: 2px; width: 100%; min-width: 0; }
+.ask-derived-sleeve .n {
+  font-size: clamp(7px, 12.5cqw, 22px); line-height: 1.05; overflow-wrap: break-word;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; overflow: hidden;
+}
+.ask-derived-sleeve .s { font-family: 'Source Sans 3', system-ui, sans-serif; font-size: clamp(6px, 8cqw, 13px); opacity: 0.75; }
+/* A sleeve too small to read (song rows, the shelf) keeps its tint and drops the type. */
+@container (max-width: 60px) { .ask-derived-sleeve .t { display: none; } }
+
+/* The tinted ground shows while a lazy image is still on its way. */
+.ask-framed, .ask-cover { display: block; width: 100%; object-fit: cover; background: rgba(255, 255, 255, 0.06); }
+.ask-icon { display: inline-block; flex: none; vertical-align: -2px; }
+.ask-cover { aspect-ratio: 1; border-radius: 4px; background: rgba(255, 255, 255, 0.06); }
+img.ex-photo, img.ex-avatar { display: block; object-fit: cover; }
+.ex-photo { overflow: hidden; font-size: 18px; }
+.ex-avatar { width: 40px; height: 40px; border-radius: 50%; flex: none; overflow: hidden; font-size: 13px; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.15); }
+
+/* A photo is a button: it opens the lightbox. Reset the button so the photo is the whole look. */
+.ask-photo-btn {
+  position: relative; display: block; padding: 0; margin: 0; border: 0; background: none; color: inherit;
+  font: inherit; text-align: left; cursor: zoom-in; border-radius: 10px; overflow: hidden;
+}
+.ask-photo-btn:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+.ask-photo-btn .ask-framed { transition: transform 0.35s ease; }
+.ask-photo-btn:hover .ask-framed { transform: scale(1.02); }
+@media (prefers-reduced-motion: reduce) { .ask-photo-btn .ask-framed { transition: none; } .ask-photo-btn:hover .ask-framed { transform: none; } }
+.ex-photo-btn { flex: none; width: 56px; height: 56px; border-radius: 10px; }
+.ex-photo-btn .ex-photo { width: 56px; height: 56px; }
+
+/* Hero — banner bleeds to the card edges; portrait sits beside the title at the crop's own aspect. */
+.ask-hero.banner { margin: -20px -22px 14px; width: calc(100% + 44px); border-radius: 0; }
+.ask-hero-cap {
+  position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 7px;
+  padding: 26px 14px 11px; font-size: 12.5px; color: #fff;
+  background: linear-gradient(to top, rgba(10, 8, 30, 0.82), rgba(10, 8, 30, 0));
+}
+.ask-hero-count {
+  position: absolute; right: 10px; top: 10px; font-size: 11px; letter-spacing: 0.04em; color: #fff;
+  background: rgba(0, 0, 0, 0.55); border-radius: 5px; padding: 2px 7px;
+}
+.ask-hero-derived { width: 100%; aspect-ratio: 3 / 2; font-size: 34px; }
+.ask-hero.portrait .ask-hero-derived { aspect-ratio: 4 / 5; }
+.ask-hero-row { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 12px; }
+.ask-hero.portrait { flex: 0 0 38%; max-width: 220px; }
+.ask-hero-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.ask-hero-side .ex-head { margin-bottom: 0; }
+.ask-cap { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 12.5px; color: rgba(255, 255, 255, 0.62); }
+.ask-cap.small { font-size: 12px; margin-top: 4px; }
+
+/* Filmstrip — more frames of the same act. */
+.ask-strip { margin-bottom: 14px; }
+.ask-strip-head, .ask-kick { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.55); margin-bottom: 8px; }
+.ask-strip-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.ask-strip-thumb { border-radius: 8px; }
+.ask-strip-thumb .ask-derived { aspect-ratio: 1; font-size: 14px; }
+.ask-strip-thumb .more {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(10, 8, 30, 0.55); font-size: 17px; font-weight: 600; color: #fff;
+}
+.show .cam { display: inline-flex; vertical-align: -1px; margin-right: 5px; color: #c7d2fe; }
+
+/* Venue hero: photo with the map inset, or photo and map side by side for a portrait frame. */
+.ask-venue-hero { position: relative; margin-bottom: 14px; }
+.ask-venue-hero .ask-hero.banner { margin-bottom: 0; }
+.ask-venue-sourced { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.ask-map-inset {
+  position: absolute; right: -8px; bottom: 12px; width: 132px; height: 92px; border-radius: 10px; overflow: hidden;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35), 0 8px 18px rgba(0, 0, 0, 0.5); z-index: 1;
+}
+.ask-map-inset .ask-map { position: absolute; inset: 0; }
+.ask-venue-duo { display: flex; gap: 12px; margin-bottom: 14px; align-items: stretch; }
+.ask-venue-duo .ask-hero.portrait { flex: 0 0 42%; max-width: none; }
+.ask-venue-duo-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.ask-venue-duo-side .ask-map-wrap { flex: 1; height: auto; min-height: 140px; margin-bottom: 0; }
+
+/* One frame per night. */
+.ask-nights { margin-bottom: 14px; }
+.ask-nights-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.ask-night { display: flex; flex-direction: column; gap: 5px; border-radius: 8px; overflow: visible; }
+.ask-night .ask-framed, .ask-night .ask-derived { border-radius: 8px; aspect-ratio: 1; }
+.ask-night .y { font-size: 12.5px; color: #fff; font-weight: 600; line-height: 1.25; }
+.ask-night .w { font-size: 11.5px; color: rgba(255, 255, 255, 0.6); line-height: 1.25; }
+
+/* List rows: square = my photo (with a count), round = a sourced portrait. */
+.ask-row { align-items: center; }
+.ask-row .th { position: relative; width: 36px; height: 36px; flex: none; }
+.ask-row .th .mine, .ask-row .th .ask-derived { width: 36px; height: 36px; border-radius: 6px; font-size: 12px; }
+.ask-row .th .src { width: 36px; height: 36px; border-radius: 50%; font-size: 12px; }
+.ask-row .th img.src { object-fit: cover; display: block; }
+.ask-row .th .b {
+  position: absolute; right: -5px; bottom: -5px; min-width: 16px; height: 16px; padding: 0 3px; box-sizing: border-box;
+  border-radius: 8px; background: #e0e7ff; color: #1e1b4b; font-size: 10px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+}
+.vtag { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: #fde68a; border: 1px solid rgba(253, 230, 138, 0.45); border-radius: 4px; padding: 0 5px; margin-left: 8px; vertical-align: 1px; white-space: nowrap; }
+
+/* Album card. */
+.ask-album-head { display: flex; gap: 18px; align-items: flex-start; margin-bottom: 14px; }
+.ask-album-cover { flex: none; width: 140px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45); font-size: 18px; }
+.ask-album-title { display: flex; flex-direction: column; gap: 5px; min-width: 0; padding-top: 2px; }
+.ask-album-title .ask-kick { margin-bottom: 0; }
+.ask-album-title .n { font-family: 'Playfair Display', Georgia, serif; font-size: 27px; line-height: 1.08; color: #fff; }
+.ask-album-title .meta { font-size: 13.5px; color: rgba(255, 255, 255, 0.7); }
+.ask-pill {
+  align-self: flex-start; margin-top: 4px; font-size: 12px; color: #dbe4ff;
+  background: rgba(59, 91, 219, 0.28); border: 1px solid rgba(129, 153, 255, 0.45); border-radius: 999px; padding: 2px 10px;
+}
+.ask-pill.on-cover { position: absolute; left: 5px; top: 5px; margin: 0; font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase; padding: 1px 6px; border-radius: 4px; background: #fde68a; border-color: transparent; color: #422006; }
+.ask-pill.on-cover.seen { left: auto; right: 5px; background: #e0e7ff; color: #1e1b4b; }
+.ask-live { border-top: 1px solid rgba(255, 255, 255, 0.09); padding-top: 12px; margin-bottom: 12px; }
+.ask-live-head { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
+.ask-live-head .ask-kick { margin-bottom: 2px; }
+.ask-live-head .meta { font-size: 13px; color: rgba(255, 255, 255, 0.68); }
+.ask-live-photo { flex: none; width: 46px; height: 46px; border-radius: 8px; }
+.ask-live-photo .ask-derived { aspect-ratio: 1; font-size: 13px; }
+
+/* A set: numbered rows, a miniature cover for the record each song came off. */
+.ask-set { list-style: none; margin: 0; padding: 0; font-size: 13.5px; }
+.ask-set li { display: grid; grid-template-columns: 22px 16px minmax(0, 1fr) auto; align-items: center; column-gap: 8px; padding: 3px 0; color: rgba(255, 255, 255, 0.86); }
+.ask-set.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 22px; }
+.ask-set.cols li { grid-template-columns: 22px minmax(0, 1fr) 16px; color: rgba(255, 255, 255, 0.5); }
+.ask-set.cols li.hit { color: #fff; }
+.ask-set.cols li.asked .t { font-weight: 600; }
+.ask-set .n { color: rgba(255, 255, 255, 0.4); text-align: right; font-variant-numeric: tabular-nums; }
+.ask-set .t { min-width: 0; overflow-wrap: anywhere; }
+.ask-set .cv { color: rgba(255, 255, 255, 0.5); }
+.ask-set .al { font-size: 12.5px; font-style: italic; color: rgba(255, 255, 255, 0.5); text-align: right; padding-left: 8px; }
+.ask-setlist .ask-set li { border-top: 1px solid rgba(255, 255, 255, 0.06); }
+.ask-songmark { width: 16px; height: 16px; display: block; border-radius: 3px; overflow: hidden; font-size: 6px; }
+.ask-songmark .ask-cover, .ask-songmark .ask-derived { width: 16px; height: 16px; border-radius: 3px; padding: 0; }
+.ask-songmark .ask-derived .t { display: none; }
+.ask-songmark.none { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22); }
+.ask-note { display: block; font-size: 12px; color: rgba(255, 255, 255, 0.5); margin: 6px 0 12px; }
+.ask-links { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+
+/* Discography wall. */
+.ask-disc-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px 12px; margin-bottom: 8px; }
+.ask-disc { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ask-disc .c { position: relative; border-radius: 4px; box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45); font-size: 13px; }
+.ask-disc .t { font-size: 13px; color: #fff; line-height: 1.2; overflow-wrap: anywhere; }
+.ask-disc .y { font-size: 11.5px; color: rgba(255, 255, 255, 0.55); }
+.ask-disc.seen .c { outline: 2px solid #a5b4fc; outline-offset: 3px; }
+.ask-disc.dim .c > .ask-cover, .ask-disc.dim .c > .ask-derived { opacity: 0.45; }
+
+/* Night card: one tile per act I photographed, each at the crop's own 4:5. */
+.ask-mosaic { display: grid; gap: 6px; margin-bottom: 12px; }
+.ask-mosaic.n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ask-mosaic.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ask-tile .lbl {
+  position: absolute; left: 8px; bottom: 8px; right: 8px; font-size: 12px; color: #fff; line-height: 1.25;
+  background: rgba(0, 0, 0, 0.6); border-radius: 6px; padding: 4px 8px; width: fit-content; max-width: calc(100% - 16px);
+}
+.ask-tile .ask-derived { aspect-ratio: 4 / 5; font-size: 26px; }
+.ask-records { margin-bottom: 14px; }
+.ask-records-row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; }
+.ask-rec { flex: 0 0 72px; display: flex; flex-direction: column; gap: 4px; }
+.ask-rec .ask-cover, .ask-rec .ask-derived { width: 72px; height: 72px; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4); font-size: 11px; }
+.ask-rec .x { font-size: 12.5px; font-weight: 600; color: #fff; }
+.ask-rec .t { font-size: 11.5px; color: rgba(255, 255, 255, 0.72); line-height: 1.2; overflow-wrap: anywhere; }
+.ask-rec .y { color: rgba(255, 255, 255, 0.5); }
+.ask-rec.none .ask-cover, .ask-rec.none .ask-derived { opacity: 0.5; outline: 1px dashed rgba(255, 255, 255, 0.5); outline-offset: 2px; box-shadow: none; }
+.ask-setlist { margin-bottom: 12px; }
+
+/* ---- Era, shape, songs (#593) — the cards for tools that used to answer in text only ---- */
+.ask-era-now { display: flex; gap: 16px; align-items: center; margin-bottom: 14px; padding: 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.04); }
+.ask-era-cover { flex: none; width: 96px; box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45); font-size: 15px; }
+.ask-era-now-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ask-era-now-text .ask-kick { margin-bottom: 0; }
+.ask-era-now-text .t { font-family: 'Playfair Display', Georgia, serif; font-size: 18px; line-height: 1.25; color: #fff; }
+.ask-era-ahead { font-size: 13.5px; color: #fde68a; line-height: 1.4; }
+
+/* The shelf: every studio album; the amber line is the night. Records not out yet are faded. */
+.ask-shelf { margin-bottom: 14px; }
+.ask-shelf-row { display: flex; gap: 10px; overflow-x: auto; padding: 6px 2px 6px 4px; scrollbar-width: thin; }
+.ask-shelf-item { position: relative; flex: 0 0 46px; display: flex; flex-direction: column; gap: 3px; }
+.ask-shelf-item .ask-cover, .ask-shelf-item .ask-derived { width: 46px; height: 46px; font-size: 8px; }
+.ask-shelf-item .y { font-size: 10.5px; color: rgba(255, 255, 255, 0.55); text-align: center; }
+.ask-shelf-item.after > .ask-cover, .ask-shelf-item.after > .ask-derived { opacity: 0.4; }
+.ask-shelf-item.defining > .ask-cover, .ask-shelf-item.defining > .ask-derived { opacity: 1; outline: 2px solid #fde68a; outline-offset: 2px; }
+.ask-shelf-item .ask-pill.on-cover { top: -6px; left: 50%; transform: translateX(-50%); font-size: 8px; padding: 0 4px; white-space: nowrap; }
+.ask-shelf-item.first-after::before, .ask-shelf-end {
+  content: ''; position: absolute; left: -6px; top: -4px; bottom: 14px; width: 2px; border-radius: 1px;
+  background: #fde68a; box-shadow: 0 0 8px rgba(253, 230, 138, 0.6);
+}
+.ask-shelf-end { position: relative; left: 0; flex: 0 0 2px; height: 46px; top: 0; }
+
+/* Shape: one stacked bar, five album-age buckets, then the "before the record" covers. */
+.ask-shape-bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; gap: 2px; margin-bottom: 10px; }
+.ask-shape-bar .seg { flex-basis: 0; min-width: 4px; }
+.s0 { background: #c7d2fe; } .s1 { background: #a5b4fc; } .s2 { background: #818cf8; } .s3 { background: #6366f1; } .s4 { background: #4338ca; }
+.ask-shape-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: rgba(255, 255, 255, 0.7); margin-bottom: 4px; }
+.ask-shape-legend .lg { display: inline-flex; align-items: center; gap: 6px; }
+.ask-shape-legend .lg b { color: #fff; font-weight: 600; }
+.ask-shape-legend .sw { width: 10px; height: 10px; border-radius: 3px; }
+.ask-ahead { margin-bottom: 8px; }
+.ask-ahead-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 12px; }
+.ask-ahead-item { display: flex; flex-direction: column; gap: 4px; text-decoration: none; min-width: 0; }
+.ask-ahead-item .ask-cover, .ask-ahead-item .ask-derived { box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45); font-size: 13px; }
+.ask-ahead-item .t { font-size: 13px; color: #fff; line-height: 1.25; }
+.ask-ahead-item .y { font-size: 11.5px; color: rgba(255, 255, 255, 0.6); line-height: 1.3; }
+.ask-ahead-item:hover .t { text-decoration: underline; }
+
+/* Songs: rank, cover, title / act · record, count. */
+.ask-songs { list-style: none; margin: 0 0 6px; padding: 0; }
+.ask-songs li { display: grid; grid-template-columns: 22px 36px minmax(0, 1fr) auto; align-items: center; column-gap: 12px; padding: 7px 0; border-top: 1px solid rgba(255, 255, 255, 0.07); }
+.ask-songs li:first-child { border-top: none; }
+.ask-songs .n { font-size: 12.5px; color: rgba(255, 255, 255, 0.45); text-align: right; font-variant-numeric: tabular-nums; }
+.ask-songs .c, .ask-songs .c .ask-cover, .ask-songs .c .ask-derived { width: 36px; height: 36px; border-radius: 4px; font-size: 11px; }
+.ask-songs .body { display: flex; flex-direction: column; min-width: 0; }
+.ask-songs .t { font-size: 14.5px; color: #fff; overflow-wrap: anywhere; }
+.ask-songs .w { font-size: 12.5px; color: rgba(255, 255, 255, 0.62); }
+.ask-songs .w a { color: rgba(255, 255, 255, 0.85); text-decoration: none; }
+.ask-songs .w a:hover { text-decoration: underline; }
+.ask-songs .al { font-style: italic; }
+.ask-songs .x { font-size: 13.5px; font-weight: 600; color: #fff; font-variant-numeric: tabular-nums; }
+
+/* Choice chips with a face. */
+.chip.with-av { display: inline-flex; align-items: center; gap: 8px; padding-left: 5px; }
+.chip-av { width: 24px; height: 24px; border-radius: 50%; flex: none; overflow: hidden; font-size: 9px; }
+img.chip-av { object-fit: cover; display: block; }
+
+@media (max-width: 767px) {
+  .ask-ahead-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ask-era-cover { width: 80px; }
+}
+
+/* Lightbox — above the Spotlight (2000) and its scrim. */
+.ask-lightbox {
+  position: fixed; inset: 0; z-index: 2100; display: flex; flex-direction: column;
+  background: #07060f; color: #fff; font-family: 'Source Sans 3', system-ui, sans-serif;
+  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom); animation: ask-fade-in 0.15s ease both;
+}
+.ask-lightbox-bar { display: flex; align-items: center; padding: 8px 8px 8px 18px; }
+.ask-lightbox-bar .count { font-size: 13px; color: rgba(255, 255, 255, 0.7); }
+.ask-lightbox-btn {
+  width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; margin-left: auto;
+  border: 0; border-radius: 10px; background: transparent; color: #fff; font-size: 30px; line-height: 1; cursor: pointer;
+}
+.ask-lightbox-btn:hover { background: rgba(255, 255, 255, 0.1); }
+.ask-lightbox-btn:focus-visible { outline: 2px solid #a5b4fc; }
+.ask-lightbox-stage { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 0 56px; }
+.ask-lightbox-stage img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+.ask-lightbox-btn.nav { position: absolute; top: 50%; transform: translateY(-50%); margin: 0; }
+.ask-lightbox-btn.nav.prev { left: 6px; }
+.ask-lightbox-btn.nav.next { right: 6px; }
+.ask-lightbox-cap { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0; padding: 14px 20px 22px; font-size: 14px; color: rgba(255, 255, 255, 0.82); text-align: center; }
+@media (prefers-reduced-motion: reduce) { .ask-lightbox { animation: none; } }
+
+@media (max-width: 767px) {
+  .ask-hero.portrait { flex-basis: 40%; }
+  /* Beside a portrait photo the avatar crowds the name; the photo already says who it is. */
+  .ask-hero-side .ex-avatar { display: none; }
+  .ask-strip-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .ask-strip-row > :nth-child(5) { display: none; }
+  .ask-nights-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ask-disc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ask-album-cover { width: 104px; }
+  .ask-album-title .n { font-size: 22px; }
+  .ask-set.cols { grid-template-columns: minmax(0, 1fr); }
+  .ask-set .al { display: none; }
+  .ask-venue-duo { flex-direction: column; }
+  .ask-venue-duo .ask-hero.portrait { flex: none; width: 60%; align-self: center; }
+  .ask-lightbox-stage { padding: 0; }
+  .ask-lightbox-btn.nav { display: none; }
+}
+
+/* =====================================================================================
    Containers (#141) — the shared conversation surface + the two answer containers.
    ===================================================================================== */
 

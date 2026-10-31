@@ -23,6 +23,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type {
   AlbumEras,
+  AlbumRef,
   ArtistEra,
   ArtistsMetadata,
   ArtistsTopTracks,
@@ -1112,6 +1113,70 @@ export function concertSetlist(
   return out + linkFooter(out);
 }
 
+/** One performed song on a night, with the record it came off when known. */
+export interface SelectedSong {
+  title: string;
+  /** setlist.fm's cover credit — "Kajagoogoo" for a Kajagoogoo song. */
+  coverOf?: string;
+  /** Null for covers (the record is another act's) and for songs nothing matched. */
+  album: SongAlbum | null;
+}
+
+/** The night `concertSetlist` narrates, as data rather than prose. */
+export interface SetlistSelection {
+  concert: Concert;
+  /** Whose set `songs` is: the headliner, or an opener when only theirs is on record. */
+  performer: string;
+  isOpener: boolean;
+  /** Empty when no setlist is on record. Tape intros are left out. */
+  songs: SelectedSong[];
+  /** The record the headliner was touring; null for an opener's set or no era data. */
+  touring: AlbumRef | null;
+}
+
+/**
+ * The same night `concertSetlist` resolves, as structure — for Ask the Archive's night card.
+ *
+ * Shares `resolveConcert`, `resolveSetlistEntry` and `songAlbumOf` with the prose, so the
+ * card cannot name a different night, a different set or a different album than the text
+ * beside it. Covers carry no album for the same reason the prose prints none: the record
+ * belongs to the original act. Returns null wherever `concertSetlist` answers with a
+ * question instead of a night (ambiguous artist, several shows and no date).
+ */
+export function setlistSelection(
+  concerts: Concert[],
+  setlists: SetlistsCache | null,
+  args: { artist?: string; date?: string; concertId?: string },
+  eras: AlbumEras | null = null,
+  songAlbums: SongAlbums | null = null,
+  artistsMeta: ArtistsMetadata = {},
+  aliases: ArtistAliasData | null = null,
+): SetlistSelection | null {
+  const r = resolveConcert(concerts, args);
+  if (r.kind === "message") return null;
+  const c = r.concert;
+  const sl = resolveSetlistEntry(setlists, c.id, c.headlinerNormalized);
+  const billing = sl.artistName ?? c.headliner;
+  const songs = sl.songs
+    .filter((song) => !song.tape)
+    .map((song) => {
+      const a = songAlbumOf(song, billing, songAlbums, artistsMeta, aliases);
+      return {
+        title: song.name,
+        ...(song.cover?.name ? { coverOf: song.cover.name } : {}),
+        // Exactly the prose's rule (`albumOf` above), so card and text agree on every row.
+        album: a && !a.isCover ? a : null,
+      };
+    });
+  return {
+    concert: c,
+    performer: billing,
+    isOpener: sl.isOpener,
+    songs,
+    touring: sl.isOpener ? null : (eras?.concerts[c.id]?.currentAlbum ?? null),
+  };
+}
+
 
 // ===================================================================
 // 9. get_career_position (v5.4, #271)
@@ -1143,6 +1208,53 @@ function agePhrase(days: number): string {
   return `${years < 10 ? years.toFixed(1) : Math.round(years)} years old`;
 }
 
+/**
+ * The night get_career_position talks about, or the sentence it answers with instead.
+ * Deliberately NOT resolveConcert: with no date that asks "which night?", and the spec's
+ * contract here is "omit -> most recent show". Shared with Ask's era card (#593) so the card
+ * is always about the night the prose is about.
+ */
+export function careerPositionNight(
+  concerts: Concert[],
+  args: { artist?: string; date?: string; concertId?: string },
+  aliases: AliasIndex = EMPTY_ALIAS_INDEX,
+): { concert: Concert } | { message: string } {
+  if (args.concertId) {
+    const concert = concerts.find((c) => c.id === args.concertId);
+    return concert ? { concert } : { message: `I don't have a concert with id "${args.concertId}" in the archive.` };
+  }
+  if (!args.artist) {
+    return { message: "Tell me which artist — and a date, if you want a particular night." };
+  }
+  const r = resolveArtist(concerts, args.artist, aliases);
+  if (r.kind === "owner") return { message: ownerNotAnArtist(concerts.length) };
+  if (r.kind === "none") return { message: `${args.artist.trim()} isn't in the archive.` };
+  if (r.kind === "ambiguous") {
+    return {
+      message: [
+        `I have a few artists matching "${args.artist.trim()}":`,
+        ...r.options.map((o) => `- ${o}`),
+        "",
+        "Which one did you mean?",
+      ].join("\n"),
+    };
+  }
+  const isThem = new Set(r.slugs);
+  let shows = concerts.filter((c) => isThem.has(c.headlinerNormalized)).sort(byDate);
+  if (args.date) {
+    const d = args.date.trim();
+    const narrowed = shows.filter((c) => c.date === d || c.date.startsWith(d) || String(c.year) === d);
+    if (narrowed.length === 0) {
+      return {
+        message: `I don't have a ${r.name} show on ${d} in the archive — I've seen them ${shows.length} ${shows.length === 1 ? "time" : "times"}.`,
+      };
+    }
+    shows = narrowed;
+  }
+  const concert = shows[shows.length - 1];
+  return concert ? { concert } : { message: `${r.name} isn't in the archive as a headliner.` };
+}
+
 export function careerPosition(
   concerts: Concert[],
   eras: AlbumEras | null,
@@ -1151,41 +1263,9 @@ export function careerPosition(
 ): string {
   if (!eras) return "I don't have album-cycle data on hand right now.";
 
-  // Deliberately NOT resolveConcert: with no date that asks "which night?",
-  // and the spec's contract here is "omit -> most recent show".
-  let concert: Concert | undefined;
-
-  if (args.concertId) {
-    concert = concerts.find((c) => c.id === args.concertId);
-    if (!concert) return `I don't have a concert with id "${args.concertId}" in the archive.`;
-  } else {
-    if (!args.artist) {
-      return "Tell me which artist — and a date, if you want a particular night.";
-    }
-    const r = resolveArtist(concerts, args.artist, aliases);
-    if (r.kind === "owner") return ownerNotAnArtist(concerts.length);
-    if (r.kind === "none") return `${args.artist.trim()} isn't in the archive.`;
-    if (r.kind === "ambiguous") {
-      return [
-        `I have a few artists matching "${args.artist.trim()}":`,
-        ...r.options.map((o) => `- ${o}`),
-        "",
-        "Which one did you mean?",
-      ].join("\n");
-    }
-    const isThem = new Set(r.slugs);
-    let shows = concerts.filter((c) => isThem.has(c.headlinerNormalized)).sort(byDate);
-    if (args.date) {
-      const d = args.date.trim();
-      const narrowed = shows.filter((c) => c.date === d || c.date.startsWith(d) || String(c.year) === d);
-      if (narrowed.length === 0) {
-        return `I don't have a ${r.name} show on ${d} in the archive — I've seen them ${shows.length} ${shows.length === 1 ? "time" : "times"}.`;
-      }
-      shows = narrowed;
-    }
-    concert = shows[shows.length - 1];
-    if (!concert) return `${r.name} isn't in the archive as a headliner.`;
-  }
+  const night = careerPositionNight(concerts, args, aliases);
+  if ("message" in night) return night.message;
+  const concert = night.concert;
 
   const era: ConcertEra | undefined = eras.concerts[concert.id];
   const artistEra: ArtistEra | undefined = era ? eras.artists[era.artistKey] : undefined;
@@ -1266,17 +1346,29 @@ function monthsAwayPhrase(months: number): string {
   return `${years} years`;
 }
 
-export function careerShape(concerts: Concert[], eras: AlbumEras | null): string {
-  if (!eras) return "I don't have album-cycle data on hand right now.";
+export interface CareerShapeData {
+  placed: number;
+  medianMonths: number;
+  buckets: Record<CycleBucket, number>;
+  debut: number;
+  /** Every night the defining record was still ahead. */
+  aheadCount: number;
+  /** Those nights in quoting order: well-evidenced first, then the longest wait. */
+  quotable: ConcertEra[];
+  multiEra: ArtistEra[];
+}
 
+/**
+ * The aggregate get_career_shape narrates, as data. Shared with Ask's shape card (#593) so
+ * the covers on the card are the nights the prose quotes, in the same order.
+ */
+export function careerShapeData(eras: AlbumEras): CareerShapeData | null {
   const entries = Object.values(eras.concerts);
   const placed = entries.filter(
     (e): e is ConcertEra & { cycleBucket: CycleBucket; daysSinceRelease: number } =>
       e.cycleBucket !== null && e.daysSinceRelease !== null,
   );
-  if (placed.length === 0) {
-    return "I don't have enough album-cycle data yet to see a shape in it.";
-  }
+  if (placed.length === 0) return null;
 
   const days = placed.map((e) => e.daysSinceRelease).sort((a, b) => a - b);
   const medianDays = days[Math.floor(days.length / 2)];
@@ -1290,54 +1382,74 @@ export function careerShape(concerts: Concert[], eras: AlbumEras | null): string
     { fresh: 0, current: 0, mature: 0, deep: 0, catalog: 0 },
   );
 
-  const lines = [
-    `I can place ${placed.length} of my ${concerts.length} nights inside the artist's own catalogue — where they stood, in their own arc, the evening I was in the room.`,
-    "",
-    `The median night lands about ${medianMonths} months after the record that was current that evening.`,
-    `${buckets.fresh} inside an album's first three months, ${buckets.current} within its first year, ${buckets.mature} one to three years on, ${buckets.deep} three to ten years deep, and ${buckets.catalog} deeper than ten.`,
-  ];
-
-  const debut = entries.filter((e) => e.isDebutEra).length;
-  if (debut > 0) {
-    lines.push(`${debut} of them were somebody's first record.`);
-  }
-
   // The best thing in this data: nights where the album that would define the artist did
   // not exist yet.
   const ahead = entries.filter(
     (e) => e.definingAlbumAhead && e.definingAlbum && e.definingAlbumMonthsAway !== null,
   );
-
-  if (ahead.length > 0) {
-    // Which three to quote is not the same question as how many there are. Ranking by gap
-    // alone puts the weakest claims first: the longest gap in the archive (17 years) rests
-    // on a "defining album" backed by 2 of 5 top tracks, which is likelier an artifact of
-    // the top-tracks source than a story. So examples must clear an evidence bar first,
-    // and only then does the longest wait win. The count above stays honest at all of them.
-    const wellEvidenced = ahead.filter((e) => {
-      const d = e.definingAlbum!;
-      return d.topTrackTotal > 0 && d.topTrackCount / d.topTrackTotal >= 0.6;
-    });
-    const quotable = (wellEvidenced.length ? wellEvidenced : ahead)
-      .slice()
-      .sort((a, b) => (b.definingAlbumMonthsAway ?? 0) - (a.definingAlbumMonthsAway ?? 0));
-
-    const examples = quotable.slice(0, 3).map((e) => {
-      const name = eras.artists[e.artistKey]?.displayName ?? e.artistKey;
-      const year = e.date.slice(0, 4);
-      return `${artistLink(name, e.artistKey)} in ${year}, ${monthsAwayPhrase(e.definingAlbumMonthsAway!)} before ${e.definingAlbum!.title}`;
-    });
-    lines.push(
-      "",
-      `${ahead.length} ${ahead.length === 1 ? "night" : "nights"} I watched a band before the record they'd be remembered for existed — ${joinList(examples)}.`,
-    );
-  }
+  // Which ones to quote is not the same question as how many there are. Ranking by gap
+  // alone puts the weakest claims first: the longest gap in the archive (17 years) rests
+  // on a "defining album" backed by 2 of 5 top tracks, which is likelier an artifact of
+  // the top-tracks source than a story. So examples must clear an evidence bar first,
+  // and only then does the longest wait win. The count stays honest at all of them.
+  const wellEvidenced = ahead.filter((e) => {
+    const d = e.definingAlbum!;
+    return d.topTrackTotal > 0 && d.topTrackCount / d.topTrackTotal >= 0.6;
+  });
+  const quotable = (wellEvidenced.length ? wellEvidenced : ahead)
+    .slice()
+    .sort((a, b) => (b.definingAlbumMonthsAway ?? 0) - (a.definingAlbumMonthsAway ?? 0));
 
   // erasSeen is per-album, so >1 means the same act caught in genuinely different chapters.
   const multiEra = Object.values(eras.artists)
     .filter((a) => (a.erasSeen?.length ?? 0) > 1)
     .sort((a, b) => b.erasSeen.length - a.erasSeen.length);
 
+  return {
+    placed: placed.length,
+    medianMonths,
+    buckets,
+    debut: entries.filter((e) => e.isDebutEra).length,
+    aheadCount: ahead.length,
+    quotable,
+    multiEra,
+  };
+}
+
+export function careerShape(concerts: Concert[], eras: AlbumEras | null): string {
+  if (!eras) return "I don't have album-cycle data on hand right now.";
+
+  const shape = careerShapeData(eras);
+  if (!shape) {
+    return "I don't have enough album-cycle data yet to see a shape in it.";
+  }
+  const { medianMonths, buckets } = shape;
+
+  const lines = [
+    `I can place ${shape.placed} of my ${concerts.length} nights inside the artist's own catalogue — where they stood, in their own arc, the evening I was in the room.`,
+    "",
+    `The median night lands about ${medianMonths} months after the record that was current that evening.`,
+    `${buckets.fresh} inside an album's first three months, ${buckets.current} within its first year, ${buckets.mature} one to three years on, ${buckets.deep} three to ten years deep, and ${buckets.catalog} deeper than ten.`,
+  ];
+
+  const debut = shape.debut;
+  if (debut > 0) {
+    lines.push(`${debut} of them were somebody's first record.`);
+  }
+
+  if (shape.aheadCount > 0) {
+    const examples = shape.quotable.slice(0, 3).map((e) => {
+      const name = eras.artists[e.artistKey]?.displayName ?? e.artistKey;
+      const year = e.date.slice(0, 4);
+      return `${artistLink(name, e.artistKey)} in ${year}, ${monthsAwayPhrase(e.definingAlbumMonthsAway!)} before ${e.definingAlbum!.title}`;
+    });
+    lines.push(
+      "",
+      `${shape.aheadCount} ${shape.aheadCount === 1 ? "night" : "nights"} I watched a band before the record they'd be remembered for existed — ${joinList(examples)}.`,
+    );
+  }
+
+  const multiEra = shape.multiEra;
   if (multiEra.length > 0) {
     const deepest = multiEra[0];
     lines.push(

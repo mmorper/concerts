@@ -19,10 +19,13 @@ import type {
   AlbumRef,
   ArtistsMetadata,
   Concert,
+  SetlistEntry,
+  SetlistsCache,
   SongAlbum,
   SongAlbums,
 } from "../../mcp-server/src/types.js";
-import { songAlbumArtistKeys } from "../../../scripts/utils/song-album-lookup.js";
+import { lookupSongAlbum, songAlbumArtistKeys } from "../../../scripts/utils/song-album-lookup.js";
+import { artistDeepLink, venueDeepLink, type AlbumExhibit, type AlbumIdentity, type EntityRef, type Exhibit } from "./exhibits.js";
 import { songAlbumKey } from "../../../scripts/utils/song-title.js";
 
 export interface AlbumInfoArgs {
@@ -91,6 +94,37 @@ function resolveKeys(query: string, data: AlbumInfoData): ArtistKeys {
   return { name: r.name, keys };
 }
 
+/**
+ * The song-albums entries a song question lands on. Exact folded-title match first; only when
+ * that misses, a looser contains-match capped at five. Shared by the prose and the card so the
+ * card always shows the record the text names.
+ */
+function songHits(song: string, scoped: Entry[]): Entry[] {
+  const wanted = songAlbumKey("x", song).slice(3);
+  const exact = scoped.filter((e) => e.songKey === wanted);
+  if (exact.length) return exact;
+  const needle = fold(song);
+  return scoped.filter((e) => fold(e.album.songTitle).includes(needle)).slice(0, 5);
+}
+
+/** Songs heard live off a named album, and studio albums carrying that title. Shared, as above. */
+function albumMatches(
+  album: string,
+  scoped: Entry[],
+  artist: { keys: Set<string> } | undefined,
+  data: AlbumInfoData,
+) {
+  const needle = fold(album);
+  const live = scoped.filter((e) => fold(e.album.albumTitle) === needle || fold(e.album.albumTitle).includes(needle));
+  const spines = artist
+    ? [...artist.keys].map((k) => data.eras?.artists[k]).filter((a): a is NonNullable<typeof a> => Boolean(a))
+    : Object.values(data.eras?.artists ?? {});
+  const studio = spines.flatMap((a) =>
+    a.studioAlbums.filter((s) => fold(s.title) === needle).map((s) => ({ artist: a.displayName, key: a.artistKey, ref: s })),
+  );
+  return { live, studio };
+}
+
 const COVERAGE_NOTE =
   "Song-to-album matching covers about nine in ten of the songs in my setlists, and I only have setlists for some shows — so a missing song isn't proof it wasn't played.";
 
@@ -115,12 +149,7 @@ export function albumInfo(args: AlbumInfoArgs, data: AlbumInfoData): string {
 
   // ── A song → its album ───────────────────────────────────────────────────
   if (song) {
-    const wanted = songAlbumKey("x", song).slice(3);
-    let hits = scoped.filter((e) => e.songKey === wanted);
-    if (!hits.length) {
-      const needle = fold(song);
-      hits = scoped.filter((e) => fold(e.album.songTitle).includes(needle)).slice(0, 5);
-    }
+    const hits = songHits(song, scoped);
     if (!hits.length) {
       return `I don't have "${song}"${artist ? ` by ${artist.name}` : ""} matched to an album. ${COVERAGE_NOTE}`;
     }
@@ -137,14 +166,7 @@ export function albumInfo(args: AlbumInfoArgs, data: AlbumInfoData): string {
 
   // ── Songs heard live off one album ───────────────────────────────────────
   if (album) {
-    const needle = fold(album);
-    const live = scoped.filter((e) => fold(e.album.albumTitle) === needle || fold(e.album.albumTitle).includes(needle));
-    const spines = artist
-      ? [...artist.keys].map((k) => data.eras?.artists[k]).filter((a): a is NonNullable<typeof a> => Boolean(a))
-      : Object.values(data.eras?.artists ?? {});
-    const studio = spines.flatMap((a) =>
-      a.studioAlbums.filter((s) => fold(s.title) === needle).map((s) => ({ artist: a.displayName, ref: s })),
-    );
+    const { live, studio } = albumMatches(album, scoped, artist, data);
 
     if (!live.length && !studio.length) {
       return `I don't have a record called *${album}*${artist ? ` for ${artist.name}` : ""}.`;
@@ -208,4 +230,168 @@ export function albumInfo(args: AlbumInfoArgs, data: AlbumInfoData): string {
     );
   }
   return lines.join("\n");
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// The card (#593). Same resolution as the prose above — `songHits`, `albumMatches`,
+// `resolveKeys` — so the record on the card is always the record the text names.
+// Returns undefined whenever the prose would hedge (several records, an unknown act):
+// an ambiguous card is worse than the plain one.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface AlbumExhibitData extends AlbumInfoData {
+  /** For "the night I heard it". Absent → the album card simply has no live block. */
+  setlists?: SetlistsCache | null;
+}
+
+/** Album identity from either shape: a studio-spine AlbumRef (`title`) or a SongAlbum (`albumTitle`). */
+const identity = (a: AlbumRef | SongAlbum): AlbumIdentity => ({
+  mbid: a.mbid,
+  title: "albumTitle" in a ? a.albumTitle : a.title,
+  releaseDate: a.releaseDate,
+  coverAvailable: a.coverAvailable,
+});
+
+/** An act's archive card link, by display name then by key. Null for acts I never saw. */
+function archiveRef(name: string, key: string, data: AlbumInfoData): EntityRef | null {
+  for (const q of [name, key.replace(/-/g, " ")]) {
+    const r = resolveArtist(data.concerts, q, data.aliasIndex);
+    if (r.kind === "match") return { entity: "artist", slug: r.slug, name: r.name, deepLink: artistDeepLink(r.slug) };
+  }
+  return null;
+}
+
+function setOf(entry: SetlistEntry, data: AlbumInfoData): Array<{ title: string; coverOf?: string; rec: SongAlbum | null }> {
+  const out: Array<{ title: string; coverOf?: string; rec: SongAlbum | null }> = [];
+  for (const set of entry.setlist?.sets?.set ?? []) {
+    for (const s of set.song ?? []) {
+      if (!s.name || s.tape) continue;
+      const rec = lookupSongAlbum<SongAlbum>(data.songAlbums?.songs, entry.artistName, s.name, {
+        discographyKeys: data.aliasData?.discographyKeys,
+        artistsMetadata: data.meta,
+      });
+      out.push({ title: s.name, ...(s.cover?.name ? { coverOf: s.cover.name } : {}), rec });
+    }
+  }
+  return out;
+}
+
+/** The most recent night with a song matching `hit` in someone's set — the set, as SetSongs. */
+function heardLive(
+  hit: (rec: SongAlbum) => boolean,
+  data: AlbumExhibitData,
+): AlbumExhibit["heardLive"] | undefined {
+  const byId = new Map(data.concerts.map((c) => [c.id, c]));
+  const nights = [...(data.setlists?.entries ?? [])].sort((a, b) => b.date.localeCompare(a.date));
+  for (const entry of nights) {
+    const set = setOf(entry, data);
+    if (!set.some((s) => s.rec && hit(s.rec))) continue;
+    const c = byId.get(entry.concertId);
+    if (!c) continue;
+    return {
+      concertId: c.id,
+      date: c.date,
+      headliner: { entity: "artist", slug: c.headlinerNormalized, name: c.headliner, deepLink: artistDeepLink(c.headlinerNormalized) },
+      venue: { entity: "venue", slug: c.venueNormalized, name: c.venue, deepLink: venueDeepLink(c.venueNormalized) },
+      performer: entry.artistName,
+      // Covers carry no album — the record is another act's, the same rule the setlist prose follows.
+      songs: set.map((s) => ({
+        title: s.title,
+        ...(s.coverOf ? { coverOf: s.coverOf } : {}),
+        album: s.rec && !s.rec.isCover ? identity(s.rec) : null,
+      })),
+    };
+  }
+  return undefined;
+}
+
+function albumCard(
+  album: AlbumIdentity,
+  ownerKey: string,
+  data: AlbumExhibitData,
+  live: (rec: SongAlbum) => boolean,
+  song?: string,
+): AlbumExhibit {
+  const name = displayName(ownerKey, data);
+  const spine = data.eras?.artists[ownerKey];
+  const studio = spine ? dedupeAlbums(spine.studioAlbums) : [];
+  const i = studio.findIndex((s) => s.mbid === album.mbid || fold(s.title) === fold(album.title));
+  const heard = heardLive(live, data);
+  return {
+    kind: "album",
+    album,
+    artist: archiveRef(name, ownerKey, data),
+    artistName: name,
+    ...(song ? { song } : {}),
+    ...(i >= 0 ? { position: { index: i + 1, total: studio.length } } : {}),
+    ...(spine?.definingAlbum && spine.definingAlbum.mbid === album.mbid ? { defining: true } : {}),
+    ...(heard ? { heardLive: heard } : {}),
+  };
+}
+
+/** MusicBrainz lists a few records twice (Blancmange's Big Fat Head). One cover per record. */
+function dedupeAlbums<T extends { mbid: string }>(albums: T[]): T[] {
+  const seen = new Set<string>();
+  return albums.filter((a) => (seen.has(a.mbid) ? false : (seen.add(a.mbid), true)));
+}
+
+/** The structured card for a get_album_info call, or undefined when the answer isn't one record or one act. */
+export function albumExhibit(args: AlbumInfoArgs, data: AlbumExhibitData): Exhibit | undefined {
+  if (!data.songAlbums && !data.eras) return undefined;
+  const song = args.song?.trim();
+  const albumQ = args.album?.trim();
+  const artistQuery = args.artist?.trim();
+
+  let artist: { name: string; keys: Set<string> } | undefined;
+  if (artistQuery) {
+    const r = resolveKeys(artistQuery, data);
+    if ("message" in r) return undefined;
+    artist = r;
+  }
+  const all = entries(data.songAlbums);
+  const scoped = artist ? all.filter((e) => artist!.keys.has(e.artistKey)) : all;
+
+  if (song) {
+    const hits = songHits(song, scoped);
+    if (new Set(hits.map((h) => h.album.mbid)).size !== 1) return undefined;
+    const h = hits[0];
+    // A cover's record belongs to the original act, so the card is theirs.
+    const owner = h.album.isCover && h.album.originalArtistKey ? h.album.originalArtistKey : h.artistKey;
+    const title = fold(h.album.songTitle);
+    return albumCard(identity(h.album), owner, data, (rec) => rec.mbid === h.album.mbid && fold(rec.songTitle) === title, h.album.songTitle);
+  }
+
+  if (albumQ) {
+    const { live, studio } = albumMatches(albumQ, scoped, artist, data);
+    const liveIds = new Set(live.map((e) => e.album.mbid));
+    const studioIds = new Set(studio.map((s) => s.ref.mbid));
+    const ids = new Set([...liveIds, ...studioIds]);
+    if (ids.size !== 1) return undefined;
+    const [mbid] = ids;
+    if (live.length) {
+      const e = live[0];
+      const owner = e.album.isCover && e.album.originalArtistKey ? e.album.originalArtistKey : e.artistKey;
+      return albumCard(identity(e.album), owner, data, (rec) => rec.mbid === mbid);
+    }
+    const s = studio[0];
+    return albumCard(identity(s.ref), s.key, data, (rec) => rec.mbid === mbid);
+  }
+
+  if (artist) {
+    const spine = [...artist.keys].map((k) => data.eras?.artists[k]).find(Boolean);
+    const ref = archiveRef(artist.name, [...artist.keys][0] ?? "", data);
+    if (!spine || !ref || !spine.studioAlbums.length) return undefined;
+    const seenBy = new Map(spine.erasSeen.map((e) => [fold(e.title), e.dates]));
+    return {
+      kind: "discography",
+      artist: ref,
+      albums: dedupeAlbums(spine.studioAlbums).map((a) => ({
+        ...identity(a),
+        seen: seenBy.get(fold(a.title)) ?? [],
+        defining: spine.definingAlbum?.mbid === a.mbid,
+      })),
+      truncated: spine.truncated,
+    };
+  }
+  return undefined;
 }
