@@ -1,6 +1,20 @@
 {
   "releases": [
     {
+      "version": "6.2.0",
+      "date": "2026-10-31",
+      "title": "Mange Tout, 1984",
+      "description": "Ask the archive which album “Blind Vision” came off and it used to answer with a sentence. Now it hands you the record: Mange Tout, Blancmange’s second, and the night in Glasgow I heard it, with the other two songs off that album marked in the set. Ask about a band and my own photograph from the night leads the answer, framed the way I cropped it. Ask about a room and you see the room.",
+      "route": "/?scene=ask",
+      "highlights": [
+        "Answers about a record show the sleeve, where it sits in the catalogue, and the night I heard it",
+        "My photographs lead the answer — 129 frames, each framed on the crop I drew, and credited to whoever is actually in it",
+        "Ask what a band played and you see everyone on the bill, and the records the set drew on",
+        "“Where were they in their career?” lays out their whole shelf of albums, with a line at the night I was there",
+        "Venues lead with a photo of the room, with the map tucked in the corner"
+      ]
+    },
+    {
       "version": "6.1.0",
       "date": "2026-10-31",
       "title": "The Archive Posts Itself",

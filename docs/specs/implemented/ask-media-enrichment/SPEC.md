@@ -1,6 +1,6 @@
 # Ask the Archive — Media in Answers
 
-**Status:** Built on PR #593, not yet released. Decisions below; the open questions are answered.
+**Status:** Released in v6.2.0 (PR #593). Decisions below; the open questions are answered.
 **Builds on:** the exhibit system (#140), its containers (#141), the album tool (#317), the media index (#340)
 **Visual references:** the design canvas at https://claude.ai/artifact/Wdq4QzHxyGqzqG9iR9EUAE
 (nine artboards, A–I below). Stage, crowd and marquee frames on it are real photos from

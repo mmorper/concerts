@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v6.1.0 (Production)
+**Version:** v6.2.0 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-10-31
 
@@ -119,7 +119,14 @@ docs/
 - ✅ One archive-stats derivation replaces six; `validate:docs` now guards the shape, not just the prose (#295)
 - ✅ Dashboard can see attribution coverage; `lastBuildAt` moves when the resolver runs (#289)
 
-**v6.1.0 Production (Latest — 2026-10-31):**
+**v6.2.0 Production (Latest — 2026-10-31):**
+
+- ✅ Ask answers with media — my photographs framed on their `media:crop` box with per-act/per-night attribution, Cover Art Archive sleeves, Deezer portraits, venue photos; personal → sourced → derived ladder at selection and load time (#593)
+- ✅ Six new exhibit kinds: `album`, `discography`, `show`, `era`, `shape`, `songs`; artist choice chips with faces; photo lightbox (Esc never reaches the Spotlight)
+- ✅ Card and prose share one resolver: `setlistSelection`, `careerPositionNight`, `careerShapeData` extracted in `workers/mcp-server/src/tools.ts`, career text byte-identical on the real archive
+- ✅ `/ask-dev?fixtures` renders every card from generated fixtures with no backend; spec in `docs/specs/implemented/ask-media-enrichment/`
+
+**v6.1.0 (2026-10-31):**
 
 - ✅ Social syndication live — Bluesky + Mastodon drip one liner note a day plus On This Day posts; kill switch, retraction, `syndicate:preview`, per-channel health (epic #323, `docs/SYNDICATION.md`)
 - ✅ Instagram adapter + R2 card host wired in, **inert until its secrets exist** (#556/#557, awaiting #334/#336)
@@ -131,6 +138,7 @@ docs/
 
 **Recent Releases:**
 
+- **v6.2.0** (2026-10-31): Ask the Archive answers with pictures — photos, album sleeves, venue photos; album/discography/night/era/shape/songs cards and a photo viewer (#593)
 - **v6.1.0** (2026-10-31): The archive posts itself — Bluesky + Mastodon syndication with On This Day (#323); claim check on every note and post (#529); personal media pipeline, 129 photos + 15 clips from 44 shows; Instagram wired, inert pending credentials; liner-notes empty-run fix and Ask album questions (#317, PR #591); Sonnet 5, TypeScript 7, SDK 1.x
 - **v6.0.0** (2026-08-10): Song → album attribution — `song-albums.json` at 89.7% across three tiers (#276/#282); `road-tested` + `most-witnessed-album` detectors and MCP setlist annotation (#277); liner-note footers play their subject song (#299); 12 artists' wrong-band audio fixed and Re-Flex's discography corrected (#275/#300); one archive-stats derivation (#295); dashboard attribution stage (#289)
 - **v5.4.0** (2026-08-07): Discography trajectory — `album-eras.json` joins 11,359 releases against attendance; `get_career_position` MCP tool + `cycleBucket` search; `album-trajectory` detector; `album-context` repaired 17→24; voice checklist made executable (epic #266, PR #278)
@@ -260,4 +268,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-10-31 by Claude Code for v6.1.0 release*
+*Last updated: 2026-10-31 by Claude Code for v6.2.0 release*
