@@ -262,6 +262,19 @@ export function coverUrl(mbid: string, size: 250 | 500 = 250): string {
   return `https://coverartarchive.org/release-group/${encodeURIComponent(mbid)}/front-${size}`
 }
 
+/**
+ * Every Cover Art Archive URL worth trying for one sleeve, smallest adequate first. CAA's
+ * resized thumbnails are generated separately from the original upload and are sometimes
+ * missing for a record whose front image exists, so a 404 on `front-250` does not mean there
+ * is no cover. Seen on v6.2.0: Streetlight Manifesto's and Social Distortion's sleeves fell
+ * straight to the derived tile while Depeche Mode's loaded, with `coverAvailable: true` on all
+ * of them. The ladder tries the next size, then the full-size original, before giving up.
+ */
+export function coverUrls(mbid: string, size: 250 | 500 = 250): string[] {
+  const base = `https://coverartarchive.org/release-group/${encodeURIComponent(mbid)}/front`
+  return size === 250 ? [`${base}-250`, `${base}-500`, base] : [`${base}-500`, base]
+}
+
 export interface VenuePhotoMeta {
   manualPhotos?: Array<{ url: string }> | null
   photoUrls?: { thumbnail?: string; medium?: string; large?: string } | null

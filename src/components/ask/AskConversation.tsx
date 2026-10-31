@@ -39,15 +39,26 @@ export function AskConversation({
   const [input, setInput] = useState('')
   const localRef = useRef<HTMLInputElement>(null)
   const ref = inputRef ?? localRef
-  const endRef = useRef<HTMLDivElement>(null)
+  const transcriptRef = useRef<HTMLDivElement>(null)
+  const lastTurnRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (autoFocus) ref.current?.focus()
   }, [autoFocus, ref])
 
+  // When a new question is asked, bring IT to the top of the transcript, once. The answer then
+  // streams in and its card lands below the question, and the view stays put. This used to
+  // scroll to the bottom on every change (each streamed token, then the card), which left a
+  // long answer pinned to its end with the question and the top of the card scrolled away.
+  const lastId = exchanges[exchanges.length - 1]?.id
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-  }, [exchanges])
+    const box = transcriptRef.current
+    const turn = lastTurnRef.current
+    if (!box || !turn || !lastId) return
+    const top = turn.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    box.scrollTo({ top: Math.max(0, top - 4), behavior: reduce ? 'auto' : 'smooth' })
+  }, [lastId])
 
   const submit = (q: string) => {
     const trimmed = q.trim()
@@ -89,9 +100,9 @@ export function AskConversation({
           )}
         </div>
       ) : (
-        <div className="ask-transcript">
-          {exchanges.map((ex) => (
-            <div key={ex.id}>
+        <div className="ask-transcript" ref={transcriptRef}>
+          {exchanges.map((ex, i) => (
+            <div key={ex.id} ref={i === exchanges.length - 1 ? lastTurnRef : undefined}>
               <div className="ask-q">
                 <span className="you">You</span>
                 <span className="q">&ldquo;{ex.question}&rdquo;</span>
@@ -99,7 +110,6 @@ export function AskConversation({
               <AskExhibit exchange={ex} archive={archive} />
             </div>
           ))}
-          <div ref={endRef} />
         </div>
       )}
 

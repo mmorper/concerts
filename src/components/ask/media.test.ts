@@ -11,6 +11,7 @@ import {
   photoCaption,
   venueSourcedPhoto,
   coverUrl,
+  coverUrls,
   fmtDate,
   agePhrase,
   monthsPhrase,
@@ -142,6 +143,12 @@ describe('sourced images', () => {
     expect(coverUrl('b08c68d7-c203-3dfc-ac37-ab09c140e663', 500)).toBe(
       'https://coverartarchive.org/release-group/b08c68d7-c203-3dfc-ac37-ab09c140e663/front-500',
     )
+  })
+
+  it('tries the next size, then the original, when a CAA thumbnail is missing', () => {
+    const base = 'https://coverartarchive.org/release-group/24deab6d-9374-34df-b413-3a14eadad293/front'
+    expect(coverUrls('24deab6d-9374-34df-b413-3a14eadad293')).toEqual([`${base}-250`, `${base}-500`, base])
+    expect(coverUrls('24deab6d-9374-34df-b413-3a14eadad293', 500)).toEqual([`${base}-500`, base])
   })
 
   it('formats a calendar date without a timezone shift', () => {
