@@ -108,6 +108,7 @@ function ArtistCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: ArtistExh
                 )}
                 <span className="yr">{c.year}</span>
                 <span className="vn">{c.venue}</span>
+                {f.opened.has(c.id) && <span className="role">opening for {c.headliner}</span>}
               </a>
             )
           })}
