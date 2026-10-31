@@ -49,6 +49,7 @@ function run(command: string): Promise<void> {
  *   --skip-discography        Skip discography enrichment (MusicBrainz)
  *   --skip-album-eras         Skip album-era derivation (local, no API calls)
  *   --skip-song-albums        Skip song→album resolution (MusicBrainz + iTunes, cached)
+ *   --skip-album-covers       Skip album cover resolution (iTunes, cached per artist)
  *   --skip-tracks             Skip top tracks enrichment (iTunes/Deezer)
  *   --skip-setlists           Skip setlist pre-fetch (setlist.fm)
  *   --force-refresh-setlists  Re-fetch all setlists (ignore cache)
@@ -63,6 +64,7 @@ async function buildData() {
   const skipAlbumEras = process.argv.includes('--skip-album-eras')
   const skipHandles = process.argv.includes('--skip-handles')
   const skipSongAlbums = process.argv.includes('--skip-song-albums')
+  const skipAlbumCovers = process.argv.includes('--skip-album-covers')
   const skipTracks = process.argv.includes('--skip-tracks')
   const skipSetlists = process.argv.includes('--skip-setlists')
   const forceRefreshSetlists = process.argv.includes('--force-refresh-setlists')
@@ -81,6 +83,7 @@ async function buildData() {
     { name: 'Derive album eras', active: !skipAlbumEras },
     { name: 'Pre-fetch setlists', active: !skipSetlists },
     { name: 'Resolve songs to albums', active: !skipSongAlbums },
+    { name: 'Resolve album covers', active: !skipAlbumCovers },
     { name: 'Aggregate genres timeline', active: true },
     { name: 'Aggregate most-played songs', active: true },
     { name: 'Generate facts for liner notes', active: true },
@@ -287,6 +290,21 @@ async function buildData() {
       console.log()
     } else {
       console.log('⏭️  Skipping song→album resolution (--skip-song-albums flag set)\n')
+    }
+
+    // Album covers for the Ask cards (iTunes, one lookup per artist, 90-day cache). Runs
+    // after song→albums so a newly attributed album gets its cover the same run.
+    if (!skipAlbumCovers) {
+      currentStep++
+      console.log('=' .repeat(60))
+      console.log(`Step ${currentStep}/${activeSteps}: Resolving album covers`)
+      console.log('-'.repeat(60))
+
+      const { resolveAlbumCovers } = await import('./resolve-album-covers.ts')
+      await resolveAlbumCovers({ dryRun })
+      console.log()
+    } else {
+      console.log('⏭️  Skipping album covers (--skip-album-covers flag set)\n')
     }
 
     // Step 9: Aggregate genres timeline (always runs)

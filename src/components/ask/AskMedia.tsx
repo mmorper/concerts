@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties, type Reac
 import { createPortal } from 'react-dom'
 import { coverUrls, cropAspect, focalPosition, yearOf, type Photo } from './media'
 import type { AlbumIdentity } from '@/types/exhibit'
+import { useAlbumCover } from './albumCovers'
 
 /**
  * Tries each source in order; on a load error moves to the next; renders `fallback` when none is
@@ -125,7 +126,10 @@ export function FramedPhoto({
   )
 }
 
-/** An album sleeve: Cover Art Archive when it has one, else the derived sleeve with the title. */
+/**
+ * An album sleeve: the build-time iTunes cover, then Cover Art Archive, else the derived sleeve
+ * with the title. While the iTunes index is still loading it shows the derived sleeve.
+ */
 export function CoverArt({
   album,
   size = 250,
@@ -140,10 +144,11 @@ export function CoverArt({
   /** What to show when no sleeve loads. Default: the derived sleeve with the title. */
   fallback?: ReactNode
 }) {
+  const itunes = useAlbumCover(album.mbid)
   const sleeve = fallback ?? <DerivedArt name={album.title} sub={yearOf(album.releaseDate)} color={color} shape="sleeve" className={className} />
   return (
     <LadderImage
-      sources={album.coverAvailable ? coverUrls(album.mbid, size) : []}
+      sources={itunes === undefined ? [] : coverUrls(album.mbid, size, itunes, album.coverAvailable)}
       alt={`${album.title} cover`}
       className={`ask-cover ${className}`}
       fallback={sleeve}
