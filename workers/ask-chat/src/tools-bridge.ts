@@ -33,7 +33,9 @@ import {
   getNarration,
   getAlbumEras,
   getArtistAliases,
+  getSongAlbums,
 } from "../../mcp-server/src/data.js";
+import { albumInfo } from "./album-info.js";
 import { OWNER_FIRST_NAME } from "../../mcp-server/src/owner.js";
 import type { Env } from "./types.js";
 import type { Exhibit, EntityRef } from "./exhibits.js";
@@ -174,6 +176,22 @@ export const TOOL_DEFS = [
         artist: { type: "string" },
         date: { type: "string", description: "YYYY-MM-DD, YYYY-MM or YYYY. Omit for their most recent show." },
         concertId: { type: "string" },
+      },
+      additionalProperties: false,
+    },
+  },
+  // #317 — song→album and the studio spine reached the connector in v5.4/v6.0 and never
+  // this surface. A lookup tool, not a bundled digest: the files are 346 KB + 576 KB.
+  {
+    name: "get_album_info",
+    description:
+      "The records behind the songs. Which album a song I heard live came from; an artist's studio albums and which of them my setlists drew on; or whether they played anything off a given album. Give a song, an album, an artist, or a combination.",
+    input_schema: {
+      type: "object",
+      properties: {
+        song: { type: "string", description: "A song title, e.g. \"Story of My Life\"." },
+        artist: { type: "string" },
+        album: { type: "string", description: "An album title, e.g. \"Nebraska\"." },
       },
       additionalProperties: false,
     },
@@ -387,9 +405,15 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
     case "get_concert_setlist": {
       const data = await getConcerts(e, bgCtx);
       if (!data) return { text: DATA_UNAVAILABLE };
-      const [setlists, tracks] = await Promise.all([
+      // The same six inputs the MCP tool passes. Until #317 this passed two, so every song
+      // came back without the album the connector annotates it with.
+      const [setlists, tracks, eras, songAlbums, meta, aliasData] = await Promise.all([
         getSetlistsCache(e, bgCtx),
         getArtistsTopTracks(e, bgCtx),
+        getAlbumEras(e, bgCtx),
+        getSongAlbums(e, bgCtx),
+        getArtistsMetadata(e, bgCtx),
+        getArtistAliases(e, bgCtx),
       ]);
       const text = concertSetlist(
         data.concerts,
@@ -400,6 +424,10 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
           concertId: input.concertId ? str(input.concertId) : undefined,
         },
         tracks ?? {},
+        eras,
+        songAlbums,
+        meta ?? {},
+        aliasData,
       );
       return { text }; // plain (songs, not an entity card) in v1
     }
@@ -439,6 +467,32 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       const text = careerPosition(data.concerts, eras, args, buildAliasIndex(aliasData));
       // The exhibit is the artist card, same as get_artist_history — the answer is about
       // one act's arc, so that's the card worth clicking through to.
+      const exhibit = args.artist ? artistExhibit(data.concerts, args.artist) : undefined;
+      return exhibit ? { text, exhibit } : { text };
+    }
+
+    case "get_album_info": {
+      const data = await getConcerts(e, bgCtx);
+      if (!data) return { text: DATA_UNAVAILABLE };
+      const [eras, songAlbums, meta, aliasData] = await Promise.all([
+        getAlbumEras(e, bgCtx),
+        getSongAlbums(e, bgCtx),
+        getArtistsMetadata(e, bgCtx),
+        getArtistAliases(e, bgCtx),
+      ]);
+      const args = {
+        song: input.song ? str(input.song) : undefined,
+        artist: input.artist ? str(input.artist) : undefined,
+        album: input.album ? str(input.album) : undefined,
+      };
+      const text = albumInfo(args, {
+        concerts: data.concerts,
+        eras,
+        songAlbums,
+        meta: meta ?? {},
+        aliasData,
+        aliasIndex: buildAliasIndex(aliasData),
+      });
       const exhibit = args.artist ? artistExhibit(data.concerts, args.artist) : undefined;
       return exhibit ? { text, exhibit } : { text };
     }
