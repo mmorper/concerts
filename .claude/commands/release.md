@@ -682,6 +682,29 @@ git push origin v{VERSION}
 Pushing the tag triggers `deploy.yml`, which re-checks that the tag matches
 `package.json` before it deploys, then builds and ships to production.
 
+**In a Claude Code cloud session (claude.ai/code), tag and release through `gh`,
+not `git push`.** Learned on v6.2.0 (2026-10-31), where both of these misled:
+
+- **`git push origin v{VERSION}` is refused.** The session's git access accepts
+  pushes to its own branch only; a tag push dies with "the remote end hung up
+  unexpectedly", every retry. That is not a network blip.
+- **`gh auth status` reports "The token in GH_TOKEN is invalid" — ignore it.**
+  `GH_TOKEN` there is a placeholder the platform sets; its network proxy attaches
+  real credentials to each `gh` request. `gh auth status` validates the
+  placeholder itself, so it always fails, while real calls go through (checked:
+  `gh api repos/mmorper/concerts --jq .permissions` returns push and admin). Test
+  with that, not `gh auth status`, and do not ask the owner for a personal access
+  token on the strength of the warning. The first cloud release to run
+  `gh release create` this way is the first to prove the write path end to end;
+  if it fails, report the actual error.
+
+So in a cloud session, skip the `git tag` / `git push` above and let Step 9 create
+the tag: `gh release create v{VERSION} --target {MERGE_SHA} …` creates the tag on
+GitHub's side, and a tag created that way triggers `deploy.yml` exactly as a pushed
+one does (v6.2.0's tag was created by publishing the release, and its Deploy run
+went green). Use the merge commit's SHA for `--target`, not `main`, so a commit
+that lands in between cannot end up tagged.
+
 **Note:** if the remote has new commits, the *merge* will conflict rather than the
 push being rejected. Rebase the release branch on `main` and let the checks re-run.
 
@@ -753,6 +776,9 @@ npm run deploy:worker
 **CHECKPOINT:** Create GitHub release
 
 GitHub release notes include **all commits** (both user-facing and internal) for complete technical documentation.
+
+In a cloud session the tag does not exist yet at this point (see the note under
+8c): add `--target {MERGE_SHA}` to the commands below and the release creates it.
 
 **If user-facing changes exist (liner notes published):**
 
