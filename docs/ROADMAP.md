@@ -1,6 +1,6 @@
 # Roadmap
 
-## Current State (v6.0.0)
+## Current State (v6.1.0)
 
 - **185 concerts** spanning 1984-2027
 - **258 artists** (including openers) with 100% imagery coverage
@@ -9,7 +9,8 @@
 - **1,716 of 1,912 setlist songs** matched to the studio album they came from (89.7%)
 - **6 interactive scenes**: Timeline, Venues, Geography, Genres, Artists, Ask the Archive
 - **Standalone pages**: /liner-notes, /whats-playing, /how-it-works, /about, /about-mcp, /dashboard
-- **Latest**: song → album attribution — which record each song I've heard live came off
+- **Syndication**: a liner note a day plus On This Day, on Bluesky and Mastodon
+- **Latest**: the archive posts itself — and Ask the Archive answers album questions
 
 ---
 
@@ -166,7 +167,7 @@ Click-to-filter year cards, animated genre treemap with timeline slider, mobile-
 
 ### Social Syndication — Liner Notes & On This Day (v7.0.0)
 
-**Status**: In Progress — Phase 0 closed, Bluesky and Mastodon live
+**Status**: In Progress — Bluesky and Mastodon live since v6.1.0; Instagram wired, awaiting credentials
 **Spec**: [global-social-syndication.md](specs/future/global-social-syndication.md)
 **Decisions**: [Phase 0 — Decisions](specs/future/mocks-social-syndication/DECISIONS.md)
 

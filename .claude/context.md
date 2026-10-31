@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v6.0.0 (Production)
+**Version:** v6.1.0 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-10-31
 
@@ -110,7 +110,7 @@ docs/
 
 **Live Site:** https://concerts.morperhaus.org
 
-**v6.0.0 Production (Latest — 2026-08-10):**
+**v6.0.0 (2026-08-10):**
 
 - ✅ Song → album attribution across the archive — 1,716 of 1,912 unique artist·song pairs (89.7%), three tiers: top-tracks 253, MusicBrainz 1,428, iTunes 35 (#276/#282)
 - ✅ Two detectors off the back of it: `road-tested` (14 findings) and `most-witnessed-album`; `get_concert_setlist` annotates every song with its album (#277)
@@ -119,7 +119,7 @@ docs/
 - ✅ One archive-stats derivation replaces six; `validate:docs` now guards the shape, not just the prose (#295)
 - ✅ Dashboard can see attribution coverage; `lastBuildAt` moves when the resolver runs (#289)
 
-**Unreleased on `main` since v6.0.0 (ships as the next release):**
+**v6.1.0 Production (Latest — 2026-10-31):**
 
 - ✅ Social syndication live — Bluesky + Mastodon drip one liner note a day plus On This Day posts; kill switch, retraction, `syndicate:preview`, per-channel health (epic #323, `docs/SYNDICATION.md`)
 - ✅ Instagram adapter + R2 card host wired in, **inert until its secrets exist** (#556/#557, awaiting #334/#336)
@@ -131,6 +131,7 @@ docs/
 
 **Recent Releases:**
 
+- **v6.1.0** (2026-10-31): The archive posts itself — Bluesky + Mastodon syndication with On This Day (#323); claim check on every note and post (#529); personal media pipeline, 129 photos + 15 clips from 44 shows; Instagram wired, inert pending credentials; liner-notes empty-run fix and Ask album questions (#317, PR #591); Sonnet 5, TypeScript 7, SDK 1.x
 - **v6.0.0** (2026-08-10): Song → album attribution — `song-albums.json` at 89.7% across three tiers (#276/#282); `road-tested` + `most-witnessed-album` detectors and MCP setlist annotation (#277); liner-note footers play their subject song (#299); 12 artists' wrong-band audio fixed and Re-Flex's discography corrected (#275/#300); one archive-stats derivation (#295); dashboard attribution stage (#289)
 - **v5.4.0** (2026-08-07): Discography trajectory — `album-eras.json` joins 11,359 releases against attendance; `get_career_position` MCP tool + `cycleBucket` search; `album-trajectory` detector; `album-context` repaired 17→24; voice checklist made executable (epic #266, PR #278)
 - **v5.3.0** (2026-08-06): Artist billing aliases in the mosaic and MCP (#227); `full-circle` + `guest-bridge` detectors and song joins across five more (#228/#229/#230); image-rot fixes with validation at the source and orphan pruning (#252/#255/#259/#256); meta-injector auto-deploy completes Worker automation (#262)
@@ -259,4 +260,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-10-31 by Claude Code — context sync before the next release*
+*Last updated: 2026-10-31 by Claude Code for v6.1.0 release*

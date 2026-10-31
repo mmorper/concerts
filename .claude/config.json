@@ -14,14 +14,14 @@
     ]
   },
   "version": {
-    "current": "6.0.0",
+    "current": "6.1.0",
     "status": "production",
     "live_url": "https://concerts.morperhaus.org"
   },
   "status": {
     "lastContextSync": "2026-10-31",
     "lastCommit": "test: compare by id, not a detector name the type does not allow (6ce1ba2)",
-    "notes": "v6.0.0 in production, with a large unreleased body of work on main (social syndication on Bluesky + Mastodon, media pipeline, claim check, Sonnet 5). Instagram is wired but inert pending credentials (#334/#336). PR #591: liner-notes empty-run fix + Ask album questions (#317). Owner to-do: NOTIFY_WEBHOOK_URL (#164)."
+    "notes": "v6.1.0 released 2026-10-31: social syndication on Bluesky + Mastodon, media pipeline, claim check, Sonnet 5, liner-notes empty-run fix, Ask album questions (#317). Instagram wired but inert pending credentials (#334/#336). Owner to-do: NOTIFY_WEBHOOK_URL (#164)."
   },
   "deployment": {
     "platform": "cloudflare-pages",
