@@ -1,6 +1,6 @@
 # Roadmap
 
-## Current State (v6.1.0)
+## Current State (v6.2.0)
 
 - **185 concerts** spanning 1984-2027
 - **258 artists** (including openers) with 100% imagery coverage
@@ -10,11 +10,20 @@
 - **6 interactive scenes**: Timeline, Venues, Geography, Genres, Artists, Ask the Archive
 - **Standalone pages**: /liner-notes, /whats-playing, /how-it-works, /about, /about-mcp, /dashboard
 - **Syndication**: a liner note a day plus On This Day, on Bluesky and Mastodon
-- **Latest**: the archive posts itself — and Ask the Archive answers album questions
+- **Latest**: Ask the Archive answers with pictures — my photographs, album sleeves, venue photos
 
 ---
 
 ## Recently Completed
+
+### ✅ Media in Ask the Archive Answers (v6.2.0)
+
+**Status**: Released 2026-10-31 — [#593](https://github.com/mmorper/concerts/pull/593)
+**Spec**: [ask-media-enrichment/SPEC.md](specs/implemented/ask-media-enrichment/SPEC.md)
+
+Ask's answer cards carry the archive's media: my photographs (framed on each still's hand-drawn crop, attributed per act and per night), Cover Art Archive sleeves, Deezer portraits and venue photos, each falling through personal → sourced → derived at selection time and at load time. Six new card kinds — album, discography, night, era, shape, songs — built from the same resolvers as the prose; artist choice chips carry faces; a photo viewer for every photo.
+
+---
 
 ### ✅ Setlist Song → Album Attribution (v6.0.0)
 

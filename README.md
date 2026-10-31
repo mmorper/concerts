@@ -11,6 +11,8 @@ An interactive web app for exploring personal concert history. Six scenes—Time
 
 ## What's new
 
+**v6.2.0** 💿 Ask the archive which album "Blind Vision" came off and it used to answer with a sentence. Now it hands you the record — *Mange Tout*, Blancmange's second — and the night in Glasgow I heard it, with the other songs off that album marked in the set. Ask about a band and my own photograph from the night leads the answer, framed the way I cropped it and credited to whoever is actually in it. Ask what they played and you see everyone on the bill; ask about a room and you see the room. [Ask the archive](https://concerts.morperhaus.org/?scene=ask).
+
 **v6.1.0** 📣 The archive posts itself. One liner note a day, and on the anniversary of a night I was there, a post about that night — on Bluesky at [@concerts.morperhaus.org](https://bsky.app/profile/concerts.morperhaus.org) and on Mastodon at [@concertsmorperhaus@mastodon.social](https://mastodon.social/@concertsmorperhaus). Every line is fact-checked against the archive before it leaves, more of them carry my own photographs from the night, and Ask the Archive can now tell you which record a song came off. [Read the liner notes](https://concerts.morperhaus.org/liner-notes).
 
 **v6.0.0** 🎸 The Cure played the Hollywood Bowl in May 2023 and put five songs from *Songs of a Lost World* into the set — a record that was still seventeen months away. The archive has now worked out which album almost every song I've watched came off, so a setlist reads as a shape rather than a list: what the night leaned on, what was brand new, and what hadn't arrived yet. [Hear the arc](https://concerts.morperhaus.org/?scene=artists&artist=the-cure).
