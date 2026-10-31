@@ -535,6 +535,29 @@ describe("get_concert_setlist", () => {
     expect(text).toMatchSnapshot();
   });
 
+  // Blancmange opened for Thompson Twins in Glasgow; asking for their set there answered
+  // "I've seen them 1 time" with the setlist sitting in the cache (resolveConcert matched
+  // headliners only).
+  it("finds a night the act opened, and gives that act's set — not the headliner's", () => {
+    const text = concertSetlist(archive(), SETLISTS, { artist: "OMD" }, TOP_TRACKS);
+    expect(text).toContain("OMD opened for Depeche Mode that night");
+    expect(text).toContain("Enola Gay");
+    expect(text).not.toContain("Everything Counts");
+    expect(text).not.toContain("I don't have Depeche Mode's own setlist");
+  });
+
+  it("an opener asked by name, when only that opener's set exists", () => {
+    const text = concertSetlist(archive(), SETLISTS, { artist: "Romeo Void" }, TOP_TRACKS);
+    expect(text).toContain("Romeo Void opened for Adam Ant that night");
+    expect(text).toContain("Never Say Never");
+  });
+
+  it("the headliner asked by name still gets the headliner's set", () => {
+    const text = concertSetlist(archive(), SETLISTS, { artist: "Depeche Mode", date: "1988" }, TOP_TRACKS);
+    expect(text).toContain("Everything Counts");
+    expect(text).not.toContain("opened for");
+  });
+
   it("resolves by artist + year", () => {
     const text = concertSetlist(archive(), SETLISTS, { artist: "Social Distortion", date: "1990" }, TOP_TRACKS);
     expect(text).toContain("1. Story of My Life");

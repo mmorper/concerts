@@ -125,7 +125,7 @@ export function AlbumCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Alb
       )}
       <div className="ask-links">
         {live && (
-          <DeepLink href={setlistDeepLink(live.headliner.slug, live.date)} kind="album">
+          <DeepLink href={setlistDeepLink(normalizeArtistName(live.performer), live.date)} kind="album">
             See that night’s setlist
           </DeepLink>
         )}
@@ -328,7 +328,8 @@ export function ShowCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Show
         </div>
       )}
       <div className="ask-links">
-        <DeepLink href={setlistDeepLink(exhibit.headliner.slug, date)} kind="show">
+        {/* The set shown is the performer's — an opener's night opens their panel, not the headliner's. */}
+        <DeepLink href={setlistDeepLink(normalizeArtistName(exhibit.performer), date)} kind="show">
           Open this night on the site
         </DeepLink>
         <DeepLink href={exhibit.venue.deepLink} kind="show">
