@@ -1,10 +1,10 @@
 {
   "version": "1",
-  "generatedAt": "2026-10-26T13:59:29.997Z",
+  "generatedAt": "2026-10-31T23:24:38.475Z",
   "coverage": {
-    "concertsWithSetlist": 116,
+    "concertsWithSetlist": 118,
     "totalConcerts": 185,
-    "distinctSongs": 1626
+    "distinctSongs": 1633
   },
   "songs": [
     {
@@ -243,6 +243,14 @@
       ]
     },
     {
+      "name": "Being Boiled",
+      "count": 3,
+      "artists": [
+        "Heaven 17",
+        "The Human League"
+      ]
+    },
+    {
       "name": "Black Gold",
       "count": 3,
       "artists": [
@@ -282,6 +290,14 @@
       "count": 3,
       "artists": [
         "Royal Blood"
+      ]
+    },
+    {
+      "name": "Dead Man's Party",
+      "count": 3,
+      "artists": [
+        "Danny Elfman",
+        "Oingo Boingo"
       ]
     },
     {
@@ -655,6 +671,13 @@
       ]
     },
     {
+      "name": "(Keep Feeling) Fascination",
+      "count": 2,
+      "artists": [
+        "The Human League"
+      ]
+    },
+    {
       "name": "(She's) Sexy + 17",
       "count": 2,
       "artists": [
@@ -753,6 +776,13 @@
       ]
     },
     {
+      "name": "Ain't This the Life",
+      "count": 2,
+      "artists": [
+        "Danny Elfman"
+      ]
+    },
+    {
       "name": "Airwaves",
       "count": 2,
       "artists": [
@@ -806,14 +836,6 @@
       "count": 2,
       "artists": [
         "Gary Numan"
-      ]
-    },
-    {
-      "name": "Being Boiled",
-      "count": 2,
-      "artists": [
-        "Heaven 17",
-        "The Human League"
       ]
     },
     {
@@ -1048,11 +1070,10 @@
       ]
     },
     {
-      "name": "Dead Man's Party",
+      "name": "Dance With the Lemurs",
       "count": 2,
       "artists": [
-        "Danny Elfman",
-        "Oingo Boingo"
+        "Danny Elfman"
       ]
     },
     {
@@ -1118,6 +1139,13 @@
       "count": 2,
       "artists": [
         "Social Distortion"
+      ]
+    },
+    {
+      "name": "Don't You Want Me",
+      "count": 2,
+      "artists": [
+        "The Human League"
       ]
     },
     {
@@ -1280,6 +1308,13 @@
       ]
     },
     {
+      "name": "Happy",
+      "count": 2,
+      "artists": [
+        "Danny Elfman"
+      ]
+    },
+    {
       "name": "Heartbeat",
       "count": 2,
       "artists": [
@@ -1314,6 +1349,13 @@
       "count": 2,
       "artists": [
         "Royal Blood"
+      ]
+    },
+    {
+      "name": "Human",
+      "count": 2,
+      "artists": [
+        "The Human League"
       ]
     },
     {
@@ -1380,6 +1422,13 @@
       ]
     },
     {
+      "name": "Insects",
+      "count": 2,
+      "artists": [
+        "Danny Elfman"
+      ]
+    },
+    {
       "name": "It's Different for Girls",
       "count": 2,
       "artists": [
@@ -1423,10 +1472,24 @@
       ]
     },
     {
+      "name": "Just Another Day",
+      "count": 2,
+      "artists": [
+        "Danny Elfman"
+      ]
+    },
+    {
       "name": "Just Like Heaven",
       "count": 2,
       "artists": [
         "The Cure"
+      ]
+    },
+    {
+      "name": "Kick Me",
+      "count": 2,
+      "artists": [
+        "Danny Elfman"
       ]
     },
     {
@@ -1473,6 +1536,13 @@
       ]
     },
     {
+      "name": "Love Action (I Believe in Love)",
+      "count": 2,
+      "artists": [
+        "The Human League"
+      ]
+    },
+    {
       "name": "Love Will Tear Us Apart",
       "count": 2,
       "artists": [
@@ -1513,6 +1583,13 @@
       "count": 2,
       "artists": [
         "Kraftwerk"
+      ]
+    },
+    {
+      "name": "Mirror Man",
+      "count": 2,
+      "artists": [
+        "The Human League"
       ]
     },
     {
@@ -1558,6 +1635,13 @@
       ]
     },
     {
+      "name": "Native Intelligence",
+      "count": 2,
+      "artists": [
+        "Danny Elfman"
+      ]
+    },
+    {
       "name": "Neon Lights",
       "count": 2,
       "artists": [
@@ -1579,11 +1663,25 @@
       ]
     },
     {
+      "name": "No One Lives Forever",
+      "count": 2,
+      "artists": [
+        "Danny Elfman"
+      ]
+    },
+    {
       "name": "Nobody's Diary",
       "count": 2,
       "artists": [
         "Alison Moyet",
         "Yaz"
+      ]
+    },
+    {
+      "name": "Nothing to Fear (But Fear Itself)",
+      "count": 2,
+      "artists": [
+        "Danny Elfman"
       ]
     },
     {
@@ -1601,10 +1699,24 @@
       ]
     },
     {
+      "name": "One Man in My Heart",
+      "count": 2,
+      "artists": [
+        "The Human League"
+      ]
+    },
+    {
       "name": "One More Time",
       "count": 2,
       "artists": [
         "Joe Jackson"
+      ]
+    },
+    {
+      "name": "Only a Lad",
+      "count": 2,
+      "artists": [
+        "Danny Elfman"
       ]
     },
     {
@@ -1723,6 +1835,13 @@
       ]
     },
     {
+      "name": "Seconds",
+      "count": 2,
+      "artists": [
+        "The Human League"
+      ]
+    },
+    {
       "name": "Secret Agent Man",
       "count": 2,
       "artists": [
@@ -1832,6 +1951,13 @@
       ]
     },
     {
+      "name": "Sorry",
+      "count": 2,
+      "artists": [
+        "Danny Elfman"
+      ]
+    },
+    {
       "name": "Spacelab",
       "count": 2,
       "artists": [
@@ -1880,6 +2006,13 @@
       "count": 2,
       "artists": [
         "Garbage"
+      ]
+    },
+    {
+      "name": "Tell Me When",
+      "count": 2,
+      "artists": [
+        "The Human League"
       ]
     },
     {
@@ -1948,6 +2081,13 @@
       ]
     },
     {
+      "name": "The Lebanon",
+      "count": 2,
+      "artists": [
+        "The Human League"
+      ]
+    },
+    {
       "name": "The Man-Machine",
       "count": 2,
       "artists": [
@@ -1973,6 +2113,20 @@
       "count": 2,
       "artists": [
         "Streetlight Manifesto"
+      ]
+    },
+    {
+      "name": "The Sound of the Crowd",
+      "count": 2,
+      "artists": [
+        "The Human League"
+      ]
+    },
+    {
+      "name": "The Things That Dreams Are Made Of",
+      "count": 2,
+      "artists": [
+        "The Human League"
       ]
     },
     {
@@ -2049,6 +2203,13 @@
       ]
     },
     {
+      "name": "Together in Electric Dreams",
+      "count": 2,
+      "artists": [
+        "The Human League"
+      ]
+    },
+    {
       "name": "Tonight",
       "count": 2,
       "artists": [
@@ -2070,10 +2231,25 @@
       ]
     },
     {
+      "name": "True",
+      "count": 2,
+      "artists": [
+        "Danny Elfman"
+      ]
+    },
+    {
       "name": "Uncontrollable Urge",
       "count": 2,
       "artists": [
         "Devo"
+      ]
+    },
+    {
+      "name": "Upside Down",
+      "count": 2,
+      "artists": [
+        "Danny Elfman",
+        "Nile Rodgers"
       ]
     },
     {
@@ -2159,6 +2335,13 @@
       "count": 2,
       "artists": [
         "Devo"
+      ]
+    },
+    {
+      "name": "Who Do You Want to Be",
+      "count": 2,
+      "artists": [
+        "Danny Elfman"
       ]
     },
     {
