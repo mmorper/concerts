@@ -32,6 +32,7 @@ import { maybeTripwire } from "./notify.js";
 import { logTurn, type TurnOutcome } from "./telemetry.js";
 import type { AnthropicUsage } from "./cost.js";
 import { handleAdmin } from "./admin.js";
+import { handleCover } from "./cover.js";
 
 export { SpendCounter } from "./spend-counter.js";
 
@@ -315,6 +316,9 @@ export default {
     }
     if (url.pathname === "/api/ask/status" && request.method === "GET") {
       return handleStatus(request, env);
+    }
+    if (url.pathname.startsWith("/api/ask/cover/") && request.method === "GET") {
+      return handleCover(request, env, ctx, url.pathname.slice("/api/ask/cover/".length));
     }
 
     return new Response("Not found", { status: 404, headers: cors(request) });

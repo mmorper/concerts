@@ -15,6 +15,7 @@
 //     silently credited to the headliner is fabricated attribution on half the archive.
 
 import { normalizeArtistName } from '@/utils/normalize'
+import { ASK_API_BASE } from '@/services/askArchive'
 
 export interface MediaCrop {
   x: number
@@ -252,27 +253,31 @@ export function photoCaption(p: Photo, ctx: CaptionContext): string {
 /**
  * Cover Art Archive front cover for a MusicBrainz release-group.
  *
- * Loaded straight from the browser, not proxied through a Worker. The site already loads Deezer
- * portraits and Google venue photos this way; covers are immutable and CAA serves them with
- * long cache headers from the Internet Archive's CDN. The one real cost — CAA is occasionally
- * slow or down — is what `LadderImage` exists for: lazy-load, and on error fall to the derived
- * sleeve. A proxy is worth revisiting only if those failures show up in practice.
+ * Loaded straight from the browser. CAA's failures did show up in practice, so cards try the
+ * iTunes redirect first — see `coverUrls`.
  */
 export function coverUrl(mbid: string, size: 250 | 500 = 250): string {
   return `https://coverartarchive.org/release-group/${encodeURIComponent(mbid)}/front-${size}`
 }
 
 /**
- * Every Cover Art Archive URL worth trying for one sleeve, smallest adequate first. CAA's
- * resized thumbnails are generated separately from the original upload and are sometimes
- * missing for a record whose front image exists, so a 404 on `front-250` does not mean there
- * is no cover. Seen on v6.2.0: Streetlight Manifesto's and Social Distortion's sleeves fell
- * straight to the derived tile while Depeche Mode's loaded, with `coverAvailable: true` on all
- * of them. The ladder tries the next size, then the full-size original, before giving up.
+ * Every URL worth trying for one sleeve, in order.
+ *
+ * 1. The ask-chat Worker's `/api/ask/cover/<mbid>`, which redirects to the same album on Apple's
+ *    artwork CDN (workers/ask-chat/src/cover.ts). First because it is the one that loads: on
+ *    2026-10-31 Cover Art Archive 500'd on Dare, Hysteria, Secrets and Credo — originals and
+ *    thumbnails alike — in the Human League discography card. It 404s when iTunes has no album
+ *    whose artist and title both match, which simply moves the image down the ladder.
+ * 2. Cover Art Archive, which is exact (keyed by the id) but flaky. Its resized thumbnails are
+ *    generated separately from the upload and are sometimes missing for a record whose front
+ *    image exists (Streetlight Manifesto, Social Distortion on v6.2.0), so it tries the next
+ *    size, then the full-size original, before the card draws the derived sleeve.
  */
-export function coverUrls(mbid: string, size: 250 | 500 = 250): string[] {
-  const base = `https://coverartarchive.org/release-group/${encodeURIComponent(mbid)}/front`
-  return size === 250 ? [`${base}-250`, `${base}-500`, base] : [`${base}-500`, base]
+export function coverUrls(mbid: string, size: 250 | 500 = 250, apiBase: string = ASK_API_BASE): string[] {
+  const id = encodeURIComponent(mbid)
+  const base = `https://coverartarchive.org/release-group/${id}/front`
+  const caa = size === 250 ? [`${base}-250`, `${base}-500`, base] : [`${base}-500`, base]
+  return [`${apiBase}/api/ask/cover/${id}?size=${size}`, ...caa]
 }
 
 export interface VenuePhotoMeta {
