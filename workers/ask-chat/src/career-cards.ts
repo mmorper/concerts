@@ -124,13 +124,19 @@ export function songsExhibit(most: MostPlayedSongs | null, limit: number | undef
   if (!most || most.songs.length === 0) return undefined;
   const n = Math.min(Math.max(limit ?? 10, 1), 25);
   const acts = new Set(data.concerts.flatMap((c) => [c.headlinerNormalized, ...(c.openers ?? []).map(slugOf)]));
+  const byId = new Map(data.concerts.map((c) => [c.id, c]));
   const ctx = { discographyKeys: data.aliasData?.discographyKeys, artistsMetadata: data.meta };
   // "song|performer" → setlist.fm's cover credit, the same credit the setlist prose prints.
   const credited = new Map<string, string>();
+  // "song|performer" → the latest night I heard that act play it.
+  const lastHeard = new Map<string, { date: string; concertId: string }>();
   for (const e of data.setlists?.entries ?? []) {
     for (const set of e.setlist?.sets?.set ?? []) {
       for (const song of set.song ?? []) {
-        if (song.name && song.cover?.name) credited.set(`${song.name.toLowerCase()}|${slugOf(e.artistName)}`, song.cover.name);
+        if (!song.name) continue;
+        const key = `${song.name.toLowerCase()}|${slugOf(e.artistName)}`;
+        if (song.cover?.name) credited.set(key, song.cover.name);
+        if ((lastHeard.get(key)?.date ?? "") < e.date) lastHeard.set(key, { date: e.date, concertId: e.concertId });
       }
     }
   }
@@ -161,6 +167,26 @@ export function songsExhibit(most: MostPlayedSongs | null, limit: number | undef
       }
       const only = s.artists.length === 1 ? s.artists[0] : null;
       const slug = only ? slugOf(only) : "";
+      // The act I most recently heard play it — the thumbnail's fallback when there is no
+      // sleeve (a cover, an unmatched song) or the sleeve fails to load. Owner's call
+      // (v6.2.x): a real album cover still wins, even on a song several acts played.
+      const latest = s.artists
+        .map((who) => {
+          const h = lastHeard.get(`${s.name.toLowerCase()}|${slugOf(who)}`);
+          return { who, date: h?.date ?? "", concertId: h?.concertId ?? "" };
+        })
+        .sort((a, b) => b.date.localeCompare(a.date))[0];
+      const lastName = latest && (latest.date || only) ? latest.who : null;
+      const lastSlug = lastName ? slugOf(lastName) : "";
+      // Album artwork for that act, for the thumbnail when the song has no sleeve of its own or
+      // it fails to load (owner's call: always a record, never a photo). The record they were
+      // touring that night when they headlined it, else the one they're remembered for, else
+      // their latest studio album.
+      // A night's era entry is the headliner's, so it only speaks for this act if they headlined.
+      const headlined = latest?.concertId && byId.get(latest.concertId)?.headlinerNormalized === lastSlug;
+      const era = headlined ? data.eras?.concerts[latest!.concertId] : undefined;
+      const spine = lastSlug ? data.eras?.artists[era?.artistKey ?? lastSlug] : undefined;
+      const actAlbum = era?.currentAlbum ?? spine?.definingAlbum ?? spine?.latestAlbum ?? null;
       return {
         title: s.name,
         count: s.count,
@@ -168,6 +194,11 @@ export function songsExhibit(most: MostPlayedSongs | null, limit: number | undef
         artistNames: s.artists,
         album,
         ...(album || !coverOf ? {} : { coverOf }),
+        lastAct:
+          lastName && acts.has(lastSlug)
+            ? { entity: "artist" as const, slug: lastSlug, name: lastName, deepLink: artistDeepLink(lastSlug) }
+            : null,
+        lastActAlbum: actAlbum && actAlbum.mbid !== album?.mbid ? identity(actAlbum) : null,
       };
     }),
   };

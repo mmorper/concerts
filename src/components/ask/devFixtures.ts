@@ -1187,7 +1187,19 @@ export const DEV_FIXTURES: Exchange[] = [
             "Social Distortion"
           ],
           "album": null,
-          "coverOf": "Merle Kilgore"
+          "coverOf": "Merle Kilgore",
+          "lastAct": {
+            "entity": "artist",
+            "slug": "social-distortion",
+            "name": "Social Distortion",
+            "deepLink": "/?scene=artists&artist=social-distortion"
+          },
+          "lastActAlbum": {
+            "mbid": "fc7b3c99-b7e6-489f-ae4f-b11e59337550",
+            "title": "Hard Times and Nursery Rhymes",
+            "releaseDate": "2011-01-14",
+            "coverAvailable": true
+          }
         },
         {
           "title": "A Moment of Silence",
@@ -1205,6 +1217,18 @@ export const DEV_FIXTURES: Exchange[] = [
             "mbid": "24deab6d-9374-34df-b413-3a14eadad293",
             "title": "Everything Goes Numb",
             "releaseDate": "2003-08-26",
+            "coverAvailable": true
+          },
+          "lastAct": {
+            "entity": "artist",
+            "slug": "streetlight-manifesto",
+            "name": "Streetlight Manifesto",
+            "deepLink": "/?scene=artists&artist=streetlight-manifesto"
+          },
+          "lastActAlbum": {
+            "mbid": "97724072-d016-44f3-9f4e-f805c82900f0",
+            "title": "The Hands That Thieve",
+            "releaseDate": "2013-04-30",
             "coverAvailable": true
           }
         },
@@ -1225,6 +1249,18 @@ export const DEV_FIXTURES: Exchange[] = [
             "title": "Everything Goes Numb",
             "releaseDate": "2003-08-26",
             "coverAvailable": true
+          },
+          "lastAct": {
+            "entity": "artist",
+            "slug": "streetlight-manifesto",
+            "name": "Streetlight Manifesto",
+            "deepLink": "/?scene=artists&artist=streetlight-manifesto"
+          },
+          "lastActAlbum": {
+            "mbid": "97724072-d016-44f3-9f4e-f805c82900f0",
+            "title": "The Hands That Thieve",
+            "releaseDate": "2013-04-30",
+            "coverAvailable": true
           }
         },
         {
@@ -1243,6 +1279,18 @@ export const DEV_FIXTURES: Exchange[] = [
             "mbid": "c4a2af67-1561-3b1b-ba7f-85515f1f9ef7",
             "title": "Social Distortion",
             "releaseDate": "1990-03-27",
+            "coverAvailable": true
+          },
+          "lastAct": {
+            "entity": "artist",
+            "slug": "social-distortion",
+            "name": "Social Distortion",
+            "deepLink": "/?scene=artists&artist=social-distortion"
+          },
+          "lastActAlbum": {
+            "mbid": "fc7b3c99-b7e6-489f-ae4f-b11e59337550",
+            "title": "Hard Times and Nursery Rhymes",
+            "releaseDate": "2011-01-14",
             "coverAvailable": true
           }
         },
@@ -1263,6 +1311,18 @@ export const DEV_FIXTURES: Exchange[] = [
             "title": "Construction Time Again",
             "releaseDate": "1983-08-22",
             "coverAvailable": true
+          },
+          "lastAct": {
+            "entity": "artist",
+            "slug": "depeche-mode",
+            "name": "Depeche Mode",
+            "deepLink": "/?scene=artists&artist=depeche-mode"
+          },
+          "lastActAlbum": {
+            "mbid": "5db2f1f0-ae05-4de2-930d-b0d3cea31d15",
+            "title": "Memento Mori",
+            "releaseDate": "2023-03-24",
+            "coverAvailable": true
           }
         },
         {
@@ -1278,7 +1338,19 @@ export const DEV_FIXTURES: Exchange[] = [
             "Streetlight Manifesto"
           ],
           "album": null,
-          "coverOf": "Bandits of the Acoustic Revolution"
+          "coverOf": "Bandits of the Acoustic Revolution",
+          "lastAct": {
+            "entity": "artist",
+            "slug": "streetlight-manifesto",
+            "name": "Streetlight Manifesto",
+            "deepLink": "/?scene=artists&artist=streetlight-manifesto"
+          },
+          "lastActAlbum": {
+            "mbid": "97724072-d016-44f3-9f4e-f805c82900f0",
+            "title": "The Hands That Thieve",
+            "releaseDate": "2013-04-30",
+            "coverAvailable": true
+          }
         },
         {
           "title": "Just Can't Get Enough",
@@ -1292,6 +1364,18 @@ export const DEV_FIXTURES: Exchange[] = [
             "mbid": "7a0e0366-91f4-3444-b45a-83b158004165",
             "title": "Speak & Spell",
             "releaseDate": "1981-10-05",
+            "coverAvailable": true
+          },
+          "lastAct": {
+            "entity": "artist",
+            "slug": "depeche-mode",
+            "name": "Depeche Mode",
+            "deepLink": "/?scene=artists&artist=depeche-mode"
+          },
+          "lastActAlbum": {
+            "mbid": "5db2f1f0-ae05-4de2-930d-b0d3cea31d15",
+            "title": "Memento Mori",
+            "releaseDate": "2023-03-24",
             "coverAvailable": true
           }
         },
@@ -1309,6 +1393,18 @@ export const DEV_FIXTURES: Exchange[] = [
             "mbid": "05ced530-5077-3a59-9c27-e2d9fe497598",
             "title": "Built for Speed",
             "releaseDate": "1982",
+            "coverAvailable": true
+          },
+          "lastAct": {
+            "entity": "artist",
+            "slug": "brian-setzer",
+            "name": "Brian Setzer",
+            "deepLink": "/?scene=artists&artist=brian-setzer"
+          },
+          "lastActAlbum": {
+            "mbid": "be1d0ca0-c2d0-4508-bf1c-a84c89d8d92f",
+            "title": "The Devil Always Collects",
+            "releaseDate": "2023-09-15",
             "coverAvailable": true
           }
         },
@@ -1329,6 +1425,18 @@ export const DEV_FIXTURES: Exchange[] = [
             "title": "Somewhere in the Between",
             "releaseDate": "2007-11-13",
             "coverAvailable": true
+          },
+          "lastAct": {
+            "entity": "artist",
+            "slug": "streetlight-manifesto",
+            "name": "Streetlight Manifesto",
+            "deepLink": "/?scene=artists&artist=streetlight-manifesto"
+          },
+          "lastActAlbum": {
+            "mbid": "97724072-d016-44f3-9f4e-f805c82900f0",
+            "title": "The Hands That Thieve",
+            "releaseDate": "2013-04-30",
+            "coverAvailable": true
           }
         },
         {
@@ -1347,6 +1455,18 @@ export const DEV_FIXTURES: Exchange[] = [
             "mbid": "c4a2af67-1561-3b1b-ba7f-85515f1f9ef7",
             "title": "Social Distortion",
             "releaseDate": "1990-03-27",
+            "coverAvailable": true
+          },
+          "lastAct": {
+            "entity": "artist",
+            "slug": "social-distortion",
+            "name": "Social Distortion",
+            "deepLink": "/?scene=artists&artist=social-distortion"
+          },
+          "lastActAlbum": {
+            "mbid": "fc7b3c99-b7e6-489f-ae4f-b11e59337550",
+            "title": "Hard Times and Nursery Rhymes",
+            "releaseDate": "2011-01-14",
             "coverAvailable": true
           }
         }

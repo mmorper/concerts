@@ -131,13 +131,16 @@ export function CoverArt({
   size = 250,
   color,
   className = '',
+  fallback,
 }: {
   album: AlbumIdentity
   size?: 250 | 500
   color: string
   className?: string
+  /** What to show when no sleeve loads. Default: the derived sleeve with the title. */
+  fallback?: ReactNode
 }) {
-  const sleeve = <DerivedArt name={album.title} sub={yearOf(album.releaseDate)} color={color} shape="sleeve" className={className} />
+  const sleeve = fallback ?? <DerivedArt name={album.title} sub={yearOf(album.releaseDate)} color={color} shape="sleeve" className={className} />
   return (
     <LadderImage
       sources={album.coverAvailable ? coverUrls(album.mbid, size) : []}
