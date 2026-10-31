@@ -51,6 +51,14 @@ interface iTunesSearchResponse {
   results: iTunesTrack[]
 }
 
+/** One iTunes collection, trimmed to what cover art needs. */
+export interface ItunesAlbum {
+  collectionName: string
+  artistName: string
+  /** ".../100x100bb.jpg" — the CDN serves any square size from the same path. */
+  artworkUrl100: string
+}
+
 export interface NormalizedTrack {
   name: string
   previewUrl: string | null
@@ -116,6 +124,41 @@ export class iTunesClient {
     const url = `${this.baseUrl}/search?term=${encodedName}&entity=song&limit=${limit}&country=US`
 
     return this.fetchTracks(url, artistName)
+  }
+
+  /**
+   * Every album iTunes credits to one artist (exact lookup by artist ID), for cover art.
+   *
+   * Unlike the track methods this THROWS on any failure instead of returning []: the
+   * caller caches the answer for 90 days, and a failed request cached as "no albums"
+   * would hide the artist's covers until it expired.
+   */
+  async getAlbumsByArtistId(artistId: number): Promise<ItunesAlbum[]> {
+    return this.fetchAlbums(`${this.baseUrl}/lookup?id=${artistId}&entity=album&limit=200&country=US`, `artist ID ${artistId}`)
+  }
+
+  /** Album search by artist name — for the few artists with no known iTunes ID. Throws like the above. */
+  async searchAlbums(artistName: string): Promise<ItunesAlbum[]> {
+    const term = encodeURIComponent(artistName)
+    return this.fetchAlbums(`${this.baseUrl}/search?term=${term}&entity=album&attribute=artistTerm&limit=200&country=US`, artistName)
+  }
+
+  private async fetchAlbums(url: string, label: string): Promise<ItunesAlbum[]> {
+    for (let attempt = 0; ; attempt++) {
+      const response = await fetch(url)
+      if (response.status === 403) throw new ITunesBlockedError(label)
+      if (response.status === 429 && attempt < this.maxRetries) {
+        const delay = this.retryBaseDelayMs * Math.pow(2, attempt)
+        console.log(`    ⏳ iTunes rate limited, retrying in ${delay}ms (attempt ${attempt + 1}/${this.maxRetries})`)
+        await new Promise(resolve => setTimeout(resolve, delay))
+        continue
+      }
+      if (!response.ok) throw new Error(`iTunes API error ${response.status} for "${label}"`)
+      const data = (await response.json()) as { results?: Array<ItunesAlbum & { wrapperType?: string }> }
+      return (data.results ?? [])
+        .filter(r => r.wrapperType === 'collection' && !!r.artworkUrl100)
+        .map(({ collectionName, artistName, artworkUrl100 }) => ({ collectionName, artistName, artworkUrl100 }))
+    }
   }
 
   private async fetchTracks(url: string, label: string): Promise<NormalizedTrack[]> {

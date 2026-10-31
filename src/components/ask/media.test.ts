@@ -12,6 +12,7 @@ import {
   venueSourcedPhoto,
   coverUrl,
   coverUrls,
+  itunesArtAt,
   fmtDate,
   agePhrase,
   monthsPhrase,
@@ -145,13 +146,20 @@ describe('sourced images', () => {
     )
   })
 
-  it('tries the next size, then the original, when a CAA thumbnail is missing', () => {
+  it('tries the iTunes cover first, then every Cover Art Archive size', () => {
     const base = 'https://coverartarchive.org/release-group/24deab6d-9374-34df-b413-3a14eadad293/front'
-    const apple = (n: number) => `https://concerts.morperhaus.org/api/ask/cover/24deab6d-9374-34df-b413-3a14eadad293?size=${n}&v=2`
-    // iTunes (via the ask-chat Worker) first, then every Cover Art Archive size.
-    expect(coverUrls('24deab6d-9374-34df-b413-3a14eadad293', 250, 'https://concerts.morperhaus.org')).toEqual([apple(250), `${base}-250`, `${base}-500`, base])
-    expect(coverUrls('24deab6d-9374-34df-b413-3a14eadad293', 500, 'https://concerts.morperhaus.org')).toEqual([apple(500), `${base}-500`, base])
-    expect(coverUrls('24deab6d-9374-34df-b413-3a14eadad293', 250, '')[0]).toBe('/api/ask/cover/24deab6d-9374-34df-b413-3a14eadad293?size=250&v=2')
+    const art = 'https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/60/b1/13UABIM56819.rgb.jpg/100x100bb.jpg'
+    const at = (px: number) => art.replace('100x100bb', `${px}x${px}bb`)
+    expect(coverUrls('24deab6d-9374-34df-b413-3a14eadad293')).toEqual([`${base}-250`, `${base}-500`, base])
+    expect(coverUrls('24deab6d-9374-34df-b413-3a14eadad293', 250, art)).toEqual([at(300), `${base}-250`, `${base}-500`, base])
+    expect(coverUrls('24deab6d-9374-34df-b413-3a14eadad293', 500, art)).toEqual([at(600), `${base}-500`, base])
+    // No CAA image on record: iTunes alone.
+    expect(coverUrls('24deab6d-9374-34df-b413-3a14eadad293', 250, art, false)).toEqual([at(300)])
+  })
+
+  it('asks the iTunes CDN for the size the card draws', () => {
+    expect(itunesArtAt('https://x/a.jpg/100x100bb.jpg', 500)).toBe('https://x/a.jpg/600x600bb.jpg')
+    expect(itunesArtAt('https://x/a.png/100x100bb.png', 250)).toBe('https://x/a.png/300x300bb.png')
   })
 
   it('formats a calendar date without a timezone shift', () => {

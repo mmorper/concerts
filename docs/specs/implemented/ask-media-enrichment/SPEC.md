@@ -123,7 +123,7 @@ on the frame's centre.
 | Venue hero | my venue shot, newest night | hand-placed photo, then Google Places (the generic `fallback*.jpg` placeholder doesn't count) | the map, as before |
 | List row | that night: headliner, else an opener (labelled), else the venue (labelled) | Deezer portrait (round) | genre tile |
 | Night card | one 4:5 tile per act photographed, plus the venue | my photo of the headliner from another night (captioned "not this night"), then Deezer | genre tile |
-| Covers | — | iTunes via the ask-chat Worker, then Cover Art Archive (only when `coverAvailable`) | a sleeve in the genre colour, tinted per title, with title and year (type dropped below 60px) |
+| Covers | — | iTunes (resolved at build time), then Cover Art Archive (only when `coverAvailable`) | a sleeve in the genre colour, tinted per title, with title and year (type dropped below 60px) |
 | Era card | that night's frame | Deezer portrait | genre tile |
 | Choice chips (artists) | my lead photo of them | Deezer portrait | genre tile with initials |
 
@@ -132,16 +132,12 @@ on the frame's centre.
 the venue. Every caption names the night.
 
 **Covers.** The failures did show up: after 6.2.0, Cover Art Archive returned 500s for Dare,
-Hysteria, Secrets and Credo (originals and thumbnails alike). So each sleeve now tries, in order:
-`GET /api/ask/cover/<mbid>` on the ask-chat Worker (`workers/ask-chat/src/cover.ts`), which names
-the record from the archive's own `album-eras.json` / `song-albums.json` (MusicBrainz only for an
-id they don't hold — the first version asked MusicBrainz every time and returned no covers in
-production), finds the iTunes album whose artist and title both match (edition suffixes stripped;
-"artist title" first, then the title alone), and 302s to Apple's artwork CDN — the answer kept in
-the `ASK_CONTROL` KV for 90 days, a miss for 7, an upstream error not at all. Every response
-carries an `X-Cover` header saying why; `?fresh` skips the stored answer. Then Cover Art Archive
+Hysteria, Secrets and Credo (originals and thumbnails alike). Each sleeve now tries, in order: the
+iTunes cover resolved at build time (`public/data/album-covers.json`, from
+`scripts/resolve-album-covers.ts`, `docs/DATA_PIPELINE.md` §8.6); then Cover Art Archive
 `front-250` → `front-500` → the original; then the derived sleeve. Strict matching on purpose: a
-wrong sleeve is worse than the derived one.
+wrong sleeve is worse than the derived one. A runtime route on the ask-chat Worker was tried first
+(#596, #597) and removed: iTunes answered it with HTTP 429, since Workers share egress IPs.
 
 **Lightbox.** Tapping any of my photos opens it with the full caption. Arrow keys or swipe page
 through; Escape closes the photo without closing the Spotlight underneath (keys are caught on

@@ -15,7 +15,6 @@
 //     silently credited to the headliner is fabricated attribution on half the archive.
 
 import { normalizeArtistName } from '@/utils/normalize'
-import { ASK_API_BASE } from '@/services/askArchive'
 
 export interface MediaCrop {
   x: number
@@ -254,31 +253,38 @@ export function photoCaption(p: Photo, ctx: CaptionContext): string {
  * Cover Art Archive front cover for a MusicBrainz release-group.
  *
  * Loaded straight from the browser. CAA's failures did show up in practice, so cards try the
- * iTunes redirect first — see `coverUrls`.
+ * build-time iTunes cover first — see `coverUrls`.
  */
 export function coverUrl(mbid: string, size: 250 | 500 = 250): string {
   return `https://coverartarchive.org/release-group/${encodeURIComponent(mbid)}/front-${size}`
 }
 
 /**
+ * An iTunes artwork URL at the size a card draws. `artworkUrl100` ends ".../100x100bb.jpg" and
+ * Apple's CDN serves any square size from the same path; 300/600 cover 250/500 on 2x screens.
+ */
+export function itunesArtAt(artworkUrl100: string, size: 250 | 500): string {
+  const px = size === 500 ? 600 : 300
+  return artworkUrl100.replace(/\/\d+x\d+bb\.(jpg|png|webp)$/, `/${px}x${px}bb.$1`)
+}
+
+/**
  * Every URL worth trying for one sleeve, in order.
  *
- * 1. The ask-chat Worker's `/api/ask/cover/<mbid>`, which redirects to the same album on Apple's
- *    artwork CDN (workers/ask-chat/src/cover.ts). First because it is the one that loads: on
- *    2026-10-31 Cover Art Archive 500'd on Dare, Hysteria, Secrets and Credo — originals and
- *    thumbnails alike — in the Human League discography card. It 404s when iTunes has no album
- *    whose artist and title both match, which simply moves the image down the ladder.
+ * 1. The iTunes cover resolved at build time (`public/data/album-covers.json`, written by
+ *    scripts/resolve-album-covers.ts). First because Apple's CDN is the one that loads: on
+ *    2026-10-31 Cover Art Archive 500'd on Dare, Hysteria, Secrets and Credo, originals and
+ *    thumbnails alike. (Resolving it at view time from the ask-chat Worker was tried and got
+ *    HTTP 429 from iTunes — Workers share egress IPs.)
  * 2. Cover Art Archive, which is exact (keyed by the id) but flaky. Its resized thumbnails are
  *    generated separately from the upload and are sometimes missing for a record whose front
- *    image exists (Streetlight Manifesto, Social Distortion on v6.2.0), so it tries the next
- *    size, then the full-size original, before the card draws the derived sleeve.
+ *    image exists, so it tries the next size, then the full-size original.
+ * The card draws the derived sleeve when all of them fail.
  */
-export function coverUrls(mbid: string, size: 250 | 500 = 250, apiBase: string = ASK_API_BASE): string[] {
-  const id = encodeURIComponent(mbid)
-  const base = `https://coverartarchive.org/release-group/${id}/front`
-  const caa = size === 250 ? [`${base}-250`, `${base}-500`, base] : [`${base}-500`, base]
-  // `v` changes when the route's answers change, so a browser's cached 404 from the old one is skipped.
-  return [`${apiBase}/api/ask/cover/${id}?size=${size}&v=2`, ...caa]
+export function coverUrls(mbid: string, size: 250 | 500 = 250, itunes?: string | null, caaAvailable = true): string[] {
+  const base = `https://coverartarchive.org/release-group/${encodeURIComponent(mbid)}/front`
+  const caa = !caaAvailable ? [] : size === 250 ? [`${base}-250`, `${base}-500`, base] : [`${base}-500`, base]
+  return itunes ? [itunesArtAt(itunes, size), ...caa] : caa
 }
 
 export interface VenuePhotoMeta {

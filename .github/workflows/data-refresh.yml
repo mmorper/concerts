@@ -108,6 +108,9 @@ jobs:
           # Explicit path, never `git add data/`: syndicate.yml stages
           # data/syndication-log.json itself and the two must not contend for it.
           git add data/cache/musicbrainz-tracks.json 2>/dev/null || true
+          # Same reason for the album-cover cache: unstaged, every week would re-ask iTunes
+          # for every artist and spend its request budget for nothing.
+          git add data/cache/itunes-album-covers.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No data changes to commit."
           else

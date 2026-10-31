@@ -5,6 +5,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import type { Concert } from '@/types/concert'
+import { loadAlbumCovers } from '@/components/ask/albumCovers'
 import { buildMediaIndex, EMPTY_MEDIA, type MediaAsset, type MediaIndex, type VenuePhotoMeta } from '@/components/ask/media'
 
 export interface ArtistMeta {
@@ -84,6 +85,8 @@ export function useArchiveData(enabled = true): ArchiveData {
       setArtists(a as Record<string, ArtistMeta>)
       setVenues(v as Record<string, VenueMeta>)
     }
+    // Album covers too: started when Ask opens, so they're in hand before the first card.
+    loadAlbumCovers()
     // Photos load beside the rest but never hold them up, and a failure is just "no photos":
     // the card is still complete on its sourced tier.
     fetch('/data/media-index.json')
