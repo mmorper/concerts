@@ -14,9 +14,7 @@ describe('indexConcerts', () => {
     // Blancmange headlined Irvine in 1986 and opened for Thompson Twins in Glasgow.
     const shows = ix.byArtist.get('blancmange') ?? []
     expect(shows.map((c) => c.city)).toEqual(['Irvine', 'Glasgow'])
-    expect(ix.headlined.get('blancmange')).toHaveLength(1)
-    const glasgow = shows.find((c) => c.city === 'Glasgow')!
-    expect(ix.opened.get('blancmange')?.has(glasgow.id)).toBe(true)
+    expect(ix.headlined.get('blancmange')?.map((c) => c.city)).toEqual(['Irvine'])
   })
 
   it('lists each night once per act: headlined, or on the bill as an opener', () => {

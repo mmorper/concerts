@@ -68,9 +68,6 @@
 }
 .show:hover { background: rgba(255, 255, 255, 0.13); }
 .show .yr { color: #fff; font-weight: 600; margin-right: 6px; }
-/* A night on someone else's bill (#219): the act opened, so say whose night it was. */
-.show { max-width: 100%; }
-.show .role { color: rgba(255, 255, 255, 0.6); margin-left: 6px; font-size: 0.9em; white-space: normal; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
 .chip {

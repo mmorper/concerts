@@ -28,8 +28,6 @@ export interface ArtistFacts {
   /** Every night I saw them, chronological — headlining AND opening (#219), as the Artists scene counts. */
   shows: Concert[]
   count: number
-  /** Ids of the nights in `shows` where they were on someone else's bill. */
-  opened: Set<string>
   firstYear?: number
   lastYear?: number
   primaryGenre?: string
@@ -69,14 +67,13 @@ function topGenre(shows: Concert[]): string | undefined {
 
 /**
  * Concerts indexed by id, date, artist and venue. An artist's list holds every night I saw them,
- * headlining or opening (#219); `headlined` and `opened` keep the two apart.
+ * headlining or opening (#219); `headlined` keeps the nights they headlined.
  */
 export function indexConcerts(concerts: Concert[]) {
   const byId = new Map<string, Concert>()
   const onDate = new Map<string, Concert>()
   const byArtist = new Map<string, Concert[]>()
   const headlined = new Map<string, Concert[]>()
-  const opened = new Map<string, Set<string>>()
   const byVenue = new Map<string, Concert[]>()
   for (const c of concerts) {
     byId.set(c.id, c)
@@ -89,15 +86,13 @@ export function indexConcerts(concerts: Concert[]) {
       const slug = normalizeArtistName(name.trim())
       if (!slug || slug === c.headlinerNormalized) continue
       const list = byArtist.get(slug) ?? byArtist.set(slug, []).get(slug)!
-      if (list.includes(c)) continue
-      list.push(c)
-      ;(opened.get(slug) ?? opened.set(slug, new Set()).get(slug)!).add(c.id)
+      if (!list.includes(c)) list.push(c)
     }
     ;(byVenue.get(c.venueNormalized) ?? byVenue.set(c.venueNormalized, []).get(c.venueNormalized)!).push(c)
   }
   for (const list of byArtist.values()) list.sort(byDate)
   for (const list of byVenue.values()) list.sort(byDate)
-  return { byId, onDate, byArtist, headlined, opened, byVenue }
+  return { byId, onDate, byArtist, headlined, byVenue }
 }
 
 // `enabled` lets a caller defer the three fetches until Ask is actually used (the provider passes
@@ -167,7 +162,6 @@ export function useArchiveData(enabled = true): ArchiveData {
         meta: artists?.[slug] ?? null,
         shows,
         count: shows.length,
-        opened: indexes.opened.get(slug) ?? new Set(),
         firstYear: shows[0]?.year,
         lastYear: shows[shows.length - 1]?.year,
         primaryGenre: topGenre(own.length ? own : shows),
