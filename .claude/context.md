@@ -4,7 +4,7 @@
 
 **Version:** v6.0.0 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-08-07
+**Last Sync:** 2026-10-31
 
 ### Commands
 
@@ -28,7 +28,7 @@ npm run build-data   # Fetch & enrich concert data
 
 ## Architecture
 
-**5 Full-Viewport Scenes** with snap scrolling + standalone pages:
+**6 Full-Viewport Scenes** with snap scrolling + standalone pages:
 
 | # | Scene | Component | Tech |
 |---|-------|-----------|------|
@@ -37,6 +37,7 @@ npm run build-data   # Fetch & enrich concert data
 | 3 | Geography | Scene3Map.tsx | Leaflet + Venue Photos |
 | 4 | Genres | Scene5Genres.tsx | D3.js sunburst |
 | 5 | Artists | ArtistScene/ | Framer Motion + Gatefold |
+| 6 | Ask the Archive | components/ask/ | Chat over the MCP tools (ask-chat Worker), ⌘K spotlight |
 
 **Standalone Pages:**
 
@@ -47,12 +48,14 @@ npm run build-data   # Fetch & enrich concert data
 | `/whats-playing` | App release notes & changelog (v4.4.0) |
 | `/how-it-works` | Interactive data enrichment cascade, 7 tiers (v4.6.0) |
 | `/about` | Creator backstory & E-E-A-T signals |
+| `/about-mcp` | The MCP connector — add the archive to Claude |
+| `/dashboard` | Internal operator console (Cloudflare Access) |
 
 **Tech Stack:** Vite 6 + React 18 + TypeScript 5 + Tailwind 4 + D3 7 + Framer Motion 11 + Leaflet
 
-**Infrastructure:** Cloudflare Pages (hosting) + Cloudflare Worker (dynamic OG tags for `/liner-notes` and `/whats-playing`)
+**Infrastructure:** Cloudflare Pages (hosting) + four Workers, each with its own CI and auto-deploy: `meta-injector` (dynamic OG tags), `mcp-server` (`/mcp` connector), `ask-chat` (Ask the Archive), `dashboard-refresh` (operator dashboard). GitHub Actions run the data refresh, weekly liner notes, and daily syndication / On This Day.
 
-**Data:** 183 concerts (1984-2026), 257 artists (107 headliners + openers), 79 venues
+**Data:** 185 concerts (1984-2027), 258 artists (108 headliners), 80 venues
 **SEO:** 92/100 (last analyzed: 2026-02-05)
 
 ---
@@ -116,6 +119,16 @@ docs/
 - ✅ One archive-stats derivation replaces six; `validate:docs` now guards the shape, not just the prose (#295)
 - ✅ Dashboard can see attribution coverage; `lastBuildAt` moves when the resolver runs (#289)
 
+**Unreleased on `main` since v6.0.0 (ships as the next release):**
+
+- ✅ Social syndication live — Bluesky + Mastodon drip one liner note a day plus On This Day posts; kill switch, retraction, `syndicate:preview`, per-channel health (epic #323, `docs/SYNDICATION.md`)
+- ✅ Instagram adapter + R2 card host wired in, **inert until its secrets exist** (#556/#557, awaiting #334/#336)
+- ✅ Personal media pipeline — `npm run media` (prep → review → ingest → crop), PhotoKit-safe, 30+ shows culled (`.claude/skills/media-pipeline/SKILL.md`)
+- ✅ Automatic claim check for liner notes and social copy (#529), notes corrected after owner review (#526/#527)
+- ✅ Liner notes no longer publish nothing: failures held for 8 weeks, every gate falls through to a deeper reserve, fact sheet sees every show a post names, exact date spans; empty run fails red (PR #591)
+- ✅ Ask the Archive answers album questions — `get_album_info` + album-annotated setlists (#317, PR #591)
+- ✅ Model move to Sonnet 5 across all surfaces (#500/#502); TypeScript 7 at the root (#523); `@anthropic-ai/sdk` 1.x (#590)
+
 **Recent Releases:**
 
 - **v6.0.0** (2026-08-10): Song → album attribution — `song-albums.json` at 89.7% across three tiers (#276/#282); `road-tested` + `most-witnessed-album` detectors and MCP setlist annotation (#277); liner-note footers play their subject song (#299); 12 artists' wrong-band audio fixed and Re-Flex's discography corrected (#275/#300); one archive-stats derivation (#295); dashboard attribution stage (#289)
@@ -132,40 +145,28 @@ docs/
 
 ## Active Work & Next Steps
 
-### In flight — Discography Trajectory (v5.4.0)
+### In flight — Social Syndication (v7.0.0)
 
-**Epic** [#266](https://github.com/mmorper/concerts/issues/266) · **Spec** [global-discography-trajectory.md](../docs/specs/future/global-discography-trajectory.md) (v1.3) · **Merged** [#278](https://github.com/mmorper/concerts/pull/278) → `f426575`, live in production
+**Epic** [#323](https://github.com/mmorper/concerts/issues/323) · **Spec** [global-social-syndication.md](../docs/specs/future/global-social-syndication.md) · **Operator doc** [SYNDICATION.md](../docs/SYNDICATION.md)
 
-Joins the 11,359-release discography against 40 years of attendance to answer where an artist stood in their arc on a given night — and what hadn't happened yet. Ships the first liner-notes detector where the narrator is wrong about the future.
-
-All three windows complete (#268–#274). Full suites green.
-
-| Artefact | Note |
+| Channel | State |
 | --- | --- |
-| `scripts/utils/album-title.ts` | iTunes ↔ MusicBrainz titles, 58.1% → 73.5%. **Fail-closed by design** — do not add a fuzzy tier |
-| `scripts/utils/artist-key.ts` | Comparison only. **Never** wire into slug generation — published deep links depend on `normalize.ts` |
-| `public/data/album-eras.json` | 302 KB, build-data Step 7.5. Stores nothing derivable |
-| `get_career_position` | MCP tool; `search_concerts` gained `cycleBucket` |
-| `album-trajectory` | 8 findings, `surpriseFactor` 10 |
-| `discography-crossref` | Implemented, tested, **deliberately not registered** — enable in v5.5 |
-| `scripts/liner-notes/voice-check.ts` | The voice checklist as code; errors drop a post from the run |
+| Bluesky | Live — daily drip + On This Day, @-mentions for artists/venues |
+| Mastodon | Live — no @-mentions yet (#454) |
+| Instagram | Built and wired, inert until credentials ([#334](https://github.com/mmorper/concerts/issues/334), [#336](https://github.com/mmorper/concerts/issues/336) — manual account setup) |
+| X | Unbuilt ([#335](https://github.com/mmorper/concerts/issues/335)) |
+| Video (L3) | Gated on the HyperFrames pilot decision (#100) |
 
-**Released 2026-08-07** as v5.4.0 (`a3abfe7`, tag `v5.4.0`). Pages + all three auto-deploying Workers green; verified live via a `tools/call` against `concerts.morperhaus.org/mcp`.
+`public/data/syndication-health.json` is the at-a-glance state: per-channel last success, posted counts, consecutive failures. Kill switch: `/social-pause`.
 
-⚠️ **The liner-notes cron (Mondays 08:00 UTC) runs independently of `/release`.** The first `album-trajectory` post and the first real run of the voice gate happen on schedule. The gate drops posts on error rather than publishing them, so the failure mode is conservative — but it has never run outside a manual invocation. **Check the feed Monday afternoon.**
+### Watch — weekly liner notes
 
-**Follow-on:** [#267](https://github.com/mmorper/concerts/issues/267) v5.5 setlist song → album attribution (spec written, **provisional** until v5.4 ships). [#275](https://github.com/mmorper/concerts/issues/275) iTunes wrong-artist bug — fixing it raises the match rate for free.
+Four Mondays between 2026-09-14 and 2026-10-26 published nothing. Fixed in PR #591 (held findings in `data/liner-notes-held.json`, reserve 4, fact sheet covers referenced shows, exact spans). **Check the Monday run after it merges**: a red run now means nothing published and GitHub emails the owner. The live fact checker has not been exercised against the fix.
 
-### In-flight Gate (blocking MCP work)
+### Operational to-dos (owner)
 
-**Morperhaus Concert Archive MCP Server** — epic [#102](https://github.com/mmorper/concerts/issues/102)
-
-- **W0 ✅ cleared** (2026-05-09) — verified via `workers/mcp-poc/verify.sh` from a Codespace; `tools/call ping` returned `pong` over Streamable HTTP. Architecture decision (Cloudflare `agents/mcp` SDK) confirmed. See [#103](https://github.com/mmorper/concerts/issues/103).
-- **Next gate: W1** ([#104](https://github.com/mmorper/concerts/issues/104)) — restructure live meta-injector into `workers/meta-injector/`, redeploy, live-curl verify. **Production-touching; do this from a laptop, not iPad.** Branch: `mcp/w1-restructure` (not yet created).
-- **W2+W3+W4** ([#105](https://github.com/mmorper/concerts/issues/105) / [#106](https://github.com/mmorper/concerts/issues/106) / [#107](https://github.com/mmorper/concerts/issues/107)) — share branch `mcp/phase-1-server`, blocked on W1.
-- **Spec:** [docs/specs/future/global-mcp-server.md](../docs/specs/future/global-mcp-server.md)
-- **Cleanup outstanding:** retire the throwaway `workers/mcp-poc/` directory and the `mcp/w0-transport-poc` branch (W0 was throwaway by design — no merge needed).
-- **Housekeeping (cosmetic):** delete stale local branch `claude/add-mcp-server-spec-GAzJd`; backfill `Target Version` and `Last Updated` lines in the spec header.
+- [#164](https://github.com/mmorper/concerts/issues/164) — set `NOTIFY_WEBHOOK_URL` (ntfy topic) as a GitHub Actions secret and in `workers/ask-chat` + `workers/mcp-server`. Every alert path (spend tripwires, syndication health, empty liner-note runs) is log-only until then.
+- [#515](https://github.com/mmorper/concerts/issues/515) — TypeScript 7: root done (#523); the three Workers are still on 5.7.
 
 ### Paused Initiatives
 
@@ -174,7 +175,7 @@ All three windows complete (#268–#274). Full suites green.
 - **Status:** Data layer shipped; the **visual design does not exist**. Deliberately unmilestoned rather than parked on a v6.5 — a version number would stand in for a decision not yet made.
 - **Why it is not a scheduling accident:** #5 was opened 2026-02-03, the day after #1. Six releases have shipped past it. It is not blocked and not unimportant; nobody has cracked what it should look like.
 - **The spec misleads.** [docs/specs/future/artists-discography.md](../docs/specs/future/artists-discography.md) is 899 lines and reads as ready. It is a **data** spec — MusicBrainz endpoints, cover art, client architecture. That half shipped in v5.4/v6.0. The visual question was never answered.
-- **What unblocks it — not inspiration.** This data has never been on screen in any form, so designing a panel means guessing what reads well. Two cheap surfaces in v6.1 put it on screen inside an existing visual language first: [#286](https://github.com/mmorper/concerts/issues/286) (How It Works Tier 3 — one line of copy in a row that exists) and [#22](https://github.com/mmorper/concerts/issues/22) (setlist items — "which album, press play"). Ship those, learn which framing lands, then design the panel.
+- **What unblocks it — not inspiration.** This data has never been on screen in any form, so designing a panel means guessing what reads well. Cheap surfaces put it on screen inside an existing visual language first: #286 (How It Works Tier 3) shipped, and #317 (Ask answers album questions) shipped in PR #591. [#22](https://github.com/mmorper/concerts/issues/22) (setlist items — "which album, press play") is the one left. Learn which framing lands, then design the panel.
 - **Knock-on:** [#115](https://github.com/mmorper/concerts/issues/115) is **no longer sequenced behind #5** and goes standalone — with an `llm.txt` fix attached, since `llm.txt:127`/`:678` publish `discography.json` to agents and moving it would 404 for them. Sitemap album routes stay out until #5 lands.
 
 To resume: decide the visual framing first — that is the whole blocker. #5's own numbers are stale (`discography.json` is 4.6 MB / 260 artists / 11,366 releases, not 2.5 MB / 247 / 15k+).
@@ -183,7 +184,7 @@ To resume: decide the visual framing first — that is the whole blocker. #5's o
 **HyperFrames video pilot — Social Distortion Thread** (shelved 2026-05-17)
 
 - **Status:** First pilot video built, rendered, and delivered with audio. Paused awaiting pilot review decision [#100](https://github.com/mmorper/concerts/issues/100). Templates A/B/D ([#99](https://github.com/mmorper/concerts/issues/99)) not started.
-- **Branch:** `pilot/hyperframes-poc` (pushed to origin, not merged)
+- **Branch:** `pilot/hyperframes-poc` is gone; the video workspace landed on `main` in #400
 - **Tag:** `pilot/social-distortion-thread-v1` at commit `09f065d` (permanent reference even if branch is ever deleted)
 - **Start here if resuming:** [docs/specs/future/hyperframes-poc/README.md](../docs/specs/future/hyperframes-poc/README.md) — the folder's front door (#447). Supersedes the old `HANDOFF.md`, which was deleted as stale.
 - **Pattern library (reusable for future videos):** [video/PATTERNS.md](../video/PATTERNS.md)
@@ -196,18 +197,18 @@ To resume: read the folder README, make the [#100](https://github.com/mmorper/co
 
 See [docs/ROADMAP.md](../docs/ROADMAP.md) for current priorities.
 
-**Open GitHub issues:**
+**Open GitHub issues (top of the queue):**
 
-1. **#88** — Make How It Works cascade thumbnails interactive (T2 venue, T3 artist, T4 album art)
-2. **#69** — Improve genre coverage for opener artists (currently 62% vs 93% for headliners)
-3. **#68** — Deferred liner notes generators: genreOutlier, doubleHeader, discographyCrossref, temporalPattern
-4. **#30** — Enhance llm.txt with page structure & semantic hierarchy (low-effort, ~15 min)
-5. **#22** — Audio preview playback on individual setlist items
-6. **#5** — Artist Discography UI Panel (data pipeline complete since v3.5.0)
-7. **Analytics Suite** (#37–#41) — Scene navigation, artist content, setlist/venue, user behavior, retention
-8. **#8** — Renamed venue display badges on map popups
-9. **#7** — Venue name change detection & CLI management
-10. **#14** — Validation architecture refactor (code quality)
+1. **#334 / #336** — Instagram credentials and account setup (manual; code is done)
+2. **#164** — Alert transport (`NOTIFY_WEBHOOK_URL`)
+3. **#335** — X adapter
+4. **#454** — Mastodon @-mentions
+5. **#22** — Audio preview on setlist items (next step toward #5)
+6. **#115** — `discography.json` (4.9 MB) shipped but unused by the client — #317 confirmed Ask doesn't need it
+7. **#100** — HyperFrames pilot green/yellow/red call
+8. **#515** — TypeScript 7 in the Workers
+9. **#69** — Genre coverage for openers
+10. **#68** — Deferred liner-notes detectors
 
 ---
 
@@ -245,17 +246,17 @@ See `.claude/commands/README.md` for full documentation.
 
 ## Recent Commits (Last 10)
 
-- `ffcada2` — docs: secret management runbook + key→store matrix (#148)
-- `bd26c28` — feat(ask): exhibit schema + rendering (#140) (#147)
-- `57a055a` — feat(ask-chat): chat backend — tool-grounded loop + cost/abuse gate (#139) (#146)
-- `53fcae1` — docs(spec): Ask the Archive in-app conversational client (epic #138) (#144)
-- `7f4bb30` — docs: context-sync + roadmap refresh (post setlists/top-songs)
-- `ef8f4e3` — chore: housekeeping — gitignore video renders, file completed specs
-- `ffc521d` — fix(mcp): connector icon — serve PNG, not SVG/ICO only
-- `d7c09f3` — feat(mcp): setlists & top songs — get_concert_setlist + get_archive_top_songs (#145)
-- `bf18ead` — feat(mcp): Ask the Archive — site presence (nav + end-of-scroll coda) (#135)
-- `049804d` — fix(changelog): 'See it live' uses a real navigation, not client-side navigate
+- `6ce1ba2` — test: compare by id, not a detector name the type does not allow
+- `3e1ed6b` — chore(deps): bump @anthropic-ai/sdk in /workers/mcp-server (#587)
+- `ee5f37c` — chore(deps): bump @anthropic-ai/sdk from 0.135.0 to 1.3.0 (#590)
+- `15b995c` — content: update syndication ledger + health [automated]
+- `d74ed71` — chore(deps-dev): bump googleapis (#589)
+- `779fcc2` — chore(deps-dev): bump @cloudflare/workers-types (#586)
+- `e022dae` — chore(deps): bump dotenv (#588)
+- `057a18a` — chore(deps-dev): bump @cloudflare/workers-types (#585)
+- `f564392` — chore(deps-dev): bump @cloudflare/workers-types (#584)
+- `1f1ec4c` — chore(deps): bump agents in /workers/mcp-server in the mcp-agents group (#583)
 
 ---
 
-*Last updated: 2026-08-07 by Claude Code — v5.4.0 released*
+*Last updated: 2026-10-31 by Claude Code — context sync before the next release*

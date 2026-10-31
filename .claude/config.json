@@ -14,14 +14,14 @@
     ]
   },
   "version": {
-    "current": "4.7.0",
+    "current": "6.0.0",
     "status": "production",
     "live_url": "https://concerts.morperhaus.org"
   },
   "status": {
-    "lastContextSync": "2026-06-18",
-    "lastCommit": "docs: secret management runbook — key→store matrix (#148) (ffcada2)",
-    "notes": "v4.7.0 production. MCP server live at /mcp (9 tools); search_concerts gained a month filter, deployed 2026-06-18. Ask the Archive chat: #140 (exhibit schema + rendering) MERGED 2026-06-18 — backend SSE event:exhibit + React exhibit cards, behind dev-only /ask-dev (no prod entry yet). ask-chat worker NOT yet deployed (deploy with #141). Next: #141 (Spotlight overlay + /ask canvas + Turnstile session exchange). Deferred polish + Sonnet-vs-Haiku watch tracked on issue #140."
+    "lastContextSync": "2026-10-31",
+    "lastCommit": "test: compare by id, not a detector name the type does not allow (6ce1ba2)",
+    "notes": "v6.0.0 in production, with a large unreleased body of work on main (social syndication on Bluesky + Mastodon, media pipeline, claim check, Sonnet 5). Instagram is wired but inert pending credentials (#334/#336). PR #591: liner-notes empty-run fix + Ask album questions (#317). Owner to-do: NOTIFY_WEBHOOK_URL (#164)."
   },
   "deployment": {
     "platform": "cloudflare-pages",
@@ -73,7 +73,7 @@
       "documentation": ".claude/commands/README.md",
       "usage": [
         "/release minor     # New feature",
-        "/release patch     # Bug fix", 
+        "/release patch     # Bug fix",
         "/release --dry-run # Preview changes"
       ],
       "manual_steps_if_needed": [
@@ -88,7 +88,7 @@
       "trigger": "When moving spec to docs/specs/implemented/",
       "note": "Handled automatically by /release command when ROADMAP items are selected",
       "manual_steps_if_needed": [
-        "1. Update spec status to '✅ IMPLEMENTED'",
+        "1. Update spec status to '\u2705 IMPLEMENTED'",
         "2. Add implementation date",
         "3. Move file from specs/future/ to specs/implemented/"
       ]

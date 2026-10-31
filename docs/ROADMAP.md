@@ -15,6 +15,15 @@
 
 ## Recently Completed
 
+### ✅ Setlist Song → Album Attribution (v6.0.0)
+
+**Status**: Released 2026-08-10 — #276/#282/#277
+**Spec**: [global-setlist-album-attribution.md](specs/future/global-setlist-album-attribution.md)
+
+1,716 of 1,912 setlist songs matched to the studio album they came from (89.7%), across three tiers. Ships `song-albums.json`, the `road-tested` and `most-witnessed-album` detectors, and album annotations on `get_concert_setlist`. Ask the Archive gained `get_album_info` on top of it (#317).
+
+---
+
 ### ✅ Discography Trajectory (v5.4.0)
 
 **Status**: Released 2026-08-07 — [#278](https://github.com/mmorper/concerts/pull/278), epic [#266](https://github.com/mmorper/concerts/issues/266)
@@ -170,17 +179,6 @@ Phase 0 creative investigation is closed — eleven decisions recorded, includin
 per-channel media matrix, measured text budgets, the imagery rubric and the provenance
 disclosure rule. Instagram (L2 carousel) is built and awaits credentials (#334); X is unbuilt; L3 video
 is gated on #89.
-
----
-
-### Setlist Song → Album Attribution (v5.5.0)
-
-**Status**: Planned
-**Spec**: [global-setlist-album-attribution.md](specs/future/global-setlist-album-attribution.md)
-
-Joins 2,731 setlist song performances to the discography at zero incremental API cost — per-album indexing rather than per-song search, with a free iTunes Search fallback. Unlocks "I heard that song before its album existed" and "the album I've witnessed most," and is where `discography-crossref` gets enabled.
-
-**Depends on**: Discography Trajectory (v5.4.0) — consumes its `album-title.ts` matcher.
 
 ---
 
