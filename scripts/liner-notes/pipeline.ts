@@ -10,7 +10,7 @@
  * Called by index.ts (CLI) and by build-data.ts (full pipeline).
  */
 
-import { readFileSync, writeFileSync, existsSync } from "fs";
+import { readFileSync, writeFileSync, existsSync, appendFileSync } from "fs";
 import { createHash } from "crypto";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
@@ -29,7 +29,8 @@ import { checkSocial, formatSocialIssues } from "./voice-check.ts";
 import { resolveAnchorConcert } from "../syndication/payload.ts";
 import { buildSetlistIndex, type SetlistIndex } from "./setlists.ts";
 import { buildAliasMap, EMPTY_ALIAS_MAP, type AliasMap } from "./artist-aliases.ts";
-import { buildFactSheet, loadOwnerFacts as parseOwnerFacts, type FactSheetSources, type OwnerFactsMap } from "./fact-sheet.ts";
+import { buildFactSheet, factSheetSubjectsFor, loadOwnerFacts as parseOwnerFacts, type FactSheetSources, type OwnerFactsMap } from "./fact-sheet.ts";
+import { activeHeldIds, loadHeld, recordHeld, saveHeld, type HeldFinding } from "./held.ts";
 import { verifyClaims, formatClaimIssues, type ClaimIssue, type CopyFields } from "./verify-claims.ts";
 import type { PipelineOptions, ScoredFinding } from "./types.ts";
 import type { Concert } from "../../src/types/concert.ts";
@@ -39,6 +40,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..", "..");
 const DATA_DIR = join(ROOT, "public", "data");
 const LINER_NOTES_PATH = join(DATA_DIR, "liner-notes.json");
+const HELD_PATH = join(ROOT, "data", "liner-notes-held.json");
 
 /** Posts published in `--seed` mode. Normal runs publish POSTS_PER_RUN. */
 const SEED_POST_COUNT = 10;
@@ -208,10 +210,14 @@ export async function run(options: PipelineOptions): Promise<void> {
   // `--force` skips the rerun cooldown but must NOT hide publication history:
   // rotation reads it to decide which detector is stalest (#231).
   const target = options.seed ? SEED_POST_COUNT : POSTS_PER_RUN;
+  const heldFile = loadHeld(HELD_PATH);
+  const held = activeHeldIds(heldFile, today);
+  if (held.size) console.log(`   ${held.size} finding(s) held out after recent failures (data/liner-notes-held.json)`);
   const selected = select(candidateFindings, existingPosts, {
     maxPosts: target,
     force: options.force,
     today,
+    held,
   });
   console.log(`   Publishing ${target}, with ${Math.max(0, selected.length - target)} in reserve:`);
   selected.forEach((f, i) => {
@@ -221,7 +227,10 @@ export async function run(options: PipelineOptions): Promise<void> {
 
   if (selected.length === 0) {
     console.log("\n⚠️  No candidates selected — nothing to publish this run.");
-    if (!options.dryRun) await alertNothingPublished("no candidates were selected");
+    if (!options.dryRun) {
+      reportPublished(0);
+      await alertNothingPublished("no candidates were selected");
+    }
     return;
   }
 
@@ -235,71 +244,90 @@ export async function run(options: PipelineOptions): Promise<void> {
   if (!process.env.ANTHROPIC_API_KEY) {
     throw new Error("ANTHROPIC_API_KEY environment variable is required for prose generation.");
   }
-  const { withProse, attempted } = await generateUpTo(selected, target, async (candidate) => {
+  // Every gate runs inside the loop, per candidate, so a failure at ANY of them
+  // falls through to the next reserve. Before, the voice and claim checks ran
+  // after the loop had already stopped at `target`; on 2026-09-14 the claim
+  // check dropped the one post that had prose and the run ended with a reserve
+  // never tried.
+  const getFactSheet = (finding: ScoredFinding): string =>
+    buildFactSheet(factSheetSubjectsFor(finding, concerts), factSheetSources);
+  const failures: Array<Omit<HeldFinding, "heldAt">> = [];
+  const fail = (candidate: ScoredFinding, reason: string): undefined => {
+    failures.push({ id: candidate.id, headline: candidate.headline, detector: candidate.detector, reason });
+    return undefined;
+  };
+  let voiceErrors = 0;
+  let claimErrors = 0;
+
+  const { withProse: clean, attempted } = await generateUpTo(selected, target, async (candidate) => {
     const [result] = await generate([candidate], {
       artistsMetadata,
       artistsTopTracks,
       // Threaded through so `--date` and forward simulations frame tense the way
       // they frame cooldowns, instead of silently reading the wall clock.
       today: today.toISOString().slice(0, 10),
-      getFactSheet: (finding) => buildFactSheet({ artists: finding.artists, venues: finding.venues }, factSheetSources),
+      getFactSheet,
       verifyClaims: verifyClaimsFn,
     });
-    return result;
-  });
-  console.log(`   Prose generated for ${withProse.length}/${target} (${attempted} API call${attempted !== 1 ? "s" : ""})`);
+    if (!result?.prose) return fail(candidate, result?.generationError ?? "prose generation failed");
 
-  // ── Stage 4b: Voice and claim checks ─────────────────────────────────────
-  //
-  // The voice skill has carried a validation checklist since v4.4 and nothing
-  // ever ran it. Two defects reached generated prose during v5.4 — an invented
-  // distance, and a negative field rendered as its absolute value — both of
-  // which a human had already read past. Errors block the run; warnings print.
-  //
-  // The claim check (#529) runs here too, as a backstop: `generate()` already
-  // retries once on a must-fix issue for the ordinary path, but this is the one
-  // place that also covers `historical-moment`'s web-search path, and it is
-  // cheap insurance against a `getFactSheet`/`verifyClaims` wiring bug silently
-  // skipping the inline check.
-  const clean: typeof withProse = [];
-  let voiceErrors = 0;
-  let claimErrors = 0;
-  for (const candidate of withProse) {
-    const issues = checkVoice(candidate);
-    if (issues.length) console.log(formatVoiceIssues(candidate, issues));
-    if (issues.some((i) => i.severity === "error")) {
+    // ── Voice and claim checks ───────────────────────────────────────────
+    //
+    // The voice skill has carried a validation checklist since v4.4 and nothing
+    // ever ran it. Two defects reached generated prose during v5.4 — an invented
+    // distance, and a negative field rendered as its absolute value — both of
+    // which a human had already read past. Errors drop the candidate; warnings print.
+    //
+    // The claim check (#529) runs here too, as a backstop: `generate()` already
+    // retries once on a must-fix issue for the ordinary path, but this is the one
+    // place that also covers `historical-moment`'s web-search path, and it is
+    // cheap insurance against a `getFactSheet`/`verifyClaims` wiring bug silently
+    // skipping the inline check.
+    const issues = checkVoice(result);
+    if (issues.length) console.log(formatVoiceIssues(result, issues));
+    const voiceError = issues.find((i) => i.severity === "error");
+    if (voiceError) {
       voiceErrors++;
-      continue; // Drop it rather than publish it. Reserve candidates remain.
+      return fail(candidate, `voice-check: ${JSON.stringify(voiceError)}`);
     }
 
     try {
-      const factSheet = buildFactSheet({ artists: candidate.artists, venues: candidate.venues }, factSheetSources);
-      const claimIssues = await verifyClaimsFn(factSheet, { headline: candidate.headline, prose: candidate.prose });
-      if (claimIssues.length) console.log(formatClaimIssues(candidate.headline, claimIssues));
-      if (claimIssues.some((i) => i.severity === "must-fix")) {
+      const claimIssues = await verifyClaimsFn(getFactSheet(result), { headline: result.headline, prose: result.prose });
+      if (claimIssues.length) console.log(formatClaimIssues(result.headline, claimIssues));
+      const mustFix = claimIssues.filter((i) => i.severity === "must-fix");
+      if (mustFix.length) {
         claimErrors++;
-        continue; // Drop it rather than publish it. Reserve candidates remain.
+        return fail(candidate, `claim check: ${mustFix.map((i) => `"${i.sentence}" (${i.kind}) — ${i.evidence}`).join("; ")}`);
       }
     } catch (err) {
       // Ambiguity means stop, the same posture as the kill switch: a verifier
       // failure holds this candidate rather than publishing it unchecked.
-      console.warn(`   ⚠️  Claim check failed for "${candidate.headline}" (${(err as Error).message}) — held`);
+      console.warn(`   ⚠️  Claim check failed for "${result.headline}" (${(err as Error).message}) — held`);
       claimErrors++;
-      continue;
+      return fail(candidate, `claim check errored: ${(err as Error).message}`);
     }
 
-    clean.push(candidate);
-  }
+    return result;
+  });
+  console.log(`   ${clean.length}/${target} passed every check (${attempted} candidate${attempted !== 1 ? "s" : ""} tried)`);
   if (voiceErrors > 0) {
-    console.log(`   ⚠️  ${voiceErrors} post(s) failed voice checks and were dropped`);
+    console.log(`   ⚠️  ${voiceErrors} candidate(s) failed voice checks and were dropped`);
   }
   if (claimErrors > 0) {
-    console.log(`   ⚠️  ${claimErrors} post(s) failed the claim check and were dropped`);
+    console.log(`   ⚠️  ${claimErrors} candidate(s) failed the claim check and were dropped`);
   }
+
+  // Remember what failed, so next week's run doesn't pick the same findings (held.ts).
+  if (failures.length) {
+    saveHeld(HELD_PATH, recordHeld(heldFile, failures, today));
+    console.log(`   ${failures.length} finding(s) held for the next runs: ${failures.map((f) => f.headline).join("; ")}`);
+  }
+
   if (clean.length === 0) {
     console.log("\n⚠️  Nothing passed voice/claim checks — nothing to publish this run.");
+    reportPublished(0);
     await alertNothingPublished(
-      `every candidate failed voice/claim checks (${selected.map((f) => f.headline).join("; ")})`
+      `every candidate failed voice/claim checks (${failures.map((f) => f.headline).join("; ")})`
     );
     return;
   }
@@ -370,7 +398,10 @@ export async function run(options: PipelineOptions): Promise<void> {
         facts: finding ? detectorFacts(finding) : [],
         // The claim check (#529), against the same subjects the payload builder
         // will eventually resolve this post's credit stack against.
-        factSheet: buildFactSheet({ artists: post.artists, venues: post.venues }, factSheetSources),
+        factSheet: buildFactSheet(
+          finding ? factSheetSubjectsFor(finding, concerts) : { artists: post.artists, venues: post.venues },
+          factSheetSources
+        ),
       };
       return { post, context };
     });
@@ -463,6 +494,7 @@ export async function run(options: PipelineOptions): Promise<void> {
 
   if (newPosts.length === 0 && !refreshMutated) {
     console.log("\n⚠️  No posts built and no image changes. Nothing written.");
+    reportPublished(0);
     return;
   }
   if (newPosts.length === 0) {
@@ -493,6 +525,7 @@ export async function run(options: PipelineOptions): Promise<void> {
 
   writeFileSync(LINER_NOTES_PATH, JSON.stringify(output, null, 2));
   console.log(`   ✓ Written: public/data/liner-notes.json (${allPosts.length} total posts)`);
+  reportPublished(newPosts.length);
 
   // ── Stage 7: RSS feed ────────────────────────────────────────────────────
   try {
@@ -699,6 +732,23 @@ function loadOwnerFactsFile(): OwnerFactsMap | undefined {
  * Annotate the Actions run and push to NOTIFY_WEBHOOK_URL, the same slot the
  * syndication health alerts use. Absent webhook → logged only, never an error.
  */
+/**
+ * Tells the workflow how many posts this run published, via $GITHUB_OUTPUT.
+ * The workflow commits first (so the held list is saved) and then fails the run
+ * when this is 0 — a red run is what makes GitHub email the owner, which works
+ * with no NOTIFY_WEBHOOK_URL at all. Four empty Mondays went unnoticed while it
+ * was a green run with a warning annotation.
+ */
+function reportPublished(count: number): void {
+  const out = process.env.GITHUB_OUTPUT;
+  if (!out) return;
+  try {
+    appendFileSync(out, `published=${count}\n`);
+  } catch (e) {
+    console.warn("   ⚠️  could not write GITHUB_OUTPUT:", (e as Error).message);
+  }
+}
+
 async function alertNothingPublished(reason: string): Promise<void> {
   const message = `Liner notes: nothing published this run — ${reason}`;
   if (process.env.GITHUB_ACTIONS) console.log(`::warning title=No liner note published::${message}`);

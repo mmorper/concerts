@@ -75,8 +75,12 @@ export const POSTS_PER_RUN = 1;
  * Extra ranked candidates returned beyond the target. Only consumed if an
  * earlier candidate's prose fails validation, so a normal run still costs one
  * API call — see the generation loop in pipeline.ts.
+ *
+ * Was 2. Four of the eight Mondays from 2026-09-07 to 2026-10-26 published
+ * nothing because the target and both reserves all failed the claim check.
+ * A reserve is only paid for when the one above it fails.
  */
-export const CANDIDATE_RESERVE = 2;
+export const CANDIDATE_RESERVE = 4;
 /** Months before the same artist can appear twice for the same detector. */
 const RERUN_COOLDOWN_MONTHS = 6;
 /** A finding whose primary artist (artists[0]) headlined any of the last N posts is skipped. */
@@ -104,6 +108,11 @@ export interface SelectOptions {
    * Identical to the wall clock in a normal run.
    */
   today?: Date;
+  /**
+   * Finding IDs that failed recently and sit out selection (see held.ts), so
+   * their detector nominates its next-best finding. Ignored under `force`.
+   */
+  held?: ReadonlySet<string>;
 }
 
 /**
@@ -155,7 +164,9 @@ export function select(
   const eligible = findings.filter(
     (f) =>
       options.force ||
-      (!isDuplicate(f, existingPosts, now) && !isInPrimaryArtistCooldown(f, recentPosts))
+      (!isDuplicate(f, existingPosts, now) &&
+        !isInPrimaryArtistCooldown(f, recentPosts) &&
+        !options.held?.has(f.id))
   );
 
   // Each detector nominates its best eligible finding. This is where the score

@@ -128,6 +128,8 @@ export interface ScoreBreakdown {
 export interface ScoredFinding extends AnalysisFinding {
   score: number;
   scoreBreakdown: ScoreBreakdown;
+  /** Set by generate() when prose generation or its inline fact-check failed — why. */
+  generationError?: string;
 }
 
 // ── Deduplication store ──────────────────────────────────────────────────────
