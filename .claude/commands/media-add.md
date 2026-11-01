@@ -211,6 +211,16 @@ the bucket and stays off the site, while the rest carry on. It needs the `R2_MED
 values in `.env` (`docs/SECRETS.md`) and the renders on disk, so in a worktree link
 `video/renders` from the main checkout first.
 
+Then make each clip's share card, which is what a shared link to it previews with:
+
+```bash
+npm run media:share <YYYY-MM-DD>
+```
+
+It reads the poster from `video/web/`, or fetches it, and needs the network for the
+card's fonts. Look at each card, and commit `public/og/shows/`. A published clip with
+no card fails `test/pipeline`. A new `--poster-at` means running this again.
+
 ### 10. Commit and open the PR
 
 Confirm the phase reads `done`:

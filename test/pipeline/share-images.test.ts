@@ -1,7 +1,15 @@
 import { existsSync, readFileSync } from 'fs'
-import { basename, join } from 'path'
+import { join } from 'path'
 import { describe, it, expect } from 'vitest'
-import { shareByline, shareCredits, staleShareImages, type ShareAsset } from '../../scripts/media/share-images'
+import { mediaId } from '../../src/components/ask/media'
+import {
+  shareByline,
+  shareCredits,
+  shareFile,
+  shareTargets,
+  staleShareImages,
+  type ShareAsset,
+} from '../../scripts/media/share-images'
 
 const concert = { date: '2026-09-16', venue: 'Pavilion Theatre', city: 'Glasgow', cityState: 'Glasgow, UK' }
 
@@ -30,6 +38,47 @@ describe('share image credits', () => {
 
   it('writes the byline in the card’s one form', () => {
     expect(shareByline('2026-09-16')).toBe('Mike Morper · 16 September 2026')
+  })
+})
+
+describe('which assets get a share image', () => {
+  const R2 = 'https://media.morperhaus.org'
+  const still: ShareAsset = { kind: 'image', url: '/images/shows/2026-09-16-blancmange-01.jpg', date: '2026-09-16', artist: 'Blancmange', subject: 'artist' }
+  const clip: ShareAsset = {
+    kind: 'video',
+    url: `${R2}/videos/2026-09-16-blancmange-01.mp4?v=abc123def456`,
+    poster: `${R2}/posters/2026-09-16-blancmange-01.jpg?v=123abc456def`,
+    date: '2026-09-16',
+    artist: 'Blancmange',
+    subject: 'artist',
+  }
+
+  it('gives a published video a card', () => {
+    expect(shareTargets([clip])).toEqual([clip])
+  })
+
+  it('gives an unpublished video none', () => {
+    expect(shareTargets([{ ...clip, url: null, poster: null }])).toEqual([])
+  })
+
+  it('keeps stills, and narrows to one show', () => {
+    expect(shareTargets([still, clip], '2026-09-16')).toEqual([still, clip])
+    expect(shareTargets([still, clip], '2026-09-14')).toEqual([])
+  })
+
+  it('names a clip’s card for the Worker’s lookup, without the version', () => {
+    const id = mediaId({ ...clip, kind: 'video', url: clip.url as string })
+    expect(id).toBe('blancmange-01-video')
+    expect(shareFile(clip)).toBe(`${clip.date}-${id}.jpg`)
+  })
+
+  it('does not rename a still', () => {
+    expect(shareFile(still)).toBe('2026-09-16-blancmange-01.jpg')
+  })
+
+  it('credits the clip’s own act, an opener here, not the night’s headliner', () => {
+    const credits = shareCredits(clip, { ...concert, headliner: 'Thompson Twins' } as typeof concert)
+    expect(credits.display).toBe('Blancmange')
   })
 })
 
@@ -64,13 +113,10 @@ describe('which share images a crop session leaves stale', () => {
 })
 
 describe('share images on disk', () => {
-  it('has one for every published still, so a new show cannot skip `npm run media:share`', () => {
-    const { assets } = JSON.parse(readFileSync('public/data/media-index.json', 'utf-8')) as {
-      assets: Array<{ kind: string; url: string | null }>
-    }
-    const missing = assets
-      .filter((a) => a.kind === 'image' && a.url)
-      .map((a) => basename(a.url as string))
+  it('has one for every published still and video, so a new show cannot skip `npm run media:share`', () => {
+    const { assets } = JSON.parse(readFileSync('public/data/media-index.json', 'utf-8')) as { assets: ShareAsset[] }
+    const missing = shareTargets(assets)
+      .map(shareFile)
       .filter((file) => !existsSync(join('public/og/shows', file)))
     expect(missing).toEqual([])
   })

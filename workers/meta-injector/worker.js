@@ -32,6 +32,8 @@ const BOT_USER_AGENTS = [
   'telegram',
   'slackbot',
   'discordbot',
+  'cardyb', // Bluesky's link card fetcher
+  'mastodon', // every instance fetches its own preview
 
   // AI Bots
   'gptbot',
@@ -164,7 +166,7 @@ export default {
     const genre = url.searchParams.get('genre');
     const region = url.searchParams.get('region');
     const show = url.searchParams.get('show'); // #193 — concert date, YYYY-MM-DD
-    const photo = url.searchParams.get('photo'); // one still from that night
+    const photo = url.searchParams.get('photo'); // one still or video from that night
 
     // Fetch original HTML from origin
     const response = await fetch(request);
@@ -250,11 +252,11 @@ function isHTMLRequest(request) {
  * Inject artist-specific meta tags
  */
 /**
- * The share image for one still, or null if there is none.
+ * The share image for one still or video, or null if there is none.
  *
  * Asked of the origin rather than assumed, because the SPA answers 200 with HTML for any path it
  * does not know. A card pointing at that shows a broken image, which is worse than a show card.
- * A video has no share image, so its link previews as the show.
+ * A video's id ends in `-video`, and its link previews as the show until it has an image.
  */
 async function photoShareImage(photo, showDate, origin) {
   if (!photo || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(photo)) return null;
@@ -314,8 +316,9 @@ async function injectShowMeta(html, artistNormalized, showDate, origin, ctx, pho
 
     const title = `${artistName} at ${concert.venue} · ${longDate} | Morperhaus Concert Archives`;
     const photoImage = await photoShareImage(photo, concert.date, origin);
+    const lead = !photoImage ? 'The setlist from' : photo.endsWith('-video') ? 'A video from' : 'A photo from';
     const description =
-      `${photoImage ? 'A photo from' : 'The setlist from'} ${artistName} at ${concert.venue}, ${concert.cityState || concert.city} ` +
+      `${lead} ${artistName} at ${concert.venue}, ${concert.cityState || concert.city} ` +
       `on ${longDate}, from a personal concert archive spanning four decades.`;
     // Per-show cards are a follow-up (#194); until then the artist image is the
     // best available, and a missing one falls back to the site card.
