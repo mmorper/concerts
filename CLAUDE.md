@@ -59,6 +59,7 @@ npm run build-data   # Refresh data pipeline
 | `/context-sync` | Update context files |
 | `/validate` | Run all validation checks |
 | `/data-refresh` | Orchestrate data pipeline |
+| `/media-add` | Add a show's photos and videos from chat |
 | `/seo` | SEO analysis & optimization report |
 | `/preview` | Start dev server with context |
 | `/hotfix` | Emergency patch workflow |
