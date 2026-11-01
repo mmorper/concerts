@@ -4061,6 +4061,316 @@
           "subject": "performer"
         }
       }
+    },
+    "2026-09-14": {
+      "reviewed": 81,
+      "decidedAt": "2026-11-01T18:06:49.197Z",
+      "decisions": {
+        "00D68B00-5BD2-4DE4-A482-725A692531D4": {
+          "verdict": "reject"
+        },
+        "01159FC1-3086-4F6D-8083-82CA419A93AB": {
+          "verdict": "reject"
+        },
+        "067BC854-E7F0-4532-A01E-9A434FF7B40D": {
+          "verdict": "reject"
+        },
+        "08E3E9A2-4533-49F6-B4D5-BF51DA8BCE99": {
+          "verdict": "reject"
+        },
+        "0A1E31BF-32AE-4D64-90F2-672CEC0A9DC2": {
+          "verdict": "reject"
+        },
+        "0D366B8F-5B25-4A9C-B877-3F1BEE45CC98": {
+          "verdict": "reject"
+        },
+        "0DC8EE4C-41E4-4553-A239-148B663C3AFE": {
+          "verdict": "reject"
+        },
+        "0E27960E-5A09-4900-A845-FB2CB4B9228F": {
+          "verdict": "reject"
+        },
+        "10811AD5-F093-4B0B-B67F-2A3F5DF66DE4": {
+          "verdict": "reject"
+        },
+        "117EFFE6-1179-46F6-9EF7-B091F00FC888": {
+          "verdict": "reject"
+        },
+        "15BCFF0B-779E-4742-B2C5-7072CACD45BD": {
+          "verdict": "reject"
+        },
+        "24015A84-A31D-48BA-BD6F-204AE70C5DC1": {
+          "verdict": "reject"
+        },
+        "241D04D4-C0C5-4838-BD0F-7C496A3075DA": {
+          "verdict": "reject"
+        },
+        "263F04A6-F9FD-49DC-9A4B-2C45C617B29D": {
+          "verdict": "reject"
+        },
+        "2988C568-4EF9-4909-9DAF-DFBBDDB752B5": {
+          "verdict": "reject"
+        },
+        "2A62C6AF-B6C2-4760-9F45-625E118568F1": {
+          "verdict": "reject"
+        },
+        "2F0389EF-2911-4710-8B06-AA71AA60F9FA": {
+          "verdict": "reject"
+        },
+        "3228BBB8-3456-41B4-AE90-981B9FF52EEA": {
+          "verdict": "reject"
+        },
+        "34FB9494-340E-4015-A1EF-53A41387498A": {
+          "verdict": "reject"
+        },
+        "378DF1C7-5EE7-4AF0-AE96-A0584D44A924": {
+          "verdict": "reject"
+        },
+        "3812F1EF-DF21-4C36-9076-BF5F4FC939E0": {
+          "verdict": "reject"
+        },
+        "38D7D32E-5AE3-49C8-A1B0-816D7F2357C6": {
+          "verdict": "reject"
+        },
+        "3A9A123D-24E1-4F34-871B-3C2FE8793671": {
+          "verdict": "reject"
+        },
+        "3C9A1018-60A3-4F7E-8F81-FB8D248803F4": {
+          "verdict": "reject"
+        },
+        "3DF0F90B-64B7-4F67-B12A-628B7B4AB248": {
+          "verdict": "reject"
+        },
+        "42F9A520-B90C-456A-8FBF-3302D57A6EB1": {
+          "verdict": "reject"
+        },
+        "43B2E10B-2C92-4A72-818C-87B43BC80338": {
+          "verdict": "reject"
+        },
+        "456C7012-9467-4C1F-BD9F-3B0C5FE6FD32": {
+          "verdict": "reject"
+        },
+        "48D841C9-06FB-4383-8695-E17B28BFE24C": {
+          "verdict": "reject"
+        },
+        "4CC80094-8B67-47E6-ADBB-08CCE2F32ED4": {
+          "verdict": "reject"
+        },
+        "4D184BFA-585D-4CEE-B476-B490B665F605": {
+          "verdict": "keep",
+          "artist": "Danny Elfman",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "4DFAB0C8-0302-49CA-8370-E07D7DA129C4": {
+          "verdict": "reject"
+        },
+        "4E057553-905C-4449-964A-8AF31CF6354E": {
+          "verdict": "keep",
+          "artist": "Danny Elfman",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0461,
+            "w": 1,
+            "h": 0.9375
+          },
+          "hero": true
+        },
+        "50B67CF8-282A-4104-8FCC-D24184078BF5": {
+          "verdict": "reject"
+        },
+        "517184BA-EF04-49B4-9BC1-2E28812D26BA": {
+          "verdict": "reject"
+        },
+        "5F46602C-9572-4212-B69F-C8E8A3F52078": {
+          "verdict": "reject"
+        },
+        "64078E25-4F52-4BE9-88B1-F2823EF3B63F": {
+          "verdict": "reject"
+        },
+        "64285A5E-413D-469D-BF50-14309D46DA25": {
+          "verdict": "reject"
+        },
+        "647D8B99-E54E-4206-81A2-FFD491E20093": {
+          "verdict": "reject"
+        },
+        "67305839-3B3F-44AA-8D99-9055111A821B": {
+          "verdict": "reject"
+        },
+        "679077F3-DCDD-403B-9CCC-6DD24CD82BBF": {
+          "verdict": "keep",
+          "artist": "Danny Elfman",
+          "subject": "performer",
+          "trim": {
+            "in": 48,
+            "out": 68
+          }
+        },
+        "68399B08-3A94-4A66-81C0-9F905399057C": {
+          "verdict": "reject"
+        },
+        "68732DB3-4758-481E-A6FE-0FEF3A73C0CA": {
+          "verdict": "reject"
+        },
+        "6A11C298-7518-412A-8F61-40FB5D5A9556": {
+          "verdict": "reject"
+        },
+        "6D5EB9A8-E10F-4685-AA9B-B5F931D1C915": {
+          "verdict": "keep",
+          "artist": "Danny Elfman",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "79133044-0CE6-40E8-BA21-31EB92C44506": {
+          "verdict": "reject"
+        },
+        "79A7286F-F265-47E3-8F1C-B44BE485691C": {
+          "verdict": "reject"
+        },
+        "86C441C4-4FE8-424B-9E5C-31A9140D973C": {
+          "verdict": "reject"
+        },
+        "92227641-984A-42CB-ACB2-1B846B8C09BA": {
+          "verdict": "reject"
+        },
+        "96E179DB-380D-48DF-ABD5-B80050887427": {
+          "verdict": "reject"
+        },
+        "97740E3B-054B-4630-B026-ACDB0C7460E5": {
+          "verdict": "reject"
+        },
+        "97BE0C64-D072-4EB7-B638-644D909D6A04": {
+          "verdict": "reject"
+        },
+        "998156B9-E6E6-428F-8B60-A9A2FDBE170D": {
+          "verdict": "reject"
+        },
+        "A8DF7B0D-7342-4A49-94A6-E20EB5917C98": {
+          "verdict": "reject"
+        },
+        "AA768573-5B42-4032-9F04-9FA6756269A0": {
+          "verdict": "reject"
+        },
+        "AB6BF1D2-93D3-4D2A-B6DE-20767EDD9E0D": {
+          "verdict": "reject"
+        },
+        "AFB98A4C-A6B3-4788-BB58-F1F4A37BB98D": {
+          "verdict": "reject"
+        },
+        "B23E9CBD-54C7-4F9E-9D39-189A5D61A91B": {
+          "verdict": "reject"
+        },
+        "B55A6E11-DE42-424B-90A9-5CC7A6CE944B": {
+          "verdict": "reject"
+        },
+        "B584333C-6D89-4436-B15A-23E2666726DB": {
+          "verdict": "reject"
+        },
+        "B971B6C5-385D-4171-AA6E-DDA0CE3C8B0E": {
+          "verdict": "reject"
+        },
+        "BB9F12DD-2EDD-406B-9ABE-E141B53914A3": {
+          "verdict": "reject"
+        },
+        "BE7C25D0-981A-4FB2-95CA-E63032273C29": {
+          "verdict": "reject"
+        },
+        "C129F43E-7E63-46A7-B2BD-04EE5538C417": {
+          "verdict": "keep",
+          "artist": "Danny Elfman",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0507,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "C1BE0915-85DB-4EC2-96A8-BA99BFC0FB5F": {
+          "verdict": "reject"
+        },
+        "C89137E2-1235-4971-BCA6-C004C949F835": {
+          "verdict": "keep",
+          "artist": "Danny Elfman",
+          "subject": "performer",
+          "trim": {
+            "in": 1,
+            "out": 56
+          }
+        },
+        "CBAE478A-47B7-4FF4-83CD-B4145058532A": {
+          "verdict": "reject"
+        },
+        "CEDA0005-51B2-4593-A931-F83BD6836CB8": {
+          "verdict": "reject"
+        },
+        "D453EF47-5733-4690-AAB7-953B69B923DE": {
+          "verdict": "reject"
+        },
+        "D8C21B7A-DBB1-4666-85C2-16C895949977": {
+          "verdict": "reject"
+        },
+        "D9820680-4708-4E49-9A3E-C8312A50C107": {
+          "verdict": "reject"
+        },
+        "DB88F875-2CA9-45C3-A251-12FF8BC76D59": {
+          "verdict": "reject"
+        },
+        "DD85DC7D-8C06-4BAF-82F1-88A4DCA8994D": {
+          "verdict": "reject"
+        },
+        "DF5A0257-FB1E-4ED5-87D5-06719762ACDD": {
+          "verdict": "reject"
+        },
+        "E51BA84E-2BA1-4A01-8A5B-2A9C45DFC374": {
+          "verdict": "reject"
+        },
+        "EA85A8F3-87AA-4DD0-BAF7-A2FA7FF00C97": {
+          "verdict": "reject"
+        },
+        "F1EE0B52-79BE-46CF-80A9-D9008F24CDAF": {
+          "verdict": "keep",
+          "artist": "Danny Elfman",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0625,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "F8AD963F-9AE9-425E-AD7B-1C866048A172": {
+          "verdict": "reject"
+        },
+        "FAF575D8-F8FB-4591-A3BD-D3C8B9ED0520": {
+          "verdict": "reject"
+        },
+        "FBF82D1F-BE21-450B-BF78-2C2894A30B02": {
+          "verdict": "keep",
+          "artist": "Danny Elfman",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0476,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "FD6E0053-208C-44C2-9290-EFB4815F9888": {
+          "verdict": "reject"
+        }
+      }
     }
   }
 }
