@@ -3,18 +3,21 @@ import { getGenreColor } from '../../../constants/colors'
 import { ConcertHistoryPanel } from './ConcertHistoryPanel'
 import { AudioPreviewPanel } from './AudioPreviewPanel'
 import { SetlistPanel } from './SetlistPanel'
+import { PhotosPanel } from './PhotosPanel'
 import { TourDatesPanel } from './TourDatesPanel'
 import { fetchSetlist } from '../../../services/setlistfm'
 import { useTourDates } from '../../../hooks/useTourDates'
 import { useLinerNotesCount } from '../../../hooks/useLinerNotesCount'
+import { useMediaIndex } from '../../../hooks/useMediaIndex'
 import { useGatefoldOrientation } from '../../../hooks/useGatefoldOrientation'
 import { haptics } from '../../../utils/haptics'
 import type { ArtistCard, ArtistConcert } from './types'
 import type { Setlist } from '../../../types/setlist'
 import { analytics } from '../../../services/analytics'
+import { nightPhotoCount, nightReel } from '../../ask/media'
 
 // Active panel type - only one panel can be visible at a time
-type ActivePanel = 'none' | 'setlist' | 'tour-dates'
+type ActivePanel = 'none' | 'setlist' | 'photos' | 'tour-dates'
 
 interface ArtistGatefoldProps {
   artist: ArtistCard | null
@@ -64,6 +67,9 @@ export function ArtistGatefold({
 
   // Liner notes count (#66)
   const { count: linerNotesCount } = useLinerNotesCount(artist?.normalizedName ?? null)
+
+  // The owner's photographs, for the Photos link on each night
+  const media = useMediaIndex(!!artist)
 
   // Tour dates eager loading (v1.6.0)
   const { tourDates, tourCount, isLoading: isLoadingTourDates, error: tourDatesError } = useTourDates(
@@ -263,8 +269,8 @@ export function ArtistGatefold({
       return
     }
 
-    // If tour panel is open, trigger crossfade transition
-    if (activePanel === 'tour-dates' && !isTransitioning) {
+    // If another panel is open, trigger crossfade transition
+    if ((activePanel === 'tour-dates' || activePanel === 'photos') && !isTransitioning) {
       setIsTransitioning(true)
       // Wait 100ms (crossfade overlap), then switch panels
       setTimeout(() => {
@@ -279,6 +285,41 @@ export function ArtistGatefold({
 
     // Otherwise, open setlist panel normally
     openSetlistPanel(concert)
+  }
+
+  // Handle Photos click from concert row
+  const handlePhotosClick = (concert: ArtistConcert) => {
+    if (activePanel === 'photos' &&
+        selectedConcert?.date === concert.date &&
+        selectedConcert?.venue === concert.venue) {
+      handleClosePanel()
+      return
+    }
+
+    analytics.trackEvent('artist_tab_viewed', {
+      artist_name: artist?.name || '',
+      tab_name: 'photos',
+    })
+
+    const open = () => {
+      setSelectedConcert(concert)
+      setActivePanel('photos')
+    }
+
+    if (activePanel !== 'none' && !isTransitioning) {
+      setIsTransitioning(true)
+      // Wait 100ms (crossfade overlap), then switch panels
+      setTimeout(() => {
+        setActivePanel('none')
+        setTimeout(() => {
+          open()
+          setIsTransitioning(false)
+        }, 100)
+      }, 100)
+      return
+    }
+
+    open()
   }
 
   // Open setlist panel helper
@@ -350,8 +391,8 @@ export function ArtistGatefold({
       tab_name: 'tour-dates',
     })
 
-    // If setlist panel is open, trigger crossfade transition
-    if (activePanel === 'setlist' && !isTransitioning) {
+    // If another panel is open, trigger crossfade transition
+    if ((activePanel === 'setlist' || activePanel === 'photos') && !isTransitioning) {
       setIsTransitioning(true)
       // Wait 100ms (crossfade overlap), then switch panels
       setTimeout(() => {
@@ -648,6 +689,19 @@ export function ArtistGatefold({
                     />
                   )}
 
+                  {/* Photos Panel - slides from left (desktop), same gesture as the setlist */}
+                  {activePanel === 'photos' && selectedConcert && (
+                    <PhotosPanel
+                      key={selectedConcert.date}
+                      photos={nightReel(media, selectedConcert.date, artist.normalizedName)}
+                      concert={selectedConcert}
+                      artistName={artist.name}
+                      artistSlug={artist.normalizedName}
+                      onClose={handleClosePanel}
+                      reducedMotion={reducedMotion}
+                    />
+                  )}
+
                   {/* Tour Dates Panel - slides from left (desktop) */}
                   {activePanel === 'tour-dates' && (
                     <TourDatesPanel
@@ -716,7 +770,10 @@ export function ArtistGatefold({
                     <ConcertHistoryPanel
                       artist={artist}
                       onSetlistClick={handleSetlistClick}
-                      openSetlistConcert={selectedConcert}
+                      openSetlistConcert={activePanel === 'setlist' ? selectedConcert : null}
+                      openPhotosConcert={activePanel === 'photos' ? selectedConcert : null}
+                      onPhotosClick={handlePhotosClick}
+                      photoCountOf={(date) => nightPhotoCount(media, date)}
                       tourCount={tourCount}
                       isTourPanelActive={activePanel === 'tour-dates'}
                       onTourBadgeClick={handleTourBadgeClick}

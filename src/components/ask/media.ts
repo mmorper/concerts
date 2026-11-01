@@ -136,6 +136,19 @@ export function nightPhotoCount(ix: MediaIndex, date: string): number {
   return ix.byDate.get(date)?.length ?? 0
 }
 
+/**
+ * A whole night in the order someone looking at one act should see it: that act's frames with
+ * their hero first, then the rest of the bill, then the room. The caption names everyone who is
+ * not that act, so the order can mix them without implying a frame belongs to the headliner.
+ */
+export function nightReel(ix: MediaIndex, date: string, actSlug: string): Photo[] {
+  const night = ix.byDate.get(date) ?? []
+  const own = actPhotosOnNight(ix, date, actSlug)
+  const others = night.filter((p) => p.subject === 'artist' && p.artistNormalized !== actSlug)
+  const room = night.filter((p) => p.subject !== 'artist')
+  return [...own, ...others, ...room]
+}
+
 // ---------------------------------------------------------------------------------------------
 // Framing. Every published still carries a crop box the owner drew by hand (`media:crop`):
 // normalised x/y/w/h, almost always 4:5. That box is the subject. A card never guesses from the
@@ -239,7 +252,9 @@ export function photoCaption(p: Photo, ctx: CaptionContext): string {
   if (ctx.aboutAct && p.artistNormalized && p.artistNormalized !== ctx.aboutAct) {
     const head = ctx.headlinerOf(p.date)
     const who = p.artist ?? 'Another act'
-    return head && normalizeArtistName(head) !== p.artistNormalized ? `${who}, on ${head}’s bill · ${when}` : `${who} · ${when}`
+    return head && normalizeArtistName(head) !== p.artistNormalized
+      ? `${who}, on ${head}${head.endsWith('s') ? '’' : '’s'} bill · ${when}`
+      : `${who} · ${when}`
   }
   if (ctx.aboutDate && p.date !== ctx.aboutDate) return `My photo from ${when}, not this night`
   return ['My photo', where, when].filter(Boolean).join(' · ')

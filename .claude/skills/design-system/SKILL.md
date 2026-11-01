@@ -333,6 +333,7 @@ The shared scale runs to **2100**. The 0–50 range describes scene-local chrome
 | Changelog toast | 9999 | `TOAST.Z_INDEX`; outside the scale |
 | Artist gatefold | 99998–100000 | `ArtistGatefold.tsx`; outside the scale |
 | Phone artist modal | 99998 | `PhoneArtistModal.tsx`; outside the scale |
+| Photo viewer | 100010 | `.ask-lightbox`; opens from Ask and from the gatefold, so it clears both |
 
 Place new layers against this table rather than picking a round number.
 

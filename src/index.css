@@ -605,6 +605,39 @@ body {
   transform: translateZ(0);
 }
 
+/* A night's links. One link keeps its old place in the row; a night with photos stacks two,
+   tightened so the row grows as little as possible on a pointer that can be precise. */
+.concert-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+@media (pointer: fine) {
+  .concert-links-stacked .setlist-link {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+}
+
+/* The photo in the Photos panel, cross-faded each time it changes */
+.photos-panel-frame {
+  animation: fade-in 200ms ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photos-panel-frame {
+    animation: none;
+  }
+
+  .photos-panel.liner-notes-panel,
+  .photos-panel.liner-notes-panel-closing {
+    animation: fade-in 180ms ease both;
+  }
+}
+
 /* ============================================
    Concert Row Hover Fix
    ============================================ */

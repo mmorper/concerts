@@ -372,7 +372,7 @@ img.chip-av { object-fit: cover; display: block; }
 
 /* Lightbox — above the Spotlight (2000) and its scrim. */
 .ask-lightbox {
-  position: fixed; inset: 0; z-index: 2100; display: flex; flex-direction: column;
+  position: fixed; inset: 0; z-index: 100010; display: flex; flex-direction: column;
   background: #07060f; color: #fff; font-family: 'Source Sans 3', system-ui, sans-serif;
   padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom); animation: ask-fade-in 0.15s ease both;
 }

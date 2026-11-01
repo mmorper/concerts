@@ -18,6 +18,9 @@ interface ConcertHistoryPanelProps {
   artist: ArtistCard
   onSetlistClick?: (concert: ArtistConcert) => void
   openSetlistConcert?: ArtistConcert | null // Currently open setlist concert
+  onPhotosClick?: (concert: ArtistConcert) => void
+  openPhotosConcert?: ArtistConcert | null // Night whose photos are open
+  photoCountOf?: (date: string) => number // Stills from that night, 0 for none
   tourCount?: number // v1.6.0 - Number of upcoming tour dates
   isTourPanelActive?: boolean // v1.6.0 - Whether tour panel is currently open
   onTourBadgeClick?: () => void // v1.6.0 - Handler for tour badge click
@@ -50,6 +53,9 @@ export function ConcertHistoryPanel({
   artist,
   onSetlistClick,
   openSetlistConcert,
+  onPhotosClick,
+  openPhotosConcert,
+  photoCountOf,
   tourCount = 0,
   isTourPanelActive = false,
   onTourBadgeClick,
@@ -197,7 +203,11 @@ export function ConcertHistoryPanel({
           {artist.concerts.map((concert, idx) => {
             const isSetlistOpen = openSetlistConcert?.date === concert.date &&
                                   openSetlistConcert?.venue === concert.venue
+            const isPhotosOpen = openPhotosConcert?.date === concert.date &&
+                                 openPhotosConcert?.venue === concert.venue
             const isUpcoming = isUpcomingConcert(concert.date)
+            const photoCount = photoCountOf?.(concert.date) ?? 0
+            const showPhotos = !isUpcoming && photoCount > 0 && !!onPhotosClick
 
             return (
               <li
@@ -232,6 +242,7 @@ export function ConcertHistoryPanel({
                     <UpcomingBadge size="sm" />
                   </div>
                 ) : onSetlistClick && (
+                  <div className={`concert-links ${showPhotos ? 'concert-links-stacked' : ''}`}>
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
@@ -247,7 +258,7 @@ export function ConcertHistoryPanel({
 
                       onSetlistClick(concert)
                     }}
-                    className={`setlist-link flex items-center gap-1.5 flex-shrink-0 ml-4 transition-all duration-150 relative touchable-subtle ${
+                    className={`setlist-link flex items-center gap-1.5 flex-shrink-0 transition-all duration-150 relative touchable-subtle ${
                       isSetlistOpen ? 'setlist-link-active' : ''
                     }`}
                     aria-label={`View setlist for ${concert.venue}`}
@@ -262,6 +273,44 @@ export function ConcertHistoryPanel({
                     </svg>
                     <span className="text-sm font-medium pointer-events-none">Setlist</span>
                   </button>
+                  {showPhotos && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        haptics.light()
+                        analytics.trackEvent('photos_button_clicked', {
+                          artist_name: artist.name,
+                          concert_date: concert.date,
+                          venue_name: concert.venue,
+                          photo_count: photoCount,
+                          device_type: window.innerWidth < 768 ? 'mobile' : 'desktop',
+                        })
+                        onPhotosClick(concert)
+                      }}
+                      className={`setlist-link flex items-center gap-1.5 flex-shrink-0 transition-all duration-150 relative touchable-subtle ${
+                        isPhotosOpen ? 'setlist-link-active' : ''
+                      }`}
+                      aria-label={`View ${photoCount} ${photoCount === 1 ? 'photo' : 'photos'} from ${concert.venue}`}
+                    >
+                      {/* Camera icon */}
+                      <svg
+                        className="w-4 h-4 pointer-events-none"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M4 8h3l2-3h6l2 3h3v11H4z" />
+                        <circle cx="12" cy="13" r="3.5" />
+                      </svg>
+                      <span className="text-sm font-medium pointer-events-none">
+                        {photoCount === 1 ? 'Photo' : `Photos · ${photoCount}`}
+                      </span>
+                    </button>
+                  )}
+                  </div>
                 )}
               </li>
             )

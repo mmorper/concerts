@@ -4,6 +4,8 @@ import {
   actPhotosOnNight,
   leadPhoto,
   nightPhoto,
+  nightPhotoCount,
+  nightReel,
   focalPosition,
   cropAspect,
   cropCoverage,
@@ -74,6 +76,38 @@ describe('choosing the frame', () => {
   })
 })
 
+describe('a night in the Photos panel', () => {
+  const tom: MediaAsset = {
+    kind: 'image', url: '/images/shows/2026-09-16-thompson-twins-10.jpg', date: '2026-09-16',
+    artist: 'Thompson Twins', artistNormalized: 'thompson-twins', subject: 'artist', hero: true,
+    order: 10, width: 1536, height: 2048,
+  }
+  const tom2: MediaAsset = { ...tom, url: '/images/shows/2026-09-16-thompson-twins-03.jpg', hero: false, order: 3 }
+  const neil: MediaAsset = { ...tom, url: '/images/shows/2026-09-16-blancmange-02.jpg', artist: 'Blancmange', artistNormalized: 'blancmange', order: 2 }
+  const pavilion: MediaAsset = { ...tom, url: '/images/shows/2026-09-16-venue-01.jpg', artist: null, artistNormalized: null, subject: 'venue', hero: false, order: 1 }
+  const glasgow = buildMediaIndex([pavilion, tom2, neil, tom])
+
+  it('leads with the act’s own hero, then the bill, then the room', () => {
+    const urls = (slug: string) => nightReel(glasgow, '2026-09-16', slug).map((p) => p.url.split('/').pop())
+    expect(urls('thompson-twins')).toEqual([
+      '2026-09-16-thompson-twins-10.jpg', '2026-09-16-thompson-twins-03.jpg', '2026-09-16-blancmange-02.jpg', '2026-09-16-venue-01.jpg',
+    ])
+    expect(urls('blancmange')[0]).toBe('2026-09-16-blancmange-02.jpg')
+  })
+
+  it('shows every still from the night, so the count on the link is the count in the panel', () => {
+    expect(nightReel(glasgow, '2026-09-16', 'blancmange')).toHaveLength(nightPhotoCount(glasgow, '2026-09-16'))
+  })
+
+  it('still shows a night where the act has no frames of its own', () => {
+    expect(nightReel(glasgow, '2026-09-16', 'someone-else').map((p) => p.artist)).toEqual(['Blancmange', 'Thompson Twins', 'Thompson Twins', null])
+  })
+
+  it('is empty for a night with no stills', () => {
+    expect(nightReel(glasgow, '1984-05-12', 'thompson-twins')).toEqual([])
+  })
+})
+
 describe('framing on the owner’s crop', () => {
   it('a box at the crop’s own aspect shows exactly the crop', () => {
     // Landscape frame, crop on the right: the window lands on x≈716px, where the crop starts.
@@ -106,6 +140,12 @@ describe('framing on the owner’s crop', () => {
 })
 
 describe('captions — the two attribution rules', () => {
+  it('writes the possessive of a plural headliner properly', () => {
+    const neil = { ...(hj03 as Photo), artist: 'Blancmange', artistNormalized: 'blancmange', date: '2026-09-16' }
+    const ctx = { aboutAct: 'thompson-twins', venueOf: () => 'Pavilion Theatre', headlinerOf: () => 'Thompson Twins' }
+    expect(photoCaption(neil, ctx)).toBe('Blancmange, on Thompson Twins’ bill · Sep 16, 2026')
+  })
+
   const ctx = {
     venueOf: (d: string) => ({ '2026-06-04': 'Hollywood Bowl', '2024-08-20': 'YouTube Theatre', '2022-10-07': 'Hollywood Bowl' })[d],
     headlinerOf: (d: string) => ({ '2026-06-04': 'The Human League', '2024-08-20': 'Howard Jones', '2022-10-07': 'New Order' })[d],
