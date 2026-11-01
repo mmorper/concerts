@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'fs'
 import { basename, join } from 'path'
 import { describe, it, expect } from 'vitest'
-import { shareByline, shareCredits } from '../../scripts/media/share-images'
+import { shareByline, shareCredits, staleShareImages, type ShareAsset } from '../../scripts/media/share-images'
 
 const concert = { date: '2026-09-16', venue: 'Pavilion Theatre', city: 'Glasgow', cityState: 'Glasgow, UK' }
 
@@ -30,6 +30,36 @@ describe('share image credits', () => {
 
   it('writes the byline in the card’s one form', () => {
     expect(shareByline('2026-09-16')).toBe('Mike Morper · 16 September 2026')
+  })
+})
+
+describe('which share images a crop session leaves stale', () => {
+  const box = { x: 0, y: 0, w: 1, h: 0.9375 }
+  const still: ShareAsset = { kind: 'image', url: '/images/shows/a.jpg', date: '2026-09-16', artist: 'X', subject: 'artist', crop: box }
+  const urls = (list: ShareAsset[]) => list.map((a) => a.url)
+  const had = new Map([['/images/shows/a.jpg', box]])
+
+  it('leaves an untouched still alone', () => {
+    expect(staleShareImages([still], had, () => true)).toEqual([])
+  })
+
+  it('picks up a redrawn box, the case nothing else would catch', () => {
+    const moved = { ...still, crop: { ...box, y: 0.05 } }
+    expect(urls(staleShareImages([moved], had, () => true))).toEqual(['/images/shows/a.jpg'])
+  })
+
+  it('picks up a still with no image yet, as on a new show', () => {
+    expect(urls(staleShareImages([still], had, () => false))).toEqual(['/images/shows/a.jpg'])
+  })
+
+  it('picks up a box drawn for the first time', () => {
+    expect(urls(staleShareImages([still], new Map(), () => true))).toEqual(['/images/shows/a.jpg'])
+  })
+
+  it('skips videos, and stills with no box, which the card refuses', () => {
+    const video = { ...still, kind: 'video' }
+    const uncropped = { ...still, crop: null }
+    expect(staleShareImages([video, uncropped], new Map(), () => false)).toEqual([])
   })
 })
 

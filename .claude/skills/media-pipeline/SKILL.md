@@ -559,7 +559,7 @@ in `url` and, again, no consumer changes.
 | `concert-photos-audit/bin/osxphotos` | **read-only guard — tracked by exception, CI-tested.** The binary it wraps stays gitignored |
 | `extract_frames.sh` / `frame_score.py` / `pick_frames.py` | frame sampling, Laplacian scoring, min-gap selection |
 | **`npm run media:review <date>`** | **stills review — previews, localhost page, verdicts per keystroke — #380, shipped** |
-| **`npm run media:share [date]`** | **one 1200×630 share image per still, on the wide card layout, committed to `public/og/shows/`. Re-run after redrawing a crop** |
+| **`npm run media:share [date]`** | **one 1200×630 share image per still, on the wide card layout, committed to `public/og/shows/`. `media:crop` does this itself as boxes are saved** |
 | `scripts/media/review-page.html` | the review page — tracked, one show per run |
 | `scripts/media/review_server.py` | localhost server; writes only `verdicts.json` |
 | `scripts/media/selects.ts` | `selects.json` — the decision, and the cross-check on the filing |
