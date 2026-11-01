@@ -135,8 +135,7 @@ interface IndexedAsset {
  * has no act to lead, and demanding a hero for it would leave every show permanently
  * unfinished.
  *
- * Stills only. A render carries `url: null` — video is never served from this repo — so it
- * has no box to draw and no post will ever reach for it.
+ * Stills only. A render has no box to draw, and no post will ever reach for it.
  */
 export function framingGaps(assets: IndexedAsset[]): { actsMissingHero: number; stillsUncropped: number } {
   const stills = assets.filter((a) => a.kind === 'image' && a.url)

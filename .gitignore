@@ -35,6 +35,7 @@ Thumbs.db
 
 # Video production render outputs (large binaries; the video/ workspace is local)
 video/renders/
+video/web/
 
 # Logs
 npm-debug.log*

@@ -13,6 +13,10 @@
  *
  * Credentials: R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET,
  * R2_PUBLIC_URL (the bucket's public r2.dev or custom-domain base URL).
+ *
+ * `media:publish-video` signs through this class too, with its own bucket and a token scoped
+ * to it (the R2_MEDIA_ prefix). Same signing, separate credentials, so neither job can touch
+ * the other's objects.
  */
 
 import { createHash, createHmac } from "node:crypto";
@@ -29,18 +33,14 @@ export interface HostConfig {
   publicUrl: string;
 }
 
-export function hostConfigFromEnv(env: NodeJS.ProcessEnv = process.env): HostConfig | undefined {
-  const { R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET, R2_PUBLIC_URL } = env;
-  if (!R2_ACCOUNT_ID || !R2_ACCESS_KEY_ID || !R2_SECRET_ACCESS_KEY || !R2_BUCKET || !R2_PUBLIC_URL) {
-    return undefined;
-  }
-  return {
-    accountId: R2_ACCOUNT_ID,
-    accessKeyId: R2_ACCESS_KEY_ID,
-    secretAccessKey: R2_SECRET_ACCESS_KEY,
-    bucket: R2_BUCKET,
-    publicUrl: R2_PUBLIC_URL.replace(/\/+$/, ""),
-  };
+export function hostConfigFromEnv(env: NodeJS.ProcessEnv = process.env, prefix = "R2"): HostConfig | undefined {
+  const accountId = env[`${prefix}_ACCOUNT_ID`];
+  const accessKeyId = env[`${prefix}_ACCESS_KEY_ID`];
+  const secretAccessKey = env[`${prefix}_SECRET_ACCESS_KEY`];
+  const bucket = env[`${prefix}_BUCKET`];
+  const publicUrl = env[`${prefix}_PUBLIC_URL`];
+  if (!accountId || !accessKeyId || !secretAccessKey || !bucket || !publicUrl) return undefined;
+  return { accountId, accessKeyId, secretAccessKey, bucket, publicUrl: publicUrl.replace(/\/+$/, "") };
 }
 
 export interface CardHost {
@@ -68,6 +68,12 @@ export class R2Host implements CardHost {
     return { key, url: `${this.config.publicUrl}/${key}` };
   }
 
+  /** Store bytes at an exact key, for a caller that names its own objects. */
+  async put(key: string, body: Buffer, contentType: string, cacheControl?: string): Promise<void> {
+    const res = await this.signed("PUT", key, body, contentType, cacheControl);
+    if (!res.ok) throw new Error(`R2 upload of ${key} failed: ${res.status} ${await res.text()}`);
+  }
+
   async remove(key: string): Promise<void> {
     try {
       const res = await this.signed("DELETE", key, Buffer.alloc(0));
@@ -78,7 +84,13 @@ export class R2Host implements CardHost {
   }
 
   /** AWS Signature V4, region "auto", service "s3" — what R2 expects. */
-  private signed(method: "PUT" | "DELETE", key: string, body: Buffer, contentType?: string): Promise<Response> {
+  private signed(
+    method: "PUT" | "DELETE",
+    key: string,
+    body: Buffer,
+    contentType?: string,
+    cacheControl?: string
+  ): Promise<Response> {
     const { accountId, accessKeyId, secretAccessKey, bucket } = this.config;
     const host = `${accountId}.r2.cloudflarestorage.com`;
     const path = `/${bucket}/${key.split("/").map(encodeURIComponent).join("/")}`;
@@ -91,6 +103,7 @@ export class R2Host implements CardHost {
       "x-amz-content-sha256": payloadHash,
       "x-amz-date": amzDate,
       ...(contentType ? { "content-type": contentType } : {}),
+      ...(cacheControl ? { "cache-control": cacheControl } : {}),
     };
     const names = Object.keys(headers).sort();
     const canonical = [
