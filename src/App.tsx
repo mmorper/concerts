@@ -8,6 +8,7 @@ import { Scene5Genres } from './components/scenes/Scene5Genres/index'
 import { ArtistScene } from './components/scenes/ArtistScene/ArtistScene'
 import { AskScene } from './components/ask/AskScene'
 import { SceneNavigation } from './components/SceneNavigation'
+import { SceneErrorBoundary } from './components/SceneErrorBoundary'
 import { ChangelogToast, ChangelogRSS } from './components/changelog'
 import { WhatsPlayingPage } from './components/changelog/WhatsPlayingPage'
 import { LinerNotesPage, LinerNotePermalink } from './components/liner-notes'
@@ -369,48 +370,60 @@ function MainScenes() {
     <>
       <div ref={scrollContainerRef} className="relative snap-y snap-mandatory h-screen overflow-y-scroll">
         {/* Scene 1: Hero/Timeline */}
-        <Scene1Hero
-          concerts={concerts}
-          onNavigateToArtist={handleArtistNavigate}
-          pendingYearFocus={pendingYearFocus}
-          onYearFocusComplete={() => setPendingYearFocus(null)}
-        />
+        <SceneErrorBoundary scene="timeline">
+          <Scene1Hero
+            concerts={concerts}
+            onNavigateToArtist={handleArtistNavigate}
+            pendingYearFocus={pendingYearFocus}
+            onYearFocusComplete={() => setPendingYearFocus(null)}
+          />
+        </SceneErrorBoundary>
 
         {/* Scene 2: Venues (force-directed graph) */}
-        <Scene4Bands
-          concerts={concerts}
-          pendingVenueFocus={pendingVenueFocus}
-          onVenueFocusComplete={() => setPendingVenueFocus(null)}
-          pendingVenueArtistFocus={pendingVenueArtistFocus}
-          onVenueArtistFocusComplete={() => setPendingVenueArtistFocus(null)}
-        />
+        <SceneErrorBoundary scene="venues">
+          <Scene4Bands
+            concerts={concerts}
+            pendingVenueFocus={pendingVenueFocus}
+            onVenueFocusComplete={() => setPendingVenueFocus(null)}
+            pendingVenueArtistFocus={pendingVenueArtistFocus}
+            onVenueArtistFocusComplete={() => setPendingVenueArtistFocus(null)}
+          />
+        </SceneErrorBoundary>
 
         {/* Scene 3: Map */}
-        <Scene3Map
-          concerts={concerts}
-          onVenueNavigate={handleVenueNavigate}
-          pendingVenueFocus={pendingMapVenueFocus}
-          onVenueFocusComplete={() => setPendingMapVenueFocus(null)}
-        />
+        <SceneErrorBoundary scene="geography">
+          <Scene3Map
+            concerts={concerts}
+            onVenueNavigate={handleVenueNavigate}
+            pendingVenueFocus={pendingMapVenueFocus}
+            onVenueFocusComplete={() => setPendingMapVenueFocus(null)}
+          />
+        </SceneErrorBoundary>
 
         {/* Scene 4: Genres (sunburst) */}
-        <Scene5Genres concerts={concerts} />
+        <SceneErrorBoundary scene="genres">
+          <Scene5Genres concerts={concerts} />
+        </SceneErrorBoundary>
 
         {/* Scene 5: Artists (album mosaic) */}
-        <ArtistScene
-          concerts={concerts}
-          pendingArtistFocus={pendingArtistFocus}
-          pendingSetlistFocus={pendingSetlistFocus}
-          pendingPhotoFocus={pendingPhotoFocus}
-          onShowFocusComplete={() => {
-            setPendingSetlistFocus(null)
-            setPendingPhotoFocus(null)
-          }}
-          onArtistFocusComplete={() => setPendingArtistFocus(null)}
-        />
+        <SceneErrorBoundary scene="artists">
+          <ArtistScene
+            concerts={concerts}
+            pendingArtistFocus={pendingArtistFocus}
+            pendingSetlistFocus={pendingSetlistFocus}
+            pendingPhotoFocus={pendingPhotoFocus}
+            onShowFocusComplete={() => {
+              setPendingSetlistFocus(null)
+              setPendingPhotoFocus(null)
+            }}
+            onArtistFocusComplete={() => setPendingArtistFocus(null)}
+          />
+        </SceneErrorBoundary>
 
         {/* Scene 6: Ask the Archive — the blended invitation (#142). Deep link /?scene=ask. */}
-        <AskScene />
+        <SceneErrorBoundary scene="ask">
+          <AskScene />
+        </SceneErrorBoundary>
       </div>
 
       {/* Scene Navigation */}

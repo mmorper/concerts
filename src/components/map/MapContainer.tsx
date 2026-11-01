@@ -3,6 +3,7 @@ import { MapContainer as LeafletMap, TileLayer, Marker, Popup, useMap } from 're
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import L from 'leaflet'
 import type { Concert } from '@/types/concert'
+import { safeFlyTo } from '@/utils/safeFlyTo'
 import 'leaflet/dist/leaflet.css'
 
 // Fix for default marker icons in React Leaflet
@@ -27,7 +28,7 @@ function MapController({ focusedConcert }: { focusedConcert: Concert | null }) {
 
   useEffect(() => {
     if (focusedConcert) {
-      map.flyTo([focusedConcert.location.lat, focusedConcert.location.lng], 13, {
+      safeFlyTo(map, [focusedConcert.location.lat, focusedConcert.location.lng], 13, {
         duration: 1,
       })
     }
