@@ -187,7 +187,35 @@ This is what a shared link to one photo previews with. It runs after cropping
 because it uses the crop box, so run it again if a box is redrawn later. It needs
 the network for the card's fonts. Look at one image for each act before moving on.
 
-### 10. Commit and open the PR
+### 10. Publish the videos
+
+Skip this if no clips were trimmed, or the owner does not want them on the site.
+
+**Ask first, naming each clip. An upload is public the moment it finishes, before
+any PR merges.** A clip kept in the review was kept to mine, which is not the same
+as a yes to showing it.
+
+Check the web copies first. This uploads nothing and needs no credentials:
+
+```bash
+npm run media:publish-video <YYYY-MM-DD> -- --dry-run
+```
+
+Look at each poster in `video/web/` and report anything wrong, such as a blurred
+frame or a mic across a face. The owner chooses the moment, and
+`--only <clip> --poster-at <seconds>` applies it. Then, with their yes:
+
+```bash
+npm run media:publish-video <YYYY-MM-DD>
+```
+
+Each clip is checked before `url` is written: encoded right, no metadata, and read
+back through the public URL with range requests. A clip that fails is removed from
+the bucket and stays off the site, while the rest carry on. It needs the `R2_MEDIA_`
+values in `.env` (`docs/SECRETS.md`) and the renders on disk, so in a worktree link
+`video/renders` from the main checkout first.
+
+### 11. Commit and open the PR
 
 Confirm the phase reads `done`:
 
@@ -227,3 +255,5 @@ may start using the new stills.
 | `No media in this window` | Nothing dated 17:00 to 04:00. Check the sync and the date before giving up |
 | A blank crop page | It is still loading. Take another screenshot |
 | `quality: 'preview'` in the index | The fetch failed. Fix it before committing |
+| `Missing from .env: R2_MEDIA_...` | The bucket credentials are not on this machine. See `docs/SECRETS.md` |
+| `read-back failed` on a clip | R2 stored it but the public URL did not serve it. Check the custom domain |

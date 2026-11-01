@@ -150,8 +150,8 @@ Two homes each, no prod store: nothing in the Workers or the client bundle ever 
 | `MASTODON_ACCESS_TOKEN` | local + CI | Mastodon adapter | Settings → Development → your app. No expiry. Needs `write:statuses` and `write:media`. |
 | `INSTAGRAM_USER_ID` | CI | Instagram adapter | The professional account's id: Graph API Explorer → `me/accounts?fields=instagram_business_account`. Not secret, kept with its token. |
 | `INSTAGRAM_ACCESS_TOKEN` | CI | Instagram adapter | Meta Business **system-user** token, expiration *Never*. Business settings → Users → System users → Generate new token. Steps: `docs/specs/future/global-instagram-syndication.md` §"Account setup". |
-| `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | CI | `scripts/syndication/host.ts` | Cloudflare R2 API token, **Object Read & Write scoped to the one bucket**. Instagram fetches cards by URL, so they are hosted here briefly. |
-| `R2_BUCKET`, `R2_PUBLIC_URL` | CI | `scripts/syndication/host.ts` | `concerts-syndication` and its public r2.dev URL. Configuration rather than secrets; kept together. |
+| `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | CI | `scripts/syndication/host.ts` | **Not set yet**: Instagram awaits credentials, and `concerts-syndication` does not exist (checked 2026-11-01). Cloudflare R2 API token, **Object Read & Write scoped to the one bucket**. Instagram fetches cards by URL, so they are hosted here briefly. |
+| `R2_BUCKET`, `R2_PUBLIC_URL` | CI | `scripts/syndication/host.ts` | **Not set yet.** `concerts-syndication` and its public r2.dev URL. Configuration rather than secrets; kept together. |
 
 `BLUESKY_SERVICE` overrides the PDS host (default `https://bsky.social`) and is
 configuration, not a secret — set it only when pointing at a different service.
@@ -178,6 +178,43 @@ account's own settings, and neither has an expiry to race — so if either leaks
 revoke it in the platform UI first and generate a new one, rather than
 following the rotate-then-revoke order the golden rules impose on API keys with
 no revocation surface.
+
+### Media hosting — root `.env` only
+
+Consumed by `npm run media:publish-video`, which puts trimmed clips on the site. **One home:**
+it needs the renders, which exist only on the owner's Mac, so no CI job runs it and nothing
+goes in GitHub Actions. A new worktree needs its own copy of `.env`.
+
+| Secret | Store | Notes |
+|--------|-------|-------|
+| `R2_MEDIA_ACCOUNT_ID` | local | The Cloudflare account id. An identifier, kept with its token. |
+| `R2_MEDIA_ACCESS_KEY_ID`, `R2_MEDIA_SECRET_ACCESS_KEY` | local | R2 API token, **Object Read & Write scoped to `concerts-media` only**. The secret is shown once. Mint at R2 → Manage API Tokens. |
+| `R2_MEDIA_BUCKET` | local | `concerts-media`. Configuration, not a secret. |
+| `R2_MEDIA_PUBLIC_URL` | local | `https://media.morperhaus.org`. Configuration, not a secret. |
+
+These are separate from the `R2_` values above on purpose. A token is scoped to one bucket, so
+sharing names would mean one job's credentials could reach the other's objects.
+
+The bucket keeps r2.dev access off and serves through the custom domain, because r2.dev is
+rate-limited and has no CDN cache. Its CORS policy, on the JSON tab of the bucket's Settings:
+
+```json
+[
+  {
+    "AllowedOrigins": ["https://concerts.morperhaus.org", "http://localhost:5173"],
+    "AllowedMethods": ["GET", "HEAD"],
+    "AllowedHeaders": ["Range"],
+    "ExposeHeaders": ["Content-Length", "Content-Range", "Accept-Ranges"],
+    "MaxAgeSeconds": 86400
+  }
+]
+```
+
+Playback does not need it: a plain `<video src>` loads without CORS. It is set up front because
+changing it later means purging a year-long cache. `media:publish-video` warns if it is absent.
+
+To rotate: mint a new token, update `.env`, run `npm run media:publish-video -- --only <clip>
+--force` on a live clip to prove it, then revoke the old token. Nothing else holds it.
 
 ---
 
