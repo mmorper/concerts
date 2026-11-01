@@ -1,98 +1,168 @@
 /**
- * One share image per published still: what a social post shows when someone shares a link to
- * that photo. `workers/meta-injector/worker.js` points `og:image` here.
+ * `npm run media:share [date]` — one share image per published still.
  *
- * Every channel crops a preview to about 1.91:1, and almost every still is a portrait 4:5. Cropped
- * to fill, a stage shot keeps a band across the chest. So the whole crop sits centred at full
- * height, over a dark blur of itself, and nothing the owner framed is lost.
+ * What a social post shows when someone shares a link to that photo.
+ * `workers/meta-injector/worker.js` points `og:image` at the file, and a preview often travels
+ * with nothing else, so the credits have to be in the image.
  *
- * BUILT, NOT COMMITTED. A box redrawn in `media:crop` must reach the image with no extra step, and
- * 15MB of derivatives have no business in a history that never forgets a byte. A file that cannot
- * be made is reported and skipped: the Worker then previews that link as the show.
+ * It is the social card's wide layout, drawn by the same template, so the two cannot drift: the
+ * photograph in a 630 square with the byline inside it, and the type beside it. There is no hook
+ * because a photo has no story of its own, and no pill because colour on a card means the post's
+ * category. The display line says who, as an On This Day card does.
  *
- * Masters are already stripped, and sharp writes no metadata unless asked to.
+ * COMMITTED, like the rest of `public/og/`. Rendering needs Chromium and Google Fonts, which have
+ * no place in a Pages build. So this runs on the owner's Mac, and must run again after a crop box
+ * is redrawn. `test/pipeline/share-images.test.ts` fails if a still has no image.
+ *
+ *   npm run media:share                every still
+ *   npm run media:share 2026-09-16     one show
+ *
+ * A still that cannot be rendered is reported and the command exits 1. Its link previews as the
+ * show until it is fixed, which is the Worker's fallback rather than a failure anyone sees.
  *
  * @module scripts/media/share-images
  */
-import { existsSync, mkdirSync, readFileSync, rmSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs'
 import { basename, join, resolve } from 'path'
 import sharp from 'sharp'
+import type { Browser } from 'puppeteer'
+import { launchBrowser } from '../utils/launch-browser'
+import { encodeUnder, escapeHtml, FORMATS, monthYear, WIDE_HEIGHT, WIDE_SLOT, WIDE_WIDTH } from '../syndication/render-card'
+import { derivationFor, deriveRect } from './derive'
 
 const INDEX = resolve('public/data/media-index.json')
+const CONCERTS = resolve('public/data/concerts.json')
 const PUBLIC = resolve('public')
 const OUT = resolve('public/og/shows')
-
-const WIDTH = 1200
-const HEIGHT = 630
-
-interface CropBox {
-  x: number
-  y: number
-  w: number
-  h: number
-}
 
 interface Asset {
   kind: string
   url: string | null
-  crop?: CropBox | null
+  date: string
+  artist: string | null
+  subject: string
+  crop?: { x: number; y: number; w: number; h: number } | null
 }
 
-/** The owner's crop in pixels, kept inside the image. No crop means the whole frame. */
-export function cropRegion(
-  crop: CropBox | null | undefined,
-  width: number,
-  height: number
-): { left: number; top: number; width: number; height: number } {
-  const c = crop ?? { x: 0, y: 0, w: 1, h: 1 }
-  const left = Math.min(Math.max(Math.round(c.x * width), 0), width - 1)
-  const top = Math.min(Math.max(Math.round(c.y * height), 0), height - 1)
-  return {
-    left,
-    top,
-    width: Math.max(Math.min(Math.round(c.w * width), width - left), 1),
-    height: Math.max(Math.min(Math.round(c.h * height), height - top), 1),
-  }
+interface Concert {
+  date: string
+  venue: string
+  cityState?: string
+  city: string
 }
 
-async function render(source: string, crop: CropBox | null | undefined, target: string): Promise<void> {
+/** "Mike Morper · 16 September 2026". One state, the capture date, as on the cards. */
+export function shareByline(date: string): string {
+  const day = new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  })
+  return `Mike Morper · ${day}`
+}
+
+/**
+ * The two lines of type. The act leads, and a frame with no act is about the room, so the venue
+ * takes the display line and is not repeated beneath it.
+ */
+export function shareCredits(asset: Pick<Asset, 'artist' | 'subject' | 'date'>, concert: Concert) {
+  const place = concert.cityState ?? concert.city
+  const month = monthYear(asset.date)
+  return asset.subject === 'artist' && asset.artist
+    ? { display: asset.artist, meta: `${escapeHtml(concert.venue)} &middot; ${escapeHtml(place)}<br>${month}` }
+    : { display: concert.venue, meta: `${escapeHtml(place)}<br>${month}` }
+}
+
+async function render(browser: Browser, asset: Asset, concert: Concert, target: string): Promise<void> {
+  if (!asset.crop) throw new Error('no crop box — run `npm run media:crop`')
+  const source = join(PUBLIC, asset.url as string)
+  if (!existsSync(source)) throw new Error('master is missing')
+
+  const format = FORMATS.wide
   const { width = 0, height = 0 } = await sharp(source).metadata()
+  const rect = deriveRect(asset.crop, { width, height }, format.slotAspect, derivationFor(1))
   const photo = await sharp(source)
-    .extract(cropRegion(crop, width, height))
-    .resize(WIDTH, HEIGHT, { fit: 'inside' })
+    .extract(rect)
+    .resize(WIDE_SLOT, WIDE_SLOT, { fit: 'fill' })
+    .jpeg({ quality: 92, mozjpeg: true })
     .toBuffer()
-  await sharp(source)
-    .resize(WIDTH, HEIGHT, { fit: 'cover' })
-    .blur(40)
-    .modulate({ brightness: 0.4 })
-    .composite([{ input: photo, gravity: 'center' }])
-    .jpeg({ quality: 82, mozjpeg: true })
-    .toFile(target)
+
+  const { display, meta } = shareCredits(asset, concert)
+  const page = await browser.newPage()
+  try {
+    await page.setViewport({ width: WIDE_WIDTH, height: WIDE_HEIGHT, deviceScaleFactor: 1 })
+    await page.setContent(
+      format.template({
+        imageDataUri: `data:image/jpeg;base64,${photo.toString('base64')}`,
+        alt: display,
+        byline: shareByline(asset.date),
+        acts: '',
+        hook: display,
+        hookSize: format.hookSizes[0],
+        meta,
+        pill: '',
+      }),
+      { waitUntil: 'load' }
+    )
+    await page.evaluate(() => document.fonts.ready)
+
+    // Step down until the name clears the top of the card. Only a very long name ever does.
+    for (const size of format.hookSizes) {
+      const fits = await page.evaluate((px: number) => {
+        const hook = document.getElementById('hook') as HTMLElement
+        hook.style.fontSize = `${px}px`
+        return hook.getBoundingClientRect().top >= 32
+      }, size)
+      if (fits) break
+    }
+
+    const shot = await page.screenshot({ type: 'png' })
+    const { buffer } = await encodeUnder(Buffer.from(shot), format.maxBytes)
+    writeFileSync(target, buffer)
+  } finally {
+    await page.close()
+  }
 }
 
 async function main(): Promise<void> {
+  const only = process.argv.slice(2).find((a) => /^\d{4}-\d{2}-\d{2}$/.test(a))
   const { assets } = JSON.parse(readFileSync(INDEX, 'utf-8')) as { assets: Asset[] }
-  const stills = assets.filter((a) => a.kind === 'image' && a.url)
-
-  // Rebuilt from nothing each time, so a removed still cannot leave a share image behind.
-  rmSync(OUT, { recursive: true, force: true })
-  mkdirSync(OUT, { recursive: true })
-
-  let made = 0
-  const skipped: string[] = []
-  for (const asset of stills) {
-    const source = join(PUBLIC, asset.url as string)
-    try {
-      if (!existsSync(source)) throw new Error('master is missing')
-      await render(source, asset.crop, join(OUT, basename(asset.url as string)))
-      made++
-    } catch (err) {
-      skipped.push(`${asset.url}: ${(err as Error).message}`)
-    }
+  const data = JSON.parse(readFileSync(CONCERTS, 'utf-8')) as { concerts: Concert[] }
+  const stills = assets.filter((a) => a.kind === 'image' && a.url && (!only || a.date === only))
+  if (only && stills.length === 0) {
+    console.error(`\n✖ No published stills for ${only}.\n`)
+    process.exit(1)
   }
 
-  console.log(`share images: ${made} of ${stills.length} written to public/og/shows/`)
-  for (const line of skipped) console.warn(`  skipped ${line}`)
+  mkdirSync(OUT, { recursive: true })
+  // A full run removes images whose still has gone, or a stale file would keep answering links.
+  if (!only) {
+    const wanted = new Set(stills.map((a) => basename(a.url as string)))
+    for (const file of readdirSync(OUT)) if (!wanted.has(file)) rmSync(join(OUT, file))
+  }
+
+  const browser = await launchBrowser()
+  let made = 0
+  const failed: string[] = []
+  try {
+    for (const asset of stills) {
+      try {
+        const concert = data.concerts.find((c) => c.date === asset.date)
+        if (!concert) throw new Error('no concert on that date')
+        await render(browser, asset, concert, join(OUT, basename(asset.url as string)))
+        made++
+      } catch (err) {
+        failed.push(`${asset.url}: ${(err as Error).message}`)
+      }
+    }
+  } finally {
+    await browser.close()
+  }
+
+  console.log(`\nshare images: ${made} of ${stills.length} written to public/og/shows/`)
+  for (const line of failed) console.error(`  ✖ ${line}`)
+  if (failed.length > 0) process.exit(1)
 }
 
 if (process.argv[1] && /share-images\.ts$/.test(process.argv[1])) void main()

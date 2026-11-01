@@ -177,7 +177,17 @@ If an act already has stills from another show, the signature is a real choice.
 `npm run media:crop <artist-slug>` shows every show at once, and that is where to
 choose it. A signature is optional for an act with one show.
 
-### 9. Commit and open the PR
+### 9. Render the share images
+
+```bash
+npm run media:share <YYYY-MM-DD>
+```
+
+This is what a shared link to one photo previews with. It runs after cropping
+because it uses the crop box, so run it again if a box is redrawn later. It needs
+the network for the card's fonts. Look at one image for each act before moving on.
+
+### 10. Commit and open the PR
 
 Confirm the phase reads `done`:
 
@@ -193,7 +203,8 @@ npm run --silent validate:docs
 ```
 
 Re-check the branch, then stage by name: `data/media-decisions.json`,
-`public/data/media-index.json`, and the show's files in `public/images/shows/`.
+`public/data/media-index.json`, and the show's files in `public/images/shows/` and
+`public/og/shows/`.
 Never use `git add -A`.
 
 Commit with the `data:` prefix and open the PR. Use a draft if more shows are

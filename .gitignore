@@ -50,7 +50,6 @@ lerna-debug.log*
 # Build-time generated files
 public/version.json
 public/og-image-stats.json
-public/og/shows/
 
 # Data pipeline backup files
 public/data/*.backup
