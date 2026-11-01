@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ArtistMosaic } from './ArtistMosaic'
 import { ArtistGatefold } from './ArtistGatefold'
@@ -52,17 +52,15 @@ export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus,
     return () => mediaQuery.removeEventListener('change', handler)
   }, [])
 
-  // Close gatefold on orientation change to prevent layout issues
+  // Close only when the layout itself changes, because the gatefold and the phone modal cannot
+  // hand over mid-flight. This used to close on any resize, so turning a phone to look at a photo
+  // threw the photo away. Both orientations are the phone layout, and the gatefold repositions
+  // itself on resize.
+  const wasPhone = useRef(isPhone)
   useEffect(() => {
-    const handleOrientationChange = () => {
-      if (openArtist) {
-        handleCloseGatefold()
-      }
-    }
-
-    window.addEventListener('resize', handleOrientationChange)
-    return () => window.removeEventListener('resize', handleOrientationChange)
-  }, [openArtist])
+    if (wasPhone.current !== isPhone && openArtist) handleCloseGatefold()
+    wasPhone.current = isPhone
+  }, [isPhone, openArtist])
 
   // Handle deep link artist focus from URL parameters
   useEffect(() => {
