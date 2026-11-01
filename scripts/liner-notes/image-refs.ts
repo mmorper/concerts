@@ -198,8 +198,7 @@ export function getAlbumArt(
  *   4. failing that, a native still before a frame pulled from video
  *   5. failing that, the NEWEST show — resolution climbed until 2018 and plateaued after
  *
- * STILLS ONLY. A render has `url: null` — video is never served from this repo — and a post
- * needs something fetchable.
+ * STILLS ONLY. A post needs a picture, and a published video's `url` is a clip, not one.
  */
 export function getShowAsset(
   artistNormalized: string,

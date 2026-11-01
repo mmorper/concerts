@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-11-01T18:52:24.421Z",
+  "generated": "2026-11-01T20:47:28.724Z",
   "assets": [
     {
       "kind": "image",
@@ -4226,7 +4226,7 @@
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2026-09-14-danny-elfman-01.mp4?v=b73d359ebeb9",
       "path": "video/renders/2026-09-14-danny-elfman-01.mp4",
       "date": "2026-09-14",
       "uuid": null,
@@ -4250,11 +4250,12 @@
         "out": 68
       },
       "duration": 20,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2026-09-14-danny-elfman-01.jpg?v=6693f7db1572"
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2026-09-14-danny-elfman-02.mp4?v=59be8af924ce",
       "path": "video/renders/2026-09-14-danny-elfman-02.mp4",
       "date": "2026-09-14",
       "uuid": null,
@@ -4278,7 +4279,8 @@
         "out": 56
       },
       "duration": 55,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2026-09-14-danny-elfman-02.jpg?v=ca0116c67dd5"
     },
     {
       "kind": "image",
@@ -4664,7 +4666,7 @@
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2026-09-16-blancmange-01.mp4?v=8bdf0c48b8e3",
       "path": "video/renders/2026-09-16-blancmange-01.mp4",
       "date": "2026-09-16",
       "uuid": null,
@@ -4688,11 +4690,12 @@
         "out": 20
       },
       "duration": 17,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2026-09-16-blancmange-01.jpg?v=d5642b2a1f78"
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2026-09-16-thompson-twins-01.mp4?v=760e809c7035",
       "path": "video/renders/2026-09-16-thompson-twins-01.mp4",
       "date": "2026-09-16",
       "uuid": null,
@@ -4716,11 +4719,12 @@
         "out": 45
       },
       "duration": 40,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2026-09-16-thompson-twins-01.jpg?v=850f91cd21c0"
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2026-09-16-thompson-twins-02.mp4?v=048f3f9a1c60",
       "path": "video/renders/2026-09-16-thompson-twins-02.mp4",
       "date": "2026-09-16",
       "uuid": null,
@@ -4744,7 +4748,8 @@
         "out": 23
       },
       "duration": 22,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2026-09-16-thompson-twins-02.jpg?v=e300378077c2"
     }
   ]
 }

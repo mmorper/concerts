@@ -87,6 +87,7 @@
     "media:review": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/review.ts",
     "media:crop": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/crop.ts",
     "media:frames": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/frames.ts",
+    "media:publish-video": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/publish-video.ts",
     "render:card": "tsx scripts/syndication/render-card.ts",
     "syndicate:preview": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/syndication/preview.ts"
   },

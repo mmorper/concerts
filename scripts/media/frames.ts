@@ -408,9 +408,10 @@ function main(): void {
 
       const asset: MediaAsset = {
         kind: 'video',
-        // Not served: the site never shows video. A url appears only if it is ever
-        // uploaded somewhere a CI job can fetch, and consumers already address by url.
-        url: null,
+        // Set by media:publish-video. Re-rendering the same cut keeps what is already live,
+        // or a re-run would silently take the clip off the site.
+        url: i >= 0 ? index.assets[i].url : null,
+        poster: i >= 0 ? index.assets[i].poster : null,
         path: r.target.replace(process.cwd() + '/', ''),
         date,
         uuid: null,

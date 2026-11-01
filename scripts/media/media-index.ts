@@ -27,14 +27,16 @@ export interface MediaAsset {
    */
   kind: 'image' | 'video'
   /**
-   * Site-absolute path for anything served, null for anything not.
+   * Site-absolute path for a still, absolute R2 URL for a published video, null for a video
+   * not published yet.
    *
-   * Video is never served: the site does not show it, and it only ever goes outbound to
-   * Shorts and TikTok. It gets a `path` instead, and a `url` if it is ever uploaded
-   * somewhere a CI job can fetch — at which point consumers need no change, because they
-   * already address by `url`.
+   * A video gets a `path` when it is rendered and a `url` only from `media:publish-video`,
+   * which writes it after fetching the file back. Every still consumer filters on
+   * `kind === 'image'` first, so a video's URL can never reach a card or a post.
    */
   url: string | null
+  /** The frame shown before a video plays, beside the clip in R2. Video only. */
+  poster?: string | null
   /** Repo-relative path on disk. Set for anything not committed — currently all video. */
   path?: string | null
   date: string

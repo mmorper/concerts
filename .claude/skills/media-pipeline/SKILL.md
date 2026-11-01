@@ -344,9 +344,9 @@ lost the link to the clip.
 
 **Video: one index, canonical names, never in `public/`.**
 
-- **Video on the site needs hosting first.** Revised 2026-11-01: the owner wants clips in the
-  gatefold's Photos panel. The panel plays any video whose `url` is set and skips the rest, so
-  nothing changes until a file is hosted. It still never goes in `public/videos/`.
+- **Video on the site is hosted on R2.** Revised 2026-11-01: the owner wants clips in the
+  gatefold's Photos panel. The panel plays any video whose `url` is set and skips the rest.
+  `npm run media:publish-video` sets it. A video still never goes in `public/videos/`.
 - **Nor could it.** Two trims from one show are 247MB at full resolution, against 13MB for
   every image in the repo combined. `.git` is already 324MB and never forgets a byte.
 - **Rendered to the SHORT EDGE at 1080**, aspect preserved: 134MB → 18.6MB. Both channels
@@ -367,6 +367,43 @@ lost the link to the clip.
   and the fallback if the library entry ever disappears.
 - Cut with `libx264`, never `-c copy`: stream-copy cuts only on keyframes and would move
   the in-point by up to a couple of seconds, losing the precision just marked by hand.
+
+**🔴 AN UPLOAD IS PUBLIC WHEN IT FINISHES, not when the PR merges.** Publishing is the owner's
+call, clip by clip. For a clip, "usable" means worth mining, so a kept clip is not a yes to
+showing it. `media:publish-video` with no date only prints the list.
+
+**A render is not a web file.** Measured 2026-11-01, on all 18 renders on disk:
+
+| | Render | Web copy |
+|---|---|---|
+| Format | 16 of 18: 10-bit H.264 High 10, HLG BT.2020 | 8-bit High, SDR BT.709 |
+| `moov` | At the end: 3 requests to start playing | At the front: 1 request |
+| Five clips, 154 seconds | 219.8 MB | 48.0 MB, about 2.5 Mbit/s |
+
+The spec is 720 on the short edge, aspect preserved, CRF 26, preset slow, AAC 128k,
+`+faststart`. It encodes at about four times realtime. CRF 23, 26 and 28 were hard to tell
+apart at 1:1 on the panel's scale, at 71, 48 and 37 MB. 540p saved another third and looked
+slightly soft, with 2x screens in mind.
+
+- **High 10 is not known to fail.** It played in Chromium 152 and AVFoundation on the owner's
+  Mac. No phone has been tried. Do not write that browsers cannot decode it. The case for 8-bit
+  is size, faststart, and not depending on each browser's HLG handling.
+- **Homebrew's ffmpeg has no `zscale`,** so the usual `zscale,tonemap` chain does not run. Tone
+  mapping is `scale` with `flags=unstable` and `intent=perceptual`, judged by eye on three shows.
+  A plain `format=yuv420p` leaves a grey haze, and `relative_colorimetric` burns out highlights.
+  The flag is ffmpeg's label for new code, so look at a clip after any ffmpeg upgrade. The output
+  checks prove the format, not how it looks.
+- **The bucket is `concerts-media`, on `media.morperhaus.org`, and CORS is not what makes
+  playback work.** A plain `<video src>` played cross-origin with no CORS headers on the real
+  panel. The policy is set anyway, because adding it later means purging a year-long cache.
+- **Posters sit beside the clip in R2, not in `public/images/shows/`.** That folder is what the
+  pipeline treats as stills, and a poster frame is not a judged photograph. One derives from
+  the other 1:1, so a clip and its poster go up and come down together.
+- **The version is on the query string, never the filename.** `mediaId` builds share links
+  from the filename, and a re-encode must not break them. Encodes use `+bitexact`, so an
+  unchanged render gives the same URL.
+- **To take a clip down:** delete both objects, set `url` and `poster` to null, commit, and purge
+  both URLs at Cloudflare. They are cached for a year, so deleting alone leaves them live.
 
 **Hand-marking FIRST, automatic picking as a real fallback.** Revised 2026-08-26 after a
 second show. Do not quote the old 83%, and do not quote the 0-for-7 either — I wrote
@@ -517,6 +554,7 @@ written to `public/images/shows/`; `media-index.json` updated; **what was skippe
 | Source library | Photos.app — never copied wholesale |
 | Candidate corpus, evaluation runs | `concert-photos-audit/` — **gitignored** |
 | **Rendered clips** | **`video/renders/`** — gitignored, canonical names, indexed |
+| **Published clips and posters** | **R2 bucket `concerts-media`** — `videos/` and `posters/`. `video/web/` is the gitignored local copy |
 | Tooling | `scripts/media/` (tracked) · the guard + `BUILD.txt` (tracked by exception) · binary, `*.py`, `*.sh` (ignored) |
 | **Final selects (stills)** | **`public/images/shows/`** — committed, EXIF-stripped, 2048px masters |
 | **The mapping** | **`public/data/media-index.json`** — committed, describes stills AND video |
@@ -543,10 +581,10 @@ attribution and clip marks. No filenames, no capture times, no GPS, no EXIF, no 
 Owner-approved 2026-08-25: a UUID and a verdict disclose nothing the published archive does
 not already say. `test/pipeline/media-decisions.test.ts` asserts the absence of the rest.
 
-**Video is the opposite case and is never committed.** It is not served, it is 10–100×
-larger, and it is reproducible from its recipe. It sits in `video/renders/` with `url:
-null` until a channel needs it somewhere fetchable — at which point an upload step fills
-in `url` and, again, no consumer changes.
+**Video is the opposite case and is never committed.** It is 10–100× larger and reproducible
+from its recipe. It sits in `video/renders/` with `url: null` until `media:publish-video` puts
+a web copy on R2 and fills in `url` and `poster`. Consumers needed no change: every still
+consumer filters on `kind === 'image'` before reading `url`.
 
 ---
 
@@ -560,6 +598,8 @@ in `url` and, again, no consumer changes.
 | `extract_frames.sh` / `frame_score.py` / `pick_frames.py` | frame sampling, Laplacian scoring, min-gap selection |
 | **`npm run media:review <date>`** | **stills review — previews, localhost page, verdicts per keystroke — #380, shipped** |
 | **`npm run media:share [date]`** | **one 1200×630 share image per still, on the wide card layout, committed to `public/og/shows/`. `media:crop` does this itself as boxes are saved** |
+| **`npm run media:publish-video [date]`** | **a render → R2, read back, then `url` and `poster` in the index. `--dry-run` uploads nothing. No date only lists clips** |
+| `scripts/media/web-video.ts` | the web encode, its checks and the read-back (pure, unit-tested) |
 | `scripts/media/review-page.html` | the review page — tracked, one show per run |
 | `scripts/media/review_server.py` | localhost server; writes only `verdicts.json` |
 | `scripts/media/selects.ts` | `selects.json` — the decision, and the cross-check on the filing |
