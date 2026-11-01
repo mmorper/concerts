@@ -161,26 +161,18 @@ export function nightPhotoCount(ix: MediaIndex, date: string): number {
   return ix.byDate.get(date)?.length ?? 0
 }
 
-/** Every still and playable video from a night. */
-export function nightMediaCount(ix: MediaIndex, date: string): number {
-  return nightPhotoCount(ix, date) + (ix.clipsByDate.get(date)?.length ?? 0)
-}
-
 /**
- * A whole night in the order someone looking at one act should see it: that act's stills with
- * their hero first and its videos after them, then the rest of the bill, then the room. The panel
- * names everyone who is not that act, so the order can mix them without implying a frame belongs
- * to the headliner.
+ * What one act's gatefold shows of a night: that act's stills with their hero first, its videos
+ * after them, then the room (marquee, exterior, setlist), which belongs to everyone on the bill.
+ * Another act's frames stay in that act's own gatefold.
  */
 export function nightReel(ix: MediaIndex, date: string, actSlug: string): ReelItem[] {
   const night = ix.byDate.get(date) ?? []
   const clips = ix.clipsByDate.get(date) ?? []
   const own = actPhotosOnNight(ix, date, actSlug)
   const ownClips = clips.filter((c) => c.artistNormalized === actSlug)
-  const others = night.filter((p) => p.subject === 'artist' && p.artistNormalized !== actSlug)
-  const otherClips = clips.filter((c) => c.artistNormalized !== actSlug)
   const room = night.filter((p) => p.subject !== 'artist')
-  return [...own, ...ownClips, ...others, ...otherClips, ...room]
+  return [...own, ...ownClips, ...room]
 }
 
 /**

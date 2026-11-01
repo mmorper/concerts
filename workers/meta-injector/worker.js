@@ -164,6 +164,7 @@ export default {
     const genre = url.searchParams.get('genre');
     const region = url.searchParams.get('region');
     const show = url.searchParams.get('show'); // #193 — concert date, YYYY-MM-DD
+    const photo = url.searchParams.get('photo'); // one still from that night
 
     // Fetch original HTML from origin
     const response = await fetch(request);
@@ -189,7 +190,7 @@ export default {
     } else if (scene === 'artists' && artist && show) {
       // More specific than the artist branch, so it must come first (#193).
       // Falls back to injectArtistMeta internally if `show` doesn't resolve.
-      html = await injectShowMeta(html, artist, show, url.origin, ctx);
+      html = await injectShowMeta(html, artist, show, url.origin, ctx, photo);
     } else if (scene === 'artists' && artist) {
       html = await injectArtistMeta(html, artist, url.origin, ctx);
     } else if ((scene === 'venues' || scene === 'geography') && venue) {
@@ -249,6 +250,21 @@ function isHTMLRequest(request) {
  * Inject artist-specific meta tags
  */
 /**
+ * The share image for one still, or null if there is none.
+ *
+ * Asked of the origin rather than assumed, because the SPA answers 200 with HTML for any path it
+ * does not know. A card pointing at that shows a broken image, which is worse than a show card.
+ * A video has no share image, so its link previews as the show.
+ */
+async function photoShareImage(photo, showDate, origin) {
+  if (!photo || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(photo)) return null;
+  const candidate = `${origin}/og/shows/${showDate}-${photo}.jpg`;
+  const response = await fetch(candidate, { method: 'HEAD' });
+  const type = response.headers.get('Content-Type') || '';
+  return response.ok && type.startsWith('image/') ? candidate : null;
+}
+
+/**
  * Inject meta tags for one specific night (#193).
  *
  * A shared setlist link previously unfurled as the generic artist card — correct,
@@ -262,7 +278,7 @@ function isHTMLRequest(request) {
  * not an enforced invariant — two shows on one date is physically possible — so
  * this never assumes a single result.
  */
-async function injectShowMeta(html, artistNormalized, showDate, origin, ctx) {
+async function injectShowMeta(html, artistNormalized, showDate, origin, ctx, photo = null) {
   try {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(showDate)) {
       return injectArtistMeta(html, artistNormalized, origin, ctx);
@@ -297,13 +313,16 @@ async function injectShowMeta(html, artistNormalized, showDate, origin, ctx) {
     });
 
     const title = `${artistName} at ${concert.venue} · ${longDate} | Morperhaus Concert Archives`;
+    const photoImage = await photoShareImage(photo, concert.date, origin);
     const description =
-      `The setlist from ${artistName} at ${concert.venue}, ${concert.cityState || concert.city} ` +
+      `${photoImage ? 'A photo from' : 'The setlist from'} ${artistName} at ${concert.venue}, ${concert.cityState || concert.city} ` +
       `on ${longDate}, from a personal concert archive spanning four decades.`;
     // Per-show cards are a follow-up (#194); until then the artist image is the
     // best available, and a missing one falls back to the site card.
-    const imageUrl = metadata?.image || `${origin}/og-image.jpg`;
-    const pageUrl = `${origin}/?scene=artists&artist=${artistNormalized}&show=${concert.date}`;
+    const imageUrl = photoImage || metadata?.image || `${origin}/og-image.jpg`;
+    const pageUrl =
+      `${origin}/?scene=artists&artist=${artistNormalized}&show=${concert.date}` +
+      (photoImage ? `&photo=${photo}` : '');
 
     html = html.replace(/<title>.*?<\/title>/, `<title>${escapeTitleText(title)}</title>`);
     html = html.replace(

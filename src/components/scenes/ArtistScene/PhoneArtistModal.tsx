@@ -30,7 +30,7 @@ import { normalizeVenueName } from '../../../utils/normalize'
 import type { ArtistCard, ArtistConcert } from './types'
 import type { Setlist } from '../../../types/setlist'
 import { analytics } from '../../../services/analytics'
-import { EMPTY_MEDIA, nightMediaCount, nightReel } from '../../ask/media'
+import { EMPTY_MEDIA, nightReel } from '../../ask/media'
 import { isUpcomingConcert } from '../../../utils/concertUtils'
 import { UpcomingBadge } from '../../UpcomingBadge'
 
@@ -45,6 +45,8 @@ interface PhoneArtistModalProps {
   pendingSetlistFocus?: string | null
   /** Image id from `?photo=` — opens that night's Photos panel on it */
   pendingPhotoFocus?: string | null
+  /** Tells the app the link has been acted on, so the next artist opened does not inherit it */
+  onShowFocusComplete?: () => void
 }
 
 /**
@@ -78,7 +80,8 @@ export function PhoneArtistModal({
   onClose,
   reducedMotion,
   pendingSetlistFocus,
-  pendingPhotoFocus
+  pendingPhotoFocus,
+  onShowFocusComplete
 }: PhoneArtistModalProps) {
   const navigate = useNavigate()
   const { getArtistImage } = useArtistMetadata()
@@ -317,12 +320,16 @@ export function PhoneArtistModal({
     // A photo link has nothing to open until the index arrives.
     if (pendingPhotoFocus && media === EMPTY_MEDIA) return
 
+    // The link is spent from here on, whatever it resolves to. Left armed, the
+    // next artist opened who played that night would open the same panel.
+    onShowFocusComplete?.()
+
     const concert = artist.concerts.find(c => c.date === pendingSetlistFocus)
     // Stale link for this artist — leave the modal open, don't error.
     if (!concert) return
 
     restoredSetlistRef.current = pendingSetlistFocus
-    if (pendingPhotoFocus && nightMediaCount(media, concert.date) > 0) {
+    if (pendingPhotoFocus && nightReel(media, concert.date, artist.normalizedName).length > 0) {
       setInitialPhotoId(pendingPhotoFocus)
       setPhotosConcert(concert)
       return
@@ -576,7 +583,7 @@ export function PhoneArtistModal({
                             <Music size={14} />
                             <span>Setlist</span>
                           </button>
-                          {nightMediaCount(media, concert.date) > 0 && (
+                          {nightReel(media, concert.date, artist.normalizedName).length > 0 && (
                             <button
                               onClick={() => handlePhotosClick(concert)}
                               className="flex items-center justify-end gap-1 text-xs font-medium text-[#22c55e] hover:text-[#4ade80] transition-colors flex-shrink-0 min-h-[44px] min-w-[72px]"

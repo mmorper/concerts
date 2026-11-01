@@ -61,8 +61,8 @@ export function setlistDeepLink(artistSlug: string, date: string): string {
  * `/?scene=artists&artist=thompson-twins&show=2026-09-16&photo=thompson-twins-10`
  *
  * One still or video from a night. `photo` is `mediaId` from src/components/ask/media.ts: the
- * published filename, which the pipeline never reuses. `artist` decides whose gatefold opens, so
- * a Blancmange frame shared from the Thompson Twins gatefold reopens there.
+ * published filename, which the pipeline never reuses. `artist` decides whose gatefold opens, and
+ * a gatefold only holds that act's frames and the room.
  */
 export function photoDeepLink(artistSlug: string, date: string, photoId: string): string {
   return `${setlistDeepLink(artistSlug, date)}&photo=${encodeURIComponent(photoId)}`

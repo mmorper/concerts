@@ -201,6 +201,50 @@ describe('meta-injector worker', () => {
 
   // ── Artist counts ──────────────────────────────────────────────────────────
 
+  describe('share image for one photo', () => {
+    const concerts = {
+      concerts: [
+        { date: '2026-09-16', headliner: 'Thompson Twins', headlinerNormalized: 'thompson-twins', venue: 'Pavilion Theatre', city: 'Glasgow, UK' },
+      ],
+    }
+    const IMAGE = 'https://concerts.morperhaus.org/og/shows/2026-09-16-thompson-twins-10.jpg'
+    const LINK = '/?scene=artists&artist=thompson-twins&show=2026-09-16'
+
+    function serve(shareImageType) {
+      vi.mocked(fetch).mockImplementation(async (input) => {
+        const url = String(input?.url ?? input)
+        if (url.includes('/og/shows/')) {
+          return new Response(null, { status: 200, headers: { 'Content-Type': shareImageType } })
+        }
+        if (url.includes('/data/concerts.json')) return new Response(JSON.stringify(concerts), { status: 200 })
+        if (url.includes('/data/')) return new Response('{}', { status: 200 })
+        return htmlResponse(PAGE)
+      })
+    }
+
+    it('uses the photo as the og and twitter image', async () => {
+      serve('image/jpeg')
+      const body = await (await worker.fetch(req(`${LINK}&photo=thompson-twins-10`), {}, ctx)).text()
+      expect(body).toContain(`<meta property="og:image" content="${IMAGE}" />`)
+      expect(body).toContain(`<meta property="twitter:image" content="${IMAGE}" />`)
+      expect(body).toContain('A photo from Thompson Twins at Pavilion Theatre')
+      expect(body).toContain('&amp;photo=thompson-twins-10')
+    })
+
+    it('falls back to the show card when the SPA answers for a file that is not there', async () => {
+      serve('text/html')
+      const body = await (await worker.fetch(req(`${LINK}&photo=thompson-twins-99`), {}, ctx)).text()
+      expect(body).not.toContain('/og/shows/')
+      expect(body).toContain('The setlist from Thompson Twins')
+    })
+
+    it('never builds a URL from a malformed photo value', async () => {
+      serve('image/jpeg')
+      const body = await (await worker.fetch(req(`${LINK}&photo=..%2F..%2Fsecret`), {}, ctx)).text()
+      expect(body).not.toContain('/og/shows/')
+    })
+  })
+
   describe('artist meta counts billings, not headliners', () => {
     // The one exception to the "content is deliberately under-tested" rule at the
     // top of this file. A wrong count is not a card that degrades — it is a card

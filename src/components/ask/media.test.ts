@@ -4,8 +4,6 @@ import {
   actPhotosOnNight,
   leadPhoto,
   nightPhoto,
-  nightPhotoCount,
-  nightMediaCount,
   nightReel,
   mediaId,
   focalPosition,
@@ -89,20 +87,16 @@ describe('a night in the Photos panel', () => {
   const pavilion: MediaAsset = { ...tom, url: '/images/shows/2026-09-16-venue-01.jpg', artist: null, artistNormalized: null, subject: 'venue', hero: false, order: 1 }
   const glasgow = buildMediaIndex([pavilion, tom2, neil, tom])
 
-  it('leads with the act’s own hero, then the bill, then the room', () => {
+  it('shows only that act and the room, hero first', () => {
     const urls = (slug: string) => nightReel(glasgow, '2026-09-16', slug).map((p) => p.url.split('/').pop())
     expect(urls('thompson-twins')).toEqual([
-      '2026-09-16-thompson-twins-10.jpg', '2026-09-16-thompson-twins-03.jpg', '2026-09-16-blancmange-02.jpg', '2026-09-16-venue-01.jpg',
+      '2026-09-16-thompson-twins-10.jpg', '2026-09-16-thompson-twins-03.jpg', '2026-09-16-venue-01.jpg',
     ])
-    expect(urls('blancmange')[0]).toBe('2026-09-16-blancmange-02.jpg')
+    expect(urls('blancmange')).toEqual(['2026-09-16-blancmange-02.jpg', '2026-09-16-venue-01.jpg'])
   })
 
-  it('shows every still from the night, so the count on the link is the count in the panel', () => {
-    expect(nightReel(glasgow, '2026-09-16', 'blancmange')).toHaveLength(nightPhotoCount(glasgow, '2026-09-16'))
-  })
-
-  it('still shows a night where the act has no frames of its own', () => {
-    expect(nightReel(glasgow, '2026-09-16', 'someone-else').map((p) => p.artist)).toEqual(['Blancmange', 'Thompson Twins', 'Thompson Twins', null])
+  it('never shows another act, even when the act has no frames of its own', () => {
+    expect(nightReel(glasgow, '2026-09-16', 'someone-else').map((p) => p.subject)).toEqual(['venue'])
   })
 
   it('is empty for a night with no stills', () => {
@@ -115,8 +109,7 @@ describe('a night in the Photos panel', () => {
   it('plays a hosted video after the act’s stills, and skips one with no file', () => {
     const withClips = buildMediaIndex([pavilion, tom2, neil, tom, clip, unhosted])
     const reel = nightReel(withClips, '2026-09-16', 'thompson-twins')
-    expect(reel.map((r) => r.kind)).toEqual(['image', 'image', 'video', 'image', 'image'])
-    expect(nightMediaCount(withClips, '2026-09-16')).toBe(5)
+    expect(reel.map((r) => r.kind)).toEqual(['image', 'image', 'video', 'image'])
   })
 
   it('names an image by its published file, and never lets a video collide with a still', () => {

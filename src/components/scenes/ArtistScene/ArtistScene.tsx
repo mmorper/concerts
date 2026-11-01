@@ -24,6 +24,8 @@ interface ArtistSceneProps {
   pendingSetlistFocus?: string | null
   /** Image id from `?photo=` — opens that night's Photos panel on it */
   pendingPhotoFocus?: string | null
+  /** Called once a gatefold has acted on those, so the next artist opened does not inherit them */
+  onShowFocusComplete?: () => void
   onArtistFocusComplete?: () => void
 }
 
@@ -31,7 +33,7 @@ interface ArtistSceneProps {
  * Main Artist Scene container
  * Album mosaic visualization with flip cards
  */
-export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus, pendingPhotoFocus, onArtistFocusComplete }: ArtistSceneProps) {
+export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus, pendingPhotoFocus, onShowFocusComplete, onArtistFocusComplete }: ArtistSceneProps) {
   const { artistCards, isLoading } = useArtistData(concerts)
   const { getArtistImage, loading: artistImageLoading } = useArtistMetadata()
   const { isPhone } = useGatefoldOrientation()
@@ -370,6 +372,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus,
             reducedMotion={reducedMotion}
             pendingSetlistFocus={pendingSetlistFocus}
             pendingPhotoFocus={pendingPhotoFocus}
+            onShowFocusComplete={onShowFocusComplete}
           />
         ) : (
           <ArtistGatefold
@@ -380,6 +383,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus,
             getArtistImage={getArtistImage}
             pendingSetlistFocus={pendingSetlistFocus}
             pendingPhotoFocus={pendingPhotoFocus}
+            onShowFocusComplete={onShowFocusComplete}
           />
         )
       )}

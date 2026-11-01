@@ -14,7 +14,7 @@ import { haptics } from '../../../utils/haptics'
 import type { ArtistCard, ArtistConcert } from './types'
 import type { Setlist } from '../../../types/setlist'
 import { analytics } from '../../../services/analytics'
-import { EMPTY_MEDIA, nightMediaCount, nightReel } from '../../ask/media'
+import { EMPTY_MEDIA, nightReel } from '../../ask/media'
 
 // Active panel type - only one panel can be visible at a time
 type ActivePanel = 'none' | 'setlist' | 'photos' | 'tour-dates'
@@ -29,6 +29,8 @@ interface ArtistGatefoldProps {
   pendingSetlistFocus?: string | null
   /** Image id from `?photo=` — opens that night's Photos panel on it */
   pendingPhotoFocus?: string | null
+  /** Tells the app the link has been acted on, so the next artist opened does not inherit it */
+  onShowFocusComplete?: () => void
 }
 
 // Constants matching prototype
@@ -50,7 +52,8 @@ export function ArtistGatefold({
   reducedMotion,
   getArtistImage,
   pendingSetlistFocus,
-  pendingPhotoFocus
+  pendingPhotoFocus,
+  onShowFocusComplete
 }: ArtistGatefoldProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -375,13 +378,17 @@ export function ArtistGatefold({
     // A photo link has nothing to open until the index arrives.
     if (pendingPhotoFocus && media === EMPTY_MEDIA) return
 
+    // The link is spent from here on, whatever it resolves to. Left armed, the
+    // next artist opened who played that night would open the same panel.
+    onShowFocusComplete?.()
+
     const concert = artist.concerts.find(c => c.date === pendingSetlistFocus)
     // No matching row means the link is stale for this artist. Leave the
     // gatefold open on its own — degrade, don't error.
     if (!concert) return
 
     restoredSetlistRef.current = pendingSetlistFocus
-    if (pendingPhotoFocus && nightMediaCount(media, concert.date) > 0) {
+    if (pendingPhotoFocus && nightReel(media, concert.date, artist.normalizedName).length > 0) {
       setInitialPhotoId(pendingPhotoFocus)
       setSelectedConcert(concert)
       setActivePanel('photos')
@@ -796,7 +803,7 @@ export function ArtistGatefold({
                       openSetlistConcert={activePanel === 'setlist' ? selectedConcert : null}
                       openPhotosConcert={activePanel === 'photos' ? selectedConcert : null}
                       onPhotosClick={handlePhotosClick}
-                      hasPhotos={(date) => nightMediaCount(media, date) > 0}
+                      hasPhotos={(date) => nightReel(media, date, artist.normalizedName).length > 0}
                       tourCount={tourCount}
                       isTourPanelActive={activePanel === 'tour-dates'}
                       onTourBadgeClick={handleTourBadgeClick}

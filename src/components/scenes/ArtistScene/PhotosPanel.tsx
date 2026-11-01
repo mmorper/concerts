@@ -3,7 +3,8 @@
  *
  * Slides out of the gatefold exactly as SetlistPanel does, one image at a time, full bleed, with
  * the same credits as a social card over it: the byline top-left, the venue and month at the foot
- * (scripts/syndication/render-card.ts). Order is `nightReel`: this act first, hero leading.
+ * (scripts/syndication/render-card.ts). Order is `nightReel`: this act only, hero leading, then
+ * the room.
  *
  * The frame is square on desktop, so a 4:5 crop loses height. It keeps the TOP of the owner's crop
  * and gives up the bottom, because a stage shot is a face above a guitar. Clicking a still opens
@@ -84,11 +85,9 @@ export function PhotosPanel({
         aboutAct: artistSlug,
         aboutDate: concert.date,
         venueOf: () => concert.venue,
-        // Only known when this act topped the bill. Without it the caption names the frame's
-        // act and the night, which is still true.
-        headlinerOf: () => (concert.isHeadliner ? artistName : undefined)
+        headlinerOf: () => undefined
       }),
-    [artistName, artistSlug, concert]
+    [artistSlug, concert]
   )
 
   const trackOpened = useMemo(
@@ -166,7 +165,6 @@ export function PhotosPanel({
   if (!item) return null
 
   const aspect = isPhone ? PHONE_ASPECT : 1
-  const otherAct = item.artistNormalized && item.artistNormalized !== artistSlug ? item.artist : null
   const footerHidden = isClip(item) && isPlaying
 
   const stage = (
@@ -276,7 +274,6 @@ export function PhotosPanel({
           style={{ background: SCRIM }}
         >
           <p className="font-sans text-[0.8125rem] font-medium leading-snug min-w-0" style={{ color: '#9b90bd' }}>
-            {otherAct && <span className="block text-white">{otherAct}</span>}
             <span className="block">
               {concert.venue} · {concert.city}
             </span>

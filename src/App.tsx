@@ -402,6 +402,10 @@ function MainScenes() {
           pendingArtistFocus={pendingArtistFocus}
           pendingSetlistFocus={pendingSetlistFocus}
           pendingPhotoFocus={pendingPhotoFocus}
+          onShowFocusComplete={() => {
+            setPendingSetlistFocus(null)
+            setPendingPhotoFocus(null)
+          }}
           onArtistFocusComplete={() => setPendingArtistFocus(null)}
         />
 
