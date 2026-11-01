@@ -2,7 +2,7 @@
  * Deep-link URL builders and parsers
  *
  * SINGLE SOURCE OF TRUTH for deep-link URL shape in the SPA.
- * The prose contract is docs/DEEP_LINKING.md (v1.2); the machine-readable
+ * The prose contract is docs/DEEP_LINKING.md (v1.3); the machine-readable
  * contract is test/fixtures/deep-link-urls.json, which this module is
  * asserted against.
  *
@@ -58,6 +58,17 @@ export function setlistDeepLink(artistSlug: string, date: string): string {
 }
 
 /**
+ * `/?scene=artists&artist=thompson-twins&show=2026-09-16&photo=thompson-twins-10`
+ *
+ * One still or video from a night. `photo` is `mediaId` from src/components/ask/media.ts: the
+ * published filename, which the pipeline never reuses. `artist` decides whose gatefold opens, and
+ * a gatefold only holds that act's frames and the room.
+ */
+export function photoDeepLink(artistSlug: string, date: string, photoId: string): string {
+  return `${setlistDeepLink(artistSlug, date)}&photo=${encodeURIComponent(photoId)}`
+}
+
+/**
  * Album deep link — RESERVED, NOT YET EMITTED (DEEP_LINKING.md v1.3).
  *
  * No route resolves this yet, so nothing calls it: `buildDeepLinks` must not
@@ -104,6 +115,13 @@ export function isValidShowDate(value: string | null | undefined): boolean {
     parsed.getDate().toString().padStart(2, '0'),
   ].join('-')
   return roundTrip === value
+}
+
+const MEDIA_ID = /^[a-z0-9]+(-[a-z0-9]+)*$/
+
+/** Validate a `photo` param value. Anything else is dropped and the night opens as usual. */
+export function isValidPhotoId(value: string | null | undefined): boolean {
+  return !!value && MEDIA_ID.test(value)
 }
 
 /** A concert as far as deep-link resolution is concerned. */

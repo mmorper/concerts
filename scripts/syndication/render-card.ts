@@ -107,7 +107,7 @@ export interface RenderResult {
 /** @deprecated The renderer takes a `SyndicationPayload` now and needs no sources at all. */
 export type RenderSources = never;
 
-function escapeHtml(s: string): string {
+export function escapeHtml(s: string): string {
   return s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
 }
 
@@ -212,7 +212,7 @@ export function yearsAgo(age: number | undefined): string {
   return `${age} year${age === 1 ? "" : "s"} ago today`;
 }
 
-function monthYear(iso: string): string {
+export function monthYear(iso: string): string {
   const [y, m] = iso.split("-").map(Number);
   return `${MONTHS[(m ?? 1) - 1]} ${y}`;
 }
@@ -244,9 +244,9 @@ function wideSplit(v: TemplateVals): string {
          the parent had already stretched to fit and every length "fitted". Pinning the
          column is what makes the measurement mean anything. -->
     <div id="type" style="width:${WIDE_WIDTH - WIDE_SLOT}px;flex-shrink:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:20px;padding:48px 48px 44px 44px;box-sizing:border-box;">
-      <div style="display:flex;align-items:flex-start;">
+      ${v.acts ? `<div style="display:flex;align-items:flex-start;">
         <span id="acts" style="font-size:24px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#fff;background:${v.pill};padding:8px 18px;border-radius:999px;white-space:nowrap;">${escapeHtml(v.acts)}</span>
-      </div>
+      </div>` : ""}
       <div id="hook" style="font-family:'Playfair Display',Georgia,serif;font-size:${v.hookSize}px;line-height:1.06;letter-spacing:-0.025em;color:#fff;text-wrap:pretty;">${escapeHtml(v.hook)}</div>
       <span style="font-size:21px;font-weight:500;line-height:1.44;color:#8a80ab;">${v.meta}</span>
       <div style="display:flex;justify-content:flex-end;">

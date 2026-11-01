@@ -12,22 +12,25 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
-import { X, Link2, History, Calendar, Music } from 'lucide-react'
+import { X, Link2, History, Calendar, Music, Camera } from 'lucide-react'
 import { useShareLink } from '../../../hooks/useShareLink'
 import { artistDeepLink, setlistDeepLink, absoluteUrl } from '../../../utils/deepLinks'
 import { getGenreColor } from '../../../constants/colors'
 import { useArtistMetadata } from '../../TimelineHoverPreview/useArtistMetadata'
 import { useTourDates } from '../../../hooks/useTourDates'
 import { useLinerNotesCount } from '../../../hooks/useLinerNotesCount'
+import { useMediaIndex } from '../../../hooks/useMediaIndex'
 import { fetchSetlist } from '../../../services/setlistfm'
 import { TourBadge } from './TourBadge'
 import { LinerNotesBadge } from './LinerNotesBadge'
 import { AudioPreviewPanel } from './AudioPreviewPanel'
+import { PhotosPanel } from './PhotosPanel'
 import { haptics } from '../../../utils/haptics'
 import { normalizeVenueName } from '../../../utils/normalize'
 import type { ArtistCard, ArtistConcert } from './types'
 import type { Setlist } from '../../../types/setlist'
 import { analytics } from '../../../services/analytics'
+import { EMPTY_MEDIA, nightReel } from '../../ask/media'
 import { isUpcomingConcert } from '../../../utils/concertUtils'
 import { UpcomingBadge } from '../../UpcomingBadge'
 
@@ -40,6 +43,10 @@ interface PhoneArtistModalProps {
   reducedMotion: boolean
   /** Concert date from `?show=` — opens that setlist on mount (#196) */
   pendingSetlistFocus?: string | null
+  /** Image id from `?photo=` — opens that night's Photos panel on it */
+  pendingPhotoFocus?: string | null
+  /** Tells the app the link has been acted on, so the next artist opened does not inherit it */
+  onShowFocusComplete?: () => void
 }
 
 /**
@@ -72,7 +79,9 @@ export function PhoneArtistModal({
   artist,
   onClose,
   reducedMotion,
-  pendingSetlistFocus
+  pendingSetlistFocus,
+  pendingPhotoFocus,
+  onShowFocusComplete
 }: PhoneArtistModalProps) {
   const navigate = useNavigate()
   const { getArtistImage } = useArtistMetadata()
@@ -91,6 +100,9 @@ export function PhoneArtistModal({
   const [setlistError, setSetlistError] = useState<string | null>(null)
   const [showSetlistOverlay, setShowSetlistOverlay] = useState(false)
 
+  // Photos overlay state
+  const [photosConcert, setPhotosConcert] = useState<ArtistConcert | null>(null)
+
   // Refs
   const modalRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -104,6 +116,10 @@ export function PhoneArtistModal({
 
   // Liner notes count
   const { count: linerNotesCount } = useLinerNotesCount(artist?.normalizedName ?? null)
+
+  // The owner's photographs, for the Photos link on each night
+  const media = useMediaIndex(!!artist)
+  const [initialPhotoId, setInitialPhotoId] = useState<string | null>(null)
 
   // Determine if Upcoming tab should show
   const showUpcomingTab = tourCount > 0
@@ -142,6 +158,12 @@ export function PhoneArtistModal({
       return
     }
 
+    // Same for the photos
+    if (photosConcert) {
+      setPhotosConcert(null)
+      return
+    }
+
     setIsClosing(true)
     haptics.light()
 
@@ -154,7 +176,7 @@ export function PhoneArtistModal({
     setTimeout(() => {
       onClose()
     }, 250)
-  }, [isClosing, showSetlistOverlay, reducedMotion, onClose])
+  }, [isClosing, showSetlistOverlay, photosConcert, reducedMotion, onClose])
 
   // Handle backdrop tap
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -295,15 +317,39 @@ export function PhoneArtistModal({
     if (!pendingSetlistFocus || !artist) return
     // Restore once per deep link, or dismissing the overlay would reopen it.
     if (restoredSetlistRef.current === pendingSetlistFocus) return
+    // A photo link has nothing to open until the index arrives.
+    if (pendingPhotoFocus && media === EMPTY_MEDIA) return
+
+    // The link is spent from here on, whatever it resolves to. Left armed, the
+    // next artist opened who played that night would open the same panel.
+    onShowFocusComplete?.()
 
     const concert = artist.concerts.find(c => c.date === pendingSetlistFocus)
     // Stale link for this artist — leave the modal open, don't error.
     if (!concert) return
 
     restoredSetlistRef.current = pendingSetlistFocus
+    if (pendingPhotoFocus && nightReel(media, concert.date, artist.normalizedName).length > 0) {
+      setInitialPhotoId(pendingPhotoFocus)
+      setPhotosConcert(concert)
+      return
+    }
     handleSetlistClick(concert)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pendingSetlistFocus, artist])
+  }, [pendingSetlistFocus, pendingPhotoFocus, media, artist])
+
+  // Handle Photos click from concert row
+  const handlePhotosClick = (concert: ArtistConcert) => {
+    haptics.light()
+    analytics.trackEvent('photos_button_clicked', {
+      artist_name: artist?.name || '',
+      concert_date: concert.date,
+      venue_name: concert.venue,
+      device_type: 'mobile',
+    })
+    setInitialPhotoId(null)
+    setPhotosConcert(concert)
+  }
 
   // Handle close setlist
   const handleCloseSetlist = () => {
@@ -482,7 +528,7 @@ export function PhoneArtistModal({
         <div
           ref={contentRef}
           className={`flex-1 overflow-y-auto relative ${
-            showSetlistOverlay ? 'pointer-events-none opacity-50' : ''
+            showSetlistOverlay || photosConcert ? 'pointer-events-none opacity-50' : ''
           }`}
         >
           {/* History Tab */}
@@ -528,14 +574,26 @@ export function PhoneArtistModal({
                           <UpcomingBadge size="sm" />
                         </div>
                       ) : (
-                        <button
-                          onClick={() => handleSetlistClick(concert)}
-                          className="flex items-center gap-1 text-xs font-medium text-[#22c55e] hover:text-[#4ade80] transition-colors flex-shrink-0 py-1"
-                          aria-label={`View setlist for ${concert.venue}`}
-                        >
-                          <Music size={14} />
-                          <span>Setlist</span>
-                        </button>
+                        <div className="flex flex-col items-end flex-shrink-0 -my-2.5">
+                          <button
+                            onClick={() => handleSetlistClick(concert)}
+                            className="flex items-center justify-end gap-1 text-xs font-medium text-[#22c55e] hover:text-[#4ade80] transition-colors flex-shrink-0 min-h-[44px] min-w-[72px]"
+                            aria-label={`View setlist for ${concert.venue}`}
+                          >
+                            <Music size={14} />
+                            <span>Setlist</span>
+                          </button>
+                          {nightReel(media, concert.date, artist.normalizedName).length > 0 && (
+                            <button
+                              onClick={() => handlePhotosClick(concert)}
+                              className="flex items-center justify-end gap-1 text-xs font-medium text-[#22c55e] hover:text-[#4ade80] transition-colors flex-shrink-0 min-h-[44px] min-w-[72px]"
+                              aria-label={`View photos from ${concert.venue}`}
+                            >
+                              <Camera size={14} />
+                              <span>Photos</span>
+                            </button>
+                          )}
+                        </div>
                       )}
                     </li>
                   )
@@ -613,6 +671,20 @@ export function PhoneArtistModal({
             </div>
           )}
         </div>
+
+        {/* Photos Overlay */}
+        {photosConcert && (
+          <PhotosPanel
+            isPhone
+            reel={nightReel(media, photosConcert.date, artist.normalizedName)}
+            initialId={initialPhotoId}
+            concert={photosConcert}
+            artistName={artist.name}
+            artistSlug={artist.normalizedName}
+            onClose={() => setPhotosConcert(null)}
+            reducedMotion={reducedMotion}
+          />
+        )}
 
         {/* Setlist Overlay */}
         {showSetlistOverlay && selectedConcert && (

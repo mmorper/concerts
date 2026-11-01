@@ -3,18 +3,21 @@ import { getGenreColor } from '../../../constants/colors'
 import { ConcertHistoryPanel } from './ConcertHistoryPanel'
 import { AudioPreviewPanel } from './AudioPreviewPanel'
 import { SetlistPanel } from './SetlistPanel'
+import { PhotosPanel } from './PhotosPanel'
 import { TourDatesPanel } from './TourDatesPanel'
 import { fetchSetlist } from '../../../services/setlistfm'
 import { useTourDates } from '../../../hooks/useTourDates'
 import { useLinerNotesCount } from '../../../hooks/useLinerNotesCount'
+import { useMediaIndex } from '../../../hooks/useMediaIndex'
 import { useGatefoldOrientation } from '../../../hooks/useGatefoldOrientation'
 import { haptics } from '../../../utils/haptics'
 import type { ArtistCard, ArtistConcert } from './types'
 import type { Setlist } from '../../../types/setlist'
 import { analytics } from '../../../services/analytics'
+import { EMPTY_MEDIA, nightReel } from '../../ask/media'
 
 // Active panel type - only one panel can be visible at a time
-type ActivePanel = 'none' | 'setlist' | 'tour-dates'
+type ActivePanel = 'none' | 'setlist' | 'photos' | 'tour-dates'
 
 interface ArtistGatefoldProps {
   artist: ArtistCard | null
@@ -24,6 +27,10 @@ interface ArtistGatefoldProps {
   getArtistImage: (artistName: string) => string | undefined
   /** Concert date from `?show=` — opens that setlist once open (#196) */
   pendingSetlistFocus?: string | null
+  /** Image id from `?photo=` — opens that night's Photos panel on it */
+  pendingPhotoFocus?: string | null
+  /** Tells the app the link has been acted on, so the next artist opened does not inherit it */
+  onShowFocusComplete?: () => void
 }
 
 // Constants matching prototype
@@ -44,7 +51,9 @@ export function ArtistGatefold({
   clickedTileRect,
   reducedMotion,
   getArtistImage,
-  pendingSetlistFocus
+  pendingSetlistFocus,
+  pendingPhotoFocus,
+  onShowFocusComplete
 }: ArtistGatefoldProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -64,6 +73,10 @@ export function ArtistGatefold({
 
   // Liner notes count (#66)
   const { count: linerNotesCount } = useLinerNotesCount(artist?.normalizedName ?? null)
+
+  // The owner's photographs, for the Photos link on each night
+  const media = useMediaIndex(!!artist)
+  const [initialPhotoId, setInitialPhotoId] = useState<string | null>(null)
 
   // Tour dates eager loading (v1.6.0)
   const { tourDates, tourCount, isLoading: isLoadingTourDates, error: tourDatesError } = useTourDates(
@@ -263,8 +276,8 @@ export function ArtistGatefold({
       return
     }
 
-    // If tour panel is open, trigger crossfade transition
-    if (activePanel === 'tour-dates' && !isTransitioning) {
+    // If another panel is open, trigger crossfade transition
+    if ((activePanel === 'tour-dates' || activePanel === 'photos') && !isTransitioning) {
       setIsTransitioning(true)
       // Wait 100ms (crossfade overlap), then switch panels
       setTimeout(() => {
@@ -279,6 +292,42 @@ export function ArtistGatefold({
 
     // Otherwise, open setlist panel normally
     openSetlistPanel(concert)
+  }
+
+  // Handle Photos click from concert row
+  const handlePhotosClick = (concert: ArtistConcert) => {
+    if (activePanel === 'photos' &&
+        selectedConcert?.date === concert.date &&
+        selectedConcert?.venue === concert.venue) {
+      handleClosePanel()
+      return
+    }
+
+    analytics.trackEvent('artist_tab_viewed', {
+      artist_name: artist?.name || '',
+      tab_name: 'photos',
+    })
+
+    const open = () => {
+      setInitialPhotoId(null)
+      setSelectedConcert(concert)
+      setActivePanel('photos')
+    }
+
+    if (activePanel !== 'none' && !isTransitioning) {
+      setIsTransitioning(true)
+      // Wait 100ms (crossfade overlap), then switch panels
+      setTimeout(() => {
+        setActivePanel('none')
+        setTimeout(() => {
+          open()
+          setIsTransitioning(false)
+        }, 100)
+      }, 100)
+      return
+    }
+
+    open()
   }
 
   // Open setlist panel helper
@@ -326,6 +375,12 @@ export function ArtistGatefold({
     // Restore once per deep link — otherwise closing the panel would fight
     // the effect and immediately reopen it.
     if (restoredSetlistRef.current === pendingSetlistFocus) return
+    // A photo link has nothing to open until the index arrives.
+    if (pendingPhotoFocus && media === EMPTY_MEDIA) return
+
+    // The link is spent from here on, whatever it resolves to. Left armed, the
+    // next artist opened who played that night would open the same panel.
+    onShowFocusComplete?.()
 
     const concert = artist.concerts.find(c => c.date === pendingSetlistFocus)
     // No matching row means the link is stale for this artist. Leave the
@@ -333,8 +388,14 @@ export function ArtistGatefold({
     if (!concert) return
 
     restoredSetlistRef.current = pendingSetlistFocus
+    if (pendingPhotoFocus && nightReel(media, concert.date, artist.normalizedName).length > 0) {
+      setInitialPhotoId(pendingPhotoFocus)
+      setSelectedConcert(concert)
+      setActivePanel('photos')
+      return
+    }
     openSetlistPanel(concert)
-  }, [pendingSetlistFocus, showGatefold, artist])
+  }, [pendingSetlistFocus, pendingPhotoFocus, media, showGatefold, artist])
 
   // Handle tour badge click (v1.6.0)
   const handleTourBadgeClick = () => {
@@ -350,8 +411,8 @@ export function ArtistGatefold({
       tab_name: 'tour-dates',
     })
 
-    // If setlist panel is open, trigger crossfade transition
-    if (activePanel === 'setlist' && !isTransitioning) {
+    // If another panel is open, trigger crossfade transition
+    if ((activePanel === 'setlist' || activePanel === 'photos') && !isTransitioning) {
       setIsTransitioning(true)
       // Wait 100ms (crossfade overlap), then switch panels
       setTimeout(() => {
@@ -648,6 +709,20 @@ export function ArtistGatefold({
                     />
                   )}
 
+                  {/* Photos Panel - slides from left (desktop), same gesture as the setlist */}
+                  {activePanel === 'photos' && selectedConcert && (
+                    <PhotosPanel
+                      key={selectedConcert.date}
+                      reel={nightReel(media, selectedConcert.date, artist.normalizedName)}
+                      initialId={initialPhotoId}
+                      concert={selectedConcert}
+                      artistName={artist.name}
+                      artistSlug={artist.normalizedName}
+                      onClose={handleClosePanel}
+                      reducedMotion={reducedMotion}
+                    />
+                  )}
+
                   {/* Tour Dates Panel - slides from left (desktop) */}
                   {activePanel === 'tour-dates' && (
                     <TourDatesPanel
@@ -672,16 +747,24 @@ export function ArtistGatefold({
                     transformOrigin: 'left center',
                     zIndex: 20,
                     cursor: 'pointer',
+                    pointerEvents: isOpen ? 'none' : 'auto',
                     transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
-                  {/* Front of cover (album art) */}
+                  {/* Front of cover (album art).
+                      Once open it faces away and cannot be seen, but it and the cover itself
+                      still lie in the same plane as the concert history on the back, and
+                      backface-visibility does not stop hit-testing. Measured: about half the
+                      width of a Setlist link fell through to them in stripes, which is why
+                      those links have always been hard to click. So an open cover takes no
+                      pointer events, and the back opts itself back in. */}
                   <div
                     className="absolute inset-0 flex items-center justify-center rounded text-[8rem] font-sans font-semibold text-white/90 overflow-hidden"
                     style={{
                       background: gradient,
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
+                      pointerEvents: isOpen ? 'none' : 'auto',
                       boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3)'
                     }}
                   >
@@ -710,13 +793,17 @@ export function ArtistGatefold({
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
-                      transform: 'rotateY(180deg)'
+                      transform: 'rotateY(180deg)',
+                      pointerEvents: 'auto'
                     }}
                   >
                     <ConcertHistoryPanel
                       artist={artist}
                       onSetlistClick={handleSetlistClick}
-                      openSetlistConcert={selectedConcert}
+                      openSetlistConcert={activePanel === 'setlist' ? selectedConcert : null}
+                      openPhotosConcert={activePanel === 'photos' ? selectedConcert : null}
+                      onPhotosClick={handlePhotosClick}
+                      hasPhotos={(date) => nightReel(media, date, artist.normalizedName).length > 0}
                       tourCount={tourCount}
                       isTourPanelActive={activePanel === 'tour-dates'}
                       onTourBadgeClick={handleTourBadgeClick}

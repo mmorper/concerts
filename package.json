@@ -83,6 +83,7 @@
     "media:prep": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/prep.ts",
     "media:audit": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/audit.ts",
     "media:ingest": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/ingest.ts",
+    "media:share": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/share-images.ts",
     "media:review": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/review.ts",
     "media:crop": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/crop.ts",
     "media:frames": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/media/frames.ts",

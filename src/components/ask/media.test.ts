@@ -4,6 +4,9 @@ import {
   actPhotosOnNight,
   leadPhoto,
   nightPhoto,
+  nightReel,
+  withCanonicalActs,
+  mediaId,
   focalPosition,
   cropAspect,
   cropCoverage,
@@ -74,6 +77,68 @@ describe('choosing the frame', () => {
   })
 })
 
+describe('an act with several billings', () => {
+  const orchestra: MediaAsset = {
+    kind: 'image', url: '/images/shows/2017-11-25-the-brian-setzer-orchestra-01.jpg', date: '2017-11-25',
+    artist: 'The Brian Setzer Orchestra', artistNormalized: 'the-brian-setzer-orchestra', subject: 'artist',
+    width: 1536, height: 2048,
+  }
+  const canonical = (slug: string) => (slug === 'the-brian-setzer-orchestra' ? 'brian-setzer' : slug)
+
+  it('reaches the merged card, keeping the name billed that night', () => {
+    const ix = buildMediaIndex(withCanonicalActs([orchestra], canonical))
+    expect(nightReel(ix, '2017-11-25', 'brian-setzer').map((p) => p.artist)).toEqual(['The Brian Setzer Orchestra'])
+  })
+
+  it('leaves a frame of the room alone', () => {
+    const room = { ...orchestra, artist: null, artistNormalized: null, subject: 'venue' }
+    expect(withCanonicalActs([room], canonical)).toEqual([room])
+  })
+})
+
+describe('a night in the Photos panel', () => {
+  const tom: MediaAsset = {
+    kind: 'image', url: '/images/shows/2026-09-16-thompson-twins-10.jpg', date: '2026-09-16',
+    artist: 'Thompson Twins', artistNormalized: 'thompson-twins', subject: 'artist', hero: true,
+    order: 10, width: 1536, height: 2048,
+  }
+  const tom2: MediaAsset = { ...tom, url: '/images/shows/2026-09-16-thompson-twins-03.jpg', hero: false, order: 3 }
+  const neil: MediaAsset = { ...tom, url: '/images/shows/2026-09-16-blancmange-02.jpg', artist: 'Blancmange', artistNormalized: 'blancmange', order: 2 }
+  const pavilion: MediaAsset = { ...tom, url: '/images/shows/2026-09-16-venue-01.jpg', artist: null, artistNormalized: null, subject: 'venue', hero: false, order: 1 }
+  const glasgow = buildMediaIndex([pavilion, tom2, neil, tom])
+
+  it('shows only that act and the room, hero first', () => {
+    const urls = (slug: string) => nightReel(glasgow, '2026-09-16', slug).map((p) => p.url.split('/').pop())
+    expect(urls('thompson-twins')).toEqual([
+      '2026-09-16-thompson-twins-10.jpg', '2026-09-16-thompson-twins-03.jpg', '2026-09-16-venue-01.jpg',
+    ])
+    expect(urls('blancmange')).toEqual(['2026-09-16-blancmange-02.jpg', '2026-09-16-venue-01.jpg'])
+  })
+
+  it('never shows another act, even when the act has no frames of its own', () => {
+    expect(nightReel(glasgow, '2026-09-16', 'someone-else').map((p) => p.subject)).toEqual(['venue'])
+  })
+
+  it('is empty for a night with no stills', () => {
+    expect(nightReel(glasgow, '1984-05-12', 'thompson-twins')).toEqual([])
+  })
+
+  const clip: MediaAsset = { kind: 'video', url: 'https://media.example/2026-09-16-thompson-twins-01.mp4', date: '2026-09-16', artist: 'Thompson Twins', artistNormalized: 'thompson-twins', subject: 'artist', order: 1 }
+  const unhosted: MediaAsset = { ...clip, url: null }
+
+  it('plays a hosted video after the act’s stills, and skips one with no file', () => {
+    const withClips = buildMediaIndex([pavilion, tom2, neil, tom, clip, unhosted])
+    const reel = nightReel(withClips, '2026-09-16', 'thompson-twins')
+    expect(reel.map((r) => r.kind)).toEqual(['image', 'image', 'video', 'image'])
+  })
+
+  it('names an image by its published file, and never lets a video collide with a still', () => {
+    expect(mediaId(tom as Photo)).toBe('thompson-twins-10')
+    expect(mediaId({ ...clip, url: clip.url! })).toBe('thompson-twins-01-video')
+    expect(mediaId({ ...tom, url: '/images/shows/2026-09-16-thompson-twins-01.jpg' })).toBe('thompson-twins-01')
+  })
+})
+
 describe('framing on the owner’s crop', () => {
   it('a box at the crop’s own aspect shows exactly the crop', () => {
     // Landscape frame, crop on the right: the window lands on x≈716px, where the crop starts.
@@ -106,6 +171,12 @@ describe('framing on the owner’s crop', () => {
 })
 
 describe('captions — the two attribution rules', () => {
+  it('writes the possessive of a plural headliner properly', () => {
+    const neil = { ...(hj03 as Photo), artist: 'Blancmange', artistNormalized: 'blancmange', date: '2026-09-16' }
+    const ctx = { aboutAct: 'thompson-twins', venueOf: () => 'Pavilion Theatre', headlinerOf: () => 'Thompson Twins' }
+    expect(photoCaption(neil, ctx)).toBe('Blancmange, on Thompson Twins’ bill · Sep 16, 2026')
+  })
+
   const ctx = {
     venueOf: (d: string) => ({ '2026-06-04': 'Hollywood Bowl', '2024-08-20': 'YouTube Theatre', '2022-10-07': 'Hollywood Bowl' })[d],
     headlinerOf: (d: string) => ({ '2026-06-04': 'The Human League', '2024-08-20': 'Howard Jones', '2022-10-07': 'New Order' })[d],

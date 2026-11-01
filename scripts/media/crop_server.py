@@ -309,4 +309,7 @@ if __name__ == "__main__":
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("127.0.0.1", PORT), Handler) as srv:
         print(f"crop → http://127.0.0.1:{PORT}/")
-        srv.serve_forever()
+        try:
+            srv.serve_forever()
+        except KeyboardInterrupt:
+            pass  # Ctrl-C is how a session ends, not a failure

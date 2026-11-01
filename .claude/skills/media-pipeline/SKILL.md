@@ -344,8 +344,9 @@ lost the link to the clip.
 
 **Video: one index, canonical names, never in `public/`.**
 
-- **The site never shows video.** It only goes outbound to Shorts and TikTok, so there is
-  nothing to serve from a CDN and no reason for `public/videos/` to exist.
+- **Video on the site needs hosting first.** Revised 2026-11-01: the owner wants clips in the
+  gatefold's Photos panel. The panel plays any video whose `url` is set and skips the rest, so
+  nothing changes until a file is hosted. It still never goes in `public/videos/`.
 - **Nor could it.** Two trims from one show are 247MB at full resolution, against 13MB for
   every image in the repo combined. `.git` is already 324MB and never forgets a byte.
 - **Rendered to the SHORT EDGE at 1080**, aspect preserved: 134MB → 18.6MB. Both channels
@@ -558,6 +559,7 @@ in `url` and, again, no consumer changes.
 | `concert-photos-audit/bin/osxphotos` | **read-only guard — tracked by exception, CI-tested.** The binary it wraps stays gitignored |
 | `extract_frames.sh` / `frame_score.py` / `pick_frames.py` | frame sampling, Laplacian scoring, min-gap selection |
 | **`npm run media:review <date>`** | **stills review — previews, localhost page, verdicts per keystroke — #380, shipped** |
+| **`npm run media:share [date]`** | **one 1200×630 share image per still, on the wide card layout, committed to `public/og/shows/`. `media:crop` does this itself as boxes are saved** |
 | `scripts/media/review-page.html` | the review page — tracked, one show per run |
 | `scripts/media/review_server.py` | localhost server; writes only `verdicts.json` |
 | `scripts/media/selects.ts` | `selects.json` — the decision, and the cross-check on the filing |

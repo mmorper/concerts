@@ -605,6 +605,39 @@ body {
   transform: translateZ(0);
 }
 
+/* A night's links. A target must reach the row's edge, so every link is a full block rather
+   than a word: the same width whichever word it holds, and tall enough to hit without aiming. */
+.concert-links {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+}
+
+.concert-links .setlist-link {
+  justify-content: flex-end;
+  min-width: 96px;
+  min-height: 36px;
+  margin-right: -0.5rem;
+}
+
+/* The photo in the Photos panel, cross-faded each time it changes */
+.photos-panel-frame {
+  animation: fade-in 200ms ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photos-panel-frame {
+    animation: none;
+  }
+
+  .photos-panel.liner-notes-panel,
+  .photos-panel.liner-notes-panel-closing {
+    animation: fade-in 180ms ease both;
+  }
+}
+
 /* ============================================
    Concert Row Hover Fix
    ============================================ */

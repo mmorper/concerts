@@ -1,7 +1,7 @@
 # Deep Linking Guide
 
-**Version:** 1.2 (v1.9.0+)
-**Last Updated:** 2026-08-03
+**Version:** 1.3 (v1.9.0+)
+**Last Updated:** 2026-11-01
 
 ---
 
@@ -21,6 +21,7 @@ https://concerts.morperhaus.org/?scene={scene}&{entity_type}={entity_name}
 - **`artist`** (optional): Normalized artist name
 - **`venue`** (optional): Normalized venue name
 - **`show`** (optional): Concert date, `YYYY-MM-DD` — expands that night's setlist. Requires `scene=artists`; pairs with `artist`. See [Setlist Deep Links](#setlist-deep-links-scene-5)
+- **`photo`** (optional): One still or video from a night. Requires `show`, and opens the Photos panel on that image instead of the setlist. See [Photo Deep Links](#photo-deep-links-scene-5)
 - **`year`** (optional): Four-digit year — expands that year's card stack. Requires `scene=timeline`
 
 ---
@@ -139,6 +140,22 @@ without one is a thin page. Roughly two-thirds of the archive qualifies; the gen
 logs how many were skipped rather than hiding the gate.
 
 See [Setlist Deep Linking spec](./specs/future/setlist-deep-linking.md) for the full rollout.
+
+### Photo Deep Links (Scene 5)
+
+A link to one still or video from a night. It opens the artist's gatefold and slides out the Photos panel on that image.
+
+```
+https://concerts.morperhaus.org/?scene=artists&artist=thompson-twins&show=2026-09-16&photo=thompson-twins-10
+```
+
+- `photo` is the published filename without its date: `2026-09-16-thompson-twins-10.jpg` becomes `thompson-twins-10`. A video ends in `-video`.
+- `artist` decides whose gatefold opens. A gatefold holds that act's frames and the night's venue frames, so an opener's frame is shared from the opener's gatefold.
+- Shared on social, the link previews with that image: `/og/shows/<date>-<photo>.jpg`, rendered as boxes are saved in `media:crop`, and committed. A link with no matching image previews as the show.
+- A value that does not match an image on that night opens the Photos panel on its first image. A malformed value is dropped, and the link behaves as a setlist link.
+- Build these with `photoDeepLink` in `src/utils/deepLinks.ts`. The Photos panel's link button is the only surface that emits them.
+
+---
 
 ### Venue Deep Links (Scene 2 - Graph)
 

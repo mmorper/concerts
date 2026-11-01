@@ -24,7 +24,7 @@ import { useChangelogCheck } from './hooks/useChangelogCheck'
 import { useLinerNotesCheck } from './hooks/useLinerNotesCheck'
 import { analytics } from './services/analytics'
 import { buildPagePath, buildPageTitle } from './utils/pageTracking'
-import { resolveShow } from './utils/deepLinks'
+import { resolveShow, isValidPhotoId } from './utils/deepLinks'
 
 function App() {
   return (
@@ -80,6 +80,7 @@ function MainScenes() {
   // #196 — the concert date from `?show=`, handed to the Artist scene so the
   // gatefold can expand that night's setlist once it has mounted.
   const [pendingSetlistFocus, setPendingSetlistFocus] = useState<string | null>(null)
+  const [pendingPhotoFocus, setPendingPhotoFocus] = useState<string | null>(null)
   const [currentDeepLinkParams, setCurrentDeepLinkParams] = useState<{
     artist?: string | null
     venue?: string | null
@@ -291,6 +292,9 @@ function MainScenes() {
         // #196 — stage three of the restore. The Artist scene opens the
         // gatefold first; the gatefold expands this setlist once mounted.
         setPendingSetlistFocus(resolvedShow?.date ?? null)
+        // With `photo`, the same stage opens the night's Photos panel instead.
+        const photoParam = params.get('photo')
+        setPendingPhotoFocus(resolvedShow && isValidPhotoId(photoParam) ? photoParam : null)
       }
 
       // If year parameter is provided, expand that year's card stack on the timeline
@@ -397,6 +401,11 @@ function MainScenes() {
           concerts={concerts}
           pendingArtistFocus={pendingArtistFocus}
           pendingSetlistFocus={pendingSetlistFocus}
+          pendingPhotoFocus={pendingPhotoFocus}
+          onShowFocusComplete={() => {
+            setPendingSetlistFocus(null)
+            setPendingPhotoFocus(null)
+          }}
           onArtistFocusComplete={() => setPendingArtistFocus(null)}
         />
 

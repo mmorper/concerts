@@ -6,9 +6,21 @@ interface GatefoldOrientation {
   safeAreas: { top: number; bottom: number; left: number; right: number }
 }
 
+/** Below this height the gatefold, 400px tall at its smallest, runs off the screen. */
+const MIN_GATEFOLD_HEIGHT = 500
+
+/**
+ * Whether a viewport gets the phone layout: narrow, or too short for the gatefold. Width alone
+ * sent a phone held sideways to the desktop gatefold, where a 400px panel on a 390px screen
+ * lost its close button above the top edge.
+ */
+export function isPhoneViewport(width: number, height: number): boolean {
+  return width < 768 || height < MIN_GATEFOLD_HEIGHT
+}
+
 /**
  * Hook to detect viewport orientation and dimensions for gatefold layout
- * Returns phone detection (<768px), viewport dimensions, and safe area insets
+ * Returns phone detection, viewport dimensions, and safe area insets
  */
 export function useGatefoldOrientation(): GatefoldOrientation {
   const [state, setState] = useState<GatefoldOrientation>({
@@ -41,7 +53,7 @@ export function useGatefoldOrientation(): GatefoldOrientation {
       }
 
       setState({
-        isPhone: width < 768,
+        isPhone: isPhoneViewport(width, height),
         dimensions: { width, height },
         safeAreas
       })

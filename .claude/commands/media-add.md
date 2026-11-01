@@ -164,7 +164,7 @@ The `.MOV` lines under "Skipped" and the metadata lines under "Warnings" are nor
 Renders sit in `video/renders/` and stay out of git. Their top-level `uuid` is null
 and the real one is under `render`, so do not read that as a duplicate.
 
-### 8. Crop, hero, signature
+### 8. Crop, hero, signature, share images
 
 ```bash
 npm run media:crop <YYYY-MM-DD>
@@ -176,6 +176,12 @@ Ask the owner for one hero per act, and a saved box on every still. Pressing
 If an act already has stills from another show, the signature is a real choice.
 `npm run media:crop <artist-slug>` shows every show at once, and that is where to
 choose it. A signature is optional for an act with one show.
+
+The session renders share images as it runs, for every still whose box changed or
+that has none, and prints a line each time. These are what a shared link to one
+photo previews with. It needs the network for the card's fonts. **Wait for the last
+line before stopping it,** and look at one image for each act before moving on.
+`npm run media:share <YYYY-MM-DD>` redoes a show by hand.
 
 ### 9. Commit and open the PR
 
@@ -193,7 +199,8 @@ npm run --silent validate:docs
 ```
 
 Re-check the branch, then stage by name: `data/media-decisions.json`,
-`public/data/media-index.json`, and the show's files in `public/images/shows/`.
+`public/data/media-index.json`, and the show's files in `public/images/shows/` and
+`public/og/shows/`.
 Never use `git add -A`.
 
 Commit with the `data:` prefix and open the PR. Use a draft if more shows are

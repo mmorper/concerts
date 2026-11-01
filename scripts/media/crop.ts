@@ -14,6 +14,10 @@
  * anything, which is exactly the case that prompted it: 34 stills were published before the
  * crop tool existed.
  *
+ * Share images are made as boxes are saved, for every still whose box changed or that has none.
+ * They are built from the box, so a redrawn crop would otherwise leave the old framing on every
+ * shared link with nothing to say so.
+ *
  * Usage:
  *   npm run media:crop                 every published still, newest show first
  *   npm run media:crop 2026-06-04      one show
@@ -23,10 +27,14 @@
 import { execFileSync, spawn } from 'child_process'
 import { existsSync, readFileSync } from 'fs'
 import { resolve } from 'path'
+import { refreshShareImages } from './share-images'
 
 const INDEX = resolve('public/data/media-index.json')
 const SERVER = resolve('scripts/media/crop_server.py')
 const PORT = Number(process.env.MEDIA_CROP_PORT ?? 8788)
+const SHARE_POLL_MS = 2000
+
+type CropBoxLike = { x: number; y: number; w: number; h: number } | null
 
 function fail(message: string): never {
   console.error(`\n✖ ${message}\n`)
@@ -119,6 +127,9 @@ function main(): void {
   console.log(`  Boxes are saved the moment you press enter — to media-index.json AND to`)
   console.log(`  data/media-decisions.json, so a re-derivation never loses them.\n`)
 
+  // The box each share image was last made from, as far as this session knows.
+  const known = new Map(published.map((a) => [a.url as string, (a.crop ?? null) as CropBoxLike]))
+
   const server = spawn('python3', [SERVER], {
     stdio: 'inherit',
     env: {
@@ -132,9 +143,22 @@ function main(): void {
     if (code) fail(`The crop server exited with code ${code}.`)
   })
 
+  /* WHILE THE SESSION RUNS, NOT WHEN IT ENDS. Ending on Ctrl-C was tried first and cannot work:
+     the signal reaches the whole process group, esbuild's service and the tsx wrapper included,
+     and the wrapper ended the run before the render finished. Measured three times. A box saved
+     is a box final, so its share image is made now, in a process with nothing killing it. */
+  let rendering = false
+  setInterval(() => {
+    if (rendering) return
+    rendering = true
+    void refreshShareImages(known).finally(() => {
+      rendering = false
+    })
+  }, SHARE_POLL_MS)
+
   console.log(`  → http://127.0.0.1:${PORT}/`)
   console.log(`\n  ← → move · drag the box · [ ] resize · enter save · 0 default · x clear`)
-  console.log(`  Ctrl-C when you are done.\n`)
+  console.log(`  Share images update as you save. Ctrl-C when you are done.\n`)
 }
 
 if (process.argv[1] && /media\/crop\.ts$/.test(process.argv[1])) main()
