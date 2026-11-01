@@ -4371,6 +4371,419 @@
           "verdict": "reject"
         }
       }
+    },
+    "2026-09-16": {
+      "reviewed": 91,
+      "decidedAt": "2026-11-01T18:50:57.725Z",
+      "decisions": {
+        "00ED5A2F-00FE-4236-B51E-28C5309EF6F1": {
+          "verdict": "reject"
+        },
+        "02D8FE96-929E-4065-B8DC-CEE129D3FE15": {
+          "verdict": "keep",
+          "artist": "Blancmange",
+          "subject": "performer"
+        },
+        "0368D88C-EEBD-4142-8103-0C2585B2FBD7": {
+          "verdict": "reject"
+        },
+        "04C5225A-A779-42DD-A98F-00015F4430E4": {
+          "verdict": "reject"
+        },
+        "0C2D3DB2-5FC1-4F3F-97AF-5C0073E51337": {
+          "verdict": "reject"
+        },
+        "0C5D2408-C973-4BAD-9551-A5E3C8F4B498": {
+          "verdict": "reject"
+        },
+        "0FFB6D21-D44D-42F0-958A-21EC9C51D2FA": {
+          "verdict": "reject"
+        },
+        "14E7B8D6-E6CD-4FAB-B434-4852197A881E": {
+          "verdict": "reject"
+        },
+        "1734978D-81A8-43BA-AFEE-0EF04F3B79F3": {
+          "verdict": "reject"
+        },
+        "195034FF-E0AA-4444-A3B2-6C979A857ED7": {
+          "verdict": "reject"
+        },
+        "1B6E24CC-9C4A-4F1D-8C57-D8CE12127A64": {
+          "verdict": "reject"
+        },
+        "1C08EEE7-B39E-4994-B5BF-22938A22B95E": {
+          "verdict": "reject"
+        },
+        "21A617B1-34EC-41C2-93B1-1CE4AB7198A0": {
+          "verdict": "reject"
+        },
+        "22671C5A-768B-498F-BA4C-C6A7A856D73B": {
+          "verdict": "reject"
+        },
+        "24ECDD5D-EB7C-45BB-AA71-69DE5EA50173": {
+          "verdict": "reject"
+        },
+        "25F31EB6-03C4-4609-99F8-0048AAC63610": {
+          "verdict": "reject"
+        },
+        "283763FF-8565-4488-B394-38133FB75ADA": {
+          "verdict": "reject"
+        },
+        "366453C6-A557-4FE5-BC0C-DEA568C8B16A": {
+          "verdict": "reject"
+        },
+        "3808160F-F95F-4D4C-BA12-768E9851728D": {
+          "verdict": "reject"
+        },
+        "39C70E21-49F9-4DC5-8717-EA1D83008BD9": {
+          "verdict": "keep",
+          "artist": "Thompson Twins",
+          "subject": "performer",
+          "crop": {
+            "x": 0.1098,
+            "y": 0.175,
+            "w": 0.88,
+            "h": 0.825
+          }
+        },
+        "3A01C443-2616-42C7-BE45-BC8AF662FBA6": {
+          "verdict": "reject"
+        },
+        "3BE83FF1-2230-4FDF-A424-F89C33C4A4D2": {
+          "verdict": "reject"
+        },
+        "3C3DC2D3-0540-41DF-BBBF-466F825E1AAF": {
+          "verdict": "reject"
+        },
+        "3DD4471A-CA4A-4DC9-BE49-AEE362E2A394": {
+          "verdict": "reject"
+        },
+        "3EB494D6-778C-4EEC-B210-2B8B04B8BC1A": {
+          "verdict": "keep",
+          "artist": "Thompson Twins",
+          "subject": "performer",
+          "trim": {
+            "in": 1,
+            "out": 23
+          }
+        },
+        "408BFBB0-C819-4188-B22A-48DC06002FA3": {
+          "verdict": "reject"
+        },
+        "41EE0B74-8C2A-420E-B938-56CA2F9C5137": {
+          "verdict": "keep",
+          "artist": "Thompson Twins",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0625,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "436000C7-36D3-48D8-B35E-558B6D8A160A": {
+          "verdict": "reject"
+        },
+        "43945A74-BA63-4733-B378-C446EDC25210": {
+          "verdict": "reject"
+        },
+        "44A74A22-FC53-44F0-B05A-725F146C5A64": {
+          "verdict": "reject"
+        },
+        "4890A23F-EA4E-4243-B163-DB29BF127B82": {
+          "verdict": "reject"
+        },
+        "4B0DE996-6113-4566-A472-D1FCB067F95C": {
+          "verdict": "reject"
+        },
+        "4B1EEE1A-A42E-4E1C-92CE-72E4DB999FE9": {
+          "verdict": "reject"
+        },
+        "4EA9134B-3243-47CD-A2A2-3E51C6F0DF6E": {
+          "verdict": "reject"
+        },
+        "4F078A9A-4CA8-4234-8B45-0264C00253EF": {
+          "verdict": "reject"
+        },
+        "4FD146C0-5F9F-49BD-B3FB-B5244D60177C": {
+          "verdict": "reject"
+        },
+        "5208A6AB-66F5-4C99-B005-7272057D1ACC": {
+          "verdict": "keep",
+          "artist": "Thompson Twins",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0625,
+            "w": 1,
+            "h": 0.9375
+          },
+          "hero": true
+        },
+        "5500A78C-4AAA-4641-BF7E-8FD35FAA0F6E": {
+          "verdict": "keep",
+          "artist": "Thompson Twins",
+          "subject": "stub",
+          "crop": {
+            "x": 0.1,
+            "y": 0.0831,
+            "w": 0.88,
+            "h": 0.825
+          }
+        },
+        "576C100B-1CAB-40CF-99CD-EB983F410AB0": {
+          "verdict": "reject"
+        },
+        "589DB18A-A759-498E-8FF1-81469CD8C5FB": {
+          "verdict": "reject"
+        },
+        "5DC49CAC-7EB4-4DBD-B13D-0BFCD22B2243": {
+          "verdict": "reject"
+        },
+        "64320699-32A5-4E3C-A698-56F6F412BE32": {
+          "verdict": "keep",
+          "artist": "Thompson Twins",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0384,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "69DE854E-E44B-4F1C-9140-8F593212D210": {
+          "verdict": "keep",
+          "artist": "Blancmange",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "6C596103-4BEB-439F-86FB-8CECDE4440F8": {
+          "verdict": "reject"
+        },
+        "70F53A03-15D7-44CA-A0E8-FD7BE2D90C28": {
+          "verdict": "reject"
+        },
+        "719AB0A5-0A4D-4E29-B801-ABCB0A4B37E8": {
+          "verdict": "reject"
+        },
+        "754873D4-23E7-4220-9C2B-6FB82EECDB0A": {
+          "verdict": "reject"
+        },
+        "758A1881-6950-4DD2-9993-193AD30A328B": {
+          "verdict": "reject"
+        },
+        "80D43F07-2F1B-44F3-A23B-1D65C178095B": {
+          "verdict": "reject"
+        },
+        "88E5F04B-BB5D-4D16-9372-A2B225A3E0B8": {
+          "verdict": "reject"
+        },
+        "8E6EF7B4-209A-4C4B-9E1B-DD55CBB9124E": {
+          "verdict": "reject"
+        },
+        "8FDCCC17-D186-41A5-BB62-025A6B1D07F6": {
+          "verdict": "reject"
+        },
+        "94C2E460-293F-46E4-B83C-46355914BCBA": {
+          "verdict": "reject"
+        },
+        "987DB973-712D-4731-ACDE-26B0A523D3A3": {
+          "verdict": "reject"
+        },
+        "996DEF18-4388-4862-AC42-961EBF52F3DC": {
+          "verdict": "reject"
+        },
+        "9A0242B4-9462-49A0-A263-292F61AA9E47": {
+          "verdict": "reject"
+        },
+        "9B37296D-C64C-4A09-BF79-CE865EF39779": {
+          "verdict": "reject"
+        },
+        "9B58C7CF-B122-49FA-8AED-FE47D15E10A3": {
+          "verdict": "keep",
+          "artist": "Thompson Twins",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0625,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "9D1DAC33-3C6E-4E7A-8D5A-9FADA1D2238C": {
+          "verdict": "reject"
+        },
+        "9ED98692-DE8F-49AC-8BE3-5EAC17D7FF9C": {
+          "verdict": "keep",
+          "artist": "Thompson Twins",
+          "subject": "performer",
+          "trim": {
+            "in": 5,
+            "out": 45
+          }
+        },
+        "A16F2BFB-5678-498C-9095-4C98C33C099D": {
+          "verdict": "reject"
+        },
+        "A29F93CC-30C6-4B22-BAAF-F63133763897": {
+          "verdict": "keep",
+          "artist": "Thompson Twins",
+          "subject": "performer",
+          "crop": {
+            "x": 0.04,
+            "y": 0.1,
+            "w": 0.96,
+            "h": 0.9
+          }
+        },
+        "A82A8722-9152-437C-9655-506AA9A09FAE": {
+          "verdict": "reject"
+        },
+        "A93C32AC-FD27-44BA-A59F-542967783836": {
+          "verdict": "reject"
+        },
+        "B0203513-F66E-4DA9-B2E3-134CB5DD01C8": {
+          "verdict": "keep",
+          "artist": "Thompson Twins",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.024,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "B2808227-DC2E-43A5-9BDB-3E08870B1FAA": {
+          "verdict": "reject"
+        },
+        "B36B4299-C8C9-40A8-AD41-525CC29D8354": {
+          "verdict": "reject"
+        },
+        "B8FEB2BC-5906-4225-909F-9D758DDDEFEB": {
+          "verdict": "reject"
+        },
+        "B929A0AA-52AD-4A64-B977-53D2DDCF16E7": {
+          "verdict": "keep",
+          "artist": "Thompson Twins",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0625,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "BD092A38-85A7-43DC-B6C1-8626E63FF6C1": {
+          "verdict": "reject"
+        },
+        "C2753E38-164D-4CFE-B3A0-1BEA2AD48240": {
+          "verdict": "reject"
+        },
+        "C3B417AD-EC47-4E1A-8299-3970414734AB": {
+          "verdict": "reject"
+        },
+        "C68ADBC4-B6CC-48C5-8000-636625347037": {
+          "verdict": "reject"
+        },
+        "C7173C71-C837-4E1F-A252-82D82B1B3765": {
+          "verdict": "reject"
+        },
+        "D0505503-7A9B-42E9-8C66-3F0CA11A82CF": {
+          "verdict": "keep",
+          "artist": "Blancmange",
+          "subject": "performer",
+          "crop": {
+            "x": 0.04,
+            "y": 0.0461,
+            "w": 0.96,
+            "h": 0.9
+          },
+          "hero": true
+        },
+        "D1C73E35-AE11-4B76-82C9-3D319E067F68": {
+          "verdict": "reject"
+        },
+        "D813BCCA-F887-4EDD-8EBB-B3E620830BD9": {
+          "verdict": "keep",
+          "artist": "Thompson Twins",
+          "subject": "performer",
+          "crop": {
+            "x": 0.04,
+            "y": 0.0531,
+            "w": 0.92,
+            "h": 0.8625
+          }
+        },
+        "D8F91AE6-00BA-4331-9D05-53D9B5EBBAE9": {
+          "verdict": "keep",
+          "artist": "Thompson Twins",
+          "subject": "venue",
+          "crop": {
+            "x": 0,
+            "y": 0.0556,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "D9D92777-2195-4E0D-9A1C-7DB7E262CEFD": {
+          "verdict": "reject"
+        },
+        "DEBDF6E1-E28C-4C42-9C20-F32A284584C9": {
+          "verdict": "reject"
+        },
+        "E9CD98F8-C176-4162-B7D2-E7820007A88C": {
+          "verdict": "reject"
+        },
+        "EBA481A5-8E05-46F4-BE42-F812C3EF4BEF": {
+          "verdict": "reject"
+        },
+        "EC6759FB-9BC1-4E7E-B365-A0270929686B": {
+          "verdict": "reject"
+        },
+        "EE0F0958-A8B1-42D7-8A2F-8C3225DE3AB6": {
+          "verdict": "keep",
+          "artist": "Blancmange",
+          "subject": "performer",
+          "trim": {
+            "in": 3,
+            "out": 20
+          }
+        },
+        "EE7BB44A-54F5-4680-BCCF-D8FEEE448D3C": {
+          "verdict": "reject"
+        },
+        "F004D597-D5B6-441D-97F5-283AE7754803": {
+          "verdict": "reject"
+        },
+        "FB644BDA-8BA2-407A-BBA5-287D81FFE6C6": {
+          "verdict": "keep",
+          "artist": "Blancmange",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0.0625,
+            "w": 1,
+            "h": 0.9375
+          }
+        },
+        "FED6068A-2044-4648-A3FE-8049FA1D1CEB": {
+          "verdict": "reject"
+        },
+        "frame:02D8FE96-929E-4065-B8DC-CEE129D3FE15:0": {
+          "verdict": "reject"
+        },
+        "frame:02D8FE96-929E-4065-B8DC-CEE129D3FE15:1": {
+          "verdict": "reject"
+        },
+        "frame:02D8FE96-929E-4065-B8DC-CEE129D3FE15:2": {
+          "verdict": "reject"
+        }
+      }
     }
   }
 }
