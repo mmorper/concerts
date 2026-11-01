@@ -119,8 +119,10 @@ export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus,
           `[data-artist="${normalizedName}"]`
         ) as HTMLElement
 
+        // The tile is only where the opening animation starts. A link should still open the
+        // artist when it has not rendered: a phone held sideways used to stop here silently.
         if (!cardElement) {
-          console.error('Card element still not found after loading all cards:', normalizedName)
+          handleCardClick(artist, new DOMRect(window.innerWidth / 2, window.innerHeight / 2, 1, 1))
           return
         }
 

@@ -125,9 +125,12 @@ export function PhotosPanel({
   )
 
   // Focus close button when panel opens (accessibility), as SetlistPanel does
+  // Desktop only, as with the setlist overlay. On a phone the panel starts off-screen, and Safari
+  // scrolled the modal sideways to reach a focused button, leaving the whole panel shifted and
+  // clipped. Chromium never showed it, so only the iOS Simulator caught it.
   useEffect(() => {
-    closeButtonRef.current?.focus()
-  }, [])
+    if (!isPhone) closeButtonRef.current?.focus({ preventScroll: true })
+  }, [isPhone])
 
   // Phone overlay slides on a transition rather than the panel keyframes
   useEffect(() => {
@@ -243,9 +246,10 @@ export function PhotosPanel({
       )}
 
       {/* Byline: one state, the capture date, as on the cards. It stays on the picture on a
-          phone too, because it is a claim about the picture. */}
+          phone too, because it is a claim about the picture, but at the foot as on the wide
+          card, where the taller frame would otherwise put it across a performer's hair. */}
       <span
-        className="absolute top-3 left-3 font-sans text-xs font-semibold text-white/80 rounded-full px-3 py-1.5 pointer-events-none whitespace-nowrap"
+        className={`absolute ${isPhone ? 'bottom-3' : 'top-3'} left-3 font-sans ${isPhone ? 'text-xs landscape:text-[0.625rem]' : 'text-xs'} font-semibold text-white/80 rounded-full px-3 py-1.5 pointer-events-none whitespace-nowrap`}
         style={{ background: CHIP_BACKGROUND, letterSpacing: '0.03em' }}
       >
         Mike Morper · {bylineDate(item.date)}
