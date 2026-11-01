@@ -3,6 +3,9 @@
 **Purpose:** Reference this skill before any work touching personal photography or video —
 the Photos library audit, culling, ingest, or attaching media to a syndicated post.
 
+**To add a show end to end from chat, use `/media-add`.** It is the order of work; this skill
+holds the rules behind it.
+
 **When to use:**
 - Reading from the Photos library (`concert-photos-audit/bin/osxphotos`)
 - Culling, ranking or scoring candidate media
@@ -221,6 +224,19 @@ them, never rank them.**
 41 fall outside the date window. It is the strongest single signal available — but tagging
 is manual and incomplete (57 tagged of 58 window assets for one show). **Weight it; never
 filter on it.**
+
+**A partial iCloud sync looks like a thin show, with no error.** On a new Mac, 2026-09-14
+returned 6 photos and no video. After an overnight sync it returned 81 assets, 9 of them
+clips. The library total was 41,560 mid-sync and about 59,500 afterwards, so
+`osxphotos query --count --quiet` is a quick check. Gaps in `IMG_` numbers are the other
+tell, read per camera, because two phones run different sequences. A number absent from a
+whole-library scan, trash included, was never kept and is not a sync gap.
+
+**The library holds edited copies beside originals.** One shot can appear as `IMG_6217.DNG`
+and `IMG_6217.jpg` with different UUIDs, and the `.jpg` is often an edit with a different
+crop or grade. Ingest treats them as two photographs, so keeping both publishes the same
+moment twice. Measured on 2026-09-16: 3 kept pairs out of 22 selects. Check for them before
+ingest, because removing one afterwards means editing the index by hand.
 
 **Burst collapsing is irrelevant.** The library has 10 bursts in 58,571 assets. Frame
 extraction, however, *manufactures* near-duplicates — see below.
@@ -463,8 +479,8 @@ Written to `media-index.json` ONLY, not to `media-decisions.json` — decisions 
 show, and a signature is a statement about the artist across shows with no per-show record to
 live in. The index is tracked and committed, so it is durable regardless.
 
-⚠️ No act is photographed at more than one show yet (2026-08-29), so nothing uses this today.
-It exists so the second show does not silently inherit the first.
+Danny Elfman was the first act photographed at more than one show (2026-11-01), with the
+signature set on `2026-09-14-danny-elfman-07.jpg`.
 - **An empty artist folder is a signal**, not an absence: no personal media for that act,
   fall back to tier 2.
 - Optional `notes.txt` carries anything for the post — a different-night disclosure, a caption.

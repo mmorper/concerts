@@ -19,6 +19,7 @@ Slash commands for common workflows. Run these in Claude Code with `/{command}`.
 | `/context-sync` | Update context files | After commits or data refresh |
 | `/validate` | Run all checks | Before releases, after data changes |
 | `/data-refresh` | Refresh data pipeline | Adding concerts, monthly maintenance |
+| `/media-add` | Add a show's media from chat | New photos or videos from a show |
 | `/seo` | SEO analysis report | Monthly audits, after improvements |
 | `/preview` | Start dev server | Local development with context |
 | `/hotfix` | Emergency patch | Urgent production fixes |
