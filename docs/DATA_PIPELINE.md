@@ -706,6 +706,7 @@ Cache: public/data/venue-photos-cache.json
 - Pre-fetches setlists from setlist.fm API at build time
 - Creates static cache file for instant runtime loading
 - Uses intelligent fuzzy matching for venue/location variations
+- Tries setlist.fm's other billings for an act when the archive's name finds nothing (`SETLISTFM_BILLINGS`): the reunion Thompson Twins are filed as "Thompson Twins' Tom Bailey". The cache entry keeps the archive's name, so readers are unchanged.
 - Supports incremental updates (reuses existing cache). A setlist with songs is reused forever; a miss is always retried; an **empty** event page is retried until it was fetched more than 30 days after the show. setlist.fm creates the page before the night and fans fill it in later — the 2026-06-04 Hollywood Bowl bill was fetched two days early and its three empty pages were otherwise reused for good (`canReuseCachedSetlist`).
 - Handles force refresh to update existing setlists
 

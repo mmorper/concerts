@@ -354,6 +354,52 @@ async function fetchSetlistFromAPI(
   }
 }
 
+/**
+ * The other names setlist.fm files an act under, tried only when the archive's own name
+ * finds nothing. Keyed by the archive's billing (concerts.json); the cache entry keeps that
+ * billing, so every reader (site, Ask, MCP) still finds the set under the archive's name.
+ *
+ * Thompson Twins: since the reunion, setlist.fm lists the shows under "Thompson Twins' Tom
+ * Bailey", a separate artist page. A search for "Thompson Twins" in Glasgow, 2026 returned
+ * 404 (no results) on every run, so the Pavilion Theatre night (2026-09-16) never had the
+ * headliner's set — while 1984 and 1985, filed under "Thompson Twins", matched fine.
+ *
+ * Add an act here only when setlist.fm is known to list it under another name. The search
+ * is still constrained by city and year, and the match by venue and date.
+ */
+export const SETLISTFM_BILLINGS: Record<string, string[]> = {
+  'Thompson Twins': ["Thompson Twins' Tom Bailey", 'Tom Bailey'],
+}
+
+/** setlist.fm answers a search with no results as HTTP 404. */
+const isNoResults = (e: unknown) => e instanceof Error && /API error: 404\b/.test(e.message)
+
+/**
+ * Search under the archive's name, then each setlist.fm billing, until one finds the show.
+ * A "no results" (404) on a name moves on to the next; any other error stops and is thrown,
+ * as is the last name's. `pause` runs between requests (setlist.fm's ~1 req/s limit).
+ */
+export async function fetchSetlistUnderBillings(
+  artistName: string,
+  search: (name: string) => Promise<Setlist | null>,
+  pause: () => Promise<void> = () => delay(1500),
+  billings: Record<string, string[]> = SETLISTFM_BILLINGS,
+): Promise<Setlist | null> {
+  const names = [artistName, ...(billings[artistName] ?? [])]
+  for (let i = 0; i < names.length; i++) {
+    const last = i === names.length - 1
+    if (i > 0) await pause()
+    try {
+      const found = await search(names[i])
+      if (found || last) return found
+    } catch (e) {
+      if (last || !isNoResults(e)) throw e
+    }
+    console.log(`      ↪ nothing under "${names[i]}" — trying "${names[i + 1]}"`)
+  }
+  return null
+}
+
 // Delay helper to respect rate limits
 /**
  * How long after a show an empty setlist.fm page is still worth asking about again.
@@ -506,7 +552,7 @@ async function main(options: { forceRefresh?: boolean } = {}) {
     console.log(`${progress} ${artistType} 🔍 ${artistName} at ${concert.venue}...`)
 
     try {
-      const setlist = await fetchSetlistFromAPI(concert, artistName, apiKey)
+      const setlist = await fetchSetlistUnderBillings(artistName, (name) => fetchSetlistFromAPI(concert, name, apiKey))
 
       /* A near match is recorded, never assumed. The gate lets a one-day gap through
          because it is genuinely ambiguous, but "ambiguous" is not "the same" — and the one
