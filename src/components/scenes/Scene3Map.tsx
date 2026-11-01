@@ -8,6 +8,7 @@ import { normalizeVenueName } from '../../utils/normalize'
 import { haptics } from '../../utils/haptics'
 import { analytics } from '../../services/analytics'
 import { addDarkBasemap } from '../../utils/basemap'
+import { safeFlyTo } from '../../utils/safeFlyTo'
 
 interface VenueMetadata {
   name: string
@@ -411,7 +412,7 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
 
       // Fly to marker location and open popup
       const latlng = marker.getLatLng()
-      mapInstanceRef.current.flyTo(latlng, 13, {
+      safeFlyTo(mapInstanceRef.current, latlng, 13, {
         duration: 1.5,
       })
 
@@ -434,7 +435,7 @@ export function Scene3Map({ concerts, pendingVenueFocus, onVenueFocusComplete }:
       const isMobile = window.innerWidth < 768
       const zoom = selectedRegion === 'all' && isMobile ? 3.5 : view.zoom
 
-      mapInstanceRef.current.flyTo(view.center, zoom, {
+      safeFlyTo(mapInstanceRef.current, view.center, zoom, {
         duration: 1.5,
       })
     }

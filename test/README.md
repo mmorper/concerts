@@ -116,7 +116,8 @@ test/
 ├── fixtures/              # Mock data and API responses (8 files)
 ├── pipeline/              # Data pipeline tests (Window 2-3)
 ├── scenes/                # Browser tests, driven by Puppeteer
-│   └── test-smoke.mjs     # The CI gate: all six scene roots render (#10)
+│   ├── test-smoke.mjs     # The CI gate: all six scene roots render (#10)
+│   └── test-hidden-load.mjs # A load with no size must not blank the page
 ├── utils/                 # Utility function tests
 │   ├── normalize.test.ts  ✅ 37 tests passing
 │   ├── helpers.mjs        # Browser setup, navigation, waits (TEST_BASE_URL lives here)
@@ -154,7 +155,8 @@ test/
 | `test-map.mjs` | 8 | ✅ Passing |
 | `test-genres.mjs` | 8 | ✅ Passing |
 | `test-artists.mjs` | 7 | ✅ Passing |
-| **Scene Total** | **37** | **✅** |
+| `test-hidden-load.mjs` | 3 | ✅ Passing |
+| **Scene Total** | **40** | **✅** |
 
 ### Overall
 

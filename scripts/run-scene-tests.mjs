@@ -25,6 +25,7 @@ import process from 'node:process'
 // a selector. Everything after it assumes the page renders at all.
 const TESTS = [
   'test/scenes/test-smoke.mjs',
+  'test/scenes/test-hidden-load.mjs',
   'test/scenes/test-timeline.mjs',
   'test/scenes/test-venues.mjs',
   'test/scenes/test-map.mjs',
