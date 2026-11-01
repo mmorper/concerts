@@ -30,7 +30,7 @@ import { normalizeVenueName } from '../../../utils/normalize'
 import type { ArtistCard, ArtistConcert } from './types'
 import type { Setlist } from '../../../types/setlist'
 import { analytics } from '../../../services/analytics'
-import { nightPhotoCount, nightReel } from '../../ask/media'
+import { EMPTY_MEDIA, nightMediaCount, nightReel } from '../../ask/media'
 import { isUpcomingConcert } from '../../../utils/concertUtils'
 import { UpcomingBadge } from '../../UpcomingBadge'
 
@@ -43,6 +43,8 @@ interface PhoneArtistModalProps {
   reducedMotion: boolean
   /** Concert date from `?show=` — opens that setlist on mount (#196) */
   pendingSetlistFocus?: string | null
+  /** Image id from `?photo=` — opens that night's Photos panel on it */
+  pendingPhotoFocus?: string | null
 }
 
 /**
@@ -75,7 +77,8 @@ export function PhoneArtistModal({
   artist,
   onClose,
   reducedMotion,
-  pendingSetlistFocus
+  pendingSetlistFocus,
+  pendingPhotoFocus
 }: PhoneArtistModalProps) {
   const navigate = useNavigate()
   const { getArtistImage } = useArtistMetadata()
@@ -113,6 +116,7 @@ export function PhoneArtistModal({
 
   // The owner's photographs, for the Photos link on each night
   const media = useMediaIndex(!!artist)
+  const [initialPhotoId, setInitialPhotoId] = useState<string | null>(null)
 
   // Determine if Upcoming tab should show
   const showUpcomingTab = tourCount > 0
@@ -310,15 +314,22 @@ export function PhoneArtistModal({
     if (!pendingSetlistFocus || !artist) return
     // Restore once per deep link, or dismissing the overlay would reopen it.
     if (restoredSetlistRef.current === pendingSetlistFocus) return
+    // A photo link has nothing to open until the index arrives.
+    if (pendingPhotoFocus && media === EMPTY_MEDIA) return
 
     const concert = artist.concerts.find(c => c.date === pendingSetlistFocus)
     // Stale link for this artist — leave the modal open, don't error.
     if (!concert) return
 
     restoredSetlistRef.current = pendingSetlistFocus
+    if (pendingPhotoFocus && nightMediaCount(media, concert.date) > 0) {
+      setInitialPhotoId(pendingPhotoFocus)
+      setPhotosConcert(concert)
+      return
+    }
     handleSetlistClick(concert)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pendingSetlistFocus, artist])
+  }, [pendingSetlistFocus, pendingPhotoFocus, media, artist])
 
   // Handle Photos click from concert row
   const handlePhotosClick = (concert: ArtistConcert) => {
@@ -327,9 +338,9 @@ export function PhoneArtistModal({
       artist_name: artist?.name || '',
       concert_date: concert.date,
       venue_name: concert.venue,
-      photo_count: nightPhotoCount(media, concert.date),
       device_type: 'mobile',
     })
+    setInitialPhotoId(null)
     setPhotosConcert(concert)
   }
 
@@ -556,25 +567,23 @@ export function PhoneArtistModal({
                           <UpcomingBadge size="sm" />
                         </div>
                       ) : (
-                        <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                        <div className="flex flex-col items-end flex-shrink-0 -my-2.5">
                           <button
                             onClick={() => handleSetlistClick(concert)}
-                            className="flex items-center gap-1 text-xs font-medium text-[#22c55e] hover:text-[#4ade80] transition-colors flex-shrink-0 py-1"
+                            className="flex items-center justify-end gap-1 text-xs font-medium text-[#22c55e] hover:text-[#4ade80] transition-colors flex-shrink-0 min-h-[44px] min-w-[72px]"
                             aria-label={`View setlist for ${concert.venue}`}
                           >
                             <Music size={14} />
                             <span>Setlist</span>
                           </button>
-                          {nightPhotoCount(media, concert.date) > 0 && (
+                          {nightMediaCount(media, concert.date) > 0 && (
                             <button
                               onClick={() => handlePhotosClick(concert)}
-                              className="flex items-center gap-1 text-xs font-medium text-[#22c55e] hover:text-[#4ade80] transition-colors flex-shrink-0 py-1"
+                              className="flex items-center justify-end gap-1 text-xs font-medium text-[#22c55e] hover:text-[#4ade80] transition-colors flex-shrink-0 min-h-[44px] min-w-[72px]"
                               aria-label={`View photos from ${concert.venue}`}
                             >
                               <Camera size={14} />
-                              <span>
-                                {nightPhotoCount(media, concert.date) === 1 ? 'Photo' : `Photos · ${nightPhotoCount(media, concert.date)}`}
-                              </span>
+                              <span>Photos</span>
                             </button>
                           )}
                         </div>
@@ -660,7 +669,8 @@ export function PhoneArtistModal({
         {photosConcert && (
           <PhotosPanel
             isPhone
-            photos={nightReel(media, photosConcert.date, artist.normalizedName)}
+            reel={nightReel(media, photosConcert.date, artist.normalizedName)}
+            initialId={initialPhotoId}
             concert={photosConcert}
             artistName={artist.name}
             artistSlug={artist.normalizedName}

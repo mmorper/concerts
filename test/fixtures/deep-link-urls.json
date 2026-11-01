@@ -42,6 +42,21 @@
     "url": "/?scene=artists&artist=adam-ant&show=1984-04-27"
   },
 
+  "photo": {
+    "input": { "slug": "thompson-twins", "date": "2026-09-16", "photo": "thompson-twins-10" },
+    "url": "/?scene=artists&artist=thompson-twins&show=2026-09-16&photo=thompson-twins-10",
+    "notes": "One still or video from a night. The show link plus `photo`, which is the published filename without its date. A video ends in -video. Only the SPA emits and reads this."
+  },
+
+  "invalidPhotoValues": [
+    "",
+    "Thompson-Twins",
+    "thompson twins",
+    "../../etc/passwd",
+    "-leading",
+    "trailing-"
+  ],
+
   "invalidShowValues": [
     "banana",
     "2026-7-31",

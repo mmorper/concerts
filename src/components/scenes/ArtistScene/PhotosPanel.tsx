@@ -1,36 +1,51 @@
 /**
- * PhotosPanel — the owner's photographs from one night
+ * PhotosPanel — the owner's photographs and videos from one night
  *
- * Slides out of the gatefold exactly as SetlistPanel does, on the same paper, so a print
- * tucked into the sleeve reads as the same gesture as the liner notes. One photo at a time,
- * hero first, with the rest of the bill and the room after it (`nightReel`).
+ * Slides out of the gatefold exactly as SetlistPanel does, one image at a time, full bleed, with
+ * the same credits as a social card over it: the byline top-left, the venue and month at the foot
+ * (scripts/syndication/render-card.ts). Order is `nightReel`: this act first, hero leading.
  *
- * The crops are almost all 4:5 and the panel is square, so the spare width becomes a fixed
- * rail for the controls. Nothing sits on a face, and the arrows never move under the cursor
- * while someone clicks through. Clicking the photo opens the full-size viewer, which is the
- * only place a landscape original is seen whole.
+ * The frame is square on desktop, so a 4:5 crop loses height. It keeps the TOP of the owner's crop
+ * and gives up the bottom, because a stage shot is a face above a guitar. Clicking a still opens
+ * the full-size viewer, the only place a whole landscape original is seen.
  *
  * Desktop: slides from the left over the Spotify panel
- * Phone: full-screen overlay sliding from the right, photo above the controls
+ * Phone: full-screen overlay sliding from the right, with the frame at 4:5
  */
 
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
-import { X } from 'lucide-react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { ChevronLeft, ChevronRight, Link2, X } from 'lucide-react'
 import { usePhotoViewer } from '../../ask/AskMedia'
-import { focalPosition, photoCaption, type Photo } from '../../ask/media'
+import {
+  bylineDate,
+  focalPosition,
+  isClip,
+  mediaId,
+  monthYear,
+  photoCaption,
+  type Photo,
+  type ReelItem
+} from '../../ask/media'
+import { useShareLink } from '../../../hooks/useShareLink'
+import { absoluteUrl, photoDeepLink } from '../../../utils/deepLinks'
 import { haptics } from '../../../utils/haptics'
 import { analytics } from '../../../services/analytics'
 import type { ArtistConcert } from './types'
 import '../../ask/ask.css'
 
-/** The frame every crop is shown in. 147 of 149 published crops are exactly this shape. */
-const FRAME_ASPECT = 4 / 5
-const CAPTION_HEIGHT = 44
-const FRAME_INSET = 14
+const PHONE_ASPECT = 4 / 5
 const SWIPE_THRESHOLD = 40
 
+/** The social card's byline chip and scrim, so the two read as one voice. */
+const CHIP_BACKGROUND = 'rgba(8, 10, 16, 0.58)'
+const SCRIM = 'linear-gradient(to bottom, rgba(9,11,18,0) 0%, rgba(9,11,18,0.78) 52%, rgba(9,11,18,0.95) 100%)'
+const OVERLAY_BUTTON =
+  'w-11 h-11 rounded-full flex items-center justify-center text-white/90 hover:text-white transition-colors duration-150 touchable-subtle'
+
 interface PhotosPanelProps {
-  photos: Photo[]
+  reel: ReelItem[]
+  /** `mediaId` to open on, from a share link. Falls back to the first image. */
+  initialId?: string | null
   concert: ArtistConcert
   artistName: string
   artistSlug: string
@@ -40,7 +55,8 @@ interface PhotosPanelProps {
 }
 
 export function PhotosPanel({
-  photos,
+  reel,
+  initialId = null,
   concert,
   artistName,
   artistSlug,
@@ -50,12 +66,17 @@ export function PhotosPanel({
 }: PhotosPanelProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const touchX = useRef<number | null>(null)
-  const [index, setIndex] = useState(0)
+  const [index, setIndex] = useState(() => {
+    const at = initialId ? reel.findIndex((item) => mediaId(item) === initialId) : -1
+    return at === -1 ? 0 : at
+  })
   const [isClosing, setIsClosing] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
 
-  const many = photos.length > 1
-  const photo = photos[index]
+  const many = reel.length > 1
+  const item = reel[index]
+  const stills = useMemo(() => reel.filter((r): r is Photo => !isClip(r)), [reel])
 
   const caption = useCallback(
     (p: Photo) =>
@@ -81,12 +102,23 @@ export function PhotosPanel({
   )
   const viewer = usePhotoViewer(caption, trackOpened)
 
+  const { share, status: shareStatus } = useShareLink({
+    url: item ? absoluteUrl(photoDeepLink(artistSlug, concert.date, mediaId(item))) : '',
+    title: `${artistName} at ${concert.venue}`,
+    isPhone,
+    analyticsEvent: {
+      name: 'photo_link_shared',
+      params: { artist_name: artistName, concert_date: concert.date, photo: item ? mediaId(item) : '' }
+    }
+  })
+
   const go = useCallback(
     (step: number) => {
       haptics.light()
-      setIndex((i) => (i + step + photos.length) % photos.length)
+      setIsPlaying(false)
+      setIndex((i) => (i + step + reel.length) % reel.length)
     },
-    [photos.length]
+    [reel.length]
   )
 
   // Focus close button when panel opens (accessibility), as SetlistPanel does
@@ -116,14 +148,14 @@ export function PhotosPanel({
     return () => window.removeEventListener('keydown', onKey)
   }, [go, many])
 
-  // Fetch the neighbours now, so paging lands on a photo rather than a blank frame
+  // Fetch the neighbouring stills now, so paging lands on a photo rather than a blank frame
   useEffect(() => {
     if (!many) return
     for (const step of [1, -1]) {
-      const near = photos[(index + step + photos.length) % photos.length]
-      new Image().src = near.url
+      const near = reel[(index + step + reel.length) % reel.length]
+      if (!isClip(near)) new Image().src = near.url
     }
-  }, [index, many, photos])
+  }, [index, many, reel])
 
   const handleClose = () => {
     haptics.light()
@@ -131,82 +163,164 @@ export function PhotosPanel({
     setTimeout(onClose, reducedMotion ? 0 : isPhone ? 250 : 350)
   }
 
-  if (!photo) return null
+  if (!item) return null
 
-  const text = caption(photo)
-  const objectPosition = focalPosition(photo, FRAME_ASPECT)
-  const swipe = {
-    onTouchStart: (e: React.TouchEvent) => {
-      touchX.current = e.touches[0]?.clientX ?? null
-    },
-    onTouchEnd: (e: React.TouchEvent) => {
-      const start = touchX.current
-      const end = e.changedTouches[0]?.clientX
-      touchX.current = null
-      if (start == null || end == null || !many) return
-      if (Math.abs(end - start) > SWIPE_THRESHOLD) go(end < start ? 1 : -1)
-    }
-  }
+  const aspect = isPhone ? PHONE_ASPECT : 1
+  const otherAct = item.artistNormalized && item.artistNormalized !== artistSlug ? item.artist : null
+  const footerHidden = isClip(item) && isPlaying
 
-  const frame = (
-    <button
-      type="button"
-      key={photo.url}
-      onClick={() => viewer.open(photos, index)}
-      className="photos-panel-frame block w-full h-full overflow-hidden"
-      style={{ cursor: 'zoom-in', borderRadius: '2px', boxShadow: '0 3px 14px rgba(0, 0, 0, 0.28)' }}
-      aria-label={`Open photo: ${text}`}
-    >
-      <img
-        src={photo.url}
-        alt={text}
-        className="w-full h-full block"
-        style={{ objectFit: 'cover', objectPosition, background: '#1a1a1a' }}
-      />
-    </button>
-  )
+  const stage = (
+    <div className="relative w-full h-full overflow-hidden" style={{ background: '#090b12' }}>
+      {isClip(item) ? (
+        <video
+          key={item.url}
+          src={item.url}
+          poster={item.poster ?? undefined}
+          controls
+          playsInline
+          preload="metadata"
+          className="photos-panel-frame block w-full h-full"
+          style={{ objectFit: 'contain' }}
+          aria-label={`Video of ${item.artist ?? artistName} at ${concert.venue}`}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          onEnded={() => setIsPlaying(false)}
+        />
+      ) : (
+        <button
+          type="button"
+          key={item.url}
+          onClick={() => viewer.open(stills, stills.indexOf(item))}
+          className="photos-panel-frame block w-full h-full"
+          style={{ cursor: 'zoom-in' }}
+          aria-label={`Open photo: ${caption(item)}`}
+        >
+          <img
+            src={item.url}
+            alt={caption(item)}
+            className="block w-full h-full"
+            style={{ objectFit: 'cover', objectPosition: focalPosition(item, aspect, 0) }}
+          />
+        </button>
+      )}
 
-  const stepper = many && (
-    <>
-      <RailButton label="Previous photo" onClick={() => go(-1)}>‹</RailButton>
-      <span className="font-sans text-[0.8125rem] text-[#6a6a60] tabular-nums whitespace-nowrap" aria-live="polite">
-        {index + 1} of {photos.length}
+      {/* Byline: one state, the capture date, as on the cards */}
+      <span
+        className="absolute top-3 left-3 font-sans text-xs font-semibold text-white/80 rounded-full px-3 py-1.5 pointer-events-none whitespace-nowrap"
+        style={{ background: CHIP_BACKGROUND, letterSpacing: '0.03em' }}
+      >
+        Mike Morper · {bylineDate(item.date)}
       </span>
-      <RailButton label="Next photo" onClick={() => go(1)}>›</RailButton>
-    </>
+
+      <div className="absolute top-1.5 right-1.5 flex items-center gap-1">
+        <div className="relative">
+          <button
+            type="button"
+            onClick={share}
+            className={OVERLAY_BUTTON}
+            style={{ background: CHIP_BACKGROUND }}
+            aria-label={`Copy link to this ${isClip(item) ? 'video' : 'photo'}`}
+            title="Copy link"
+          >
+            <Link2 size={18} />
+          </button>
+          {(shareStatus === 'copied' || shareStatus === 'error') && (
+            <div
+              className="absolute top-full right-0 mt-1 px-2 py-1 bg-black/90 text-white text-xs font-medium rounded shadow-lg animate-fade-in pointer-events-none whitespace-nowrap"
+              role="status"
+              aria-live="polite"
+            >
+              {shareStatus === 'copied' ? 'Copied!' : 'Copy failed'}
+            </div>
+          )}
+        </div>
+        <button
+          ref={closeButtonRef}
+          type="button"
+          onClick={handleClose}
+          className={OVERLAY_BUTTON}
+          style={{ background: CHIP_BACKGROUND }}
+          aria-label="Close photos"
+        >
+          <X size={20} strokeWidth={2.5} />
+        </button>
+      </div>
+
+      {many && (
+        <>
+          <button
+            type="button"
+            onClick={() => go(-1)}
+            className={`${OVERLAY_BUTTON} absolute left-1.5 top-1/2 -translate-y-1/2`}
+            style={{ background: CHIP_BACKGROUND }}
+            aria-label="Previous photo"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <button
+            type="button"
+            onClick={() => go(1)}
+            className={`${OVERLAY_BUTTON} absolute right-1.5 top-1/2 -translate-y-1/2`}
+            style={{ background: CHIP_BACKGROUND }}
+            aria-label="Next photo"
+          >
+            <ChevronRight size={24} />
+          </button>
+        </>
+      )}
+
+      {/* The card's foot. A video's own controls need this space, so it steps aside on play. */}
+      {!footerHidden && (
+        <div
+          className="absolute left-0 right-0 bottom-0 px-5 pb-4 pt-14 flex items-end justify-between gap-3 pointer-events-none"
+          style={{ background: SCRIM }}
+        >
+          <p className="font-sans text-[0.8125rem] font-medium leading-snug min-w-0" style={{ color: '#9b90bd' }}>
+            {otherAct && <span className="block text-white">{otherAct}</span>}
+            <span className="block">
+              {concert.venue} · {concert.city}
+            </span>
+            <span className="block">{monthYear(item.date)}</span>
+          </p>
+          {many && (
+            <span
+              className="font-sans text-xs font-medium tabular-nums whitespace-nowrap flex-shrink-0"
+              style={{ color: '#9b90bd' }}
+              aria-live="polite"
+            >
+              {index + 1} of {reel.length}
+            </span>
+          )}
+        </div>
+      )}
+    </div>
   )
 
   if (isPhone) {
     return (
       <>
         <div
-          className={`absolute inset-0 z-20 flex flex-col ${reducedMotion ? '' : 'transition-transform duration-300 ease-out'} ${
+          className={`absolute inset-0 z-20 flex items-center ${reducedMotion ? '' : 'transition-transform duration-300 ease-out'} ${
             isVisible && !isClosing ? 'translate-x-0' : 'translate-x-full'
           }`}
-          style={{ background: 'linear-gradient(135deg, #f5f5f0 0%, #e8e8e0 100%)' }}
+          style={{ background: '#090b12' }}
           role="dialog"
           aria-modal="false"
           aria-label={`Photos of ${artistName} at ${concert.venue}`}
-          {...swipe}
+          onTouchStart={(e) => {
+            touchX.current = e.touches[0]?.clientX ?? null
+          }}
+          onTouchEnd={(e) => {
+            const start = touchX.current
+            const end = e.changedTouches[0]?.clientX
+            touchX.current = null
+            if (start == null || end == null || !many) return
+            if (Math.abs(end - start) > SWIPE_THRESHOLD) go(end < start ? 1 : -1)
+          }}
         >
-          <div className="flex justify-end flex-shrink-0 px-2 pt-2">
-            <button
-              ref={closeButtonRef}
-              type="button"
-              onClick={handleClose}
-              className="w-11 h-11 flex items-center justify-center text-[#4a4a40] touchable-subtle"
-              aria-label="Close photos"
-            >
-              <X size={22} strokeWidth={2.5} />
-            </button>
+          <div className="w-full" style={{ aspectRatio: String(PHONE_ASPECT), maxHeight: '100%' }}>
+            {stage}
           </div>
-          <div className="flex-1 min-h-0 flex items-center justify-center px-4">
-            <div className="w-full" style={{ aspectRatio: String(FRAME_ASPECT), maxHeight: '100%' }}>
-              {frame}
-            </div>
-          </div>
-          <p className="flex-shrink-0 px-5 pt-3 font-sans text-[0.8125rem] leading-snug text-[#5a5a50] text-center">{text}</p>
-          <div className="flex-shrink-0 flex items-center justify-center gap-4 pt-1 pb-6 min-h-[60px]">{stepper}</div>
         </div>
         {/* Outside the swipe target: React bubbles through portals, so a swipe in the viewer
             would otherwise page the panel behind it too. */}
@@ -217,9 +331,6 @@ export function PhotosPanel({
 
   // Responsive sizing: 460px on desktop/tablet landscape (1024px+), 400px on smaller viewports
   const panelSize = typeof window !== 'undefined' && window.innerWidth >= 1024 ? 460 : 400
-  const contentSize = panelSize - 20
-  const frameHeight = contentSize - FRAME_INSET * 2 - CAPTION_HEIGHT
-  const frameWidth = Math.round(frameHeight * FRAME_ASPECT)
 
   return (
     <div
@@ -228,66 +339,16 @@ export function PhotosPanel({
         width: `${panelSize}px`,
         height: `${panelSize}px`,
         zIndex: 25, // Above Spotify panel (20) but below cover (30)
-        background: 'linear-gradient(135deg, #f5f5f0 0%, #e8e8e0 100%)',
-        padding: '10px'
+        borderRadius: '4px',
+        overflow: 'hidden',
+        boxShadow: '-10px 0 40px rgba(0, 0, 0, 0.6)'
       }}
       role="dialog"
       aria-modal="false"
       aria-label={`Photos of ${artistName} at ${concert.venue}`}
     >
-      <div
-        className="w-full h-full liner-notes-paper relative"
-        style={{
-          borderRadius: '4px',
-          boxShadow: '-10px 0 40px rgba(0, 0, 0, 0.6), inset -2px 0 8px rgba(0, 0, 0, 0.08)',
-          border: '1px solid rgba(180, 170, 150, 0.3)'
-        }}
-      >
-        <div
-          className="absolute top-[14px] left-[14px]"
-          style={{ width: `${frameWidth}px`, height: `${frameHeight}px` }}
-        >
-          {frame}
-        </div>
-
-        {/* The rail: whatever width the 4:5 frame leaves over. */}
-        <div
-          className="absolute top-[14px] right-0 flex flex-col items-center"
-          style={{ left: `${FRAME_INSET + frameWidth}px`, height: `${frameHeight}px` }}
-        >
-          <button
-            ref={closeButtonRef}
-            type="button"
-            onClick={handleClose}
-            className="w-11 h-11 flex items-center justify-center text-[#4a4a40] hover:text-[#1DB954] transition-all duration-150 hover:scale-110 touchable-subtle"
-            aria-label="Close photos"
-          >
-            <X size={20} strokeWidth={2.5} />
-          </button>
-          <div className="flex-1 flex flex-col items-center justify-center gap-1">{stepper}</div>
-        </div>
-
-        <p
-          className="absolute left-[14px] right-[14px] font-sans text-[0.8125rem] leading-snug text-[#5a5a50] overflow-hidden"
-          style={{ top: `${FRAME_INSET + frameHeight + 8}px`, height: `${CAPTION_HEIGHT - 8}px` }}
-        >
-          {text}
-        </p>
-      </div>
+      {stage}
       {viewer.element}
     </div>
-  )
-}
-
-function RailButton({ label, onClick, children }: { label: string; onClick: () => void; children: string }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="w-11 h-11 flex items-center justify-center font-sans text-[1.75rem] leading-none text-[#4a4a40] hover:text-[#1DB954] transition-colors duration-150 touchable-subtle"
-      aria-label={label}
-    >
-      {children}
-    </button>
   )
 }

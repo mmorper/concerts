@@ -5,7 +5,9 @@ import {
   leadPhoto,
   nightPhoto,
   nightPhotoCount,
+  nightMediaCount,
   nightReel,
+  mediaId,
   focalPosition,
   cropAspect,
   cropCoverage,
@@ -105,6 +107,22 @@ describe('a night in the Photos panel', () => {
 
   it('is empty for a night with no stills', () => {
     expect(nightReel(glasgow, '1984-05-12', 'thompson-twins')).toEqual([])
+  })
+
+  const clip: MediaAsset = { kind: 'video', url: 'https://media.example/2026-09-16-thompson-twins-01.mp4', date: '2026-09-16', artist: 'Thompson Twins', artistNormalized: 'thompson-twins', subject: 'artist', order: 1 }
+  const unhosted: MediaAsset = { ...clip, url: null }
+
+  it('plays a hosted video after the act’s stills, and skips one with no file', () => {
+    const withClips = buildMediaIndex([pavilion, tom2, neil, tom, clip, unhosted])
+    const reel = nightReel(withClips, '2026-09-16', 'thompson-twins')
+    expect(reel.map((r) => r.kind)).toEqual(['image', 'image', 'video', 'image', 'image'])
+    expect(nightMediaCount(withClips, '2026-09-16')).toBe(5)
+  })
+
+  it('names an image by its published file, and never lets a video collide with a still', () => {
+    expect(mediaId(tom as Photo)).toBe('thompson-twins-10')
+    expect(mediaId({ ...clip, url: clip.url! })).toBe('thompson-twins-01-video')
+    expect(mediaId({ ...tom, url: '/images/shows/2026-09-16-thompson-twins-01.jpg' })).toBe('thompson-twins-01')
   })
 })
 

@@ -14,6 +14,8 @@ import {
   venueMapDeepLink,
   timelineYearDeepLink,
   setlistDeepLink,
+  photoDeepLink,
+  isValidPhotoId,
   isValidShowDate,
   resolveShow,
   absoluteUrl,
@@ -44,6 +46,18 @@ describe('deep-link builders match the shared fixture', () => {
     expect(
       setlistDeepLink(fixture.setlist.input.slug, fixture.setlist.input.date)
     ).toBe(fixture.setlist.url)
+  })
+
+  it('builds links to one photo of a night', () => {
+    expect(
+      photoDeepLink(fixture.photo.input.slug, fixture.photo.input.date, fixture.photo.input.photo)
+    ).toBe(fixture.photo.url)
+  })
+
+  it('rejects photo values that are not a published filename', () => {
+    expect(isValidPhotoId(fixture.photo.input.photo)).toBe(true)
+    for (const bad of fixture.invalidPhotoValues) expect(isValidPhotoId(bad)).toBe(false)
+    expect(isValidPhotoId(null)).toBe(false)
   })
 
   it('builds setlist links for the earliest show in the archive', () => {

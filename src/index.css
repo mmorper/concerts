@@ -605,21 +605,21 @@ body {
   transform: translateZ(0);
 }
 
-/* A night's links. One link keeps its old place in the row; a night with photos stacks two,
-   tightened so the row grows as little as possible on a pointer that can be precise. */
+/* A night's links. A target must reach the row's edge, so every link is a full block rather
+   than a word: the same width whichever word it holds, and tall enough to hit without aiming. */
 .concert-links {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: stretch;
   flex-shrink: 0;
-  margin-left: 1rem;
+  margin-left: 0.5rem;
 }
 
-@media (pointer: fine) {
-  .concert-links-stacked .setlist-link {
-    padding-top: 2px;
-    padding-bottom: 2px;
-  }
+.concert-links .setlist-link {
+  justify-content: flex-end;
+  min-width: 96px;
+  min-height: 36px;
+  margin-right: -0.5rem;
 }
 
 /* The photo in the Photos panel, cross-faded each time it changes */

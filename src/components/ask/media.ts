@@ -37,6 +37,10 @@ export interface MediaAsset {
   order?: number
   width?: number
   height?: number
+  /** Seconds. Videos only. */
+  duration?: number
+  /** Still shown before a video plays. */
+  poster?: string | null
 }
 
 /** A still the site can actually show: an image with a committed file and known dimensions. */
@@ -46,14 +50,27 @@ export interface Photo extends MediaAsset {
   height: number
 }
 
+/** A video the site can actually play: one with a hosted file. Most have none yet. */
+export interface Clip extends MediaAsset {
+  kind: 'video'
+  url: string
+}
+
+/** One step of a night in the Photos panel. */
+export type ReelItem = Photo | Clip
+
+export const isClip = (item: ReelItem): item is Clip => item.kind === 'video'
+
 export interface MediaIndex {
   /** Every usable still from one night, best first. */
   byDate: Map<string, Photo[]>
+  /** Every playable video from one night, in the owner's order. */
+  clipsByDate: Map<string, Clip[]>
   /** Every usable still of one act, newest night first, best first within a night. */
   byArtist: Map<string, Photo[]>
 }
 
-export const EMPTY_MEDIA: MediaIndex = { byDate: new Map(), byArtist: new Map() }
+export const EMPTY_MEDIA: MediaIndex = { byDate: new Map(), clipsByDate: new Map(), byArtist: new Map() }
 
 const isPhoto = (a: MediaAsset): a is Photo =>
   a.kind === 'image' && typeof a.url === 'string' && a.url.length > 0 && (a.width ?? 0) > 0 && (a.height ?? 0) > 0
@@ -61,19 +78,27 @@ const isPhoto = (a: MediaAsset): a is Photo =>
 /** Hero first, then the order the owner set when culling. */
 const best = (a: Photo, b: Photo) => Number(!!b.hero) - Number(!!a.hero) || (a.order ?? 0) - (b.order ?? 0)
 
+const isPlayable = (a: MediaAsset): a is Clip => a.kind === 'video' && typeof a.url === 'string' && a.url.length > 0
+
 export function buildMediaIndex(assets: MediaAsset[] | null | undefined): MediaIndex {
   const byDate = new Map<string, Photo[]>()
+  const clipsByDate = new Map<string, Clip[]>()
   const byArtist = new Map<string, Photo[]>()
   for (const a of assets ?? []) {
-    if (!isPhoto(a)) continue // videos never show on the site; no file → nothing to show
+    if (isPlayable(a)) {
+      ;(clipsByDate.get(a.date) ?? clipsByDate.set(a.date, []).get(a.date)!).push(a)
+      continue
+    }
+    if (!isPhoto(a)) continue // no file → nothing to show
     ;(byDate.get(a.date) ?? byDate.set(a.date, []).get(a.date)!).push(a)
     if (a.subject === 'artist' && a.artistNormalized) {
       ;(byArtist.get(a.artistNormalized) ?? byArtist.set(a.artistNormalized, []).get(a.artistNormalized)!).push(a)
     }
   }
   for (const list of byDate.values()) list.sort(best)
+  for (const list of clipsByDate.values()) list.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
   for (const list of byArtist.values()) list.sort((a, b) => b.date.localeCompare(a.date) || best(a, b))
-  return { byDate, byArtist }
+  return { byDate, clipsByDate, byArtist }
 }
 
 /** Frames of one act on one night, best first. A frame never defaults to the headliner. */
@@ -136,17 +161,37 @@ export function nightPhotoCount(ix: MediaIndex, date: string): number {
   return ix.byDate.get(date)?.length ?? 0
 }
 
+/** Every still and playable video from a night. */
+export function nightMediaCount(ix: MediaIndex, date: string): number {
+  return nightPhotoCount(ix, date) + (ix.clipsByDate.get(date)?.length ?? 0)
+}
+
 /**
- * A whole night in the order someone looking at one act should see it: that act's frames with
- * their hero first, then the rest of the bill, then the room. The caption names everyone who is
- * not that act, so the order can mix them without implying a frame belongs to the headliner.
+ * A whole night in the order someone looking at one act should see it: that act's stills with
+ * their hero first and its videos after them, then the rest of the bill, then the room. The panel
+ * names everyone who is not that act, so the order can mix them without implying a frame belongs
+ * to the headliner.
  */
-export function nightReel(ix: MediaIndex, date: string, actSlug: string): Photo[] {
+export function nightReel(ix: MediaIndex, date: string, actSlug: string): ReelItem[] {
   const night = ix.byDate.get(date) ?? []
+  const clips = ix.clipsByDate.get(date) ?? []
   const own = actPhotosOnNight(ix, date, actSlug)
+  const ownClips = clips.filter((c) => c.artistNormalized === actSlug)
   const others = night.filter((p) => p.subject === 'artist' && p.artistNormalized !== actSlug)
+  const otherClips = clips.filter((c) => c.artistNormalized !== actSlug)
   const room = night.filter((p) => p.subject !== 'artist')
-  return [...own, ...others, ...room]
+  return [...own, ...ownClips, ...others, ...otherClips, ...room]
+}
+
+/**
+ * The stable name of one still or video within its night, used in share links: the published
+ * filename without the date, so `2026-09-16-thompson-twins-10.jpg` is `thompson-twins-10`.
+ * Ordinals run per act and per kind, so a video carries a suffix or it could collide with a still.
+ */
+export function mediaId(item: Pick<MediaAsset, 'kind' | 'date'> & { url: string }): string {
+  const file = item.url.split('/').pop()?.split('?')[0] ?? ''
+  const stem = file.replace(/\.[^.]+$/, '').replace(`${item.date}-`, '')
+  return item.kind === 'video' ? `${stem}-video` : stem
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -228,6 +273,20 @@ export function fmtDate(iso: string): string {
   const d = new Date(`${iso}T00:00:00Z`)
   if (Number.isNaN(d.getTime())) return iso
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+}
+
+/** "16 September 2026", the byline's date. Calendar date, so never shifted by a timezone. */
+export function bylineDate(iso: string): string {
+  const d = new Date(`${iso}T00:00:00Z`)
+  if (Number.isNaN(d.getTime())) return iso
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+}
+
+/** "September 2026", as on the social cards. */
+export function monthYear(iso: string): string {
+  const d = new Date(`${iso}T00:00:00Z`)
+  if (Number.isNaN(d.getTime())) return iso
+  return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' })
 }
 
 export interface CaptionContext {

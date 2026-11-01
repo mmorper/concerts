@@ -22,6 +22,8 @@ interface ArtistSceneProps {
    * Already validated and resolved against the archive in App.tsx.
    */
   pendingSetlistFocus?: string | null
+  /** Image id from `?photo=` — opens that night's Photos panel on it */
+  pendingPhotoFocus?: string | null
   onArtistFocusComplete?: () => void
 }
 
@@ -29,7 +31,7 @@ interface ArtistSceneProps {
  * Main Artist Scene container
  * Album mosaic visualization with flip cards
  */
-export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus, onArtistFocusComplete }: ArtistSceneProps) {
+export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus, pendingPhotoFocus, onArtistFocusComplete }: ArtistSceneProps) {
   const { artistCards, isLoading } = useArtistData(concerts)
   const { getArtistImage, loading: artistImageLoading } = useArtistMetadata()
   const { isPhone } = useGatefoldOrientation()
@@ -367,6 +369,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus,
             onClose={handleCloseGatefold}
             reducedMotion={reducedMotion}
             pendingSetlistFocus={pendingSetlistFocus}
+            pendingPhotoFocus={pendingPhotoFocus}
           />
         ) : (
           <ArtistGatefold
@@ -376,6 +379,7 @@ export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus,
             reducedMotion={reducedMotion}
             getArtistImage={getArtistImage}
             pendingSetlistFocus={pendingSetlistFocus}
+            pendingPhotoFocus={pendingPhotoFocus}
           />
         )
       )}

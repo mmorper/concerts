@@ -344,8 +344,9 @@ lost the link to the clip.
 
 **Video: one index, canonical names, never in `public/`.**
 
-- **The site never shows video.** It only goes outbound to Shorts and TikTok, so there is
-  nothing to serve from a CDN and no reason for `public/videos/` to exist.
+- **Video on the site needs hosting first.** Revised 2026-11-01: the owner wants clips in the
+  gatefold's Photos panel. The panel plays any video whose `url` is set and skips the rest, so
+  nothing changes until a file is hosted. It still never goes in `public/videos/`.
 - **Nor could it.** Two trims from one show are 247MB at full resolution, against 13MB for
   every image in the repo combined. `.git` is already 324MB and never forgets a byte.
 - **Rendered to the SHORT EDGE at 1080**, aspect preserved: 134MB → 18.6MB. Both channels
