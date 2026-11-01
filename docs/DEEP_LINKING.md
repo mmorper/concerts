@@ -151,7 +151,7 @@ https://concerts.morperhaus.org/?scene=artists&artist=thompson-twins&show=2026-0
 
 - `photo` is the published filename without its date: `2026-09-16-thompson-twins-10.jpg` becomes `thompson-twins-10`. A video ends in `-video`.
 - `artist` decides whose gatefold opens. A gatefold holds that act's frames and the night's venue frames, so an opener's frame is shared from the opener's gatefold.
-- Shared on social, the link previews with that image: `/og/shows/<date>-<photo>.jpg`, rendered by `npm run media:share` and committed. A link with no matching image previews as the show.
+- Shared on social, the link previews with that image: `/og/shows/<date>-<photo>.jpg`, rendered as boxes are saved in `media:crop`, and committed. A link with no matching image previews as the show.
 - A value that does not match an image on that night opens the Photos panel on its first image. A malformed value is dropped, and the link behaves as a setlist link.
 - Build these with `photoDeepLink` in `src/utils/deepLinks.ts`. The Photos panel's link button is the only surface that emits them.
 

@@ -164,7 +164,7 @@ The `.MOV` lines under "Skipped" and the metadata lines under "Warnings" are nor
 Renders sit in `video/renders/` and stay out of git. Their top-level `uuid` is null
 and the real one is under `render`, so do not read that as a duplicate.
 
-### 8. Crop, hero, signature
+### 8. Crop, hero, signature, share images
 
 ```bash
 npm run media:crop <YYYY-MM-DD>
@@ -177,17 +177,13 @@ If an act already has stills from another show, the signature is a real choice.
 `npm run media:crop <artist-slug>` shows every show at once, and that is where to
 choose it. A signature is optional for an act with one show.
 
-### 9. Render the share images
+The session renders share images as it runs, for every still whose box changed or
+that has none, and prints a line each time. These are what a shared link to one
+photo previews with. It needs the network for the card's fonts. **Wait for the last
+line before stopping it,** and look at one image for each act before moving on.
+`npm run media:share <YYYY-MM-DD>` redoes a show by hand.
 
-```bash
-npm run media:share <YYYY-MM-DD>
-```
-
-This is what a shared link to one photo previews with. It runs after cropping
-because it uses the crop box, so run it again if a box is redrawn later. It needs
-the network for the card's fonts. Look at one image for each act before moving on.
-
-### 10. Publish the videos
+### 9. Publish the videos
 
 Skip this if no clips were trimmed, or the owner does not want them on the site.
 
@@ -215,7 +211,7 @@ the bucket and stays off the site, while the rest carry on. It needs the `R2_MED
 values in `.env` (`docs/SECRETS.md`) and the renders on disk, so in a worktree link
 `video/renders` from the main checkout first.
 
-### 11. Commit and open the PR
+### 10. Commit and open the PR
 
 Confirm the phase reads `done`:
 

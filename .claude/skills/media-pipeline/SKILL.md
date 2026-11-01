@@ -597,7 +597,7 @@ consumer filters on `kind === 'image'` before reading `url`.
 | `concert-photos-audit/bin/osxphotos` | **read-only guard — tracked by exception, CI-tested.** The binary it wraps stays gitignored |
 | `extract_frames.sh` / `frame_score.py` / `pick_frames.py` | frame sampling, Laplacian scoring, min-gap selection |
 | **`npm run media:review <date>`** | **stills review — previews, localhost page, verdicts per keystroke — #380, shipped** |
-| **`npm run media:share [date]`** | **one 1200×630 share image per still, on the wide card layout, committed to `public/og/shows/`. Re-run after redrawing a crop** |
+| **`npm run media:share [date]`** | **one 1200×630 share image per still, on the wide card layout, committed to `public/og/shows/`. `media:crop` does this itself as boxes are saved** |
 | **`npm run media:publish-video [date]`** | **a render → R2, read back, then `url` and `poster` in the index. `--dry-run` uploads nothing. No date only lists clips** |
 | `scripts/media/web-video.ts` | the web encode, its checks and the read-back (pure, unit-tested) |
 | `scripts/media/review-page.html` | the review page — tracked, one show per run |

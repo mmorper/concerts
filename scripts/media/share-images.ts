@@ -11,8 +11,11 @@
  * category. The display line says who, as an On This Day card does.
  *
  * COMMITTED, like the rest of `public/og/`. Rendering needs Chromium and Google Fonts, which have
- * no place in a Pages build. So this runs on the owner's Mac, and must run again after a crop box
- * is redrawn. `test/pipeline/share-images.test.ts` fails if a still has no image.
+ * no place in a Pages build, so it runs on the owner's Mac. `media:crop` does it on the way out,
+ * for every still whose box changed or that has no image, so nobody has to remember.
+ * `test/pipeline/share-images.test.ts` fails if a still has no image.
+ *
+ * This command is for what `media:crop` cannot see: a change to the template, or a bad render.
  *
  *   npm run media:share                every still
  *   npm run media:share 2026-09-16     one show
@@ -35,7 +38,7 @@ const CONCERTS = resolve('public/data/concerts.json')
 const PUBLIC = resolve('public')
 const OUT = resolve('public/og/shows')
 
-interface Asset {
+export interface ShareAsset {
   kind: string
   url: string | null
   date: string
@@ -50,6 +53,8 @@ interface Concert {
   cityState?: string
   city: string
 }
+
+type Asset = ShareAsset
 
 /** "Mike Morper · 16 September 2026". One state, the capture date, as on the cards. */
 export function shareByline(date: string): string {
@@ -125,23 +130,28 @@ async function render(browser: Browser, asset: Asset, concert: Concert, target: 
   }
 }
 
-async function main(): Promise<void> {
-  const only = process.argv.slice(2).find((a) => /^\d{4}-\d{2}-\d{2}$/.test(a))
-  const { assets } = JSON.parse(readFileSync(INDEX, 'utf-8')) as { assets: Asset[] }
+/**
+ * Which stills need a new share image after a crop session: the box changed, or there is no image
+ * yet. A still with no box is left out, because the card refuses to guess at one.
+ *
+ * @param before crop box by url, as it stood when the session began
+ */
+export function staleShareImages(
+  assets: ShareAsset[],
+  before: Map<string, ShareAsset['crop']>,
+  hasImage: (file: string) => boolean
+): ShareAsset[] {
+  return assets.filter((a) => {
+    if (a.kind !== 'image' || !a.url || !a.crop) return false
+    const moved = JSON.stringify(before.get(a.url) ?? null) !== JSON.stringify(a.crop)
+    return moved || !hasImage(basename(a.url))
+  })
+}
+
+/** Render these stills. Returns what could not be made, one line each. */
+export async function renderShareImages(stills: ShareAsset[]): Promise<{ made: number; failed: string[] }> {
   const data = JSON.parse(readFileSync(CONCERTS, 'utf-8')) as { concerts: Concert[] }
-  const stills = assets.filter((a) => a.kind === 'image' && a.url && (!only || a.date === only))
-  if (only && stills.length === 0) {
-    console.error(`\n✖ No published stills for ${only}.\n`)
-    process.exit(1)
-  }
-
   mkdirSync(OUT, { recursive: true })
-  // A full run removes images whose still has gone, or a stale file would keep answering links.
-  if (!only) {
-    const wanted = new Set(stills.map((a) => basename(a.url as string)))
-    for (const file of readdirSync(OUT)) if (!wanted.has(file)) rmSync(join(OUT, file))
-  }
-
   const browser = await launchBrowser()
   let made = 0
   const failed: string[] = []
@@ -159,6 +169,47 @@ async function main(): Promise<void> {
   } finally {
     await browser.close()
   }
+  return { made, failed }
+}
+
+/**
+ * What `media:crop` calls while it runs: bring the share images up to the index, and remember
+ * what was tried in `known` so a still that will not render is reported once rather than forever.
+ */
+export async function refreshShareImages(known: Map<string, ShareAsset['crop']>): Promise<void> {
+  const { assets } = JSON.parse(readFileSync(INDEX, 'utf-8')) as { assets: ShareAsset[] }
+  const stale = staleShareImages(assets, known, (file) => tried.has(file) || existsSync(join(OUT, file)))
+  if (stale.length === 0) return
+  for (const a of stale) {
+    known.set(a.url as string, a.crop)
+    tried.add(basename(a.url as string))
+  }
+  const { made, failed } = await renderShareImages(stale)
+  console.log(`  share image${made === 1 ? '' : 's'} updated: ${made} — commit with the crops`)
+  for (const line of failed) console.error(`  ✖ ${line}
+    Re-run with: npm run media:share`)
+}
+
+/** Stills already attempted this session, so a failure is not retried every poll. */
+const tried = new Set<string>()
+
+async function main(): Promise<void> {
+  const only = process.argv.slice(2).find((a) => /^\d{4}-\d{2}-\d{2}$/.test(a))
+  const { assets } = JSON.parse(readFileSync(INDEX, 'utf-8')) as { assets: Asset[] }
+  const stills = assets.filter((a) => a.kind === 'image' && a.url && (!only || a.date === only))
+  if (only && stills.length === 0) {
+    console.error(`\n✖ No published stills for ${only}.\n`)
+    process.exit(1)
+  }
+
+  mkdirSync(OUT, { recursive: true })
+  // A full run removes images whose still has gone, or a stale file would keep answering links.
+  if (!only) {
+    const wanted = new Set(stills.map((a) => basename(a.url as string)))
+    for (const file of readdirSync(OUT)) if (!wanted.has(file)) rmSync(join(OUT, file))
+  }
+
+  const { made, failed } = await renderShareImages(stills)
 
   console.log(`\nshare images: ${made} of ${stills.length} written to public/og/shows/`)
   for (const line of failed) console.error(`  ✖ ${line}`)
