@@ -80,6 +80,11 @@ const best = (a: Photo, b: Photo) => Number(!!b.hero) - Number(!!a.hero) || (a.o
 
 const isPlayable = (a: MediaAsset): a is Clip => a.kind === 'video' && typeof a.url === 'string' && a.url.length > 0
 
+/** Refile each asset under the act's canonical name. The name shown stays the night's billing. */
+export function withCanonicalActs(assets: MediaAsset[] | undefined, canonical: (slug: string) => string): MediaAsset[] {
+  return (assets ?? []).map((a) => (a.artistNormalized ? { ...a, artistNormalized: canonical(a.artistNormalized) } : a))
+}
+
 export function buildMediaIndex(assets: MediaAsset[] | null | undefined): MediaIndex {
   const byDate = new Map<string, Photo[]>()
   const clipsByDate = new Map<string, Clip[]>()

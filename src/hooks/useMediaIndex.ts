@@ -8,7 +8,8 @@
  */
 
 import { useEffect, useState } from 'react'
-import { buildMediaIndex, EMPTY_MEDIA, type MediaAsset, type MediaIndex } from '../components/ask/media'
+import { buildMediaIndex, EMPTY_MEDIA, withCanonicalActs, type MediaAsset, type MediaIndex } from '../components/ask/media'
+import { buildArtistAliasMap, canonicalArtist, EMPTY_ARTIST_ALIAS_MAP } from '../utils/artistAliases'
 
 let cachedIndex: MediaIndex | null = null
 let fetchPromise: Promise<MediaIndex> | null = null
@@ -17,13 +18,21 @@ async function getMediaIndex(): Promise<MediaIndex> {
   if (cachedIndex) return cachedIndex
   if (fetchPromise) return fetchPromise
 
+  // A card merges an act's billings (#227), so photos filed under one billing have to answer to
+  // the card's name, or those nights show no Photos link. Failing to load only keeps them apart.
+  const aliases = fetch('/data/artist-aliases.json')
+    .then((res) => (res.ok ? res.json() : null))
+    .then((data) => (data ? buildArtistAliasMap(data) : EMPTY_ARTIST_ALIAS_MAP))
+    .catch(() => EMPTY_ARTIST_ALIAS_MAP)
+
   fetchPromise = fetch('/data/media-index.json')
     .then((res) => {
       if (!res.ok) throw new Error('media-index.json not found')
       return res.json() as Promise<{ assets?: MediaAsset[] }>
     })
-    .then((data) => {
-      cachedIndex = buildMediaIndex(data.assets)
+    .then(async (data) => {
+      const map = await aliases
+      cachedIndex = buildMediaIndex(withCanonicalActs(data.assets, (slug) => canonicalArtist(map, slug)))
       fetchPromise = null
       return cachedIndex
     })

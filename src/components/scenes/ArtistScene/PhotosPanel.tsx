@@ -10,8 +10,11 @@
  * and gives up the bottom, because a stage shot is a face above a guitar. Clicking a still opens
  * the full-size viewer, the only place a whole landscape original is seen.
  *
- * Desktop: slides from the left over the Spotify panel
- * Phone: full-screen overlay sliding from the right, with the frame at 4:5
+ * Desktop: slides from the left over the Spotify panel, with everything on the image
+ * Phone: full-screen overlay sliding from the right. The photo is the full width at 3:4 and the
+ * credits sit beneath it, as they sit beside it on a share image, because a phone has the room
+ * and a thumb has no business aiming at an overlay. Swiping pages, and dots show there is more.
+ * Held sideways, the photo takes the height and the credits move beside it.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -34,7 +37,8 @@ import { analytics } from '../../../services/analytics'
 import type { ArtistConcert } from './types'
 import '../../ask/ask.css'
 
-const PHONE_ASPECT = 4 / 5
+/** A phone has height to spare, and most masters are exactly this shape. */
+const PHONE_ASPECT = 3 / 4
 const SWIPE_THRESHOLD = 40
 
 /** The social card's byline chip and scrim, so the two read as one voice. */
@@ -167,6 +171,42 @@ export function PhotosPanel({
   const aspect = isPhone ? PHONE_ASPECT : 1
   const footerHidden = isClip(item) && isPlaying
 
+  const actions = (
+    <div className="flex items-center gap-1">
+      <div className="relative">
+        <button
+          type="button"
+          onClick={share}
+          className={OVERLAY_BUTTON}
+          style={{ background: CHIP_BACKGROUND }}
+          aria-label={`Copy link to this ${isClip(item) ? 'video' : 'photo'}`}
+          title="Copy link"
+        >
+          <Link2 size={18} />
+        </button>
+        {(shareStatus === 'copied' || shareStatus === 'error') && (
+          <div
+            className="absolute top-full right-0 mt-1 px-2 py-1 bg-black/90 text-white text-xs font-medium rounded shadow-lg animate-fade-in pointer-events-none whitespace-nowrap z-10"
+            role="status"
+            aria-live="polite"
+          >
+            {shareStatus === 'copied' ? 'Copied!' : 'Copy failed'}
+          </div>
+        )}
+      </div>
+      <button
+        ref={closeButtonRef}
+        type="button"
+        onClick={handleClose}
+        className={OVERLAY_BUTTON}
+        style={{ background: CHIP_BACKGROUND }}
+        aria-label="Close photos"
+      >
+        <X size={20} strokeWidth={2.5} />
+      </button>
+    </div>
+  )
+
   const stage = (
     <div className="relative w-full h-full overflow-hidden" style={{ background: '#090b12' }}>
       {isClip(item) ? (
@@ -202,7 +242,8 @@ export function PhotosPanel({
         </button>
       )}
 
-      {/* Byline: one state, the capture date, as on the cards */}
+      {/* Byline: one state, the capture date, as on the cards. It stays on the picture on a
+          phone too, because it is a claim about the picture. */}
       <span
         className="absolute top-3 left-3 font-sans text-xs font-semibold text-white/80 rounded-full px-3 py-1.5 pointer-events-none whitespace-nowrap"
         style={{ background: CHIP_BACKGROUND, letterSpacing: '0.03em' }}
@@ -210,41 +251,9 @@ export function PhotosPanel({
         Mike Morper · {bylineDate(item.date)}
       </span>
 
-      <div className="absolute top-1.5 right-1.5 flex items-center gap-1">
-        <div className="relative">
-          <button
-            type="button"
-            onClick={share}
-            className={OVERLAY_BUTTON}
-            style={{ background: CHIP_BACKGROUND }}
-            aria-label={`Copy link to this ${isClip(item) ? 'video' : 'photo'}`}
-            title="Copy link"
-          >
-            <Link2 size={18} />
-          </button>
-          {(shareStatus === 'copied' || shareStatus === 'error') && (
-            <div
-              className="absolute top-full right-0 mt-1 px-2 py-1 bg-black/90 text-white text-xs font-medium rounded shadow-lg animate-fade-in pointer-events-none whitespace-nowrap"
-              role="status"
-              aria-live="polite"
-            >
-              {shareStatus === 'copied' ? 'Copied!' : 'Copy failed'}
-            </div>
-          )}
-        </div>
-        <button
-          ref={closeButtonRef}
-          type="button"
-          onClick={handleClose}
-          className={OVERLAY_BUTTON}
-          style={{ background: CHIP_BACKGROUND }}
-          aria-label="Close photos"
-        >
-          <X size={20} strokeWidth={2.5} />
-        </button>
-      </div>
+      {!isPhone && <div className="absolute top-1.5 right-1.5">{actions}</div>}
 
-      {many && (
+      {many && !isPhone && (
         <>
           <button
             type="button"
@@ -268,7 +277,7 @@ export function PhotosPanel({
       )}
 
       {/* The card's foot. A video's own controls need this space, so it steps aside on play. */}
-      {!footerHidden && (
+      {!footerHidden && !isPhone && (
         <div
           className="absolute left-0 right-0 bottom-0 px-5 pb-4 pt-14 flex items-end justify-between gap-3 pointer-events-none"
           style={{ background: SCRIM }}
@@ -294,10 +303,14 @@ export function PhotosPanel({
   )
 
   if (isPhone) {
+    // The same two lines as a share image: the act leads, and a frame of the room leads with the venue.
+    const aboutTheAct = item.subject === 'artist'
+    const phoneTitle = aboutTheAct ? (item.artist ?? artistName) : concert.venue
+    const phonePlace = aboutTheAct ? `${concert.venue} · ${concert.city}` : concert.city
     return (
       <>
         <div
-          className={`absolute inset-0 z-20 flex items-center ${reducedMotion ? '' : 'transition-transform duration-300 ease-out'} ${
+          className={`absolute inset-0 z-20 flex flex-col landscape:flex-row pt-14 landscape:pt-0 ${reducedMotion ? '' : 'transition-transform duration-300 ease-out'} ${
             isVisible && !isClosing ? 'translate-x-0' : 'translate-x-full'
           }`}
           style={{ background: '#090b12' }}
@@ -315,8 +328,36 @@ export function PhotosPanel({
             if (Math.abs(end - start) > SWIPE_THRESHOLD) go(end < start ? 1 : -1)
           }}
         >
-          <div className="w-full" style={{ aspectRatio: String(PHONE_ASPECT), maxHeight: '100%' }}>
+          <div className="absolute top-1.5 right-1.5 z-10">{actions}</div>
+          <div
+            className="min-h-0 overflow-hidden w-full landscape:w-auto landscape:h-full landscape:flex-shrink-0"
+            style={{ aspectRatio: String(PHONE_ASPECT) }}
+          >
             {stage}
+          </div>
+          {/* The credits always fit. On a small phone it is the photo that gives up height. */}
+          <div className="flex-grow flex-shrink-0 landscape:flex-shrink min-w-0 flex flex-col px-5 pt-4 pb-5 landscape:pt-14">
+            <h3 className="font-serif text-[1.75rem] leading-tight text-white">{phoneTitle}</h3>
+            <p className="font-sans text-sm font-medium leading-snug mt-1.5" style={{ color: '#9b90bd' }}>
+              {phonePlace}
+              <span className="block">{monthYear(item.date)}</span>
+            </p>
+            {many && (
+              <div className="mt-auto pt-3 flex flex-wrap justify-center gap-1.5" aria-hidden="true">
+                {reel.map((r, i) => (
+                  <span
+                    key={r.url}
+                    className="w-1.5 h-1.5 rounded-full transition-colors duration-150"
+                    style={{ background: i === index ? '#fff' : 'rgba(255, 255, 255, 0.28)' }}
+                  />
+                ))}
+              </div>
+            )}
+            {many && (
+              <span className="sr-only" aria-live="polite">
+                {index + 1} of {reel.length}
+              </span>
+            )}
           </div>
         </div>
         {/* Outside the swipe target: React bubbles through portals, so a swipe in the viewer
