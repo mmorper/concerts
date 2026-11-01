@@ -248,12 +248,14 @@ export function PhotosPanel({
       {/* Byline: one state, the capture date, as on the cards. It stays on the picture on a
           phone too, because it is a claim about the picture, but at the foot as on the wide
           card, where the taller frame would otherwise put it across a performer's hair. */}
+      {!(isPhone && isClip(item)) && (
       <span
         className={`absolute ${isPhone ? 'bottom-3' : 'top-3'} left-3 font-sans ${isPhone ? 'text-xs landscape:text-[0.625rem]' : 'text-xs'} font-semibold text-white/80 rounded-full px-3 py-1.5 pointer-events-none whitespace-nowrap`}
         style={{ background: CHIP_BACKGROUND, letterSpacing: '0.03em' }}
       >
         Mike Morper · {bylineDate(item.date)}
       </span>
+      )}
 
       {!isPhone && <div className="absolute top-1.5 right-1.5">{actions}</div>}
 
@@ -345,6 +347,8 @@ export function PhotosPanel({
             <p className="font-sans text-sm font-medium leading-snug mt-1.5" style={{ color: '#9b90bd' }}>
               {phonePlace}
               <span className="block">{monthYear(item.date)}</span>
+              {/* A video's own controls sit where the chip goes, so its credit comes down here. */}
+              {isClip(item) && <span className="block mt-1 text-xs text-white/70">Mike Morper · {bylineDate(item.date)}</span>}
             </p>
             {many && (
               <div className="mt-auto pt-3 flex flex-wrap justify-center gap-1.5" aria-hidden="true">
