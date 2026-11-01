@@ -238,6 +238,32 @@ describe('meta-injector worker', () => {
       expect(body).toContain('The setlist from Thompson Twins')
     })
 
+    it('calls a clip a video, under its own card', async () => {
+      serve('image/jpeg')
+      const body = await (await worker.fetch(req(`${LINK}&photo=thompson-twins-01-video`), {}, ctx)).text()
+      expect(body).toContain('/og/shows/2026-09-16-thompson-twins-01-video.jpg')
+      expect(body).toContain('A video from Thompson Twins at Pavilion Theatre')
+      expect(body).toContain('&amp;photo=thompson-twins-01-video')
+    })
+
+    it('previews a video with no card as the show', async () => {
+      serve('text/html')
+      const body = await (await worker.fetch(req(`${LINK}&photo=thompson-twins-01-video`), {}, ctx)).text()
+      expect(body).not.toContain('/og/shows/')
+      expect(body).not.toContain('A video from')
+      expect(body).toContain('The setlist from Thompson Twins')
+    })
+
+    // The real strings. Until these were listed, a link shared on either channel got the site card.
+    it.each([
+      ['Bluesky', 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Bluesky Cardyb/1.1; +mailto:support@bsky.app) Chrome/120.0 Safari/537.36'],
+      ['Mastodon', 'Mastodon/4.5.0 (http.rb/5.2.0; +https://mastodon.social/) Bot'],
+    ])('gives %s the card', async (_channel, ua) => {
+      serve('image/jpeg')
+      const body = await (await worker.fetch(req(`${LINK}&photo=thompson-twins-10`, { ua }), {}, ctx)).text()
+      expect(body).toContain(`<meta property="og:image" content="${IMAGE}" />`)
+    })
+
     it('never builds a URL from a malformed photo value', async () => {
       serve('image/jpeg')
       const body = await (await worker.fetch(req(`${LINK}&photo=..%2F..%2Fsecret`), {}, ctx)).text()

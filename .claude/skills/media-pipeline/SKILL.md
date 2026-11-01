@@ -347,6 +347,11 @@ lost the link to the clip.
 - **Video on the site is hosted on R2.** Revised 2026-11-01: the owner wants clips in the
   gatefold's Photos panel. The panel plays any video whose `url` is set and skips the rest.
   `npm run media:publish-video` sets it. A video still never goes in `public/videos/`.
+- **A shared clip previews from a static card**, `<date>-<act>-NN-video.jpg` in
+  `public/og/shows/`, made by `media:share`. The poster is letterboxed with a play mark, never
+  cropped, because a clip has no owner-drawn box. Do not add `og:video`: checked 2026-11-01, a
+  Bluesky link card holds one image and plays only listed hosts, and Mastodon ignores it. Its
+  `twitter:player` would need a public player page, which the site does not have.
 - **Nor could it.** Two trims from one show are 247MB at full resolution, against 13MB for
   every image in the repo combined. `.git` is already 324MB and never forgets a byte.
 - **Rendered to the SHORT EDGE at 1080**, aspect preserved: 134MB → 18.6MB. Both channels
@@ -597,7 +602,7 @@ consumer filters on `kind === 'image'` before reading `url`.
 | `concert-photos-audit/bin/osxphotos` | **read-only guard — tracked by exception, CI-tested.** The binary it wraps stays gitignored |
 | `extract_frames.sh` / `frame_score.py` / `pick_frames.py` | frame sampling, Laplacian scoring, min-gap selection |
 | **`npm run media:review <date>`** | **stills review — previews, localhost page, verdicts per keystroke — #380, shipped** |
-| **`npm run media:share [date]`** | **one 1200×630 share image per still, on the wide card layout, committed to `public/og/shows/`. `media:crop` does this itself as boxes are saved** |
+| **`npm run media:share [date]`** | **one 1200×630 share image per still and published video, on the wide card layout, committed to `public/og/shows/`. `media:crop` does this itself as boxes are saved. Run it by hand after `media:publish-video`** |
 | **`npm run media:publish-video [date]`** | **a render → R2, read back, then `url` and `poster` in the index. `--dry-run` uploads nothing. No date only lists clips** |
 | `scripts/media/web-video.ts` | the web encode, its checks and the read-back (pure, unit-tested) |
 | `scripts/media/review-page.html` | the review page — tracked, one show per run |
