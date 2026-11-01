@@ -5,6 +5,7 @@ import {
   leadPhoto,
   nightPhoto,
   nightReel,
+  withCanonicalActs,
   mediaId,
   focalPosition,
   cropAspect,
@@ -73,6 +74,25 @@ describe('choosing the frame', () => {
     const venueOnly = buildMediaIndex([bowl])
     expect(nightPhoto(venueOnly, { date: '2026-06-04', headlinerNormalized: 'the-human-league' })?.relation).toBe('venue')
     expect(nightPhoto(ix, { date: '1984-04-27', headlinerNormalized: 'adam-ant' })).toBeNull()
+  })
+})
+
+describe('an act with several billings', () => {
+  const orchestra: MediaAsset = {
+    kind: 'image', url: '/images/shows/2017-11-25-the-brian-setzer-orchestra-01.jpg', date: '2017-11-25',
+    artist: 'The Brian Setzer Orchestra', artistNormalized: 'the-brian-setzer-orchestra', subject: 'artist',
+    width: 1536, height: 2048,
+  }
+  const canonical = (slug: string) => (slug === 'the-brian-setzer-orchestra' ? 'brian-setzer' : slug)
+
+  it('reaches the merged card, keeping the name billed that night', () => {
+    const ix = buildMediaIndex(withCanonicalActs([orchestra], canonical))
+    expect(nightReel(ix, '2017-11-25', 'brian-setzer').map((p) => p.artist)).toEqual(['The Brian Setzer Orchestra'])
+  })
+
+  it('leaves a frame of the room alone', () => {
+    const room = { ...orchestra, artist: null, artistNormalized: null, subject: 'venue' }
+    expect(withCanonicalActs([room], canonical)).toEqual([room])
   })
 })
 

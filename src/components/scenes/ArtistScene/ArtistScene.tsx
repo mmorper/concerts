@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ArtistMosaic } from './ArtistMosaic'
 import { ArtistGatefold } from './ArtistGatefold'
@@ -52,17 +52,15 @@ export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus,
     return () => mediaQuery.removeEventListener('change', handler)
   }, [])
 
-  // Close gatefold on orientation change to prevent layout issues
+  // Close only when the layout itself changes, because the gatefold and the phone modal cannot
+  // hand over mid-flight. This used to close on any resize, so turning a phone to look at a photo
+  // threw the photo away. Both orientations are the phone layout, and the gatefold repositions
+  // itself on resize.
+  const wasPhone = useRef(isPhone)
   useEffect(() => {
-    const handleOrientationChange = () => {
-      if (openArtist) {
-        handleCloseGatefold()
-      }
-    }
-
-    window.addEventListener('resize', handleOrientationChange)
-    return () => window.removeEventListener('resize', handleOrientationChange)
-  }, [openArtist])
+    if (wasPhone.current !== isPhone && openArtist) handleCloseGatefold()
+    wasPhone.current = isPhone
+  }, [isPhone, openArtist])
 
   // Handle deep link artist focus from URL parameters
   useEffect(() => {
@@ -119,8 +117,10 @@ export function ArtistScene({ concerts, pendingArtistFocus, pendingSetlistFocus,
           `[data-artist="${normalizedName}"]`
         ) as HTMLElement
 
+        // The tile is only where the opening animation starts. A link should still open the
+        // artist when it has not rendered: a phone held sideways used to stop here silently.
         if (!cardElement) {
-          console.error('Card element still not found after loading all cards:', normalizedName)
+          handleCardClick(artist, new DOMRect(window.innerWidth / 2, window.innerHeight / 2, 1, 1))
           return
         }
 
