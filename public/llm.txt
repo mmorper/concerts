@@ -183,13 +183,13 @@ All data is publicly accessible as JSON:
 
 ### Song → Album Attribution
 **URL:** https://concerts.morperhaus.org/data/song-albums.json
-**Records:** 1,800 of 2,014 unique artist+song pairs (89.4%)
-**Source:** three tiers — `artists-top-tracks.json` (265), MusicBrainz (1,420), iTunes Search (35)
+**Records:** 1,811 of 2,027 unique artist+song pairs (89.3%)
+**Source:** three tiers — `artists-top-tracks.json` (267), MusicBrainz (1,429), iTunes Search (35)
 **What it answers:** which studio album a song performed live came off.
 **Key format:** `artistKey::folded-song-title`. Derive it with `songAlbumKey()` from `scripts/utils/song-title.ts` — a caller that folds differently matches nothing while looking like it simply found nothing.
 
 **Two properties that matter when reading this file:**
-- **`releaseDate` precision varies.** 1,542 entries are full dates, 150 are `YYYY-MM`, 108 are bare `YYYY`. Any gap measured against it must respect that width — a 14-day claim against a month-precision date is undefined, not merely imprecise.
+- **`releaseDate` precision varies.** 1,545 entries are full dates, 158 are `YYYY-MM`, 108 are bare `YYYY`. Any gap measured against it must respect that width — a 14-day claim against a month-precision date is undefined, not merely imprecise.
 - **The album is the EARLIEST studio album carrying the song**, which is not always where the song first appeared. A standalone single that later landed on an album attributes to that album. The file supports claims about the *album*, never about when the song came into existence.
 
 **Schema:**
@@ -644,7 +644,7 @@ These facts are updated with each data refresh and can be quoted directly:
 - "First show: Adam Ant (1984)" — Where it all began — Irvine Meadows
 - "California: 122 concerts" — Home base for most concert experiences
 
-**Facts computed:** 2026-10-31T23:24:38.488Z
+**Facts computed:** 2026-11-01T00:59:12.025Z
 **Source:** https://concerts.morperhaus.org/data/facts.json
 **Browse visually:** https://concerts.morperhaus.org/liner-notes
 
@@ -804,6 +804,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-10-31
+**Last Updated:** 2026-11-01
 **Version:** v6.2.0
 **Total Content:** 185 concerts | 258 artists | 80 venues | 11,524+ albums | 1984-2027

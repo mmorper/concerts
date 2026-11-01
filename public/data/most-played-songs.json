@@ -1,10 +1,10 @@
 {
   "version": "1",
-  "generatedAt": "2026-10-31T23:24:38.475Z",
+  "generatedAt": "2026-11-01T00:59:12.017Z",
   "coverage": {
     "concertsWithSetlist": 118,
     "totalConcerts": 185,
-    "distinctSongs": 1633
+    "distinctSongs": 1637
   },
   "songs": [
     {
@@ -47,14 +47,6 @@
       "count": 5,
       "artists": [
         "Streetlight Manifesto"
-      ]
-    },
-    {
-      "name": "Just Can't Get Enough",
-      "count": 5,
-      "artists": [
-        "Depeche Mode",
-        "Thompson Twins"
       ]
     },
     {
@@ -139,6 +131,13 @@
         "Brian Setzer",
         "Stray Cats",
         "The Brian Setzer Orchestra"
+      ]
+    },
+    {
+      "name": "Just Can't Get Enough",
+      "count": 4,
+      "artists": [
+        "Depeche Mode"
       ]
     },
     {
@@ -1127,6 +1126,13 @@
       ]
     },
     {
+      "name": "Doctor! Doctor!",
+      "count": 2,
+      "artists": [
+        "Thompson Twins"
+      ]
+    },
+    {
       "name": "Don't Go",
       "count": 2,
       "artists": [
@@ -1335,6 +1341,13 @@
       "count": 2,
       "artists": [
         "Social Distortion"
+      ]
+    },
+    {
+      "name": "Hold Me Now",
+      "count": 2,
+      "artists": [
+        "Thompson Twins"
       ]
     },
     {
@@ -1796,6 +1809,14 @@
       "count": 2,
       "artists": [
         "Social Distortion"
+      ]
+    },
+    {
+      "name": "Psycho Killer",
+      "count": 2,
+      "artists": [
+        "David Byrne",
+        "Thompson Twins"
       ]
     },
     {
