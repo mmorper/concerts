@@ -11,8 +11,8 @@ import { DerivedArt, FramedPhoto, LadderImage } from './AskMedia'
 import { Frame, Prose } from './AskCardParts'
 import { findMedia, fmtDate, isClip, type Photo } from './media'
 
-/** A lead and seven tiles fill three rows. With more to see, the last cell is the way to them. */
-const CELLS = 8
+/** The lead takes four cells, so it and eight tiles fill three rows. With more to see, the last is the way to them. */
+const CELLS = 9
 
 function caption(item: GalleryItem): string {
   const who = item.song ? `“${item.song}”` : (item.act ?? 'The room')
@@ -48,6 +48,7 @@ function Tile({ item, archive }: { item: GalleryItem; archive: ArchiveLookups })
 export function GalleryCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: GalleryExhibit; archive: ArchiveLookups }) {
   const tiles = exhibit.items.slice(0, exhibit.total > CELLS ? CELLS - 1 : CELLS)
   const more = exhibit.total - tiles.length
+  const next = exhibit.items[tiles.length]
   return (
     <Frame color={DEFAULT_GENRE_COLOR}>
       <div className="ask-list-title">{exhibit.title}</div>
@@ -56,9 +57,9 @@ export function GalleryCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: G
         {tiles.map((item) => (
           <Tile key={`${item.date}-${item.id}`} item={item} archive={archive} />
         ))}
-        {more > 0 && exhibit.items[0] && (
-          <a className="ask-gal-tile more" href={exhibit.items[0].deepLink} onClick={() => track(exhibit.items[0])}>
-            {more} more in the gatefold
+        {more > 0 && next && (
+          <a className="ask-gal-tile more" href={next.deepLink} onClick={() => track(next)}>
+            {more} more
           </a>
         )}
       </div>
