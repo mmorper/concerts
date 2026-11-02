@@ -8,7 +8,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { buildOnThisDayPayload, onThisDayAlt } from "../../scripts/syndication/payload.ts";
+import { buildOnThisDayPayload, LINK_TEXT, onThisDayAlt } from "../../scripts/syndication/payload.ts";
 import { composeBlueskyText } from "../../scripts/syndication/adapters/bluesky.ts";
 import { composeMastodonStatus } from "../../scripts/syndication/adapters/mastodon.ts";
 import { CAPTION_MAX, HOOK_MAX } from "../../scripts/syndication/budgets.ts";
@@ -56,6 +56,40 @@ describe("buildOnThisDayPayload", () => {
       date: "1987-06-30",
       age: 40,
     });
+  });
+
+  it("carries the crop and byline on the owner's photograph, and says where the link goes", () => {
+    const crop = { x: 0, y: 0, w: 0.8, h: 1 };
+    const payload = buildOnThisDayPayload(
+      post({ imageUrl: "/images/shows/1987-06-30-oingo-boingo-01.jpg", tier: 1, source: "personal", crop })
+    );
+    expect(payload.media[0]).toMatchObject({ crop, byline: "Mike Morper · 30 June 1987", tier: 1 });
+    expect(payload.linkText).toBe("Photos and the full night →");
+  });
+
+  it("leaves a press shot with no byline and the setlist wording", () => {
+    const payload = buildOnThisDayPayload(post());
+    expect(payload.media[0].byline).toBeUndefined();
+    expect(payload.linkText).toBe("Setlist and the full night →");
+  });
+
+  it("the link wording fits the budget in budgets.ts", () => {
+    expect([...LINK_TEXT.onThisDayPhoto].length).toBeLessThanOrEqual(28);
+  });
+
+  it("leads with the opener in the frame and keeps everyone on the bill", () => {
+    const concerts = [
+      { date: "1987-06-30", headlinerNormalized: "oingo-boingo", openers: ["Fishbone", "The Untouchables"], state: "Mexico" },
+    ] as never;
+    const payload = buildOnThisDayPayload(
+      post({ tier: 1, source: "personal", photographedOpener: { name: "Fishbone", slug: "fishbone" } }),
+      concerts
+    );
+    expect(payload.credit.artists).toEqual(["Fishbone", "Oingo Boingo", "The Untouchables"]);
+    expect(payload.refs.artists).toEqual(["fishbone", "oingo-boingo", "the-untouchables"]);
+    expect(payload.media[0].alt).toBe(
+      "40 years ago today: Fishbone, with Oingo Boingo and The Untouchables, at Caliente Racetrack, Tijuana, Mexico, 30 June 1987."
+    );
   });
 
   it("carries the full bill when the show is known, headliner first", () => {

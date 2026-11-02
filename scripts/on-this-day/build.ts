@@ -7,8 +7,15 @@
  * this module can be exercised in full without sharp or an API key.
  */
 
-import { absoluteUrl, artistDeepLink, setlistDeepLink } from "../../src/utils/deepLinks.js";
+import {
+  absoluteUrl,
+  artistDeepLink,
+  mediaId,
+  photoDeepLink,
+  setlistDeepLink,
+} from "../../src/utils/deepLinks.js";
 import { classifyImageUrl } from "../syndication/provenance.ts";
+import { getShowAsset, type MediaIndexAsset } from "../liner-notes/image-refs.ts";
 import { SITE_URL } from "../syndication/payload.ts";
 import { otdSlug, type OnThisDayPost } from "./types.ts";
 import type { OnThisDayCandidate } from "./detect.ts";
@@ -20,6 +27,11 @@ export interface BuildSources {
   venuesMetadata: Record<string, { name?: string; city?: string }>;
   /** Published liner notes, for cross-linking. */
   linerNotes: LinerNotesPost[];
+  /**
+   * The archive's own photography. Optional: absent means every post takes the artist image,
+   * which is what the existing tests and any caller that only wants a URL expect.
+   */
+  mediaIndex?: { assets: MediaIndexAsset[] };
   /**
    * Every concert, for `narrativeFacts`. Optional so the existing tests and any
    * caller that only wants a URL keep working — absent means the copy is
@@ -128,6 +140,60 @@ export function resolveImage(
   return sources.artistsMetadata[show.headlinerNormalized]?.image;
 }
 
+
+/** A frame from the anniversary night itself, and whose gatefold it opens in. */
+export interface NightPhoto {
+  asset: MediaIndexAsset & { url: string };
+  /** The act's slug. A gatefold holds that act's frames and the room. */
+  gatefold: string;
+  /** Set when the frame is of an opener, so the card can name who is in it. */
+  opener?: { name: string; slug: string };
+}
+
+/** Every asset reaching this point was filtered on `url`. The type cannot see that. */
+function withUrl(asset: MediaIndexAsset): NightPhoto["asset"] {
+  return { ...asset, url: asset.url as string };
+}
+
+/**
+ * The owner's photograph of this night, if one exists.
+ *
+ * 🔴 PERSONAL BEATS SOURCED, ALWAYS, and this stream ignored that until 2026-11. `resolveImage`
+ * only knew the artist image, so the Howard Jones post of 3 September 2026 carried an AudioDB
+ * press shot five days after the hero from that very show was committed.
+ *
+ * THE NIGHT ONLY. A post saying "ten years ago today" under a frame from another year is the
+ * fabricated memory the rubric exists to prevent, so this never reaches for a signature from a
+ * different show. Within the night the headliner comes first, then the openers in billing
+ * order, then the room. Of 46 photographed nights, 39 have the headliner, 3 an opener only and
+ * 4 the room only. A frame with no crop box is skipped because the renderer refuses it.
+ */
+export function resolveNightPhoto(
+  candidate: OnThisDayCandidate,
+  sources: BuildSources
+): NightPhoto | undefined {
+  const show = candidate.shows[0];
+  if (!show) return undefined;
+  const night = {
+    mediaIndex: {
+      assets: (sources.mediaIndex?.assets ?? []).filter(
+        (a) => a.date === show.date && a.kind === "image" && a.url && a.crop
+      ),
+    },
+  };
+
+  const headliner = getShowAsset(show.headlinerNormalized, night);
+  if (headliner) {
+    return { asset: withUrl(headliner), gatefold: show.headlinerNormalized };
+  }
+  for (const name of show.openers ?? []) {
+    const slug = slugify(name);
+    const asset = getShowAsset(slug, night);
+    if (asset) return { asset: withUrl(asset), gatefold: slug, opener: { name, slug } };
+  }
+  const room = getShowAsset(null, night);
+  return room ? { asset: withUrl(room), gatefold: show.headlinerNormalized } : undefined;
+}
 
 /**
  * What the archive knows about this night, in sentences the model may use.
@@ -334,9 +400,17 @@ export function buildPost(candidate: OnThisDayCandidate, sources: BuildSources):
   const artist = sources.artistsMetadata[show.headlinerNormalized]?.name ?? show.headliner;
   const venueMeta = sources.venuesMetadata[show.venueNormalized];
 
-  const imageUrl = resolveImage(candidate, sources);
+  const photo = resolveNightPhoto(candidate, sources);
+  const imageUrl = photo?.asset.url ?? resolveImage(candidate, sources);
   const provenance = classifyImageUrl(imageUrl);
-  const { url, linerNoteSlug } = resolveUrl(candidate, sources);
+  /* A post carrying the owner's frame sends the reader to that frame in the gatefold, even
+     when a liner note covers the night. The owner's call, 2026-11-01. */
+  const { url, linerNoteSlug } = photo
+    ? {
+        url: absoluteUrl(photoDeepLink(photo.gatefold, show.date, mediaId(photo.asset)), SITE_URL),
+        linerNoteSlug: undefined,
+      }
+    : resolveUrl(candidate, sources);
 
   const post = {
     slug: otdSlug(candidate.publishYear, candidate.day),
@@ -350,6 +424,8 @@ export function buildPost(candidate: OnThisDayCandidate, sources: BuildSources):
     city: venueMeta?.city ?? show.city,
     score: candidate.score,
     imageUrl,
+    ...(photo?.asset.crop ? { crop: photo.asset.crop } : {}),
+    ...(photo?.opener ? { photographedOpener: photo.opener } : {}),
     tier: provenance?.tier ?? 2,
     source: provenance?.source ?? "artist-audiodb",
     url,

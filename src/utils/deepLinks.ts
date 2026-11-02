@@ -60,12 +60,23 @@ export function setlistDeepLink(artistSlug: string, date: string): string {
 /**
  * `/?scene=artists&artist=thompson-twins&show=2026-09-16&photo=thompson-twins-10`
  *
- * One still or video from a night. `photo` is `mediaId` from src/components/ask/media.ts: the
- * published filename, which the pipeline never reuses. `artist` decides whose gatefold opens, and
- * a gatefold only holds that act's frames and the room.
+ * One still or video from a night. `photo` is `mediaId` below: the published filename, which the
+ * pipeline never reuses. `artist` decides whose gatefold opens, and a gatefold only holds that
+ * act's frames and the room.
  */
 export function photoDeepLink(artistSlug: string, date: string, photoId: string): string {
   return `${setlistDeepLink(artistSlug, date)}&photo=${encodeURIComponent(photoId)}`
+}
+
+/**
+ * The stable name of one still or video within its night, used in share links: the published
+ * filename without the date, so `2026-09-16-thompson-twins-10.jpg` is `thompson-twins-10`.
+ * Ordinals run per act and per kind, so a video carries a suffix or it could collide with a still.
+ */
+export function mediaId(item: { kind: string; date: string; url: string }): string {
+  const file = item.url.split('/').pop()?.split('?')[0] ?? ''
+  const stem = file.replace(/\.[^.]+$/, '').replace(`${item.date}-`, '')
+  return item.kind === 'video' ? `${stem}-video` : stem
 }
 
 /**

@@ -9,7 +9,7 @@
  */
 
 import type { PostSocial } from "../../src/types/liner-notes.ts";
-import type { MediaSource, MediaTier } from "../syndication/types.ts";
+import type { MediaAsset, MediaSource, MediaTier } from "../syndication/types.ts";
 
 export interface OnThisDayPost {
   /** `otd-YYYY-MM-DD`, unique per publishing day and stable forever. */
@@ -34,6 +34,15 @@ export interface OnThisDayPost {
   cardPath: string;
   /** The image the card was composited over, for provenance. */
   imageUrl?: string;
+  /** The owner's crop box. Tier 1 only: the renderer refuses a personal photo without one. */
+  crop?: NonNullable<MediaAsset["crop"]>;
+  /**
+   * The act in the frame, when it is an opener rather than the headliner.
+   *
+   * The card sets `credit.artists[0]` as its display line, so without this an opener's photo
+   * would run under the headliner's name: the different-artist rule in the media skill.
+   */
+  photographedOpener?: { name: string; slug: string };
   tier: MediaTier;
   source: MediaSource;
 

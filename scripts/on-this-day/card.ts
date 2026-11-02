@@ -52,6 +52,8 @@ export interface CardInput {
   city: string;
   /** Background image URL; a solid ground is used when it cannot be fetched. */
   imageUrl?: string;
+  /** The owner's crop box, when the image is their photograph. */
+  crop?: Parameters<typeof loadBackground>[1];
 }
 
 /** `4 June` — day-first, matching how the archive writes dates elsewhere. */
@@ -142,7 +144,7 @@ export async function renderCard(
   const out = join(ROOT, rel);
   if (existsSync(out) && !options.force) return { path: rel, usedFallback: false };
 
-  const { background, usedFallback } = await loadBackground(input.imageUrl);
+  const { background, usedFallback } = await loadBackground(input.imageUrl, input.crop);
 
   const overlay = Buffer.from(
     `<svg width="${WIDTH}" height="${HEIGHT}"><rect width="${WIDTH}" height="${HEIGHT}" fill="rgba(0,0,0,0.62)" /></svg>`
