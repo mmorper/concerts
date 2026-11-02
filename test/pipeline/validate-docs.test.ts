@@ -79,6 +79,14 @@ function goodClaudeMd() {
   return `**Version:** v5.4.0 | ${EXPECTED.concerts} concerts, ${EXPECTED.artists} artists, ${EXPECTED.venues} venues`
 }
 
+function goodLlmsTxt() {
+  return [
+    `> A personal archive (1990–present): ${EXPECTED.concerts} concerts, ${EXPECTED.artists} artists, ${EXPECTED.venues} venues. An interactive web app.`,
+    ``,
+    `- [concerts.json](https://example.org/data/concerts.json): ${EXPECTED.concerts} concerts with dates, venues, and lineups`,
+  ].join('\n')
+}
+
 const SCENE_WORD_LOWER = SCENE_WORD.toLowerCase()
 
 function goodSceneDesignGuide() {
@@ -204,6 +212,7 @@ function mockFiles(overrides: Partial<Record<string, string>> = {}) {
     'README.md': goodReadme(),
     'ROADMAP.md': goodRoadmap(),
     'CLAUDE.md': goodClaudeMd(),
+    'public/llms.txt': goodLlmsTxt(),
     'docs/architecture.svg': goodArchitectureSvg(),
     'docs/design/scene-design-guide.md': goodSceneDesignGuide(),
     'docs/design/ui-component-patterns.md': goodUiComponentPatterns(),
@@ -356,6 +365,51 @@ describe('validate-docs', () => {
 
       expect(failures.map((f) => f.label)).toContain('intro scene roster')
       expect(failures.find((f) => f.label === 'intro scene roster')?.actual).toBe(short)
+    })
+  })
+
+  describe('public/llms.txt', () => {
+    // It quoted 184 concerts and 79 venues while llm.txt said 185 and 80, because
+    // neither the writer nor this gate knew the file existed.
+    it('fails on a stale summary count', async () => {
+      mockFiles({
+        'public/llms.txt': goodLlmsTxt().replace(
+          `${EXPECTED.venues} venues.`,
+          `${EXPECTED.venues - 1} venues.`
+        ),
+      })
+      const failures = await runValidator()
+
+      expect(failures).toHaveLength(1)
+      expect(failures[0]).toMatchObject({
+        file: 'public/llms.txt',
+        label: 'summary — venues',
+        reason: 'mismatch',
+      })
+    })
+
+    it('fails on a stale concerts.json description', async () => {
+      mockFiles({
+        'public/llms.txt': goodLlmsTxt().replace(
+          `${EXPECTED.concerts} concerts with dates`,
+          `${EXPECTED.concerts + 1} concerts with dates`
+        ),
+      })
+      const failures = await runValidator()
+
+      expect(failures.map((f) => f.label)).toEqual(['concerts.json description'])
+    })
+
+    it('fails when the summary is reworded out from under the pattern', async () => {
+      mockFiles({ 'public/llms.txt': 'A personal archive of live music.' })
+      const failures = await runValidator()
+
+      expect(failures.map((f) => f.reason)).toEqual([
+        'no-match',
+        'no-match',
+        'no-match',
+        'no-match',
+      ])
     })
   })
 

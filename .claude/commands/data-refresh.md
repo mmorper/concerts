@@ -227,7 +227,7 @@ npm run validate:docs
 
 **This is where doc drift is created.** Adding concerts changes the counts.
 `build-data` refreshes the machine-readable surfaces for you — `index.html`,
-`og-stats.json`, `llm.txt`, `sitemap.xml` all flow from `update:meta`. Nothing
+`og-stats.json`, `llm.txt`, `llms.txt`, `sitemap.xml` all flow from `update:meta`. Nothing
 touches README, `docs/ROADMAP.md` or `CLAUDE.md`, so the prose is stale from this
 moment until someone updates it.
 

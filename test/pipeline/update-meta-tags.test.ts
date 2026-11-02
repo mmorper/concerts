@@ -163,6 +163,41 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
 **Total Content:** 100 concerts | 50 artists | 30 venues | 1,000+ albums | 1980-2020
 `
 
+  const mockLlmsTxt = `# Morperhaus Concert Archives
+
+> A personal archive (1980–present): 100 concerts, 50 artists, 30 venues. An interactive web app with deep links.
+
+- [concerts.json](https://example.org/data/concerts.json): 100 concerts with dates, venues, and lineups
+`
+
+  const mockMinimalRead = (filePath: string) => {
+    if (filePath.includes('package.json')) {
+      return JSON.stringify({ version: '9.9.9' })
+    }
+    if (filePath.includes('facts.json')) {
+      return JSON.stringify({ computedAt: '2024-01-01', facts: [] })
+    }
+    if (filePath.includes('artists-metadata.json')) {
+      return JSON.stringify({ 'depeche-mode': { name: 'Depeche Mode' } })
+    }
+    if (filePath.includes('venues-metadata.json')) {
+      return JSON.stringify({ '9-30-club': { name: '9:30 Club' } })
+    }
+    if (filePath.includes('concerts.json')) {
+      return JSON.stringify(mockConcertsData)
+    }
+    if (filePath.includes('index.html')) {
+      return mockIndexHtml
+    }
+    if (filePath.includes('llms.txt')) {
+      return mockLlmsTxt
+    }
+    if (filePath.includes('llm.txt')) {
+      return mockLlmTxt
+    }
+    throw new Error('File not found')
+  }
+
   beforeEach(() => {
     // Save originals
     originalLog = console.log
@@ -208,6 +243,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         if (filePath.includes('index.html')) {
           return mockIndexHtml
         }
+        if (filePath.includes('llms.txt')) {
+          return mockLlmsTxt
+        }
         if (filePath.includes('llm.txt')) {
           return mockLlmTxt
         }
@@ -246,6 +284,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         if (filePath.includes('index.html')) {
           return mockIndexHtml
         }
+        if (filePath.includes('llms.txt')) {
+          return mockLlmsTxt
+        }
         if (filePath.includes('llm.txt')) {
           return mockLlmTxt
         }
@@ -283,6 +324,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         }
         if (filePath.includes('index.html')) {
           return mockIndexHtml
+        }
+        if (filePath.includes('llms.txt')) {
+          return mockLlmsTxt
         }
         if (filePath.includes('llm.txt')) {
           return mockLlmTxt
@@ -325,6 +369,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         if (filePath.includes('index.html')) {
           return mockIndexHtml
         }
+        if (filePath.includes('llms.txt')) {
+          return mockLlmsTxt
+        }
         if (filePath.includes('llm.txt')) {
           return mockLlmTxt
         }
@@ -366,6 +413,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         if (filePath.includes('index.html')) {
           return mockIndexHtml
         }
+        if (filePath.includes('llms.txt')) {
+          return mockLlmsTxt
+        }
         if (filePath.includes('llm.txt')) {
           return mockLlmTxt
         }
@@ -406,6 +456,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         if (filePath.includes('index.html')) {
           return mockIndexHtml
         }
+        if (filePath.includes('llms.txt')) {
+          return mockLlmsTxt
+        }
         if (filePath.includes('llm.txt')) {
           return mockLlmTxt
         }
@@ -443,6 +496,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         }
         if (filePath.includes('index.html')) {
           return mockIndexHtml
+        }
+        if (filePath.includes('llms.txt')) {
+          return mockLlmsTxt
         }
         if (filePath.includes('llm.txt')) {
           return mockLlmTxt
@@ -485,6 +541,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         }
         if (filePath.includes('index.html')) {
           return mockIndexHtml
+        }
+        if (filePath.includes('llms.txt')) {
+          return mockLlmsTxt
         }
         if (filePath.includes('llm.txt')) {
           return mockLlmTxt
@@ -534,6 +593,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         if (filePath.includes('index.html')) {
           return mockIndexHtml
         }
+        if (filePath.includes('llms.txt')) {
+          return mockLlmsTxt
+        }
         if (filePath.includes('llm.txt')) {
           return mockLlmTxt
         }
@@ -554,6 +616,40 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
       expect(writtenIndexHtml).toContain('"numberOfItems": 4')
       expect(writtenIndexHtml).toContain('"startDate": "1990-03-10"')
       expect(writtenIndexHtml).toContain('"endDate": "2024-05-15"')
+    })
+
+    it('should update llms.txt stats', async () => {
+      const mockFs = fs as any
+      let writtenLlmsTxt = ''
+
+      mockFs.readFileSync.mockImplementation(mockMinimalRead)
+      mockFs.writeFileSync.mockImplementation((filePath: string, content: string) => {
+        if (filePath.includes('llms.txt')) {
+          writtenLlmsTxt = content
+        }
+      })
+
+      const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
+
+      expect(writtenLlmsTxt).toContain('3 concerts, 4 artists, 2 venues. An interactive web app')
+      expect(writtenLlmsTxt).toContain('3 concerts with dates')
+      expect(console.warn).not.toHaveBeenCalledWith(expect.stringContaining('llms.txt'))
+    })
+
+    it('should warn when an llms.txt stat pattern stops matching', async () => {
+      const mockFs = fs as any
+
+      mockFs.readFileSync.mockImplementation((filePath: string) =>
+        filePath.includes('llms.txt') ? 'A personal archive of live music.' : mockMinimalRead(filePath)
+      )
+
+      const { default: main } = await import('../../scripts/update-meta-tags')
+      await main()
+
+      expect(console.warn).toHaveBeenCalledWith(
+        expect.stringContaining('llms.txt: 2 stat(s) NOT updated')
+      )
     })
 
     it('should update llm.txt stats', async () => {
@@ -582,6 +678,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         }
         if (filePath.includes('index.html')) {
           return mockIndexHtml
+        }
+        if (filePath.includes('llms.txt')) {
+          return mockLlmsTxt
         }
         if (filePath.includes('llm.txt')) {
           return mockLlmTxt
@@ -631,6 +730,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         }
         if (filePath.includes('index.html')) {
           return mockIndexHtml
+        }
+        if (filePath.includes('llms.txt')) {
+          return mockLlmsTxt
         }
         if (filePath.includes('llm.txt')) {
           return mockLlmTxt
@@ -695,6 +797,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         if (filePath.includes('index.html')) {
           return mockIndexHtml
         }
+        if (filePath.includes('llms.txt')) {
+          return mockLlmsTxt
+        }
         if (filePath.includes('llm.txt')) {
           return mockLlmTxt
         }
@@ -740,6 +845,9 @@ Personal concert archive spanning 1980-2020. Interactive web application with 10
         }
         if (filePath.includes('index.html')) {
           return mockIndexHtml
+        }
+        if (filePath.includes('llms.txt')) {
+          return mockLlmsTxt
         }
         if (filePath.includes('llm.txt')) {
           return mockLlmTxt

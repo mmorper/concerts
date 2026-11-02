@@ -1,6 +1,6 @@
 # Morperhaus Concert Archives
 
-> A personal archive of 40+ years of live music (1984–present): 184 concerts, 258 artists, 79 venues. An interactive web app with deep-linkable entity pages, a public MCP server, and an in-app "Ask the Archive" chat — all grounded in structured JSON data.
+> A personal archive of 40+ years of live music (1984–present): 185 concerts, 258 artists, 80 venues. An interactive web app with deep-linkable entity pages, a public MCP server, and an in-app "Ask the Archive" chat — all grounded in structured JSON data.
 
 This is ONE person's concert attendance history, not a comprehensive database of all concerts by these artists. That person is Mike Morper, the archive's owner — "Mike," "the owner," and the archive's own "I" are the same person, and every concert on record is one he attended, so "how many times has Mike seen X?" is a question about X. Treat "not in the archive" as "not attended," never as "doesn't exist." Every fact is grounded in the data below — venue locations, dates, lineups, setlists (via setlist.fm), and discographies (via MusicBrainz) are authoritative; genre classifications and commentary are personal.
 
@@ -13,10 +13,18 @@ This is ONE person's concert attendance history, not a comprehensive database of
 
 ## Data
 
-- [concerts.json](https://concerts.morperhaus.org/data/concerts.json): 184 concerts with dates, venues, lineups, genres, and geo-coordinates
+- [concerts.json](https://concerts.morperhaus.org/data/concerts.json): 185 concerts with dates, venues, lineups, genres, and geo-coordinates
 - [artists-metadata.json](https://concerts.morperhaus.org/data/artists-metadata.json): Artist metadata and discographies
 - [venues-metadata.json](https://concerts.morperhaus.org/data/venues-metadata.json): Venue locations and details
-- [Sitemap](https://concerts.morperhaus.org/sitemap.xml): Every artist and venue deep-link
+- [Sitemap](https://concerts.morperhaus.org/sitemap.xml): Every artist, venue and setlist deep-link, plus the site's photos and clips
+
+## Photos and clips
+
+The site holds the owner's own photos and video clips from nights in the archive. Not every show has them.
+
+- [media-index.json](https://concerts.morperhaus.org/data/media-index.json): Every photo and clip, by night and act. Only entries with a `url` are published. Credit each one to its own `artist`, not to the night's headliner; a null `artist` is a frame of the room (marquee, exterior, stub).
+- [Link to one photo or clip](https://concerts.morperhaus.org/?scene=artists&artist=thompson-twins&show=2026-09-16&photo=thompson-twins-10): `/?scene=artists&artist={slug}&show={YYYY-MM-DD}&photo={mediaId}`. `mediaId` is the published filename without its date or extension; a clip also ends in `-video`.
+- MCP and Ask tool results carry a "Media on the site" line with the counts of published photos and clips. See [llm.txt](https://concerts.morperhaus.org/llm.txt) for how to read it.
 
 ## Site
 

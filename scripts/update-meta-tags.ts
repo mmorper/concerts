@@ -6,6 +6,7 @@
  * - index.html meta descriptions (standard, OG, Twitter)
  * - index.html Schema.org JSON-LD structured data
  * - public/llm.txt with current stats
+ * - public/llms.txt with current stats
  * - public/og-stats.json
  * - public/sitemap.xml (via generate-sitemap.ts)
  *
@@ -519,12 +520,39 @@ These facts are updated with each data refresh and can be quoted directly:
   fs.writeFileSync(llmPath, llmContent, 'utf-8')
   console.log('✓ Updated public/llm.txt')
 
+  // Update public/llms.txt, the short index that points at llm.txt.
+  //
+  // It sat outside this script and drifted to 184 concerts and 79 venues while llm.txt
+  // said 185 and 80. Same rule as sub() above: a miss is a warning, and validate-docs
+  // fails on the number it leaves behind.
+  const llmsPath = path.join(__dirname, '..', 'public', 'llms.txt')
+  let llmsContent = fs.readFileSync(llmsPath, 'utf-8')
+  const llmsStats: Array<[string, RegExp, string]> = [
+    [
+      'summary stats',
+      /\d+ concerts, \d+ artists, \d+ venues\. An interactive web app/,
+      `${concerts} concerts, ${artists} artists, ${venues} venues. An interactive web app`,
+    ],
+    ['concerts.json description', /\d+ concerts with dates/, `${concerts} concerts with dates`],
+  ]
+  const llmsMisses = llmsStats.filter(([, pattern]) => !pattern.test(llmsContent))
+  for (const [, pattern, replacement] of llmsStats) {
+    llmsContent = llmsContent.replace(pattern, replacement)
+  }
+  if (llmsMisses.length > 0) {
+    console.warn(`⚠️  llms.txt: ${llmsMisses.length} stat(s) NOT updated — pattern did not match:`)
+    for (const [label] of llmsMisses) console.warn(`     - ${label}`)
+    console.warn('     These are stale in the published file. Fix the pattern in update-meta-tags.ts.')
+  }
+  fs.writeFileSync(llmsPath, llmsContent, 'utf-8')
+  console.log('✓ Updated public/llms.txt')
+
   // Regenerate sitemap to pick up any new liner notes posts or data changes
   await generateSitemap()
 
   console.log('\n✅ All meta tags and SEO files updated successfully!')
   console.log('\nNext steps:')
-  console.log('  1. Review changes: git diff index.html public/llm.txt public/og-stats.json')
+  console.log('  1. Review changes: git diff index.html public/llm.txt public/llms.txt public/og-stats.json')
   console.log('  2. Regenerate OG image: npm run og:generate')
   console.log('  3. Commit changes as part of your release')
 }
