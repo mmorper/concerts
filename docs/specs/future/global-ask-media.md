@@ -63,13 +63,15 @@ Add `media-index.json` (126 KB) to the MCP worker's data layer as a lazy, cached
 
 ### Phase 1: media counts
 
-Add `media: { photos, clips }` to these tool results:
+Tool results are markdown, so the counts arrive as one "Media on the site" line above the footer,
+from `workers/mcp-server/src/media.ts`. It credits each act, and names each clip's song:
 
 - `get_artist_history`
 - `get_concert_setlist`
 - `on_this_day`
 - `surprise_me`
 - `get_venue_history`
+- `search_concerts`, so "photos from 2023" has an answer before `get_media` exists
 
 Add a few lines to `buildSystemPrompt` in `agent-loop.ts`: mention media when counts are present,
 link to it, and never describe what a photo shows.

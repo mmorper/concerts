@@ -57,7 +57,10 @@ import {
   isQueryUsageOverCap,
   readQueryUsage,
   recordQueryUsage,
-  getArtistAliases,} from "./data.js";
+  getArtistAliases,
+  getMediaIndex,
+} from "./data.js";
+import { artistMediaNote, nightMediaNote, nightsMediaNote, withMediaNote } from "./media.js";
 import { recordMcpQuery } from "./telemetry.js";
 import QUERY_PROMPT from "../prompts/query.md";
 
@@ -1713,7 +1716,10 @@ export function registerTools(server: McpServer, env: Env): void {
       if (!data) return dataUnavailableResult();
       // Only pay for the era file when the filter is actually in play.
       const eras = (args as SearchParams).cycleBucket ? await getAlbumEras(env, bgCtx) : null;
-      return textResult(searchConcerts(data.concerts, args as SearchParams, eras).text);
+      const { text, matches } = searchConcerts(data.concerts, args as SearchParams, eras);
+      if (!matches.length) return textResult(text);
+      const media = await getMediaIndex(env, bgCtx);
+      return textResult(withMediaNote(text, nightsMediaNote(media, matches.map((c) => c.date))));
     }),
   );
 
@@ -1728,18 +1734,20 @@ export function registerTools(server: McpServer, env: Env): void {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
       const query = String(args.artist ?? "");
-      const [meta, tracks, aliasData, eras] = await Promise.all([
+      const [meta, tracks, aliasData, eras, media] = await Promise.all([
         getArtistsMetadata(env, bgCtx),
         getArtistsTopTracks(env, bgCtx),
         getArtistAliases(env, bgCtx),
         getAlbumEras(env, bgCtx),
+        getMediaIndex(env, bgCtx),
       ]);
       const aliases = buildAliasIndex(aliasData);
       const r = resolveArtist(data.concerts, query, aliases);
       const narration =
         r.kind === "match" ? await getNarration("artists", r.slug, env, bgCtx) : null;
+      const text = artistHistory(data.concerts, query, meta ?? {}, tracks ?? {}, narration, aliases, eras);
       return textResult(
-        artistHistory(data.concerts, query, meta ?? {}, tracks ?? {}, narration, aliases, eras),
+        r.kind === "match" ? withMediaNote(text, artistMediaNote(media, r.name, r.slugs)) : text,
       );
     }),
   );
@@ -1752,16 +1760,20 @@ export function registerTools(server: McpServer, env: Env): void {
       inputSchema: { venue: z.string() },
     },
     instrument(env, "get_venue_history", async (args) => {
-      const [data, venues] = await Promise.all([
+      const [data, venues, media] = await Promise.all([
         getConcerts(env, bgCtx),
         getVenuesMetadata(env, bgCtx),
+        getMediaIndex(env, bgCtx),
       ]);
       if (!data || !venues) return dataUnavailableResult();
       const query = String(args.venue ?? "");
       const r = resolveVenue(venues, query);
       const narration =
         r.kind === "match" ? await getNarration("venues", r.venue.normalizedName, env, bgCtx) : null;
-      return textResult(venueHistory(venues, data.concerts, query, narration));
+      const text = venueHistory(venues, data.concerts, query, narration);
+      if (r.kind !== "match") return textResult(text);
+      const nights = data.concerts.filter((c) => c.venueNormalized === r.venue.normalizedName);
+      return textResult(withMediaNote(text, nightsMediaNote(media, nights.map((c) => c.date))));
     }),
   );
 
@@ -1780,11 +1792,16 @@ export function registerTools(server: McpServer, env: Env): void {
       if (!data) return dataUnavailableResult();
       // Same cached loader surprise_me and get_concert_setlist already use, so
       // linking the nights that have setlists costs no extra fetch (#200).
-      const setlists = await getSetlistsCache(env, bgCtx);
+      const [setlists, media] = await Promise.all([
+        getSetlistsCache(env, bgCtx),
+        getMediaIndex(env, bgCtx),
+      ]);
       const now = new Date();
       const month = (args.month as number | undefined) ?? now.getUTCMonth() + 1;
       const day = (args.day as number | undefined) ?? now.getUTCDate();
-      return textResult(onThisDay(data.concerts, month, day, setlists).text);
+      const { text, matches } = onThisDay(data.concerts, month, day, setlists);
+      if (!matches.length) return textResult(text);
+      return textResult(withMediaNote(text, nightsMediaNote(media, matches.map((c) => c.date))));
     }),
   );
 
@@ -1794,15 +1811,15 @@ export function registerTools(server: McpServer, env: Env): void {
     instrument(env, "surprise_me", async () => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
-      const [setlists, meta, tracks] = await Promise.all([
+      const [setlists, meta, tracks, media] = await Promise.all([
         getSetlistsCache(env, bgCtx),
         getArtistsMetadata(env, bgCtx),
         getArtistsTopTracks(env, bgCtx),
+        getMediaIndex(env, bgCtx),
       ]);
       const pick = (n: number) => Math.floor(Math.random() * n);
-      return textResult(
-        surpriseMe(data.concerts, pick, setlists, meta ?? {}, tracks ?? {}).text,
-      );
+      const r = surpriseMe(data.concerts, pick, setlists, meta ?? {}, tracks ?? {});
+      return textResult(withMediaNote(r.text, nightMediaNote(media, r.concert.date)));
     }),
   );
 
@@ -1820,26 +1837,20 @@ export function registerTools(server: McpServer, env: Env): void {
     instrument(env, "get_concert_setlist", async (args) => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
-      const [setlists, tracks, eras, songAlbums, meta, aliases] = await Promise.all([
+      const [setlists, tracks, eras, songAlbums, meta, aliases, media] = await Promise.all([
         getSetlistsCache(env, bgCtx),
         getArtistsTopTracks(env, bgCtx),
         getAlbumEras(env, bgCtx),
         getSongAlbums(env, bgCtx),
         getArtistsMetadata(env, bgCtx),
         getArtistAliases(env, bgCtx),
+        getMediaIndex(env, bgCtx),
       ]);
-      return textResult(
-        concertSetlist(
-          data.concerts,
-          setlists,
-          args as { artist?: string; date?: string; concertId?: string },
-          tracks ?? {},
-          eras,
-          songAlbums,
-          meta ?? {},
-          aliases,
-        ),
-      );
+      const asked = args as { artist?: string; date?: string; concertId?: string };
+      const text = concertSetlist(data.concerts, setlists, asked, tracks ?? {}, eras, songAlbums, meta ?? {}, aliases);
+      // Same resolver as the prose, so the note is about the night the text names.
+      const sel = setlistSelection(data.concerts, setlists, asked, eras, songAlbums, meta ?? {}, aliases);
+      return textResult(sel ? withMediaNote(text, nightMediaNote(media, sel.concert.date)) : text);
     }),
   );
 

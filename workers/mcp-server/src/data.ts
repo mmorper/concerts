@@ -1,4 +1,5 @@
 import type { ArtistAliasData } from "./aliases.js";
+import type { MediaIndexFile } from "./media.js";
 import type {
   AlbumEras,
   SongAlbums,
@@ -78,6 +79,7 @@ const LAZY_FILES = [
   "most-played-songs.json",
   "album-eras.json",
   "song-albums.json",
+  "media-index.json",
 ] as const;
 
 function dataUrl(env: Env, file: string): string {
@@ -166,6 +168,14 @@ export function getSongAlbums(
   ctx: ExecutionContext,
 ): Promise<SongAlbums | null> {
   return cachedJsonFetch<SongAlbums>(dataUrl(env, "song-albums.json"), ctx);
+}
+
+// Lazy, and a null here says "I can't check" rather than "there are no photos" (media.ts).
+export function getMediaIndex(
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<MediaIndexFile | null> {
+  return cachedJsonFetch<MediaIndexFile>(dataUrl(env, "media-index.json"), ctx);
 }
 
 export function getMostPlayedSongs(
