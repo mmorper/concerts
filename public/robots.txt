@@ -17,15 +17,24 @@ Sitemap: https://concerts.morperhaus.org/sitemap.xml
 #   https://concerts.morperhaus.org/llm.txt    (full documentation)
 #   https://concerts.morperhaus.org/mcp        (MCP server)
 
-# AI Bots - Explicitly welcome
-User-agent: GPTBot
+# AI assistants - Explicitly welcome
 User-agent: ChatGPT-User
+User-agent: PerplexityBot
+Allow: /
+
+# AI training crawlers - Welcome, except for the owner's personal images.
+# /og/ holds the share cards, which are crops of the same photos.
+User-agent: GPTBot
 User-agent: Claude-Web
 User-agent: ClaudeBot
 User-agent: anthropic-ai
 User-agent: Google-Extended
-User-agent: PerplexityBot
 User-agent: CCBot
+User-agent: Applebot-Extended
+User-agent: Meta-ExternalAgent
+User-agent: Bytespider
+Disallow: /images/shows/
+Disallow: /og/
 Allow: /
 
 # Social Media Crawlers

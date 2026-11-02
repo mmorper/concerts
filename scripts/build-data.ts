@@ -429,6 +429,7 @@ async function buildData() {
       console.log('   - public/rss.xml')
       console.log('   - index.html (meta tags updated)')
       console.log('   - public/llm.txt (stats updated)')
+      console.log('   - public/llms.txt (stats updated)')
       console.log('   - public/og-stats.json')
       console.log()
       console.log('📦 Automatic backups created with .backup.TIMESTAMP extension')

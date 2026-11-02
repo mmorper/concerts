@@ -2,8 +2,9 @@
 /**
  * Validate Docs
  *
- * Fails when prose in README.md, docs/ROADMAP.md, CLAUDE.md, docs/design/* or
- * the design-system skill file contradicts the code and data it describes.
+ * Fails when prose in README.md, docs/ROADMAP.md, CLAUDE.md, public/llms.txt,
+ * docs/design/* or the design-system skill file contradicts the code and data
+ * it describes.
  *
  * Why this exists (#284): README claimed "Five scenes" for the seven months
  * after Ask the Archive shipped as scene 6, across roughly forty releases.
@@ -521,6 +522,33 @@ function buildClaims(): Claim[] {
       label: 'header — venues',
       pattern: /\| [\d,]+ concerts, [\d,]+ artists, ([\d,]+) venues/,
       expected: String(stats.venues),
+    },
+
+    // ---- public/llms.txt: the short index AI tools read first. Not optional like
+    // the block below: these come from concerts.json, which every clone has.
+    {
+      file: 'public/llms.txt',
+      label: 'summary — concerts',
+      pattern: /: ([\d,]+) concerts, [\d,]+ artists, [\d,]+ venues\./,
+      expected: String(stats.concerts),
+    },
+    {
+      file: 'public/llms.txt',
+      label: 'summary — artists',
+      pattern: /: [\d,]+ concerts, ([\d,]+) artists, [\d,]+ venues\./,
+      expected: String(stats.artists),
+    },
+    {
+      file: 'public/llms.txt',
+      label: 'summary — venues',
+      pattern: /: [\d,]+ concerts, [\d,]+ artists, ([\d,]+) venues\./,
+      expected: String(stats.venues),
+    },
+    {
+      file: 'public/llms.txt',
+      label: 'concerts.json description',
+      pattern: /concerts\.json\): ([\d,]+) concerts with dates/,
+      expected: String(stats.concerts),
     },
 
     // ---- public/llm.txt: the v6.0 data-file counts (#290).

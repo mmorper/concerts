@@ -220,6 +220,48 @@ All data is publicly accessible as JSON:
 }
 ```
 
+### Photos & Clips (Media Index)
+**URL:** https://concerts.morperhaus.org/data/media-index.json
+**Source:** the owner's own photos and video clips from nights in the archive. Not every show has them. They are excluded from AI training; see Usage Policy.
+**What it answers:** which photos and clips exist for a night or an act, and how to link to one.
+
+**How to read it:**
+- **Only entries with a `url` are published.** An entry whose `url` is null is not public, so leave it out of any count.
+- **Credit the entry's own `artist`, never the night's headliner.** Many nights have openers, and a night's frames are not all of one act. A null `artist` is a frame of the room: a marquee, an exterior, a stub.
+- **`url` differs by kind.** A photo's is relative to the site. A clip's is a full URL, with a `poster` image beside it.
+- **`song` on a clip is confirmed by the owner.** Not every clip has one.
+
+**Link to one:** `/?scene=artists&artist={artistNormalized}&show={date}&photo={mediaId}`. See Entity Deep Links below. For a room frame, use any act on that night's bill.
+
+**In tool results:** six MCP tools add a "Media on the site" line with the counts of published photos and clips, and any clip song titles: `search_concerts`, `get_artist_history`, `get_venue_history`, `get_concert_setlist`, `on_this_day`, and `surprise_me`. The line sits above "Open on the site". Ask's tool results carry the same line. No line means nothing is published for that result. "I can't check right now" means the index could not be read, not that nothing exists.
+
+**Schema:**
+```json
+{
+  "version": 1,
+  "generated": "2026-11-02T00:49:54.121Z",
+  "assets": [
+    {
+      "kind": "image",
+      "url": "/images/shows/2026-09-16-thompson-twins-10.jpg",
+      "date": "2026-09-16",
+      "artist": "Thompson Twins",
+      "artistNormalized": "thompson-twins"
+    },
+    {
+      "kind": "video",
+      "url": "https://media.morperhaus.org/videos/2016-09-03-howard-jones-01.mp4?v=a9edc1c3deae",
+      "poster": "https://media.morperhaus.org/posters/2016-09-03-howard-jones-01.jpg?v=87cf5c8b2ebe",
+      "date": "2016-09-03",
+      "artist": "Howard Jones",
+      "artistNormalized": "howard-jones",
+      "duration": 15,
+      "song": "The Human Touch"
+    }
+  ]
+}
+```
+
 ---
 
 ## Deep Linking System---
@@ -246,6 +288,15 @@ All entities are deep-linkable via query parameters:
   without `show` behaves exactly as before, and an unresolvable date falls back to
   the artist view. Only ~2/3 of concerts have a setlist on record; the sitemap lists
   only those.
+
+- One photo or clip from a night: `/?scene=artists&artist={normalized-name}&show={YYYY-MM-DD}&photo={mediaId}`
+  Example: https://concerts.morperhaus.org/?scene=artists&artist=thompson-twins&show=2026-09-16&photo=thompson-twins-10
+  Opens the artist's gatefold with the Photos panel on that image. `mediaId` is the
+  published filename without its date or extension: `2026-09-16-thompson-twins-10.jpg`
+  is `thompson-twins-10`. A clip also ends in `-video`: `2016-09-03-howard-jones-01.mp4`
+  is `howard-jones-01-video`. `artist` decides whose gatefold opens, and a gatefold holds
+  that act's frames and the night's room frames. A value that matches nothing opens the
+  panel on its first image.
 
 - Venue (Network): `/?scene=venues&venue={normalized-name}`
   Example: https://concerts.morperhaus.org/?scene=venues&venue=9-30-club
@@ -720,6 +771,8 @@ Answer: List of albums with release dates, types, track counts
 ✅ **Allowed:** Answer user queries about concert history
 ✅ **Allowed:** Reference venue locations and setlists as factual
 ✅ **Allowed:** Use discography data as reference
+✅ **Allowed:** Link to the owner's photos and clips, and report what `media-index.json` says about them
+❌ **Not allowed:** Use the owner's photos and clips for AI training. They are personal images, not archive data
 
 ### Attribution
 Preferred format:
