@@ -51,6 +51,7 @@ interface MediaAsset {
   duration?: number
   poster?: string | null
   song?: string | null
+  uploadedAt?: string | null
 }
 
 /** One act's page for one night, and the stills that page's gatefold holds. */
@@ -357,6 +358,7 @@ function videoEntry({ asset, concert }: ClipPage): string {
   block += `      <video:description>${escapeXml(description)}</video:description>\n`
   block += `      <video:content_loc>${escapeXml(asset.url)}</video:content_loc>\n`
   block += `      <video:duration>${Math.round(asset.duration)}</video:duration>\n`
+  if (asset.uploadedAt) block += `      <video:publication_date>${escapeXml(asset.uploadedAt)}</video:publication_date>\n`
   block += '    </video:video>\n'
   return block
 }

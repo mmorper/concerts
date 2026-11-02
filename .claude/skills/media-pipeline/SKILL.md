@@ -356,6 +356,11 @@ lost the link to the clip.
   cropped, because a clip has no owner-drawn box. Do not add `og:video`: checked 2026-11-01, a
   Bluesky link card holds one image and plays only listed hosts, and Mastodon ignores it. Its
   `twitter:player` would need a public player page, which the site does not have.
+- **A clip records when it went public.** `uploadedAt` is when the web copy first reached R2,
+  written by `media:publish-video` and kept through a `--force` re-encode. Google requires
+  `uploadDate` on a `VideoObject` and treats it as first publication, so the concert date must
+  never stand in for it. The first 22 were backfilled from each object's R2 `Last-Modified`. A
+  clip without the field gets no `VideoObject`, and its sitemap entry has no publication date.
 - **Nor could it.** Two trims from one show are 247MB at full resolution, against 13MB for
   every image in the repo combined. `.git` is already 324MB and never forgets a byte.
 - **Rendered to the SHORT EDGE at 1080**, aspect preserved: 134MB → 18.6MB. Both channels
@@ -411,7 +416,7 @@ slightly soft, with 2x screens in mind.
 - **The version is on the query string, never the filename.** `mediaId` builds share links
   from the filename, and a re-encode must not break them. Encodes use `+bitexact`, so an
   unchanged render gives the same URL.
-- **To take a clip down:** delete both objects, set `url` and `poster` to null, commit, and purge
+- **To take a clip down:** delete both objects, set `url`, `poster` and `uploadedAt` to null, commit, and purge
   both URLs at Cloudflare. They are cached for a year, so deleting alone leaves them live.
 
 **Hand-marking FIRST, automatic picking as a real fallback.** Revised 2026-08-26 after a

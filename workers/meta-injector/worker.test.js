@@ -446,6 +446,245 @@ describe('meta-injector worker', () => {
     })
   })
 
+  // Wrong credit here is the same failure as a wrong count below: a confident falsehood, this time
+  // read by a search engine. An opener's frame credited to the marquee is fabricated attribution.
+  describe('structured data', () => {
+    const SITE = 'https://concerts.morperhaus.org'
+    const concert = {
+      date: '2026-09-16',
+      headliner: 'Thompson Twins',
+      headlinerNormalized: 'thompson-twins',
+      openers: ['Blancmange'],
+      venue: 'Pavilion Theatre',
+      city: 'Glasgow',
+      cityState: 'Glasgow, UK',
+    }
+    const artists = { 'thompson-twins': { name: 'Thompson Twins' } }
+    const own = { kind: 'image', date: '2026-09-16', url: '/images/shows/2026-09-16-thompson-twins-10.jpg', subject: 'artist', artist: 'Thompson Twins', artistNormalized: 'thompson-twins' }
+    const opener = { ...own, url: '/images/shows/2026-09-16-blancmange-03.jpg', artist: 'Blancmange', artistNormalized: 'blancmange' }
+    const room = { kind: 'image', date: '2026-09-16', url: '/images/shows/2026-09-16-venue-01.jpg', subject: 'venue', artist: null, artistNormalized: null }
+    const clip = {
+      kind: 'video',
+      date: '2026-09-16',
+      url: 'https://media.morperhaus.org/videos/2026-09-16-thompson-twins-01.mp4?v=abc',
+      poster: 'https://media.morperhaus.org/posters/2026-09-16-thompson-twins-01.jpg?v=def',
+      subject: 'artist',
+      artist: 'Thompson Twins',
+      artistNormalized: 'thompson-twins',
+      duration: 14.6,
+      song: 'Hold Me Now',
+      uploadedAt: '2026-11-01T20:47:21.000Z',
+    }
+    const openerClip = {
+      ...clip,
+      url: 'https://media.morperhaus.org/videos/2026-09-16-blancmange-01.mp4?v=abc',
+      artist: 'Blancmange',
+      artistNormalized: 'blancmange',
+      song: null,
+    }
+    const SHOW = '/?scene=artists&artist=thompson-twins&show=2026-09-16'
+    const OPENER_SHOW = '/?scene=artists&artist=blancmange&show=2026-09-16'
+    const CLIP = `${SHOW}&photo=thompson-twins-01-video`
+
+    function serve({ assets = [], index, shareImage = 'image/jpeg', aliases = { sameAct: [] }, page = PAGE, night = concert } = {}) {
+      vi.mocked(fetch).mockImplementation(async (input) => {
+        const url = String(input?.url ?? input)
+        const json = (body) => new Response(JSON.stringify(body), { status: 200 })
+        if (url.includes('/og/shows/')) return new Response(null, { status: 200, headers: { 'Content-Type': shareImage } })
+        if (url.includes('/data/media-index.json')) return index ? index() : json({ assets })
+        if (url.includes('/data/concerts.json')) return json({ concerts: [night] })
+        if (url.includes('/data/artists-metadata.json')) return json(artists)
+        if (url.includes('/data/artist-aliases.json')) return json(aliases)
+        if (url.includes('/data/')) return json({})
+        return htmlResponse(page)
+      })
+    }
+
+    async function pageFor(link, options) {
+      serve(options)
+      return (await worker.fetch(req(link), {}, ctx)).text()
+    }
+
+    /** Every object in the page's JSON-LD, read the way a crawler does: parse, don't substring. */
+    function objectsIn(body) {
+      const blocks = [...body.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)]
+      return blocks.flatMap(([, json]) => JSON.parse(json)['@graph'])
+    }
+    const ofType = (body, type) => objectsIn(body).filter((o) => o['@type'] === type)
+
+    describe('a clip', () => {
+      it('gets a complete VideoObject', async () => {
+        const body = await pageFor(CLIP, { assets: [clip, own, room] })
+        expect(objectsIn(body)).toEqual([
+          {
+            '@type': 'VideoObject',
+            name: 'Thompson Twins: Hold Me Now',
+            description: 'Thompson Twins playing "Hold Me Now" at Pavilion Theatre, Glasgow, UK on September 16, 2026. Filmed by Mike Morper.',
+            thumbnailUrl: clip.poster,
+            contentUrl: clip.url,
+            duration: 'PT15S',
+            uploadDate: '2026-11-01T20:47:21.000Z',
+            about: { '@type': 'MusicGroup', name: 'Thompson Twins' },
+            creator: { '@type': 'Person', name: 'Mike Morper' },
+            creditText: 'Mike Morper',
+          },
+        ])
+      })
+
+      it('credits the act on the clip, never the headliner', async () => {
+        const body = await pageFor(`${OPENER_SHOW}&photo=blancmange-01-video`, { assets: [openerClip] })
+        const [video] = ofType(body, 'VideoObject')
+        expect(video.name).toBe('Blancmange, September 16, 2026')
+        expect(video.about).toEqual({ '@type': 'MusicGroup', name: 'Blancmange' })
+        expect(JSON.stringify(video)).not.toContain('Thompson Twins')
+      })
+
+      it('is not marked up on a gatefold that does not hold it', async () => {
+        const body = await pageFor(`${SHOW}&photo=blancmange-01-video`, { assets: [openerClip] })
+        expect(objectsIn(body)).toEqual([])
+      })
+
+      it('is not marked up without an upload date, rather than borrowing the concert date', async () => {
+        const body = await pageFor(CLIP, { assets: [{ ...clip, uploadedAt: null }] })
+        expect(objectsIn(body)).toEqual([])
+        expect(body).toContain('A video from Thompson Twins')
+      })
+
+      it('stays out of a link with no share image, whose canonical is the show', async () => {
+        const body = await pageFor(CLIP, { assets: [clip, own], shareImage: 'text/html' })
+        expect(ofType(body, 'VideoObject')).toEqual([])
+        expect(ofType(body, 'ImageObject')).toHaveLength(1)
+      })
+
+      it('adds no og:video or twitter:player', async () => {
+        const body = await pageFor(CLIP, { assets: [clip] })
+        expect(body).not.toContain('og:video')
+        expect(body).not.toContain('twitter:player')
+      })
+
+      it('reaches bots only', async () => {
+        serve({ assets: [clip] })
+        const res = await worker.fetch(req(CLIP, { ua: CHROME }), {}, ctx)
+        expect(await res.text()).toBe(PAGE)
+      })
+    })
+
+    describe('a show page', () => {
+      it('lists a still with its full URL and the owner credited', async () => {
+        const body = await pageFor(SHOW, { assets: [own] })
+        expect(objectsIn(body)).toEqual([
+          {
+            '@type': 'ImageObject',
+            contentUrl: `${SITE}/images/shows/2026-09-16-thompson-twins-10.jpg`,
+            name: 'Thompson Twins at Pavilion Theatre, September 16, 2026',
+            about: { '@type': 'MusicGroup', name: 'Thompson Twins' },
+            creator: { '@type': 'Person', name: 'Mike Morper' },
+            creditText: 'Mike Morper',
+          },
+        ])
+      })
+
+      it('offers no license the owner has not decided on', async () => {
+        const [image] = ofType(await pageFor(SHOW, { assets: [own] }), 'ImageObject')
+        expect(image).not.toHaveProperty('license')
+        expect(image).not.toHaveProperty('acquireLicensePage')
+      })
+
+      it('gives a still link the same frames as its show page', async () => {
+        const assets = [own, room]
+        const show = objectsIn(await pageFor(SHOW, { assets }))
+        const still = objectsIn(await pageFor(`${SHOW}&photo=thompson-twins-10`, { assets }))
+        expect(still).toEqual(show)
+        expect(still).toHaveLength(2)
+      })
+
+      it('credits the room to the venue and to no act', async () => {
+        const [image] = ofType(await pageFor(SHOW, { assets: [room] }), 'ImageObject')
+        expect(image.name).toBe('Pavilion Theatre, September 16, 2026')
+        expect(image.about).toEqual({ '@type': 'MusicVenue', name: 'Pavilion Theatre' })
+        expect(JSON.stringify(image)).not.toContain('Thompson Twins')
+      })
+
+      it('keeps an opener in its own gatefold, credited to the opener', async () => {
+        const assets = [own, opener, room]
+        const urls = (body) => ofType(body, 'ImageObject').map((o) => o.contentUrl.split('/').pop())
+
+        const headliner = await pageFor(SHOW, { assets })
+        expect(urls(headliner)).toEqual(['2026-09-16-thompson-twins-10.jpg', '2026-09-16-venue-01.jpg'])
+
+        const openerPage = await pageFor(OPENER_SHOW, { assets })
+        expect(urls(openerPage)).toEqual(['2026-09-16-blancmange-03.jpg', '2026-09-16-venue-01.jpg'])
+        expect(ofType(openerPage, 'ImageObject')[0].name).toBe('Blancmange at Pavilion Theatre, September 16, 2026')
+      })
+
+      it('credits the billing on the frame when an alias opens the gatefold', async () => {
+        const body = await pageFor('/?scene=artists&artist=tom-bailey&show=2026-09-16', {
+          assets: [own],
+          aliases: { sameAct: [{ canonical: 'tom-bailey', name: 'Tom Bailey', billings: ['tom-bailey', 'thompson-twins'] }] },
+        })
+        expect(ofType(body, 'ImageObject')[0].name).toBe('Thompson Twins at Pavilion Theatre, September 16, 2026')
+      })
+
+      it('claims nothing for an act that was not on the bill', async () => {
+        expect(objectsIn(await pageFor('/?scene=artists&artist=depeche-mode&show=2026-09-16', { assets: [own, room] }))).toEqual([])
+      })
+
+      it('leaves out clips, posters and anything unpublished', async () => {
+        const body = await pageFor(SHOW, { assets: [clip, { ...own, url: null }] })
+        expect(objectsIn(body)).toEqual([])
+      })
+
+      it('leaves out another night', async () => {
+        expect(objectsIn(await pageFor(SHOW, { assets: [{ ...own, date: '2024-08-20' }] }))).toEqual([])
+      })
+    })
+
+    describe('when the media index fails', () => {
+      it.each([
+        ['an error status', () => new Response('nope', { status: 500 })],
+        ['a body that is not JSON', () => new Response('<html>', { status: 200 })],
+      ])('keeps the normal meta with no JSON-LD: %s', async (_, index) => {
+        const body = await pageFor(SHOW, { index })
+        expect(body).not.toContain('application/ld+json')
+        expect(body).toContain('The setlist from Thompson Twins at Pavilion Theatre')
+        expect(body).toContain(`<link rel="canonical" href="${SITE}/?scene=artists&amp;artist=thompson-twins&amp;show=2026-09-16" />`)
+      })
+
+      it('keeps a clip link working too', async () => {
+        const body = await pageFor(CLIP, { index: () => { throw new Error('ECONNRESET') } })
+        expect(body).not.toContain('application/ld+json')
+        expect(body).toContain('A video from Thompson Twins')
+      })
+    })
+
+    describe('writing it into the page', () => {
+      it('lands inside the head, beside the site\'s own JSON-LD', async () => {
+        const site = '<script type="application/ld+json">{"@type":"CollectionPage"}</script>'
+        const body = await pageFor(SHOW, { assets: [own], page: PAGE.replace('</head>', `${site}</head>`) })
+        expect(body).toContain(site)
+        expect(body.indexOf('ImageObject')).toBeLessThan(body.indexOf('</head>'))
+        expect(body.match(/<\/head>/g)).toHaveLength(1)
+      })
+
+      it('cannot be broken out of by a title', async () => {
+        const escape = '</script><script>alert(1)</script>'
+        const body = await pageFor(CLIP, { assets: [{ ...clip, song: escape }] })
+        expect(body).not.toContain(escape)
+        expect(ofType(body, 'VideoObject')[0].name).toBe(`Thompson Twins: ${escape}`)
+      })
+
+      it('reads a $ in a name as a dollar sign', async () => {
+        const body = await pageFor(SHOW, { assets: [{ ...own, artist: "A$AP $& $' Rocky" }] })
+        expect(ofType(body, 'ImageObject')[0].name).toContain("A$AP $& $' Rocky")
+      })
+
+      it('leaves a page with no head alone', async () => {
+        const body = await pageFor(SHOW, { assets: [own], page: '<html><body></body></html>' })
+        expect(body).toBe('<html><body></body></html>')
+      })
+    })
+  })
+
   describe('artist meta counts billings, not headliners', () => {
     // The one exception to the "content is deliberately under-tested" rule at the
     // top of this file. A wrong count is not a card that degrades — it is a card

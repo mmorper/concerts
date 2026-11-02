@@ -5,6 +5,7 @@
  * is pinned here is the gate. A wrong clip must not reach the site, a clip must not go live
  * unverified, and nothing goes public without being named.
  */
+import { readFileSync } from 'fs'
 import { describe, it, expect } from 'vitest'
 import { mediaId } from '../../src/components/ask/media'
 import type { MediaAsset } from '../../scripts/media/media-index'
@@ -303,6 +304,19 @@ function fakeCdn(bytes: Buffer, over: { status?: number; contentType?: string; c
   }) as typeof fetch
   return { impl, calls }
 }
+
+describe('the published index', () => {
+  // The meta-injector leaves a clip without this out of its structured data, and says nothing.
+  it('records when every published clip went up, and never the night it was filmed', () => {
+    const { assets } = JSON.parse(readFileSync('public/data/media-index.json', 'utf-8')) as { assets: MediaAsset[] }
+    const published = assets.filter((a) => a.kind === 'video' && a.url)
+    expect(published.length).toBeGreaterThan(0)
+    for (const clip of published) {
+      expect(clip.uploadedAt, clip.url!).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
+      expect(clip.uploadedAt!.startsWith(clip.date), clip.url!).toBe(false)
+    }
+  })
+})
 
 describe('verifyHosted', () => {
   const bytes = Buffer.from(Array.from({ length: 5000 }, (_, i) => i % 251))

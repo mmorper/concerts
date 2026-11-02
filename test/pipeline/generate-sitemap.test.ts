@@ -266,6 +266,7 @@ describe('generate-sitemap.ts', () => {
       duration: 14.6,
       poster: 'https://media.morperhaus.org/posters/2023-08-20-new-order-01.jpg?v=def',
       song: 'Blue Monday',
+      uploadedAt: '2026-11-01T23:49:22.000Z',
     }
     const concerts = {
       concerts: mockConcertsData.concerts.map((c) =>
@@ -344,6 +345,13 @@ describe('generate-sitemap.ts', () => {
       expect(entry).toContain('<video:thumbnail_loc>https://media.morperhaus.org/posters/2023-08-20-new-order-01.jpg?v=def</video:thumbnail_loc>')
       expect(entry).toContain('<video:content_loc>https://media.morperhaus.org/videos/2023-08-20-new-order-01.mp4?v=abc&amp;x=1</video:content_loc>')
       expect(entry).toContain('<video:duration>15</video:duration>')
+      expect(entry).toContain('<video:publication_date>2026-11-01T23:49:22.000Z</video:publication_date>')
+    })
+
+    it('leaves the publication date off rather than using the night it was filmed', async () => {
+      const entry = entryFor(await sitemapWith([{ ...clip, uploadedAt: null }]), CLIP)
+      expect(entry).toContain('<video:video>')
+      expect(entry).not.toContain('<video:publication_date>')
     })
 
     it('credits the act on the clip, never the headliner', async () => {

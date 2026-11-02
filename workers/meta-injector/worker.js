@@ -296,34 +296,121 @@ async function photoShareImage(photo, showDate, origin) {
 }
 
 /**
- * How a night's card opens when the link names no one frame.
+ * What this act's gatefold holds on one night: its own frames and clips, and the room (`nightReel`
+ * in the app). Another act's frames stay in that act's gatefold.
  *
- * The sitemap lists any night with media, and some of those have no setlist, so the card can only
- * promise what this act's gatefold holds: its own frames and the room (`nightReel` in the app).
- * Falls back to the setlist line, because a night reaches the sitemap with one or the other.
+ * Empty for an act not on the bill, because its gatefold has no such night to open. Null when the
+ * index will not load, so the page keeps its normal meta and claims nothing about its media.
  */
-async function nightLead(artistNormalized, date, origin, ctx) {
+async function nightFrames(artistNormalized, concert, origin, ctx) {
   try {
     const response = await cachedJsonFetch(`${origin}/data/media-index.json`, ctx);
-    if (!response.ok) return 'The setlist from';
+    if (!response.ok) return null;
     const { assets = [] } = await response.json();
     const aliases = await fetchArtistAliases(origin, ctx);
     const act = canonicalArtist(aliases, artistNormalized);
-    const frames = assets.filter(
+    if (!billingsOnConcert(concert).some(slug => canonicalArtist(aliases, slug) === act)) return [];
+    return assets.filter(
       a =>
-        a.date === date &&
+        a.date === concert.date &&
         a.url &&
-        (a.subject !== 'artist' || canonicalArtist(aliases, a.artistNormalized) === act)
+        (canonicalArtist(aliases, a.artistNormalized) === act ||
+          (a.kind !== 'video' && a.subject !== 'artist'))
     );
-    const hasStills = frames.some(a => a.kind !== 'video');
-    const hasClips = frames.some(a => a.kind === 'video');
-    if (hasStills && hasClips) return 'Photos and video from';
-    if (hasClips) return 'Video from';
-    return hasStills ? 'Photos from' : 'The setlist from';
   } catch (error) {
     console.warn(`Media index unavailable: ${error.message}`);
-    return 'The setlist from';
+    return null;
   }
+}
+
+/**
+ * How a night's card opens when the link names no one frame.
+ *
+ * The sitemap lists any night with media, and some of those have no setlist, so the card can only
+ * promise what `nightFrames` found. Falls back to the setlist line, because a night reaches the
+ * sitemap with one or the other.
+ */
+function nightLead(frames) {
+  const hasStills = frames?.some(a => a.kind !== 'video');
+  const hasClips = frames?.some(a => a.kind === 'video');
+  if (hasStills && hasClips) return 'Photos and video from';
+  if (hasClips) return 'Video from';
+  return hasStills ? 'Photos from' : 'The setlist from';
+}
+
+// The owner made every frame here. This is a credit, not a license: `license` and
+// `acquireLicensePage` stay off until the owner decides what to offer.
+const OWNER_CREDIT = {
+  creator: { '@type': 'Person', name: 'Mike Morper' },
+  creditText: 'Mike Morper',
+};
+
+/** `mediaId` in `src/utils/deepLinks.ts`, restated because a Worker cannot import from the app. */
+function mediaId(asset) {
+  const stem = asset.url.split('/').pop().split('?')[0].replace(/\.[^.]+$/, '').replace(`${asset.date}-`, '');
+  return asset.kind === 'video' ? `${stem}-video` : stem;
+}
+
+/**
+ * The VideoObject for one clip, worded as its sitemap entry is (`videoEntry`).
+ *
+ * The credit comes from the asset, never the headliner: a frame of an opener credited to the
+ * marquee is fabricated attribution (media-pipeline skill). `uploadDate` is when the web copy
+ * reached R2, recorded by `media:publish-video`, and never the night it was filmed. Google rejects
+ * a VideoObject missing any of these three fields, so such a clip goes unmarked.
+ */
+function clipObject(clip, concert, longDate) {
+  if (!clip.poster || !clip.duration || !clip.uploadedAt) return null;
+  const who = clip.artist ?? concert.venue;
+  const what = clip.song ? `${who} playing "${clip.song}"` : who;
+  const place = [concert.venue, concert.cityState].filter(Boolean).join(', ');
+  return {
+    '@type': 'VideoObject',
+    name: clip.song ? `${who}: ${clip.song}` : `${who}, ${longDate}`,
+    description: `${what} at ${place} on ${longDate}. Filmed by Mike Morper.`,
+    thumbnailUrl: clip.poster,
+    contentUrl: clip.url,
+    duration: `PT${Math.round(clip.duration)}S`,
+    uploadDate: clip.uploadedAt,
+    ...(clip.artist && { about: { '@type': 'MusicGroup', name: clip.artist } }),
+    ...OWNER_CREDIT,
+  };
+}
+
+/** The ImageObject for one still. A frame of the room has no act, so it names the venue alone. */
+function stillObject(still, concert, longDate, origin) {
+  const act = still.subject === 'artist' ? still.artist : null;
+  return {
+    '@type': 'ImageObject',
+    contentUrl: new URL(still.url, origin).href,
+    name: `${act ? `${act} at ${concert.venue}` : concert.venue}, ${longDate}`,
+    about: act ? { '@type': 'MusicGroup', name: act } : { '@type': 'MusicVenue', name: concert.venue },
+    ...OWNER_CREDIT,
+  };
+}
+
+/**
+ * Structured data for one link. A clip's link is about that clip, so it carries nothing else. Any
+ * other link opens the gatefold, so it lists the stills that gatefold holds, and a poster frame is
+ * not one of them. A clip this gatefold does not hold gets nothing, because the page will not show it.
+ */
+function nightObjects(frames, concert, longDate, clipId, origin) {
+  if (!clipId) {
+    return frames.filter(a => a.kind !== 'video').map(a => stillObject(a, concert, longDate, origin));
+  }
+  const clip = frames.find(a => a.kind === 'video' && mediaId(a) === clipId);
+  const object = clip && clipObject(clip, concert, longDate);
+  return object ? [object] : [];
+}
+
+/**
+ * Add JSON-LD to the head. Escaping `<` keeps a title from closing the script tag, and the replacer
+ * function keeps a `$` in a name from being read as a replacement pattern.
+ */
+function injectJsonLd(html, objects) {
+  if (objects.length === 0) return html;
+  const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': objects }).replace(/</g, '\\u003c');
+  return html.replace('</head>', () => `<script type="application/ld+json">${json}</script></head>`);
 }
 
 /**
@@ -376,11 +463,9 @@ async function injectShowMeta(html, artistNormalized, showDate, origin, ctx, pho
 
     const title = `${artistName} at ${concert.venue} · ${longDate} | Morperhaus Concert Archives`;
     const photoImage = await photoShareImage(photo, concert.date, origin);
-    const lead = !photoImage
-      ? await nightLead(artistNormalized, concert.date, origin, ctx)
-      : photo.endsWith('-video')
-        ? 'A video from'
-        : 'A photo from';
+    const clipId = photoImage && photo.endsWith('-video') ? photo : null;
+    const frames = await nightFrames(artistNormalized, concert, origin, ctx);
+    const lead = !photoImage ? nightLead(frames) : clipId ? 'A video from' : 'A photo from';
     const description =
       `${lead} ${artistName} at ${concert.venue}, ${concert.cityState || concert.city} ` +
       `on ${longDate}, from a personal concert archive spanning four decades.`;
@@ -391,7 +476,7 @@ async function injectShowMeta(html, artistNormalized, showDate, origin, ctx, pho
     const pageUrl = showUrl + (photoImage ? `&photo=${photo}` : '');
     // A clip is the main content of its link, so it can rank alone. A still stays with its night:
     // 150 near-identical pages would only compete with the show page.
-    const canonicalUrl = photoImage && photo.endsWith('-video') ? pageUrl : showUrl;
+    const canonicalUrl = clipId ? pageUrl : showUrl;
 
     html = html.replace(/<title>.*?<\/title>/, `<title>${escapeTitleText(title)}</title>`);
     html = html.replace(
@@ -424,6 +509,7 @@ async function injectShowMeta(html, artistNormalized, showDate, origin, ctx, pho
     );
 
     html = injectPageIdentity(html, title, pageUrl, canonicalUrl);
+    html = injectJsonLd(html, nightObjects(frames ?? [], concert, longDate, clipId, origin));
 
     console.log(`[Show Meta Injected] ${artistName} at ${concert.venue}, ${concert.date}`);
     return html;
