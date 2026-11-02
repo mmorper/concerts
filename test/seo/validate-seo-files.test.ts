@@ -49,6 +49,25 @@ describe('SEO Files Validation', () => {
       expect(content).toContain('Claude-Web')
     })
 
+    it('should keep AI training crawlers off the personal images', () => {
+      const robotsPath = path.join(publicDir, 'robots.txt')
+      const content = fs.readFileSync(robotsPath, 'utf-8')
+
+      // The group, up to the blank line that ends it. Scoped to one group so the
+      // rule cannot pass by landing on a bot that is meant to stay welcome.
+      const group = content.slice(content.indexOf('User-agent: GPTBot')).split('\n\n')[0]
+
+      for (const bot of ['GPTBot', 'ClaudeBot', 'CCBot', 'Google-Extended']) {
+        expect(group).toContain(`User-agent: ${bot}`)
+      }
+      expect(group).toContain('Disallow: /images/shows/')
+      expect(group).toContain('Disallow: /og/')
+
+      // Share previews and assistants fetching a link for someone must keep working.
+      expect(group).not.toContain('Twitterbot')
+      expect(group).not.toContain('ChatGPT-User')
+    })
+
     it('should allow social media crawlers', () => {
       const robotsPath = path.join(publicDir, 'robots.txt')
       const content = fs.readFileSync(robotsPath, 'utf-8')

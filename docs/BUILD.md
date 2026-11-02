@@ -316,7 +316,7 @@ The JSON-LD provides machine-readable structure for:
 
 **Key Directives**:
 - Allow all crawlers (`User-agent: *`, `Allow: /`)
-- Explicitly welcome AI bots (GPTBot, ClaudeBot, Google-Extended, PerplexityBot)
+- Explicitly welcome AI bots (GPTBot, ClaudeBot, Google-Extended, PerplexityBot), with training crawlers kept off `/images/shows/` and `/og/`
 - Welcome social media scrapers (Facebook, Twitter, LinkedIn)
 - Declare sitemap location
 - Rate limit: 1 second crawl delay
