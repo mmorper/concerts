@@ -1,9 +1,10 @@
-// The list under the Ask box as you type. Every row links to where that thing lives, and the last
-// row hands the words to the model, so looking something up never spends a model call.
+// The list under the Ask box as you type. Every row links to where that thing lives, except a
+// song, which opens its card here. The last row hands the words to the model, so looking something
+// up never spends a model call.
 
 import { analytics } from '@/services/analytics'
 import { FramedPhoto, LadderImage } from './AskMedia'
-import type { SearchEntry } from './search'
+import type { SearchEntry, SongRow } from './search'
 
 export const optionId = (listId: string, index: number) => `${listId}-${index}`
 
@@ -22,6 +23,7 @@ export function AskSearchMatches({
   over,
   busy,
   onAsk,
+  onSong,
 }: {
   id: string
   query: string
@@ -31,6 +33,8 @@ export function AskSearchMatches({
   over: boolean
   busy: boolean
   onAsk: () => void
+  /** A song is heard on several nights, so it opens a card here rather than one of them. */
+  onSong?: (song: SongRow) => void
 }) {
   return (
     <div id={id} className={`ask-matches ${over ? 'over' : ''}`} role="listbox" aria-label="Matches in the archive">
@@ -43,9 +47,15 @@ export function AskSearchMatches({
           role="option"
           aria-selected={i === active}
           tabIndex={-1}
-          onClick={() =>
+          onClick={(e) => {
             analytics.trackEvent('ask_search_match_clicked', { result_kind: m.kind, position: i, search_term: query })
-          }
+            // A new tab still gets the link: the last night it was heard.
+            const plain = !(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) && e.button === 0
+            if (m.song && onSong && plain && !busy) {
+              e.preventDefault()
+              onSong(m.song)
+            }
+          }}
         >
           <span className="thumb">
             <Thumb entry={m} />

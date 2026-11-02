@@ -125,11 +125,22 @@ export function useAskArchive(options: UseAskArchiveOptions = {}) {
     [busy, exchanges, ensureSession],
   )
 
+  // An answer the site already holds, like a song picked from the matches. It joins the transcript
+  // as a finished turn with no model call, and its prose becomes history for a follow-up question.
+  const show = useCallback(
+    (question: string, prose: string, exhibit: Exhibit) => {
+      if (busy) return
+      setExchanges((xs) => [...xs, { id: nextId(), question, prose, exhibit, status: 'done' }])
+      analytics.trackEvent('ask_exhibit_shown', { kind: exhibit.kind })
+    },
+    [busy],
+  )
+
   const reset = useCallback(() => {
     abortRef.current?.abort()
     setExchanges([])
     setBusy(false)
   }, [])
 
-  return { exchanges, busy, ask, reset }
+  return { exchanges, busy, ask, show, reset }
 }

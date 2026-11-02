@@ -18,7 +18,7 @@ const SUGGESTED_PROMPTS = [
 ]
 
 export function AskSpotlight() {
-  const { open, close, exchanges, busy, ask, archive } = useAsk()
+  const { open, close, exchanges, busy, ask, show, archive } = useAsk()
   const paletteRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -110,6 +110,7 @@ export function AskSpotlight() {
           busy={busy}
           archive={archive}
           onAsk={ask}
+          onShow={show}
           suggestedPrompts={SUGGESTED_PROMPTS}
           emptyHint={EMPTY_HINT}
           autoFocus

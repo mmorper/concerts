@@ -4,7 +4,7 @@ import mediaIndex from '../../../public/data/media-index.json'
 import { indexConcerts } from '@/hooks/useArchiveData'
 import { buildMediaIndex, EMPTY_MEDIA, type MediaAsset } from './media'
 import { CLIP_PROMPT } from './prompts'
-import { buildSearchEntries, fold, MATCH_LIMIT, searchArchive, type SearchSources, type SongRow } from './search'
+import { buildSearchEntries, fold, MATCH_LIMIT, readSongIndex, searchArchive, songAnswer, type SearchSources, type SongRow } from './search'
 
 const concert = (over: Partial<Concert>): Concert =>
   ({
@@ -24,8 +24,7 @@ const song = (over: Partial<SongRow>): SongRow => ({
   name: 'Lullaby',
   act: 'The Cure',
   slug: 'the-cure',
-  count: 2,
-  lastDate: '2023-05-24',
+  dates: ['2023-05-24', '1989-08-03'],
   ...over,
 })
 
@@ -100,7 +99,7 @@ describe('searchArchive', () => {
   })
 
   it('never lets songs fill the list', () => {
-    const songs = Array.from({ length: 12 }, (_, i) => song({ name: `Curious ${i}`, slug: 'x', count: 12 - i }))
+    const songs = Array.from({ length: 12 }, (_, i) => song({ name: `Curious ${i}`, slug: 'x', dates: Array(12 - i).fill('2020-01-01') }))
     const hits = searchArchive(entriesFor([concert({})], { songs }), 'cu')
     expect(hits.length).toBeLessThanOrEqual(MATCH_LIMIT)
     expect(hits.filter((e) => e.kind === 'song')).toHaveLength(3)
@@ -115,12 +114,14 @@ describe('buildSearchEntries', () => {
     expect(band.sub).toBe('1 show · 1 clip')
   })
 
-  it('sends a song I heard to the last night I heard it', () => {
-    const [hit] = searchArchive(entriesFor([concert({})], { songs: [song({})] }), 'lullaby')
+  it('carries the song for its card, and links a new tab to the last night', () => {
+    const lullaby = song({})
+    const [hit] = searchArchive(entriesFor([concert({})], { songs: [lullaby] }), 'lullaby')
     expect(hit).toMatchObject({
       kind: 'song',
       sub: 'The Cure, heard 2 times',
       href: '/?scene=artists&artist=the-cure&show=2023-05-24',
+      song: lullaby,
     })
   })
 
@@ -137,6 +138,47 @@ describe('buildSearchEntries', () => {
     const media = buildMediaIndex([clip])
     const songs = [song({ name: 'A Forest', act: 'Tribute', slug: 'tribute' })]
     expect(searchArchive(entriesFor([concert({})], { media, songs }), 'forest')).toHaveLength(2)
+  })
+})
+
+describe('readSongIndex', () => {
+  it('looks up each song\'s record by its position', () => {
+    const disintegration = { mbid: 'm1', title: 'Disintegration', releaseDate: '1989-05-02', coverAvailable: true }
+    const rows = readSongIndex({
+      songs: [
+        { name: 'Lullaby', act: 'The Cure', slug: 'the-cure', dates: ['2023-05-24'], album: 0 },
+        { name: 'Untitled', act: 'The Cure', slug: 'the-cure', dates: ['2023-05-24'] },
+      ],
+      albums: [disintegration],
+    })
+    expect(rows.map((r) => r.album)).toEqual([disintegration, undefined])
+  })
+
+  it('reads a missing file as no songs', () => {
+    expect(readSongIndex({})).toEqual([])
+  })
+})
+
+describe('songAnswer', () => {
+  it('asks the song and answers with every night, newest first', () => {
+    const { question, prose, exhibit } = songAnswer(song({}))
+    expect(question).toBe('Lullaby')
+    expect(prose).toBe('I heard The Cure play “Lullaby” 2 times, first in 1989 and last in 2023.')
+    expect(exhibit).toEqual({
+      kind: 'song',
+      title: 'Lullaby',
+      artist: { entity: 'artist', slug: 'the-cure', name: 'The Cure', deepLink: '/?scene=artists&artist=the-cure' },
+      dates: ['2023-05-24', '1989-08-03'],
+      album: null,
+    })
+  })
+
+  it('says once, with the date, for a song heard one night', () => {
+    expect(songAnswer(song({ dates: ['2023-05-24'] })).prose).toBe('I heard The Cure play “Lullaby” once, on May 24, 2023.')
+  })
+
+  it('says so when every night fell in one year', () => {
+    expect(songAnswer(song({ dates: ['2023-05-25', '2023-05-24'] })).prose).toContain('2 times, all in 2023')
   })
 })
 

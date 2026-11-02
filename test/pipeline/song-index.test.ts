@@ -22,18 +22,16 @@ const setlist = (concertId: string, artistName: string, songs: string[]) => ({
 describe("buildSongIndex", () => {
   it("keeps a song heard once, which the most-played list drops", () => {
     const { songs } = buildSongIndex([concert("a", "2020-01-01")], [setlist("a", "Social Distortion", ["Ring of Fire"])]);
-    expect(songs).toEqual([
-      { name: "Ring of Fire", act: "Social Distortion", slug: "social-distortion", count: 1, lastDate: "2020-01-01" },
-    ]);
+    expect(songs).toEqual([{ name: "Ring of Fire", act: "Social Distortion", slug: "social-distortion", dates: ["2020-01-01"] }]);
   });
 
-  it("counts a song once a night and remembers the last night", () => {
-    const concerts = [concert("a", "2024-01-01"), concert("b", "2020-01-01")];
+  it("counts a song once a night and keeps every night, newest first", () => {
+    const concerts = [concert("b", "2020-01-01"), concert("a", "2024-01-01")];
     const entries = [
       setlist("a", "Social Distortion", ["Ring of Fire", "ring of fire!"]),
       setlist("b", "Social Distortion", ["Ring of Fire"]),
     ];
-    expect(buildSongIndex(concerts, entries).songs[0]).toMatchObject({ count: 2, lastDate: "2024-01-01" });
+    expect(buildSongIndex(concerts, entries).songs[0].dates).toEqual(["2024-01-01", "2020-01-01"]);
   });
 
   it("gives each act its own row for the same song", () => {
@@ -48,5 +46,17 @@ describe("buildSongIndex", () => {
 
     const onlyOpener = [setlist("a", "Opener", ["Support Song"])];
     expect(buildSongIndex([concert("a", "2020-01-01")], onlyOpener).songs[0]).toMatchObject({ act: "Opener", slug: "opener" });
+  });
+
+  it("names the record a song came off, listing each record once", () => {
+    const record = { albumTitle: "Ring of Fire: The Best of", mbid: "m1", releaseDate: "1963", coverAvailable: true };
+    const entries = [setlist("a", "Social Distortion", ["Ring of Fire", "Ball and Chain", "Story of My Life"])];
+    const index = buildSongIndex([concert("a", "2020-01-01")], entries, {
+      "social-distortion::ring-of-fire": record,
+      "social-distortion::ball-and-chain": record,
+    });
+    expect(index.albums).toEqual([{ mbid: "m1", title: "Ring of Fire: The Best of", releaseDate: "1963", coverAvailable: true }]);
+    const album = Object.fromEntries(index.songs.map((s) => [s.name, s.album]));
+    expect(album).toEqual({ "Ring of Fire": 0, "Ball and Chain": 0, "Story of My Life": undefined });
   });
 });

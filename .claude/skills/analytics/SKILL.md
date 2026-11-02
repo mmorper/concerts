@@ -311,7 +311,8 @@ fires these itself.
 **Ask the Archive (Scene 6):**
 - `ask_search_match_clicked` — A match in the type-ahead list: `result_kind` (band, venue, year,
   clip, song), `position`, `search_term`. A match costs no model call, so `ask_question_sent` never
-  sees it
+  sees it. A song match then opens its card in Ask, which fires `ask_exhibit_shown` with
+  `kind: song`
 
 **Timeline (Scene 1):**
 - `timeline_year_selected`

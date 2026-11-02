@@ -5,6 +5,7 @@
 
 import { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react'
 import { useAskArchive, type Exchange } from '@/hooks/useAskArchive'
+import type { Exhibit } from '@/types/exhibit'
 import { useAskSession } from '@/hooks/useAskSession'
 import { useArchiveData } from '@/hooks/useArchiveData'
 import type { ArchiveLookups } from './types'
@@ -24,6 +25,8 @@ interface AskContextValue {
   exchanges: Exchange[]
   busy: boolean
   ask: (q: string) => void
+  /** Add an answer the site already holds, with no model call (a song picked from the matches). */
+  show: (question: string, prose: string, exhibit: Exhibit) => void
   reset: () => void
   archive: ArchiveLookups & { loading: boolean }
   // Marks Ask as "used" so the archive data begins loading (the /ask route calls this on mount).
@@ -37,7 +40,7 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
   // Archive data is deferred until Ask is first touched (open or /ask), so other pages don't fetch.
   const [active, setActive] = useState(false)
   const { ensureSession } = useAskSession()
-  const { exchanges, busy, ask, reset } = useAskArchive({ ensureSession })
+  const { exchanges, busy, ask, show, reset } = useAskArchive({ ensureSession })
   const archive = useArchiveData(active)
 
   // Where the overlay was opened from, so close() can restore focus there.
@@ -80,8 +83,8 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
   )
 
   const value = useMemo<AskContextValue>(
-    () => ({ open, openSpotlight, close, exchanges, busy, ask, reset, archive, activate }),
-    [open, openSpotlight, close, exchanges, busy, ask, reset, archive, activate],
+    () => ({ open, openSpotlight, close, exchanges, busy, ask, show, reset, archive, activate }),
+    [open, openSpotlight, close, exchanges, busy, ask, show, reset, archive, activate],
   )
 
   return <AskContext.Provider value={value}>{children}</AskContext.Provider>

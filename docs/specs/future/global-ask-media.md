@@ -174,7 +174,10 @@ The modal must read as search first. The owner's decisions, 2026-11-02:
 **Type-ahead.** Typing replaces the banner with instant matches: bands, venues and clip songs, with
 counts, then "Ask the archive about…". It runs on the site with no model call. It finds
 setlist songs too, from `public/data/song-index.json`, which `generate:most-played-songs` writes. A
-song with no clip opens the last night it was heard. Years are in there as well.
+song with no clip opens a song card in Ask, with no model call: the record it came off and every
+night it was heard, each linking to that night's setlist. A song is spread over several nights, so
+jumping to one of them hid the rest. A new tab still gets the last night. Years are in there as
+well.
 
 **The ⌘K banner.** One large photo banner under the box, with a "Pull another" button.
 Text never rotates on a timer: it would need a pause control and it reads as an ad.
@@ -272,6 +275,7 @@ opening idea, then the Ask scene carousel.
 
 ## Revision History
 
+- **2026-11-02:** A song match opens a song card in Ask, from the owner's review of the live search
 - **2026-11-02:** Imagery ladder and the full set of response layouts added to Phase 6
 - **2026-11-02:** Phase 6 added: the search-first redesign, from the owner's review of the mocks
 - **2026-11-02:** Song search moved into Phase 2, since #612 shipped `song`

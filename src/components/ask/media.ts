@@ -281,10 +281,10 @@ export function heroLayout(p: Pick<Photo, 'width' | 'height' | 'crop'>): 'banner
 // ---------------------------------------------------------------------------------------------
 
 /** "Jun 4, 2026". Dates are calendar dates, so format in UTC — never shift a night by a timezone. */
-export function fmtDate(iso: string): string {
+export function fmtDate(iso: string, withYear = true): string {
   const d = new Date(`${iso}T00:00:00Z`)
   if (Number.isNaN(d.getTime())) return iso
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: withYear ? 'numeric' : undefined, timeZone: 'UTC' })
 }
 
 /** "16 September 2026", the byline's date. Calendar date, so never shifted by a timezone. */

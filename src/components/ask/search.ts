@@ -3,19 +3,32 @@
 // where that thing lives. A question goes to the model only when the visitor asks it.
 
 import type { Concert } from '@/types/concert'
+import type { AlbumIdentity, SongExhibit } from '@/types/exhibit'
 import { artistDeepLink, setlistDeepLink, timelineYearDeepLink, venueDeepLink } from '@/utils/deepLinks'
 import { normalizeArtistName } from '@/utils/normalize'
-import { actClips, frameLink, leadPhoto, venueSourcedPhoto, type MediaIndex, type Photo, type VenuePhotoMeta } from './media'
+import { actClips, fmtDate, frameLink, leadPhoto, venueSourcedPhoto, type MediaIndex, type Photo, type VenuePhotoMeta } from './media'
 
 export type SearchKind = 'band' | 'venue' | 'year' | 'clip' | 'song'
 
-/** One row of public/data/song-index.json. */
+/** One song by one act, from public/data/song-index.json, with its record looked up. */
 export interface SongRow {
   name: string
   act: string
   slug: string
-  count: number
-  lastDate: string
+  /** Every night it was heard, newest first. */
+  dates: string[]
+  album?: AlbumIdentity
+}
+
+/** The file as written: a song names its record by position, so each long id is stored once. */
+export interface SongIndexFile {
+  songs?: Array<Omit<SongRow, 'album'> & { album?: number }>
+  albums?: AlbumIdentity[]
+}
+
+export function readSongIndex(file: SongIndexFile): SongRow[] {
+  const albums = file.albums ?? []
+  return (file.songs ?? []).map(({ album, ...song }) => (album === undefined ? song : { ...song, album: albums[album] }))
 }
 
 export interface SearchEntry {
@@ -26,6 +39,8 @@ export interface SearchEntry {
   /** My photo for the thumbnail, then a sourced image. With neither, the row shows a letter. */
   photo?: Photo | null
   image?: string | null
+  /** A song row opens a card in Ask rather than leaving it. */
+  song?: SongRow
   /** Photos and clips, then shows, order the matches within a tier. */
   media: number
   shows: number
@@ -150,14 +165,39 @@ export function buildSearchEntries({ byArtist, byVenue, artists, venues, media, 
       entry({
         kind: 'song',
         name: s.name,
-        sub: s.count === 1 ? `${s.act}, heard in ${s.lastDate.slice(0, 4)}` : `${s.act}, heard ${s.count} times`,
-        href: setlistDeepLink(s.slug, s.lastDate),
+        sub: s.dates.length === 1 ? `${s.act}, heard in ${s.dates[0].slice(0, 4)}` : `${s.act}, heard ${s.dates.length} times`,
+        // Where a new tab goes. A plain click opens the song's card in Ask instead.
+        href: setlistDeepLink(s.slug, s.dates[0]),
+        song: s,
         media: 0,
-        shows: s.count,
+        shows: s.dates.length,
       }),
     )
 
   return [...bands, ...rooms, ...years, ...clips, ...heard]
+}
+
+/**
+ * A song picked from the matches, as a finished turn: the song as the question, a line of prose,
+ * and its card. The prose is what a follow-up question sees as the answer.
+ */
+export function songAnswer(song: SongRow): { question: string; prose: string; exhibit: SongExhibit } {
+  const n = song.dates.length
+  const last = song.dates[0].slice(0, 4)
+  const first = song.dates[n - 1].slice(0, 4)
+  const when =
+    n === 1 ? `once, on ${fmtDate(song.dates[0])}` : first === last ? `${n} times, all in ${last}` : `${n} times, first in ${first} and last in ${last}`
+  return {
+    question: song.name,
+    prose: `I heard ${song.act} play “${song.name}” ${when}.`,
+    exhibit: {
+      kind: 'song',
+      title: song.name,
+      artist: { entity: 'artist', slug: song.slug, name: song.act, deepLink: artistDeepLink(song.slug) },
+      dates: song.dates,
+      album: song.album ?? null,
+    },
+  }
 }
 
 // 0: the name starts with it, 1: a word in it does, 2: it's in there somewhere, null: no match.

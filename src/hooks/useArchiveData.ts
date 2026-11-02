@@ -8,7 +8,7 @@ import type { Concert } from '@/types/concert'
 import { normalizeArtistName } from '@/utils/normalize'
 import { loadAlbumCovers } from '@/components/ask/albumCovers'
 import { buildMediaIndex, EMPTY_MEDIA, type MediaAsset, type MediaIndex, type VenuePhotoMeta } from '@/components/ask/media'
-import { buildSearchEntries, type SearchEntry, type SongRow } from '@/components/ask/search'
+import { buildSearchEntries, readSongIndex, type SearchEntry, type SongIndexFile, type SongRow } from '@/components/ask/search'
 
 export interface ArtistMeta {
   name: string
@@ -135,9 +135,9 @@ export function useArchiveData(enabled = true): ArchiveData {
       })
     // The same for songs: without the file, the box still finds bands, venues and clips.
     fetch('/data/song-index.json')
-      .then((r) => (r.ok ? r.json() : { songs: [] }))
-      .then((s: { songs?: SongRow[] }) => {
-        if (!cancelled) setSongs(s.songs ?? [])
+      .then((r) => (r.ok ? r.json() : {}))
+      .then((s: SongIndexFile) => {
+        if (!cancelled) setSongs(readSongIndex(s))
       })
       .catch(() => {})
     load().catch(() => {
