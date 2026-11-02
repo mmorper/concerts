@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   buildMediaIndex,
+  nightMediaLabel,
   actPhotosOnNight,
   leadPhoto,
   nightPhoto,
@@ -282,5 +283,14 @@ describe('frame links', () => {
 
   it('finds nothing for a frame the index no longer holds', () => {
     expect(findMedia(ix, '2022-10-07', 'gone-01')).toBeNull()
+  })
+})
+
+describe('nightMediaLabel', () => {
+  it('counts photos and clips, and says nothing for a night with neither', () => {
+    expect(nightMediaLabel(2, 1)).toBe('2 photos, 1 clip')
+    expect(nightMediaLabel(1, 0)).toBe('1 photo')
+    expect(nightMediaLabel(0, 2)).toBe('2 clips')
+    expect(nightMediaLabel(0, 0)).toBe('')
   })
 })

@@ -121,6 +121,12 @@ export function actClips(ix: MediaIndex, actSlug: string): Clip[] {
     .flatMap(([, clips]) => clips.filter((c) => c.artistNormalized === actSlug))
 }
 
+/** "2 photos, 1 clip" — one act's media from one night, or '' when there is none. */
+export function nightMediaLabel(photos: number, clips: number): string {
+  const part = (n: number, word: string) => (n ? `${n} ${word}${n === 1 ? '' : 's'}` : '')
+  return [part(photos, 'photo'), part(clips, 'clip')].filter(Boolean).join(', ')
+}
+
 /** Marquee, exterior, stub, the room before doors. */
 export function venuePhotosOnNight(ix: MediaIndex, date: string): Photo[] {
   return (ix.byDate.get(date) ?? []).filter((p) => p.subject === 'venue')
