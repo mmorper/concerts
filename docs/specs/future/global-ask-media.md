@@ -107,7 +107,9 @@ Photos panel and the Ask viewer, which then takes `ReelItem[]` rather than still
 
 - `surprise_me` gains `kind: 'photo' | 'clip'`, drawing from the social pool in
   `global-social-media-posts.md`.
-- One Spotlight starter, for example "Show me something from the pit."
+- "Got any video of The Cure?" replaces one prompt in `AskScene.tsx` and one in `AskSpotlight.tsx`,
+  so each stays at three. It ships with Phase 3, because before that the answer can't play the
+  clip. A test confirms the act still has a published clip.
 
 ### Phase 5: follow-up chips
 
