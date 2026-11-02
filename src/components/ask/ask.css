@@ -650,3 +650,37 @@ img.chip-av { object-fit: cover; display: block; }
   .ask-gal-tile.more:nth-child(3n) { grid-column: span 2; aspect-ratio: auto; }
   .ask-gal-tile.more:nth-child(3n + 2) { grid-column: span 3; aspect-ratio: auto; min-height: 56px; }
 }
+
+/* A clip leads (Phase 6): the poster, with that night's photos in a column beside it. */
+.ask-clip { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); gap: 10px; height: 420px; }
+.ask-clip.solo { grid-template-columns: minmax(0, 1fr); }
+.ask-clip-poster { position: relative; display: block; border-radius: 12px; overflow: hidden; background: #000; color: #fff; text-decoration: none; }
+.ask-clip-poster > img, .ask-clip-poster > .ask-derived { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ask-clip-poster .shade { position: absolute; left: 0; right: 0; bottom: 0; height: 180px; background: linear-gradient(180deg, rgba(8, 10, 16, 0) 0%, rgba(8, 10, 16, 0.88) 78%); }
+.ask-clip-poster .txt { position: absolute; left: 22px; right: 100px; bottom: 20px; display: flex; flex-direction: column; gap: 3px; }
+.ask-clip-poster .t { font-family: 'Playfair Display', Georgia, serif; font-size: 32px; line-height: 1.1; }
+.ask-clip-poster .s { font-size: 15px; color: rgba(255, 255, 255, 0.88); }
+.ask-clip-poster .play { position: absolute; right: 20px; bottom: 20px; width: 60px; height: 60px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
+.ask-clip-poster:hover .play { transform: scale(1.06); }
+.ask-clip-poster:focus-visible, .ask-clip-thumb:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+.ask-clip-side { display: grid; grid-template-rows: repeat(var(--n, 3), minmax(0, 1fr)); gap: 10px; min-height: 0; }
+.ask-clip-thumb { position: relative; display: block; min-height: 0; border-radius: 10px; overflow: hidden; background: #000; color: #fff; text-decoration: none; }
+.ask-clip-thumb .ask-framed, .ask-clip-thumb .ask-derived { width: 100%; height: 100%; aspect-ratio: auto; }
+.ask-clip-thumb .all { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(8, 10, 16, 0.56); font-size: 15px; font-weight: 600; text-align: center; padding: 6px; }
+/* The other clips sit below as plain tiles: the poster is already the lead. */
+.ask-gallery.after-clip .ask-gal-tile:first-child { grid-column: auto; grid-row: auto; }
+@media (prefers-reduced-motion: reduce) { .ask-clip-poster .play { transition: none; } .ask-clip-poster:hover .play { transform: none; } }
+@media (max-width: 767px) {
+  .ask-clip { grid-template-columns: minmax(0, 1fr); height: auto; gap: 8px; }
+  .ask-clip-poster { aspect-ratio: 3 / 2; }
+  .ask-clip-poster .shade { height: 130px; }
+  .ask-clip-poster .txt { left: 16px; right: 76px; bottom: 14px; }
+  .ask-clip-poster .t { font-size: 26px; }
+  .ask-clip-poster .s { font-size: 13.5px; }
+  .ask-clip-poster .play { right: 14px; bottom: 14px; width: 52px; height: 52px; }
+  .ask-clip-side { grid-template-rows: none; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); }
+  .ask-clip-thumb { aspect-ratio: 1; }
+  .ask-clip-thumb .all { font-size: 13px; }
+  .ask-gallery.after-clip .ask-gal-tile:first-child { grid-column: auto; aspect-ratio: 1; }
+  .ask-gallery.after-clip .ask-gal-tile.more { grid-column: auto; aspect-ratio: 1; min-height: 0; }
+}

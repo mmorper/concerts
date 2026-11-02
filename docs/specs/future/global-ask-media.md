@@ -237,7 +237,10 @@ another night, captioned with that night's date, before it falls to the touring 
 Rankings are done: the songs I've heard most, and the acts I've seen most. The acts ranking is a
 new `acts` exhibit that `get_archive_info` sends, built from `tallyActs` in the MCP server, the
 same tally its prose reads. Each ranking is my photo of the highest-ranked act I've photographed
-beside the list, with the count in large type.
+beside the list, with the count in large type. The clip poster is done: a gallery that leads with
+a clip shows it as a poster that opens in its gatefold, with up to three of that night's photos
+beside it, the act's own then the room's, never another act on the bill. The column holds as many
+rows as it has photos, and a night with none gives the poster the full width.
 
 ---
 
