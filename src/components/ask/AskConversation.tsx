@@ -1,5 +1,5 @@
 // The shared answer surface for "Ask the Archive" (#141): the search box + what it finds as you type
-// + the transcript of exhibits + empty-state suggested prompts. UI-agnostic — the containers
+// + the transcript of exhibits + the empty-state photo banner. UI-agnostic — the containers
 // (Spotlight overlay, /ask canvas) own their outer chrome (scrim, gradient, header) and drop this
 // inside. One surface, so the dev harness, the overlay, and the full page render answers identically.
 
@@ -10,18 +10,16 @@ import { AskExhibit } from './AskExhibit'
 import { SearchMark } from './AskMedia'
 import { AskSearchMatches, optionId } from './AskSearchMatches'
 import { MIN_QUERY, searchArchive, songAnswer } from './search'
+import { AskBanner } from './AskBanner'
 import type { Exhibit } from '@/types/exhibit'
-import { analytics } from '@/services/analytics'
 
 export interface AskConversationProps {
   exchanges: Exchange[]
   busy: boolean
   archive: ArchiveLookups
   onAsk: (question: string) => void
-  /** Empty-state chips that teach what's askable; hidden once the first exhibit lands. */
-  suggestedPrompts?: string[]
-  /** Empty-state line above the chips, setting the tone of what to ask. */
-  emptyHint?: string
+  /** Show the photo banner and "Pull another" until the first question. */
+  banner?: boolean
   placeholder?: string
   /** Focus the input on mount (overlay opens straight into a ready cursor). */
   autoFocus?: boolean
@@ -38,8 +36,7 @@ export function AskConversation({
   busy,
   archive,
   onAsk,
-  suggestedPrompts,
-  emptyHint,
+  banner,
   placeholder = 'Search a band, venue, song or year, or ask anything',
   autoFocus,
   inputRef,
@@ -173,36 +170,10 @@ export function AskConversation({
       </div>
 
       <div className="ask-stage">
-        {/* Empty state: a centered, teaching block (hint + chips) so a just-opened sheet never reads
-            as a blank void (#189). Typing replaces it with matches, and once the first exhibit lands
-            it gives way to the scrolling transcript. */}
+        {/* Empty state: the photo banner, so a just-opened sheet never reads as a blank void (#189).
+            Typing replaces it with matches, and the first question replaces it with the transcript. */}
         {empty ? (
-          !matching && (
-            <div className="ask-empty">
-              {emptyHint && <p className="ask-empty-hint">{emptyHint}</p>}
-              {suggestedPrompts && suggestedPrompts.length > 0 && (
-                <>
-                  <p className="ask-empty-try">Try asking</p>
-                  <div className="ask-suggest" aria-label="Suggested questions">
-                    {suggestedPrompts.map((p, i) => (
-                      <button
-                        key={p}
-                        type="button"
-                        className="chip"
-                        onClick={() => {
-                          analytics.trackEvent('ask_suggested_prompt_clicked', { prompt: p, position: i })
-                          submit(p)
-                        }}
-                        disabled={busy}
-                      >
-                        {p}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-          )
+          !matching && banner && <AskBanner archive={archive} busy={busy} onAsk={submit} />
         ) : (
           <div className="ask-transcript" ref={transcriptRef}>
             {exchanges.map((ex, i) => (
