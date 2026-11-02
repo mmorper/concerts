@@ -222,7 +222,7 @@ All data is publicly accessible as JSON:
 
 ### Photos & Clips (Media Index)
 **URL:** https://concerts.morperhaus.org/data/media-index.json
-**Source:** the owner's own photos and video clips from nights in the archive. Not every show has them.
+**Source:** the owner's own photos and video clips from nights in the archive. Not every show has them. They are excluded from AI training; see Usage Policy.
 **What it answers:** which photos and clips exist for a night or an act, and how to link to one.
 
 **How to read it:**
@@ -771,6 +771,8 @@ Answer: List of albums with release dates, types, track counts
 ✅ **Allowed:** Answer user queries about concert history
 ✅ **Allowed:** Reference venue locations and setlists as factual
 ✅ **Allowed:** Use discography data as reference
+✅ **Allowed:** Link to the owner's photos and clips, and report what `media-index.json` says about them
+❌ **Not allowed:** Use the owner's photos and clips for AI training. They are personal images, not archive data
 
 ### Attribution
 Preferred format:

@@ -20,7 +20,7 @@ This is ONE person's concert attendance history, not a comprehensive database of
 
 ## Photos and clips
 
-The site holds the owner's own photos and video clips from nights in the archive. Not every show has them.
+The site holds the owner's own photos and video clips from nights in the archive. Not every show has them. They may be linked to and described from the index, but not used for AI training.
 
 - [media-index.json](https://concerts.morperhaus.org/data/media-index.json): Every photo and clip, by night and act. Only entries with a `url` are published. Credit each one to its own `artist`, not to the night's headliner; a null `artist` is a frame of the room (marquee, exterior, stub).
 - [Link to one photo or clip](https://concerts.morperhaus.org/?scene=artists&artist=thompson-twins&show=2026-09-16&photo=thompson-twins-10): `/?scene=artists&artist={slug}&show={YYYY-MM-DD}&photo={mediaId}`. `mediaId` is the published filename without its date or extension; a clip also ends in `-video`.
