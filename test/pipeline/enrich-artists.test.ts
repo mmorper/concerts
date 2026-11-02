@@ -4,7 +4,6 @@
  * Covers:
  * - File existence validation
  * - Artist metadata fetching from TheAudioDB
- * - Fallback to Last.fm when TheAudioDB fails
  * - Cache expiry (30 days)
  * - Mock data re-fetching (always stale)
  * - Rate limiting (2 req/sec)
@@ -19,13 +18,6 @@ import * as fs from 'fs'
 // Mock TheAudioDBClient
 vi.mock('../../scripts/utils/theaudiodb-client', () => ({
   TheAudioDBClient: vi.fn(function (this: any, _apiKey: string) {
-    this.getArtistInfo = vi.fn()
-  }),
-}))
-
-// Mock LastFmClient
-vi.mock('../../scripts/utils/lastfm-client', () => ({
-  LastFmClient: vi.fn(function (this: any, _apiKey: string) {
     this.getArtistInfo = vi.fn()
   }),
 }))
@@ -84,8 +76,7 @@ describe('enrich-artists.ts', () => {
     }) as any
 
     // Set environment variables
-    process.env.THEAUDIODB_API_KEY = '2'
-    process.env.LASTFM_API_KEY = 'test-lastfm-key'
+    process.env.THEAUDIODB_API_KEY = '123'
 
     // Stub fetch so the image liveness sweep (#264) stays offline. Without this
     // the suite HEADs whatever placeholder URL a fixture happens to carry, and a

@@ -104,7 +104,6 @@ This table lists all external services used in the data enrichment pipeline:
 | **Google Maps Geocoding** | Venue coordinates | API Key | 50 req/sec | $5/1k requests (free tier: $200/mo) | Step 1: Fetch |
 | **Google Places** | Venue photos/metadata | API Key | 50 req/sec | Variable by operation (free tier: $200/mo) | Step 5: Venues |
 | **TheAudioDB** | Artist photos/bios/genres (primary) | API Key (optional) | 2 req/sec | Free | Step 4: Artists |
-| **Last.fm** | Artist metadata (fallback) | API Key | Variable | Free | Step 4: Artists |
 | **Deezer** | Artist metadata & audio fallback | None | Variable | Free | Step 4: Artists, Step 6: Audio |
 | **iTunes/Apple Music** | Audio preview tracks (primary) | None | ~1.6 req/sec | Free | Step 6: Audio |
 | **MusicBrainz** | Artist discography data | None | 1 req/sec | Free | Step 7: Discography |
@@ -311,11 +310,11 @@ Net change: +3
 
 #### Data Source: TheAudioDB
 
-- Free music metadata API (no API key required for basic tier)
+- Free music metadata API. The free key is "123" and is built in; "2" was retired and returns 404
 - Community-maintained artist database
 - API docs: <https://www.theaudiodb.com/api_guide.php>
 - Rate limit: 2 calls per second (automatically enforced)
-- Setup instructions: See [api-setup.md](api-setup.md) for TheAudioDB and Last.fm configuration
+- Results are accepted only when the name matches the act (`scripts/utils/act-name.ts`)
 
 #### Metadata Fields Collected
 
@@ -346,7 +345,7 @@ artifact, not just the answer (#255, #264):
 - **Before trusting the cache** — every otherwise-fresh record's `image` is
   HEAD-checked. A definitive 4xx demotes it to "must re-fetch" rather than
   leaving a broken image live for the rest of the 30 days.
-- **After writing** — images newly returned by TheAudioDB/Last.fm/Deezer are
+- **After writing** — images newly returned by TheAudioDB or Deezer are
   checked too. Anything still dead loses its `image` field, and the Artist scene
   falls back to `albumCover` or its own placeholder.
 
@@ -990,7 +989,7 @@ See [docs/specs/future/artists-discography.md](specs/future/artists-discography.
 1. **Fetch Google Sheets** → `concerts.json` (always runs)
 2. **Enrich concert genres** → Genre enrichment from artist metadata (always runs)
 3. **Validate concerts** → Quality checks (optional)
-4. **Enrich artist metadata** → TheAudioDB/Last.fm/Deezer (always runs)
+4. **Enrich artist metadata** → TheAudioDB, then Deezer (always runs)
 5. **Enrich venue metadata** → Google Places API (optional)
 6. **Enrich audio preview data** → iTunes/Apple Music (primary), Deezer (fallback) (optional)
 7. **Enrich discography** → MusicBrainz albums (optional)

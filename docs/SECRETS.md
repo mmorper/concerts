@@ -79,8 +79,12 @@ Google OAuth + Maps/Places + music APIs, consumed by `scripts/` locally and by t
 `data-refresh.yml` / `liner-notes.yml` workflows in CI:
 
 `GOOGLE_SHEET_ID` · `GOOGLE_CLIENT_ID` · `GOOGLE_CLIENT_SECRET` · `GOOGLE_REDIRECT_URI` ·
-`GOOGLE_REFRESH_TOKEN` · `GOOGLE_MAPS_API_KEY` · `GOOGLE_PLACES_API_KEY` · `SHEET_RANGE` ·
-`THEAUDIODB_API_KEY` · `LASTFM_API_KEY`
+`GOOGLE_REFRESH_TOKEN` · `GOOGLE_MAPS_API_KEY` · `GOOGLE_PLACES_API_KEY` · `SHEET_RANGE`
+
+Not secrets, and nothing to set: TheAudioDB's free key is public ("123") and built into
+`scripts/utils/theaudiodb-client.ts`. Set `THEAUDIODB_API_KEY` only for a Premium key. Last.fm
+is gone from the pipeline (it serves the same grey star for every artist), so there is no
+`LASTFM_API_KEY`.
 
 Build-time / public (compiled into the client bundle — **not secret**, but set in CI for the
 build): `VITE_SETLISTFM_API_KEY` · `VITE_GA_MEASUREMENT_ID` · `VITE_TURNSTILE_SITE_KEY` ·

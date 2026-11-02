@@ -61,7 +61,7 @@ All concert data starts in a **Google Sheet** I've been maintaining since the pa
 
 But raw data isn't enough. The app enriches everything at build time:
 
-- **Artist photos and metadata** from [TheAudioDB](https://www.theaudiodb.com/), [Last.fm](https://www.last.fm/), and [Deezer](https://www.deezer.com/) (cascading fallbacks)
+- **Artist photos and metadata** from [TheAudioDB](https://www.theaudiodb.com/), then [Deezer](https://www.deezer.com/) when TheAudioDB has no match
 - **Artist discography** from [MusicBrainz](https://musicbrainz.org/) and Cover Art Archive
 - **Venue photos** from Google Places API (96% of venues have images)
 - **Geocoding** for every venue location via Google Maps Geocoding API

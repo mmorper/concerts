@@ -71,7 +71,7 @@ These columns are optional but recommended:
 | `Opener_N` | Additional openers | | Continue numbering as needed |
 | `Reference` | Link or source URL | `https://example.com/concert` | For documentation/verification |
 
-**Note on Genre**: While the script supports an optional `Genre` column, genre data is typically enriched later in the pipeline via external APIs (TheAudioDB, Last.fm).
+**Note on Genre**: While the script supports an optional `Genre` column, genre data is typically enriched later in the pipeline via external APIs (TheAudioDB).
 
 ### Sheet Structure
 

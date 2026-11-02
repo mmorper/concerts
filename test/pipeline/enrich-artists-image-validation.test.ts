@@ -24,11 +24,6 @@ vi.mock('../../scripts/utils/theaudiodb-client', () => ({
     getArtistInfo = getArtistInfo
   },
 }))
-vi.mock('../../scripts/utils/lastfm-client', () => ({
-  LastFmClient: class {
-    getArtistInfo = vi.fn(async () => null)
-  },
-}))
 vi.mock('../../scripts/utils/deezer-client', () => ({
   DeezerClient: class {
     getArtistInfo = vi.fn(async () => null)
