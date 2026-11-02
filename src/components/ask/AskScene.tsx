@@ -1,26 +1,19 @@
 // The Ask scene (#142) — the final snap panel and the canonical home of "Ask the Archive".
 // It fuses the end-of-scroll storytelling coda ("That's over forty years. Now ask me about it.") with
-// the warmth of the old /ask page (suggested prompts, the connector cross-sell). It is NOT a chat
-// page: the composer and prompts open the Spotlight overlay in place (the one chat surface), so
-// there's a single invitation and no duplicated content. Deep-linkable at /?scene=ask.
+// the warmth of the old /ask page (the crate of ideas, the connector cross-sell). It is NOT a chat
+// page: the composer and the crate's cards open the Spotlight overlay in place (the one chat
+// surface), so there's a single invitation and no duplicated content. Deep-linkable at /?scene=ask.
 
 import { useEffect, useRef } from 'react'
 import { useAsk } from './AskProvider'
 import { analytics } from '@/services/analytics'
 import { haptics } from '@/utils/haptics'
 import { SearchMark } from './AskMedia'
-import { CLIP_PROMPT } from './prompts'
+import { AskCrate } from './AskCrate'
 import './ask.css'
 
-// { label } is what's shown; { q } is what we actually ask (so a short chip can fire a fuller query).
-const PROMPTS: { label: string; q: string }[] = [
-  { label: 'Have you ever seen Depeche Mode?', q: 'Have you ever seen Depeche Mode?' },
-  { label: 'Everything at the 9:30 Club', q: 'Show me everything at the 9:30 Club' },
-  { label: CLIP_PROMPT.question, q: CLIP_PROMPT.question },
-]
-
 export function AskScene() {
-  const { openSpotlight, activate } = useAsk()
+  const { openSpotlight, activate, archive } = useAsk()
   const ref = useRef<HTMLElement>(null)
   const viewed = useRef(false)
 
@@ -71,15 +64,11 @@ export function AskScene() {
           <span className="ph">Search a band, venue, song or year, or ask anything</span>
         </button>
 
-        <p className="ask-scene-try">Try asking</p>
-        <div className="ask-scene-prompts">
-          {PROMPTS.map((p) => (
-            <button key={p.label} type="button" onClick={() => openWith(p.q)}>
-              {p.label}
-            </button>
-          ))}
-        </div>
+      </div>
 
+      <AskCrate archive={archive} onAsk={openWith} />
+
+      <div className="ask-scene-wrap">
         <p className="ask-scene-funnel">
           Prefer to ask inside Claude?{' '}
           <a

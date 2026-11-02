@@ -259,6 +259,14 @@ picture follows the ladder. A landscape photo fills the banner. A portrait one s
 at its 4:5 crop, with the byline under the venue and the year large in the space. A sourced image,
 or the type-led tile, is a smaller square in the same place.
 
+The Ask scene carousel is done (`AskCrate.tsx`), which finishes the build order. "Pull one from
+the crate" holds the banner's ideas in the same daily order, so this date's show leads it. The
+cards are tall, so they take any of my frames, not only landscape ones. Each card keeps its byline
+under the text, so a photo from another night or of an opener still says so. It shows five cards
+on desktop and one on a phone. The track is a native scroll-snap row, so a phone swipes it, and
+the arrows page it by one view. With reduced motion they jump instead of gliding. The connector
+link sits below it. The "Try asking" chips and `prompts.ts` are gone.
+
 ---
 
 ## Files

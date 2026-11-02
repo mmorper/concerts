@@ -1,9 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import type { Concert } from '@/types/concert'
-import mediaIndex from '../../../public/data/media-index.json'
 import { indexConcerts } from '@/hooks/useArchiveData'
 import { buildMediaIndex, EMPTY_MEDIA, type MediaAsset } from './media'
-import { CLIP_PROMPT } from './prompts'
 import { buildSearchEntries, fold, MATCH_LIMIT, readSongIndex, searchArchive, songAnswer, type SearchSources, type SongRow } from './search'
 
 const concert = (over: Partial<Concert>): Concert =>
@@ -179,12 +177,5 @@ describe('songAnswer', () => {
 
   it('says so when every night fell in one year', () => {
     expect(songAnswer(song({ dates: ['2023-05-25', '2023-05-24'] })).prose).toContain('2 times, all in 2023')
-  })
-})
-
-describe('the clip prompt', () => {
-  it('names an act with a published clip', () => {
-    const clips = (mediaIndex.assets as MediaAsset[]).filter((a) => a.kind === 'video' && a.artistNormalized === CLIP_PROMPT.act)
-    expect(clips.length).toBeGreaterThan(0)
   })
 })
