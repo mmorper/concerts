@@ -308,6 +308,11 @@ See complete list in: `docs/specs/implemented/global-analytics-tracking.md` (lin
 GA's enhanced measurement only sees YouTube embeds, so a hosted `<video>` reports nothing unless it
 fires these itself.
 
+**Ask the Archive (Scene 6):**
+- `ask_search_match_clicked` — A match in the type-ahead list: `result_kind` (band, venue, year,
+  clip, song), `position`, `search_term`. A match costs no model call, so `ask_question_sent` never
+  sees it
+
 **Timeline (Scene 1):**
 - `timeline_year_selected`
 - `timeline_card_clicked`

@@ -1,6 +1,7 @@
 import type { Concert } from '@/types/concert'
 import type { ArtistFacts, VenueFacts } from '@/hooks/useArchiveData'
 import type { MediaIndex } from './media'
+import type { SearchEntry } from './search'
 
 // The hydration surface the exhibit cards draw on (subset of useArchiveData's return).
 export interface ArchiveLookups {
@@ -9,4 +10,5 @@ export interface ArchiveLookups {
   media: MediaIndex
   artistFacts: (slug: string) => ArtistFacts
   venueFacts: (slug: string) => VenueFacts
+  searchEntries: SearchEntry[]
 }

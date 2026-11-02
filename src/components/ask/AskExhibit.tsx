@@ -387,17 +387,9 @@ export function AskExhibit({ exchange, archive }: { exchange: Exchange; archive:
   if (status === 'refused' || status === 'error') return <RefusalCard ex={exchange} />
 
   // Hold the card back until the answer is composed: rather than paint an empty frame (which
-  // reads as "broken") and a churn of "consulting…" text, show one quiet loading cue and only
-  // hydrate the real exhibit once the `exhibit` event lands.
-  if (!exhibit) {
-    return (
-      <div className="ask-loading" role="status" aria-label="Composing an answer">
-        <span className="ask-loading-dot" />
-        <span className="ask-loading-dot" />
-        <span className="ask-loading-dot" />
-      </div>
-    )
-  }
+  // reads as "broken") and a churn of "consulting…" text, the box shows the question and its
+  // thinking dots, and the real exhibit hydrates here once the `exhibit` event lands.
+  if (!exhibit) return null
 
   switch (exhibit.kind) {
     case 'artist':

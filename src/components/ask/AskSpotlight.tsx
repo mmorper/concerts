@@ -6,13 +6,14 @@
 import { useEffect, useRef } from 'react'
 import { useAsk } from './AskProvider'
 import { AskConversation } from './AskConversation'
+import { CLIP_PROMPT } from './prompts'
 
 // Empty-state scaffolding for a just-opened sheet (#189). Mirrors the Ask scene's voice + prompts
 // so opening the overlay never lands on a blank surface (especially the full-screen mobile sheet).
 const EMPTY_HINT = "Ask it the way you'd ask a friend who never misses a show."
 const SUGGESTED_PROMPTS = [
   'Have you ever seen Depeche Mode?',
-  'Everything at the 9:30 Club',
+  CLIP_PROMPT.question,
   'Surprise me',
 ]
 
@@ -32,7 +33,7 @@ export function AskSpotlight() {
       }
       if (e.key === 'Tab') {
         const focusables = paletteRef.current?.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])',
+          'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), input, [tabindex]:not([tabindex="-1"])',
         )
         if (!focusables || focusables.length === 0) return
         const first = focusables[0]
@@ -91,6 +92,7 @@ export function AskSpotlight() {
         aria-modal="true"
         aria-label="Ask the Archive"
       >
+        {/* Phone only: the box leads on desktop, with esc beside it. */}
         <div className="ask-spot-head">
           {/* Mobile back affordance — on a full-screen sheet there's no esc key or scrim to tap, so
               "esc" (kept for desktop) is replaced by a real ‹ control (#189). */}
@@ -101,9 +103,6 @@ export function AskSpotlight() {
             <span className="ask-live-dot" aria-hidden="true" />
             Ask the archive
           </span>
-          <button type="button" className="ask-esc" onClick={() => close()} aria-label="Close (Esc)">
-            esc
-          </button>
         </div>
 
         <AskConversation
@@ -115,6 +114,11 @@ export function AskSpotlight() {
           emptyHint={EMPTY_HINT}
           autoFocus
           inputRef={inputRef}
+          dockEnd={
+            <button type="button" className="ask-esc" onClick={() => close()} aria-label="Close (Esc)">
+              esc
+            </button>
+          }
         />
       </div>
     </div>

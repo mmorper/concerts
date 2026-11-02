@@ -1,5 +1,5 @@
 // The Ask scene (#142) — the final snap panel and the canonical home of "Ask the Archive".
-// It fuses the end-of-scroll storytelling coda ("That's forty years. Now ask me about it.") with
+// It fuses the end-of-scroll storytelling coda ("That's over forty years. Now ask me about it.") with
 // the warmth of the old /ask page (suggested prompts, the connector cross-sell). It is NOT a chat
 // page: the composer and prompts open the Spotlight overlay in place (the one chat surface), so
 // there's a single invitation and no duplicated content. Deep-linkable at /?scene=ask.
@@ -8,13 +8,15 @@ import { useEffect, useRef } from 'react'
 import { useAsk } from './AskProvider'
 import { analytics } from '@/services/analytics'
 import { haptics } from '@/utils/haptics'
+import { SearchMark } from './AskMedia'
+import { CLIP_PROMPT } from './prompts'
 import './ask.css'
 
 // { label } is what's shown; { q } is what we actually ask (so a short chip can fire a fuller query).
 const PROMPTS: { label: string; q: string }[] = [
   { label: 'Have you ever seen Depeche Mode?', q: 'Have you ever seen Depeche Mode?' },
   { label: 'Everything at the 9:30 Club', q: 'Show me everything at the 9:30 Club' },
-  { label: 'What did you see in 1998?', q: 'What did you see in 1998?' },
+  { label: CLIP_PROMPT.question, q: CLIP_PROMPT.question },
 ]
 
 export function AskScene() {
@@ -55,7 +57,7 @@ export function AskScene() {
       <div className="ask-scene-wrap">
         <p className="ask-scene-kicker">You&rsquo;ve reached the present</p>
         <h1>
-          That&rsquo;s forty years.
+          That&rsquo;s over forty years.
           <br />
           Now ask me about it.
         </h1>
@@ -64,10 +66,9 @@ export function AskScene() {
           ask a friend who never misses a show.
         </p>
 
-        <button type="button" className="ask-scene-composer" onClick={openBlank} aria-label="Ask the archive">
-          <span className="ask-live-dot" aria-hidden="true" />
-          <span className="ph">Ask me about a band, a venue, a year… or just say &ldquo;surprise me&rdquo;</span>
-          <span className="send" aria-hidden="true">↑</span>
+        <button type="button" className="ask-scene-composer" onClick={openBlank} aria-label="Search or ask the archive">
+          <SearchMark />
+          <span className="ph">Search a band, venue, song or year, or ask anything</span>
         </button>
 
         <p className="ask-scene-try">Try asking</p>

@@ -8,6 +8,7 @@ import type { Concert } from '@/types/concert'
 import { normalizeArtistName } from '@/utils/normalize'
 import { loadAlbumCovers } from '@/components/ask/albumCovers'
 import { buildMediaIndex, EMPTY_MEDIA, type MediaAsset, type MediaIndex, type VenuePhotoMeta } from '@/components/ask/media'
+import { buildSearchEntries, type SearchEntry, type SongRow } from '@/components/ask/search'
 
 export interface ArtistMeta {
   name: string
@@ -54,6 +55,8 @@ interface ArchiveData {
   media: MediaIndex
   artistFacts: (slug: string) => ArtistFacts
   venueFacts: (slug: string) => VenueFacts
+  /** What the Ask box finds as you type. Songs join when their file lands. */
+  searchEntries: SearchEntry[]
 }
 
 const byDate = (a: Concert, b: Concert) => a.date.localeCompare(b.date)
@@ -102,6 +105,7 @@ export function useArchiveData(enabled = true): ArchiveData {
   const [artists, setArtists] = useState<Record<string, ArtistMeta> | null>(null)
   const [venues, setVenues] = useState<Record<string, VenueMeta> | null>(null)
   const [mediaAssets, setMediaAssets] = useState<MediaAsset[] | null>(null)
+  const [songs, setSongs] = useState<SongRow[]>([])
 
   useEffect(() => {
     if (!enabled) return
@@ -129,6 +133,13 @@ export function useArchiveData(enabled = true): ArchiveData {
       .catch(() => {
         if (!cancelled) setMediaAssets([])
       })
+    // The same for songs: without the file, the box still finds bands, venues and clips.
+    fetch('/data/song-index.json')
+      .then((r) => (r.ok ? r.json() : { songs: [] }))
+      .then((s: { songs?: SongRow[] }) => {
+        if (!cancelled) setSongs(s.songs ?? [])
+      })
+      .catch(() => {})
     load().catch(() => {
       if (!cancelled) {
         setConcerts([])
@@ -146,6 +157,19 @@ export function useArchiveData(enabled = true): ArchiveData {
 
   const media = useMemo(() => (mediaAssets ? buildMediaIndex(mediaAssets) : EMPTY_MEDIA), [mediaAssets])
 
+  const searchEntries = useMemo(
+    () =>
+      buildSearchEntries({
+        byArtist: indexes.byArtist,
+        byVenue: indexes.byVenue,
+        artists: artists ?? {},
+        venues: venues ?? {},
+        media,
+        songs,
+      }),
+    [indexes, artists, venues, media, songs],
+  )
+
   const loading = concerts === null || artists === null || venues === null
 
   return {
@@ -153,6 +177,7 @@ export function useArchiveData(enabled = true): ArchiveData {
     concertById: (id) => indexes.byId.get(id) ?? null,
     concertByDate: (date) => indexes.onDate.get(date) ?? null,
     media,
+    searchEntries,
 
     artistFacts: (slug) => {
       const shows = indexes.byArtist.get(slug) ?? []

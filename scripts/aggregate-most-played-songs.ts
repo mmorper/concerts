@@ -18,6 +18,9 @@
  *     played it is listed — so "songs I saw most" and "covers/standards" are both
  *     legible.
  *
+ * Also writes public/data/song-index.json for Ask's type-ahead: every song, not only those seen
+ * twice, per act, with the last night it was heard so a match can open that setlist.
+ *
  * Run: npm run generate:most-played-songs (or as part of build-data)
  */
 
@@ -30,6 +33,7 @@ const __dirname = path.dirname(__filename)
 
 interface Concert {
   id: string
+  date: string
   headliner: string
   headlinerNormalized: string
 }
@@ -70,6 +74,18 @@ export interface MostPlayedSongs {
   songs: SongStat[]
 }
 
+/** One song by one act. A cover is its own row, because it opens a different night. */
+export interface SongIndexEntry {
+  name: string
+  act: string
+  slug: string
+  count: number
+  lastDate: string
+}
+export interface SongIndex {
+  songs: SongIndexEntry[]
+}
+
 // Mirrors src/utils/normalize.ts — used to match an entry's artistName to a headliner.
 function normalizeName(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
@@ -90,12 +106,46 @@ function songsOf(entry: SetlistEntry): string[] {
 // Headliner-preferred resolution, identical in spirit to the MCP server's helper:
 // a concert can carry several entries (headliner + each opener), prefer the headliner's,
 // else fall back to the richest set so a covered night still contributes.
-function resolveSongs(entries: SetlistEntry[], headlinerNormalized: string): string[] {
+function resolveEntry(entries: SetlistEntry[], headlinerNormalized: string) {
   const withSongs = entries.map((e) => ({ e, songs: songsOf(e) })).filter((x) => x.songs.length)
-  if (!withSongs.length) return []
+  if (!withSongs.length) return null
   const headliner = withSongs.find((x) => normalizeName(x.e.artistName) === headlinerNormalized)
-  const chosen = headliner ?? [...withSongs].sort((a, b) => b.songs.length - a.songs.length)[0]
-  return chosen.songs
+  return headliner ?? [...withSongs].sort((a, b) => b.songs.length - a.songs.length)[0]
+}
+
+function entriesByConcert(entries: SetlistEntry[]): Map<string, SetlistEntry[]> {
+  const byConcert = new Map<string, SetlistEntry[]>()
+  for (const e of entries) {
+    const arr = byConcert.get(e.concertId) ?? []
+    arr.push(e)
+    byConcert.set(e.concertId, arr)
+  }
+  return byConcert
+}
+
+export function buildSongIndex(concerts: Concert[], entries: SetlistEntry[]): SongIndex {
+  const byConcert = entriesByConcert(entries)
+  const agg = new Map<string, SongIndexEntry>()
+  for (const c of concerts) {
+    const chosen = resolveEntry(byConcert.get(c.id) ?? [], c.headlinerNormalized)
+    if (!chosen) continue
+    const slug = normalizeName(chosen.e.artistName)
+    const seen = new Set<string>() // a song counts once per show
+    for (const raw of chosen.songs) {
+      const key = `${slug}|${songKey(raw)}`
+      if (!songKey(raw) || seen.has(key)) continue
+      seen.add(key)
+      const rec = agg.get(key)
+      if (!rec) {
+        agg.set(key, { name: raw, act: chosen.e.artistName, slug, count: 1, lastDate: c.date })
+        continue
+      }
+      rec.count++
+      if (c.date > rec.lastDate) rec.lastDate = c.date
+    }
+  }
+  const songs = [...agg.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+  return { songs }
 }
 
 export async function generateMostPlayedSongs(): Promise<MostPlayedSongs> {
@@ -106,12 +156,7 @@ export async function generateMostPlayedSongs(): Promise<MostPlayedSongs> {
     fs.readFileSync(path.join(__dirname, '..', 'public', 'data', 'setlists-cache.json'), 'utf-8'),
   )
 
-  const byConcert = new Map<string, SetlistEntry[]>()
-  for (const e of setlists.entries) {
-    const arr = byConcert.get(e.concertId) ?? []
-    arr.push(e)
-    byConcert.set(e.concertId, arr)
-  }
+  const byConcert = entriesByConcert(setlists.entries)
 
   const agg = new Map<
     string,
@@ -120,8 +165,8 @@ export async function generateMostPlayedSongs(): Promise<MostPlayedSongs> {
   let concertsWithSetlist = 0
 
   for (const c of concertsData.concerts) {
-    const songs = resolveSongs(byConcert.get(c.id) ?? [], c.headlinerNormalized)
-    if (!songs.length) continue
+    const songs = resolveEntry(byConcert.get(c.id) ?? [], c.headlinerNormalized)?.songs
+    if (!songs) continue
     concertsWithSetlist++
 
     const seen = new Set<string>() // a song counts once per show
@@ -163,6 +208,15 @@ export async function generateMostPlayedSongs(): Promise<MostPlayedSongs> {
   }
 }
 
+function writeSongIndex(): void {
+  const dataDir = path.join(__dirname, '..', 'public', 'data')
+  const { concerts }: ConcertsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'concerts.json'), 'utf-8'))
+  const { entries }: SetlistsCache = JSON.parse(fs.readFileSync(path.join(dataDir, 'setlists-cache.json'), 'utf-8'))
+  const index = buildSongIndex(concerts, entries)
+  fs.writeFileSync(path.join(dataDir, 'song-index.json'), JSON.stringify(index) + '\n', 'utf-8')
+  console.log(`✓ ${index.songs.length} songs written to public/data/song-index.json`)
+}
+
 export async function writeMostPlayedSongs(): Promise<void> {
   console.log('🎵 Aggregating most-played songs from setlists...\n')
 
@@ -176,6 +230,7 @@ export async function writeMostPlayedSongs(): Promise<void> {
     `✓ ${data.songs.length} songs seen 2+ times (of ${distinctSongs} distinct) across ${concertsWithSetlist}/${totalConcerts} concerts with setlists`,
   )
   console.log('✓ Written to public/data/most-played-songs.json')
+  writeSongIndex()
 
   console.log('\nTop songs:')
   data.songs.slice(0, 8).forEach((s, i) => {
