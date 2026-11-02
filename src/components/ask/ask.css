@@ -54,15 +54,6 @@
 .ex-prose th:last-child, .ex-prose td:last-child { border-right: none; }
 @keyframes ask-blink { 50% { opacity: 0; } }
 
-.shows { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-.show {
-  font-size: 13px; color: rgba(255, 255, 255, 0.82);
-  background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 8px; padding: 6px 11px; text-decoration: none; white-space: nowrap;
-}
-.show:hover { background: rgba(255, 255, 255, 0.13); }
-.show .yr { color: #fff; font-weight: 600; margin-right: 6px; }
-
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
 .chip {
   font-size: 13px; color: rgba(255, 255, 255, 0.82);
@@ -151,9 +142,8 @@
 .ask-framed, .ask-cover { display: block; width: 100%; object-fit: cover; background: rgba(255, 255, 255, 0.06); }
 .ask-icon { display: inline-block; flex: none; vertical-align: -2px; }
 .ask-cover { aspect-ratio: 1; border-radius: 4px; background: rgba(255, 255, 255, 0.06); }
-img.ex-photo, img.ex-avatar { display: block; object-fit: cover; }
+img.ex-photo { display: block; object-fit: cover; }
 .ex-photo { overflow: hidden; font-size: 18px; }
-.ex-avatar { width: 40px; height: 40px; border-radius: 50%; flex: none; overflow: hidden; font-size: 13px; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.15); }
 
 /* A photo is a button: it opens the lightbox. Reset the button so the photo is the whole look. */
 .ask-photo-btn {
@@ -187,17 +177,30 @@ img.ex-photo, img.ex-avatar { display: block; object-fit: cover; }
 .ask-cap { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 12.5px; color: rgba(255, 255, 255, 0.62); }
 .ask-cap.small { font-size: 12px; margin-top: 4px; }
 
-/* Filmstrip — more frames of the same act. */
-.ask-strip { margin-bottom: 14px; }
 .ask-strip-head, .ask-kick { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.55); margin-bottom: 8px; }
-.ask-strip-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
-.ask-strip-thumb { border-radius: 8px; }
-.ask-strip-thumb .ask-derived { aspect-ratio: 1; font-size: 14px; }
-.ask-strip-thumb .more {
-  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-  background: rgba(10, 8, 30, 0.55); font-size: 17px; font-weight: 600; color: #fff;
+
+/* An act across its nights: the picture beside every night. My photo is the larger column, a
+   sourced image the smaller one, so the owner's work visibly outranks it. */
+.ask-act { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 28px; align-items: start; margin-bottom: 16px; }
+.ask-act.sourced { grid-template-columns: 200px minmax(0, 1fr); }
+/* Stays beside a long list of nights as it scrolls. */
+.ask-act-photo, .ask-act > .ask-act-sourced { position: sticky; top: 0; }
+.ask-act-photo { border-radius: 12px; }
+.ask-act-photo .ask-derived { aspect-ratio: 4 / 5; font-size: 30px; }
+.ask-act-sourced { display: block; width: 100%; aspect-ratio: 1; border-radius: 12px; overflow: hidden; object-fit: cover; font-size: 28px; }
+.ask-act-night {
+  display: grid; grid-template-columns: 112px minmax(0, 1fr) auto; gap: 12px; align-items: center;
+  min-height: 64px; padding: 6px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); color: #fff; text-decoration: none;
 }
-.show .cam { display: inline-flex; vertical-align: -1px; margin-right: 5px; color: #c7d2fe; }
+.ask-act-night:first-child { border-top: none; padding-top: 0; }
+.ask-act-night .d { font-size: 14px; color: rgba(255, 255, 255, 0.62); font-variant-numeric: tabular-nums; }
+.ask-act-night .v { display: flex; flex-direction: column; min-width: 0; }
+.ask-act-night .n { font-size: 17px; }
+.ask-act-night .c { font-size: 13.5px; color: rgba(255, 255, 255, 0.62); }
+.ask-act-night:hover .n { text-decoration: underline; text-underline-offset: 3px; }
+.ask-act-night:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; border-radius: 6px; }
+.ask-act-night .m { display: flex; align-items: center; gap: 10px; font-size: 13px; color: rgba(255, 255, 255, 0.78); white-space: nowrap; }
+.ask-act-night .th { display: block; width: 52px; height: 52px; border-radius: 8px; overflow: hidden; object-fit: cover; flex: none; font-size: 12px; }
 
 /* Venue hero: photo with the map inset, or photo and map side by side for a portrait frame. */
 .ask-venue-hero { position: relative; margin-bottom: 14px; }
@@ -394,10 +397,17 @@ img.chip-av { object-fit: cover; display: block; }
   .ask-answer > .ex-prose > p:first-child { font-size: 22px; line-height: 1.32; }
   .ask-answer > .ex-prose.long > p:first-child { font-size: 17px; line-height: 1.5; }
   .ask-hero.portrait { flex-basis: 40%; }
-  /* Beside a portrait photo the avatar crowds the name; the photo already says who it is. */
-  .ask-hero-side .ex-avatar { display: none; }
-  .ask-strip-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .ask-strip-row > :nth-child(5) { display: none; }
+  /* The picture stacks above the nights; each night puts its date over the venue, and the
+     thumbnail with its count sits to the right. */
+  .ask-act, .ask-act.sourced { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .ask-act-photo, .ask-act > .ask-act-sourced { position: static; }
+  .ask-act-photo { width: 62%; }
+  .ask-act-sourced { width: 120px; }
+  .ask-act-night { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'd m' 'v m'; gap: 2px 12px; }
+  .ask-act-night .d { grid-area: d; font-size: 12.5px; }
+  .ask-act-night .v { grid-area: v; }
+  .ask-act-night .m { grid-area: m; flex-direction: column-reverse; gap: 4px; font-size: 11.5px; }
+  .ask-act-night .th { width: 46px; height: 46px; }
   .ask-nights-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ask-disc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .ask-album-cover { width: 104px; }

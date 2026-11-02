@@ -227,7 +227,10 @@ answer it, it doesn't appear.
 **Build order:** type-ahead and the search box (done), then the response layout, then the banner, then the
 opening idea, then the Ask scene carousel. The response layout ships in two parts. First the shell
 every answer shares (done): a 920px panel, the prose above the exhibit, and no card box. Then the
-per-kind layouts in the table above.
+per-kind layouts in the table above, one at a time. The artist answer is done: my photo (or, for an
+act never photographed, a smaller sourced image) beside every night, with a thumbnail and counts
+only on nights with media. The photo leads at 280px and the sourced image sits at 200px, so the
+owner's work still outranks it.
 
 ---
 

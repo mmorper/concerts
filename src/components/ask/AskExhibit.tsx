@@ -15,7 +15,8 @@ import type { Exchange } from '@/hooks/useAskArchive'
 import type { ArchiveLookups } from './types'
 import type { ArtistExhibit, VenueExhibit, ListExhibit, SerendipityExhibit, DisambiguationExhibit, Exhibit } from '@/types/exhibit'
 import { CameraMark, DerivedArt, FramedPhoto, LadderImage } from './AskMedia'
-import { ChipLink, DeepLink, Filmstrip, Frame, PhotoButton, PhotoHero, Portrait, Prose, captionLookups, useFrameOpener, trackPhotoOpened, yearSpan } from './AskCardParts'
+import { ChipLink, DeepLink, Frame, PhotoButton, Portrait, Prose, captionLookups, useFrameOpener, trackDeepLink, trackPhotoOpened } from './AskCardParts'
+import { setlistDeepLink } from '@/utils/deepLinks'
 import { AlbumCard, DiscographyCard, ShowCard, SongCard } from './AskRecordCards'
 import { GalleryCard } from './AskGalleryCard'
 import { EraCard, ShapeCard, SongsCard } from './AskCareerCards'
@@ -27,6 +28,7 @@ import {
   frameLink,
   heroLayout,
   leadPhoto,
+  nightMediaLabel,
   nightPhoto,
   nightPhotoCount,
   photoCaption,
@@ -37,15 +39,13 @@ import {
 
 // ---------- the cards ----------
 
+// An act across its nights (Phase 6): the picture beside every night I saw them. My photo leads when
+// I have one, at the size that outranks any sourced image; a never-photographed act gets its sourced
+// image, smaller and unbylined. Thumbnails and counts sit only on the nights that have media.
 function ArtistCard({ exhibit, archive }: { exhibit: ArtistExhibit; archive: ArchiveLookups }) {
   const f = archive.artistFacts(exhibit.slug)
   const genre = f.primaryGenre ?? f.meta?.genres?.[0]
   const color = genre ? getGenreColor(genre) : DEFAULT_GENRE_COLOR
-  const metaBits = [genre, f.count ? `${f.count} ${f.count === 1 ? 'show' : 'shows'}` : '', yearSpan(f.firstYear, f.lastYear)]
-    .filter(Boolean)
-    .join(' · ')
-  const chips = f.shows.slice(0, 3)
-  const extra = f.count - chips.length
 
   const all = archive.media.byArtist.get(exhibit.slug) ?? []
   const clips = actClips(archive.media, exhibit.slug)
@@ -53,70 +53,53 @@ function ArtistCard({ exhibit, archive }: { exhibit: ArtistExhibit; archive: Arc
   const lookups = captionLookups(archive)
   const caption = (p: Photo) => photoCaption(p, { aboutAct: exhibit.slug, ...lookups })
   const viewer = useFrameOpener(archive, trackPhotoOpened('artist'))
-  const rest = lead ? all.filter((p) => p !== lead) : []
-  const nights = new Set(all.map((p) => p.date))
-  const stripLabel =
-    nights.size === 1 && lead
-      ? `From ${lookups.venueOf(lead.date) ?? 'that night'}, ${lead.date.slice(0, 4)}`
-      : `My photos · ${nights.size} nights`
-
-  const title = (avatar: boolean) => (
-    <div className="ex-head">
-      {avatar && <Portrait name={exhibit.name} image={f.meta?.image} color={color} className={lead ? 'ex-avatar' : 'ex-photo'} />}
-      <div className="ex-title">
-        <div className="n">{exhibit.name}</div>
-        {metaBits && (
-          <div className="meta">
-            <span className="gd" style={{ background: color }} />
-            {metaBits}
-          </div>
-        )}
-      </div>
-    </div>
-  )
+  const portrait = <Portrait name={exhibit.name} image={f.meta?.image} color={color} className="ask-act-sourced" />
 
   return (
     <Frame>
-      {lead ? (
-        <PhotoHero
-          photo={lead}
-          caption={caption(lead)}
-          onOpen={() => viewer.open(all, all.indexOf(lead))}
-          count={all.length}
-          color={color}
-          name={exhibit.name}
-          side={title(true)}
-        />
-      ) : (
-        title(true)
-      )}
-      <Filmstrip
-        photos={rest}
-        label={stripLabel}
-        onOpen={(i) => viewer.open(all, all.indexOf(rest[i]))}
-        caption={caption}
-        name={exhibit.name}
-        color={color}
-      />
-      {chips.length > 0 && (
-        <div className="shows">
-          {chips.map((c) => {
-            const mine = actPhotosOnNight(archive.media, c.date, exhibit.slug).length > 0
+      <div className={`ask-act ${lead ? 'mine' : 'sourced'}`}>
+        {lead ? (
+          <PhotoButton className="ask-act-photo" onOpen={() => viewer.open(all, all.indexOf(lead))} label={caption(lead)}>
+            <FramedPhoto photo={lead} aspect={0.8} alt={caption(lead)} fallback={portrait} eager />
+            {all.length > 1 && <span className="ask-hero-count">{all.length} photos</span>}
+            <span className="ask-hero-cap">
+              <CameraMark size={12} /> {caption(lead)}
+            </span>
+          </PhotoButton>
+        ) : (
+          portrait
+        )}
+        <div className="ask-nights-list">
+          {f.shows.map((c) => {
+            const photos = actPhotosOnNight(archive.media, c.date, exhibit.slug)
+            const nightClips = clips.filter((k) => k.date === c.date)
+            const media = nightMediaLabel(photos.length, nightClips.length)
+            const thumb = photos[0] ?? null
+            const poster = nightClips[0]?.poster
+            const opening = c.headlinerNormalized !== exhibit.slug ? `opening for ${c.headliner}` : ''
+            const href = setlistDeepLink(exhibit.slug, c.date)
             return (
-              <a key={c.id} className="show" href={`/?scene=venues&venue=${c.venueNormalized}`} onClick={() => analytics.trackEvent('ask_deeplink_clicked', { kind: 'artist', target_scene: 'venues' })}>
-                {mine && (
-                  <span className="cam" title="I have photos from this night">
-                    <CameraMark size={12} />
+              <a key={c.id} className="ask-act-night" href={href} onClick={() => trackDeepLink('artist', href)}>
+                <span className="d">{fmtDate(c.date)}</span>
+                <span className="v">
+                  <span className="n">{c.venue}</span>
+                  <span className="c">{[c.city, opening].filter(Boolean).join(' · ')}</span>
+                </span>
+                {media && (
+                  <span className="m">
+                    <span className="t">{media}</span>
+                    {thumb ? (
+                      <FramedPhoto photo={thumb} aspect={1} alt="" className="th" fallback={<DerivedArt name={exhibit.name} color={color} />} />
+                    ) : (
+                      <LadderImage sources={[poster]} alt="" className="th" fallback={<DerivedArt name={exhibit.name} color={color} />} />
+                    )}
                   </span>
                 )}
-                <span className="yr">{c.year}</span>
-                <span className="vn">{c.venue}</span>
               </a>
             )
           })}
-          {extra > 0 && <span className="show"><span className="yr">+{extra} more</span></span>}
         </div>
-      )}
+      </div>
       <div className="ask-links">
         {clips[0] && (
           <DeepLink href={frameLink(clips[0], exhibit.slug)} kind="artist">

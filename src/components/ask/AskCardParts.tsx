@@ -61,8 +61,6 @@ export function Frame({ children, className = '' }: { children: ReactNode; class
   )
 }
 
-export const yearSpan = (a?: number, b?: number) => (a && b ? (a === b ? `${a}` : `${a}–${b}`) : '')
-
 /** Caption lookups for a photo's own night, from the archive's concerts. */
 export function captionLookups(archive: ArchiveLookups): Pick<CaptionContext, 'venueOf' | 'headlinerOf'> {
   return {
@@ -162,33 +160,6 @@ export function PhotoHero({ photo, caption, onOpen, count, color, name, side }: 
         <p className="ask-cap">
           <CameraMark /> {caption}
         </p>
-      </div>
-    </div>
-  )
-}
-
-/** Up to five thumbnails; the last one carries "+N" when there are more. */
-export function Filmstrip({ photos, label, onOpen, caption, name, color }: {
-  photos: Photo[]
-  label: ReactNode
-  onOpen: (i: number) => void
-  caption: (p: Photo) => string
-  name: string
-  color: string
-}) {
-  if (!photos.length) return null
-  const shown = photos.slice(0, 5)
-  const more = photos.length - shown.length
-  return (
-    <div className="ask-strip">
-      <div className="ask-strip-head">{label}</div>
-      <div className="ask-strip-row">
-        {shown.map((p, i) => (
-          <PhotoButton key={p.url} className="ask-strip-thumb" onOpen={() => onOpen(i)} label={caption(p)}>
-            <FramedPhoto photo={p} aspect={1} alt={caption(p)} fallback={<DerivedArt name={name} color={color} />} />
-            {more > 0 && i === shown.length - 1 && <span className="more">+{more}</span>}
-          </PhotoButton>
-        ))}
       </div>
     </div>
   )
