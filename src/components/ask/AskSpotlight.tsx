@@ -6,16 +6,6 @@
 import { useEffect, useRef } from 'react'
 import { useAsk } from './AskProvider'
 import { AskConversation } from './AskConversation'
-import { CLIP_PROMPT } from './prompts'
-
-// Empty-state scaffolding for a just-opened sheet (#189). Mirrors the Ask scene's voice + prompts
-// so opening the overlay never lands on a blank surface (especially the full-screen mobile sheet).
-const EMPTY_HINT = "Ask it the way you'd ask a friend who never misses a show."
-const SUGGESTED_PROMPTS = [
-  'Have you ever seen Depeche Mode?',
-  CLIP_PROMPT.question,
-  'Surprise me',
-]
 
 export function AskSpotlight() {
   const { open, close, exchanges, busy, ask, show, archive } = useAsk()
@@ -111,8 +101,7 @@ export function AskSpotlight() {
           archive={archive}
           onAsk={ask}
           onShow={show}
-          suggestedPrompts={SUGGESTED_PROMPTS}
-          emptyHint={EMPTY_HINT}
+          banner
           autoFocus
           inputRef={inputRef}
           dockEnd={

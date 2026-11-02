@@ -452,12 +452,41 @@ img.chip-av { object-fit: cover; display: block; }
    them clear of the scrollbar and esc. */
 .ask-transcript { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; padding-right: 32px; scrollbar-gutter: stable; }
 @media (max-width: 767px) { .ask-transcript { padding-right: 0; } }
-/* Empty state — centered teaching block that fills the space above the persistent composer (#189). */
-.ask-empty { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 18px 8px 8px; }
-.ask-empty-hint { margin: 0; max-width: 34ch; font-size: 14px; line-height: 1.5; color: rgba(255, 255, 255, 0.55); }
-.ask-empty-try { margin: 0; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; color: rgba(255, 255, 255, 0.38); }
-.ask-suggest { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-.ask-suggest .chip { cursor: pointer; }
+/* Empty state — the photo banner under the box, and "Pull another" (#189, Phase 6). The picture
+   is positioned on the owner's crop for each shape: --pos-wide on desktop, --pos-tall on a phone. */
+.ask-banner { flex: none; }
+.ask-band {
+  position: relative; display: block; width: 100%; aspect-ratio: 2.2; max-height: 52vh; padding: 0; border: 0;
+  border-radius: 14px; overflow: hidden; background: #000; color: #fff; text-align: left; font: inherit;
+  text-decoration: none; cursor: pointer;
+}
+.ask-band:disabled { cursor: default; }
+.ask-band > img, .ask-band > .ask-derived { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos-wide, 50% 30%); }
+.ask-band .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 10, 16, 0.9) 0%, rgba(8, 10, 16, 0.66) 40%, rgba(8, 10, 16, 0) 74%); }
+.ask-band .txt { position: absolute; left: 26px; bottom: 24px; width: min(470px, 60%); display: flex; flex-direction: column; gap: 4px; }
+.ask-band .k { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #e0e7ff; }
+.ask-band .t { font-family: 'Playfair Display', Georgia, serif; font-size: 38px; line-height: 1.1; letter-spacing: -0.01em; }
+.ask-band .s { font-size: 16px; color: rgba(255, 255, 255, 0.88); }
+.ask-band .by { position: absolute; right: 12px; top: 12px; display: flex; align-items: center; gap: 6px; max-width: 60%; padding: 4px 9px; border-radius: 6px; font-size: 12px; color: #fff; background: rgba(0, 0, 0, 0.55); }
+.ask-band .play { position: absolute; right: 22px; bottom: 22px; width: 56px; height: 56px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
+.ask-band:hover .play { transform: scale(1.06); }
+.ask-band:focus-visible, .ask-pull:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+.ask-banner-foot { display: flex; justify-content: flex-end; margin-top: 10px; }
+.ask-pull {
+  min-height: 40px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(165, 180, 252, 0.55);
+  background: rgba(255, 255, 255, 0.06); color: #e0e7ff; font: inherit; font-size: 15px; cursor: pointer;
+}
+.ask-pull:hover { background: rgba(255, 255, 255, 0.12); }
+@media (max-width: 767px) {
+  .ask-band { aspect-ratio: 0.9; max-height: 56vh; }
+  .ask-band > img, .ask-band > .ask-derived { object-position: var(--pos-tall, 50% 30%); }
+  .ask-band .shade { background: linear-gradient(180deg, rgba(8, 10, 16, 0) 40%, rgba(8, 10, 16, 0.92) 86%); }
+  .ask-band .txt { left: 18px; right: 84px; bottom: 18px; width: auto; }
+  .ask-band .t { font-size: 32px; }
+  .ask-band .play { right: 16px; bottom: 18px; width: 54px; height: 54px; }
+  .ask-band .by { left: 12px; right: auto; max-width: calc(100% - 24px); }
+}
+@media (prefers-reduced-motion: reduce) { .ask-band .play { transition: none; } .ask-band:hover .play { transform: none; } }
 
 .ask-dock-row { flex: none; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
 .ask-dock {

@@ -245,6 +245,14 @@ done, which finishes the table: when `get_media` finds nothing for an act, room,
 also returns the past shows the question was about, and Ask lists them under the no. A question
 about a song names no show, so it stays prose only.
 
+The ⌘K banner is done (`banner.ts`, `AskBanner.tsx`), and it replaces the "Try asking" chips in
+the overlay. Each idea is a clip, a year or a familiar face (an act seen three times or more). A
+clip opens in its gatefold. A year asks "What did you see in 2017?" and a face asks "How many times
+have you seen X?". The kinds take turns, the order is shuffled once a day, and "Pull another" goes
+through every idea before one repeats. Every published crop is 4:5, which no wide banner holds
+whole, so the banner takes landscape frames only and shows the top of the crop. The opening idea
+puts On This Day at the front of this deck.
+
 ---
 
 ## Files
