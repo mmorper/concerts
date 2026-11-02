@@ -4,6 +4,8 @@
  * Docs: https://www.theaudiodb.com/api_guide.php
  */
 
+import { matchingArtist } from './act-name'
+
 interface AudioDBResponse {
   artists?: Array<{
     idArtist: string
@@ -36,11 +38,22 @@ function cleanText(value?: string): string | undefined {
   return v ? v : undefined
 }
 
+/**
+ * TheAudioDB's free key. It was "2" until the service retired it: every request with "2" now
+ * answers 404, and the archive spent weeks falling through to Deezer without saying so.
+ */
+const FREE_KEY = '123'
+const RETIRED_KEYS = new Set(['2'])
+
 export class TheAudioDBClient {
   private apiKey: string
   private baseUrl = 'https://www.theaudiodb.com/api/v1/json'
 
-  constructor(apiKey: string = '2') {
+  constructor(apiKey: string = FREE_KEY) {
+    if (RETIRED_KEYS.has(apiKey)) {
+      console.warn(`⚠️  TheAudioDB retired the free key "${apiKey}"; using "${FREE_KEY}". Update THEAUDIODB_API_KEY.`)
+      apiKey = FREE_KEY
+    }
     this.apiKey = apiKey
   }
 
@@ -74,7 +87,10 @@ export class TheAudioDBClient {
       return null
     }
 
-    const artist = artists[0]
+    const artist = matchingArtist(artists, artistName, (a) => a.strArtist)
+    if (!artist) {
+      return null
+    }
     return {
       name: artist.strArtist,
       image: artist.strArtistThumb || artist.strArtistLogo,
