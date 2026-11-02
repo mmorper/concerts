@@ -95,32 +95,20 @@ Each result carries `id` (`mediaId`), `kind`, `date`, `act`, `subject`, `deepLin
   and different-act rules are enforced in one place.
 - The MCP connector gets the same tool. It returns links, not images: the site is canonical.
 
-### Phase 3: clip playback
+### Phase 3: media opens in the gatefold
 
-Move the `<video>` block out of `PhotosPanel.tsx` into a shared `ClipPlayer`. Use it in the
-Photos panel and the Ask viewer, which then takes `ReelItem[]` rather than stills only.
+The owner's decision, 2026-11: Ask has no player and no full-screen viewer. A photo or clip opens
+its exact frame in its gatefold, beside the night's other media and setlist. A viewer in Ask was a
+dead end, with no way on to the video.
 
-- `preload="none"` until the viewer opens a clip. A card can carry a dozen tiles.
-- Track with `ask_media_opened`, per the analytics skill.
+Shipped in #628:
 
-What `ClipPlayer` must keep from the Photos panel, per #616:
+- Every photo on an Ask card goes through `useFrameOpener` in `AskCardParts.tsx`.
+- An act with clips gets a "Watch" link on its card.
+- The Photos panel keeps its own viewer. It is where those links land.
 
-- The event and parameter names stay exactly as they are. The owner is registering them as GA
-  dimensions in #617: `photo`, `media_kind`, `view_source`, `concert_date`, `song`.
-- `clip_played` and `clip_completed` fire once per view, so pause and resume is one play. Paging
-  away and back is a new view. Today that reset lives in the panel's `media_viewed` effect, so the
-  player needs its own, by remounting on clip identity or with an effect.
-- Those two events carry `artist_name`, `concert_date`, `song` and `photo`, which stays the
-  `mediaId` ending in `-video`.
-- `media_viewed` stays in the panel. It covers stills, and its `view_source` comes from the panel.
-- The panel needs play, pause and ended back through a callback, because `isPlaying` hides the
-  desktop footer.
-- Keep `key={item.url}`, `controls`, `playsInline`, `poster` and contain fit. The panel keeps
-  `preload="metadata"`, so `preload` is a prop.
-- Plays in Ask would mix with gatefold plays. Add a `surface` param rather than changing any
-  existing one, give it a row in #617, and tell the owner the day it ships: a dimension isn't
-  retroactive.
-- Check the panel on real iOS Safari, not only Chromium. Its phone layout was fixed against it.
+This drops the shared `ClipPlayer`, so the panel's `<video>` block and its events (#616, #617) stay
+as they are. Clip plays all happen in the gatefold, so the GA dimensions need no `surface` param.
 
 For the gallery in Phase 2: build links with `photoDeepLink` and `mediaId`, and never change the
 `mediaId` format. The Worker, the sitemap and every share link depend on it. `artist` is the act
@@ -133,8 +121,8 @@ Add Ask to the emitters list in `docs/DEEP_LINKING.md`.
 - `surprise_me` gains `kind: 'photo' | 'clip'`, drawing from the social pool in
   `global-social-media-posts.md`.
 - "Got any video of The Cure?" replaces one prompt in `AskScene.tsx` and one in `AskSpotlight.tsx`,
-  so each stays at three. It ships with Phase 3, because before that the answer can't play the
-  clip. A test confirms the act still has a published clip.
+  so each stays at three. Clips open in the gatefold, so it can ship with the next Ask change.
+  A test confirms the act still has a published clip.
 
 ### Phase 5: follow-up chips
 
@@ -221,19 +209,19 @@ layout changes shape. "No photos from 1987" still lists that year's shows.
 
 | Answer | Layout |
 |---|---|
-| A clip | Large player, with photos beside it |
+| A clip | Large poster that opens the clip in its gatefold, with photos beside it |
 | A ranking | A photo beside a list with large numbers |
 | No media for a question about media | A plain "no", then the shows |
 | A night with no media | Date, venue and bill beside the setlist |
 | An act never photographed | A small sourced image beside the shows |
 | An act across many nights | A list of nights, with a thumbnail and counts only on nights with media |
-| A gallery | One large photo, a grid, and an "All N photos" tile. The viewer names each photo's night |
+| A gallery | One large photo, a grid, and an "All N photos" tile. Each tile names its night and opens in the gatefold |
 
 Every banner, card and opener goes through the same check as the chips in Phase 5: if a tool can't
 answer it, it doesn't appear.
 
 **Build order:** type-ahead and the search box, then the response layout, then the banner, then the
-opening idea, then the Ask scene carousel. Clip rows wait for Phase 3.
+opening idea, then the Ask scene carousel.
 
 ---
 
@@ -244,13 +232,11 @@ opening idea, then the Ask scene carousel. Clip rows wait for Phase 3.
 | `workers/mcp-server/src/data.ts`, `tools.ts` | Media data, counts, `get_media` |
 | `workers/ask-chat/src/tools-bridge.ts`, `exhibits.ts`, `agent-loop.ts` | Tool, exhibit, prompt |
 | `src/types/exhibit`, `src/components/ask/AskExhibit.tsx` | The gallery kind |
-| `src/components/scenes/ArtistScene/PhotosPanel.tsx` | Use `ClipPlayer` |
 | `docs/DEEP_LINKING.md` | Ask gallery becomes a third emitter of photo links |
 
 | Create | Purpose |
 |---|---|
 | `src/components/ask/AskGalleryCard.tsx` | The gallery |
-| `src/components/media/ClipPlayer.tsx` | The shared player |
 
 ---
 
