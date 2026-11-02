@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-11-01T20:47:28.724Z",
+  "generated": "2026-11-01T23:51:13.705Z",
   "assets": [
     {
       "kind": "image",
@@ -756,7 +756,7 @@
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2016-09-03-howard-jones-01.mp4?v=a9edc1c3deae",
       "path": "video/renders/2016-09-03-howard-jones-01.mp4",
       "date": "2016-09-03",
       "uuid": null,
@@ -780,7 +780,8 @@
         "out": 18
       },
       "duration": 15,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2016-09-03-howard-jones-01.jpg?v=87cf5c8b2ebe"
     },
     {
       "kind": "image",
@@ -1036,7 +1037,7 @@
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2017-12-09-gary-numan-01.mp4?v=89bf14e48f3f",
       "path": "video/renders/2017-12-09-gary-numan-01.mp4",
       "date": "2017-12-09",
       "uuid": null,
@@ -1060,7 +1061,8 @@
         "out": 30
       },
       "duration": 30,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2017-12-09-gary-numan-01.jpg?v=19ec23f0087f"
     },
     {
       "kind": "image",
@@ -1768,7 +1770,7 @@
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2023-05-24-the-cure-01.mp4?v=b536b9b0c722",
       "path": "video/renders/2023-05-24-the-cure-01.mp4",
       "date": "2023-05-24",
       "uuid": null,
@@ -1793,7 +1795,8 @@
         "out": 70
       },
       "duration": 30,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2023-05-24-the-cure-01.jpg?v=68162650b9b5"
     },
     {
       "kind": "image",
@@ -1992,7 +1995,7 @@
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2023-07-18-foals-01.mp4?v=a5bb9ead92c7",
       "path": "video/renders/2023-07-18-foals-01.mp4",
       "date": "2023-07-18",
       "uuid": null,
@@ -2016,7 +2019,8 @@
         "out": 84
       },
       "duration": 49,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2023-07-18-foals-01.jpg?v=5e7430ff2d57"
     },
     {
       "kind": "image",
@@ -2356,7 +2360,7 @@
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2023-11-22-kasabian-01.mp4?v=055f567b41f0",
       "path": "video/renders/2023-11-22-kasabian-01.mp4",
       "date": "2023-11-22",
       "uuid": null,
@@ -2380,11 +2384,12 @@
         "out": 39
       },
       "duration": 20,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2023-11-22-kasabian-01.jpg?v=662f700fb190"
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2023-11-22-kasabian-02.mp4?v=213013513466",
       "path": "video/renders/2023-11-22-kasabian-02.mp4",
       "date": "2023-11-22",
       "uuid": null,
@@ -2408,7 +2413,8 @@
         "out": 34
       },
       "duration": 31,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2023-11-22-kasabian-02.jpg?v=e5c100dd9a40"
     },
     {
       "kind": "image",
@@ -2654,7 +2660,7 @@
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2024-08-20-abc-01.mp4?v=7aa7bfeb2bfc",
       "path": "video/renders/2024-08-20-abc-01.mp4",
       "date": "2024-08-20",
       "uuid": null,
@@ -2679,11 +2685,12 @@
         "out": 27
       },
       "duration": 15,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2024-08-20-abc-01.jpg?v=5d8c8364a622"
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2024-08-20-haircut-100-01.mp4?v=d4dcd0d7a0b0",
       "path": "video/renders/2024-08-20-haircut-100-01.mp4",
       "date": "2024-08-20",
       "uuid": null,
@@ -2708,7 +2715,8 @@
         "out": 56
       },
       "duration": 29,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2024-08-20-haircut-100-01.jpg?v=551e4125ee9c"
     },
     {
       "kind": "image",
@@ -2829,7 +2837,7 @@
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2025-03-01-klangphonics-01.mp4?v=b88393d508cd",
       "path": "video/renders/2025-03-01-klangphonics-01.mp4",
       "date": "2025-03-01",
       "uuid": null,
@@ -2853,7 +2861,8 @@
         "out": 14
       },
       "duration": 14,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2025-03-01-klangphonics-01.jpg?v=fbc6694d4fd2"
     },
     {
       "kind": "image",
@@ -3056,7 +3065,7 @@
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2025-11-20-david-byrne-01.mp4?v=3081a3adcdf9",
       "path": "video/renders/2025-11-20-david-byrne-01.mp4",
       "date": "2025-11-20",
       "uuid": null,
@@ -3080,7 +3089,8 @@
         "out": 65
       },
       "duration": 38,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2025-11-20-david-byrne-01.jpg?v=e8d3fb73cba5"
     },
     {
       "kind": "image",
@@ -3714,7 +3724,7 @@
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2026-06-04-alison-moyet-01.mp4?v=2d2fdcf10047",
       "path": "video/renders/2026-06-04-alison-moyet-01.mp4",
       "date": "2026-06-04",
       "uuid": null,
@@ -3738,11 +3748,12 @@
         "out": 38
       },
       "duration": 36,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2026-06-04-alison-moyet-01.jpg?v=d4070086fe1c"
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2026-06-04-alison-moyet-02.mp4?v=9a8ff560b9bd",
       "path": "video/renders/2026-06-04-alison-moyet-02.mp4",
       "date": "2026-06-04",
       "uuid": null,
@@ -3766,7 +3777,8 @@
         "out": 130
       },
       "duration": 21,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2026-06-04-alison-moyet-02.jpg?v=13ad523d6e12"
     },
     {
       "kind": "image",
@@ -3975,7 +3987,7 @@
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2026-07-31-nile-rodgers-01.mp4?v=ca90d149198a",
       "path": "video/renders/2026-07-31-nile-rodgers-01.mp4",
       "date": "2026-07-31",
       "uuid": null,
@@ -4000,11 +4012,12 @@
         "out": 21
       },
       "duration": 17,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2026-07-31-nile-rodgers-01.jpg?v=e58b3e91e731"
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2026-07-31-nile-rodgers-02.mp4?v=0016c2a1e979",
       "path": "video/renders/2026-07-31-nile-rodgers-02.mp4",
       "date": "2026-07-31",
       "uuid": null,
@@ -4029,11 +4042,12 @@
         "out": 33
       },
       "duration": 16,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2026-07-31-nile-rodgers-02.jpg?v=5204b5201dc2"
     },
     {
       "kind": "video",
-      "url": null,
+      "url": "https://media.morperhaus.org/videos/2026-07-31-nile-rodgers-03.mp4?v=b0ee40a3c87a",
       "path": "video/renders/2026-07-31-nile-rodgers-03.mp4",
       "date": "2026-07-31",
       "uuid": null,
@@ -4058,7 +4072,8 @@
         "out": 64
       },
       "duration": 26,
-      "notes": null
+      "notes": null,
+      "poster": "https://media.morperhaus.org/posters/2026-07-31-nile-rodgers-03.jpg?v=d53230ae5acd"
     },
     {
       "kind": "image",
