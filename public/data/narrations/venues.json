@@ -20,7 +20,7 @@
   "pacific-amphitheatre": {
     "narration": {
       "context": "Pacific Amphitheatre in Costa Mesa has been part of my concertgoing since Tears For Fears opened the place for me on July 10, 1985, and forty-one years later I'm still going, with Nile Rodgers the most recent name on the ticket in July 2026.",
-      "closingArc": "Seventeen shows and fifteen artists in, with Stray Cats, X, and the Beach Boys among the names I came back for most, this is a room I never really stopped returning to."
+      "closingArc": "Seventeen shows and fifteen headliners in, with The English Beat, Stray Cats, and X among the names I came back for most, this is a room I never really stopped returning to."
     },
     "inputHash": "sha256:8325cd08562e760f1dd4ecda579c7c83cbf88b1eacda11b09cdd7e0ac4bc1626",
     "generatedAt": "2026-09-07T01:01:53.636Z",
@@ -65,7 +65,7 @@
   "caliente-racetrack": {
     "narration": {
       "context": "Caliente Racetrack in Tijuana only shows up once in my history — June 30, 1987, when I crossed the border to catch Oingo Boingo.",
-      "closingArc": "One night, one band, one racetrack — one of those shows that never turned into a habit but never faded either."
+      "closingArc": "One night, six bands, one racetrack — one of those shows that never turned into a habit but never faded either."
     },
     "inputHash": "sha256:616a1ebd3f41382898f2ed51eadff7cc575e98bf945bc3e7626371a56b1683ec",
     "generatedAt": "2026-09-07T01:02:05.306Z",
@@ -83,7 +83,7 @@
   "the-rose-bowl": {
     "narration": {
       "context": "The Rose Bowl in Pasadena shows up in my history exactly once — June 18, 1988, for Depeche Mode.",
-      "closingArc": "Just one night in this enormous stadium, and Depeche Mode was reason enough to make the trip."
+      "closingArc": "Just one night at the Rose Bowl, and Depeche Mode was reason enough to make the trip."
     },
     "inputHash": "sha256:0972e0374922abdb70cfd73b72d8e2aa6c0ce51829e0dbca254f4af4d47264c1",
     "generatedAt": "2026-09-07T01:02:09.404Z",
@@ -110,7 +110,7 @@
   "universal-amphitheater": {
     "narration": {
       "context": "I only made it to Universal Amphitheater five times, but they span a real stretch — from Howard Jones opening things up in July 1989 to Tears For Fears closing it out in November 2005, with Siouxsie and the Banshees somewhere in between.",
-      "closingArc": "The place was demolished not long after that last Tears For Fears show, so without knowing it, I'd already seen my final concert there."
+      "closingArc": "The place was demolished after that last Tears For Fears show, so without knowing it, I'd already seen my final concert there."
     },
     "inputHash": "sha256:1f509e95bc20b5447ca50e76ad485001f2cd03e2e0aec725e3680119bbe61aca",
     "generatedAt": "2026-09-07T01:02:16.647Z",
@@ -128,7 +128,7 @@
   "kia-forum": {
     "narration": {
       "context": "Five shows at the Inglewood venue I knew across its many names — from Erasure in March 1990 to Depeche Mode in March 2023, with Bell Biv DeVoe and Elton John somewhere in between.",
-      "closingArc": "Thirty-three years apart, both nights belonged to synth-driven bands, and somehow that felt like the room coming full circle."
+      "closingArc": "Thirty-three years apart, those two nights bookend my time here, and somehow that felt like the room coming full circle."
     },
     "inputHash": "sha256:64a53050abbc902be1192e861c0ff83ea01e093cc3d4652915608f2d68c60652",
     "generatedAt": "2026-09-07T01:02:21.675Z",
@@ -164,7 +164,7 @@
   "long-beach-arena": {
     "narration": {
       "context": "I only made it to Long Beach Arena once — September 8th, 1991, for Burning Spear.",
-      "closingArc": "One night, one artist, no repeats — just a single show that stands alone in my history with this room."
+      "closingArc": "One night, one bill, no repeats — just a single show that stands alone in my history with this room."
     },
     "inputHash": "sha256:8b6e7a886847b7b6fdf5b78abaed3c1143a7fac456902c2d91ca3eee36f00a66",
     "generatedAt": "2026-09-07T01:02:31.099Z",
@@ -181,7 +181,7 @@
   },
   "the-coach-house": {
     "narration": {
-      "context": "The Coach House in San Juan Capistrano is a small room I visited 10 times across 26 years, starting with Adam Ant on February 26, 1993 and returning most often for names like Berlin and Brian Setzer's '68 Comeback Special.",
+      "context": "The Coach House in San Juan Capistrano is a room I visited 10 times across 26 years, starting with Adam Ant on February 26, 1993 and returning most often for Berlin, the only name I saw there twice.",
       "closingArc": "By the time Lee Rocker closed things out for me in October 2019, this place had quietly become one of those venues I could count on to book the artists who first got me hooked decades earlier."
     },
     "inputHash": "sha256:7200b008972c12d4e68ef26c7eb6dd0783fe4f3b5803795ebd6ece7208da871d",
@@ -218,7 +218,7 @@
   "greek-theatre": {
     "narration": {
       "context": "The Greek Theatre in Hollywood shows up in my history just once — August 8, 1998, when I caught The Brian Setzer Orchestra there.",
-      "closingArc": "A single night, no return visits since, but that swing-band set under the Hollywood sky has stuck with me."
+      "closingArc": "A single night, no return visits since, but that Brian Setzer Orchestra set in Hollywood has stuck with me."
     },
     "inputHash": "sha256:102683a4b786140fb4763126f351a0a527f819558f94134b42a5c4c950fb7a8a",
     "generatedAt": "2026-09-07T01:02:45.540Z",
@@ -254,7 +254,7 @@
   "house-of-blues-anaheim": {
     "narration": {
       "context": "House of Blues Anaheim has only seen me six times, but it's stretched across nearly two decades, opening with Joe Jackson in August 2003 and, most recently, Social Distortion in December 2022.",
-      "closingArc": "A room I never visited often, but kept returning to just enough that it quietly bookends most of my concertgoing life."
+      "closingArc": "A room I never visited often, but kept returning to just enough that it quietly spans nearly two decades of my concertgoing life."
     },
     "inputHash": "sha256:fdca7c58ffb808d134da9e5efa33d8ffbc3a2971611bfca9edc94a6135ca9051",
     "generatedAt": "2026-09-07T01:02:55.713Z",
@@ -263,7 +263,7 @@
   "hyundai-pavilion": {
     "narration": {
       "context": "I only made it to Hyundai Pavilion in San Bernardino once, on September 20, 2003, for The Cure.",
-      "closingArc": "One night, one band, one venue — sometimes that's the whole story."
+      "closingArc": "One night, fifteen bands, one venue — sometimes that's the whole story."
     },
     "inputHash": "sha256:55b7e8b5760cdc94862e4cfd94d0d2abe1136349d4c63b89a12aed9fe54a3f00",
     "generatedAt": "2026-09-07T01:02:57.650Z",
@@ -290,7 +290,7 @@
   "nokia-center": {
     "narration": {
       "context": "The Nokia Center in Los Angeles only shows up once in my records — May 4, 2008, when I caught Duran Duran there.",
-      "closingArc": "The venue itself didn't last much longer under that name either, renamed before it became the Microsoft Theater and then the Peacock Theater, so that one night is the whole story I have with it."
+      "closingArc": "The venue kept that name until 2015, when it was renamed the Microsoft Theater and later the Peacock Theater, so that one night is the whole story I have with it."
     },
     "inputHash": "sha256:a1c3a31198e2450cc2e8010e363bb0ce9c2886f8114d80a4f488b7fdd6dec060",
     "generatedAt": "2026-09-07T01:03:04.727Z",
@@ -299,7 +299,7 @@
   "doheny": {
     "narration": {
       "context": "Doheny, out in Dana Point, is a one-night entry in my archive — just Brian Setzer and the Nashvillians, on May 16, 2009.",
-      "closingArc": "I never went back, so it stays frozen as that single evening by the coast."
+      "closingArc": "I never went back, so it stays frozen as that single evening."
     },
     "inputHash": "sha256:a1e0b79ea7a7a5c2cf82ecb280dccbef01bbd77da8a48a436de55af723845417",
     "generatedAt": "2026-09-07T01:03:07.013Z",
@@ -326,7 +326,7 @@
   "the-black-cat": {
     "narration": {
       "context": "Just two nights at The Black Cat in Washington, D.C., years apart: Echo and the Bunnymen in April 2010, then Gary Numan in October 2013.",
-      "closingArc": "A small, sharp footprint — one club, two very different post-punk survivors, and not much reason to go back in between."
+      "closingArc": "A small, sharp footprint — one club, two very different acts, and not much reason to go back in between."
     },
     "inputHash": "sha256:4b625f17104e73058a1168cfbd1c3cd692b321c7cc9420f66367844d303e7a88",
     "generatedAt": "2026-09-07T01:03:15.148Z",
@@ -352,8 +352,8 @@
   },
   "rams-head-live-baltimore": {
     "narration": {
-      "context": "Rams Head Live! in Baltimore was a one-night stop for me — April 27, 2012, catching Squeeze and nothing else.",
-      "closingArc": "Just the one show, one band, one night in Baltimore — no return visit yet, just that single evening on the books."
+      "context": "Rams Head Live! in Baltimore was a one-night stop for me — April 27, 2012, catching Squeeze with The English Beat opening.",
+      "closingArc": "Just the one show, one bill, one night in Baltimore — no return visit yet, just that single evening on the books."
     },
     "inputHash": "sha256:729ff5875c573c8c2b88d8d7db3a64d8b6fa40ed19db73791d0b862b00c414c8",
     "generatedAt": "2026-09-07T13:22:16.253Z",
@@ -416,7 +416,7 @@
   "pier-6-pavillion": {
     "narration": {
       "context": "Pier 6 Pavilion in Baltimore only shows up once in my history — July 30, 2014, when I caught The Offspring there.",
-      "closingArc": "One night on the water with one band, and I never made it back."
+      "closingArc": "One night on the water with one bill, and I never made it back."
     },
     "inputHash": "sha256:8962a894252f5ec7c1109883ac3ffd502e79164cfe05b5f6acc34b34e8473fbc",
     "generatedAt": "2026-09-07T01:03:39.146Z",
@@ -461,7 +461,7 @@
   "national-museum-of-african-american-history-and-culture": {
     "narration": {
       "context": "I only made it to the National Museum of African American History and Culture in Washington once, on September 24, 2016, for The Roots.",
-      "closingArc": "One night, one band, one museum — sometimes a single show is the whole story."
+      "closingArc": "One night, one bill, one museum — sometimes a single show is the whole story."
     },
     "inputHash": "sha256:bf32d900e87e5ca1eec59749f8cfb1e556c6601129355a4c7762ce679118b6ec",
     "generatedAt": "2026-09-07T01:03:50.127Z",
@@ -488,7 +488,7 @@
   "sixth-i-synagogue": {
     "narration": {
       "context": "Sixth & I Synagogue in Washington, D.C. only shows up once in my history — a single night with Alison Moyet on September 11, 2017.",
-      "closingArc": "I never went back, but that one night with Alison Moyet in a synagogue turned concert hall is exactly the kind of one-off I keep chasing."
+      "closingArc": "I never went back, but that one night with Alison Moyet in a synagogue is exactly the kind of one-off I keep chasing."
     },
     "inputHash": "sha256:a171d0d2ddf567881c50e7c83bcbfdb0415fe6bb60eec6452c2bc45bc68bcabb",
     "generatedAt": "2026-09-07T01:03:57.400Z",
@@ -703,8 +703,8 @@
   },
   "garden-amp": {
     "narration": {
-      "context": "The Garden Amp in Garden Grove, California, is a new addition to my concertgoing life — just one show so far, Pinhead Gunpowder on November 11, 2026.",
-      "closingArc": "Right now this venue is a single night in the books, and I'm curious what it'll grow into from here."
+      "context": "Garden Amp in Garden Grove, California, is one date in my archive: Pinhead Gunpowder on November 11, 2026.",
+      "closingArc": "One night, one room, and no other history with it in the archive."
     },
     "inputHash": "sha256:61e713bdffba66cf668ad48cfd11f90c479447b6754037ed3ada64a224a16869",
     "generatedAt": "2026-09-07T01:04:54.857Z",
