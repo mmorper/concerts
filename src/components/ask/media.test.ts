@@ -7,6 +7,7 @@ import {
   nightReel,
   withCanonicalActs,
   mediaId,
+  actClips,
   findMedia,
   frameLink,
   focalPosition,
@@ -269,6 +270,14 @@ describe('frame links', () => {
   it('opens a room frame in the fallback act\'s gatefold', () => {
     const frame = findMedia(ix, '2022-10-07', 'venue-01')!
     expect(frameLink(frame, 'new-order')).toBe('/?scene=artists&artist=new-order&show=2022-10-07&photo=venue-01')
+  })
+
+  it('lists an act\'s clips newest night first, and only theirs', () => {
+    const clip = (date: string, act: string) => ({
+      kind: 'video', url: `https://m/${date}-${act}-01.mp4`, date, artist: act, artistNormalized: act, subject: 'artist',
+    })
+    const clips = buildMediaIndex([clip('2020-01-01', 'a'), clip('2024-01-01', 'a'), clip('2024-01-01', 'b')])
+    expect(actClips(clips, 'a').map((c) => c.date)).toEqual(['2024-01-01', '2020-01-01'])
   })
 
   it('finds nothing for a frame the index no longer holds', () => {

@@ -114,6 +114,13 @@ export function actPhotosOnNight(ix: MediaIndex, date: string, actSlug: string):
   return (ix.byDate.get(date) ?? []).filter((p) => p.subject === 'artist' && p.artistNormalized === actSlug)
 }
 
+/** Every playable clip of one act, newest night first. */
+export function actClips(ix: MediaIndex, actSlug: string): Clip[] {
+  return [...ix.clipsByDate.entries()]
+    .sort(([a], [b]) => b.localeCompare(a))
+    .flatMap(([, clips]) => clips.filter((c) => c.artistNormalized === actSlug))
+}
+
 /** Marquee, exterior, stub, the room before doors. */
 export function venuePhotosOnNight(ix: MediaIndex, date: string): Photo[] {
   return (ix.byDate.get(date) ?? []).filter((p) => p.subject === 'venue')

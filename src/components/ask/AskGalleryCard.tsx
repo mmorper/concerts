@@ -11,8 +11,8 @@ import { DerivedArt, FramedPhoto, LadderImage } from './AskMedia'
 import { Frame, Prose } from './AskCardParts'
 import { findMedia, fmtDate, isClip, type Photo } from './media'
 
-/** Lead plus five, and the sixth grid cell is the way to the rest. */
-const SHOWN = 6
+/** A lead and seven tiles fill three rows. With more to see, the last cell is the way to them. */
+const CELLS = 8
 
 function caption(item: GalleryItem): string {
   const who = item.song ? `“${item.song}”` : (item.act ?? 'The room')
@@ -29,7 +29,7 @@ function Tile({ item, archive }: { item: GalleryItem; archive: ArchiveLookups })
   const label = item.act ? `${item.act}, ${caption(item)}` : caption(item)
   const fallback = <DerivedArt name={item.act ?? 'The room'} color={DEFAULT_GENRE_COLOR} />
   return (
-    <a className="ask-tile" href={item.deepLink} aria-label={`Open ${label}`} onClick={() => track(item)}>
+    <a className="ask-gal-tile" href={item.deepLink} aria-label={`Open ${label}`} onClick={() => track(item)}>
       {isClip(media) ? (
         <LadderImage sources={[media.poster]} alt="" fallback={fallback} />
       ) : (
@@ -46,7 +46,7 @@ function Tile({ item, archive }: { item: GalleryItem; archive: ArchiveLookups })
 }
 
 export function GalleryCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: GalleryExhibit; archive: ArchiveLookups }) {
-  const tiles = exhibit.items.slice(0, SHOWN)
+  const tiles = exhibit.items.slice(0, exhibit.total > CELLS ? CELLS - 1 : CELLS)
   const more = exhibit.total - tiles.length
   return (
     <Frame color={DEFAULT_GENRE_COLOR}>
@@ -57,7 +57,7 @@ export function GalleryCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: G
           <Tile key={`${item.date}-${item.id}`} item={item} archive={archive} />
         ))}
         {more > 0 && exhibit.items[0] && (
-          <a className="ask-tile more" href={exhibit.items[0].deepLink} onClick={() => track(exhibit.items[0])}>
+          <a className="ask-gal-tile more" href={exhibit.items[0].deepLink} onClick={() => track(exhibit.items[0])}>
             {more} more in the gatefold
           </a>
         )}

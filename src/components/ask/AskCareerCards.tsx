@@ -9,8 +9,8 @@ import { setlistDeepLink } from '@/utils/deepLinks'
 import type { Exchange } from '@/hooks/useAskArchive'
 import type { EraExhibit, ShapeExhibit, SongsExhibit } from '@/types/exhibit'
 import type { ArchiveLookups } from './types'
-import { CoverArt, DerivedArt, FramedPhoto, usePhotoViewer } from './AskMedia'
-import { DeepLink, Frame, PhotoButton, Portrait, Prose, captionLookups, trackDeepLink, trackPhotoOpened } from './AskCardParts'
+import { CoverArt, DerivedArt, FramedPhoto } from './AskMedia'
+import { DeepLink, Frame, PhotoButton, Portrait, Prose, captionLookups, trackDeepLink, useFrameOpener, trackPhotoOpened } from './AskCardParts'
 import { agePhrase, fmtDate, monthsPhrase, nightPhoto, photoCaption, yearOf, type Photo } from './media'
 
 const genreColor = (archive: ArchiveLookups, slug: string | undefined): string => {
@@ -29,7 +29,7 @@ export function EraCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: EraEx
   const color = c ? getGenreColor(c.genre) : genreColor(archive, exhibit.artist.slug)
   const pick = c ? nightPhoto(archive.media, c) : null
   const caption = (p: Photo) => photoCaption(p, { aboutAct: exhibit.artist.slug, aboutDate: exhibit.date, ...captionLookups(archive) })
-  const viewer = usePhotoViewer(caption, trackPhotoOpened('era'))
+  const viewer = useFrameOpener(archive, trackPhotoOpened('era'))
   const nightAll = archive.media.byDate.get(exhibit.date) ?? []
   const portrait = <Portrait name={exhibit.artist.name} image={archive.artistFacts(exhibit.artist.slug).meta?.image} color={color} className="ex-photo" />
 
@@ -114,7 +114,6 @@ export function EraCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: EraEx
           {exhibit.artist.name}
         </DeepLink>
       </div>
-      {viewer.element}
     </Frame>
   )
 }

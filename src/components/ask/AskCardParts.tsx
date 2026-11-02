@@ -9,7 +9,7 @@ import { analytics } from '@/services/analytics'
 import type { Exchange } from '@/hooks/useAskArchive'
 import type { EntityRef, Exhibit } from '@/types/exhibit'
 import type { ArchiveLookups } from './types'
-import { BANNER_ASPECT, heroLayout, type CaptionContext, type Photo } from './media'
+import { BANNER_ASPECT, frameLink, heroLayout, type CaptionContext, type Photo } from './media'
 import { CameraMark, DerivedArt, FramedPhoto, LadderImage } from './AskMedia'
 
 export const sceneOf = (deepLink: string): string => new URLSearchParams(deepLink.split('?')[1] ?? '').get('scene') ?? ''
@@ -75,7 +75,22 @@ export function captionLookups(archive: ArchiveLookups): Pick<CaptionContext, 'v
 export const trackPhotoOpened = (kind: Exhibit['kind']) => (p: Photo) =>
   analytics.trackEvent('ask_photo_opened', { kind, subject: p.subject, date: p.date })
 
-/** A button that opens a photo in the lightbox; the photo itself is the label. */
+/**
+ * Opens a photo where it lives: that exact frame in its gatefold, beside the night's clips and
+ * setlist. A full-screen viewer here was a dead end, with no way on to the video.
+ */
+export function useFrameOpener(archive: ArchiveLookups, onOpen?: (p: Photo) => void) {
+  return {
+    open: (photos: Photo[], index: number) => {
+      const photo = photos[index]
+      if (!photo) return
+      onOpen?.(photo)
+      window.location.assign(frameLink(photo, archive.concertByDate(photo.date)?.headlinerNormalized ?? ''))
+    },
+  }
+}
+
+/** A button that opens a photo in its gatefold; the photo itself is the label. */
 export function PhotoButton({
   onOpen,
   label,
