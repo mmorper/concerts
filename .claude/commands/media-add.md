@@ -118,6 +118,12 @@ is ingested:
 - **Unmarked clips.** Name any kept clip with no marks. It falls back to automatic
   frame picking, and those frames need judging afterwards.
 
+**On a show with published stills, `--finish` drops their crop boxes from
+`data/media-decisions.json`,** because `verdicts.json` does not hold them. The index
+keeps them. Restore that file from git and re-apply only what changed. To trim one
+clip there, run `npm run media:frames <YYYY-MM-DD> -- --only IMG_1234`, or the show's
+other kept clips download again.
+
 If the show already holds a signature, add `"signature": true` to that asset in
 `verdicts.json` first, or the next ingest clears it. Then:
 
@@ -210,6 +216,10 @@ back through the public URL with range requests. A clip that fails is removed fr
 the bucket and stays off the site, while the rest carry on. It needs the `R2_MEDIA_`
 values in `.env` (`docs/SECRETS.md`) and the renders on disk, so in a worktree link
 `video/renders` from the main checkout first.
+
+Ask the owner which song each clip shows, offering that night's setlist from
+`public/data/setlists-cache.json`, and set `song` on its row in the index. It shows
+in the Photos panel. Leave it out if nobody can place the song.
 
 Then make each clip's share card, which is what a shared link to it previews with:
 

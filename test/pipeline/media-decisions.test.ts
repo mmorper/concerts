@@ -179,8 +179,8 @@ describe('the committed file', () => {
     const show = f.shows['2026-06-04']
     expect(show).toBeDefined()
     const marked = Object.values(show.decisions).filter((d) => d.frames || d.trim)
-    expect(marked).toHaveLength(3)
-    expect(marked.filter((d) => d.trim)).toHaveLength(2)
+    expect(marked).toHaveLength(4)
+    expect(marked.filter((d) => d.trim)).toHaveLength(3)
     expect(marked.find((d) => d.frames)?.frames).toEqual([1])
   })
 

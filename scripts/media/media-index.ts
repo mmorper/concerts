@@ -112,6 +112,8 @@ export interface MediaAsset {
   render?: { uuid: string; in: number; out: number } | null
   /** Seconds. Video only. */
   duration?: number | null
+  /** What the band is playing, as the setlist spells it. Video only, set by hand. */
+  song?: string | null
   /** From `notes.txt`. Carries a different-night disclosure or a caption. */
   notes: string | null
 }

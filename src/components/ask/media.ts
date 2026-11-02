@@ -41,6 +41,8 @@ export interface MediaAsset {
   duration?: number
   /** Still shown before a video plays. */
   poster?: string | null
+  /** What the band is playing in a clip, as the setlist spells it. Videos only. */
+  song?: string | null
 }
 
 /** A still the site can actually show: an image with a committed file and known dimensions. */
