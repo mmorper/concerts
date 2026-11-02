@@ -35,7 +35,8 @@ interface ArtistGatefoldProps {
 
 // Constants matching prototype
 // Desktop: 460px panels (eliminates scroll for 5 tracks)
-// Smaller viewports: 400px panels (for tighter screens)
+// Smaller viewports: 400px panels (for tighter screens). The panel spacing that lets
+// 5 tracks fit keys off Tailwind's lg, so these sizes must keep switching at 1024px.
 const PANEL_SIZE_LARGE = 460
 const PANEL_SIZE_SMALL = 400
 const SPINE_WIDTH = 12

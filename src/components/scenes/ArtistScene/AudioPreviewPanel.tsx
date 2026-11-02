@@ -23,7 +23,7 @@ export function AudioPreviewPanel({ artist, isPhone = false }: AudioPreviewPanel
   return (
     <div
       data-testid="audio-preview-panel"
-      className={`flex flex-col ${isPhone ? 'w-full h-full p-6' : 'p-10'}`}
+      className={`flex flex-col ${isPhone ? 'w-full h-full p-6' : 'px-10 pt-10 pb-4 lg:pb-10'}`}
       style={{
         width: isPhone ? '100%' : `${panelSize}px`,
         height: isPhone ? '100%' : `${panelSize}px`,

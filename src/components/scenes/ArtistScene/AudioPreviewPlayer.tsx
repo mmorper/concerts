@@ -220,9 +220,10 @@ export function AudioPreviewPlayer({
         </div>
       )}
 
-      {/* Track List - No scrolling needed for 5 tracks */}
+      {/* Track List - No scrolling needed for 5 tracks. The 400px panel (below lg)
+          only fits them, and the link under them, with the tighter spacing. */}
       <div
-        className="space-y-1.5"
+        className={isPhone ? 'space-y-1.5' : 'space-y-0.5 lg:space-y-1.5'}
         role="list"
         aria-label="Track list"
       >
@@ -241,7 +242,7 @@ export function AudioPreviewPlayer({
       </div>
 
       {/* Streaming Link Footer - Fixed below track list */}
-      <div className="mt-4 flex-shrink-0">
+      <div className={`${isPhone ? 'mt-4' : 'mt-2 lg:mt-4'} flex-shrink-0`}>
           <a
             href={streamingUrl}
             target="_blank"
