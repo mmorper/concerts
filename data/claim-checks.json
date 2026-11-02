@@ -1,7 +1,28 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-01T16:34:51.576Z",
+  "updatedAt": "2026-11-02T19:58:22.590Z",
   "entries": [
+    {
+      "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
+      "hash": "d997617f92d1272a",
+      "checkedAt": "2026-11-02T19:58:22.590Z",
+      "issues": [
+        {
+          "field": "beat1",
+          "sentence": "Before this run, my last show was the Beach Boys, in Phoenix.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No Beach Boys show, and no Phoenix/Arizona show prior to 1989, appears anywhere in the fact sheet's artist or venue listings."
+        },
+        {
+          "field": "beat5",
+          "sentence": "My next show after that was The Art of Noise, in Boston.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "No Art of Noise show, and no Boston/Massachusetts show following the Alien Fashion Show date, appears anywhere in the fact sheet's artist or venue listings."
+        }
+      ]
+    },
     {
       "slug": "billy-idol-caught-once-never-again",
       "hash": "920b33f86b56f7b6",

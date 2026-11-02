@@ -1,7 +1,26 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-30T16:34:00.521Z",
+  "updatedAt": "2026-11-02T20:01:58.548Z",
   "entries": [
+    {
+      "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mze4cu6lro2y",
+      "rkey": "3mze4cu6lro2y",
+      "postedAt": "2026-11-02T19:58:26.430Z",
+      "tier": 2,
+      "source": "venue-archival"
+    },
+    {
+      "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117548627942810561",
+      "postedAt": "2026-11-02T20:01:58.547Z",
+      "tier": 2,
+      "source": "venue-archival"
+    },
     {
       "slug": "3-concerts-in-12-days",
       "platform": "bluesky",
