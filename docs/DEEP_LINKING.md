@@ -153,6 +153,7 @@ https://concerts.morperhaus.org/?scene=artists&artist=thompson-twins&show=2026-0
 - `artist` decides whose gatefold opens. A gatefold holds that act's frames and the night's venue frames, so an opener's frame is shared from the opener's gatefold.
 - Shared on social, the link previews with that image: `/og/shows/<date>-<photo>.jpg`, rendered as boxes are saved in `media:crop`, and committed. A video's card comes from `npm run media:share`, from its poster with a play mark. A link with no matching image previews as the show.
 - A value that does not match an image on that night opens the Photos panel on its first image. A malformed value is dropped, and the link behaves as a setlist link.
+- For search, a video's link is its own canonical page. A still's link names its show as canonical, so 150 near-identical pages do not compete with it. Both are set by the meta-injector Worker, which is also what stops a deep link naming the homepage (`index.html`'s only canonical).
 - Build these with `photoDeepLink` and `mediaId` in `src/utils/deepLinks.ts`. Two surfaces emit them: the Photos panel's link button, and On This Day posts that carry the owner's frame (`scripts/on-this-day/build.ts`).
 
 ---
