@@ -4,6 +4,8 @@
  * Docs: https://developers.deezer.com/api
  */
 
+import { matchingArtist } from './act-name'
+
 interface DeezerArtist {
   id: number
   name: string
@@ -52,34 +54,6 @@ export interface NormalizedTrack {
   streamingUrl: string
 }
 
-/**
- * A name reduced to the letters that tell one act from another: no case, accents,
- * punctuation or spaces, and no "the" or "and". "Run–D.M.C." is "Run DMC" and "Joan Jett &
- * the Blackhearts" is "Joan Jett and the Blackhearts", but "Adamant (IT)" is not "Adam Ant"
- * and "Erasure (US)" is not "Erasure".
- */
-export function actKey(name: string): string {
-  return name
-    .normalize('NFKD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/&/g, ' and ')
-    .split(/[^a-z0-9]+/)
-    .filter((w) => w && w !== 'the' && w !== 'and')
-    .join('')
-}
-
-/**
- * The search result that is the act asked for, or null. Deezer ranks by popularity, not by
- * name, so its first result for "Adam Ant" was an Italian act called Adamant, and for
- * "Blondie" a duo called Blondie & Pappa. A wrong face on an artist is worse than none: with
- * no match the site falls back to its own type-led tile.
- */
-export function matchingArtist<T extends { name: string }>(artists: T[], artistName: string): T | null {
-  const key = actKey(artistName)
-  return artists.find((a) => actKey(a.name) === key) ?? null
-}
-
 export class DeezerClient {
   private baseUrl = 'https://api.deezer.com'
 
@@ -119,7 +93,7 @@ export class DeezerClient {
       return null
     }
 
-    const artist = matchingArtist(artists, artistName)
+    const artist = matchingArtist(artists, artistName, (a) => a.name)
     if (!artist) {
       return null
     }
@@ -158,7 +132,7 @@ export class DeezerClient {
         return []
       }
 
-      const artist = matchingArtist(artists, artistName)
+      const artist = matchingArtist(artists, artistName, (a) => a.name)
       if (!artist) {
         return []
       }

@@ -1762,5 +1762,57 @@
     "genres": [],
     "source": "deezer",
     "fetchedAt": "2026-11-02T19:37:18.302Z"
+  },
+  "beck": {
+    "name": "Beck",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vtuvvs1424793068.jpg",
+    "genres": [
+      "Alternative Rock",
+      "Rock/Pop"
+    ],
+    "formed": "1988",
+    "website": "www.beck.com",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-11-02T20:04:43.510Z"
+  },
+  "james": {
+    "name": "James",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/sqvrvu1363697356.jpg",
+    "genres": [
+      "Pop",
+      "Rock/Pop"
+    ],
+    "formed": "1982",
+    "website": "www.wearejames.com",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-11-02T20:04:44.588Z"
+  },
+  "john-doe": {
+    "name": "John Doe",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/xvqwyq1390363385.jpg",
+    "genres": [],
+    "formed": "1954",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-11-02T20:04:45.085Z"
+  },
+  "heart": {
+    "name": "Heart",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/heart-507e5577ec37f.jpg",
+    "genres": [
+      "Classic Rock",
+      "Rock/Pop"
+    ],
+    "formed": "1973",
+    "website": "www.heart-music.com",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-11-02T20:04:45.600Z"
+  },
+  "fear": {
+    "name": "Fear",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/vstwsr1389870115.jpg",
+    "genres": [],
+    "formed": "1977",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-11-02T20:04:46.071Z"
   }
 }

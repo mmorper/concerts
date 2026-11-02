@@ -160,7 +160,7 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
   }
 
   // Initialize API clients
-  const audioDb = new TheAudioDBClient(process.env.THEAUDIODB_API_KEY || '2')
+  const audioDb = new TheAudioDBClient(process.env.THEAUDIODB_API_KEY || undefined)
   const lastFm = process.env.LASTFM_API_KEY
     ? new LastFmClient(process.env.LASTFM_API_KEY)
     : null

@@ -11,7 +11,8 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { DeezerClient, actKey } from '../../scripts/utils/deezer-client'
+import { DeezerClient } from '../../scripts/utils/deezer-client'
+import { actKey } from '../../scripts/utils/act-name'
 
 describe('DeezerClient', () => {
   let client: DeezerClient

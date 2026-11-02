@@ -31,7 +31,7 @@ describe('TheAudioDBClient.getArtistInfo', () => {
   let originalConsoleError: typeof console.error
 
   beforeEach(() => {
-    client = new TheAudioDBClient('2')
+    client = new TheAudioDBClient('123')
     originalFetch = global.fetch
     originalConsoleError = console.error
     console.error = vi.fn()
@@ -90,5 +90,27 @@ describe('TheAudioDBClient.getArtistInfo', () => {
   it('returns null when the artist is not found', async () => {
     respondWith(null)
     expect(await client.getArtistInfo('Nobody At All')).toBeNull()
+  })
+
+  it('takes the result that is the act asked for, or none', async () => {
+    respondWith(mockArtist({ strArtist: 'Book of Love (2)' }))
+    expect(await client.getArtistInfo('Book of Love')).toBeNull()
+  })
+})
+
+describe('TheAudioDBClient key', () => {
+  it('swaps the retired free key "2" for "123"', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const fetch = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ artists: null }) })
+    const original = global.fetch
+    global.fetch = fetch as unknown as typeof global.fetch
+    try {
+      await new TheAudioDBClient('2').getArtistInfo('Heart')
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/json/123/search.php'))
+      expect(warn).toHaveBeenCalled()
+    } finally {
+      global.fetch = original
+      warn.mockRestore()
+    }
   })
 })
