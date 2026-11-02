@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   buildMediaIndex,
+  joinNames,
   nightMediaLabel,
   actPhotosOnNight,
   leadPhoto,
@@ -283,6 +284,15 @@ describe('frame links', () => {
 
   it('finds nothing for a frame the index no longer holds', () => {
     expect(findMedia(ix, '2022-10-07', 'gone-01')).toBeNull()
+  })
+})
+
+describe('joinNames', () => {
+  it('lists a bill without a serial comma', () => {
+    expect(joinNames(['Thomas Dolby', 'Wire', 'OMD'])).toBe('Thomas Dolby, Wire and OMD')
+    expect(joinNames(['ABC', 'Haircut 100'])).toBe('ABC and Haircut 100')
+    expect(joinNames(['Midge Ure'])).toBe('Midge Ure')
+    expect(joinNames([])).toBe('')
   })
 })
 

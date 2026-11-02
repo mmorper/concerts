@@ -121,6 +121,12 @@ export function actClips(ix: MediaIndex, actSlug: string): Clip[] {
     .flatMap(([, clips]) => clips.filter((c) => c.artistNormalized === actSlug))
 }
 
+/** "A, B and C" — the house style: no serial comma. */
+export function joinNames(names: string[]): string {
+  if (names.length <= 1) return names[0] ?? ''
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`
+}
+
 /** "2 photos, 1 clip" — one act's media from one night, or '' when there is none. */
 export function nightMediaLabel(photos: number, clips: number): string {
   const part = (n: number, word: string) => (n ? `${n} ${word}${n === 1 ? '' : 's'}` : '')

@@ -117,7 +117,7 @@
 }
 /* The ring is texture for the larger shapes only; on an avatar it would sit on the initials. */
 .ask-derived .ring { display: none; }
-.ask-derived-sleeve .ring, .ask-hero-derived .ring, .ask-tile .ask-derived .ring {
+.ask-derived-sleeve .ring, .ask-hero-derived .ring {
   display: block; position: absolute; right: -30%; top: -30%; width: 90%; aspect-ratio: 1; border-radius: 50%;
   border: 0.9em solid rgba(255, 255, 255, 0.08); pointer-events: none;
 }
@@ -170,10 +170,7 @@ img.ex-photo { display: block; object-fit: cover; }
 }
 .ask-hero-derived { width: 100%; aspect-ratio: 3 / 2; font-size: 34px; }
 .ask-hero.portrait .ask-hero-derived { aspect-ratio: 4 / 5; }
-.ask-hero-row { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 12px; }
 .ask-hero.portrait { flex: 0 0 38%; max-width: 220px; }
-.ask-hero-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
-.ask-hero-side .ex-head { margin-bottom: 0; }
 .ask-cap { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 12.5px; color: rgba(255, 255, 255, 0.62); }
 .ask-cap.small { font-size: 12px; margin-top: 4px; }
 
@@ -271,8 +268,6 @@ img.ex-photo { display: block; object-fit: cover; }
 .ask-set .n { color: rgba(255, 255, 255, 0.4); text-align: right; font-variant-numeric: tabular-nums; }
 .ask-set .t { min-width: 0; overflow-wrap: anywhere; }
 .ask-set .cv { color: rgba(255, 255, 255, 0.5); }
-.ask-set .al { font-size: 12.5px; font-style: italic; color: rgba(255, 255, 255, 0.5); text-align: right; padding-left: 8px; }
-.ask-setlist .ask-set li { border-top: 1px solid rgba(255, 255, 255, 0.06); }
 .ask-songmark { width: 16px; height: 16px; display: block; border-radius: 3px; overflow: hidden; font-size: 6px; }
 .ask-songmark .ask-cover, .ask-songmark .ask-derived { width: 16px; height: 16px; border-radius: 3px; padding: 0; }
 .ask-songmark .ask-derived .t { display: none; }
@@ -289,24 +284,28 @@ img.ex-photo { display: block; object-fit: cover; }
 .ask-disc.seen .c { outline: 2px solid #a5b4fc; outline-offset: 3px; }
 .ask-disc.dim .c > .ask-cover, .ask-disc.dim .c > .ask-derived { opacity: 0.45; }
 
-/* Night card: one tile per act I photographed, each at the crop's own 4:5. */
-.ask-mosaic { display: grid; gap: 6px; margin-bottom: 12px; }
-.ask-mosaic.n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.ask-mosaic.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.ask-tile .lbl {
-  position: absolute; left: 8px; bottom: 8px; right: 8px; font-size: 12px; color: #fff; line-height: 1.25;
-  background: rgba(0, 0, 0, 0.6); border-radius: 6px; padding: 4px 8px; width: fit-content; max-width: calc(100% - 16px);
+/* One night (Phase 6): a card with the picture, date, room and bill, beside the setlist in two
+   columns that fill down, then across. */
+.ask-night-card { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; align-items: start; margin-bottom: 16px; }
+.ask-night-id { border-radius: 12px; overflow: hidden; background: rgba(255, 255, 255, 0.06); }
+.ask-night-art { display: block; width: 100%; aspect-ratio: 1; border-radius: 0; }
+.ask-night-art.ask-derived { font-size: 26px; }
+.ask-night-text { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 4px; }
+.ask-night-text .d { font-family: 'Playfair Display', Georgia, serif; font-size: 21px; line-height: 1.15; color: #fff; }
+.ask-night-text .w { font-size: 15px; color: rgba(255, 255, 255, 0.86); }
+.ask-night-text .b { font-size: 14px; line-height: 1.35; color: rgba(255, 255, 255, 0.72); }
+.ask-night-text .p { display: none; font-size: 12px; line-height: 1.35; color: rgba(255, 255, 255, 0.62); }
+.ask-night-set .ask-kick { color: #c7d2fe; }
+.ask-set-cols {
+  list-style: none; margin: 0; padding: 0; display: grid; grid-auto-flow: column;
+  grid-template-rows: repeat(var(--rows, 10), auto); grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 22px;
+  font-size: 15px; line-height: 1.35; color: rgba(255, 255, 255, 0.9);
 }
-.ask-tile .ask-derived { aspect-ratio: 4 / 5; font-size: 26px; }
-.ask-records { margin-bottom: 14px; }
-.ask-records-row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; }
-.ask-rec { flex: 0 0 72px; display: flex; flex-direction: column; gap: 4px; }
-.ask-rec .ask-cover, .ask-rec .ask-derived { width: 72px; height: 72px; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4); font-size: 11px; }
-.ask-rec .x { font-size: 12.5px; font-weight: 600; color: #fff; }
-.ask-rec .t { font-size: 11.5px; color: rgba(255, 255, 255, 0.72); line-height: 1.2; overflow-wrap: anywhere; }
-.ask-rec .y { color: rgba(255, 255, 255, 0.5); }
-.ask-rec.none .ask-cover, .ask-rec.none .ask-derived { opacity: 0.5; outline: 1px dashed rgba(255, 255, 255, 0.5); outline-offset: 2px; box-shadow: none; }
-.ask-setlist { margin-bottom: 12px; }
+.ask-set-cols li { display: grid; grid-template-columns: 26px minmax(0, 1fr); min-width: 0; padding: 4px 0; }
+.ask-set-cols .n { color: rgba(255, 255, 255, 0.5); font-variant-numeric: tabular-nums; }
+/* A long title wraps rather than losing its end, which is often the "(… cover)" credit. */
+.ask-set-cols .t { min-width: 0; overflow-wrap: anywhere; }
+.ask-set-cols .cv { color: rgba(255, 255, 255, 0.5); }
 
 /* ---- Era, shape, songs (#593) — the cards for tools that used to answer in text only ---- */
 .ask-era-now { display: flex; gap: 16px; align-items: center; margin-bottom: 14px; padding: 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.04); }
@@ -413,7 +412,14 @@ img.chip-av { object-fit: cover; display: block; }
   .ask-album-cover { width: 104px; }
   .ask-album-title .n { font-size: 22px; }
   .ask-set.cols { grid-template-columns: minmax(0, 1fr); }
-  .ask-set .al { display: none; }
+  /* One night: the picture and its text side by side above a single-column setlist. */
+  .ask-night-card { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .ask-night-id { display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: center; }
+  .ask-night-art .ask-hero-cap, .ask-night-art .ask-hero-count { display: none; }
+  .ask-night-text { padding: 10px 14px; }
+  .ask-night-text .d { font-size: 18px; }
+  .ask-night-text .p { display: block; }
+  .ask-set-cols { grid-auto-flow: row; grid-template-rows: none; grid-template-columns: minmax(0, 1fr); }
   .ask-venue-duo { flex-direction: column; }
   .ask-venue-duo .ask-hero.portrait { flex: none; width: 60%; align-self: center; }
   .ask-lightbox-stage { padding: 0; }

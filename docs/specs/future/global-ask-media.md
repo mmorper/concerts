@@ -230,7 +230,10 @@ every answer shares (done): a 920px panel, the prose above the exhibit, and no c
 per-kind layouts in the table above, one at a time. The artist answer is done: my photo (or, for an
 act never photographed, a smaller sourced image) beside every night, with a thumbnail and counts
 only on nights with media. The photo leads at 280px and the sourced image sits at 200px, so the
-owner's work still outranks it.
+owner's work still outranks it. One night is done too: a card with the picture, date, room and
+bill beside the setlist in two columns, its heading naming the record they were touring. The
+picture follows the ladder, so a night I have no photo from can show my photo of the act from
+another night, captioned with that night's date, before it falls to the touring record's cover.
 
 ---
 

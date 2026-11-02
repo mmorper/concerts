@@ -6,12 +6,13 @@ import { setlistDeepLink } from '@/utils/deepLinks'
 import { normalizeArtistName } from '@/utils/normalize'
 import type { AlbumExhibit, AlbumIdentity, DiscographyExhibit, ShowExhibit, SetSong, SongExhibit } from '@/types/exhibit'
 import type { ArchiveLookups } from './types'
-import { CoverArt, DerivedArt, FramedPhoto } from './AskMedia'
-import { DeepLink, Frame, PhotoButton, PhotoHero, Portrait, captionLookups, useFrameOpener, trackDeepLink, trackPhotoOpened } from './AskCardParts'
+import { CameraMark, CoverArt, DerivedArt, FramedPhoto } from './AskMedia'
+import { DeepLink, Frame, PhotoButton, Portrait, captionLookups, useFrameOpener, trackDeepLink, trackPhotoOpened } from './AskCardParts'
 import {
   actPhotosOnNight,
   billSlugs,
   fmtDate,
+  joinNames,
   leadPhoto,
   photoCaption,
   venuePhotosOnNight,
@@ -262,130 +263,106 @@ export function SongCard({ exhibit, archive }: { exhibit: SongExhibit; archive: 
 // C · One night
 // ---------------------------------------------------------------------------------------------
 
+// One night (Phase 6): a card with the night's picture, the date, the room and the bill, beside the
+// setlist. The picture takes the first rung that exists: my photo of the act that night (or of
+// anyone on the bill, or the room), then my photo of the act from another night, then the record
+// they were touring, then the type-led tile.
 export function ShowCard({ exhibit, archive }: { exhibit: ShowExhibit; archive: ArchiveLookups }) {
   const c = archive.concertById(exhibit.concertId)
   const color = c ? getGenreColor(c.genre) : genreColor(archive, exhibit.headliner.slug)
   const date = exhibit.date
-  const names = c ? [c.headliner, ...c.openers] : [exhibit.headliner.name]
-  const slugs = c ? billSlugs(c) : [exhibit.headliner.slug]
+  const performerSlug = normalizeArtistName(exhibit.performer)
   const lookups = captionLookups(archive)
-  const caption = (p: Photo) => photoCaption(p, { aboutAct: exhibit.headliner.slug, aboutDate: date, ...lookups })
   const viewer = useFrameOpener(archive, trackPhotoOpened('show'))
 
-  // One tile per act on the bill that I photographed, headliner first, each labelled with who it
-  // is; the venue fills in when fewer than three acts are covered. At most three, all at the
-  // crop's own 4:5 so every tile shows exactly the owner's framing.
-  const acts = slugs
-    .map((slug, i) => ({ label: `${names[i]} · ${i === 0 ? 'headliner' : 'opener'}`, photo: actPhotosOnNight(archive.media, date, slug)[0] }))
-    .filter((t): t is { label: string; photo: Photo } => !!t.photo)
-  const venueShot = venuePhotosOnNight(archive.media, date)[0]
-  const tiles = [...acts, ...(venueShot ? [{ label: `${exhibit.venue.name} · the venue`, photo: venueShot }] : [])].slice(0, 3)
   const nightAll = archive.media.byDate.get(date) ?? []
-  // No frame from this night: my photo of the headliner from another night (captioned as such).
-  const elsewhere = tiles.length ? null : leadPhoto(archive.media, exhibit.headliner.slug)
-
-  const withWhom = c?.openers.length ? ` · with ${c.openers.join(' and ')}` : ''
-  const title = (
-    <div className="ex-title">
-      <div className="n">{exhibit.headliner.name}</div>
-      <div className="meta">
-        {fmtDate(date)} · {exhibit.venue.name}
-        {c?.city ? `, ${c.city}` : ''}
-        {withWhom}
-      </div>
-    </div>
-  )
-
-  // Records in the set: by count, then release; the touring record kept even at ×0.
-  const counts = new Map<string, { album: AlbumIdentity; n: number }>()
-  for (const s of exhibit.songs) {
-    if (!s.album) continue
-    const hit = counts.get(s.album.mbid) ?? { album: s.album, n: 0 }
-    hit.n++
-    counts.set(s.album.mbid, hit)
-  }
-  const records = [...counts.values()].sort((x, y) => y.n - x.n || x.album.releaseDate.localeCompare(y.album.releaseDate))
+  const slugs = c ? billSlugs(c) : [exhibit.headliner.slug]
+  const tonight =
+    actPhotosOnNight(archive.media, date, performerSlug)[0] ??
+    slugs.map((s) => actPhotosOnNight(archive.media, date, s)[0]).find(Boolean) ??
+    venuePhotosOnNight(archive.media, date)[0] ??
+    null
+  const elsewhere = tonight ? null : leadPhoto(archive.media, performerSlug) ?? leadPhoto(archive.media, exhibit.headliner.slug)
+  const photo = tonight ?? elsewhere
+  const caption = (p: Photo) => photoCaption(p, { aboutAct: performerSlug, aboutDate: date, ...lookups })
   const touring = exhibit.touring
-  if (touring && !counts.has(touring.mbid)) records.push({ album: touring, n: 0 })
-  const identified = exhibit.songs.filter((s) => s.album).length
+  const derived = <DerivedArt name={exhibit.headliner.name} color={color} className="ask-night-art" />
+
+  const bill = exhibit.isOpener
+    ? `${exhibit.performer}, opening for ${exhibit.headliner.name}`
+    : c?.openers.length
+      ? `With ${joinNames(c.openers)}`
+      : ''
+  const heading = [
+    exhibit.isOpener ? `${exhibit.performer}’s opening set` : 'The setlist',
+    exhibit.songs.length ? `${exhibit.songs.length} ${exhibit.songs.length === 1 ? 'song' : 'songs'}` : '',
+    touring ? `${touring.title} tour` : '',
+  ]
+    .filter(Boolean)
+    .join(' · ')
 
   return (
     <Frame>
-      {tiles.length > 1 ? (
-        <>
-          <div className={`ask-mosaic n${tiles.length}`}>
-            {tiles.map((t) => (
-              <PhotoButton key={t.photo.url} className="ask-tile" onOpen={() => viewer.open(nightAll, nightAll.indexOf(t.photo))} label={caption(t.photo)}>
-                <FramedPhoto photo={t.photo} aspect={0.8} alt={caption(t.photo)} fallback={<DerivedArt name={t.label} color={color} />} />
-                <span className="lbl">{t.label}</span>
-              </PhotoButton>
-            ))}
-          </div>
-          {title}
-        </>
-      ) : tiles.length === 1 || elsewhere ? (
-        <PhotoHero
-          photo={(tiles[0]?.photo ?? elsewhere)!}
-          caption={caption((tiles[0]?.photo ?? elsewhere)!)}
-          onOpen={() => {
-            const p = (tiles[0]?.photo ?? elsewhere)!
-            const set = tiles.length ? nightAll : (archive.media.byArtist.get(exhibit.headliner.slug) ?? [p])
-            viewer.open(set, set.indexOf(p))
-          }}
-          count={tiles.length ? nightAll.length : 0}
-          color={color}
-          name={exhibit.headliner.name}
-          side={title}
-        />
-      ) : (
-        <div className="ex-head">
-          <Portrait name={exhibit.headliner.name} image={archive.artistFacts(exhibit.headliner.slug).meta?.image} color={color} className="ex-photo" />
-          {title}
-        </div>
-      )}
-      {records.length > 0 && (
-        <div className="ask-records">
-          <div className="ask-kick">Records in the set</div>
-          <div className="ask-records-row">
-            {records.map(({ album, n }) => (
-              <div key={album.mbid} className={`ask-rec ${n === 0 ? 'none' : ''}`}>
-                <CoverArt album={album} color={color} />
-                <span className="x">×{n}</span>
-                <span className="t">
-                  {album.title}
-                  <span className="y"> · {yearOf(album.releaseDate)}{touring?.mbid === album.mbid ? ' · touring' : ''}</span>
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      {exhibit.songs.length > 0 && (
-        <div className="ask-setlist">
-          <div className="ask-kick">{exhibit.isOpener ? `${exhibit.performer}’s opening set` : 'Setlist'}</div>
-          <ol className="ask-set">
-            {exhibit.songs.map((s, i) => (
-              <li key={`${i}-${s.title}`}>
-                <span className="n">{i + 1}</span>
-                <SongMark album={s.album} color={color} />
-                <span className="t">
-                  {s.title}
-                  {s.coverOf && <span className="cv"> ({s.coverOf} cover)</span>}
-                </span>
-                <span className="al">{s.album?.title ?? ''}</span>
-              </li>
-            ))}
-          </ol>
-          {identified > 0 && (
-            <div className="ask-note">
-              {identified} of {exhibit.songs.length} songs matched to a record.
+      <div className="ask-night-card">
+        <div className="ask-night-id">
+          {photo ? (
+            <PhotoButton
+              className="ask-night-art"
+              onOpen={() => {
+                const set = tonight ? nightAll : (archive.media.byArtist.get(photo.artistNormalized ?? '') ?? [photo])
+                viewer.open(set, Math.max(0, set.indexOf(photo)))
+              }}
+              label={caption(photo)}
+            >
+              <FramedPhoto photo={photo} aspect={1} alt={caption(photo)} fallback={derived} eager />
+              {tonight && nightAll.length > 1 && <span className="ask-hero-count">{nightAll.length} photos</span>}
+              <span className="ask-hero-cap">
+                <CameraMark size={12} /> {caption(photo)}
+              </span>
+            </PhotoButton>
+          ) : touring ? (
+            <CoverArt album={touring} size={500} color={color} className="ask-night-art" />
+          ) : (
+            derived
+          )}
+          <div className="ask-night-text">
+            <div className="d">{fmtDate(date)}</div>
+            <div className="w">
+              {exhibit.venue.name}
+              {c?.city ? `, ${c.city}` : ''}
             </div>
+            {bill && <div className="b">{bill}</div>}
+            {/* On a phone the photo is too small for its caption, and a frame from another night
+                must still say so. */}
+            {elsewhere && (
+              <div className="p">
+                <CameraMark size={12} /> {caption(elsewhere)}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="ask-night-set">
+          <div className="ask-kick">{heading}</div>
+          {exhibit.songs.length > 0 ? (
+            <ol className="ask-set-cols" style={{ ['--rows' as string]: Math.ceil(exhibit.songs.length / 2) }}>
+              {exhibit.songs.map((s, i) => (
+                <li key={`${i}-${s.title}`}>
+                  <span className="n">{i + 1}</span>
+                  <span className="t">
+                    {s.title}
+                    {s.coverOf && <span className="cv"> ({s.coverOf} cover)</span>}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p className="ask-note">No setlist on record for this night.</p>
           )}
         </div>
-      )}
+      </div>
       <div className="ask-links">
         {/* The set shown is the performer's — an opener's night opens their panel, not the headliner's. */}
-        <DeepLink href={setlistDeepLink(normalizeArtistName(exhibit.performer), date)} kind="show">
+        <DeepLink href={setlistDeepLink(performerSlug, date)} kind="show">
           Open this night on the site
         </DeepLink>
         <DeepLink href={exhibit.venue.deepLink} kind="show">
