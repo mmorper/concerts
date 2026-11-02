@@ -142,6 +142,54 @@ Also:
 The test does not cover the daily spend cap or a model failure. Those replies stay as they are
 today.
 
+### Phase 6: the redesign
+
+Mocks: [Ask the Archive redesign](https://claude.ai/artifact/GghUJAdPAzQmZ231XDDBe7), the rows
+"Where I'd land" and "The response". The canvas is private to the owner until shared.
+
+The modal must read as search first. The owner's decisions, 2026-11-02:
+
+| Decision | Choice |
+|---|---|
+| The field | A traditional search box, first on the page, with a magnifier and "Search a band, venue, song or year, or ask anything" |
+| Follow-ups | The box stays at the top on desktop. A new question replaces the view, with earlier answers above. On a phone it stays at the bottom, above the keyboard |
+| A clicked card | Asks straight away. The question shows in the box, followed by thinking dots |
+| Where answers appear | The Spotlight overlay, for the Ask scene too |
+| Headline | "That's over forty years. Now ask me about it." |
+| Connector link | Below the crate, in the Ask scene |
+
+**Type-ahead.** Typing replaces the banner with instant matches: bands, venues and clip songs, with
+counts, then "Ask the archive about…". It runs on the site with no model call. Extend it to
+setlist songs, or the word "song" in the placeholder over-promises.
+
+**The ⌘K banner.** One large photo banner under the box, with a "Pull another" button.
+Text never rotates on a timer: it would need a pause control and it reads as an ad.
+
+**The opening idea.** One per day, the same for everyone, chosen in this order:
+
+1. A photographed show on this date
+2. A show on this date with no photo from that night. Use the owner's photo of that act from
+   another night, with its full date in the byline. Use the type-led card only for acts never
+   photographed
+3. The rotation: a clip, a year, a familiar face
+
+A date with several shows prefers a photographed night, then the higher On This Day score. Go
+through every item before repeating one. "Pull another" works through the rest.
+
+**The Ask scene.** "Pull one from the crate" is a carousel: five cards at a time on desktop, one on
+a phone, with an arrow on each side. An On This Day card leads it on days that are true, and clicking
+it asks "What did you see on this day?". Cards need swipe on a phone and a reduced-motion version.
+
+**The response.** A sentence or two in Playfair, then the exhibit as the largest thing on
+screen, then chips. No bubbles or avatars. Three layouts: clip with photos, a ranked list beside a
+photo, and shows with no media. "No photos from 1987" still lists that year's shows.
+
+Every banner, card and opener goes through the same check as the chips in Phase 5: if a tool can't
+answer it, it doesn't appear.
+
+**Build order:** type-ahead and the search box, then the response layout, then the banner, then the
+opening idea, then the Ask scene carousel. Clip rows wait for Phase 3.
+
 ---
 
 ## Files
@@ -191,6 +239,7 @@ today.
 
 ## Revision History
 
+- **2026-11-02:** Phase 6 added: the search-first redesign, from the owner's review of the mocks
 - **2026-11-02:** Song search moved into Phase 2, since #612 shipped `song`
 - **2026-11-01:** Initial specification created
 - **Version:** 1.1.0
