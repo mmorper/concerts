@@ -75,8 +75,21 @@ function goodRoadmap() {
   ].join('\n')
 }
 
+/** A package.json with the five majors the stack lines name. */
+const PACKAGE_JSON = JSON.stringify({
+  dependencies: { react: '^18.3.1', d3: '^7.9.0' },
+  devDependencies: { vite: '^8.3.5', typescript: '^7.0.2', tailwindcss: '^4.0.0' },
+})
+
+/** The MCP server's registrations, in the shape tools.ts writes them. */
+const MCP_TOOLS = ['get_archive_info', 'get_media', 'query']
+const TOOLS_TS = MCP_TOOLS.map((t) => `  server.registerTool(\n    "${t}",\n    {},`).join('\n')
+
 function goodClaudeMd() {
-  return `**Version:** v5.4.0 | ${EXPECTED.concerts} concerts, ${EXPECTED.artists} artists, ${EXPECTED.venues} venues`
+  return [
+    `**Version:** v5.4.0 | ${EXPECTED.concerts} concerts, ${EXPECTED.artists} artists, ${EXPECTED.venues} venues`,
+    `**Stack:** Vite 8, React 18, TypeScript 7, Tailwind 4, D3.js 7, Leaflet`,
+  ].join('\n')
 }
 
 function goodLlmsTxt() {
@@ -89,6 +102,13 @@ function goodLlmsTxt() {
 
 function goodLlmTxt() {
   return [
+    `grounded questions without scraping. Tools: \`get_archive_info\`, \`get_media\`, and a`,
+    `freeform \`query\` escape hatch.`,
+    ``,
+    `- **Frontend:** React 18 + TypeScript 7 + Vite 8`,
+    `- **Styling:** Tailwind CSS 4`,
+    `- **Visualization:** D3.js 7 + Framer Motion 11`,
+    ``,
     `## Deep Linking System`,
     ``,
     `### Scene Navigation`,
@@ -227,6 +247,8 @@ function mockFiles(overrides: Partial<Record<string, string>> = {}) {
     'CLAUDE.md': goodClaudeMd(),
     'public/llms.txt': goodLlmsTxt(),
     'public/llm.txt': goodLlmTxt(),
+    'package.json': PACKAGE_JSON,
+    'workers/mcp-server/src/tools.ts': TOOLS_TS,
     'docs/architecture.svg': goodArchitectureSvg(),
     'docs/design/scene-design-guide.md': goodSceneDesignGuide(),
     'docs/design/ui-component-patterns.md': goodUiComponentPatterns(),
@@ -298,7 +320,10 @@ describe('validate-docs', () => {
 
     it('flags stale concert, artist and venue counts together', async () => {
       mockFiles({
-        'CLAUDE.md': `**Version:** v5.4.0 | 999 concerts, 888 artists, 777 venues`,
+        'CLAUDE.md': goodClaudeMd().replace(
+          `${EXPECTED.concerts} concerts, ${EXPECTED.artists} artists, ${EXPECTED.venues} venues`,
+          '999 concerts, 888 artists, 777 venues'
+        ),
       })
       const failures = await runValidator()
 
@@ -447,6 +472,40 @@ describe('validate-docs', () => {
 
       expect(failures).toHaveLength(1)
       expect(failures[0]).toMatchObject({ file: 'public/llm.txt', label: 'back-to-back --- separators', actual: '2' })
+    })
+  })
+
+  describe('stack lines and the MCP tool list', () => {
+    // CLAUDE.md said Vite 6 and TypeScript 5 after the move to 8 and 7.
+    it('flags a stack line behind package.json', async () => {
+      mockFiles({ 'CLAUDE.md': goodClaudeMd().replace('TypeScript 7', 'TypeScript 5') })
+      const failures = await runValidator()
+
+      expect(failures).toHaveLength(1)
+      expect(failures[0]).toMatchObject({ file: 'CLAUDE.md', label: 'stack — TypeScript', actual: '5', expected: '7' })
+    })
+
+    it('reads llm.txt\'s stack per line, so Tailwind CSS counts as Tailwind', async () => {
+      mockFiles({ 'public/llm.txt': goodLlmTxt().replace('Tailwind CSS 4', 'Tailwind CSS 3') })
+      const failures = await runValidator()
+
+      expect(failures.map((f) => [f.file, f.label, f.actual])).toEqual([['public/llm.txt', 'stack — Tailwind', '3']])
+    })
+
+    // It listed eleven tools while the server registered twelve: get_media never made the list.
+    it('flags a registered tool the list leaves out', async () => {
+      mockFiles({ 'public/llm.txt': goodLlmTxt().replace('`get_media`, ', '') })
+      const failures = await runValidator()
+
+      expect(failures).toHaveLength(1)
+      expect(failures[0]).toMatchObject({ label: 'MCP tool list', reason: 'mismatch', actual: 'get_archive_info, query' })
+    })
+
+    it('fails rather than passes when no registrations can be found', async () => {
+      mockFiles({ 'workers/mcp-server/src/tools.ts': 'export {}' })
+      const failures = await runValidator()
+
+      expect(failures.map((f) => [f.label, f.reason])).toEqual([['MCP tool registrations', 'no-match']])
     })
   })
 
