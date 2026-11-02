@@ -367,6 +367,64 @@ function deriveTopology() {
   return { workers: workers.length, gates: gates.length }
 }
 
+/**
+ * The major versions the stack lines name, read off package.json.
+ *
+ * CLAUDE.md said "Vite 6 … TypeScript 5" after the move to Vite 8 and TypeScript 7.
+ * /release updates the version line above it and never looked at this one.
+ */
+function deriveStack() {
+  const pkg = JSON.parse(readRepoFile('package.json'))
+  const deps: Record<string, string> = { ...pkg.dependencies, ...pkg.devDependencies }
+  const major = (name: string) => deps[name]?.match(/\d+/)?.[0] ?? `(no ${name} in package.json)`
+  return {
+    Vite: major('vite'),
+    React: major('react'),
+    TypeScript: major('typescript'),
+    Tailwind: major('tailwindcss'),
+    'D3.js': major('d3'),
+  }
+}
+
+/** One claim per tool on a stack line: `line` is the line's own label, so a match stays on it. */
+function stackClaims(file: string, line: string, names: Array<keyof ReturnType<typeof deriveStack>>): Claim[] {
+  const stack = deriveStack()
+  const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return names.map((name) => ({
+    file,
+    label: `stack — ${name}`,
+    pattern: new RegExp(`${esc(line)}[^\\n]*\\b${esc(name)}(?: CSS)? (\\d+)`),
+    expected: stack[name],
+  }))
+}
+
+/**
+ * llm.txt's MCP tool list against the tools the server registers.
+ *
+ * It named eleven tools while the server had twelve: `get_media` shipped and the list
+ * never heard. A tool list is a set, so it is compared as one, not as a sentence.
+ */
+function checkMcpTools(): Failure[] {
+  const file = 'public/llm.txt'
+  const registered = [
+    ...readRepoFile('workers/mcp-server/src/tools.ts').matchAll(/registerTool\(\s*"([a-z_]+)"/g),
+  ]
+    .map((m) => m[1])
+    .sort()
+  // Any whitespace before "escape hatch": the sentence is prose, and re-wrapping it must not stop the check.
+  const pattern = /Tools: ([\s\S]*?)\s+escape hatch\./
+  if (registered.length === 0) {
+    // The registration pattern stopped matching: say so rather than pass an empty set.
+    return [{ file: 'workers/mcp-server/src/tools.ts', label: 'MCP tool registrations', reason: 'no-match', expected: 'registerTool("name", …)', pattern: /registerTool\(\s*"([a-z_]+)"/g }]
+  }
+  const m = readRepoFile(file).match(pattern)
+  if (!m) return [{ file, label: 'MCP tool list', reason: 'no-match', expected: registered.join(', '), pattern }]
+  const listed = [...m[1].matchAll(/`([a-z_]+)`/g)].map((x) => x[1]).sort()
+  return listed.join(', ') === registered.join(', ')
+    ? []
+    : [{ file, label: 'MCP tool list', reason: 'mismatch', expected: registered.join(', '), actual: listed.join(', '), pattern }]
+}
+
 function buildClaims(): Claim[] {
   const stats = deriveStats()
   const topology = deriveTopology()
@@ -551,6 +609,12 @@ function buildClaims(): Claim[] {
       expected: String(stats.concerts),
     },
 
+    // ---- The stack lines: CLAUDE.md's header and llm.txt's Technology Stack.
+    ...stackClaims('CLAUDE.md', '**Stack:**', ['Vite', 'React', 'TypeScript', 'Tailwind', 'D3.js']),
+    ...stackClaims('public/llm.txt', '**Frontend:**', ['React', 'TypeScript', 'Vite']),
+    ...stackClaims('public/llm.txt', '**Styling:**', ['Tailwind']),
+    ...stackClaims('public/llm.txt', '**Visualization:**', ['D3.js']),
+
     // ---- public/llm.txt: the scenes. It described five for months after Ask shipped as
     // the sixth, in the order the scenes had before the Venues/Artists swap.
     {
@@ -682,6 +746,7 @@ export function validateDocs(): Failure[] {
   failures.push(...checkDerivationUse())
   failures.push(...checkTableRosters())
   failures.push(...checkSeparators())
+  failures.push(...checkMcpTools())
 
   const fileCache = new Map<string, string>()
 
