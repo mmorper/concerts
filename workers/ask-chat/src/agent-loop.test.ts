@@ -43,7 +43,12 @@ describe("system prompt — photos and clips", () => {
   });
 
   it("keeps media on the nights the line names", () => {
-    expect(prompt).toContain("Place it on those nights only");
+    expect(prompt).toContain("Never say it's spread across an artist's shows");
+    expect(prompt).toContain("never guess who is in a clip");
+  });
+
+  it("sends any question about seeing media to get_media", () => {
+    expect(prompt).toContain("goes to get_media");
   });
 });
 

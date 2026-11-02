@@ -17,11 +17,13 @@ import type { ArtistExhibit, VenueExhibit, ListExhibit, SerendipityExhibit, Disa
 import { CameraMark, DerivedArt, FramedPhoto, LadderImage, usePhotoViewer } from './AskMedia'
 import { ChipLink, DeepLink, Filmstrip, Frame, PhotoButton, PhotoHero, Portrait, Prose, captionLookups, trackPhotoOpened, yearSpan } from './AskCardParts'
 import { AlbumCard, DiscographyCard, ShowCard } from './AskRecordCards'
+import { GalleryCard } from './AskGalleryCard'
 import { EraCard, ShapeCard, SongsCard } from './AskCareerCards'
 import {
   BANNER_ASPECT,
   actPhotosOnNight,
   fmtDate,
+  frameLink,
   heroLayout,
   leadPhoto,
   nightPhoto,
@@ -262,7 +264,7 @@ function ListCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: ListExhibit
         const meta = archive.artistFacts(r.artist.slug).meta
         const count = nightPhotoCount(archive.media, r.date)
         return (
-          <a key={r.concertId} className="ask-row" href={r.artist.deepLink} onClick={() => analytics.trackEvent('ask_deeplink_clicked', { kind: 'list', target_scene: 'artists' })}>
+          <a key={r.concertId} className="ask-row" href={pick ? frameLink(pick.photo, r.artist.slug) : r.artist.deepLink} onClick={() => analytics.trackEvent('ask_deeplink_clicked', { kind: 'list', target_scene: 'artists' })}>
             <span className="yr">{r.date.slice(0, 4)}</span>
             <span className="th">
               {pick ? (
@@ -414,6 +416,8 @@ export function AskExhibit({ exchange, archive }: { exchange: Exchange; archive:
       return <ShapeCard ex={exchange} exhibit={exhibit} archive={archive} />
     case 'songs':
       return <SongsCard ex={exchange} exhibit={exhibit} archive={archive} />
+    case 'gallery':
+      return <GalleryCard ex={exchange} exhibit={exhibit} archive={archive} />
     case 'disambiguation':
       return <DisambiguationCard ex={exchange} exhibit={exhibit} archive={archive} />
     case 'refusal':

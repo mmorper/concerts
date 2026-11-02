@@ -7,6 +7,8 @@ import {
   nightReel,
   withCanonicalActs,
   mediaId,
+  findMedia,
+  frameLink,
   focalPosition,
   cropAspect,
   cropCoverage,
@@ -247,5 +249,29 @@ describe('duration phrases', () => {
     expect(monthsPhrase(21)).toBe('21 months')
     expect(monthsPhrase(91)).toBe('7.6 years')
     expect(monthsPhrase(1)).toBe('1 month')
+  })
+})
+
+describe('frame links', () => {
+  const still = {
+    kind: 'image', url: '/images/shows/2022-10-07-pet-shop-boys-01.jpg', date: '2022-10-07',
+    artist: 'Pet Shop Boys', artistNormalized: 'pet-shop-boys', subject: 'artist', width: 10, height: 10,
+  }
+  const room = { ...still, url: '/images/shows/2022-10-07-venue-01.jpg', artist: null, artistNormalized: null, subject: 'venue' }
+  const ix = buildMediaIndex([still, room])
+
+  it('opens an act\'s frame in that act\'s gatefold, not the headliner\'s', () => {
+    expect(frameLink(ix.byDate.get('2022-10-07')![0], 'new-order')).toBe(
+      '/?scene=artists&artist=pet-shop-boys&show=2022-10-07&photo=pet-shop-boys-01',
+    )
+  })
+
+  it('opens a room frame in the fallback act\'s gatefold', () => {
+    const frame = findMedia(ix, '2022-10-07', 'venue-01')!
+    expect(frameLink(frame, 'new-order')).toBe('/?scene=artists&artist=new-order&show=2022-10-07&photo=venue-01')
+  })
+
+  it('finds nothing for a frame the index no longer holds', () => {
+    expect(findMedia(ix, '2022-10-07', 'gone-01')).toBeNull()
   })
 })

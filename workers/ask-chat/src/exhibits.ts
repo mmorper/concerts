@@ -34,6 +34,7 @@ export type ExhibitKind =
   | "era"
   | "shape"
   | "songs"
+  | "gallery"
   | "plain"
   | "disambiguation"
   | "refusal";
@@ -243,6 +244,24 @@ export interface SongsExhibit {
   songs: TopSong[];
 }
 
+/** get_media: the owner's frames, by identity. Tiles link to the exact frame in its gatefold. */
+export interface GalleryItem {
+  id: string;
+  kind: "image" | "video";
+  date: string;
+  act: string | null;
+  song?: string;
+  duration?: number;
+  deepLink: string;
+}
+
+export interface GalleryExhibit {
+  kind: "gallery";
+  title: string;
+  total: number;
+  items: GalleryItem[];
+}
+
 /** Prose-only answer (archive_info, on_this_day with no matches, or any non-entity reply). */
 export interface PlainExhibit {
   kind: "plain";
@@ -265,6 +284,7 @@ export type Exhibit =
   | EraExhibit
   | ShapeExhibit
   | SongsExhibit
+  | GalleryExhibit
   | DisambiguationExhibit
   | PlainExhibit
   | RefusalExhibit;
@@ -278,6 +298,9 @@ export type Exhibit =
 /** Higher wins. Disambiguation outranks all — if the archive needs a pick, that IS the answer. */
 const KIND_PRIORITY: Record<Exhibit["kind"], number> = {
   disambiguation: 60,
+  // Asking to see something is the most specific question there is: a media turn often also
+  // resolves the act or the night, and the card should be the frames.
+  gallery: 58,
   // A record or a night is narrower than the act: "what album was X on" often also runs
   // get_artist_history, and the card should be the record, not the act.
   album: 55,

@@ -2,6 +2,7 @@ import { buildAliasIndex } from "./aliases.js";
 import { describe, it, expect } from "vitest";
 import {
   archiveInfo,
+  mediaResults,
   searchConcerts,
   resolveArtist,
   artistHistory,
@@ -177,6 +178,38 @@ function assertVoice(text: string) {
 }
 
 // ---------- get_archive_info ----------
+
+describe("get_media", () => {
+  const concert = (date: string, headliner: string, openers: string[] = []) =>
+    ({ date, year: Number(date.slice(0, 4)), headliner, headlinerNormalized: headliner.toLowerCase().replace(/ /g, "-"), openers, venue: "A Room", venueNormalized: "a-room" }) as unknown as Concert;
+  const concerts = [concert("2022-10-07", "New Order", ["Pet Shop Boys"]), concert("1987-06-30", "Oingo Boingo")];
+  const media = {
+    assets: [
+      { kind: "image", url: "/images/shows/2022-10-07-pet-shop-boys-01.jpg", date: "2022-10-07", artist: "Pet Shop Boys", artistNormalized: "pet-shop-boys" },
+      { kind: "image", url: "/images/shows/2022-10-07-venue-01.jpg", date: "2022-10-07", artist: null, artistNormalized: null },
+    ],
+  };
+
+  it("opens an opener's frame in the opener's gatefold, and a room frame in the headliner's", () => {
+    const { items } = mediaResults(concerts, media, {}, null);
+    const link = (id: string) => items.find((m) => m.id === id)?.deepLink;
+    expect(link("pet-shop-boys-01")).toBe("/?scene=artists&artist=pet-shop-boys&show=2022-10-07&photo=pet-shop-boys-01");
+    expect(link("venue-01")).toBe("/?scene=artists&artist=new-order&show=2022-10-07&photo=venue-01");
+  });
+
+  it("names each item's own night and act in the text", () => {
+    const { text } = mediaResults(concerts, media, { artist: "Pet Shop Boys" }, null);
+    expect(text).toContain("October 7, 2022, Pet Shop Boys, photo");
+    expect(text).toContain("&photo=pet-shop-boys-01");
+  });
+
+  it("says plainly when there is nothing, and where the photos start", () => {
+    const { text, items } = mediaResults(concerts, media, { artist: "Oingo Boingo" }, null);
+    expect(items).toEqual([]);
+    expect(text).toContain("I have no photos or clips of Oingo Boingo");
+    expect(text).toContain("My photos start in 2022");
+  });
+});
 
 describe("get_archive_info", () => {
   const night = (headliner: string, openers: string[] = []) =>

@@ -1,8 +1,11 @@
 import { describe, it, expect } from "vitest";
+import DEEP_LINKS from "../../../test/fixtures/deep-link-urls.json";
 import {
   artistMediaNote,
   nightMediaNote,
   nightsMediaNote,
+  photoDeepLink,
+  selectMedia,
   withMediaNote,
   type MediaAsset,
   type MediaIndexFile,
@@ -95,7 +98,7 @@ describe("nightMediaNote", () => {
 describe("nightsMediaNote", () => {
   it("totals a set of nights and says how many had media", () => {
     expect(nightsMediaNote(media, [NIGHT, "2019-01-01", "1987-06-30"])).toBe(
-      "**Media on the site:** 5 photos and 2 clips from 2 of these 3 nights: 1 January 2019, 16 September 2026. The clips show “Lies”, “In the Name of Love”.",
+      "**Media on the site:** 5 photos and 2 clips from 2 of these 3 nights: 1 January 2019, 16 September 2026. The clips show “Lies” (Thompson Twins), “In the Name of Love” (Thompson Twins).",
     );
   });
 
@@ -129,5 +132,56 @@ describe("withMediaNote", () => {
 
   it("leaves the text alone for an empty note", () => {
     expect(withMediaNote(`Body.${footer}`, "")).toBe(`Body.${footer}`);
+  });
+});
+
+describe("selectMedia", () => {
+  it("builds the link every surface agrees on", () => {
+    const { slug, date, photo } = DEEP_LINKS.photo.input;
+    expect(photoDeepLink(slug, date, photo)).toBe(DEEP_LINKS.photo.url);
+  });
+
+  const gatefold = (a: MediaAsset) => a.artistNormalized ?? "the-headliner";
+  const tt = (n: string, extra: Partial<MediaAsset> = {}): MediaAsset => ({
+    ...still(NIGHT, "Thompson Twins", "thompson-twins"),
+    url: `/images/shows/${NIGHT}-thompson-twins-${n}.jpg`,
+    ...extra,
+  });
+
+  it("links to the exact frame, not just the gatefold", () => {
+    const [item] = selectMedia({ assets: [tt("10")] }, {}, gatefold);
+    expect(item.deepLink).toBe(`/?scene=artists&artist=thompson-twins&show=${NIGHT}&photo=thompson-twins-10`);
+    expect(item.id).toBe("thompson-twins-10");
+  });
+
+  it("names a clip's link so it opens the clip", () => {
+    const [item] = selectMedia({ assets: [clip(NIGHT, "Thompson Twins", "thompson-twins", "Lies", `https://m/${NIGHT}-thompson-twins-01.mp4?v=1`)] }, {}, gatefold);
+    expect(item.id).toBe("thompson-twins-01-video");
+    expect(item.deepLink).toContain("&photo=thompson-twins-01-video");
+  });
+
+  it("opens a room frame in the gatefold it names, with no act credited", () => {
+    const [item] = selectMedia({ assets: [{ ...still(NIGHT, null, null), url: `/images/shows/${NIGHT}-venue-01.jpg` }] }, {}, gatefold);
+    expect(item.act).toBeNull();
+    expect(item.deepLink).toContain("artist=the-headliner");
+  });
+
+  it("leads with the owner's marks, then the newest night", () => {
+    const assets = [tt("01"), tt("02", { hero: true }), { ...tt("03"), date: "2027-01-01" }, tt("04", { signature: true })];
+    expect(selectMedia({ assets }, {}, gatefold).map((m) => m.id.slice(-2))).toEqual(["04", "02", "03", "01"]);
+  });
+
+  it("never returns an unpublished clip", () => {
+    const hidden = clip(NIGHT, "Blancmange", "blancmange", "Secret Song", null);
+    expect(selectMedia({ assets: [hidden] }, {}, gatefold)).toEqual([]);
+  });
+
+  it("filters by act, night, year, kind and song", () => {
+    const filter = (f: Parameters<typeof selectMedia>[1]) => selectMedia(media, f, gatefold).length;
+    expect(filter({ slugs: ["blancmange"] })).toBe(1);
+    expect(filter({ dates: new Set(["2019-01-01"]) })).toBe(1);
+    expect(filter({ year: 2026 })).toBe(6);
+    expect(filter({ kind: "video" })).toBe(2);
+    expect(filter({ song: "lies" })).toBe(1);
   });
 });

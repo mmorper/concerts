@@ -18,6 +18,7 @@ import {
   surpriseMe,
   concertSetlist,
   archiveTopSongs,
+  mediaResults,
   careerPosition,
   careerShape,
   setlistSelection,
@@ -150,6 +151,23 @@ export const TOOL_DEFS = [
         artist: { type: "string" },
         date: { type: "string" },
         concertId: { type: "string" },
+      },
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "get_media",
+    description:
+      "My own photos and video clips. Use for any question asking to see, or asking whether I have, photos or video: by artist, venue, date, year or song. Each result names its own night and act. Most shows have none, and nothing predates 2011.",
+    input_schema: {
+      type: "object",
+      properties: {
+        artist: { type: "string" },
+        venue: { type: "string" },
+        date: { type: "string", description: "One night, YYYY-MM-DD." },
+        year: { type: "integer" },
+        kind: { type: "string", enum: ["photo", "clip"] },
+        song: { type: "string", description: "A song a clip shows." },
       },
       additionalProperties: false,
     },
@@ -477,6 +495,32 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       const sel = setlistSelection(data.concerts, setlists, args, eras, songAlbums, meta ?? {}, aliasData);
       if (!sel) return { text }; // the prose is asking which night — no card yet
       return { text: withMediaNote(text, nightMediaNote(media, sel.concert.date)), exhibit: showExhibit(sel) };
+    }
+
+    case "get_media": {
+      const [data, media, venues, aliasData] = await Promise.all([
+        getConcerts(e, bgCtx),
+        getMediaIndex(e, bgCtx),
+        getVenuesMetadata(e, bgCtx),
+        getArtistAliases(e, bgCtx),
+      ]);
+      if (!data || !media) return { text: DATA_UNAVAILABLE };
+      const r = mediaResults(
+        data.concerts,
+        media,
+        {
+          artist: input.artist ? str(input.artist) : undefined,
+          venue: input.venue ? str(input.venue) : undefined,
+          date: input.date ? str(input.date) : undefined,
+          year: num(input.year),
+          kind: input.kind === "photo" || input.kind === "clip" ? input.kind : undefined,
+          song: input.song ? str(input.song) : undefined,
+        },
+        venues,
+        buildAliasIndex(aliasData),
+      );
+      if (!r.items.length) return { text: r.text };
+      return { text: r.text, exhibit: { kind: "gallery", title: r.title, total: r.total, items: r.items } };
     }
 
     case "get_archive_top_songs": {

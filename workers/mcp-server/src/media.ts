@@ -16,6 +16,35 @@ export interface MediaAsset {
   artistNormalized: string | null;
   /** The song a clip shows. Confirmed by the owner. */
   song?: string;
+  hero?: boolean;
+  signature?: boolean;
+  order?: number;
+  /** Seconds. Clips only. */
+  duration?: number;
+}
+
+/** What a reader asked to see. Every field narrows; an empty filter is everything public. */
+export interface MediaFilter {
+  /** Every billing of one act. */
+  slugs?: readonly string[];
+  /** One night, or every night at a venue. */
+  dates?: ReadonlySet<string>;
+  year?: number;
+  kind?: "image" | "video";
+  song?: string;
+}
+
+/** One still or clip, by identity. The site hydrates the pixels. */
+export interface MediaItem {
+  /** `mediaId`: the published filename without its date. */
+  id: string;
+  kind: "image" | "video";
+  date: string;
+  /** Null on a room frame. Never defaults to the headliner. */
+  act: string | null;
+  song?: string;
+  duration?: number;
+  deepLink: string;
 }
 
 export interface MediaIndexFile {
@@ -32,6 +61,9 @@ export const MEDIA_NOTE_LABEL = "Media on the site";
 const UNAVAILABLE = `**${MEDIA_NOTE_LABEL}:** I can't check right now.`;
 
 const FOOTER = "\n\n---\n**Open on the site:**";
+
+/** Gallery size: the card shows a lead and a grid, and the total says if there is more. */
+export const MEDIA_RESULT_LIMIT = 12;
 
 const published = (media: MediaIndexFile): MediaAsset[] => media.assets.filter((a) => !!a.url);
 
@@ -62,12 +94,15 @@ function songs(assets: MediaAsset[]): string {
   return titles.map((t) => `“${t}”`).join(", ");
 }
 
-/** " The clips show “Lies”.", or nothing. */
+/**
+ * " The clips show “Lies” (Thompson Twins).", or nothing. Named by act, because a song title
+ * alone across several nights left the model guessing who played "Holocene".
+ */
 function songSentence(assets: MediaAsset[]): string {
-  const list = songs(assets);
-  if (!list) return "";
-  const clips = assets.filter((a) => a.kind === "video").length;
-  return ` ${clips === 1 ? "The clip shows" : "The clips show"} ${list}.`;
+  const titled = assets.filter((a) => a.kind === "video" && a.song);
+  if (!titled.length) return "";
+  const list = titled.map((a) => `“${a.song}”${a.artist ? ` (${a.artist})` : ""}`).join(", ");
+  return ` ${titled.length === 1 ? "The clip shows" : "The clips show"} ${list}.`;
 }
 
 /** Every billing of one act. `slugs` comes from `resolveArtist`, which collapses aliases. */
@@ -125,6 +160,63 @@ export function nightsMediaNote(media: MediaIndexFile | null, dates: readonly st
     ? "this night"
     : `${nights.length} of these ${wanted.size} nights: ${nights.map(fullDate).join(", ")}`;
   return `**${MEDIA_NOTE_LABEL}:** ${counts(found)} from ${from}.${songSentence(found)}`;
+}
+
+/**
+ * The URL shapes in src/utils/deepLinks.ts, which a Worker can't import. Asserted against
+ * test/fixtures/deep-link-urls.json, like every other surface that emits these.
+ */
+function mediaId(a: MediaAsset): string {
+  const file = (a.url as string).split("/").pop()?.split("?")[0] ?? "";
+  const stem = file.replace(/\.[^.]+$/, "").replace(`${a.date}-`, "");
+  return a.kind === "video" ? `${stem}-video` : stem;
+}
+
+export function photoDeepLink(act: string, date: string, id: string): string {
+  return `/?scene=artists&artist=${encodeURIComponent(act)}&show=${encodeURIComponent(date)}&photo=${encodeURIComponent(id)}`;
+}
+
+/** The owner's marks lead, newest night first, then the order the owner culled in. */
+function rank(a: MediaAsset, b: MediaAsset): number {
+  return (
+    Number(!!b.signature) - Number(!!a.signature) ||
+    Number(!!b.hero) - Number(!!a.hero) ||
+    b.date.localeCompare(a.date) ||
+    (a.order ?? 0) - (b.order ?? 0)
+  );
+}
+
+/**
+ * Everything public that matches, best first.
+ *
+ * `gatefoldOf` names the act whose gatefold holds the asset, so a link opens the frame itself: an
+ * opener's frame opens in the opener's gatefold, and a room frame in the headliner's.
+ */
+export function selectMedia(
+  media: MediaIndexFile,
+  filter: MediaFilter,
+  gatefoldOf: (asset: MediaAsset) => string,
+): MediaItem[] {
+  const song = filter.song?.trim().toLowerCase();
+  return published(media)
+    .filter((a) => !filter.slugs || (a.artistNormalized !== null && filter.slugs.includes(a.artistNormalized)))
+    .filter((a) => !filter.dates || filter.dates.has(a.date))
+    .filter((a) => !filter.year || a.date.startsWith(`${filter.year}-`))
+    .filter((a) => !filter.kind || a.kind === filter.kind)
+    .filter((a) => !song || a.song?.toLowerCase().includes(song))
+    .sort(rank)
+    .map((a) => {
+      const id = mediaId(a);
+      return {
+        id,
+        kind: a.kind === "video" ? ("video" as const) : ("image" as const),
+        date: a.date,
+        act: a.artist,
+        ...(a.song ? { song: a.song } : {}),
+        ...(a.duration ? { duration: a.duration } : {}),
+        deepLink: photoDeepLink(gatefoldOf(a), a.date, id),
+      };
+    });
 }
 
 /**
