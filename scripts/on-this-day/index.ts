@@ -132,6 +132,7 @@ function sources(concerts: Concert[]): BuildSources {
     artistsMetadata: readJson("artists-metadata.json"),
     venuesMetadata: readJson("venues-metadata.json"),
     linerNotes: readJson<LinerNotesData>("liner-notes.json").posts,
+    mediaIndex: readJson("media-index.json"),
     concerts,
     setlists: setlists.byKey,
     datesWithSetlists: setlists.dates,
@@ -241,6 +242,7 @@ async function main(): Promise<void> {
       venue: built.post.venue,
       city: built.post.city,
       imageUrl: built.post.imageUrl,
+      crop: built.post.crop,
     },
     { force }
   );

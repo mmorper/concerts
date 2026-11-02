@@ -202,6 +202,12 @@ handle on file.
 - **On This Day cards lead with the artist.** The eyebrow says how long ago, the
   display line is the artist, and the meta line is the rest of the bill and the
   room. The hook is the post text, so it is not repeated on the card.
+- **On This Day uses the owner's photo when that night has one.** Only a frame from
+  that exact night counts: the headliner's, then an opener's, then the room. The frame
+  carries the byline, and the link opens it in the gatefold's Photos panel, even when
+  a liner note covers the night. An opener's frame puts that act on the display line,
+  so a photo never runs under the wrong name. Otherwise the post takes the artist
+  image and links as before.
 - **Liner-note cards keep the hook.** Their caption and hook are different
   sentences.
 - **Tags:** the lead artist, then one genre tag from the reviewed map in

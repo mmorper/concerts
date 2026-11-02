@@ -45,6 +45,8 @@ export interface MediaIndexAsset {
   kind: "image" | "video";
   url: string | null;
   date: string;
+  /** The act as billed that night. Null on a room frame: marquee, exterior, stub. */
+  artist?: string | null;
   artistNormalized: string | null;
   hero?: boolean;
   /**
@@ -201,8 +203,8 @@ export function getAlbumArt(
  * STILLS ONLY. A post needs a picture, and a published video's `url` is a clip, not one.
  */
 export function getShowAsset(
-  artistNormalized: string,
-  sources: ImageSources
+  artistNormalized: string | null,
+  sources: Pick<ImageSources, "mediaIndex">
 ): MediaIndexAsset | undefined {
   const assets = (sources.mediaIndex?.assets ?? []).filter(
     (a) => a.kind === "image" && a.url && a.artistNormalized === artistNormalized

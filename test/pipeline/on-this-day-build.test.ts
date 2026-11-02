@@ -10,6 +10,7 @@ import { describe, it, expect } from "vitest";
 import { buildPost, findCoveringNote, resolveUrl, type BuildSources } from "../../scripts/on-this-day/build.ts";
 import { candidateForDay } from "../../scripts/on-this-day/detect.ts";
 import { SITE_URL } from "../../scripts/syndication/payload.ts";
+import type { MediaIndexAsset } from "../../scripts/liner-notes/image-refs.ts";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesPost } from "../../src/types/liner-notes.ts";
 
@@ -182,5 +183,115 @@ describe("buildPost", () => {
       sources({ artistsMetadata: { "oingo-boingo": { name: "Oingo Boingo", image: "https://new-cdn.example/x.jpg" } } })
     );
     expect(ineligible).toMatch(/unclassified image host/);
+  });
+});
+
+describe("the owner's photograph", () => {
+  const CROP = { x: 0, y: 0, w: 0.8, h: 1 };
+  const asset = (name: string, overrides: Partial<MediaIndexAsset> = {}): MediaIndexAsset => ({
+    kind: "image",
+    url: `/images/shows/1987-06-30-${name}.jpg`,
+    date: "1987-06-30",
+    artist: "Oingo Boingo",
+    artistNormalized: "oingo-boingo",
+    order: 1,
+    crop: CROP,
+    ...overrides,
+  });
+  const withMedia = (assets: MediaIndexAsset[], overrides: Partial<BuildSources> = {}) =>
+    sources({ mediaIndex: { assets }, ...overrides });
+  const opener = (assets: MediaIndexAsset[]) =>
+    buildPost(
+      candidateForDay([{ ...SHOW, openers: ["Fishbone"] } as Concert], NOW)!,
+      withMedia(assets)
+    ).post;
+
+  it("beats the press shot, and links to that frame in the gatefold", () => {
+    const { post, ineligible } = buildPost(candidate(), withMedia([asset("oingo-boingo-01")]));
+    expect(ineligible).toBeUndefined();
+    expect(post).toMatchObject({
+      imageUrl: "/images/shows/1987-06-30-oingo-boingo-01.jpg",
+      crop: CROP,
+      tier: 1,
+      source: "personal",
+      url: `${SITE_URL}/?scene=artists&artist=oingo-boingo&show=1987-06-30&photo=oingo-boingo-01`,
+    });
+  });
+
+  it("takes the hero of the night, not the first ordinal", () => {
+    const { post } = buildPost(
+      candidate(),
+      withMedia([asset("oingo-boingo-01"), asset("oingo-boingo-02", { order: 2, hero: true })])
+    );
+    expect(post.imageUrl).toContain("oingo-boingo-02");
+  });
+
+  it("links to the frame even when a liner note covers the night", () => {
+    const { post } = buildPost(
+      candidate(),
+      withMedia([asset("oingo-boingo-01")], {
+        linerNotes: [
+          note({ deepLinks: [{ type: "setlist", label: "x", url: "/?show=1987-06-30" }] }),
+        ],
+      })
+    );
+    expect(post.url).toContain("&photo=oingo-boingo-01");
+    expect(post.linerNoteSlug).toBeUndefined();
+  });
+
+  it("never reaches for a frame from a different night", () => {
+    const { post } = buildPost(
+      candidate(),
+      withMedia([asset("oingo-boingo-01", { date: "1988-01-01", signature: true })])
+    );
+    expect(post.tier).toBe(2);
+    expect(post.imageUrl).toBe("https://r2.theaudiodb.com/ob.jpg");
+  });
+
+  it("skips a frame with no crop box, which the renderer would refuse", () => {
+    const { post } = buildPost(candidate(), withMedia([asset("oingo-boingo-01", { crop: null })]));
+    expect(post.tier).toBe(2);
+  });
+
+  it("skips a clip, which is not a picture", () => {
+    const { post } = buildPost(
+      candidate(),
+      withMedia([asset("oingo-boingo-01", { kind: "video", url: "https://media.example/x.mp4" })])
+    );
+    expect(post.tier).toBe(2);
+  });
+
+  it("publishes a night whose artist has no image at all", () => {
+    const { ineligible } = buildPost(
+      candidate(),
+      withMedia([asset("oingo-boingo-01")], {
+        artistsMetadata: { "oingo-boingo": { name: "Oingo Boingo" } },
+      })
+    );
+    expect(ineligible).toBeUndefined();
+  });
+
+  it("opens an opener's frame in the opener's gatefold, and names them", () => {
+    const post = opener([
+      asset("fishbone-01", { artist: "Fishbone", artistNormalized: "fishbone" }),
+    ]);
+    expect(post.url).toContain("artist=fishbone&show=1987-06-30&photo=fishbone-01");
+    expect(post.photographedOpener).toEqual({ name: "Fishbone", slug: "fishbone" });
+  });
+
+  it("prefers the headliner over an opener", () => {
+    const post = opener([
+      asset("fishbone-01", { artist: "Fishbone", artistNormalized: "fishbone", hero: true }),
+      asset("oingo-boingo-01"),
+    ]);
+    expect(post.imageUrl).toContain("oingo-boingo-01");
+    expect(post.photographedOpener).toBeUndefined();
+  });
+
+  it("falls to the room, in the headliner's gatefold, with no act credited", () => {
+    const post = opener([asset("marquee-01", { artist: null, artistNormalized: null })]);
+    expect(post.url).toContain("artist=oingo-boingo&show=1987-06-30&photo=marquee-01");
+    expect(post.photographedOpener).toBeUndefined();
+    expect(post.tier).toBe(1);
   });
 });

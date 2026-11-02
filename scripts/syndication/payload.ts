@@ -29,6 +29,7 @@ import { isPublishableTier, type MediaAsset, type PayloadCredit, type Syndicatio
 import { HOOK_MAX, BEATS_MAX, BEATS_MIN, CAPTION_MAX } from "./budgets.ts";
 import { graphemeLength } from "./text.ts";
 import { normalizeArtistName } from "../../src/utils/normalize.js";
+import { showByline } from "../liner-notes/image-refs.ts";
 import type { Concert } from "../../src/types/concert.ts";
 import type { LinerNotesPost } from "../../src/types/liner-notes.ts";
 import type { OnThisDayPost } from "../on-this-day/types.ts";
@@ -70,6 +71,8 @@ export const SITE_URL = "https://concerts.morperhaus.org";
  */
 export const LINK_TEXT = {
   onThisDay: "Setlist and the full night →",
+  /** An On This Day post carrying the owner's photo, which opens in the Photos panel. */
+  onThisDayPhoto: "Photos and the full night →",
   linerNote: "Read the note →",
 } as const;
 
@@ -503,14 +506,19 @@ export function buildOnThisDayPayload(
   const show = concerts.find(
     (c) => c.date === post.showDate && c.headlinerNormalized === post.artistNormalized
   );
-  const openers = show?.openers ?? [];
+  /* THE ACT IN THE FRAME LEADS. The card's display line is `credit.artists[0]`, so an opener's
+     photograph under the headliner's name would be a false credit. Everyone stays on the bill. */
+  const inFrame = post.photographedOpener;
+  const lead = inFrame ? { ...post, artist: inFrame.name } : post;
+  const openers = (show?.openers ?? []).filter((o) => normalizeArtistName(o) !== inFrame?.slug);
+  const billed = inFrame ? [post.artist, ...openers] : openers;
 
   /* "Washington, DC", not "Washington" — the same abbreviation the liner-note credit uses.
      The show carries the state; `on-this-day.json` does not. */
   const region = regionLabel(show?.state).label || undefined;
 
   const credit: PayloadCredit = {
-    artists: [post.artist, ...openers],
+    artists: [lead.artist, ...billed],
     venue: post.venue,
     city: post.city,
     ...(region ? { region } : {}),
@@ -554,9 +562,12 @@ export function buildOnThisDayPayload(
       aspect: "4:5",
       path: cardPath(post.slug),
       sourceUrl: post.imageUrl,
-      alt: onThisDayAlt(post, openers, region),
+      alt: onThisDayAlt(lead, billed, region),
       tier: post.tier,
       source: post.source,
+      // Tier 1 only, for the reason the liner-note path gives: the absence is the point.
+      ...(post.crop ? { crop: { ...post.crop } } : {}),
+      ...(post.tier === 1 ? { byline: showByline(post.showDate) } : {}),
     });
   }
 
@@ -576,11 +587,15 @@ export function buildOnThisDayPayload(
     caption: social?.caption ?? "",
     credit,
     refs: {
-      artists: [post.artistNormalized, ...openers.map(normalizeArtistName)],
+      artists: [
+        ...(inFrame ? [inFrame.slug] : []),
+        post.artistNormalized,
+        ...openers.map(normalizeArtistName),
+      ],
       venue: post.venueNormalized,
     },
     url: post.url,
-    linkText: LINK_TEXT.onThisDay,
+    linkText: post.tier === 1 ? LINK_TEXT.onThisDayPhoto : LINK_TEXT.onThisDay,
     media: publishable,
     tags: entityTags({
       artists: credit.artists,
