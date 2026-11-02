@@ -49,7 +49,7 @@ export function TrackRow({
       onClick={hasPreview ? onPlay : undefined}
       onMouseEnter={hasPreview && onHoverChange ? onHoverChange : undefined}
       className={`
-        group flex items-center gap-3 p-3 rounded-lg
+        group flex items-center gap-3 ${isPhone ? 'p-3' : 'p-2 lg:p-3'} rounded-lg
         transition-all duration-200
         ${hasPreview ? 'cursor-pointer hover:bg-white/5' : 'cursor-not-allowed opacity-40'}
         ${isPlaying ? 'bg-white/5' : ''}
