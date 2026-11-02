@@ -133,7 +133,10 @@ interface PageItem {
 
 function main(): void {
   const date = process.argv.slice(2).find((a) => !a.startsWith('-'))
-  if (!date) fail('Usage: npm run media:frames <YYYY-MM-DD>')
+  if (!date) fail('Usage: npm run media:frames <YYYY-MM-DD> [-- --only IMG_1234]')
+  // One clip, by its name in Photos. A finished show's other kept clips would download again.
+  const onlyAt = process.argv.indexOf('--only')
+  const only = onlyAt === -1 ? null : process.argv[onlyAt + 1]
 
   let concert
   try {
@@ -154,6 +157,7 @@ function main(): void {
   // Only clips the owner actually kept. This is the gate that keeps 22.5GB off the disk.
   const clips = selects.selects
     .filter((s) => !s.sourceFile && byUuid.get(s.uuid)?.media === 'video')
+    .filter((s) => !only || s.originalFilename.startsWith(only))
     .map((s) => ({ sel: s, item: byUuid.get(s.uuid)! }))
 
   if (clips.length === 0) {
@@ -437,6 +441,8 @@ function main(): void {
         // The durable artefact. The 134MB full-resolution trim is reproducible from this.
         render: { uuid: r.sel.uuid, in: r.in, out: r.out },
         duration,
+        // Typed by hand, so a re-render of the same cut must not lose it.
+        ...(i >= 0 && index.assets[i].song ? { song: index.assets[i].song } : {}),
         notes: null,
       }
       if (i >= 0) index.assets[i] = asset

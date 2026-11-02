@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-11-01T23:51:13.705Z",
+  "generated": "2026-11-02T00:49:54.121Z",
   "assets": [
     {
       "kind": "image",
@@ -781,7 +781,8 @@
       },
       "duration": 15,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2016-09-03-howard-jones-01.jpg?v=87cf5c8b2ebe"
+      "poster": "https://media.morperhaus.org/posters/2016-09-03-howard-jones-01.jpg?v=87cf5c8b2ebe",
+      "song": "The Human Touch"
     },
     {
       "kind": "image",
@@ -841,6 +842,34 @@
     },
     {
       "kind": "image",
+      "url": "/images/shows/2017-10-08-bat-fangs-01.jpg",
+      "date": "2017-10-08",
+      "uuid": "5782EE6F-8F82-4C1A-90F8-787C7DB5087B",
+      "artist": "Bat Fangs",
+      "artistNormalized": "bat-fangs",
+      "subject": "artist",
+      "tier": 1,
+      "source": "personal",
+      "hero": false,
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.9381
+      },
+      "order": 1,
+      "quality": "original",
+      "width": 1536,
+      "height": 2048,
+      "sourceWidth": 4032,
+      "sourceHeight": 3024,
+      "bytes": 398955,
+      "sourceSha256": "cf0ec18322e09e9046bd43e69ca49fcd8c12ae1d4221f13fbfb97a9480580ac7",
+      "derivedFrom": null,
+      "notes": null
+    },
+    {
+      "kind": "image",
       "url": "/images/shows/2017-10-08-venue-01.jpg",
       "date": "2017-10-08",
       "uuid": "4EA56F84-0EE8-41A8-98D0-8A2B8974A623",
@@ -854,7 +883,7 @@
         "x": 0,
         "y": 0.0313,
         "w": 1,
-        "h": 0.9375
+        "h": 0.9381
       },
       "order": 1,
       "quality": "original",
@@ -882,7 +911,7 @@
         "x": 0,
         "y": 0.0317,
         "w": 1,
-        "h": 0.9365
+        "h": 0.9357
       },
       "order": 2,
       "quality": "original",
@@ -910,7 +939,7 @@
         "x": 0.1822,
         "y": 0,
         "w": 0.5997,
-        "h": 1
+        "h": 0.9998
       },
       "order": 3,
       "quality": "original",
@@ -1062,7 +1091,8 @@
       },
       "duration": 30,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2017-12-09-gary-numan-01.jpg?v=19ec23f0087f"
+      "poster": "https://media.morperhaus.org/posters/2017-12-09-gary-numan-01.jpg?v=19ec23f0087f",
+      "song": "The Fall"
     },
     {
       "kind": "image",
@@ -1796,7 +1826,8 @@
       },
       "duration": 30,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2023-05-24-the-cure-01.jpg?v=68162650b9b5"
+      "poster": "https://media.morperhaus.org/posters/2023-05-24-the-cure-01.jpg?v=68162650b9b5",
+      "song": "A Forest"
     },
     {
       "kind": "image",
@@ -2020,7 +2051,8 @@
       },
       "duration": 49,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2023-07-18-foals-01.jpg?v=5e7430ff2d57"
+      "poster": "https://media.morperhaus.org/posters/2023-07-18-foals-01.jpg?v=5e7430ff2d57",
+      "song": "What Went Down"
     },
     {
       "kind": "image",
@@ -2385,7 +2417,8 @@
       },
       "duration": 20,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2023-11-22-kasabian-01.jpg?v=662f700fb190"
+      "poster": "https://media.morperhaus.org/posters/2023-11-22-kasabian-01.jpg?v=662f700fb190",
+      "song": "Empire"
     },
     {
       "kind": "video",
@@ -2414,7 +2447,8 @@
       },
       "duration": 31,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2023-11-22-kasabian-02.jpg?v=e5c100dd9a40"
+      "poster": "https://media.morperhaus.org/posters/2023-11-22-kasabian-02.jpg?v=e5c100dd9a40",
+      "song": "You're in Love With a Psycho"
     },
     {
       "kind": "image",
@@ -2686,7 +2720,8 @@
       },
       "duration": 15,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2024-08-20-abc-01.jpg?v=5d8c8364a622"
+      "poster": "https://media.morperhaus.org/posters/2024-08-20-abc-01.jpg?v=5d8c8364a622",
+      "song": "Poison Arrow"
     },
     {
       "kind": "video",
@@ -2716,7 +2751,8 @@
       },
       "duration": 29,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2024-08-20-haircut-100-01.jpg?v=551e4125ee9c"
+      "poster": "https://media.morperhaus.org/posters/2024-08-20-haircut-100-01.jpg?v=551e4125ee9c",
+      "song": "Love Plus One"
     },
     {
       "kind": "image",
@@ -2862,7 +2898,8 @@
       },
       "duration": 14,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2025-03-01-klangphonics-01.jpg?v=fbc6694d4fd2"
+      "poster": "https://media.morperhaus.org/posters/2025-03-01-klangphonics-01.jpg?v=fbc6694d4fd2",
+      "song": "Holocene"
     },
     {
       "kind": "image",
@@ -3090,7 +3127,8 @@
       },
       "duration": 38,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2025-11-20-david-byrne-01.jpg?v=e8d3fb73cba5"
+      "poster": "https://media.morperhaus.org/posters/2025-11-20-david-byrne-01.jpg?v=e8d3fb73cba5",
+      "song": "This Must Be the Place (Naive Melody)"
     },
     {
       "kind": "image",
@@ -3749,7 +3787,8 @@
       },
       "duration": 36,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2026-06-04-alison-moyet-01.jpg?v=d4070086fe1c"
+      "poster": "https://media.morperhaus.org/posters/2026-06-04-alison-moyet-01.jpg?v=d4070086fe1c",
+      "song": "Nobody's Diary"
     },
     {
       "kind": "video",
@@ -3778,7 +3817,39 @@
       },
       "duration": 21,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2026-06-04-alison-moyet-02.jpg?v=13ad523d6e12"
+      "poster": "https://media.morperhaus.org/posters/2026-06-04-alison-moyet-02.jpg?v=13ad523d6e12",
+      "song": "Don't Go"
+    },
+    {
+      "kind": "video",
+      "url": "https://media.morperhaus.org/videos/2026-06-04-the-human-league-01.mp4?v=83fde13d84e4",
+      "poster": "https://media.morperhaus.org/posters/2026-06-04-the-human-league-01.jpg?v=e296a66bcde5",
+      "path": "video/renders/2026-06-04-the-human-league-01.mp4",
+      "date": "2026-06-04",
+      "uuid": null,
+      "artist": "The Human League",
+      "artistNormalized": "the-human-league",
+      "subject": "artist",
+      "tier": 1,
+      "source": "personal",
+      "hero": false,
+      "order": 1,
+      "width": 1080,
+      "height": 1920,
+      "sourceWidth": 1080,
+      "sourceHeight": 1920,
+      "bytes": 30949517,
+      "quality": "original",
+      "sourceSha256": "",
+      "derivedFrom": null,
+      "render": {
+        "uuid": "420C8375-6CD8-4255-A64B-3439EB16ADF6",
+        "in": 8,
+        "out": 39
+      },
+      "duration": 31,
+      "notes": null,
+      "song": "Seconds"
     },
     {
       "kind": "image",
@@ -4013,7 +4084,8 @@
       },
       "duration": 17,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2026-07-31-nile-rodgers-01.jpg?v=e58b3e91e731"
+      "poster": "https://media.morperhaus.org/posters/2026-07-31-nile-rodgers-01.jpg?v=e58b3e91e731",
+      "song": "Good Times / Jam / Rapper's Delight"
     },
     {
       "kind": "video",
@@ -4043,7 +4115,8 @@
       },
       "duration": 16,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2026-07-31-nile-rodgers-02.jpg?v=5204b5201dc2"
+      "poster": "https://media.morperhaus.org/posters/2026-07-31-nile-rodgers-02.jpg?v=5204b5201dc2",
+      "song": "China Girl"
     },
     {
       "kind": "video",
@@ -4073,7 +4146,8 @@
       },
       "duration": 26,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2026-07-31-nile-rodgers-03.jpg?v=d53230ae5acd"
+      "poster": "https://media.morperhaus.org/posters/2026-07-31-nile-rodgers-03.jpg?v=d53230ae5acd",
+      "song": "Get Lucky"
     },
     {
       "kind": "image",
@@ -4266,7 +4340,8 @@
       },
       "duration": 20,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2026-09-14-danny-elfman-01.jpg?v=6693f7db1572"
+      "poster": "https://media.morperhaus.org/posters/2026-09-14-danny-elfman-01.jpg?v=6693f7db1572",
+      "song": "Nothing to Fear (But Fear Itself)"
     },
     {
       "kind": "video",
@@ -4295,7 +4370,8 @@
       },
       "duration": 55,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2026-09-14-danny-elfman-02.jpg?v=ca0116c67dd5"
+      "poster": "https://media.morperhaus.org/posters/2026-09-14-danny-elfman-02.jpg?v=ca0116c67dd5",
+      "song": "Only a Lad"
     },
     {
       "kind": "image",
@@ -4706,7 +4782,39 @@
       },
       "duration": 17,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2026-09-16-blancmange-01.jpg?v=d5642b2a1f78"
+      "poster": "https://media.morperhaus.org/posters/2026-09-16-blancmange-01.jpg?v=d5642b2a1f78",
+      "song": "Blind Vision"
+    },
+    {
+      "kind": "video",
+      "url": "https://media.morperhaus.org/videos/2026-09-16-blancmange-02.mp4?v=040ae99fc96d",
+      "poster": "https://media.morperhaus.org/posters/2026-09-16-blancmange-02.jpg?v=92a97449436a",
+      "path": "video/renders/2026-09-16-blancmange-02.mp4",
+      "date": "2026-09-16",
+      "uuid": null,
+      "artist": "Blancmange",
+      "artistNormalized": "blancmange",
+      "subject": "artist",
+      "tier": 1,
+      "source": "personal",
+      "hero": false,
+      "order": 2,
+      "width": 1080,
+      "height": 1920,
+      "sourceWidth": 1080,
+      "sourceHeight": 1920,
+      "bytes": 22002093,
+      "quality": "original",
+      "sourceSha256": "",
+      "derivedFrom": null,
+      "render": {
+        "uuid": "02D8FE96-929E-4065-B8DC-CEE129D3FE15",
+        "in": 17,
+        "out": 50
+      },
+      "duration": 33,
+      "notes": null,
+      "song": "Don't Tell Me"
     },
     {
       "kind": "video",
@@ -4735,7 +4843,8 @@
       },
       "duration": 40,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2026-09-16-thompson-twins-01.jpg?v=850f91cd21c0"
+      "poster": "https://media.morperhaus.org/posters/2026-09-16-thompson-twins-01.jpg?v=850f91cd21c0",
+      "song": "Lies"
     },
     {
       "kind": "video",
@@ -4764,7 +4873,8 @@
       },
       "duration": 22,
       "notes": null,
-      "poster": "https://media.morperhaus.org/posters/2026-09-16-thompson-twins-02.jpg?v=e300378077c2"
+      "poster": "https://media.morperhaus.org/posters/2026-09-16-thompson-twins-02.jpg?v=e300378077c2",
+      "song": "In the Name of Love"
     }
   ]
 }

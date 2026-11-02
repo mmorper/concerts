@@ -289,6 +289,7 @@ export function PhotosPanel({
           style={{ background: SCRIM }}
         >
           <p className="font-sans text-[0.8125rem] font-medium leading-snug min-w-0" style={{ color: '#9b90bd' }}>
+            {item.song && <span className="block text-white">{item.song}</span>}
             <span className="block">
               {concert.venue} · {concert.city}
             </span>
@@ -345,6 +346,7 @@ export function PhotosPanel({
           <div className="flex-grow flex-shrink-0 landscape:flex-shrink min-w-0 flex flex-col px-5 pt-4 pb-5 landscape:pt-14">
             <h3 className="font-serif text-[1.75rem] leading-tight text-white">{phoneTitle}</h3>
             <p className="font-sans text-sm font-medium leading-snug mt-1.5" style={{ color: '#9b90bd' }}>
+              {item.song && <span className="block text-white">{item.song}</span>}
               {phonePlace}
               <span className="block">{monthYear(item.date)}</span>
               {/* A video's own controls sit where the chip goes, so its credit comes down here. */}

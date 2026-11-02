@@ -1032,13 +1032,19 @@
             "x": 0,
             "y": 0.0313,
             "w": 1,
-            "h": 0.9375
+            "h": 0.9381
           }
         },
         "5782EE6F-8F82-4C1A-90F8-787C7DB5087B": {
           "verdict": "keep",
-          "artist": "__unknown__",
-          "subject": "performer"
+          "artist": "Bat Fangs",
+          "subject": "performer",
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.9381
+          }
         },
         "58EE704F-E52A-4BA0-A1BF-F8F4444189F6": {
           "verdict": "reject"
@@ -1062,7 +1068,7 @@
             "x": 0,
             "y": 0.0317,
             "w": 1,
-            "h": 0.9365
+            "h": 0.9357
           }
         },
         "ED7DFFF5-D821-4A41-A20B-A89773DD0AFA": {
@@ -1078,7 +1084,7 @@
             "x": 0.1822,
             "y": 0,
             "w": 0.5997,
-            "h": 1
+            "h": 0.9998
           }
         }
       }
@@ -3587,7 +3593,11 @@
         "420C8375-6CD8-4255-A64B-3439EB16ADF6": {
           "verdict": "keep",
           "artist": "The Human League",
-          "subject": "performer"
+          "subject": "performer",
+          "trim": {
+            "in": 8,
+            "out": 39
+          }
         },
         "4440ACDB-CC21-4912-9708-3901E2821F3B": {
           "verdict": "reject"
@@ -4382,7 +4392,11 @@
         "02D8FE96-929E-4065-B8DC-CEE129D3FE15": {
           "verdict": "keep",
           "artist": "Blancmange",
-          "subject": "performer"
+          "subject": "performer",
+          "trim": {
+            "in": 17,
+            "out": 50
+          }
         },
         "0368D88C-EEBD-4142-8103-0C2585B2FBD7": {
           "verdict": "reject"
