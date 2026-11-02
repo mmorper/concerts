@@ -205,11 +205,11 @@ const SEARCH_ALIASES: Record<string, string> = {
   "Brian Setzer \u201968 Comeback Special": "Brian Setzer",
   "Brian Setzer and the Nashvillians": "Brian Setzer",
 
-  // The archive spells these three differently from every catalogue on earth.
+  // The archive spells these two differently from every catalogue on earth.
   // Corrected here rather than loosened in the matcher: a matcher slack enough
-  // to bridge "Kahn"/"Khan" also bridges things that are genuinely different.
-  // The concert data is what is actually wrong \u2014 see #275 follow-up.
-  "Chaka Kahn": "Chaka Khan",
+  // to bridge "Weidlin"/"Wiedlin" also bridges things that are genuinely different.
+  // The concert data is what is actually wrong \u2014 see #275 follow-up. Chaka
+  // Khan was the third, fixed at the source in November 2026.
   "Jane Weidlin": "Jane Wiedlin",
   "Gene Loves Jezabel": "Gene Loves Jezebel",
 

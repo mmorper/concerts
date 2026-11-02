@@ -1899,8 +1899,8 @@
       }
     ]
   },
-  "chaka-kahn": {
-    "name": "Chaka Kahn",
+  "chaka-khan": {
+    "name": "Chaka Khan",
     "source": "itunes",
     "fetchedAt": "2026-10-19T14:23:44.258Z",
     "resolvedVia": "alias",

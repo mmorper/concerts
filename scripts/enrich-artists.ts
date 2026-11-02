@@ -58,8 +58,23 @@ function getArtistNameVariants(artistName: string): string[] {
     variants.push(specialMatch[1])
   }
 
+  // Drop a leading "DJ": the marquee said "DJ Z-Trip", the catalogues bill him as "Z-Trip".
+  // Matching is by name now (deezer-client.ts), so the variant has to be the billed name.
+  const djMatch = artistName.match(/^DJ\s+(.+)$/i)
+  if (djMatch) {
+    variants.push(djMatch[1])
+  }
+
   return [...new Set(variants)] // Remove duplicates
 }
+
+/**
+ * Acts whose exact name Deezer gives to a different artist, checked by eye on 2026-11-02:
+ * its "Heart" is another act's single, its "James" a Dutch rapper, and its "Beck", "F.E.A.R."
+ * and "Johndoe" are not Beck, Fear or X's John Doe. The name match in deezer-client.ts can't
+ * catch a namesake, so these skip Deezer and show the site's own tile instead of a stranger.
+ */
+const DEEZER_NAMESAKES = new Set(['heart', 'james', 'beck', 'fear', 'john-doe'])
 
 const CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000
 
@@ -236,8 +251,9 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
         }
       }
 
-      // 3. Deezer — last resort (images only, no genres)
-      if (!found) {
+      // 3. Deezer — last resort (images only, no genres). Never for an act whose name Deezer
+      // gives to someone else: a matching name is not the same band.
+      if (!found && !DEEZER_NAMESAKES.has(normalized)) {
         for (let i = 0; i < nameVariants.length && !found; i++) {
           const variantName = nameVariants[i]
           const isOriginalName = i === 0

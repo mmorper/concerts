@@ -505,10 +505,10 @@
   },
   "bad-religion": {
     "narration": {
-      "context": "I caught Bad Religion four times, twice headlining the 9:30 Club in 2011 and 2013, then as an opener at Pier 6 Pavillion in 2014 and Huntington State Beach in 2018.",
+      "context": "I caught Bad Religion four times, twice headlining the 9:30 Club in 2011 and 2013, then as an opener at Pier 6 Pavilion in 2014 and Huntington State Beach in 2018.",
       "closingArc": "Same band, same room, two years apart at the 9:30 Club, then two more nights on other bands' bills — seven and a half years in all."
     },
-    "inputHash": "sha256:1e8537f9f83b37c2b3d0e6f369f9d5863d97300f69240e8455c2970aff798094",
+    "inputHash": "sha256:c79993785a2f9f5384fdb1576874576dcf04c9c36b61e9ff6ddafcae83101c2d",
     "generatedAt": "2026-09-07T01:07:02.211Z",
     "promptVersion": 3
   },
@@ -604,10 +604,10 @@
   },
   "the-offspring": {
     "narration": {
-      "context": "I caught The Offspring twice, headlining Pier 6 Pavillion in 2014 and opening at Huntington State Beach in 2018, and that was that.",
+      "context": "I caught The Offspring twice, headlining Pier 6 Pavilion in 2014 and opening at Huntington State Beach in 2018, and that was that.",
       "closingArc": "One return trip, four years on — Pier 6 in 2014, then Huntington State Beach in 2018."
     },
-    "inputHash": "sha256:a7bb8dc667b170db38d4b12f145dea15a0a38d3887e2bcbc0010e425caaf5a4a",
+    "inputHash": "sha256:ae01081fc88ef5d373aee7e7b923b916b96f56f2da7b6bc05ebb80c46436d48a",
     "generatedAt": "2026-09-07T01:07:26.827Z",
     "promptVersion": 3
   },

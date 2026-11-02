@@ -638,8 +638,8 @@
     },
     {
       "kind": "artist",
-      "slug": "chaka-kahn",
-      "name": "Chaka Kahn",
+      "slug": "chaka-khan",
+      "name": "Chaka Khan",
       "channel": "x",
       "handle": "ChakaKhan",
       "evidence": "musicbrainz",
@@ -647,8 +647,8 @@
     },
     {
       "kind": "artist",
-      "slug": "chaka-kahn",
-      "name": "Chaka Kahn",
+      "slug": "chaka-khan",
+      "name": "Chaka Khan",
       "channel": "instagram",
       "handle": "chakaikhan",
       "evidence": "musicbrainz",
@@ -4377,8 +4377,8 @@
     },
     {
       "kind": "venue",
-      "slug": "pier-6-pavillion",
-      "name": "Pier 6 Pavillion"
+      "slug": "pier-6-pavilion",
+      "name": "Pier 6 Pavilion"
     },
     {
       "kind": "venue",
@@ -4514,7 +4514,7 @@
     "artist:boy-harsher": "2026-08-28",
     "artist:bruce-springsteen": "2026-08-28",
     "artist:buddy-guy": "2026-08-28",
-    "artist:chaka-kahn": "2026-08-28",
+    "artist:chaka-khan": "2026-08-28",
     "artist:chris-isaak": "2026-08-28",
     "artist:chris-murray": "2026-08-28",
     "artist:chris-shiflett": "2026-08-28",
@@ -4781,7 +4781,7 @@
     "venue:the-strathmore": "2026-08-28",
     "venue:the-hamilton-live": "2026-08-28",
     "venue:rams-head-center-stage": "2026-08-28",
-    "venue:pier-6-pavillion": "2026-08-28",
+    "venue:pier-6-pavilion": "2026-08-28",
     "venue:dar-constitution-hall": "2026-08-28",
     "venue:rfk-stadium": "2026-08-28",
     "venue:bethesda-jazz-and-blues-club": "2026-08-28",

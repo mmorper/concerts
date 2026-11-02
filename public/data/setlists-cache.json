@@ -802,7 +802,7 @@
     },
     {
       "concertId": "concert-9",
-      "artistName": "Chaka Kahn",
+      "artistName": "Chaka Khan",
       "date": "1985-08-30",
       "venue": "Hollywood Park Racetrack",
       "city": "Inglewood",
@@ -11480,7 +11480,7 @@
       "concertId": "concert-99",
       "artistName": "The Offspring",
       "date": "2014-07-30",
-      "venue": "Pier 6 Pavillion",
+      "venue": "Pier 6 Pavilion",
       "city": "Baltimore",
       "setlist": {
         "id": "63c1465f",
@@ -11615,7 +11615,7 @@
       "concertId": "concert-99",
       "artistName": "Pennywise",
       "date": "2014-07-30",
-      "venue": "Pier 6 Pavillion",
+      "venue": "Pier 6 Pavilion",
       "city": "Baltimore",
       "setlist": {
         "id": "73c14641",
@@ -11724,7 +11724,7 @@
       "concertId": "concert-99",
       "artistName": "The Vandals",
       "date": "2014-07-30",
-      "venue": "Pier 6 Pavillion",
+      "venue": "Pier 6 Pavilion",
       "city": "Baltimore",
       "setlist": {
         "id": "bcebdd2",
@@ -11768,7 +11768,7 @@
       "concertId": "concert-99",
       "artistName": "Bad Religion",
       "date": "2014-07-30",
-      "venue": "Pier 6 Pavillion",
+      "venue": "Pier 6 Pavilion",
       "city": "Baltimore",
       "setlist": {
         "id": "6bc14652",

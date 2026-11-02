@@ -21,11 +21,11 @@
     "fetchedAt": "2026-10-31T22:40:40.557Z"
   },
   "adam-ant": {
-    "name": "Adamant (IT)",
-    "image": "https://cdn-images.dzcdn.net/images/artist/354bd1bb92100b92cb7ab7081fb35bbd/500x500-000000-80-0-0.jpg",
+    "name": "Adam Ant",
+    "image": "https://cdn-images.dzcdn.net/images/artist/26367b6ce2aa35a71ffe56f5138d5f2b/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-10-31T22:38:46.042Z"
+    "fetchedAt": "2026-11-02T19:35:04.773Z"
   },
   "against-me": {
     "name": "Against Me!",
@@ -40,13 +40,6 @@
     "genres": [],
     "source": "deezer",
     "fetchedAt": "2026-10-31T22:39:27.429Z"
-  },
-  "andrew-tosh": {
-    "name": "Andrew Roth",
-    "image": "https://cdn-images.dzcdn.net/images/artist/4402c6bed950801831c6f563f1959df4/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-31T22:39:52.093Z"
   },
   "andy-stavas": {
     "name": "Andy Stavas",
@@ -140,11 +133,11 @@
     "fetchedAt": "2026-10-31T22:38:51.849Z"
   },
   "blondie": {
-    "name": "Blondie & Pappa",
-    "image": "https://cdn-images.dzcdn.net/images/artist/ef4d4aff6f90d7315052117f8a808298/500x500-000000-80-0-0.jpg",
+    "name": "Blondie",
+    "image": "https://cdn-images.dzcdn.net/images/artist/cafb14187fa6dc5c5764eee3d4281490/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-10-31T22:39:27.004Z"
+    "fetchedAt": "2026-11-02T19:35:05.764Z"
   },
   "blood-or-whiskey": {
     "name": "Blood or Whiskey",
@@ -223,8 +216,8 @@
     "source": "deezer",
     "fetchedAt": "2026-10-31T22:39:52.521Z"
   },
-  "chaka-kahn": {
-    "name": "Chaka Kahn",
+  "chaka-khan": {
+    "name": "Chaka Khan",
     "image": "https://cdn-images.dzcdn.net/images/artist/8ecc6be8fca55d0d5cf7698e076f5993/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
@@ -448,18 +441,11 @@
     "fetchedAt": "2026-10-31T22:39:13.331Z"
   },
   "erasure": {
-    "name": "Erasure (US)",
-    "image": "https://cdn-images.dzcdn.net/images/artist/9437fd22d1c4547e65708cbf21f08587/500x500-000000-80-0-0.jpg",
+    "name": "Erasure",
+    "image": "https://cdn-images.dzcdn.net/images/artist/1257f78c1c946f99aec96a6900070aa0/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-10-31T22:38:57.867Z"
-  },
-  "fear": {
-    "name": "F.E.A.R.",
-    "image": "https://cdn-images.dzcdn.net/images/artist/19809918710697739c7565ba6973dd46/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-31T22:40:39.520Z"
+    "fetchedAt": "2026-11-02T19:35:05.234Z"
   },
   "fishbone": {
     "name": "Fishbone",
@@ -545,13 +531,6 @@
     "source": "deezer",
     "fetchedAt": "2026-10-31T22:40:12.958Z"
   },
-  "heart": {
-    "name": "Heart & Soul",
-    "image": "https://cdn-images.dzcdn.net/images/artist/5596a4f52bb95a65e7ef63933ed33168/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-31T22:40:24.523Z"
-  },
   "heaven-17": {
     "name": "Heaven 17",
     "image": "https://cdn-images.dzcdn.net/images/artist/d03600c176cb722596b53adf80049061/500x500-000000-80-0-0.jpg",
@@ -635,13 +614,6 @@
     "genres": [],
     "source": "deezer",
     "fetchedAt": "2026-10-31T22:39:08.408Z"
-  },
-  "john-doe": {
-    "name": "Johndoe",
-    "image": "https://cdn-images.dzcdn.net/images/artist/3d1ba449a18407d8aeb7f146abd6b524/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-31T22:40:02.030Z"
   },
   "johnny-gill": {
     "name": "Johnny Gill",
@@ -1581,13 +1553,6 @@
     "source": "deezer",
     "fetchedAt": "2026-10-31T22:39:57.921Z"
   },
-  "james": {
-    "name": "James & Elizabeth Johnson",
-    "image": "https://cdn-images.dzcdn.net/images/artist/817c5873b6ea6c23c94173eea4d2a593/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-31T22:39:58.456Z"
-  },
   "p-m-dawn": {
     "name": "P.M. Dawn",
     "image": "https://cdn-images.dzcdn.net/images/artist/95a87c4d269f5d99761f4466ca57c002/500x500-000000-80-0-0.jpg",
@@ -1714,13 +1679,6 @@
     "source": "deezer",
     "fetchedAt": "2026-10-31T22:40:25.414Z"
   },
-  "dj-z-trip": {
-    "name": "DJ Katrip",
-    "image": "https://cdn-images.dzcdn.net/images/artist/ae1a3a71af726edab49fbe91b95cd0cb/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-31T22:40:26.473Z"
-  },
   "gene-loves-jezabel": {
     "name": "Gene Loves Jezebel",
     "image": "https://cdn-images.dzcdn.net/images/artist/9cb7cbc1ac48b2c35c8d7fd06a7fddad/500x500-000000-80-0-0.jpg",
@@ -1741,13 +1699,6 @@
     "genres": [],
     "source": "deezer",
     "fetchedAt": "2026-10-31T22:40:53.954Z"
-  },
-  "beck": {
-    "name": "beck & call",
-    "image": "https://cdn-images.dzcdn.net/images/artist/85d126e3003bce011acc488a0d4bc6f6/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-12T16:31:56.456Z"
   },
   "pinhead-gunpowder": {
     "name": "Pinhead Gunpowder",
@@ -1804,5 +1755,12 @@
     "genres": [],
     "source": "deezer",
     "fetchedAt": "2026-10-25T16:12:31.106Z"
+  },
+  "dj-z-trip": {
+    "name": "Z-Trip",
+    "image": "https://cdn-images.dzcdn.net/images/artist/fe5090413afb06a9ed7b85faf579f7b8/500x500-000000-80-0-0.jpg",
+    "genres": [],
+    "source": "deezer",
+    "fetchedAt": "2026-11-02T19:37:18.302Z"
   }
 }
