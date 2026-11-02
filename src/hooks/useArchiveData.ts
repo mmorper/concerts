@@ -47,6 +47,8 @@ export interface VenueFacts {
 
 interface ArchiveData {
   loading: boolean
+  /** Every show, as the file lists them. Empty until loaded. */
+  concerts: Concert[]
   concertById: (id: string) => Concert | null
   /** Every date in the archive is a single show (DATA_PIPELINE.md), so a date names a night. */
   concertByDate: (date: string) => Concert | null
@@ -60,6 +62,8 @@ interface ArchiveData {
 }
 
 const byDate = (a: Concert, b: Concert) => a.date.localeCompare(b.date)
+
+const NO_CONCERTS: Concert[] = []
 
 function topGenre(shows: Concert[]): string | undefined {
   if (!shows.length) return undefined
@@ -174,6 +178,7 @@ export function useArchiveData(enabled = true): ArchiveData {
 
   return {
     loading,
+    concerts: concerts ?? NO_CONCERTS,
     concertById: (id) => indexes.byId.get(id) ?? null,
     concertByDate: (date) => indexes.onDate.get(date) ?? null,
     media,

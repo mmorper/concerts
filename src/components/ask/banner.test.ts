@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { bannerDeck, localDay, FAMILIAR_SHOWS, type BannerSources } from './banner'
 import { buildMediaIndex, type MediaAsset } from './media'
 import type { SearchEntry } from './search'
+import type { Concert } from '@/types/concert'
 
 const wide = { width: 3000, height: 2000 }
 const photo = (date: string, act: string, extra: Partial<MediaAsset> = {}): MediaAsset => ({
@@ -35,15 +36,30 @@ const nights: Record<string, { venue: string; headliner: string }> = {
   '1999-01-01': { venue: 'The Roxy', headliner: 'Solo' },
 }
 
-function sources(assets: MediaAsset[], entries: SearchEntry[], counts: Record<string, number> = {}): BannerSources {
+function sources(assets: MediaAsset[], entries: SearchEntry[], counts: Record<string, number> = {}, concerts: Concert[] = []): BannerSources {
   const media = buildMediaIndex(assets)
   return {
+    concerts,
     media,
     searchEntries: entries,
     concertByDate: (d) => (nights[d] ? { ...nights[d], headlinerNormalized: '' } : null),
-    artistFacts: (slug) => ({ count: counts[slug] ?? 0, firstYear: 1990, lastYear: 2024 }),
+    artistFacts: (slug) => ({ count: counts[slug] ?? 0, firstYear: 1990, lastYear: 2024, meta: { image: `/img/${slug}.jpg` } }),
   }
 }
+
+const show = (date: string, headliner: string, venue = 'The Forum', openers: string[] = []): Concert =>
+  ({
+    id: `${date}-${headliner}`,
+    date,
+    year: Number(date.slice(0, 4)),
+    headliner,
+    headlinerNormalized: headliner.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    venue,
+    venueNormalized: venue.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    cityState: 'Inglewood, California',
+    genre: 'Rock',
+    openers,
+  }) as unknown as Concert
 
 describe('bannerDeck — the ⌘K banner ideas', () => {
   it('makes a clip idea that opens the clip, named for the song, act, room and year', () => {
@@ -107,6 +123,61 @@ describe('bannerDeck — the ⌘K banner ideas', () => {
     expect(deck.map((i) => i.kind)).toEqual(['clip', 'year', 'clip', 'year'])
     expect(new Set(deck.map((i) => i.key)).size).toBe(4)
     expect(bannerDeck(sources(assets, entries), '2026-11-02').map((i) => i.key)).toEqual(deck.map((i) => i.key))
+  })
+})
+
+describe('bannerDeck — a show on this date leads', () => {
+  const day = '2026-11-02'
+
+  it('leads with a show from this date, asking what I saw on this day', () => {
+    const concerts = [show('1988-11-02', 'Depeche Mode', 'The Rose Bowl')]
+    const deck = bannerDeck(sources([clip('2023-06-04', 'the-cure', 'A Forest')], [], {}, concerts), day)
+    expect(deck.map((i) => i.kind)).toEqual(['today', 'clip'])
+    expect(deck[0]).toMatchObject({
+      kicker: '38 years ago tonight',
+      title: 'Depeche Mode',
+      sub: 'The Rose Bowl · Inglewood, California',
+      question: 'What did you see on this day?',
+      aboutDate: '1988-11-02',
+    })
+  })
+
+  it('says one year, and leaves out a show from this year or a later one', () => {
+    const concerts = [show('2025-11-02', 'David Byrne'), show('2026-11-02', 'Tonight'), show('2027-11-02', 'Next Year')]
+    const deck = bannerDeck(sources([], [], {}, concerts), day)
+    expect(deck.map((i) => [i.title, i.kicker])).toEqual([['David Byrne', 'One year ago tonight']])
+  })
+
+  it('prefers a photographed night over a higher-scoring one', () => {
+    // 1986 is a 40th, which scores far higher. The 2019 night has my photo.
+    const concerts = [show('1986-11-02', 'Big Anniversary'), show('2019-11-02', 'Photographed')]
+    const deck = bannerDeck(sources([photo('2019-11-02', 'photographed')], [], {}, concerts), day)
+    expect(deck.map((i) => i.title)).toEqual(['Photographed', 'Big Anniversary'])
+  })
+
+  it('ranks unphotographed nights by the On This Day score', () => {
+    const concerts = [show('2019-11-02', 'Seven Years'), show('1986-11-02', 'Forty Years')]
+    const deck = bannerDeck(sources([], [], {}, concerts), day)
+    expect(deck.map((i) => i.title)).toEqual(['Forty Years', 'Seven Years'])
+  })
+
+  it('walks the ladder: that night, then the act on another night, then the sourced image', () => {
+    const concerts = [show('2019-11-02', 'Thisnight'), show('2018-11-02', 'Othernight'), show('2017-11-02', 'Nophoto')]
+    const assets = [photo('2019-11-02', 'thisnight'), photo('2023-06-04', 'othernight')]
+    const deck = bannerDeck(sources(assets, [], {}, concerts), day)
+    const [a, b, c] = ['Thisnight', 'Othernight', 'Nophoto'].map((t) => deck.find((i) => i.title === t)!)
+    expect(a.photo?.date).toBe('2019-11-02')
+    expect(b.photo?.date).toBe('2023-06-04')
+    expect(b.sourced).toBeUndefined()
+    expect(c.photo).toBeUndefined()
+    expect(c.sourced).toBe('/img/nophoto.jpg')
+  })
+
+  it("uses an opener's photo from that night before the headliner's from another", () => {
+    const concerts = [show('2019-11-02', 'Headliner', 'The Forum', ['Opener'])]
+    const assets = [photo('2019-11-02', 'opener'), photo('2023-06-04', 'headliner')]
+    const deck = bannerDeck(sources(assets, [], {}, concerts), day)
+    expect(deck[0].photo?.artistNormalized).toBe('opener')
   })
 })
 
