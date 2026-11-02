@@ -213,6 +213,12 @@ rate-limited and has no CDN cache. Its CORS policy, on the JSON tab of the bucke
 Playback does not need it: a plain `<video src>` loads without CORS. It is set up front because
 changing it later means purging a year-long cache. `media:publish-video` warns if it is absent.
 
+The bucket also holds a `robots.txt` at its root, because the site's `public/robots.txt` does not
+cover this host. It tells AI training crawlers `Disallow: /`, and allows everyone else. Its crawler
+list matches the training group in `public/robots.txt`, so a crawler added there is added here too.
+Nothing in the repo writes this object: upload a new copy with `R2Host.put`, using the `R2_MEDIA_`
+values above.
+
 To rotate: mint a new token, update `.env`, run `npm run media:publish-video -- --only <clip>
 --force` on a live clip to prove it, then revoke the old token. Nothing else holds it.
 
