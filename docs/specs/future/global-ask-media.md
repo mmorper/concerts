@@ -109,6 +109,37 @@ Photos panel and the Ask viewer, which then takes `ReelItem[]` rather than still
   `global-social-media-posts.md`.
 - One Spotlight starter, for example "Show me something from the pit."
 
+### Phase 5: follow-up chips
+
+One or two chips under an answer that has a card. A chip must never lead to an empty answer, so
+three things guard it:
+
+1. **The Worker chooses them, after the tool has run.** It holds the data the site doesn't load,
+   such as setlists and album eras, so it can test each chip before offering it. Chips ride on the
+   `exhibit` event. No model call writes them, and the model's text never mentions them.
+2. **A chip carries its tool and arguments, not just words.** Clicking it runs that exact tool,
+   then the model writes the prose. Free text could be routed elsewhere, or stumble on a name.
+3. **A CI test proves it.** It walks every artist, venue and night in the real data, runs each
+   chip offered, and fails on an empty result.
+
+| Chip | Offered only when |
+|---|---|
+| The setlist | That night has at least 3 songs on record, the floor On This Day uses |
+| Who else was on the bill | The night has openers (89 of 185) |
+| What album they were touring | The night has era data |
+| Their first show / my first show here | There are at least 2 shows, or the answer is the card itself |
+| The photos / the clips | The night or act has published media, after Phase 2 |
+
+Also:
+
+- No chips on a refusal, an error or "nothing matched".
+- No chips unless Ask is in its normal mode, or a chip could lead to a paused or quiet reply.
+- Never repeat a question already asked in the conversation.
+- Track clicks with the existing `ask_suggested_prompt_clicked`, adding a `source` param.
+
+The test does not cover the daily spend cap or a model failure. Those replies stay as they are
+today.
+
 ---
 
 ## Files
