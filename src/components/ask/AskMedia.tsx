@@ -166,6 +166,16 @@ export function CameraMark({ size = 14 }: { size?: number }) {
   )
 }
 
+/** The magnifier that says "this is a search box". */
+export function SearchMark({ size = 20 }: { size?: number }) {
+  return (
+    <svg className="ask-icon ask-search-mark" width={size} height={size} viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <circle cx="9.5" cy="9.5" r="6.5" />
+      <path d="M14.5 14.5L20 20" />
+    </svg>
+  )
+}
+
 // ---------------------------------------------------------------------------------------------
 // Lightbox
 // ---------------------------------------------------------------------------------------------

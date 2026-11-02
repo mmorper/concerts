@@ -424,6 +424,7 @@ async function buildData() {
       if (!skipSongAlbums) console.log('   - public/data/song-albums.json')
       if (!skipSetlists) console.log('   - public/data/setlists-cache.json')
       console.log('   - public/data/most-played-songs.json')
+      console.log('   - public/data/song-index.json')
       console.log('   - public/data/facts.json')
       console.log('   - public/sitemap.xml')
       console.log('   - public/rss.xml')

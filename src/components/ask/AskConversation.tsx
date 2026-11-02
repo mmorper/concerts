@@ -1,12 +1,15 @@
-// The shared answer surface for "Ask the Archive" (#141): the transcript of exhibits + the input
-// dock + empty-state suggested prompts. UI-agnostic — the containers (Spotlight overlay, /ask
-// canvas) own their outer chrome (scrim, gradient, header) and drop this inside. One surface, so
-// the dev harness, the overlay, and the full page all render answers identically.
+// The shared answer surface for "Ask the Archive" (#141): the search box + what it finds as you type
+// + the transcript of exhibits + empty-state suggested prompts. UI-agnostic — the containers
+// (Spotlight overlay, /ask canvas) own their outer chrome (scrim, gradient, header) and drop this
+// inside. One surface, so the dev harness, the overlay, and the full page render answers identically.
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import type { Exchange } from '@/hooks/useAskArchive'
 import type { ArchiveLookups } from './types'
 import { AskExhibit } from './AskExhibit'
+import { SearchMark } from './AskMedia'
+import { AskSearchMatches, optionId } from './AskSearchMatches'
+import { MIN_QUERY, searchArchive } from './search'
 import { analytics } from '@/services/analytics'
 
 export interface AskConversationProps {
@@ -23,6 +26,8 @@ export interface AskConversationProps {
   autoFocus?: boolean
   /** Imperatively focus the input from a parent (e.g. the `/` shortcut). */
   inputRef?: React.RefObject<HTMLInputElement>
+  /** Sits beside the box, for the container's own control (the overlay's esc). */
+  dockEnd?: React.ReactNode
 }
 
 export function AskConversation({
@@ -32,11 +37,16 @@ export function AskConversation({
   onAsk,
   suggestedPrompts,
   emptyHint,
-  placeholder = 'Ask me about a band, a venue, a year… or just say "surprise me"',
+  placeholder = 'Search a band, venue, song or year, or ask anything',
   autoFocus,
   inputRef,
+  dockEnd,
 }: AskConversationProps) {
   const [input, setInput] = useState('')
+  // Which row the arrow keys are on. -1 is the box itself, so Enter asks the words as typed.
+  const [active, setActive] = useState(-1)
+  const [dismissed, setDismissed] = useState(false)
+  const listId = useId()
   const localRef = useRef<HTMLInputElement>(null)
   const ref = inputRef ?? localRef
   const transcriptRef = useRef<HTMLDivElement>(null)
@@ -73,80 +83,147 @@ export function AskConversation({
     const trimmed = q.trim()
     if (!trimmed || busy) return
     setInput('')
+    setActive(-1)
     onAsk(trimmed)
   }
 
   const empty = exchanges.length === 0
+  const query = input.trim()
+  const matches = useMemo(() => searchArchive(archive.searchEntries, query), [archive.searchEntries, query])
+  const matching = query.length >= MIN_QUERY && !dismissed
+  // The question stays in the box while the archive thinks, so a clicked card visibly went in.
+  const pending = busy && !input ? last?.question : undefined
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!matching) return
+    const rows = matches.length + 1
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault()
+      const step = e.key === 'ArrowDown' ? 1 : -1
+      setActive((a) => ((a + 1 + step + rows + 1) % (rows + 1)) - 1)
+    } else if (e.key === 'Enter' && active >= 0) {
+      e.preventDefault()
+      document.getElementById(optionId(listId, active))?.click()
+    } else if (e.key === 'Escape') {
+      // One esc closes the list. The next one closes the overlay.
+      e.preventDefault()
+      e.stopPropagation()
+      setDismissed(true)
+    }
+  }
 
   return (
     <div className="ask-convo">
-      {/* Empty state: a centered, teaching block (hint + chips) that fills the space above the
-          persistent composer — so a just-opened sheet never reads as a blank void (#189). Once the
-          first exhibit lands it gives way to the scrolling transcript. */}
-      {empty ? (
-        <div className="ask-empty">
-          {emptyHint && <p className="ask-empty-hint">{emptyHint}</p>}
-          {suggestedPrompts && suggestedPrompts.length > 0 && (
-            <>
-              <p className="ask-empty-try">Try asking</p>
-              <div className="ask-suggest" aria-label="Suggested questions">
-                {suggestedPrompts.map((p, i) => (
-                  <button
-                    key={p}
-                    type="button"
-                    className="chip"
-                    onClick={() => {
-                      analytics.trackEvent('ask_suggested_prompt_clicked', { prompt: p, position: i })
-                      submit(p)
-                    }}
-                    disabled={busy}
-                  >
-                    {p}
-                  </button>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      ) : (
-        <div className="ask-transcript" ref={transcriptRef}>
-          {exchanges.map((ex, i) => (
-            <div key={ex.id} ref={i === exchanges.length - 1 ? lastTurnRef : undefined}>
-              <div className="ask-q">
-                <span className="you">You</span>
-                <span className="q">&ldquo;{ex.question}&rdquo;</span>
-              </div>
-              <AskExhibit exchange={ex} archive={archive} />
-            </div>
-          ))}
-        </div>
-      )}
-
-      <form
-        className="ask-dock"
-        onSubmit={(e) => {
-          e.preventDefault()
-          submit(input)
-        }}
-      >
-        <input
-          ref={ref}
-          className="ask-dock-input"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={placeholder}
-          aria-label="Ask the archive a question"
-          enterKeyHint="send"
-        />
-        <button
-          type="submit"
-          className="ask-dock-send"
-          disabled={busy || !input.trim()}
-          aria-label="Send question"
+      {/* First in the DOM and on the page: this reads as search. On a phone CSS moves it to the
+          bottom, above the keyboard. */}
+      <div className="ask-dock-row">
+        <form
+          className="ask-dock"
+          onSubmit={(e) => {
+            e.preventDefault()
+            submit(input)
+          }}
         >
-          ↑
-        </button>
-      </form>
+          <SearchMark />
+          <div className="ask-dock-field">
+            <input
+              ref={ref}
+              className="ask-dock-input"
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value)
+                setActive(-1)
+                setDismissed(false)
+              }}
+              onKeyDown={onKeyDown}
+              placeholder={pending ? '' : placeholder}
+              aria-label="Search or ask the archive"
+              role="combobox"
+              aria-expanded={matching}
+              aria-controls={listId}
+              aria-autocomplete="list"
+              aria-activedescendant={matching && active >= 0 ? optionId(listId, active) : undefined}
+              enterKeyHint="send"
+            />
+            {pending && (
+              <span className="ask-dock-pending" role="status" aria-label="Composing an answer">
+                <span className="q">{pending}</span>
+                <span className="ask-loading">
+                  <span className="ask-loading-dot" />
+                  <span className="ask-loading-dot" />
+                  <span className="ask-loading-dot" />
+                </span>
+              </span>
+            )}
+          </div>
+          <button
+            type="submit"
+            className="ask-dock-send"
+            disabled={busy || !input.trim()}
+            aria-label="Send question"
+          >
+            ↑
+          </button>
+        </form>
+        {dockEnd}
+      </div>
+
+      <div className="ask-stage">
+        {/* Empty state: a centered, teaching block (hint + chips) so a just-opened sheet never reads
+            as a blank void (#189). Typing replaces it with matches, and once the first exhibit lands
+            it gives way to the scrolling transcript. */}
+        {empty ? (
+          !matching && (
+            <div className="ask-empty">
+              {emptyHint && <p className="ask-empty-hint">{emptyHint}</p>}
+              {suggestedPrompts && suggestedPrompts.length > 0 && (
+                <>
+                  <p className="ask-empty-try">Try asking</p>
+                  <div className="ask-suggest" aria-label="Suggested questions">
+                    {suggestedPrompts.map((p, i) => (
+                      <button
+                        key={p}
+                        type="button"
+                        className="chip"
+                        onClick={() => {
+                          analytics.trackEvent('ask_suggested_prompt_clicked', { prompt: p, position: i })
+                          submit(p)
+                        }}
+                        disabled={busy}
+                      >
+                        {p}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )
+        ) : (
+          <div className="ask-transcript" ref={transcriptRef}>
+            {exchanges.map((ex, i) => (
+              <div key={ex.id} ref={i === exchanges.length - 1 ? lastTurnRef : undefined}>
+                <div className="ask-q">
+                  <span className="you">You</span>
+                  <span className="q">&ldquo;{ex.question}&rdquo;</span>
+                </div>
+                <AskExhibit exchange={ex} archive={archive} />
+              </div>
+            ))}
+          </div>
+        )}
+        {matching && (
+          <AskSearchMatches
+            id={listId}
+            query={query}
+            matches={matches}
+            active={active}
+            over={!empty}
+            busy={busy}
+            onAsk={() => submit(input)}
+          />
+        )}
+      </div>
     </div>
   )
 }

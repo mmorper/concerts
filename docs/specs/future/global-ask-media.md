@@ -172,8 +172,9 @@ The modal must read as search first. The owner's decisions, 2026-11-02:
 | Connector link | Below the crate, in the Ask scene |
 
 **Type-ahead.** Typing replaces the banner with instant matches: bands, venues and clip songs, with
-counts, then "Ask the archive about…". It runs on the site with no model call. Extend it to
-setlist songs, or the word "song" in the placeholder over-promises.
+counts, then "Ask the archive about…". It runs on the site with no model call. It finds
+setlist songs too, from `public/data/song-index.json`, which `generate:most-played-songs` writes. A
+song with no clip opens the last night it was heard. Years are in there as well.
 
 **The ⌘K banner.** One large photo banner under the box, with a "Pull another" button.
 Text never rotates on a timer: it would need a pause control and it reads as an ad.
@@ -220,7 +221,7 @@ layout changes shape. "No photos from 1987" still lists that year's shows.
 Every banner, card and opener goes through the same check as the chips in Phase 5: if a tool can't
 answer it, it doesn't appear.
 
-**Build order:** type-ahead and the search box, then the response layout, then the banner, then the
+**Build order:** type-ahead and the search box (done), then the response layout, then the banner, then the
 opening idea, then the Ask scene carousel.
 
 ---
@@ -237,6 +238,7 @@ opening idea, then the Ask scene carousel.
 | Create | Purpose |
 |---|---|
 | `src/components/ask/AskGalleryCard.tsx` | The gallery |
+| `src/components/ask/search.ts`, `AskSearchMatches.tsx` | Type-ahead |
 
 ---
 

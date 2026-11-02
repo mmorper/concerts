@@ -105,7 +105,7 @@
 
 /* Minimal "composing an answer" cue — shown in place of an empty card while the answer is being
    composed; the control grows by just this row, then the real exhibit hydrates in. */
-.ask-loading { display: flex; gap: 6px; align-items: center; padding: 12px 4px 18px; }
+.ask-loading { display: inline-flex; flex: none; gap: 6px; align-items: center; }
 .ask-loading-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 255, 255, 0.5); animation: ask-pulse 1.2s ease-in-out infinite; }
 .ask-loading-dot:nth-child(2) { animation-delay: 0.15s; }
 .ask-loading-dot:nth-child(3) { animation-delay: 0.3s; }
@@ -414,34 +414,69 @@ img.chip-av { object-fit: cover; display: block; }
    Containers (#141) — the shared conversation surface + the two answer containers.
    ===================================================================================== */
 
-/* Shared surface: suggested chips (empty state) → scrolling transcript → input dock. */
+/* Shared surface: the box → suggested chips (empty state), matches or the scrolling transcript. */
 .ask-convo { display: flex; flex-direction: column; min-height: 0; flex: 1; }
+.ask-stage { position: relative; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
 /* overflow-x:hidden — `overflow-y:auto` alone promotes overflow-x to `auto`, which would let a stray
    over-wide child scroll the transcript sideways. overscroll-behavior keeps flings off the scene (#189). */
 .ask-transcript { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
 /* Empty state — centered teaching block that fills the space above the persistent composer (#189). */
-.ask-empty { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 0 8px; }
+.ask-empty { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 18px 8px 8px; }
 .ask-empty-hint { margin: 0; max-width: 34ch; font-size: 14px; line-height: 1.5; color: rgba(255, 255, 255, 0.55); }
 .ask-empty-try { margin: 0; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; color: rgba(255, 255, 255, 0.38); }
 .ask-suggest { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .ask-suggest .chip { cursor: pointer; }
 
+.ask-dock-row { flex: none; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
 .ask-dock {
-  display: flex; align-items: center; gap: 8px; margin-top: 14px;
-  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 14px; padding: 6px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  flex: 1; min-width: 0; min-height: 58px; box-sizing: border-box; display: flex; align-items: center; gap: 12px;
+  padding: 0 16px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(165, 180, 252, 0.55);
+  border-radius: 14px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
 }
-.ask-dock:focus-within { border-color: rgba(167, 139, 250, 0.6); }
+.ask-dock:focus-within { border-color: rgba(167, 139, 250, 0.9); }
+.ask-search-mark { flex: none; color: #c7d2fe; vertical-align: 0; }
+.ask-dock-field { position: relative; flex: 1; min-width: 0; display: flex; align-items: center; }
 .ask-dock-input {
-  flex: 1; min-width: 0; background: transparent; border: none; outline: none;
-  color: #fff; font-size: 15px; padding: 9px 12px; font-family: 'Source Sans 3', system-ui, sans-serif;
+  width: 100%; min-width: 0; background: transparent; border: none; outline: none; text-overflow: ellipsis;
+  color: #fff; font-size: 18px; padding: 8px 0; font-family: 'Source Sans 3', system-ui, sans-serif;
 }
-.ask-dock-input::placeholder { color: rgba(255, 255, 255, 0.45); }
+.ask-dock-input::placeholder { color: rgba(255, 255, 255, 0.66); }
+/* Sits on the empty input, and gives way the moment the visitor types the next question. */
+.ask-dock-pending { position: absolute; inset: 0; display: flex; align-items: center; gap: 10px; min-width: 0; pointer-events: none; font-size: 18px; color: #fff; }
+.ask-dock-pending .q { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+/* What the box finds as you type. In the panel when it's empty, over the answer when it isn't. */
+.ask-matches { min-height: 0; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; }
+.ask-matches.over { position: absolute; inset: 0; z-index: 1; background: #1e1b4b; }
+.ask-match {
+  flex: none; display: flex; align-items: center; gap: 14px; width: 100%; min-height: 62px; box-sizing: border-box;
+  padding: 8px 10px; border: 0; border-radius: 10px; background: none; color: #fff; font: inherit; text-align: left;
+  text-decoration: none; cursor: pointer;
+}
+.ask-match:hover, .ask-match.on { background: rgba(255, 255, 255, 0.08); }
+.ask-match .thumb { flex: none; width: 46px; height: 46px; border-radius: 8px; overflow: hidden; background: rgba(255, 255, 255, 0.08); }
+.ask-match .thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.ask-match .mark { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; font-family: 'Playfair Display', Georgia, serif; font-size: 22px; color: #c7d2fe; }
+.ask-match .text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ask-match .name { font-size: 17px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ask-match .sub { font-size: 13.5px; color: rgba(255, 255, 255, 0.72); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ask-match .kind { flex: none; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.66); }
+/* Pinned, so on a short screen the way to the model never scrolls out of reach. */
+.ask-match-ask { position: sticky; bottom: 0; margin-top: 4px; border-top: 1px solid rgba(255, 255, 255, 0.12); border-radius: 0; background: #1e1b4b; }
+.ask-match-ask:hover, .ask-match-ask.on { background: #2b2860; }
+.ask-match-ask:disabled { opacity: 0.55; cursor: default; }
+.ask-match .thumb.q { display: flex; align-items: center; justify-content: center; background: #fff; color: #17143a; font-size: 22px; }
+
 .ask-dock-send {
   flex: none; width: 40px; height: 40px; border: none; border-radius: 10px; cursor: pointer;
   background: #fff; color: #111; font-size: 18px; line-height: 1;
 }
 .ask-dock-send:disabled { background: rgba(255, 255, 255, 0.2); color: rgba(255,255,255,.5); cursor: default; }
+/* Enter sends on a keyboard. The arrow is for phones, and the box stays a search box here. */
+@media (min-width: 768px) {
+  .ask-dock-send { display: none; }
+  .ask-spotlight .ask-spot-head { display: none; }
+}
 
 /* ---- Container B — Spotlight overlay (summoned over a scene; esc restores) ---- */
 .ask-spotlight-scrim {
@@ -492,12 +527,15 @@ img.chip-av { object-fit: cover; display: block; }
   .ask-convo { padding: 12px 16px 0; }
   /* Specific selectors so these win over the base .ask-back/.ask-esc rules defined later in the file. */
   .ask-spot-head .ask-back { display: flex; }
-  .ask-spot-head .ask-esc { display: none; }
-  /* Composer reads as a real input: brighter fill + glow; 16px kills iOS focus-zoom; 44px tap target;
-     bottom margin clears the home indicator. */
-  .ask-dock { margin-bottom: calc(env(safe-area-inset-bottom) + 10px); background: rgba(255, 255, 255, 0.12); border-color: rgba(165, 180, 252, 0.5); }
-  .ask-dock-input { font-size: 16px; }
+  .ask-dock-row .ask-esc { display: none; }
+  /* The box stays at the bottom here, above the keyboard. Brighter fill + glow; 16px kills iOS
+     focus-zoom; 44px tap target; bottom margin clears the home indicator. */
+  .ask-dock-row { order: 1; margin: 10px 0 calc(env(safe-area-inset-bottom) + 10px); }
+  .ask-dock { min-height: 56px; padding: 0 6px 0 14px; gap: 10px; background: rgba(255, 255, 255, 0.12); border-color: rgba(165, 180, 252, 0.5); }
+  .ask-dock-input, .ask-dock-pending { font-size: 16px; }
   .ask-dock-send { width: 44px; height: 44px; }
+  .ask-match { gap: 12px; padding: 8px 4px; }
+  .ask-match .name { font-size: 16px; }
 }
 @keyframes ask-fade-in { from { opacity: 0; } to { opacity: 1; } }
 
@@ -535,13 +573,12 @@ img.chip-av { object-fit: cover; display: block; }
 /* Composer — a button styled like the Spotlight input; clicking blooms the overlay open in place. */
 .ask-scene-composer {
   display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
-  background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 16px;
-  padding: 6px 6px 6px 16px; cursor: pointer; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(165, 180, 252, 0.55); border-radius: 16px;
+  min-height: 60px; box-sizing: border-box; padding: 0 18px; cursor: pointer; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
   transition: border-color 0.2s ease, background 0.2s ease;
 }
-.ask-scene-composer:hover { border-color: rgba(165, 180, 252, 0.55); background: rgba(255, 255, 255, 0.09); }
-.ask-scene-composer .ph { flex: 1; font-size: 15.5px; color: rgba(255, 255, 255, 0.55); padding: 8px 0; }
-.ask-scene-composer .send { width: 42px; height: 42px; flex: none; border: none; border-radius: 11px; background: #fff; color: #1e1b4b; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.ask-scene-composer:hover { border-color: rgba(165, 180, 252, 0.9); background: rgba(255, 255, 255, 0.09); }
+.ask-scene-composer .ph { flex: 1; min-width: 0; font-size: 17px; color: rgba(255, 255, 255, 0.72); padding: 8px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* Suggested prompts — demoted to hints (not buttons) so they don't compete with the composer. */
 .ask-scene-try { margin: 32px 0 12px; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.36); font-weight: 600; }
