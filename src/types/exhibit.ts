@@ -19,6 +19,7 @@ export type ExhibitKind =
   | 'shape'
   | 'songs'
   | 'gallery'
+  | 'acts'
   | 'song'
   | 'plain'
   | 'disambiguation'
@@ -194,6 +195,22 @@ export interface GalleryExhibit {
   items: GalleryItem[]
 }
 
+/** One act in the seen-most ranking. */
+export interface RankedAct {
+  artist: EntityRef
+  count: number
+  /** Of `count`, the nights they headlined. */
+  headlined: number
+  firstYear: number
+  lastYear: number
+}
+
+/** get_archive_info: the acts I've seen most, the same tally its prose names. */
+export interface ActsExhibit {
+  kind: 'acts'
+  acts: RankedAct[]
+}
+
 /**
  * One song and every night I heard it. The one kind the worker never sends: the Ask box builds it
  * from song-index.json when a song is picked from its matches, so it costs no model call.
@@ -227,6 +244,7 @@ export type Exhibit =
   | ShapeExhibit
   | SongsExhibit
   | GalleryExhibit
+  | ActsExhibit
   | SongExhibit
   | DisambiguationExhibit
   | PlainExhibit

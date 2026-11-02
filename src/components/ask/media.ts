@@ -121,6 +121,14 @@ export function actClips(ix: MediaIndex, actSlug: string): Clip[] {
     .flatMap(([, clips]) => clips.filter((c) => c.artistNormalized === actSlug))
 }
 
+/** A seen-most row's line: "2003 to 2024 · 5 headlining, 5 opening". */
+export function actRankSub(a: { count: number; headlined: number; firstYear: number; lastYear: number }): string {
+  const years = a.firstYear === a.lastYear ? `${a.firstYear}` : `${a.firstYear} to ${a.lastYear}`
+  const opened = a.count - a.headlined
+  const billing = opened === 0 ? 'all headlining' : a.headlined === 0 ? 'all opening' : `${a.headlined} headlining, ${opened} opening`
+  return `${years} · ${billing}`
+}
+
 /** "A, B and C" — the house style: no serial comma. */
 export function joinNames(names: string[]): string {
   if (names.length <= 1) return names[0] ?? ''

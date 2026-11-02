@@ -234,6 +234,10 @@ owner's work still outranks it. One night is done too: a card with the picture, 
 bill beside the setlist in two columns, its heading naming the record they were touring. The
 picture follows the ladder, so a night I have no photo from can show my photo of the act from
 another night, captioned with that night's date, before it falls to the touring record's cover.
+Rankings are done: the songs I've heard most, and the acts I've seen most. The acts ranking is a
+new `acts` exhibit that `get_archive_info` sends, built from `tallyActs` in the MCP server, the
+same tally its prose reads. Each ranking is my photo of the highest-ranked act I've photographed
+beside the list, with the count in large type.
 
 ---
 

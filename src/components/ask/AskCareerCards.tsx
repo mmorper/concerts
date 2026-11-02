@@ -3,14 +3,14 @@
 // most (songs). Same ladder as every other card: my photo → sourced → derived, and a cover that
 // fails to load drops to the derived sleeve.
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
 import { getGenreColor, DEFAULT_GENRE_COLOR } from '@/constants/colors'
 import { setlistDeepLink } from '@/utils/deepLinks'
-import type { EraExhibit, ShapeExhibit, SongsExhibit } from '@/types/exhibit'
+import type { ActsExhibit, EraExhibit, ShapeExhibit, SongsExhibit } from '@/types/exhibit'
 import type { ArchiveLookups } from './types'
-import { CoverArt, DerivedArt, FramedPhoto } from './AskMedia'
+import { CameraMark, CoverArt, DerivedArt, FramedPhoto } from './AskMedia'
 import { DeepLink, Frame, PhotoButton, Portrait, captionLookups, trackDeepLink, useFrameOpener, trackPhotoOpened } from './AskCardParts'
-import { agePhrase, fmtDate, monthsPhrase, nightPhoto, photoCaption, yearOf, type Photo } from './media'
+import { actRankSub, agePhrase, fmtDate, leadPhoto, monthsPhrase, nightPhoto, photoCaption, yearOf, type Photo } from './media'
 
 const genreColor = (archive: ArchiveLookups, slug: string | undefined): string => {
   if (!slug) return DEFAULT_GENRE_COLOR
@@ -175,46 +175,123 @@ export function ShapeCard({ exhibit, archive }: { exhibit: ShapeExhibit; archive
 }
 
 // ---------------------------------------------------------------------------------------------
-// Songs — "what songs have I heard most?"
+// Rankings (Phase 6) — a picture beside a list with large numbers, for the songs I've heard most
+// and the acts I've seen most. The number is the count; the rows say what it counts.
 // ---------------------------------------------------------------------------------------------
 
-export function SongsCard({ exhibit, archive }: { exhibit: SongsExhibit; archive: ArchiveLookups }) {
+interface RankRow {
+  key: string
+  count: number
+  name: string
+  sub: string
+  href?: string
+}
+
+function Ranking({ kind, heading, picture, sourced, rows }: {
+  kind: 'songs' | 'acts'
+  heading: string
+  picture: ReactNode
+  /** No photo of mine to lead with: the sourced picture sits smaller, as on the artist card. */
+  sourced: boolean
+  rows: RankRow[]
+}) {
+  return (
+    <div className={`ask-rank ${sourced ? 'sourced' : ''}`}>
+      <div className="ask-rank-pic">{picture}</div>
+      <div>
+        <div className="ask-kick">{heading}</div>
+        <ol className="ask-rank-list">
+          {rows.map((r) => {
+            const body = (
+              <>
+                <span className="n">{r.count}</span>
+                <span className="b">
+                  <span className="t">{r.name}</span>
+                  {r.sub && <span className="s">{r.sub}</span>}
+                </span>
+              </>
+            )
+            return (
+              <li key={r.key}>
+                {r.href ? (
+                  <a href={r.href} onClick={() => trackDeepLink(kind, r.href!)}>
+                    {body}
+                  </a>
+                ) : (
+                  <span className="row">{body}</span>
+                )}
+              </li>
+            )
+          })}
+        </ol>
+      </div>
+    </div>
+  )
+}
+
+/** My photo of the highest-ranked act I've photographed, bylined, opening that act's frames. */
+function RankPhoto({ archive, slugs, kind }: { archive: ArchiveLookups; slugs: string[]; kind: 'songs' | 'acts' }) {
+  const viewer = useFrameOpener(archive, trackPhotoOpened(kind))
+  const slug = slugs.find((s) => leadPhoto(archive.media, s))
+  const lead = slug ? leadPhoto(archive.media, slug) : null
+  if (!slug || !lead) return null
+  const all = archive.media.byArtist.get(slug) ?? [lead]
+  const caption = photoCaption(lead, { aboutAct: slug, ...captionLookups(archive) })
+  return (
+    <PhotoButton className="ask-rank-photo" onOpen={() => viewer.open(all, all.indexOf(lead))} label={caption}>
+      <FramedPhoto photo={lead} aspect={0.8} alt={caption} fallback={<DerivedArt name={lead.artist ?? ''} color={DEFAULT_GENRE_COLOR} />} eager />
+      <span className="ask-hero-cap">
+        <CameraMark size={12} /> {caption}
+      </span>
+    </PhotoButton>
+  )
+}
+
+export function ActsCard({ exhibit, archive }: { exhibit: ActsExhibit; archive: ArchiveLookups }) {
+  const slugs = exhibit.acts.map((a) => a.artist.slug)
+  const photo = <RankPhoto archive={archive} slugs={slugs} kind="acts" />
+  const top = exhibit.acts[0]
+  const mine = slugs.some((s) => leadPhoto(archive.media, s))
   return (
     <Frame>
-      <div className="ask-list-title">Most-heard songs</div>
-      <ol className="ask-songs">
-        {exhibit.songs.map((s, i) => {
-          const color = genreColor(archive, s.artist?.slug)
+      <Ranking
+        kind="acts"
+        heading="The acts I’ve seen most · nights"
+        sourced={!mine}
+        picture={
+          mine
+            ? photo
+            : top && (
+                <Portrait name={top.artist.name} image={archive.artistFacts(top.artist.slug).meta?.image} color={genreColor(archive, top.artist.slug)} className="ask-rank-sourced" />
+              )
+        }
+        rows={exhibit.acts.map((a) => ({ key: a.artist.slug, count: a.count, name: a.artist.name, sub: actRankSub(a), href: a.artist.deepLink }))}
+      />
+    </Frame>
+  )
+}
+
+export function SongsCard({ exhibit, archive }: { exhibit: SongsExhibit; archive: ArchiveLookups }) {
+  const slugs = exhibit.songs.flatMap((s) => [s.artist?.slug, s.lastAct?.slug]).filter((s): s is string => !!s)
+  const mine = slugs.some((s) => leadPhoto(archive.media, s))
+  const top = exhibit.songs[0]
+  const color = genreColor(archive, top?.artist?.slug ?? top?.lastAct?.slug)
+  const derived = <DerivedArt name={top?.coverOf ?? top?.title ?? ''} color={color} className="ask-rank-sourced" />
+  // No photo of mine: the top song's record, square and uncropped, then the derived sleeve.
+  const record = top?.album ?? top?.lastActAlbum
+  return (
+    <Frame>
+      <Ranking
+        kind="songs"
+        heading="The songs I’ve heard most · times"
+        sourced={!mine}
+        picture={mine ? <RankPhoto archive={archive} slugs={slugs} kind="songs" /> : record ? <CoverArt album={record} size={500} color={color} fallback={derived} className="ask-rank-sourced" /> : derived}
+        rows={exhibit.songs.map((s, i) => {
           const who = s.artistNames.length === 1 ? s.artistNames[0] : `${s.artistNames.length} acts`
           const from = s.album ? s.album.title : s.coverOf ? `${s.coverOf} cover` : ''
-          // Always a record (owner's call): the song's own sleeve; if it has none or it fails, the
-          // album of the act I last heard play it; only then the derived tile.
-          const derived = <DerivedArt name={s.coverOf ?? s.title} color={color} />
-          const actAlbum = s.lastActAlbum ? <CoverArt album={s.lastActAlbum} color={color} fallback={derived} /> : derived
-          return (
-            <li key={`${i}-${s.title}`}>
-              <span className="n">{i + 1}</span>
-              <span className="c">
-                {s.album ? <CoverArt album={s.album} color={color} fallback={actAlbum} /> : actAlbum}
-              </span>
-              <span className="body">
-                <span className="t">{s.title}</span>
-                <span className="w">
-                  {s.artist ? (
-                    <a href={s.artist.deepLink} onClick={() => trackDeepLink('songs', s.artist!.deepLink)}>
-                      {who}
-                    </a>
-                  ) : (
-                    who
-                  )}
-                  {from && <span className="al"> · {from}</span>}
-                </span>
-              </span>
-              <span className="x">×{s.count}</span>
-            </li>
-          )
+          return { key: `${i}-${s.title}`, count: s.count, name: s.title, sub: [who, from].filter(Boolean).join(' · '), href: s.artist?.deepLink }
         })}
-      </ol>
+      />
       <div className="ask-note">
         Counted from the {exhibit.withSetlist} of {exhibit.totalConcerts} shows with a setlist on record.
       </div>

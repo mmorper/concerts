@@ -23,6 +23,7 @@ import {
   careerShape,
   setlistSelection,
   careerPositionNight,
+  tallyActs,
   type SetlistSelection,
 } from "../../mcp-server/src/tools.js";
 import { eraExhibit, shapeExhibit, songsExhibit } from "./career-cards.js";
@@ -325,6 +326,31 @@ const albumId = (a: AlbumLike | null): AlbumIdentity | null =>
     ? { mbid: a.mbid, title: "albumTitle" in a ? a.albumTitle : a.title, releaseDate: a.releaseDate, coverAvailable: a.coverAvailable }
     : null;
 
+/** How many acts the seen-most ranking shows: the five the prose names. */
+export const RANKED_ACTS = 5;
+
+/**
+ * The collection overall → the acts I've seen most, from the tally the prose reads, over the shows
+ * that have happened. Photos and portraits hydrate client-side from each slug.
+ */
+export function actsExhibit(concerts: Parameters<typeof tallyActs>[0], aliases: Parameters<typeof tallyActs>[1], today: string): Exhibit | undefined {
+  const acts = tallyActs(
+    concerts.filter((c) => c.date < today),
+    aliases,
+  ).slice(0, RANKED_ACTS);
+  if (!acts.length) return undefined;
+  return {
+    kind: "acts",
+    acts: acts.map((a) => ({
+      artist: { entity: "artist", slug: a.slug, name: a.name, deepLink: artistDeepLink(a.slug) },
+      count: a.count,
+      headlined: a.headlined,
+      firstYear: a.firstYear,
+      lastYear: a.lastYear,
+    })),
+  };
+}
+
 /** A resolved night → the night card. Lineup and photos hydrate client-side from concertId. */
 export function showExhibit(sel: SetlistSelection): Exhibit {
   const c = sel.concert;
@@ -352,7 +378,11 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       const data = await getConcerts(e, bgCtx);
       if (!data) return { text: DATA_UNAVAILABLE };
       const [facts, aliasData] = await Promise.all([getFacts(e, bgCtx), getArtistAliases(e, bgCtx)]);
-      return { text: archiveInfo(data.concerts, facts, buildAliasIndex(aliasData)) }; // plain
+      const aliases = buildAliasIndex(aliasData);
+      return {
+        text: archiveInfo(data.concerts, facts, aliases),
+        exhibit: actsExhibit(data.concerts, aliases, todayISO()),
+      };
     }
 
     case "search_concerts": {

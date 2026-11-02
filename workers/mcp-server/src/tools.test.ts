@@ -1,7 +1,8 @@
-import { buildAliasIndex } from "./aliases.js";
+import { buildAliasIndex, EMPTY_ALIAS_INDEX } from "./aliases.js";
 import { describe, it, expect } from "vitest";
 import {
   archiveInfo,
+  tallyActs,
   mediaResults,
   searchConcerts,
   resolveArtist,
@@ -249,6 +250,14 @@ describe("get_archive_info", () => {
 
   it("counts an act once on a night it appears on twice", () => {
     expect(archiveInfo([night("Twice", ["Twice"])], null)).toContain("seen most: Twice (1)");
+  });
+
+  // Ask's ranking card reads this, so its numbers must match the prose above.
+  it("tallies each act's headlining nights and years beside the total", () => {
+    const later = { ...night("Other", ["Twice"]), date: "2024-01-01", year: 2024 };
+    const [top, ...rest] = tallyActs([night("Twice"), later, night("Solo")], EMPTY_ALIAS_INDEX);
+    expect(top).toEqual({ slug: "twice", name: "Twice", count: 2, headlined: 1, firstYear: 2020, lastYear: 2024 });
+    expect(rest.map((a) => a.slug)).toEqual(["other", "solo"]);
   });
 
   it("narrates the collection's shape", () => {
