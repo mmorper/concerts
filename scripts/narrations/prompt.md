@@ -24,6 +24,9 @@ Call the `record_narration` tool with:
 ## Hard rules
 
 - **No named era labels.** Never write "the New Wave era", "the post-punk years", "the synthpop boom", or any coined period name. Refer to actual years and decades instead ("the late '80s", "across the 1990s").
+- **Count from `shows`.** It is every show. An act may be the headliner or an opener (`role`), and both count as seeing them. Check any "once", "twice", "same year", "last time" or gap against the dates before you write it. Do the arithmetic.
+- **A bill is not one band.** A venue's `shows` list each night's openers. Don't call a night "one band" unless it had no openers.
+- **`upcoming` hasn't happened.** Never write of it as seen. If there are no past shows, say what's on the calendar, in words that will still be true after the date.
 - **Facts only.** Use only the artists/venues/years/counts in the input. No chart positions, no sales figures, no outside cultural events, no specific release dates you weren't given.
 - **No filler.** Banned: "journey", "tapestry", "legendary" (without evidence), "over the years" as an opener, "a diverse range of". Every sentence earns its place with a specific fact.
 - **One detail, well-placed.** Approximate framing is fine ("around the time", "I didn't know it would be my last") but at most one such flourish per piece, and only when the facts support it.
