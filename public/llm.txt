@@ -20,21 +20,30 @@ strictly grounded — every number, date, and name comes from the archive's own 
 **Connect / about:** https://concerts.morperhaus.org/about-mcp
 A remote MCP server that exposes the archive as structured tools, so an assistant can answer
 grounded questions without scraping. Tools: `search_concerts`, `get_artist_history`,
-`get_venue_history`, `get_concert_setlist`, `get_archive_top_songs`, `get_archive_info`,
-`on_this_day`, `surprise_me`, `get_career_position`, `get_career_shape`, and a freeform `query`
-escape hatch. Each tool result ends with an "Open on the site" line of deep links to the entities
-mentioned.
+`get_venue_history`, `get_concert_setlist`, `get_media`, `get_archive_top_songs`,
+`get_archive_info`, `on_this_day`, `surprise_me`, `get_career_position`, `get_career_shape`, and a
+freeform `query` escape hatch. `get_media` returns the owner's photos and clips as links to the exact
+frame, never the images themselves. Each tool result ends with an "Open on the site" line of deep
+links to the entities mentioned.
 
 The two career tools read `album-eras.json` — the join between attendance and discography. They
 answer where an artist stood in their own arc on a given night (`get_career_position`) and how the
 whole archive falls across four decades of album cycles (`get_career_shape`), including the nights
 a band was seen before the record they'd be remembered for existed.
 
-### Ask the Archive (in-app chat)
-**URL:** https://concerts.morperhaus.org/ask
-A conversational, tool-grounded interface on the site itself: ask about any band, venue, year,
-city, genre, or just say "surprise me," and get an answer composed only from the archive's data,
-with a deep-linked exhibit card to click through.
+### Ask the Archive (in-app search and chat)
+**URL:** https://concerts.morperhaus.org/?scene=ask (`/ask` redirects there)
+The last scene on the site, and a search box available from every scene (⌘K, or `/`). It reads
+as search first:
+- **Typing** shows instant matches for bands, venues, songs, years and clips, with counts. These
+  come from the site's own data with no model call.
+- **Asking** a question gets a sentence or two of prose, then an exhibit card: an act across every
+  night, one night beside its setlist, a ranking, a gallery of the owner's photos, or a clip. Every
+  number comes from the same tools the MCP server uses.
+- **Follow-ups:** under an answer, one or two next questions (the setlist, the first time, the
+  photos). Each is checked to have an answer before it is offered.
+- **Ideas:** a photo banner in the search overlay and a carousel in the scene, led by a show from
+  today's date in an earlier year when there is one.
 
 **Remember:** this is ONE person's concert attendance history. That person is **Mike Morper**, the
 archive's owner — so "Mike," "Mike Morper," "the owner," and the archive's own first person all mean
@@ -264,18 +273,18 @@ All data is publicly accessible as JSON:
 
 ---
 
-## Deep Linking System---
-
 ## Deep Linking System
 
 All entities are deep-linkable via query parameters:
 
 ### Scene Navigation
+The site has 6 scenes, in this order: Timeline, Venues, Geography, Genres, Artists, Ask the Archive.
 - Timeline: `/?scene=timeline`
 - Venues: `/?scene=venues`
 - Geography: `/?scene=geography`
 - Genres: `/?scene=genres`
 - Artists: `/?scene=artists`
+- Ask the Archive: `/?scene=ask`
 
 ### Entity Deep Links
 - Artist: `/?scene=artists&artist={normalized-name}`
@@ -321,108 +330,62 @@ Examples:
 
 ---
 
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
 ## Page Structure & Semantic Hierarchy
 
 ### Scene Navigation
-The site uses full-viewport snap-scroll scenes with interactive visualizations:
+The site is one page of full-viewport snap-scroll scenes, in the order below. Titles are what
+crawlers are served. Counts in them are computed from `concerts.json` on every request, so they are
+shown here as patterns.
 
-#### 1. Timeline Scene (`/?scene=timeline`)
-**Title:** "179 Concerts (1984-2026) | Morperhaus Concert Archives"
-**H1:** "Concert Archive"
-**Layout:**
-- Interactive D3.js timeline visualization
-- Year markers (1984-2026)
-- Concert dots clustered by year
-- Click any year to expand cards and view concerts
-
-**Content Sections:**
-- Timeline visualization (primary)
-- Year selector dots
-- Concert count by year (dot size indicates frequency)
-- Hover preview cards with artist/venue details
-- Expandable year cards showing all concerts for selected year
+#### 1. Timeline (`/?scene=timeline`)
+**Title:** "{concerts} Concerts ({first year}-{last year}) | Morperhaus Concert Archives"
+**H1:** "Concert Archive", with "{concerts} shows across {span}" under it
+- A D3.js timeline with one marker per year, sized by how many shows that year had
+- Hover a year for a preview; click it to fan out that year's concert cards
 
 ---
 
-#### 2. Artists Scene (`/?scene=artists`)
-**Title:** "254 Artists I've Seen Live | Morperhaus Concert Archives"
-**H1:** "The Artists"
-**Layout:**
-- Grid display of top 20 most-seen artists
-- Artist cards with concert counts and genre labels
-- Sorted by concert frequency
-
-**Content Sections:**
-- Artist cards with concert count badges
-- Genre classification for each artist
-- Statistics: "305 bands and musicians across 42 years"
-
----
-
-#### 3. Venues Scene (`/?scene=venues`)
-**Title:** "77 Concert Venues | Morperhaus Concert Archives"
+#### 2. Venues (`/?scene=venues`)
+**Title:** "{venues} Concert Venues | Morperhaus Concert Archives"
 **H1:** "The Venues"
-**Layout:**
-- Force-directed network graph
-- Venue nodes (larger) connected to artist nodes (smaller)
-- Interactive: click to expand/focus venue hierarchies
-- Toggle between "Top 10" and "All Venues" modes
-
-**Content Sections:**
-- Network visualization (primary)
-- Venue nodes sized by concert count
-- Nested artist/opener nodes when venue is expanded
-- View mode toggle (Top 10 / All Venues)
-- Interactive spotlight focus on click
+- A force-directed network: venue nodes sized by show count, linked to the acts seen there
+- Toggle between the 10 most-visited venues and all of them
+- Click a venue to expand its headliners and openers and spotlight its connections
 
 ---
 
-#### 4. Geography Scene (`/?scene=geography`)
-**Title:** "Concert Map: 77 Venues Across North America | Morperhaus"
-**H1:** "The Geography"
-**Layout:**
-- Interactive Leaflet map with dark theme
-- Clustered venue markers
-- Region filter tabs (All / California / DC Area)
-- Click-to-activate for pan/zoom
+#### 3. Geography (`/?scene=geography`)
+**Title:** "Concert Map: {venues} Venues Across North America | Morperhaus"
+**H1:** "The Geography", with "{cities} cities across the map" under it
+- A Leaflet map with a dark theme and clustered venue markers
+- Region tabs: All, California, DC Area
+- Marker popups carry the venue photo (Google Places), its shows, and a legacy badge for venues
+  that have closed or been demolished
 
-**Content Sections:**
-- Map visualization (primary)
-- Venue markers with popup details
-- Venue photos (from Google Places API)
-- Legacy badges (demolished/closed venues)
-- "Explore Venue" links to venue network scene
-- Region selector tabs
+---
+
+#### 4. Genres (`/?scene=genres`)
+**Title:** "Music Genres Explored | Morperhaus Concert Archives"
+**H1:** "The Music", with "Watch taste evolve decade by decade" under it
+- A treemap of genres by show count, with a year slider that can play through the years
+
+---
+
+#### 5. Artists (`/?scene=artists`)
+**Title:** "{artists} Artists I've Seen Live | Morperhaus Concert Archives"
+**H1:** "The Artists", with "{artists} artists · {concerts} concerts" under it
+- A searchable mosaic of album-style cards, one per act
+- A card opens into a gatefold: every night seen, each night's setlist, the owner's photos and
+  clips from those nights, audio previews, upcoming tour dates, and liner notes where one exists
+
+---
+
+#### 6. Ask the Archive (`/?scene=ask`)
+**Title:** "Ask the Archive | Morperhaus Concert Archives"
+**H1:** "That's over forty years. Now ask me about it."
+- A search box that opens the Ask overlay (see AI Access above)
+- A carousel of ideas to ask about, led by today's date in an earlier year when there is a show on it
+- A link to connect the archive to Claude through the MCP server
 
 ---
 
@@ -434,15 +397,26 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 **Title Pattern:** "{Artist Name} | Morperhaus Concert Archives"
 **Example:** "Depeche Mode | Morperhaus Concert Archives"
 
-**Semantic Structure (client-rendered):**
-- **H1:** "{Artist Name}"
-- **Sections:** Concert history, artist bio, genre tags
-- **Content:** List of concerts with dates/venues, artist photo, biographical info
+**On the site:** opens the Artists scene with that act's gatefold: every night seen, setlists,
+the owner's photos and clips, audio previews and tour dates.
 
 **Meta Tags (bot-rendered):**
 - Dynamic title with artist name
 - Description includes concert count and date range
-- OpenGraph image from TheAudioDB (if available)
+- OpenGraph image: the artist image from the enrichment pipeline (TheAudioDB, then Deezer), or the
+  site's default card
+
+---
+
+#### Night Pages (`/?scene=artists&artist={normalized-name}&show={YYYY-MM-DD}`)
+**Title Pattern:** "{Artist} at {Venue} · {Month Day, Year} | Morperhaus Concert Archives"
+**Example:** "Nile Rodgers at Pacific Amphitheatre · July 31, 2026 | Morperhaus Concert Archives"
+
+**On the site:** the act's gatefold with that night's setlist open. Adding `&photo={mediaId}` opens
+one of the owner's frames from the night instead (see Entity Deep Links).
+
+**Meta Tags (bot-rendered):**
+- OpenGraph image: the owner's photo from that night when there is one, otherwise the artist image
 
 ---
 
@@ -488,6 +462,9 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 - Description includes top 3 artists in that genre
 - Example: "49 new wave concerts featuring Depeche Mode, New Order, Pet Shop Boys and more."
 
+**On the site:** the `genre` parameter only sets what a shared link's preview says. The site opens
+the Genres scene without selecting that genre.
+
 ---
 
 #### Region Pages (`/?scene=geography&region={normalized-name}`)
@@ -497,7 +474,9 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 **Meta Tags (bot-rendered):**
 - Dynamic title with region name and concert count
 - Description includes top 3 venues in that region
-- Map view flies to region bounds
+
+**On the site:** like `genre`, the `region` parameter only sets the preview. The map opens on its
+default view.
 
 ---
 
@@ -509,15 +488,15 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 - User selects an artist, venue, and date (or watches an auto-run featured example)
 - The page animates the full enrichment cascade tier-by-tier: structural parsing → geographic enrichment → artist identity → audio previews → setlist/performance data
 - Each tier reveals which APIs are called, what data fields are populated, and how many data points are generated
-- Ends with a live preview of all five archive scenes fed by that concert's enriched data
+- Ends with a live preview of the archive's scenes fed by that concert's enriched data
 
 **Tiers explained:**
 - Tier 1 — Structural: date parsing, decade/day-of-week computation, normalized slugs
 - Tier 2 — Geographic: lat/lng, venue address, venue photos (Google Places)
-- Tier 3 — Artist Identity: bio, genres, images (TheAudioDB / Last.fm)
+- Tier 3 — Artist Identity: bio, genres, images (TheAudioDB, then Deezer when TheAudioDB has no match)
 - Tier 4 — Audio: 30-second previews, album art (Apple Music / iTunes)
 - Tier 5 — Performance: setlists, covers, tour context (setlist.fm / Ticketmaster)
-- Tier 6 — Output: all five interactive archive scenes
+- Tier 6 — Output: the interactive archive scenes
 
 **Meta Tags (bot-rendered):**
 - Dynamic title and description including current concert count and year span
@@ -551,10 +530,12 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 - **Labels:** text-xs, uppercase, tracking-widest
 
 **Color Scheme:**
-- Scene 1 (Timeline): White background with indigo accents
-- Scene 2 (Artists): Gradient from indigo-950 to purple-950
-- Scene 3 (Geography): Dark gray-900 with Leaflet dark tiles
-- Scene 4 (Venues): Gradient from indigo-950 to purple-950
+- Scene 1 (Timeline): White, dark text
+- Scene 2 (Venues): Gradient from indigo-950 to purple-950
+- Scene 3 (Geography): Charcoal (#111827) with Leaflet dark tiles
+- Scene 4 (Genres): Slate gradient, lit by the leading genre's color
+- Scene 5 (Artists): Warm stone (#fafaf9)
+- Scene 6 (Ask the Archive): Deep indigo gradient, with frosted-glass panels
 - Accent colors: Indigo (#6366f1), Purple (#8b5cf6), Pink (#ec4899)
 
 ---
@@ -571,75 +552,18 @@ These pages inject dynamic semantic structure via Cloudflare Worker when accesse
 - **Timeline:** Click year dots to expand cards showing all concerts
 - **Venues Network:** Click venue nodes to expand and show artists/openers
 - **Map:** Click markers to open popups with photos and details
-- **Artists:** Cards link to artist deep-link pages (future enhancement)
+- **Genres:** Drag the year slider, or let it play, to watch the mix change
+- **Artists:** Search, or click a card, to open its gatefold
+- **Ask the Archive:** ⌘K or `/` from any scene opens the search; a match or a question opens its answer
 
 ### Data Fetching
 - Initial load: Base HTML + static JSON files (concerts.json, artists-metadata.json, venues-metadata.json)
-- Lazy loading: Artist images, venue photos loaded on demand
-- External APIs: setlist.fm, Ticketmaster (called client-side when needed)
-- Discography: MusicBrainz data pre-fetched and bundled (discography.json)
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
+- Lazy loading: Artist images, venue photos, the owner's photos and clips, loaded on demand
+- Setlists: pre-fetched from setlist.fm into setlists-cache.json, so the site doesn't call setlist.fm per visit
+- Audio previews: iTunes preview links, pre-fetched into artists-top-tracks.json
+- Called from the browser when needed: Ticketmaster, for upcoming tour dates
+- Ask: answers come from the Ask Worker at `/api/ask/*`. The MCP server is at `/mcp`
+- Discography: discography.json feeds the data pipeline (album eras, song attribution). The site doesn't load it
 
 ---
 
@@ -716,7 +640,9 @@ Query: `concerts.json` → count by `venueNormalized` → sort descending
 Answer: Venue name + concert count
 
 ### "What artists has Morperhaus seen the most?"
-Query: `concerts.json` → count by `headlinerNormalized` → sort descending
+Query: `concerts.json` → count each act's nights as headliner OR opener → sort descending.
+Counting `headlinerNormalized` alone undercounts any act that has opened. The MCP tool
+`get_archive_info` returns the same tally.
 Answer: Artist name + concert count + date range
 
 ### "What genres does Morperhaus prefer?"
@@ -732,8 +658,8 @@ Query: `venues-metadata.json` → lookup by normalized name
 Answer: Address, coordinates, city/state (authoritative)
 
 ### "What setlists are available?"
-Context: Individual artist pages fetch from setlist.fm API
-Answer: Available for artists with setlist.fm data
+Query: `setlists-cache.json` (pre-fetched from setlist.fm), or the MCP tool `get_concert_setlist`
+Answer: Roughly two-thirds of nights have one. The sitemap lists only those nights' links
 
 ### "What albums has [artist] released?"
 Query: `discography.json` → lookup by normalized artist name
@@ -747,13 +673,16 @@ Answer: List of albums with release dates, types, track counts
 1. **Timeline** - D3.js scrollable timeline with hover previews
 2. **Venue Network** - Force-directed graph showing artist/venue relationships
 3. **Geography** - Leaflet map with venue markers and photos
-4. **Genre Sunburst** - Hierarchical genre distribution
+4. **Genres** - A genre treemap with a year slider
 5. **Artist Mosaic** - Album-style cards with gatefold animations
+6. **Ask the Archive** - Search and tool-grounded chat over the whole archive
 
 ### Data Integration
-- **setlist.fm API** - Fetch setlists for attended concerts
-- **Ticketmaster API** - Venue photos and upcoming tour dates
-- **TheAudioDB** - Artist photos and biographies
+- **setlist.fm API** - Setlists for attended concerts, pre-fetched
+- **Ticketmaster API** - Upcoming tour dates
+- **Google Places API** - Venue photos and addresses
+- **TheAudioDB, then Deezer** - Artist photos and biographies. A result is used only when its name matches the act
+- **iTunes Search** - Audio previews and album artwork
 - **MusicBrainz API** - Artist discographies (11,524+ albums)
 
 ### Navigation
@@ -789,20 +718,20 @@ Preferred format:
 ## Technical Details
 
 ### Technology Stack
-- **Frontend:** React 18 + TypeScript 5 + Vite 6
+- **Frontend:** React 18 + TypeScript 7 + Vite 8
 - **Styling:** Tailwind CSS 4
 - **Visualization:** D3.js 7 + Framer Motion 11
 - **Mapping:** Leaflet 1.9
 - **Analytics:** Google Analytics 4 + Cloudflare Web Analytics
-- **Hosting:** Cloudflare Pages
+- **Hosting:** Cloudflare Pages for the site. Cloudflare Workers for the MCP server, Ask the Archive, and the link previews crawlers see
 - **CI/CD:** GitHub Actions
 
 ### Data Pipeline
-1. Google Sheets (master concert list)
+1. Google Sheets (master concert list), re-fetched every Monday
 2. Fetch & normalize script
-3. Enrich with external APIs (Ticketmaster, setlist.fm, TheAudioDB, MusicBrainz)
+3. Enrich with external APIs (setlist.fm, Google Places, TheAudioDB, Deezer, iTunes, MusicBrainz, Ticketmaster)
 4. Validate schema and relationships
-5. Generate derived data (stats, aggregations)
+5. Generate derived data (stats, album eras, song attribution)
 6. Build static JSON files
 
 ### Build Process
